@@ -5,10 +5,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
-
 concurrency:
   group: washer-demo
-  cancel-in-progress: true
+  cancel-in-progress: false
+
 
 jobs:
   run:
