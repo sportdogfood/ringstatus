@@ -1,0 +1,41 @@
+name: washer-demo
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"   # GitHub minimum is every 5 minutes :contentReference[oaicite:0]{index=0}
+
+concurrency:
+  group: washer-demo
+  cancel-in-progress: true  # prevent overlapping runs :contentReference[oaicite:1]{index=1}
+
+jobs:
+  run:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run washer loop (300s, tick=5s)
+        run: node washer-demo.js
+        env:
+          # Airtable (required to hit real views)
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+          AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+          AIRTABLE_TABLE: ${{ secrets.AIRTABLE_TABLE }}
+          AIRTABLE_VIEW_HOT: ${{ secrets.AIRTABLE_VIEW_HOT }}
+
+          # Your showtime endpoint (optional; falls back to Date.now())
+          SHOWTIME_URL: ${{ secrets.SHOWTIME_URL }}
+
+          # Field names in your table
+          FIELD_NEXT_DUE: next_due_epoch
+          FIELD_LOCK_UNTIL: lock_until_epoch
+          FIELD_BUCKET: bucket
+
+          # Demo behavior
+          DO_WRITE: "0"         # set to "1" to write lock/next_due updates
+          LOOP_SECONDS: "300"
+          TICK_SECONDS: "5"
