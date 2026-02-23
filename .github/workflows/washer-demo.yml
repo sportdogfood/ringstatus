@@ -35,6 +35,6 @@ jobs:
           FIELD_LOCK_UNTIL: lock_until_epoch
           FIELD_BUCKET: bucket
 
-          DO_WRITE: "0"
+          DO_WRITE: "1"
           LOOP_SECONDS: "300"
           TICK_SECONDS: "5"
