@@ -1,4 +1,4 @@
-// tagger.js
+// tagger.js (FULL DROP)
 /**
  * RingStatus — Epoch Tagger (external clock, Airtable as state store)
  *
@@ -14,8 +14,12 @@
  *  - next_due_epoch
  *
  * Overrides:
- *  - FORCE_MODE=DAY|NIGHT|HOLDOVER  (lets you test without changing shows.mode)
- *  - DRY_RUN=1 (no Airtable writes; logs sample of what would be written)
+ *  - FORCE_MODE=DAY|NIGHT|HOLDOVER  (test without changing shows.mode)
+ *  - DRY_RUN=1 (no Airtable writes; logs sample)
+ *
+ * Reliability:
+ *  - If SHOWTIME_URL clock fetch fails (timeouts/AbortError), this script DOES NOT write
+ *    for that pass; it exits cleanly. (No “fallback epoch” writes.)
  */
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
@@ -121,7 +125,7 @@ function parseTimeParts(timeStr) {
 
 function toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour = false } = {}) {
   const dp = parseDateParts(dateStr);
-  let tp = parseTimeParts(timeStr);
+  const tp = parseTimeParts(timeStr);
   if (!dp || !tp) return null;
 
   let { y, mo, d } = dp;
@@ -143,6 +147,7 @@ function toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour = 
     d = dt.getUTCDate();
   }
 
+  // local time -> UTC epoch
   const ms = Date.UTC(y, mo - 1, d, h, mi, se) - (tzOffsetMinutes * 60_000);
   return Math.floor(ms / 1000);
 }
@@ -151,8 +156,7 @@ async function fetchWithTimeout(url, opts = {}) {
   const ac = new AbortController();
   const t = setTimeout(() => ac.abort(), HTTP_TIMEOUT_MS);
   try {
-    const res = await fetch(url, { ...opts, signal: ac.signal });
-    return res;
+    return await fetch(url, { ...opts, signal: ac.signal });
   } finally {
     clearTimeout(t);
   }
@@ -163,25 +167,65 @@ function pickNowMsAndOffsetFromRingPayload(j) {
   const offset = j?.time_zone_date_time?.time_zone_offset;
   const ms = (typeof iso === "string") ? Date.parse(iso) : NaN;
   return {
-    nowMs: Number.isFinite(ms) ? ms : Date.now(),
-    tzOffsetMinutes: Number.isFinite(Number(offset)) ? Number(offset) : 0
+    nowMs: Number.isFinite(ms) ? ms : NaN,
+    tzOffsetMinutes: Number.isFinite(Number(offset)) ? Number(offset) : NaN
   };
 }
 
-async function getServerClock() {
-  if (!SHOWTIME_URL) return { nowEpoch: Math.floor(Date.now() / 1000), tzOffsetMinutes: 0 };
+/**
+ * Strict clock: MUST come from SHOWTIME_URL.
+ * - Retries a few times.
+ * - If it still fails, returns null and caller will SKIP WRITES for that pass.
+ */
+async function getServerClockStrict() {
+  if (!SHOWTIME_URL) return null;
 
-  const res = await fetchWithTimeout(SHOWTIME_URL, { method: "GET" });
-  const txt = await res.text();
-  try {
-    const j = JSON.parse(txt);
-    const { nowMs, tzOffsetMinutes } = pickNowMsAndOffsetFromRingPayload(j);
-    return { nowEpoch: Math.floor(nowMs / 1000), tzOffsetMinutes };
-  } catch {
-    const trimmed = txt.trim();
-    if (/^\d+$/.test(trimmed)) return { nowEpoch: Math.floor(Number(trimmed) / 1000), tzOffsetMinutes: 0 };
-    return { nowEpoch: Math.floor(Date.now() / 1000), tzOffsetMinutes: 0 };
+  const backoffs = [0, 600, 1200]; // ms
+
+  for (let i = 0; i < backoffs.length; i++) {
+    if (backoffs[i]) await sleep(backoffs[i]);
+
+    try {
+      const res = await fetchWithTimeout(SHOWTIME_URL, { method: "GET" });
+      const txt = await res.text();
+
+      if (!res.ok) {
+        console.log(`clock warn: http ${res.status}`);
+        continue;
+      }
+
+      // parse JSON payload
+      try {
+        const j = JSON.parse(txt);
+        const { nowMs, tzOffsetMinutes } = pickNowMsAndOffsetFromRingPayload(j);
+
+        if (!Number.isFinite(nowMs)) {
+          console.log(`clock warn: date_obj invalid`);
+          continue;
+        }
+        if (!Number.isFinite(tzOffsetMinutes)) {
+          console.log(`clock warn: time_zone_offset invalid`);
+          continue;
+        }
+
+        return {
+          nowEpoch: Math.floor(nowMs / 1000),
+          tzOffsetMinutes
+        };
+      } catch {
+        // numeric fallback
+        const trimmed = txt.trim();
+        if (/^\d+$/.test(trimmed)) {
+          return { nowEpoch: Math.floor(Number(trimmed) / 1000), tzOffsetMinutes: 0 };
+        }
+        console.log(`clock warn: non-json response`);
+      }
+    } catch (e) {
+      console.log(`clock warn: ${e?.name || "error"} ${String(e?.message || e)}`);
+    }
   }
+
+  return null;
 }
 
 function airtableUrl(tableName) {
@@ -301,7 +345,7 @@ function computeTempTrip(fields, nowEpoch, tzOffsetMinutes) {
   return { temp: "COLD" };
 }
 
-function buildUpdate(recordId, existingFields, nowEpoch, temp, mode) {
+function buildUpdate(recordId, nowEpoch, temp, mode) {
   const bucket = temp;
   const interval = intervalSecondsFor(mode, temp);
   const nextDue = (interval == null) ? null : (nowEpoch + interval);
@@ -336,14 +380,14 @@ async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
   const schedUpdates = sched.map(r => {
     const fields = r.fields || {};
     const { temp } = computeTempSchedule(fields, nowEpoch, tzOffsetMinutes);
-    return buildUpdate(r.id, fields, nowEpoch, temp, mode);
+    return buildUpdate(r.id, nowEpoch, temp, mode);
   });
 
   const trips = await airtableList(TABLE_TRIPS, VIEW_TRIPS);
   const tripUpdates = trips.map(r => {
     const fields = r.fields || {};
     const { temp } = computeTempTrip(fields, nowEpoch, tzOffsetMinutes);
-    return buildUpdate(r.id, fields, nowEpoch, temp, mode);
+    return buildUpdate(r.id, nowEpoch, temp, mode);
   });
 
   if (DRY_RUN) {
@@ -363,7 +407,6 @@ async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
   requireEnv("SHOWTIME_URL", SHOWTIME_URL);
 
-  const clk1 = await getServerClock();
   let mode = await getCurrentMode();
   if (FORCE_MODE) mode = normalizeMode(FORCE_MODE);
 
@@ -374,11 +417,22 @@ async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
     process.exit(0);
   }
 
+  // PASS 1: require strict clock; if unavailable, skip writes and exit cleanly
+  const clk1 = await getServerClockStrict();
+  if (!clk1) {
+    console.log(`clock unavailable: skipping pass1 (no writes)`);
+    process.exit(0);
+  }
   await tagOnce(clk1.nowEpoch, clk1.tzOffsetMinutes, mode);
 
+  // PASS 2: only in DAY, and also strict clock; if unavailable, skip second pass cleanly
   if (mode === "DAY") {
     await sleep(DAY_SECOND_PASS_DELAY_SEC * 1000);
-    const clk2 = await getServerClock();
+    const clk2 = await getServerClockStrict();
+    if (!clk2) {
+      console.log(`clock unavailable: skipping pass2 (no writes)`);
+      process.exit(0);
+    }
     await tagOnce(clk2.nowEpoch, clk2.tzOffsetMinutes, mode);
   }
 })();
