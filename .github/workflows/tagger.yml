@@ -58,4 +58,4 @@ jobs:
 
           # TEST OVERRIDE (no Airtable writes, behave like DAY even if shows.mode=HOLDOVER)
           FORCE_MODE: "DAY"
-          DRY_RUN: "1"
+          DRY_RUN: "0"
