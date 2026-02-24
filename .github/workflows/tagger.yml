@@ -1,3 +1,4 @@
+# .github/workflows/tagger.yml
 name: epoch-tagger
 
 on:
@@ -54,3 +55,7 @@ jobs:
           TRIP_GONEIN: lastGonein
 
           DAY_SECOND_PASS_DELAY_SEC: "180"
+
+          # TEST OVERRIDE (no Airtable writes, behave like DAY even if shows.mode=HOLDOVER)
+          FORCE_MODE: "DAY"
+          DRY_RUN: "1"
