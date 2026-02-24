@@ -1,0 +1,56 @@
+name: epoch-tagger
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+concurrency:
+  group: epoch-tagger
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run tagger
+        run: node tagger.js
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+          AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+          SHOWTIME_URL: ${{ secrets.SHOWTIME_URL }}
+
+          TABLE_SHOWS: shows
+          TABLE_SCHEDULE: watch_schedule
+          TABLE_TRIPS: watch_trips
+
+          VIEW_SHOWS: epoch
+          VIEW_SCHEDULE: epoch
+          VIEW_TRIPS: epoch
+
+          FIELD_MODE: mode
+
+          FIELD_EPOCH: epoch
+          FIELD_TEMP: temp
+          FIELD_BUCKET: bucket
+          FIELD_NEXT_DUE: next_due_epoch
+
+          SCHED_SHOW_DATE: show_date
+          SCHED_TIME_LATEST: latest_estimated_start_time
+          SCHED_TIME_BASE: estimated_start_time
+          SCHED_STATUS: latestStatus
+
+          TRIP_DT: dt
+          TRIP_GO_LATEST: latest_estimated_go_time
+          TRIP_GO_BASE: estimated_go_time
+          TRIP_START_FALLB: estimated_start_time
+          TRIP_STATUS: latestStatus
+          TRIP_GONEIN: lastGonein
+
+          DAY_SECOND_PASS_DELAY_SEC: "180"
