@@ -7,33 +7,15 @@
  *  - watch_schedule (view: epoch)
  *  - watch_trips (view: epoch)
  *
- * Writes ONLY these fields on schedule/trips:
+ * Writes ONLY these fields on schedule/trips (unless DRY_RUN=1):
  *  - epoch
  *  - temp
  *  - bucket
  *  - next_due_epoch
  *
- * Temp rules (status overrides first):
- *  - DONE: latestStatus == "Completed"
- *  - LIVE:
- *      schedule: latestStatus == "Underway"
- *      trips: lastGonein == 1
- *  - else time-based (till_seconds = target_epoch - epoch):
- *      HOT  : 0 < till <= 1800
- *      WARM : 1800 < till <= 3600
- *      COLD : till > 3600
- *      (if till <= 0 and not DONE/LIVE: HOT)
- *
- * next_due defaults (agreed):
- *  - HOLDOVER: clear next_due_epoch
- *  - NIGHT   : COLD/WARM = +1200, HOT/LIVE = +300, DONE = clear
- *  - DAY     : COLD = +1200, WARM = +300, HOT/LIVE = +180, DONE = clear
- *
- * Run cadence:
- *  - GitHub schedule every 5 min
- *  - If mode=DAY, does 2 passes per run: immediately + ~180s (3 min)
- *  - If mode=NIGHT, does 1 pass per run
- *  - If mode=HOLDOVER, exits
+ * Overrides:
+ *  - FORCE_MODE=DAY|NIGHT|HOLDOVER  (lets you test without changing shows.mode)
+ *  - DRY_RUN=1 (no Airtable writes; logs sample of what would be written)
  */
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
@@ -58,22 +40,26 @@ const FIELD_BUCKET     = process.env.FIELD_BUCKET || "bucket";
 const FIELD_NEXT_DUE   = process.env.FIELD_NEXT_DUE || "next_due_epoch";
 
 // Schedule input fields
-const SCHED_SHOW_DATE  = process.env.SCHED_SHOW_DATE || "show_date";
-const SCHED_TIME_LATEST= process.env.SCHED_TIME_LATEST || "latest_estimated_start_time";
-const SCHED_TIME_BASE  = process.env.SCHED_TIME_BASE || "estimated_start_time";
-const SCHED_STATUS     = process.env.SCHED_STATUS || "latestStatus";
+const SCHED_SHOW_DATE   = process.env.SCHED_SHOW_DATE || "show_date";
+const SCHED_TIME_LATEST = process.env.SCHED_TIME_LATEST || "latest_estimated_start_time";
+const SCHED_TIME_BASE   = process.env.SCHED_TIME_BASE || "estimated_start_time";
+const SCHED_STATUS      = process.env.SCHED_STATUS || "latestStatus";
 
 // Trips input fields
-const TRIP_DT          = process.env.TRIP_DT || "dt";
-const TRIP_GO_LATEST   = process.env.TRIP_GO_LATEST || "latest_estimated_go_time";
-const TRIP_GO_BASE     = process.env.TRIP_GO_BASE || "estimated_go_time";
-const TRIP_START_FALLB = process.env.TRIP_START_FALLB || "estimated_start_time";
-const TRIP_STATUS      = process.env.TRIP_STATUS || "latestStatus";
-const TRIP_GONEIN      = process.env.TRIP_GONEIN || "lastGonein";
+const TRIP_DT           = process.env.TRIP_DT || "dt";
+const TRIP_GO_LATEST    = process.env.TRIP_GO_LATEST || "latest_estimated_go_time";
+const TRIP_GO_BASE      = process.env.TRIP_GO_BASE || "estimated_go_time";
+const TRIP_START_FALLB  = process.env.TRIP_START_FALLB || "estimated_start_time";
+const TRIP_STATUS       = process.env.TRIP_STATUS || "latestStatus";
+const TRIP_GONEIN       = process.env.TRIP_GONEIN || "lastGonein";
 
 // Controls
 const DAY_SECOND_PASS_DELAY_SEC = Number(process.env.DAY_SECOND_PASS_DELAY_SEC || "180"); // 3 minutes
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+
+// TEST OVERRIDES
+const FORCE_MODE = (process.env.FORCE_MODE || "").trim().toUpperCase(); // DAY|NIGHT|HOLDOVER
+const DRY_RUN    = (process.env.DRY_RUN || "0") === "1";
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -147,10 +133,9 @@ function toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour = 
     if (ampm === "PM") h += 12;
   }
 
-  // Handle 24:xx(:xx) rollover (trips)
+  // Handle 24:xx rollover
   if (allow24Hour && h >= 24) {
     h = h - 24;
-    // add 1 day
     const dt = new Date(Date.UTC(y, mo - 1, d, 0, 0, 0));
     dt.setUTCDate(dt.getUTCDate() + 1);
     y = dt.getUTCFullYear();
@@ -158,8 +143,6 @@ function toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour = 
     d = dt.getUTCDate();
   }
 
-  // local time -> UTC epoch:
-  // epoch_ms = UTC(y,m,d,h,mi,se) - offsetMinutes
   const ms = Date.UTC(y, mo - 1, d, h, mi, se) - (tzOffsetMinutes * 60_000);
   return Math.floor(ms / 1000);
 }
@@ -195,7 +178,6 @@ async function getServerClock() {
     const { nowMs, tzOffsetMinutes } = pickNowMsAndOffsetFromRingPayload(j);
     return { nowEpoch: Math.floor(nowMs / 1000), tzOffsetMinutes };
   } catch {
-    // raw number fallback
     const trimmed = txt.trim();
     if (/^\d+$/.test(trimmed)) return { nowEpoch: Math.floor(Number(trimmed) / 1000), tzOffsetMinutes: 0 };
     return { nowEpoch: Math.floor(Date.now() / 1000), tzOffsetMinutes: 0 };
@@ -235,7 +217,6 @@ async function airtableList(tableName, viewName) {
 }
 
 async function airtableBatchUpdate(tableName, updates) {
-  // updates: [{id, fields}]
   if (!updates.length) return;
 
   for (let i = 0; i < updates.length; i += 10) {
@@ -275,8 +256,8 @@ function intervalSecondsFor(mode, temp) {
 function computeTempSchedule(fields, nowEpoch, tzOffsetMinutes) {
   const status = fields[SCHED_STATUS];
 
-  if (isCompleted(status)) return { temp: "DONE", targetEpoch: null };
-  if (isUnderway(status)) return { temp: "LIVE", targetEpoch: null };
+  if (isCompleted(status)) return { temp: "DONE" };
+  if (isUnderway(status)) return { temp: "LIVE" };
 
   const dateStr = fields[SCHED_SHOW_DATE];
   const tLatest = fields[SCHED_TIME_LATEST];
@@ -284,44 +265,40 @@ function computeTempSchedule(fields, nowEpoch, tzOffsetMinutes) {
   const timeStr = tLatest || tBase;
 
   const targetEpoch = toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour: false });
-  if (targetEpoch == null) return { temp: "COLD", targetEpoch: null };
+  if (targetEpoch == null) return { temp: "COLD" };
 
   const till = targetEpoch - nowEpoch;
 
-  if (till <= 0) return { temp: "HOT", targetEpoch };
-  if (till <= 1800) return { temp: "HOT", targetEpoch };
-  if (till <= 3600) return { temp: "WARM", targetEpoch };
-  return { temp: "COLD", targetEpoch };
+  if (till <= 0) return { temp: "HOT" };
+  if (till <= 1800) return { temp: "HOT" };
+  if (till <= 3600) return { temp: "WARM" };
+  return { temp: "COLD" };
 }
 
 function computeTempTrip(fields, nowEpoch, tzOffsetMinutes) {
   const status = fields[TRIP_STATUS];
 
-  if (isCompleted(status)) return { temp: "DONE", targetEpoch: null };
-  if (isGoneIn(fields[TRIP_GONEIN])) return { temp: "LIVE", targetEpoch: null };
+  if (isCompleted(status)) return { temp: "DONE" };
+  if (isGoneIn(fields[TRIP_GONEIN])) return { temp: "LIVE" };
 
   const dateStr = fields[TRIP_DT];
   const tLatest = fields[TRIP_GO_LATEST];
   const tGo = fields[TRIP_GO_BASE];
   const tStart = fields[TRIP_START_FALLB];
 
-  // replicate "00:00:00 invalid" behavior for estimated_go_time
   const goCandidate = (tGo && !String(tGo).includes("00:00:00")) ? tGo : null;
+  const timeStr = tLatest || goCandidate || tStart;
 
-  let timeStr = tLatest || goCandidate || tStart;
-
-  // allow 24:xx rollover mainly for estimated_go_time
   const allow24 = Boolean(timeStr && String(timeStr).startsWith("24"));
-
   const targetEpoch = toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour: allow24 });
-  if (targetEpoch == null) return { temp: "COLD", targetEpoch: null };
+  if (targetEpoch == null) return { temp: "COLD" };
 
   const till = targetEpoch - nowEpoch;
 
-  if (till <= 0) return { temp: "HOT", targetEpoch };
-  if (till <= 1800) return { temp: "HOT", targetEpoch };
-  if (till <= 3600) return { temp: "WARM", targetEpoch };
-  return { temp: "COLD", targetEpoch };
+  if (till <= 0) return { temp: "HOT" };
+  if (till <= 1800) return { temp: "HOT" };
+  if (till <= 3600) return { temp: "WARM" };
+  return { temp: "COLD" };
 }
 
 function buildUpdate(recordId, existingFields, nowEpoch, temp, mode) {
@@ -330,46 +307,53 @@ function buildUpdate(recordId, existingFields, nowEpoch, temp, mode) {
   const nextDue = (interval == null) ? null : (nowEpoch + interval);
 
   const patch = {};
-  // always stamp epoch
   patch[FIELD_EPOCH] = nowEpoch;
+  patch[FIELD_TEMP] = temp;
+  patch[FIELD_BUCKET] = bucket;
+  patch[FIELD_NEXT_DUE] = nextDue;
 
-  // stamp temp/bucket if changed (or blank)
-  if (existingFields[FIELD_TEMP] !== temp) patch[FIELD_TEMP] = temp;
-  if (existingFields[FIELD_BUCKET] !== bucket) patch[FIELD_BUCKET] = bucket;
-
-  // next_due_epoch: write null to clear
-  if (existingFields[FIELD_NEXT_DUE] !== nextDue) patch[FIELD_NEXT_DUE] = nextDue;
-
-  // Only write if anything besides epoch changed OR if epoch field differs
-  // (epoch updates every pass by design, so always write it)
   return { id: recordId, fields: patch };
 }
 
 async function getCurrentMode() {
   const shows = await airtableList(TABLE_SHOWS, VIEW_SHOWS);
   const top = shows[0];
-  const mode = normalizeMode(top?.fields?.[FIELD_MODE]);
-  return mode;
+  return normalizeMode(top?.fields?.[FIELD_MODE]);
+}
+
+function sampleLog(label, updates, limit = 3) {
+  const sample = updates.slice(0, limit).map(u => ({
+    id: u.id,
+    temp: u.fields[FIELD_TEMP],
+    bucket: u.fields[FIELD_BUCKET],
+    next_due_epoch: u.fields[FIELD_NEXT_DUE]
+  }));
+  console.log(`${label}: sample`, JSON.stringify(sample));
 }
 
 async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
-  // schedule
   const sched = await airtableList(TABLE_SCHEDULE, VIEW_SCHEDULE);
   const schedUpdates = sched.map(r => {
     const fields = r.fields || {};
     const { temp } = computeTempSchedule(fields, nowEpoch, tzOffsetMinutes);
     return buildUpdate(r.id, fields, nowEpoch, temp, mode);
   });
-  await airtableBatchUpdate(TABLE_SCHEDULE, schedUpdates);
 
-  // trips
   const trips = await airtableList(TABLE_TRIPS, VIEW_TRIPS);
   const tripUpdates = trips.map(r => {
     const fields = r.fields || {};
     const { temp } = computeTempTrip(fields, nowEpoch, tzOffsetMinutes);
     return buildUpdate(r.id, fields, nowEpoch, temp, mode);
   });
-  await airtableBatchUpdate(TABLE_TRIPS, tripUpdates);
+
+  if (DRY_RUN) {
+    console.log(`DRY_RUN: would update schedule=${schedUpdates.length} trips=${tripUpdates.length}`);
+    sampleLog("schedule", schedUpdates);
+    sampleLog("trips", tripUpdates);
+  } else {
+    await airtableBatchUpdate(TABLE_SCHEDULE, schedUpdates);
+    await airtableBatchUpdate(TABLE_TRIPS, tripUpdates);
+  }
 
   console.log(`tag pass ok | mode=${mode} | schedule=${sched.length} trips=${trips.length} | epoch=${nowEpoch} offsetMin=${tzOffsetMinutes}`);
 }
@@ -379,18 +363,19 @@ async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
   requireEnv("SHOWTIME_URL", SHOWTIME_URL);
 
-  const { nowEpoch, tzOffsetMinutes } = await getServerClock();
-  const mode = await getCurrentMode();
+  const clk1 = await getServerClock();
+  let mode = await getCurrentMode();
+  if (FORCE_MODE) mode = normalizeMode(FORCE_MODE);
+
+  console.log(`mode=${mode} (force=${FORCE_MODE || "none"}) dry_run=${DRY_RUN}`);
 
   if (mode === "HOLDOVER") {
     console.log(`mode=HOLDOVER -> no tagging run`);
     process.exit(0);
   }
 
-  // First pass
-  await tagOnce(nowEpoch, tzOffsetMinutes, mode);
+  await tagOnce(clk1.nowEpoch, clk1.tzOffsetMinutes, mode);
 
-  // Second pass only in DAY mode (approx 3-minute cycle inside a 5-minute workflow window)
   if (mode === "DAY") {
     await sleep(DAY_SECOND_PASS_DELAY_SEC * 1000);
     const clk2 = await getServerClock();
