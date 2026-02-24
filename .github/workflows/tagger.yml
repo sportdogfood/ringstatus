@@ -1,10 +1,10 @@
 # .github/workflows/tagger.yml
 name: epoch-tagger
-
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
   schedule:
     - cron: "*/5 * * * *"
+
 
 concurrency:
   group: epoch-tagger
