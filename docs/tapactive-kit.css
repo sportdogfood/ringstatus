@@ -1,4 +1,4 @@
-<style>
+
 /* Tap-Active Locked UI Kit — v1.1 (patched)
    Goals:
    - Fixed “phone canvas” (375–475 sweet spot), NO ballooning on desktop
@@ -488,4 +488,4 @@ button,input,a{ font:inherit; }
 @media (prefers-reduced-motion: reduce){
   *{ transition:none !important; }
 }
-</style>
+
