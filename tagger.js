@@ -18,8 +18,10 @@
  *  - DRY_RUN=1 (no Airtable writes; logs sample)
  *
  * Reliability:
- *  - If SHOWTIME_URL clock fetch fails (timeouts/AbortError), this script DOES NOT write
- *    for that pass; it exits cleanly. (No “fallback epoch” writes.)
+ *  - Retries Airtable GET/PATCH on transient failures (timeouts/AbortError/429/5xx).
+ *  - If Airtable mode fetch fails, exits cleanly (no writes) so next drumbeat can recover.
+ *  - If SHOWTIME_URL clock fetch fails, exits cleanly (no writes) for that pass.
+ *  - Optional: set UNDICI_CONNECT_TIMEOUT_MS to override default connect timeout for fetch.
  */
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
@@ -60,6 +62,14 @@ const TRIP_GONEIN       = process.env.TRIP_GONEIN || "lastGonein";
 // Controls
 const DAY_SECOND_PASS_DELAY_SEC = Number(process.env.DAY_SECOND_PASS_DELAY_SEC || "180"); // 3 minutes
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+
+// Airtable retry controls
+const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
+const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS  || "400");
+const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS   || "2000");
+
+// Optional: override undici connect timeout (helps with 10s connect timeouts seen in logs)
+const UNDICI_CONNECT_TIMEOUT_MS = Number(process.env.UNDICI_CONNECT_TIMEOUT_MS || "0");
 
 // TEST OVERRIDES
 const FORCE_MODE = (process.env.FORCE_MODE || "").trim().toUpperCase(); // DAY|NIGHT|HOLDOVER
@@ -152,6 +162,23 @@ function toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour = 
   return Math.floor(ms / 1000);
 }
 
+// Optional: configure undici global dispatcher to increase connect timeout
+(function maybeConfigureUndici() {
+  if (!UNDICI_CONNECT_TIMEOUT_MS || !Number.isFinite(UNDICI_CONNECT_TIMEOUT_MS) || UNDICI_CONNECT_TIMEOUT_MS <= 0) return;
+  try {
+    // eslint-disable-next-line global-require
+    const undici = require("undici");
+    const Agent = undici?.Agent;
+    const setGlobalDispatcher = undici?.setGlobalDispatcher;
+    if (Agent && typeof setGlobalDispatcher === "function") {
+      setGlobalDispatcher(new Agent({ connectTimeout: UNDICI_CONNECT_TIMEOUT_MS }));
+      console.log(`undici: set connectTimeout=${UNDICI_CONNECT_TIMEOUT_MS}ms`);
+    }
+  } catch {
+    // ignore
+  }
+})();
+
 async function fetchWithTimeout(url, opts = {}) {
   const ac = new AbortController();
   const t = setTimeout(() => ac.abort(), HTTP_TIMEOUT_MS);
@@ -160,6 +187,58 @@ async function fetchWithTimeout(url, opts = {}) {
   } finally {
     clearTimeout(t);
   }
+}
+
+function isRetryableFetchError(e) {
+  const name = String(e?.name || "");
+  const code = String(e?.code || "");
+  const msg  = String(e?.message || "");
+
+  if (name === "AbortError") return true;
+  if (code === "UND_ERR_CONNECT_TIMEOUT") return true;
+  if (code === "UND_ERR_HEADERS_TIMEOUT") return true;
+  if (code === "UND_ERR_BODY_TIMEOUT") return true;
+  if (/timeout/i.test(msg)) return true;
+  if (/fetch failed/i.test(msg)) return true;
+  return false;
+}
+
+async function fetchWithRetry(url, opts = {}, retry = {}) {
+  const attempts = Math.max(1, Math.floor(Number(retry.attempts ?? AT_RETRY_ATTEMPTS)));
+  const baseMs   = Math.max(0, Math.floor(Number(retry.baseMs ?? AT_RETRY_BASE_MS)));
+  const maxMs    = Math.max(250, Math.floor(Number(retry.maxMs ?? AT_RETRY_MAX_MS)));
+
+  let lastErr = null;
+
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      const res = await fetchWithTimeout(url, opts);
+
+      // Retry on 429 + 5xx
+      if (res.status === 429 || (res.status >= 500 && res.status <= 599)) {
+        if (i === attempts) return res;
+
+        let waitMs = Math.min(maxMs, baseMs * i + Math.floor(Math.random() * 200));
+        const ra = res.headers?.get?.("retry-after");
+        const raNum = ra ? Number(ra) : NaN;
+        if (Number.isFinite(raNum) && raNum > 0) waitMs = Math.min(maxMs, raNum * 1000);
+
+        await sleep(waitMs);
+        continue;
+      }
+
+      return res;
+    } catch (e) {
+      lastErr = e;
+      const retryable = isRetryableFetchError(e);
+      if (!retryable || i === attempts) throw e;
+
+      const waitMs = Math.min(maxMs, baseMs * i + Math.floor(Math.random() * 250));
+      await sleep(waitMs);
+    }
+  }
+
+  throw lastErr || new Error("fetchWithRetry failed");
 }
 
 function pickNowMsAndOffsetFromRingPayload(j) {
@@ -242,16 +321,16 @@ async function airtableList(tableName, viewName) {
     url.searchParams.set("pageSize", "100");
     if (offset) url.searchParams.set("offset", offset);
 
-    const res = await fetchWithTimeout(url.toString(), {
+    const res = await fetchWithRetry(url.toString(), {
       headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
     });
 
     if (!res.ok) {
-      const body = await res.text();
+      const body = await res.text().catch(() => "");
       throw new Error(`Airtable list failed (${res.status}) ${tableName}/${viewName}: ${body}`);
     }
 
-    const json = await res.json();
+    const json = await res.json().catch(() => ({}));
     out.push(...(json.records || []));
     offset = json.offset;
     if (!offset) break;
@@ -265,7 +344,7 @@ async function airtableBatchUpdate(tableName, updates) {
 
   for (let i = 0; i < updates.length; i += 10) {
     const chunk = updates.slice(i, i + 10);
-    const res = await fetchWithTimeout(airtableUrl(tableName), {
+    const res = await fetchWithRetry(airtableUrl(tableName), {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${AIRTABLE_TOKEN}`,
@@ -275,7 +354,7 @@ async function airtableBatchUpdate(tableName, updates) {
     });
 
     if (!res.ok) {
-      const body = await res.text();
+      const body = await res.text().catch(() => "");
       throw new Error(`Airtable patch failed (${res.status}) ${tableName}: ${body}`);
     }
   }
@@ -359,10 +438,17 @@ function buildUpdate(recordId, nowEpoch, temp, mode) {
   return { id: recordId, fields: patch };
 }
 
-async function getCurrentMode() {
-  const shows = await airtableList(TABLE_SHOWS, VIEW_SHOWS);
-  const top = shows[0];
-  return normalizeMode(top?.fields?.[FIELD_MODE]);
+async function getCurrentModeSafe() {
+  try {
+    const shows = await airtableList(TABLE_SHOWS, VIEW_SHOWS);
+    const top = shows[0];
+    return normalizeMode(top?.fields?.[FIELD_MODE]);
+  } catch (e) {
+    const name = e?.name || "error";
+    const msg = String(e?.message || e);
+    console.log(`mode warn: ${name} ${msg.slice(0, 180)}`);
+    return null;
+  }
 }
 
 function sampleLog(label, updates, limit = 3) {
@@ -403,36 +489,48 @@ async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
 }
 
 (async () => {
-  requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
-  requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
-  requireEnv("SHOWTIME_URL", SHOWTIME_URL);
+  try {
+    requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
+    requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
+    requireEnv("SHOWTIME_URL", SHOWTIME_URL);
 
-  let mode = await getCurrentMode();
-  if (FORCE_MODE) mode = normalizeMode(FORCE_MODE);
-
-  console.log(`mode=${mode} (force=${FORCE_MODE || "none"}) dry_run=${DRY_RUN}`);
-
-  if (mode === "HOLDOVER") {
-    console.log(`mode=HOLDOVER -> no tagging run`);
-    process.exit(0);
-  }
-
-  // PASS 1: require strict clock; if unavailable, skip writes and exit cleanly
-  const clk1 = await getServerClockStrict();
-  if (!clk1) {
-    console.log(`clock unavailable: skipping pass1 (no writes)`);
-    process.exit(0);
-  }
-  await tagOnce(clk1.nowEpoch, clk1.tzOffsetMinutes, mode);
-
-  // PASS 2: only in DAY, and also strict clock; if unavailable, skip second pass cleanly
-  if (mode === "DAY") {
-    await sleep(DAY_SECOND_PASS_DELAY_SEC * 1000);
-    const clk2 = await getServerClockStrict();
-    if (!clk2) {
-      console.log(`clock unavailable: skipping pass2 (no writes)`);
+    let mode = await getCurrentModeSafe();
+    if (!mode) {
+      console.log(`mode unavailable: skipping run (no writes)`);
       process.exit(0);
     }
-    await tagOnce(clk2.nowEpoch, clk2.tzOffsetMinutes, mode);
+    if (FORCE_MODE) mode = normalizeMode(FORCE_MODE);
+
+    console.log(`mode=${mode} (force=${FORCE_MODE || "none"}) dry_run=${DRY_RUN}`);
+
+    if (mode === "HOLDOVER") {
+      console.log(`mode=HOLDOVER -> no tagging run`);
+      process.exit(0);
+    }
+
+    // PASS 1: require strict clock; if unavailable, skip writes and exit cleanly
+    const clk1 = await getServerClockStrict();
+    if (!clk1) {
+      console.log(`clock unavailable: skipping pass1 (no writes)`);
+      process.exit(0);
+    }
+    await tagOnce(clk1.nowEpoch, clk1.tzOffsetMinutes, mode);
+
+    // PASS 2: only in DAY, and also strict clock; if unavailable, skip second pass cleanly
+    if (mode === "DAY") {
+      await sleep(DAY_SECOND_PASS_DELAY_SEC * 1000);
+      const clk2 = await getServerClockStrict();
+      if (!clk2) {
+        console.log(`clock unavailable: skipping pass2 (no writes)`);
+        process.exit(0);
+      }
+      await tagOnce(clk2.nowEpoch, clk2.tzOffsetMinutes, mode);
+    }
+  } catch (e) {
+    // Hard stop only for truly unexpected failures; keep logs single-line and let next drumbeat recover.
+    const name = e?.name || "error";
+    const msg = String(e?.message || e);
+    console.log(`fatal: ${name} ${msg.slice(0, 240)}`);
+    process.exit(0);
   }
 })();
