@@ -1,19 +1,23 @@
 /**
- * publisher.js (FULL DROP) — with manifest support
+ * publisher.js (FULL DROP) — RingStatus Data Publisher + Per-Tenant Manifest (NO table_view2)
  *
- * Runs OUTSIDE Airtable:
- * - Reads publish_queue (optionally via view; default: all_active)
- * - Processes only records where dirty=true
- * - For each dirty dataset:
- *    - exports rows from table_name + table_view1/table_view2
- *    - writes to paths1/paths2 (comma/newline-separated paths)
- *    - preflight GETs published JSON and skips commit if no change
- *    - commits changed paths via commit-bulk
- *    - clears dirty and stamps last_publish_epoch ONLY when a commit occurs
+ * INTENT
+ * - Code/templates live in repo: sportdogfood/ringstatus
+ * - Data snapshots live in repo: sportdogfood/ringstatus-data (via Cloudflare Worker commit gateway)
  *
- * NEW:
- * - dataset_key="manifest" publishes a tenant manifest JSON to its paths.
- *   Manifest is derived from other publish_queue rows (visible in the same queue fetch).
+ * RUNS OUTSIDE AIRTABLE (Task Scheduler heartbeat or manual):
+ * - Reads publish_queue (optionally via a view; default: all_active)
+ * - Processes only rows where dirty=true
+ * - Each row publishes ONE lane (table_view1 -> paths1). No table_view2 is used.
+ * - allowed_fields is taken from publish_queue row (comma/newline separated)
+ * - Preflight GET of published JSON and SKIP commit if no change
+ * - Commits changed paths via /docs/commit-bulk on ringstatus-proxy
+ * - Clears dirty; stamps last_publish_epoch ONLY when a commit happens
+ *
+ * MANIFEST
+ * - Any dataset_key starting with "manifest" publishes a tenant manifest to its paths1.
+ * - Tenant is inferred from manifest path: docs/{tenant}/manifest.json
+ * - Manifest includes ONLY datasets whose paths1 are under docs/{tenant}/...
  *
  * Requires env:
  *   AIRTABLE_TOKEN
@@ -21,9 +25,9 @@
  *
  * Optional env:
  *   PUBLISH_QUEUE_TABLE (default: publish_queue)
- *   PUBLISH_QUEUE_VIEW  (default: all_active)  // set to empty to disable view filtering
- *   PUBLISH_URI         (default: https://items.clearroundtravel.com/docs/commit-bulk)
- *   PUBLISHED_BASE      (default: https://items.clearroundtravel.com/)
+ *   PUBLISH_QUEUE_VIEW  (default: all_active)   // set to empty to disable view filtering
+ *   PUBLISH_URI         (default: https://ringstatus-proxy.gombcg.workers.dev/docs/commit-bulk)
+ *   PUBLISHED_BASE      (default: https://ringstatus-proxy.gombcg.workers.dev/)
  *   FORCE_PUSH          (default: 1)
  *   DRY_RUN             (default: 0)
  *   SHOWTIME_URL        (optional; used only to stamp epoch; falls back to local time)
@@ -41,31 +45,29 @@ if (!AIRTABLE_BASE_ID) throw new Error("Missing env AIRTABLE_BASE_ID");
 const PUBLISH_QUEUE_TABLE = process.env.PUBLISH_QUEUE_TABLE || "publish_queue";
 const PUBLISH_QUEUE_VIEW  = (process.env.PUBLISH_QUEUE_VIEW ?? "all_active").trim(); // allow blank => no view
 
-const PUBLISH_URI    = process.env.PUBLISH_URI    || "https://items.clearroundtravel.com/docs/commit-bulk";
-const PUBLISHED_BASE = process.env.PUBLISHED_BASE || "https://items.clearroundtravel.com/";
+// RingStatus proxy defaults (data repo = ringstatus-data behind the Worker)
+const PUBLISH_URI    = process.env.PUBLISH_URI    || "https://ringstatus-proxy.gombcg.workers.dev/docs/commit-bulk";
+const PUBLISHED_BASE = process.env.PUBLISHED_BASE || "https://ringstatus-proxy.gombcg.workers.dev/";
+
 const FORCE_PUSH     = String(process.env.FORCE_PUSH ?? "1") === "1";
 const DRY_RUN        = String(process.env.DRY_RUN ?? "0") === "1";
-
 const SHOWTIME_URL   = process.env.SHOWTIME_URL || "";
 
-// publish_queue field names (match Airtable visible names)
+// publish_queue field names (must match Airtable field names)
 const PQ_DATASET_KEY        = "dataset_key";
 const PQ_DIRTY              = "dirty";
 const PQ_DIRTY_REASON       = "dirty_reason";
-const PQ_DIRTY_EPOCH        = "dirty_epoch";
+const PQ_DIRTY_EPOCH        = "dirty_epoch";         // optional
 const PQ_LAST_PUBLISH_EPOCH = "last_publish_epoch";
 const PQ_TABLE_NAME         = "table_name";
-const PQ_VIEW1              = "table_view1";
-const PQ_VIEW2              = "table_view2";
-const PQ_PATHS1             = "paths1";
-const PQ_PATHS2             = "paths2";
-const PQ_ALLOWED_FIELDS     = "allowed_fields";
+const PQ_VIEW1              = "table_view1";         // ONLY view used
+const PQ_PATHS1             = "paths1";              // ONLY paths used
+const PQ_ALLOWED_FIELDS     = "allowed_fields";      // comma/newline list
 
-// Commit bulk payload defaults
 const CONTENT_TYPE = "application/json";
 
 //////////////////////
-// 1) Dataset defaults (only used if publish_queue.allowed_fields is blank)
+// 1) Dataset defaults (fallback only if allowed_fields is blank)
 //////////////////////
 const DEFAULT_ALLOWED_FIELDS = {
   watch_schedule: [
@@ -110,22 +112,18 @@ function normalizePath(p) {
   return s.replace(/^\/+/, "");
 }
 
-function parseCommaList(s) {
-  if (!s) return [];
-  return String(s)
-    .split(",")
-    .map(x => x.trim())
-    .filter(Boolean);
-}
-
-function parsePaths(s) {
+function parseListFlexible(s) {
+  // supports: comma, newline, space-separated
   if (!s) return [];
   return String(s)
     .replace(/\r/g, "")
     .split(/[, \n]+/)
     .map(x => x.trim())
-    .filter(Boolean)
-    .map(normalizePath);
+    .filter(Boolean);
+}
+
+function parsePaths(s) {
+  return parseListFlexible(s).map(normalizePath);
 }
 
 function toBase64Utf8(str) {
@@ -146,12 +144,19 @@ function stableStringify(obj) {
   return JSON.stringify(sorter(obj));
 }
 
-function inferTenantFromFirstPath(paths) {
-  // expects docs/{tenant}/...
+function isManifestKey(k) {
+  return String(k || "").trim().toLowerCase().startsWith("manifest");
+}
+
+function inferTenantFromManifestPath(paths) {
+  // expects docs/{tenant}/manifest.json (or docs/{tenant}/anything/manifest.json)
   if (!paths || !paths.length) return null;
-  const p = String(paths[0] || "");
-  const m = p.match(/^docs\/([^\/]+)\//i);
-  return m ? m[1] : null;
+  for (const raw of paths) {
+    const p = String(raw || "");
+    const m = p.match(/^docs\/([^\/]+)\//i);
+    if (m) return m[1];
+  }
+  return null;
 }
 
 async function getEpochSec() {
@@ -184,12 +189,16 @@ const AT_BASE = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}`;
 
 function atHeaders() {
   return {
-    "Authorization": `Bearer ${AIRTABLE_TOKEN}`,
+    Authorization: `Bearer ${AIRTABLE_TOKEN}`,
     "Content-Type": "application/json",
   };
 }
 
-async function airtableListAll({ table, view, fields = [] }) {
+async function airtableListAll({ table, view, fields = null }) {
+  // fields:
+  // - null => do not send fields[] (safe for schema drift)
+  // - []   => do not send fields[] (treat as null)
+  // - [..] => send fields[] to reduce payload
   const out = [];
   let offset = null;
 
@@ -197,14 +206,23 @@ async function airtableListAll({ table, view, fields = [] }) {
     const url = new URL(`${AT_BASE}/${encodeURIComponent(table)}`);
     if (view) url.searchParams.set("view", view);
 
-    for (const f of fields) url.searchParams.append("fields[]", f);
+    if (Array.isArray(fields) && fields.length) {
+      for (const f of fields) url.searchParams.append("fields[]", f);
+    }
+
     if (offset) url.searchParams.set("offset", offset);
 
     const res = await fetchWithTimeout(url.toString(), { method: "GET", headers: atHeaders() }, 20000);
     const j = await res.json().catch(() => ({}));
+
     if (!res.ok) {
-      const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 300);
-      throw new Error(`Airtable list failed (${table}/${view || "NO_VIEW"}): ${res.status} ${msg}`);
+      const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 400);
+      const type = (j && j.error && j.error.type) ? j.error.type : "";
+      const err = new Error(`Airtable list failed (${table}/${view || "NO_VIEW"}): ${res.status} ${type} ${msg}`);
+      err._airtable_status = res.status;
+      err._airtable_type = type;
+      err._airtable_message = msg;
+      throw err;
     }
 
     if (Array.isArray(j.records)) out.push(...j.records);
@@ -215,7 +233,7 @@ async function airtableListAll({ table, view, fields = [] }) {
   return out;
 }
 
-async function airtableUpdateRecord({ table, recordId, fields }) {
+async function airtablePatchRecord({ table, recordId, fields }) {
   const url = `${AT_BASE}/${encodeURIComponent(table)}/${recordId}`;
   const res = await fetchWithTimeout(
     url,
@@ -224,8 +242,9 @@ async function airtableUpdateRecord({ table, recordId, fields }) {
   );
   const j = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 300);
-    throw new Error(`Airtable patch failed (${table}/${recordId}): ${res.status} ${msg}`);
+    const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 400);
+    const type = (j && j.error && j.error.type) ? j.error.type : "";
+    throw new Error(`Airtable patch failed (${table}/${recordId}): ${res.status} ${type} ${msg}`);
   }
   return j;
 }
@@ -250,7 +269,7 @@ async function preflightGetJson(url) {
 }
 
 //////////////////////
-// 5) Commit-bulk
+// 5) Commit-bulk (RingStatus proxy)
 //////////////////////
 function isNonFastForward422(status, text) {
   if (status !== 422) return false;
@@ -281,7 +300,7 @@ async function commitBulk({ message, files, force = true }) {
     const res = await fetchWithTimeout(
       PUBLISH_URI,
       { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) },
-      30000
+      45000
     );
 
     lastStatus = res.status;
@@ -302,7 +321,7 @@ async function commitBulk({ message, files, force = true }) {
 }
 
 //////////////////////
-// 6) Core publish logic
+// 6) Publish primitives
 //////////////////////
 function buildRowsFromRecords(records, allowedFields) {
   // Preserve view order (Airtable view controls sorting)
@@ -315,9 +334,9 @@ function buildRowsFromRecords(records, allowedFields) {
 }
 
 async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }) {
-  if (!paths.length) return { ok: true, skipped: true, reason: "no_paths" };
+  if (!paths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
 
-  const contentText = JSON.stringify(contentObj, null, 2);
+  const contentText = JSON.stringify(contentObj, null, 2) + "\n";
   const changedFiles = [];
   let anyChange = false;
 
@@ -336,6 +355,7 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
         });
       }
     } else {
+      // If preflight fails, commit for safety.
       anyChange = true;
       changedFiles.push({
         path: normalizePath(p),
@@ -347,16 +367,24 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
 
   if (!anyChange) return { ok: true, skipped: true, reason: "no_change", committed: 0 };
 
-  if (DRY_RUN) return { ok: true, skipped: true, reason: "dry_run", wouldCommit: changedFiles.length };
+  if (DRY_RUN) return { ok: true, skipped: true, reason: "dry_run", committed: 0, wouldCommit: changedFiles.length };
 
   const msg = `chore: publish ${datasetKey} @${epochSec}`;
   const res = await commitBulk({ message: msg, files: changedFiles, force: FORCE_PUSH });
-  if (!res.ok) return { ok: false, status: res.status, errorText: String(res.text || "").slice(0, 300), committed: 0 };
 
-  return { ok: true, skipped: false, committed: changedFiles.length, status: res.status };
+  if (!res.ok) {
+    return {
+      ok: false,
+      status: res.status,
+      errorText: String(res.text || "").slice(0, 500),
+      committed: 0,
+    };
+  }
+
+  return { ok: true, skipped: false, reason: "published", committed: changedFiles.length, status: res.status };
 }
 
-async function publishDatasetSlot({
+async function publishDataset({
   datasetKey,
   tableName,
   viewName,
@@ -368,7 +396,23 @@ async function publishDatasetSlot({
   if (!paths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
   if (!allowedFields.length) return { ok: true, skipped: true, reason: "no_allowed_fields", committed: 0 };
 
-  const records = await airtableListAll({ table: tableName, view: viewName, fields: allowedFields });
+  // Try with fields[] first; if Airtable complains about unknown field, retry without fields[].
+  let records;
+  try {
+    records = await airtableListAll({ table: tableName, view: viewName, fields: allowedFields });
+  } catch (e) {
+    const status = e && e._airtable_status;
+    const type   = e && e._airtable_type;
+    const msg    = (e && e._airtable_message) ? String(e._airtable_message) : String(e?.message || e);
+
+    if (status === 422 && String(type).toUpperCase() === "UNKNOWN_FIELD_NAME") {
+      console.log(`warn: ${datasetKey} unknown field in fields[]; retrying without fields[] | ${msg}`);
+      records = await airtableListAll({ table: tableName, view: viewName, fields: null });
+    } else {
+      throw e;
+    }
+  }
+
   const rows = buildRowsFromRecords(records, allowedFields);
 
   return await publishContentToPaths({
@@ -380,46 +424,40 @@ async function publishDatasetSlot({
 }
 
 function pickAllowedFields(datasetKey, pqAllowedFieldsRaw) {
-  const fromQueue = parseCommaList(pqAllowedFieldsRaw);
+  const fromQueue = parseListFlexible(pqAllowedFieldsRaw);
   if (fromQueue.length) return fromQueue;
 
   const def = DEFAULT_ALLOWED_FIELDS[String(datasetKey || "").trim()] || [];
   return def.slice();
 }
 
-function buildManifestFromQueue(pqRecords, epochSec, tenantHint) {
-  // include all non-manifest rows that have at least one path
+//////////////////////
+// 7) Manifest
+//////////////////////
+function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
   const datasets = [];
+
+  if (!tenant) {
+    return { tenant: null, epoch: epochSec, datasets: [] };
+  }
+
+  const tenantPrefix = `docs/${tenant}/`.toLowerCase();
 
   for (const r of pqRecords) {
     const f = r.fields || {};
     const key = String(f[PQ_DATASET_KEY] || "").trim();
     if (!key) continue;
-    if (key.toLowerCase() === "manifest") continue;
+    if (isManifestKey(key)) continue;
 
-    const p1 = parsePaths(f[PQ_PATHS1]);
-    const p2 = parsePaths(f[PQ_PATHS2]);
-    const allPaths = [...p1, ...p2].filter(Boolean);
+    const paths = parsePaths(f[PQ_PATHS1]).filter(Boolean);
+    // ONLY include paths under docs/{tenant}/...
+    const tenantPaths = paths.filter(p => String(p).toLowerCase().startsWith(tenantPrefix));
+    if (!tenantPaths.length) continue;
 
-    if (!allPaths.length) continue;
+    const rawVer = f[PQ_LAST_PUBLISH_EPOCH];
+    const version = (rawVer === undefined || rawVer === null || rawVer === "") ? null : Number(rawVer);
 
-    // If tenantHint is present and we see any tenant-style paths in this row,
-    // keep only those paths matching docs/{tenant}/..., otherwise keep legacy paths too.
-    let filteredPaths = allPaths;
-    if (tenantHint) {
-      const tenantPrefix = `docs/${tenantHint}/`;
-      const hasAnyTenantPaths = allPaths.some(p => String(p).toLowerCase().startsWith("docs/"));
-      if (hasAnyTenantPaths) {
-        const match = allPaths.filter(p => String(p).toLowerCase().startsWith(tenantPrefix.toLowerCase()));
-        if (match.length) filteredPaths = match;
-      }
-    }
-
-    const version = (f[PQ_LAST_PUBLISH_EPOCH] === undefined || f[PQ_LAST_PUBLISH_EPOCH] === null || f[PQ_LAST_PUBLISH_EPOCH] === "")
-      ? null
-      : Number(f[PQ_LAST_PUBLISH_EPOCH]);
-
-    for (const p of filteredPaths) {
+    for (const p of tenantPaths) {
       datasets.push({
         key,
         path: normalizePath(p),
@@ -431,22 +469,23 @@ function buildManifestFromQueue(pqRecords, epochSec, tenantHint) {
   datasets.sort((a, b) => (a.key.localeCompare(b.key) || a.path.localeCompare(b.path)));
 
   return {
-    tenant: tenantHint || null,
+    tenant,
     epoch: epochSec,
     datasets,
   };
 }
 
+//////////////////////
+// 8) Dirty clearing (success vs error)
+//////////////////////
 async function clearDirtySuccess({ recordId, committedAny, epochSec, reason }) {
   const fields = {
     [PQ_DIRTY]: false,
     [PQ_DIRTY_REASON]: reason,
   };
-
-  // Stamp last_publish_epoch ONLY when a commit occurred.
   if (committedAny) fields[PQ_LAST_PUBLISH_EPOCH] = epochSec;
 
-  await airtableUpdateRecord({
+  await airtablePatchRecord({
     table: PUBLISH_QUEUE_TABLE,
     recordId,
     fields,
@@ -454,34 +493,25 @@ async function clearDirtySuccess({ recordId, committedAny, epochSec, reason }) {
 }
 
 async function stampDirtyError({ recordId, msg }) {
-  await airtableUpdateRecord({
+  await airtablePatchRecord({
     table: PUBLISH_QUEUE_TABLE,
     recordId,
     fields: { [PQ_DIRTY_REASON]: `error: ${msg}` },
   }).catch(() => {});
 }
 
+//////////////////////
+// 9) Main
+//////////////////////
 async function main() {
   const epochSec = await getEpochSec();
   console.log(`publisher start | epoch=${epochSec} dry_run=${DRY_RUN}`);
 
-  // Read queue
+  // IMPORTANT: do NOT pass fields[] here to avoid 422 when schema changes.
   const pqRecords = await airtableListAll({
     table: PUBLISH_QUEUE_TABLE,
     view: PUBLISH_QUEUE_VIEW || null,
-    fields: [
-      PQ_DATASET_KEY,
-      PQ_DIRTY,
-      PQ_DIRTY_REASON,
-      PQ_DIRTY_EPOCH,
-      PQ_LAST_PUBLISH_EPOCH,
-      PQ_TABLE_NAME,
-      PQ_VIEW1,
-      PQ_VIEW2,
-      PQ_PATHS1,
-      PQ_PATHS2,
-      PQ_ALLOWED_FIELDS,
-    ],
+    fields: null,
   });
 
   const dirty = pqRecords.filter(r => Boolean(r.fields && r.fields[PQ_DIRTY]));
@@ -489,40 +519,33 @@ async function main() {
 
   for (const r of dirty) {
     const f = r.fields || {};
+
     const datasetKey = String(f[PQ_DATASET_KEY] || "").trim() || "unknown";
     const tableName  = String(f[PQ_TABLE_NAME] || "").trim();
+    const viewName   = String(f[PQ_VIEW1] || "").trim();
+    const paths      = parsePaths(f[PQ_PATHS1]);
 
-    const slot1 = {
-      viewName: String(f[PQ_VIEW1] || "").trim(),
-      paths: parsePaths(f[PQ_PATHS1]),
-    };
-    const slot2 = {
-      viewName: String(f[PQ_VIEW2] || "").trim(),
-      paths: parsePaths(f[PQ_PATHS2]),
-    };
-
-    console.log(`job=${datasetKey} table=${tableName} v1=${slot1.viewName} p1=${slot1.paths.length} v2=${slot2.viewName} p2=${slot2.paths.length}`);
+    console.log(`job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length}`);
 
     try {
-      // MANIFEST job (special)
-      if (datasetKey.toLowerCase() === "manifest") {
-        const manifestPaths = [...slot1.paths, ...slot2.paths].filter(Boolean);
-        const tenantHint = inferTenantFromFirstPath(manifestPaths);
-        const manifest = buildManifestFromQueue(pqRecords, epochSec, tenantHint);
+      // MANIFEST job
+      if (isManifestKey(datasetKey)) {
+        const tenant = inferTenantFromManifestPath(paths);
+        const manifest = buildTenantManifestFromQueue(pqRecords, epochSec, tenant);
 
         const resM = await publishContentToPaths({
-          datasetKey: "manifest",
+          datasetKey,
           contentObj: manifest,
-          paths: manifestPaths,
+          paths,
           epochSec,
         });
 
         if (!resM.ok) throw new Error(`manifest publish failed (${resM.status || "?"}) ${resM.errorText || ""}`);
 
-        const committedAny = !resM.skipped && (resM.committed || 0) > 0;
-        const reason = resM.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
         console.log(`job done: ${datasetKey} | ${resM.skipped ? "skip" : "commit"}(${resM.committed || 0})`);
 
+        const committedAny = !resM.skipped && (resM.committed || 0) > 0;
+        const reason = resM.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
         await clearDirtySuccess({ recordId: r.id, committedAny, epochSec, reason });
         continue;
       }
@@ -530,40 +553,21 @@ async function main() {
       // Normal dataset job
       const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
 
-      const res1 = await publishDatasetSlot({
+      const res = await publishDataset({
         datasetKey,
         tableName,
-        viewName: slot1.viewName,
-        paths: slot1.paths,
+        viewName,
+        paths,
         allowedFields,
         epochSec,
       });
 
-      let res2 = { ok: true, skipped: true, reason: "no_slot2", committed: 0 };
-      if (slot2.viewName && slot2.paths.length) {
-        res2 = await publishDatasetSlot({
-          datasetKey,
-          tableName,
-          viewName: slot2.viewName,
-          paths: slot2.paths,
-          allowedFields,
-          epochSec,
-        });
-      }
+      if (!res.ok) throw new Error(`publish failed (${res.status || "?"}) ${res.errorText || ""}`);
 
-      if (!res1.ok) throw new Error(`slot1 failed (${res1.status || "?"}) ${res1.errorText || ""}`);
-      if (!res2.ok) throw new Error(`slot2 failed (${res2.status || "?"}) ${res2.errorText || ""}`);
+      console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0})`);
 
-      const c1 = res1.committed || 0;
-      const c2 = res2.committed || 0;
-
-      const summary = `ok v1=${res1.skipped ? "skip" : "commit"}(${c1}) v2=${res2.skipped ? "skip" : "commit"}(${c2})`;
-      console.log(`job done: ${datasetKey} | ${summary}`);
-
-      const committedAny = (!res1.skipped && c1 > 0) || (!res2.skipped && c2 > 0);
-      const bothNoChange = (res1.reason === "no_change" || res1.skipped) && (res2.reason === "no_change" || res2.skipped);
-      const reason = bothNoChange ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
-
+      const committedAny = !res.skipped && (res.committed || 0) > 0;
+      const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
       await clearDirtySuccess({ recordId: r.id, committedAny, epochSec, reason });
     } catch (e) {
       const msg = String(e?.message || e).slice(0, 240);
