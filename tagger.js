@@ -13,6 +13,15 @@
  *  - bucket
  *  - next_due_epoch
  *
+ * Also writes ONE heartbeat record per pass (best-effort; does NOT block tagging if heartbeat create fails):
+ *  - heartbeat_id
+ *  - show_id
+ *  - show_date
+ *  - sql_date
+ *  - time
+ *  - mode
+ *  - interval
+ *
  * Overrides:
  *  - FORCE_MODE=DAY|NIGHT|HOLDOVER  (test without changing shows.mode)
  *  - DRY_RUN=1 (no Airtable writes; logs sample)
@@ -30,6 +39,7 @@ const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const TABLE_SHOWS      = process.env.TABLE_SHOWS || "shows";
 const TABLE_SCHEDULE   = process.env.TABLE_SCHEDULE || "watch_schedule";
 const TABLE_TRIPS      = process.env.TABLE_TRIPS || "watch_trips";
+const TABLE_HEARTBEAT  = process.env.TABLE_HEARTBEAT || "heartbeat";
 
 const VIEW_SHOWS       = process.env.VIEW_SHOWS || "epoch";
 const VIEW_SCHEDULE    = process.env.VIEW_SCHEDULE || "epoch";
@@ -44,6 +54,15 @@ const FIELD_EPOCH      = process.env.FIELD_EPOCH || "epoch";
 const FIELD_TEMP       = process.env.FIELD_TEMP || "temp";
 const FIELD_BUCKET     = process.env.FIELD_BUCKET || "bucket";
 const FIELD_NEXT_DUE   = process.env.FIELD_NEXT_DUE || "next_due_epoch";
+
+// Heartbeat fields
+const HEARTBEAT_ID_FIELD    = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
+const HEARTBEAT_SHOW_ID     = process.env.HEARTBEAT_SHOW_ID || "show_id";
+const HEARTBEAT_SHOW_DATE   = process.env.HEARTBEAT_SHOW_DATE || "show_date";
+const HEARTBEAT_SQL_DATE    = process.env.HEARTBEAT_SQL_DATE || "sql_date";
+const HEARTBEAT_TIME        = process.env.HEARTBEAT_TIME || "time";
+const HEARTBEAT_MODE        = process.env.HEARTBEAT_MODE || "mode";
+const HEARTBEAT_INTERVAL    = process.env.HEARTBEAT_INTERVAL || "interval";
 
 // Schedule input fields
 const SCHED_SHOW_DATE   = process.env.SCHED_SHOW_DATE || "show_date";
@@ -61,7 +80,8 @@ const TRIP_GONEIN       = process.env.TRIP_GONEIN || "lastGonein";
 
 // Controls
 const DAY_SECOND_PASS_DELAY_SEC = Number(process.env.DAY_SECOND_PASS_DELAY_SEC || "180"); // 3 minutes
-const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const HEARTBEAT_INTERVAL_SEC    = Number(process.env.HEARTBEAT_INTERVAL_SEC || "300");   // 5 minutes external drumbeat
+const HTTP_TIMEOUT_MS           = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 
 // Airtable retry controls
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
@@ -289,13 +309,24 @@ async function getServerClockStrict() {
 
         return {
           nowEpoch: Math.floor(nowMs / 1000),
-          tzOffsetMinutes
+          tzOffsetMinutes,
+          showId: j?.show_id ?? j?.show?.show_id ?? null,
+          showDate: j?.show_date ?? j?.show?.show_date ?? null,
+          sqlDate: j?.time_zone_date_time?.sql_date ?? null,
+          time: j?.time_zone_date_time?.time ?? null
         };
       } catch {
         // numeric fallback
         const trimmed = txt.trim();
         if (/^\d+$/.test(trimmed)) {
-          return { nowEpoch: Math.floor(Number(trimmed) / 1000), tzOffsetMinutes: 0 };
+          return {
+            nowEpoch: Math.floor(Number(trimmed) / 1000),
+            tzOffsetMinutes: 0,
+            showId: null,
+            showDate: null,
+            sqlDate: null,
+            time: null
+          };
         }
         console.log(`clock warn: non-json response`);
       }
@@ -358,6 +389,24 @@ async function airtableBatchUpdate(tableName, updates) {
       throw new Error(`Airtable patch failed (${res.status}) ${tableName}: ${body}`);
     }
   }
+}
+
+async function airtableCreateRecord(tableName, fields) {
+  const res = await fetchWithRetry(airtableUrl(tableName), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ fields })
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Airtable create failed (${res.status}) ${tableName}: ${body}`);
+  }
+
+  return res.json().catch(() => ({}));
 }
 
 function intervalSecondsFor(mode, temp) {
@@ -461,6 +510,36 @@ function sampleLog(label, updates, limit = 3) {
   console.log(`${label}: sample`, JSON.stringify(sample));
 }
 
+async function createHeartbeatPassSafe(clock, mode, intervalSec) {
+  if (DRY_RUN) return;
+
+  try {
+    const sqlDate = String(clock?.sqlDate || "").trim();
+    const epoch = Number(clock?.nowEpoch);
+
+    if (!sqlDate || !Number.isFinite(epoch)) {
+      console.log("heartbeat warn: missing sqlDate/epoch; skipping heartbeat create");
+      return;
+    }
+
+    const heartbeatId = `${clock?.showId ?? "unknown"}-${sqlDate}-${epoch}`;
+
+    const fields = {};
+    fields[HEARTBEAT_ID_FIELD]  = heartbeatId;
+    fields[HEARTBEAT_SHOW_ID]   = clock?.showId ?? null;
+    fields[HEARTBEAT_SHOW_DATE] = clock?.showDate ?? null;
+    fields[HEARTBEAT_SQL_DATE]  = sqlDate;
+    fields[HEARTBEAT_TIME]      = clock?.time ?? null;
+    fields[HEARTBEAT_MODE]      = mode;
+    fields[HEARTBEAT_INTERVAL]  = Number.isFinite(Number(intervalSec)) ? Number(intervalSec) : null;
+
+    await airtableCreateRecord(TABLE_HEARTBEAT, fields);
+  } catch (e) {
+    const msg = String(e?.message || e).slice(0, 200);
+    console.log(`heartbeat warn: create failed ${msg}`);
+  }
+}
+
 async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
   const sched = await airtableList(TABLE_SCHEDULE, VIEW_SCHEDULE);
   const schedUpdates = sched.map(r => {
@@ -514,6 +593,8 @@ async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
       console.log(`clock unavailable: skipping pass1 (no writes)`);
       process.exit(0);
     }
+
+    await createHeartbeatPassSafe(clk1, mode, HEARTBEAT_INTERVAL_SEC);
     await tagOnce(clk1.nowEpoch, clk1.tzOffsetMinutes, mode);
 
     // PASS 2: only in DAY, and also strict clock; if unavailable, skip second pass cleanly
@@ -524,6 +605,8 @@ async function tagOnce(nowEpoch, tzOffsetMinutes, mode) {
         console.log(`clock unavailable: skipping pass2 (no writes)`);
         process.exit(0);
       }
+
+      await createHeartbeatPassSafe(clk2, mode, DAY_SECOND_PASS_DELAY_SEC);
       await tagOnce(clk2.nowEpoch, clk2.tzOffsetMinutes, mode);
     }
   } catch (e) {
