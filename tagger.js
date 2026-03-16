@@ -1,7 +1,4 @@
-// tagger.js (FULL DROP)
-
-const fs = require("fs");
-const path = require("path");
+// tagger.js (STATELESS FULL DROP)
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -68,8 +65,7 @@ const UNDICI_CONNECT_TIMEOUT_MS = Number(process.env.UNDICI_CONNECT_TIMEOUT_MS |
 const FORCE_MODE = (process.env.FORCE_MODE || "").trim().toUpperCase();
 const DRY_RUN    = (process.env.DRY_RUN || "0") === "1";
 
-const STATE_FILE = process.env.TAGGER_STATE_FILE || path.join(process.cwd(), "tagger_runtime_state.json");
-const HB_TZ      = process.env.HB_TIMEZONE || "America/New_York";
+const HB_TZ = process.env.HB_TIMEZONE || "America/New_York";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -639,40 +635,6 @@ function buildModeOnlyUpdate(recordId, meta, mode) {
   };
 }
 
-function readRuntimeState() {
-  try {
-    if (!fs.existsSync(STATE_FILE)) return {};
-    return JSON.parse(fs.readFileSync(STATE_FILE, "utf8") || "{}");
-  } catch {
-    return {};
-  }
-}
-
-function writeRuntimeState(nextState) {
-  try {
-    fs.writeFileSync(STATE_FILE, JSON.stringify(nextState, null, 2), "utf8");
-  } catch (e) {
-    console.log(`state warn: ${String(e?.message || e).slice(0, 180)}`);
-  }
-}
-
-function updateRuntimeState(patch) {
-  const current = readRuntimeState();
-  const next = { ...current, ...patch };
-  writeRuntimeState(next);
-}
-
-function shouldRunNightFull(nowEpoch) {
-  const state = readRuntimeState();
-  const lastNightFullRunAt = Number(state.lastNightFullRunAt || 0);
-  if (!lastNightFullRunAt) return true;
-  return (nowEpoch - lastNightFullRunAt) >= (NIGHT_INTERVAL_MIN * 60);
-}
-
-function markNightFullRun(nowEpoch) {
-  updateRuntimeState({ lastNightFullRunAt: nowEpoch });
-}
-
 async function updateShowsAndQueue(clock, mode, intervalMin) {
   const meta = buildCommonMeta(clock, mode, intervalMin);
 
@@ -741,13 +703,7 @@ async function runFullPass(clock, mode, intervalMin) {
     }
 
     if (mode === "NIGHT") {
-      if (!shouldRunNightFull(clk1.nowEpoch)) {
-        console.log("mode=NIGHT -> heartbeat only; full run not due yet");
-        process.exit(0);
-      }
-
       await runFullPass(clk1, mode, intervalMin);
-      markNightFullRun(clk1.nowEpoch);
       process.exit(0);
     }
 
@@ -762,13 +718,8 @@ async function runFullPass(clock, mode, intervalMin) {
 
     await createHeartbeatPassSafe(clk2, mode2, intervalMin2);
 
-    if (mode2 === "DAY") {
+    if (mode2 === "DAY" || mode2 === "NIGHT") {
       await runFullPass(clk2, mode2, intervalMin2);
-    } else if (mode2 === "NIGHT") {
-      if (shouldRunNightFull(clk2.nowEpoch)) {
-        await runFullPass(clk2, mode2, intervalMin2);
-        markNightFullRun(clk2.nowEpoch);
-      }
     }
   } catch (e) {
     const name = e?.name || "error";
