@@ -1,61 +1,4 @@
 // tagger.js (FULL DROP)
-/**
- * RingStatus — Epoch Tagger
- *
- * RULES
- * - Heartbeat writes every launch
- * - DAY:
- *    - full Airtable work
- *    - second pass after DAY_SECOND_PASS_DELAY_SEC
- * - NIGHT:
- *    - heartbeat every launch
- *    - all other Airtable work once per NIGHT_FULL_INTERVAL_SEC
- * - HOLDOVER:
- *    - heartbeat every launch
- *    - no other Airtable work
- *
- * MODE LOOKUP
- * - DAY mode is checked from Airtable every launch
- * - NIGHT mode is re-checked from Airtable once per NIGHT_FULL_INTERVAL_SEC
- * - HOLDOVER mode is re-checked from Airtable once per HOLDOVER_MODE_CHECK_INTERVAL_SEC
- * - between checks, the last known mode is read from a local state file
- *
- * TABLES
- * - shows            (read)
- * - watch_schedule   (update all records in view)
- * - watch_trips      (update all records in view)
- * - scheduler        (update all records in view)
- * - active_tenants   (update all records in view)
- * - heartbeat        (create one record per launch / pass)
- *
- * watch_schedule / watch_trips fields
- * - epoch
- * - temp
- * - bucket
- * - next_due_epoch
- * - first_print
- * - mode
- * - hb_duration
- * - interval
- * - hb_at
- *
- * scheduler / active_tenants fields
- * - mode
- * - hb_duration
- * - interval
- * - hb_at
- *
- * heartbeat fields
- * - heartbeat_id
- * - show_id
- * - show_date
- * - sql_date
- * - time
- * - mode
- * - hb_duration
- * - interval
- * - hb_at
- */
 
 const fs = require("fs");
 const path = require("path");
@@ -106,11 +49,12 @@ const TRIP_START_FALLB = process.env.TRIP_START_FALLB || "estimated_start_time";
 const TRIP_STATUS      = process.env.TRIP_STATUS || "latestStatus";
 const TRIP_GONEIN      = process.env.TRIP_GONEIN || "lastGonein";
 
-const DAY_SECOND_PASS_DELAY_SEC       = Number(process.env.DAY_SECOND_PASS_DELAY_SEC || "180");
-const HEARTBEAT_INTERVAL_SEC          = Number(process.env.HEARTBEAT_INTERVAL_SEC || "300");
-const NIGHT_FULL_INTERVAL_SEC         = Number(process.env.NIGHT_FULL_INTERVAL_SEC || "3600");
+const DAY_SECOND_PASS_DELAY_SEC        = Number(process.env.DAY_SECOND_PASS_DELAY_SEC || "180");
+const HEARTBEAT_INTERVAL_SEC           = Number(process.env.HEARTBEAT_INTERVAL_SEC || "300");
+const NIGHT_FULL_INTERVAL_SEC          = Number(process.env.NIGHT_FULL_INTERVAL_SEC || "3600");
+const NIGHT_MODE_CHECK_INTERVAL_SEC    = Number(process.env.NIGHT_MODE_CHECK_INTERVAL_SEC || "3600");
 const HOLDOVER_MODE_CHECK_INTERVAL_SEC = Number(process.env.HOLDOVER_MODE_CHECK_INTERVAL_SEC || "36000");
-const HTTP_TIMEOUT_MS                 = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const HTTP_TIMEOUT_MS                  = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
 const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
@@ -122,6 +66,7 @@ const FORCE_MODE = (process.env.FORCE_MODE || "").trim().toUpperCase();
 const DRY_RUN    = (process.env.DRY_RUN || "0") === "1";
 
 const STATE_FILE = process.env.TAGGER_STATE_FILE || path.join(process.cwd(), "tagger_runtime_state.json");
+const HB_TZ      = process.env.HB_TIMEZONE || "America/New_York";
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -271,7 +216,6 @@ async function fetchWithRetry(url, opts = {}, retry = {}) {
     } catch (e) {
       lastErr = e;
       if (!isRetryableFetchError(e) || i === attempts) throw e;
-
       const waitMs = Math.min(maxMs, baseMs * i + Math.floor(Math.random() * 250));
       await sleep(waitMs);
     }
@@ -288,6 +232,40 @@ function pickNowMsAndOffsetFromRingPayload(j) {
     nowMs: Number.isFinite(ms) ? ms : NaN,
     tzOffsetMinutes: Number.isFinite(Number(offset)) ? Number(offset) : NaN
   };
+}
+
+function getTzPartsFromMs(ms, timeZone = HB_TZ) {
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  const parts = dtf.formatToParts(new Date(ms));
+  const out = { hour: 0, minute: 0, second: 0 };
+
+  for (const p of parts) {
+    if (p.type === "hour") out.hour = Number(p.value);
+    if (p.type === "minute") out.minute = Number(p.value);
+    if (p.type === "second") out.second = Number(p.value);
+  }
+
+  return out;
+}
+
+function secondsSinceMidnightInTz(ms, timeZone = HB_TZ) {
+  const { hour, minute, second } = getTzPartsFromMs(ms, timeZone);
+  return (hour * 3600) + (minute * 60) + second;
+}
+
+function isFirstPrint(mode, clock) {
+  if (mode !== "DAY") return false;
+  const secOfDay = secondsSinceMidnightInTz(clock.nowMs, HB_TZ);
+  const start = 6 * 3600;           // 06:00:00
+  const end   = (6 * 3600) + 1500;  // 06:25:00
+  return secOfDay >= start && secOfDay <= end;
 }
 
 async function getServerClockStrict() {
@@ -321,6 +299,7 @@ async function getServerClockStrict() {
         }
 
         return {
+          nowMs,
           nowEpoch: Math.floor(nowMs / 1000),
           tzOffsetMinutes,
           showId: j?.show_id ?? j?.show?.show_id ?? null,
@@ -334,6 +313,7 @@ async function getServerClockStrict() {
         if (/^\d+$/.test(trimmed)) {
           const ms = Number(trimmed);
           return {
+            nowMs: ms,
             nowEpoch: Math.floor(ms / 1000),
             tzOffsetMinutes: 0,
             showId: null,
@@ -435,7 +415,7 @@ function intervalSecondsFor(mode, temp) {
     return 300;
   }
 
-  // NIGHT temp-based next_due remains as-is when NIGHT full pass runs
+  // NIGHT full-run next_due stays temp-based
   if (temp === "HOT" || temp === "LIVE") return 300;
   return 1200;
 }
@@ -484,26 +464,9 @@ function computeTempTrip(fields, nowEpoch, tzOffsetMinutes) {
   return { temp: "COLD" };
 }
 
-function isFirstPrint(mode, clock) {
-  if (mode !== "DAY") return false;
-  const tp = parseTimeParts(clock?.time || "");
-  if (!tp) return false;
-
-  let h = tp.h;
-  if (tp.ampm) {
-    if (h === 12) h = 0;
-    if (tp.ampm === "PM") h += 12;
-  }
-
-  const secOfDay = (h * 3600) + (tp.mi * 60) + (tp.se || 0);
-  const start = 6 * 3600;            // 06:00:00
-  const end   = (6 * 3600) + 1500;   // 06:25:00
-  return secOfDay >= start && secOfDay <= end;
-}
-
-function buildWatchUpdate(recordId, nowEpoch, temp, mode, hbDurationSec, hbAtIso, firstPrintFlag) {
-  const interval = intervalSecondsFor(mode, temp);
-  const nextDue = interval == null ? null : (nowEpoch + interval);
+function buildWatchUpdate(recordId, nowEpoch, temp, mode, hbDurationSec, intervalSec, hbAtIso, firstPrintFlag) {
+  const nextDueInterval = intervalSecondsFor(mode, temp);
+  const nextDue = nextDueInterval == null ? null : (nowEpoch + nextDueInterval);
 
   return {
     id: recordId,
@@ -515,27 +478,22 @@ function buildWatchUpdate(recordId, nowEpoch, temp, mode, hbDurationSec, hbAtIso
       [FIELD_FIRST_PRINT]: firstPrintFlag,
       [FIELD_MODE]: mode,
       [FIELD_HB_DURATION]: hbDurationSec,
-      [FIELD_INTERVAL]: hbDurationSec,
+      [FIELD_INTERVAL]: intervalSec,
       [FIELD_HB_AT]: hbAtIso,
     }
   };
 }
 
-function buildModeOnlyUpdate(recordId, mode, hbDurationSec, hbAtIso) {
+function buildModeOnlyUpdate(recordId, mode, hbDurationSec, intervalSec, hbAtIso) {
   return {
     id: recordId,
     fields: {
       [FIELD_MODE]: mode,
       [FIELD_HB_DURATION]: hbDurationSec,
-      [FIELD_INTERVAL]: hbDurationSec,
+      [FIELD_INTERVAL]: intervalSec,
       [FIELD_HB_AT]: hbAtIso,
     }
   };
-}
-
-function sampleLog(label, updates, limit = 3) {
-  const sample = updates.slice(0, limit).map(u => u.fields);
-  console.log(`${label}: sample ${JSON.stringify(sample)}`);
 }
 
 function readRuntimeState() {
@@ -584,9 +542,10 @@ async function resolveMode(nowEpoch) {
   if (!lastKnownMode || !lastModeCheckAt) {
     shouldRefresh = true;
   } else if (lastKnownMode === "DAY") {
+    // always refresh in DAY so stale DAY clears quickly
     shouldRefresh = true;
   } else if (lastKnownMode === "NIGHT") {
-    shouldRefresh = (nowEpoch - lastModeCheckAt) >= NIGHT_FULL_INTERVAL_SEC;
+    shouldRefresh = (nowEpoch - lastModeCheckAt) >= NIGHT_MODE_CHECK_INTERVAL_SEC;
   } else if (lastKnownMode === "HOLDOVER") {
     shouldRefresh = (nowEpoch - lastModeCheckAt) >= HOLDOVER_MODE_CHECK_INTERVAL_SEC;
   }
@@ -618,7 +577,7 @@ function markNightFullRun(nowEpoch) {
   updateRuntimeState({ lastNightFullRunAt: nowEpoch });
 }
 
-async function createHeartbeatPassSafe(clock, mode, hbDurationSec) {
+async function createHeartbeatPassSafe(clock, mode, intervalSec) {
   if (DRY_RUN) return;
 
   try {
@@ -629,6 +588,7 @@ async function createHeartbeatPassSafe(clock, mode, hbDurationSec) {
       return;
     }
 
+    const hbDurationSec = secondsSinceMidnightInTz(clock.nowMs, HB_TZ);
     const heartbeatId = `${clock?.showId ?? "unknown"}-${sqlDate}-${epoch}`;
 
     const fields = {
@@ -639,7 +599,7 @@ async function createHeartbeatPassSafe(clock, mode, hbDurationSec) {
       [HEARTBEAT_TIME]: clock?.time ?? null,
       [FIELD_MODE]: mode,
       [FIELD_HB_DURATION]: hbDurationSec,
-      [FIELD_INTERVAL]: hbDurationSec,
+      [FIELD_INTERVAL]: intervalSec,
       [FIELD_HB_AT]: clock?.iso ?? new Date(epoch * 1000).toISOString(),
     };
 
@@ -649,12 +609,15 @@ async function createHeartbeatPassSafe(clock, mode, hbDurationSec) {
   }
 }
 
-async function updateModeTables(mode, hbDurationSec, hbAtIso) {
+async function updateModeTables(clock, mode, intervalSec) {
+  const hbAtIso = clock?.iso ?? new Date(clock.nowEpoch * 1000).toISOString();
+  const hbDurationSec = secondsSinceMidnightInTz(clock.nowMs, HB_TZ);
+
   const schedulerRows = await airtableList(TABLE_SCHEDULER, VIEW_SCHEDULER);
-  const schedulerUpdates = schedulerRows.map(r => buildModeOnlyUpdate(r.id, mode, hbDurationSec, hbAtIso));
+  const schedulerUpdates = schedulerRows.map(r => buildModeOnlyUpdate(r.id, mode, hbDurationSec, intervalSec, hbAtIso));
 
   const activeTenantRows = await airtableList(TABLE_ACTIVE_TENANTS, VIEW_ACTIVE_TENANTS);
-  const activeTenantUpdates = activeTenantRows.map(r => buildModeOnlyUpdate(r.id, mode, hbDurationSec, hbAtIso));
+  const activeTenantUpdates = activeTenantRows.map(r => buildModeOnlyUpdate(r.id, mode, hbDurationSec, intervalSec, hbAtIso));
 
   if (DRY_RUN) {
     console.log(`DRY_RUN: scheduler=${schedulerUpdates.length} active_tenants=${activeTenantUpdates.length}`);
@@ -664,26 +627,25 @@ async function updateModeTables(mode, hbDurationSec, hbAtIso) {
   }
 }
 
-async function updateWatchTables(clock, mode, hbDurationSec) {
+async function updateWatchTables(clock, mode, intervalSec) {
   const hbAtIso = clock?.iso ?? new Date(clock.nowEpoch * 1000).toISOString();
+  const hbDurationSec = secondsSinceMidnightInTz(clock.nowMs, HB_TZ);
   const firstPrintFlag = isFirstPrint(mode, clock);
 
   const scheduleRows = await airtableList(TABLE_SCHEDULE, VIEW_SCHEDULE);
   const scheduleUpdates = scheduleRows.map(r => {
     const temp = computeTempSchedule(r.fields || {}, clock.nowEpoch, clock.tzOffsetMinutes).temp;
-    return buildWatchUpdate(r.id, clock.nowEpoch, temp, mode, hbDurationSec, hbAtIso, firstPrintFlag);
+    return buildWatchUpdate(r.id, clock.nowEpoch, temp, mode, hbDurationSec, intervalSec, hbAtIso, firstPrintFlag);
   });
 
   const tripRows = await airtableList(TABLE_TRIPS, VIEW_TRIPS);
   const tripUpdates = tripRows.map(r => {
     const temp = computeTempTrip(r.fields || {}, clock.nowEpoch, clock.tzOffsetMinutes).temp;
-    return buildWatchUpdate(r.id, clock.nowEpoch, temp, mode, hbDurationSec, hbAtIso, firstPrintFlag);
+    return buildWatchUpdate(r.id, clock.nowEpoch, temp, mode, hbDurationSec, intervalSec, hbAtIso, firstPrintFlag);
   });
 
   if (DRY_RUN) {
     console.log(`DRY_RUN: watch_schedule=${scheduleUpdates.length} watch_trips=${tripUpdates.length}`);
-    sampleLog("watch_schedule", scheduleUpdates);
-    sampleLog("watch_trips", tripUpdates);
   } else {
     await airtableBatchUpdate(TABLE_SCHEDULE, scheduleUpdates);
     await airtableBatchUpdate(TABLE_TRIPS, tripUpdates);
@@ -692,10 +654,9 @@ async function updateWatchTables(clock, mode, hbDurationSec) {
   console.log(`tag pass ok | mode=${mode} | watch_schedule=${scheduleRows.length} watch_trips=${tripRows.length}`);
 }
 
-async function runFullPass(clock, mode, hbDurationSec) {
-  const hbAtIso = clock?.iso ?? new Date(clock.nowEpoch * 1000).toISOString();
-  await updateModeTables(mode, hbDurationSec, hbAtIso);
-  await updateWatchTables(clock, mode, hbDurationSec);
+async function runFullPass(clock, mode, intervalSec) {
+  await updateModeTables(clock, mode, intervalSec);
+  await updateWatchTables(clock, mode, intervalSec);
 }
 
 (async () => {
@@ -719,7 +680,7 @@ async function runFullPass(clock, mode, hbDurationSec) {
     mode = normalizeMode(mode);
     console.log(`mode=${mode} force=${FORCE_MODE || "none"} dry_run=${DRY_RUN}`);
 
-    // heartbeat always writes every launch
+    // heartbeat every launch
     await createHeartbeatPassSafe(clk1, mode, HEARTBEAT_INTERVAL_SEC);
 
     if (mode === "HOLDOVER") {
@@ -741,7 +702,7 @@ async function runFullPass(clock, mode, hbDurationSec) {
     // DAY pass 1
     await runFullPass(clk1, mode, HEARTBEAT_INTERVAL_SEC);
 
-    // DAY pass 2
+    // DAY pass 2 comes from tagger itself, not Task Scheduler
     await sleep(DAY_SECOND_PASS_DELAY_SEC * 1000);
     const clk2 = await getServerClockStrict();
     if (!clk2) {
