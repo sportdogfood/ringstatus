@@ -21,34 +21,41 @@ const VIEW_ACTIVE_TENANTS = process.env.VIEW_ACTIVE_TENANTS || "epoch";
 
 const RING_ENDPOINT = `https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 
-const FIELD_MODE        = process.env.FIELD_MODE || "mode";
-const FIELD_EPOCH       = process.env.FIELD_EPOCH || "epoch";
-const FIELD_TEMP        = process.env.FIELD_TEMP || "temp";
-const FIELD_BUCKET      = process.env.FIELD_BUCKET || "bucket";
-const FIELD_NEXT_DUE    = process.env.FIELD_NEXT_DUE || "next_due_epoch";
-const FIELD_FIRST_PRINT = process.env.FIELD_FIRST_PRINT || "first_print";
-const FIELD_HB_DURATION = process.env.FIELD_HB_DURATION || "hb_duration";
-const FIELD_INTERVAL    = process.env.FIELD_INTERVAL || "interval";
-const FIELD_HB_AT       = process.env.FIELD_HB_AT || "hb_at";
-const FIELD_HB_TIME     = process.env.FIELD_HB_TIME || "hb_time";
+const FIELD_MODE              = process.env.FIELD_MODE || "mode";
+const FIELD_EPOCH             = process.env.FIELD_EPOCH || "epoch";
+const FIELD_TEMP              = process.env.FIELD_TEMP || "temp";
+const FIELD_BUCKET            = process.env.FIELD_BUCKET || "bucket";
+const FIELD_NEXT_DUE          = process.env.FIELD_NEXT_DUE || "next_due_epoch";
+const FIELD_FIRST_PRINT       = process.env.FIELD_FIRST_PRINT || "first_print";
+const FIELD_HB_DURATION       = process.env.FIELD_HB_DURATION || "hb_duration";
+const FIELD_INTERVAL          = process.env.FIELD_INTERVAL || "interval";
+const FIELD_HB_AT             = process.env.FIELD_HB_AT || "hb_at";
+const FIELD_HB_TIME           = process.env.FIELD_HB_TIME || "hb_time";
 
-const HEARTBEAT_ID_FIELD  = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
-const HEARTBEAT_SHOW_ID   = process.env.HEARTBEAT_SHOW_ID || "show_id";
-const HEARTBEAT_SHOW_DATE = process.env.HEARTBEAT_SHOW_DATE || "show_date";
-const HEARTBEAT_SQL_DATE  = process.env.HEARTBEAT_SQL_DATE || "sql_date";
-const HEARTBEAT_TIME      = process.env.HEARTBEAT_TIME || "time";
+const FIELD_APP_SHOW_ID       = process.env.FIELD_APP_SHOW_ID || "app_show_id";
+const FIELD_APP_SQL_DATE      = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
+const FIELD_APP_DOW_RAW       = process.env.FIELD_APP_DOW_RAW || "app_dow_raw";
+const FIELD_DOW_RAW           = process.env.FIELD_DOW_RAW || "dow_raw";
+const FIELD_SHIFTED_NEXT_DAY  = process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
+const FIELD_HELDOVER_SUNDAY   = process.env.FIELD_HELDOVER_SUNDAY || "heldover_from_sunday";
 
-const SCHED_SHOW_DATE   = process.env.SCHED_SHOW_DATE || "show_date";
-const SCHED_TIME_LATEST = process.env.SCHED_TIME_LATEST || "latest_estimated_start_time";
-const SCHED_TIME_BASE   = process.env.SCHED_TIME_BASE || "estimated_start_time";
-const SCHED_STATUS      = process.env.SCHED_STATUS || "latestStatus";
+const HEARTBEAT_ID_FIELD      = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
+const HEARTBEAT_SHOW_ID       = process.env.HEARTBEAT_SHOW_ID || "show_id";
+const HEARTBEAT_SHOW_DATE     = process.env.HEARTBEAT_SHOW_DATE || "show_date";
+const HEARTBEAT_SQL_DATE      = process.env.HEARTBEAT_SQL_DATE || "sql_date";
+const HEARTBEAT_TIME          = process.env.HEARTBEAT_TIME || "time";
 
-const TRIP_DT          = process.env.TRIP_DT || "dt";
-const TRIP_GO_LATEST   = process.env.TRIP_GO_LATEST || "latest_estimated_go_time";
-const TRIP_GO_BASE     = process.env.TRIP_GO_BASE || "estimated_go_time";
-const TRIP_START_FALLB = process.env.TRIP_START_FALLB || "estimated_start_time";
-const TRIP_STATUS      = process.env.TRIP_STATUS || "latestStatus";
-const TRIP_GONEIN      = process.env.TRIP_GONEIN || "lastGonein";
+const SCHED_SHOW_DATE         = process.env.SCHED_SHOW_DATE || "show_date";
+const SCHED_TIME_LATEST       = process.env.SCHED_TIME_LATEST || "latest_estimated_start_time";
+const SCHED_TIME_BASE         = process.env.SCHED_TIME_BASE || "estimated_start_time";
+const SCHED_STATUS            = process.env.SCHED_STATUS || "latestStatus";
+
+const TRIP_DT                 = process.env.TRIP_DT || "dt";
+const TRIP_GO_LATEST          = process.env.TRIP_GO_LATEST || "latest_estimated_go_time";
+const TRIP_GO_BASE            = process.env.TRIP_GO_BASE || "estimated_go_time";
+const TRIP_START_FALLB        = process.env.TRIP_START_FALLB || "estimated_start_time";
+const TRIP_STATUS             = process.env.TRIP_STATUS || "latestStatus";
+const TRIP_GONEIN             = process.env.TRIP_GONEIN || "lastGonein";
 
 const DAY_SECOND_PASS_DELAY_SEC = Number(process.env.DAY_SECOND_PASS_DELAY_SEC || "180");
 const DAY_INTERVAL_MIN          = Number(process.env.DAY_INTERVAL_MIN || "6");
@@ -61,7 +68,6 @@ const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
 
 const UNDICI_CONNECT_TIMEOUT_MS = Number(process.env.UNDICI_CONNECT_TIMEOUT_MS || "0");
-
 const FORCE_MODE = (process.env.FORCE_MODE || "").trim().toUpperCase();
 const DRY_RUN    = (process.env.DRY_RUN || "0") === "1";
 
@@ -146,7 +152,18 @@ function toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour = 
 function dayOfWeekUtc(sqlDate) {
   const d = new Date(`${sqlDate}T00:00:00Z`);
   if (isNaN(d.getTime())) return null;
-  return d.getUTCDay();
+  return d.getUTCDay(); // 0 Sun .. 6 Sat
+}
+
+function dowName(dow) {
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dow] ?? "";
+}
+
+function addDaysSql(sqlDate, days) {
+  const d = new Date(`${sqlDate}T00:00:00Z`);
+  if (isNaN(d.getTime())) return null;
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
 }
 
 (function maybeConfigureUndici() {
@@ -337,7 +354,9 @@ function pickClockFromPayload(payload) {
     source: "endpoint",
     nowMs,
     nowEpoch: Math.floor(nowMs / 1000),
-    tzOffsetMinutes: Number.isFinite(Number(tz.time_zone_offset)) ? Number(tz.time_zone_offset) : getTzOffsetMinutes(HB_TZ, nowMs),
+    tzOffsetMinutes: Number.isFinite(Number(tz.time_zone_offset))
+      ? Number(tz.time_zone_offset)
+      : getTzOffsetMinutes(HB_TZ, nowMs),
     showId: show?.show_id ?? null,
     showDate: show?.show_date ?? null,
     sqlDate: tz?.sql_date || formatSqlDateFromMs(nowMs, HB_TZ),
@@ -477,7 +496,73 @@ async function airtableCreateRecord(tableName, fields) {
   return res.json().catch(() => ({}));
 }
 
-async function createHeartbeatPassSafe(clock, mode, intervalMin) {
+async function getLatestLastSundayForCustomer(customerId) {
+  const rows = await safeList(TABLE_SHOWS, VIEW_SHOWS);
+  let best = null;
+  let bestKey = -1;
+
+  for (const r of rows) {
+    const f = r.fields || {};
+    if (String(f.customer_id ?? "") !== String(customerId)) continue;
+
+    const sid = f.last_sunday_show_id;
+    const sdt = String(f.last_sunday_sql_date || "").trim();
+
+    if (sid === null || sid === undefined || String(sid) === "") continue;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(sdt)) continue;
+
+    const k = Number(sdt.replaceAll("-", ""));
+    if (Number.isFinite(k) && k > bestKey) {
+      bestKey = k;
+      best = {
+        lastSundayShowId: sid,
+        lastSundaySqlDate: sdt,
+      };
+    }
+  }
+
+  return best;
+}
+
+async function buildAppContext(clock, mode) {
+  const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
+  let effectiveMode = mode;
+
+  let appShowId = clock.showId ?? null;
+  let appSqlDate = clock.sqlDate;
+  let shiftedToNextDay = false;
+  let heldoverFromSunday = false;
+
+  if (mode === "NIGHT") {
+    appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
+    shiftedToNextDay = true;
+  } else if (mode === "HOLDOVER") {
+    const best = await getLatestLastSundayForCustomer(CUSTOMER_ID);
+    if (!best) {
+      effectiveMode = "DAY";
+      appShowId = clock.showId ?? null;
+      appSqlDate = clock.sqlDate;
+    } else {
+      appShowId = best.lastSundayShowId;
+      appSqlDate = best.lastSundaySqlDate;
+      heldoverFromSunday = true;
+    }
+  }
+
+  const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
+
+  return {
+    effectiveMode,
+    dowRaw,
+    appShowId,
+    appSqlDate,
+    appDowRaw,
+    shiftedToNextDay,
+    heldoverFromSunday,
+  };
+}
+
+async function createHeartbeatPassSafe(clock, mode, intervalMin, appCtx) {
   if (DRY_RUN) return;
 
   try {
@@ -497,10 +582,19 @@ async function createHeartbeatPassSafe(clock, mode, intervalMin) {
       [HEARTBEAT_SHOW_DATE]: clock?.showDate ?? null,
       [HEARTBEAT_SQL_DATE]: sqlDate,
       [HEARTBEAT_TIME]: clock?.time ?? null,
+
       [FIELD_MODE]: mode,
+      [FIELD_EPOCH]: epoch,
       [FIELD_HB_DURATION]: hbDurationSec,
       [FIELD_INTERVAL]: intervalMin,
       [FIELD_HB_AT]: clock?.iso ?? new Date(epoch * 1000).toISOString(),
+
+      [FIELD_APP_SHOW_ID]: appCtx.appShowId,
+      [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
+      [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
+      [FIELD_DOW_RAW]: appCtx.dowRaw,
+      [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
+      [FIELD_HELDOVER_SUNDAY]: appCtx.heldoverFromSunday,
     };
 
     await airtableCreateRecord(TABLE_HEARTBEAT, fields);
@@ -575,7 +669,7 @@ function computeTempTrip(fields, nowEpoch, tzOffsetMinutes) {
   return { temp: "COLD" };
 }
 
-function buildCommonMeta(clock, mode, intervalMin) {
+function buildCommonMeta(clock, mode, intervalMin, appCtx) {
   return {
     epoch: clock.nowEpoch,
     hbDurationSec: hbDurationSecondsFromMs(clock.nowMs, HB_TZ),
@@ -583,6 +677,13 @@ function buildCommonMeta(clock, mode, intervalMin) {
     hbTime: clock.time || formatHbTimeFromMs(clock.nowMs, HB_TZ),
     firstPrint: isFirstPrint(mode, clock),
     intervalMin,
+
+    appShowId: appCtx.appShowId,
+    appSqlDate: appCtx.appSqlDate,
+    appDowRaw: appCtx.appDowRaw,
+    dowRaw: appCtx.dowRaw,
+    shiftedToNextDay: appCtx.shiftedToNextDay,
+    heldoverFromSunday: appCtx.heldoverFromSunday,
   };
 }
 
@@ -597,6 +698,13 @@ function buildShowsLikeUpdate(recordId, meta, mode) {
       [FIELD_HB_AT]: meta.hbAtIso,
       [FIELD_FIRST_PRINT]: meta.firstPrint,
       [FIELD_HB_TIME]: meta.hbTime,
+
+      [FIELD_APP_SHOW_ID]: meta.appShowId,
+      [FIELD_APP_SQL_DATE]: meta.appSqlDate,
+      [FIELD_APP_DOW_RAW]: meta.appDowRaw,
+      [FIELD_DOW_RAW]: meta.dowRaw,
+      [FIELD_SHIFTED_NEXT_DAY]: meta.shiftedToNextDay,
+      [FIELD_HELDOVER_SUNDAY]: meta.heldoverFromSunday,
     }
   };
 }
@@ -618,6 +726,13 @@ function buildWatchUpdate(recordId, meta, temp, mode) {
       [FIELD_INTERVAL]: meta.intervalMin,
       [FIELD_HB_AT]: meta.hbAtIso,
       [FIELD_HB_TIME]: meta.hbTime,
+
+      [FIELD_APP_SHOW_ID]: meta.appShowId,
+      [FIELD_APP_SQL_DATE]: meta.appSqlDate,
+      [FIELD_APP_DOW_RAW]: meta.appDowRaw,
+      [FIELD_DOW_RAW]: meta.dowRaw,
+      [FIELD_SHIFTED_NEXT_DAY]: meta.shiftedToNextDay,
+      [FIELD_HELDOVER_SUNDAY]: meta.heldoverFromSunday,
     }
   };
 }
@@ -627,16 +742,24 @@ function buildModeOnlyUpdate(recordId, meta, mode) {
     id: recordId,
     fields: {
       [FIELD_MODE]: mode,
+      [FIELD_EPOCH]: meta.epoch,
       [FIELD_HB_DURATION]: meta.hbDurationSec,
       [FIELD_INTERVAL]: meta.intervalMin,
       [FIELD_HB_AT]: meta.hbAtIso,
       [FIELD_HB_TIME]: meta.hbTime,
+
+      [FIELD_APP_SHOW_ID]: meta.appShowId,
+      [FIELD_APP_SQL_DATE]: meta.appSqlDate,
+      [FIELD_APP_DOW_RAW]: meta.appDowRaw,
+      [FIELD_DOW_RAW]: meta.dowRaw,
+      [FIELD_SHIFTED_NEXT_DAY]: meta.shiftedToNextDay,
+      [FIELD_HELDOVER_SUNDAY]: meta.heldoverFromSunday,
     }
   };
 }
 
-async function updateShowsAndQueue(clock, mode, intervalMin) {
-  const meta = buildCommonMeta(clock, mode, intervalMin);
+async function updateShowsAndQueue(clock, mode, intervalMin, appCtx) {
+  const meta = buildCommonMeta(clock, mode, intervalMin, appCtx);
 
   const showRows = await safeList(TABLE_SHOWS, VIEW_SHOWS);
   const showUpdates = showRows.map((r) => buildShowsLikeUpdate(r.id, meta, mode));
@@ -647,8 +770,8 @@ async function updateShowsAndQueue(clock, mode, intervalMin) {
   await safeBatchUpdate(TABLE_PUBLISH_QUEUE, pqUpdates);
 }
 
-async function updateModeTables(clock, mode, intervalMin) {
-  const meta = buildCommonMeta(clock, mode, intervalMin);
+async function updateModeTables(clock, mode, intervalMin, appCtx) {
+  const meta = buildCommonMeta(clock, mode, intervalMin, appCtx);
 
   const schedulerRows = await safeList(TABLE_SCHEDULER, VIEW_SCHEDULER);
   const schedulerUpdates = schedulerRows.map((r) => buildModeOnlyUpdate(r.id, meta, mode));
@@ -659,8 +782,8 @@ async function updateModeTables(clock, mode, intervalMin) {
   await safeBatchUpdate(TABLE_ACTIVE_TENANTS, activeTenantUpdates);
 }
 
-async function updateWatchTables(clock, mode, intervalMin) {
-  const meta = buildCommonMeta(clock, mode, intervalMin);
+async function updateWatchTables(clock, mode, intervalMin, appCtx) {
+  const meta = buildCommonMeta(clock, mode, intervalMin, appCtx);
 
   const scheduleRows = await safeList(TABLE_SCHEDULE, VIEW_SCHEDULE);
   const scheduleUpdates = scheduleRows.map((r) => {
@@ -677,10 +800,10 @@ async function updateWatchTables(clock, mode, intervalMin) {
   await safeBatchUpdate(TABLE_TRIPS, tripUpdates);
 }
 
-async function runFullPass(clock, mode, intervalMin) {
-  await updateShowsAndQueue(clock, mode, intervalMin);
-  await updateModeTables(clock, mode, intervalMin);
-  await updateWatchTables(clock, mode, intervalMin);
+async function runFullPass(clock, mode, intervalMin, appCtx) {
+  await updateShowsAndQueue(clock, mode, intervalMin, appCtx);
+  await updateModeTables(clock, mode, intervalMin, appCtx);
+  await updateWatchTables(clock, mode, intervalMin, appCtx);
 }
 
 (async () => {
@@ -689,37 +812,39 @@ async function runFullPass(clock, mode, intervalMin) {
     requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
     const clk1 = await getClockSafe();
-    const mode = resolveModeFromClock(clk1);
-    const intervalMin = intervalMinutesForMode(mode);
+    let mode1 = resolveModeFromClock(clk1);
+    const appCtx1 = await buildAppContext(clk1, mode1);
+    mode1 = appCtx1.effectiveMode;
+    const intervalMin1 = intervalMinutesForMode(mode1);
 
-    console.log(`mode=${mode} source=${clk1.source} dry_run=${DRY_RUN}`);
+    console.log(`mode=${mode1} source=${clk1.source} dry_run=${DRY_RUN}`);
 
-    // heartbeat every launch
-    await createHeartbeatPassSafe(clk1, mode, intervalMin);
+    await createHeartbeatPassSafe(clk1, mode1, intervalMin1, appCtx1);
 
-    if (mode === "HOLDOVER") {
+    if (mode1 === "HOLDOVER") {
       console.log("mode=HOLDOVER -> heartbeat only");
       process.exit(0);
     }
 
-    if (mode === "NIGHT") {
-      await runFullPass(clk1, mode, intervalMin);
+    if (mode1 === "NIGHT") {
+      await runFullPass(clk1, mode1, intervalMin1, appCtx1);
       process.exit(0);
     }
 
-    // DAY pass 1
-    await runFullPass(clk1, mode, intervalMin);
+    await runFullPass(clk1, mode1, intervalMin1, appCtx1);
 
-    // DAY pass 2 comes from tagger, not Task Scheduler
     await sleep(DAY_SECOND_PASS_DELAY_SEC * 1000);
+
     const clk2 = await getClockSafe();
-    const mode2 = resolveModeFromClock(clk2);
+    let mode2 = resolveModeFromClock(clk2);
+    const appCtx2 = await buildAppContext(clk2, mode2);
+    mode2 = appCtx2.effectiveMode;
     const intervalMin2 = intervalMinutesForMode(mode2);
 
-    await createHeartbeatPassSafe(clk2, mode2, intervalMin2);
+    await createHeartbeatPassSafe(clk2, mode2, intervalMin2, appCtx2);
 
     if (mode2 === "DAY" || mode2 === "NIGHT") {
-      await runFullPass(clk2, mode2, intervalMin2);
+      await runFullPass(clk2, mode2, intervalMin2, appCtx2);
     }
   } catch (e) {
     const name = e?.name || "error";
