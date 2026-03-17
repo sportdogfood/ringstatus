@@ -1,64 +1,37 @@
-// trips_tagger.js (STATELESS FULL DROP)
-/**
- * RingStatus — trips_tagger
- *
- * PURPOSE
- * - Runs outside Airtable on Task Scheduler cadence, similar to tagger.js
- * - Reads watch_trips from a single view (default: hb_targets)
- * - DOES NOT ping /ring again
- * - Uses app/clock fields already stamped onto each watch_trips row
- * - Pings /classes/{class_id} ONCE per unique (resolved_show_id + class_id)
- * - Matches a single trip by entryxclasses_uuid
- * - Updates the SAME watch_trips row
- *
- * RESOLVED SHOW ID
- * - Uses app_show_id first
- * - Falls back to show_id
- *
- * DEFAULT TABLE / VIEW
- * - watch_trips / hb_targets
- *
- * WRITES
- * Existing/legacy fields (same spirit as the old automation):
- * - trip_id
- * - last_order_of_go, last_score, last_placing
- * - last_status, last_actual_time, last_estimated_time, last_estimated_go_time
- * - lastPlace, lastGoneIn, lastPosition
- * - time_one, time_two, time_three
- * - score1, score2, score3
- * - sql_date, observed_at
- * - cwf_estimated_go_time
- * - results_verified
- *
- * New direct fields on watch_trips:
- * - estimated_end_time
- * - estimated_go_time
- * - estimated_start_time
- * - order_of_go
- * - remaining_trips
- * - status
- * - total_trips
- * - hb_second_pass_at
- *
- * NOTES
- * - safeSet() silently skips fields that do not exist
- * - no /ring ping in this script
- * - no local runtime state
- */
+// trips_tagger.js (CORRECTED FULL DROP)
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
-const CUSTOMER_ID      = Number(process.env.CUSTOMER_ID || "15");
 
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "hb_targets";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
 
-const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const HTTP_TIMEOUT_MS   = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
 const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
+
+const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
+const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
+
+const FIELD_HB_SECOND_PASS_AT     = process.env.FIELD_HB_SECOND_PASS_AT || "hb_second_pass_at";
+const FIELD_HB_SECOND_PASS_REASON = process.env.FIELD_HB_SECOND_PASS_REASON || "hb_second_pass_reason";
+
+const FIELD_STATUS                = process.env.FIELD_STATUS || "status";
+const FIELD_ESTIMATED_START_TIME  = process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time";
+const FIELD_ESTIMATED_END_TIME    = process.env.FIELD_ESTIMATED_END_TIME || "estimated_end_time";
+const FIELD_ESTIMATED_GO_TIME     = process.env.FIELD_ESTIMATED_GO_TIME || "estimated_go_time";
+const FIELD_ORDER_OF_GO           = process.env.FIELD_ORDER_OF_GO || "order_of_go";
+const FIELD_REMAINING_TRIPS       = process.env.FIELD_REMAINING_TRIPS || "remaining_trips";
+const FIELD_TOTAL_TRIPS           = process.env.FIELD_TOTAL_TRIPS || "total_trips";
+const FIELD_TIME_ONE              = process.env.FIELD_TIME_ONE || "time_one";
+const FIELD_TIME_TWO              = process.env.FIELD_TIME_TWO || "time_two";
+const FIELD_TIME_THREE            = process.env.FIELD_TIME_THREE || "time_three";
+const FIELD_SCORE1                = process.env.FIELD_SCORE1 || "score1";
+const FIELD_SCORE2                = process.env.FIELD_SCORE2 || "score2";
+const FIELD_SCORE3                = process.env.FIELD_SCORE3 || "score3";
 
 function requireEnv(name, val) {
   if (!val) throw new Error(`Missing required env: ${name}`);
@@ -105,42 +78,10 @@ function pickFrom(obj, keys = []) {
   return null;
 }
 
-function boolFrom01(v) {
-  if (isBlank(v)) return null;
-  if (typeof v === "boolean") return v;
-
-  const n = Number(v);
-  if (Number.isFinite(n)) return n === 1;
-
-  const s = String(v).trim().toLowerCase();
-  if (["true", "yes", "y", "checked", "on"].includes(s)) return true;
-  if (["false", "no", "n", "unchecked", "off"].includes(s)) return false;
-
-  return null;
-}
-
-function getFieldSetFromRecords(records = []) {
-  const out = new Set();
-  for (const r of records) {
-    for (const k of Object.keys(r.fields || {})) out.add(k);
-  }
-  return out;
-}
-
-function safeSet(outObj, fieldSet, fieldName, value) {
-  if (!fieldSet.has(fieldName)) return;
-  if (value === undefined) return;
-  outObj[fieldName] = value;
-}
-
 function chunk(arr, size) {
   const out = [];
   for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
   return out;
-}
-
-function classKey(show_id, class_id) {
-  return `${show_id}:${class_id}`;
 }
 
 function tripUuid(t) {
@@ -157,15 +98,12 @@ function tripUuid(t) {
 const IGNORE_NUM = {
   time_any: new Set([0]),
   score_any: new Set([0]),
-  placing: new Set([0, 10000, 100000]),
-  position: new Set([0, 10000, 100000]),
   order_of_go: new Set([0, 10000, 100000]),
-  timeallowed: new Set([0, 10000, 100000]),
 };
 
 const IGNORE_TIME_STR = new Set(["00:00:00"]);
 
-function normNum(n, ignoreSet) {
+function normNum(n, ignoreSet = null) {
   if (n === null || n === undefined) return null;
   if (!Number.isFinite(n)) return null;
   if (ignoreSet && ignoreSet.has(n)) return null;
@@ -181,42 +119,6 @@ function normTimeStr(s) {
 
 function normStr(s) {
   return strOrNull(s);
-}
-
-function isValidHms(t) {
-  return typeof t === "string" && /^\d{2}:\d{2}:\d{2}$/.test(t);
-}
-
-function hmsToSeconds(hms) {
-  const [h, m, s] = hms.split(":").map(Number);
-  return (h * 3600) + (m * 60) + s;
-}
-
-function secondsToHms(sec) {
-  sec = ((sec % 86400) + 86400) % 86400;
-  const h = String(Math.floor(sec / 3600)).padStart(2, "0");
-  const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
-  const s = String(sec % 60).padStart(2, "0");
-  return `${h}:${m}:${s}`;
-}
-
-function getSecondsPerTrip(timeallowed_tripone_raw) {
-  const v = Number(timeallowed_tripone_raw);
-  if (!Number.isFinite(v) || IGNORE_NUM.timeallowed.has(v)) return 80;
-  return v;
-}
-
-function computeCwfEstimatedGoTime({ class_type, order_of_go, anchor_time, timeallowed_tripone }) {
-  if (class_type !== "Jumpers") return null;
-
-  const o = Number(order_of_go);
-  if (!Number.isFinite(o) || o <= 0 || IGNORE_NUM.order_of_go.has(o)) return null;
-
-  if (!isValidHms(anchor_time)) return null;
-
-  const secondsPerTrip = getSecondsPerTrip(timeallowed_tripone);
-  const outSec = hmsToSeconds(anchor_time) + ((o - 1) * secondsPerTrip);
-  return secondsToHms(outSec);
 }
 
 async function fetchWithTimeout(url, opts = {}) {
@@ -304,28 +206,89 @@ async function airtableList(tableName, viewName) {
   return out;
 }
 
-async function airtableBatchUpdate(tableName, updates) {
+async function airtablePatchRecords(tableName, updates) {
   if (!updates.length) return;
 
-  for (const batch of chunk(updates, 10)) {
-    const res = await fetchWithRetry(airtableUrl(tableName), {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ records: batch })
-    });
+  const res = await fetchWithRetry(airtableUrl(tableName), {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ records: updates })
+  });
 
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      throw new Error(`Airtable patch failed (${res.status}) ${tableName}: ${body}`);
-    }
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Airtable patch failed (${res.status}) ${tableName}: ${body}`);
   }
 }
 
-function resolvedShowIdFromRecord(fields) {
-  return numOrNull(firstNonBlank(fields.app_show_id, fields.show_id));
+async function airtablePatchWithFallback(tableName, updates) {
+  if (!updates.length) return { okRows: 0, failedRows: [] };
+
+  let okRows = 0;
+  const failedRows = [];
+
+  for (const batch of chunk(updates, 10)) {
+    try {
+      await airtablePatchRecords(tableName, batch);
+      okRows += batch.length;
+    } catch (batchErr) {
+      console.log(`patch warn: batch failed, falling back to single-row updates :: ${String(batchErr?.message || batchErr).slice(0, 300)}`);
+
+      for (const row of batch) {
+        try {
+          await airtablePatchRecords(tableName, [row]);
+          okRows += 1;
+        } catch (rowErr) {
+          failedRows.push({
+            record_id: row.id,
+            reason: String(rowErr?.message || rowErr).slice(0, 300),
+            attempted_fields: Object.keys(row.fields || {})
+          });
+          console.log(`row warn: ${row.id} :: ${String(rowErr?.message || rowErr).slice(0, 300)}`);
+        }
+      }
+    }
+  }
+
+  return { okRows, failedRows };
+}
+
+function setBaseFields(updateFields, observedAt, reason) {
+  updateFields[FIELD_HB_SECOND_PASS_AT] = observedAt;
+  updateFields[FIELD_HB_SECOND_PASS_REASON] = reason;
+}
+
+function setClassLevelFields(updateFields, data) {
+  updateFields[FIELD_STATUS] = data.class_status;
+  updateFields[FIELD_ESTIMATED_START_TIME] = data.estimated_start_time;
+  updateFields[FIELD_ESTIMATED_END_TIME] = data.estimated_end_time;
+  updateFields[FIELD_REMAINING_TRIPS] = data.remaining_trips;
+  updateFields[FIELD_TOTAL_TRIPS] = data.total_trips;
+}
+
+function setTripLevelFields(updateFields, data) {
+  updateFields[FIELD_ESTIMATED_GO_TIME] = data.estimated_go_time;
+  updateFields[FIELD_ORDER_OF_GO] = data.order_of_go;
+  updateFields[FIELD_TIME_ONE] = data.time_one;
+  updateFields[FIELD_TIME_TWO] = data.time_two;
+  updateFields[FIELD_TIME_THREE] = data.time_three;
+  updateFields[FIELD_SCORE1] = data.score1;
+  updateFields[FIELD_SCORE2] = data.score2;
+  updateFields[FIELD_SCORE3] = data.score3;
+}
+
+function clearTripLevelFields(updateFields) {
+  updateFields[FIELD_ESTIMATED_GO_TIME] = null;
+  updateFields[FIELD_ORDER_OF_GO] = null;
+  updateFields[FIELD_TIME_ONE] = null;
+  updateFields[FIELD_TIME_TWO] = null;
+  updateFields[FIELD_TIME_THREE] = null;
+  updateFields[FIELD_SCORE1] = null;
+  updateFields[FIELD_SCORE2] = null;
+  updateFields[FIELD_SCORE3] = null;
 }
 
 (async () => {
@@ -333,92 +296,136 @@ function resolvedShowIdFromRecord(fields) {
     requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
     requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
-    const recordsAll = await airtableList(WATCH_TABLE, WATCH_VIEW);
-    const records = MAX_RECORDS > 0 ? recordsAll.slice(0, MAX_RECORDS) : recordsAll;
-    const watchFields = getFieldSetFromRecords(records);
+    const allRecords = await airtableList(WATCH_TABLE, WATCH_VIEW);
+    const records = MAX_RECORDS > 0 ? allRecords.slice(0, MAX_RECORDS) : allRecords;
     const observedAt = new Date().toISOString();
 
     const recInputs = [];
-    const uniqueKeys = new Set();
+    const uniqueEndpoints = new Set();
 
-    for (const r of records) {
-      const f = r.fields || {};
-      const resolved_show_id = resolvedShowIdFromRecord(f);
-      const class_id = numOrNull(f.class_id);
-      const entryxclasses_uuid = normStr(f.entryxclasses_uuid);
+    for (const rec of records) {
+      const f = rec.fields || {};
+      const classEndpoint = strOrNull(f[FIELD_CLASS_ENDPOINT]);
+      const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
 
       recInputs.push({
-        rec: r,
-        resolved_show_id,
-        class_id,
+        rec,
+        classEndpoint,
         entryxclasses_uuid,
-        rowFields: f,
       });
 
-      if (resolved_show_id !== null && class_id !== null) {
-        uniqueKeys.add(classKey(resolved_show_id, class_id));
-      }
+      if (classEndpoint) uniqueEndpoints.add(classEndpoint);
     }
 
-    const classCache = new Map();
+    const endpointCache = new Map();
+    const endpointErrors = [];
 
-    for (const key of uniqueKeys) {
-      const [show_id_s, class_id_s] = key.split(":");
-      const show_id = Number(show_id_s);
-      const class_id = Number(class_id_s);
-
-      const classUrl =
-        `https://broad-tooth-b8ed.gombcg.workers.dev/classes/${encodeURIComponent(
-          class_id
-        )}/?show_id=${encodeURIComponent(show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
-
+    for (const endpoint of uniqueEndpoints) {
       try {
-        const res = await fetchWithRetry(classUrl, { method: "GET" });
-        if (!res.ok) throw new Error(`Class ping failed: ${res.status} ${res.statusText}`);
-        const json = await res.json();
-        classCache.set(key, { ok: true, json });
-      } catch {
-        classCache.set(key, { ok: false, json: null });
+        const res = await fetchWithRetry(endpoint, { method: "GET" });
+        const txt = await res.text();
+
+        if (!res.ok) {
+          const reason = `err:class_http_${res.status}`;
+          endpointCache.set(endpoint, {
+            ok: false,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          endpointErrors.push({
+            endpoint,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${txt.slice(0, 200)}`);
+          continue;
+        }
+
+        let json = null;
+        try {
+          json = JSON.parse(txt);
+        } catch {
+          const reason = "err:class_invalid_json";
+          endpointCache.set(endpoint, {
+            ok: false,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          endpointErrors.push({
+            endpoint,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          console.log(`endpoint warn: ${reason} :: ${endpoint}`);
+          continue;
+        }
+
+        endpointCache.set(endpoint, {
+          ok: true,
+          json
+        });
+      } catch (e) {
+        const reason = "err:class_fetch_exception";
+        const detail = String(e?.message || e).slice(0, 300);
+        endpointCache.set(endpoint, {
+          ok: false,
+          reason,
+          detail
+        });
+        endpointErrors.push({
+          endpoint,
+          reason,
+          detail
+        });
+        console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${detail}`);
       }
     }
 
     const updates = [];
+    const rowReasonCounts = {};
 
     let processed_in_view = records.length;
     let processed_valid = 0;
     let updated_rows = 0;
-    let skipped_missing_required = 0;
-    let class_fetch_errors = 0;
+    let skipped_missing_class_endpoint = 0;
+    let skipped_missing_entryxclasses_uuid = 0;
+    let endpoint_fetch_errors = 0;
     let trip_matched = 0;
     let trip_not_found = 0;
 
+    function bumpReason(reason) {
+      rowReasonCounts[reason] = (rowReasonCounts[reason] || 0) + 1;
+    }
+
     for (const row of recInputs) {
-      const { rec, resolved_show_id, class_id, entryxclasses_uuid } = row;
+      const { rec, classEndpoint, entryxclasses_uuid } = row;
+      const updateFields = {};
 
-      if (resolved_show_id === null || class_id === null || !entryxclasses_uuid) {
-        skipped_missing_required++;
+      if (!classEndpoint) {
+        skipped_missing_class_endpoint++;
+        setBaseFields(updateFields, observedAt, "err:missing_class_endpoint");
+        bumpReason("err:missing_class_endpoint");
+        updates.push({ id: rec.id, fields: updateFields });
+        continue;
+      }
 
-        const u = {};
-        safeSet(u, watchFields, "hb_second_pass_at", observedAt);
-        safeSet(u, watchFields, "observed_at", observedAt);
-
-        if (Object.keys(u).length > 0) updates.push({ id: rec.id, fields: u });
+      if (!entryxclasses_uuid) {
+        skipped_missing_entryxclasses_uuid++;
+        setBaseFields(updateFields, observedAt, "err:missing_entryxclasses_uuid");
+        bumpReason("err:missing_entryxclasses_uuid");
+        updates.push({ id: rec.id, fields: updateFields });
         continue;
       }
 
       processed_valid++;
 
-      const key = classKey(resolved_show_id, class_id);
-      const cached = classCache.get(key);
-
+      const cached = endpointCache.get(classEndpoint);
       if (!cached || !cached.ok) {
-        class_fetch_errors++;
-
-        const u = {};
-        safeSet(u, watchFields, "hb_second_pass_at", observedAt);
-        safeSet(u, watchFields, "observed_at", observedAt);
-
-        if (Object.keys(u).length > 0) updates.push({ id: rec.id, fields: u });
+        endpoint_fetch_errors++;
+        const reason = cached?.reason || "err:class_fetch_unknown";
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
+        updates.push({ id: rec.id, fields: updateFields });
         continue;
       }
 
@@ -435,24 +442,10 @@ function resolvedShowIdFromRecord(fields) {
         )
       );
 
-      const actual_time = normTimeStr(
+      const estimated_start_time = normTimeStr(
         firstNonBlank(
-          pickFrom(classRelated, ["actual_time"]),
-          pickFrom(classJson, ["actual_time"])
-        )
-      );
-
-      const estimated_time = normTimeStr(
-        firstNonBlank(
-          pickFrom(classRelated, ["estimated_time"]),
-          pickFrom(classJson, ["estimated_time"])
-        )
-      );
-
-      const default_time = normTimeStr(
-        firstNonBlank(
-          pickFrom(classRelated, ["default_time"]),
-          pickFrom(classJson, ["default_time"])
+          pickFrom(classRelated, ["estimated_start_time", "estimated_time", "start_time"]),
+          pickFrom(classJson, ["estimated_start_time", "estimated_time", "start_time"])
         )
       );
 
@@ -469,8 +462,7 @@ function resolvedShowIdFromRecord(fields) {
             pickFrom(classRelated, ["remaining_trips"]),
             pickFrom(classJson, ["remaining_trips"])
           )
-        ),
-        null
+        )
       );
 
       const total_trips = normNum(
@@ -479,20 +471,8 @@ function resolvedShowIdFromRecord(fields) {
             pickFrom(classRelated, ["total_trips"]),
             pickFrom(classJson, ["total_trips"])
           )
-        ),
-        null
-      );
-
-      const class_type = normStr(
-        firstNonBlank(
-          pickFrom(classRelated, ["class_type", "type", "division_type"]),
-          pickFrom(classJson, ["class_type", "type", "division_type"])
         )
       );
-
-      const anchor_time = isValidHms(estimated_time)
-        ? estimated_time
-        : (isValidHms(default_time) ? default_time : null);
 
       const trips = Array.isArray(classRelated?.trips)
         ? classRelated.trips
@@ -506,191 +486,88 @@ function resolvedShowIdFromRecord(fields) {
           return k && k === entryxclasses_uuid;
         }) || null;
 
-      const trip_id_raw = matchedTrip
-        ? numOrNull(firstNonBlank(matchedTrip.trip_id, matchedTrip.id, matchedTrip.tripId))
-        : null;
-
-      const order_of_go_raw = matchedTrip
-        ? numOrNull(firstNonBlank(matchedTrip.order_of_go, matchedTrip.orderOfGo))
-        : null;
-
-      const score_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.score, matchedTrip.points))
-        : null;
-
-      const placing_raw = matchedTrip
-        ? numOrNull(firstNonBlank(matchedTrip.placing, matchedTrip.place))
-        : null;
-
-      const estimated_go_time_raw = matchedTrip
-        ? strOrNull(firstNonBlank(matchedTrip.estimated_go_time, matchedTrip.estimatedGoTime))
-        : null;
-
-      const lastPlace_raw = matchedTrip
-        ? numOrNull(firstNonBlank(matchedTrip.place, matchedTrip.placing))
-        : null;
-
-      const lastGoneIn_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.gone_in, matchedTrip.goneIn))
-        : null;
-
-      const lastPosition_raw = matchedTrip
-        ? numOrNull(firstNonBlank(matchedTrip.position))
-        : null;
-
-      const time_one_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.time_one, matchedTrip.timeOne, matchedTrip.time1))
-        : null;
-
-      const time_two_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.time_two, matchedTrip.timeTwo, matchedTrip.time2))
-        : null;
-
-      const time_three_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.time_three, matchedTrip.timeThree, matchedTrip.time3))
-        : null;
-
-      const score1_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.score1, matchedTrip.score_1))
-        : null;
-
-      const score2_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.score2, matchedTrip.score_2))
-        : null;
-
-      const score3_raw = matchedTrip
-        ? floatOrNull(firstNonBlank(matchedTrip.score3, matchedTrip.score_3))
-        : null;
-
-      const timeallowed_tripone_raw = matchedTrip
-        ? numOrNull(
-            firstNonBlank(
-              matchedTrip.timeallowed_tripone,
-              matchedTrip.time_allowed_tripone,
-              matchedTrip.timeAllowedTripOne
-            )
-          )
-        : null;
-
-      const results_verified_raw = matchedTrip
-        ? firstNonBlank(
-            matchedTrip.results_verified,
-            matchedTrip.resultsVerified,
-            matchedTrip.results_verified_flag,
-            matchedTrip.resultsVerifiedFlag
-          )
-        : null;
-
-      const trip_id = trip_id_raw;
-      const order_of_go = normNum(order_of_go_raw, IGNORE_NUM.order_of_go);
-      const score = normNum(score_raw, IGNORE_NUM.score_any);
-      const placing = normNum(placing_raw, IGNORE_NUM.placing);
-      const estimated_go_time = normTimeStr(estimated_go_time_raw);
-
-      const lastPlaceVal = normNum(lastPlace_raw, IGNORE_NUM.placing);
-      const lastGoneInVal = lastGoneIn_raw;
-      const lastPositionVal = normNum(lastPosition_raw, IGNORE_NUM.position);
-
-      const time_one = normNum(time_one_raw, IGNORE_NUM.time_any);
-      const time_two = normNum(time_two_raw, IGNORE_NUM.time_any);
-      const time_three = normNum(time_three_raw, IGNORE_NUM.time_any);
-
-      const score1 = normNum(score1_raw, IGNORE_NUM.score_any);
-      const score2 = normNum(score2_raw, IGNORE_NUM.score_any);
-      const score3 = normNum(score3_raw, IGNORE_NUM.score_any);
-
-      const results_verified_bool = boolFrom01(results_verified_raw);
-      const results_verified_checkbox = results_verified_bool === null ? false : results_verified_bool;
-
-      const u = {};
-
-      // Always stamp pass meta
-      safeSet(u, watchFields, "hb_second_pass_at", observedAt);
-      safeSet(u, watchFields, "observed_at", observedAt);
-
-      // Class-level writes
-      safeSet(u, watchFields, "last_status", class_status);
-      safeSet(u, watchFields, "last_actual_time", actual_time);
-      safeSet(u, watchFields, "last_estimated_time", estimated_time);
-
-      safeSet(u, watchFields, "status", class_status);
-      safeSet(u, watchFields, "estimated_start_time", estimated_time);
-      safeSet(u, watchFields, "estimated_end_time", estimated_end_time);
-      safeSet(u, watchFields, "remaining_trips", remaining_trips);
-      safeSet(u, watchFields, "total_trips", total_trips);
+      setClassLevelFields(updateFields, {
+        class_status,
+        estimated_start_time,
+        estimated_end_time,
+        remaining_trips,
+        total_trips,
+      });
 
       if (matchedTrip) {
         trip_matched++;
 
-        safeSet(u, watchFields, "trip_id", trip_id);
-        safeSet(u, watchFields, "last_order_of_go", order_of_go);
-        safeSet(u, watchFields, "last_score", score);
-        safeSet(u, watchFields, "last_placing", placing);
-        safeSet(u, watchFields, "last_estimated_go_time", estimated_go_time);
+        const estimated_go_time = normTimeStr(
+          firstNonBlank(matchedTrip.estimated_go_time, matchedTrip.estimatedGoTime)
+        );
 
-        safeSet(u, watchFields, "lastPlace", lastPlaceVal);
-        safeSet(u, watchFields, "lastGoneIn", lastGoneInVal);
-        safeSet(u, watchFields, "lastPosition", lastPositionVal);
+        const order_of_go = normNum(
+          numOrNull(firstNonBlank(matchedTrip.order_of_go, matchedTrip.orderOfGo)),
+          IGNORE_NUM.order_of_go
+        );
 
-        safeSet(u, watchFields, "time_one", time_one);
-        safeSet(u, watchFields, "time_two", time_two);
-        safeSet(u, watchFields, "time_three", time_three);
+        const time_one = normNum(
+          floatOrNull(firstNonBlank(matchedTrip.time_one, matchedTrip.timeOne, matchedTrip.time1)),
+          IGNORE_NUM.time_any
+        );
 
-        safeSet(u, watchFields, "score1", score1);
-        safeSet(u, watchFields, "score2", score2);
-        safeSet(u, watchFields, "score3", score3);
+        const time_two = normNum(
+          floatOrNull(firstNonBlank(matchedTrip.time_two, matchedTrip.timeTwo, matchedTrip.time2)),
+          IGNORE_NUM.time_any
+        );
 
-        safeSet(u, watchFields, "results_verified", results_verified_checkbox);
+        const time_three = normNum(
+          floatOrNull(firstNonBlank(matchedTrip.time_three, matchedTrip.timeThree, matchedTrip.time3)),
+          IGNORE_NUM.time_any
+        );
 
-        // Direct fields
-        safeSet(u, watchFields, "estimated_go_time", estimated_go_time);
-        safeSet(u, watchFields, "order_of_go", order_of_go);
+        const score1 = normNum(
+          floatOrNull(firstNonBlank(matchedTrip.score1, matchedTrip.score_1)),
+          IGNORE_NUM.score_any
+        );
 
-        const cwf_estimated_go_time = computeCwfEstimatedGoTime({
-          class_type,
-          order_of_go: order_of_go_raw,
-          anchor_time,
-          timeallowed_tripone: timeallowed_tripone_raw,
+        const score2 = normNum(
+          floatOrNull(firstNonBlank(matchedTrip.score2, matchedTrip.score_2)),
+          IGNORE_NUM.score_any
+        );
+
+        const score3 = normNum(
+          floatOrNull(firstNonBlank(matchedTrip.score3, matchedTrip.score_3)),
+          IGNORE_NUM.score_any
+        );
+
+        setTripLevelFields(updateFields, {
+          estimated_go_time,
+          order_of_go,
+          time_one,
+          time_two,
+          time_three,
+          score1,
+          score2,
+          score3,
         });
-        safeSet(u, watchFields, "cwf_estimated_go_time", cwf_estimated_go_time);
+
+        setBaseFields(updateFields, observedAt, "ok:matched_trip");
+        bumpReason("ok:matched_trip");
       } else {
         trip_not_found++;
-
-        safeSet(u, watchFields, "trip_id", null);
-        safeSet(u, watchFields, "last_order_of_go", null);
-        safeSet(u, watchFields, "last_score", null);
-        safeSet(u, watchFields, "last_placing", null);
-        safeSet(u, watchFields, "last_estimated_go_time", null);
-
-        safeSet(u, watchFields, "lastPlace", null);
-        safeSet(u, watchFields, "lastGoneIn", null);
-        safeSet(u, watchFields, "lastPosition", null);
-
-        safeSet(u, watchFields, "time_one", null);
-        safeSet(u, watchFields, "time_two", null);
-        safeSet(u, watchFields, "time_three", null);
-
-        safeSet(u, watchFields, "score1", null);
-        safeSet(u, watchFields, "score2", null);
-        safeSet(u, watchFields, "score3", null);
-
-        safeSet(u, watchFields, "results_verified", false);
-        safeSet(u, watchFields, "cwf_estimated_go_time", null);
-
-        safeSet(u, watchFields, "estimated_go_time", null);
-        safeSet(u, watchFields, "order_of_go", null);
+        clearTripLevelFields(updateFields);
+        setBaseFields(updateFields, observedAt, "err:no_trip_match");
+        bumpReason("err:no_trip_match");
       }
 
-      if (Object.keys(u).length > 0) updates.push({ id: rec.id, fields: u });
+      updates.push({ id: rec.id, fields: updateFields });
     }
 
+    let failedRows = [];
+
     if (DRY_RUN) {
-      console.log(`DRY_RUN trips_tagger | rows=${records.length} updates=${updates.length}`);
+      updated_rows = updates.length;
+      console.log(`DRY_RUN: updates=${updates.length}`);
     } else {
-      for (const batch of chunk(updates, 10)) {
-        await airtableBatchUpdate(WATCH_TABLE, batch);
-        updated_rows += batch.length;
-      }
+      const result = await airtablePatchWithFallback(WATCH_TABLE, updates);
+      updated_rows = result.okRows;
+      failedRows = result.failedRows;
     }
 
     console.log(
@@ -700,12 +577,18 @@ function resolvedShowIdFromRecord(fields) {
           watch_view: WATCH_VIEW,
           processed_in_view,
           processed_valid,
-          updated_rows: DRY_RUN ? updates.length : updated_rows,
-          skipped_missing_required,
-          class_fetch_errors,
+          updated_rows,
+          failed_row_updates: failedRows.length,
+          skipped_missing_class_endpoint,
+          skipped_missing_entryxclasses_uuid,
+          unique_class_endpoints: uniqueEndpoints.size,
+          endpoint_fetch_errors,
           trip_matched,
           trip_not_found,
+          row_reason_counts: rowReasonCounts,
           observed_at: observedAt,
+          endpoint_error_samples: endpointErrors.slice(0, 10),
+          failed_row_samples: failedRows.slice(0, 10),
         },
         null,
         2
@@ -714,7 +597,7 @@ function resolvedShowIdFromRecord(fields) {
   } catch (e) {
     const name = e?.name || "error";
     const msg = String(e?.message || e);
-    console.log(`fatal: ${name} ${msg.slice(0, 240)}`);
+    console.log(`fatal: ${name} ${msg.slice(0, 400)}`);
     process.exit(0);
   }
 })();
