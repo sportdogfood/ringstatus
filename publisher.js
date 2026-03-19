@@ -325,6 +325,33 @@ async function commitBulk({ message, files, force = true }) {
   return { ok: false, status: lastStatus, text: lastText };
 }
 
+const GITHUB_COMMITS_API_BASE = "https://api.github.com/repos/sportdogfood/ringstatus-data/commits";
+
+async function getLatestCommitShaForPath(repoPath) {
+  const path = normalizePath(repoPath);
+  const url = new URL(GITHUB_COMMITS_API_BASE);
+  url.searchParams.set("path", path);
+  url.searchParams.set("per_page", "1");
+
+  const res = await fetchWithTimeout(
+    url.toString(),
+    {
+      method: "GET",
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "ringstatus-publisher"
+      }
+    },
+    15000
+  );
+
+  const txt = await res.text();
+  if (!res.ok) throw new Error(`GitHub commits lookup failed (${res.status}) ${txt.slice(0, 200)}`);
+
+  let arr = [];
+  try { arr = JSON.parse(txt); } catch {}
+  return Array.isArray(arr) && arr[0] && arr[0].sha ? arr[0].sha : null;
+}
 //////////////////////
 // 6) Publish primitives
 //////////////////////
@@ -590,6 +617,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
