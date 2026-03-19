@@ -698,6 +698,21 @@ async function main() {
       console.log(`DIFF_READY path=${res.repoPath || "-"} shaPrev=${res.shaPrev || "-"} shaNew=${res.shaNew || "-"} oldLen=${res.oldBlob ? res.oldBlob.length : 0} newLen=${res.newBlob ? res.newBlob.length : 0}`);
       const focused = buildFocusedDiff({ datasetKey, repoPath: res.repoPath, oldBlob: res.oldBlob, newBlob: res.newBlob });
       console.log(`FOCUSED_DIFF path=${res.repoPath || "-"} oldRows=${focused.oldRows.length} newRows=${focused.newRows.length}`);
+      if (!res.skipped && focused.newRows.length > 0) {
+        await airtableCreateRecord({
+          table: "publish_diffs",
+          fields: {
+            path: res.repoPath || "",
+            dataset_key: datasetKey,
+            sha_prev: res.shaPrev || "",
+            sha_new: res.shaNew || "",
+            old_blob: JSON.stringify(focused.oldRows, null, 2),
+            new_blob: JSON.stringify(focused.newRows, null, 2),
+            published_epoch: epochSec,
+            status: "commit",
+          }
+        });
+      }
 
       const committedAny = !res.skipped && (res.committed || 0) > 0;
       const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
@@ -717,6 +732,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
