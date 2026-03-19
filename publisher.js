@@ -307,7 +307,7 @@ async function commitBulk({ message, files, force = true }) {
     lastText = await res.text();
     console.log("COMMIT_BULK_RESPONSE", res.status, lastText);
 
-    if (res.ok) return { ok: true, status: res.status, text: lastText };
+    if (res.ok) {`r`n      let json = null;`r`n      try { json = JSON.parse(lastText); } catch {}`r`n      return { ok: true, status: res.status, text: lastText, json };`r`n    }
 
     if (isNonFastForward422(res.status, lastText) && attempt < RETRY_MAX_ATTEMPTS) {
       const delay = RETRY_BASE_DELAY_MS * attempt + Math.floor(Math.random() * 600);
@@ -585,5 +585,6 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
