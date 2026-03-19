@@ -623,6 +623,7 @@ async function main() {
       if (!res.ok) throw new Error(`publish failed (${res.status || "?"}) ${res.errorText || ""}`);
 
       console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
+      console.log(`DIFF_READY path=${res.repoPath || "-"} shaPrev=${res.shaPrev || "-"} shaNew=${res.shaNew || "-"} oldLen=${res.oldBlob ? res.oldBlob.length : 0} newLen=${res.newBlob ? res.newBlob.length : 0}`);
 
       const committedAny = !res.skipped && (res.committed || 0) > 0;
       const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
@@ -642,6 +643,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
