@@ -305,6 +305,7 @@ async function commitBulk({ message, files, force = true }) {
 
     lastStatus = res.status;
     lastText = await res.text();
+    console.log("COMMIT_BULK_RESPONSE", res.status, lastText);
 
     if (res.ok) return { ok: true, status: res.status, text: lastText };
 
@@ -584,3 +585,5 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
+
