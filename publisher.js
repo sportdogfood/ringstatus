@@ -428,6 +428,7 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
   const msg = `chore: publish ${datasetKey} @${epochSec}`;
   const res = await commitBulk({ message: msg, files: changedFiles, force: FORCE_PUSH });
   const shaNew = res?.json?.commit?.sha || null;
+  console.log(`BLOB_STATE path=${paths[0] || "-"} shaPrev=${shaPrev || "-"} shaNew=${shaNew || "-"} oldLen=${oldBlob ? oldBlob.length : 0} newLen=${newBlob ? newBlob.length : 0}`);
 
   if (!res.ok) {
     return {
@@ -641,6 +642,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
