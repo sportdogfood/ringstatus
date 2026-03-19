@@ -352,6 +352,26 @@ async function getLatestCommitShaForPath(repoPath) {
   try { arr = JSON.parse(txt); } catch {}
   return Array.isArray(arr) && arr[0] && arr[0].sha ? arr[0].sha : null;
 }
+
+async function getRawFileTextAtSha(sha, repoPath) {
+  if (!sha || !repoPath) return null;
+  const path = normalizePath(repoPath);
+  const url = `https://raw.githubusercontent.com/sportdogfood/ringstatus-data/${sha}/${path}`;
+
+  const res = await fetchWithTimeout(
+    url,
+    {
+      method: "GET",
+      headers: {
+        "User-Agent": "ringstatus-publisher"
+      }
+    },
+    15000
+  );
+
+  if (!res.ok) return null;
+  return await res.text();
+}
 //////////////////////
 // 6) Publish primitives
 //////////////////////
@@ -619,6 +639,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
