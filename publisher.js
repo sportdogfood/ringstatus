@@ -439,7 +439,7 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
     };
   }
 
-  return { ok: true, skipped: false, reason: "published", committed: changedFiles.length, status: res.status, shaNew };
+  return { ok: true, skipped: false, reason: "published", committed: changedFiles.length, status: res.status, shaPrev, shaNew, oldBlob, newBlob, repoPath: (paths[0] || null) };
 }
 
 async function publishDataset({
@@ -642,6 +642,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
