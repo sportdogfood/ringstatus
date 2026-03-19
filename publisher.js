@@ -390,7 +390,8 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
 
   const contentText = JSON.stringify(contentObj, null, 2) + "\n";
   const changedFiles = [];
-  const shaPrev = paths[0] ? await getLatestCommitShaForPath(paths[0]) : null;`r`n  const oldBlob = (shaPrev && paths[0]) ? await getRawFileTextAtSha(shaPrev, paths[0]) : null;
+  const shaPrev = paths[0] ? await getLatestCommitShaForPath(paths[0]) : null;
+  const oldBlob = (shaPrev && paths[0]) ? await getRawFileTextAtSha(shaPrev, paths[0]) : null;
   console.log(`PREV_SHA path=${paths[0] || "-"} sha=${shaPrev || "-"}`);
   let anyChange = false;
 
@@ -639,6 +640,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
