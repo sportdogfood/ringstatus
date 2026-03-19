@@ -388,7 +388,7 @@ function buildRowsFromRecords(records, allowedFields) {
 async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }) {
   if (!paths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
 
-  const contentText = JSON.stringify(contentObj, null, 2) + "\n";
+  const contentText = JSON.stringify(contentObj, null, 2) + "\n";`r`n  const newBlob = contentText;
   const changedFiles = [];
   const shaPrev = paths[0] ? await getLatestCommitShaForPath(paths[0]) : null;
   const oldBlob = (shaPrev && paths[0]) ? await getRawFileTextAtSha(shaPrev, paths[0]) : null;
@@ -640,6 +640,7 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
 
 
 
