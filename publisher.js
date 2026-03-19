@@ -387,7 +387,7 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
     };
   }
 
-  return { ok: true, skipped: false, reason: "published", committed: changedFiles.length, status: res.status };
+  return { ok: true, skipped: false, reason: "published", committed: changedFiles.length, status: res.status, shaNew };
 }
 
 async function publishDataset({
@@ -570,7 +570,7 @@ async function main() {
 
       if (!res.ok) throw new Error(`publish failed (${res.status || "?"}) ${res.errorText || ""}`);
 
-      console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0})`);
+      console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
 
       const committedAny = !res.skipped && (res.committed || 0) > 0;
       const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
@@ -590,6 +590,9 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
+
+
 
 
 
