@@ -249,6 +249,22 @@ async function airtablePatchRecord({ table, recordId, fields }) {
   return j;
 }
 
+
+async function airtableCreateRecord({ table, fields }) {
+  const url = `${AT_BASE}/${encodeURIComponent(table)}`;
+  const res = await fetchWithTimeout(
+    url,
+    { method: "POST", headers: atHeaders(), body: JSON.stringify({ records: [{ fields }] }) },
+    20000
+  );
+  const j = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 400);
+    const type = (j && j.error && j.error.type) ? j.error.type : "";
+    throw new Error(`Airtable create failed (${table}): ${res.status} ${type} ${msg}`);
+  }
+  return j;
+}
 //////////////////////
 // 4) Preflight GET
 //////////////////////
@@ -533,6 +549,62 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
   };
 }
 
+
+function safeJsonParseArray(txt) {
+  try {
+    const v = JSON.parse(txt);
+    return Array.isArray(v) ? v : [];
+  } catch {
+    return [];
+  }
+}
+
+function pickFields(obj, fields) {
+  const out = {};
+  for (const f of fields) out[f] = (obj && Object.prototype.hasOwnProperty.call(obj, f)) ? obj[f] : null;
+  return out;
+}
+
+function valuesDiffer(a, b) {
+  return JSON.stringify(a) !== JSON.stringify(b);
+}
+
+function buildFocusedDiff({ datasetKey, repoPath, oldBlob, newBlob }) {
+  const keyAndFields =
+    /schedules\/schedule\.json$/i.test(repoPath || "")
+      ? { key: "class_groupxclasses_id", watched: ["latestStart", "latestStatus", "total_trips"] }
+      : /schedules\/trips\.json$/i.test(repoPath || "")
+      ? { key: "entryxclasses_uuid", watched: ["lastGoneIn","estimated_end_time","estimated_start_time","latestStart","latestStatus","total_trips","latestPlacing","lastScore","time_one","time_two","remaining_trips","time_three","score1","score2","score3","lastTime","latestGO","runningOOG","lastOOG"] }
+      : null;
+
+  if (!keyAndFields) return { oldRows: [], newRows: [] };
+
+  const { key, watched } = keyAndFields;
+  const oldRows = safeJsonParseArray(oldBlob);
+  const newRows = safeJsonParseArray(newBlob);
+
+  const oldMap = new Map(oldRows.filter(r => r && r[key] != null).map(r => [String(r[key]), r]));
+  const newMap = new Map(newRows.filter(r => r && r[key] != null).map(r => [String(r[key]), r]));
+
+  const allKeys = new Set([...oldMap.keys(), ...newMap.keys()]);
+  const oldChanged = [];
+  const newChanged = [];
+
+  for (const id of allKeys) {
+    const oldRow = oldMap.get(id) || null;
+    const newRow = newMap.get(id) || null;
+
+    const oldPicked = { [key]: id, ...pickFields(oldRow, watched) };
+    const newPicked = { [key]: id, ...pickFields(newRow, watched) };
+
+    if (valuesDiffer(oldPicked, newPicked)) {
+      oldChanged.push(oldPicked);
+      newChanged.push(newPicked);
+    }
+  }
+
+  return { oldRows: oldChanged, newRows: newChanged };
+}
 //////////////////////
 // 8) Dirty clearing (success vs error)
 //////////////////////
@@ -624,6 +696,8 @@ async function main() {
 
       console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
       console.log(`DIFF_READY path=${res.repoPath || "-"} shaPrev=${res.shaPrev || "-"} shaNew=${res.shaNew || "-"} oldLen=${res.oldBlob ? res.oldBlob.length : 0} newLen=${res.newBlob ? res.newBlob.length : 0}`);
+      const focused = buildFocusedDiff({ datasetKey, repoPath: res.repoPath, oldBlob: res.oldBlob, newBlob: res.newBlob });
+      console.log(`FOCUSED_DIFF path=${res.repoPath || "-"} oldRows=${focused.oldRows.length} newRows=${focused.newRows.length}`);
 
       const committedAny = !res.skipped && (res.committed || 0) > 0;
       const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
@@ -643,6 +717,9 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
+
+
 
 
 
