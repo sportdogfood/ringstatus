@@ -163,6 +163,13 @@ function normalizeTextValue(v) {
   return JSON.stringify(v);
 }
 
+function isNumericLike(v) {
+  if (v === null || v === undefined) return false;
+  const s = String(v).trim();
+  if (!s) return false;
+  return /^-?\d+(\.\d+)?$/.test(s);
+}
+
 function pickRowValue(row, fieldName) {
   if (!row || typeof row !== "object") return undefined;
   return row[fieldName];
@@ -174,14 +181,6 @@ function pickIdValue(newRow, oldRow, fieldName) {
   const b = pickRowValue(oldRow, fieldName);
   if (b !== null && b !== undefined && String(b).trim() !== "") return b;
   return null;
-}
-
-function toAirtableNumber(v) {
-  if (v === null || v === undefined) return null;
-  const s = String(v).trim();
-  if (!s) return null;
-  const n = Number(s);
-  return Number.isFinite(n) ? n : null;
 }
 
 //////////////////////
@@ -577,8 +576,7 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
           keyField: "class_groupxclasses_id",
           watched: ["latestStart", "latestStatus", "total_trips"],
           numericFields: new Set(["total_trips"]),
-          textIdFields: ["class_groupxclasses_id"],
-          numericIdFields: ["class_group_id", "class_id"]
+          idFields: ["class_group_id", "class_id"]
         }
       : /schedules\/trips\.json$/i.test(repoPath || "")
       ? {
@@ -592,14 +590,13 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
             "lastGoneIn","total_trips","latestPlacing","lastScore","time_one","time_two",
             "remaining_trips","time_three","score1","score2","score3","runningOOG","lastOOG"
           ]),
-          textIdFields: ["entryxclasses_uuid"],
-          numericIdFields: ["entry_id", "class_id"]
+          idFields: ["entry_id", "class_id"]
         }
       : null;
 
   if (!cfg) return [];
 
-  const { keyField, watched, numericFields, textIdFields, numericIdFields } = cfg;
+  const { keyField, watched, numericFields, idFields } = cfg;
   const oldRows = safeJsonParseArray(oldBlob);
   const newRows = safeJsonParseArray(newBlob);
 
@@ -627,7 +624,9 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
 
       if (oldNorm === newNorm) continue;
 
-      const useValueFields = numericFields.has(fieldName);
+      const useValueFields =
+        numericFields.has(fieldName) ||
+        (isNumericLike(oldNorm) && isNumericLike(newNorm));
 
       const fields = {
         dataset_key: datasetKey,
@@ -648,18 +647,18 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
         fields.new_text = newNorm;
       }
 
-      for (const textIdField of textIdFields) {
-        const idValue = pickIdValue(newRow, oldRow, textIdField);
-        if (idValue !== null && idValue !== undefined && String(idValue).trim() !== "") {
-          fields[textIdField] = String(idValue).trim();
-        }
+      if (keyField === "class_groupxclasses_id") {
+        fields.class_groupxclasses_id = rowKey;
       }
 
-      for (const numericIdField of numericIdFields) {
-        const idValue = pickIdValue(newRow, oldRow, numericIdField);
-        const n = toAirtableNumber(idValue);
-        if (n !== null) {
-          fields[numericIdField] = n;
+      if (keyField === "entryxclasses_uuid") {
+        fields.entryxclasses_uuid = rowKey;
+      }
+
+      for (const idField of idFields) {
+        const idValue = pickIdValue(newRow, oldRow, idField);
+        if (idValue !== null && idValue !== undefined && String(idValue).trim() !== "") {
+          fields[idField] = String(idValue).trim();
         }
       }
 
