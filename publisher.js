@@ -1,36 +1,5 @@
 /**
  * publisher.js (FULL DROP) — RingStatus Data Publisher + Per-Tenant Manifest (NO table_view2)
- *
- * INTENT
- * - Code/templates live in repo: sportdogfood/ringstatus
- * - Data snapshots live in repo: sportdogfood/ringstatus-data (via Cloudflare Worker commit gateway)
- *
- * RUNS OUTSIDE AIRTABLE (Task Scheduler heartbeat or manual):
- * - Reads publish_queue (optionally via a view; default: all_active)
- * - Processes only rows where dirty=true
- * - Each row publishes ONE lane (table_view1 -> paths1). No table_view2 is used.
- * - allowed_fields is taken from publish_queue row (comma/newline separated)
- * - Preflight GET of published JSON and SKIP commit if no change
- * - Commits changed paths via /docs/commit-bulk on ringstatus-proxy
- * - Clears dirty; stamps last_publish_epoch ONLY when a commit happens
- *
- * MANIFEST
- * - Any dataset_key starting with "manifest" publishes a tenant manifest to its paths1.
- * - Tenant is inferred from manifest path: docs/{tenant}/manifest.json
- * - Manifest includes ONLY datasets whose paths1 are under docs/{tenant}/...
- *
- * Requires env:
- *   AIRTABLE_TOKEN
- *   AIRTABLE_BASE_ID
- *
- * Optional env:
- *   PUBLISH_QUEUE_TABLE (default: publish_queue)
- *   PUBLISH_QUEUE_VIEW  (default: all_active)   // set to empty to disable view filtering
- *   PUBLISH_URI         (default: https://ringstatus-proxy.gombcg.workers.dev/docs/commit-bulk)
- *   PUBLISHED_BASE      (default: https://ringstatus-proxy.gombcg.workers.dev/)
- *   FORCE_PUSH          (default: 1)
- *   DRY_RUN             (default: 0)
- *   SHOWTIME_URL        (optional; used only to stamp epoch; falls back to local time)
  */
 
 //////////////////////
@@ -178,6 +147,42 @@ async function getEpochSec() {
   }
 }
 
+function safeJsonParseArray(txt) {
+  try {
+    const v = JSON.parse(txt);
+    return Array.isArray(v) ? v : [];
+  } catch {
+    return [];
+  }
+}
+
+function normalizeTextValue(v) {
+  if (v === null || v === undefined) return "";
+  if (typeof v === "string") return v.trim();
+  if (typeof v === "number" || typeof v === "boolean") return String(v);
+  return JSON.stringify(v);
+}
+
+function isNumericLike(v) {
+  if (v === null || v === undefined) return false;
+  const s = String(v).trim();
+  if (!s) return false;
+  return /^-?\d+(\.\d+)?$/.test(s);
+}
+
+function pickRowValue(row, fieldName) {
+  if (!row || typeof row !== "object") return undefined;
+  return row[fieldName];
+}
+
+function pickIdValue(newRow, oldRow, fieldName) {
+  const a = pickRowValue(newRow, fieldName);
+  if (a !== null && a !== undefined && String(a).trim() !== "") return a;
+  const b = pickRowValue(oldRow, fieldName);
+  if (b !== null && b !== undefined && String(b).trim() !== "") return b;
+  return null;
+}
+
 //////////////////////
 // 3) Airtable REST
 //////////////////////
@@ -237,22 +242,6 @@ async function airtablePatchRecord({ table, recordId, fields }) {
     const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 400);
     const type = (j && j.error && j.error.type) ? j.error.type : "";
     throw new Error(`Airtable patch failed (${table}/${recordId}): ${res.status} ${type} ${msg}`);
-  }
-  return j;
-}
-
-async function airtableCreateRecord({ table, fields }) {
-  const url = `${AT_BASE}/${encodeURIComponent(table)}`;
-  const res = await fetchWithTimeout(
-    url,
-    { method: "POST", headers: atHeaders(), body: JSON.stringify({ records: [{ fields }] }) },
-    20000
-  );
-  const j = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 400);
-    const type = (j && j.error && j.error.type) ? j.error.type : "";
-    throw new Error(`Airtable create failed (${table}): ${res.status} ${type} ${msg}`);
   }
   return j;
 }
@@ -474,7 +463,18 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
     };
   }
 
-  return { ok: true, skipped: false, reason: "published", committed: changedFiles.length, status: res.status, shaPrev, shaNew, oldBlob, newBlob, repoPath: (paths[0] || null) };
+  return {
+    ok: true,
+    skipped: false,
+    reason: "published",
+    committed: changedFiles.length,
+    status: res.status,
+    shaPrev,
+    shaNew,
+    oldBlob,
+    newBlob,
+    repoPath: (paths[0] || null)
+  };
 }
 
 async function publishDataset({
@@ -566,33 +566,37 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
   };
 }
 
-function safeJsonParseArray(txt) {
-  try {
-    const v = JSON.parse(txt);
-    return Array.isArray(v) ? v : [];
-  } catch {
-    return [];
-  }
-}
-
-function normalizeDiffValue(v) {
-  if (v === null || v === undefined) return "";
-  if (typeof v === "string") return v.trim();
-  if (typeof v === "number" || typeof v === "boolean") return String(v);
-  return JSON.stringify(v);
-}
-
+//////////////////////
+// 8) Field diffs
+//////////////////////
 function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlob, newBlob }) {
   const cfg =
     /schedules\/schedule\.json$/i.test(repoPath || "")
-      ? { keyField: "class_groupxclasses_id", watched: ["latestStart", "latestStatus", "total_trips"] }
+      ? {
+          keyField: "class_groupxclasses_id",
+          watched: ["latestStart", "latestStatus", "total_trips"],
+          numericFields: new Set(["total_trips"]),
+          idFields: ["class_group_id", "class_id"]
+        }
       : /schedules\/trips\.json$/i.test(repoPath || "")
-      ? { keyField: "entryxclasses_uuid", watched: ["lastGoneIn","estimated_end_time","estimated_start_time","latestStart","latestStatus","total_trips","latestPlacing","lastScore","time_one","time_two","remaining_trips","time_three","score1","score2","score3","lastTime","latestGO","runningOOG","lastOOG"] }
+      ? {
+          keyField: "entryxclasses_uuid",
+          watched: [
+            "lastGoneIn","estimated_end_time","estimated_start_time","latestStart","latestStatus","total_trips",
+            "latestPlacing","lastScore","time_one","time_two","remaining_trips","time_three","score1","score2",
+            "score3","lastTime","latestGO","runningOOG","lastOOG"
+          ],
+          numericFields: new Set([
+            "lastGoneIn","total_trips","latestPlacing","lastScore","time_one","time_two",
+            "remaining_trips","time_three","score1","score2","score3","runningOOG","lastOOG"
+          ]),
+          idFields: ["entry_id", "class_id"]
+        }
       : null;
 
   if (!cfg) return [];
 
-  const { keyField, watched } = cfg;
+  const { keyField, watched, numericFields, idFields } = cfg;
   const oldRows = safeJsonParseArray(oldBlob);
   const newRows = safeJsonParseArray(newBlob);
 
@@ -612,10 +616,17 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
     const oldRow = oldMap.get(rowKey);
 
     for (const fieldName of watched) {
-      const oldValue = normalizeDiffValue(oldRow[fieldName]);
-      const newValue = normalizeDiffValue(newRow[fieldName]);
+      const oldRaw = pickRowValue(oldRow, fieldName);
+      const newRaw = pickRowValue(newRow, fieldName);
 
-      if (oldValue === newValue) continue;
+      const oldNorm = normalizeTextValue(oldRaw);
+      const newNorm = normalizeTextValue(newRaw);
+
+      if (oldNorm === newNorm) continue;
+
+      const useValueFields =
+        numericFields.has(fieldName) ||
+        (isNumericLike(oldNorm) && isNumericLike(newNorm));
 
       const fields = {
         dataset_key: datasetKey,
@@ -623,15 +634,33 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
         sha_prev: shaPrev || "",
         sha_new: shaNew || "",
         field_name: fieldName,
-        old_value: oldValue,
-        new_value: newValue,
         changed_at: changedAtIso,
         file_ref: `${shaNew || ""}:${repoPath || ""}:${rowKey}:${fieldName}`,
         published_epoch: Number(epochSec)
       };
 
-      if (keyField === "class_groupxclasses_id") fields.class_groupxclasses_id = rowKey;
-      if (keyField === "entryxclasses_uuid") fields.entryxclasses_uuid = rowKey;
+      if (useValueFields) {
+        fields.old_value = oldNorm;
+        fields.new_value = newNorm;
+      } else {
+        fields.old_text = oldNorm;
+        fields.new_text = newNorm;
+      }
+
+      if (keyField === "class_groupxclasses_id") {
+        fields.class_groupxclasses_id = rowKey;
+      }
+
+      if (keyField === "entryxclasses_uuid") {
+        fields.entryxclasses_uuid = rowKey;
+      }
+
+      for (const idField of idFields) {
+        const idValue = pickIdValue(newRow, oldRow, idField);
+        if (idValue !== null && idValue !== undefined && String(idValue).trim() !== "") {
+          fields[idField] = String(idValue).trim();
+        }
+      }
 
       out.push({ fields });
     }
@@ -641,7 +670,7 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
 }
 
 //////////////////////
-// 8) Dirty clearing
+// 9) Dirty clearing
 //////////////////////
 async function clearDirtySuccess({ recordId, committedAny, epochSec, reason }) {
   const fields = {
@@ -666,7 +695,7 @@ async function stampDirtyError({ recordId, msg }) {
 }
 
 //////////////////////
-// 9) Main
+// 10) Main
 //////////////////////
 async function main() {
   const epochSec = await getEpochSec();
