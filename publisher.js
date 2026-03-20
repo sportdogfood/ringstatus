@@ -588,7 +588,7 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
             "latestPlacing","lastScore","time_one","score1","lastTime","latestGO","lastOOG"
           ],
           numericFields: new Set([
-            "lastGoneIn","total_trips","latestPlacing","lastScore","time_one",
+            "lastGoneIn","total_trips","latestPlacing","lastScore",
             "remaining_trips","score1","lastOOG"
           ]),
           textIdFields: ["entryxclasses_uuid"],
