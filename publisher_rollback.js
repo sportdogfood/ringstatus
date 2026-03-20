@@ -43,8 +43,9 @@ if (!AIRTABLE_TOKEN) throw new Error("Missing env AIRTABLE_TOKEN");
 if (!AIRTABLE_BASE_ID) throw new Error("Missing env AIRTABLE_BASE_ID");
 
 const PUBLISH_QUEUE_TABLE = process.env.PUBLISH_QUEUE_TABLE || "publish_queue";
-const PUBLISH_QUEUE_VIEW  = (process.env.PUBLISH_QUEUE_VIEW ?? "all_active").trim();
+const PUBLISH_QUEUE_VIEW  = (process.env.PUBLISH_QUEUE_VIEW ?? "all_active").trim(); // allow blank => no view
 
+// RingStatus proxy defaults (data repo = ringstatus-data behind the Worker)
 const PUBLISH_URI    = process.env.PUBLISH_URI    || "https://ringstatus-proxy.gombcg.workers.dev/docs/commit-bulk";
 const PUBLISHED_BASE = process.env.PUBLISHED_BASE || "https://ringstatus-proxy.gombcg.workers.dev/";
 
@@ -52,20 +53,21 @@ const FORCE_PUSH     = String(process.env.FORCE_PUSH ?? "1") === "1";
 const DRY_RUN        = String(process.env.DRY_RUN ?? "0") === "1";
 const SHOWTIME_URL   = process.env.SHOWTIME_URL || "";
 
+// publish_queue field names (must match Airtable field names)
 const PQ_DATASET_KEY        = "dataset_key";
 const PQ_DIRTY              = "dirty";
 const PQ_DIRTY_REASON       = "dirty_reason";
-const PQ_DIRTY_EPOCH        = "dirty_epoch";
+const PQ_DIRTY_EPOCH        = "dirty_epoch";         // optional
 const PQ_LAST_PUBLISH_EPOCH = "last_publish_epoch";
 const PQ_TABLE_NAME         = "table_name";
-const PQ_VIEW1              = "table_view1";
-const PQ_PATHS1             = "paths1";
-const PQ_ALLOWED_FIELDS     = "allowed_fields";
+const PQ_VIEW1              = "table_view1";         // ONLY view used
+const PQ_PATHS1             = "paths1";              // ONLY paths used
+const PQ_ALLOWED_FIELDS     = "allowed_fields";      // comma/newline list
 
 const CONTENT_TYPE = "application/json";
 
 //////////////////////
-// 1) Dataset defaults
+// 1) Dataset defaults (fallback only if allowed_fields is blank)
 //////////////////////
 const DEFAULT_ALLOWED_FIELDS = {
   watch_schedule: [
@@ -111,6 +113,7 @@ function normalizePath(p) {
 }
 
 function parseListFlexible(s) {
+  // supports: comma, newline, space-separated
   if (!s) return [];
   return String(s)
     .replace(/\r/g, "")
@@ -146,6 +149,7 @@ function isManifestKey(k) {
 }
 
 function inferTenantFromManifestPath(paths) {
+  // expects docs/{tenant}/manifest.json (or docs/{tenant}/anything/manifest.json)
   if (!paths || !paths.length) return null;
   for (const raw of paths) {
     const p = String(raw || "");
@@ -191,6 +195,10 @@ function atHeaders() {
 }
 
 async function airtableListAll({ table, view, fields = null }) {
+  // fields:
+  // - null => do not send fields[] (safe for schema drift)
+  // - []   => do not send fields[] (treat as null)
+  // - [..] => send fields[] to reduce payload
   const out = [];
   let offset = null;
 
@@ -241,6 +249,7 @@ async function airtablePatchRecord({ table, recordId, fields }) {
   return j;
 }
 
+
 async function airtableCreateRecord({ table, fields }) {
   const url = `${AT_BASE}/${encodeURIComponent(table)}`;
   const res = await fetchWithTimeout(
@@ -256,35 +265,6 @@ async function airtableCreateRecord({ table, fields }) {
   }
   return j;
 }
-
-async function airtableCreateRecords({ table, records }) {
-  if (!Array.isArray(records) || !records.length) return { records: [] };
-
-  const out = [];
-
-  for (let i = 0; i < records.length; i += 10) {
-    const chunk = records.slice(i, i + 10);
-    const url = `${AT_BASE}/${encodeURIComponent(table)}`;
-
-    const res = await fetchWithTimeout(
-      url,
-      { method: "POST", headers: atHeaders(), body: JSON.stringify({ records: chunk }) },
-      20000
-    );
-
-    const j = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      const msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j).slice(0, 400);
-      const type = (j && j.error && j.error.type) ? j.error.type : "";
-      throw new Error(`Airtable create failed (${table}): ${res.status} ${type} ${msg}`);
-    }
-
-    if (Array.isArray(j.records)) out.push(...j.records);
-  }
-
-  return { records: out };
-}
-
 //////////////////////
 // 4) Preflight GET
 //////////////////////
@@ -305,7 +285,7 @@ async function preflightGetJson(url) {
 }
 
 //////////////////////
-// 5) Commit-bulk
+// 5) Commit-bulk (RingStatus proxy)
 //////////////////////
 function isNonFastForward422(status, text) {
   if (status !== 422) return false;
@@ -408,11 +388,11 @@ async function getRawFileTextAtSha(sha, repoPath) {
   if (!res.ok) return null;
   return await res.text();
 }
-
 //////////////////////
 // 6) Publish primitives
 //////////////////////
 function buildRowsFromRecords(records, allowedFields) {
+  // Preserve view order (Airtable view controls sorting)
   return records.map(r => {
     const src = r.fields || {};
     const obj = {};
@@ -447,6 +427,7 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
         });
       }
     } else {
+      // If preflight fails, commit for safety.
       anyChange = true;
       changedFiles.push({
         path: normalizePath(p),
@@ -489,6 +470,7 @@ async function publishDataset({
   if (!paths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
   if (!allowedFields.length) return { ok: true, skipped: true, reason: "no_allowed_fields", committed: 0 };
 
+  // Try with fields[] first; if Airtable complains about unknown field, retry without fields[].
   let records;
   try {
     records = await airtableListAll({ table: tableName, view: viewName, fields: allowedFields });
@@ -542,6 +524,7 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
     if (isManifestKey(key)) continue;
 
     const paths = parsePaths(f[PQ_PATHS1]).filter(Boolean);
+    // ONLY include paths under docs/{tenant}/...
     const tenantPaths = paths.filter(p => String(p).toLowerCase().startsWith(tenantPrefix));
     if (!tenantPaths.length) continue;
 
@@ -566,6 +549,7 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
   };
 }
 
+
 function safeJsonParseArray(txt) {
   try {
     const v = JSON.parse(txt);
@@ -575,73 +559,54 @@ function safeJsonParseArray(txt) {
   }
 }
 
-function normalizeDiffValue(v) {
-  if (v === null || v === undefined) return "";
-  if (typeof v === "string") return v.trim();
-  if (typeof v === "number" || typeof v === "boolean") return String(v);
-  return JSON.stringify(v);
-}
-
-function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlob, newBlob }) {
-  const cfg =
-    /schedules\/schedule\.json$/i.test(repoPath || "")
-      ? { keyField: "class_groupxclasses_id", watched: ["latestStart", "latestStatus", "total_trips"] }
-      : /schedules\/trips\.json$/i.test(repoPath || "")
-      ? { keyField: "entryxclasses_uuid", watched: ["lastGoneIn","estimated_end_time","estimated_start_time","latestStart","latestStatus","total_trips","latestPlacing","lastScore","time_one","time_two","remaining_trips","time_three","score1","score2","score3","lastTime","latestGO","runningOOG","lastOOG"] }
-      : null;
-
-  if (!cfg) return [];
-
-  const { keyField, watched } = cfg;
-  const oldRows = safeJsonParseArray(oldBlob);
-  const newRows = safeJsonParseArray(newBlob);
-
-  const oldMap = new Map(
-    oldRows.filter(r => r && r[keyField] != null).map(r => [String(r[keyField]), r])
-  );
-  const newMap = new Map(
-    newRows.filter(r => r && r[keyField] != null).map(r => [String(r[keyField]), r])
-  );
-
-  const out = [];
-  const changedAtIso = new Date(Number(epochSec) * 1000).toISOString();
-
-  for (const [rowKey, newRow] of newMap.entries()) {
-    if (!oldMap.has(rowKey)) continue;
-
-    const oldRow = oldMap.get(rowKey);
-
-    for (const fieldName of watched) {
-      const oldValue = normalizeDiffValue(oldRow[fieldName]);
-      const newValue = normalizeDiffValue(newRow[fieldName]);
-
-      if (oldValue === newValue) continue;
-
-      const fields = {
-        dataset_key: datasetKey,
-        path: repoPath || "",
-        sha_prev: shaPrev || "",
-        sha_new: shaNew || "",
-        field_name: fieldName,
-        old_value: oldValue,
-        new_value: newValue,
-        changed_at: changedAtIso,
-        file_ref: `${shaNew || ""}:${repoPath || ""}:${rowKey}:${fieldName}`,
-        published_epoch: Number(epochSec)
-      };
-
-      if (keyField === "class_groupxclasses_id") fields.class_groupxclasses_id = rowKey;
-      if (keyField === "entryxclasses_uuid") fields.entryxclasses_uuid = rowKey;
-
-      out.push({ fields });
-    }
-  }
-
+function pickFields(obj, fields) {
+  const out = {};
+  for (const f of fields) out[f] = (obj && Object.prototype.hasOwnProperty.call(obj, f)) ? obj[f] : null;
   return out;
 }
 
+function valuesDiffer(a, b) {
+  return JSON.stringify(a) !== JSON.stringify(b);
+}
+
+function buildFocusedDiff({ datasetKey, repoPath, oldBlob, newBlob }) {
+  const keyAndFields =
+    /schedules\/schedule\.json$/i.test(repoPath || "")
+      ? { key: "class_groupxclasses_id", watched: ["latestStart", "latestStatus", "total_trips"] }
+      : /schedules\/trips\.json$/i.test(repoPath || "")
+      ? { key: "entryxclasses_uuid", watched: ["lastGoneIn","estimated_end_time","estimated_start_time","latestStart","latestStatus","total_trips","latestPlacing","lastScore","time_one","time_two","remaining_trips","time_three","score1","score2","score3","lastTime","latestGO","runningOOG","lastOOG"] }
+      : null;
+
+  if (!keyAndFields) return { oldRows: [], newRows: [] };
+
+  const { key, watched } = keyAndFields;
+  const oldRows = safeJsonParseArray(oldBlob);
+  const newRows = safeJsonParseArray(newBlob);
+
+  const oldMap = new Map(oldRows.filter(r => r && r[key] != null).map(r => [String(r[key]), r]));
+  const newMap = new Map(newRows.filter(r => r && r[key] != null).map(r => [String(r[key]), r]));
+
+  const allKeys = new Set([...oldMap.keys(), ...newMap.keys()]);
+  const oldChanged = [];
+  const newChanged = [];
+
+  for (const id of allKeys) {
+    const oldRow = oldMap.get(id) || null;
+    const newRow = newMap.get(id) || null;
+
+    const oldPicked = { [key]: id, ...pickFields(oldRow, watched) };
+    const newPicked = { [key]: id, ...pickFields(newRow, watched) };
+
+    if (valuesDiffer(oldPicked, newPicked)) {
+      oldChanged.push(oldPicked);
+      newChanged.push(newPicked);
+    }
+  }
+
+  return { oldRows: oldChanged, newRows: newChanged };
+}
 //////////////////////
-// 8) Dirty clearing
+// 8) Dirty clearing (success vs error)
 //////////////////////
 async function clearDirtySuccess({ recordId, committedAny, epochSec, reason }) {
   const fields = {
@@ -672,6 +637,7 @@ async function main() {
   const epochSec = await getEpochSec();
   console.log(`publisher start | epoch=${epochSec} dry_run=${DRY_RUN}`);
 
+  // IMPORTANT: do NOT pass fields[] here to avoid 422 when schema changes.
   const pqRecords = await airtableListAll({
     table: PUBLISH_QUEUE_TABLE,
     view: PUBLISH_QUEUE_VIEW || null,
@@ -692,6 +658,7 @@ async function main() {
     console.log(`job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length}`);
 
     try {
+      // MANIFEST job
       if (isManifestKey(datasetKey)) {
         const tenant = inferTenantFromManifestPath(paths);
         const manifest = buildTenantManifestFromQueue(pqRecords, epochSec, tenant);
@@ -713,6 +680,7 @@ async function main() {
         continue;
       }
 
+      // Normal dataset job
       const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
 
       const res = await publishDataset({
@@ -728,23 +696,21 @@ async function main() {
 
       console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
       console.log(`DIFF_READY path=${res.repoPath || "-"} shaPrev=${res.shaPrev || "-"} shaNew=${res.shaNew || "-"} oldLen=${res.oldBlob ? res.oldBlob.length : 0} newLen=${res.newBlob ? res.newBlob.length : 0}`);
-
-      const diffRows = buildDiffRows({
-        datasetKey,
-        repoPath: res.repoPath,
-        shaPrev: res.shaPrev,
-        shaNew: res.shaNew,
-        epochSec,
-        oldBlob: res.oldBlob,
-        newBlob: res.newBlob
-      });
-
-      console.log(`FIELD_DIFF path=${res.repoPath || "-"} rows=${diffRows.length}`);
-
-      if (!res.skipped && diffRows.length > 0) {
-        await airtableCreateRecords({
+      const focused = buildFocusedDiff({ datasetKey, repoPath: res.repoPath, oldBlob: res.oldBlob, newBlob: res.newBlob });
+      console.log(`FOCUSED_DIFF path=${res.repoPath || "-"} oldRows=${focused.oldRows.length} newRows=${focused.newRows.length}`);
+      if (!res.skipped && focused.newRows.length > 0) {
+        await airtableCreateRecord({
           table: "publish_diffs",
-          records: diffRows
+          fields: {
+            path: res.repoPath || "",
+            dataset_key: datasetKey,
+            sha_prev: res.shaPrev || "",
+            sha_new: res.shaNew || "",
+            old_blob: JSON.stringify(focused.oldRows, null, 2),
+            new_blob: JSON.stringify(focused.newRows, null, 2),
+            published_epoch: epochSec,
+            status: "commit",
+          }
         });
       }
 
@@ -755,6 +721,7 @@ async function main() {
       const msg = String(e?.message || e).slice(0, 240);
       console.log(`job error: ${datasetKey} | ${msg}`);
       await stampDirtyError({ recordId: r.id, msg });
+      // keep dirty=true on errors
     }
   }
 
@@ -765,3 +732,28 @@ main().catch(err => {
   console.error("publisher fatal:", err?.message || err);
   process.exitCode = 1;
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
