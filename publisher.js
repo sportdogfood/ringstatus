@@ -575,8 +575,8 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
     /schedules\/schedule\.json$/i.test(repoPath || "")
       ? {
           keyField: "class_groupxclasses_id",
-          watched: ["latestStart", "latestStatus", "total_trips"],
-          numericFields: new Set(["total_trips"]),
+          watched: ["latestStart", "latestStatus"],
+          //numericFields: new Set(["total_trips"]),
           textIdFields: ["class_groupxclasses_id"],
           numericIdFields: ["class_group_id", "class_id"]
         }
@@ -584,11 +584,11 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
       ? {
           keyField: "entryxclasses_uuid",
           watched: [
-            "lastGoneIn","estimated_start_time","latestStart","latestStatus","total_trips",
-            "latestPlacing","lastScore","time_one","score1","lastTime","latestGO","lastOOG"
+            "lastGoneIn","estimated_start_time","latestStatus",
+            "latestPlacing","remaining_trips","time_one","score1","latestGO","lastOOG"
           ],
           numericFields: new Set([
-            "lastGoneIn","total_trips","latestPlacing","lastScore",
+            "lastGoneIn","latestPlacing","lastScore",
             "remaining_trips","score1","lastOOG"
           ]),
           textIdFields: ["entryxclasses_uuid"],
