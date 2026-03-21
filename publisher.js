@@ -33,6 +33,7 @@ const PQ_ALLOWED_FIELDS     = "allowed_fields";
 
 const CONTENT_TYPE = "application/json";
 const PUBLISH_DIFFS_TABLE = "publish_diffs";
+const DIFF_TARGET_PATH = "docs/9999/schedules/trips-catch-changes.json";
 
 //////////////////////
 // 1) Dataset defaults
@@ -249,38 +250,6 @@ function computeFieldDiff(fieldName, oldRaw, newRaw, cfg) {
     oldOut: oldText,
     newOut: newText
   };
-}
-
-function isTripsPath(p) {
-  return /\/schedules\/trips\.json$/i.test(String(p || ""));
-}
-
-function deriveTripsCatchPath(fullTripsPath) {
-  return normalizePath(String(fullTripsPath).replace(/trips\.json$/i, "trips-catch-changes.json"));
-}
-
-function buildTripsCatchRows(fullRows) {
-  const out = [];
-
-  for (const row of fullRows || []) {
-    const key = normalizeTextValue(row.entryxclasses_uuid);
-    if (!key) continue;
-
-    out.push({
-      entryxclasses_uuid: key,
-      entry_id: row.entry_id ?? null,
-      class_id: row.class_id ?? null,
-      estimated_start_time: row.estimated_start_time ?? null,
-      estimated_go_time: row.estimated_go_time ?? null,
-      latestStatus: row.latestStatus ?? null,
-      completed_trips: row.completed_trips ?? null,
-      lastOOG: row.lastOOG ?? null,
-      lastGoneIn: row.lastGoneIn ?? null
-    });
-  }
-
-  out.sort((a, b) => String(a.entryxclasses_uuid).localeCompare(String(b.entryxclasses_uuid)));
-  return out;
 }
 
 //////////////////////
@@ -515,10 +484,15 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
 
   const contentText = JSON.stringify(contentObj, null, 2) + "\n";
   const changedFiles = [];
+  const primaryPath = normalizePath(paths[0]);
+  const shaPrev = primaryPath ? await getLatestCommitShaForPath(primaryPath) : null;
+  const oldBlob = (shaPrev && primaryPath) ? await getRawFileTextAtSha(shaPrev, primaryPath) : null;
+
   let anyChange = false;
 
   for (const p of paths) {
-    const publishedUrl = `${PUBLISHED_BASE}${normalizePath(p)}`;
+    const normalized = normalizePath(p);
+    const publishedUrl = `${PUBLISHED_BASE}${normalized}`;
     const pre = await preflightGetJson(publishedUrl);
 
     if (pre.ok) {
@@ -526,7 +500,7 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
       if (!same) {
         anyChange = true;
         changedFiles.push({
-          path: normalizePath(p),
+          path: normalized,
           content_type: CONTENT_TYPE,
           content_base64: toBase64Utf8(contentText),
         });
@@ -534,130 +508,9 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
     } else {
       anyChange = true;
       changedFiles.push({
-        path: normalizePath(p),
+        path: normalized,
         content_type: CONTENT_TYPE,
         content_base64: toBase64Utf8(contentText),
-      });
-    }
-  }
-
-  if (!anyChange) return { ok: true, skipped: true, reason: "no_change", committed: 0 };
-
-  if (DRY_RUN) return { ok: true, skipped: true, reason: "dry_run", committed: 0, wouldCommit: changedFiles.length };
-
-  const msg = `chore: publish ${datasetKey} @${epochSec}`;
-  const res = await commitBulk({ message: msg, files: changedFiles, force: FORCE_PUSH });
-
-  if (!res.ok) {
-    return {
-      ok: false,
-      status: res.status,
-      errorText: String(res.text || "").slice(0, 500),
-      committed: 0,
-    };
-  }
-
-  return {
-    ok: true,
-    skipped: false,
-    reason: "published",
-    committed: changedFiles.length,
-    status: res.status,
-    shaNew: res?.json?.commit?.sha || null
-  };
-}
-
-async function publishTripsDatasetWithCatch({
-  datasetKey,
-  tableName,
-  viewName,
-  fullPaths,
-  allowedFields,
-  epochSec,
-}) {
-  if (!tableName || !viewName) return { ok: true, skipped: true, reason: "missing_table_or_view", committed: 0 };
-  if (!fullPaths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
-  if (!allowedFields.length) return { ok: true, skipped: true, reason: "no_allowed_fields", committed: 0 };
-
-  let records;
-  try {
-    records = await airtableListAll({ table: tableName, view: viewName, fields: allowedFields });
-  } catch (e) {
-    const status = e && e._airtable_status;
-    const type   = e && e._airtable_type;
-    const msg    = (e && e._airtable_message) ? String(e._airtable_message) : String(e?.message || e);
-
-    if (status === 422 && String(type).toUpperCase() === "UNKNOWN_FIELD_NAME") {
-      console.log(`warn: ${datasetKey} unknown field in fields[]; retrying without fields[] | ${msg}`);
-      records = await airtableListAll({ table: tableName, view: viewName, fields: null });
-    } else {
-      throw e;
-    }
-  }
-
-  const fullRows = buildRowsFromRecords(records, allowedFields);
-  const catchRows = buildTripsCatchRows(fullRows);
-
-  const fullText = JSON.stringify(fullRows, null, 2) + "\n";
-  const catchText = JSON.stringify(catchRows, null, 2) + "\n";
-
-  const fullPrimaryPath = normalizePath(fullPaths[0]);
-  const catchPaths = fullPaths.filter(isTripsPath).map(deriveTripsCatchPath);
-  const catchPrimaryPath = catchPaths[0] || null;
-
-  const catchShaPrev = catchPrimaryPath ? await getLatestCommitShaForPath(catchPrimaryPath) : null;
-  const catchOldBlob = (catchShaPrev && catchPrimaryPath) ? await getRawFileTextAtSha(catchShaPrev, catchPrimaryPath) : null;
-
-  const changedFiles = [];
-  let anyChange = false;
-  let catchChanged = false;
-
-  for (const p of fullPaths) {
-    const publishedUrl = `${PUBLISHED_BASE}${normalizePath(p)}`;
-    const pre = await preflightGetJson(publishedUrl);
-
-    if (pre.ok) {
-      const same = stableStringify(pre.json) === stableStringify(fullRows);
-      if (!same) {
-        anyChange = true;
-        changedFiles.push({
-          path: normalizePath(p),
-          content_type: CONTENT_TYPE,
-          content_base64: toBase64Utf8(fullText),
-        });
-      }
-    } else {
-      anyChange = true;
-      changedFiles.push({
-        path: normalizePath(p),
-        content_type: CONTENT_TYPE,
-        content_base64: toBase64Utf8(fullText),
-      });
-    }
-  }
-
-  for (const p of catchPaths) {
-    const publishedUrl = `${PUBLISHED_BASE}${normalizePath(p)}`;
-    const pre = await preflightGetJson(publishedUrl);
-
-    if (pre.ok) {
-      const same = stableStringify(pre.json) === stableStringify(catchRows);
-      if (!same) {
-        anyChange = true;
-        catchChanged = true;
-        changedFiles.push({
-          path: normalizePath(p),
-          content_type: CONTENT_TYPE,
-          content_base64: toBase64Utf8(catchText),
-        });
-      }
-    } else {
-      anyChange = true;
-      catchChanged = true;
-      changedFiles.push({
-        path: normalizePath(p),
-        content_type: CONTENT_TYPE,
-        content_base64: toBase64Utf8(catchText),
       });
     }
   }
@@ -668,14 +521,10 @@ async function publishTripsDatasetWithCatch({
       skipped: true,
       reason: "no_change",
       committed: 0,
-      catch: {
-        changed: false,
-        path: catchPrimaryPath,
-        shaPrev: catchShaPrev,
-        shaNew: null,
-        oldBlob: catchOldBlob,
-        newBlob: catchText
-      }
+      repoPath: primaryPath,
+      shaPrev,
+      oldBlob,
+      newBlob: contentText
     };
   }
 
@@ -686,14 +535,10 @@ async function publishTripsDatasetWithCatch({
       reason: "dry_run",
       committed: 0,
       wouldCommit: changedFiles.length,
-      catch: {
-        changed: catchChanged,
-        path: catchPrimaryPath,
-        shaPrev: catchShaPrev,
-        shaNew: null,
-        oldBlob: catchOldBlob,
-        newBlob: catchText
-      }
+      repoPath: primaryPath,
+      shaPrev,
+      oldBlob,
+      newBlob: contentText
     };
   }
 
@@ -716,19 +561,11 @@ async function publishTripsDatasetWithCatch({
     reason: "published",
     committed: changedFiles.length,
     status: res.status,
+    shaPrev,
     shaNew,
-    full: {
-      path: fullPrimaryPath,
-      newBlob: fullText
-    },
-    catch: {
-      changed: catchChanged,
-      path: catchPrimaryPath,
-      shaPrev: catchShaPrev,
-      shaNew,
-      oldBlob: catchOldBlob,
-      newBlob: catchText
-    }
+    oldBlob,
+    newBlob: contentText,
+    repoPath: primaryPath
   };
 }
 
@@ -822,7 +659,7 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
 }
 
 //////////////////////
-// 8) Trips catch diff only
+// 8) Diff — only explicit 9999 catch file
 //////////////////////
 function buildTripsCatchDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlob, newBlob }) {
   const cfg = {
@@ -998,7 +835,6 @@ async function main() {
     const tableName  = String(f[PQ_TABLE_NAME] || "").trim();
     const viewName   = String(f[PQ_VIEW1] || "").trim();
     const paths      = parsePaths(f[PQ_PATHS1]);
-    const hasTripsPath = paths.some(isTripsPath);
 
     console.log(`job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length}`);
 
@@ -1026,49 +862,6 @@ async function main() {
 
       const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
 
-      if (hasTripsPath) {
-        const res = await publishTripsDatasetWithCatch({
-          datasetKey,
-          tableName,
-          viewName,
-          fullPaths: paths,
-          allowedFields,
-          epochSec
-        });
-
-        if (!res.ok) throw new Error(`publish failed (${res.status || "?"}) ${res.errorText || ""}`);
-
-        console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
-
-        if (!res.skipped && res.catch && res.catch.changed) {
-          console.log(`CATCH_DIFF_READY path=${res.catch.path || "-"} shaPrev=${res.catch.shaPrev || "-"} shaNew=${res.catch.shaNew || "-"} oldLen=${res.catch.oldBlob ? res.catch.oldBlob.length : 0} newLen=${res.catch.newBlob ? res.catch.newBlob.length : 0}`);
-
-          const diffRows = buildTripsCatchDiffRows({
-            datasetKey,
-            repoPath: res.catch.path,
-            shaPrev: res.catch.shaPrev,
-            shaNew: res.catch.shaNew,
-            epochSec,
-            oldBlob: res.catch.oldBlob,
-            newBlob: res.catch.newBlob
-          });
-
-          console.log(`FIELD_DIFF path=${res.catch.path || "-"} rows=${diffRows.length}`);
-
-          if (diffRows.length > 0) {
-            await airtableCreateRecords({
-              table: PUBLISH_DIFFS_TABLE,
-              records: diffRows
-            });
-          }
-        }
-
-        const committedAny = !res.skipped && (res.committed || 0) > 0;
-        const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
-        await clearDirtySuccess({ recordId: r.id, committedAny, epochSec, reason });
-        continue;
-      }
-
       const res = await publishDataset({
         datasetKey,
         tableName,
@@ -1081,6 +874,32 @@ async function main() {
       if (!res.ok) throw new Error(`publish failed (${res.status || "?"}) ${res.errorText || ""}`);
 
       console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
+
+      const repoPath = normalizePath(res.repoPath || "");
+      const shouldDiff = !res.skipped && repoPath === DIFF_TARGET_PATH;
+
+      if (shouldDiff) {
+        console.log(`DIFF_READY path=${repoPath} shaPrev=${res.shaPrev || "-"} shaNew=${res.shaNew || "-"} oldLen=${res.oldBlob ? res.oldBlob.length : 0} newLen=${res.newBlob ? res.newBlob.length : 0}`);
+
+        const diffRows = buildTripsCatchDiffRows({
+          datasetKey,
+          repoPath,
+          shaPrev: res.shaPrev,
+          shaNew: res.shaNew,
+          epochSec,
+          oldBlob: res.oldBlob,
+          newBlob: res.newBlob
+        });
+
+        console.log(`FIELD_DIFF path=${repoPath} rows=${diffRows.length}`);
+
+        if (diffRows.length > 0) {
+          await airtableCreateRecords({
+            table: PUBLISH_DIFFS_TABLE,
+            records: diffRows
+          });
+        }
+      }
 
       const committedAny = !res.skipped && (res.committed || 0) > 0;
       const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
