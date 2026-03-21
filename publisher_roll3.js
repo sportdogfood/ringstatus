@@ -576,7 +576,7 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
       ? {
           keyField: "class_groupxclasses_id",
           watched: ["estimated_start_time", "latestStatus"],
-          numericFields: new Set(),
+          //numericFields: new Set(["total_trips"]),
           textIdFields: ["class_groupxclasses_id"],
           numericIdFields: ["class_group_id", "class_id"]
         }
@@ -663,41 +663,6 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
 
       out.push({ fields });
     }
-  }
-
-  // deleted rows
-  for (const [rowKey, oldRow] of oldMap.entries()) {
-    if (newMap.has(rowKey)) continue;
-
-    const fields = {
-      dataset_key: datasetKey,
-      path: repoPath || "",
-      sha_prev: shaPrev || "",
-      sha_new: shaNew || "",
-      field_name: "__deleted__",
-      old_text: "present",
-      new_text: "missing",
-      changed_at: changedAtIso,
-      file_ref: `${shaNew || ""}:${repoPath || ""}:${rowKey}:__deleted__`,
-      published_epoch: Number(epochSec)
-    };
-
-    for (const textIdField of textIdFields) {
-      const idValue = pickIdValue(null, oldRow, textIdField);
-      if (idValue !== null && idValue !== undefined && String(idValue).trim() !== "") {
-        fields[textIdField] = String(idValue).trim();
-      }
-    }
-
-    for (const numericIdField of numericIdFields) {
-      const idValue = pickIdValue(null, oldRow, numericIdField);
-      const n = toAirtableNumber(idValue);
-      if (n !== null) {
-        fields[numericIdField] = n;
-      }
-    }
-
-    out.push({ fields });
   }
 
   return out;
