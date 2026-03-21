@@ -184,72 +184,6 @@ function toAirtableNumber(v) {
   return Number.isFinite(n) ? n : null;
 }
 
-function isBlankLike(v) {
-  return v === null || v === undefined || String(v).trim() === "";
-}
-
-function numericCompareValue(v) {
-  if (isBlankLike(v)) return 0;
-  const n = Number(String(v).trim());
-  return Number.isFinite(n) ? n : 0;
-}
-
-function parseHmsToSeconds(v) {
-  if (isBlankLike(v)) return 0;
-  const s = String(v).trim();
-  if (s === "00:00:00") return 0;
-  const m = s.match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
-  if (!m) return null;
-  return (Number(m[1]) * 3600) + (Number(m[2]) * 60) + Number(m[3]);
-}
-
-function computeFieldDiff(fieldName, oldRaw, newRaw, cfg) {
-  if (cfg.numericFields.has(fieldName)) {
-    const oldNum = numericCompareValue(oldRaw);
-    const newNum = numericCompareValue(newRaw);
-    if (oldNum === newNum) return null;
-    return {
-      useValueFields: true,
-      oldOut: String(oldNum),
-      newOut: String(newNum)
-    };
-  }
-
-  if (cfg.tolerantTimeFields.has(fieldName)) {
-    const oldSec = parseHmsToSeconds(oldRaw);
-    const newSec = parseHmsToSeconds(newRaw);
-
-    if (oldSec !== null && newSec !== null) {
-      if (Math.abs(oldSec - newSec) < cfg.timeToleranceSec) return null;
-    } else {
-      const oldText = normalizeTextValue(oldRaw);
-      const newText = normalizeTextValue(newRaw);
-      if (oldText === newText) return null;
-      return {
-        useValueFields: false,
-        oldOut: oldText,
-        newOut: newText
-      };
-    }
-
-    return {
-      useValueFields: false,
-      oldOut: normalizeTextValue(oldRaw),
-      newOut: normalizeTextValue(newRaw)
-    };
-  }
-
-  const oldText = normalizeTextValue(oldRaw);
-  const newText = normalizeTextValue(newRaw);
-  if (oldText === newText) return null;
-
-  return {
-    useValueFields: false,
-    oldOut: oldText,
-    newOut: newText
-  };
-}
-
 //////////////////////
 // 3) Airtable REST
 //////////////////////
@@ -643,8 +577,6 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
           keyField: "class_groupxclasses_id",
           watched: ["estimated_start_time", "latestStatus"],
           numericFields: new Set(),
-          tolerantTimeFields: new Set(["estimated_start_time"]),
-          timeToleranceSec: 180,
           textIdFields: ["class_groupxclasses_id"],
           numericIdFields: ["class_group_id", "class_id"]
         }
@@ -652,20 +584,12 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
       ? {
           keyField: "entryxclasses_uuid",
           watched: [
-            "estimated_start_time",
-            "estimated_go_time",
-            "latestStatus",
-            "completed_trips",
-            "lastOOG",
-            "lastGoneIn"
+            "estimated_start_time","estimated_go_time","latestStatus",
+            "completed_trips","lastOOG","lastGoneIn"
           ],
           numericFields: new Set([
-            "lastGoneIn",
-            "completed_trips",
-            "lastOOG"
+            "lastGoneIn","completed_trips","lastOOG"
           ]),
-          tolerantTimeFields: new Set(["estimated_start_time", "estimated_go_time"]),
-          timeToleranceSec: 180,
           textIdFields: ["entryxclasses_uuid"],
           numericIdFields: ["entry_id", "class_id"]
         }
@@ -673,7 +597,7 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
 
   if (!cfg) return [];
 
-  const { keyField, watched, textIdFields, numericIdFields } = cfg;
+  const { keyField, watched, numericFields, textIdFields, numericIdFields } = cfg;
   const oldRows = safeJsonParseArray(oldBlob);
   const newRows = safeJsonParseArray(newBlob);
 
@@ -696,8 +620,12 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
       const oldRaw = pickRowValue(oldRow, fieldName);
       const newRaw = pickRowValue(newRow, fieldName);
 
-      const diff = computeFieldDiff(fieldName, oldRaw, newRaw, cfg);
-      if (!diff) continue;
+      const oldNorm = normalizeTextValue(oldRaw);
+      const newNorm = normalizeTextValue(newRaw);
+
+      if (oldNorm === newNorm) continue;
+
+      const useValueFields = numericFields.has(fieldName);
 
       const fields = {
         dataset_key: datasetKey,
@@ -710,12 +638,12 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
         published_epoch: Number(epochSec)
       };
 
-      if (diff.useValueFields) {
-        fields.old_value = diff.oldOut;
-        fields.new_value = diff.newOut;
+      if (useValueFields) {
+        fields.old_value = oldNorm;
+        fields.new_value = newNorm;
       } else {
-        fields.old_text = diff.oldOut;
-        fields.new_text = diff.newOut;
+        fields.old_text = oldNorm;
+        fields.new_text = newNorm;
       }
 
       for (const textIdField of textIdFields) {
@@ -737,7 +665,7 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
     }
   }
 
-  // deleted rows for both schedule and trips
+  // deleted rows
   for (const [rowKey, oldRow] of oldMap.entries()) {
     if (newMap.has(rowKey)) continue;
 
