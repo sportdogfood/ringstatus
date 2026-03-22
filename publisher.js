@@ -1,13 +1,13 @@
 /**
  * publisher.js (FULL DROP)
  *
- * Queue-driven publisher with 2 lanes:
- * - bulk-commit lane   -> use_differ = false
- * - differ lane        -> use_differ = true
+ * Fast publisher:
+ * - dirty + use_differ=false  -> grouped into one bulk commit call
+ * - dirty + use_differ=true   -> processed in differ lane
  *
  * Exact queue paths only.
  * No auto-generated paths.
- * Diff support is only for explicit *trips-catch-changes.json paths.
+ * Diff runs only for explicit *trips-catch-changes.json paths.
  */
 
 //////////////////////
@@ -29,7 +29,6 @@ const PUBLISH_DIFFS_TABLE = process.env.PUBLISH_DIFFS_TABLE || "publish_diffs";
 const FORCE_PUSH   = String(process.env.FORCE_PUSH ?? "1") === "1";
 const DRY_RUN      = String(process.env.DRY_RUN ?? "0") === "1";
 const SHOWTIME_URL = process.env.SHOWTIME_URL || "";
-
 const PUBLISHER_LANE = String(process.env.PUBLISHER_LANE || "all").trim().toLowerCase(); // all | bulk | differ
 
 const PQ_DATASET_KEY        = "dataset_key";
@@ -530,135 +529,7 @@ async function getRawFileTextAtSha(sha, repoPath) {
 }
 
 //////////////////////
-// 7) Publish primitives
-//////////////////////
-async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }) {
-  if (!paths.length) {
-    return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
-  }
-
-  const contentText = JSON.stringify(contentObj, null, 2) + "\n";
-  const primaryPath = normalizePath(paths[0]);
-  const shaPrev = primaryPath ? await getLatestCommitShaForPath(primaryPath) : null;
-  const oldBlob = (shaPrev && primaryPath) ? await getRawFileTextAtSha(shaPrev, primaryPath) : null;
-
-  const changedFiles = [];
-  let anyChange = false;
-
-  for (const p of paths) {
-    const normalized = normalizePath(p);
-    const publishedUrl = `${PUBLISHED_BASE}${normalized}`;
-    const pre = await preflightGetJson(publishedUrl);
-
-    if (pre.ok) {
-      const same = stableStringify(pre.json) === stableStringify(contentObj);
-      if (!same) {
-        anyChange = true;
-        changedFiles.push({
-          path: normalized,
-          content_type: CONTENT_TYPE,
-          content_base64: toBase64Utf8(contentText),
-        });
-      }
-    } else {
-      anyChange = true;
-      changedFiles.push({
-        path: normalized,
-        content_type: CONTENT_TYPE,
-        content_base64: toBase64Utf8(contentText),
-      });
-    }
-  }
-
-  if (!anyChange) {
-    return {
-      ok: true,
-      skipped: true,
-      reason: "no_change",
-      committed: 0,
-      repoPath: primaryPath,
-      shaPrev,
-      shaNew: null,
-      oldBlob,
-      newBlob: contentText
-    };
-  }
-
-  if (DRY_RUN) {
-    return {
-      ok: true,
-      skipped: true,
-      reason: "dry_run",
-      committed: 0,
-      wouldCommit: changedFiles.length,
-      repoPath: primaryPath,
-      shaPrev,
-      shaNew: null,
-      oldBlob,
-      newBlob: contentText
-    };
-  }
-
-  const msg = `chore: publish ${datasetKey} @${epochSec}`;
-  const res = await commitBulk({ message: msg, files: changedFiles, force: FORCE_PUSH });
-  const shaNew = res?.json?.commit?.sha || null;
-
-  if (!res.ok) {
-    return {
-      ok: false,
-      status: res.status,
-      errorText: String(res.text || "").slice(0, 500),
-      committed: 0,
-    };
-  }
-
-  return {
-    ok: true,
-    skipped: false,
-    reason: "published",
-    committed: changedFiles.length,
-    status: res.status,
-    repoPath: primaryPath,
-    shaPrev,
-    shaNew,
-    oldBlob,
-    newBlob: contentText
-  };
-}
-
-async function publishDataset({ datasetKey, tableName, viewName, paths, allowedFields, epochSec }) {
-  if (!tableName || !viewName) return { ok: true, skipped: true, reason: "missing_table_or_view", committed: 0 };
-  if (!paths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
-  if (!allowedFields.length) return { ok: true, skipped: true, reason: "no_allowed_fields", committed: 0 };
-
-  let records;
-  try {
-    records = await airtableListAll({ table: tableName, view: viewName, fields: allowedFields });
-  } catch (e) {
-    const status = e && e._airtable_status;
-    const type   = e && e._airtable_type;
-    const msg    = (e && e._airtable_message) ? String(e._airtable_message) : String(e?.message || e);
-
-    if (status === 422 && String(type).toUpperCase() === "UNKNOWN_FIELD_NAME") {
-      console.log(`warn: ${datasetKey} unknown field in fields[]; retrying without fields[] | ${msg}`);
-      records = await airtableListAll({ table: tableName, view: viewName, fields: null });
-    } else {
-      throw e;
-    }
-  }
-
-  const rows = buildRowsFromRecords(records, allowedFields);
-
-  return await publishContentToPaths({
-    datasetKey: `${datasetKey} (${tableName}/${viewName})`,
-    contentObj: rows,
-    paths,
-    epochSec,
-  });
-}
-
-//////////////////////
-// 8) Manifest
+// 7) Manifest
 //////////////////////
 function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
   const datasets = [];
@@ -697,6 +568,146 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
     tenant,
     epoch: epochSec,
     datasets,
+  };
+}
+
+//////////////////////
+// 8) Prepare jobs
+//////////////////////
+async function buildContentObjectForRow(row, pqRecords, epochSec) {
+  const f = row.fields || {};
+  const datasetKey = String(f[PQ_DATASET_KEY] || "").trim() || "unknown";
+  const tableName  = String(f[PQ_TABLE_NAME] || "").trim();
+  const viewName   = String(f[PQ_VIEW1] || "").trim();
+  const paths      = parsePaths(f[PQ_PATHS1]);
+  const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
+
+  if (isManifestKey(datasetKey)) {
+    const tenant = inferTenantFromManifestPath(paths);
+    return {
+      datasetKey,
+      tableName,
+      viewName,
+      paths,
+      useDiffer: boolCell(f[PQ_USE_DIFFER]),
+      contentObj: buildTenantManifestFromQueue(pqRecords, epochSec, tenant)
+    };
+  }
+
+  if (!tableName || !viewName) throw new Error("missing_table_or_view");
+  if (!paths.length) throw new Error("no_paths");
+  if (!allowedFields.length) throw new Error("no_allowed_fields");
+
+  let records;
+  try {
+    records = await airtableListAll({ table: tableName, view: viewName, fields: allowedFields });
+  } catch (e) {
+    const status = e && e._airtable_status;
+    const type   = e && e._airtable_type;
+    const msg    = (e && e._airtable_message) ? String(e._airtable_message) : String(e?.message || e);
+
+    if (status === 422 && String(type).toUpperCase() === "UNKNOWN_FIELD_NAME") {
+      console.log(`warn: ${datasetKey} unknown field in fields[]; retrying without fields[] | ${msg}`);
+      records = await airtableListAll({ table: tableName, view: viewName, fields: null });
+    } else {
+      throw e;
+    }
+  }
+
+  return {
+    datasetKey,
+    tableName,
+    viewName,
+    paths,
+    useDiffer: boolCell(f[PQ_USE_DIFFER]),
+    contentObj: buildRowsFromRecords(records, allowedFields)
+  };
+}
+
+async function prepareBulkRow(row, pqRecords, epochSec) {
+  const built = await buildContentObjectForRow(row, pqRecords, epochSec);
+  const contentText = JSON.stringify(built.contentObj, null, 2) + "\n";
+  const changedFiles = [];
+
+  for (const p of built.paths) {
+    const normalized = normalizePath(p);
+    const publishedUrl = `${PUBLISHED_BASE}${normalized}`;
+    const pre = await preflightGetJson(publishedUrl);
+
+    if (pre.ok) {
+      const same = stableStringify(pre.json) === stableStringify(built.contentObj);
+      if (!same) {
+        changedFiles.push({
+          path: normalized,
+          content_type: CONTENT_TYPE,
+          content_base64: toBase64Utf8(contentText),
+        });
+      }
+    } else {
+      changedFiles.push({
+        path: normalized,
+        content_type: CONTENT_TYPE,
+        content_base64: toBase64Utf8(contentText),
+      });
+    }
+  }
+
+  return {
+    recordId: row.id,
+    datasetKey: built.datasetKey,
+    paths: built.paths,
+    changedFiles,
+    changedAny: changedFiles.length > 0
+  };
+}
+
+async function prepareDifferRow(row, pqRecords, epochSec) {
+  const built = await buildContentObjectForRow(row, pqRecords, epochSec);
+  const contentText = JSON.stringify(built.contentObj, null, 2) + "\n";
+  const primaryPath = normalizePath(built.paths[0] || "");
+  const changedFiles = [];
+
+  for (const p of built.paths) {
+    const normalized = normalizePath(p);
+    const publishedUrl = `${PUBLISHED_BASE}${normalized}`;
+    const pre = await preflightGetJson(publishedUrl);
+
+    if (pre.ok) {
+      const same = stableStringify(pre.json) === stableStringify(built.contentObj);
+      if (!same) {
+        changedFiles.push({
+          path: normalized,
+          content_type: CONTENT_TYPE,
+          content_base64: toBase64Utf8(contentText),
+        });
+      }
+    } else {
+      changedFiles.push({
+        path: normalized,
+        content_type: CONTENT_TYPE,
+        content_base64: toBase64Utf8(contentText),
+      });
+    }
+  }
+
+  let shaPrev = null;
+  let oldBlob = null;
+
+  if (changedFiles.length > 0 && DIFF_PATH_REGEX.test(primaryPath)) {
+    shaPrev = await getLatestCommitShaForPath(primaryPath);
+    oldBlob = await getRawFileTextAtSha(shaPrev, primaryPath);
+  }
+
+  return {
+    recordId: row.id,
+    datasetKey: built.datasetKey,
+    paths: built.paths,
+    changedFiles,
+    changedAny: changedFiles.length > 0,
+    repoPath: primaryPath,
+    shaPrev,
+    oldBlob,
+    newBlob: contentText
   };
 }
 
@@ -858,67 +869,141 @@ async function main() {
   const dirty = pqRecords.filter(r => Boolean(r.fields && r.fields[PQ_DIRTY]));
   const todo = dirty.filter(r => laneAllowsRecord(boolCell(r.fields?.[PQ_USE_DIFFER])));
 
-  console.log(`queue visible=${pqRecords.length} dirty=${dirty.length} lane_todo=${todo.length}`);
+  const bulkRows = todo.filter(r => !boolCell(r.fields?.[PQ_USE_DIFFER]));
+  const differRows = todo.filter(r => boolCell(r.fields?.[PQ_USE_DIFFER]));
 
-  for (const r of todo) {
+  console.log(`queue visible=${pqRecords.length} dirty=${dirty.length} bulk=${bulkRows.length} differ=${differRows.length}`);
+
+  // BULK LANE
+  const bulkPrepared = [];
+  for (const r of bulkRows) {
     const f = r.fields || {};
-
     const datasetKey = String(f[PQ_DATASET_KEY] || "").trim() || "unknown";
     const tableName  = String(f[PQ_TABLE_NAME] || "").trim();
     const viewName   = String(f[PQ_VIEW1] || "").trim();
     const paths      = parsePaths(f[PQ_PATHS1]);
-    const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
-    const useDiffer = boolCell(f[PQ_USE_DIFFER]);
 
-    console.log(`job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length} use_differ=${useDiffer}`);
+    console.log(`bulk job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length}`);
 
     try {
-      if (isManifestKey(datasetKey)) {
-        const tenant = inferTenantFromManifestPath(paths);
-        const manifest = buildTenantManifestFromQueue(pqRecords, epochSec, tenant);
+      const prepared = await prepareBulkRow(r, pqRecords, epochSec);
+      bulkPrepared.push(prepared);
+    } catch (e) {
+      const msg = String(e?.message || e).slice(0, 240);
+      console.log(`bulk job error: ${datasetKey} | ${msg}`);
+      await stampDirtyError({ recordId: r.id, msg });
+    }
+  }
 
-        const resM = await publishContentToPaths({
-          datasetKey,
-          contentObj: manifest,
-          paths,
+  const bulkChangedFiles = bulkPrepared.flatMap(x => x.changedFiles);
+  let bulkCommitOk = true;
+  let bulkCommitSha = null;
+  let bulkCommitErr = "";
+
+  if (bulkChangedFiles.length > 0) {
+    if (DRY_RUN) {
+      console.log(`bulk commit skipped: dry_run files=${bulkChangedFiles.length}`);
+    } else {
+      const bulkCommit = await commitBulk({
+        message: `chore: publish bulk @${epochSec}`,
+        files: bulkChangedFiles,
+        force: FORCE_PUSH
+      });
+
+      if (!bulkCommit.ok) {
+        bulkCommitOk = false;
+        bulkCommitErr = String(bulkCommit.text || "").slice(0, 300);
+      } else {
+        bulkCommitSha = bulkCommit?.json?.commit?.sha || null;
+      }
+    }
+  }
+
+  if (bulkChangedFiles.length > 0 && bulkCommitOk) {
+    console.log(`bulk done: commit(${bulkChangedFiles.length}) | sha=${bulkCommitSha || "-"}`);
+  }
+
+  for (const prepared of bulkPrepared) {
+    if (!prepared.changedAny) {
+      await clearDirtySuccess({
+        recordId: prepared.recordId,
+        committedAny: false,
+        epochSec,
+        reason: DRY_RUN ? "dry_run" : "skipped: no change"
+      });
+      continue;
+    }
+
+    if (!bulkCommitOk && !DRY_RUN) {
+      await stampDirtyError({
+        recordId: prepared.recordId,
+        msg: `bulk commit failed ${bulkCommitErr}`
+      });
+      continue;
+    }
+
+    await clearDirtySuccess({
+      recordId: prepared.recordId,
+      committedAny: !DRY_RUN,
+      epochSec,
+      reason: DRY_RUN ? "dry_run" : "published"
+    });
+  }
+
+  // DIFFER LANE
+  for (const r of differRows) {
+    const f = r.fields || {};
+    const datasetKey = String(f[PQ_DATASET_KEY] || "").trim() || "unknown";
+    const tableName  = String(f[PQ_TABLE_NAME] || "").trim();
+    const viewName   = String(f[PQ_VIEW1] || "").trim();
+    const paths      = parsePaths(f[PQ_PATHS1]);
+
+    console.log(`differ job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length}`);
+
+    try {
+      const prepared = await prepareDifferRow(r, pqRecords, epochSec);
+
+      if (!prepared.changedAny) {
+        await clearDirtySuccess({
+          recordId: prepared.recordId,
+          committedAny: false,
           epochSec,
+          reason: DRY_RUN ? "dry_run" : "skipped: no change"
         });
-
-        if (!resM.ok) throw new Error(`manifest publish failed (${resM.status || "?"}) ${resM.errorText || ""}`);
-
-        console.log(`job done: ${datasetKey} | ${resM.skipped ? "skip" : "commit"}(${resM.committed || 0}) | sha=${resM.shaNew || "-"}`);
-
-        const committedAny = !resM.skipped && (resM.committed || 0) > 0;
-        const reason = resM.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
-        await clearDirtySuccess({ recordId: r.id, committedAny, epochSec, reason });
         continue;
       }
 
-      const res = await publishDataset({
-        datasetKey,
-        tableName,
-        viewName,
-        paths,
-        allowedFields,
-        epochSec,
-      });
+      let shaNew = null;
 
-      if (!res.ok) throw new Error(`publish failed (${res.status || "?"}) ${res.errorText || ""}`);
-
-      console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
-
-      if (useDiffer && !res.skipped) {
-        const diffRows = buildDiffRows({
-          datasetKey,
-          repoPath: res.repoPath,
-          shaPrev: res.shaPrev,
-          shaNew: res.shaNew,
-          epochSec,
-          oldBlob: res.oldBlob,
-          newBlob: res.newBlob
+      if (!DRY_RUN) {
+        const res = await commitBulk({
+          message: `chore: publish ${prepared.datasetKey} @${epochSec}`,
+          files: prepared.changedFiles,
+          force: FORCE_PUSH
         });
 
-        console.log(`FIELD_DIFF path=${res.repoPath || "-"} rows=${diffRows.length}`);
+        if (!res.ok) {
+          throw new Error(`differ commit failed (${res.status || "?"}) ${String(res.text || "").slice(0, 300)}`);
+        }
+
+        shaNew = res?.json?.commit?.sha || null;
+        console.log(`differ done: ${prepared.datasetKey} | commit(${prepared.changedFiles.length}) | sha=${shaNew || "-"}`);
+      } else {
+        console.log(`differ dry_run: ${prepared.datasetKey} files=${prepared.changedFiles.length}`);
+      }
+
+      if (!DRY_RUN && DIFF_PATH_REGEX.test(String(prepared.repoPath || ""))) {
+        const diffRows = buildDiffRows({
+          datasetKey: prepared.datasetKey,
+          repoPath: prepared.repoPath,
+          shaPrev: prepared.shaPrev,
+          shaNew,
+          epochSec,
+          oldBlob: prepared.oldBlob,
+          newBlob: prepared.newBlob
+        });
+
+        console.log(`FIELD_DIFF path=${prepared.repoPath || "-"} rows=${diffRows.length}`);
 
         if (diffRows.length > 0) {
           await airtableCreateRecords({
@@ -928,14 +1013,15 @@ async function main() {
         }
       }
 
-      const committedAny = !res.skipped && (res.committed || 0) > 0;
-      let reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
-      if (useDiffer && !res.skipped) reason = `${reason} + differ`;
-
-      await clearDirtySuccess({ recordId: r.id, committedAny, epochSec, reason });
+      await clearDirtySuccess({
+        recordId: prepared.recordId,
+        committedAny: !DRY_RUN,
+        epochSec,
+        reason: DRY_RUN ? "dry_run" : "published + differ"
+      });
     } catch (e) {
       const msg = String(e?.message || e).slice(0, 240);
-      console.log(`job error: ${datasetKey} | ${msg}`);
+      console.log(`differ job error: ${datasetKey} | ${msg}`);
       await stampDirtyError({ recordId: r.id, msg });
     }
   }
