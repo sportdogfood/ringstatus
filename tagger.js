@@ -1,36 +1,36 @@
-// tagger.js (HEARTBEAT ONLY FULL DROP)
+// tagger.js (CLEAN HEARTBEAT + RELINK)
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const CUSTOMER_ID      = Number(process.env.CUSTOMER_ID || "15");
 
+if (!AIRTABLE_TOKEN) throw new Error("Missing AIRTABLE_TOKEN");
+if (!AIRTABLE_BASE_ID) throw new Error("Missing AIRTABLE_BASE_ID");
+
+const TABLE_HEARTBEAT      = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_SHOWS          = process.env.TABLE_SHOWS || "shows";
-const TABLE_PUBLISH_QUEUE  = process.env.TABLE_PUBLISH_QUEUE || "publish_queue";
-const TABLE_SCHEDULE       = process.env.TABLE_SCHEDULE || "watch_schedule";
-const TABLE_TRIPS          = process.env.TABLE_TRIPS || "watch_trips";
+const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
+const TABLE_WATCH_TRIPS    = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const TABLE_SCHEDULER      = process.env.TABLE_SCHEDULER || "scheduler";
 const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants";
-const TABLE_HEARTBEAT      = process.env.TABLE_HEARTBEAT || "heartbeat";
+const TABLE_ACTIVE_ALERTS  = process.env.TABLE_ACTIVE_ALERTS || "active_alerts";
+const TABLE_WATCH_RINGS    = process.env.TABLE_WATCH_RINGS || "watch_rings";
 
-const VIEW_SHOWS          = process.env.VIEW_SHOWS || "epoch";
-const VIEW_PUBLISH_QUEUE  = process.env.VIEW_PUBLISH_QUEUE || "epoch";
-const VIEW_SCHEDULE       = process.env.VIEW_SCHEDULE || "epoch";
-const VIEW_TRIPS          = process.env.VIEW_TRIPS || "epoch";
-const VIEW_SCHEDULER      = process.env.VIEW_SCHEDULER || "epoch";
-const VIEW_ACTIVE_TENANTS = process.env.VIEW_ACTIVE_TENANTS || "epoch";
+const VIEW_HEARTBEAT       = process.env.VIEW_HEARTBEAT || "heartbeat";
+const VIEW_SHOWS_EPOCH     = process.env.VIEW_SHOWS_EPOCH || "epoch";
 
 const RING_ENDPOINT = `https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 
+const FIELD_LINK_HEARTBEAT     = process.env.FIELD_LINK_HEARTBEAT || "heartbeat";
+const FIELD_SHOW_ID            = process.env.FIELD_SHOW_ID || "show_id";
+const FIELD_NEW_APP_SHOW_ID    = process.env.FIELD_NEW_APP_SHOW_ID || "new_app_show_id";
+const FIELD_NEW_APP_SHOW_ID_AT = process.env.FIELD_NEW_APP_SHOW_ID_AT || "new_app_show_id_at";
+
 const FIELD_MODE              = process.env.FIELD_MODE || "mode";
 const FIELD_EPOCH             = process.env.FIELD_EPOCH || "epoch";
-const FIELD_TEMP              = process.env.FIELD_TEMP || "temp";
-const FIELD_BUCKET            = process.env.FIELD_BUCKET || "bucket";
-const FIELD_NEXT_DUE          = process.env.FIELD_NEXT_DUE || "next_due_epoch";
-const FIELD_FIRST_PRINT       = process.env.FIELD_FIRST_PRINT || "first_print";
 const FIELD_HB_DURATION       = process.env.FIELD_HB_DURATION || "hb_duration";
 const FIELD_INTERVAL          = process.env.FIELD_INTERVAL || "interval";
 const FIELD_HB_AT             = process.env.FIELD_HB_AT || "hb_at";
-const FIELD_HB_TIME           = process.env.FIELD_HB_TIME || "hb_time";
 
 const FIELD_APP_SHOW_ID       = process.env.FIELD_APP_SHOW_ID || "app_show_id";
 const FIELD_APP_SQL_DATE      = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
@@ -45,145 +45,38 @@ const HEARTBEAT_SHOW_DATE     = process.env.HEARTBEAT_SHOW_DATE || "show_date";
 const HEARTBEAT_SQL_DATE      = process.env.HEARTBEAT_SQL_DATE || "sql_date";
 const HEARTBEAT_TIME          = process.env.HEARTBEAT_TIME || "time";
 
-const SCHED_SHOW_DATE         = process.env.SCHED_SHOW_DATE || "show_date";
-const SCHED_TIME_LATEST       = process.env.SCHED_TIME_LATEST || "latest_estimated_start_time";
-const SCHED_TIME_BASE         = process.env.SCHED_TIME_BASE || "estimated_start_time";
-const SCHED_STATUS            = process.env.SCHED_STATUS || "latestStatus";
+const FIELD_LAST_SUNDAY_SHOW_ID  = process.env.FIELD_LAST_SUNDAY_SHOW_ID || "last_sunday_show_id";
+const FIELD_LAST_SUNDAY_SQL_DATE = process.env.FIELD_LAST_SUNDAY_SQL_DATE || "last_sunday_sql_date";
+const FIELD_CUSTOMER_ID          = process.env.FIELD_CUSTOMER_ID || "customer_id";
 
-const TRIP_DT                 = process.env.TRIP_DT || "dt";
-const TRIP_GO_LATEST          = process.env.TRIP_GO_LATEST || "latest_estimated_go_time";
-const TRIP_GO_BASE            = process.env.TRIP_GO_BASE || "estimated_go_time";
-const TRIP_START_FALLB        = process.env.TRIP_START_FALLB || "estimated_start_time";
-const TRIP_STATUS             = process.env.TRIP_STATUS || "latestStatus";
-const TRIP_GONEIN             = process.env.TRIP_GONEIN || "lastGonein";
+const DAY_INTERVAL_MIN      = Number(process.env.DAY_INTERVAL_MIN || "6");
+const NIGHT_INTERVAL_MIN    = Number(process.env.NIGHT_INTERVAL_MIN || "120");
+const HOLDOVER_INTERVAL_MIN = Number(process.env.HOLDOVER_INTERVAL_MIN || "99999");
 
-const DAY_SECOND_PASS_DELAY_SEC = Number(process.env.DAY_SECOND_PASS_DELAY_SEC || "180");
-const DAY_INTERVAL_MIN          = Number(process.env.DAY_INTERVAL_MIN || "6");
-const NIGHT_INTERVAL_MIN        = Number(process.env.NIGHT_INTERVAL_MIN || "120");
-const HOLDOVER_INTERVAL_MIN     = Number(process.env.HOLDOVER_INTERVAL_MIN || "99999");
-const HTTP_TIMEOUT_MS           = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const HTTP_TIMEOUT_MS       = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const AT_RETRY_ATTEMPTS     = Number(process.env.AT_RETRY_ATTEMPTS || "3");
+const AT_RETRY_BASE_MS      = Number(process.env.AT_RETRY_BASE_MS || "400");
+const AT_RETRY_MAX_MS       = Number(process.env.AT_RETRY_MAX_MS || "2000");
+const FORCE_MODE            = String(process.env.FORCE_MODE || "").trim().toUpperCase();
+const DRY_RUN               = String(process.env.DRY_RUN || "0") === "1";
+const HB_TZ                 = process.env.HB_TIMEZONE || "America/New_York";
 
-const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
-const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
-const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-const UNDICI_CONNECT_TIMEOUT_MS = Number(process.env.UNDICI_CONNECT_TIMEOUT_MS || "0");
-const FORCE_MODE = (process.env.FORCE_MODE || "").trim().toUpperCase();
-const DRY_RUN    = (process.env.DRY_RUN || "0") === "1";
-
-const HB_TZ = process.env.HB_TIMEZONE || "America/New_York";
-
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-function requireEnv(name, val) {
-  if (!val) throw new Error(`Missing required env: ${name}`);
+function airtableUrl(tableName) {
+  return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
 }
 
-function isCompleted(statusVal) {
-  return String(statusVal ?? "").trim().toLowerCase() === "completed";
+function headers() {
+  return {
+    Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+    "Content-Type": "application/json",
+  };
 }
 
-function isUnderway(statusVal) {
-  return String(statusVal ?? "").trim().toLowerCase() === "underway";
-}
-
-function isGoneIn(v) {
-  if (v === true) return true;
-  const n = Number(v);
-  return Number.isFinite(n) && n === 1;
-}
-
-function parseDateParts(dateStr) {
-  const s = String(dateStr ?? "").trim();
-  if (!s) return null;
-
-  const m1 = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (m1) return { y: +m1[1], mo: +m1[2], d: +m1[3] };
-
-  const m2 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/);
-  if (m2) {
-    const yRaw = +m2[3];
-    const y = String(m2[3]).length === 2 ? 2000 + yRaw : yRaw;
-    return { y, mo: +m2[1], d: +m2[2] };
-  }
-
-  return null;
-}
-
-function parseTimeParts(timeStr) {
-  const s = String(timeStr ?? "").trim();
-  if (!s) return null;
-
-  let m = s.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
-  if (m) return { h: +m[1], mi: +m[2], se: m[3] ? +m[3] : 0, ampm: null };
-
-  m = s.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([AP]M)$/i);
-  if (m) return { h: +m[1], mi: +m[2], se: m[3] ? +m[3] : 0, ampm: m[4].toUpperCase() };
-
-  return null;
-}
-
-function toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour = false } = {}) {
-  const dp = parseDateParts(dateStr);
-  const tp = parseTimeParts(timeStr);
-  if (!dp || !tp) return null;
-
-  let { y, mo, d } = dp;
-  let { h, mi, se, ampm } = tp;
-
-  if (ampm) {
-    if (h === 12) h = 0;
-    if (ampm === "PM") h += 12;
-  }
-
-  if (allow24Hour && h >= 24) {
-    h = h - 24;
-    const dt = new Date(Date.UTC(y, mo - 1, d, 0, 0, 0));
-    dt.setUTCDate(dt.getUTCDate() + 1);
-    y = dt.getUTCFullYear();
-    mo = dt.getUTCMonth() + 1;
-    d = dt.getUTCDate();
-  }
-
-  const ms = Date.UTC(y, mo - 1, d, h, mi, se) - (tzOffsetMinutes * 60_000);
-  return Math.floor(ms / 1000);
-}
-
-function dayOfWeekUtc(sqlDate) {
-  const d = new Date(`${sqlDate}T00:00:00Z`);
-  if (isNaN(d.getTime())) return null;
-  return d.getUTCDay(); // 0 Sun .. 6 Sat
-}
-
-function dowName(dow) {
-  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dow] ?? "";
-}
-
-function addDaysSql(sqlDate, days) {
-  const d = new Date(`${sqlDate}T00:00:00Z`);
-  if (isNaN(d.getTime())) return null;
-  d.setUTCDate(d.getUTCDate() + days);
-  return d.toISOString().slice(0, 10);
-}
-
-(function maybeConfigureUndici() {
-  if (!UNDICI_CONNECT_TIMEOUT_MS || !Number.isFinite(UNDICI_CONNECT_TIMEOUT_MS) || UNDICI_CONNECT_TIMEOUT_MS <= 0) return;
-  try {
-    const undici = require("undici");
-    const Agent = undici?.Agent;
-    const setGlobalDispatcher = undici?.setGlobalDispatcher;
-    if (Agent && typeof setGlobalDispatcher === "function") {
-      setGlobalDispatcher(new Agent({ connectTimeout: UNDICI_CONNECT_TIMEOUT_MS }));
-      console.log(`undici: set connectTimeout=${UNDICI_CONNECT_TIMEOUT_MS}ms`);
-    }
-  } catch {
-    // ignore
-  }
-})();
-
-async function fetchWithTimeout(url, opts = {}) {
+async function fetchWithTimeout(url, opts = {}, timeoutMs = HTTP_TIMEOUT_MS) {
   const ac = new AbortController();
-  const t = setTimeout(() => ac.abort(), HTTP_TIMEOUT_MS);
+  const t = setTimeout(() => ac.abort(), timeoutMs);
   try {
     return await fetch(url, { ...opts, signal: ac.signal });
   } finally {
@@ -205,9 +98,9 @@ function isRetryableFetchError(e) {
 }
 
 async function fetchWithRetry(url, opts = {}, retry = {}) {
-  const attempts = Math.max(1, Math.floor(Number(retry.attempts ?? AT_RETRY_ATTEMPTS)));
-  const baseMs   = Math.max(0, Math.floor(Number(retry.baseMs ?? AT_RETRY_BASE_MS)));
-  const maxMs    = Math.max(250, Math.floor(Number(retry.maxMs ?? AT_RETRY_MAX_MS)));
+  const attempts = Math.max(1, Number(retry.attempts ?? AT_RETRY_ATTEMPTS));
+  const baseMs   = Math.max(0, Number(retry.baseMs ?? AT_RETRY_BASE_MS));
+  const maxMs    = Math.max(250, Number(retry.maxMs ?? AT_RETRY_MAX_MS));
 
   let lastErr = null;
 
@@ -232,6 +125,86 @@ async function fetchWithRetry(url, opts = {}, retry = {}) {
   }
 
   throw lastErr || new Error("fetchWithRetry failed");
+}
+
+async function airtableListAll({ table, view, fields }) {
+  const out = [];
+  let offset = null;
+
+  while (true) {
+    const url = new URL(airtableUrl(table));
+    if (view) url.searchParams.set("view", view);
+    if (offset) url.searchParams.set("offset", offset);
+    for (const f of fields || []) url.searchParams.append("fields[]", f);
+
+    const res = await fetchWithRetry(url.toString(), {
+      method: "GET",
+      headers: headers(),
+    });
+
+    const txt = await res.text();
+    let json = {};
+    try { json = JSON.parse(txt); } catch {}
+
+    if (!res.ok) {
+      throw new Error(`Airtable list failed (${table}/${view || "-"}) ${res.status} ${txt.slice(0, 300)}`);
+    }
+
+    out.push(...(json.records || []));
+    offset = json.offset || null;
+    if (!offset) break;
+  }
+
+  return out;
+}
+
+async function airtableCreateRecord(table, fields) {
+  const res = await fetchWithRetry(airtableUrl(table), {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ fields }),
+  });
+
+  const txt = await res.text();
+  let json = {};
+  try { json = JSON.parse(txt); } catch {}
+
+  if (!res.ok) {
+    throw new Error(`Airtable create failed (${table}) ${res.status} ${txt.slice(0, 300)}`);
+  }
+
+  return json;
+}
+
+async function airtableUpdateRecord(table, recordId, fields) {
+  const res = await fetchWithRetry(`${airtableUrl(table)}/${recordId}`, {
+    method: "PATCH",
+    headers: headers(),
+    body: JSON.stringify({ fields }),
+  });
+
+  const txt = await res.text();
+  if (!res.ok) {
+    throw new Error(`Airtable update failed (${table}/${recordId}) ${res.status} ${txt.slice(0, 300)}`);
+  }
+}
+
+async function airtableBatchUpdate(table, updates) {
+  if (!updates.length) return;
+
+  for (let i = 0; i < updates.length; i += 10) {
+    const chunk = updates.slice(i, i + 10);
+    const res = await fetchWithRetry(airtableUrl(table), {
+      method: "PATCH",
+      headers: headers(),
+      body: JSON.stringify({ records: chunk }),
+    });
+
+    const txt = await res.text();
+    if (!res.ok) {
+      throw new Error(`Airtable batch update failed (${table}) ${res.status} ${txt.slice(0, 300)}`);
+    }
+  }
 }
 
 function getTzPartsFromMs(ms, timeZone = HB_TZ) {
@@ -301,6 +274,23 @@ function minuteOfDayFromMs(ms, timeZone = HB_TZ) {
   return (hour * 60) + minute;
 }
 
+function dayOfWeekUtc(sqlDate) {
+  const d = new Date(`${sqlDate}T00:00:00Z`);
+  if (isNaN(d.getTime())) return null;
+  return d.getUTCDay();
+}
+
+function dowName(dow) {
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dow] ?? "";
+}
+
+function addDaysSql(sqlDate, days) {
+  const d = new Date(`${sqlDate}T00:00:00Z`);
+  if (isNaN(d.getTime())) return null;
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
 function normalizeMode(v) {
   const s = String(v ?? "").trim().toUpperCase();
   if (s === "DAY" || s === "NIGHT" || s === "HOLDOVER") return s;
@@ -314,17 +304,17 @@ function resolveModeFromClock(clock) {
   const dow = dayOfWeekUtc(sqlDate);
   const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
 
-  if (dow === 1) return "HOLDOVER"; // Mon
+  if (dow === 1) return "HOLDOVER";
   if (dow === 2 || dow === 3 || dow === 4 || dow === 5 || dow === 6) {
-    return minuteOfDay >= (17 * 60) ? "NIGHT" : "DAY"; // Tue-Sat
+    return minuteOfDay >= (17 * 60) ? "NIGHT" : "DAY";
   }
-  return "DAY"; // Sun
+  return "DAY";
 }
 
-function isFirstPrint(mode, clock) {
-  if (mode !== "DAY") return false;
-  const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
-  return minuteOfDay >= (6 * 60) && minuteOfDay <= ((6 * 60) + 25);
+function intervalMinutesForMode(mode) {
+  if (mode === "DAY") return DAY_INTERVAL_MIN;
+  if (mode === "NIGHT") return NIGHT_INTERVAL_MIN;
+  return HOLDOVER_INTERVAL_MIN;
 }
 
 function buildFallbackClock() {
@@ -404,109 +394,22 @@ async function getClockSafe() {
   }
 }
 
-function airtableUrl(tableName) {
-  return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
-}
-
-async function airtableList(tableName, viewName) {
-  const out = [];
-  let offset = null;
-
-  while (true) {
-    const url = new URL(airtableUrl(tableName));
-    url.searchParams.set("view", viewName);
-    url.searchParams.set("pageSize", "100");
-    if (offset) url.searchParams.set("offset", offset);
-
-    const res = await fetchWithRetry(url.toString(), {
-      headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
-    });
-
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      throw new Error(`Airtable list failed (${res.status}) ${tableName}/${viewName}: ${body}`);
-    }
-
-    const json = await res.json().catch(() => ({}));
-    out.push(...(json.records || []));
-    offset = json.offset;
-    if (!offset) break;
-  }
-
-  return out;
-}
-
-async function airtableBatchUpdate(tableName, updates) {
-  if (!updates.length) return;
-
-  for (let i = 0; i < updates.length; i += 10) {
-    const chunk = updates.slice(i, i + 10);
-    const res = await fetchWithRetry(airtableUrl(tableName), {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ records: chunk })
-    });
-
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      throw new Error(`Airtable patch failed (${res.status}) ${tableName}: ${body}`);
-    }
-  }
-}
-
-async function safeList(tableName, viewName) {
-  try {
-    return await airtableList(tableName, viewName);
-  } catch (e) {
-    console.log(`table warn: ${tableName}/${viewName} list failed ${String(e?.message || e).slice(0, 200)}`);
-    return [];
-  }
-}
-
-async function safeBatchUpdate(tableName, updates) {
-  try {
-    if (DRY_RUN) {
-      console.log(`DRY_RUN: ${tableName} updates=${updates.length}`);
-      return;
-    }
-    await airtableBatchUpdate(tableName, updates);
-  } catch (e) {
-    console.log(`table warn: ${tableName} update failed ${String(e?.message || e).slice(0, 200)}`);
-  }
-}
-
-async function airtableCreateRecord(tableName, fields) {
-  const res = await fetchWithRetry(airtableUrl(tableName), {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_TOKEN}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ fields })
+async function getLatestLastSundayForCustomer(customerId) {
+  const rows = await airtableListAll({
+    table: TABLE_SHOWS,
+    view: VIEW_SHOWS_EPOCH,
+    fields: [FIELD_CUSTOMER_ID, FIELD_LAST_SUNDAY_SHOW_ID, FIELD_LAST_SUNDAY_SQL_DATE]
   });
 
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`Airtable create failed (${res.status}) ${tableName}: ${body}`);
-  }
-
-  return res.json().catch(() => ({}));
-}
-
-async function getLatestLastSundayForCustomer(customerId) {
-  const rows = await safeList(TABLE_SHOWS, VIEW_SHOWS);
   let best = null;
   let bestKey = -1;
 
   for (const r of rows) {
     const f = r.fields || {};
-    if (String(f.customer_id ?? "") !== String(customerId)) continue;
+    if (String(f[FIELD_CUSTOMER_ID] ?? "") !== String(customerId)) continue;
 
-    const sid = f.last_sunday_show_id;
-    const sdt = String(f.last_sunday_sql_date || "").trim();
+    const sid = f[FIELD_LAST_SUNDAY_SHOW_ID];
+    const sdt = String(f[FIELD_LAST_SUNDAY_SQL_DATE] || "").trim();
 
     if (sid === null || sid === undefined || String(sid) === "") continue;
     if (!/^\d{4}-\d{2}-\d{2}$/.test(sdt)) continue;
@@ -562,255 +465,140 @@ async function buildAppContext(clock, mode) {
   };
 }
 
-async function createHeartbeatPassSafe(clock, mode, intervalMin, appCtx) {
-  if (DRY_RUN) return;
+async function createHeartbeat(clock, mode, intervalMin, appCtx) {
+  const sqlDate = String(clock?.sqlDate || "").trim();
+  const epoch = Number(clock?.nowEpoch);
 
-  try {
-    const sqlDate = String(clock?.sqlDate || "").trim();
-    const epoch = Number(clock?.nowEpoch);
-    if (!sqlDate || !Number.isFinite(epoch)) {
-      console.log("heartbeat warn: missing sqlDate/epoch; skipping");
-      return;
+  if (!sqlDate || !Number.isFinite(epoch)) {
+    throw new Error("Heartbeat create missing sqlDate/epoch");
+  }
+
+  const fields = {
+    [HEARTBEAT_ID_FIELD]: `${clock?.showId ?? "unknown"}-${sqlDate}-${epoch}`,
+    [HEARTBEAT_SHOW_ID]: clock?.showId ?? null,
+    [HEARTBEAT_SHOW_DATE]: clock?.showDate ?? null,
+    [HEARTBEAT_SQL_DATE]: sqlDate,
+    [HEARTBEAT_TIME]: clock?.time ?? null,
+
+    [FIELD_MODE]: mode,
+    [FIELD_EPOCH]: epoch,
+    [FIELD_HB_DURATION]: hbDurationSecondsFromMs(clock.nowMs, HB_TZ),
+    [FIELD_INTERVAL]: intervalMin,
+    [FIELD_HB_AT]: clock?.iso ?? new Date(epoch * 1000).toISOString(),
+
+    [FIELD_APP_SHOW_ID]: appCtx.appShowId,
+    [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
+    [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
+    [FIELD_DOW_RAW]: appCtx.dowRaw,
+    [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
+    [FIELD_HELDOVER_SUNDAY]: appCtx.heldoverFromSunday,
+  };
+
+  if (DRY_RUN) {
+    return { id: "recDRYRUNHEARTBEAT", fields };
+  }
+
+  return await airtableCreateRecord(TABLE_HEARTBEAT, fields);
+}
+
+function currentHeartbeatLinkIds(v) {
+  if (!Array.isArray(v)) return [];
+  return v.map(x => typeof x === "string" ? x : x?.id).filter(Boolean);
+}
+
+async function relinkHeartbeatView(tableName, heartbeatId) {
+  const rows = await airtableListAll({
+    table: tableName,
+    view: VIEW_HEARTBEAT,
+    fields: [FIELD_LINK_HEARTBEAT]
+  });
+
+  const updates = [];
+
+  for (const r of rows) {
+    const current = currentHeartbeatLinkIds(r.fields?.[FIELD_LINK_HEARTBEAT]);
+    const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
+    if (alreadyCorrect) continue;
+
+    updates.push({
+      id: r.id,
+      fields: {
+        [FIELD_LINK_HEARTBEAT]: [heartbeatId]
+      }
+    });
+  }
+
+  if (!DRY_RUN && updates.length) {
+    await airtableBatchUpdate(tableName, updates);
+  }
+
+  return {
+    table: tableName,
+    found_in_view: rows.length,
+    relinked: updates.length
+  };
+}
+
+async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
+  const heartbeatId = heartbeatRecord.id;
+  const appShowId = appCtx.appShowId;
+
+  const rows = await airtableListAll({
+    table: TABLE_SHOWS,
+    view: VIEW_HEARTBEAT,
+    fields: [FIELD_SHOW_ID, FIELD_LINK_HEARTBEAT]
+  });
+
+  const match = rows.find(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === String(appShowId ?? "").trim());
+
+  if (match) {
+    const current = currentHeartbeatLinkIds(match.fields?.[FIELD_LINK_HEARTBEAT]);
+    const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
+
+    if (!alreadyCorrect && !DRY_RUN) {
+      await airtableUpdateRecord(TABLE_SHOWS, match.id, {
+        [FIELD_LINK_HEARTBEAT]: [heartbeatId]
+      });
     }
 
-    const hbDurationSec = hbDurationSecondsFromMs(clock.nowMs, HB_TZ);
-    const heartbeatId = `${clock?.showId ?? "unknown"}-${sqlDate}-${epoch}`;
-
-    const fields = {
-      [HEARTBEAT_ID_FIELD]: heartbeatId,
-      [HEARTBEAT_SHOW_ID]: clock?.showId ?? null,
-      [HEARTBEAT_SHOW_DATE]: clock?.showDate ?? null,
-      [HEARTBEAT_SQL_DATE]: sqlDate,
-      [HEARTBEAT_TIME]: clock?.time ?? null,
-
-      [FIELD_MODE]: mode,
-      [FIELD_EPOCH]: epoch,
-      [FIELD_HB_DURATION]: hbDurationSec,
-      [FIELD_INTERVAL]: intervalMin,
-      [FIELD_HB_AT]: clock?.iso ?? new Date(epoch * 1000).toISOString(),
-
-      [FIELD_APP_SHOW_ID]: appCtx.appShowId,
-      [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
-      [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
-      [FIELD_DOW_RAW]: appCtx.dowRaw,
-      [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
-      [FIELD_HELDOVER_SUNDAY]: appCtx.heldoverFromSunday,
+    return {
+      table: TABLE_SHOWS,
+      found_in_view: rows.length,
+      matched_show_id: appShowId,
+      updated_existing: alreadyCorrect ? 0 : 1,
+      created_new: 0
     };
-
-    await airtableCreateRecord(TABLE_HEARTBEAT, fields);
-  } catch (e) {
-    console.log(`heartbeat warn: ${String(e?.message || e).slice(0, 200)}`);
-  }
-}
-
-function nextDueSecondsFor(mode, temp) {
-  if (temp === "DONE") return null;
-
-  if (mode === "DAY") {
-    if (temp === "LIVE" || temp === "HOT") return 180;
-    if (temp === "WARM") return 300;
-    return 1200;
   }
 
-  if (mode === "NIGHT") {
-    return NIGHT_INTERVAL_MIN * 60;
+  const createFields = {
+    [FIELD_SHOW_ID]: appShowId,
+    [FIELD_APP_SHOW_ID]: appShowId,
+    [FIELD_LINK_HEARTBEAT]: [heartbeatId],
+    [FIELD_NEW_APP_SHOW_ID]: true,
+    [FIELD_NEW_APP_SHOW_ID_AT]: new Date().toISOString(),
+    [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
+    [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
+    [FIELD_DOW_RAW]: appCtx.dowRaw,
+    [FIELD_MODE]: heartbeatRecord.fields?.[FIELD_MODE] ?? null,
+    [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
+    [FIELD_HELDOVER_SUNDAY]: appCtx.heldoverFromSunday
+  };
+
+  if (!DRY_RUN) {
+    await airtableCreateRecord(TABLE_SHOWS, createFields);
   }
 
-  return null;
-}
-
-function intervalMinutesForMode(mode) {
-  if (mode === "DAY") return DAY_INTERVAL_MIN;
-  if (mode === "NIGHT") return NIGHT_INTERVAL_MIN;
-  return HOLDOVER_INTERVAL_MIN;
-}
-
-function computeTempSchedule(fields, nowEpoch, tzOffsetMinutes) {
-  const status = fields[SCHED_STATUS];
-
-  if (isCompleted(status)) return { temp: "DONE" };
-  if (isUnderway(status)) return { temp: "LIVE" };
-
-  const dateStr = fields[SCHED_SHOW_DATE];
-  const timeStr = fields[SCHED_TIME_LATEST] || fields[SCHED_TIME_BASE];
-
-  const targetEpoch = toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour: false });
-  if (targetEpoch == null) return { temp: "COLD" };
-
-  const till = targetEpoch - nowEpoch;
-
-  if (till <= 1800) return { temp: "HOT" };
-  if (till <= 3600) return { temp: "WARM" };
-  return { temp: "COLD" };
-}
-
-function computeTempTrip(fields, nowEpoch, tzOffsetMinutes) {
-  const status = fields[TRIP_STATUS];
-
-  if (isCompleted(status)) return { temp: "DONE" };
-  if (isGoneIn(fields[TRIP_GONEIN])) return { temp: "LIVE" };
-
-  const dateStr = fields[TRIP_DT];
-  const tLatest = fields[TRIP_GO_LATEST];
-  const tGo = fields[TRIP_GO_BASE];
-  const tStart = fields[TRIP_START_FALLB];
-
-  const goCandidate = (tGo && !String(tGo).includes("00:00:00")) ? tGo : null;
-  const timeStr = tLatest || goCandidate || tStart;
-
-  const allow24 = Boolean(timeStr && String(timeStr).startsWith("24"));
-  const targetEpoch = toEpochSecondsLocal(dateStr, timeStr, tzOffsetMinutes, { allow24Hour: allow24 });
-  if (targetEpoch == null) return { temp: "COLD" };
-
-  const till = targetEpoch - nowEpoch;
-
-  if (till <= 1800) return { temp: "HOT" };
-  if (till <= 3600) return { temp: "WARM" };
-  return { temp: "COLD" };
-}
-
-function buildCommonMeta(clock, mode, intervalMin, appCtx) {
   return {
-    epoch: clock.nowEpoch,
-    hbDurationSec: hbDurationSecondsFromMs(clock.nowMs, HB_TZ),
-    hbAtIso: clock.iso ?? new Date(clock.nowEpoch * 1000).toISOString(),
-    hbTime: clock.time || formatHbTimeFromMs(clock.nowMs, HB_TZ),
-    firstPrint: isFirstPrint(mode, clock),
-    intervalMin,
-
-    appShowId: appCtx.appShowId,
-    appSqlDate: appCtx.appSqlDate,
-    appDowRaw: appCtx.appDowRaw,
-    dowRaw: appCtx.dowRaw,
-    shiftedToNextDay: appCtx.shiftedToNextDay,
-    heldoverFromSunday: appCtx.heldoverFromSunday,
+    table: TABLE_SHOWS,
+    found_in_view: rows.length,
+    matched_show_id: appShowId,
+    updated_existing: 0,
+    created_new: 1
   };
-}
-
-function buildShowsLikeUpdate(recordId, meta, mode) {
-  return {
-    id: recordId,
-    fields: {
-      [FIELD_MODE]: mode,
-      [FIELD_EPOCH]: meta.epoch,
-      [FIELD_HB_DURATION]: meta.hbDurationSec,
-      [FIELD_INTERVAL]: meta.intervalMin,
-      [FIELD_HB_AT]: meta.hbAtIso,
-      [FIELD_FIRST_PRINT]: meta.firstPrint,
-      [FIELD_HB_TIME]: meta.hbTime,
-
-      [FIELD_APP_SHOW_ID]: meta.appShowId,
-      [FIELD_APP_SQL_DATE]: meta.appSqlDate,
-      [FIELD_APP_DOW_RAW]: meta.appDowRaw,
-      [FIELD_DOW_RAW]: meta.dowRaw,
-      [FIELD_SHIFTED_NEXT_DAY]: meta.shiftedToNextDay,
-      [FIELD_HELDOVER_SUNDAY]: meta.heldoverFromSunday,
-    }
-  };
-}
-
-function buildWatchUpdate(recordId, meta, temp, mode) {
-  const nextDueInterval = nextDueSecondsFor(mode, temp);
-  const nextDue = nextDueInterval == null ? null : (meta.epoch + nextDueInterval);
-
-  return {
-    id: recordId,
-    fields: {
-      [FIELD_EPOCH]: meta.epoch,
-      [FIELD_TEMP]: temp,
-      [FIELD_BUCKET]: temp,
-      [FIELD_NEXT_DUE]: nextDue,
-      [FIELD_FIRST_PRINT]: meta.firstPrint,
-      [FIELD_MODE]: mode,
-      [FIELD_HB_DURATION]: meta.hbDurationSec,
-      [FIELD_INTERVAL]: meta.intervalMin,
-      [FIELD_HB_AT]: meta.hbAtIso,
-      [FIELD_HB_TIME]: meta.hbTime,
-
-      [FIELD_APP_SHOW_ID]: meta.appShowId,
-      [FIELD_APP_SQL_DATE]: meta.appSqlDate,
-      [FIELD_APP_DOW_RAW]: meta.appDowRaw,
-      [FIELD_DOW_RAW]: meta.dowRaw,
-      [FIELD_SHIFTED_NEXT_DAY]: meta.shiftedToNextDay,
-      [FIELD_HELDOVER_SUNDAY]: meta.heldoverFromSunday,
-    }
-  };
-}
-
-function buildModeOnlyUpdate(recordId, meta, mode) {
-  return {
-    id: recordId,
-    fields: {
-      [FIELD_MODE]: mode,
-      [FIELD_EPOCH]: meta.epoch,
-      [FIELD_HB_DURATION]: meta.hbDurationSec,
-      [FIELD_INTERVAL]: meta.intervalMin,
-      [FIELD_HB_AT]: meta.hbAtIso,
-      [FIELD_HB_TIME]: meta.hbTime,
-
-      [FIELD_APP_SHOW_ID]: meta.appShowId,
-      [FIELD_APP_SQL_DATE]: meta.appSqlDate,
-      [FIELD_APP_DOW_RAW]: meta.appDowRaw,
-      [FIELD_DOW_RAW]: meta.dowRaw,
-      [FIELD_SHIFTED_NEXT_DAY]: meta.shiftedToNextDay,
-      [FIELD_HELDOVER_SUNDAY]: meta.heldoverFromSunday,
-    }
-  };
-}
-
-async function updateShowsAndQueue(clock, mode, intervalMin, appCtx) {
-  const meta = buildCommonMeta(clock, mode, intervalMin, appCtx);
-
-  const showRows = await safeList(TABLE_SHOWS, VIEW_SHOWS);
-  const showUpdates = showRows.map((r) => buildShowsLikeUpdate(r.id, meta, mode));
-  await safeBatchUpdate(TABLE_SHOWS, showUpdates);
-
-  const pqRows = await safeList(TABLE_PUBLISH_QUEUE, VIEW_PUBLISH_QUEUE);
-  const pqUpdates = pqRows.map((r) => buildShowsLikeUpdate(r.id, meta, mode));
-  await safeBatchUpdate(TABLE_PUBLISH_QUEUE, pqUpdates);
-}
-
-async function updateModeTables(clock, mode, intervalMin, appCtx) {
-  const meta = buildCommonMeta(clock, mode, intervalMin, appCtx);
-
-  const schedulerRows = await safeList(TABLE_SCHEDULER, VIEW_SCHEDULER);
-  const schedulerUpdates = schedulerRows.map((r) => buildModeOnlyUpdate(r.id, meta, mode));
-  await safeBatchUpdate(TABLE_SCHEDULER, schedulerUpdates);
-
-  const activeTenantRows = await safeList(TABLE_ACTIVE_TENANTS, VIEW_ACTIVE_TENANTS);
-  const activeTenantUpdates = activeTenantRows.map((r) => buildModeOnlyUpdate(r.id, meta, mode));
-  await safeBatchUpdate(TABLE_ACTIVE_TENANTS, activeTenantUpdates);
-}
-
-async function updateWatchTables(clock, mode, intervalMin, appCtx) {
-  const meta = buildCommonMeta(clock, mode, intervalMin, appCtx);
-
-  const scheduleRows = await safeList(TABLE_SCHEDULE, VIEW_SCHEDULE);
-  const scheduleUpdates = scheduleRows.map((r) => {
-    const temp = computeTempSchedule(r.fields || {}, clock.nowEpoch, clock.tzOffsetMinutes).temp;
-    return buildWatchUpdate(r.id, meta, temp, mode);
-  });
-  await safeBatchUpdate(TABLE_SCHEDULE, scheduleUpdates);
-
-  const tripRows = await safeList(TABLE_TRIPS, VIEW_TRIPS);
-  const tripUpdates = tripRows.map((r) => {
-    const temp = computeTempTrip(r.fields || {}, clock.nowEpoch, clock.tzOffsetMinutes).temp;
-    return buildWatchUpdate(r.id, meta, temp, mode);
-  });
-  await safeBatchUpdate(TABLE_TRIPS, tripUpdates);
-}
-
-async function runFullPass(clock, mode, intervalMin, appCtx) {
-  await updateShowsAndQueue(clock, mode, intervalMin, appCtx);
-  await updateModeTables(clock, mode, intervalMin, appCtx);
-  await updateWatchTables(clock, mode, intervalMin, appCtx);
 }
 
 (async () => {
   try {
-    requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
-    requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
-
     const clk = await getClockSafe();
     let mode = resolveModeFromClock(clk);
     const appCtx = await buildAppContext(clk, mode);
@@ -818,14 +606,48 @@ async function runFullPass(clock, mode, intervalMin, appCtx) {
     const intervalMin = intervalMinutesForMode(mode);
 
     console.log(`mode=${mode} source=${clk.source} dry_run=${DRY_RUN}`);
-    await createHeartbeatPassSafe(clk, mode, intervalMin, appCtx);
 
-    console.log("heartbeat only -> exit");
+    const heartbeatRecord = await createHeartbeat(clk, mode, intervalMin, appCtx);
+
+    const results = [];
+    const warnings = [];
+
+    try {
+      results.push(await syncShowsHeartbeat(heartbeatRecord, appCtx));
+    } catch (e) {
+      warnings.push(`shows: ${String(e?.message || e).slice(0, 240)}`);
+    }
+
+    for (const tableName of [
+      TABLE_WATCH_TRIPS,
+      TABLE_WATCH_SCHEDULE,
+      TABLE_SCHEDULER,
+      TABLE_ACTIVE_TENANTS,
+      TABLE_ACTIVE_ALERTS,
+      TABLE_WATCH_RINGS
+    ]) {
+      try {
+        results.push(await relinkHeartbeatView(tableName, heartbeatRecord.id));
+      } catch (e) {
+        warnings.push(`${tableName}: ${String(e?.message || e).slice(0, 240)}`);
+      }
+    }
+
+    console.log(JSON.stringify({
+      ok: true,
+      heartbeat_record_id: heartbeatRecord.id,
+      heartbeat_app_show_id: appCtx.appShowId,
+      mode,
+      source: clk.source,
+      results,
+      warnings
+    }, null, 2));
+
     process.exit(0);
   } catch (e) {
     const name = e?.name || "error";
     const msg = String(e?.message || e);
     console.log(`fatal: ${name} ${msg.slice(0, 240)}`);
-    process.exit(0);
+    process.exit(1);
   }
 })();
