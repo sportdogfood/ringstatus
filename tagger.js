@@ -1,4 +1,4 @@
-// tagger.js (CLEAN HEARTBEAT + RELINK)
+// tagger.js (CLEAN HEARTBEAT + RELINK + OVERNIGHT MODE)
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -16,8 +16,8 @@ const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants
 const TABLE_ACTIVE_ALERTS  = process.env.TABLE_ACTIVE_ALERTS || "active_alerts";
 const TABLE_WATCH_RINGS    = process.env.TABLE_WATCH_RINGS || "watch_rings";
 
-const VIEW_HEARTBEAT       = process.env.VIEW_HEARTBEAT || "heartbeat";
-const VIEW_SHOWS_EPOCH     = process.env.VIEW_SHOWS_EPOCH || "epoch";
+const VIEW_HEARTBEAT   = process.env.VIEW_HEARTBEAT || "heartbeat";
+const VIEW_SHOWS_EPOCH = process.env.VIEW_SHOWS_EPOCH || "epoch";
 
 const RING_ENDPOINT = `https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 
@@ -49,9 +49,10 @@ const FIELD_LAST_SUNDAY_SHOW_ID  = process.env.FIELD_LAST_SUNDAY_SHOW_ID || "las
 const FIELD_LAST_SUNDAY_SQL_DATE = process.env.FIELD_LAST_SUNDAY_SQL_DATE || "last_sunday_sql_date";
 const FIELD_CUSTOMER_ID          = process.env.FIELD_CUSTOMER_ID || "customer_id";
 
-const DAY_INTERVAL_MIN      = Number(process.env.DAY_INTERVAL_MIN || "6");
-const NIGHT_INTERVAL_MIN    = Number(process.env.NIGHT_INTERVAL_MIN || "120");
-const HOLDOVER_INTERVAL_MIN = Number(process.env.HOLDOVER_INTERVAL_MIN || "99999");
+const DAY_INTERVAL_MIN       = Number(process.env.DAY_INTERVAL_MIN || "6");
+const NIGHT_INTERVAL_MIN     = Number(process.env.NIGHT_INTERVAL_MIN || "120");
+const HOLDOVER_INTERVAL_MIN  = Number(process.env.HOLDOVER_INTERVAL_MIN || "99999");
+const OVERNIGHT_INTERVAL_MIN = Number(process.env.OVERNIGHT_INTERVAL_MIN || String(HOLDOVER_INTERVAL_MIN));
 
 const HTTP_TIMEOUT_MS       = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS     = Number(process.env.AT_RETRY_ATTEMPTS || "3");
@@ -277,7 +278,7 @@ function minuteOfDayFromMs(ms, timeZone = HB_TZ) {
 function dayOfWeekUtc(sqlDate) {
   const d = new Date(`${sqlDate}T00:00:00Z`);
   if (isNaN(d.getTime())) return null;
-  return d.getUTCDay();
+  return d.getUTCDay(); // 0 Sun .. 6 Sat
 }
 
 function dowName(dow) {
@@ -293,7 +294,7 @@ function addDaysSql(sqlDate, days) {
 
 function normalizeMode(v) {
   const s = String(v ?? "").trim().toUpperCase();
-  if (s === "DAY" || s === "NIGHT" || s === "HOLDOVER") return s;
+  if (s === "DAY" || s === "NIGHT" || s === "HOLDOVER" || s === "OVERNIGHT") return s;
   return "HOLDOVER";
 }
 
@@ -304,16 +305,31 @@ function resolveModeFromClock(clock) {
   const dow = dayOfWeekUtc(sqlDate);
   const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
 
-  if (dow === 1) return "HOLDOVER";
-  if (dow === 2 || dow === 3 || dow === 4 || dow === 5 || dow === 6) {
-    return minuteOfDay >= (17 * 60) ? "NIGHT" : "DAY";
+  // Sunday
+  if (dow === 0) {
+    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";      // 5:00 AM - 4:59 PM
+    return "HOLDOVER";                                                // all other Sunday times
   }
-  return "DAY";
+
+  // Monday
+  if (dow === 1) {
+    return "HOLDOVER";
+  }
+
+  // Tuesday - Saturday
+  if (dow >= 2 && dow <= 6) {
+    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";       // 5:00 AM - 4:59 PM
+    if (minuteOfDay >= 1020 && minuteOfDay <= 1319) return "NIGHT";    // 5:00 PM - 9:59 PM
+    return "OVERNIGHT";                                                 // 10:00 PM - 4:59 AM
+  }
+
+  return "HOLDOVER";
 }
 
 function intervalMinutesForMode(mode) {
   if (mode === "DAY") return DAY_INTERVAL_MIN;
   if (mode === "NIGHT") return NIGHT_INTERVAL_MIN;
+  if (mode === "OVERNIGHT") return OVERNIGHT_INTERVAL_MIN;
   return HOLDOVER_INTERVAL_MIN;
 }
 
@@ -436,7 +452,7 @@ async function buildAppContext(clock, mode) {
   let shiftedToNextDay = false;
   let heldoverFromSunday = false;
 
-  if (mode === "NIGHT") {
+  if (mode === "NIGHT" || mode === "OVERNIGHT") {
     appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
     shiftedToNextDay = true;
   } else if (mode === "HOLDOVER") {
@@ -543,13 +559,24 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
   const heartbeatId = heartbeatRecord.id;
   const appShowId = appCtx.appShowId;
 
+  if (appShowId === null || appShowId === undefined || String(appShowId).trim() === "") {
+    return {
+      table: TABLE_SHOWS,
+      found_in_view: 0,
+      matched_show_id: null,
+      updated_existing: 0,
+      created_new: 0,
+      skipped: "missing_app_show_id"
+    };
+  }
+
   const rows = await airtableListAll({
     table: TABLE_SHOWS,
     view: VIEW_HEARTBEAT,
     fields: [FIELD_SHOW_ID, FIELD_LINK_HEARTBEAT]
   });
 
-  const match = rows.find(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === String(appShowId ?? "").trim());
+  const match = rows.find(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === String(appShowId).trim());
 
   if (match) {
     const current = currentHeartbeatLinkIds(match.fields?.[FIELD_LINK_HEARTBEAT]);
@@ -575,7 +602,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     [FIELD_APP_SHOW_ID]: appShowId,
     [FIELD_LINK_HEARTBEAT]: [heartbeatId],
     [FIELD_NEW_APP_SHOW_ID]: true,
-    [FIELD_NEW_APP_SHOW_ID_AT]: new Date().toISOString(),
+    [FIELD_NEW_APP_SHOW_ID_AT]: heartbeatRecord.fields?.[FIELD_HB_AT] || new Date().toISOString(),
     [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
     [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
     [FIELD_DOW_RAW]: appCtx.dowRaw,
