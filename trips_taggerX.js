@@ -1,4 +1,4 @@
-// trips_tagger.js (UPDATED FULL DROP)
+// trips_tagger.js (CORRECTED FULL DROP)
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -18,7 +18,6 @@ const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "ent
 
 const FIELD_HB_SECOND_PASS_AT     = process.env.FIELD_HB_SECOND_PASS_AT || "hb_second_pass_at";
 const FIELD_HB_SECOND_PASS_REASON = process.env.FIELD_HB_SECOND_PASS_REASON || "hb_second_pass_reason";
-const FIELD_HB_SECOND_PASS_DONE   = process.env.FIELD_HB_SECOND_PASS_DONE || "hb_second_pass_done";
 
 const FIELD_STATUS                = process.env.FIELD_STATUS || "status";
 const FIELD_ESTIMATED_START_TIME  = process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time";
@@ -27,20 +26,6 @@ const FIELD_ESTIMATED_GO_TIME     = process.env.FIELD_ESTIMATED_GO_TIME || "esti
 const FIELD_ORDER_OF_GO           = process.env.FIELD_ORDER_OF_GO || "order_of_go";
 const FIELD_REMAINING_TRIPS       = process.env.FIELD_REMAINING_TRIPS || "remaining_trips";
 const FIELD_TOTAL_TRIPS           = process.env.FIELD_TOTAL_TRIPS || "total_trips";
-const FIELD_COMPLETED_TRIPS       = process.env.FIELD_COMPLETED_TRIPS || "completed_trips";
-const FIELD_ACTUAL_TIME           = process.env.FIELD_ACTUAL_TIME || "actual_time";
-const FIELD_ESTIMATED_TIME        = process.env.FIELD_ESTIMATED_TIME || "estimated_time";
-const FIELD_RESULTS_VERIFIED      = process.env.FIELD_RESULTS_VERIFIED || "results_verified";
-const FIELD_TOTAL_ENTRY_TRIPS     = process.env.FIELD_TOTAL_ENTRY_TRIPS || "total_entry_trips";
-const FIELD_ACTUAL_ORDER          = process.env.FIELD_ACTUAL_ORDER || "actual_order";
-const FIELD_H_EID                 = process.env.FIELD_H_EID || "h_eid";
-const FIELD_TIME_FAULT_ONE        = process.env.FIELD_TIME_FAULT_ONE || "time_fault_one";
-const FIELD_FAULTS_ONE            = process.env.FIELD_FAULTS_ONE || "faults_one";
-const FIELD_TIME_FAULTS_TWO       = process.env.FIELD_TIME_FAULTS_TWO || "time_faults_two";
-const FIELD_FAULTS_TWO            = process.env.FIELD_FAULTS_TWO || "faults_two";
-const FIELD_PLACING               = process.env.FIELD_PLACING || "placing";
-const FIELD_GONE_IN               = process.env.FIELD_GONE_IN || "gone_in";
-const FIELD_SCORE                 = process.env.FIELD_SCORE || "score";
 const FIELD_TIME_ONE              = process.env.FIELD_TIME_ONE || "time_one";
 const FIELD_TIME_TWO              = process.env.FIELD_TIME_TWO || "time_two";
 const FIELD_TIME_THREE            = process.env.FIELD_TIME_THREE || "time_three";
@@ -274,7 +259,6 @@ async function airtablePatchWithFallback(tableName, updates) {
 function setBaseFields(updateFields, observedAt, reason) {
   updateFields[FIELD_HB_SECOND_PASS_AT] = observedAt;
   updateFields[FIELD_HB_SECOND_PASS_REASON] = reason;
-  updateFields[FIELD_HB_SECOND_PASS_DONE] = true;
 }
 
 function setClassLevelFields(updateFields, data) {
@@ -283,9 +267,6 @@ function setClassLevelFields(updateFields, data) {
   updateFields[FIELD_ESTIMATED_END_TIME] = data.estimated_end_time;
   updateFields[FIELD_REMAINING_TRIPS] = data.remaining_trips;
   updateFields[FIELD_TOTAL_TRIPS] = data.total_trips;
-  updateFields[FIELD_COMPLETED_TRIPS] = data.completed_trips;
-  updateFields[FIELD_ACTUAL_TIME] = data.actual_time;
-  updateFields[FIELD_ESTIMATED_TIME] = data.estimated_time;
 }
 
 function setTripLevelFields(updateFields, data) {
@@ -297,18 +278,6 @@ function setTripLevelFields(updateFields, data) {
   updateFields[FIELD_SCORE1] = data.score1;
   updateFields[FIELD_SCORE2] = data.score2;
   updateFields[FIELD_SCORE3] = data.score3;
-
-  updateFields[FIELD_RESULTS_VERIFIED] = data.results_verified;
-  updateFields[FIELD_TOTAL_ENTRY_TRIPS] = data.total_entry_trips;
-  updateFields[FIELD_ACTUAL_ORDER] = data.actual_order;
-  updateFields[FIELD_H_EID] = data.h_eid;
-  updateFields[FIELD_TIME_FAULT_ONE] = data.time_fault_one;
-  updateFields[FIELD_FAULTS_ONE] = data.faults_one;
-  updateFields[FIELD_TIME_FAULTS_TWO] = data.time_faults_two;
-  updateFields[FIELD_FAULTS_TWO] = data.faults_two;
-  updateFields[FIELD_PLACING] = data.placing;
-  updateFields[FIELD_GONE_IN] = data.gone_in;
-  updateFields[FIELD_SCORE] = data.score;
 }
 
 function clearTripLevelFields(updateFields) {
@@ -320,18 +289,6 @@ function clearTripLevelFields(updateFields) {
   updateFields[FIELD_SCORE1] = null;
   updateFields[FIELD_SCORE2] = null;
   updateFields[FIELD_SCORE3] = null;
-
-  updateFields[FIELD_RESULTS_VERIFIED] = null;
-  updateFields[FIELD_TOTAL_ENTRY_TRIPS] = null;
-  updateFields[FIELD_ACTUAL_ORDER] = null;
-  updateFields[FIELD_H_EID] = null;
-  updateFields[FIELD_TIME_FAULT_ONE] = null;
-  updateFields[FIELD_FAULTS_ONE] = null;
-  updateFields[FIELD_TIME_FAULTS_TWO] = null;
-  updateFields[FIELD_FAULTS_TWO] = null;
-  updateFields[FIELD_PLACING] = null;
-  updateFields[FIELD_GONE_IN] = null;
-  updateFields[FIELD_SCORE] = null;
 }
 
 (async () => {
@@ -517,29 +474,6 @@ function clearTripLevelFields(updateFields) {
         )
       );
 
-      const completed_trips = normNum(
-        numOrNull(
-          firstNonBlank(
-            pickFrom(classRelated, ["completed_trips"]),
-            pickFrom(classJson, ["completed_trips"])
-          )
-        )
-      );
-
-      const actual_time = normTimeStr(
-        firstNonBlank(
-          pickFrom(classRelated, ["actual_time"]),
-          pickFrom(classJson, ["actual_time"])
-        )
-      );
-
-      const estimated_time = normTimeStr(
-        firstNonBlank(
-          pickFrom(classRelated, ["estimated_time"]),
-          pickFrom(classJson, ["estimated_time"])
-        )
-      );
-
       const trips = Array.isArray(classRelated?.trips)
         ? classRelated.trips
         : Array.isArray(classJson?.trips)
@@ -558,9 +492,6 @@ function clearTripLevelFields(updateFields) {
         estimated_end_time,
         remaining_trips,
         total_trips,
-        completed_trips,
-        actual_time,
-        estimated_time,
       });
 
       if (matchedTrip) {
@@ -605,50 +536,6 @@ function clearTripLevelFields(updateFields) {
           IGNORE_NUM.score_any
         );
 
-        const results_verified = normNum(
-          numOrNull(firstNonBlank(matchedTrip.results_verified, matchedTrip.resultsVerified))
-        );
-
-        const total_entry_trips = normNum(
-          numOrNull(firstNonBlank(matchedTrip.total_entry_trips, matchedTrip.totalEntryTrips))
-        );
-
-        const actual_order = normNum(
-          numOrNull(firstNonBlank(matchedTrip.actual_order, matchedTrip.actualOrder))
-        );
-
-        const h_eid = normNum(
-          numOrNull(firstNonBlank(matchedTrip.number, matchedTrip.entry_number, matchedTrip.entryNumber))
-        );
-
-        const time_fault_one = normNum(
-          floatOrNull(firstNonBlank(matchedTrip.time_fault_one, matchedTrip.timeFaultOne))
-        );
-
-        const faults_one = normNum(
-          numOrNull(firstNonBlank(matchedTrip.faults_one, matchedTrip.faultsOne))
-        );
-
-        const time_faults_two = normNum(
-          floatOrNull(firstNonBlank(matchedTrip.time_faults_two, matchedTrip.timeFaultsTwo))
-        );
-
-        const faults_two = normNum(
-          numOrNull(firstNonBlank(matchedTrip.faults_two, matchedTrip.faultsTwo))
-        );
-
-        const placing = normNum(
-          numOrNull(firstNonBlank(matchedTrip.placing))
-        );
-
-        const gone_in = normNum(
-          numOrNull(firstNonBlank(matchedTrip.gone_in, matchedTrip.goneIn))
-        );
-
-        const score = normNum(
-          floatOrNull(firstNonBlank(matchedTrip.score))
-        );
-
         setTripLevelFields(updateFields, {
           estimated_go_time,
           order_of_go,
@@ -658,17 +545,6 @@ function clearTripLevelFields(updateFields) {
           score1,
           score2,
           score3,
-          results_verified,
-          total_entry_trips,
-          actual_order,
-          h_eid,
-          time_fault_one,
-          faults_one,
-          time_faults_two,
-          faults_two,
-          placing,
-          gone_in,
-          score,
         });
 
         setBaseFields(updateFields, observedAt, "ok:matched_trip");

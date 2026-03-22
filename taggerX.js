@@ -1,4 +1,4 @@
-// tagger.js (HEARTBEAT ONLY FULL DROP)
+// tagger.js (STATELESS FULL DROP)
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -811,17 +811,41 @@ async function runFullPass(clock, mode, intervalMin, appCtx) {
     requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
     requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
-    const clk = await getClockSafe();
-    let mode = resolveModeFromClock(clk);
-    const appCtx = await buildAppContext(clk, mode);
-    mode = appCtx.effectiveMode;
-    const intervalMin = intervalMinutesForMode(mode);
+    const clk1 = await getClockSafe();
+    let mode1 = resolveModeFromClock(clk1);
+    const appCtx1 = await buildAppContext(clk1, mode1);
+    mode1 = appCtx1.effectiveMode;
+    const intervalMin1 = intervalMinutesForMode(mode1);
 
-    console.log(`mode=${mode} source=${clk.source} dry_run=${DRY_RUN}`);
-    await createHeartbeatPassSafe(clk, mode, intervalMin, appCtx);
+    console.log(`mode=${mode1} source=${clk1.source} dry_run=${DRY_RUN}`);
 
-    console.log("heartbeat only -> exit");
-    process.exit(0);
+    await createHeartbeatPassSafe(clk1, mode1, intervalMin1, appCtx1);
+
+    if (mode1 === "HOLDOVER") {
+      console.log("mode=HOLDOVER -> heartbeat only");
+      process.exit(0);
+    }
+
+    if (mode1 === "NIGHT") {
+      await runFullPass(clk1, mode1, intervalMin1, appCtx1);
+      process.exit(0);
+    }
+
+    await runFullPass(clk1, mode1, intervalMin1, appCtx1);
+
+    await sleep(DAY_SECOND_PASS_DELAY_SEC * 1000);
+
+    const clk2 = await getClockSafe();
+    let mode2 = resolveModeFromClock(clk2);
+    const appCtx2 = await buildAppContext(clk2, mode2);
+    mode2 = appCtx2.effectiveMode;
+    const intervalMin2 = intervalMinutesForMode(mode2);
+
+    await createHeartbeatPassSafe(clk2, mode2, intervalMin2, appCtx2);
+
+    if (mode2 === "DAY" || mode2 === "NIGHT") {
+      await runFullPass(clk2, mode2, intervalMin2, appCtx2);
+    }
   } catch (e) {
     const name = e?.name || "error";
     const msg = String(e?.message || e);
