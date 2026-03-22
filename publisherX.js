@@ -1,13 +1,5 @@
 /**
- * publisher.js (FULL DROP)
- *
- * Queue-driven publisher with 2 lanes:
- * - bulk-commit lane   -> use_differ = false
- * - differ lane        -> use_differ = true
- *
- * Exact queue paths only.
- * No auto-generated paths.
- * Diff support is only for explicit *trips-catch-changes.json paths.
+ * publisher.js (FULL DROP) — RingStatus Data Publisher + Per-Tenant Manifest (NO table_view2)
  */
 
 //////////////////////
@@ -24,54 +16,27 @@ const PUBLISH_QUEUE_VIEW  = (process.env.PUBLISH_QUEUE_VIEW ?? "all_active").tri
 
 const PUBLISH_URI    = process.env.PUBLISH_URI    || "https://ringstatus-proxy.gombcg.workers.dev/docs/commit-bulk";
 const PUBLISHED_BASE = process.env.PUBLISHED_BASE || "https://ringstatus-proxy.gombcg.workers.dev/";
-const PUBLISH_DIFFS_TABLE = process.env.PUBLISH_DIFFS_TABLE || "publish_diffs";
 
-const FORCE_PUSH   = String(process.env.FORCE_PUSH ?? "1") === "1";
-const DRY_RUN      = String(process.env.DRY_RUN ?? "0") === "1";
-const SHOWTIME_URL = process.env.SHOWTIME_URL || "";
-
-const PUBLISHER_LANE = String(process.env.PUBLISHER_LANE || "all").trim().toLowerCase(); // all | bulk | differ
+const FORCE_PUSH     = String(process.env.FORCE_PUSH ?? "1") === "1";
+const DRY_RUN        = String(process.env.DRY_RUN ?? "0") === "1";
+const SHOWTIME_URL   = process.env.SHOWTIME_URL || "";
 
 const PQ_DATASET_KEY        = "dataset_key";
 const PQ_DIRTY              = "dirty";
 const PQ_DIRTY_REASON       = "dirty_reason";
+const PQ_DIRTY_EPOCH        = "dirty_epoch";
 const PQ_LAST_PUBLISH_EPOCH = "last_publish_epoch";
 const PQ_TABLE_NAME         = "table_name";
 const PQ_VIEW1              = "table_view1";
 const PQ_PATHS1             = "paths1";
 const PQ_ALLOWED_FIELDS     = "allowed_fields";
-const PQ_USE_DIFFER         = "use_differ";
 
 const CONTENT_TYPE = "application/json";
+const PUBLISH_DIFFS_TABLE = "publish_diffs";
+const DIFF_TARGET_PATH = "docs/9999/schedules/trips-catch-changes.json";
 
 //////////////////////
-// 1) Diff config
-//////////////////////
-const DIFF_PATH_REGEX = /\/trips-catch-changes\.json$/i;
-
-const DIFF_TRIPS_FIELDS = parseListFlexible(
-  process.env.DIFF_TRIPS_FIELDS ||
-  "estimated_start_time,estimated_go_time,latestStatus,completed_trips"
-);
-
-const DIFF_NUMERIC_FIELDS = new Set(
-  parseListFlexible(
-    process.env.DIFF_NUMERIC_FIELDS ||
-    "completed_trips,lastGoneIn,lastOOG"
-  )
-);
-
-const DIFF_TOLERANT_TIME_FIELDS = new Set(
-  parseListFlexible(
-    process.env.DIFF_TOLERANT_TIME_FIELDS ||
-    "estimated_start_time,estimated_go_time"
-  )
-);
-
-const DIFF_TIME_TOLERANCE_SEC = Number(process.env.DIFF_TIME_TOLERANCE_SEC || "180");
-
-//////////////////////
-// 2) Dataset defaults
+// 1) Dataset defaults
 //////////////////////
 const DEFAULT_ALLOWED_FIELDS = {
   watch_schedule: [
@@ -95,7 +60,7 @@ const DEFAULT_ALLOWED_FIELDS = {
 };
 
 //////////////////////
-// 3) Helpers
+// 2) Helpers
 //////////////////////
 function nowEpochSecFallback() {
   return Math.floor(Date.now() / 1000);
@@ -112,7 +77,7 @@ async function fetchWithTimeout(url, opts = {}, timeoutMs = 15000) {
 }
 
 function normalizePath(p) {
-  const s = String(p ?? "").trim();
+  const s = (p ?? "").toString().trim();
   return s.replace(/^\/+/, "");
 }
 
@@ -182,15 +147,6 @@ async function getEpochSec() {
   } catch {
     return nowEpochSecFallback();
   }
-}
-
-function buildRowsFromRecords(records, allowedFields) {
-  return records.map(r => {
-    const src = r.fields || {};
-    const obj = {};
-    for (const f of allowedFields) obj[f] = (f in src) ? src[f] : null;
-    return obj;
-  });
 }
 
 function safeJsonParseArray(txt) {
@@ -296,26 +252,8 @@ function computeFieldDiff(fieldName, oldRaw, newRaw, cfg) {
   };
 }
 
-function pickAllowedFields(datasetKey, pqAllowedFieldsRaw) {
-  const fromQueue = parseListFlexible(pqAllowedFieldsRaw);
-  if (fromQueue.length) return fromQueue;
-
-  const def = DEFAULT_ALLOWED_FIELDS[String(datasetKey || "").trim()] || [];
-  return def.slice();
-}
-
-function boolCell(v) {
-  return v === true || String(v).trim().toLowerCase() === "true" || String(v).trim() === "1";
-}
-
-function laneAllowsRecord(useDiffer) {
-  if (PUBLISHER_LANE === "bulk") return !useDiffer;
-  if (PUBLISHER_LANE === "differ") return useDiffer;
-  return true;
-}
-
 //////////////////////
-// 4) Airtable REST
+// 3) Airtable REST
 //////////////////////
 const AT_BASE = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}`;
 
@@ -406,7 +344,7 @@ async function airtableCreateRecords({ table, records }) {
 }
 
 //////////////////////
-// 5) Preflight GET
+// 4) Preflight GET
 //////////////////////
 async function preflightGetJson(url) {
   try {
@@ -425,7 +363,7 @@ async function preflightGetJson(url) {
 }
 
 //////////////////////
-// 6) Commit-bulk
+// 5) Commit-bulk
 //////////////////////
 function isNonFastForward422(status, text) {
   if (status !== 422) return false;
@@ -530,19 +468,26 @@ async function getRawFileTextAtSha(sha, repoPath) {
 }
 
 //////////////////////
-// 7) Publish primitives
+// 6) Publish primitives
 //////////////////////
+function buildRowsFromRecords(records, allowedFields) {
+  return records.map(r => {
+    const src = r.fields || {};
+    const obj = {};
+    for (const f of allowedFields) obj[f] = (f in src) ? src[f] : null;
+    return obj;
+  });
+}
+
 async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }) {
-  if (!paths.length) {
-    return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
-  }
+  if (!paths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
 
   const contentText = JSON.stringify(contentObj, null, 2) + "\n";
+  const changedFiles = [];
   const primaryPath = normalizePath(paths[0]);
   const shaPrev = primaryPath ? await getLatestCommitShaForPath(primaryPath) : null;
   const oldBlob = (shaPrev && primaryPath) ? await getRawFileTextAtSha(shaPrev, primaryPath) : null;
 
-  const changedFiles = [];
   let anyChange = false;
 
   for (const p of paths) {
@@ -578,7 +523,6 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
       committed: 0,
       repoPath: primaryPath,
       shaPrev,
-      shaNew: null,
       oldBlob,
       newBlob: contentText
     };
@@ -593,7 +537,6 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
       wouldCommit: changedFiles.length,
       repoPath: primaryPath,
       shaPrev,
-      shaNew: null,
       oldBlob,
       newBlob: contentText
     };
@@ -618,15 +561,22 @@ async function publishContentToPaths({ datasetKey, contentObj, paths, epochSec }
     reason: "published",
     committed: changedFiles.length,
     status: res.status,
-    repoPath: primaryPath,
     shaPrev,
     shaNew,
     oldBlob,
-    newBlob: contentText
+    newBlob: contentText,
+    repoPath: primaryPath
   };
 }
 
-async function publishDataset({ datasetKey, tableName, viewName, paths, allowedFields, epochSec }) {
+async function publishDataset({
+  datasetKey,
+  tableName,
+  viewName,
+  paths,
+  allowedFields,
+  epochSec,
+}) {
   if (!tableName || !viewName) return { ok: true, skipped: true, reason: "missing_table_or_view", committed: 0 };
   if (!paths.length) return { ok: true, skipped: true, reason: "no_paths", committed: 0 };
   if (!allowedFields.length) return { ok: true, skipped: true, reason: "no_allowed_fields", committed: 0 };
@@ -657,8 +607,16 @@ async function publishDataset({ datasetKey, tableName, viewName, paths, allowedF
   });
 }
 
+function pickAllowedFields(datasetKey, pqAllowedFieldsRaw) {
+  const fromQueue = parseListFlexible(pqAllowedFieldsRaw);
+  if (fromQueue.length) return fromQueue;
+
+  const def = DEFAULT_ALLOWED_FIELDS[String(datasetKey || "").trim()] || [];
+  return def.slice();
+}
+
 //////////////////////
-// 8) Manifest
+// 7) Manifest
 //////////////////////
 function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
   const datasets = [];
@@ -701,17 +659,29 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
 }
 
 //////////////////////
-// 9) Diff builder
+// 8) Diff — only explicit 9999 catch file
 //////////////////////
-function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlob, newBlob }) {
-  if (!DIFF_PATH_REGEX.test(String(repoPath || ""))) return [];
-
+function buildTripsCatchDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlob, newBlob }) {
   const cfg = {
     keyField: "entryxclasses_uuid",
-    watched: DIFF_TRIPS_FIELDS,
-    numericFields: DIFF_NUMERIC_FIELDS,
-    tolerantTimeFields: DIFF_TOLERANT_TIME_FIELDS,
-    timeToleranceSec: DIFF_TIME_TOLERANCE_SEC,
+    watched: [
+      "estimated_start_time",
+      "estimated_go_time",
+      "latestStatus",
+      "completed_trips",
+      "lastOOG",
+      "lastGoneIn"
+    ],
+    numericFields: new Set([
+      "lastGoneIn",
+      "completed_trips",
+      "lastOOG"
+    ]),
+    tolerantTimeFields: new Set([
+      "estimated_start_time",
+      "estimated_go_time"
+    ]),
+    timeToleranceSec: 180,
     textIdFields: ["entryxclasses_uuid"],
     numericIdFields: ["entry_id", "class_id"]
   };
@@ -818,7 +788,7 @@ function buildDiffRows({ datasetKey, repoPath, shaPrev, shaNew, epochSec, oldBlo
 }
 
 //////////////////////
-// 10) Queue writeback
+// 9) Dirty clearing
 //////////////////////
 async function clearDirtySuccess({ recordId, committedAny, epochSec, reason }) {
   const fields = {
@@ -843,11 +813,11 @@ async function stampDirtyError({ recordId, msg }) {
 }
 
 //////////////////////
-// 11) Main
+// 10) Main
 //////////////////////
 async function main() {
   const epochSec = await getEpochSec();
-  console.log(`publisher start | epoch=${epochSec} dry_run=${DRY_RUN} lane=${PUBLISHER_LANE}`);
+  console.log(`publisher start | epoch=${epochSec} dry_run=${DRY_RUN}`);
 
   const pqRecords = await airtableListAll({
     table: PUBLISH_QUEUE_TABLE,
@@ -856,21 +826,17 @@ async function main() {
   });
 
   const dirty = pqRecords.filter(r => Boolean(r.fields && r.fields[PQ_DIRTY]));
-  const todo = dirty.filter(r => laneAllowsRecord(boolCell(r.fields?.[PQ_USE_DIFFER])));
+  console.log(`queue visible=${pqRecords.length} dirty=${dirty.length}`);
 
-  console.log(`queue visible=${pqRecords.length} dirty=${dirty.length} lane_todo=${todo.length}`);
-
-  for (const r of todo) {
+  for (const r of dirty) {
     const f = r.fields || {};
 
     const datasetKey = String(f[PQ_DATASET_KEY] || "").trim() || "unknown";
     const tableName  = String(f[PQ_TABLE_NAME] || "").trim();
     const viewName   = String(f[PQ_VIEW1] || "").trim();
     const paths      = parsePaths(f[PQ_PATHS1]);
-    const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
-    const useDiffer = boolCell(f[PQ_USE_DIFFER]);
 
-    console.log(`job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length} use_differ=${useDiffer}`);
+    console.log(`job=${datasetKey} table=${tableName || "-"} view=${viewName || "-"} paths=${paths.length}`);
 
     try {
       if (isManifestKey(datasetKey)) {
@@ -886,13 +852,15 @@ async function main() {
 
         if (!resM.ok) throw new Error(`manifest publish failed (${resM.status || "?"}) ${resM.errorText || ""}`);
 
-        console.log(`job done: ${datasetKey} | ${resM.skipped ? "skip" : "commit"}(${resM.committed || 0}) | sha=${resM.shaNew || "-"}`);
+        console.log(`job done: ${datasetKey} | ${resM.skipped ? "skip" : "commit"}(${resM.committed || 0})`);
 
         const committedAny = !resM.skipped && (resM.committed || 0) > 0;
         const reason = resM.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
         await clearDirtySuccess({ recordId: r.id, committedAny, epochSec, reason });
         continue;
       }
+
+      const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
 
       const res = await publishDataset({
         datasetKey,
@@ -907,10 +875,15 @@ async function main() {
 
       console.log(`job done: ${datasetKey} | ${res.skipped ? "skip" : "commit"}(${res.committed || 0}) | sha=${res.shaNew || "-"}`);
 
-      if (useDiffer && !res.skipped) {
-        const diffRows = buildDiffRows({
+      const repoPath = normalizePath(res.repoPath || "");
+      const shouldDiff = !res.skipped && repoPath === DIFF_TARGET_PATH;
+
+      if (shouldDiff) {
+        console.log(`DIFF_READY path=${repoPath} shaPrev=${res.shaPrev || "-"} shaNew=${res.shaNew || "-"} oldLen=${res.oldBlob ? res.oldBlob.length : 0} newLen=${res.newBlob ? res.newBlob.length : 0}`);
+
+        const diffRows = buildTripsCatchDiffRows({
           datasetKey,
-          repoPath: res.repoPath,
+          repoPath,
           shaPrev: res.shaPrev,
           shaNew: res.shaNew,
           epochSec,
@@ -918,7 +891,7 @@ async function main() {
           newBlob: res.newBlob
         });
 
-        console.log(`FIELD_DIFF path=${res.repoPath || "-"} rows=${diffRows.length}`);
+        console.log(`FIELD_DIFF path=${repoPath} rows=${diffRows.length}`);
 
         if (diffRows.length > 0) {
           await airtableCreateRecords({
@@ -929,9 +902,7 @@ async function main() {
       }
 
       const committedAny = !res.skipped && (res.committed || 0) > 0;
-      let reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
-      if (useDiffer && !res.skipped) reason = `${reason} + differ`;
-
+      const reason = res.reason === "no_change" ? "skipped: no change" : (DRY_RUN ? "dry_run" : "published");
       await clearDirtySuccess({ recordId: r.id, committedAny, epochSec, reason });
     } catch (e) {
       const msg = String(e?.message || e).slice(0, 240);
