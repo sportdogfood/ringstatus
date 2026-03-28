@@ -452,10 +452,13 @@ async function buildAppContext(clock, mode) {
   let shiftedToNextDay = false;
   let heldoverFromSunday = false;
 
-  if (mode === "NIGHT" || mode === "OVERNIGHT") {
-    appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
-    shiftedToNextDay = true;
-  } else if (mode === "HOLDOVER") {
+  if (mode === "NIGHT") {
+  appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
+  shiftedToNextDay = true;
+} else if (mode === "OVERNIGHT") {
+  appSqlDate = clock.sqlDate;
+  shiftedToNextDay = false;
+} else if (mode === "HOLDOVER") {
     const best = await getLatestLastSundayForCustomer(CUSTOMER_ID);
     if (!best) {
       effectiveMode = "DAY";
