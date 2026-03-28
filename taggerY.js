@@ -1,6 +1,4 @@
 // tagger.js (CLEAN HEARTBEAT + RELINK + OVERNIGHT MODE)
-// light proactive logging + small shows guardrails
-// intended to help diagnose endpoint/show conflicts without overhauling core behavior
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -64,32 +62,7 @@ const FORCE_MODE            = String(process.env.FORCE_MODE || "").trim().toUppe
 const DRY_RUN               = String(process.env.DRY_RUN || "0") === "1";
 const HB_TZ                 = process.env.HB_TIMEZONE || "America/New_York";
 
-// light logging controls
-const LOG_ACCEPTED_ENDPOINT = String(process.env.LOG_ACCEPTED_ENDPOINT || "1") === "1";
-const LOG_TRANSITIONS       = String(process.env.LOG_TRANSITIONS || "1") === "1";
-const LOG_SHOWS_SYNC        = String(process.env.LOG_SHOWS_SYNC || "1") === "1";
-const LOG_RELINK_SUMMARY    = String(process.env.LOG_RELINK_SUMMARY || "0") === "1";
-
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
-function logEvent(level, event, data = {}) {
-  const payload = {
-    level,
-    event,
-    ts: new Date().toISOString(),
-    dry_run: DRY_RUN,
-    ...data
-  };
-  try {
-    console.log(JSON.stringify(payload));
-  } catch {
-    console.log(`[${level}] ${event}`);
-  }
-}
-
-const logInfo = (event, data) => logEvent("info", event, data);
-const logWarn = (event, data) => logEvent("warn", event, data);
-const logError = (event, data) => logEvent("error", event, data);
 
 function airtableUrl(tableName) {
   return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
@@ -406,12 +379,7 @@ async function getClockSafe() {
     const txt = await res.text();
 
     if (!res.ok) {
-      logWarn("endpoint_fallback_http", {
-        endpoint: RING_ENDPOINT,
-        http_status: res.status,
-        system_sql_date: systemClock.sqlDate,
-        system_time: systemClock.time
-      });
+      console.log(`clock warn: endpoint http ${res.status}, using system clock`);
       return systemClock;
     }
 
@@ -419,59 +387,25 @@ async function getClockSafe() {
     try {
       payload = JSON.parse(txt);
     } catch {
-      logWarn("endpoint_fallback_invalid_json", {
-        endpoint: RING_ENDPOINT,
-        body_sample: txt.slice(0, 250),
-        system_sql_date: systemClock.sqlDate,
-        system_time: systemClock.time
-      });
+      console.log("clock warn: endpoint invalid json, using system clock");
       return systemClock;
     }
 
     const endpointClock = pickClockFromPayload(payload);
     if (!endpointClock) {
-      logWarn("endpoint_fallback_missing_clock_values", {
-        endpoint: RING_ENDPOINT,
-        system_sql_date: systemClock.sqlDate,
-        system_time: systemClock.time
-      });
+      console.log("clock warn: endpoint missing clock values, using system clock");
       return systemClock;
     }
 
     const systemSqlDate = systemClock.sqlDate;
     if (String(endpointClock.sqlDate || "") !== String(systemSqlDate || "")) {
-      logWarn("endpoint_fallback_sql_date_mismatch", {
-        endpoint: RING_ENDPOINT,
-        endpoint_show_id: endpointClock.showId,
-        endpoint_show_date: endpointClock.showDate,
-        endpoint_sql_date: endpointClock.sqlDate,
-        endpoint_time: endpointClock.time,
-        system_sql_date: systemSqlDate,
-        system_time: systemClock.time
-      });
+      console.log(`clock warn: endpoint sql_date ${endpointClock.sqlDate} != system today ${systemSqlDate}, using system clock`);
       return systemClock;
-    }
-
-    if (LOG_ACCEPTED_ENDPOINT) {
-      logInfo("endpoint_clock_accepted", {
-        endpoint: RING_ENDPOINT,
-        endpoint_show_id: endpointClock.showId,
-        endpoint_show_date: endpointClock.showDate,
-        endpoint_sql_date: endpointClock.sqlDate,
-        endpoint_time: endpointClock.time,
-        source: endpointClock.source
-      });
     }
 
     return endpointClock;
   } catch (e) {
-    logWarn("endpoint_fallback_fetch_error", {
-      endpoint: RING_ENDPOINT,
-      error_name: e?.name || null,
-      error_message: String(e?.message || e).slice(0, 240),
-      system_sql_date: systemClock.sqlDate,
-      system_time: systemClock.time
-    });
+    console.log(`clock warn: ${String(e?.message || e).slice(0, 180)}, using system clock`);
     return systemClock;
   }
 }
@@ -510,7 +444,6 @@ async function getLatestLastSundayForCustomer(customerId) {
 }
 
 async function buildAppContext(clock, mode) {
-  const originalMode = mode;
   const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
   let effectiveMode = mode;
 
@@ -520,12 +453,12 @@ async function buildAppContext(clock, mode) {
   let heldoverFromSunday = false;
 
   if (mode === "NIGHT") {
-    appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
-    shiftedToNextDay = true;
-  } else if (mode === "OVERNIGHT") {
-    appSqlDate = clock.sqlDate;
-    shiftedToNextDay = false;
-  } else if (mode === "HOLDOVER") {
+  appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
+  shiftedToNextDay = true;
+} else if (mode === "OVERNIGHT") {
+  appSqlDate = clock.sqlDate;
+  shiftedToNextDay = false;
+} else if (mode === "HOLDOVER") {
     const best = await getLatestLastSundayForCustomer(CUSTOMER_ID);
     if (!best) {
       effectiveMode = "DAY";
@@ -540,7 +473,7 @@ async function buildAppContext(clock, mode) {
 
   const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
 
-  const appCtx = {
+  return {
     effectiveMode,
     dowRaw,
     appShowId,
@@ -549,44 +482,6 @@ async function buildAppContext(clock, mode) {
     shiftedToNextDay,
     heldoverFromSunday,
   };
-
-  if (LOG_TRANSITIONS) {
-    logInfo("app_context_computed", {
-      source: clock.source,
-      original_mode: originalMode,
-      effective_mode: effectiveMode,
-      raw_show_id: clock.showId ?? null,
-      raw_show_date: clock.showDate ?? null,
-      raw_sql_date: clock.sqlDate,
-      raw_time: clock.time,
-      app_show_id: appShowId,
-      app_sql_date: appSqlDate,
-      shifted_to_next_day: shiftedToNextDay,
-      heldover_from_sunday: heldoverFromSunday
-    });
-  }
-
-  if (shiftedToNextDay === true && String(appSqlDate) === String(clock.sqlDate)) {
-    logWarn("app_context_conflict_shifted_true_same_date", {
-      mode: effectiveMode,
-      raw_sql_date: clock.sqlDate,
-      app_sql_date: appSqlDate,
-      raw_show_id: clock.showId ?? null,
-      app_show_id: appShowId
-    });
-  }
-
-  if (shiftedToNextDay === false && String(appSqlDate) !== String(clock.sqlDate) && !heldoverFromSunday) {
-    logWarn("app_context_conflict_shifted_false_different_date", {
-      mode: effectiveMode,
-      raw_sql_date: clock.sqlDate,
-      app_sql_date: appSqlDate,
-      raw_show_id: clock.showId ?? null,
-      app_show_id: appShowId
-    });
-  }
-
-  return appCtx;
 }
 
 async function createHeartbeat(clock, mode, intervalMin, appCtx) {
@@ -619,14 +514,6 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
   };
 
   if (DRY_RUN) {
-    logInfo("heartbeat_create_dry_run", {
-      heartbeat_id: fields[HEARTBEAT_ID_FIELD],
-      raw_show_id: fields[HEARTBEAT_SHOW_ID],
-      raw_sql_date: fields[HEARTBEAT_SQL_DATE],
-      app_show_id: fields[FIELD_APP_SHOW_ID],
-      app_sql_date: fields[FIELD_APP_SQL_DATE],
-      mode
-    });
     return { id: "recDRYRUNHEARTBEAT", fields };
   }
 
@@ -664,49 +551,10 @@ async function relinkHeartbeatView(tableName, heartbeatId) {
     await airtableBatchUpdate(tableName, updates);
   }
 
-  const summary = {
+  return {
     table: tableName,
     found_in_view: rows.length,
     relinked: updates.length
-  };
-
-  if (LOG_RELINK_SUMMARY && updates.length) {
-    logInfo("relink_summary", summary);
-  }
-
-  return summary;
-}
-
-async function findShowsMatchInView(appShowId) {
-  const rows = await airtableListAll({
-    table: TABLE_SHOWS,
-    view: VIEW_HEARTBEAT,
-    fields: [FIELD_SHOW_ID, FIELD_LINK_HEARTBEAT]
-  });
-
-  const normalized = String(appShowId).trim();
-  const matches = rows.filter(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === normalized);
-
-  return {
-    rows,
-    matches,
-    match: matches[0] || null
-  };
-}
-
-async function findShowsMatchAnywhere(appShowId) {
-  const rows = await airtableListAll({
-    table: TABLE_SHOWS,
-    fields: [FIELD_SHOW_ID, FIELD_LINK_HEARTBEAT]
-  });
-
-  const normalized = String(appShowId).trim();
-  const matches = rows.filter(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === normalized);
-
-  return {
-    rows,
-    matches,
-    match: matches[0] || null
   };
 }
 
@@ -715,16 +563,6 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
   const appShowId = appCtx.appShowId;
 
   if (appShowId === null || appShowId === undefined || String(appShowId).trim() === "") {
-    if (LOG_SHOWS_SYNC) {
-      logWarn("shows_sync_skipped_missing_app_show_id", {
-        heartbeat_record_id: heartbeatId,
-        app_show_id: appShowId,
-        app_sql_date: appCtx.appSqlDate,
-        shifted_to_next_day: appCtx.shiftedToNextDay,
-        heldover_from_sunday: appCtx.heldoverFromSunday
-      });
-    }
-
     return {
       table: TABLE_SHOWS,
       found_in_view: 0,
@@ -735,32 +573,17 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     };
   }
 
-  const viewLookup = await findShowsMatchInView(appShowId);
+  const rows = await airtableListAll({
+    table: TABLE_SHOWS,
+    view: VIEW_HEARTBEAT,
+    fields: [FIELD_SHOW_ID, FIELD_LINK_HEARTBEAT]
+  });
 
-  if (viewLookup.matches.length > 1) {
-    logWarn("shows_sync_duplicate_matches_in_view", {
-      app_show_id: appShowId,
-      count: viewLookup.matches.length,
-      record_ids: viewLookup.matches.map(r => r.id)
-    });
-  }
+  const match = rows.find(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === String(appShowId).trim());
 
-  if (viewLookup.match) {
-    const match = viewLookup.match;
+  if (match) {
     const current = currentHeartbeatLinkIds(match.fields?.[FIELD_LINK_HEARTBEAT]);
     const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
-
-    if (LOG_SHOWS_SYNC) {
-      logInfo("shows_sync_update_existing_in_view", {
-        app_show_id: appShowId,
-        app_sql_date: appCtx.appSqlDate,
-        heartbeat_record_id: heartbeatId,
-        matched_record_id: match.id,
-        existing_heartbeat_links: current,
-        already_correct: alreadyCorrect,
-        found_in_view: viewLookup.rows.length
-      });
-    }
 
     if (!alreadyCorrect && !DRY_RUN) {
       await airtableUpdateRecord(TABLE_SHOWS, match.id, {
@@ -770,52 +593,10 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
 
     return {
       table: TABLE_SHOWS,
-      found_in_view: viewLookup.rows.length,
+      found_in_view: rows.length,
       matched_show_id: appShowId,
       updated_existing: alreadyCorrect ? 0 : 1,
       created_new: 0
-    };
-  }
-
-  // guardrail: if not found in view, check entire table before creating a new row
-  const allLookup = await findShowsMatchAnywhere(appShowId);
-
-  if (allLookup.matches.length > 1) {
-    logWarn("shows_sync_duplicate_matches_anywhere", {
-      app_show_id: appShowId,
-      count: allLookup.matches.length,
-      record_ids: allLookup.matches.map(r => r.id)
-    });
-  }
-
-  if (allLookup.match) {
-    const match = allLookup.match;
-    const current = currentHeartbeatLinkIds(match.fields?.[FIELD_LINK_HEARTBEAT]);
-    const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
-
-    logWarn("shows_sync_guard_found_match_outside_view", {
-      app_show_id: appShowId,
-      app_sql_date: appCtx.appSqlDate,
-      heartbeat_record_id: heartbeatId,
-      matched_record_id: match.id,
-      existing_heartbeat_links: current,
-      found_in_view: viewLookup.rows.length,
-      found_anywhere: allLookup.rows.length
-    });
-
-    if (!alreadyCorrect && !DRY_RUN) {
-      await airtableUpdateRecord(TABLE_SHOWS, match.id, {
-        [FIELD_LINK_HEARTBEAT]: [heartbeatId]
-      });
-    }
-
-    return {
-      table: TABLE_SHOWS,
-      found_in_view: viewLookup.rows.length,
-      matched_show_id: appShowId,
-      updated_existing: alreadyCorrect ? 0 : 1,
-      created_new: 0,
-      recovered_from_out_of_view_match: 1
     };
   }
 
@@ -833,24 +614,13 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     [FIELD_HELDOVER_SUNDAY]: appCtx.heldoverFromSunday
   };
 
-  if (LOG_SHOWS_SYNC) {
-    logWarn("shows_sync_create_new_record", {
-      app_show_id: appShowId,
-      app_sql_date: appCtx.appSqlDate,
-      heartbeat_record_id: heartbeatId,
-      found_in_view: viewLookup.rows.length,
-      found_anywhere: allLookup.rows.length,
-      create_fields: createFields
-    });
-  }
-
   if (!DRY_RUN) {
     await airtableCreateRecord(TABLE_SHOWS, createFields);
   }
 
   return {
     table: TABLE_SHOWS,
-    found_in_view: viewLookup.rows.length,
+    found_in_view: rows.length,
     matched_show_id: appShowId,
     updated_existing: 0,
     created_new: 1
@@ -865,19 +635,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     mode = appCtx.effectiveMode;
     const intervalMin = intervalMinutesForMode(mode);
 
-    logInfo("run_summary_pre_write", {
-      mode,
-      source: clk.source,
-      raw_show_id: clk.showId ?? null,
-      raw_show_date: clk.showDate ?? null,
-      raw_sql_date: clk.sqlDate,
-      raw_time: clk.time,
-      app_show_id: appCtx.appShowId,
-      app_sql_date: appCtx.appSqlDate,
-      shifted_to_next_day: appCtx.shiftedToNextDay,
-      heldover_from_sunday: appCtx.heldoverFromSunday,
-      interval_min: intervalMin
-    });
+    console.log(`mode=${mode} source=${clk.source} dry_run=${DRY_RUN}`);
 
     const heartbeatRecord = await createHeartbeat(clk, mode, intervalMin, appCtx);
 
@@ -887,14 +645,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     try {
       results.push(await syncShowsHeartbeat(heartbeatRecord, appCtx));
     } catch (e) {
-      const msg = String(e?.message || e).slice(0, 240);
-      warnings.push(`shows: ${msg}`);
-      logError("shows_sync_failed", {
-        heartbeat_record_id: heartbeatRecord?.id || null,
-        app_show_id: appCtx.appShowId,
-        app_sql_date: appCtx.appSqlDate,
-        error_message: msg
-      });
+      warnings.push(`shows: ${String(e?.message || e).slice(0, 240)}`);
     }
 
     for (const tableName of [
@@ -908,13 +659,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
       try {
         results.push(await relinkHeartbeatView(tableName, heartbeatRecord.id));
       } catch (e) {
-        const msg = String(e?.message || e).slice(0, 240);
-        warnings.push(`${tableName}: ${msg}`);
-        logError("relink_failed", {
-          table: tableName,
-          heartbeat_record_id: heartbeatRecord?.id || null,
-          error_message: msg
-        });
+        warnings.push(`${tableName}: ${String(e?.message || e).slice(0, 240)}`);
       }
     }
 
@@ -932,10 +677,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
   } catch (e) {
     const name = e?.name || "error";
     const msg = String(e?.message || e);
-    logError("fatal", {
-      error_name: name,
-      error_message: msg.slice(0, 240)
-    });
+    console.log(`fatal: ${name} ${msg.slice(0, 240)}`);
     process.exit(1);
   }
 })();
