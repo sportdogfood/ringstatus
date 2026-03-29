@@ -573,7 +573,11 @@ async function buildAppContext(clock, mode) {
     });
   }
 
-  if (shiftedToNextDay === false && String(appSqlDate) !== String(clock.sqlDate) && !heldoverFromSunday) {
+  if (
+    shiftedToNextDay === false &&
+    String(appSqlDate) !== String(clock.sqlDate) &&
+    !heldoverFromSunday
+  ) {
     logWarn("app_context_conflict_shifted_false_different_date", {
       mode: effectiveMode,
       raw_sql_date: clock.sqlDate,
