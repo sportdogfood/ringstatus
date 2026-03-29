@@ -186,6 +186,34 @@ async function airtableListAll({ table, view, fields }) {
   return out;
 }
 
+async function airtableListSome({ table, view, fields, maxRecords, sortField, sortDirection = "desc" }) {
+  const url = new URL(airtableUrl(table));
+  if (view) url.searchParams.set("view", view);
+  if (Number.isFinite(Number(maxRecords)) && Number(maxRecords) > 0) {
+    url.searchParams.set("maxRecords", String(maxRecords));
+  }
+  if (sortField) {
+    url.searchParams.set("sort[0][field]", sortField);
+    url.searchParams.set("sort[0][direction]", sortDirection);
+  }
+  for (const f of fields || []) url.searchParams.append("fields[]", f);
+
+  const res = await fetchWithRetry(url.toString(), {
+    method: "GET",
+    headers: headers(),
+  });
+
+  const txt = await res.text();
+  let json = {};
+  try { json = JSON.parse(txt); } catch {}
+
+  if (!res.ok) {
+    throw new Error(`Airtable list failed (${table}/${view || "-"}) ${res.status} ${txt.slice(0, 300)}`);
+  }
+
+  return json.records || [];
+}
+
 async function airtableCreateRecord(table, fields) {
   const res = await fetchWithRetry(airtableUrl(table), {
     method: "POST",
@@ -506,6 +534,55 @@ async function getLatestLastSundayForCustomer(customerId) {
   return best;
 }
 
+async function getLatestShiftedHeartbeatContext(clock) {
+  const rows = await airtableListSome({
+    table: TABLE_HEARTBEAT,
+    fields: [
+      FIELD_EPOCH,
+      FIELD_MODE,
+      FIELD_APP_SHOW_ID,
+      FIELD_APP_SQL_DATE,
+      FIELD_SHIFTED_NEXT_DAY,
+      HEARTBEAT_SHOW_ID,
+      HEARTBEAT_SQL_DATE,
+      FIELD_HB_AT
+    ],
+    maxRecords: 25,
+    sortField: FIELD_EPOCH,
+    sortDirection: "desc"
+  });
+
+  const nowEpoch = Number(clock?.nowEpoch || 0);
+
+  for (const r of rows) {
+    const f = r.fields || {};
+    const rowEpoch = Number(f[FIELD_EPOCH] || 0);
+    const rowMode = normalizeMode(f[FIELD_MODE]);
+    const rowAppSqlDate = String(f[FIELD_APP_SQL_DATE] || "").trim();
+    const rowAppShowId = f[FIELD_APP_SHOW_ID] ?? null;
+    const rowShifted = !!f[FIELD_SHIFTED_NEXT_DAY];
+
+    if (!rowEpoch || rowEpoch >= nowEpoch) continue;
+    if ((nowEpoch - rowEpoch) > (18 * 3600)) continue;
+    if (!rowAppSqlDate) continue;
+    if (!(rowShifted || rowMode === "NIGHT")) continue;
+
+    return {
+      recordId: r.id,
+      epoch: rowEpoch,
+      mode: rowMode,
+      appShowId: rowAppShowId,
+      appSqlDate: rowAppSqlDate,
+      shiftedToNextDay: rowShifted,
+      rawShowId: f[HEARTBEAT_SHOW_ID] ?? null,
+      rawSqlDate: String(f[HEARTBEAT_SQL_DATE] || "").trim(),
+      hbAt: f[FIELD_HB_AT] || null
+    };
+  }
+
+  return null;
+}
+
 async function buildAppContext(clock, mode) {
   const originalMode = mode;
   const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
@@ -519,6 +596,33 @@ async function buildAppContext(clock, mode) {
   if (mode === "NIGHT") {
     appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
     shiftedToNextDay = true;
+  } else if (mode === "OVERNIGHT") {
+    const carry = await getLatestShiftedHeartbeatContext(clock);
+
+    if (carry) {
+      appShowId = carry.appShowId ?? appShowId;
+      appSqlDate = carry.appSqlDate;
+      shiftedToNextDay = true;
+
+      logInfo("overnight_carry_forward_applied", {
+        carry_record_id: carry.recordId,
+        carry_epoch: carry.epoch,
+        carry_mode: carry.mode,
+        carry_app_show_id: carry.appShowId,
+        carry_app_sql_date: carry.appSqlDate,
+        raw_show_id: clock.showId ?? null,
+        raw_sql_date: clock.sqlDate,
+        raw_time: clock.time
+      });
+    } else {
+      logWarn("overnight_carry_forward_missing", {
+        raw_show_id: clock.showId ?? null,
+        raw_sql_date: clock.sqlDate,
+        raw_time: clock.time,
+        fallback_app_show_id: appShowId,
+        fallback_app_sql_date: appSqlDate
+      });
+    }
   } else if (mode === "HOLDOVER") {
     const best = await getLatestLastSundayForCustomer(CUSTOMER_ID);
     if (!best) {
@@ -560,7 +664,7 @@ async function buildAppContext(clock, mode) {
     });
   }
 
-  if (shiftedToNextDay === true && String(appSqlDate) === String(clock.sqlDate)) {
+  if (shiftedToNextDay === true && String(appSqlDate) === String(clock.sqlDate) && mode !== "OVERNIGHT") {
     logWarn("app_context_conflict_shifted_true_same_date", {
       mode: effectiveMode,
       raw_sql_date: clock.sqlDate,
