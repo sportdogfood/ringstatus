@@ -332,22 +332,19 @@ function resolveModeFromClock(clock) {
   const dow = dayOfWeekUtc(sqlDate);
   const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
 
-  // Sunday
   if (dow === 0) {
-    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";      // 5:00 AM - 4:59 PM
-    return "HOLDOVER";                                                // all other Sunday times
+    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";
+    return "HOLDOVER";
   }
 
-  // Monday
   if (dow === 1) {
     return "HOLDOVER";
   }
 
-  // Tuesday - Saturday
   if (dow >= 2 && dow <= 6) {
-    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";       // 5:00 AM - 4:59 PM
-    if (minuteOfDay >= 1020 && minuteOfDay <= 1319) return "NIGHT";    // 5:00 PM - 9:59 PM
-    return "OVERNIGHT";                                                 // 10:00 PM - 4:59 AM
+    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";
+    if (minuteOfDay >= 1020 && minuteOfDay <= 1319) return "NIGHT";
+    return "OVERNIGHT";
   }
 
   return "HOLDOVER";
@@ -590,45 +587,6 @@ async function buildAppContext(clock, mode) {
   return appCtx;
 }
 
-  if (LOG_TRANSITIONS) {
-    logInfo("app_context_computed", {
-      source: clock.source,
-      original_mode: originalMode,
-      effective_mode: effectiveMode,
-      raw_show_id: clock.showId ?? null,
-      raw_show_date: clock.showDate ?? null,
-      raw_sql_date: clock.sqlDate,
-      raw_time: clock.time,
-      app_show_id: appShowId,
-      app_sql_date: appSqlDate,
-      shifted_to_next_day: shiftedToNextDay,
-      heldover_from_sunday: heldoverFromSunday
-    });
-  }
-
-  if (shiftedToNextDay === true && String(appSqlDate) === String(clock.sqlDate)) {
-    logWarn("app_context_conflict_shifted_true_same_date", {
-      mode: effectiveMode,
-      raw_sql_date: clock.sqlDate,
-      app_sql_date: appSqlDate,
-      raw_show_id: clock.showId ?? null,
-      app_show_id: appShowId
-    });
-  }
-
-  if (shiftedToNextDay === false && String(appSqlDate) !== String(clock.sqlDate) && !heldoverFromSunday) {
-    logWarn("app_context_conflict_shifted_false_different_date", {
-      mode: effectiveMode,
-      raw_sql_date: clock.sqlDate,
-      app_sql_date: appSqlDate,
-      raw_show_id: clock.showId ?? null,
-      app_show_id: appShowId
-    });
-  }
-
-  return appCtx;
-}
-
 async function createHeartbeat(clock, mode, intervalMin, appCtx) {
   const sqlDate = String(clock?.sqlDate || "").trim();
   const epoch = Number(clock?.nowEpoch);
@@ -817,7 +775,6 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     };
   }
 
-  // guardrail: if not found in view, check entire table before creating a new row
   const allLookup = await findShowsMatchAnywhere(appShowId);
 
   if (allLookup.matches.length > 1) {
