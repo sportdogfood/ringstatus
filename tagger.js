@@ -522,9 +522,6 @@ async function buildAppContext(clock, mode) {
   if (mode === "NIGHT") {
     appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
     shiftedToNextDay = true;
-  } else if (mode === "OVERNIGHT") {
-    appSqlDate = clock.sqlDate;
-    shiftedToNextDay = false;
   } else if (mode === "HOLDOVER") {
     const best = await getLatestLastSundayForCustomer(CUSTOMER_ID);
     if (!best) {
@@ -549,6 +546,45 @@ async function buildAppContext(clock, mode) {
     shiftedToNextDay,
     heldoverFromSunday,
   };
+
+  if (LOG_TRANSITIONS) {
+    logInfo("app_context_computed", {
+      source: clock.source,
+      original_mode: originalMode,
+      effective_mode: effectiveMode,
+      raw_show_id: clock.showId ?? null,
+      raw_show_date: clock.showDate ?? null,
+      raw_sql_date: clock.sqlDate,
+      raw_time: clock.time,
+      app_show_id: appShowId,
+      app_sql_date: appSqlDate,
+      shifted_to_next_day: shiftedToNextDay,
+      heldover_from_sunday: heldoverFromSunday
+    });
+  }
+
+  if (shiftedToNextDay === true && String(appSqlDate) === String(clock.sqlDate)) {
+    logWarn("app_context_conflict_shifted_true_same_date", {
+      mode: effectiveMode,
+      raw_sql_date: clock.sqlDate,
+      app_sql_date: appSqlDate,
+      raw_show_id: clock.showId ?? null,
+      app_show_id: appShowId
+    });
+  }
+
+  if (shiftedToNextDay === false && String(appSqlDate) !== String(clock.sqlDate) && !heldoverFromSunday) {
+    logWarn("app_context_conflict_shifted_false_different_date", {
+      mode: effectiveMode,
+      raw_sql_date: clock.sqlDate,
+      app_sql_date: appSqlDate,
+      raw_show_id: clock.showId ?? null,
+      app_show_id: appShowId
+    });
+  }
+
+  return appCtx;
+}
 
   if (LOG_TRANSITIONS) {
     logInfo("app_context_computed", {
