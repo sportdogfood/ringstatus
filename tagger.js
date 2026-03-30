@@ -1,6 +1,12 @@
-// tagger.js (CLEAN HEARTBEAT + RELINK + OVERNIGHT MODE)
-// light proactive logging + small shows guardrails
-// intended to help diagnose endpoint/show conflicts without overhauling core behavior
+// tagger.js (SIMPLIFIED 3-MODE VERSION)
+// DAY / NIGHT / OVERNIGHT only
+// - raw clock always comes from endpoint/system fallback
+// - NIGHT shifts app_sql_date to next day
+// - OVERNIGHT preserves the shifted app context already established by NIGHT
+// - shows table still matches-or-creates by app_show_id
+// - shows table heartbeat link is overwritten to the latest heartbeat only
+// - new show checkbox is checked on create
+// - shifted_to_next_day checkbox is checked for NIGHT and OVERNIGHT
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -18,8 +24,7 @@ const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants
 const TABLE_ACTIVE_ALERTS  = process.env.TABLE_ACTIVE_ALERTS || "active_alerts";
 const TABLE_WATCH_RINGS    = process.env.TABLE_WATCH_RINGS || "watch_rings";
 
-const VIEW_HEARTBEAT   = process.env.VIEW_HEARTBEAT || "heartbeat";
-const VIEW_SHOWS_EPOCH = process.env.VIEW_SHOWS_EPOCH || "epoch";
+const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
 
 const RING_ENDPOINT = `https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 
@@ -28,43 +33,37 @@ const FIELD_SHOW_ID            = process.env.FIELD_SHOW_ID || "show_id";
 const FIELD_NEW_APP_SHOW_ID    = process.env.FIELD_NEW_APP_SHOW_ID || "new_app_show_id";
 const FIELD_NEW_APP_SHOW_ID_AT = process.env.FIELD_NEW_APP_SHOW_ID_AT || "new_app_show_id_at";
 
-const FIELD_MODE              = process.env.FIELD_MODE || "mode";
-const FIELD_EPOCH             = process.env.FIELD_EPOCH || "epoch";
-const FIELD_HB_DURATION       = process.env.FIELD_HB_DURATION || "hb_duration";
-const FIELD_INTERVAL          = process.env.FIELD_INTERVAL || "interval";
-const FIELD_HB_AT             = process.env.FIELD_HB_AT || "hb_at";
+const FIELD_MODE             = process.env.FIELD_MODE || "mode";
+const FIELD_EPOCH            = process.env.FIELD_EPOCH || "epoch";
+const FIELD_HB_DURATION      = process.env.FIELD_HB_DURATION || "hb_duration";
+const FIELD_INTERVAL         = process.env.FIELD_INTERVAL || "interval";
+const FIELD_HB_AT            = process.env.FIELD_HB_AT || "hb_at";
 
-const FIELD_APP_SHOW_ID       = process.env.FIELD_APP_SHOW_ID || "app_show_id";
-const FIELD_APP_SQL_DATE      = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
-const FIELD_APP_DOW_RAW       = process.env.FIELD_APP_DOW_RAW || "app_dow_raw";
-const FIELD_DOW_RAW           = process.env.FIELD_DOW_RAW || "dow_raw";
-const FIELD_SHIFTED_NEXT_DAY  = process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
-const FIELD_HELDOVER_SUNDAY   = process.env.FIELD_HELDOVER_SUNDAY || "heldover_from_sunday";
+const FIELD_APP_SHOW_ID      = process.env.FIELD_APP_SHOW_ID || "app_show_id";
+const FIELD_APP_SQL_DATE     = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
+const FIELD_APP_DOW_RAW      = process.env.FIELD_APP_DOW_RAW || "app_dow_raw";
+const FIELD_DOW_RAW          = process.env.FIELD_DOW_RAW || "dow_raw";
+const FIELD_SHIFTED_NEXT_DAY = process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
+const FIELD_HELDOVER_SUNDAY  = process.env.FIELD_HELDOVER_SUNDAY || "heldover_from_sunday";
 
-const HEARTBEAT_ID_FIELD      = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
-const HEARTBEAT_SHOW_ID       = process.env.HEARTBEAT_SHOW_ID || "show_id";
-const HEARTBEAT_SHOW_DATE     = process.env.HEARTBEAT_SHOW_DATE || "show_date";
-const HEARTBEAT_SQL_DATE      = process.env.HEARTBEAT_SQL_DATE || "sql_date";
-const HEARTBEAT_TIME          = process.env.HEARTBEAT_TIME || "time";
-
-const FIELD_LAST_SUNDAY_SHOW_ID  = process.env.FIELD_LAST_SUNDAY_SHOW_ID || "last_sunday_show_id";
-const FIELD_LAST_SUNDAY_SQL_DATE = process.env.FIELD_LAST_SUNDAY_SQL_DATE || "last_sunday_sql_date";
-const FIELD_CUSTOMER_ID          = process.env.FIELD_CUSTOMER_ID || "customer_id";
+const HEARTBEAT_ID_FIELD   = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
+const HEARTBEAT_SHOW_ID    = process.env.HEARTBEAT_SHOW_ID || "show_id";
+const HEARTBEAT_SHOW_DATE  = process.env.HEARTBEAT_SHOW_DATE || "show_date";
+const HEARTBEAT_SQL_DATE   = process.env.HEARTBEAT_SQL_DATE || "sql_date";
+const HEARTBEAT_TIME       = process.env.HEARTBEAT_TIME || "time";
 
 const DAY_INTERVAL_MIN       = Number(process.env.DAY_INTERVAL_MIN || "6");
 const NIGHT_INTERVAL_MIN     = Number(process.env.NIGHT_INTERVAL_MIN || "120");
-const HOLDOVER_INTERVAL_MIN  = Number(process.env.HOLDOVER_INTERVAL_MIN || "99999");
-const OVERNIGHT_INTERVAL_MIN = Number(process.env.OVERNIGHT_INTERVAL_MIN || String(HOLDOVER_INTERVAL_MIN));
+const OVERNIGHT_INTERVAL_MIN = Number(process.env.OVERNIGHT_INTERVAL_MIN || "99999");
 
-const HTTP_TIMEOUT_MS       = Number(process.env.HTTP_TIMEOUT_MS || "20000");
-const AT_RETRY_ATTEMPTS     = Number(process.env.AT_RETRY_ATTEMPTS || "3");
-const AT_RETRY_BASE_MS      = Number(process.env.AT_RETRY_BASE_MS || "400");
-const AT_RETRY_MAX_MS       = Number(process.env.AT_RETRY_MAX_MS || "2000");
-const FORCE_MODE            = String(process.env.FORCE_MODE || "").trim().toUpperCase();
-const DRY_RUN               = String(process.env.DRY_RUN || "0") === "1";
-const HB_TZ                 = process.env.HB_TIMEZONE || "America/New_York";
+const HTTP_TIMEOUT_MS   = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
+const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
+const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
+const FORCE_MODE        = String(process.env.FORCE_MODE || "").trim().toUpperCase();
+const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
+const HB_TZ             = process.env.HB_TIMEZONE || "America/New_York";
 
-// light logging controls
 const LOG_ACCEPTED_ENDPOINT = String(process.env.LOG_ACCEPTED_ENDPOINT || "1") === "1";
 const LOG_TRANSITIONS       = String(process.env.LOG_TRANSITIONS || "1") === "1";
 const LOG_SHOWS_SYNC        = String(process.env.LOG_SHOWS_SYNC || "1") === "1";
@@ -333,7 +332,7 @@ function minuteOfDayFromMs(ms, timeZone = HB_TZ) {
 function dayOfWeekUtc(sqlDate) {
   const d = new Date(`${sqlDate}T00:00:00Z`);
   if (isNaN(d.getTime())) return null;
-  return d.getUTCDay(); // 0 Sun .. 6 Sat
+  return d.getUTCDay();
 }
 
 function dowName(dow) {
@@ -349,40 +348,24 @@ function addDaysSql(sqlDate, days) {
 
 function normalizeMode(v) {
   const s = String(v ?? "").trim().toUpperCase();
-  if (s === "DAY" || s === "NIGHT" || s === "HOLDOVER" || s === "OVERNIGHT") return s;
-  return "HOLDOVER";
+  if (s === "DAY" || s === "NIGHT" || s === "OVERNIGHT") return s;
+  return "DAY";
 }
 
 function resolveModeFromClock(clock) {
   if (FORCE_MODE) return normalizeMode(FORCE_MODE);
 
-  const sqlDate = String(clock?.sqlDate || "").trim();
-  const dow = dayOfWeekUtc(sqlDate);
   const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
 
-  if (dow === 0) {
-    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";
-    return "HOLDOVER";
-  }
-
-  if (dow === 1) {
-    return "HOLDOVER";
-  }
-
-  if (dow >= 2 && dow <= 6) {
-    if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";
-    if (minuteOfDay >= 1020 && minuteOfDay <= 1319) return "NIGHT";
-    return "OVERNIGHT";
-  }
-
-  return "HOLDOVER";
+  if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";        // 5:00 AM - 4:59 PM
+  if (minuteOfDay >= 1020 && minuteOfDay <= 1319) return "NIGHT";     // 5:00 PM - 9:59 PM
+  return "OVERNIGHT";                                                  // 10:00 PM - 4:59 AM
 }
 
 function intervalMinutesForMode(mode) {
   if (mode === "DAY") return DAY_INTERVAL_MIN;
   if (mode === "NIGHT") return NIGHT_INTERVAL_MIN;
-  if (mode === "OVERNIGHT") return OVERNIGHT_INTERVAL_MIN;
-  return HOLDOVER_INTERVAL_MIN;
+  return OVERNIGHT_INTERVAL_MIN;
 }
 
 function buildFallbackClock() {
@@ -501,40 +484,7 @@ async function getClockSafe() {
   }
 }
 
-async function getLatestLastSundayForCustomer(customerId) {
-  const rows = await airtableListAll({
-    table: TABLE_SHOWS,
-    view: VIEW_SHOWS_EPOCH,
-    fields: [FIELD_CUSTOMER_ID, FIELD_LAST_SUNDAY_SHOW_ID, FIELD_LAST_SUNDAY_SQL_DATE]
-  });
-
-  let best = null;
-  let bestKey = -1;
-
-  for (const r of rows) {
-    const f = r.fields || {};
-    if (String(f[FIELD_CUSTOMER_ID] ?? "") !== String(customerId)) continue;
-
-    const sid = f[FIELD_LAST_SUNDAY_SHOW_ID];
-    const sdt = String(f[FIELD_LAST_SUNDAY_SQL_DATE] || "").trim();
-
-    if (sid === null || sid === undefined || String(sid) === "") continue;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(sdt)) continue;
-
-    const k = Number(sdt.replaceAll("-", ""));
-    if (Number.isFinite(k) && k > bestKey) {
-      bestKey = k;
-      best = {
-        lastSundayShowId: sid,
-        lastSundaySqlDate: sdt,
-      };
-    }
-  }
-
-  return best;
-}
-
-async function getLatestShiftedHeartbeatContext(clock) {
+async function getLatestNightContext(clock) {
   const rows = await airtableListSome({
     table: TABLE_HEARTBEAT,
     fields: [
@@ -565,7 +515,7 @@ async function getLatestShiftedHeartbeatContext(clock) {
     if (!rowEpoch || rowEpoch >= nowEpoch) continue;
     if ((nowEpoch - rowEpoch) > (18 * 3600)) continue;
     if (!rowAppSqlDate) continue;
-    if (!(rowShifted || rowMode === "NIGHT")) continue;
+    if (!(rowShifted || rowMode === "NIGHT" || rowMode === "OVERNIGHT")) continue;
 
     return {
       recordId: r.id,
@@ -584,20 +534,18 @@ async function getLatestShiftedHeartbeatContext(clock) {
 }
 
 async function buildAppContext(clock, mode) {
-  const originalMode = mode;
   const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
-  let effectiveMode = mode;
 
   let appShowId = clock.showId ?? null;
   let appSqlDate = clock.sqlDate;
   let shiftedToNextDay = false;
-  let heldoverFromSunday = false;
+  const heldoverFromSunday = false;
 
   if (mode === "NIGHT") {
     appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
     shiftedToNextDay = true;
   } else if (mode === "OVERNIGHT") {
-    const carry = await getLatestShiftedHeartbeatContext(clock);
+    const carry = await getLatestNightContext(clock);
 
     if (carry) {
       appShowId = carry.appShowId ?? appShowId;
@@ -615,7 +563,10 @@ async function buildAppContext(clock, mode) {
         raw_time: clock.time
       });
     } else {
-      logWarn("overnight_carry_forward_missing", {
+      appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
+      shiftedToNextDay = true;
+
+      logWarn("overnight_carry_forward_missing_using_shifted_raw", {
         raw_show_id: clock.showId ?? null,
         raw_sql_date: clock.sqlDate,
         raw_time: clock.time,
@@ -623,23 +574,12 @@ async function buildAppContext(clock, mode) {
         fallback_app_sql_date: appSqlDate
       });
     }
-  } else if (mode === "HOLDOVER") {
-    const best = await getLatestLastSundayForCustomer(CUSTOMER_ID);
-    if (!best) {
-      effectiveMode = "DAY";
-      appShowId = clock.showId ?? null;
-      appSqlDate = clock.sqlDate;
-    } else {
-      appShowId = best.lastSundayShowId;
-      appSqlDate = best.lastSundaySqlDate;
-      heldoverFromSunday = true;
-    }
   }
 
   const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
 
   const appCtx = {
-    effectiveMode,
+    effectiveMode: mode,
     dowRaw,
     appShowId,
     appSqlDate,
@@ -651,40 +591,14 @@ async function buildAppContext(clock, mode) {
   if (LOG_TRANSITIONS) {
     logInfo("app_context_computed", {
       source: clock.source,
-      original_mode: originalMode,
-      effective_mode: effectiveMode,
+      effective_mode: mode,
       raw_show_id: clock.showId ?? null,
       raw_show_date: clock.showDate ?? null,
       raw_sql_date: clock.sqlDate,
       raw_time: clock.time,
       app_show_id: appShowId,
       app_sql_date: appSqlDate,
-      shifted_to_next_day: shiftedToNextDay,
-      heldover_from_sunday: heldoverFromSunday
-    });
-  }
-
-  if (shiftedToNextDay === true && String(appSqlDate) === String(clock.sqlDate) && mode !== "OVERNIGHT") {
-    logWarn("app_context_conflict_shifted_true_same_date", {
-      mode: effectiveMode,
-      raw_sql_date: clock.sqlDate,
-      app_sql_date: appSqlDate,
-      raw_show_id: clock.showId ?? null,
-      app_show_id: appShowId
-    });
-  }
-
-  if (
-    shiftedToNextDay === false &&
-    String(appSqlDate) !== String(clock.sqlDate) &&
-    !heldoverFromSunday
-  ) {
-    logWarn("app_context_conflict_shifted_false_different_date", {
-      mode: effectiveMode,
-      raw_sql_date: clock.sqlDate,
-      app_sql_date: appSqlDate,
-      raw_show_id: clock.showId ?? null,
-      app_show_id: appShowId
+      shifted_to_next_day: shiftedToNextDay
     });
   }
 
@@ -717,7 +631,7 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
     [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
     [FIELD_DOW_RAW]: appCtx.dowRaw,
     [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
-    [FIELD_HELDOVER_SUNDAY]: appCtx.heldoverFromSunday,
+    [FIELD_HELDOVER_SUNDAY]: false,
   };
 
   if (DRY_RUN) {
@@ -812,7 +726,7 @@ async function findShowsMatchAnywhere(appShowId) {
   };
 }
 
-async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
+async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
   const heartbeatId = heartbeatRecord.id;
   const appShowId = appCtx.appShowId;
 
@@ -822,8 +736,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
         heartbeat_record_id: heartbeatId,
         app_show_id: appShowId,
         app_sql_date: appCtx.appSqlDate,
-        shifted_to_next_day: appCtx.shiftedToNextDay,
-        heldover_from_sunday: appCtx.heldoverFromSunday
+        shifted_to_next_day: appCtx.shiftedToNextDay
       });
     }
 
@@ -858,7 +771,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
         app_sql_date: appCtx.appSqlDate,
         heartbeat_record_id: heartbeatId,
         matched_record_id: match.id,
-        existing_heartbeat_links: current,
+        existing_heartbeat_links_count: current.length,
         already_correct: alreadyCorrect,
         found_in_view: viewLookup.rows.length
       });
@@ -899,7 +812,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
       app_sql_date: appCtx.appSqlDate,
       heartbeat_record_id: heartbeatId,
       matched_record_id: match.id,
-      existing_heartbeat_links: current,
+      existing_heartbeat_links_count: current.length,
       found_in_view: viewLookup.rows.length,
       found_anywhere: allLookup.rows.length
     });
@@ -929,9 +842,9 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
     [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
     [FIELD_DOW_RAW]: appCtx.dowRaw,
-    [FIELD_MODE]: heartbeatRecord.fields?.[FIELD_MODE] ?? null,
+    [FIELD_MODE]: mode,
     [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
-    [FIELD_HELDOVER_SUNDAY]: appCtx.heldoverFromSunday
+    [FIELD_HELDOVER_SUNDAY]: false,
   };
 
   if (LOG_SHOWS_SYNC) {
@@ -961,9 +874,8 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
 (async () => {
   try {
     const clk = await getClockSafe();
-    let mode = resolveModeFromClock(clk);
+    const mode = resolveModeFromClock(clk);
     const appCtx = await buildAppContext(clk, mode);
-    mode = appCtx.effectiveMode;
     const intervalMin = intervalMinutesForMode(mode);
 
     logInfo("run_summary_pre_write", {
@@ -976,7 +888,6 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
       app_show_id: appCtx.appShowId,
       app_sql_date: appCtx.appSqlDate,
       shifted_to_next_day: appCtx.shiftedToNextDay,
-      heldover_from_sunday: appCtx.heldoverFromSunday,
       interval_min: intervalMin
     });
 
@@ -986,7 +897,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx) {
     const warnings = [];
 
     try {
-      results.push(await syncShowsHeartbeat(heartbeatRecord, appCtx));
+      results.push(await syncShowsHeartbeat(heartbeatRecord, appCtx, mode));
     } catch (e) {
       const msg = String(e?.message || e).slice(0, 240);
       warnings.push(`shows: ${msg}`);
