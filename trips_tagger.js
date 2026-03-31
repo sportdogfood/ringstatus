@@ -1,4 +1,4 @@
-// trips_tagger.js (UPDATED FULL DROP)
+// trips_tagger.js (UPDATED FULL DROP WITH APP SHOW/DATE GATE)
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -13,8 +13,20 @@ const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 
+const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15";
+
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
+
+const FIELD_SHOW_ID               = process.env.FIELD_SHOW_ID || "show_id";
+const FIELD_SQL_DATE              = process.env.FIELD_SQL_DATE || "sql_date";
+const FIELD_SHOW_DATE             = process.env.FIELD_SHOW_DATE || "show_date";
+
+const FIELD_APP_SHOW_ID           = process.env.FIELD_APP_SHOW_ID || "app_show_id";
+const FIELD_APP_SQL_DATE          = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
+const FIELD_APP_TIME              = process.env.FIELD_APP_TIME || "app_time";
+const FIELD_APP_SHOW_MISMATCH     = process.env.FIELD_APP_SHOW_MISMATCH || "app_show_mismatch";
+const FIELD_APP_SQL_DATE_MISMATCH = process.env.FIELD_APP_SQL_DATE_MISMATCH || "app_sql_date_mismatch";
 
 const FIELD_HB_SECOND_PASS_AT     = process.env.FIELD_HB_SECOND_PASS_AT || "hb_second_pass_at";
 const FIELD_HB_SECOND_PASS_REASON = process.env.FIELD_HB_SECOND_PASS_REASON || "hb_second_pass_reason";
@@ -134,6 +146,13 @@ function normTimeStr(s) {
 
 function normStr(s) {
   return strOrNull(s);
+}
+
+function normSqlDate(s) {
+  const v = strOrNull(s);
+  if (!v) return null;
+  const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m ? v : null;
 }
 
 async function fetchWithTimeout(url, opts = {}) {
@@ -277,6 +296,17 @@ function setBaseFields(updateFields, observedAt, reason) {
   updateFields[FIELD_HB_SECOND_PASS_DONE] = true;
 }
 
+function setAppFields(updateFields, appCtx) {
+  updateFields[FIELD_APP_SHOW_ID] = appCtx?.app_show_id ?? null;
+  updateFields[FIELD_APP_SQL_DATE] = appCtx?.app_sql_date ?? null;
+  updateFields[FIELD_APP_TIME] = appCtx?.app_time ?? null;
+}
+
+function setMismatchFlags(updateFields, showMismatch, sqlDateMismatch) {
+  updateFields[FIELD_APP_SHOW_MISMATCH] = !!showMismatch;
+  updateFields[FIELD_APP_SQL_DATE_MISMATCH] = !!sqlDateMismatch;
+}
+
 function setClassLevelFields(updateFields, data) {
   updateFields[FIELD_STATUS] = data.class_status;
   updateFields[FIELD_ESTIMATED_START_TIME] = data.estimated_start_time;
@@ -334,14 +364,97 @@ function clearTripLevelFields(updateFields) {
   updateFields[FIELD_SCORE] = null;
 }
 
+async function fetchAppContext() {
+  const res = await fetchWithRetry(APP_RING_ENDPOINT, { method: "GET" });
+  const txt = await res.text();
+
+  if (!res.ok) {
+    throw new Error(`app endpoint failed (${res.status}): ${txt.slice(0, 300)}`);
+  }
+
+  let json = null;
+  try {
+    json = JSON.parse(txt);
+  } catch {
+    throw new Error(`app endpoint invalid json: ${txt.slice(0, 300)}`);
+  }
+
+  const app_show_id = normNum(numOrNull(firstNonBlank(json?.show_id, json?.show?.show_id)));
+  const app_sql_date = normSqlDate(firstNonBlank(json?.time_zone_date_time?.sql_date, json?.show_date));
+  const app_time = normStr(json?.time_zone_date_time?.time);
+
+  if (app_show_id === null) throw new Error("app endpoint missing show_id");
+  if (!app_sql_date) throw new Error("app endpoint missing sql_date");
+
+  return {
+    app_show_id,
+    app_sql_date,
+    app_time
+  };
+}
+
 (async () => {
   try {
     requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
     requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
+    const observedAt = new Date().toISOString();
+
+    let appCtx = null;
+    try {
+      appCtx = await fetchAppContext();
+    } catch (e) {
+      const allRecords = await airtableList(WATCH_TABLE, WATCH_VIEW);
+      const records = MAX_RECORDS > 0 ? allRecords.slice(0, MAX_RECORDS) : allRecords;
+
+      const failUpdates = records.map((rec) => {
+        const updateFields = {};
+        setAppFields(updateFields, {
+          app_show_id: null,
+          app_sql_date: null,
+          app_time: null
+        });
+        setMismatchFlags(updateFields, false, false);
+        setBaseFields(updateFields, observedAt, "err:app_endpoint_failed");
+        return { id: rec.id, fields: updateFields };
+      });
+
+      let failedRows = [];
+      let updated_rows = 0;
+
+      if (DRY_RUN) {
+        updated_rows = failUpdates.length;
+        console.log(`DRY_RUN: app endpoint failed, updates=${failUpdates.length}`);
+      } else {
+        const result = await airtablePatchWithFallback(WATCH_TABLE, failUpdates);
+        updated_rows = result.okRows;
+        failedRows = result.failedRows;
+      }
+
+      console.log(
+        JSON.stringify(
+          {
+            watch_table: WATCH_TABLE,
+            watch_view: WATCH_VIEW,
+            processed_in_view: records.length,
+            processed_valid: 0,
+            updated_rows,
+            failed_row_updates: failedRows.length,
+            app_endpoint: APP_RING_ENDPOINT,
+            app_endpoint_failed: true,
+            app_error: String(e?.message || e).slice(0, 400),
+            observed_at: observedAt,
+            failed_row_samples: failedRows.slice(0, 10),
+          },
+          null,
+          2
+        )
+      );
+      return;
+    }
+
     const allRecords = await airtableList(WATCH_TABLE, WATCH_VIEW);
     const records = MAX_RECORDS > 0 ? allRecords.slice(0, MAX_RECORDS) : allRecords;
-    const observedAt = new Date().toISOString();
 
     const recInputs = [];
     const uniqueEndpoints = new Set();
@@ -351,13 +464,25 @@ function clearTripLevelFields(updateFields) {
       const classEndpoint = strOrNull(f[FIELD_CLASS_ENDPOINT]);
       const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
 
+      const row_show_id = normNum(numOrNull(f[FIELD_SHOW_ID]));
+      const row_sql_date = normSqlDate(firstNonBlank(f[FIELD_SQL_DATE], f[FIELD_SHOW_DATE]));
+
+      const showMismatch = row_show_id !== appCtx.app_show_id;
+      const sqlDateMismatch = row_sql_date !== appCtx.app_sql_date;
+
       recInputs.push({
         rec,
         classEndpoint,
         entryxclasses_uuid,
+        row_show_id,
+        row_sql_date,
+        showMismatch,
+        sqlDateMismatch,
       });
 
-      if (classEndpoint) uniqueEndpoints.add(classEndpoint);
+      if (!showMismatch && !sqlDateMismatch && classEndpoint) {
+        uniqueEndpoints.add(classEndpoint);
+      }
     }
 
     const endpointCache = new Map();
@@ -435,14 +560,49 @@ function clearTripLevelFields(updateFields) {
     let endpoint_fetch_errors = 0;
     let trip_matched = 0;
     let trip_not_found = 0;
+    let app_show_mismatch_count = 0;
+    let app_sql_date_mismatch_count = 0;
+    let app_show_and_date_mismatch_count = 0;
+    let processed_app_match = 0;
 
     function bumpReason(reason) {
       rowReasonCounts[reason] = (rowReasonCounts[reason] || 0) + 1;
     }
 
     for (const row of recInputs) {
-      const { rec, classEndpoint, entryxclasses_uuid } = row;
+      const {
+        rec,
+        classEndpoint,
+        entryxclasses_uuid,
+        showMismatch,
+        sqlDateMismatch
+      } = row;
+
       const updateFields = {};
+      setAppFields(updateFields, appCtx);
+      setMismatchFlags(updateFields, showMismatch, sqlDateMismatch);
+
+      if (showMismatch || sqlDateMismatch) {
+        let reason = "err:app_record_mismatch";
+
+        if (showMismatch && sqlDateMismatch) {
+          app_show_and_date_mismatch_count++;
+          reason = "err:app_show_and_date_mismatch";
+        } else if (showMismatch) {
+          app_show_mismatch_count++;
+          reason = "err:app_show_mismatch";
+        } else if (sqlDateMismatch) {
+          app_sql_date_mismatch_count++;
+          reason = "err:app_sql_date_mismatch";
+        }
+
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
+        updates.push({ id: rec.id, fields: updateFields });
+        continue;
+      }
+
+      processed_app_match++;
 
       if (!classEndpoint) {
         skipped_missing_class_endpoint++;
@@ -699,7 +859,12 @@ function clearTripLevelFields(updateFields) {
         {
           watch_table: WATCH_TABLE,
           watch_view: WATCH_VIEW,
+          app_endpoint: APP_RING_ENDPOINT,
+          app_show_id: appCtx.app_show_id,
+          app_sql_date: appCtx.app_sql_date,
+          app_time: appCtx.app_time,
           processed_in_view,
+          processed_app_match,
           processed_valid,
           updated_rows,
           failed_row_updates: failedRows.length,
@@ -709,6 +874,9 @@ function clearTripLevelFields(updateFields) {
           endpoint_fetch_errors,
           trip_matched,
           trip_not_found,
+          app_show_mismatch_count,
+          app_sql_date_mismatch_count,
+          app_show_and_date_mismatch_count,
           row_reason_counts: rowReasonCounts,
           observed_at: observedAt,
           endpoint_error_samples: endpointErrors.slice(0, 10),
