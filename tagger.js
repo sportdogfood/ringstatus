@@ -1,12 +1,14 @@
-// tagger.js (SIMPLIFIED 3-MODE VERSION)
-// DAY / NIGHT / OVERNIGHT only
+// tagger.js (NEW CLEAN REWRITE)
+// 3 modes only: DAY / NIGHT / OVERNIGHT
 // - raw clock always comes from endpoint/system fallback
-// - NIGHT shifts app_sql_date to next day
-// - OVERNIGHT preserves the shifted app context already established by NIGHT
-// - shows table still matches-or-creates by app_show_id
-// - shows table heartbeat link is overwritten to the latest heartbeat only
-// - new show checkbox is checked on create
-// - shifted_to_next_day checkbox is checked for NIGHT and OVERNIGHT
+// - DAY:        app_show_id = raw show_id, app_sql_date = raw sql_date
+// - NIGHT:      app_show_id = raw show_id, app_sql_date = next day
+// - OVERNIGHT:  before midnight behaves exactly like NIGHT;
+//               after midnight preserves the shifted app context from the latest shifted heartbeat
+// - shows table: match by show_id/app_show_id or create if missing
+// - shows table heartbeat link is overwritten to latest heartbeat only
+// - shifted_to_next_day is checked for NIGHT and OVERNIGHT
+// - new_app_show_id is checked only when a new show row is created
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -44,7 +46,6 @@ const FIELD_APP_SQL_DATE     = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
 const FIELD_APP_DOW_RAW      = process.env.FIELD_APP_DOW_RAW || "app_dow_raw";
 const FIELD_DOW_RAW          = process.env.FIELD_DOW_RAW || "dow_raw";
 const FIELD_SHIFTED_NEXT_DAY = process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
-const FIELD_HELDOVER_SUNDAY  = process.env.FIELD_HELDOVER_SUNDAY || "heldover_from_sunday";
 
 const HEARTBEAT_ID_FIELD   = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
 const HEARTBEAT_SHOW_ID    = process.env.HEARTBEAT_SHOW_ID || "show_id";
@@ -356,7 +357,6 @@ function resolveModeFromClock(clock) {
   if (FORCE_MODE) return normalizeMode(FORCE_MODE);
 
   const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
-
   if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";        // 5:00 AM - 4:59 PM
   if (minuteOfDay >= 1020 && minuteOfDay <= 1319) return "NIGHT";     // 5:00 PM - 9:59 PM
   return "OVERNIGHT";                                                  // 10:00 PM - 4:59 AM
@@ -484,7 +484,9 @@ async function getClockSafe() {
   }
 }
 
-async function getLatestNightContext(clock) {
+// Most recent shifted heartbeat context.
+// Used only for after-midnight OVERNIGHT to preserve what NIGHT already set.
+async function getLatestShiftedContext(clock) {
   const rows = await airtableListSome({
     table: TABLE_HEARTBEAT,
     fields: [
@@ -493,9 +495,6 @@ async function getLatestNightContext(clock) {
       FIELD_APP_SHOW_ID,
       FIELD_APP_SQL_DATE,
       FIELD_SHIFTED_NEXT_DAY,
-      HEARTBEAT_SHOW_ID,
-      HEARTBEAT_SQL_DATE,
-      FIELD_HB_AT
     ],
     maxRecords: 25,
     sortField: FIELD_EPOCH,
@@ -513,20 +512,14 @@ async function getLatestNightContext(clock) {
     const rowShifted = !!f[FIELD_SHIFTED_NEXT_DAY];
 
     if (!rowEpoch || rowEpoch >= nowEpoch) continue;
-    if ((nowEpoch - rowEpoch) > (18 * 3600)) continue;
+    if ((nowEpoch - rowEpoch) > (12 * 3600)) continue;
     if (!rowAppSqlDate) continue;
     if (!(rowShifted || rowMode === "NIGHT" || rowMode === "OVERNIGHT")) continue;
 
     return {
       recordId: r.id,
-      epoch: rowEpoch,
-      mode: rowMode,
       appShowId: rowAppShowId,
       appSqlDate: rowAppSqlDate,
-      shiftedToNextDay: rowShifted,
-      rawShowId: f[HEARTBEAT_SHOW_ID] ?? null,
-      rawSqlDate: String(f[HEARTBEAT_SQL_DATE] || "").trim(),
-      hbAt: f[FIELD_HB_AT] || null
     };
   }
 
@@ -535,44 +528,55 @@ async function getLatestNightContext(clock) {
 
 async function buildAppContext(clock, mode) {
   const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
+  const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
 
   let appShowId = clock.showId ?? null;
   let appSqlDate = clock.sqlDate;
   let shiftedToNextDay = false;
-  const heldoverFromSunday = false;
 
-  if (mode === "NIGHT") {
+  if (mode === "DAY") {
+    appShowId = clock.showId ?? null;
+    appSqlDate = clock.sqlDate;
+    shiftedToNextDay = false;
+  } else if (mode === "NIGHT") {
+    appShowId = clock.showId ?? null;
     appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
     shiftedToNextDay = true;
   } else if (mode === "OVERNIGHT") {
-    const carry = await getLatestNightContext(clock);
-
-    if (carry) {
-      appShowId = carry.appShowId ?? appShowId;
-      appSqlDate = carry.appSqlDate;
-      shiftedToNextDay = true;
-
-      logInfo("overnight_carry_forward_applied", {
-        carry_record_id: carry.recordId,
-        carry_epoch: carry.epoch,
-        carry_mode: carry.mode,
-        carry_app_show_id: carry.appShowId,
-        carry_app_sql_date: carry.appSqlDate,
-        raw_show_id: clock.showId ?? null,
-        raw_sql_date: clock.sqlDate,
-        raw_time: clock.time
-      });
-    } else {
+    if (minuteOfDay >= 1320) {
+      // 10:00 PM - 11:59 PM: exactly same app state NIGHT would set
+      appShowId = clock.showId ?? null;
       appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
       shiftedToNextDay = true;
+    } else {
+      // 12:00 AM - 4:59 AM: keep exactly what NIGHT already set
+      const carry = await getLatestShiftedContext(clock);
 
-      logWarn("overnight_carry_forward_missing_using_shifted_raw", {
-        raw_show_id: clock.showId ?? null,
-        raw_sql_date: clock.sqlDate,
-        raw_time: clock.time,
-        fallback_app_show_id: appShowId,
-        fallback_app_sql_date: appSqlDate
-      });
+      if (carry) {
+        appShowId = carry.appShowId ?? appShowId;
+        appSqlDate = carry.appSqlDate;
+        shiftedToNextDay = true;
+
+        logInfo("overnight_carry_forward_applied", {
+          carry_record_id: carry.recordId,
+          app_show_id: appShowId,
+          app_sql_date: appSqlDate
+        });
+      } else {
+        // If no shifted context exists yet, do not invent a new show id.
+        // Preserve the shifted date contract deterministically.
+        appShowId = clock.showId ?? null;
+        appSqlDate = clock.sqlDate;
+        shiftedToNextDay = true;
+
+        logWarn("overnight_carry_forward_missing", {
+          raw_show_id: clock.showId ?? null,
+          raw_sql_date: clock.sqlDate,
+          raw_time: clock.time,
+          fallback_app_show_id: appShowId,
+          fallback_app_sql_date: appSqlDate
+        });
+      }
     }
   }
 
@@ -585,13 +589,12 @@ async function buildAppContext(clock, mode) {
     appSqlDate,
     appDowRaw,
     shiftedToNextDay,
-    heldoverFromSunday,
   };
 
   if (LOG_TRANSITIONS) {
     logInfo("app_context_computed", {
       source: clock.source,
-      effective_mode: mode,
+      mode,
       raw_show_id: clock.showId ?? null,
       raw_show_date: clock.showDate ?? null,
       raw_sql_date: clock.sqlDate,
@@ -631,7 +634,6 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
     [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
     [FIELD_DOW_RAW]: appCtx.dowRaw,
     [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
-    [FIELD_HELDOVER_SUNDAY]: false,
   };
 
   if (DRY_RUN) {
@@ -693,15 +695,21 @@ async function relinkHeartbeatView(tableName, heartbeatId) {
   return summary;
 }
 
+function matchesShowRow(fields, appShowId) {
+  const target = String(appShowId ?? "").trim();
+  const showId = String(fields?.[FIELD_SHOW_ID] ?? "").trim();
+  const appId  = String(fields?.[FIELD_APP_SHOW_ID] ?? "").trim();
+  return (showId && showId === target) || (appId && appId === target);
+}
+
 async function findShowsMatchInView(appShowId) {
   const rows = await airtableListAll({
     table: TABLE_SHOWS,
     view: VIEW_HEARTBEAT,
-    fields: [FIELD_SHOW_ID, FIELD_LINK_HEARTBEAT]
+    fields: [FIELD_SHOW_ID, FIELD_APP_SHOW_ID, FIELD_LINK_HEARTBEAT]
   });
 
-  const normalized = String(appShowId).trim();
-  const matches = rows.filter(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === normalized);
+  const matches = rows.filter(r => matchesShowRow(r.fields || {}, appShowId));
 
   return {
     rows,
@@ -713,11 +721,10 @@ async function findShowsMatchInView(appShowId) {
 async function findShowsMatchAnywhere(appShowId) {
   const rows = await airtableListAll({
     table: TABLE_SHOWS,
-    fields: [FIELD_SHOW_ID, FIELD_LINK_HEARTBEAT]
+    fields: [FIELD_SHOW_ID, FIELD_APP_SHOW_ID, FIELD_LINK_HEARTBEAT]
   });
 
-  const normalized = String(appShowId).trim();
-  const matches = rows.filter(r => String(r.fields?.[FIELD_SHOW_ID] ?? "").trim() === normalized);
+  const matches = rows.filter(r => matchesShowRow(r.fields || {}, appShowId));
 
   return {
     rows,
@@ -763,7 +770,16 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
   if (viewLookup.match) {
     const match = viewLookup.match;
     const current = currentHeartbeatLinkIds(match.fields?.[FIELD_LINK_HEARTBEAT]);
-    const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
+
+    const updateFields = {
+      [FIELD_LINK_HEARTBEAT]: [heartbeatId],
+      [FIELD_APP_SHOW_ID]: appShowId,
+      [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
+      [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
+      [FIELD_DOW_RAW]: appCtx.dowRaw,
+      [FIELD_MODE]: mode,
+      [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
+    };
 
     if (LOG_SHOWS_SYNC) {
       logInfo("shows_sync_update_existing_in_view", {
@@ -771,23 +787,19 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
         app_sql_date: appCtx.appSqlDate,
         heartbeat_record_id: heartbeatId,
         matched_record_id: match.id,
-        existing_heartbeat_links_count: current.length,
-        already_correct: alreadyCorrect,
-        found_in_view: viewLookup.rows.length
+        existing_heartbeat_links_count: current.length
       });
     }
 
-    if (!alreadyCorrect && !DRY_RUN) {
-      await airtableUpdateRecord(TABLE_SHOWS, match.id, {
-        [FIELD_LINK_HEARTBEAT]: [heartbeatId]
-      });
+    if (!DRY_RUN) {
+      await airtableUpdateRecord(TABLE_SHOWS, match.id, updateFields);
     }
 
     return {
       table: TABLE_SHOWS,
       found_in_view: viewLookup.rows.length,
       matched_show_id: appShowId,
-      updated_existing: alreadyCorrect ? 0 : 1,
+      updated_existing: 1,
       created_new: 0
     };
   }
@@ -805,29 +817,34 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
   if (allLookup.match) {
     const match = allLookup.match;
     const current = currentHeartbeatLinkIds(match.fields?.[FIELD_LINK_HEARTBEAT]);
-    const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
+
+    const updateFields = {
+      [FIELD_LINK_HEARTBEAT]: [heartbeatId],
+      [FIELD_APP_SHOW_ID]: appShowId,
+      [FIELD_APP_SQL_DATE]: appCtx.appSqlDate,
+      [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
+      [FIELD_DOW_RAW]: appCtx.dowRaw,
+      [FIELD_MODE]: mode,
+      [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
+    };
 
     logWarn("shows_sync_guard_found_match_outside_view", {
       app_show_id: appShowId,
       app_sql_date: appCtx.appSqlDate,
       heartbeat_record_id: heartbeatId,
       matched_record_id: match.id,
-      existing_heartbeat_links_count: current.length,
-      found_in_view: viewLookup.rows.length,
-      found_anywhere: allLookup.rows.length
+      existing_heartbeat_links_count: current.length
     });
 
-    if (!alreadyCorrect && !DRY_RUN) {
-      await airtableUpdateRecord(TABLE_SHOWS, match.id, {
-        [FIELD_LINK_HEARTBEAT]: [heartbeatId]
-      });
+    if (!DRY_RUN) {
+      await airtableUpdateRecord(TABLE_SHOWS, match.id, updateFields);
     }
 
     return {
       table: TABLE_SHOWS,
       found_in_view: viewLookup.rows.length,
       matched_show_id: appShowId,
-      updated_existing: alreadyCorrect ? 0 : 1,
+      updated_existing: 1,
       created_new: 0,
       recovered_from_out_of_view_match: 1
     };
@@ -844,7 +861,6 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     [FIELD_DOW_RAW]: appCtx.dowRaw,
     [FIELD_MODE]: mode,
     [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
-    [FIELD_HELDOVER_SUNDAY]: false,
   };
 
   if (LOG_SHOWS_SYNC) {
@@ -852,8 +868,6 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       app_show_id: appShowId,
       app_sql_date: appCtx.appSqlDate,
       heartbeat_record_id: heartbeatId,
-      found_in_view: viewLookup.rows.length,
-      found_anywhere: allLookup.rows.length,
       create_fields: createFields
     });
   }
