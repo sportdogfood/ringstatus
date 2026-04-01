@@ -1,11 +1,17 @@
-// trips_tagger.js (FULL REPLACEMENT)
-// Rules locked:
-// - app_show_id comes directly from endpoint show_id
-// - app_sql_date comes directly from endpoint time_zone_date_time.sql_date
-// - app_time comes directly from endpoint time_zone_date_time.time
-// - no timezone conversion, no date normalization, no date_obj/time_obj usage
-// - mode + shifted_to_next_day are tagging outputs only
-// - also binds watch_trips.shows link by matching shows.show_id === app_show_id
+// trips_tagger.js (REVISED FULL REPLACEMENT)
+//
+// Locked rules:
+// - app_show_id comes from endpoint show_id
+// - app_sql_date starts from endpoint time_zone_date_time.sql_date text
+// - app_time comes from endpoint time_zone_date_time.time text
+// - no timezone conversion
+// - no date_obj / time_obj usage
+// - no UTC/local math
+// - DAY uses raw endpoint sql_date text
+// - NIGHT shifts sql_date text to next calendar date text
+// - OVERNIGHT uses raw endpoint sql_date text
+// - shifted_to_next_day is true only in NIGHT
+// - also binds watch_trips.shows by matching shows.show_id === app_show_id
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -169,6 +175,46 @@ function normStr(s) {
 function currentLinkIds(v) {
   if (!Array.isArray(v)) return [];
   return v.map(x => typeof x === "string" ? x : x?.id).filter(Boolean);
+}
+
+function isLeapYearText(year) {
+  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+function daysInMonthText(year, month) {
+  if (month === 2) return isLeapYearText(year) ? 29 : 28;
+  if ([4, 6, 9, 11].includes(month)) return 30;
+  return 31;
+}
+
+function shiftSqlDateText(rawSqlDate) {
+  const v = strOrNull(rawSqlDate);
+  if (!v) return null;
+
+  const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return null;
+
+  let year  = Number(m[1]);
+  let month = Number(m[2]);
+  let day   = Number(m[3]);
+
+  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) return null;
+  if (month < 1 || month > 12) return null;
+
+  const dim = daysInMonthText(year, month);
+  if (day < 1 || day > dim) return null;
+
+  day += 1;
+  if (day > dim) {
+    day = 1;
+    month += 1;
+    if (month > 12) {
+      month = 1;
+      year += 1;
+    }
+  }
+
+  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
 async function fetchWithTimeout(url, opts = {}) {
@@ -412,29 +458,16 @@ function parseTimeToMinutes(appTime) {
   return hh * 60 + mm;
 }
 
-function deriveModeAndShift(appTime) {
+function deriveMode(appTime) {
   const mins = parseTimeToMinutes(appTime);
+  if (mins === null) return null;
 
-  if (mins === null) {
-    return {
-      mode: null,
-      shifted_to_next_day: false
-    };
-  }
-
-  // Locked business buckets using app_time only, with no timezone conversion:
   // DAY       = 5:00 AM - 4:59 PM
   // NIGHT     = 5:00 PM - 11:59 PM
   // OVERNIGHT = 12:00 AM - 4:59 AM
-  if (mins >= 300 && mins <= 1019) {
-    return { mode: "DAY", shifted_to_next_day: false };
-  }
-
-  if (mins >= 1020 && mins <= 1439) {
-    return { mode: "NIGHT", shifted_to_next_day: true };
-  }
-
-  return { mode: "OVERNIGHT", shifted_to_next_day: false };
+  if (mins >= 300 && mins <= 1019) return "DAY";
+  if (mins >= 1020 && mins <= 1439) return "NIGHT";
+  return "OVERNIGHT";
 }
 
 async function fetchAppContext() {
@@ -453,21 +486,37 @@ async function fetchAppContext() {
   }
 
   const app_show_id = numOrNull(firstNonBlank(json?.show_id, json?.show?.show_id));
-  const app_sql_date = strOrNull(firstNonBlank(json?.time_zone_date_time?.sql_date, json?.show_date));
+  const raw_sql_date = strOrNull(firstNonBlank(json?.time_zone_date_time?.sql_date, json?.show_date));
   const app_time = strOrNull(json?.time_zone_date_time?.time);
 
   if (app_show_id === null) throw new Error("app endpoint missing show_id");
-  if (!app_sql_date) throw new Error("app endpoint missing sql_date");
+  if (!raw_sql_date) throw new Error("app endpoint missing sql_date");
   if (!app_time) throw new Error("app endpoint missing time");
 
-  const modeBits = deriveModeAndShift(app_time);
+  const mode = deriveMode(app_time);
+  if (!mode) throw new Error("unable to derive mode from app_time");
+
+  let app_sql_date = raw_sql_date;
+  let shifted_to_next_day = false;
+
+  if (mode === "NIGHT") {
+    app_sql_date = shiftSqlDateText(raw_sql_date);
+    if (!app_sql_date) throw new Error(`unable to shift sql_date text: ${raw_sql_date}`);
+    shifted_to_next_day = true;
+  }
+
+  if (mode === "DAY" || mode === "OVERNIGHT") {
+    app_sql_date = raw_sql_date;
+    shifted_to_next_day = false;
+  }
 
   return {
     app_show_id,
+    raw_sql_date,
     app_sql_date,
     app_time,
-    mode: modeBits.mode,
-    shifted_to_next_day: modeBits.shifted_to_next_day
+    mode,
+    shifted_to_next_day
   };
 }
 
@@ -976,6 +1025,7 @@ async function fetchShowsMap() {
       shows_table: SHOWS_TABLE,
       app_endpoint: APP_RING_ENDPOINT,
       app_show_id: appCtx.app_show_id,
+      raw_sql_date: appCtx.raw_sql_date,
       app_sql_date: appCtx.app_sql_date,
       app_time: appCtx.app_time,
       mode: appCtx.mode,
