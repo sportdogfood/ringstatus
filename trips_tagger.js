@@ -1,10 +1,18 @@
-// trips_tagger.js (UPDATED FULL DROP WITH APP SHOW/DATE GATE)
+// trips_tagger.js (FULL REPLACEMENT)
+// Rules locked:
+// - app_show_id comes directly from endpoint show_id
+// - app_sql_date comes directly from endpoint time_zone_date_time.sql_date
+// - app_time comes directly from endpoint time_zone_date_time.time
+// - no timezone conversion, no date normalization, no date_obj/time_obj usage
+// - mode + shifted_to_next_day are tagging outputs only
+// - also binds watch_trips.shows link by matching shows.show_id === app_show_id
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "hb_targets";
+const SHOWS_TABLE = process.env.SHOWS_TABLE || "shows";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
 
 const HTTP_TIMEOUT_MS   = Number(process.env.HTTP_TIMEOUT_MS || "20000");
@@ -15,23 +23,33 @@ const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 
 const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15";
 
+// watch_trips source / compare fields
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
-
 const FIELD_SHOW_ID               = process.env.FIELD_SHOW_ID || "show_id";
 const FIELD_SQL_DATE              = process.env.FIELD_SQL_DATE || "sql_date";
 const FIELD_SHOW_DATE             = process.env.FIELD_SHOW_DATE || "show_date";
 
+// app context fields written back
 const FIELD_APP_SHOW_ID           = process.env.FIELD_APP_SHOW_ID || "app_show_id";
 const FIELD_APP_SQL_DATE          = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
 const FIELD_APP_TIME              = process.env.FIELD_APP_TIME || "app_time";
 const FIELD_APP_SHOW_MISMATCH     = process.env.FIELD_APP_SHOW_MISMATCH || "app_show_mismatch";
 const FIELD_APP_SQL_DATE_MISMATCH = process.env.FIELD_APP_SQL_DATE_MISMATCH || "app_sql_date_mismatch";
 
+// tag output fields
+const FIELD_MODE                  = process.env.FIELD_MODE || "mode";
+const FIELD_SHIFTED_NEXT_DAY      = process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
+
+// watch_trips link field to shows
+const FIELD_LINK_SHOWS            = process.env.FIELD_LINK_SHOWS || "shows";
+
+// pass / audit fields
 const FIELD_HB_SECOND_PASS_AT     = process.env.FIELD_HB_SECOND_PASS_AT || "hb_second_pass_at";
 const FIELD_HB_SECOND_PASS_REASON = process.env.FIELD_HB_SECOND_PASS_REASON || "hb_second_pass_reason";
 const FIELD_HB_SECOND_PASS_DONE   = process.env.FIELD_HB_SECOND_PASS_DONE || "hb_second_pass_done";
 
+// enrichment fields
 const FIELD_STATUS                = process.env.FIELD_STATUS || "status";
 const FIELD_ESTIMATED_START_TIME  = process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time";
 const FIELD_ESTIMATED_END_TIME    = process.env.FIELD_ESTIMATED_END_TIME || "estimated_end_time";
@@ -148,11 +166,9 @@ function normStr(s) {
   return strOrNull(s);
 }
 
-function normSqlDate(s) {
-  const v = strOrNull(s);
-  if (!v) return null;
-  const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  return m ? v : null;
+function currentLinkIds(v) {
+  if (!Array.isArray(v)) return [];
+  return v.map(x => typeof x === "string" ? x : x?.id).filter(Boolean);
 }
 
 async function fetchWithTimeout(url, opts = {}) {
@@ -218,7 +234,7 @@ async function airtableList(tableName, viewName) {
 
   while (true) {
     const url = new URL(airtableUrl(tableName));
-    url.searchParams.set("view", viewName);
+    if (viewName) url.searchParams.set("view", viewName);
     url.searchParams.set("pageSize", "100");
     if (offset) url.searchParams.set("offset", offset);
 
@@ -228,7 +244,7 @@ async function airtableList(tableName, viewName) {
 
     if (!res.ok) {
       const body = await res.text().catch(() => "");
-      throw new Error(`Airtable list failed (${res.status}) ${tableName}/${viewName}: ${body}`);
+      throw new Error(`Airtable list failed (${res.status}) ${tableName}/${viewName || "-"}: ${body}`);
     }
 
     const json = await res.json().catch(() => ({}));
@@ -302,9 +318,18 @@ function setAppFields(updateFields, appCtx) {
   updateFields[FIELD_APP_TIME] = appCtx?.app_time ?? null;
 }
 
+function setModeFields(updateFields, appCtx) {
+  updateFields[FIELD_MODE] = appCtx?.mode ?? null;
+  updateFields[FIELD_SHIFTED_NEXT_DAY] = !!appCtx?.shifted_to_next_day;
+}
+
 function setMismatchFlags(updateFields, showMismatch, sqlDateMismatch) {
   updateFields[FIELD_APP_SHOW_MISMATCH] = !!showMismatch;
   updateFields[FIELD_APP_SQL_DATE_MISMATCH] = !!sqlDateMismatch;
+}
+
+function setShowsLink(updateFields, showRecordId) {
+  updateFields[FIELD_LINK_SHOWS] = showRecordId ? [showRecordId] : [];
 }
 
 function setClassLevelFields(updateFields, data) {
@@ -364,6 +389,54 @@ function clearTripLevelFields(updateFields) {
   updateFields[FIELD_SCORE] = null;
 }
 
+function parseTimeToMinutes(appTime) {
+  const v = strOrNull(appTime);
+  if (!v) return null;
+
+  const m = v.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return null;
+
+  let hh = Number(m[1]);
+  const mm = Number(m[2]);
+  const ap = m[3].toUpperCase();
+
+  if (!Number.isFinite(hh) || !Number.isFinite(mm)) return null;
+  if (hh < 1 || hh > 12 || mm < 0 || mm > 59) return null;
+
+  if (ap === "AM") {
+    if (hh === 12) hh = 0;
+  } else {
+    if (hh !== 12) hh += 12;
+  }
+
+  return hh * 60 + mm;
+}
+
+function deriveModeAndShift(appTime) {
+  const mins = parseTimeToMinutes(appTime);
+
+  if (mins === null) {
+    return {
+      mode: null,
+      shifted_to_next_day: false
+    };
+  }
+
+  // Locked business buckets using app_time only, with no timezone conversion:
+  // DAY       = 5:00 AM - 4:59 PM
+  // NIGHT     = 5:00 PM - 11:59 PM
+  // OVERNIGHT = 12:00 AM - 4:59 AM
+  if (mins >= 300 && mins <= 1019) {
+    return { mode: "DAY", shifted_to_next_day: false };
+  }
+
+  if (mins >= 1020 && mins <= 1439) {
+    return { mode: "NIGHT", shifted_to_next_day: true };
+  }
+
+  return { mode: "OVERNIGHT", shifted_to_next_day: false };
+}
+
 async function fetchAppContext() {
   const res = await fetchWithRetry(APP_RING_ENDPOINT, { method: "GET" });
   const txt = await res.text();
@@ -379,18 +452,36 @@ async function fetchAppContext() {
     throw new Error(`app endpoint invalid json: ${txt.slice(0, 300)}`);
   }
 
-  const app_show_id = normNum(numOrNull(firstNonBlank(json?.show_id, json?.show?.show_id)));
-  const app_sql_date = normSqlDate(firstNonBlank(json?.time_zone_date_time?.sql_date, json?.show_date));
-  const app_time = normStr(json?.time_zone_date_time?.time);
+  const app_show_id = numOrNull(firstNonBlank(json?.show_id, json?.show?.show_id));
+  const app_sql_date = strOrNull(firstNonBlank(json?.time_zone_date_time?.sql_date, json?.show_date));
+  const app_time = strOrNull(json?.time_zone_date_time?.time);
 
   if (app_show_id === null) throw new Error("app endpoint missing show_id");
   if (!app_sql_date) throw new Error("app endpoint missing sql_date");
+  if (!app_time) throw new Error("app endpoint missing time");
+
+  const modeBits = deriveModeAndShift(app_time);
 
   return {
     app_show_id,
     app_sql_date,
-    app_time
+    app_time,
+    mode: modeBits.mode,
+    shifted_to_next_day: modeBits.shifted_to_next_day
   };
+}
+
+async function fetchShowsMap() {
+  const rows = await airtableList(SHOWS_TABLE, null);
+  const out = new Map();
+
+  for (const row of rows) {
+    const showId = numOrNull(row?.fields?.[FIELD_SHOW_ID]);
+    if (showId === null) continue;
+    if (!out.has(showId)) out.set(showId, row.id);
+  }
+
+  return out;
 }
 
 (async () => {
@@ -414,7 +505,12 @@ async function fetchAppContext() {
           app_sql_date: null,
           app_time: null
         });
+        setModeFields(updateFields, {
+          mode: null,
+          shifted_to_next_day: false
+        });
         setMismatchFlags(updateFields, false, false);
+        setShowsLink(updateFields, null);
         setBaseFields(updateFields, observedAt, "err:app_endpoint_failed");
         return { id: rec.id, fields: updateFields };
       });
@@ -431,27 +527,24 @@ async function fetchAppContext() {
         failedRows = result.failedRows;
       }
 
-      console.log(
-        JSON.stringify(
-          {
-            watch_table: WATCH_TABLE,
-            watch_view: WATCH_VIEW,
-            processed_in_view: records.length,
-            processed_valid: 0,
-            updated_rows,
-            failed_row_updates: failedRows.length,
-            app_endpoint: APP_RING_ENDPOINT,
-            app_endpoint_failed: true,
-            app_error: String(e?.message || e).slice(0, 400),
-            observed_at: observedAt,
-            failed_row_samples: failedRows.slice(0, 10),
-          },
-          null,
-          2
-        )
-      );
+      console.log(JSON.stringify({
+        watch_table: WATCH_TABLE,
+        watch_view: WATCH_VIEW,
+        processed_in_view: records.length,
+        processed_valid: 0,
+        updated_rows,
+        failed_row_updates: failedRows.length,
+        app_endpoint: APP_RING_ENDPOINT,
+        app_endpoint_failed: true,
+        app_error: String(e?.message || e).slice(0, 400),
+        observed_at: observedAt,
+        failed_row_samples: failedRows.slice(0, 10)
+      }, null, 2));
       return;
     }
+
+    const showsMap = await fetchShowsMap();
+    const linkedShowRecordId = showsMap.get(appCtx.app_show_id) || null;
 
     const allRecords = await airtableList(WATCH_TABLE, WATCH_VIEW);
     const records = MAX_RECORDS > 0 ? allRecords.slice(0, MAX_RECORDS) : allRecords;
@@ -464,8 +557,8 @@ async function fetchAppContext() {
       const classEndpoint = strOrNull(f[FIELD_CLASS_ENDPOINT]);
       const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
 
-      const row_show_id = normNum(numOrNull(f[FIELD_SHOW_ID]));
-      const row_sql_date = normSqlDate(firstNonBlank(f[FIELD_SQL_DATE], f[FIELD_SHOW_DATE]));
+      const row_show_id = numOrNull(f[FIELD_SHOW_ID]);
+      const row_sql_date = strOrNull(firstNonBlank(f[FIELD_SQL_DATE], f[FIELD_SHOW_DATE]));
 
       const showMismatch = row_show_id !== appCtx.app_show_id;
       const sqlDateMismatch = row_sql_date !== appCtx.app_sql_date;
@@ -477,7 +570,7 @@ async function fetchAppContext() {
         row_show_id,
         row_sql_date,
         showMismatch,
-        sqlDateMismatch,
+        sqlDateMismatch
       });
 
       if (!showMismatch && !sqlDateMismatch && classEndpoint) {
@@ -528,10 +621,7 @@ async function fetchAppContext() {
           continue;
         }
 
-        endpointCache.set(endpoint, {
-          ok: true,
-          json
-        });
+        endpointCache.set(endpoint, { ok: true, json });
       } catch (e) {
         const reason = "err:class_fetch_exception";
         const detail = String(e?.message || e).slice(0, 300);
@@ -564,6 +654,8 @@ async function fetchAppContext() {
     let app_sql_date_mismatch_count = 0;
     let app_show_and_date_mismatch_count = 0;
     let processed_app_match = 0;
+    let shows_link_bound = 0;
+    let shows_link_missing = 0;
 
     function bumpReason(reason) {
       rowReasonCounts[reason] = (rowReasonCounts[reason] || 0) + 1;
@@ -580,7 +672,12 @@ async function fetchAppContext() {
 
       const updateFields = {};
       setAppFields(updateFields, appCtx);
+      setModeFields(updateFields, appCtx);
       setMismatchFlags(updateFields, showMismatch, sqlDateMismatch);
+      setShowsLink(updateFields, linkedShowRecordId);
+
+      if (linkedShowRecordId) shows_link_bound++;
+      else shows_link_missing++;
 
       if (showMismatch || sqlDateMismatch) {
         let reason = "err:app_record_mismatch";
@@ -596,6 +693,10 @@ async function fetchAppContext() {
           reason = "err:app_sql_date_mismatch";
         }
 
+        if (!linkedShowRecordId) {
+          reason = `${reason}|warn:shows_link_missing`;
+        }
+
         setBaseFields(updateFields, observedAt, reason);
         bumpReason(reason);
         updates.push({ id: rec.id, fields: updateFields });
@@ -605,17 +706,23 @@ async function fetchAppContext() {
       processed_app_match++;
 
       if (!classEndpoint) {
+        let reason = "err:missing_class_endpoint";
+        if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+
         skipped_missing_class_endpoint++;
-        setBaseFields(updateFields, observedAt, "err:missing_class_endpoint");
-        bumpReason("err:missing_class_endpoint");
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
         updates.push({ id: rec.id, fields: updateFields });
         continue;
       }
 
       if (!entryxclasses_uuid) {
+        let reason = "err:missing_entryxclasses_uuid";
+        if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+
         skipped_missing_entryxclasses_uuid++;
-        setBaseFields(updateFields, observedAt, "err:missing_entryxclasses_uuid");
-        bumpReason("err:missing_entryxclasses_uuid");
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
         updates.push({ id: rec.id, fields: updateFields });
         continue;
       }
@@ -624,8 +731,10 @@ async function fetchAppContext() {
 
       const cached = endpointCache.get(classEndpoint);
       if (!cached || !cached.ok) {
+        let reason = cached?.reason || "err:class_fetch_unknown";
+        if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+
         endpoint_fetch_errors++;
-        const reason = cached?.reason || "err:class_fetch_unknown";
         setBaseFields(updateFields, observedAt, reason);
         bumpReason(reason);
         updates.push({ id: rec.id, fields: updateFields });
@@ -720,7 +829,7 @@ async function fetchAppContext() {
         total_trips,
         completed_trips,
         actual_time,
-        estimated_time,
+        estimated_time
       });
 
       if (matchedTrip) {
@@ -828,16 +937,23 @@ async function fetchAppContext() {
           faults_two,
           placing,
           gone_in,
-          score,
+          score
         });
 
-        setBaseFields(updateFields, observedAt, "ok:matched_trip");
-        bumpReason("ok:matched_trip");
+        let reason = "ok:matched_trip";
+        if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
       } else {
         trip_not_found++;
         clearTripLevelFields(updateFields);
-        setBaseFields(updateFields, observedAt, "err:no_trip_match");
-        bumpReason("err:no_trip_match");
+
+        let reason = "err:no_trip_match";
+        if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
       }
 
       updates.push({ id: rec.id, fields: updateFields });
@@ -854,38 +970,38 @@ async function fetchAppContext() {
       failedRows = result.failedRows;
     }
 
-    console.log(
-      JSON.stringify(
-        {
-          watch_table: WATCH_TABLE,
-          watch_view: WATCH_VIEW,
-          app_endpoint: APP_RING_ENDPOINT,
-          app_show_id: appCtx.app_show_id,
-          app_sql_date: appCtx.app_sql_date,
-          app_time: appCtx.app_time,
-          processed_in_view,
-          processed_app_match,
-          processed_valid,
-          updated_rows,
-          failed_row_updates: failedRows.length,
-          skipped_missing_class_endpoint,
-          skipped_missing_entryxclasses_uuid,
-          unique_class_endpoints: uniqueEndpoints.size,
-          endpoint_fetch_errors,
-          trip_matched,
-          trip_not_found,
-          app_show_mismatch_count,
-          app_sql_date_mismatch_count,
-          app_show_and_date_mismatch_count,
-          row_reason_counts: rowReasonCounts,
-          observed_at: observedAt,
-          endpoint_error_samples: endpointErrors.slice(0, 10),
-          failed_row_samples: failedRows.slice(0, 10),
-        },
-        null,
-        2
-      )
-    );
+    console.log(JSON.stringify({
+      watch_table: WATCH_TABLE,
+      watch_view: WATCH_VIEW,
+      shows_table: SHOWS_TABLE,
+      app_endpoint: APP_RING_ENDPOINT,
+      app_show_id: appCtx.app_show_id,
+      app_sql_date: appCtx.app_sql_date,
+      app_time: appCtx.app_time,
+      mode: appCtx.mode,
+      shifted_to_next_day: appCtx.shifted_to_next_day,
+      shows_link_record_id: linkedShowRecordId,
+      processed_in_view,
+      processed_app_match,
+      processed_valid,
+      updated_rows,
+      failed_row_updates: failedRows.length,
+      skipped_missing_class_endpoint,
+      skipped_missing_entryxclasses_uuid,
+      unique_class_endpoints: uniqueEndpoints.size,
+      endpoint_fetch_errors,
+      trip_matched,
+      trip_not_found,
+      app_show_mismatch_count,
+      app_sql_date_mismatch_count,
+      app_show_and_date_mismatch_count,
+      shows_link_bound,
+      shows_link_missing,
+      row_reason_counts: rowReasonCounts,
+      observed_at: observedAt,
+      endpoint_error_samples: endpointErrors.slice(0, 10),
+      failed_row_samples: failedRows.slice(0, 10)
+    }, null, 2));
   } catch (e) {
     const name = e?.name || "error";
     const msg = String(e?.message || e);
