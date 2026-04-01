@@ -1,13 +1,12 @@
-// tagger.js (NEW CLEAN REWRITE)
+// tagger.js (FULL DROP)
 // 3 modes only: DAY / NIGHT / OVERNIGHT
 // - raw clock always comes from endpoint/system fallback
-// - DAY:        app_show_id = raw show_id, app_sql_date = raw sql_date
-// - NIGHT:      app_show_id = raw show_id, app_sql_date = next day
-// - OVERNIGHT:  before midnight behaves exactly like NIGHT;
-//               after midnight preserves the shifted app context from the latest shifted heartbeat
+// - mode logic is based only on app_time as provided by the endpoint/system fallback
+// - DAY:        app_show_id = raw show_id, app_sql_date = raw sql_date, shifted_to_next_day = false
+// - NIGHT:      app_show_id = raw show_id, app_sql_date = next day,   shifted_to_next_day = true
+// - OVERNIGHT:  app_show_id = raw show_id, app_sql_date = raw sql_date, shifted_to_next_day = false
 // - shows table: match by show_id/app_show_id or create if missing
 // - shows table heartbeat link is overwritten to latest heartbeat only
-// - shifted_to_next_day is checked for NIGHT and OVERNIGHT
 // - new_app_show_id is checked only when a new show row is created
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
@@ -357,9 +356,10 @@ function resolveModeFromClock(clock) {
   if (FORCE_MODE) return normalizeMode(FORCE_MODE);
 
   const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
+
   if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";        // 5:00 AM - 4:59 PM
-  if (minuteOfDay >= 1020 && minuteOfDay <= 1319) return "NIGHT";     // 5:00 PM - 9:59 PM
-  return "OVERNIGHT";                                                  // 10:00 PM - 4:59 AM
+  if (minuteOfDay >= 1020 && minuteOfDay <= 1439) return "NIGHT";     // 5:00 PM - 11:59 PM
+  return "OVERNIGHT";                                                  // 12:00 AM - 4:59 AM
 }
 
 function intervalMinutesForMode(mode) {
@@ -484,51 +484,8 @@ async function getClockSafe() {
   }
 }
 
-// Most recent shifted heartbeat context.
-// Used only for after-midnight OVERNIGHT to preserve what NIGHT already set.
-async function getLatestShiftedContext(clock) {
-  const rows = await airtableListSome({
-    table: TABLE_HEARTBEAT,
-    fields: [
-      FIELD_EPOCH,
-      FIELD_MODE,
-      FIELD_APP_SHOW_ID,
-      FIELD_APP_SQL_DATE,
-      FIELD_SHIFTED_NEXT_DAY,
-    ],
-    maxRecords: 25,
-    sortField: FIELD_EPOCH,
-    sortDirection: "desc"
-  });
-
-  const nowEpoch = Number(clock?.nowEpoch || 0);
-
-  for (const r of rows) {
-    const f = r.fields || {};
-    const rowEpoch = Number(f[FIELD_EPOCH] || 0);
-    const rowMode = normalizeMode(f[FIELD_MODE]);
-    const rowAppSqlDate = String(f[FIELD_APP_SQL_DATE] || "").trim();
-    const rowAppShowId = f[FIELD_APP_SHOW_ID] ?? null;
-    const rowShifted = !!f[FIELD_SHIFTED_NEXT_DAY];
-
-    if (!rowEpoch || rowEpoch >= nowEpoch) continue;
-    if ((nowEpoch - rowEpoch) > (12 * 3600)) continue;
-    if (!rowAppSqlDate) continue;
-    if (!(rowShifted || rowMode === "NIGHT" || rowMode === "OVERNIGHT")) continue;
-
-    return {
-      recordId: r.id,
-      appShowId: rowAppShowId,
-      appSqlDate: rowAppSqlDate,
-    };
-  }
-
-  return null;
-}
-
 async function buildAppContext(clock, mode) {
   const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
-  const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
 
   let appShowId = clock.showId ?? null;
   let appSqlDate = clock.sqlDate;
@@ -543,41 +500,9 @@ async function buildAppContext(clock, mode) {
     appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
     shiftedToNextDay = true;
   } else if (mode === "OVERNIGHT") {
-    if (minuteOfDay >= 1320) {
-      // 10:00 PM - 11:59 PM: exactly same app state NIGHT would set
-      appShowId = clock.showId ?? null;
-      appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
-      shiftedToNextDay = true;
-    } else {
-      // 12:00 AM - 4:59 AM: keep exactly what NIGHT already set
-      const carry = await getLatestShiftedContext(clock);
-
-      if (carry) {
-        appShowId = carry.appShowId ?? appShowId;
-        appSqlDate = carry.appSqlDate;
-        shiftedToNextDay = true;
-
-        logInfo("overnight_carry_forward_applied", {
-          carry_record_id: carry.recordId,
-          app_show_id: appShowId,
-          app_sql_date: appSqlDate
-        });
-      } else {
-        // If no shifted context exists yet, do not invent a new show id.
-        // Preserve the shifted date contract deterministically.
-        appShowId = clock.showId ?? null;
-        appSqlDate = clock.sqlDate;
-        shiftedToNextDay = true;
-
-        logWarn("overnight_carry_forward_missing", {
-          raw_show_id: clock.showId ?? null,
-          raw_sql_date: clock.sqlDate,
-          raw_time: clock.time,
-          fallback_app_show_id: appShowId,
-          fallback_app_sql_date: appSqlDate
-        });
-      }
-    }
+    appShowId = clock.showId ?? null;
+    appSqlDate = clock.sqlDate;
+    shiftedToNextDay = false;
   }
 
   const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
