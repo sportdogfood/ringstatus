@@ -1,4 +1,4 @@
-// trips_tagger.js (REVISED AGAIN)
+// trips_tagger.js (REMOVE ALL MISMATCH LOGIC)
 //
 // Locked rules:
 // - app_show_id comes from endpoint show_id
@@ -11,8 +11,8 @@
 // - NIGHT shifts sql_date text to next text date (April-safe only, per current rule)
 // - OVERNIGHT uses raw endpoint sql_date text
 // - shifted_to_next_day is true only in NIGHT
-// - remove app_sql_date_mismatch entirely
-// - compare show_id only
+// - no mismatch fields
+// - no mismatch comparisons
 // - also binds watch_trips.shows by matching shows.show_id === app_show_id
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
@@ -31,22 +31,21 @@ const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 
 const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15";
 
-// watch_trips source / compare fields
+// watch_trips source fields
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
-const FIELD_SHOW_ID               = process.env.FIELD_SHOW_ID || "show_id";
 
 // app context fields written back
 const FIELD_APP_SHOW_ID           = process.env.FIELD_APP_SHOW_ID || "app_show_id";
 const FIELD_APP_SQL_DATE          = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
 const FIELD_APP_TIME              = process.env.FIELD_APP_TIME || "app_time";
-const FIELD_APP_SHOW_MISMATCH     = process.env.FIELD_APP_SHOW_MISMATCH || "app_show_mismatch";
 
 // tag output fields
 const FIELD_MODE                  = process.env.FIELD_MODE || "mode";
 const FIELD_SHIFTED_NEXT_DAY      = process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
 
-// watch_trips link field to shows
+// shows linkage
+const FIELD_SHOW_ID               = process.env.FIELD_SHOW_ID || "show_id";
 const FIELD_LINK_SHOWS            = process.env.FIELD_LINK_SHOWS || "shows";
 
 // pass / audit fields
@@ -323,10 +322,6 @@ function setModeFields(updateFields, appCtx) {
   updateFields[FIELD_SHIFTED_NEXT_DAY] = !!appCtx?.shifted_to_next_day;
 }
 
-function setMismatchFlags(updateFields, showMismatch) {
-  updateFields[FIELD_APP_SHOW_MISMATCH] = !!showMismatch;
-}
-
 function setShowsLink(updateFields, showRecordId) {
   updateFields[FIELD_LINK_SHOWS] = showRecordId ? [showRecordId] : [];
 }
@@ -530,7 +525,6 @@ async function fetchShowsMap() {
           mode: null,
           shifted_to_next_day: false
         });
-        setMismatchFlags(updateFields, false);
         setShowsLink(updateFields, null);
         setBaseFields(updateFields, observedAt, "err:app_endpoint_failed");
         return { id: rec.id, fields: updateFields };
@@ -577,17 +571,14 @@ async function fetchShowsMap() {
       const f = rec.fields || {};
       const classEndpoint = strOrNull(f[FIELD_CLASS_ENDPOINT]);
       const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
-      const row_show_id = numOrNull(f[FIELD_SHOW_ID]);
-      const showMismatch = row_show_id !== appCtx.app_show_id;
 
       recInputs.push({
         rec,
         classEndpoint,
-        entryxclasses_uuid,
-        showMismatch
+        entryxclasses_uuid
       });
 
-      if (!showMismatch && classEndpoint) {
+      if (classEndpoint) {
         uniqueEndpoints.add(classEndpoint);
       }
     }
@@ -664,8 +655,6 @@ async function fetchShowsMap() {
     let endpoint_fetch_errors = 0;
     let trip_matched = 0;
     let trip_not_found = 0;
-    let app_show_mismatch_count = 0;
-    let processed_app_match = 0;
     let shows_link_bound = 0;
     let shows_link_missing = 0;
 
@@ -677,34 +666,16 @@ async function fetchShowsMap() {
       const {
         rec,
         classEndpoint,
-        entryxclasses_uuid,
-        showMismatch
+        entryxclasses_uuid
       } = row;
 
       const updateFields = {};
       setAppFields(updateFields, appCtx);
       setModeFields(updateFields, appCtx);
-      setMismatchFlags(updateFields, showMismatch);
       setShowsLink(updateFields, linkedShowRecordId);
 
       if (linkedShowRecordId) shows_link_bound++;
       else shows_link_missing++;
-
-      if (showMismatch) {
-        app_show_mismatch_count++;
-
-        let reason = "err:app_show_mismatch";
-        if (!linkedShowRecordId) {
-          reason = `${reason}|warn:shows_link_missing`;
-        }
-
-        setBaseFields(updateFields, observedAt, reason);
-        bumpReason(reason);
-        updates.push({ id: rec.id, fields: updateFields });
-        continue;
-      }
-
-      processed_app_match++;
 
       if (!classEndpoint) {
         let reason = "err:missing_class_endpoint";
@@ -984,7 +955,6 @@ async function fetchShowsMap() {
       shifted_to_next_day: appCtx.shifted_to_next_day,
       shows_link_record_id: linkedShowRecordId,
       processed_in_view,
-      processed_app_match,
       processed_valid,
       updated_rows,
       failed_row_updates: failedRows.length,
@@ -994,7 +964,6 @@ async function fetchShowsMap() {
       endpoint_fetch_errors,
       trip_matched,
       trip_not_found,
-      app_show_mismatch_count,
       shows_link_bound,
       shows_link_missing,
       row_reason_counts: rowReasonCounts,
