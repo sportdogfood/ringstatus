@@ -1,16 +1,18 @@
-// trips_tagger.js (REVISED FULL REPLACEMENT)
+// trips_tagger.js (REVISED AGAIN)
 //
 // Locked rules:
 // - app_show_id comes from endpoint show_id
 // - app_sql_date starts from endpoint time_zone_date_time.sql_date text
-// - app_time comes from endpoint time_zone_date_time.time text
+// - app_time comes from endpoint time text
 // - no timezone conversion
 // - no date_obj / time_obj usage
 // - no UTC/local math
 // - DAY uses raw endpoint sql_date text
-// - NIGHT shifts sql_date text to next calendar date text
+// - NIGHT shifts sql_date text to next text date (April-safe only, per current rule)
 // - OVERNIGHT uses raw endpoint sql_date text
 // - shifted_to_next_day is true only in NIGHT
+// - remove app_sql_date_mismatch entirely
+// - compare show_id only
 // - also binds watch_trips.shows by matching shows.show_id === app_show_id
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
@@ -33,15 +35,12 @@ const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || "https://broad-tooth-
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
 const FIELD_SHOW_ID               = process.env.FIELD_SHOW_ID || "show_id";
-const FIELD_SQL_DATE              = process.env.FIELD_SQL_DATE || "sql_date";
-const FIELD_SHOW_DATE             = process.env.FIELD_SHOW_DATE || "show_date";
 
 // app context fields written back
 const FIELD_APP_SHOW_ID           = process.env.FIELD_APP_SHOW_ID || "app_show_id";
 const FIELD_APP_SQL_DATE          = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
 const FIELD_APP_TIME              = process.env.FIELD_APP_TIME || "app_time";
 const FIELD_APP_SHOW_MISMATCH     = process.env.FIELD_APP_SHOW_MISMATCH || "app_show_mismatch";
-const FIELD_APP_SQL_DATE_MISMATCH = process.env.FIELD_APP_SQL_DATE_MISMATCH || "app_sql_date_mismatch";
 
 // tag output fields
 const FIELD_MODE                  = process.env.FIELD_MODE || "mode";
@@ -170,51 +169,6 @@ function normTimeStr(s) {
 
 function normStr(s) {
   return strOrNull(s);
-}
-
-function currentLinkIds(v) {
-  if (!Array.isArray(v)) return [];
-  return v.map(x => typeof x === "string" ? x : x?.id).filter(Boolean);
-}
-
-function isLeapYearText(year) {
-  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-}
-
-function daysInMonthText(year, month) {
-  if (month === 2) return isLeapYearText(year) ? 29 : 28;
-  if ([4, 6, 9, 11].includes(month)) return 30;
-  return 31;
-}
-
-function shiftSqlDateText(rawSqlDate) {
-  const v = strOrNull(rawSqlDate);
-  if (!v) return null;
-
-  const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!m) return null;
-
-  let year  = Number(m[1]);
-  let month = Number(m[2]);
-  let day   = Number(m[3]);
-
-  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) return null;
-  if (month < 1 || month > 12) return null;
-
-  const dim = daysInMonthText(year, month);
-  if (day < 1 || day > dim) return null;
-
-  day += 1;
-  if (day > dim) {
-    day = 1;
-    month += 1;
-    if (month > 12) {
-      month = 1;
-      year += 1;
-    }
-  }
-
-  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
 async function fetchWithTimeout(url, opts = {}) {
@@ -369,9 +323,8 @@ function setModeFields(updateFields, appCtx) {
   updateFields[FIELD_SHIFTED_NEXT_DAY] = !!appCtx?.shifted_to_next_day;
 }
 
-function setMismatchFlags(updateFields, showMismatch, sqlDateMismatch) {
+function setMismatchFlags(updateFields, showMismatch) {
   updateFields[FIELD_APP_SHOW_MISMATCH] = !!showMismatch;
-  updateFields[FIELD_APP_SQL_DATE_MISMATCH] = !!sqlDateMismatch;
 }
 
 function setShowsLink(updateFields, showRecordId) {
@@ -458,6 +411,25 @@ function parseTimeToMinutes(appTime) {
   return hh * 60 + mm;
 }
 
+function shiftAprilSqlDateText(rawSqlDate) {
+  const v = strOrNull(rawSqlDate);
+  if (!v) return null;
+
+  const m = v.match(/^(\d{4})-(04)-(\d{2})$/);
+  if (!m) return null;
+
+  const year = m[1];
+  const month = m[2];
+  const day = Number(m[3]);
+
+  if (!Number.isFinite(day) || day < 1 || day > 30) return null;
+
+  const nextDay = day + 1;
+  const nextText = String(nextDay).padStart(2, "0");
+
+  return `${year}-${month}-${nextText}`;
+}
+
 function deriveMode(appTime) {
   const mins = parseTimeToMinutes(appTime);
   if (mins === null) return null;
@@ -500,8 +472,8 @@ async function fetchAppContext() {
   let shifted_to_next_day = false;
 
   if (mode === "NIGHT") {
-    app_sql_date = shiftSqlDateText(raw_sql_date);
-    if (!app_sql_date) throw new Error(`unable to shift sql_date text: ${raw_sql_date}`);
+    app_sql_date = shiftAprilSqlDateText(raw_sql_date);
+    if (!app_sql_date) throw new Error(`unable to shift April sql_date text: ${raw_sql_date}`);
     shifted_to_next_day = true;
   }
 
@@ -558,7 +530,7 @@ async function fetchShowsMap() {
           mode: null,
           shifted_to_next_day: false
         });
-        setMismatchFlags(updateFields, false, false);
+        setMismatchFlags(updateFields, false);
         setShowsLink(updateFields, null);
         setBaseFields(updateFields, observedAt, "err:app_endpoint_failed");
         return { id: rec.id, fields: updateFields };
@@ -605,24 +577,17 @@ async function fetchShowsMap() {
       const f = rec.fields || {};
       const classEndpoint = strOrNull(f[FIELD_CLASS_ENDPOINT]);
       const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
-
       const row_show_id = numOrNull(f[FIELD_SHOW_ID]);
-      const row_sql_date = strOrNull(firstNonBlank(f[FIELD_SQL_DATE], f[FIELD_SHOW_DATE]));
-
       const showMismatch = row_show_id !== appCtx.app_show_id;
-      const sqlDateMismatch = row_sql_date !== appCtx.app_sql_date;
 
       recInputs.push({
         rec,
         classEndpoint,
         entryxclasses_uuid,
-        row_show_id,
-        row_sql_date,
-        showMismatch,
-        sqlDateMismatch
+        showMismatch
       });
 
-      if (!showMismatch && !sqlDateMismatch && classEndpoint) {
+      if (!showMismatch && classEndpoint) {
         uniqueEndpoints.add(classEndpoint);
       }
     }
@@ -700,8 +665,6 @@ async function fetchShowsMap() {
     let trip_matched = 0;
     let trip_not_found = 0;
     let app_show_mismatch_count = 0;
-    let app_sql_date_mismatch_count = 0;
-    let app_show_and_date_mismatch_count = 0;
     let processed_app_match = 0;
     let shows_link_bound = 0;
     let shows_link_missing = 0;
@@ -715,33 +678,22 @@ async function fetchShowsMap() {
         rec,
         classEndpoint,
         entryxclasses_uuid,
-        showMismatch,
-        sqlDateMismatch
+        showMismatch
       } = row;
 
       const updateFields = {};
       setAppFields(updateFields, appCtx);
       setModeFields(updateFields, appCtx);
-      setMismatchFlags(updateFields, showMismatch, sqlDateMismatch);
+      setMismatchFlags(updateFields, showMismatch);
       setShowsLink(updateFields, linkedShowRecordId);
 
       if (linkedShowRecordId) shows_link_bound++;
       else shows_link_missing++;
 
-      if (showMismatch || sqlDateMismatch) {
-        let reason = "err:app_record_mismatch";
+      if (showMismatch) {
+        app_show_mismatch_count++;
 
-        if (showMismatch && sqlDateMismatch) {
-          app_show_and_date_mismatch_count++;
-          reason = "err:app_show_and_date_mismatch";
-        } else if (showMismatch) {
-          app_show_mismatch_count++;
-          reason = "err:app_show_mismatch";
-        } else if (sqlDateMismatch) {
-          app_sql_date_mismatch_count++;
-          reason = "err:app_sql_date_mismatch";
-        }
-
+        let reason = "err:app_show_mismatch";
         if (!linkedShowRecordId) {
           reason = `${reason}|warn:shows_link_missing`;
         }
@@ -1043,8 +995,6 @@ async function fetchShowsMap() {
       trip_matched,
       trip_not_found,
       app_show_mismatch_count,
-      app_sql_date_mismatch_count,
-      app_show_and_date_mismatch_count,
       shows_link_bound,
       shows_link_missing,
       row_reason_counts: rowReasonCounts,
