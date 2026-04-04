@@ -63,6 +63,8 @@ const FIELD_RS_MIN_TO_ACTUAL_GO = process.env.FIELD_RS_MIN_TO_ACTUAL_GO || "rs_m
 
 const LOG_FIELD_ENTRYXCLASSES_UUID = process.env.LOG_FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
 const LOG_FIELD_WATCH_TRIP_RECORD_ID = process.env.LOG_FIELD_WATCH_TRIP_RECORD_ID || "watch_trip_record_id";
+const LOG_FIELD_WATCH_TRIPS_LINK = process.env.LOG_FIELD_WATCH_TRIPS_LINK || "watch_trips";
+const LOG_FIELD_CALC_LOG_KEY = process.env.LOG_FIELD_CALC_LOG_KEY || "calc_log_key";
 const LOG_FIELD_APP_SHOW_ID = process.env.LOG_FIELD_APP_SHOW_ID || "app_show_id";
 const LOG_FIELD_APP_SQL_DATE = process.env.LOG_FIELD_APP_SQL_DATE || "app_sql_date";
 const LOG_FIELD_CALC_MODE = process.env.LOG_FIELD_CALC_MODE || "calc_mode";
@@ -769,6 +771,10 @@ function setIfPresent(target, fieldName, value) {
   target[fieldName] = value;
 }
 
+function linkOne(recordId) {
+  return recordId ? [{ id: recordId }] : undefined;
+}
+
 function finalCalcStatus(result, patchFailure) {
   if (!result.eligibility.eligible) return "skipped";
   if (patchFailure) return "patch_failed";
@@ -786,17 +792,47 @@ function shouldCreateLogRow(result, patchFailure) {
 
 function buildTripLogRecord(result, patchFailure) {
   const fields = {};
+  const createdAt = new Date().toISOString();
   const status = finalCalcStatus(result, patchFailure);
   const skipReason = result.eligibility.skipReasons.join(",");
   const changedFields = result.changedFields.join(",");
   const anomalies = patchFailure
     ? [...result.anomalies, `patch_failed:${patchFailure.reason}`]
     : result.anomalies;
+  const normalized = result.inputsForLog?.normalized || {};
+  const computedOutputs = result.computedOutputs || {};
+  const calcLogKey = [
+    result.entryxclasses_uuid || result.recordId || "na",
+    CALC_VERSION,
+    CALC_MODE,
+    createdAt,
+  ].join("|");
 
+  setIfPresent(fields, LOG_FIELD_CALC_LOG_KEY, calcLogKey);
   setIfPresent(fields, LOG_FIELD_ENTRYXCLASSES_UUID, result.entryxclasses_uuid);
   setIfPresent(fields, LOG_FIELD_WATCH_TRIP_RECORD_ID, result.recordId);
+  if (LOG_FIELD_WATCH_TRIPS_LINK && result.recordId) {
+    fields[LOG_FIELD_WATCH_TRIPS_LINK] = linkOne(result.recordId);
+  }
   setIfPresent(fields, LOG_FIELD_APP_SHOW_ID, result.app_show_id);
   setIfPresent(fields, LOG_FIELD_APP_SQL_DATE, result.app_sql_date);
+  setIfPresent(fields, FIELD_APP_TIME, normalized.app_time_text);
+  setIfPresent(fields, FIELD_CLASS_STATUS, normalized.class_status);
+  setIfPresent(fields, FIELD_ESTIMATED_START_TIME, normalized.estimated_start_time_text);
+  setIfPresent(fields, FIELD_ESTIMATED_END_TIME, normalized.estimated_end_time_text);
+  setIfPresent(fields, FIELD_REMAINING_TRIPS, normalized.remaining_trips);
+  setIfPresent(fields, FIELD_TOTAL_TRIPS, normalized.total_trips);
+  setIfPresent(fields, FIELD_COMPLETED_TRIPS, normalized.completed_trips);
+  setIfPresent(fields, FIELD_ACTUAL_TIME, normalized.actual_time_text);
+  setIfPresent(fields, FIELD_ESTIMATED_TIME, normalized.estimated_time_text);
+  setIfPresent(fields, FIELD_ESTIMATED_GO_TIME, normalized.estimated_go_time_text);
+  setIfPresent(fields, FIELD_ORDER_OF_GO, normalized.order_of_go);
+  setIfPresent(fields, FIELD_ACTUAL_ORDER, normalized.actual_order);
+  setIfPresent(fields, FIELD_GONE_IN, normalized.gone_in);
+  setIfPresent(fields, FIELD_H_EID, normalized.h_eid);
+  for (const fieldName of OUTPUT_FIELDS) {
+    setIfPresent(fields, fieldName, computedOutputs[fieldName]);
+  }
   setIfPresent(fields, LOG_FIELD_CALC_MODE, CALC_MODE);
   setIfPresent(fields, LOG_FIELD_CALC_VERSION, CALC_VERSION);
   setIfPresent(fields, LOG_FIELD_CALC_STATUS, status);
@@ -804,9 +840,9 @@ function buildTripLogRecord(result, patchFailure) {
   setIfPresent(fields, LOG_FIELD_CHANGED_FIELDS, changedFields || undefined);
   setIfPresent(fields, LOG_FIELD_INPUTS_JSON, jsonForField(result.inputsForLog));
   setIfPresent(fields, LOG_FIELD_PRIOR_OUTPUTS_JSON, jsonForField(result.priorOutputs));
-  setIfPresent(fields, LOG_FIELD_COMPUTED_OUTPUTS_JSON, jsonForField(result.computedOutputs));
+  setIfPresent(fields, LOG_FIELD_COMPUTED_OUTPUTS_JSON, jsonForField(computedOutputs));
   setIfPresent(fields, LOG_FIELD_ANOMALIES_JSON, anomalies.length ? jsonForField(anomalies) : undefined);
-  setIfPresent(fields, LOG_FIELD_CREATED_AT, new Date().toISOString());
+  setIfPresent(fields, LOG_FIELD_CREATED_AT, createdAt);
 
   return { fields };
 }
