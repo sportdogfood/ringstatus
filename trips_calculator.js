@@ -67,6 +67,33 @@ const LOG_FIELD_WATCH_TRIPS_LINK = process.env.LOG_FIELD_WATCH_TRIPS_LINK || "wa
 const LOG_FIELD_CALC_LOG_KEY = process.env.LOG_FIELD_CALC_LOG_KEY || "calc_log_key";
 const LOG_FIELD_APP_SHOW_ID = process.env.LOG_FIELD_APP_SHOW_ID || "app_show_id";
 const LOG_FIELD_APP_SQL_DATE = process.env.LOG_FIELD_APP_SQL_DATE || "app_sql_date";
+const LOG_FIELD_APP_TIME = process.env.LOG_FIELD_APP_TIME || "app_time";
+const LOG_FIELD_CLASS_STATUS = process.env.LOG_FIELD_CLASS_STATUS || "class_status";
+const LOG_FIELD_ESTIMATED_START_TIME = process.env.LOG_FIELD_ESTIMATED_START_TIME || "estimated_start_time";
+const LOG_FIELD_ESTIMATED_END_TIME = process.env.LOG_FIELD_ESTIMATED_END_TIME || "estimated_end_time";
+const LOG_FIELD_REMAINING_TRIPS = process.env.LOG_FIELD_REMAINING_TRIPS || "remaining_trips";
+const LOG_FIELD_TOTAL_TRIPS = process.env.LOG_FIELD_TOTAL_TRIPS || "total_trips";
+const LOG_FIELD_COMPLETED_TRIPS = process.env.LOG_FIELD_COMPLETED_TRIPS || "completed_trips";
+const LOG_FIELD_ACTUAL_TIME = process.env.LOG_FIELD_ACTUAL_TIME || "actual_time";
+const LOG_FIELD_ESTIMATED_TIME = process.env.LOG_FIELD_ESTIMATED_TIME || "estimated_time";
+const LOG_FIELD_ESTIMATED_GO_TIME = process.env.LOG_FIELD_ESTIMATED_GO_TIME || "estimated_go_time";
+const LOG_FIELD_ORDER_OF_GO = process.env.LOG_FIELD_ORDER_OF_GO || "order_of_go";
+const LOG_FIELD_ACTUAL_ORDER = process.env.LOG_FIELD_ACTUAL_ORDER || "actual_order";
+const LOG_FIELD_GONE_IN = process.env.LOG_FIELD_GONE_IN || "gone_in";
+const LOG_FIELD_H_EID = process.env.LOG_FIELD_H_EID || "h_eid";
+const LOG_FIELD_RS_TRIP_DEFAULT = process.env.LOG_FIELD_RS_TRIP_DEFAULT || "rs_trip_default";
+const LOG_FIELD_RS_ORDER_OF_GO = process.env.LOG_FIELD_RS_ORDER_OF_GO || "rs_order_of_go";
+const LOG_FIELD_RS_RUNNING_ORDER_OF_GO = process.env.LOG_FIELD_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go";
+const LOG_FIELD_RS_MINS_TILL_START = process.env.LOG_FIELD_RS_MINS_TILL_START || "rs_mins_till_start";
+const LOG_FIELD_RS_MINS_SINCE_START = process.env.LOG_FIELD_RS_MINS_SINCE_START || "rs_mins_since_start";
+const LOG_FIELD_RS_TRIP_TIME = process.env.LOG_FIELD_RS_TRIP_TIME || "rs_trip_time";
+const LOG_FIELD_RS_TRIP_TIME2 = process.env.LOG_FIELD_RS_TRIP_TIME2 || "rs_trip_time2";
+const LOG_FIELD_RS_LENGTH = process.env.LOG_FIELD_RS_LENGTH || "rs_length";
+const LOG_FIELD_RS_END_TIME = process.env.LOG_FIELD_RS_END_TIME || "rs_end_time";
+const LOG_FIELD_RS_GO_MINS_FROM_START = process.env.LOG_FIELD_RS_GO_MINS_FROM_START || "rs_go_mins_from_start";
+const LOG_FIELD_RS_GO_TIME_FROM_START = process.env.LOG_FIELD_RS_GO_TIME_FROM_START || "rs_go_time_from_start";
+const LOG_FIELD_RS_MIN_TILL_GO = process.env.LOG_FIELD_RS_MIN_TILL_GO || "rs_min_till_go";
+const LOG_FIELD_RS_MIN_TO_ACTUAL_GO = process.env.LOG_FIELD_RS_MIN_TO_ACTUAL_GO || "rs_min_to_actual_go";
 const LOG_FIELD_CALC_MODE = process.env.LOG_FIELD_CALC_MODE || "calc_mode";
 const LOG_FIELD_CALC_VERSION = process.env.LOG_FIELD_CALC_VERSION || "calc_version";
 const LOG_FIELD_CALC_STATUS = process.env.LOG_FIELD_CALC_STATUS || "calc_status";
@@ -140,6 +167,22 @@ const OUTPUT_FIELDS = [
   FIELD_RS_MIN_TILL_GO,
   FIELD_RS_MIN_TO_ACTUAL_GO,
 ];
+
+const OUTPUT_TO_LOG_FIELD = {
+  [FIELD_RS_TRIP_DEFAULT]: LOG_FIELD_RS_TRIP_DEFAULT,
+  [FIELD_RS_ORDER_OF_GO]: LOG_FIELD_RS_ORDER_OF_GO,
+  [FIELD_RS_RUNNING_ORDER_OF_GO]: LOG_FIELD_RS_RUNNING_ORDER_OF_GO,
+  [FIELD_RS_MINS_TILL_START]: LOG_FIELD_RS_MINS_TILL_START,
+  [FIELD_RS_MINS_SINCE_START]: LOG_FIELD_RS_MINS_SINCE_START,
+  [FIELD_RS_TRIP_TIME]: LOG_FIELD_RS_TRIP_TIME,
+  [FIELD_RS_TRIP_TIME2]: LOG_FIELD_RS_TRIP_TIME2,
+  [FIELD_RS_LENGTH]: LOG_FIELD_RS_LENGTH,
+  [FIELD_RS_END_TIME]: LOG_FIELD_RS_END_TIME,
+  [FIELD_RS_GO_MINS_FROM_START]: LOG_FIELD_RS_GO_MINS_FROM_START,
+  [FIELD_RS_GO_TIME_FROM_START]: LOG_FIELD_RS_GO_TIME_FROM_START,
+  [FIELD_RS_MIN_TILL_GO]: LOG_FIELD_RS_MIN_TILL_GO,
+  [FIELD_RS_MIN_TO_ACTUAL_GO]: LOG_FIELD_RS_MIN_TO_ACTUAL_GO,
+};
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -816,22 +859,22 @@ function buildTripLogRecord(result, patchFailure) {
   }
   setIfPresent(fields, LOG_FIELD_APP_SHOW_ID, result.app_show_id);
   setIfPresent(fields, LOG_FIELD_APP_SQL_DATE, result.app_sql_date);
-  setIfPresent(fields, FIELD_APP_TIME, normalized.app_time_text);
-  setIfPresent(fields, FIELD_CLASS_STATUS, normalized.class_status);
-  setIfPresent(fields, FIELD_ESTIMATED_START_TIME, normalized.estimated_start_time_text);
-  setIfPresent(fields, FIELD_ESTIMATED_END_TIME, normalized.estimated_end_time_text);
-  setIfPresent(fields, FIELD_REMAINING_TRIPS, normalized.remaining_trips);
-  setIfPresent(fields, FIELD_TOTAL_TRIPS, normalized.total_trips);
-  setIfPresent(fields, FIELD_COMPLETED_TRIPS, normalized.completed_trips);
-  setIfPresent(fields, FIELD_ACTUAL_TIME, normalized.actual_time_text);
-  setIfPresent(fields, FIELD_ESTIMATED_TIME, normalized.estimated_time_text);
-  setIfPresent(fields, FIELD_ESTIMATED_GO_TIME, normalized.estimated_go_time_text);
-  setIfPresent(fields, FIELD_ORDER_OF_GO, normalized.order_of_go);
-  setIfPresent(fields, FIELD_ACTUAL_ORDER, normalized.actual_order);
-  setIfPresent(fields, FIELD_GONE_IN, normalized.gone_in);
-  setIfPresent(fields, FIELD_H_EID, normalized.h_eid);
+  setIfPresent(fields, LOG_FIELD_APP_TIME, normalized.app_time_text);
+  setIfPresent(fields, LOG_FIELD_CLASS_STATUS, normalized.class_status);
+  setIfPresent(fields, LOG_FIELD_ESTIMATED_START_TIME, normalized.estimated_start_time_text);
+  setIfPresent(fields, LOG_FIELD_ESTIMATED_END_TIME, normalized.estimated_end_time_text);
+  setIfPresent(fields, LOG_FIELD_REMAINING_TRIPS, normalized.remaining_trips);
+  setIfPresent(fields, LOG_FIELD_TOTAL_TRIPS, normalized.total_trips);
+  setIfPresent(fields, LOG_FIELD_COMPLETED_TRIPS, normalized.completed_trips);
+  setIfPresent(fields, LOG_FIELD_ACTUAL_TIME, normalized.actual_time_text);
+  setIfPresent(fields, LOG_FIELD_ESTIMATED_TIME, normalized.estimated_time_text);
+  setIfPresent(fields, LOG_FIELD_ESTIMATED_GO_TIME, normalized.estimated_go_time_text);
+  setIfPresent(fields, LOG_FIELD_ORDER_OF_GO, normalized.order_of_go);
+  setIfPresent(fields, LOG_FIELD_ACTUAL_ORDER, normalized.actual_order);
+  setIfPresent(fields, LOG_FIELD_GONE_IN, normalized.gone_in);
+  setIfPresent(fields, LOG_FIELD_H_EID, normalized.h_eid);
   for (const fieldName of OUTPUT_FIELDS) {
-    setIfPresent(fields, fieldName, computedOutputs[fieldName]);
+    setIfPresent(fields, OUTPUT_TO_LOG_FIELD[fieldName] || fieldName, computedOutputs[fieldName]);
   }
   setIfPresent(fields, LOG_FIELD_CALC_MODE, CALC_MODE);
   setIfPresent(fields, LOG_FIELD_CALC_VERSION, CALC_VERSION);
