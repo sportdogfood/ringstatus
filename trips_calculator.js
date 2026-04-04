@@ -31,7 +31,8 @@ const FIELD_ENTRYXCLASSES_UUID = process.env.FIELD_ENTRYXCLASSES_UUID || "entryx
 const FIELD_APP_SHOW_ID = process.env.FIELD_APP_SHOW_ID || "app_show_id";
 const FIELD_APP_SQL_DATE = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
 const FIELD_APP_TIME = process.env.FIELD_APP_TIME || "app_time";
-const FIELD_CLASS_STATUS = process.env.FIELD_CLASS_STATUS || "class_status";
+const FIELD_CLASS_STATUS = process.env.FIELD_CLASS_STATUS || "status";
+const FIELD_CLASS_STATUS_FALLBACK = process.env.FIELD_CLASS_STATUS_FALLBACK || "class_status";
 const FIELD_ESTIMATED_START_TIME = process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time";
 const FIELD_ESTIMATED_END_TIME = process.env.FIELD_ESTIMATED_END_TIME || "estimated_end_time";
 const FIELD_REMAINING_TRIPS = process.env.FIELD_REMAINING_TRIPS || "remaining_trips";
@@ -227,6 +228,23 @@ function normalizeOrderValue(value) {
 function normalizeCountValue(value) {
   const num = numOrNull(value);
   return num === null ? null : roundNumber(num, 6);
+}
+
+function normalizeClassStatusValue(...candidates) {
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) continue;
+
+    if (candidate && typeof candidate === "object") {
+      const named = strOrNull(candidate.name ?? candidate.label ?? candidate.value);
+      if (named) return named;
+      continue;
+    }
+
+    const text = strOrNull(candidate);
+    if (text) return text;
+  }
+
+  return null;
 }
 
 function parseClockToMinutes(value) {
@@ -477,6 +495,7 @@ function buildRawInputs(fields) {
     app_sql_date: fields[FIELD_APP_SQL_DATE],
     app_time: fields[FIELD_APP_TIME],
     class_status: fields[FIELD_CLASS_STATUS],
+    class_status_fallback: fields[FIELD_CLASS_STATUS_FALLBACK],
     estimated_start_time: fields[FIELD_ESTIMATED_START_TIME],
     estimated_end_time: fields[FIELD_ESTIMATED_END_TIME],
     remaining_trips: fields[FIELD_REMAINING_TRIPS],
@@ -525,7 +544,10 @@ function buildNormalizedInputs(record) {
       entryxclasses_uuid: strOrNull(fields[FIELD_ENTRYXCLASSES_UUID]),
       app_show_id: numOrNull(fields[FIELD_APP_SHOW_ID]),
       app_sql_date: strOrNull(fields[FIELD_APP_SQL_DATE]),
-      class_status: strOrNull(fields[FIELD_CLASS_STATUS]),
+      class_status: normalizeClassStatusValue(
+        fields[FIELD_CLASS_STATUS],
+        fields[FIELD_CLASS_STATUS_FALLBACK]
+      ),
       remaining_trips: normalizeCountValue(fields[FIELD_REMAINING_TRIPS]),
       total_trips: normalizeCountValue(fields[FIELD_TOTAL_TRIPS]),
       completed_trips: normalizeCountValue(fields[FIELD_COMPLETED_TRIPS]),
