@@ -17,6 +17,10 @@ echo [%DATE% %TIME%] TRIPS_TAGGER RUN >> "C:\actions-runner\ringstatus\trips-tag
 "C:\Program Files\nodejs\node.exe" trips_tagger.js >> "C:\actions-runner\ringstatus\trips-tagger.log" 2>&1
 if errorlevel 1 exit /b %ERRORLEVEL%
 
+echo [%DATE% %TIME%] TRIPS_CALCULATOR RUN >> "C:\actions-runner\ringstatus\trips-calculator.log"
+"C:\Program Files\nodejs\node.exe" trips_calculator.js >> "C:\actions-runner\ringstatus\trips-calculator.log" 2>&1
+if errorlevel 1 exit /b %ERRORLEVEL%
+
 timeout /t 30 /nobreak >nul
 
 echo [%DATE% %TIME%] PUBLISH RUN >> "C:\actions-runner\ringstatus\publisher.log"
