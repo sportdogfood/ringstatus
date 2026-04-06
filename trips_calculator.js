@@ -48,6 +48,11 @@ const WATCH_FIELDS = {
   GONE_IN: process.env.FIELD_GONE_IN || "gone_in",
   H_EID: process.env.FIELD_H_EID || "h_eid",
   RS: {
+    STATUS: process.env.FIELD_RS_STATUS || "rs_status",
+    START_TIME: process.env.FIELD_RS_START_TIME || "rs_start_time",
+    GO_TIME: process.env.FIELD_RS_GO_TIME || "rs_go_time",
+    COMPLETED_TRIPS: process.env.FIELD_RS_COMPLETED_TRIPS || "rs_completed_trips",
+    GONE_IN: process.env.FIELD_RS_GONE_IN || "rs_gone_in",
     TRIP_DEFAULT: process.env.FIELD_RS_TRIP_DEFAULT || "rs_trip_default",
     ORDER_OF_GO: process.env.FIELD_RS_ORDER_OF_GO || "rs_order_of_go",
     RUNNING_ORDER_OF_GO: process.env.FIELD_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go",
@@ -134,6 +139,11 @@ const LOG_CALC_FIELDS = {
 };
 
 const LOG_RS_FIELDS = {
+  STATUS: process.env.LOG_RS_STATUS || "rs_status",
+  START_TIME: process.env.LOG_RS_START_TIME || "rs_start_time",
+  GO_TIME: process.env.LOG_RS_GO_TIME || "rs_go_time",
+  COMPLETED_TRIPS: process.env.LOG_RS_COMPLETED_TRIPS || "rs_completed_trips",
+  GONE_IN: process.env.LOG_RS_GONE_IN || "rs_gone_in",
   TRIP_DEFAULT: process.env.LOG_RS_TRIP_DEFAULT || "rs_trip_default",
   ORDER_OF_GO: process.env.LOG_RS_ORDER_OF_GO || "rs_order_of_go",
   RUNNING_ORDER_OF_GO: process.env.LOG_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go",
@@ -190,6 +200,8 @@ const OUTPUT_DURATION_FIELDS = new Set([
 ]);
 
 const OUTPUT_NUMBER_FIELDS = new Set([
+  WATCH_FIELDS.RS.COMPLETED_TRIPS,
+  WATCH_FIELDS.RS.GONE_IN,
   WATCH_FIELDS.RS.ORDER_OF_GO,
   WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO,
   WATCH_FIELDS.RS.MINS_TILL_START,
@@ -200,6 +212,9 @@ const OUTPUT_NUMBER_FIELDS = new Set([
 ]);
 
 const OUTPUT_TEXT_FIELDS = new Set([
+  WATCH_FIELDS.RS.STATUS,
+  WATCH_FIELDS.RS.START_TIME,
+  WATCH_FIELDS.RS.GO_TIME,
   WATCH_FIELDS.RS.TRIP_DEFAULT,
   WATCH_FIELDS.RS.LENGTH,
   WATCH_FIELDS.RS.END_TIME,
@@ -207,6 +222,11 @@ const OUTPUT_TEXT_FIELDS = new Set([
 ]);
 
 const WATCH_TO_LOG_RS_FIELD_MAP = {
+  [WATCH_FIELDS.RS.STATUS]: LOG_RS_FIELDS.STATUS,
+  [WATCH_FIELDS.RS.START_TIME]: LOG_RS_FIELDS.START_TIME,
+  [WATCH_FIELDS.RS.GO_TIME]: LOG_RS_FIELDS.GO_TIME,
+  [WATCH_FIELDS.RS.COMPLETED_TRIPS]: LOG_RS_FIELDS.COMPLETED_TRIPS,
+  [WATCH_FIELDS.RS.GONE_IN]: LOG_RS_FIELDS.GONE_IN,
   [WATCH_FIELDS.RS.TRIP_DEFAULT]: LOG_RS_FIELDS.TRIP_DEFAULT,
   [WATCH_FIELDS.RS.ORDER_OF_GO]: LOG_RS_FIELDS.ORDER_OF_GO,
   [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO]: LOG_RS_FIELDS.RUNNING_ORDER_OF_GO,
@@ -807,6 +827,11 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
   };
 
   const outputs = {
+    [WATCH_FIELDS.RS.STATUS]: values.class_status,
+    [WATCH_FIELDS.RS.START_TIME]: startAnchorText,
+    [WATCH_FIELDS.RS.GO_TIME]: goClockFromStart,
+    [WATCH_FIELDS.RS.COMPLETED_TRIPS]: values.completed_trips,
+    [WATCH_FIELDS.RS.GONE_IN]: values.gone_in,
     [WATCH_FIELDS.RS.TRIP_DEFAULT]: String(tripMinutesDefault),
     [WATCH_FIELDS.RS.ORDER_OF_GO]: effectiveOrder,
     [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO]: runningOrder,
