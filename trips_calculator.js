@@ -27,161 +27,199 @@ const CALC_MODE = String(process.env.CALC_MODE || "shadow").trim().toLowerCase()
   : "shadow";
 const CALC_VERSION = String(process.env.CALC_VERSION || "trips_calculator_v1_2").trim();
 
-const FIELD_ENTRYXCLASSES_UUID = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
-const FIELD_APP_SHOW_ID = process.env.FIELD_APP_SHOW_ID || "app_show_id";
-const FIELD_APP_SQL_DATE = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
-const FIELD_APP_TIME = process.env.FIELD_APP_TIME || "app_time";
-const FIELD_CLASS_STATUS = process.env.FIELD_CLASS_STATUS || "status";
-const FIELD_CLASS_STATUS_FALLBACK = process.env.FIELD_CLASS_STATUS_FALLBACK || "class_status";
-const FIELD_ESTIMATED_START_TIME = process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time";
-const FIELD_ESTIMATED_END_TIME = process.env.FIELD_ESTIMATED_END_TIME || "estimated_end_time";
-const FIELD_REMAINING_TRIPS = process.env.FIELD_REMAINING_TRIPS || "remaining_trips";
-const FIELD_TOTAL_TRIPS = process.env.FIELD_TOTAL_TRIPS || "total_trips";
-const FIELD_COMPLETED_TRIPS = process.env.FIELD_COMPLETED_TRIPS || "completed_trips";
-const FIELD_ACTUAL_TIME = process.env.FIELD_ACTUAL_TIME || "actual_time";
-const FIELD_ESTIMATED_TIME = process.env.FIELD_ESTIMATED_TIME || "estimated_time";
-const FIELD_ESTIMATED_GO_TIME = process.env.FIELD_ESTIMATED_GO_TIME || "estimated_go_time";
-const FIELD_ORDER_OF_GO = process.env.FIELD_ORDER_OF_GO || "order_of_go";
-const FIELD_ACTUAL_ORDER = process.env.FIELD_ACTUAL_ORDER || "actual_order";
-const FIELD_ACTUAL_GO = process.env.FIELD_ACTUAL_GO || "actual_go";
-const FIELD_GONE_IN = process.env.FIELD_GONE_IN || "gone_in";
-const FIELD_H_EID = process.env.FIELD_H_EID || "h_eid";
+const WATCH_FIELDS = {
+  ENTRYXCLASSES_UUID: process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid",
+  APP_SHOW_ID: process.env.FIELD_APP_SHOW_ID || "app_show_id",
+  APP_SQL_DATE: process.env.FIELD_APP_SQL_DATE || "app_sql_date",
+  APP_TIME: process.env.FIELD_APP_TIME || "app_time",
+  STATUS: process.env.FIELD_CLASS_STATUS || "status",
+  CLASS_STATUS_FALLBACK: process.env.FIELD_CLASS_STATUS_FALLBACK || "class_status",
+  ESTIMATED_START_TIME: process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time",
+  ESTIMATED_END_TIME: process.env.FIELD_ESTIMATED_END_TIME || "estimated_end_time",
+  REMAINING_TRIPS: process.env.FIELD_REMAINING_TRIPS || "remaining_trips",
+  TOTAL_TRIPS: process.env.FIELD_TOTAL_TRIPS || "total_trips",
+  COMPLETED_TRIPS: process.env.FIELD_COMPLETED_TRIPS || "completed_trips",
+  ACTUAL_TIME: process.env.FIELD_ACTUAL_TIME || "actual_time",
+  ESTIMATED_TIME: process.env.FIELD_ESTIMATED_TIME || "estimated_time",
+  ESTIMATED_GO_TIME: process.env.FIELD_ESTIMATED_GO_TIME || "estimated_go_time",
+  ORDER_OF_GO: process.env.FIELD_ORDER_OF_GO || "order_of_go",
+  ACTUAL_ORDER: process.env.FIELD_ACTUAL_ORDER || "actual_order",
+  ACTUAL_GO: process.env.FIELD_ACTUAL_GO || "actual_go",
+  GONE_IN: process.env.FIELD_GONE_IN || "gone_in",
+  H_EID: process.env.FIELD_H_EID || "h_eid",
+  RS: {
+    TRIP_DEFAULT: process.env.FIELD_RS_TRIP_DEFAULT || "rs_trip_default",
+    ORDER_OF_GO: process.env.FIELD_RS_ORDER_OF_GO || "rs_order_of_go",
+    RUNNING_ORDER_OF_GO: process.env.FIELD_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go",
+    MINS_TILL_START: process.env.FIELD_RS_MINS_TILL_START || "rs_mins_till_start",
+    MINS_SINCE_START: process.env.FIELD_RS_MINS_SINCE_START || "rs_mins_since_start",
+    TRIP_TIME: process.env.FIELD_RS_TRIP_TIME || "rs_trip_time",
+    TRIP_TIME2: process.env.FIELD_RS_TRIP_TIME2 || "rs_trip_time2",
+    LENGTH: process.env.FIELD_RS_LENGTH || "rs_length",
+    END_TIME: process.env.FIELD_RS_END_TIME || "rs_end_time",
+    GO_MINS_FROM_START: process.env.FIELD_RS_GO_MINS_FROM_START || "rs_go_mins_from_start",
+    GO_TIME_FROM_START: process.env.FIELD_RS_GO_TIME_FROM_START || "rs_go_time_from_start",
+    MIN_TILL_GO: process.env.FIELD_RS_MIN_TILL_GO || "rs_min_till_go",
+    MIN_TO_ACTUAL_GO: process.env.FIELD_RS_MIN_TO_ACTUAL_GO || "rs_min_to_actual_go",
+  },
+};
 
-const FIELD_RS_TRIP_DEFAULT = process.env.FIELD_RS_TRIP_DEFAULT || "rs_trip_default";
-const FIELD_RS_ORDER_OF_GO = process.env.FIELD_RS_ORDER_OF_GO || "rs_order_of_go";
-const FIELD_RS_RUNNING_ORDER_OF_GO = process.env.FIELD_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go";
-const FIELD_RS_MINS_TILL_START = process.env.FIELD_RS_MINS_TILL_START || "rs_mins_till_start";
-const FIELD_RS_MINS_SINCE_START = process.env.FIELD_RS_MINS_SINCE_START || "rs_mins_since_start";
-const FIELD_RS_TRIP_TIME = process.env.FIELD_RS_TRIP_TIME || "rs_trip_time";
-const FIELD_RS_TRIP_TIME2 = process.env.FIELD_RS_TRIP_TIME2 || "rs_trip_time2";
-const FIELD_RS_LENGTH = process.env.FIELD_RS_LENGTH || "rs_length";
-const FIELD_RS_END_TIME = process.env.FIELD_RS_END_TIME || "rs_end_time";
-const FIELD_RS_GO_MINS_FROM_START = process.env.FIELD_RS_GO_MINS_FROM_START || "rs_go_mins_from_start";
-const FIELD_RS_GO_TIME_FROM_START = process.env.FIELD_RS_GO_TIME_FROM_START || "rs_go_time_from_start";
-const FIELD_RS_MIN_TILL_GO = process.env.FIELD_RS_MIN_TILL_GO || "rs_min_till_go";
-const FIELD_RS_MIN_TO_ACTUAL_GO = process.env.FIELD_RS_MIN_TO_ACTUAL_GO || "rs_min_to_actual_go";
+const LOG_KEY_FIELDS = {
+  CALC_LOG_KEY: process.env.LOG_FIELD_CALC_LOG_KEY || "calc_log_key",
+  WATCH_TRIPS_LINK: process.env.LOG_FIELD_WATCH_TRIPS_LINK || "watch_trips",
+  WATCH_TRIP_RECORD_ID: process.env.LOG_FIELD_WATCH_TRIP_RECORD_ID || "watch_trip_record_id",
+  ENTRYXCLASSES_UUID: process.env.LOG_FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid",
+  APP_SHOW_ID: process.env.LOG_FIELD_APP_SHOW_ID || "app_show_id",
+  APP_SQL_DATE: process.env.LOG_FIELD_APP_SQL_DATE || "app_sql_date",
+  CALC_MODE: process.env.LOG_FIELD_CALC_MODE || "calc_mode",
+  CALC_VERSION: process.env.LOG_FIELD_CALC_VERSION || "calc_version",
+  CALC_STATUS: process.env.LOG_FIELD_CALC_STATUS || "calc_status",
+  SKIP_REASON: process.env.LOG_FIELD_SKIP_REASON || "skip_reason",
+  CHANGED_FIELDS: process.env.LOG_FIELD_CHANGED_FIELDS || "changed_fields",
+  CREATED_AT: process.env.LOG_FIELD_CREATED_AT || "created_at",
+};
 
-const LOG_FIELD_ENTRYXCLASSES_UUID = process.env.LOG_FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
-const LOG_FIELD_WATCH_TRIP_RECORD_ID = process.env.LOG_FIELD_WATCH_TRIP_RECORD_ID || "watch_trip_record_id";
-const LOG_FIELD_WATCH_TRIPS_LINK = process.env.LOG_FIELD_WATCH_TRIPS_LINK || "watch_trips";
-const LOG_FIELD_CALC_LOG_KEY = process.env.LOG_FIELD_CALC_LOG_KEY || "calc_log_key";
-const LOG_FIELD_APP_SHOW_ID = process.env.LOG_FIELD_APP_SHOW_ID || "app_show_id";
-const LOG_FIELD_APP_SQL_DATE = process.env.LOG_FIELD_APP_SQL_DATE || "app_sql_date";
-const LOG_FIELD_APP_TIME = process.env.LOG_FIELD_APP_TIME || "app_time";
-const LOG_FIELD_CLASS_STATUS = process.env.LOG_FIELD_CLASS_STATUS || "class_status";
-const LOG_FIELD_ESTIMATED_START_TIME = process.env.LOG_FIELD_ESTIMATED_START_TIME || "estimated_start_time";
-const LOG_FIELD_ESTIMATED_END_TIME = process.env.LOG_FIELD_ESTIMATED_END_TIME || "estimated_end_time";
-const LOG_FIELD_REMAINING_TRIPS = process.env.LOG_FIELD_REMAINING_TRIPS || "remaining_trips";
-const LOG_FIELD_TOTAL_TRIPS = process.env.LOG_FIELD_TOTAL_TRIPS || "total_trips";
-const LOG_FIELD_COMPLETED_TRIPS = process.env.LOG_FIELD_COMPLETED_TRIPS || "completed_trips";
-const LOG_FIELD_ACTUAL_TIME = process.env.LOG_FIELD_ACTUAL_TIME || "actual_time";
-const LOG_FIELD_ESTIMATED_TIME = process.env.LOG_FIELD_ESTIMATED_TIME || "estimated_time";
-const LOG_FIELD_ESTIMATED_GO_TIME = process.env.LOG_FIELD_ESTIMATED_GO_TIME || "estimated_go_time";
-const LOG_FIELD_ORDER_OF_GO = process.env.LOG_FIELD_ORDER_OF_GO || "order_of_go";
-const LOG_FIELD_ACTUAL_ORDER = process.env.LOG_FIELD_ACTUAL_ORDER || "actual_order";
-const LOG_FIELD_GONE_IN = process.env.LOG_FIELD_GONE_IN || "gone_in";
-const LOG_FIELD_H_EID = process.env.LOG_FIELD_H_EID || "h_eid";
-const LOG_FIELD_RS_TRIP_DEFAULT = process.env.LOG_FIELD_RS_TRIP_DEFAULT || "rs_trip_default";
-const LOG_FIELD_RS_ORDER_OF_GO = process.env.LOG_FIELD_RS_ORDER_OF_GO || "rs_order_of_go";
-const LOG_FIELD_RS_RUNNING_ORDER_OF_GO = process.env.LOG_FIELD_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go";
-const LOG_FIELD_RS_MINS_TILL_START = process.env.LOG_FIELD_RS_MINS_TILL_START || "rs_mins_till_start";
-const LOG_FIELD_RS_MINS_SINCE_START = process.env.LOG_FIELD_RS_MINS_SINCE_START || "rs_mins_since_start";
-const LOG_FIELD_RS_TRIP_TIME = process.env.LOG_FIELD_RS_TRIP_TIME || "rs_trip_time";
-const LOG_FIELD_RS_TRIP_TIME2 = process.env.LOG_FIELD_RS_TRIP_TIME2 || "rs_trip_time2";
-const LOG_FIELD_RS_LENGTH = process.env.LOG_FIELD_RS_LENGTH || "rs_length";
-const LOG_FIELD_RS_END_TIME = process.env.LOG_FIELD_RS_END_TIME || "rs_end_time";
-const LOG_FIELD_RS_GO_MINS_FROM_START = process.env.LOG_FIELD_RS_GO_MINS_FROM_START || "rs_go_mins_from_start";
-const LOG_FIELD_RS_GO_TIME_FROM_START = process.env.LOG_FIELD_RS_GO_TIME_FROM_START || "rs_go_time_from_start";
-const LOG_FIELD_RS_MIN_TILL_GO = process.env.LOG_FIELD_RS_MIN_TILL_GO || "rs_min_till_go";
-const LOG_FIELD_RS_MIN_TO_ACTUAL_GO = process.env.LOG_FIELD_RS_MIN_TO_ACTUAL_GO || "rs_min_to_actual_go";
-const LOG_FIELD_CALC_MODE = process.env.LOG_FIELD_CALC_MODE || "calc_mode";
-const LOG_FIELD_CALC_VERSION = process.env.LOG_FIELD_CALC_VERSION || "calc_version";
-const LOG_FIELD_CALC_STATUS = process.env.LOG_FIELD_CALC_STATUS || "calc_status";
-const LOG_FIELD_SKIP_REASON = process.env.LOG_FIELD_SKIP_REASON || "skip_reason";
-const LOG_FIELD_CHANGED_FIELDS = process.env.LOG_FIELD_CHANGED_FIELDS || "changed_fields";
-const LOG_FIELD_INPUTS_JSON = process.env.LOG_FIELD_INPUTS_JSON || "inputs_json";
-const LOG_FIELD_PRIOR_OUTPUTS_JSON = process.env.LOG_FIELD_PRIOR_OUTPUTS_JSON || "prior_outputs_json";
-const LOG_FIELD_COMPUTED_OUTPUTS_JSON = process.env.LOG_FIELD_COMPUTED_OUTPUTS_JSON || "computed_outputs_json";
-const LOG_FIELD_ANOMALIES_JSON = process.env.LOG_FIELD_ANOMALIES_JSON || "anomalies_json";
-const LOG_FIELD_CREATED_AT = process.env.LOG_FIELD_CREATED_AT || "created_at";
+const LOG_RAW_FIELDS = {
+  APP_TIME: process.env.LOG_RAW_APP_TIME || "raw_app_time",
+  STATUS: process.env.LOG_RAW_STATUS || "raw_status",
+  CLASS_STATUS: process.env.LOG_RAW_CLASS_STATUS || "raw_class_status",
+  ESTIMATED_START_TIME: process.env.LOG_RAW_ESTIMATED_START_TIME || "raw_estimated_start_time",
+  ESTIMATED_END_TIME: process.env.LOG_RAW_ESTIMATED_END_TIME || "raw_estimated_end_time",
+  ACTUAL_TIME: process.env.LOG_RAW_ACTUAL_TIME || "raw_actual_time",
+  ESTIMATED_TIME: process.env.LOG_RAW_ESTIMATED_TIME || "raw_estimated_time",
+  ESTIMATED_GO_TIME: process.env.LOG_RAW_ESTIMATED_GO_TIME || "raw_estimated_go_time",
+  ORDER_OF_GO: process.env.LOG_RAW_ORDER_OF_GO || "raw_order_of_go",
+  ACTUAL_ORDER: process.env.LOG_RAW_ACTUAL_ORDER || "raw_actual_order",
+  ACTUAL_GO: process.env.LOG_RAW_ACTUAL_GO || "raw_actual_go",
+  GONE_IN: process.env.LOG_RAW_GONE_IN || "raw_gone_in",
+  REMAINING_TRIPS: process.env.LOG_RAW_REMAINING_TRIPS || "raw_remaining_trips",
+  TOTAL_TRIPS: process.env.LOG_RAW_TOTAL_TRIPS || "raw_total_trips",
+  COMPLETED_TRIPS: process.env.LOG_RAW_COMPLETED_TRIPS || "raw_completed_trips",
+  H_EID: process.env.LOG_RAW_H_EID || "raw_h_eid",
+};
+
+const LOG_NORM_FIELDS = {
+  CLASS_STATUS: process.env.LOG_NORM_CLASS_STATUS || "norm_class_status",
+  APP_TIME_TEXT: process.env.LOG_NORM_APP_TIME_TEXT || "norm_app_time_text",
+  ESTIMATED_START_TIME_TEXT: process.env.LOG_NORM_ESTIMATED_START_TIME_TEXT || "norm_estimated_start_time_text",
+  ESTIMATED_END_TIME_TEXT: process.env.LOG_NORM_ESTIMATED_END_TIME_TEXT || "norm_estimated_end_time_text",
+  ACTUAL_TIME_TEXT: process.env.LOG_NORM_ACTUAL_TIME_TEXT || "norm_actual_time_text",
+  ESTIMATED_TIME_TEXT: process.env.LOG_NORM_ESTIMATED_TIME_TEXT || "norm_estimated_time_text",
+  ESTIMATED_GO_TIME_TEXT: process.env.LOG_NORM_ESTIMATED_GO_TIME_TEXT || "norm_estimated_go_time_text",
+  H_EID: process.env.LOG_NORM_H_EID || "norm_h_eid",
+  APP_TIME_MINS: process.env.LOG_NORM_APP_TIME_MINS || "norm_app_time_mins",
+  ESTIMATED_START_TIME_MINS: process.env.LOG_NORM_ESTIMATED_START_TIME_MINS || "norm_estimated_start_time_mins",
+  ESTIMATED_END_TIME_MINS: process.env.LOG_NORM_ESTIMATED_END_TIME_MINS || "norm_estimated_end_time_mins",
+  ACTUAL_TIME_MINS: process.env.LOG_NORM_ACTUAL_TIME_MINS || "norm_actual_time_mins",
+  ESTIMATED_TIME_MINS: process.env.LOG_NORM_ESTIMATED_TIME_MINS || "norm_estimated_time_mins",
+  ESTIMATED_GO_TIME_MINS: process.env.LOG_NORM_ESTIMATED_GO_TIME_MINS || "norm_estimated_go_time_mins",
+  ORDER_OF_GO: process.env.LOG_NORM_ORDER_OF_GO || "norm_order_of_go",
+  ACTUAL_ORDER: process.env.LOG_NORM_ACTUAL_ORDER || "norm_actual_order",
+  ACTUAL_GO: process.env.LOG_NORM_ACTUAL_GO || "norm_actual_go",
+  GONE_IN: process.env.LOG_NORM_GONE_IN || "norm_gone_in",
+  REMAINING_TRIPS: process.env.LOG_NORM_REMAINING_TRIPS || "norm_remaining_trips",
+  TOTAL_TRIPS: process.env.LOG_NORM_TOTAL_TRIPS || "norm_total_trips",
+  COMPLETED_TRIPS: process.env.LOG_NORM_COMPLETED_TRIPS || "norm_completed_trips",
+};
+
+const LOG_CALC_FIELDS = {
+  EFFECTIVE_ORDER: process.env.LOG_CALC_EFFECTIVE_ORDER || "calc_effective_order",
+  TRIP_MINUTES_RAW: process.env.LOG_CALC_TRIP_MINUTES_RAW || "calc_trip_minutes_raw",
+  TRIP_MINUTES_FINAL: process.env.LOG_CALC_TRIP_MINUTES_FINAL || "calc_trip_minutes_final",
+  PROJECTED_CLASS_MINUTES: process.env.LOG_CALC_PROJECTED_CLASS_MINUTES || "calc_projected_class_minutes",
+  START_ANCHOR_MINS: process.env.LOG_CALC_START_ANCHOR_MINS || "calc_start_anchor_mins",
+  START_ANCHOR_TEXT: process.env.LOG_CALC_START_ANCHOR_TEXT || "calc_start_anchor_text",
+  TRIP_MINUTES_USED_DEFAULT: process.env.LOG_CALC_TRIP_MINUTES_USED_DEFAULT || "calc_trip_minutes_used_default",
+  USED_ESTIMATED_GO_FALLBACK: process.env.LOG_CALC_USED_ESTIMATED_GO_FALLBACK || "calc_used_estimated_go_fallback",
+};
+
+const LOG_RS_FIELDS = {
+  TRIP_DEFAULT: process.env.LOG_RS_TRIP_DEFAULT || "rs_trip_default",
+  ORDER_OF_GO: process.env.LOG_RS_ORDER_OF_GO || "rs_order_of_go",
+  RUNNING_ORDER_OF_GO: process.env.LOG_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go",
+  MINS_TILL_START: process.env.LOG_RS_MINS_TILL_START || "rs_mins_till_start",
+  MINS_SINCE_START: process.env.LOG_RS_MINS_SINCE_START || "rs_mins_since_start",
+  TRIP_TIME: process.env.LOG_RS_TRIP_TIME || "rs_trip_time",
+  TRIP_TIME2: process.env.LOG_RS_TRIP_TIME2 || "rs_trip_time2",
+  LENGTH: process.env.LOG_RS_LENGTH || "rs_length",
+  END_TIME: process.env.LOG_RS_END_TIME || "rs_end_time",
+  GO_MINS_FROM_START: process.env.LOG_RS_GO_MINS_FROM_START || "rs_go_mins_from_start",
+  GO_TIME_FROM_START: process.env.LOG_RS_GO_TIME_FROM_START || "rs_go_time_from_start",
+  MIN_TILL_GO: process.env.LOG_RS_MIN_TILL_GO || "rs_min_till_go",
+  MIN_TO_ACTUAL_GO: process.env.LOG_RS_MIN_TO_ACTUAL_GO || "rs_min_to_actual_go",
+};
+
+const LOG_JSON_FIELDS = {
+  INPUTS_JSON: process.env.LOG_FIELD_INPUTS_JSON || "inputs_json",
+  PRIOR_OUTPUTS_JSON: process.env.LOG_FIELD_PRIOR_OUTPUTS_JSON || "prior_outputs_json",
+  COMPUTED_OUTPUTS_JSON: process.env.LOG_FIELD_COMPUTED_OUTPUTS_JSON || "computed_outputs_json",
+  ANOMALIES_JSON: process.env.LOG_FIELD_ANOMALIES_JSON || "anomalies_json",
+};
 
 const INVALID_ORDER_NUMS = new Set([0, 10000, 100000]);
 const INVALID_TIME_TEXT = new Set(["00:00:00"]);
 const TRIP_MINUTES_DEFAULT = 3;
 
+const WATCH_SOURCE_FIELDS = [
+  WATCH_FIELDS.ENTRYXCLASSES_UUID,
+  WATCH_FIELDS.APP_SHOW_ID,
+  WATCH_FIELDS.APP_SQL_DATE,
+  WATCH_FIELDS.APP_TIME,
+  WATCH_FIELDS.STATUS,
+  WATCH_FIELDS.CLASS_STATUS_FALLBACK,
+  WATCH_FIELDS.ESTIMATED_START_TIME,
+  WATCH_FIELDS.ESTIMATED_END_TIME,
+  WATCH_FIELDS.REMAINING_TRIPS,
+  WATCH_FIELDS.TOTAL_TRIPS,
+  WATCH_FIELDS.COMPLETED_TRIPS,
+  WATCH_FIELDS.ACTUAL_TIME,
+  WATCH_FIELDS.ESTIMATED_TIME,
+  WATCH_FIELDS.ESTIMATED_GO_TIME,
+  WATCH_FIELDS.ORDER_OF_GO,
+  WATCH_FIELDS.ACTUAL_ORDER,
+  WATCH_FIELDS.ACTUAL_GO,
+  WATCH_FIELDS.GONE_IN,
+  WATCH_FIELDS.H_EID,
+];
+
+const WATCH_OUTPUT_FIELDS = Object.values(WATCH_FIELDS.RS);
+
 const OUTPUT_DURATION_FIELDS = new Set([
-  FIELD_RS_TRIP_TIME,
-  FIELD_RS_TRIP_TIME2,
+  WATCH_FIELDS.RS.TRIP_TIME,
+  WATCH_FIELDS.RS.TRIP_TIME2,
 ]);
 
 const OUTPUT_NUMBER_FIELDS = new Set([
-  FIELD_RS_ORDER_OF_GO,
-  FIELD_RS_RUNNING_ORDER_OF_GO,
-  FIELD_RS_MINS_TILL_START,
-  FIELD_RS_MINS_SINCE_START,
-  FIELD_RS_GO_MINS_FROM_START,
-  FIELD_RS_MIN_TILL_GO,
-  FIELD_RS_MIN_TO_ACTUAL_GO,
+  WATCH_FIELDS.RS.ORDER_OF_GO,
+  WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO,
+  WATCH_FIELDS.RS.MINS_TILL_START,
+  WATCH_FIELDS.RS.MINS_SINCE_START,
+  WATCH_FIELDS.RS.GO_MINS_FROM_START,
+  WATCH_FIELDS.RS.MIN_TILL_GO,
+  WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO,
 ]);
 
 const OUTPUT_TEXT_FIELDS = new Set([
-  FIELD_RS_TRIP_DEFAULT,
-  FIELD_RS_LENGTH,
-  FIELD_RS_END_TIME,
-  FIELD_RS_GO_TIME_FROM_START,
+  WATCH_FIELDS.RS.TRIP_DEFAULT,
+  WATCH_FIELDS.RS.LENGTH,
+  WATCH_FIELDS.RS.END_TIME,
+  WATCH_FIELDS.RS.GO_TIME_FROM_START,
 ]);
 
-const SOURCE_FIELDS = [
-  FIELD_ENTRYXCLASSES_UUID,
-  FIELD_APP_SHOW_ID,
-  FIELD_APP_SQL_DATE,
-  FIELD_APP_TIME,
-  FIELD_CLASS_STATUS,
-  FIELD_ESTIMATED_START_TIME,
-  FIELD_ESTIMATED_END_TIME,
-  FIELD_REMAINING_TRIPS,
-  FIELD_TOTAL_TRIPS,
-  FIELD_COMPLETED_TRIPS,
-  FIELD_ACTUAL_TIME,
-  FIELD_ESTIMATED_TIME,
-  FIELD_ESTIMATED_GO_TIME,
-  FIELD_ORDER_OF_GO,
-  FIELD_ACTUAL_ORDER,
-  FIELD_ACTUAL_GO,
-  FIELD_GONE_IN,
-  FIELD_H_EID,
-];
-
-const OUTPUT_FIELDS = [
-  FIELD_RS_TRIP_DEFAULT,
-  FIELD_RS_ORDER_OF_GO,
-  FIELD_RS_RUNNING_ORDER_OF_GO,
-  FIELD_RS_MINS_TILL_START,
-  FIELD_RS_MINS_SINCE_START,
-  FIELD_RS_TRIP_TIME,
-  FIELD_RS_TRIP_TIME2,
-  FIELD_RS_LENGTH,
-  FIELD_RS_END_TIME,
-  FIELD_RS_GO_MINS_FROM_START,
-  FIELD_RS_GO_TIME_FROM_START,
-  FIELD_RS_MIN_TILL_GO,
-  FIELD_RS_MIN_TO_ACTUAL_GO,
-];
-
-const OUTPUT_TO_LOG_FIELD = {
-  [FIELD_RS_TRIP_DEFAULT]: LOG_FIELD_RS_TRIP_DEFAULT,
-  [FIELD_RS_ORDER_OF_GO]: LOG_FIELD_RS_ORDER_OF_GO,
-  [FIELD_RS_RUNNING_ORDER_OF_GO]: LOG_FIELD_RS_RUNNING_ORDER_OF_GO,
-  [FIELD_RS_MINS_TILL_START]: LOG_FIELD_RS_MINS_TILL_START,
-  [FIELD_RS_MINS_SINCE_START]: LOG_FIELD_RS_MINS_SINCE_START,
-  [FIELD_RS_TRIP_TIME]: LOG_FIELD_RS_TRIP_TIME,
-  [FIELD_RS_TRIP_TIME2]: LOG_FIELD_RS_TRIP_TIME2,
-  [FIELD_RS_LENGTH]: LOG_FIELD_RS_LENGTH,
-  [FIELD_RS_END_TIME]: LOG_FIELD_RS_END_TIME,
-  [FIELD_RS_GO_MINS_FROM_START]: LOG_FIELD_RS_GO_MINS_FROM_START,
-  [FIELD_RS_GO_TIME_FROM_START]: LOG_FIELD_RS_GO_TIME_FROM_START,
-  [FIELD_RS_MIN_TILL_GO]: LOG_FIELD_RS_MIN_TILL_GO,
-  [FIELD_RS_MIN_TO_ACTUAL_GO]: LOG_FIELD_RS_MIN_TO_ACTUAL_GO,
+const WATCH_TO_LOG_RS_FIELD_MAP = {
+  [WATCH_FIELDS.RS.TRIP_DEFAULT]: LOG_RS_FIELDS.TRIP_DEFAULT,
+  [WATCH_FIELDS.RS.ORDER_OF_GO]: LOG_RS_FIELDS.ORDER_OF_GO,
+  [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO]: LOG_RS_FIELDS.RUNNING_ORDER_OF_GO,
+  [WATCH_FIELDS.RS.MINS_TILL_START]: LOG_RS_FIELDS.MINS_TILL_START,
+  [WATCH_FIELDS.RS.MINS_SINCE_START]: LOG_RS_FIELDS.MINS_SINCE_START,
+  [WATCH_FIELDS.RS.TRIP_TIME]: LOG_RS_FIELDS.TRIP_TIME,
+  [WATCH_FIELDS.RS.TRIP_TIME2]: LOG_RS_FIELDS.TRIP_TIME2,
+  [WATCH_FIELDS.RS.LENGTH]: LOG_RS_FIELDS.LENGTH,
+  [WATCH_FIELDS.RS.END_TIME]: LOG_RS_FIELDS.END_TIME,
+  [WATCH_FIELDS.RS.GO_MINS_FROM_START]: LOG_RS_FIELDS.GO_MINS_FROM_START,
+  [WATCH_FIELDS.RS.GO_TIME_FROM_START]: LOG_RS_FIELDS.GO_TIME_FROM_START,
+  [WATCH_FIELDS.RS.MIN_TILL_GO]: LOG_RS_FIELDS.MIN_TILL_GO,
+  [WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO]: LOG_RS_FIELDS.MIN_TO_ACTUAL_GO,
 };
 
 function requireEnv(name, value) {
@@ -350,6 +388,23 @@ function jsonForField(value, maxLen = 8000) {
     return `${text.slice(0, maxLen)}...(truncated)`;
   } catch (err) {
     return String(err?.message || err);
+  }
+}
+
+function serializeRawValueForLog(value) {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value === "string") {
+    const text = value.trim();
+    return text || undefined;
+  }
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+  try {
+    return stableStringify(value);
+  } catch (_) {
+    const text = String(value).trim();
+    return text || undefined;
   }
 }
 
@@ -522,7 +577,7 @@ async function airtableCreateWithFallback({ table, records }) {
           okRows += 1;
         } catch (rowErr) {
           failedRows.push({
-            entryxclasses_uuid: row?.fields?.[LOG_FIELD_ENTRYXCLASSES_UUID] || "",
+            entryxclasses_uuid: row?.fields?.[LOG_KEY_FIELDS.ENTRYXCLASSES_UUID] || "",
             reason: String(rowErr?.message || rowErr).slice(0, 300),
           });
         }
@@ -535,25 +590,25 @@ async function airtableCreateWithFallback({ table, records }) {
 
 function buildRawInputs(fields) {
   return {
-    entryxclasses_uuid: fields[FIELD_ENTRYXCLASSES_UUID],
-    app_show_id: fields[FIELD_APP_SHOW_ID],
-    app_sql_date: fields[FIELD_APP_SQL_DATE],
-    app_time: fields[FIELD_APP_TIME],
-    class_status: fields[FIELD_CLASS_STATUS],
-    class_status_fallback: fields[FIELD_CLASS_STATUS_FALLBACK],
-    estimated_start_time: fields[FIELD_ESTIMATED_START_TIME],
-    estimated_end_time: fields[FIELD_ESTIMATED_END_TIME],
-    remaining_trips: fields[FIELD_REMAINING_TRIPS],
-    total_trips: fields[FIELD_TOTAL_TRIPS],
-    completed_trips: fields[FIELD_COMPLETED_TRIPS],
-    actual_time: fields[FIELD_ACTUAL_TIME],
-    estimated_time: fields[FIELD_ESTIMATED_TIME],
-    estimated_go_time: fields[FIELD_ESTIMATED_GO_TIME],
-    order_of_go: fields[FIELD_ORDER_OF_GO],
-    actual_order: fields[FIELD_ACTUAL_ORDER],
-    actual_go: fields[FIELD_ACTUAL_GO],
-    gone_in: fields[FIELD_GONE_IN],
-    h_eid: fields[FIELD_H_EID],
+    entryxclasses_uuid: fields[WATCH_FIELDS.ENTRYXCLASSES_UUID],
+    app_show_id: fields[WATCH_FIELDS.APP_SHOW_ID],
+    app_sql_date: fields[WATCH_FIELDS.APP_SQL_DATE],
+    app_time: fields[WATCH_FIELDS.APP_TIME],
+    status: fields[WATCH_FIELDS.STATUS],
+    class_status: fields[WATCH_FIELDS.CLASS_STATUS_FALLBACK],
+    estimated_start_time: fields[WATCH_FIELDS.ESTIMATED_START_TIME],
+    estimated_end_time: fields[WATCH_FIELDS.ESTIMATED_END_TIME],
+    remaining_trips: fields[WATCH_FIELDS.REMAINING_TRIPS],
+    total_trips: fields[WATCH_FIELDS.TOTAL_TRIPS],
+    completed_trips: fields[WATCH_FIELDS.COMPLETED_TRIPS],
+    actual_time: fields[WATCH_FIELDS.ACTUAL_TIME],
+    estimated_time: fields[WATCH_FIELDS.ESTIMATED_TIME],
+    estimated_go_time: fields[WATCH_FIELDS.ESTIMATED_GO_TIME],
+    order_of_go: fields[WATCH_FIELDS.ORDER_OF_GO],
+    actual_order: fields[WATCH_FIELDS.ACTUAL_ORDER],
+    actual_go: fields[WATCH_FIELDS.ACTUAL_GO],
+    gone_in: fields[WATCH_FIELDS.GONE_IN],
+    h_eid: fields[WATCH_FIELDS.H_EID],
   };
 }
 
@@ -575,32 +630,32 @@ function buildNormalizedInputs(record) {
   const anomalies = [];
   const rawInputs = buildRawInputs(fields);
 
-  const appTime = parseTimeInput("app_time", fields[FIELD_APP_TIME], anomalies);
-  const estimatedStartTime = parseTimeInput("estimated_start_time", fields[FIELD_ESTIMATED_START_TIME], anomalies);
-  const estimatedEndTime = parseTimeInput("estimated_end_time", fields[FIELD_ESTIMATED_END_TIME], anomalies);
-  const actualTime = parseTimeInput("actual_time", fields[FIELD_ACTUAL_TIME], anomalies);
-  const estimatedTime = parseTimeInput("estimated_time", fields[FIELD_ESTIMATED_TIME], anomalies);
-  const estimatedGoTime = parseTimeInput("estimated_go_time", fields[FIELD_ESTIMATED_GO_TIME], anomalies);
+  const appTime = parseTimeInput("app_time", rawInputs.app_time, anomalies);
+  const estimatedStartTime = parseTimeInput("estimated_start_time", rawInputs.estimated_start_time, anomalies);
+  const estimatedEndTime = parseTimeInput("estimated_end_time", rawInputs.estimated_end_time, anomalies);
+  const actualTime = parseTimeInput("actual_time", rawInputs.actual_time, anomalies);
+  const estimatedTime = parseTimeInput("estimated_time", rawInputs.estimated_time, anomalies);
+  const estimatedGoTime = parseTimeInput("estimated_go_time", rawInputs.estimated_go_time, anomalies);
 
   return {
     rawInputs,
     anomalies,
     values: {
-      entryxclasses_uuid: strOrNull(fields[FIELD_ENTRYXCLASSES_UUID]),
-      app_show_id: numOrNull(fields[FIELD_APP_SHOW_ID]),
-      app_sql_date: strOrNull(fields[FIELD_APP_SQL_DATE]),
+      entryxclasses_uuid: strOrNull(rawInputs.entryxclasses_uuid),
+      app_show_id: numOrNull(rawInputs.app_show_id),
+      app_sql_date: strOrNull(rawInputs.app_sql_date),
       class_status: normalizeClassStatusValue(
-        fields[FIELD_CLASS_STATUS],
-        fields[FIELD_CLASS_STATUS_FALLBACK]
+        rawInputs.status,
+        rawInputs.class_status
       ),
-      remaining_trips: normalizeCountValue(fields[FIELD_REMAINING_TRIPS]),
-      total_trips: normalizeCountValue(fields[FIELD_TOTAL_TRIPS]),
-      completed_trips: normalizeCountValue(fields[FIELD_COMPLETED_TRIPS]),
-      order_of_go: normalizeOrderValue(fields[FIELD_ORDER_OF_GO]),
-      actual_order: normalizeOrderValue(fields[FIELD_ACTUAL_ORDER]),
-      actual_go: normalizeOrderValue(fields[FIELD_ACTUAL_GO]),
-      gone_in: normalizeCountValue(fields[FIELD_GONE_IN]),
-      h_eid: strOrNull(fields[FIELD_H_EID]),
+      remaining_trips: normalizeCountValue(rawInputs.remaining_trips),
+      total_trips: normalizeCountValue(rawInputs.total_trips),
+      completed_trips: normalizeCountValue(rawInputs.completed_trips),
+      order_of_go: normalizeOrderValue(rawInputs.order_of_go),
+      actual_order: normalizeOrderValue(rawInputs.actual_order),
+      actual_go: normalizeOrderValue(rawInputs.actual_go),
+      gone_in: normalizeCountValue(rawInputs.gone_in),
+      h_eid: strOrNull(rawInputs.h_eid),
       app_time_text: appTime.text,
       app_time_minutes: appTime.minutes,
       estimated_start_time_text: estimatedStartTime.text,
@@ -662,9 +717,14 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     rawTripMinutes = roundNumber(minutesSinceStart / values.completed_trips, 6);
   }
 
+  const tripMinutesUsedDefault =
+    rawTripMinutes === null ||
+    rawTripMinutes < 2 ||
+    rawTripMinutes > 4;
+
   let tripMinutes = rawTripMinutes;
-  if (tripMinutes === null || tripMinutes < 2 || tripMinutes > 4) {
-    anomalies.push(tripMinutes === null ? "trip_minutes_default_missing_rate" : "trip_minutes_default_out_of_range");
+  if (tripMinutesUsedDefault) {
+    anomalies.push(rawTripMinutes === null ? "trip_minutes_default_missing_rate" : "trip_minutes_default_out_of_range");
     tripMinutes = tripMinutesDefault;
   }
 
@@ -676,6 +736,7 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
   );
 
   const startAnchorMinutes = firstNonBlank(values.actual_time_minutes, values.estimated_start_time_minutes);
+  const startAnchorText = firstNonBlank(values.actual_time_text, values.estimated_start_time_text);
   if (startAnchorMinutes === null) anomalies.push("missing_start_anchor");
   if (effectiveOrder === null) anomalies.push("missing_effective_order");
 
@@ -729,30 +790,36 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     running_order: runningOrder,
     minutes_until_start: minutesUntilStart,
     minutes_since_start: minutesSinceStart,
+    raw_trip_minutes: rawTripMinutes,
     trip_minutes: tripMinutes,
+    trip_minutes_final: tripMinutes,
+    trip_minutes_used_default: tripMinutesUsedDefault,
     trip_duration_seconds: tripDurationSeconds,
     projected_class_minutes: projectedClassMinutes,
+    start_anchor_minutes: startAnchorMinutes,
+    start_anchor_text: startAnchorText,
     projected_end_clock: projectedEndClock,
     go_minutes_from_start: goMinutesFromStart,
     go_clock_from_start: goClockFromStart,
     minutes_until_go: minutesUntilGo,
     minutes_from_actual_start_to_go: minutesFromActualStartToGo,
+    used_estimated_go_fallback: usedEstimatedGoFallback,
   };
 
   const outputs = {
-    [FIELD_RS_TRIP_DEFAULT]: String(tripMinutesDefault),
-    [FIELD_RS_ORDER_OF_GO]: effectiveOrder,
-    [FIELD_RS_RUNNING_ORDER_OF_GO]: runningOrder,
-    [FIELD_RS_MINS_TILL_START]: minutesUntilStart,
-    [FIELD_RS_MINS_SINCE_START]: minutesSinceStart,
-    [FIELD_RS_TRIP_TIME]: tripDurationSeconds,
-    [FIELD_RS_TRIP_TIME2]: tripDurationSeconds,
-    [FIELD_RS_LENGTH]: projectedClassMinutes === null ? null : formatDecimalText(projectedClassMinutes, 4),
-    [FIELD_RS_END_TIME]: projectedEndClock,
-    [FIELD_RS_GO_MINS_FROM_START]: goMinutesFromStart,
-    [FIELD_RS_GO_TIME_FROM_START]: goClockFromStart,
-    [FIELD_RS_MIN_TILL_GO]: minutesUntilGo,
-    [FIELD_RS_MIN_TO_ACTUAL_GO]: minutesFromActualStartToGo,
+    [WATCH_FIELDS.RS.TRIP_DEFAULT]: String(tripMinutesDefault),
+    [WATCH_FIELDS.RS.ORDER_OF_GO]: effectiveOrder,
+    [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO]: runningOrder,
+    [WATCH_FIELDS.RS.MINS_TILL_START]: minutesUntilStart,
+    [WATCH_FIELDS.RS.MINS_SINCE_START]: minutesSinceStart,
+    [WATCH_FIELDS.RS.TRIP_TIME]: tripDurationSeconds,
+    [WATCH_FIELDS.RS.TRIP_TIME2]: tripDurationSeconds,
+    [WATCH_FIELDS.RS.LENGTH]: projectedClassMinutes === null ? null : formatDecimalText(projectedClassMinutes, 4),
+    [WATCH_FIELDS.RS.END_TIME]: projectedEndClock,
+    [WATCH_FIELDS.RS.GO_MINS_FROM_START]: goMinutesFromStart,
+    [WATCH_FIELDS.RS.GO_TIME_FROM_START]: goClockFromStart,
+    [WATCH_FIELDS.RS.MIN_TILL_GO]: minutesUntilGo,
+    [WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO]: minutesFromActualStartToGo,
   };
 
   return { canonical, outputs, anomalies };
@@ -786,7 +853,7 @@ function sameOutputValue(fieldName, left, right) {
 
 function buildPriorOutputs(fields) {
   const out = {};
-  for (const fieldName of OUTPUT_FIELDS) {
+  for (const fieldName of WATCH_OUTPUT_FIELDS) {
     out[fieldName] = normalizeOutputValue(fieldName, fields[fieldName]);
   }
   return out;
@@ -796,7 +863,7 @@ function buildChangedFields(priorOutputs, computedOutputs) {
   const changedNames = [];
   const patchFields = {};
 
-  for (const fieldName of OUTPUT_FIELDS) {
+  for (const fieldName of WATCH_OUTPUT_FIELDS) {
     const nextValue = normalizeOutputValue(fieldName, computedOutputs[fieldName]);
     const prevValue = normalizeOutputValue(fieldName, priorOutputs[fieldName]);
     if (sameOutputValue(fieldName, prevValue, nextValue)) continue;
@@ -816,6 +883,77 @@ function setIfPresent(target, fieldName, value) {
 
 function linkOne(recordId) {
   return recordId ? [{ id: recordId }] : undefined;
+}
+
+function buildRawLogValues(rawInputs) {
+  const raw = rawInputs || {};
+  return {
+    [LOG_RAW_FIELDS.APP_TIME]: serializeRawValueForLog(raw.app_time),
+    [LOG_RAW_FIELDS.STATUS]: serializeRawValueForLog(raw.status),
+    [LOG_RAW_FIELDS.CLASS_STATUS]: serializeRawValueForLog(raw.class_status),
+    [LOG_RAW_FIELDS.ESTIMATED_START_TIME]: serializeRawValueForLog(raw.estimated_start_time),
+    [LOG_RAW_FIELDS.ESTIMATED_END_TIME]: serializeRawValueForLog(raw.estimated_end_time),
+    [LOG_RAW_FIELDS.ACTUAL_TIME]: serializeRawValueForLog(raw.actual_time),
+    [LOG_RAW_FIELDS.ESTIMATED_TIME]: serializeRawValueForLog(raw.estimated_time),
+    [LOG_RAW_FIELDS.ESTIMATED_GO_TIME]: serializeRawValueForLog(raw.estimated_go_time),
+    [LOG_RAW_FIELDS.ORDER_OF_GO]: serializeRawValueForLog(raw.order_of_go),
+    [LOG_RAW_FIELDS.ACTUAL_ORDER]: serializeRawValueForLog(raw.actual_order),
+    [LOG_RAW_FIELDS.ACTUAL_GO]: serializeRawValueForLog(raw.actual_go),
+    [LOG_RAW_FIELDS.GONE_IN]: serializeRawValueForLog(raw.gone_in),
+    [LOG_RAW_FIELDS.REMAINING_TRIPS]: serializeRawValueForLog(raw.remaining_trips),
+    [LOG_RAW_FIELDS.TOTAL_TRIPS]: serializeRawValueForLog(raw.total_trips),
+    [LOG_RAW_FIELDS.COMPLETED_TRIPS]: serializeRawValueForLog(raw.completed_trips),
+    [LOG_RAW_FIELDS.H_EID]: serializeRawValueForLog(raw.h_eid),
+  };
+}
+
+function buildNormalizedLogValues(normalized) {
+  const values = normalized || {};
+  return {
+    [LOG_NORM_FIELDS.CLASS_STATUS]: values.class_status,
+    [LOG_NORM_FIELDS.APP_TIME_TEXT]: values.app_time_text,
+    [LOG_NORM_FIELDS.ESTIMATED_START_TIME_TEXT]: values.estimated_start_time_text,
+    [LOG_NORM_FIELDS.ESTIMATED_END_TIME_TEXT]: values.estimated_end_time_text,
+    [LOG_NORM_FIELDS.ACTUAL_TIME_TEXT]: values.actual_time_text,
+    [LOG_NORM_FIELDS.ESTIMATED_TIME_TEXT]: values.estimated_time_text,
+    [LOG_NORM_FIELDS.ESTIMATED_GO_TIME_TEXT]: values.estimated_go_time_text,
+    [LOG_NORM_FIELDS.H_EID]: values.h_eid,
+    [LOG_NORM_FIELDS.APP_TIME_MINS]: values.app_time_minutes,
+    [LOG_NORM_FIELDS.ESTIMATED_START_TIME_MINS]: values.estimated_start_time_minutes,
+    [LOG_NORM_FIELDS.ESTIMATED_END_TIME_MINS]: values.estimated_end_time_minutes,
+    [LOG_NORM_FIELDS.ACTUAL_TIME_MINS]: values.actual_time_minutes,
+    [LOG_NORM_FIELDS.ESTIMATED_TIME_MINS]: values.estimated_time_minutes,
+    [LOG_NORM_FIELDS.ESTIMATED_GO_TIME_MINS]: values.estimated_go_time_minutes,
+    [LOG_NORM_FIELDS.ORDER_OF_GO]: values.order_of_go,
+    [LOG_NORM_FIELDS.ACTUAL_ORDER]: values.actual_order,
+    [LOG_NORM_FIELDS.ACTUAL_GO]: values.actual_go,
+    [LOG_NORM_FIELDS.GONE_IN]: values.gone_in,
+    [LOG_NORM_FIELDS.REMAINING_TRIPS]: values.remaining_trips,
+    [LOG_NORM_FIELDS.TOTAL_TRIPS]: values.total_trips,
+    [LOG_NORM_FIELDS.COMPLETED_TRIPS]: values.completed_trips,
+  };
+}
+
+function buildCalcLogValues(canonical) {
+  const calc = canonical || {};
+  return {
+    [LOG_CALC_FIELDS.EFFECTIVE_ORDER]: calc.effective_order,
+    [LOG_CALC_FIELDS.TRIP_MINUTES_RAW]: calc.raw_trip_minutes,
+    [LOG_CALC_FIELDS.TRIP_MINUTES_FINAL]: calc.trip_minutes_final,
+    [LOG_CALC_FIELDS.PROJECTED_CLASS_MINUTES]: calc.projected_class_minutes,
+    [LOG_CALC_FIELDS.START_ANCHOR_MINS]: calc.start_anchor_minutes,
+    [LOG_CALC_FIELDS.START_ANCHOR_TEXT]: calc.start_anchor_text,
+    [LOG_CALC_FIELDS.TRIP_MINUTES_USED_DEFAULT]: calc.trip_minutes_used_default,
+    [LOG_CALC_FIELDS.USED_ESTIMATED_GO_FALLBACK]: calc.used_estimated_go_fallback,
+  };
+}
+
+function buildRsLogValues(computedOutputs) {
+  const out = {};
+  for (const fieldName of WATCH_OUTPUT_FIELDS) {
+    out[WATCH_TO_LOG_RS_FIELD_MAP[fieldName]] = computedOutputs?.[fieldName];
+  }
+  return out;
 }
 
 function finalCalcStatus(result, patchFailure) {
@@ -842,7 +980,9 @@ function buildTripLogRecord(result, patchFailure) {
   const anomalies = patchFailure
     ? [...result.anomalies, `patch_failed:${patchFailure.reason}`]
     : result.anomalies;
+  const rawInputs = result.inputsForLog?.raw || {};
   const normalized = result.inputsForLog?.normalized || {};
+  const canonical = result.canonicalOutputs || {};
   const computedOutputs = result.computedOutputs || {};
   const calcLogKey = [
     result.entryxclasses_uuid || result.recordId || "na",
@@ -850,42 +990,41 @@ function buildTripLogRecord(result, patchFailure) {
     CALC_MODE,
     createdAt,
   ].join("|");
+  const rawLogValues = buildRawLogValues(rawInputs);
+  const normalizedLogValues = buildNormalizedLogValues(normalized);
+  const calcLogValues = buildCalcLogValues(canonical);
+  const rsLogValues = buildRsLogValues(computedOutputs);
 
-  setIfPresent(fields, LOG_FIELD_CALC_LOG_KEY, calcLogKey);
-  setIfPresent(fields, LOG_FIELD_ENTRYXCLASSES_UUID, result.entryxclasses_uuid);
-  setIfPresent(fields, LOG_FIELD_WATCH_TRIP_RECORD_ID, result.recordId);
-  if (LOG_FIELD_WATCH_TRIPS_LINK && result.recordId) {
-    fields[LOG_FIELD_WATCH_TRIPS_LINK] = linkOne(result.recordId);
+  setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
+  setIfPresent(fields, LOG_KEY_FIELDS.ENTRYXCLASSES_UUID, result.entryxclasses_uuid);
+  setIfPresent(fields, LOG_KEY_FIELDS.WATCH_TRIP_RECORD_ID, result.recordId);
+  if (LOG_KEY_FIELDS.WATCH_TRIPS_LINK && result.recordId) {
+    fields[LOG_KEY_FIELDS.WATCH_TRIPS_LINK] = linkOne(result.recordId);
   }
-  setIfPresent(fields, LOG_FIELD_APP_SHOW_ID, result.app_show_id);
-  setIfPresent(fields, LOG_FIELD_APP_SQL_DATE, result.app_sql_date);
-  setIfPresent(fields, LOG_FIELD_APP_TIME, normalized.app_time_text);
-  setIfPresent(fields, LOG_FIELD_CLASS_STATUS, normalized.class_status);
-  setIfPresent(fields, LOG_FIELD_ESTIMATED_START_TIME, normalized.estimated_start_time_text);
-  setIfPresent(fields, LOG_FIELD_ESTIMATED_END_TIME, normalized.estimated_end_time_text);
-  setIfPresent(fields, LOG_FIELD_REMAINING_TRIPS, normalized.remaining_trips);
-  setIfPresent(fields, LOG_FIELD_TOTAL_TRIPS, normalized.total_trips);
-  setIfPresent(fields, LOG_FIELD_COMPLETED_TRIPS, normalized.completed_trips);
-  setIfPresent(fields, LOG_FIELD_ACTUAL_TIME, normalized.actual_time_text);
-  setIfPresent(fields, LOG_FIELD_ESTIMATED_TIME, normalized.estimated_time_text);
-  setIfPresent(fields, LOG_FIELD_ESTIMATED_GO_TIME, normalized.estimated_go_time_text);
-  setIfPresent(fields, LOG_FIELD_ORDER_OF_GO, normalized.order_of_go);
-  setIfPresent(fields, LOG_FIELD_ACTUAL_ORDER, normalized.actual_order);
-  setIfPresent(fields, LOG_FIELD_GONE_IN, normalized.gone_in);
-  setIfPresent(fields, LOG_FIELD_H_EID, normalized.h_eid);
-  for (const fieldName of OUTPUT_FIELDS) {
-    setIfPresent(fields, OUTPUT_TO_LOG_FIELD[fieldName] || fieldName, computedOutputs[fieldName]);
+  setIfPresent(fields, LOG_KEY_FIELDS.APP_SHOW_ID, result.app_show_id);
+  setIfPresent(fields, LOG_KEY_FIELDS.APP_SQL_DATE, result.app_sql_date);
+  for (const [fieldName, value] of Object.entries(rawLogValues)) {
+    setIfPresent(fields, fieldName, value);
   }
-  setIfPresent(fields, LOG_FIELD_CALC_MODE, CALC_MODE);
-  setIfPresent(fields, LOG_FIELD_CALC_VERSION, CALC_VERSION);
-  setIfPresent(fields, LOG_FIELD_CALC_STATUS, status);
-  setIfPresent(fields, LOG_FIELD_SKIP_REASON, skipReason || undefined);
-  setIfPresent(fields, LOG_FIELD_CHANGED_FIELDS, changedFields || undefined);
-  setIfPresent(fields, LOG_FIELD_INPUTS_JSON, jsonForField(result.inputsForLog));
-  setIfPresent(fields, LOG_FIELD_PRIOR_OUTPUTS_JSON, jsonForField(result.priorOutputs));
-  setIfPresent(fields, LOG_FIELD_COMPUTED_OUTPUTS_JSON, jsonForField(computedOutputs));
-  setIfPresent(fields, LOG_FIELD_ANOMALIES_JSON, anomalies.length ? jsonForField(anomalies) : undefined);
-  setIfPresent(fields, LOG_FIELD_CREATED_AT, createdAt);
+  for (const [fieldName, value] of Object.entries(normalizedLogValues)) {
+    setIfPresent(fields, fieldName, value);
+  }
+  for (const [fieldName, value] of Object.entries(calcLogValues)) {
+    setIfPresent(fields, fieldName, value);
+  }
+  for (const [fieldName, value] of Object.entries(rsLogValues)) {
+    setIfPresent(fields, fieldName, value);
+  }
+  setIfPresent(fields, LOG_KEY_FIELDS.CALC_MODE, CALC_MODE);
+  setIfPresent(fields, LOG_KEY_FIELDS.CALC_VERSION, CALC_VERSION);
+  setIfPresent(fields, LOG_KEY_FIELDS.CALC_STATUS, status);
+  setIfPresent(fields, LOG_KEY_FIELDS.SKIP_REASON, skipReason || undefined);
+  setIfPresent(fields, LOG_KEY_FIELDS.CHANGED_FIELDS, changedFields || undefined);
+  setIfPresent(fields, LOG_JSON_FIELDS.INPUTS_JSON, jsonForField(result.inputsForLog));
+  setIfPresent(fields, LOG_JSON_FIELDS.PRIOR_OUTPUTS_JSON, jsonForField(result.priorOutputs));
+  setIfPresent(fields, LOG_JSON_FIELDS.COMPUTED_OUTPUTS_JSON, jsonForField(computedOutputs));
+  setIfPresent(fields, LOG_JSON_FIELDS.ANOMALIES_JSON, anomalies.length ? jsonForField(anomalies) : undefined);
+  setIfPresent(fields, LOG_KEY_FIELDS.CREATED_AT, createdAt);
 
   return { fields };
 }
@@ -940,6 +1079,7 @@ async function main() {
       eligibility,
       anomalies: [...built.anomalies],
       priorOutputs,
+      canonicalOutputs: null,
       computedOutputs: null,
       changedFields: [],
       patch: null,
@@ -958,6 +1098,7 @@ async function main() {
 
     const computed = computeCanonicalOutputs(values, result.anomalies);
     result.anomalies = computed.anomalies;
+    result.canonicalOutputs = computed.canonical;
     result.computedOutputs = computed.outputs;
 
     const changed = buildChangedFields(priorOutputs, computed.outputs);
