@@ -74,7 +74,7 @@ export default {
       if (path === "/people") {
         return {
           key: "people",
-          totalKey: "total_records",
+          totalKey: "total_people",
           perPageKey: "records_per_page",
           pageKey: "page",
         };
