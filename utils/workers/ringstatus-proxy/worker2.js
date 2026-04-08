@@ -96,9 +96,17 @@ async function proxyGet(upstreamUrl, ttlSec, requestedPath) {
   });
 
   const h = new Headers(r.headers);
+  const contentType = contentTypeForPath(requestedPath);
+  const p = String(requestedPath || "").toLowerCase();
 
   // force correct content-type based on requested file extension
-  h.set("content-type", contentTypeForPath(requestedPath));
+  h.set("content-type", contentType);
+
+  // strip upstream headers that break standalone app rendering
+  if (p.endsWith(".html") || p.endsWith(".js")) {
+    h.delete("content-security-policy");
+    h.delete("x-frame-options");
+  }
 
   for (const [k, v] of Object.entries(corsHeaders)) h.set(k, v);
 
