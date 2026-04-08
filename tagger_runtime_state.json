@@ -1,4 +1,17 @@
 {
   "lastKnownMode": "HOLDOVER",
-  "lastModeCheckAt": 1773633835
+  "lastModeCheckAt": 1773633835,
+  "lastKnownClock": {
+    "version": 1,
+    "customer_id": 15,
+    "saved_at": "2026-04-08T22:08:54.965Z",
+    "source": "endpoint",
+    "origin_epoch": 1775686135,
+    "show_id": 200000058,
+    "show_date": null,
+    "sql_date": "2026-04-08",
+    "time": "06:08 PM",
+    "recorded_at": "2026-04-08T22:08:55.904Z",
+    "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15"
+  }
 }

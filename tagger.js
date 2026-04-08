@@ -1,6 +1,6 @@
 // tagger.js (FULL DROP)
 // 3 modes only: DAY / NIGHT / OVERNIGHT
-// - raw clock always comes from endpoint/system fallback
+// - raw clock always comes from endpoint, or system time with a bounded last-known show fallback
 // - mode logic is based only on app_time as provided by the endpoint/system fallback
 // - DAY:        app_show_id = raw show_id, app_sql_date = raw sql_date, shifted_to_next_day = false
 // - NIGHT:      app_show_id = raw show_id, app_sql_date = next day,   shifted_to_next_day = true
@@ -8,6 +8,9 @@
 // - shows table: match by show_id/app_show_id or create if missing
 // - shows table heartbeat link is overwritten to latest heartbeat only
 // - new_app_show_id is checked only when a new show row is created
+
+const fs = require("fs");
+const path = require("path");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -60,9 +63,12 @@ const HTTP_TIMEOUT_MS   = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
 const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
+const LAST_KNOWN_CLOCK_MAX_AGE_MIN = Math.max(1, Number(process.env.LAST_KNOWN_CLOCK_MAX_AGE_MIN || "360") || 360);
+const LAST_KNOWN_HEARTBEAT_LOOKBACK = Math.max(1, Number(process.env.LAST_KNOWN_HEARTBEAT_LOOKBACK || "100") || 100);
 const FORCE_MODE        = String(process.env.FORCE_MODE || "").trim().toUpperCase();
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 const HB_TZ             = process.env.HB_TIMEZONE || "America/New_York";
+const TAGGER_STATE_PATH = path.resolve(__dirname, process.env.TAGGER_STATE_FILE || "tagger_runtime_state.json");
 
 const LOG_ACCEPTED_ENDPOINT = String(process.env.LOG_ACCEPTED_ENDPOINT || "1") === "1";
 const LOG_TRANSITIONS       = String(process.env.LOG_TRANSITIONS || "1") === "1";
@@ -89,6 +95,230 @@ function logEvent(level, event, data = {}) {
 const logInfo = (event, data) => logEvent("info", event, data);
 const logWarn = (event, data) => logEvent("warn", event, data);
 const logError = (event, data) => logEvent("error", event, data);
+
+function hasValue(v) {
+  return !(v === null || v === undefined || String(v).trim() === "");
+}
+
+function toFiniteNumber(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+function loadRuntimeState() {
+  try {
+    if (!fs.existsSync(TAGGER_STATE_PATH)) return {};
+    const raw = fs.readFileSync(TAGGER_STATE_PATH, "utf8");
+    const json = JSON.parse(raw);
+    return json && typeof json === "object" ? json : {};
+  } catch (e) {
+    logWarn("runtime_state_read_failed", {
+      state_file: TAGGER_STATE_PATH,
+      error_message: String(e?.message || e).slice(0, 240)
+    });
+    return {};
+  }
+}
+
+function saveRuntimeState(nextState) {
+  try {
+    fs.writeFileSync(TAGGER_STATE_PATH, `${JSON.stringify(nextState, null, 2)}\n`, "utf8");
+    return true;
+  } catch (e) {
+    logWarn("runtime_state_write_failed", {
+      state_file: TAGGER_STATE_PATH,
+      error_message: String(e?.message || e).slice(0, 240)
+    });
+    return false;
+  }
+}
+
+function persistLastKnownClockRecord(record) {
+  const showId = hasValue(record?.show_id) ? record.show_id : null;
+  const originEpoch = toFiniteNumber(record?.origin_epoch);
+
+  if (!hasValue(showId) || !Number.isFinite(originEpoch)) return false;
+
+  const state = loadRuntimeState();
+  const nextState = {
+    ...state,
+    lastKnownClock: {
+      version: 1,
+      customer_id: CUSTOMER_ID,
+      saved_at: new Date().toISOString(),
+      ...record,
+      show_id: showId,
+      origin_epoch: originEpoch,
+    }
+  };
+
+  return saveRuntimeState(nextState);
+}
+
+function persistLastKnownClock(clock, source, extra = {}) {
+  return persistLastKnownClockRecord({
+    source,
+    origin_epoch: toFiniteNumber(clock?.nowEpoch),
+    show_id: hasValue(clock?.showId) ? clock.showId : null,
+    show_date: hasValue(clock?.showDate) ? clock.showDate : null,
+    sql_date: hasValue(clock?.sqlDate) ? clock.sqlDate : null,
+    time: hasValue(clock?.time) ? clock.time : null,
+    recorded_at: hasValue(clock?.iso) ? clock.iso : null,
+    ...extra,
+  });
+}
+
+function buildClockFromCachedShow(systemClock, cached, source) {
+  const showId = hasValue(cached?.show_id) ? cached.show_id : null;
+  const originEpoch = toFiniteNumber(cached?.origin_epoch);
+
+  if (!hasValue(showId) || !Number.isFinite(originEpoch)) return null;
+
+  const ageSec = systemClock.nowEpoch - originEpoch;
+  const maxAgeSec = LAST_KNOWN_CLOCK_MAX_AGE_MIN * 60;
+  if (!Number.isFinite(ageSec) || ageSec < 0 || ageSec > maxAgeSec) return null;
+
+  return {
+    clock: {
+      ...systemClock,
+      source,
+      showId,
+      showDate: hasValue(cached?.show_date) ? cached.show_date : null,
+      last_known_source: cached?.source || source,
+      last_known_age_sec: ageSec,
+      last_known_origin_epoch: originEpoch,
+      last_known_sql_date: hasValue(cached?.sql_date) ? cached.sql_date : null,
+      last_known_recorded_at: hasValue(cached?.recorded_at) ? cached.recorded_at : null,
+      last_known_heartbeat_record_id: hasValue(cached?.heartbeat_record_id) ? cached.heartbeat_record_id : null,
+    },
+    meta: {
+      ageSec,
+      cachedSource: cached?.source || source,
+      sqlDate: hasValue(cached?.sql_date) ? cached.sql_date : null,
+      heartbeatRecordId: hasValue(cached?.heartbeat_record_id) ? cached.heartbeat_record_id : null,
+    }
+  };
+}
+
+function getLastKnownClockFromState(systemClock) {
+  const state = loadRuntimeState();
+  const cached = state?.lastKnownClock;
+
+  if (!cached || typeof cached !== "object") {
+    return { reason: "missing_state_cache" };
+  }
+
+  if (toFiniteNumber(cached.customer_id) !== CUSTOMER_ID) {
+    return {
+      reason: "customer_mismatch",
+      customer_id: cached.customer_id ?? null
+    };
+  }
+
+  const hit = buildClockFromCachedShow(systemClock, cached, "system_last_known_clock");
+  if (!hit) {
+    return { reason: "stale_or_invalid_state_cache" };
+  }
+
+  return { ...hit, reason: null };
+}
+
+async function bootstrapLastKnownClockFromHeartbeat(systemClock) {
+  const rows = await airtableListSome({
+    table: TABLE_HEARTBEAT,
+    fields: [
+      FIELD_EPOCH,
+      HEARTBEAT_SHOW_ID,
+      HEARTBEAT_SHOW_DATE,
+      HEARTBEAT_SQL_DATE,
+      HEARTBEAT_TIME,
+      FIELD_HB_AT,
+    ],
+    maxRecords: LAST_KNOWN_HEARTBEAT_LOOKBACK,
+    sortField: FIELD_EPOCH,
+    sortDirection: "desc"
+  });
+
+  for (const row of rows) {
+    const fields = row?.fields || {};
+    const cached = {
+      customer_id: CUSTOMER_ID,
+      source: "heartbeat_bootstrap",
+      origin_epoch: toFiniteNumber(fields?.[FIELD_EPOCH]),
+      show_id: hasValue(fields?.[HEARTBEAT_SHOW_ID]) ? fields[HEARTBEAT_SHOW_ID] : null,
+      show_date: hasValue(fields?.[HEARTBEAT_SHOW_DATE]) ? fields[HEARTBEAT_SHOW_DATE] : null,
+      sql_date: hasValue(fields?.[HEARTBEAT_SQL_DATE]) ? fields[HEARTBEAT_SQL_DATE] : null,
+      time: hasValue(fields?.[HEARTBEAT_TIME]) ? fields[HEARTBEAT_TIME] : null,
+      recorded_at: hasValue(fields?.[FIELD_HB_AT]) ? fields[FIELD_HB_AT] : null,
+      heartbeat_record_id: row.id,
+    };
+
+    const hit = buildClockFromCachedShow(systemClock, cached, "system_last_known_heartbeat");
+    if (!hit) continue;
+
+    persistLastKnownClockRecord(cached);
+
+    return {
+      ...hit,
+      reason: null
+    };
+  }
+
+  return { reason: "no_recent_heartbeat_with_show_id" };
+}
+
+async function recoverClockFromLastKnown(systemClock, fallbackEvent) {
+  const stateHit = getLastKnownClockFromState(systemClock);
+  if (stateHit.clock) {
+    logWarn("last_known_clock_reused", {
+      fallback_event: fallbackEvent,
+      fallback_source: "state_cache",
+      show_id: stateHit.clock.showId,
+      show_date: stateHit.clock.showDate,
+      cache_source: stateHit.meta.cachedSource,
+      cache_age_sec: stateHit.meta.ageSec,
+      cache_sql_date: stateHit.meta.sqlDate,
+      heartbeat_record_id: stateHit.meta.heartbeatRecordId,
+    });
+    return stateHit.clock;
+  }
+
+  try {
+    const heartbeatHit = await bootstrapLastKnownClockFromHeartbeat(systemClock);
+    if (heartbeatHit.clock) {
+      logWarn("last_known_clock_reused", {
+        fallback_event: fallbackEvent,
+        fallback_source: "heartbeat_bootstrap",
+        show_id: heartbeatHit.clock.showId,
+        show_date: heartbeatHit.clock.showDate,
+        cache_source: heartbeatHit.meta.cachedSource,
+        cache_age_sec: heartbeatHit.meta.ageSec,
+        cache_sql_date: heartbeatHit.meta.sqlDate,
+        heartbeat_record_id: heartbeatHit.meta.heartbeatRecordId,
+      });
+      return heartbeatHit.clock;
+    }
+
+    logWarn("last_known_clock_unavailable", {
+      fallback_event: fallbackEvent,
+      state_reason: stateHit.reason,
+      heartbeat_reason: heartbeatHit.reason
+    });
+  } catch (e) {
+    logWarn("last_known_clock_lookup_failed", {
+      fallback_event: fallbackEvent,
+      state_reason: stateHit.reason,
+      error_message: String(e?.message || e).slice(0, 240)
+    });
+  }
+
+  return null;
+}
+
+async function fallbackToBestKnownClock(systemClock, event, data) {
+  logWarn(event, data);
+  return (await recoverClockFromLastKnown(systemClock, event)) || systemClock;
+}
 
 function airtableUrl(tableName) {
   return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
@@ -414,41 +644,38 @@ async function getClockSafe() {
     const txt = await res.text();
 
     if (!res.ok) {
-      logWarn("endpoint_fallback_http", {
+      return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_http", {
         endpoint: RING_ENDPOINT,
         http_status: res.status,
         system_sql_date: systemClock.sqlDate,
         system_time: systemClock.time
       });
-      return systemClock;
     }
 
     let payload = null;
     try {
       payload = JSON.parse(txt);
     } catch {
-      logWarn("endpoint_fallback_invalid_json", {
+      return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_invalid_json", {
         endpoint: RING_ENDPOINT,
         body_sample: txt.slice(0, 250),
         system_sql_date: systemClock.sqlDate,
         system_time: systemClock.time
       });
-      return systemClock;
     }
 
     const endpointClock = pickClockFromPayload(payload);
     if (!endpointClock) {
-      logWarn("endpoint_fallback_missing_clock_values", {
+      return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_missing_clock_values", {
         endpoint: RING_ENDPOINT,
         system_sql_date: systemClock.sqlDate,
         system_time: systemClock.time
       });
-      return systemClock;
     }
 
     const systemSqlDate = systemClock.sqlDate;
     if (String(endpointClock.sqlDate || "") !== String(systemSqlDate || "")) {
-      logWarn("endpoint_fallback_sql_date_mismatch", {
+      return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_sql_date_mismatch", {
         endpoint: RING_ENDPOINT,
         endpoint_show_id: endpointClock.showId,
         endpoint_show_date: endpointClock.showDate,
@@ -457,8 +684,11 @@ async function getClockSafe() {
         system_sql_date: systemSqlDate,
         system_time: systemClock.time
       });
-      return systemClock;
     }
+
+    persistLastKnownClock(endpointClock, "endpoint", {
+      endpoint: RING_ENDPOINT
+    });
 
     if (LOG_ACCEPTED_ENDPOINT) {
       logInfo("endpoint_clock_accepted", {
@@ -473,14 +703,13 @@ async function getClockSafe() {
 
     return endpointClock;
   } catch (e) {
-    logWarn("endpoint_fallback_fetch_error", {
+    return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_fetch_error", {
       endpoint: RING_ENDPOINT,
       error_name: e?.name || null,
       error_message: String(e?.message || e).slice(0, 240),
       system_sql_date: systemClock.sqlDate,
       system_time: systemClock.time
     });
-    return systemClock;
   }
 }
 
