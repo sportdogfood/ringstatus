@@ -4,14 +4,14 @@
   "lastKnownClock": {
     "version": 1,
     "customer_id": 15,
-    "saved_at": "2026-04-08T22:43:55.320Z",
+    "saved_at": "2026-04-08T23:23:55.180Z",
     "source": "endpoint",
-    "origin_epoch": 1775688236,
+    "origin_epoch": 1775690636,
     "show_id": 200000058,
     "show_date": null,
     "sql_date": "2026-04-08",
-    "time": "06:43 PM",
-    "recorded_at": "2026-04-08T22:43:56.148Z",
+    "time": "07:23 PM",
+    "recorded_at": "2026-04-08T23:23:56.155Z",
     "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15"
   }
 }

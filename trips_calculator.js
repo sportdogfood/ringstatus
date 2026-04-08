@@ -907,7 +907,7 @@ function setIfPresent(target, fieldName, value) {
 }
 
 function linkOne(recordId) {
-  return recordId ? [{ id: recordId }] : undefined;
+  return recordId ? [recordId] : undefined;
 }
 
 function buildRawLogValues(rawInputs) {
