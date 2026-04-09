@@ -83,20 +83,22 @@ const LOG_KEY_FIELDS = {
   CALC_MODE: process.env.LOG_FIELD_CALC_MODE || "calc_mode",
   CALC_VERSION: process.env.LOG_FIELD_CALC_VERSION || "calc_version",
   CALC_STATUS: process.env.LOG_FIELD_CALC_STATUS || "calc_status",
-  SKIP_REASON: optionalFieldEnv("LOG_FIELD_SKIP_REASON"),
-  CHANGED_FIELDS: optionalFieldEnv("LOG_FIELD_CHANGED_FIELDS"),
+  SKIP_REASON: process.env.LOG_FIELD_SKIP_REASON || "skip_reason",
+  CHANGED_FIELDS: process.env.LOG_FIELD_CHANGED_FIELDS || "changed_fields",
   CREATED_AT: process.env.LOG_FIELD_CREATED_AT || "created_at",
 };
 
+// Default to the compact audit columns that already exist on trip_logs.
+// Legacy duplicate namespaces like raw.*, raw_*, normalized.*, and norm_* remain opt-in only.
 const LOG_RAW_FIELDS = {
-  APP_TIME: optionalFieldEnv("LOG_RAW_APP_TIME"),
-  STATUS: optionalFieldEnv("LOG_RAW_STATUS"),
+  APP_TIME: process.env.LOG_RAW_APP_TIME || "app_time",
+  STATUS: process.env.LOG_RAW_STATUS || "status",
   CLASS_STATUS: optionalFieldEnv("LOG_RAW_CLASS_STATUS"),
-  ESTIMATED_START_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_START_TIME"),
-  ESTIMATED_END_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_END_TIME"),
-  ACTUAL_TIME: optionalFieldEnv("LOG_RAW_ACTUAL_TIME"),
-  ESTIMATED_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_TIME"),
-  ESTIMATED_GO_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_GO_TIME"),
+  ESTIMATED_START_TIME: process.env.LOG_RAW_ESTIMATED_START_TIME || "estimated_start_time",
+  ESTIMATED_END_TIME: process.env.LOG_RAW_ESTIMATED_END_TIME || "estimated_end_time",
+  ACTUAL_TIME: process.env.LOG_RAW_ACTUAL_TIME || "actual_time",
+  ESTIMATED_TIME: process.env.LOG_RAW_ESTIMATED_TIME || "estimated_time",
+  ESTIMATED_GO_TIME: process.env.LOG_RAW_ESTIMATED_GO_TIME || "estimated_go_time",
   ORDER_OF_GO: optionalFieldEnv("LOG_RAW_ORDER_OF_GO"),
   ACTUAL_ORDER: optionalFieldEnv("LOG_RAW_ACTUAL_ORDER"),
   ACTUAL_GO: optionalFieldEnv("LOG_RAW_ACTUAL_GO"),
@@ -108,38 +110,38 @@ const LOG_RAW_FIELDS = {
 };
 
 const LOG_NORM_FIELDS = {
-  CLASS_STATUS: optionalFieldEnv("LOG_NORM_CLASS_STATUS"),
+  CLASS_STATUS: process.env.LOG_NORM_CLASS_STATUS || "class_status",
   APP_TIME_TEXT: optionalFieldEnv("LOG_NORM_APP_TIME_TEXT"),
   ESTIMATED_START_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_START_TIME_TEXT"),
   ESTIMATED_END_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_END_TIME_TEXT"),
   ACTUAL_TIME_TEXT: optionalFieldEnv("LOG_NORM_ACTUAL_TIME_TEXT"),
   ESTIMATED_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_TIME_TEXT"),
   ESTIMATED_GO_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_GO_TIME_TEXT"),
-  H_EID: optionalFieldEnv("LOG_NORM_H_EID"),
+  H_EID: process.env.LOG_NORM_H_EID || "h_eid",
   APP_TIME_MINS: optionalFieldEnv("LOG_NORM_APP_TIME_MINS"),
   ESTIMATED_START_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_START_TIME_MINS"),
   ESTIMATED_END_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_END_TIME_MINS"),
   ACTUAL_TIME_MINS: optionalFieldEnv("LOG_NORM_ACTUAL_TIME_MINS"),
   ESTIMATED_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_TIME_MINS"),
   ESTIMATED_GO_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_GO_TIME_MINS"),
-  ORDER_OF_GO: optionalFieldEnv("LOG_NORM_ORDER_OF_GO"),
-  ACTUAL_ORDER: optionalFieldEnv("LOG_NORM_ACTUAL_ORDER"),
+  ORDER_OF_GO: process.env.LOG_NORM_ORDER_OF_GO || "order_of_go",
+  ACTUAL_ORDER: process.env.LOG_NORM_ACTUAL_ORDER || "actual_order",
   ACTUAL_GO: optionalFieldEnv("LOG_NORM_ACTUAL_GO"),
-  GONE_IN: optionalFieldEnv("LOG_NORM_GONE_IN"),
-  REMAINING_TRIPS: optionalFieldEnv("LOG_NORM_REMAINING_TRIPS"),
-  TOTAL_TRIPS: optionalFieldEnv("LOG_NORM_TOTAL_TRIPS"),
-  COMPLETED_TRIPS: optionalFieldEnv("LOG_NORM_COMPLETED_TRIPS"),
+  GONE_IN: process.env.LOG_NORM_GONE_IN || "gone_in",
+  REMAINING_TRIPS: process.env.LOG_NORM_REMAINING_TRIPS || "remaining_trips",
+  TOTAL_TRIPS: process.env.LOG_NORM_TOTAL_TRIPS || "total_trips",
+  COMPLETED_TRIPS: process.env.LOG_NORM_COMPLETED_TRIPS || "completed_trips",
 };
 
 const LOG_CALC_FIELDS = {
-  EFFECTIVE_ORDER: optionalFieldEnv("LOG_CALC_EFFECTIVE_ORDER"),
-  TRIP_MINUTES_RAW: optionalFieldEnv("LOG_CALC_TRIP_MINUTES_RAW"),
-  TRIP_MINUTES_FINAL: optionalFieldEnv("LOG_CALC_TRIP_MINUTES_FINAL"),
-  PROJECTED_CLASS_MINUTES: optionalFieldEnv("LOG_CALC_PROJECTED_CLASS_MINUTES"),
-  START_ANCHOR_MINS: optionalFieldEnv("LOG_CALC_START_ANCHOR_MINS"),
-  START_ANCHOR_TEXT: optionalFieldEnv("LOG_CALC_START_ANCHOR_TEXT"),
-  TRIP_MINUTES_USED_DEFAULT: optionalFieldEnv("LOG_CALC_TRIP_MINUTES_USED_DEFAULT"),
-  USED_ESTIMATED_GO_FALLBACK: optionalFieldEnv("LOG_CALC_USED_ESTIMATED_GO_FALLBACK"),
+  EFFECTIVE_ORDER: process.env.LOG_CALC_EFFECTIVE_ORDER || "calc_effective_order",
+  TRIP_MINUTES_RAW: process.env.LOG_CALC_TRIP_MINUTES_RAW || "calc_trip_minutes_raw",
+  TRIP_MINUTES_FINAL: process.env.LOG_CALC_TRIP_MINUTES_FINAL || "calc_trip_minutes_final",
+  PROJECTED_CLASS_MINUTES: process.env.LOG_CALC_PROJECTED_CLASS_MINUTES || "calc_projected_class_minutes",
+  START_ANCHOR_MINS: process.env.LOG_CALC_START_ANCHOR_MINS || "calc_start_anchor_mins",
+  START_ANCHOR_TEXT: process.env.LOG_CALC_START_ANCHOR_TEXT || "calc_start_anchor_text",
+  TRIP_MINUTES_USED_DEFAULT: process.env.LOG_CALC_TRIP_MINUTES_USED_DEFAULT || "calc_trip_minutes_used_default",
+  USED_ESTIMATED_GO_FALLBACK: process.env.LOG_CALC_USED_ESTIMATED_GO_FALLBACK || "calc_used_estimated_go_fallback",
 };
 
 // trip_logs stores audit copies of computed rs_* outputs. These are not raw source
@@ -166,10 +168,10 @@ const LOG_RS_FIELDS = {
 };
 
 const LOG_JSON_FIELDS = {
-  INPUTS_JSON: optionalFieldEnv("LOG_FIELD_INPUTS_JSON"),
-  PRIOR_OUTPUTS_JSON: optionalFieldEnv("LOG_FIELD_PRIOR_OUTPUTS_JSON"),
-  COMPUTED_OUTPUTS_JSON: optionalFieldEnv("LOG_FIELD_COMPUTED_OUTPUTS_JSON"),
-  ANOMALIES_JSON: optionalFieldEnv("LOG_FIELD_ANOMALIES_JSON"),
+  INPUTS_JSON: process.env.LOG_FIELD_INPUTS_JSON || "inputs_json",
+  PRIOR_OUTPUTS_JSON: process.env.LOG_FIELD_PRIOR_OUTPUTS_JSON || "prior_outputs_json",
+  COMPUTED_OUTPUTS_JSON: process.env.LOG_FIELD_COMPUTED_OUTPUTS_JSON || "computed_outputs_json",
+  ANOMALIES_JSON: process.env.LOG_FIELD_ANOMALIES_JSON || "anomalies_json",
 };
 
 const INVALID_ORDER_NUMS = new Set([0, 10000, 100000]);
