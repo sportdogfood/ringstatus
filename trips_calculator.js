@@ -88,17 +88,35 @@ const LOG_KEY_FIELDS = {
   CREATED_AT: process.env.LOG_FIELD_CREATED_AT || "created_at",
 };
 
-// Default to the compact audit columns that already exist on trip_logs.
-// Legacy duplicate namespaces like raw.*, raw_*, normalized.*, and norm_* remain opt-in only.
+// Compact source snapshot copied directly from watch_trips after trips_tagger updates it.
+const LOG_SOURCE_FIELDS = {
+  APP_TIME: process.env.LOG_SOURCE_APP_TIME || "app_time",
+  STATUS: process.env.LOG_SOURCE_STATUS || "status",
+  CLASS_STATUS: process.env.LOG_SOURCE_CLASS_STATUS || "class_status",
+  ESTIMATED_START_TIME: process.env.LOG_SOURCE_ESTIMATED_START_TIME || "estimated_start_time",
+  ESTIMATED_END_TIME: process.env.LOG_SOURCE_ESTIMATED_END_TIME || "estimated_end_time",
+  ACTUAL_TIME: process.env.LOG_SOURCE_ACTUAL_TIME || "actual_time",
+  ESTIMATED_TIME: process.env.LOG_SOURCE_ESTIMATED_TIME || "estimated_time",
+  ESTIMATED_GO_TIME: process.env.LOG_SOURCE_ESTIMATED_GO_TIME || "estimated_go_time",
+  ORDER_OF_GO: process.env.LOG_SOURCE_ORDER_OF_GO || "order_of_go",
+  ACTUAL_ORDER: process.env.LOG_SOURCE_ACTUAL_ORDER || "actual_order",
+  GONE_IN: process.env.LOG_SOURCE_GONE_IN || "gone_in",
+  REMAINING_TRIPS: process.env.LOG_SOURCE_REMAINING_TRIPS || "remaining_trips",
+  TOTAL_TRIPS: process.env.LOG_SOURCE_TOTAL_TRIPS || "total_trips",
+  COMPLETED_TRIPS: process.env.LOG_SOURCE_COMPLETED_TRIPS || "completed_trips",
+  H_EID: process.env.LOG_SOURCE_H_EID || "h_eid",
+};
+
+// Legacy duplicate namespaces like raw.*, raw_*, normalized.*, and norm_* are opt-in only.
 const LOG_RAW_FIELDS = {
-  APP_TIME: process.env.LOG_RAW_APP_TIME || "app_time",
-  STATUS: process.env.LOG_RAW_STATUS || "status",
+  APP_TIME: optionalFieldEnv("LOG_RAW_APP_TIME"),
+  STATUS: optionalFieldEnv("LOG_RAW_STATUS"),
   CLASS_STATUS: optionalFieldEnv("LOG_RAW_CLASS_STATUS"),
-  ESTIMATED_START_TIME: process.env.LOG_RAW_ESTIMATED_START_TIME || "estimated_start_time",
-  ESTIMATED_END_TIME: process.env.LOG_RAW_ESTIMATED_END_TIME || "estimated_end_time",
-  ACTUAL_TIME: process.env.LOG_RAW_ACTUAL_TIME || "actual_time",
-  ESTIMATED_TIME: process.env.LOG_RAW_ESTIMATED_TIME || "estimated_time",
-  ESTIMATED_GO_TIME: process.env.LOG_RAW_ESTIMATED_GO_TIME || "estimated_go_time",
+  ESTIMATED_START_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_START_TIME"),
+  ESTIMATED_END_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_END_TIME"),
+  ACTUAL_TIME: optionalFieldEnv("LOG_RAW_ACTUAL_TIME"),
+  ESTIMATED_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_TIME"),
+  ESTIMATED_GO_TIME: optionalFieldEnv("LOG_RAW_ESTIMATED_GO_TIME"),
   ORDER_OF_GO: optionalFieldEnv("LOG_RAW_ORDER_OF_GO"),
   ACTUAL_ORDER: optionalFieldEnv("LOG_RAW_ACTUAL_ORDER"),
   ACTUAL_GO: optionalFieldEnv("LOG_RAW_ACTUAL_GO"),
@@ -110,27 +128,27 @@ const LOG_RAW_FIELDS = {
 };
 
 const LOG_NORM_FIELDS = {
-  CLASS_STATUS: process.env.LOG_NORM_CLASS_STATUS || "class_status",
+  CLASS_STATUS: optionalFieldEnv("LOG_NORM_CLASS_STATUS"),
   APP_TIME_TEXT: optionalFieldEnv("LOG_NORM_APP_TIME_TEXT"),
   ESTIMATED_START_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_START_TIME_TEXT"),
   ESTIMATED_END_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_END_TIME_TEXT"),
   ACTUAL_TIME_TEXT: optionalFieldEnv("LOG_NORM_ACTUAL_TIME_TEXT"),
   ESTIMATED_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_TIME_TEXT"),
   ESTIMATED_GO_TIME_TEXT: optionalFieldEnv("LOG_NORM_ESTIMATED_GO_TIME_TEXT"),
-  H_EID: process.env.LOG_NORM_H_EID || "h_eid",
+  H_EID: optionalFieldEnv("LOG_NORM_H_EID"),
   APP_TIME_MINS: optionalFieldEnv("LOG_NORM_APP_TIME_MINS"),
   ESTIMATED_START_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_START_TIME_MINS"),
   ESTIMATED_END_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_END_TIME_MINS"),
   ACTUAL_TIME_MINS: optionalFieldEnv("LOG_NORM_ACTUAL_TIME_MINS"),
   ESTIMATED_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_TIME_MINS"),
   ESTIMATED_GO_TIME_MINS: optionalFieldEnv("LOG_NORM_ESTIMATED_GO_TIME_MINS"),
-  ORDER_OF_GO: process.env.LOG_NORM_ORDER_OF_GO || "order_of_go",
-  ACTUAL_ORDER: process.env.LOG_NORM_ACTUAL_ORDER || "actual_order",
+  ORDER_OF_GO: optionalFieldEnv("LOG_NORM_ORDER_OF_GO"),
+  ACTUAL_ORDER: optionalFieldEnv("LOG_NORM_ACTUAL_ORDER"),
   ACTUAL_GO: optionalFieldEnv("LOG_NORM_ACTUAL_GO"),
-  GONE_IN: process.env.LOG_NORM_GONE_IN || "gone_in",
-  REMAINING_TRIPS: process.env.LOG_NORM_REMAINING_TRIPS || "remaining_trips",
-  TOTAL_TRIPS: process.env.LOG_NORM_TOTAL_TRIPS || "total_trips",
-  COMPLETED_TRIPS: process.env.LOG_NORM_COMPLETED_TRIPS || "completed_trips",
+  GONE_IN: optionalFieldEnv("LOG_NORM_GONE_IN"),
+  REMAINING_TRIPS: optionalFieldEnv("LOG_NORM_REMAINING_TRIPS"),
+  TOTAL_TRIPS: optionalFieldEnv("LOG_NORM_TOTAL_TRIPS"),
+  COMPLETED_TRIPS: optionalFieldEnv("LOG_NORM_COMPLETED_TRIPS"),
 };
 
 const LOG_CALC_FIELDS = {
@@ -1059,6 +1077,29 @@ function linkOne(recordId) {
   return recordId ? [recordId] : undefined;
 }
 
+function buildSourceLogValues(rawInputs, normalized) {
+  const raw = rawInputs || {};
+  const values = normalized || {};
+
+  return {
+    [LOG_SOURCE_FIELDS.APP_TIME]: strOrNull(raw.app_time),
+    [LOG_SOURCE_FIELDS.STATUS]: strOrNull(raw.status),
+    [LOG_SOURCE_FIELDS.CLASS_STATUS]: values.class_status,
+    [LOG_SOURCE_FIELDS.ESTIMATED_START_TIME]: strOrNull(raw.estimated_start_time),
+    [LOG_SOURCE_FIELDS.ESTIMATED_END_TIME]: strOrNull(raw.estimated_end_time),
+    [LOG_SOURCE_FIELDS.ACTUAL_TIME]: strOrNull(raw.actual_time),
+    [LOG_SOURCE_FIELDS.ESTIMATED_TIME]: strOrNull(raw.estimated_time),
+    [LOG_SOURCE_FIELDS.ESTIMATED_GO_TIME]: strOrNull(raw.estimated_go_time),
+    [LOG_SOURCE_FIELDS.ORDER_OF_GO]: numOrNull(raw.order_of_go),
+    [LOG_SOURCE_FIELDS.ACTUAL_ORDER]: numOrNull(raw.actual_order),
+    [LOG_SOURCE_FIELDS.GONE_IN]: numOrNull(raw.gone_in),
+    [LOG_SOURCE_FIELDS.REMAINING_TRIPS]: numOrNull(raw.remaining_trips),
+    [LOG_SOURCE_FIELDS.TOTAL_TRIPS]: numOrNull(raw.total_trips),
+    [LOG_SOURCE_FIELDS.COMPLETED_TRIPS]: numOrNull(raw.completed_trips),
+    [LOG_SOURCE_FIELDS.H_EID]: numOrNull(raw.h_eid),
+  };
+}
+
 function buildRawLogValues(rawInputs) {
   const raw = rawInputs || {};
   return {
@@ -1182,6 +1223,7 @@ function buildTripLogRecord(result, patchFailure) {
     CALC_MODE,
     createdAt,
   ].join("|");
+  const sourceLogValues = buildSourceLogValues(rawInputs, normalized);
   const rawLogValues = buildRawLogValues(rawInputs);
   const normalizedLogValues = buildNormalizedLogValues(normalized);
   const calcLogValues = buildCalcLogValues(canonical);
@@ -1195,6 +1237,9 @@ function buildTripLogRecord(result, patchFailure) {
   }
   setIfPresent(fields, LOG_KEY_FIELDS.APP_SHOW_ID, result.app_show_id);
   setIfPresent(fields, LOG_KEY_FIELDS.APP_SQL_DATE, result.app_sql_date);
+  for (const [fieldName, value] of Object.entries(sourceLogValues)) {
+    setIfPresent(fields, fieldName, value);
+  }
   for (const [fieldName, value] of Object.entries(rawLogValues)) {
     setIfPresent(fields, fieldName, value);
   }
