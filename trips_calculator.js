@@ -3,7 +3,7 @@
  *
  * Downstream calculator for derived rs_* timing fields on watch_trips.
  * - reads normalized watch_trips rows
- * - computes 13 rs_* outputs
+ * - computes 18 rs_* outputs
  * - patches changed outputs in promote mode
  * - writes audit rows to trip_logs
  */
@@ -75,7 +75,7 @@ const WATCH_FIELDS = {
 
 const LOG_KEY_FIELDS = {
   CALC_LOG_KEY: process.env.LOG_FIELD_CALC_LOG_KEY || "calc_log_key",
-  WATCH_TRIPS_LINK: optionalFieldEnv("LOG_FIELD_WATCH_TRIPS_LINK"),
+  WATCH_TRIPS_LINK: process.env.LOG_FIELD_WATCH_TRIPS_LINK || "watch_trips",
   WATCH_TRIP_RECORD_ID: process.env.LOG_FIELD_WATCH_TRIP_RECORD_ID || "watch_trip_record_id",
   ENTRYXCLASSES_UUID: process.env.LOG_FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid",
   APP_SHOW_ID: process.env.LOG_FIELD_APP_SHOW_ID || "app_show_id",
@@ -142,25 +142,27 @@ const LOG_CALC_FIELDS = {
   USED_ESTIMATED_GO_FALLBACK: optionalFieldEnv("LOG_CALC_USED_ESTIMATED_GO_FALLBACK"),
 };
 
+// trip_logs stores audit copies of computed rs_* outputs. These are not raw source
+// fields, and some trip_logs column types intentionally differ from watch_trips.
 const LOG_RS_FIELDS = {
-  STATUS: optionalFieldEnv("LOG_RS_STATUS"),
-  START_TIME: optionalFieldEnv("LOG_RS_START_TIME"),
-  GO_TIME: optionalFieldEnv("LOG_RS_GO_TIME"),
-  COMPLETED_TRIPS: optionalFieldEnv("LOG_RS_COMPLETED_TRIPS"),
-  GONE_IN: optionalFieldEnv("LOG_RS_GONE_IN"),
-  TRIP_DEFAULT: optionalFieldEnv("LOG_RS_TRIP_DEFAULT"),
-  ORDER_OF_GO: optionalFieldEnv("LOG_RS_ORDER_OF_GO"),
-  RUNNING_ORDER_OF_GO: optionalFieldEnv("LOG_RS_RUNNING_ORDER_OF_GO"),
-  MINS_TILL_START: optionalFieldEnv("LOG_RS_MINS_TILL_START"),
-  MINS_SINCE_START: optionalFieldEnv("LOG_RS_MINS_SINCE_START"),
-  TRIP_TIME: optionalFieldEnv("LOG_RS_TRIP_TIME"),
-  TRIP_TIME2: optionalFieldEnv("LOG_RS_TRIP_TIME2"),
-  LENGTH: optionalFieldEnv("LOG_RS_LENGTH"),
-  END_TIME: optionalFieldEnv("LOG_RS_END_TIME"),
-  GO_MINS_FROM_START: optionalFieldEnv("LOG_RS_GO_MINS_FROM_START"),
-  GO_TIME_FROM_START: optionalFieldEnv("LOG_RS_GO_TIME_FROM_START"),
-  MIN_TILL_GO: optionalFieldEnv("LOG_RS_MIN_TILL_GO"),
-  MIN_TO_ACTUAL_GO: optionalFieldEnv("LOG_RS_MIN_TO_ACTUAL_GO"),
+  STATUS: process.env.LOG_RS_STATUS || "rs_status",
+  START_TIME: process.env.LOG_RS_START_TIME || "rs_start_time",
+  GO_TIME: process.env.LOG_RS_GO_TIME || "rs_go_time",
+  COMPLETED_TRIPS: process.env.LOG_RS_COMPLETED_TRIPS || "rs_completed_trips",
+  GONE_IN: process.env.LOG_RS_GONE_IN || "rs_gone_in",
+  TRIP_DEFAULT: process.env.LOG_RS_TRIP_DEFAULT || "rs_trip_default",
+  ORDER_OF_GO: process.env.LOG_RS_ORDER_OF_GO || "rs_order_of_go",
+  RUNNING_ORDER_OF_GO: process.env.LOG_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go",
+  MINS_TILL_START: process.env.LOG_RS_MINS_TILL_START || "rs_mins_till_start",
+  MINS_SINCE_START: process.env.LOG_RS_MINS_SINCE_START || "rs_mins_since_start",
+  TRIP_TIME: process.env.LOG_RS_TRIP_TIME || "rs_trip_time",
+  TRIP_TIME2: process.env.LOG_RS_TRIP_TIME2 || "rs_trip_time2",
+  LENGTH: process.env.LOG_RS_LENGTH || "rs_length",
+  END_TIME: process.env.LOG_RS_END_TIME || "rs_end_time",
+  GO_MINS_FROM_START: process.env.LOG_RS_GO_MINS_FROM_START || "rs_go_mins_from_start",
+  GO_TIME_FROM_START: process.env.LOG_RS_GO_TIME_FROM_START || "rs_go_time_from_start",
+  MIN_TILL_GO: process.env.LOG_RS_MIN_TILL_GO || "rs_min_till_go",
+  MIN_TO_ACTUAL_GO: process.env.LOG_RS_MIN_TO_ACTUAL_GO || "rs_min_to_actual_go",
 };
 
 const LOG_JSON_FIELDS = {
@@ -199,6 +201,7 @@ const WATCH_SOURCE_FIELDS = [
 const WATCH_OUTPUT_FIELDS = Object.values(WATCH_FIELDS.RS);
 
 const OUTPUT_DURATION_FIELDS = new Set([
+  WATCH_FIELDS.RS.TRIP_DEFAULT,
   WATCH_FIELDS.RS.TRIP_TIME,
   WATCH_FIELDS.RS.TRIP_TIME2,
 ]);
@@ -219,32 +222,10 @@ const OUTPUT_TEXT_FIELDS = new Set([
   WATCH_FIELDS.RS.STATUS,
   WATCH_FIELDS.RS.START_TIME,
   WATCH_FIELDS.RS.GO_TIME,
-  WATCH_FIELDS.RS.TRIP_DEFAULT,
   WATCH_FIELDS.RS.LENGTH,
   WATCH_FIELDS.RS.END_TIME,
   WATCH_FIELDS.RS.GO_TIME_FROM_START,
 ]);
-
-const WATCH_TO_LOG_RS_FIELD_MAP = {
-  [WATCH_FIELDS.RS.STATUS]: LOG_RS_FIELDS.STATUS,
-  [WATCH_FIELDS.RS.START_TIME]: LOG_RS_FIELDS.START_TIME,
-  [WATCH_FIELDS.RS.GO_TIME]: LOG_RS_FIELDS.GO_TIME,
-  [WATCH_FIELDS.RS.COMPLETED_TRIPS]: LOG_RS_FIELDS.COMPLETED_TRIPS,
-  [WATCH_FIELDS.RS.GONE_IN]: LOG_RS_FIELDS.GONE_IN,
-  [WATCH_FIELDS.RS.TRIP_DEFAULT]: LOG_RS_FIELDS.TRIP_DEFAULT,
-  [WATCH_FIELDS.RS.ORDER_OF_GO]: LOG_RS_FIELDS.ORDER_OF_GO,
-  [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO]: LOG_RS_FIELDS.RUNNING_ORDER_OF_GO,
-  [WATCH_FIELDS.RS.MINS_TILL_START]: LOG_RS_FIELDS.MINS_TILL_START,
-  [WATCH_FIELDS.RS.MINS_SINCE_START]: LOG_RS_FIELDS.MINS_SINCE_START,
-  [WATCH_FIELDS.RS.TRIP_TIME]: LOG_RS_FIELDS.TRIP_TIME,
-  [WATCH_FIELDS.RS.TRIP_TIME2]: LOG_RS_FIELDS.TRIP_TIME2,
-  [WATCH_FIELDS.RS.LENGTH]: LOG_RS_FIELDS.LENGTH,
-  [WATCH_FIELDS.RS.END_TIME]: LOG_RS_FIELDS.END_TIME,
-  [WATCH_FIELDS.RS.GO_MINS_FROM_START]: LOG_RS_FIELDS.GO_MINS_FROM_START,
-  [WATCH_FIELDS.RS.GO_TIME_FROM_START]: LOG_RS_FIELDS.GO_TIME_FROM_START,
-  [WATCH_FIELDS.RS.MIN_TILL_GO]: LOG_RS_FIELDS.MIN_TILL_GO,
-  [WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO]: LOG_RS_FIELDS.MIN_TO_ACTUAL_GO,
-};
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -823,6 +804,7 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     tripMinutes = tripMinutesDefault;
   }
 
+  const tripDefaultDurationSeconds = durationSecondsFromMinutes(tripMinutesDefault);
   const tripDurationSeconds = durationSecondsFromMinutes(tripMinutes);
   const projectedClassMinutes = (
     values.total_trips !== null
@@ -907,7 +889,7 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     [WATCH_FIELDS.RS.GO_TIME]: goClockFromStart,
     [WATCH_FIELDS.RS.COMPLETED_TRIPS]: values.completed_trips,
     [WATCH_FIELDS.RS.GONE_IN]: values.gone_in,
-    [WATCH_FIELDS.RS.TRIP_DEFAULT]: String(tripMinutesDefault),
+    [WATCH_FIELDS.RS.TRIP_DEFAULT]: tripDefaultDurationSeconds,
     [WATCH_FIELDS.RS.ORDER_OF_GO]: effectiveOrder,
     [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO]: runningOrder,
     [WATCH_FIELDS.RS.MINS_TILL_START]: minutesUntilStart,
@@ -1048,12 +1030,30 @@ function buildCalcLogValues(canonical) {
   };
 }
 
-function buildRsLogValues(computedOutputs) {
-  const out = {};
-  for (const fieldName of WATCH_OUTPUT_FIELDS) {
-    out[WATCH_TO_LOG_RS_FIELD_MAP[fieldName]] = computedOutputs?.[fieldName];
-  }
-  return out;
+function buildRsLogValues(canonical, computedOutputs) {
+  const calc = canonical || {};
+  const outputs = computedOutputs || {};
+
+  return {
+    [LOG_RS_FIELDS.STATUS]: outputs[WATCH_FIELDS.RS.STATUS],
+    [LOG_RS_FIELDS.START_TIME]: outputs[WATCH_FIELDS.RS.START_TIME],
+    [LOG_RS_FIELDS.GO_TIME]: outputs[WATCH_FIELDS.RS.GO_TIME],
+    [LOG_RS_FIELDS.COMPLETED_TRIPS]: outputs[WATCH_FIELDS.RS.COMPLETED_TRIPS],
+    [LOG_RS_FIELDS.GONE_IN]: outputs[WATCH_FIELDS.RS.GONE_IN],
+    [LOG_RS_FIELDS.TRIP_DEFAULT]: durationSecondsFromMinutes(calc.trip_minutes_default),
+    [LOG_RS_FIELDS.ORDER_OF_GO]: outputs[WATCH_FIELDS.RS.ORDER_OF_GO],
+    [LOG_RS_FIELDS.RUNNING_ORDER_OF_GO]: outputs[WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO],
+    [LOG_RS_FIELDS.MINS_TILL_START]: outputs[WATCH_FIELDS.RS.MINS_TILL_START],
+    [LOG_RS_FIELDS.MINS_SINCE_START]: outputs[WATCH_FIELDS.RS.MINS_SINCE_START],
+    [LOG_RS_FIELDS.TRIP_TIME]: outputs[WATCH_FIELDS.RS.TRIP_TIME],
+    [LOG_RS_FIELDS.TRIP_TIME2]: outputs[WATCH_FIELDS.RS.TRIP_TIME2],
+    [LOG_RS_FIELDS.LENGTH]: calc.projected_class_minutes,
+    [LOG_RS_FIELDS.END_TIME]: outputs[WATCH_FIELDS.RS.END_TIME],
+    [LOG_RS_FIELDS.GO_MINS_FROM_START]: outputs[WATCH_FIELDS.RS.GO_MINS_FROM_START],
+    [LOG_RS_FIELDS.GO_TIME_FROM_START]: outputs[WATCH_FIELDS.RS.GO_TIME_FROM_START],
+    [LOG_RS_FIELDS.MIN_TILL_GO]: outputs[WATCH_FIELDS.RS.MIN_TILL_GO],
+    [LOG_RS_FIELDS.MIN_TO_ACTUAL_GO]: outputs[WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO],
+  };
 }
 
 function finalCalcStatus(result, patchFailure) {
@@ -1093,7 +1093,7 @@ function buildTripLogRecord(result, patchFailure) {
   const rawLogValues = buildRawLogValues(rawInputs);
   const normalizedLogValues = buildNormalizedLogValues(normalized);
   const calcLogValues = buildCalcLogValues(canonical);
-  const rsLogValues = buildRsLogValues(computedOutputs);
+  const rsLogValues = buildRsLogValues(canonical, computedOutputs);
 
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
   setIfPresent(fields, LOG_KEY_FIELDS.ENTRYXCLASSES_UUID, result.entryxclasses_uuid);
