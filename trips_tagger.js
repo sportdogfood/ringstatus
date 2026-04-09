@@ -67,6 +67,7 @@ const FIELD_ESTIMATED_TIME        = process.env.FIELD_ESTIMATED_TIME || "estimat
 const FIELD_RESULTS_VERIFIED      = process.env.FIELD_RESULTS_VERIFIED || "results_verified";
 const FIELD_TOTAL_ENTRY_TRIPS     = process.env.FIELD_TOTAL_ENTRY_TRIPS || "total_entry_trips";
 const FIELD_ACTUAL_ORDER          = process.env.FIELD_ACTUAL_ORDER || "actual_order";
+const FIELD_ACTUAL_GO             = process.env.FIELD_ACTUAL_GO || "actual_go";
 const FIELD_H_EID                 = process.env.FIELD_H_EID || "h_eid";
 const FIELD_TIME_FAULT_ONE        = process.env.FIELD_TIME_FAULT_ONE || "time_fault_one";
 const FIELD_FAULTS_ONE            = process.env.FIELD_FAULTS_ONE || "faults_one";
@@ -81,6 +82,7 @@ const FIELD_TIME_THREE            = process.env.FIELD_TIME_THREE || "time_three"
 const FIELD_SCORE1                = process.env.FIELD_SCORE1 || "score1";
 const FIELD_SCORE2                = process.env.FIELD_SCORE2 || "score2";
 const FIELD_SCORE3                = process.env.FIELD_SCORE3 || "score3";
+let CAN_WRITE_ACTUAL_GO           = false;
 
 function requireEnv(name, val) {
   if (!val) throw new Error(`Missing required env: ${name}`);
@@ -227,6 +229,24 @@ function airtableUrl(tableName) {
   return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
 }
 
+async function airtableTableFieldSet(tableName) {
+  const res = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Airtable meta failed (${res.status}) ${tableName}: ${body}`);
+  }
+
+  const json = await res.json().catch(() => ({}));
+  const table = Array.isArray(json?.tables)
+    ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
+    : null;
+
+  return new Set(Array.isArray(table?.fields) ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean) : []);
+}
+
 async function airtableList(tableName, viewName) {
   const out = [];
   let offset = null;
@@ -350,6 +370,7 @@ function setTripLevelFields(updateFields, data) {
   updateFields[FIELD_RESULTS_VERIFIED] = data.results_verified;
   updateFields[FIELD_TOTAL_ENTRY_TRIPS] = data.total_entry_trips;
   updateFields[FIELD_ACTUAL_ORDER] = data.actual_order;
+  if (CAN_WRITE_ACTUAL_GO) updateFields[FIELD_ACTUAL_GO] = data.actual_go;
   updateFields[FIELD_H_EID] = data.h_eid;
   updateFields[FIELD_TIME_FAULT_ONE] = data.time_fault_one;
   updateFields[FIELD_FAULTS_ONE] = data.faults_one;
@@ -373,6 +394,7 @@ function clearTripLevelFields(updateFields) {
   updateFields[FIELD_RESULTS_VERIFIED] = null;
   updateFields[FIELD_TOTAL_ENTRY_TRIPS] = null;
   updateFields[FIELD_ACTUAL_ORDER] = null;
+  if (CAN_WRITE_ACTUAL_GO) updateFields[FIELD_ACTUAL_GO] = null;
   updateFields[FIELD_H_EID] = null;
   updateFields[FIELD_TIME_FAULT_ONE] = null;
   updateFields[FIELD_FAULTS_ONE] = null;
@@ -504,6 +526,14 @@ async function fetchShowsMap() {
   try {
     requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
     requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
+
+    try {
+      const watchTableFields = await airtableTableFieldSet(WATCH_TABLE);
+      CAN_WRITE_ACTUAL_GO = watchTableFields.has(FIELD_ACTUAL_GO);
+    } catch (e) {
+      CAN_WRITE_ACTUAL_GO = false;
+      console.log(`meta warn: unable to confirm ${WATCH_TABLE}.${FIELD_ACTUAL_GO} :: ${String(e?.message || e).slice(0, 300)}`);
+    }
 
     const observedAt = new Date().toISOString();
 
@@ -858,6 +888,10 @@ async function fetchShowsMap() {
           numOrNull(firstNonBlank(matchedTrip.actual_order, matchedTrip.actualOrder))
         );
 
+        const actual_go = normNum(
+          numOrNull(firstNonBlank(matchedTrip.actual_go, matchedTrip.actualGo))
+        );
+
         const h_eid = normNum(
           numOrNull(firstNonBlank(matchedTrip.number, matchedTrip.entry_number, matchedTrip.entryNumber))
         );
@@ -902,6 +936,7 @@ async function fetchShowsMap() {
           results_verified,
           total_entry_trips,
           actual_order,
+          actual_go,
           h_eid,
           time_fault_one,
           faults_one,
