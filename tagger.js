@@ -68,7 +68,13 @@ const LAST_KNOWN_HEARTBEAT_LOOKBACK = Math.max(1, Number(process.env.LAST_KNOWN_
 const FORCE_MODE        = String(process.env.FORCE_MODE || "").trim().toUpperCase();
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 const HB_TZ             = process.env.HB_TIMEZONE || "America/New_York";
-const TAGGER_STATE_PATH = path.resolve(__dirname, process.env.TAGGER_STATE_FILE || "tagger_runtime_state.json");
+const DEFAULT_TAGGER_STATE_PATH = "C:\\actions-runner\\ringstatus\\tagger_runtime_state.json";
+const TAGGER_STATE_FILE_ENV = String(process.env.TAGGER_STATE_FILE || "").trim();
+const TAGGER_STATE_PATH = TAGGER_STATE_FILE_ENV
+  ? (path.isAbsolute(TAGGER_STATE_FILE_ENV)
+      ? TAGGER_STATE_FILE_ENV
+      : path.resolve(__dirname, TAGGER_STATE_FILE_ENV))
+  : DEFAULT_TAGGER_STATE_PATH;
 
 const LOG_ACCEPTED_ENDPOINT = String(process.env.LOG_ACCEPTED_ENDPOINT || "1") === "1";
 const LOG_TRANSITIONS       = String(process.env.LOG_TRANSITIONS || "1") === "1";
@@ -122,6 +128,7 @@ function loadRuntimeState() {
 
 function saveRuntimeState(nextState) {
   try {
+    fs.mkdirSync(path.dirname(TAGGER_STATE_PATH), { recursive: true });
     fs.writeFileSync(TAGGER_STATE_PATH, `${JSON.stringify(nextState, null, 2)}\n`, "utf8");
     return true;
   } catch (e) {
