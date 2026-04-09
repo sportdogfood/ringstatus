@@ -280,6 +280,35 @@ function chunk(items, size) {
   return out;
 }
 
+function parseAirtableError(bodyText) {
+  const body = String(bodyText || "");
+  let json = null;
+  try {
+    json = JSON.parse(body);
+  } catch (_) {}
+
+  const type = String(json?.error?.type || "").trim();
+  const message = String(json?.error?.message || body || "").trim();
+  return { type, message, body };
+}
+
+function extractUnknownFieldName(err) {
+  const status = Number(err?._airtable_status);
+  const type = String(err?._airtable_type || "").trim().toUpperCase();
+  const message = String(err?._airtable_message || err?.message || "");
+  if (status !== 422 || type !== "UNKNOWN_FIELD_NAME") return null;
+  const match = message.match(/Unknown field name:\s*"([^"]+)"/i);
+  return match ? match[1] : null;
+}
+
+function stripFieldFromRecords(records, fieldName) {
+  return records.map((record) => {
+    const fields = { ...(record?.fields || {}) };
+    delete fields[fieldName];
+    return { ...record, fields };
+  });
+}
+
 function stableStringify(value) {
   const seen = new WeakSet();
 
@@ -545,7 +574,13 @@ async function airtableCreateRecords({ table, records }) {
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`Airtable create failed (${res.status}) ${table}: ${body}`);
+    const parsed = parseAirtableError(body);
+    const err = new Error(`Airtable create failed (${res.status}) ${table}: ${body}`);
+    err._airtable_status = res.status;
+    err._airtable_type = parsed.type;
+    err._airtable_message = parsed.message;
+    err._airtable_body = parsed.body;
+    throw err;
   }
 }
 
@@ -584,17 +619,53 @@ async function airtableCreateWithFallback({ table, records }) {
 
   let okRows = 0;
   const failedRows = [];
+  const ignoredUnknownFields = new Set();
 
-  for (const batch of chunk(records, 10)) {
+  for (const originalBatch of chunk(records, 10)) {
+    let batch = originalBatch;
+    for (const fieldName of ignoredUnknownFields) {
+      batch = stripFieldFromRecords(batch, fieldName);
+    }
+
     try {
-      await airtableCreateRecords({ table, records: batch });
-      okRows += batch.length;
+      while (true) {
+        try {
+          await airtableCreateRecords({ table, records: batch });
+          okRows += batch.length;
+          break;
+        } catch (batchErr) {
+          const unknownField = extractUnknownFieldName(batchErr);
+          if (!unknownField) throw batchErr;
+          if (ignoredUnknownFields.has(unknownField)) throw batchErr;
+          ignoredUnknownFields.add(unknownField);
+          console.log(`create warn: ignoring unknown trip_logs field "${unknownField}" and retrying batch`);
+          batch = stripFieldFromRecords(batch, unknownField);
+        }
+      }
     } catch (batchErr) {
       console.log(`create warn: batch failed, falling back :: ${String(batchErr?.message || batchErr).slice(0, 300)}`);
-      for (const row of batch) {
+      for (const originalRow of batch) {
+        let row = originalRow;
+        for (const fieldName of ignoredUnknownFields) {
+          row = stripFieldFromRecords([row], fieldName)[0];
+        }
         try {
-          await airtableCreateRecords({ table, records: [row] });
-          okRows += 1;
+          while (true) {
+            try {
+              await airtableCreateRecords({ table, records: [row] });
+              okRows += 1;
+              break;
+            } catch (rowErr) {
+              const unknownField = extractUnknownFieldName(rowErr);
+              const rowFields = row?.fields || {};
+              if (!unknownField || !Object.prototype.hasOwnProperty.call(rowFields, unknownField)) {
+                throw rowErr;
+              }
+              ignoredUnknownFields.add(unknownField);
+              console.log(`create warn: ignoring unknown trip_logs field "${unknownField}" and retrying row`);
+              row = stripFieldFromRecords([row], unknownField)[0];
+            }
+          }
         } catch (rowErr) {
           failedRows.push({
             entryxclasses_uuid: row?.fields?.[LOG_KEY_FIELDS.ENTRYXCLASSES_UUID] || "",
