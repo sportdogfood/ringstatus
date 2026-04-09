@@ -175,6 +175,8 @@ const LOG_JSON_FIELDS = {
 const INVALID_ORDER_NUMS = new Set([0, 10000, 100000]);
 const INVALID_TIME_TEXT = new Set(["00:00:00"]);
 const TRIP_MINUTES_DEFAULT = 3;
+const TRIP_MINUTES_MIN = Number(process.env.TRIP_MINUTES_MIN || "0.5");
+const TRIP_MINUTES_MAX = Number(process.env.TRIP_MINUTES_MAX || "15");
 
 const WATCH_SOURCE_FIELDS = [
   WATCH_FIELDS.ENTRYXCLASSES_UUID,
@@ -362,6 +364,98 @@ function normalizeClassStatusValue(...candidates) {
   }
 
   return null;
+}
+
+function isCompleteStatus(value) {
+  const text = String(value || "").trim().toLowerCase();
+  return !!text && /complete(d)?/.test(text);
+}
+
+function positiveDurationMinutes(laterMinutes, earlierMinutes) {
+  if (!Number.isFinite(laterMinutes) || !Number.isFinite(earlierMinutes)) return null;
+  const diff = roundNumber(laterMinutes - earlierMinutes, 6);
+  return diff !== null && diff > 0 ? diff : null;
+}
+
+function minutesPerUnit(totalMinutes, units) {
+  if (!Number.isFinite(totalMinutes) || totalMinutes <= 0) return null;
+  if (!Number.isFinite(units) || units <= 0) return null;
+  return roundNumber(totalMinutes / units, 6);
+}
+
+function isUsableTripMinutes(value) {
+  return Number.isFinite(value) && value >= TRIP_MINUTES_MIN && value <= TRIP_MINUTES_MAX;
+}
+
+function deriveTripMinutes(values, context) {
+  const candidates = [];
+  const startAnchorMinutes = context?.startAnchorMinutes ?? null;
+  const effectiveOrder = context?.effectiveOrder ?? null;
+  const classIsComplete = isCompleteStatus(values.class_status);
+  const hasStarted =
+    Number.isFinite(startAnchorMinutes) &&
+    Number.isFinite(values.app_time_minutes) &&
+    values.app_time_minutes >= startAnchorMinutes;
+
+  const elapsedFromStart = minutesPerUnit(
+    positiveDurationMinutes(values.app_time_minutes, startAnchorMinutes),
+    values.completed_trips
+  );
+  if (elapsedFromStart !== null) {
+    candidates.push({ source: "elapsed_from_start", minutes: elapsedFromStart });
+  }
+
+  const remainingToEstimatedEnd = hasStarted
+    ? minutesPerUnit(
+      positiveDurationMinutes(values.estimated_end_time_minutes, values.app_time_minutes),
+      values.remaining_trips
+    )
+    : null;
+  if (remainingToEstimatedEnd !== null) {
+    candidates.push({ source: "remaining_to_estimated_end", minutes: remainingToEstimatedEnd });
+  }
+
+  const classWindow = minutesPerUnit(
+    positiveDurationMinutes(values.estimated_end_time_minutes, startAnchorMinutes),
+    values.total_trips
+  );
+  if (classWindow !== null) {
+    candidates.push({ source: "class_window", minutes: classWindow });
+  }
+
+  const estimatedGoWindow = minutesPerUnit(
+    positiveDurationMinutes(values.estimated_go_time_minutes, startAnchorMinutes),
+    effectiveOrder !== null ? Math.max(effectiveOrder - 1, 0) : null
+  );
+  if (estimatedGoWindow !== null) {
+    candidates.push({ source: "estimated_go_window", minutes: estimatedGoWindow });
+  }
+
+  const preferredSources = classIsComplete
+    ? ["class_window", "elapsed_from_start", "remaining_to_estimated_end", "estimated_go_window"]
+    : ["elapsed_from_start", "remaining_to_estimated_end", "class_window", "estimated_go_window"];
+
+  for (const source of preferredSources) {
+    const candidate = candidates.find((item) => item.source === source);
+    if (candidate && isUsableTripMinutes(candidate.minutes)) {
+      return {
+        minutes: candidate.minutes,
+        source: candidate.source,
+        usedDefault: false,
+        rejectedMinutes: null,
+        rejectedSource: null,
+      };
+    }
+  }
+
+  const firstCandidate = candidates.find((item) => Number.isFinite(item.minutes) && item.minutes > 0) || null;
+  return {
+    minutes: TRIP_MINUTES_DEFAULT,
+    source: "default",
+    usedDefault: true,
+    rejectedMinutes: firstCandidate?.minutes ?? null,
+    rejectedSource: firstCandidate?.source ?? null,
+  };
 }
 
 function parseClockToMinutes(value) {
@@ -750,12 +844,9 @@ function buildNormalizedInputs(record) {
 
 function determineEligibility(values) {
   const skipReasons = [];
-  const classStatus = String(values.class_status || "").trim().toLowerCase();
 
   if (!values.entryxclasses_uuid) skipReasons.push("missing_entryxclasses_uuid");
   if (!values.h_eid) skipReasons.push("missing_h_eid");
-  if (values.gone_in === 1) skipReasons.push("gone_in_1");
-  if (classStatus && /complete(d)?/.test(classStatus)) skipReasons.push("class_complete");
 
   return {
     eligible: skipReasons.length === 0,
@@ -767,6 +858,8 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
   const anomalies = [...priorAnomalies];
 
   const tripMinutesDefault = TRIP_MINUTES_DEFAULT;
+  const startAnchorMinutes = firstNonBlank(values.actual_time_minutes, values.estimated_start_time_minutes);
+  const startAnchorText = firstNonBlank(values.actual_time_text, values.estimated_start_time_text);
   const effectiveOrder = firstNonBlank(values.actual_order, values.actual_go, values.order_of_go);
   const runningOrder = (
     effectiveOrder !== null && values.completed_trips !== null
@@ -777,28 +870,26 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
   if (runningOrder !== null && runningOrder < 0) anomalies.push("negative_running_order");
 
   const minutesUntilStart = (
-    values.estimated_start_time_minutes !== null && values.app_time_minutes !== null
-      ? roundNumber(values.estimated_start_time_minutes - values.app_time_minutes, 6)
+    startAnchorMinutes !== null && values.app_time_minutes !== null
+      ? roundNumber(startAnchorMinutes - values.app_time_minutes, 6)
       : null
   );
 
   const minutesSinceStart = (
-    values.estimated_start_time_minutes !== null && values.app_time_minutes !== null
-      ? roundNumber(values.app_time_minutes - values.estimated_start_time_minutes, 6)
+    startAnchorMinutes !== null && values.app_time_minutes !== null
+      ? roundNumber(values.app_time_minutes - startAnchorMinutes, 6)
       : null
   );
 
-  let rawTripMinutes = null;
-  if (minutesSinceStart !== null && values.completed_trips !== null && values.completed_trips > 0) {
-    rawTripMinutes = roundNumber(minutesSinceStart / values.completed_trips, 6);
-  }
+  const derivedTripMinutes = deriveTripMinutes(values, {
+    startAnchorMinutes,
+    effectiveOrder,
+  });
+  const rawTripMinutes = derivedTripMinutes.usedDefault ? derivedTripMinutes.rejectedMinutes : derivedTripMinutes.minutes;
+  const tripMinutesUsedDefault = derivedTripMinutes.usedDefault;
+  const tripMinutesSource = derivedTripMinutes.source;
 
-  const tripMinutesUsedDefault =
-    rawTripMinutes === null ||
-    rawTripMinutes < 2 ||
-    rawTripMinutes > 4;
-
-  let tripMinutes = rawTripMinutes;
+  let tripMinutes = derivedTripMinutes.minutes;
   if (tripMinutesUsedDefault) {
     anomalies.push(rawTripMinutes === null ? "trip_minutes_default_missing_rate" : "trip_minutes_default_out_of_range");
     tripMinutes = tripMinutesDefault;
@@ -812,8 +903,6 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
       : null
   );
 
-  const startAnchorMinutes = firstNonBlank(values.actual_time_minutes, values.estimated_start_time_minutes);
-  const startAnchorText = firstNonBlank(values.actual_time_text, values.estimated_start_time_text);
   if (startAnchorMinutes === null) anomalies.push("missing_start_anchor");
   if (effectiveOrder === null) anomalies.push("missing_effective_order");
 
@@ -870,6 +959,7 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     raw_trip_minutes: rawTripMinutes,
     trip_minutes: tripMinutes,
     trip_minutes_final: tripMinutes,
+    trip_minutes_source: tripMinutesSource,
     trip_minutes_used_default: tripMinutesUsedDefault,
     trip_duration_seconds: tripDurationSeconds,
     projected_class_minutes: projectedClassMinutes,
@@ -1155,6 +1245,8 @@ async function main() {
     trip_logs_planned: 0,
     trip_logs_created: 0,
     trip_logs_failures: 0,
+    trip_minutes_default_rows: 0,
+    trip_minutes_source_counts: {},
     skip_reason_counts: {},
     anomaly_samples: [],
     failed_patch_samples: [],
@@ -1200,6 +1292,13 @@ async function main() {
     result.anomalies = computed.anomalies;
     result.canonicalOutputs = computed.canonical;
     result.computedOutputs = computed.outputs;
+
+    const tripMinutesSource = String(computed.canonical?.trip_minutes_source || "unknown");
+    summary.trip_minutes_source_counts[tripMinutesSource] =
+      (summary.trip_minutes_source_counts[tripMinutesSource] || 0) + 1;
+    if (computed.canonical?.trip_minutes_used_default) {
+      summary.trip_minutes_default_rows += 1;
+    }
 
     const changed = buildChangedFields(priorOutputs, computed.outputs);
     result.changedFields = changed.changedNames;
