@@ -2,6 +2,7 @@ $ErrorActionPreference = 'Stop'
 
 $env:DRY_RUN   = '0'
 $env:CALC_MODE = 'promote'
+$env:WATCH_VIEW = 'hb_targets_active'
 
 $repoPath = 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus'
 $nodePath = 'C:\Program Files\nodejs\node.exe'

@@ -3,6 +3,7 @@ setlocal
 
 set DRY_RUN=0
 set CALC_MODE=promote
+set WATCH_VIEW=hb_targets_active
 
 cd /d "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" || exit /b 1
 
