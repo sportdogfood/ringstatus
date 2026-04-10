@@ -80,6 +80,7 @@ const WATCH_FIELDS = {
 
 const LOG_KEY_FIELDS = {
   CALC_LOG_KEY: process.env.LOG_FIELD_CALC_LOG_KEY || "calc_log_key",
+  RS_RUN_ID: process.env.LOG_FIELD_RS_RUN_ID || "rs_run_id",
   WATCH_TRIPS_LINK: process.env.LOG_FIELD_WATCH_TRIPS_LINK || "watch_trips",
   WATCH_TRIP_RECORD_ID: process.env.LOG_FIELD_WATCH_TRIP_RECORD_ID || "watch_trip_record_id",
   ENTRYXCLASSES_UUID: process.env.LOG_FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid",
@@ -1327,9 +1328,9 @@ function shouldCreateLogRow(result, patchFailure) {
     !!patchFailure;
 }
 
-function buildTripLogRecord(result, patchFailure) {
+function buildTripLogRecord(result, patchFailure, calcRunId) {
   const fields = {};
-  const createdAt = new Date().toISOString();
+  const createdAt = calcRunId || new Date().toISOString();
   const status = finalCalcStatus(result, patchFailure);
   const skipReason = result.eligibility.skipReasons.join(",");
   const changedFields = result.changedFields.join(",");
@@ -1344,7 +1345,7 @@ function buildTripLogRecord(result, patchFailure) {
     result.entryxclasses_uuid || result.recordId || "na",
     CALC_VERSION,
     CALC_MODE,
-    createdAt,
+    calcRunId || createdAt,
   ].join("|");
   const sourceLogValues = buildSourceLogValues(rawInputs, normalized);
   const rawLogValues = buildRawLogValues(rawInputs);
@@ -1354,6 +1355,7 @@ function buildTripLogRecord(result, patchFailure) {
   const rsLogValues = buildRsLogValues(canonical, computedOutputs);
 
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
+  setIfPresent(fields, LOG_KEY_FIELDS.RS_RUN_ID, calcRunId || createdAt);
   setIfPresent(fields, LOG_KEY_FIELDS.ENTRYXCLASSES_UUID, result.entryxclasses_uuid);
   setIfPresent(fields, LOG_KEY_FIELDS.WATCH_TRIP_RECORD_ID, result.recordId);
   if (LOG_KEY_FIELDS.WATCH_TRIPS_LINK && result.recordId) {
@@ -1396,6 +1398,7 @@ function buildTripLogRecord(result, patchFailure) {
 async function main() {
   requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
+  const calcRunId = new Date().toISOString();
   const watchTableFieldSet = await airtableTableFieldSet(WATCH_TABLE);
   const activeWatchOutputFields = WATCH_OUTPUT_FIELDS.filter((fieldName) => watchTableFieldSet.has(fieldName));
 
@@ -1406,6 +1409,7 @@ async function main() {
   });
 
   const summary = {
+    calc_run_id: calcRunId,
     calc_mode: CALC_MODE,
     calc_version: CALC_VERSION,
     dry_run: DRY_RUN,
@@ -1520,7 +1524,7 @@ async function main() {
   for (const result of results) {
     const patchFailure = patchFailureById.get(result.recordId) || null;
     if (!shouldCreateLogRow(result, patchFailure)) continue;
-    tripLogRecords.push(buildTripLogRecord(result, patchFailure));
+    tripLogRecords.push(buildTripLogRecord(result, patchFailure, calcRunId));
   }
 
   summary.trip_logs_planned = tripLogRecords.length;
