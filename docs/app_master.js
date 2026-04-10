@@ -1,4 +1,4 @@
-/* tapactive-rings-v2.3 — app.v2_78.js
+/* tapactive-rings-v2.3 — app_master.js
    - Data paths: RELATIVE (./data/latest/*) to avoid deployment-base issues
    - Views: Start | Summary | Lite | Full | Threads | Horses
    - Lite: interactive (class + entry flyups)
