@@ -38,6 +38,7 @@ const WATCH_FIELDS = {
   APP_TIME: process.env.FIELD_APP_TIME || "app_time",
   STATUS: process.env.FIELD_CLASS_STATUS || "status",
   CLASS_STATUS_FALLBACK: process.env.FIELD_CLASS_STATUS_FALLBACK || "class_status",
+  CLASS_TYPE: process.env.FIELD_CLASS_TYPE || "class_type",
   ESTIMATED_START_TIME: process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time",
   ESTIMATED_END_TIME: process.env.FIELD_ESTIMATED_END_TIME || "estimated_end_time",
   REMAINING_TRIPS: process.env.FIELD_REMAINING_TRIPS || "remaining_trips",
@@ -47,6 +48,7 @@ const WATCH_FIELDS = {
   ESTIMATED_TIME: process.env.FIELD_ESTIMATED_TIME || "estimated_time",
   ESTIMATED_GO_TIME: process.env.FIELD_ESTIMATED_GO_TIME || "estimated_go_time",
   ORDER_OF_GO: process.env.FIELD_ORDER_OF_GO || "order_of_go",
+  CLASSSIGNUP_OOG: process.env.FIELD_CLASSSIGNUP_OOG || "classsignup_oog",
   ACTUAL_ORDER: process.env.FIELD_ACTUAL_ORDER || "actual_order",
   ACTUAL_GO: process.env.FIELD_ACTUAL_GO || "actual_go",
   GONE_IN: process.env.FIELD_GONE_IN || "gone_in",
@@ -202,6 +204,11 @@ const LOG_JSON_FIELDS = {
 const INVALID_ORDER_NUMS = new Set([0, 10000, 100000]);
 const INVALID_TIME_TEXT = new Set(["00:00:00"]);
 const TRIP_MINUTES_DEFAULT = 3;
+const TRIP_MINUTES_DEFAULT_BY_CLASS_TYPE = {
+  equitation: 3.0113,
+  hunters: 2.921,
+  jumpers: 2.8364,
+};
 // Reject pace candidates outside the operational band and fall back to default.
 const TRIP_MINUTES_MIN = Number(process.env.TRIP_MINUTES_MIN || "1.8");
 const TRIP_MINUTES_MAX = Number(process.env.TRIP_MINUTES_MAX || "3.8");
@@ -222,6 +229,7 @@ const WATCH_SOURCE_FIELDS = [
   WATCH_FIELDS.ESTIMATED_TIME,
   WATCH_FIELDS.ESTIMATED_GO_TIME,
   WATCH_FIELDS.ORDER_OF_GO,
+  WATCH_FIELDS.CLASSSIGNUP_OOG,
   WATCH_FIELDS.ACTUAL_ORDER,
   WATCH_FIELDS.ACTUAL_GO,
   WATCH_FIELDS.GONE_IN,
@@ -400,6 +408,16 @@ function isCompleteStatus(value) {
   return !!text && /complete(d)?/.test(text);
 }
 
+function normalizeClassTypeValue(value) {
+  const text = String(value || "").trim();
+  return text || null;
+}
+
+function defaultTripMinutesForClassType(value) {
+  const key = String(value || "").trim().toLowerCase();
+  return TRIP_MINUTES_DEFAULT_BY_CLASS_TYPE[key] ?? TRIP_MINUTES_DEFAULT;
+}
+
 function positiveDurationMinutes(laterMinutes, earlierMinutes) {
   if (!Number.isFinite(laterMinutes) || !Number.isFinite(earlierMinutes)) return null;
   const diff = roundNumber(laterMinutes - earlierMinutes, 6);
@@ -421,6 +439,8 @@ function deriveTripMinutes(values, context) {
   const startAnchorMinutes = context?.startAnchorMinutes ?? null;
   const effectiveOrder = context?.effectiveOrder ?? null;
   const classIsComplete = isCompleteStatus(values.class_status);
+  const defaultTripMinutes = defaultTripMinutesForClassType(values.class_type);
+  const usedClassTypeDefault = defaultTripMinutes !== TRIP_MINUTES_DEFAULT;
   const hasStarted =
     Number.isFinite(startAnchorMinutes) &&
     Number.isFinite(values.app_time_minutes) &&
@@ -479,8 +499,8 @@ function deriveTripMinutes(values, context) {
 
   const firstCandidate = candidates.find((item) => Number.isFinite(item.minutes) && item.minutes > 0) || null;
   return {
-    minutes: TRIP_MINUTES_DEFAULT,
-    source: "default",
+    minutes: defaultTripMinutes,
+    source: usedClassTypeDefault ? "class_type_default" : "default",
     usedDefault: true,
     rejectedMinutes: firstCandidate?.minutes ?? null,
     rejectedSource: firstCandidate?.source ?? null,
@@ -817,6 +837,7 @@ function buildRawInputs(fields) {
     app_time: fields[WATCH_FIELDS.APP_TIME],
     status: fields[WATCH_FIELDS.STATUS],
     class_status: fields[WATCH_FIELDS.CLASS_STATUS_FALLBACK],
+    class_type: fields[WATCH_FIELDS.CLASS_TYPE],
     estimated_start_time: fields[WATCH_FIELDS.ESTIMATED_START_TIME],
     estimated_end_time: fields[WATCH_FIELDS.ESTIMATED_END_TIME],
     remaining_trips: fields[WATCH_FIELDS.REMAINING_TRIPS],
@@ -826,6 +847,7 @@ function buildRawInputs(fields) {
     estimated_time: fields[WATCH_FIELDS.ESTIMATED_TIME],
     estimated_go_time: fields[WATCH_FIELDS.ESTIMATED_GO_TIME],
     order_of_go: fields[WATCH_FIELDS.ORDER_OF_GO],
+    classsignup_oog: fields[WATCH_FIELDS.CLASSSIGNUP_OOG],
     actual_order: fields[WATCH_FIELDS.ACTUAL_ORDER],
     actual_go: fields[WATCH_FIELDS.ACTUAL_GO],
     gone_in: fields[WATCH_FIELDS.GONE_IN],
@@ -869,10 +891,11 @@ function buildNormalizedInputs(record) {
         rawInputs.status,
         rawInputs.class_status
       ),
+      class_type: normalizeClassTypeValue(rawInputs.class_type),
       remaining_trips: normalizeCountValue(rawInputs.remaining_trips),
       total_trips: normalizeCountValue(rawInputs.total_trips),
       completed_trips: normalizeCountValue(rawInputs.completed_trips),
-      order_of_go: normalizeOrderValue(rawInputs.order_of_go),
+      order_of_go: normalizeOrderValue(firstNonBlank(rawInputs.order_of_go, rawInputs.classsignup_oog)),
       actual_order: normalizeOrderValue(rawInputs.actual_order),
       actual_go: normalizeOrderValue(rawInputs.actual_go),
       gone_in: normalizeCountValue(rawInputs.gone_in),
@@ -908,7 +931,7 @@ function determineEligibility(values) {
 function computeCanonicalOutputs(values, priorAnomalies = []) {
   const anomalies = [...priorAnomalies];
 
-  const tripMinutesDefault = TRIP_MINUTES_DEFAULT;
+  const tripMinutesDefault = defaultTripMinutesForClassType(values.class_type);
   const startAnchorMinutes = firstNonBlank(values.actual_time_minutes, values.estimated_start_time_minutes);
   const startAnchorText = firstNonBlank(values.actual_time_text, values.estimated_start_time_text);
   const effectiveOrder = firstNonBlank(values.actual_order, values.actual_go, values.order_of_go);
@@ -1144,7 +1167,7 @@ function buildSourceLogValues(rawInputs, normalized) {
     [LOG_SOURCE_FIELDS.ACTUAL_TIME]: strOrNull(raw.actual_time),
     [LOG_SOURCE_FIELDS.ESTIMATED_TIME]: strOrNull(raw.estimated_time),
     [LOG_SOURCE_FIELDS.ESTIMATED_GO_TIME]: strOrNull(raw.estimated_go_time),
-    [LOG_SOURCE_FIELDS.ORDER_OF_GO]: numOrNull(raw.order_of_go),
+    [LOG_SOURCE_FIELDS.ORDER_OF_GO]: numOrNull(firstNonBlank(raw.order_of_go, raw.classsignup_oog)),
     [LOG_SOURCE_FIELDS.ACTUAL_ORDER]: numOrNull(raw.actual_order),
     [LOG_SOURCE_FIELDS.ACTUAL_GO]: numOrNull(raw.actual_go),
     [LOG_SOURCE_FIELDS.GONE_IN]: numOrNull(raw.gone_in),
