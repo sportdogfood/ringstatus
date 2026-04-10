@@ -38,7 +38,6 @@ const WATCH_FIELDS = {
   APP_TIME: process.env.FIELD_APP_TIME || "app_time",
   STATUS: process.env.FIELD_CLASS_STATUS || "status",
   CLASS_STATUS_FALLBACK: process.env.FIELD_CLASS_STATUS_FALLBACK || "class_status",
-  CLASS_TYPE: process.env.FIELD_CLASS_TYPE || "class_type",
   ESTIMATED_START_TIME: process.env.FIELD_ESTIMATED_START_TIME || "estimated_start_time",
   ESTIMATED_END_TIME: process.env.FIELD_ESTIMATED_END_TIME || "estimated_end_time",
   REMAINING_TRIPS: process.env.FIELD_REMAINING_TRIPS || "remaining_trips",
@@ -58,7 +57,6 @@ const WATCH_FIELDS = {
     STATUS: process.env.FIELD_RS_STATUS || "rs_status",
     START_TIME: process.env.FIELD_RS_START_TIME || "rs_start_time",
     GO_TIME: process.env.FIELD_RS_GO_TIME || "rs_go_time",
-    TRIP_TEMPERATURE: process.env.FIELD_RS_TRIP_TEMPERATURE || "rs_trip_temperature",
     COMPLETED_TRIPS: process.env.FIELD_RS_COMPLETED_TRIPS || "rs_completed_trips",
     GONE_IN: process.env.FIELD_RS_GONE_IN || "rs_gone_in",
     TRIP_DEFAULT: process.env.FIELD_RS_TRIP_DEFAULT || "rs_trip_default",
@@ -179,7 +177,6 @@ const LOG_RS_FIELDS = {
   STATUS: process.env.LOG_RS_STATUS || "rs_status",
   START_TIME: process.env.LOG_RS_START_TIME || "rs_start_time",
   GO_TIME: process.env.LOG_RS_GO_TIME || "rs_go_time",
-  TRIP_TEMPERATURE: process.env.LOG_RS_TRIP_TEMPERATURE || " rs_trip_temperature",
   COMPLETED_TRIPS: process.env.LOG_RS_COMPLETED_TRIPS || "rs_completed_trips",
   GONE_IN: process.env.LOG_RS_GONE_IN || "rs_gone_in",
   TRIP_DEFAULT: process.env.LOG_RS_TRIP_DEFAULT || "rs_trip_default",
@@ -208,11 +205,6 @@ const LOG_JSON_FIELDS = {
 const INVALID_ORDER_NUMS = new Set([0, 10000, 100000]);
 const INVALID_TIME_TEXT = new Set(["00:00:00"]);
 const TRIP_MINUTES_DEFAULT = 3;
-const TRIP_MINUTES_DEFAULT_BY_CLASS_TYPE = {
-  equitation: 3.0113,
-  hunters: 2.921,
-  jumpers: 2.8364,
-};
 // Reject pace candidates outside the operational band and fall back to default.
 const TRIP_MINUTES_MIN = Number(process.env.TRIP_MINUTES_MIN || "1.8");
 const TRIP_MINUTES_MAX = Number(process.env.TRIP_MINUTES_MAX || "3.8");
@@ -266,7 +258,6 @@ const OUTPUT_TEXT_FIELDS = new Set([
   WATCH_FIELDS.RS.STATUS,
   WATCH_FIELDS.RS.START_TIME,
   WATCH_FIELDS.RS.GO_TIME,
-  WATCH_FIELDS.RS.TRIP_TEMPERATURE,
   WATCH_FIELDS.RS.LENGTH,
   WATCH_FIELDS.RS.END_TIME,
   WATCH_FIELDS.RS.GO_TIME_FROM_START,
@@ -414,30 +405,6 @@ function isCompleteStatus(value) {
   return !!text && /complete(d)?/.test(text);
 }
 
-function normalizeClassTypeValue(value) {
-  const text = String(value || "").trim();
-  return text || null;
-}
-
-function defaultTripMinutesForClassType(value) {
-  const key = String(value || "").trim().toLowerCase();
-  return TRIP_MINUTES_DEFAULT_BY_CLASS_TYPE[key] ?? TRIP_MINUTES_DEFAULT;
-}
-
-function classifyTripTemperature(tripMinutesSource) {
-  const source = String(tripMinutesSource || "").trim().toLowerCase();
-  if (source === "elapsed_from_start") return "hot";
-  if (source === "remaining_to_estimated_end" || source === "estimated_go_window") return "warm";
-  if (
-    source === "class_window" ||
-    source === "class_type_default" ||
-    source === "default"
-  ) {
-    return "cold";
-  }
-  return null;
-}
-
 function positiveDurationMinutes(laterMinutes, earlierMinutes) {
   if (!Number.isFinite(laterMinutes) || !Number.isFinite(earlierMinutes)) return null;
   const diff = roundNumber(laterMinutes - earlierMinutes, 6);
@@ -459,8 +426,6 @@ function deriveTripMinutes(values, context) {
   const startAnchorMinutes = context?.startAnchorMinutes ?? null;
   const effectiveOrder = context?.effectiveOrder ?? null;
   const classIsComplete = isCompleteStatus(values.class_status);
-  const defaultTripMinutes = defaultTripMinutesForClassType(values.class_type);
-  const usedClassTypeDefault = defaultTripMinutes !== TRIP_MINUTES_DEFAULT;
   const hasStarted =
     Number.isFinite(startAnchorMinutes) &&
     Number.isFinite(values.app_time_minutes) &&
@@ -519,8 +484,8 @@ function deriveTripMinutes(values, context) {
 
   const firstCandidate = candidates.find((item) => Number.isFinite(item.minutes) && item.minutes > 0) || null;
   return {
-    minutes: defaultTripMinutes,
-    source: usedClassTypeDefault ? "class_type_default" : "default",
+    minutes: TRIP_MINUTES_DEFAULT,
+    source: "default",
     usedDefault: true,
     rejectedMinutes: firstCandidate?.minutes ?? null,
     rejectedSource: firstCandidate?.source ?? null,
@@ -857,7 +822,6 @@ function buildRawInputs(fields) {
     app_time: fields[WATCH_FIELDS.APP_TIME],
     status: fields[WATCH_FIELDS.STATUS],
     class_status: fields[WATCH_FIELDS.CLASS_STATUS_FALLBACK],
-    class_type: fields[WATCH_FIELDS.CLASS_TYPE],
     estimated_start_time: fields[WATCH_FIELDS.ESTIMATED_START_TIME],
     estimated_end_time: fields[WATCH_FIELDS.ESTIMATED_END_TIME],
     remaining_trips: fields[WATCH_FIELDS.REMAINING_TRIPS],
@@ -912,7 +876,6 @@ function buildNormalizedInputs(record) {
         rawInputs.status,
         rawInputs.class_status
       ),
-      class_type: normalizeClassTypeValue(rawInputs.class_type),
       remaining_trips: normalizeCountValue(rawInputs.remaining_trips),
       total_trips: normalizeCountValue(rawInputs.total_trips),
       completed_trips: normalizeCountValue(rawInputs.completed_trips),
@@ -952,7 +915,7 @@ function determineEligibility(values) {
 function computeCanonicalOutputs(values, priorAnomalies = []) {
   const anomalies = [...priorAnomalies];
 
-  const tripMinutesDefault = defaultTripMinutesForClassType(values.class_type);
+  const tripMinutesDefault = TRIP_MINUTES_DEFAULT;
   const startAnchorMinutes = firstNonBlank(values.actual_time_minutes, values.estimated_start_time_minutes);
   const startAnchorText = firstNonBlank(values.actual_time_text, values.estimated_start_time_text);
   const effectiveOrder = firstNonBlank(values.actual_order, values.actual_go, values.order_of_go);
@@ -991,7 +954,6 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
   const rawTripMinutes = derivedTripMinutes.usedDefault ? derivedTripMinutes.rejectedMinutes : derivedTripMinutes.minutes;
   const tripMinutesUsedDefault = derivedTripMinutes.usedDefault;
   const tripMinutesSource = derivedTripMinutes.source;
-  const tripTemperature = classifyTripTemperature(tripMinutesSource);
 
   let tripMinutes = derivedTripMinutes.minutes;
   if (tripMinutesUsedDefault) {
@@ -1078,7 +1040,6 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     trip_minutes: tripMinutes,
     trip_minutes_final: tripMinutes,
     trip_minutes_source: tripMinutesSource,
-    trip_temperature: tripTemperature,
     trip_minutes_used_default: tripMinutesUsedDefault,
     trip_duration_seconds: tripDurationSeconds,
     projected_class_minutes: projectedClassMinutes,
@@ -1096,7 +1057,6 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     [WATCH_FIELDS.RS.STATUS]: values.class_status,
     [WATCH_FIELDS.RS.START_TIME]: startAnchorText,
     [WATCH_FIELDS.RS.GO_TIME]: goClockFromStart,
-    [WATCH_FIELDS.RS.TRIP_TEMPERATURE]: tripTemperature,
     [WATCH_FIELDS.RS.COMPLETED_TRIPS]: values.completed_trips,
     [WATCH_FIELDS.RS.GONE_IN]: values.gone_in,
     [WATCH_FIELDS.RS.TRIP_DEFAULT]: tripDefaultDurationSeconds,
@@ -1280,7 +1240,6 @@ function buildRsLogValues(canonical, computedOutputs) {
     [LOG_RS_FIELDS.STATUS]: outputs[WATCH_FIELDS.RS.STATUS],
     [LOG_RS_FIELDS.START_TIME]: outputs[WATCH_FIELDS.RS.START_TIME],
     [LOG_RS_FIELDS.GO_TIME]: outputs[WATCH_FIELDS.RS.GO_TIME],
-    [LOG_RS_FIELDS.TRIP_TEMPERATURE]: outputs[WATCH_FIELDS.RS.TRIP_TEMPERATURE],
     [LOG_RS_FIELDS.COMPLETED_TRIPS]: outputs[WATCH_FIELDS.RS.COMPLETED_TRIPS],
     [LOG_RS_FIELDS.GONE_IN]: outputs[WATCH_FIELDS.RS.GONE_IN],
     [LOG_RS_FIELDS.TRIP_DEFAULT]: durationSecondsFromMinutes(calc.trip_minutes_default),
@@ -1310,13 +1269,11 @@ function finalCalcStatus(result, patchFailure) {
 
 function shouldSuppressTripLog(result) {
   const hbReason = String(result?.inputsForLog?.raw?.hb_second_pass_reason || "").trim().toLowerCase();
-  const classStatus = String(result?.inputsForLog?.normalized?.class_status || "").trim();
 
   // Once trips_tagger can no longer match a live trip, it clears trip-level fields.
   // Those transient rows are often deleted shortly after, so do not create calculator
   // audit rows for them.
   if (hbReason.startsWith("err:no_trip_match")) return true;
-  if (isCompleteStatus(classStatus)) return true;
   return false;
 }
 
