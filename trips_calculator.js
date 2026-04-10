@@ -47,6 +47,7 @@ const WATCH_FIELDS = {
   ACTUAL_TIME: process.env.FIELD_ACTUAL_TIME || "actual_time",
   ESTIMATED_TIME: process.env.FIELD_ESTIMATED_TIME || "estimated_time",
   ESTIMATED_GO_TIME: process.env.FIELD_ESTIMATED_GO_TIME || "estimated_go_time",
+  HB_SECOND_PASS_REASON: process.env.FIELD_HB_SECOND_PASS_REASON || "hb_second_pass_reason",
   ORDER_OF_GO: process.env.FIELD_ORDER_OF_GO || "order_of_go",
   CLASSSIGNUP_OOG: process.env.FIELD_CLASSSIGNUP_OOG || "classsignup_oog",
   ACTUAL_ORDER: process.env.FIELD_ACTUAL_ORDER || "actual_order",
@@ -228,6 +229,7 @@ const WATCH_SOURCE_FIELDS = [
   WATCH_FIELDS.ACTUAL_TIME,
   WATCH_FIELDS.ESTIMATED_TIME,
   WATCH_FIELDS.ESTIMATED_GO_TIME,
+  WATCH_FIELDS.HB_SECOND_PASS_REASON,
   WATCH_FIELDS.ORDER_OF_GO,
   WATCH_FIELDS.CLASSSIGNUP_OOG,
   WATCH_FIELDS.ACTUAL_ORDER,
@@ -846,6 +848,7 @@ function buildRawInputs(fields) {
     actual_time: fields[WATCH_FIELDS.ACTUAL_TIME],
     estimated_time: fields[WATCH_FIELDS.ESTIMATED_TIME],
     estimated_go_time: fields[WATCH_FIELDS.ESTIMATED_GO_TIME],
+    hb_second_pass_reason: fields[WATCH_FIELDS.HB_SECOND_PASS_REASON],
     order_of_go: fields[WATCH_FIELDS.ORDER_OF_GO],
     classsignup_oog: fields[WATCH_FIELDS.CLASSSIGNUP_OOG],
     actual_order: fields[WATCH_FIELDS.ACTUAL_ORDER],
@@ -1283,7 +1286,20 @@ function finalCalcStatus(result, patchFailure) {
   return "unchanged";
 }
 
+function shouldSuppressTripLog(result) {
+  const skipReasons = Array.isArray(result?.eligibility?.skipReasons) ? result.eligibility.skipReasons : [];
+  const hbReason = String(result?.inputsForLog?.raw?.hb_second_pass_reason || "").trim().toLowerCase();
+
+  // Once trips_tagger can no longer match a live trip, it clears trip-level fields.
+  // Those transient rows are often deleted shortly after, so do not create calculator
+  // audit rows for them.
+  if (hbReason.startsWith("err:no_trip_match")) return true;
+  if (skipReasons.includes("missing_h_eid")) return true;
+  return false;
+}
+
 function shouldCreateLogRow(result, patchFailure) {
+  if (shouldSuppressTripLog(result)) return false;
   return !result.eligibility.eligible ||
     result.changedFields.length > 0 ||
     result.anomalies.length > 0 ||
