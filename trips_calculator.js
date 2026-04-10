@@ -196,8 +196,9 @@ const LOG_JSON_FIELDS = {
 const INVALID_ORDER_NUMS = new Set([0, 10000, 100000]);
 const INVALID_TIME_TEXT = new Set(["00:00:00"]);
 const TRIP_MINUTES_DEFAULT = 3;
-const TRIP_MINUTES_MIN = Number(process.env.TRIP_MINUTES_MIN || "0.5");
-const TRIP_MINUTES_MAX = Number(process.env.TRIP_MINUTES_MAX || "15");
+// Reject pace candidates outside the operational band and fall back to default.
+const TRIP_MINUTES_MIN = Number(process.env.TRIP_MINUTES_MIN || "1.8");
+const TRIP_MINUTES_MAX = Number(process.env.TRIP_MINUTES_MAX || "3.8");
 
 const WATCH_SOURCE_FIELDS = [
   WATCH_FIELDS.ENTRYXCLASSES_UUID,
