@@ -1287,14 +1287,12 @@ function finalCalcStatus(result, patchFailure) {
 }
 
 function shouldSuppressTripLog(result) {
-  const skipReasons = Array.isArray(result?.eligibility?.skipReasons) ? result.eligibility.skipReasons : [];
   const hbReason = String(result?.inputsForLog?.raw?.hb_second_pass_reason || "").trim().toLowerCase();
 
   // Once trips_tagger can no longer match a live trip, it clears trip-level fields.
   // Those transient rows are often deleted shortly after, so do not create calculator
   // audit rows for them.
   if (hbReason.startsWith("err:no_trip_match")) return true;
-  if (skipReasons.includes("missing_h_eid")) return true;
   return false;
 }
 
