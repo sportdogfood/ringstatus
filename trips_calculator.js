@@ -60,6 +60,7 @@ const WATCH_FIELDS = {
     TRIP_DEFAULT: process.env.FIELD_RS_TRIP_DEFAULT || "rs_trip_default",
     ORDER_OF_GO: process.env.FIELD_RS_ORDER_OF_GO || "rs_order_of_go",
     RUNNING_ORDER_OF_GO: process.env.FIELD_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go",
+    RUNNING_ORDER_OF_GO_MINS_TILL: process.env.FIELD_RS_RUNNING_ORDER_OF_GO_MINS_TILL || "rs_running_order_of_go_mins_till",
     MINS_TILL_START: process.env.FIELD_RS_MINS_TILL_START || "rs_mins_till_start",
     MINS_SINCE_START: process.env.FIELD_RS_MINS_SINCE_START || "rs_mins_since_start",
     TRIP_TIME: process.env.FIELD_RS_TRIP_TIME || "rs_trip_time",
@@ -163,6 +164,10 @@ const LOG_CALC_FIELDS = {
   USED_ESTIMATED_GO_FALLBACK: process.env.LOG_CALC_USED_ESTIMATED_GO_FALLBACK || "calc_used_estimated_go_fallback",
 };
 
+const LOG_DECISION_FIELDS = {
+  RUNNING_ORDER_IS_TEN_OUT: process.env.LOG_FIELD_RUNNING_ORDER_IS_TEN_OUT || "running_order_is_ten_out",
+};
+
 // trip_logs stores audit copies of computed rs_* outputs. These are not raw source
 // fields, and some trip_logs column types intentionally differ from watch_trips.
 const LOG_RS_FIELDS = {
@@ -174,6 +179,7 @@ const LOG_RS_FIELDS = {
   TRIP_DEFAULT: process.env.LOG_RS_TRIP_DEFAULT || "rs_trip_default",
   ORDER_OF_GO: process.env.LOG_RS_ORDER_OF_GO || "rs_order_of_go",
   RUNNING_ORDER_OF_GO: process.env.LOG_RS_RUNNING_ORDER_OF_GO || "rs_running_order_of_go",
+  RUNNING_ORDER_OF_GO_MINS_TILL: process.env.LOG_RS_RUNNING_ORDER_OF_GO_MINS_TILL || "rs_running_order_of_go_mins_till",
   MINS_TILL_START: process.env.LOG_RS_MINS_TILL_START || "rs_mins_till_start",
   MINS_SINCE_START: process.env.LOG_RS_MINS_SINCE_START || "rs_mins_since_start",
   TRIP_TIME: process.env.LOG_RS_TRIP_TIME || "rs_trip_time",
@@ -235,6 +241,7 @@ const OUTPUT_NUMBER_FIELDS = new Set([
   WATCH_FIELDS.RS.GONE_IN,
   WATCH_FIELDS.RS.ORDER_OF_GO,
   WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO,
+  WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO_MINS_TILL,
   WATCH_FIELDS.RS.MINS_TILL_START,
   WATCH_FIELDS.RS.MINS_SINCE_START,
   WATCH_FIELDS.RS.GO_MINS_FROM_START,
@@ -610,6 +617,28 @@ function airtableUrl(tableName) {
   return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
 }
 
+async function airtableTableFieldSet(tableName) {
+  const res = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Airtable meta failed (${res.status}) ${tableName}: ${body}`);
+  }
+
+  const json = await res.json().catch(() => ({}));
+  const table = Array.isArray(json?.tables)
+    ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
+    : null;
+
+  return new Set(
+    Array.isArray(table?.fields)
+      ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean)
+      : []
+  );
+}
+
 async function airtableList({ table, view, fields = [], maxRecords = 0 }) {
   const rows = [];
   let offset = null;
@@ -883,13 +912,21 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
   const startAnchorMinutes = firstNonBlank(values.actual_time_minutes, values.estimated_start_time_minutes);
   const startAnchorText = firstNonBlank(values.actual_time_text, values.estimated_start_time_text);
   const effectiveOrder = firstNonBlank(values.actual_order, values.actual_go, values.order_of_go);
-  const runningOrder = (
+  const rawRunningOrder = (
     effectiveOrder !== null && values.completed_trips !== null
       ? roundNumber(effectiveOrder - values.completed_trips, 6)
       : null
   );
+  const shouldBlankRunningOrder = values.gone_in === 1;
+  const runningOrder = (
+    shouldBlankRunningOrder || rawRunningOrder === null || rawRunningOrder < 0
+      ? null
+      : rawRunningOrder
+  );
 
-  if (runningOrder !== null && runningOrder < 0) anomalies.push("negative_running_order");
+  if (!shouldBlankRunningOrder && rawRunningOrder !== null && rawRunningOrder < 0) {
+    anomalies.push("negative_running_order");
+  }
 
   const minutesUntilStart = (
     startAnchorMinutes !== null && values.app_time_minutes !== null
@@ -934,6 +971,18 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
       : null
   );
   const projectedEndClock = formatClockFromMinutes(projectedEndMinutes);
+  const runningOrderMinsTill = (
+    runningOrder !== null
+      ? roundNumber(Math.max(runningOrder - 1, 0) * tripMinutes, 6)
+      : null
+  );
+  const runningOrderIsTenOut = (
+    effectiveOrder !== null &&
+    effectiveOrder >= 14 &&
+    runningOrder !== null &&
+    runningOrder >= 9 &&
+    runningOrder <= 13
+  );
 
   let goMinutesFromStart = null;
   let usedEstimatedGoFallback = false;
@@ -976,6 +1025,8 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     trip_minutes_default: tripMinutesDefault,
     effective_order: effectiveOrder,
     running_order: runningOrder,
+    running_order_mins_till: runningOrderMinsTill,
+    running_order_is_ten_out: runningOrderIsTenOut,
     minutes_until_start: minutesUntilStart,
     minutes_since_start: minutesSinceStart,
     raw_trip_minutes: rawTripMinutes,
@@ -1004,6 +1055,7 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     [WATCH_FIELDS.RS.TRIP_DEFAULT]: tripDefaultDurationSeconds,
     [WATCH_FIELDS.RS.ORDER_OF_GO]: effectiveOrder,
     [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO]: runningOrder,
+    [WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO_MINS_TILL]: runningOrderMinsTill,
     [WATCH_FIELDS.RS.MINS_TILL_START]: minutesUntilStart,
     [WATCH_FIELDS.RS.MINS_SINCE_START]: minutesSinceStart,
     [WATCH_FIELDS.RS.TRIP_TIME]: tripDurationSeconds,
@@ -1045,19 +1097,19 @@ function sameOutputValue(fieldName, left, right) {
   return a === b;
 }
 
-function buildPriorOutputs(fields) {
+function buildPriorOutputs(fields, outputFieldNames = WATCH_OUTPUT_FIELDS) {
   const out = {};
-  for (const fieldName of WATCH_OUTPUT_FIELDS) {
+  for (const fieldName of outputFieldNames) {
     out[fieldName] = normalizeOutputValue(fieldName, fields[fieldName]);
   }
   return out;
 }
 
-function buildChangedFields(priorOutputs, computedOutputs) {
+function buildChangedFields(priorOutputs, computedOutputs, outputFieldNames = WATCH_OUTPUT_FIELDS) {
   const changedNames = [];
   const patchFields = {};
 
-  for (const fieldName of WATCH_OUTPUT_FIELDS) {
+  for (const fieldName of outputFieldNames) {
     const nextValue = normalizeOutputValue(fieldName, computedOutputs[fieldName]);
     const prevValue = normalizeOutputValue(fieldName, priorOutputs[fieldName]);
     if (sameOutputValue(fieldName, prevValue, nextValue)) continue;
@@ -1166,6 +1218,13 @@ function buildCalcLogValues(canonical) {
   };
 }
 
+function buildDecisionLogValues(canonical) {
+  const calc = canonical || {};
+  return {
+    [LOG_DECISION_FIELDS.RUNNING_ORDER_IS_TEN_OUT]: !!calc.running_order_is_ten_out,
+  };
+}
+
 function buildRsLogValues(canonical, computedOutputs) {
   const calc = canonical || {};
   const outputs = computedOutputs || {};
@@ -1179,6 +1238,7 @@ function buildRsLogValues(canonical, computedOutputs) {
     [LOG_RS_FIELDS.TRIP_DEFAULT]: durationSecondsFromMinutes(calc.trip_minutes_default),
     [LOG_RS_FIELDS.ORDER_OF_GO]: outputs[WATCH_FIELDS.RS.ORDER_OF_GO],
     [LOG_RS_FIELDS.RUNNING_ORDER_OF_GO]: outputs[WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO],
+    [LOG_RS_FIELDS.RUNNING_ORDER_OF_GO_MINS_TILL]: outputs[WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO_MINS_TILL],
     [LOG_RS_FIELDS.MINS_TILL_START]: outputs[WATCH_FIELDS.RS.MINS_TILL_START],
     [LOG_RS_FIELDS.MINS_SINCE_START]: outputs[WATCH_FIELDS.RS.MINS_SINCE_START],
     [LOG_RS_FIELDS.TRIP_TIME]: outputs[WATCH_FIELDS.RS.TRIP_TIME],
@@ -1230,6 +1290,7 @@ function buildTripLogRecord(result, patchFailure) {
   const rawLogValues = buildRawLogValues(rawInputs);
   const normalizedLogValues = buildNormalizedLogValues(normalized);
   const calcLogValues = buildCalcLogValues(canonical);
+  const decisionLogValues = buildDecisionLogValues(canonical);
   const rsLogValues = buildRsLogValues(canonical, computedOutputs);
 
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
@@ -1252,6 +1313,9 @@ function buildTripLogRecord(result, patchFailure) {
   for (const [fieldName, value] of Object.entries(calcLogValues)) {
     setIfPresent(fields, fieldName, value);
   }
+  for (const [fieldName, value] of Object.entries(decisionLogValues)) {
+    setIfPresent(fields, fieldName, value);
+  }
   for (const [fieldName, value] of Object.entries(rsLogValues)) {
     setIfPresent(fields, fieldName, value);
   }
@@ -1272,6 +1336,8 @@ function buildTripLogRecord(result, patchFailure) {
 async function main() {
   requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
+  const watchTableFieldSet = await airtableTableFieldSet(WATCH_TABLE);
+  const activeWatchOutputFields = WATCH_OUTPUT_FIELDS.filter((fieldName) => watchTableFieldSet.has(fieldName));
 
   const records = await airtableList({
     table: WATCH_TABLE,
@@ -1310,7 +1376,7 @@ async function main() {
     const built = buildNormalizedInputs(record);
     const values = built.values;
     const eligibility = determineEligibility(values);
-    const priorOutputs = buildPriorOutputs(record.fields || {});
+    const priorOutputs = buildPriorOutputs(record.fields || {}, activeWatchOutputFields);
 
     const result = {
       recordId: record.id,
@@ -1350,7 +1416,7 @@ async function main() {
       summary.trip_minutes_default_rows += 1;
     }
 
-    const changed = buildChangedFields(priorOutputs, computed.outputs);
+    const changed = buildChangedFields(priorOutputs, computed.outputs, activeWatchOutputFields);
     result.changedFields = changed.changedNames;
 
     if (result.changedFields.length > 0) {
