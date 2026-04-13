@@ -37,6 +37,7 @@ const WATCH_FIELDS = {
   APP_SHOW_ID: process.env.FIELD_APP_SHOW_ID || "app_show_id",
   APP_SQL_DATE: process.env.FIELD_APP_SQL_DATE || "app_sql_date",
   CLASS_ID: process.env.FIELD_CLASS_ID || "class_id",
+  SCHEDULE_RID: process.env.FIELD_SCHEDULE_RID || "schedule_rid",
   APP_TIME: process.env.FIELD_APP_TIME || "app_time",
   STATUS: process.env.FIELD_CLASS_STATUS || "status",
   CLASS_STATUS_FALLBACK: process.env.FIELD_CLASS_STATUS_FALLBACK || "class_status",
@@ -86,6 +87,8 @@ const LOG_KEY_FIELDS = {
   RS_RUN_ID: process.env.LOG_FIELD_RS_RUN_ID || "rs_run_id",
   WATCH_TRIPS_LINK: process.env.LOG_FIELD_WATCH_TRIPS_LINK || "watch_trips",
   WATCH_TRIP_RECORD_ID: process.env.LOG_FIELD_WATCH_TRIP_RECORD_ID || "watch_trip_record_id",
+  WATCH_SCHEDULE_LINK: process.env.LOG_FIELD_WATCH_SCHEDULE_LINK || "watch_schedule",
+  WATCH_SCHEDULE_RECORD_ID: process.env.LOG_FIELD_WATCH_SCHEDULE_RECORD_ID || "watch_schedule_record_id",
   ENTRYXCLASSES_UUID: process.env.LOG_FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid",
   APP_SHOW_ID: process.env.LOG_FIELD_APP_SHOW_ID || "app_show_id",
   APP_SQL_DATE: process.env.LOG_FIELD_APP_SQL_DATE || "app_sql_date",
@@ -219,6 +222,7 @@ const WATCH_SOURCE_FIELDS = [
   WATCH_FIELDS.APP_SHOW_ID,
   WATCH_FIELDS.APP_SQL_DATE,
   WATCH_FIELDS.CLASS_ID,
+  WATCH_FIELDS.SCHEDULE_RID,
   WATCH_FIELDS.APP_TIME,
   WATCH_FIELDS.STATUS,
   WATCH_FIELDS.CLASS_STATUS_FALLBACK,
@@ -857,6 +861,7 @@ function buildRawInputs(fields) {
     app_show_id: fields[WATCH_FIELDS.APP_SHOW_ID],
     app_sql_date: fields[WATCH_FIELDS.APP_SQL_DATE],
     class_id: fields[WATCH_FIELDS.CLASS_ID],
+    schedule_rid: fields[WATCH_FIELDS.SCHEDULE_RID],
     app_time: fields[WATCH_FIELDS.APP_TIME],
     status: fields[WATCH_FIELDS.STATUS],
     class_status: fields[WATCH_FIELDS.CLASS_STATUS_FALLBACK],
@@ -1257,6 +1262,11 @@ function linkOne(recordId) {
   return recordId ? [recordId] : undefined;
 }
 
+function isAirtableRecordId(value) {
+  const text = strOrNull(value);
+  return !!text && /^rec[a-zA-Z0-9]+$/.test(text);
+}
+
 function buildSourceLogValues(rawInputs, normalized) {
   const raw = rawInputs || {};
   const values = normalized || {};
@@ -1429,6 +1439,7 @@ function buildTripLogRecord(result, patchFailure, calcRunId) {
   const calcLogValues = buildCalcLogValues(canonical);
   const decisionLogValues = buildDecisionLogValues(canonical);
   const rsLogValues = buildRsLogValues(canonical, computedOutputs);
+  const scheduleRecordId = strOrNull(rawInputs.schedule_rid);
 
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
   setIfPresent(fields, LOG_KEY_FIELDS.RS_RUN_ID, calcRunId || createdAt);
@@ -1436,6 +1447,10 @@ function buildTripLogRecord(result, patchFailure, calcRunId) {
   setIfPresent(fields, LOG_KEY_FIELDS.WATCH_TRIP_RECORD_ID, result.recordId);
   if (LOG_KEY_FIELDS.WATCH_TRIPS_LINK && result.recordId) {
     fields[LOG_KEY_FIELDS.WATCH_TRIPS_LINK] = linkOne(result.recordId);
+  }
+  setIfPresent(fields, LOG_KEY_FIELDS.WATCH_SCHEDULE_RECORD_ID, scheduleRecordId);
+  if (LOG_KEY_FIELDS.WATCH_SCHEDULE_LINK && isAirtableRecordId(scheduleRecordId)) {
+    fields[LOG_KEY_FIELDS.WATCH_SCHEDULE_LINK] = linkOne(scheduleRecordId);
   }
   setIfPresent(fields, LOG_KEY_FIELDS.APP_SHOW_ID, result.app_show_id);
   setIfPresent(fields, LOG_KEY_FIELDS.APP_SQL_DATE, result.app_sql_date);
