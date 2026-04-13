@@ -3,7 +3,8 @@
  *
  * Downstream calculator for derived rs_* timing fields on watch_trips.
  * - reads normalized watch_trips rows
- * - computes 18 rs_* outputs
+ * - computes rs_* timing outputs plus optional class-level alert tags
+ * - optionally tags one class-level alert parent row per duplicated class_id
  * - patches changed outputs in promote mode
  * - writes audit rows to trip_logs
  */
@@ -25,7 +26,7 @@ const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const CALC_MODE = String(process.env.CALC_MODE || "shadow").trim().toLowerCase() === "promote"
   ? "promote"
   : "shadow";
-const CALC_VERSION = String(process.env.CALC_VERSION || "trips_calculator_v1_2").trim();
+const CALC_VERSION = String(process.env.CALC_VERSION || "trips_calculator_v1_3").trim();
 
 function optionalFieldEnv(name) {
   return String(process.env[name] || "").trim();
@@ -35,6 +36,7 @@ const WATCH_FIELDS = {
   ENTRYXCLASSES_UUID: process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid",
   APP_SHOW_ID: process.env.FIELD_APP_SHOW_ID || "app_show_id",
   APP_SQL_DATE: process.env.FIELD_APP_SQL_DATE || "app_sql_date",
+  CLASS_ID: process.env.FIELD_CLASS_ID || "class_id",
   APP_TIME: process.env.FIELD_APP_TIME || "app_time",
   STATUS: process.env.FIELD_CLASS_STATUS || "status",
   CLASS_STATUS_FALLBACK: process.env.FIELD_CLASS_STATUS_FALLBACK || "class_status",
@@ -73,6 +75,9 @@ const WATCH_FIELDS = {
     GO_TIME_FROM_START: process.env.FIELD_RS_GO_TIME_FROM_START || "rs_go_time_from_start",
     MIN_TILL_GO: process.env.FIELD_RS_MIN_TILL_GO || "rs_min_till_go",
     MIN_TO_ACTUAL_GO: process.env.FIELD_RS_MIN_TO_ACTUAL_GO || "rs_min_to_actual_go",
+    CLASS_ALERT_PARENT: process.env.FIELD_RS_CLASS_ALERT_PARENT || "rs_class_alert_parent",
+    CLASS_ALERT_PARENT_RECORD_ID: process.env.FIELD_RS_CLASS_ALERT_PARENT_RECORD_ID || "rs_class_alert_parent_record_id",
+    CLASS_ALERT_GROUP_SIZE: process.env.FIELD_RS_CLASS_ALERT_GROUP_SIZE || "rs_class_alert_group_size",
   },
 };
 
@@ -213,6 +218,7 @@ const WATCH_SOURCE_FIELDS = [
   WATCH_FIELDS.ENTRYXCLASSES_UUID,
   WATCH_FIELDS.APP_SHOW_ID,
   WATCH_FIELDS.APP_SQL_DATE,
+  WATCH_FIELDS.CLASS_ID,
   WATCH_FIELDS.APP_TIME,
   WATCH_FIELDS.STATUS,
   WATCH_FIELDS.CLASS_STATUS_FALLBACK,
@@ -252,6 +258,7 @@ const OUTPUT_NUMBER_FIELDS = new Set([
   WATCH_FIELDS.RS.GO_MINS_FROM_START,
   WATCH_FIELDS.RS.MIN_TILL_GO,
   WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO,
+  WATCH_FIELDS.RS.CLASS_ALERT_GROUP_SIZE,
 ]);
 
 const OUTPUT_TEXT_FIELDS = new Set([
@@ -261,6 +268,7 @@ const OUTPUT_TEXT_FIELDS = new Set([
   WATCH_FIELDS.RS.LENGTH,
   WATCH_FIELDS.RS.END_TIME,
   WATCH_FIELDS.RS.GO_TIME_FROM_START,
+  WATCH_FIELDS.RS.CLASS_ALERT_PARENT_RECORD_ID,
 ]);
 
 function requireEnv(name, value) {
@@ -383,6 +391,14 @@ function normalizeCountValue(value) {
   return num === null ? null : roundNumber(num, 6);
 }
 
+function normalizeClassIdValue(value) {
+  if (value && typeof value === "object") {
+    const nested = firstNonBlank(value.id, value.value, value.name, value.label);
+    return strOrNull(nested);
+  }
+  return strOrNull(value);
+}
+
 function normalizeClassStatusValue(...candidates) {
   for (const candidate of candidates) {
     if (Array.isArray(candidate)) continue;
@@ -403,6 +419,27 @@ function normalizeClassStatusValue(...candidates) {
 function isCompleteStatus(value) {
   const text = String(value || "").trim().toLowerCase();
   return !!text && /complete(d)?/.test(text);
+}
+
+function compareNullableNumbers(left, right) {
+  const hasLeft = Number.isFinite(left);
+  const hasRight = Number.isFinite(right);
+  if (hasLeft && hasRight) {
+    if (left === right) return 0;
+    return left < right ? -1 : 1;
+  }
+  if (hasLeft) return -1;
+  if (hasRight) return 1;
+  return 0;
+}
+
+function compareNullableText(left, right) {
+  const a = strOrNull(left);
+  const b = strOrNull(right);
+  if (a && b) return a.localeCompare(b);
+  if (a) return -1;
+  if (b) return 1;
+  return 0;
 }
 
 function positiveDurationMinutes(laterMinutes, earlierMinutes) {
@@ -819,6 +856,7 @@ function buildRawInputs(fields) {
     entryxclasses_uuid: fields[WATCH_FIELDS.ENTRYXCLASSES_UUID],
     app_show_id: fields[WATCH_FIELDS.APP_SHOW_ID],
     app_sql_date: fields[WATCH_FIELDS.APP_SQL_DATE],
+    class_id: fields[WATCH_FIELDS.CLASS_ID],
     app_time: fields[WATCH_FIELDS.APP_TIME],
     status: fields[WATCH_FIELDS.STATUS],
     class_status: fields[WATCH_FIELDS.CLASS_STATUS_FALLBACK],
@@ -872,6 +910,7 @@ function buildNormalizedInputs(record) {
       entryxclasses_uuid: strOrNull(rawInputs.entryxclasses_uuid),
       app_show_id: numOrNull(rawInputs.app_show_id),
       app_sql_date: strOrNull(rawInputs.app_sql_date),
+      class_id: normalizeClassIdValue(rawInputs.class_id),
       class_status: normalizeClassStatusValue(
         rawInputs.status,
         rawInputs.class_status
@@ -900,6 +939,74 @@ function buildNormalizedInputs(record) {
   };
 }
 
+function deriveEffectiveOrder(values) {
+  return firstNonBlank(values.actual_order, values.actual_go, values.order_of_go);
+}
+
+function compareClassAlertCandidates(left, right) {
+  return compareNullableNumbers(left.effectiveOrder, right.effectiveOrder) ||
+    compareNullableNumbers(left.estimatedGoTimeMinutes, right.estimatedGoTimeMinutes) ||
+    compareNullableNumbers(left.appTimeMinutes, right.appTimeMinutes) ||
+    compareNullableText(left.entryxclasses_uuid, right.entryxclasses_uuid) ||
+    compareNullableText(left.recordId, right.recordId);
+}
+
+function buildClassAlertAssignments(preparedRows) {
+  const groups = new Map();
+
+  for (const prepared of preparedRows) {
+    const classId = prepared?.values?.class_id;
+    if (!classId) continue;
+
+    if (!groups.has(classId)) groups.set(classId, []);
+    groups.get(classId).push({
+      recordId: prepared.record.id,
+      entryxclasses_uuid: prepared.values.entryxclasses_uuid,
+      effectiveOrder: deriveEffectiveOrder(prepared.values),
+      estimatedGoTimeMinutes: prepared.values.estimated_go_time_minutes,
+      appTimeMinutes: prepared.values.app_time_minutes,
+      eligible: !!prepared.eligibility?.eligible,
+    });
+  }
+
+  const assignments = new Map();
+  let duplicatedClassCount = 0;
+  let parentRowCount = 0;
+
+  for (const [classId, rows] of groups.entries()) {
+    if (!Array.isArray(rows) || rows.length === 0) continue;
+
+    const orderedRows = rows.slice().sort(compareClassAlertCandidates);
+    const eligibleRows = orderedRows.filter((row) => row.eligible);
+    // Prefer the earliest eligible trip in the class as the alert parent.
+    const chosenParent = eligibleRows[0] || orderedRows[0];
+    const groupSize = orderedRows.length;
+    const hasPeers = groupSize > 1;
+
+    if (hasPeers) duplicatedClassCount += 1;
+
+    for (const row of orderedRows) {
+      const isParent = hasPeers && row.recordId === chosenParent.recordId;
+      if (isParent) parentRowCount += 1;
+
+      assignments.set(row.recordId, {
+        classId,
+        groupSize,
+        hasPeers,
+        isParent,
+        parentRecordId: hasPeers ? chosenParent.recordId : null,
+      });
+    }
+  }
+
+  return {
+    assignments,
+    classCount: groups.size,
+    duplicatedClassCount,
+    parentRowCount,
+  };
+}
+
 function determineEligibility(values) {
   const skipReasons = [];
 
@@ -912,13 +1019,19 @@ function determineEligibility(values) {
   };
 }
 
-function computeCanonicalOutputs(values, priorAnomalies = []) {
+function computeCanonicalOutputs(values, priorAnomalies = [], context = {}) {
   const anomalies = [...priorAnomalies];
 
   const tripMinutesDefault = TRIP_MINUTES_DEFAULT;
   const startAnchorMinutes = firstNonBlank(values.actual_time_minutes, values.estimated_start_time_minutes);
   const startAnchorText = firstNonBlank(values.actual_time_text, values.estimated_start_time_text);
-  const effectiveOrder = firstNonBlank(values.actual_order, values.actual_go, values.order_of_go);
+  const effectiveOrder = deriveEffectiveOrder(values);
+  const classAlert = context.classAlert || {};
+  const classAlertParent = classAlert.isParent === true;
+  const classAlertParentRecordId = strOrNull(classAlert.parentRecordId);
+  const classAlertGroupSize = Number.isFinite(classAlert.groupSize)
+    ? Math.max(0, Math.trunc(classAlert.groupSize))
+    : null;
   const rawRunningOrder = (
     effectiveOrder !== null && values.completed_trips !== null
       ? roundNumber(effectiveOrder - values.completed_trips, 6)
@@ -1051,6 +1164,9 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     minutes_until_go: minutesUntilGo,
     minutes_from_actual_start_to_go: minutesFromActualStartToGo,
     used_estimated_go_fallback: usedEstimatedGoFallback,
+    class_alert_parent: classAlertParent,
+    class_alert_parent_record_id: classAlertParentRecordId,
+    class_alert_group_size: classAlertGroupSize,
   };
 
   const outputs = {
@@ -1073,6 +1189,9 @@ function computeCanonicalOutputs(values, priorAnomalies = []) {
     [WATCH_FIELDS.RS.GO_TIME_FROM_START]: goClockFromStart,
     [WATCH_FIELDS.RS.MIN_TILL_GO]: minutesUntilGo,
     [WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO]: minutesFromActualStartToGo,
+    [WATCH_FIELDS.RS.CLASS_ALERT_PARENT]: classAlertParent,
+    [WATCH_FIELDS.RS.CLASS_ALERT_PARENT_RECORD_ID]: classAlertParentRecordId,
+    [WATCH_FIELDS.RS.CLASS_ALERT_GROUP_SIZE]: classAlertGroupSize,
   };
 
   return { canonical, outputs, anomalies };
@@ -1382,6 +1501,9 @@ async function main() {
     trip_logs_planned: 0,
     trip_logs_created: 0,
     trip_logs_failures: 0,
+    class_alert_classes_in_view: 0,
+    class_alert_duplicated_classes: 0,
+    class_alert_parent_rows: 0,
     trip_minutes_default_rows: 0,
     trip_minutes_source_counts: {},
     skip_reason_counts: {},
@@ -1392,12 +1514,34 @@ async function main() {
 
   const results = [];
   const watchTripUpdates = [];
+  const preparedRows = [];
 
   for (const record of records) {
     const built = buildNormalizedInputs(record);
     const values = built.values;
     const eligibility = determineEligibility(values);
     const priorOutputs = buildPriorOutputs(record.fields || {}, activeWatchOutputFields);
+
+    preparedRows.push({
+      record,
+      built,
+      values,
+      eligibility,
+      priorOutputs,
+    });
+  }
+
+  const classAlertAssignments = buildClassAlertAssignments(preparedRows);
+  summary.class_alert_classes_in_view = classAlertAssignments.classCount;
+  summary.class_alert_duplicated_classes = classAlertAssignments.duplicatedClassCount;
+  summary.class_alert_parent_rows = classAlertAssignments.parentRowCount;
+
+  for (const prepared of preparedRows) {
+    const record = prepared.record;
+    const built = prepared.built;
+    const values = prepared.values;
+    const eligibility = prepared.eligibility;
+    const priorOutputs = prepared.priorOutputs;
 
     const result = {
       recordId: record.id,
@@ -1425,7 +1569,9 @@ async function main() {
 
     summary.eligible_rows += 1;
 
-    const computed = computeCanonicalOutputs(values, result.anomalies);
+    const computed = computeCanonicalOutputs(values, result.anomalies, {
+      classAlert: classAlertAssignments.assignments.get(record.id) || null,
+    });
     result.anomalies = computed.anomalies;
     result.canonicalOutputs = computed.canonical;
     result.computedOutputs = computed.outputs;
