@@ -20,6 +20,7 @@ const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
 const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
+const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -54,6 +55,18 @@ function toIsoDateOnly(value) {
   if (/^\d{4}-\d{2}-\d{2}T/.test(text)) return text.slice(0, 10);
   const parsed = Date.parse(text);
   return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
+}
+
+function dayOfWeekUtc(sqlDate) {
+  const iso = toIsoDateOnly(sqlDate);
+  if (!iso) return null;
+  const ms = Date.parse(`${iso}T00:00:00.000Z`);
+  if (!Number.isFinite(ms)) return null;
+  return new Date(ms).getUTCDay();
+}
+
+function dowName(dow) {
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dow] || null;
 }
 
 function buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay) {
@@ -102,6 +115,24 @@ function boolValue(value) {
   if (raw === false || raw === 0 || raw === null || raw === undefined) return false;
   const text = String(raw).trim().toLowerCase();
   return text === "true" || text === "1";
+}
+
+function strictSqlDate(value, fieldName) {
+  const text = strOrNull(value);
+  if (!text) throw new Error(`Missing required heartbeat field: ${fieldName}`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    throw new Error(`Invalid heartbeat ${fieldName}: ${text}`);
+  }
+  return text;
+}
+
+function strictDowRaw(value, fieldName) {
+  const text = strOrNull(value);
+  if (!text) throw new Error(`Missing required heartbeat field: ${fieldName}`);
+  if (!VALID_DOW_RAW.has(text)) {
+    throw new Error(`Invalid heartbeat ${fieldName}: ${text}`);
+  }
+  return text;
 }
 
 async function fetchWithTimeout(url, options = {}) {
@@ -338,17 +369,24 @@ async function fetchWatchScheduleScopeStatusChoices() {
 function buildScopeFromHeartbeat(record) {
   const fields = record?.fields || {};
   const appShowId = numOrNull(fields.app_show_id);
-  const appSqlDate = strOrNull(fields.app_sql_date);
-  const appDowRaw = strOrNull(fields.app_dow_raw);
+  const appSqlDate = strictSqlDate(fields.app_sql_date, "app_sql_date");
+  const appDowRaw = strictDowRaw(fields.app_dow_raw, "app_dow_raw");
   const shiftedToNextDay = boolValue(fields.shifted_to_next_day);
+  const recordId = strOrNull(fields.record_id);
 
   if (appShowId === null) throw new Error("Latest heartbeat is missing app_show_id");
-  if (!appSqlDate) throw new Error("Latest heartbeat is missing app_sql_date");
-  if (!appDowRaw) throw new Error("Latest heartbeat is missing app_dow_raw");
+  if (!recordId) throw new Error("Latest heartbeat is missing record_id");
+  if (recordId !== record.id) {
+    throw new Error(`Heartbeat record_id mismatch: field=${recordId} actual=${record.id}`);
+  }
+  const expectedDowRaw = dowName(dayOfWeekUtc(appSqlDate));
+  if (expectedDowRaw !== appDowRaw) {
+    throw new Error(`Heartbeat app_dow_raw mismatch: expected=${expectedDowRaw} actual=${appDowRaw}`);
+  }
 
   return {
     heartbeat_record_id: record.id,
-    heartbeat_rid: strOrNull(fields.record_id) || record.id,
+    heartbeat_rid: recordId,
     hb_at: strOrNull(fields.hb_at),
     app_show_idv2: appShowId,
     app_sql_datev2: appSqlDate,

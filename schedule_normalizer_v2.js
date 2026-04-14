@@ -17,6 +17,7 @@ const OUTPUT_PATH = String(process.env.NORMALIZER_OUTPUT_PATH || "").trim();
 const OUTPUT_PRETTY = String(process.env.NORMALIZER_OUTPUT_PRETTY || "1") === "1";
 const STDOUT_FULL = String(process.env.NORMALIZER_STDOUT_FULL || "0") === "1";
 const DEBUG = String(process.env.NORMALIZER_DEBUG || "0") === "1";
+const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -109,6 +110,38 @@ function boolValue(value) {
   if (raw === false || raw === 0 || raw === null || raw === undefined) return false;
   const text = String(raw).trim().toLowerCase();
   return text === "true" || text === "1";
+}
+
+function strictSqlDate(value, fieldName) {
+  const text = strOrNull(value);
+  if (!text) throw new Error(`Missing required scope field: ${fieldName}`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    throw new Error(`Invalid scope ${fieldName}: ${text}`);
+  }
+  return text;
+}
+
+function strictDowRaw(value, fieldName) {
+  const text = strOrNull(value);
+  if (!text) throw new Error(`Missing required scope field: ${fieldName}`);
+  if (!VALID_DOW_RAW.has(text)) {
+    throw new Error(`Invalid scope ${fieldName}: ${text}`);
+  }
+  return text;
+}
+
+function uniqueNonBlankValues(rows, selector) {
+  const values = [];
+  const seen = new Set();
+  for (const row of rows) {
+    const value = selector(row);
+    if (isBlank(value)) continue;
+    const text = String(value);
+    if (seen.has(text)) continue;
+    seen.add(text);
+    values.push(value);
+  }
+  return values;
 }
 
 function setIfPresent(target, fieldName, value) {
@@ -338,12 +371,7 @@ async function fetchScheduleHeartbeatRows() {
       pageSize: 100,
       "fields[]": [
         "class_groupxclasses_id",
-        "heartbeat",
         "heartbeat_rid",
-        "app_show_id",
-        "app_sql_date",
-        "app_dow_raw",
-        "shifted_to_next_day",
         "app_show_idv2",
         "app_sql_datev2",
         "app_dow_rawv2",
@@ -359,15 +387,31 @@ async function fetchScheduleHeartbeatRows() {
 function buildScopeFromScheduleHeartbeatRows(rows) {
   if (!rows.length) return null;
   const firstRow = rows[0];
-  const fields = firstRow?.fields || {};
 
-  const appShowId = numOrNull(firstValue(pickFirst(fields.app_show_idv2, fields.app_show_id)));
-  const appSqlDate = strOrNull(firstValue(pickFirst(fields.app_sql_datev2, fields.app_sql_date)));
-  const appDowRaw = strOrNull(firstValue(pickFirst(fields.app_dow_rawv2, fields.app_dow_raw))) || dowName(dayOfWeekUtc(appSqlDate));
-  const shiftedToNextDay = boolValue(pickFirst(fields.shifted_to_next_dayv2, fields.shifted_to_next_day));
-  const heartbeatRecordId = strOrNull(firstValue(fields.heartbeat_rid)) || strOrNull(firstValue(fields.heartbeat));
+  const appShowIds = uniqueNonBlankValues(rows, (row) => numOrNull(row?.fields?.app_show_idv2));
+  const appSqlDates = uniqueNonBlankValues(rows, (row) => strictSqlDate(row?.fields?.app_sql_datev2, "app_sql_datev2"));
+  const appDowRaws = uniqueNonBlankValues(rows, (row) => strictDowRaw(row?.fields?.app_dow_rawv2, "app_dow_rawv2"));
+  const heartbeatRids = uniqueNonBlankValues(rows, (row) => strOrNull(firstValue(row?.fields?.heartbeat_rid)));
+  const shiftedValues = uniqueNonBlankValues(rows, (row) => String(boolValue(row?.fields?.shifted_to_next_dayv2)));
 
-  if (appShowId === null || !appSqlDate || !appDowRaw) return null;
+  if (appShowIds.length !== 1) throw new Error(`Inconsistent watch_schedule heartbeat app_show_idv2 values: ${appShowIds.join(",")}`);
+  if (appSqlDates.length !== 1) throw new Error(`Inconsistent watch_schedule heartbeat app_sql_datev2 values: ${appSqlDates.join(",")}`);
+  if (appDowRaws.length !== 1) throw new Error(`Inconsistent watch_schedule heartbeat app_dow_rawv2 values: ${appDowRaws.join(",")}`);
+  if (heartbeatRids.length !== 1) throw new Error(`Inconsistent watch_schedule heartbeat heartbeat_rid values: ${heartbeatRids.join(",")}`);
+  if (shiftedValues.length > 1) throw new Error(`Inconsistent watch_schedule heartbeat shifted_to_next_dayv2 values: ${shiftedValues.join(",")}`);
+
+  const appShowId = appShowIds[0];
+  const appSqlDate = appSqlDates[0];
+  const appDowRaw = appDowRaws[0];
+  const heartbeatRecordId = heartbeatRids[0];
+  const shiftedToNextDay = shiftedValues.length ? shiftedValues[0] === "true" : false;
+
+  if (appShowId === null) throw new Error("Missing required scope field: app_show_idv2");
+  if (!heartbeatRecordId) throw new Error("Missing required scope field: heartbeat_rid");
+  const expectedDowRaw = dowName(dayOfWeekUtc(appSqlDate));
+  if (expectedDowRaw !== appDowRaw) {
+    throw new Error(`Scope app_dow_rawv2 mismatch: expected=${expectedDowRaw} actual=${appDowRaw}`);
+  }
 
   return {
     heartbeat_record_id: heartbeatRecordId,
