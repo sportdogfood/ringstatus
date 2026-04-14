@@ -1,9 +1,8 @@
-﻿$ErrorActionPreference = 'Stop'
+﻿﻿$ErrorActionPreference = 'Stop'
 
 $env:DRY_RUN          = '0'
 $env:CALC_MODE        = 'promote'
 $env:WATCH_VIEW       = 'hb_targets_active'
-$env:AIRTABLE_TOKEN    = ''
 $env:AIRTABLE_BASE_ID  = 'apptdhhNzduxm5gjn'
 $env:AIRTABLE_TABLE    = 'tblCnHDB4IVtxqulo'
 $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
@@ -35,9 +34,15 @@ function Run-Step {
     )
 
     $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
-    Add-Content -Path $LogPath -Value "[$timestamp] $Label RUN"
+    $header = "[$timestamp] $Label RUN`r`n"
 
-    & $nodePath $ScriptName *>> $LogPath
+    [System.IO.File]::AppendAllText(
+        $LogPath,
+        $header,
+        [System.Text.UTF8Encoding]::new($false)
+    )
+
+    & $nodePath $ScriptName 2>&1 | Out-File -FilePath $LogPath -Append -Encoding utf8
 
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
