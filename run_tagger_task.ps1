@@ -34,15 +34,16 @@ function Run-Step {
     )
 
     $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
-    $header = "[$timestamp] $Label RUN`r`n"
+    $allText = "[$timestamp] $Label RUN`r`n"
+
+    $nodeOutput = & $nodePath $ScriptName 2>&1 | Out-String
+    $allText += $nodeOutput
 
     [System.IO.File]::AppendAllText(
         $LogPath,
-        $header,
+        $allText,
         [System.Text.UTF8Encoding]::new($false)
     )
-
-    & $nodePath $ScriptName 2>&1 | Out-File -FilePath $LogPath -Append -Encoding utf8
 
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
