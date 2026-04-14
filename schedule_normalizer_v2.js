@@ -5,10 +5,8 @@ const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
 
-const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
-const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
-const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
+const VIEW_WATCH_SCHEDULE_HEARTBEAT = process.env.VIEW_WATCH_SCHEDULE_HEARTBEAT || "heartbeat";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
@@ -17,9 +15,18 @@ const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 
 const OUTPUT_PATH = String(process.env.NORMALIZER_OUTPUT_PATH || "").trim();
 const OUTPUT_PRETTY = String(process.env.NORMALIZER_OUTPUT_PRETTY || "1") === "1";
+const STDOUT_FULL = String(process.env.NORMALIZER_STDOUT_FULL || "0") === "1";
+const DEBUG = String(process.env.NORMALIZER_DEBUG || "0") === "1";
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
+}
+
+function debug(step, extra = {}) {
+  if (!DEBUG) return;
+  try {
+    process.stderr.write(`${JSON.stringify({ step, ...extra })}\n`);
+  } catch {}
 }
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -84,6 +91,24 @@ function dowName(dow) {
 function normalizeKey(value) {
   if (isBlank(value)) return "";
   return String(value).trim();
+}
+
+function firstValue(value) {
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      if (!isBlank(item)) return item;
+    }
+    return null;
+  }
+  return value;
+}
+
+function boolValue(value) {
+  const raw = firstValue(value);
+  if (raw === true || raw === 1) return true;
+  if (raw === false || raw === 0 || raw === null || raw === undefined) return false;
+  const text = String(raw).trim().toLowerCase();
+  return text === "true" || text === "1";
 }
 
 function setIfPresent(target, fieldName, value) {
@@ -273,6 +298,24 @@ function buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay) {
   ].join("|");
 }
 
+function summarizeResult(result) {
+  return {
+    ok: result.ok,
+    generated_at: result.generated_at,
+    chosen_source: result.chosen_source,
+    authoritative: result.authoritative,
+    authoritative_empty: result.authoritative_empty,
+    row_count: result.row_count,
+    existing_scope_row_count: result.existing_scope_row_count,
+    added_keys: result.added_keys.length,
+    dropped_keys: result.dropped_keys.length,
+    unchanged_keys: result.unchanged_keys.length,
+    scope: result.scope,
+    fetches: result.fetches,
+    endpoints: result.endpoints,
+  };
+}
+
 function buildScheduleEndpoint(appSqlDate, appShowId) {
   if (isBlank(appSqlDate) || isBlank(appShowId)) return null;
   return `https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=${encodeURIComponent(appSqlDate)}&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
@@ -288,69 +331,56 @@ function buildClassesEndpoint(classId, appShowId) {
   return `https://broad-tooth-b8ed.gombcg.workers.dev/classes/${encodeURIComponent(classId)}/?show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
-async function fetchLatestHeartbeat() {
-  const heartbeatFields = [
-    "record_id",
-    "heartbeat_id",
-    "hb_at",
-    "app_show_id",
-    "app_sql_date",
-    "app_dow_raw",
-    "shifted_to_next_day",
-    "show_date",
-    "time",
-  ];
-  let rows = [];
-
+async function fetchScheduleHeartbeatRows() {
   try {
-    rows = await airtableList(TABLE_HEARTBEAT, {
-      view: VIEW_HEARTBEAT,
-      pageSize: 1,
-      "sort[0][field]": HEARTBEAT_SORT_FIELD,
-      "sort[0][direction]": "desc",
-      "fields[]": heartbeatFields,
+    return await airtableList(TABLE_WATCH_SCHEDULE, {
+      view: VIEW_WATCH_SCHEDULE_HEARTBEAT,
+      pageSize: 100,
+      "fields[]": [
+        "class_groupxclasses_id",
+        "heartbeat",
+        "heartbeat_rid",
+        "app_show_id",
+        "app_sql_date",
+        "app_dow_raw",
+        "shifted_to_next_day",
+        "app_show_idv2",
+        "app_sql_datev2",
+        "app_dow_rawv2",
+        "shifted_to_next_dayv2",
+      ],
     });
   } catch (error) {
     if (!isViewNotFoundError(error)) throw error;
-    rows = await airtableList(TABLE_HEARTBEAT, {
-      pageSize: 1,
-      "sort[0][field]": HEARTBEAT_SORT_FIELD,
-      "sort[0][direction]": "desc",
-      "fields[]": heartbeatFields,
-    });
+    return [];
   }
-
-  if (!rows.length) {
-    throw new Error(`No heartbeat rows found in ${TABLE_HEARTBEAT}/${VIEW_HEARTBEAT}`);
-  }
-
-  return rows[0];
 }
 
-function buildScopeFromHeartbeat(record) {
-  const fields = record?.fields || {};
-  const appShowId = numOrNull(fields.app_show_id);
-  const appSqlDate = strOrNull(fields.app_sql_date);
-  const appDowRaw = strOrNull(fields.app_dow_raw) || dowName(dayOfWeekUtc(appSqlDate));
-  const shiftedToNextDay = Boolean(fields.shifted_to_next_day);
-  const scopeKey = buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay);
+function buildScopeFromScheduleHeartbeatRows(rows) {
+  if (!rows.length) return null;
+  const firstRow = rows[0];
+  const fields = firstRow?.fields || {};
 
-  if (appShowId === null) throw new Error("Latest heartbeat is missing app_show_id");
-  if (!appSqlDate) throw new Error("Latest heartbeat is missing app_sql_date");
-  if (!appDowRaw) throw new Error("Latest heartbeat is missing app_dow_raw");
+  const appShowId = numOrNull(firstValue(pickFirst(fields.app_show_idv2, fields.app_show_id)));
+  const appSqlDate = strOrNull(firstValue(pickFirst(fields.app_sql_datev2, fields.app_sql_date)));
+  const appDowRaw = strOrNull(firstValue(pickFirst(fields.app_dow_rawv2, fields.app_dow_raw))) || dowName(dayOfWeekUtc(appSqlDate));
+  const shiftedToNextDay = boolValue(pickFirst(fields.shifted_to_next_dayv2, fields.shifted_to_next_day));
+  const heartbeatRecordId = strOrNull(firstValue(fields.heartbeat_rid)) || strOrNull(firstValue(fields.heartbeat));
+
+  if (appShowId === null || !appSqlDate || !appDowRaw) return null;
 
   return {
-    heartbeat_record_id: record.id,
-    heartbeat_rid: strOrNull(fields.record_id) || record.id,
-    hb_at: strOrNull(fields.hb_at),
+    heartbeat_record_id: heartbeatRecordId,
+    heartbeat_rid: heartbeatRecordId,
+    hb_at: null,
     app_show_idv2: appShowId,
     app_sql_datev2: appSqlDate,
     app_dow_rawv2: appDowRaw,
     shifted_to_next_dayv2: shiftedToNextDay,
-    scope_key: scopeKey,
-    scope_run_id: strOrNull(fields.heartbeat_id) || record.id,
-    heartbeat_time: strOrNull(fields.time),
-    heartbeat_show_date: toIsoDateOnly(fields.show_date),
+    scope_key: buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay),
+    scope_run_id: heartbeatRecordId || firstRow.id,
+    heartbeat_time: null,
+    heartbeat_show_date: null,
   };
 }
 
@@ -606,15 +636,6 @@ function escapeFormulaString(value) {
   return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 }
 
-async function fetchExistingScopeRows(scopeKey) {
-  const formula = `AND({scope_key}="${escapeFormulaString(scopeKey)}",{is_current_scope}=TRUE())`;
-  return airtableList(TABLE_WATCH_SCHEDULE, {
-    filterByFormula: formula,
-    pageSize: 100,
-    "fields[]": ["class_groupxclasses_id"],
-  });
-}
-
 function stableStringify(value) {
   return JSON.stringify(value, null, OUTPUT_PRETTY ? 2 : 0);
 }
@@ -626,17 +647,30 @@ async function runNormalizer() {
   const generatedAt = new Date().toISOString();
   const generatedDate = generatedAt.slice(0, 10);
 
-  const heartbeatRecord = await fetchLatestHeartbeat();
-  const scope = buildScopeFromHeartbeat(heartbeatRecord);
+  debug("fetch_schedule_heartbeat_rows:start");
+  const scheduleHeartbeatRows = await fetchScheduleHeartbeatRows();
+  debug("fetch_schedule_heartbeat_rows:done", { rows: scheduleHeartbeatRows.length });
+  const scheduleHeartbeatScope = buildScopeFromScheduleHeartbeatRows(scheduleHeartbeatRows);
+
+  if (!scheduleHeartbeatScope) {
+    throw new Error(`No scoped rows available in ${TABLE_WATCH_SCHEDULE}/${VIEW_WATCH_SCHEDULE_HEARTBEAT}`);
+  }
+
+  const heartbeatRecord = null;
+  const scope = scheduleHeartbeatScope;
+  const existingRows = scheduleHeartbeatRows;
 
   const datedUrl = buildScheduleEndpoint(scope.app_sql_datev2, scope.app_show_idv2);
   const emptyUrl = buildScheduleEmptyEndpoint(scope.app_show_idv2);
 
+  debug("fetch_variant:start", { variant: "dated_schedule" });
   const datedResult = await fetchScheduleVariant("dated_schedule", datedUrl, scope, generatedAt, generatedDate);
+  debug("fetch_variant:done", { variant: "dated_schedule", ok: datedResult.ok, rows: datedResult.rows.length });
+  debug("fetch_variant:start", { variant: "empty_ping_schedule" });
   const emptyResult = await fetchScheduleVariant("empty_ping_schedule", emptyUrl, scope, generatedAt, generatedDate);
+  debug("fetch_variant:done", { variant: "empty_ping_schedule", ok: emptyResult.ok, rows: emptyResult.rows.length });
   const chosen = chooseScheduleVariant(datedResult, emptyResult);
 
-  const existingRows = await fetchExistingScopeRows(scope.scope_key);
   const existingKeys = existingRows
     .map((record) => normalizeKey(record?.fields?.class_groupxclasses_id))
     .filter(Boolean);
@@ -651,20 +685,26 @@ async function runNormalizer() {
   const rowsByKey = {};
   for (const row of chosen.rows) rowsByKey[row.key] = row;
 
+  debug("run_normalizer:return", {
+    chosen_source: chosen.source,
+    row_count: chosen.rows.length,
+    existing_scope_row_count: existingRows.length,
+  });
   return {
     ok: true,
     generated_at: generatedAt,
     scope,
     heartbeat: {
-      record_id: heartbeatRecord.id,
-      heartbeat_id: strOrNull(heartbeatRecord?.fields?.heartbeat_id),
-      hb_at: strOrNull(heartbeatRecord?.fields?.hb_at),
-      app_show_id: numOrNull(heartbeatRecord?.fields?.app_show_id),
-      app_sql_date: strOrNull(heartbeatRecord?.fields?.app_sql_date),
-      app_dow_raw: strOrNull(heartbeatRecord?.fields?.app_dow_raw),
-      shifted_to_next_day: Boolean(heartbeatRecord?.fields?.shifted_to_next_day),
-      show_date: toIsoDateOnly(heartbeatRecord?.fields?.show_date),
-      time: strOrNull(heartbeatRecord?.fields?.time),
+      source: "watch_schedule_heartbeat_view",
+      record_id: scope.heartbeat_record_id || null,
+      heartbeat_id: strOrNull(scope.scope_run_id),
+      hb_at: strOrNull(scope.hb_at),
+      app_show_id: scope.app_show_idv2,
+      app_sql_date: scope.app_sql_datev2,
+      app_dow_raw: scope.app_dow_rawv2,
+      shifted_to_next_day: scope.shifted_to_next_dayv2,
+      show_date: scope.heartbeat_show_date,
+      time: scope.heartbeat_time,
     },
     endpoints: {
       dated: datedUrl,
@@ -701,7 +741,9 @@ async function runNormalizer() {
 
 async function main() {
   const result = await runNormalizer();
+  const summary = summarizeResult(result);
   const text = stableStringify(result);
+  const stdoutText = stableStringify(STDOUT_FULL ? result : summary);
 
   if (OUTPUT_PATH) {
     const resolved = path.isAbsolute(OUTPUT_PATH)
@@ -711,7 +753,8 @@ async function main() {
     fs.writeFileSync(resolved, `${text}\n`, "utf8");
   }
 
-  process.stdout.write(`${text}\n`);
+  process.stdout.write(`${stdoutText}\n`);
+  process.exit(0);
 }
 
 if (require.main === module) {
@@ -721,12 +764,11 @@ if (require.main === module) {
       error: String(error?.message || error),
     };
     process.stdout.write(`${stableStringify(payload)}\n`);
-    process.exitCode = 1;
+    process.exit(1);
   });
 }
 
 module.exports = {
-  buildScopeFromHeartbeat,
   chooseScheduleVariant,
   normalizeSchedulePayload,
   runNormalizer,
