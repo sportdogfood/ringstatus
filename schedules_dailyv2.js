@@ -584,9 +584,8 @@ async function fetchShowRecordId(appShowId) {
 }
 
 async function fetchExistingRowsForShow(appShowId) {
-  return airtableList(TABLE_WATCH_SCHEDULE, {
+  const rows = await airtableList(TABLE_WATCH_SCHEDULE, {
     pageSize: 100,
-    filterByFormula: `OR({show_id}=${Number(appShowId)},{app_show_idv2}=${Number(appShowId)})`,
     "fields[]": [
       "class_groupxclasses_id",
       "show_id",
@@ -598,6 +597,13 @@ async function fetchExistingRowsForShow(appShowId) {
       "is_current_scope",
       "scope_status",
     ],
+  });
+
+  return rows.filter((row) => {
+    const fields = row?.fields || {};
+    const rawShowId = numOrNull(fields.show_id);
+    const appShowIdV2 = numOrNull(fields.app_show_idv2);
+    return rawShowId === appShowId || appShowIdV2 === appShowId;
   });
 }
 
