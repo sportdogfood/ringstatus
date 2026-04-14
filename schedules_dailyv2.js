@@ -21,6 +21,7 @@ const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
+const VALID_MODES = new Set(["DAY", "NIGHT", "OVERNIGHT"]);
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -133,6 +134,38 @@ function strictDowRaw(value, fieldName) {
     throw new Error(`Invalid heartbeat ${fieldName}: ${text}`);
   }
   return text;
+}
+
+function strictMode(value, fieldName) {
+  const text = strOrNull(value);
+  if (!text) throw new Error(`Missing required heartbeat field: ${fieldName}`);
+  if (!VALID_MODES.has(text)) {
+    throw new Error(`Invalid heartbeat ${fieldName}: ${text}`);
+  }
+  return text;
+}
+
+function addDaysSql(sqlDate, days) {
+  const base = strictSqlDate(sqlDate, "sql_date");
+  const ms = Date.parse(`${base}T00:00:00.000Z`);
+  if (!Number.isFinite(ms)) throw new Error(`Invalid heartbeat sql_date: ${base}`);
+  const next = new Date(ms + days * 86400000);
+  return next.toISOString().slice(0, 10);
+}
+
+function compareSqlDate(left, right) {
+  const a = strictSqlDate(left, "left_sql_date");
+  const b = strictSqlDate(right, "right_sql_date");
+  if (a < b) return -1;
+  if (a > b) return 1;
+  return 0;
+}
+
+function sameValue(left, right) {
+  if (Array.isArray(left) || Array.isArray(right)) {
+    return JSON.stringify(left ?? null) === JSON.stringify(right ?? null);
+  }
+  return left === right;
 }
 
 async function fetchWithTimeout(url, options = {}) {
@@ -329,12 +362,20 @@ async function fetchLatestHeartbeat() {
       "record_id",
       "heartbeat_id",
       "hb_at",
+      "show_id",
+      "sql_date",
       "app_show_id",
       "app_sql_date",
       "app_dow_raw",
       "shifted_to_next_day",
+      "mode",
       "show_date",
       "time",
+      "set_to_default_app_sql_date",
+      "default_app_sql_date_is",
+      "show_app_sql_end_date",
+      "show_app_sql_start_date",
+      "app_sql_date_source",
     ],
   });
 
@@ -366,22 +407,37 @@ async function fetchWatchScheduleScopeStatusChoices() {
   return new Set(choices.map((choice) => String(choice?.name || "").trim()).filter(Boolean));
 }
 
-function buildScopeFromHeartbeat(record) {
+async function fetchHeartbeatFieldSet() {
+  const response = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+  });
+
+  if (!response.ok) {
+    const body = await response.text().catch(() => "");
+    throw new Error(`Airtable meta failed (${response.status}) heartbeat: ${body}`);
+  }
+
+  const json = await response.json().catch(() => ({}));
+  const table = Array.isArray(json?.tables)
+    ? json.tables.find((item) => String(item?.name || "").trim() === TABLE_HEARTBEAT)
+    : null;
+  return new Set(Array.isArray(table?.fields) ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean) : []);
+}
+
+function buildBaseHeartbeatContext(record) {
   const fields = record?.fields || {};
+  const rawShowId = numOrNull(fields.show_id);
   const appShowId = numOrNull(fields.app_show_id);
-  const appSqlDate = strictSqlDate(fields.app_sql_date, "app_sql_date");
-  const appDowRaw = strictDowRaw(fields.app_dow_raw, "app_dow_raw");
-  const shiftedToNextDay = boolValue(fields.shifted_to_next_day);
+  const rawSqlDate = strictSqlDate(fields.sql_date, "sql_date");
+  const mode = strictMode(fields.mode, "mode");
   const recordId = strOrNull(fields.record_id);
 
+  if (rawShowId === null) throw new Error("Latest heartbeat is missing show_id");
   if (appShowId === null) throw new Error("Latest heartbeat is missing app_show_id");
+  if (rawShowId !== appShowId) throw new Error(`Heartbeat app_show_id mismatch: show_id=${rawShowId} app_show_id=${appShowId}`);
   if (!recordId) throw new Error("Latest heartbeat is missing record_id");
   if (recordId !== record.id) {
     throw new Error(`Heartbeat record_id mismatch: field=${recordId} actual=${record.id}`);
-  }
-  const expectedDowRaw = dowName(dayOfWeekUtc(appSqlDate));
-  if (expectedDowRaw !== appDowRaw) {
-    throw new Error(`Heartbeat app_dow_raw mismatch: expected=${expectedDowRaw} actual=${appDowRaw}`);
   }
 
   return {
@@ -389,14 +445,125 @@ function buildScopeFromHeartbeat(record) {
     heartbeat_rid: recordId,
     hb_at: strOrNull(fields.hb_at),
     app_show_idv2: appShowId,
-    app_sql_datev2: appSqlDate,
-    app_dow_rawv2: appDowRaw,
-    shifted_to_next_dayv2: shiftedToNextDay,
-    scope_key: buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay),
     scope_run_id: strOrNull(fields.heartbeat_id) || record.id,
     heartbeat_time: strOrNull(fields.time),
     heartbeat_show_date: toIsoDateOnly(fields.show_date),
+    raw_sql_date: rawSqlDate,
+    mode,
+    current_app_sql_date: strOrNull(fields.app_sql_date),
+    current_app_dow_raw: strOrNull(fields.app_dow_raw),
+    current_shifted_to_next_day: boolValue(fields.shifted_to_next_day),
+    current_set_to_default_app_sql_date: boolValue(fields.set_to_default_app_sql_date),
+    current_default_app_sql_date_is: strOrNull(fields.default_app_sql_date_is),
+    current_show_app_sql_start_date: strOrNull(fields.show_app_sql_start_date),
+    current_show_app_sql_end_date: strOrNull(fields.show_app_sql_end_date),
+    current_app_sql_date_source: strOrNull(fields.app_sql_date_source),
   };
+}
+
+function extractScheduleDefaultInfo(payload) {
+  const show = payload?.show && typeof payload.show === "object" ? payload.show : {};
+  const showAppName = strOrNull(pickFirst(show.show_name, payload?.show_name));
+  const showAppSqlStartDate = toIsoDateOnly(pickFirst(show.start_date, payload?.start_date));
+  const showAppSqlEndDate = toIsoDateOnly(pickFirst(show.end_date, payload?.end_date));
+  const defaultAppSqlDateIs = strictSqlDate(pickFirst(payload?.show_date, payload?.showDate), "default_app_sql_date_is");
+  const validDates = Array.isArray(payload?.show_days_list)
+    ? payload.show_days_list.map((item) => toIsoDateOnly(item?.date)).filter(Boolean)
+    : [];
+
+  return {
+    show_app_name: showAppName,
+    show_app_sql_start_date: showAppSqlStartDate,
+    show_app_sql_end_date: showAppSqlEndDate,
+    default_app_sql_date_is: defaultAppSqlDateIs,
+    valid_dates: validDates,
+  };
+}
+
+function candidateDateFromMode(rawSqlDate, mode) {
+  if (mode === "NIGHT") return addDaysSql(rawSqlDate, 1);
+  return strictSqlDate(rawSqlDate, "sql_date");
+}
+
+function isValidAppSqlDate(candidateDate, scheduleInfo) {
+  if (scheduleInfo.valid_dates.length) {
+    return scheduleInfo.valid_dates.includes(candidateDate);
+  }
+  if (scheduleInfo.show_app_sql_start_date && compareSqlDate(candidateDate, scheduleInfo.show_app_sql_start_date) < 0) {
+    return false;
+  }
+  if (scheduleInfo.show_app_sql_end_date && compareSqlDate(candidateDate, scheduleInfo.show_app_sql_end_date) > 0) {
+    return false;
+  }
+  return true;
+}
+
+function resolveHeartbeatScope(baseContext, emptyPayload) {
+  const scheduleInfo = extractScheduleDefaultInfo(emptyPayload);
+  const candidateAppSqlDate = candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode);
+  const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
+  const setToDefault = !validCandidate;
+  const finalAppSqlDate = setToDefault
+    ? scheduleInfo.default_app_sql_date_is
+    : candidateAppSqlDate;
+  const finalAppDowRaw = strictDowRaw(dowName(dayOfWeekUtc(finalAppSqlDate)), "derived_app_dow_raw");
+  const shiftedToNextDay = setToDefault ? false : baseContext.mode === "NIGHT";
+  const appSqlDateSource = setToDefault
+    ? "default_day"
+    : baseContext.mode === "NIGHT"
+    ? "night_shift"
+    : "raw_day";
+
+  return {
+    heartbeat_record_id: baseContext.heartbeat_record_id,
+    heartbeat_rid: baseContext.heartbeat_rid,
+    hb_at: baseContext.hb_at,
+    app_show_idv2: baseContext.app_show_idv2,
+    app_sql_datev2: finalAppSqlDate,
+    app_dow_rawv2: finalAppDowRaw,
+    shifted_to_next_dayv2: shiftedToNextDay,
+    scope_key: buildScopeKey(baseContext.app_show_idv2, finalAppSqlDate, finalAppDowRaw, shiftedToNextDay),
+    scope_run_id: baseContext.scope_run_id,
+    heartbeat_time: baseContext.heartbeat_time,
+    heartbeat_show_date: baseContext.heartbeat_show_date,
+    raw_sql_date: baseContext.raw_sql_date,
+    mode: baseContext.mode,
+    set_to_default_app_sql_date: setToDefault,
+    default_app_sql_date_is: scheduleInfo.default_app_sql_date_is,
+    show_app_sql_start_date: scheduleInfo.show_app_sql_start_date,
+    show_app_sql_end_date: scheduleInfo.show_app_sql_end_date,
+    show_app_name: scheduleInfo.show_app_name,
+    app_sql_date_source: appSqlDateSource,
+    candidate_app_sql_date: candidateAppSqlDate,
+  };
+}
+
+function buildHeartbeatPatchFields(resolvedScope, heartbeatFieldSet) {
+  const fields = {};
+  const maybeSet = (name, value) => {
+    if (!heartbeatFieldSet.has(name)) return;
+    fields[name] = value;
+  };
+
+  maybeSet("app_sql_date", resolvedScope.app_sql_datev2);
+  maybeSet("app_dow_raw", resolvedScope.app_dow_rawv2);
+  maybeSet("shifted_to_next_day", resolvedScope.shifted_to_next_dayv2);
+  maybeSet("set_to_default_app_sql_date", resolvedScope.set_to_default_app_sql_date);
+  maybeSet("default_app_sql_date_is", resolvedScope.default_app_sql_date_is);
+  maybeSet("show_app_sql_start_date", resolvedScope.show_app_sql_start_date);
+  maybeSet("show_app_sql_end_date", resolvedScope.show_app_sql_end_date);
+  maybeSet("show_app_name", resolvedScope.show_app_name);
+  maybeSet("app_sql_date_source", resolvedScope.app_sql_date_source);
+
+  return fields;
+}
+
+function diffHeartbeatFields(currentFields, nextFields) {
+  const diff = {};
+  for (const [name, value] of Object.entries(nextFields)) {
+    if (!sameValue(currentFields?.[name], value)) diff[name] = value;
+  }
+  return diff;
 }
 
 async function fetchShowRecordId(appShowId) {
@@ -489,16 +656,27 @@ async function runDaily() {
   const dateOnly = nowIso.slice(0, 10);
 
   const heartbeatRecord = await fetchLatestHeartbeat();
-  const scope = buildScopeFromHeartbeat(heartbeatRecord);
+  const baseHeartbeatContext = buildBaseHeartbeatContext(heartbeatRecord);
   const scopeStatusChoices = await fetchWatchScheduleScopeStatusChoices().catch(() => new Set());
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
+  const heartbeatFieldSet = await fetchHeartbeatFieldSet().catch(() => new Set());
+
+  const emptyUrl = buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2);
+  const emptyPayload = await fetchJson(emptyUrl);
+  const scope = resolveHeartbeatScope(baseHeartbeatContext, emptyPayload);
+  const heartbeatPatchFields = buildHeartbeatPatchFields(scope, heartbeatFieldSet);
+  const heartbeatChangedFields = diffHeartbeatFields(heartbeatRecord?.fields || {}, heartbeatPatchFields);
+
+  if (!DRY_RUN && Object.keys(heartbeatChangedFields).length) {
+    await airtablePatchRecords(TABLE_HEARTBEAT, [{
+      id: heartbeatRecord.id,
+      fields: heartbeatChangedFields,
+    }]);
+  }
 
   const datedUrl = buildScheduleEndpoint(scope.app_sql_datev2, scope.app_show_idv2);
-  const emptyUrl = buildScheduleEmptyEndpoint(scope.app_show_idv2);
-
   const datedPayload = await fetchJson(datedUrl);
-  const emptyPayload = await fetchJson(emptyUrl);
 
   const datedResult = {
     ok: true,
@@ -587,6 +765,7 @@ async function runDaily() {
     dry_run: DRY_RUN,
     scope,
     chosen_source: chosen.source,
+    heartbeat_patch_fields: heartbeatChangedFields,
     row_count: chosen.rows.length,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
