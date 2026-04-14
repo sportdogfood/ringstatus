@@ -3,7 +3,6 @@
 $env:DRY_RUN          = '0'
 $env:CALC_MODE        = 'promote'
 $env:WATCH_VIEW       = 'hb_targets_active'
-$env:AIRTABLE_TOKEN    = ''
 $env:AIRTABLE_BASE_ID  = 'apptdhhNzduxm5gjn'
 $env:AIRTABLE_TABLE    = 'tblCnHDB4IVtxqulo'
 $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
