@@ -212,6 +212,13 @@ async function airtableList(tableName, queryParams = {}) {
     const url = new URL(airtableUrl(tableName));
     for (const [key, value] of Object.entries(queryParams)) {
       if (value === undefined || value === null || value === "") continue;
+      if (Array.isArray(value)) {
+        for (const item of value) {
+          if (item === undefined || item === null || item === "") continue;
+          url.searchParams.append(key, String(item));
+        }
+        continue;
+      }
       url.searchParams.set(key, String(value));
     }
     if (offset) url.searchParams.set("offset", offset);
@@ -282,6 +289,17 @@ function buildClassesEndpoint(classId, appShowId) {
 }
 
 async function fetchLatestHeartbeat() {
+  const heartbeatFields = [
+    "record_id",
+    "heartbeat_id",
+    "hb_at",
+    "app_show_id",
+    "app_sql_date",
+    "app_dow_raw",
+    "shifted_to_next_day",
+    "show_date",
+    "time",
+  ];
   let rows = [];
 
   try {
@@ -290,6 +308,7 @@ async function fetchLatestHeartbeat() {
       pageSize: 1,
       "sort[0][field]": HEARTBEAT_SORT_FIELD,
       "sort[0][direction]": "desc",
+      "fields[]": heartbeatFields,
     });
   } catch (error) {
     if (!isViewNotFoundError(error)) throw error;
@@ -297,6 +316,7 @@ async function fetchLatestHeartbeat() {
       pageSize: 1,
       "sort[0][field]": HEARTBEAT_SORT_FIELD,
       "sort[0][direction]": "desc",
+      "fields[]": heartbeatFields,
     });
   }
 
@@ -591,6 +611,7 @@ async function fetchExistingScopeRows(scopeKey) {
   return airtableList(TABLE_WATCH_SCHEDULE, {
     filterByFormula: formula,
     pageSize: 100,
+    "fields[]": ["class_groupxclasses_id"],
   });
 }
 
