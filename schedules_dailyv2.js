@@ -48,6 +48,13 @@ function numOrNull(value) {
   return Number.isFinite(num) ? num : null;
 }
 
+function pickFirst(...values) {
+  for (const value of values) {
+    if (!isBlank(value)) return value;
+  }
+  return undefined;
+}
+
 function toIsoDateOnly(value) {
   if (isBlank(value)) return null;
   if (value instanceof Date) return value.toISOString().slice(0, 10);
