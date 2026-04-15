@@ -100,5 +100,13 @@ Program/script: C:\Windows\System32\cmd.exe
 Add arguments: /d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
 
 
+<<<<<<< HEAD
 dir "C:\actions-runner\ringstatus\schedules-dailyv2.log"
 dir "C:\actions-runner\ringstatus\schedules-calculatorv2.log"
+=======
+Execute          : powershell.exe
+Arguments        : -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog
+                   Food\github\repos\ringstatus\run_tagger_task.ps1"
+WorkingDirectory : C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus
+
+>>>>>>> 4412de39cbfdf4ca3faf3c1c521cdc54101fa296
