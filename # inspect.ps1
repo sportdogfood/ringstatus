@@ -1,3 +1,9 @@
+cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
+node .\schedules_dailyv2.js
+node .\schedules_calculatorv2.js
+
+
+
 Yes. Those are the same OneDrive path on two machines, and telling you to “copy from that path to that path” was not useful.
 
 The correct fix is:
