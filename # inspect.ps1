@@ -164,3 +164,4 @@ Error: UNKNOWN: unknown error, open 'C:\Users\gombc\OneDrive - Sport Dog Food\gi
 
 Node.js v24.14.1
 
+attrib +P -U "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" /S /D
