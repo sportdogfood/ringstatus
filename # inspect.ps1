@@ -98,3 +98,7 @@ Actions
 Set it to:
 Program/script: C:\Windows\System32\cmd.exe
 Add arguments: /d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
+
+
+dir "C:\actions-runner\ringstatus\schedules-dailyv2.log"
+dir "C:\actions-runner\ringstatus\schedules-calculatorv2.log"
