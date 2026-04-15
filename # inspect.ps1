@@ -98,3 +98,10 @@ Actions
 Set it to:
 Program/script: C:\Windows\System32\cmd.exe
 Add arguments: /d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
+
+
+Execute          : powershell.exe
+Arguments        : -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog
+                   Food\github\repos\ringstatus\run_tagger_task.ps1"
+WorkingDirectory : C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus
+
