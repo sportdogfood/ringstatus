@@ -1,3 +1,74 @@
+[Wed 04/15/2026 14:52:30.41] SCHEDULES_CALCULATORV2 RUN 
+node:fs:440
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: UNKNOWN: unknown error, open 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\schedules_calculatorv2.js'
+    at Object.readFileSync (node:fs:440:20)
+    at defaultLoadImpl (node:internal/modules/cjs/loader:1148:17)
+    at loadSource (node:internal/modules/cjs/loader:1838:20)
+    at Object..js (node:internal/modules/cjs/loader:1936:44)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  errno: -4094,
+  code: 'UNKNOWN',
+  syscall: 'open',
+  path: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_calculatorv2.js'
+}
+
+Node.js v24.14.1
+
+
+Node.js v24.14.1
+[Wed 04/15/2026 14:52:40.42] SCHEDULES_DAILYV2 RUN 
+node:fs:440
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: UNKNOWN: unknown error, open 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\schedules_dailyv2.js'
+    at Object.readFileSync (node:fs:440:20)
+    at defaultLoadImpl (node:internal/modules/cjs/loader:1148:17)
+    at loadSource (node:internal/modules/cjs/loader:1838:20)
+    at Object..js (node:internal/modules/cjs/loader:1936:44)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  errno: -4094,
+  code: 'UNKNOWN',
+  syscall: 'open',
+  path: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_dailyv2.js'
+}
+
+Node.js v24.14.1
+[Wed 04/15/2026 14:55:29.10] SCHEDULES_DAILYV2 RUN 
+node:fs:440
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: UNKNOWN: unknown error, open 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\schedules_dailyv2.js'
+    at Object.readFileSync (node:fs:440:20)
+    at defaultLoadImpl (node:internal/modules/cjs/loader:1148:17)
+    at loadSource (node:internal/modules/cjs/loader:1838:20)
+    at Object..js (node:internal/modules/cjs/loader:1936:44)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  errno: -4094,
+  code: 'UNKNOWN',
+  syscall: 'open',
+  path: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_dailyv2.js'
+}
+
+Node.js v24.14.1
+
+
 Information	4/15/2026 2:52:30 PM	102	Task completed	(2)	df11fc63-7b20-4964-8bbe-aa6b8bb231c3
 Information	4/15/2026 2:52:30 PM	201	Action completed	(2)	df11fc63-7b20-4964-8bbe-aa6b8bb231c3
 Information	4/15/2026 2:52:30 PM	102	Task completed	(2)	5c96b1dd-1d83-494d-9279-6daa391c3073
