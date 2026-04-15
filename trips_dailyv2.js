@@ -910,6 +910,182 @@ async function upsertActiveGroups({
   return summary;
 }
 
+function normalizeLinkIds(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map((item) => strOrNull(item)).filter(Boolean))].sort();
+}
+
+function sameLinkIds(left, right) {
+  return JSON.stringify(normalizeLinkIds(left)) === JSON.stringify(normalizeLinkIds(right));
+}
+
+async function fetchScopedActiveRows(tableName, fieldNames, scopeAppSid) {
+  const rows = await airtableList(tableName, {
+    pageSize: 100,
+    "fields[]": fieldNames,
+  });
+
+  return rows.filter((row) => numOrNull(row?.fields?.app_sid) === scopeAppSid);
+}
+
+async function syncActiveTableLinks({
+  scopeAppSid,
+  activeGroupsFieldSet,
+  activeClassesFieldSet,
+  activeEntriesFieldSet,
+  entryClassKeysByEntryKey,
+}) {
+  const summary = {
+    active_groups_to_classes: { planned: 0, updated: 0, failures: [] },
+    active_classes_to_groups: { planned: 0, updated: 0, failures: [] },
+    active_entries_to_classes: { planned: 0, updated: 0, failures: [] },
+    active_classes_to_entries: { planned: 0, updated: 0, failures: [] },
+    skipped: false,
+  };
+
+  const needsGroupClassLinks = activeGroupsFieldSet.has("active_classes");
+  const needsClassGroupLinks = activeClassesFieldSet.has("active_groups");
+  const needsEntryClassLinks = activeEntriesFieldSet.has("active_classes");
+  const needsClassEntryLinks = activeClassesFieldSet.has("active_entries");
+
+  if (!needsGroupClassLinks && !needsClassGroupLinks && !needsEntryClassLinks && !needsClassEntryLinks) {
+    summary.skipped = true;
+    return summary;
+  }
+
+  const [groupRows, classRows, entryRows] = await Promise.all([
+    fetchScopedActiveRows(
+      TABLE_ACTIVE_GROUPS,
+      ["app_sid", "class_group_id", "inactive", "active_classes"],
+      scopeAppSid
+    ),
+    fetchScopedActiveRows(
+      TABLE_ACTIVE_CLASSES,
+      ["app_sid", "class_id", "class_group_id", "inactive", "active_groups", "active_entries"],
+      scopeAppSid
+    ),
+    fetchScopedActiveRows(
+      TABLE_ACTIVE_ENTRIES,
+      ["app_sid", "entry_id", "inactive", "active_classes"],
+      scopeAppSid
+    ),
+  ]);
+
+  const activeGroups = groupRows.filter((row) => !boolValue(row?.fields?.inactive));
+  const activeClasses = classRows.filter((row) => !boolValue(row?.fields?.inactive));
+  const activeEntries = entryRows.filter((row) => !boolValue(row?.fields?.inactive));
+
+  const groupRecordIdByGroupId = new Map();
+  for (const row of activeGroups) {
+    const classGroupId = normalizeKey(row?.fields?.class_group_id);
+    if (!classGroupId || groupRecordIdByGroupId.has(classGroupId)) continue;
+    groupRecordIdByGroupId.set(classGroupId, row.id);
+  }
+
+  const classRecordIdByClassId = new Map();
+  const classRecordIdsByGroupId = new Map();
+  for (const row of activeClasses) {
+    const classId = normalizeKey(row?.fields?.class_id);
+    const classGroupId = normalizeKey(row?.fields?.class_group_id);
+    if (classId && !classRecordIdByClassId.has(classId)) classRecordIdByClassId.set(classId, row.id);
+    if (classGroupId) {
+      if (!classRecordIdsByGroupId.has(classGroupId)) classRecordIdsByGroupId.set(classGroupId, new Set());
+      classRecordIdsByGroupId.get(classGroupId).add(row.id);
+    }
+  }
+
+  const entryRecordIdByEntryId = new Map();
+  const entryRecordIdsByClassId = new Map();
+  for (const row of activeEntries) {
+    const entryId = normalizeKey(row?.fields?.entry_id);
+    if (entryId && !entryRecordIdByEntryId.has(entryId)) entryRecordIdByEntryId.set(entryId, row.id);
+  }
+  for (const [entryKey, classKeySet] of entryClassKeysByEntryKey.entries()) {
+    const entryRecordId = entryRecordIdByEntryId.get(entryKey);
+    if (!entryRecordId) continue;
+    for (const classKey of classKeySet) {
+      if (!classKey) continue;
+      if (!entryRecordIdsByClassId.has(classKey)) entryRecordIdsByClassId.set(classKey, new Set());
+      entryRecordIdsByClassId.get(classKey).add(entryRecordId);
+    }
+  }
+
+  const groupUpdates = [];
+  if (needsGroupClassLinks) {
+    for (const row of activeGroups) {
+      const classGroupId = normalizeKey(row?.fields?.class_group_id);
+      const desired = [...(classRecordIdsByGroupId.get(classGroupId) || new Set())].sort();
+      const current = normalizeLinkIds(row?.fields?.active_classes);
+      if (sameLinkIds(current, desired)) continue;
+      summary.active_groups_to_classes.planned += 1;
+      groupUpdates.push({ id: row.id, fields: { active_classes: desired } });
+    }
+  }
+
+  const classUpdates = [];
+  if (needsClassGroupLinks || needsClassEntryLinks) {
+    for (const row of activeClasses) {
+      const fields = {};
+      if (needsClassGroupLinks) {
+        const classGroupId = normalizeKey(row?.fields?.class_group_id);
+        const desiredGroupLinks = groupRecordIdByGroupId.get(classGroupId) ? [groupRecordIdByGroupId.get(classGroupId)] : [];
+        const currentGroupLinks = normalizeLinkIds(row?.fields?.active_groups);
+        if (!sameLinkIds(currentGroupLinks, desiredGroupLinks)) {
+          fields.active_groups = desiredGroupLinks;
+          summary.active_classes_to_groups.planned += 1;
+        }
+      }
+      if (needsClassEntryLinks) {
+        const classId = normalizeKey(row?.fields?.class_id);
+        const desiredEntryLinks = [...(entryRecordIdsByClassId.get(classId) || new Set())].sort();
+        const currentEntryLinks = normalizeLinkIds(row?.fields?.active_entries);
+        if (!sameLinkIds(currentEntryLinks, desiredEntryLinks)) {
+          fields.active_entries = desiredEntryLinks;
+          summary.active_classes_to_entries.planned += 1;
+        }
+      }
+      if (Object.keys(fields).length) classUpdates.push({ id: row.id, fields });
+    }
+  }
+
+  const entryUpdates = [];
+  if (needsEntryClassLinks) {
+    for (const row of activeEntries) {
+      const entryId = normalizeKey(row?.fields?.entry_id);
+      const desiredClassLinks = [...(entryClassKeysByEntryKey.get(entryId) || new Set())]
+        .map((classKey) => classRecordIdByClassId.get(classKey))
+        .filter(Boolean)
+        .sort();
+      const currentClassLinks = normalizeLinkIds(row?.fields?.active_classes);
+      if (sameLinkIds(currentClassLinks, desiredClassLinks)) continue;
+      summary.active_entries_to_classes.planned += 1;
+      entryUpdates.push({ id: row.id, fields: { active_classes: desiredClassLinks } });
+    }
+  }
+
+  if (DRY_RUN) return summary;
+
+  if (groupUpdates.length) {
+    const result = await airtablePatchRecords(TABLE_ACTIVE_GROUPS, groupUpdates);
+    summary.active_groups_to_classes.updated = result.okRows;
+    summary.active_groups_to_classes.failures = result.failedRows;
+  }
+  if (classUpdates.length) {
+    const result = await airtablePatchRecords(TABLE_ACTIVE_CLASSES, classUpdates);
+    summary.active_classes_to_groups.updated = result.okRows;
+    summary.active_classes_to_entries.updated = result.okRows;
+    summary.active_classes_to_groups.failures = result.failedRows;
+    summary.active_classes_to_entries.failures = result.failedRows;
+  }
+  if (entryUpdates.length) {
+    const result = await airtablePatchRecords(TABLE_ACTIVE_ENTRIES, entryUpdates);
+    summary.active_entries_to_classes.updated = result.okRows;
+    summary.active_entries_to_classes.failures = result.failedRows;
+  }
+
+  return summary;
+}
+
 async function buildAuxiliaryRowsForTenant({
   payload,
   tenantId,
@@ -1075,6 +1251,7 @@ async function buildAuxiliaryRowsForTenant({
       app_sql_datev2: heartbeat.app_sql_date,
       app_dow_rawv2: heartbeat.app_dow_raw,
       is_today: classMatchesAppDate,
+      " is_today": classMatchesAppDate,
       shows: commonLinks.shows,
       pid: Number(tenantId),
       class_id: row.class_id,
@@ -1171,6 +1348,10 @@ async function buildAuxiliaryRowsForTenant({
     classRows,
     groupRows,
     entryRows,
+    entryClassLinks: [...entryById.values()].map((row) => ({
+      entry_key: String(row.entry_id),
+      class_keys: [...row.class_ids].map((value) => normalizeKey(value)).filter(Boolean),
+    })),
     classEndpointFailures: classEndpointDetailResult.failures,
   };
 }
@@ -1327,6 +1508,7 @@ async function main() {
   const uniqueGroupRows = new Map();
   const uniqueClassRows = new Map();
   const uniqueEntryRows = new Map();
+  const entryClassKeysByEntryKey = new Map();
 
   for (const tenantId of activeTenantIds) {
     const tenantRow = activeTenantMap.get(tenantId) || null;
@@ -1421,6 +1603,7 @@ async function main() {
       existing.app_sql_datev2 = existing.app_sql_datev2 ?? row.app_sql_datev2;
       existing.app_dow_rawv2 = existing.app_dow_rawv2 ?? row.app_dow_rawv2;
       existing.is_today = Boolean(existing.is_today) || Boolean(row.is_today);
+      existing[" is_today"] = Boolean(existing[" is_today"]) || Boolean(row[" is_today"]);
       existing.class_number = existing.class_number ?? row.class_number;
       existing.class_name = existing.class_name || row.class_name;
       existing.watch_schedule = existing.watch_schedule || row.watch_schedule;
@@ -1453,6 +1636,17 @@ async function main() {
       existing.rider_id = existing.rider_id ?? row.rider_id;
       existing.rider_name = existing.rider_name || row.rider_name;
       if (!sameValue(existing.pid, row.pid)) existing.pid_mismatch = true;
+    }
+
+    for (const row of auxiliaryRows.entryClassLinks || []) {
+      const entryKey = normalizeKey(row?.entry_key);
+      if (!entryKey) continue;
+      const classKeySet = entryClassKeysByEntryKey.get(entryKey) || new Set();
+      for (const classKey of row?.class_keys || []) {
+        const normalizedClassKey = normalizeKey(classKey);
+        if (normalizedClassKey) classKeySet.add(normalizedClassKey);
+      }
+      entryClassKeysByEntryKey.set(entryKey, classKeySet);
     }
 
     for (const row of auxiliaryRows.groupRows || []) {
@@ -1546,6 +1740,14 @@ async function main() {
     lastRun: dateOnly,
   });
 
+  const activeLinkSync = await syncActiveTableLinks({
+    scopeAppSid: heartbeat.app_show_id,
+    activeGroupsFieldSet,
+    activeClassesFieldSet,
+    activeEntriesFieldSet,
+    entryClassKeysByEntryKey,
+  });
+
   const emptyTenantIds = tenantSummaries
     .filter((item) => item.empty_payload)
     .map((item) => item.tenant_id);
@@ -1609,6 +1811,7 @@ async function main() {
       people_failures: peopleFailures,
       drops_planned: dropUpdates.length,
       active_groups: activeGroupSync,
+      active_links: activeLinkSync,
       writes: {
         created: 0,
         updated: 0,
@@ -1658,6 +1861,7 @@ async function main() {
     tenant_summaries: tenantSummaries,
     outside_schedule_count: outsideSchedule.length,
     active_groups: activeGroupSync,
+    active_links: activeLinkSync,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
     drops_planned: dropUpdates.length,
