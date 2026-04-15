@@ -928,7 +928,7 @@ async function buildAuxiliaryRowsForTenant({
   const riderById = new Map();
   const horseById = new Map();
   const classById = new Map();
-  const entryById = new Map();
+  const entryByKey = new Map();
 
   for (const trip of trips) {
     const riderId = numOrNull(pickFirst(trip?.rider_id, trip?.riderId));
@@ -987,25 +987,26 @@ async function buildAuxiliaryRowsForTenant({
       classById.set(classId, existing);
     }
 
-    if (entryId !== null) {
-      const existing = entryById.get(entryId) || {
+    if (entryId !== null && classId !== null) {
+      const entryKey = `${entryId}|${classId}`;
+      const existing = entryByKey.get(entryKey) || {
+        entry_key: entryKey,
         entry_id: entryId,
+        class_id: classId,
+        class_group_id: rawClassGroupId,
         entry_number: undefined,
         horse_id: null,
         horse: null,
         rider_id: null,
         rider_name: null,
-        class_ids: new Set(),
-        class_group_ids: new Set(),
       };
       if (existing.entry_number === undefined && entryNumber !== undefined) existing.entry_number = entryNumber;
       if (existing.horse_id === null && horseId !== null) existing.horse_id = horseId;
       if (!existing.horse && horseName) existing.horse = horseName;
       if (existing.rider_id === null && riderId !== null) existing.rider_id = riderId;
       if (!existing.rider_name && riderName) existing.rider_name = riderName;
-      if (classId !== null) existing.class_ids.add(String(classId));
-      if (rawClassGroupId !== null) existing.class_group_ids.add(String(rawClassGroupId));
-      entryById.set(entryId, existing);
+      if (existing.class_group_id === null && rawClassGroupId !== null) existing.class_group_id = rawClassGroupId;
+      entryByKey.set(entryKey, existing);
     }
   }
 
@@ -1142,39 +1143,37 @@ async function buildAuxiliaryRowsForTenant({
 
   const groupRows = [...groupById.values()].map((row) => pickWritableFields(activeGroupsFieldSet, row));
 
-  const entryRows = [...entryById.values()].map((row) => {
-    const singleClassId = row.class_ids.size === 1 ? numOrNull([...row.class_ids][0]) : null;
+  const entryRows = [...entryByKey.values()].map((row) => {
+    const singleClassId = numOrNull(row.class_id);
     const singleClass = singleClassId !== null ? classRowById.get(singleClassId) || null : null;
-    const singleClassGroupId = row.class_group_ids.size === 1
-      ? numOrNull([...row.class_group_ids][0])
-      : numOrNull(singleClass?.class_group_id);
+    const singleClassGroupId = numOrNull(row.class_group_id) ?? numOrNull(singleClass?.class_group_id);
 
     return pickWritableFields(activeEntriesFieldSet, {
-      ...(singleClassId !== null ? { class_id: singleClassId } : {}),
-      ...(singleClassGroupId !== null ? { class_group_id: singleClassGroupId } : {}),
-    key: `${heartbeat.app_show_id}|${tenantId}|${row.entry_id}`,
-    app_sid: heartbeat.app_show_id,
-    app_sql_date: heartbeat.app_sql_date,
-    shows: commonLinks.shows,
-    pid: Number(tenantId),
-    entry_id: row.entry_id,
-    entry_number: row.entry_number,
-    horse_id: row.horse_id ?? undefined,
-    horse: row.horse || undefined,
-    rider_id: row.rider_id ?? undefined,
-    rider_name: row.rider_name || undefined,
-    class_number: singleClass?.class_number,
-    class_name: singleClass?.class_name,
-    schedule_date: singleClass?.schedule_date,
-    scheduled_date: singleClass?.scheduled_date,
-    scheduled_estimated_start_time: singleClass?.scheduled_estimated_start_time,
-    watch_schedule: singleClass?.watch_schedule,
-    ww_trainers: commonLinks.ww_trainers,
-    inactive: false,
-    run_id: runId,
-    last_run: dateOnly,
-    new_entry: true,
-    pid_mismatch: false,
+      key: `${heartbeat.app_show_id}|${tenantId}|${row.entry_id}|${row.class_id}`,
+      app_sid: heartbeat.app_show_id,
+      app_sql_date: heartbeat.app_sql_date,
+      shows: commonLinks.shows,
+      pid: Number(tenantId),
+      entry_id: row.entry_id,
+      class_id: singleClassId ?? undefined,
+      class_group_id: singleClassGroupId ?? undefined,
+      entry_number: row.entry_number,
+      horse_id: row.horse_id ?? undefined,
+      horse: row.horse || undefined,
+      rider_id: row.rider_id ?? undefined,
+      rider_name: row.rider_name || undefined,
+      class_number: singleClass?.class_number,
+      class_name: singleClass?.class_name,
+      schedule_date: singleClass?.schedule_date,
+      scheduled_date: singleClass?.scheduled_date,
+      scheduled_estimated_start_time: singleClass?.scheduled_estimated_start_time,
+      watch_schedule: singleClass?.watch_schedule,
+      ww_trainers: commonLinks.ww_trainers,
+      inactive: false,
+      run_id: runId,
+      last_run: dateOnly,
+      new_entry: true,
+      pid_mismatch: false,
     });
   });
 
