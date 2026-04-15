@@ -1074,6 +1074,7 @@ async function buildAuxiliaryRowsForTenant({
       app_show_idv2: heartbeat.app_show_id,
       app_sql_datev2: heartbeat.app_sql_date,
       app_dow_rawv2: heartbeat.app_dow_raw,
+      is_today: classMatchesAppDate,
       shows: commonLinks.shows,
       pid: Number(tenantId),
       class_id: row.class_id,
@@ -1091,7 +1092,7 @@ async function buildAuxiliaryRowsForTenant({
       schedule_date: resolvedScheduleDate || undefined,
       scheduled_date: resolvedScheduleDate || undefined,
       scheduled_estimated_start_time: resolvedEstimatedStart || undefined,
-      inactive: !classMatchesAppDate,
+      inactive: false,
       run_id: runId,
       last_run: dateOnly,
       new_class_id: true,
@@ -1176,6 +1177,8 @@ async function buildAuxiliaryRowsForTenant({
 
 function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet) {
   const fields = {};
+  const resolvedScheduledDate = toIsoDateOnly(pickFirst(row.scheduled_date, row.schedule_show_datev2));
+  const isActiveForScope = resolvedScheduledDate === heartbeat.app_sql_date;
   const maybeSet = (name, value) => {
     if (!watchTripsFieldSet.has(name)) return;
     setIfPresent(fields, name, value);
@@ -1203,6 +1206,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("scope_run_id", heartbeat.scope_run_id);
   maybeSet("is_current_scope", true);
   maybeSet("scope_status", currentScopeStatus);
+  maybeSet("inactive", !isActiveForScope);
   maybeSet("last_seen_at", dateOnly);
   maybeSet("dropped_at", null);
   maybeSet("run_id", heartbeat.scope_run_id);
@@ -1229,6 +1233,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("rider_id", row.rider_id);
   maybeSet("placing", row.placing);
   maybeSet("schedule_show_datev2", row.schedule_show_datev2);
+  maybeSet("scheduled_date", resolvedScheduledDate);
   maybeSet("is_missing", false);
 
   return fields;
@@ -1244,12 +1249,18 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
   maybeSet("heartbeat", []);
   maybeSet("is_current_scope", false);
   maybeSet("scope_status", droppedScopeStatus);
+  maybeSet("inactive", true);
   maybeSet("dropped_at", dateOnly);
   maybeSet("run_id", heartbeat.scope_run_id);
   maybeSet("run_time", nowIso);
   maybeSet("last_seen_at", dateOnly);
 
   return fields;
+}
+
+function rowScheduledDateMatchesScope(row, heartbeat) {
+  const resolvedScheduledDate = toIsoDateOnly(pickFirst(row?.scheduled_date, row?.schedule_show_datev2));
+  return resolvedScheduledDate === heartbeat.app_sql_date;
 }
 
 async function main() {
@@ -1409,6 +1420,7 @@ async function main() {
       existing.app_show_idv2 = existing.app_show_idv2 ?? row.app_show_idv2;
       existing.app_sql_datev2 = existing.app_sql_datev2 ?? row.app_sql_datev2;
       existing.app_dow_rawv2 = existing.app_dow_rawv2 ?? row.app_dow_rawv2;
+      existing.is_today = Boolean(existing.is_today) || Boolean(row.is_today);
       existing.class_number = existing.class_number ?? row.class_number;
       existing.class_name = existing.class_name || row.class_name;
       existing.watch_schedule = existing.watch_schedule || row.watch_schedule;
@@ -1559,8 +1571,9 @@ async function main() {
   const createRecords = [];
   const updateRecords = [];
   const keepKeySet = new Set();
+  const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
 
-  for (const row of uniqueRows.values()) {
+  for (const row of scopedRows) {
     const key = normalizeKey(row.entryxclasses_uuid);
     if (!key) continue;
     keepKeySet.add(key);
@@ -1570,7 +1583,7 @@ async function main() {
     else createRecords.push({ fields });
   }
 
-  if (!uniqueRows.size) {
+  if (!scopedRows.length) {
     const dropUpdates = [];
     for (const row of heartbeatViewRows) {
       dropUpdates.push({
@@ -1589,6 +1602,7 @@ async function main() {
       active_tenant_ids: activeTenantIds.length,
       watch_schedule_classes: scheduleByClassId.size,
       normalized_rows: normalizedRows.length,
+      filtered_out_scheduled_date_mismatch: uniqueRows.size,
       outside_schedule_count: outsideSchedule.length,
       empty_tenant_ids: emptyTenantIds,
       tenant_summaries: tenantSummaries,
@@ -1637,7 +1651,8 @@ async function main() {
     watch_schedule_rows: scheduleRows.length,
     watch_schedule_classes: scheduleByClassId.size,
     normalized_rows: normalizedRows.length,
-    unique_rows: uniqueRows.size,
+    unique_rows: scopedRows.length,
+    filtered_out_scheduled_date_mismatch: uniqueRows.size - scopedRows.length,
     people_failures: peopleFailures,
     empty_tenant_ids: emptyTenantIds,
     tenant_summaries: tenantSummaries,
