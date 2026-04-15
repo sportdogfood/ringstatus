@@ -4,7 +4,7 @@ $env:DRY_RUN   = '0'
 $env:CALC_MODE = 'promote'
 $env:WATCH_VIEW = 'heartbeat'
 
-$repoPath = 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus'
+$repoPath = Split-Path -Parent $PSCommandPath
 $nodePath = 'C:\Program Files\nodejs\node.exe'
 $logDir   = 'C:\actions-runner\ringstatus'
 
@@ -17,7 +17,7 @@ if (-not (Test-Path $repoPath)) {
 }
 
 if (-not (Test-Path $nodePath)) {
-    throw "Node path not found: $nodePath"
+    $nodePath = 'node'
 }
 
 Set-Location $repoPath

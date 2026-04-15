@@ -4,8 +4,10 @@ setlocal
 set DRY_RUN=0
 set CALC_MODE=promote
 set WATCH_VIEW=heartbeat
-set REPO_PATH=C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus
+set REPO_PATH=%~dp0
+if "%REPO_PATH:~-1%"=="\" set REPO_PATH=%REPO_PATH:~0,-1%
 set NODE_PATH=C:\Program Files\nodejs\node.exe
+if not exist "%NODE_PATH%" set NODE_PATH=node
 
 cd /d "%REPO_PATH%" || exit /b 1
 

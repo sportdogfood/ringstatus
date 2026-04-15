@@ -8,7 +8,7 @@ $env:AIRTABLE_TABLE    = 'tblCnHDB4IVtxqulo'
 $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
 $env:CUSTOMER_ID       = '15'
 
-$repoPath = 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus'
+$repoPath = Split-Path -Parent $PSCommandPath
 $nodePath = 'C:\Program Files\nodejs\node.exe'
 $logDir   = 'C:\actions-runner\ringstatus'
 
@@ -21,7 +21,7 @@ if (-not (Test-Path $repoPath)) {
 }
 
 if (-not (Test-Path $nodePath)) {
-    throw "Node path not found: $nodePath"
+    $nodePath = 'node'
 }
 
 Set-Location $repoPath
