@@ -58,6 +58,7 @@ Register-ScheduledTask `
   Format-List MultipleInstances, Enabled
 
 notepad "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
+dir "C:\actions-runner\ringstatus\schedules-calculatorv2.log"
 
   cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
 
