@@ -35,8 +35,9 @@ function Run-Step {
 
     $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
     $allText = "[$timestamp] $Label RUN`r`n"
+    $scriptPath = Join-Path $repoPath $ScriptName
 
-    $nodeOutput = & $nodePath $ScriptName 2>&1 | Out-String
+    $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
     $allText += $nodeOutput
 
     [System.IO.File]::AppendAllText(

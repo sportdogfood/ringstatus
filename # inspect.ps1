@@ -110,3 +110,8 @@ Arguments        : -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Spor
 WorkingDirectory : C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus
 
 >>>>>>> 4412de39cbfdf4ca3faf3c1c521cdc54101fa296
+
+
+Get-ScheduledTask -TaskName 'epoch-tagger-local' |
+  Select-Object -ExpandProperty Actions |
+  Format-List Execute,Arguments,WorkingDirectory
