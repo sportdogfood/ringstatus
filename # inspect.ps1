@@ -57,6 +57,7 @@ Register-ScheduledTask `
   ForEach-Object { $_.Settings } |
   Format-List MultipleInstances, Enabled
 
+notepad "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
 
   cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
 
