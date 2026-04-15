@@ -1118,10 +1118,6 @@ async function buildAuxiliaryRowsForTenant({
       estimated_start_time: null,
       estimated_end_time: null,
       total: 0,
-      total_trips: 0,
-      schedule_date: null,
-      scheduled_date: null,
-      scheduled_estimated_start_time: null,
       inactive: false,
       run_id: runId,
       last_run: dateOnly,
@@ -1190,7 +1186,6 @@ async function buildAuxiliaryRowsForTenant({
 
 function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet) {
   const fields = {};
-  const scopeKey = `${heartbeat.app_show_id}|${heartbeat.app_sql_date}|${heartbeat.app_dow_raw}|${heartbeat.shifted_to_next_day ? 1 : 0}`;
   const maybeSet = (name, value) => {
     if (!watchTripsFieldSet.has(name)) return;
     setIfPresent(fields, name, value);
@@ -1215,7 +1210,6 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("app_sql_datev2", heartbeat.app_sql_date);
   maybeSet("app_dow_rawv2", heartbeat.app_dow_raw);
   maybeSet("shifted_to_next_dayv2", heartbeat.shifted_to_next_day);
-  maybeSet("scope_key", scopeKey);
   maybeSet("scope_run_id", heartbeat.scope_run_id);
   maybeSet("is_current_scope", true);
   maybeSet("scope_status", currentScopeStatus);
@@ -1461,12 +1455,8 @@ async function main() {
       existing.group_name = existing.group_name || strOrNull(row.group_name);
       existing.ring_number = existing.ring_number ?? numOrNull(row.ring_number);
       existing.estimated_start_time = minTimeText(existing.estimated_start_time, strOrNull(row.estimated_start_time));
-      existing.scheduled_estimated_start_time = minTimeText(existing.scheduled_estimated_start_time, strOrNull(row.scheduled_estimated_start_time));
       existing.estimated_end_time = maxTimeText(existing.estimated_end_time, strOrNull(row.estimated_end_time));
-      existing.schedule_date = existing.schedule_date || toIsoDateOnly(row.schedule_date);
-      existing.scheduled_date = existing.scheduled_date || toIsoDateOnly(row.scheduled_date);
       existing.total = (numOrNull(existing.total) ?? 0) + (numOrNull(row.total) ?? 0);
-      existing.total_trips = (numOrNull(existing.total_trips) ?? 0) + (numOrNull(row.total_trips) ?? 0);
     }
 
     const perTenantNormalized = normalizeTripsForScope({
