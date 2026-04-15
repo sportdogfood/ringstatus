@@ -408,7 +408,7 @@ async function fetchActiveTenantRows() {
   const rows = await airtableList(TABLE_ACTIVE_TENANTS, {
     view: VIEW_ACTIVE_TENANTS,
     pageSize: 100,
-    "fields[]": ["tenant_id", "tenant_active", "record_id"],
+    "fields[]": ["tenant_id", "tenant_active"],
   });
 
   return rows
@@ -740,6 +740,7 @@ function buildAuxiliaryRowsForTenant({
   showRecordId,
   runId,
   nowIso,
+  dateOnly,
   scheduleByClassId,
   activeClassesFieldSet,
   activeEntriesFieldSet,
@@ -828,7 +829,7 @@ function buildAuxiliaryRowsForTenant({
     ww_trainers: commonLinks.ww_trainers,
     inactive: false,
     run_id: runId,
-    last_run: nowIso,
+    last_run: dateOnly,
     new_rider: true,
     pid_mismatch: false,
   }));
@@ -847,7 +848,7 @@ function buildAuxiliaryRowsForTenant({
     entry_number: row.entry_number,
     inactive: false,
     run_id: runId,
-    last_run: nowIso,
+    last_run: dateOnly,
     new_horse: true,
     pid_mismatch: false,
   }));
@@ -866,7 +867,7 @@ function buildAuxiliaryRowsForTenant({
       watch_schedule: schedule?.recordId ? linkOne(schedule.recordId) : undefined,
       inactive: false,
       run_id: runId,
-      last_run: nowIso,
+      last_run: dateOnly,
       new_class_id: true,
       pid_mismatch: false,
     });
@@ -887,7 +888,7 @@ function buildAuxiliaryRowsForTenant({
     ww_trainers: commonLinks.ww_trainers,
     inactive: false,
     run_id: runId,
-    last_run: nowIso,
+    last_run: dateOnly,
     new_entry: true,
     pid_mismatch: false,
   }));
@@ -984,36 +985,42 @@ async function main() {
 
   const nowIso = new Date().toISOString();
   const dateOnly = nowIso.slice(0, 10);
+  const runId = buildNumericRunId(nowIso);
 
   const heartbeat = await fetchLatestHeartbeat();
-  const [watchTripsFieldSet, scopeStatusChoices, showRecordId, scheduleRows, activeTenantRows] = await Promise.all([
+  const [
+    watchTripsFieldSet,
+    scopeStatusChoices,
+    showRecordId,
+    scheduleRows,
+    activeTenantRows,
+    wwTrainerRecordIdByPid,
+    activeClassesFieldSet,
+    activeEntriesFieldSet,
+    wwRidersFieldSet,
+    wwHorsesFieldSet,
+  ] = await Promise.all([
     fetchTableFieldSet(TABLE_WATCH_TRIPS),
     fetchScopeStatusChoices(TABLE_WATCH_TRIPS).catch(() => new Set()),
     fetchShowRecordId(heartbeat.app_show_id).catch(() => null),
     fetchWatchScheduleRows(),
     fetchActiveTenantRows(),
+    fetchWwTrainerRecordIdByPid().catch(() => new Map()),
+    fetchTableFieldSet(TABLE_ACTIVE_CLASSES),
+    fetchTableFieldSet(TABLE_ACTIVE_ENTRIES),
+    fetchTableFieldSet(TABLE_WW_RIDERS),
+    fetchTableFieldSet(TABLE_WW_HORSES),
   ]);
 
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
-
   const scheduleByClassId = buildScheduleMap(scheduleRows);
-  if (!scheduleByClassId.size) {
-    console.log(JSON.stringify({
-      ok: true,
-      run_status: "NOOP",
-      reason: "No watch_schedule rows found in heartbeat view",
-      app_show_id: heartbeat.app_show_id,
-      app_sql_date: heartbeat.app_sql_date,
-    }));
-    return;
+  const activeTenantMap = new Map();
+  for (const row of activeTenantRows) {
+    if (!row?.tenant_id || activeTenantMap.has(row.tenant_id)) continue;
+    activeTenantMap.set(row.tenant_id, row);
   }
-
-  const activeTenantIds = [...new Set(
-    activeTenantRows
-      .map((row) => row.tenant_id)
-      .filter(Boolean)
-  )];
+  const activeTenantIds = [...activeTenantMap.keys()];
 
   if (!activeTenantIds.length) {
     console.log(JSON.stringify({
@@ -1026,32 +1033,157 @@ async function main() {
     return;
   }
 
-  const peoplePayloads = new Map();
   const peopleFailures = [];
-  await runPool(activeTenantIds, FETCH_CONCURRENCY, async (tenantId) => {
-    const url = `${BASE_URL}/people/${encodeURIComponent(tenantId)}?pid=${encodeURIComponent(tenantId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  const tenantSummaries = [];
+  const normalizedRows = [];
+  const outsideSchedule = [];
+  const uniqueRows = new Map();
+
+  for (const tenantId of activeTenantIds) {
+    const tenantRow = activeTenantMap.get(tenantId) || null;
+    const endpoint = buildPeopleEndpoint(tenantId, heartbeat);
+    let payload = null;
     try {
-      const payload = await fetchJson(url);
-      peoplePayloads.set(tenantId, payload);
+      payload = await fetchJson(endpoint);
     } catch (error) {
       peopleFailures.push({
         tenant_id: tenantId,
-        endpoint: url,
+        endpoint,
         reason: String(error?.message || error).slice(0, 300)
       });
-      peoplePayloads.set(tenantId, null);
+      tenantSummaries.push({
+        tenant_id: tenantId,
+        endpoint,
+        status: "fetch_failed",
+      });
+      continue;
     }
-  });
 
-  const normalizedResult = normalizeTripsForScope({
-    sourceIds: activeTenantIds,
-    peoplePayloads,
-    scheduleByClassId,
-  });
-  const normalizedRows = normalizedResult.normalized_rows;
-  const outsideSchedule = normalizedResult.outside_schedule;
-  const uniqueRows = normalizedResult.unique_rows_by_key;
-  const emptyTenantIds = normalizedResult.empty_source_ids || [];
+    const peopleShowId = extractPeopleShowId(payload);
+    if (peopleShowId !== null && peopleShowId !== heartbeat.app_show_id) {
+      peopleFailures.push({
+        tenant_id: tenantId,
+        endpoint,
+        reason: `people_show_id_conflict:${peopleShowId}`,
+      });
+      tenantSummaries.push({
+        tenant_id: tenantId,
+        endpoint,
+        status: "show_id_conflict",
+        people_show_id: peopleShowId,
+      });
+      continue;
+    }
+
+    const wwTrainerRecordId = wwTrainerRecordIdByPid.get(String(tenantId)) || null;
+    const auxiliaryRows = buildAuxiliaryRowsForTenant({
+      payload,
+      tenantId,
+      activeTenantRecordId: tenantRow?.recordId || null,
+      wwTrainerRecordId,
+      heartbeat,
+      showRecordId,
+      runId,
+      nowIso,
+      dateOnly,
+      scheduleByClassId,
+      activeClassesFieldSet,
+      activeEntriesFieldSet,
+      wwRidersFieldSet,
+      wwHorsesFieldSet,
+    });
+
+    const riderSync = await upsertByNumberId({
+      tableName: TABLE_WW_RIDERS,
+      fieldSet: wwRidersFieldSet,
+      fieldId: "rider_id",
+      fieldPid: "pid",
+      fieldInactive: "inactive",
+      fieldRunId: "run_id",
+      fieldLastRun: "last_run",
+      fieldNewFlag: "new_rider",
+      fieldPidMismatch: "pid_mismatch",
+      rows: auxiliaryRows.riderRows,
+    });
+
+    const horseSync = await upsertByNumberId({
+      tableName: TABLE_WW_HORSES,
+      fieldSet: wwHorsesFieldSet,
+      fieldId: "horse_id",
+      fieldPid: "pid",
+      fieldInactive: "inactive",
+      fieldRunId: "run_id",
+      fieldLastRun: "last_run",
+      fieldNewFlag: "new_horse",
+      fieldPidMismatch: "pid_mismatch",
+      rows: auxiliaryRows.horseRows,
+    });
+
+    const classSync = await upsertActiveByKey({
+      tableName: TABLE_ACTIVE_CLASSES,
+      fieldSet: activeClassesFieldSet,
+      fieldKey: "key",
+      fieldPid: "pid",
+      fieldAppSid: "app_sid",
+      fieldInactive: "inactive",
+      fieldRunId: "run_id",
+      fieldLastRun: "last_run",
+      fieldNewFlag: "new_class_id",
+      fieldPidMismatch: "pid_mismatch",
+      rows: auxiliaryRows.classRows,
+      scopePid: Number(tenantId),
+      scopeAppSid: heartbeat.app_show_id,
+      runId,
+      lastRun: dateOnly,
+    });
+
+    const entrySync = await upsertActiveByKey({
+      tableName: TABLE_ACTIVE_ENTRIES,
+      fieldSet: activeEntriesFieldSet,
+      fieldKey: "key",
+      fieldPid: "pid",
+      fieldAppSid: "app_sid",
+      fieldInactive: "inactive",
+      fieldRunId: "run_id",
+      fieldLastRun: "last_run",
+      fieldNewFlag: "new_entry",
+      fieldPidMismatch: "pid_mismatch",
+      rows: auxiliaryRows.entryRows,
+      scopePid: Number(tenantId),
+      scopeAppSid: heartbeat.app_show_id,
+      runId,
+      lastRun: dateOnly,
+    });
+
+    const perTenantNormalized = normalizeTripsForScope({
+      sourceIds: [tenantId],
+      peoplePayloads: new Map([[tenantId, payload]]),
+      scheduleByClassId,
+    });
+
+    normalizedRows.push(...perTenantNormalized.normalized_rows);
+    outsideSchedule.push(...perTenantNormalized.outside_schedule);
+    for (const [key, row] of perTenantNormalized.unique_rows_by_key.entries()) {
+      if (!uniqueRows.has(key)) uniqueRows.set(key, row);
+    }
+
+    tenantSummaries.push({
+      tenant_id: tenantId,
+      endpoint,
+      trip_count: auxiliaryRows.tripCount,
+      empty_payload: auxiliaryRows.tripCount === 0,
+      watch_trip_rows: perTenantNormalized.unique_row_count,
+      outside_schedule_count: perTenantNormalized.outside_schedule.length,
+      rider_sync: riderSync,
+      horse_sync: horseSync,
+      class_sync: classSync,
+      entry_sync: entrySync,
+    });
+  }
+
+  const emptyTenantIds = tenantSummaries
+    .filter((item) => item.empty_payload)
+    .map((item) => item.tenant_id);
 
   const existingRows = await fetchExistingTripsForShow(heartbeat.app_show_id);
   const heartbeatViewRows = await fetchHeartbeatViewTripRows().catch(() => []);
@@ -1098,6 +1230,7 @@ async function main() {
       normalized_rows: normalizedRows.length,
       outside_schedule_count: outsideSchedule.length,
       empty_tenant_ids: emptyTenantIds,
+      tenant_summaries: tenantSummaries,
       people_failures: peopleFailures,
     }, null, 2));
     return;
@@ -1128,6 +1261,7 @@ async function main() {
     unique_rows: uniqueRows.size,
     people_failures: peopleFailures,
     empty_tenant_ids: emptyTenantIds,
+    tenant_summaries: tenantSummaries,
     outside_schedule_count: outsideSchedule.length,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
