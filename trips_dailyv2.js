@@ -14,11 +14,10 @@ const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants";
-const TABLE_WW_TRAINERS = process.env.TABLE_WW_TRAINERS || "ww_trainers";
 
 const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "heartbeat";
 const VIEW_WATCH_TRIPS = process.env.VIEW_WATCH_TRIPS || "heartbeat";
-const VIEW_ACTIVE_TENANTS = process.env.VIEW_ACTIVE_TENANTS || "heartbeat";
+const VIEW_ACTIVE_TENANTS = process.env.VIEW_ACTIVE_TENANTS || "active_tenants";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
@@ -403,30 +402,14 @@ async function fetchActiveTenantRows() {
   const rows = await airtableList(TABLE_ACTIVE_TENANTS, {
     view: VIEW_ACTIVE_TENANTS,
     pageSize: 100,
-    "fields[]": ["pid", "tenant_active", "heartbeat", "ww_trainers"],
+    "fields[]": ["tenant_id", "tenant_active"],
   });
 
   return rows
     .filter((row) => boolValue(row?.fields?.tenant_active))
     .map((row) => ({
-      tenant_pid: normalizePidToken(row?.fields?.pid),
-      trainer_links: Array.isArray(row?.fields?.ww_trainers)
-        ? row.fields.ww_trainers.map((id) => String(id).trim()).filter(Boolean)
-        : [],
+      tenant_id: normalizePidToken(row?.fields?.tenant_id),
     }));
-}
-
-async function fetchWwTrainerPidByRecordId() {
-  const rows = await airtableList(TABLE_WW_TRAINERS, {
-    pageSize: 100,
-    "fields[]": ["pid"],
-  });
-
-  return new Map(
-    rows
-      .map((row) => [row.id, normalizePidToken(row?.fields?.pid)])
-      .filter(([, pid]) => Boolean(pid))
-  );
 }
 
 async function fetchExistingTripsForShow(appShowId) {
@@ -591,13 +574,12 @@ async function main() {
   const dateOnly = nowIso.slice(0, 10);
 
   const heartbeat = await fetchLatestHeartbeat();
-  const [watchTripsFieldSet, scopeStatusChoices, showRecordId, scheduleRows, activeTenantRows, wwTrainerPidByRecordId] = await Promise.all([
+  const [watchTripsFieldSet, scopeStatusChoices, showRecordId, scheduleRows, activeTenantRows] = await Promise.all([
     fetchTableFieldSet(TABLE_WATCH_TRIPS),
     fetchScopeStatusChoices(TABLE_WATCH_TRIPS).catch(() => new Set()),
     fetchShowRecordId(heartbeat.app_show_id).catch(() => null),
     fetchWatchScheduleRows(),
     fetchActiveTenantRows(),
-    fetchWwTrainerPidByRecordId(),
   ]);
 
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
@@ -615,21 +597,17 @@ async function main() {
     return;
   }
 
-  const activeTenantPids = [...new Set(
-    activeTenantRows.flatMap((row) => {
-      const trainerPids = row.trainer_links
-        .map((id) => wwTrainerPidByRecordId.get(id) || "")
-        .filter(Boolean);
-      if (trainerPids.length) return trainerPids;
-      return row.tenant_pid ? [row.tenant_pid] : [];
-    })
+  const activeTenantIds = [...new Set(
+    activeTenantRows
+      .map((row) => row.tenant_id)
+      .filter(Boolean)
   )];
 
-  if (!activeTenantPids.length) {
+  if (!activeTenantIds.length) {
     console.log(JSON.stringify({
       ok: true,
       run_status: "NOOP",
-      reason: "No trainer pids found from active_tenants heartbeat view",
+      reason: "No active tenant_id values found from active_tenants view",
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
     }));
@@ -638,25 +616,30 @@ async function main() {
 
   const peoplePayloads = new Map();
   const peopleFailures = [];
-  await runPool(activeTenantPids, FETCH_CONCURRENCY, async (pid) => {
-    const url = `${BASE_URL}/people/${encodeURIComponent(pid)}?pid=${encodeURIComponent(pid)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  await runPool(activeTenantIds, FETCH_CONCURRENCY, async (tenantId) => {
+    const url = `${BASE_URL}/people/${encodeURIComponent(tenantId)}?pid=${encodeURIComponent(tenantId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
     try {
       const payload = await fetchJson(url);
-      peoplePayloads.set(pid, payload);
+      peoplePayloads.set(tenantId, payload);
     } catch (error) {
-      peopleFailures.push({ pid, reason: String(error?.message || error).slice(0, 300) });
-      peoplePayloads.set(pid, null);
+      peopleFailures.push({
+        tenant_id: tenantId,
+        endpoint: url,
+        reason: String(error?.message || error).slice(0, 300)
+      });
+      peoplePayloads.set(tenantId, null);
     }
   });
 
   const normalizedResult = normalizeTripsForScope({
-    trainerPids: activeTenantPids,
+    sourceIds: activeTenantIds,
     peoplePayloads,
     scheduleByClassId,
   });
   const normalizedRows = normalizedResult.normalized_rows;
   const outsideSchedule = normalizedResult.outside_schedule;
   const uniqueRows = normalizedResult.unique_rows_by_key;
+  const emptyTenantIds = normalizedResult.empty_source_ids || [];
 
   const existingRows = await fetchExistingTripsForShow(heartbeat.app_show_id);
   const heartbeatViewRows = await fetchHeartbeatViewTripRows().catch(() => []);
@@ -698,10 +681,11 @@ async function main() {
       reason: "No people trips matched current watch_schedule class ids",
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
-      active_tenant_pids: activeTenantPids.length,
+      active_tenant_ids: activeTenantIds.length,
       watch_schedule_classes: scheduleByClassId.size,
       normalized_rows: normalizedRows.length,
       outside_schedule_count: outsideSchedule.length,
+      empty_tenant_ids: emptyTenantIds,
       people_failures: peopleFailures,
     }, null, 2));
     return;
@@ -725,12 +709,13 @@ async function main() {
     app_dow_raw: heartbeat.app_dow_raw,
     shifted_to_next_day: heartbeat.shifted_to_next_day,
     mode: heartbeat.mode,
-    active_tenant_pids: activeTenantPids.length,
+    active_tenant_ids: activeTenantIds.length,
     watch_schedule_rows: scheduleRows.length,
     watch_schedule_classes: scheduleByClassId.size,
     normalized_rows: normalizedRows.length,
     unique_rows: uniqueRows.size,
     people_failures: peopleFailures,
+    empty_tenant_ids: emptyTenantIds,
     outside_schedule_count: outsideSchedule.length,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,

@@ -118,16 +118,20 @@ function normalizePeopleTripRow(raw, ownerPid) {
   };
 }
 
-function normalizeTripsForScope({ trainerPids = [], peoplePayloads = new Map(), scheduleByClassId = new Map() }) {
+function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloads = new Map(), scheduleByClassId = new Map() }) {
+  const effectiveSourceIds = Array.isArray(sourceIds) && sourceIds.length ? sourceIds : trainerPids;
   const normalizedRows = [];
   const outsideSchedule = [];
   const uniqueRows = new Map();
+  const sourceRowCounts = {};
+  const emptySourceIds = [];
 
-  for (const pid of trainerPids) {
-    const payload = peoplePayloads.get(pid);
+  for (const sourceId of effectiveSourceIds) {
+    const payload = peoplePayloads.get(sourceId);
     const candidates = collectTripCandidates(payload);
+    let keptCount = 0;
     for (const raw of candidates) {
-      const trip = normalizePeopleTripRow(raw, pid);
+      const trip = normalizePeopleTripRow(raw, sourceId);
       if (!trip) continue;
       const schedule = scheduleByClassId.get(String(trip.class_id));
       if (!schedule) {
@@ -162,9 +166,12 @@ function normalizeTripsForScope({ trainerPids = [], peoplePayloads = new Map(), 
       };
 
       normalizedRows.push(row);
+      keptCount += 1;
       const key = normalizeKey(row.entryxclasses_uuid);
       if (key && !uniqueRows.has(key)) uniqueRows.set(key, row);
     }
+    sourceRowCounts[String(sourceId)] = keptCount;
+    if (candidates.length === 0) emptySourceIds.push(String(sourceId));
   }
 
   return {
@@ -173,6 +180,8 @@ function normalizeTripsForScope({ trainerPids = [], peoplePayloads = new Map(), 
     unique_rows_by_key: uniqueRows,
     row_count: normalizedRows.length,
     unique_row_count: uniqueRows.size,
+    source_row_counts: sourceRowCounts,
+    empty_source_ids: emptySourceIds,
   };
 }
 
