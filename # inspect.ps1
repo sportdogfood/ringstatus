@@ -1,3 +1,352 @@
+Information	4/15/2026 2:52:30 PM	102	Task completed	(2)	df11fc63-7b20-4964-8bbe-aa6b8bb231c3
+Information	4/15/2026 2:52:30 PM	201	Action completed	(2)	df11fc63-7b20-4964-8bbe-aa6b8bb231c3
+Information	4/15/2026 2:52:30 PM	102	Task completed	(2)	5c96b1dd-1d83-494d-9279-6daa391c3073
+Information	4/15/2026 2:52:30 PM	201	Action completed	(2)	5c96b1dd-1d83-494d-9279-6daa391c3073
+Information	4/15/2026 2:52:30 PM	110	Task triggered by user	Info	5c96b1dd-1d83-494d-9279-6daa391c3073
+Information	4/15/2026 2:52:30 PM	200	Action started	(1)	5c96b1dd-1d83-494d-9279-6daa391c3073
+Information	4/15/2026 2:52:30 PM	100	Task Started	(1)	5c96b1dd-1d83-494d-9279-6daa391c3073
+Information	4/15/2026 2:52:30 PM	129	Created Task Process	Info	
+Information	4/15/2026 2:52:29 PM	110	Task triggered by user	Info	df11fc63-7b20-4964-8bbe-aa6b8bb231c3
+Information	4/15/2026 2:52:29 PM	200	Action started	(1)	df11fc63-7b20-4964-8bbe-aa6b8bb231c3
+Information	4/15/2026 2:52:29 PM	100	Task Started	(1)	df11fc63-7b20-4964-8bbe-aa6b8bb231c3
+Information	4/15/2026 2:52:29 PM	129	Created Task Process	Info	
+
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      110
+Task Category: Task triggered by user
+Level:         Information
+Keywords:      
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler launched "{5c96b1dd-1d83-494d-9279-6daa391c3073}"  instance of task "\epoch-tagger-local"  for user "gombc" .
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>110</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>110</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.1854167Z" />
+    <EventRecordID>9962</EventRecordID>
+    <Correlation ActivityID="{5c96b1dd-1d83-494d-9279-6daa391c3073}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="TaskRunEvent">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="InstanceId">{5c96b1dd-1d83-494d-9279-6daa391c3073}</Data>
+    <Data Name="UserContext">gombc</Data>
+  </EventData>
+</Event>
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      129
+Task Category: Created Task Process
+Level:         Information
+Keywords:      
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler launch task "\epoch-tagger-local" , instance "C:\Windows\System32\cmd.exe"  with process ID 11652.
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>129</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>129</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.1840740Z" />
+    <EventRecordID>9959</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="CreatedTaskProcess">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="Path">C:\Windows\System32\cmd.exe</Data>
+    <Data Name="ProcessID">11652</Data>
+    <Data Name="Priority">16384</Data>
+  </EventData>
+</Event>
+
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      100
+Task Category: Task Started
+Level:         Information
+Keywords:      (1)
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler started "{5c96b1dd-1d83-494d-9279-6daa391c3073}" instance of the "\epoch-tagger-local" task for user "LAPTOP-4JTHU84J\gombc".
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>100</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>100</Task>
+    <Opcode>1</Opcode>
+    <Keywords>0x8000000000000001</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.1847647Z" />
+    <EventRecordID>9960</EventRecordID>
+    <Correlation ActivityID="{5c96b1dd-1d83-494d-9279-6daa391c3073}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="TaskStartEvent">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="UserContext">LAPTOP-4JTHU84J\gombc</Data>
+    <Data Name="InstanceId">{5c96b1dd-1d83-494d-9279-6daa391c3073}</Data>
+  </EventData>
+</Event>
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      200
+Task Category: Action started
+Level:         Information
+Keywords:      
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler launched action "C:\Windows\System32\cmd.exe" in instance "{5c96b1dd-1d83-494d-9279-6daa391c3073}" of task "\epoch-tagger-local".
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>200</EventID>
+    <Version>1</Version>
+    <Level>4</Level>
+    <Task>200</Task>
+    <Opcode>1</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.1847725Z" />
+    <EventRecordID>9961</EventRecordID>
+    <Correlation ActivityID="{5c96b1dd-1d83-494d-9279-6daa391c3073}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="ActionStart">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="ActionName">C:\Windows\System32\cmd.exe</Data>
+    <Data Name="TaskInstanceId">{5c96b1dd-1d83-494d-9279-6daa391c3073}</Data>
+    <Data Name="EnginePID">11652</Data>
+  </EventData>
+</Event>
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      110
+Task Category: Task triggered by user
+Level:         Information
+Keywords:      
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler launched "{5c96b1dd-1d83-494d-9279-6daa391c3073}"  instance of task "\epoch-tagger-local"  for user "gombc" .
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>110</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>110</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.1854167Z" />
+    <EventRecordID>9962</EventRecordID>
+    <Correlation ActivityID="{5c96b1dd-1d83-494d-9279-6daa391c3073}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="TaskRunEvent">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="InstanceId">{5c96b1dd-1d83-494d-9279-6daa391c3073}</Data>
+    <Data Name="UserContext">gombc</Data>
+  </EventData>
+</Event>
+
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      201
+Task Category: Action completed
+Level:         Information
+Keywords:      
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler successfully completed task "\epoch-tagger-local" , instance "{5c96b1dd-1d83-494d-9279-6daa391c3073}" , action "C:\Windows\System32\cmd.exe" with return code 2147942401.
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>201</EventID>
+    <Version>2</Version>
+    <Level>4</Level>
+    <Task>201</Task>
+    <Opcode>2</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.6621179Z" />
+    <EventRecordID>9963</EventRecordID>
+    <Correlation ActivityID="{5c96b1dd-1d83-494d-9279-6daa391c3073}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="ActionSuccess">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="TaskInstanceId">{5c96b1dd-1d83-494d-9279-6daa391c3073}</Data>
+    <Data Name="ActionName">C:\Windows\System32\cmd.exe</Data>
+    <Data Name="ResultCode">2147942401</Data>
+    <Data Name="EnginePID">11652</Data>
+  </EventData>
+</Event>
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      102
+Task Category: Task completed
+Level:         Information
+Keywords:      (1)
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler successfully finished "{5c96b1dd-1d83-494d-9279-6daa391c3073}" instance of the "\epoch-tagger-local" task for user "LAPTOP-4JTHU84J\gombc".
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>102</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>102</Task>
+    <Opcode>2</Opcode>
+    <Keywords>0x8000000000000001</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.6627472Z" />
+    <EventRecordID>9964</EventRecordID>
+    <Correlation ActivityID="{5c96b1dd-1d83-494d-9279-6daa391c3073}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="TaskSuccessEvent">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="UserContext">LAPTOP-4JTHU84J\gombc</Data>
+    <Data Name="InstanceId">{5c96b1dd-1d83-494d-9279-6daa391c3073}</Data>
+  </EventData>
+</Event>
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      201
+Task Category: Action completed
+Level:         Information
+Keywords:      
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler successfully completed task "\epoch-tagger-local" , instance "{df11fc63-7b20-4964-8bbe-aa6b8bb231c3}" , action "C:\Windows\System32\cmd.exe" with return code 2147942401.
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>201</EventID>
+    <Version>2</Version>
+    <Level>4</Level>
+    <Task>201</Task>
+    <Opcode>2</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.6742718Z" />
+    <EventRecordID>9965</EventRecordID>
+    <Correlation ActivityID="{df11fc63-7b20-4964-8bbe-aa6b8bb231c3}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="ActionSuccess">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="TaskInstanceId">{df11fc63-7b20-4964-8bbe-aa6b8bb231c3}</Data>
+    <Data Name="ActionName">C:\Windows\System32\cmd.exe</Data>
+    <Data Name="ResultCode">2147942401</Data>
+    <Data Name="EnginePID">19292</Data>
+  </EventData>
+</Event>
+
+
+Log Name:      Microsoft-Windows-TaskScheduler/Operational
+Source:        Microsoft-Windows-TaskScheduler
+Date:          4/15/2026 2:52:30 PM
+Event ID:      102
+Task Category: Task completed
+Level:         Information
+Keywords:      (1)
+User:          SYSTEM
+Computer:      LAPTOP-4JTHU84J
+Description:
+Task Scheduler successfully finished "{df11fc63-7b20-4964-8bbe-aa6b8bb231c3}" instance of the "\epoch-tagger-local" task for user "LAPTOP-4JTHU84J\gombc".
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{de7b24ea-73c8-4a09-985d-5bdadcfa9017}" />
+    <EventID>102</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>102</Task>
+    <Opcode>2</Opcode>
+    <Keywords>0x8000000000000001</Keywords>
+    <TimeCreated SystemTime="2026-04-15T18:52:30.6747953Z" />
+    <EventRecordID>9966</EventRecordID>
+    <Correlation ActivityID="{df11fc63-7b20-4964-8bbe-aa6b8bb231c3}" />
+    <Execution ProcessID="3272" ThreadID="19800" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>LAPTOP-4JTHU84J</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData Name="TaskSuccessEvent">
+    <Data Name="TaskName">\epoch-tagger-local</Data>
+    <Data Name="UserContext">LAPTOP-4JTHU84J\gombc</Data>
+    <Data Name="InstanceId">{df11fc63-7b20-4964-8bbe-aa6b8bb231c3}</Data>
+  </EventData>
+</Event>
+
+
+
 # inspect
 Get-ScheduledTask -TaskName 'epoch-tagger-local' |
   ForEach-Object { $_.Settings } |
