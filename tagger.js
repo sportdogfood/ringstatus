@@ -2,9 +2,9 @@
 // 3 modes only: DAY / NIGHT / OVERNIGHT
 // - raw clock always comes from endpoint, or system time with a bounded last-known show fallback
 // - mode logic is based only on app_time as provided by the endpoint/system fallback
-// - DAY:        app_show_id = raw show_id, app_sql_date = raw sql_date, shifted_to_next_day = false
-// - NIGHT:      app_show_id = raw show_id, app_sql_date = next day,   shifted_to_next_day = true
-// - OVERNIGHT:  app_show_id = raw show_id, app_sql_date = raw sql_date, shifted_to_next_day = false
+// - DAY/NIGHT/OVERNIGHT first produce a candidate app_sql_date from raw sql_date
+// - candidate app_sql_date may then be overridden to the schedule default day from /schedule?date=00/00/00
+// - heartbeat owns the final app_sql_date, app_dow_raw, shifted_to_next_day, and app-date provenance fields
 // - shows table: match by show_id/app_show_id or create if missing
 // - shows table heartbeat link is overwritten to latest heartbeat only
 // - new_app_show_id is checked only when a new show row is created
@@ -48,6 +48,12 @@ const FIELD_APP_SQL_DATE     = process.env.FIELD_APP_SQL_DATE || "app_sql_date";
 const FIELD_APP_DOW_RAW      = process.env.FIELD_APP_DOW_RAW || "app_dow_raw";
 const FIELD_DOW_RAW          = process.env.FIELD_DOW_RAW || "dow_raw";
 const FIELD_SHIFTED_NEXT_DAY = process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
+const FIELD_SET_TO_DEFAULT_APP_SQL_DATE = process.env.FIELD_SET_TO_DEFAULT_APP_SQL_DATE || "set_to_default_app_sql_date";
+const FIELD_DEFAULT_APP_SQL_DATE_IS = process.env.FIELD_DEFAULT_APP_SQL_DATE_IS || "default_app_sql_date_is";
+const FIELD_SHOW_APP_SQL_START_DATE = process.env.FIELD_SHOW_APP_SQL_START_DATE || "show_app_sql_start_date";
+const FIELD_SHOW_APP_SQL_END_DATE = process.env.FIELD_SHOW_APP_SQL_END_DATE || "show_app_sql_end_date";
+const FIELD_SHOW_APP_NAME = process.env.FIELD_SHOW_APP_NAME || "show_app_name";
+const FIELD_APP_SQL_DATE_SOURCE = process.env.FIELD_APP_SQL_DATE_SOURCE || "app_sql_date_source";
 
 const HEARTBEAT_ID_FIELD   = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
 const HEARTBEAT_SHOW_ID    = process.env.HEARTBEAT_SHOW_ID || "show_id";
@@ -106,9 +112,36 @@ function hasValue(v) {
   return !(v === null || v === undefined || String(v).trim() === "");
 }
 
+function isBlank(v) {
+  return !hasValue(v) ||
+    String(v).trim().toLowerCase() === "null" ||
+    String(v).trim().toLowerCase() === "nan";
+}
+
+function strOrNull(v) {
+  return isBlank(v) ? null : String(v).trim();
+}
+
 function toFiniteNumber(v) {
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
+}
+
+function pickFirst(...values) {
+  for (const value of values) {
+    if (!isBlank(value)) return value;
+  }
+  return undefined;
+}
+
+function toIsoDateOnly(value) {
+  if (isBlank(value)) return null;
+  if (value instanceof Date) return value.toISOString().slice(0, 10);
+  const text = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+  if (/^\d{4}-\d{2}-\d{2}T/.test(text)) return text.slice(0, 10);
+  const parsed = Date.parse(text);
+  return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
 }
 
 function loadRuntimeState() {
@@ -391,6 +424,17 @@ async function fetchWithRetry(url, opts = {}, retry = {}) {
   throw lastErr || new Error("fetchWithRetry failed");
 }
 
+async function fetchJson(url) {
+  const res = await fetchWithRetry(url, { method: "GET" });
+  const txt = await res.text();
+  let json = {};
+  try { json = JSON.parse(txt); } catch {}
+  if (!res.ok) {
+    throw new Error(`Fetch failed (${res.status}): ${txt.slice(0, 300)}`);
+  }
+  return json;
+}
+
 async function airtableListAll({ table, view, fields }) {
   const out = [];
   let offset = null;
@@ -583,6 +627,53 @@ function addDaysSql(sqlDate, days) {
   return d.toISOString().slice(0, 10);
 }
 
+function compareSqlDate(left, right) {
+  const a = toIsoDateOnly(left);
+  const b = toIsoDateOnly(right);
+  if (!a || !b) return 0;
+  if (a < b) return -1;
+  if (a > b) return 1;
+  return 0;
+}
+
+function buildScheduleEmptyEndpoint(appShowId) {
+  if (isBlank(appShowId)) return null;
+  return `https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+}
+
+function extractScheduleDefaultInfo(payload) {
+  const show = payload?.show && typeof payload.show === "object" ? payload.show : {};
+  const showAppName = strOrNull(pickFirst(show.show_name, payload?.show_name));
+  const showAppSqlStartDate = toIsoDateOnly(pickFirst(show.start_date, payload?.start_date));
+  const showAppSqlEndDate = toIsoDateOnly(pickFirst(show.end_date, payload?.end_date));
+  const defaultAppSqlDateIs = toIsoDateOnly(pickFirst(payload?.show_date, payload?.showDate));
+  const validDates = Array.isArray(payload?.show_days_list)
+    ? payload.show_days_list.map((item) => toIsoDateOnly(item?.date)).filter(Boolean)
+    : [];
+
+  return {
+    showAppName,
+    showAppSqlStartDate,
+    showAppSqlEndDate,
+    defaultAppSqlDateIs,
+    validDates,
+  };
+}
+
+function isValidAppSqlDate(candidateDate, scheduleInfo) {
+  if (!candidateDate) return false;
+  if (Array.isArray(scheduleInfo?.validDates) && scheduleInfo.validDates.length) {
+    return scheduleInfo.validDates.includes(candidateDate);
+  }
+  if (scheduleInfo?.showAppSqlStartDate && compareSqlDate(candidateDate, scheduleInfo.showAppSqlStartDate) < 0) {
+    return false;
+  }
+  if (scheduleInfo?.showAppSqlEndDate && compareSqlDate(candidateDate, scheduleInfo.showAppSqlEndDate) > 0) {
+    return false;
+  }
+  return true;
+}
+
 function normalizeMode(v) {
   const s = String(v ?? "").trim().toUpperCase();
   if (s === "DAY" || s === "NIGHT" || s === "OVERNIGHT") return s;
@@ -726,19 +817,56 @@ async function buildAppContext(clock, mode) {
   let appShowId = clock.showId ?? null;
   let appSqlDate = clock.sqlDate;
   let shiftedToNextDay = false;
+  let candidateAppSqlDate = clock.sqlDate;
+  let setToDefaultAppSqlDate = false;
+  let defaultAppSqlDateIs = null;
+  let showAppSqlStartDate = null;
+  let showAppSqlEndDate = null;
+  let showAppName = null;
+  let appSqlDateSource = mode === "NIGHT" ? "night_shift" : "raw_day";
 
   if (mode === "DAY") {
     appShowId = clock.showId ?? null;
-    appSqlDate = clock.sqlDate;
+    candidateAppSqlDate = clock.sqlDate;
+    appSqlDate = candidateAppSqlDate;
     shiftedToNextDay = false;
   } else if (mode === "NIGHT") {
     appShowId = clock.showId ?? null;
-    appSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
+    candidateAppSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
+    appSqlDate = candidateAppSqlDate;
     shiftedToNextDay = true;
   } else if (mode === "OVERNIGHT") {
     appShowId = clock.showId ?? null;
-    appSqlDate = clock.sqlDate;
+    candidateAppSqlDate = clock.sqlDate;
+    appSqlDate = candidateAppSqlDate;
     shiftedToNextDay = false;
+  }
+
+  const emptyScheduleEndpoint = buildScheduleEmptyEndpoint(appShowId);
+  if (emptyScheduleEndpoint) {
+    try {
+      const emptySchedulePayload = await fetchJson(emptyScheduleEndpoint);
+      const scheduleInfo = extractScheduleDefaultInfo(emptySchedulePayload);
+      defaultAppSqlDateIs = scheduleInfo.defaultAppSqlDateIs;
+      showAppSqlStartDate = scheduleInfo.showAppSqlStartDate;
+      showAppSqlEndDate = scheduleInfo.showAppSqlEndDate;
+      showAppName = scheduleInfo.showAppName;
+
+      const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
+      if (!validCandidate && scheduleInfo.defaultAppSqlDateIs) {
+        appSqlDate = scheduleInfo.defaultAppSqlDateIs;
+        shiftedToNextDay = false;
+        setToDefaultAppSqlDate = true;
+        appSqlDateSource = "default_day";
+      }
+    } catch (e) {
+      logWarn("schedule_default_lookup_failed", {
+        endpoint: emptyScheduleEndpoint,
+        app_show_id: appShowId,
+        candidate_app_sql_date: candidateAppSqlDate,
+        error_message: String(e?.message || e).slice(0, 240)
+      });
+    }
   }
 
   const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
@@ -750,6 +878,13 @@ async function buildAppContext(clock, mode) {
     appSqlDate,
     appDowRaw,
     shiftedToNextDay,
+    setToDefaultAppSqlDate,
+    defaultAppSqlDateIs,
+    showAppSqlStartDate,
+    showAppSqlEndDate,
+    showAppName,
+    appSqlDateSource,
+    candidateAppSqlDate,
   };
 
   if (LOG_TRANSITIONS) {
@@ -762,7 +897,15 @@ async function buildAppContext(clock, mode) {
       raw_time: clock.time,
       app_show_id: appShowId,
       app_sql_date: appSqlDate,
-      shifted_to_next_day: shiftedToNextDay
+      app_dow_raw: appDowRaw,
+      shifted_to_next_day: shiftedToNextDay,
+      set_to_default_app_sql_date: setToDefaultAppSqlDate,
+      default_app_sql_date_is: defaultAppSqlDateIs,
+      show_app_sql_start_date: showAppSqlStartDate,
+      show_app_sql_end_date: showAppSqlEndDate,
+      show_app_name: showAppName,
+      app_sql_date_source: appSqlDateSource,
+      candidate_app_sql_date: candidateAppSqlDate
     });
   }
 
@@ -795,7 +938,19 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
     [FIELD_APP_DOW_RAW]: appCtx.appDowRaw,
     [FIELD_DOW_RAW]: appCtx.dowRaw,
     [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
+    [FIELD_SET_TO_DEFAULT_APP_SQL_DATE]: appCtx.setToDefaultAppSqlDate,
   };
+
+  const maybeSet = (fieldName, value) => {
+    if (value === undefined) return;
+    fields[fieldName] = value;
+  };
+
+  maybeSet(FIELD_DEFAULT_APP_SQL_DATE_IS, appCtx.defaultAppSqlDateIs);
+  maybeSet(FIELD_SHOW_APP_SQL_START_DATE, appCtx.showAppSqlStartDate);
+  maybeSet(FIELD_SHOW_APP_SQL_END_DATE, appCtx.showAppSqlEndDate);
+  maybeSet(FIELD_SHOW_APP_NAME, appCtx.showAppName);
+  maybeSet(FIELD_APP_SQL_DATE_SOURCE, appCtx.appSqlDateSource);
 
   if (DRY_RUN) {
     logInfo("heartbeat_create_dry_run", {
@@ -804,6 +959,14 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
       raw_sql_date: fields[HEARTBEAT_SQL_DATE],
       app_show_id: fields[FIELD_APP_SHOW_ID],
       app_sql_date: fields[FIELD_APP_SQL_DATE],
+      app_dow_raw: fields[FIELD_APP_DOW_RAW],
+      shifted_to_next_day: fields[FIELD_SHIFTED_NEXT_DAY],
+      set_to_default_app_sql_date: fields[FIELD_SET_TO_DEFAULT_APP_SQL_DATE],
+      default_app_sql_date_is: fields[FIELD_DEFAULT_APP_SQL_DATE_IS] ?? null,
+      show_app_sql_start_date: fields[FIELD_SHOW_APP_SQL_START_DATE] ?? null,
+      show_app_sql_end_date: fields[FIELD_SHOW_APP_SQL_END_DATE] ?? null,
+      show_app_name: fields[FIELD_SHOW_APP_NAME] ?? null,
+      app_sql_date_source: fields[FIELD_APP_SQL_DATE_SOURCE] ?? null,
       mode
     });
     return { id: "recDRYRUNHEARTBEAT", fields };
@@ -1062,7 +1225,15 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       raw_time: clk.time,
       app_show_id: appCtx.appShowId,
       app_sql_date: appCtx.appSqlDate,
+      app_dow_raw: appCtx.appDowRaw,
       shifted_to_next_day: appCtx.shiftedToNextDay,
+      set_to_default_app_sql_date: appCtx.setToDefaultAppSqlDate,
+      default_app_sql_date_is: appCtx.defaultAppSqlDateIs,
+      show_app_sql_start_date: appCtx.showAppSqlStartDate,
+      show_app_sql_end_date: appCtx.showAppSqlEndDate,
+      show_app_name: appCtx.showAppName,
+      app_sql_date_source: appCtx.appSqlDateSource,
+      candidate_app_sql_date: appCtx.candidateAppSqlDate,
       interval_min: intervalMin
     });
 
