@@ -115,3 +115,52 @@ WorkingDirectory : C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringsta
 Get-ScheduledTask -TaskName 'epoch-tagger-local' |
   Select-Object -ExpandProperty Actions |
   Format-List Execute,Arguments,WorkingDirectory
+
+
+  "C:\Users\gombc\OneDrive - Sport Dog Food"
+
+  
+Execute          : C:\Windows\System32\cmd.exe
+Arguments        : /d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
+WorkingDirectory :
+
+Error: UNKNOWN: unknown error, open 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\schedules_dailyv2.js'
+    at Object.readFileSync (node:fs:440:20)
+    at defaultLoadImpl (node:internal/modules/cjs/loader:1148:17)
+    at loadSource (node:internal/modules/cjs/loader:1838:20)
+    at Object..js (node:internal/modules/cjs/loader:1936:44)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  errno: -4094,
+  code: 'UNKNOWN',
+  syscall: 'open',
+  path: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_dailyv2.js'
+}
+
+Node.js v24.14.1
+[Wed 04/15/2026 14:15:23.35] SCHEDULES_DAILYV2 RUN 
+node:fs:440
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: UNKNOWN: unknown error, open 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\schedules_dailyv2.js'
+    at Object.readFileSync (node:fs:440:20)
+    at defaultLoadImpl (node:internal/modules/cjs/loader:1148:17)
+    at loadSource (node:internal/modules/cjs/loader:1838:20)
+    at Object..js (node:internal/modules/cjs/loader:1936:44)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  errno: -4094,
+  code: 'UNKNOWN',
+  syscall: 'open',
+  path: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_dailyv2.js'
+}
+
+Node.js v24.14.1
+
