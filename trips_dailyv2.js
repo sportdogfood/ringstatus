@@ -17,6 +17,7 @@ const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants";
 const TABLE_ACTIVE_CLASSES = process.env.TABLE_ACTIVE_CLASSES || "active_classes";
 const TABLE_ACTIVE_ENTRIES = process.env.TABLE_ACTIVE_ENTRIES || "active_entries";
+const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
 const TABLE_WW_RIDERS = process.env.TABLE_WW_RIDERS || "ww_riders";
 const TABLE_WW_HORSES = process.env.TABLE_WW_HORSES || "ww_horses";
 const TABLE_WW_TRAINERS = process.env.TABLE_WW_TRAINERS || "ww_trainers";
@@ -119,6 +120,18 @@ function normalizeEntryNumber(value) {
   if (!text) return undefined;
   if (/^\d+$/.test(text)) return Number(text);
   return text;
+}
+
+function minTimeText(left, right) {
+  if (!left) return right || null;
+  if (!right) return left || null;
+  return String(left) <= String(right) ? left : right;
+}
+
+function maxTimeText(left, right) {
+  if (!left) return right || null;
+  if (!right) return left || null;
+  return String(left) >= String(right) ? left : right;
 }
 
 function toIsoDateOnly(value) {
@@ -790,6 +803,110 @@ async function upsertActiveByKey({
   return summary;
 }
 
+async function upsertActiveGroups({
+  tableName,
+  fieldSet,
+  rows,
+  scopeAppSid,
+  runId,
+  lastRun,
+}) {
+  if (!fieldSet.size) {
+    return {
+      table: tableName,
+      created_planned: 0,
+      updated_planned: 0,
+      inactivated_planned: 0,
+      writes: {
+        created: 0,
+        updated: 0,
+        inactivated: 0,
+        create_failures: [],
+        update_failures: [],
+        inactivate_failures: [],
+      },
+      skipped: true,
+    };
+  }
+
+  const existingRows = await airtableList(tableName, {
+    pageSize: 100,
+    "fields[]": ["key", "app_sid"],
+  });
+
+  const relevantExisting = existingRows.filter((row) => numOrNull(row?.fields?.app_sid) === scopeAppSid);
+  const existingByKey = new Map();
+  for (const row of relevantExisting) {
+    const key = normalizeKey(row?.fields?.key);
+    if (!key || existingByKey.has(key)) continue;
+    existingByKey.set(key, row);
+  }
+
+  const keepKeys = new Set();
+  const creates = [];
+  const updates = [];
+
+  for (const row of rows) {
+    const key = normalizeKey(row?.key);
+    if (!key) continue;
+    keepKeys.add(key);
+    const existing = existingByKey.get(key);
+    if (!existing) {
+      creates.push({ fields: row });
+      continue;
+    }
+    updates.push({
+      id: existing.id,
+      fields: row,
+    });
+  }
+
+  const inactivations = [];
+  for (const row of relevantExisting) {
+    const key = normalizeKey(row?.fields?.key);
+    if (!key || keepKeys.has(key)) continue;
+    inactivations.push({
+      id: row.id,
+      fields: pickWritableFields(fieldSet, {
+        inactive: true,
+        run_id: runId,
+        last_run: lastRun,
+      }),
+    });
+  }
+
+  const summary = {
+    table: tableName,
+    created_planned: creates.length,
+    updated_planned: updates.length,
+    inactivated_planned: inactivations.length,
+    writes: {
+      created: 0,
+      updated: 0,
+      inactivated: 0,
+      create_failures: [],
+      update_failures: [],
+      inactivate_failures: [],
+    },
+    skipped: false,
+  };
+
+  if (DRY_RUN) return summary;
+
+  const createResult = await airtableCreateRecords(tableName, creates);
+  const updateResult = await airtablePatchRecords(tableName, updates);
+  const inactivateResult = await airtablePatchRecords(tableName, inactivations);
+
+  summary.writes.created = createResult.okRows;
+  summary.writes.updated = updateResult.okRows;
+  summary.writes.inactivated = inactivateResult.okRows;
+  summary.writes.create_failures = createResult.failedRows;
+  summary.writes.update_failures = updateResult.failedRows;
+  summary.writes.inactivate_failures = inactivateResult.failedRows;
+
+  return summary;
+}
+
 async function buildAuxiliaryRowsForTenant({
   payload,
   tenantId,
@@ -803,6 +920,7 @@ async function buildAuxiliaryRowsForTenant({
   scheduleByClassId,
   activeClassesFieldSet,
   activeEntriesFieldSet,
+  activeGroupsFieldSet,
   wwRidersFieldSet,
   wwHorsesFieldSet,
 }) {
@@ -825,6 +943,15 @@ async function buildAuxiliaryRowsForTenant({
     const horseName = strOrNull(pickFirst(trip?.horse, trip?.Horse));
     const entryId = numOrNull(pickFirst(trip?.entry_id, trip?.entryId));
     const entryNumber = normalizeEntryNumber(pickFirst(trip?.entry_number, trip?.entryNumber, trip?.entry_no, trip?.entryNo, trip?.number));
+    const rawClassGroupId = numOrNull(pickFirst(trip?.class_group_id, trip?.classGroupId));
+    const rawGroupName = strOrNull(pickFirst(trip?.group_name, trip?.groupName));
+    const rawClassGroupSequence = numOrNull(pickFirst(
+      trip?.class_group_sequence,
+      trip?.classGroupSequence,
+      trip?.group_sequence,
+      trip?.groupSequence
+    ));
+    const rawRingNumber = numOrNull(pickFirst(trip?.ring_number, trip?.ringNumber, trip?.ring));
     if (horseId !== null) {
       const existing = horseById.get(horseId) || {
         horse_id: horseId,
@@ -846,9 +973,17 @@ async function buildAuxiliaryRowsForTenant({
         class_id: classId,
         class_number: undefined,
         class_name: null,
+        class_group_id: null,
+        group_name: null,
+        class_group_sequence: null,
+        ring_number: null,
       };
       if (existing.class_number === undefined && classNumber !== undefined) existing.class_number = classNumber;
       if (!existing.class_name && className) existing.class_name = className;
+       if (existing.class_group_id === null && rawClassGroupId !== null) existing.class_group_id = rawClassGroupId;
+       if (!existing.group_name && rawGroupName) existing.group_name = rawGroupName;
+       if (existing.class_group_sequence === null && rawClassGroupSequence !== null) existing.class_group_sequence = rawClassGroupSequence;
+       if (existing.ring_number === null && rawRingNumber !== null) existing.ring_number = rawRingNumber;
       classById.set(classId, existing);
     }
 
@@ -860,12 +995,16 @@ async function buildAuxiliaryRowsForTenant({
         horse: null,
         rider_id: null,
         rider_name: null,
+        class_ids: new Set(),
+        class_group_ids: new Set(),
       };
       if (existing.entry_number === undefined && entryNumber !== undefined) existing.entry_number = entryNumber;
       if (existing.horse_id === null && horseId !== null) existing.horse_id = horseId;
       if (!existing.horse && horseName) existing.horse = horseName;
       if (existing.rider_id === null && riderId !== null) existing.rider_id = riderId;
       if (!existing.rider_name && riderName) existing.rider_name = riderName;
+      if (classId !== null) existing.class_ids.add(String(classId));
+      if (rawClassGroupId !== null) existing.class_group_ids.add(String(rawClassGroupId));
       entryById.set(entryId, existing);
     }
   }
@@ -915,12 +1054,16 @@ async function buildAuxiliaryRowsForTenant({
     pid_mismatch: false,
   }));
 
-  const classRows = [...classById.values()].map((row) => {
+  const enrichedClassRows = [...classById.values()].map((row) => {
     const schedule = scheduleByClassId.get(String(row.class_id));
     const classDetail = classEndpointDetails.get(String(row.class_id)) || null;
     const resolvedScheduleDate = classDetail?.schedule_date || schedule?.schedule_show_datev2;
     const resolvedEstimatedStart = classDetail?.scheduled_estimated_start_time || schedule?.estimated_start_time;
-    return pickWritableFields(activeClassesFieldSet, {
+    const resolvedClassGroupId = classDetail?.class_group_id ?? row.class_group_id ?? schedule?.class_group_id;
+    const resolvedRingNumber = classDetail?.ring_number ?? row.ring_number ?? schedule?.ring_number;
+    const resolvedGroupName = row.group_name || schedule?.group_name || undefined;
+    const resolvedClassGroupSequence = row.class_group_sequence ?? schedule?.class_group_sequence;
+    return {
       key: `${heartbeat.app_show_id}|${tenantId}|${row.class_id}`,
       app_sid: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
@@ -930,8 +1073,10 @@ async function buildAuxiliaryRowsForTenant({
       class_number: classDetail?.class_number ?? row.class_number,
       class_name: classDetail?.class_name || row.class_name || undefined,
       watch_schedule: schedule?.recordId ? linkOne(schedule.recordId) : undefined,
-      class_group_id: classDetail?.class_group_id ?? schedule?.class_group_id,
-      ring_number: classDetail?.ring_number ?? schedule?.ring_number,
+      class_group_id: resolvedClassGroupId,
+      group_name: resolvedGroupName,
+      class_group_sequence: resolvedClassGroupSequence,
+      ring_number: resolvedRingNumber,
       total_trips: classDetail?.total_trips ?? schedule?.total_trips,
       class_type: classDetail?.class_type ?? schedule?.class_type,
       schedule_sequencetype: classDetail?.schedule_sequencetype ?? schedule?.schedule_sequencetype,
@@ -944,10 +1089,69 @@ async function buildAuxiliaryRowsForTenant({
       last_run: dateOnly,
       new_class_id: true,
       pid_mismatch: false,
-    });
+    };
   });
 
-  const entryRows = [...entryById.values()].map((row) => pickWritableFields(activeEntriesFieldSet, {
+  const classRows = enrichedClassRows.map((row) => pickWritableFields(activeClassesFieldSet, row));
+  const classRowById = new Map(
+    enrichedClassRows
+      .map((row) => [numOrNull(row.class_id), row])
+      .filter(([classId]) => classId !== null)
+  );
+
+  const groupById = new Map();
+  for (const row of enrichedClassRows) {
+    const classGroupId = numOrNull(row.class_group_id);
+    if (classGroupId === null) continue;
+
+    const key = `${heartbeat.app_show_id}|${classGroupId}`;
+    const existing = groupById.get(key) || {
+      key,
+      app_sid: heartbeat.app_show_id,
+      app_sql_date: heartbeat.app_sql_date,
+      shows: commonLinks.shows,
+      class_group_id: classGroupId,
+      class_group_sequence: undefined,
+      group_name: null,
+      ring_number: undefined,
+      estimated_start_time: null,
+      estimated_end_time: null,
+      total: 0,
+      total_trips: 0,
+      schedule_date: null,
+      scheduled_date: null,
+      scheduled_estimated_start_time: null,
+      inactive: false,
+      run_id: runId,
+      last_run: dateOnly,
+    };
+
+    const totalTrips = numOrNull(row.total_trips);
+    existing.class_group_sequence = existing.class_group_sequence ?? numOrNull(row.class_group_sequence);
+    existing.group_name = existing.group_name || strOrNull(row.group_name);
+    existing.ring_number = existing.ring_number ?? numOrNull(row.ring_number);
+    existing.estimated_start_time = minTimeText(existing.estimated_start_time, strOrNull(row.scheduled_estimated_start_time ?? row.estimated_start_time));
+    existing.scheduled_estimated_start_time = minTimeText(existing.scheduled_estimated_start_time, strOrNull(row.scheduled_estimated_start_time ?? row.estimated_start_time));
+    existing.estimated_end_time = maxTimeText(existing.estimated_end_time, strOrNull(row.estimated_end_time));
+    existing.total += totalTrips ?? 0;
+    existing.total_trips += totalTrips ?? 0;
+    existing.schedule_date = existing.schedule_date || toIsoDateOnly(row.schedule_date);
+    existing.scheduled_date = existing.scheduled_date || toIsoDateOnly(row.scheduled_date || row.schedule_date);
+    groupById.set(key, existing);
+  }
+
+  const groupRows = [...groupById.values()].map((row) => pickWritableFields(activeGroupsFieldSet, row));
+
+  const entryRows = [...entryById.values()].map((row) => {
+    const singleClassId = row.class_ids.size === 1 ? numOrNull([...row.class_ids][0]) : null;
+    const singleClass = singleClassId !== null ? classRowById.get(singleClassId) || null : null;
+    const singleClassGroupId = row.class_group_ids.size === 1
+      ? numOrNull([...row.class_group_ids][0])
+      : numOrNull(singleClass?.class_group_id);
+
+    return pickWritableFields(activeEntriesFieldSet, {
+      ...(singleClassId !== null ? { class_id: singleClassId } : {}),
+      ...(singleClassGroupId !== null ? { class_group_id: singleClassGroupId } : {}),
     key: `${heartbeat.app_show_id}|${tenantId}|${row.entry_id}`,
     app_sid: heartbeat.app_show_id,
     app_sql_date: heartbeat.app_sql_date,
@@ -959,19 +1163,27 @@ async function buildAuxiliaryRowsForTenant({
     horse: row.horse || undefined,
     rider_id: row.rider_id ?? undefined,
     rider_name: row.rider_name || undefined,
+    class_number: singleClass?.class_number,
+    class_name: singleClass?.class_name,
+    schedule_date: singleClass?.schedule_date,
+    scheduled_date: singleClass?.scheduled_date,
+    scheduled_estimated_start_time: singleClass?.scheduled_estimated_start_time,
+    watch_schedule: singleClass?.watch_schedule,
     ww_trainers: commonLinks.ww_trainers,
     inactive: false,
     run_id: runId,
     last_run: dateOnly,
     new_entry: true,
     pid_mismatch: false,
-  }));
+    });
+  });
 
   return {
     tripCount: trips.length,
     riderRows,
     horseRows,
     classRows,
+    groupRows,
     entryRows,
     classEndpointFailures: classEndpointDetailResult.failures,
   };
@@ -979,6 +1191,7 @@ async function buildAuxiliaryRowsForTenant({
 
 function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet) {
   const fields = {};
+  const scopeKey = `${heartbeat.app_show_id}|${heartbeat.app_sql_date}|${heartbeat.app_dow_raw}|${heartbeat.shifted_to_next_day ? 1 : 0}`;
   const maybeSet = (name, value) => {
     if (!watchTripsFieldSet.has(name)) return;
     setIfPresent(fields, name, value);
@@ -1003,6 +1216,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("app_sql_datev2", heartbeat.app_sql_date);
   maybeSet("app_dow_rawv2", heartbeat.app_dow_raw);
   maybeSet("shifted_to_next_dayv2", heartbeat.shifted_to_next_day);
+  maybeSet("scope_key", scopeKey);
   maybeSet("scope_run_id", heartbeat.scope_run_id);
   maybeSet("is_current_scope", true);
   maybeSet("scope_status", currentScopeStatus);
@@ -1031,6 +1245,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("rider_name", row.rider_name);
   maybeSet("rider_id", row.rider_id);
   maybeSet("placing", row.placing);
+  maybeSet("schedule_show_datev2", row.schedule_show_datev2);
   maybeSet("is_missing", false);
 
   return fields;
@@ -1072,6 +1287,7 @@ async function main() {
     wwTrainerRecordIdByPid,
     activeClassesFieldSet,
     activeEntriesFieldSet,
+    activeGroupsFieldSet,
     wwRidersFieldSet,
     wwHorsesFieldSet,
   ] = await Promise.all([
@@ -1083,6 +1299,7 @@ async function main() {
     fetchWwTrainerRecordIdByPid().catch(() => new Map()),
     fetchTableFieldSet(TABLE_ACTIVE_CLASSES),
     fetchTableFieldSet(TABLE_ACTIVE_ENTRIES),
+    fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set()),
     fetchTableFieldSet(TABLE_WW_RIDERS),
     fetchTableFieldSet(TABLE_WW_HORSES),
   ]);
@@ -1113,6 +1330,7 @@ async function main() {
   const normalizedRows = [];
   const outsideSchedule = [];
   const uniqueRows = new Map();
+  const uniqueGroupRows = new Map();
 
   for (const tenantId of activeTenantIds) {
     const tenantRow = activeTenantMap.get(tenantId) || null;
@@ -1164,6 +1382,7 @@ async function main() {
       scheduleByClassId,
       activeClassesFieldSet,
       activeEntriesFieldSet,
+      activeGroupsFieldSet,
       wwRidersFieldSet,
       wwHorsesFieldSet,
     });
@@ -1230,6 +1449,27 @@ async function main() {
       lastRun: dateOnly,
     });
 
+    for (const row of auxiliaryRows.groupRows || []) {
+      const key = normalizeKey(row?.key);
+      if (!key) continue;
+      const existing = uniqueGroupRows.get(key);
+      if (!existing) {
+        uniqueGroupRows.set(key, { ...row });
+        continue;
+      }
+
+      existing.class_group_sequence = existing.class_group_sequence ?? numOrNull(row.class_group_sequence);
+      existing.group_name = existing.group_name || strOrNull(row.group_name);
+      existing.ring_number = existing.ring_number ?? numOrNull(row.ring_number);
+      existing.estimated_start_time = minTimeText(existing.estimated_start_time, strOrNull(row.estimated_start_time));
+      existing.scheduled_estimated_start_time = minTimeText(existing.scheduled_estimated_start_time, strOrNull(row.scheduled_estimated_start_time));
+      existing.estimated_end_time = maxTimeText(existing.estimated_end_time, strOrNull(row.estimated_end_time));
+      existing.schedule_date = existing.schedule_date || toIsoDateOnly(row.schedule_date);
+      existing.scheduled_date = existing.scheduled_date || toIsoDateOnly(row.scheduled_date);
+      existing.total = (numOrNull(existing.total) ?? 0) + (numOrNull(row.total) ?? 0);
+      existing.total_trips = (numOrNull(existing.total_trips) ?? 0) + (numOrNull(row.total_trips) ?? 0);
+    }
+
     const perTenantNormalized = normalizeTripsForScope({
       sourceIds: [tenantId],
       peoplePayloads: new Map([[tenantId, payload]]),
@@ -1256,6 +1496,15 @@ async function main() {
       class_endpoint_failures: auxiliaryRows.classEndpointFailures,
     });
   }
+
+  const activeGroupSync = await upsertActiveGroups({
+    tableName: TABLE_ACTIVE_GROUPS,
+    fieldSet: activeGroupsFieldSet,
+    rows: [...uniqueGroupRows.values()],
+    scopeAppSid: heartbeat.app_show_id,
+    runId,
+    lastRun: dateOnly,
+  });
 
   const emptyTenantIds = tenantSummaries
     .filter((item) => item.empty_payload)
@@ -1294,7 +1543,15 @@ async function main() {
   }
 
   if (!uniqueRows.size) {
-    console.log(JSON.stringify({
+    const dropUpdates = [];
+    for (const row of heartbeatViewRows) {
+      dropUpdates.push({
+        id: row.id,
+        fields: buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, watchTripsFieldSet),
+      });
+    }
+
+    const emptySummary = {
       ok: true,
       dry_run: DRY_RUN,
       run_status: "NOOP",
@@ -1308,7 +1565,25 @@ async function main() {
       empty_tenant_ids: emptyTenantIds,
       tenant_summaries: tenantSummaries,
       people_failures: peopleFailures,
-    }, null, 2));
+      drops_planned: dropUpdates.length,
+      active_groups: activeGroupSync,
+      writes: {
+        created: 0,
+        updated: 0,
+        dropped: 0,
+        create_failures: [],
+        update_failures: [],
+        drop_failures: [],
+      },
+    };
+
+    if (!DRY_RUN) {
+      const dropResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, dropUpdates);
+      emptySummary.writes.dropped = dropResult.okRows;
+      emptySummary.writes.drop_failures = dropResult.failedRows;
+    }
+
+    console.log(JSON.stringify(emptySummary, null, 2));
     return;
   }
 
@@ -1339,6 +1614,7 @@ async function main() {
     empty_tenant_ids: emptyTenantIds,
     tenant_summaries: tenantSummaries,
     outside_schedule_count: outsideSchedule.length,
+    active_groups: activeGroupSync,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
     drops_planned: dropUpdates.length,

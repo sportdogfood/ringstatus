@@ -21,6 +21,7 @@ const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
 const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
+const SYNC_ACTIVE_GROUPS_FROM_SCHEDULE = String(process.env.SYNC_ACTIVE_GROUPS_FROM_SCHEDULE || "0") === "1";
 const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
 const VALID_MODES = new Set(["DAY", "NIGHT", "OVERNIGHT"]);
 
@@ -857,7 +858,9 @@ async function runDaily() {
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
   const heartbeatFieldSet = await fetchHeartbeatFieldSet().catch(() => new Set());
-  const activeGroupsFieldSet = await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set());
+  const activeGroupsFieldSet = SYNC_ACTIVE_GROUPS_FROM_SCHEDULE
+    ? await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set())
+    : new Set();
 
   const emptyUrl = buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2);
   const emptyPayload = await fetchJson(emptyUrl);
