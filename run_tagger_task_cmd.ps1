@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 
 $env:DRY_RUN   = '0'
 $env:CALC_MODE = 'promote'
-$env:WATCH_VIEW = 'hb_targets_active'
+$env:WATCH_VIEW = 'heartbeat'
 
 $repoPath = 'C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus'
 $nodePath = 'C:\Program Files\nodejs\node.exe'
@@ -26,10 +26,13 @@ function Run-Step {
     }
 }
 
-Run-Step -Label 'TAGGER'              -ScriptName 'tagger.js'              -LogPath 'C:\actions-runner\ringstatus\epoch-tagger.log'
-Run-Step -Label 'HEARTBEAT_PATTERNS'  -ScriptName 'heartbeat_patterns.js'  -LogPath 'C:\actions-runner\ringstatus\epoch-tagger.log'
-Run-Step -Label 'TRIPS_TAGGER'        -ScriptName 'trips_tagger.js'        -LogPath 'C:\actions-runner\ringstatus\trips-tagger.log'
-Run-Step -Label 'TRIPS_CALCULATOR'    -ScriptName 'trips_calculator.js'    -LogPath 'C:\actions-runner\ringstatus\trips-calculator.log'
+Run-Step -Label 'TAGGER'                  -ScriptName 'tagger.js'                  -LogPath 'C:\actions-runner\ringstatus\epoch-tagger.log'
+Run-Step -Label 'HEARTBEAT_PATTERNS'      -ScriptName 'heartbeat_patterns.js'      -LogPath 'C:\actions-runner\ringstatus\epoch-tagger.log'
+Run-Step -Label 'SCHEDULES_DAILYV2'       -ScriptName 'schedules_dailyv2.js'       -LogPath 'C:\actions-runner\ringstatus\schedules-dailyv2.log'
+Run-Step -Label 'SCHEDULES_CALCULATORV2'  -ScriptName 'schedules_calculatorv2.js'  -LogPath 'C:\actions-runner\ringstatus\schedules-calculatorv2.log'
+Run-Step -Label 'TRIPS_DAILYV2'           -ScriptName 'trips_dailyv2.js'           -LogPath 'C:\actions-runner\ringstatus\trips-dailyv2.log'
+Run-Step -Label 'TRIPS_TAGGER'            -ScriptName 'trips_tagger.js'            -LogPath 'C:\actions-runner\ringstatus\trips-tagger.log'
+Run-Step -Label 'TRIPS_CALCULATORV2'      -ScriptName 'trips_calculatorv2.js'      -LogPath 'C:\actions-runner\ringstatus\trips-calculatorv2.log'
 
 Start-Sleep -Seconds 30
 
