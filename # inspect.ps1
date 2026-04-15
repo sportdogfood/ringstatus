@@ -1,3 +1,19 @@
+Use this model:
+
+repo stays at C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus
+scheduled task keeps pointing to:
+C:\Windows\System32\cmd.exe
+/d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
+What you n
+
+
+
+
+cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
+node .\schedules_calculatorv2.js
+
+
+
 cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
 node .\schedules_dailyv2.js
 

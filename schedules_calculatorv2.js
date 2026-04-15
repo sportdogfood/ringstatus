@@ -431,22 +431,25 @@ async function fetchWatchScheduleRows() {
 }
 
 async function fetchGroupsLiveRows(appShowId, targetDays) {
+  const fieldSet = await fetchTableFieldSet(TABLE_GROUPS_LIVE);
+  const requestedFields = [
+    "class_group_id",
+    "show_id",
+    "day",
+    "estimated_start_time",
+    "gone",
+    "total",
+    "status",
+    "curr_updated_at",
+    "ingested_at",
+    "created_time",
+    "is_live",
+  ];
+  if (fieldSet.has("stop_updating")) requestedFields.push("stop_updating");
+
   const rows = await airtableList(TABLE_GROUPS_LIVE, {
     maxRecords: MAX_RECORDS,
-    "fields[]": [
-      "class_group_id",
-      "show_id",
-      "day",
-      "estimated_start_time",
-      "gone",
-      "total",
-      "status",
-      "curr_updated_at",
-      "ingested_at",
-      "created_time",
-      "is_live",
-      "stop_updating",
-    ],
+    "fields[]": requestedFields,
   });
 
   const normalizedDays = new Set(Array.from(targetDays || []).map((value) => toIsoDateOnly(value)).filter(Boolean));
@@ -466,7 +469,7 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
         ingested_at: strOrNull(fields.ingested_at),
         created_time: strOrNull(fields.created_time),
         is_live: boolValue(fields.is_live),
-        stop_updating: boolValue(fields.stop_updating),
+        stop_updating: fieldSet.has("stop_updating") ? boolValue(fields.stop_updating) : false,
       };
     })
     .filter((row) => row.class_group_id !== null)
