@@ -82,3 +82,19 @@ git pull
 
   powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1"
 
+
+
+  Get-ScheduledTask -TaskName 'epoch-tagger-local' |
+  Select-Object -ExpandProperty Actions |
+  Format-List Execute,Arguments,WorkingDirectory
+
+
+  Fastest fix:
+
+Open Task Scheduler
+epoch-tagger-local
+Properties
+Actions
+Set it to:
+Program/script: C:\Windows\System32\cmd.exe
+Add arguments: /d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
