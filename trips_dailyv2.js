@@ -4,6 +4,7 @@ const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
 
 const {
   buildScheduleMap,
+  collectTripCandidates,
   normalizeTripsForScope,
 } = require("./trips_normalizer_v2");
 
@@ -14,6 +15,11 @@ const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants";
+const TABLE_ACTIVE_CLASSES = process.env.TABLE_ACTIVE_CLASSES || "active_classes";
+const TABLE_ACTIVE_ENTRIES = process.env.TABLE_ACTIVE_ENTRIES || "active_entries";
+const TABLE_WW_RIDERS = process.env.TABLE_WW_RIDERS || "ww_riders";
+const TABLE_WW_HORSES = process.env.TABLE_WW_HORSES || "ww_horses";
+const TABLE_WW_TRAINERS = process.env.TABLE_WW_TRAINERS || "ww_trainers";
 
 const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "heartbeat";
 const VIEW_WATCH_TRIPS = process.env.VIEW_WATCH_TRIPS || "heartbeat";
@@ -402,14 +408,28 @@ async function fetchActiveTenantRows() {
   const rows = await airtableList(TABLE_ACTIVE_TENANTS, {
     view: VIEW_ACTIVE_TENANTS,
     pageSize: 100,
-    "fields[]": ["tenant_id", "tenant_active"],
+    "fields[]": ["tenant_id", "tenant_active", "record_id"],
   });
 
   return rows
     .filter((row) => boolValue(row?.fields?.tenant_active))
     .map((row) => ({
+      recordId: row.id,
       tenant_id: normalizePidToken(row?.fields?.tenant_id),
     }));
+}
+
+async function fetchWwTrainerRecordIdByPid() {
+  const rows = await airtableList(TABLE_WW_TRAINERS, {
+    pageSize: 100,
+    "fields[]": ["pid"],
+  });
+
+  return new Map(
+    rows
+      .map((row) => [normalizePidToken(row?.fields?.pid), row.id])
+      .filter(([pid]) => Boolean(pid))
+  );
 }
 
 async function fetchExistingTripsForShow(appShowId) {
@@ -487,6 +507,398 @@ async function runPool(items, concurrency, worker) {
   }
 
   await Promise.all(threads);
+}
+
+function linkOne(recordId) {
+  return recordId ? [recordId] : undefined;
+}
+
+function pickWritableFields(fieldSet, values) {
+  const fields = {};
+  for (const [name, value] of Object.entries(values || {})) {
+    if (!fieldSet.has(name)) continue;
+    if (value === undefined || value === null) continue;
+    if (typeof value === "string" && value.trim() === "") continue;
+    fields[name] = value;
+  }
+  return fields;
+}
+
+function buildPeopleEndpoint(sourceId, heartbeat) {
+  return `${BASE_URL}/people/${encodeURIComponent(sourceId)}?pid=${encodeURIComponent(sourceId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+}
+
+function extractPeopleShowId(payload) {
+  return numOrNull(pickFirst(payload?.show_id, payload?.people?.show_id));
+}
+
+function extractPayloadTrips(payload) {
+  if (Array.isArray(payload?.trips)) return payload.trips;
+  return collectTripCandidates(payload);
+}
+
+function buildNumericRunId(nowIso) {
+  const ms = Date.parse(nowIso);
+  return Number.isFinite(ms) ? ms : Date.now();
+}
+
+async function upsertByNumberId({
+  tableName,
+  fieldSet,
+  fieldId,
+  fieldPid,
+  fieldInactive,
+  fieldRunId,
+  fieldLastRun,
+  fieldNewFlag,
+  fieldPidMismatch,
+  rows,
+}) {
+  if (!rows.length) {
+    return {
+      table: tableName,
+      created_planned: 0,
+      updated_planned: 0,
+      writes: { created: 0, updated: 0, create_failures: [], update_failures: [] },
+    };
+  }
+
+  const existingRows = await airtableList(tableName, {
+    pageSize: 100,
+    "fields[]": [fieldId, fieldPid],
+  });
+
+  const existingById = new Map();
+  for (const row of existingRows) {
+    const idNum = numOrNull(row?.fields?.[fieldId]);
+    if (idNum === null) continue;
+    if (!existingById.has(idNum)) existingById.set(idNum, row);
+  }
+
+  const creates = [];
+  const updates = [];
+
+  for (const row of rows) {
+    const idNum = numOrNull(row?.[fieldId]);
+    const pidNum = numOrNull(row?.[fieldPid]);
+    if (idNum === null) continue;
+    const existing = existingById.get(idNum);
+    if (!existing) {
+      creates.push({ fields: pickWritableFields(fieldSet, row) });
+      continue;
+    }
+
+    const oldPid = numOrNull(existing?.fields?.[fieldPid]);
+    const pidMismatch = oldPid !== null && pidNum !== null && oldPid !== pidNum;
+    updates.push({
+      id: existing.id,
+      fields: pickWritableFields(fieldSet, {
+        ...row,
+        [fieldInactive]: false,
+        [fieldRunId]: row[fieldRunId],
+        [fieldLastRun]: row[fieldLastRun],
+        [fieldNewFlag]: false,
+        [fieldPidMismatch]: pidMismatch,
+      }),
+    });
+  }
+
+  const summary = {
+    table: tableName,
+    created_planned: creates.length,
+    updated_planned: updates.length,
+    writes: { created: 0, updated: 0, create_failures: [], update_failures: [] },
+  };
+
+  if (!DRY_RUN) {
+    const createResult = await airtableCreateRecords(tableName, creates);
+    const updateResult = await airtablePatchRecords(tableName, updates);
+    summary.writes.created = createResult.okRows;
+    summary.writes.updated = updateResult.okRows;
+    summary.writes.create_failures = createResult.failedRows;
+    summary.writes.update_failures = updateResult.failedRows;
+  }
+
+  return summary;
+}
+
+async function upsertActiveByKey({
+  tableName,
+  fieldSet,
+  fieldKey,
+  fieldPid,
+  fieldAppSid,
+  fieldInactive,
+  fieldRunId,
+  fieldLastRun,
+  fieldNewFlag,
+  fieldPidMismatch,
+  rows,
+  scopePid,
+  scopeAppSid,
+  runId,
+  lastRun,
+}) {
+  const existingRows = await airtableList(tableName, {
+    pageSize: 100,
+    "fields[]": [fieldKey, fieldPid, fieldAppSid],
+  });
+
+  const relevantExisting = existingRows.filter((row) => {
+    const pidNum = numOrNull(row?.fields?.[fieldPid]);
+    const appSidNum = numOrNull(row?.fields?.[fieldAppSid]);
+    return pidNum === scopePid && appSidNum === scopeAppSid;
+  });
+
+  const existingByKey = new Map();
+  for (const row of relevantExisting) {
+    const key = normalizeKey(row?.fields?.[fieldKey]);
+    if (!key || existingByKey.has(key)) continue;
+    existingByKey.set(key, row);
+  }
+
+  const keepKeys = new Set();
+  const creates = [];
+  const updates = [];
+
+  for (const row of rows) {
+    const key = normalizeKey(row?.[fieldKey]);
+    if (!key) continue;
+    keepKeys.add(key);
+    const existing = existingByKey.get(key);
+    if (!existing) {
+      creates.push({ fields: pickWritableFields(fieldSet, row) });
+      continue;
+    }
+
+    const oldPid = numOrNull(existing?.fields?.[fieldPid]);
+    const currentPid = numOrNull(row?.[fieldPid]);
+    const pidMismatch = oldPid !== null && currentPid !== null && oldPid !== currentPid;
+    updates.push({
+      id: existing.id,
+      fields: pickWritableFields(fieldSet, {
+        ...row,
+        [fieldInactive]: false,
+        [fieldRunId]: row[fieldRunId],
+        [fieldLastRun]: row[fieldLastRun],
+        [fieldNewFlag]: false,
+        [fieldPidMismatch]: pidMismatch,
+      }),
+    });
+  }
+
+  const inactivations = [];
+  for (const row of relevantExisting) {
+    const key = normalizeKey(row?.fields?.[fieldKey]);
+    if (!key || keepKeys.has(key)) continue;
+    inactivations.push({
+      id: row.id,
+      fields: pickWritableFields(fieldSet, {
+        [fieldInactive]: true,
+        [fieldRunId]: runId,
+        [fieldLastRun]: lastRun,
+      }),
+    });
+  }
+
+  const summary = {
+    table: tableName,
+    created_planned: creates.length,
+    updated_planned: updates.length,
+    inactivated_planned: inactivations.length,
+    writes: {
+      created: 0,
+      updated: 0,
+      inactivated: 0,
+      create_failures: [],
+      update_failures: [],
+      inactivate_failures: [],
+    },
+  };
+
+  if (!DRY_RUN) {
+    const createResult = await airtableCreateRecords(tableName, creates);
+    const updateResult = await airtablePatchRecords(tableName, updates);
+    const inactivateResult = await airtablePatchRecords(tableName, inactivations);
+    summary.writes.created = createResult.okRows;
+    summary.writes.updated = updateResult.okRows;
+    summary.writes.inactivated = inactivateResult.okRows;
+    summary.writes.create_failures = createResult.failedRows;
+    summary.writes.update_failures = updateResult.failedRows;
+    summary.writes.inactivate_failures = inactivateResult.failedRows;
+  }
+
+  return summary;
+}
+
+function buildAuxiliaryRowsForTenant({
+  payload,
+  tenantId,
+  activeTenantRecordId,
+  wwTrainerRecordId,
+  heartbeat,
+  showRecordId,
+  runId,
+  nowIso,
+  scheduleByClassId,
+  activeClassesFieldSet,
+  activeEntriesFieldSet,
+  wwRidersFieldSet,
+  wwHorsesFieldSet,
+}) {
+  const trips = extractPayloadTrips(payload);
+  const riderById = new Map();
+  const horseById = new Map();
+  const classById = new Map();
+  const entryById = new Map();
+
+  for (const trip of trips) {
+    const riderId = numOrNull(pickFirst(trip?.rider_id, trip?.riderId));
+    const riderName = strOrNull(pickFirst(trip?.rider_name, trip?.riderName));
+    if (riderId !== null) {
+      const existing = riderById.get(riderId) || { rider_id: riderId, rider_name: null };
+      if (!existing.rider_name && riderName) existing.rider_name = riderName;
+      riderById.set(riderId, existing);
+    }
+
+    const horseId = numOrNull(pickFirst(trip?.horse_id, trip?.horseId));
+    const horseName = strOrNull(pickFirst(trip?.horse, trip?.Horse));
+    const entryId = numOrNull(pickFirst(trip?.entry_id, trip?.entryId));
+    const entryNumber = normalizeEntryNumber(pickFirst(trip?.entry_number, trip?.entryNumber, trip?.entry_no, trip?.entryNo, trip?.number));
+    if (horseId !== null) {
+      const existing = horseById.get(horseId) || {
+        horse_id: horseId,
+        horse: null,
+        entry_id: null,
+        entry_number: undefined,
+      };
+      if (!existing.horse && horseName) existing.horse = horseName;
+      if (existing.entry_id === null && entryId !== null) existing.entry_id = entryId;
+      if (existing.entry_number === undefined && entryNumber !== undefined) existing.entry_number = entryNumber;
+      horseById.set(horseId, existing);
+    }
+
+    const classId = numOrNull(pickFirst(trip?.class_id, trip?.classId));
+    const classNumber = normalizeEntryNumber(pickFirst(trip?.class_number, trip?.classNumber));
+    const className = strOrNull(pickFirst(trip?.class_name, trip?.className));
+    if (classId !== null) {
+      const existing = classById.get(classId) || {
+        class_id: classId,
+        class_number: undefined,
+        class_name: null,
+      };
+      if (existing.class_number === undefined && classNumber !== undefined) existing.class_number = classNumber;
+      if (!existing.class_name && className) existing.class_name = className;
+      classById.set(classId, existing);
+    }
+
+    if (entryId !== null) {
+      const existing = entryById.get(entryId) || {
+        entry_id: entryId,
+        entry_number: undefined,
+        horse_id: null,
+        horse: null,
+        rider_id: null,
+        rider_name: null,
+      };
+      if (existing.entry_number === undefined && entryNumber !== undefined) existing.entry_number = entryNumber;
+      if (existing.horse_id === null && horseId !== null) existing.horse_id = horseId;
+      if (!existing.horse && horseName) existing.horse = horseName;
+      if (existing.rider_id === null && riderId !== null) existing.rider_id = riderId;
+      if (!existing.rider_name && riderName) existing.rider_name = riderName;
+      entryById.set(entryId, existing);
+    }
+  }
+
+  const commonLinks = {
+    shows: linkOne(showRecordId),
+    active_tenants: linkOne(activeTenantRecordId),
+    ww_trainers: linkOne(wwTrainerRecordId),
+  };
+
+  const riderRows = [...riderById.values()].map((row) => pickWritableFields(wwRidersFieldSet, {
+    rider_id: row.rider_id,
+    rider_name: row.rider_name || undefined,
+    name: row.rider_name || undefined,
+    pid: Number(tenantId),
+    app_sid: heartbeat.app_show_id,
+    app_sql_date: heartbeat.app_sql_date,
+    shows: commonLinks.shows,
+    active_tenants: commonLinks.active_tenants,
+    ww_trainers: commonLinks.ww_trainers,
+    inactive: false,
+    run_id: runId,
+    last_run: nowIso,
+    new_rider: true,
+    pid_mismatch: false,
+  }));
+
+  const horseRows = [...horseById.values()].map((row) => pickWritableFields(wwHorsesFieldSet, {
+    horse_id: row.horse_id,
+    horse: row.horse || undefined,
+    pid: Number(tenantId),
+    trainer_id: Number(tenantId),
+    app_sid: heartbeat.app_show_id,
+    app_sql_date: heartbeat.app_sql_date,
+    shows: commonLinks.shows,
+    active_tenants: commonLinks.active_tenants,
+    ww_trainers: commonLinks.ww_trainers,
+    entry_id: row.entry_id ?? undefined,
+    entry_number: row.entry_number,
+    inactive: false,
+    run_id: runId,
+    last_run: nowIso,
+    new_horse: true,
+    pid_mismatch: false,
+  }));
+
+  const classRows = [...classById.values()].map((row) => {
+    const schedule = scheduleByClassId.get(String(row.class_id));
+    return pickWritableFields(activeClassesFieldSet, {
+      key: `${heartbeat.app_show_id}|${tenantId}|${row.class_id}`,
+      app_sid: heartbeat.app_show_id,
+      app_sql_date: heartbeat.app_sql_date,
+      shows: commonLinks.shows,
+      pid: Number(tenantId),
+      class_id: row.class_id,
+      class_number: row.class_number,
+      class_name: row.class_name || undefined,
+      watch_schedule: schedule?.recordId ? linkOne(schedule.recordId) : undefined,
+      inactive: false,
+      run_id: runId,
+      last_run: nowIso,
+      new_class_id: true,
+      pid_mismatch: false,
+    });
+  });
+
+  const entryRows = [...entryById.values()].map((row) => pickWritableFields(activeEntriesFieldSet, {
+    key: `${heartbeat.app_show_id}|${tenantId}|${row.entry_id}`,
+    app_sid: heartbeat.app_show_id,
+    app_sql_date: heartbeat.app_sql_date,
+    shows: commonLinks.shows,
+    pid: Number(tenantId),
+    entry_id: row.entry_id,
+    entry_number: row.entry_number,
+    horse_id: row.horse_id ?? undefined,
+    horse: row.horse || undefined,
+    rider_id: row.rider_id ?? undefined,
+    rider_name: row.rider_name || undefined,
+    ww_trainers: commonLinks.ww_trainers,
+    inactive: false,
+    run_id: runId,
+    last_run: nowIso,
+    new_entry: true,
+    pid_mismatch: false,
+  }));
+
+  return {
+    tripCount: trips.length,
+    riderRows,
+    horseRows,
+    classRows,
+    entryRows,
+  };
 }
 
 function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet) {
