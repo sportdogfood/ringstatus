@@ -655,9 +655,13 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
   return scored[0].row;
 }
 
-function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue) {
+function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldSet) {
   const fields = { ...normalizedRow.fields };
+  const resolvedScheduledDate = toIsoDateOnly(pickFirst(fields.scheduled_date, fields.schedule_show_datev2, fields.show_date));
   delete fields.scope_status;
+  if (watchScheduleFieldSet?.has("scheduled_date") && resolvedScheduledDate) {
+    fields.scheduled_date = resolvedScheduledDate;
+  }
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
   fields.run_tag = scope.app_sql_datev2;
@@ -670,6 +674,12 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   fields.is_gotcha = false;
   if (showRecordId) fields.shows = [showRecordId];
   return fields;
+}
+
+function rowScheduledDateMatchesScope(normalizedRow, scope) {
+  const fields = normalizedRow?.fields || {};
+  const resolvedScheduledDate = toIsoDateOnly(pickFirst(fields.scheduled_date, fields.schedule_show_datev2, fields.show_date));
+  return resolvedScheduledDate === scope.app_sql_datev2;
 }
 
 function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue) {
@@ -858,6 +868,7 @@ async function runDaily() {
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
   const heartbeatFieldSet = await fetchHeartbeatFieldSet().catch(() => new Set());
+  const watchScheduleFieldSet = await fetchTableFieldSet(TABLE_WATCH_SCHEDULE);
   const activeGroupsFieldSet = SYNC_ACTIVE_GROUPS_FROM_SCHEDULE
     ? await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set())
     : new Set();
@@ -903,6 +914,7 @@ async function runDaily() {
   };
 
   const chosen = chooseScheduleVariant(datedResult, emptyResult);
+  const scopedRows = chosen.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
   const showRecordId = await fetchShowRecordId(scope.app_show_idv2).catch(() => null);
   const existingRows = await fetchExistingRowsForShow(scope.app_show_idv2);
   const heartbeatViewRows = await fetchHeartbeatViewRows().catch(() => []);
@@ -926,7 +938,7 @@ async function runDaily() {
   const updateRecords = [];
   const keepKeySet = new Set();
 
-  for (const row of chosen.rows) {
+  for (const row of scopedRows) {
     const key = normalizeKey(row.key);
     if (!key) continue;
     keepKeySet.add(key);
@@ -940,7 +952,8 @@ async function runDaily() {
       nowIso,
       dateOnly,
       existing ? "existing" : "new",
-      currentScopeStatus
+      currentScopeStatus,
+      watchScheduleFieldSet
     );
 
     if (existing) {
@@ -966,7 +979,8 @@ async function runDaily() {
     scope,
     chosen_source: chosen.source,
     heartbeat_patch_fields: heartbeatChangedFields,
-    row_count: chosen.rows.length,
+    row_count: scopedRows.length,
+    filtered_out_scheduled_date_mismatch: chosen.rows.length - scopedRows.length,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
     drops_planned: dropUpdates.length,
@@ -1003,7 +1017,7 @@ async function runDaily() {
     },
   };
 
-  const activeGroupRows = buildActiveGroupRows(chosen.rows, scope, runId, dateOnly, activeGroupsFieldSet);
+  const activeGroupRows = buildActiveGroupRows(scopedRows, scope, runId, dateOnly, activeGroupsFieldSet);
   summary.active_groups.created_planned = activeGroupRows.length;
 
   if (DRY_RUN) {

@@ -708,6 +708,7 @@ async function upsertActiveByKey({
   rows,
   scopePid,
   scopeAppSid,
+  scopeByPid = true,
   runId,
   lastRun,
 }) {
@@ -717,9 +718,11 @@ async function upsertActiveByKey({
   });
 
   const relevantExisting = existingRows.filter((row) => {
-    const pidNum = numOrNull(row?.fields?.[fieldPid]);
     const appSidNum = numOrNull(row?.fields?.[fieldAppSid]);
-    return pidNum === scopePid && appSidNum === scopeAppSid;
+    if (appSidNum !== scopeAppSid) return false;
+    if (!scopeByPid) return true;
+    const pidNum = numOrNull(row?.fields?.[fieldPid]);
+    return pidNum === scopePid;
   });
 
   const existingByKey = new Map();
@@ -743,14 +746,14 @@ async function upsertActiveByKey({
       continue;
     }
 
-    const oldPid = numOrNull(existing?.fields?.[fieldPid]);
-    const currentPid = numOrNull(row?.[fieldPid]);
-    const pidMismatch = oldPid !== null && currentPid !== null && oldPid !== currentPid;
+    const oldPid = fieldPid ? numOrNull(existing?.fields?.[fieldPid]) : null;
+    const currentPid = fieldPid ? numOrNull(row?.[fieldPid]) : null;
+    const pidMismatch = fieldPid && oldPid !== null && currentPid !== null && oldPid !== currentPid;
     updates.push({
       id: existing.id,
       fields: pickWritableFields(fieldSet, {
         ...row,
-        [fieldInactive]: false,
+        [fieldInactive]: row[fieldInactive] ?? false,
         [fieldRunId]: row[fieldRunId],
         [fieldLastRun]: row[fieldLastRun],
         [fieldNewFlag]: false,
@@ -928,7 +931,7 @@ async function buildAuxiliaryRowsForTenant({
   const riderById = new Map();
   const horseById = new Map();
   const classById = new Map();
-  const entryByKey = new Map();
+  const entryById = new Map();
 
   for (const trip of trips) {
     const riderId = numOrNull(pickFirst(trip?.rider_id, trip?.riderId));
@@ -987,26 +990,25 @@ async function buildAuxiliaryRowsForTenant({
       classById.set(classId, existing);
     }
 
-    if (entryId !== null && classId !== null) {
-      const entryKey = `${entryId}|${classId}`;
-      const existing = entryByKey.get(entryKey) || {
-        entry_key: entryKey,
+    if (entryId !== null) {
+      const existing = entryById.get(entryId) || {
         entry_id: entryId,
-        class_id: classId,
-        class_group_id: rawClassGroupId,
         entry_number: undefined,
         horse_id: null,
         horse: null,
         rider_id: null,
         rider_name: null,
+        class_ids: new Set(),
+        class_group_ids: new Set(),
       };
       if (existing.entry_number === undefined && entryNumber !== undefined) existing.entry_number = entryNumber;
       if (existing.horse_id === null && horseId !== null) existing.horse_id = horseId;
       if (!existing.horse && horseName) existing.horse = horseName;
       if (existing.rider_id === null && riderId !== null) existing.rider_id = riderId;
       if (!existing.rider_name && riderName) existing.rider_name = riderName;
-      if (existing.class_group_id === null && rawClassGroupId !== null) existing.class_group_id = rawClassGroupId;
-      entryByKey.set(entryKey, existing);
+      if (classId !== null) existing.class_ids.add(String(classId));
+      if (rawClassGroupId !== null) existing.class_group_ids.add(String(rawClassGroupId));
+      entryById.set(entryId, existing);
     }
   }
 
@@ -1064,10 +1066,14 @@ async function buildAuxiliaryRowsForTenant({
     const resolvedRingNumber = classDetail?.ring_number ?? row.ring_number ?? schedule?.ring_number;
     const resolvedGroupName = row.group_name || schedule?.group_name || undefined;
     const resolvedClassGroupSequence = row.class_group_sequence ?? schedule?.class_group_sequence;
+    const classMatchesAppDate = resolvedScheduleDate === heartbeat.app_sql_date;
     return {
-      key: `${heartbeat.app_show_id}|${tenantId}|${row.class_id}`,
+      key: String(row.class_id),
       app_sid: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
+      app_show_idv2: heartbeat.app_show_id,
+      app_sql_datev2: heartbeat.app_sql_date,
+      app_dow_rawv2: heartbeat.app_dow_raw,
       shows: commonLinks.shows,
       pid: Number(tenantId),
       class_id: row.class_id,
@@ -1085,7 +1091,7 @@ async function buildAuxiliaryRowsForTenant({
       schedule_date: resolvedScheduleDate || undefined,
       scheduled_date: resolvedScheduleDate || undefined,
       scheduled_estimated_start_time: resolvedEstimatedStart || undefined,
-      inactive: false,
+      inactive: !classMatchesAppDate,
       run_id: runId,
       last_run: dateOnly,
       new_class_id: true,
@@ -1094,18 +1100,13 @@ async function buildAuxiliaryRowsForTenant({
   });
 
   const classRows = enrichedClassRows.map((row) => pickWritableFields(activeClassesFieldSet, row));
-  const classRowById = new Map(
-    enrichedClassRows
-      .map((row) => [numOrNull(row.class_id), row])
-      .filter(([classId]) => classId !== null)
-  );
 
   const groupById = new Map();
   for (const row of enrichedClassRows) {
     const classGroupId = numOrNull(row.class_group_id);
     if (classGroupId === null) continue;
 
-    const key = `${heartbeat.app_show_id}|${classGroupId}`;
+    const key = String(classGroupId);
     const existing = groupById.get(key) || {
       key,
       app_sid: heartbeat.app_show_id,
@@ -1128,42 +1129,31 @@ async function buildAuxiliaryRowsForTenant({
     existing.group_name = existing.group_name || strOrNull(row.group_name);
     existing.ring_number = existing.ring_number ?? numOrNull(row.ring_number);
     existing.estimated_start_time = minTimeText(existing.estimated_start_time, strOrNull(row.scheduled_estimated_start_time ?? row.estimated_start_time));
-    existing.scheduled_estimated_start_time = minTimeText(existing.scheduled_estimated_start_time, strOrNull(row.scheduled_estimated_start_time ?? row.estimated_start_time));
     existing.estimated_end_time = maxTimeText(existing.estimated_end_time, strOrNull(row.estimated_end_time));
     existing.total += totalTrips ?? 0;
-    existing.total_trips += totalTrips ?? 0;
-    existing.schedule_date = existing.schedule_date || toIsoDateOnly(row.schedule_date);
-    existing.scheduled_date = existing.scheduled_date || toIsoDateOnly(row.scheduled_date || row.schedule_date);
     groupById.set(key, existing);
   }
 
   const groupRows = [...groupById.values()].map((row) => pickWritableFields(activeGroupsFieldSet, row));
 
-  const entryRows = [...entryByKey.values()].map((row) => {
-    const singleClassId = numOrNull(row.class_id);
-    const singleClass = singleClassId !== null ? classRowById.get(singleClassId) || null : null;
-    const singleClassGroupId = numOrNull(row.class_group_id) ?? numOrNull(singleClass?.class_group_id);
+  const entryRows = [...entryById.values()].map((row) => {
+    const singleClassId = row.class_ids.size === 1 ? numOrNull([...row.class_ids][0]) : null;
+    const singleClassGroupId = row.class_group_ids.size === 1 ? numOrNull([...row.class_group_ids][0]) : null;
 
     return pickWritableFields(activeEntriesFieldSet, {
-      key: `${heartbeat.app_show_id}|${tenantId}|${row.entry_id}|${row.class_id}`,
+      key: String(row.entry_id),
       app_sid: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
       shows: commonLinks.shows,
       pid: Number(tenantId),
       entry_id: row.entry_id,
-      class_id: singleClassId ?? undefined,
-      class_group_id: singleClassGroupId ?? undefined,
       entry_number: row.entry_number,
       horse_id: row.horse_id ?? undefined,
       horse: row.horse || undefined,
       rider_id: row.rider_id ?? undefined,
       rider_name: row.rider_name || undefined,
-      class_number: singleClass?.class_number,
-      class_name: singleClass?.class_name,
-      schedule_date: singleClass?.schedule_date,
-      scheduled_date: singleClass?.scheduled_date,
-      scheduled_estimated_start_time: singleClass?.scheduled_estimated_start_time,
-      watch_schedule: singleClass?.watch_schedule,
+      class_id: singleClassId ?? undefined,
+      class_group_id: singleClassGroupId ?? undefined,
       ww_trainers: commonLinks.ww_trainers,
       inactive: false,
       run_id: runId,
@@ -1324,6 +1314,8 @@ async function main() {
   const outsideSchedule = [];
   const uniqueRows = new Map();
   const uniqueGroupRows = new Map();
+  const uniqueClassRows = new Map();
+  const uniqueEntryRows = new Map();
 
   for (const tenantId of activeTenantIds) {
     const tenantRow = activeTenantMap.get(tenantId) || null;
@@ -1406,41 +1398,50 @@ async function main() {
       rows: auxiliaryRows.horseRows,
     });
 
-    const classSync = await upsertActiveByKey({
-      tableName: TABLE_ACTIVE_CLASSES,
-      fieldSet: activeClassesFieldSet,
-      fieldKey: "key",
-      fieldPid: "pid",
-      fieldAppSid: "app_sid",
-      fieldInactive: "inactive",
-      fieldRunId: "run_id",
-      fieldLastRun: "last_run",
-      fieldNewFlag: "new_class_id",
-      fieldPidMismatch: "pid_mismatch",
-      rows: auxiliaryRows.classRows,
-      scopePid: Number(tenantId),
-      scopeAppSid: heartbeat.app_show_id,
-      runId,
-      lastRun: dateOnly,
-    });
+    for (const row of auxiliaryRows.classRows || []) {
+      const key = normalizeKey(row?.key);
+      if (!key) continue;
+      const existing = uniqueClassRows.get(key);
+      if (!existing) {
+        uniqueClassRows.set(key, { ...row });
+        continue;
+      }
+      existing.app_show_idv2 = existing.app_show_idv2 ?? row.app_show_idv2;
+      existing.app_sql_datev2 = existing.app_sql_datev2 ?? row.app_sql_datev2;
+      existing.app_dow_rawv2 = existing.app_dow_rawv2 ?? row.app_dow_rawv2;
+      existing.class_number = existing.class_number ?? row.class_number;
+      existing.class_name = existing.class_name || row.class_name;
+      existing.watch_schedule = existing.watch_schedule || row.watch_schedule;
+      existing.class_group_id = existing.class_group_id ?? row.class_group_id;
+      existing.group_name = existing.group_name || row.group_name;
+      existing.class_group_sequence = existing.class_group_sequence ?? row.class_group_sequence;
+      existing.ring_number = existing.ring_number ?? row.ring_number;
+      existing.total_trips = existing.total_trips ?? row.total_trips;
+      existing.class_type = existing.class_type || row.class_type;
+      existing.schedule_sequencetype = existing.schedule_sequencetype || row.schedule_sequencetype;
+      existing.show_id = existing.show_id ?? row.show_id;
+      existing.schedule_date = existing.schedule_date || row.schedule_date;
+      existing.scheduled_date = existing.scheduled_date || row.scheduled_date;
+      existing.scheduled_estimated_start_time = existing.scheduled_estimated_start_time || row.scheduled_estimated_start_time;
+      existing.inactive = Boolean(existing.inactive) && Boolean(row.inactive);
+      if (!sameValue(existing.pid, row.pid)) existing.pid_mismatch = true;
+    }
 
-    const entrySync = await upsertActiveByKey({
-      tableName: TABLE_ACTIVE_ENTRIES,
-      fieldSet: activeEntriesFieldSet,
-      fieldKey: "key",
-      fieldPid: "pid",
-      fieldAppSid: "app_sid",
-      fieldInactive: "inactive",
-      fieldRunId: "run_id",
-      fieldLastRun: "last_run",
-      fieldNewFlag: "new_entry",
-      fieldPidMismatch: "pid_mismatch",
-      rows: auxiliaryRows.entryRows,
-      scopePid: Number(tenantId),
-      scopeAppSid: heartbeat.app_show_id,
-      runId,
-      lastRun: dateOnly,
-    });
+    for (const row of auxiliaryRows.entryRows || []) {
+      const key = normalizeKey(row?.key);
+      if (!key) continue;
+      const existing = uniqueEntryRows.get(key);
+      if (!existing) {
+        uniqueEntryRows.set(key, { ...row });
+        continue;
+      }
+      existing.entry_number = existing.entry_number ?? row.entry_number;
+      existing.horse_id = existing.horse_id ?? row.horse_id;
+      existing.horse = existing.horse || row.horse;
+      existing.rider_id = existing.rider_id ?? row.rider_id;
+      existing.rider_name = existing.rider_name || row.rider_name;
+      if (!sameValue(existing.pid, row.pid)) existing.pid_mismatch = true;
+    }
 
     for (const row of auxiliaryRows.groupRows || []) {
       const key = normalizeKey(row?.key);
@@ -1480,11 +1481,49 @@ async function main() {
       outside_schedule_count: perTenantNormalized.outside_schedule.length,
       rider_sync: riderSync,
       horse_sync: horseSync,
-      class_sync: classSync,
-      entry_sync: entrySync,
+      active_class_rows: auxiliaryRows.classRows.length,
+      active_entry_rows: auxiliaryRows.entryRows.length,
       class_endpoint_failures: auxiliaryRows.classEndpointFailures,
     });
   }
+
+  const classSync = await upsertActiveByKey({
+    tableName: TABLE_ACTIVE_CLASSES,
+    fieldSet: activeClassesFieldSet,
+    fieldKey: "key",
+    fieldPid: "pid",
+    fieldAppSid: "app_sid",
+    fieldInactive: "inactive",
+    fieldRunId: "run_id",
+    fieldLastRun: "last_run",
+    fieldNewFlag: "new_class_id",
+    fieldPidMismatch: "pid_mismatch",
+    rows: [...uniqueClassRows.values()],
+    scopePid: null,
+    scopeAppSid: heartbeat.app_show_id,
+    scopeByPid: false,
+    runId,
+    lastRun: dateOnly,
+  });
+
+  const entrySync = await upsertActiveByKey({
+    tableName: TABLE_ACTIVE_ENTRIES,
+    fieldSet: activeEntriesFieldSet,
+    fieldKey: "key",
+    fieldPid: "pid",
+    fieldAppSid: "app_sid",
+    fieldInactive: "inactive",
+    fieldRunId: "run_id",
+    fieldLastRun: "last_run",
+    fieldNewFlag: "new_entry",
+    fieldPidMismatch: "pid_mismatch",
+    rows: [...uniqueEntryRows.values()],
+    scopePid: null,
+    scopeAppSid: heartbeat.app_show_id,
+    scopeByPid: false,
+    runId,
+    lastRun: dateOnly,
+  });
 
   const activeGroupSync = await upsertActiveGroups({
     tableName: TABLE_ACTIVE_GROUPS,
