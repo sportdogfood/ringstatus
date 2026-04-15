@@ -1,8 +1,88 @@
 cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
 node .\schedules_dailyv2.js
+
+PS C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus> node .\schedules_dailyv2.js
+{
+  "ok": true,
+  "dry_run": false,
+  "scope": {
+    "heartbeat_record_id": "recJAbNwAwsgDImkR",
+    "heartbeat_rid": "recJAbNwAwsgDImkR",
+    "hb_at": "2026-04-15T19:45:18.745Z",
+    "app_show_idv2": 200000059,
+    "app_sql_datev2": "2026-04-15",
+    "app_dow_rawv2": "Wed",
+    "shifted_to_next_dayv2": false,
+    "scope_key": "200000059|2026-04-15|Wed|0",
+    "scope_run_id": "200000059-2026-04-15-1776282318",
+    "heartbeat_time": "03:45 PM",
+    "heartbeat_show_date": null,
+    "raw_sql_date": "2026-04-15",
+    "mode": "DAY",
+    "set_to_default_app_sql_date": false,
+    "default_app_sql_date_is": "2026-04-15",
+    "show_app_sql_start_date": "2026-04-15",
+    "show_app_sql_end_date": "2026-04-19",
+    "show_app_name": "2026 ESP Spring 3 (#5028) CSI 3*",
+    "app_sql_date_source": "raw_day",
+    "candidate_app_sql_date": "2026-04-15"
+  },
+  "chosen_source": "dated_schedule",
+  "heartbeat_patch_fields": {
+    "shifted_to_next_day": false,
+    "set_to_default_app_sql_date": false,
+    "show_app_name": "2026 ESP Spring 3 (#5028) CSI 3*"
+  },
+  "row_count": 11,
+  "creates_planned": 0,
+  "updates_planned": 11,
+  "drops_planned": 25,
+  "existing_show_rows": 36,
+  "heartbeat_view_rows": 36,
+  "show_record_bound": true,
+  "fetches": {
+    "dated_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-04-15&show_id=200000059&customer_id=15",
+      "rows": 11,
+      "schedule_show_datev2": "2026-04-15"
+    },
+    "empty_ping_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=200000059&customer_id=15",
+      "rows": 11,
+      "schedule_show_datev2": "2026-04-15"
+    }
+  },
+  "writes": {
+    "created": 0,
+    "updated": 11,
+    "dropped": 25,
+    "create_failures": [],
+    "update_failures": [],
+    "drop_failures": []
+  },
+  "active_groups": {
+    "table": "active_groups",
+    "created_planned": 0,
+    "updated_planned": 5,
+    "inactivated_planned": 0,
+    "writes": {
+      "created": 0,
+      "updated": 5,
+      "inactivated": 0,
+      "create_failures": [],
+      "update_failures": [],
+      "inactivate_failures": []
+    },
+    "skipped": false
+  }
+}
+
+
 node .\schedules_calculatorv2.js
 
-
+PS C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus> node .\schedules_calculatorv2.js
+{"ok":false,"error":"Error: Airtable list failed (422) groups_live: {\"error\":{\"type\":\"UNKNOWN_FIELD_NAME\",\"message\":\"Unknown field name: \\\"stop_updating\\\"\"}}\n    at airtableList (C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_calculatorv2.js:256:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async fetchGroupsLiveRows (C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_calculatorv2.js:434:16)\n    at async main (C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_calculatorv2.js:822:22)","calc_mode":"shadow","calc_version":"schedules_calculator_v2_1"}
+PS C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus>
 
 Yes. Those are the same OneDrive path on two machines, and telling you to “copy from that path to that path” was not useful.
 
