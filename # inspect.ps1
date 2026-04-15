@@ -56,3 +56,8 @@ Register-ScheduledTask `
   Get-ScheduledTask -TaskName 'epoch-tagger-local' |
   ForEach-Object { $_.Settings } |
   Format-List MultipleInstances, Enabled
+
+
+
+  powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1"
+
