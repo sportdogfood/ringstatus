@@ -121,6 +121,16 @@ function normalizeEntryNumber(value) {
   return text;
 }
 
+function toIsoDateOnly(value) {
+  if (isBlank(value)) return null;
+  if (value instanceof Date) return value.toISOString().slice(0, 10);
+  const text = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+  if (/^\d{4}-\d{2}-\d{2}T/.test(text)) return text.slice(0, 10);
+  const parsed = Date.parse(text);
+  return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
+}
+
 function setIfPresent(target, fieldName, value) {
   if (!fieldName) return;
   if (value === undefined || value === null) return;
@@ -528,6 +538,11 @@ function buildPeopleEndpoint(sourceId, heartbeat) {
   return `${BASE_URL}/people/${encodeURIComponent(sourceId)}?pid=${encodeURIComponent(sourceId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
+function buildClassesEndpoint(classId, showId) {
+  if (isBlank(classId) || isBlank(showId)) return null;
+  return `${BASE_URL}/classes/${encodeURIComponent(classId)}/?show_id=${encodeURIComponent(showId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+}
+
 function extractPeopleShowId(payload) {
   return numOrNull(pickFirst(payload?.show_id, payload?.people?.show_id));
 }
@@ -535,6 +550,50 @@ function extractPeopleShowId(payload) {
 function extractPayloadTrips(payload) {
   if (Array.isArray(payload?.trips)) return payload.trips;
   return collectTripCandidates(payload);
+}
+
+function normalizeClassEndpointPayload(payload) {
+  const classObj = payload?.class && typeof payload.class === "object" ? payload.class : {};
+  const related = payload?.class_related_data && typeof payload.class_related_data === "object"
+    ? payload.class_related_data
+    : {};
+
+  return {
+    class_id: numOrNull(pickFirst(payload?.class_id, classObj?.class_id)),
+    class_number: normalizeEntryNumber(pickFirst(payload?.number, payload?.class_number, classObj?.number)),
+    class_name: strOrNull(pickFirst(classObj?.name, payload?.class_name, payload?.name)),
+    class_group_id: numOrNull(pickFirst(payload?.class_group_id, related?.class_group_id)),
+    ring_number: numOrNull(pickFirst(payload?.ring, related?.ring, payload?.ring_number)),
+    total_trips: numOrNull(pickFirst(payload?.total_trips, related?.total_trips)),
+    class_type: strOrNull(pickFirst(payload?.class_type, classObj?.class_type)),
+    schedule_sequencetype: strOrNull(pickFirst(payload?.schedule_sequencetype, classObj?.schedule_sequencetype)),
+    show_id: numOrNull(pickFirst(payload?.show_id, classObj?.show_id)),
+    schedule_date: toIsoDateOnly(pickFirst(payload?.date, related?.date)),
+    scheduled_estimated_start_time: strOrNull(pickFirst(payload?.estimated_time, related?.estimated_time)),
+  };
+}
+
+async function fetchClassEndpointDetailsById(classIds, heartbeat) {
+  const detailById = new Map();
+  const failures = [];
+  const uniqueIds = [...new Set((classIds || []).map((value) => numOrNull(value)).filter((value) => value !== null))];
+
+  await runPool(uniqueIds, FETCH_CONCURRENCY, async (classId) => {
+    const endpoint = buildClassesEndpoint(classId, heartbeat.app_show_id);
+    if (!endpoint) return;
+    try {
+      const payload = await fetchJson(endpoint);
+      detailById.set(String(classId), normalizeClassEndpointPayload(payload));
+    } catch (error) {
+      failures.push({
+        class_id: classId,
+        endpoint,
+        reason: String(error?.message || error).slice(0, 300),
+      });
+    }
+  });
+
+  return { detailById, failures };
 }
 
 function buildNumericRunId(nowIso) {
@@ -731,7 +790,7 @@ async function upsertActiveByKey({
   return summary;
 }
 
-function buildAuxiliaryRowsForTenant({
+async function buildAuxiliaryRowsForTenant({
   payload,
   tenantId,
   activeTenantRecordId,
@@ -817,6 +876,9 @@ function buildAuxiliaryRowsForTenant({
     ww_trainers: linkOne(wwTrainerRecordId),
   };
 
+  const classEndpointDetailResult = await fetchClassEndpointDetailsById([...classById.keys()], heartbeat);
+  const classEndpointDetails = classEndpointDetailResult.detailById;
+
   const riderRows = [...riderById.values()].map((row) => pickWritableFields(wwRidersFieldSet, {
     rider_id: row.rider_id,
     rider_name: row.rider_name || undefined,
@@ -855,6 +917,9 @@ function buildAuxiliaryRowsForTenant({
 
   const classRows = [...classById.values()].map((row) => {
     const schedule = scheduleByClassId.get(String(row.class_id));
+    const classDetail = classEndpointDetails.get(String(row.class_id)) || null;
+    const resolvedScheduleDate = classDetail?.schedule_date || schedule?.schedule_show_datev2;
+    const resolvedEstimatedStart = classDetail?.scheduled_estimated_start_time || schedule?.estimated_start_time;
     return pickWritableFields(activeClassesFieldSet, {
       key: `${heartbeat.app_show_id}|${tenantId}|${row.class_id}`,
       app_sid: heartbeat.app_show_id,
@@ -862,9 +927,18 @@ function buildAuxiliaryRowsForTenant({
       shows: commonLinks.shows,
       pid: Number(tenantId),
       class_id: row.class_id,
-      class_number: row.class_number,
-      class_name: row.class_name || undefined,
+      class_number: classDetail?.class_number ?? row.class_number,
+      class_name: classDetail?.class_name || row.class_name || undefined,
       watch_schedule: schedule?.recordId ? linkOne(schedule.recordId) : undefined,
+      class_group_id: classDetail?.class_group_id ?? schedule?.class_group_id,
+      ring_number: classDetail?.ring_number ?? schedule?.ring_number,
+      total_trips: classDetail?.total_trips ?? schedule?.total_trips,
+      class_type: classDetail?.class_type ?? schedule?.class_type,
+      schedule_sequencetype: classDetail?.schedule_sequencetype ?? schedule?.schedule_sequencetype,
+      show_id: classDetail?.show_id ?? heartbeat.app_show_id,
+      schedule_date: resolvedScheduleDate || undefined,
+      scheduled_date: resolvedScheduleDate || undefined,
+      scheduled_estimated_start_time: resolvedEstimatedStart || undefined,
       inactive: false,
       run_id: runId,
       last_run: dateOnly,
@@ -899,6 +973,7 @@ function buildAuxiliaryRowsForTenant({
     horseRows,
     classRows,
     entryRows,
+    classEndpointFailures: classEndpointDetailResult.failures,
   };
 }
 
@@ -1076,7 +1151,7 @@ async function main() {
     }
 
     const wwTrainerRecordId = wwTrainerRecordIdByPid.get(String(tenantId)) || null;
-    const auxiliaryRows = buildAuxiliaryRowsForTenant({
+    const auxiliaryRows = await buildAuxiliaryRowsForTenant({
       payload,
       tenantId,
       activeTenantRecordId: tenantRow?.recordId || null,
@@ -1178,6 +1253,7 @@ async function main() {
       horse_sync: horseSync,
       class_sync: classSync,
       entry_sync: entrySync,
+      class_endpoint_failures: auxiliaryRows.classEndpointFailures,
     });
   }
 

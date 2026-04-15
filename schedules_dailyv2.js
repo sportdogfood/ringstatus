@@ -10,6 +10,7 @@ const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
+const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
 const VIEW_WATCH_SCHEDULE_HEARTBEAT = process.env.VIEW_WATCH_SCHEDULE_HEARTBEAT || "heartbeat";
@@ -105,6 +106,11 @@ function chunk(items, size) {
   const out = [];
   for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
   return out;
+}
+
+function buildNumericRunId(nowIso) {
+  const ms = Date.parse(nowIso);
+  return Number.isFinite(ms) ? ms : Date.now();
 }
 
 function firstValue(value) {
@@ -431,6 +437,23 @@ async function fetchHeartbeatFieldSet() {
   return new Set(Array.isArray(table?.fields) ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean) : []);
 }
 
+async function fetchTableFieldSet(tableName) {
+  const response = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+  });
+
+  if (!response.ok) {
+    const body = await response.text().catch(() => "");
+    throw new Error(`Airtable meta failed (${response.status}) ${tableName}: ${body}`);
+  }
+
+  const json = await response.json().catch(() => ({}));
+  const table = Array.isArray(json?.tables)
+    ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
+    : null;
+  return new Set(Array.isArray(table?.fields) ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean) : []);
+}
+
 function buildBaseHeartbeatContext(record) {
   const fields = record?.fields || {};
   const rawShowId = numOrNull(fields.show_id);
@@ -661,12 +684,172 @@ function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue) {
   return fields;
 }
 
+function minTimeText(left, right) {
+  if (!left) return right || null;
+  if (!right) return left || null;
+  return String(left) <= String(right) ? left : right;
+}
+
+function maxTimeText(left, right) {
+  if (!left) return right || null;
+  if (!right) return left || null;
+  return String(left) >= String(right) ? left : right;
+}
+
+function buildActiveGroupRows(rows, scope, runId, dateOnly, activeGroupsFieldSet) {
+  if (!activeGroupsFieldSet.size) return [];
+
+  const byGroup = new Map();
+
+  for (const row of rows || []) {
+    const fields = row?.fields || {};
+    const classGroupId = numOrNull(fields.class_group_id);
+    if (classGroupId === null) continue;
+
+    const key = `${scope.app_show_idv2}|${classGroupId}`;
+    const existing = byGroup.get(key) || {
+      key,
+      app_sid: scope.app_show_idv2,
+      app_sql_date: scope.app_sql_datev2,
+      class_group_id: classGroupId,
+      class_group_sequence: undefined,
+      group_name: null,
+      estimated_start_time: null,
+      estimated_end_time: null,
+      ring_number: undefined,
+      run_id: runId,
+      last_run: dateOnly,
+      inactive: false,
+      total: 0,
+      schedule_date: null,
+      scheduled_date: null,
+      scheduled_estimated_start_time: null,
+    };
+
+    const totalTrips = numOrNull(fields.total_trips);
+    existing.class_group_sequence = existing.class_group_sequence ?? numOrNull(fields.class_group_sequence);
+    existing.group_name = existing.group_name || strOrNull(fields.group_name);
+    existing.ring_number = existing.ring_number ?? numOrNull(fields.ring_number);
+    existing.estimated_start_time = minTimeText(existing.estimated_start_time, strOrNull(fields.estimated_start_time));
+    existing.estimated_end_time = maxTimeText(existing.estimated_end_time, strOrNull(fields.estimated_end_time));
+    existing.total += totalTrips ?? 0;
+
+    const resolvedScheduleDate = toIsoDateOnly(pickFirst(fields.schedule_show_datev2, fields.show_date));
+    existing.schedule_date = existing.schedule_date || resolvedScheduleDate;
+    existing.scheduled_date = existing.scheduled_date || resolvedScheduleDate;
+    existing.scheduled_estimated_start_time = existing.scheduled_estimated_start_time || strOrNull(fields.estimated_start_time);
+
+    byGroup.set(key, existing);
+  }
+
+  return [...byGroup.values()].map((row) => {
+    const fields = {};
+    for (const [name, value] of Object.entries(row)) {
+      if (!activeGroupsFieldSet.has(name)) continue;
+      if (value === undefined || value === null) continue;
+      if (typeof value === "string" && value.trim() === "") continue;
+      fields[name] = value;
+    }
+    return fields;
+  });
+}
+
+async function upsertActiveGroups({
+  fieldSet,
+  rows,
+  scopeAppSid,
+  runId,
+  lastRun,
+}) {
+  if (!fieldSet.size) {
+    return {
+      table: TABLE_ACTIVE_GROUPS,
+      created_planned: 0,
+      updated_planned: 0,
+      inactivated_planned: 0,
+      writes: { created: 0, updated: 0, inactivated: 0, create_failures: [], update_failures: [], inactivate_failures: [] },
+      skipped: true,
+    };
+  }
+
+  const existingRows = await airtableList(TABLE_ACTIVE_GROUPS, {
+    pageSize: 100,
+    "fields[]": ["key", "app_sid"],
+  });
+
+  const relevantExisting = existingRows.filter((row) => numOrNull(row?.fields?.app_sid) === scopeAppSid);
+  const existingByKey = new Map();
+  for (const row of relevantExisting) {
+    const key = normalizeKey(row?.fields?.key);
+    if (!key || existingByKey.has(key)) continue;
+    existingByKey.set(key, row);
+  }
+
+  const keepKeys = new Set();
+  const creates = [];
+  const updates = [];
+
+  for (const row of rows) {
+    const key = normalizeKey(row?.key);
+    if (!key) continue;
+    keepKeys.add(key);
+    const existing = existingByKey.get(key);
+    if (!existing) {
+      creates.push({ fields: row });
+      continue;
+    }
+    updates.push({
+      id: existing.id,
+      fields: row,
+    });
+  }
+
+  const inactivations = [];
+  for (const row of relevantExisting) {
+    const key = normalizeKey(row?.fields?.key);
+    if (!key || keepKeys.has(key)) continue;
+    inactivations.push({
+      id: row.id,
+      fields: {
+        inactive: true,
+        run_id: runId,
+        last_run: lastRun,
+      },
+    });
+  }
+
+  const summary = {
+    table: TABLE_ACTIVE_GROUPS,
+    created_planned: creates.length,
+    updated_planned: updates.length,
+    inactivated_planned: inactivations.length,
+    writes: { created: 0, updated: 0, inactivated: 0, create_failures: [], update_failures: [], inactivate_failures: [] },
+    skipped: false,
+  };
+
+  if (DRY_RUN) return summary;
+
+  const createResult = await airtableCreateRecords(TABLE_ACTIVE_GROUPS, creates);
+  const updateResult = await airtablePatchRecords(TABLE_ACTIVE_GROUPS, updates);
+  const inactivateResult = await airtablePatchRecords(TABLE_ACTIVE_GROUPS, inactivations);
+
+  summary.writes.created = createResult.okRows;
+  summary.writes.updated = updateResult.okRows;
+  summary.writes.inactivated = inactivateResult.okRows;
+  summary.writes.create_failures = createResult.failedRows;
+  summary.writes.update_failures = updateResult.failedRows;
+  summary.writes.inactivate_failures = inactivateResult.failedRows;
+
+  return summary;
+}
+
 async function runDaily() {
   requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
   const nowIso = new Date().toISOString();
   const dateOnly = nowIso.slice(0, 10);
+  const runId = buildNumericRunId(nowIso);
 
   const heartbeatRecord = await fetchLatestHeartbeat();
   const baseHeartbeatContext = buildBaseHeartbeatContext(heartbeatRecord);
@@ -674,6 +857,7 @@ async function runDaily() {
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
   const heartbeatFieldSet = await fetchHeartbeatFieldSet().catch(() => new Set());
+  const activeGroupsFieldSet = await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set());
 
   const emptyUrl = buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2);
   const emptyPayload = await fetchJson(emptyUrl);
@@ -806,9 +990,29 @@ async function runDaily() {
       update_failures: [],
       drop_failures: [],
     },
+    active_groups: {
+      table: TABLE_ACTIVE_GROUPS,
+      created_planned: 0,
+      updated_planned: 0,
+      inactivated_planned: 0,
+      writes: { created: 0, updated: 0, inactivated: 0, create_failures: [], update_failures: [], inactivate_failures: [] },
+      skipped: true,
+    },
   };
 
+  const activeGroupRows = buildActiveGroupRows(chosen.rows, scope, runId, dateOnly, activeGroupsFieldSet);
+  summary.active_groups.created_planned = activeGroupRows.length;
+
   if (DRY_RUN) {
+    if (activeGroupsFieldSet.size) {
+      summary.active_groups = await upsertActiveGroups({
+        fieldSet: activeGroupsFieldSet,
+        rows: activeGroupRows,
+        scopeAppSid: scope.app_show_idv2,
+        runId,
+        lastRun: dateOnly,
+      });
+    }
     return summary;
   }
 
@@ -822,6 +1026,15 @@ async function runDaily() {
   summary.writes.create_failures = createResult.failedRows;
   summary.writes.update_failures = updateResult.failedRows;
   summary.writes.drop_failures = dropResult.failedRows;
+  if (activeGroupsFieldSet.size) {
+    summary.active_groups = await upsertActiveGroups({
+      fieldSet: activeGroupsFieldSet,
+      rows: activeGroupRows,
+      scopeAppSid: scope.app_show_idv2,
+      runId,
+      lastRun: dateOnly,
+    });
+  }
 
   return summary;
 }
