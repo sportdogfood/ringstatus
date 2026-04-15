@@ -2,7 +2,7 @@
 
 $env:DRY_RUN          = '0'
 $env:CALC_MODE        = 'promote'
-$env:WATCH_VIEW       = 'hb_targets_active'
+$env:WATCH_VIEW       = 'heartbeat'
 $env:AIRTABLE_BASE_ID  = 'apptdhhNzduxm5gjn'
 $env:AIRTABLE_TABLE    = 'tblCnHDB4IVtxqulo'
 $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
@@ -52,8 +52,11 @@ function Run-Step {
 
 Run-Step -Label 'TAGGER'             -ScriptName 'tagger.js'             -LogPath "$logDir\epoch-tagger.log"
 Run-Step -Label 'HEARTBEAT_PATTERNS' -ScriptName 'heartbeat_patterns.js' -LogPath "$logDir\epoch-tagger.log"
-Run-Step -Label 'TRIPS_TAGGER'       -ScriptName 'trips_tagger.js'       -LogPath "$logDir\trips-tagger.log"
-Run-Step -Label 'TRIPS_CALCULATOR'   -ScriptName 'trips_calculator.js'   -LogPath "$logDir\trips-calculator.log"
+Run-Step -Label 'SCHEDULES_DAILYV2'      -ScriptName 'schedules_dailyv2.js'      -LogPath "$logDir\schedules-dailyv2.log"
+Run-Step -Label 'SCHEDULES_CALCULATORV2' -ScriptName 'schedules_calculatorv2.js' -LogPath "$logDir\schedules-calculatorv2.log"
+Run-Step -Label 'TRIPS_DAILYV2'          -ScriptName 'trips_dailyv2.js'          -LogPath "$logDir\trips-dailyv2.log"
+Run-Step -Label 'TRIPS_TAGGER'           -ScriptName 'trips_tagger.js'           -LogPath "$logDir\trips-tagger.log"
+Run-Step -Label 'TRIPS_CALCULATORV2'     -ScriptName 'trips_calculatorv2.js'     -LogPath "$logDir\trips-calculatorv2.log"
 
 Start-Sleep -Seconds 30
 
