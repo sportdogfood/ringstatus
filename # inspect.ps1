@@ -1,3 +1,27 @@
+
+$root = "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
+$files = @(
+  "schedule_normalizer_v2.js",
+  "schedules_dailyv2.js",
+  "schedules_calculatorv2.js",
+  "trips_normalizer_v2.js",
+  "trips_dailyv2.js",
+  "trips_calculatorv2.js"
+)
+
+foreach ($f in $files) {
+  $p = Join-Path $root $f
+  attrib +P -U $p
+}
+
+foreach ($f in $files) {
+  $p = Join-Path $root $f
+  Get-Content $p -Head 1 | Out-Null
+  Write-Host "OK $f"
+}
+
+
+
 [Wed 04/15/2026 14:52:30.41] SCHEDULES_CALCULATORV2 RUN 
 node:fs:440
     return binding.readFileUtf8(path, stringToFlags(options.flag));
