@@ -58,6 +58,25 @@ Register-ScheduledTask `
   Format-List MultipleInstances, Enabled
 
 
+  cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
+
+Get-Content .\run_tagger_task.cmd
+Get-Content .\run_tagger_task.ps1
+Get-Content .\run_tagger_task_cmd.ps1
+
+
+
+  cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
+
+Select-String -Path .\run_tagger_task.cmd, .\run_tagger_task.ps1, .\run_tagger_task_cmd.ps1 `
+  -Pattern 'heartbeat|schedules_dailyv2|schedules_calculatorv2|trips_dailyv2|trips_calculatorv2'
+
+
+
+cd "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus"
+git status
+git pull
+
 
   powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1"
 
