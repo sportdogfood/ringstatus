@@ -7,7 +7,7 @@ const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 const TABLE_SCHEDULE_LOGS = process.env.TABLE_SCHEDULE_LOGS || "schedule_logs";
 const TABLE_TRIGGER_TAGS = process.env.TABLE_TRIGGER_TAGS || "trigger_tags";
 
-const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "enrich";
+const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
 
@@ -622,9 +622,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   const completedTripsLive = numOrNull(groupRow?.gone);
   const rowStatus = strOrNull(row.status);
   const groupStatus = strOrNull(groupRow?.status);
-  const latestStatusFinal = isTerminalClassStatus(rowStatus)
-    ? rowStatus
-    : (groupStatus || row.latest_status || rowStatus);
+  const latestStatusFinal = rowStatus || groupStatus || row.latest_status || null;
   const priorStatus = row.latest_status || row.status || null;
   const tripMinutesConfigured = numOrNull(row.perTrip);
   const tripMinutesFinal = tripMinutesConfigured && tripMinutesConfigured > 0
