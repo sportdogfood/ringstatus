@@ -15,6 +15,7 @@ const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW = process.env.WATCH_VIEW || "hb_targets";
 const TRIP_LOGS_TABLE = process.env.TRIP_LOGS_TABLE || "trip_logs";
+const TABLE_TRIGGER_TAGS = process.env.TABLE_TRIGGER_TAGS || "trigger_tags";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
@@ -305,6 +306,34 @@ function firstNonBlank(...values) {
     if (!isBlank(value)) return value;
   }
   return null;
+}
+
+function boolValue(value) {
+  if (value === true || value === 1) return true;
+  if (value === false || value === 0 || value === null || value === undefined) return false;
+  const text = String(value).trim().toLowerCase();
+  return text === "true" || text === "1" || text === "yes" || text === "checked";
+}
+
+function normalizeKey(value) {
+  return strOrNull(value) || "";
+}
+
+function compareTriggerValue(left, right) {
+  const leftNum = numOrNull(left);
+  const rightNum = numOrNull(right);
+  if (leftNum !== null && rightNum !== null) return leftNum === rightNum;
+  return normalizeKey(left).toLowerCase() === normalizeKey(right).toLowerCase();
+}
+
+function parseTriggerNumber(value) {
+  const num = numOrNull(value);
+  return num !== null ? num : null;
+}
+
+function fieldsHasTruthy(fields, fieldName) {
+  if (!fieldName) return false;
+  return boolValue(fields?.[fieldName]);
 }
 
 function chunk(items, size) {
@@ -716,6 +745,54 @@ async function airtableList({ table, view, fields = [], maxRecords = 0 }) {
   }
 
   return rows;
+}
+
+async function fetchActiveTriggerTags() {
+  const fieldSet = await airtableTableFieldSet(TABLE_TRIGGER_TAGS);
+  const requestedFields = [
+    "trigger_name",
+    "trigger_lane",
+    "trigger_type",
+    "source_table",
+    "source_view",
+    "is_active",
+    "query",
+    "this_field",
+    "argument",
+    "from",
+    "to",
+    "output_field",
+    "priority",
+  ].filter((fieldName) => fieldSet.has(fieldName));
+
+  const rows = await airtableList({
+    table: TABLE_TRIGGER_TAGS,
+    fields: requestedFields,
+    maxRecords: MAX_RECORDS,
+  });
+
+  return rows
+    .filter((row) => fieldsHasTruthy(row?.fields || {}, "is_active"))
+    .map((row) => {
+      const fields = row?.fields || {};
+      return {
+        recordId: row.id,
+        trigger_name: strOrNull(fields.trigger_name),
+        trigger_lane: strOrNull(fields.trigger_lane),
+        trigger_type: strOrNull(fields.trigger_type),
+        source_table: strOrNull(fields.source_table),
+        source_view: strOrNull(fields.source_view),
+        query: strOrNull(fields.query),
+        this_field: strOrNull(fields.this_field),
+        argument: strOrNull(fields.argument),
+        from: firstNonBlank(fields.from, fields.From),
+        to: firstNonBlank(fields.to, fields.To),
+        output_field: strOrNull(fields.output_field),
+        priority: numOrNull(fields.priority) ?? 999,
+      };
+    })
+    .filter((row) => normalizeKey(row.source_table).toLowerCase() === normalizeKey(TRIP_LOGS_TABLE).toLowerCase())
+    .sort((a, b) => a.priority - b.priority || String(a.trigger_name || "").localeCompare(String(b.trigger_name || "")));
 }
 
 async function airtablePatchRecords({ table, updates }) {
@@ -1414,7 +1491,101 @@ function shouldCreateLogRow(result, patchFailure) {
     !!patchFailure;
 }
 
-function buildTripLogRecord(result, patchFailure, calcRunId) {
+function buildTripTriggerEvaluationContext(result) {
+  const raw = result.inputsForLog?.raw || {};
+  const normalized = result.inputsForLog?.normalized || {};
+  const canonical = result.canonicalOutputs || {};
+  const currentOutputs = result.computedOutputs || {};
+  const priorOutputs = result.priorOutputs || {};
+
+  return {
+    currentByField: {
+      entryxclasses_uuid: result.entryxclasses_uuid,
+      app_show_id: result.app_show_id,
+      app_sql_date: result.app_sql_date,
+      class_id: normalized.class_id,
+      status: strOrNull(raw.status),
+      class_status: normalized.class_status,
+      app_time: normalized.app_time_text,
+      estimated_start_time: normalized.estimated_start_time_text,
+      estimated_end_time: normalized.estimated_end_time_text,
+      estimated_time: normalized.estimated_time_text,
+      estimated_go_time: normalized.estimated_go_time_text,
+      order_of_go: normalized.order_of_go,
+      actual_order: normalized.actual_order,
+      actual_go: normalized.actual_go,
+      gone_in: normalized.gone_in,
+      remaining_trips: normalized.remaining_trips,
+      total_trips: normalized.total_trips,
+      completed_trips: normalized.completed_trips,
+      h_eid: normalized.h_eid,
+      running_order_is_ten_out: !!canonical.running_order_is_ten_out,
+      ...currentOutputs,
+    },
+    priorByField: {
+      ...priorOutputs,
+    },
+  };
+}
+
+function evaluateTriggerTag(trigger, triggerContext) {
+  const query = normalizeKey(trigger?.query).toLowerCase();
+  const argument = normalizeKey(trigger?.argument).toLowerCase();
+  const fieldName = strOrNull(trigger?.this_field);
+  if (!query || !fieldName) return false;
+
+  const currentValue = triggerContext.currentByField[fieldName];
+  const priorValue = triggerContext.priorByField[fieldName];
+
+  if (query === "first_transition") {
+    const targetValue = firstNonBlank(trigger?.to, trigger?.from);
+    if (isBlank(targetValue)) return false;
+    if (argument === "from_not") {
+      return compareTriggerValue(currentValue, targetValue) && !compareTriggerValue(priorValue, targetValue);
+    }
+    return compareTriggerValue(currentValue, targetValue) && compareTriggerValue(priorValue, trigger?.from);
+  }
+
+  if (query === "in_range") {
+    const currentNum = parseTriggerNumber(currentValue);
+    const fromNum = parseTriggerNumber(trigger?.from);
+    const toNum = parseTriggerNumber(trigger?.to);
+    if (currentNum === null || fromNum === null || toNum === null) return false;
+    const low = Math.min(fromNum, toNum);
+    const high = Math.max(fromNum, toNum);
+    return currentNum >= low && currentNum <= high;
+  }
+
+  if (query === "equals") {
+    return compareTriggerValue(currentValue, firstNonBlank(trigger?.to, trigger?.from));
+  }
+
+  if (query === "gt" || query === "gte" || query === "lt" || query === "lte") {
+    const currentNum = parseTriggerNumber(currentValue);
+    const targetNum = parseTriggerNumber(firstNonBlank(trigger?.to, trigger?.from));
+    if (currentNum === null || targetNum === null) return false;
+    if (query === "gt") return currentNum > targetNum;
+    if (query === "gte") return currentNum >= targetNum;
+    if (query === "lt") return currentNum < targetNum;
+    return currentNum <= targetNum;
+  }
+
+  return false;
+}
+
+function applyTriggerTags(fields, triggerTags, triggerContext, tripLogFieldSet) {
+  const fired = [];
+  for (const trigger of triggerTags || []) {
+    const outputField = strOrNull(trigger?.output_field);
+    if (!outputField || !tripLogFieldSet.has(outputField)) continue;
+    if (!evaluateTriggerTag(trigger, triggerContext)) continue;
+    fields[outputField] = true;
+    fired.push(outputField);
+  }
+  return fired;
+}
+
+function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, triggerTags) {
   const fields = {};
   const createdAt = calcRunId || new Date().toISOString();
   const status = finalCalcStatus(result, patchFailure);
@@ -1482,8 +1653,10 @@ function buildTripLogRecord(result, patchFailure, calcRunId) {
   setIfPresent(fields, LOG_JSON_FIELDS.COMPUTED_OUTPUTS_JSON, jsonForField(computedOutputs));
   setIfPresent(fields, LOG_JSON_FIELDS.ANOMALIES_JSON, anomalies.length ? jsonForField(anomalies) : undefined);
   setIfPresent(fields, LOG_KEY_FIELDS.CREATED_AT, createdAt);
+  const triggerContext = buildTripTriggerEvaluationContext(result);
+  const firedTriggerFields = applyTriggerTags(fields, triggerTags, triggerContext, tripLogFieldSet);
 
-  return { fields };
+  return { fields, firedTriggerFields };
 }
 
 async function main() {
@@ -1491,6 +1664,8 @@ async function main() {
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
   const calcRunId = new Date().toISOString();
   const watchTableFieldSet = await airtableTableFieldSet(WATCH_TABLE);
+  const tripLogFieldSet = await airtableTableFieldSet(TRIP_LOGS_TABLE);
+  const activeTriggerTags = await fetchActiveTriggerTags();
   const activeWatchOutputFields = WATCH_OUTPUT_FIELDS.filter((fieldName) => watchTableFieldSet.has(fieldName));
 
   const records = await airtableList({
@@ -1516,6 +1691,8 @@ async function main() {
     trip_logs_planned: 0,
     trip_logs_created: 0,
     trip_logs_failures: 0,
+    trigger_tags_active: activeTriggerTags.length,
+    trigger_hits: 0,
     class_alert_classes_in_view: 0,
     class_alert_duplicated_classes: 0,
     class_alert_parent_rows: 0,
@@ -1642,7 +1819,9 @@ async function main() {
   for (const result of results) {
     const patchFailure = patchFailureById.get(result.recordId) || null;
     if (!shouldCreateLogRow(result, patchFailure)) continue;
-    tripLogRecords.push(buildTripLogRecord(result, patchFailure, calcRunId));
+    const tripLogRecord = buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, activeTriggerTags);
+    summary.trigger_hits += tripLogRecord.firedTriggerFields.length;
+    tripLogRecords.push({ fields: tripLogRecord.fields });
   }
 
   summary.trip_logs_planned = tripLogRecords.length;
