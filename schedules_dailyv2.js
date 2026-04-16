@@ -528,6 +528,46 @@ async function fetchTableFieldSet(tableName) {
   return new Set(Array.isArray(table?.fields) ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean) : []);
 }
 
+async function fetchTableFieldMeta(tableName) {
+  const response = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+  });
+
+  if (!response.ok) {
+    const body = await response.text().catch(() => "");
+    throw new Error(`Airtable meta failed (${response.status}) ${tableName}: ${body}`);
+  }
+
+  const json = await response.json().catch(() => ({}));
+  const table = Array.isArray(json?.tables)
+    ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
+    : null;
+
+  const names = new Set();
+  const actualByTrim = new Map();
+
+  for (const field of Array.isArray(table?.fields) ? table.fields : []) {
+    const actualName = String(field?.name || "");
+    const trimmedName = actualName.trim();
+    if (!trimmedName) continue;
+    names.add(trimmedName);
+    if (!actualByTrim.has(trimmedName)) actualByTrim.set(trimmedName, actualName);
+  }
+
+  return { names, actualByTrim };
+}
+
+function resolveFieldName(fieldMeta, logicalName) {
+  if (!fieldMeta || !logicalName) return null;
+  return fieldMeta.actualByTrim?.get(logicalName) || (fieldMeta.names?.has(logicalName) ? logicalName : null);
+}
+
+function setResolvedField(fields, fieldMeta, logicalName, value) {
+  const actualName = resolveFieldName(fieldMeta, logicalName);
+  if (!actualName || value === undefined) return;
+  fields[actualName] = value;
+}
+
 function buildBaseHeartbeatContext(record) {
   const fields = record?.fields || {};
   const rawShowId = numOrNull(fields.show_id);
@@ -728,21 +768,19 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
   return scored[0].row;
 }
 
-function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldSet) {
+function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldMeta) {
   const fields = { ...normalizedRow.fields };
   const classDetail = normalizedRow?.class_detail || null;
   const resolvedScheduledDate = toIsoDateOnly(
     pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date)
   );
   delete fields.scope_status;
-  if (watchScheduleFieldSet?.has("schedule_date") && resolvedScheduledDate) {
-    fields.schedule_date = resolvedScheduledDate;
+  if (resolvedScheduledDate) {
+    setResolvedField(fields, watchScheduleFieldMeta, "schedule_date", resolvedScheduledDate);
+    setResolvedField(fields, watchScheduleFieldMeta, "scheduled_date", resolvedScheduledDate);
   }
-  if (watchScheduleFieldSet?.has("scheduled_date") && resolvedScheduledDate) {
-    fields.scheduled_date = resolvedScheduledDate;
-  }
-  if (watchScheduleFieldSet?.has("status") && classDetail?.status) {
-    fields.status = classDetail.status;
+  if (classDetail?.status) {
+    setResolvedField(fields, watchScheduleFieldMeta, "status", classDetail.status);
   }
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
@@ -750,6 +788,7 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   fields.last_updated_at = nowIso;
   fields.is_current_scope = true;
   fields.scope_run_id = scope.scope_run_id;
+  setResolvedField(fields, watchScheduleFieldMeta, "inactive", false);
   if (scopeStatusValue) fields.scope_status = scopeStatusValue;
   fields.last_seen_at = dateOnly;
   fields.dropped_at = null;
@@ -767,7 +806,7 @@ function rowScheduledDateMatchesScope(normalizedRow, scope) {
   return resolvedScheduledDate === scope.app_sql_datev2;
 }
 
-function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue) {
+function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue, watchScheduleFieldMeta) {
   const fields = {
     heartbeat: [],
     is_current_scope: false,
@@ -776,6 +815,7 @@ function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue) {
     run_tag: scope.app_sql_datev2,
     record_state: "existing",
   };
+  setResolvedField(fields, watchScheduleFieldMeta, "inactive", true);
   if (scopeStatusValue) fields.scope_status = scopeStatusValue;
   return fields;
 }
@@ -953,7 +993,7 @@ async function runDaily() {
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
   const heartbeatFieldSet = await fetchHeartbeatFieldSet().catch(() => new Set());
-  const watchScheduleFieldSet = await fetchTableFieldSet(TABLE_WATCH_SCHEDULE);
+  const watchScheduleFieldMeta = await fetchTableFieldMeta(TABLE_WATCH_SCHEDULE);
   const activeGroupsFieldSet = SYNC_ACTIVE_GROUPS_FROM_SCHEDULE
     ? await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set())
     : new Set();
@@ -1039,7 +1079,7 @@ async function runDaily() {
       dateOnly,
       existing ? "existing" : "new",
       currentScopeStatus,
-      watchScheduleFieldSet
+      watchScheduleFieldMeta
     );
 
     if (existing) {
@@ -1055,7 +1095,7 @@ async function runDaily() {
     if (!key || keepKeySet.has(key)) continue;
     dropUpdates.push({
       id: row.id,
-      fields: buildDroppedFields(scope, nowIso, dateOnly, droppedScopeStatus),
+      fields: buildDroppedFields(scope, nowIso, dateOnly, droppedScopeStatus, watchScheduleFieldMeta),
     });
   }
 
