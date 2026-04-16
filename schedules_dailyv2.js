@@ -402,7 +402,6 @@ function normalizeClassEndpointPayload(payload) {
     status: strOrNull(pickFirst(payload?.status, related?.status)),
     schedule_date: toIsoDateOnly(pickFirst(payload?.date, related?.date)),
     estimated_start_time: strOrNull(pickFirst(payload?.estimated_time, related?.estimated_time)),
-    total_trips: numOrNull(pickFirst(payload?.total_trips, related?.total_trips)),
     completed_trips: numOrNull(pickFirst(payload?.completed_trips, related?.completed_trips)),
   };
 }
@@ -568,6 +567,12 @@ function setResolvedField(fields, fieldMeta, logicalName, value) {
   const actualName = resolveFieldName(fieldMeta, logicalName);
   if (!actualName || value === undefined) return;
   fields[actualName] = value;
+}
+
+function clearResolvedField(fields, fieldMeta, logicalName) {
+  const actualName = resolveFieldName(fieldMeta, logicalName);
+  if (!actualName) return;
+  fields[actualName] = null;
 }
 
 function buildBaseHeartbeatContext(record) {
@@ -772,6 +777,7 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
 
 function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldMeta) {
   const fields = { ...normalizedRow.fields };
+  delete fields.total_trips;
   const classDetail = normalizedRow?.class_detail || null;
   const resolvedScheduledDate = toIsoDateOnly(
     pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date)
@@ -784,6 +790,7 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   if (classDetail?.status) {
     setResolvedField(fields, watchScheduleFieldMeta, "status", classDetail.status);
   }
+  clearResolvedField(fields, watchScheduleFieldMeta, "total_trips");
   if (watchScheduleFieldMeta?.names?.has("completed_trips") || watchScheduleFieldMeta?.actualByTrim?.has("completed_trips")) {
     setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", fields.completed_trips ?? null);
   }
@@ -861,19 +868,16 @@ function buildActiveGroupRows(rows, scope, runId, dateOnly, activeGroupsFieldSet
       run_id: runId,
       last_run: dateOnly,
       inactive: false,
-      total: 0,
       schedule_date: null,
       scheduled_date: null,
       scheduled_estimated_start_time: null,
     };
 
-    const totalTrips = numOrNull(fields.total_trips);
     existing.class_group_sequence = existing.class_group_sequence ?? numOrNull(fields.class_group_sequence);
     existing.group_name = existing.group_name || strOrNull(fields.group_name);
     existing.ring_number = existing.ring_number ?? numOrNull(fields.ring_number);
     existing.estimated_start_time = minTimeText(existing.estimated_start_time, strOrNull(fields.estimated_start_time));
     existing.estimated_end_time = maxTimeText(existing.estimated_end_time, strOrNull(fields.estimated_end_time));
-    existing.total += totalTrips ?? 0;
 
     const resolvedScheduleDate = toIsoDateOnly(pickFirst(fields.schedule_show_datev2, fields.show_date));
     existing.schedule_date = existing.schedule_date || resolvedScheduleDate;

@@ -515,7 +515,6 @@ function normalizeSchedulePayload(payload, options) {
       const classGroupXClassesId = numOrNull(pickFirst(node.class_groupxclasses_id, node.classGroupXClassesId));
       if (classGroupXClassesId !== null) {
         const classObj = isObj(node.class) ? node.class : undefined;
-        const totalTripsRaw = pickFirst(classRelated?.total_trips, classRelated?.totalTrips, node.total_trips, node.totalTrips);
 
         const classRow = {
           class_groupxclasses_id: classGroupXClassesId,
@@ -547,7 +546,6 @@ function normalizeSchedulePayload(payload, options) {
           estimated_start_time: strOrNull(pickFirst(node.estimated_start_time, node.estimatedStartTime)),
           start_time_default: strOrNull(pickFirst(node.start_time_default, node.startTimeDefault)),
           estimated_end_time: strOrNull(pickFirst(node.estimated_end_time, node.estimatedEndTime)),
-          total_trips: numOrNull(totalTripsRaw),
           grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),
         };
 
@@ -588,7 +586,6 @@ function normalizeSchedulePayload(payload, options) {
     setIfPresent(fields, "schedule_sequencetype", merged.schedule_sequencetype);
     setIfPresent(fields, "estimated_start_time", merged.estimated_start_time || merged.start_time_default);
     setIfPresent(fields, "estimated_end_time", merged.estimated_end_time);
-    setIfPresent(fields, "total_trips", merged.total_trips);
     setIfPresent(fields, "app_show_idv2", scope.app_show_idv2);
     setIfPresent(fields, "app_sql_datev2", scope.app_sql_datev2);
     setIfPresent(fields, "app_dow_rawv2", scope.app_dow_rawv2);
