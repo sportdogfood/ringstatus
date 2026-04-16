@@ -731,6 +731,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
 }
 
 function buildTriggerEvaluationContext(row, groupRow, heartbeatContext, computation) {
+  const rowStatus = strOrNull(row.status);
   const currentByField = {
     status: rowStatus,
     latest_status: computation.latestStatusFinal,
