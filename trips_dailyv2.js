@@ -578,6 +578,7 @@ function normalizeClassEndpointPayload(payload) {
     class_group_id: numOrNull(pickFirst(payload?.class_group_id, related?.class_group_id)),
     ring_number: numOrNull(pickFirst(payload?.ring, related?.ring, payload?.ring_number)),
     total_trips: numOrNull(pickFirst(payload?.total_trips, related?.total_trips)),
+    status: strOrNull(pickFirst(payload?.status, related?.status)),
     class_type: strOrNull(pickFirst(payload?.class_type, classObj?.class_type)),
     schedule_sequencetype: strOrNull(pickFirst(payload?.schedule_sequencetype, classObj?.schedule_sequencetype)),
     show_id: numOrNull(pickFirst(payload?.show_id, classObj?.show_id)),
@@ -1263,6 +1264,7 @@ async function buildAuxiliaryRowsForTenant({
       class_group_sequence: resolvedClassGroupSequence,
       ring_number: resolvedRingNumber,
       total_trips: classDetail?.total_trips ?? schedule?.total_trips,
+      status: classDetail?.status || undefined,
       class_type: classDetail?.class_type ?? schedule?.class_type,
       schedule_sequencetype: classDetail?.schedule_sequencetype ?? schedule?.schedule_sequencetype,
       show_id: classDetail?.show_id ?? heartbeat.app_show_id,
@@ -1612,6 +1614,7 @@ async function main() {
       existing.class_group_sequence = existing.class_group_sequence ?? row.class_group_sequence;
       existing.ring_number = existing.ring_number ?? row.ring_number;
       existing.total_trips = existing.total_trips ?? row.total_trips;
+      existing.status = existing.status || row.status;
       existing.class_type = existing.class_type || row.class_type;
       existing.schedule_sequencetype = existing.schedule_sequencetype || row.schedule_sequencetype;
       existing.show_id = existing.show_id ?? row.show_id;
