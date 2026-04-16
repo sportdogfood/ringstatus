@@ -5,6 +5,7 @@ const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 const TABLE_SCHEDULE_LOGS = process.env.TABLE_SCHEDULE_LOGS || "schedule_logs";
+const TABLE_TRIGGER_TAGS = process.env.TABLE_TRIGGER_TAGS || "trigger_tags";
 
 const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
@@ -106,11 +107,28 @@ function isUnderwayStatus(value) {
   return strOrNull(value)?.toLowerCase() === "underway";
 }
 
+function compareTriggerValue(left, right) {
+  const leftNum = numOrNull(left);
+  const rightNum = numOrNull(right);
+  if (leftNum !== null && rightNum !== null) return leftNum === rightNum;
+  return normalizeKey(left).toLowerCase() === normalizeKey(right).toLowerCase();
+}
+
+function parseTriggerNumber(value) {
+  const num = numOrNull(value);
+  return num !== null ? num : null;
+}
+
 function setIfPresent(target, fieldName, value) {
   if (!fieldName) return;
   if (value === undefined || value === null) return;
   if (typeof value === "string" && value.trim() === "") return;
   target[fieldName] = value;
+}
+
+function fieldsHasTruthy(fields, fieldName) {
+  if (!fieldName) return false;
+  return boolValue(fields?.[fieldName]);
 }
 
 function toIsoDateOnly(value) {
@@ -361,6 +379,55 @@ async function fetchTableFieldSet(tableName) {
     ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
     : null;
   return new Set(Array.isArray(table?.fields) ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean) : []);
+}
+
+async function fetchActiveTriggerTags(sourceTableName) {
+  const rows = await airtableList(TABLE_TRIGGER_TAGS, {
+    maxRecords: MAX_RECORDS,
+    "fields[]": [
+      "trigger_name",
+      "query",
+      "query_select",
+      "this_field",
+      "argument",
+      "from",
+      "to",
+      "is_active",
+      "output_field",
+      "priority",
+      "source_table",
+      "source_view",
+      "trigger_lane",
+      "trigger_type",
+      "expected_when",
+    ],
+  });
+
+  return rows
+    .map((row) => {
+      const fields = row?.fields || {};
+      return {
+        recordId: row.id,
+        trigger_name: strOrNull(fields.trigger_name),
+        query: strOrNull(pickFirst(fields.query_select, fields.query)),
+        this_field: strOrNull(fields.this_field),
+        argument: strOrNull(fields.argument),
+        from: strOrNull(fields.from),
+        to: strOrNull(fields.to),
+        is_active: boolValue(fields.is_active),
+        output_field: strOrNull(fields.output_field),
+        priority: numOrNull(fields.priority) ?? 9999,
+        source_table: strOrNull(fields.source_table),
+        source_view: strOrNull(fields.source_view),
+        trigger_lane: strOrNull(fields.trigger_lane),
+        trigger_type: strOrNull(fields.trigger_type),
+        expected_when: strOrNull(fields.expected_when),
+      };
+    })
+    .filter((row) => row.is_active)
+    .filter((row) => !sourceTableName || compareTriggerValue(row.source_table, sourceTableName))
+    .filter((row) => row.output_field)
+    .sort((a, b) => a.priority - b.priority || String(a.trigger_name || "").localeCompare(String(b.trigger_name || "")));
 }
 
 async function fetchLatestHeartbeat() {
@@ -656,7 +723,101 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   };
 }
 
-function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, calcStatus, skipReason, scheduleLogFieldSet) {
+function buildTriggerEvaluationContext(row, groupRow, heartbeatContext, computation) {
+  const currentByField = {
+    status: strOrNull(groupRow?.status) || row.status,
+    latest_status: computation.latestStatusFinal,
+    rs_status: computation.latestStatusFinal,
+    completed_trips: computation.completedTripsFinal,
+    rs_completed_trips: computation.completedTripsFinal,
+    total_trips: computation.totalTripsFinal,
+    total_trips_live: computation.totalTripsLive,
+    rs_mins_till_start: computation.minsTillStart,
+    rs_mins_since_start: computation.minsSinceStart,
+    rs_start_time: computation.startAnchorText,
+    rs_end_time: computation.endFromProjection,
+    estimated_start_time: row.estimated_start_time,
+    estimated_start_live: computation.startLiveText,
+    app_sql_datev2: row.app_sql_datev2,
+    app_dow_rawv2: row.app_dow_rawv2,
+    class_id: row.class_id,
+    class_group_id: row.class_group_id,
+    ring_number: row.ring_number,
+    tripTarget: row.tripTarget,
+  };
+
+  const priorByField = {
+    status: row.status,
+    latest_status: row.latest_status,
+    rs_status: row.latest_status || row.status,
+    completed_trips: row.completed_trips,
+    rs_completed_trips: row.completed_trips,
+    total_trips: row.total_trips,
+    estimated_start_time: row.estimated_start_time,
+  };
+
+  return { currentByField, priorByField };
+}
+
+function evaluateTriggerTag(trigger, triggerContext) {
+  const query = normalizeKey(trigger?.query).toLowerCase();
+  const argument = normalizeKey(trigger?.argument).toLowerCase();
+  const fieldName = strOrNull(trigger?.this_field);
+  if (!query || !fieldName) return false;
+
+  const currentValue = triggerContext.currentByField[fieldName];
+  const priorValue = triggerContext.priorByField[fieldName];
+
+  if (query === "first_transition") {
+    const targetValue = pickFirst(trigger?.to, trigger?.from);
+    if (isBlank(targetValue)) return false;
+    if (argument === "from_not") {
+      return compareTriggerValue(currentValue, targetValue) && !compareTriggerValue(priorValue, targetValue);
+    }
+    const fromValue = trigger?.from;
+    return compareTriggerValue(currentValue, targetValue) && compareTriggerValue(priorValue, fromValue);
+  }
+
+  if (query === "in_range") {
+    const currentNum = parseTriggerNumber(currentValue);
+    const fromNum = parseTriggerNumber(trigger?.from);
+    const toNum = parseTriggerNumber(trigger?.to);
+    if (currentNum === null || fromNum === null || toNum === null) return false;
+    const low = Math.min(fromNum, toNum);
+    const high = Math.max(fromNum, toNum);
+    return currentNum >= low && currentNum <= high;
+  }
+
+  if (query === "equals") {
+    return compareTriggerValue(currentValue, pickFirst(trigger?.to, trigger?.from));
+  }
+
+  if (query === "gt" || query === "gte" || query === "lt" || query === "lte") {
+    const currentNum = parseTriggerNumber(currentValue);
+    const targetNum = parseTriggerNumber(pickFirst(trigger?.to, trigger?.from));
+    if (currentNum === null || targetNum === null) return false;
+    if (query === "gt") return currentNum > targetNum;
+    if (query === "gte") return currentNum >= targetNum;
+    if (query === "lt") return currentNum < targetNum;
+    return currentNum <= targetNum;
+  }
+
+  return false;
+}
+
+function applyTriggerTags(fields, triggerTags, triggerContext, scheduleLogFieldSet) {
+  const fired = [];
+  for (const trigger of triggerTags || []) {
+    const outputField = strOrNull(trigger?.output_field);
+    if (!outputField || !scheduleLogFieldSet.has(outputField)) continue;
+    if (!evaluateTriggerTag(trigger, triggerContext)) continue;
+    fields[outputField] = true;
+    fired.push(outputField);
+  }
+  return fired;
+}
+
+function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, calcStatus, skipReason, scheduleLogFieldSet, triggerTags) {
   const fields = {};
   const nowIso = new Date().toISOString();
   const calcLogKey = [
@@ -709,7 +870,6 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
   setIfPresent(fields, scheduleLogFieldSet.has("rs_end_time") ? "rs_end_time" : "", computation.endFromProjection);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_mins_since_start") ? "rs_mins_since_start" : "", computation.minsSinceStart);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_status") ? "rs_status" : "", computation.latestStatusFinal);
-  setIfPresent(fields, scheduleLogFieldSet.has("run_underway") ? "run_underway" : "", computation.underwayFlip);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_completed_trips") ? "rs_completed_trips" : "", computation.completedTripsFinal);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_trip_default") ? "rs_trip_default" : "", DEFAULT_TRIP_MINUTES);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_trip_time") ? "rs_trip_time" : "", computation.tripMinutesFinal);
@@ -772,6 +932,13 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
   setIfPresent(fields, scheduleLogFieldSet.has("prior_outputs_json") ? "prior_outputs_json" : "", JSON.stringify(computation.priorOutputs));
   setIfPresent(fields, scheduleLogFieldSet.has("computed_outputs_json") ? "computed_outputs_json" : "", JSON.stringify(computation.computedOutputs));
 
+  const triggerContext = buildTriggerEvaluationContext(row, groupRow, heartbeatContext, computation);
+  const firedTriggerFields = applyTriggerTags(fields, triggerTags, triggerContext, scheduleLogFieldSet);
+  if (firedTriggerFields.length && scheduleLogFieldSet.has("changed_fields")) {
+    const baseChanged = strOrNull(fields.changed_fields);
+    fields.changed_fields = [baseChanged, ...firedTriggerFields].filter(Boolean).join(", ");
+  }
+
   return fields;
 }
 
@@ -779,9 +946,10 @@ async function main() {
   requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
-  const [watchScheduleFieldSet, scheduleLogFieldSet] = await Promise.all([
+  const [watchScheduleFieldSet, scheduleLogFieldSet, activeTriggerTags] = await Promise.all([
     fetchTableFieldSet(TABLE_WATCH_SCHEDULE),
     fetchTableFieldSet(TABLE_SCHEDULE_LOGS),
+    fetchActiveTriggerTags(TABLE_SCHEDULE_LOGS).catch(() => []),
   ]);
 
   const heartbeatRecord = await fetchLatestHeartbeat();
@@ -861,6 +1029,7 @@ async function main() {
   let matchedRows = 0;
   let skippedRows = 0;
   let changedRows = 0;
+  let triggerHits = 0;
 
   for (const row of watchRows) {
     const groupRow = groupsById.get(normalizeKey(row.class_group_id)) || null;
@@ -874,17 +1043,21 @@ async function main() {
     else skippedRows += 1;
     if (groupRow && computation.changedFields.length) changedRows += 1;
 
-    logRecords.push({
-      fields: buildScheduleLogFields(
-        row,
-        groupRow,
-        heartbeatContext,
-        computation,
-        calcStatus,
-        skipReason,
-        scheduleLogFieldSet
-      ),
-    });
+    const logFields = buildScheduleLogFields(
+      row,
+      groupRow,
+      heartbeatContext,
+      computation,
+      calcStatus,
+      skipReason,
+      scheduleLogFieldSet,
+      activeTriggerTags
+    );
+    triggerHits += activeTriggerTags.filter((trigger) => {
+      const outputField = strOrNull(trigger?.output_field);
+      return outputField && fieldsHasTruthy(logFields, outputField);
+    }).length;
+    logRecords.push({ fields: logFields });
 
     patchWork.push({ row, groupRow, computation });
   }
@@ -949,6 +1122,8 @@ async function main() {
     matched_rows: matchedRows,
     skipped_rows: skippedRows,
     changed_rows: changedRows,
+    trigger_tags_active: activeTriggerTags.length,
+    trigger_hits: triggerHits,
     logs_planned: logRecords.length,
     logs_created: DRY_RUN ? 0 : logCreateResult.okRows,
     log_failures: logCreateResult.failedRows.length,
