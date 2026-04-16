@@ -20,6 +20,7 @@ const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
 const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
+const FETCH_CONCURRENCY = Math.max(1, Number(process.env.FETCH_CONCURRENCY || "4"));
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const SYNC_ACTIVE_GROUPS_FROM_SCHEDULE = String(process.env.SYNC_ACTIVE_GROUPS_FROM_SCHEDULE || "0") === "1";
 const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
@@ -96,6 +97,11 @@ function buildScheduleEndpoint(appSqlDate, appShowId) {
 function buildScheduleEmptyEndpoint(appShowId) {
   if (isBlank(appShowId)) return null;
   return `https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+}
+
+function buildClassesEndpoint(classId, showId) {
+  if (isBlank(classId) || isBlank(showId)) return null;
+  return `https://broad-tooth-b8ed.gombcg.workers.dev/classes/${encodeURIComponent(classId)}/?show_id=${encodeURIComponent(showId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
 function normalizeKey(value) {
@@ -180,6 +186,24 @@ function sameValue(left, right) {
     return JSON.stringify(left ?? null) === JSON.stringify(right ?? null);
   }
   return left === right;
+}
+
+async function runPool(items, concurrency, worker) {
+  const queue = [...items];
+  const threads = [];
+  const width = Math.max(1, concurrency);
+
+  for (let i = 0; i < width; i += 1) {
+    threads.push((async () => {
+      while (queue.length) {
+        const item = queue.shift();
+        if (item === undefined) break;
+        await worker(item);
+      }
+    })());
+  }
+
+  await Promise.all(threads);
 }
 
 async function fetchWithTimeout(url, options = {}) {
@@ -365,6 +389,55 @@ async function fetchJson(url) {
   } catch {
     throw new Error(`Response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
   }
+}
+
+function normalizeClassEndpointPayload(payload) {
+  const classObj = payload?.class && typeof payload.class === "object" ? payload.class : {};
+  const related = payload?.class_related_data && typeof payload.class_related_data === "object"
+    ? payload.class_related_data
+    : {};
+
+  return {
+    class_id: numOrNull(pickFirst(payload?.class_id, classObj?.class_id)),
+    status: strOrNull(pickFirst(payload?.status, related?.status)),
+    schedule_date: toIsoDateOnly(pickFirst(payload?.date, related?.date)),
+    estimated_start_time: strOrNull(pickFirst(payload?.estimated_time, related?.estimated_time)),
+  };
+}
+
+async function enrichScheduleRowsWithClassDetails(rows, scope) {
+  const detailById = new Map();
+  const failures = [];
+  const classIds = [...new Set((rows || [])
+    .map((row) => numOrNull(row?.fields?.class_id))
+    .filter((value) => value !== null))];
+
+  await runPool(classIds, FETCH_CONCURRENCY, async (classId) => {
+    const endpoint = buildClassesEndpoint(classId, scope.app_show_idv2);
+    if (!endpoint) return;
+    try {
+      const payload = await fetchJson(endpoint);
+      detailById.set(String(classId), normalizeClassEndpointPayload(payload));
+    } catch (error) {
+      failures.push({
+        class_id: classId,
+        endpoint,
+        reason: String(error?.message || error).slice(0, 300),
+      });
+    }
+  });
+
+  return {
+    rows: (rows || []).map((row) => {
+      const classId = numOrNull(row?.fields?.class_id);
+      return {
+        ...row,
+        class_detail: classId !== null ? detailById.get(String(classId)) || null : null,
+      };
+    }),
+    class_endpoint_failures: failures,
+    class_endpoint_enriched: detailById.size,
+  };
 }
 
 async function fetchLatestHeartbeat() {
@@ -657,10 +730,19 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
 
 function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldSet) {
   const fields = { ...normalizedRow.fields };
-  const resolvedScheduledDate = toIsoDateOnly(pickFirst(fields.scheduled_date, fields.schedule_show_datev2, fields.show_date));
+  const classDetail = normalizedRow?.class_detail || null;
+  const resolvedScheduledDate = toIsoDateOnly(
+    pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date)
+  );
   delete fields.scope_status;
+  if (watchScheduleFieldSet?.has("schedule_date") && resolvedScheduledDate) {
+    fields.schedule_date = resolvedScheduledDate;
+  }
   if (watchScheduleFieldSet?.has("scheduled_date") && resolvedScheduledDate) {
     fields.scheduled_date = resolvedScheduledDate;
+  }
+  if (watchScheduleFieldSet?.has("status") && classDetail?.status) {
+    fields.status = classDetail.status;
   }
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
@@ -678,7 +760,10 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
 
 function rowScheduledDateMatchesScope(normalizedRow, scope) {
   const fields = normalizedRow?.fields || {};
-  const resolvedScheduledDate = toIsoDateOnly(pickFirst(fields.scheduled_date, fields.schedule_show_datev2, fields.show_date));
+  const classDetail = normalizedRow?.class_detail || null;
+  const resolvedScheduledDate = toIsoDateOnly(
+    pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date)
+  );
   return resolvedScheduledDate === scope.app_sql_datev2;
 }
 
@@ -914,7 +999,8 @@ async function runDaily() {
   };
 
   const chosen = chooseScheduleVariant(datedResult, emptyResult);
-  const scopedRows = chosen.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
+  const classEnrichment = await enrichScheduleRowsWithClassDetails(chosen.rows, scope);
+  const scopedRows = classEnrichment.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
   const showRecordId = await fetchShowRecordId(scope.app_show_idv2).catch(() => null);
   const existingRows = await fetchExistingRowsForShow(scope.app_show_idv2);
   const heartbeatViewRows = await fetchHeartbeatViewRows().catch(() => []);
@@ -997,6 +1083,10 @@ async function runDaily() {
         url: emptyUrl,
         rows: emptyResult.rows.length,
         schedule_show_datev2: emptyResult.schedule_show_datev2 || null,
+      },
+      classes_endpoint: {
+        enriched_rows: classEnrichment.class_endpoint_enriched,
+        failures: classEnrichment.class_endpoint_failures,
       },
     },
     writes: {
