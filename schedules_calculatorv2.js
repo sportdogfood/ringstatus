@@ -102,6 +102,10 @@ function roundNumber(value, places = 6) {
   return Math.round(value * factor) / factor;
 }
 
+function isUnderwayStatus(value) {
+  return strOrNull(value)?.toLowerCase() === "underway";
+}
+
 function setIfPresent(target, fieldName, value) {
   if (!fieldName) return;
   if (value === undefined || value === null) return;
@@ -546,6 +550,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   const totalTripsFinal = totalTripsLive ?? row.total_trips;
   const completedTripsFinal = numOrNull(groupRow?.gone) ?? row.completed_trips;
   const latestStatusFinal = strOrNull(groupRow?.status) || row.latest_status || row.status;
+  const priorStatus = row.latest_status || row.status || null;
   const tripMinutesConfigured = numOrNull(row.perTrip);
   const tripMinutesFinal = tripMinutesConfigured && tripMinutesConfigured > 0
     ? tripMinutesConfigured
@@ -616,6 +621,15 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     calc_start_anchor_mins: startAnchorMins,
   };
 
+  const underwayFlip = Boolean(groupRow) && (
+    (isUnderwayStatus(latestStatusFinal) && !isUnderwayStatus(priorStatus)) ||
+    (
+      isUnderwayStatus(latestStatusFinal) &&
+      (numOrNull(row.completed_trips) ?? 0) === 0 &&
+      (completedTripsFinal ?? 0) > 0
+    )
+  );
+
   return {
     appTimeText,
     appTimeMinutes,
@@ -634,6 +648,8 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     minsTillStart,
     minsSinceStart,
     watchScheduleFields,
+    priorStatus,
+    underwayFlip,
     priorOutputs,
     computedOutputs,
     changedFields,
@@ -693,6 +709,7 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
   setIfPresent(fields, scheduleLogFieldSet.has("rs_end_time") ? "rs_end_time" : "", computation.endFromProjection);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_mins_since_start") ? "rs_mins_since_start" : "", computation.minsSinceStart);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_status") ? "rs_status" : "", computation.latestStatusFinal);
+  setIfPresent(fields, scheduleLogFieldSet.has("run_underway") ? "run_underway" : "", computation.underwayFlip);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_completed_trips") ? "rs_completed_trips" : "", computation.completedTripsFinal);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_trip_default") ? "rs_trip_default" : "", DEFAULT_TRIP_MINUTES);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_trip_time") ? "rs_trip_time" : "", computation.tripMinutesFinal);
