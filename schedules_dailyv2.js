@@ -402,6 +402,8 @@ function normalizeClassEndpointPayload(payload) {
     status: strOrNull(pickFirst(payload?.status, related?.status)),
     schedule_date: toIsoDateOnly(pickFirst(payload?.date, related?.date)),
     estimated_start_time: strOrNull(pickFirst(payload?.estimated_time, related?.estimated_time)),
+    total_trips: numOrNull(pickFirst(payload?.total_trips, related?.total_trips)),
+    completed_trips: numOrNull(pickFirst(payload?.completed_trips, related?.completed_trips)),
   };
 }
 
@@ -781,6 +783,9 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   }
   if (classDetail?.status) {
     setResolvedField(fields, watchScheduleFieldMeta, "status", classDetail.status);
+  }
+  if (watchScheduleFieldMeta?.names?.has("completed_trips") || watchScheduleFieldMeta?.actualByTrim?.has("completed_trips")) {
+    setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", fields.completed_trips ?? null);
   }
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
