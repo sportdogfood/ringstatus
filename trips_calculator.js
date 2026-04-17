@@ -1593,6 +1593,19 @@ function evaluateTriggerTag(trigger, triggerContext) {
     return currentNum >= low && currentNum <= high;
   }
 
+  if (query === "first_in_range") {
+    const currentNum = parseTriggerNumber(currentValue);
+    const priorNum = parseTriggerNumber(priorValue);
+    const fromNum = parseTriggerNumber(trigger?.from);
+    const toNum = parseTriggerNumber(trigger?.to);
+    if (currentNum === null || fromNum === null || toNum === null) return false;
+    const low = Math.min(fromNum, toNum);
+    const high = Math.max(fromNum, toNum);
+    const currentInRange = currentNum >= low && currentNum <= high;
+    const priorInRange = priorNum !== null && priorNum >= low && priorNum <= high;
+    return currentInRange && !priorInRange;
+  }
+
   if (query === "equals") {
     return compareTriggerValue(currentValue, firstNonBlank(trigger?.to, trigger?.from));
   }
