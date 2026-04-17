@@ -131,6 +131,24 @@ function setIfPresent(target, fieldName, value) {
   target[fieldName] = value;
 }
 
+function formatDiffDisplayValue(value) {
+  if (value === undefined || value === null) return "blank";
+  if (typeof value === "string") {
+    const text = value.trim();
+    return text === "" ? "blank" : text;
+  }
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? String(roundNumber(value, 6)) : "blank";
+  }
+  if (typeof value === "boolean") return value ? "true" : "false";
+  return String(value);
+}
+
+function buildDiffText(priorValue, currentValue) {
+  if (sameValue(priorValue ?? null, currentValue ?? null)) return null;
+  return `${formatDiffDisplayValue(priorValue)} -> ${formatDiffDisplayValue(currentValue)}`;
+}
+
 function fieldsHasTruthy(fields, fieldName) {
   if (!fieldName) return false;
   return boolValue(fields?.[fieldName]);
@@ -437,6 +455,7 @@ async function fetchActiveTriggerTags(sourceTableName) {
 
 async function fetchPriorScheduleLogMap(triggerTags) {
   const requestedFields = new Set(["watch_schedule", "created_at"]);
+  requestedFields.add("rs_start_time");
   for (const trigger of triggerTags || []) {
     const fieldName = strOrNull(trigger?.this_field);
     if (fieldName) requestedFields.add(fieldName);
@@ -876,6 +895,7 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
   const fields = {};
   const nowIso = new Date().toISOString();
   const rowStatus = strOrNull(row.status);
+  const rsStartTimeDiff = buildDiffText(priorLogFields?.rs_start_time, computation.startAnchorText);
   const calcLogKey = [
     heartbeatContext.scope_run_id || heartbeatContext.heartbeat_record_id,
     row.record_id,
@@ -923,6 +943,7 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
   setIfPresent(fields, scheduleLogFieldSet.has("nextTargetClassId") ? "nextTargetClassId" : "", row.nextTargetClassId);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_mins_till_start") ? "rs_mins_till_start" : "", computation.minsTillStart);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_start_time") ? "rs_start_time" : "", computation.startAnchorText);
+  setIfPresent(fields, scheduleLogFieldSet.has("rs_start_time_diff") ? "rs_start_time_diff" : "", rsStartTimeDiff);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_length") ? "rs_length" : "", computation.projectedClassMinutes);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_end_time") ? "rs_end_time" : "", computation.endFromProjection);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_mins_since_start") ? "rs_mins_since_start" : "", computation.minsSinceStart);

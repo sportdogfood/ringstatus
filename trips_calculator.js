@@ -804,6 +804,9 @@ async function fetchActiveTriggerTags() {
 
 async function fetchPriorTripLogMap(triggerTags) {
   const requestedFields = new Set([LOG_KEY_FIELDS.ENTRYXCLASSES_UUID, LOG_KEY_FIELDS.CREATED_AT]);
+  requestedFields.add(LOG_RS_FIELDS.START_TIME);
+  requestedFields.add(LOG_RS_FIELDS.GO_TIME);
+  requestedFields.add(LOG_RS_FIELDS.ORDER_OF_GO);
   for (const trigger of triggerTags || []) {
     const fieldName = strOrNull(trigger?.this_field);
     if (fieldName) requestedFields.add(fieldName);
@@ -1373,6 +1376,26 @@ function setIfPresent(target, fieldName, value) {
   target[fieldName] = value;
 }
 
+function formatDiffDisplayValue(value) {
+  if (value === undefined || value === null) return "blank";
+  if (typeof value === "string") {
+    const text = value.trim();
+    return text === "" ? "blank" : text;
+  }
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? String(roundNumber(value, 6)) : "blank";
+  }
+  if (typeof value === "boolean") return value ? "true" : "false";
+  return String(value);
+}
+
+function buildDiffText(priorValue, currentValue) {
+  const left = priorValue ?? null;
+  const right = currentValue ?? null;
+  if (left === right) return null;
+  return `${formatDiffDisplayValue(priorValue)} -> ${formatDiffDisplayValue(currentValue)}`;
+}
+
 function linkOne(recordId) {
   return recordId ? [recordId] : undefined;
 }
@@ -1667,6 +1690,9 @@ function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, tr
   const decisionLogValues = buildDecisionLogValues(canonical);
   const rsLogValues = buildRsLogValues(canonical, computedOutputs);
   const scheduleRecordId = strOrNull(rawInputs.schedule_rid);
+  const rsStartTimeDiff = buildDiffText(priorLogFields?.[LOG_RS_FIELDS.START_TIME], rsLogValues[LOG_RS_FIELDS.START_TIME]);
+  const rsGoTimeDiff = buildDiffText(priorLogFields?.[LOG_RS_FIELDS.GO_TIME], rsLogValues[LOG_RS_FIELDS.GO_TIME]);
+  const rsOrderOfGoDiff = buildDiffText(priorLogFields?.[LOG_RS_FIELDS.ORDER_OF_GO], rsLogValues[LOG_RS_FIELDS.ORDER_OF_GO]);
 
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
   setIfPresent(fields, LOG_KEY_FIELDS.RS_RUN_ID, calcRunId || createdAt);
@@ -1699,6 +1725,9 @@ function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, tr
   for (const [fieldName, value] of Object.entries(rsLogValues)) {
     setIfPresent(fields, fieldName, value);
   }
+  setIfPresent(fields, tripLogFieldSet.has("rs_start_time_diff") ? "rs_start_time_diff" : "", rsStartTimeDiff);
+  setIfPresent(fields, tripLogFieldSet.has("rs_go_time_diff") ? "rs_go_time_diff" : "", rsGoTimeDiff);
+  setIfPresent(fields, tripLogFieldSet.has("rs_order_of_go_diff") ? "rs_order_of_go_diff" : "", rsOrderOfGoDiff);
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_MODE, CALC_MODE);
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_VERSION, CALC_VERSION);
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_STATUS, status);
