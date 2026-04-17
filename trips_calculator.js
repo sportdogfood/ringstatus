@@ -336,6 +336,13 @@ function fieldsHasTruthy(fields, fieldName) {
   return boolValue(fields?.[fieldName]);
 }
 
+function normalizeTriggerFieldAlias(fieldName) {
+  const text = strOrNull(fieldName);
+  if (!text) return null;
+  if (text === "rs_mins_till_go") return "rs_min_till_go";
+  return text;
+}
+
 function chunk(items, size) {
   const out = [];
   for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
@@ -783,7 +790,7 @@ async function fetchActiveTriggerTags() {
         source_table: strOrNull(fields.source_table),
         source_view: strOrNull(fields.source_view),
         query: strOrNull(fields.query),
-        this_field: strOrNull(fields.this_field),
+        this_field: normalizeTriggerFieldAlias(fields.this_field),
         argument: strOrNull(fields.argument),
         from: firstNonBlank(fields.from, fields.From),
         to: firstNonBlank(fields.to, fields.To),
@@ -793,6 +800,35 @@ async function fetchActiveTriggerTags() {
     })
     .filter((row) => normalizeKey(row.source_table).toLowerCase() === normalizeKey(TRIP_LOGS_TABLE).toLowerCase())
     .sort((a, b) => a.priority - b.priority || String(a.trigger_name || "").localeCompare(String(b.trigger_name || "")));
+}
+
+async function fetchPriorTripLogMap(triggerTags) {
+  const requestedFields = new Set([LOG_KEY_FIELDS.ENTRYXCLASSES_UUID, LOG_KEY_FIELDS.CREATED_AT]);
+  for (const trigger of triggerTags || []) {
+    const fieldName = strOrNull(trigger?.this_field);
+    if (fieldName) requestedFields.add(fieldName);
+  }
+
+  const rows = await airtableList({
+    table: TRIP_LOGS_TABLE,
+    fields: Array.from(requestedFields),
+    maxRecords: Math.max(MAX_RECORDS * 10, 1000),
+  });
+
+  rows.sort((left, right) => {
+    const leftCreated = Date.parse(String(left?.fields?.[LOG_KEY_FIELDS.CREATED_AT] || "")) || 0;
+    const rightCreated = Date.parse(String(right?.fields?.[LOG_KEY_FIELDS.CREATED_AT] || "")) || 0;
+    return rightCreated - leftCreated;
+  });
+
+  const byUuid = new Map();
+  for (const row of rows) {
+    const entryxclassesUuid = strOrNull(row?.fields?.[LOG_KEY_FIELDS.ENTRYXCLASSES_UUID]);
+    if (!entryxclassesUuid || byUuid.has(entryxclassesUuid)) continue;
+    byUuid.set(entryxclassesUuid, row.fields || {});
+  }
+
+  return byUuid;
 }
 
 async function airtablePatchRecords({ table, updates }) {
@@ -1491,7 +1527,7 @@ function shouldCreateLogRow(result, patchFailure) {
     !!patchFailure;
 }
 
-function buildTripTriggerEvaluationContext(result) {
+function buildTripTriggerEvaluationContext(result, priorLogFields) {
   const raw = result.inputsForLog?.raw || {};
   const normalized = result.inputsForLog?.normalized || {};
   const canonical = result.canonicalOutputs || {};
@@ -1524,6 +1560,7 @@ function buildTripTriggerEvaluationContext(result) {
     },
     priorByField: {
       ...priorOutputs,
+      ...(priorLogFields || {}),
     },
   };
 }
@@ -1585,7 +1622,7 @@ function applyTriggerTags(fields, triggerTags, triggerContext, tripLogFieldSet) 
   return fired;
 }
 
-function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, triggerTags) {
+function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, triggerTags, priorLogFields) {
   const fields = {};
   const createdAt = calcRunId || new Date().toISOString();
   const status = finalCalcStatus(result, patchFailure);
@@ -1653,7 +1690,7 @@ function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, tr
   setIfPresent(fields, LOG_JSON_FIELDS.COMPUTED_OUTPUTS_JSON, jsonForField(computedOutputs));
   setIfPresent(fields, LOG_JSON_FIELDS.ANOMALIES_JSON, anomalies.length ? jsonForField(anomalies) : undefined);
   setIfPresent(fields, LOG_KEY_FIELDS.CREATED_AT, createdAt);
-  const triggerContext = buildTripTriggerEvaluationContext(result);
+  const triggerContext = buildTripTriggerEvaluationContext(result, priorLogFields);
   const firedTriggerFields = applyTriggerTags(fields, triggerTags, triggerContext, tripLogFieldSet);
 
   return { fields, firedTriggerFields };
@@ -1666,6 +1703,7 @@ async function main() {
   const watchTableFieldSet = await airtableTableFieldSet(WATCH_TABLE);
   const tripLogFieldSet = await airtableTableFieldSet(TRIP_LOGS_TABLE);
   const activeTriggerTags = await fetchActiveTriggerTags();
+  const priorTripLogByUuid = await fetchPriorTripLogMap(activeTriggerTags);
   const activeWatchOutputFields = WATCH_OUTPUT_FIELDS.filter((fieldName) => watchTableFieldSet.has(fieldName));
 
   const records = await airtableList({
@@ -1819,7 +1857,14 @@ async function main() {
   for (const result of results) {
     const patchFailure = patchFailureById.get(result.recordId) || null;
     if (!shouldCreateLogRow(result, patchFailure)) continue;
-    const tripLogRecord = buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, activeTriggerTags);
+    const tripLogRecord = buildTripLogRecord(
+      result,
+      patchFailure,
+      calcRunId,
+      tripLogFieldSet,
+      activeTriggerTags,
+      priorTripLogByUuid.get(result.entryxclasses_uuid) || null
+    );
     summary.trigger_hits += tripLogRecord.firedTriggerFields.length;
     tripLogRecords.push({ fields: tripLogRecord.fields });
   }
