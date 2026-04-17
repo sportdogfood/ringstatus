@@ -7,7 +7,7 @@ const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 const TABLE_SCHEDULE_LOGS = process.env.TABLE_SCHEDULE_LOGS || "schedule_logs";
 const TABLE_TRIGGER_TAGS = process.env.TABLE_TRIGGER_TAGS || "trigger_tags";
 
-const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "heartbeat";
+const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "enrich";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
 
