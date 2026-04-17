@@ -807,6 +807,8 @@ async function fetchPriorTripLogMap(triggerTags) {
   for (const trigger of triggerTags || []) {
     const fieldName = strOrNull(trigger?.this_field);
     if (fieldName) requestedFields.add(fieldName);
+    const outputField = strOrNull(trigger?.output_field);
+    if (outputField) requestedFields.add(outputField);
   }
 
   const rows = await airtableList({
@@ -1573,8 +1575,11 @@ function evaluateTriggerTag(trigger, triggerContext) {
 
   const currentValue = triggerContext.currentByField[fieldName];
   const priorValue = triggerContext.priorByField[fieldName];
+  const outputField = strOrNull(trigger?.output_field);
+  const priorTriggered = outputField ? boolValue(triggerContext.priorByField[outputField]) : false;
 
   if (query === "first_transition") {
+    if (priorTriggered) return false;
     const targetValue = firstNonBlank(trigger?.to, trigger?.from);
     if (isBlank(targetValue)) return false;
     if (argument === "from_not") {
@@ -1594,6 +1599,7 @@ function evaluateTriggerTag(trigger, triggerContext) {
   }
 
   if (query === "first_in_range") {
+    if (priorTriggered) return false;
     const currentNum = parseTriggerNumber(currentValue);
     const priorNum = parseTriggerNumber(priorValue);
     const fromNum = parseTriggerNumber(trigger?.from);
