@@ -777,7 +777,6 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
 
 function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldMeta) {
   const fields = { ...normalizedRow.fields };
-  delete fields.total_trips;
   const classDetail = normalizedRow?.class_detail || null;
   const resolvedScheduledDate = toIsoDateOnly(
     pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date)
@@ -790,7 +789,6 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   if (classDetail?.status) {
     setResolvedField(fields, watchScheduleFieldMeta, "status", classDetail.status);
   }
-  clearResolvedField(fields, watchScheduleFieldMeta, "total_trips");
   if (watchScheduleFieldMeta?.names?.has("completed_trips") || watchScheduleFieldMeta?.actualByTrim?.has("completed_trips")) {
     setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", fields.completed_trips ?? null);
   }

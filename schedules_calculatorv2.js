@@ -512,6 +512,7 @@ async function fetchWatchScheduleRows() {
       "latest_status",
       "status",
       "completed_trips",
+      "total_trips",
       "latest_estimated_start_time",
       "___latest_estimated_start_time",
       "groups_live",
@@ -618,6 +619,7 @@ function normalizeWatchScheduleRow(record) {
     latest_status: strOrNull(fields.latest_status),
     status: strOrNull(fields.status),
     completed_trips: numOrNull(fields.completed_trips),
+    total_trips: numOrNull(fields.total_trips),
     latest_estimated_start_time: strOrNull(fields.latest_estimated_start_time),
     latest_estimated_start_hidden: strOrNull(fields.___latest_estimated_start_time),
     groups_live_link: firstLinkId(fields.groups_live),
@@ -641,7 +643,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   const startAnchorMins = parseTimeTextToMinutes(startAnchorText);
   const estimatedEndTimeMinutes = parseTimeTextToMinutes(row.estimated_end_time);
   const totalTripsLive = numOrNull(groupRow?.total);
-  const totalTripsFinal = null;
+  const totalTripsFinal = row.total_trips;
   const completedTripsFinal = row.completed_trips;
   const completedTripsLive = numOrNull(groupRow?.gone);
   const rowStatus = strOrNull(row.status);
@@ -653,7 +655,9 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     ? tripMinutesConfigured
     : DEFAULT_TRIP_MINUTES;
   const tripMinutesUsedDefault = !(tripMinutesConfigured && tripMinutesConfigured > 0);
-  const projectedClassMinutes = null;
+  const projectedClassMinutes = totalTripsFinal !== null
+    ? roundNumber(totalTripsFinal * tripMinutesFinal, 6)
+    : null;
   const endFromProjection = startAnchorMins !== null && projectedClassMinutes !== null
     ? formatMinutesToTimeText(startAnchorMins + projectedClassMinutes)
     : row.estimated_end_time;
@@ -689,6 +693,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     latest_status: row.latest_status,
     status: row.status,
     completed_trips: row.completed_trips,
+    total_trips: row.total_trips,
     latest_ingested_at: row.latest_ingested_at,
   };
 
@@ -757,6 +762,8 @@ function buildTriggerEvaluationContext(row, groupRow, heartbeatContext, computat
     completed_trips_live: computation.completedTripsLive,
     rs_completed_trips: computation.completedTripsLive,
     rs_completed_trips_live: computation.completedTripsLive,
+    rs_total_trips: computation.totalTripsFinal,
+    total_trips: computation.totalTripsFinal,
     total_trips_live: computation.totalTripsLive,
     rs_mins_till_start: computation.minsTillStart,
     rs_mins_since_start: computation.minsSinceStart,
@@ -780,6 +787,8 @@ function buildTriggerEvaluationContext(row, groupRow, heartbeatContext, computat
     completed_trips_live: pickFirst(priorLogFields?.completed_trips_live, null),
     rs_completed_trips: pickFirst(priorLogFields?.rs_completed_trips, null),
     rs_completed_trips_live: pickFirst(priorLogFields?.rs_completed_trips_live, null),
+    rs_total_trips: pickFirst(priorLogFields?.rs_total_trips, priorLogFields?.total_trips, row.total_trips),
+    total_trips: pickFirst(priorLogFields?.total_trips, row.total_trips),
     estimated_start_time: pickFirst(priorLogFields?.estimated_start_time, row.estimated_start_time),
   };
 
@@ -885,6 +894,7 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
   setIfPresent(fields, scheduleLogFieldSet.has("estimated_end_time_minutes") ? "estimated_end_time_minutes" : "", computation.estimatedEndTimeMinutes);
   setIfPresent(fields, scheduleLogFieldSet.has("status") ? "status" : "", row.status);
   setIfPresent(fields, scheduleLogFieldSet.has("latest_status") ? "latest_status" : "", computation.latestStatusFinal);
+  setIfPresent(fields, scheduleLogFieldSet.has("total_trips") ? "total_trips" : "", computation.totalTripsFinal);
   setIfPresent(fields, scheduleLogFieldSet.has("total_trips_live") ? "total_trips_live" : "", computation.totalTripsLive);
   setIfPresent(fields, scheduleLogFieldSet.has("completed_trips") ? "completed_trips" : "", computation.completedTripsFinal);
   setIfPresent(fields, scheduleLogFieldSet.has("completed_trips_live") ? "completed_trips_live" : "", computation.completedTripsLive);
@@ -900,6 +910,7 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
   setIfPresent(fields, scheduleLogFieldSet.has("rs_status") ? "rs_status" : "", computation.latestStatusFinal);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_completed_trips") ? "rs_completed_trips" : "", computation.completedTripsLive);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_completed_trips_live") ? "rs_completed_trips_live" : "", computation.completedTripsLive);
+  setIfPresent(fields, scheduleLogFieldSet.has("rs_total_trips") ? "rs_total_trips" : "", computation.totalTripsFinal);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_trip_default") ? "rs_trip_default" : "", DEFAULT_TRIP_MINUTES);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_trip_time") ? "rs_trip_time" : "", computation.tripMinutesFinal);
   setIfPresent(fields, scheduleLogFieldSet.has("rs_trip_time2") ? "rs_trip_time2" : "", computation.tripMinutesFinal);
@@ -930,6 +941,7 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
       status: rowStatus,
       completed_trips: row.completed_trips,
       completed_trips_live: computation.completedTripsLive,
+      total_trips: row.total_trips,
       tripTarget: row.tripTarget,
       focusTargetClassId: row.focusTargetClassId,
       nextTargetClassId: row.nextTargetClassId,
