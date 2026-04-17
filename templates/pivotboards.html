@@ -1,0 +1,1043 @@
+<!-- lessons-v4.6.1-full-drop.html
+     Template intact — styling aligned closer to Tap-Active kit:
+     - Inter font (with system fallbacks)
+     - Deeper surfaces + consistent glass panels
+     - Stronger/cleaner bar tint + card feel
+     - Backgrounds + borders tuned to match kit
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Lessons Board (v4.6.1)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* Mobile-first geometry (390x844 target) */
+    --yW: clamp(84px, 26vw, 140px);
+    --rowH: 62px;              /* requested */
+    --slotW: 92px;             /* 30m bucket width (not tiny) */
+    --slotGap: 2px;
+
+    --xTopH: 42px;
+    --radius: 12px;
+
+    /* Tap-Active-ish UI tokens */
+    --bg:#070a10;
+    --panel:#0c111a;
+    --panel2:#0e1522;
+    --fg:#e9edf6;
+    --muted:rgba(233,237,246,.62);
+    --muted2:rgba(233,237,246,.48);
+
+    --line: rgba(255,255,255,.08);
+    --line2: rgba(255,255,255,.12);
+    --shadow: 0 10px 26px rgba(0,0,0,.40);
+
+    --glass: rgba(255,255,255,.035);
+    --glass2: rgba(255,255,255,.055);
+
+    --accent: rgba(76,125,255,1);
+    --accentA: rgba(76,125,255,.55);
+    --accentB: rgba(76,125,255,.18);
+
+    /* type (tight + lighter) */
+    --fs-0: 10px;
+    --fs-1: 11px;
+    --fs-2: 12px;
+    --fs-3: 13px;
+
+    --w-30: 66px;  /* requested: increase width of 30/60 */
+    --w-60: 66px;
+  }
+
+  @media (max-width: 380px){
+    :root{
+      --slotW: 86px;
+      --fs-0: 9.75px;
+      --fs-1: 10.75px;
+      --fs-2: 11.75px;
+      --fs-3: 12.75px;
+      --yW: clamp(80px, 28vw, 132px);
+    }
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background:
+      radial-gradient(900px 560px at 20% -10%, rgba(76,125,255,.10), rgba(0,0,0,0) 60%),
+      radial-gradient(820px 520px at 110% 18%, rgba(255,255,255,.05), rgba(0,0,0,0) 55%),
+      linear-gradient(180deg, #060812 0%, #04050a 100%);
+    color: var(--fg);
+  }
+  button{ font: inherit; }
+  [hidden]{ display:none !important; }
+
+  /* App shell */
+  .shell{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 10px 8px;
+    position:relative;
+    z-index:50;
+  }
+  .topbar__left{ min-width:0; }
+  .title{
+    font-size: var(--fs-3);
+    font-weight: 650;
+    letter-spacing:.12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .meta{
+    font-size: var(--fs-1);
+    color: var(--muted2);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    letter-spacing:.02em;
+  }
+  .topbar__right{ display:flex; gap:8px; }
+
+  .btn{
+    height:34px;
+    padding:0 10px;
+    border-radius:10px;
+    border:1px solid var(--line2);
+    background: linear-gradient(180deg, var(--glass2), var(--glass));
+    color: var(--fg);
+    font-weight: 600;
+    font-size: var(--fs-2);
+    cursor:pointer;
+  }
+  .btn:active{ transform: translateY(1px); }
+
+  .tabs{
+    display:flex;
+    gap:6px;
+    padding:0 10px 10px;
+    overflow:auto;
+    position:relative;
+    z-index:45;
+  }
+  .tab{
+    height:30px;
+    padding:0 10px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background: rgba(255,255,255,.02);
+    color: rgba(233,237,246,.72);
+    font-weight: 650;
+    font-size: var(--fs-2);
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .tab.is-active{
+    border-color: rgba(76,125,255,.34);
+    background: linear-gradient(180deg, rgba(76,125,255,.16), rgba(255,255,255,.03));
+    color: var(--fg);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.22);
+  }
+
+  /* Board container that can grow and scroll vertically */
+  .boardWrap{
+    flex:1;
+    min-height:0;
+    padding:0 10px 10px;
+  }
+
+  .viewport{
+    height:100%;
+    min-height:0;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.018) 100%);
+    box-shadow: var(--shadow);
+    overflow:auto;            /* both axes */
+    position:relative;
+  }
+
+  /* Sticky X */
+  .xTop{
+    position:sticky;
+    top:0;
+    z-index:30;
+    display:flex;
+    align-items:stretch;
+    background: rgba(6,8,14,.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    height: var(--xTopH);
+  }
+
+  .corner{
+    width: var(--yW);
+    min-width: var(--yW);
+    position: sticky;
+    left:0;
+    z-index:60;
+    border-right:1px solid var(--line);
+    background: rgba(6,8,14,.90);
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+    font-size: var(--fs-1);
+    color: rgba(233,237,246,.68);
+    font-weight: 650;
+    letter-spacing:.10em;
+    text-transform: uppercase;
+  }
+
+  .xBand{
+    display:grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--slotW);
+    gap: var(--slotGap);
+    align-items:stretch;
+    padding:6px 6px 6px var(--slotGap);
+    min-width: max-content; /* ensure horizontal scrolling */
+  }
+
+  .xTick{
+    border:1px solid var(--line);
+    border-radius:10px;
+    background: rgba(255,255,255,.025);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: var(--fs-0);
+    color: rgba(233,237,246,.66);
+    font-weight: 650;
+    letter-spacing:.03em;
+  }
+
+  /* Rows */
+  .laneRow{
+    display:flex;
+    align-items:stretch;
+    min-height: var(--rowH);
+    border-bottom: 1px solid rgba(255,255,255,.055);
+    position:relative;
+  }
+
+  .yCell{
+    width: var(--yW);
+    min-width: var(--yW);
+    position: sticky;
+    left:0;
+    z-index:20;
+    border-right:1px solid var(--line);
+    background:
+      linear-gradient(180deg, rgba(10,12,18,.92), rgba(8,10,16,.92));
+    padding: 8px 8px;
+    display:flex;
+    align-items:center;
+  }
+
+  .yPrimary{
+    font-size: var(--fs-2);
+    font-weight: 650;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* Track */
+  .laneTrack{
+    position:relative;
+    min-width: max-content; /* horizontal scroll */
+    display:grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--slotW);
+    gap: var(--slotGap);
+    padding: 6px 6px 6px var(--slotGap);
+    height: var(--rowH);
+    align-items:stretch;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.010), rgba(255,255,255,.000));
+  }
+
+  .slotBtn{
+    border: 1px solid rgba(255,255,255,.075);
+    background: rgba(255,255,255,.015);
+    border-radius: 10px;
+    cursor:pointer;
+    position:relative;
+  }
+  .slotBtn:active{ transform: translateY(1px); }
+  .slotBtn::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:10px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.22);
+    pointer-events:none;
+  }
+
+  /* Bars layer sits above slot buttons */
+  .barsLayer{
+    position:absolute;
+    left: calc(var(--yW) + 0px); /* not used (we render per-row), kept for clarity */
+  }
+
+  .bar{
+    position:absolute;
+    top: 7px;
+    height: calc(var(--rowH) - 14px);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.14);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03)),
+      rgba(12,16,26,.86);
+    box-shadow: 0 8px 18px rgba(0,0,0,.34);
+    padding: 6px 8px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap: 2px;
+    overflow:hidden;
+    cursor:pointer;
+    pointer-events:auto;
+  }
+  .bar:active{ transform: translateY(1px); }
+
+  /* “card-lines” stacked (tighter + not oversized) */
+  .barLine1{
+    font-size: var(--fs-2);
+    font-weight: 650;
+    line-height: 1.05;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .barLine2{
+    font-size: var(--fs-1);
+    font-weight: 550;
+    line-height: 1.05;
+    color: rgba(233,237,246,.76);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .barLine3{
+    font-size: var(--fs-0);
+    font-weight: 600;
+    line-height: 1.05;
+    color: rgba(233,237,246,.60);
+    letter-spacing:.08em;
+    text-transform: uppercase;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* stronger, cleaner tint (Tap-Active style) */
+  .bar.tint{
+    border-color: rgba(76,125,255,.26);
+    box-shadow:
+      inset 3px 0 0 var(--accentA),
+      inset 0 0 0 1px rgba(0,0,0,.18),
+      0 8px 18px rgba(0,0,0,.34);
+  }
+
+  /* ===== Modal (BODY-level, always on top) ===== */
+  body.is-modal-open .shell{
+    pointer-events:none; /* critical: ensure inputs/buttons work */
+    user-select:none;
+  }
+  body.is-modal-open{ overflow:hidden; } /* lock background scroll */
+
+  .overlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;               /* higher than topbar/tabs/boardwrap */
+    background: rgba(0,0,0,.58);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding: 12px 10px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .sheet{
+    width: min(520px, 100%);
+    border-radius: 16px;
+    border:1px solid rgba(255,255,255,.14);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)),
+      rgba(10,14,22,.96);
+    box-shadow: 0 22px 52px rgba(0,0,0,.62);
+    overflow:hidden;
+    pointer-events:auto;
+  }
+
+  .sheetHead{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.03);
+  }
+  .sheetTitle{
+    min-width:0;
+    flex:1;
+    font-size: var(--fs-3);
+    font-weight: 650;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .iconBtn{
+    width: 38px;
+    height: 34px;
+    border-radius: 12px;
+    border:1px solid rgba(255,255,255,.12);
+    background: linear-gradient(180deg, var(--glass2), var(--glass));
+    color: var(--fg);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    font-size: 14px;
+    font-weight: 650;
+  }
+  .iconBtn:active{ transform: translateY(1px); }
+  .iconBtn.danger{
+    border-color: rgba(255,77,90,.28);
+    background: rgba(255,77,90,.10);
+  }
+
+  .sheetBody{
+    padding: 14px 14px 10px;
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+  }
+
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .labelRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .label{
+    font-size: var(--fs-0);
+    color: rgba(233,237,246,.58);
+    letter-spacing:.10em;
+    text-transform: uppercase;
+    font-weight: 650;
+  }
+  .ghost{
+    border: 0;
+    background: transparent;
+    color: rgba(233,237,246,.72);
+    font-size: var(--fs-1);
+    font-weight: 600;
+    cursor:pointer;
+    padding: 0;
+  }
+
+  .search{
+    height: 36px;
+    border-radius: 12px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    color: var(--fg);
+    padding: 0 10px;
+    font-size: var(--fs-2);
+    outline:none;
+  }
+
+  .pillRow{
+    display:flex;
+    gap:8px;
+    overflow:auto;
+    padding-bottom: 2px;
+  }
+
+  .pill{
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    color: rgba(233,237,246,.86);
+    font-size: var(--fs-2);
+    font-weight: 650;
+    cursor:pointer;
+    white-space:nowrap;
+    flex: 0 0 auto;
+  }
+  .pill:active{ transform: translateY(1px); }
+  .pill.is-on{
+    border-color: rgba(76,125,255,.38);
+    background: rgba(76,125,255,.16);
+    color:#fff;
+  }
+
+  .rowSplit{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .rowSplit .left{ display:flex; align-items:center; gap:10px; flex:1; }
+  .rowSplit .right{ display:flex; align-items:center; gap:10px; justify-content:flex-end; }
+
+  .cyclePill{
+    width: var(--w-30);
+    height: 34px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    color: rgba(233,237,246,.92);
+    font-size: var(--fs-2);
+    font-weight: 700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex: 0 0 auto;
+  }
+  .cyclePill:active{ transform: translateY(1px); }
+
+  .sheetFoot{
+    padding: 10px 14px 14px;
+    display:flex;
+    gap:10px;
+    justify-content:space-between;
+    border-top: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.02);
+  }
+  .footLeft, .footRight{ display:flex; gap:10px; }
+
+  /* Print */
+  @media print{
+    @page { size: landscape; margin: .35in; }
+    body{ background:#fff; color:#000; }
+    .topbar,.tabs{ display:none !important; }
+    .boardWrap{ padding:0 !important; }
+    .viewport{
+      height:auto !important;
+      overflow:visible !important;
+      border:0 !important;
+      box-shadow:none !important;
+      background:#fff !important;
+    }
+    .xTop,.corner,.yCell{ background:#fff !important; backdrop-filter:none !important; }
+    .overlay{ display:none !important; }
+  }
+</style>
+</head>
+
+<body>
+<div class="shell" id="appShell">
+  <div class="topbar">
+    <div class="topbar__left">
+      <div class="title" id="boardTitle">Lessons Board</div>
+      <div class="meta" id="boardMeta">6:00 AM–5:00 PM • 30-min buckets • Tap slot to add</div>
+    </div>
+    <div class="topbar__right">
+      <button class="btn" id="printBtn">Print</button>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab is-active" data-board="lessons">Lessons</button>
+    <button class="tab" data-board="feed" disabled title="stub">Feed</button>
+    <button class="tab" data-board="turnout" disabled title="stub">Turnout</button>
+  </div>
+
+  <div class="boardWrap">
+    <div class="viewport" id="viewport">
+      <div class="xTop" id="xTop">
+        <div class="corner">HORSE</div>
+        <div class="xBand" id="xBand"></div>
+      </div>
+      <div id="lanes"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY-LEVEL MODAL (always on top) -->
+<div class="overlay" id="overlay" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Lesson editor">
+    <div class="sheetHead">
+      <button class="iconBtn" type="button" id="closeBtn" aria-label="Close">✕</button>
+      <div class="sheetTitle" id="sheetTitle">Lesson</div>
+      <button class="iconBtn" type="button" id="saveBtn" aria-label="Save">✓</button>
+    </div>
+
+    <div class="sheetBody">
+      <!-- Rider -->
+      <div class="field">
+        <div class="labelRow">
+          <div class="label">Rider</div>
+          <button class="ghost" type="button" id="toggleRiderSearch">Search</button>
+        </div>
+        <input class="search" id="riderSearch" placeholder="Search riders…" hidden />
+        <div class="pillRow" id="riderPills"></div>
+      </div>
+
+      <!-- Time -->
+      <div class="field">
+        <div class="label">Time</div>
+        <div class="pillRow" id="timePills"></div>
+      </div>
+
+      <!-- Duration + Trainer -->
+      <div class="field">
+        <div class="rowSplit">
+          <div class="left">
+            <div class="label">Duration</div>
+            <button class="cyclePill" type="button" id="durPill">30</button>
+          </div>
+          <div class="right">
+            <div class="label">Trainer</div>
+            <button class="cyclePill" type="button" id="trnPill">AB</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheetFoot">
+      <div class="footLeft">
+        <button class="iconBtn danger" type="button" id="deleteBtn" aria-label="Delete">🗑</button>
+        <button class="iconBtn" type="button" id="dupBtn" aria-label="Duplicate">⧉</button>
+      </div>
+      <div class="footRight">
+        <button class="iconBtn" type="button" id="cancelBtn" aria-label="Cancel">✕</button>
+        <button class="iconBtn" type="button" id="saveBtn2" aria-label="Save">✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ---------- Model ---------- */
+  const START_H = 6, END_H = 17;          // 6:00 to 17:00 end boundary
+  const BUCKET = 30;                      // minutes
+  const DURATIONS = [30, 60];
+  const trainers = ["AB","CK","MP","—"];
+
+  const horses = [
+    {id:"h1", name:"Ben"},
+    {id:"h2", name:"Juno"},
+    {id:"h3", name:"Sage"},
+    {id:"h4", name:"Oddur"},
+    {id:"h5", name:"Bernie"},
+  ];
+
+  const ridersAll = ["Meg P","Lainey K","Alan B","Chris J","Tess R","Nina S","Owen D","Quinn L"];
+
+  // lessons: horseId + startMin + duration + rider + trainer
+  let lessons = [
+    {id:"l1", horseId:"h2", startMin: 8*60,   duration:60, rider:"Meg P",   trainer:"AB"},
+    {id:"l2", horseId:"h1", startMin: 9*60+30,duration:30, rider:"Lainey K",trainer:"CK"},
+    {id:"l3", horseId:"h4", startMin: 10*60,  duration:60, rider:"Alan B",  trainer:"MP"},
+  ];
+
+  /* ---------- DOM ---------- */
+  const els = {
+    viewport: document.getElementById("viewport"),
+    xBand: document.getElementById("xBand"),
+    lanes: document.getElementById("lanes"),
+    overlay: document.getElementById("overlay"),
+    printBtn: document.getElementById("printBtn"),
+
+    sheetTitle: document.getElementById("sheetTitle"),
+    closeBtn: document.getElementById("closeBtn"),
+    cancelBtn: document.getElementById("cancelBtn"),
+    saveBtn: document.getElementById("saveBtn"),
+    saveBtn2: document.getElementById("saveBtn2"),
+    deleteBtn: document.getElementById("deleteBtn"),
+    dupBtn: document.getElementById("dupBtn"),
+
+    riderPills: document.getElementById("riderPills"),
+    riderSearch: document.getElementById("riderSearch"),
+    toggleRiderSearch: document.getElementById("toggleRiderSearch"),
+    timePills: document.getElementById("timePills"),
+    durPill: document.getElementById("durPill"),
+    trnPill: document.getElementById("trnPill"),
+  };
+
+  /* ---------- Helpers ---------- */
+  const pad2 = n => String(n).padStart(2,"0");
+  function fmtTime(min){
+    const h24 = Math.floor(min/60);
+    const m = min%60;
+    const am = h24 < 12;
+    const h12 = ((h24 + 11) % 12) + 1;
+    return `${h12}:${pad2(m)}${am ? "A":"P"}`;
+  }
+  function timeSlots(){
+    const start = START_H*60;
+    const end = END_H*60; // boundary
+    const arr = [];
+    for(let t=start; t<end; t+=BUCKET) arr.push(t);
+    return arr;
+  }
+  const SLOTS = timeSlots();
+
+  function cssVarPx(name){
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return parseFloat(v.replace("px","")) || 0;
+  }
+  function slotIndex(min){ return Math.max(0, SLOTS.indexOf(min)); }
+  function uid(prefix="l"){ return prefix + Math.random().toString(16).slice(2,9); }
+
+  function clampToRange(min){
+    if(!SLOTS.length) return min;
+    if(min < SLOTS[0]) return SLOTS[0];
+    if(min > SLOTS[SLOTS.length-1]) return SLOTS[SLOTS.length-1];
+    return min;
+  }
+
+  /* ---------- Render ---------- */
+  function renderX(){
+    els.xBand.innerHTML = "";
+    for(const t of SLOTS){
+      const d = document.createElement("div");
+      d.className = "xTick";
+      d.textContent = fmtTime(t);
+      els.xBand.appendChild(d);
+    }
+  }
+
+  function renderLanes(){
+    els.lanes.innerHTML = "";
+
+    const slotW = cssVarPx("--slotW");
+    const gap = cssVarPx("--slotGap");
+
+    for(const h of horses){
+      const row = document.createElement("div");
+      row.className = "laneRow";
+      row.dataset.horseId = h.id;
+
+      const y = document.createElement("div");
+      y.className = "yCell";
+      y.innerHTML = `<div class="yPrimary">${escapeHtml(h.name)}</div>`;
+      row.appendChild(y);
+
+      const trackWrap = document.createElement("div");
+      trackWrap.style.position = "relative";
+      trackWrap.style.minWidth = "max-content";
+      trackWrap.style.height = "var(--rowH)";
+
+      const track = document.createElement("div");
+      track.className = "laneTrack";
+      track.dataset.horseId = h.id;
+
+      // Slot buttons (tap to add)
+      for(const t of SLOTS){
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "slotBtn";
+        b.dataset.horseId = h.id;
+        b.dataset.startMin = String(t);
+        b.title = "Add lesson";
+        track.appendChild(b);
+      }
+
+      // Bars layer (absolute inside trackWrap, aligned to track padding)
+      const barsLayer = document.createElement("div");
+      barsLayer.style.position = "absolute";
+      barsLayer.style.left = `calc(${getComputedStyle(track).paddingLeft || "0px"})`;
+      barsLayer.style.top = "0";
+      barsLayer.style.height = "var(--rowH)";
+      barsLayer.style.width = `calc(${SLOTS.length} * ${slotW}px + ${(SLOTS.length-1)*gap}px)`;
+      barsLayer.style.pointerEvents = "none"; // bars enable pointer individually
+
+      // render bars for this horse
+      const mine = lessons.filter(x => x.horseId === h.id);
+      for(const l of mine){
+        const i = slotIndex(l.startMin);
+        const span = Math.max(1, l.duration / BUCKET);
+
+        const left = i * (slotW + gap);
+        const width = span * slotW + (span-1)*gap;
+
+        const bar = document.createElement("div");
+        bar.className = "bar tint";
+        bar.dataset.lessonId = l.id;
+        bar.style.left = `${left}px`;
+        bar.style.width = `${width}px`;
+        bar.style.pointerEvents = "auto";
+
+        bar.innerHTML = `
+          <div class="barLine1">${escapeHtml(l.rider)}</div>
+          <div class="barLine2">${escapeHtml(fmtTime(l.startMin))} • ${escapeHtml(String(l.duration))}m</div>
+          <div class="barLine3">TRN: ${escapeHtml(l.trainer)}</div>
+        `;
+        barsLayer.appendChild(bar);
+      }
+
+      trackWrap.appendChild(track);
+      trackWrap.appendChild(barsLayer);
+      row.appendChild(trackWrap);
+
+      els.lanes.appendChild(row);
+    }
+  }
+
+  function renderAll(){
+    renderX();
+    renderLanes();
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[s]));
+  }
+
+  /* ---------- Editor State ---------- */
+  const editor = {
+    open: false,
+    lessonId: null,
+    horseId: null,
+    startMin: null,
+    duration: 30,
+    rider: null,
+    trainer: "AB",
+    riderFilter: "",
+  };
+
+  function openEditor({horseId, startMin, lessonId=null}){
+    const existing = lessonId ? lessons.find(x => x.id === lessonId) : null;
+
+    editor.open = true;
+    editor.lessonId = lessonId;
+    editor.horseId = horseId ?? (existing && existing.horseId) ?? horses[0].id;
+    editor.startMin = clampToRange(startMin ?? (existing && existing.startMin) ?? SLOTS[0]);
+    editor.duration = (existing && existing.duration) ?? 30;
+    editor.rider = (existing && existing.rider) ?? ridersAll[0];
+    editor.trainer = (existing && existing.trainer) ?? trainers[0];
+
+    els.sheetTitle.textContent = existing ? "Edit Lesson" : "New Lesson";
+    els.deleteBtn.hidden = !existing;
+    els.dupBtn.hidden = !existing;
+
+    els.riderSearch.hidden = true;
+    els.riderSearch.value = "";
+    editor.riderFilter = "";
+
+    // pills + cycles
+    renderRiderPills();
+    renderTimePills();
+    renderCyclePills();
+
+    // show
+    document.body.classList.add("is-modal-open");
+    els.overlay.hidden = false;
+
+    // focus after paint (mobile)
+    requestAnimationFrame(() => {
+      // nothing forced; user can tap, but modal is now top-most and interactive
+    });
+  }
+
+  function closeEditor(){
+    editor.open = false;
+    editor.lessonId = null;
+    els.overlay.hidden = true;
+    document.body.classList.remove("is-modal-open");
+  }
+
+  function renderRiderPills(){
+    els.riderPills.innerHTML = "";
+    const q = (editor.riderFilter || "").trim().toLowerCase();
+    const list = q ? ridersAll.filter(r => r.toLowerCase().includes(q)) : ridersAll;
+
+    for(const r of list){
+      const p = document.createElement("button");
+      p.type = "button";
+      p.className = "pill" + (r === editor.rider ? " is-on" : "");
+      p.textContent = r;
+      p.addEventListener("click", () => {
+        editor.rider = r;
+        renderRiderPills();
+      });
+      els.riderPills.appendChild(p);
+    }
+  }
+
+  function renderTimePills(){
+    els.timePills.innerHTML = "";
+    for(const t of SLOTS){
+      const p = document.createElement("button");
+      p.type = "button";
+      p.className = "pill" + (t === editor.startMin ? " is-on" : "");
+      p.textContent = fmtTime(t);
+      p.addEventListener("click", () => {
+        editor.startMin = t;
+        renderTimePills();
+      });
+      els.timePills.appendChild(p);
+    }
+  }
+
+  function renderCyclePills(){
+    els.durPill.textContent = String(editor.duration);
+    els.trnPill.textContent = editor.trainer;
+  }
+
+  function cycleDuration(){
+    const i = DURATIONS.indexOf(editor.duration);
+    editor.duration = DURATIONS[(i + 1) % DURATIONS.length];
+    renderCyclePills();
+  }
+
+  function cycleTrainer(){
+    const i = trainers.indexOf(editor.trainer);
+    editor.trainer = trainers[(i + 1) % trainers.length];
+    renderCyclePills();
+  }
+
+  function saveEditor(){
+    // basic validation
+    if(!editor.rider) editor.rider = ridersAll[0];
+    if(!editor.trainer) editor.trainer = trainers[0];
+
+    if(editor.lessonId){
+      const i = lessons.findIndex(x => x.id === editor.lessonId);
+      if(i >= 0){
+        lessons[i] = {
+          ...lessons[i],
+          horseId: editor.horseId,
+          startMin: editor.startMin,
+          duration: editor.duration,
+          rider: editor.rider,
+          trainer: editor.trainer
+        };
+      }
+    }else{
+      lessons.push({
+        id: uid("l"),
+        horseId: editor.horseId,
+        startMin: editor.startMin,
+        duration: editor.duration,
+        rider: editor.rider,
+        trainer: editor.trainer
+      });
+    }
+
+    renderLanes();   // move bar immediately after save
+    closeEditor();
+  }
+
+  function deleteEditor(){
+    if(!editor.lessonId) return;
+    lessons = lessons.filter(x => x.id !== editor.lessonId);
+    renderLanes();
+    closeEditor();
+  }
+
+  function duplicateEditor(){
+    if(!editor.lessonId) return;
+    const src = lessons.find(x => x.id === editor.lessonId);
+    if(!src) return;
+    lessons.push({ ...src, id: uid("l") });
+    renderLanes();
+    closeEditor();
+  }
+
+  /* ---------- Events ---------- */
+
+  // Print
+  els.printBtn.addEventListener("click", () => window.print());
+
+  // Open editor: tap slot or bar (event delegation)
+  els.viewport.addEventListener("click", (e) => {
+    // bar (edit)
+    const bar = e.target.closest(".bar[data-lesson-id]");
+    if(bar){
+      const id = bar.getAttribute("data-lesson-id");
+      openEditor({ lessonId: id });
+      return;
+    }
+
+    // slot (new)
+    const slot = e.target.closest(".slotBtn[data-horse-id][data-start-min]");
+    if(slot){
+      openEditor({
+        horseId: slot.getAttribute("data-horse-id"),
+        startMin: parseInt(slot.getAttribute("data-start-min"), 10)
+      });
+    }
+  });
+
+  // Modal close/cancel/backdrop
+  els.closeBtn.addEventListener("click", closeEditor);
+  els.cancelBtn.addEventListener("click", closeEditor);
+
+  // backdrop click closes (but not when clicking sheet)
+  els.overlay.addEventListener("click", (e) => {
+    if(e.target === els.overlay) closeEditor();
+  });
+
+  // Save / Delete / Duplicate
+  els.saveBtn.addEventListener("click", saveEditor);
+  els.saveBtn2.addEventListener("click", saveEditor);
+  els.deleteBtn.addEventListener("click", deleteEditor);
+  els.dupBtn.addEventListener("click", duplicateEditor);
+
+  // Cycles
+  els.durPill.addEventListener("click", cycleDuration);
+  els.trnPill.addEventListener("click", cycleTrainer);
+
+  // Rider search toggle + filter
+  els.toggleRiderSearch.addEventListener("click", () => {
+    const on = els.riderSearch.hidden;
+    els.riderSearch.hidden = !on;
+    if(on){
+      els.riderSearch.focus();
+    }else{
+      els.riderSearch.value = "";
+      editor.riderFilter = "";
+      renderRiderPills();
+    }
+  });
+  els.riderSearch.addEventListener("input", () => {
+    editor.riderFilter = els.riderSearch.value || "";
+    renderRiderPills();
+  });
+
+  // Escape closes
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape" && !els.overlay.hidden) closeEditor();
+  });
+
+  // Basic tabs stub
+  document.getElementById("tabs").addEventListener("click", (e) => {
+    const t = e.target.closest(".tab");
+    if(!t || t.disabled) return;
+    document.querySelectorAll(".tab").forEach(x => x.classList.remove("is-active"));
+    t.classList.add("is-active");
+  });
+
+  // Re-render on resize so bar widths remain correct
+  window.addEventListener("resize", () => renderAll());
+
+  /* ---------- Init ---------- */
+  renderAll();
+})();
+</script>
+</body>
+</html>
