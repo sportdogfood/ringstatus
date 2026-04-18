@@ -699,26 +699,48 @@ function airtableUrl(tableName) {
   return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
 }
 
-async function airtableTableFieldSet(tableName) {
-  const res = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
-    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
-  });
+let airtableMetaTablesPromise = null;
 
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`Airtable meta failed (${res.status}) ${tableName}: ${body}`);
+async function airtableMetaTables() {
+  if (!airtableMetaTablesPromise) {
+    airtableMetaTablesPromise = (async () => {
+      const res = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+        headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
+      });
+
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        throw new Error(`Airtable meta failed (${res.status}): ${body}`);
+      }
+
+      const json = await res.json().catch(() => ({}));
+      return Array.isArray(json?.tables) ? json.tables : [];
+    })();
   }
 
-  const json = await res.json().catch(() => ({}));
-  const table = Array.isArray(json?.tables)
-    ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
-    : null;
+  return airtableMetaTablesPromise;
+}
 
-  return new Set(
-    Array.isArray(table?.fields)
-      ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean)
-      : []
-  );
+async function airtableTableFieldMeta(tableName) {
+  const tables = await airtableMetaTables();
+  const table = tables.find((item) => String(item?.name || "").trim() === tableName) || null;
+  const out = new Map();
+
+  for (const field of Array.isArray(table?.fields) ? table.fields : []) {
+    const fieldName = String(field?.name || "").trim();
+    if (!fieldName) continue;
+    out.set(fieldName, {
+      name: fieldName,
+      type: String(field?.type || "").trim(),
+    });
+  }
+
+  return out;
+}
+
+async function airtableTableFieldSet(tableName) {
+  const fieldMeta = await airtableTableFieldMeta(tableName);
+  return new Set(fieldMeta.keys());
 }
 
 async function airtableList({ table, view, fields = [], maxRecords = 0 }) {
@@ -1396,6 +1418,30 @@ function buildDiffText(priorValue, currentValue) {
   return `${formatDiffDisplayValue(priorValue)} -> ${formatDiffDisplayValue(currentValue)}`;
 }
 
+function buildNumericDiffValue(priorValue, currentValue) {
+  const leftTime = parseClockToMinutes(priorValue);
+  const rightTime = parseClockToMinutes(currentValue);
+  if (leftTime !== null && rightTime !== null) {
+    const delta = roundNumber(rightTime - leftTime, 6);
+    return Math.abs(delta) < 0.000001 ? null : delta;
+  }
+
+  const leftNum = numOrNull(priorValue);
+  const rightNum = numOrNull(currentValue);
+  if (leftNum === null || rightNum === null) return null;
+
+  const delta = roundNumber(rightNum - leftNum, 6);
+  return Math.abs(delta) < 0.000001 ? null : delta;
+}
+
+function buildDiffValueForField(priorValue, currentValue, fieldMeta) {
+  const fieldType = String(fieldMeta?.type || "").trim().toLowerCase();
+  if (fieldType === "number" || fieldType === "currency" || fieldType === "percent" || fieldType === "rating") {
+    return buildNumericDiffValue(priorValue, currentValue);
+  }
+  return buildDiffText(priorValue, currentValue);
+}
+
 function linkOne(recordId) {
   return recordId ? [recordId] : undefined;
 }
@@ -1664,7 +1710,7 @@ function applyTriggerTags(fields, triggerTags, triggerContext, tripLogFieldSet) 
   return fired;
 }
 
-function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, triggerTags, priorLogFields) {
+function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, tripLogFieldMeta, triggerTags, priorLogFields) {
   const fields = {};
   const createdAt = calcRunId || new Date().toISOString();
   const status = finalCalcStatus(result, patchFailure);
@@ -1690,9 +1736,21 @@ function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, tr
   const decisionLogValues = buildDecisionLogValues(canonical);
   const rsLogValues = buildRsLogValues(canonical, computedOutputs);
   const scheduleRecordId = strOrNull(rawInputs.schedule_rid);
-  const rsStartTimeDiff = buildDiffText(priorLogFields?.[LOG_RS_FIELDS.START_TIME], rsLogValues[LOG_RS_FIELDS.START_TIME]);
-  const rsGoTimeDiff = buildDiffText(priorLogFields?.[LOG_RS_FIELDS.GO_TIME], rsLogValues[LOG_RS_FIELDS.GO_TIME]);
-  const rsOrderOfGoDiff = buildDiffText(priorLogFields?.[LOG_RS_FIELDS.ORDER_OF_GO], rsLogValues[LOG_RS_FIELDS.ORDER_OF_GO]);
+  const rsStartTimeDiff = buildDiffValueForField(
+    priorLogFields?.[LOG_RS_FIELDS.START_TIME],
+    rsLogValues[LOG_RS_FIELDS.START_TIME],
+    tripLogFieldMeta.get("rs_start_time_diff")
+  );
+  const rsGoTimeDiff = buildDiffValueForField(
+    priorLogFields?.[LOG_RS_FIELDS.GO_TIME],
+    rsLogValues[LOG_RS_FIELDS.GO_TIME],
+    tripLogFieldMeta.get("rs_go_time_diff")
+  );
+  const rsOrderOfGoDiff = buildDiffValueForField(
+    priorLogFields?.[LOG_RS_FIELDS.ORDER_OF_GO],
+    rsLogValues[LOG_RS_FIELDS.ORDER_OF_GO],
+    tripLogFieldMeta.get("rs_order_of_go_diff")
+  );
 
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
   setIfPresent(fields, LOG_KEY_FIELDS.RS_RUN_ID, calcRunId || createdAt);
@@ -1749,7 +1807,8 @@ async function main() {
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
   const calcRunId = new Date().toISOString();
   const watchTableFieldSet = await airtableTableFieldSet(WATCH_TABLE);
-  const tripLogFieldSet = await airtableTableFieldSet(TRIP_LOGS_TABLE);
+  const tripLogFieldMeta = await airtableTableFieldMeta(TRIP_LOGS_TABLE);
+  const tripLogFieldSet = new Set(tripLogFieldMeta.keys());
   const activeTriggerTags = await fetchActiveTriggerTags();
   const priorTripLogByUuid = await fetchPriorTripLogMap(activeTriggerTags);
   const activeWatchOutputFields = WATCH_OUTPUT_FIELDS.filter((fieldName) => watchTableFieldSet.has(fieldName));
@@ -1910,6 +1969,7 @@ async function main() {
       patchFailure,
       calcRunId,
       tripLogFieldSet,
+      tripLogFieldMeta,
       activeTriggerTags,
       priorTripLogByUuid.get(result.entryxclasses_uuid) || null
     );
