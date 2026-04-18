@@ -402,7 +402,27 @@ function normalizeClassEndpointPayload(payload) {
     status: strOrNull(pickFirst(payload?.status, related?.status)),
     schedule_date: toIsoDateOnly(pickFirst(payload?.date, related?.date)),
     estimated_start_time: strOrNull(pickFirst(payload?.estimated_time, related?.estimated_time)),
-    completed_trips: numOrNull(pickFirst(payload?.completed_trips, related?.completed_trips)),
+    total_trips: numOrNull(pickFirst(
+      payload?.total_trips,
+      payload?.totalTrips,
+      classObj?.total_trips,
+      classObj?.totalTrips,
+      related?.total_trips,
+      related?.totalTrips,
+      payload?.total,
+      related?.total
+    )),
+    completed_trips: numOrNull(pickFirst(
+      payload?.completed_trips,
+      payload?.completedTrips,
+      classObj?.completed_trips,
+      classObj?.completedTrips,
+      related?.completed_trips,
+      related?.completedTrips,
+      payload?.gone,
+      classObj?.gone,
+      related?.gone
+    )),
   };
 }
 
@@ -789,8 +809,13 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   if (classDetail?.status) {
     setResolvedField(fields, watchScheduleFieldMeta, "status", classDetail.status);
   }
+  if (classDetail?.total_trips !== null && classDetail?.total_trips !== undefined) {
+    setResolvedField(fields, watchScheduleFieldMeta, "total_trips", classDetail.total_trips);
+  } else if (fields.total_trips !== undefined) {
+    setResolvedField(fields, watchScheduleFieldMeta, "total_trips", fields.total_trips);
+  }
   if (watchScheduleFieldMeta?.names?.has("completed_trips") || watchScheduleFieldMeta?.actualByTrim?.has("completed_trips")) {
-    setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", fields.completed_trips ?? null);
+    setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", classDetail?.completed_trips ?? fields.completed_trips ?? null);
   }
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;

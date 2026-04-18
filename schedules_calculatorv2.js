@@ -664,9 +664,9 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   const startAnchorMins = parseTimeTextToMinutes(startAnchorText);
   const estimatedEndTimeMinutes = parseTimeTextToMinutes(row.estimated_end_time);
   const totalTripsLive = numOrNull(groupRow?.total);
-  const totalTripsFinal = row.total_trips;
-  const completedTripsFinal = row.completed_trips;
   const completedTripsLive = numOrNull(groupRow?.gone);
+  const totalTripsFinal = totalTripsLive ?? row.total_trips;
+  const completedTripsFinal = completedTripsLive ?? row.completed_trips;
   const rowStatus = strOrNull(row.status);
   const groupStatus = strOrNull(groupRow?.status);
   const latestStatusFinal = rowStatus || groupStatus || row.latest_status || null;
@@ -695,6 +695,8 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     ___latest_estimated_start_time: startLiveText || undefined,
     latest_status: latestStatusFinal || undefined,
     status: rowStatus || undefined,
+    completed_trips: completedTripsLive ?? undefined,
+    total_trips: totalTripsLive ?? undefined,
     latest_ingested_at: strOrNull(pickFirst(groupRow?.ingested_at, groupRow?.curr_updated_at)) || undefined,
   };
 
@@ -705,6 +707,8 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   if (startLiveText && !sameValue(row.latest_estimated_start_hidden, startLiveText)) changedFields.push("___latest_estimated_start_time");
   if (latestStatusFinal && !sameValue(row.latest_status, latestStatusFinal)) changedFields.push("latest_status");
   if (rowStatus && !sameValue(row.status, rowStatus)) changedFields.push("status");
+  if (completedTripsLive !== null && !sameValue(row.completed_trips, completedTripsLive)) changedFields.push("completed_trips");
+  if (totalTripsLive !== null && !sameValue(row.total_trips, totalTripsLive)) changedFields.push("total_trips");
   if (!sameValue(row.latest_ingested_at, pickFirst(groupRow?.ingested_at, groupRow?.curr_updated_at) || null)) changedFields.push("latest_ingested_at");
 
   const priorOutputs = {

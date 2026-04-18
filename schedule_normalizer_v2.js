@@ -546,7 +546,25 @@ function normalizeSchedulePayload(payload, options) {
           estimated_start_time: strOrNull(pickFirst(node.estimated_start_time, node.estimatedStartTime)),
           start_time_default: strOrNull(pickFirst(node.start_time_default, node.startTimeDefault)),
           estimated_end_time: strOrNull(pickFirst(node.estimated_end_time, node.estimatedEndTime)),
-          total_trips: numOrNull(pickFirst(node.total_trips, node.totalTrips)),
+          total_trips: numOrNull(pickFirst(
+            node.total_trips,
+            node.totalTrips,
+            classRelated?.total_trips,
+            classRelated?.totalTrips,
+            classObj?.total_trips,
+            classObj?.totalTrips
+          )),
+          completed_trips: numOrNull(pickFirst(
+            node.completed_trips,
+            node.completedTrips,
+            classRelated?.completed_trips,
+            classRelated?.completedTrips,
+            classObj?.completed_trips,
+            classObj?.completedTrips,
+            node.gone,
+            classRelated?.gone,
+            classObj?.gone
+          )),
           grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),
         };
 
@@ -588,6 +606,7 @@ function normalizeSchedulePayload(payload, options) {
     setIfPresent(fields, "estimated_start_time", merged.estimated_start_time || merged.start_time_default);
     setIfPresent(fields, "estimated_end_time", merged.estimated_end_time);
     setIfPresent(fields, "total_trips", merged.total_trips);
+    setIfPresent(fields, "completed_trips", merged.completed_trips);
     setIfPresent(fields, "app_show_idv2", scope.app_show_idv2);
     setIfPresent(fields, "app_sql_datev2", scope.app_sql_datev2);
     setIfPresent(fields, "app_dow_rawv2", scope.app_dow_rawv2);
