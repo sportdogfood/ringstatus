@@ -37,6 +37,33 @@ function Show-TaskSummary {
     $Task.Actions | Format-List Execute, Arguments, WorkingDirectory
 }
 
+function Convert-ToTaskTimeSpan {
+    param([object]$Value)
+
+    if ($null -eq $Value) {
+        return $null
+    }
+
+    if ($Value -is [TimeSpan]) {
+        return $Value
+    }
+
+    $text = [string]$Value
+    if ([string]::IsNullOrWhiteSpace($text)) {
+        return $null
+    }
+
+    try {
+        return [System.Xml.XmlConvert]::ToTimeSpan($text)
+    } catch {
+        try {
+            return [TimeSpan]::Parse($text)
+        } catch {
+            throw "Unable to parse task duration '$text' as TimeSpan."
+        }
+    }
+}
+
 if (-not (Test-IsAdministrator)) {
     Write-Host "Restarting elevated to modify scheduled task '$TaskName'..."
     Restart-Elevated -ScriptPath $PSCommandPath -TaskNameArg $TaskName -DoNotEnableArg $DoNotEnable.IsPresent
@@ -48,9 +75,11 @@ $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
 Write-Host "Current task settings:"
 Show-TaskSummary -Task $task
 
+$executionTimeLimit = Convert-ToTaskTimeSpan $task.Settings.ExecutionTimeLimit
+
 $settings = New-ScheduledTaskSettingsSet `
     -MultipleInstances Queue `
-    -ExecutionTimeLimit $task.Settings.ExecutionTimeLimit `
+    -ExecutionTimeLimit $executionTimeLimit `
     -Hidden:([bool]$task.Settings.Hidden) `
     -Priority ([int]$task.Settings.Priority)
 
