@@ -124,4 +124,28 @@ Write-Host "  Enabled           : True"
 //Test-Path "C:\ringstatus-task\fix_epoch_tagger_task.ps1"
 //Test-Path "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1"
 
+Execute          : C:\Windows\System32\cmd.exe
+Arguments        : /d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
+WorkingDirectory :
+
+
+
+WARNING: Set-ScheduledTask failed. Trying re-register path. Error: The user name or password is incorrect.
+Register-ScheduledTask : The user name or password is incorrect.
+At C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1:96 char:5
++     Register-ScheduledTask `
++     ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : AuthenticationError: (PS_ScheduledTask:Root/Microsoft/...S_ScheduledTask) [Register-Sche
+   duledTask], CimException
+    + FullyQualifiedErrorId : HRESULT 0x8007052e,Register-ScheduledTask
+
+PS C:\WINDOWS\system32> powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\fix_epoch_tagger_task.ps1"
+param : The term 'param' is not recognized as the name of a cmdlet, function, script file, or operable program. Check
+the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At C:\ringstatus-task\fix_epoch_tagger_task.ps1:3 char:1
++ param(
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (param:String) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
 
