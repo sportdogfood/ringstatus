@@ -117,3 +117,11 @@ Write-Host ""
 Write-Host "Expected:"
 Write-Host "  MultipleInstances : Queue"
 Write-Host "  Enabled           : True"
+
+
+//powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1"
+//powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\fix_epoch_tagger_task.ps1"
+//Test-Path "C:\ringstatus-task\fix_epoch_tagger_task.ps1"
+//Test-Path "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1"
+
+
