@@ -119,5 +119,74 @@ Write-Host "  MultipleInstances : Queue"
 Write-Host "  Enabled           : True"
 
 
-//robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" fix_epoch_tagger_task.ps1
-//powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\fix_epoch_tagger_task.ps1"
+//
+PS C:\WINDOWS\system32> robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" fix_epoch_tagger_task.ps1
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows
+-------------------------------------------------------------------------------
+
+  Started : Monday, April 27, 2026 8:27:49 PM
+   Source : C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\
+     Dest : C:\ringstatus-task\
+
+    Files : fix_epoch_tagger_task.ps1
+
+  Options : /DCOPY:DA /COPY:DAT /R:1000000 /W:30
+
+------------------------------------------------------------------------------
+
+                           1    C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\
+100%        Newer                   3665        fix_epoch_tagger_task.ps1
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :         1         0         1         0         0         0
+   Files :         1         1         0         0         0         0
+   Bytes :     3.5 k     3.5 k         0         0         0         0
+   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+   Ended : Monday, April 27, 2026 8:27:49 PM
+
+PS C:\WINDOWS\system32> powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\fix_epoch_tagger_task.ps1"
+Current task settings:
+
+TaskName           TaskPath   State
+--------           --------   -----
+epoch-tagger-local \        Running
+
+
+
+
+MultipleInstances  : Queue
+Enabled            : True
+ExecutionTimeLimit : PT72H
+Hidden             : False
+Priority           : 7
+
+
+
+
+
+Enabled       : True
+StartBoundary : 2026-04-12T18:55:12
+Repetition    : MSFT_TaskRepetitionPattern
+
+
+
+
+
+Execute          : C:\Windows\System32\cmd.exe
+Arguments        : /d /c "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\run_tagger_task.cmd"
+WorkingDirectory :
+
+
+
+WARNING: Set-ScheduledTask failed. Trying re-register path. Error: The user name or password is incorrect.
+Register-ScheduledTask : The user name or password is incorrect.
+At C:\ringstatus-task\fix_epoch_tagger_task.ps1:96 char:5
++     Register-ScheduledTask `
++     ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : AuthenticationError: (PS_ScheduledTask:Root/Microsoft/...S_ScheduledTask) [Register-Sche
+   duledTask], CimException
+    + FullyQualifiedErrorId : HRESULT 0x8007052e,Register-ScheduledTask
