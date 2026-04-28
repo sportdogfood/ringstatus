@@ -221,4 +221,207 @@ Microsoft-Windows-TaskScheduler_Operational_Microsoft-Windows-TaskScheduler_324
 Task Scheduler queued instance "{b141fe22-098f-479a-996f-f93ab65b6142}"  of task "\epoch-tagger-local"  and will launch it as soon as instance "{c5951765-8a57-471a-83dc-523700d6b773}"  completes.
 
 Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 100
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 100
+    }
+  },
+  "writes": {
+    "created": 0,
+    "updated": 0,
+    "dropped": 0,
+    "create_failures": [],
+    "update_failures": [],
+    "drop_failures": []
+  },
+  "active_groups": {
+    "table": "active_groups",
+    "created_planned": 0,
+    "updated_planned": 0,
+    "inactivated_planned": 0,
+    "writes": {
+      "created": 0,
+      "updated": 0,
+      "inactivated": 0,
+      "create_failures": [],
+      "update_failures": [],
+      "inactivate_failures": []
+    },
+    "skipped": false
+  }
+}
+[2026-04-28 08:52:07] SCHEDULES_DAILYV2 RUN
+{
+  "ok": true,
+  "dry_run": false,
+  "scope": {
+    "heartbeat_record_id": "rec9g9psBUG47CzHG",
+    "heartbeat_rid": "rec9g9psBUG47CzHG",
+    "hb_at": "2026-04-28T12:51:51.718Z",
+    "app_show_idv2": 200000060,
+    "app_sql_datev2": "2026-04-29",
+    "app_dow_rawv2": "Wed",
+    "shifted_to_next_dayv2": false,
+    "scope_key": "200000060|2026-04-29|Wed|0",
+    "scope_run_id": "200000060-2026-04-28-1777380711",
+    "heartbeat_time": "08:51 AM",
+    "heartbeat_show_date": null,
+    "raw_sql_date": "2026-04-28",
+    "mode": "DAY",
+    "set_to_default_app_sql_date": true,
+    "default_app_sql_date_is": "2026-04-29",
+    "show_app_sql_start_date": "2026-04-29",
+    "show_app_sql_end_date": "2026-05-03",
+    "show_app_name": "2026 ESP Spring 4 (#7179)",
+    "app_sql_date_source": "default_day",
+    "candidate_app_sql_date": "2026-04-28"
+  },
+  "chosen_source": "dated_schedule",
+  "heartbeat_patch_fields": {
+    "shifted_to_next_day": false,
+    "show_app_name": "2026 ESP Spring 4 (#7179)"
+  },
+  "row_count": 0,
+  "creates_planned": 0,
+  "updates_planned": 0,
+  "drops_planned": 0,
+  "existing_show_rows": 0,
+  "heartbeat_view_rows": 0,
+  "show_record_bound": true,
+  "fetches": {
+    "dated_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-04-29&show_id=200000060&customer_id=15",
+      "rows": 0,
+      "schedule_show_datev2": "2026-04-29"
+    },
+    "empty_ping_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=200000060&customer_id=15",
+      "rows": 0,
+      "schedule_show_datev2": "2026-04-29"
+    }
+  },
+  "writes": {
+    "created": 0,
+    "updated": 0,
+    "dropped": 0,
+    "create_failures": [],
+    "update_failures": [],
+    "drop_failures": []
+  },
+  "active_groups": {
+    "table": "active_groups",
+    "created_planned": 0,
+    "updated_planned": 0,
+    "inactivated_planned": 0,
+    "writes": {
+      "created": 0,
+      "updated": 0,
+      "inactivated": 0,
+      "create_failures": [],
+      "update_failures": [],
+      "inactivate_failures": []
+    },
+    "skipped": false
+  }
+}
 Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 100
+
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 100
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 18:50:32.89] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 18:57:27.26] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:04:22.56] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:11:30.24] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:19:19.39] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:26:11.14] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:33:06.56] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:39:52.10] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:46:38.42] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 19:53:41.37] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:00:11.71] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:07:34.27] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:14:17.97] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:21:33.98] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:28:16.57] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:35:30.64] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:42:09.11] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:44:16.91] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 20:51:36.51] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:02:44.68] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:09:18.64] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:15:53.76] SCHEDULES_CALCULATORV2 RUN
+[Mon 04/27/2026 21:22:23.51] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:28:59.28] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:35:45.95] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:42:19.86] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:49:11.24] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 21:55:52.06] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 22:02:36.74] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 22:09:28.37] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 22:15:59.26] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Mon 04/27/2026 22:24:01.43] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  6:50:12.30] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  6:57:40.20] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:04:44.31] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:11:33.49] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:18:49.49] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:25:42.03] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:32:51.13] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:39:41.65] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:46:32.84] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  7:53:37.57] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  8:00:18.26] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  8:07:46.85] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  8:27:07.17] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  8:34:33.33] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[Tue 04/28/2026  8:41:36.21] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[2026-04-28 08:46:17] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[2026-04-28 08:47:13] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+[2026-04-28 08:54:12] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"NOOP","reason":"No watch_schedule rows found in heartbeat view","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
