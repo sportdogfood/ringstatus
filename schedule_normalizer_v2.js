@@ -470,6 +470,14 @@ function normalizeSchedulePayload(payload, options) {
     return Boolean(hasKey && hasClassId);
   }
 
+  function isGroupShellNode(node) {
+    if (!isObj(node)) return false;
+    const classGroupId = numOrNull(pickFirst(node.class_group_id, node.classGroupId));
+    if (classGroupId === null) return false;
+    const shellKey = numOrNull(pickFirst(node.sgl_id, node.class_group_id, node.classGroupId));
+    return shellKey !== null;
+  }
+
   function walk(node, ctx) {
     if (Array.isArray(node)) {
       for (const item of node) walk(item, ctx);
@@ -511,17 +519,18 @@ function normalizeSchedulePayload(payload, options) {
       groupsById.set(key, mergePreserveJoinKeys(groupsById.get(key), groupRow));
     }
 
-    if (isClassNode(node)) {
-      const classGroupXClassesId = numOrNull(pickFirst(node.class_groupxclasses_id, node.classGroupXClassesId));
+    if (isClassNode(node) || isGroupShellNode(node)) {
+      const classObj = isObj(node.class) ? node.class : undefined;
+      const classGroupXClassesId = numOrNull(
+        pickFirst(node.class_groupxclasses_id, node.classGroupXClassesId, node.sgl_id, node.class_group_id, node.classGroupId)
+      );
       if (classGroupXClassesId !== null) {
-        const classObj = isObj(node.class) ? node.class : undefined;
-
         const classRow = {
           class_groupxclasses_id: classGroupXClassesId,
           class_group_id: classGroupId !== null ? classGroupId : numOrNull(pickFirst(node.class_group_id, node.classGroupId)),
           class_id: numOrNull(pickFirst(node.class_id, node.classId, node.id, classObj?.class_id, classObj?.classId)),
           class_number: numOrNull(pickFirst(node.class_number, node.classNumber, node.number, classObj?.number)),
-          class_name: strOrNull(pickFirst(node.class_name, node.className, node.name, classObj?.name)),
+          class_name: strOrNull(pickFirst(node.class_name, node.className, classObj?.name, node.group_name, node.groupName, node.name)),
           class_list: strOrNull(pickFirst(node.class_list, node.classList)),
           class_type: strOrNull(pickFirst(node.class_type, node.classType, classObj?.class_type, classObj?.classType)),
           jumper_table: strOrNull(pickFirst(node.jumper_table, node.jumperTable, classObj?.jumper_table, classObj?.jumperTable)),
