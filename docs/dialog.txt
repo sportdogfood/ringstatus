@@ -1,0 +1,161 @@
+I reviewed tagger.js, schedules_dailyv2.js, schedule_normalizer_v2.js, and schedules_calculatorv2.js. The active schedule path is:
+
+The runner executes tagger.js, 
+then heartbeat_patterns.js, 
+then schedules_dailyv2.js, then schedules_calculatorv2.js.
+
+tagger.js gets the raw clock from the ring endpoint GET /ring?customer_id=15 in getClockSafe() at tagger.js:737. 
+That endpoint only provides the clock/show context. It does not populate watch_schedule directly.
+
+The ring endpoint is rejected, and its data is not used, if any of these happen in getClockSafe():
+
+HTTP not OK at tagger.js:744-751
+invalid JSON at tagger.js:753-763
+missing clock values at tagger.js:765-772
+endpoint sql_date does not match the system sql_date at tagger.js:774-785
+fetch error at tagger.js:803-811
+If the ring endpoint is rejected, tagger.js falls back to last-known state, then last-known heartbeat, then finally pure system clock at tagger.js:310-360. If it falls all the way to pure system clock with no usable show id, downstream schedule loading is likely to fail because there is no app_show_id.
+
+tagger.js decides mode in resolveModeFromClock() at tagger.js:683-691:
+
+DAY: 5:00 AM to 4:59 PM
+NIGHT: 5:00 PM to 11:59 PM
+OVERNIGHT: 12:00 AM to 4:59 AM
+FORCE_MODE overrides this entirely.
+tagger.js then builds app scope in buildAppContext() at tagger.js:814:
+
+DAY candidate date = raw sql_date
+NIGHT candidate date = raw sql_date + 1
+OVERNIGHT candidate date = raw sql_date
+tagger.js then fetches the 
+empty schedule endpoint /schedule?date=00/00/00&show_id=... at tagger.js:845-869 
+and decides whether to keep the candidate date or override it to the show’s default day:
+
+it reads default_app_sql_date_is, start/end dates, and show_days_list via extractScheduleDefaultInfo() at tagger.js:644-660
+if the candidate date is invalid for that show, it sets app_sql_date to the default day and app_sql_date_source = "default_day" at tagger.js:855-860
+if this empty schedule fetch fails, tagger logs a warning and keeps the candidate date at tagger.js:862-868
+tagger.js writes the heartbeat row in createHeartbeat() at tagger.js:915-975. 
+This is the handoff point. watch_schedule later trusts heartbeat for app_show_id, app_sql_date, mode, and provenance fields.
+
+tagger.js no longer pre-relinks watch_schedule heartbeat links. 
+That relink loop now skips TABLE_WATCH_SCHEDULE at tagger.js:1258-1267. schedules_dailyv2.js is now the owner of watch_schedule heartbeat/current-scope state.
+
+schedules_dailyv2.js starts by loading the newest heartbeat by hb_at desc in fetchLatestHeartbeat() at schedules_dailyv2.js:464-495. If there is no heartbeat row, the schedule lane stops immediately.
+
+schedules_dailyv2.js validates the heartbeat in buildBaseHeartbeatContext() at schedules_dailyv2.js:598-633. 
+Schedule loading stops before any schedule fetch if:
+
+show_id missing
+app_show_id missing
+show_id !== app_show_id
+sql_date invalid
+mode invalid
+record_id missing or mismatched
+schedules_dailyv2.js then fetches the empty schedule endpoint again at 
+schedules_dailyv2.js:1033-1035 and resolves scope again in resolveHeartbeatScope() at schedules_dailyv2.js:672-709. This is the decisive schedule-date logic used for watch_schedule.
+
+If that empty schedule fetch fails, or the payload is malformed, schedules_dailyv2.js fails before it ever fetches the dated schedule endpoint. The empty schedule fetch is not optional in this lane.
+
+After resolving scope, schedules_dailyv2.js patches heartbeat to the final resolved values at schedules_dailyv2.js:1036-1043, then fetches the dated schedule endpoint /schedule?date=<final_app_sql_date>&show_id=<app_show_id> at schedules_dailyv2.js:1046-1047.
+
+The schedule payload is normalized by logic imported from schedule_normalizer_v2.js. That code only emits rows for nodes that look like real classes, meaning they must have both class_groupxclasses_id and a class id at schedule_normalizer_v2.js:466-470. If the payload shape changes or lacks those nodes, the endpoint can fetch successfully and still produce zero watch_schedule rows.
+
+Variant choice is controlled by chooseScheduleVariant() from schedule_normalizer_v2.js:689-695:
+
+prefer dated result if ok and it has rows
+else prefer empty result if ok and it has rows
+else prefer dated if merely ok
+else prefer empty if merely ok
+else throw if both fetches failed
+schedules_dailyv2.js then enriches rows with the classes endpoint, not the ring endpoint, 
+in enrichScheduleRowsWithClassDetails() at schedules_dailyv2.js:429-461. 
+Class endpoint failures are non-fatal; they do not stop schedule ingestion.
+
+A major row-level blocker is rowScheduledDateMatchesScope() at schedules_dailyv2.js:835-842. A row is dropped if its resolved date does not equal scope.app_sql_datev2. The resolved date prefers class-endpoint schedule_date, then scheduled_date, then schedule_show_datev2, then show_date. So rows can be fetched from the schedule endpoint and still be filtered out afterward.
+
+Only surviving scoped rows are written to watch_schedule via create/update/drop at schedules_dailyv2.js:1198-1200. That is the actual population step.
+
+schedules_dailyv2.js also optionally syncs active_groups if SYNC_ACTIVE_GROUPS_FROM_SCHEDULE=1 at schedules_dailyv2.js:1029-1031 and 1208-1215. As currently coded, it does not touch active_classes or active_entries.
+
+schedules_calculatorv2.js is downstream. It reads the latest heartbeat and existing watch_schedule rows, then overlays groups_live. It does not decide the scope date and it does not perform the initial schedule fetch. It NOOPs if:
+
+no watch_schedule rows are in the heartbeat view at schedules_calculatorv2.js:1065-1075
+heartbeat mode is not DAY at schedules_calculatorv2.js:1077-1088
+no groups_live rows exist for the target show/day at schedules_calculatorv2.js:1096-1109
+The shortest summary is:
+
+The ring endpoint only decides the heartbeat clock/show context in tagger.js.
+The schedule endpoints are what populate watch_schedule in schedules_dailyv2.js.
+The most likely blockers are upstream heartbeat scope being wrong, empty schedule fetch failure, dated schedule fetch producing zero usable class rows, or post-fetch filtering by rowScheduledDateMatchesScope().
+If you want, the next useful pass is a blocker matrix: one table listing every guard, the exact failure symptom, and which log/output field would expose it on the runner.
+
+
+
+For this payload, the endpoint sql_date does not match the system sql_date rejection does not fire.
+
+Here is the exact flow.
+
+tagger.js builds a fallback “system clock” from the machine time in America/New_York at tagger.js:699-711.
+If your machine date is April 28, 2026, that produces systemClock.sqlDate = "2026-04-28".
+
+The ring payload is parsed by pickClockFromPayload() at tagger.js:714-735.
+From your sample, it extracts:
+
+showId = 200000060
+sqlDate = "2026-04-28" from time_zone_date_time.sql_date
+time = "08:14 AM"
+nowMs from time_obj/date_obj
+showDate = null
+Important: it does not use the top-level "show_date": "2026-04-29" here, because pickClockFromPayload() only reads payload.show.show_date, and your show object does not contain that field.
+The rejection check happens at tagger.js:774-785.
+It compares:
+
+endpointClock.sqlDate = "2026-04-28"
+systemClock.sqlDate = "2026-04-28"
+Since they match, the endpoint is accepted. No fallback is used.
+After that, resolveModeFromClock() at tagger.js:683-691 sees 08:14 AM and chooses DAY.
+
+Then buildAppContext() at tagger.js:814-912 starts with:
+
+candidateAppSqlDate = "2026-04-28"
+appShowId = 200000060
+tagger.js then fetches the empty schedule endpoint at tagger.js:845-869, not the ring payload, 
+to validate the candidate date.
+Given the date set you showed:
+
+valid show days are April 29, 2026 through May 3, 2026
+candidate date is April 28, 2026
+That makes the candidate invalid, so tagger.js switches:
+app_sql_date = "2026-04-29"
+set_to_default_app_sql_date = true
+app_sql_date_source = "default_day"
+createHeartbeat() writes both dates at tagger.js:923-953:
+
+raw heartbeat sql_date = "2026-04-28"
+resolved app_sql_date = "2026-04-29"
+schedules_dailyv2.js then reads the latest heartbeat at schedules_dailyv2.js:464-495, rebuilds scope from raw sql_date + mode at schedules_dailyv2.js:598-709, and reaches the same result:
+https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=200000060&customer_id=15
+
+raw date = 2026-04-28
+final app date = 2026-04-29
+Only then does schedules_dailyv2.js fetch the dated schedule endpoint at schedules_dailyv2.js:1046-1047:
+
+/schedule?date=2026-04-29&show_id=200000060&customer_id=15
+What would have caused the ring-endpoint rejection?
+
+If the machine-derived systemClock.sqlDate were 2026-04-29 while the endpoint still said 2026-04-28, then tagger.js:774-785 would reject it and fall back to last-known/system clock.
+That check compares only time_zone_date_time.sql_date against the machine date in HB_TZ. It does not compare against top-level show_date.
+One more important point: your ring payload by itself cannot populate watch_schedule. It contains rings and group shells, but the actual watch_schedule loader depends on the separate schedule endpoint and looks for class rows with IDs via the normalizer in schedule_normalizer_v2.js:466-470.
+
+So for this exact dataset:
+
+ring endpoint should be accepted
+heartbeat raw date should be 2026-04-28
+resolved app date should become 2026-04-29
+schedule fetch should target April 29, 2026
+If you want, I can next map the exact failure modes after this point that would still prevent watch_schedule rows from being written for 2026-04-29.
+
+
+robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" run_tagger_task.cmd run_tagger_task.ps1
+Rename-Item "C:\actions-runner\ringstatus\epoch-tagger.log" "epoch-tagger.old.log" -ErrorAction SilentlyContinue
+robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" run_tagger_task.cmd run_tagger_task.ps1 tagger.js
