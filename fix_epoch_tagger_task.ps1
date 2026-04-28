@@ -1,13 +1,15 @@
 param(
     [string]$TaskName = 'epoch-tagger-local',
-    [switch]$DoNotEnable
+    [switch]$DoNotEnable,
+    [string]$RunnerPath = 'C:\ringstatus-task\run_tagger_task.cmd'
 )
 
 $ErrorActionPreference = 'Stop'
 
 <#
 Run this file as a script, not by pasting it line-by-line into an interactive
-PowerShell prompt. The `param(...)` block must stay at the top of the script.
+PowerShell prompt. If you need notes, use PowerShell comment syntax only, not
+pasted console output.
 #>
 
 function Test-IsAdministrator {
@@ -17,13 +19,19 @@ function Test-IsAdministrator {
 }
 
 function Restart-Elevated {
-    param([string]$ScriptPath, [string]$TaskNameArg, [bool]$DoNotEnableArg)
+    param(
+        [string]$ScriptPath,
+        [string]$TaskNameArg,
+        [bool]$DoNotEnableArg,
+        [string]$RunnerPathArg
+    )
 
     $argList = @(
-        '-NoProfile'
-        '-ExecutionPolicy', 'Bypass'
-        '-File', ('"{0}"' -f $ScriptPath)
-        '-TaskName', ('"{0}"' -f $TaskNameArg)
+        '-NoProfile',
+        '-ExecutionPolicy', 'Bypass',
+        '-File', ('"{0}"' -f $ScriptPath),
+        '-TaskName', ('"{0}"' -f $TaskNameArg),
+        '-RunnerPath', ('"{0}"' -f $RunnerPathArg)
     )
 
     if ($DoNotEnableArg) {
@@ -42,7 +50,7 @@ function Show-TaskSummary {
     $Task.Actions | Format-List Execute, Arguments, WorkingDirectory
 }
 
-function Convert-ToTaskTimeSpan {
+function ConvertTo-TaskTimeSpan {
     param([object]$Value)
 
     if ($null -eq $Value) {
@@ -67,6 +75,69 @@ function Convert-ToTaskTimeSpan {
             throw "Unable to parse task duration '$text' as TimeSpan."
         }
     }
+}
+
+function ConvertTo-NormalizedPathText {
+    param([object]$Value)
+
+    if ($null -eq $Value) {
+        return ''
+    }
+
+    return ([string]$Value).Trim().Trim('"')
+}
+
+function Resolve-RunnerPathValue {
+    param([string]$PathText)
+
+    if ([string]::IsNullOrWhiteSpace($PathText)) {
+        throw "RunnerPath cannot be blank."
+    }
+
+    return [System.IO.Path]::GetFullPath($PathText)
+}
+
+function New-DesiredTaskAction {
+    param([string]$ResolvedRunnerPath)
+
+    if (-not (Test-Path $ResolvedRunnerPath)) {
+        throw "Runner path not found: $ResolvedRunnerPath"
+    }
+
+    $runnerDirectory = Split-Path -Parent $ResolvedRunnerPath
+    $arguments = "/d /c `"$ResolvedRunnerPath`""
+
+    return New-ScheduledTaskAction `
+        -Execute 'C:\Windows\System32\cmd.exe' `
+        -Argument $arguments `
+        -WorkingDirectory $runnerDirectory
+}
+
+function Test-TaskActionMatchesRunner {
+    param(
+        $Task,
+        [string]$ResolvedRunnerPath
+    )
+
+    $actions = @($Task.Actions)
+    if ($actions.Count -ne 1) {
+        return $false
+    }
+
+    $action = $actions[0]
+    $expectedExecute = 'C:\Windows\System32\cmd.exe'
+    $expectedArguments = "/d /c `"$ResolvedRunnerPath`""
+    $expectedWorkingDirectory = Split-Path -Parent $ResolvedRunnerPath
+
+    $actualExecute = ConvertTo-NormalizedPathText $action.Execute
+    $actualArguments = ([string]$action.Arguments).Trim()
+    $actualWorkingDirectory = ConvertTo-NormalizedPathText $action.WorkingDirectory
+
+    return (
+        [string]::Equals($actualExecute, $expectedExecute, [System.StringComparison]::OrdinalIgnoreCase) -and
+        [string]::Equals($actualArguments, $expectedArguments, [System.StringComparison]::OrdinalIgnoreCase) -and
+        [string]::Equals($actualWorkingDirectory, $expectedWorkingDirectory, [System.StringComparison]::OrdinalIgnoreCase)
+    )
 }
 
 function Get-TaskCredentialArgs {
@@ -106,10 +177,16 @@ function Get-TaskCredentialArgs {
 
 if (-not (Test-IsAdministrator)) {
     Write-Host "Restarting elevated to modify scheduled task '$TaskName'..."
-    Restart-Elevated -ScriptPath $PSCommandPath -TaskNameArg $TaskName -DoNotEnableArg $DoNotEnable.IsPresent
+    Restart-Elevated `
+        -ScriptPath $PSCommandPath `
+        -TaskNameArg $TaskName `
+        -DoNotEnableArg $DoNotEnable.IsPresent `
+        -RunnerPathArg $RunnerPath
     exit 0
 }
 
+$resolvedRunnerPath = Resolve-RunnerPathValue $RunnerPath
+$desiredAction = New-DesiredTaskAction -ResolvedRunnerPath $resolvedRunnerPath
 $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
 
 Write-Host "Current task settings:"
@@ -117,14 +194,15 @@ Show-TaskSummary -Task $task
 
 $queueAlreadySet = [string]$task.Settings.MultipleInstances -eq 'Queue'
 $enabledAlreadySet = $DoNotEnable -or [bool]$task.Settings.Enabled
+$actionAlreadySet = Test-TaskActionMatchesRunner -Task $task -ResolvedRunnerPath $resolvedRunnerPath
 
-if ($queueAlreadySet -and $enabledAlreadySet) {
+if ($queueAlreadySet -and $enabledAlreadySet -and $actionAlreadySet) {
     Write-Host ""
     Write-Host "Task already matches the requested settings. No changes needed."
     exit 0
 }
 
-$executionTimeLimit = Convert-ToTaskTimeSpan $task.Settings.ExecutionTimeLimit
+$executionTimeLimit = ConvertTo-TaskTimeSpan $task.Settings.ExecutionTimeLimit
 $credentialArgs = Get-TaskCredentialArgs -Task $task
 
 $settings = New-ScheduledTaskSettingsSet `
@@ -134,7 +212,11 @@ $settings = New-ScheduledTaskSettingsSet `
     -Priority ([int]$task.Settings.Priority)
 
 try {
-    Set-ScheduledTask -TaskName $TaskName -Settings $settings @credentialArgs | Out-Null
+    Set-ScheduledTask `
+        -TaskName $TaskName `
+        -Action $desiredAction `
+        -Settings $settings `
+        @credentialArgs | Out-Null
 } catch {
     Write-Warning "Set-ScheduledTask failed. Trying re-register path. Error: $($_.Exception.Message)"
 
@@ -142,7 +224,7 @@ try {
         Register-ScheduledTask `
             -TaskName $task.TaskName `
             -TaskPath $task.TaskPath `
-            -Action $task.Actions `
+            -Action $desiredAction `
             -Trigger $task.Triggers `
             -Settings $settings `
             -User $credentialArgs.User `
@@ -154,7 +236,7 @@ try {
         Register-ScheduledTask `
             -TaskName $task.TaskName `
             -TaskPath $task.TaskPath `
-            -Action $task.Actions `
+            -Action $desiredAction `
             -Trigger $task.Triggers `
             -Principal $task.Principal `
             -Settings $settings `
@@ -177,84 +259,4 @@ Write-Host ""
 Write-Host "Expected:"
 Write-Host "  MultipleInstances : Queue"
 Write-Host "  Enabled           : True"
-
-//
-//PS C:\WINDOWS\system32> robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" fix_epoch_tagger_task.ps1
-
--------------------------------------------------------------------------------
-   ROBOCOPY     ::     Robust File Copy for Windows
--------------------------------------------------------------------------------
-
-  Started : Monday, April 27, 2026 8:39:40 PM
-   Source : C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\
-     Dest : C:\ringstatus-task\
-
-    Files : fix_epoch_tagger_task.ps1
-
-  Options : /DCOPY:DA /COPY:DAT /R:1000000 /W:30
-
-------------------------------------------------------------------------------
-
-                           1    C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\
-100%        Newer                   6043        fix_epoch_tagger_task.ps1
-
-------------------------------------------------------------------------------
-
-               Total    Copied   Skipped  Mismatch    FAILED    Extras
-    Dirs :         1         0         1         0         0         0
-   Files :         1         1         0         0         0         0
-   Bytes :     5.9 k     5.9 k         0         0         0         0
-   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
-   Ended : Monday, April 27, 2026 8:39:40 PM
-
-PS C:\WINDOWS\system32> Get-Item "C:\ringstatus-task\fix_epoch_tagger_task.ps1" | Select-Object FullName,Length,LastWriteTime
-
-FullName                                     Length LastWriteTime
---------                                     ------ -------------
-C:\ringstatus-task\fix_epoch_tagger_task.ps1   6043 4/27/2026 8:29:54 PM
-
-
-PS C:\WINDOWS\system32> powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\fix_epoch_tagger_task.ps1"
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:125 char:80
-+ ... ---------------------------------------------------------------------
-+                                                                          ~
-Missing expression after unary operator '-'.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:126 char:4
-+    ROBOCOPY     ::     Robust File Copy for Windows
-+    ~~~~~~~~
-Unexpected token 'ROBOCOPY' in expression or statement.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:127 char:80
-+ ... ---------------------------------------------------------------------
-+                                                                          ~
-Missing expression after unary operator '-'.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:129 char:3
-+   Started : Monday, April 27, 2026 8:27:49 PM
-+   ~~~~~~~
-Unexpected token 'Started' in expression or statement.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:139 char:33
-+                            1    C:\Users\gombc\OneDrive - Sport Dog F ...
-+                                 ~~~~~~~~~~~~~~~~~~~~~~~
-Unexpected token 'C:\Users\gombc\OneDrive' in expression or statement.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:140 char:5
-+ 100%        Newer                   3665        fix_epoch_tagger_task ...
-+     ~
-You must provide a value expression following the '%' operator.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:140 char:13
-+ 100%        Newer                   3665        fix_epoch_tagger_task ...
-+             ~~~~~
-Unexpected token 'Newer' in expression or statement.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:142 char:79
-+ ... ---------------------------------------------------------------------
-+                                                                          ~
-Missing expression after unary operator '--'.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:144 char:16
-+                Total    Copied   Skipped  Mismatch    FAILED    Extra ...
-+                ~~~~~
-Unexpected token 'Total' in expression or statement.
-At C:\ringstatus-task\fix_epoch_tagger_task.ps1:155 char:36
-+ --------           --------   -----
-+                                    ~
-Missing expression after unary operator '-'.
-Not all parse errors were reported.  Correct the reported errors and try again.
-    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
-    + FullyQualifiedErrorId : MissingExpressionAfterOperator
+Write-Host "  Arguments         : /d /c `"$resolvedRunnerPath`""
