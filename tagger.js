@@ -1255,9 +1255,11 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       });
     }
 
+    // watch_schedule scope ownership belongs to schedules_dailyv2.
+    // Avoid pre-relinking stale schedule rows onto the newest heartbeat before
+    // the schedule lane has rebuilt current scope.
     for (const tableName of [
       TABLE_WATCH_TRIPS,
-      TABLE_WATCH_SCHEDULE,
       TABLE_SCHEDULER,
       TABLE_ACTIVE_TENANTS,
       TABLE_ACTIVE_ALERTS,
