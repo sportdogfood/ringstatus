@@ -832,6 +832,21 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   return fields;
 }
 
+function resolveActualScheduleShowDate(normalizedRow) {
+  const fields = normalizedRow?.fields || {};
+  const classDetail = normalizedRow?.class_detail || null;
+  return toIsoDateOnly(
+    pickFirst(fields.schedule_show_datev2, classDetail?.schedule_date, fields.show_date)
+  );
+}
+
+function resolveExistingScheduleShowDate(row) {
+  const fields = row?.fields || {};
+  return toIsoDateOnly(
+    pickFirst(fields.schedule_show_datev2, fields.show_date)
+  );
+}
+
 function rowScheduledDateMatchesScope(normalizedRow, scope) {
   const fields = normalizedRow?.fields || {};
   const classDetail = normalizedRow?.class_detail || null;
@@ -1095,13 +1110,17 @@ async function runDaily() {
   const createRecords = [];
   const updateRecords = [];
   const keepKeySet = new Set();
+  const keepRecordIdSet = new Set();
+  const actualScheduleShowDateByKey = new Map();
 
   for (const row of scopedRows) {
     const key = normalizeKey(row.key);
     if (!key) continue;
     keepKeySet.add(key);
+    actualScheduleShowDateByKey.set(key, resolveActualScheduleShowDate(row));
 
     const existing = existingByKey.get(key);
+    if (existing) keepRecordIdSet.add(existing.id);
     const fields = buildCurrentFields(
       row,
       scope,
@@ -1122,9 +1141,26 @@ async function runDaily() {
   }
 
   const dropUpdates = [];
-  for (const row of heartbeatViewRows) {
+  let droppedForScheduleShowDateMismatch = 0;
+  for (const row of existingRows) {
     const key = normalizeKey(row?.fields?.class_groupxclasses_id);
-    if (!key || keepKeySet.has(key)) continue;
+    if (!key) continue;
+
+    const hasCurrentMarkers =
+      heartbeatViewIdSet.has(row.id) ||
+      boolValue(row?.fields?.is_current_scope) ||
+      !!firstValue(row?.fields?.heartbeat);
+    if (!hasCurrentMarkers) continue;
+
+    if (keepRecordIdSet.has(row.id)) continue;
+
+    if (keepKeySet.has(key)) {
+      const actualScheduleShowDate = actualScheduleShowDateByKey.get(key);
+      const existingScheduleShowDate = resolveExistingScheduleShowDate(row);
+      if (!actualScheduleShowDate || existingScheduleShowDate === actualScheduleShowDate) continue;
+      droppedForScheduleShowDateMismatch += 1;
+    }
+
     dropUpdates.push({
       id: row.id,
       fields: buildDroppedFields(scope, nowIso, dateOnly, droppedScopeStatus, watchScheduleFieldMeta),
@@ -1139,6 +1175,7 @@ async function runDaily() {
     heartbeat_patch_fields: heartbeatChangedFields,
     row_count: scopedRows.length,
     filtered_out_scheduled_date_mismatch: chosen.rows.length - scopedRows.length,
+    dropped_due_to_schedule_show_date_mismatch: droppedForScheduleShowDateMismatch,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
     drops_planned: dropUpdates.length,
