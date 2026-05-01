@@ -1,10 +1,154 @@
 robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" schedules_calculatorv2.js run_tagger_task.ps1 run_tagger_task_cmd.ps1
 
+PS C:\WINDOWS\system32> robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" schedules_calculatorv2.js run_tagger_task.ps1 run_tagger_task_cmd.ps1
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows
+-------------------------------------------------------------------------------
+
+  Started : Friday, May 1, 2026 9:38:56 AM
+   Source : C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\
+     Dest : C:\ringstatus-task\
+
+    Files : schedules_calculatorv2.js
+            run_tagger_task.ps1
+            run_tagger_task_cmd.ps1
+
+  Options : /DCOPY:DA /COPY:DAT /R:1000000 /W:30
+
+------------------------------------------------------------------------------
+
+                           3    C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\
+100%        Newer                   3216        run_tagger_task.ps1
+100%        Newer                  51402        schedules_calculatorv2.js
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :         1         0         1         0         0         0
+   Files :         3         2         1         0         0         0
+   Bytes :    55.3 k    53.3 k     2.0 k         0         0         0
+   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+
+
+   Speed :           10,923,600 Bytes/sec.
+   Speed :              625.053 MegaBytes/min.
+   Ended : Friday, May 1, 2026 9:38:56 AM
+
+
 Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
+S C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
+
+[2026-05-01 09:26:21] SCHEDULES_CALCULATORV2 RUN
+node.exe : {"ok":false,"error":"Error: Airtable list failed (422) groups_live:
+{\"error\":{\"type\":\"UNKNOWN_FIELD_NAME\",\"message\":\"Unknown field name: \\\"stop_updating\\\"\"}}\n    at
+airtableList (C:\\ringstatus-task\\schedules_calculatorv2.js:256:13)\n    at process.processTicksAndRejections
+(node:internal/process/task_queues:104:5)\n    at async fetchGroupsLiveRows
+(C:\\ringstatus-task\\schedules_calculatorv2.js:434:16)\n    at async main (C:\\ringstatus-task\\schedules_calculatorv2
+.js:822:22)","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+At C:\ringstatus-task\run_tagger_task.ps1:40 char:19
++     $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({"ok":false,"er...lculator_v2_1"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[2026-05-01 09:32:31] SCHEDULES_CALCULATORV2 RUN
+node.exe : {"ok":false,"error":"Error: Airtable list failed (422) groups_live:
+{\"error\":{\"type\":\"UNKNOWN_FIELD_NAME\",\"message\":\"Unknown field name: \\\"stop_updating\\\"\"}}\n    at
+airtableList (C:\\ringstatus-task\\schedules_calculatorv2.js:256:13)\n    at process.processTicksAndRejections
+(node:internal/process/task_queues:104:5)\n    at async fetchGroupsLiveRows
+(C:\\ringstatus-task\\schedules_calculatorv2.js:434:16)\n    at async main (C:\\ringstatus-task\\schedules_calculatorv2
+.js:822:22)","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+At C:\ringstatus-task\run_tagger_task.ps1:40 char:19
++     $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({"ok":false,"er...lculator_v2_1"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[2026-05-01 09:38:26] SCHEDULES_CALCULATORV2 RUN
+node.exe : {"ok":false,"error":"Error: Airtable list failed (422) groups_live:
+{\"error\":{\"type\":\"UNKNOWN_FIELD_NAME\",\"message\":\"Unknown field name: \\\"stop_updating\\\"\"}}\n    at
+airtableList (C:\\ringstatus-task\\schedules_calculatorv2.js:256:13)\n    at process.processTicksAndRejections
+(node:internal/process/task_queues:104:5)\n    at async fetchGroupsLiveRows
+(C:\\ringstatus-task\\schedules_calculatorv2.js:434:16)\n    at async main (C:\\ringstatus-task\\schedules_calculatorv2
+.js:822:22)","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+At C:\ringstatus-task\run_tagger_task.ps1:40 char:19
++     $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({"ok":false,"er...lculator_v2_1"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+PS C:\WINDOWS\system32>
+
+
 Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+
+PS C:\WINDOWS\system32>
+>> Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+  "calc_version": "trips_calculator_v2_1",
+  "dry_run": false,
+  "processed_in_view": 35,
+  "eligible_rows": 26,
+  "skipped_rows": 9,
+  "changed_rows": 26,
+  "unchanged_rows": 0,
+  "anomaly_rows": 20,
+  "watch_trips_updates_planned": 26,
+  "watch_trips_patched": 26,
+  "watch_trips_patch_failures": 0,
+  "trip_logs_planned": 26,
+  "trip_logs_created": 26,
+  "trip_logs_failures": 0,
+  "class_alert_classes_in_view": 22,
+  "class_alert_duplicated_classes": 9,
+  "class_alert_parent_rows": 9,
+  "trip_minutes_default_rows": 20,
+  "trip_minutes_source_counts": {
+    "default": 20,
+    "estimated_go_window": 6
+  },
+  "skip_reason_counts": {
+    "missing_h_eid": 9
+  },
+  "anomaly_samples": [
+    "FDE34A2E81094CC9A870646D54ABF7E6:trip_minutes_default_missing_rate",
+    "ED6855C9423348E38D274FE1C914380F:trip_minutes_default_missing_rate",
+    "234A8B22B79B472CA253B813F421B4DB:trip_minutes_default_missing_rate",
+    "08770E72584F4051A492D703794DA5CE:trip_minutes_default_missing_rate",
+    "B42EFDC497B8407BBFE5812361B1C927:trip_minutes_default_missing_rate",
+    "B2AB089D7C0C430483447ECF5F9DCE5B:trip_minutes_default_missing_rate",
+    "0C4F5AC9B7D04A22B3DBB39252872DC4:trip_minutes_default_missing_rate",
+    "1E1C8FC307764AF2AB550568F0F57C67:trip_minutes_default_missing_rate",
+    "9430704D547E4904B0C7E481A414808E:trip_minutes_default_missing_rate",
+    "EF8C2BAA7D8E40A3B1D5816D66454670:trip_minutes_default_missing_rate"
+  ],
+  "failed_patch_samples": [],
+  "failed_trip_log_samples": []
+}
+
+
+
 Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 40
 
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 40
+Get-Content : Cannot find path 'C:\actions-runner\ringstatus\runner-pipeline.log' because it does not exist.
+At line:1 char:1
++ Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\actions-runn...er-pipeline.log:String) [Get-Content], ItemNotFoundEx
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
 
+
+
+
+Task Scheduler queued instance "{4a32bfa1-3980-4a56-8a73-38acce61781d}"  of task "\epoch-tagger-local"  and will launch it as soon as instance "{3c86e64d-e247-4063-8be6-5b89d73c6df9}"  completes.
+Task Scheduler queued instance "{4471fb2d-e0b3-469b-bac7-16a47cbaed53}"  of task "\epoch-tagger-local"  and will launch it as soon as instance "{3c86e64d-e247-4063-8be6-5b89d73c6df9}"  completes.
+
+
+
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
