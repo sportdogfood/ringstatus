@@ -1,0 +1,2 @@
+Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
+Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
