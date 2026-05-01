@@ -628,6 +628,7 @@ function buildBaseHeartbeatContext(record) {
     current_default_app_sql_date_is: strOrNull(fields.default_app_sql_date_is),
     current_show_app_sql_start_date: strOrNull(fields.show_app_sql_start_date),
     current_show_app_sql_end_date: strOrNull(fields.show_app_sql_end_date),
+    current_show_app_name: strOrNull(fields.show_app_name),
     current_app_sql_date_source: strOrNull(fields.app_sql_date_source),
   };
 }
@@ -706,6 +707,62 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
     show_app_name: scheduleInfo.show_app_name,
     app_sql_date_source: appSqlDateSource,
     candidate_app_sql_date: candidateAppSqlDate,
+  };
+}
+
+function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
+  const candidateAppSqlDate = candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode);
+  const finalAppSqlDate = strictSqlDate(
+    pickFirst(baseContext.current_app_sql_date, candidateAppSqlDate),
+    "app_sql_date"
+  );
+  const inferredAppDowRaw = dowName(dayOfWeekUtc(finalAppSqlDate));
+  const finalAppDowRaw = strictDowRaw(
+    pickFirst(baseContext.current_app_dow_raw, inferredAppDowRaw),
+    "app_dow_raw"
+  );
+  const currentSource = strOrNull(baseContext.current_app_sql_date_source);
+  const setToDefault = currentSource === "default_day"
+    ? true
+    : boolValue(baseContext.current_set_to_default_app_sql_date);
+  const shiftedToNextDay = setToDefault
+    ? false
+    : (boolValue(baseContext.current_shifted_to_next_day) || baseContext.mode === "NIGHT");
+  const defaultAppSqlDateIs = strictSqlDate(
+    pickFirst(baseContext.current_default_app_sql_date_is, finalAppSqlDate),
+    "default_app_sql_date_is"
+  );
+  const appSqlDateSource = currentSource || (
+    setToDefault
+      ? "default_day"
+      : baseContext.mode === "NIGHT"
+      ? "night_shift"
+      : "raw_day"
+  );
+
+  return {
+    heartbeat_record_id: baseContext.heartbeat_record_id,
+    heartbeat_rid: baseContext.heartbeat_rid,
+    hb_at: baseContext.hb_at,
+    app_show_idv2: baseContext.app_show_idv2,
+    app_sql_datev2: finalAppSqlDate,
+    app_dow_rawv2: finalAppDowRaw,
+    shifted_to_next_dayv2: shiftedToNextDay,
+    scope_key: buildScopeKey(baseContext.app_show_idv2, finalAppSqlDate, finalAppDowRaw, shiftedToNextDay),
+    scope_run_id: baseContext.scope_run_id,
+    heartbeat_time: baseContext.heartbeat_time,
+    heartbeat_show_date: baseContext.heartbeat_show_date,
+    raw_sql_date: baseContext.raw_sql_date,
+    mode: baseContext.mode,
+    set_to_default_app_sql_date: setToDefault,
+    default_app_sql_date_is: defaultAppSqlDateIs,
+    show_app_sql_start_date: baseContext.current_show_app_sql_start_date,
+    show_app_sql_end_date: baseContext.current_show_app_sql_end_date,
+    show_app_name: baseContext.current_show_app_name,
+    app_sql_date_source: appSqlDateSource,
+    candidate_app_sql_date: candidateAppSqlDate,
+    scope_resolution_source: "heartbeat_current_fields_fallback",
+    scope_resolution_error: strOrNull(reason),
   };
 }
 
@@ -1046,8 +1103,27 @@ async function runDaily() {
     : new Set();
 
   const emptyUrl = buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2);
-  const emptyPayload = await fetchJson(emptyUrl);
-  const scope = resolveHeartbeatScope(baseHeartbeatContext, emptyPayload);
+  let emptyPayload = null;
+  let emptyPingError = null;
+  let scope = null;
+
+  try {
+    emptyPayload = await fetchJson(emptyUrl);
+  } catch (error) {
+    emptyPingError = String(error?.message || error);
+  }
+
+  if (emptyPayload) {
+    try {
+      scope = resolveHeartbeatScope(baseHeartbeatContext, emptyPayload);
+    } catch (error) {
+      emptyPingError = String(error?.message || error);
+      scope = resolveHeartbeatScopeFromCurrentHeartbeat(baseHeartbeatContext, emptyPingError);
+    }
+  } else {
+    scope = resolveHeartbeatScopeFromCurrentHeartbeat(baseHeartbeatContext, emptyPingError || "empty_ping_schedule_unavailable");
+  }
+
   const heartbeatPatchFields = buildHeartbeatPatchFields(scope, heartbeatFieldSet);
   const heartbeatChangedFields = diffHeartbeatFields(heartbeatRecord?.fields || {}, heartbeatPatchFields);
 
@@ -1073,17 +1149,28 @@ async function runDaily() {
     }),
   };
 
-  const emptyResult = {
-    ok: true,
-    source: "empty_ping_schedule",
-    url: emptyUrl,
-    ...normalizeSchedulePayload(emptyPayload, {
-      scope,
-      source: "empty_ping_schedule",
-      generatedAt: nowIso,
-      generatedDate: dateOnly,
-    }),
-  };
+  const emptyResult = emptyPayload
+    ? {
+        ok: true,
+        source: "empty_ping_schedule",
+        url: emptyUrl,
+        error: emptyPingError,
+        ...normalizeSchedulePayload(emptyPayload, {
+          scope,
+          source: "empty_ping_schedule",
+          generatedAt: nowIso,
+          generatedDate: dateOnly,
+        }),
+      }
+    : {
+        ok: false,
+        source: "empty_ping_schedule",
+        url: emptyUrl,
+        error: emptyPingError || "empty_ping_schedule_unavailable",
+        rows: [],
+        keep_keys: [],
+        schedule_show_datev2: null,
+      };
 
   const chosen = chooseScheduleVariant(datedResult, emptyResult);
   const classEnrichment = await enrichScheduleRowsWithClassDetails(chosen.rows, scope);
@@ -1190,6 +1277,8 @@ async function runDaily() {
       },
       empty_ping_schedule: {
         url: emptyUrl,
+        ok: emptyResult.ok,
+        error: emptyResult.error || null,
         rows: emptyResult.rows.length,
         schedule_show_datev2: emptyResult.schedule_show_datev2 || null,
       },
