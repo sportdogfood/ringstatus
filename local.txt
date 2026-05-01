@@ -1,3 +1,24 @@
+# 1) Stop current churn
+Stop-ScheduledTask -TaskName "epoch-tagger-local" -ErrorAction SilentlyContinue
+
+# 2) Sync corrected files (includes fail-fast rollback + zero-row guard + lane scripts)
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
+
+# 3) Re-assert task action/queue settings to monolith entrypoint
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\fix_epoch_tagger_task.ps1" -TaskName "epoch-tagger-local" -RunnerPath "C:\ringstatus-task\run_tagger_task.cmd"
+
+# 4) Set schedule repeat to 15 minutes in Task Scheduler UI (recommended for reliability)
+#    Trigger -> Edit -> Repeat task every: 15 minutes, for a duration of: Indefinitely
+
+# 5) Rebuild missing schedule/trips state once
+powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_heavy_lane.ps1"
+
+# 6) Start normal task again
+Start-ScheduledTask -TaskName "epoch-tagger-local"
+
+Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 60
+
+
 powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\apply_runner_hotfix_and_collect.ps1"
 
 powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
