@@ -1,6 +1,13 @@
+robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" schedules_calculatorv2.js run_tagger_task.ps1 run_tagger_task_cmd.ps1
+
 Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
+Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 40
 
 
+
+
+Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
 
 
 [2026-05-01 09:08:45] SCHEDULES_CALCULATORV2 RUN
