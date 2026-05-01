@@ -1,2 +1,87 @@
 Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
 Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+
+
+
+[2026-05-01 09:08:45] SCHEDULES_CALCULATORV2 RUN
+node.exe : {"ok":false,"error":"Error: Airtable list failed (422) groups_live:
+{\"error\":{\"type\":\"UNKNOWN_FIELD_NAME\",\"message\":\"Unknown field name: \\\"stop_updating\\\"\"}}\n    at
+airtableList (C:\\ringstatus-task\\schedules_calculatorv2.js:256:13)\n    at process.processTicksAndRejections
+(node:internal/process/task_queues:104:5)\n    at async fetchGroupsLiveRows
+(C:\\ringstatus-task\\schedules_calculatorv2.js:434:16)\n    at async main (C:\\ringstatus-task\\schedules_calculatorv2
+.js:822:22)","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+At C:\ringstatus-task\run_tagger_task.ps1:40 char:19
++     $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({"ok":false,"er...lculator_v2_1"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[2026-05-01 09:14:42] SCHEDULES_CALCULATORV2 RUN
+node.exe : {"ok":false,"error":"Error: Airtable list failed (422) groups_live:
+{\"error\":{\"type\":\"UNKNOWN_FIELD_NAME\",\"message\":\"Unknown field name: \\\"stop_updating\\\"\"}}\n    at
+airtableList (C:\\ringstatus-task\\schedules_calculatorv2.js:256:13)\n    at process.processTicksAndRejections
+(node:internal/process/task_queues:104:5)\n    at async fetchGroupsLiveRows
+(C:\\ringstatus-task\\schedules_calculatorv2.js:434:16)\n    at async main (C:\\ringstatus-task\\schedules_calculatorv2
+.js:822:22)","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+At C:\ringstatus-task\run_tagger_task.ps1:40 char:19
++     $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({"ok":false,"er...lculator_v2_1"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[2026-05-01 09:20:44] SCHEDULES_CALCULATORV2 RUN
+node.exe : {"ok":false,"error":"Error: Airtable list failed (422) groups_live:
+{\"error\":{\"type\":\"UNKNOWN_FIELD_NAME\",\"message\":\"Unknown field name: \\\"stop_updating\\\"\"}}\n    at
+airtableList (C:\\ringstatus-task\\schedules_calculatorv2.js:256:13)\n    at process.processTicksAndRejections
+(node:internal/process/task_queues:104:5)\n    at async fetchGroupsLiveRows
+(C:\\ringstatus-task\\schedules_calculatorv2.js:434:16)\n    at async main (C:\\ringstatus-task\\schedules_calculatorv2
+.js:822:22)","calc_mode":"promote","calc_version":"schedules_calculator_v2_1"}
+At C:\ringstatus-task\run_tagger_task.ps1:40 char:19
++     $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ({"ok":false,"er...lculator_v2_1"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+
+S C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+  "calc_version": "trips_calculator_v2_1",
+  "dry_run": false,
+  "processed_in_view": 35,
+  "eligible_rows": 26,
+  "skipped_rows": 9,
+  "changed_rows": 26,
+  "unchanged_rows": 0,
+  "anomaly_rows": 20,
+  "watch_trips_updates_planned": 26,
+  "watch_trips_patched": 26,
+  "watch_trips_patch_failures": 0,
+  "trip_logs_planned": 26,
+  "trip_logs_created": 26,
+  "trip_logs_failures": 0,
+  "class_alert_classes_in_view": 22,
+  "class_alert_duplicated_classes": 9,
+  "class_alert_parent_rows": 9,
+  "trip_minutes_default_rows": 20,
+  "trip_minutes_source_counts": {
+    "default": 20,
+    "estimated_go_window": 6
+  },
+  "skip_reason_counts": {
+    "missing_h_eid": 9
+  },
+  "anomaly_samples": [
+    "FDE34A2E81094CC9A870646D54ABF7E6:trip_minutes_default_missing_rate",
+    "ED6855C9423348E38D274FE1C914380F:trip_minutes_default_missing_rate",
+    "234A8B22B79B472CA253B813F421B4DB:trip_minutes_default_missing_rate",
+    "08770E72584F4051A492D703794DA5CE:trip_minutes_default_missing_rate",
+    "B42EFDC497B8407BBFE5812361B1C927:trip_minutes_default_missing_rate",
+    "B2AB089D7C0C430483447ECF5F9DCE5B:trip_minutes_default_missing_rate",
+    "0C4F5AC9B7D04A22B3DBB39252872DC4:trip_minutes_default_missing_rate",
+    "1E1C8FC307764AF2AB550568F0F57C67:trip_minutes_default_missing_rate",
+    "9430704D547E4904B0C7E481A414808E:trip_minutes_default_missing_rate",
+    "EF8C2BAA7D8E40A3B1D5816D66454670:trip_minutes_default_missing_rate"
+  ],
+  "failed_patch_samples": [],
+  "failed_trip_log_samples": []
+}
