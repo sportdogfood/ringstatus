@@ -1,5 +1,5 @@
 Get-Content "C:\actions-runner\ringstatus\schedules-calculatorv2.log" -Tail 40
-Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+
 
 
 
@@ -43,7 +43,7 @@ At C:\ringstatus-task\run_tagger_task.ps1:40 char:19
     + FullyQualifiedErrorId : NativeCommandError
 
 
-
+Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
 S C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
   "calc_version": "trips_calculator_v2_1",
   "dry_run": false,
