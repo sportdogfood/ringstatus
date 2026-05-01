@@ -1,5 +1,9 @@
 powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
 powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
+
+
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
+powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
 Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 120
 
 powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
