@@ -1,48 +1,13 @@
-powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
-powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
+[2026-05-01 15:17:17] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"OK","calc_mode":"promote","calc_version":"schedules_calculator_v2_1","heartbeat_mode":"DAY","app_show_id":200000060,"app_sql_date":"2026-05-01","target_days":["2026-05-01"],"watch_rows":27,"groups_live_rows":33,"matched_rows":25,"skipped_rows":2,"changed_rows":25,"trigger_tags_active":5,"trigger_hits":2,"logs_planned":27,"logs_created":27,"log_failures":0,"patches_planned":27,"patches_applied":27,"patch_failures":0}
+{"event":"step_completed","label":"SCHEDULES_CALCULATORV2","script":"schedules_calculatorv2.js","ok":true,"duration_ms":226367,"exit_code":0}
+[2026-05-01 15:17:33] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"OK","calc_mode":"promote","calc_version":"schedules_calculator_v2_1","heartbeat_mode":"DAY","app_show_id":200000060,"app_sql_date":"2026-05-01","target_days":["2026-05-01"],"watch_rows":27,"groups_live_rows":33,"matched_rows":25,"skipped_rows":2,"changed_rows":0,"trigger_tags_active":5,"trigger_hits":2,"logs_planned":27,"logs_created":27,"log_failures":0,"patches_planned":27,"patches_applied":27,"patch_failures":0}
+{"event":"step_completed","label":"SCHEDULES_CALCULATORV2","script":"schedules_calculatorv2.js","ok":true,"duration_ms":221527,"exit_code":0}
 
 
-powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
-powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
-Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 120
 
-powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
-powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
-Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 120
-Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 80
-
-
-[2026-05-01 14:18:43] SCHEDULES_CALCULATORV2 RUN
-{"ok":true,"run_status":"OK","calc_mode":"promote","calc_version":"schedules_calculator_v2_1","heartbeat_mode":"DAY","app_show_id":200000060,"app_sql_date":"2026-05-01","target_days":["2026-05-01"],"watch_rows":23,"groups_live_rows":33,"matched_rows":22,"skipped_rows":1,"changed_rows":22,"trigger_tags_active":5,"trigger_hits":1,"logs_planned":23,"logs_created":23,"log_failures":0,"patches_planned":23,"patches_applied":23,"patch_failures":0}
-
-
-[2026-05-01 14:15:09] SCHEDULES_DAILYV2 RUN
-{
-  "ok": true,
-  "dry_run": false,
-  "scope": {
-    "heartbeat_record_id": "recHqE3YIx0JNOwzF",
-    "heartbeat_rid": "recHqE3YIx0JNOwzF",
-    "hb_at": "2026-05-01T18:15:00.154Z",
-    "app_show_idv2": 200000060,
-    "app_sql_datev2": "2026-05-01",
-    "app_dow_rawv2": "Fri",
-    "shifted_to_next_dayv2": false,
-    "scope_key": "200000060|2026-05-01|Fri|0",
-    "scope_run_id": "200000060-2026-05-01-1777659300",
-    "heartbeat_time": "02:15 PM",
-    "heartbeat_show_date": null,
-    "raw_sql_date": "2026-05-01",
-    "mode": "DAY",
-    "set_to_default_app_sql_date": false,
-    "default_app_sql_date_is": "2026-05-01",
-    "show_app_sql_start_date": "2026-04-29",
-    "show_app_sql_end_date": "2026-05-03",
-    "show_app_name": "2026 ESP Spring 4 (#7179)",
-    "app_sql_date_source": "raw_day",
-    "candidate_app_sql_date": "2026-05-01"
-  },
-  "chosen_source": "dated_schedule",
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 80
   "heartbeat_patch_fields": {
     "shifted_to_next_day": false,
     "set_to_default_app_sql_date": false,
@@ -94,731 +59,273 @@ Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 80
     "skipped": false
   }
 }
-[2026-05-01 14:26:24] SCHEDULES_DAILYV2 RUN
+{"event":"step_completed","label":"SCHEDULES_DAILYV2","script":"schedules_dailyv2.js","ok":true,"duration_ms":219289,"exit_code":0}
+[2026-05-01 14:57:51] SCHEDULES_DAILYV2 RUN
 {
   "ok": false,
   "error": "Missing required heartbeat field: default_app_sql_date_is",
   "dry_run": false
 }
-[2026-05-01 14:30:14] SCHEDULES_DAILYV2 RUN
+{"event":"step_completed","label":"SCHEDULES_DAILYV2","script":"schedules_dailyv2.js","ok":false,"duration_ms":228888,"exit_code":1}
+[2026-05-01 15:01:53] SCHEDULES_DAILYV2 RUN
 {
   "ok": false,
   "error": "Missing required heartbeat field: default_app_sql_date_is",
   "dry_run": false
 }
-{"event":"step_completed","label":"SCHEDULES_DAILYV2","script":"schedules_dailyv2.js","ok":false,"duration_ms":215906,"exit_code":1}
-
-Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵〱〺㨵㠲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㐱〺㨵㠲㔮㘰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱ㄠ㨰〱㈺崶吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨴〱㈺⸶㌴娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵〱ㄺ㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㐱ㄺ㨵㔲㐮〲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ
-
-
-
-[2026-05-01 09:50:24] TRIPS_CALCULATORV2 RUN
+{"event":"step_completed","label":"SCHEDULES_DAILYV2","script":"schedules_dailyv2.js","ok":false,"duration_ms":202409,"exit_code":1}
+[2026-05-01 15:05:29] SCHEDULES_DAILYV2 RUN
 {
-  "calc_run_id": "2026-05-01T13:50:24.578Z",
-  "calc_mode": "promote",
-  "calc_version": "trips_calculator_v2_1",
-  "dry_run": false,
-  "processed_in_view": 37,
-  "eligible_rows": 0,
-  "skipped_rows": 37,
-  "changed_rows": 0,
-  "unchanged_rows": 0,
-  "anomaly_rows": 0,
-  "watch_trips_updates_planned": 0,
-  "watch_trips_patched": 0,
-  "watch_trips_patch_failures": 0,
-  "trip_logs_planned": 0,
-  "trip_logs_created": 0,
-  "trip_logs_failures": 0,
-  "class_alert_classes_in_view": 23,
-  "class_alert_duplicated_classes": 10,
-  "class_alert_parent_rows": 10,
-  "trip_minutes_default_rows": 0,
-  "trip_minutes_source_counts": {},
-  "skip_reason_counts": {
-    "missing_h_eid": 37
+  "ok": false,
+  "error": "Missing required heartbeat field: default_app_sql_date_is",
+  "dry_run": false
+}
+{"event":"step_completed","label":"SCHEDULES_DAILYV2","script":"schedules_dailyv2.js","ok":false,"duration_ms":211508,"exit_code":1}
+[2026-05-01 15:09:13] SCHEDULES_DAILYV2 RUN
+{
+  "ok": false,
+  "error": "Missing required heartbeat field: default_app_sql_date_is",
+  "dry_run": false
+}
+{"event":"step_completed","label":"SCHEDULES_DAILYV2","script":"schedules_dailyv2.js","ok":false,"duration_ms":205825,"exit_code":1}
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 120
+[2026-05-01 14:34:04] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":11075,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:34:06] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":2730,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:34:57] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 14:35:05] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":8234,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:35:08] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":2890,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:36:10] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 14:36:19] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":8245,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:36:22] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":2895,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:38:33] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":true,"label":"SCHEDULES_DAILYV2","duration_ms":266280,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 14:39:19] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":true,"label":"SCHEDULES_DAILYV2","duration_ms":251393,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 14:40:25] RUNNER PIPELINE
+{"exit_code":1,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":false,"label":"SCHEDULES_DAILYV2","duration_ms":243758,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 14:42:06] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":true,"script":"schedules_calculatorv2.js","ok":true,"label":"SCHEDULES_CALCULATORV2","duration_ms":212802,"log_path":"C:\\actions-runner\\ringstatus\\schedules-calculatorv2.log","event":"step_completed"}
+[2026-05-01 14:42:49] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":true,"script":"schedules_calculatorv2.js","ok":true,"label":"SCHEDULES_CALCULATORV2","duration_ms":209212,"log_path":"C:\\actions-runner\\ringstatus\\schedules-calculatorv2.log","event":"step_completed"}
+[2026-05-01 14:45:44] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"trips_dailyv2.js","ok":true,"label":"TRIPS_DAILYV2","duration_ms":217926,"log_path":"C:\\actions-runner\\ringstatus\\trips-dailyv2.log","event":"step_completed"}
+[2026-05-01 14:45:51] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"trips_tagger.js","ok":true,"label":"TRIPS_TAGGER","duration_ms":7652,"log_path":"C:\\actions-runner\\ringstatus\\trips-tagger.log","event":"step_completed"}
+[2026-05-01 14:45:59] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":true,"script":"trips_calculatorv2.js","ok":true,"label":"TRIPS_CALCULATORV2","duration_ms":7749,"log_path":"C:\\actions-runner\\ringstatus\\trips-calculatorv2.log","event":"step_completed"}
+[2026-05-01 14:46:09] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"publisher.js","ok":true,"label":"PUBLISH","duration_ms":9931,"log_path":"C:\\actions-runner\\ringstatus\\publisher.log","event":"step_completed"}
+[2026-05-01 14:46:09] RUNNER PIPELINE
+{"ok":true,"deferred_failures":0,"event":"pipeline_completed"}
+[2026-05-01 14:46:47] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 14:46:53] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"trips_dailyv2.js","ok":true,"label":"TRIPS_DAILYV2","duration_ms":244063,"log_path":"C:\\actions-runner\\ringstatus\\trips-dailyv2.log","event":"step_completed"}
+[2026-05-01 14:47:02] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"trips_tagger.js","ok":true,"label":"TRIPS_TAGGER","duration_ms":9147,"log_path":"C:\\actions-runner\\ringstatus\\trips-tagger.log","event":"step_completed"}
+[2026-05-01 14:47:02] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":14909,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:47:05] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":2614,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:47:07] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":true,"script":"trips_calculatorv2.js","ok":true,"label":"TRIPS_CALCULATORV2","duration_ms":5172,"log_path":"C:\\actions-runner\\ringstatus\\trips-calculatorv2.log","event":"step_completed"}
+[2026-05-01 14:47:08] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"publisher.js","ok":true,"label":"PUBLISH","duration_ms":1183,"log_path":"C:\\actions-runner\\ringstatus\\publisher.log","event":"step_completed"}
+[2026-05-01 14:47:08] RUNNER PIPELINE
+{"ok":true,"deferred_failures":0,"event":"pipeline_completed"}
+[2026-05-01 14:50:44] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":true,"label":"SCHEDULES_DAILYV2","duration_ms":219289,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 14:53:57] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":true,"script":"schedules_calculatorv2.js","ok":true,"label":"SCHEDULES_CALCULATORV2","duration_ms":192520,"log_path":"C:\\actions-runner\\ringstatus\\schedules-calculatorv2.log","event":"step_completed"}
+[2026-05-01 14:57:16] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"trips_dailyv2.js","ok":true,"label":"TRIPS_DAILYV2","duration_ms":198627,"log_path":"C:\\actions-runner\\ringstatus\\trips-dailyv2.log","event":"step_completed"}
+[2026-05-01 14:57:23] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"trips_tagger.js","ok":true,"label":"TRIPS_TAGGER","duration_ms":7577,"log_path":"C:\\actions-runner\\ringstatus\\trips-tagger.log","event":"step_completed"}
+[2026-05-01 14:57:30] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":true,"script":"trips_calculatorv2.js","ok":true,"label":"TRIPS_CALCULATORV2","duration_ms":6647,"log_path":"C:\\actions-runner\\ringstatus\\trips-calculatorv2.log","event":"step_completed"}
+[2026-05-01 14:57:37] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"publisher.js","ok":true,"label":"PUBLISH","duration_ms":7348,"log_path":"C:\\actions-runner\\ringstatus\\publisher.log","event":"step_completed"}
+[2026-05-01 14:57:37] RUNNER PIPELINE
+{"ok":true,"deferred_failures":0,"event":"pipeline_completed"}
+[2026-05-01 14:57:38] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 14:57:48] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":9621,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 14:57:51] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":2608,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:01:40] RUNNER PIPELINE
+{"exit_code":1,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":false,"label":"SCHEDULES_DAILYV2","duration_ms":228888,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 15:01:40] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 15:01:50] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":9835,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:01:53] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":2777,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:05:16] RUNNER PIPELINE
+{"exit_code":1,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":false,"label":"SCHEDULES_DAILYV2","duration_ms":202409,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 15:05:16] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 15:05:25] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":9059,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:05:29] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":3159,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:09:00] RUNNER PIPELINE
+{"exit_code":1,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":false,"label":"SCHEDULES_DAILYV2","duration_ms":211508,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 15:09:01] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 15:09:10] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":8646,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:09:13] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":2811,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:12:38] RUNNER PIPELINE
+{"exit_code":1,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":false,"label":"SCHEDULES_DAILYV2","duration_ms":205825,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 15:12:39] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 15:12:48] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":8651,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:12:52] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":3673,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:13:04] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"tracked_files":[{"path":"run_tagger_task.cmd","exists":true,"length":521,"last_write_time":"2026-05-01T09:48:42.9225324-04:00","sha256":"0AD4EDBEBE4AC5D855360530348DD1416087825630D755E5650C1632F0AE025B"},{"path":"run_tagger_task.ps1","exists":true,"length":7434,"last_write_time":"2026-05-01T15:08:07.0000000-04:00","sha256":"F509828E81BD007656638BD032A40B7A68808FDAED4CD9D431AC1B0E0F9DDCE4"},{"path":"schedules_dailyv2.js","exists":true,"length":47245,"last_write_time":"2026-05-01T14:53:34.0000000-04:00","sha256":"292E499AA83A2E8DFDE51A458181A4B022E28AEEA60F6A87C9CB8D54D18F6036"},{"path":"schedules_calculatorv2.js","exists":true,"length":51402,"last_write_time":"2026-05-01T09:31:04.0000000-04:00","sha256":"07BD558D03353F09EAD32F2E8BAA262417BF71E16073D77A22F86276ED28E06A"},{"path":"trips_dailyv2.js","exists":true,"length":70284,"last_write_time":"2026-05-01T12:38:25.0000000-04:00","sha256":"2BD5B978D5D5CCAACC87A8D8EC184EA9B268B84745239C7C177229F42F13521D"},{"path":"trips_tagger.js","exists":true,"length":33965,"last_write_time":"2026-04-13T14:17:37.0000000-04:00","sha256":"E3E095BFE37BD8EE25392CEC8DBF569B0F0D30CE66E4FAB03FF900452AD7600E"},{"path":"trips_calculator.js","exists":true,"length":77975,"last_write_time":"2026-05-01T10:16:59.0000000-04:00","sha256":"1A7130D11478B89BB76AF97FA71BA99AC632265B11DDF28B01793A8D8A743F6D"},{"path":"publisher.js","exists":true,"length":31508,"last_write_time":"2026-03-22T13:52:20.0000000-04:00","sha256":"AD6A25DDCCBF4D74DAAA1640973F7A5AE1FA2DEC0FC2398963037E2BAB37BB94"}],"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 15:13:19] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":15087,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:13:25] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":5776,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:15:54] RUNNER PIPELINE
+{"publisher_delay_seconds":0,"ok":true,"tracked_files":[{"path":"run_tagger_task.cmd","exists":true,"length":521,"last_write_time":"2026-05-01T09:48:42.9225324-04:00","sha256":"0AD4EDBEBE4AC5D855360530348DD1416087825630D755E5650C1632F0AE025B"},{"path":"run_tagger_task.ps1","exists":true,"length":7434,"last_write_time":"2026-05-01T15:08:07.0000000-04:00","sha256":"F509828E81BD007656638BD032A40B7A68808FDAED4CD9D431AC1B0E0F9DDCE4"},{"path":"schedules_dailyv2.js","exists":true,"length":47245,"last_write_time":"2026-05-01T14:53:34.0000000-04:00","sha256":"292E499AA83A2E8DFDE51A458181A4B022E28AEEA60F6A87C9CB8D54D18F6036"},{"path":"schedules_calculatorv2.js","exists":true,"length":51402,"last_write_time":"2026-05-01T09:31:04.0000000-04:00","sha256":"07BD558D03353F09EAD32F2E8BAA262417BF71E16073D77A22F86276ED28E06A"},{"path":"trips_dailyv2.js","exists":true,"length":70284,"last_write_time":"2026-05-01T12:38:25.0000000-04:00","sha256":"2BD5B978D5D5CCAACC87A8D8EC184EA9B268B84745239C7C177229F42F13521D"},{"path":"trips_tagger.js","exists":true,"length":33965,"last_write_time":"2026-04-13T14:17:37.0000000-04:00","sha256":"E3E095BFE37BD8EE25392CEC8DBF569B0F0D30CE66E4FAB03FF900452AD7600E"},{"path":"trips_calculator.js","exists":true,"length":77975,"last_write_time":"2026-05-01T10:16:59.0000000-04:00","sha256":"1A7130D11478B89BB76AF97FA71BA99AC632265B11DDF28B01793A8D8A743F6D"},{"path":"publisher.js","exists":true,"length":31508,"last_write_time":"2026-03-22T13:52:20.0000000-04:00","sha256":"AD6A25DDCCBF4D74DAAA1640973F7A5AE1FA2DEC0FC2398963037E2BAB37BB94"}],"repo_path":"C:\\ringstatus-task","event":"pipeline_started"}
+[2026-05-01 15:16:06] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"tagger.js","ok":true,"label":"TAGGER","duration_ms":11510,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:16:09] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"heartbeat_patterns.js","ok":true,"label":"HEARTBEAT_PATTERNS","duration_ms":3118,"log_path":"C:\\actions-runner\\ringstatus\\epoch-tagger.log","event":"step_completed"}
+[2026-05-01 15:17:17] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":false,"script":"schedules_dailyv2.js","ok":true,"label":"SCHEDULES_DAILYV2","duration_ms":265240,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+[2026-05-01 15:17:33] RUNNER PIPELINE
+{"exit_code":0,"continue_on_error":true,"script":"schedules_dailyv2.js","ok":true,"label":"SCHEDULES_DAILYV2","duration_ms":247795,"log_path":"C:\\actions-runner\\ringstatus\\schedules-dailyv2.log","event":"step_completed"}
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 80
+    "app_sql_datev2": "2026-05-01",
+    "app_dow_rawv2": "Fri",
+    "shifted_to_next_dayv2": false,
+    "scope_key": "200000060|2026-05-01|Fri|0",
+    "scope_run_id": "200000060-2026-05-01-1777662785",
+    "heartbeat_time": "03:13 PM",
+    "heartbeat_show_date": null,
+    "raw_sql_date": "2026-05-01",
+    "mode": "DAY",
+    "set_to_default_app_sql_date": false,
+    "default_app_sql_date_is": "2026-05-01",
+    "show_app_sql_start_date": null,
+    "show_app_sql_end_date": null,
+    "show_app_name": null,
+    "app_sql_date_source": "raw_day",
+    "candidate_app_sql_date": "2026-05-01",
+    "scope_resolution_source": "heartbeat_current_fields_fallback",
+    "scope_resolution_error": "Missing required heartbeat field: default_app_sql_date_is"
   },
-  "anomaly_samples": [],
-  "failed_patch_samples": [],
-  "failed_trip_log_samples": []
-}
-
-[2026-05-01 14:21:56] TRIPS_DAILYV2 RUN
-{
-  "ok": true,
-  "dry_run": false,
-  "app_show_id": 200000060,
-  "app_sql_date": "2026-05-01",
-  "app_dow_raw": "Fri",
-  "shifted_to_next_day": false,
-  "mode": "DAY",
-  "active_tenant_ids": 2,
-  "watch_schedule_rows": 70,
-  "watch_schedule_classes": 62,
-  "normalized_rows": 41,
-  "unique_rows": 41,
+  "chosen_source": "dated_schedule",
+  "heartbeat_patch_fields": {
+    "shifted_to_next_day": false,
+    "set_to_default_app_sql_date": false,
+    "default_app_sql_date_is": "2026-05-01",
+    "show_app_sql_start_date": null,
+    "show_app_sql_end_date": null,
+    "show_app_name": null
+  },
+  "row_count": 0,
   "filtered_out_scheduled_date_mismatch": 0,
-  "people_failures": [],
-  "empty_tenant_ids": [],
-  "tenant_summaries": [
-    {
-      "tenant_id": "8778",
-      "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/people/8778?pid=8778&show_id=200000060&customer_id=15",
-      "trip_count": 119,
-      "empty_payload": false,
-      "watch_trip_rows": 36,
-      "outside_schedule_count": 83,
-      "rider_sync": {
-        "table": "ww_riders",
-        "created_planned": 0,
-        "updated_planned": 14,
-        "writes": {
-          "created": 0,
-          "updated": 14,
-          "create_failures": [],
-          "update_failures": []
-        }
-      },
-      "horse_sync": {
-        "table": "ww_horses",
-        "created_planned": 0,
-        "updated_planned": 23,
-        "writes": {
-          "created": 0,
-          "updated": 23,
-          "create_failures": [],
-          "update_failures": []
-        }
-      },
-      "active_class_rows": 87,
-      "active_entry_rows": 23,
-      "class_endpoint_failures": []
+  "dropped_due_to_schedule_show_date_mismatch": 0,
+  "creates_planned": 0,
+  "updates_planned": 0,
+  "drops_planned": 70,
+  "existing_show_rows": 70,
+  "heartbeat_view_rows": 70,
+  "show_record_bound": true,
+  "fetches": {
+    "dated_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-05-01&show_id=200000060&customer_id=15",
+      "rows": 0,
+      "schedule_show_datev2": null
     },
-    {
-      "tenant_id": "19676",
-      "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/people/19676?pid=19676&show_id=200000060&customer_id=15",
-      "trip_count": 16,
-      "empty_payload": false,
-      "watch_trip_rows": 5,
-      "outside_schedule_count": 11,
-      "rider_sync": {
-        "table": "ww_riders",
-        "created_planned": 0,
-        "updated_planned": 2,
-        "writes": {
-          "created": 0,
-          "updated": 2,
-          "create_failures": [],
-          "update_failures": []
-        }
-      },
-      "horse_sync": {
-        "table": "ww_horses",
-        "created_planned": 0,
-        "updated_planned": 2,
-        "writes": {
-          "created": 0,
-          "updated": 2,
-          "create_failures": [],
-          "update_failures": []
-        }
-      },
-      "active_class_rows": 16,
-      "active_entry_rows": 2,
-      "class_endpoint_failures": []
+    "empty_ping_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=200000060&customer_id=15",
+      "ok": true,
+      "error": "Missing required heartbeat field: default_app_sql_date_is",
+      "rows": 0,
+      "schedule_show_datev2": null
+    },
+    "classes_endpoint": {
+      "enriched_rows": 0,
+      "failures": []
     }
-  ],
-  "outside_schedule_count": 94,
+  },
+  "writes": {
+    "created": 0,
+    "updated": 0,
+    "dropped": 70,
+    "create_failures": [],
+    "update_failures": [],
+    "drop_failures": []
+  },
   "active_groups": {
     "table": "active_groups",
     "created_planned": 0,
-    "updated_planned": 35,
-    "inactivated_planned": 99,
+    "updated_planned": 0,
+    "inactivated_planned": 0,
     "writes": {
       "created": 0,
-      "updated": 35,
-      "inactivated": 99,
+      "updated": 0,
+      "inactivated": 0,
       "create_failures": [],
       "update_failures": [],
       "inactivate_failures": []
     },
-    "skipped": false
-  },
-  "active_links": {
-    "active_groups_to_classes": {
-      "planned": 0,
-      "updated": 0,
-      "failures": []
-    },
-    "active_classes_to_groups": {
-      "planned": 0,
-      "updated": 0,
-      "failures": []
-    },
-    "active_entries_to_classes": {
-      "planned": 0,
-      "updated": 0,
-      "failures": []
-    },
-    "active_classes_to_entries": {
-      "planned": 0,
-      "updated": 0,
-      "failures": []
-    },
-    "skipped": false
-  },
-  "creates_planned": 5,
-  "updates_planned": 36,
-  "drops_planned": 1,
-  "existing_show_rows": 37,
-  "heartbeat_view_rows": 37,
-  "writes": {
-    "created": 0,
-    "updated": 0,
-    "dropped": 1,
-    "create_failures": [
-      {
-        "key": "DB9C36DFB296434EAB4DA0E6A6922009",
-        "reason": "Airtable create failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "key": "7496C3F370AB4A3F948B1F8E5D541BC0",
-        "reason": "Airtable create failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "key": "909AE3F36DA14B9C9163EAC085F4C21F",
-        "reason": "Airtable create failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "key": "1D37D858E3F4497CBA4017514E7357D8",
-        "reason": "Airtable create failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "key": "0E6271443BA249A29449EC429EA44F51",
-        "reason": "Airtable create failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      }
-    ],
-    "update_failures": [
-      {
-        "record_id": "recfiT0f0D3C3wkyA",
-        "key": "9430704D547E4904B0C7E481A414808E",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recE2ZyrfDCSyXnMO",
-        "key": "DA70A83B22FD4BAC9CA5C24BD097EC3F",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recggXwSg87e2Mh04",
-        "key": "89B8979F78DD47A6B76C92A85F020E77",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recohHLmt9sj9sbB1",
-        "key": "1B5DCB180117450299D3C5E6C26E47DC",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec7B4JbYoHRSQRD0",
-        "key": "80A48BBC02E24C5AA348FA82DBEE9798",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recg9JwmwboOckunu",
-        "key": "2243E582764B4BC29DBFDBD4938C1917",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "reca8ePvWPFWVAeIk",
-        "key": "FDE34A2E81094CC9A870646D54ABF7E6",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recrLC52cI1UWXVJB",
-        "key": "0FBC9459ABAD473AA4ECF82ECD27C786",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recvbZBovYJeVozUi",
-        "key": "B887EE50EC9E4FCB953C79CEBF40AF60",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rech0d16G65odqweB",
-        "key": "74BF070CBEAC48A8855C9853EF13B4B4",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec4SnYbNX3LTiZHK",
-        "key": "1CCCE6B3174F4AC28A57C8B54215AEFC",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recQGjio1tv0jo4ZO",
-        "key": "35C8B9FC43D04C3691ACF2741063F791",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "reczWFT1N23x2H6Xo",
-        "key": "86CC7899DA204BB4A91C5D499D5A8C08",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec4QIO0e4ejjqa5f",
-        "key": "966CAC52480349FD98A8C6DEEAD2D0D2",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec7ZGsDlJhUV1bhV",
-        "key": "ED6855C9423348E38D274FE1C914380F",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recVkcBhjDoTFYnV5",
-        "key": "234A8B22B79B472CA253B813F421B4DB",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recuF9TTefMv4eOL2",
-        "key": "EF8C2BAA7D8E40A3B1D5816D66454670",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recXdkOIqlwYf2SSY",
-        "key": "85BAB50602484367AA44DF5337874DAC",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec7PjxdH4yvduGOl",
-        "key": "CE6757C044434285BF20D436E6F7A0FC",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rechcWHDCCXvaxgMB",
-        "key": "244F896AA0C94782BF0F5A54B55D542B",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec0XRK0zOKxywP6d",
-        "key": "34B462349B874727AEA4FB0389323520",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec3ZCaqzixcbG3jM",
-        "key": "7FD69163C0BE413CB510F3CF8B5B8C68",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recsHaiRrG4GgjTyy",
-        "key": "0C4F5AC9B7D04A22B3DBB39252872DC4",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recKUaYzPrpcc5Frm",
-        "key": "1E1C8FC307764AF2AB550568F0F57C67",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recTCUmBEbMWwNaKE",
-        "key": "16FEE2029F014F048894A01835E0D376",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recJf1Ta6mpdbiPBR",
-        "key": "CB6DAB18540C4D748587013A25C1B2B1",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rechWTxC2hURghCMB",
-        "key": "6B70D115F70844E798FB66B9812C4FA6",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recnBBpCylgjy7B3D",
-        "key": "3EBD614BBE374D0FA2033E9A30A73BBA",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rec5OIIcVvnuswpzD",
-        "key": "08770E72584F4051A492D703794DA5CE",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recQPyqsxKyYSPbPP",
-        "key": "239CF750DECC444F84F67EE9573E9230",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recPWY2r03Vd89NmT",
-        "key": "90E1D046DF8547518D8091EE8A0B7DBF",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recxA8W2JnV5P9Hvt",
-        "key": "8C9C6A0E05B74DA49C58B06ACC486EA9",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "reccO8lrelE8cMEgb",
-        "key": "B2AB089D7C0C430483447ECF5F9DCE5B",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "rectXuICujphQDwOv",
-        "key": "1C51F84CF80041F7A186873D5D835372",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recrGSZuLJWhac7T3",
-        "key": "B42EFDC497B8407BBFE5812361B1C927",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      },
-      {
-        "record_id": "recmiXY1Z8d0aWwWg",
-        "key": "ED40B91FC1F44CE380FDC1357EEE1590",
-        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
-      }
-    ],
-    "drop_failures": []
-  },
-  "schedule_date_backfill": {
-    "planned": 0,
-    "updated": 0,
-    "failures": []
+    "skipped": true
   }
 }
+{"event":"step_completed","label":"SCHEDULES_DAILYV2","script":"schedules_dailyv2.js","ok":true,"duration_ms":247795,"exit_code":0}
+PS C:\WINDOWS\system32>
+
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
+powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
+
+PS C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus> powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
+
+File                      SourceLength TargetLength SourceLastWriteTime TargetLastWriteTime HashMatch SHA256
+----                      ------------ ------------ ------------------- ------------------- --------- ------
+run_tagger_task.cmd                521          521 2026-05-01T09:48:42 2026-05-01T09:48:42      True 0AD4EDBEBE4AC5...
+run_tagger_task.ps1               7434         7434 2026-05-01T15:08:07 2026-05-01T15:08:07      True F509828E81BD00...
+run_tagger_task_cmd.ps1           7082         7082 2026-05-01T15:08:07 2026-05-01T15:08:07      True A43E69148B0963...
+schedules_dailyv2.js             47245        47245 2026-05-01T14:53:34 2026-05-01T14:53:34      True 292E499AA83A2E...
+schedules_calculatorv2.js        51402        51402 2026-05-01T09:31:04 2026-05-01T09:31:04      True 07BD558D03353F...
+trips_dailyv2.js                 70284        70284 2026-05-01T12:38:25 2026-05-01T12:38:25      True 2BD5B978D5D5CC...
+trips_calculator.js              77975        77975 2026-05-01T10:16:59 2026-05-01T10:16:59      True 1A7130D11478B8...
 
 
-{"event":"step_completed","label":"HEARTBEAT_PATTERNS","script":"heartbeat_patterns.js","ok":true,"duration_ms":2890,"exit_code":0}
-[2026-05-01 14:36:10] TAGGER RUN
-{"level":"info","event":"endpoint_clock_accepted","ts":"2026-05-01T18:36:11.405Z","dry_run":false,"endpoint":"https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15","endpoint_show_id":200000060,"endpoint_show_date":null,"endpoint_sql_date":"2026-05-01","endpoint_time":"02:36 PM","source":"endpoint"}
-{"level":"info","event":"app_context_computed","ts":"2026-05-01T18:36:11.543Z","dry_run":false,"source":"endpoint","mode":"DAY","raw_show_id":200000060,"raw_show_date":null,"raw_sql_date":"2026-05-01","raw_time":"02:36 PM","app_show_id":200000060,"app_sql_date":"2026-05-01","app_dow_raw":"Fri","shifted_to_next_day":false,"set_to_default_app_sql_date":false,"default_app_sql_date_is":"2026-05-01","show_app_sql_start_date":"2026-04-29","show_app_sql_end_date":"2026-05-03","show_app_name":"2026 ESP Spring 4 (#7179)","app_sql_date_source":"raw_day","candidate_app_sql_date":"2026-05-01"}
-{"level":"info","event":"run_summary_pre_write","ts":"2026-05-01T18:36:11.543Z","dry_run":false,"mode":"DAY","source":"endpoint","raw_show_id":200000060,"raw_show_date":null,"raw_sql_date":"2026-05-01","raw_time":"02:36 PM","app_show_id":200000060,"app_sql_date":"2026-05-01","app_dow_raw":"Fri","shifted_to_next_day":false,"set_to_default_app_sql_date":false,"default_app_sql_date_is":"2026-05-01","show_app_sql_start_date":"2026-04-29","show_app_sql_end_date":"2026-05-03","show_app_name":"2026 ESP Spring 4 (#7179)","app_sql_date_source":"raw_day","candidate_app_sql_date":"2026-05-01","interval_min":6}
-{"level":"info","event":"shows_sync_update_existing_in_view","ts":"2026-05-01T18:36:12.135Z","dry_run":false,"app_show_id":200000060,"app_sql_date":"2026-05-01","heartbeat_record_id":"recoDCb1T9npMPN96","matched_record_id":"recqC6CigI8iPID7Q","existing_heartbeat_links_count":1}
-{
-  "ok": true,
-  "heartbeat_record_id": "recoDCb1T9npMPN96",
-  "heartbeat_app_show_id": 200000060,
-  "mode": "DAY",
-  "source": "endpoint",
-  "results": [
-    {
-      "table": "shows",
-      "found_in_view": 6,
-      "matched_show_id": 200000060,
-      "updated_existing": 1,
-      "created_new": 0
-    },
-    {
-      "table": "watch_trips",
-      "found_in_view": 37,
-      "relinked": 37
-    },
-    {
-      "table": "scheduler",
-      "found_in_view": 18,
-      "relinked": 18
-    },
-    {
-      "table": "active_tenants",
-      "found_in_view": 2,
-      "relinked": 2
-    },
-    {
-      "table": "active_alerts",
-      "found_in_view": 2,
-      "relinked": 2
-    },
-    {
-      "table": "watch_rings",
-      "found_in_view": 35,
-      "relinked": 35
-    }
-  ],
-  "warnings": []
-}
-{"event":"step_completed","label":"TAGGER","script":"tagger.js","ok":true,"duration_ms":8245,"exit_code":0}
-[2026-05-01 14:36:19] HEARTBEAT_PATTERNS RUN
-{
-  "ok": true,
-  "target_heartbeat_id": "recoDCb1T9npMPN96",
-  "source_heartbeat_id": "recsDQzmvr0kBLLcT",
-  "target_isA": true,
-  "target_isB": false
-}
-{"event":"step_completed","label":"HEARTBEAT_PATTERNS","script":"heartbeat_patterns.js","ok":true,"duration_ms":2895,"exit_code":0}
-
-[2026-05-01 14:25:16] TRIPS_TAGGER RUN
-{
-  "watch_table": "watch_trips",
-  "watch_view": "heartbeat",
-  "shows_table": "shows",
-  "app_endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15",
-  "app_show_id": 200000060,
-  "raw_sql_date": "2026-05-01",
-  "app_sql_date": "2026-05-01",
-  "app_time": "02:25 PM",
-  "mode": "DAY",
-  "shifted_to_next_day": false,
-  "shows_link_record_id": "recqC6CigI8iPID7Q",
-  "processed_in_view": 37,
-  "processed_valid": 37,
-  "updated_rows": 37,
-  "failed_row_updates": 0,
-  "skipped_missing_class_endpoint": 0,
-  "skipped_missing_entryxclasses_uuid": 0,
-  "unique_class_endpoints": 23,
-  "endpoint_fetch_errors": 0,
-  "trip_matched": 27,
-  "trip_not_found": 10,
-  "shows_link_bound": 37,
-  "shows_link_missing": 0,
-  "row_reason_counts": {
-    "err:no_trip_match": 10,
-    "ok:matched_trip": 27
-  },
-  "observed_at": "2026-05-01T18:25:17.318Z",
-  "endpoint_error_samples": [],
-  "failed_row_samples": []
-}
-
-PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-tagger.log" -Tail 40
-    "err:no_trip_match": 35,
-    "ok:matched_trip": 2
-  },
-  "observed_at": "2026-05-01T18:03:28.532Z",
-  "endpoint_error_samples": [],
-  "failed_row_samples": []
-}
-[2026-05-01 14:25:16] TRIPS_TAGGER RUN
-{
-  "watch_table": "watch_trips",
-  "watch_view": "heartbeat",
-  "shows_table": "shows",
-  "app_endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15",
-  "app_show_id": 200000060,
-  "raw_sql_date": "2026-05-01",
-  "app_sql_date": "2026-05-01",
-  "app_time": "02:25 PM",
-  "mode": "DAY",
-  "shifted_to_next_day": false,
-  "shows_link_record_id": "recqC6CigI8iPID7Q",
-  "processed_in_view": 37,
-  "processed_valid": 37,
-  "updated_rows": 37,
-  "failed_row_updates": 0,
-  "skipped_missing_class_endpoint": 0,
-  "skipped_missing_entryxclasses_uuid": 0,
-  "unique_class_endpoints": 23,
-  "endpoint_fetch_errors": 0,
-  "trip_matched": 27,
-  "trip_not_found": 10,
-  "shows_link_bound": 37,
-  "shows_link_missing": 0,
-  "row_reason_counts": {
-    "err:no_trip_match": 10,
-    "ok:matched_trip": 27
-  },
-  "observed_at": "2026-05-01T18:25:17.318Z",
-  "endpoint_error_samples": [],
-  "failed_row_samples": []
-}
+PS C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus> powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
+﻿﻿﻿$ErrorActionPreference : The term '﻿﻿﻿$ErrorActionPreference' is not recognized as the name of a cmdlet, function,
+script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is
+correct and try again.
+At C:\ringstatus-task\run_tagger_task.ps1:1 char:1
++ ﻿﻿﻿$ErrorActionPreference = 'Stop'
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (﻿﻿﻿$ErrorActionPreference:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
 
 
-PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-tagger.log" -Tail 40
-    "err:no_trip_match": 35,
-    "ok:matched_trip": 2
-  },
-  "observed_at": "2026-05-01T18:03:28.532Z",
-  "endpoint_error_samples": [],
-  "failed_row_samples": []
-}
-[2026-05-01 14:25:16] TRIPS_TAGGER RUN
-{
-  "watch_table": "watch_trips",
-  "watch_view": "heartbeat",
-  "shows_table": "shows",
-  "app_endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15",
-  "app_show_id": 200000060,
-  "raw_sql_date": "2026-05-01",
-  "app_sql_date": "2026-05-01",
-  "app_time": "02:25 PM",
-  "mode": "DAY",
-  "shifted_to_next_day": false,
-  "shows_link_record_id": "recqC6CigI8iPID7Q",
-  "processed_in_view": 37,
-  "processed_valid": 37,
-  "updated_rows": 37,
-  "failed_row_updates": 0,
-  "skipped_missing_class_endpoint": 0,
-  "skipped_missing_entryxclasses_uuid": 0,
-  "unique_class_endpoints": 23,
-  "endpoint_fetch_errors": 0,
-  "trip_matched": 27,
-  "trip_not_found": 10,
-  "shows_link_bound": 37,
-  "shows_link_missing": 0,
-  "row_reason_counts": {
-    "err:no_trip_match": 10,
-    "ok:matched_trip": 27
-  },
-  "observed_at": "2026-05-01T18:25:17.318Z",
-  "endpoint_error_samples": [],
-  "failed_row_samples": []
-}
-PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
-  "dry_run": false,
-  "processed_in_view": 37,
-  "eligible_rows": 37,
-  "skipped_rows": 0,
-  "changed_rows": 30,
-  "unchanged_rows": 7,
-  "anomaly_rows": 30,
-  "watch_trips_updates_planned": 30,
-  "watch_trips_patched": 30,
-  "watch_trips_patch_failures": 0,
-  "trip_logs_planned": 27,
-  "trip_logs_created": 27,
-  "trip_logs_failures": 0,
-  "trigger_tags_active": 9,
-  "trigger_hits": 12,
-  "class_alert_classes_in_view": 23,
-  "class_alert_duplicated_classes": 10,
-  "class_alert_parent_rows": 10,
-  "trip_minutes_default_rows": 29,
-  "trip_minutes_source_counts": {
-    "default": 29,
-    "estimated_go_window": 6,
-    "elapsed_from_start": 2
-  },
-  "skip_reason_counts": {},
-  "anomaly_samples": [
-    "F2F3675C09164063AC9ABB9388E9A6DD:trip_minutes_default_out_of_range",
-    "ED6855C9423348E38D274FE1C914380F:trip_minutes_default_missing_rate",
-    "B42EFDC497B8407BBFE5812361B1C927:trip_minutes_default_missing_rate",
-    "B887EE50EC9E4FCB953C79CEBF40AF60:trip_minutes_default_missing_rate",
-    "80A48BBC02E24C5AA348FA82DBEE9798:trip_minutes_default_missing_rate",
-    "1B5DCB180117450299D3C5E6C26E47DC:trip_minutes_default_missing_rate",
-    "86CC7899DA204BB4A91C5D499D5A8C08:trip_minutes_default_missing_rate",
-    "966CAC52480349FD98A8C6DEEAD2D0D2:trip_minutes_default_missing_rate",
-    "1CCCE6B3174F4AC28A57C8B54215AEFC:trip_minutes_default_missing_rate",
-    "35C8B9FC43D04C3691ACF2741063F791:trip_minutes_default_missing_rate"
-  ],
-  "failed_patch_samples": [],
-  "faile
+Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 120
+Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 80
 
-PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
-  "dry_run": false,
-  "processed_in_view": 37,
-  "eligible_rows": 37,
-  "skipped_rows": 0,
-  "changed_rows": 30,
-  "unchanged_rows": 7,
-  "anomaly_rows": 30,
-  "watch_trips_updates_planned": 30,
-  "watch_trips_patched": 30,
-  "watch_trips_patch_failures": 0,
-  "trip_logs_planned": 27,
-  "trip_logs_created": 27,
-  "trip_logs_failures": 0,
-  "trigger_tags_active": 9,
-  "trigger_hits": 12,
-  "class_alert_classes_in_view": 23,
-  "class_alert_duplicated_classes": 10,
-  "class_alert_parent_rows": 10,
-  "trip_minutes_default_rows": 29,
-  "trip_minutes_source_counts": {
-    "default": 29,
-    "estimated_go_window": 6,
-    "elapsed_from_start": 2
-  },
-  "skip_reason_counts": {},
-  "anomaly_samples": [
-    "F2F3675C09164063AC9ABB9388E9A6DD:trip_minutes_default_out_of_range",
-    "ED6855C9423348E38D274FE1C914380F:trip_minutes_default_missing_rate",
-    "B42EFDC497B8407BBFE5812361B1C927:trip_minutes_default_missing_rate",
-    "B887EE50EC9E4FCB953C79CEBF40AF60:trip_minutes_default_missing_rate",
-    "80A48BBC02E24C5AA348FA82DBEE9798:trip_minutes_default_missing_rate",
-    "1B5DCB180117450299D3C5E6C26E47DC:trip_minutes_default_missing_rate",
-    "86CC7899DA204BB4A91C5D499D5A8C08:trip_minutes_default_missing_rate",
-    "966CAC52480349FD98A8C6DEEAD2D0D2:trip_minutes_default_missing_rate",
-    "1CCCE6B3174F4AC28A57C8B54215AEFC:trip_minutes_default_missing_rate",
-    "35C8B9FC43D04C3691ACF2741063F791:trip_minutes_default_missing_rate"
-  ],
-  "failed_patch_samples": [],
-  "failed_trip_log_samples": []
-}
-PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\publisher.log" -Tail 40
-[2026-05-01 14:26:04] PUBLISH RUN
-publisher start | epoch=1777659964 dry_run=false lane=all
-queue visible=39 dirty=11 bulk=11 differ=0
-bulk job=data-8778--manifest-json table=- view=all_active paths=1
-bulk job error: data-8778--manifest-json | missing_table_or_view
-bulk job=data-8778-schedules-schedule-json table=watch_schedule view=8778-schedule paths=1
-bulk job=data-8778-schedules-trips-json table=watch_trips view=8778-trips paths=1
-warn: data-8778-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
-bulk job=data-9999--manifest-json table=- view=all_active paths=1
-bulk job error: data-9999--manifest-json | missing_table_or_view
-bulk job=data-9999-schedules-schedule-json table=watch_schedule view=9999-schedule paths=1
-bulk job=data-9999-schedules-trips-json table=watch_trips view=9999-trips paths=1
-warn: data-9999-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
-bulk job=data-9999-trips-catch-changes-json table=watch_trips view=9999-trips paths=1
-warn: data-9999-trips-catch-changes-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
-bulk job=data-34933-schedules-trips-json table=watch_trips view=34933-trips paths=1
-warn: data-34933-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
-bulk job=data-40362--manifest-json table=- view=all_active paths=1
-bulk job error: data-40362--manifest-json | missing_table_or_view
-bulk job=data-40362-schedules-trips-json table=watch_trips view=40362-trips paths=1
-warn: data-40362-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
-bulk job=data-schedules-master.json table=watch_schedule view=master paths=1
-COMMIT_BULK_RESPONSE 200 {
-  "ok": true,
-  "commit": {
-    "sha": "b8b97bbe69f4deff1db2ac25c4fb0d8cf9fefff8",
-    "url": "https://github.com/sportdogfood/ringstatus-data/commit/b8b97bbe69f4deff1db2ac25c4fb0d8cf9fefff8"
-  },
-  "committed_paths": [
-    "docs/8778/schedules/schedule.json",
-    "docs/8778/schedules/trips.json",
-    "docs/9999/schedules/schedule.json",
-    "docs/9999/schedules/trips.json",
-    "docs/9999/schedules/trips-catch-changes.json",
-    "docs/schedules/master.json"
-  ]
-}
-
-bulk done: commit(6) | sha=b8b97bbe69f4deff1db2ac25c4fb0d8cf9fefff8
-
-
-
-
-
-
-
-robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" trips_dailyv2.js trips_calculator.js run_tagger_task.ps1 run_tagger_task_cmd.ps1
-Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 80
-
-
-run_tagger_task.ps1
-run_tagger_task_cmd.ps1
-trips_dailyv2.js
-
-
-robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" trips_dailyv2.js
 
 
 Get-Content "C:\actions-runner\ringstatus\trips-tagger.log" -Tail 40
 Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
-
-robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" trips_dailyv2.js trips_calculator.js
-
-
-Rename-Item "C:\actions-runner\ringstatus\trips-calculatorv2.log" "trips-calculatorv2.old.log" -ErrorAction SilentlyContinue
-Rename-Item "C:\actions-runner\ringstatus\trips-dailyv2.log" "trips-dailyv2.old.log" -ErrorAction SilentlyContinue
-Rename-Item "C:\actions-runner\ringstatus\trips-tagger.log" "trips-tagger.old.log" -ErrorAction SilentlyContinue
-Rename-Item "C:\actions-runner\ringstatus\publisher.log" "publisher.old.log" -ErrorAction SilentlyContinue
-
 Get-Content "C:\actions-runner\ringstatus\trips-tagger.log" -Tail 40
 Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
 Get-Content "C:\actions-runner\ringstatus\publisher.log" -Tail 40
