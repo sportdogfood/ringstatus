@@ -144,6 +144,17 @@ function toIsoDateOnly(value) {
   return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
 }
 
+function resolveTripScheduleDate(source) {
+  if (!source || typeof source !== "object") return null;
+  return toIsoDateOnly(pickFirst(
+    firstValue(source.schedule_show_datev2),
+    firstValue(source.scheduled_date),
+    firstValue(source["schedule_show_datev2 (from watch_schedule)"]),
+    firstValue(source.show_date),
+    firstValue(source.date)
+  ));
+}
+
 function setIfPresent(target, fieldName, value) {
   if (!fieldName) return;
   if (value === undefined || value === null) return;
@@ -253,7 +264,7 @@ async function airtableCreateRecords(tableName, records) {
           Authorization: `Bearer ${AIRTABLE_TOKEN}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ records: batch }),
+        body: JSON.stringify({ records: batch, typecast: true }),
       });
 
       if (!response.ok) {
@@ -289,7 +300,7 @@ async function airtablePatchRecords(tableName, updates) {
           Authorization: `Bearer ${AIRTABLE_TOKEN}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ records: batch }),
+        body: JSON.stringify({ records: batch, typecast: true }),
       });
 
       if (!response.ok) {
@@ -483,6 +494,60 @@ async function fetchHeartbeatViewTripRows() {
     pageSize: 100,
     "fields[]": ["entryxclasses_uuid", "heartbeat", "is_current_scope"],
   });
+}
+
+async function fetchTripScheduleBackfillRows(appShowId) {
+  const rows = await airtableList(TABLE_WATCH_TRIPS, {
+    pageSize: 100,
+    "fields[]": [
+      "show_id",
+      "app_show_id",
+      "app_show_idv2",
+      "schedule_show_datev2",
+      "scheduled_date",
+      "schedule_show_datev2 (from watch_schedule)",
+      "show_date",
+      "date",
+    ],
+  });
+
+  return rows.filter((row) => {
+    const fields = row?.fields || {};
+    return numOrNull(fields.show_id) === appShowId ||
+      numOrNull(fields.app_show_id) === appShowId ||
+      numOrNull(fields.app_show_idv2) === appShowId;
+  });
+}
+
+function buildTripScheduleBackfillUpdates(rows, watchTripsFieldSet) {
+  const updates = [];
+
+  for (const row of rows) {
+    const fields = row?.fields || {};
+    const resolvedScheduleDate = resolveTripScheduleDate(fields);
+    if (!resolvedScheduleDate) continue;
+
+    const directScheduleShowDate = toIsoDateOnly(firstValue(fields.schedule_show_datev2));
+    const directScheduledDate = strOrNull(firstValue(fields.scheduled_date));
+    const patchFields = {};
+
+    if (watchTripsFieldSet.has("schedule_show_datev2") && directScheduleShowDate !== resolvedScheduleDate) {
+      patchFields.schedule_show_datev2 = resolvedScheduleDate;
+    }
+
+    if (watchTripsFieldSet.has("scheduled_date") && directScheduledDate !== resolvedScheduleDate) {
+      patchFields.scheduled_date = resolvedScheduleDate;
+    }
+
+    if (Object.keys(patchFields).length) {
+      updates.push({
+        id: row.id,
+        fields: patchFields,
+      });
+    }
+  }
+
+  return updates;
 }
 
 function chooseExistingWinner(rows, heartbeatViewIdSet) {
@@ -1360,7 +1425,8 @@ async function buildAuxiliaryRowsForTenant({
 
 function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet) {
   const fields = {};
-  const resolvedScheduledDate = toIsoDateOnly(pickFirst(row.scheduled_date, row.schedule_show_datev2));
+  const resolvedScheduleDate = resolveTripScheduleDate(row);
+  const resolvedScheduledDate = resolvedScheduleDate;
   const isActiveForScope = resolvedScheduledDate === heartbeat.app_sql_date;
   const maybeSet = (name, value) => {
     if (!watchTripsFieldSet.has(name)) return;
@@ -1372,7 +1438,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("watch_schedule", row.watch_schedule_record_id ? [row.watch_schedule_record_id] : undefined);
   maybeSet("entryxclasses_uuid", row.entryxclasses_uuid);
   maybeSet("show_id", heartbeat.app_show_id);
-  maybeSet("show_date", row.schedule_show_datev2 || heartbeat.app_sql_date);
+  maybeSet("show_date", resolvedScheduleDate || heartbeat.app_sql_date);
   maybeSet("app_show_id", heartbeat.app_show_id);
   maybeSet("app_sql_date", heartbeat.app_sql_date);
   maybeSet("app_sid", heartbeat.app_show_id);
@@ -1415,7 +1481,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("rider_name", row.rider_name);
   maybeSet("rider_id", row.rider_id);
   maybeSet("placing", row.placing);
-  maybeSet("schedule_show_datev2", row.schedule_show_datev2);
+  maybeSet("schedule_show_datev2", resolvedScheduleDate);
   maybeSet("scheduled_date", resolvedScheduledDate);
   maybeSet("is_missing", false);
 
@@ -1442,7 +1508,7 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
 }
 
 function rowScheduledDateMatchesScope(row, heartbeat) {
-  const resolvedScheduledDate = toIsoDateOnly(pickFirst(row?.scheduled_date, row?.schedule_show_datev2));
+  const resolvedScheduledDate = resolveTripScheduleDate(row);
   return resolvedScheduledDate === heartbeat.app_sql_date;
 }
 
@@ -1823,12 +1889,27 @@ async function main() {
         update_failures: [],
         drop_failures: [],
       },
+      schedule_date_backfill: {
+        planned: 0,
+        updated: 0,
+        failures: [],
+      },
     };
 
     if (!DRY_RUN) {
       const dropResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, dropUpdates);
+      const backfillRows = await fetchTripScheduleBackfillRows(heartbeat.app_show_id);
+      const backfillUpdates = buildTripScheduleBackfillUpdates(backfillRows, watchTripsFieldSet);
+      const backfillResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, backfillUpdates);
       emptySummary.writes.dropped = dropResult.okRows;
       emptySummary.writes.drop_failures = dropResult.failedRows;
+      emptySummary.schedule_date_backfill.planned = backfillUpdates.length;
+      emptySummary.schedule_date_backfill.updated = backfillResult.okRows;
+      emptySummary.schedule_date_backfill.failures = backfillResult.failedRows;
+    } else {
+      const backfillRows = await fetchTripScheduleBackfillRows(heartbeat.app_show_id);
+      const backfillUpdates = buildTripScheduleBackfillUpdates(backfillRows, watchTripsFieldSet);
+      emptySummary.schedule_date_backfill.planned = backfillUpdates.length;
     }
 
     console.log(JSON.stringify(emptySummary, null, 2));
@@ -1878,18 +1959,30 @@ async function main() {
       update_failures: [],
       drop_failures: [],
     },
+    schedule_date_backfill: {
+      planned: 0,
+      updated: 0,
+      failures: [],
+    },
   };
+
+  const backfillRows = await fetchTripScheduleBackfillRows(heartbeat.app_show_id);
+  const backfillUpdates = buildTripScheduleBackfillUpdates(backfillRows, watchTripsFieldSet);
+  summary.schedule_date_backfill.planned = backfillUpdates.length;
 
   if (!DRY_RUN) {
     const createResult = await airtableCreateRecords(TABLE_WATCH_TRIPS, createRecords);
     const updateResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, updateRecords);
     const dropResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, dropUpdates);
+    const backfillResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, backfillUpdates);
     summary.writes.created = createResult.okRows;
     summary.writes.updated = updateResult.okRows;
     summary.writes.dropped = dropResult.okRows;
     summary.writes.create_failures = createResult.failedRows;
     summary.writes.update_failures = updateResult.failedRows;
     summary.writes.drop_failures = dropResult.failedRows;
+    summary.schedule_date_backfill.updated = backfillResult.okRows;
+    summary.schedule_date_backfill.failures = backfillResult.failedRows;
   }
 
   console.log(JSON.stringify(summary, null, 2));
