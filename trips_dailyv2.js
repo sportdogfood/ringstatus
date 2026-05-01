@@ -1481,6 +1481,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("rider_name", row.rider_name);
   maybeSet("rider_id", row.rider_id);
   maybeSet("placing", row.placing);
+  maybeSet("class_endpoint", buildClassesEndpoint(row.class_id, heartbeat.app_show_id));
   maybeSet("schedule_show_datev2", resolvedScheduleDate);
   maybeSet("scheduled_date", resolvedScheduledDate);
   maybeSet("is_missing", false);
