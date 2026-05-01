@@ -1,4 +1,4 @@
-﻿﻿$ErrorActionPreference = 'Stop'
+﻿﻿﻿$ErrorActionPreference = 'Stop'
 
 $env:DRY_RUN          = '0'
 $env:CALC_MODE        = 'promote'
