@@ -27,6 +27,7 @@ const TABLE_SCHEDULER      = process.env.TABLE_SCHEDULER || "scheduler";
 const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants";
 const TABLE_ACTIVE_ALERTS  = process.env.TABLE_ACTIVE_ALERTS || "active_alerts";
 const TABLE_WATCH_RINGS    = process.env.TABLE_WATCH_RINGS || "watch_rings";
+const TABLE_PUBLISH_QUEUE  = process.env.TABLE_PUBLISH_QUEUE || process.env.PUBLISH_QUEUE_TABLE || "publish_queue";
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
 
@@ -1261,6 +1262,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       TABLE_SCHEDULER,
       TABLE_ACTIVE_TENANTS,
       TABLE_ACTIVE_ALERTS,
+      TABLE_PUBLISH_QUEUE,
       TABLE_WATCH_RINGS
     ]) {
       try {
