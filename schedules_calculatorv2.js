@@ -273,6 +273,12 @@ function airtableUrl(tableName) {
   return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
 }
 
+function extractUnknownFieldNameFromAirtableError(error) {
+  const message = String(error?.message || error || "");
+  const match = message.match(/Unknown field name:\s*\\?"([^"]+)\\?"/i);
+  return match ? String(match[1] || "").trim() : null;
+}
+
 async function airtableList(tableName, queryParams = {}) {
   const records = [];
   let offset = null;
@@ -566,12 +572,34 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
     "created_time",
     "is_live",
   ];
-  if (fieldSet.has("stop_updating")) requestedFields.push("stop_updating");
+  let includeStopUpdating = fieldSet.has("stop_updating");
+  if (includeStopUpdating) requestedFields.push("stop_updating");
 
-  const rows = await airtableList(TABLE_GROUPS_LIVE, {
-    maxRecords: MAX_RECORDS,
-    "fields[]": requestedFields,
-  });
+  let rows;
+  try {
+    rows = await airtableList(TABLE_GROUPS_LIVE, {
+      maxRecords: MAX_RECORDS,
+      "fields[]": requestedFields,
+    });
+  } catch (error) {
+    const unknownField = extractUnknownFieldNameFromAirtableError(error);
+    if (!includeStopUpdating || unknownField !== "stop_updating") throw error;
+
+    includeStopUpdating = false;
+    console.log(
+      JSON.stringify({
+        ok: true,
+        event: "groups_live_optional_field_skipped",
+        field_name: "stop_updating",
+        table: TABLE_GROUPS_LIVE,
+      })
+    );
+
+    rows = await airtableList(TABLE_GROUPS_LIVE, {
+      maxRecords: MAX_RECORDS,
+      "fields[]": requestedFields.filter((fieldName) => fieldName !== "stop_updating"),
+    });
+  }
 
   const normalizedDays = new Set(Array.from(targetDays || []).map((value) => toIsoDateOnly(value)).filter(Boolean));
   return rows
@@ -590,7 +618,7 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
         ingested_at: strOrNull(fields.ingested_at),
         created_time: strOrNull(fields.created_time),
         is_live: boolValue(fields.is_live),
-        stop_updating: fieldSet.has("stop_updating") ? boolValue(fields.stop_updating) : false,
+        stop_updating: includeStopUpdating ? boolValue(fields.stop_updating) : false,
       };
     })
     .filter((row) => row.class_group_id !== null)
