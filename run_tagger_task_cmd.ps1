@@ -3,7 +3,9 @@ $ErrorActionPreference = 'Stop'
 $env:DRY_RUN   = '0'
 $env:CALC_MODE = 'promote'
 $env:WATCH_VIEW = 'heartbeat'
-$env:PUBLISHER_DELAY_SECONDS = $env:PUBLISHER_DELAY_SECONDS ? $env:PUBLISHER_DELAY_SECONDS : '30'
+if (-not $env:PUBLISHER_DELAY_SECONDS) {
+    $env:PUBLISHER_DELAY_SECONDS = '30'
+}
 
 $repoPath = Split-Path -Parent $PSCommandPath
 $nodePath = 'C:\Program Files\nodejs\node.exe'
