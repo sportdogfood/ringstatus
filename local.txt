@@ -1,3 +1,920 @@
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\publisher.log" -Tail 40
+[2026-05-01 11:37:15] PUBLISH RUN
+publisher start | epoch=1777649836 dry_run=false lane=all
+queue visible=39 dirty=11 bulk=11 differ=0
+bulk job=data-8778--manifest-json table=- view=all_active paths=1
+bulk job error: data-8778--manifest-json | missing_table_or_view
+bulk job=data-8778-schedules-schedule-json table=watch_schedule view=8778-schedule paths=1
+bulk job=data-8778-schedules-trips-json table=watch_trips view=8778-trips paths=1
+warn: data-8778-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-9999--manifest-json table=- view=all_active paths=1
+bulk job error: data-9999--manifest-json | missing_table_or_view
+bulk job=data-9999-schedules-schedule-json table=watch_schedule view=9999-schedule paths=1
+bulk job=data-9999-schedules-trips-json table=watch_trips view=9999-trips paths=1
+warn: data-9999-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-9999-trips-catch-changes-json table=watch_trips view=9999-trips paths=1
+warn: data-9999-trips-catch-changes-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-34933-schedules-trips-json table=watch_trips view=34933-trips paths=1
+warn: data-34933-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-40362--manifest-json table=- view=all_active paths=1
+bulk job error: data-40362--manifest-json | missing_table_or_view
+bulk job=data-40362-schedules-trips-json table=watch_trips view=40362-trips paths=1
+warn: data-40362-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-schedules-master.json table=watch_schedule view=master paths=1
+COMMIT_BULK_RESPONSE 200 {
+  "ok": true,
+  "commit": {
+    "sha": "88e2e5b7afcaf588e187061f505c21bd37c22775",
+    "url": "https://github.com/sportdogfood/ringstatus-data/commit/88e2e5b7afcaf588e187061f505c21bd37c22775"
+  },
+  "committed_paths": [
+    "docs/8778/schedules/schedule.json",
+    "docs/8778/schedules/trips.json",
+    "docs/9999/schedules/schedule.json",
+    "docs/9999/schedules/trips.json",
+    "docs/9999/schedules/trips-catch-changes.json",
+    "docs/schedules/master.json"
+  ]
+}
+
+bulk done: commit(6) | sha=88e2e5b7afcaf588e187061f505c21bd37c22775
+publisher done
+
+
+
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\publisher.log" -Tail 40
+[2026-05-01 11:37:15] PUBLISH RUN
+publisher start | epoch=1777649836 dry_run=false lane=all
+queue visible=39 dirty=11 bulk=11 differ=0
+bulk job=data-8778--manifest-json table=- view=all_active paths=1
+bulk job error: data-8778--manifest-json | missing_table_or_view
+bulk job=data-8778-schedules-schedule-json table=watch_schedule view=8778-schedule paths=1
+bulk job=data-8778-schedules-trips-json table=watch_trips view=8778-trips paths=1
+warn: data-8778-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-9999--manifest-json table=- view=all_active paths=1
+bulk job error: data-9999--manifest-json | missing_table_or_view
+bulk job=data-9999-schedules-schedule-json table=watch_schedule view=9999-schedule paths=1
+bulk job=data-9999-schedules-trips-json table=watch_trips view=9999-trips paths=1
+warn: data-9999-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-9999-trips-catch-changes-json table=watch_trips view=9999-trips paths=1
+warn: data-9999-trips-catch-changes-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-34933-schedules-trips-json table=watch_trips view=34933-trips paths=1
+warn: data-34933-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-40362--manifest-json table=- view=all_active paths=1
+bulk job error: data-40362--manifest-json | missing_table_or_view
+bulk job=data-40362-schedules-trips-json table=watch_trips view=40362-trips paths=1
+warn: data-40362-schedules-trips-json unknown field in fields[]; retrying without fields[] | Unknown field name: "is_parent"
+bulk job=data-schedules-master.json table=watch_schedule view=master paths=1
+COMMIT_BULK_RESPONSE 200 {
+  "ok": true,
+  "commit": {
+    "sha": "88e2e5b7afcaf588e187061f505c21bd37c22775",
+    "url": "https://github.com/sportdogfood/ringstatus-data/commit/88e2e5b7afcaf588e187061f505c21bd37c22775"
+  },
+  "committed_paths": [
+    "docs/8778/schedules/schedule.json",
+    "docs/8778/schedules/trips.json",
+    "docs/9999/schedules/schedule.json",
+    "docs/9999/schedules/trips.json",
+    "docs/9999/schedules/trips-catch-changes.json",
+    "docs/schedules/master.json"
+  ]
+}
+
+bulk done: commit(6) | sha=88e2e5b7afcaf588e187061f505c21bd37c22775
+publisher done
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+  "dry_run": false,
+  "processed_in_view": 37,
+  "eligible_rows": 37,
+  "skipped_rows": 0,
+  "changed_rows": 23,
+  "unchanged_rows": 14,
+  "anomaly_rows": 27,
+  "watch_trips_updates_planned": 23,
+  "watch_trips_patched": 23,
+  "watch_trips_patch_failures": 0,
+  "trip_logs_planned": 23,
+  "trip_logs_created": 23,
+  "trip_logs_failures": 0,
+  "trigger_tags_active": 9,
+  "trigger_hits": 9,
+  "class_alert_classes_in_view": 23,
+  "class_alert_duplicated_classes": 10,
+  "class_alert_parent_rows": 10,
+  "trip_minutes_default_rows": 27,
+  "trip_minutes_source_counts": {
+    "default": 27,
+    "estimated_go_window": 9,
+    "elapsed_from_start": 1
+  },
+  "skip_reason_counts": {},
+  "anomaly_samples": [
+    "FDE34A2E81094CC9A870646D54ABF7E6:trip_minutes_default_missing_rate",
+    "08770E72584F4051A492D703794DA5CE:trip_minutes_default_missing_rate",
+    "ED6855C9423348E38D274FE1C914380F:trip_minutes_default_missing_rate",
+    "89B8979F78DD47A6B76C92A85F020E77:trip_minutes_default_missing_rate",
+    "DA70A83B22FD4BAC9CA5C24BD097EC3F:trip_minutes_default_missing_rate",
+    "7FD69163C0BE413CB510F3CF8B5B8C68:trip_minutes_default_missing_rate",
+    "1E1C8FC307764AF2AB550568F0F57C67:trip_minutes_default_missing_rate",
+    "9430704D547E4904B0C7E481A414808E:trip_minutes_default_missing_rate",
+    "CE6757C044434285BF20D436E6F7A0FC:trip_minutes_default_missing_rate",
+    "85BAB50602484367AA44DF5337874DAC:trip_minutes_default_missing_rate"
+  ],
+  "failed_patch_samples": [],
+  "failed_trip_log_samples": []
+
+
+PS C:\WINDOWS\system32> Get-Content "C:\actions-runner\ringstatus\trips-tagger.log" -Tail 40
+  "row_reason_counts": {
+    "err:no_trip_match": 37
+  },
+  "observed_at": "2026-05-01T15:23:02.391Z",
+  "endpoint_error_samples": [],
+  "failed_row_samples": []
+}
+[2026-05-01 11:36:30] TRIPS_TAGGER RUN
+{
+  "watch_table": "watch_trips",
+  "watch_view": "heartbeat",
+  "shows_table": "shows",
+  "app_endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15",
+  "app_show_id": 200000060,
+  "raw_sql_date": "2026-05-01",
+  "app_sql_date": "2026-05-01",
+  "app_time": "11:36 AM",
+  "mode": "DAY",
+  "shifted_to_next_day": false,
+  "shows_link_record_id": "recqC6CigI8iPID7Q",
+  "processed_in_view": 37,
+  "processed_valid": 37,
+  "updated_rows": 37,
+  "failed_row_updates": 0,
+  "skipped_missing_class_endpoint": 0,
+  "skipped_missing_entryxclasses_uuid": 0,
+  "unique_class_endpoints": 23,
+  "endpoint_fetch_errors": 0,
+  "trip_matched": 23,
+  "trip_not_found": 14,
+  "shows_link_bound": 37,
+  "shows_link_missing": 0,
+  "row_reason_counts": {
+    "err:no_trip_match": 14,
+    "ok:matched_trip": 23
+  },
+  "observed_at": "2026-05-01T15:36:30.783Z",
+  "endpoint_error_samples": [],
+  "failed_row_samples": []
+
+
+
+[2026-05-01 11:41:04] SCHEDULES_DAILYV2 RUN
+{
+  "ok": true,
+  "dry_run": false,
+  "scope": {
+    "heartbeat_record_id": "rec1LKLVmUIdkGHrC",
+    "heartbeat_rid": "rec1LKLVmUIdkGHrC",
+    "hb_at": "2026-05-01T15:40:54.603Z",
+    "app_show_idv2": 200000060,
+    "app_sql_datev2": "2026-05-01",
+    "app_dow_rawv2": "Fri",
+    "shifted_to_next_dayv2": false,
+    "scope_key": "200000060|2026-05-01|Fri|0",
+    "scope_run_id": "200000060-2026-05-01-1777650054",
+    "heartbeat_time": "11:40 AM",
+    "heartbeat_show_date": null,
+    "raw_sql_date": "2026-05-01",
+    "mode": "DAY",
+    "set_to_default_app_sql_date": false,
+    "default_app_sql_date_is": "2026-05-01",
+    "show_app_sql_start_date": "2026-04-29",
+    "show_app_sql_end_date": "2026-05-03",
+    "show_app_name": "2026 ESP Spring 4 (#7179)",
+    "app_sql_date_source": "raw_day",
+    "candidate_app_sql_date": "2026-05-01"
+  },
+  "chosen_source": "dated_schedule",
+  "heartbeat_patch_fields": {
+    "shifted_to_next_day": false,
+    "set_to_default_app_sql_date": false,
+    "show_app_name": "2026 ESP Spring 4 (#7179)"
+  },
+  "row_count": 70,
+  "creates_planned": 0,
+  "updates_planned": 70,
+  "drops_planned": 0,
+  "existing_show_rows": 70,
+  "heartbeat_view_rows": 70,
+  "show_record_bound": true,
+  "fetches": {
+    "dated_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-05-01&show_id=200000060&customer_id=15",
+      "rows": 70,
+      "schedule_show_datev2": "2026-05-01"
+    },
+    "empty_ping_schedule": {
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=200000060&customer_id=15",
+      "rows": 70,
+      "schedule_show_datev2": "2026-05-01"
+    }
+  },
+  "writes": {
+    "created": 0,
+    "updated": 70,
+    "dropped": 0,
+    "create_failures": [],
+    "update_failures": [],
+    "drop_failures": []
+  },
+  "active_groups": {
+    "table": "active_groups",
+    "created_planned": 0,
+    "updated_planned": 40,
+    "inactivated_planned": 82,
+    "writes": {
+      "created": 0,
+      "updated": 40,
+      "inactivated": 82,
+      "create_failures": [],
+      "update_failures": [],
+      "inactivate_failures": []
+    },
+    "skipped": false
+  }
+}
+
+
+
+[2026-05-01 11:16:52] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"OK","calc_mode":"promote","calc_version":"schedules_calculator_v2_1","heartbeat_mode":"DAY","app_show_id":200000060,"app_sql_date":"2026-05-01","target_days":["2026-05-01"],"watch_rows":23,"groups_live_rows":33,"matched_rows":22,"skipped_rows":1,"changed_rows":22,"trigger_tags_active":5,"trigger_hits":5,"logs_planned":23,"logs_created":23,"log_failures":0,"patches_planned":23,"patches_applied":23,"patch_failures":0}
+
+
+[2026-05-01 11:30:12] SCHEDULES_CALCULATORV2 RUN
+{"ok":true,"run_status":"OK","calc_mode":"promote","calc_version":"schedules_calculator_v2_1","heartbeat_mode":"DAY","app_show_id":200000060,"app_sql_date":"2026-05-01","target_days":["2026-05-01"],"watch_rows":23,"groups_live_rows":33,"matched_rows":22,"skipped_rows":1,"changed_rows":22,"trigger_tags_active":5,"trigger_hits":0,"logs_planned":23,"logs_created":23,"log_failures":0,"patches_planned":23,"patches_applied":23,"patch_failures":0}
+
+[2026-05-01 11:19:57] TRIPS_DAILYV2 RUN
+{
+  "ok": true,
+  "dry_run": false,
+  "app_show_id": 200000060,
+  "app_sql_date": "2026-05-01",
+  "app_dow_raw": "Fri",
+  "shifted_to_next_day": false,
+  "mode": "DAY",
+  "active_tenant_ids": 2,
+  "watch_schedule_rows": 70,
+  "watch_schedule_classes": 62,
+  "normalized_rows": 37,
+  "unique_rows": 37,
+  "filtered_out_scheduled_date_mismatch": 0,
+  "people_failures": [],
+  "empty_tenant_ids": [],
+  "tenant_summaries": [
+    {
+      "tenant_id": "8778",
+      "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/people/8778?pid=8778&show_id=200000060&customer_id=15",
+      "trip_count": 116,
+      "empty_payload": false,
+      "watch_trip_rows": 34,
+      "outside_schedule_count": 82,
+      "rider_sync": {
+        "table": "ww_riders",
+        "created_planned": 0,
+        "updated_planned": 14,
+        "writes": {
+          "created": 0,
+          "updated": 14,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "horse_sync": {
+        "table": "ww_horses",
+        "created_planned": 0,
+        "updated_planned": 22,
+        "writes": {
+          "created": 0,
+          "updated": 22,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "active_class_rows": 85,
+      "active_entry_rows": 22,
+      "class_endpoint_failures": []
+    },
+    {
+      "tenant_id": "19676",
+      "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/people/19676?pid=19676&show_id=200000060&customer_id=15",
+      "trip_count": 13,
+      "empty_payload": false,
+      "watch_trip_rows": 3,
+      "outside_schedule_count": 10,
+      "rider_sync": {
+        "table": "ww_riders",
+        "created_planned": 0,
+        "updated_planned": 2,
+        "writes": {
+          "created": 0,
+          "updated": 2,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "horse_sync": {
+        "table": "ww_horses",
+        "created_planned": 0,
+        "updated_planned": 2,
+        "writes": {
+          "created": 0,
+          "updated": 2,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "active_class_rows": 13,
+      "active_entry_rows": 2,
+      "class_endpoint_failures": []
+    }
+  ],
+  "outside_schedule_count": 92,
+  "active_groups": {
+    "table": "active_groups",
+    "created_planned": 32,
+    "updated_planned": 0,
+    "inactivated_planned": 75,
+    "writes": {
+      "created": 32,
+      "updated": 0,
+      "inactivated": 75,
+      "create_failures": [],
+      "update_failures": [],
+      "inactivate_failures": []
+    },
+    "skipped": false
+  },
+  "active_links": {
+    "active_groups_to_classes": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "active_classes_to_groups": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "active_entries_to_classes": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "active_classes_to_entries": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "skipped": false
+  },
+  "creates_planned": 0,
+  "updates_planned": 37,
+  "drops_planned": 0,
+  "existing_show_rows": 37,
+  "heartbeat_view_rows": 37,
+  "writes": {
+    "created": 0,
+    "updated": 0,
+    "dropped": 0,
+    "create_failures": [],
+    "update_failures": [
+      {
+        "record_id": "recfiT0f0D3C3wkyA",
+        "key": "9430704D547E4904B0C7E481A414808E",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recE2ZyrfDCSyXnMO",
+        "key": "DA70A83B22FD4BAC9CA5C24BD097EC3F",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recggXwSg87e2Mh04",
+        "key": "89B8979F78DD47A6B76C92A85F020E77",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recohHLmt9sj9sbB1",
+        "key": "1B5DCB180117450299D3C5E6C26E47DC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec7B4JbYoHRSQRD0",
+        "key": "80A48BBC02E24C5AA348FA82DBEE9798",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recg9JwmwboOckunu",
+        "key": "2243E582764B4BC29DBFDBD4938C1917",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "reca8ePvWPFWVAeIk",
+        "key": "FDE34A2E81094CC9A870646D54ABF7E6",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recrLC52cI1UWXVJB",
+        "key": "0FBC9459ABAD473AA4ECF82ECD27C786",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recvbZBovYJeVozUi",
+        "key": "B887EE50EC9E4FCB953C79CEBF40AF60",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rech0d16G65odqweB",
+        "key": "74BF070CBEAC48A8855C9853EF13B4B4",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec4SnYbNX3LTiZHK",
+        "key": "1CCCE6B3174F4AC28A57C8B54215AEFC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recQGjio1tv0jo4ZO",
+        "key": "35C8B9FC43D04C3691ACF2741063F791",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "reczWFT1N23x2H6Xo",
+        "key": "86CC7899DA204BB4A91C5D499D5A8C08",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec4QIO0e4ejjqa5f",
+        "key": "966CAC52480349FD98A8C6DEEAD2D0D2",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec7ZGsDlJhUV1bhV",
+        "key": "ED6855C9423348E38D274FE1C914380F",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recVkcBhjDoTFYnV5",
+        "key": "234A8B22B79B472CA253B813F421B4DB",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recuF9TTefMv4eOL2",
+        "key": "EF8C2BAA7D8E40A3B1D5816D66454670",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recXdkOIqlwYf2SSY",
+        "key": "85BAB50602484367AA44DF5337874DAC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec7PjxdH4yvduGOl",
+        "key": "CE6757C044434285BF20D436E6F7A0FC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rechcWHDCCXvaxgMB",
+        "key": "244F896AA0C94782BF0F5A54B55D542B",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec0XRK0zOKxywP6d",
+        "key": "34B462349B874727AEA4FB0389323520",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec3ZCaqzixcbG3jM",
+        "key": "7FD69163C0BE413CB510F3CF8B5B8C68",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recsHaiRrG4GgjTyy",
+        "key": "0C4F5AC9B7D04A22B3DBB39252872DC4",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recKUaYzPrpcc5Frm",
+        "key": "1E1C8FC307764AF2AB550568F0F57C67",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recTCUmBEbMWwNaKE",
+        "key": "16FEE2029F014F048894A01835E0D376",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recJf1Ta6mpdbiPBR",
+        "key": "CB6DAB18540C4D748587013A25C1B2B1",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rechWTxC2hURghCMB",
+        "key": "6B70D115F70844E798FB66B9812C4FA6",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recnBBpCylgjy7B3D",
+        "key": "3EBD614BBE374D0FA2033E9A30A73BBA",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec5OIIcVvnuswpzD",
+        "key": "08770E72584F4051A492D703794DA5CE",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recQPyqsxKyYSPbPP",
+        "key": "239CF750DECC444F84F67EE9573E9230",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recPWY2r03Vd89NmT",
+        "key": "90E1D046DF8547518D8091EE8A0B7DBF",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recxA8W2JnV5P9Hvt",
+        "key": "8C9C6A0E05B74DA49C58B06ACC486EA9",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "reccO8lrelE8cMEgb",
+        "key": "B2AB089D7C0C430483447ECF5F9DCE5B",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rectXuICujphQDwOv",
+        "key": "1C51F84CF80041F7A186873D5D835372",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recrGSZuLJWhac7T3",
+        "key": "B42EFDC497B8407BBFE5812361B1C927",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recmiXY1Z8d0aWwWg",
+        "key": "ED40B91FC1F44CE380FDC1357EEE1590",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recGFEP4KVoYypSm8",
+        "key": "F2F3675C09164063AC9ABB9388E9A6DD",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      }
+    ],
+    "drop_failures": []
+  },
+  "schedule_date_backfill": {
+    "planned": 37,
+    "updated": 37,
+    "failures": []
+  }
+}
+[2026-05-01 11:33:22] TRIPS_DAILYV2 RUN
+{
+  "ok": true,
+  "dry_run": false,
+  "app_show_id": 200000060,
+  "app_sql_date": "2026-05-01",
+  "app_dow_raw": "Fri",
+  "shifted_to_next_day": false,
+  "mode": "DAY",
+  "active_tenant_ids": 2,
+  "watch_schedule_rows": 70,
+  "watch_schedule_classes": 62,
+  "normalized_rows": 37,
+  "unique_rows": 37,
+  "filtered_out_scheduled_date_mismatch": 0,
+  "people_failures": [],
+  "empty_tenant_ids": [],
+  "tenant_summaries": [
+    {
+      "tenant_id": "8778",
+      "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/people/8778?pid=8778&show_id=200000060&customer_id=15",
+      "trip_count": 116,
+      "empty_payload": false,
+      "watch_trip_rows": 34,
+      "outside_schedule_count": 82,
+      "rider_sync": {
+        "table": "ww_riders",
+        "created_planned": 0,
+        "updated_planned": 14,
+        "writes": {
+          "created": 0,
+          "updated": 14,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "horse_sync": {
+        "table": "ww_horses",
+        "created_planned": 0,
+        "updated_planned": 22,
+        "writes": {
+          "created": 0,
+          "updated": 22,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "active_class_rows": 85,
+      "active_entry_rows": 22,
+      "class_endpoint_failures": []
+    },
+    {
+      "tenant_id": "19676",
+      "endpoint": "https://broad-tooth-b8ed.gombcg.workers.dev/people/19676?pid=19676&show_id=200000060&customer_id=15",
+      "trip_count": 13,
+      "empty_payload": false,
+      "watch_trip_rows": 3,
+      "outside_schedule_count": 10,
+      "rider_sync": {
+        "table": "ww_riders",
+        "created_planned": 0,
+        "updated_planned": 2,
+        "writes": {
+          "created": 0,
+          "updated": 2,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "horse_sync": {
+        "table": "ww_horses",
+        "created_planned": 0,
+        "updated_planned": 2,
+        "writes": {
+          "created": 0,
+          "updated": 2,
+          "create_failures": [],
+          "update_failures": []
+        }
+      },
+      "active_class_rows": 13,
+      "active_entry_rows": 2,
+      "class_endpoint_failures": []
+    }
+  ],
+  "outside_schedule_count": 92,
+  "active_groups": {
+    "table": "active_groups",
+    "created_planned": 15,
+    "updated_planned": 28,
+    "inactivated_planned": 79,
+    "writes": {
+      "created": 15,
+      "updated": 28,
+      "inactivated": 79,
+      "create_failures": [],
+      "update_failures": [],
+      "inactivate_failures": []
+    },
+    "skipped": false
+  },
+  "active_links": {
+    "active_groups_to_classes": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "active_classes_to_groups": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "active_entries_to_classes": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "active_classes_to_entries": {
+      "planned": 0,
+      "updated": 0,
+      "failures": []
+    },
+    "skipped": false
+  },
+  "creates_planned": 0,
+  "updates_planned": 37,
+  "drops_planned": 0,
+  "existing_show_rows": 37,
+  "heartbeat_view_rows": 37,
+  "writes": {
+    "created": 0,
+    "updated": 0,
+    "dropped": 0,
+    "create_failures": [],
+    "update_failures": [
+      {
+        "record_id": "recfiT0f0D3C3wkyA",
+        "key": "9430704D547E4904B0C7E481A414808E",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recE2ZyrfDCSyXnMO",
+        "key": "DA70A83B22FD4BAC9CA5C24BD097EC3F",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recggXwSg87e2Mh04",
+        "key": "89B8979F78DD47A6B76C92A85F020E77",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recohHLmt9sj9sbB1",
+        "key": "1B5DCB180117450299D3C5E6C26E47DC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec7B4JbYoHRSQRD0",
+        "key": "80A48BBC02E24C5AA348FA82DBEE9798",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recg9JwmwboOckunu",
+        "key": "2243E582764B4BC29DBFDBD4938C1917",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "reca8ePvWPFWVAeIk",
+        "key": "FDE34A2E81094CC9A870646D54ABF7E6",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recrLC52cI1UWXVJB",
+        "key": "0FBC9459ABAD473AA4ECF82ECD27C786",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recvbZBovYJeVozUi",
+        "key": "B887EE50EC9E4FCB953C79CEBF40AF60",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rech0d16G65odqweB",
+        "key": "74BF070CBEAC48A8855C9853EF13B4B4",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec4SnYbNX3LTiZHK",
+        "key": "1CCCE6B3174F4AC28A57C8B54215AEFC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recQGjio1tv0jo4ZO",
+        "key": "35C8B9FC43D04C3691ACF2741063F791",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "reczWFT1N23x2H6Xo",
+        "key": "86CC7899DA204BB4A91C5D499D5A8C08",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec4QIO0e4ejjqa5f",
+        "key": "966CAC52480349FD98A8C6DEEAD2D0D2",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec7ZGsDlJhUV1bhV",
+        "key": "ED6855C9423348E38D274FE1C914380F",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recVkcBhjDoTFYnV5",
+        "key": "234A8B22B79B472CA253B813F421B4DB",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recuF9TTefMv4eOL2",
+        "key": "EF8C2BAA7D8E40A3B1D5816D66454670",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recXdkOIqlwYf2SSY",
+        "key": "85BAB50602484367AA44DF5337874DAC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec7PjxdH4yvduGOl",
+        "key": "CE6757C044434285BF20D436E6F7A0FC",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rechcWHDCCXvaxgMB",
+        "key": "244F896AA0C94782BF0F5A54B55D542B",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec0XRK0zOKxywP6d",
+        "key": "34B462349B874727AEA4FB0389323520",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec3ZCaqzixcbG3jM",
+        "key": "7FD69163C0BE413CB510F3CF8B5B8C68",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recsHaiRrG4GgjTyy",
+        "key": "0C4F5AC9B7D04A22B3DBB39252872DC4",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recKUaYzPrpcc5Frm",
+        "key": "1E1C8FC307764AF2AB550568F0F57C67",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recTCUmBEbMWwNaKE",
+        "key": "16FEE2029F014F048894A01835E0D376",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recJf1Ta6mpdbiPBR",
+        "key": "CB6DAB18540C4D748587013A25C1B2B1",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rechWTxC2hURghCMB",
+        "key": "6B70D115F70844E798FB66B9812C4FA6",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recnBBpCylgjy7B3D",
+        "key": "3EBD614BBE374D0FA2033E9A30A73BBA",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rec5OIIcVvnuswpzD",
+        "key": "08770E72584F4051A492D703794DA5CE",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recQPyqsxKyYSPbPP",
+        "key": "239CF750DECC444F84F67EE9573E9230",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recPWY2r03Vd89NmT",
+        "key": "90E1D046DF8547518D8091EE8A0B7DBF",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recxA8W2JnV5P9Hvt",
+        "key": "8C9C6A0E05B74DA49C58B06ACC486EA9",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "reccO8lrelE8cMEgb",
+        "key": "B2AB089D7C0C430483447ECF5F9DCE5B",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "rectXuICujphQDwOv",
+        "key": "1C51F84CF80041F7A186873D5D835372",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recrGSZuLJWhac7T3",
+        "key": "B42EFDC497B8407BBFE5812361B1C927",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recmiXY1Z8d0aWwWg",
+        "key": "ED40B91FC1F44CE380FDC1357EEE1590",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      },
+      {
+        "record_id": "recGFEP4KVoYypSm8",
+        "key": "F2F3675C09164063AC9ABB9388E9A6DD",
+        "reason": "Airtable patch failed (422) watch_trips: {\"error\":{\"type\":\"INVALID_VALUE_FOR_COLUMN\",\"message\":\"Field \\\"class_endpoint\\\" cannot accept a value because the field is computed\"}}"
+      }
+    ],
+    "drop_failures": []
+  },
+  "schedule_date_backfill": {
+    "planned": 0,
+    "updated": 0,
+    "failures": []
+  }
+}
+
+
+㉛㈰ⴶ㐰ㄭ‴㠰〺㨴㘱⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈱〺㨴㘱㈮〵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨸㔰㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨲㔰㌺⸰㤹娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠰ㄺ㨰㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈱ㄺ㨰㈳ㄮ㈷≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨸㔱㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨲㔱㌺⸱㜲娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠰㈺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈱㈺㨰ㄳ㐮㜵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨸㔲㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨲㔲㌺⸱㤵娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠰㌺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈱㌺㨰ㄳ㌮㈹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨸㔳㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨲㔳㌺⸱㔱娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠰㐺㨰〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈱㐺㨰〳㈮㔵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨸㔴㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨲㔴㌺⸱㌶娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠰㔺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈱㔺㨰ㄳ㈮㠳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨸㔵㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨲㔵㌺⸱㜳娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤰〺㨰㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌱〺㨰㈳㘮㘶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨹㔰㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨳㔰㌺⸱ㄵ娳Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤰ㄺ㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌱ㄺ㨰ㄳ㔮㜲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨹㔱㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨳㔱㌺⸲㄰娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤰㈺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌱㈺㨰ㄳ㔮㐲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨹㔲㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨳㔲㌺⸰㔷娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤰㌺㨰〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌱㌺㨰〳㔮ㄲ≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨹㔳㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨳㔳㌺⸰〶娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤰㐺㨰〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌱㐺㨰〳㜮㔴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨹㔴㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨳㔴㌺⸰㤴娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤰㔺㨰〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌱㔺㨰〳㔮㐶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱〠㨹㔵㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨳㔵㌺⸱㐱娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〱〺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㐱〺㨰ㄳ㠮ㄶ≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨰㔰㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨴㔰㌺⸲㜱娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〱ㄺ㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㐱ㄺ㨰㈳〮㔴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨰㔱㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨴㔱㌺⸱㤰娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〱㈺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㐱㈺㨰ㄳㄮ㤱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨰㔲㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨴㔲㌺⸱㘱娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〱㌺㨰㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㐱㌺㨰㈳㔮㠰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨰㔳㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨴㔳㌺⸱㤳娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〱㐺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㐱㐺㨰ㄳ㌮㤲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨰㔴㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨴㔴㌺⸱㌳娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〱㔺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㐱㔺㨰ㄳ㘮㜷≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨰㔵㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨴㔵㌺⸱㔸娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄱ〺㨰㌳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㔱〺㨰㌳㈮㤶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨱㔰㌺崳吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨵㔰㌺⸳㤲娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄱㄺ㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㔱ㄺ㨰ㄳ㤮㘷≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨱㔱㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨵㔱㌺⸱㜶娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄱ㈺㨰㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㔱㈺㨰㈳㈮㤴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨱㔲㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨵㔲㌺⸲㈴娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄱ㌺㨱㤱⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㔱㌺㨱㤱㤮㠱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨱㔳㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨵㔳㌺⸱㐱娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄱ㐺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㔱㐺㨰ㄳ㈮㌶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨱㔴㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨵㔴㌺⸱㔱娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄱ㔺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㔱㔺㨰ㄳ㌮㐷≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨱㔵㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨵㔵㌺⸱ㄳ娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈱〺㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㘱〺㨰ㄳ㔮〰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨲㔰㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨶㔰㌺⸲㠰娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈱ㄺ㨰ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㘱ㄺ㨰ㄳ㐮㠲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨲㈱㔺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨶㈱㔺⸹㜹娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈱ㄺ㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㘱ㄺ㨵〳㤮㠴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨲〲㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨶〲㌺⸱㤸娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈱㈺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㘱㈺㨵ㄳㄮ㤳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨲〳㌺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨶〳㌺⸵㔴娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈱㌺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㘱㌺㨵〳㤮㈱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨲〴㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨶〴㌺⸱㌰娳Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈱㐺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㘱㐺㨵〳㜮㜶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨲〵㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨶〵㌺⸱㌷娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈱㔺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㘱㔺㨵〳㠮㌱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨳〰㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨷〰㌺⸲㠳娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㌱〺㨵㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㜱〺㨵㈳㘮㤵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨳〱㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨷〱㌺⸲㤷娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㌱ㄺ㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㜱ㄺ㨵〳㐮〸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨳〲㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨷〲㌺⸱㜲娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㌱㈺㨵㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㜱㈺㨵㈳㈮㜲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨳〳㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨷〳㌺⸱㤷娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㌱㌺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㜱㌺㨵〳㤮㌶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨳〴㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨷〴㌺⸰㤵娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㌱㐺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㜱㐺㨵ㄳㄮ㌶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨳〵㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨷〵㌺⸰㌷娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㌱㔺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㜱㔺㨵〳㜮〹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨴〰㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨸〰㌺⸲㠳娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㐱〺㨵㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㠱〺㨵㈳㌮〴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨴〱㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨸〱㌺⸱㌴娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㐱ㄺ㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㠱ㄺ㨵ㄳ㤮㈰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨴〲㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨸〲㌺⸲㠱娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㐱㈺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㠱㈺㨵ㄳ㜮㜹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨴〳㌺崳吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨸〳㌺⸳㤰娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㐱㌺㨵㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㠱㌺㨵㈳㌮㐴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨴〴㌺崳吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨸〴㌺⸴㐰娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㐱㐺㨵㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㠱㐺㨵㈳㘮〹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨴〵㐺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨸〵㐺⸲㠲娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㐱㔺㨵㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㠱㔺㨵㈳ㄮ〴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨵㄰㈺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨹㄰㈺⸹㐹娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㔱〺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㤱〺㨵ㄳ㠮㘹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨵〱㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨹〱㌺⸲㌳娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㔱ㄺ㨶㜲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㤱ㄺ㨶㜲㤮ㄵ≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨵〲㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨹〲㌺⸲㤹娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㔱㈺㨵㈳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㤱㈺㨵㈳㔮㈵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨵〳㌺崳吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨹〳㌺⸳㘴娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㔱㌺㨵㔳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㤱㌺㨵㔳㌮㈲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨵〴㌺崶吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨹〴㌺⸶㔶娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㔱㐺㨵㜳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㤱㐺㨵㜳㤮㜵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨵〵㐺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱ㅔ㨹〵㐺⸱㠷娳Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㔱㔺㨵㤲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㤱㔺㨵㤲㘮㤸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨶〰㈺崸吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨰〰㈺⸸㈶娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㘱〺㨵㜲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴〲〺㨵㜲㤮㤱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨶〱㈺崷吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨰〱㈺⸷㜵娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㘱ㄺ㨵㜲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴〲ㄺ㨵㜲㠮㔵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨶〲㈺崷吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨰〲㈺⸷㜶娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㘱㈺㨵㠲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴〲㈺㨵㠲㌮㜶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨶〳㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨰〳㌺⸱㜵娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㘱㌺㨵㠲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴〲㌺㨵㠲㌮〲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨶〴㈺崷吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨰〴㈺⸷㘸娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㘱㐺㨵㜲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴〲㐺㨵㜲㠮㈵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨶〵㈺崸吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨰〵㈺⸸ㄱ娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㘱㔺㨵㠲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴〲㔺㨵㠲㌮㌳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨷〰㈺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨱〰㈺⸹㠴娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㜱〺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴ㄲ〺㨵ㄳ〮㤸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨷〱㈺崷吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨱〱㈺⸸㈰娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㜱ㄺ㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴ㄲㄺ㨵ㄳ㔮㐲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨷〲㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨱〲㌺⸰㔶娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㜱㈺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴ㄲ㈺㨵〳㠮㈳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨷〳㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨱〳㌺⸱㐲娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㜱㌺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴ㄲ㌺㨵〳㠮ㄷ≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨷〴㈺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨱〴㈺⸹㜹娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㜱㐺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴ㄲ㐺㨵〳㤮㤵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨷〵㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨱〵㌺⸰〸娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㜱㔺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴ㄲ㔺㨵〳㤮㜴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨸〰㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨲〰㌺⸲㈱娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠱〺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈲〺㨵ㄳㄮㄵ≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨸〱㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨲〱㌺⸰㤲娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠱ㄺ㨵㘳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈲ㄺ㨵㘳㐮㤴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨸〲㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨲〲㌺⸰ㄶ娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠱㈺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈲㈺㨵〳㠮㔵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨸〳㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨲〳㌺⸰〹娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠱㌺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈲㌺㨵ㄳㄮ㠰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨸〴㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨲〴㌺⸰㠸娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠱㐺㨵㔴⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈲㐺㨵㘴〮㈲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨸〵㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨲〵㌺⸱㌱娳Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㠱㔺㨵㤲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㈲㔺㨵㤲㐮ㄴ≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨹〰㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨳〰㌺⸰㈳娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤱〺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌲〺㨵〳㘮㈷≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨹〱㈺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨳〱㌺⸰㌰娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤱ㄺ㨵㐴⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌲ㄺ㨵㐴㈮㘸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨹〲㈺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨳〲㈺⸹㠱娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤱㈺㨵㤲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌲㈺㨵㤲㔮㌰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨹〳㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨳〳㌺⸰㠷娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤱㌺㨵㤲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌲㌺㨵㤲㔮㌳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨹〴㌺崱吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨳〴㌺⸱㈲娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤱㐺㨵ㄳ⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌲㐺㨵ㄳㄮ㈰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱ㄠ㨹〵㈺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㐱㉔㨳〵㈺⸹㘷娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㤱㔺㨵㤲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吴㌲㔺㨵㤲㌮㔲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨰〰㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨰〰㌺⸰㈵娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〲〺㨵〳⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〰〺㨵〳ㄮ㤰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨰〱㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨰〱㌺⸰㠹娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〲ㄺ㨵㤲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〰ㄺ㨵㤲㜮㤶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨰〲㌺崰吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨰〲㌺⸰〱娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〲㈺㨵㤲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〰㈺㨵㤲㠮㘸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨰〳㈺崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨰〳㈺⸹㌷娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〲㌺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〰㌺㨵㐲㐮㐱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨰〴㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨰〴㈺⸴㔶娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〲㐺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〰㐺㨵㐲㌮㈶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨰〵㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨰〵㈺⸴㈴娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴〲㔺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〰㔺㨵㐲㠮㠷≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨱〰㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨱〰㈺⸵㌳娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄲ〺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㄰〺㨵㔲ㄮ㠳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨱〱㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨱〱㈺⸵㘱娹Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄲㄺ㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㄰ㄺ㨵㐲〮㌸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨱〲㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨱〲㈺⸴㔳娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄲ㈺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㄰㈺㨵㐲㌮〵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨱〳㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨱〳㈺⸴㠱娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄲ㌺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㄰㌺㨵㐲㐮〲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨱〴㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨱〴㈺⸴㔳娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄲ㐺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㄰㐺㨵㐲㠮㜸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨱〵㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨱〵㈺⸴〸娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴ㄲ㔺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㄰㔺㨵㔲㈮㠰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨲〰㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨲〰㈺⸴㠷娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈲〺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈰〺㨵㐲㜮㘵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨲〱㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨲〱㈺⸵㠰娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈲ㄺ㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈰ㄺ㨵㐲㌮㘱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨲〲㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨲〲㌺⸲㜳娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈲㈺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈰㈺㨵㔲㔮㈱≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨲〳㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨲〳㈺⸴㤶娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈲㌺㨵㌲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈰㌺㨵㌲㤮㘴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㐱㈠㨲〴㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ご㨲〴㈺⸴㠳娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‴㈲㐺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈰㐺㨵㐲㌮㜳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨶㐳ㄺ崹吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨰㐳ㄺ⸹㤱娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㘰㌺㨵㠲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〱㌺㨵㤲〮㜲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨶〴㈺崳吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨰〴㈺⸴㈰娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㘰㐺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〱㐺㨵㐲ㄮㄶ≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨶〵㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨰〵㈺⸴㌴娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㘰㔺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵〱㔺㨵㐲㐮㔹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨷〰㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨱〰㈺⸴㜴娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㜰〺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵ㄱ〺㨵㐲㔮〵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨷〱㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨱〱㈺⸴〴娰Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㜰ㄺ㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵ㄱㄺ㨵㐲㌮㠴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨷〲㈺崳吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨱〲㈺⸳㌷娳Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㜰㈺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵ㄱ㈺㨵㔲㜮㘰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨷〳㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨱〳㈺⸴㘳娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㜰㌺㨵㌲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵ㄱ㌺㨵㐲〮㈴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨷〴㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨱〴㈺⸴㘱娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㜰㐺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵ㄱ㐺㨵㐲㐮〰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨷〵㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨱〵㈺⸴㔵娲Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㜰㔺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵ㄱ㔺㨵㐲㜮㈴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨸〰㌺崲吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨲〰㌺⸲㈱娶Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㠰〺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈱〺㨵㐲㐮〶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨸〱㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨲〱㈺⸴㘶娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㠰ㄺ㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈱ㄺ㨵㐲㈮㌲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨸〲㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨲〲㈺⸵㤸娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㠰㈺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈱㈺㨵㐲㤮㐳≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨸〳㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨲〳㈺⸵㌱娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㠰㌺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈱㌺㨵㔲㤮㐸≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨸〴㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨲〴㈺⸵㌲娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㠰㐺㨵㐲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈱㐺㨵㐲㐮㔴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨸〵㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨲〵㈺⸴㠹娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㠰㔺㨵㜲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㈱㔺㨵㜲〮㔹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨹〰㈺崶吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨳〰㈺⸶ㄶ娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㤰〺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㌱〺㨵㔲㜮㈲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨹〱㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨳〱㈺⸵ㄵ娱Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㤰ㄺ㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㌱ㄺ㨵㔲㜮㔴≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨹〲㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨳〲㈺⸵㜷娳Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㤰㈺㨵㘲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㌱㈺㨵㘲㔮㈹≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨹〳㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨳〳㈺⸵㔷娵Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㤰㌺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㌱㌺㨵㔲㌮㔶≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨹〴㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨳〴㈺⸵㔶娸Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㤰㐺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㌱㐺㨵㔲㔮〲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱〠㨹〵㈺崴吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨳〵㈺⸴〹娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵㤰㔺㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㌱㔺㨵㔲㈮㔵≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱ㄠ㨰〰㈺崵吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨴〰㈺⸵〴娷Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵〱〺㨵㠲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㐱〺㨵㠲㔮㘰≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ嬊〲㘲〭ⴴ㔱ㄠ㨰〱㈺崶吠䥒卐䍟䱁啃䅌佔⁒啒ൎ笊਍†挢污彣畲彮摩㨢∠〲㘲〭ⴴ㔱ㅔ㨴〱㈺⸶㌴娴Ⱒ਍†挢污彣潭敤㨢∠牰浯瑯≥ബ ∠慣捬癟牥楳湯㨢∠牴灩彳慣捬汵瑡牯癟弱∳ബ ∠牤役畲≮›慦獬ⱥ਍†瀢潲散獳摥楟彮楶睥㨢〠ബ ∠汥杩扩敬牟睯≳›ⰰ਍†猢楫灰摥牟睯≳›ⰰ਍†挢慨杮摥牟睯≳›ⰰ਍†產据慨杮摥牟睯≳›ⰰ਍†愢潮慭祬牟睯≳›ⰰ਍†眢瑡档瑟楲獰畟摰瑡獥灟慬湮摥㨢〠ബ ∠慷捴彨牴灩彳慰捴敨≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档晟楡畬敲≳›ⰰ਍†琢楲彰潬獧灟慬湮摥㨢〠ബ ∠牴灩江杯彳牣慥整≤›ⰰ਍†琢楲彰潬獧晟楡畬敲≳›ⰰ਍†挢慬獳慟敬瑲损慬獳獥楟彮楶睥㨢〠ബ ∠汣獡彳污牥彴畤汰捩瑡摥损慬獳獥㨢〠ബ ∠汣獡彳污牥彴慰敲瑮牟睯≳›ⰰ਍†琢楲彰業畮整彳敤慦汵彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥獟畯捲彥潣湵獴㨢笠ⱽ਍†猢楫彰敲獡湯损畯瑮≳›絻ബ ∠湡浯污役慳灭敬≳›嵛ബ ∠慦汩摥灟瑡档獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤牴灩江杯獟浡汰獥㨢嬠൝紊਍㉛㈰ⴶ㐰ㄭ‵〱ㄺ㨵㔲⁝剔偉当䅃䍌䱕呁剏删乕਍ൻ ∠慣捬牟湵楟≤›㈢㈰ⴶ㐰ㄭ吵㐱ㄺ㨵㔲㐮〲≚ബ ∠慣捬浟摯≥›瀢潲潭整Ⱒ਍†挢污彣敶獲潩≮›琢楲獰损污畣慬潴彲ㅶ㍟Ⱒ਍†搢祲牟湵㨢映污敳ബ ∠牰捯獥敳彤湩癟敩≷›ⰰ਍†攢楬楧汢彥潲獷㨢〠ബ ∠歳灩数彤潲獷㨢〠ബ ∠档湡敧彤潲獷㨢〠ബ ∠湵档湡敧彤潲獷㨢〠ബ ∠湡浯污役潲獷㨢〠ബ ∠慷捴彨牴灩彳灵慤整彳汰湡敮≤›ⰰ਍†眢瑡档瑟楲獰灟瑡档摥㨢〠ബ ∠慷捴彨牴灩彳慰捴彨慦汩牵獥㨢〠ബ ∠牴灩江杯彳汰湡敮≤›ⰰ਍†琢楲彰潬獧损敲瑡摥㨢〠ബ ∠牴灩江杯彳慦汩牵獥㨢〠ബ ∠汣獡彳污牥彴汣獡敳彳湩癟敩≷›ⰰ਍†挢慬獳慟敬瑲摟灵楬慣整彤汣獡敳≳›ⰰ਍†挢慬獳慟敬瑲灟牡湥彴潲獷㨢〠ബ ∠牴灩浟湩瑵獥摟晥畡瑬牟睯≳›ⰰ਍†琢楲彰業畮整彳潳牵散损畯瑮≳›絻ബ ∠歳灩牟慥潳彮潣湵獴㨢笠ⱽ਍†愢潮慭祬獟浡汰獥㨢嬠ⱝ਍†昢楡敬彤慰捴彨慳灭敬≳›嵛ബ ∠慦汩摥瑟楲彰潬彧慳灭敬≳›嵛਍ൽ
+
 robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" trips_dailyv2.js
 
 
