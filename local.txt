@@ -1,3 +1,13 @@
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
+powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
+Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 120
+
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
+powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
+Get-Content "C:\actions-runner\ringstatus\runner-pipeline.log" -Tail 120
+Get-Content "C:\actions-runner\ringstatus\schedules-dailyv2.log" -Tail 80
+
+
 [2026-05-01 14:18:43] SCHEDULES_CALCULATORV2 RUN
 {"ok":true,"run_status":"OK","calc_mode":"promote","calc_version":"schedules_calculator_v2_1","heartbeat_mode":"DAY","app_show_id":200000060,"app_sql_date":"2026-05-01","target_days":["2026-05-01"],"watch_rows":23,"groups_live_rows":33,"matched_rows":22,"skipped_rows":1,"changed_rows":22,"trigger_tags_active":5,"trigger_hits":1,"logs_planned":23,"logs_created":23,"log_failures":0,"patches_planned":23,"patches_applied":23,"patch_failures":0}
 
