@@ -3,3 +3,15 @@ robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\
 
 Get-Content "C:\actions-runner\ringstatus\trips-tagger.log" -Tail 40
 Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+
+robocopy "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus" "C:\ringstatus-task" trips_dailyv2.js trips_calculator.js
+
+
+Rename-Item "C:\actions-runner\ringstatus\trips-calculatorv2.log" "trips-calculatorv2.old.log" -ErrorAction SilentlyContinue
+Rename-Item "C:\actions-runner\ringstatus\trips-dailyv2.log" "trips-dailyv2.old.log" -ErrorAction SilentlyContinue
+Rename-Item "C:\actions-runner\ringstatus\trips-tagger.log" "trips-tagger.old.log" -ErrorAction SilentlyContinue
+Rename-Item "C:\actions-runner\ringstatus\publisher.log" "publisher.old.log" -ErrorAction SilentlyContinue
+
+Get-Content "C:\actions-runner\ringstatus\trips-tagger.log" -Tail 40
+Get-Content "C:\actions-runner\ringstatus\trips-calculatorv2.log" -Tail 40
+Get-Content "C:\actions-runner\ringstatus\publisher.log" -Tail 40

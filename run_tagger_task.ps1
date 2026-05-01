@@ -7,6 +7,7 @@ $env:AIRTABLE_BASE_ID  = 'apptdhhNzduxm5gjn'
 $env:AIRTABLE_TABLE    = 'tblCnHDB4IVtxqulo'
 $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
 $env:CUSTOMER_ID       = '15'
+$env:PUBLISHER_DELAY_SECONDS = $env:PUBLISHER_DELAY_SECONDS ? $env:PUBLISHER_DELAY_SECONDS : '30'
 
 $repoPath = Split-Path -Parent $PSCommandPath
 $nodePath = 'C:\Program Files\nodejs\node.exe'
@@ -39,10 +40,20 @@ function Run-Step {
     $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
     $allText = "[$timestamp] $Label RUN`r`n"
     $scriptPath = Join-Path $repoPath $ScriptName
+    $startedAt = Get-Date
 
     $nodeOutput = & $nodePath $scriptPath 2>&1 | Out-String
     $exitCode = $LASTEXITCODE
+    $durationMs = [int][Math]::Round(((Get-Date) - $startedAt).TotalMilliseconds)
     $allText += $nodeOutput
+    $allText += ("{0}`r`n" -f (@{
+        ok = ($exitCode -eq 0)
+        event = 'step_completed'
+        label = $Label
+        script = $ScriptName
+        exit_code = $exitCode
+        duration_ms = $durationMs
+    } | ConvertTo-Json -Compress))
 
     [System.IO.File]::AppendAllText(
         $LogPath,
@@ -58,6 +69,7 @@ function Run-Step {
                 ExitCode = $exitCode
                 LogPath = $LogPath
                 Timestamp = $timestamp
+                DurationMs = $durationMs
             }
             return
         }
@@ -74,7 +86,10 @@ Run-Step -Label 'TRIPS_DAILYV2'          -ScriptName 'trips_dailyv2.js'         
 Run-Step -Label 'TRIPS_TAGGER'           -ScriptName 'trips_tagger.js'           -LogPath "$logDir\trips-tagger.log"
 Run-Step -Label 'TRIPS_CALCULATORV2'     -ScriptName 'trips_calculatorv2.js'     -LogPath "$logDir\trips-calculatorv2.log" -ContinueOnError
 
-Start-Sleep -Seconds 30
+$publisherDelaySeconds = [int]($env:PUBLISHER_DELAY_SECONDS)
+if ($publisherDelaySeconds -gt 0) {
+    Start-Sleep -Seconds $publisherDelaySeconds
+}
 
 Run-Step -Label 'PUBLISH'            -ScriptName 'publisher.js'          -LogPath "$logDir\publisher.log"
 
