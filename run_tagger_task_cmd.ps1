@@ -102,6 +102,34 @@ function Write-PipelineEvent {
     Append-Utf8Text -Path $summaryPath -Text "[$timestamp] RUNNER PIPELINE`r`n$json`r`n"
 }
 
+function Get-TrackedFileState {
+    param([string[]]$RelativePaths)
+
+    $items = @()
+    foreach ($relativePath in $RelativePaths) {
+        $fullPath = Join-Path $repoPath $relativePath
+        if (-not (Test-Path $fullPath)) {
+            $items += [pscustomobject]@{
+                path = $relativePath
+                exists = $false
+            }
+            continue
+        }
+
+        $item = Get-Item $fullPath
+        $hash = (Get-FileHash -Algorithm SHA256 -Path $fullPath).Hash
+        $items += [pscustomobject]@{
+            path = $relativePath
+            exists = $true
+            length = $item.Length
+            last_write_time = $item.LastWriteTime.ToString('o')
+            sha256 = $hash
+        }
+    }
+
+    return $items
+}
+
 function Run-Step {
     param(
         [string]$Label,
@@ -162,6 +190,16 @@ Write-PipelineEvent @{
     event = 'pipeline_started'
     publisher_delay_seconds = [int]$env:PUBLISHER_DELAY_SECONDS
     repo_path = $repoPath
+    tracked_files = Get-TrackedFileState @(
+        'run_tagger_task.cmd',
+        'run_tagger_task_cmd.ps1',
+        'schedules_dailyv2.js',
+        'schedules_calculatorv2.js',
+        'trips_dailyv2.js',
+        'trips_tagger.js',
+        'trips_calculator.js',
+        'publisher.js'
+    )
 }
 
 Run-Step -Label 'TAGGER'                  -ScriptName 'tagger.js'                  -LogPath "$logDir\epoch-tagger.log"
