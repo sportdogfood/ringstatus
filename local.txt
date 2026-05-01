@@ -1,3 +1,9 @@
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\apply_runner_hotfix_and_collect.ps1"
+
+powershell -ExecutionPolicy Bypass -File "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\sync_runner_hotfix.ps1"
+powershell -ExecutionPolicy Bypass -File "C:\ringstatus-task\run_tagger_task.ps1"
+
+
 [2026-05-01 15:17:17] SCHEDULES_CALCULATORV2 RUN
 {"ok":true,"run_status":"OK","calc_mode":"promote","calc_version":"schedules_calculator_v2_1","heartbeat_mode":"DAY","app_show_id":200000060,"app_sql_date":"2026-05-01","target_days":["2026-05-01"],"watch_rows":27,"groups_live_rows":33,"matched_rows":25,"skipped_rows":2,"changed_rows":25,"trigger_tags_active":5,"trigger_hits":2,"logs_planned":27,"logs_created":27,"log_failures":0,"patches_planned":27,"patches_applied":27,"patch_failures":0}
 {"event":"step_completed","label":"SCHEDULES_CALCULATORV2","script":"schedules_calculatorv2.js","ok":true,"duration_ms":226367,"exit_code":0}
