@@ -1180,6 +1180,22 @@ async function runDaily() {
   const heartbeatViewRows = await fetchHeartbeatViewRows().catch(() => []);
   const heartbeatViewIdSet = new Set(heartbeatViewRows.map((row) => row.id));
 
+  const zeroRowScheduleFailure = chosen.rows.length === 0 &&
+    existingRows.length > 0 &&
+    (
+      !datedResult.rows.length ||
+      !emptyResult.ok ||
+      !!emptyResult.error
+    );
+
+  if (zeroRowScheduleFailure) {
+    throw new Error(
+      `Refusing destructive zero-row schedule sync for show ${scope.app_show_idv2} on ${scope.app_sql_datev2}; ` +
+      `dated_rows=${datedResult.rows.length} empty_rows=${emptyResult.rows.length} empty_ok=${emptyResult.ok} ` +
+      `empty_error=${emptyResult.error || 'none'} existing_rows=${existingRows.length}`
+    );
+  }
+
   const groupedExisting = new Map();
   for (const row of existingRows) {
     const key = normalizeKey(row?.fields?.class_groupxclasses_id);
