@@ -759,10 +759,41 @@ async function fetchShowsMap() {
       }
 
       const classJson = cached.json;
+      const classJsonKeys =
+        classJson && typeof classJson === "object"
+          ? Object.keys(classJson)
+          : [];
       const classRelated =
         classJson?.class_related_data && typeof classJson.class_related_data === "object"
           ? classJson.class_related_data
           : null;
+      const trips = Array.isArray(classRelated?.trips)
+        ? classRelated.trips
+        : Array.isArray(classJson?.trips)
+        ? classJson.trips
+        : [];
+
+      const classPayloadEmpty =
+        classJsonKeys.length === 0 ||
+        (
+          trips.length === 0 &&
+          classJsonKeys.every((k) => k === "show_id")
+        );
+
+      if (classPayloadEmpty) {
+        let reason = "err:class_empty_payload_preserved";
+        if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+        endpoint_fetch_errors++;
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
+        endpointErrors.push({
+          endpoint: classEndpoint,
+          reason,
+          detail: "{}"
+        });
+        updates.push({ id: rec.id, fields: updateFields });
+        continue;
+      }
 
       const class_status = normStr(
         firstNonBlank(
@@ -825,12 +856,6 @@ async function fetchShowsMap() {
           pickFrom(classJson, ["estimated_time"])
         )
       );
-
-      const trips = Array.isArray(classRelated?.trips)
-        ? classRelated.trips
-        : Array.isArray(classJson?.trips)
-        ? classJson.trips
-        : [];
 
       const matchedTrip =
         trips.find((t) => {
