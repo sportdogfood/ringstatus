@@ -1405,9 +1405,12 @@ function statusAllowsConditionalClear(value) {
 }
 
 function shouldPreserveConditionalRsValue(fieldName, prevValue, nextValue, computedOutputs) {
-  if (!RS_CONDITIONAL_CLEAR_FIELDS.has(fieldName)) return false;
   if (prevValue === null || prevValue === undefined) return false;
   if (nextValue !== null) return false;
+
+  // Global guard: do not clear rs_* fields just because a source field came back null.
+  // Only the explicitly approved conditional subset can clear, and only when complete/gone_in.
+  if (!RS_CONDITIONAL_CLEAR_FIELDS.has(fieldName)) return true;
 
   const goneIn = numOrNull(computedOutputs?.[WATCH_FIELDS.RS.GONE_IN]);
   const rsStatus = computedOutputs?.[WATCH_FIELDS.RS.STATUS];
