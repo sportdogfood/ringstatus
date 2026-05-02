@@ -28,6 +28,7 @@ const CALC_MODE = String(process.env.CALC_MODE || "shadow").trim().toLowerCase()
   ? "promote"
   : "shadow";
 const CALC_VERSION = String(process.env.CALC_VERSION || "trips_calculator_v1_3").trim();
+const WATCH_LAST_LOG_FIELD = String(process.env.WATCH_LAST_LOG_FIELD || "last_log").trim();
 
 function optionalFieldEnv(name) {
   return String(process.env[name] || "").trim();
@@ -276,6 +277,17 @@ const OUTPUT_TEXT_FIELDS = new Set([
   WATCH_FIELDS.RS.END_TIME,
   WATCH_FIELDS.RS.GO_TIME_FROM_START,
   WATCH_FIELDS.RS.CLASS_ALERT_PARENT_RECORD_ID,
+]);
+
+const RS_CONDITIONAL_CLEAR_FIELDS = new Set([
+  WATCH_FIELDS.RS.MIN_TILL_GO,
+  WATCH_FIELDS.RS.MIN_TO_ACTUAL_GO,
+  WATCH_FIELDS.RS.MINS_SINCE_START,
+  WATCH_FIELDS.RS.MINS_TILL_START,
+  WATCH_FIELDS.RS.ORDER_OF_GO,
+  WATCH_FIELDS.RS.RUNNING_ORDER_OF_GO,
+  WATCH_FIELDS.RS.GO_MINS_FROM_START,
+  WATCH_FIELDS.RS.GO_TIME_FROM_START,
 ]);
 
 function requireEnv(name, value) {
@@ -879,7 +891,7 @@ async function airtablePatchRecords({ table, updates }) {
 }
 
 async function airtableCreateRecords({ table, records }) {
-  if (!records.length) return;
+  if (!records.length) return [];
 
   const res = await fetchWithRetry(airtableUrl(table), {
     method: "POST",
@@ -900,6 +912,15 @@ async function airtableCreateRecords({ table, records }) {
     err._airtable_body = parsed.body;
     throw err;
   }
+
+  const body = await res.text().catch(() => "");
+  let json = {};
+  try {
+    json = body ? JSON.parse(body) : {};
+  } catch (_) {
+    json = {};
+  }
+  return Array.isArray(json?.records) ? json.records : [];
 }
 
 async function airtablePatchWithFallback({ table, updates }) {
@@ -933,10 +954,11 @@ async function airtablePatchWithFallback({ table, updates }) {
 }
 
 async function airtableCreateWithFallback({ table, records }) {
-  if (!records.length) return { okRows: 0, failedRows: [] };
+  if (!records.length) return { okRows: 0, failedRows: [], createdRows: [] };
 
   let okRows = 0;
   const failedRows = [];
+  const createdRows = [];
   const ignoredUnknownFields = new Set();
 
   for (const originalBatch of chunk(records, 10)) {
@@ -948,8 +970,11 @@ async function airtableCreateWithFallback({ table, records }) {
     try {
       while (true) {
         try {
-          await airtableCreateRecords({ table, records: batch });
+          const created = await airtableCreateRecords({ table, records: batch });
           okRows += batch.length;
+          if (Array.isArray(created) && created.length > 0) {
+            createdRows.push(...created);
+          }
           break;
         } catch (batchErr) {
           const unknownField = extractUnknownFieldName(batchErr);
@@ -970,8 +995,11 @@ async function airtableCreateWithFallback({ table, records }) {
         try {
           while (true) {
             try {
-              await airtableCreateRecords({ table, records: [row] });
+              const created = await airtableCreateRecords({ table, records: [row] });
               okRows += 1;
+              if (Array.isArray(created) && created.length > 0) {
+                createdRows.push(...created);
+              }
               break;
             } catch (rowErr) {
               const unknownField = extractUnknownFieldName(rowErr);
@@ -994,7 +1022,7 @@ async function airtableCreateWithFallback({ table, records }) {
     }
   }
 
-  return { okRows, failedRows };
+  return { okRows, failedRows, createdRows };
 }
 
 function buildRawInputs(fields) {
@@ -1371,6 +1399,23 @@ function sameOutputValue(fieldName, left, right) {
   return a === b;
 }
 
+function statusAllowsConditionalClear(value) {
+  const text = String(value || "").trim().toLowerCase();
+  return text === "complete" || text === "completed";
+}
+
+function shouldPreserveConditionalRsValue(fieldName, prevValue, nextValue, computedOutputs) {
+  if (!RS_CONDITIONAL_CLEAR_FIELDS.has(fieldName)) return false;
+  if (prevValue === null || prevValue === undefined) return false;
+  if (nextValue !== null) return false;
+
+  const goneIn = numOrNull(computedOutputs?.[WATCH_FIELDS.RS.GONE_IN]);
+  const rsStatus = computedOutputs?.[WATCH_FIELDS.RS.STATUS];
+  const allowClear = goneIn === 1 || statusAllowsConditionalClear(rsStatus);
+
+  return !allowClear;
+}
+
 function buildPriorOutputs(fields, outputFieldNames = WATCH_OUTPUT_FIELDS) {
   const out = {};
   for (const fieldName of outputFieldNames) {
@@ -1384,8 +1429,16 @@ function buildChangedFields(priorOutputs, computedOutputs, outputFieldNames = WA
   const patchFields = {};
 
   for (const fieldName of outputFieldNames) {
-    const nextValue = normalizeOutputValue(fieldName, computedOutputs[fieldName]);
+    const normalizedNext = normalizeOutputValue(fieldName, computedOutputs[fieldName]);
     const prevValue = normalizeOutputValue(fieldName, priorOutputs[fieldName]);
+    const nextValue = shouldPreserveConditionalRsValue(
+      fieldName,
+      prevValue,
+      normalizedNext,
+      computedOutputs
+    )
+      ? prevValue
+      : normalizedNext;
     if (sameOutputValue(fieldName, prevValue, nextValue)) continue;
     changedNames.push(fieldName);
     patchFields[fieldName] = nextValue;
@@ -1809,9 +1862,16 @@ async function main() {
   requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
   const calcRunId = new Date().toISOString();
+  const watchTableFieldMeta = await airtableTableFieldMeta(WATCH_TABLE);
   const watchTableFieldSet = await airtableTableFieldSet(WATCH_TABLE);
   const tripLogFieldMeta = await airtableTableFieldMeta(TRIP_LOGS_TABLE);
   const tripLogFieldSet = new Set(tripLogFieldMeta.keys());
+  const lastLogFieldMeta = watchTableFieldMeta.get(WATCH_LAST_LOG_FIELD) || null;
+  const canWriteLastLogField = !!(
+    WATCH_LAST_LOG_FIELD &&
+    lastLogFieldMeta &&
+    String(lastLogFieldMeta.type || "").trim() === "multipleRecordLinks"
+  );
   const activeTriggerTags = await fetchActiveTriggerTags();
   const priorTripLogByUuid = await fetchPriorTripLogMap(activeTriggerTags);
   const activeWatchOutputFields = WATCH_OUTPUT_FIELDS.filter((fieldName) => watchTableFieldSet.has(fieldName));
@@ -1836,6 +1896,11 @@ async function main() {
     watch_trips_updates_planned: 0,
     watch_trips_patched: 0,
     watch_trips_patch_failures: 0,
+    watch_trips_last_log_field: WATCH_LAST_LOG_FIELD || null,
+    watch_trips_last_log_field_writable: canWriteLastLogField,
+    watch_trips_last_log_planned: 0,
+    watch_trips_last_log_patched: 0,
+    watch_trips_last_log_patch_failures: 0,
     trip_logs_planned: 0,
     trip_logs_created: 0,
     trip_logs_failures: 0,
@@ -1996,6 +2061,43 @@ async function main() {
         summary.failed_trip_log_samples,
         `${failure.entryxclasses_uuid || "unknown"}:${String(failure.reason || "").slice(0, 140)}`
       );
+    }
+
+    if (canWriteLastLogField && createResult.createdRows.length > 0) {
+      const latestLogByWatchTripId = new Map();
+      for (const row of createResult.createdRows) {
+        const watchTripRecordId = strOrNull(row?.fields?.[LOG_KEY_FIELDS.WATCH_TRIP_RECORD_ID]);
+        const tripLogRecordId = strOrNull(row?.id);
+        if (!watchTripRecordId || !isAirtableRecordId(watchTripRecordId) || !isAirtableRecordId(tripLogRecordId)) {
+          continue;
+        }
+        latestLogByWatchTripId.set(watchTripRecordId, tripLogRecordId);
+      }
+
+      const lastLogUpdates = [];
+      for (const [watchTripRecordId, tripLogRecordId] of latestLogByWatchTripId.entries()) {
+        lastLogUpdates.push({
+          id: watchTripRecordId,
+          fields: { [WATCH_LAST_LOG_FIELD]: linkOne(tripLogRecordId) },
+        });
+      }
+
+      summary.watch_trips_last_log_planned = lastLogUpdates.length;
+
+      if (lastLogUpdates.length > 0) {
+        const lastLogPatch = await airtablePatchWithFallback({
+          table: WATCH_TABLE,
+          updates: lastLogUpdates,
+        });
+        summary.watch_trips_last_log_patched = lastLogPatch.okRows;
+        summary.watch_trips_last_log_patch_failures = lastLogPatch.failedRows.length;
+        for (const failure of lastLogPatch.failedRows) {
+          pushSample(
+            summary.failed_patch_samples,
+            `${failure.record_id}:${String(failure.reason || "").slice(0, 140)}`
+          );
+        }
+      }
     }
   }
 
