@@ -1,8 +1,6 @@
 name: ringstatus-pipeline
 on:
   workflow_dispatch: {}
-  schedule:
-    - cron: "*/5 * * * *"
 
 concurrency:
   group: ringstatus-pipeline
