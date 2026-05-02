@@ -114,6 +114,21 @@ function strOrNull(v) {
   return String(v).trim();
 }
 
+function normalizeClassEndpoint(v) {
+  const raw = strOrNull(v);
+  if (!raw) return null;
+
+  try {
+    const u = new URL(raw);
+    if (u.pathname.startsWith("/classes/") && !u.pathname.endsWith("/")) {
+      u.pathname = `${u.pathname}/`;
+    }
+    return u.toString();
+  } catch {
+    return raw.replace(/(\/classes\/[^/?#]+)(\?)/i, "$1/$2");
+  }
+}
+
 function firstNonBlank(...vals) {
   for (const v of vals) {
     if (!isBlank(v)) return v;
@@ -599,7 +614,7 @@ async function fetchShowsMap() {
 
     for (const rec of records) {
       const f = rec.fields || {};
-      const classEndpoint = strOrNull(f[FIELD_CLASS_ENDPOINT]);
+      const classEndpoint = normalizeClassEndpoint(f[FIELD_CLASS_ENDPOINT]);
       const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
 
       recInputs.push({
