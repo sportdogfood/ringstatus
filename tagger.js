@@ -870,6 +870,12 @@ async function buildAppContext(clock, mode) {
     }
   }
 
+  // Keep heartbeat scope fields self-contained even when the empty schedule
+  // endpoint is transiently unavailable or missing expected fields.
+  if (!defaultAppSqlDateIs && appSqlDate) {
+    defaultAppSqlDateIs = appSqlDate;
+  }
+
   const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
 
   const appCtx = {
