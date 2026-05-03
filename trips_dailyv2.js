@@ -7,6 +7,10 @@ const {
   collectTripCandidates,
   normalizeTripsForScope,
 } = require("./trips_normalizer_v2");
+const {
+  assertValidPayload,
+  isSoftPayloadError,
+} = require("./lib/soft_payload_guard");
 
 const BASE_URL = String(process.env.BASE_URL || "https://broad-tooth-b8ed.gombcg.workers.dev").trim().replace(/\/+$/, "");
 
@@ -572,11 +576,34 @@ async function fetchJson(url) {
 
   const text = await response.text().catch(() => "");
   if (!response.ok) throw new Error(`Fetch failed (${response.status}): ${text.slice(0, 1200)}`);
+  let json = null;
   try {
-    return JSON.parse(text);
+    json = JSON.parse(text);
   } catch {
     throw new Error(`Response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
   }
+
+  const isClassEndpoint = String(url || "").includes("/classes/");
+  assertValidPayload({
+    payload: json,
+    text,
+    response,
+    lane: "trips_dailyv2",
+    endpoint: url,
+    expectedTopLevelKeys: isClassEndpoint
+      ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
+      : [],
+    expectedPredicate: isClassEndpoint
+      ? null
+      : (payload) => Array.isArray(payload?.trips) ||
+          collectTripCandidates(payload).length > 0 ||
+          payload?.people !== undefined ||
+          payload?.entries !== undefined ||
+          payload?.classes !== undefined ||
+          payload?.show_id !== undefined,
+    minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
+  });
+  return json;
 }
 
 async function runPool(items, concurrency, worker) {
@@ -1578,6 +1605,9 @@ async function main() {
   const uniqueEntryRows = new Map();
   const entryClassKeysByEntryKey = new Map();
 
+  const preparedTenants = [];
+  const softPayloadSamples = [];
+
   for (const tenantId of activeTenantIds) {
     const tenantRow = activeTenantMap.get(tenantId) || null;
     const endpoint = buildPeopleEndpoint(tenantId, heartbeat);
@@ -1585,16 +1615,27 @@ async function main() {
     try {
       payload = await fetchJson(endpoint);
     } catch (error) {
+      const softPayload = isSoftPayloadError(error);
       peopleFailures.push({
         tenant_id: tenantId,
         endpoint,
-        reason: String(error?.message || error).slice(0, 300)
+        reason: String(error?.message || error).slice(0, 300),
+        soft_payload: softPayload,
       });
       tenantSummaries.push({
         tenant_id: tenantId,
         endpoint,
-        status: "fetch_failed",
+        status: softPayload ? "soft_payload_blocked" : "fetch_failed",
       });
+      if (softPayload) {
+        softPayloadSamples.push({
+          tenant_id: tenantId,
+          endpoint,
+          reason: error?.reason || "soft_payload",
+          body_length: error?.body_length ?? null,
+          content_length: error?.content_length ?? null,
+        });
+      }
       continue;
     }
 
@@ -1632,6 +1673,52 @@ async function main() {
       wwRidersFieldSet,
       wwHorsesFieldSet,
     });
+
+    const classSoftFailures = (auxiliaryRows.classEndpointFailures || [])
+      .filter((failure) => /soft_payload_/i.test(String(failure?.reason || "")));
+    if (classSoftFailures.length) {
+      softPayloadSamples.push(...classSoftFailures.slice(0, 5).map((failure) => ({
+        tenant_id: tenantId,
+        endpoint: failure.endpoint,
+        reason: failure.reason,
+      })));
+      tenantSummaries.push({
+        tenant_id: tenantId,
+        endpoint,
+        status: "soft_payload_blocked",
+        class_endpoint_failures: classSoftFailures,
+      });
+      continue;
+    }
+
+    preparedTenants.push({
+      tenantId,
+      endpoint,
+      payload,
+      auxiliaryRows,
+    });
+  }
+
+  if (softPayloadSamples.length) {
+    console.log(JSON.stringify({
+      ok: false,
+      dry_run: DRY_RUN,
+      run_status: "SOFT_PAYLOAD_BLOCKED",
+      reason: "soft_payload_empty",
+      app_show_id: heartbeat.app_show_id,
+      app_sql_date: heartbeat.app_sql_date,
+      active_tenant_ids: activeTenantIds.length,
+      people_failures: peopleFailures,
+      tenant_summaries: tenantSummaries,
+      soft_payload_samples: softPayloadSamples.slice(0, 10),
+      writes_blocked: true,
+    }, null, 2));
+    process.exitCode = 1;
+    return;
+  }
+
+  for (const prepared of preparedTenants) {
+    const { tenantId, endpoint, payload, auxiliaryRows } = prepared;
 
     const riderSync = await upsertByNumberId({
       tableName: TABLE_WW_RIDERS,

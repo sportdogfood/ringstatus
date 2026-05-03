@@ -2,6 +2,10 @@ const {
   normalizeSchedulePayload,
   chooseScheduleVariant,
 } = require("./schedule_normalizer_v2");
+const {
+  assertValidPayload,
+  isSoftPayloadError,
+} = require("./lib/soft_payload_guard");
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -384,11 +388,25 @@ async function fetchJson(url) {
     throw new Error(`Fetch failed (${response.status}): ${text.slice(0, 1200)}`);
   }
 
+  let json = null;
   try {
-    return JSON.parse(text);
+    json = JSON.parse(text);
   } catch {
     throw new Error(`Response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
   }
+
+  assertValidPayload({
+    payload: json,
+    text,
+    response,
+    lane: "schedules_dailyv2",
+    endpoint: url,
+    expectedTopLevelKeys: String(url || "").includes("/classes/")
+      ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
+      : ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
+    minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
+  });
+  return json;
 }
 
 function normalizeClassEndpointPayload(payload) {
@@ -1111,6 +1129,9 @@ async function runDaily() {
     emptyPayload = await fetchJson(emptyUrl);
   } catch (error) {
     emptyPingError = String(error?.message || error);
+    if (isSoftPayloadError(error)) {
+      throw new Error(`soft_payload_empty: refusing schedule lane for empty ping ${emptyUrl}; ${emptyPingError}`);
+    }
   }
 
   if (emptyPayload) {
@@ -1174,6 +1195,14 @@ async function runDaily() {
 
   const chosen = chooseScheduleVariant(datedResult, emptyResult);
   const classEnrichment = await enrichScheduleRowsWithClassDetails(chosen.rows, scope);
+  const softClassFailures = classEnrichment.class_endpoint_failures
+    .filter((failure) => /soft_payload_/i.test(String(failure?.reason || "")));
+  if (softClassFailures.length) {
+    throw new Error(
+      `soft_payload_empty: refusing schedule writes after class endpoint soft payloads; ` +
+      `count=${softClassFailures.length} sample=${JSON.stringify(softClassFailures.slice(0, 3))}`
+    );
+  }
   const scopedRows = classEnrichment.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
   const showRecordId = await fetchShowRecordId(scope.app_show_idv2).catch(() => null);
   const existingRows = await fetchExistingRowsForShow(scope.app_show_idv2);

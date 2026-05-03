@@ -1,5 +1,9 @@
 const fs = require("fs");
 const path = require("path");
+const {
+  assertValidPayload,
+  isSoftPayloadError,
+} = require("./lib/soft_payload_guard");
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -315,11 +319,25 @@ async function fetchJson(url) {
     throw new Error(`Fetch failed (${response.status}): ${text.slice(0, 1200)}`);
   }
 
+  let json = null;
   try {
-    return JSON.parse(text);
+    json = JSON.parse(text);
   } catch {
     throw new Error(`Response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
   }
+
+  assertValidPayload({
+    payload: json,
+    text,
+    response,
+    lane: "schedule_normalizer_v2",
+    endpoint: url,
+    expectedTopLevelKeys: String(url || "").includes("/classes/")
+      ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
+      : ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
+    minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
+  });
+  return json;
 }
 
 function buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay) {
@@ -679,6 +697,7 @@ async function fetchScheduleVariant(label, url, scope, generatedAt, generatedDat
       source: label,
       url,
       error: String(error?.message || error),
+      soft_payload: isSoftPayloadError(error),
       rows: [],
       keep_keys: [],
     };
@@ -686,6 +705,12 @@ async function fetchScheduleVariant(label, url, scope, generatedAt, generatedDat
 }
 
 function chooseScheduleVariant(datedResult, emptyResult) {
+  if (datedResult.soft_payload || emptyResult.soft_payload) {
+    throw new Error(
+      `soft_payload_empty: refusing schedule variant selection :: ` +
+      `dated=${datedResult.error || "none"} :: empty=${emptyResult.error || "none"}`
+    );
+  }
   if (datedResult.ok && datedResult.rows.length > 0) return datedResult;
   if (emptyResult.ok && emptyResult.rows.length > 0) return emptyResult;
   if (datedResult.ok) return datedResult;
