@@ -11,6 +11,11 @@
 
 const fs = require("fs");
 const path = require("path");
+const {
+  assertValidPayload,
+  isSoftPayloadError,
+  softPayloadLogFields,
+} = require("./lib/soft_payload_guard");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -433,6 +438,15 @@ async function fetchJson(url) {
   if (!res.ok) {
     throw new Error(`Fetch failed (${res.status}): ${txt.slice(0, 300)}`);
   }
+  assertValidPayload({
+    payload: json,
+    text: txt,
+    response: res,
+    lane: "tagger",
+    endpoint: url,
+    expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list"],
+    minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
+  });
   return json;
 }
 
@@ -763,6 +777,27 @@ async function getClockSafe() {
       });
     }
 
+    try {
+      assertValidPayload({
+        payload,
+        text: txt,
+        response: res,
+        lane: "tagger_ring",
+        endpoint: RING_ENDPOINT,
+        expectedTopLevelKeys: ["time_zone_date_time", "show", "show_id"],
+        minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
+      });
+    } catch (e) {
+      if (isSoftPayloadError(e)) {
+        return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_soft_payload", {
+          ...softPayloadLogFields(e),
+          system_sql_date: systemClock.sqlDate,
+          system_time: systemClock.time
+        });
+      }
+      throw e;
+    }
+
     const endpointClock = pickClockFromPayload(payload);
     if (!endpointClock) {
       return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_missing_clock_values", {
@@ -861,11 +896,12 @@ async function buildAppContext(clock, mode) {
         appSqlDateSource = "default_day";
       }
     } catch (e) {
-      logWarn("schedule_default_lookup_failed", {
+      logWarn(isSoftPayloadError(e) ? "schedule_default_soft_payload" : "schedule_default_lookup_failed", {
         endpoint: emptyScheduleEndpoint,
         app_show_id: appShowId,
         candidate_app_sql_date: candidateAppSqlDate,
-        error_message: String(e?.message || e).slice(0, 240)
+        error_message: String(e?.message || e).slice(0, 240),
+        ...(isSoftPayloadError(e) ? softPayloadLogFields(e) : {})
       });
     }
   }
@@ -980,6 +1016,30 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
   }
 
   return await airtableCreateRecord(TABLE_HEARTBEAT, fields);
+}
+
+function persistLatestHeartbeatContext(heartbeatRecord, appCtx, mode) {
+  const state = loadRuntimeState();
+  const nextState = {
+    ...state,
+    latestHeartbeatContext: {
+      version: 1,
+      saved_at: new Date().toISOString(),
+      heartbeat_record_id: heartbeatRecord?.id || null,
+      app_show_id: appCtx?.appShowId ?? null,
+      app_sql_date: appCtx?.appSqlDate ?? null,
+      app_dow_raw: appCtx?.appDowRaw ?? null,
+      shifted_to_next_day: !!appCtx?.shiftedToNextDay,
+      mode,
+      scope_key: [
+        appCtx?.appShowId ?? "",
+        appCtx?.appSqlDate ?? "",
+        appCtx?.appDowRaw ?? "",
+        appCtx?.shiftedToNextDay ? "1" : "0",
+      ].join("|"),
+    }
+  };
+  saveRuntimeState(nextState);
 }
 
 function currentHeartbeatLinkIds(v) {
@@ -1245,6 +1305,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     });
 
     const heartbeatRecord = await createHeartbeat(clk, mode, intervalMin, appCtx);
+    persistLatestHeartbeatContext(heartbeatRecord, appCtx, mode);
 
     const results = [];
     const warnings = [];
@@ -1288,6 +1349,14 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       ok: true,
       heartbeat_record_id: heartbeatRecord.id,
       heartbeat_app_show_id: appCtx.appShowId,
+      heartbeat_app_sql_date: appCtx.appSqlDate,
+      heartbeat_app_dow_raw: appCtx.appDowRaw,
+      heartbeat_scope_key: [
+        appCtx.appShowId ?? "",
+        appCtx.appSqlDate ?? "",
+        appCtx.appDowRaw ?? "",
+        appCtx.shiftedToNextDay ? "1" : "0",
+      ].join("|"),
       mode,
       source: clk.source,
       results,
