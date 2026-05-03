@@ -26,11 +26,19 @@ const {
 const {
   fetchTextWithConfiguredTransport,
 } = require("./lib/sgl_fetch_adapter");
+const {
+  buildClassDetailEndpoint,
+  findClassGroupOrderEntry,
+  findClassTrip,
+  normalizeClassEndpointWithCgid,
+} = require("./lib/watch_trips_enrichment");
 
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "hb_targets";
 const SHOWS_TABLE = process.env.SHOWS_TABLE || "shows";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
+const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
+const BASE_URL = String(process.env.BASE_URL || "https://broad-tooth-b8ed.gombcg.workers.dev").trim().replace(/\/+$/, "");
 
 const HTTP_TIMEOUT_MS   = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
@@ -43,6 +51,9 @@ const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || "https://broad-tooth-
 // watch_trips source fields
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
+const FIELD_ENTRY_ID              = process.env.FIELD_ENTRY_ID || "entry_id";
+const FIELD_CLASS_ID              = process.env.FIELD_CLASS_ID || "class_id";
+const FIELD_CLASS_GROUP_ID        = process.env.FIELD_CLASS_GROUP_ID || "class_group_id";
 
 // app context fields written back
 const FIELD_APP_SHOW_ID           = process.env.FIELD_APP_SHOW_ID || "app_show_id";
@@ -123,19 +134,10 @@ function strOrNull(v) {
   return String(v).trim();
 }
 
-function normalizeClassEndpoint(v) {
+function normalizeClassEndpoint(v, classGroupId) {
   const raw = strOrNull(v);
   if (!raw) return null;
-
-  try {
-    const u = new URL(raw);
-    if (u.pathname.startsWith("/classes/") && !u.pathname.endsWith("/")) {
-      u.pathname = `${u.pathname}/`;
-    }
-    return u.toString();
-  } catch {
-    return raw.replace(/(\/classes\/[^/?#]+)(\?)/i, "$1/$2");
-  }
+  return normalizeClassEndpointWithCgid(raw, classGroupId);
 }
 
 function endpointPathKind(endpoint) {
@@ -665,13 +667,28 @@ async function fetchShowsMap() {
 
     for (const rec of records) {
       const f = rec.fields || {};
-      const classEndpoint = normalizeClassEndpoint(f[FIELD_CLASS_ENDPOINT]);
+      const entry_id = numOrNull(f[FIELD_ENTRY_ID]);
+      const class_id = numOrNull(f[FIELD_CLASS_ID]);
+      const class_group_id = numOrNull(f[FIELD_CLASS_GROUP_ID]);
+      let classEndpoint = normalizeClassEndpoint(f[FIELD_CLASS_ENDPOINT], class_group_id);
+      if (!classEndpoint && class_id !== null) {
+        classEndpoint = buildClassDetailEndpoint({
+          baseUrl: BASE_URL,
+          classId: class_id,
+          showId: appCtx.app_show_id,
+          customerId: CUSTOMER_ID,
+          classGroupId: class_group_id,
+        });
+      }
       const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
 
       recInputs.push({
         rec,
         classEndpoint,
-        entryxclasses_uuid
+        entryxclasses_uuid,
+        entry_id,
+        class_id,
+        class_group_id
       });
 
       if (classEndpoint) {
@@ -818,7 +835,9 @@ async function fetchShowsMap() {
       const {
         rec,
         classEndpoint,
-        entryxclasses_uuid
+        entryxclasses_uuid,
+        entry_id,
+        class_id
       } = row;
 
       const updateFields = {};
@@ -964,11 +983,13 @@ async function fetchShowsMap() {
         )
       );
 
-      const matchedTrip =
+      const matchedTrip = findClassTrip(classJson, { entryxclassesUuid: entryxclasses_uuid }) ||
         trips.find((t) => {
           const k = tripUuid(t);
           return k && k === entryxclasses_uuid;
-        }) || null;
+        }) ||
+        null;
+      const groupOrderEntry = findClassGroupOrderEntry(classJson, { entryId: entry_id, classId: class_id });
 
       setClassLevelFields(updateFields, {
         class_status,
@@ -989,7 +1010,12 @@ async function fetchShowsMap() {
         );
 
         const order_of_go = normNum(
-          numOrNull(firstNonBlank(matchedTrip.order_of_go, matchedTrip.orderOfGo)),
+          numOrNull(firstNonBlank(
+            matchedTrip.order_of_go,
+            matchedTrip.orderOfGo,
+            groupOrderEntry?.order_of_go,
+            groupOrderEntry?.orderOfGo
+          )),
           IGNORE_NUM.order_of_go
         );
 
@@ -1095,6 +1121,25 @@ async function fetchShowsMap() {
         });
 
         let reason = "ok:matched_trip";
+        if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
+        if (!class_status) reason = `${reason}|warn:missing_status`;
+        if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+
+        setBaseFields(updateFields, observedAt, reason);
+        bumpReason(reason);
+      } else if (groupOrderEntry) {
+        trip_not_found++;
+        clearTripLevelFields(updateFields);
+
+        const order_of_go = normNum(
+          numOrNull(firstNonBlank(groupOrderEntry.order_of_go, groupOrderEntry.orderOfGo)),
+          IGNORE_NUM.order_of_go
+        );
+        updateFields[FIELD_ORDER_OF_GO] = order_of_go;
+
+        let reason = "warn:no_trip_match_group_order_only";
+        if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
+        if (!class_status) reason = `${reason}|warn:missing_status`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
 
         setBaseFields(updateFields, observedAt, reason);
@@ -1104,6 +1149,8 @@ async function fetchShowsMap() {
         clearTripLevelFields(updateFields);
 
         let reason = "err:no_trip_match";
+        reason = `${reason}|warn:missing_order_of_go`;
+        if (!class_status) reason = `${reason}|warn:missing_status`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
 
         setBaseFields(updateFields, observedAt, reason);

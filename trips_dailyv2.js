@@ -14,6 +14,9 @@ const {
 const {
   fetchTextWithConfiguredTransport,
 } = require("./lib/sgl_fetch_adapter");
+const {
+  buildClassDetailEndpoint,
+} = require("./lib/watch_trips_enrichment");
 
 const BASE_URL = String(process.env.BASE_URL || "https://broad-tooth-b8ed.gombcg.workers.dev").trim().replace(/\/+$/, "");
 
@@ -650,9 +653,14 @@ function buildPeopleEndpoint(sourceId, heartbeat) {
   return `${BASE_URL}/people/${encodeURIComponent(sourceId)}?pid=${encodeURIComponent(sourceId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
-function buildClassesEndpoint(classId, showId) {
-  if (isBlank(classId) || isBlank(showId)) return null;
-  return `${BASE_URL}/classes/${encodeURIComponent(classId)}/?show_id=${encodeURIComponent(showId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+function buildClassesEndpoint(classId, showId, classGroupId = null) {
+  return buildClassDetailEndpoint({
+    baseUrl: BASE_URL,
+    classId,
+    showId,
+    customerId: CUSTOMER_ID,
+    classGroupId,
+  });
 }
 
 function extractPeopleShowId(payload) {
@@ -686,13 +694,21 @@ function normalizeClassEndpointPayload(payload) {
   };
 }
 
-async function fetchClassEndpointDetailsById(classIds, heartbeat) {
+async function fetchClassEndpointDetailsById(classRows, heartbeat) {
   const detailById = new Map();
   const failures = [];
-  const uniqueIds = [...new Set((classIds || []).map((value) => numOrNull(value)).filter((value) => value !== null))];
+  const uniqueByKey = new Map();
 
-  await runPool(uniqueIds, FETCH_CONCURRENCY, async (classId) => {
-    const endpoint = buildClassesEndpoint(classId, heartbeat.app_show_id);
+  for (const item of classRows || []) {
+    const classId = numOrNull(typeof item === "object" ? item?.class_id : item);
+    const classGroupId = numOrNull(typeof item === "object" ? item?.class_group_id : null);
+    if (classId === null) continue;
+    const key = `${classId}|${classGroupId ?? ""}`;
+    if (!uniqueByKey.has(key)) uniqueByKey.set(key, { classId, classGroupId });
+  }
+
+  await runPool([...uniqueByKey.values()], FETCH_CONCURRENCY, async ({ classId, classGroupId }) => {
+    const endpoint = buildClassesEndpoint(classId, heartbeat.app_show_id, classGroupId);
     if (!endpoint) return;
     try {
       const payload = await fetchJson(endpoint);
@@ -700,6 +716,7 @@ async function fetchClassEndpointDetailsById(classIds, heartbeat) {
     } catch (error) {
       failures.push({
         class_id: classId,
+        class_group_id: classGroupId,
         endpoint,
         reason: String(error?.message || error).slice(0, 300),
       });
@@ -1294,7 +1311,7 @@ async function buildAuxiliaryRowsForTenant({
     ww_trainers: linkOne(wwTrainerRecordId),
   };
 
-  const classEndpointDetailResult = await fetchClassEndpointDetailsById([...classById.keys()], heartbeat);
+  const classEndpointDetailResult = await fetchClassEndpointDetailsById([...classById.values()], heartbeat);
   const classEndpointDetails = classEndpointDetailResult.detailById;
 
   const riderRows = [...riderById.values()].map((row) => pickWritableFields(wwRidersFieldSet, {
@@ -1512,6 +1529,9 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("latest_estimated_start_time", row.estimated_start_time);
   maybeSet("latest_ingested_at", nowIso);
   maybeSet("class_group_sequence", row.class_group_sequence);
+  maybeSet("class_endpoint", buildClassesEndpoint(row.class_id, heartbeat.app_show_id, row.class_group_id));
+  maybeSet("status", row.status);
+  maybeSet("order_of_go", row.order_of_go);
   maybeSet("rider_name", row.rider_name);
   maybeSet("rider_id", row.rider_id);
   maybeSet("placing", row.placing);

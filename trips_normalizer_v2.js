@@ -115,6 +115,8 @@ function normalizePeopleTripRow(raw, ownerPid) {
     rider_name: String(raw?.rider_name ?? raw?.riderName ?? "").trim(),
     rider_id: numOrNull(raw?.rider_id ?? raw?.riderId) ?? undefined,
     placing: numOrNull(raw?.placing) ?? undefined,
+    order_of_go: numOrNull(raw?.order_of_go ?? raw?.orderOfGo) ?? undefined,
+    status: strOrNull(raw?.status ?? raw?.class_status ?? raw?.classStatus) ?? undefined,
   };
 }
 
@@ -162,6 +164,8 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
         rider_name: trip.rider_name,
         rider_id: trip.rider_id,
         placing: trip.placing,
+        order_of_go: trip.order_of_go,
+        status: trip.status,
         watch_schedule_record_id: schedule.recordId,
       };
 
