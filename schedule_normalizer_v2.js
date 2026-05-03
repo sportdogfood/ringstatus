@@ -335,7 +335,6 @@ async function fetchJson(url) {
     expectedTopLevelKeys: String(url || "").includes("/classes/")
       ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
       : ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
-    minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
   });
   return json;
 }

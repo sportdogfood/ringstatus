@@ -445,7 +445,6 @@ async function fetchJson(url) {
     lane: "tagger",
     endpoint: url,
     expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list"],
-    minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
   });
   return json;
 }
@@ -785,7 +784,6 @@ async function getClockSafe() {
         lane: "tagger_ring",
         endpoint: RING_ENDPOINT,
         expectedTopLevelKeys: ["time_zone_date_time", "show", "show_id"],
-        minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
       });
     } catch (e) {
       if (isSoftPayloadError(e)) {

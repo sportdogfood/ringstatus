@@ -5,6 +5,7 @@ const {
   inspectSoftPayload,
   assertValidPayload,
   isSoftPayloadError,
+  softPayloadMinBodyLengthForEndpoint,
 } = require("../lib/soft_payload_guard");
 
 function response(headers = {}) {
@@ -43,6 +44,7 @@ const missingKeys = inspectSoftPayload({
   payload: { ok: true },
   text: '{"ok":true}',
   response: response({ "content-length": "11" }),
+  minBodyLength: 2,
   expectedTopLevelKeys: ["show", "trips"],
 });
 assert.strictEqual(missingKeys.ok, false);
@@ -52,6 +54,7 @@ const validByKey = inspectSoftPayload({
   payload: { show: { show_id: 15 } },
   text: '{"show":{"show_id":15}}',
   response: response({ "content-length": "22" }),
+  minBodyLength: 2,
   expectedTopLevelKeys: ["show", "trips"],
 });
 assert.strictEqual(validByKey.ok, true);
@@ -65,6 +68,59 @@ const validByPredicate = inspectSoftPayload({
   },
 });
 assert.strictEqual(validByPredicate.ok, true);
+
+const smallScheduleWithExpectedKey = inspectSoftPayload({
+  payload: { show: {} },
+  text: '{"show":{}}',
+  response: response({ "content-length": "11" }),
+  endpoint: "https://sglapi.wellingtoninternational.com/schedule?date=2026-05-03&show_id=200000060&customer_id=15",
+  lane: "schedules_dailyv2",
+  expectedTopLevelKeys: ["show"],
+});
+assert.strictEqual(smallScheduleWithExpectedKey.ok, false);
+assert.strictEqual(smallScheduleWithExpectedKey.reason, "soft_payload_too_small");
+assert.strictEqual(smallScheduleWithExpectedKey.min_body_length, 5000);
+
+const normalSchedule = inspectSoftPayload({
+  payload: { show: {}, show_date: "2026-05-03", show_days_list: [] },
+  text: "x".repeat(58758),
+  response: response({ "content-length": "58758" }),
+  endpoint: "https://sglapi.wellingtoninternational.com/schedule?date=2026-05-03&show_id=200000060&customer_id=15",
+  lane: "schedules_dailyv2",
+  expectedTopLevelKeys: ["show"],
+});
+assert.strictEqual(normalSchedule.ok, true);
+
+const normalClassVideos = inspectSoftPayload({
+  payload: { video_insights: {}, exc_videos: [{}] },
+  text: "x".repeat(10469),
+  response: response({ "content-length": "10469" }),
+  endpoint: "https://sglapi.wellingtoninternational.com/classes/videos/200024756?show_id=200000060&customer_id=15&include_hidden=true",
+  lane: "trips_tagger",
+  expectedTopLevelKeys: ["video_insights", "exc_videos"],
+});
+assert.strictEqual(normalClassVideos.ok, true);
+assert.strictEqual(
+  softPayloadMinBodyLengthForEndpoint({
+    endpoint: "https://sglapi.wellingtoninternational.com/classes/videos/200024756?show_id=200000060&customer_id=15&include_hidden=true",
+  }),
+  1000
+);
+
+const previousGlobalMin = process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH;
+process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH = "2";
+assert.strictEqual(
+  softPayloadMinBodyLengthForEndpoint({
+    endpoint: "https://sglapi.wellingtoninternational.com/schedule?date=2026-05-03&show_id=200000060&customer_id=15",
+  }),
+  5000,
+  "legacy global env cannot lower endpoint-specific defaults"
+);
+if (previousGlobalMin === undefined) {
+  delete process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH;
+} else {
+  process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH = previousGlobalMin;
+}
 
 assert.throws(
   () => assertValidPayload({
