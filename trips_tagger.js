@@ -105,6 +105,18 @@ const FIELD_TIME_THREE            = process.env.FIELD_TIME_THREE || "time_three"
 const FIELD_SCORE1                = process.env.FIELD_SCORE1 || "score1";
 const FIELD_SCORE2                = process.env.FIELD_SCORE2 || "score2";
 const FIELD_SCORE3                = process.env.FIELD_SCORE3 || "score3";
+
+const PROTECTED_WATCH_TRIPS_FIELDS = new Set([
+  FIELD_STATUS,
+  FIELD_ESTIMATED_START_TIME,
+  FIELD_ORDER_OF_GO,
+  FIELD_REMAINING_TRIPS,
+  FIELD_TOTAL_TRIPS,
+  FIELD_COMPLETED_TRIPS,
+  FIELD_ACTUAL_TIME,
+  FIELD_ESTIMATED_TIME,
+  FIELD_ESTIMATED_GO_TIME
+]);
 let CAN_WRITE_ACTUAL_GO           = false;
 
 function requireEnv(name, val) {
@@ -341,13 +353,37 @@ async function airtablePatchRecords(tableName, updates) {
   }
 }
 
+function isBlankPatchValue(value) {
+  return value === null ||
+    value === undefined ||
+    (typeof value === "string" && value.trim() === "") ||
+    (Array.isArray(value) && value.length === 0);
+}
+
+function sanitizeWatchTripsPatchUpdates(tableName, updates) {
+  if (tableName !== WATCH_TABLE) return updates;
+
+  return updates
+    .map((row) => {
+      const fields = { ...(row.fields || {}) };
+      for (const fieldName of PROTECTED_WATCH_TRIPS_FIELDS) {
+        if (Object.prototype.hasOwnProperty.call(fields, fieldName) && isBlankPatchValue(fields[fieldName])) {
+          delete fields[fieldName];
+        }
+      }
+      return { ...row, fields };
+    })
+    .filter((row) => Object.keys(row.fields || {}).length > 0);
+}
+
 async function airtablePatchWithFallback(tableName, updates) {
-  if (!updates.length) return { okRows: 0, failedRows: [] };
+  const safeUpdates = sanitizeWatchTripsPatchUpdates(tableName, updates);
+  if (!safeUpdates.length) return { okRows: 0, failedRows: [] };
 
   let okRows = 0;
   const failedRows = [];
 
-  for (const batch of chunk(updates, 10)) {
+  for (const batch of chunk(safeUpdates, 10)) {
     try {
       await airtablePatchRecords(tableName, batch);
       okRows += batch.length;

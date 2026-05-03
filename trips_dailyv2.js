@@ -44,6 +44,19 @@ const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const FETCH_CONCURRENCY = Math.max(1, Number(process.env.FETCH_CONCURRENCY || "4"));
 
+const PROTECTED_WATCH_TRIPS_FIELDS = new Set([
+  "status",
+  "estimated_start_time",
+  "estimated_end_time",
+  "estimated_go_time",
+  "order_of_go",
+  "remaining_trips",
+  "total_trips",
+  "completed_trips",
+  "actual_time",
+  "estimated_time"
+]);
+
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
 }
@@ -172,6 +185,29 @@ function setIfPresent(target, fieldName, value) {
   target[fieldName] = value;
 }
 
+function isBlankPatchValue(value) {
+  return value === null ||
+    value === undefined ||
+    (typeof value === "string" && value.trim() === "") ||
+    (Array.isArray(value) && value.length === 0);
+}
+
+function sanitizeWatchTripsPatchUpdates(tableName, updates) {
+  if (tableName !== TABLE_WATCH_TRIPS) return updates;
+
+  return updates
+    .map((row) => {
+      const fields = { ...(row.fields || {}) };
+      for (const fieldName of PROTECTED_WATCH_TRIPS_FIELDS) {
+        if (Object.prototype.hasOwnProperty.call(fields, fieldName) && isBlankPatchValue(fields[fieldName])) {
+          delete fields[fieldName];
+        }
+      }
+      return { ...row, fields };
+    })
+    .filter((row) => Object.keys(row.fields || {}).length > 0);
+}
+
 async function fetchWithTimeout(url, options = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), HTTP_TIMEOUT_MS);
@@ -297,12 +333,13 @@ async function airtableCreateRecords(tableName, records) {
 }
 
 async function airtablePatchRecords(tableName, updates) {
-  if (!updates.length) return { okRows: 0, failedRows: [] };
+  const safeUpdates = sanitizeWatchTripsPatchUpdates(tableName, updates);
+  if (!safeUpdates.length) return { okRows: 0, failedRows: [] };
 
   let okRows = 0;
   const failedRows = [];
 
-  for (const batch of chunk(updates, 10)) {
+  for (const batch of chunk(safeUpdates, 10)) {
     try {
       const response = await fetchWithRetry(airtableUrl(tableName), {
         method: "PATCH",

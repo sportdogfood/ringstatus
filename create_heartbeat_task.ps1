@@ -6,19 +6,18 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $repoPath = Split-Path -Parent $PSCommandPath
-$taggerPath = Join-Path $repoPath 'tagger.js'
+$heartbeatLanePath = Join-Path $repoPath 'run_tagger_heartbeat_lane.ps1'
 
-if (-not (Test-Path $taggerPath)) {
-    throw "tagger.js not found at $taggerPath"
+if (-not (Test-Path $heartbeatLanePath)) {
+    throw "run_tagger_heartbeat_lane.ps1 not found at $heartbeatLanePath"
 }
 
-if (-not (Test-Path $NodePath)) {
-    $NodePath = 'node'
-}
+$powershellPath = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+if (-not (Test-Path $powershellPath)) { $powershellPath = 'powershell.exe' }
 
 $action = New-ScheduledTaskAction `
-    -Execute $NodePath `
-    -Argument ('"{0}"' -f $taggerPath) `
+    -Execute $powershellPath `
+    -Argument ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "{0}"' -f $heartbeatLanePath) `
     -WorkingDirectory $repoPath
 
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date `
@@ -36,7 +35,7 @@ Register-ScheduledTask `
     -Action $action `
     -Trigger $trigger `
     -Settings $settings `
-    -Description 'Runs ringstatus tagger.js heartbeat every 5 minutes.' `
+    -Description 'Runs ringstatus heartbeat lane every 5 minutes.' `
     -Force | Out-Null
 
 Enable-ScheduledTask -TaskName $TaskName | Out-Null
