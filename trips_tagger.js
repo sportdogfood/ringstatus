@@ -23,6 +23,9 @@ const {
   isSoftPayloadError,
   softPayloadLogFields,
 } = require("./lib/soft_payload_guard");
+const {
+  fetchTextWithConfiguredTransport,
+} = require("./lib/sgl_fetch_adapter");
 
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "hb_targets";
@@ -141,7 +144,6 @@ function endpointPathKind(endpoint) {
   try {
     path = new URL(raw).pathname.toLowerCase();
   } catch {}
-  if (path.includes("/classes/videos/")) return "class_videos";
   if (path.includes("/classes/")) return "class";
   return "unknown";
 }
@@ -492,8 +494,14 @@ function deriveMode(appTime) {
 }
 
 async function fetchAppContext() {
-  const res = await fetchWithRetry(APP_RING_ENDPOINT, { method: "GET" });
-  const txt = await res.text();
+  const fetched = await fetchTextWithConfiguredTransport(APP_RING_ENDPOINT, async (endpoint) => {
+    const response = await fetchWithRetry(endpoint, { method: "GET" });
+    const text = await response.text();
+    return { response, text, endpoint };
+  });
+  const res = fetched.response;
+  const txt = fetched.text;
+  const endpoint = fetched.endpoint || APP_RING_ENDPOINT;
 
   if (!res.ok) {
     throw new Error(`app endpoint failed (${res.status}): ${txt.slice(0, 300)}`);
@@ -511,7 +519,7 @@ async function fetchAppContext() {
     text: txt,
     response: res,
     lane: "trips_tagger",
-    endpoint: APP_RING_ENDPOINT,
+    endpoint,
     expectedTopLevelKeys: ["time_zone_date_time", "show", "show_id"],
   });
 
@@ -676,8 +684,14 @@ async function fetchShowsMap() {
 
     for (const endpoint of uniqueEndpoints) {
       try {
-        const res = await fetchWithRetry(endpoint, { method: "GET" });
-        const txt = await res.text();
+        const fetched = await fetchTextWithConfiguredTransport(endpoint, async (targetEndpoint) => {
+          const response = await fetchWithRetry(targetEndpoint, { method: "GET" });
+          const text = await response.text();
+          return { response, text, endpoint: targetEndpoint };
+        });
+        const res = fetched.response;
+        const txt = fetched.text;
+        const effectiveEndpoint = fetched.endpoint || endpoint;
 
         if (!res.ok) {
           const reason = `err:class_http_${res.status}`;
@@ -687,11 +701,11 @@ async function fetchShowsMap() {
             detail: txt.slice(0, 300)
           });
           endpointErrors.push({
-            endpoint,
+            endpoint: effectiveEndpoint,
             reason,
             detail: txt.slice(0, 300)
           });
-          console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${txt.slice(0, 200)}`);
+          console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint} :: ${txt.slice(0, 200)}`);
           continue;
         }
 
@@ -706,25 +720,25 @@ async function fetchShowsMap() {
             detail: txt.slice(0, 300)
           });
           endpointErrors.push({
-            endpoint,
+            endpoint: effectiveEndpoint,
             reason,
             detail: txt.slice(0, 300)
           });
-          console.log(`endpoint warn: ${reason} :: ${endpoint}`);
+          console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint}`);
           continue;
         }
 
         try {
-          const isVideoEndpoint = endpointPathKind(endpoint) === "class_videos";
+          const isClassEndpoint = endpointPathKind(effectiveEndpoint) === "class";
           assertValidPayload({
             payload: json,
             text: txt,
             response: res,
             lane: "trips_tagger",
-            endpoint,
-            expectedTopLevelKeys: isVideoEndpoint
-              ? ["video_insights", "exc_videos"]
-              : ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"],
+            endpoint: effectiveEndpoint,
+            expectedTopLevelKeys: isClassEndpoint
+              ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
+              : [],
           });
         } catch (e) {
           if (!isSoftPayloadError(e)) throw e;
@@ -737,11 +751,11 @@ async function fetchShowsMap() {
             detail
           });
           endpointErrors.push({
-            endpoint,
+            endpoint: effectiveEndpoint,
             reason,
             detail
           });
-          console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${detail}`);
+          console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint} :: ${detail}`);
           continue;
         }
 

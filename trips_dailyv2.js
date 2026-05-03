@@ -11,6 +11,9 @@ const {
   assertValidPayload,
   isSoftPayloadError,
 } = require("./lib/soft_payload_guard");
+const {
+  fetchTextWithConfiguredTransport,
+} = require("./lib/sgl_fetch_adapter");
 
 const BASE_URL = String(process.env.BASE_URL || "https://broad-tooth-b8ed.gombcg.workers.dev").trim().replace(/\/+$/, "");
 
@@ -569,12 +572,17 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
 }
 
 async function fetchJson(url) {
-  const response = await fetchWithRetry(url, {
-    method: "GET",
-    headers: { Accept: "application/json" },
+  const fetched = await fetchTextWithConfiguredTransport(url, async (endpoint) => {
+    const response = await fetchWithRetry(endpoint, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
+    const text = await response.text().catch(() => "");
+    return { response, text, endpoint };
   });
 
-  const text = await response.text().catch(() => "");
+  const { response, text } = fetched;
+  const endpoint = fetched.endpoint || url;
   if (!response.ok) throw new Error(`Fetch failed (${response.status}): ${text.slice(0, 1200)}`);
   let json = null;
   try {
@@ -583,13 +591,13 @@ async function fetchJson(url) {
     throw new Error(`Response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
   }
 
-  const isClassEndpoint = String(url || "").includes("/classes/");
+  const isClassEndpoint = String(endpoint || "").includes("/classes/");
   assertValidPayload({
     payload: json,
     text,
     response,
     lane: "trips_dailyv2",
-    endpoint: url,
+    endpoint,
     expectedTopLevelKeys: isClassEndpoint
       ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
       : [],

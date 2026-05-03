@@ -16,6 +16,9 @@ const {
   isSoftPayloadError,
   softPayloadLogFields,
 } = require("./lib/soft_payload_guard");
+const {
+  fetchTextWithConfiguredTransport,
+} = require("./lib/sgl_fetch_adapter");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -431,8 +434,14 @@ async function fetchWithRetry(url, opts = {}, retry = {}) {
 }
 
 async function fetchJson(url) {
-  const res = await fetchWithRetry(url, { method: "GET" });
-  const txt = await res.text();
+  const fetched = await fetchTextWithConfiguredTransport(url, async (endpoint) => {
+    const response = await fetchWithRetry(endpoint, { method: "GET" });
+    const text = await response.text();
+    return { response, text, endpoint };
+  });
+  const res = fetched.response;
+  const txt = fetched.text;
+  const endpoint = fetched.endpoint || url;
   let json = {};
   try { json = JSON.parse(txt); } catch {}
   if (!res.ok) {
@@ -443,7 +452,7 @@ async function fetchJson(url) {
     text: txt,
     response: res,
     lane: "tagger",
-    endpoint: url,
+    endpoint,
     expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list"],
   });
   return json;
@@ -752,12 +761,18 @@ async function getClockSafe() {
   const systemClock = buildFallbackClock();
 
   try {
-    const res = await fetchWithTimeout(RING_ENDPOINT, { method: "GET" });
-    const txt = await res.text();
+    const fetched = await fetchTextWithConfiguredTransport(RING_ENDPOINT, async (endpoint) => {
+      const response = await fetchWithTimeout(endpoint, { method: "GET" });
+      const text = await response.text();
+      return { response, text, endpoint };
+    });
+    const res = fetched.response;
+    const txt = fetched.text;
+    const endpoint = fetched.endpoint || RING_ENDPOINT;
 
     if (!res.ok) {
       return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_http", {
-        endpoint: RING_ENDPOINT,
+        endpoint,
         http_status: res.status,
         system_sql_date: systemClock.sqlDate,
         system_time: systemClock.time
@@ -769,7 +784,7 @@ async function getClockSafe() {
       payload = JSON.parse(txt);
     } catch {
       return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_invalid_json", {
-        endpoint: RING_ENDPOINT,
+        endpoint,
         body_sample: txt.slice(0, 250),
         system_sql_date: systemClock.sqlDate,
         system_time: systemClock.time
@@ -782,7 +797,7 @@ async function getClockSafe() {
         text: txt,
         response: res,
         lane: "tagger_ring",
-        endpoint: RING_ENDPOINT,
+        endpoint,
         expectedTopLevelKeys: ["time_zone_date_time", "show", "show_id"],
       });
     } catch (e) {
@@ -799,7 +814,7 @@ async function getClockSafe() {
     const endpointClock = pickClockFromPayload(payload);
     if (!endpointClock) {
       return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_missing_clock_values", {
-        endpoint: RING_ENDPOINT,
+        endpoint,
         system_sql_date: systemClock.sqlDate,
         system_time: systemClock.time
       });
@@ -808,7 +823,7 @@ async function getClockSafe() {
     const systemSqlDate = systemClock.sqlDate;
     if (String(endpointClock.sqlDate || "") !== String(systemSqlDate || "")) {
       return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_sql_date_mismatch", {
-        endpoint: RING_ENDPOINT,
+        endpoint,
         endpoint_show_id: endpointClock.showId,
         endpoint_show_date: endpointClock.showDate,
         endpoint_sql_date: endpointClock.sqlDate,
