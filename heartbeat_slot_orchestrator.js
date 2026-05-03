@@ -1,0 +1,340 @@
+const fs = require("fs");
+const path = require("path");
+const { spawn, spawnSync } = require("child_process");
+
+const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
+const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
+
+const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
+const HEARTBEAT_CREATED_FIELD = process.env.HEARTBEAT_CREATED_FIELD || "created_time";
+const HEARTBEAT_ISA_FIELD = process.env.HEARTBEAT_ISA_FIELD || "isA";
+const HEARTBEAT_ISB_FIELD = process.env.HEARTBEAT_ISB_FIELD || "isB";
+const HEARTBEAT_ISC_FIELD = process.env.HEARTBEAT_ISC_FIELD || "isC";
+const HEARTBEAT_ISD_FIELD = process.env.HEARTBEAT_ISD_FIELD || "isD";
+
+const DEFAULT_TRIPS_DAILY_SLOTS = "A,C";
+const DEFAULT_TRIPS_TAGGER_SLOTS = "C";
+const DEFAULT_TRIPS_CALCULATOR_SLOTS = "A,C";
+const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
+const DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "";
+const DEFAULT_PUBLISHER_SLOTS = "";
+
+const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const LOG_DIR = process.env.RUNNER_LOG_DIR || "C:\\actions-runner\\ringstatus";
+const LOG_PATH = process.env.ORCH_LOG_PATH || path.join(LOG_DIR, "heartbeat-slot-orchestrator.log");
+const LOCK_PATH = process.env.ORCH_LOCK_PATH || path.join(LOG_DIR, "heartbeat-slot-orchestrator.lock");
+const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "30") || 30);
+const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
+const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
+const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
+
+const SCRIPT_LOG_FILES = {
+  "schedules_dailyv2.js": "schedules-dailyv2.log",
+  "schedules_calculatorv2.js": "schedules-calculatorv2.log",
+  "trips_dailyv2.js": "trips-dailyv2.log",
+  "trips_tagger.js": "trips-tagger.log",
+  "trips_calculatorv2.js": "trips-calculatorv2.log",
+  "publisher.js": "publisher.log",
+};
+
+if (!AIRTABLE_TOKEN) throw new Error("Missing AIRTABLE_TOKEN");
+if (!AIRTABLE_BASE_ID) throw new Error("Missing AIRTABLE_BASE_ID");
+
+function ensureLogDir() {
+  fs.mkdirSync(path.dirname(LOG_PATH), { recursive: true });
+}
+
+function appendEvent(event) {
+  ensureLogDir();
+  const payload = {
+    ts: new Date().toISOString(),
+    ...event,
+  };
+  fs.appendFileSync(LOG_PATH, `${JSON.stringify(payload)}\r\n`, "utf8");
+  console.log(JSON.stringify(payload));
+}
+
+function appendScriptLog(scriptName, text) {
+  const logFileName = SCRIPT_LOG_FILES[scriptName] || "heartbeat-slot-orchestrator-steps.log";
+  const logPath = path.join(LOG_DIR, logFileName);
+  fs.mkdirSync(path.dirname(logPath), { recursive: true });
+  fs.appendFileSync(logPath, text, "utf8");
+}
+
+function parseSlotSet(value, fallback) {
+  return new Set(
+    String(value || fallback || "")
+      .split(",")
+      .map((item) => item.trim().toUpperCase())
+      .filter(Boolean)
+  );
+}
+
+function slotIsDue(slot, value, fallback) {
+  if (!slot) return false;
+  return parseSlotSet(value, fallback).has(String(slot).toUpperCase());
+}
+
+function airtableUrl(tableName, params = {}) {
+  const url = new URL(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`);
+  for (const [key, value] of Object.entries(params)) {
+    if (Array.isArray(value)) {
+      for (const item of value) url.searchParams.append(key, item);
+    } else if (value !== undefined && value !== null) {
+      url.searchParams.set(key, String(value));
+    }
+  }
+  return url;
+}
+
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), HTTP_TIMEOUT_MS);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function airtableList(tableName, params = {}) {
+  const out = [];
+  let offset = null;
+
+  do {
+    const url = airtableUrl(tableName, { ...params, offset });
+    const response = await fetchWithTimeout(url, {
+      headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+    });
+    const body = await response.text();
+    if (!response.ok) {
+      throw new Error(`Airtable list failed (${response.status}) ${tableName}: ${body.slice(0, 500)}`);
+    }
+    const json = JSON.parse(body);
+    out.push(...(json.records || []));
+    offset = json.offset || null;
+  } while (offset);
+
+  return out;
+}
+
+async function latestHeartbeat() {
+  const rows = await airtableList(TABLE_HEARTBEAT, {
+    maxRecords: 1,
+    "sort[0][field]": HEARTBEAT_CREATED_FIELD,
+    "sort[0][direction]": "desc",
+    "fields[]": [
+      HEARTBEAT_CREATED_FIELD,
+      HEARTBEAT_ISA_FIELD,
+      HEARTBEAT_ISB_FIELD,
+      HEARTBEAT_ISC_FIELD,
+      HEARTBEAT_ISD_FIELD,
+      "show_id",
+      "sql_date",
+      "time",
+    ],
+  });
+  return rows[0] || null;
+}
+
+function slotFromFields(fields = {}) {
+  const active = [
+    fields[HEARTBEAT_ISA_FIELD] ? "A" : null,
+    fields[HEARTBEAT_ISB_FIELD] ? "B" : null,
+    fields[HEARTBEAT_ISC_FIELD] ? "C" : null,
+    fields[HEARTBEAT_ISD_FIELD] ? "D" : null,
+  ].filter(Boolean);
+  return active.length === 1 ? active[0] : null;
+}
+
+function runNodeScript(scriptName) {
+  const startedAt = Date.now();
+  const scriptPath = path.resolve(__dirname, scriptName);
+  const label = scriptName.replace(/\.js$/i, "").toUpperCase();
+  const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19);
+  appendEvent({ ok: true, event: "step_started", script: scriptName });
+
+  const result = spawnSync(process.execPath, [scriptPath], {
+    cwd: __dirname,
+    env: process.env,
+    encoding: "utf8",
+    windowsHide: true,
+  });
+
+  const exitCode = Number(result.status ?? (result.error ? -1 : 0));
+  const ok = exitCode === 0;
+  const durationMs = Date.now() - startedAt;
+  const output = [
+    `[${timestamp}] ${label} RUN`,
+    result.stdout || "",
+    result.stderr || "",
+    JSON.stringify({
+      ok,
+      event: "step_completed",
+      script: scriptName,
+      exit_code: exitCode,
+      duration_ms: durationMs,
+      pipeline: "heartbeat_slot_orchestrator",
+      error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
+    }),
+    "",
+  ].join("\r\n");
+  appendScriptLog(scriptName, output);
+
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
+
+  appendEvent({
+    ok,
+    event: "step_completed",
+    script: scriptName,
+    exit_code: exitCode,
+    duration_ms: durationMs,
+    error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
+  });
+
+  return { ok, exitCode };
+}
+
+function acquireLock() {
+  fs.mkdirSync(path.dirname(LOCK_PATH), { recursive: true });
+
+  if (fs.existsSync(LOCK_PATH)) {
+    const stat = fs.statSync(LOCK_PATH);
+    const ageMs = Date.now() - stat.mtimeMs;
+    if (ageMs > LOCK_STALE_MINUTES * 60 * 1000) {
+      fs.rmSync(LOCK_PATH, { force: true });
+      appendEvent({ ok: true, event: "stale_lock_removed", lock_path: LOCK_PATH, age_ms: Math.round(ageMs) });
+    }
+  }
+
+  try {
+    const fd = fs.openSync(LOCK_PATH, "wx");
+    fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, started_at: new Date().toISOString() }));
+    fs.closeSync(fd);
+    return true;
+  } catch {
+    appendEvent({ ok: true, event: "orchestrator_skipped_locked", lock_path: LOCK_PATH });
+    return false;
+  }
+}
+
+function releaseLock() {
+  fs.rmSync(LOCK_PATH, { force: true });
+}
+
+async function runOrchestrator() {
+  if (DISABLE_HEAVY) {
+    appendEvent({ ok: true, event: "orchestrator_disabled" });
+    return;
+  }
+
+  if (!acquireLock()) return;
+
+  try {
+    const heartbeat = await latestHeartbeat();
+    const slot = slotFromFields(heartbeat?.fields || {});
+    appendEvent({
+      ok: true,
+      event: "orchestrator_started",
+      heartbeat_id: heartbeat?.id || null,
+      slot,
+      heartbeat_fields: heartbeat?.fields || null,
+    });
+
+    if (!slot) {
+      appendEvent({ ok: true, event: "orchestrator_noop", reason: "no_single_active_slot" });
+      return;
+    }
+
+    const schedulesDailyDue = slotIsDue(slot, process.env.ORCH_SCHEDULES_DAILY_SLOTS, DEFAULT_SCHEDULES_DAILY_SLOTS);
+    const schedulesCalcDue = slotIsDue(slot, process.env.ORCH_SCHEDULES_CALCULATOR_SLOTS, DEFAULT_SCHEDULES_CALCULATOR_SLOTS);
+    const tripsDailyDue = slotIsDue(slot, process.env.ORCH_TRIPS_DAILY_SLOTS, DEFAULT_TRIPS_DAILY_SLOTS);
+    const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
+    const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
+    const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
+
+    if (schedulesDailyDue) {
+      const schedulesDailyResult = runNodeScript("schedules_dailyv2.js");
+      if (!schedulesDailyResult.ok) {
+        appendEvent({ ok: false, event: "schedule_downstream_blocked", reason: "schedules_dailyv2_failed" });
+      } else if (schedulesCalcDue) {
+        runNodeScript("schedules_calculatorv2.js");
+      }
+    }
+
+    let tripsOk = true;
+    let tripsRan = false;
+    if (tripsDailyDue) {
+      tripsRan = true;
+      const tripsDailyResult = runNodeScript("trips_dailyv2.js");
+      if (!tripsDailyResult.ok) {
+        tripsOk = false;
+        appendEvent({ ok: false, event: "trips_downstream_blocked", reason: "trips_dailyv2_failed" });
+      }
+    }
+
+    if (tripsOk && tripsTaggerDue) {
+      tripsRan = true;
+      const tripsTaggerResult = runNodeScript("trips_tagger.js");
+      if (!tripsTaggerResult.ok) {
+        tripsOk = false;
+        appendEvent({ ok: false, event: "trips_downstream_blocked", reason: "trips_tagger_failed" });
+      }
+    }
+
+    if (tripsOk && tripsCalcDue && tripsRan) {
+      runNodeScript("trips_calculatorv2.js");
+    }
+
+    if (publisherDue) {
+      runNodeScript("publisher.js");
+    }
+
+    appendEvent({
+      ok: true,
+      event: "orchestrator_completed",
+      slot,
+      due: {
+        schedules_daily: schedulesDailyDue,
+        schedules_calculator: schedulesCalcDue,
+        trips_daily: tripsDailyDue,
+        trips_tagger: tripsTaggerDue,
+        trips_calculator: tripsCalcDue,
+        publisher: publisherDue,
+      },
+    });
+  } finally {
+    releaseLock();
+  }
+}
+
+function launchDetachedChild() {
+  ensureLogDir();
+  const child = spawn(process.execPath, [__filename], {
+    cwd: __dirname,
+    env: {
+      ...process.env,
+      ORCH_DETACHED_CHILD: "1",
+      ORCH_RUN_INLINE: "0",
+    },
+    detached: true,
+    stdio: "ignore",
+    windowsHide: true,
+  });
+  child.unref();
+  appendEvent({ ok: true, event: "orchestrator_child_launched", pid: child.pid });
+}
+
+if (!DETACHED_CHILD && !RUN_INLINE) {
+  launchDetachedChild();
+} else {
+  runOrchestrator().catch((error) => {
+    appendEvent({
+      ok: false,
+      event: "orchestrator_failed",
+      error: String(error?.stack || error?.message || error).slice(0, 1000),
+    });
+    process.exit(1);
+  });
+}

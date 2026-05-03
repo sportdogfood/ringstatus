@@ -14,6 +14,12 @@ $steps = @(
         ScriptName = 'heartbeat_patterns.js'
         LogFileName = 'epoch-tagger.log'
         ContinueOnError = $false
+    },
+    @{
+        Label = 'SLOT_ORCHESTRATOR'
+        ScriptName = 'heartbeat_slot_orchestrator.js'
+        LogFileName = 'heartbeat-slot-orchestrator.log'
+        ContinueOnError = $true
     }
 )
 
@@ -26,6 +32,7 @@ Invoke-RunnerPipeline `
         'run_tagger_heartbeat_lane.ps1',
         'runner_pipeline_common.ps1',
         'tagger.js',
-        'heartbeat_patterns.js'
+        'heartbeat_patterns.js',
+        'heartbeat_slot_orchestrator.js'
     ) `
     -Steps $steps

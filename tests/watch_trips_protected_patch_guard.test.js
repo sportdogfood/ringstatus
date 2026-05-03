@@ -6,9 +6,23 @@ const scripts = ["trips_tagger.js", "trips_dailyv2.js"];
 const protectedFields = [
   "status",
   "estimated_start_time",
+  "estimated_end_time",
+  "estimated_go_time",
   "order_of_go",
   "total_trips",
   "completed_trips",
+  "actual_time",
+  "estimated_time",
+  "gone_in",
+  "h_eid",
+  "time_one",
+  "time_two",
+  "time_three",
+  "score",
+  "score1",
+  "score2",
+  "score3",
+  "placing",
 ];
 
 for (const script of scripts) {
