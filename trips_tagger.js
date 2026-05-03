@@ -379,78 +379,60 @@ function setBaseFields(updateFields, observedAt, reason) {
   updateFields[FIELD_HB_SECOND_PASS_DONE] = true;
 }
 
+function setIfPresent(updateFields, fieldName, value) {
+  if (isBlank(fieldName) || isBlank(value)) return false;
+  updateFields[fieldName] = value;
+  return true;
+}
+
 function setAppFields(updateFields, appCtx) {
-  updateFields[FIELD_APP_SHOW_ID] = appCtx?.app_show_id ?? null;
-  updateFields[FIELD_APP_SQL_DATE] = appCtx?.app_sql_date ?? null;
-  updateFields[FIELD_APP_TIME] = appCtx?.app_time ?? null;
+  setIfPresent(updateFields, FIELD_APP_SHOW_ID, appCtx?.app_show_id);
+  setIfPresent(updateFields, FIELD_APP_SQL_DATE, appCtx?.app_sql_date);
+  setIfPresent(updateFields, FIELD_APP_TIME, appCtx?.app_time);
 }
 
 function setModeFields(updateFields, appCtx) {
-  updateFields[FIELD_MODE] = appCtx?.mode ?? null;
+  setIfPresent(updateFields, FIELD_MODE, appCtx?.mode);
   updateFields[FIELD_SHIFTED_NEXT_DAY] = !!appCtx?.shifted_to_next_day;
 }
 
 function setShowsLink(updateFields, showRecordId) {
-  updateFields[FIELD_LINK_SHOWS] = showRecordId ? [showRecordId] : [];
+  if (showRecordId) updateFields[FIELD_LINK_SHOWS] = [showRecordId];
 }
 
 function setClassLevelFields(updateFields, data) {
-  updateFields[FIELD_STATUS] = data.class_status;
-  updateFields[FIELD_ESTIMATED_START_TIME] = data.estimated_start_time;
-  updateFields[FIELD_ESTIMATED_END_TIME] = data.estimated_end_time;
-  updateFields[FIELD_REMAINING_TRIPS] = data.remaining_trips;
-  updateFields[FIELD_TOTAL_TRIPS] = data.total_trips;
-  updateFields[FIELD_COMPLETED_TRIPS] = data.completed_trips;
-  updateFields[FIELD_ACTUAL_TIME] = data.actual_time;
-  updateFields[FIELD_ESTIMATED_TIME] = data.estimated_time;
+  setIfPresent(updateFields, FIELD_STATUS, data.class_status);
+  setIfPresent(updateFields, FIELD_ESTIMATED_START_TIME, data.estimated_start_time);
+  setIfPresent(updateFields, FIELD_ESTIMATED_END_TIME, data.estimated_end_time);
+  setIfPresent(updateFields, FIELD_REMAINING_TRIPS, data.remaining_trips);
+  setIfPresent(updateFields, FIELD_TOTAL_TRIPS, data.total_trips);
+  setIfPresent(updateFields, FIELD_COMPLETED_TRIPS, data.completed_trips);
+  setIfPresent(updateFields, FIELD_ACTUAL_TIME, data.actual_time);
+  setIfPresent(updateFields, FIELD_ESTIMATED_TIME, data.estimated_time);
 }
 
 function setTripLevelFields(updateFields, data) {
-  updateFields[FIELD_ESTIMATED_GO_TIME] = data.estimated_go_time;
-  updateFields[FIELD_ORDER_OF_GO] = data.order_of_go;
-  updateFields[FIELD_TIME_ONE] = data.time_one;
-  updateFields[FIELD_TIME_TWO] = data.time_two;
-  updateFields[FIELD_TIME_THREE] = data.time_three;
-  updateFields[FIELD_SCORE1] = data.score1;
-  updateFields[FIELD_SCORE2] = data.score2;
-  updateFields[FIELD_SCORE3] = data.score3;
+  setIfPresent(updateFields, FIELD_ESTIMATED_GO_TIME, data.estimated_go_time);
+  setIfPresent(updateFields, FIELD_ORDER_OF_GO, data.order_of_go);
+  setIfPresent(updateFields, FIELD_TIME_ONE, data.time_one);
+  setIfPresent(updateFields, FIELD_TIME_TWO, data.time_two);
+  setIfPresent(updateFields, FIELD_TIME_THREE, data.time_three);
+  setIfPresent(updateFields, FIELD_SCORE1, data.score1);
+  setIfPresent(updateFields, FIELD_SCORE2, data.score2);
+  setIfPresent(updateFields, FIELD_SCORE3, data.score3);
 
-  updateFields[FIELD_RESULTS_VERIFIED] = data.results_verified;
-  updateFields[FIELD_TOTAL_ENTRY_TRIPS] = data.total_entry_trips;
-  updateFields[FIELD_ACTUAL_ORDER] = data.actual_order;
-  if (CAN_WRITE_ACTUAL_GO) updateFields[FIELD_ACTUAL_GO] = data.actual_go;
-  updateFields[FIELD_H_EID] = data.h_eid;
-  updateFields[FIELD_TIME_FAULT_ONE] = data.time_fault_one;
-  updateFields[FIELD_FAULTS_ONE] = data.faults_one;
-  updateFields[FIELD_TIME_FAULTS_TWO] = data.time_faults_two;
-  updateFields[FIELD_FAULTS_TWO] = data.faults_two;
-  updateFields[FIELD_PLACING] = data.placing;
-  updateFields[FIELD_GONE_IN] = data.gone_in;
-  updateFields[FIELD_SCORE] = data.score;
-}
-
-function clearTripLevelFields(updateFields) {
-  updateFields[FIELD_ESTIMATED_GO_TIME] = null;
-  updateFields[FIELD_ORDER_OF_GO] = null;
-  updateFields[FIELD_TIME_ONE] = null;
-  updateFields[FIELD_TIME_TWO] = null;
-  updateFields[FIELD_TIME_THREE] = null;
-  updateFields[FIELD_SCORE1] = null;
-  updateFields[FIELD_SCORE2] = null;
-  updateFields[FIELD_SCORE3] = null;
-
-  updateFields[FIELD_RESULTS_VERIFIED] = null;
-  updateFields[FIELD_TOTAL_ENTRY_TRIPS] = null;
-  updateFields[FIELD_ACTUAL_ORDER] = null;
-  if (CAN_WRITE_ACTUAL_GO) updateFields[FIELD_ACTUAL_GO] = null;
-  updateFields[FIELD_H_EID] = null;
-  updateFields[FIELD_TIME_FAULT_ONE] = null;
-  updateFields[FIELD_FAULTS_ONE] = null;
-  updateFields[FIELD_TIME_FAULTS_TWO] = null;
-  updateFields[FIELD_FAULTS_TWO] = null;
-  updateFields[FIELD_PLACING] = null;
-  updateFields[FIELD_GONE_IN] = null;
-  updateFields[FIELD_SCORE] = null;
+  setIfPresent(updateFields, FIELD_RESULTS_VERIFIED, data.results_verified);
+  setIfPresent(updateFields, FIELD_TOTAL_ENTRY_TRIPS, data.total_entry_trips);
+  setIfPresent(updateFields, FIELD_ACTUAL_ORDER, data.actual_order);
+  if (CAN_WRITE_ACTUAL_GO) setIfPresent(updateFields, FIELD_ACTUAL_GO, data.actual_go);
+  setIfPresent(updateFields, FIELD_H_EID, data.h_eid);
+  setIfPresent(updateFields, FIELD_TIME_FAULT_ONE, data.time_fault_one);
+  setIfPresent(updateFields, FIELD_FAULTS_ONE, data.faults_one);
+  setIfPresent(updateFields, FIELD_TIME_FAULTS_TWO, data.time_faults_two);
+  setIfPresent(updateFields, FIELD_FAULTS_TWO, data.faults_two);
+  setIfPresent(updateFields, FIELD_PLACING, data.placing);
+  setIfPresent(updateFields, FIELD_GONE_IN, data.gone_in);
+  setIfPresent(updateFields, FIELD_SCORE, data.score);
 }
 
 function parseTimeToMinutes(appTime) {
@@ -1277,7 +1259,6 @@ async function fetchShowsMap() {
         bumpReason(reason);
       } else if (classSignupEntry || groupOrderEntry) {
         trip_not_found++;
-        clearTripLevelFields(updateFields);
 
         const order_of_go = firstNormNum(
           IGNORE_NUM.order_of_go,
@@ -1293,8 +1274,8 @@ async function fetchShowsMap() {
             classSignupEntry?.number
           ))
         );
-        updateFields[FIELD_ORDER_OF_GO] = order_of_go;
-        updateFields[FIELD_H_EID] = h_eid;
+        setIfPresent(updateFields, FIELD_ORDER_OF_GO, order_of_go);
+        setIfPresent(updateFields, FIELD_H_EID, h_eid);
 
         let reason = classSignupEntry
           ? "warn:no_trip_match_classsignup_order_only"
@@ -1307,7 +1288,6 @@ async function fetchShowsMap() {
         bumpReason(reason);
       } else {
         trip_not_found++;
-        clearTripLevelFields(updateFields);
 
         let reason = "err:no_trip_match";
         reason = `${reason}|warn:missing_order_of_go`;
