@@ -201,6 +201,14 @@ function normNum(n, ignoreSet = null) {
   return n;
 }
 
+function firstNormNum(ignoreSet, ...values) {
+  for (const value of values) {
+    const normalized = normNum(numOrNull(value), ignoreSet);
+    if (normalized !== null) return normalized;
+  }
+  return null;
+}
+
 function normTimeStr(s) {
   const v = strOrNull(s);
   if (v === null) return null;
@@ -951,9 +959,11 @@ async function fetchShowsMap() {
       const {
         rec,
         classEndpoint,
+        classSignupEndpoint,
         entryxclasses_uuid,
         entry_id,
-        class_id
+        class_id,
+        class_number
       } = row;
 
       const updateFields = {};
@@ -975,8 +985,14 @@ async function fetchShowsMap() {
         continue;
       }
 
-      if (!entryxclasses_uuid) {
-        let reason = "err:missing_entryxclasses_uuid";
+      const hasTripIdentity = !!entryxclasses_uuid ||
+        (entry_id !== null && (class_number !== null || class_id !== null));
+      if (!hasTripIdentity) {
+        let reason = "err:missing_trip_identity";
+        if (!entryxclasses_uuid) reason = `${reason}|debug:missing_entryxclasses_uuid`;
+        if (entry_id === null) reason = `${reason}|debug:missing_entry_id`;
+        if (class_number === null) reason = `${reason}|debug:missing_class_number`;
+        if (class_id === null) reason = `${reason}|debug:missing_class_id`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
 
         skipped_missing_entryxclasses_uuid++;
@@ -1104,8 +1120,24 @@ async function fetchShowsMap() {
           const k = tripUuid(t);
           return k && k === entryxclasses_uuid;
         }) ||
+        findClassTrip(classJson, {
+          entryId: entry_id,
+          classId: class_id,
+        }) ||
         null;
-      const groupOrderEntry = findClassGroupOrderEntry(classJson, { entryId: entry_id, classId: class_id });
+      const groupOrderEntry = findClassGroupOrderEntry(classJson, {
+        entryxclassesUuid: entryxclasses_uuid,
+        entryId: entry_id,
+        classId: class_id,
+      });
+      const classSignupCached = classSignupEndpoint ? classSignupEndpointCache.get(classSignupEndpoint) : null;
+      const classSignupEntry = classSignupCached?.ok
+        ? findClassSignupEntry(classSignupCached.json, {
+          entryId: entry_id,
+          classNumber: class_number,
+          classId: class_id,
+        })
+        : null;
 
       setClassLevelFields(updateFields, {
         class_status,
@@ -1125,14 +1157,14 @@ async function fetchShowsMap() {
           firstNonBlank(matchedTrip.estimated_go_time, matchedTrip.estimatedGoTime)
         );
 
-        const order_of_go = normNum(
-          numOrNull(firstNonBlank(
-            matchedTrip.order_of_go,
-            matchedTrip.orderOfGo,
-            groupOrderEntry?.order_of_go,
-            groupOrderEntry?.orderOfGo
-          )),
-          IGNORE_NUM.order_of_go
+        const order_of_go = firstNormNum(
+          IGNORE_NUM.order_of_go,
+          matchedTrip.order_of_go,
+          matchedTrip.orderOfGo,
+          classSignupEntry?.order_of_go,
+          classSignupEntry?.orderOfGo,
+          groupOrderEntry?.order_of_go,
+          groupOrderEntry?.orderOfGo
         );
 
         const time_one = normNum(
@@ -1243,17 +1275,30 @@ async function fetchShowsMap() {
 
         setBaseFields(updateFields, observedAt, reason);
         bumpReason(reason);
-      } else if (groupOrderEntry) {
+      } else if (classSignupEntry || groupOrderEntry) {
         trip_not_found++;
         clearTripLevelFields(updateFields);
 
-        const order_of_go = normNum(
-          numOrNull(firstNonBlank(groupOrderEntry.order_of_go, groupOrderEntry.orderOfGo)),
-          IGNORE_NUM.order_of_go
+        const order_of_go = firstNormNum(
+          IGNORE_NUM.order_of_go,
+          classSignupEntry?.order_of_go,
+          classSignupEntry?.orderOfGo,
+          groupOrderEntry?.order_of_go,
+          groupOrderEntry?.orderOfGo
+        );
+        const h_eid = normNum(
+          numOrNull(firstNonBlank(
+            classSignupEntry?.entry_number,
+            classSignupEntry?.entryNumber,
+            classSignupEntry?.number
+          ))
         );
         updateFields[FIELD_ORDER_OF_GO] = order_of_go;
+        updateFields[FIELD_H_EID] = h_eid;
 
-        let reason = "warn:no_trip_match_group_order_only";
+        let reason = classSignupEntry
+          ? "warn:no_trip_match_classsignup_order_only"
+          : "warn:no_trip_match_group_order_only";
         if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
         if (!class_status) reason = `${reason}|warn:missing_status`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
@@ -1266,6 +1311,11 @@ async function fetchShowsMap() {
 
         let reason = "err:no_trip_match";
         reason = `${reason}|warn:missing_order_of_go`;
+        if (entry_id === null) reason = `${reason}|debug:missing_entry_id`;
+        if (class_number === null) reason = `${reason}|debug:missing_class_number`;
+        if (class_id === null) reason = `${reason}|debug:missing_class_id`;
+        if (!classSignupEndpoint) reason = `${reason}|debug:missing_classsignup_endpoint`;
+        if (classSignupCached && !classSignupCached.ok) reason = `${reason}|warn:${classSignupCached.reason || "classsignup_fetch_failed"}`;
         if (!class_status) reason = `${reason}|warn:missing_status`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
 
@@ -1306,6 +1356,7 @@ async function fetchShowsMap() {
       skipped_missing_class_endpoint,
       skipped_missing_entryxclasses_uuid,
       unique_class_endpoints: uniqueEndpoints.size,
+      unique_classsignup_endpoints: uniqueClassSignupEndpoints.size,
       endpoint_fetch_errors,
       trip_matched,
       trip_not_found,

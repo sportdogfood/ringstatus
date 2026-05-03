@@ -17,7 +17,7 @@ Example file shape:
 ```json
 {
   "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
-  "authorization": "Bearer <redacted>",
+  "authorization": "<redacted>",
   "cookies": [
     {
       "name": "jwt",
@@ -38,9 +38,12 @@ Example file shape:
 Alternate environment-only mode:
 
 ```powershell
-$env:SGL_AUTHORIZATION = 'Bearer <redacted>'
+$env:SGL_AUTHORIZATION = '<redacted>'
 $env:SGL_COOKIE_HEADER = 'jwt=<redacted>; sgl=<redacted>; __cf_bm=<redacted>'
 ```
+
+`SGL_AUTHORIZATION` may be a raw JWT/token. `sgl_fetch.ps1` adds the
+`Bearer ` prefix when the stored value does not already include it.
 
 ## Smoke Test
 
