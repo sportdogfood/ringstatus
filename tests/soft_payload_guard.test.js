@@ -106,6 +106,18 @@ assert.strictEqual(
   }),
   500
 );
+assert.strictEqual(
+  softPayloadMinBodyLengthForEndpoint({
+    endpoint: "https://sglapi.wellingtoninternational.com/classsignup?show_date=2026-05-03&show_id=200000060&customer_id=15",
+  }),
+  1000
+);
+assert.strictEqual(
+  softPayloadMinBodyLengthForEndpoint({
+    endpoint: "https://sglapi.wellingtoninternational.com/entries/200230238?eid=200230238&show_id=200000060&customer_id=15",
+  }),
+  128
+);
 
 const previousGlobalMin = process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH;
 process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH = "2";

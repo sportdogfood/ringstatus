@@ -18,9 +18,31 @@ assert.strictEqual(
   resolveSglDirectUrl("https://broad-tooth-b8ed.gombcg.workers.dev/people/123?pid=123&show_id=200000060&customer_id=15"),
   "https://sglapi.wellingtoninternational.com/people/123?pid=123&show_id=200000060&customer_id=15"
 );
+assert.strictEqual(
+  resolveSglDirectUrl("https://broad-tooth-b8ed.gombcg.workers.dev/classsignup?show_date=2026-05-03&show_id=200000060&customer_id=15"),
+  "https://sglapi.wellingtoninternational.com/classsignup?show_date=2026-05-03&show_id=200000060&customer_id=15"
+);
+assert.strictEqual(
+  resolveSglDirectUrl("https://broad-tooth-b8ed.gombcg.workers.dev/entries/200230238?eid=200230238&show_id=200000060&customer_id=15"),
+  "https://sglapi.wellingtoninternational.com/entries/200230238?eid=200230238&show_id=200000060&customer_id=15"
+);
 
 assert.strictEqual(shouldUsePowerShellSglFetch(workerSchedule, { platform: "win32", env: {} }), true);
 assert.strictEqual(shouldUsePowerShellSglFetch(directSchedule, { platform: "win32", env: {} }), true);
+assert.strictEqual(
+  shouldUsePowerShellSglFetch(
+    "https://sglapi.wellingtoninternational.com/classsignup?show_date=2026-05-03&show_id=200000060&customer_id=15",
+    { platform: "win32", env: {} }
+  ),
+  true
+);
+assert.strictEqual(
+  shouldUsePowerShellSglFetch(
+    "https://sglapi.wellingtoninternational.com/entries/200230238?eid=200230238&show_id=200000060&customer_id=15",
+    { platform: "win32", env: {} }
+  ),
+  true
+);
 assert.strictEqual(
   shouldUsePowerShellSglFetch(workerSchedule, {
     platform: "win32",
