@@ -28,7 +28,9 @@ const {
 } = require("./lib/sgl_fetch_adapter");
 const {
   buildClassDetailEndpoint,
+  buildClassSignupGroupEndpoint,
   findClassGroupOrderEntry,
+  findClassSignupEntry,
   findClassTrip,
   normalizeClassEndpointWithCgid,
 } = require("./lib/watch_trips_enrichment");
@@ -53,6 +55,7 @@ const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_e
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
 const FIELD_ENTRY_ID              = process.env.FIELD_ENTRY_ID || "entry_id";
 const FIELD_CLASS_ID              = process.env.FIELD_CLASS_ID || "class_id";
+const FIELD_CLASS_NUMBER          = process.env.FIELD_CLASS_NUMBER || "class_number";
 const FIELD_CLASS_GROUP_ID        = process.env.FIELD_CLASS_GROUP_ID || "class_group_id";
 
 // app context fields written back
@@ -146,6 +149,7 @@ function endpointPathKind(endpoint) {
   try {
     path = new URL(raw).pathname.toLowerCase();
   } catch {}
+  if (path.includes("/classsignup/")) return "classsignup_detail";
   if (path.includes("/classes/")) return "class";
   return "unknown";
 }
@@ -664,11 +668,13 @@ async function fetchShowsMap() {
 
     const recInputs = [];
     const uniqueEndpoints = new Set();
+    const uniqueClassSignupEndpoints = new Set();
 
     for (const rec of records) {
       const f = rec.fields || {};
       const entry_id = numOrNull(f[FIELD_ENTRY_ID]);
       const class_id = numOrNull(f[FIELD_CLASS_ID]);
+      const class_number = numOrNull(f[FIELD_CLASS_NUMBER]);
       const class_group_id = numOrNull(f[FIELD_CLASS_GROUP_ID]);
       let classEndpoint = normalizeClassEndpoint(f[FIELD_CLASS_ENDPOINT], class_group_id);
       if (!classEndpoint && class_id !== null) {
@@ -680,19 +686,33 @@ async function fetchShowsMap() {
           classGroupId: class_group_id,
         });
       }
+      const classSignupEndpoint = class_group_id !== null
+        ? buildClassSignupGroupEndpoint({
+          baseUrl: BASE_URL,
+          classGroupId: class_group_id,
+          entryId: entry_id,
+          showId: appCtx.app_show_id,
+          customerId: CUSTOMER_ID,
+        })
+        : null;
       const entryxclasses_uuid = normStr(f[FIELD_ENTRYXCLASSES_UUID]);
 
       recInputs.push({
         rec,
         classEndpoint,
+        classSignupEndpoint,
         entryxclasses_uuid,
         entry_id,
         class_id,
+        class_number,
         class_group_id
       });
 
       if (classEndpoint) {
         uniqueEndpoints.add(classEndpoint);
+      }
+      if (classSignupEndpoint) {
+        uniqueClassSignupEndpoints.add(classSignupEndpoint);
       }
     }
 
@@ -781,6 +801,102 @@ async function fetchShowsMap() {
         const reason = "err:class_fetch_exception";
         const detail = String(e?.message || e).slice(0, 300);
         endpointCache.set(endpoint, {
+          ok: false,
+          reason,
+          detail
+        });
+        endpointErrors.push({
+          endpoint,
+          reason,
+          detail
+        });
+        console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${detail}`);
+      }
+    }
+
+    const classSignupEndpointCache = new Map();
+    for (const endpoint of uniqueClassSignupEndpoints) {
+      try {
+        const fetched = await fetchTextWithConfiguredTransport(endpoint, async (targetEndpoint) => {
+          const response = await fetchWithRetry(targetEndpoint, { method: "GET" });
+          const text = await response.text();
+          return { response, text, endpoint: targetEndpoint };
+        });
+        const res = fetched.response;
+        const txt = fetched.text;
+        const effectiveEndpoint = fetched.endpoint || endpoint;
+
+        if (!res.ok) {
+          const reason = `err:classsignup_http_${res.status}`;
+          classSignupEndpointCache.set(endpoint, {
+            ok: false,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          endpointErrors.push({
+            endpoint: effectiveEndpoint,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint} :: ${txt.slice(0, 200)}`);
+          continue;
+        }
+
+        let json = null;
+        try {
+          json = JSON.parse(txt);
+        } catch {
+          const reason = "err:classsignup_invalid_json";
+          classSignupEndpointCache.set(endpoint, {
+            ok: false,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          endpointErrors.push({
+            endpoint: effectiveEndpoint,
+            reason,
+            detail: txt.slice(0, 300)
+          });
+          console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint}`);
+          continue;
+        }
+
+        try {
+          assertValidPayload({
+            payload: json,
+            text: txt,
+            response: res,
+            lane: "trips_tagger_classsignup",
+            endpoint: effectiveEndpoint,
+            expectedTopLevelKeys: ["show", "class_group", "entry_x_classes"],
+            expectedPredicate(payload) {
+              return Array.isArray(payload?.entry_x_classes);
+            },
+          });
+        } catch (e) {
+          if (!isSoftPayloadError(e)) throw e;
+
+          const reason = e?.reason || "soft_payload";
+          const detail = JSON.stringify(softPayloadLogFields(e)).slice(0, 300);
+          classSignupEndpointCache.set(endpoint, {
+            ok: false,
+            reason,
+            detail
+          });
+          endpointErrors.push({
+            endpoint: effectiveEndpoint,
+            reason,
+            detail
+          });
+          console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint} :: ${detail}`);
+          continue;
+        }
+
+        classSignupEndpointCache.set(endpoint, { ok: true, json });
+      } catch (e) {
+        const reason = "err:classsignup_fetch_exception";
+        const detail = String(e?.message || e).slice(0, 300);
+        classSignupEndpointCache.set(endpoint, {
           ok: false,
           reason,
           detail
