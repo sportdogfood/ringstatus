@@ -694,7 +694,7 @@ async function fetchShowsMap() {
           classGroupId: class_group_id,
         });
       }
-      const classSignupEndpoint = class_group_id !== null
+      const classSignupEndpoint = class_group_id !== null && entry_id !== null
         ? buildClassSignupGroupEndpoint({
           baseUrl: BASE_URL,
           classGroupId: class_group_id,
