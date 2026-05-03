@@ -18,6 +18,12 @@
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 
+const {
+  assertValidPayload,
+  isSoftPayloadError,
+  softPayloadLogFields,
+} = require("./lib/soft_payload_guard");
+
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "hb_targets";
 const SHOWS_TABLE = process.env.SHOWS_TABLE || "shows";
@@ -127,6 +133,17 @@ function normalizeClassEndpoint(v) {
   } catch {
     return raw.replace(/(\/classes\/[^/?#]+)(\?)/i, "$1/$2");
   }
+}
+
+function endpointPathKind(endpoint) {
+  const raw = String(endpoint || "");
+  let path = raw.toLowerCase();
+  try {
+    path = new URL(raw).pathname.toLowerCase();
+  } catch {}
+  if (path.includes("/classes/videos/")) return "class_videos";
+  if (path.includes("/classes/")) return "class";
+  return "unknown";
 }
 
 function firstNonBlank(...vals) {
@@ -489,6 +506,15 @@ async function fetchAppContext() {
     throw new Error(`app endpoint invalid json: ${txt.slice(0, 300)}`);
   }
 
+  assertValidPayload({
+    payload: json,
+    text: txt,
+    response: res,
+    lane: "trips_tagger",
+    endpoint: APP_RING_ENDPOINT,
+    expectedTopLevelKeys: ["time_zone_date_time", "show", "show_id"],
+  });
+
   const app_show_id = numOrNull(firstNonBlank(json?.show_id, json?.show?.show_id));
   const raw_sql_date = strOrNull(firstNonBlank(json?.time_zone_date_time?.sql_date, json?.show_date));
   const app_time = strOrNull(json?.time_zone_date_time?.time);
@@ -556,6 +582,23 @@ async function fetchShowsMap() {
     try {
       appCtx = await fetchAppContext();
     } catch (e) {
+      if (isSoftPayloadError(e)) {
+        console.log(JSON.stringify({
+          ok: false,
+          run_status: "SOFT_PAYLOAD_BLOCKED",
+          reason: e?.reason || "soft_payload",
+          watch_table: WATCH_TABLE,
+          watch_view: WATCH_VIEW,
+          app_endpoint: APP_RING_ENDPOINT,
+          app_endpoint_failed: true,
+          writes_blocked: true,
+          observed_at: observedAt,
+          ...softPayloadLogFields(e),
+        }, null, 2));
+        process.exitCode = 1;
+        return;
+      }
+
       const allRecords = await airtableList(WATCH_TABLE, WATCH_VIEW);
       const records = MAX_RECORDS > 0 ? allRecords.slice(0, MAX_RECORDS) : allRecords;
 
@@ -671,6 +714,37 @@ async function fetchShowsMap() {
           continue;
         }
 
+        try {
+          const isVideoEndpoint = endpointPathKind(endpoint) === "class_videos";
+          assertValidPayload({
+            payload: json,
+            text: txt,
+            response: res,
+            lane: "trips_tagger",
+            endpoint,
+            expectedTopLevelKeys: isVideoEndpoint
+              ? ["video_insights", "exc_videos"]
+              : ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"],
+          });
+        } catch (e) {
+          if (!isSoftPayloadError(e)) throw e;
+
+          const reason = e?.reason || "soft_payload";
+          const detail = JSON.stringify(softPayloadLogFields(e)).slice(0, 300);
+          endpointCache.set(endpoint, {
+            ok: false,
+            reason,
+            detail
+          });
+          endpointErrors.push({
+            endpoint,
+            reason,
+            detail
+          });
+          console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${detail}`);
+          continue;
+        }
+
         endpointCache.set(endpoint, { ok: true, json });
       } catch (e) {
         const reason = "err:class_fetch_exception";
@@ -687,6 +761,25 @@ async function fetchShowsMap() {
         });
         console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${detail}`);
       }
+    }
+
+    const softEndpointErrors = endpointErrors.filter((error) =>
+      /^soft_payload_/i.test(String(error?.reason || ""))
+    );
+    if (softEndpointErrors.length) {
+      console.log(JSON.stringify({
+        ok: false,
+        run_status: "SOFT_PAYLOAD_BLOCKED",
+        reason: "soft_payload_empty",
+        watch_table: WATCH_TABLE,
+        watch_view: WATCH_VIEW,
+        app_endpoint: APP_RING_ENDPOINT,
+        writes_blocked: true,
+        observed_at: observedAt,
+        soft_endpoint_errors: softEndpointErrors.slice(0, 10),
+      }, null, 2));
+      process.exitCode = 1;
+      return;
     }
 
     const updates = [];

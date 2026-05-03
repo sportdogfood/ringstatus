@@ -601,7 +601,6 @@ async function fetchJson(url) {
           payload?.entries !== undefined ||
           payload?.classes !== undefined ||
           payload?.show_id !== undefined,
-    minBodyLength: Number(process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH || "2"),
   });
   return json;
 }
