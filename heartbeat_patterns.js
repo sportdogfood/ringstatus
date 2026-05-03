@@ -4,7 +4,7 @@
 // - previous older heartbeat = source
 // - source task boxes -> false
 // - target task boxes -> true
-// - toggle isA / isB on target based on source
+// - rotate target slot isA / isB / isC / isD based on source
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -23,6 +23,8 @@ const HEARTBEAT_TENANTS_FIELD    = process.env.HEARTBEAT_TENANTS_FIELD || "tenan
 const HEARTBEAT_ALERTS_FIELD     = process.env.HEARTBEAT_ALERTS_FIELD || "alerts";
 const HEARTBEAT_ISA_FIELD        = process.env.HEARTBEAT_ISA_FIELD || "isA";
 const HEARTBEAT_ISB_FIELD        = process.env.HEARTBEAT_ISB_FIELD || "isB";
+const HEARTBEAT_ISC_FIELD        = process.env.HEARTBEAT_ISC_FIELD || "isC";
+const HEARTBEAT_ISD_FIELD        = process.env.HEARTBEAT_ISD_FIELD || "isD";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 
@@ -96,6 +98,34 @@ function toMs(v) {
   return Number.isFinite(ms) ? ms : null;
 }
 
+function slotFromFields(fields = {}) {
+  const active = [
+    fields[HEARTBEAT_ISA_FIELD] ? "A" : null,
+    fields[HEARTBEAT_ISB_FIELD] ? "B" : null,
+    fields[HEARTBEAT_ISC_FIELD] ? "C" : null,
+    fields[HEARTBEAT_ISD_FIELD] ? "D" : null,
+  ].filter(Boolean);
+
+  return active.length === 1 ? active[0] : null;
+}
+
+function nextSlotFromSource(source) {
+  const sourceSlot = slotFromFields(source?.fields || {});
+  if (sourceSlot === "A") return "B";
+  if (sourceSlot === "B") return "C";
+  if (sourceSlot === "C") return "D";
+  return "A";
+}
+
+function slotFields(slot) {
+  return {
+    [HEARTBEAT_ISA_FIELD]: slot === "A",
+    [HEARTBEAT_ISB_FIELD]: slot === "B",
+    [HEARTBEAT_ISC_FIELD]: slot === "C",
+    [HEARTBEAT_ISD_FIELD]: slot === "D",
+  };
+}
+
 (async () => {
   const fieldsToRead = [
     HEARTBEAT_CREATED_FIELD,
@@ -106,7 +136,9 @@ function toMs(v) {
     HEARTBEAT_TENANTS_FIELD,
     HEARTBEAT_ALERTS_FIELD,
     HEARTBEAT_ISA_FIELD,
-    HEARTBEAT_ISB_FIELD
+    HEARTBEAT_ISB_FIELD,
+    HEARTBEAT_ISC_FIELD,
+    HEARTBEAT_ISD_FIELD
   ];
 
   const hbRecords = await listAll({
@@ -165,25 +197,7 @@ function toMs(v) {
     });
   }
 
-  // toggle target isA/isB from source, otherwise default A=true B=false
-  let targetIsA = true;
-  let targetIsB = false;
-
-  if (source) {
-    const sourceIsA = !!source.fields?.[HEARTBEAT_ISA_FIELD];
-    const sourceIsB = !!source.fields?.[HEARTBEAT_ISB_FIELD];
-
-    if (sourceIsA && !sourceIsB) {
-      targetIsA = false;
-      targetIsB = true;
-    } else if (sourceIsB && !sourceIsA) {
-      targetIsA = true;
-      targetIsB = false;
-    } else {
-      targetIsA = true;
-      targetIsB = false;
-    }
-  }
+  const targetSlot = nextSlotFromSource(source);
 
   // target boxes on
   await updateRecord(TABLE_HEARTBEAT, target.id, {
@@ -193,16 +207,19 @@ function toMs(v) {
     [HEARTBEAT_TRIPS_FIELD]: true,
     [HEARTBEAT_TENANTS_FIELD]: true,
     [HEARTBEAT_ALERTS_FIELD]: true,
-    [HEARTBEAT_ISA_FIELD]: targetIsA,
-    [HEARTBEAT_ISB_FIELD]: targetIsB
+    ...slotFields(targetSlot)
   });
 
   console.log(JSON.stringify({
     ok: true,
     target_heartbeat_id: target.id,
     source_heartbeat_id: source ? source.id : null,
-    target_isA: targetIsA,
-    target_isB: targetIsB
+    source_slot: source ? slotFromFields(source.fields || {}) : null,
+    target_slot: targetSlot,
+    target_isA: targetSlot === "A",
+    target_isB: targetSlot === "B",
+    target_isC: targetSlot === "C",
+    target_isD: targetSlot === "D"
   }, null, 2));
 })().catch(err => {
   console.error(String(err?.message || err));
