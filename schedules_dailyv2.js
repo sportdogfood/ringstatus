@@ -6,6 +6,9 @@ const {
   assertValidPayload,
   isSoftPayloadError,
 } = require("./lib/soft_payload_guard");
+const {
+  fetchTextWithConfiguredTransport,
+} = require("./lib/sgl_fetch_adapter");
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -378,12 +381,17 @@ async function airtablePatchRecords(tableName, updates) {
 }
 
 async function fetchJson(url) {
-  const response = await fetchWithRetry(url, {
-    method: "GET",
-    headers: { Accept: "application/json" },
+  const fetched = await fetchTextWithConfiguredTransport(url, async (endpoint) => {
+    const response = await fetchWithRetry(endpoint, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
+    const text = await response.text().catch(() => "");
+    return { response, text, endpoint };
   });
 
-  const text = await response.text().catch(() => "");
+  const { response, text } = fetched;
+  const endpoint = fetched.endpoint || url;
   if (!response.ok) {
     throw new Error(`Fetch failed (${response.status}): ${text.slice(0, 1200)}`);
   }
@@ -400,8 +408,8 @@ async function fetchJson(url) {
     text,
     response,
     lane: "schedules_dailyv2",
-    endpoint: url,
-    expectedTopLevelKeys: String(url || "").includes("/classes/")
+    endpoint,
+    expectedTopLevelKeys: String(endpoint || "").includes("/classes/")
       ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
       : ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
   });

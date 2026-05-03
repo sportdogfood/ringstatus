@@ -91,20 +91,20 @@ const normalSchedule = inspectSoftPayload({
 });
 assert.strictEqual(normalSchedule.ok, true);
 
-const normalClassVideos = inspectSoftPayload({
-  payload: { video_insights: {}, exc_videos: [{}] },
+const normalClassEndpoint = inspectSoftPayload({
+  payload: { class_related_data: {}, trips: [] },
   text: "x".repeat(10469),
   response: response({ "content-length": "10469" }),
-  endpoint: "https://sglapi.wellingtoninternational.com/classes/videos/200024756?show_id=200000060&customer_id=15&include_hidden=true",
+  endpoint: "https://sglapi.wellingtoninternational.com/classes/200024756/?show_id=200000060&customer_id=15",
   lane: "trips_tagger",
-  expectedTopLevelKeys: ["video_insights", "exc_videos"],
+  expectedTopLevelKeys: ["class", "class_related_data", "trips"],
 });
-assert.strictEqual(normalClassVideos.ok, true);
+assert.strictEqual(normalClassEndpoint.ok, true);
 assert.strictEqual(
   softPayloadMinBodyLengthForEndpoint({
-    endpoint: "https://sglapi.wellingtoninternational.com/classes/videos/200024756?show_id=200000060&customer_id=15&include_hidden=true",
+    endpoint: "https://sglapi.wellingtoninternational.com/classes/200024756/?show_id=200000060&customer_id=15",
   }),
-  1000
+  500
 );
 
 const previousGlobalMin = process.env.SOFT_PAYLOAD_MIN_BODY_LENGTH;
