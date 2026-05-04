@@ -1,5 +1,5 @@
 // tagger.js (FULL DROP)
-// 3 modes only: DAY / NIGHT / OVERNIGHT
+// heartbeat modes: DAY / NIGHT / OVERNIGHT / IDLE / OFF
 // - raw clock always comes from endpoint, or system time with a bounded last-known show fallback
 // - mode logic is based only on app_time as provided by the endpoint/system fallback
 // - DAY/NIGHT/OVERNIGHT first produce a candidate app_sql_date from raw sql_date
@@ -19,6 +19,11 @@ const {
 const {
   fetchTextWithConfiguredTransport,
 } = require("./lib/sgl_fetch_adapter");
+const {
+  normalizeHeartbeatMode,
+  isHeartbeatControlMode,
+  resolveHeartbeatCadenceSeconds,
+} = require("./lib/heartbeat_mode");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -50,6 +55,8 @@ const FIELD_MODE             = process.env.FIELD_MODE || "mode";
 const FIELD_EPOCH            = process.env.FIELD_EPOCH || "epoch";
 const FIELD_HB_DURATION      = process.env.FIELD_HB_DURATION || "hb_duration";
 const FIELD_INTERVAL         = process.env.FIELD_INTERVAL || "interval";
+const FIELD_CADENCE          = process.env.FIELD_CADENCE || "cadence";
+const FIELD_SET_INTERVALS    = process.env.FIELD_SET_INTERVALS || "set_intervals";
 const FIELD_HB_AT            = process.env.FIELD_HB_AT || "hb_at";
 
 const FIELD_APP_SHOW_ID      = process.env.FIELD_APP_SHOW_ID || "app_show_id";
@@ -73,6 +80,8 @@ const HEARTBEAT_TIME       = process.env.HEARTBEAT_TIME || "time";
 const DAY_INTERVAL_MIN       = Number(process.env.DAY_INTERVAL_MIN || "6");
 const NIGHT_INTERVAL_MIN     = Number(process.env.NIGHT_INTERVAL_MIN || "120");
 const OVERNIGHT_INTERVAL_MIN = Number(process.env.OVERNIGHT_INTERVAL_MIN || "99999");
+const IDLE_INTERVAL_MIN      = Number(process.env.IDLE_INTERVAL_MIN || "30");
+const OFF_INTERVAL_MIN       = Number(process.env.OFF_INTERVAL_MIN || "60");
 
 const HTTP_TIMEOUT_MS   = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
@@ -698,9 +707,7 @@ function isValidAppSqlDate(candidateDate, scheduleInfo) {
 }
 
 function normalizeMode(v) {
-  const s = String(v ?? "").trim().toUpperCase();
-  if (s === "DAY" || s === "NIGHT" || s === "OVERNIGHT") return s;
-  return "DAY";
+  return normalizeHeartbeatMode(v, "DAY");
 }
 
 function resolveModeFromClock(clock) {
@@ -716,7 +723,52 @@ function resolveModeFromClock(clock) {
 function intervalMinutesForMode(mode) {
   if (mode === "DAY") return DAY_INTERVAL_MIN;
   if (mode === "NIGHT") return NIGHT_INTERVAL_MIN;
+  if (mode === "IDLE") return IDLE_INTERVAL_MIN;
+  if (mode === "OFF") return OFF_INTERVAL_MIN;
   return OVERNIGHT_INTERVAL_MIN;
+}
+
+async function latestHeartbeatModeControl() {
+  try {
+    const rows = await airtableListSome({
+      table: TABLE_HEARTBEAT,
+      fields: [
+        FIELD_MODE,
+        FIELD_CADENCE,
+        FIELD_SET_INTERVALS,
+        FIELD_INTERVAL,
+        FIELD_EPOCH,
+        FIELD_HB_AT,
+      ],
+      maxRecords: 1,
+      sortField: FIELD_EPOCH,
+      sortDirection: "desc"
+    });
+
+    const latest = rows[0] || null;
+    const fields = latest?.fields || {};
+    const mode = normalizeMode(fields[FIELD_MODE]);
+
+    if (!isHeartbeatControlMode(mode)) return null;
+
+    return {
+      mode,
+      source: "latest_heartbeat",
+      heartbeat_record_id: latest?.id || null,
+      cadence_seconds: resolveHeartbeatCadenceSeconds({
+        mode,
+        cadence: fields[FIELD_CADENCE],
+        set_intervals: fields[FIELD_SET_INTERVALS],
+        interval: fields[FIELD_INTERVAL],
+      })
+    };
+  } catch (e) {
+    logWarn("heartbeat_mode_control_lookup_failed", {
+      table: TABLE_HEARTBEAT,
+      error_message: String(e?.message || e).slice(0, 240)
+    });
+    return null;
+  }
 }
 
 function buildFallbackClock() {
@@ -1292,12 +1344,16 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
 (async () => {
   try {
     const clk = await getClockSafe();
-    const mode = resolveModeFromClock(clk);
+    const modeControl = await latestHeartbeatModeControl();
+    const mode = modeControl?.mode || resolveModeFromClock(clk);
     const appCtx = await buildAppContext(clk, mode);
     const intervalMin = intervalMinutesForMode(mode);
 
     logInfo("run_summary_pre_write", {
       mode,
+      mode_control_source: modeControl?.source || null,
+      mode_control_heartbeat_record_id: modeControl?.heartbeat_record_id || null,
+      mode_control_cadence_seconds: modeControl?.cadence_seconds || null,
       source: clk.source,
       raw_show_id: clk.showId ?? null,
       raw_show_date: clk.showDate ?? null,

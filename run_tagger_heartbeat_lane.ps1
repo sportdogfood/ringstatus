@@ -16,6 +16,12 @@ $steps = @(
         ContinueOnError = $false
     },
     @{
+        Label = 'HEARTBEAT_TASK_CADENCE'
+        ScriptName = 'heartbeat_task_cadence.js'
+        LogFileName = 'heartbeat-task-cadence.log'
+        ContinueOnError = $true
+    },
+    @{
         Label = 'SLOT_ORCHESTRATOR'
         ScriptName = 'heartbeat_slot_orchestrator.js'
         LogFileName = 'heartbeat-slot-orchestrator.log'
@@ -33,6 +39,8 @@ Invoke-RunnerPipeline `
         'runner_pipeline_common.ps1',
         'tagger.js',
         'heartbeat_patterns.js',
+        'heartbeat_task_cadence.js',
+        'lib/heartbeat_mode.js',
         'heartbeat_slot_orchestrator.js'
     ) `
     -Steps $steps

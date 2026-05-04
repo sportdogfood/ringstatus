@@ -1,6 +1,7 @@
 param(
     [string]$TaskName = 'ringstatus-heartbeat',
-    [string]$NodePath = 'C:\Program Files\nodejs\node.exe'
+    [string]$NodePath = 'C:\Program Files\nodejs\node.exe',
+    [int]$IntervalSeconds = 300
 )
 
 $ErrorActionPreference = 'Stop'
@@ -21,7 +22,7 @@ $action = New-ScheduledTaskAction `
     -WorkingDirectory $repoPath
 
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date `
-    -RepetitionInterval (New-TimeSpan -Minutes 5) `
+    -RepetitionInterval (New-TimeSpan -Seconds $IntervalSeconds) `
     -RepetitionDuration (New-TimeSpan -Days 3650)
 
 $settings = New-ScheduledTaskSettingsSet `
@@ -35,7 +36,7 @@ Register-ScheduledTask `
     -Action $action `
     -Trigger $trigger `
     -Settings $settings `
-    -Description 'Runs ringstatus heartbeat lane every 5 minutes.' `
+    -Description 'Runs ringstatus heartbeat lane; cadence is reconciled from Airtable heartbeat mode.' `
     -Force | Out-Null
 
 Enable-ScheduledTask -TaskName $TaskName | Out-Null

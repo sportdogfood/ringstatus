@@ -8,6 +8,10 @@ const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const VIEW_HEARTBEAT = process.env.WATCH_TRIPS_HEALTH_VIEW || process.env.WATCH_VIEW || "heartbeat";
 
 const HEARTBEAT_CREATED_FIELD = process.env.HEARTBEAT_CREATED_FIELD || "created_time";
+const HEARTBEAT_MODE_FIELD = process.env.HEARTBEAT_MODE_FIELD || process.env.FIELD_MODE || "mode";
+const HEARTBEAT_CADENCE_FIELD = process.env.HEARTBEAT_CADENCE_FIELD || process.env.FIELD_CADENCE || "cadence";
+const HEARTBEAT_SET_INTERVALS_FIELD = process.env.HEARTBEAT_SET_INTERVALS_FIELD || process.env.FIELD_SET_INTERVALS || "set_intervals";
+const HEARTBEAT_INTERVAL_FIELD = process.env.HEARTBEAT_INTERVAL_FIELD || process.env.FIELD_INTERVAL || "interval";
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const DEFAULT_INTERVAL_SECONDS = Number(process.env.MONITOR_INTERVAL_SECONDS || "60");
 const DEFAULT_CYCLES = Number(process.env.MONITOR_CYCLES || "20");
@@ -240,6 +244,10 @@ async function snapshot() {
       record_id: heartbeat?.id || null,
       created_time: strOrNull(heartbeatFields.created_time),
       slot: heartbeatSlot(heartbeatFields),
+      mode: strOrNull(heartbeatFields[HEARTBEAT_MODE_FIELD]),
+      cadence: firstValue(heartbeatFields[HEARTBEAT_CADENCE_FIELD]) ?? null,
+      set_intervals: firstValue(heartbeatFields[HEARTBEAT_SET_INTERVALS_FIELD]) ?? null,
+      interval: firstValue(heartbeatFields[HEARTBEAT_INTERVAL_FIELD]) ?? null,
       app_sid: appShowId,
       app_sql_date: strOrNull(heartbeatFields.sql_date),
       app_time: strOrNull(heartbeatFields.time),

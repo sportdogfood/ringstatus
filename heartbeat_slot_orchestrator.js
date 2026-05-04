@@ -1,6 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const { spawn, spawnSync } = require("child_process");
+const {
+  normalizeHeartbeatMode,
+  modeAllowsHeavy,
+  resolveHeartbeatCadenceSeconds,
+} = require("./lib/heartbeat_mode");
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -11,6 +16,10 @@ const HEARTBEAT_ISA_FIELD = process.env.HEARTBEAT_ISA_FIELD || "isA";
 const HEARTBEAT_ISB_FIELD = process.env.HEARTBEAT_ISB_FIELD || "isB";
 const HEARTBEAT_ISC_FIELD = process.env.HEARTBEAT_ISC_FIELD || "isC";
 const HEARTBEAT_ISD_FIELD = process.env.HEARTBEAT_ISD_FIELD || "isD";
+const HEARTBEAT_MODE_FIELD = process.env.HEARTBEAT_MODE_FIELD || process.env.FIELD_MODE || "mode";
+const HEARTBEAT_CADENCE_FIELD = process.env.HEARTBEAT_CADENCE_FIELD || process.env.FIELD_CADENCE || "cadence";
+const HEARTBEAT_SET_INTERVALS_FIELD = process.env.HEARTBEAT_SET_INTERVALS_FIELD || process.env.FIELD_SET_INTERVALS || "set_intervals";
+const HEARTBEAT_INTERVAL_FIELD = process.env.HEARTBEAT_INTERVAL_FIELD || process.env.FIELD_INTERVAL || "interval";
 
 const DEFAULT_TRIPS_DAILY_SLOTS = "A,C";
 const DEFAULT_TRIPS_TAGGER_SLOTS = "C";
@@ -129,6 +138,10 @@ async function latestHeartbeat() {
       HEARTBEAT_ISB_FIELD,
       HEARTBEAT_ISC_FIELD,
       HEARTBEAT_ISD_FIELD,
+      HEARTBEAT_MODE_FIELD,
+      HEARTBEAT_CADENCE_FIELD,
+      HEARTBEAT_SET_INTERVALS_FIELD,
+      HEARTBEAT_INTERVAL_FIELD,
       "show_id",
       "sql_date",
       "time",
@@ -234,13 +247,33 @@ async function runOrchestrator() {
   try {
     const heartbeat = await latestHeartbeat();
     const slot = slotFromFields(heartbeat?.fields || {});
+    const mode = normalizeHeartbeatMode(heartbeat?.fields?.[HEARTBEAT_MODE_FIELD]);
+    const cadenceSeconds = resolveHeartbeatCadenceSeconds({
+      mode,
+      cadence: heartbeat?.fields?.[HEARTBEAT_CADENCE_FIELD],
+      set_intervals: heartbeat?.fields?.[HEARTBEAT_SET_INTERVALS_FIELD],
+      interval: heartbeat?.fields?.[HEARTBEAT_INTERVAL_FIELD],
+    });
     appendEvent({
       ok: true,
       event: "orchestrator_started",
       heartbeat_id: heartbeat?.id || null,
       slot,
+      mode,
+      cadence_seconds: cadenceSeconds,
       heartbeat_fields: heartbeat?.fields || null,
     });
+
+    if (!modeAllowsHeavy(mode)) {
+      appendEvent({
+        ok: true,
+        event: "orchestrator_mode_noop",
+        reason: "mode_blocks_heavy_lanes",
+        mode,
+        cadence_seconds: cadenceSeconds,
+      });
+      return;
+    }
 
     if (!slot) {
       appendEvent({ ok: true, event: "orchestrator_noop", reason: "no_single_active_slot" });
@@ -295,6 +328,8 @@ async function runOrchestrator() {
       ok: true,
       event: "orchestrator_completed",
       slot,
+      mode,
+      cadence_seconds: cadenceSeconds,
       due: {
         schedules_daily: schedulesDailyDue,
         schedules_calculator: schedulesCalcDue,
