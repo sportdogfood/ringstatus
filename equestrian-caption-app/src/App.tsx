@@ -787,57 +787,41 @@ export default function EquestrianCaptionPrototypeApp() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-stone-100 text-stone-900">
-      <div className="mx-auto max-w-md px-4 py-4">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
-          <div className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">
-            mobile caption generator
-          </div>
-          <h1 className="text-2xl font-semibold tracking-tight">horse post builder</h1>
-        </motion.div>
+  const screenTitle = screen === "create" ? "Create" : screen === "log" ? "Log" : "Dashboard";
 
-        <div className="mb-4 grid grid-cols-3 gap-2 rounded-lg border border-stone-200 bg-white p-2 shadow-sm">
+  return (
+    <div className="page">
+      <div className="app">
+        <header className="app-header">
+          <button type="button" className="header-back is-invisible">
+            Back
+          </button>
+          <h1 className="header-title">horse post builder / {screenTitle}</h1>
           <button
             type="button"
-            onClick={() => setScreen("create")}
-            aria-pressed={screen === "create"}
-            className={`rounded-md px-3 py-3 text-sm font-medium ${
-              screen === "create" ? "bg-stone-900 text-white" : "bg-stone-100 text-stone-700"
-            }`}
+            className={screen === "create" ? "header-action" : "header-action is-invisible"}
+            onClick={() => {
+              setGenerationRound(0);
+              generateCaptions(0);
+            }}
           >
-            create
+            Gen
           </button>
-          <button
-            type="button"
-            onClick={() => setScreen("log")}
-            aria-pressed={screen === "log"}
-            className={`rounded-md px-3 py-3 text-sm font-medium ${
-              screen === "log" ? "bg-stone-900 text-white" : "bg-stone-100 text-stone-700"
-            }`}
-          >
-            <span className="inline-flex items-center gap-2">
-              <List className="h-4 w-4" />
-              log
-            </span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setScreen("dashboard")}
-            aria-pressed={screen === "dashboard"}
-            className={`rounded-md px-3 py-3 text-sm font-medium ${
-              screen === "dashboard" ? "bg-stone-900 text-white" : "bg-stone-100 text-stone-700"
-            }`}
-          >
-            <span className="inline-flex items-center gap-2">
-              <LayoutDashboard className="h-4 w-4" />
-              dashboard
-            </span>
-          </button>
-        </div>
+        </header>
+
+        <main className="app-main">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="list-column">
+            {screen === "create" ? (
+              <div className="start-logo">
+                <div className="start-logo-title">mobile caption generator</div>
+                <div className="start-logo-subtitle">
+                  Pick a type, add the image notes, generate four options, then save one to the log.
+                </div>
+              </div>
+            ) : null}
 
         {screen === "create" ? (
-          <div className="grid gap-4">
+          <div className="screen-stack">
             <Card className="rounded-lg border-stone-200 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">post type</CardTitle>
