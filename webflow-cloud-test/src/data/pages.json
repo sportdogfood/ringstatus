@@ -1,0 +1,20 @@
+﻿[
+  {
+    "slug": "tack",
+    "title": "Tack, packed right.",
+    "subtitle": "A simple landing page for organizing show-day tack, packing, and reminders.",
+    "cta": "Open Tack"
+  },
+  {
+    "slug": "barn",
+    "title": "Barn work, organized.",
+    "subtitle": "Keep feed, turnout, lessons, and packing in one simple flow.",
+    "cta": "Open Barn"
+  },
+  {
+    "slug": "show",
+    "title": "Show day, simplified.",
+    "subtitle": "Fast pages for riders, trainers, and grooms who need the right information now.",
+    "cta": "Open Show"
+  }
+]
