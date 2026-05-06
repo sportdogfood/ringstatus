@@ -1321,10 +1321,10 @@ function getTagHintTerms(selectedTags: CaptionTag[]): string[] {
     .sort((a, b) => b.priority - a.priority)
     .flatMap((tag) => {
       return [tag.label, tag.line, ...tag.aliases, ...tag.attributes].flatMap((value) => {
-      return normalizeTagLabel(value)
-        .split(" ")
-        .filter((term) => term.length > 2 && !TAG_HINT_STOP_WORDS.has(term));
-    });
+        return normalizeTagLabel(value)
+          .split(" ")
+          .filter((term) => term.length > 2 && !TAG_HINT_STOP_WORDS.has(term));
+      });
     });
 
   return Array.from(new Set(terms));
@@ -1428,6 +1428,10 @@ function TagsCard({
                     onClick={() => onToggleTag(tag.id)}
                     aria-pressed={isActive}
                     data-purpose={purpose}
+                    data-source={tag.source}
+                    data-behavior={tag.selectedBehavior}
+                    data-active={isActive ? "true" : "false"}
+                    data-relevant={tag.appliesTo.length === 0 || tag.appliesTo.includes(postType) ? "true" : "false"}
                     className={`tag-pill ${isActive ? "is-active" : ""}`}
                   >
                     {tag.label}
