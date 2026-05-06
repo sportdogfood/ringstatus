@@ -1,0 +1,7 @@
+﻿{
+  "scripts": {
+    "install": "cd webflow-cloud-test && npm install",
+    "build": "cd webflow-cloud-test && npm run build"
+  },
+  "dependencies": {}
+}
