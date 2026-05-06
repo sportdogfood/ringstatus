@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -39,7 +39,7 @@ const createSteps = [
 
 type PostType = (typeof postTypes)[number]["value"];
 type Screen = "start" | "create" | "logs" | "dashboard";
-type CreateStep = (typeof createSteps)[number]["value"];
+type CreateStep = (typeof createSteps)[number]["value"] | "captions";
 
 type GeneratedCaption = {
   id: string;
@@ -1053,6 +1053,8 @@ export default function EquestrianCaptionPrototypeApp() {
   const [generated, setGenerated] = useState<GeneratedCaption[]>([]);
   const [showVoiceProfile, setShowVoiceProfile] = useState(false);
   const [selectedTagIdsByType, setSelectedTagIdsByType] = useState<Partial<Record<PostType, string[]>>>({});
+  const [visibleCaptionIndex, setVisibleCaptionIndex] = useState(0);
+  const captionScrollRef = useRef<HTMLDivElement>(null);
 
   const monthKey = currentMonthKey();
   const activeRule = postTypeRules[postType];
@@ -1098,6 +1100,42 @@ export default function EquestrianCaptionPrototypeApp() {
     reader.readAsDataURL(file);
   }
 
+  function scrollCaptionTo(index: number) {
+    window.requestAnimationFrame(() => {
+      const scrollContainer = captionScrollRef.current;
+      const target = scrollContainer?.querySelector<HTMLElement>(`[data-caption-index="${index}"]`);
+      target?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    });
+  }
+
+  function showCaptionAt(index: number) {
+    if (generated.length === 0) return;
+
+    const nextIndex = Math.max(0, Math.min(index, generated.length - 1));
+    setVisibleCaptionIndex(nextIndex);
+    scrollCaptionTo(nextIndex);
+  }
+
+  function handleCaptionScroll() {
+    const scrollContainer = captionScrollRef.current;
+    const firstCard = scrollContainer?.querySelector<HTMLElement>(".caption-option-card");
+    if (!scrollContainer || !firstCard || generated.length === 0) return;
+
+    const styles = window.getComputedStyle(scrollContainer);
+    const gap = Number.parseFloat(styles.columnGap || styles.gap || "0") || 0;
+    const cardWidth = firstCard.getBoundingClientRect().width + gap;
+    if (cardWidth <= 0) return;
+
+    const nextIndex = Math.max(0, Math.min(Math.round(scrollContainer.scrollLeft / cardWidth), generated.length - 1));
+    if (nextIndex !== visibleCaptionIndex) {
+      setVisibleCaptionIndex(nextIndex);
+    }
+  }
+
   function generateCaptions(nextRound = generationRound) {
     const highlightedLine = pickHighlightedLine(postType, nextRound);
     const pool = shiftPool(
@@ -1115,6 +1153,9 @@ export default function EquestrianCaptionPrototypeApp() {
 
     setGenerated([...regularCaptions, highlightedCaption]);
     setSelectedCaption("");
+    setVisibleCaptionIndex(0);
+    setCreateStep("captions");
+    scrollCaptionTo(0);
   }
 
   function refreshCaptions() {
@@ -1129,6 +1170,7 @@ export default function EquestrianCaptionPrototypeApp() {
     setGenerationRound(0);
     setGenerated([]);
     setSelectedCaption("");
+    setVisibleCaptionIndex(0);
   }
 
   function toggleTag(tagId: string) {
@@ -1146,6 +1188,7 @@ export default function EquestrianCaptionPrototypeApp() {
     setGenerationRound(0);
     setGenerated([]);
     setSelectedCaption("");
+    setVisibleCaptionIndex(0);
   }
 
   function savePost() {
