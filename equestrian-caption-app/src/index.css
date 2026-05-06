@@ -244,6 +244,73 @@ button {
   color: var(--muted);
 }
 
+.start-action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.start-status-dot {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 1px 4px rgba(0, 0, 0, 0.75);
+}
+
+.start-status-dot.is-on {
+  border-color: rgba(34, 197, 94, 0.85);
+  background: #15803d;
+}
+
+.start-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px auto 0;
+  width: 100%;
+  max-width: 474px;
+  color: var(--fg-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.voice-subtle-line {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.voice-subtle-line span:last-child {
+  min-width: 0;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.voice-subtle-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.voice-subtle-line:has(.voice-subtle-input:focus-visible) {
+  outline: 2px solid rgba(37, 99, 235, 0.55);
+  outline-offset: 3px;
+}
+
 .tap-panel {
   width: 100%;
   max-width: 474px;
@@ -572,7 +639,10 @@ button {
 }
 
 .tag-pill-wrap {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, minmax(34px, auto));
+  grid-auto-columns: max-content;
   gap: 8px;
   min-width: 0;
   overflow-x: auto;
@@ -598,11 +668,10 @@ button {
 }
 
 .tag-pill {
-  flex: 0 0 auto;
   min-height: 34px;
   min-width: 112px;
   max-width: 180px;
-  width: auto;
+  width: max-content;
   padding: 8px 10px;
   border-radius: var(--pill-radius);
   border: 1px solid var(--border-soft);
@@ -1265,7 +1334,7 @@ button {
 
   .tag-pill {
     font-size: 12px;
-    min-width: 106px;
+    min-width: 104px;
     max-width: 166px;
     padding-inline: 8px;
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -665,9 +665,193 @@ function toneTag(id: string, label: string, line: string): CaptionTag {
   return { id, label, line, purpose: "tone" };
 }
 
+const globalDetailPillLabels = [
+  "base",
+  "canter",
+  "change",
+  "line",
+  "rhythm",
+  "softness",
+  "rideability",
+  "what-the-horse-dealt-with",
+  "what-you-asked",
+  "how-it-answered",
+  "one-thing",
+  "one-result",
+  "answer",
+  "quiet-ride",
+  "better-finish",
+  "ribbon",
+  "clean-round",
+  "perfect-trip",
+  "big-result",
+  "improvement",
+  "feel",
+  "trust",
+  "boots",
+  "dust",
+  "tired-legs",
+  "multiple-rides",
+  "late-day",
+  "cold-hands",
+  "kids",
+  "progress",
+  "working-student",
+  "junior-rider",
+  "hunter-equitation",
+  "horsewoman",
+  "horsemanship",
+  "early-mornings",
+  "long-days",
+  "barn-ready",
+  "show-week",
+  "ring-ready",
+  "on-time",
+  "schedule-smart",
+  "order-of-go",
+  "in-gate",
+  "groom-alerts",
+  "trainer-view",
+  "rider-first",
+  "packing-checklists",
+  "tack-ready",
+  "team-first",
+  "pony-mentor",
+  "confidence-builder",
+  "horse-development",
+  "fast",
+  "sms",
+  "mobile",
+  "modular",
+  "barn-board",
+  "routines",
+  "structure",
+  "preparation",
+  "safety",
+  "barn-to-ring",
+  "timing",
+  "execution",
+  "last-minute",
+  "readiness",
+  "coordination",
+  "communication",
+  "overlay",
+  "next-up",
+  "share",
+  "fast-answers",
+  "workflow",
+  "review",
+  "alerts",
+  "less-stress",
+  "triggers",
+  "targeting",
+  "prep",
+  "walk",
+  "two-way",
+  "realtime",
+  "query",
+  "now-next",
+  "templates",
+  "inventory",
+  "check-off",
+  "ringwaze",
+  "crowd",
+  "community",
+  "signals",
+  "efficiency",
+  "reminders",
+  "deadlines",
+  "care",
+  "per-horse",
+  "repeating",
+  "notes",
+  "stay-ahead",
+  "shipping",
+  "travel",
+  "papers",
+  "contacts",
+  "eta",
+  "feed",
+  "am-pm",
+  "log",
+  "turnout",
+  "mornings",
+  "status",
+  "restrictions",
+  "lessons",
+  "less-texting",
+  "calendar",
+  "assignments",
+  "schooling",
+  "weekly-plan",
+  "horse-care",
+  "flat",
+  "jump",
+  "hack",
+  "rest",
+  "plan",
+  "balance",
+  "show-board",
+  "alignment",
+  "day-view",
+];
+
+const globalTonePillLabels = [
+  "confident",
+  "horse-first",
+  "calm-under-pressure",
+  "quiet-leadership",
+  "consistent",
+  "accountable",
+  "detail-oriented",
+  "reliable",
+  "low-drama",
+  "simple",
+  "focused",
+  "no-fluff",
+  "understated",
+  "dependable",
+  "credible",
+  "observant",
+  "honest",
+  "casual",
+  "funny",
+  "dry",
+  "soft",
+  "team-first",
+];
+
+function normalizeTagLabel(label: string): string {
+  return label.toLowerCase().replace(/[-\s]+/g, " ").trim();
+}
+
+function detailTagFromLabel(prefix: string, label: string): CaptionTag {
+  const id = label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return detailTag(`${prefix}-global-detail-${id}`, label, `${label.replaceAll("-", " ")}.`);
+}
+
+function toneTagFromLabel(prefix: string, label: string): CaptionTag {
+  const id = label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return toneTag(`${prefix}-global-tone-${id}`, label, `${label.replaceAll("-", " ")}.`);
+}
+
+function mergeDetailTags(prefix: string, localTags: CaptionTag[]): CaptionTag[] {
+  const globalTags = globalDetailPillLabels.map((label) => detailTagFromLabel(prefix, label));
+  const globalLabels = new Set(globalTags.map((tag) => normalizeTagLabel(tag.label)));
+
+  return [...globalTags, ...localTags.filter((tag) => !globalLabels.has(normalizeTagLabel(tag.label)))];
+}
+
+function mergeToneTags(prefix: string, localTags: CaptionTag[]): CaptionTag[] {
+  const globalTags = globalTonePillLabels.map((label) => toneTagFromLabel(prefix, label));
+  const globalLabels = new Set(globalTags.map((tag) => normalizeTagLabel(tag.label)));
+
+  return [...globalTags, ...localTags.filter((tag) => !globalLabels.has(normalizeTagLabel(tag.label)))];
+}
+
 const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
   "what i see": {
-    detail: [
+    detail: mergeDetailTags("wis", [
       detailTag("wis-waiting-base", "waiting to base", "waited to the base."),
       detailTag("wis-organized-canter", "organized canter", "organized canter."),
       detailTag("wis-softer-change", "softer change", "softer change."),
@@ -680,8 +864,8 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       detailTag("wis-inside-leg", "inside leg", "actually listened to my inside leg."),
       detailTag("wis-landed-straighter", "landed straighter", "landed straighter."),
       detailTag("wis-waited-after", "waited after fence", "waited after the jump."),
-    ],
-    tone: [
+    ]),
+    tone: mergeToneTags("wis", [
       toneTag("wis-quietly-pleased", "quietly pleased", "small win."),
       toneTag("wis-dry", "dry", "finally."),
       toneTag("wis-matter-of-fact", "matter-of-fact", "that was the point."),
@@ -692,10 +876,10 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       toneTag("wis-teen-honest", "teen honest", "not fancy. just better."),
       toneTag("wis-no-drama", "no drama", "no big speech needed."),
       toneTag("wis-useful", "useful", "useful detail."),
-    ],
+    ]),
   },
   "what the horse sees": {
-    detail: [
+    detail: mergeDetailTags("whs", [
       detailTag("whs-opinion", "opinion", "had an opinion."),
       detailTag("whs-weird-timing", "weird timing", "timing was a choice."),
       detailTag("whs-tolerated-me", "tolerated me", "tolerated me anyway."),
@@ -708,8 +892,8 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       detailTag("whs-steering-thoughts", "steering thoughts", "steering was a group project."),
       detailTag("whs-rider-overthinking", "rider overthinking", "she was overthinking again."),
       detailTag("whs-jump-judgment", "jump judgment", "judged the jump and me."),
-    ],
-    tone: [
+    ]),
+    tone: mergeToneTags("whs", [
       toneTag("whs-deadpan", "deadpan", "fair enough."),
       toneTag("whs-sarcastic", "mildly sarcastic", "apparently."),
       toneTag("whs-playful", "playful", "i had notes."),
@@ -720,10 +904,10 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       toneTag("whs-not-impressed", "not impressed", "not my favorite idea."),
       toneTag("whs-tiny-chaos", "tiny chaos", "small chaos. tasteful."),
       toneTag("whs-soft-funny", "soft funny", "she meant well."),
-    ],
+    ]),
   },
   "what we did": {
-    detail: [
+    detail: mergeDetailTags("wwd", [
       detailTag("wwd-rhythm-first", "rhythm first", "rhythm first."),
       detailTag("wwd-softer", "softer", "softer by the end."),
       detailTag("wwd-rideable", "rideable", "more rideable."),
@@ -736,8 +920,8 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       detailTag("wwd-forward-no-run", "forward no run", "forward without running."),
       detailTag("wwd-lower-neck", "lower neck", "lower neck, softer back."),
       detailTag("wwd-simple-changes", "simple changes", "made the changes simpler."),
-    ],
-    tone: [
+    ]),
+    tone: mergeToneTags("wwd", [
       toneTag("wwd-practical", "practical", "useful day."),
       toneTag("wwd-quiet-pride", "quiet pride", "earned that."),
       toneTag("wwd-grounded", "grounded", "nothing dramatic."),
@@ -748,10 +932,10 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       toneTag("wwd-not-showy", "not showy", "not showy. helpful."),
       toneTag("wwd-useful", "useful", "useful ride."),
       toneTag("wwd-earned", "earned", "earned the better feel."),
-    ],
+    ]),
   },
   "what we almost did": {
-    detail: [
+    detail: mergeDetailTags("wwad", [
       detailTag("wwad-one-rail", "one rail", "one rail."),
       detailTag("wwad-no-ribbon", "no ribbon", "no ribbon."),
       detailTag("wwad-better-answer", "better answer", "better answer after."),
@@ -764,8 +948,8 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       detailTag("wwad-almost-there", "almost there", "almost there."),
       detailTag("wwad-learned-spot", "learned spot", "learned where it left."),
       detailTag("wwad-better-finish", "better finish", "better finish."),
-    ],
-    tone: [
+    ]),
+    tone: mergeToneTags("wwad", [
       toneTag("wwad-calm", "calm", "still worth posting."),
       toneTag("wwad-tough", "tough", "kept riding."),
       toneTag("wwad-dry", "dry", "annoying. helpful."),
@@ -776,10 +960,10 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       toneTag("wwad-still-useful", "still useful", "still useful."),
       toneTag("wwad-perspective", "perspective", "not the whole story."),
       toneTag("wwad-not-wasted", "not wasted", "not wasted."),
-    ],
+    ]),
   },
   reality: {
-    detail: [
+    detail: mergeDetailTags("reality", [
       detailTag("reality-long-day", "long barn day", "long barn day."),
       detailTag("reality-chores", "chores first", "chores first."),
       detailTag("reality-tired-legs", "tired legs", "tired legs."),
@@ -792,8 +976,8 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       detailTag("reality-cold-hands", "cold hands", "cold hands."),
       detailTag("reality-five-horses", "five horses", "five horses later."),
       detailTag("reality-one-more", "one more ride", "one more ride."),
-    ],
-    tone: [
+    ]),
+    tone: mergeToneTags("reality", [
       toneTag("reality-dry", "dry", "normal."),
       toneTag("reality-funny", "funny", "fair trade."),
       toneTag("reality-matter-of-fact", "matter-of-fact", "still rode."),
@@ -804,10 +988,10 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       toneTag("reality-low-drama", "low drama", "no speech."),
       toneTag("reality-normal", "normal", "normal day."),
       toneTag("reality-worth-it", "worth it", "still worth it."),
-    ],
+    ]),
   },
   confidence: {
-    detail: [
+    detail: mergeDetailTags("confidence", [
       detailTag("confidence-simple-win", "simple win", "simple win."),
       detailTag("confidence-strong-image", "strong image", "image says enough."),
       detailTag("confidence-rideable", "rideable", "rideable."),
@@ -820,8 +1004,8 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       detailTag("confidence-useful-ride", "useful ride", "useful ride."),
       detailTag("confidence-quiet-photo", "quiet photo", "quiet photo."),
       detailTag("confidence-good-one", "good one", "good one."),
-    ],
-    tone: [
+    ]),
+    tone: mergeToneTags("confidence", [
       toneTag("confidence-final", "final", "enough said."),
       toneTag("confidence-understated", "understated", "quietly solid."),
       toneTag("confidence-sharper", "sharper", "useful."),
@@ -832,7 +1016,7 @@ const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
       toneTag("confidence-simple", "simple", "simple enough."),
       toneTag("confidence-earned", "earned", "earned."),
       toneTag("confidence-no-speech", "no speech", "no speech needed."),
-    ],
+    ]),
   },
 };
 
@@ -840,8 +1024,88 @@ const monthLabel = new Intl.DateTimeFormat("en-US", {
   month: "short",
   year: "numeric",
 });
+const sessionTimeLabel = new Intl.DateTimeFormat("en-US", {
+  hour: "numeric",
+  minute: "2-digit",
+});
 
 const EMPTY_TAG_IDS: string[] = [];
+const SESSION_STORAGE_KEY = "lainey-caption-builder-session-v1";
+const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+type PersistedSessionState = {
+  postType: PostType;
+  description: string;
+  photoUrl: string;
+  photoName: string;
+  generationRound: number;
+  selectedCaption: string;
+  savedPosts: SavedPost[];
+  showVoiceProfile: boolean;
+  selectedTagIdsByType: Partial<Record<PostType, string[]>>;
+};
+
+type PersistedSession = {
+  version: 1;
+  savedAt: string;
+  expiresAt: string;
+  state: PersistedSessionState;
+};
+
+function readStoredSession(): PersistedSession | null {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const raw = window.localStorage.getItem(SESSION_STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as PersistedSession;
+    const expiresAtMs = Date.parse(parsed.expiresAt);
+    if (!Number.isFinite(expiresAtMs) || expiresAtMs <= Date.now()) {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
+
+    return parsed;
+  } catch (error) {
+    console.error("Unable to read saved caption session", error);
+    return null;
+  }
+}
+
+function writeStoredSession(state: PersistedSessionState): PersistedSession | null {
+  if (typeof window === "undefined") return null;
+
+  const savedAt = new Date();
+  const payload: PersistedSession = {
+    version: 1,
+    savedAt: savedAt.toISOString(),
+    expiresAt: new Date(savedAt.getTime() + SESSION_TTL_MS).toISOString(),
+    state,
+  };
+
+  try {
+    window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(payload));
+    return payload;
+  } catch (error) {
+    console.error("Unable to save caption session", error);
+    return null;
+  }
+}
+
+function clearStoredSession() {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(SESSION_STORAGE_KEY);
+}
+
+function formatSessionTime(value: string) {
+  if (!value) return "--";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "--";
+
+  return sessionTimeLabel.format(date);
+}
 
 function makeEmptyCounts(): Record<PostType, number> {
   const counts = {} as Record<PostType, number>;
@@ -973,93 +1237,6 @@ async function writeClipboard(text: string): Promise<void> {
   textarea.remove();
 }
 
-function VoiceProfileCard({ postType, activeRule }: { postType: PostType; activeRule: PostTypeRule }) {
-  const knobEntries = Object.entries(voiceProfile.knobs).filter(([key]) => {
-    return ["confidence", "humor", "softness", "maturity", "polish", "detail", "length"].includes(key);
-  });
-  const avoidList = [...activeRule.avoid.slice(0, 4), ...voiceProfile.avoid.slice(0, 3)];
-  const availableLines = [
-    ...voiceProfile.recurringSeries,
-    ...highlightedLinesByPostType[postType].slice(0, 3),
-  ];
-
-  return (
-    <Card className="rounded-lg border-stone-200 shadow-sm">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base">voice rules in use</CardTitle>
-      </CardHeader>
-      <CardContent className="voice-rule-grid">
-        <div className="voice-rule-block">
-          <div className="voice-rule-title">why this shows</div>
-          <p className="voice-rule-copy">
-            These are the guardrails steering every caption option: teen voice, horse-specific detail, short length,
-            and no adult-polished caption language.
-          </p>
-        </div>
-
-        <div className="voice-rule-block">
-          <div className="voice-rule-title">tone</div>
-          <div className="voice-chip-wrap">
-            {voiceProfile.coreTone.slice(0, 7).map((tone) => (
-              <Badge key={tone} variant="secondary">
-                {tone}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        <div className="voice-rule-block">
-          <div className="voice-rule-title">{postType}</div>
-          <div className="voice-rule-meta">target: {activeRule.maxLines} short lines max</div>
-          <div className="voice-rule-list">
-            {activeRule.leadWith.map((item) => (
-              <div key={item} className="voice-rule-line">
-                lead with {item}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="voice-rule-block">
-          <div className="voice-rule-title">keep out</div>
-          <div className="voice-chip-wrap">
-            {avoidList.map((item) => (
-              <Badge key={item} variant="outline">
-                {item}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        <div className="voice-rule-block">
-          <div className="voice-rule-title">settings</div>
-          <div className="voice-chip-wrap">
-            {knobEntries.map(([key, value]) => (
-              <Badge key={key}>
-                {key}: {value}
-              </Badge>
-            ))}
-          </div>
-          <div className="voice-rule-copy">
-            {voiceProfile.generationChecklist.should.slice(0, 3).join(" / ")}
-          </div>
-        </div>
-
-        <div className="voice-rule-block">
-          <div className="voice-rule-title">must stay available</div>
-          <div className="voice-chip-wrap">
-            {availableLines.map((line) => (
-              <Badge key={line} variant="outline">
-                {line}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
 function TagsCard({
   postType,
   selectedTagIds,
@@ -1129,20 +1306,25 @@ function CreateProgress({ step }: { step: CreateStep }) {
 }
 
 export default function EquestrianCaptionPrototypeApp() {
+  const [initialSession] = useState(() => readStoredSession());
   const [screen, setScreen] = useState<Screen>("start");
   const [createStep, setCreateStep] = useState<CreateStep>("postType");
-  const [postType, setPostType] = useState<PostType>("what i see");
-  const [description, setDescription] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
-  const [photoName, setPhotoName] = useState("");
-  const [generationRound, setGenerationRound] = useState(0);
-  const [selectedCaption, setSelectedCaption] = useState("");
-  const [savedPosts, setSavedPosts] = useState<SavedPost[]>([]);
+  const [postType, setPostType] = useState<PostType>(initialSession?.state.postType ?? "what i see");
+  const [description, setDescription] = useState(initialSession?.state.description ?? "");
+  const [photoUrl, setPhotoUrl] = useState(initialSession?.state.photoUrl ?? "");
+  const [photoName, setPhotoName] = useState(initialSession?.state.photoName ?? "");
+  const [generationRound, setGenerationRound] = useState(initialSession?.state.generationRound ?? 0);
+  const [selectedCaption, setSelectedCaption] = useState(initialSession?.state.selectedCaption ?? "");
+  const [savedPosts, setSavedPosts] = useState<SavedPost[]>(initialSession?.state.savedPosts ?? []);
   const [copiedId, setCopiedId] = useState("");
   const [generated, setGenerated] = useState<GeneratedCaption[]>([]);
-  const [showVoiceProfile, setShowVoiceProfile] = useState(false);
-  const [selectedTagIdsByType, setSelectedTagIdsByType] = useState<Partial<Record<PostType, string[]>>>({});
+  const [showVoiceProfile, setShowVoiceProfile] = useState(initialSession?.state.showVoiceProfile ?? false);
+  const [selectedTagIdsByType, setSelectedTagIdsByType] = useState<Partial<Record<PostType, string[]>>>(
+    initialSession?.state.selectedTagIdsByType ?? {},
+  );
   const [visibleCaptionIndex, setVisibleCaptionIndex] = useState(0);
+  const [lastSavedAt, setLastSavedAt] = useState(initialSession?.savedAt ?? "");
+  const [expiresAt, setExpiresAt] = useState(initialSession?.expiresAt ?? "");
   const captionScrollRef = useRef<HTMLDivElement>(null);
 
   const monthKey = currentMonthKey();
@@ -1152,6 +1334,35 @@ export default function EquestrianCaptionPrototypeApp() {
   const selectedTags = useMemo(() => {
     return getSelectedTagsForPostType(postType, selectedTagIds);
   }, [postType, selectedTagIds]);
+
+  useEffect(() => {
+    const savedSession = writeStoredSession({
+      postType,
+      description,
+      photoUrl,
+      photoName,
+      generationRound,
+      selectedCaption,
+      savedPosts,
+      showVoiceProfile,
+      selectedTagIdsByType,
+    });
+
+    if (savedSession) {
+      setLastSavedAt(savedSession.savedAt);
+      setExpiresAt(savedSession.expiresAt);
+    }
+  }, [
+    description,
+    generationRound,
+    photoName,
+    photoUrl,
+    postType,
+    savedPosts,
+    selectedCaption,
+    selectedTagIdsByType,
+    showVoiceProfile,
+  ]);
 
   const dashboardRows = useMemo<DashboardRow[]>(() => {
     const months = Array.from(new Set(savedPosts.map((post) => post.monthKey))).sort().reverse();
@@ -1312,6 +1523,26 @@ export default function EquestrianCaptionPrototypeApp() {
     setCreateStep("postType");
   }
 
+  function restartSession() {
+    clearStoredSession();
+    setScreen("start");
+    setCreateStep("postType");
+    setPostType("what i see");
+    setDescription("");
+    setPhotoUrl("");
+    setPhotoName("");
+    setGenerationRound(0);
+    setSelectedCaption("");
+    setSavedPosts([]);
+    setCopiedId("");
+    setGenerated([]);
+    setShowVoiceProfile(false);
+    setSelectedTagIdsByType({});
+    setVisibleCaptionIndex(0);
+    setLastSavedAt("");
+    setExpiresAt("");
+  }
+
   function goBack() {
     if (screen !== "create") return;
 
@@ -1368,9 +1599,14 @@ export default function EquestrianCaptionPrototypeApp() {
         : screen === "logs"
           ? "Logs"
           : "Dashboard";
-  const headerActionLabel = screen === "start" ? "Start" : screen === "create" && createStep === "image" ? "Gen" : "Next";
-  const showHeaderAction = screen === "start" || (screen === "create" && createStep !== "captions");
+  const headerActionLabel = screen === "create" && createStep === "image" ? "Gen" : "Next";
+  const showHeaderAction = screen === "create" && createStep !== "captions";
   const showHeaderBack = screen === "create";
+  const autosaveText = `Autosave: ON (device). Last save: ${formatSessionTime(lastSavedAt)}. Expires: ${formatSessionTime(expiresAt)}.`;
+  const summaryIsActive = savedPosts.length > 0;
+  const voiceProfileText = showVoiceProfile
+    ? `on: teen, horse-smart, ${activeRule.maxLines}L max`
+    : "off";
 
   return (
     <div className="page">
@@ -1412,39 +1648,38 @@ export default function EquestrianCaptionPrototypeApp() {
             {screen === "start" ? (
               <div className="screen-stack">
                 <div className="start-logo">
-                  <div className="start-logo-title">mobile caption generator</div>
-                  <div className="start-logo-subtitle">horse post builder</div>
+                  <div className="start-logo-title">Horse Post Builder</div>
+                  <div className="start-logo-subtitle">Quick horse captions, in her voice.</div>
                 </div>
 
-                <Card className="rounded-lg border-stone-200 shadow-sm">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base">start</CardTitle>
-                  </CardHeader>
-                  <CardContent className="start-screen-content">
-                    <label className="voice-toggle" htmlFor="voice-profile-toggle">
-                      <input
-                        id="voice-profile-toggle"
-                        type="checkbox"
-                        checked={showVoiceProfile}
-                        onChange={(event) => setShowVoiceProfile(event.target.checked)}
-                        aria-controls="voice-profile-panel"
-                        className="voice-toggle-input"
-                      />
-                      <span className="voice-toggle-box" aria-hidden="true">
-                        <Check className="h-3 w-3" />
-                      </span>
-                      <span>Voice Profile</span>
-                    </label>
+                <div className="start-action-list" aria-label="Start options">
+                  <button type="button" className="row row--tap row--active" onClick={startCreateFlow}>
+                    <span className="row-title">In-session</span>
+                    <span className="start-status-dot is-on" aria-hidden="true" />
+                  </button>
+                  <button type="button" className="row row--tap" onClick={() => setScreen("dashboard")}>
+                    <span className="row-title">Summary</span>
+                    <span className={`start-status-dot ${summaryIsActive ? "is-on" : ""}`} aria-hidden="true" />
+                  </button>
+                  <button type="button" className="row row--tap" onClick={restartSession}>
+                    <span className="row-title">Restart session</span>
+                    <span className="start-status-dot" aria-hidden="true" />
+                  </button>
+                </div>
 
-                    <Button onClick={startCreateFlow} className="w-full">
-                      Start
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <div id="voice-profile-panel" className="voice-profile-panel" data-visible={showVoiceProfile}>
-                  <VoiceProfileCard postType={postType} activeRule={activeRule} />
+                <div className="start-meta">
+                  <div>{autosaveText}</div>
+                  <label className="voice-subtle-line" htmlFor="voice-profile-toggle">
+                    <input
+                      id="voice-profile-toggle"
+                      type="checkbox"
+                      checked={showVoiceProfile}
+                      onChange={(event) => setShowVoiceProfile(event.target.checked)}
+                      className="voice-subtle-input"
+                    />
+                    <span>Voice Profile</span>
+                    <span>{voiceProfileText}</span>
+                  </label>
                 </div>
               </div>
             ) : null}
