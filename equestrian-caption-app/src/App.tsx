@@ -32,7 +32,7 @@ const postTypes = [
 ] as const;
 
 const createSteps = [
-  { value: "postType", label: "Post Type" },
+  { value: "postType", label: "Post" },
   { value: "tags", label: "Tags" },
   { value: "image", label: "Image" },
 ] as const;
@@ -1292,18 +1292,30 @@ export default function EquestrianCaptionPrototypeApp() {
             type="button"
             className={showHeaderBack ? "header-back" : "header-back is-invisible"}
             onClick={goBack}
+            aria-hidden={!showHeaderBack}
+            tabIndex={showHeaderBack ? 0 : -1}
           >
-            <ArrowLeft className="h-4 w-4" />
-            Back
+            {showHeaderBack ? (
+              <>
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </>
+            ) : null}
           </button>
           <h1 className="header-title">{screenTitle}</h1>
           <button
             type="button"
             className={showHeaderAction ? "header-action" : "header-action is-invisible"}
             onClick={goNext}
+            aria-hidden={!showHeaderAction}
+            tabIndex={showHeaderAction ? 0 : -1}
           >
-            {headerActionLabel}
-            {headerActionLabel === "Next" ? <ArrowRight className="h-4 w-4" /> : null}
+            {showHeaderAction ? (
+              <>
+                {headerActionLabel}
+                {headerActionLabel === "Next" ? <ArrowRight className="h-4 w-4" /> : null}
+              </>
+            ) : null}
           </button>
         </header>
 
@@ -1466,6 +1478,7 @@ export default function EquestrianCaptionPrototypeApp() {
                         <button
                           type="button"
                           className="caption-step-button"
+                          aria-label="Previous caption option"
                           onClick={() => showCaptionAt(visibleCaptionIndex - 1)}
                           disabled={visibleCaptionIndex === 0}
                         >
@@ -1478,6 +1491,7 @@ export default function EquestrianCaptionPrototypeApp() {
                         <button
                           type="button"
                           className="caption-step-button"
+                          aria-label="Next caption option"
                           onClick={() => showCaptionAt(visibleCaptionIndex + 1)}
                           disabled={visibleCaptionIndex >= generated.length - 1}
                         >

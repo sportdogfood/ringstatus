@@ -52,7 +52,7 @@ html {
 }
 
 body {
-  min-width: 320px;
+  min-width: 0;
   min-height: 100vh;
   margin: 0;
   font-family: var(--font-sans);
@@ -575,17 +575,16 @@ button {
   min-height: 34px;
   min-width: 0;
   width: 100%;
-  padding: 0 10px;
+  padding: 8px 10px;
   border-radius: var(--pill-radius);
   border: 1px solid var(--border-soft);
   background: var(--surface-1);
   color: var(--fg-soft);
   font-size: 13px;
   font-weight: 650;
-  line-height: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-align: center;
   cursor: pointer;
   user-select: none;
   box-shadow: 0 1px 0 var(--bg);
@@ -634,8 +633,8 @@ button {
 
 .post-type-button {
   min-width: 0;
-  min-height: var(--h-row);
-  padding: 0 16px;
+  min-height: calc(var(--h-row) + 6px);
+  padding: 8px 14px;
   border-radius: var(--pill-radius);
   border: 1px solid var(--border-soft);
   background: var(--surface-1);
@@ -645,7 +644,7 @@ button {
   justify-content: center;
   font-size: var(--fs-row);
   font-weight: 650;
-  line-height: 1.15;
+  line-height: 1.18;
   cursor: pointer;
   user-select: none;
   box-shadow: 0 1px 0 var(--bg);
@@ -658,9 +657,8 @@ button {
 
 .post-type-button span {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .post-type-button:active {
@@ -1075,12 +1073,14 @@ button {
   }
 
   .app-header {
-    grid-template-columns: 70px 1fr 70px;
+    grid-template-columns: 66px minmax(0, 1fr) 66px;
+    gap: 6px;
+    padding: 0 8px;
   }
 
   .header-back,
   .header-action {
-    min-width: 60px;
+    min-width: 58px;
     padding: 0 8px;
     font-size: 12px;
   }
@@ -1096,8 +1096,41 @@ button {
   }
 
   .create-progress-labels {
-    font-size: 10px;
-    gap: 5px;
+    font-size: 9px;
+    gap: 4px;
+  }
+
+  .tag-pill-wrap {
+    gap: 7px;
+  }
+
+  .tag-pill {
+    font-size: 12px;
+    padding-inline: 8px;
+  }
+
+  .post-type-button {
+    padding-inline: 10px;
+  }
+}
+
+@media (max-width: 350px) {
+  :root {
+    --fs-title: 14px;
+  }
+
+  .app-main {
+    padding-inline: 8px;
+  }
+
+  .app-header {
+    grid-template-columns: 60px minmax(0, 1fr) 60px;
+  }
+
+  .header-back,
+  .header-action {
+    min-width: 54px;
+    padding: 0 6px;
   }
 }
 
