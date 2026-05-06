@@ -251,23 +251,6 @@ button {
   margin-top: 26px;
 }
 
-.start-status-dot {
-  width: 26px;
-  height: 26px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  border: 1px solid var(--border-soft);
-  background: var(--surface-2);
-  box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.5),
-    0 1px 4px rgba(0, 0, 0, 0.75);
-}
-
-.start-status-dot.is-on {
-  border-color: rgba(34, 197, 94, 0.85);
-  background: #15803d;
-}
-
 .start-meta {
   display: flex;
   flex-direction: column;

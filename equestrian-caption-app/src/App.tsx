@@ -2026,15 +2026,18 @@ export default function EquestrianCaptionPrototypeApp() {
                 <div className="start-action-list" aria-label="Start options">
                   <button type="button" className="row row--tap row--active" onClick={startCreateFlow}>
                     <span className="row-title">In-session</span>
-                    <span className="start-status-dot is-on" aria-hidden="true" />
+                    <span className="row-tag row-tag--boolean row-tag--positive" aria-hidden="true" />
                   </button>
                   <button type="button" className="row row--tap" onClick={() => setScreen("dashboard")}>
                     <span className="row-title">Summary</span>
-                    <span className={`start-status-dot ${summaryIsActive ? "is-on" : ""}`} aria-hidden="true" />
+                    <span
+                      className={`row-tag row-tag--boolean ${summaryIsActive ? "row-tag--positive" : ""}`}
+                      aria-hidden="true"
+                    />
                   </button>
                   <button type="button" className="row row--tap" onClick={restartSession}>
                     <span className="row-title">Restart session</span>
-                    <span className="start-status-dot" aria-hidden="true" />
+                    <span className="row-tag row-tag--boolean" aria-hidden="true" />
                   </button>
                 </div>
 

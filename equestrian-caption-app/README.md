@@ -2,6 +2,10 @@
 
 Mobile-first caption builder for Lainey-style horse posts. The app helps choose a post type, add image notes, generate four caption options, save one, copy saved captions, and track monthly post counts.
 
+## Shell Contract
+
+Before changing shell layout, styling, navigation cadence, persistence, row/button behavior, or mobile viewport behavior, read [SHELL_CONTRACT.md](./SHELL_CONTRACT.md). The branded shell is locked unless the owner explicitly asks for a shell change.
+
 ## What It Does
 
 - `Create`: choose a post type, upload/select an image, describe the moment, generate 4 captions, and save one.
@@ -66,6 +70,5 @@ The local UI primitives are in [src/components/ui](./src/components/ui).
 
 ## Current Limits
 
-- Saved posts live only in React state, so they reset on reload.
 - Caption generation is template/rule-based, not model-backed.
-- Uploaded images are kept as data URLs in local component state only.
+- RiTa is loaded on demand for local grammar generation and may produce a large async chunk.
