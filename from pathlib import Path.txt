@@ -1,0 +1,90 @@
+from pathlib import Path
+
+ps1 = r'''# setup-webflow-cloud-test.ps1
+# Creates an isolated Astro test app inside the RingStatus source repo.
+# Does NOT touch ringstatus-data.
+# Does NOT configure Cloudflare.
+# Does NOT deploy anything.
+
+param(
+  [string]$RepoPath = "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus",
+  [string]$AppFolder = "webflow-cloud-test"
+)
+
+$ErrorActionPreference = "Stop"
+
+Write-Host ""
+Write-Host "RingStatus Webflow Cloud Local Test Setup" -ForegroundColor Cyan
+Write-Host "----------------------------------------"
+
+if (!(Test-Path $RepoPath)) {
+  throw "Source repo path does not exist: $RepoPath"
+}
+
+Set-Location $RepoPath
+
+Write-Host ""
+Write-Host "Using source repo:" -ForegroundColor Cyan
+Write-Host $RepoPath
+
+$DataRepoPath = "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus-data"
+
+Write-Host ""
+Write-Host "Protected output/data repo, not touched:" -ForegroundColor Yellow
+Write-Host $DataRepoPath
+
+$TargetPath = Join-Path $RepoPath $AppFolder
+
+if (Test-Path $TargetPath) {
+  Write-Host ""
+  Write-Host "Folder already exists:" -ForegroundColor Yellow
+  Write-Host $TargetPath
+} else {
+  New-Item -ItemType Directory -Path $TargetPath | Out-Null
+  Write-Host ""
+  Write-Host "Created folder:" -ForegroundColor Green
+  Write-Host $TargetPath
+}
+
+Set-Location $TargetPath
+
+Write-Host ""
+Write-Host "Checking Node and npm..." -ForegroundColor Cyan
+
+try {
+  $nodeVersion = node -v
+  Write-Host "Node: $nodeVersion"
+} catch {
+  throw "Node was not found. Install or update Node before continuing."
+}
+
+try {
+  $npmVersion = npm -v
+  Write-Host "npm: $npmVersion"
+} catch {
+  throw "npm was not found. Reinstall Node/npm before continuing."
+}
+
+Write-Host ""
+Write-Host "Starting Astro installer..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "When prompted, choose:" -ForegroundColor Yellow
+Write-Host "  Template: Empty"
+Write-Host "  Install dependencies: Yes"
+Write-Host "  Initialize git: No"
+Write-Host "  TypeScript: No"
+Write-Host ""
+
+npm create astro@latest .
+
+Write-Host ""
+Write-Host "Astro setup finished." -ForegroundColor Green
+Write-Host ""
+Write-Host "Next command to run the local test:" -ForegroundColor Cyan
+Write-Host "  cd `"$TargetPath`""
+Write-Host "  npm run dev"
+Write-Host ""
+'''
+path = Path('/mnt/data/setup-webflow-cloud-test-correct.ps1')
+path.write_text(ps1, encoding='utf-8')
+path.as_posix()
