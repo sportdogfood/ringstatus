@@ -7,10 +7,7 @@ import {
   Camera,
   Check,
   Copy,
-  Home,
   Image as ImageIcon,
-  LayoutDashboard,
-  List,
   RefreshCcw,
   Sparkles,
 } from "lucide-react";
@@ -660,89 +657,181 @@ const highlightedLinesByPostType: Record<PostType, string[]> = {
   ],
 };
 
+function detailTag(id: string, label: string, line: string): CaptionTag {
+  return { id, label, line, purpose: "detail" };
+}
+
+function toneTag(id: string, label: string, line: string): CaptionTag {
+  return { id, label, line, purpose: "tone" };
+}
+
 const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
   "what i see": {
     detail: [
-      { id: "wis-waiting-base", label: "waiting to base", line: "waited to the base.", purpose: "detail" },
-      { id: "wis-organized-canter", label: "organized canter", line: "organized canter.", purpose: "detail" },
-      { id: "wis-softer-change", label: "softer change", line: "softer change.", purpose: "detail" },
-      { id: "wis-straightness", label: "straightness", line: "stayed straighter.", purpose: "detail" },
+      detailTag("wis-waiting-base", "waiting to base", "waited to the base."),
+      detailTag("wis-organized-canter", "organized canter", "organized canter."),
+      detailTag("wis-softer-change", "softer change", "softer change."),
+      detailTag("wis-straightness", "straightness", "stayed straighter."),
+      detailTag("wis-rhythm", "rhythm", "rhythm stayed normal."),
+      detailTag("wis-relaxed-mouth", "relaxed mouth", "less noise in the bridle."),
+      detailTag("wis-better-distance", "better distance", "the distance showed up."),
+      detailTag("wis-quieter-hand", "quieter hand", "quieter in my hand."),
+      detailTag("wis-stayed-balanced", "stayed balanced", "stayed balanced after the turn."),
+      detailTag("wis-inside-leg", "inside leg", "actually listened to my inside leg."),
+      detailTag("wis-landed-straighter", "landed straighter", "landed straighter."),
+      detailTag("wis-waited-after", "waited after fence", "waited after the jump."),
     ],
     tone: [
-      { id: "wis-quietly-pleased", label: "quietly pleased", line: "small win.", purpose: "tone" },
-      { id: "wis-dry", label: "dry", line: "finally.", purpose: "tone" },
-      { id: "wis-matter-of-fact", label: "matter-of-fact", line: "that was the point.", purpose: "tone" },
-      { id: "wis-soft", label: "soft", line: "i'll take it.", purpose: "tone" },
+      toneTag("wis-quietly-pleased", "quietly pleased", "small win."),
+      toneTag("wis-dry", "dry", "finally."),
+      toneTag("wis-matter-of-fact", "matter-of-fact", "that was the point."),
+      toneTag("wis-soft", "soft", "i'll take it."),
+      toneTag("wis-sharp-eye", "sharp eye", "worth noticing."),
+      toneTag("wis-small-win", "small win", "small but useful."),
+      toneTag("wis-calm", "calm", "quietly better."),
+      toneTag("wis-teen-honest", "teen honest", "not fancy. just better."),
+      toneTag("wis-no-drama", "no drama", "no big speech needed."),
+      toneTag("wis-useful", "useful", "useful detail."),
     ],
   },
   "what the horse sees": {
     detail: [
-      { id: "whs-opinion", label: "opinion", line: "had an opinion.", purpose: "detail" },
-      { id: "whs-weird-timing", label: "weird timing", line: "timing was a choice.", purpose: "detail" },
-      { id: "whs-tolerated-me", label: "tolerated me", line: "tolerated me anyway.", purpose: "detail" },
-      { id: "whs-chaos", label: "chaos", line: "provided character development.", purpose: "detail" },
+      detailTag("whs-opinion", "opinion", "had an opinion."),
+      detailTag("whs-weird-timing", "weird timing", "timing was a choice."),
+      detailTag("whs-tolerated-me", "tolerated me", "tolerated me anyway."),
+      detailTag("whs-chaos", "chaos", "provided character development."),
+      detailTag("whs-ears", "ears", "ears had their own plan."),
+      detailTag("whs-side-eye", "side eye", "side eye was earned."),
+      detailTag("whs-spooking", "spooking", "found something to inspect."),
+      detailTag("whs-left-lead", "lead debate", "the lead was apparently debatable."),
+      detailTag("whs-snack-agenda", "snack agenda", "snacks were still the main goal."),
+      detailTag("whs-steering-thoughts", "steering thoughts", "steering was a group project."),
+      detailTag("whs-rider-overthinking", "rider overthinking", "she was overthinking again."),
+      detailTag("whs-jump-judgment", "jump judgment", "judged the jump and me."),
     ],
     tone: [
-      { id: "whs-deadpan", label: "deadpan", line: "fair enough.", purpose: "tone" },
-      { id: "whs-sarcastic", label: "mildly sarcastic", line: "apparently.", purpose: "tone" },
-      { id: "whs-playful", label: "playful", line: "i had notes.", purpose: "tone" },
-      { id: "whs-low-affection", label: "low affection", line: "still tried.", purpose: "tone" },
+      toneTag("whs-deadpan", "deadpan", "fair enough."),
+      toneTag("whs-sarcastic", "mildly sarcastic", "apparently."),
+      toneTag("whs-playful", "playful", "i had notes."),
+      toneTag("whs-low-affection", "low affection", "still tried."),
+      toneTag("whs-judgy", "judgy", "valid concern."),
+      toneTag("whs-silly", "silly", "normal behavior, sadly."),
+      toneTag("whs-patient", "patient", "very patient of me."),
+      toneTag("whs-not-impressed", "not impressed", "not my favorite idea."),
+      toneTag("whs-tiny-chaos", "tiny chaos", "small chaos. tasteful."),
+      toneTag("whs-soft-funny", "soft funny", "she meant well."),
     ],
   },
   "what we did": {
     detail: [
-      { id: "wwd-rhythm-first", label: "rhythm first", line: "rhythm first.", purpose: "detail" },
-      { id: "wwd-softer", label: "softer", line: "softer by the end.", purpose: "detail" },
-      { id: "wwd-rideable", label: "rideable", line: "more rideable.", purpose: "detail" },
-      { id: "wwd-brought-along", label: "brought along", line: "a little more together.", purpose: "detail" },
+      detailTag("wwd-rhythm-first", "rhythm first", "rhythm first."),
+      detailTag("wwd-softer", "softer", "softer by the end."),
+      detailTag("wwd-rideable", "rideable", "more rideable."),
+      detailTag("wwd-brought-along", "brought along", "a little more together."),
+      detailTag("wwd-transitions", "transitions", "cleaner transitions."),
+      detailTag("wwd-straight-lines", "straight lines", "straighter lines."),
+      detailTag("wwd-quieter-canter", "quieter canter", "quieter canter."),
+      detailTag("wwd-wait-after-fence", "wait after fence", "waited after the fence."),
+      detailTag("wwd-balance", "balance", "better balance."),
+      detailTag("wwd-forward-no-run", "forward no run", "forward without running."),
+      detailTag("wwd-lower-neck", "lower neck", "lower neck, softer back."),
+      detailTag("wwd-simple-changes", "simple changes", "made the changes simpler."),
     ],
     tone: [
-      { id: "wwd-practical", label: "practical", line: "useful day.", purpose: "tone" },
-      { id: "wwd-quiet-pride", label: "quiet pride", line: "earned that.", purpose: "tone" },
-      { id: "wwd-grounded", label: "grounded", line: "nothing dramatic.", purpose: "tone" },
-      { id: "wwd-warm", label: "warm", line: "good little step.", purpose: "tone" },
+      toneTag("wwd-practical", "practical", "useful day."),
+      toneTag("wwd-quiet-pride", "quiet pride", "earned that."),
+      toneTag("wwd-grounded", "grounded", "nothing dramatic."),
+      toneTag("wwd-warm", "warm", "good little step."),
+      toneTag("wwd-productive", "productive", "productive enough."),
+      toneTag("wwd-horse-first", "horse first", "good answer for him."),
+      toneTag("wwd-steady", "steady", "steady work."),
+      toneTag("wwd-not-showy", "not showy", "not showy. helpful."),
+      toneTag("wwd-useful", "useful", "useful ride."),
+      toneTag("wwd-earned", "earned", "earned the better feel."),
     ],
   },
   "what we almost did": {
     detail: [
-      { id: "wwad-one-rail", label: "one rail", line: "one rail.", purpose: "detail" },
-      { id: "wwad-no-ribbon", label: "no ribbon", line: "no ribbon.", purpose: "detail" },
-      { id: "wwad-better-answer", label: "better answer", line: "better answer after.", purpose: "detail" },
-      { id: "wwad-useful-miss", label: "useful miss", line: "useful miss.", purpose: "detail" },
+      detailTag("wwad-one-rail", "one rail", "one rail."),
+      detailTag("wwad-no-ribbon", "no ribbon", "no ribbon."),
+      detailTag("wwad-better-answer", "better answer", "better answer after."),
+      detailTag("wwad-useful-miss", "useful miss", "useful miss."),
+      detailTag("wwad-late-change", "late change", "late change."),
+      detailTag("wwad-missed-distance", "missed distance", "missed the distance."),
+      detailTag("wwad-got-close", "got close", "got close."),
+      detailTag("wwad-stayed-rideable", "stayed rideable", "stayed rideable after."),
+      detailTag("wwad-recovered", "recovered", "recovered well."),
+      detailTag("wwad-almost-there", "almost there", "almost there."),
+      detailTag("wwad-learned-spot", "learned spot", "learned where it left."),
+      detailTag("wwad-better-finish", "better finish", "better finish."),
     ],
     tone: [
-      { id: "wwad-calm", label: "calm", line: "still worth posting.", purpose: "tone" },
-      { id: "wwad-tough", label: "tough", line: "kept riding.", purpose: "tone" },
-      { id: "wwad-dry", label: "dry", line: "annoying. helpful.", purpose: "tone" },
-      { id: "wwad-honest", label: "honest", line: "not wasted.", purpose: "tone" },
+      toneTag("wwad-calm", "calm", "still worth posting."),
+      toneTag("wwad-tough", "tough", "kept riding."),
+      toneTag("wwad-dry", "dry", "annoying. helpful."),
+      toneTag("wwad-honest", "honest", "not wasted."),
+      toneTag("wwad-no-excuses", "no excuses", "no excuses."),
+      toneTag("wwad-slightly-annoyed", "slightly annoyed", "slightly annoying."),
+      toneTag("wwad-steady", "steady", "kept it together."),
+      toneTag("wwad-still-useful", "still useful", "still useful."),
+      toneTag("wwad-perspective", "perspective", "not the whole story."),
+      toneTag("wwad-not-wasted", "not wasted", "not wasted."),
     ],
   },
   reality: {
     detail: [
-      { id: "reality-long-day", label: "long barn day", line: "long barn day.", purpose: "detail" },
-      { id: "reality-chores", label: "chores first", line: "chores first.", purpose: "detail" },
-      { id: "reality-tired-legs", label: "tired legs", line: "tired legs.", purpose: "detail" },
-      { id: "reality-weather", label: "weather", line: "barn weather.", purpose: "detail" },
+      detailTag("reality-long-day", "long barn day", "long barn day."),
+      detailTag("reality-chores", "chores first", "chores first."),
+      detailTag("reality-tired-legs", "tired legs", "tired legs."),
+      detailTag("reality-weather", "weather", "barn weather."),
+      detailTag("reality-wet-boots", "wet boots", "wet boots."),
+      detailTag("reality-hay-hair", "hay hair", "hay in my hair."),
+      detailTag("reality-feed-then-ride", "feed then ride", "feed, then ride."),
+      detailTag("reality-late-ride", "late ride", "late ride."),
+      detailTag("reality-dusty-tack", "dusty tack", "dusty tack."),
+      detailTag("reality-cold-hands", "cold hands", "cold hands."),
+      detailTag("reality-five-horses", "five horses", "five horses later."),
+      detailTag("reality-one-more", "one more ride", "one more ride."),
     ],
     tone: [
-      { id: "reality-dry", label: "dry", line: "normal.", purpose: "tone" },
-      { id: "reality-funny", label: "funny", line: "fair trade.", purpose: "tone" },
-      { id: "reality-matter-of-fact", label: "matter-of-fact", line: "still rode.", purpose: "tone" },
-      { id: "reality-soft", label: "soft", line: "worth it.", purpose: "tone" },
+      toneTag("reality-dry", "dry", "normal."),
+      toneTag("reality-funny", "funny", "fair trade."),
+      toneTag("reality-matter-of-fact", "matter-of-fact", "still rode."),
+      toneTag("reality-soft", "soft", "worth it."),
+      toneTag("reality-tired", "tired", "tired but fine."),
+      toneTag("reality-honest", "honest", "real barn day."),
+      toneTag("reality-real", "real", "that is the day."),
+      toneTag("reality-low-drama", "low drama", "no speech."),
+      toneTag("reality-normal", "normal", "normal day."),
+      toneTag("reality-worth-it", "worth it", "still worth it."),
     ],
   },
   confidence: {
     detail: [
-      { id: "confidence-simple-win", label: "simple win", line: "simple win.", purpose: "detail" },
-      { id: "confidence-strong-image", label: "strong image", line: "image says enough.", purpose: "detail" },
-      { id: "confidence-rideable", label: "rideable", line: "rideable.", purpose: "detail" },
-      { id: "confidence-earned-feel", label: "earned feel", line: "earned feel.", purpose: "detail" },
+      detailTag("confidence-simple-win", "simple win", "simple win."),
+      detailTag("confidence-strong-image", "strong image", "image says enough."),
+      detailTag("confidence-rideable", "rideable", "rideable."),
+      detailTag("confidence-earned-feel", "earned feel", "earned feel."),
+      detailTag("confidence-soft-straight", "soft + straight", "soft and straight."),
+      detailTag("confidence-no-extra", "no extra", "no extra."),
+      detailTag("confidence-solid-canter", "solid canter", "solid canter."),
+      detailTag("confidence-better-answer", "better answer", "better answer."),
+      detailTag("confidence-clean-moment", "clean moment", "clean moment."),
+      detailTag("confidence-useful-ride", "useful ride", "useful ride."),
+      detailTag("confidence-quiet-photo", "quiet photo", "quiet photo."),
+      detailTag("confidence-good-one", "good one", "good one."),
     ],
     tone: [
-      { id: "confidence-final", label: "final", line: "enough said.", purpose: "tone" },
-      { id: "confidence-understated", label: "understated", line: "quietly solid.", purpose: "tone" },
-      { id: "confidence-sharper", label: "sharper", line: "useful.", purpose: "tone" },
-      { id: "confidence-warm", label: "warm", line: "good one.", purpose: "tone" },
+      toneTag("confidence-final", "final", "enough said."),
+      toneTag("confidence-understated", "understated", "quietly solid."),
+      toneTag("confidence-sharper", "sharper", "useful."),
+      toneTag("confidence-warm", "warm", "good one."),
+      toneTag("confidence-blunt", "blunt", "better."),
+      toneTag("confidence-quiet", "quiet", "quietly better."),
+      toneTag("confidence-strong", "strong", "solid."),
+      toneTag("confidence-simple", "simple", "simple enough."),
+      toneTag("confidence-earned", "earned", "earned."),
+      toneTag("confidence-no-speech", "no speech", "no speech needed."),
     ],
   },
 };
@@ -991,7 +1080,7 @@ function TagsCard({
         {(["detail", "tone"] as const).map((purpose) => (
           <div key={purpose} className="tag-purpose-group">
             <div className="tag-purpose-label">{purpose}</div>
-            <div className="tag-pill-wrap">
+            <div className="tag-pill-wrap" aria-label={`${purpose} tags`}>
               {tagGroups[purpose].map((tag) => {
                 const isActive = selectedTagIds.includes(tag.id);
 
@@ -1166,7 +1255,6 @@ export default function EquestrianCaptionPrototypeApp() {
 
   function selectPostType(nextPostType: PostType) {
     setPostType(nextPostType);
-    setCreateStep("tags");
     setGenerationRound(0);
     setGenerated([]);
     setSelectedCaption("");
@@ -1366,30 +1454,38 @@ export default function EquestrianCaptionPrototypeApp() {
                 {createStep !== "captions" ? <CreateProgress step={createStep} /> : null}
 
                 {createStep === "postType" ? (
-                  <Card className="rounded-lg border-stone-200 shadow-sm">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">post type</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="post-type-grid">
-                        {postTypes.map((type) => {
-                          const isActive = postType === type.value;
+                  <>
+                    <Card className="post-type-card rounded-lg border-stone-200 shadow-sm">
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-base">post type</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="post-type-grid">
+                          {postTypes.map((type) => {
+                            const isActive = postType === type.value;
 
-                          return (
-                            <button
-                              key={type.value}
-                              type="button"
-                              onClick={() => selectPostType(type.value)}
-                              aria-pressed={isActive}
-                              className={`post-type-button ${isActive ? "is-active" : ""}`}
-                            >
-                              <span>{type.value}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </CardContent>
-                  </Card>
+                            return (
+                              <button
+                                key={type.value}
+                                type="button"
+                                onClick={() => selectPostType(type.value)}
+                                aria-pressed={isActive}
+                                className={`post-type-button ${isActive ? "is-active" : ""}`}
+                              >
+                                <span>{type.value}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <div className="step-bottom-action">
+                      <Button onClick={() => setCreateStep("tags")} className="w-full">
+                        Next
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  </>
                 ) : null}
 
                 {createStep === "tags" ? (
@@ -1567,29 +1663,29 @@ export default function EquestrianCaptionPrototypeApp() {
               </Card>
             ) : (
               savedPosts.map((post) => (
-                <Card key={post.id} className="rounded-lg border-stone-200 shadow-sm">
-                  <CardContent className="p-4">
-                    <div className="mb-3 flex items-center justify-between gap-3">
+                <Card key={post.id} className="log-card rounded-lg border-stone-200 shadow-sm">
+                  <CardContent>
+                    <div className="log-card-meta">
                       <Badge className="rounded-full bg-stone-900 text-white">{post.postType}</Badge>
-                      <div className="text-xs text-stone-500">{new Date(post.createdAt).toLocaleDateString()}</div>
+                      <div className="log-card-date">{new Date(post.createdAt).toLocaleDateString()}</div>
                     </div>
-                    <div className="grid grid-cols-[84px,1fr] gap-3">
-                      <div className="overflow-hidden rounded-md bg-stone-100">
+                    <div className="log-post-body">
+                      <div className="log-thumb">
                         {post.photoUrl ? (
-                          <img
-                            src={post.photoUrl}
-                            alt={post.photoName || "horse"}
-                            className="h-24 w-full object-cover"
-                          />
+                          <img src={post.photoUrl} alt={post.photoName || "horse"} className="log-thumb-img" />
                         ) : (
-                          <div className="photo-drop flex h-24 items-center justify-center">
+                          <div className="log-thumb-empty">
                             <ImageIcon className="h-5 w-5" />
                           </div>
                         )}
                       </div>
-                      <div>
-                        <p className="mb-2 whitespace-pre-wrap text-sm leading-6">{post.caption}</p>
-                        <Button onClick={() => copyCaption(post.caption, post.id)} variant="secondary" className="rounded-md">
+                      <div className="log-copy-area">
+                        <p className="log-caption">{post.caption}</p>
+                        <Button
+                          onClick={() => copyCaption(post.caption, post.id)}
+                          variant="secondary"
+                          className="log-copy-button rounded-md"
+                        >
                           <Copy className="mr-2 h-4 w-4" />
                           {copiedId === post.id ? "copied" : "copy caption"}
                         </Button>
@@ -1648,15 +1744,14 @@ export default function EquestrianCaptionPrototypeApp() {
         </main>
 
         <nav className="app-nav">
-          <div className="nav-strip">
+          <div className="nav-strip" aria-label="Main app navigation">
             <button
               type="button"
               onClick={() => setScreen("start")}
               aria-pressed={screen === "start"}
               className={`nav-btn ${screen === "start" ? "is-active" : ""}`}
             >
-              <Home className="h-4 w-4" />
-              Start
+              <span>Start</span>
             </button>
             <button
               type="button"
@@ -1664,8 +1759,7 @@ export default function EquestrianCaptionPrototypeApp() {
               aria-pressed={screen === "create"}
               className={`nav-btn ${screen === "create" ? "is-active" : ""}`}
             >
-              <Sparkles className="h-4 w-4" />
-              Create
+              <span>Create</span>
             </button>
             <button
               type="button"
@@ -1673,8 +1767,7 @@ export default function EquestrianCaptionPrototypeApp() {
               aria-pressed={screen === "logs"}
               className={`nav-btn ${screen === "logs" ? "is-active" : ""}`}
             >
-              <List className="h-4 w-4" />
-              Logs
+              <span>Logs</span>
             </button>
             <button
               type="button"
@@ -1682,8 +1775,7 @@ export default function EquestrianCaptionPrototypeApp() {
               aria-pressed={screen === "dashboard"}
               className={`nav-btn ${screen === "dashboard" ? "is-active" : ""}`}
             >
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
+              <span>Dashboard</span>
             </button>
           </div>
         </nav>
