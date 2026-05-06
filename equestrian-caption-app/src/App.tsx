@@ -735,65 +735,78 @@ function VoiceProfileCard({ postType, activeRule }: { postType: PostType; active
   const knobEntries = Object.entries(voiceProfile.knobs).filter(([key]) => {
     return ["confidence", "humor", "softness", "maturity", "polish", "detail", "length"].includes(key);
   });
+  const avoidList = [...activeRule.avoid.slice(0, 4), ...voiceProfile.avoid.slice(0, 3)];
+  const availableLines = [
+    ...voiceProfile.recurringSeries,
+    ...highlightedLinesByPostType[postType].slice(0, 3),
+  ];
 
   return (
     <Card className="rounded-lg border-stone-200 shadow-sm">
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">voice profile</CardTitle>
+        <CardTitle className="text-base">voice rules in use</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex flex-wrap gap-2">
-          {voiceProfile.coreTone.slice(0, 7).map((tone) => (
-            <Badge key={tone} variant="secondary" className="rounded-full bg-stone-100 text-stone-700">
-              {tone}
-            </Badge>
-          ))}
+      <CardContent className="voice-rule-grid">
+        <div className="voice-rule-block">
+          <div className="voice-rule-title">why this shows</div>
+          <p className="voice-rule-copy">
+            These are the guardrails steering every caption option: teen voice, horse-specific detail, short length,
+            and no adult-polished caption language.
+          </p>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <div className="row">
-            <div className="row-title">
-              <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">{postType}</div>
-              {activeRule.leadWith.map((item) => (
-                <div key={item}>lead: {item}</div>
-              ))}
-            </div>
-            <span className="row-tag">{activeRule.maxLines}L</span>
-          </div>
-
-          <div className="tap-panel-content rounded-md border border-[var(--border-soft)]">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">keep out</div>
-            <div className="flex flex-wrap gap-2">
-              {[...activeRule.avoid.slice(0, 4), ...voiceProfile.avoid.slice(0, 3)].map((item) => (
-                <Badge key={item} variant="outline">
-                  {item}
-                </Badge>
-              ))}
-            </div>
+        <div className="voice-rule-block">
+          <div className="voice-rule-title">tone</div>
+          <div className="voice-chip-wrap">
+            {voiceProfile.coreTone.slice(0, 7).map((tone) => (
+              <Badge key={tone} variant="secondary">
+                {tone}
+              </Badge>
+            ))}
           </div>
         </div>
 
-        <div className="tap-panel-content rounded-md border border-[var(--border-soft)]">
-          <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">settings</div>
-          <div className="flex flex-wrap gap-2">
+        <div className="voice-rule-block">
+          <div className="voice-rule-title">{postType}</div>
+          <div className="voice-rule-meta">target: {activeRule.maxLines} short lines max</div>
+          <div className="voice-rule-list">
+            {activeRule.leadWith.map((item) => (
+              <div key={item} className="voice-rule-line">
+                lead with {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="voice-rule-block">
+          <div className="voice-rule-title">keep out</div>
+          <div className="voice-chip-wrap">
+            {avoidList.map((item) => (
+              <Badge key={item} variant="outline">
+                {item}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <div className="voice-rule-block">
+          <div className="voice-rule-title">settings</div>
+          <div className="voice-chip-wrap">
             {knobEntries.map(([key, value]) => (
               <Badge key={key}>
                 {key}: {value}
               </Badge>
             ))}
           </div>
-          <div className="muted-note mt-3">
+          <div className="voice-rule-copy">
             {voiceProfile.generationChecklist.should.slice(0, 3).join(" / ")}
           </div>
         </div>
 
-        <div className="tap-panel-content rounded-md border border-[var(--border-soft)]">
-          <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">must stay available</div>
-          <div className="flex flex-wrap gap-2">
-            {[
-              ...voiceProfile.recurringSeries,
-              ...highlightedLinesByPostType[postType].slice(0, 3),
-            ].map((line) => (
+        <div className="voice-rule-block">
+          <div className="voice-rule-title">must stay available</div>
+          <div className="voice-chip-wrap">
+            {availableLines.map((line) => (
               <Badge key={line} variant="outline">
                 {line}
               </Badge>
@@ -816,22 +829,10 @@ export default function EquestrianCaptionPrototypeApp() {
   const [savedPosts, setSavedPosts] = useState<SavedPost[]>([]);
   const [copiedId, setCopiedId] = useState("");
   const [generated, setGenerated] = useState<GeneratedCaption[]>([]);
+  const [showVoiceProfile, setShowVoiceProfile] = useState(false);
 
   const monthKey = currentMonthKey();
-  const currentTypeMeta = postTypes.find((type) => type.value === postType) ?? postTypes[0];
   const activeRule = postTypeRules[postType];
-
-  const currentMonthCounts = useMemo(() => {
-    const counts = makeEmptyCounts();
-
-    savedPosts.forEach((post) => {
-      if (post.monthKey === monthKey) {
-        counts[post.postType] += 1;
-      }
-    });
-
-    return counts;
-  }, [monthKey, savedPosts]);
 
   const dashboardRows = useMemo<DashboardRow[]>(() => {
     const months = Array.from(new Set(savedPosts.map((post) => post.monthKey))).sort().reverse();
@@ -969,9 +970,8 @@ export default function EquestrianCaptionPrototypeApp() {
                 <CardTitle className="text-base">post type</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid h-auto w-full grid-cols-2 gap-2">
+                <div className="post-type-grid">
                   {postTypes.map((type) => {
-                    const done = currentMonthCounts[type.value];
                     const isActive = postType === type.value;
 
                     return (
@@ -980,23 +980,34 @@ export default function EquestrianCaptionPrototypeApp() {
                         type="button"
                         onClick={() => resetCaptionsForType(type.value)}
                         aria-pressed={isActive}
-                        className={`row row--tap ${isActive ? "row--active" : ""}`}
+                        className={`post-type-button ${isActive ? "is-active" : ""}`}
                       >
-                        <span className="row-title">
-                          <span>{type.value}</span>
-                          <span className="mt-1 block text-[11px] leading-4 opacity-75">
-                            {done}/{type.expected} this month
-                          </span>
-                        </span>
-                        <span className="row-tag">{done}</span>
+                        <span>{type.value}</span>
                       </button>
                     );
                   })}
                 </div>
+
+                <label className="voice-toggle" htmlFor="voice-profile-toggle">
+                  <input
+                    id="voice-profile-toggle"
+                    type="checkbox"
+                    checked={showVoiceProfile}
+                    onChange={(event) => setShowVoiceProfile(event.target.checked)}
+                    aria-controls="voice-profile-panel"
+                    className="voice-toggle-input"
+                  />
+                  <span className="voice-toggle-box" aria-hidden="true">
+                    <Check className="h-3 w-3" />
+                  </span>
+                  <span>Voice Profile</span>
+                </label>
               </CardContent>
             </Card>
 
-            <VoiceProfileCard postType={postType} activeRule={activeRule} />
+            <div id="voice-profile-panel" className="voice-profile-panel" data-visible={showVoiceProfile}>
+              <VoiceProfileCard postType={postType} activeRule={activeRule} />
+            </div>
 
             <Card className="rounded-lg border-stone-200 shadow-sm">
               <CardHeader className="pb-3">
@@ -1031,24 +1042,6 @@ export default function EquestrianCaptionPrototypeApp() {
                     placeholder="what is happening, what you liked, what made it funny, soft, honest, or worth posting"
                     className="min-h-[110px] rounded-md"
                   />
-                </div>
-
-                <div className="row">
-                  <div className="row-title">
-                    <div className="font-medium">expected this month</div>
-                    <div className="mt-1 text-[11px] opacity-75">{postType}</div>
-                  </div>
-                  <div className="row-tag">
-                    {currentMonthCounts[postType]}/{currentTypeMeta.expected}
-                  </div>
-                </div>
-
-                <div className="muted-note">
-                  <div className="font-medium">current target</div>
-                  <div className="mt-1">
-                    {currentTypeMeta.expected} total for {postType}
-                  </div>
-                  <div className="mt-1">done so far: {currentMonthCounts[postType]}</div>
                 </div>
 
                 <Button
