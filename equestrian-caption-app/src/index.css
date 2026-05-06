@@ -413,6 +413,11 @@ button {
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 0 1px var(--bg);
+  pointer-events: none;
+}
+
+.voice-toggle-box svg {
+  pointer-events: none;
 }
 
 .voice-toggle-input:checked + .voice-toggle-box {
@@ -478,6 +483,68 @@ button {
 
 .voice-chip-wrap + .voice-rule-copy {
   margin-top: 10px;
+}
+
+.tag-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tag-purpose-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tag-purpose-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tag-pill-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-pill {
+  min-height: 34px;
+  padding: 0 13px;
+  border-radius: var(--pill-radius);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-1);
+  color: var(--fg-soft);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 1px 0 var(--bg);
+  transition:
+    transform var(--t-fast) ease-out,
+    box-shadow var(--t-med) ease-out,
+    border-color var(--t-med) ease-out,
+    background var(--t-med) ease-out;
+}
+
+.tag-pill:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow:
+    0 0 0 1px var(--bg),
+    var(--shadow-press);
+}
+
+.tag-pill.is-active {
+  border-color: var(--accent);
+  background: radial-gradient(circle at top, #1f2937, var(--bg) 75%);
+  color: var(--fg);
+  box-shadow:
+    0 0 0 1px var(--bg),
+    0 4px 10px rgba(15, 23, 42, 0.75);
 }
 
 .post-type-grid {

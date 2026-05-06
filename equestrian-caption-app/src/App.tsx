@@ -2,9 +2,12 @@
 
 import React, { useMemo, useState } from "react";
 import {
+  ArrowLeft,
+  ArrowRight,
   Camera,
   Check,
   Copy,
+  Home,
   Image as ImageIcon,
   LayoutDashboard,
   List,
@@ -28,8 +31,15 @@ const postTypes = [
   { value: "confidence", expected: 4 },
 ] as const;
 
+const createSteps = [
+  { value: "postType", label: "Post Type" },
+  { value: "tags", label: "Tags" },
+  { value: "image", label: "Image" },
+] as const;
+
 type PostType = (typeof postTypes)[number]["value"];
-type Screen = "create" | "log" | "dashboard";
+type Screen = "start" | "create" | "logs" | "dashboard";
+type CreateStep = (typeof createSteps)[number]["value"];
 
 type GeneratedCaption = {
   id: string;
@@ -87,6 +97,17 @@ type PostTypeRule = {
   manualPrompts: string[];
   maxLines: number;
 };
+
+type CaptionTagPurpose = "detail" | "tone";
+
+type CaptionTag = {
+  id: string;
+  label: string;
+  line: string;
+  purpose: CaptionTagPurpose;
+};
+
+type CaptionTagGroups = Record<CaptionTagPurpose, CaptionTag[]>;
 
 const voiceProfile: VoiceProfile = {
   identity: [
@@ -639,10 +660,99 @@ const highlightedLinesByPostType: Record<PostType, string[]> = {
   ],
 };
 
+const tagOptionsByPostType: Record<PostType, CaptionTagGroups> = {
+  "what i see": {
+    detail: [
+      { id: "wis-waiting-base", label: "waiting to base", line: "waited to the base.", purpose: "detail" },
+      { id: "wis-organized-canter", label: "organized canter", line: "organized canter.", purpose: "detail" },
+      { id: "wis-softer-change", label: "softer change", line: "softer change.", purpose: "detail" },
+      { id: "wis-straightness", label: "straightness", line: "stayed straighter.", purpose: "detail" },
+    ],
+    tone: [
+      { id: "wis-quietly-pleased", label: "quietly pleased", line: "small win.", purpose: "tone" },
+      { id: "wis-dry", label: "dry", line: "finally.", purpose: "tone" },
+      { id: "wis-matter-of-fact", label: "matter-of-fact", line: "that was the point.", purpose: "tone" },
+      { id: "wis-soft", label: "soft", line: "i'll take it.", purpose: "tone" },
+    ],
+  },
+  "what the horse sees": {
+    detail: [
+      { id: "whs-opinion", label: "opinion", line: "had an opinion.", purpose: "detail" },
+      { id: "whs-weird-timing", label: "weird timing", line: "timing was a choice.", purpose: "detail" },
+      { id: "whs-tolerated-me", label: "tolerated me", line: "tolerated me anyway.", purpose: "detail" },
+      { id: "whs-chaos", label: "chaos", line: "provided character development.", purpose: "detail" },
+    ],
+    tone: [
+      { id: "whs-deadpan", label: "deadpan", line: "fair enough.", purpose: "tone" },
+      { id: "whs-sarcastic", label: "mildly sarcastic", line: "apparently.", purpose: "tone" },
+      { id: "whs-playful", label: "playful", line: "i had notes.", purpose: "tone" },
+      { id: "whs-low-affection", label: "low affection", line: "still tried.", purpose: "tone" },
+    ],
+  },
+  "what we did": {
+    detail: [
+      { id: "wwd-rhythm-first", label: "rhythm first", line: "rhythm first.", purpose: "detail" },
+      { id: "wwd-softer", label: "softer", line: "softer by the end.", purpose: "detail" },
+      { id: "wwd-rideable", label: "rideable", line: "more rideable.", purpose: "detail" },
+      { id: "wwd-brought-along", label: "brought along", line: "a little more together.", purpose: "detail" },
+    ],
+    tone: [
+      { id: "wwd-practical", label: "practical", line: "useful day.", purpose: "tone" },
+      { id: "wwd-quiet-pride", label: "quiet pride", line: "earned that.", purpose: "tone" },
+      { id: "wwd-grounded", label: "grounded", line: "nothing dramatic.", purpose: "tone" },
+      { id: "wwd-warm", label: "warm", line: "good little step.", purpose: "tone" },
+    ],
+  },
+  "what we almost did": {
+    detail: [
+      { id: "wwad-one-rail", label: "one rail", line: "one rail.", purpose: "detail" },
+      { id: "wwad-no-ribbon", label: "no ribbon", line: "no ribbon.", purpose: "detail" },
+      { id: "wwad-better-answer", label: "better answer", line: "better answer after.", purpose: "detail" },
+      { id: "wwad-useful-miss", label: "useful miss", line: "useful miss.", purpose: "detail" },
+    ],
+    tone: [
+      { id: "wwad-calm", label: "calm", line: "still worth posting.", purpose: "tone" },
+      { id: "wwad-tough", label: "tough", line: "kept riding.", purpose: "tone" },
+      { id: "wwad-dry", label: "dry", line: "annoying. helpful.", purpose: "tone" },
+      { id: "wwad-honest", label: "honest", line: "not wasted.", purpose: "tone" },
+    ],
+  },
+  reality: {
+    detail: [
+      { id: "reality-long-day", label: "long barn day", line: "long barn day.", purpose: "detail" },
+      { id: "reality-chores", label: "chores first", line: "chores first.", purpose: "detail" },
+      { id: "reality-tired-legs", label: "tired legs", line: "tired legs.", purpose: "detail" },
+      { id: "reality-weather", label: "weather", line: "barn weather.", purpose: "detail" },
+    ],
+    tone: [
+      { id: "reality-dry", label: "dry", line: "normal.", purpose: "tone" },
+      { id: "reality-funny", label: "funny", line: "fair trade.", purpose: "tone" },
+      { id: "reality-matter-of-fact", label: "matter-of-fact", line: "still rode.", purpose: "tone" },
+      { id: "reality-soft", label: "soft", line: "worth it.", purpose: "tone" },
+    ],
+  },
+  confidence: {
+    detail: [
+      { id: "confidence-simple-win", label: "simple win", line: "simple win.", purpose: "detail" },
+      { id: "confidence-strong-image", label: "strong image", line: "image says enough.", purpose: "detail" },
+      { id: "confidence-rideable", label: "rideable", line: "rideable.", purpose: "detail" },
+      { id: "confidence-earned-feel", label: "earned feel", line: "earned feel.", purpose: "detail" },
+    ],
+    tone: [
+      { id: "confidence-final", label: "final", line: "enough said.", purpose: "tone" },
+      { id: "confidence-understated", label: "understated", line: "quietly solid.", purpose: "tone" },
+      { id: "confidence-sharper", label: "sharper", line: "useful.", purpose: "tone" },
+      { id: "confidence-warm", label: "warm", line: "good one.", purpose: "tone" },
+    ],
+  },
+};
+
 const monthLabel = new Intl.DateTimeFormat("en-US", {
   month: "short",
   year: "numeric",
 });
+
+const EMPTY_TAG_IDS: string[] = [];
 
 function makeEmptyCounts(): Record<PostType, number> {
   const counts = {} as Record<PostType, number>;
@@ -688,15 +798,58 @@ function limitCaptionLines(lines: string[], maxLines: number): string {
   return lines.filter(Boolean).slice(0, maxLines).join("\n");
 }
 
-function buildCaption(base: string, description: string, type: PostType): string {
+function dedupeCaptionLines(lines: string[]): string[] {
+  const seen = new Set<string>();
+  const uniqueLines: string[] = [];
+
+  lines.forEach((line) => {
+    const key = normalizeCaptionLine(line).toLowerCase();
+    if (!key || seen.has(key)) return;
+
+    seen.add(key);
+    uniqueLines.push(line);
+  });
+
+  return uniqueLines;
+}
+
+function getTagsForPostType(type: PostType): CaptionTag[] {
+  const groups = tagOptionsByPostType[type];
+  return [...groups.detail, ...groups.tone];
+}
+
+function getSelectedTagsForPostType(type: PostType, selectedTagIds: string[]): CaptionTag[] {
+  const selectedIds = new Set(selectedTagIds);
+  return getTagsForPostType(type).filter((tag) => selectedIds.has(tag.id));
+}
+
+function buildTagSteeringLine(selectedTags: CaptionTag[]): string {
+  const detailLines = selectedTags
+    .filter((tag) => tag.purpose === "detail")
+    .slice(0, 2)
+    .map((tag) => tag.line);
+  const toneLines = selectedTags
+    .filter((tag) => tag.purpose === "tone")
+    .slice(0, 1)
+    .map((tag) => tag.line);
+
+  return normalizeCaptionLine([...detailLines, ...toneLines].join(" "));
+}
+
+function buildCaption(base: string, description: string, type: PostType, selectedTags: CaptionTag[] = []): string {
   const rule = postTypeRules[type];
   const baseLine = normalizeCaptionLine(base);
   const desc = normalizeCaptionLine(description);
+  const tagLine = buildTagSteeringLine(selectedTags);
 
-  if (!desc) return baseLine;
+  if (!desc && !tagLine) return baseLine;
 
-  const detailLine = type === "confidence" ? shortenLine(desc, 82) : shortenLine(desc, 138);
-  return limitCaptionLines([baseLine, detailLine], rule.maxLines);
+  const maxSupportingLength = type === "confidence" ? 82 : 138;
+  const descLength = tagLine ? (type === "confidence" ? 42 : 82) : maxSupportingLength;
+  const descLine = desc ? shortenLine(desc, descLength) : "";
+  const supportingLine = shortenLine([descLine, tagLine].filter(Boolean).join(" "), maxSupportingLength);
+
+  return limitCaptionLines(dedupeCaptionLines([baseLine, supportingLine]), rule.maxLines);
 }
 
 function pickHighlightedLine(type: PostType, round: number): string {
@@ -818,8 +971,77 @@ function VoiceProfileCard({ postType, activeRule }: { postType: PostType; active
   );
 }
 
+function TagsCard({
+  postType,
+  selectedTagIds,
+  onToggleTag,
+}: {
+  postType: PostType;
+  selectedTagIds: string[];
+  onToggleTag: (tagId: string) => void;
+}) {
+  const tagGroups = tagOptionsByPostType[postType];
+
+  return (
+    <Card className="rounded-lg border-stone-200 shadow-sm">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">tags</CardTitle>
+      </CardHeader>
+      <CardContent className="tag-card-content">
+        {(["detail", "tone"] as const).map((purpose) => (
+          <div key={purpose} className="tag-purpose-group">
+            <div className="tag-purpose-label">{purpose}</div>
+            <div className="tag-pill-wrap">
+              {tagGroups[purpose].map((tag) => {
+                const isActive = selectedTagIds.includes(tag.id);
+
+                return (
+                  <button
+                    key={tag.id}
+                    type="button"
+                    onClick={() => onToggleTag(tag.id)}
+                    aria-pressed={isActive}
+                    data-purpose={purpose}
+                    className={`tag-pill ${isActive ? "is-active" : ""}`}
+                  >
+                    {tag.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+function CreateProgress({ step }: { step: CreateStep }) {
+  const stepIndex = createSteps.findIndex((item) => item.value === step);
+  const progress = ((stepIndex + 1) / createSteps.length) * 100;
+
+  return (
+    <div className="create-progress" aria-label={`Create step ${stepIndex + 1} of ${createSteps.length}`}>
+      <div className="create-progress-track">
+        <div className="create-progress-fill" style={{ width: `${progress}%` }} />
+      </div>
+      <div className="create-progress-labels">
+        {createSteps.map((item, index) => (
+          <span
+            key={item.value}
+            className={index <= stepIndex ? "is-active" : ""}
+          >
+            {index + 1}. {item.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function EquestrianCaptionPrototypeApp() {
-  const [screen, setScreen] = useState<Screen>("create");
+  const [screen, setScreen] = useState<Screen>("start");
+  const [createStep, setCreateStep] = useState<CreateStep>("postType");
   const [postType, setPostType] = useState<PostType>("what i see");
   const [description, setDescription] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
@@ -830,9 +1052,15 @@ export default function EquestrianCaptionPrototypeApp() {
   const [copiedId, setCopiedId] = useState("");
   const [generated, setGenerated] = useState<GeneratedCaption[]>([]);
   const [showVoiceProfile, setShowVoiceProfile] = useState(false);
+  const [selectedTagIdsByType, setSelectedTagIdsByType] = useState<Partial<Record<PostType, string[]>>>({});
 
   const monthKey = currentMonthKey();
   const activeRule = postTypeRules[postType];
+  const createStepIndex = createSteps.findIndex((step) => step.value === createStep);
+  const selectedTagIds = selectedTagIdsByType[postType] ?? EMPTY_TAG_IDS;
+  const selectedTags = useMemo(() => {
+    return getSelectedTagsForPostType(postType, selectedTagIds);
+  }, [postType, selectedTagIds]);
 
   const dashboardRows = useMemo<DashboardRow[]>(() => {
     const months = Array.from(new Set(savedPosts.map((post) => post.monthKey))).sort().reverse();
@@ -878,11 +1106,11 @@ export default function EquestrianCaptionPrototypeApp() {
     );
     const regularCaptions = pool.slice(0, 3).map((base, index) => ({
       id: `${postType}-${nextRound}-${index}`,
-      text: buildCaption(base, description, postType),
+      text: buildCaption(base, description, postType, selectedTags),
     }));
     const highlightedCaption = {
       id: `${postType}-${nextRound}-highlight`,
-      text: buildCaption(highlightedLine, "", postType),
+      text: buildCaption(highlightedLine, "", postType, selectedTags),
     };
 
     setGenerated([...regularCaptions, highlightedCaption]);
@@ -897,6 +1125,23 @@ export default function EquestrianCaptionPrototypeApp() {
 
   function resetCaptionsForType(nextPostType: PostType) {
     setPostType(nextPostType);
+    setGenerationRound(0);
+    setGenerated([]);
+    setSelectedCaption("");
+  }
+
+  function toggleTag(tagId: string) {
+    setSelectedTagIdsByType((prev) => {
+      const currentTagIds = prev[postType] ?? EMPTY_TAG_IDS;
+      const nextTagIds = currentTagIds.includes(tagId)
+        ? currentTagIds.filter((currentTagId) => currentTagId !== tagId)
+        : [...currentTagIds, tagId];
+
+      return {
+        ...prev,
+        [postType]: nextTagIds,
+      };
+    });
     setGenerationRound(0);
     setGenerated([]);
     setSelectedCaption("");
@@ -1004,6 +1249,8 @@ export default function EquestrianCaptionPrototypeApp() {
                 </label>
               </CardContent>
             </Card>
+
+            <TagsCard postType={postType} selectedTagIds={selectedTagIds} onToggleTag={toggleTag} />
 
             <div id="voice-profile-panel" className="voice-profile-panel" data-visible={showVoiceProfile}>
               <VoiceProfileCard postType={postType} activeRule={activeRule} />
