@@ -1,346 +1,111 @@
 ---
+import "../styles/rs4.css";
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Tack Test | RingStatus</title>
-    <meta name="description" content="A Webflow Cloud Astro test page using a large RS3-style page section." />
-
-    <style>
-      html,
-      body {
-        min-height: 100%;
-        margin: 0;
-      }
-
-      body.rs2_body {
-        background-color: rgb(219, 213, 206);
-        color: #111;
-        font-family: Arial, sans-serif;
-      }
-
-      .rs3-page,
-      .rs3-page * {
-        box-sizing: border-box;
-      }
-
-      .rs3-page {
-        overflow-x: hidden;
-        width: 100%;
-        background-color: rgb(219, 213, 206);
-      }
-
-      .rs3-shell {
-        width: 100%;
-      }
-
-      .rs3-wrapper {
-        width: 100%;
-        max-width: 1180px;
-        margin: 0 auto;
-        padding-right: 24px;
-        padding-left: 24px;
-      }
-
-      .rs3-panel.is-active {
-        display: block;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        font-size: 18px;
-        line-height: 1.45;
-      }
-
-      .rs3-hero {
-        width: 100%;
-        margin-top: 0;
-        padding: 72px 0 72px;
-        background-image: none;
-        color: #111;
-      }
-
-      .rs3-hero-inner {
-        max-width: 980px;
-      }
-
-      .eyebrow-2 {
-        margin-bottom: 18px;
-        font-size: 13px;
-        line-height: 1;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #555;
-      }
-
-      .rs3-title {
-        max-width: 980px;
-        margin: 0 0 28px;
-        font-size: clamp(48px, 8vw, 112px);
-        line-height: 0.95;
-        font-weight: 500;
-        letter-spacing: -0.045em;
-      }
-
-      .rs3-lede {
-        max-width: 760px;
-        margin: 0;
-        font-size: clamp(22px, 3vw, 38px);
-        line-height: 1.12;
-        color: #111;
-      }
-
-      .rs3-s {
-        width: 100%;
-        margin-top: 0;
-        padding: 64px 0;
-        background-color: #f7f4ed;
-        color: #111;
-      }
-
-      .rs3-s.no-shade {
-        background-color: rgb(219, 213, 206);
-      }
-
-      .rs3-grid {
-        display: grid;
-        grid-template-columns: 0.85fr 1.15fr;
-        gap: 48px;
-        align-items: start;
-      }
-
-      .rs3-h2 {
-        margin: 0 0 22px;
-        font-size: clamp(34px, 5vw, 72px);
-        line-height: 1;
-        font-weight: 500;
-        letter-spacing: -0.035em;
-      }
-
-      .p-medium {
-        margin: 0;
-        max-width: 650px;
-        font-size: 18px;
-        line-height: 1.45;
-        color: #333;
-      }
-
-      .text-span {
-        color: #111;
-      }
-
-      .rs3-media {
-        width: 100%;
-        overflow: hidden;
-        border-radius: 18px;
-        background: #d0c9c1;
-      }
-
-      .rs3-media img {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-
-      .rs3-cards {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
-      }
-
-      .rs3-card {
-        min-height: 220px;
-        padding: 24px;
-        border-top: 1px solid #111;
-        background: rgba(247, 244, 237, 0.72);
-      }
-
-      .rs3-card h3 {
-        margin: 0 0 12px;
-        font-size: 24px;
-        line-height: 1.1;
-        font-weight: 500;
-      }
-
-      .rs3-card p {
-        margin: 0;
-        font-size: 17px;
-        line-height: 1.45;
-        color: #333;
-      }
-
-      .rs3-auto {
-        width: 100%;
-        height: auto;
-        margin-top: 0;
-        padding: 64px 0 88px;
-        background-color: #f7f4ed;
-        color: #111;
-      }
-
-      .rs3-auto.no-shade {
-        background-color: rgb(219, 213, 206);
-      }
-
-      .rs3-statement {
-        max-width: 780px;
-      }
-
-      .rs3-h3 {
-        margin: 0 0 18px;
-        font-size: clamp(30px, 4vw, 58px);
-        line-height: 1;
-        font-weight: 500;
-        letter-spacing: -0.03em;
-      }
-
-      .rs3-para2 {
-        margin: 0;
-        font-size: 18px;
-        line-height: 1.45;
-        color: #333;
-      }
-
-      .rs3-placeholder-top,
-      .rs3-placeholder-bottom {
-        padding: 24px;
-        border-bottom: 1px solid rgba(17, 17, 17, 0.15);
-        font-size: 14px;
-        color: #555;
-      }
-
-      .rs3-placeholder-bottom {
-        border-top: 1px solid rgba(17, 17, 17, 0.15);
-        border-bottom: 0;
-      }
-
-      @media screen and (max-width: 991px) {
-        .rs3-page {
-          position: relative;
-        }
-
-        .rs3-grid {
-          grid-template-columns: 1fr;
-          gap: 36px;
-        }
-      }
-
-      @media screen and (max-width: 767px) {
-        .rs3-wrapper {
-          padding-right: 20px;
-          padding-left: 20px;
-        }
-
-        .rs3-hero {
-          padding-top: 56px;
-          padding-bottom: 56px;
-        }
-
-        .rs3-s,
-        .rs3-auto {
-          padding-top: 52px;
-          padding-bottom: 60px;
-        }
-
-        .rs3-cards {
-          grid-template-columns: 1fr;
-        }
-
-        .rs3-title {
-          letter-spacing: -0.035em;
-        }
-      }
-
-      @media screen and (max-width: 479px) {
-        .rs3-page {
-          min-width: 320px;
-        }
-      }
-    </style>
+    <meta name="description" content="A Webflow Cloud Astro test page using the RS4 landing section." />
   </head>
 
-  <body class="rs2_body">
-    <div class="rs3-placeholder-top">
-      Header placeholder — future site navigation goes here.
-    </div>
+  <body class="rs4-body">
+    <main class="rs4-page">
 
-    <main class="rs3-shell">
-      <section class="rs3-page">
-        <section class="rs3-panel is-active">
-          <section class="rs3-hero">
-            <div class="rs3-wrapper">
-              <div class="rs3-hero-inner">
-                <div class="eyebrow-2">About Me</div>
-                <h1 class="rs3-title">I built this because being ready matters.</h1>
-                <p class="rs3-lede">
-                  I am a junior rider and working student. I ride a lot, work a lot, and spend enough time at shows to know when something is making the day harder than it needs to be.
-                </p>
-              </div>
+      <section class="rs4-sec">
+        <div class="rs4-flexv-v">
+          <h1 class="rs4-h1">
+            I built this because being ready matters.
+          </h1>
+
+          <p class="rs4-lede">
+            I am a junior rider and working student. I ride a lot, work a lot, and spend enough time at shows to know when something is making the day harder than it needs to be.
+          </p>
+        </div>
+      </section>
+
+      <section class="rs4-sec">
+        <div class="rs4-flexv-h">
+          <div class="rs3-col-left">
+            <h2 class="rs4-h2">
+              Show days are not calm.
+            </h2>
+
+            <p class="rs4-body2">
+              Show days are not calm. You still have to be ready. I started building simple tools because I needed a better way to keep track of horses, timing, packing, grooms, and rings without digging through a heavy app every five minutes.
+            </p>
+          </div>
+
+          <div class="rs3-col-right">
+            <div class="rs3-img-wrapper">
+              <img
+                class="rs3-image-screen1"
+                src="https://cdn.prod.website-files.com/6982268b7543ac3c80151266/69ef980833ad820a005542da_ring6.avif"
+                alt=""
+                loading="lazy"
+              />
             </div>
-          </section>
+          </div>
+        </div>
+      </section>
 
-          <section class="rs3-s no-shade">
-            <div class="rs3-wrapper">
-              <div class="rs3-grid">
-                <div>
-                  <div class="eyebrow-2">Me</div>
-                  <h2 class="rs3-h2">Show days are not calm.</h2>
-                  <p class="p-medium">
-                    Show days are not calm. You still have to be ready. I started building simple tools because I needed a better way to keep track of horses, timing, packing, grooms, and rings without digging through a heavy app every five minutes.
-                    <span class="text-span">I know what needs to work because I am using it while getting horses ready, checking the ring, and trying not to make anyone wait.</span>
+      <section class="rs4-sec is-short">
+        <div class="pwr-card-shell">
+          <div class="pwr-slider-actions">
+            <h3 class="rs4-h3">Barn Tools</h3>
+          </div>
+
+          <div class="pwr-card-lane hide-scrollbar">
+            <div class="pwr-card">
+              <a href="#" class="card-link on-secondary">
+                <div class="rs2-card3">
+                  <h4 class="rs4-h4">I work a lot.</h4>
+                  <p class="rs4-para2">
+                    I pack, prep, check timing, help with horses, and keep moving when the day changes.
                   </p>
                 </div>
+              </a>
+            </div>
 
-                <div class="rs3-media">
-                  <img
-                    src="https://cdn.prod.website-files.com/6982268b7543ac3c80151266/69ef980833ad820a005542da_ring6.avif"
-                    alt=""
-                    loading="lazy"
-                  />
+            <div class="pwr-card">
+              <a href="#" class="card-link on-secondary">
+                <div class="rs2-card3">
+                  <h4 class="rs4-h4">I ride a lot.</h4>
+                  <p class="rs4-para2">
+                    I ride different types, including the hard ones, and I learn fast because I have to.
+                  </p>
                 </div>
-              </div>
+              </a>
             </div>
-          </section>
 
-          <section class="rs3-s">
-            <div class="rs3-wrapper">
-              <div class="eyebrow-2">Barn Tools</div>
-
-              <div class="rs3-cards">
-                <article class="rs3-card">
-                  <h3>I work a lot.</h3>
-                  <p>I pack, prep, check timing, help with horses, and keep moving when the day changes.</p>
-                </article>
-
-                <article class="rs3-card">
-                  <h3>I ride a lot.</h3>
-                  <p>I ride different types, including the hard ones, and I learn fast because I have to.</p>
-                </article>
-
-                <article class="rs3-card">
-                  <h3>I had help building it.</h3>
-                  <p>I bring the show-day problems from the barn. My dad helps turn them into simple tools that work.</p>
-                </article>
-              </div>
+            <div class="pwr-card">
+              <a href="#" class="card-link on-secondary">
+                <div class="rs2-card3">
+                  <h4 class="rs4-h4">I had help building it.</h4>
+                  <p class="rs4-para2">
+                    I bring the show-day problems from the barn. My dad helps turn them into simple tools that work.
+                  </p>
+                </div>
+              </a>
             </div>
-          </section>
-
-          <section class="rs3-auto no-shade">
-            <div class="rs3-wrapper">
-              <div class="rs3-statement">
-                <div class="eyebrow-2">Mission</div>
-                <h3 class="rs3-h3">Not fancy. Just useful.</h3>
-                <p class="rs3-para2">
-                  This was not something handed off to a developer. It came from real show weeks, long days, moving rings, and needing better answers fast.
-                </p>
-              </div>
-            </div>
-          </section>
-        </section>
+          </div>
+        </div>
       </section>
-    </main>
 
-    <div class="rs3-placeholder-bottom">
-      Footer placeholder — future sections can continue below this module.
-    </div>
+      <section class="rs4-sec is-short">
+        <div class="rs3-statement">
+          <div class="eyebrow-2">Mission</div>
+
+          <h3 class="rs4-h3">
+            Not fancy. Just useful.
+          </h3>
+
+          <p class="rs4-para2">
+            This was not something handed off to a developer. It came from real show weeks, long days, moving rings, and needing better answers fast.
+          </p>
+        </div>
+      </section>
+
+    </main>
   </body>
 </html>
