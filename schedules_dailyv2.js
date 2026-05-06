@@ -13,6 +13,13 @@ const {
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
+const SGL_BASE_URL = String(
+  process.env.SGL_DATA_BASE_URL ||
+  process.env.SGL_DIRECT_BASE_URL ||
+  process.env.SGL_API_BASE_URL ||
+  process.env.BASE_URL ||
+  "https://sglapi.wellingtoninternational.com"
+).trim().replace(/\/+$/, "");
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
@@ -98,17 +105,17 @@ function buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay) {
 
 function buildScheduleEndpoint(appSqlDate, appShowId) {
   if (isBlank(appSqlDate) || isBlank(appShowId)) return null;
-  return `https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=${encodeURIComponent(appSqlDate)}&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  return `${SGL_BASE_URL}/schedule?date=${encodeURIComponent(appSqlDate)}&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
 function buildScheduleEmptyEndpoint(appShowId) {
   if (isBlank(appShowId)) return null;
-  return `https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
 function buildClassesEndpoint(classId, showId) {
   if (isBlank(classId) || isBlank(showId)) return null;
-  return `https://broad-tooth-b8ed.gombcg.workers.dev/classes/${encodeURIComponent(classId)}/?show_id=${encodeURIComponent(showId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  return `${SGL_BASE_URL}/classes/${encodeURIComponent(classId)}/?show_id=${encodeURIComponent(showId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
 function normalizeKey(value) {

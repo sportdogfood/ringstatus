@@ -18,7 +18,13 @@ const {
   buildClassDetailEndpoint,
 } = require("./lib/watch_trips_enrichment");
 
-const BASE_URL = String(process.env.BASE_URL || "https://broad-tooth-b8ed.gombcg.workers.dev").trim().replace(/\/+$/, "");
+const BASE_URL = String(
+  process.env.SGL_DATA_BASE_URL ||
+  process.env.SGL_DIRECT_BASE_URL ||
+  process.env.SGL_API_BASE_URL ||
+  process.env.BASE_URL ||
+  "https://sglapi.wellingtoninternational.com"
+).trim().replace(/\/+$/, "");
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
@@ -182,6 +188,7 @@ function resolveTripScheduleDate(source) {
   return toIsoDateOnly(pickFirst(
     firstValue(source.schedule_show_datev2),
     firstValue(source.scheduled_date),
+    firstValue(source[" scheduled_date"]),
     firstValue(source["schedule_show_datev2 (from watch_schedule)"]),
     firstValue(source.show_date),
     firstValue(source.date)
@@ -477,6 +484,7 @@ async function fetchWatchScheduleRows() {
     pageSize: 100,
     "fields[]": [
       "record_id",
+      "show_id",
       "class_groupxclasses_id",
       "class_group_id",
       "class_id",
@@ -488,8 +496,12 @@ async function fetchWatchScheduleRows() {
       "ring_number",
       "estimated_start_time",
       "estimated_end_time",
+      "total_trips",
+      "completed_trips",
+      "status",
       "class_group_sequence",
       "schedule_show_datev2",
+      " scheduled_date",
       "show_date",
     ],
   });
@@ -1573,6 +1585,8 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("ring_number", row.ring_number);
   maybeSet("estimated_start_time", row.estimated_start_time);
   maybeSet("estimated_end_time", row.estimated_end_time);
+  maybeSet("total_trips", row.total_trips);
+  maybeSet("completed_trips", row.completed_trips);
   maybeSet("latest_estimated_start_time", row.estimated_start_time);
   maybeSet("latest_ingested_at", nowIso);
   maybeSet("class_group_sequence", row.class_group_sequence);
@@ -1613,6 +1627,13 @@ function rowScheduledDateMatchesScope(row, heartbeat) {
   return resolvedScheduledDate === heartbeat.app_sql_date;
 }
 
+function scheduleRowMatchesHeartbeat(row, heartbeat) {
+  const fields = row?.fields || {};
+  const rowShowId = numOrNull(fields.show_id);
+  const rowDate = resolveTripScheduleDate(fields);
+  return rowShowId === heartbeat.app_show_id && rowDate === heartbeat.app_sql_date;
+}
+
 async function main() {
   requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
@@ -1650,7 +1671,8 @@ async function main() {
 
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
-  const scheduleByClassId = buildScheduleMap(scheduleRows);
+  const scopedScheduleRows = scheduleRows.filter((row) => scheduleRowMatchesHeartbeat(row, heartbeat));
+  const scheduleByClassId = buildScheduleMap(scopedScheduleRows);
   const activeTenantMap = new Map();
   for (const row of activeTenantRows) {
     if (!row?.tenant_id || activeTenantMap.has(row.tenant_id)) continue;
@@ -1666,6 +1688,29 @@ async function main() {
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
     }));
+    return;
+  }
+
+  if (!scopedScheduleRows.length) {
+    console.log(JSON.stringify({
+      ok: true,
+      dry_run: DRY_RUN,
+      run_status: "NOOP",
+      reason: "No current watch_schedule rows matched heartbeat scope",
+      app_show_id: heartbeat.app_show_id,
+      app_sql_date: heartbeat.app_sql_date,
+      watch_schedule_rows: scheduleRows.length,
+      scoped_watch_schedule_rows: 0,
+      active_tenant_ids: activeTenantIds.length,
+      writes: {
+        created: 0,
+        updated: 0,
+        dropped: 0,
+        create_failures: [],
+        update_failures: [],
+        drop_failures: [],
+      },
+    }, null, 2));
     return;
   }
 

@@ -1,14 +1,13 @@
 // trips_tagger.js (REMOVE ALL MISMATCH LOGIC)
 //
 // Locked rules:
-// - app_show_id comes from endpoint show_id
-// - app_sql_date starts from endpoint time_zone_date_time.sql_date text
-// - app_time comes from endpoint time text
+// - app_show_id/app_sql_date/app_time come from latest heartbeat by default
+// - /ring remains available only when APP_CONTEXT_SOURCE=ring|sgl|auto
 // - no timezone conversion
 // - no date_obj / time_obj usage
 // - no UTC/local math
 // - DAY uses raw endpoint sql_date text
-// - NIGHT shifts sql_date text to next text date (April-safe only, per current rule)
+// - NIGHT shifts sql_date text to next text date using literal calendar arithmetic
 // - OVERNIGHT uses raw endpoint sql_date text
 // - shifted_to_next_day is true only in NIGHT
 // - no mismatch fields
@@ -29,18 +28,31 @@ const {
 const {
   buildClassDetailEndpoint,
   buildClassSignupGroupEndpoint,
+  classSignupEntries,
   findClassGroupOrderEntry,
   findClassSignupEntry,
   findClassTrip,
   normalizeClassEndpointWithCgid,
 } = require("./lib/watch_trips_enrichment");
+const {
+  recordMatchesAppScope,
+} = require("./lib/watch_trips_scope");
 
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
-const WATCH_VIEW  = process.env.WATCH_VIEW || "hb_targets";
+const WATCH_VIEW  = process.env.WATCH_VIEW || "heartbeat";
 const SHOWS_TABLE = process.env.SHOWS_TABLE || "shows";
+const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
+const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
 const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
-const BASE_URL = String(process.env.BASE_URL || "https://broad-tooth-b8ed.gombcg.workers.dev").trim().replace(/\/+$/, "");
+const APP_CONTEXT_SOURCE = String(process.env.APP_CONTEXT_SOURCE || "heartbeat").trim().toLowerCase();
+const BASE_URL = String(
+  process.env.SGL_DATA_BASE_URL ||
+  process.env.SGL_DIRECT_BASE_URL ||
+  process.env.SGL_API_BASE_URL ||
+  process.env.BASE_URL ||
+  "https://sglapi.wellingtoninternational.com"
+).trim().replace(/\/+$/, "");
 
 const HTTP_TIMEOUT_MS   = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
@@ -48,12 +60,13 @@ const AT_RETRY_BASE_MS  = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 
-const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || "https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=15";
+const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || `${BASE_URL}/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 
 // watch_trips source fields
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
 const FIELD_ENTRY_ID              = process.env.FIELD_ENTRY_ID || "entry_id";
+const FIELD_ENTRY_NUMBER          = process.env.FIELD_ENTRY_NUMBER || "entry_number";
 const FIELD_CLASS_ID              = process.env.FIELD_CLASS_ID || "class_id";
 const FIELD_CLASS_NUMBER          = process.env.FIELD_CLASS_NUMBER || "class_number";
 const FIELD_CLASS_GROUP_ID        = process.env.FIELD_CLASS_GROUP_ID || "class_group_id";
@@ -155,6 +168,17 @@ function floatOrNull(v) {
   return Number.isFinite(n) ? n : null;
 }
 
+function boolValue(value) {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+  if (typeof value === "string") {
+    const text = value.trim().toLowerCase();
+    if (["true", "yes", "1", "checked"].includes(text)) return true;
+    if (["false", "no", "0", "unchecked"].includes(text)) return false;
+  }
+  return false;
+}
+
 function strOrNull(v) {
   if (isBlank(v)) return null;
   return String(v).trim();
@@ -241,6 +265,15 @@ function normTimeStr(s) {
 
 function normStr(s) {
   return strOrNull(s);
+}
+
+function classSignupEntryHasUsableKeys(entry) {
+  if (!entry || typeof entry !== "object") return false;
+  return numOrNull(firstNonBlank(entry.entry_id, entry.entryId)) !== null ||
+    numOrNull(firstNonBlank(entry.entry_number, entry.entryNumber, entry.number)) !== null ||
+    numOrNull(firstNonBlank(entry.class_number, entry.classNumber)) !== null ||
+    numOrNull(firstNonBlank(entry.class_id, entry.classId)) !== null ||
+    !!strOrNull(entry.horse);
 }
 
 async function fetchWithTimeout(url, opts = {}) {
@@ -505,23 +538,31 @@ function parseTimeToMinutes(appTime) {
   return hh * 60 + mm;
 }
 
-function shiftAprilSqlDateText(rawSqlDate) {
+function shiftSqlDateText(rawSqlDate, days = 1) {
   const v = strOrNull(rawSqlDate);
   if (!v) return null;
 
-  const m = v.match(/^(\d{4})-(04)-(\d{2})$/);
+  const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!m) return null;
 
-  const year = m[1];
-  const month = m[2];
+  const year = Number(m[1]);
+  const month = Number(m[2]);
   const day = Number(m[3]);
 
-  if (!Number.isFinite(day) || day < 1 || day > 30) return null;
+  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) return null;
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
 
-  const nextDay = day + 1;
-  const nextText = String(nextDay).padStart(2, "0");
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
 
-  return `${year}-${month}-${nextText}`;
+  date.setUTCDate(date.getUTCDate() + Number(days || 0));
+  return date.toISOString().slice(0, 10);
 }
 
 function deriveMode(appTime) {
@@ -536,7 +577,7 @@ function deriveMode(appTime) {
   return "OVERNIGHT";
 }
 
-async function fetchAppContext() {
+async function fetchAppContextFromRing() {
   const fetched = await fetchTextWithConfiguredTransport(APP_RING_ENDPOINT, async (endpoint) => {
     const response = await fetchWithRetry(endpoint, { method: "GET" });
     const text = await response.text();
@@ -581,8 +622,8 @@ async function fetchAppContext() {
   let shifted_to_next_day = false;
 
   if (mode === "NIGHT") {
-    app_sql_date = shiftAprilSqlDateText(raw_sql_date);
-    if (!app_sql_date) throw new Error(`unable to shift April sql_date text: ${raw_sql_date}`);
+    app_sql_date = shiftSqlDateText(raw_sql_date, 1);
+    if (!app_sql_date) throw new Error(`unable to shift sql_date text: ${raw_sql_date}`);
     shifted_to_next_day = true;
   }
 
@@ -597,8 +638,78 @@ async function fetchAppContext() {
     app_sql_date,
     app_time,
     mode,
-    shifted_to_next_day
+    shifted_to_next_day,
+    source: "ring"
   };
+}
+
+async function fetchAppContextFromHeartbeat() {
+  const url = new URL(airtableUrl(TABLE_HEARTBEAT));
+  url.searchParams.set("pageSize", "1");
+  url.searchParams.set("sort[0][field]", HEARTBEAT_SORT_FIELD);
+  url.searchParams.set("sort[0][direction]", "desc");
+  for (const fieldName of [
+    "record_id",
+    "heartbeat_id",
+    "show_id",
+    "app_show_id",
+    "app_sql_date",
+    "shifted_to_next_day",
+    "mode",
+    "time",
+  ]) {
+    url.searchParams.append("fields[]", fieldName);
+  }
+
+  const res = await fetchWithRetry(url.toString(), {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Airtable heartbeat context failed (${res.status}): ${body.slice(0, 300)}`);
+  }
+
+  const json = await res.json().catch(() => ({}));
+  const record = Array.isArray(json?.records) ? json.records[0] : null;
+  const fields = record?.fields || {};
+
+  const app_show_id = numOrNull(firstNonBlank(fields.app_show_id, fields.show_id));
+  const app_sql_date = strOrNull(fields.app_sql_date);
+  const app_time = strOrNull(fields.time);
+  const mode = strOrNull(fields.mode) || deriveMode(app_time);
+
+  if (!record?.id) throw new Error(`No heartbeat rows found in ${TABLE_HEARTBEAT}`);
+  if (app_show_id === null) throw new Error("Latest heartbeat missing app_show_id/show_id");
+  if (!app_sql_date) throw new Error("Latest heartbeat missing app_sql_date");
+
+  return {
+    app_show_id,
+    raw_sql_date: app_sql_date,
+    app_sql_date,
+    app_time,
+    mode,
+    shifted_to_next_day: boolValue(fields.shifted_to_next_day),
+    source: "heartbeat",
+    heartbeat_record_id: record.id,
+    scope_run_id: strOrNull(fields.heartbeat_id) || record.id,
+  };
+}
+
+async function fetchAppContext() {
+  if (APP_CONTEXT_SOURCE === "ring" || APP_CONTEXT_SOURCE === "sgl") {
+    return fetchAppContextFromRing();
+  }
+
+  try {
+    return await fetchAppContextFromHeartbeat();
+  } catch (heartbeatError) {
+    if (APP_CONTEXT_SOURCE === "auto" || APP_CONTEXT_SOURCE === "fallback") {
+      console.log(`context warn: heartbeat context failed, falling back to /ring :: ${String(heartbeatError?.message || heartbeatError).slice(0, 300)}`);
+      return fetchAppContextFromRing();
+    }
+    throw heartbeatError;
+  }
 }
 
 async function fetchShowsMap() {
@@ -701,7 +812,10 @@ async function fetchShowsMap() {
     const linkedShowRecordId = showsMap.get(appCtx.app_show_id) || null;
 
     const allRecords = await airtableList(WATCH_TABLE, WATCH_VIEW);
-    const records = MAX_RECORDS > 0 ? allRecords.slice(0, MAX_RECORDS) : allRecords;
+    const scopeRecords = allRecords.filter((rec) => recordMatchesAppScope(rec.fields || {}, appCtx));
+    const records = MAX_RECORDS > 0 ? scopeRecords.slice(0, MAX_RECORDS) : scopeRecords;
+    const recordsFilteredOutOfScope = allRecords.length - scopeRecords.length;
+    const recordsSkippedByMax = scopeRecords.length - records.length;
 
     const recInputs = [];
     const uniqueEndpoints = new Set();
@@ -710,10 +824,14 @@ async function fetchShowsMap() {
     for (const rec of records) {
       const f = rec.fields || {};
       const entry_id = numOrNull(f[FIELD_ENTRY_ID]);
+      const entry_number = numOrNull(f[FIELD_ENTRY_NUMBER]);
       const class_id = numOrNull(f[FIELD_CLASS_ID]);
       const class_number = numOrNull(f[FIELD_CLASS_NUMBER]);
       const class_group_id = numOrNull(f[FIELD_CLASS_GROUP_ID]);
       let classEndpoint = normalizeClassEndpoint(f[FIELD_CLASS_ENDPOINT], class_group_id);
+      if (class_id === null) {
+        classEndpoint = null;
+      }
       if (!classEndpoint && class_id !== null) {
         classEndpoint = buildClassDetailEndpoint({
           baseUrl: BASE_URL,
@@ -723,7 +841,7 @@ async function fetchShowsMap() {
           classGroupId: class_group_id,
         });
       }
-      const classSignupEndpoint = class_group_id !== null && entry_id !== null
+      const classSignupEndpoint = class_group_id !== null
         ? buildClassSignupGroupEndpoint({
           baseUrl: BASE_URL,
           classGroupId: class_group_id,
@@ -740,6 +858,7 @@ async function fetchShowsMap() {
         classSignupEndpoint,
         entryxclasses_uuid,
         entry_id,
+        entry_number,
         class_id,
         class_number,
         class_group_id
@@ -929,7 +1048,25 @@ async function fetchShowsMap() {
           continue;
         }
 
-        classSignupEndpointCache.set(endpoint, { ok: true, json });
+        const signupEntries = classSignupEntries(json);
+        const usableEntryCount = signupEntries.filter(classSignupEntryHasUsableKeys).length;
+        const payloadHasNoUsableEntryKeys = signupEntries.length > 0 && usableEntryCount === 0;
+        const metadata = fetched.metadata || {};
+
+        if (payloadHasNoUsableEntryKeys) {
+          console.log(`endpoint warn: warn:classsignup_payload_no_usable_entry_keys :: ${effectiveEndpoint} :: entries=${signupEntries.length} authorization_used=${metadata.authorization_used === true}`);
+        }
+
+        classSignupEndpointCache.set(endpoint, {
+          ok: true,
+          json,
+          entry_count: signupEntries.length,
+          usable_entry_count: usableEntryCount,
+          payload_has_no_usable_entry_keys: payloadHasNoUsableEntryKeys,
+          authorization_used: metadata.authorization_used === true,
+          cookie_header_used: metadata.cookie_header_used === true,
+          session_json_used: metadata.session_json_used === true,
+        });
       } catch (e) {
         const reason = "err:classsignup_fetch_exception";
         const detail = String(e?.message || e).slice(0, 300);
@@ -966,6 +1103,18 @@ async function fetchShowsMap() {
       return;
     }
 
+    const classSignupEndpointWarnings = [...classSignupEndpointCache.entries()]
+      .filter(([, cached]) => cached?.payload_has_no_usable_entry_keys)
+      .map(([endpoint, cached]) => ({
+        endpoint,
+        reason: "classsignup_payload_no_usable_entry_keys",
+        entry_count: cached.entry_count,
+        usable_entry_count: cached.usable_entry_count,
+        authorization_used: cached.authorization_used,
+        cookie_header_used: cached.cookie_header_used,
+        session_json_used: cached.session_json_used,
+      }));
+
     const updates = [];
     const rowReasonCounts = {};
 
@@ -991,6 +1140,7 @@ async function fetchShowsMap() {
         classSignupEndpoint,
         entryxclasses_uuid,
         entry_id,
+        entry_number,
         class_id,
         class_number
       } = row;
@@ -1004,7 +1154,44 @@ async function fetchShowsMap() {
       else shows_link_missing++;
 
       if (!classEndpoint) {
-        let reason = "err:missing_class_endpoint";
+        const classSignupCached = classSignupEndpoint ? classSignupEndpointCache.get(classSignupEndpoint) : null;
+        const classSignupEntry = classSignupCached?.ok
+          ? findClassSignupEntry(classSignupCached.json, {
+            entryId: entry_id,
+            entryNumber: entry_number,
+            classNumber: class_number,
+            classId: class_id,
+          })
+          : null;
+
+        if (classSignupEntry) {
+          const order_of_go = firstNormNum(
+            IGNORE_NUM.order_of_go,
+            classSignupEntry?.order_of_go,
+            classSignupEntry?.orderOfGo
+          );
+          const h_eid = normNum(firstNonBlank(
+            classSignupEntry?.entry_id,
+            classSignupEntry?.entryId,
+            classSignupEntry?.entry_number,
+            classSignupEntry?.entryNumber,
+            classSignupEntry?.number
+          ));
+          setIfPresent(updateFields, FIELD_ORDER_OF_GO, order_of_go);
+          setIfPresent(updateFields, FIELD_H_EID, h_eid);
+
+          let reason = "warn:classsignup_only";
+          if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
+          if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+          setBaseFields(updateFields, observedAt, reason);
+          bumpReason(reason);
+          updates.push({ id: rec.id, fields: updateFields });
+          continue;
+        }
+
+        let reason = classSignupEndpoint ? "err:missing_class_endpoint|warn:no_classsignup_match" : "err:missing_class_endpoint";
+        if (classSignupCached?.payload_has_no_usable_entry_keys) reason = `${reason}|warn:classsignup_payload_no_usable_entry_keys`;
+        if (classSignupCached && classSignupCached.authorization_used === false) reason = `${reason}|warn:sgl_auth_not_used`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
 
         skipped_missing_class_endpoint++;
@@ -1151,18 +1338,21 @@ async function fetchShowsMap() {
         }) ||
         findClassTrip(classJson, {
           entryId: entry_id,
+          entryNumber: entry_number,
           classId: class_id,
         }) ||
         null;
       const groupOrderEntry = findClassGroupOrderEntry(classJson, {
         entryxclassesUuid: entryxclasses_uuid,
         entryId: entry_id,
+        entryNumber: entry_number,
         classId: class_id,
       });
       const classSignupCached = classSignupEndpoint ? classSignupEndpointCache.get(classSignupEndpoint) : null;
       const classSignupEntry = classSignupCached?.ok
         ? findClassSignupEntry(classSignupCached.json, {
           entryId: entry_id,
+          entryNumber: entry_number,
           classNumber: class_number,
           classId: class_id,
         })
@@ -1343,6 +1533,8 @@ async function fetchShowsMap() {
         if (class_id === null) reason = `${reason}|debug:missing_class_id`;
         if (!classSignupEndpoint) reason = `${reason}|debug:missing_classsignup_endpoint`;
         if (classSignupCached && !classSignupCached.ok) reason = `${reason}|warn:${classSignupCached.reason || "classsignup_fetch_failed"}`;
+        if (classSignupCached?.payload_has_no_usable_entry_keys) reason = `${reason}|warn:classsignup_payload_no_usable_entry_keys`;
+        if (classSignupCached && classSignupCached.authorization_used === false) reason = `${reason}|warn:sgl_auth_not_used`;
         if (!class_status) reason = `${reason}|warn:missing_status`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
 
@@ -1369,6 +1561,7 @@ async function fetchShowsMap() {
       watch_view: WATCH_VIEW,
       shows_table: SHOWS_TABLE,
       app_endpoint: APP_RING_ENDPOINT,
+      app_context_source: appCtx.source,
       app_show_id: appCtx.app_show_id,
       raw_sql_date: appCtx.raw_sql_date,
       app_sql_date: appCtx.app_sql_date,
@@ -1376,6 +1569,10 @@ async function fetchShowsMap() {
       mode: appCtx.mode,
       shifted_to_next_day: appCtx.shifted_to_next_day,
       shows_link_record_id: linkedShowRecordId,
+      records_fetched_in_view: allRecords.length,
+      records_scope_eligible: scopeRecords.length,
+      records_filtered_out_of_scope: recordsFilteredOutOfScope,
+      records_skipped_by_max_records: recordsSkippedByMax,
       processed_in_view,
       processed_valid,
       updated_rows,
@@ -1391,6 +1588,7 @@ async function fetchShowsMap() {
       shows_link_missing,
       row_reason_counts: rowReasonCounts,
       observed_at: observedAt,
+      classsignup_endpoint_warnings: classSignupEndpointWarnings.slice(0, 10),
       endpoint_error_samples: endpointErrors.slice(0, 10),
       failed_row_samples: failedRows.slice(0, 10)
     }, null, 2));

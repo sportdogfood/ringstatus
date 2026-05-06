@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "dry_run": false,
+  "scope": {
+    "heartbeat_record_id": "recdHf1zQJRTOMK2f",
+    "heartbeat_rid": "recdHf1zQJRTOMK2f",
+    "hb_at": "2026-05-06T22:15:04.836Z",
+    "app_show_idv2": 200000061,
+    "app_sql_datev2": "2026-05-07",
+    "app_dow_rawv2": "Thu",
+    "shifted_to_next_dayv2": true,
+    "scope_key": "200000061|2026-05-07|Thu|1",
+    "scope_run_id": "200000061-2026-05-06-1778105704",
+    "heartbeat_time": "06:15 PM",
+    "heartbeat_show_date": null,
+    "raw_sql_date": "2026-05-06",
+    "mode": "NIGHT",
+    "set_to_default_app_sql_date": false,
+    "default_app_sql_date_is": "2026-05-06",
+    "show_app_sql_start_date": "2026-05-06",
+    "show_app_sql_end_date": "2026-05-10",
+    "show_app_name": "2026 ESP Spring 5 (#4397)",
+    "app_sql_date_source": "night_shift",
+    "candidate_app_sql_date": "2026-05-07"
+  },
+  "chosen_source": "dated_schedule",
+  "heartbeat_patch_fields": {
+    "set_to_default_app_sql_date": false,
+    "show_app_name": "2026 ESP Spring 5 (#4397)"
+  },
+  "row_count": 43,
+  "filtered_out_scheduled_date_mismatch": 0,
+  "dropped_due_to_schedule_show_date_mismatch": 0,
+  "creates_planned": 43,
+  "updates_planned": 0,
+  "drops_planned": 0,
+  "existing_show_rows": 0,
+  "heartbeat_view_rows": 92,
+  "show_record_bound": true,
+  "fetches": {
+    "dated_schedule": {
+      "url": "https://sglapi.wellingtoninternational.com/schedule?date=2026-05-07&show_id=200000061&customer_id=15",
+      "rows": 43,
+      "schedule_show_datev2": "2026-05-07"
+    },
+    "empty_ping_schedule": {
+      "url": "https://sglapi.wellingtoninternational.com/schedule?date=00/00/00&show_id=200000061&customer_id=15",
+      "ok": true,
+      "error": null,
+      "rows": 0,
+      "schedule_show_datev2": "2026-05-06"
+    },
+    "classes_endpoint": {
+      "enriched_rows": 0,
+      "failures": []
+    }
+  },
+  "writes": {
+    "created": 43,
+    "updated": 0,
+    "dropped": 0,
+    "create_failures": [],
+    "update_failures": [],
+    "drop_failures": []
+  },
+  "active_groups": {
+    "table": "active_groups",
+    "created_planned": 0,
+    "updated_planned": 0,
+    "inactivated_planned": 0,
+    "writes": {
+      "created": 0,
+      "updated": 0,
+      "inactivated": 0,
+      "create_failures": [],
+      "update_failures": [],
+      "inactivate_failures": []
+    },
+    "skipped": true
+  }
+}

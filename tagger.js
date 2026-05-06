@@ -28,6 +28,13 @@ const {
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const CUSTOMER_ID      = Number(process.env.CUSTOMER_ID || "15");
+const SGL_BASE_URL = String(
+  process.env.SGL_DATA_BASE_URL ||
+  process.env.SGL_DIRECT_BASE_URL ||
+  process.env.SGL_API_BASE_URL ||
+  process.env.BASE_URL ||
+  "https://sglapi.wellingtoninternational.com"
+).trim().replace(/\/+$/, "");
 
 if (!AIRTABLE_TOKEN) throw new Error("Missing AIRTABLE_TOKEN");
 if (!AIRTABLE_BASE_ID) throw new Error("Missing AIRTABLE_BASE_ID");
@@ -44,7 +51,7 @@ const TABLE_PUBLISH_QUEUE  = process.env.TABLE_PUBLISH_QUEUE || process.env.PUBL
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
 
-const RING_ENDPOINT = `https://broad-tooth-b8ed.gombcg.workers.dev/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+const RING_ENDPOINT = `${SGL_BASE_URL}/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 
 const FIELD_LINK_HEARTBEAT     = process.env.FIELD_LINK_HEARTBEAT || "heartbeat";
 const FIELD_SHOW_ID            = process.env.FIELD_SHOW_ID || "show_id";
@@ -670,7 +677,7 @@ function compareSqlDate(left, right) {
 
 function buildScheduleEmptyEndpoint(appShowId) {
   if (isBlank(appShowId)) return null;
-  return `https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
 function extractScheduleDefaultInfo(payload) {
