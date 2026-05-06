@@ -1227,6 +1227,11 @@ export default function EquestrianCaptionPrototypeApp() {
   function goBack() {
     if (screen !== "create") return;
 
+    if (createStep === "captions") {
+      setCreateStep("image");
+      return;
+    }
+
     if (createStepIndex <= 0) {
       setScreen("start");
       return;
@@ -1253,6 +1258,8 @@ export default function EquestrianCaptionPrototypeApp() {
       return;
     }
 
+    if (createStep === "captions") return;
+
     setGenerationRound(0);
     generateCaptions(0);
   }
@@ -1261,12 +1268,14 @@ export default function EquestrianCaptionPrototypeApp() {
     screen === "start"
       ? "Start"
       : screen === "create"
-        ? `Create ${createStepIndex + 1}/3`
+        ? createStep === "captions"
+          ? "Caption Options"
+          : `Create ${createStepIndex + 1}/3`
         : screen === "logs"
           ? "Logs"
           : "Dashboard";
   const headerActionLabel = screen === "start" ? "Start" : screen === "create" && createStep === "image" ? "Gen" : "Next";
-  const showHeaderAction = screen === "start" || screen === "create";
+  const showHeaderAction = screen === "start" || (screen === "create" && createStep !== "captions");
   const showHeaderBack = screen === "create";
 
   return (
@@ -1336,7 +1345,7 @@ export default function EquestrianCaptionPrototypeApp() {
 
             {screen === "create" ? (
               <div className="screen-stack">
-                <CreateProgress step={createStep} />
+                {createStep !== "captions" ? <CreateProgress step={createStep} /> : null}
 
                 {createStep === "postType" ? (
                   <Card className="rounded-lg border-stone-200 shadow-sm">
@@ -1424,70 +1433,100 @@ export default function EquestrianCaptionPrototypeApp() {
                         </Button>
                       </CardContent>
                     </Card>
-
-                    {generated.length > 0 ? (
-                      <Card className="rounded-lg border-stone-200 shadow-sm">
-                        <CardHeader className="pb-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <CardTitle className="text-base">caption options</CardTitle>
-                            <Button onClick={refreshCaptions} variant="secondary" className="rounded-md">
-                              <RefreshCcw className="mr-2 h-4 w-4" />
-                              refresh 4 more
-                            </Button>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="caption-card-content">
-                          <div className="caption-scroll snap-x" aria-label="Swipe caption options">
-                            {generated.map((item, index) => {
-                              const isSelected = selectedCaption === item.text;
-
-                              return (
-                                <button
-                                  key={item.id}
-                                  type="button"
-                                  onClick={() => setSelectedCaption(item.text)}
-                                  aria-pressed={isSelected}
-                                  className={`caption-option-card snap-center ${isSelected ? "is-active" : ""}`}
-                                >
-                                  <span className="caption-preview-media">
-                                    {photoUrl ? (
-                                      <img
-                                        src={photoUrl}
-                                        alt={photoName || "caption preview"}
-                                        className="caption-preview-img"
-                                      />
-                                    ) : (
-                                      <span className="caption-preview-empty">
-                                        <ImageIcon className="h-6 w-6" />
-                                        <span>image preview</span>
-                                      </span>
-                                    )}
-                                    <span className="caption-preview-shade" />
-                                    <span className="caption-preview-top">
-                                      <Badge data-active={isSelected}>option {index + 1}</Badge>
-                                      {isSelected ? (
-                                        <span className="caption-selected-mark">
-                                          <Check className="h-4 w-4" />
-                                        </span>
-                                      ) : null}
-                                    </span>
-                                    <span className="caption-preview-copy">{item.text}</span>
-                                  </span>
-                                </button>
-                              );
-                            })}
-                          </div>
-
-                          <div className="caption-save-row">
-                            <Button disabled={!selectedCaption} onClick={savePost}>
-                              <Check className="mr-2 h-4 w-4" />
-                              save selected caption
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ) : null}
                   </>
+                ) : null}
+
+                {createStep === "captions" ? (
+                  <Card className="caption-options-panel rounded-lg border-stone-200 shadow-sm">
+                    <CardHeader className="pb-3">
+                      <div className="caption-options-header">
+                        <CardTitle className="text-base">caption options</CardTitle>
+                        <Button onClick={refreshCaptions} variant="secondary" className="rounded-md">
+                          <RefreshCcw className="mr-2 h-4 w-4" />
+                          refresh 4 more
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="caption-card-content">
+                      <div className="caption-carousel-bar">
+                        <button
+                          type="button"
+                          className="caption-step-button"
+                          onClick={() => showCaptionAt(visibleCaptionIndex - 1)}
+                          disabled={visibleCaptionIndex === 0}
+                        >
+                          <ArrowLeft className="h-4 w-4" />
+                          Prev
+                        </button>
+                        <div className="caption-carousel-count">
+                          {generated.length > 0 ? `${visibleCaptionIndex + 1}/${generated.length}` : "0/0"}
+                        </div>
+                        <button
+                          type="button"
+                          className="caption-step-button"
+                          onClick={() => showCaptionAt(visibleCaptionIndex + 1)}
+                          disabled={visibleCaptionIndex >= generated.length - 1}
+                        >
+                          Next
+                          <ArrowRight className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      <div
+                        ref={captionScrollRef}
+                        className="caption-scroll snap-x"
+                        aria-label="Swipe caption options"
+                        onScroll={handleCaptionScroll}
+                      >
+                        {generated.map((item, index) => {
+                          const isSelected = selectedCaption === item.text;
+
+                          return (
+                            <button
+                              key={item.id}
+                              type="button"
+                              data-caption-index={index}
+                              onClick={() => setSelectedCaption(item.text)}
+                              aria-pressed={isSelected}
+                              className={`caption-option-card snap-center ${isSelected ? "is-active" : ""}`}
+                            >
+                              <span className="caption-preview-media">
+                                {photoUrl ? (
+                                  <img
+                                    src={photoUrl}
+                                    alt={photoName || "caption preview"}
+                                    className="caption-preview-img"
+                                  />
+                                ) : (
+                                  <span className="caption-preview-empty">
+                                    <ImageIcon className="h-6 w-6" />
+                                    <span>image preview</span>
+                                  </span>
+                                )}
+                                <span className="caption-preview-shade" />
+                                <span className="caption-preview-top">
+                                  <Badge data-active={isSelected}>option {index + 1}</Badge>
+                                  {isSelected ? (
+                                    <span className="caption-selected-mark">
+                                      <Check className="h-4 w-4" />
+                                    </span>
+                                  ) : null}
+                                </span>
+                                <span className="caption-preview-copy">{item.text}</span>
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="caption-save-row">
+                        <Button disabled={!selectedCaption} onClick={savePost}>
+                          <Check className="mr-2 h-4 w-4" />
+                          save selected caption
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ) : null}
               </div>
             ) : null}
