@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "install": "cd webflow-cloud-test && npm install",
-    "build": "cd webflow-cloud-test && npm run build"
+    "build": "cd webflow-cloud-test && npm install && npm run build && cd .. && if (Test-Path dist) { Remove-Item dist -Recurse -Force } && Copy-Item webflow-cloud-test\\dist dist -Recurse"
   },
-  "dependencies": {}
+  "dependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {}
 }
