@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Fuse from "fuse.js";
 import {
   ArrowLeft,
   ArrowRight,
@@ -1157,6 +1158,7 @@ const sessionTimeLabel = new Intl.DateTimeFormat("en-US", {
 const EMPTY_TAG_IDS: string[] = [];
 const SESSION_STORAGE_KEY = "lainey-caption-builder-session-v1";
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+let ritaLoader: Promise<typeof import("rita")["RiTa"]> | null = null;
 const TAG_HINT_STOP_WORDS = new Set([
   "and",
   "for",
@@ -1171,6 +1173,11 @@ const TAG_HINT_STOP_WORDS = new Set([
   "was",
   "were",
 ]);
+
+function loadRiTa() {
+  ritaLoader ??= import("rita").then((module) => module.RiTa);
+  return ritaLoader;
+}
 
 type PersistedSessionState = {
   postType: PostType;
@@ -1330,6 +1337,14 @@ function getTagHintTerms(selectedTags: CaptionTag[]): string[] {
   return Array.from(new Set(terms));
 }
 
+async function getDescriptionHintTerms(description: string): Promise<string[]> {
+  const RiTa = await loadRiTa();
+
+  return RiTa.tokenize(normalizeCaptionLine(description))
+    .map((token) => normalizeTagLabel(token))
+    .filter((term) => term.length > 2 && !TAG_HINT_STOP_WORDS.has(term));
+}
+
 function scoreStarterLineWithHints(base: string, hintTerms: string[]): number {
   const normalizedBase = normalizeTagLabel(base);
 
@@ -1338,8 +1353,12 @@ function scoreStarterLineWithHints(base: string, hintTerms: string[]): number {
   }, 0);
 }
 
-function prioritizeStarterPoolByHints(pool: string[], selectedTags: CaptionTag[]): string[] {
-  const hintTerms = getTagHintTerms(selectedTags);
+async function prioritizeStarterPoolByHints(
+  pool: string[],
+  selectedTags: CaptionTag[],
+  description: string,
+): Promise<string[]> {
+  const hintTerms = Array.from(new Set([...getTagHintTerms(selectedTags), ...(await getDescriptionHintTerms(description))]));
   if (hintTerms.length === 0) return pool;
 
   return pool
@@ -1350,6 +1369,70 @@ function prioritizeStarterPoolByHints(pool: string[], selectedTags: CaptionTag[]
     }))
     .sort((a, b) => b.score - a.score || a.index - b.index)
     .map((item) => item.line);
+}
+
+function getSelectedToneProfile(selectedTags: CaptionTag[]): "dry" | "soft" | "strong" | "plain" {
+  const toneText = selectedTags
+    .filter((tag) => tag.purpose === "tone")
+    .flatMap((tag) => [tag.label, ...tag.aliases, ...tag.attributes])
+    .map((value) => normalizeTagLabel(value))
+    .join(" ");
+
+  if (/\b(dry|funny|no fluff|low drama|casual)\b/.test(toneText)) return "dry";
+  if (/\b(soft|horse first|team first|dependable)\b/.test(toneText)) return "soft";
+  if (/\b(confident|credible|focused|quiet leadership|calm under pressure)\b/.test(toneText)) return "strong";
+
+  return "plain";
+}
+
+async function buildRitaGrammarStarter(type: PostType, selectedTags: CaptionTag[], round: number): Promise<string> {
+  const RiTa = await loadRiTa();
+  const toneProfile = getSelectedToneProfile(selectedTags);
+  const closersByTone = {
+    dry: "finally. | apparently that was the plan. | normal behavior, sadly. | no big speech.",
+    soft: "good little step. | i'll take it. | that felt fair. | quietly better.",
+    strong: "useful. | earned. | enough said. | better is enough.",
+    plain: "useful. | better by the end. | that was the point. | i'll take it.",
+  };
+  const close = closersByTone[toneProfile];
+  const rulesByType: Record<PostType, Record<string, string>> = {
+    "what i see": {
+      start: "$observe $close",
+      observe: "small detail, better ride. | the canter stayed normal. | he waited without making it dramatic. | she got quieter where it counted.",
+      close,
+    },
+    "what the horse sees": {
+      start: "$horse",
+      horse: "i had notes. | she kept riding anyway. | apparently that was still my job. | i considered cooperating.",
+    },
+    "what we did": {
+      start: "$work $close",
+      work: "kept it simple. | made it less complicated. | put the boring part first. | got a better answer by the end.",
+      close,
+    },
+    "what we almost did": {
+      start: "$miss $close",
+      miss: "not the round on paper. | close enough to be annoying. | missed the result. | not perfect, still useful.",
+      close,
+    },
+    reality: {
+      start: "$barn",
+      barn: "long day, still rode. | barn dust and one decent answer. | tired legs, normal day. | not glamorous. still useful.",
+    },
+    confidence: {
+      start: "$strong",
+      strong: "better. | rideable. | earned. | not fancy. effective. | quiet and useful.",
+    },
+  };
+
+  const grammar = RiTa.grammar(rulesByType[type]);
+  let line = "";
+
+  for (let i = 0; i <= round; i += 1) {
+    line = grammar.expand();
+  }
+
+  return normalizeCaptionLine(line);
 }
 
 function buildCaption(base: string, description: string, type: PostType): string {
@@ -1363,6 +1446,77 @@ function buildCaption(base: string, description: string, type: PostType): string
   const supportingLine = shortenLine(desc, maxSupportingLength);
 
   return limitCaptionLines(dedupeCaptionLines([baseLine, supportingLine]), rule.maxLines);
+}
+
+function isTagDefaultVisible(tag: CaptionTag, postType: PostType): boolean {
+  return tag.source === "post-type" || tag.appliesTo.includes(postType);
+}
+
+function sortDefaultTags(tags: CaptionTag[], selectedIds: Set<string>, postType: PostType): CaptionTag[] {
+  return [...tags].sort((a, b) => {
+    const aSelected = selectedIds.has(a.id);
+    const bSelected = selectedIds.has(b.id);
+    if (aSelected !== bSelected) return aSelected ? -1 : 1;
+
+    const aRelevant = isTagDefaultVisible(a, postType);
+    const bRelevant = isTagDefaultVisible(b, postType);
+    if (aRelevant !== bRelevant) return aRelevant ? -1 : 1;
+
+    if (a.priority !== b.priority) return b.priority - a.priority;
+    return a.label.localeCompare(b.label);
+  });
+}
+
+function uniqueTags(tags: CaptionTag[]): CaptionTag[] {
+  const seen = new Set<string>();
+  const unique: CaptionTag[] = [];
+
+  tags.forEach((tag) => {
+    if (seen.has(tag.id)) return;
+    seen.add(tag.id);
+    unique.push(tag);
+  });
+
+  return unique;
+}
+
+function searchTagsWithFuse(tags: CaptionTag[], query: string): CaptionTag[] {
+  const cleanedQuery = query.trim();
+  if (!cleanedQuery) return tags;
+
+  const fuse = new Fuse(tags, {
+    threshold: 0.36,
+    ignoreLocation: true,
+    minMatchCharLength: 1,
+    keys: [
+      { name: "label", weight: 0.42 },
+      { name: "aliases", weight: 0.28 },
+      { name: "attributes", weight: 0.18 },
+      { name: "line", weight: 0.08 },
+      { name: "selectedBehavior", weight: 0.04 },
+    ],
+  });
+
+  return fuse.search(cleanedQuery).map((result) => result.item);
+}
+
+function getVisibleTagsForLane(
+  tags: CaptionTag[],
+  postType: PostType,
+  selectedTagIds: string[],
+  query: string,
+): CaptionTag[] {
+  const selectedIds = new Set(selectedTagIds);
+  const selectedTags = tags.filter((tag) => selectedIds.has(tag.id));
+  const searchedOrDefault = query.trim()
+    ? searchTagsWithFuse(tags, query)
+    : sortDefaultTags(
+        tags.filter((tag) => isTagDefaultVisible(tag, postType)),
+        selectedIds,
+        postType,
+      );
+
+  return uniqueTags([...selectedTags, ...searchedOrDefault]);
 }
 
 function pickHighlightedLine(type: PostType, round: number): string {
@@ -1407,6 +1561,39 @@ function TagsCard({
   onToggleTag: (tagId: string) => void;
 }) {
   const tagGroups = tagOptionsByPostType[postType];
+  const [tagFilters, setTagFilters] = useState<Record<CaptionTagPurpose, string>>({
+    detail: "",
+    tone: "",
+  });
+  const visibleTagGroups = useMemo<CaptionTagGroups>(() => {
+    return {
+      detail: getVisibleTagsForLane(tagGroups.detail, postType, selectedTagIds, tagFilters.detail),
+      tone: getVisibleTagsForLane(tagGroups.tone, postType, selectedTagIds, tagFilters.tone),
+    };
+  }, [postType, selectedTagIds, tagFilters.detail, tagFilters.tone, tagGroups.detail, tagGroups.tone]);
+
+  function updateTagFilter(purpose: CaptionTagPurpose, value: string) {
+    setTagFilters((prev) => ({
+      ...prev,
+      [purpose]: value,
+    }));
+  }
+
+  function handleTagFilterKeyDown(purpose: CaptionTagPurpose, event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      updateTagFilter(purpose, "");
+      return;
+    }
+
+    if (event.key !== "Enter") return;
+
+    const firstUnselectedTag = visibleTagGroups[purpose].find((tag) => !selectedTagIds.includes(tag.id));
+    if (!firstUnselectedTag) return;
+
+    event.preventDefault();
+    onToggleTag(firstUnselectedTag.id);
+  }
 
   return (
     <Card className="rounded-lg border-stone-200 shadow-sm">
@@ -1417,8 +1604,18 @@ function TagsCard({
         {(["detail", "tone"] as const).map((purpose) => (
           <div key={purpose} className="tag-purpose-group">
             <div className="tag-purpose-label">{purpose}</div>
+            <input
+              type="search"
+              value={tagFilters[purpose]}
+              onChange={(event) => updateTagFilter(purpose, event.target.value)}
+              onKeyDown={(event) => handleTagFilterKeyDown(purpose, event)}
+              placeholder={`filter ${purpose}`}
+              aria-label={`Filter ${purpose} pills`}
+              autoComplete="off"
+              className="tag-filter-input"
+            />
             <div className="tag-pill-wrap" aria-label={`${purpose} tags`}>
-              {tagGroups[purpose].map((tag) => {
+              {visibleTagGroups[purpose].map((tag) => {
                 const isActive = selectedTagIds.includes(tag.id);
 
                 return (
@@ -1487,6 +1684,7 @@ export default function EquestrianCaptionPrototypeApp() {
     initialSession?.state.selectedTagIdsByType ?? {},
   );
   const [visibleCaptionIndex, setVisibleCaptionIndex] = useState(0);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState(initialSession?.savedAt ?? "");
   const [expiresAt, setExpiresAt] = useState(initialSession?.expiresAt ?? "");
   const captionScrollRef = useRef<HTMLDivElement>(null);
@@ -1600,35 +1798,40 @@ export default function EquestrianCaptionPrototypeApp() {
     }
   }
 
-  function generateCaptions(nextRound = generationRound) {
-    const highlightedLine = pickHighlightedLine(postType, nextRound);
-    const pool = prioritizeStarterPoolByHints(
-      shiftPool(
-        starterPools[postType].filter((line) => line !== highlightedLine),
-        nextRound * 3,
-      ),
-      selectedTags,
-    );
-    const regularCaptions = pool.slice(0, 3).map((base, index) => ({
-      id: `${postType}-${nextRound}-${index}`,
-      text: buildCaption(base, description, postType),
-    }));
-    const highlightedCaption = {
-      id: `${postType}-${nextRound}-highlight`,
-      text: buildCaption(highlightedLine, "", postType),
-    };
+  async function generateCaptions(nextRound = generationRound) {
+    setIsGenerating(true);
 
-    setGenerated([...regularCaptions, highlightedCaption]);
-    setSelectedCaption("");
-    setVisibleCaptionIndex(0);
-    setCreateStep("captions");
-    scrollCaptionTo(0);
+    try {
+      const highlightedLine = pickHighlightedLine(postType, nextRound);
+      const pool = await prioritizeStarterPoolByHints(
+        shiftPool(
+          starterPools[postType].filter((line) => line !== highlightedLine),
+          nextRound * 3,
+        ),
+        selectedTags,
+        description,
+      );
+      const grammarLine = await buildRitaGrammarStarter(postType, selectedTags, nextRound);
+      const captionBases = dedupeCaptionLines([pool[0], pool[1], grammarLine, highlightedLine, ...pool.slice(2)]).slice(0, 4);
+      const regularCaptions = captionBases.map((base, index) => ({
+        id: `${postType}-${nextRound}-${index}`,
+        text: buildCaption(base, description, postType),
+      }));
+
+      setGenerated(regularCaptions);
+      setSelectedCaption("");
+      setVisibleCaptionIndex(0);
+      setCreateStep("captions");
+      scrollCaptionTo(0);
+    } finally {
+      setIsGenerating(false);
+    }
   }
 
   function refreshCaptions() {
     const nextRound = generationRound + 1;
     setGenerationRound(nextRound);
-    generateCaptions(nextRound);
+    void generateCaptions(nextRound);
   }
 
   function selectPostType(nextPostType: PostType) {
@@ -1747,7 +1950,7 @@ export default function EquestrianCaptionPrototypeApp() {
     if (createStep === "captions") return;
 
     setGenerationRound(0);
-    generateCaptions(0);
+    void generateCaptions(0);
   }
 
   const createStepTitle =
@@ -1800,6 +2003,7 @@ export default function EquestrianCaptionPrototypeApp() {
             onClick={goNext}
             aria-hidden={!showHeaderAction}
             tabIndex={showHeaderAction ? 0 : -1}
+            disabled={isGenerating}
           >
             {showHeaderAction ? (
               <>
@@ -1948,12 +2152,13 @@ export default function EquestrianCaptionPrototypeApp() {
                         <Button
                           onClick={() => {
                             setGenerationRound(0);
-                            generateCaptions(0);
+                            void generateCaptions(0);
                           }}
+                          disabled={isGenerating}
                           className="w-full"
                         >
                           <Sparkles className="mr-2 h-4 w-4" />
-                          generate 4 captions
+                          {isGenerating ? "generating..." : "generate 4 captions"}
                         </Button>
                       </CardContent>
                     </Card>
@@ -1965,9 +2170,9 @@ export default function EquestrianCaptionPrototypeApp() {
                     <CardHeader className="pb-3">
                       <div className="caption-options-header">
                         <CardTitle className="text-base">caption options</CardTitle>
-                        <Button onClick={refreshCaptions} variant="secondary" className="rounded-md">
+                        <Button onClick={refreshCaptions} disabled={isGenerating} variant="secondary" className="rounded-md">
                           <RefreshCcw className="mr-2 h-4 w-4" />
-                          refresh 4 more
+                          {isGenerating ? "generating..." : "refresh 4 more"}
                         </Button>
                       </div>
                     </CardHeader>

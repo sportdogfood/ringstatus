@@ -638,6 +638,30 @@ button {
   text-transform: uppercase;
 }
 
+.tag-filter-input {
+  width: 100%;
+  min-height: 38px;
+  border-radius: var(--pill-radius);
+  border: 1px solid var(--border-soft);
+  background: rgba(2, 6, 23, 0.62);
+  color: var(--fg);
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.tag-filter-input::placeholder {
+  color: rgba(209, 213, 219, 0.62);
+}
+
+.tag-filter-input:focus {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
 .tag-pill-wrap {
   display: grid;
   grid-auto-flow: column;
