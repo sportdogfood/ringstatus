@@ -96,15 +96,26 @@ type PostTypeRule = {
 };
 
 type CaptionTagPurpose = "detail" | "tone";
+type CaptionTagSource = "global" | "post-type";
+type CaptionTagSelectedBehavior = "caption-angle" | "caption-tone" | "filter-only";
 
 type CaptionTag = {
   id: string;
   label: string;
   line: string;
   purpose: CaptionTagPurpose;
+  source: CaptionTagSource;
+  aliases: string[];
+  attributes: string[];
+  appliesTo: PostType[];
+  selectedBehavior: CaptionTagSelectedBehavior;
+  priority: number;
 };
 
 type CaptionTagGroups = Record<CaptionTagPurpose, CaptionTag[]>;
+type CaptionTagMeta = Partial<
+  Pick<CaptionTag, "source" | "aliases" | "attributes" | "appliesTo" | "selectedBehavior" | "priority">
+>;
 
 const voiceProfile: VoiceProfile = {
   identity: [
@@ -657,12 +668,50 @@ const highlightedLinesByPostType: Record<PostType, string[]> = {
   ],
 };
 
-function detailTag(id: string, label: string, line: string): CaptionTag {
-  return { id, label, line, purpose: "detail" };
+function buildTagAliases(label: string, line: string, aliases: string[] = []): string[] {
+  const normalizedLine = normalizeTagLabel(line.replace(/\.$/, ""));
+  const values = [
+    label,
+    label.replaceAll("-", " "),
+    normalizedLine,
+    ...aliases,
+  ].filter(Boolean);
+
+  return Array.from(new Set(values.map((value) => normalizeTagLabel(value))));
 }
 
-function toneTag(id: string, label: string, line: string): CaptionTag {
-  return { id, label, line, purpose: "tone" };
+function buildTagAttributes(label: string, attributes: string[] = []): string[] {
+  const labelParts = normalizeTagLabel(label).split(" ").filter(Boolean);
+  return Array.from(new Set([...labelParts, ...attributes.map((value) => normalizeTagLabel(value))]));
+}
+
+function makeCaptionTag(
+  id: string,
+  label: string,
+  line: string,
+  purpose: CaptionTagPurpose,
+  meta: CaptionTagMeta = {},
+): CaptionTag {
+  return {
+    id,
+    label,
+    line,
+    purpose,
+    source: meta.source ?? "post-type",
+    aliases: buildTagAliases(label, line, meta.aliases),
+    attributes: buildTagAttributes(label, meta.attributes),
+    appliesTo: meta.appliesTo ?? [],
+    selectedBehavior: meta.selectedBehavior ?? (purpose === "detail" ? "caption-angle" : "caption-tone"),
+    priority: meta.priority ?? (meta.source === "global" ? 10 : 30),
+  };
+}
+
+function detailTag(id: string, label: string, line: string, meta?: CaptionTagMeta): CaptionTag {
+  return makeCaptionTag(id, label, line, "detail", meta);
+}
+
+function toneTag(id: string, label: string, line: string, meta?: CaptionTagMeta): CaptionTag {
+  return makeCaptionTag(id, label, line, "tone", meta);
 }
 
 const globalDetailPillLabels = [
@@ -821,18 +870,94 @@ const globalTonePillLabels = [
   "team-first",
 ];
 
+const defaultDetailLabelsByPostType: Record<PostType, string[]> = {
+  "what i see": ["base", "canter", "change", "line", "rhythm", "softness", "rideability", "feel", "balance"],
+  "what the horse sees": [
+    "what-the-horse-dealt-with",
+    "what-you-asked",
+    "how-it-answered",
+    "one-thing",
+    "timing",
+  ],
+  "what we did": [
+    "what-you-asked",
+    "how-it-answered",
+    "answer",
+    "quiet-ride",
+    "better-finish",
+    "improvement",
+    "progress",
+    "horse-development",
+  ],
+  "what we almost did": [
+    "one-result",
+    "ribbon",
+    "clean-round",
+    "perfect-trip",
+    "big-result",
+    "improvement",
+    "better-finish",
+    "answer",
+  ],
+  reality: [
+    "boots",
+    "dust",
+    "tired-legs",
+    "multiple-rides",
+    "late-day",
+    "cold-hands",
+    "working-student",
+    "early-mornings",
+    "long-days",
+    "show-week",
+  ],
+  confidence: [
+    "one-thing",
+    "one-result",
+    "feel",
+    "trust",
+    "rideability",
+    "confidence-builder",
+    "execution",
+    "readiness",
+    "balance",
+  ],
+};
+
 function normalizeTagLabel(label: string): string {
   return label.toLowerCase().replace(/[-\s]+/g, " ").trim();
 }
 
+function getDefaultDetailPostTypes(label: string): PostType[] {
+  const normalizedLabel = normalizeTagLabel(label);
+
+  return postTypes
+    .filter((postTypeItem) => {
+      return defaultDetailLabelsByPostType[postTypeItem.value].some((defaultLabel) => {
+        return normalizeTagLabel(defaultLabel) === normalizedLabel;
+      });
+    })
+    .map((postTypeItem) => postTypeItem.value);
+}
+
 function detailTagFromLabel(prefix: string, label: string): CaptionTag {
   const id = label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-  return detailTag(`${prefix}-global-detail-${id}`, label, `${label.replaceAll("-", " ")}.`);
+  return detailTag(`${prefix}-global-detail-${id}`, label, `${label.replaceAll("-", " ")}.`, {
+    source: "global",
+    appliesTo: getDefaultDetailPostTypes(label),
+    attributes: ["global-detail"],
+    selectedBehavior: "caption-angle",
+  });
 }
 
 function toneTagFromLabel(prefix: string, label: string): CaptionTag {
   const id = label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-  return toneTag(`${prefix}-global-tone-${id}`, label, `${label.replaceAll("-", " ")}.`);
+  return toneTag(`${prefix}-global-tone-${id}`, label, `${label.replaceAll("-", " ")}.`, {
+    source: "global",
+    appliesTo: postTypes.map((postTypeItem) => postTypeItem.value),
+    attributes: ["global-tone"],
+    selectedBehavior: "caption-tone",
+  });
 }
 
 function mergeDetailTags(prefix: string, localTags: CaptionTag[]): CaptionTag[] {
@@ -1032,6 +1157,20 @@ const sessionTimeLabel = new Intl.DateTimeFormat("en-US", {
 const EMPTY_TAG_IDS: string[] = [];
 const SESSION_STORAGE_KEY = "lainey-caption-builder-session-v1";
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const TAG_HINT_STOP_WORDS = new Set([
+  "and",
+  "for",
+  "the",
+  "with",
+  "that",
+  "this",
+  "you",
+  "what",
+  "how",
+  "one",
+  "was",
+  "were",
+]);
 
 type PersistedSessionState = {
   postType: PostType;
@@ -1176,31 +1315,52 @@ function getSelectedTagsForPostType(type: PostType, selectedTagIds: string[]): C
   return getTagsForPostType(type).filter((tag) => selectedIds.has(tag.id));
 }
 
-function buildTagSteeringLine(selectedTags: CaptionTag[]): string {
-  const detailLines = selectedTags
-    .filter((tag) => tag.purpose === "detail")
-    .slice(0, 2)
-    .map((tag) => tag.line);
-  const toneLines = selectedTags
-    .filter((tag) => tag.purpose === "tone")
-    .slice(0, 1)
-    .map((tag) => tag.line);
+function getTagHintTerms(selectedTags: CaptionTag[]): string[] {
+  const terms = selectedTags
+    .filter((tag) => tag.selectedBehavior !== "filter-only")
+    .sort((a, b) => b.priority - a.priority)
+    .flatMap((tag) => {
+      return [tag.label, tag.line, ...tag.aliases, ...tag.attributes].flatMap((value) => {
+      return normalizeTagLabel(value)
+        .split(" ")
+        .filter((term) => term.length > 2 && !TAG_HINT_STOP_WORDS.has(term));
+    });
+    });
 
-  return normalizeCaptionLine([...detailLines, ...toneLines].join(" "));
+  return Array.from(new Set(terms));
 }
 
-function buildCaption(base: string, description: string, type: PostType, selectedTags: CaptionTag[] = []): string {
+function scoreStarterLineWithHints(base: string, hintTerms: string[]): number {
+  const normalizedBase = normalizeTagLabel(base);
+
+  return hintTerms.reduce((score, term) => {
+    return normalizedBase.includes(term) ? score + 1 : score;
+  }, 0);
+}
+
+function prioritizeStarterPoolByHints(pool: string[], selectedTags: CaptionTag[]): string[] {
+  const hintTerms = getTagHintTerms(selectedTags);
+  if (hintTerms.length === 0) return pool;
+
+  return pool
+    .map((line, index) => ({
+      index,
+      line,
+      score: scoreStarterLineWithHints(line, hintTerms),
+    }))
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .map((item) => item.line);
+}
+
+function buildCaption(base: string, description: string, type: PostType): string {
   const rule = postTypeRules[type];
   const baseLine = normalizeCaptionLine(base);
   const desc = normalizeCaptionLine(description);
-  const tagLine = buildTagSteeringLine(selectedTags);
 
-  if (!desc && !tagLine) return baseLine;
+  if (!desc) return baseLine;
 
   const maxSupportingLength = type === "confidence" ? 82 : 138;
-  const descLength = tagLine ? (type === "confidence" ? 42 : 82) : maxSupportingLength;
-  const descLine = desc ? shortenLine(desc, descLength) : "";
-  const supportingLine = shortenLine([descLine, tagLine].filter(Boolean).join(" "), maxSupportingLength);
+  const supportingLine = shortenLine(desc, maxSupportingLength);
 
   return limitCaptionLines(dedupeCaptionLines([baseLine, supportingLine]), rule.maxLines);
 }
@@ -1438,17 +1598,20 @@ export default function EquestrianCaptionPrototypeApp() {
 
   function generateCaptions(nextRound = generationRound) {
     const highlightedLine = pickHighlightedLine(postType, nextRound);
-    const pool = shiftPool(
-      starterPools[postType].filter((line) => line !== highlightedLine),
-      nextRound * 3,
+    const pool = prioritizeStarterPoolByHints(
+      shiftPool(
+        starterPools[postType].filter((line) => line !== highlightedLine),
+        nextRound * 3,
+      ),
+      selectedTags,
     );
     const regularCaptions = pool.slice(0, 3).map((base, index) => ({
       id: `${postType}-${nextRound}-${index}`,
-      text: buildCaption(base, description, postType, selectedTags),
+      text: buildCaption(base, description, postType),
     }));
     const highlightedCaption = {
       id: `${postType}-${nextRound}-highlight`,
-      text: buildCaption(highlightedLine, "", postType, selectedTags),
+      text: buildCaption(highlightedLine, "", postType),
     };
 
     setGenerated([...regularCaptions, highlightedCaption]);
