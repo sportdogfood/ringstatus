@@ -631,21 +631,22 @@ function VoiceProfileCard({ postType, activeRule }: { postType: PostType; active
           ))}
         </div>
 
-        <div className="grid gap-3">
-          <div className="rounded-md border border-stone-200 bg-white p-3">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">{postType}</div>
-            <div className="flex flex-col gap-1 text-sm text-stone-700">
+        <div className="flex flex-col gap-3">
+          <div className="row">
+            <div className="row-title">
+              <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">{postType}</div>
               {activeRule.leadWith.map((item) => (
                 <div key={item}>lead: {item}</div>
               ))}
             </div>
+            <span className="row-tag">{activeRule.maxLines}L</span>
           </div>
 
-          <div className="rounded-md border border-stone-200 bg-white p-3">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">keep out</div>
+          <div className="tap-panel-content rounded-md border border-[var(--border-soft)]">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">keep out</div>
             <div className="flex flex-wrap gap-2">
               {[...activeRule.avoid.slice(0, 4), ...voiceProfile.avoid.slice(0, 3)].map((item) => (
-                <Badge key={item} variant="outline" className="rounded-full border-stone-300 text-stone-600">
+                <Badge key={item} variant="outline">
                   {item}
                 </Badge>
               ))}
@@ -653,16 +654,16 @@ function VoiceProfileCard({ postType, activeRule }: { postType: PostType; active
           </div>
         </div>
 
-        <div className="rounded-md bg-stone-100 p-3">
-          <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">settings</div>
+        <div className="tap-panel-content rounded-md border border-[var(--border-soft)]">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">settings</div>
           <div className="flex flex-wrap gap-2">
             {knobEntries.map(([key, value]) => (
-              <Badge key={key} className="rounded-full bg-stone-900 text-white">
+              <Badge key={key}>
                 {key}: {value}
               </Badge>
             ))}
           </div>
-          <div className="mt-3 text-xs leading-5 text-stone-600">
+          <div className="muted-note mt-3">
             {voiceProfile.generationChecklist.should.slice(0, 3).join(" / ")}
           </div>
         </div>
@@ -838,18 +839,15 @@ export default function EquestrianCaptionPrototypeApp() {
                         type="button"
                         onClick={() => resetCaptionsForType(type.value)}
                         aria-pressed={isActive}
-                        className={`h-auto rounded-md border px-3 py-3 text-left ${
-                          isActive
-                            ? "border-stone-900 bg-stone-900 text-white"
-                            : "border-stone-200 bg-white text-stone-900"
-                        }`}
+                        className={`row row--tap ${isActive ? "row--active" : ""}`}
                       >
-                        <span className="block w-full">
-                          <span className="block text-sm font-medium leading-5">{type.value}</span>
+                        <span className="row-title">
+                          <span>{type.value}</span>
                           <span className="mt-1 block text-[11px] leading-4 opacity-75">
                             {done}/{type.expected} this month
                           </span>
                         </span>
+                        <span className="row-tag">{done}</span>
                       </button>
                     );
                   })}
@@ -866,7 +864,7 @@ export default function EquestrianCaptionPrototypeApp() {
               <CardContent className="flex flex-col gap-4">
                 <label
                   htmlFor="horse-photo"
-                  className="flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-stone-300 bg-stone-50 px-4 py-5 text-center"
+                  className="photo-drop flex cursor-pointer flex-col items-center justify-center px-4 py-5 text-center"
                 >
                   {photoUrl ? (
                     <img
@@ -875,8 +873,8 @@ export default function EquestrianCaptionPrototypeApp() {
                       className="mb-3 aspect-[4/5] w-full rounded-md object-cover"
                     />
                   ) : (
-                    <span className="mb-3 rounded-full bg-white p-4 shadow-sm">
-                      <Camera className="h-6 w-6 text-stone-600" />
+                    <span className="photo-icon mb-3">
+                      <Camera className="h-6 w-6" />
                     </span>
                   )}
                   <span className="text-sm font-medium">{photoName || "upload image"}</span>
@@ -894,8 +892,18 @@ export default function EquestrianCaptionPrototypeApp() {
                   />
                 </div>
 
-                <div className="rounded-md bg-stone-100 p-3 text-sm text-stone-700">
-                  <div className="font-medium">expected this month</div>
+                <div className="row">
+                  <div className="row-title">
+                    <div className="font-medium">expected this month</div>
+                    <div className="mt-1 text-[11px] opacity-75">{postType}</div>
+                  </div>
+                  <div className="row-tag">
+                    {currentMonthCounts[postType]}/{currentTypeMeta.expected}
+                  </div>
+                </div>
+
+                <div className="muted-note">
+                  <div className="font-medium">current target</div>
                   <div className="mt-1">
                     {currentTypeMeta.expected} total for {postType}
                   </div>
@@ -907,7 +915,7 @@ export default function EquestrianCaptionPrototypeApp() {
                     setGenerationRound(0);
                     generateCaptions(0);
                   }}
-                  className="w-full rounded-md bg-stone-900 text-white hover:bg-stone-800"
+                  className="w-full"
                 >
                   <Sparkles className="mr-2 h-4 w-4" />
                   generate 4 captions
@@ -927,7 +935,7 @@ export default function EquestrianCaptionPrototypeApp() {
                   </div>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-3">
-                  <div className="flex snap-x gap-3 overflow-x-auto pb-1">
+                  <div className="caption-scroll snap-x">
                     {generated.map((item) => {
                       const isSelected = selectedCaption === item.text;
 
@@ -937,17 +945,11 @@ export default function EquestrianCaptionPrototypeApp() {
                           type="button"
                           onClick={() => setSelectedCaption(item.text)}
                           aria-pressed={isSelected}
-                          className={`min-w-[86%] snap-center rounded-lg border p-4 text-left ${
-                            isSelected
-                              ? "border-stone-900 bg-stone-900 text-white"
-                              : "border-stone-200 bg-white text-stone-900"
-                          }`}
+                          className={`row row--tap caption-option snap-center text-left ${isSelected ? "row--active" : ""}`}
                         >
                           <span className="mb-3 flex items-center justify-between">
                             <Badge
-                              className={`rounded-full ${
-                                isSelected ? "bg-white text-stone-900" : "bg-stone-100 text-stone-700"
-                              }`}
+                              data-active={isSelected}
                             >
                               option
                             </Badge>
@@ -959,14 +961,12 @@ export default function EquestrianCaptionPrototypeApp() {
                     })}
                   </div>
 
-                  <Button
-                    disabled={!selectedCaption}
-                    onClick={savePost}
-                    className="w-full rounded-md bg-stone-900 text-white hover:bg-stone-800 disabled:opacity-50"
-                  >
-                    <Check className="mr-2 h-4 w-4" />
-                    save selected caption
-                  </Button>
+                  <div className="action-row">
+                    <Button disabled={!selectedCaption} onClick={savePost}>
+                      <Check className="mr-2 h-4 w-4" />
+                      save selected caption
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ) : null}
@@ -974,10 +974,10 @@ export default function EquestrianCaptionPrototypeApp() {
         ) : null}
 
         {screen === "log" ? (
-          <div className="grid gap-4">
+          <div className="screen-stack">
             {savedPosts.length === 0 ? (
               <Card className="rounded-lg border-stone-200 shadow-sm">
-                <CardContent className="py-10 text-center text-sm text-stone-600">No saved posts yet.</CardContent>
+                <CardContent className="py-10 text-center text-sm">No saved posts yet.</CardContent>
               </Card>
             ) : (
               savedPosts.map((post) => (
@@ -996,13 +996,13 @@ export default function EquestrianCaptionPrototypeApp() {
                             className="h-24 w-full object-cover"
                           />
                         ) : (
-                          <div className="flex h-24 items-center justify-center text-stone-400">
+                          <div className="photo-drop flex h-24 items-center justify-center">
                             <ImageIcon className="h-5 w-5" />
                           </div>
                         )}
                       </div>
                       <div>
-                        <p className="mb-2 whitespace-pre-wrap text-sm leading-6 text-stone-800">{post.caption}</p>
+                        <p className="mb-2 whitespace-pre-wrap text-sm leading-6">{post.caption}</p>
                         <Button onClick={() => copyCaption(post.caption, post.id)} variant="secondary" className="rounded-md">
                           <Copy className="mr-2 h-4 w-4" />
                           {copiedId === post.id ? "copied" : "copy caption"}
@@ -1017,17 +1017,17 @@ export default function EquestrianCaptionPrototypeApp() {
         ) : null}
 
         {screen === "dashboard" ? (
-          <div className="grid gap-4">
+          <div className="screen-stack">
             <Card className="rounded-lg border-stone-200 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">month totals vs expected</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
                 {dashboardRows.map((row) => (
-                  <div key={row.monthKey} className="rounded-md border border-stone-200 p-4">
+                  <div key={row.monthKey} className="tap-panel-content rounded-md border border-[var(--border-soft)]">
                     <div className="mb-3 flex items-center justify-between">
                       <div className="font-medium">{formatMonth(row.monthKey)}</div>
-                      <div className="text-sm text-stone-500">
+                      <div className="row-tag">
                         {row.total}/{row.expected}
                       </div>
                     </div>
@@ -1041,12 +1041,12 @@ export default function EquestrianCaptionPrototypeApp() {
                           <div key={type.value}>
                             <div className="mb-1 flex items-center justify-between text-sm">
                               <span>{type.value}</span>
-                              <span className="text-stone-500">
+                              <span className="row-tag">
                                 {done}/{expected}
                               </span>
                             </div>
-                            <div className="h-2 rounded-full bg-stone-200">
-                              <div className="h-2 rounded-full bg-stone-900" style={{ width: `${pct}%` }} />
+                            <div className="progress-track">
+                              <div className="progress-fill" style={{ width: `${pct}%` }} />
                             </div>
                           </div>
                         );
@@ -1058,6 +1058,40 @@ export default function EquestrianCaptionPrototypeApp() {
             </Card>
           </div>
         ) : null}
+          </motion.div>
+        </main>
+
+        <nav className="app-nav">
+          <div className="nav-strip">
+            <button
+              type="button"
+              onClick={() => setScreen("create")}
+              aria-pressed={screen === "create"}
+              className={`nav-btn ${screen === "create" ? "is-active" : ""}`}
+            >
+              <Sparkles className="h-4 w-4" />
+              create
+            </button>
+            <button
+              type="button"
+              onClick={() => setScreen("log")}
+              aria-pressed={screen === "log"}
+              className={`nav-btn ${screen === "log" ? "is-active" : ""}`}
+            >
+              <List className="h-4 w-4" />
+              log
+            </button>
+            <button
+              type="button"
+              onClick={() => setScreen("dashboard")}
+              aria-pressed={screen === "dashboard"}
+              className={`nav-btn ${screen === "dashboard" ? "is-active" : ""}`}
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              dashboard
+            </button>
+          </div>
+        </nav>
       </div>
     </div>
   );
