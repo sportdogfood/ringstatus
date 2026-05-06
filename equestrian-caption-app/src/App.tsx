@@ -2076,9 +2076,13 @@ export default function EquestrianCaptionPrototypeApp() {
                                 type="button"
                                 onClick={() => selectPostType(type.value)}
                                 aria-pressed={isActive}
-                                className={`post-type-button ${isActive ? "is-active" : ""}`}
+                                className={`row row--tap post-type-button ${isActive ? "row--active" : ""}`}
                               >
-                                <span>{type.value}</span>
+                                <span className="row-title">{type.value}</span>
+                                <span
+                                  className={`row-tag row-tag--boolean ${isActive ? "row-tag--positive" : ""}`}
+                                  aria-hidden="true"
+                                />
                               </button>
                             );
                           })}
