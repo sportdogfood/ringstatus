@@ -1123,8 +1123,9 @@ export default function EquestrianCaptionPrototypeApp() {
     generateCaptions(nextRound);
   }
 
-  function resetCaptionsForType(nextPostType: PostType) {
+  function selectPostType(nextPostType: PostType) {
     setPostType(nextPostType);
+    setCreateStep("tags");
     setGenerationRound(0);
     setGenerated([]);
     setSelectedCaption("");
@@ -1175,7 +1176,55 @@ export default function EquestrianCaptionPrototypeApp() {
     }
   }
 
-  const screenTitle = screen === "create" ? "Create" : screen === "log" ? "Log" : "Dashboard";
+  function startCreateFlow() {
+    setScreen("create");
+    setCreateStep("postType");
+  }
+
+  function goBack() {
+    if (screen !== "create") return;
+
+    if (createStepIndex <= 0) {
+      setScreen("start");
+      return;
+    }
+
+    setCreateStep(createSteps[createStepIndex - 1].value);
+  }
+
+  function goNext() {
+    if (screen === "start") {
+      startCreateFlow();
+      return;
+    }
+
+    if (screen !== "create") return;
+
+    if (createStep === "postType") {
+      setCreateStep("tags");
+      return;
+    }
+
+    if (createStep === "tags") {
+      setCreateStep("image");
+      return;
+    }
+
+    setGenerationRound(0);
+    generateCaptions(0);
+  }
+
+  const screenTitle =
+    screen === "start"
+      ? "Start"
+      : screen === "create"
+        ? `Create ${createStepIndex + 1}/3`
+        : screen === "logs"
+          ? "Logs"
+          : "Dashboard";
+  const headerActionLabel = screen === "start" ? "Start" : screen === "create" && createStep === "image" ? "Gen" : "Next";
+  const showHeaderAction = screen === "start" || screen === "create";
+  const showHeaderBack = screen === "create";
 
   return (
     <div className="page">
