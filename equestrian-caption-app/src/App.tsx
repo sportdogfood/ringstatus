@@ -1163,7 +1163,7 @@ export default function EquestrianCaptionPrototypeApp() {
     };
 
     setSavedPosts((prev) => [entry, ...prev]);
-    setScreen("log");
+    setScreen("logs");
   }
 
   async function copyCaption(text: string, id: string) {
@@ -1230,180 +1230,226 @@ export default function EquestrianCaptionPrototypeApp() {
     <div className="page">
       <div className="app">
         <header className="app-header">
-          <button type="button" className="header-back is-invisible">
+          <button
+            type="button"
+            className={showHeaderBack ? "header-back" : "header-back is-invisible"}
+            onClick={goBack}
+          >
+            <ArrowLeft className="h-4 w-4" />
             Back
           </button>
           <h1 className="header-title">horse post builder / {screenTitle}</h1>
           <button
             type="button"
-            className={screen === "create" ? "header-action" : "header-action is-invisible"}
-            onClick={() => {
-              setGenerationRound(0);
-              generateCaptions(0);
-            }}
+            className={showHeaderAction ? "header-action" : "header-action is-invisible"}
+            onClick={goNext}
           >
-            Gen
+            {headerActionLabel}
+            {headerActionLabel === "Next" ? <ArrowRight className="h-4 w-4" /> : null}
           </button>
         </header>
 
         <main className="app-main">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="list-column">
-            {screen === "create" ? (
-              <div className="start-logo">
-                <div className="start-logo-title">mobile caption generator</div>
-                <div className="start-logo-subtitle">
-                  Pick a type, add the image notes, generate four options, then save one to the log.
+            {screen === "start" ? (
+              <div className="screen-stack">
+                <div className="start-logo">
+                  <div className="start-logo-title">mobile caption generator</div>
+                  <div className="start-logo-subtitle">horse post builder</div>
+                </div>
+
+                <Card className="rounded-lg border-stone-200 shadow-sm">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base">start</CardTitle>
+                  </CardHeader>
+                  <CardContent className="start-screen-content">
+                    <label className="voice-toggle" htmlFor="voice-profile-toggle">
+                      <input
+                        id="voice-profile-toggle"
+                        type="checkbox"
+                        checked={showVoiceProfile}
+                        onChange={(event) => setShowVoiceProfile(event.target.checked)}
+                        aria-controls="voice-profile-panel"
+                        className="voice-toggle-input"
+                      />
+                      <span className="voice-toggle-box" aria-hidden="true">
+                        <Check className="h-3 w-3" />
+                      </span>
+                      <span>Voice Profile</span>
+                    </label>
+
+                    <Button onClick={startCreateFlow} className="w-full">
+                      Start
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <div id="voice-profile-panel" className="voice-profile-panel" data-visible={showVoiceProfile}>
+                  <VoiceProfileCard postType={postType} activeRule={activeRule} />
                 </div>
               </div>
             ) : null}
 
-        {screen === "create" ? (
-          <div className="screen-stack">
-            <Card className="rounded-lg border-stone-200 shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">post type</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="post-type-grid">
-                  {postTypes.map((type) => {
-                    const isActive = postType === type.value;
+            {screen === "create" ? (
+              <div className="screen-stack">
+                <CreateProgress step={createStep} />
 
-                    return (
-                      <button
-                        key={type.value}
-                        type="button"
-                        onClick={() => resetCaptionsForType(type.value)}
-                        aria-pressed={isActive}
-                        className={`post-type-button ${isActive ? "is-active" : ""}`}
-                      >
-                        <span>{type.value}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                {createStep === "postType" ? (
+                  <Card className="rounded-lg border-stone-200 shadow-sm">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base">post type</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="post-type-grid">
+                        {postTypes.map((type) => {
+                          const isActive = postType === type.value;
 
-                <label className="voice-toggle" htmlFor="voice-profile-toggle">
-                  <input
-                    id="voice-profile-toggle"
-                    type="checkbox"
-                    checked={showVoiceProfile}
-                    onChange={(event) => setShowVoiceProfile(event.target.checked)}
-                    aria-controls="voice-profile-panel"
-                    className="voice-toggle-input"
-                  />
-                  <span className="voice-toggle-box" aria-hidden="true">
-                    <Check className="h-3 w-3" />
-                  </span>
-                  <span>Voice Profile</span>
-                </label>
-              </CardContent>
-            </Card>
-
-            <TagsCard postType={postType} selectedTagIds={selectedTagIds} onToggleTag={toggleTag} />
-
-            <div id="voice-profile-panel" className="voice-profile-panel" data-visible={showVoiceProfile}>
-              <VoiceProfileCard postType={postType} activeRule={activeRule} />
-            </div>
-
-            <Card className="rounded-lg border-stone-200 shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">image + description</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4">
-                <label
-                  htmlFor="horse-photo"
-                  className="photo-drop flex cursor-pointer flex-col items-center justify-center px-4 py-5 text-center"
-                >
-                  {photoUrl ? (
-                    <img
-                      src={photoUrl}
-                      alt="Uploaded horse"
-                      className="mb-3 aspect-[4/5] w-full rounded-md object-cover"
-                    />
-                  ) : (
-                    <span className="photo-icon mb-3">
-                      <Camera className="h-6 w-6" />
-                    </span>
-                  )}
-                  <span className="text-sm font-medium">{photoName || "upload image"}</span>
-                  <input id="horse-photo" type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
-                </label>
-
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="image-description">describe the image</Label>
-                  <Textarea
-                    id="image-description"
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                    placeholder="what is happening, what you liked, what made it funny, soft, honest, or worth posting"
-                    className="min-h-[110px] rounded-md"
-                  />
-                </div>
-
-                <Button
-                  onClick={() => {
-                    setGenerationRound(0);
-                    generateCaptions(0);
-                  }}
-                  className="w-full"
-                >
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  generate 4 captions
-                </Button>
-              </CardContent>
-            </Card>
-
-            {generated.length > 0 ? (
-              <Card className="rounded-lg border-stone-200 shadow-sm">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <CardTitle className="text-base">caption options</CardTitle>
-                    <Button onClick={refreshCaptions} variant="secondary" className="rounded-md">
-                      <RefreshCcw className="mr-2 h-4 w-4" />
-                      refresh 4 more
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-3">
-                  <div className="caption-scroll snap-x">
-                    {generated.map((item) => {
-                      const isSelected = selectedCaption === item.text;
-
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => setSelectedCaption(item.text)}
-                          aria-pressed={isSelected}
-                          className={`row row--tap caption-option snap-center text-left ${isSelected ? "row--active" : ""}`}
-                        >
-                          <span className="mb-3 flex items-center justify-between">
-                            <Badge
-                              data-active={isSelected}
+                          return (
+                            <button
+                              key={type.value}
+                              type="button"
+                              onClick={() => selectPostType(type.value)}
+                              aria-pressed={isActive}
+                              className={`post-type-button ${isActive ? "is-active" : ""}`}
                             >
-                              option
-                            </Badge>
-                            {isSelected ? <Check className="h-4 w-4" /> : null}
-                          </span>
-                          <span className="block whitespace-pre-wrap text-sm leading-6">{item.text}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                              <span>{type.value}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : null}
 
-                  <div className="action-row">
-                    <Button disabled={!selectedCaption} onClick={savePost}>
-                      <Check className="mr-2 h-4 w-4" />
-                      save selected caption
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                {createStep === "tags" ? (
+                  <TagsCard postType={postType} selectedTagIds={selectedTagIds} onToggleTag={toggleTag} />
+                ) : null}
+
+                {createStep === "image" ? (
+                  <>
+                    <Card className="rounded-lg border-stone-200 shadow-sm">
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-base">image + description</CardTitle>
+                      </CardHeader>
+                      <CardContent className="flex flex-col gap-4">
+                        <label
+                          htmlFor="horse-photo"
+                          className="photo-drop flex cursor-pointer flex-col items-center justify-center px-4 py-5 text-center"
+                        >
+                          {photoUrl ? (
+                            <img
+                              src={photoUrl}
+                              alt="Uploaded horse"
+                              className="mb-3 aspect-[4/5] w-full rounded-md object-cover"
+                            />
+                          ) : (
+                            <span className="photo-icon mb-3">
+                              <Camera className="h-6 w-6" />
+                            </span>
+                          )}
+                          <span className="text-sm font-medium">{photoName || "upload image"}</span>
+                          <input
+                            id="horse-photo"
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleFileChange}
+                          />
+                        </label>
+
+                        <div className="flex flex-col gap-2">
+                          <Label htmlFor="image-description">describe the image</Label>
+                          <Textarea
+                            id="image-description"
+                            value={description}
+                            onChange={(event) => setDescription(event.target.value)}
+                            placeholder="what is happening, what you liked, what made it funny, soft, honest, or worth posting"
+                            className="min-h-[110px] rounded-md"
+                          />
+                        </div>
+
+                        <Button
+                          onClick={() => {
+                            setGenerationRound(0);
+                            generateCaptions(0);
+                          }}
+                          className="w-full"
+                        >
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          generate 4 captions
+                        </Button>
+                      </CardContent>
+                    </Card>
+
+                    {generated.length > 0 ? (
+                      <Card className="rounded-lg border-stone-200 shadow-sm">
+                        <CardHeader className="pb-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <CardTitle className="text-base">caption options</CardTitle>
+                            <Button onClick={refreshCaptions} variant="secondary" className="rounded-md">
+                              <RefreshCcw className="mr-2 h-4 w-4" />
+                              refresh 4 more
+                            </Button>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="caption-card-content">
+                          <div className="caption-scroll snap-x" aria-label="Swipe caption options">
+                            {generated.map((item, index) => {
+                              const isSelected = selectedCaption === item.text;
+
+                              return (
+                                <button
+                                  key={item.id}
+                                  type="button"
+                                  onClick={() => setSelectedCaption(item.text)}
+                                  aria-pressed={isSelected}
+                                  className={`caption-option-card snap-center ${isSelected ? "is-active" : ""}`}
+                                >
+                                  <span className="caption-preview-media">
+                                    {photoUrl ? (
+                                      <img
+                                        src={photoUrl}
+                                        alt={photoName || "caption preview"}
+                                        className="caption-preview-img"
+                                      />
+                                    ) : (
+                                      <span className="caption-preview-empty">
+                                        <ImageIcon className="h-6 w-6" />
+                                        <span>image preview</span>
+                                      </span>
+                                    )}
+                                    <span className="caption-preview-shade" />
+                                    <span className="caption-preview-top">
+                                      <Badge data-active={isSelected}>option {index + 1}</Badge>
+                                      {isSelected ? (
+                                        <span className="caption-selected-mark">
+                                          <Check className="h-4 w-4" />
+                                        </span>
+                                      ) : null}
+                                    </span>
+                                    <span className="caption-preview-copy">{item.text}</span>
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          <div className="caption-save-row">
+                            <Button disabled={!selectedCaption} onClick={savePost}>
+                              <Check className="mr-2 h-4 w-4" />
+                              save selected caption
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ) : null}
+                  </>
+                ) : null}
+              </div>
             ) : null}
-          </div>
-        ) : null}
 
-        {screen === "log" ? (
+        {screen === "logs" ? (
           <div className="screen-stack">
             {savedPosts.length === 0 ? (
               <Card className="rounded-lg border-stone-200 shadow-sm">
@@ -1495,21 +1541,30 @@ export default function EquestrianCaptionPrototypeApp() {
           <div className="nav-strip">
             <button
               type="button"
+              onClick={() => setScreen("start")}
+              aria-pressed={screen === "start"}
+              className={`nav-btn ${screen === "start" ? "is-active" : ""}`}
+            >
+              <Home className="h-4 w-4" />
+              Start
+            </button>
+            <button
+              type="button"
               onClick={() => setScreen("create")}
               aria-pressed={screen === "create"}
               className={`nav-btn ${screen === "create" ? "is-active" : ""}`}
             >
               <Sparkles className="h-4 w-4" />
-              create
+              Create
             </button>
             <button
               type="button"
-              onClick={() => setScreen("log")}
-              aria-pressed={screen === "log"}
-              className={`nav-btn ${screen === "log" ? "is-active" : ""}`}
+              onClick={() => setScreen("logs")}
+              aria-pressed={screen === "logs"}
+              className={`nav-btn ${screen === "logs" ? "is-active" : ""}`}
             >
               <List className="h-4 w-4" />
-              log
+              Logs
             </button>
             <button
               type="button"
@@ -1518,7 +1573,7 @@ export default function EquestrianCaptionPrototypeApp() {
               className={`nav-btn ${screen === "dashboard" ? "is-active" : ""}`}
             >
               <LayoutDashboard className="h-4 w-4" />
-              dashboard
+              Dashboard
             </button>
           </div>
         </nav>

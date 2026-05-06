@@ -117,7 +117,7 @@ button {
   height: var(--header-h);
   flex: 0 0 auto;
   display: grid;
-  grid-template-columns: 60px 1fr 60px;
+  grid-template-columns: 78px 1fr 78px;
   align-items: center;
   gap: 10px;
   padding: 0 12px;
@@ -141,9 +141,9 @@ button {
 
 .header-back,
 .header-action {
-  min-width: 60px;
+  min-width: 68px;
   height: 34px;
-  padding: 0 16px;
+  padding: 0 10px;
   border-radius: var(--pill-radius);
   border: 1px solid var(--border-soft);
   background: var(--header-surface);
@@ -151,6 +151,7 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -381,6 +382,7 @@ button {
 .voice-toggle {
   min-height: var(--h-row);
   margin-top: var(--gap);
+  width: 100%;
   padding: 0 16px;
   border-radius: 16px;
   border: 1px solid var(--border-soft);
@@ -388,6 +390,7 @@ button {
   color: var(--fg-soft);
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
   font-size: var(--fs-row);
   font-weight: 650;
@@ -483,6 +486,59 @@ button {
 
 .voice-chip-wrap + .voice-rule-copy {
   margin-top: 10px;
+}
+
+.start-screen-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.create-progress {
+  width: 100%;
+  max-width: 474px;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background: rgba(17, 24, 39, 0.78);
+  padding: 12px 14px;
+  box-shadow: 0 1px 0 var(--bg);
+}
+
+.create-progress-track {
+  height: 6px;
+  border-radius: var(--pill-radius);
+  background: rgba(75, 85, 99, 0.75);
+  overflow: hidden;
+}
+
+.create-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width var(--t-med) ease-out;
+}
+
+.create-progress-labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.create-progress-labels span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.create-progress-labels .is-active {
+  color: var(--fg);
 }
 
 .tag-card-content {
@@ -717,7 +773,7 @@ button {
   max-width: 474px;
   margin: 0 auto;
   display: flex;
-  gap: var(--gap);
+  gap: 6px;
 }
 
 .nav-btn {
@@ -727,14 +783,16 @@ button {
   border: 1px solid var(--border-soft);
   background: var(--surface-1);
   color: var(--fg-soft);
-  font-size: var(--fs-btn);
+  font-size: 12px;
   font-weight: 650;
   cursor: pointer;
   user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 5px;
+  min-width: 0;
+  padding: 0 4px;
   transition:
     transform var(--t-fast) ease-out,
     box-shadow var(--t-med) ease-out,
@@ -742,6 +800,10 @@ button {
     background var(--t-med) ease-out;
   box-shadow: 0 1px 0 var(--bg);
   white-space: nowrap;
+}
+
+.nav-btn svg {
+  flex: 0 0 auto;
 }
 
 .nav-btn:active {
@@ -809,6 +871,32 @@ button {
     --fs-row: 13px;
     --fs-title: 15px;
     --gap: 8px;
+  }
+
+  .app-header {
+    grid-template-columns: 70px 1fr 70px;
+  }
+
+  .header-back,
+  .header-action {
+    min-width: 60px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .nav-btn {
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .nav-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .create-progress-labels {
+    font-size: 10px;
+    gap: 5px;
   }
 }
 
