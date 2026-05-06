@@ -63,6 +63,9 @@ type VoiceProfile = {
   avoid: string[];
   bannedPhrases: string[];
   phrasingStyle: string[];
+  recurringSeries: string[];
+  highlightedLines: string[];
+  outputRules: string[];
   knobs: Record<string, string>;
   generationChecklist: {
     should: string[];
@@ -96,6 +99,8 @@ const voiceProfile: VoiceProfile = {
     "understated",
     "not attention-seeking",
     "not ribbon-centered",
+    "improves what she sits on",
+    "no spotlight needed",
     "values feel, improvement, and connection",
   ],
   coreTone: [
@@ -134,21 +139,28 @@ const voiceProfile: VoiceProfile = {
     "natural",
     "not overexplained",
     "not too polished",
+    "one real detail only",
   ],
   avoid: [
     "cheesy horse-girl language",
     "adult-sounding language",
+    "adult coach tone",
     "influencer language",
     "bragging",
     "fake humility",
     "bitterness",
+    "excuses",
+    "martyr energy",
     "motivational quote energy",
     "stale stock caption language",
     "anything that sounds generated",
   ],
   bannedPhrases: [
+    "$300k horse kids",
+    "expensive horse kids",
     "so proud",
     "grateful beyond words",
+    "grateful for this journey",
     "soulful partner",
     "my heart horse",
     "every ride is a blessing",
@@ -164,6 +176,26 @@ const voiceProfile: VoiceProfile = {
     "real horse details",
     "calm endings",
     "quiet confidence",
+  ],
+  recurringSeries: [
+    "what this horse taught me",
+    "how i helped bring this horse along",
+    "not a ribbon round, still worth posting",
+  ],
+  highlightedLines: [
+    "ears up for once.",
+    "this horse stays in my camera roll.",
+    "not a riding post just a cute one.",
+    "another photo i didn't need but took anyway.",
+    "no reason just him.",
+    "not a ribbon round. still worth posting.",
+    "spent the whole day making other people's horses go nicely.",
+  ],
+  outputRules: [
+    "generate 4 caption options per request",
+    "each caption should be 1 to 3 short lines",
+    "at least 1 option should use a Lainey-highlight line",
+    "never mention expensive-horse kids",
   ],
   knobs: {
     confidence: "medium",
@@ -185,12 +217,15 @@ const voiceProfile: VoiceProfile = {
       "avoid adult polish",
       "match the post type",
       "stay fairly short",
+      "include at least one highlighted Lainey line in each generated set",
     ],
     shouldNot: [
       "sound like a brand",
       "sound like a trainer report",
       "sound fake-deep",
       "sound bitter",
+      "make excuses",
+      "sound like a martyr",
       "sound like it was written to impress adults",
       "sound copied from generic horse Instagram",
     ],
@@ -202,6 +237,19 @@ const voiceProfile: VoiceProfile = {
     "phrases that never sound like me": [],
     "horse words i like": [],
     "horse words i do not like": [],
+    "recurring series": [
+      "what this horse taught me",
+      "how i helped bring this horse along",
+      "not a ribbon round, still worth posting",
+    ],
+    "highlighted lainey lines": [
+      "ears up for once.",
+      "this horse stays in my camera roll.",
+      "not a riding post just a cute one.",
+      "another photo i didn't need but took anyway.",
+      "no reason just him.",
+      "spent the whole day making other people's horses go nicely.",
+    ],
     "captions i wrote that felt most like me": [],
     "captions i wrote that felt too adult / fake / generated": [],
   },
@@ -220,6 +268,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "canter",
       "rhythm",
       "changes",
+      "line",
       "softness",
       "feel",
       "rideability",
@@ -231,6 +280,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "one real detail you noticed",
       "one thing that changed",
       "one thing most non-horse people would miss",
+      "he was finally waiting for me to the base",
     ],
     structure: ["observation", "why it mattered", "understated ending"],
     emotionalRange: ["calm", "observant", "quietly pleased", "thoughtful", "not emotional"],
@@ -242,7 +292,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "ribbon talk unless truly needed",
       "generic great round wording",
     ],
-    endingStyle: ["short", "understated", "almost quiet"],
+    endingStyle: ["short", "understated", "almost quiet", "that's the win"],
     variationKnobs: {
       observationSharpness: ["low", "medium", "high"],
       horseSpecificDetail: ["low", "medium", "high"],
@@ -251,7 +301,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
     },
     manualPrompts: [
       "favorite opening words",
-      "details i use a lot",
+      "details i use a lot: waiting to the base, organized canter, softer change, between hand and leg",
       "details i never want repeated too often",
       "phrases that sound most like me here",
       "phrases to block here",
@@ -286,6 +336,8 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "overhumanizing",
       "therapy-horse language",
       "trying too hard to be funny",
+      "meme slang",
+      "too many jokes",
     ],
     endingStyle: ["quick", "punchy", "deadpan if possible"],
     variationKnobs: {
@@ -295,6 +347,9 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       chaosLevel: ["low", "medium", "high"],
     },
     manualPrompts: [
+      "i was not ___ today but she still ___",
+      "she asked me to ___",
+      "not every ride is ___",
       "horse voice should feel like",
       "horse voice should never sound like",
       "favorite kinds of jokes here",
@@ -314,11 +369,12 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "horses you are bringing along",
     ],
     leadWith: ["what you focused on", "what the horse needed", "what got better"],
-    structure: ["one focus", "one shift or improvement", "grounded ending"],
+    structure: ["focused on ___", "kept it ___", "by the end ___"],
     emotionalRange: ["steady", "productive", "confident", "practical", "not showy"],
     allowedQualities: ["useful", "horse-first", "clear", "grounded", "quietly proud"],
     avoid: [
       "sounding like a lesson note from an adult trainer",
+      "adult coach tone",
       "overselling progress",
       "bragging about fixing the horse",
       "sounding too polished or clinical",
@@ -353,7 +409,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "improvement without result",
     ],
     leadWith: ["what did not happen", "what still mattered more"],
-    structure: ["missed outcome", "meaningful gain", "calm close"],
+    structure: ["what did not happen", "what still mattered"],
     emotionalRange: ["honest", "grounded", "mature", "slightly disappointed if true", "never dramatic"],
     allowedQualities: ["perspective", "progress", "calm honesty", "mental toughness"],
     avoid: [
@@ -372,6 +428,8 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       toughnessLevel: ["low", "medium", "high"],
     },
     manualPrompts: [
+      "not a ribbon round. still worth posting.",
+      "didn't get the prize, got the answer.",
       "ways i like to say it did not happen",
       "ways i like to say it still mattered",
       "phrases that feel too negative",
@@ -398,7 +456,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "silly but true moments",
     ],
     leadWith: ["what the day felt like", "something physical or sensory", "one real detail from the day"],
-    structure: ["sensory reality", "simple tag or close"],
+    structure: ["one real sentence", "no complaining"],
     emotionalRange: ["tired", "honest", "funny", "dry", "matter-of-fact"],
     allowedQualities: [
       "barn realism",
@@ -410,6 +468,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
     avoid: [
       "whining",
       "martyr tone",
+      "martyr energy",
       "trying to prove you work harder than everyone",
       "long speeches about sacrifice",
     ],
@@ -421,6 +480,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       sensoryDetail: ["low", "medium", "high"],
     },
     manualPrompts: [
+      "spent the whole day making other people's horses go nicely.",
       "sensory details i use a lot",
       "reality details i want more of",
       "things that feel too complain-y",
@@ -440,7 +500,7 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
       "when the caption should stay short",
     ],
     leadWith: ["the takeaway", "the feeling", "the one phrase that says enough"],
-    structure: ["one line", "maybe two", "no explanation unless needed"],
+    structure: ["1 to 3 words", "maybe two short phrases", "no explanation unless needed"],
     emotionalRange: ["quiet", "strong", "final", "earned", "restrained"],
     allowedQualities: ["understatement", "firmness", "calm confidence", "directness"],
     avoid: ["quote energy", "empowerment language", "trying to sound deep", "anything that explains too much"],
@@ -464,6 +524,11 @@ const postTypeRules: Record<PostType, PostTypeRule> = {
 
 const starterPools: Record<PostType, string[]> = {
   "what i see": [
+    "he was finally waiting for me to the base.",
+    "that mattered more than the placing.",
+    "the canter stayed organized the whole trip.",
+    "she gave me a much softer change today.",
+    "he finally stayed between my hand and leg.",
     "he waited without getting flat. finally.",
     "the base showed up because the canter stayed normal.",
     "she got softer after the turn, which was the whole point.",
@@ -474,6 +539,9 @@ const starterPools: Record<PostType, string[]> = {
     "she let me keep the rhythm instead of negotiating every stride.",
   ],
   "what the horse sees": [
+    "i was not simple today but she still stayed quiet.",
+    "she asked me to do my job today.",
+    "not every ride is fancy.",
     "she said relax. i considered it.",
     "i had thoughts. she kept riding.",
     "apparently steering is still on the schedule.",
@@ -484,6 +552,9 @@ const starterPools: Record<PostType, string[]> = {
     "today i provided character development.",
   ],
   "what we did": [
+    "focused on rhythm.",
+    "kept it quiet.",
+    "by the end, he was actually waiting.",
     "kept the canter quieter and got a better answer.",
     "worked on waiting without losing the step.",
     "made it less complicated, which helped.",
@@ -494,6 +565,8 @@ const starterPools: Record<PostType, string[]> = {
     "not fixed. just better.",
   ],
   "what we almost did": [
+    "not a ribbon round. still worth posting.",
+    "didn't get the prize, got the answer.",
     "missed the result, kept the progress.",
     "one rail, better ride.",
     "not the round on paper. still a useful one.",
@@ -504,6 +577,8 @@ const starterPools: Record<PostType, string[]> = {
     "close enough to be annoying. useful enough to keep.",
   ],
   reality: [
+    "spent the whole day making other people's horses go nicely.",
+    "early feed, tired legs, still riding.",
     "hay in my hair and one decent canter. fair trade.",
     "cold hands, wet boots, still riding.",
     "long day. good horse. bad hair.",
@@ -514,6 +589,11 @@ const starterPools: Record<PostType, string[]> = {
     "five horses later, somehow still learning.",
   ],
   confidence: [
+    "useful.",
+    "better.",
+    "rideable.",
+    "earned.",
+    "not fancy. effective.",
     "quietly better.",
     "that felt earned.",
     "no extra caption needed.",
@@ -522,6 +602,40 @@ const starterPools: Record<PostType, string[]> = {
     "better is enough.",
     "soft. straight. useful.",
     "not loud. solid.",
+  ],
+};
+
+const highlightedLinesByPostType: Record<PostType, string[]> = {
+  "what i see": [
+    "ears up for once.",
+    "this horse stays in my camera roll.",
+    "he was finally waiting for me to the base.",
+  ],
+  "what the horse sees": [
+    "ears up for once.",
+    "no reason just him.",
+    "another photo i didn't need but took anyway.",
+  ],
+  "what we did": [
+    "how i helped bring this horse along.",
+    "what this horse taught me.",
+    "spent the whole day making other people's horses go nicely.",
+  ],
+  "what we almost did": [
+    "not a ribbon round. still worth posting.",
+    "didn't get the prize, got the answer.",
+  ],
+  reality: [
+    "spent the whole day making other people's horses go nicely.",
+    "not a riding post just a cute one.",
+    "another photo i didn't need but took anyway.",
+  ],
+  confidence: [
+    "useful.",
+    "better.",
+    "rideable.",
+    "earned.",
+    "not fancy. effective.",
   ],
 };
 
@@ -583,6 +697,11 @@ function buildCaption(base: string, description: string, type: PostType): string
 
   const detailLine = type === "confidence" ? shortenLine(desc, 82) : shortenLine(desc, 138);
   return limitCaptionLines([baseLine, detailLine], rule.maxLines);
+}
+
+function pickHighlightedLine(type: PostType, round: number): string {
+  const lines = highlightedLinesByPostType[type];
+  return lines[round % lines.length];
 }
 
 function currentMonthKey(date = new Date()): string {
@@ -667,6 +786,20 @@ function VoiceProfileCard({ postType, activeRule }: { postType: PostType; active
             {voiceProfile.generationChecklist.should.slice(0, 3).join(" / ")}
           </div>
         </div>
+
+        <div className="tap-panel-content rounded-md border border-[var(--border-soft)]">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]">must stay available</div>
+          <div className="flex flex-wrap gap-2">
+            {[
+              ...voiceProfile.recurringSeries,
+              ...highlightedLinesByPostType[postType].slice(0, 3),
+            ].map((line) => (
+              <Badge key={line} variant="outline">
+                {line}
+              </Badge>
+            ))}
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
@@ -737,13 +870,21 @@ export default function EquestrianCaptionPrototypeApp() {
   }
 
   function generateCaptions(nextRound = generationRound) {
-    const pool = shiftPool(starterPools[postType], nextRound * 4);
-    const nextCaptions = pool.slice(0, 4).map((base, index) => ({
+    const highlightedLine = pickHighlightedLine(postType, nextRound);
+    const pool = shiftPool(
+      starterPools[postType].filter((line) => line !== highlightedLine),
+      nextRound * 3,
+    );
+    const regularCaptions = pool.slice(0, 3).map((base, index) => ({
       id: `${postType}-${nextRound}-${index}`,
       text: buildCaption(base, description, postType),
     }));
+    const highlightedCaption = {
+      id: `${postType}-${nextRound}-highlight`,
+      text: buildCaption(highlightedLine, "", postType),
+    };
 
-    setGenerated(nextCaptions);
+    setGenerated([...regularCaptions, highlightedCaption]);
     setSelectedCaption("");
   }
 
