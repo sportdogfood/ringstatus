@@ -1264,13 +1264,19 @@ export default function EquestrianCaptionPrototypeApp() {
     generateCaptions(0);
   }
 
+  const createStepTitle =
+    createStep === "postType"
+      ? "Post Type"
+      : createStep === "tags"
+        ? "Tags"
+        : createStep === "image"
+          ? "Image + Description"
+          : "Caption Options";
   const screenTitle =
     screen === "start"
       ? "Start"
       : screen === "create"
-        ? createStep === "captions"
-          ? "Caption Options"
-          : `Create ${createStepIndex + 1}/3`
+        ? createStepTitle
         : screen === "logs"
           ? "Logs"
           : "Dashboard";
@@ -1290,7 +1296,7 @@ export default function EquestrianCaptionPrototypeApp() {
             <ArrowLeft className="h-4 w-4" />
             Back
           </button>
-          <h1 className="header-title">horse post builder / {screenTitle}</h1>
+          <h1 className="header-title">{screenTitle}</h1>
           <button
             type="button"
             className={showHeaderAction ? "header-action" : "header-action is-invisible"}
@@ -1344,7 +1350,7 @@ export default function EquestrianCaptionPrototypeApp() {
             ) : null}
 
             {screen === "create" ? (
-              <div className="screen-stack">
+              <div className="screen-stack create-screen-stack">
                 {createStep !== "captions" ? <CreateProgress step={createStep} /> : null}
 
                 {createStep === "postType" ? (
@@ -1375,7 +1381,15 @@ export default function EquestrianCaptionPrototypeApp() {
                 ) : null}
 
                 {createStep === "tags" ? (
-                  <TagsCard postType={postType} selectedTagIds={selectedTagIds} onToggleTag={toggleTag} />
+                  <>
+                    <TagsCard postType={postType} selectedTagIds={selectedTagIds} onToggleTag={toggleTag} />
+                    <div className="step-bottom-action">
+                      <Button onClick={() => setCreateStep("image")} className="w-full">
+                        Next
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  </>
                 ) : null}
 
                 {createStep === "image" ? (
