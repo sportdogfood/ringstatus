@@ -2,6 +2,8 @@
 
 This document locks the currently verified SGL API endpoint patterns used by the RingStatus fetch pipeline.
 
+Pipeline operating scope is versioned separately in [`ringstatus_pipeline_scope_2026-05-07.md`](./ringstatus_pipeline_scope_2026-05-07.md). Treat that document as the current evolving pipeline scope before adding or changing endpoint behavior.
+
 Do not treat `status_code: 200` alone as a successful fetch. Each endpoint must be validated by expected payload shape and known soft-failure patterns.
 
 ## Base Rules
