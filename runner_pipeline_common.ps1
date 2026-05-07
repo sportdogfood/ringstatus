@@ -11,6 +11,24 @@ function Initialize-RunnerDefaults {
     $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
     $env:CUSTOMER_ID       = '15'
 
+    $sglEnvNames = @(
+        'SGL_AUTHORIZATION',
+        'SGL_BEARER_TOKEN',
+        'SGL_COOKIE_HEADER',
+        'SGL_FETCH_SESSION_JSON',
+        'SGL_USER_AGENT'
+    )
+    foreach ($name in $sglEnvNames) {
+        if (-not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($name, 'Process'))) {
+            continue
+        }
+
+        $userValue = [Environment]::GetEnvironmentVariable($name, 'User')
+        if (-not [string]::IsNullOrWhiteSpace($userValue)) {
+            Set-Item -LiteralPath "Env:$name" -Value $userValue
+        }
+    }
+
     if (-not $env:PUBLISHER_DELAY_SECONDS) {
         $env:PUBLISHER_DELAY_SECONDS = '0'
     }

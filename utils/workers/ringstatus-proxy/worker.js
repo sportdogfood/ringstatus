@@ -73,16 +73,31 @@ async function readJsonBody(req) {
 }
 
 // ---------- proxy GET ----------
-async function proxyGet(upstreamUrl, ttlSec) {
-  const r = await fetch(upstreamUrl, {
+async function proxyGet(upstreamUrl, ttlSec, requestedPath) {
+  const p = String(requestedPath || "").toLowerCase();
+  const isDataFile = p.endsWith(".json") || p.endsWith(".ndjson");
+  const freshUrl = new URL(upstreamUrl);
+
+  if (isDataFile) {
+    freshUrl.searchParams.set("_cb", String(Date.now()));
+  }
+
+  const r = await fetch(freshUrl.toString(), {
     method: "GET",
-    cf: { cacheTtl: ttlSec, cacheEverything: true },
+    cf: isDataFile
+      ? { cacheTtl: 0, cacheEverything: false }
+      : { cacheTtl: ttlSec, cacheEverything: true },
   });
 
   // pass-through body + content-type, add CORS
   const h = new Headers(r.headers);
   // ensure content-type present
   if (!h.get("content-type")) h.set("content-type", "application/json; charset=utf-8");
+  if (isDataFile) {
+    h.set("Cache-Control", "no-store, no-cache, max-age=0");
+    h.set("Pragma", "no-cache");
+    h.delete("Age");
+  }
   for (const [k, v] of Object.entries(corsHeaders)) h.set(k, v);
 
   return new Response(r.body, { status: r.status, headers: h });
@@ -243,7 +258,7 @@ export default {
         if (!safePath(rel)) return json({ ok: false, error: "Invalid path" }, 400);
 
         const upstream = `${env.UPSTREAM_BASE}/docs/${rel}`;
-        return await proxyGet(upstream, ttl);
+        return await proxyGet(upstream, ttl, rel);
       }
 
       // proxy GET /items/*
@@ -252,7 +267,7 @@ export default {
         if (!safePath(rel)) return json({ ok: false, error: "Invalid path" }, 400);
 
         const upstream = `${env.UPSTREAM_BASE}/items/${rel}`;
-        return await proxyGet(upstream, ttl);
+        return await proxyGet(upstream, ttl, rel);
       }
 
       // commit-bulk docs

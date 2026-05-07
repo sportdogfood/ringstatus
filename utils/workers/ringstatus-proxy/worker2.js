@@ -90,17 +90,32 @@ function contentTypeForPath(path) {
 
 // ---------- proxy GET ----------
 async function proxyGet(upstreamUrl, ttlSec, requestedPath) {
-  const r = await fetch(upstreamUrl, {
+  const p = String(requestedPath || "").toLowerCase();
+  const isDataFile = p.endsWith(".json") || p.endsWith(".ndjson");
+  const freshUrl = new URL(upstreamUrl);
+
+  if (isDataFile) {
+    freshUrl.searchParams.set("_cb", String(Date.now()));
+  }
+
+  const r = await fetch(freshUrl.toString(), {
     method: "GET",
-    cf: { cacheTtl: ttlSec, cacheEverything: true },
+    cf: isDataFile
+      ? { cacheTtl: 0, cacheEverything: false }
+      : { cacheTtl: ttlSec, cacheEverything: true },
   });
 
   const h = new Headers(r.headers);
   const contentType = contentTypeForPath(requestedPath);
-  const p = String(requestedPath || "").toLowerCase();
 
   // force correct content-type based on requested file extension
   h.set("content-type", contentType);
+
+  if (isDataFile) {
+    h.set("Cache-Control", "no-store, no-cache, max-age=0");
+    h.set("Pragma", "no-cache");
+    h.delete("Age");
+  }
 
   // strip upstream headers that break standalone app rendering
   if (p.endsWith(".html") || p.endsWith(".js")) {

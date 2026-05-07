@@ -108,6 +108,16 @@ function normalizeKey(value) {
   return String(value).trim();
 }
 
+function buildScheduleMachineKey(row = {}) {
+  const classGroupId = numOrNull(row.class_group_id);
+  const classNumber = numOrNull(row.class_number);
+  if (classGroupId !== null && classNumber !== null) {
+    return `${classGroupId}_${classNumber}`;
+  }
+
+  return normalizeKey(pickFirst(row.class_groupxclasses_id, row.class_id));
+}
+
 function firstValue(value) {
   if (Array.isArray(value)) {
     for (const item of value) {
@@ -499,7 +509,8 @@ function normalizeSchedulePayload(payload, options) {
     if (!isObj(node)) return false;
     const hasKey = node.class_groupxclasses_id !== undefined || node.classGroupXClassesId !== undefined;
     const hasClassId = node.class_id !== undefined || node.classId !== undefined || node.id !== undefined;
-    return Boolean(hasKey && hasClassId);
+    const hasClassNumber = node.class_number !== undefined || node.classNumber !== undefined || node.number !== undefined;
+    return Boolean(hasKey && (hasClassId || hasClassNumber));
   }
 
   function walk(node, ctx) {
@@ -652,7 +663,7 @@ function normalizeSchedulePayload(payload, options) {
     setIfPresent(fields, "latest_ingested_at", generatedAt);
 
     rows.push({
-      key,
+      key: buildScheduleMachineKey(merged) || key,
       fields,
       refs: {
         heartbeat_record_id: scope.heartbeat_record_id,
@@ -869,6 +880,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  buildScheduleMachineKey,
   chooseScheduleVariant,
   normalizeSchedulePayload,
   runNormalizer,

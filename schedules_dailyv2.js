@@ -25,6 +25,7 @@ const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
+const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
 const VIEW_WATCH_SCHEDULE_HEARTBEAT = process.env.VIEW_WATCH_SCHEDULE_HEARTBEAT || "heartbeat";
@@ -410,16 +411,28 @@ async function fetchJson(url) {
     throw new Error(`Response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
   }
 
-  assertValidPayload({
-    payload: json,
-    text,
-    response,
-    lane: "schedules_dailyv2",
-    endpoint,
-    expectedTopLevelKeys: String(endpoint || "").includes("/classes/")
-      ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
-      : ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
-  });
+  try {
+    assertValidPayload({
+      payload: json,
+      text,
+      response,
+      lane: "schedules_dailyv2",
+      endpoint,
+      expectedTopLevelKeys: String(endpoint || "").includes("/classes/")
+        ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
+        : ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
+    });
+  } catch (error) {
+    if (isSoftPayloadError(error)) {
+      throw new Error(
+        `${error?.reason || error?.message || "soft_payload"} ` +
+        `endpoint=${endpoint} status=${error?.http_status ?? response.status} ` +
+        `body_length=${error?.body_length ?? Buffer.byteLength(text || "", "utf8")} ` +
+        `content_length=${error?.content_length ?? response.headers?.get?.("content-length") ?? "unknown"}`
+      );
+    }
+    throw error;
+  }
   return json;
 }
 
@@ -625,6 +638,16 @@ function clearResolvedField(fields, fieldMeta, logicalName) {
   const actualName = resolveFieldName(fieldMeta, logicalName);
   if (!actualName) return;
   fields[actualName] = null;
+}
+
+function scheduleRowKeyFromFields(fields = {}) {
+  const classGroupId = numOrNull(fields.class_group_id);
+  const classNumber = numOrNull(fields.class_number);
+  if (classGroupId !== null && classNumber !== null) {
+    return `${classGroupId}_${classNumber}`;
+  }
+
+  return normalizeKey(pickFirst(fields.class_groupxclasses_id, fields.class_id));
 }
 
 function buildBaseHeartbeatContext(record) {
@@ -841,6 +864,9 @@ async function fetchExistingRowsForShow(appShowId) {
     pageSize: 100,
     "fields[]": [
       "class_groupxclasses_id",
+      "class_group_id",
+      "class_number",
+      "class_id",
       "show_id",
       "show_date",
       "app_show_idv2",
@@ -864,7 +890,7 @@ async function fetchHeartbeatViewRows() {
   return airtableList(TABLE_WATCH_SCHEDULE, {
     view: VIEW_WATCH_SCHEDULE_HEARTBEAT,
     pageSize: 100,
-    "fields[]": ["class_groupxclasses_id", "heartbeat", "is_current_scope"],
+    "fields[]": ["class_groupxclasses_id", "class_group_id", "class_number", "class_id", "heartbeat", "is_current_scope"],
   });
 }
 
@@ -887,8 +913,10 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
 function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldMeta) {
   const fields = { ...normalizedRow.fields };
   const classDetail = normalizedRow?.class_detail || null;
+  const groupsLiveDetail = normalizedRow?.groups_live_detail || null;
+  const groupsLiveDay = toIsoDateOnly(groupsLiveDetail?.day);
   const resolvedScheduledDate = toIsoDateOnly(
-    pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date)
+    pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date, groupsLiveDay)
   );
   delete fields.scope_status;
   if (resolvedScheduledDate) {
@@ -903,8 +931,40 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   } else if (fields.total_trips !== undefined) {
     setResolvedField(fields, watchScheduleFieldMeta, "total_trips", fields.total_trips);
   }
-  if (watchScheduleFieldMeta?.names?.has("completed_trips") || watchScheduleFieldMeta?.actualByTrim?.has("completed_trips")) {
-    setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", classDetail?.completed_trips ?? fields.completed_trips ?? null);
+  const completedTrips = classDetail?.completed_trips ?? fields.completed_trips;
+  if (completedTrips !== null && completedTrips !== undefined) {
+    setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", completedTrips);
+  }
+  if (groupsLiveDetail) {
+    if (groupsLiveDetail.recordId) {
+      setResolvedField(fields, watchScheduleFieldMeta, "groups_live", [groupsLiveDetail.recordId]);
+    }
+    if (groupsLiveDetail.ring_number !== null && groupsLiveDetail.ring_number !== undefined && isBlank(fields.ring_number)) {
+      setResolvedField(fields, watchScheduleFieldMeta, "ring_number", groupsLiveDetail.ring_number);
+    }
+    if (groupsLiveDay) {
+      if (isBlank(fields.show_date)) setResolvedField(fields, watchScheduleFieldMeta, "show_date", groupsLiveDay);
+      if (isBlank(fields.sql_date)) setResolvedField(fields, watchScheduleFieldMeta, "sql_date", groupsLiveDay);
+      if (isBlank(fields.schedule_show_datev2)) setResolvedField(fields, watchScheduleFieldMeta, "schedule_show_datev2", groupsLiveDay);
+      if (isBlank(fields.scheduled_date)) setResolvedField(fields, watchScheduleFieldMeta, "scheduled_date", groupsLiveDay);
+      if (isBlank(fields.schedule_date)) setResolvedField(fields, watchScheduleFieldMeta, "schedule_date", groupsLiveDay);
+    }
+    if (groupsLiveDetail.estimated_start_time) {
+      setResolvedField(fields, watchScheduleFieldMeta, "estimated_start_time", groupsLiveDetail.estimated_start_time);
+      setResolvedField(fields, watchScheduleFieldMeta, "latest_estimated_start_time", groupsLiveDetail.estimated_start_time);
+      setResolvedField(fields, watchScheduleFieldMeta, "___latest_estimated_start_time", groupsLiveDetail.estimated_start_time);
+    }
+    if (groupsLiveDetail.status) {
+      setResolvedField(fields, watchScheduleFieldMeta, "status", groupsLiveDetail.status);
+      setResolvedField(fields, watchScheduleFieldMeta, "latest_status", groupsLiveDetail.status);
+    }
+    if (groupsLiveDetail.total !== null && groupsLiveDetail.total !== undefined) {
+      setResolvedField(fields, watchScheduleFieldMeta, "total_trips", groupsLiveDetail.total);
+    }
+    if (groupsLiveDetail.gone !== null && groupsLiveDetail.gone !== undefined) {
+      setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", groupsLiveDetail.gone);
+    }
+    setResolvedField(fields, watchScheduleFieldMeta, "latest_ingested_at", pickFirst(groupsLiveDetail.ingested_at, groupsLiveDetail.curr_updated_at));
   }
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
@@ -969,6 +1029,113 @@ function maxTimeText(left, right) {
   if (!left) return right || null;
   if (!right) return left || null;
   return String(left) >= String(right) ? left : right;
+}
+
+function parseTimestampMs(value) {
+  const text = strOrNull(value);
+  if (!text) return null;
+  const ms = Date.parse(text);
+  return Number.isFinite(ms) ? ms : null;
+}
+
+function groupsLiveRecencyMs(row) {
+  return parseTimestampMs(pickFirst(row?.curr_updated_at, row?.ingested_at, row?.created_time)) || 0;
+}
+
+function chooseGroupsLiveWinner(existing, candidate) {
+  if (!existing) return candidate;
+  if (boolValue(candidate?.is_live) && !boolValue(existing?.is_live)) return candidate;
+  if (!boolValue(candidate?.is_live) && boolValue(existing?.is_live)) return existing;
+  return groupsLiveRecencyMs(candidate) >= groupsLiveRecencyMs(existing) ? candidate : existing;
+}
+
+async function fetchGroupsLiveRows(appShowId, targetDays) {
+  const fieldSet = await fetchTableFieldSet(TABLE_GROUPS_LIVE).catch(() => new Set());
+  const baseFields = [
+    "class_group_id",
+    "show_id",
+    "day",
+    "ring_number",
+    "estimated_start_time",
+    "gone",
+    "total",
+    "status",
+    "curr_updated_at",
+    "ingested_at",
+    "created_time",
+    "is_live",
+    "stop_updating",
+  ];
+  const requestedFields = fieldSet.size
+    ? baseFields.filter((fieldName) => fieldSet.has(fieldName))
+    : baseFields;
+
+  if (fieldSet.size && (!fieldSet.has("class_group_id") || !fieldSet.has("show_id"))) {
+    return [];
+  }
+
+  const query = { pageSize: 100 };
+  if (requestedFields.length) query["fields[]"] = requestedFields;
+
+  const normalizedDays = new Set(
+    Array.from(targetDays || [])
+      .map((value) => toIsoDateOnly(value))
+      .filter(Boolean)
+  );
+
+  const rows = await airtableList(TABLE_GROUPS_LIVE, query);
+  return rows
+    .map((row) => {
+      const fields = row?.fields || {};
+      return {
+        recordId: row.id,
+        class_group_id: numOrNull(fields.class_group_id),
+        show_id: numOrNull(fields.show_id),
+        day: toIsoDateOnly(fields.day),
+        ring_number: numOrNull(fields.ring_number),
+        estimated_start_time: strOrNull(fields.estimated_start_time),
+        gone: numOrNull(fields.gone),
+        total: numOrNull(fields.total),
+        status: strOrNull(fields.status),
+        curr_updated_at: strOrNull(fields.curr_updated_at),
+        ingested_at: strOrNull(fields.ingested_at),
+        created_time: strOrNull(fields.created_time),
+        is_live: boolValue(fields.is_live),
+        stop_updating: boolValue(fields.stop_updating),
+      };
+    })
+    .filter((row) => row.class_group_id !== null)
+    .filter((row) => row.show_id === appShowId)
+    .filter((row) => !row.stop_updating)
+    .filter((row) => !normalizedDays.size || !row.day || normalizedDays.has(row.day));
+}
+
+function buildGroupsLiveMap(rows) {
+  const byGroupId = new Map();
+  for (const row of rows || []) {
+    const key = normalizeKey(row?.class_group_id);
+    if (!key) continue;
+    byGroupId.set(key, chooseGroupsLiveWinner(byGroupId.get(key), row));
+  }
+  return byGroupId;
+}
+
+function applyGroupsLiveFallback(rows, groupsById) {
+  let matched = 0;
+
+  const nextRows = (rows || []).map((row) => {
+    const classGroupId = numOrNull(row?.fields?.class_group_id);
+    const groupsLiveDetail = groupsById?.get?.(normalizeKey(classGroupId)) || null;
+    if (!groupsLiveDetail) return row;
+
+    matched += 1;
+    return {
+      ...row,
+      groups_live_detail: groupsLiveDetail,
+    };
+  });
+
+  return { rows: nextRows, matched };
 }
 
 function buildActiveGroupRows(rows, scope, runId, dateOnly, activeGroupsFieldSet) {
@@ -1143,9 +1310,6 @@ async function runDaily() {
     emptyPayload = await fetchJson(emptyUrl);
   } catch (error) {
     emptyPingError = String(error?.message || error);
-    if (isSoftPayloadError(error)) {
-      throw new Error(`soft_payload_empty: refusing schedule lane for empty ping ${emptyUrl}; ${emptyPingError}`);
-    }
   }
 
   if (emptyPayload) {
@@ -1217,7 +1381,19 @@ async function runDaily() {
       `count=${softClassFailures.length} sample=${JSON.stringify(softClassFailures.slice(0, 3))}`
     );
   }
-  const scopedRows = classEnrichment.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
+  const scopedRowsBase = classEnrichment.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
+  let scopedRows = scopedRowsBase;
+  let groupsLiveRows = [];
+  let groupsLiveMatchedRows = 0;
+  let groupsLiveError = null;
+  try {
+    groupsLiveRows = await fetchGroupsLiveRows(scope.app_show_idv2, new Set([scope.app_sql_datev2]));
+    const groupsLiveOverlay = applyGroupsLiveFallback(scopedRowsBase, buildGroupsLiveMap(groupsLiveRows));
+    scopedRows = groupsLiveOverlay.rows;
+    groupsLiveMatchedRows = groupsLiveOverlay.matched;
+  } catch (error) {
+    groupsLiveError = String(error?.message || error);
+  }
   const showRecordId = await fetchShowRecordId(scope.app_show_idv2).catch(() => null);
   const existingRows = await fetchExistingRowsForShow(scope.app_show_idv2);
   const heartbeatViewRows = await fetchHeartbeatViewRows().catch(() => []);
@@ -1241,7 +1417,7 @@ async function runDaily() {
 
   const groupedExisting = new Map();
   for (const row of existingRows) {
-    const key = normalizeKey(row?.fields?.class_groupxclasses_id);
+    const key = scheduleRowKeyFromFields(row?.fields || {});
     if (!key) continue;
     if (!groupedExisting.has(key)) groupedExisting.set(key, []);
     groupedExisting.get(key).push(row);
@@ -1289,7 +1465,7 @@ async function runDaily() {
   const dropUpdates = [];
   let droppedForScheduleShowDateMismatch = 0;
   for (const row of existingRows) {
-    const key = normalizeKey(row?.fields?.class_groupxclasses_id);
+    const key = scheduleRowKeyFromFields(row?.fields || {});
     if (!key) continue;
 
     const hasCurrentMarkers =
@@ -1344,6 +1520,12 @@ async function runDaily() {
       classes_endpoint: {
         enriched_rows: classEnrichment.class_endpoint_enriched,
         failures: classEnrichment.class_endpoint_failures,
+      },
+      groups_live_fallback: {
+        table: TABLE_GROUPS_LIVE,
+        rows: groupsLiveRows.length,
+        matched_rows: groupsLiveMatchedRows,
+        error: groupsLiveError,
       },
     },
     writes: {
@@ -1420,5 +1602,8 @@ if (require.main === module) {
 }
 
 module.exports = {
+  applyGroupsLiveFallback,
+  buildCurrentFields,
   runDaily,
+  scheduleRowKeyFromFields,
 };

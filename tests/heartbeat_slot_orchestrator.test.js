@@ -31,6 +31,11 @@ assert.ok(
 );
 
 assert.ok(
+  orchestrator.includes('DEFAULT_PUBLISHER_SLOTS = "A,B,C,D"'),
+  "publisher must be due on every heartbeat slot so dirty queue records are not stranded"
+);
+
+assert.ok(
   /runNodeScript\("trips_dailyv2\.js"\)[\s\S]+if\s*\(!tripsDailyResult\.ok\)/.test(orchestrator),
   "trips downstream work must be blocked when trips_dailyv2 fails"
 );
@@ -38,6 +43,16 @@ assert.ok(
 assert.ok(
   /runNodeScript\("schedules_dailyv2\.js"\)[\s\S]+if\s*\(!schedulesDailyResult\.ok\)/.test(orchestrator),
   "schedule downstream work must be blocked when schedules_dailyv2 fails"
+);
+
+assert.ok(
+  /if\s*\(publisherDue\s*&&\s*upstreamOk\)\s*\{[\s\S]+runNodeScript\("publisher\.js"\)/.test(orchestrator),
+  "publisher must be blocked when an upstream due lane fails"
+);
+
+assert.ok(
+  orchestrator.includes('event: "publisher_blocked"'),
+  "publisher block events must be logged when upstream lanes fail"
 );
 
 assert.ok(

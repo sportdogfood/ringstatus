@@ -26,7 +26,7 @@ const DEFAULT_TRIPS_TAGGER_SLOTS = "C";
 const DEFAULT_TRIPS_CALCULATOR_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
 const DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "";
-const DEFAULT_PUBLISHER_SLOTS = "";
+const DEFAULT_PUBLISHER_SLOTS = "A,B,C,D";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const LOG_DIR = process.env.RUNNER_LOG_DIR || "C:\\actions-runner\\ringstatus";
@@ -287,12 +287,16 @@ async function runOrchestrator() {
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
 
+    let upstreamOk = true;
+
     if (schedulesDailyDue) {
       const schedulesDailyResult = runNodeScript("schedules_dailyv2.js");
       if (!schedulesDailyResult.ok) {
+        upstreamOk = false;
         appendEvent({ ok: false, event: "schedule_downstream_blocked", reason: "schedules_dailyv2_failed" });
       } else if (schedulesCalcDue) {
-        runNodeScript("schedules_calculatorv2.js");
+        const schedulesCalcResult = runNodeScript("schedules_calculatorv2.js");
+        if (!schedulesCalcResult.ok) upstreamOk = false;
       }
     }
 
@@ -303,6 +307,7 @@ async function runOrchestrator() {
       const tripsDailyResult = runNodeScript("trips_dailyv2.js");
       if (!tripsDailyResult.ok) {
         tripsOk = false;
+        upstreamOk = false;
         appendEvent({ ok: false, event: "trips_downstream_blocked", reason: "trips_dailyv2_failed" });
       }
     }
@@ -312,16 +317,20 @@ async function runOrchestrator() {
       const tripsTaggerResult = runNodeScript("trips_tagger.js");
       if (!tripsTaggerResult.ok) {
         tripsOk = false;
+        upstreamOk = false;
         appendEvent({ ok: false, event: "trips_downstream_blocked", reason: "trips_tagger_failed" });
       }
     }
 
     if (tripsOk && tripsCalcDue && tripsRan) {
-      runNodeScript("trips_calculatorv2.js");
+      const tripsCalcResult = runNodeScript("trips_calculatorv2.js");
+      if (!tripsCalcResult.ok) upstreamOk = false;
     }
 
-    if (publisherDue) {
+    if (publisherDue && upstreamOk) {
       runNodeScript("publisher.js");
+    } else if (publisherDue) {
+      appendEvent({ ok: false, event: "publisher_blocked", reason: "upstream_due_lane_failed" });
     }
 
     appendEvent({
