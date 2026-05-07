@@ -143,9 +143,13 @@ function collectTripCandidates(obj, depth = 0, out = []) {
   }
   if (!obj || typeof obj !== "object") return out;
 
-  const hasClass = ("class_id" in obj) || ("classId" in obj);
+  const hasClass = ("class_id" in obj) || ("classId" in obj) ||
+    ("class_number" in obj) || ("classNumber" in obj);
   const hasHorse = ("horse" in obj) || ("Horse" in obj);
-  const hasEntry = ("entry_id" in obj) || ("entryId" in obj) || ("entryxclasses_uuid" in obj);
+  const hasEntry = ("entry_id" in obj) || ("entryId" in obj) ||
+    ("entry_number" in obj) || ("entryNumber" in obj) ||
+    ("entry_no" in obj) || ("entryNo" in obj) ||
+    ("number" in obj) || ("entryxclasses_uuid" in obj);
   if (hasClass && hasEntry && hasHorse) out.push(obj);
 
   for (const value of Object.values(obj)) collectTripCandidates(value, depth + 1, out);
