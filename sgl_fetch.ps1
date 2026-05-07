@@ -126,9 +126,14 @@ function Add-HeaderIfValue {
 $sessionJsonUsed = $false
 $cookieHeaderUsed = $false
 $authorizationUsed = $false
+$userAgentOverrideUsed = $false
+$clientHintsOverrideUsed = $false
+$recaptchaUsed = $false
 $config = $null
 
 try {
+    $resolvedOutputPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputPath)
+
     $sessionJsonOverride = Get-ConfigValue -Name 'SGL_FETCH_SESSION_JSON'
     if (-not [string]::IsNullOrWhiteSpace($sessionJsonOverride)) {
         $SessionJsonPath = $sessionJsonOverride
@@ -141,8 +146,12 @@ try {
 
     $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
     $session.UserAgent = Get-ConfigValue -Name 'SGL_USER_AGENT'
+    if (-not [string]::IsNullOrWhiteSpace($session.UserAgent)) {
+        $userAgentOverrideUsed = $true
+    }
     if ([string]::IsNullOrWhiteSpace($session.UserAgent) -and $config -and $config.userAgent) {
         $session.UserAgent = [string]$config.userAgent
+        $userAgentOverrideUsed = $true
     }
     if ([string]::IsNullOrWhiteSpace($session.UserAgent)) {
         $session.UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0'
@@ -182,6 +191,33 @@ try {
         'sgl-request-origin' = 'SGL-API'
     }
 
+    $secChUa = Get-ConfigValue -Name 'SGL_SEC_CH_UA'
+    if (-not [string]::IsNullOrWhiteSpace($secChUa)) {
+        $headers['sec-ch-ua'] = $secChUa
+        $clientHintsOverrideUsed = $true
+    }
+
+    $secChUaMobile = Get-ConfigValue -Name 'SGL_SEC_CH_UA_MOBILE'
+    if (-not [string]::IsNullOrWhiteSpace($secChUaMobile)) {
+        $headers['sec-ch-ua-mobile'] = $secChUaMobile
+        $clientHintsOverrideUsed = $true
+    }
+
+    $secChUaPlatform = Get-ConfigValue -Name 'SGL_SEC_CH_UA_PLATFORM'
+    if (-not [string]::IsNullOrWhiteSpace($secChUaPlatform)) {
+        $headers['sec-ch-ua-platform'] = $secChUaPlatform
+        $clientHintsOverrideUsed = $true
+    }
+
+    $recaptchaToken = Get-ConfigValue -Name 'SGL_RECAPTCHA_TOKEN'
+    if ([string]::IsNullOrWhiteSpace($recaptchaToken)) {
+        $recaptchaToken = Get-ConfigValue -Name 'SGL_X_RECAPTCHA_TOKEN'
+    }
+    if (-not [string]::IsNullOrWhiteSpace($recaptchaToken)) {
+        $headers['x-recaptcha-token'] = $recaptchaToken
+        $recaptchaUsed = $true
+    }
+
     $authorization = Get-ConfigValue -Name 'SGL_AUTHORIZATION'
     $bearerToken = Get-ConfigValue -Name 'SGL_BEARER_TOKEN'
     if ([string]::IsNullOrWhiteSpace($authorization) -and -not [string]::IsNullOrWhiteSpace($bearerToken)) {
@@ -204,7 +240,7 @@ try {
         }
     }
 
-    $outputDirectory = Split-Path -Parent $OutputPath
+    $outputDirectory = Split-Path -Parent $resolvedOutputPath
     if (-not [string]::IsNullOrWhiteSpace($outputDirectory) -and -not (Test-Path -LiteralPath $outputDirectory)) {
         New-Item -ItemType Directory -Path $outputDirectory -Force | Out-Null
     }
@@ -218,7 +254,7 @@ try {
 
     $content = [string]$response.Content
     [System.IO.File]::WriteAllText(
-        $OutputPath,
+        $resolvedOutputPath,
         $content,
         [System.Text.UTF8Encoding]::new($false)
     )
@@ -232,7 +268,7 @@ try {
         ok = $true
         transport = 'powershell_iwr'
         url = $Url
-        output_path = $OutputPath
+        output_path = $resolvedOutputPath
         status_code = [int]$response.StatusCode
         content_length = $contentLength
         raw_content_length = [int64]$response.RawContentLength
@@ -240,6 +276,9 @@ try {
         session_json_used = $sessionJsonUsed
         cookie_header_used = $cookieHeaderUsed
         authorization_used = $authorizationUsed
+        user_agent_override_used = $userAgentOverrideUsed
+        client_hints_override_used = $clientHintsOverrideUsed
+        recaptcha_used = $recaptchaUsed
     }
 
     $meta | ConvertTo-Json -Compress -Depth 5
@@ -254,6 +293,9 @@ catch {
         session_json_used = $sessionJsonUsed
         cookie_header_used = $cookieHeaderUsed
         authorization_used = $authorizationUsed
+        user_agent_override_used = $userAgentOverrideUsed
+        client_hints_override_used = $clientHintsOverrideUsed
+        recaptcha_used = $recaptchaUsed
     }
     $meta | ConvertTo-Json -Compress -Depth 5
     exit 1

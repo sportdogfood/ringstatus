@@ -16,7 +16,12 @@ function Initialize-RunnerDefaults {
         'SGL_BEARER_TOKEN',
         'SGL_COOKIE_HEADER',
         'SGL_FETCH_SESSION_JSON',
-        'SGL_USER_AGENT'
+        'SGL_USER_AGENT',
+        'SGL_SEC_CH_UA',
+        'SGL_SEC_CH_UA_MOBILE',
+        'SGL_SEC_CH_UA_PLATFORM',
+        'SGL_RECAPTCHA_TOKEN',
+        'SGL_X_RECAPTCHA_TOKEN'
     )
     foreach ($name in $sglEnvNames) {
         if (-not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($name, 'Process'))) {

@@ -45,6 +45,22 @@ $env:SGL_COOKIE_HEADER = 'jwt=<redacted>; sgl=<redacted>; __cf_bm=<redacted>'
 `SGL_AUTHORIZATION` may be a raw JWT/token. `sgl_fetch.ps1` adds the
 `Bearer ` prefix when the stored value does not already include it.
 
+When an endpoint requires the same browser-session shape as the website, store
+the non-cookie browser headers as environment values rather than editing the
+script:
+
+```powershell
+$env:SGL_USER_AGENT = '<browser user agent>'
+$env:SGL_SEC_CH_UA_MOBILE = '?1'
+$env:SGL_SEC_CH_UA_PLATFORM = '"Android"'
+$env:SGL_RECAPTCHA_TOKEN = '<redacted>'
+```
+
+`SGL_RECAPTCHA_TOKEN` and `SGL_X_RECAPTCHA_TOKEN` are treated the same. The
+fetch output reports `user_agent_override_used`, `client_hints_override_used`,
+and `recaptcha_used` as booleans so the run can be diagnosed without printing
+token values.
+
 ## Smoke Test
 
 Use a known active show/date:
