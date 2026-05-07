@@ -1243,6 +1243,8 @@ async function fetchShowsMap() {
     let skipped_missing_entryxclasses_uuid = 0;
     let endpoint_fetch_errors = 0;
     let trip_matched = 0;
+    let liveclass_trip_matched = 0;
+    let liveclass_group_only = 0;
     let trip_not_found = 0;
     let shows_link_bound = 0;
     let shows_link_missing = 0;
@@ -1260,18 +1262,51 @@ async function fetchShowsMap() {
         entry_id,
         entry_number,
         class_id,
-        class_number
+        class_number,
+        class_group_id
       } = row;
 
       const updateFields = {};
       setAppFields(updateFields, appCtx);
       setModeFields(updateFields, appCtx);
       setShowsLink(updateFields, linkedShowRecordId);
+      const liveCtx = liveContextFor(row);
 
       if (linkedShowRecordId) shows_link_bound++;
       else shows_link_missing++;
 
       if (!classEndpoint) {
+        if (liveCtx.group) {
+          setClassLevelFields(updateFields, {
+            class_status: liveCtx.group.status,
+            estimated_start_time: liveCtx.group.estimated_start_time,
+            total_trips: liveCtx.group.total,
+            completed_trips: liveCtx.group.gone,
+          });
+
+          if (liveCtx.trip) {
+            liveclass_trip_matched++;
+            trip_matched++;
+            setTripLevelFields(updateFields, {
+              order_of_go: normNum(liveCtx.trip.order_of_go, IGNORE_NUM.order_of_go),
+              actual_order: normNum(liveCtx.trip.actual_order),
+              gone_in: normNum(liveCtx.trip.gone_in),
+              h_eid: normNum(liveCtx.trip.entry_number),
+            });
+          } else {
+            liveclass_group_only++;
+          }
+
+          let reason = liveCtx.trip ? "ok:liveclassv2_matched" : "warn:liveclassv2_group_only";
+          if (!liveCtx.trip) reason = `${reason}|warn:missing_order_of_go`;
+          if (!liveCtx.group.status) reason = `${reason}|warn:missing_status`;
+          if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+          setBaseFields(updateFields, observedAt, reason);
+          bumpReason(reason);
+          updates.push({ id: rec.id, fields: updateFields });
+          continue;
+        }
+
         const classSignupCached = classSignupEndpoint ? classSignupEndpointCache.get(classSignupEndpoint) : null;
         const classSignupEntry = classSignupCached?.ok
           ? findClassSignupEntry(classSignupCached.json, {
