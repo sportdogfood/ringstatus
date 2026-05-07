@@ -1202,7 +1202,8 @@ async function fetchShowsMap() {
       }
 
       const hasTripIdentity = !!entryxclasses_uuid ||
-        (entry_id !== null && (class_number !== null || class_id !== null));
+        (entry_id !== null && (class_number !== null || class_id !== null)) ||
+        (entry_number !== null && (class_number !== null || class_id !== null));
       if (!hasTripIdentity) {
         let reason = "err:missing_trip_identity";
         if (!entryxclasses_uuid) reason = `${reason}|debug:missing_entryxclasses_uuid`;

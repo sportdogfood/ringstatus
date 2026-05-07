@@ -3,6 +3,7 @@ const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
 
 const {
+  buildPeopleTripKey,
   buildScheduleMap,
   collectTripCandidates,
   normalizeTripsForScope,
@@ -132,6 +133,13 @@ function boolValue(value) {
 function normalizeKey(value) {
   if (isBlank(value)) return "";
   return String(value).trim();
+}
+
+function tripRowKeyFromFields(fields = {}) {
+  return buildPeopleTripKey({
+    classNumber: firstValue(fields.class_number),
+    entryNumber: firstValue(fields.entry_number),
+  }) || normalizeKey(firstValue(fields.entryxclasses_uuid));
 }
 
 function normalizePidToken(value) {
@@ -541,6 +549,8 @@ async function fetchExistingTripsForShow(appShowId) {
     pageSize: 100,
     "fields[]": [
       "entryxclasses_uuid",
+      "entry_number",
+      "class_number",
       "show_id",
       "app_show_id",
       "app_show_idv2",
@@ -562,7 +572,7 @@ async function fetchHeartbeatViewTripRows() {
   return airtableList(TABLE_WATCH_TRIPS, {
     view: VIEW_WATCH_TRIPS,
     pageSize: 100,
-    "fields[]": ["entryxclasses_uuid", "heartbeat", "is_current_scope"],
+    "fields[]": ["entryxclasses_uuid", "entry_number", "class_number", "heartbeat", "is_current_scope"],
   });
 }
 
@@ -2036,7 +2046,7 @@ async function main() {
 
   const groupedExisting = new Map();
   for (const row of existingRows) {
-    const key = normalizeKey(row?.fields?.entryxclasses_uuid);
+    const key = tripRowKeyFromFields(row?.fields || {});
     if (!key) continue;
     if (!groupedExisting.has(key)) groupedExisting.set(key, []);
     groupedExisting.get(key).push(row);
@@ -2054,7 +2064,7 @@ async function main() {
   const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
 
   for (const row of scopedRows) {
-    const key = normalizeKey(row.entryxclasses_uuid);
+    const key = normalizeKey(row.trip_key || row.entryxclasses_uuid);
     if (!key) continue;
     keepKeySet.add(key);
     const existing = existingByKey.get(key);
@@ -2127,7 +2137,7 @@ async function main() {
 
   const dropUpdates = [];
   for (const row of heartbeatViewRows) {
-    const key = normalizeKey(row?.fields?.entryxclasses_uuid);
+    const key = tripRowKeyFromFields(row?.fields || {});
     if (!key || keepKeySet.has(key)) continue;
     dropUpdates.push({
       id: row.id,
@@ -2200,11 +2210,17 @@ async function main() {
   console.log(JSON.stringify(summary, null, 2));
 }
 
-main().catch((error) => {
-  const message = String(error?.stack || error?.message || error);
-  console.error(JSON.stringify({
-    ok: false,
-    error: message.slice(0, 4000),
-  }));
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch((error) => {
+    const message = String(error?.stack || error?.message || error);
+    console.error(JSON.stringify({
+      ok: false,
+      error: message.slice(0, 4000),
+    }));
+    process.exitCode = 1;
+  });
+}
+
+module.exports = {
+  tripRowKeyFromFields,
+};

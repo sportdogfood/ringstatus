@@ -50,6 +50,7 @@ assert.strictEqual(
 const payload = {
   trips: [
     { entryxclasses_uuid: "abc", entry_id: 10, class_id: 20, order_of_go: 7 },
+    { entryxclasses_uuid: "real-markanto", entry_number: 3160, class_id: 20, order_of_go: 15 },
   ],
   class_group_order_of_go: {
     entries: [
@@ -69,6 +70,11 @@ assert.strictEqual(findClassTrip(payload, { entryxclassesUuid: "missing" }), nul
 assert.deepStrictEqual(
   findClassTrip(payload, { entryxclassesUuid: "missing", entryId: 10, classId: 20 }),
   payload.trips[0]
+);
+assert.deepStrictEqual(
+  findClassTrip(payload, { entryxclassesUuid: "abc", entryNumber: 3160, classId: 20 }),
+  payload.trips[1],
+  "entry_number/class matching should be primary and entryxclasses_uuid should be backup"
 );
 assert.deepStrictEqual(
   findClassGroupOrderEntry(payload, { entryId: 10, classId: 20 }),

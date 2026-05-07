@@ -56,16 +56,12 @@ function fallbackKeyPart(value) {
     .replace(/[^a-z0-9_.:-]/g, "");
 }
 
-function buildFallbackEntryClassKey({ ownerPid, entryId, entryNumber, classId, classNumber, horse }) {
-  const entryPart = entryId ?? entryNumber;
-  const classPart = classId ?? classNumber;
-  if (isBlank(ownerPid) || isBlank(entryPart) || isBlank(classPart) || isBlank(horse)) return "";
+function buildPeopleTripKey({ classNumber, entryNumber }) {
+  if (isBlank(classNumber) || isBlank(entryNumber)) return "";
   return [
-    "fallback",
-    fallbackKeyPart(ownerPid),
-    fallbackKeyPart(entryPart),
-    fallbackKeyPart(classPart),
-    fallbackKeyPart(horse),
+    "people",
+    fallbackKeyPart(classNumber),
+    fallbackKeyPart(entryNumber),
   ].join(":");
 }
 
@@ -164,24 +160,21 @@ function normalizePeopleTripRow(raw, ownerPid) {
   const entryNumber = raw?.entry_number ?? raw?.entryNumber ?? raw?.entry_no ?? raw?.entryNo ?? raw?.number;
   const normalizedEntryNumber = normalizeEntryNumber(entryNumber);
   const rawEntryxclassesUuid = strOrNull(raw?.entryxclasses_uuid ?? raw?.entryxclassesUUID ?? raw?.uuid);
-  const entryxclassesUuid = rawEntryxclassesUuid || buildFallbackEntryClassKey({
-    ownerPid,
-    entryId,
-    entryNumber: normalizedEntryNumber,
-    classId,
+  const tripKey = buildPeopleTripKey({
     classNumber,
-    horse,
-  });
+    entryNumber: normalizedEntryNumber,
+  }) || rawEntryxclassesUuid;
 
   if (classId === null && classNumber === undefined) return null;
   if (entryId === null && normalizedEntryNumber === undefined && !rawEntryxclassesUuid) return null;
-  if (!String(horse || "").trim() || !entryxclassesUuid) return null;
+  if (!String(horse || "").trim() || !tripKey) return null;
 
   return {
+    trip_key: tripKey,
     pid: Number(ownerPid),
     class_id: classId,
     entry_id: entryId,
-    entryxclasses_uuid: entryxclassesUuid,
+    entryxclasses_uuid: rawEntryxclassesUuid,
     horse: String(horse).trim(),
     entry_number: normalizedEntryNumber,
     class_name: String(raw?.class_name ?? raw?.className ?? "").trim(),
@@ -212,12 +205,13 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
       if (!trip) continue;
       const schedule = findScheduleForTrip(scheduleByClassId, trip);
       if (!schedule) {
-        outsideSchedule.push(`${trip.class_id ?? trip.class_number}|${trip.entryxclasses_uuid}`);
+        outsideSchedule.push(`${trip.class_id ?? trip.class_number}|${trip.trip_key || trip.entryxclasses_uuid}`);
         continue;
       }
 
       const row = {
         record_id: null,
+        trip_key: trip.trip_key,
         entryxclasses_uuid: trip.entryxclasses_uuid,
         pid: trip.pid,
         entry_id: trip.entry_id,
@@ -248,7 +242,7 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
 
       normalizedRows.push(row);
       keptCount += 1;
-      const key = normalizeKey(row.entryxclasses_uuid);
+      const key = normalizeKey(row.trip_key || row.entryxclasses_uuid);
       if (key && !uniqueRows.has(key)) uniqueRows.set(key, row);
     }
     sourceRowCounts[String(sourceId)] = keptCount;
@@ -267,6 +261,7 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
 }
 
 module.exports = {
+  buildPeopleTripKey,
   buildScheduleMap,
   collectTripCandidates,
   normalizePeopleTripRow,
