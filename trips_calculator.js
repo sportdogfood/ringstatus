@@ -39,6 +39,7 @@ const WATCH_FIELDS = {
   APP_SHOW_ID: process.env.FIELD_APP_SHOW_ID || "app_show_id",
   APP_SQL_DATE: process.env.FIELD_APP_SQL_DATE || "app_sql_date",
   CLASS_ID: process.env.FIELD_CLASS_ID || "class_id",
+  CLASS_NUMBER: process.env.FIELD_CLASS_NUMBER || "class_number",
   ENTRY_NUMBER: process.env.FIELD_ENTRY_NUMBER || "entry_number",
   SCHEDULE_RID: process.env.FIELD_SCHEDULE_RID || "schedule_rid",
   APP_TIME: process.env.FIELD_APP_TIME || "app_time",
@@ -225,6 +226,7 @@ const WATCH_SOURCE_FIELDS = [
   WATCH_FIELDS.APP_SHOW_ID,
   WATCH_FIELDS.APP_SQL_DATE,
   WATCH_FIELDS.CLASS_ID,
+  WATCH_FIELDS.CLASS_NUMBER,
   WATCH_FIELDS.ENTRY_NUMBER,
   WATCH_FIELDS.SCHEDULE_RID,
   WATCH_FIELDS.APP_TIME,
@@ -1031,6 +1033,7 @@ function buildRawInputs(fields) {
     app_show_id: fields[WATCH_FIELDS.APP_SHOW_ID],
     app_sql_date: fields[WATCH_FIELDS.APP_SQL_DATE],
     class_id: fields[WATCH_FIELDS.CLASS_ID],
+    class_number: fields[WATCH_FIELDS.CLASS_NUMBER],
     entry_number: fields[WATCH_FIELDS.ENTRY_NUMBER],
     schedule_rid: fields[WATCH_FIELDS.SCHEDULE_RID],
     app_time: fields[WATCH_FIELDS.APP_TIME],
@@ -1079,44 +1082,59 @@ function buildNormalizedInputs(record) {
   const estimatedTime = parseTimeInput("estimated_time", rawInputs.estimated_time, anomalies);
   const estimatedGoTime = parseTimeInput("estimated_go_time", rawInputs.estimated_go_time, anomalies);
 
+  const values = {
+    entryxclasses_uuid: strOrNull(rawInputs.entryxclasses_uuid),
+    app_show_id: numOrNull(rawInputs.app_show_id),
+    app_sql_date: strOrNull(rawInputs.app_sql_date),
+    class_id: normalizeClassIdValue(rawInputs.class_id),
+    class_number: numOrNull(rawInputs.class_number),
+    entry_number: numOrNull(rawInputs.entry_number),
+    class_status: normalizeClassStatusValue(
+      rawInputs.status,
+      rawInputs.class_status
+    ),
+    remaining_trips: normalizeCountValue(rawInputs.remaining_trips),
+    total_trips: normalizeCountValue(rawInputs.total_trips),
+    completed_trips: normalizeCountValue(rawInputs.completed_trips),
+    order_of_go: normalizeOrderValue(firstNonBlank(rawInputs.order_of_go, rawInputs.classsignup_oog)),
+    actual_order: normalizeOrderValue(rawInputs.actual_order),
+    actual_go: normalizeOrderValue(rawInputs.actual_go),
+    gone_in: normalizeCountValue(rawInputs.gone_in),
+    h_eid: strOrNull(firstNonBlank(rawInputs.h_eid, rawInputs.entry_number)),
+    app_time_text: appTime.text,
+    app_time_minutes: appTime.minutes,
+    estimated_start_time_text: estimatedStartTime.text,
+    estimated_start_time_minutes: estimatedStartTime.minutes,
+    estimated_end_time_text: estimatedEndTime.text,
+    estimated_end_time_minutes: estimatedEndTime.minutes,
+    actual_time_text: actualTime.text,
+    actual_time_minutes: actualTime.minutes,
+    estimated_time_text: estimatedTime.text,
+    estimated_time_minutes: estimatedTime.minutes,
+    estimated_go_time_text: estimatedGoTime.text,
+    estimated_go_time_minutes: estimatedGoTime.minutes,
+  };
+  values.trip_identity_key = buildTripIdentityKey(values);
+
   return {
     rawInputs,
     anomalies,
-    values: {
-      entryxclasses_uuid: strOrNull(rawInputs.entryxclasses_uuid),
-      app_show_id: numOrNull(rawInputs.app_show_id),
-      app_sql_date: strOrNull(rawInputs.app_sql_date),
-      class_id: normalizeClassIdValue(rawInputs.class_id),
-      class_status: normalizeClassStatusValue(
-        rawInputs.status,
-        rawInputs.class_status
-      ),
-      remaining_trips: normalizeCountValue(rawInputs.remaining_trips),
-      total_trips: normalizeCountValue(rawInputs.total_trips),
-      completed_trips: normalizeCountValue(rawInputs.completed_trips),
-      order_of_go: normalizeOrderValue(firstNonBlank(rawInputs.order_of_go, rawInputs.classsignup_oog)),
-      actual_order: normalizeOrderValue(rawInputs.actual_order),
-      actual_go: normalizeOrderValue(rawInputs.actual_go),
-      gone_in: normalizeCountValue(rawInputs.gone_in),
-      h_eid: strOrNull(firstNonBlank(rawInputs.h_eid, rawInputs.entry_number)),
-      app_time_text: appTime.text,
-      app_time_minutes: appTime.minutes,
-      estimated_start_time_text: estimatedStartTime.text,
-      estimated_start_time_minutes: estimatedStartTime.minutes,
-      estimated_end_time_text: estimatedEndTime.text,
-      estimated_end_time_minutes: estimatedEndTime.minutes,
-      actual_time_text: actualTime.text,
-      actual_time_minutes: actualTime.minutes,
-      estimated_time_text: estimatedTime.text,
-      estimated_time_minutes: estimatedTime.minutes,
-      estimated_go_time_text: estimatedGoTime.text,
-      estimated_go_time_minutes: estimatedGoTime.minutes,
-    },
+    values,
   };
 }
 
 function deriveEffectiveOrder(values) {
   return firstNonBlank(values.actual_order, values.actual_go, values.order_of_go);
+}
+
+function buildTripIdentityKey(values = {}) {
+  const existing = strOrNull(values.entryxclasses_uuid);
+  if (existing) return existing;
+
+  const classNumber = numOrNull(values.class_number);
+  const entryNumber = numOrNull(firstNonBlank(values.h_eid, values.entry_number));
+  if (classNumber === null || entryNumber === null) return null;
+  return `people:${classNumber}:${entryNumber}`;
 }
 
 function compareClassAlertCandidates(left, right) {
@@ -1186,7 +1204,7 @@ function buildClassAlertAssignments(preparedRows) {
 function determineEligibility(values) {
   const skipReasons = [];
 
-  if (!values.entryxclasses_uuid) skipReasons.push("missing_entryxclasses_uuid");
+  if (!values.trip_identity_key) skipReasons.push("missing_trip_identity");
   if (!values.h_eid) skipReasons.push("missing_h_eid");
 
   return {
@@ -1667,6 +1685,7 @@ function buildTripTriggerEvaluationContext(result, priorLogFields) {
   return {
     currentByField: {
       entryxclasses_uuid: result.entryxclasses_uuid,
+      trip_identity_key: result.trip_identity_key,
       app_show_id: result.app_show_id,
       app_sql_date: result.app_sql_date,
       class_id: normalized.class_id,
@@ -1783,7 +1802,7 @@ function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, tr
   const canonical = result.canonicalOutputs || {};
   const computedOutputs = result.computedOutputs || {};
   const calcLogKey = [
-    result.entryxclasses_uuid || result.recordId || "na",
+    result.trip_identity_key || result.entryxclasses_uuid || result.recordId || "na",
     CALC_VERSION,
     CALC_MODE,
     calcRunId || createdAt,
@@ -1813,7 +1832,7 @@ function buildTripLogRecord(result, patchFailure, calcRunId, tripLogFieldSet, tr
 
   setIfPresent(fields, LOG_KEY_FIELDS.CALC_LOG_KEY, calcLogKey);
   setIfPresent(fields, LOG_KEY_FIELDS.RS_RUN_ID, calcRunId || createdAt);
-  setIfPresent(fields, LOG_KEY_FIELDS.ENTRYXCLASSES_UUID, result.entryxclasses_uuid);
+  setIfPresent(fields, LOG_KEY_FIELDS.ENTRYXCLASSES_UUID, result.trip_identity_key || result.entryxclasses_uuid);
   setIfPresent(fields, LOG_KEY_FIELDS.WATCH_TRIP_RECORD_ID, result.recordId);
   if (LOG_KEY_FIELDS.WATCH_TRIPS_LINK && result.recordId) {
     fields[LOG_KEY_FIELDS.WATCH_TRIPS_LINK] = linkOne(result.recordId);
@@ -1954,6 +1973,7 @@ async function main() {
     const result = {
       recordId: record.id,
       entryxclasses_uuid: values.entryxclasses_uuid,
+      trip_identity_key: values.trip_identity_key,
       app_show_id: values.app_show_id,
       app_sql_date: values.app_sql_date,
       inputsForLog: { raw: built.rawInputs, normalized: values },
@@ -2004,7 +2024,7 @@ async function main() {
 
     if (result.anomalies.length > 0) {
       summary.anomaly_rows += 1;
-      pushSample(summary.anomaly_samples, `${result.entryxclasses_uuid || record.id}:${result.anomalies[0]}`);
+      pushSample(summary.anomaly_samples, `${result.trip_identity_key || result.entryxclasses_uuid || record.id}:${result.anomalies[0]}`);
     }
 
     results.push(result);
@@ -2042,7 +2062,7 @@ async function main() {
       tripLogFieldSet,
       tripLogFieldMeta,
       activeTriggerTags,
-      priorTripLogByUuid.get(result.entryxclasses_uuid) || null
+      priorTripLogByUuid.get(result.trip_identity_key) || priorTripLogByUuid.get(result.entryxclasses_uuid) || null
     );
     summary.trigger_hits += tripLogRecord.firedTriggerFields.length;
     tripLogRecords.push({ fields: tripLogRecord.fields });
