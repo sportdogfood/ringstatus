@@ -131,6 +131,8 @@ const FIELD_SCORE2                = process.env.FIELD_SCORE2 || "score2";
 const FIELD_SCORE3                = process.env.FIELD_SCORE3 || "score3";
 
 const PROTECTED_WATCH_TRIPS_FIELDS = new Set([
+  FIELD_ENTRY_ID,
+  FIELD_ENTRY_NUMBER,
   FIELD_STATUS,
   FIELD_ESTIMATED_START_TIME,
   FIELD_ESTIMATED_END_TIME,
@@ -1288,6 +1290,7 @@ async function fetchShowsMap() {
             liveclass_trip_matched++;
             trip_matched++;
             setTripLevelFields(updateFields, {
+              entry_id: normNum(liveCtx.trip.entry_id),
               order_of_go: normNum(liveCtx.trip.order_of_go, IGNORE_NUM.order_of_go),
               actual_order: normNum(liveCtx.trip.actual_order),
               gone_in: normNum(liveCtx.trip.gone_in),

@@ -39,6 +39,7 @@ const GROUPS_LIVE_FIELDS = [
 ];
 
 const WATCH_TRIPS_RAW_FIELDS = [
+  "entry_id",
   "order_of_go",
   "estimated_start_time",
   "total_trips",
@@ -215,8 +216,8 @@ function missingSamples(rows) {
 async function snapshot() {
   const heartbeat = await latestHeartbeat();
   const heartbeatFields = heartbeat?.fields || {};
-  const appShowId = numOrNull(heartbeatFields.show_id);
-  const appSqlDate = toIsoDateOnly(heartbeatFields.sql_date);
+  const appShowId = numOrNull(firstValue(heartbeatFields.app_show_id)) ?? numOrNull(heartbeatFields.show_id);
+  const appSqlDate = toIsoDateOnly(firstValue(heartbeatFields.app_sql_date)) ?? toIsoDateOnly(heartbeatFields.sql_date);
 
   const [watchScheduleRows, watchTripsRows, allGroupsLiveRows] = await Promise.all([
     airtableList(TABLE_WATCH_SCHEDULE, { view: VIEW_HEARTBEAT, pageSize: 100 }),
@@ -249,7 +250,9 @@ async function snapshot() {
       set_intervals: firstValue(heartbeatFields[HEARTBEAT_SET_INTERVALS_FIELD]) ?? null,
       interval: firstValue(heartbeatFields[HEARTBEAT_INTERVAL_FIELD]) ?? null,
       app_sid: appShowId,
-      app_sql_date: strOrNull(heartbeatFields.sql_date),
+      raw_sql_date: strOrNull(heartbeatFields.sql_date),
+      app_sql_date: strOrNull(firstValue(heartbeatFields.app_sql_date)) || strOrNull(heartbeatFields.sql_date),
+      shifted_to_next_day: firstValue(heartbeatFields.shifted_to_next_day) ?? null,
       app_time: strOrNull(heartbeatFields.time),
     },
     watch_schedule: {

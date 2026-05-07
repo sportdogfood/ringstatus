@@ -12,6 +12,19 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+function Get-ConfigValue {
+    param([string]$Name)
+
+    foreach ($scope in @('Process', 'User', 'Machine')) {
+        $value = [Environment]::GetEnvironmentVariable($Name, $scope)
+        if (-not [string]::IsNullOrWhiteSpace($value)) {
+            return $value
+        }
+    }
+
+    return $null
+}
+
 function ConvertTo-PlainHashtable {
     param([object]$Value)
 
@@ -116,13 +129,18 @@ $authorizationUsed = $false
 $config = $null
 
 try {
+    $sessionJsonOverride = Get-ConfigValue -Name 'SGL_FETCH_SESSION_JSON'
+    if (-not [string]::IsNullOrWhiteSpace($sessionJsonOverride)) {
+        $SessionJsonPath = $sessionJsonOverride
+    }
+
     if (-not [string]::IsNullOrWhiteSpace($SessionJsonPath) -and (Test-Path -LiteralPath $SessionJsonPath)) {
         $config = Get-Content -LiteralPath $SessionJsonPath -Raw | ConvertFrom-Json
         $sessionJsonUsed = $true
     }
 
     $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-    $session.UserAgent = $env:SGL_USER_AGENT
+    $session.UserAgent = Get-ConfigValue -Name 'SGL_USER_AGENT'
     if ([string]::IsNullOrWhiteSpace($session.UserAgent) -and $config -and $config.userAgent) {
         $session.UserAgent = [string]$config.userAgent
     }
@@ -141,8 +159,9 @@ try {
         }
     }
 
-    if (-not [string]::IsNullOrWhiteSpace($env:SGL_COOKIE_HEADER)) {
-        Add-CookieHeaderPairs -Session $session -CookieHeader $env:SGL_COOKIE_HEADER
+    $cookieHeader = Get-ConfigValue -Name 'SGL_COOKIE_HEADER'
+    if (-not [string]::IsNullOrWhiteSpace($cookieHeader)) {
+        Add-CookieHeaderPairs -Session $session -CookieHeader $cookieHeader
         $cookieHeaderUsed = $true
     }
 
@@ -163,9 +182,10 @@ try {
         'sgl-request-origin' = 'SGL-API'
     }
 
-    $authorization = $env:SGL_AUTHORIZATION
-    if ([string]::IsNullOrWhiteSpace($authorization) -and -not [string]::IsNullOrWhiteSpace($env:SGL_BEARER_TOKEN)) {
-        $authorization = "Bearer $($env:SGL_BEARER_TOKEN)"
+    $authorization = Get-ConfigValue -Name 'SGL_AUTHORIZATION'
+    $bearerToken = Get-ConfigValue -Name 'SGL_BEARER_TOKEN'
+    if ([string]::IsNullOrWhiteSpace($authorization) -and -not [string]::IsNullOrWhiteSpace($bearerToken)) {
+        $authorization = "Bearer $bearerToken"
     }
     if ([string]::IsNullOrWhiteSpace($authorization) -and $config -and $config.authorization) {
         $authorization = [string]$config.authorization

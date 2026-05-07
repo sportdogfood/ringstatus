@@ -27,7 +27,12 @@ assert.ok(
 
 assert.ok(
   orchestrator.includes('DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D"'),
-  "schedules_dailyv2 must default to slots B/D so schedule and trip fetches are separated"
+  "schedules_dailyv2 must default to slots B/D in non-NIGHT modes"
+);
+
+assert.ok(
+  orchestrator.includes('DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS = "A,C"'),
+  "NIGHT schedules_dailyv2 must run on A/C before trips so next-day schedule exists"
 );
 
 assert.ok(
@@ -43,6 +48,12 @@ assert.ok(
 assert.ok(
   /runNodeScript\("schedules_dailyv2\.js"\)[\s\S]+if\s*\(!schedulesDailyResult\.ok\)/.test(orchestrator),
   "schedule downstream work must be blocked when schedules_dailyv2 fails"
+);
+
+assert.ok(
+  orchestrator.includes('reason: "schedules_dailyv2_failed"') &&
+    /if\s*\(scheduleDueFailed\s*&&\s*\(tripsDailyDue\s*\|\|\s*tripsTaggerDue\s*\|\|\s*tripsCalcDue\)\)/.test(orchestrator),
+  "trip lanes must be blocked when a due schedule refresh fails"
 );
 
 assert.ok(

@@ -25,6 +25,7 @@ const DEFAULT_TRIPS_DAILY_SLOTS = "A,C";
 const DEFAULT_TRIPS_TAGGER_SLOTS = "C";
 const DEFAULT_TRIPS_CALCULATOR_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
+const DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "";
 const DEFAULT_PUBLISHER_SLOTS = "A,B,C,D";
 
@@ -143,7 +144,11 @@ async function latestHeartbeat() {
       HEARTBEAT_SET_INTERVALS_FIELD,
       HEARTBEAT_INTERVAL_FIELD,
       "show_id",
+      "app_show_id",
       "sql_date",
+      "app_sql_date",
+      "app_dow_raw",
+      "shifted_to_next_day",
       "time",
     ],
   });
@@ -280,7 +285,13 @@ async function runOrchestrator() {
       return;
     }
 
-    const schedulesDailyDue = slotIsDue(slot, process.env.ORCH_SCHEDULES_DAILY_SLOTS, DEFAULT_SCHEDULES_DAILY_SLOTS);
+    const schedulesDailyDefaultSlots = mode === "NIGHT"
+      ? DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS
+      : DEFAULT_SCHEDULES_DAILY_SLOTS;
+    const schedulesDailySlots = mode === "NIGHT"
+      ? (process.env.ORCH_SCHEDULES_DAILY_NIGHT_SLOTS || process.env.ORCH_SCHEDULES_DAILY_SLOTS)
+      : process.env.ORCH_SCHEDULES_DAILY_SLOTS;
+    const schedulesDailyDue = slotIsDue(slot, schedulesDailySlots, schedulesDailyDefaultSlots);
     const schedulesCalcDue = slotIsDue(slot, process.env.ORCH_SCHEDULES_CALCULATOR_SLOTS, DEFAULT_SCHEDULES_CALCULATOR_SLOTS);
     const tripsDailyDue = slotIsDue(slot, process.env.ORCH_TRIPS_DAILY_SLOTS, DEFAULT_TRIPS_DAILY_SLOTS);
     const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
@@ -288,11 +299,13 @@ async function runOrchestrator() {
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
 
     let upstreamOk = true;
+    let scheduleDueFailed = false;
 
     if (schedulesDailyDue) {
       const schedulesDailyResult = runNodeScript("schedules_dailyv2.js");
       if (!schedulesDailyResult.ok) {
         upstreamOk = false;
+        scheduleDueFailed = true;
         appendEvent({ ok: false, event: "schedule_downstream_blocked", reason: "schedules_dailyv2_failed" });
       } else if (schedulesCalcDue) {
         const schedulesCalcResult = runNodeScript("schedules_calculatorv2.js");
@@ -302,7 +315,12 @@ async function runOrchestrator() {
 
     let tripsOk = true;
     let tripsRan = false;
-    if (tripsDailyDue) {
+    if (scheduleDueFailed && (tripsDailyDue || tripsTaggerDue || tripsCalcDue)) {
+      tripsOk = false;
+      appendEvent({ ok: false, event: "trips_downstream_blocked", reason: "schedules_dailyv2_failed" });
+    }
+
+    if (tripsOk && tripsDailyDue) {
       tripsRan = true;
       const tripsDailyResult = runNodeScript("trips_dailyv2.js");
       if (!tripsDailyResult.ok) {

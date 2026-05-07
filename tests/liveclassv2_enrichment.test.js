@@ -75,6 +75,7 @@ assert.strictEqual(live.ring_number, 3);
 const match = findLiveClassTrip(live, { entryNumber: 3160 });
 assert.deepStrictEqual(match, {
   live_trip_id: "200383053",
+  entry_id: 200383053,
   entry_number: 3160,
   horse: "MARKANTO A",
   rider_name: "TANNER KOROTKIN",

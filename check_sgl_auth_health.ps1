@@ -59,9 +59,11 @@ function Restore-EnvValues {
 
 function Test-AuthConfigured {
     foreach ($name in $authEnvNames) {
-        $value = [Environment]::GetEnvironmentVariable($name, 'Process')
-        if (-not [string]::IsNullOrWhiteSpace($value)) {
-            return $true
+        foreach ($scope in @('Process', 'User', 'Machine')) {
+            $value = [Environment]::GetEnvironmentVariable($name, $scope)
+            if (-not [string]::IsNullOrWhiteSpace($value)) {
+                return $true
+            }
         }
     }
     return (Test-Path -LiteralPath $defaultSessionJson)

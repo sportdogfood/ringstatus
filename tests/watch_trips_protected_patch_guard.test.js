@@ -15,6 +15,8 @@ const protectedFields = [
   "estimated_time",
   "gone_in",
   "h_eid",
+  "entry_id",
+  "entry_number",
   "time_one",
   "time_two",
   "time_three",
