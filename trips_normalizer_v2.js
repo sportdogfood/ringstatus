@@ -38,6 +38,17 @@ function normalizeKey(value) {
   return String(value).trim();
 }
 
+function boolValue(value) {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+  if (typeof value === "string") {
+    const text = value.trim().toLowerCase();
+    if (["true", "yes", "1", "checked"].includes(text)) return true;
+    if (["false", "no", "0", "unchecked"].includes(text)) return false;
+  }
+  return false;
+}
+
 function fallbackKeyPart(value) {
   return normalizeKey(value)
     .toLowerCase()
@@ -96,13 +107,17 @@ function buildScheduleMap(rows) {
       completed_trips: numOrNull(fields.completed_trips),
       status: strOrNull(fields.status),
       class_group_sequence: numOrNull(fields.class_group_sequence),
+      is_target: boolValue(fields.is_target),
       schedule_show_datev2: toIsoDateOnly(pickFirst(fields.schedule_show_datev2, fields[" scheduled_date"], fields.show_date)),
     };
 
     if (classId !== null) byClassId.set(String(classId), schedule);
     if (classNumber !== undefined) {
       const classNumberKey = String(classNumber);
-      if (!byClassNumber.has(classNumberKey)) byClassNumber.set(classNumberKey, schedule);
+      const existing = byClassNumber.get(classNumberKey);
+      if (!existing || (!existing.is_target && schedule.is_target)) {
+        byClassNumber.set(classNumberKey, schedule);
+      }
     }
   }
 

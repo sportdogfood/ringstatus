@@ -500,6 +500,7 @@ async function fetchWatchScheduleRows() {
       "completed_trips",
       "status",
       "class_group_sequence",
+      "is_target",
       "schedule_show_datev2",
       " scheduled_date",
       "show_date",
@@ -1672,7 +1673,9 @@ async function main() {
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
   const scopedScheduleRows = scheduleRows.filter((row) => scheduleRowMatchesHeartbeat(row, heartbeat));
-  const scheduleByClassId = buildScheduleMap(scopedScheduleRows);
+  const targetScheduleRows = scopedScheduleRows.filter((row) => boolValue(row?.fields?.is_target));
+  const scheduleRowsForTripJoin = targetScheduleRows.length ? targetScheduleRows : scopedScheduleRows;
+  const scheduleByClassId = buildScheduleMap(scheduleRowsForTripJoin);
   const activeTenantMap = new Map();
   for (const row of activeTenantRows) {
     if (!row?.tenant_id || activeTenantMap.has(row.tenant_id)) continue;
@@ -2142,6 +2145,9 @@ async function main() {
     mode: heartbeat.mode,
     active_tenant_ids: activeTenantIds.length,
     watch_schedule_rows: scheduleRows.length,
+    scoped_watch_schedule_rows: scopedScheduleRows.length,
+    target_watch_schedule_rows: targetScheduleRows.length,
+    watch_schedule_join_rows: scheduleRowsForTripJoin.length,
     watch_schedule_classes: scheduleByClassId.size,
     normalized_rows: normalizedRows.length,
     unique_rows: scopedRows.length,
