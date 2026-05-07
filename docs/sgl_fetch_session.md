@@ -72,3 +72,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\sgl_fetch.ps1 `
 ```
 
 Expected: `ok:true`, status `200`, and a body length much larger than `{}`.
+
+If SGL returns HTTP `200` with a body of `{}`, `sgl_fetch.ps1` reports
+`ok:false` with `reason:"soft_payload_empty"`. Treat that as a blocked/stale
+browser session or soft-throttle signal, not a valid empty dataset.

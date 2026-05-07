@@ -264,15 +264,21 @@ try {
         $contentLength = [int64]([string]$response.Headers['Content-Length'])
     }
 
+    $bodyLength = [System.Text.Encoding]::UTF8.GetByteCount($content)
+    $softPayloadReason = $null
+    if ($content.Trim() -eq '{}') {
+        $softPayloadReason = 'soft_payload_empty'
+    }
+
     $meta = [ordered]@{
-        ok = $true
+        ok = ($null -eq $softPayloadReason)
         transport = 'powershell_iwr'
         url = $Url
         output_path = $resolvedOutputPath
         status_code = [int]$response.StatusCode
         content_length = $contentLength
         raw_content_length = [int64]$response.RawContentLength
-        body_length = [System.Text.Encoding]::UTF8.GetByteCount($content)
+        body_length = $bodyLength
         session_json_used = $sessionJsonUsed
         cookie_header_used = $cookieHeaderUsed
         authorization_used = $authorizationUsed
@@ -281,7 +287,15 @@ try {
         recaptcha_used = $recaptchaUsed
     }
 
+    if ($softPayloadReason) {
+        $meta.reason = $softPayloadReason
+        $meta.error = $softPayloadReason
+    }
+
     $meta | ConvertTo-Json -Compress -Depth 5
+    if ($softPayloadReason) {
+        exit 2
+    }
 }
 catch {
     $meta = [ordered]@{
