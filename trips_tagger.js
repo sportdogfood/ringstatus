@@ -35,12 +35,19 @@ const {
   normalizeClassEndpointWithCgid,
 } = require("./lib/watch_trips_enrichment");
 const {
+  buildGroupsLiveMap,
+  buildLiveClassDataEndpoint,
+  findLiveClassTrip,
+  normalizeLiveClassDataPayload,
+} = require("./lib/liveclassv2_enrichment");
+const {
   recordMatchesAppScope,
 } = require("./lib/watch_trips_scope");
 
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "heartbeat";
 const SHOWS_TABLE = process.env.SHOWS_TABLE || "shows";
+const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
@@ -61,6 +68,10 @@ const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 
 const APP_RING_ENDPOINT = process.env.APP_RING_ENDPOINT || `${BASE_URL}/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+const LIVECLASS_BASE_URL = String(
+  process.env.LIVECLASS_BASE_URL ||
+  "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2"
+).trim().replace(/\/+$/, "");
 
 // watch_trips source fields
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
@@ -377,6 +388,48 @@ async function airtableList(tableName, viewName) {
   }
 
   return out;
+}
+
+async function fetchLiveClassData(endpoint, expectedClassId) {
+  const res = await fetchWithRetry(endpoint, {
+    method: "GET",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "User-Agent": process.env.SGL_USER_AGENT || "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      Referer: "https://www.wellingtoninternational.com/",
+    },
+  });
+  const text = await res.text();
+
+  if (!res.ok) {
+    throw new Error(`err:liveclass_http_${res.status} body=${text.slice(0, 200)}`);
+  }
+
+  let json = null;
+  try {
+    json = JSON.parse(text);
+  } catch {
+    throw new Error(`err:liveclass_invalid_json body_length=${Buffer.byteLength(text || "", "utf8")}`);
+  }
+
+  if (!json || typeof json !== "object" || Array.isArray(json) || Object.keys(json).length === 0) {
+    throw new Error(`soft_payload_empty body_length=${Buffer.byteLength(text || "", "utf8")}`);
+  }
+
+  const normalized = normalizeLiveClassDataPayload(json);
+  const expected = numOrNull(expectedClassId);
+  if (expected !== null && normalized.class_id !== expected) {
+    throw new Error(`err:liveclass_id_mismatch expected=${expected} actual=${normalized.class_id}`);
+  }
+  if (!Array.isArray(json.rows)) {
+    throw new Error(`err:liveclass_missing_rows keys=${Object.keys(json).join(",")}`);
+  }
+
+  return {
+    ok: true,
+    normalized,
+    body_length: Buffer.byteLength(text || "", "utf8"),
+  };
 }
 
 async function airtablePatchRecords(tableName, updates) {
@@ -872,8 +925,73 @@ async function fetchShowsMap() {
       }
     }
 
+    let liveGroupsByGroupId = new Map();
+    let liveGroupsError = null;
+    try {
+      const groupsLiveRows = await airtableList(TABLE_GROUPS_LIVE, null);
+      liveGroupsByGroupId = buildGroupsLiveMap(groupsLiveRows, appCtx);
+    } catch (e) {
+      liveGroupsError = String(e?.message || e).slice(0, 300);
+      console.log(`endpoint warn: err:groups_live_fetch_failed :: ${liveGroupsError}`);
+    }
+
+    const liveClassIds = new Set();
+    for (const row of recInputs) {
+      const liveGroup = liveGroupsByGroupId.get(String(row.class_group_id));
+      if (!liveGroup) continue;
+      for (const classId of liveGroup.class_ids || []) liveClassIds.add(String(classId));
+    }
+
     const endpointCache = new Map();
     const endpointErrors = [];
+
+    const liveClassDataCache = new Map();
+    for (const classId of liveClassIds) {
+      const endpoint = buildLiveClassDataEndpoint({
+        baseUrl: LIVECLASS_BASE_URL,
+        showId: appCtx.app_show_id,
+        classId,
+      });
+      if (!endpoint) continue;
+      try {
+        const result = await fetchLiveClassData(endpoint, classId);
+        liveClassDataCache.set(String(classId), {
+          ok: true,
+          endpoint,
+          ...result,
+        });
+      } catch (e) {
+        const reason = String(e?.message || e).slice(0, 300);
+        liveClassDataCache.set(String(classId), {
+          ok: false,
+          endpoint,
+          reason,
+        });
+        endpointErrors.push({ endpoint, reason });
+        console.log(`endpoint warn: err:liveclass_fetch_failed :: ${endpoint} :: ${reason}`);
+      }
+    }
+
+    function liveContextFor(row) {
+      const liveGroup = liveGroupsByGroupId.get(String(row.class_group_id)) || null;
+      if (!liveGroup) return { group: null, trip: null, classId: null };
+
+      const preferredClassIds = [];
+      if (row.class_id !== null && row.class_id !== undefined) preferredClassIds.push(String(row.class_id));
+      for (const classId of liveGroup.class_ids || []) {
+        const key = String(classId);
+        if (!preferredClassIds.includes(key)) preferredClassIds.push(key);
+      }
+
+      for (const classId of preferredClassIds) {
+        const cached = liveClassDataCache.get(String(classId));
+        if (!cached?.ok) continue;
+        const trip = findLiveClassTrip(cached.normalized, { entryNumber: row.entry_number });
+        if (trip) return { group: liveGroup, trip, classId, payload: cached.normalized };
+      }
+
+      return { group: liveGroup, trip: null, classId: null };
+    }
 
     for (const endpoint of uniqueEndpoints) {
       try {
