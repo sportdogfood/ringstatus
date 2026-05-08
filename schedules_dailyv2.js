@@ -615,11 +615,17 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload) {
   const summary = {
     enabled: PREFETCH_FORWARD_SCHEDULES,
     early_schedule_dir: EARLY_SCHEDULE_PAYLOAD_DIR,
+    skipped: false,
     current: null,
     forward: [],
   };
 
   if (!PREFETCH_FORWARD_SCHEDULES) return summary;
+  if (DRY_RUN) {
+    summary.skipped = true;
+    summary.reason = "dry_run";
+    return summary;
+  }
 
   const appShowId = scope?.app_show_idv2;
   const currentDate = scope?.app_sql_datev2;
