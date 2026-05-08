@@ -36,6 +36,11 @@ assert.ok(
 );
 
 assert.ok(
+  orchestrator.includes('DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "A,B,C,D"'),
+  "schedules_calculatorv2 must run after any due schedules_dailyv2 slot so groups_live overlays are promoted"
+);
+
+assert.ok(
   orchestrator.includes('DEFAULT_PUBLISHER_SLOTS = "A,B,C,D"'),
   "publisher must be due on every heartbeat slot so dirty queue records are not stranded"
 );

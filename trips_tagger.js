@@ -1091,7 +1091,10 @@ async function fetchShowsMap() {
     }
 
     const classSignupEndpointCache = new Map();
-    for (const endpoint of uniqueClassSignupEndpoints) {
+    async function fetchClassSignupEndpointCached(endpoint) {
+      if (!endpoint) return null;
+      if (classSignupEndpointCache.has(endpoint)) return classSignupEndpointCache.get(endpoint);
+
       try {
         const fetched = await fetchTextWithConfiguredTransport(endpoint, async (targetEndpoint) => {
           const response = await fetchWithRetry(targetEndpoint, { method: "GET" });
@@ -1104,18 +1107,19 @@ async function fetchShowsMap() {
 
         if (!res.ok) {
           const reason = `err:classsignup_http_${res.status}`;
-          classSignupEndpointCache.set(endpoint, {
+          const cached = {
             ok: false,
             reason,
             detail: txt.slice(0, 300)
-          });
+          };
+          classSignupEndpointCache.set(endpoint, cached);
           endpointErrors.push({
             endpoint: effectiveEndpoint,
             reason,
             detail: txt.slice(0, 300)
           });
           console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint} :: ${txt.slice(0, 200)}`);
-          continue;
+          return cached;
         }
 
         let json = null;
@@ -1123,18 +1127,19 @@ async function fetchShowsMap() {
           json = JSON.parse(txt);
         } catch {
           const reason = "err:classsignup_invalid_json";
-          classSignupEndpointCache.set(endpoint, {
+          const cached = {
             ok: false,
             reason,
             detail: txt.slice(0, 300)
-          });
+          };
+          classSignupEndpointCache.set(endpoint, cached);
           endpointErrors.push({
             endpoint: effectiveEndpoint,
             reason,
             detail: txt.slice(0, 300)
           });
           console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint}`);
-          continue;
+          return cached;
         }
 
         try {
@@ -1154,18 +1159,19 @@ async function fetchShowsMap() {
 
           const reason = e?.reason || "soft_payload";
           const detail = JSON.stringify(softPayloadLogFields(e)).slice(0, 300);
-          classSignupEndpointCache.set(endpoint, {
+          const cached = {
             ok: false,
             reason,
             detail
-          });
+          };
+          classSignupEndpointCache.set(endpoint, cached);
           endpointErrors.push({
             endpoint: effectiveEndpoint,
             reason,
             detail
           });
           console.log(`endpoint warn: ${reason} :: ${effectiveEndpoint} :: ${detail}`);
-          continue;
+          return cached;
         }
 
         const signupEntries = classSignupEntries(json);
@@ -1177,7 +1183,7 @@ async function fetchShowsMap() {
           console.log(`endpoint warn: warn:classsignup_payload_no_usable_entry_keys :: ${effectiveEndpoint} :: entries=${signupEntries.length} authorization_used=${metadata.authorization_used === true}`);
         }
 
-        classSignupEndpointCache.set(endpoint, {
+        const cached = {
           ok: true,
           json,
           entry_count: signupEntries.length,
@@ -1186,21 +1192,25 @@ async function fetchShowsMap() {
           authorization_used: metadata.authorization_used === true,
           cookie_header_used: metadata.cookie_header_used === true,
           session_json_used: metadata.session_json_used === true,
-        });
+        };
+        classSignupEndpointCache.set(endpoint, cached);
+        return cached;
       } catch (e) {
         const reason = "err:classsignup_fetch_exception";
         const detail = String(e?.message || e).slice(0, 300);
-        classSignupEndpointCache.set(endpoint, {
+        const cached = {
           ok: false,
           reason,
           detail
-        });
+        };
+        classSignupEndpointCache.set(endpoint, cached);
         endpointErrors.push({
           endpoint,
           reason,
           detail
         });
         console.log(`endpoint warn: ${reason} :: ${endpoint} :: ${detail}`);
+        return cached;
       }
     }
 
@@ -1222,18 +1232,6 @@ async function fetchShowsMap() {
       process.exitCode = 1;
       return;
     }
-
-    const classSignupEndpointWarnings = [...classSignupEndpointCache.entries()]
-      .filter(([, cached]) => cached?.payload_has_no_usable_entry_keys)
-      .map(([endpoint, cached]) => ({
-        endpoint,
-        reason: "classsignup_payload_no_usable_entry_keys",
-        entry_count: cached.entry_count,
-        usable_entry_count: cached.usable_entry_count,
-        authorization_used: cached.authorization_used,
-        cookie_header_used: cached.cookie_header_used,
-        session_json_used: cached.session_json_used,
-      }));
 
     const updates = [];
     const rowReasonCounts = {};
@@ -1287,30 +1285,67 @@ async function fetchShowsMap() {
           });
 
           if (liveCtx.trip) {
+            let classSignupCached = null;
+            let classSignupEntry = null;
+            let order_of_go = normNum(liveCtx.trip.order_of_go, IGNORE_NUM.order_of_go);
+
+            if (order_of_go === null && classSignupEndpoint) {
+              classSignupCached = await fetchClassSignupEndpointCached(classSignupEndpoint);
+              classSignupEntry = classSignupCached?.ok
+                ? findClassSignupEntry(classSignupCached.json, {
+                  entryId: entry_id,
+                  entryNumber: entry_number,
+                  classNumber: class_number,
+                  classId: class_id,
+                })
+                : null;
+              order_of_go = firstNormNum(
+                IGNORE_NUM.order_of_go,
+                classSignupEntry?.order_of_go,
+                classSignupEntry?.orderOfGo
+              );
+            }
+
             liveclass_trip_matched++;
             trip_matched++;
             setTripLevelFields(updateFields, {
               entry_id: normNum(liveCtx.trip.entry_id),
-              order_of_go: normNum(liveCtx.trip.order_of_go, IGNORE_NUM.order_of_go),
+              order_of_go,
               actual_order: normNum(liveCtx.trip.actual_order),
               gone_in: normNum(liveCtx.trip.gone_in),
-              h_eid: normNum(liveCtx.trip.entry_number),
+              h_eid: normNum(firstNonBlank(
+                liveCtx.trip.entry_number,
+                classSignupEntry?.entry_number,
+                classSignupEntry?.entryNumber,
+                classSignupEntry?.number
+              )),
             });
+
+            let reason = "ok:liveclassv2_matched";
+            if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
+            if (classSignupCached && !classSignupCached.ok) reason = `${reason}|warn:${classSignupCached.reason || "classsignup_fetch_failed"}`;
+            if (classSignupCached?.payload_has_no_usable_entry_keys) reason = `${reason}|warn:classsignup_payload_no_usable_entry_keys`;
+            if (classSignupCached && classSignupCached.authorization_used === false) reason = `${reason}|warn:sgl_auth_not_used`;
+            if (!liveCtx.group.status) reason = `${reason}|warn:missing_status`;
+            if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+            setBaseFields(updateFields, observedAt, reason);
+            bumpReason(reason);
           } else {
             liveclass_group_only++;
-          }
 
-          let reason = liveCtx.trip ? "ok:liveclassv2_matched" : "warn:liveclassv2_group_only";
-          if (!liveCtx.trip) reason = `${reason}|warn:missing_order_of_go`;
-          if (!liveCtx.group.status) reason = `${reason}|warn:missing_status`;
-          if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
-          setBaseFields(updateFields, observedAt, reason);
-          bumpReason(reason);
+            let reason = "warn:liveclassv2_group_only|warn:missing_order_of_go";
+            if (!liveCtx.group.status) reason = `${reason}|warn:missing_status`;
+            if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
+            setBaseFields(updateFields, observedAt, reason);
+            bumpReason(reason);
+          }
           updates.push({ id: rec.id, fields: updateFields });
           continue;
         }
 
-        const classSignupCached = classSignupEndpoint ? classSignupEndpointCache.get(classSignupEndpoint) : null;
+        const classSignupCached = classSignupEndpoint
+          ? await fetchClassSignupEndpointCached(classSignupEndpoint)
+          : null;
         const classSignupEntry = classSignupCached?.ok
           ? findClassSignupEntry(classSignupCached.json, {
             entryId: entry_id,
@@ -1505,7 +1540,9 @@ async function fetchShowsMap() {
         entryNumber: entry_number,
         classId: class_id,
       });
-      const classSignupCached = classSignupEndpoint ? classSignupEndpointCache.get(classSignupEndpoint) : null;
+      const classSignupCached = classSignupEndpoint
+        ? await fetchClassSignupEndpointCached(classSignupEndpoint)
+        : null;
       const classSignupEntry = classSignupCached?.ok
         ? findClassSignupEntry(classSignupCached.json, {
           entryId: entry_id,
@@ -1702,6 +1739,37 @@ async function fetchShowsMap() {
       updates.push({ id: rec.id, fields: updateFields });
     }
 
+    const softClassSignupErrors = endpointErrors.filter((error) =>
+      /^soft_payload_/i.test(String(error?.reason || ""))
+    );
+    if (softClassSignupErrors.length) {
+      console.log(JSON.stringify({
+        ok: false,
+        run_status: "SOFT_PAYLOAD_BLOCKED",
+        reason: "soft_payload_empty",
+        watch_table: WATCH_TABLE,
+        watch_view: WATCH_VIEW,
+        app_endpoint: APP_RING_ENDPOINT,
+        writes_blocked: true,
+        observed_at: observedAt,
+        soft_endpoint_errors: softClassSignupErrors.slice(0, 10),
+      }, null, 2));
+      process.exitCode = 1;
+      return;
+    }
+
+    const classSignupEndpointWarnings = [...classSignupEndpointCache.entries()]
+      .filter(([, cached]) => cached?.payload_has_no_usable_entry_keys)
+      .map(([endpoint, cached]) => ({
+        endpoint,
+        reason: "classsignup_payload_no_usable_entry_keys",
+        entry_count: cached.entry_count,
+        usable_entry_count: cached.usable_entry_count,
+        authorization_used: cached.authorization_used,
+        cookie_header_used: cached.cookie_header_used,
+        session_json_used: cached.session_json_used,
+      }));
+
     let failedRows = [];
 
     if (DRY_RUN) {
@@ -1738,6 +1806,7 @@ async function fetchShowsMap() {
       skipped_missing_entryxclasses_uuid,
       unique_class_endpoints: uniqueEndpoints.size,
       unique_classsignup_endpoints: uniqueClassSignupEndpoints.size,
+      classsignup_endpoints_fetched: classSignupEndpointCache.size,
       groups_live_fetch_error: liveGroupsError,
       groups_live_eligible_groups: liveGroupsByGroupId.size,
       unique_liveclass_endpoints: liveClassIds.size,
