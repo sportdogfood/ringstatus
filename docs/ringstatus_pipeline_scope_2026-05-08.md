@@ -179,6 +179,7 @@ Soft-blocked behavior:
 - do not write empty values
 - do not clear existing fields
 - block downstream calculator and publisher for that lane when the failed payload is required
+- create an `automation_errs` record for every soft/empty SGL payload, including the endpoint path, show/date context, run id, and payload size evidence
 
 ## Source Authority
 

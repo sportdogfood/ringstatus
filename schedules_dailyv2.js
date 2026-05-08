@@ -7,6 +7,7 @@ const path = require("path");
 const {
   assertValidPayload,
   isSoftPayloadError,
+  softPayloadLogFields,
 } = require("./lib/soft_payload_guard");
 const {
   fetchTextWithConfiguredTransport,
@@ -28,6 +29,7 @@ const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
 const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
+const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
 const VIEW_WATCH_SCHEDULE_HEARTBEAT = process.env.VIEW_WATCH_SCHEDULE_HEARTBEAT || "heartbeat";
@@ -391,6 +393,89 @@ async function airtableCreateRecords(tableName, records) {
   return { okRows, failedRows };
 }
 
+async function createAutomationErr(fields) {
+  if (DRY_RUN) return { skipped: true, reason: "dry_run" };
+  const safeFields = {};
+  for (const [key, value] of Object.entries(fields || {})) {
+    if (value === undefined || value === null) continue;
+    if (typeof value === "string" && value.trim() === "") continue;
+    safeFields[key] = value;
+  }
+  if (!Object.keys(safeFields).length) return { skipped: true, reason: "empty_fields" };
+
+  try {
+    return await airtableCreateRecords(TABLE_AUTOMATION_ERRS, [{ fields: safeFields }]);
+  } catch (error) {
+    console.log(`automation_errs write warn: ${String(error?.message || error).slice(0, 300)}`);
+    return { skipped: true, reason: String(error?.message || error).slice(0, 300) };
+  }
+}
+
+function endpointParts(endpoint) {
+  try {
+    const url = new URL(String(endpoint || ""));
+    const pathText = url.pathname || "";
+    const peopleMatch = pathText.match(/\/people\/([^/]+)/i);
+    const isPeopleEndpoint = !!peopleMatch;
+    return {
+      path: `${pathText}${url.search || ""}`,
+      pid: peopleMatch ? numOrNull(peopleMatch[1]) : null,
+      people_show_id: isPeopleEndpoint ? numOrNull(url.searchParams.get("show_id")) : null,
+      app_show_id: numOrNull(url.searchParams.get("show_id")),
+      app_sql_date: strOrNull(url.searchParams.get("date")),
+    };
+  } catch {
+    return {
+      path: String(endpoint || ""),
+      pid: null,
+      people_show_id: null,
+      app_show_id: null,
+      app_sql_date: null,
+    };
+  }
+}
+
+async function recordSoftPayloadAudit(error, endpoint, audit = {}) {
+  if (!isSoftPayloadError(error)) return null;
+  const info = softPayloadLogFields(error);
+  const parts = endpointParts(info.endpoint || endpoint);
+  const errorType = strOrNull(info.reason) || "soft_payload";
+  const appShowId = numOrNull(audit.app_show_id) ?? parts.app_show_id;
+  const appSqlDate = strOrNull(audit.app_sql_date) || parts.app_sql_date;
+  const pathText = parts.path || String(info.endpoint || endpoint || "");
+  const automationKey = strOrNull(audit.automation_key) ||
+    [
+      "schedules_dailyv2",
+      errorType,
+      appShowId || "show",
+      appSqlDate || "date",
+      pathText,
+    ].join("|").slice(0, 1000);
+
+  return createAutomationErr({
+    automation_key: automationKey,
+    automation_name: strOrNull(audit.automation_name) || "schedules_dailyv2",
+    error_type: errorType,
+    app_sql_date: appSqlDate,
+    run_id: numOrNull(audit.run_id),
+    last_run: strOrNull(audit.last_run),
+    resolved: false,
+    message: [
+      `path=${pathText}`,
+      `endpoint=${info.endpoint || endpoint || ""}`,
+      `status=${info.http_status ?? ""}`,
+      `body_length=${info.body_length ?? ""}`,
+      `content_length=${info.content_length ?? ""}`,
+      `transport=${error?.transport || error?.metadata?.transport || ""}`,
+      `source=${strOrNull(audit.source) || ""}`,
+      `message=${String(error?.message || errorType).slice(0, 500)}`,
+    ].join(" "),
+    pid: numOrNull(audit.pid) ?? parts.pid,
+    app_show_id: appShowId,
+    people_show_id: numOrNull(audit.people_show_id) ?? parts.people_show_id,
+  });
+}
+
 async function airtablePatchRecords(tableName, updates) {
   if (!updates.length) return { okRows: 0, failedRows: [] };
 
@@ -428,15 +513,21 @@ async function airtablePatchRecords(tableName, updates) {
   return { okRows, failedRows };
 }
 
-async function fetchJson(url) {
-  const fetched = await fetchTextWithConfiguredTransport(url, async (endpoint) => {
-    const response = await fetchWithRetry(endpoint, {
-      method: "GET",
-      headers: { Accept: "application/json" },
+async function fetchJson(url, audit = {}) {
+  let fetched = null;
+  try {
+    fetched = await fetchTextWithConfiguredTransport(url, async (endpoint) => {
+      const response = await fetchWithRetry(endpoint, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
+      const text = await response.text().catch(() => "");
+      return { response, text, endpoint };
     });
-    const text = await response.text().catch(() => "");
-    return { response, text, endpoint };
-  });
+  } catch (error) {
+    await recordSoftPayloadAudit(error, url, audit);
+    throw error;
+  }
 
   const { response, text } = fetched;
   const endpoint = fetched.endpoint || url;
@@ -464,6 +555,7 @@ async function fetchJson(url) {
     });
   } catch (error) {
     if (isSoftPayloadError(error)) {
+      await recordSoftPayloadAudit(error, endpoint, audit);
       throw new Error(
         `${error?.reason || error?.message || "soft_payload"} ` +
         `endpoint=${endpoint} status=${error?.http_status ?? response.status} ` +
@@ -611,7 +703,7 @@ function forwardScheduleDates(startDate, endDate) {
   return dates;
 }
 
-async function cacheSuccessfulSchedulePayloads(scope, currentPayload) {
+async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = null, lastRun = null } = {}) {
   const summary = {
     enabled: PREFETCH_FORWARD_SCHEDULES,
     early_schedule_dir: EARLY_SCHEDULE_PAYLOAD_DIR,
@@ -645,7 +737,15 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload) {
     const url = buildScheduleEndpoint(scheduleDate, appShowId);
     const item = { date: scheduleDate, url, ok: false, file_path: null, reason: null };
     try {
-      const payload = await fetchJson(url);
+      const payload = await fetchJson(url, {
+        automation_key: `schedules_dailyv2|forward_schedule|${appShowId}|${scheduleDate}`,
+        automation_name: "schedules_dailyv2",
+        source: "forward_schedule_cache",
+        app_show_id: appShowId,
+        app_sql_date: scheduleDate,
+        run_id: runId,
+        last_run: lastRun,
+      });
       const writeResult = writeEarlySchedulePayload(appShowId, scheduleDate, payload, epochSeconds);
       item.ok = true;
       item.file_path = writeResult.file_path;
@@ -705,7 +805,13 @@ async function enrichScheduleRowsWithClassDetails(rows, scope) {
     const endpoint = buildClassesEndpoint(classId, scope.app_show_idv2);
     if (!endpoint) return;
     try {
-      const payload = await fetchJson(endpoint);
+      const payload = await fetchJson(endpoint, {
+        automation_key: `schedules_dailyv2|class_detail|${scope?.app_show_idv2 || ""}|${scope?.app_sql_datev2 || ""}|${classId}`,
+        automation_name: "schedules_dailyv2",
+        source: "classes_endpoint",
+        app_show_id: scope?.app_show_idv2,
+        app_sql_date: scope?.app_sql_datev2,
+      });
       detailById.set(String(classId), normalizeClassEndpointPayload(payload));
     } catch (error) {
       failures.push({
@@ -1530,7 +1636,15 @@ async function runDaily() {
   let scope = null;
 
   try {
-    emptyPayload = await fetchJson(emptyUrl);
+    emptyPayload = await fetchJson(emptyUrl, {
+      automation_key: `schedules_dailyv2|empty_ping_schedule|${baseHeartbeatContext.app_show_idv2}|00/00/00`,
+      automation_name: "schedules_dailyv2",
+      source: "empty_ping_schedule",
+      app_show_id: baseHeartbeatContext.app_show_idv2,
+      app_sql_date: baseHeartbeatContext.raw_sql_date,
+      run_id: runId,
+      last_run: dateOnly,
+    });
   } catch (error) {
     emptyPingError = String(error?.message || error);
   }
@@ -1562,7 +1676,15 @@ async function runDaily() {
   let datedFallback = null;
 
   try {
-    datedPayload = await fetchJson(datedUrl);
+    datedPayload = await fetchJson(datedUrl, {
+      automation_key: `schedules_dailyv2|dated_schedule|${scope.app_show_idv2}|${scope.app_sql_datev2}`,
+      automation_name: "schedules_dailyv2",
+      source: "dated_schedule",
+      app_show_id: scope.app_show_idv2,
+      app_sql_date: scope.app_sql_datev2,
+      run_id: runId,
+      last_run: dateOnly,
+    });
   } catch (error) {
     datedFetchError = String(error?.message || error);
     if (!isSoftPayloadError(error) && !/^soft_payload_/i.test(datedFetchError)) throw error;
@@ -1595,7 +1717,7 @@ async function runDaily() {
         current: null,
         forward: [],
       }
-    : await cacheSuccessfulSchedulePayloads(scope, datedPayload);
+    : await cacheSuccessfulSchedulePayloads(scope, datedPayload, { runId, lastRun: dateOnly });
 
   const emptyResult = emptyPayload
     ? {

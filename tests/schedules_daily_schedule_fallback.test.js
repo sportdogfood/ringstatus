@@ -55,4 +55,18 @@ assert.ok(
   "schedule cache filenames should be schedule_YYYY-MM-DD_show_SHOWID_EPOCH.json"
 );
 
+assert.ok(
+  source.includes('TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs"') &&
+    source.includes("createAutomationErr") &&
+    source.includes("recordSoftPayloadAudit"),
+  "soft/empty SGL payloads should be written to automation_errs"
+);
+
+assert.ok(
+  source.includes("path=") &&
+    source.includes("body_length=") &&
+    source.includes("content_length="),
+  "automation_errs message should retain the endpoint path and payload size evidence"
+);
+
 console.log("schedules_daily_schedule_fallback tests passed");
