@@ -2,6 +2,8 @@ const {
   normalizeSchedulePayload,
   chooseScheduleVariant,
 } = require("./schedule_normalizer_v2");
+const fs = require("fs");
+const path = require("path");
 const {
   assertValidPayload,
   isSoftPayloadError,
@@ -40,6 +42,10 @@ const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const SYNC_ACTIVE_GROUPS_FROM_SCHEDULE = String(process.env.SYNC_ACTIVE_GROUPS_FROM_SCHEDULE || "0") === "1";
 const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
 const VALID_MODES = new Set(["DAY", "NIGHT", "OVERNIGHT"]);
+const DEFAULT_SCHEDULE_FALLBACK_DIRS = [
+  path.resolve(__dirname, "tmp", "sgl_schedule_samples"),
+  "C:\\actions-runner\\ringstatus\\manual_sgl_payloads",
+];
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -434,6 +440,108 @@ async function fetchJson(url) {
     throw error;
   }
   return json;
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function scheduleFallbackDirs() {
+  const raw = strOrNull(process.env.SGL_SCHEDULE_FALLBACK_DIRS);
+  const values = raw
+    ? raw.split(path.delimiter)
+    : DEFAULT_SCHEDULE_FALLBACK_DIRS;
+
+  return values
+    .map((value) => strOrNull(value))
+    .filter(Boolean);
+}
+
+function collectFilesRecursive(dirPath, out = []) {
+  if (!dirPath || !fs.existsSync(dirPath)) return out;
+
+  for (const entry of fs.readdirSync(dirPath, { withFileTypes: true })) {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      collectFilesRecursive(fullPath, out);
+    } else if (entry.isFile()) {
+      out.push(fullPath);
+    }
+  }
+
+  return out;
+}
+
+function candidateScheduleFallbackFiles(appShowId, appSqlDate) {
+  const showText = escapeRegExp(appShowId);
+  const dateText = escapeRegExp(appSqlDate);
+  const exactSample = new RegExp(`^schedule_${showText}_${dateText}\\.json$`, "i");
+  const manualSample = new RegExp(`^schedule_show-${showText}-${dateText}.*\\.json$`, "i");
+
+  const candidates = [];
+  for (const dirPath of scheduleFallbackDirs()) {
+    for (const filePath of collectFilesRecursive(dirPath)) {
+      const name = path.basename(filePath);
+      if (name.endsWith(".pretty.json")) continue;
+      if (!exactSample.test(name) && !manualSample.test(name)) continue;
+
+      const stat = fs.statSync(filePath);
+      if (!stat.size || stat.size <= 2) continue;
+      candidates.push({ filePath, size: stat.size, mtimeMs: stat.mtimeMs });
+    }
+  }
+
+  candidates.sort((left, right) => right.mtimeMs - left.mtimeMs);
+  return candidates;
+}
+
+function loadScheduleFallbackPayload(appShowId, appSqlDate) {
+  const candidates = candidateScheduleFallbackFiles(appShowId, appSqlDate);
+  const failures = [];
+
+  for (const candidate of candidates) {
+    let text = "";
+    try {
+      text = fs.readFileSync(candidate.filePath, "utf8");
+      const payload = JSON.parse(text);
+      assertValidPayload({
+        payload,
+        text,
+        response: {
+          status: 200,
+          headers: {
+            get(name) {
+              return String(name || "").toLowerCase() === "content-length"
+                ? String(Buffer.byteLength(text || "", "utf8"))
+                : null;
+            },
+          },
+        },
+        lane: "schedules_dailyv2_fallback",
+        endpoint: candidate.filePath,
+        expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
+      });
+      return {
+        ok: true,
+        payload,
+        file_path: candidate.filePath,
+        body_length: Buffer.byteLength(text || "", "utf8"),
+        mtime_ms: candidate.mtimeMs,
+      };
+    } catch (error) {
+      failures.push({
+        file_path: candidate.filePath,
+        reason: String(error?.message || error).slice(0, 300),
+      });
+    }
+  }
+
+  return {
+    ok: false,
+    file_path: null,
+    body_length: null,
+    failures,
+  };
 }
 
 function normalizeClassEndpointPayload(payload) {
@@ -1334,15 +1442,31 @@ async function runDaily() {
   }
 
   const datedUrl = buildScheduleEndpoint(scope.app_sql_datev2, scope.app_show_idv2);
-  const datedPayload = await fetchJson(datedUrl);
+  let datedPayload = null;
+  let datedFetchError = null;
+  let datedFallback = null;
+
+  try {
+    datedPayload = await fetchJson(datedUrl);
+  } catch (error) {
+    datedFetchError = String(error?.message || error);
+    if (!isSoftPayloadError(error) && !/^soft_payload_/i.test(datedFetchError)) throw error;
+
+    datedFallback = loadScheduleFallbackPayload(scope.app_show_idv2, scope.app_sql_datev2);
+    if (!datedFallback.ok) throw error;
+    datedPayload = datedFallback.payload;
+  }
 
   const datedResult = {
     ok: true,
-    source: "dated_schedule",
+    source: datedFallback?.ok ? "dated_schedule_fallback" : "dated_schedule",
     url: datedUrl,
+    fetch_error: datedFetchError,
+    fallback_file: datedFallback?.file_path || null,
+    fallback_body_length: datedFallback?.body_length || null,
     ...normalizeSchedulePayload(datedPayload, {
       scope,
-      source: "dated_schedule",
+      source: datedFallback?.ok ? "dated_schedule_fallback" : "dated_schedule",
       generatedAt: nowIso,
       generatedDate: dateOnly,
     }),
@@ -1507,6 +1631,10 @@ async function runDaily() {
     fetches: {
       dated_schedule: {
         url: datedUrl,
+        source: datedResult.source,
+        fetch_error: datedResult.fetch_error || null,
+        fallback_file: datedResult.fallback_file || null,
+        fallback_body_length: datedResult.fallback_body_length || null,
         rows: datedResult.rows.length,
         schedule_show_datev2: datedResult.schedule_show_datev2 || null,
       },
