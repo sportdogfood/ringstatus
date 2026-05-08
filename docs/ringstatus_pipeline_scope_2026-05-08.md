@@ -260,7 +260,14 @@ Schedule fetch pattern:
 https://sglapi.wellingtoninternational.com/schedule?date={YYYY-MM-DD}&show_id={SHOW_ID}&customer_id=15
 ```
 
-When a schedule payload succeeds for a show, the schedule lane should opportunistically try each subsequent show day through `end_date`, subject to cadence and throttling guards.
+Schedule fetch policy:
+
+1. First try the live SGL schedule endpoint through the local PowerShell fetch path.
+2. If that returns a soft/empty unusable payload, look for cached JSON in `early_sgl_payloads/schedule`.
+3. If no early cache exists, look for manual JSON in `manual_sgl_payloads/schedule`.
+4. Manual HTML belongs in `manual_sgl_payloads/schedule-html` and is a separate scrape input, not the first JSON fallback.
+
+When a live schedule payload succeeds for a show, the schedule lane should store that payload in `early_sgl_payloads/schedule`, then opportunistically try each subsequent show day through `end_date` and store each successful payload there as well. These forward-day cache fetches are support artifacts; they should not drive same-run Airtable writes for a different date.
 
 For show `200000061`, useful daily schedule cache targets are:
 
@@ -272,7 +279,7 @@ For show `200000061`, useful daily schedule cache targets are:
 2026-05-10
 ```
 
-Successful schedule payloads should be stored as temporary JSON fallback files. These fallback files are not the source of truth when fresh SGL data is available, but they are useful when a needed schedule payload later fails, soft-throttles, or returns an unusable body.
+Successful schedule payloads should be stored as early JSON fallback files. These fallback files are not the source of truth when fresh SGL data is available, but they are useful when a needed schedule payload later fails, soft-throttles, or returns an unusable body.
 
 The `/people/{pid}` endpoint is show/week scoped rather than day scoped. A single successful people payload can contain enough full-week trip detail to help pre-live trip creation and fallback matching.
 
@@ -284,34 +291,44 @@ People payload rule:
 - log when fallback data is used
 - treat fallback data as pre-live support, not same-day live authority
 
-Suggested fallback file families:
+Payload folder contract:
 
 ```text
-manual_sgl_payloads/schedule_show-{SHOW_ID}-{YYYY-MM-DD}-{FETCH_EPOCH}-customer-15-fetched-meta.json
-manual_sgl_payloads/people_show-pid-{PID}-{SHOW_ID}-{FETCH_DATE}-{FETCH_EPOCH}-customer-15-fetched-meta.json
+early_sgl_payloads/schedule
+early_sgl_payloads/people
+manual_sgl_payloads/schedule
+manual_sgl_payloads/people
+manual_sgl_payloads/schedule-html
 ```
 
-The final managed cache location and retention policy should be approved before making the fallback automatic.
-
-Manual payload folder:
+Schedule JSON filename pattern:
 
 ```text
-C:\actions-runner\ringstatus\manual_sgl_payloads\
+schedule_{YYYY-MM-DD}_show_{SHOW_ID}_{FETCH_EPOCH}.json
 ```
 
-Manual files in this folder are last-resort fallback inputs when the normal SGL fetch path cannot obtain a usable payload at the time the pipeline needs it.
+Examples:
+
+```text
+manual_sgl_payloads/schedule/schedule_2026-05-08_show_200000061_1778280002.json
+manual_sgl_payloads/schedule/schedule_2026-05-09_show_200000061_1778280002.json
+manual_sgl_payloads/schedule/schedule_2026-05-10_show_200000061_1778280002.json
+manual_sgl_payloads/people/people_8778_show_200000061_1778280002.json
+manual_sgl_payloads/schedule-html/schedule_html_2026-05-08_show_200000061_1778245924.html
+```
+
+Manual files in these folders are last-resort fallback inputs when the normal SGL fetch path cannot obtain a usable payload at the time the pipeline needs it.
 
 Known manual HTML examples:
 
 ```text
-C:\actions-runner\ringstatus\manual_sgl_payloads\schedule_html_show-schedule_show-200000061-2026-05-07-1778196302.html
-C:\actions-runner\ringstatus\manual_sgl_payloads\schedule_html_show-people_show-pid-8778-200000061-2026-05-07-1778196302.html
+C:\actions-runner\ringstatus\manual_sgl_payloads\schedule-html\schedule_html_2026-05-08_show_200000061_1778245924.html
 ```
 
 Derived schedule HTML fallback example:
 
 ```text
-C:\actions-runner\ringstatus\manual_sgl_payloads\schedule_html_show-schedule_html-200000061-2026-05-08-1778245924.html
+C:\actions-runner\ringstatus\manual_sgl_payloads\schedule-html\schedule_html_2026-05-08_show_200000061_1778245924.html
 ```
 
 The derived schedule HTML fallback can be used to form the basic schedule when API schedule data is unavailable. It should be parsed conservatively for:

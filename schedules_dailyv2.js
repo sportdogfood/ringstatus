@@ -42,10 +42,44 @@ const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const SYNC_ACTIVE_GROUPS_FROM_SCHEDULE = String(process.env.SYNC_ACTIVE_GROUPS_FROM_SCHEDULE || "0") === "1";
 const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
 const VALID_MODES = new Set(["DAY", "NIGHT", "OVERNIGHT"]);
+const SGL_PAYLOAD_ROOT = String(process.env.SGL_PAYLOAD_ROOT || "C:\\actions-runner\\ringstatus").trim();
+const EARLY_SGL_PAYLOAD_ROOT = String(
+  process.env.EARLY_SGL_PAYLOAD_ROOT ||
+  path.join(SGL_PAYLOAD_ROOT, "early_sgl_payloads")
+).trim();
+const MANUAL_SGL_PAYLOAD_ROOT = String(
+  process.env.MANUAL_SGL_PAYLOAD_ROOT ||
+  path.join(SGL_PAYLOAD_ROOT, "manual_sgl_payloads")
+).trim();
+const EARLY_SCHEDULE_PAYLOAD_DIR = String(
+  process.env.EARLY_SCHEDULE_PAYLOAD_DIR ||
+  path.join(EARLY_SGL_PAYLOAD_ROOT, "schedule")
+).trim();
+const EARLY_PEOPLE_PAYLOAD_DIR = String(
+  process.env.EARLY_PEOPLE_PAYLOAD_DIR ||
+  path.join(EARLY_SGL_PAYLOAD_ROOT, "people")
+).trim();
+const MANUAL_SCHEDULE_PAYLOAD_DIR = String(
+  process.env.MANUAL_SCHEDULE_PAYLOAD_DIR ||
+  path.join(MANUAL_SGL_PAYLOAD_ROOT, "schedule")
+).trim();
+const MANUAL_PEOPLE_PAYLOAD_DIR = String(
+  process.env.MANUAL_PEOPLE_PAYLOAD_DIR ||
+  path.join(MANUAL_SGL_PAYLOAD_ROOT, "people")
+).trim();
+const MANUAL_SCHEDULE_HTML_DIR = String(
+  process.env.MANUAL_SCHEDULE_HTML_DIR ||
+  path.join(MANUAL_SGL_PAYLOAD_ROOT, "schedule-html")
+).trim();
 const DEFAULT_SCHEDULE_FALLBACK_DIRS = [
-  path.resolve(__dirname, "tmp", "sgl_schedule_samples"),
-  "C:\\actions-runner\\ringstatus\\manual_sgl_payloads",
+  EARLY_SCHEDULE_PAYLOAD_DIR,
+  MANUAL_SCHEDULE_PAYLOAD_DIR,
 ];
+const PREFETCH_FORWARD_SCHEDULES = String(process.env.PREFETCH_FORWARD_SCHEDULES || "1") !== "0";
+const MAX_FORWARD_SCHEDULE_PREFETCH_DAYS = Math.max(
+  0,
+  Number(process.env.MAX_FORWARD_SCHEDULE_PREFETCH_DAYS || "14")
+);
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -475,15 +509,14 @@ function collectFilesRecursive(dirPath, out = []) {
 function candidateScheduleFallbackFiles(appShowId, appSqlDate) {
   const showText = escapeRegExp(appShowId);
   const dateText = escapeRegExp(appSqlDate);
-  const exactSample = new RegExp(`^schedule_${showText}_${dateText}\\.json$`, "i");
-  const manualSample = new RegExp(`^schedule_show-${showText}-${dateText}.*\\.json$`, "i");
+  const scheduleJson = new RegExp(`^schedule_${dateText}_show_${showText}_[0-9]+\\.json$`, "i");
 
   const candidates = [];
   for (const dirPath of scheduleFallbackDirs()) {
     for (const filePath of collectFilesRecursive(dirPath)) {
       const name = path.basename(filePath);
       if (name.endsWith(".pretty.json")) continue;
-      if (!exactSample.test(name) && !manualSample.test(name)) continue;
+      if (!scheduleJson.test(name)) continue;
 
       const stat = fs.statSync(filePath);
       if (!stat.size || stat.size <= 2) continue;
@@ -542,6 +575,82 @@ function loadScheduleFallbackPayload(appShowId, appSqlDate) {
     body_length: null,
     failures,
   };
+}
+
+function schedulePayloadFileName(appShowId, appSqlDate, epochSeconds = Math.floor(Date.now() / 1000)) {
+  return `schedule_${appSqlDate}_show_${appShowId}_${epochSeconds}.json`;
+}
+
+function writeEarlySchedulePayload(appShowId, appSqlDate, payload, epochSeconds) {
+  const dirPath = EARLY_SCHEDULE_PAYLOAD_DIR;
+  fs.mkdirSync(dirPath, { recursive: true });
+  const filePath = path.join(dirPath, schedulePayloadFileName(appShowId, appSqlDate, epochSeconds));
+  fs.writeFileSync(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  const stat = fs.statSync(filePath);
+  return {
+    ok: true,
+    file_path: filePath,
+    body_length: stat.size,
+  };
+}
+
+function nextSqlDate(sqlDate) {
+  return addDaysSql(sqlDate, 1);
+}
+
+function forwardScheduleDates(startDate, endDate) {
+  const dates = [];
+  if (!startDate || !endDate) return dates;
+  let current = nextSqlDate(startDate);
+  let guard = 0;
+  while (compareSqlDate(current, endDate) <= 0 && guard < MAX_FORWARD_SCHEDULE_PREFETCH_DAYS) {
+    dates.push(current);
+    current = nextSqlDate(current);
+    guard += 1;
+  }
+  return dates;
+}
+
+async function cacheSuccessfulSchedulePayloads(scope, currentPayload) {
+  const summary = {
+    enabled: PREFETCH_FORWARD_SCHEDULES,
+    early_schedule_dir: EARLY_SCHEDULE_PAYLOAD_DIR,
+    current: null,
+    forward: [],
+  };
+
+  if (!PREFETCH_FORWARD_SCHEDULES) return summary;
+
+  const appShowId = scope?.app_show_idv2;
+  const currentDate = scope?.app_sql_datev2;
+  const endDate = scope?.show_app_sql_end_date;
+  const epochSeconds = Math.floor(Date.now() / 1000);
+
+  try {
+    summary.current = writeEarlySchedulePayload(appShowId, currentDate, currentPayload, epochSeconds);
+  } catch (error) {
+    summary.current = {
+      ok: false,
+      reason: String(error?.message || error).slice(0, 300),
+    };
+  }
+
+  for (const scheduleDate of forwardScheduleDates(currentDate, endDate)) {
+    const url = buildScheduleEndpoint(scheduleDate, appShowId);
+    const item = { date: scheduleDate, url, ok: false, file_path: null, reason: null };
+    try {
+      const payload = await fetchJson(url);
+      const writeResult = writeEarlySchedulePayload(appShowId, scheduleDate, payload, epochSeconds);
+      item.ok = true;
+      item.file_path = writeResult.file_path;
+      item.body_length = writeResult.body_length;
+    } catch (error) {
+      item.reason = String(error?.reason || error?.message || error).slice(0, 300);
+    }
+    summary.forward.push(item);
+  }
+
+  return summary;
 }
 
 function normalizeClassEndpointPayload(payload) {
@@ -1471,6 +1580,16 @@ async function runDaily() {
       generatedDate: dateOnly,
     }),
   };
+  const schedulePayloadCache = datedFallback?.ok
+    ? {
+        enabled: PREFETCH_FORWARD_SCHEDULES,
+        skipped: true,
+        reason: "dated_schedule_from_fallback",
+        early_schedule_dir: EARLY_SCHEDULE_PAYLOAD_DIR,
+        current: null,
+        forward: [],
+      }
+    : await cacheSuccessfulSchedulePayloads(scope, datedPayload);
 
   const emptyResult = emptyPayload
     ? {
@@ -1638,6 +1757,7 @@ async function runDaily() {
         rows: datedResult.rows.length,
         schedule_show_datev2: datedResult.schedule_show_datev2 || null,
       },
+      schedule_payload_cache: schedulePayloadCache,
       empty_ping_schedule: {
         url: emptyUrl,
         ok: emptyResult.ok,
