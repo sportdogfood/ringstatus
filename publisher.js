@@ -394,12 +394,14 @@ function computeFieldDiff(fieldName, oldRaw, newRaw, cfg) {
 
 function pickAllowedFields(datasetKey, pqAllowedFieldsRaw) {
   const fromQueue = parseListFlexible(pqAllowedFieldsRaw);
-  if (fromQueue.length) return fromQueue;
-
   const cfg = getProDatasetConfig(datasetKey);
   const key = cfg?.sourceKey || String(datasetKey || "").trim();
+  if (fromQueue.length) {
+    return mergeUnique(fromQueue, cfg?.outputMode === "indexed" ? requiredIndexFieldsForSource(key) : []);
+  }
+
   const def = DEFAULT_ALLOWED_FIELDS[key] || [];
-  return def.slice();
+  return mergeUnique(def, cfg?.outputMode === "indexed" ? requiredIndexFieldsForSource(key) : []);
 }
 
 function boolCell(v) {
@@ -415,6 +417,46 @@ function laneAllowsRecord(useDiffer) {
 function getProDatasetConfig(datasetKey) {
   const key = String(datasetKey || "").trim().toLowerCase();
   return PRO_DATASETS[key] || null;
+}
+
+function mergeUnique(left, right) {
+  return [...new Set([...(left || []), ...(right || [])].filter(Boolean))];
+}
+
+function requiredIndexFieldsForSource(sourceKey) {
+  if (sourceKey === "watch_trips") {
+    return [
+      "rider_name",
+      "rider_id",
+      "horse",
+      "horse_id",
+      "status",
+      "latestStatus",
+      "scope_status",
+      "ring_number",
+      "ringName",
+      "class_type",
+      "schedule_sequencetype",
+      "group_name_tags",
+      "group_name",
+    ];
+  }
+
+  if (sourceKey === "watch_schedule") {
+    return [
+      "status",
+      "latestStatus",
+      "scope_status",
+      "ring_number",
+      "ringName",
+      "class_type",
+      "schedule_sequencetype",
+      "group_name_tags",
+      "group_name",
+    ];
+  }
+
+  return [];
 }
 
 function normalizeIndexKey(value) {
@@ -433,7 +475,14 @@ function valuesForIndex(row, fieldNames) {
         if (item !== null && item !== undefined && String(item).trim() !== "") out.push(item);
       }
     } else if (value !== null && value !== undefined && String(value).trim() !== "") {
-      out.push(value);
+      const text = String(value);
+      if (text.includes(",") || text.includes("|")) {
+        for (const part of text.split(/[|,]/)) {
+          if (part.trim()) out.push(part);
+        }
+      } else {
+        out.push(value);
+      }
     }
   }
   return out;
@@ -480,8 +529,8 @@ function shapePublishedContent(datasetKey, rows) {
   const cfg = getProDatasetConfig(datasetKey);
   if (!cfg || cfg.outputMode !== "indexed") return rows;
   return {
-    rows,
-    indexed: buildProIndexes(rows),
+    records: rows,
+    indexes: buildProIndexes(rows),
   };
 }
 
