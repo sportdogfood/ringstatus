@@ -55,6 +55,32 @@ function pickFirst(...values) {
   return undefined;
 }
 
+function splitNumericStrings(value) {
+  const raw = Array.isArray(value) ? value : String(value || "").split(",");
+  return raw
+    .map((item) => String(item).trim())
+    .filter(Boolean)
+    .filter((item) => numOrNull(item) !== null);
+}
+
+function resolveGroupsLiveClassId(groupRow, classNumber) {
+  const wantedClassNumber = numOrNull(classNumber);
+  if (wantedClassNumber === null || !groupRow) return null;
+
+  const classIds = groupRow.class_ids || splitNumericStrings(groupRow.classes);
+  const classNumbers = groupRow.class_numbers || splitNumericStrings(
+    pickFirst(groupRow.classNumbers, groupRow.class_numbers_list)
+  );
+
+  for (let index = 0; index < classNumbers.length; index += 1) {
+    if (numOrNull(classNumbers[index]) === wantedClassNumber) {
+      return numOrNull(classIds[index]);
+    }
+  }
+
+  return null;
+}
+
 function firstValue(value) {
   if (Array.isArray(value)) {
     for (const item of value) {
@@ -571,6 +597,10 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
     "ingested_at",
     "created_time",
     "is_live",
+    "classes",
+    "classNumbers",
+    "class_numbers",
+    "class_numbers_list",
   ];
   let includeStopUpdating = fieldSet.has("stop_updating");
   if (includeStopUpdating) requestedFields.push("stop_updating");
@@ -619,6 +649,8 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
         created_time: strOrNull(fields.created_time),
         is_live: boolValue(fields.is_live),
         stop_updating: includeStopUpdating ? boolValue(fields.stop_updating) : false,
+        class_ids: splitNumericStrings(fields.classes),
+        class_numbers: splitNumericStrings(pickFirst(fields.classNumbers, fields.class_numbers, fields.class_numbers_list)),
       };
     })
     .filter((row) => row.class_group_id !== null)
@@ -715,9 +747,11 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     : null;
   const minsTillStart = startDeltaMins !== null ? Math.max(0, startDeltaMins) : null;
   const minsSinceStart = startDeltaMins !== null ? Math.max(0, -startDeltaMins) : null;
+  const resolvedClassId = resolveGroupsLiveClassId(groupRow, row.class_number);
 
   const watchScheduleFields = {
     groups_live: groupRow ? [groupRow.recordId] : undefined,
+    class_id: resolvedClassId !== null && isBlank(row.class_id) ? resolvedClassId : undefined,
     estimated_start_time: startLiveText || undefined,
     latest_estimated_start_time: startLiveText || undefined,
     ___latest_estimated_start_time: startLiveText || undefined,
@@ -730,6 +764,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
 
   const changedFields = [];
   if (groupRow && !sameValue(row.groups_live_link ? [row.groups_live_link] : null, [groupRow.recordId])) changedFields.push("groups_live");
+  if (watchScheduleFields.class_id !== undefined && !sameValue(row.class_id, watchScheduleFields.class_id)) changedFields.push("class_id");
   if (startLiveText && !sameValue(row.estimated_start_time, startLiveText)) changedFields.push("estimated_start_time");
   if (startLiveText && !sameValue(row.latest_estimated_start_time, startLiveText)) changedFields.push("latest_estimated_start_time");
   if (startLiveText && !sameValue(row.latest_estimated_start_hidden, startLiveText)) changedFields.push("___latest_estimated_start_time");
@@ -741,6 +776,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
 
   const priorOutputs = {
     groups_live: row.groups_live_link ? [row.groups_live_link] : [],
+    class_id: row.class_id,
     estimated_start_time: row.estimated_start_time,
     latest_estimated_start_time: row.latest_estimated_start_time,
     latest_status: row.latest_status,

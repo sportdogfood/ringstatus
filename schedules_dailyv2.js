@@ -1041,6 +1041,32 @@ function scheduleRowKeyFromFields(fields = {}) {
   return normalizeKey(pickFirst(fields.class_groupxclasses_id, fields.class_id));
 }
 
+function splitNumericStrings(value) {
+  const raw = Array.isArray(value) ? value : String(value || "").split(",");
+  return raw
+    .map((item) => String(item).trim())
+    .filter(Boolean)
+    .filter((item) => numOrNull(item) !== null);
+}
+
+function resolveGroupsLiveClassId(groupsLiveDetail, classNumber) {
+  const wantedClassNumber = numOrNull(classNumber);
+  if (wantedClassNumber === null || !groupsLiveDetail) return null;
+
+  const classIds = groupsLiveDetail.class_ids || splitNumericStrings(groupsLiveDetail.classes);
+  const classNumbers = groupsLiveDetail.class_numbers || splitNumericStrings(
+    pickFirst(groupsLiveDetail.classNumbers, groupsLiveDetail.class_numbers_list)
+  );
+
+  for (let index = 0; index < classNumbers.length; index += 1) {
+    if (numOrNull(classNumbers[index]) === wantedClassNumber) {
+      return numOrNull(classIds[index]);
+    }
+  }
+
+  return null;
+}
+
 function buildBaseHeartbeatContext(record) {
   const fields = record?.fields || {};
   const rawShowId = numOrNull(fields.show_id);
@@ -1330,6 +1356,10 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
     if (groupsLiveDetail.recordId) {
       setResolvedField(fields, watchScheduleFieldMeta, "groups_live", [groupsLiveDetail.recordId]);
     }
+    const resolvedClassId = resolveGroupsLiveClassId(groupsLiveDetail, fields.class_number);
+    if (resolvedClassId !== null && isBlank(fields.class_id)) {
+      setResolvedField(fields, watchScheduleFieldMeta, "class_id", resolvedClassId);
+    }
     if (groupsLiveDetail.ring_number !== null && groupsLiveDetail.ring_number !== undefined && isBlank(fields.ring_number)) {
       setResolvedField(fields, watchScheduleFieldMeta, "ring_number", groupsLiveDetail.ring_number);
     }
@@ -1456,6 +1486,10 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
     "created_time",
     "is_live",
     "stop_updating",
+    "classes",
+    "classNumbers",
+    "class_numbers",
+    "class_numbers_list",
   ];
   const requestedFields = fieldSet.size
     ? baseFields.filter((fieldName) => fieldSet.has(fieldName))
@@ -1493,6 +1527,8 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
         created_time: strOrNull(fields.created_time),
         is_live: boolValue(fields.is_live),
         stop_updating: boolValue(fields.stop_updating),
+        class_ids: splitNumericStrings(fields.classes),
+        class_numbers: splitNumericStrings(pickFirst(fields.classNumbers, fields.class_numbers, fields.class_numbers_list)),
       };
     })
     .filter((row) => row.class_group_id !== null)

@@ -37,6 +37,8 @@ const groupsById = new Map([
     status: "In Progress",
     total: 42,
     gone: 7,
+    class_ids: ["200025008", "200025009"],
+    class_numbers: ["770", "771"],
     ingested_at: "2026-05-07T12:00:00.000Z",
   }],
 ]);
@@ -61,6 +63,7 @@ const fieldMeta = {
     "latest_ingested_at",
     "schedule_date",
     "scheduled_date",
+    "class_id",
     "inactive",
   ]),
   actualByTrim: new Map(),
@@ -92,6 +95,7 @@ assert.strictEqual(fields.status, "In Progress");
 assert.strictEqual(fields.latest_status, "In Progress");
 assert.strictEqual(fields.total_trips, 42);
 assert.strictEqual(fields.completed_trips, 7);
+assert.strictEqual(fields.class_id, 200025008);
 
 const noLiveFields = buildCurrentFields(
   { fields: { class_group_id: 1, class_number: 2 } },
