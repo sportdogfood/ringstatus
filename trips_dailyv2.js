@@ -588,6 +588,7 @@ async function fetchScopeStatusChoices(tableName) {
 
 async function fetchLatestHeartbeat() {
   const rows = await airtableList(TABLE_HEARTBEAT, {
+    maxRecords: 1,
     pageSize: 1,
     "sort[0][field]": HEARTBEAT_SORT_FIELD,
     "sort[0][direction]": "desc",
@@ -632,11 +633,13 @@ async function fetchLatestHeartbeat() {
 
 async function fetchShowRecordId(appShowId) {
   const rows = await airtableList(TABLE_SHOWS, {
+    maxRecords: 1,
     pageSize: 1,
+    filterByFormula: `{show_id}=${Number(appShowId)}`,
     "fields[]": ["show_id"],
   });
 
-  return rows.find((row) => numOrNull(row?.fields?.show_id) === appShowId)?.id || null;
+  return rows[0]?.id || null;
 }
 
 async function fetchWatchScheduleRows() {
@@ -2464,14 +2467,18 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch((error) => {
-    const message = String(error?.stack || error?.message || error);
-    console.error(JSON.stringify({
-      ok: false,
-      error: message.slice(0, 4000),
-    }));
-    process.exitCode = 1;
-  });
+  main()
+    .then(() => {
+      process.exit(0);
+    })
+    .catch((error) => {
+      const message = String(error?.stack || error?.message || error);
+      console.error(JSON.stringify({
+        ok: false,
+        error: message.slice(0, 4000),
+      }));
+      process.exit(1);
+    });
 }
 
 module.exports = {

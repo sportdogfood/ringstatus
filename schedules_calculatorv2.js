@@ -1,5 +1,7 @@
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
+const fs = require("fs");
+const path = require("path");
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
@@ -22,6 +24,25 @@ const CALC_MODE = String(process.env.CALC_MODE || "shadow").trim().toLowerCase()
   : "shadow";
 const CALC_VERSION = String(process.env.CALC_VERSION || "schedules_calculator_v2_1").trim();
 const DEFAULT_TRIP_MINUTES = Number(process.env.DEFAULT_TRIP_MINUTES || "3");
+const TRACE_ENABLED = String(process.env.SCHEDULES_CALCULATOR_TRACE || "0") === "1";
+const TRACE_LOG_PATH = path.join(
+  process.env.RUNNER_LOG_DIR || "C:\\actions-runner\\ringstatus",
+  "schedules-calculatorv2-progress.log"
+);
+
+function traceStage(stage, extra = {}) {
+  if (!TRACE_ENABLED) return;
+  try {
+    fs.mkdirSync(path.dirname(TRACE_LOG_PATH), { recursive: true });
+    fs.appendFileSync(TRACE_LOG_PATH, `${JSON.stringify({
+      ts: new Date().toISOString(),
+      stage,
+      ...extra,
+    })}\r\n`, "utf8");
+  } catch {
+    // Tracing must never change calculator behavior.
+  }
+}
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -514,6 +535,7 @@ async function fetchPriorScheduleLogMap(triggerTags) {
 
 async function fetchLatestHeartbeat() {
   const rows = await airtableList(TABLE_HEARTBEAT, {
+    maxRecords: 1,
     pageSize: 1,
     "sort[0][field]": HEARTBEAT_SORT_FIELD,
     "sort[0][direction]": "desc",
@@ -1095,14 +1117,9 @@ async function main() {
   requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
-  const [watchScheduleFieldSet, scheduleLogFieldSet, activeTriggerTags] = await Promise.all([
-    fetchTableFieldSet(TABLE_WATCH_SCHEDULE),
-    fetchTableFieldSet(TABLE_SCHEDULE_LOGS),
-    fetchActiveTriggerTags(TABLE_SCHEDULE_LOGS).catch(() => []),
-  ]);
-  const priorScheduleLogByWatchId = await fetchPriorScheduleLogMap(activeTriggerTags).catch(() => new Map());
-
+  traceStage("fetch_heartbeat_start");
   const heartbeatRecord = await fetchLatestHeartbeat();
+  traceStage("fetch_heartbeat_done", { heartbeat_id: heartbeatRecord?.id || null });
   const heartbeatFields = heartbeatRecord?.fields || {};
   const heartbeatContext = {
     heartbeat_record_id: heartbeatRecord.id,
@@ -1126,7 +1143,29 @@ async function main() {
     throw new Error("Latest heartbeat is missing app_dow_raw");
   }
 
+  traceStage("heartbeat_context", {
+    mode: heartbeatContext.mode,
+    app_show_id: heartbeatContext.app_show_id,
+    app_sql_date: heartbeatContext.app_sql_date,
+  });
+  if (heartbeatContext.mode !== "DAY") {
+    console.log(JSON.stringify({
+      ok: true,
+      run_status: "NOOP",
+      reason: "groups_live overlay only runs in DAY mode",
+      heartbeat_mode: heartbeatContext.mode,
+      app_show_id: heartbeatContext.app_show_id,
+      app_sql_date: heartbeatContext.app_sql_date,
+      calc_mode: CALC_MODE,
+      calc_version: CALC_VERSION,
+    }));
+    traceStage("noop_non_day");
+    return;
+  }
+
+  traceStage("fetch_watch_rows_start");
   const watchRows = (await fetchWatchScheduleRows()).map(normalizeWatchScheduleRow);
+  traceStage("fetch_watch_rows_done", { watch_rows: watchRows.length });
   if (!watchRows.length) {
     console.log(JSON.stringify({
       ok: true,
@@ -1138,18 +1177,14 @@ async function main() {
     return;
   }
 
-  if (heartbeatContext.mode !== "DAY") {
-    console.log(JSON.stringify({
-      ok: true,
-      run_status: "NOOP",
-      reason: "groups_live overlay only runs in DAY mode",
-      heartbeat_mode: heartbeatContext.mode,
-      watch_rows: watchRows.length,
-      calc_mode: CALC_MODE,
-      calc_version: CALC_VERSION,
-    }));
-    return;
-  }
+  traceStage("fetch_metadata_start");
+  const [watchScheduleFieldSet, scheduleLogFieldSet, activeTriggerTags] = await Promise.all([
+    fetchTableFieldSet(TABLE_WATCH_SCHEDULE),
+    fetchTableFieldSet(TABLE_SCHEDULE_LOGS),
+    fetchActiveTriggerTags(TABLE_SCHEDULE_LOGS).catch(() => []),
+  ]);
+  const priorScheduleLogByWatchId = await fetchPriorScheduleLogMap(activeTriggerTags).catch(() => new Map());
+  traceStage("fetch_metadata_done", { trigger_tags_active: activeTriggerTags.length });
 
   const targetDays = new Set(
     watchRows
@@ -1284,13 +1319,17 @@ async function main() {
   }));
 }
 
-main().catch((error) => {
-  const message = String(error?.stack || error?.message || error);
-  console.error(JSON.stringify({
-    ok: false,
-    error: message.slice(0, 4000),
-    calc_mode: CALC_MODE,
-    calc_version: CALC_VERSION,
-  }));
-  process.exitCode = 1;
-});
+main()
+  .then(() => {
+    process.exit(0);
+  })
+  .catch((error) => {
+    const message = String(error?.stack || error?.message || error);
+    console.error(JSON.stringify({
+      ok: false,
+      error: message.slice(0, 4000),
+      calc_mode: CALC_MODE,
+      calc_version: CALC_VERSION,
+    }));
+    process.exit(1);
+  });

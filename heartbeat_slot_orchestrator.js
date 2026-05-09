@@ -308,7 +308,8 @@ async function runOrchestrator() {
       ? (process.env.ORCH_SCHEDULES_DAILY_NIGHT_SLOTS || process.env.ORCH_SCHEDULES_DAILY_SLOTS)
       : process.env.ORCH_SCHEDULES_DAILY_SLOTS;
     const schedulesDailyDue = slotIsDue(slot, schedulesDailySlots, schedulesDailyDefaultSlots);
-    const schedulesCalcDue = slotIsDue(slot, process.env.ORCH_SCHEDULES_CALCULATOR_SLOTS, DEFAULT_SCHEDULES_CALCULATOR_SLOTS);
+    const schedulesCalcDue = mode === "DAY"
+      && slotIsDue(slot, process.env.ORCH_SCHEDULES_CALCULATOR_SLOTS, DEFAULT_SCHEDULES_CALCULATOR_SLOTS);
     const tripsDailyDefaultSlots = isNightShiftedNextDay
       ? DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS
       : DEFAULT_TRIPS_DAILY_SLOTS;

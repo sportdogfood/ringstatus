@@ -946,6 +946,7 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
 
 async function fetchLatestHeartbeat() {
   const rows = await airtableList(TABLE_HEARTBEAT, {
+    maxRecords: 1,
     pageSize: 1,
     "sort[0][field]": HEARTBEAT_SORT_FIELD,
     "sort[0][direction]": "desc",
@@ -1315,6 +1316,7 @@ function diffHeartbeatFields(currentFields, nextFields) {
 
 async function fetchShowRecordId(appShowId) {
   const rows = await airtableList(TABLE_SHOWS, {
+    maxRecords: 1,
     pageSize: 1,
     filterByFormula: `{show_id}=${Number(appShowId)}`,
     "fields[]": ["show_id"],
@@ -2117,14 +2119,18 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch((error) => {
-    process.stdout.write(`${JSON.stringify({
-      ok: false,
-      error: String(error?.message || error),
-      dry_run: DRY_RUN,
-    }, null, 2)}\n`);
-    process.exit(1);
-  });
+  main()
+    .then(() => {
+      process.exit(0);
+    })
+    .catch((error) => {
+      process.stdout.write(`${JSON.stringify({
+        ok: false,
+        error: String(error?.message || error),
+        dry_run: DRY_RUN,
+      }, null, 2)}\n`);
+      process.exit(1);
+    });
 }
 
 module.exports = {
