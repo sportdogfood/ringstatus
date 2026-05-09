@@ -1815,6 +1815,7 @@ async function fetchShowsMap() {
       updated_rows,
       failed_row_updates: failedRows.length,
       skipped_missing_class_endpoint,
+      skipped_missing_liveclass_mapping: skipped_missing_class_endpoint,
       skipped_missing_entryxclasses_uuid,
       unique_class_endpoints: uniqueEndpoints.size,
       unique_classsignup_endpoints: uniqueClassSignupEndpoints.size,
