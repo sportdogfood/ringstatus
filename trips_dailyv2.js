@@ -1558,8 +1558,11 @@ async function buildAuxiliaryRowsForTenant({
     ww_trainers: linkOne(wwTrainerRecordId),
   };
 
-  const classEndpointDetailResult = await fetchClassEndpointDetailsById([...classById.values()], heartbeat);
-  const classEndpointDetails = classEndpointDetailResult.detailById;
+  const classEndpointEnrichment = {
+    skipped: true,
+    reason: "people_payload_plus_watch_schedule_only",
+    failures: [],
+  };
 
   const riderRows = [...riderById.values()].map((row) => pickWritableFields(wwRidersFieldSet, {
     rider_id: row.rider_id,
@@ -1599,11 +1602,10 @@ async function buildAuxiliaryRowsForTenant({
 
   const enrichedClassRows = [...classById.values()].map((row) => {
     const schedule = scheduleByClassId.get(String(row.class_id));
-    const classDetail = classEndpointDetails.get(String(row.class_id)) || null;
-    const resolvedScheduleDate = classDetail?.schedule_date || schedule?.schedule_show_datev2;
-    const resolvedEstimatedStart = classDetail?.scheduled_estimated_start_time || schedule?.estimated_start_time;
-    const resolvedClassGroupId = classDetail?.class_group_id ?? row.class_group_id ?? schedule?.class_group_id;
-    const resolvedRingNumber = classDetail?.ring_number ?? row.ring_number ?? schedule?.ring_number;
+    const resolvedScheduleDate = schedule?.schedule_show_datev2;
+    const resolvedEstimatedStart = schedule?.estimated_start_time;
+    const resolvedClassGroupId = row.class_group_id ?? schedule?.class_group_id;
+    const resolvedRingNumber = row.ring_number ?? schedule?.ring_number;
     const resolvedGroupName = row.group_name || schedule?.group_name || undefined;
     const resolvedClassGroupSequence = row.class_group_sequence ?? schedule?.class_group_sequence;
     const classMatchesAppDate = resolvedScheduleDate === heartbeat.app_sql_date;
@@ -1619,18 +1621,18 @@ async function buildAuxiliaryRowsForTenant({
       shows: commonLinks.shows,
       pid: Number(tenantId),
       class_id: row.class_id,
-      class_number: classDetail?.class_number ?? row.class_number,
-      class_name: classDetail?.class_name || row.class_name || undefined,
+      class_number: row.class_number,
+      class_name: row.class_name || undefined,
       watch_schedule: schedule?.recordId ? linkOne(schedule.recordId) : undefined,
       class_group_id: resolvedClassGroupId,
       group_name: resolvedGroupName,
       class_group_sequence: resolvedClassGroupSequence,
       ring_number: resolvedRingNumber,
-      total_trips: classDetail?.total_trips ?? schedule?.total_trips,
-      status: classDetail?.status || undefined,
-      class_type: classDetail?.class_type ?? schedule?.class_type,
-      schedule_sequencetype: classDetail?.schedule_sequencetype ?? schedule?.schedule_sequencetype,
-      show_id: classDetail?.show_id ?? heartbeat.app_show_id,
+      total_trips: schedule?.total_trips,
+      status: undefined,
+      class_type: schedule?.class_type,
+      schedule_sequencetype: schedule?.schedule_sequencetype,
+      show_id: heartbeat.app_show_id,
       schedule_date: resolvedScheduleDate || undefined,
       scheduled_date: resolvedScheduleDate || undefined,
       scheduled_estimated_start_time: resolvedEstimatedStart || undefined,
@@ -1717,7 +1719,7 @@ async function buildAuxiliaryRowsForTenant({
       entry_key: String(row.entry_id),
       class_keys: [...row.class_ids].map((value) => normalizeKey(value)).filter(Boolean),
     })),
-    classEndpointFailures: classEndpointDetailResult.failures,
+    classEndpointEnrichment,
   };
 }
 
@@ -1778,7 +1780,6 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("latest_estimated_start_time", row.estimated_start_time);
   maybeSet("latest_ingested_at", nowIso);
   maybeSet("class_group_sequence", row.class_group_sequence);
-  maybeSet("class_endpoint", buildClassesEndpoint(row.class_id, heartbeat.app_show_id, row.class_group_id));
   maybeSet("status", row.status);
   maybeSet("order_of_go", row.order_of_go);
   maybeSet("rider_name", row.rider_name);
@@ -1919,10 +1920,21 @@ async function main() {
 
   for (const tenantId of activeTenantIds) {
     const tenantRow = activeTenantMap.get(tenantId) || null;
-    const endpoint = buildPeopleEndpoint(tenantId, heartbeat);
+    let endpoint = buildPeopleEndpoint(tenantId, heartbeat);
     let payload = null;
+    let payloadSource = "live_people_endpoint";
+    let peopleFallback = null;
+    let peopleCache = null;
     try {
-      payload = await fetchJson(endpoint);
+      const fetchResult = await fetchPeoplePayloadWithFallback(tenantId, heartbeat, {
+        runId,
+        lastRun: dateOnly,
+      });
+      payload = fetchResult.payload;
+      endpoint = fetchResult.endpoint;
+      payloadSource = fetchResult.source;
+      peopleFallback = fetchResult.fallback;
+      peopleCache = fetchResult.cache;
     } catch (error) {
       const softPayload = isSoftPayloadError(error);
       peopleFailures.push({
@@ -1930,11 +1942,13 @@ async function main() {
         endpoint,
         reason: String(error?.message || error).slice(0, 300),
         soft_payload: softPayload,
+        fallback: error?.peopleFallback || null,
       });
       tenantSummaries.push({
         tenant_id: tenantId,
         endpoint,
         status: softPayload ? "soft_payload_blocked" : "fetch_failed",
+        fallback: error?.peopleFallback || null,
       });
       if (softPayload) {
         softPayloadSamples.push({
@@ -1964,6 +1978,15 @@ async function main() {
       continue;
     }
 
+    tenantSummaries.push({
+      tenant_id: tenantId,
+      endpoint,
+      status: "payload_ready",
+      source: payloadSource,
+      fallback_file_path: peopleFallback?.file_path || null,
+      cached_file_path: peopleCache?.file_path || null,
+    });
+
     const wwTrainerRecordId = wwTrainerRecordIdByPid.get(String(tenantId)) || null;
     const auxiliaryRows = await buildAuxiliaryRowsForTenant({
       payload,
@@ -1983,27 +2006,13 @@ async function main() {
       wwHorsesFieldSet,
     });
 
-    const classSoftFailures = (auxiliaryRows.classEndpointFailures || [])
-      .filter((failure) => /soft_payload_/i.test(String(failure?.reason || "")));
-    if (classSoftFailures.length) {
-      softPayloadSamples.push(...classSoftFailures.slice(0, 5).map((failure) => ({
-        tenant_id: tenantId,
-        endpoint: failure.endpoint,
-        reason: failure.reason,
-      })));
-      tenantSummaries.push({
-        tenant_id: tenantId,
-        endpoint,
-        status: "soft_payload_blocked",
-        class_endpoint_failures: classSoftFailures,
-      });
-      continue;
-    }
-
     preparedTenants.push({
       tenantId,
       endpoint,
       payload,
+      payloadSource,
+      peopleFallback,
+      peopleCache,
       auxiliaryRows,
     });
   }
@@ -2027,7 +2036,7 @@ async function main() {
   }
 
   for (const prepared of preparedTenants) {
-    const { tenantId, endpoint, payload, auxiliaryRows } = prepared;
+    const { tenantId, endpoint, payload, payloadSource, peopleFallback, peopleCache, auxiliaryRows } = prepared;
 
     const riderSync = await upsertByNumberId({
       tableName: TABLE_WW_RIDERS,
@@ -2154,7 +2163,10 @@ async function main() {
       horse_sync: horseSync,
       active_class_rows: auxiliaryRows.classRows.length,
       active_entry_rows: auxiliaryRows.entryRows.length,
-      class_endpoint_failures: auxiliaryRows.classEndpointFailures,
+      people_payload_source: payloadSource,
+      people_fallback_file_path: peopleFallback?.file_path || null,
+      people_cache_file_path: peopleCache?.file_path || null,
+      class_detail_enrichment: auxiliaryRows.classEndpointEnrichment,
     });
   }
 
