@@ -1,6 +1,8 @@
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 const CUSTOMER_ID = Number(process.env.CUSTOMER_ID || "15");
+const fs = require("fs");
+const path = require("path");
 
 const {
   buildPeopleTripKey,
@@ -11,13 +13,11 @@ const {
 const {
   assertValidPayload,
   isSoftPayloadError,
+  softPayloadLogFields,
 } = require("./lib/soft_payload_guard");
 const {
   fetchTextWithConfiguredTransport,
 } = require("./lib/sgl_fetch_adapter");
-const {
-  buildClassDetailEndpoint,
-} = require("./lib/watch_trips_enrichment");
 
 const BASE_URL = String(
   process.env.SGL_DATA_BASE_URL ||
@@ -38,6 +38,7 @@ const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
 const TABLE_WW_RIDERS = process.env.TABLE_WW_RIDERS || "ww_riders";
 const TABLE_WW_HORSES = process.env.TABLE_WW_HORSES || "ww_horses";
 const TABLE_WW_TRAINERS = process.env.TABLE_WW_TRAINERS || "ww_trainers";
+const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 
 const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "heartbeat";
 const VIEW_WATCH_TRIPS = process.env.VIEW_WATCH_TRIPS || "heartbeat";
@@ -50,6 +51,27 @@ const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const FETCH_CONCURRENCY = Math.max(1, Number(process.env.FETCH_CONCURRENCY || "4"));
+const SGL_PAYLOAD_ROOT = String(process.env.SGL_PAYLOAD_ROOT || "C:\\actions-runner\\ringstatus").trim();
+const EARLY_SGL_PAYLOAD_ROOT = String(
+  process.env.EARLY_SGL_PAYLOAD_ROOT ||
+  path.join(SGL_PAYLOAD_ROOT, "early_sgl_payloads")
+).trim();
+const MANUAL_SGL_PAYLOAD_ROOT = String(
+  process.env.MANUAL_SGL_PAYLOAD_ROOT ||
+  path.join(SGL_PAYLOAD_ROOT, "manual_sgl_payloads")
+).trim();
+const EARLY_PEOPLE_PAYLOAD_DIR = String(
+  process.env.EARLY_PEOPLE_PAYLOAD_DIR ||
+  path.join(EARLY_SGL_PAYLOAD_ROOT, "people")
+).trim();
+const MANUAL_PEOPLE_PAYLOAD_DIR = String(
+  process.env.MANUAL_PEOPLE_PAYLOAD_DIR ||
+  path.join(MANUAL_SGL_PAYLOAD_ROOT, "people")
+).trim();
+const DEFAULT_PEOPLE_FALLBACK_DIRS = [
+  EARLY_PEOPLE_PAYLOAD_DIR,
+  MANUAL_PEOPLE_PAYLOAD_DIR,
+];
 
 const PROTECTED_WATCH_TRIPS_FIELDS = new Set([
   "status",
@@ -355,6 +377,91 @@ async function airtableCreateRecords(tableName, records) {
   }
 
   return { okRows, failedRows };
+}
+
+async function createAutomationErr(fields) {
+  if (DRY_RUN) return { skipped: true, reason: "dry_run" };
+  const safeFields = {};
+  for (const [key, value] of Object.entries(fields || {})) {
+    if (value === undefined || value === null) continue;
+    if (typeof value === "string" && value.trim() === "") continue;
+    safeFields[key] = value;
+  }
+  if (!Object.keys(safeFields).length) return { skipped: true, reason: "empty_fields" };
+
+  try {
+    return await airtableCreateRecords(TABLE_AUTOMATION_ERRS, [{ fields: safeFields }]);
+  } catch (error) {
+    console.log(`automation_errs write warn: ${String(error?.message || error).slice(0, 300)}`);
+    return { skipped: true, reason: String(error?.message || error).slice(0, 300) };
+  }
+}
+
+function endpointParts(endpoint) {
+  try {
+    const url = new URL(String(endpoint || ""));
+    const pathText = url.pathname || "";
+    const peopleMatch = pathText.match(/\/people\/([^/]+)/i);
+    const isPeopleEndpoint = !!peopleMatch;
+    return {
+      path: `${pathText}${url.search || ""}`,
+      pid: peopleMatch ? numOrNull(peopleMatch[1]) : null,
+      people_show_id: isPeopleEndpoint ? numOrNull(url.searchParams.get("show_id")) : null,
+      app_show_id: numOrNull(url.searchParams.get("show_id")),
+      app_sql_date: strOrNull(url.searchParams.get("date")),
+    };
+  } catch {
+    return {
+      path: String(endpoint || ""),
+      pid: null,
+      people_show_id: null,
+      app_show_id: null,
+      app_sql_date: null,
+    };
+  }
+}
+
+async function recordSoftPayloadAudit(error, endpoint, audit = {}) {
+  if (!isSoftPayloadError(error)) return null;
+  const info = softPayloadLogFields(error);
+  const parts = endpointParts(info.endpoint || endpoint);
+  const errorType = strOrNull(info.reason) || "soft_payload";
+  const appShowId = numOrNull(audit.app_show_id) ?? parts.app_show_id;
+  const appSqlDate = strOrNull(audit.app_sql_date) || parts.app_sql_date;
+  const pathText = parts.path || String(info.endpoint || endpoint || "");
+  const pid = numOrNull(audit.pid) ?? parts.pid;
+  const automationKey = strOrNull(audit.automation_key) ||
+    [
+      "trips_dailyv2",
+      errorType,
+      appShowId || "show",
+      appSqlDate || "date",
+      pid || "pid",
+      pathText,
+    ].join("|").slice(0, 1000);
+
+  return createAutomationErr({
+    automation_key: automationKey,
+    automation_name: strOrNull(audit.automation_name) || "trips_dailyv2",
+    error_type: errorType,
+    app_sql_date: appSqlDate,
+    run_id: numOrNull(audit.run_id),
+    last_run: strOrNull(audit.last_run),
+    resolved: false,
+    message: [
+      `path=${pathText}`,
+      `endpoint=${info.endpoint || endpoint || ""}`,
+      `status=${info.http_status ?? ""}`,
+      `body_length=${info.body_length ?? ""}`,
+      `content_length=${info.content_length ?? ""}`,
+      `transport=${error?.transport || error?.metadata?.transport || ""}`,
+      `source=${strOrNull(audit.source) || ""}`,
+      `message=${String(error?.message || errorType).slice(0, 500)}`,
+    ].join(" "),
+    pid,
+    app_show_id: appShowId,
+    people_show_id: numOrNull(audit.people_show_id) ?? parts.people_show_id,
+  });
 }
 
 async function airtablePatchRecords(tableName, updates) {
@@ -664,44 +771,20 @@ async function fetchJson(url) {
     throw new Error(`Response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
   }
 
-  const isClassEndpoint = String(endpoint || "").includes("/classes/");
   assertValidPayload({
     payload: json,
     text,
     response,
     lane: "trips_dailyv2",
     endpoint,
-    expectedTopLevelKeys: isClassEndpoint
-      ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
-      : [],
-    expectedPredicate: isClassEndpoint
-      ? null
-      : (payload) => Array.isArray(payload?.trips) ||
-          collectTripCandidates(payload).length > 0 ||
-          payload?.people !== undefined ||
-          payload?.entries !== undefined ||
-          payload?.classes !== undefined ||
-          payload?.show_id !== undefined,
+    expectedPredicate: (payload) => Array.isArray(payload?.trips) ||
+      collectTripCandidates(payload).length > 0 ||
+      payload?.people !== undefined ||
+      payload?.entries !== undefined ||
+      payload?.classes !== undefined ||
+      payload?.show_id !== undefined,
   });
   return json;
-}
-
-async function runPool(items, concurrency, worker) {
-  const queue = [...items];
-  const threads = [];
-  const width = Math.max(1, concurrency);
-
-  for (let i = 0; i < width; i += 1) {
-    threads.push((async () => {
-      while (queue.length) {
-        const item = queue.shift();
-        if (item === undefined) break;
-        await worker(item);
-      }
-    })());
-  }
-
-  await Promise.all(threads);
 }
 
 function linkOne(recordId) {
@@ -723,14 +806,162 @@ function buildPeopleEndpoint(sourceId, heartbeat) {
   return `${BASE_URL}/people/${encodeURIComponent(sourceId)}?pid=${encodeURIComponent(sourceId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
-function buildClassesEndpoint(classId, showId, classGroupId = null) {
-  return buildClassDetailEndpoint({
-    baseUrl: BASE_URL,
-    classId,
-    showId,
-    customerId: CUSTOMER_ID,
-    classGroupId,
-  });
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function peopleFallbackDirs() {
+  const raw = strOrNull(process.env.SGL_PEOPLE_FALLBACK_DIRS);
+  const values = raw
+    ? raw.split(path.delimiter)
+    : DEFAULT_PEOPLE_FALLBACK_DIRS;
+
+  return values
+    .map((value) => strOrNull(value))
+    .filter(Boolean);
+}
+
+function collectFilesRecursive(dirPath, out = []) {
+  if (!dirPath || !fs.existsSync(dirPath)) return out;
+
+  for (const entry of fs.readdirSync(dirPath, { withFileTypes: true })) {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) collectFilesRecursive(fullPath, out);
+    else if (entry.isFile()) out.push(fullPath);
+  }
+
+  return out;
+}
+
+function candidatePeopleFallbackFiles(pid, appShowId) {
+  const pidText = escapeRegExp(pid);
+  const showText = escapeRegExp(appShowId);
+  const peopleJson = new RegExp(`^people_${pidText}_show_${showText}_[0-9]+\\.json$`, "i");
+
+  const candidates = [];
+  for (const dirPath of peopleFallbackDirs()) {
+    for (const filePath of collectFilesRecursive(dirPath)) {
+      const name = path.basename(filePath);
+      if (name.endsWith(".pretty.json")) continue;
+      if (!peopleJson.test(name)) continue;
+
+      const stat = fs.statSync(filePath);
+      if (!stat.size || stat.size <= 2) continue;
+      candidates.push({ filePath, size: stat.size, mtimeMs: stat.mtimeMs });
+    }
+  }
+
+  candidates.sort((left, right) => right.mtimeMs - left.mtimeMs);
+  return candidates;
+}
+
+function loadPeopleFallbackPayload(pid, appShowId) {
+  const candidates = candidatePeopleFallbackFiles(pid, appShowId);
+  const failures = [];
+
+  for (const candidate of candidates) {
+    let text = "";
+    try {
+      text = fs.readFileSync(candidate.filePath, "utf8");
+      const payload = JSON.parse(text);
+      assertValidPayload({
+        payload,
+        text,
+        response: {
+          status: 200,
+          headers: {
+            get(name) {
+              return String(name || "").toLowerCase() === "content-length"
+                ? String(Buffer.byteLength(text || "", "utf8"))
+                : null;
+            },
+          },
+        },
+        lane: "trips_dailyv2_fallback",
+        endpoint: candidate.filePath,
+        expectedPredicate: (data) => Array.isArray(data?.trips) ||
+          collectTripCandidates(data).length > 0 ||
+          data?.people !== undefined ||
+          data?.entries !== undefined ||
+          data?.classes !== undefined ||
+          data?.show_id !== undefined,
+      });
+      return {
+        ok: true,
+        payload,
+        file_path: candidate.filePath,
+        body_length: Buffer.byteLength(text || "", "utf8"),
+        mtime_ms: candidate.mtimeMs,
+      };
+    } catch (error) {
+      failures.push({
+        file_path: candidate.filePath,
+        reason: String(error?.message || error).slice(0, 300),
+      });
+    }
+  }
+
+  return { ok: false, file_path: null, body_length: null, failures };
+}
+
+function peoplePayloadFileName(pid, appShowId, epochSeconds = Math.floor(Date.now() / 1000)) {
+  return `people_${pid}_show_${appShowId}_${epochSeconds}.json`;
+}
+
+function writeEarlyPeoplePayload(pid, appShowId, payload, epochSeconds) {
+  const dirPath = EARLY_PEOPLE_PAYLOAD_DIR;
+  fs.mkdirSync(dirPath, { recursive: true });
+  const filePath = path.join(dirPath, peoplePayloadFileName(pid, appShowId, epochSeconds));
+  fs.writeFileSync(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  const stat = fs.statSync(filePath);
+  return { ok: true, file_path: filePath, body_length: stat.size };
+}
+
+async function fetchPeoplePayloadWithFallback(tenantId, heartbeat, { runId = null, lastRun = null } = {}) {
+  const endpoint = buildPeopleEndpoint(tenantId, heartbeat);
+  try {
+    const payload = await fetchJson(endpoint);
+    let cache = null;
+    if (!DRY_RUN) {
+      try {
+        cache = writeEarlyPeoplePayload(tenantId, heartbeat.app_show_id, payload, Math.floor(Date.now() / 1000));
+      } catch (error) {
+        cache = { ok: false, reason: String(error?.message || error).slice(0, 300) };
+      }
+    } else {
+      cache = { skipped: true, reason: "dry_run" };
+    }
+    return { payload, endpoint, source: "live_people_endpoint", fallback: null, cache };
+  } catch (error) {
+    const softPayload = isSoftPayloadError(error);
+    if (softPayload) {
+      await recordSoftPayloadAudit(error, endpoint, {
+        app_show_id: heartbeat.app_show_id,
+        app_sql_date: heartbeat.app_sql_date,
+        pid: tenantId,
+        people_show_id: heartbeat.app_show_id,
+        run_id: runId,
+        last_run: lastRun,
+        source: "people_endpoint",
+      });
+    }
+
+    const fallback = loadPeopleFallbackPayload(tenantId, heartbeat.app_show_id);
+    if (fallback.ok) {
+      return {
+        payload: fallback.payload,
+        endpoint,
+        source: "people_payload_fallback",
+        fallback,
+        cache: null,
+        fetch_error: String(error?.message || error).slice(0, 300),
+        soft_payload: softPayload,
+      };
+    }
+
+    error.peopleFallback = fallback;
+    throw error;
+  }
 }
 
 function extractPeopleShowId(payload) {
@@ -740,60 +971,6 @@ function extractPeopleShowId(payload) {
 function extractPayloadTrips(payload) {
   if (Array.isArray(payload?.trips)) return payload.trips;
   return collectTripCandidates(payload);
-}
-
-function normalizeClassEndpointPayload(payload) {
-  const classObj = payload?.class && typeof payload.class === "object" ? payload.class : {};
-  const related = payload?.class_related_data && typeof payload.class_related_data === "object"
-    ? payload.class_related_data
-    : {};
-
-  return {
-    class_id: numOrNull(pickFirst(payload?.class_id, classObj?.class_id)),
-    class_number: normalizeEntryNumber(pickFirst(payload?.number, payload?.class_number, classObj?.number)),
-    class_name: strOrNull(pickFirst(classObj?.name, payload?.class_name, payload?.name)),
-    class_group_id: numOrNull(pickFirst(payload?.class_group_id, related?.class_group_id)),
-    ring_number: numOrNull(pickFirst(payload?.ring, related?.ring, payload?.ring_number)),
-    total_trips: numOrNull(pickFirst(payload?.total_trips, related?.total_trips)),
-    status: strOrNull(pickFirst(payload?.status, related?.status)),
-    class_type: strOrNull(pickFirst(payload?.class_type, classObj?.class_type)),
-    schedule_sequencetype: strOrNull(pickFirst(payload?.schedule_sequencetype, classObj?.schedule_sequencetype)),
-    show_id: numOrNull(pickFirst(payload?.show_id, classObj?.show_id)),
-    schedule_date: toIsoDateOnly(pickFirst(payload?.date, related?.date)),
-    scheduled_estimated_start_time: strOrNull(pickFirst(payload?.estimated_time, related?.estimated_time)),
-  };
-}
-
-async function fetchClassEndpointDetailsById(classRows, heartbeat) {
-  const detailById = new Map();
-  const failures = [];
-  const uniqueByKey = new Map();
-
-  for (const item of classRows || []) {
-    const classId = numOrNull(typeof item === "object" ? item?.class_id : item);
-    const classGroupId = numOrNull(typeof item === "object" ? item?.class_group_id : null);
-    if (classId === null) continue;
-    const key = `${classId}|${classGroupId ?? ""}`;
-    if (!uniqueByKey.has(key)) uniqueByKey.set(key, { classId, classGroupId });
-  }
-
-  await runPool([...uniqueByKey.values()], FETCH_CONCURRENCY, async ({ classId, classGroupId }) => {
-    const endpoint = buildClassesEndpoint(classId, heartbeat.app_show_id, classGroupId);
-    if (!endpoint) return;
-    try {
-      const payload = await fetchJson(endpoint);
-      detailById.set(String(classId), normalizeClassEndpointPayload(payload));
-    } catch (error) {
-      failures.push({
-        class_id: classId,
-        class_group_id: classGroupId,
-        endpoint,
-        reason: String(error?.message || error).slice(0, 300),
-      });
-    }
-  });
-
-  return { detailById, failures };
 }
 
 function buildNumericRunId(nowIso) {
