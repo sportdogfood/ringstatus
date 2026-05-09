@@ -1,6 +1,6 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.09.2  
+**Version:** v2026.05.09.3  
 **Date:** 2026-05-09  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.09.3 | 2026-05-09 | Clarified the non-live schedule/people refresh contract that runs throughout the day and becomes critical on `DAY -> NIGHT`: fresh schedule and people payloads are primary when successful, successful schedule payloads should be cached for current and remaining show dates, successful people payloads should be cached once per person/show because they are full-week, and manual JSON/HTML folders are secondary fallbacks. |
 | v2026.05.09.2 | 2026-05-09 | Added the live schedule backfill rule: when `ListAjax`/`groups_live` provides a reliable `classNumbers[] -> classes[]` pair, blank `watch_schedule.class_id` should be populated from that pair without pinging `/classes/{class_id}`. |
 | v2026.05.09.1 | 2026-05-09 | Clarified the same-day live trips enrichment sequence: prove live feed availability, validate current `groups_live`, pair `classNumbers[]` to `classes[]`, build class-scoped `getLiveClassData` requests from those live groups, then enrich existing `watch_trips` rows. Also clarified that `class_id` remains critical while `/classes/{class_id}` is only too unreliable to be a schedule/trips population dependency. |
 | v2026.05.08.4 | 2026-05-08 | Made manual schedule HTML time handling explicit: `manual_sgl_payloads/schedule-html/schedule_html_YYYY-MM-DD_show_SHOWID_EPOCH.html` is allowed as a conservative time overlay, and all display start times in `h:mm AM/PM` or `hh:mm AM/PM` format must write `estimated_start_time` as normalized `HH:MM:SS`. |
@@ -205,6 +206,8 @@ Soft-blocked behavior:
 
 `schedules_dailyv2.js` is the owner for pre-live and shifted next-day `watch_schedule` population.
 
+This lane must continue running throughout the day outside the liveclassv2 enrichment workflow. Fresh schedule payloads are the most relevant source when successful. Fallbacks are only for soft/empty live schedule payloads or manual repair cases.
+
 For each scoped show/date, the schedule lane must make one primary schedule request:
 
 ```text
@@ -238,11 +241,15 @@ Reason:
 
 When heartbeat mode shifts from `DAY` to `NIGHT` and `shifted_to_next_day = true`, the next-day schedule lane should create or refresh minimum viable `watch_schedule` rows from the day-scoped schedule payload or approved fallback payloads. Missing live-only or class-detail-only fields are expected at that point. The next actual live day should rely on the liveclassv2 paths, gated by `groups_live`, to populate richer fields.
 
+When a fresh schedule payload succeeds, the schedule lane should proceed with that payload for the scoped date, store it in `early_sgl_payloads/schedule`, then opportunistically try each remaining show day through `end_date` and store each successful forward-day payload there as fallback support. These forward-day cache fetches are support artifacts; they should not drive same-run Airtable writes for a different date.
+
 This boundary does not remove day-of live enrichment. `ListAjax`, `groups_live`, `getLiveClassStatus`, `ClassStatus`, and `getLiveClassData` remain same-day live paths and must stay separate from pre-live next-day schedule population.
 
 ## Trips Lane Endpoint Boundary
 
 `trips_dailyv2.js` is the owner for pre-live and shifted next-day `watch_trips` population from person-scoped trip payloads.
+
+This lane must continue running throughout the day outside the liveclassv2 enrichment workflow. Fresh people payloads are the most relevant source when successful. The `/people/{pid}` payload is show/week scoped, not date scoped, so one successful person/show payload can support all show dates in the week and should be cached once as a fallback artifact.
 
 For each active tenant/person, the trips lane must make one primary people request:
 
@@ -277,7 +284,7 @@ Reason:
 
 When heartbeat mode shifts from `DAY` to `NIGHT` and `shifted_to_next_day = true`, the next-day trips lane should create or refresh minimum viable `watch_trips` rows from people payloads and current scoped `watch_schedule`. The next actual live day should rely on the liveclassv2 paths, gated by `groups_live`, to populate critical live data points.
 
-Successful people payloads should be stored in `early_sgl_payloads/people` as fallback support. Fallback people payloads are not live authority and must not overwrite newer successful live people payloads.
+Successful people payloads should be used for the current run and stored in `early_sgl_payloads/people` as fallback support. Fallback people payloads are not live authority and must not overwrite newer successful live people payloads. Manually added people files in `manual_sgl_payloads/people` are a second fallback only.
 
 ## Same-Day Trips Live Enrichment Sequence
 
