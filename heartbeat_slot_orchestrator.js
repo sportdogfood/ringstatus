@@ -20,8 +20,10 @@ const HEARTBEAT_MODE_FIELD = process.env.HEARTBEAT_MODE_FIELD || process.env.FIE
 const HEARTBEAT_CADENCE_FIELD = process.env.HEARTBEAT_CADENCE_FIELD || process.env.FIELD_CADENCE || "cadence";
 const HEARTBEAT_SET_INTERVALS_FIELD = process.env.HEARTBEAT_SET_INTERVALS_FIELD || process.env.FIELD_SET_INTERVALS || "set_intervals";
 const HEARTBEAT_INTERVAL_FIELD = process.env.HEARTBEAT_INTERVAL_FIELD || process.env.FIELD_INTERVAL || "interval";
+const HEARTBEAT_SHIFTED_NEXT_DAY_FIELD = process.env.HEARTBEAT_SHIFTED_NEXT_DAY_FIELD || process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
 
 const DEFAULT_TRIPS_DAILY_SLOTS = "";
+const DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS = "A,C";
 const DEFAULT_TRIPS_TAGGER_SLOTS = "A,C";
 const DEFAULT_TRIPS_CALCULATOR_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
@@ -83,6 +85,17 @@ function parseSlotSet(value, fallback) {
 function slotIsDue(slot, value, fallback) {
   if (!slot) return false;
   return parseSlotSet(value, fallback).has(String(slot).toUpperCase());
+}
+
+function boolValue(value) {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+  if (typeof value === "string") {
+    const text = value.trim().toLowerCase();
+    if (["true", "yes", "1", "checked"].includes(text)) return true;
+    if (["false", "no", "0", "unchecked"].includes(text)) return false;
+  }
+  return false;
 }
 
 function airtableUrl(tableName, params = {}) {
@@ -148,7 +161,7 @@ async function latestHeartbeat() {
       "sql_date",
       "app_sql_date",
       "app_dow_raw",
-      "shifted_to_next_day",
+      HEARTBEAT_SHIFTED_NEXT_DAY_FIELD,
       "time",
     ],
   });
@@ -285,6 +298,9 @@ async function runOrchestrator() {
       return;
     }
 
+    const shiftedToNextDay = boolValue(heartbeat?.fields?.[HEARTBEAT_SHIFTED_NEXT_DAY_FIELD]);
+    const isNightShiftedNextDay = mode === "NIGHT" && shiftedToNextDay;
+
     const schedulesDailyDefaultSlots = mode === "NIGHT"
       ? DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS
       : DEFAULT_SCHEDULES_DAILY_SLOTS;
@@ -293,7 +309,13 @@ async function runOrchestrator() {
       : process.env.ORCH_SCHEDULES_DAILY_SLOTS;
     const schedulesDailyDue = slotIsDue(slot, schedulesDailySlots, schedulesDailyDefaultSlots);
     const schedulesCalcDue = slotIsDue(slot, process.env.ORCH_SCHEDULES_CALCULATOR_SLOTS, DEFAULT_SCHEDULES_CALCULATOR_SLOTS);
-    const tripsDailyDue = slotIsDue(slot, process.env.ORCH_TRIPS_DAILY_SLOTS, DEFAULT_TRIPS_DAILY_SLOTS);
+    const tripsDailyDefaultSlots = isNightShiftedNextDay
+      ? DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS
+      : DEFAULT_TRIPS_DAILY_SLOTS;
+    const tripsDailySlots = isNightShiftedNextDay
+      ? (process.env.ORCH_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS || process.env.ORCH_TRIPS_DAILY_SLOTS)
+      : process.env.ORCH_TRIPS_DAILY_SLOTS;
+    const tripsDailyDue = slotIsDue(slot, tripsDailySlots, tripsDailyDefaultSlots);
     const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
@@ -357,6 +379,7 @@ async function runOrchestrator() {
       slot,
       mode,
       cadence_seconds: cadenceSeconds,
+      shifted_to_next_day: shiftedToNextDay,
       due: {
         schedules_daily: schedulesDailyDue,
         schedules_calculator: schedulesCalcDue,
