@@ -156,11 +156,6 @@ function buildScheduleEmptyEndpoint(appShowId) {
   return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
-function buildClassesEndpoint(classId, showId) {
-  if (isBlank(classId) || isBlank(showId)) return null;
-  return `${SGL_BASE_URL}/classes/${encodeURIComponent(classId)}/?show_id=${encodeURIComponent(showId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
-}
-
 function normalizeKey(value) {
   if (isBlank(value)) return "";
   return String(value).trim();
@@ -549,9 +544,7 @@ async function fetchJson(url, audit = {}) {
       response,
       lane: "schedules_dailyv2",
       endpoint,
-      expectedTopLevelKeys: String(endpoint || "").includes("/classes/")
-        ? ["class", "class_related_data", "trips", "status", "class_id", "number", "total_trips"]
-        : ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
+      expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
     });
   } catch (error) {
     if (isSoftPayloadError(error)) {
@@ -757,82 +750,6 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
   }
 
   return summary;
-}
-
-function normalizeClassEndpointPayload(payload) {
-  const classObj = payload?.class && typeof payload.class === "object" ? payload.class : {};
-  const related = payload?.class_related_data && typeof payload.class_related_data === "object"
-    ? payload.class_related_data
-    : {};
-
-  return {
-    class_id: numOrNull(pickFirst(payload?.class_id, classObj?.class_id)),
-    status: strOrNull(pickFirst(payload?.status, related?.status)),
-    schedule_date: toIsoDateOnly(pickFirst(payload?.date, related?.date)),
-    estimated_start_time: strOrNull(pickFirst(payload?.estimated_time, related?.estimated_time)),
-    total_trips: numOrNull(pickFirst(
-      payload?.total_trips,
-      payload?.totalTrips,
-      classObj?.total_trips,
-      classObj?.totalTrips,
-      related?.total_trips,
-      related?.totalTrips,
-      payload?.total,
-      related?.total
-    )),
-    completed_trips: numOrNull(pickFirst(
-      payload?.completed_trips,
-      payload?.completedTrips,
-      classObj?.completed_trips,
-      classObj?.completedTrips,
-      related?.completed_trips,
-      related?.completedTrips,
-      payload?.gone,
-      classObj?.gone,
-      related?.gone
-    )),
-  };
-}
-
-async function enrichScheduleRowsWithClassDetails(rows, scope) {
-  const detailById = new Map();
-  const failures = [];
-  const classIds = [...new Set((rows || [])
-    .map((row) => numOrNull(row?.fields?.class_id))
-    .filter((value) => value !== null))];
-
-  await runPool(classIds, FETCH_CONCURRENCY, async (classId) => {
-    const endpoint = buildClassesEndpoint(classId, scope.app_show_idv2);
-    if (!endpoint) return;
-    try {
-      const payload = await fetchJson(endpoint, {
-        automation_key: `schedules_dailyv2|class_detail|${scope?.app_show_idv2 || ""}|${scope?.app_sql_datev2 || ""}|${classId}`,
-        automation_name: "schedules_dailyv2",
-        source: "classes_endpoint",
-        app_show_id: scope?.app_show_idv2,
-        app_sql_date: scope?.app_sql_datev2,
-      });
-      detailById.set(String(classId), normalizeClassEndpointPayload(payload));
-    } catch (error) {
-      failures.push({
-        class_id: classId,
-        endpoint,
-        reason: String(error?.message || error).slice(0, 300),
-      });
-    }
-  });
-
-  return {
-    rows: (rows || []).map((row) => {
-      const classId = numOrNull(row?.fields?.class_id);
-      return {
-        ...row,
-        class_detail: classId !== null ? detailById.get(String(classId)) || null : null,
-      };
-    }),
-    class_endpoint_failures: failures,
-    class_endpoint_enriched: detailById.size,
-  };
 }
 
 async function fetchLatestHeartbeat() {
@@ -1743,16 +1660,13 @@ async function runDaily() {
       };
 
   const chosen = chooseScheduleVariant(datedResult, emptyResult);
-  const classEnrichment = await enrichScheduleRowsWithClassDetails(chosen.rows, scope);
-  const softClassFailures = classEnrichment.class_endpoint_failures
-    .filter((failure) => /soft_payload_/i.test(String(failure?.reason || "")));
-  if (softClassFailures.length) {
-    throw new Error(
-      `soft_payload_empty: refusing schedule writes after class endpoint soft payloads; ` +
-      `count=${softClassFailures.length} sample=${JSON.stringify(softClassFailures.slice(0, 3))}`
-    );
-  }
-  const scopedRowsBase = classEnrichment.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
+  const classEndpointEnrichment = {
+    skipped: true,
+    reason: "classes_endpoint_unreliable_for_schedule_lane",
+    enriched_rows: 0,
+    failures: [],
+  };
+  const scopedRowsBase = chosen.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
   let scopedRows = scopedRowsBase;
   let groupsLiveRows = [];
   let groupsLiveMatchedRows = 0;
@@ -1894,8 +1808,10 @@ async function runDaily() {
         schedule_show_datev2: emptyResult.schedule_show_datev2 || null,
       },
       classes_endpoint: {
-        enriched_rows: classEnrichment.class_endpoint_enriched,
-        failures: classEnrichment.class_endpoint_failures,
+        skipped: classEndpointEnrichment.skipped,
+        reason: classEndpointEnrichment.reason,
+        enriched_rows: classEndpointEnrichment.enriched_rows,
+        failures: classEndpointEnrichment.failures,
       },
       groups_live_fallback: {
         table: TABLE_GROUPS_LIVE,

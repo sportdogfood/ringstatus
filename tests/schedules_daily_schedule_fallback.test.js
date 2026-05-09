@@ -69,4 +69,19 @@ assert.ok(
   "automation_errs message should retain the endpoint path and payload size evidence"
 );
 
+assert.ok(
+  !source.includes("buildClassesEndpoint") &&
+    !source.includes("enrichScheduleRowsWithClassDetails") &&
+    !source.includes("class_detail|") &&
+    !source.includes("class_endpoint_soft_payloads_nonfatal") &&
+    !source.includes("refusing schedule writes after class endpoint soft payloads"),
+  "schedules_dailyv2 should not ping /classes/{class_id} while building schedule rows"
+);
+
+assert.ok(
+  source.includes("classes_endpoint_unreliable_for_schedule_lane") &&
+    source.includes("const scopedRowsBase = chosen.rows.filter"),
+  "schedule rows should come directly from schedule payload/fallback without class endpoint enrichment"
+);
+
 console.log("schedules_daily_schedule_fallback tests passed");

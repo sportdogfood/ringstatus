@@ -193,7 +193,7 @@ Soft-blocked behavior:
 | `ListAjax` liveclassv2 endpoint | day-of only | source feed for `groups_live` | Must match expected show/day before downstream live enrichment. |
 | `ClassStatus` liveclassv2 endpoint | day-of only | group/class live status | Useful for status, gone, total, estimated start, ring/date. |
 | `getLiveClassData` liveclassv2 endpoint | day-of only | class live trip rows | Useful for order, gone-in, actual order, rider/horse/entry number. |
-| `/classes/{class_id}` | day-of/enrichment | class detail | Not reliable when `class_id` is missing. Should not run every heartbeat. |
+| `/classes/{class_id}` | separate enrichment only | class detail | Not reliable for schedule population. `schedules_dailyv2.js` must not ping this endpoint while building next-day schedule rows. |
 | `/classsignup/{class_group_id}` | day-of/enrichment | order fallback when usable | Payload may contain unusable/null entry fields. Validate shape. |
 
 ## Identity Model
