@@ -76,21 +76,118 @@ const DEFAULT_ALLOWED_FIELDS = {
   watch_schedule: [
     "sid",
     "dt",
+    "show_id",
+    "app_sid",
+    "app_sql_date",
+    "app_show_idv2",
+    "app_sql_datev2",
     "ring_number",
     "ringName",
     "class_groupxclasses_id",
     "class_group_id",
+    "class_group_sequence",
     "group_name",
+    "group_name_tags",
     "class_id",
     "class_number",
     "class_name",
+    "class_type",
+    "schedule_sequencetype",
     "latestStart",
     "latestStatus",
+    "status",
+    "scope_status",
+    "estimated_start_time",
+    "estimated_end_time",
     "total_trips",
     "rollup_entries",
     "rollup_trips",
     "rollup_horses",
   ],
+  watch_trips: [
+    "entryxclasses_uuid",
+    "entry_id",
+    "entry_number",
+    "rider_id",
+    "rider_name",
+    "horse_id",
+    "horse",
+    "class_id",
+    "class_number",
+    "class_name",
+    "class_type",
+    "class_group_id",
+    "group_name",
+    "group_name_tags",
+    "ring_number",
+    "ringName",
+    "status",
+    "latestStatus",
+    "scope_status",
+    "estimated_start_time",
+    "estimated_go_time",
+    "completed_trips",
+    "rs_order_of_go",
+    "rs_go_time",
+    "rs_min_till_go",
+    "rs_gone_in",
+    "last_score",
+    "show_date",
+    "schedule_show_datev2",
+    "scheduled_date",
+    "app_sql_datev2",
+  ],
+};
+
+const PRO_DATASETS = {
+  ws_pro: {
+    sourceKey: "watch_schedule",
+    tableName: "watch_schedule",
+    viewName: "heartbeat",
+    outputMode: "rows",
+  },
+  watch_schedule_pro: {
+    sourceKey: "watch_schedule",
+    tableName: "watch_schedule",
+    viewName: "heartbeat",
+    outputMode: "rows",
+  },
+  ws_proplus: {
+    sourceKey: "watch_schedule",
+    tableName: "watch_schedule",
+    viewName: "heartbeat",
+    outputMode: "indexed",
+  },
+  watch_schedule_proplus: {
+    sourceKey: "watch_schedule",
+    tableName: "watch_schedule",
+    viewName: "heartbeat",
+    outputMode: "indexed",
+  },
+  wt_pro: {
+    sourceKey: "watch_trips",
+    tableName: "watch_trips",
+    viewName: "heartbeat",
+    outputMode: "rows",
+  },
+  watch_trips_pro: {
+    sourceKey: "watch_trips",
+    tableName: "watch_trips",
+    viewName: "heartbeat",
+    outputMode: "rows",
+  },
+  wt_proplus: {
+    sourceKey: "watch_trips",
+    tableName: "watch_trips",
+    viewName: "heartbeat",
+    outputMode: "indexed",
+  },
+  watch_trips_proplus: {
+    sourceKey: "watch_trips",
+    tableName: "watch_trips",
+    viewName: "heartbeat",
+    outputMode: "indexed",
+  },
 };
 
 //////////////////////
@@ -299,7 +396,9 @@ function pickAllowedFields(datasetKey, pqAllowedFieldsRaw) {
   const fromQueue = parseListFlexible(pqAllowedFieldsRaw);
   if (fromQueue.length) return fromQueue;
 
-  const def = DEFAULT_ALLOWED_FIELDS[String(datasetKey || "").trim()] || [];
+  const cfg = getProDatasetConfig(datasetKey);
+  const key = cfg?.sourceKey || String(datasetKey || "").trim();
+  const def = DEFAULT_ALLOWED_FIELDS[key] || [];
   return def.slice();
 }
 
@@ -311,6 +410,79 @@ function laneAllowsRecord(useDiffer) {
   if (PUBLISHER_LANE === "bulk") return !useDiffer;
   if (PUBLISHER_LANE === "differ") return useDiffer;
   return true;
+}
+
+function getProDatasetConfig(datasetKey) {
+  const key = String(datasetKey || "").trim().toLowerCase();
+  return PRO_DATASETS[key] || null;
+}
+
+function normalizeIndexKey(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
+function valuesForIndex(row, fieldNames) {
+  const out = [];
+  for (const fieldName of fieldNames) {
+    const value = row?.[fieldName];
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (item !== null && item !== undefined && String(item).trim() !== "") out.push(item);
+      }
+    } else if (value !== null && value !== undefined && String(value).trim() !== "") {
+      out.push(value);
+    }
+  }
+  return out;
+}
+
+function addIndexValue(index, indexName, rawValue, rowIndex) {
+  const key = normalizeIndexKey(rawValue);
+  if (!key) return;
+  if (!index[indexName][key]) index[indexName][key] = [];
+  index[indexName][key].push(rowIndex);
+}
+
+function buildProIndexes(rows) {
+  const index = {
+    rider: {},
+    horse: {},
+    status: {},
+    ring: {},
+    class_type: {},
+    group_name_tags: {},
+  };
+
+  const fieldsByIndex = {
+    rider: ["rider_name", "rider", "riderName", "rider_id"],
+    horse: ["horse", "horse_name", "horseName", "horse_id"],
+    status: ["status", "latestStatus", "scope_status"],
+    ring: ["ring_number", "ringName", "ring"],
+    class_type: ["class_type", "schedule_sequencetype"],
+    group_name_tags: ["group_name_tags", "group_name"],
+  };
+
+  rows.forEach((row, rowIndex) => {
+    for (const [indexName, fieldNames] of Object.entries(fieldsByIndex)) {
+      for (const value of valuesForIndex(row, fieldNames)) {
+        addIndexValue(index, indexName, value, rowIndex);
+      }
+    }
+  });
+
+  return index;
+}
+
+function shapePublishedContent(datasetKey, rows) {
+  const cfg = getProDatasetConfig(datasetKey);
+  if (!cfg || cfg.outputMode !== "indexed") return rows;
+  return {
+    rows,
+    indexed: buildProIndexes(rows),
+  };
 }
 
 //////////////////////
@@ -577,8 +749,9 @@ function buildTenantManifestFromQueue(pqRecords, epochSec, tenant) {
 async function buildContentObjectForRow(row, pqRecords, epochSec) {
   const f = row.fields || {};
   const datasetKey = String(f[PQ_DATASET_KEY] || "").trim() || "unknown";
-  const tableName  = String(f[PQ_TABLE_NAME] || "").trim();
-  const viewName   = String(f[PQ_VIEW1] || "").trim();
+  const proCfg = getProDatasetConfig(datasetKey);
+  const tableName  = String(f[PQ_TABLE_NAME] || "").trim() || proCfg?.tableName || "";
+  const viewName   = String(f[PQ_VIEW1] || "").trim() || proCfg?.viewName || "";
   const paths      = parsePaths(f[PQ_PATHS1]);
   const allowedFields = pickAllowedFields(datasetKey, f[PQ_ALLOWED_FIELDS]);
 
@@ -620,7 +793,7 @@ async function buildContentObjectForRow(row, pqRecords, epochSec) {
     viewName,
     paths,
     useDiffer: boolCell(f[PQ_USE_DIFFER]),
-    contentObj: buildRowsFromRecords(records, allowedFields)
+    contentObj: shapePublishedContent(datasetKey, buildRowsFromRecords(records, allowedFields))
   };
 }
 
@@ -924,17 +1097,22 @@ async function main() {
   }
 
   for (const prepared of bulkPrepared) {
+    if (DRY_RUN) {
+      console.log(`bulk dry_run writeback skipped: ${prepared.datasetKey} changed=${prepared.changedAny}`);
+      continue;
+    }
+
     if (!prepared.changedAny) {
       await clearDirtySuccess({
         recordId: prepared.recordId,
         committedAny: false,
         epochSec,
-        reason: DRY_RUN ? "dry_run" : "skipped: no change"
+        reason: "skipped: no change"
       });
       continue;
     }
 
-    if (!bulkCommitOk && !DRY_RUN) {
+    if (!bulkCommitOk) {
       await stampDirtyError({
         recordId: prepared.recordId,
         msg: `bulk commit failed ${bulkCommitErr}`
@@ -944,9 +1122,9 @@ async function main() {
 
     await clearDirtySuccess({
       recordId: prepared.recordId,
-      committedAny: !DRY_RUN,
+      committedAny: true,
       epochSec,
-      reason: DRY_RUN ? "dry_run" : "published"
+      reason: "published"
     });
   }
 
@@ -964,11 +1142,15 @@ async function main() {
       const prepared = await prepareDifferRow(r, pqRecords, epochSec);
 
       if (!prepared.changedAny) {
+        if (DRY_RUN) {
+          console.log(`differ dry_run writeback skipped: ${prepared.datasetKey} changed=false`);
+          continue;
+        }
         await clearDirtySuccess({
           recordId: prepared.recordId,
           committedAny: false,
           epochSec,
-          reason: DRY_RUN ? "dry_run" : "skipped: no change"
+          reason: "skipped: no change"
         });
         continue;
       }
@@ -1013,11 +1195,16 @@ async function main() {
         }
       }
 
+      if (DRY_RUN) {
+        console.log(`differ dry_run writeback skipped: ${prepared.datasetKey} changed=true`);
+        continue;
+      }
+
       await clearDirtySuccess({
         recordId: prepared.recordId,
-        committedAny: !DRY_RUN,
+        committedAny: true,
         epochSec,
-        reason: DRY_RUN ? "dry_run" : "published + differ"
+        reason: "published + differ"
       });
     } catch (e) {
       const msg = String(e?.message || e).slice(0, 240);
