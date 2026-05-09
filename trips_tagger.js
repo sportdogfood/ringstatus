@@ -76,6 +76,7 @@ const LIVECLASS_BASE_URL = String(
 
 // watch_trips source fields
 const FIELD_CLASS_ENDPOINT        = process.env.FIELD_CLASS_ENDPOINT || "class_endpoint";
+const FIELD_GET_LIVE_CLASS_DATA   = process.env.FIELD_GET_LIVE_CLASS_DATA || "getLiveClassData";
 const FIELD_ENTRYXCLASSES_UUID    = process.env.FIELD_ENTRYXCLASSES_UUID || "entryxclasses_uuid";
 const FIELD_ENTRY_ID              = process.env.FIELD_ENTRY_ID || "entry_id";
 const FIELD_ENTRY_NUMBER          = process.env.FIELD_ENTRY_NUMBER || "entry_number";
@@ -202,6 +203,31 @@ function normalizeClassEndpoint(v, classGroupId) {
   const raw = strOrNull(v);
   if (!raw) return null;
   return normalizeClassEndpointWithCgid(raw, classGroupId);
+}
+
+function normalizeLiveClassDataEndpoint(v) {
+  const raw = strOrNull(v);
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (!url.pathname.toLowerCase().endsWith("/getliveclassdata")) return null;
+    if (isBlank(url.searchParams.get("cid"))) return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+function liveClassDataEndpointParts(endpoint) {
+  try {
+    const url = new URL(endpoint);
+    return {
+      classId: numOrNull(url.searchParams.get("cid")),
+      classGroupId: numOrNull(url.searchParams.get("cgid")),
+    };
+  } catch {
+    return { classId: null, classGroupId: null };
+  }
 }
 
 function endpointPathKind(endpoint) {
@@ -884,6 +910,8 @@ async function fetchShowsMap() {
       const class_id = numOrNull(f[FIELD_CLASS_ID]);
       const class_number = numOrNull(f[FIELD_CLASS_NUMBER]);
       const class_group_id = numOrNull(f[FIELD_CLASS_GROUP_ID]);
+      const getLiveClassDataEndpoint = normalizeLiveClassDataEndpoint(f[FIELD_GET_LIVE_CLASS_DATA]);
+      const getLiveClassDataParts = liveClassDataEndpointParts(getLiveClassDataEndpoint);
       let classEndpoint = normalizeClassEndpoint(f[FIELD_CLASS_ENDPOINT], class_group_id);
       if (class_id === null) {
         classEndpoint = null;
@@ -912,12 +940,17 @@ async function fetchShowsMap() {
         rec,
         classEndpoint,
         classSignupEndpoint,
+        getLiveClassDataEndpoint,
+        getLiveClassDataClassId: getLiveClassDataParts.classId,
+        getLiveClassDataClassGroupId: getLiveClassDataParts.classGroupId,
         entryxclasses_uuid,
         entry_id,
         entry_number,
         class_id,
         class_number,
-        class_group_id
+        class_group_id,
+        classId: class_id,
+        classNumber: class_number
       });
 
       if (classEndpoint) {
@@ -938,16 +971,34 @@ async function fetchShowsMap() {
       console.log(`endpoint warn: err:groups_live_fetch_failed :: ${liveGroupsError}`);
     }
 
-    const liveClassIds = new Set();
-    const liveClassGroupByClassId = new Map();
+    const liveClassTargets = new Map();
+    function addLiveClassTarget(classId, classGroupId, endpoint = null) {
+      const normalizedClassId = strOrNull(classId);
+      if (!normalizedClassId) return;
+      if (!liveClassTargets.has(normalizedClassId)) {
+        liveClassTargets.set(normalizedClassId, {
+          classId: normalizedClassId,
+          classGroupId,
+          endpoint,
+        });
+        return;
+      }
+      const target = liveClassTargets.get(normalizedClassId);
+      if (!target.endpoint && endpoint) target.endpoint = endpoint;
+      if (isBlank(target.classGroupId) && !isBlank(classGroupId)) target.classGroupId = classGroupId;
+    }
     for (const row of recInputs) {
+      if (row.getLiveClassDataEndpoint && row.getLiveClassDataClassId !== null) {
+        addLiveClassTarget(
+          row.getLiveClassDataClassId,
+          row.getLiveClassDataClassGroupId ?? row.class_group_id,
+          row.getLiveClassDataEndpoint
+        );
+      }
       const liveGroup = liveGroupsByGroupId.get(String(row.class_group_id));
       if (!liveGroup) continue;
       for (const classId of resolveLiveClassIdsForTrip(liveGroup, row)) {
-        liveClassIds.add(String(classId));
-        if (!liveClassGroupByClassId.has(String(classId))) {
-          liveClassGroupByClassId.set(String(classId), liveGroup.class_group_id);
-        }
+        addLiveClassTarget(classId, liveGroup.class_group_id);
       }
     }
 
@@ -955,24 +1006,24 @@ async function fetchShowsMap() {
     const endpointErrors = [];
 
     const liveClassDataCache = new Map();
-    for (const classId of liveClassIds) {
-      const endpoint = buildLiveClassDataEndpoint({
+    for (const target of liveClassTargets.values()) {
+      const endpoint = target.endpoint || buildLiveClassDataEndpoint({
         baseUrl: LIVECLASS_BASE_URL,
         showId: appCtx.app_show_id,
-        classId,
-        classGroupId: liveClassGroupByClassId.get(String(classId)),
+        classId: target.classId,
+        classGroupId: target.classGroupId,
       });
       if (!endpoint) continue;
       try {
-        const result = await fetchLiveClassData(endpoint, classId);
-        liveClassDataCache.set(String(classId), {
+        const result = await fetchLiveClassData(endpoint, target.classId);
+        liveClassDataCache.set(String(target.classId), {
           ok: true,
           endpoint,
           ...result,
         });
       } catch (e) {
         const reason = String(e?.message || e).slice(0, 300);
-        liveClassDataCache.set(String(classId), {
+        liveClassDataCache.set(String(target.classId), {
           ok: false,
           endpoint,
           reason,
@@ -984,9 +1035,21 @@ async function fetchShowsMap() {
 
     function liveContextFor(row) {
       const liveGroup = liveGroupsByGroupId.get(String(row.class_group_id)) || null;
-      if (!liveGroup) return { group: null, trip: null, classId: null };
+      const preferredClassIds = [];
+      const seenClassIds = new Set();
+      function pushPreferredClassId(value) {
+        const normalized = strOrNull(value);
+        if (!normalized || seenClassIds.has(normalized)) return;
+        seenClassIds.add(normalized);
+        preferredClassIds.push(normalized);
+      }
 
-      const preferredClassIds = resolveLiveClassIdsForTrip(liveGroup, row);
+      pushPreferredClassId(row.getLiveClassDataClassId);
+      if (liveGroup) {
+        for (const classId of resolveLiveClassIdsForTrip(liveGroup, row)) {
+          pushPreferredClassId(classId);
+        }
+      }
 
       for (const classId of preferredClassIds) {
         const cached = liveClassDataCache.get(String(classId));
@@ -1279,35 +1342,16 @@ async function fetchShowsMap() {
       else shows_link_missing++;
 
       if (!classEndpoint) {
-        if (liveCtx.group) {
+        if (liveCtx.group || liveCtx.trip) {
           setClassLevelFields(updateFields, {
-            class_status: liveCtx.group.status,
-            estimated_start_time: liveCtx.group.estimated_start_time,
-            total_trips: liveCtx.group.total,
-            completed_trips: liveCtx.group.gone,
+            class_status: liveCtx.group?.status,
+            estimated_start_time: liveCtx.group?.estimated_start_time,
+            total_trips: liveCtx.group?.total,
+            completed_trips: liveCtx.group?.gone,
           });
 
           if (liveCtx.trip) {
-            let classSignupCached = null;
-            let classSignupEntry = null;
-            let order_of_go = normNum(liveCtx.trip.order_of_go, IGNORE_NUM.order_of_go);
-
-            if (order_of_go === null && classSignupEndpoint) {
-              classSignupCached = await fetchClassSignupEndpointCached(classSignupEndpoint);
-              classSignupEntry = classSignupCached?.ok
-                ? findClassSignupEntry(classSignupCached.json, {
-                  entryId: entry_id,
-                  entryNumber: entry_number,
-                  classNumber: class_number,
-                  classId: class_id,
-                })
-                : null;
-              order_of_go = firstNormNum(
-                IGNORE_NUM.order_of_go,
-                classSignupEntry?.order_of_go,
-                classSignupEntry?.orderOfGo
-              );
-            }
+            const order_of_go = normNum(liveCtx.trip.order_of_go, IGNORE_NUM.order_of_go);
 
             liveclass_trip_matched++;
             trip_matched++;
@@ -1318,18 +1362,14 @@ async function fetchShowsMap() {
               gone_in: normNum(liveCtx.trip.gone_in),
               h_eid: normNum(firstNonBlank(
                 liveCtx.trip.entry_number,
-                classSignupEntry?.entry_number,
-                classSignupEntry?.entryNumber,
-                classSignupEntry?.number
+                liveCtx.trip.entry_id
               )),
             });
 
             let reason = "ok:liveclassv2_matched";
             if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
-            if (classSignupCached && !classSignupCached.ok) reason = `${reason}|warn:${classSignupCached.reason || "classsignup_fetch_failed"}`;
-            if (classSignupCached?.payload_has_no_usable_entry_keys) reason = `${reason}|warn:classsignup_payload_no_usable_entry_keys`;
-            if (classSignupCached && classSignupCached.authorization_used === false) reason = `${reason}|warn:sgl_auth_not_used`;
-            if (!liveCtx.group.status) reason = `${reason}|warn:missing_status`;
+            if (!liveCtx.group) reason = `${reason}|warn:missing_groups_live_context`;
+            if (liveCtx.group && !liveCtx.group.status) reason = `${reason}|warn:missing_status`;
             if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
             setBaseFields(updateFields, observedAt, reason);
             bumpReason(reason);
@@ -1346,46 +1386,13 @@ async function fetchShowsMap() {
           continue;
         }
 
-        const classSignupCached = classSignupEndpoint
-          ? await fetchClassSignupEndpointCached(classSignupEndpoint)
-          : null;
-        const classSignupEntry = classSignupCached?.ok
-          ? findClassSignupEntry(classSignupCached.json, {
-            entryId: entry_id,
-            entryNumber: entry_number,
-            classNumber: class_number,
-            classId: class_id,
-          })
-          : null;
-
-        if (classSignupEntry) {
-          const order_of_go = firstNormNum(
-            IGNORE_NUM.order_of_go,
-            classSignupEntry?.order_of_go,
-            classSignupEntry?.orderOfGo
-          );
-          const h_eid = normNum(firstNonBlank(
-            classSignupEntry?.entry_id,
-            classSignupEntry?.entryId,
-            classSignupEntry?.entry_number,
-            classSignupEntry?.entryNumber,
-            classSignupEntry?.number
-          ));
-          setIfPresent(updateFields, FIELD_ORDER_OF_GO, order_of_go);
-          setIfPresent(updateFields, FIELD_H_EID, h_eid);
-
-          let reason = "warn:classsignup_only";
-          if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
-          if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
-          setBaseFields(updateFields, observedAt, reason);
-          bumpReason(reason);
-          updates.push({ id: rec.id, fields: updateFields });
-          continue;
-        }
-
-        let reason = classSignupEndpoint ? "err:missing_class_endpoint|warn:no_classsignup_match" : "err:missing_class_endpoint";
-        if (classSignupCached?.payload_has_no_usable_entry_keys) reason = `${reason}|warn:classsignup_payload_no_usable_entry_keys`;
-        if (classSignupCached && classSignupCached.authorization_used === false) reason = `${reason}|warn:sgl_auth_not_used`;
+        let reason = "err:missing_liveclass_mapping";
+        if (!liveCtx.group) reason = `${reason}|debug:missing_groups_live_context`;
+        if (!getLiveClassDataEndpoint) reason = `${reason}|debug:missing_getLiveClassData`;
+        if (getLiveClassDataEndpoint && getLiveClassDataClassId === null) reason = `${reason}|debug:invalid_getLiveClassData`;
+        if (class_id === null) reason = `${reason}|debug:missing_class_id`;
+        if (class_group_id === null) reason = `${reason}|debug:missing_class_group_id`;
+        if (class_number === null) reason = `${reason}|debug:missing_class_number`;
         if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
 
         skipped_missing_class_endpoint++;
