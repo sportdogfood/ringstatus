@@ -2017,7 +2017,7 @@ async function main() {
     });
   }
 
-  if (softPayloadSamples.length) {
+  if (softPayloadSamples.length && preparedTenants.length === 0) {
     console.log(JSON.stringify({
       ok: false,
       dry_run: DRY_RUN,
@@ -2352,6 +2352,8 @@ async function main() {
     unique_rows: scopedRows.length,
     filtered_out_scheduled_date_mismatch: uniqueRows.size - scopedRows.length,
     people_failures: peopleFailures,
+    soft_payload_samples: softPayloadSamples.slice(0, 10),
+    partial_people_payload_failures: softPayloadSamples.length,
     empty_tenant_ids: emptyTenantIds,
     tenant_summaries: tenantSummaries,
     outside_schedule_count: outsideSchedule.length,
