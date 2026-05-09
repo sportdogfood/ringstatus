@@ -1,7 +1,7 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.08.3  
-**Date:** 2026-05-08  
+**Version:** v2026.05.09.1  
+**Date:** 2026-05-09  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
 
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.09.1 | 2026-05-09 | Clarified the same-day live trips enrichment sequence: prove live feed availability, validate current `groups_live`, pair `classNumbers[]` to `classes[]`, build class-scoped `getLiveClassData` requests from those live groups, then enrich existing `watch_trips` rows. Also clarified that `class_id` remains critical while `/classes/{class_id}` is only too unreliable to be a schedule/trips population dependency. |
 | v2026.05.08.4 | 2026-05-08 | Made manual schedule HTML time handling explicit: `manual_sgl_payloads/schedule-html/schedule_html_YYYY-MM-DD_show_SHOWID_EPOCH.html` is allowed as a conservative time overlay, and all display start times in `h:mm AM/PM` or `hh:mm AM/PM` format must write `estimated_start_time` as normalized `HH:MM:SS`. |
 | v2026.05.08.3 | 2026-05-08 | Added the matching trips-lane boundary: `trips_dailyv2.js` must use one `/people/{pid}` endpoint per active tenant through the local PowerShell fetch path, cache successful people payloads, fall back only to approved people payload folders, and must not use `/classes/{class_id}` as a pre-live substitute for trip population. |
 | v2026.05.08.2 | 2026-05-08 | Clarified the schedule-lane endpoint boundary: `schedules_dailyv2.js` must use the single day-scoped `/schedule?date=...` endpoint plus approved payload fallbacks, must not fan out to `/classes/{class_id}`, and must treat `DAY -> NIGHT` shifted next-day schedule creation as pre-live minimum-row population. |
@@ -276,6 +277,49 @@ Reason:
 When heartbeat mode shifts from `DAY` to `NIGHT` and `shifted_to_next_day = true`, the next-day trips lane should create or refresh minimum viable `watch_trips` rows from people payloads and current scoped `watch_schedule`. The next actual live day should rely on the liveclassv2 paths, gated by `groups_live`, to populate critical live data points.
 
 Successful people payloads should be stored in `early_sgl_payloads/people` as fallback support. Fallback people payloads are not live authority and must not overwrite newer successful live people payloads.
+
+## Same-Day Trips Live Enrichment Sequence
+
+Same-day trip enrichment has a fixed gate order:
+
+1. Prove live feed availability with `getLiveClassStatus`.
+2. Validate current-scope `groups_live` rows from `ListAjax`.
+3. Build class-scoped liveclassv2 requests from those validated groups.
+4. Enrich existing `watch_trips` rows from the returned live trip rows.
+
+In this sequence, "classes" means liveclassv2 class identifiers exposed through `groups_live` and queried through `getLiveClassData`. `class_id` is not deprecated; it remains critical for enrichment. The less reliable part is depending on `/classes/{class_id}` as a schedule/trips population endpoint.
+
+The class-scoped live trip endpoint is:
+
+```text
+https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&cgid={CLASS_GROUP_ID}
+```
+
+The endpoint also accepts the cache-buster form `&t={CACHE_BUSTER}`. When `class_group_id` is known from `ListAjax`, include `cgid` because it makes the class/group pairing explicit and matches the observed working call shape.
+
+The trip enrichment field contract is:
+
+| Live row field | Target field |
+| --- | --- |
+| `rows[].OOG` | `order_of_go` |
+| `rows[].Gone` | `gone_in` |
+| `rows[].Actual_OOG` | `actual_order` |
+| `rows[].ENo` | entry-number match key |
+| `rows[].Hor` | horse confirmation |
+| `rows[].Rid` | rider confirmation |
+
+`ListAjax` should be the default broad live ping because one payload gives the current groups, `estimated_start_time`, `status`, `gone`, `total`, `classes[]`, `classNumbers[]`, and `has_JSON`. `ClassStatus` may be used as a targeted group refresh, but it should not replace `ListAjax` as the default group discovery path.
+
+For groups with multiple classes, pair by array index:
+
+```text
+classes[index]      -> class_id
+classNumbers[index] -> class_number
+```
+
+That pair should be used to build the narrowest viable `getLiveClassData` endpoint for each trip row. If `watch_trips.class_id` is present, prefer it. If it is missing but `class_number` is present, resolve `class_number` through the `ListAjax` pair. Only fall back to all group class ids when no exact class can be resolved. When building the endpoint, pass both `cid = class_id` and `cgid = class_group_id` when both are available.
+
+The lane should enrich rows already created by `trips_dailyv2.js`; it should not rebuild `watch_trips` from scratch because liveclassv2 became available. If `getLiveClassData` returns `{}`, invalid JSON, the wrong show/class, or no matching trip row, the run must log the reason and keep the existing pre-live trip row intact.
 
 ## Identity Model
 

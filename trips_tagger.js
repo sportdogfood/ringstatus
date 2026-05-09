@@ -39,6 +39,7 @@ const {
   buildLiveClassDataEndpoint,
   findLiveClassTrip,
   normalizeLiveClassDataPayload,
+  resolveLiveClassIdsForTrip,
 } = require("./lib/liveclassv2_enrichment");
 const {
   recordMatchesAppScope,
@@ -938,10 +939,16 @@ async function fetchShowsMap() {
     }
 
     const liveClassIds = new Set();
+    const liveClassGroupByClassId = new Map();
     for (const row of recInputs) {
       const liveGroup = liveGroupsByGroupId.get(String(row.class_group_id));
       if (!liveGroup) continue;
-      for (const classId of liveGroup.class_ids || []) liveClassIds.add(String(classId));
+      for (const classId of resolveLiveClassIdsForTrip(liveGroup, row)) {
+        liveClassIds.add(String(classId));
+        if (!liveClassGroupByClassId.has(String(classId))) {
+          liveClassGroupByClassId.set(String(classId), liveGroup.class_group_id);
+        }
+      }
     }
 
     const endpointCache = new Map();
@@ -953,6 +960,7 @@ async function fetchShowsMap() {
         baseUrl: LIVECLASS_BASE_URL,
         showId: appCtx.app_show_id,
         classId,
+        classGroupId: liveClassGroupByClassId.get(String(classId)),
       });
       if (!endpoint) continue;
       try {
@@ -978,12 +986,7 @@ async function fetchShowsMap() {
       const liveGroup = liveGroupsByGroupId.get(String(row.class_group_id)) || null;
       if (!liveGroup) return { group: null, trip: null, classId: null };
 
-      const preferredClassIds = [];
-      if (row.class_id !== null && row.class_id !== undefined) preferredClassIds.push(String(row.class_id));
-      for (const classId of liveGroup.class_ids || []) {
-        const key = String(classId);
-        if (!preferredClassIds.includes(key)) preferredClassIds.push(key);
-      }
+      const preferredClassIds = resolveLiveClassIdsForTrip(liveGroup, row);
 
       for (const classId of preferredClassIds) {
         const cached = liveClassDataCache.get(String(classId));
