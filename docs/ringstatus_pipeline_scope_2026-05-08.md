@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.09.4 | 2026-05-09 | Clarified live trip enrichment endpoint policy: `getLiveClassData` should be constructed from known `show_id`, `class_id`, and `class_group_id`, or read from `watch_trips.getLiveClassData` when explicitly populated; if neither is possible, skip the row with `err:missing_liveclass_mapping` and do not use `classsignup` as the fallback for missing liveclass mapping. |
 | v2026.05.09.3 | 2026-05-09 | Clarified the non-live schedule/people refresh contract that runs throughout the day and becomes critical on `DAY -> NIGHT`: fresh schedule and people payloads are primary when successful, successful schedule payloads should be cached for current and remaining show dates, successful people payloads should be cached once per person/show because they are full-week, and manual JSON/HTML folders are secondary fallbacks. |
 | v2026.05.09.2 | 2026-05-09 | Added the live schedule backfill rule: when `ListAjax`/`groups_live` provides a reliable `classNumbers[] -> classes[]` pair, blank `watch_schedule.class_id` should be populated from that pair without pinging `/classes/{class_id}`. |
 | v2026.05.09.1 | 2026-05-09 | Clarified the same-day live trips enrichment sequence: prove live feed availability, validate current `groups_live`, pair `classNumbers[]` to `classes[]`, build class-scoped `getLiveClassData` requests from those live groups, then enrich existing `watch_trips` rows. Also clarified that `class_id` remains critical while `/classes/{class_id}` is only too unreliable to be a schedule/trips population dependency. |
@@ -568,6 +569,16 @@ Pattern:
 https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&t={CACHE_BUSTER}
 ```
 
+Preferred constructed pattern:
+
+```text
+https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&cgid={CLASS_GROUP_ID}
+```
+
+The endpoint should be constructed from known `show_id`, `class_id`, and `class_group_id`. If `watch_trips.getLiveClassData` is populated, that field may be used as the explicit endpoint for the row, provided it is a `getLiveClassData` URL with a usable `cid`.
+
+If neither construction nor `watch_trips.getLiveClassData` is available, skip live trip enrichment for that row and log `err:missing_liveclass_mapping`. Do not use `classsignup` as the fallback for missing liveclass mapping because it does not reliably yield the live fields currently needed.
+
 Confirmed identifier behavior:
 
 | Payload field | Meaning |
@@ -668,7 +679,8 @@ Implemented or in progress:
 - protected fields are guarded against global clearing
 - soft payload checks exist and should block destructive downstream work
 - same-day `getLiveClassData` enrichment is active in `trips_tagger.js` when `groups_live.has_JSON = true`
-- `classsignup` fallback is lazy and should only be used after stronger same-day live sources fail to provide `order_of_go`
+- `watch_trips.getLiveClassData` can act as an explicit row endpoint when the script cannot otherwise construct the same `getLiveClassData` URL
+- missing liveclass mapping is logged as `err:missing_liveclass_mapping`; `classsignup` is not a fallback for that miss
 - split orchestration should run `schedules_calculatorv2.js` after due schedule refresh slots so `groups_live` overlays are promoted
 
 Not yet fully implemented:

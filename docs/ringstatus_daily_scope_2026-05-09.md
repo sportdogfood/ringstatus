@@ -27,6 +27,8 @@ Current-day live enrichment:
 4. Use `classes[] + classNumbers[]` to pair `class_number -> class_id`.
 5. Use `getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&cgid={CLASS_GROUP_ID}` for trip row enrichment.
 
+If `watch_trips.getLiveClassData` is populated, it may be used as the explicit same-day enrichment endpoint for that row. Otherwise the endpoint must be constructed from known `show_id`, `class_id`, and `class_group_id`. If those identifiers cannot be resolved, skip live trip enrichment for that row and log `err:missing_liveclass_mapping`. Do not use `classsignup` as the fallback for missing liveclass mapping.
+
 Current-day schedule/people refresh still runs separately:
 
 - `schedules_dailyv2.js` keeps trying the day-scoped `/schedule?date=...` endpoint through the local PowerShell fetch path.
@@ -106,6 +108,8 @@ The pipeline should switch from pre-live minimum-row population to current-day e
 
 If live endpoints return `{}`, wrong show, wrong date, invalid JSON, or no matching rows, log the reason and keep the pre-live rows intact.
 
+`classsignup` is not the fallback for live trip enrichment when `getLiveClassData` cannot be built or read from `watch_trips.getLiveClassData`; unresolved rows should remain intact for the next valid live pass.
+
 ## Estimated Start Time
 
 `estimated_start_time` remains a known weak point before live group feeds are available.
@@ -135,4 +139,3 @@ Do not treat live enrichment as a replacement for the schedule/people refresh wo
 
 - schedule/people refresh creates and repairs minimum viable rows
 - live enrichment fills current-day live progress and trip order/detail
-
