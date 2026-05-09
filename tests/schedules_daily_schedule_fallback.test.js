@@ -1,6 +1,10 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
+const {
+  normalizeHtmlScheduleTimeText,
+  parseScheduleHtmlTimeOverlay,
+} = require("../schedules_dailyv2");
 
 const source = fs.readFileSync(path.resolve(__dirname, "..", "schedules_dailyv2.js"), "utf8");
 
@@ -83,5 +87,20 @@ assert.ok(
     source.includes("const scopedRowsBase = chosen.rows.filter"),
   "schedule rows should come directly from schedule payload/fallback without class endpoint enrichment"
 );
+
+assert.equal(normalizeHtmlScheduleTimeText("8:30 AM"), "08:30:00");
+assert.equal(normalizeHtmlScheduleTimeText("1:40 PM"), "13:40:00");
+
+const htmlOverlay = parseScheduleHtmlTimeOverlay(`
+  <tr class="class_group_row">
+    <td><a href="/showgrounds/classes/detail?cid=200024977&amp;sid=200000061&amp;cgid=200023750&amp;ring=1">Open Jumper [701]</a></td>
+    <td class="center-align"><a>8:30 AM</a></td>
+    <td class="center-align"><a>18</a></td>
+  </tr>
+`);
+
+assert.equal(htmlOverlay.parsedRows.length, 1);
+assert.equal(htmlOverlay.rowsByGroupId.get("200023750").estimated_start_time, "08:30:00");
+assert.equal(htmlOverlay.rowsByClassNumber.get("701").estimated_start_time, "08:30:00");
 
 console.log("schedules_daily_schedule_fallback tests passed");

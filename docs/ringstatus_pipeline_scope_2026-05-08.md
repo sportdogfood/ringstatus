@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.08.4 | 2026-05-08 | Made manual schedule HTML time handling explicit: `manual_sgl_payloads/schedule-html/schedule_html_YYYY-MM-DD_show_SHOWID_EPOCH.html` is allowed as a conservative time overlay, and display times such as `8:30 AM` must write `estimated_start_time` as `08:30:00`. |
 | v2026.05.08.3 | 2026-05-08 | Added the matching trips-lane boundary: `trips_dailyv2.js` must use one `/people/{pid}` endpoint per active tenant through the local PowerShell fetch path, cache successful people payloads, fall back only to approved people payload folders, and must not use `/classes/{class_id}` as a pre-live substitute for trip population. |
 | v2026.05.08.2 | 2026-05-08 | Clarified the schedule-lane endpoint boundary: `schedules_dailyv2.js` must use the single day-scoped `/schedule?date=...` endpoint plus approved payload fallbacks, must not fan out to `/classes/{class_id}`, and must treat `DAY -> NIGHT` shifted next-day schedule creation as pre-live minimum-row population. |
 | v2026.05.08.1 | 2026-05-08 | Refreshed daily scope; added stale-document stop rule; clarified same-day live gating through `getLiveClassStatus`, `ListAjax`, matching `groups_live.day`, and `groups_live.has_JSON`; clarified `getLiveClassData` is active for same-day trip enrichment while `ClassStatus` remains a documented but not-yet-wired status overlay. |
@@ -396,6 +397,7 @@ manual_sgl_payloads/schedule/schedule_2026-05-09_show_200000061_1778280002.json
 manual_sgl_payloads/schedule/schedule_2026-05-10_show_200000061_1778280002.json
 manual_sgl_payloads/people/people_8778_show_200000061_1778280002.json
 manual_sgl_payloads/schedule-html/schedule_html_2026-05-08_show_200000061_1778245924.html
+manual_sgl_payloads/schedule-html/schedule_html_2026-05-09_show_200000061_1778245924.html
 ```
 
 Manual files in these folders are last-resort fallback inputs when the normal SGL fetch path cannot obtain a usable payload at the time the pipeline needs it.
@@ -404,6 +406,7 @@ Known manual HTML examples:
 
 ```text
 C:\actions-runner\ringstatus\manual_sgl_payloads\schedule-html\schedule_html_2026-05-08_show_200000061_1778245924.html
+C:\actions-runner\ringstatus\manual_sgl_payloads\schedule-html\schedule_html_2026-05-09_show_200000061_1778245924.html
 ```
 
 Derived schedule HTML fallback example:
@@ -421,6 +424,8 @@ The derived schedule HTML fallback can be used to form the basic schedule when A
 - `ring_number`, usually from `ring=` in links or the table/ring header context
 - `estimated_start_time`, normalized to `HH:MM:SS`
 - entries/total trips when visible
+
+Time handling is explicit: if the manual HTML shows `8:30 AM`, the schedule lane must write `estimated_start_time` as `08:30:00`. If the HTML shows `1:40 PM`, it must write `13:40:00`. Manual HTML time extraction fills missing `estimated_start_time` values only; it must not replace a newer nonblank API-derived time.
 
 Manual HTML fallback rules:
 

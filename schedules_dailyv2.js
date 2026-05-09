@@ -662,6 +662,151 @@ function loadScheduleFallbackPayload(appShowId, appSqlDate) {
   };
 }
 
+function candidateScheduleHtmlFiles(appShowId, appSqlDate) {
+  const showText = escapeRegExp(appShowId);
+  const dateText = escapeRegExp(appSqlDate);
+  const scheduleHtml = new RegExp(`^schedule_html_${dateText}_show_${showText}_[0-9]+\\.html$`, "i");
+
+  const candidates = [];
+  for (const filePath of collectFilesRecursive(MANUAL_SCHEDULE_HTML_DIR)) {
+    const name = path.basename(filePath);
+    if (!scheduleHtml.test(name)) continue;
+
+    const stat = fs.statSync(filePath);
+    if (!stat.size) continue;
+    candidates.push({ filePath, size: stat.size, mtimeMs: stat.mtimeMs });
+  }
+
+  candidates.sort((left, right) => right.mtimeMs - left.mtimeMs);
+  return candidates;
+}
+
+function decodeHtmlText(value) {
+  return String(value || "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/gi, '"')
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeHtmlScheduleTimeText(value) {
+  const match = String(value || "").match(/\b(\d{1,2})(?::(\d{2}))?\s*(AM|PM)\b/i);
+  if (!match) return null;
+
+  let hour = Number(match[1]);
+  const minute = Number(match[2] || "0");
+  const meridiem = match[3].toUpperCase();
+  if (!Number.isInteger(hour) || !Number.isInteger(minute)) return null;
+  if (hour < 1 || hour > 12 || minute < 0 || minute > 59) return null;
+  if (meridiem === "PM" && hour !== 12) hour += 12;
+  if (meridiem === "AM" && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`;
+}
+
+function parseScheduleHtmlTimeOverlay(htmlText) {
+  const rowsByGroupId = new Map();
+  const rowsByClassNumber = new Map();
+  const parsedRows = [];
+  const rowMatches = String(htmlText || "").match(/<tr\b[\s\S]*?<\/tr>/gi) || [];
+
+  for (const rowHtml of rowMatches) {
+    if (!/\bclass_group_row\b/i.test(rowHtml)) continue;
+    if (/Total\s+Trips/i.test(rowHtml)) continue;
+
+    const estimatedStartTime = normalizeHtmlScheduleTimeText(decodeHtmlText(rowHtml));
+    if (!estimatedStartTime) continue;
+
+    const cgidMatch = rowHtml.match(/(?:[?&]|&amp;)cgid=(\d+)/i);
+    const ringMatch = rowHtml.match(/(?:[?&]|&amp;)ring=(\d+)/i);
+    const bracketMatch = decodeHtmlText(rowHtml).match(/\[([0-9,\s]+)\]/);
+    const classNumbers = bracketMatch
+      ? bracketMatch[1].split(",").map((value) => numOrNull(value)).filter((value) => value !== null)
+      : [];
+    const item = {
+      class_group_id: cgidMatch ? numOrNull(cgidMatch[1]) : null,
+      ring_number: ringMatch ? numOrNull(ringMatch[1]) : null,
+      class_numbers: classNumbers,
+      estimated_start_time: estimatedStartTime,
+    };
+
+    parsedRows.push(item);
+    if (item.class_group_id !== null) rowsByGroupId.set(normalizeKey(item.class_group_id), item);
+    for (const classNumber of classNumbers) {
+      if (!rowsByClassNumber.has(normalizeKey(classNumber))) rowsByClassNumber.set(normalizeKey(classNumber), item);
+    }
+  }
+
+  return { parsedRows, rowsByGroupId, rowsByClassNumber };
+}
+
+function applyScheduleHtmlTimeOverlay(rows, appShowId, appSqlDate) {
+  const candidates = candidateScheduleHtmlFiles(appShowId, appSqlDate);
+  const summary = {
+    ok: false,
+    skipped: candidates.length === 0,
+    reason: candidates.length === 0 ? "no_matching_manual_schedule_html" : null,
+    manual_schedule_html_dir: MANUAL_SCHEDULE_HTML_DIR,
+    file_path: candidates[0]?.filePath || null,
+    body_length: candidates[0]?.size || null,
+    parsed_rows: 0,
+    matched_rows: 0,
+    updated_rows: 0,
+    failures: [],
+  };
+
+  if (!candidates.length) return { rows, summary };
+
+  for (const candidate of candidates) {
+    try {
+      const htmlText = fs.readFileSync(candidate.filePath, "utf8");
+      const parsed = parseScheduleHtmlTimeOverlay(htmlText);
+      summary.ok = true;
+      summary.skipped = false;
+      summary.reason = null;
+      summary.file_path = candidate.filePath;
+      summary.body_length = candidate.size;
+      summary.parsed_rows = parsed.parsedRows.length;
+
+      const nextRows = (rows || []).map((row) => {
+        const fields = row?.fields || {};
+        const byGroup = parsed.rowsByGroupId.get(normalizeKey(fields.class_group_id));
+        const byClass = parsed.rowsByClassNumber.get(normalizeKey(fields.class_number));
+        const overlay = byGroup || byClass || null;
+        if (!overlay?.estimated_start_time) return row;
+
+        summary.matched_rows += 1;
+        if (!isBlank(fields.estimated_start_time)) return row;
+
+        summary.updated_rows += 1;
+        return {
+          ...row,
+          fields: {
+            ...fields,
+            estimated_start_time: overlay.estimated_start_time,
+          },
+          refs: {
+            ...(row?.refs || {}),
+            schedule_html_time_overlay: candidate.filePath,
+          },
+        };
+      });
+
+      return { rows: nextRows, summary };
+    } catch (error) {
+      summary.failures.push({
+        file_path: candidate.filePath,
+        reason: String(error?.message || error).slice(0, 300),
+      });
+    }
+  }
+
+  summary.reason = "manual_schedule_html_parse_failed";
+  return { rows, summary };
+}
+
 function schedulePayloadFileName(appShowId, appSqlDate, epochSeconds = Math.floor(Date.now() / 1000)) {
   return `schedule_${appSqlDate}_show_${appShowId}_${epochSeconds}.json`;
 }
@@ -1667,13 +1812,18 @@ async function runDaily() {
     failures: [],
   };
   const scopedRowsBase = chosen.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
-  let scopedRows = scopedRowsBase;
+  const scheduleHtmlTimeOverlay = applyScheduleHtmlTimeOverlay(
+    scopedRowsBase,
+    scope.app_show_idv2,
+    scope.app_sql_datev2
+  );
+  let scopedRows = scheduleHtmlTimeOverlay.rows;
   let groupsLiveRows = [];
   let groupsLiveMatchedRows = 0;
   let groupsLiveError = null;
   try {
     groupsLiveRows = await fetchGroupsLiveRows(scope.app_show_idv2, new Set([scope.app_sql_datev2]));
-    const groupsLiveOverlay = applyGroupsLiveFallback(scopedRowsBase, buildGroupsLiveMap(groupsLiveRows));
+    const groupsLiveOverlay = applyGroupsLiveFallback(scopedRows, buildGroupsLiveMap(groupsLiveRows));
     scopedRows = groupsLiveOverlay.rows;
     groupsLiveMatchedRows = groupsLiveOverlay.matched;
   } catch (error) {
@@ -1813,6 +1963,7 @@ async function runDaily() {
         enriched_rows: classEndpointEnrichment.enriched_rows,
         failures: classEndpointEnrichment.failures,
       },
+      schedule_html_time_overlay: scheduleHtmlTimeOverlay.summary,
       groups_live_fallback: {
         table: TABLE_GROUPS_LIVE,
         rows: groupsLiveRows.length,
@@ -1895,7 +2046,10 @@ if (require.main === module) {
 
 module.exports = {
   applyGroupsLiveFallback,
+  applyScheduleHtmlTimeOverlay,
   buildCurrentFields,
+  normalizeHtmlScheduleTimeText,
+  parseScheduleHtmlTimeOverlay,
   runDaily,
   scheduleRowKeyFromFields,
 };
