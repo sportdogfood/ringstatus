@@ -88,6 +88,7 @@ assert.ok(
   "schedule rows should come directly from schedule payload/fallback without class endpoint enrichment"
 );
 
+assert.equal(normalizeHtmlScheduleTimeText("8:00 AM"), "08:00:00");
 assert.equal(normalizeHtmlScheduleTimeText("8:30 AM"), "08:30:00");
 assert.equal(normalizeHtmlScheduleTimeText("1:40 PM"), "13:40:00");
 
