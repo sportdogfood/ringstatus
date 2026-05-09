@@ -399,7 +399,11 @@ async function createAutomationErr(fields) {
   if (!Object.keys(safeFields).length) return { skipped: true, reason: "empty_fields" };
 
   try {
-    return await airtableCreateRecords(TABLE_AUTOMATION_ERRS, [{ fields: safeFields }]);
+    const result = await airtableCreateRecords(TABLE_AUTOMATION_ERRS, [{ fields: safeFields }]);
+    if (result.failedRows?.length) {
+      console.log(`automation_errs write warn: ${JSON.stringify(result.failedRows).slice(0, 300)}`);
+    }
+    return result;
   } catch (error) {
     console.log(`automation_errs write warn: ${String(error?.message || error).slice(0, 300)}`);
     return { skipped: true, reason: String(error?.message || error).slice(0, 300) };
@@ -464,6 +468,45 @@ async function recordSoftPayloadAudit(error, endpoint, audit = {}) {
       `transport=${error?.transport || error?.metadata?.transport || ""}`,
       `source=${strOrNull(audit.source) || ""}`,
       `message=${String(error?.message || errorType).slice(0, 500)}`,
+    ].join(" "),
+    pid: numOrNull(audit.pid) ?? parts.pid,
+    app_show_id: appShowId,
+    people_show_id: numOrNull(audit.people_show_id) ?? parts.people_show_id,
+  });
+}
+
+async function recordPayloadPingAudit(endpoint, response, text, audit = {}) {
+  const parts = endpointParts(endpoint);
+  const appShowId = numOrNull(audit.app_show_id) ?? parts.app_show_id;
+  const appSqlDate = strOrNull(audit.app_sql_date) || parts.app_sql_date;
+  const pathText = parts.path || String(endpoint || "");
+  const bodyLength = Buffer.byteLength(text || "", "utf8");
+  const automationKey = strOrNull(audit.automation_key) ||
+    [
+      "schedules_dailyv2",
+      "payload_ok",
+      appShowId || "show",
+      appSqlDate || "date",
+      pathText,
+    ].join("|").slice(0, 1000);
+
+  return createAutomationErr({
+    automation_key: automationKey,
+    automation_name: strOrNull(audit.automation_name) || "schedules_dailyv2",
+    error_type: "payload_ok",
+    app_sql_date: appSqlDate,
+    run_id: numOrNull(audit.run_id),
+    last_run: strOrNull(audit.last_run),
+    resolved: true,
+    message: [
+      `path=${pathText}`,
+      `endpoint=${endpoint || ""}`,
+      `status=${response?.status ?? ""}`,
+      `body_length=${bodyLength}`,
+      `content_length=${response?.headers?.get?.("content-length") ?? ""}`,
+      `transport=${audit.transport || ""}`,
+      `source=${strOrNull(audit.source) || ""}`,
+      "message=payload_ok",
     ].join(" "),
     pid: numOrNull(audit.pid) ?? parts.pid,
     app_show_id: appShowId,
@@ -558,6 +601,10 @@ async function fetchJson(url, audit = {}) {
     }
     throw error;
   }
+  await recordPayloadPingAudit(endpoint, response, text, {
+    ...audit,
+    transport: fetched.transport,
+  });
   return json;
 }
 

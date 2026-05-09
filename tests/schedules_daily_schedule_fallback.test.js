@@ -62,8 +62,9 @@ assert.ok(
 assert.ok(
   source.includes('TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs"') &&
     source.includes("createAutomationErr") &&
-    source.includes("recordSoftPayloadAudit"),
-  "soft/empty SGL payloads should be written to automation_errs"
+    source.includes("recordSoftPayloadAudit") &&
+    source.includes("recordPayloadPingAudit"),
+  "SGL payload pings and soft/empty payloads should be written to automation_errs"
 );
 
 assert.ok(
