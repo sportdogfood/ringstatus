@@ -1,6 +1,6 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.08.1  
+**Version:** v2026.05.08.2  
 **Date:** 2026-05-08  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.08.2 | 2026-05-08 | Clarified the schedule-lane endpoint boundary: `schedules_dailyv2.js` must use the single day-scoped `/schedule?date=...` endpoint plus approved payload fallbacks, must not fan out to `/classes/{class_id}`, and must treat `DAY -> NIGHT` shifted next-day schedule creation as pre-live minimum-row population. |
 | v2026.05.08.1 | 2026-05-08 | Refreshed daily scope; added stale-document stop rule; clarified same-day live gating through `getLiveClassStatus`, `ListAjax`, matching `groups_live.day`, and `groups_live.has_JSON`; clarified `getLiveClassData` is active for same-day trip enrichment while `ClassStatus` remains a documented but not-yet-wired status overlay. |
 | v2026.05.07.1 | 2026-05-07 | Initial documented scope for split heartbeat, pre-live trip population, same-day liveclassv2 enrichment, groups_live gating, and trip identity rules. |
 
@@ -195,6 +196,45 @@ Soft-blocked behavior:
 | `getLiveClassData` liveclassv2 endpoint | day-of only | class live trip rows | Useful for order, gone-in, actual order, rider/horse/entry number. |
 | `/classes/{class_id}` | separate enrichment only | class detail | Not reliable for schedule population. `schedules_dailyv2.js` must not ping this endpoint while building next-day schedule rows. |
 | `/classsignup/{class_group_id}` | day-of/enrichment | order fallback when usable | Payload may contain unusable/null entry fields. Validate shape. |
+
+## Schedule Lane Endpoint Boundary
+
+`schedules_dailyv2.js` is the owner for pre-live and shifted next-day `watch_schedule` population.
+
+For each scoped show/date, the schedule lane must make one primary schedule request:
+
+```text
+/schedule?date={YYYY-MM-DD}&show_id={SHOW_ID}&customer_id=15
+```
+
+That request must run through the local PowerShell fetch path so the local environment, proxy behavior, and headers match the runner context.
+
+If the live schedule request returns `{}`, a small body, a shape-mismatched body, or another soft/empty payload, the lane must not fan out to class detail endpoints to compensate. It must record the soft payload in `automation_errs`, preserve existing Airtable data, and then use only the approved schedule fallbacks in this order:
+
+1. `early_sgl_payloads/schedule`
+2. `manual_sgl_payloads/schedule`
+3. `manual_sgl_payloads/schedule-html`, only when manual HTML scrape handling is intentionally invoked
+
+The schedule lane must not use these folders:
+
+```text
+tmp/schedule
+tmp/sgl_schedule_samples
+```
+
+The schedule lane must not ping this endpoint while building schedule rows:
+
+```text
+/classes/{class_id}/?show_id={SHOW_ID}&customer_id=15
+```
+
+Reason:
+
+`/classes/{class_id}` is no longer reliable enough to be part of schedule population. A fanout from one usable schedule payload into dozens or hundreds of class-detail requests can convert a good schedule run into a failed run because the class-detail family returns `{}` or otherwise unusable payloads.
+
+When heartbeat mode shifts from `DAY` to `NIGHT` and `shifted_to_next_day = true`, the next-day schedule lane should create or refresh minimum viable `watch_schedule` rows from the day-scoped schedule payload or approved fallback payloads. Missing live-only or class-detail-only fields are expected at that point. The next actual live day should rely on the liveclassv2 paths, gated by `groups_live`, to populate richer fields.
+
+This boundary does not remove day-of live enrichment. `ListAjax`, `groups_live`, `getLiveClassStatus`, `ClassStatus`, and `getLiveClassData` remain same-day live paths and must stay separate from pre-live next-day schedule population.
 
 ## Identity Model
 
