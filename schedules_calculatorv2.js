@@ -118,6 +118,13 @@ function firstLinkId(value) {
   return String(raw).trim();
 }
 
+function linkIds(value) {
+  const raw = Array.isArray(value) ? value : [value];
+  return raw
+    .map((item) => String(item || "").trim())
+    .filter(Boolean);
+}
+
 function boolValue(value) {
   const raw = firstValue(value);
   if (raw === true || raw === 1) return true;
@@ -601,6 +608,7 @@ async function fetchWatchScheduleRows() {
       "latest_ingested_at",
       "last_updated_at",
       "schedule_logs",
+      "watch_trips",
     ],
   });
 }
@@ -735,6 +743,8 @@ function normalizeWatchScheduleRow(record) {
     perTrip: numOrNull(fields.perTrip),
     latest_ingested_at: strOrNull(fields.latest_ingested_at),
     last_updated_at: strOrNull(fields.last_updated_at),
+    watch_trips_link_ids: linkIds(fields.watch_trips),
+    watch_trips_count: linkIds(fields.watch_trips).length,
   };
 }
 
