@@ -585,7 +585,7 @@ async function fetchWatchScheduleRows() {
 
 async function fetchGroupsLiveRows(appShowId, targetDays) {
   const fieldSet = await fetchTableFieldSet(TABLE_GROUPS_LIVE);
-  const requestedFields = [
+  const baseFields = [
     "class_group_id",
     "show_id",
     "day",
@@ -602,8 +602,8 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
     "class_numbers",
     "class_numbers_list",
   ];
+  const requestedFields = baseFields.filter((fieldName) => fieldSet.has(fieldName));
   let includeStopUpdating = fieldSet.has("stop_updating");
-  if (includeStopUpdating) requestedFields.push("stop_updating");
 
   let rows;
   try {
