@@ -29,6 +29,11 @@ const TRACE_LOG_PATH = path.join(
   process.env.RUNNER_LOG_DIR || "C:\\actions-runner\\ringstatus",
   "schedules-calculatorv2-progress.log"
 );
+const WATCH_SCHEDULE_MANUAL_TIME_FIELDS = [
+  "estimated_start_time",
+  "latest_estimated_start_time",
+  "___latest_estimated_start_time",
+];
 
 function traceStage(stage, extra = {}) {
   if (!TRACE_ENABLED) return;
@@ -131,6 +136,10 @@ function boolValue(value) {
   if (raw === false || raw === 0 || raw === null || raw === undefined) return false;
   const text = String(raw).trim().toLowerCase();
   return text === "true" || text === "1" || text === "yes" || text === "checked";
+}
+
+function hasManualTimeOverride(fields) {
+  return boolValue(fields?.manual_time_overide) || boolValue(fields?.manual_time_override);
 }
 
 function normalizeKey(value) {
@@ -590,6 +599,8 @@ async function fetchWatchScheduleRows() {
       "scope_run_id",
       "schedule_show_datev2",
       "estimated_start_time",
+      "manual_time_overide",
+      "manual_time_override",
       "estimated_end_time",
       "latest_status",
       "status",
@@ -726,6 +737,8 @@ function normalizeWatchScheduleRow(record) {
     scope_run_id: strOrNull(fields.scope_run_id),
     schedule_show_datev2: strOrNull(fields.schedule_show_datev2),
     estimated_start_time: strOrNull(fields.estimated_start_time),
+    manual_time_overide: boolValue(fields.manual_time_overide),
+    manual_time_override: boolValue(fields.manual_time_override),
     estimated_end_time: strOrNull(fields.estimated_end_time),
     latest_status: strOrNull(fields.latest_status),
     status: strOrNull(fields.status),
@@ -780,13 +793,14 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   const minsTillStart = startDeltaMins !== null ? Math.max(0, startDeltaMins) : null;
   const minsSinceStart = startDeltaMins !== null ? Math.max(0, -startDeltaMins) : null;
   const resolvedClassId = resolveGroupsLiveClassId(groupRow, row.class_number);
+  const manualTimeOverride = hasManualTimeOverride(row);
 
   const watchScheduleFields = {
     groups_live: groupRow ? [groupRow.recordId] : undefined,
     class_id: resolvedClassId !== null && isBlank(row.class_id) ? resolvedClassId : undefined,
-    estimated_start_time: startLiveText || undefined,
-    latest_estimated_start_time: startLiveText || undefined,
-    ___latest_estimated_start_time: startLiveText || undefined,
+    estimated_start_time: manualTimeOverride ? undefined : (startLiveText || undefined),
+    latest_estimated_start_time: manualTimeOverride ? undefined : (startLiveText || undefined),
+    ___latest_estimated_start_time: manualTimeOverride ? undefined : (startLiveText || undefined),
     latest_status: latestStatusFinal || undefined,
     status: rowStatus || undefined,
     completed_trips: completedTripsLive ?? undefined,
@@ -797,9 +811,9 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   const changedFields = [];
   if (groupRow && !sameValue(row.groups_live_link ? [row.groups_live_link] : null, [groupRow.recordId])) changedFields.push("groups_live");
   if (watchScheduleFields.class_id !== undefined && !sameValue(row.class_id, watchScheduleFields.class_id)) changedFields.push("class_id");
-  if (startLiveText && !sameValue(row.estimated_start_time, startLiveText)) changedFields.push("estimated_start_time");
-  if (startLiveText && !sameValue(row.latest_estimated_start_time, startLiveText)) changedFields.push("latest_estimated_start_time");
-  if (startLiveText && !sameValue(row.latest_estimated_start_hidden, startLiveText)) changedFields.push("___latest_estimated_start_time");
+  if (!manualTimeOverride && startLiveText && !sameValue(row.estimated_start_time, startLiveText)) changedFields.push("estimated_start_time");
+  if (!manualTimeOverride && startLiveText && !sameValue(row.latest_estimated_start_time, startLiveText)) changedFields.push("latest_estimated_start_time");
+  if (!manualTimeOverride && startLiveText && !sameValue(row.latest_estimated_start_hidden, startLiveText)) changedFields.push("___latest_estimated_start_time");
   if (latestStatusFinal && !sameValue(row.latest_status, latestStatusFinal)) changedFields.push("latest_status");
   if (rowStatus && !sameValue(row.status, rowStatus)) changedFields.push("status");
   if (completedTripsLive !== null && !sameValue(row.completed_trips, completedTripsLive)) changedFields.push("completed_trips");
@@ -870,6 +884,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     priorOutputs,
     computedOutputs,
     changedFields,
+    manualTimeOverride,
   };
 }
 
