@@ -1177,6 +1177,7 @@ async function fetchShowsMap() {
     const endpointErrors = [];
 
     const liveClassDataCache = new Map();
+    const liveClassAttemptAuditRows = [];
     for (const target of liveClassTargets.values()) {
       const endpoint = target.endpoint || buildLiveClassDataEndpoint({
         baseUrl: LIVECLASS_BASE_URL,
@@ -1192,6 +1193,14 @@ async function fetchShowsMap() {
           endpoint,
           ...result,
         });
+        liveClassAttemptAuditRows.push(buildLiveClassAttemptAuditRow({
+          endpoint,
+          target,
+          appCtx,
+          observedAt,
+          ok: true,
+          result,
+        }));
       } catch (e) {
         const reason = String(e?.message || e).slice(0, 300);
         liveClassDataCache.set(String(target.classId), {
@@ -1199,10 +1208,19 @@ async function fetchShowsMap() {
           endpoint,
           reason,
         });
+        liveClassAttemptAuditRows.push(buildLiveClassAttemptAuditRow({
+          endpoint,
+          target,
+          appCtx,
+          observedAt,
+          ok: false,
+          reason,
+        }));
         endpointErrors.push({ endpoint, reason });
         console.log(`endpoint warn: err:liveclass_fetch_failed :: ${endpoint} :: ${reason}`);
       }
     }
+    const liveClassAttemptAudit = await flushAutomationErrRows(liveClassAttemptAuditRows);
 
     function liveContextFor(row) {
       const liveGroup = liveGroupsByGroupId.get(String(row.class_group_id)) || null;
@@ -1956,6 +1974,7 @@ async function fetchShowsMap() {
         writes_blocked: true,
         observed_at: observedAt,
         soft_endpoint_errors: softClassSignupErrors.slice(0, 10),
+        liveclass_attempt_audit: liveClassAttemptAudit,
       }, null, 2));
       process.exitCode = 1;
       return;
@@ -2015,6 +2034,7 @@ async function fetchShowsMap() {
       groups_live_eligible_groups: liveGroupsByGroupId.size,
       unique_liveclass_endpoints: liveClassTargets.size,
       liveclass_endpoint_errors: [...liveClassDataCache.values()].filter((item) => item && !item.ok).length,
+      liveclass_attempt_audit: liveClassAttemptAudit,
       liveclass_trip_matched,
       liveclass_group_only,
       endpoint_fetch_errors,
