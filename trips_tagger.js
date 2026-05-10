@@ -1324,7 +1324,7 @@ async function fetchShowsMap() {
     const rowReasonCounts = {};
     const manualTimeOverrideGuard = {
       table: WATCH_TABLE,
-      field: FIELD_MANUAL_TIME_OVERIDE,
+      field: FIELD_MANUAL_TIME_OVERRIDE,
       preserved: 0,
       samples: [],
     };

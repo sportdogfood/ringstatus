@@ -580,47 +580,6 @@ async function fetchWatchScheduleRows() {
   return airtableList(TABLE_WATCH_SCHEDULE, {
     view: VIEW_WATCH_SCHEDULE,
     maxRecords: MAX_RECORDS,
-    "fields[]": [
-      "record_id",
-      "heartbeat",
-      "shows",
-      "class_groupxclasses_id",
-      "class_group_id",
-      "class_id",
-      "class_number",
-      "class_name",
-      "group_name",
-      "ring_number",
-      "app_show_idv2",
-      "app_sql_datev2",
-      "app_dow_rawv2",
-      "shifted_to_next_dayv2",
-      "scope_key",
-      "scope_run_id",
-      "schedule_show_datev2",
-      "estimated_start_time",
-      "manual_time_overide",
-      "manual_time_override",
-      "estimated_end_time",
-      "latest_status",
-      "status",
-      "completed_trips",
-      "total_trips",
-      "latest_estimated_start_time",
-      "___latest_estimated_start_time",
-      "groups_live",
-      "schedule_endpoint",
-      "schedule_empty_endpoint",
-      "classes_endpointv2",
-      "tripTarget",
-      "focusTargetClassId",
-      "nextTargetClassId",
-      "perTrip",
-      "latest_ingested_at",
-      "last_updated_at",
-      "schedule_logs",
-      "watch_trips",
-    ],
   });
 }
 
@@ -1244,6 +1203,7 @@ async function main() {
     let skippedRows = 0;
     let changedRows = 0;
     let triggerHits = 0;
+    let manualTimeOverridePreserved = 0;
 
     traceStage("process_batch_start", { batch: batchName, rows: batchRows.length });
 
@@ -1258,6 +1218,9 @@ async function main() {
       if (groupRow) matchedRows += 1;
       else skippedRows += 1;
       if (groupRow && computation.changedFields.length) changedRows += 1;
+      if (groupRow && computation.manualTimeOverride && strOrNull(groupRow.estimated_start_time)) {
+        manualTimeOverridePreserved += 1;
+      }
 
       const logFields = buildScheduleLogFields(
         row,
@@ -1338,6 +1301,7 @@ async function main() {
       patches_planned: patchUpdates.length,
       patches_applied: DRY_RUN ? 0 : patchResult.okRows,
       patch_failures: patchResult.failedRows.length,
+      manual_time_override_preserved: manualTimeOverridePreserved,
     };
 
     traceStage("process_batch_done", summary);

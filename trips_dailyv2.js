@@ -2326,7 +2326,7 @@ async function main() {
   const updateRecords = [];
   const manualTimeOverrideGuard = {
     table: TABLE_WATCH_TRIPS,
-    field: "manual_time_overide",
+    field: "manual_time_override",
     preserved: 0,
     samples: [],
   };
