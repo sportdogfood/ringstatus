@@ -1219,90 +1219,122 @@ async function main() {
   }
 
   const groupsById = buildGroupsLiveMap(groupsRows);
-  const logRecords = [];
-  const patchWork = [];
-  let matchedRows = 0;
-  let skippedRows = 0;
-  let changedRows = 0;
-  let triggerHits = 0;
+  const rowsWithTrips = watchRows.filter((row) => row.watch_trips_count > 0);
+  const rowsWithoutTrips = watchRows.filter((row) => row.watch_trips_count <= 0);
 
-  for (const row of watchRows) {
-    const groupRow = groupsById.get(normalizeKey(row.class_group_id)) || null;
-    const computation = deriveRowComputation(row, groupRow, heartbeatContext);
-    const calcStatus = groupRow
-      ? (computation.changedFields.length ? "updated" : "unchanged")
-      : "skipped";
-    const skipReason = groupRow ? null : "group_not_live";
+  async function processScheduleBatch(batchName, batchRows) {
+    const logRecords = [];
+    const patchWork = [];
+    let matchedRows = 0;
+    let skippedRows = 0;
+    let changedRows = 0;
+    let triggerHits = 0;
 
-    if (groupRow) matchedRows += 1;
-    else skippedRows += 1;
-    if (groupRow && computation.changedFields.length) changedRows += 1;
+    traceStage("process_batch_start", { batch: batchName, rows: batchRows.length });
 
-    const logFields = buildScheduleLogFields(
-      row,
-      groupRow,
-      heartbeatContext,
-      computation,
-      calcStatus,
-      skipReason,
-      scheduleLogFieldSet,
-      activeTriggerTags,
-      priorScheduleLogByWatchId.get(row.recordId) || null
-    );
-    triggerHits += activeTriggerTags.filter((trigger) => {
-      const outputField = strOrNull(trigger?.output_field);
-      return outputField && fieldsHasTruthy(logFields, outputField);
-    }).length;
-    logRecords.push({ fields: logFields });
+    for (const row of batchRows) {
+      const groupRow = groupsById.get(normalizeKey(row.class_group_id)) || null;
+      const computation = deriveRowComputation(row, groupRow, heartbeatContext);
+      const calcStatus = groupRow
+        ? (computation.changedFields.length ? "updated" : "unchanged")
+        : "skipped";
+      const skipReason = groupRow ? null : "group_not_live";
 
-    patchWork.push({ row, groupRow, computation });
-  }
+      if (groupRow) matchedRows += 1;
+      else skippedRows += 1;
+      if (groupRow && computation.changedFields.length) changedRows += 1;
 
-  let logCreateResult = { okRows: 0, failedRows: [], createdRecords: [] };
-  if (!DRY_RUN) {
-    logCreateResult = await airtableCreateRecords(TABLE_SCHEDULE_LOGS, logRecords);
-  }
+      const logFields = buildScheduleLogFields(
+        row,
+        groupRow,
+        heartbeatContext,
+        computation,
+        calcStatus,
+        skipReason,
+        scheduleLogFieldSet,
+        activeTriggerTags,
+        priorScheduleLogByWatchId.get(row.recordId) || null
+      );
+      triggerHits += activeTriggerTags.filter((trigger) => {
+        const outputField = strOrNull(trigger?.output_field);
+        return outputField && fieldsHasTruthy(logFields, outputField);
+      }).length;
+      logRecords.push({ fields: logFields });
 
-  const patchUpdates = [];
-  if (CALC_MODE === "promote") {
-    const logIdByKey = new Map(
-      (logCreateResult.createdRecords || [])
-        .map((record) => [strOrNull(record?.fields?.calc_log_key), record?.id])
-        .filter(([key, id]) => Boolean(key && id))
-    );
-
-    for (let index = 0; index < patchWork.length; index += 1) {
-      const item = patchWork[index];
-      const logId = logIdByKey.get(strOrNull(logRecords[index]?.fields?.calc_log_key)) || null;
-      const fields = {};
-
-      if (item.groupRow) {
-        for (const [fieldName, value] of Object.entries(item.computation.watchScheduleFields)) {
-          if (!watchScheduleFieldSet.has(fieldName)) continue;
-          if (value === undefined) continue;
-          fields[fieldName] = value;
-        }
-        if (item.computation.changedFields.length && watchScheduleFieldSet.has("last_updated_at")) {
-          fields.last_updated_at = new Date().toISOString();
-        }
-      }
-
-      if (logId && watchScheduleFieldSet.has("schedule_logs")) {
-        fields.schedule_logs = [logId];
-      }
-
-      if (!Object.keys(fields).length) continue;
-      patchUpdates.push({
-        id: item.row.recordId,
-        fields,
-      });
+      patchWork.push({ row, groupRow, computation });
     }
+
+    let logCreateResult = { okRows: 0, failedRows: [], createdRecords: [] };
+    if (!DRY_RUN) {
+      logCreateResult = await airtableCreateRecords(TABLE_SCHEDULE_LOGS, logRecords);
+    }
+
+    const patchUpdates = [];
+    if (CALC_MODE === "promote") {
+      const logIdByKey = new Map(
+        (logCreateResult.createdRecords || [])
+          .map((record) => [strOrNull(record?.fields?.calc_log_key), record?.id])
+          .filter(([key, id]) => Boolean(key && id))
+      );
+
+      for (let index = 0; index < patchWork.length; index += 1) {
+        const item = patchWork[index];
+        const logId = logIdByKey.get(strOrNull(logRecords[index]?.fields?.calc_log_key)) || null;
+        const fields = {};
+
+        if (item.groupRow) {
+          for (const [fieldName, value] of Object.entries(item.computation.watchScheduleFields)) {
+            if (!watchScheduleFieldSet.has(fieldName)) continue;
+            if (value === undefined) continue;
+            fields[fieldName] = value;
+          }
+          if (item.computation.changedFields.length && watchScheduleFieldSet.has("last_updated_at")) {
+            fields.last_updated_at = new Date().toISOString();
+          }
+        }
+
+        if (logId && watchScheduleFieldSet.has("schedule_logs")) {
+          fields.schedule_logs = [logId];
+        }
+
+        if (!Object.keys(fields).length) continue;
+        patchUpdates.push({
+          id: item.row.recordId,
+          fields,
+        });
+      }
+    }
+
+    let patchResult = { okRows: 0, failedRows: [] };
+    if (!DRY_RUN && patchUpdates.length) {
+      patchResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, patchUpdates);
+    }
+
+    const summary = {
+      batch: batchName,
+      watch_rows: batchRows.length,
+      matched_rows: matchedRows,
+      skipped_rows: skippedRows,
+      changed_rows: changedRows,
+      trigger_hits: triggerHits,
+      logs_planned: logRecords.length,
+      logs_created: DRY_RUN ? 0 : logCreateResult.okRows,
+      log_failures: logCreateResult.failedRows.length,
+      patches_planned: patchUpdates.length,
+      patches_applied: DRY_RUN ? 0 : patchResult.okRows,
+      patch_failures: patchResult.failedRows.length,
+    };
+
+    traceStage("process_batch_done", summary);
+    return summary;
   }
 
-  let patchResult = { okRows: 0, failedRows: [] };
-  if (!DRY_RUN && patchUpdates.length) {
-    patchResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, patchUpdates);
-  }
+  const writeBatches = [
+    await processScheduleBatch("with_watch_trips", rowsWithTrips),
+    await processScheduleBatch("without_watch_trips", rowsWithoutTrips),
+  ];
+
+  const sumBatch = (field) => writeBatches.reduce((total, batch) => total + Number(batch[field] || 0), 0);
 
   console.log(JSON.stringify({
     ok: true,
@@ -1314,18 +1346,21 @@ async function main() {
     app_sql_date: heartbeatContext.app_sql_date,
     target_days: Array.from(targetDays),
     watch_rows: watchRows.length,
+    watch_rows_with_trips: rowsWithTrips.length,
+    watch_rows_without_trips: rowsWithoutTrips.length,
     groups_live_rows: groupsRows.length,
-    matched_rows: matchedRows,
-    skipped_rows: skippedRows,
-    changed_rows: changedRows,
+    matched_rows: sumBatch("matched_rows"),
+    skipped_rows: sumBatch("skipped_rows"),
+    changed_rows: sumBatch("changed_rows"),
     trigger_tags_active: activeTriggerTags.length,
-    trigger_hits: triggerHits,
-    logs_planned: logRecords.length,
-    logs_created: DRY_RUN ? 0 : logCreateResult.okRows,
-    log_failures: logCreateResult.failedRows.length,
-    patches_planned: patchUpdates.length,
-    patches_applied: DRY_RUN ? 0 : patchResult.okRows,
-    patch_failures: patchResult.failedRows.length,
+    trigger_hits: sumBatch("trigger_hits"),
+    logs_planned: sumBatch("logs_planned"),
+    logs_created: sumBatch("logs_created"),
+    log_failures: sumBatch("log_failures"),
+    patches_planned: sumBatch("patches_planned"),
+    patches_applied: sumBatch("patches_applied"),
+    patch_failures: sumBatch("patch_failures"),
+    write_batches: writeBatches,
   }));
 }
 
