@@ -29,6 +29,8 @@ Current-day live enrichment:
 
 If `watch_trips.getLiveClassData` is populated, it may be used as the explicit same-day enrichment endpoint for that row. Otherwise the endpoint must be constructed from known `show_id`, `class_id`, and `class_group_id`. If those identifiers cannot be resolved, skip live trip enrichment for that row and log `err:missing_liveclass_mapping`. Do not use `classsignup` as the fallback for missing liveclass mapping.
 
+Every `getLiveClassData` ping attempt must create an `automation_errs` row. Successful payloads should use `automation_name = trips_tagger_getLiveClassData`, `error_type = liveclass_payload_ok`, `resolved = true`, and a message containing the path, endpoint, `show_id`, `cid`, `cgid`, HTTP status, body length, payload `ID`, and returned row count. Failed, empty, wrong-class, or malformed payloads should use the same automation name with `resolved = false` and the failure reason in `error_type`/`message`. This table is the row-level audit trail for whether live trip enrichment actually pinged the endpoint.
+
 Current-day schedule/people refresh still runs separately:
 
 - `schedules_dailyv2.js` keeps trying the day-scoped `/schedule?date=...` endpoint through the local PowerShell fetch path.
