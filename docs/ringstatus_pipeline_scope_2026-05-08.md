@@ -1,6 +1,6 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.09.3  
+**Version:** v2026.05.09.5  
 **Date:** 2026-05-09  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.09.5 | 2026-05-09 | Strengthened the repeated DAY -> NIGHT estimated start rule: `estimated_start_time` is critical for next-day minimum viable rows; if fresh/cached/manual schedule JSON leaves it blank, manual schedule HTML in `manual_sgl_payloads` is the required last-resort source for all dates present in that folder, including `schedule_html_2026_05_09_show_id_200000061_1778369104.html`, with display times normalized to `HH:MM:SS`. |
 | v2026.05.09.4 | 2026-05-09 | Clarified live trip enrichment endpoint policy: `getLiveClassData` should be constructed from known `show_id`, `class_id`, and `class_group_id`, or read from `watch_trips.getLiveClassData` when explicitly populated; if neither is possible, skip the row with `err:missing_liveclass_mapping` and do not use `classsignup` as the fallback for missing liveclass mapping. |
 | v2026.05.09.3 | 2026-05-09 | Clarified the non-live schedule/people refresh contract that runs throughout the day and becomes critical on `DAY -> NIGHT`: fresh schedule and people payloads are primary when successful, successful schedule payloads should be cached for current and remaining show dates, successful people payloads should be cached once per person/show because they are full-week, and manual JSON/HTML folders are secondary fallbacks. |
 | v2026.05.09.2 | 2026-05-09 | Added the live schedule backfill rule: when `ListAjax`/`groups_live` provides a reliable `classNumbers[] -> classes[]` pair, blank `watch_schedule.class_id` should be populated from that pair without pinging `/classes/{class_id}`. |
@@ -433,10 +434,13 @@ Payload folder contract:
 ```text
 early_sgl_payloads/schedule
 early_sgl_payloads/people
+manual_sgl_payloads
 manual_sgl_payloads/schedule
 manual_sgl_payloads/people
 manual_sgl_payloads/schedule-html
 ```
+
+The repo-local `manual_sgl_payloads` folder is a manual fallback contract, not a one-off scratch location. It may contain schedule JSON, people JSON, and schedule HTML directly at the folder root as well as in approved subfolders. The pipeline should discover all available dates in that folder family when falling back.
 
 Schedule JSON filename pattern:
 
@@ -453,9 +457,10 @@ manual_sgl_payloads/schedule/schedule_2026-05-10_show_200000061_1778280002.json
 manual_sgl_payloads/people/people_8778_show_200000061_1778280002.json
 manual_sgl_payloads/schedule-html/schedule_html_2026-05-08_show_200000061_1778245924.html
 manual_sgl_payloads/schedule-html/schedule_html_2026-05-09_show_200000061_1778245924.html
+manual_sgl_payloads/schedule_html_2026_05_09_show_id_200000061_1778369104.html
 ```
 
-Manual files in these folders are last-resort fallback inputs when the normal SGL fetch path cannot obtain a usable payload at the time the pipeline needs it.
+Manual files in these folders are last-resort fallback inputs when the normal SGL fetch path cannot obtain a usable payload at the time the pipeline needs it. For `DAY -> NIGHT`, these manual files are especially important because they may be the only source that fills tomorrow's minimum viable rows before live enrichment is available.
 
 Known manual HTML examples:
 
@@ -470,7 +475,7 @@ Derived schedule HTML fallback example:
 C:\actions-runner\ringstatus\manual_sgl_payloads\schedule-html\schedule_html_2026-05-08_show_200000061_1778245924.html
 ```
 
-The derived schedule HTML fallback can be used to form the basic schedule when API schedule data is unavailable. It should be parsed conservatively for:
+The derived schedule HTML fallback can be used to form the basic schedule when API schedule data is unavailable. During `DAY -> NIGHT`, it must also be used as the last resort when schedule rows exist but `estimated_start_time` is still blank after fresh/cached/manual JSON sources. It should be parsed conservatively for:
 
 - `class_group_id`, usually from `cgid=` in schedule links
 - `class_id`, when `cid=` exists
@@ -480,13 +485,15 @@ The derived schedule HTML fallback can be used to form the basic schedule when A
 - `estimated_start_time`, normalized to `HH:MM:SS`
 - entries/total trips when visible
 
-Time handling is explicit: every manual HTML start time in `h:mm AM/PM` or `hh:mm AM/PM` format must be normalized to `HH:MM:SS` before writing `estimated_start_time`. Examples: `8:00 AM` writes `08:00:00`, `8:30 AM` writes `08:30:00`, and `1:40 PM` writes `13:40:00`. Manual HTML time extraction fills missing `estimated_start_time` values only; it must not replace a newer nonblank API-derived time.
+Time handling is explicit: every manual HTML start time in `h:mm AM/PM` or `hh:mm AM/PM` format must be normalized to `HH:MM:SS` before writing `estimated_start_time`. Examples: `8:00 AM` writes `08:00:00`, `8:30 AM` writes `08:30:00`, and `1:40 PM` writes `13:40:00`. Manual HTML time extraction fills missing `estimated_start_time` values only; it must not replace a newer nonblank API-derived time. If manual HTML cannot be matched to the schedule row, log the mismatch instead of silently leaving the transition ambiguous.
 
 Manual HTML fallback rules:
 
 - use fresh API JSON first when available
 - use cached successful JSON before manual HTML when JSON is newer and valid
-- use manual HTML only as a last resort for missing schedule basics
+- use manual schedule JSON before manual HTML when JSON contains the needed `estimated_start_time`
+- use manual HTML as the final source when `estimated_start_time` remains blank
+- use manual HTML only as a last resort for missing schedule basics or missing `estimated_start_time`
 - log the manual file path and extracted row count when used
 - do not overwrite newer API-derived values with older manual HTML
 - do not treat manual HTML as a same-day live source

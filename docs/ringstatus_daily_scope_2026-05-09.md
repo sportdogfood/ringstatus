@@ -43,9 +43,10 @@ People payloads are show/week scoped. They do not need a date loop.
 
 Manual fallbacks during the day:
 
-- `manual_sgl_payloads/schedule` is the second JSON fallback for schedules.
-- `manual_sgl_payloads/people` is the second JSON fallback for people.
-- `manual_sgl_payloads/schedule-html` is only for manually added schedule HTML time extraction.
+- `manual_sgl_payloads` is the manual fallback contract for all manually supplied show dates.
+- Schedule JSON may be supplied directly in `manual_sgl_payloads` or an approved `manual_sgl_payloads/schedule` folder.
+- People JSON may be supplied directly in `manual_sgl_payloads` or an approved `manual_sgl_payloads/people` folder.
+- Schedule HTML may be supplied directly in `manual_sgl_payloads` or an approved `manual_sgl_payloads/schedule-html` folder, and is only for manually added schedule HTML time extraction.
 
 ## DAY -> NIGHT Transition
 
@@ -60,8 +61,11 @@ Schedule requirements:
 - If successful, write/refresh tomorrow's minimum viable `watch_schedule` rows from that payload.
 - Store the successful payload in `early_sgl_payloads/schedule`.
 - Try remaining show dates and store successful forward-day payloads for fallback support.
-- If the fresh schedule payload is soft/empty, fall back to `early_sgl_payloads/schedule`, then `manual_sgl_payloads/schedule`.
-- Use `manual_sgl_payloads/schedule-html` only to fill missing `estimated_start_time` when JSON sources do not provide it.
+- If the fresh schedule payload is soft/empty, fall back to `early_sgl_payloads/schedule`, then manual schedule JSON in `manual_sgl_payloads`.
+- `estimated_start_time` is critical for DAY -> NIGHT prep. If it remains empty after fresh/cached/manual JSON, the lane must use manual schedule HTML as the last resort.
+- Manual schedule HTML can cover all dates present in `manual_sgl_payloads`; it is not a one-file exception.
+- Example last-resort file: `manual_sgl_payloads/schedule_html_2026_05_09_show_id_200000061_1778369104.html`.
+- HTML display times such as `8:30 AM` must normalize to `08:30:00` before writing `estimated_start_time`.
 
 Trip requirements:
 
@@ -69,7 +73,7 @@ Trip requirements:
 - Ping one `/people/{pid}` endpoint per active tenant/person.
 - If successful, write/refresh tomorrow's minimum viable `watch_trips` rows from that payload plus current scoped `watch_schedule`.
 - Store the successful people payload in `early_sgl_payloads/people`.
-- If the fresh people payload is soft/empty, fall back to `early_sgl_payloads/people`, then `manual_sgl_payloads/people`.
+- If the fresh people payload is soft/empty, fall back to `early_sgl_payloads/people`, then manual people JSON in `manual_sgl_payloads`.
 - Do not loop people by date because the payload is full-week.
 
 Fields expected for minimum viable rows:
@@ -112,14 +116,14 @@ If live endpoints return `{}`, wrong show, wrong date, invalid JSON, or no match
 
 ## Estimated Start Time
 
-`estimated_start_time` remains a known weak point before live group feeds are available.
+`estimated_start_time` remains a known weak point before live group feeds are available. This has been a repeated DAY -> NIGHT failure point and must be treated as a required troubleshooting checkpoint, not a nice-to-have field.
 
 Current allowed sources:
 
 - `/schedule?date=...` when it provides usable time data
 - `ListAjax` / `groups_live` once the day is live or live-ready
 - `ClassStatus` as a targeted group confirmation path
-- manually added HTML in `manual_sgl_payloads/schedule-html`
+- manually added HTML in `manual_sgl_payloads` or `manual_sgl_payloads/schedule-html`
 
 Manual HTML time extraction must normalize display times to `HH:MM:SS`:
 
@@ -130,6 +134,8 @@ Manual HTML time extraction must normalize display times to `HH:MM:SS`:
 ```
 
 Manual HTML is a fallback, not a primary live source. Continue looking for a more efficient upstream source for pre-live `estimated_start_time` so manual HTML is needed less often.
+
+DAY -> NIGHT rule: if the target date has minimum viable schedule rows but `estimated_start_time` is still blank after JSON sources, use the manual HTML files in `manual_sgl_payloads` as the last resort for every available date. Do not leave the transition without either filling the normalized time or logging why the manual HTML could not be matched.
 
 ## Operating Boundary
 
