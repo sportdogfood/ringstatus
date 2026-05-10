@@ -85,6 +85,12 @@ const MAX_FORWARD_SCHEDULE_PREFETCH_DAYS = Math.max(
   0,
   Number(process.env.MAX_FORWARD_SCHEDULE_PREFETCH_DAYS || "14")
 );
+const PRELIVE_ESTIMATED_START_TIME_MIN = String(
+  process.env.PRELIVE_ESTIMATED_START_TIME_MIN || "07:00:00"
+).trim();
+const PRELIVE_ESTIMATED_START_TIME_MAX = String(
+  process.env.PRELIVE_ESTIMATED_START_TIME_MAX || "19:00:00"
+).trim();
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -776,6 +782,25 @@ function normalizeHtmlScheduleTimeText(value) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`;
 }
 
+function timeTextToSeconds(value) {
+  const match = String(value || "").trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+  if (!match) return null;
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const second = Number(match[3] || "0");
+  if (!Number.isFinite(hour) || !Number.isFinite(minute) || !Number.isFinite(second)) return null;
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) return null;
+  return hour * 3600 + minute * 60 + second;
+}
+
+function isSuspiciousPreliveEstimatedStartTime(value) {
+  const valueSeconds = timeTextToSeconds(value);
+  const minSeconds = timeTextToSeconds(PRELIVE_ESTIMATED_START_TIME_MIN);
+  const maxSeconds = timeTextToSeconds(PRELIVE_ESTIMATED_START_TIME_MAX);
+  if (valueSeconds === null || minSeconds === null || maxSeconds === null) return false;
+  return valueSeconds < minSeconds || valueSeconds > maxSeconds;
+}
+
 function parseScheduleHtmlTimeOverlay(htmlText) {
   const rowsByGroupId = new Map();
   const rowsByClassNumber = new Map();
@@ -1351,20 +1376,6 @@ async function fetchShowRecordId(appShowId) {
 async function fetchExistingRowsForShow(appShowId) {
   const rows = await airtableList(TABLE_WATCH_SCHEDULE, {
     pageSize: 100,
-    "fields[]": [
-      "class_groupxclasses_id",
-      "class_group_id",
-      "class_number",
-      "class_id",
-      "show_id",
-      "show_date",
-      "app_show_idv2",
-      "app_sql_datev2",
-      "schedule_show_datev2",
-      "heartbeat",
-      "is_current_scope",
-      "scope_status",
-    ],
   });
 
   return rows.filter((row) => {
@@ -1397,6 +1408,10 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
 
   scored.sort((a, b) => b.score - a.score);
   return scored[0].row;
+}
+
+function hasManualTimeOverride(fields) {
+  return boolValue(fields?.manual_time_overide) || boolValue(fields?.manual_time_override);
 }
 
 function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldMeta) {
@@ -1516,6 +1531,31 @@ function minTimeText(left, right) {
   if (!left) return right || null;
   if (!right) return left || null;
   return String(left) <= String(right) ? left : right;
+}
+
+function applyPreliveEstimatedStartTimeGuard(fields, existingRow, scope) {
+  const candidate = strOrNull(fields?.estimated_start_time);
+  if (!candidate) return null;
+  if (String(scope?.mode || "").toUpperCase() !== "NIGHT") return null;
+  if (!boolValue(scope?.shifted_to_next_dayv2)) return null;
+  if (!isSuspiciousPreliveEstimatedStartTime(candidate)) return null;
+
+  const existingValue = strOrNull(existingRow?.fields?.estimated_start_time);
+  if (existingValue && existingValue !== candidate) {
+    fields.estimated_start_time = existingValue;
+    return {
+      action: "preserved_existing",
+      candidate,
+      existing: existingValue,
+    };
+  }
+
+  delete fields.estimated_start_time;
+  return {
+    action: "omitted_suspicious",
+    candidate,
+    existing: existingValue || null,
+  };
 }
 
 function maxTimeText(left, right) {
@@ -1974,6 +2014,15 @@ async function runDaily() {
 
   const createRecords = [];
   const updateRecords = [];
+  const estimatedStartTimeGuard = {
+    enabled: String(scope.mode || "").toUpperCase() === "NIGHT" && boolValue(scope.shifted_to_next_dayv2),
+    valid_min: PRELIVE_ESTIMATED_START_TIME_MIN,
+    valid_max: PRELIVE_ESTIMATED_START_TIME_MAX,
+    manual_time_override_preserved: 0,
+    preserved_existing: 0,
+    omitted_suspicious: 0,
+    samples: [],
+  };
   const keepKeySet = new Set();
   const keepRecordIdSet = new Set();
   const actualScheduleShowDateByKey = new Map();
@@ -1997,6 +2046,30 @@ async function runDaily() {
       currentScopeStatus,
       watchScheduleFieldMeta
     );
+    let guardResult = null;
+    if (hasManualTimeOverride(existing?.fields || {})) {
+      delete fields.estimated_start_time;
+      estimatedStartTimeGuard.manual_time_override_preserved += 1;
+      guardResult = {
+        action: "manual_time_override_preserved",
+        candidate: strOrNull(row?.fields?.estimated_start_time) || null,
+        existing: strOrNull(existing?.fields?.estimated_start_time) || null,
+      };
+    } else {
+      guardResult = applyPreliveEstimatedStartTimeGuard(fields, existing, scope);
+    }
+    if (guardResult) {
+      if (guardResult.action === "preserved_existing") estimatedStartTimeGuard.preserved_existing += 1;
+      if (guardResult.action === "omitted_suspicious") estimatedStartTimeGuard.omitted_suspicious += 1;
+      if (estimatedStartTimeGuard.samples.length < 10) {
+        estimatedStartTimeGuard.samples.push({
+          key,
+          class_number: fields.class_number ?? row?.fields?.class_number ?? null,
+          class_group_id: fields.class_group_id ?? row?.fields?.class_group_id ?? null,
+          ...guardResult,
+        });
+      }
+    }
 
     if (existing) {
       updateRecords.push({ id: existing.id, fields });
@@ -2087,6 +2160,7 @@ async function runDaily() {
       update_failures: [],
       drop_failures: [],
     },
+    estimated_start_time_guard: estimatedStartTimeGuard,
     active_groups: {
       table: TABLE_ACTIVE_GROUPS,
       created_planned: 0,
@@ -2160,6 +2234,9 @@ module.exports = {
   applyGroupsLiveFallback,
   applyScheduleHtmlTimeOverlay,
   buildCurrentFields,
+  applyPreliveEstimatedStartTimeGuard,
+  hasManualTimeOverride,
+  isSuspiciousPreliveEstimatedStartTime,
   normalizeHtmlScheduleTimeText,
   parseScheduleHtmlTimeOverlay,
   runDaily,

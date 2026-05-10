@@ -131,6 +131,8 @@ const FIELD_TIME_THREE            = process.env.FIELD_TIME_THREE || "time_three"
 const FIELD_SCORE1                = process.env.FIELD_SCORE1 || "score1";
 const FIELD_SCORE2                = process.env.FIELD_SCORE2 || "score2";
 const FIELD_SCORE3                = process.env.FIELD_SCORE3 || "score3";
+const FIELD_MANUAL_TIME_OVERIDE   = process.env.FIELD_MANUAL_TIME_OVERIDE || "manual_time_overide";
+const FIELD_MANUAL_TIME_OVERRIDE  = process.env.FIELD_MANUAL_TIME_OVERRIDE || "manual_time_override";
 
 const PROTECTED_WATCH_TRIPS_FIELDS = new Set([
   FIELD_ENTRY_ID,
@@ -156,6 +158,13 @@ const PROTECTED_WATCH_TRIPS_FIELDS = new Set([
   FIELD_PLACING,
   FIELD_GONE_IN
 ]);
+const WATCH_TRIPS_MANUAL_TIME_FIELDS = [
+  FIELD_ESTIMATED_START_TIME,
+  FIELD_ESTIMATED_END_TIME,
+  FIELD_ESTIMATED_GO_TIME,
+  FIELD_ESTIMATED_TIME,
+  FIELD_ACTUAL_TIME,
+].filter(Boolean);
 let CAN_WRITE_ACTUAL_GO           = false;
 
 function requireEnv(name, val) {
@@ -544,6 +553,18 @@ function setBaseFields(updateFields, observedAt, reason) {
 function setIfPresent(updateFields, fieldName, value) {
   if (isBlank(fieldName) || isBlank(value)) return false;
   updateFields[fieldName] = value;
+  return true;
+}
+
+function hasManualTimeOverride(fields) {
+  return boolValue(fields?.[FIELD_MANUAL_TIME_OVERIDE]) || boolValue(fields?.[FIELD_MANUAL_TIME_OVERRIDE]);
+}
+
+function applyManualTimeOverride(updateFields, recordFields) {
+  if (!hasManualTimeOverride(recordFields || {})) return false;
+  for (const fieldName of WATCH_TRIPS_MANUAL_TIME_FIELDS) {
+    delete updateFields[fieldName];
+  }
   return true;
 }
 
@@ -1301,6 +1322,12 @@ async function fetchShowsMap() {
 
     const updates = [];
     const rowReasonCounts = {};
+    const manualTimeOverrideGuard = {
+      table: WATCH_TABLE,
+      field: FIELD_MANUAL_TIME_OVERIDE,
+      preserved: 0,
+      samples: [],
+    };
 
     let processed_in_view = records.length;
     let processed_valid = 0;
@@ -1317,6 +1344,20 @@ async function fetchShowsMap() {
 
     function bumpReason(reason) {
       rowReasonCounts[reason] = (rowReasonCounts[reason] || 0) + 1;
+    }
+
+    function queueUpdate(rec, updateFields, keyInfo = {}) {
+      if (applyManualTimeOverride(updateFields, rec?.fields || {})) {
+        manualTimeOverrideGuard.preserved += 1;
+        if (manualTimeOverrideGuard.samples.length < 10) {
+          manualTimeOverrideGuard.samples.push({
+            record_id: rec.id,
+            class_number: keyInfo.class_number ?? rec?.fields?.[FIELD_CLASS_NUMBER] ?? null,
+            entry_number: keyInfo.entry_number ?? rec?.fields?.[FIELD_ENTRY_NUMBER] ?? null,
+          });
+        }
+      }
+      updates.push({ id: rec.id, fields: updateFields });
     }
 
     for (const row of recInputs) {
@@ -1384,7 +1425,7 @@ async function fetchShowsMap() {
             setBaseFields(updateFields, observedAt, reason);
             bumpReason(reason);
           }
-          updates.push({ id: rec.id, fields: updateFields });
+          queueUpdate(rec, updateFields, { class_number, entry_number });
           continue;
         }
 
@@ -1400,7 +1441,7 @@ async function fetchShowsMap() {
         skipped_missing_class_endpoint++;
         setBaseFields(updateFields, observedAt, reason);
         bumpReason(reason);
-        updates.push({ id: rec.id, fields: updateFields });
+        queueUpdate(rec, updateFields, { class_number, entry_number });
         continue;
       }
 
@@ -1418,7 +1459,7 @@ async function fetchShowsMap() {
         skipped_missing_entryxclasses_uuid++;
         setBaseFields(updateFields, observedAt, reason);
         bumpReason(reason);
-        updates.push({ id: rec.id, fields: updateFields });
+        queueUpdate(rec, updateFields, { class_number, entry_number });
         continue;
       }
 
@@ -1432,7 +1473,7 @@ async function fetchShowsMap() {
         endpoint_fetch_errors++;
         setBaseFields(updateFields, observedAt, reason);
         bumpReason(reason);
-        updates.push({ id: rec.id, fields: updateFields });
+        queueUpdate(rec, updateFields, { class_number, entry_number });
         continue;
       }
 
@@ -1469,7 +1510,7 @@ async function fetchShowsMap() {
           reason,
           detail: "{}"
         });
-        updates.push({ id: rec.id, fields: updateFields });
+        queueUpdate(rec, updateFields, { class_number, entry_number });
         continue;
       }
 
@@ -1748,7 +1789,7 @@ async function fetchShowsMap() {
         bumpReason(reason);
       }
 
-      updates.push({ id: rec.id, fields: updateFields });
+      queueUpdate(rec, updateFields, { class_number, entry_number });
     }
 
     const softClassSignupErrors = endpointErrors.filter((error) =>
@@ -1831,6 +1872,7 @@ async function fetchShowsMap() {
       trip_not_found,
       shows_link_bound,
       shows_link_missing,
+      manual_time_override_guard: manualTimeOverrideGuard,
       row_reason_counts: rowReasonCounts,
       observed_at: observedAt,
       classsignup_endpoint_warnings: classSignupEndpointWarnings.slice(0, 10),

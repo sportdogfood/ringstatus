@@ -95,6 +95,15 @@ const PROTECTED_WATCH_TRIPS_FIELDS = new Set([
   "score3",
   "placing"
 ]);
+const WATCH_TRIPS_MANUAL_TIME_FIELDS = [
+  "estimated_start_time",
+  "estimated_end_time",
+  "estimated_go_time",
+  "estimated_time",
+  "actual_time",
+  "scheduled_estimated_start_time",
+  "latest_estimated_start_time",
+];
 
 function requireEnv(name, value) {
   if (!value) throw new Error(`Missing required env: ${name}`);
@@ -703,17 +712,6 @@ async function fetchWwTrainerRecordIdByPid() {
 async function fetchExistingTripsForShow(appShowId) {
   const rows = await airtableList(TABLE_WATCH_TRIPS, {
     pageSize: 100,
-    "fields[]": [
-      "entryxclasses_uuid",
-      "entry_number",
-      "class_number",
-      "show_id",
-      "app_show_id",
-      "app_show_idv2",
-      "heartbeat",
-      "is_current_scope",
-      "scope_status",
-    ],
   });
 
   return rows.filter((row) => {
@@ -730,6 +728,18 @@ async function fetchHeartbeatViewTripRows() {
     pageSize: 100,
     "fields[]": ["entryxclasses_uuid", "entry_number", "class_number", "heartbeat", "is_current_scope"],
   });
+}
+
+function hasManualTimeOverride(fields) {
+  return boolValue(fields?.manual_time_overide) || boolValue(fields?.manual_time_override);
+}
+
+function applyManualTimeOverrideToTripFields(fields, existingRow) {
+  if (!hasManualTimeOverride(existingRow?.fields || {})) return false;
+  for (const fieldName of WATCH_TRIPS_MANUAL_TIME_FIELDS) {
+    delete fields[fieldName];
+  }
+  return true;
 }
 
 async function fetchTripScheduleBackfillRows(appShowId) {
@@ -2314,6 +2324,12 @@ async function main() {
 
   const createRecords = [];
   const updateRecords = [];
+  const manualTimeOverrideGuard = {
+    table: TABLE_WATCH_TRIPS,
+    field: "manual_time_overide",
+    preserved: 0,
+    samples: [],
+  };
   const keepKeySet = new Set();
   const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
 
@@ -2323,6 +2339,17 @@ async function main() {
     keepKeySet.add(key);
     const existing = existingByKey.get(key);
     const fields = buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet);
+    if (existing && applyManualTimeOverrideToTripFields(fields, existing)) {
+      manualTimeOverrideGuard.preserved += 1;
+      if (manualTimeOverrideGuard.samples.length < 10) {
+        manualTimeOverrideGuard.samples.push({
+          key,
+          record_id: existing.id,
+          class_number: fields.class_number ?? row.class_number ?? null,
+          entry_number: fields.entry_number ?? row.entry_number ?? null,
+        });
+      }
+    }
     if (existing) updateRecords.push({ id: existing.id, fields });
     else createRecords.push({ fields });
   }
@@ -2353,8 +2380,9 @@ async function main() {
       people_failures: peopleFailures,
       drops_planned: dropUpdates.length,
       active_groups: activeGroupSync,
-      active_links: activeLinkSync,
-      writes: {
+    active_links: activeLinkSync,
+    manual_time_override_guard: manualTimeOverrideGuard,
+    writes: {
         created: 0,
         updated: 0,
         dropped: 0,
@@ -2429,6 +2457,7 @@ async function main() {
     drops_planned: dropUpdates.length,
     existing_show_rows: existingRows.length,
     heartbeat_view_rows: heartbeatViewRows.length,
+    manual_time_override_guard: manualTimeOverrideGuard,
     writes: {
       created: 0,
       updated: 0,
@@ -2482,5 +2511,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  applyManualTimeOverrideToTripFields,
+  hasManualTimeOverride,
   tripRowKeyFromFields,
 };
