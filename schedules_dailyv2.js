@@ -73,9 +73,12 @@ const MANUAL_SCHEDULE_HTML_DIR = String(
   process.env.MANUAL_SCHEDULE_HTML_DIR ||
   path.join(MANUAL_SGL_PAYLOAD_ROOT, "schedule-html")
 ).trim();
+const REPO_MANUAL_SGL_PAYLOAD_ROOT = path.join(__dirname, "manual_sgl_payloads");
 const DEFAULT_SCHEDULE_FALLBACK_DIRS = [
   EARLY_SCHEDULE_PAYLOAD_DIR,
+  MANUAL_SGL_PAYLOAD_ROOT,
   MANUAL_SCHEDULE_PAYLOAD_DIR,
+  REPO_MANUAL_SGL_PAYLOAD_ROOT,
 ];
 const PREFETCH_FORWARD_SCHEDULES = String(process.env.PREFETCH_FORWARD_SCHEDULES || "1") !== "0";
 const MAX_FORWARD_SCHEDULE_PREFETCH_DAYS = Math.max(
@@ -618,9 +621,25 @@ function scheduleFallbackDirs() {
     ? raw.split(path.delimiter)
     : DEFAULT_SCHEDULE_FALLBACK_DIRS;
 
-  return values
+  return [...new Set(values
     .map((value) => strOrNull(value))
-    .filter(Boolean);
+    .filter(Boolean))];
+}
+
+function scheduleHtmlFallbackDirs() {
+  const raw = strOrNull(process.env.SGL_SCHEDULE_HTML_FALLBACK_DIRS);
+  const values = raw
+    ? raw.split(path.delimiter)
+    : [
+        MANUAL_SGL_PAYLOAD_ROOT,
+        MANUAL_SCHEDULE_HTML_DIR,
+        REPO_MANUAL_SGL_PAYLOAD_ROOT,
+        path.join(REPO_MANUAL_SGL_PAYLOAD_ROOT, "schedule-html"),
+      ];
+
+  return [...new Set(values
+    .map((value) => strOrNull(value))
+    .filter(Boolean))];
 }
 
 function collectFilesRecursive(dirPath, out = []) {
@@ -640,8 +659,9 @@ function collectFilesRecursive(dirPath, out = []) {
 
 function candidateScheduleFallbackFiles(appShowId, appSqlDate) {
   const showText = escapeRegExp(appShowId);
-  const dateText = escapeRegExp(appSqlDate);
-  const scheduleJson = new RegExp(`^schedule_${dateText}_show_${showText}_[0-9]+\\.json$`, "i");
+  const dateHyphen = escapeRegExp(appSqlDate);
+  const dateUnderscore = escapeRegExp(String(appSqlDate || "").replace(/-/g, "_"));
+  const scheduleJson = new RegExp(`^schedule_(?:${dateHyphen}|${dateUnderscore})_show(?:_id)?_${showText}_[0-9]+\\.json$`, "i");
 
   const candidates = [];
   for (const dirPath of scheduleFallbackDirs()) {
@@ -711,17 +731,20 @@ function loadScheduleFallbackPayload(appShowId, appSqlDate) {
 
 function candidateScheduleHtmlFiles(appShowId, appSqlDate) {
   const showText = escapeRegExp(appShowId);
-  const dateText = escapeRegExp(appSqlDate);
-  const scheduleHtml = new RegExp(`^schedule_html_${dateText}_show_${showText}_[0-9]+\\.html$`, "i");
+  const dateHyphen = escapeRegExp(appSqlDate);
+  const dateUnderscore = escapeRegExp(String(appSqlDate || "").replace(/-/g, "_"));
+  const scheduleHtml = new RegExp(`^schedule_html_(?:${dateHyphen}|${dateUnderscore})_show(?:_id)?_${showText}_[0-9]+\\.html$`, "i");
 
   const candidates = [];
-  for (const filePath of collectFilesRecursive(MANUAL_SCHEDULE_HTML_DIR)) {
-    const name = path.basename(filePath);
-    if (!scheduleHtml.test(name)) continue;
+  for (const dirPath of scheduleHtmlFallbackDirs()) {
+    for (const filePath of collectFilesRecursive(dirPath)) {
+      const name = path.basename(filePath);
+      if (!scheduleHtml.test(name)) continue;
 
-    const stat = fs.statSync(filePath);
-    if (!stat.size) continue;
-    candidates.push({ filePath, size: stat.size, mtimeMs: stat.mtimeMs });
+      const stat = fs.statSync(filePath);
+      if (!stat.size) continue;
+      candidates.push({ filePath, size: stat.size, mtimeMs: stat.mtimeMs });
+    }
   }
 
   candidates.sort((left, right) => right.mtimeMs - left.mtimeMs);

@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.09.6 | 2026-05-09 | Documented the verified DAY -> NIGHT estimated-start incident: when `app_sql_datev2` shifted to `2026-05-10`, manual HTML had to be selected by the shifted target date, not by the earlier `2026-05-09` example. The schedule lane must search runner and repo-local `manual_sgl_payloads`, including root-level files, and match both hyphen/underscore dates plus `show_` and `show_id_` filename shapes. The corrected run wrote `schedule_html_time_overlay.updated_rows = 86` and direct Airtable verification found 86 of 86 scoped `watch_schedule` rows filled for show `200000061`, date `2026-05-10`. |
 | v2026.05.09.5 | 2026-05-09 | Strengthened the repeated DAY -> NIGHT estimated start rule: `estimated_start_time` is critical for next-day minimum viable rows; if fresh/cached/manual schedule JSON leaves it blank, manual schedule HTML in `manual_sgl_payloads` is the required last-resort source for all dates present in that folder, including `schedule_html_2026_05_09_show_id_200000061_1778369104.html`, with display times normalized to `HH:MM:SS`. |
 | v2026.05.09.4 | 2026-05-09 | Clarified live trip enrichment endpoint policy: `getLiveClassData` should be constructed from known `show_id`, `class_id`, and `class_group_id`, or read from `watch_trips.getLiveClassData` when explicitly populated; if neither is possible, skip the row with `err:missing_liveclass_mapping` and do not use `classsignup` as the fallback for missing liveclass mapping. |
 | v2026.05.09.3 | 2026-05-09 | Clarified the non-live schedule/people refresh contract that runs throughout the day and becomes critical on `DAY -> NIGHT`: fresh schedule and people payloads are primary when successful, successful schedule payloads should be cached for current and remaining show dates, successful people payloads should be cached once per person/show because they are full-week, and manual JSON/HTML folders are secondary fallbacks. |
@@ -458,9 +459,12 @@ manual_sgl_payloads/people/people_8778_show_200000061_1778280002.json
 manual_sgl_payloads/schedule-html/schedule_html_2026-05-08_show_200000061_1778245924.html
 manual_sgl_payloads/schedule-html/schedule_html_2026-05-09_show_200000061_1778245924.html
 manual_sgl_payloads/schedule_html_2026_05_09_show_id_200000061_1778369104.html
+manual_sgl_payloads/schedule_html_2026_05_10_show_id_200000061_1778369104.html
 ```
 
 Manual files in these folders are last-resort fallback inputs when the normal SGL fetch path cannot obtain a usable payload at the time the pipeline needs it. For `DAY -> NIGHT`, these manual files are especially important because they may be the only source that fills tomorrow's minimum viable rows before live enrichment is available.
+
+For `DAY -> NIGHT`, the manual schedule HTML date must be the shifted target `app_sql_datev2`/`app_sql_date`. Example files from prior conversations are formatting examples only. If the shifted heartbeat says `app_sql_datev2 = 2026-05-10`, the HTML overlay must look for the `2026-05-10` manual schedule HTML, not `2026-05-09`.
 
 Known manual HTML examples:
 
@@ -486,6 +490,8 @@ The derived schedule HTML fallback can be used to form the basic schedule when A
 - entries/total trips when visible
 
 Time handling is explicit: every manual HTML start time in `h:mm AM/PM` or `hh:mm AM/PM` format must be normalized to `HH:MM:SS` before writing `estimated_start_time`. Examples: `8:00 AM` writes `08:00:00`, `8:30 AM` writes `08:30:00`, and `1:40 PM` writes `13:40:00`. Manual HTML time extraction fills missing `estimated_start_time` values only; it must not replace a newer nonblank API-derived time. If manual HTML cannot be matched to the schedule row, log the mismatch instead of silently leaving the transition ambiguous.
+
+Verified 2026-05-09 transition failure and fix: `schedules_dailyv2.js` correctly targeted `app_sql_datev2 = 2026-05-10` and built 86 rows, but initially skipped HTML overlay as `no_matching_manual_schedule_html` because it searched only `C:\actions-runner\ringstatus\manual_sgl_payloads\schedule-html` and did not recognize repo-root names like `schedule_html_2026_05_10_show_id_200000061_1778369104.html`. The required search contract is runner manual root, runner `schedule-html`, repo-local manual root, and repo-local `schedule-html`, with filename matching for both `YYYY-MM-DD` and `YYYY_MM_DD`, and both `show_` and `show_id_`. After correction, `schedule_html_time_overlay` parsed 49 rows, matched 86 schedule rows, updated 86 rows, and direct Airtable verification showed zero blank `estimated_start_time` values for the scoped `2026-05-10` schedule.
 
 Manual HTML fallback rules:
 

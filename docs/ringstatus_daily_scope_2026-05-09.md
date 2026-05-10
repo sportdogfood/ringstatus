@@ -64,7 +64,9 @@ Schedule requirements:
 - If the fresh schedule payload is soft/empty, fall back to `early_sgl_payloads/schedule`, then manual schedule JSON in `manual_sgl_payloads`.
 - `estimated_start_time` is critical for DAY -> NIGHT prep. If it remains empty after fresh/cached/manual JSON, the lane must use manual schedule HTML as the last resort.
 - Manual schedule HTML can cover all dates present in `manual_sgl_payloads`; it is not a one-file exception.
-- Example last-resort file: `manual_sgl_payloads/schedule_html_2026_05_09_show_id_200000061_1778369104.html`.
+- During `DAY -> NIGHT`, select the manual schedule HTML by the shifted target `app_sql_datev2`/`app_sql_date`, not by an example date from a prior discussion.
+- Supported last-resort filename shapes include `manual_sgl_payloads/schedule_html_YYYY_MM_DD_show_id_SHOWID_EPOCH.html` and `manual_sgl_payloads/schedule-html/schedule_html_YYYY-MM-DD_show_SHOWID_EPOCH.html`.
+- Current incident example: when the target was `app_sql_datev2 = 2026-05-10`, the correct manual file was `manual_sgl_payloads/schedule_html_2026_05_10_show_id_200000061_1778369104.html`; using the earlier `2026-05-09` example would be wrong for that shifted run.
 - HTML display times such as `8:30 AM` must normalize to `08:30:00` before writing `estimated_start_time`.
 
 Trip requirements:
@@ -135,7 +137,9 @@ Manual HTML time extraction must normalize display times to `HH:MM:SS`:
 
 Manual HTML is a fallback, not a primary live source. Continue looking for a more efficient upstream source for pre-live `estimated_start_time` so manual HTML is needed less often.
 
-DAY -> NIGHT rule: if the target date has minimum viable schedule rows but `estimated_start_time` is still blank after JSON sources, use the manual HTML files in `manual_sgl_payloads` as the last resort for every available date. Do not leave the transition without either filling the normalized time or logging why the manual HTML could not be matched.
+DAY -> NIGHT rule: if the target date has minimum viable schedule rows but `estimated_start_time` is still blank after JSON sources, use the manual HTML files in `manual_sgl_payloads` as the last resort for the current shifted `app_sql_datev2`/`app_sql_date`. Do not leave the transition without either filling the normalized time or logging why the manual HTML could not be matched.
+
+Operational incident to preserve: on the 2026-05-09 `DAY -> NIGHT` transition, the heartbeat shifted to `app_sql_datev2 = 2026-05-10` and `schedules_dailyv2.js` had 86 schedule rows, but the HTML overlay initially skipped with `no_matching_manual_schedule_html` because it searched only the runner `manual_sgl_payloads/schedule-html` folder and only the older hyphenated `show_` filename shape. The corrected contract is to search runner and repo-local `manual_sgl_payloads`, including root-level files, and to match both hyphen/underscore dates plus `show_` and `show_id_` forms. Verification after the fix showed `schedule_html_time_overlay.updated_rows = 86` and Airtable `watch_schedule` for show `200000061`, date `2026-05-10`, had `estimated_start_time` filled on all 86 scoped rows.
 
 ## Operating Boundary
 
