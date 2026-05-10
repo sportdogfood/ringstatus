@@ -48,6 +48,7 @@ const {
 const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "heartbeat";
 const SHOWS_TABLE = process.env.SHOWS_TABLE || "shows";
+const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
@@ -382,6 +383,69 @@ function airtableUrl(tableName) {
   return `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`;
 }
 
+async function airtableCreateRecords(tableName, records) {
+  if (!records.length) return { okRows: 0, failedRows: [] };
+
+  let okRows = 0;
+  const failedRows = [];
+
+  for (const batch of chunk(records, 10)) {
+    try {
+      const response = await fetchWithRetry(airtableUrl(tableName), {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ records: batch, typecast: true }),
+      });
+
+      if (!response.ok) {
+        const body = await response.text().catch(() => "");
+        throw new Error(`Airtable create failed (${response.status}) ${tableName}: ${body}`);
+      }
+
+      okRows += batch.length;
+    } catch (error) {
+      for (const row of batch) {
+        failedRows.push({
+          key: row?.fields?.automation_key ?? null,
+          reason: String(error?.message || error).slice(0, 300),
+        });
+      }
+    }
+  }
+
+  return { okRows, failedRows };
+}
+
+async function flushAutomationErrRows(rows) {
+  if (!rows.length) return { attempted: 0, created: 0, failures: 0, failure_samples: [] };
+  if (DRY_RUN) return { attempted: rows.length, created: 0, failures: 0, failure_samples: [], dry_run: true };
+
+  try {
+    const result = await airtableCreateRecords(TABLE_AUTOMATION_ERRS, rows);
+    if (result.failedRows?.length) {
+      console.log(`automation_errs write warn: ${JSON.stringify(result.failedRows).slice(0, 500)}`);
+    }
+    return {
+      attempted: rows.length,
+      created: result.okRows || 0,
+      failures: result.failedRows?.length || 0,
+      failure_samples: (result.failedRows || []).slice(0, 5),
+    };
+  } catch (error) {
+    const reason = String(error?.message || error).slice(0, 300);
+    console.log(`automation_errs write warn: ${reason}`);
+    return {
+      attempted: rows.length,
+      created: 0,
+      failures: rows.length,
+      failure_samples: [{ reason }],
+    };
+  }
+}
+
 async function airtableTableFieldSet(tableName) {
   const res = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
     headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
@@ -466,7 +530,93 @@ async function fetchLiveClassData(endpoint, expectedClassId) {
   return {
     ok: true,
     normalized,
+    http_status: res.status,
     body_length: Buffer.byteLength(text || "", "utf8"),
+    content_length: res.headers?.get?.("content-length") || null,
+  };
+}
+
+function liveClassEndpointParts(endpoint) {
+  try {
+    const url = new URL(String(endpoint || ""));
+    return {
+      path: `${url.pathname || ""}${url.search || ""}`,
+      app_show_id: numOrNull(url.searchParams.get("show_id")),
+      class_id: numOrNull(url.searchParams.get("cid")),
+      class_group_id: numOrNull(url.searchParams.get("cgid")),
+    };
+  } catch {
+    return {
+      path: String(endpoint || ""),
+      app_show_id: null,
+      class_id: null,
+      class_group_id: null,
+    };
+  }
+}
+
+function liveClassErrorType(reason) {
+  const text = String(reason || "");
+  if (/^soft_payload_/i.test(text)) return "liveclass_soft_payload_empty";
+  const match = text.match(/^(err:[^\s]+)/i);
+  if (match) return `liveclass_${match[1].replace(/^err:/i, "")}`.slice(0, 120);
+  return "liveclass_fetch_failed";
+}
+
+function buildLiveClassAttemptAuditRow({
+  endpoint,
+  target,
+  appCtx,
+  observedAt,
+  ok,
+  result = null,
+  reason = null,
+}) {
+  const parts = liveClassEndpointParts(endpoint);
+  const classId = numOrNull(target?.classId) ?? parts.class_id;
+  const classGroupId = numOrNull(target?.classGroupId) ?? parts.class_group_id;
+  const appShowId = numOrNull(appCtx?.app_show_id) ?? parts.app_show_id;
+  const errorType = ok ? "liveclass_payload_ok" : liveClassErrorType(reason);
+  const rowsCount = Array.isArray(result?.normalized?.rows) ? result.normalized.rows.length : null;
+  const payloadClassId = numOrNull(result?.normalized?.class_id);
+  const pathText = parts.path || String(endpoint || "");
+
+  const fields = {
+    automation_key: [
+      "trips_tagger",
+      "getLiveClassData",
+      observedAt,
+      appShowId || "show",
+      classId || "cid",
+      classGroupId || "cgid",
+    ].join("|").slice(0, 1000),
+    automation_name: "trips_tagger_getLiveClassData",
+    error_type: errorType,
+    app_sql_date: strOrNull(appCtx?.app_sql_date),
+    last_run: observedAt,
+    resolved: !!ok,
+    message: [
+      `path=${pathText}`,
+      `endpoint=${endpoint || ""}`,
+      `show_id=${appShowId ?? ""}`,
+      `cid=${classId ?? ""}`,
+      `cgid=${classGroupId ?? ""}`,
+      `status=${result?.http_status ?? ""}`,
+      `body_length=${result?.body_length ?? ""}`,
+      `content_length=${result?.content_length ?? ""}`,
+      `payload_class_id=${payloadClassId ?? ""}`,
+      `rows=${rowsCount ?? ""}`,
+      `message=${ok ? "payload_ok" : String(reason || "fetch_failed").slice(0, 500)}`,
+    ].join(" "),
+    app_show_id: appShowId,
+  };
+
+  return {
+    fields: Object.fromEntries(
+      Object.entries(fields).filter(([, value]) =>
+        value !== null && value !== undefined && !(typeof value === "string" && value.trim() === "")
+      )
+    ),
   };
 }
 
