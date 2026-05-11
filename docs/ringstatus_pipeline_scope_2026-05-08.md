@@ -1,7 +1,7 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.09.5  
-**Date:** 2026-05-09  
+**Version:** v2026.05.11.1  
+**Date:** 2026-05-11  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
 
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.11.1 | 2026-05-11 | Added heartbeat/show manual controls: `shows.mode_control` is the owner-facing lever for `AUTO`/blank, `DAY`, `NIGHT`, `OVERNIGHT`, `IDLE`, and `OFF`; `shows.is_default_show_manual_override` confirms a suspicious default show date; heartbeat writes `clock_mode`, effective `mode`, `mode_source`, `mode_reason`, `default_show_date_status`, and `default_show_date_reason`. Unconfirmed default show-date guard failures move the effective mode to `OFF` and the slot orchestrator blocks heavy lanes. |
 | v2026.05.09.9 | 2026-05-09 | Added `automation_errs` audit rows for every `trips_tagger.js` `getLiveClassData` ping attempt. Successes write `error_type = liveclass_payload_ok` with endpoint/path/body length/payload class/row count evidence and `resolved = true`; failures write the liveclass failure type with `resolved = false`. |
 | v2026.05.09.8 | 2026-05-09 | Added `manual_time_override` as the row-level stop switch for time writes on both `watch_schedule` and `watch_trips`: when checked, schedule/trip writers must omit time fields from future patches for that row so manual corrections are not repopulated by the next cycle. Airtable metadata confirms the real field uses the correct `override` spelling; code may accept `manual_time_overide` only as a defensive alias. |
 | v2026.05.09.7 | 2026-05-09 | Added the shifted NIGHT pre-live bad-time guard for `estimated_start_time`: values outside `07:00:00` through `19:00:00` from schedule/manual/HTML sources are suspicious, so existing nonblank Airtable corrections must be preserved and new suspicious values must be omitted from the patch instead of overwriting rows. This follows the prior Airtable `check gate` window without writing `"check gate"` into `estimated_start_time`, and remains narrow so it does not block same-day live `groups_live` enrichment. |
@@ -66,6 +67,8 @@ The goal is to populate useful records before live data exists, then enrich thos
 - Existing good Airtable data must not be overwritten by empty, null, or soft-throttled payloads.
 - Shows link resolution failures should be logged and the lane should continue where safe.
 - Do not add Airtable fields unless the owner approves the field and purpose.
+- `shows.mode_control` is the manual heartbeat/tagger lever. Blank or `AUTO` means clock/guard logic owns the mode; `DAY`, `NIGHT`, `OVERNIGHT`, `IDLE`, and `OFF` are explicit manual modes.
+- `shows.is_default_show_manual_override` is only the owner confirmation that the current default show-date warning is acceptable. It must not be treated as a general bypass for other payload or endpoint guards.
 
 ## Pipeline States
 
@@ -80,8 +83,27 @@ Current expected responsibilities:
 - expose slot flags such as `isA`, `isB`, `isC`, and `isD`
 - decide whether heavier lanes are due
 - avoid running all SGL fetch lanes on every heartbeat
+- write both the clock-derived mode and the effective mode decision so Airtable shows whether the system is running by clock, manual control, forced env, or date guard
 
 The heartbeat must not blindly run schedule, trip, class detail, or live detail endpoints every 5 minutes.
+
+Heartbeat mode decision order:
+
+1. `FORCE_MODE` environment override, when present.
+2. `shows.mode_control`, when set to a mode other than blank/`AUTO`.
+3. automatic `OFF` when the default show-date guard needs manual confirmation and `shows.is_default_show_manual_override` is not checked.
+4. clock-derived `DAY`, `NIGHT`, or `OVERNIGHT`.
+
+Date guard checks are code-owned because Airtable formula date math is not reliable enough for this decision. The guard compares `default_app_sql_date_is` and `app_sql_date` against `show_app_sql_start_date` and `show_app_sql_end_date`, and also checks distance from raw `sql_date`. It flags a show window shorter than two days. Heartbeat writes the result into `default_show_date_status` and `default_show_date_reason`.
+
+Expected display fields:
+
+- `heartbeat.clock_mode`: clock-derived mode only.
+- `heartbeat.mode`: effective operational mode.
+- `heartbeat.mode_source`: `force_mode`, `shows_manual`, `default_show_date_guard`, or `clock`.
+- `heartbeat.mode_reason`: short reason for the effective mode.
+- `heartbeat.default_show_date_status`: `ok_no_review_needed`, `needs_manual_confirmation`, or `confirmed_default_show_date`.
+- `heartbeat.default_show_date_reason`: pipe-delimited guard reason such as `short_show_window`.
 
 ### 2. Pre-Live
 

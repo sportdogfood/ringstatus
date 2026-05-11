@@ -41,6 +41,7 @@ Invoke-RunnerPipeline `
         'heartbeat_patterns.js',
         'heartbeat_task_cadence.js',
         'lib/heartbeat_mode.js',
+        'lib/default_show_date_guard.js',
         'heartbeat_slot_orchestrator.js'
     ) `
     -Steps $steps

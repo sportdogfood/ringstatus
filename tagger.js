@@ -24,6 +24,13 @@ const {
   isHeartbeatControlMode,
   resolveHeartbeatCadenceSeconds,
 } = require("./lib/heartbeat_mode");
+const {
+  boolValue,
+  computeDefaultShowDateGuard,
+  decideEffectiveMode,
+  modeForDateContext,
+  normalizeControlMode,
+} = require("./lib/default_show_date_guard");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -77,6 +84,17 @@ const FIELD_SHOW_APP_SQL_START_DATE = process.env.FIELD_SHOW_APP_SQL_START_DATE 
 const FIELD_SHOW_APP_SQL_END_DATE = process.env.FIELD_SHOW_APP_SQL_END_DATE || "show_app_sql_end_date";
 const FIELD_SHOW_APP_NAME = process.env.FIELD_SHOW_APP_NAME || "show_app_name";
 const FIELD_APP_SQL_DATE_SOURCE = process.env.FIELD_APP_SQL_DATE_SOURCE || "app_sql_date_source";
+const FIELD_CLOCK_MODE = process.env.FIELD_CLOCK_MODE || "clock_mode";
+const FIELD_MODE_SOURCE = process.env.FIELD_MODE_SOURCE || "mode_source";
+const FIELD_MODE_REASON = process.env.FIELD_MODE_REASON || "mode_reason";
+const FIELD_DEFAULT_SHOW_DATE_STATUS = process.env.FIELD_DEFAULT_SHOW_DATE_STATUS || "default_show_date_status";
+const FIELD_DEFAULT_SHOW_DATE_REASON = process.env.FIELD_DEFAULT_SHOW_DATE_REASON || "default_show_date_reason";
+const FIELD_MODE_CONTROL = process.env.FIELD_MODE_CONTROL || "mode_control";
+const FIELD_MODE_CONTROL_REASON = process.env.FIELD_MODE_CONTROL_REASON || "mode_control_reason";
+const FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE = process.env.FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE || "is_default_show_manual_override";
+const FIELD_SHOW_NAME_BASE = process.env.FIELD_SHOW_NAME_BASE || "show_name";
+const FIELD_SHOW_START_DATE_BASE = process.env.FIELD_SHOW_START_DATE_BASE || "start_date";
+const FIELD_SHOW_END_DATE_BASE = process.env.FIELD_SHOW_END_DATE_BASE || "end_date";
 
 const HEARTBEAT_ID_FIELD   = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
 const HEARTBEAT_SHOW_ID    = process.env.HEARTBEAT_SHOW_ID || "show_id";
@@ -717,14 +735,17 @@ function normalizeMode(v) {
   return normalizeHeartbeatMode(v, "DAY");
 }
 
-function resolveModeFromClock(clock) {
-  if (FORCE_MODE) return normalizeMode(FORCE_MODE);
-
+function deriveModeFromClock(clock) {
   const minuteOfDay = minuteOfDayFromMs(clock.nowMs, HB_TZ);
 
   if (minuteOfDay >= 300 && minuteOfDay <= 1019) return "DAY";        // 5:00 AM - 4:59 PM
   if (minuteOfDay >= 1020 && minuteOfDay <= 1439) return "NIGHT";     // 5:00 PM - 11:59 PM
   return "OVERNIGHT";                                                  // 12:00 AM - 4:59 AM
+}
+
+function resolveModeFromClock(clock) {
+  if (FORCE_MODE) return normalizeMode(FORCE_MODE);
+  return deriveModeFromClock(clock);
 }
 
 function intervalMinutesForMode(mode) {
@@ -985,6 +1006,14 @@ async function buildAppContext(clock, mode) {
   }
 
   const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
+  const defaultShowDateGuard = computeDefaultShowDateGuard({
+    rawSqlDate: clock.sqlDate,
+    appSqlDate,
+    defaultAppSqlDateIs,
+    showAppSqlStartDate,
+    showAppSqlEndDate,
+    setToDefaultAppSqlDate,
+  });
 
   const appCtx = {
     effectiveMode: mode,
@@ -1000,6 +1029,7 @@ async function buildAppContext(clock, mode) {
     showAppName,
     appSqlDateSource,
     candidateAppSqlDate,
+    defaultShowDateGuard,
   };
 
   if (LOG_TRANSITIONS) {
@@ -1020,7 +1050,8 @@ async function buildAppContext(clock, mode) {
       show_app_sql_end_date: showAppSqlEndDate,
       show_app_name: showAppName,
       app_sql_date_source: appSqlDateSource,
-      candidate_app_sql_date: candidateAppSqlDate
+      candidate_app_sql_date: candidateAppSqlDate,
+      default_show_date_guard: defaultShowDateGuard,
     });
   }
 
@@ -1066,6 +1097,11 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
   maybeSet(FIELD_SHOW_APP_SQL_END_DATE, appCtx.showAppSqlEndDate);
   maybeSet(FIELD_SHOW_APP_NAME, appCtx.showAppName);
   maybeSet(FIELD_APP_SQL_DATE_SOURCE, appCtx.appSqlDateSource);
+  maybeSet(FIELD_CLOCK_MODE, appCtx.clockMode);
+  maybeSet(FIELD_MODE_SOURCE, appCtx.modeSource);
+  maybeSet(FIELD_MODE_REASON, appCtx.modeReason);
+  maybeSet(FIELD_DEFAULT_SHOW_DATE_STATUS, appCtx.defaultShowDateStatus);
+  maybeSet(FIELD_DEFAULT_SHOW_DATE_REASON, appCtx.defaultShowDateReason);
 
   if (DRY_RUN) {
     logInfo("heartbeat_create_dry_run", {
@@ -1082,6 +1118,12 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
       show_app_sql_end_date: fields[FIELD_SHOW_APP_SQL_END_DATE] ?? null,
       show_app_name: fields[FIELD_SHOW_APP_NAME] ?? null,
       app_sql_date_source: fields[FIELD_APP_SQL_DATE_SOURCE] ?? null,
+      clock_mode: fields[FIELD_CLOCK_MODE] ?? null,
+      mode_source: fields[FIELD_MODE_SOURCE] ?? null,
+      mode_reason: fields[FIELD_MODE_REASON] ?? null,
+      default_show_date_status: fields[FIELD_DEFAULT_SHOW_DATE_STATUS] ?? null,
+      default_show_date_reason: fields[FIELD_DEFAULT_SHOW_DATE_REASON] ?? null,
+      default_show_date_guard: appCtx.defaultShowDateGuard,
       mode
     });
     return { id: "recDRYRUNHEARTBEAT", fields };
@@ -1103,6 +1145,11 @@ function persistLatestHeartbeatContext(heartbeatRecord, appCtx, mode) {
       app_dow_raw: appCtx?.appDowRaw ?? null,
       shifted_to_next_day: !!appCtx?.shiftedToNextDay,
       mode,
+      clock_mode: appCtx?.clockMode ?? null,
+      mode_source: appCtx?.modeSource ?? null,
+      mode_reason: appCtx?.modeReason ?? null,
+      default_show_date_status: appCtx?.defaultShowDateStatus ?? null,
+      default_show_date_reason: appCtx?.defaultShowDateReason ?? null,
       scope_key: [
         appCtx?.appShowId ?? "",
         appCtx?.appSqlDate ?? "",
@@ -1196,6 +1243,50 @@ async function findShowsMatchAnywhere(appShowId) {
   };
 }
 
+async function fetchShowsModeControl(appShowId) {
+  if (appShowId === null || appShowId === undefined || String(appShowId).trim() === "") {
+    return {
+      found: false,
+      record_id: null,
+      mode_control: null,
+      mode_control_reason: null,
+      is_default_show_manual_override: false,
+    };
+  }
+
+  const rows = await airtableListAll({
+    table: TABLE_SHOWS,
+    fields: [
+      FIELD_SHOW_ID,
+      FIELD_APP_SHOW_ID,
+      FIELD_MODE_CONTROL,
+      FIELD_MODE_CONTROL_REASON,
+      FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE,
+    ],
+  });
+  const matches = rows.filter(r => matchesShowRow(r.fields || {}, appShowId));
+  const match = matches[0] || null;
+  const fields = match?.fields || {};
+  const modeControl = normalizeControlMode(fields[FIELD_MODE_CONTROL]);
+
+  if (matches.length > 1) {
+    logWarn("shows_mode_control_duplicate_matches", {
+      app_show_id: appShowId,
+      count: matches.length,
+      record_ids: matches.map(r => r.id),
+    });
+  }
+
+  return {
+    found: !!match,
+    record_id: match?.id || null,
+    matched_count: matches.length,
+    mode_control: modeControl,
+    mode_control_reason: strOrNull(fields[FIELD_MODE_CONTROL_REASON]),
+    is_default_show_manual_override: boolValue(fields[FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE]),
+  };
+}
+
 async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
   const heartbeatId = heartbeatRecord.id;
   const appShowId = appCtx.appShowId;
@@ -1243,6 +1334,9 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       [FIELD_MODE]: mode,
       [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
     };
+    if (appCtx.showAppName !== undefined) updateFields[FIELD_SHOW_NAME_BASE] = appCtx.showAppName;
+    if (appCtx.showAppSqlStartDate !== undefined) updateFields[FIELD_SHOW_START_DATE_BASE] = appCtx.showAppSqlStartDate;
+    if (appCtx.showAppSqlEndDate !== undefined) updateFields[FIELD_SHOW_END_DATE_BASE] = appCtx.showAppSqlEndDate;
 
     if (LOG_SHOWS_SYNC) {
       logInfo("shows_sync_update_existing_in_view", {
@@ -1290,6 +1384,9 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       [FIELD_MODE]: mode,
       [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
     };
+    if (appCtx.showAppName !== undefined) updateFields[FIELD_SHOW_NAME_BASE] = appCtx.showAppName;
+    if (appCtx.showAppSqlStartDate !== undefined) updateFields[FIELD_SHOW_START_DATE_BASE] = appCtx.showAppSqlStartDate;
+    if (appCtx.showAppSqlEndDate !== undefined) updateFields[FIELD_SHOW_END_DATE_BASE] = appCtx.showAppSqlEndDate;
 
     logWarn("shows_sync_guard_found_match_outside_view", {
       app_show_id: appShowId,
@@ -1325,6 +1422,9 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     [FIELD_MODE]: mode,
     [FIELD_SHIFTED_NEXT_DAY]: appCtx.shiftedToNextDay,
   };
+  if (appCtx.showAppName !== undefined) createFields[FIELD_SHOW_NAME_BASE] = appCtx.showAppName;
+  if (appCtx.showAppSqlStartDate !== undefined) createFields[FIELD_SHOW_START_DATE_BASE] = appCtx.showAppSqlStartDate;
+  if (appCtx.showAppSqlEndDate !== undefined) createFields[FIELD_SHOW_END_DATE_BASE] = appCtx.showAppSqlEndDate;
 
   if (LOG_SHOWS_SYNC) {
     logWarn("shows_sync_create_new_record", {
@@ -1351,16 +1451,41 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
 (async () => {
   try {
     const clk = await getClockSafe();
-    const modeControl = await latestHeartbeatModeControl();
-    const mode = modeControl?.mode || resolveModeFromClock(clk);
-    const appCtx = await buildAppContext(clk, mode);
+    const clockMode = deriveModeFromClock(clk);
+    const preliminaryShowControl = await fetchShowsModeControl(clk.showId);
+    const forcedMode = FORCE_MODE ? normalizeMode(FORCE_MODE) : null;
+    const dateContextMode = modeForDateContext(forcedMode || preliminaryShowControl.mode_control, clockMode);
+    const appCtx = await buildAppContext(clk, dateContextMode);
+    const showControl = preliminaryShowControl?.found
+      ? preliminaryShowControl
+      : await fetchShowsModeControl(appCtx.appShowId);
+    const modeDecision = decideEffectiveMode({
+      clockMode,
+      forcedMode,
+      defaultShowDateGuard: appCtx.defaultShowDateGuard,
+      showControl,
+    });
+    const mode = modeDecision.mode;
     const intervalMin = intervalMinutesForMode(mode);
+    appCtx.effectiveMode = mode;
+    appCtx.dateContextMode = dateContextMode;
+    appCtx.clockMode = clockMode;
+    appCtx.modeSource = modeDecision.mode_source;
+    appCtx.modeReason = modeDecision.mode_reason;
+    appCtx.defaultShowDateStatus = modeDecision.default_show_date_status;
+    appCtx.defaultShowDateReason = appCtx.defaultShowDateGuard?.default_show_date_reason || "ok";
+    appCtx.showsModeControl = showControl;
 
     logInfo("run_summary_pre_write", {
       mode,
-      mode_control_source: modeControl?.source || null,
-      mode_control_heartbeat_record_id: modeControl?.heartbeat_record_id || null,
-      mode_control_cadence_seconds: modeControl?.cadence_seconds || null,
+      clock_mode: clockMode,
+      mode_source: modeDecision.mode_source,
+      mode_reason: modeDecision.mode_reason,
+      forced_mode: forcedMode,
+      shows_mode_control: showControl?.mode_control || null,
+      shows_mode_control_reason: showControl?.mode_control_reason || null,
+      is_default_show_manual_override: !!showControl?.is_default_show_manual_override,
+      shows_control_record_id: showControl?.record_id || null,
       source: clk.source,
       raw_show_id: clk.showId ?? null,
       raw_show_date: clk.showDate ?? null,
@@ -1377,6 +1502,9 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       show_app_name: appCtx.showAppName,
       app_sql_date_source: appCtx.appSqlDateSource,
       candidate_app_sql_date: appCtx.candidateAppSqlDate,
+      default_show_date_guard: appCtx.defaultShowDateGuard,
+      default_show_date_status: appCtx.defaultShowDateStatus,
+      default_show_date_reason: appCtx.defaultShowDateReason,
       interval_min: intervalMin
     });
 
@@ -1427,6 +1555,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       heartbeat_app_show_id: appCtx.appShowId,
       heartbeat_app_sql_date: appCtx.appSqlDate,
       heartbeat_app_dow_raw: appCtx.appDowRaw,
+      default_show_date_guard: appCtx.defaultShowDateGuard,
       heartbeat_scope_key: [
         appCtx.appShowId ?? "",
         appCtx.appSqlDate ?? "",
@@ -1434,6 +1563,11 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
         appCtx.shiftedToNextDay ? "1" : "0",
       ].join("|"),
       mode,
+      clock_mode: appCtx.clockMode,
+      mode_source: appCtx.modeSource,
+      mode_reason: appCtx.modeReason,
+      default_show_date_status: appCtx.defaultShowDateStatus,
+      default_show_date_reason: appCtx.defaultShowDateReason,
       source: clk.source,
       results,
       warnings

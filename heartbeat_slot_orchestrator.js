@@ -6,11 +6,15 @@ const {
   modeAllowsHeavy,
   resolveHeartbeatCadenceSeconds,
 } = require("./lib/heartbeat_mode");
+const {
+  computeDefaultShowDateGuard,
+} = require("./lib/default_show_date_guard");
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
+const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const HEARTBEAT_CREATED_FIELD = process.env.HEARTBEAT_CREATED_FIELD || "created_time";
 const HEARTBEAT_ISA_FIELD = process.env.HEARTBEAT_ISA_FIELD || "isA";
 const HEARTBEAT_ISB_FIELD = process.env.HEARTBEAT_ISB_FIELD || "isB";
@@ -37,6 +41,7 @@ const LOG_PATH = process.env.ORCH_LOG_PATH || path.join(LOG_DIR, "heartbeat-slot
 const LOCK_PATH = process.env.ORCH_LOCK_PATH || path.join(LOG_DIR, "heartbeat-slot-orchestrator.lock");
 const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "30") || 30);
 const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
+const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
 
@@ -96,6 +101,27 @@ function boolValue(value) {
     if (["false", "no", "0", "unchecked"].includes(text)) return false;
   }
   return false;
+}
+
+function firstValue(value) {
+  if (Array.isArray(value)) return value.length ? firstValue(value[0]) : undefined;
+  if (value && typeof value === "object" && "name" in value) return value.name;
+  return value;
+}
+
+function strOrNull(value) {
+  const v = firstValue(value);
+  if (v === null || v === undefined) return null;
+  const text = String(v).trim();
+  if (!text || text.toLowerCase() === "null" || text.toLowerCase() === "nan") return null;
+  return text;
+}
+
+function numOrNull(value) {
+  const text = strOrNull(value);
+  if (text === null) return null;
+  const num = Number(text);
+  return Number.isFinite(num) ? num : null;
 }
 
 function airtableUrl(tableName, params = {}) {
@@ -161,11 +187,39 @@ async function latestHeartbeat() {
       "sql_date",
       "app_sql_date",
       "app_dow_raw",
+      "set_to_default_app_sql_date",
+      "default_app_sql_date_is",
+      "show_app_sql_start_date",
+      "show_app_sql_end_date",
+      "check_show_date",
+      "default_show_date_status",
       HEARTBEAT_SHIFTED_NEXT_DAY_FIELD,
       "time",
     ],
   });
   return rows[0] || null;
+}
+
+async function showManualOverride(appShowId) {
+  const showId = numOrNull(appShowId);
+  if (showId === null) return { found: false, is_default_show_manual_override: false };
+  const rows = await airtableList(TABLE_SHOWS, {
+    maxRecords: 10,
+    filterByFormula: `OR({show_id}=${showId},{app_show_id}=${showId})`,
+    "fields[]": [
+      "show_id",
+      "app_show_id",
+      "is_default_show_manual_override",
+      "check_show_date (from heartbeat)",
+    ],
+  });
+  const row = rows[0] || null;
+  return {
+    found: !!row,
+    record_id: row?.id || null,
+    matched_count: rows.length,
+    is_default_show_manual_override: boolValue(row?.fields?.is_default_show_manual_override),
+  };
 }
 
 function slotFromFields(fields = {}) {
@@ -291,6 +345,33 @@ async function runOrchestrator() {
         cadence_seconds: cadenceSeconds,
       });
       return;
+    }
+
+    const defaultShowDateGuard = computeDefaultShowDateGuard({
+      rawSqlDate: heartbeat?.fields?.sql_date,
+      appSqlDate: heartbeat?.fields?.app_sql_date,
+      defaultAppSqlDateIs: heartbeat?.fields?.default_app_sql_date_is,
+      showAppSqlStartDate: heartbeat?.fields?.show_app_sql_start_date,
+      showAppSqlEndDate: heartbeat?.fields?.show_app_sql_end_date,
+      setToDefaultAppSqlDate: heartbeat?.fields?.set_to_default_app_sql_date,
+    });
+
+    if (DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY && defaultShowDateGuard.check_show_date) {
+      const showOverride = await showManualOverride(heartbeat?.fields?.app_show_id);
+      if (!showOverride.is_default_show_manual_override) {
+        appendEvent({
+          ok: true,
+          event: "orchestrator_mode_noop",
+          reason: "default_show_date_needs_manual_confirmation",
+          mode,
+          cadence_seconds: cadenceSeconds,
+          default_show_date_status: defaultShowDateGuard.default_show_date_status,
+          default_show_date_reason: defaultShowDateGuard.default_show_date_reason,
+          default_show_date_metrics: defaultShowDateGuard.default_show_date_metrics,
+          show_override: showOverride,
+        });
+        return;
+      }
     }
 
     if (!slot) {

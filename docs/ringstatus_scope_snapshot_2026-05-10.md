@@ -16,6 +16,17 @@ The pipeline has three separate workflows that must remain separate:
 
 Live enrichment is not a substitute for schedule/people refresh. Schedule/people refresh creates and repairs minimum viable rows. Live enrichment fills same-day progress, order, and live details.
 
+## Heartbeat Manual Controls
+
+Current non-regression baseline after the 2026-05-11 show-date control change:
+
+- `shows.mode_control` is the manual lever for `AUTO`/blank, `DAY`, `NIGHT`, `OVERNIGHT`, `IDLE`, and `OFF`.
+- `heartbeat.clock_mode` records the clock-derived mode.
+- `heartbeat.mode` records the effective mode after `FORCE_MODE`, show manual control, and default show-date guard logic.
+- `heartbeat.mode_source` and `heartbeat.mode_reason` explain why the effective mode was selected.
+- `heartbeat.default_show_date_status` and `heartbeat.default_show_date_reason` expose the code-owned default show-date guard result.
+- If the default show-date guard needs confirmation and `shows.is_default_show_manual_override` is unchecked, effective mode becomes `OFF` and the slot orchestrator must not run heavy lanes.
+
 ## Live Trip Enrichment
 
 Current same-day live enrichment should follow this sequence:
@@ -143,3 +154,4 @@ Before accepting future changes, confirm:
 - `DAY -> NIGHT` remains pre-live and uses schedule/people refresh plus approved fallback folders.
 - Manual schedule HTML lookup uses the shifted target date.
 - Existing pre-live rows remain intact when live endpoints are empty, wrong, or unavailable.
+- Manual `shows.mode_control` and `shows.is_default_show_manual_override` still control heartbeat/tagger mode without relying on Airtable formula date math.

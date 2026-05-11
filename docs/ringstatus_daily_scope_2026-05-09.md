@@ -5,6 +5,23 @@
 **Primary mode focus:** `DAY`  
 **Transition scopes:** `DAY -> NIGHT`, `OVERNIGHT -> DAY`
 
+## 2026-05-11 Heartbeat Controls
+
+The current heartbeat/tagger mode is now visible as two separate values:
+
+- `clock_mode`: what the clock says now (`DAY`, `NIGHT`, or `OVERNIGHT`).
+- `mode`: what the pipeline will actually use after manual controls and guardrails.
+
+Manual controls live on the `shows` table:
+
+- `mode_control` blank or `AUTO`: let the clock and guards decide.
+- `mode_control = DAY`, `NIGHT`, or `OVERNIGHT`: force that operational mode.
+- `mode_control = IDLE`: throttle heavy work without fully stopping the heartbeat record.
+- `mode_control = OFF`: stop heavy lanes until the control is cleared or changed.
+- `is_default_show_manual_override`: confirms the default show-date warning for the current show when the owner has reviewed it.
+
+The default show-date guard is code-owned. It checks whether `default_app_sql_date_is` and `app_sql_date` fall inside `show_app_sql_start_date` through `show_app_sql_end_date`, whether the default/app date is too far from raw `sql_date`, and whether the show window is shorter than two days. If the guard fails and the show is not manually confirmed, effective `mode` becomes `OFF`, heartbeat writes `default_show_date_status = needs_manual_confirmation`, and the slot orchestrator blocks heavy lanes.
+
 ## Purpose
 
 This daily scope separates three workflows that are easy to confuse:
