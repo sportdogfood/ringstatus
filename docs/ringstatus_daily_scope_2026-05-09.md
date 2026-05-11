@@ -32,6 +32,36 @@ This daily scope separates three workflows that are easy to confuse:
 
 The liveclassv2 workflow enriches current-day rows. The schedule/people workflow must keep running outside live enrichment because it prepares and repairs `watch_schedule` and `watch_trips`, especially when the target date shifts to tomorrow.
 
+## Writable Key Contract
+
+`watch_schedule` and `watch_trips` should not use Airtable formula-derived keys as the operational matching keys. Formula fields such as `new_key`, `new_schedule_key`, and `new_trips_key` may remain as audit helpers, but the pipeline and Airtable automations should match on writable text keys.
+
+Schedule keys:
+
+```text
+schedule_key = sid|sql_date|ring_number|class_number|class_sequence
+schedule_short = ring_number|class_number|class_sequence
+```
+
+Trip keys:
+
+```text
+trips_key = sid|sql_date|ring_number|class_number|class_sequence|pid|entry_number|entry_sequence
+trips_short_key = class_number|class_sequence|pid|entry_number|entry_sequence
+```
+
+Full nesting key:
+
+```text
+full_nesting_key = sid|sql_date|ring_number|time|cgid|class_number|class_sequence|pid|entry_number|entry_sequence
+```
+
+`time` and `cgid` are important for nesting, diagnostics, endpoint construction, and review, but they are intentionally not part of `schedule_key` or `trips_key`. The shared parent prefix is:
+
+```text
+sid|sql_date|ring_number|class_number|class_sequence
+```
+
 ## DAY Mode
 
 `DAY` mode focuses on the current `app_sql_date`.

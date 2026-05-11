@@ -1,6 +1,6 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.11.3  
+**Version:** v2026.05.11.4  
 **Date:** 2026-05-11  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.11.4 | 2026-05-11 | Replaced the old derived/formula-first identity guidance with writable key fields for `watch_schedule` and `watch_trips`: `schedule_key`, `schedule_short`, `trips_key`, `trips_short_key`, and `full_nesting_key`. `cgid` and start time remain important nesting/enrichment dimensions but are not part of the operational match keys. |
 | v2026.05.11.1 | 2026-05-11 | Added heartbeat/show manual controls: `shows.mode_control` is the owner-facing lever for `AUTO`/blank, `DAY`, `NIGHT`, `OVERNIGHT`, `IDLE`, and `OFF`; `shows.is_default_show_manual_override` confirms a suspicious default show date; heartbeat writes `clock_mode`, effective `mode`, `mode_source`, `mode_reason`, `default_show_date_status`, and `default_show_date_reason`. Unconfirmed default show-date guard failures move the effective mode to `OFF` and the slot orchestrator blocks heavy lanes. |
 | v2026.05.11.2 | 2026-05-11 | Audited `watch_schedule` date/show fields. `heartbeat.show_id`/`app_show_id`/`app_sql_date`/`app_dow_raw` are current app-control scope; `watch_schedule.show_id`/`show_date`/`schedule_show_datev2` are row-owned schedule identity; `watch_schedule.app_show_idv2`/`app_sql_datev2`/`app_dow_rawv2` are row scope snapshots. `tagger.js` must not globally rebind `watch_schedule.heartbeat` to the newest heartbeat unless the row's stored show/date scope matches the heartbeat app scope. See `docs/watch_schedule_field_audit_2026-05-11.md`. |
 | v2026.05.11.3 | 2026-05-11 | Applied the same scoped heartbeat relink rule to `watch_trips`: row-owned trip schedule fields are authoritative for the row, and heartbeat lookup fields are cleared when their linked heartbeat scope does not match the trip row scope. |
@@ -363,45 +364,89 @@ The lane should enrich rows already created by `trips_dailyv2.js`; it should not
 
 ## Identity Model
 
+Formula-derived keys such as `new_key`, `new_schedule_key`, and `new_trips_key` are reference/audit helpers only. Airtable automations and pipeline matching should use writable text keys because formula keys do not behave reliably enough as primary operational keys.
+
+The first visible column can remain a human-readable title/label. The indexing key may be the second column, but it must be a writable text field populated by the pipeline.
+
 ### watch_schedule
 
-Preferred machine key:
+Writable operational key:
 
 ```text
-{class_group_id}_{class_number}
+schedule_key = sid|sql_date|ring_number|class_number|class_sequence
 ```
 
-Fallback keys:
+Example:
 
 ```text
-class_groupxclasses_id
-class_id
+200000061|2026-05-10|3|723|1
 ```
 
-Reason:
+Short schedule key for display/filtering:
 
-Current schedules may return `class_id = null`, while `class_group_id` and `class_number` remain usable.
+```text
+schedule_short = ring_number|class_number|class_sequence
+```
+
+Example:
+
+```text
+3|723|1
+```
 
 ### watch_trips
 
-Preferred trip key:
+Writable operational key:
 
 ```text
-people:{class_number}:{entry_number}
+trips_key = sid|sql_date|ring_number|class_number|class_sequence|pid|entry_number|entry_sequence
 ```
 
-Backup:
+Example:
 
 ```text
-entryxclasses_uuid
+200000061|2026-05-10|3|723|1|8778|2807|1
+```
+
+Short trips key for display/filtering:
+
+```text
+trips_short_key = class_number|class_sequence|pid|entry_number|entry_sequence
+```
+
+Example:
+
+```text
+723|1|8778|2807|1
+```
+
+### Full Nesting Key
+
+The full nesting key is for hierarchy, diagnostics, display grouping, and richer nested payload construction. It includes `time` and `cgid` because those values are important context when nesting or reviewing data, but neither `time` nor `cgid` belongs in the operational match keys.
+
+```text
+full_nesting_key = sid|sql_date|ring_number|time|cgid|class_number|class_sequence|pid|entry_number|entry_sequence
+```
+
+Example:
+
+```text
+200000061|2026-05-10|3|08:30:00|200023880|723|1|8778|2807|1
 ```
 
 Rules:
 
+- `schedule_key`, `schedule_short`, `trips_key`, `trips_short_key`, and `full_nesting_key` must be writable text fields, not Airtable formula fields.
+- `schedule_key` is the shared parent prefix for `trips_key`.
+- `watch_trips` should match or nest under `watch_schedule` by the first five segments of `trips_key`: `sid|sql_date|ring_number|class_number|class_sequence`.
+- `pid` acts as the tenant/person/trainer scope for trip identity.
+- `entry_sequence` is required in `trips_key` and `trips_short_key` so repeated entry/class combinations do not collapse.
+- `cgid` and `time` should be stored and used for nesting, diagnostics, live endpoint construction, and tie-breaking where useful, but they are not required for `schedule_key` or `trips_key`.
+- `class_id`, `class_group_id`/`cgid`, and `entryxclasses_uuid` remain enrichment/evidence identifiers, not primary operational keys.
 - `entryxclasses_uuid` should contain a real SGL value only.
 - Synthetic `fallback:*` values should not be created for new rows.
-- Existing legacy `fallback:*` values should be tolerated during transition if `class_number + entry_number` is available.
-- Enrichment should match by class/entry identity first, and use `entryxclasses_uuid` only as a backup.
+- Existing legacy `fallback:*` values should be tolerated during transition if `trips_key` can be built.
+- Existing formula keys such as `new_key`, `new_schedule_key`, and `new_trips_key` may be kept as audit/comparison fields, but they should not be the key fields used by Airtable automations.
 
 ## Same-Day Liveclassv2 Endpoints
 
