@@ -2,6 +2,11 @@
 
 This audit documents the date/show fields currently visible on `watch_schedule` and `watch_trips`.
 
+Related PRO field ownership audits:
+
+- `docs/watch_schedule_pro_field_audit_2026-05-11.md`
+- `docs/watch_trips_pro_field_audit_2026-05-11.md`
+
 ## Field Ownership
 
 Important naming rule: the same concept name in `heartbeat` and `watch_schedule` does not always mean the same operational thing.

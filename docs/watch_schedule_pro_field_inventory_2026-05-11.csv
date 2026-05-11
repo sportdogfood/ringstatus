@@ -1,0 +1,211 @@
+field,type,field_id,status,group,populated,blank,unique,publisher_default,action,top_values
+new_schedule_key,formula,fldvGIVNzxztIU1LQ,derived_display_or_filter,derived,58,0,58,no,derived from other fields; not independent truth,200023880-723 (1) | 200023881-763 (1)
+class_number,number,fldqCQmpheiSzv85v,value_of_truth,class_number,58,0,58,yes,keep as canonical PRO field,723 (1) | 763 (1)
+class_id,number,fldtRgws0T6PSbvFd,value_of_truth,class,51,7,51,yes,keep as canonical PRO field,200025174 (1) | 200025154 (1)
+show_id,number,fldFuKv9v7X7XqqLw,value_of_truth,show,58,0,1,yes,keep as canonical PRO field,200000061 (58)
+YYYYMMDD,formula,fldCNbDXCw4lPf6mw,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,20260510 (58)
+scheduled_date,singleLineText,fldgYI2jdP2W3GcWP,inactive_duplicate_or_lookup,date,58,0,1,no,do not use as independent truth; compare to schedule_show_datev2,2026-05-10 (58)
+app_show_idv2,number,fldOsppTThTFklwP0,value_of_truth,show_scope,58,0,1,yes,keep as canonical PRO field,200000061 (58)
+app_sql_datev2,singleLineText,fldD4WY2MfodJKGge,value_of_truth,date_scope,58,0,1,yes,keep as canonical PRO field,2026-05-10 (58)
+app_dow_rawv2,singleLineText,fldOZrk3Va3jZhL0c,value_of_truth,dow_scope,58,0,1,no,keep as canonical PRO field,Sun (58)
+record_state,singleLineText,fld00VATolZrYddRf,operational_control,operation,58,0,1,no,runner/control/audit field,existing (58)
+ringName,formula,fldP17wWtizmofz6U,value_of_truth,ring_name,58,0,5,yes,keep as canonical PRO field,Hunter 1 (20) | Hunter 2 (13)
+classes_endpoint,formula,fldl0BJhh8JrwwxGX,source_evidence,evidence,51,7,51,no,source/lookup evidence only,https://broad-tooth-b8ed.gombcg.workers.dev/classes/200025174/?show_id=200000061&customer_id=15 (1) | https://broad-tooth-b8ed.gombcg.workers.dev/classes/200025154/?show_id=200000061&customer_id=15 (1)
+inactive,checkbox,fldZ1u2LRttYI6vRq,operational_control,operation,3,55,1,no,runner/control/audit field,true (3)
+show_date,singleLineText,fldd75bslCdZZdghT,inactive_duplicate_or_lookup,date,58,0,1,no,do not use as independent truth; compare to schedule_show_datev2,2026-05-10 (58)
+class_groupxclasses_id,number,fldvFwyusNAzBpURC,value_of_truth,class_groupxclasses,58,0,58,yes,keep as canonical PRO field,200035732 (1) | 200035734 (1)
+class_group_id,number,fld1cc1gxno1hTTNu,value_of_truth,class_group,58,0,43,yes,keep as canonical PRO field,200023881 (2) | 200023882 (2)
+groups_live,multipleRecordLinks,fldytLC3prQSYPF3a,relationship_link,link,49,9,34,no,relationship field; not a scalar truth value,recEWk56AvqxFNCPq (2) | rectere6T7d1r18WH (2)
+start_display,formula,fldz6ft8u7datsUEj,derived_calculator_output,calculator,58,0,37,no,derived/calculated value; use only for display or alerts,7:45 AM (4) | 3:00 PM (4)
+class_group_sequence,number,fldqgrnmwyNukaE1C,value_of_truth,class_group_sequence,58,0,13,yes,keep as canonical PRO field,2 (6) | 4 (6)
+group_name,singleLineText,fldzBoNvfhyHUPzie,value_of_truth,group_name,58,0,43,yes,keep as canonical PRO field,"$2,640 M&S 1.15m Junior & Amateur Jumper Classics II2b (2) | 1.10m Junior & Amateur Jumpers II2d (2)"
+class_name,multilineText,fldr2LjgnNrPrPVmu,value_of_truth,class_name,58,0,49,yes,keep as canonical PRO field,Stirrup Equitation (2) | Cross Rail Equitation (2)
+Count (watch_trips),count,fldqrfIgL402b0XR7,inactive_duplicate_or_lookup,total,58,0,5,no,do not use as independent truth; compare to total_trips,0 (43) | 2 (7)
+watch_trips,multipleRecordLinks,fldROZUwR1k9F6LW7,relationship_link,link,15,43,15,no,relationship field; not a scalar truth value,rec82ypiIZNS9f4aq (1) | recGLPCE78dnOIe3A (1)
+rider_name (from watch_trips),multipleLookupValues,fldFfKmMVqPr2bw0Z,source_evidence,lookup,15,43,12,no,lookup evidence only,CARSYN KOROTKIN|NAOMI SELLECK|LAINEY POSA|ZOEY BURTON (2) | KATE MARISCH|LAINEY POSA (2)
+record_id_rollups,rollup,fldrT95HGDpYQkXuW,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,rec82ypiIZNS9f4aq (1) | recGLPCE78dnOIe3A (1)
+total_trips,number,fldXCJsgKvKCLJ70X,value_of_truth,total,51,7,23,yes,keep as canonical PRO field,25 (4) | 8 (4)
+total_trips (from watch_trips),multipleLookupValues,fldMSWHf747dzQI1s,source_evidence,lookup,14,44,10,no,lookup evidence only,25 (3) | 15 (2)
+estimated_end_time,singleLineText,fld9tmkqVzk2y4gdS,value_of_truth,end_time,0,58,0,yes,keep as canonical PRO field,
+ring_number,number,fldnqXMJAS1McxTZO,value_of_truth,ring,58,0,5,yes,keep as canonical PRO field,5 (20) | 6 (13)
+ww_rings,multipleRecordLinks,fldzfYXK8KZK8UcJo,relationship_link,link,58,0,5,no,relationship field; not a scalar truth value,recjmmvcrkUOOCKIN (20) | rec5r2BR7JaEci5ge (13)
+ring_nickname,formula,fldkS2C9lNfqS69BP,value_of_truth,ring_display,58,0,5,no,keep as canonical PRO field,Hunter 1 (20) | Hunter 2 (13)
+group_display,rollup,fldYkV4ZHIndBAlPK,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,King (2) (1) | Choco (9) (1)
+show_days_report_title,formula,fldrSfvfkSR43jusq,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,Schedule (58)
+show_days_display_date,formula,fldkCer8IRbnKFQQg,derived_display_or_filter,derived,58,0,1,no,rollup/display helper; not independent truth,"Sunday, May, 10, 2026 (58)"
+dt,formula,fldYyrGQtEhKPnTiZ,inactive_duplicate_or_lookup,date,0,58,0,yes,do not use as independent truth; compare to schedule_show_datev2,
+sid,formula,fldIhkHBhD4bfb3IM,value_of_truth,identity,58,0,1,yes,keep as canonical PRO field,200000061 (58)
+record_id,formula,fldXhGbViswrIus6r,derived_display_or_filter,derived,58,0,58,no,derived from other fields; not independent truth,rec4x2rSLXbPpwqCR (1) | recjVQhpNGpIphY0F (1)
+status,singleLineText,fldNUOtoM7RvIeaAi,value_of_truth,status,51,7,2,yes,keep as canonical PRO field,Completed (48) | Upcoming (3)
+class_status,multipleRecordLinks,fldnNslm5vmS7GVxL,relationship_link,link,51,7,2,no,relationship field; not a scalar truth value,reccMJ4aWWQqEY9dm (48) | rec1eTKTdrymeGC7v (3)
+latest_ingested_at,singleLineText,fld7VVtd6mqzuNZT3,operational_control,operation,58,0,6,no,runner/control/audit field,2026-05-11T03:55:25.927Z (49) | 2026-05-11T03:45:22.474Z (4)
+manual_time_override,checkbox,fldJbVKifKVRCkt1C,value_of_truth,manual_time_override,6,52,1,no,keep as canonical PRO field,true (6)
+time-check,formula,fldDVmDyxWWUmcmvz,derived_display_or_filter,derived,58,0,37,no,derived from other fields; not independent truth,7:45 AM (4) | 3:00 PM (4)
+estimated_start_time,singleLineText,fldRP7CIUhx9sj1dJ,value_of_truth,start_time,58,0,42,yes,keep as canonical PRO field,07:45:00 (3) | 09:05:00 (2)
+schedule_sequencetype,singleLineText,fldXOpfxo0b0oi5n0,value_of_truth,sequence,58,0,2,yes,keep as canonical PRO field,Over Fences (51) | Under Saddle/Flat (7)
+is_usf,formula,fldVfpHE2TfXQ5JNE,derived_display_or_filter,derived,7,51,1,no,derived from other fields; not independent truth,true (7)
+group,rollup,fldjUizn4Ue2V904Z,derived_display_or_filter,derived,15,43,14,no,rollup/display helper; not independent truth,Knox|Poptart (2) | King (1)
+prior_class_group_idv2,number,fldRsdoFABvq12gsT,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+rollup_entries,rollup,fldb6FfissLzxaMCl,derived_display_or_filter,derived,0,58,0,yes,rollup/display helper; not independent truth,
+rollup_trips,rollup,fld2MxgtkwTXQ1sSb,derived_display_or_filter,derived,0,58,0,yes,rollup/display helper; not independent truth,
+rollup_horses,rollup,fldXr0jRyRefCOrdb,derived_display_or_filter,derived,15,43,12,yes,rollup/display helper; not independent truth,Fento|Indy|Jason|Munster (2) | Ranger|Tommy (2)
+firstup,checkbox,fld1YxwSdATwCPorT,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+expected_first,formula,fld8wtzF9jtEOW6A7,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""error"":""#ERROR!""} (58)"
+expected_second,formula,fldExtEsqa4wphJIi,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""error"":""#ERROR!""} (58)"
+shows,multipleRecordLinks,fldcFcbCSO6pS2pQp,relationship_link,link,58,0,1,no,relationship field; not a scalar truth value,recqX2PPTCVTx329X (58)
+mode (from heartbeat),multipleLookupValues,fldFeQoFKA0yTwyBV,source_evidence,evidence,0,58,0,no,source/lookup evidence only,
+full_schedule_endpoint,formula,fldSsb776mkKCYhXA,source_evidence,evidence,58,0,1,no,source/lookup evidence only,https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=&show_id=200000061&customer_id=15 (58)
+isFirstUp,formula,fld0nNT6yJ4g1rRE5,derived_display_or_filter,derived,9,49,1,no,derived from other fields; not independent truth,true (9)
+time_sort,formula,fldYt5r7uiSv6Eg8R,operational_control,operation,58,0,42,no,runner/control/audit field,27900 (3) | 32700 (2)
+class_type,singleLineText,fldxZrmEeUa1mMxRd,value_of_truth,class_type,58,0,3,yes,keep as canonical PRO field,Hunters (22) | Equitation (19)
+oog_endpoint,formula,fldBweI3f9jGY2KRp,source_evidence,evidence,58,0,1,no,source/lookup evidence only,https://sglapi.wellingtoninternational.com/classsignup/200020693?eid=200020693&show_id=200000053&customer_id=15 (58)
+class_alerts,multipleRecordLinks,fld7Mk79GKZoC800o,relationship_link,link,14,44,14,no,relationship field; not a scalar truth value,recY37uLQPaVSkQBy (1) | recf8RuYnpTLQI0qB|reckwfyAH2bEOKeVr (1)
+app_sql_date,formula,fldS9Sw0GxLO06hXH,inactive_duplicate_or_lookup,date,0,58,0,yes,do not use as independent truth; compare to schedule_show_datev2,
+heartbeat,multipleRecordLinks,fldp1qJhWITiLueqo,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+app_dow_raw,formula,fldIB2rUUGJZb9nMW,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+shifted_to_next_day,formula,fldW3L4anINTJOnc4,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+class_types,multipleRecordLinks,fldvkz1Hc5ZlwUonO,relationship_link,link,58,0,3,no,relationship field; not a scalar truth value,recoqzxmHIXuqCfjs (22) | recvjjM6bNgbUV5zX (19)
+watch_rings_uid,formula,fld6l45Dmdd4p9kmF,relationship_link,link,58,0,5,no,relationship field; not a scalar truth value,200000061||5 (20) | 200000061||6 (13)
+watch_rings,multipleRecordLinks,fldUZAWZHQf1NSZ2W,relationship_link,link,58,0,5,no,relationship field; not a scalar truth value,recjhB1YXqJ4AjBSM (20) | reckSRGNFLlLRcF6K (13)
+run_time (from watch_rings),multipleLookupValues,fldayJ5c3OwR1zij0,source_evidence,lookup,58,0,1,no,lookup evidence only,2026-05-11T16:45:48.115Z (58)
+next_group_id (from watch_rings),multipleLookupValues,fldnCJ324I4kK9pSe,source_evidence,lookup,0,58,0,no,lookup evidence only,
+focusTargetGroupId,number,fldeQmHQokKCAMNWs,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+immediatePriorGroupId,number,fld7h9HEb0vAUuH9z,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+diif,checkbox,flddIxFDYI8ULcJCU,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+8778_sched_display,rollup,fldKa0XjhHeyepGo8,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,King (2) (1) | Choco (9) (1)
+8778_group_display,rollup,flduQStzelygxkoUa,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,King (2) (1) | Choco (9) (1)
+8778_group_alert,rollup,fldjzoWwlnD3U8KPG,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,King (2) (1) | Choco (9) (1)
+40362_group_display,rollup,fld0E25cC84T3HvjA,derived_display_or_filter,derived,0,58,0,no,rollup/display helper; not independent truth,
+trip_logs,multipleRecordLinks,fldpIttRHce0GLspl,relationship_link,link,15,43,15,no,relationship field; not a scalar truth value,recPl6cmTzaFGnC0W|recJVrJr42xY6Jo6g|recuxtFrRcsixXpuj|recpAXvnok8sIHMPt|recHq2RWlY6Btodc4|recZWAiQMCcf37r0K|recQLVMguh7nIjw0l|rec7zj4PDysF2BKA5|recekl7GkeXVBcK5Q|recCI9dnGELS6Qn3a|rechGj23TURyPipdu|recNBGbRjZGFtBjaG|recoZKr2tjKlPHIXI|recRW91DkDahJJEMc|recO58ozx8hPyULjx|recZRUKY80Ibn4xke|recHYw0lXEOkxkJmY|recEjr7k4k2ikL7KL|recJ0Q772s00GbNN3|recL8TJV3pSyAZFvR|rec9Y473xfG9a089F|rech34m79LlX9qkMr|recH0tw72EVIv6yia|recsJq0RlBCnH7wNY|recBAzyCrOh4QwEDF|recPiGaDMTL3dYs0C|recRjWZs9g3OrIQer|recrhufxl5F1MHnth|recWtJFsoC40k3HBw|recDSeToFKeHsLzA0|reciaFJqfJPPVyM8V|recZ1YqI7Rtsa1IC7|rec6awJqICopTQu5d|rec8K40Nf4BJBY2Yw|recRplqUGN4ImBmwk|recDZCXuxmRJJlOOJ|recu9ySm7FC5DQw5F|rec8DiXWsg3mUuesq|recafq5FyHebTwg3g|recocEo4wAaHTQuPz|recDEd3WtnqnvrvmC|recGlNeZWa8tpy42n|reczPrPLAwUcjnFEZ|recLJRZFNb5LwUR4E|reclJmsrRBNTd7cs0|rec32LbHPb6SlrcaH|recaBm5E8pnXieitY|recdPFNZZxpRxUQLQ|recJPuUpQtihWUKOx|recmIP4qUL1M1O4xw|reckuBXaNDUQN7dPJ|rec1szrObmerew1GX (1) | rec8vSV3MjA6o4W5b|recL8GnFvwUkG9zzd|rec8jbX8nLqZMgjHH|recwEu8L2gHcWBI6T|recKCCsHbsF9msEyf|recVzAjsejJ6LKjcI|recZzfVTdj3Hf9zES|recQ6TQTAueaY4ziV|recCkhdXS0fdUuzQ8|recqr4IM6qi27sdKk|recutcBNUeFZKJYmp|recigSZ3zDFQUcCL5|recCK0EJPsKHEhlMF|recBIBJrR3rUYCF5p|recfT5jRcdBBLQbpB|recZcT4GsfIYju5jl|recM9qHiAMhpDGpx9|rec2svQZtxBnxEoWr|recISN0TBJc0LEJlD|rec9YJpcasQ4dEldV|recAwang3zyvgG6aa|recdI4hFRWDUjGO5c|reckFWl6afjzvNcKb|rec27o5Z7q1VJSPdr|recDG8YWD7PjXkbHa|recc6OcxqYG5DQDuI|reclBPMuzfdSOAFmR|recKSFx7zSrSHfrjR|recXMWF6n3nBzSvHX|recfZAlWGIR9QXILe|recYNwfTcV6mAZ27p|recKTdKnTwXeTZrCT|recACFYx0cgb1uCk8|recuqF4lAIrnpewPw|rec77o3JxL9yLD15Z|recfVUGTAhqpB8vry|recAkDcofOfXh2jji|rec6CAYId5a91uf4N|recfISzyaVzh1LTyN|rec9rFOH0DXhomlsG|recCG1naBWAPjAD8I|recg5Zpy78L5nZM69|rec9HQL6XY0UGgo1L|reczE3A7mxG9iPRTX|recX9D5nAmXDB0tth|reclEHoXFr2njeC2T|recR6JGUhPA2QKCgu|recRMRNIFGNX0scoz|rec6xVj0ck6kp4MKt|reczu2PYBq2NyrRuq|recZNbm9v0ceM0y2J|recYhENUlgxJKDWg2|recSV8gsOg6ISFvED|receo1Ezp5QmyyhBm|recURH7gmKTIijyKG|recSAkd7Xkxh4qjdL|recfotJRVGxuf4v1J|recysUqCToz2jimyW|recA86UYysy8hvCac|recDbWJEwFVBo6sxn|rec7hj2slasHOz15H|recZ8neIXWaYi7k1h|recMeTqYlhb5EeusC|recrS7NYPIrqvrKLc (1)
+class_sequences,multipleRecordLinks,fldLkyHw9R4JhgxX9,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+is_handy,formula,flddw3gaT2T1yo9Vj,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+is_warmup,formula,fldDHIq2nkmH3rZz9,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+is_mulligan,formula,fldySknRFZPpjIUGY,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+is_schooling_pony,formula,fldSftr3BvqKqIjmm,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+is_add_back,formula,fld4ilWb33v7KFnsd,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+entry_sequence,number,fldOFDlMQ3FIZBMhC,value_of_truth,entry_sequence,58,0,2,no,keep as canonical PRO field,1 (51) | 5 (7)
+is_target,checkbox,fldYVItS0aJebUH7y,value_of_truth,target,58,0,1,no,keep as canonical PRO field,true (58)
+targets_last_at,singleLineText,fld4uymnfnO8Y9EdK,operational_control,operation,58,0,1,no,runner/control/audit field,2026-05-11T16:51:21.478Z (58)
+group_name_tags,multilineText,fldNBreH0T5EKlzGt,value_of_truth,group_tags,58,0,43,yes,keep as canonical PRO field,"target, amateur, junior, jumpers, Over Fences (2) | target, 1.10m, amateur, junior, II2d, jumpers, Over Fences (2)"
+group_tags_links,multipleRecordLinks,fldWSEQUpxZi6Ecq3,relationship_link,link,58,0,43,no,relationship field; not a scalar truth value,reckq8gUh5wGAMovW|rec5xAjLqlB2TMAJ8|rec66RTwzbzyoeogh|recHFU1eqtxCkOQBj|rec6TurvonyitxCGb (2) | reckq8gUh5wGAMovW|rec39spNKkqkj0r5y|rec5xAjLqlB2TMAJ8|rec66RTwzbzyoeogh|recLDJnVwnTri7i4n|recHFU1eqtxCkOQBj|rec6TurvonyitxCGb (2)
+schedule_endpoint,formula,fldEOHTxLlFSzlIdp,source_evidence,evidence,58,0,1,no,source/lookup evidence only,https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-05-10&show_id=200000061&customer_id=15 (58)
+schedule_empty_endpoint,formula,fldY699Ch4rAsgqFX,source_evidence,evidence,58,0,1,no,source/lookup evidence only,https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=00/00/00&show_id=200000061&customer_id=15 (58)
+classes_endpointv2,formula,fldbNqscYFVpsVTE5,source_evidence,evidence,51,7,51,no,source/lookup evidence only,https://broad-tooth-b8ed.gombcg.workers.dev/classes/200025174/?show_id=200000061&customer_id=15 (1) | https://broad-tooth-b8ed.gombcg.workers.dev/classes/200025154/?show_id=200000061&customer_id=15 (1)
+schedule_show_datev2,singleLineText,fldeRkrEU1se0DaYs,value_of_truth,date,58,0,1,no,keep as canonical PRO field,2026-05-10 (58)
+schedule_show_display_datev2,singleLineText,fldkeSjHZmSj00jcG,inactive_duplicate_or_lookup,date,58,0,1,no,do not use as independent truth; compare to schedule_show_datev2,05/10/26 (58)
+not_target,formula,fldpE8RKSRl4P9d74,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+enrich_priors_endpoint,formula,fldVs5qJywBfkHIm0,source_evidence,evidence,0,58,0,no,source/lookup evidence only,
+run_tag,singleLineText,fld916kUIYymytgTH,operational_control,operation,58,0,1,no,runner/control/audit field,2026-05-10 (58)
+ringName_esp,formula,fld5DeZT1mIsZrkKY,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+ring_nickname_esp,multipleLookupValues,fldhRaN980ZcM3Qv5,source_evidence,lookup,0,58,0,no,lookup evidence only,
+ring_nickname2,multipleLookupValues,fldMpqWTb5upBlLIx,source_evidence,lookup,58,0,5,no,lookup evidence only,Hunter 1 (20) | Hunter 2 (13)
+large_class_tag,formula,fldC8CHCUsKLX6pO6,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+now,formula,fldIu3BnsAIhq9vzS,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,2026-05-11T16:53:31.564Z (58)
+latestStatus,formula,fldjUV2455u42vVlW,inactive_duplicate_or_lookup,status,51,7,2,yes,do not use as independent truth; compare to status,Completed (48) | Upcoming (3)
+status2,formula,fldvXZXScgCYbmh5B,derived_display_or_filter,derived,51,7,2,no,derived from other fields; not independent truth,Completed (48) | Upcoming (3)
+latest_status,singleLineText,fld5hyJXH8iaiYvVP,inactive_duplicate_or_lookup,status,51,7,2,no,do not use as independent truth; compare to status,Completed (48) | Upcoming (3)
+___latest_estimated_start_time,singleLineText,fld6fP2dsukwUcR8B,inactive_duplicate_or_lookup,start_time,51,7,35,no,do not use as independent truth; compare to estimated_start_time,07:45:00 (3) | 09:00:13 (2)
+last_modified_time,lastModifiedTime,fldhWaXgKhO4KCxJu,operational_control,operation,58,0,3,no,runner/control/audit field,2026-05-11T16:51:22.000Z (49) | 2026-05-11T16:51:24.000Z (8)
+start_display2,formula,fldFHmiHkjfRzWPLe,derived_display_or_filter,derived,58,0,37,no,rollup/display helper; not independent truth,7:45 AM (4) | 3:00 PM (4)
+last_ingested_check,formula,fldBVOUC1bBwoEHDM,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,1 (58)
+last_updated_at,singleLineText,fldQRtMidsRwSuZkv,operational_control,operation,58,0,2,no,runner/control/audit field,2026-05-11T03:55:23.835Z (32) | 2026-05-11T03:45:22.474Z (26)
+is_gotcha,checkbox,fldQ3AEGmGa4xdCHv,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+startKey,formula,fldi98Rtyb1WKftjN,derived_display_or_filter,derived,58,0,37,no,derived from other fields; not independent truth,7:45 AM (4) | 3:00 PM (4)
+startKeyDT,formula,fldXyOllR4EjNR3qD,derived_display_or_filter,derived,58,0,42,no,derived from other fields; not independent truth,T07:45:00 (3) | T09:05:00 (2)
+startKeyDTT,formula,fldkHb66b1x0f9NsM,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""error"":""#ERROR""} (58)"
+nowKeyDTT,formula,fld1QSmj0baiDr6Fv,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,2026-05-11T12:53:31.564Z (58)
+secondsTill,formula,fldIH2XW4rrhwwuHG,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""specialValue"":""NaN""} (58)"
+30Till,formula,fldYQrsfzNLRjewcV,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+classTrigger,singleLineText,fldhCQBqEdFLu33HN,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+classActual,number,fldotmxxrhjHuQT3a,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+latestStart,formula,fldzGhUx9bHnY3w68,inactive_duplicate_or_lookup,start_time,58,0,37,yes,do not use as independent truth; compare to estimated_start_time,7:45 AM (4) | 3:00 PM (4)
+group_alert,rollup,fldZTSaUbHlHIq0nt,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,King (2) (1) | Choco (9) (1)
+nowTime,formula,fldGArT3of5i58TXr,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,12:53 PM (58)
+latestStart24,formula,fldz6rFagzSdXa3SJ,derived_display_or_filter,derived,58,0,42,no,derived from other fields; not independent truth,07:45:00 (3) | 09:05:00 (2)
+estimatedStart24,formula,fldHl6xRZYISRmeS9,derived_display_or_filter,derived,58,0,42,no,derived from other fields; not independent truth,07:45:00 (3) | 09:05:00 (2)
+minsTill,formula,fldN3nWLcQQHlh254,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""specialValue"":""NaN""} (58)"
+entry_id (from watch_trips),multipleLookupValues,fld53pgNMHuWt5hsu,source_evidence,lookup,0,58,0,no,lookup evidence only,
+entryID,formula,fldEtS3WnC5T09mOp,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+conflict,checkbox,fldG8IU9Iw8WxgXtu,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+clear,checkbox,fldnw04g67eaOQJI4,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+epoch,formula,fld6iedy3agbXS4n8,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+next_due_epoch,number,flduqJ0jQM0W4AxrR,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+latestStatus_fallback,multipleLookupValues,fldbguNzvR4TAxhoD,source_evidence,lookup,14,44,1,no,lookup evidence only,Completed (14)
+showsMode,formula,fldXHi32rE4NqwEs6,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+expectFirst,formula,fldjR9uapCnzem4NR,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""error"":""#ERROR""} (58)"
+expectSecond,formula,fldgBQXYsWv6EOpdl,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""error"":""#ERROR""} (58)"
+defaultTimeTo (from ww_rings),multipleLookupValues,fld9VJvAsEWyM38eS,source_evidence,lookup,0,58,0,no,lookup evidence only,
+ringWalk,formula,fldYocQ3eQaUuruhx,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+latestStart (from watch_trips),multipleLookupValues,fldF5PZJ9wN4f6TD0,source_evidence,lookup,15,43,14,no,lookup evidence only,12:05 PM|12:05 PM (2) | 7:45 AM (1)
+latest_estimated_start_time (from watch_trips),multipleLookupValues,fldfw1jXXYCycLAtU,source_evidence,lookup,15,43,14,no,lookup evidence only,12:05:09|12:05:09 (2) | 07:45:00 (1)
+prev_estimated_start_time,singleLineText,fldMprg80HpbujDON,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+___expected_sort,formula,fldZueP1C2ruNPRUt,derived_display_or_filter,derived,58,0,1,no,derived from other fields; not independent truth,"{""error"":""#ERROR!""} (58)"
+oog_endpoint copy,formula,fldpNheF0boSFuCrZ,source_evidence,evidence,58,0,1,no,source/lookup evidence only,https://sglapi.wellingtoninternational.com/classsignup?show_date=2026-03-06&show_id=200000053&customer_id=15 (58)
+order_of_go_endpoint,formula,fldOD89I2iAMsJExi,source_evidence,evidence,58,0,43,no,source/lookup evidence only,https://sglapi.wellingtoninternational.com/classsignup/200023881?eid=200023881&show_id=200000061&customer_id=15 (2) | https://sglapi.wellingtoninternational.com/classsignup/200023882?eid=200023882&show_id=200000061&customer_id=15 (2)
+group_alert2,rollup,fldXadwiF32P2aQrY,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,King (2) (1) | Choco (9) (1)
+created_time,createdTime,fld6mEVJU7cLQCO0F,operational_control,operation,58,0,6,no,runner/control/audit field,2026-05-09T21:27:02.000Z (13) | 2026-05-09T21:27:03.000Z (11)
+latest_estimated_start_time,singleLineText,fld2KVutbYqlEwqfe,inactive_duplicate_or_lookup,start_time,51,7,35,no,do not use as independent truth; compare to estimated_start_time,07:45:00 (3) | 09:00:13 (2)
+active_classes,multipleRecordLinks,fldDgxp0Fnv8TAFG9,inactive_blank_legacy_link,legacy_link,0,58,0,no,blank in PRO; do not use for PRO decisions,
+entry_oog,multipleRecordLinks,fldHkbJ1aGXNVJlng,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+is_target (from watch_trips),multipleLookupValues,fldWs8WCAsOWT69fb,source_evidence,lookup,14,44,1,no,lookup evidence only,true (14)
+is_classic,formula,fldPFaOthVrqUwZtO,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+mode,formula,fldMMc1rzwinFfMS4,operational_control,operation,0,58,0,no,runner/control/audit field,
+app_show_id,formula,fldaSppo7DZbjyTfI,inactive_duplicate_or_lookup,show,0,58,0,no,do not use as independent truth; compare to show_id,
+epoch (from heartbeat),multipleLookupValues,fldlQrq6YQYLP3TBa,source_evidence,evidence,0,58,0,no,source/lookup evidence only,
+shifted_to_next_day (from heartbeat),multipleLookupValues,fldEn4j5eoAf7I2Mv,source_evidence,evidence,0,58,0,no,source/lookup evidence only,
+time (from heartbeat),multipleLookupValues,fldt7kKdvfCdD4iZg,source_evidence,evidence,0,58,0,no,source/lookup evidence only,
+app_dow_raw (from heartbeat),multipleLookupValues,fldzUpitz0oFSu1vF,inactive_duplicate_or_lookup,dow_scope,0,58,0,no,do not use as independent truth; compare to app_dow_rawv2,
+dow_raw,multilineText,fld4WFYdseUr38TmZ,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+heldover_from_sunday,checkbox,fldttmMMu1SvK6dWR,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+tripsCount,count,fld1rBqdRGE0ZOgHj,inactive_duplicate_or_lookup,total,58,0,5,no,do not use as independent truth; compare to total_trips,0 (43) | 2 (7)
+status (from groups_live),multipleLookupValues,fldgRETwtRhHlEmZA,inactive_duplicate_or_lookup,status,49,9,2,no,do not use as independent truth; compare to status,Completed (47) | Upcoming (2)
+estimated_start_time (from groups_live),multipleLookupValues,fldUKQ1y6dzA5BCJ7,inactive_duplicate_or_lookup,start_time,49,9,33,no,do not use as independent truth; compare to estimated_start_time,07:45:00 (3) | 09:00:13 (2)
+since_lastModified,formula,fldLLeTmNPKPOWxIF,derived_display_or_filter,derived,58,0,2,no,derived from other fields; not independent truth,2 (57) | 0 (1)
+isA,checkbox,fldWETB2cieNiOFAM,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+publish_diffs,multipleRecordLinks,fldqNledipaVYkqoI,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+tripTarget,formula,fldAqSqwLOk0DFPTP,derived_display_or_filter,derived,15,43,2,no,derived from other fields; not independent truth,TRUE (14) | FALSE (1)
+nextTargetClassId,number,fldoNCk4w978uBDsP,derived_calculator_output,calculator,20,38,7,no,derived/calculated value; use only for display or alerts,200024865 (7) | 200025154 (4)
+focusTargetClassId,number,fldp4gyzxj9QCU1Dp,derived_calculator_output,calculator,26,32,12,no,derived/calculated value; use only for display or alerts,200024836 (7) | 200024959 (4)
+tripTargetClassId,formula,fldw8V7NOmukfzWOV,derived_display_or_filter,derived,13,45,13,no,derived from other fields; not independent truth,200025174 (1) | 200025154 (1)
+mins_per_trip (from watch_rings),multipleLookupValues,fldUBXVS2DZ8xT2OD,source_evidence,lookup,0,58,0,no,lookup evidence only,
+immediatePriorDelayMinutes,number,fldUCNgfTlmZGYg9y,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+perTrip,formula,fldfgS338A8bwnXwX,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+app_sql_date (from heartbeat),multipleLookupValues,fldHZ7ZpjD885gSkg,inactive_duplicate_or_lookup,date,0,58,0,no,do not use as independent truth; compare to schedule_show_datev2,
+app_show_id (from heartbeat),multipleLookupValues,fldoctIYTsqfLrdVX,source_evidence,evidence,0,58,0,no,source/lookup evidence only,
+40362_group_alert,rollup,fldEgjJaoq9PdekbU,derived_display_or_filter,derived,0,58,0,no,rollup/display helper; not independent truth,
+is_classic2,formula,fldTf84Qw1YbkTSlH,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+class_NOT_both,formula,fldl0M33OTYaxyaF4,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+thread_logs,multipleRecordLinks,fldMK3FMBVlCKIo2Q,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+active_alerts,multipleRecordLinks,fldB8fGVPnSpW4JAy,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+app_dows,multipleRecordLinks,fldcjrP3U4uoKTwBH,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+is_target (from watch_trips) 2,multipleLookupValues,flduAbP1DskZu09o9,source_evidence,lookup,15,43,5,no,lookup evidence only,true|true (6) | true (5)
+class_state,formula,fldoNzZ4tBOm6kmlR,derived_display_or_filter,derived,51,7,2,no,derived from other fields; not independent truth,Completed (48) | Upcoming (3)
+start_display_short,formula,fldiSHS3q1CcGHwP4,derived_display_or_filter,derived,58,0,37,no,rollup/display helper; not independent truth,7:45A (4) | 3:00P (4)
+table_name,formula,fldd9P5tejexkCAri,operational_control,operation,58,0,1,no,runner/control/audit field,watch_schedule (58)
+table_view,formula,fldXR0ylBs7tTGCWo,operational_control,operation,58,0,1,no,runner/control/audit field,TODAY (58)
+scope_key,formula,fldTIGQU7Eiz4jmCu,value_of_truth,scope,58,0,1,no,keep as canonical PRO field,200000061|2026-05-10|Sun|0 (58)
+is_current_scope,checkbox,fldzzhwcGA6AqHsHL,value_of_truth,current_scope,55,3,1,no,keep as canonical PRO field,true (55)
+scope_run_id,singleLineText,fld5fbm6YOKNYHq3i,operational_control,operation,58,0,4,no,runner/control/audit field,200000061-2026-05-10-1778471703 (29) | 200000061-2026-05-10-1778471103 (26)
+scope_status,singleSelect,fldlab7glgK7JkqRP,value_of_truth,scope_status,0,58,0,yes,keep as canonical PRO field,
+last_seen_at,date,fldyPeNZmHOeG76gu,value_of_truth,last_seen,58,0,2,no,keep as canonical PRO field,2026-05-11 (55) | 2026-05-10 (3)
+dropped_at,date,fldOwufamYFvlvJqO,operational_control,operation,3,55,1,no,runner/control/audit field,2026-05-11 (3)
+record_ID Rollup (from watch_trips),rollup,fldP7neg9QMXLC5EZ,derived_display_or_filter,derived,15,43,15,no,rollup/display helper; not independent truth,rec82ypiIZNS9f4aq (1) | recGLPCE78dnOIe3A (1)
+shifted_to_next_dayv2,checkbox,fldtLXCWgQ2oSPPnn,operational_control,operation,0,58,0,no,runner/control/audit field,
+schedule_logs2,multipleRecordLinks,fldru9d75yCiv8lRY,relationship_link,link,15,43,15,no,relationship field; not a scalar truth value,recBlKizO1VmP76Kr|reccCAgASEPBuLH8s|rechsNlR4jz5tsKXc|recgBvNIW2gRbR31P|recAh5JZ14x2Z2G3j|recacG4klVHUzpYNG|recTp2O3yyoXMbBOb|rec4mCkBJ8c6WWrrX|rec81gCdK9U722b0n|recz0MCPdbgySilOD|recadPgxvWXuM2ROn|rec6kTbekHgHaoCqs|rectgabYaqND9F2n2|recnbcDchFbh8t0em|rec5UrdZT25pABkaD|recRxPGK9KgG1QRGH|reczWXsWW9LCQGkkY|recUa4xuacGFtsYcw|recZ7gi8VTvTxiupV|recEfO2awyUf5nVIT|recbo7HKIWe6ecAz9|recL6IqlwjGbkDlEf|rec1PiFZr1yJnSIBG|recmyUiYrJnB2S7Hn|recS8HrZtWZ5jNDdt|recOPYqlx9hvOJOUT|rec39JLAhYNys59A5|rectY6ePbShFfV1WQ|rec7uBdjb5OCd1IjF|recJYJGR7D7d9rGGw|rec4YMFftTKaH6N0c|recJU0wnMZoCBCMrz|recv0ZfwwwrlnBBM2|recoi8ppVxlXyfKKJ|rec0TgLS00yEa2w3W|recz2eydHnddBi2gT|rec9gSRYDZAJJV4yl|recO96LjOxhkpBNi4|recx3SVAUVML5Rrjn|rec0xe0HZuPkjcFZJ|recfIgYAnAMFtL3nt|recIRaG5o4oHdYBjh|recOUemhZSKVltskM|rec4L6gLb69NFI8mN|recAMHrGdVQoENfjM|reckIjmKLGgk6cD8L|recrLscFkCcO7FX7d|recN0ouuJbeYwgDTn|recZGXQzKbzLn17Nf|recjt8lJwao6HDt8L|reccRAubVWAA9NZVP|recNxvtLV1zShjFnW|reclwXRj0HqwWH5H2|recSTFwkjLKqUS0Uc|recPF2vVMGSMIBlrj|recxqNPhH7HGYdKkn|rec11In19CnVEva4e|recOaiLeH3nVDEzoK|reciZzugcuyQCvNKX|rec5hkceJEyYXMwv8|recRjiGlhGnaIl65C|recefwkLZC3RQItRo|recwGfNAYpEcZpdrz|recZaSBNKNzr7IL5X|recZc2tshmZmz5UCJ|recNKZLfC8Pmtf2K3|recCy0VIdstFtqRkp|recmyqwSCL7FwYiGg|recbiZpRtZSXFVdwa|reczywvELLwrPJSUU|recMrVcfNaZFz0w3G|reccSCsVlistaZWMj|recoBf0DtMldByFRE|recvj0yuCrbA7VTIz|recmDjyu4qVs6j6Zf|recBe83dUOyjuUKFP|recIGxPk0Eh0ztAcB|recj0yNwV3etrNQax|recKEnKPolC5nkZiQ|recu2wPAWaSmV8fLg|recXn47panvd1l4vM|rec3V18cOvuv6T41k|recPVxMKo6epu3JYU|recE3fQRHBEP8wlyP|recburOPlY7ZD8GUT|recExOy4rdnNoc72d|reciE9d8JNLtg6O87|recL6KYjS3bkw4May|recX7BxAPdLhM4W9F|rec4nVQ5ceWbGMVlA|recWKT2gIphuo9hxr|recjbdvPEvnSrfuEk|recqoDeREV7JNLwkO|recGjURykphvZRy1s|recLHI0OGkUXOnaoE|reckqfgnfmMwDYnsM|recxlotGTATjDeOZ2|recgo5vrviwoA0gUl|rec1Smqxn8hDQ4MhU|reckbAV8AhI2UkR55|rec0ZYtxSjokoSZSr|recMkKFOrvRzhN9Ib|reczYKNhAG04mo8VL|recgys7eov8ab7bTl|recdW7pEZAoBZGAuU|rec6o4Yug8FJk5eLO|rechfTyPgVbHatlew|recfaiCArqvaAXR1a|recZumGuvjATNBzQ7|recvyDsxxb7hYX0tY (1) | rectqslut8wRWffov|recVhTxLHM2H0nvH2|recQ9YexUcZ8OCWbc|recCUmWHwtPLibCyH|recLUBjEGLTXx4HLq|recfV50ia0EuW6upr|recTiPylms6cvfvn2|recSnPObEBMOe2V7y|recvzONlQP2ACgM1D|recz8g8hMXQLw02r5|rec6iIe0nmBZ28lqG|rec9meqTWFd0LObQq|rec1Jgw2LkeLpTTrj|rec2HemYYloWCIugS|rec69blTXkgsgJFFs|recg4Nh66CpN7ItQo|recZyf7aiM4yBcBNH|recyFjLI5ace8BxZC|reclqQ2s0KIobaURI|recWBg9ihS39zz47I|recvNFhWgA2B8DlzA|recsgnOhH5hSzF7zU|recduCqfQUmzTvNHd|rec9MhmkdcWKEK9cc|recRJWfFHFO84LqMQ|rec74f4N6Z3aSurtU|reczq3t81TPewDEEg|recfHvmexZHqM9THN|recklqmnuPOxTeCYy|recyTScMO3fk7zX0l|recYMArKQr6OU9Tab|recubrauqbANd6CFT|recdHcwukOm7U1c7c|rec0WRd2C5cNOgZJW|recNdYKozgAsLNhgi|reczQEg7hmJTknlcd|recjSKo6eejYAZcuk|recXVi3v3Yix5tH7E|recBFZuf6E967eY8u|recLS6WMTe6GSBGJU|recvldhllHRGr6uMa|recUooF36xnkFyDbD|recf2gzWTCWPFGPUd|recW1ifbChljYR2gc|recXVOXoXUXxARsKI|rec8av6A3Uksi9qMt|recP21lSyQJvzx7Sb|recbY5aKEHn66yPcT|recqhPwrqbmB336Q8|recLSFlVsz5aIyxEG|reczADGz1GSgYdWaK|rec9LZ1sq84Ux6uYn|recpLm5b20XhMFs87|reccfG2wOriufcnQJ|rec4as2O4tJ07Tlm7|recA55bLmdnWzE3Xl|rectxm2wg33hGSAIm|reco4y40PCTAUBuZ6|recpdJDwr5ExpXU6z|recP3JImwR80xQz7a|reconMKtTqWiC0NOo|recMNmXW0DgAaEUwE|rec2fZsNNGyHd8muD|recf3kgSz5CvgIfId|recPuc8bbBxpm91wD|recFERBg5sJxg1ovn|rec5M5wnXAMHy1Tnc|recc2mqaup9Mr2hN4|recFhxaceja6wLS2t|recKHjGySXk8IT4JR|recnD384oxP8a1Bjz|recRmPU1Noc2UQCTT|recTUChnBn03O8sN6|recKZixmbBZ0Lnw6P|recWIxG5r4j9RmR8i|recPeHhHLyNrnHHc1|recDCZJe6e1In16ro|rec2wPtDW1okyvKU4|recHpEn2B8krw5Ddb|recgYe2jPxEKpz0NQ|receY5Rjkir4ZFEJ0|recPzCyy9iqhX8ZA5|rec3NbwvwDTxPScdG|recrWlB0abM0nw0Ui|recwbyL04RTZYdkyZ|reclZLUKQdDBZ827x|recKQc4mhhsuDzuFv|recdHPA4CB4CofyIp|recF9rdW3ASQ2t0qr|recJTlRa9t4AvQrGx|rec28t7q5HS7G6YLm|rec33uJPNnuQaivAo|recwM7Ykp7wEIhcow|rec2AaKuQGBPO5UTU|rec57OhtMml1p1OdK|recWHupVb9e2Em16N|recC1k6x6HKpcRRjB|rect7GaxW1W0uuLA2|recFQp5TwT64WUL6a|recHyMDcCW39bvEnN|recIZhBpudh8xLUaH|recKuxLrGwoKXWel8|recTEgbbufgrhKO4l|recHmwceNm6eBCom3|recIrIMaicNv7DDPL|recNhZU9LP9TpYJDR|recqYC5CDJqp1gCnu|rec5fo1rXAq8TW2GN|recWH2QINVfSmSDh9|recUfUnDg8IvnTnt1 (1)
+schedule_logs,multipleRecordLinks,fldb14RQQD3Me9Ytd,relationship_link,link,15,43,15,no,relationship field; not a scalar truth value,recvyDsxxb7hYX0tY (1) | recUfUnDg8IvnTnt1 (1)
+schedule_logs_rid,multipleLookupValues,fldD2ZqQhnDQ0YZtt,source_evidence,evidence,15,43,15,no,source/lookup evidence only,recvyDsxxb7hYX0tY (1) | recUfUnDg8IvnTnt1 (1)
+heartbeat_rid,multipleLookupValues,fldr5uKmuvHwotxPX,source_evidence,evidence,0,58,0,no,source/lookup evidence only,
+record_id (from watch_trips),multipleLookupValues,fldtxmsIDXUvjh8Jq,source_evidence,lookup,15,43,15,no,lookup evidence only,rec82ypiIZNS9f4aq (1) | recGLPCE78dnOIe3A (1)
+watch_trips_rid_rollups,rollup,fldFUiRlLEjvLEisK,relationship_link,link,15,43,15,no,relationship field; not a scalar truth value,rec82ypiIZNS9f4aq (1) | recGLPCE78dnOIe3A (1)
+schedule_show_display_date_dayv2,singleLineText,flduTsBbpK0QHu3AS,inactive_duplicate_or_lookup,dow_scope,58,0,1,no,do not use as independent truth; compare to app_dow_rawv2,"Sunday, May 10, 2026 (58)"
+shows_rid,multipleLookupValues,fld7FXZQG2DbH7RyI,source_evidence,evidence,58,0,1,no,source/lookup evidence only,recqX2PPTCVTx329X (58)
+completed_trips,number,fldTuQ52DUrkPOUrZ,value_of_truth,completed,51,7,24,no,keep as canonical PRO field,25 (4) | 8 (4)
+group_tags copy,multipleRecordLinks,fldvixBHkrb5ijMfF,relationship_link,link,0,58,0,no,relationship field; not a scalar truth value,
+is_usef,formula,fldDp9NqagVIybedG,derived_display_or_filter,derived,2,56,1,no,derived from other fields; not independent truth,true (2)
+class_completed10,formula,fldKGTdjwKzqHi2UJ,derived_display_or_filter,derived,0,58,0,no,derived from other fields; not independent truth,
+prior_class_group_status,singleLineText,fldIQwpKAjQxGxYGg,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+prior_class_group_trips_text,singleLineText,fld7ZfW5n5xePXskq,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+prior_class_group_updated_at,number,fldyvulapVrb5rANV,blank_in_pro,blank,0,58,0,no,not populated in current PRO rows,
+alert-title,formula,fld7O79SuNQUwgsTd,derived_display_or_filter,derived,58,0,1,no,rollup/display helper; not independent truth,*** Upcoming *** *** 2nd Reminder *** (58)
+ring_name,formula,fldih5c6peOoDnIVJ,derived_display_or_filter,derived,58,0,5,no,derived from other fields; not independent truth,Hunter 1 (20) | Hunter 2 (13)
+is_firstUp,formula,fldJ1PfWnMYtwQ2B2,derived_display_or_filter,derived,9,49,1,no,derived from other fields; not independent truth,true (9)
