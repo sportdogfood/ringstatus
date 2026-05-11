@@ -43,6 +43,8 @@ Invoke-RunnerPipeline `
         'lib/heartbeat_mode.js',
         'lib/default_show_date_guard.js',
         'lib/watch_schedule_scope_relink.js',
+        'lib/watch_trips_scope_relink.js',
+        'lib/watch_trips_scope.js',
         'heartbeat_slot_orchestrator.js'
     ) `
     -Steps $steps

@@ -34,6 +34,9 @@ const {
 const {
   classifyWatchScheduleHeartbeatRelink,
 } = require("./lib/watch_schedule_scope_relink");
+const {
+  classifyWatchTripsHeartbeatRelink,
+} = require("./lib/watch_trips_scope_relink");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -1170,7 +1173,22 @@ function currentHeartbeatLinkIds(v) {
 }
 
 function relinkFieldsForTable(tableName) {
-  if (tableName !== TABLE_WATCH_SCHEDULE) return [FIELD_LINK_HEARTBEAT];
+  if (tableName !== TABLE_WATCH_SCHEDULE && tableName !== TABLE_WATCH_TRIPS) return [FIELD_LINK_HEARTBEAT];
+  if (tableName === TABLE_WATCH_TRIPS) {
+    return [
+      FIELD_LINK_HEARTBEAT,
+      "show_id",
+      "app_show_idv2",
+      "app_sql_datev2",
+      "app_dow_rawv2",
+      "schedule_show_datev2",
+      "schedule_show_datev2 (from watch_schedule)",
+      "scheduled_date",
+      "show_date",
+      "app_sql_date (from heartbeat)",
+      "app_dow_raw (from heartbeat)",
+    ];
+  }
   return [
     FIELD_LINK_HEARTBEAT,
     "show_id",
@@ -1186,10 +1204,13 @@ function relinkFieldsForTable(tableName) {
 }
 
 function classifyRelinkForTable(tableName, fields, heartbeatId, appCtx) {
-  if (tableName !== TABLE_WATCH_SCHEDULE) {
+  if (tableName !== TABLE_WATCH_SCHEDULE && tableName !== TABLE_WATCH_TRIPS) {
     const current = currentHeartbeatLinkIds(fields?.[FIELD_LINK_HEARTBEAT]);
     const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
     return { action: alreadyCorrect ? "keep" : "link", current };
+  }
+  if (tableName === TABLE_WATCH_TRIPS) {
+    return classifyWatchTripsHeartbeatRelink(fields, appCtx, heartbeatId);
   }
   return classifyWatchScheduleHeartbeatRelink(fields, appCtx, heartbeatId);
 }

@@ -1,6 +1,6 @@
-# Watch Schedule Field Audit - 2026-05-11
+# Watch Schedule And Trips Field Audit - 2026-05-11
 
-This audit documents the date/show fields currently visible on `watch_schedule`.
+This audit documents the date/show fields currently visible on `watch_schedule` and `watch_trips`.
 
 ## Field Ownership
 
@@ -12,6 +12,9 @@ Important naming rule: the same concept name in `heartbeat` and `watch_schedule`
 | `watch_schedule` | `show_id`, `show_date`, `schedule_show_datev2` | Row-owned SGL schedule identity. These fields answer: what show/date does this schedule row represent? |
 | `watch_schedule` | `app_show_idv2`, `app_sql_datev2`, `app_dow_rawv2` | Row scope snapshot from the schedule lane when the row was created/refreshed. These fields should usually match the row-owned SGL schedule identity. |
 | `watch_schedule` | `app_sql_date (from heartbeat)`, `app_dow_raw (from heartbeat)` | Lookup values from the linked heartbeat only. These are only meaningful when the row is linked to a heartbeat whose scope matches the row. |
+| `watch_trips` | `show_id`, `schedule_show_datev2`, `scheduled_date`, `show_date` | Row-owned trip/schedule identity. These fields answer what show/date the trip row represents. |
+| `watch_trips` | `app_show_idv2`, `app_sql_datev2`, `app_dow_rawv2` | Row scope snapshot from the trips lane when the row was created/refreshed. |
+| `watch_trips` | `app_sql_date (from heartbeat)`, `app_dow_raw (from heartbeat)` | Lookup values from the linked heartbeat only. These are only meaningful when the row is linked to a heartbeat whose scope matches the row. |
 
 | Field | Owner | Definition | Current correction |
 | --- | --- | --- | --- |
@@ -57,7 +60,7 @@ For row filtering, use row-owned fields:
 
 Do not filter historical/current schedule rows by `app_sql_date (from heartbeat)` unless the row is known to be linked to the current heartbeat scope.
 
-## 2026-05-11 Cleanup Result
+## 2026-05-11 `watch_schedule` Cleanup Result
 
 After the scoped relink fix was deployed and the heartbeat lane was run:
 
@@ -69,3 +72,20 @@ cleared mismatched heartbeat links: 87
 ```
 
 The 87 cleared rows kept their row-owned May 10 schedule fields. Only the misleading heartbeat lookup link was removed.
+
+## 2026-05-11 `watch_trips` Cleanup Rule
+
+The same relink rule applies to `watch_trips`:
+
+- link to the latest heartbeat only when `watch_trips` row scope matches heartbeat `app_show_id/app_sql_date`
+- clear an existing heartbeat link when the row's schedule date differs from the linked heartbeat lookup date
+- preserve row-owned trip fields such as `show_id`, `schedule_show_datev2`, `scheduled_date`, `show_date`, `app_show_idv2`, and `app_sql_datev2`
+
+Cleanup result after deployment:
+
+```text
+watch_trips heartbeat view rows: 2
+cleared mismatched heartbeat links: 2
+linked rows after cleanup: 0
+linked lookup date mismatches: 0
+```
