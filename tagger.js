@@ -1330,7 +1330,6 @@ async function fetchShowsModeControl(appShowId) {
       FIELD_SHOW_ID,
       FIELD_APP_SHOW_ID,
       FIELD_MODE_CONTROL,
-      FIELD_MODE_CONTROL_REASON,
       FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE,
     ],
   });
@@ -1352,7 +1351,7 @@ async function fetchShowsModeControl(appShowId) {
     record_id: match?.id || null,
     matched_count: matches.length,
     mode_control: modeControl,
-    mode_control_reason: strOrNull(fields[FIELD_MODE_CONTROL_REASON]),
+    mode_control_reason: null,
     is_default_show_manual_override: boolValue(fields[FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE]),
   };
 }
