@@ -31,6 +31,9 @@ const {
   modeForDateContext,
   normalizeControlMode,
 } = require("./lib/default_show_date_guard");
+const {
+  classifyWatchScheduleHeartbeatRelink,
+} = require("./lib/watch_schedule_scope_relink");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -1166,20 +1169,63 @@ function currentHeartbeatLinkIds(v) {
   return v.map(x => typeof x === "string" ? x : x?.id).filter(Boolean);
 }
 
-async function relinkHeartbeatView(tableName, heartbeatId) {
+function relinkFieldsForTable(tableName) {
+  if (tableName !== TABLE_WATCH_SCHEDULE) return [FIELD_LINK_HEARTBEAT];
+  return [
+    FIELD_LINK_HEARTBEAT,
+    "show_id",
+    "app_show_idv2",
+    "app_sql_datev2",
+    "app_dow_rawv2",
+    "schedule_show_datev2",
+    "scheduled_date",
+    "show_date",
+    "app_sql_date (from heartbeat)",
+    "app_dow_raw (from heartbeat)",
+  ];
+}
+
+function classifyRelinkForTable(tableName, fields, heartbeatId, appCtx) {
+  if (tableName !== TABLE_WATCH_SCHEDULE) {
+    const current = currentHeartbeatLinkIds(fields?.[FIELD_LINK_HEARTBEAT]);
+    const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
+    return { action: alreadyCorrect ? "keep" : "link", current };
+  }
+  return classifyWatchScheduleHeartbeatRelink(fields, appCtx, heartbeatId);
+}
+
+async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
   const rows = await airtableListAll({
     table: tableName,
     view: VIEW_HEARTBEAT,
-    fields: [FIELD_LINK_HEARTBEAT]
+    fields: relinkFieldsForTable(tableName)
   });
 
   const updates = [];
+  let kept = 0;
+  let skippedScopeMismatch = 0;
+  let clearedScopeMismatch = 0;
 
   for (const r of rows) {
-    const current = currentHeartbeatLinkIds(r.fields?.[FIELD_LINK_HEARTBEAT]);
-    const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
-    if (alreadyCorrect) continue;
-
+    const decision = classifyRelinkForTable(tableName, r.fields || {}, heartbeatId, appCtx);
+    if (decision.action === "keep") {
+      kept++;
+      continue;
+    }
+    if (decision.action === "skip") {
+      skippedScopeMismatch++;
+      continue;
+    }
+    if (decision.action === "clear") {
+      clearedScopeMismatch++;
+      updates.push({
+        id: r.id,
+        fields: {
+          [FIELD_LINK_HEARTBEAT]: []
+        }
+      });
+      continue;
+    }
     updates.push({
       id: r.id,
       fields: {
@@ -1195,7 +1241,10 @@ async function relinkHeartbeatView(tableName, heartbeatId) {
   const summary = {
     table: tableName,
     found_in_view: rows.length,
-    relinked: updates.length
+    relinked: updates.length - clearedScopeMismatch,
+    cleared_scope_mismatch: clearedScopeMismatch,
+    skipped_scope_mismatch: skippedScopeMismatch,
+    kept
   };
 
   if (LOG_RELINK_SUMMARY && updates.length) {
@@ -1537,7 +1586,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       TABLE_WATCH_RINGS
     ]) {
       try {
-        results.push(await relinkHeartbeatView(tableName, heartbeatRecord.id));
+        results.push(await relinkHeartbeatView(tableName, heartbeatRecord.id, appCtx));
       } catch (e) {
         const msg = String(e?.message || e).slice(0, 240);
         warnings.push(`${tableName}: ${msg}`);

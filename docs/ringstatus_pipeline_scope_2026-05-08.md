@@ -1,6 +1,6 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.11.1  
+**Version:** v2026.05.11.2  
 **Date:** 2026-05-11  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
@@ -28,6 +28,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 | Version | Date | Change |
 | --- | --- | --- |
 | v2026.05.11.1 | 2026-05-11 | Added heartbeat/show manual controls: `shows.mode_control` is the owner-facing lever for `AUTO`/blank, `DAY`, `NIGHT`, `OVERNIGHT`, `IDLE`, and `OFF`; `shows.is_default_show_manual_override` confirms a suspicious default show date; heartbeat writes `clock_mode`, effective `mode`, `mode_source`, `mode_reason`, `default_show_date_status`, and `default_show_date_reason`. Unconfirmed default show-date guard failures move the effective mode to `OFF` and the slot orchestrator blocks heavy lanes. |
+| v2026.05.11.2 | 2026-05-11 | Audited `watch_schedule` date/show fields. `heartbeat.show_id`/`app_show_id`/`app_sql_date`/`app_dow_raw` are current app-control scope; `watch_schedule.show_id`/`show_date`/`schedule_show_datev2` are row-owned schedule identity; `watch_schedule.app_show_idv2`/`app_sql_datev2`/`app_dow_rawv2` are row scope snapshots. `tagger.js` must not globally rebind `watch_schedule.heartbeat` to the newest heartbeat unless the row's stored show/date scope matches the heartbeat app scope. See `docs/watch_schedule_field_audit_2026-05-11.md`. |
 | v2026.05.09.9 | 2026-05-09 | Added `automation_errs` audit rows for every `trips_tagger.js` `getLiveClassData` ping attempt. Successes write `error_type = liveclass_payload_ok` with endpoint/path/body length/payload class/row count evidence and `resolved = true`; failures write the liveclass failure type with `resolved = false`. |
 | v2026.05.09.8 | 2026-05-09 | Added `manual_time_override` as the row-level stop switch for time writes on both `watch_schedule` and `watch_trips`: when checked, schedule/trip writers must omit time fields from future patches for that row so manual corrections are not repopulated by the next cycle. Airtable metadata confirms the real field uses the correct `override` spelling; code may accept `manual_time_overide` only as a defensive alias. |
 | v2026.05.09.7 | 2026-05-09 | Added the shifted NIGHT pre-live bad-time guard for `estimated_start_time`: values outside `07:00:00` through `19:00:00` from schedule/manual/HTML sources are suspicious, so existing nonblank Airtable corrections must be preserved and new suspicious values must be omitted from the patch instead of overwriting rows. This follows the prior Airtable `check gate` window without writing `"check gate"` into `estimated_start_time`, and remains narrow so it does not block same-day live `groups_live` enrichment. |
