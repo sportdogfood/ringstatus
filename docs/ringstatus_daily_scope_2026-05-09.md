@@ -46,14 +46,14 @@ schedule_short = ring_number|class_number|class_sequence
 Trip keys:
 
 ```text
-trips_key = sid|sql_date|ring_number|class_number|class_sequence|pid|entry_number|entry_sequence
-trips_short_key = class_number|class_sequence|pid|entry_number|entry_sequence
+trips_key = sid|sql_date|ring_number|class_number|class_sequence|pid|entry_number
+trips_short_key = class_number|class_sequence|pid|entry_number
 ```
 
 Full nesting key:
 
 ```text
-full_nesting_key = sid|sql_date|ring_number|time|cgid|class_number|class_sequence|pid|entry_number|entry_sequence
+full_nesting_key = sid|sql_date|ring_number|time|cgid|class_number|class_sequence|pid|entry_number
 ```
 
 `time` and `cgid` are important for nesting, diagnostics, endpoint construction, and review, but they are intentionally not part of `schedule_key` or `trips_key`. The shared parent prefix is:

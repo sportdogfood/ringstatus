@@ -399,25 +399,25 @@ Example:
 Writable operational key:
 
 ```text
-trips_key = sid|sql_date|ring_number|class_number|class_sequence|pid|entry_number|entry_sequence
+trips_key = sid|sql_date|ring_number|class_number|class_sequence|pid|entry_number
 ```
 
 Example:
 
 ```text
-200000061|2026-05-10|3|723|1|8778|2807|1
+200000061|2026-05-10|3|723|1|8778|2807
 ```
 
 Short trips key for display/filtering:
 
 ```text
-trips_short_key = class_number|class_sequence|pid|entry_number|entry_sequence
+trips_short_key = class_number|class_sequence|pid|entry_number
 ```
 
 Example:
 
 ```text
-723|1|8778|2807|1
+723|1|8778|2807
 ```
 
 ### Full Nesting Key
@@ -425,13 +425,13 @@ Example:
 The full nesting key is for hierarchy, diagnostics, display grouping, and richer nested payload construction. It includes `time` and `cgid` because those values are important context when nesting or reviewing data, but neither `time` nor `cgid` belongs in the operational match keys.
 
 ```text
-full_nesting_key = sid|sql_date|ring_number|time|cgid|class_number|class_sequence|pid|entry_number|entry_sequence
+full_nesting_key = sid|sql_date|ring_number|time|cgid|class_number|class_sequence|pid|entry_number
 ```
 
 Example:
 
 ```text
-200000061|2026-05-10|3|08:30:00|200023880|723|1|8778|2807|1
+200000061|2026-05-10|3|08:30:00|200023880|723|1|8778|2807
 ```
 
 Rules:
@@ -440,7 +440,6 @@ Rules:
 - `schedule_key` is the shared parent prefix for `trips_key`.
 - `watch_trips` should match or nest under `watch_schedule` by the first five segments of `trips_key`: `sid|sql_date|ring_number|class_number|class_sequence`.
 - `pid` acts as the tenant/person/trainer scope for trip identity.
-- `entry_sequence` is required in `trips_key` and `trips_short_key` so repeated entry/class combinations do not collapse.
 - `cgid` and `time` should be stored and used for nesting, diagnostics, live endpoint construction, and tie-breaking where useful, but they are not required for `schedule_key` or `trips_key`.
 - `class_id`, `class_group_id`/`cgid`, and `entryxclasses_uuid` remain enrichment/evidence identifiers, not primary operational keys.
 - `entryxclasses_uuid` should contain a real SGL value only.
