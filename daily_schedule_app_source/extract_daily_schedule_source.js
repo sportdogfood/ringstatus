@@ -65,6 +65,13 @@ function makeScheduleShort(parts) {
   return joinKey([parts.ring_number, parts.class_number, parts.class_sequence]);
 }
 
+function makeScheduleInstanceKey(parts) {
+  const base = makeScheduleKey(parts);
+  if (!isBlank(parts.cgid)) return `${base}|cgid:${String(parts.cgid).trim()}`;
+  if (!isBlank(parts.class_groupxclasses_id)) return `${base}|cgxc:${String(parts.class_groupxclasses_id).trim()}`;
+  return `${base}|record:${String(parts.record_id || "").trim()}`;
+}
+
 function makeTripsKey(parts) {
   return joinKey([
     parts.sid,
@@ -79,6 +86,12 @@ function makeTripsKey(parts) {
 
 function makeTripsShortKey(parts) {
   return joinKey([parts.class_number, parts.class_sequence, parts.pid, parts.entry_number]);
+}
+
+function makeTripInstanceKey(parts) {
+  const base = makeTripsKey(parts);
+  if (!isBlank(parts.trip_tie_breaker)) return `${base}|${String(parts.trip_tie_breaker).trim()}`;
+  return `${base}|record:${String(parts.record_id || "").trim()}`;
 }
 
 function makeFullNestingKey(parts) {
@@ -108,19 +121,38 @@ function scheduleIdentity(row) {
   const sid = firstValue(f.sid, f.show_id, f.app_show_idv2);
   const sqlDate = firstValue(f.schedule_show_datev2, f.app_sql_datev2, f.show_date);
   const classSequence = firstValue(f.class_group_sequence, f.class_sequence, f.entry_sequence);
+  const explicitTieBreaker = firstValue(f.entry_sequence);
+  const classGroupTieBreaker = firstValue(f.class_group_id);
+  const classGroupXClassesTieBreaker = firstValue(f.class_groupxclasses_id);
+  const fallbackTieBreaker = `fallback:${firstValue(f.estimated_start_time, f.time_sort, f.class_id, f.class_groupxclasses_id) || "no-time"}:${rowId(row) || "no-record-id"}`;
   const parts = {
     sid,
     sql_date: sqlDate,
     ring_number: firstValue(f.ring_number),
     time: firstValue(f.estimated_start_time),
     cgid: firstValue(f.class_group_id),
+    class_groupxclasses_id: firstValue(f.class_groupxclasses_id),
     class_number: firstValue(f.class_number),
     class_sequence: classSequence,
-    schedule_tie_breaker: firstValue(f.entry_sequence),
+    record_id: rowId(row),
+    schedule_tie_breaker: firstValue(
+      explicitTieBreaker,
+      isBlank(classGroupTieBreaker) ? null : `class_group_id:${classGroupTieBreaker}`,
+      isBlank(classGroupXClassesTieBreaker) ? null : `class_groupxclasses_id:${classGroupXClassesTieBreaker}`,
+      fallbackTieBreaker
+    ),
+    schedule_tie_breaker_source: !isBlank(explicitTieBreaker)
+      ? "entry_sequence"
+      : !isBlank(classGroupTieBreaker)
+        ? "class_group_id"
+        : !isBlank(classGroupXClassesTieBreaker)
+          ? "class_groupxclasses_id"
+          : "fallback:estimated_start_time_record_id",
   };
   return {
     ...parts,
     schedule_key: makeScheduleKey(parts),
+    schedule_instance_key: makeScheduleInstanceKey(parts),
     schedule_short: makeScheduleShort(parts),
   };
 }
@@ -130,6 +162,23 @@ function tripIdentity(row) {
   const sid = firstValue(f.sid, f.show_id, f.app_show_idv2);
   const sqlDate = firstValue(f.schedule_show_datev2, f.scheduled_date, f.app_sql_datev2, f.show_date);
   const classSequence = firstValue(f.class_group_sequence, f.class_sequence, f.entry_sequence);
+  const explicitTieBreaker = firstValue(f.entry_sequence);
+  const hEidTieBreaker = firstValue(f.h_eid);
+  const entryIdTieBreaker = firstValue(f.entry_id);
+  const recordTieBreaker = rowId(row);
+  const tripTieBreaker = firstValue(
+    isBlank(explicitTieBreaker) ? null : `entry_sequence:${explicitTieBreaker}`,
+    isBlank(hEidTieBreaker) ? null : `h_eid:${hEidTieBreaker}`,
+    isBlank(entryIdTieBreaker) ? null : `entry_id:${entryIdTieBreaker}`,
+    isBlank(recordTieBreaker) ? null : `record:${recordTieBreaker}`
+  );
+  const tripTieBreakerSource = !isBlank(explicitTieBreaker)
+    ? "entry_sequence"
+    : !isBlank(hEidTieBreaker)
+      ? "h_eid"
+      : !isBlank(entryIdTieBreaker)
+        ? "entry_id"
+        : "record_id";
   const parts = {
     sid,
     sql_date: sqlDate,
@@ -141,13 +190,16 @@ function tripIdentity(row) {
     pid: firstValue(f.pid),
     entry_number: firstValue(f.entry_number),
     schedule_tie_breaker: firstValue(f.entry_sequence),
-    trip_tie_breaker: firstValue(f.entry_sequence),
+    trip_tie_breaker: tripTieBreaker,
+    trip_tie_breaker_source: tripTieBreakerSource,
+    record_id: rowId(row),
   };
   return {
     ...parts,
     schedule_key: makeScheduleKey(parts),
     schedule_short: makeScheduleShort(parts),
     trips_key: makeTripsKey(parts),
+    trip_instance_key: makeTripInstanceKey(parts),
     trips_short_key: makeTripsShortKey(parts),
     full_nesting_key: makeFullNestingKey(parts),
   };
@@ -282,8 +334,10 @@ function buildSourcePayload(input) {
     });
     pushLane("groups", `group:${id}`, {
       schedule_key: identity.schedule_key,
+      schedule_instance_key: identity.schedule_instance_key,
       schedule_short: identity.schedule_short,
       schedule_tie_breaker: identity.schedule_tie_breaker,
+      schedule_tie_breaker_source: identity.schedule_tie_breaker_source,
       schedule_record_id: id,
       class_group_id: firstValue(f.class_group_id),
       class_group_sequence: firstValue(f.class_group_sequence),
@@ -297,7 +351,9 @@ function buildSourcePayload(input) {
     pushLane("class_start", `class_start:${id}`, {
       schedule_record_id: id,
       schedule_key: identity.schedule_key,
+      schedule_instance_key: identity.schedule_instance_key,
       schedule_tie_breaker: identity.schedule_tie_breaker,
+      schedule_tie_breaker_source: identity.schedule_tie_breaker_source,
       estimated_start_time: firstValue(f.estimated_start_time),
       estimated_end_time: firstValue(f.estimated_end_time),
       manual_time_override: firstValue(f.manual_time_override),
@@ -312,7 +368,9 @@ function buildSourcePayload(input) {
     pushLane("classes", `class:${id}`, {
       schedule_record_id: id,
       schedule_key: identity.schedule_key,
+      schedule_instance_key: identity.schedule_instance_key,
       schedule_tie_breaker: identity.schedule_tie_breaker,
+      schedule_tie_breaker_source: identity.schedule_tie_breaker_source,
       class_id: firstValue(f.class_id),
       class_number: firstValue(f.class_number),
       class_sequence: identity.class_sequence,
@@ -341,15 +399,24 @@ function buildSourcePayload(input) {
         .map((item) => item.identity.schedule_tie_breaker)
         .filter((value) => !isBlank(value));
       const missingTieBreakerRecordIds = rows
-        .filter((item) => isBlank(item.identity.schedule_tie_breaker))
+        .filter((item) => item.identity.schedule_tie_breaker_source !== "entry_sequence")
         .map((item) => rowId(item.row));
+      const fallbackTieBreakerRecordIds = rows
+        .filter((item) => item.identity.schedule_tie_breaker_source !== "entry_sequence")
+        .map((item) => rowId(item.row));
+      const tieBreakerUnique = tieBreakers.length === count && new Set(tieBreakers.map(String)).size === count;
       return {
         key,
         count,
         tie_breaker_field: "entry_sequence",
+        fallback_tie_breaker: "class_group_id, class_groupxclasses_id, then estimated_start_time + record_id",
         tie_breakers: tieBreakers,
         missing_tie_breaker_record_ids: missingTieBreakerRecordIds,
-        tie_breaker_unique: tieBreakers.length === count && new Set(tieBreakers.map(String)).size === count,
+        fallback_tie_breaker_record_ids: fallbackTieBreakerRecordIds,
+        tie_breaker_unique: tieBreakerUnique,
+        severity: tieBreakerUnique ? "warning" : "error",
+        workflow_blocking: false,
+        resolution_strategy: "schedule_key groups rows; schedule_instance_key separates class-group instances",
       };
     });
 
@@ -367,7 +434,7 @@ function buildSourcePayload(input) {
   for (const row of scheduleRows) {
     const id = rowId(row);
     const identity = scheduleIdentity(row);
-    indexes.by_airtable_record_id[id] = { lane: "class_start", schedule_key: identity.schedule_key };
+    indexes.by_airtable_record_id[id] = { lane: "class_start", schedule_key: identity.schedule_key, schedule_instance_key: identity.schedule_instance_key };
     addUnique(indexes.by_schedule_key, identity.schedule_key, id);
   }
 
@@ -396,7 +463,7 @@ function buildSourcePayload(input) {
     }
 
     tripsKeyCounts[identity.trips_key] = (tripsKeyCounts[identity.trips_key] || 0) + 1;
-    indexes.by_airtable_record_id[id] = { lane: "trips", trips_key: identity.trips_key, schedule_key: identity.schedule_key };
+    indexes.by_airtable_record_id[id] = { lane: "trips", trips_key: identity.trips_key, trip_instance_key: identity.trip_instance_key, schedule_key: identity.schedule_key };
     if (!isBlank(identity.trips_key)) indexes.by_trips_key[identity.trips_key] = id;
     addUnique(indexes.children_by_parent_key, identity.schedule_key, identity.trips_key);
     if (latestLog) {
@@ -423,12 +490,14 @@ function buildSourcePayload(input) {
 
     pushLane("entries", `entry:${identity.trips_key}`, {
       trips_key: identity.trips_key,
+      trip_instance_key: identity.trip_instance_key,
       trips_short_key: identity.trips_short_key,
       schedule_key: identity.schedule_key,
       pid: identity.pid,
       entry_number: firstValue(f.entry_number),
-      entry_sequence: identity.trip_tie_breaker,
+      entry_sequence: firstValue(f.entry_sequence),
       trip_tie_breaker: identity.trip_tie_breaker,
+      trip_tie_breaker_source: identity.trip_tie_breaker_source,
       entry_id: firstValue(f.entry_id),
       h_eid: firstValue(f.h_eid),
     });
@@ -436,12 +505,14 @@ function buildSourcePayload(input) {
       trip_record_id: id,
       schedule_record_id: parent ? rowId(parent.row) : null,
       trips_key: identity.trips_key,
+      trip_instance_key: identity.trip_instance_key,
       schedule_key: identity.schedule_key,
       full_nesting_key: identity.full_nesting_key,
       pid: identity.pid,
       entry_number: identity.entry_number,
-      entry_sequence: identity.trip_tie_breaker,
+      entry_sequence: firstValue(f.entry_sequence),
       trip_tie_breaker: identity.trip_tie_breaker,
+      trip_tie_breaker_source: identity.trip_tie_breaker_source,
       estimated_start_time: firstValue(f.estimated_start_time),
       estimated_go_time: firstValue(f.estimated_go_time),
       actual_order: firstValue(f.actual_order),
@@ -458,11 +529,13 @@ function buildSourcePayload(input) {
       trip_record_id: id,
       schedule_record_id: parent ? rowId(parent.row) : null,
       trips_key: identity.trips_key,
+      trip_instance_key: identity.trip_instance_key,
       schedule_key: identity.schedule_key,
       pid: identity.pid,
       entry_number: identity.entry_number,
-      entry_sequence: identity.trip_tie_breaker,
+      entry_sequence: firstValue(f.entry_sequence),
       trip_tie_breaker: identity.trip_tie_breaker,
+      trip_tie_breaker_source: identity.trip_tie_breaker_source,
       status: firstValue(f.status),
       completed_trips: firstValue(f.completed_trips),
       total_trips: firstValue(f.total_trips),
@@ -501,9 +574,13 @@ function buildSourcePayload(input) {
         key,
         count,
         tie_breaker_field: "entry_sequence",
+        fallback_tie_breaker: "h_eid, entry_id, then record_id",
         tie_breakers: tieBreakers,
         missing_tie_breaker_record_ids: missingTieBreakerRecordIds,
         tie_breaker_unique: tieBreakers.length === count && new Set(tieBreakers.map(String)).size === count,
+        severity: tieBreakers.length === count && new Set(tieBreakers.map(String)).size === count ? "warning" : "error",
+        workflow_blocking: false,
+        resolution_strategy: "trips_key identifies trip rows; trip_instance_key separates imperfect row instances",
       };
     });
 

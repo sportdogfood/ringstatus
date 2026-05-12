@@ -21,8 +21,10 @@
   "key_scheme": {
     "full_nesting_key": "sid|sql_date|ring_number|time|cgid|class_number|class_sequence|pid|entry_number",
     "schedule_key": "sid|sql_date|ring_number|class_number|class_sequence",
+    "schedule_instance_key": "schedule_key|cgid:{class_group_id}; fallback cgxc:{class_groupxclasses_id}; fallback record:{record_id}",
     "schedule_short": "ring_number|class_number|class_sequence",
     "trips_key": "sid|sql_date|ring_number|class_number|class_sequence|pid|entry_number",
+    "trip_instance_key": "trips_key|entry_sequence:{entry_sequence}; fallback h_eid:{h_eid}; fallback entry_id:{entry_id}; fallback record:{record_id}",
     "trips_short_key": "class_number|class_sequence|pid|entry_number"
   },
   "tables": {

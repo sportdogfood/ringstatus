@@ -65,7 +65,10 @@
       {
         "id": "group:recsched_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
+        "schedule_instance_key": "200000061|2026-05-10|1|101|2|cgid:987",
         "schedule_short": "1|101|2",
+        "schedule_tie_breaker": "class_group_id:987",
+        "schedule_tie_breaker_source": "class_group_id",
         "schedule_record_id": "recsched_sample",
         "class_group_id": 987,
         "class_group_sequence": 2,
@@ -82,6 +85,9 @@
         "id": "class_start:recsched_sample",
         "schedule_record_id": "recsched_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
+        "schedule_instance_key": "200000061|2026-05-10|1|101|2|cgid:987",
+        "schedule_tie_breaker": "class_group_id:987",
+        "schedule_tie_breaker_source": "class_group_id",
         "estimated_start_time": "09:05:00",
         "latest_schedule_log": {}
       }
@@ -91,6 +97,9 @@
         "id": "class:recsched_sample",
         "schedule_record_id": "recsched_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
+        "schedule_instance_key": "200000061|2026-05-10|1|101|2|cgid:987",
+        "schedule_tie_breaker": "class_group_id:987",
+        "schedule_tie_breaker_source": "class_group_id",
         "class_id": 67890,
         "class_number": 101,
         "class_sequence": 2,
@@ -103,10 +112,13 @@
       {
         "id": "entry:200000061|2026-05-10|1|101|2|555|44",
         "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "trip_instance_key": "200000061|2026-05-10|1|101|2|555|44|record:rectrip_sample",
         "trips_short_key": "101|2|555|44",
         "schedule_key": "200000061|2026-05-10|1|101|2",
+        "pid": 555,
         "entry_number": 44,
-        "pid": 555
+        "trip_tie_breaker": "record:rectrip_sample",
+        "trip_tie_breaker_source": "record_id"
       }
     ],
     "trip_go": [
@@ -115,8 +127,13 @@
         "trip_record_id": "rectrip_sample",
         "schedule_record_id": "recsched_sample",
         "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "trip_instance_key": "200000061|2026-05-10|1|101|2|555|44|record:rectrip_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
         "full_nesting_key": "200000061|2026-05-10|1|09:20:00|987|101|2|555|44",
+        "pid": 555,
+        "entry_number": 44,
+        "trip_tie_breaker": "record:rectrip_sample",
+        "trip_tie_breaker_source": "record_id",
         "estimated_start_time": "09:05:00",
         "estimated_go_time": "09:20:00",
         "actual_order": 5,
@@ -144,7 +161,12 @@
         "trip_record_id": "rectrip_sample",
         "schedule_record_id": "recsched_sample",
         "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "trip_instance_key": "200000061|2026-05-10|1|101|2|555|44|record:rectrip_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
+        "pid": 555,
+        "entry_number": 44,
+        "trip_tie_breaker": "record:rectrip_sample",
+        "trip_tie_breaker_source": "record_id",
         "status": "in_progress",
         "completed_trips": 4,
         "total_trips": 20
@@ -211,11 +233,13 @@
     "by_airtable_record_id": {
       "recsched_sample": {
         "lane": "class_start",
-        "schedule_key": "200000061|2026-05-10|1|101|2"
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "schedule_instance_key": "200000061|2026-05-10|1|101|2|cgid:987"
       },
       "rectrip_sample": {
         "lane": "trips",
         "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "trip_instance_key": "200000061|2026-05-10|1|101|2|555|44|record:rectrip_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2"
       }
     },

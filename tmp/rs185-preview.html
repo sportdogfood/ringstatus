@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RS185 Responsive Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f2f2f2;
+      font-family: Arial, sans-serif;
+      color: #111;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .preview {
+      overflow: auto;
+      border: 1px solid #bbb;
+      background: #fff;
+    }
+
+    .preview__label {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 8px 10px;
+      background: #111;
+      color: #fff;
+      font: 600 13px/1.2 Arial, sans-serif;
+    }
+
+    .stage {
+      transform-origin: top left;
+      border-top: 2px solid #1473e6;
+      border-bottom: 2px solid #1473e6;
+    }
+
+    .stage--1200 {
+      width: 1200px;
+      height: 760px;
+    }
+
+    .stage--1024 {
+      width: 1024px;
+      height: 680px;
+    }
+
+    .stage--768 {
+      width: 768px;
+      height: 720px;
+    }
+
+    .stage--390 {
+      width: 390px;
+      height: 844px;
+    }
+
+    .rs185,
+    .rs185 * {
+      box-sizing: border-box;
+    }
+
+    .rs185 {
+      --rs-stage-w: 100vw;
+      --rs-stage-h: 100vh;
+      --rs-inner-w: 91vw;
+      --rs-left: 42%;
+      --rs-right: 58%;
+      --rs-gap: clamp(24px, 4vw, 72px);
+      --rs-img-h: 100%;
+      --rs-copy-w: 88%;
+      --rs-h1: clamp(48px, 4.8vw, 86px);
+      --rs-p: clamp(17px, 1.48vw, 24px);
+
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background: #fff;
+      color: #000;
+    }
+
+    .rs185__inner {
+      width: var(--rs-inner-w);
+      height: 100%;
+      display: grid;
+      grid-template-columns: var(--rs-left) var(--rs-right);
+      column-gap: var(--rs-gap);
+      align-items: center;
+    }
+
+    .rs185__media {
+      height: 100%;
+      min-width: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .rs185__image {
+      display: block;
+      width: auto;
+      height: var(--rs-img-h);
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .rs185__copy {
+      width: var(--rs-copy-w);
+      max-width: 860px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(12px, 1.8vw, 24px);
+    }
+
+    .rs185__h1 {
+      margin: 0;
+      font-family: Outfit, sans-serif;
+      color: #000;
+      font-size: var(--rs-h1);
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: -0.065em;
+    }
+
+    .rs185__p {
+      margin: 0;
+      max-width: 720px;
+      font-family: Outfit, sans-serif;
+      color: #000;
+      font-size: var(--rs-p);
+      line-height: 1.38;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    @media (min-width: 1280px) {
+      .rs185 {
+        --rs-inner-w: 88vw;
+        --rs-img-h: 102%;
+        --rs-h1: clamp(64px, 5.1vw, 104px);
+        --rs-p: clamp(20px, 1.45vw, 30px);
+      }
+    }
+
+    @media (min-width: 992px) and (max-width: 1279px) {
+      .rs185 {
+        --rs-inner-w: 92vw;
+        --rs-left: 42%;
+        --rs-right: 58%;
+        --rs-gap: clamp(24px, 3.6vw, 48px);
+        --rs-img-h: 102%;
+        --rs-copy-w: 90%;
+        --rs-h1: clamp(48px, 4.8vw, 62px);
+        --rs-p: clamp(17px, 1.62vw, 21px);
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+      .rs185 {
+        --rs-inner-w: 94vw;
+        --rs-left: 40%;
+        --rs-right: 60%;
+        --rs-gap: clamp(20px, 3vw, 32px);
+        --rs-img-h: 96%;
+        --rs-copy-w: 96%;
+        --rs-h1: clamp(38px, 4.8vw, 48px);
+        --rs-p: clamp(15px, 1.85vw, 18px);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .rs185 {
+        --rs-inner-w: 90vw;
+        --rs-left: 1fr;
+        --rs-right: 1fr;
+        --rs-gap: 0px;
+        --rs-img-h: min(36vh, 300px);
+        --rs-copy-w: 100%;
+        --rs-h1: clamp(36px, 9.4vw, 44px);
+        --rs-p: clamp(15px, 4vw, 17px);
+
+        align-items: center;
+      }
+
+      .rs185__inner {
+        height: 92%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 42% 58%;
+        row-gap: 0;
+      }
+
+      .rs185__media {
+        height: 100%;
+        align-items: flex-end;
+      }
+
+      .rs185__copy {
+        align-self: start;
+        padding-top: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="preview-grid">
+    <section class="preview">
+      <div class="preview__label">1200 x 760</div>
+      <div class="stage stage--1200">
+        <section class="rs185">
+          <div class="rs185__inner">
+            <div class="rs185__media">
+              <img class="rs185__image" src="https://cdn.prod.website-files.com/6a034c204cee22f92347e6b9/6a034cd2ecedfe0ddb03c874_blue.avif" alt="">
+            </div>
+            <div class="rs185__copy">
+              <h1 class="rs185__h1">I built this because being ready matters.</h1>
+              <p class="rs185__p">I am a junior rider and working student. I ride a lot, work a lot, and spend enough time at shows to know when something is making the day harder than it needs to be.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="preview">
+      <div class="preview__label">1024 x 680</div>
+      <div class="stage stage--1024">
+        <section class="rs185">
+          <div class="rs185__inner">
+            <div class="rs185__media">
+              <img class="rs185__image" src="https://cdn.prod.website-files.com/6a034c204cee22f92347e6b9/6a034cd2ecedfe0ddb03c874_blue.avif" alt="">
+            </div>
+            <div class="rs185__copy">
+              <h1 class="rs185__h1">I built this because being ready matters.</h1>
+              <p class="rs185__p">I am a junior rider and working student. I ride a lot, work a lot, and spend enough time at shows to know when something is making the day harder than it needs to be.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="preview">
+      <div class="preview__label">768 x 720</div>
+      <div class="stage stage--768">
+        <section class="rs185">
+          <div class="rs185__inner">
+            <div class="rs185__media">
+              <img class="rs185__image" src="https://cdn.prod.website-files.com/6a034c204cee22f92347e6b9/6a034cd2ecedfe0ddb03c874_blue.avif" alt="">
+            </div>
+            <div class="rs185__copy">
+              <h1 class="rs185__h1">I built this because being ready matters.</h1>
+              <p class="rs185__p">I am a junior rider and working student. I ride a lot, work a lot, and spend enough time at shows to know when something is making the day harder than it needs to be.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="preview">
+      <div class="preview__label">390 x 844</div>
+      <div class="stage stage--390">
+        <section class="rs185">
+          <div class="rs185__inner">
+            <div class="rs185__media">
+              <img class="rs185__image" src="https://cdn.prod.website-files.com/6a034c204cee22f92347e6b9/6a034cd2ecedfe0ddb03c874_blue.avif" alt="">
+            </div>
+            <div class="rs185__copy">
+              <h1 class="rs185__h1">I built this because being ready matters.</h1>
+              <p class="rs185__p">I am a junior rider and working student. I ride a lot, work a lot, and spend enough time at shows to know when something is making the day harder than it needs to be.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
