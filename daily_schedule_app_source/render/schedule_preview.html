@@ -1,0 +1,1516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RingStatus Schedule Preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --text: #16181d;
+      --muted: #68707d;
+      --border: #d9dee7;
+      --accent: #176b5d;
+      --accent-soft: #e6f3ef;
+      --shadow: 0 1px 2px rgba(20, 24, 31, .06);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 44px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    .subtle { color: var(--muted); font-size: 13px; }
+    .summary {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .summary span {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 9px;
+      box-shadow: var(--shadow);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .ring-section {
+      margin-top: 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .ring-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: #fbfcfd;
+    }
+    .ring-header h2 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    .ring-header span {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr) 86px;
+      gap: 14px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .schedule-row:last-child { border-bottom: 0; }
+    .time-cell {
+      color: var(--accent);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .class-line {
+      display: flex;
+      gap: 8px;
+      min-width: 0;
+      align-items: baseline;
+    }
+    .class-number {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .class-name {
+      min-width: 0;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+    .class-meta {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+    .progress-cell {
+      justify-self: end;
+      min-width: 52px;
+      text-align: center;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .progress-cell:empty { display: none; }
+    .trip-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+      border-top: 1px solid #edf0f4;
+    }
+    .trip-row {
+      display: grid;
+      grid-template-columns: 58px minmax(120px, 1fr) minmax(100px, 1fr) 70px;
+      gap: 8px;
+      padding: 7px 0;
+      color: var(--muted);
+      font-size: 13px;
+      border-bottom: 1px solid #f0f2f5;
+      align-items: center;
+    }
+    .trip-row:last-child { border-bottom: 0; }
+    .trip-entry, .trip-time {
+      font-variant-numeric: tabular-nums;
+      color: var(--text);
+      font-weight: 650;
+      white-space: nowrap;
+    }
+    .trip-main, .trip-horse { overflow-wrap: anywhere; }
+    @media (max-width: 720px) {
+      .topbar { display: block; }
+      .summary { justify-content: flex-start; margin-top: 12px; }
+      .schedule-row {
+        grid-template-columns: 64px minmax(0, 1fr);
+      }
+      .progress-cell {
+        grid-column: 2;
+        justify-self: start;
+        margin-top: 4px;
+      }
+      .trip-row {
+        grid-template-columns: 48px minmax(0, 1fr) 56px;
+      }
+      .trip-horse { grid-column: 2 / 4; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div>
+        <h1>Schedule Preview</h1>
+        <div class="subtle">Generated from latest local source data at 2026-05-12T20:25:11.456Z</div>
+      </div>
+      <div class="summary">
+        <span>5 rings</span>
+        <span>105 classes</span>
+        <span>2 trips</span>
+      </div>
+    </div>
+    
+    <section class="ring-section">
+      <header class="ring-header">
+        <h2>Derby</h2>
+        <span>2 classes</span>
+      </header>
+      <div class="schedule-table">
+        
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|1|775|1|cgid:200023878">
+      <div class="time-cell">7:45a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">775</span>
+          <span class="class-name">$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b</div>
+        
+      </div>
+      <div class="progress-cell">23/23</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|1|806|2|cgid:200023879">
+      <div class="time-cell">9:35a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">806</span>
+          <span class="class-name">$24,999 IDA Development Regional Grand Prix</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $24,999 IDA Development Regional Grand Prix</div>
+        
+      </div>
+      <div class="progress-cell">39/39</div>
+    </article>
+      </div>
+    </section>
+    <section class="ring-section">
+      <header class="ring-header">
+        <h2>Covered</h2>
+        <span>30 classes</span>
+      </header>
+      <div class="schedule-table">
+        
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|723|2|cgid:200023880">
+      <div class="time-cell">7:45a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">723</span>
+          <span class="class-name">$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b</div>
+        
+      </div>
+      <div class="progress-cell">15/15</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|743|3|cgid:200023881">
+      <div class="time-cell">9:05a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">743</span>
+          <span class="class-name">$1,595 M&amp;S 1.15m Junior Jumper Classic II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $2,640 M&amp;S 1.15m Junior &amp; Amateur Jumper Classics II2b</div>
+        
+      </div>
+      <div class="progress-cell">25/25</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|763|3|cgid:200023881">
+      <div class="time-cell">9:05a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">763</span>
+          <span class="class-name">$1,595 M&amp;S 1.15m Amateur Jumper Classic II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $2,640 M&amp;S 1.15m Junior &amp; Amateur Jumper Classics II2b</div>
+        
+      </div>
+      <div class="progress-cell">25/25</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|742|4|cgid:200023882">
+      <div class="time-cell">10:17a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">742</span>
+          <span class="class-name">1.10m Junior Jumper II2d</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | 1.10m Junior &amp; Amateur Jumpers II2d</div>
+        
+      </div>
+      <div class="progress-cell">15/15</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|762|4|cgid:200023882">
+      <div class="time-cell">10:17a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">762</span>
+          <span class="class-name">1.10m Amateur Jumper II2d</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | 1.10m Junior &amp; Amateur Jumpers II2d</div>
+        
+      </div>
+      <div class="progress-cell">15/15</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|739|5|cgid:200023883">
+      <div class="time-cell">11:11a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">739</span>
+          <span class="class-name">$1,595 1.0m Junior Jumper Classic II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $2,640 1.0m Junior &amp; Amateur Jumper Classics II2b</div>
+        
+      </div>
+      <div class="progress-cell">27/27</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|767|5|cgid:200023883">
+      <div class="time-cell">11:11a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">767</span>
+          <span class="class-name">$1,595 1.0m Amateur Jumper Classic II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $2,640 1.0m Junior &amp; Amateur Jumper Classics II2b</div>
+        
+      </div>
+      <div class="progress-cell">27/27</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|792|6|cgid:200023896">
+      <div class="time-cell">1:35p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">792</span>
+          <span class="class-name">Hopeful Jumper (.85m) II2d</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | Hopeful Jumper (.85m) II2d</div>
+        
+      </div>
+      <div class="progress-cell">11/11</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|815|7|cgid:200023897">
+      <div class="time-cell">2:15p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">815</span>
+          <span class="class-name">$250 .85m Jumper Classic II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | $250 .85m Jumper Classic II2b</div>
+        
+      </div>
+      <div class="progress-cell">19/19</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|685|8|cgid:200026493">
+      <div class="time-cell">3:30p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">685</span>
+          <span class="class-name">WIHS Large/Medium Pony Jumper II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | WIHS Large/Medium Pony Jumper II2b</div>
+        
+      </div>
+      <div class="progress-cell">11/11</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|682|9|cgid:200023898">
+      <div class="time-cell">4:20p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">682</span>
+          <span class="class-name">WIHS Small Pony Jumper II2b</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | WIHS Small Pony Jumper II2b</div>
+        
+      </div>
+      <div class="progress-cell">8/8</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|3|992|10|cgid:200025066">
+      <div class="time-cell">4:33p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">992</span>
+          <span class="class-name">Mulligan Class</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Mulligan Class</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|525|17|cgid:200024452">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">525</span>
+          <span class="class-name">SFHJA Junior Medal (Flat Phase)</span>
+        </div>
+        <div class="class-meta">Equitation | Under Saddle/Flat | SFHJA Junior Medal (Flat Phase)</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|527|16|cgid:200024451">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">527</span>
+          <span class="class-name">SFHJA Adult Medal (Flat Phase)</span>
+        </div>
+        <div class="class-meta">Equitation | Under Saddle/Flat | SFHJA Adult Medal (Flat Phase)</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|529|18|cgid:200024453">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">529</span>
+          <span class="class-name">M&amp;S Children's Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | M&amp;S Children's Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|530|9|cgid:200024444">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">530</span>
+          <span class="class-name">Hamel Foundation NHS 3'3' Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Hamel Foundation NHS 3'3' Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|531|19|cgid:200024454">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">531</span>
+          <span class="class-name">M&amp;S Adult Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | M&amp;S Adult Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|535|10|cgid:200024445">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">535</span>
+          <span class="class-name">USHJA 3'3&quot; Hunter Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | USHJA 3'3&quot; Hunter Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|540|22|cgid:200025073">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">540</span>
+          <span class="class-name">M&amp;S USEF Pony Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | M&amp;S USEF Pony Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|545|7|cgid:200024442">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">545</span>
+          <span class="class-name">USHJA Jumping Seat Medal 3'3&quot;</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | USHJA Jumping Seat Medal 3'3&quot;</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|546|8|cgid:200024443">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">546</span>
+          <span class="class-name">USHJA 3'3&quot; Adult Amateur Jumper Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | USHJA 3'3&quot; Adult Amateur Jumper Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|550|11|cgid:200024446">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">550</span>
+          <span class="class-name">Dover Saddlery USEF Hunter Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Dover Saddlery USEF Hunter Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|555|14|cgid:200024449">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">555</span>
+          <span class="class-name">THIS Children's Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | THIS Children's Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|560|20|cgid:200024455">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">560</span>
+          <span class="class-name">NHS/THIS Adult Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | NHS/THIS Adult Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|565|15|cgid:200024450">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">565</span>
+          <span class="class-name">Ariat Adult Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Ariat Adult Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|570|12|cgid:200024447">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">570</span>
+          <span class="class-name">ASPCA Maclay</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | ASPCA Maclay</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|575|21|cgid:200024456">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">575</span>
+          <span class="class-name">USEF Adult Equitation 3'3&quot;</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | USEF Adult Equitation 3'3&quot;</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|581|5|cgid:200024440">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">581</span>
+          <span class="class-name">WIHS Jumper Phase</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | WIHS Jumper Phase</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|585|13|cgid:200024448">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">585</span>
+          <span class="class-name">USEF/NCEA Junior Hunter Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | USEF/NCEA Junior Hunter Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000062|2026-05-28|3|590|6|cgid:200024441">
+      <div class="time-cell"></div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">590</span>
+          <span class="class-name">Platinum Performance/USEF Talent Search 1*</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Platinum Performance/USEF Talent Search 1*</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+      </div>
+    </section>
+    <section class="ring-section">
+      <header class="ring-header">
+        <h2>Village</h2>
+        <span>14 classes</span>
+      </header>
+      <div class="schedule-table">
+        
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|530|2|cgid:200023886">
+      <div class="time-cell">7:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">530</span>
+          <span class="class-name">Hamel Foundation/NHS 3'3&quot; Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Hamel Foundation/NHS 3'3&quot; Medal</div>
+        
+      </div>
+      <div class="progress-cell">8/8</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|585|3|cgid:200023884">
+      <div class="time-cell">8:30a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">585</span>
+          <span class="class-name">NCEA/USEF Junior Hunter Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | NCEA/USEF Junior Hunter Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell">4/4</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|535|4|cgid:200026496">
+      <div class="time-cell">8:40a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">535</span>
+          <span class="class-name">IHSA/USHJA 3'3&quot; Hunter Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | IHSA/USHJA 3'3&quot; Hunter Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell">3/3</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|535|4|cgid:200023885">
+      <div class="time-cell">9:00a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">535</span>
+          <span class="class-name">IHSA/USHJA 3'3&quot; Hunter Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | IHSA/USHJA 3'3&quot; Hunter Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell">3/3</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|570|5|cgid:200023887">
+      <div class="time-cell">9:40a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">570</span>
+          <span class="class-name">ASPCA Maclay</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | ASPCA Maclay</div>
+        
+      </div>
+      <div class="progress-cell">7/7</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|550|6|cgid:200023888">
+      <div class="time-cell">10:20a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">550</span>
+          <span class="class-name">Dover Saddlery/USEF Hunter Seat Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Dover Saddlery/USEF Hunter Seat Medal</div>
+        
+      </div>
+      <div class="progress-cell">7/7</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|555|7|cgid:200023889">
+      <div class="time-cell">11:25a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">555</span>
+          <span class="class-name">THIS Children's Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | THIS Children's Medal</div>
+        
+      </div>
+      <div class="progress-cell">11/11</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|565|8|cgid:200023891">
+      <div class="time-cell">12:12p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">565</span>
+          <span class="class-name">Ariat Adult Medal</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Ariat Adult Medal</div>
+        
+      </div>
+      <div class="progress-cell">2/2</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|525|9|cgid:200023890">
+      <div class="time-cell">12:21p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">525</span>
+          <span class="class-name">SFHJA Junior/Adult Amatuer Medal (Flat Phase)</span>
+        </div>
+        <div class="class-meta">Equitation | Under Saddle/Flat | SFHJA Junior/Adult Amatuer Medal (Flat Phase)</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|696|10|cgid:200023894">
+      <div class="time-cell">1:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">696</span>
+          <span class="class-name">Itty Bitty Jumper Open (.60-.65m) II2d</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | Itty Bitty Jumpers (.60-.65m) II2d</div>
+        
+      </div>
+      <div class="progress-cell">12/12</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|699|10|cgid:200023894">
+      <div class="time-cell">1:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">699</span>
+          <span class="class-name">Itty Bitty Jumper Jr/Am (.60-.65m)  II2d</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | Itty Bitty Jumpers (.60-.65m) II2d</div>
+        
+      </div>
+      <div class="progress-cell">12/12</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|785|11|cgid:200023895">
+      <div class="time-cell">2:05p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">785</span>
+          <span class="class-name">Puddle Jumper Open (.80m) II2d</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | Puddle Jumpers (.80m) II2d</div>
+        
+      </div>
+      <div class="progress-cell">19/19</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|797|11|cgid:200023895">
+      <div class="time-cell">2:05p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">797</span>
+          <span class="class-name">Puddle Jumper Junior/Amateur (.80m) II2d</span>
+        </div>
+        <div class="class-meta">Jumpers | Over Fences | Puddle Jumpers (.80m) II2d</div>
+        
+      </div>
+      <div class="progress-cell">19/19</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|4|993|12|cgid:200025067">
+      <div class="time-cell">3:16p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">993</span>
+          <span class="class-name">Mulligan Class</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Mulligan Class</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+      </div>
+    </section>
+    <section class="ring-section">
+      <header class="ring-header">
+        <h2>Hunter 1</h2>
+        <span>37 classes</span>
+      </header>
+      <div class="schedule-table">
+        
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|144|1|cgid:200023919">
+      <div class="time-cell">7:30a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">144</span>
+          <span class="class-name">Cross Rail Equitation Flat</span>
+        </div>
+        <div class="class-meta">Equitation | Under Saddle/Flat | Cross Rail Equitation Flat</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|140|2|cgid:200023921">
+      <div class="time-cell">7:40a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">140</span>
+          <span class="class-name">Cross Rail Warm Up</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Cross Rail Equitation</div>
+        
+      </div>
+      <div class="progress-cell">14/14</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|145|2|cgid:200023921">
+      <div class="time-cell">7:40a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">145</span>
+          <span class="class-name">Cross Rail Equitation</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Cross Rail Equitation</div>
+        
+      </div>
+      <div class="progress-cell">14/14</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|146|2|cgid:200023921">
+      <div class="time-cell">7:40a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">146</span>
+          <span class="class-name">Cross Rail Equitation</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Cross Rail Equitation</div>
+        
+      </div>
+      <div class="progress-cell">14/14</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|604|3|cgid:200023922">
+      <div class="time-cell">8:05a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">604</span>
+          <span class="class-name">Stirrup Equitation Flat</span>
+        </div>
+        <div class="class-meta">Equitation | Under Saddle/Flat | Stirrup Equitation Flat</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|605|4|cgid:200023924">
+      <div class="time-cell">8:35a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">605</span>
+          <span class="class-name">Stirrup Equitation</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Short Stirrup Equitation</div>
+        
+      </div>
+      <div class="progress-cell">9/9</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|606|4|cgid:200023924">
+      <div class="time-cell">8:35a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">606</span>
+          <span class="class-name">Stirrup Equitation</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Short Stirrup Equitation</div>
+        
+      </div>
+      <div class="progress-cell">9/9</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|614|4|cgid:200023924">
+      <div class="time-cell">8:35a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">614</span>
+          <span class="class-name">Stirrup Warm Up</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Short Stirrup Equitation</div>
+        
+      </div>
+      <div class="progress-cell">9/9</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|210|5|cgid:200023900">
+      <div class="time-cell">9:25a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">210</span>
+          <span class="class-name">Add Back Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Amateur Owner Hunter 3'3&quot;/3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">18/18</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|394|5|cgid:200023900">
+      <div class="time-cell">9:25a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">394</span>
+          <span class="class-name">Amateur Owner Hunter 3'3&quot;/3'6&quot;</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Amateur Owner Hunter 3'3&quot;/3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">18/18</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|395|5|cgid:200023900">
+      <div class="time-cell">9:25a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">395</span>
+          <span class="class-name">Amateur Owner Hunter 3'3&quot;/3'6&quot; Handy</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Amateur Owner Hunter 3'3&quot;/3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">18/18</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|909|5|cgid:200023900">
+      <div class="time-cell">9:25a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">909</span>
+          <span class="class-name">$1,000 Junior/Amateur Owner 3'3&quot;/3'6&quot; Hunter Classic</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Amateur Owner Hunter 3'3&quot;/3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">18/18</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|210|6|cgid:200023903">
+      <div class="time-cell">9:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">210</span>
+          <span class="class-name">Add Back Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">20/20</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|309|6|cgid:200023903">
+      <div class="time-cell">9:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">309</span>
+          <span class="class-name">Junior Hunter 3'6&quot;</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">20/20</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|310|6|cgid:200023903">
+      <div class="time-cell">9:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">310</span>
+          <span class="class-name">Junior Hunter 3'6&quot; Handy</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">20/20</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|909|6|cgid:200023903">
+      <div class="time-cell">9:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">909</span>
+          <span class="class-name">$1,000 Junior/Amateur Owner 3'3&quot;/3'6&quot; Hunter Classic</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">20/20</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|210|7|cgid:200023905">
+      <div class="time-cell">10:20a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">210</span>
+          <span class="class-name">Add Back Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'3&quot;</div>
+        
+      </div>
+      <div class="progress-cell">28/28</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|339|7|cgid:200023905">
+      <div class="time-cell">10:20a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">339</span>
+          <span class="class-name">Junior Hunter 3'3&quot;</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'3&quot;</div>
+        
+      </div>
+      <div class="progress-cell">28/28</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|340|7|cgid:200023905">
+      <div class="time-cell">10:20a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">340</span>
+          <span class="class-name">Junior Hunter 3'3&quot; Handy</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'3&quot;</div>
+        
+      </div>
+      <div class="progress-cell">28/28</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|909|7|cgid:200023905">
+      <div class="time-cell">10:20a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">909</span>
+          <span class="class-name">$1,000 Junior/Amateur Owner 3'3&quot;/3'6&quot; Hunter Classic</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Junior Hunter 3'3&quot;</div>
+        
+      </div>
+      <div class="progress-cell">28/28</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|314|8|cgid:200023908">
+      <div class="time-cell">12:05p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">314</span>
+          <span class="class-name">Children's Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Children's Hunter</div>
+        
+      </div>
+      <div class="progress-cell">25/25</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|315|8|cgid:200023908">
+      <div class="time-cell">12:05p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">315</span>
+          <span class="class-name">Children's Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Children's Hunter</div>
+        
+      </div>
+      <div class="progress-cell">25/25</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|659|8|cgid:200023908">
+      <div class="time-cell">12:05p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">659</span>
+          <span class="class-name">Warm Up Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Children's Hunter</div>
+        
+      </div>
+      <div class="progress-cell">25/25</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|502|10|cgid:200023910">
+      <div class="time-cell">1:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">502</span>
+          <span class="class-name">Child/Adult Amateur Equitation 2'6&quot; Flat</span>
+        </div>
+        <div class="class-meta">Equitation | Under Saddle/Flat | Child/Adult Amateur Equitation 2'6&quot; Flat</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|284|9|cgid:200023909">
+      <div class="time-cell">1:22p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">284</span>
+          <span class="class-name">Adult Amateur Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Adult Amateur Hunter</div>
+        
+      </div>
+      <div class="progress-cell">8/8</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|285|9|cgid:200023909">
+      <div class="time-cell">1:22p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">285</span>
+          <span class="class-name">Adult Amateur Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Adult Amateur Hunter</div>
+        
+      </div>
+      <div class="progress-cell">8/8</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|659|9|cgid:200023909">
+      <div class="time-cell">1:22p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">659</span>
+          <span class="class-name">Warm Up Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Adult Amateur Hunter</div>
+        
+      </div>
+      <div class="progress-cell">8/8</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|503|11|cgid:200023911">
+      <div class="time-cell">1:52p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">503</span>
+          <span class="class-name">Child/Adult Amateur Equitation 2'6&quot;</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Child/Adult Amateur Equitation 2'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">2/4</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|504|11|cgid:200023911">
+      <div class="time-cell">1:52p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">504</span>
+          <span class="class-name">Child/Adult Amateur Equitation 2'6&quot;</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | Child/Adult Amateur Equitation 2'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">2/4</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|653|11|cgid:200023911">
+      <div class="time-cell">1:52p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">653</span>
+          <span class="class-name">Warm Up Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Child/Adult Amateur Equitation 2'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">2/4</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|994|14|cgid:200025068">
+      <div class="time-cell">2:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">994</span>
+          <span class="class-name">Mulligan Class</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Mulligan Class</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|319|12|cgid:200023912">
+      <div class="time-cell">2:08p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">319</span>
+          <span class="class-name">Low Children's Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Low Children's Hunter</div>
+        
+      </div>
+      <div class="progress-cell">10/10</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|320|12|cgid:200023912">
+      <div class="time-cell">2:08p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">320</span>
+          <span class="class-name">Low Children's Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Low Children's Hunter</div>
+        
+      </div>
+      <div class="progress-cell">10/10</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|653|12|cgid:200023912">
+      <div class="time-cell">2:08p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">653</span>
+          <span class="class-name">Warm Up Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Low Children's Hunter</div>
+        
+      </div>
+      <div class="progress-cell">10/10</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|299|13|cgid:200023913">
+      <div class="time-cell">2:29p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">299</span>
+          <span class="class-name">Low Adult Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Low Adult Hunter</div>
+        
+      </div>
+      <div class="progress-cell">10/10</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|300|13|cgid:200023913">
+      <div class="time-cell">2:29p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">300</span>
+          <span class="class-name">Low Adult Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Low Adult Hunter</div>
+        
+      </div>
+      <div class="progress-cell">10/10</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|5|653|13|cgid:200023913">
+      <div class="time-cell">2:29p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">653</span>
+          <span class="class-name">Warm Up Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Low Adult Hunter</div>
+        
+      </div>
+      <div class="progress-cell">10/10</div>
+    </article>
+      </div>
+    </section>
+    <section class="ring-section">
+      <header class="ring-header">
+        <h2>Hunter 2</h2>
+        <span>22 classes</span>
+      </header>
+      <div class="schedule-table">
+        
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|644|1|cgid:200023925">
+      <div class="time-cell">7:45a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">644</span>
+          <span class="class-name">Modified Hunter 2'/2'6&quot;</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Modified Hunter 2'/2'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">13/14</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|645|1|cgid:200023925">
+      <div class="time-cell">7:45a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">645</span>
+          <span class="class-name">Modified Hunter 2'/2'6&quot;</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Modified Hunter 2'/2'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">13/14</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|652|1|cgid:200023925">
+      <div class="time-cell">7:45a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">652</span>
+          <span class="class-name">Warm Up Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Modified Hunter 2'/2'6&quot;</div>
+        
+      </div>
+      <div class="progress-cell">13/14</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|411|2|cgid:200023861">
+      <div class="time-cell">8:40a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">411</span>
+          <span class="class-name">Small Pony Hunter U/S</span>
+        </div>
+        <div class="class-meta">Hunters | Under Saddle/Flat | Small Pony Hunter U/S</div>
+        <ul class="trip-list">
+    <li class="trip-row">
+      <span class="trip-entry">#2815</span>
+      <span class="trip-main">JESSICA HEAP</span>
+      <span class="trip-horse">FORT KNOX</span>
+      <span class="trip-time"></span>
+    </li>
+    <li class="trip-row">
+      <span class="trip-entry">#2818</span>
+      <span class="trip-main">Rider TBD</span>
+      <span class="trip-horse">POPTART</span>
+      <span class="trip-time"></span>
+    </li></ul>
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|414|3|cgid:200023927">
+      <div class="time-cell">8:59a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">414</span>
+          <span class="class-name">Small Pony Conformation Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Small Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">33/33</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|415|3|cgid:200023927">
+      <div class="time-cell">8:59a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">415</span>
+          <span class="class-name">Small Pony Handy Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Small Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">33/33</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|906|3|cgid:200023927">
+      <div class="time-cell">8:59a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">906</span>
+          <span class="class-name">$500 Small Pony Hunter Classic</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Small Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">33/33</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|424|4|cgid:200023928">
+      <div class="time-cell">10:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">424</span>
+          <span class="class-name">Medium Pony Conformation Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Medium Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">26/26</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|425|4|cgid:200023928">
+      <div class="time-cell">10:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">425</span>
+          <span class="class-name">Medium Pony Handy Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Medium Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">26/26</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|907|4|cgid:200023928">
+      <div class="time-cell">10:50a</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">907</span>
+          <span class="class-name">$500 Medium/Large Pony Hunter Classic</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Medium Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">26/26</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|434|5|cgid:200023929">
+      <div class="time-cell">12:25p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">434</span>
+          <span class="class-name">Large Pony Conformation Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Large Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">22/22</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|435|5|cgid:200023929">
+      <div class="time-cell">12:25p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">435</span>
+          <span class="class-name">Large Pony Handy Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Large Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">22/22</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|907|5|cgid:200023929">
+      <div class="time-cell">12:25p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">907</span>
+          <span class="class-name">$500 Medium/Large Pony Hunter Classic</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Large Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">22/22</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|441|6|cgid:200023930">
+      <div class="time-cell">12:50p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">441</span>
+          <span class="class-name">Green Pony Hunter U/S</span>
+        </div>
+        <div class="class-meta">Hunters | Under Saddle/Flat | Green Pony Hunter U/S</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|444|7|cgid:200023931">
+      <div class="time-cell">1:55p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">444</span>
+          <span class="class-name">Green Pony Conformation Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Green Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">12/12</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|445|7|cgid:200023931">
+      <div class="time-cell">1:55p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">445</span>
+          <span class="class-name">Green Pony Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Green Pony Hunter</div>
+        
+      </div>
+      <div class="progress-cell">12/12</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|995|9|cgid:200025069">
+      <div class="time-cell">2:33p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">995</span>
+          <span class="class-name">Mulligan Class</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Mulligan Class</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|528|10|cgid:200023934">
+      <div class="time-cell">3:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">528</span>
+          <span class="class-name">SFHJA Children's Pony Medal (Flat Phase) **3 To Fill**</span>
+        </div>
+        <div class="class-meta">Equitation | Under Saddle/Flat | SFHJA Children's Pony Medal (Flat Phase) **3 To Fill**</div>
+        
+      </div>
+      <div class="progress-cell"></div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|408|8|cgid:200023932">
+      <div class="time-cell">3:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">408</span>
+          <span class="class-name">Children's Hunter Pony</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Children's Hunter Pony</div>
+        
+      </div>
+      <div class="progress-cell">13/13</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|409|8|cgid:200023932">
+      <div class="time-cell">3:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">409</span>
+          <span class="class-name">Children's Hunter Pony</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Children's Hunter Pony</div>
+        
+      </div>
+      <div class="progress-cell">13/13</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|654|8|cgid:200023932">
+      <div class="time-cell">3:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">654</span>
+          <span class="class-name">Warm Up Hunter</span>
+        </div>
+        <div class="class-meta">Hunters | Over Fences | Children's Hunter Pony</div>
+        
+      </div>
+      <div class="progress-cell">13/13</div>
+    </article>
+    <article class="schedule-row" data-schedule-instance="200000061|2026-05-10|6|532|9|cgid:200023933">
+      <div class="time-cell">3:00p</div>
+      <div class="class-cell">
+        <div class="class-line">
+          <span class="class-number">532</span>
+          <span class="class-name">M&amp;S Children's Pony Medal **3 To Fill**</span>
+        </div>
+        <div class="class-meta">Equitation | Over Fences | M&amp;S Children's Pony Medal **3 To Fill**</div>
+        
+      </div>
+      <div class="progress-cell">0/2</div>
+    </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

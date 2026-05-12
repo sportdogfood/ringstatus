@@ -22,30 +22,32 @@
     }
 
     .rs185 {
-      --stage-h: clamp(560px, 78svh, 880px);
-      --inner-w: min(91vw, 1680px);
-      --media-col: 42%;
-      --copy-col: 58%;
-      --col-gap: clamp(24px, 4.2vw, 88px);
-      --image-h: calc(var(--stage-h) * 0.98);
-      --copy-w: min(84%, 860px);
-      --copy-gap: clamp(12px, 1.55vw, 26px);
-      --h1-size: clamp(50px, 4.65vw, 92px);
-      --p-size: clamp(17px, 1.45vw, 27px);
+      --stage-h: 100%;
+      --inner-w: 100%;
+      --media-col: 50%;
+      --copy-col: 50%;
+      --col-gap: 0px;
+      --image-h: 100%;
+      --copy-w: 60%;
+      --copy-gap: clamp(14px, 1.5vw, 24px);
+      --h1-size: clamp(48px, 4.35vw, 86px);
+      --p-size: clamp(17px, 1.35vw, 25px);
 
       width: 100%;
-      height: var(--stage-h);
+      height: 100%;
+      min-height: 95svh;
       overflow: hidden;
       background: #fff;
       color: #000;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
     }
 
     .rs185__inner {
       width: var(--inner-w);
-      height: var(--stage-h);
+      height: 100%;
+      min-height: 95svh;
       display: grid;
       grid-template-columns: var(--media-col) var(--copy-col);
       column-gap: var(--col-gap);
@@ -56,7 +58,7 @@
       height: 100%;
       min-width: 0;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
     }
 
@@ -65,6 +67,7 @@
       width: auto;
       height: var(--image-h);
       max-width: 100%;
+      max-height: 95svh;
       object-fit: contain;
     }
 
@@ -75,7 +78,10 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: flex-start;
       gap: var(--copy-gap);
+      margin-right: auto;
+      margin-left: auto;
     }
 
     .rs185__h1 {
@@ -101,40 +107,23 @@
 
     @media screen and (min-width: 1440px) {
       .rs185 {
-        --stage-h: clamp(640px, 76svh, 900px);
-        --inner-w: min(88vw, 1760px);
-        --image-h: calc(var(--stage-h) * 0.97);
-        --h1-size: clamp(66px, 4.95vw, 108px);
-        --p-size: clamp(20px, 1.38vw, 30px);
+        --h1-size: clamp(64px, 4.55vw, 104px);
+        --p-size: clamp(20px, 1.3vw, 29px);
       }
     }
 
     @media screen and (min-width: 992px) and (max-width: 1279px) {
       .rs185 {
-        --stage-h: clamp(540px, 78svh, 720px);
-        --inner-w: 92vw;
-        --media-col: 42%;
-        --copy-col: 58%;
-        --col-gap: clamp(24px, 3.2vw, 44px);
-        --image-h: calc(var(--stage-h) * 0.98);
-        --copy-w: 88%;
         --copy-gap: clamp(10px, 1.4vw, 18px);
-        --h1-size: clamp(42px, 4.35vw, 56px);
+        --h1-size: clamp(40px, 4.2vw, 54px);
         --p-size: clamp(15px, 1.45vw, 18px);
       }
     }
 
     @media screen and (min-width: 768px) and (max-width: 991px) {
       .rs185 {
-        --stage-h: clamp(560px, 78svh, 760px);
-        --inner-w: 94vw;
-        --media-col: 41%;
-        --copy-col: 59%;
-        --col-gap: clamp(18px, 2.8vw, 28px);
-        --image-h: calc(var(--stage-h) * 0.9);
-        --copy-w: 94%;
         --copy-gap: 10px;
-        --h1-size: clamp(34px, 4.45vw, 44px);
+        --h1-size: clamp(32px, 4.15vw, 40px);
         --p-size: clamp(14px, 1.7vw, 16px);
       }
 
@@ -145,20 +134,41 @@
 
     @media screen and (max-width: 767px) {
       .rs185 {
-        --stage-h: 100svh;
-        --inner-w: 96vw;
-        --media-col: 42%;
-        --copy-col: 58%;
-        --col-gap: clamp(8px, 2.2vw, 14px);
-        --image-h: min(72svh, 560px);
-        --copy-w: 98%;
-        --copy-gap: 10px;
-        --h1-size: clamp(24px, 6.4vw, 36px);
-        --p-size: clamp(11px, 3.05vw, 14px);
+        --inner-w: 100%;
+        --image-h: 100%;
+        --copy-w: 100%;
+        --copy-gap: clamp(12px, 1.8svh, 16px);
+        --h1-size: clamp(24px, 6.4vw, 34px);
+        --p-size: clamp(11px, 3.2vw, 14px);
+      }
+
+      .rs185__inner {
+        height: 100%;
+        min-height: 95svh;
+        grid-template-columns: 50% 50%;
+        align-items: center;
+      }
+
+      .rs185__media {
+        height: 100%;
+        align-items: center;
+      }
+
+      .rs185__copy {
+        width: 60%;
+        padding-top: 0;
       }
 
       .rs185__p {
-        line-height: 1.32;
+        line-height: 1.36;
+      }
+    }
+
+    @media screen and (max-width: 479px) {
+      .rs185 {
+        --copy-gap: 12px;
+        --h1-size: clamp(22px, 6vw, 28px);
+        --p-size: clamp(10px, 3vw, 12px);
       }
     }
   </style>
