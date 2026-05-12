@@ -63,9 +63,10 @@
     ],
     "groups": [
       {
-        "id": "group:200000061|2026-05-10|1|101|2",
+        "id": "group:recsched_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
         "schedule_short": "1|101|2",
+        "schedule_record_id": "recsched_sample",
         "class_group_id": 987,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 12345,
@@ -78,7 +79,7 @@
     ],
     "class_start": [
       {
-        "id": "class_start:200000061|2026-05-10|1|101|2",
+        "id": "class_start:recsched_sample",
         "schedule_record_id": "recsched_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
         "estimated_start_time": "09:05:00",
@@ -87,7 +88,8 @@
     ],
     "classes": [
       {
-        "id": "class:200000061|2026-05-10|1|101|2",
+        "id": "class:recsched_sample",
+        "schedule_record_id": "recsched_sample",
         "schedule_key": "200000061|2026-05-10|1|101|2",
         "class_id": 67890,
         "class_number": 101,
@@ -194,7 +196,9 @@
   },
   "indexes": {
     "by_schedule_key": {
-      "200000061|2026-05-10|1|101|2": "recsched_sample"
+      "200000061|2026-05-10|1|101|2": [
+        "recsched_sample"
+      ]
     },
     "by_trips_key": {
       "200000061|2026-05-10|1|101|2|555|44": "rectrip_sample"

@@ -1,13 +1,13 @@
 {
   "meta": {
-    "generated_at": "2026-05-12T18:20:49.951Z",
+    "generated_at": "2026-05-12T18:45:32.752Z",
     "field_contract_version": "2026-05-12.daily_schedule_app_source.v1",
     "row_counts": {
       "heartbeat": 1,
       "watch_schedule": 105,
       "watch_trips": 2,
       "schedule_logs": 2149,
-      "trip_logs": 3225
+      "trip_logs": 3233
     },
     "note": "Flat source payload only; primary app nesting is intentionally not built here."
   },
@@ -27,16 +27,16 @@
   "lanes": {
     "heartbeat": [
       {
-        "id": "recWpUjVA91zjTUdP",
-        "record_id": "recWpUjVA91zjTUdP",
-        "heartbeat_id": "200000062-2026-05-12-1778609883",
-        "hb_at": "2026-05-12T18:18:03.481Z",
+        "id": "recHc5l0xhRXYVNoh",
+        "record_id": "recHc5l0xhRXYVNoh",
+        "heartbeat_id": "200000062-2026-05-12-1778611504",
+        "hb_at": "2026-05-12T18:45:04.620Z",
         "show_id": 200000062,
         "app_show_id": 200000062,
         "app_sql_date": "2026-05-28",
         "app_dow_raw": "Thu",
         "mode": "DAY",
-        "time": "02:18 PM"
+        "time": "02:45 PM"
       }
     ],
     "show": [
@@ -120,9 +120,11 @@
     ],
     "groups": [
       {
-        "id": "group:200000061|2026-05-10|3|723|2",
+        "id": "group:rec4x2rSLXbPpwqCR",
         "schedule_key": "200000061|2026-05-10|3|723|2",
         "schedule_short": "3|723|2",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rec4x2rSLXbPpwqCR",
         "class_group_id": 200023880,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 200035732,
@@ -133,9 +135,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|763|3",
+        "id": "group:recjVQhpNGpIphY0F",
         "schedule_key": "200000061|2026-05-10|3|763|3",
         "schedule_short": "3|763|3",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recjVQhpNGpIphY0F",
         "class_group_id": 200023881,
         "class_group_sequence": 3,
         "class_groupxclasses_id": 200035734,
@@ -146,9 +150,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|792|6",
+        "id": "group:reckAYCdFHylr08MP",
         "schedule_key": "200000061|2026-05-10|3|792|6",
         "schedule_short": "3|792|6",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "reckAYCdFHylr08MP",
         "class_group_id": 200023896,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200035753,
@@ -159,9 +165,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|1|775|1",
+        "id": "group:recocqN2ycDrKjUTD",
         "schedule_key": "200000061|2026-05-10|1|775|1",
         "schedule_short": "1|775|1",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recocqN2ycDrKjUTD",
         "class_group_id": 200023878,
         "class_group_sequence": 1,
         "class_groupxclasses_id": 200035730,
@@ -172,9 +180,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|762|4",
+        "id": "group:recrRvXzTJ7YJMmlO",
         "schedule_key": "200000061|2026-05-10|3|762|4",
         "schedule_short": "3|762|4",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recrRvXzTJ7YJMmlO",
         "class_group_id": 200023882,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035736,
@@ -185,9 +195,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|767|5",
+        "id": "group:recEktKyNu7DjiOc3",
         "schedule_key": "200000061|2026-05-10|3|767|5",
         "schedule_short": "3|767|5",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recEktKyNu7DjiOc3",
         "class_group_id": 200023883,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035738,
@@ -198,9 +210,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|739|5",
+        "id": "group:recKwL4KOR6Du67qQ",
         "schedule_key": "200000061|2026-05-10|3|739|5",
         "schedule_short": "3|739|5",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recKwL4KOR6Du67qQ",
         "class_group_id": 200023883,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035737,
@@ -211,9 +225,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|742|4",
+        "id": "group:recLmC6USajHypEzd",
         "schedule_key": "200000061|2026-05-10|3|742|4",
         "schedule_short": "3|742|4",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recLmC6USajHypEzd",
         "class_group_id": 200023882,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035735,
@@ -224,9 +240,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|743|3",
+        "id": "group:recMT7ja7hvSFeo8x",
         "schedule_key": "200000061|2026-05-10|3|743|3",
         "schedule_short": "3|743|3",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recMT7ja7hvSFeo8x",
         "class_group_id": 200023881,
         "class_group_sequence": 3,
         "class_groupxclasses_id": 200035733,
@@ -237,9 +255,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|1|806|2",
+        "id": "group:recTI7BjXWhrbV5Yw",
         "schedule_key": "200000061|2026-05-10|1|806|2",
         "schedule_short": "1|806|2",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recTI7BjXWhrbV5Yw",
         "class_group_id": 200023879,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 200035731,
@@ -250,9 +270,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|570|5",
+        "id": "group:recwqlkuEYmrzPr2J",
         "schedule_key": "200000061|2026-05-10|4|570|5",
         "schedule_short": "4|570|5",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recwqlkuEYmrzPr2J",
         "class_group_id": 200023887,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035742,
@@ -263,9 +285,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|685|8",
+        "id": "group:recesGc3TMP6C41OO",
         "schedule_key": "200000061|2026-05-10|3|685|8",
         "schedule_short": "3|685|8",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recesGc3TMP6C41OO",
         "class_group_id": 200026493,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200039617,
@@ -276,9 +300,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|550|6",
+        "id": "group:recmPS6FLfg6R6uN8",
         "schedule_key": "200000061|2026-05-10|4|550|6",
         "schedule_short": "4|550|6",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recmPS6FLfg6R6uN8",
         "class_group_id": 200023888,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200035743,
@@ -289,9 +315,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|555|7",
+        "id": "group:recn0a367VVyjSid8",
         "schedule_key": "200000061|2026-05-10|4|555|7",
         "schedule_short": "4|555|7",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recn0a367VVyjSid8",
         "class_group_id": 200023889,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035744,
@@ -302,9 +330,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|535|4",
+        "id": "group:recotAXxare3c9pD8",
         "schedule_key": "200000061|2026-05-10|4|535|4",
         "schedule_short": "4|535|4",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recotAXxare3c9pD8",
         "class_group_id": 200023885,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035740,
@@ -315,9 +345,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|585|3",
+        "id": "group:recERjbCdbTffmu9n",
         "schedule_key": "200000061|2026-05-10|4|585|3",
         "schedule_short": "4|585|3",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recERjbCdbTffmu9n",
         "class_group_id": 200023884,
         "class_group_sequence": 3,
         "class_groupxclasses_id": 200035739,
@@ -328,9 +360,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|682|9",
+        "id": "group:recEsvxCuyxvtkbOp",
         "schedule_key": "200000061|2026-05-10|3|682|9",
         "schedule_short": "3|682|9",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recEsvxCuyxvtkbOp",
         "class_group_id": 200023898,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200035755,
@@ -341,9 +375,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|815|7",
+        "id": "group:recKeTVcfpBP7jI63",
         "schedule_key": "200000061|2026-05-10|3|815|7",
         "schedule_short": "3|815|7",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recKeTVcfpBP7jI63",
         "class_group_id": 200023897,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035754,
@@ -354,9 +390,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|530|2",
+        "id": "group:recZsFiV8x4Y17mE0",
         "schedule_key": "200000061|2026-05-10|4|530|2",
         "schedule_short": "4|530|2",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recZsFiV8x4Y17mE0",
         "class_group_id": 200023886,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 200035741,
@@ -367,9 +405,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|3|992|10",
+        "id": "group:rec1RKcjoMIYx4tBS",
         "schedule_key": "200000061|2026-05-10|3|992|10",
         "schedule_short": "3|992|10",
+        "schedule_tie_breaker": 98,
+        "schedule_record_id": "rec1RKcjoMIYx4tBS",
         "class_group_id": 200025066,
         "class_group_sequence": 10,
         "class_groupxclasses_id": 200037125,
@@ -377,9 +417,11 @@
         "group_name_tags": "mulligan, hunters, Over Fences"
       },
       {
-        "id": "group:200000061|2026-05-10|4|525|9",
+        "id": "group:recsxFSxinb8cLTEF",
         "schedule_key": "200000061|2026-05-10|4|525|9",
         "schedule_short": "4|525|9",
+        "schedule_tie_breaker": 5,
+        "schedule_record_id": "recsxFSxinb8cLTEF",
         "class_group_id": 200023890,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200035745,
@@ -387,9 +429,11 @@
         "group_name_tags": "target, usf, adult, medal, junior, flat, Under Saddle/Flat"
       },
       {
-        "id": "group:200000061|2026-05-10|5|606|4",
+        "id": "group:recyOAUUbZVknUjHO",
         "schedule_key": "200000061|2026-05-10|5|606|4",
         "schedule_short": "5|606|4",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recyOAUUbZVknUjHO",
         "class_group_id": 200023924,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035821,
@@ -400,9 +444,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|699|10",
+        "id": "group:rec28na3cikgKZZdf",
         "schedule_key": "200000061|2026-05-10|4|699|10",
         "schedule_short": "4|699|10",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rec28na3cikgKZZdf",
         "class_group_id": 200023894,
         "class_group_sequence": 10,
         "class_groupxclasses_id": 200035750,
@@ -413,9 +459,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|565|8",
+        "id": "group:recbZf5Pz5bJjDnv3",
         "schedule_key": "200000061|2026-05-10|4|565|8",
         "schedule_short": "4|565|8",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recbZf5Pz5bJjDnv3",
         "class_group_id": 200023891,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200035746,
@@ -426,9 +474,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|394|5",
+        "id": "group:recbmvK9R7S96haCt",
         "schedule_key": "200000061|2026-05-10|5|394|5",
         "schedule_short": "5|394|5",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recbmvK9R7S96haCt",
         "class_group_id": 200023900,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035760,
@@ -439,9 +489,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|395|5",
+        "id": "group:reccPi72qEuDwvpMg",
         "schedule_key": "200000061|2026-05-10|5|395|5",
         "schedule_short": "5|395|5",
+        "schedule_tie_breaker": 4,
+        "schedule_record_id": "reccPi72qEuDwvpMg",
         "class_group_id": 200023900,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035761,
@@ -452,9 +504,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|210|5",
+        "id": "group:recgzTQvhUZ5dLqo5",
         "schedule_key": "200000061|2026-05-10|5|210|5",
         "schedule_short": "5|210|5",
+        "schedule_tie_breaker": 99,
+        "schedule_record_id": "recgzTQvhUZ5dLqo5",
         "class_group_id": 200023900,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035763,
@@ -465,9 +519,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|785|11",
+        "id": "group:rechtkwwDNVND8y2V",
         "schedule_key": "200000061|2026-05-10|4|785|11",
         "schedule_short": "4|785|11",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rechtkwwDNVND8y2V",
         "class_group_id": 200023895,
         "class_group_sequence": 11,
         "class_groupxclasses_id": 200035751,
@@ -478,9 +534,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|993|12",
+        "id": "group:reciUR9zFVhxlsziy",
         "schedule_key": "200000061|2026-05-10|4|993|12",
         "schedule_short": "4|993|12",
+        "schedule_tie_breaker": 98,
+        "schedule_record_id": "reciUR9zFVhxlsziy",
         "class_group_id": 200025067,
         "class_group_sequence": 12,
         "class_groupxclasses_id": 200037126,
@@ -488,9 +546,11 @@
         "group_name_tags": "mulligan, hunters, Over Fences"
       },
       {
-        "id": "group:200000061|2026-05-10|5|140|2",
+        "id": "group:recmtt5GG9V95Ap4u",
         "schedule_key": "200000061|2026-05-10|5|140|2",
         "schedule_short": "5|140|2",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "recmtt5GG9V95Ap4u",
         "class_group_id": 200023921,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 200035812,
@@ -501,9 +561,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|909|5",
+        "id": "group:recos9Ngu8lwlMGj4",
         "schedule_key": "200000061|2026-05-10|5|909|5",
         "schedule_short": "5|909|5",
+        "schedule_tie_breaker": 3,
+        "schedule_record_id": "recos9Ngu8lwlMGj4",
         "class_group_id": 200023900,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200039620,
@@ -514,9 +576,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|696|10",
+        "id": "group:recpJJknzNIg8X7Nq",
         "schedule_key": "200000061|2026-05-10|4|696|10",
         "schedule_short": "4|696|10",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recpJJknzNIg8X7Nq",
         "class_group_id": 200023894,
         "class_group_sequence": 10,
         "class_groupxclasses_id": 200035749,
@@ -527,9 +591,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|4|797|11",
+        "id": "group:recqkdi5jKVXL1aFi",
         "schedule_key": "200000061|2026-05-10|4|797|11",
         "schedule_short": "4|797|11",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recqkdi5jKVXL1aFi",
         "class_group_id": 200023895,
         "class_group_sequence": 11,
         "class_groupxclasses_id": 200035752,
@@ -540,9 +606,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|604|3",
+        "id": "group:recr9zauvcDXEJ5d0",
         "schedule_key": "200000061|2026-05-10|5|604|3",
         "schedule_short": "5|604|3",
+        "schedule_tie_breaker": 5,
+        "schedule_record_id": "recr9zauvcDXEJ5d0",
         "class_group_id": 200023922,
         "class_group_sequence": 3,
         "class_groupxclasses_id": 200035817,
@@ -550,9 +618,11 @@
         "group_name_tags": "isFirstUp, target, usf, stirrup, flat, Under Saddle/Flat"
       },
       {
-        "id": "group:200000061|2026-05-10|5|144|1",
+        "id": "group:recr93MHDfbHvw6hS",
         "schedule_key": "200000061|2026-05-10|5|144|1",
         "schedule_short": "5|144|1",
+        "schedule_tie_breaker": 5,
+        "schedule_record_id": "recr93MHDfbHvw6hS",
         "class_group_id": 200023919,
         "class_group_sequence": 1,
         "class_groupxclasses_id": 200035810,
@@ -560,9 +630,11 @@
         "group_name_tags": "isFirstUp, target, usf, flat, Under Saddle/Flat"
       },
       {
-        "id": "group:200000061|2026-05-10|5|614|4",
+        "id": "group:recrfzfsKOYERVfeO",
         "schedule_key": "200000061|2026-05-10|5|614|4",
         "schedule_short": "5|614|4",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "recrfzfsKOYERVfeO",
         "class_group_id": 200023924,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035819,
@@ -573,9 +645,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|145|2",
+        "id": "group:recIBWLnHI3XU4go9",
         "schedule_key": "200000061|2026-05-10|5|145|2",
         "schedule_short": "5|145|2",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recIBWLnHI3XU4go9",
         "class_group_id": 200023921,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 200035813,
@@ -586,9 +660,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|146|2",
+        "id": "group:recKsAKE910Tvzpt7",
         "schedule_key": "200000061|2026-05-10|5|146|2",
         "schedule_short": "5|146|2",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recKsAKE910Tvzpt7",
         "class_group_id": 200023921,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 200035814,
@@ -599,9 +675,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|605|4",
+        "id": "group:recMOM56Sn7LLsWAi",
         "schedule_key": "200000061|2026-05-10|5|605|4",
         "schedule_short": "5|605|4",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recMOM56Sn7LLsWAi",
         "class_group_id": 200023924,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035820,
@@ -612,9 +690,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|210|6",
+        "id": "group:recOSdrkOQVo5DIZu",
         "schedule_key": "200000061|2026-05-10|5|210|6",
         "schedule_short": "5|210|6",
+        "schedule_tie_breaker": 99,
+        "schedule_record_id": "recOSdrkOQVo5DIZu",
         "class_group_id": 200023903,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200035772,
@@ -625,9 +705,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|315|8",
+        "id": "group:recs3dplSkndOCdPg",
         "schedule_key": "200000061|2026-05-10|5|315|8",
         "schedule_short": "5|315|8",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recs3dplSkndOCdPg",
         "class_group_id": 200023908,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200035790,
@@ -638,9 +720,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|340|7",
+        "id": "group:reczVmlbB2xiRn3Ku",
         "schedule_key": "200000061|2026-05-10|5|340|7",
         "schedule_short": "5|340|7",
+        "schedule_tie_breaker": 4,
+        "schedule_record_id": "reczVmlbB2xiRn3Ku",
         "class_group_id": 200023905,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035783,
@@ -651,9 +735,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|659|9",
+        "id": "group:rec8chdknOAPY9W24",
         "schedule_key": "200000061|2026-05-10|5|659|9",
         "schedule_short": "5|659|9",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "rec8chdknOAPY9W24",
         "class_group_id": 200023909,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200035792,
@@ -664,9 +750,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|309|6",
+        "id": "group:rece4AJ8PUXT0NoDT",
         "schedule_key": "200000061|2026-05-10|5|309|6",
         "schedule_short": "5|309|6",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rece4AJ8PUXT0NoDT",
         "class_group_id": 200023903,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200035773,
@@ -677,9 +765,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|339|7",
+        "id": "group:reciU4Ky0BJ5vNGJR",
         "schedule_key": "200000061|2026-05-10|5|339|7",
         "schedule_short": "5|339|7",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "reciU4Ky0BJ5vNGJR",
         "class_group_id": 200023905,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035781,
@@ -690,9 +780,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|659|8",
+        "id": "group:recmGVwBrRRHlERbo",
         "schedule_key": "200000061|2026-05-10|5|659|8",
         "schedule_short": "5|659|8",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "recmGVwBrRRHlERbo",
         "class_group_id": 200023908,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200035789,
@@ -703,9 +795,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|909|6",
+        "id": "group:recnW42otfcKkiAmm",
         "schedule_key": "200000061|2026-05-10|5|909|6",
         "schedule_short": "5|909|6",
+        "schedule_tie_breaker": 3,
+        "schedule_record_id": "recnW42otfcKkiAmm",
         "class_group_id": 200023903,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200035775,
@@ -716,9 +810,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|314|8",
+        "id": "group:recoysocQBUtoFlFy",
         "schedule_key": "200000061|2026-05-10|5|314|8",
         "schedule_short": "5|314|8",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recoysocQBUtoFlFy",
         "class_group_id": 200023908,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200035791,
@@ -729,9 +825,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|210|7",
+        "id": "group:recqMuXS9sTVv8Hjo",
         "schedule_key": "200000061|2026-05-10|5|210|7",
         "schedule_short": "5|210|7",
+        "schedule_tie_breaker": 99,
+        "schedule_record_id": "recqMuXS9sTVv8Hjo",
         "class_group_id": 200023905,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035780,
@@ -742,9 +840,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|504|11",
+        "id": "group:recFxJKVNNs5avJfg",
         "schedule_key": "200000061|2026-05-10|5|504|11",
         "schedule_short": "5|504|11",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recFxJKVNNs5avJfg",
         "class_group_id": 200023911,
         "class_group_sequence": 11,
         "class_groupxclasses_id": 200035797,
@@ -755,9 +855,11 @@
         "status": "Upcoming"
       },
       {
-        "id": "group:200000061|2026-05-10|5|320|12",
+        "id": "group:recFB5cIna1pUtOAp",
         "schedule_key": "200000061|2026-05-10|5|320|12",
         "schedule_short": "5|320|12",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recFB5cIna1pUtOAp",
         "class_group_id": 200023912,
         "class_group_sequence": 12,
         "class_groupxclasses_id": 200035800,
@@ -768,9 +870,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|909|7",
+        "id": "group:recIMdl8NqL4yHTNF",
         "schedule_key": "200000061|2026-05-10|5|909|7",
         "schedule_short": "5|909|7",
+        "schedule_tie_breaker": 3,
+        "schedule_record_id": "recIMdl8NqL4yHTNF",
         "class_group_id": 200023905,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035782,
@@ -781,9 +885,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|653|12",
+        "id": "group:recJrnV7izOqoPub9",
         "schedule_key": "200000061|2026-05-10|5|653|12",
         "schedule_short": "5|653|12",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "recJrnV7izOqoPub9",
         "class_group_id": 200023912,
         "class_group_sequence": 12,
         "class_groupxclasses_id": 200035799,
@@ -794,9 +900,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|653|11",
+        "id": "group:recM9YmupYlt4GyJT",
         "schedule_key": "200000061|2026-05-10|5|653|11",
         "schedule_short": "5|653|11",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "recM9YmupYlt4GyJT",
         "class_group_id": 200023911,
         "class_group_sequence": 11,
         "class_groupxclasses_id": 200035796,
@@ -807,9 +915,11 @@
         "status": "Upcoming"
       },
       {
-        "id": "group:200000061|2026-05-10|5|319|12",
+        "id": "group:recNfMWxR6xZA86gF",
         "schedule_key": "200000061|2026-05-10|5|319|12",
         "schedule_short": "5|319|12",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recNfMWxR6xZA86gF",
         "class_group_id": 200023912,
         "class_group_sequence": 12,
         "class_groupxclasses_id": 200035801,
@@ -820,9 +930,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|503|11",
+        "id": "group:recUfGK9NTJXMUrKF",
         "schedule_key": "200000061|2026-05-10|5|503|11",
         "schedule_short": "5|503|11",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recUfGK9NTJXMUrKF",
         "class_group_id": 200023911,
         "class_group_sequence": 11,
         "class_groupxclasses_id": 200035798,
@@ -833,9 +945,11 @@
         "status": "Upcoming"
       },
       {
-        "id": "group:200000061|2026-05-10|5|285|9",
+        "id": "group:recV7bfPXPoWaECKz",
         "schedule_key": "200000061|2026-05-10|5|285|9",
         "schedule_short": "5|285|9",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recV7bfPXPoWaECKz",
         "class_group_id": 200023909,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200035793,
@@ -846,9 +960,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|284|9",
+        "id": "group:recYXxvNkbBPyZo18",
         "schedule_key": "200000061|2026-05-10|5|284|9",
         "schedule_short": "5|284|9",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recYXxvNkbBPyZo18",
         "class_group_id": 200023909,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200035794,
@@ -859,9 +975,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|310|6",
+        "id": "group:rec0QYc2jzwZU4LCF",
         "schedule_key": "200000061|2026-05-10|5|310|6",
         "schedule_short": "5|310|6",
+        "schedule_tie_breaker": 4,
+        "schedule_record_id": "rec0QYc2jzwZU4LCF",
         "class_group_id": 200023903,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200035774,
@@ -872,9 +990,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|502|10",
+        "id": "group:rec1nRMYHbHa40WHp",
         "schedule_key": "200000061|2026-05-10|5|502|10",
         "schedule_short": "5|502|10",
+        "schedule_tie_breaker": 5,
+        "schedule_record_id": "rec1nRMYHbHa40WHp",
         "class_group_id": 200023910,
         "class_group_sequence": 10,
         "class_groupxclasses_id": 200035795,
@@ -882,9 +1002,11 @@
         "group_name_tags": "target, usf, adult, amateur, flat, Under Saddle/Flat"
       },
       {
-        "id": "group:200000061|2026-05-10|5|300|13",
+        "id": "group:rectI5udq9PqYoSbD",
         "schedule_key": "200000061|2026-05-10|5|300|13",
         "schedule_short": "5|300|13",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rectI5udq9PqYoSbD",
         "class_group_id": 200023913,
         "class_group_sequence": 13,
         "class_groupxclasses_id": 200035803,
@@ -895,9 +1017,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|653|13",
+        "id": "group:recvHDGJWVvKZf433",
         "schedule_key": "200000061|2026-05-10|5|653|13",
         "schedule_short": "5|653|13",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "recvHDGJWVvKZf433",
         "class_group_id": 200023913,
         "class_group_sequence": 13,
         "class_groupxclasses_id": 200035802,
@@ -908,9 +1032,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|415|3",
+        "id": "group:recyMKT4ONBVlLtyA",
         "schedule_key": "200000061|2026-05-10|6|415|3",
         "schedule_short": "6|415|3",
+        "schedule_tie_breaker": 4,
+        "schedule_record_id": "recyMKT4ONBVlLtyA",
         "class_group_id": 200023927,
         "class_group_sequence": 3,
         "class_groupxclasses_id": 200035830,
@@ -921,9 +1047,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|414|3",
+        "id": "group:reczSo4WI2HXDqIBQ",
         "schedule_key": "200000061|2026-05-10|6|414|3",
         "schedule_short": "6|414|3",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "reczSo4WI2HXDqIBQ",
         "class_group_id": 200023927,
         "class_group_sequence": 3,
         "class_groupxclasses_id": 200035828,
@@ -934,9 +1062,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|411|2",
+        "id": "group:rec4bmPTHYMu294Ca",
         "schedule_key": "200000061|2026-05-10|6|411|2",
         "schedule_short": "6|411|2",
+        "schedule_tie_breaker": 5,
+        "schedule_record_id": "rec4bmPTHYMu294Ca",
         "class_group_id": 200023861,
         "class_group_sequence": 2,
         "class_groupxclasses_id": 200035697,
@@ -944,9 +1074,11 @@
         "group_name_tags": "target, usf, pony, small, U/S, hunters, Under Saddle/Flat"
       },
       {
-        "id": "group:200000061|2026-05-10|6|644|1",
+        "id": "group:rec8ahxMbO73HzZ8c",
         "schedule_key": "200000061|2026-05-10|6|644|1",
         "schedule_short": "6|644|1",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rec8ahxMbO73HzZ8c",
         "class_group_id": 200023925,
         "class_group_sequence": 1,
         "class_groupxclasses_id": 200035826,
@@ -957,9 +1089,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|299|13",
+        "id": "group:recn9SQ7jKG3tVMnN",
         "schedule_key": "200000061|2026-05-10|5|299|13",
         "schedule_short": "5|299|13",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recn9SQ7jKG3tVMnN",
         "class_group_id": 200023913,
         "class_group_sequence": 13,
         "class_groupxclasses_id": 200035804,
@@ -970,9 +1104,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|5|994|14",
+        "id": "group:recpxUt9KVmfQf3oM",
         "schedule_key": "200000061|2026-05-10|5|994|14",
         "schedule_short": "5|994|14",
+        "schedule_tie_breaker": 98,
+        "schedule_record_id": "recpxUt9KVmfQf3oM",
         "class_group_id": 200025068,
         "class_group_sequence": 14,
         "class_groupxclasses_id": 200037127,
@@ -980,9 +1116,11 @@
         "group_name_tags": "mulligan, hunters, Over Fences"
       },
       {
-        "id": "group:200000061|2026-05-10|6|652|1",
+        "id": "group:recpc3mXhBD3mgWc5",
         "schedule_key": "200000061|2026-05-10|6|652|1",
         "schedule_short": "6|652|1",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "recpc3mXhBD3mgWc5",
         "class_group_id": 200023925,
         "class_group_sequence": 1,
         "class_groupxclasses_id": 200035824,
@@ -993,9 +1131,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|645|1",
+        "id": "group:recRHO8ZWoGbjwyRO",
         "schedule_key": "200000061|2026-05-10|6|645|1",
         "schedule_short": "6|645|1",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recRHO8ZWoGbjwyRO",
         "class_group_id": 200023925,
         "class_group_sequence": 1,
         "class_groupxclasses_id": 200035825,
@@ -1006,9 +1146,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|441|6",
+        "id": "group:recvTcU6h7rXu4gqe",
         "schedule_key": "200000061|2026-05-10|6|441|6",
         "schedule_short": "6|441|6",
+        "schedule_tie_breaker": 5,
+        "schedule_record_id": "recvTcU6h7rXu4gqe",
         "class_group_id": 200023930,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200035837,
@@ -1016,9 +1158,11 @@
         "group_name_tags": "target, usf, pony, green, U/S, hunters, Under Saddle/Flat"
       },
       {
-        "id": "group:200000061|2026-05-10|6|906|3",
+        "id": "group:recz2KXXoTS0kNIld",
         "schedule_key": "200000061|2026-05-10|6|906|3",
         "schedule_short": "6|906|3",
+        "schedule_tie_breaker": 3,
+        "schedule_record_id": "recz2KXXoTS0kNIld",
         "class_group_id": 200023927,
         "class_group_sequence": 3,
         "class_groupxclasses_id": 200035829,
@@ -1029,9 +1173,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|995|9",
+        "id": "group:recA3lmuIT6lK7UVw",
         "schedule_key": "200000061|2026-05-10|6|995|9",
         "schedule_short": "6|995|9",
+        "schedule_tie_breaker": 98,
+        "schedule_record_id": "recA3lmuIT6lK7UVw",
         "class_group_id": 200025069,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200037128,
@@ -1039,9 +1185,11 @@
         "group_name_tags": "mulligan, hunters, Over Fences"
       },
       {
-        "id": "group:200000061|2026-05-10|6|408|8",
+        "id": "group:rec5GklPIKndFVLJ8",
         "schedule_key": "200000061|2026-05-10|6|408|8",
         "schedule_short": "6|408|8",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rec5GklPIKndFVLJ8",
         "class_group_id": 200023932,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200035843,
@@ -1052,9 +1200,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|424|4",
+        "id": "group:rec8wareFbK9RP2v7",
         "schedule_key": "200000061|2026-05-10|6|424|4",
         "schedule_short": "6|424|4",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "rec8wareFbK9RP2v7",
         "class_group_id": 200023928,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035831,
@@ -1065,9 +1215,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|654|8",
+        "id": "group:receUK4IKSncNM61c",
         "schedule_key": "200000061|2026-05-10|6|654|8",
         "schedule_short": "6|654|8",
+        "schedule_tie_breaker": 96,
+        "schedule_record_id": "receUK4IKSncNM61c",
         "class_group_id": 200023932,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200035841,
@@ -1078,9 +1230,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|907|5",
+        "id": "group:recg36hkMo8LJS7cp",
         "schedule_key": "200000061|2026-05-10|6|907|5",
         "schedule_short": "6|907|5",
+        "schedule_tie_breaker": 3,
+        "schedule_record_id": "recg36hkMo8LJS7cp",
         "class_group_id": 200023929,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200039621,
@@ -1091,9 +1245,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|444|7",
+        "id": "group:reckX52SrP2VSOufR",
         "schedule_key": "200000061|2026-05-10|6|444|7",
         "schedule_short": "6|444|7",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "reckX52SrP2VSOufR",
         "class_group_id": 200023931,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035838,
@@ -1104,9 +1260,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|528|10",
+        "id": "group:recDx6J02rz0FvN0u",
         "schedule_key": "200000061|2026-05-10|6|528|10",
         "schedule_short": "6|528|10",
+        "schedule_tie_breaker": 5,
+        "schedule_record_id": "recDx6J02rz0FvN0u",
         "class_group_id": 200023934,
         "class_group_sequence": 10,
         "class_groupxclasses_id": 200035845,
@@ -1114,9 +1272,11 @@
         "group_name_tags": "target, usf, medal, pony, children's, flat, Under Saddle/Flat"
       },
       {
-        "id": "group:200000061|2026-05-10|6|435|5",
+        "id": "group:recGye0eAacTVUEEJ",
         "schedule_key": "200000061|2026-05-10|6|435|5",
         "schedule_short": "6|435|5",
+        "schedule_tie_breaker": 4,
+        "schedule_record_id": "recGye0eAacTVUEEJ",
         "class_group_id": 200023929,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035836,
@@ -1127,9 +1287,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|907|4",
+        "id": "group:recOzGmCWCZkq8XHE",
         "schedule_key": "200000061|2026-05-10|6|907|4",
         "schedule_short": "6|907|4",
+        "schedule_tie_breaker": 3,
+        "schedule_record_id": "recOzGmCWCZkq8XHE",
         "class_group_id": 200023928,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035832,
@@ -1140,9 +1302,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|532|9",
+        "id": "group:recQ0Z1DVdbuR3qxl",
         "schedule_key": "200000061|2026-05-10|6|532|9",
         "schedule_short": "6|532|9",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recQ0Z1DVdbuR3qxl",
         "class_group_id": 200023933,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200035844,
@@ -1153,9 +1317,11 @@
         "status": "Upcoming"
       },
       {
-        "id": "group:200000061|2026-05-10|6|425|4",
+        "id": "group:recTqG0uKgSnXoXX6",
         "schedule_key": "200000061|2026-05-10|6|425|4",
         "schedule_short": "6|425|4",
+        "schedule_tie_breaker": 4,
+        "schedule_record_id": "recTqG0uKgSnXoXX6",
         "class_group_id": 200023928,
         "class_group_sequence": 4,
         "class_groupxclasses_id": 200035833,
@@ -1166,9 +1332,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|445|7",
+        "id": "group:recTv4IDoZBFKTAYJ",
         "schedule_key": "200000061|2026-05-10|6|445|7",
         "schedule_short": "6|445|7",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recTv4IDoZBFKTAYJ",
         "class_group_id": 200023931,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200035839,
@@ -1179,9 +1347,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|434|5",
+        "id": "group:recVejA25lioeILQg",
         "schedule_key": "200000061|2026-05-10|6|434|5",
         "schedule_short": "6|434|5",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recVejA25lioeILQg",
         "class_group_id": 200023929,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200035834,
@@ -1192,9 +1362,11 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000061|2026-05-10|6|409|8",
+        "id": "group:recYdBx4LiSkjuuoB",
         "schedule_key": "200000061|2026-05-10|6|409|8",
         "schedule_short": "6|409|8",
+        "schedule_tie_breaker": 1,
+        "schedule_record_id": "recYdBx4LiSkjuuoB",
         "class_group_id": 200023932,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200035842,
@@ -1205,162 +1377,193 @@
         "status": "Completed"
       },
       {
-        "id": "group:200000062|2026-05-28|3|555|14",
+        "id": "group:rec4qVUyEB2tT3qIP",
+        "schedule_key": "200000061|2026-05-10|4|535|4",
+        "schedule_short": "4|535|4",
+        "schedule_record_id": "rec4qVUyEB2tT3qIP",
+        "class_group_id": 200026496,
+        "class_group_sequence": 4,
+        "class_groupxclasses_id": 200039622,
+        "group_name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+        "total_trips": 3,
+        "completed_trips": 3,
+        "status": "Completed"
+      },
+      {
+        "id": "group:rec2Rkk48KTWrpUHJ",
         "schedule_key": "200000062|2026-05-28|3|555|14",
         "schedule_short": "3|555|14",
+        "schedule_record_id": "rec2Rkk48KTWrpUHJ",
         "class_group_id": 200024449,
         "class_group_sequence": 14,
         "class_groupxclasses_id": 200036107,
         "group_name": "THIS Children's Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|530|9",
+        "id": "group:rec2t2w8lOJdqAtgf",
         "schedule_key": "200000062|2026-05-28|3|530|9",
         "schedule_short": "3|530|9",
+        "schedule_record_id": "rec2t2w8lOJdqAtgf",
         "class_group_id": 200024444,
         "class_group_sequence": 9,
         "class_groupxclasses_id": 200036102,
         "group_name": "Hamel Foundation NHS 3'3' Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|585|13",
+        "id": "group:rec5V1cqFCSPOePjH",
         "schedule_key": "200000062|2026-05-28|3|585|13",
         "schedule_short": "3|585|13",
+        "schedule_record_id": "rec5V1cqFCSPOePjH",
         "class_group_id": 200024448,
         "class_group_sequence": 13,
         "class_groupxclasses_id": 200036106,
         "group_name": "USEF/NCEA Junior Hunter Seat Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|545|7",
+        "id": "group:recd92mGmGjZRj9ZR",
         "schedule_key": "200000062|2026-05-28|3|545|7",
         "schedule_short": "3|545|7",
+        "schedule_record_id": "recd92mGmGjZRj9ZR",
         "class_group_id": 200024442,
         "class_group_sequence": 7,
         "class_groupxclasses_id": 200036100,
         "group_name": "USHJA Jumping Seat Medal 3'3\""
       },
       {
-        "id": "group:200000062|2026-05-28|3|546|8",
+        "id": "group:recjDLuOp0kxz98SU",
         "schedule_key": "200000062|2026-05-28|3|546|8",
         "schedule_short": "3|546|8",
+        "schedule_record_id": "recjDLuOp0kxz98SU",
         "class_group_id": 200024443,
         "class_group_sequence": 8,
         "class_groupxclasses_id": 200036101,
         "group_name": "USHJA 3'3\" Adult Amateur Jumper Seat Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|570|12",
+        "id": "group:reclG1wv4Jab6H2fI",
         "schedule_key": "200000062|2026-05-28|3|570|12",
         "schedule_short": "3|570|12",
+        "schedule_record_id": "reclG1wv4Jab6H2fI",
         "class_group_id": 200024447,
         "class_group_sequence": 12,
         "class_groupxclasses_id": 200036105,
         "group_name": "ASPCA Maclay"
       },
       {
-        "id": "group:200000062|2026-05-28|3|550|11",
+        "id": "group:recmFHqmQJQfa1UZz",
         "schedule_key": "200000062|2026-05-28|3|550|11",
         "schedule_short": "3|550|11",
+        "schedule_record_id": "recmFHqmQJQfa1UZz",
         "class_group_id": 200024446,
         "class_group_sequence": 11,
         "class_groupxclasses_id": 200036104,
         "group_name": "Dover Saddlery USEF Hunter Seat Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|590|6",
+        "id": "group:recqh0pQrVd2zoCaC",
         "schedule_key": "200000062|2026-05-28|3|590|6",
         "schedule_short": "3|590|6",
+        "schedule_record_id": "recqh0pQrVd2zoCaC",
         "class_group_id": 200024441,
         "class_group_sequence": 6,
         "class_groupxclasses_id": 200036099,
         "group_name": "Platinum Performance/USEF Talent Search 1*"
       },
       {
-        "id": "group:200000062|2026-05-28|3|535|10",
+        "id": "group:recLJ7RMNtAXS4D47",
         "schedule_key": "200000062|2026-05-28|3|535|10",
         "schedule_short": "3|535|10",
+        "schedule_record_id": "recLJ7RMNtAXS4D47",
         "class_group_id": 200024445,
         "class_group_sequence": 10,
         "class_groupxclasses_id": 200036103,
         "group_name": "USHJA 3'3\" Hunter Seat Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|581|5",
+        "id": "group:recSYnKDicSIuCppm",
         "schedule_key": "200000062|2026-05-28|3|581|5",
         "schedule_short": "3|581|5",
+        "schedule_record_id": "recSYnKDicSIuCppm",
         "class_group_id": 200024440,
         "class_group_sequence": 5,
         "class_groupxclasses_id": 200036098,
         "group_name": "WIHS Jumper Phase"
       },
       {
-        "id": "group:200000062|2026-05-28|3|540|22",
+        "id": "group:rectPrZtjAButGbQj",
         "schedule_key": "200000062|2026-05-28|3|540|22",
         "schedule_short": "3|540|22",
+        "schedule_record_id": "rectPrZtjAButGbQj",
         "class_group_id": 200025073,
         "class_group_sequence": 22,
         "class_groupxclasses_id": 200037139,
         "group_name": "M&S USEF Pony Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|560|20",
+        "id": "group:reczwyWVAiDwjOwmC",
         "schedule_key": "200000062|2026-05-28|3|560|20",
         "schedule_short": "3|560|20",
+        "schedule_record_id": "reczwyWVAiDwjOwmC",
         "class_group_id": 200024455,
         "class_group_sequence": 20,
         "class_groupxclasses_id": 200036113,
         "group_name": "NHS/THIS Adult Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|529|18",
+        "id": "group:rechqiiZm1Y3trRkM",
         "schedule_key": "200000062|2026-05-28|3|529|18",
         "schedule_short": "3|529|18",
+        "schedule_record_id": "rechqiiZm1Y3trRkM",
         "class_group_id": 200024453,
         "class_group_sequence": 18,
         "class_groupxclasses_id": 200036111,
         "group_name": "M&S Children's Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|565|15",
+        "id": "group:reciR9WzOCd7nPxkh",
         "schedule_key": "200000062|2026-05-28|3|565|15",
         "schedule_short": "3|565|15",
+        "schedule_record_id": "reciR9WzOCd7nPxkh",
         "class_group_id": 200024450,
         "class_group_sequence": 15,
         "class_groupxclasses_id": 200036108,
         "group_name": "Ariat Adult Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|525|17",
+        "id": "group:recivXE0ebF1zjRJq",
         "schedule_key": "200000062|2026-05-28|3|525|17",
         "schedule_short": "3|525|17",
+        "schedule_record_id": "recivXE0ebF1zjRJq",
         "class_group_id": 200024452,
         "class_group_sequence": 17,
         "class_groupxclasses_id": 200036110,
         "group_name": "SFHJA Junior Medal (Flat Phase)"
       },
       {
-        "id": "group:200000062|2026-05-28|3|531|19",
+        "id": "group:recor1IEEnEKUZfSH",
         "schedule_key": "200000062|2026-05-28|3|531|19",
         "schedule_short": "3|531|19",
+        "schedule_record_id": "recor1IEEnEKUZfSH",
         "class_group_id": 200024454,
         "class_group_sequence": 19,
         "class_groupxclasses_id": 200036112,
         "group_name": "M&S Adult Medal"
       },
       {
-        "id": "group:200000062|2026-05-28|3|575|21",
+        "id": "group:recqdc6QDUDuLLCEk",
         "schedule_key": "200000062|2026-05-28|3|575|21",
         "schedule_short": "3|575|21",
+        "schedule_record_id": "recqdc6QDUDuLLCEk",
         "class_group_id": 200024456,
         "class_group_sequence": 21,
         "class_groupxclasses_id": 200036114,
         "group_name": "USEF Adult Equitation 3'3\""
       },
       {
-        "id": "group:200000062|2026-05-28|3|527|16",
+        "id": "group:recS85UUNBg5djXdp",
         "schedule_key": "200000062|2026-05-28|3|527|16",
         "schedule_short": "3|527|16",
+        "schedule_record_id": "recS85UUNBg5djXdp",
         "class_group_id": 200024451,
         "class_group_sequence": 16,
         "class_groupxclasses_id": 200036109,
@@ -1369,9 +1572,10 @@
     ],
     "class_start": [
       {
-        "id": "class_start:200000061|2026-05-10|3|723|2",
+        "id": "class_start:rec4x2rSLXbPpwqCR",
         "schedule_record_id": "rec4x2rSLXbPpwqCR",
         "schedule_key": "200000061|2026-05-10|3|723|2",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "07:45:00",
         "latest_schedule_log_record_id": "recvyDsxxb7hYX0tY",
         "latest_schedule_log": {
@@ -1381,9 +1585,10 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|763|3",
+        "id": "class_start:recjVQhpNGpIphY0F",
         "schedule_record_id": "recjVQhpNGpIphY0F",
         "schedule_key": "200000061|2026-05-10|3|763|3",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "09:05:00",
         "manual_time_override": true,
         "latest_schedule_log_record_id": "recUfUnDg8IvnTnt1",
@@ -1394,16 +1599,18 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|792|6",
+        "id": "class_start:reckAYCdFHylr08MP",
         "schedule_record_id": "reckAYCdFHylr08MP",
         "schedule_key": "200000061|2026-05-10|3|792|6",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:35:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|1|775|1",
+        "id": "class_start:recocqN2ycDrKjUTD",
         "schedule_record_id": "recocqN2ycDrKjUTD",
         "schedule_key": "200000061|2026-05-10|1|775|1",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "07:45:08",
         "latest_schedule_log_record_id": "rec950evr7PixKlz0",
         "latest_schedule_log": {
@@ -1413,9 +1620,10 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|762|4",
+        "id": "class_start:recrRvXzTJ7YJMmlO",
         "schedule_record_id": "recrRvXzTJ7YJMmlO",
         "schedule_key": "200000061|2026-05-10|3|762|4",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "10:17:00",
         "manual_time_override": true,
         "latest_schedule_log_record_id": "recDU8zn6ArVoLp5P",
@@ -1426,41 +1634,46 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|767|5",
+        "id": "class_start:recEktKyNu7DjiOc3",
         "schedule_record_id": "recEktKyNu7DjiOc3",
         "schedule_key": "200000061|2026-05-10|3|767|5",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "11:11:00",
         "manual_time_override": true,
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|739|5",
+        "id": "class_start:recKwL4KOR6Du67qQ",
         "schedule_record_id": "recKwL4KOR6Du67qQ",
         "schedule_key": "200000061|2026-05-10|3|739|5",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "11:11:00",
         "manual_time_override": true,
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|742|4",
+        "id": "class_start:recLmC6USajHypEzd",
         "schedule_record_id": "recLmC6USajHypEzd",
         "schedule_key": "200000061|2026-05-10|3|742|4",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "10:17:00",
         "manual_time_override": true,
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|743|3",
+        "id": "class_start:recMT7ja7hvSFeo8x",
         "schedule_record_id": "recMT7ja7hvSFeo8x",
         "schedule_key": "200000061|2026-05-10|3|743|3",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "09:05:00",
         "manual_time_override": true,
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|1|806|2",
+        "id": "class_start:recTI7BjXWhrbV5Yw",
         "schedule_record_id": "recTI7BjXWhrbV5Yw",
         "schedule_key": "200000061|2026-05-10|1|806|2",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "09:35:12",
         "latest_schedule_log_record_id": "recxax4zAlnp9qkg4",
         "latest_schedule_log": {
@@ -1470,9 +1683,10 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|570|5",
+        "id": "class_start:recwqlkuEYmrzPr2J",
         "schedule_record_id": "recwqlkuEYmrzPr2J",
         "schedule_key": "200000061|2026-05-10|4|570|5",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "09:40:00",
         "latest_schedule_log_record_id": "recKk9Tjb7Z0muacj",
         "latest_schedule_log": {
@@ -1482,16 +1696,18 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|685|8",
+        "id": "class_start:recesGc3TMP6C41OO",
         "schedule_record_id": "recesGc3TMP6C41OO",
         "schedule_key": "200000061|2026-05-10|3|685|8",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "15:30:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|550|6",
+        "id": "class_start:recmPS6FLfg6R6uN8",
         "schedule_record_id": "recmPS6FLfg6R6uN8",
         "schedule_key": "200000061|2026-05-10|4|550|6",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "10:20:09",
         "latest_schedule_log_record_id": "recmI76AK6A1QHbBm",
         "latest_schedule_log": {
@@ -1501,9 +1717,10 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|555|7",
+        "id": "class_start:recn0a367VVyjSid8",
         "schedule_record_id": "recn0a367VVyjSid8",
         "schedule_key": "200000061|2026-05-10|4|555|7",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "11:25:09",
         "latest_schedule_log_record_id": "recmVkGcO93Lxee99",
         "latest_schedule_log": {
@@ -1514,37 +1731,42 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|535|4",
+        "id": "class_start:recotAXxare3c9pD8",
         "schedule_record_id": "recotAXxare3c9pD8",
         "schedule_key": "200000061|2026-05-10|4|535|4",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "09:00:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|585|3",
+        "id": "class_start:recERjbCdbTffmu9n",
         "schedule_record_id": "recERjbCdbTffmu9n",
         "schedule_key": "200000061|2026-05-10|4|585|3",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "08:30:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|682|9",
+        "id": "class_start:recEsvxCuyxvtkbOp",
         "schedule_record_id": "recEsvxCuyxvtkbOp",
         "schedule_key": "200000061|2026-05-10|3|682|9",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "16:20:07",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|815|7",
+        "id": "class_start:recKeTVcfpBP7jI63",
         "schedule_record_id": "recKeTVcfpBP7jI63",
         "schedule_key": "200000061|2026-05-10|3|815|7",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "14:15:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|530|2",
+        "id": "class_start:recZsFiV8x4Y17mE0",
         "schedule_record_id": "recZsFiV8x4Y17mE0",
         "schedule_key": "200000061|2026-05-10|4|530|2",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "07:50:09",
         "latest_schedule_log_record_id": "recaTIdawA1Z42OnJ",
         "latest_schedule_log": {
@@ -1554,156 +1776,178 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|3|992|10",
+        "id": "class_start:rec1RKcjoMIYx4tBS",
         "schedule_record_id": "rec1RKcjoMIYx4tBS",
         "schedule_key": "200000061|2026-05-10|3|992|10",
+        "schedule_tie_breaker": 98,
         "estimated_start_time": "16:33:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|525|9",
+        "id": "class_start:recsxFSxinb8cLTEF",
         "schedule_record_id": "recsxFSxinb8cLTEF",
         "schedule_key": "200000061|2026-05-10|4|525|9",
+        "schedule_tie_breaker": 5,
         "estimated_start_time": "12:21:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|606|4",
+        "id": "class_start:recyOAUUbZVknUjHO",
         "schedule_record_id": "recyOAUUbZVknUjHO",
         "schedule_key": "200000061|2026-05-10|5|606|4",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "08:35:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|699|10",
+        "id": "class_start:rec28na3cikgKZZdf",
         "schedule_record_id": "rec28na3cikgKZZdf",
         "schedule_key": "200000061|2026-05-10|4|699|10",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:00:13",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|565|8",
+        "id": "class_start:recbZf5Pz5bJjDnv3",
         "schedule_record_id": "recbZf5Pz5bJjDnv3",
         "schedule_key": "200000061|2026-05-10|4|565|8",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "12:12:08",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|394|5",
+        "id": "class_start:recbmvK9R7S96haCt",
         "schedule_record_id": "recbmvK9R7S96haCt",
         "schedule_key": "200000061|2026-05-10|5|394|5",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "09:25:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|395|5",
+        "id": "class_start:reccPi72qEuDwvpMg",
         "schedule_record_id": "reccPi72qEuDwvpMg",
         "schedule_key": "200000061|2026-05-10|5|395|5",
+        "schedule_tie_breaker": 4,
         "estimated_start_time": "09:25:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|210|5",
+        "id": "class_start:recgzTQvhUZ5dLqo5",
         "schedule_record_id": "recgzTQvhUZ5dLqo5",
         "schedule_key": "200000061|2026-05-10|5|210|5",
+        "schedule_tie_breaker": 99,
         "estimated_start_time": "09:25:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|785|11",
+        "id": "class_start:rechtkwwDNVND8y2V",
         "schedule_record_id": "rechtkwwDNVND8y2V",
         "schedule_key": "200000061|2026-05-10|4|785|11",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "14:05:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|993|12",
+        "id": "class_start:reciUR9zFVhxlsziy",
         "schedule_record_id": "reciUR9zFVhxlsziy",
         "schedule_key": "200000061|2026-05-10|4|993|12",
+        "schedule_tie_breaker": 98,
         "estimated_start_time": "15:16:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|140|2",
+        "id": "class_start:recmtt5GG9V95Ap4u",
         "schedule_record_id": "recmtt5GG9V95Ap4u",
         "schedule_key": "200000061|2026-05-10|5|140|2",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "07:40:10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|909|5",
+        "id": "class_start:recos9Ngu8lwlMGj4",
         "schedule_record_id": "recos9Ngu8lwlMGj4",
         "schedule_key": "200000061|2026-05-10|5|909|5",
+        "schedule_tie_breaker": 3,
         "estimated_start_time": "09:25:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|696|10",
+        "id": "class_start:recpJJknzNIg8X7Nq",
         "schedule_record_id": "recpJJknzNIg8X7Nq",
         "schedule_key": "200000061|2026-05-10|4|696|10",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:00:13",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|4|797|11",
+        "id": "class_start:recqkdi5jKVXL1aFi",
         "schedule_record_id": "recqkdi5jKVXL1aFi",
         "schedule_key": "200000061|2026-05-10|4|797|11",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "14:05:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|604|3",
+        "id": "class_start:recr9zauvcDXEJ5d0",
         "schedule_record_id": "recr9zauvcDXEJ5d0",
         "schedule_key": "200000061|2026-05-10|5|604|3",
+        "schedule_tie_breaker": 5,
         "estimated_start_time": "08:05:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|144|1",
+        "id": "class_start:recr93MHDfbHvw6hS",
         "schedule_record_id": "recr93MHDfbHvw6hS",
         "schedule_key": "200000061|2026-05-10|5|144|1",
+        "schedule_tie_breaker": 5,
         "estimated_start_time": "07:30:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|614|4",
+        "id": "class_start:recrfzfsKOYERVfeO",
         "schedule_record_id": "recrfzfsKOYERVfeO",
         "schedule_key": "200000061|2026-05-10|5|614|4",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "08:35:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|145|2",
+        "id": "class_start:recIBWLnHI3XU4go9",
         "schedule_record_id": "recIBWLnHI3XU4go9",
         "schedule_key": "200000061|2026-05-10|5|145|2",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "07:40:10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|146|2",
+        "id": "class_start:recKsAKE910Tvzpt7",
         "schedule_record_id": "recKsAKE910Tvzpt7",
         "schedule_key": "200000061|2026-05-10|5|146|2",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "07:40:10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|605|4",
+        "id": "class_start:recMOM56Sn7LLsWAi",
         "schedule_record_id": "recMOM56Sn7LLsWAi",
         "schedule_key": "200000061|2026-05-10|5|605|4",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "08:35:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|210|6",
+        "id": "class_start:recOSdrkOQVo5DIZu",
         "schedule_record_id": "recOSdrkOQVo5DIZu",
         "schedule_key": "200000061|2026-05-10|5|210|6",
+        "schedule_tie_breaker": 99,
         "estimated_start_time": "09:50:15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|315|8",
+        "id": "class_start:recs3dplSkndOCdPg",
         "schedule_record_id": "recs3dplSkndOCdPg",
         "schedule_key": "200000061|2026-05-10|5|315|8",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "12:05:09",
         "latest_schedule_log_record_id": "rec3kVxJtr8AwCc68",
         "latest_schedule_log": {
@@ -1713,23 +1957,26 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|340|7",
+        "id": "class_start:reczVmlbB2xiRn3Ku",
         "schedule_record_id": "reczVmlbB2xiRn3Ku",
         "schedule_key": "200000061|2026-05-10|5|340|7",
+        "schedule_tie_breaker": 4,
         "estimated_start_time": "10:20:15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|659|9",
+        "id": "class_start:rec8chdknOAPY9W24",
         "schedule_record_id": "rec8chdknOAPY9W24",
         "schedule_key": "200000061|2026-05-10|5|659|9",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "13:22:39",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|309|6",
+        "id": "class_start:rece4AJ8PUXT0NoDT",
         "schedule_record_id": "rece4AJ8PUXT0NoDT",
         "schedule_key": "200000061|2026-05-10|5|309|6",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "09:50:15",
         "latest_schedule_log_record_id": "recAl5c7SsTPsnIZB",
         "latest_schedule_log": {
@@ -1739,30 +1986,34 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|339|7",
+        "id": "class_start:reciU4Ky0BJ5vNGJR",
         "schedule_record_id": "reciU4Ky0BJ5vNGJR",
         "schedule_key": "200000061|2026-05-10|5|339|7",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "10:20:15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|659|8",
+        "id": "class_start:recmGVwBrRRHlERbo",
         "schedule_record_id": "recmGVwBrRRHlERbo",
         "schedule_key": "200000061|2026-05-10|5|659|8",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "12:05:09",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|909|6",
+        "id": "class_start:recnW42otfcKkiAmm",
         "schedule_record_id": "recnW42otfcKkiAmm",
         "schedule_key": "200000061|2026-05-10|5|909|6",
+        "schedule_tie_breaker": 3,
         "estimated_start_time": "09:50:15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|314|8",
+        "id": "class_start:recoysocQBUtoFlFy",
         "schedule_record_id": "recoysocQBUtoFlFy",
         "schedule_key": "200000061|2026-05-10|5|314|8",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "12:05:09",
         "latest_schedule_log_record_id": "recDqKX6ZJh00fMdV",
         "latest_schedule_log": {
@@ -1772,114 +2023,130 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|210|7",
+        "id": "class_start:recqMuXS9sTVv8Hjo",
         "schedule_record_id": "recqMuXS9sTVv8Hjo",
         "schedule_key": "200000061|2026-05-10|5|210|7",
+        "schedule_tie_breaker": 99,
         "estimated_start_time": "10:20:15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|504|11",
+        "id": "class_start:recFxJKVNNs5avJfg",
         "schedule_record_id": "recFxJKVNNs5avJfg",
         "schedule_key": "200000061|2026-05-10|5|504|11",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:52:40",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|320|12",
+        "id": "class_start:recFB5cIna1pUtOAp",
         "schedule_record_id": "recFB5cIna1pUtOAp",
         "schedule_key": "200000061|2026-05-10|5|320|12",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "14:08:21",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|909|7",
+        "id": "class_start:recIMdl8NqL4yHTNF",
         "schedule_record_id": "recIMdl8NqL4yHTNF",
         "schedule_key": "200000061|2026-05-10|5|909|7",
+        "schedule_tie_breaker": 3,
         "estimated_start_time": "10:20:15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|653|12",
+        "id": "class_start:recJrnV7izOqoPub9",
         "schedule_record_id": "recJrnV7izOqoPub9",
         "schedule_key": "200000061|2026-05-10|5|653|12",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "14:08:21",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|653|11",
+        "id": "class_start:recM9YmupYlt4GyJT",
         "schedule_record_id": "recM9YmupYlt4GyJT",
         "schedule_key": "200000061|2026-05-10|5|653|11",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "13:52:40",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|319|12",
+        "id": "class_start:recNfMWxR6xZA86gF",
         "schedule_record_id": "recNfMWxR6xZA86gF",
         "schedule_key": "200000061|2026-05-10|5|319|12",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "14:08:21",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|503|11",
+        "id": "class_start:recUfGK9NTJXMUrKF",
         "schedule_record_id": "recUfGK9NTJXMUrKF",
         "schedule_key": "200000061|2026-05-10|5|503|11",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:52:40",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|285|9",
+        "id": "class_start:recV7bfPXPoWaECKz",
         "schedule_record_id": "recV7bfPXPoWaECKz",
         "schedule_key": "200000061|2026-05-10|5|285|9",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:22:39",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|284|9",
+        "id": "class_start:recYXxvNkbBPyZo18",
         "schedule_record_id": "recYXxvNkbBPyZo18",
         "schedule_key": "200000061|2026-05-10|5|284|9",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:22:39",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|310|6",
+        "id": "class_start:rec0QYc2jzwZU4LCF",
         "schedule_record_id": "rec0QYc2jzwZU4LCF",
         "schedule_key": "200000061|2026-05-10|5|310|6",
+        "schedule_tie_breaker": 4,
         "estimated_start_time": "09:50:15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|502|10",
+        "id": "class_start:rec1nRMYHbHa40WHp",
         "schedule_record_id": "rec1nRMYHbHa40WHp",
         "schedule_key": "200000061|2026-05-10|5|502|10",
+        "schedule_tie_breaker": 5,
         "estimated_start_time": "13:00:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|300|13",
+        "id": "class_start:rectI5udq9PqYoSbD",
         "schedule_record_id": "rectI5udq9PqYoSbD",
         "schedule_key": "200000061|2026-05-10|5|300|13",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "14:29:49",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|653|13",
+        "id": "class_start:recvHDGJWVvKZf433",
         "schedule_record_id": "recvHDGJWVvKZf433",
         "schedule_key": "200000061|2026-05-10|5|653|13",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "14:29:49",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|415|3",
+        "id": "class_start:recyMKT4ONBVlLtyA",
         "schedule_record_id": "recyMKT4ONBVlLtyA",
         "schedule_key": "200000061|2026-05-10|6|415|3",
+        "schedule_tie_breaker": 4,
         "estimated_start_time": "08:59:10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|414|3",
+        "id": "class_start:reczSo4WI2HXDqIBQ",
         "schedule_record_id": "reczSo4WI2HXDqIBQ",
         "schedule_key": "200000061|2026-05-10|6|414|3",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "08:59:10",
         "latest_schedule_log_record_id": "recHelLx4qNb9BS4W",
         "latest_schedule_log": {
@@ -1889,9 +2156,10 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|411|2",
+        "id": "class_start:rec4bmPTHYMu294Ca",
         "schedule_record_id": "rec4bmPTHYMu294Ca",
         "schedule_key": "200000061|2026-05-10|6|411|2",
+        "schedule_tie_breaker": 5,
         "estimated_start_time": "08:40:00",
         "latest_schedule_log_record_id": "recljSTMMbcL1eKBz",
         "latest_schedule_log": {
@@ -1902,72 +2170,82 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|644|1",
+        "id": "class_start:rec8ahxMbO73HzZ8c",
         "schedule_record_id": "rec8ahxMbO73HzZ8c",
         "schedule_key": "200000061|2026-05-10|6|644|1",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "07:45:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|299|13",
+        "id": "class_start:recn9SQ7jKG3tVMnN",
         "schedule_record_id": "recn9SQ7jKG3tVMnN",
         "schedule_key": "200000061|2026-05-10|5|299|13",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "14:29:49",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|5|994|14",
+        "id": "class_start:recpxUt9KVmfQf3oM",
         "schedule_record_id": "recpxUt9KVmfQf3oM",
         "schedule_key": "200000061|2026-05-10|5|994|14",
+        "schedule_tie_breaker": 98,
         "estimated_start_time": "14:00:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|652|1",
+        "id": "class_start:recpc3mXhBD3mgWc5",
         "schedule_record_id": "recpc3mXhBD3mgWc5",
         "schedule_key": "200000061|2026-05-10|6|652|1",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "07:45:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|645|1",
+        "id": "class_start:recRHO8ZWoGbjwyRO",
         "schedule_record_id": "recRHO8ZWoGbjwyRO",
         "schedule_key": "200000061|2026-05-10|6|645|1",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "07:45:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|441|6",
+        "id": "class_start:recvTcU6h7rXu4gqe",
         "schedule_record_id": "recvTcU6h7rXu4gqe",
         "schedule_key": "200000061|2026-05-10|6|441|6",
+        "schedule_tie_breaker": 5,
         "estimated_start_time": "12:50:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|906|3",
+        "id": "class_start:recz2KXXoTS0kNIld",
         "schedule_record_id": "recz2KXXoTS0kNIld",
         "schedule_key": "200000061|2026-05-10|6|906|3",
+        "schedule_tie_breaker": 3,
         "estimated_start_time": "08:59:10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|995|9",
+        "id": "class_start:recA3lmuIT6lK7UVw",
         "schedule_record_id": "recA3lmuIT6lK7UVw",
         "schedule_key": "200000061|2026-05-10|6|995|9",
+        "schedule_tie_breaker": 98,
         "estimated_start_time": "14:33:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|408|8",
+        "id": "class_start:rec5GklPIKndFVLJ8",
         "schedule_record_id": "rec5GklPIKndFVLJ8",
         "schedule_key": "200000061|2026-05-10|6|408|8",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "15:00:13",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|424|4",
+        "id": "class_start:rec8wareFbK9RP2v7",
         "schedule_record_id": "rec8wareFbK9RP2v7",
         "schedule_key": "200000061|2026-05-10|6|424|4",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "10:50:12",
         "latest_schedule_log_record_id": "receXwLlKaq8cZ2Lf",
         "latest_schedule_log": {
@@ -1977,186 +2255,204 @@
         }
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|654|8",
+        "id": "class_start:receUK4IKSncNM61c",
         "schedule_record_id": "receUK4IKSncNM61c",
         "schedule_key": "200000061|2026-05-10|6|654|8",
+        "schedule_tie_breaker": 96,
         "estimated_start_time": "15:00:13",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|907|5",
+        "id": "class_start:recg36hkMo8LJS7cp",
         "schedule_record_id": "recg36hkMo8LJS7cp",
         "schedule_key": "200000061|2026-05-10|6|907|5",
+        "schedule_tie_breaker": 3,
         "estimated_start_time": "12:25:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|444|7",
+        "id": "class_start:reckX52SrP2VSOufR",
         "schedule_record_id": "reckX52SrP2VSOufR",
         "schedule_key": "200000061|2026-05-10|6|444|7",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:55:10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|528|10",
+        "id": "class_start:recDx6J02rz0FvN0u",
         "schedule_record_id": "recDx6J02rz0FvN0u",
         "schedule_key": "200000061|2026-05-10|6|528|10",
+        "schedule_tie_breaker": 5,
         "estimated_start_time": "15:00:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|435|5",
+        "id": "class_start:recGye0eAacTVUEEJ",
         "schedule_record_id": "recGye0eAacTVUEEJ",
         "schedule_key": "200000061|2026-05-10|6|435|5",
+        "schedule_tie_breaker": 4,
         "estimated_start_time": "12:25:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|907|4",
+        "id": "class_start:recOzGmCWCZkq8XHE",
         "schedule_record_id": "recOzGmCWCZkq8XHE",
         "schedule_key": "200000061|2026-05-10|6|907|4",
+        "schedule_tie_breaker": 3,
         "estimated_start_time": "10:50:12",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|532|9",
+        "id": "class_start:recQ0Z1DVdbuR3qxl",
         "schedule_record_id": "recQ0Z1DVdbuR3qxl",
         "schedule_key": "200000061|2026-05-10|6|532|9",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "15:00:51",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|425|4",
+        "id": "class_start:recTqG0uKgSnXoXX6",
         "schedule_record_id": "recTqG0uKgSnXoXX6",
         "schedule_key": "200000061|2026-05-10|6|425|4",
+        "schedule_tie_breaker": 4,
         "estimated_start_time": "10:50:12",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|445|7",
+        "id": "class_start:recTv4IDoZBFKTAYJ",
         "schedule_record_id": "recTv4IDoZBFKTAYJ",
         "schedule_key": "200000061|2026-05-10|6|445|7",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "13:55:10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|434|5",
+        "id": "class_start:recVejA25lioeILQg",
         "schedule_record_id": "recVejA25lioeILQg",
         "schedule_key": "200000061|2026-05-10|6|434|5",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "12:25:00",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000061|2026-05-10|6|409|8",
+        "id": "class_start:recYdBx4LiSkjuuoB",
         "schedule_record_id": "recYdBx4LiSkjuuoB",
         "schedule_key": "200000061|2026-05-10|6|409|8",
+        "schedule_tie_breaker": 1,
         "estimated_start_time": "15:00:13",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|555|14",
+        "id": "class_start:rec4qVUyEB2tT3qIP",
+        "schedule_record_id": "rec4qVUyEB2tT3qIP",
+        "schedule_key": "200000061|2026-05-10|4|535|4",
+        "estimated_start_time": "08:40:00",
+        "latest_schedule_log": {}
+      },
+      {
+        "id": "class_start:rec2Rkk48KTWrpUHJ",
         "schedule_record_id": "rec2Rkk48KTWrpUHJ",
         "schedule_key": "200000062|2026-05-28|3|555|14",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|530|9",
+        "id": "class_start:rec2t2w8lOJdqAtgf",
         "schedule_record_id": "rec2t2w8lOJdqAtgf",
         "schedule_key": "200000062|2026-05-28|3|530|9",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|585|13",
+        "id": "class_start:rec5V1cqFCSPOePjH",
         "schedule_record_id": "rec5V1cqFCSPOePjH",
         "schedule_key": "200000062|2026-05-28|3|585|13",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|545|7",
+        "id": "class_start:recd92mGmGjZRj9ZR",
         "schedule_record_id": "recd92mGmGjZRj9ZR",
         "schedule_key": "200000062|2026-05-28|3|545|7",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|546|8",
+        "id": "class_start:recjDLuOp0kxz98SU",
         "schedule_record_id": "recjDLuOp0kxz98SU",
         "schedule_key": "200000062|2026-05-28|3|546|8",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|570|12",
+        "id": "class_start:reclG1wv4Jab6H2fI",
         "schedule_record_id": "reclG1wv4Jab6H2fI",
         "schedule_key": "200000062|2026-05-28|3|570|12",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|550|11",
+        "id": "class_start:recmFHqmQJQfa1UZz",
         "schedule_record_id": "recmFHqmQJQfa1UZz",
         "schedule_key": "200000062|2026-05-28|3|550|11",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|590|6",
+        "id": "class_start:recqh0pQrVd2zoCaC",
         "schedule_record_id": "recqh0pQrVd2zoCaC",
         "schedule_key": "200000062|2026-05-28|3|590|6",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|535|10",
+        "id": "class_start:recLJ7RMNtAXS4D47",
         "schedule_record_id": "recLJ7RMNtAXS4D47",
         "schedule_key": "200000062|2026-05-28|3|535|10",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|581|5",
+        "id": "class_start:recSYnKDicSIuCppm",
         "schedule_record_id": "recSYnKDicSIuCppm",
         "schedule_key": "200000062|2026-05-28|3|581|5",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|540|22",
+        "id": "class_start:rectPrZtjAButGbQj",
         "schedule_record_id": "rectPrZtjAButGbQj",
         "schedule_key": "200000062|2026-05-28|3|540|22",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|560|20",
+        "id": "class_start:reczwyWVAiDwjOwmC",
         "schedule_record_id": "reczwyWVAiDwjOwmC",
         "schedule_key": "200000062|2026-05-28|3|560|20",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|529|18",
+        "id": "class_start:rechqiiZm1Y3trRkM",
         "schedule_record_id": "rechqiiZm1Y3trRkM",
         "schedule_key": "200000062|2026-05-28|3|529|18",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|565|15",
+        "id": "class_start:reciR9WzOCd7nPxkh",
         "schedule_record_id": "reciR9WzOCd7nPxkh",
         "schedule_key": "200000062|2026-05-28|3|565|15",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|525|17",
+        "id": "class_start:recivXE0ebF1zjRJq",
         "schedule_record_id": "recivXE0ebF1zjRJq",
         "schedule_key": "200000062|2026-05-28|3|525|17",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|531|19",
+        "id": "class_start:recor1IEEnEKUZfSH",
         "schedule_record_id": "recor1IEEnEKUZfSH",
         "schedule_key": "200000062|2026-05-28|3|531|19",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|575|21",
+        "id": "class_start:recqdc6QDUDuLLCEk",
         "schedule_record_id": "recqdc6QDUDuLLCEk",
         "schedule_key": "200000062|2026-05-28|3|575|21",
         "latest_schedule_log": {}
       },
       {
-        "id": "class_start:200000062|2026-05-28|3|527|16",
+        "id": "class_start:recS85UUNBg5djXdp",
         "schedule_record_id": "recS85UUNBg5djXdp",
         "schedule_key": "200000062|2026-05-28|3|527|16",
         "latest_schedule_log": {}
@@ -2164,8 +2460,10 @@
     ],
     "classes": [
       {
-        "id": "class:200000061|2026-05-10|3|723|2",
+        "id": "class:rec4x2rSLXbPpwqCR",
+        "schedule_record_id": "rec4x2rSLXbPpwqCR",
         "schedule_key": "200000061|2026-05-10|3|723|2",
+        "schedule_tie_breaker": 1,
         "class_id": 200025174,
         "class_number": 723,
         "class_sequence": 2,
@@ -2174,8 +2472,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|763|3",
+        "id": "class:recjVQhpNGpIphY0F",
+        "schedule_record_id": "recjVQhpNGpIphY0F",
         "schedule_key": "200000061|2026-05-10|3|763|3",
+        "schedule_tie_breaker": 1,
         "class_id": 200025154,
         "class_number": 763,
         "class_sequence": 3,
@@ -2184,8 +2484,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|792|6",
+        "id": "class:reckAYCdFHylr08MP",
+        "schedule_record_id": "reckAYCdFHylr08MP",
         "schedule_key": "200000061|2026-05-10|3|792|6",
+        "schedule_tie_breaker": 1,
         "class_id": 200024993,
         "class_number": 792,
         "class_sequence": 6,
@@ -2194,8 +2496,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|1|775|1",
+        "id": "class:recocqN2ycDrKjUTD",
+        "schedule_record_id": "recocqN2ycDrKjUTD",
         "schedule_key": "200000061|2026-05-10|1|775|1",
+        "schedule_tie_breaker": 1,
         "class_id": 200025175,
         "class_number": 775,
         "class_sequence": 1,
@@ -2204,8 +2508,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|762|4",
+        "id": "class:recrRvXzTJ7YJMmlO",
+        "schedule_record_id": "recrRvXzTJ7YJMmlO",
         "schedule_key": "200000061|2026-05-10|3|762|4",
+        "schedule_tie_breaker": 1,
         "class_id": 200024959,
         "class_number": 762,
         "class_sequence": 4,
@@ -2214,8 +2520,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|767|5",
+        "id": "class:recEktKyNu7DjiOc3",
+        "schedule_record_id": "recEktKyNu7DjiOc3",
         "schedule_key": "200000061|2026-05-10|3|767|5",
+        "schedule_tie_breaker": 1,
         "class_id": 200025070,
         "class_number": 767,
         "class_sequence": 5,
@@ -2224,8 +2532,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|739|5",
+        "id": "class:recKwL4KOR6Du67qQ",
+        "schedule_record_id": "recKwL4KOR6Du67qQ",
         "schedule_key": "200000061|2026-05-10|3|739|5",
+        "schedule_tie_breaker": 1,
         "class_id": 200024920,
         "class_number": 739,
         "class_sequence": 5,
@@ -2234,8 +2544,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|742|4",
+        "id": "class:recLmC6USajHypEzd",
+        "schedule_record_id": "recLmC6USajHypEzd",
         "schedule_key": "200000061|2026-05-10|3|742|4",
+        "schedule_tie_breaker": 1,
         "class_id": 200024940,
         "class_number": 742,
         "class_sequence": 4,
@@ -2244,8 +2556,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|743|3",
+        "id": "class:recMT7ja7hvSFeo8x",
+        "schedule_record_id": "recMT7ja7hvSFeo8x",
         "schedule_key": "200000061|2026-05-10|3|743|3",
+        "schedule_tie_breaker": 1,
         "class_id": 200025105,
         "class_number": 743,
         "class_sequence": 3,
@@ -2254,8 +2568,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|1|806|2",
+        "id": "class:recTI7BjXWhrbV5Yw",
+        "schedule_record_id": "recTI7BjXWhrbV5Yw",
         "schedule_key": "200000061|2026-05-10|1|806|2",
+        "schedule_tie_breaker": 1,
         "class_id": 200024852,
         "class_number": 806,
         "class_sequence": 2,
@@ -2264,8 +2580,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|4|570|5",
+        "id": "class:recwqlkuEYmrzPr2J",
+        "schedule_record_id": "recwqlkuEYmrzPr2J",
         "schedule_key": "200000061|2026-05-10|4|570|5",
+        "schedule_tie_breaker": 1,
         "class_id": 200025034,
         "class_number": 570,
         "class_sequence": 5,
@@ -2274,8 +2592,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|3|685|8",
+        "id": "class:recesGc3TMP6C41OO",
+        "schedule_record_id": "recesGc3TMP6C41OO",
         "schedule_key": "200000061|2026-05-10|3|685|8",
+        "schedule_tie_breaker": 1,
         "class_id": 200028291,
         "class_number": 685,
         "class_sequence": 8,
@@ -2284,8 +2604,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|4|550|6",
+        "id": "class:recmPS6FLfg6R6uN8",
+        "schedule_record_id": "recmPS6FLfg6R6uN8",
         "schedule_key": "200000061|2026-05-10|4|550|6",
+        "schedule_tie_breaker": 1,
         "class_id": 200025045,
         "class_number": 550,
         "class_sequence": 6,
@@ -2294,8 +2616,10 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|4|555|7",
+        "id": "class:recn0a367VVyjSid8",
+        "schedule_record_id": "recn0a367VVyjSid8",
         "schedule_key": "200000061|2026-05-10|4|555|7",
+        "schedule_tie_breaker": 1,
         "class_id": 200024991,
         "class_number": 555,
         "class_sequence": 7,
@@ -2304,7 +2628,861 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|4|535|4",
+        "id": "class:recotAXxare3c9pD8",
+        "schedule_record_id": "recotAXxare3c9pD8",
+        "schedule_key": "200000061|2026-05-10|4|535|4",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024936,
+        "class_number": 535,
+        "class_sequence": 4,
+        "class_name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recERjbCdbTffmu9n",
+        "schedule_record_id": "recERjbCdbTffmu9n",
+        "schedule_key": "200000061|2026-05-10|4|585|3",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025206,
+        "class_number": 585,
+        "class_sequence": 3,
+        "class_name": "NCEA/USEF Junior Hunter Seat Medal",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recEsvxCuyxvtkbOp",
+        "schedule_record_id": "recEsvxCuyxvtkbOp",
+        "schedule_key": "200000061|2026-05-10|3|682|9",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025035,
+        "class_number": 682,
+        "class_sequence": 9,
+        "class_name": "WIHS Small Pony Jumper II2b",
+        "class_type": "Jumpers",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recKeTVcfpBP7jI63",
+        "schedule_record_id": "recKeTVcfpBP7jI63",
+        "schedule_key": "200000061|2026-05-10|3|815|7",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024961,
+        "class_number": 815,
+        "class_sequence": 7,
+        "class_name": "$250 .85m Jumper Classic II2b",
+        "class_type": "Jumpers",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recZsFiV8x4Y17mE0",
+        "schedule_record_id": "recZsFiV8x4Y17mE0",
+        "schedule_key": "200000061|2026-05-10|4|530|2",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025181,
+        "class_number": 530,
+        "class_sequence": 2,
+        "class_name": "Hamel Foundation/NHS 3'3\" Medal",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec1RKcjoMIYx4tBS",
+        "schedule_record_id": "rec1RKcjoMIYx4tBS",
+        "schedule_key": "200000061|2026-05-10|3|992|10",
+        "schedule_tie_breaker": 98,
+        "class_number": 992,
+        "class_sequence": 10,
+        "class_name": "Mulligan Class",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recsxFSxinb8cLTEF",
+        "schedule_record_id": "recsxFSxinb8cLTEF",
+        "schedule_key": "200000061|2026-05-10|4|525|9",
+        "schedule_tie_breaker": 5,
+        "class_number": 525,
+        "class_sequence": 9,
+        "class_name": "SFHJA Junior/Adult Amatuer Medal (Flat Phase)",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Under Saddle/Flat"
+      },
+      {
+        "id": "class:recyOAUUbZVknUjHO",
+        "schedule_record_id": "recyOAUUbZVknUjHO",
+        "schedule_key": "200000061|2026-05-10|5|606|4",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024952,
+        "class_number": 606,
+        "class_sequence": 4,
+        "class_name": "Stirrup Equitation",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec28na3cikgKZZdf",
+        "schedule_record_id": "rec28na3cikgKZZdf",
+        "schedule_key": "200000061|2026-05-10|4|699|10",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025046,
+        "class_number": 699,
+        "class_sequence": 10,
+        "class_name": "Itty Bitty Jumper Jr/Am (.60-.65m)  II2d",
+        "class_type": "Jumpers",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recbZf5Pz5bJjDnv3",
+        "schedule_record_id": "recbZf5Pz5bJjDnv3",
+        "schedule_key": "200000061|2026-05-10|4|565|8",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025019,
+        "class_number": 565,
+        "class_sequence": 8,
+        "class_name": "Ariat Adult Medal",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recbmvK9R7S96haCt",
+        "schedule_record_id": "recbmvK9R7S96haCt",
+        "schedule_key": "200000061|2026-05-10|5|394|5",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024984,
+        "class_number": 394,
+        "class_sequence": 5,
+        "class_name": "Amateur Owner Hunter 3'3\"/3'6\"",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:reccPi72qEuDwvpMg",
+        "schedule_record_id": "reccPi72qEuDwvpMg",
+        "schedule_key": "200000061|2026-05-10|5|395|5",
+        "schedule_tie_breaker": 4,
+        "class_id": 200025075,
+        "class_number": 395,
+        "class_sequence": 5,
+        "class_name": "Amateur Owner Hunter 3'3\"/3'6\" Handy",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recgzTQvhUZ5dLqo5",
+        "schedule_record_id": "recgzTQvhUZ5dLqo5",
+        "schedule_key": "200000061|2026-05-10|5|210|5",
+        "schedule_tie_breaker": 99,
+        "class_id": 200025080,
+        "class_number": 210,
+        "class_sequence": 5,
+        "class_name": "Add Back Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rechtkwwDNVND8y2V",
+        "schedule_record_id": "rechtkwwDNVND8y2V",
+        "schedule_key": "200000061|2026-05-10|4|785|11",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025167,
+        "class_number": 785,
+        "class_sequence": 11,
+        "class_name": "Puddle Jumper Open (.80m) II2d",
+        "class_type": "Jumpers",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:reciUR9zFVhxlsziy",
+        "schedule_record_id": "reciUR9zFVhxlsziy",
+        "schedule_key": "200000061|2026-05-10|4|993|12",
+        "schedule_tie_breaker": 98,
+        "class_number": 993,
+        "class_sequence": 12,
+        "class_name": "Mulligan Class",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recmtt5GG9V95Ap4u",
+        "schedule_record_id": "recmtt5GG9V95Ap4u",
+        "schedule_key": "200000061|2026-05-10|5|140|2",
+        "schedule_tie_breaker": 96,
+        "class_id": 200025157,
+        "class_number": 140,
+        "class_sequence": 2,
+        "class_name": "Cross Rail Warm Up",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recos9Ngu8lwlMGj4",
+        "schedule_record_id": "recos9Ngu8lwlMGj4",
+        "schedule_key": "200000061|2026-05-10|5|909|5",
+        "schedule_tie_breaker": 3,
+        "class_id": 200024962,
+        "class_number": 909,
+        "class_sequence": 5,
+        "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recpJJknzNIg8X7Nq",
+        "schedule_record_id": "recpJJknzNIg8X7Nq",
+        "schedule_key": "200000061|2026-05-10|4|696|10",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024896,
+        "class_number": 696,
+        "class_sequence": 10,
+        "class_name": "Itty Bitty Jumper Open (.60-.65m) II2d",
+        "class_type": "Jumpers",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recqkdi5jKVXL1aFi",
+        "schedule_record_id": "recqkdi5jKVXL1aFi",
+        "schedule_key": "200000061|2026-05-10|4|797|11",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024918,
+        "class_number": 797,
+        "class_sequence": 11,
+        "class_name": "Puddle Jumper Junior/Amateur (.80m) II2d",
+        "class_type": "Jumpers",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recr9zauvcDXEJ5d0",
+        "schedule_record_id": "recr9zauvcDXEJ5d0",
+        "schedule_key": "200000061|2026-05-10|5|604|3",
+        "schedule_tie_breaker": 5,
+        "class_number": 604,
+        "class_sequence": 3,
+        "class_name": "Stirrup Equitation Flat",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Under Saddle/Flat"
+      },
+      {
+        "id": "class:recr93MHDfbHvw6hS",
+        "schedule_record_id": "recr93MHDfbHvw6hS",
+        "schedule_key": "200000061|2026-05-10|5|144|1",
+        "schedule_tie_breaker": 5,
+        "class_number": 144,
+        "class_sequence": 1,
+        "class_name": "Cross Rail Equitation Flat",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Under Saddle/Flat"
+      },
+      {
+        "id": "class:recrfzfsKOYERVfeO",
+        "schedule_record_id": "recrfzfsKOYERVfeO",
+        "schedule_key": "200000061|2026-05-10|5|614|4",
+        "schedule_tie_breaker": 96,
+        "class_id": 200024845,
+        "class_number": 614,
+        "class_sequence": 4,
+        "class_name": "Stirrup Warm Up",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recIBWLnHI3XU4go9",
+        "schedule_record_id": "recIBWLnHI3XU4go9",
+        "schedule_key": "200000061|2026-05-10|5|145|2",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025212,
+        "class_number": 145,
+        "class_sequence": 2,
+        "class_name": "Cross Rail Equitation",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recKsAKE910Tvzpt7",
+        "schedule_record_id": "recKsAKE910Tvzpt7",
+        "schedule_key": "200000061|2026-05-10|5|146|2",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025151,
+        "class_number": 146,
+        "class_sequence": 2,
+        "class_name": "Cross Rail Equitation",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recMOM56Sn7LLsWAi",
+        "schedule_record_id": "recMOM56Sn7LLsWAi",
+        "schedule_key": "200000061|2026-05-10|5|605|4",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024891,
+        "class_number": 605,
+        "class_sequence": 4,
+        "class_name": "Stirrup Equitation",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recOSdrkOQVo5DIZu",
+        "schedule_record_id": "recOSdrkOQVo5DIZu",
+        "schedule_key": "200000061|2026-05-10|5|210|6",
+        "schedule_tie_breaker": 99,
+        "class_id": 200025080,
+        "class_number": 210,
+        "class_sequence": 6,
+        "class_name": "Add Back Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recs3dplSkndOCdPg",
+        "schedule_record_id": "recs3dplSkndOCdPg",
+        "schedule_key": "200000061|2026-05-10|5|315|8",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025108,
+        "class_number": 315,
+        "class_sequence": 8,
+        "class_name": "Children's Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:reczVmlbB2xiRn3Ku",
+        "schedule_record_id": "reczVmlbB2xiRn3Ku",
+        "schedule_key": "200000061|2026-05-10|5|340|7",
+        "schedule_tie_breaker": 4,
+        "class_id": 200024928,
+        "class_number": 340,
+        "class_sequence": 7,
+        "class_name": "Junior Hunter 3'3\" Handy",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec8chdknOAPY9W24",
+        "schedule_record_id": "rec8chdknOAPY9W24",
+        "schedule_key": "200000061|2026-05-10|5|659|9",
+        "schedule_tie_breaker": 96,
+        "class_id": 200024974,
+        "class_number": 659,
+        "class_sequence": 9,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rece4AJ8PUXT0NoDT",
+        "schedule_record_id": "rece4AJ8PUXT0NoDT",
+        "schedule_key": "200000061|2026-05-10|5|309|6",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024836,
+        "class_number": 309,
+        "class_sequence": 6,
+        "class_name": "Junior Hunter 3'6\"",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:reciU4Ky0BJ5vNGJR",
+        "schedule_record_id": "reciU4Ky0BJ5vNGJR",
+        "schedule_key": "200000061|2026-05-10|5|339|7",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025216,
+        "class_number": 339,
+        "class_sequence": 7,
+        "class_name": "Junior Hunter 3'3\"",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recmGVwBrRRHlERbo",
+        "schedule_record_id": "recmGVwBrRRHlERbo",
+        "schedule_key": "200000061|2026-05-10|5|659|8",
+        "schedule_tie_breaker": 96,
+        "class_id": 200024974,
+        "class_number": 659,
+        "class_sequence": 8,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recnW42otfcKkiAmm",
+        "schedule_record_id": "recnW42otfcKkiAmm",
+        "schedule_key": "200000061|2026-05-10|5|909|6",
+        "schedule_tie_breaker": 3,
+        "class_id": 200024962,
+        "class_number": 909,
+        "class_sequence": 6,
+        "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recoysocQBUtoFlFy",
+        "schedule_record_id": "recoysocQBUtoFlFy",
+        "schedule_key": "200000061|2026-05-10|5|314|8",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024865,
+        "class_number": 314,
+        "class_sequence": 8,
+        "class_name": "Children's Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recqMuXS9sTVv8Hjo",
+        "schedule_record_id": "recqMuXS9sTVv8Hjo",
+        "schedule_key": "200000061|2026-05-10|5|210|7",
+        "schedule_tie_breaker": 99,
+        "class_id": 200025080,
+        "class_number": 210,
+        "class_sequence": 7,
+        "class_name": "Add Back Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recFxJKVNNs5avJfg",
+        "schedule_record_id": "recFxJKVNNs5avJfg",
+        "schedule_key": "200000061|2026-05-10|5|504|11",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025103,
+        "class_number": 504,
+        "class_sequence": 11,
+        "class_name": "Child/Adult Amateur Equitation 2'6\"",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recFB5cIna1pUtOAp",
+        "schedule_record_id": "recFB5cIna1pUtOAp",
+        "schedule_key": "200000061|2026-05-10|5|320|12",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024840,
+        "class_number": 320,
+        "class_sequence": 12,
+        "class_name": "Low Children's Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recIMdl8NqL4yHTNF",
+        "schedule_record_id": "recIMdl8NqL4yHTNF",
+        "schedule_key": "200000061|2026-05-10|5|909|7",
+        "schedule_tie_breaker": 3,
+        "class_id": 200024962,
+        "class_number": 909,
+        "class_sequence": 7,
+        "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recJrnV7izOqoPub9",
+        "schedule_record_id": "recJrnV7izOqoPub9",
+        "schedule_key": "200000061|2026-05-10|5|653|12",
+        "schedule_tie_breaker": 96,
+        "class_id": 200024990,
+        "class_number": 653,
+        "class_sequence": 12,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recM9YmupYlt4GyJT",
+        "schedule_record_id": "recM9YmupYlt4GyJT",
+        "schedule_key": "200000061|2026-05-10|5|653|11",
+        "schedule_tie_breaker": 96,
+        "class_id": 200024990,
+        "class_number": 653,
+        "class_sequence": 11,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recNfMWxR6xZA86gF",
+        "schedule_record_id": "recNfMWxR6xZA86gF",
+        "schedule_key": "200000061|2026-05-10|5|319|12",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025077,
+        "class_number": 319,
+        "class_sequence": 12,
+        "class_name": "Low Children's Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recUfGK9NTJXMUrKF",
+        "schedule_record_id": "recUfGK9NTJXMUrKF",
+        "schedule_key": "200000061|2026-05-10|5|503|11",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025135,
+        "class_number": 503,
+        "class_sequence": 11,
+        "class_name": "Child/Adult Amateur Equitation 2'6\"",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recV7bfPXPoWaECKz",
+        "schedule_record_id": "recV7bfPXPoWaECKz",
+        "schedule_key": "200000061|2026-05-10|5|285|9",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025188,
+        "class_number": 285,
+        "class_sequence": 9,
+        "class_name": "Adult Amateur Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recYXxvNkbBPyZo18",
+        "schedule_record_id": "recYXxvNkbBPyZo18",
+        "schedule_key": "200000061|2026-05-10|5|284|9",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025177,
+        "class_number": 284,
+        "class_sequence": 9,
+        "class_name": "Adult Amateur Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec0QYc2jzwZU4LCF",
+        "schedule_record_id": "rec0QYc2jzwZU4LCF",
+        "schedule_key": "200000061|2026-05-10|5|310|6",
+        "schedule_tie_breaker": 4,
+        "class_id": 200024946,
+        "class_number": 310,
+        "class_sequence": 6,
+        "class_name": "Junior Hunter 3'6\" Handy",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec1nRMYHbHa40WHp",
+        "schedule_record_id": "rec1nRMYHbHa40WHp",
+        "schedule_key": "200000061|2026-05-10|5|502|10",
+        "schedule_tie_breaker": 5,
+        "class_number": 502,
+        "class_sequence": 10,
+        "class_name": "Child/Adult Amateur Equitation 2'6\" Flat",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Under Saddle/Flat"
+      },
+      {
+        "id": "class:rectI5udq9PqYoSbD",
+        "schedule_record_id": "rectI5udq9PqYoSbD",
+        "schedule_key": "200000061|2026-05-10|5|300|13",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024950,
+        "class_number": 300,
+        "class_sequence": 13,
+        "class_name": "Low Adult Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recvHDGJWVvKZf433",
+        "schedule_record_id": "recvHDGJWVvKZf433",
+        "schedule_key": "200000061|2026-05-10|5|653|13",
+        "schedule_tie_breaker": 96,
+        "class_id": 200024990,
+        "class_number": 653,
+        "class_sequence": 13,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recyMKT4ONBVlLtyA",
+        "schedule_record_id": "recyMKT4ONBVlLtyA",
+        "schedule_key": "200000061|2026-05-10|6|415|3",
+        "schedule_tie_breaker": 4,
+        "class_id": 200025133,
+        "class_number": 415,
+        "class_sequence": 3,
+        "class_name": "Small Pony Handy Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:reczSo4WI2HXDqIBQ",
+        "schedule_record_id": "reczSo4WI2HXDqIBQ",
+        "schedule_key": "200000061|2026-05-10|6|414|3",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025090,
+        "class_number": 414,
+        "class_sequence": 3,
+        "class_name": "Small Pony Conformation Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec4bmPTHYMu294Ca",
+        "schedule_record_id": "rec4bmPTHYMu294Ca",
+        "schedule_key": "200000061|2026-05-10|6|411|2",
+        "schedule_tie_breaker": 5,
+        "class_number": 411,
+        "class_sequence": 2,
+        "class_name": "Small Pony Hunter U/S",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Under Saddle/Flat"
+      },
+      {
+        "id": "class:rec8ahxMbO73HzZ8c",
+        "schedule_record_id": "rec8ahxMbO73HzZ8c",
+        "schedule_key": "200000061|2026-05-10|6|644|1",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024867,
+        "class_number": 644,
+        "class_sequence": 1,
+        "class_name": "Modified Hunter 2'/2'6\"",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recn9SQ7jKG3tVMnN",
+        "schedule_record_id": "recn9SQ7jKG3tVMnN",
+        "schedule_key": "200000061|2026-05-10|5|299|13",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024864,
+        "class_number": 299,
+        "class_sequence": 13,
+        "class_name": "Low Adult Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recpxUt9KVmfQf3oM",
+        "schedule_record_id": "recpxUt9KVmfQf3oM",
+        "schedule_key": "200000061|2026-05-10|5|994|14",
+        "schedule_tie_breaker": 98,
+        "class_number": 994,
+        "class_sequence": 14,
+        "class_name": "Mulligan Class",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recpc3mXhBD3mgWc5",
+        "schedule_record_id": "recpc3mXhBD3mgWc5",
+        "schedule_key": "200000061|2026-05-10|6|652|1",
+        "schedule_tie_breaker": 96,
+        "class_id": 200025055,
+        "class_number": 652,
+        "class_sequence": 1,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recRHO8ZWoGbjwyRO",
+        "schedule_record_id": "recRHO8ZWoGbjwyRO",
+        "schedule_key": "200000061|2026-05-10|6|645|1",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025017,
+        "class_number": 645,
+        "class_sequence": 1,
+        "class_name": "Modified Hunter 2'/2'6\"",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recvTcU6h7rXu4gqe",
+        "schedule_record_id": "recvTcU6h7rXu4gqe",
+        "schedule_key": "200000061|2026-05-10|6|441|6",
+        "schedule_tie_breaker": 5,
+        "class_number": 441,
+        "class_sequence": 6,
+        "class_name": "Green Pony Hunter U/S",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Under Saddle/Flat"
+      },
+      {
+        "id": "class:recz2KXXoTS0kNIld",
+        "schedule_record_id": "recz2KXXoTS0kNIld",
+        "schedule_key": "200000061|2026-05-10|6|906|3",
+        "schedule_tie_breaker": 3,
+        "class_id": 200025221,
+        "class_number": 906,
+        "class_sequence": 3,
+        "class_name": "$500 Small Pony Hunter Classic",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recA3lmuIT6lK7UVw",
+        "schedule_record_id": "recA3lmuIT6lK7UVw",
+        "schedule_key": "200000061|2026-05-10|6|995|9",
+        "schedule_tie_breaker": 98,
+        "class_number": 995,
+        "class_sequence": 9,
+        "class_name": "Mulligan Class",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec5GklPIKndFVLJ8",
+        "schedule_record_id": "rec5GklPIKndFVLJ8",
+        "schedule_key": "200000061|2026-05-10|6|408|8",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025003,
+        "class_number": 408,
+        "class_sequence": 8,
+        "class_name": "Children's Hunter Pony",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec8wareFbK9RP2v7",
+        "schedule_record_id": "rec8wareFbK9RP2v7",
+        "schedule_key": "200000061|2026-05-10|6|424|4",
+        "schedule_tie_breaker": 1,
+        "class_id": 200025002,
+        "class_number": 424,
+        "class_sequence": 4,
+        "class_name": "Medium Pony Conformation Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:receUK4IKSncNM61c",
+        "schedule_record_id": "receUK4IKSncNM61c",
+        "schedule_key": "200000061|2026-05-10|6|654|8",
+        "schedule_tie_breaker": 96,
+        "class_id": 200025189,
+        "class_number": 654,
+        "class_sequence": 8,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recg36hkMo8LJS7cp",
+        "schedule_record_id": "recg36hkMo8LJS7cp",
+        "schedule_key": "200000061|2026-05-10|6|907|5",
+        "schedule_tie_breaker": 3,
+        "class_id": 200025192,
+        "class_number": 907,
+        "class_sequence": 5,
+        "class_name": "$500 Medium/Large Pony Hunter Classic",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:reckX52SrP2VSOufR",
+        "schedule_record_id": "reckX52SrP2VSOufR",
+        "schedule_key": "200000061|2026-05-10|6|444|7",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024866,
+        "class_number": 444,
+        "class_sequence": 7,
+        "class_name": "Green Pony Conformation Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recDx6J02rz0FvN0u",
+        "schedule_record_id": "recDx6J02rz0FvN0u",
+        "schedule_key": "200000061|2026-05-10|6|528|10",
+        "schedule_tie_breaker": 5,
+        "class_number": 528,
+        "class_sequence": 10,
+        "class_name": "SFHJA Children's Pony Medal (Flat Phase) **3 To Fill**",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Under Saddle/Flat"
+      },
+      {
+        "id": "class:recGye0eAacTVUEEJ",
+        "schedule_record_id": "recGye0eAacTVUEEJ",
+        "schedule_key": "200000061|2026-05-10|6|435|5",
+        "schedule_tie_breaker": 4,
+        "class_id": 200025225,
+        "class_number": 435,
+        "class_sequence": 5,
+        "class_name": "Large Pony Handy Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recOzGmCWCZkq8XHE",
+        "schedule_record_id": "recOzGmCWCZkq8XHE",
+        "schedule_key": "200000061|2026-05-10|6|907|4",
+        "schedule_tie_breaker": 3,
+        "class_id": 200025192,
+        "class_number": 907,
+        "class_sequence": 4,
+        "class_name": "$500 Medium/Large Pony Hunter Classic",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recQ0Z1DVdbuR3qxl",
+        "schedule_record_id": "recQ0Z1DVdbuR3qxl",
+        "schedule_key": "200000061|2026-05-10|6|532|9",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024846,
+        "class_number": 532,
+        "class_sequence": 9,
+        "class_name": "M&S Children's Pony Medal **3 To Fill**",
+        "class_type": "Equitation",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recTqG0uKgSnXoXX6",
+        "schedule_record_id": "recTqG0uKgSnXoXX6",
+        "schedule_key": "200000061|2026-05-10|6|425|4",
+        "schedule_tie_breaker": 4,
+        "class_id": 200024841,
+        "class_number": 425,
+        "class_sequence": 4,
+        "class_name": "Medium Pony Handy Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recTv4IDoZBFKTAYJ",
+        "schedule_record_id": "recTv4IDoZBFKTAYJ",
+        "schedule_key": "200000061|2026-05-10|6|445|7",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024817,
+        "class_number": 445,
+        "class_sequence": 7,
+        "class_name": "Green Pony Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recVejA25lioeILQg",
+        "schedule_record_id": "recVejA25lioeILQg",
+        "schedule_key": "200000061|2026-05-10|6|434|5",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024911,
+        "class_number": 434,
+        "class_sequence": 5,
+        "class_name": "Large Pony Conformation Hunter",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:recYdBx4LiSkjuuoB",
+        "schedule_record_id": "recYdBx4LiSkjuuoB",
+        "schedule_key": "200000061|2026-05-10|6|409|8",
+        "schedule_tie_breaker": 1,
+        "class_id": 200024931,
+        "class_number": 409,
+        "class_sequence": 8,
+        "class_name": "Children's Hunter Pony",
+        "class_type": "Hunters",
+        "schedule_sequencetype": "Over Fences"
+      },
+      {
+        "id": "class:rec4qVUyEB2tT3qIP",
+        "schedule_record_id": "rec4qVUyEB2tT3qIP",
         "schedule_key": "200000061|2026-05-10|4|535|4",
         "class_id": 200024936,
         "class_number": 535,
@@ -2314,706 +3492,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000061|2026-05-10|4|585|3",
-        "schedule_key": "200000061|2026-05-10|4|585|3",
-        "class_id": 200025206,
-        "class_number": 585,
-        "class_sequence": 3,
-        "class_name": "NCEA/USEF Junior Hunter Seat Medal",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|3|682|9",
-        "schedule_key": "200000061|2026-05-10|3|682|9",
-        "class_id": 200025035,
-        "class_number": 682,
-        "class_sequence": 9,
-        "class_name": "WIHS Small Pony Jumper II2b",
-        "class_type": "Jumpers",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|3|815|7",
-        "schedule_key": "200000061|2026-05-10|3|815|7",
-        "class_id": 200024961,
-        "class_number": 815,
-        "class_sequence": 7,
-        "class_name": "$250 .85m Jumper Classic II2b",
-        "class_type": "Jumpers",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|530|2",
-        "schedule_key": "200000061|2026-05-10|4|530|2",
-        "class_id": 200025181,
-        "class_number": 530,
-        "class_sequence": 2,
-        "class_name": "Hamel Foundation/NHS 3'3\" Medal",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|3|992|10",
-        "schedule_key": "200000061|2026-05-10|3|992|10",
-        "class_number": 992,
-        "class_sequence": 10,
-        "class_name": "Mulligan Class",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|525|9",
-        "schedule_key": "200000061|2026-05-10|4|525|9",
-        "class_number": 525,
-        "class_sequence": 9,
-        "class_name": "SFHJA Junior/Adult Amatuer Medal (Flat Phase)",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Under Saddle/Flat"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|606|4",
-        "schedule_key": "200000061|2026-05-10|5|606|4",
-        "class_id": 200024952,
-        "class_number": 606,
-        "class_sequence": 4,
-        "class_name": "Stirrup Equitation",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|699|10",
-        "schedule_key": "200000061|2026-05-10|4|699|10",
-        "class_id": 200025046,
-        "class_number": 699,
-        "class_sequence": 10,
-        "class_name": "Itty Bitty Jumper Jr/Am (.60-.65m)  II2d",
-        "class_type": "Jumpers",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|565|8",
-        "schedule_key": "200000061|2026-05-10|4|565|8",
-        "class_id": 200025019,
-        "class_number": 565,
-        "class_sequence": 8,
-        "class_name": "Ariat Adult Medal",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|394|5",
-        "schedule_key": "200000061|2026-05-10|5|394|5",
-        "class_id": 200024984,
-        "class_number": 394,
-        "class_sequence": 5,
-        "class_name": "Amateur Owner Hunter 3'3\"/3'6\"",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|395|5",
-        "schedule_key": "200000061|2026-05-10|5|395|5",
-        "class_id": 200025075,
-        "class_number": 395,
-        "class_sequence": 5,
-        "class_name": "Amateur Owner Hunter 3'3\"/3'6\" Handy",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|210|5",
-        "schedule_key": "200000061|2026-05-10|5|210|5",
-        "class_id": 200025080,
-        "class_number": 210,
-        "class_sequence": 5,
-        "class_name": "Add Back Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|785|11",
-        "schedule_key": "200000061|2026-05-10|4|785|11",
-        "class_id": 200025167,
-        "class_number": 785,
-        "class_sequence": 11,
-        "class_name": "Puddle Jumper Open (.80m) II2d",
-        "class_type": "Jumpers",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|993|12",
-        "schedule_key": "200000061|2026-05-10|4|993|12",
-        "class_number": 993,
-        "class_sequence": 12,
-        "class_name": "Mulligan Class",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|140|2",
-        "schedule_key": "200000061|2026-05-10|5|140|2",
-        "class_id": 200025157,
-        "class_number": 140,
-        "class_sequence": 2,
-        "class_name": "Cross Rail Warm Up",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|909|5",
-        "schedule_key": "200000061|2026-05-10|5|909|5",
-        "class_id": 200024962,
-        "class_number": 909,
-        "class_sequence": 5,
-        "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|696|10",
-        "schedule_key": "200000061|2026-05-10|4|696|10",
-        "class_id": 200024896,
-        "class_number": 696,
-        "class_sequence": 10,
-        "class_name": "Itty Bitty Jumper Open (.60-.65m) II2d",
-        "class_type": "Jumpers",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|4|797|11",
-        "schedule_key": "200000061|2026-05-10|4|797|11",
-        "class_id": 200024918,
-        "class_number": 797,
-        "class_sequence": 11,
-        "class_name": "Puddle Jumper Junior/Amateur (.80m) II2d",
-        "class_type": "Jumpers",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|604|3",
-        "schedule_key": "200000061|2026-05-10|5|604|3",
-        "class_number": 604,
-        "class_sequence": 3,
-        "class_name": "Stirrup Equitation Flat",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Under Saddle/Flat"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|144|1",
-        "schedule_key": "200000061|2026-05-10|5|144|1",
-        "class_number": 144,
-        "class_sequence": 1,
-        "class_name": "Cross Rail Equitation Flat",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Under Saddle/Flat"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|614|4",
-        "schedule_key": "200000061|2026-05-10|5|614|4",
-        "class_id": 200024845,
-        "class_number": 614,
-        "class_sequence": 4,
-        "class_name": "Stirrup Warm Up",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|145|2",
-        "schedule_key": "200000061|2026-05-10|5|145|2",
-        "class_id": 200025212,
-        "class_number": 145,
-        "class_sequence": 2,
-        "class_name": "Cross Rail Equitation",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|146|2",
-        "schedule_key": "200000061|2026-05-10|5|146|2",
-        "class_id": 200025151,
-        "class_number": 146,
-        "class_sequence": 2,
-        "class_name": "Cross Rail Equitation",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|605|4",
-        "schedule_key": "200000061|2026-05-10|5|605|4",
-        "class_id": 200024891,
-        "class_number": 605,
-        "class_sequence": 4,
-        "class_name": "Stirrup Equitation",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|210|6",
-        "schedule_key": "200000061|2026-05-10|5|210|6",
-        "class_id": 200025080,
-        "class_number": 210,
-        "class_sequence": 6,
-        "class_name": "Add Back Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|315|8",
-        "schedule_key": "200000061|2026-05-10|5|315|8",
-        "class_id": 200025108,
-        "class_number": 315,
-        "class_sequence": 8,
-        "class_name": "Children's Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|340|7",
-        "schedule_key": "200000061|2026-05-10|5|340|7",
-        "class_id": 200024928,
-        "class_number": 340,
-        "class_sequence": 7,
-        "class_name": "Junior Hunter 3'3\" Handy",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|659|9",
-        "schedule_key": "200000061|2026-05-10|5|659|9",
-        "class_id": 200024974,
-        "class_number": 659,
-        "class_sequence": 9,
-        "class_name": "Warm Up Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|309|6",
-        "schedule_key": "200000061|2026-05-10|5|309|6",
-        "class_id": 200024836,
-        "class_number": 309,
-        "class_sequence": 6,
-        "class_name": "Junior Hunter 3'6\"",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|339|7",
-        "schedule_key": "200000061|2026-05-10|5|339|7",
-        "class_id": 200025216,
-        "class_number": 339,
-        "class_sequence": 7,
-        "class_name": "Junior Hunter 3'3\"",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|659|8",
-        "schedule_key": "200000061|2026-05-10|5|659|8",
-        "class_id": 200024974,
-        "class_number": 659,
-        "class_sequence": 8,
-        "class_name": "Warm Up Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|909|6",
-        "schedule_key": "200000061|2026-05-10|5|909|6",
-        "class_id": 200024962,
-        "class_number": 909,
-        "class_sequence": 6,
-        "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|314|8",
-        "schedule_key": "200000061|2026-05-10|5|314|8",
-        "class_id": 200024865,
-        "class_number": 314,
-        "class_sequence": 8,
-        "class_name": "Children's Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|210|7",
-        "schedule_key": "200000061|2026-05-10|5|210|7",
-        "class_id": 200025080,
-        "class_number": 210,
-        "class_sequence": 7,
-        "class_name": "Add Back Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|504|11",
-        "schedule_key": "200000061|2026-05-10|5|504|11",
-        "class_id": 200025103,
-        "class_number": 504,
-        "class_sequence": 11,
-        "class_name": "Child/Adult Amateur Equitation 2'6\"",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|320|12",
-        "schedule_key": "200000061|2026-05-10|5|320|12",
-        "class_id": 200024840,
-        "class_number": 320,
-        "class_sequence": 12,
-        "class_name": "Low Children's Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|909|7",
-        "schedule_key": "200000061|2026-05-10|5|909|7",
-        "class_id": 200024962,
-        "class_number": 909,
-        "class_sequence": 7,
-        "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|653|12",
-        "schedule_key": "200000061|2026-05-10|5|653|12",
-        "class_id": 200024990,
-        "class_number": 653,
-        "class_sequence": 12,
-        "class_name": "Warm Up Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|653|11",
-        "schedule_key": "200000061|2026-05-10|5|653|11",
-        "class_id": 200024990,
-        "class_number": 653,
-        "class_sequence": 11,
-        "class_name": "Warm Up Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|319|12",
-        "schedule_key": "200000061|2026-05-10|5|319|12",
-        "class_id": 200025077,
-        "class_number": 319,
-        "class_sequence": 12,
-        "class_name": "Low Children's Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|503|11",
-        "schedule_key": "200000061|2026-05-10|5|503|11",
-        "class_id": 200025135,
-        "class_number": 503,
-        "class_sequence": 11,
-        "class_name": "Child/Adult Amateur Equitation 2'6\"",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|285|9",
-        "schedule_key": "200000061|2026-05-10|5|285|9",
-        "class_id": 200025188,
-        "class_number": 285,
-        "class_sequence": 9,
-        "class_name": "Adult Amateur Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|284|9",
-        "schedule_key": "200000061|2026-05-10|5|284|9",
-        "class_id": 200025177,
-        "class_number": 284,
-        "class_sequence": 9,
-        "class_name": "Adult Amateur Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|310|6",
-        "schedule_key": "200000061|2026-05-10|5|310|6",
-        "class_id": 200024946,
-        "class_number": 310,
-        "class_sequence": 6,
-        "class_name": "Junior Hunter 3'6\" Handy",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|502|10",
-        "schedule_key": "200000061|2026-05-10|5|502|10",
-        "class_number": 502,
-        "class_sequence": 10,
-        "class_name": "Child/Adult Amateur Equitation 2'6\" Flat",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Under Saddle/Flat"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|300|13",
-        "schedule_key": "200000061|2026-05-10|5|300|13",
-        "class_id": 200024950,
-        "class_number": 300,
-        "class_sequence": 13,
-        "class_name": "Low Adult Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|653|13",
-        "schedule_key": "200000061|2026-05-10|5|653|13",
-        "class_id": 200024990,
-        "class_number": 653,
-        "class_sequence": 13,
-        "class_name": "Warm Up Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|415|3",
-        "schedule_key": "200000061|2026-05-10|6|415|3",
-        "class_id": 200025133,
-        "class_number": 415,
-        "class_sequence": 3,
-        "class_name": "Small Pony Handy Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|414|3",
-        "schedule_key": "200000061|2026-05-10|6|414|3",
-        "class_id": 200025090,
-        "class_number": 414,
-        "class_sequence": 3,
-        "class_name": "Small Pony Conformation Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|411|2",
-        "schedule_key": "200000061|2026-05-10|6|411|2",
-        "class_number": 411,
-        "class_sequence": 2,
-        "class_name": "Small Pony Hunter U/S",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Under Saddle/Flat"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|644|1",
-        "schedule_key": "200000061|2026-05-10|6|644|1",
-        "class_id": 200024867,
-        "class_number": 644,
-        "class_sequence": 1,
-        "class_name": "Modified Hunter 2'/2'6\"",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|299|13",
-        "schedule_key": "200000061|2026-05-10|5|299|13",
-        "class_id": 200024864,
-        "class_number": 299,
-        "class_sequence": 13,
-        "class_name": "Low Adult Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|5|994|14",
-        "schedule_key": "200000061|2026-05-10|5|994|14",
-        "class_number": 994,
-        "class_sequence": 14,
-        "class_name": "Mulligan Class",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|652|1",
-        "schedule_key": "200000061|2026-05-10|6|652|1",
-        "class_id": 200025055,
-        "class_number": 652,
-        "class_sequence": 1,
-        "class_name": "Warm Up Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|645|1",
-        "schedule_key": "200000061|2026-05-10|6|645|1",
-        "class_id": 200025017,
-        "class_number": 645,
-        "class_sequence": 1,
-        "class_name": "Modified Hunter 2'/2'6\"",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|441|6",
-        "schedule_key": "200000061|2026-05-10|6|441|6",
-        "class_number": 441,
-        "class_sequence": 6,
-        "class_name": "Green Pony Hunter U/S",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Under Saddle/Flat"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|906|3",
-        "schedule_key": "200000061|2026-05-10|6|906|3",
-        "class_id": 200025221,
-        "class_number": 906,
-        "class_sequence": 3,
-        "class_name": "$500 Small Pony Hunter Classic",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|995|9",
-        "schedule_key": "200000061|2026-05-10|6|995|9",
-        "class_number": 995,
-        "class_sequence": 9,
-        "class_name": "Mulligan Class",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|408|8",
-        "schedule_key": "200000061|2026-05-10|6|408|8",
-        "class_id": 200025003,
-        "class_number": 408,
-        "class_sequence": 8,
-        "class_name": "Children's Hunter Pony",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|424|4",
-        "schedule_key": "200000061|2026-05-10|6|424|4",
-        "class_id": 200025002,
-        "class_number": 424,
-        "class_sequence": 4,
-        "class_name": "Medium Pony Conformation Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|654|8",
-        "schedule_key": "200000061|2026-05-10|6|654|8",
-        "class_id": 200025189,
-        "class_number": 654,
-        "class_sequence": 8,
-        "class_name": "Warm Up Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|907|5",
-        "schedule_key": "200000061|2026-05-10|6|907|5",
-        "class_id": 200025192,
-        "class_number": 907,
-        "class_sequence": 5,
-        "class_name": "$500 Medium/Large Pony Hunter Classic",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|444|7",
-        "schedule_key": "200000061|2026-05-10|6|444|7",
-        "class_id": 200024866,
-        "class_number": 444,
-        "class_sequence": 7,
-        "class_name": "Green Pony Conformation Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|528|10",
-        "schedule_key": "200000061|2026-05-10|6|528|10",
-        "class_number": 528,
-        "class_sequence": 10,
-        "class_name": "SFHJA Children's Pony Medal (Flat Phase) **3 To Fill**",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Under Saddle/Flat"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|435|5",
-        "schedule_key": "200000061|2026-05-10|6|435|5",
-        "class_id": 200025225,
-        "class_number": 435,
-        "class_sequence": 5,
-        "class_name": "Large Pony Handy Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|907|4",
-        "schedule_key": "200000061|2026-05-10|6|907|4",
-        "class_id": 200025192,
-        "class_number": 907,
-        "class_sequence": 4,
-        "class_name": "$500 Medium/Large Pony Hunter Classic",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|532|9",
-        "schedule_key": "200000061|2026-05-10|6|532|9",
-        "class_id": 200024846,
-        "class_number": 532,
-        "class_sequence": 9,
-        "class_name": "M&S Children's Pony Medal **3 To Fill**",
-        "class_type": "Equitation",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|425|4",
-        "schedule_key": "200000061|2026-05-10|6|425|4",
-        "class_id": 200024841,
-        "class_number": 425,
-        "class_sequence": 4,
-        "class_name": "Medium Pony Handy Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|445|7",
-        "schedule_key": "200000061|2026-05-10|6|445|7",
-        "class_id": 200024817,
-        "class_number": 445,
-        "class_sequence": 7,
-        "class_name": "Green Pony Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|434|5",
-        "schedule_key": "200000061|2026-05-10|6|434|5",
-        "class_id": 200024911,
-        "class_number": 434,
-        "class_sequence": 5,
-        "class_name": "Large Pony Conformation Hunter",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000061|2026-05-10|6|409|8",
-        "schedule_key": "200000061|2026-05-10|6|409|8",
-        "class_id": 200024931,
-        "class_number": 409,
-        "class_sequence": 8,
-        "class_name": "Children's Hunter Pony",
-        "class_type": "Hunters",
-        "schedule_sequencetype": "Over Fences"
-      },
-      {
-        "id": "class:200000062|2026-05-28|3|555|14",
+        "id": "class:rec2Rkk48KTWrpUHJ",
+        "schedule_record_id": "rec2Rkk48KTWrpUHJ",
         "schedule_key": "200000062|2026-05-28|3|555|14",
         "class_number": 555,
         "class_sequence": 14,
@@ -3022,7 +3502,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|530|9",
+        "id": "class:rec2t2w8lOJdqAtgf",
+        "schedule_record_id": "rec2t2w8lOJdqAtgf",
         "schedule_key": "200000062|2026-05-28|3|530|9",
         "class_number": 530,
         "class_sequence": 9,
@@ -3031,7 +3512,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|585|13",
+        "id": "class:rec5V1cqFCSPOePjH",
+        "schedule_record_id": "rec5V1cqFCSPOePjH",
         "schedule_key": "200000062|2026-05-28|3|585|13",
         "class_number": 585,
         "class_sequence": 13,
@@ -3040,7 +3522,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|545|7",
+        "id": "class:recd92mGmGjZRj9ZR",
+        "schedule_record_id": "recd92mGmGjZRj9ZR",
         "schedule_key": "200000062|2026-05-28|3|545|7",
         "class_number": 545,
         "class_sequence": 7,
@@ -3049,7 +3532,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|546|8",
+        "id": "class:recjDLuOp0kxz98SU",
+        "schedule_record_id": "recjDLuOp0kxz98SU",
         "schedule_key": "200000062|2026-05-28|3|546|8",
         "class_number": 546,
         "class_sequence": 8,
@@ -3058,7 +3542,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|570|12",
+        "id": "class:reclG1wv4Jab6H2fI",
+        "schedule_record_id": "reclG1wv4Jab6H2fI",
         "schedule_key": "200000062|2026-05-28|3|570|12",
         "class_number": 570,
         "class_sequence": 12,
@@ -3067,7 +3552,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|550|11",
+        "id": "class:recmFHqmQJQfa1UZz",
+        "schedule_record_id": "recmFHqmQJQfa1UZz",
         "schedule_key": "200000062|2026-05-28|3|550|11",
         "class_number": 550,
         "class_sequence": 11,
@@ -3076,7 +3562,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|590|6",
+        "id": "class:recqh0pQrVd2zoCaC",
+        "schedule_record_id": "recqh0pQrVd2zoCaC",
         "schedule_key": "200000062|2026-05-28|3|590|6",
         "class_number": 590,
         "class_sequence": 6,
@@ -3085,7 +3572,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|535|10",
+        "id": "class:recLJ7RMNtAXS4D47",
+        "schedule_record_id": "recLJ7RMNtAXS4D47",
         "schedule_key": "200000062|2026-05-28|3|535|10",
         "class_number": 535,
         "class_sequence": 10,
@@ -3094,7 +3582,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|581|5",
+        "id": "class:recSYnKDicSIuCppm",
+        "schedule_record_id": "recSYnKDicSIuCppm",
         "schedule_key": "200000062|2026-05-28|3|581|5",
         "class_number": 581,
         "class_sequence": 5,
@@ -3103,7 +3592,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|540|22",
+        "id": "class:rectPrZtjAButGbQj",
+        "schedule_record_id": "rectPrZtjAButGbQj",
         "schedule_key": "200000062|2026-05-28|3|540|22",
         "class_number": 540,
         "class_sequence": 22,
@@ -3112,7 +3602,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|560|20",
+        "id": "class:reczwyWVAiDwjOwmC",
+        "schedule_record_id": "reczwyWVAiDwjOwmC",
         "schedule_key": "200000062|2026-05-28|3|560|20",
         "class_number": 560,
         "class_sequence": 20,
@@ -3121,7 +3612,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|529|18",
+        "id": "class:rechqiiZm1Y3trRkM",
+        "schedule_record_id": "rechqiiZm1Y3trRkM",
         "schedule_key": "200000062|2026-05-28|3|529|18",
         "class_number": 529,
         "class_sequence": 18,
@@ -3130,7 +3622,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|565|15",
+        "id": "class:reciR9WzOCd7nPxkh",
+        "schedule_record_id": "reciR9WzOCd7nPxkh",
         "schedule_key": "200000062|2026-05-28|3|565|15",
         "class_number": 565,
         "class_sequence": 15,
@@ -3139,7 +3632,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|525|17",
+        "id": "class:recivXE0ebF1zjRJq",
+        "schedule_record_id": "recivXE0ebF1zjRJq",
         "schedule_key": "200000062|2026-05-28|3|525|17",
         "class_number": 525,
         "class_sequence": 17,
@@ -3148,7 +3642,8 @@
         "schedule_sequencetype": "Under Saddle/Flat"
       },
       {
-        "id": "class:200000062|2026-05-28|3|531|19",
+        "id": "class:recor1IEEnEKUZfSH",
+        "schedule_record_id": "recor1IEEnEKUZfSH",
         "schedule_key": "200000062|2026-05-28|3|531|19",
         "class_number": 531,
         "class_sequence": 19,
@@ -3157,7 +3652,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|575|21",
+        "id": "class:recqdc6QDUDuLLCEk",
+        "schedule_record_id": "recqdc6QDUDuLLCEk",
         "schedule_key": "200000062|2026-05-28|3|575|21",
         "class_number": 575,
         "class_sequence": 21,
@@ -3166,7 +3662,8 @@
         "schedule_sequencetype": "Over Fences"
       },
       {
-        "id": "class:200000062|2026-05-28|3|527|16",
+        "id": "class:recS85UUNBg5djXdp",
+        "schedule_record_id": "recS85UUNBg5djXdp",
         "schedule_key": "200000062|2026-05-28|3|527|16",
         "class_number": 527,
         "class_sequence": 16,
@@ -3215,7 +3712,7 @@
           "rs_trip_time": 180,
           "rs_mins_till_start": -915
         },
-        "latest_trip_log_record_id": "recAG0693DJvWuwII",
+        "latest_trip_log_record_id": "reccs79ON97etb8kR",
         "rs_latest_log": {
           "rs_mins_since_start": 915,
           "rs_mins_till_start": -915,
@@ -3223,7 +3720,7 @@
           "rs_start_time": "08:40:00",
           "rs_trip_default": 180,
           "rs_trip_time2": 180,
-          "rs_run_id": "2026-05-12T18:15:23.667Z"
+          "rs_run_id": "2026-05-12T18:39:20.662Z"
         },
         "rs_diff": {}
       },
@@ -3246,7 +3743,7 @@
           "rs_trip_time": 180,
           "rs_mins_till_start": -915
         },
-        "latest_trip_log_record_id": "recJWtXjqw3ZiSNje",
+        "latest_trip_log_record_id": "rectQXWS2l8GVrATh",
         "rs_latest_log": {
           "rs_mins_since_start": 915,
           "rs_mins_till_start": -915,
@@ -3254,7 +3751,7 @@
           "rs_start_time": "08:40:00",
           "rs_trip_default": 180,
           "rs_trip_time2": 180,
-          "rs_run_id": "2026-05-12T18:15:23.667Z"
+          "rs_run_id": "2026-05-12T18:39:20.662Z"
         },
         "rs_diff": {}
       }
@@ -3496,7 +3993,7 @@
       ],
       "trip_logs": [
         {
-          "record_id": "recAG0693DJvWuwII",
+          "record_id": "reccs79ON97etb8kR",
           "source_table": "trip_logs",
           "watch_trips": [
             "recze5aOT8o3Eewos"
@@ -3505,7 +4002,7 @@
           "watch_schedule": [
             "rec4bmPTHYMu294Ca"
           ],
-          "created_at": "2026-05-12T18:15:23.667Z",
+          "created_at": "2026-05-12T18:39:20.662Z",
           "calc_mode": "promote",
           "calc_version": "trips_calculator_v2_1",
           "calc_status": "anomaly",
@@ -3520,11 +4017,11 @@
             "rs_start_time": "08:40:00",
             "rs_trip_default": 180,
             "rs_trip_time2": 180,
-            "rs_run_id": "2026-05-12T18:15:23.667Z"
+            "rs_run_id": "2026-05-12T18:39:20.662Z"
           }
         },
         {
-          "record_id": "recJWtXjqw3ZiSNje",
+          "record_id": "rectQXWS2l8GVrATh",
           "source_table": "trip_logs",
           "watch_trips": [
             "recTQsZxnE9g3BxhC"
@@ -3533,7 +4030,7 @@
           "watch_schedule": [
             "rec4bmPTHYMu294Ca"
           ],
-          "created_at": "2026-05-12T18:15:23.667Z",
+          "created_at": "2026-05-12T18:39:20.662Z",
           "calc_mode": "promote",
           "calc_version": "trips_calculator_v2_1",
           "calc_status": "anomaly",
@@ -3548,7 +4045,7 @@
             "rs_start_time": "08:40:00",
             "rs_trip_default": 180,
             "rs_trip_time2": 180,
-            "rs_run_id": "2026-05-12T18:15:23.667Z"
+            "rs_run_id": "2026-05-12T18:39:20.662Z"
           }
         }
       ]
@@ -3556,110 +4053,319 @@
   },
   "indexes": {
     "by_schedule_key": {
-      "200000061|2026-05-10|3|723|2": "rec4x2rSLXbPpwqCR",
-      "200000061|2026-05-10|3|763|3": "recjVQhpNGpIphY0F",
-      "200000061|2026-05-10|3|792|6": "reckAYCdFHylr08MP",
-      "200000061|2026-05-10|1|775|1": "recocqN2ycDrKjUTD",
-      "200000061|2026-05-10|3|762|4": "recrRvXzTJ7YJMmlO",
-      "200000061|2026-05-10|3|767|5": "recEktKyNu7DjiOc3",
-      "200000061|2026-05-10|3|739|5": "recKwL4KOR6Du67qQ",
-      "200000061|2026-05-10|3|742|4": "recLmC6USajHypEzd",
-      "200000061|2026-05-10|3|743|3": "recMT7ja7hvSFeo8x",
-      "200000061|2026-05-10|1|806|2": "recTI7BjXWhrbV5Yw",
-      "200000061|2026-05-10|4|570|5": "recwqlkuEYmrzPr2J",
-      "200000061|2026-05-10|3|685|8": "recesGc3TMP6C41OO",
-      "200000061|2026-05-10|4|550|6": "recmPS6FLfg6R6uN8",
-      "200000061|2026-05-10|4|555|7": "recn0a367VVyjSid8",
-      "200000061|2026-05-10|4|535|4": "rec4qVUyEB2tT3qIP",
-      "200000061|2026-05-10|4|585|3": "recERjbCdbTffmu9n",
-      "200000061|2026-05-10|3|682|9": "recEsvxCuyxvtkbOp",
-      "200000061|2026-05-10|3|815|7": "recKeTVcfpBP7jI63",
-      "200000061|2026-05-10|4|530|2": "recZsFiV8x4Y17mE0",
-      "200000061|2026-05-10|3|992|10": "rec1RKcjoMIYx4tBS",
-      "200000061|2026-05-10|4|525|9": "recsxFSxinb8cLTEF",
-      "200000061|2026-05-10|5|606|4": "recyOAUUbZVknUjHO",
-      "200000061|2026-05-10|4|699|10": "rec28na3cikgKZZdf",
-      "200000061|2026-05-10|4|565|8": "recbZf5Pz5bJjDnv3",
-      "200000061|2026-05-10|5|394|5": "recbmvK9R7S96haCt",
-      "200000061|2026-05-10|5|395|5": "reccPi72qEuDwvpMg",
-      "200000061|2026-05-10|5|210|5": "recgzTQvhUZ5dLqo5",
-      "200000061|2026-05-10|4|785|11": "rechtkwwDNVND8y2V",
-      "200000061|2026-05-10|4|993|12": "reciUR9zFVhxlsziy",
-      "200000061|2026-05-10|5|140|2": "recmtt5GG9V95Ap4u",
-      "200000061|2026-05-10|5|909|5": "recos9Ngu8lwlMGj4",
-      "200000061|2026-05-10|4|696|10": "recpJJknzNIg8X7Nq",
-      "200000061|2026-05-10|4|797|11": "recqkdi5jKVXL1aFi",
-      "200000061|2026-05-10|5|604|3": "recr9zauvcDXEJ5d0",
-      "200000061|2026-05-10|5|144|1": "recr93MHDfbHvw6hS",
-      "200000061|2026-05-10|5|614|4": "recrfzfsKOYERVfeO",
-      "200000061|2026-05-10|5|145|2": "recIBWLnHI3XU4go9",
-      "200000061|2026-05-10|5|146|2": "recKsAKE910Tvzpt7",
-      "200000061|2026-05-10|5|605|4": "recMOM56Sn7LLsWAi",
-      "200000061|2026-05-10|5|210|6": "recOSdrkOQVo5DIZu",
-      "200000061|2026-05-10|5|315|8": "recs3dplSkndOCdPg",
-      "200000061|2026-05-10|5|340|7": "reczVmlbB2xiRn3Ku",
-      "200000061|2026-05-10|5|659|9": "rec8chdknOAPY9W24",
-      "200000061|2026-05-10|5|309|6": "rece4AJ8PUXT0NoDT",
-      "200000061|2026-05-10|5|339|7": "reciU4Ky0BJ5vNGJR",
-      "200000061|2026-05-10|5|659|8": "recmGVwBrRRHlERbo",
-      "200000061|2026-05-10|5|909|6": "recnW42otfcKkiAmm",
-      "200000061|2026-05-10|5|314|8": "recoysocQBUtoFlFy",
-      "200000061|2026-05-10|5|210|7": "recqMuXS9sTVv8Hjo",
-      "200000061|2026-05-10|5|504|11": "recFxJKVNNs5avJfg",
-      "200000061|2026-05-10|5|320|12": "recFB5cIna1pUtOAp",
-      "200000061|2026-05-10|5|909|7": "recIMdl8NqL4yHTNF",
-      "200000061|2026-05-10|5|653|12": "recJrnV7izOqoPub9",
-      "200000061|2026-05-10|5|653|11": "recM9YmupYlt4GyJT",
-      "200000061|2026-05-10|5|319|12": "recNfMWxR6xZA86gF",
-      "200000061|2026-05-10|5|503|11": "recUfGK9NTJXMUrKF",
-      "200000061|2026-05-10|5|285|9": "recV7bfPXPoWaECKz",
-      "200000061|2026-05-10|5|284|9": "recYXxvNkbBPyZo18",
-      "200000061|2026-05-10|5|310|6": "rec0QYc2jzwZU4LCF",
-      "200000061|2026-05-10|5|502|10": "rec1nRMYHbHa40WHp",
-      "200000061|2026-05-10|5|300|13": "rectI5udq9PqYoSbD",
-      "200000061|2026-05-10|5|653|13": "recvHDGJWVvKZf433",
-      "200000061|2026-05-10|6|415|3": "recyMKT4ONBVlLtyA",
-      "200000061|2026-05-10|6|414|3": "reczSo4WI2HXDqIBQ",
-      "200000061|2026-05-10|6|411|2": "rec4bmPTHYMu294Ca",
-      "200000061|2026-05-10|6|644|1": "rec8ahxMbO73HzZ8c",
-      "200000061|2026-05-10|5|299|13": "recn9SQ7jKG3tVMnN",
-      "200000061|2026-05-10|5|994|14": "recpxUt9KVmfQf3oM",
-      "200000061|2026-05-10|6|652|1": "recpc3mXhBD3mgWc5",
-      "200000061|2026-05-10|6|645|1": "recRHO8ZWoGbjwyRO",
-      "200000061|2026-05-10|6|441|6": "recvTcU6h7rXu4gqe",
-      "200000061|2026-05-10|6|906|3": "recz2KXXoTS0kNIld",
-      "200000061|2026-05-10|6|995|9": "recA3lmuIT6lK7UVw",
-      "200000061|2026-05-10|6|408|8": "rec5GklPIKndFVLJ8",
-      "200000061|2026-05-10|6|424|4": "rec8wareFbK9RP2v7",
-      "200000061|2026-05-10|6|654|8": "receUK4IKSncNM61c",
-      "200000061|2026-05-10|6|907|5": "recg36hkMo8LJS7cp",
-      "200000061|2026-05-10|6|444|7": "reckX52SrP2VSOufR",
-      "200000061|2026-05-10|6|528|10": "recDx6J02rz0FvN0u",
-      "200000061|2026-05-10|6|435|5": "recGye0eAacTVUEEJ",
-      "200000061|2026-05-10|6|907|4": "recOzGmCWCZkq8XHE",
-      "200000061|2026-05-10|6|532|9": "recQ0Z1DVdbuR3qxl",
-      "200000061|2026-05-10|6|425|4": "recTqG0uKgSnXoXX6",
-      "200000061|2026-05-10|6|445|7": "recTv4IDoZBFKTAYJ",
-      "200000061|2026-05-10|6|434|5": "recVejA25lioeILQg",
-      "200000061|2026-05-10|6|409|8": "recYdBx4LiSkjuuoB",
-      "200000062|2026-05-28|3|555|14": "rec2Rkk48KTWrpUHJ",
-      "200000062|2026-05-28|3|530|9": "rec2t2w8lOJdqAtgf",
-      "200000062|2026-05-28|3|585|13": "rec5V1cqFCSPOePjH",
-      "200000062|2026-05-28|3|545|7": "recd92mGmGjZRj9ZR",
-      "200000062|2026-05-28|3|546|8": "recjDLuOp0kxz98SU",
-      "200000062|2026-05-28|3|570|12": "reclG1wv4Jab6H2fI",
-      "200000062|2026-05-28|3|550|11": "recmFHqmQJQfa1UZz",
-      "200000062|2026-05-28|3|590|6": "recqh0pQrVd2zoCaC",
-      "200000062|2026-05-28|3|535|10": "recLJ7RMNtAXS4D47",
-      "200000062|2026-05-28|3|581|5": "recSYnKDicSIuCppm",
-      "200000062|2026-05-28|3|540|22": "rectPrZtjAButGbQj",
-      "200000062|2026-05-28|3|560|20": "reczwyWVAiDwjOwmC",
-      "200000062|2026-05-28|3|529|18": "rechqiiZm1Y3trRkM",
-      "200000062|2026-05-28|3|565|15": "reciR9WzOCd7nPxkh",
-      "200000062|2026-05-28|3|525|17": "recivXE0ebF1zjRJq",
-      "200000062|2026-05-28|3|531|19": "recor1IEEnEKUZfSH",
-      "200000062|2026-05-28|3|575|21": "recqdc6QDUDuLLCEk",
-      "200000062|2026-05-28|3|527|16": "recS85UUNBg5djXdp"
+      "200000061|2026-05-10|3|723|2": [
+        "rec4x2rSLXbPpwqCR"
+      ],
+      "200000061|2026-05-10|3|763|3": [
+        "recjVQhpNGpIphY0F"
+      ],
+      "200000061|2026-05-10|3|792|6": [
+        "reckAYCdFHylr08MP"
+      ],
+      "200000061|2026-05-10|1|775|1": [
+        "recocqN2ycDrKjUTD"
+      ],
+      "200000061|2026-05-10|3|762|4": [
+        "recrRvXzTJ7YJMmlO"
+      ],
+      "200000061|2026-05-10|3|767|5": [
+        "recEktKyNu7DjiOc3"
+      ],
+      "200000061|2026-05-10|3|739|5": [
+        "recKwL4KOR6Du67qQ"
+      ],
+      "200000061|2026-05-10|3|742|4": [
+        "recLmC6USajHypEzd"
+      ],
+      "200000061|2026-05-10|3|743|3": [
+        "recMT7ja7hvSFeo8x"
+      ],
+      "200000061|2026-05-10|1|806|2": [
+        "recTI7BjXWhrbV5Yw"
+      ],
+      "200000061|2026-05-10|4|570|5": [
+        "recwqlkuEYmrzPr2J"
+      ],
+      "200000061|2026-05-10|3|685|8": [
+        "recesGc3TMP6C41OO"
+      ],
+      "200000061|2026-05-10|4|550|6": [
+        "recmPS6FLfg6R6uN8"
+      ],
+      "200000061|2026-05-10|4|555|7": [
+        "recn0a367VVyjSid8"
+      ],
+      "200000061|2026-05-10|4|535|4": [
+        "recotAXxare3c9pD8",
+        "rec4qVUyEB2tT3qIP"
+      ],
+      "200000061|2026-05-10|4|585|3": [
+        "recERjbCdbTffmu9n"
+      ],
+      "200000061|2026-05-10|3|682|9": [
+        "recEsvxCuyxvtkbOp"
+      ],
+      "200000061|2026-05-10|3|815|7": [
+        "recKeTVcfpBP7jI63"
+      ],
+      "200000061|2026-05-10|4|530|2": [
+        "recZsFiV8x4Y17mE0"
+      ],
+      "200000061|2026-05-10|3|992|10": [
+        "rec1RKcjoMIYx4tBS"
+      ],
+      "200000061|2026-05-10|4|525|9": [
+        "recsxFSxinb8cLTEF"
+      ],
+      "200000061|2026-05-10|5|606|4": [
+        "recyOAUUbZVknUjHO"
+      ],
+      "200000061|2026-05-10|4|699|10": [
+        "rec28na3cikgKZZdf"
+      ],
+      "200000061|2026-05-10|4|565|8": [
+        "recbZf5Pz5bJjDnv3"
+      ],
+      "200000061|2026-05-10|5|394|5": [
+        "recbmvK9R7S96haCt"
+      ],
+      "200000061|2026-05-10|5|395|5": [
+        "reccPi72qEuDwvpMg"
+      ],
+      "200000061|2026-05-10|5|210|5": [
+        "recgzTQvhUZ5dLqo5"
+      ],
+      "200000061|2026-05-10|4|785|11": [
+        "rechtkwwDNVND8y2V"
+      ],
+      "200000061|2026-05-10|4|993|12": [
+        "reciUR9zFVhxlsziy"
+      ],
+      "200000061|2026-05-10|5|140|2": [
+        "recmtt5GG9V95Ap4u"
+      ],
+      "200000061|2026-05-10|5|909|5": [
+        "recos9Ngu8lwlMGj4"
+      ],
+      "200000061|2026-05-10|4|696|10": [
+        "recpJJknzNIg8X7Nq"
+      ],
+      "200000061|2026-05-10|4|797|11": [
+        "recqkdi5jKVXL1aFi"
+      ],
+      "200000061|2026-05-10|5|604|3": [
+        "recr9zauvcDXEJ5d0"
+      ],
+      "200000061|2026-05-10|5|144|1": [
+        "recr93MHDfbHvw6hS"
+      ],
+      "200000061|2026-05-10|5|614|4": [
+        "recrfzfsKOYERVfeO"
+      ],
+      "200000061|2026-05-10|5|145|2": [
+        "recIBWLnHI3XU4go9"
+      ],
+      "200000061|2026-05-10|5|146|2": [
+        "recKsAKE910Tvzpt7"
+      ],
+      "200000061|2026-05-10|5|605|4": [
+        "recMOM56Sn7LLsWAi"
+      ],
+      "200000061|2026-05-10|5|210|6": [
+        "recOSdrkOQVo5DIZu"
+      ],
+      "200000061|2026-05-10|5|315|8": [
+        "recs3dplSkndOCdPg"
+      ],
+      "200000061|2026-05-10|5|340|7": [
+        "reczVmlbB2xiRn3Ku"
+      ],
+      "200000061|2026-05-10|5|659|9": [
+        "rec8chdknOAPY9W24"
+      ],
+      "200000061|2026-05-10|5|309|6": [
+        "rece4AJ8PUXT0NoDT"
+      ],
+      "200000061|2026-05-10|5|339|7": [
+        "reciU4Ky0BJ5vNGJR"
+      ],
+      "200000061|2026-05-10|5|659|8": [
+        "recmGVwBrRRHlERbo"
+      ],
+      "200000061|2026-05-10|5|909|6": [
+        "recnW42otfcKkiAmm"
+      ],
+      "200000061|2026-05-10|5|314|8": [
+        "recoysocQBUtoFlFy"
+      ],
+      "200000061|2026-05-10|5|210|7": [
+        "recqMuXS9sTVv8Hjo"
+      ],
+      "200000061|2026-05-10|5|504|11": [
+        "recFxJKVNNs5avJfg"
+      ],
+      "200000061|2026-05-10|5|320|12": [
+        "recFB5cIna1pUtOAp"
+      ],
+      "200000061|2026-05-10|5|909|7": [
+        "recIMdl8NqL4yHTNF"
+      ],
+      "200000061|2026-05-10|5|653|12": [
+        "recJrnV7izOqoPub9"
+      ],
+      "200000061|2026-05-10|5|653|11": [
+        "recM9YmupYlt4GyJT"
+      ],
+      "200000061|2026-05-10|5|319|12": [
+        "recNfMWxR6xZA86gF"
+      ],
+      "200000061|2026-05-10|5|503|11": [
+        "recUfGK9NTJXMUrKF"
+      ],
+      "200000061|2026-05-10|5|285|9": [
+        "recV7bfPXPoWaECKz"
+      ],
+      "200000061|2026-05-10|5|284|9": [
+        "recYXxvNkbBPyZo18"
+      ],
+      "200000061|2026-05-10|5|310|6": [
+        "rec0QYc2jzwZU4LCF"
+      ],
+      "200000061|2026-05-10|5|502|10": [
+        "rec1nRMYHbHa40WHp"
+      ],
+      "200000061|2026-05-10|5|300|13": [
+        "rectI5udq9PqYoSbD"
+      ],
+      "200000061|2026-05-10|5|653|13": [
+        "recvHDGJWVvKZf433"
+      ],
+      "200000061|2026-05-10|6|415|3": [
+        "recyMKT4ONBVlLtyA"
+      ],
+      "200000061|2026-05-10|6|414|3": [
+        "reczSo4WI2HXDqIBQ"
+      ],
+      "200000061|2026-05-10|6|411|2": [
+        "rec4bmPTHYMu294Ca"
+      ],
+      "200000061|2026-05-10|6|644|1": [
+        "rec8ahxMbO73HzZ8c"
+      ],
+      "200000061|2026-05-10|5|299|13": [
+        "recn9SQ7jKG3tVMnN"
+      ],
+      "200000061|2026-05-10|5|994|14": [
+        "recpxUt9KVmfQf3oM"
+      ],
+      "200000061|2026-05-10|6|652|1": [
+        "recpc3mXhBD3mgWc5"
+      ],
+      "200000061|2026-05-10|6|645|1": [
+        "recRHO8ZWoGbjwyRO"
+      ],
+      "200000061|2026-05-10|6|441|6": [
+        "recvTcU6h7rXu4gqe"
+      ],
+      "200000061|2026-05-10|6|906|3": [
+        "recz2KXXoTS0kNIld"
+      ],
+      "200000061|2026-05-10|6|995|9": [
+        "recA3lmuIT6lK7UVw"
+      ],
+      "200000061|2026-05-10|6|408|8": [
+        "rec5GklPIKndFVLJ8"
+      ],
+      "200000061|2026-05-10|6|424|4": [
+        "rec8wareFbK9RP2v7"
+      ],
+      "200000061|2026-05-10|6|654|8": [
+        "receUK4IKSncNM61c"
+      ],
+      "200000061|2026-05-10|6|907|5": [
+        "recg36hkMo8LJS7cp"
+      ],
+      "200000061|2026-05-10|6|444|7": [
+        "reckX52SrP2VSOufR"
+      ],
+      "200000061|2026-05-10|6|528|10": [
+        "recDx6J02rz0FvN0u"
+      ],
+      "200000061|2026-05-10|6|435|5": [
+        "recGye0eAacTVUEEJ"
+      ],
+      "200000061|2026-05-10|6|907|4": [
+        "recOzGmCWCZkq8XHE"
+      ],
+      "200000061|2026-05-10|6|532|9": [
+        "recQ0Z1DVdbuR3qxl"
+      ],
+      "200000061|2026-05-10|6|425|4": [
+        "recTqG0uKgSnXoXX6"
+      ],
+      "200000061|2026-05-10|6|445|7": [
+        "recTv4IDoZBFKTAYJ"
+      ],
+      "200000061|2026-05-10|6|434|5": [
+        "recVejA25lioeILQg"
+      ],
+      "200000061|2026-05-10|6|409|8": [
+        "recYdBx4LiSkjuuoB"
+      ],
+      "200000062|2026-05-28|3|555|14": [
+        "rec2Rkk48KTWrpUHJ"
+      ],
+      "200000062|2026-05-28|3|530|9": [
+        "rec2t2w8lOJdqAtgf"
+      ],
+      "200000062|2026-05-28|3|585|13": [
+        "rec5V1cqFCSPOePjH"
+      ],
+      "200000062|2026-05-28|3|545|7": [
+        "recd92mGmGjZRj9ZR"
+      ],
+      "200000062|2026-05-28|3|546|8": [
+        "recjDLuOp0kxz98SU"
+      ],
+      "200000062|2026-05-28|3|570|12": [
+        "reclG1wv4Jab6H2fI"
+      ],
+      "200000062|2026-05-28|3|550|11": [
+        "recmFHqmQJQfa1UZz"
+      ],
+      "200000062|2026-05-28|3|590|6": [
+        "recqh0pQrVd2zoCaC"
+      ],
+      "200000062|2026-05-28|3|535|10": [
+        "recLJ7RMNtAXS4D47"
+      ],
+      "200000062|2026-05-28|3|581|5": [
+        "recSYnKDicSIuCppm"
+      ],
+      "200000062|2026-05-28|3|540|22": [
+        "rectPrZtjAButGbQj"
+      ],
+      "200000062|2026-05-28|3|560|20": [
+        "reczwyWVAiDwjOwmC"
+      ],
+      "200000062|2026-05-28|3|529|18": [
+        "rechqiiZm1Y3trRkM"
+      ],
+      "200000062|2026-05-28|3|565|15": [
+        "reciR9WzOCd7nPxkh"
+      ],
+      "200000062|2026-05-28|3|525|17": [
+        "recivXE0ebF1zjRJq"
+      ],
+      "200000062|2026-05-28|3|531|19": [
+        "recor1IEEnEKUZfSH"
+      ],
+      "200000062|2026-05-28|3|575|21": [
+        "recqdc6QDUDuLLCEk"
+      ],
+      "200000062|2026-05-28|3|527|16": [
+        "recS85UUNBg5djXdp"
+      ]
     },
     "by_trips_key": {
       "200000061|2026-05-10|6|411|2|8778|2815": "recze5aOT8o3Eewos",
@@ -4105,10 +4811,10 @@
     },
     "logs_by_trip_key": {
       "200000061|2026-05-10|6|411|2|8778|2815": [
-        "recAG0693DJvWuwII"
+        "reccs79ON97etb8kR"
       ],
       "200000061|2026-05-10|6|411|2|8778|2818": [
-        "recJWtXjqw3ZiSNje"
+        "rectQXWS2l8GVrATh"
       ]
     }
   },
@@ -4118,7 +4824,15 @@
       "duplicate_schedule_keys": [
         {
           "key": "200000061|2026-05-10|4|535|4",
-          "count": 2
+          "count": 2,
+          "tie_breaker_field": "entry_sequence",
+          "tie_breakers": [
+            1
+          ],
+          "missing_tie_breaker_record_ids": [
+            "rec4qVUyEB2tT3qIP"
+          ],
+          "tie_breaker_unique": false
         }
       ],
       "duplicate_trips_keys": [],

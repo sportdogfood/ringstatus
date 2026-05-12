@@ -116,6 +116,7 @@ function scheduleIdentity(row) {
     cgid: firstValue(f.class_group_id),
     class_number: firstValue(f.class_number),
     class_sequence: classSequence,
+    schedule_tie_breaker: firstValue(f.entry_sequence),
   };
   return {
     ...parts,
@@ -139,6 +140,7 @@ function tripIdentity(row) {
     class_sequence: classSequence,
     pid: firstValue(f.pid),
     entry_number: firstValue(f.entry_number),
+    schedule_tie_breaker: firstValue(f.entry_sequence),
   };
   return {
     ...parts,
@@ -254,7 +256,10 @@ function buildSourcePayload(input) {
     const latestLogFields = fieldsOf(latestLog);
 
     scheduleByRecordId.set(id, { row, identity });
-    if (!isBlank(identity.schedule_key)) scheduleByKey.set(identity.schedule_key, { row, identity });
+    if (!isBlank(identity.schedule_key)) {
+      if (!scheduleByKey.has(identity.schedule_key)) scheduleByKey.set(identity.schedule_key, []);
+      scheduleByKey.get(identity.schedule_key).push({ row, identity });
+    }
 
     pushLane("show", `show:${identity.sid}:${identity.sql_date}`, {
       sid: identity.sid,
@@ -274,9 +279,11 @@ function buildSourcePayload(input) {
       status: firstValue(f.status),
       scope_status: firstValue(f.scope_status),
     });
-    pushLane("groups", `group:${identity.schedule_key}`, {
+    pushLane("groups", `group:${id}`, {
       schedule_key: identity.schedule_key,
       schedule_short: identity.schedule_short,
+      schedule_tie_breaker: identity.schedule_tie_breaker,
+      schedule_record_id: id,
       class_group_id: firstValue(f.class_group_id),
       class_group_sequence: firstValue(f.class_group_sequence),
       class_groupxclasses_id: firstValue(f.class_groupxclasses_id),
@@ -286,9 +293,10 @@ function buildSourcePayload(input) {
       completed_trips: firstValue(f.completed_trips),
       status: firstValue(f.status),
     });
-    pushLane("class_start", `class_start:${identity.schedule_key}`, {
+    pushLane("class_start", `class_start:${id}`, {
       schedule_record_id: id,
       schedule_key: identity.schedule_key,
+      schedule_tie_breaker: identity.schedule_tie_breaker,
       estimated_start_time: firstValue(f.estimated_start_time),
       estimated_end_time: firstValue(f.estimated_end_time),
       manual_time_override: firstValue(f.manual_time_override),
@@ -300,8 +308,10 @@ function buildSourcePayload(input) {
         "changed_fields",
       ]),
     });
-    pushLane("classes", `class:${identity.schedule_key}`, {
+    pushLane("classes", `class:${id}`, {
+      schedule_record_id: id,
       schedule_key: identity.schedule_key,
+      schedule_tie_breaker: identity.schedule_tie_breaker,
       class_id: firstValue(f.class_id),
       class_number: firstValue(f.class_number),
       class_sequence: identity.class_sequence,
@@ -324,7 +334,23 @@ function buildSourcePayload(input) {
   }
   validation.duplicate_schedule_keys = Object.entries(scheduleKeyCounts)
     .filter(([, count]) => count > 1)
-    .map(([key, count]) => ({ key, count }));
+    .map(([key, count]) => {
+      const rows = scheduleByKey.get(key) || [];
+      const tieBreakers = rows
+        .map((item) => item.identity.schedule_tie_breaker)
+        .filter((value) => !isBlank(value));
+      const missingTieBreakerRecordIds = rows
+        .filter((item) => isBlank(item.identity.schedule_tie_breaker))
+        .map((item) => rowId(item.row));
+      return {
+        key,
+        count,
+        tie_breaker_field: "entry_sequence",
+        tie_breakers: tieBreakers,
+        missing_tie_breaker_record_ids: missingTieBreakerRecordIds,
+        tie_breaker_unique: tieBreakers.length === count && new Set(tieBreakers.map(String)).size === count,
+      };
+    });
 
   const tripsKeyCounts = {};
   const relevantScheduleLogIds = new Set();
@@ -341,7 +367,7 @@ function buildSourcePayload(input) {
     const id = rowId(row);
     const identity = scheduleIdentity(row);
     indexes.by_airtable_record_id[id] = { lane: "class_start", schedule_key: identity.schedule_key };
-    if (!isBlank(identity.schedule_key)) indexes.by_schedule_key[identity.schedule_key] = id;
+    addUnique(indexes.by_schedule_key, identity.schedule_key, id);
   }
 
   for (const row of tripRows) {
@@ -352,8 +378,12 @@ function buildSourcePayload(input) {
     const latestLogFields = fieldsOf(latestLog);
     const linkedScheduleId = firstValue(f.schedule_rid, f.watch_schedule);
     const linkedSchedule = linkedScheduleId ? scheduleByRecordId.get(String(linkedScheduleId)) : null;
-    const keySchedule = scheduleByKey.get(identity.schedule_key);
-    const parent = linkedSchedule || keySchedule || null;
+    const keySchedules = scheduleByKey.get(identity.schedule_key) || [];
+    const tieBreakerSchedule = !isBlank(identity.schedule_tie_breaker)
+      ? keySchedules.find((item) => String(item.identity.schedule_tie_breaker) === String(identity.schedule_tie_breaker))
+      : null;
+    const keySchedule = keySchedules.length === 1 ? keySchedules[0] : null;
+    const parent = linkedSchedule || tieBreakerSchedule || keySchedule || null;
 
     if (!parent) {
       validation.unresolved_trip_parents.push({

@@ -131,3 +131,43 @@ test("reports trips that cannot resolve a schedule parent", () => {
   assert.equal(payload.reports.validation.unresolved_trip_parents.length, 1);
   assert.equal(payload.reports.validation.unresolved_trip_parents[0].reason, "missing_schedule_parent");
 });
+
+test("uses entry_sequence as a duplicate schedule tie breaker without changing schedule_key", () => {
+  const payload = buildSourcePayload({
+    generatedAt: "2026-05-12T12:00:00.000Z",
+    heartbeatRows: [],
+    scheduleRows: [
+      rec("schedA", {
+        sid: 200000061,
+        schedule_show_datev2: "2026-05-10",
+        ring_number: 4,
+        class_number: 535,
+        class_group_sequence: 4,
+        entry_sequence: 1,
+        estimated_start_time: "09:00:00",
+      }),
+      rec("schedB", {
+        sid: 200000061,
+        schedule_show_datev2: "2026-05-10",
+        ring_number: 4,
+        class_number: 535,
+        class_group_sequence: 4,
+        entry_sequence: 2,
+        estimated_start_time: "09:00:00",
+      }),
+    ],
+    tripRows: [],
+    scheduleLogRows: [],
+    tripLogRows: [],
+  });
+
+  const key = "200000061|2026-05-10|4|535|4";
+  const classStarts = payload.lanes.class_start.filter((row) => row.schedule_key === key);
+  const duplicate = payload.reports.validation.duplicate_schedule_keys[0];
+
+  assert.equal(classStarts.length, 2);
+  assert.deepEqual(classStarts.map((row) => row.schedule_tie_breaker), [1, 2]);
+  assert.equal(duplicate.key, key);
+  assert.equal(duplicate.tie_breaker_field, "entry_sequence");
+  assert.deepEqual(duplicate.tie_breakers, [1, 2]);
+});
