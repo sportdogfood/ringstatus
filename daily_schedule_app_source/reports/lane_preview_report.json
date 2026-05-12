@@ -1,0 +1,1124 @@
+{
+  "generated_at": "2026-05-12T22:05:24.634Z",
+  "source_generated_at": "2026-05-12T20:25:11.456Z",
+  "purpose": "Review what data exists per lane before making render, nesting, or flyup decisions.",
+  "render_decisions_made": false,
+  "render_decisions": [],
+  "lane_order": [
+    "heartbeat",
+    "show",
+    "rings",
+    "groups",
+    "class_start",
+    "classes",
+    "entries",
+    "trip_go",
+    "trips",
+    "horses",
+    "riders"
+  ],
+  "lanes": {
+    "heartbeat": {
+      "record_count": 1,
+      "field_count": 10,
+      "fields": {
+        "app_dow_raw": {
+          "populated": 1,
+          "blank": 0
+        },
+        "app_show_id": {
+          "populated": 1,
+          "blank": 0
+        },
+        "app_sql_date": {
+          "populated": 1,
+          "blank": 0
+        },
+        "hb_at": {
+          "populated": 1,
+          "blank": 0
+        },
+        "heartbeat_id": {
+          "populated": 1,
+          "blank": 0
+        },
+        "id": {
+          "populated": 1,
+          "blank": 0
+        },
+        "mode": {
+          "populated": 1,
+          "blank": 0
+        },
+        "record_id": {
+          "populated": 1,
+          "blank": 0
+        },
+        "show_id": {
+          "populated": 1,
+          "blank": 0
+        },
+        "time": {
+          "populated": 1,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "recLGsOxY3F2T6ZxT",
+          "record_id": "recLGsOxY3F2T6ZxT",
+          "heartbeat_id": "200000062-2026-05-12-1778617443",
+          "hb_at": "2026-05-12T20:24:03.675Z",
+          "show_id": 200000062,
+          "app_show_id": 200000062,
+          "app_sql_date": "2026-05-28",
+          "app_dow_raw": "Thu",
+          "mode": "DAY",
+          "time": "04:24 PM"
+        }
+      ]
+    },
+    "show": {
+      "record_count": 2,
+      "field_count": 7,
+      "fields": {
+        "app_dow_rawv2": {
+          "populated": 2,
+          "blank": 0
+        },
+        "app_show_idv2": {
+          "populated": 2,
+          "blank": 0
+        },
+        "app_sql_datev2": {
+          "populated": 2,
+          "blank": 0
+        },
+        "id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "show_id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "sid": {
+          "populated": 2,
+          "blank": 0
+        },
+        "sql_date": {
+          "populated": 2,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "show:200000061:2026-05-10",
+          "sid": 200000061,
+          "sql_date": "2026-05-10",
+          "show_id": 200000061,
+          "app_show_idv2": 200000061,
+          "app_sql_datev2": "2026-05-10",
+          "app_dow_rawv2": "Sun"
+        },
+        {
+          "id": "show:200000062:2026-05-28",
+          "sid": 200000062,
+          "sql_date": "2026-05-28",
+          "show_id": 200000062,
+          "app_show_idv2": 200000062,
+          "app_sql_datev2": "2026-05-28",
+          "app_dow_rawv2": "Thu"
+        }
+      ]
+    },
+    "rings": {
+      "record_count": 6,
+      "field_count": 8,
+      "fields": {
+        "id": {
+          "populated": 6,
+          "blank": 0
+        },
+        "ring_nickname": {
+          "populated": 5,
+          "blank": 0
+        },
+        "ring_number": {
+          "populated": 6,
+          "blank": 0
+        },
+        "ringName": {
+          "populated": 5,
+          "blank": 0
+        },
+        "schedule_key": {
+          "populated": 6,
+          "blank": 0
+        },
+        "sid": {
+          "populated": 6,
+          "blank": 0
+        },
+        "sql_date": {
+          "populated": 6,
+          "blank": 0
+        },
+        "status": {
+          "populated": 5,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "ring:200000061:2026-05-10:3",
+          "schedule_key": "200000061|2026-05-10|3|723|2",
+          "sid": 200000061,
+          "sql_date": "2026-05-10",
+          "ring_number": 3,
+          "ringName": "Covered",
+          "ring_nickname": "Covered",
+          "status": "Completed"
+        },
+        {
+          "id": "ring:200000061:2026-05-10:1",
+          "schedule_key": "200000061|2026-05-10|1|775|1",
+          "sid": 200000061,
+          "sql_date": "2026-05-10",
+          "ring_number": 1,
+          "ringName": "Derby",
+          "ring_nickname": "Derby",
+          "status": "Completed"
+        },
+        {
+          "id": "ring:200000061:2026-05-10:4",
+          "schedule_key": "200000061|2026-05-10|4|570|5",
+          "sid": 200000061,
+          "sql_date": "2026-05-10",
+          "ring_number": 4,
+          "ringName": "Village",
+          "ring_nickname": "Village",
+          "status": "Completed"
+        }
+      ]
+    },
+    "groups": {
+      "record_count": 105,
+      "field_count": 15,
+      "fields": {
+        "class_group_id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "class_group_sequence": {
+          "populated": 105,
+          "blank": 0
+        },
+        "class_groupxclasses_id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "completed_trips": {
+          "populated": 76,
+          "blank": 0
+        },
+        "group_name": {
+          "populated": 105,
+          "blank": 0
+        },
+        "group_name_tags": {
+          "populated": 86,
+          "blank": 0
+        },
+        "id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_instance_key": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_key": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_record_id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_short": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_tie_breaker": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_tie_breaker_source": {
+          "populated": 105,
+          "blank": 0
+        },
+        "status": {
+          "populated": 76,
+          "blank": 0
+        },
+        "total_trips": {
+          "populated": 76,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "group:rec4x2rSLXbPpwqCR",
+          "schedule_key": "200000061|2026-05-10|3|723|2",
+          "schedule_instance_key": "200000061|2026-05-10|3|723|2|cgid:200023880",
+          "schedule_short": "3|723|2",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "schedule_record_id": "rec4x2rSLXbPpwqCR",
+          "class_group_id": 200023880,
+          "class_group_sequence": 2,
+          "class_groupxclasses_id": 200035732,
+          "group_name": "$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b",
+          "group_name_tags": "isFirstUp, target, 1.20m, amateur, junior, jumpers, Over Fences",
+          "total_trips": 15,
+          "completed_trips": 15,
+          "status": "Completed"
+        },
+        {
+          "id": "group:recjVQhpNGpIphY0F",
+          "schedule_key": "200000061|2026-05-10|3|763|3",
+          "schedule_instance_key": "200000061|2026-05-10|3|763|3|cgid:200023881",
+          "schedule_short": "3|763|3",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "schedule_record_id": "recjVQhpNGpIphY0F",
+          "class_group_id": 200023881,
+          "class_group_sequence": 3,
+          "class_groupxclasses_id": 200035734,
+          "group_name": "$2,640 M&S 1.15m Junior & Amateur Jumper Classics II2b",
+          "group_name_tags": "target, amateur, junior, jumpers, Over Fences",
+          "total_trips": 25,
+          "completed_trips": 25,
+          "status": "Completed"
+        },
+        {
+          "id": "group:reckAYCdFHylr08MP",
+          "schedule_key": "200000061|2026-05-10|3|792|6",
+          "schedule_instance_key": "200000061|2026-05-10|3|792|6|cgid:200023896",
+          "schedule_short": "3|792|6",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "schedule_record_id": "reckAYCdFHylr08MP",
+          "class_group_id": 200023896,
+          "class_group_sequence": 6,
+          "class_groupxclasses_id": 200035753,
+          "group_name": "Hopeful Jumper (.85m) II2d",
+          "group_name_tags": "target, hopeful, .85m, II2d, jumpers, Over Fences",
+          "total_trips": 11,
+          "completed_trips": 11,
+          "status": "Completed"
+        }
+      ]
+    },
+    "class_start": {
+      "record_count": 105,
+      "field_count": 10,
+      "fields": {
+        "estimated_start_time": {
+          "populated": 87,
+          "blank": 0
+        },
+        "id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "latest_schedule_log": {
+          "populated": 105,
+          "blank": 0
+        },
+        "latest_schedule_log_record_id": {
+          "populated": 15,
+          "blank": 0
+        },
+        "manual_time_override": {
+          "populated": 6,
+          "blank": 0
+        },
+        "schedule_instance_key": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_key": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_record_id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_tie_breaker": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_tie_breaker_source": {
+          "populated": 105,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "class_start:rec4x2rSLXbPpwqCR",
+          "schedule_record_id": "rec4x2rSLXbPpwqCR",
+          "schedule_key": "200000061|2026-05-10|3|723|2",
+          "schedule_instance_key": "200000061|2026-05-10|3|723|2|cgid:200023880",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "estimated_start_time": "07:45:00",
+          "latest_schedule_log_record_id": "recvyDsxxb7hYX0tY",
+          "latest_schedule_log": {
+            "created_at": "2026-05-10T20:54:37.982Z",
+            "rs_start_time": "07:45:00",
+            "calc_status": "unchanged"
+          }
+        },
+        {
+          "id": "class_start:recjVQhpNGpIphY0F",
+          "schedule_record_id": "recjVQhpNGpIphY0F",
+          "schedule_key": "200000061|2026-05-10|3|763|3",
+          "schedule_instance_key": "200000061|2026-05-10|3|763|3|cgid:200023881",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "estimated_start_time": "09:05:00",
+          "manual_time_override": true,
+          "latest_schedule_log_record_id": "recUfUnDg8IvnTnt1",
+          "latest_schedule_log": {
+            "created_at": "2026-05-10T20:54:37.984Z",
+            "rs_start_time": "09:00:13",
+            "calc_status": "unchanged"
+          }
+        },
+        {
+          "id": "class_start:reckAYCdFHylr08MP",
+          "schedule_record_id": "reckAYCdFHylr08MP",
+          "schedule_key": "200000061|2026-05-10|3|792|6",
+          "schedule_instance_key": "200000061|2026-05-10|3|792|6|cgid:200023896",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "estimated_start_time": "13:35:09",
+          "latest_schedule_log": {}
+        }
+      ]
+    },
+    "classes": {
+      "record_count": 105,
+      "field_count": 12,
+      "fields": {
+        "class_id": {
+          "populated": 76,
+          "blank": 0
+        },
+        "class_name": {
+          "populated": 105,
+          "blank": 0
+        },
+        "class_number": {
+          "populated": 105,
+          "blank": 0
+        },
+        "class_sequence": {
+          "populated": 105,
+          "blank": 0
+        },
+        "class_type": {
+          "populated": 105,
+          "blank": 0
+        },
+        "id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_instance_key": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_key": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_record_id": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_sequencetype": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_tie_breaker": {
+          "populated": 105,
+          "blank": 0
+        },
+        "schedule_tie_breaker_source": {
+          "populated": 105,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "class:rec4x2rSLXbPpwqCR",
+          "schedule_record_id": "rec4x2rSLXbPpwqCR",
+          "schedule_key": "200000061|2026-05-10|3|723|2",
+          "schedule_instance_key": "200000061|2026-05-10|3|723|2|cgid:200023880",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "class_id": 200025174,
+          "class_number": 723,
+          "class_sequence": 2,
+          "class_name": "$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b",
+          "class_type": "Jumpers",
+          "schedule_sequencetype": "Over Fences"
+        },
+        {
+          "id": "class:recjVQhpNGpIphY0F",
+          "schedule_record_id": "recjVQhpNGpIphY0F",
+          "schedule_key": "200000061|2026-05-10|3|763|3",
+          "schedule_instance_key": "200000061|2026-05-10|3|763|3|cgid:200023881",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "class_id": 200025154,
+          "class_number": 763,
+          "class_sequence": 3,
+          "class_name": "$1,595 M&S 1.15m Amateur Jumper Classic II2b",
+          "class_type": "Jumpers",
+          "schedule_sequencetype": "Over Fences"
+        },
+        {
+          "id": "class:reckAYCdFHylr08MP",
+          "schedule_record_id": "reckAYCdFHylr08MP",
+          "schedule_key": "200000061|2026-05-10|3|792|6",
+          "schedule_instance_key": "200000061|2026-05-10|3|792|6|cgid:200023896",
+          "schedule_tie_breaker": 1,
+          "schedule_tie_breaker_source": "entry_sequence",
+          "class_id": 200024993,
+          "class_number": 792,
+          "class_sequence": 6,
+          "class_name": "Hopeful Jumper (.85m) II2d",
+          "class_type": "Jumpers",
+          "schedule_sequencetype": "Over Fences"
+        }
+      ]
+    },
+    "entries": {
+      "record_count": 2,
+      "field_count": 11,
+      "fields": {
+        "entry_number": {
+          "populated": 2,
+          "blank": 0
+        },
+        "entry_sequence": {
+          "populated": 2,
+          "blank": 0
+        },
+        "h_eid": {
+          "populated": 2,
+          "blank": 0
+        },
+        "id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "pid": {
+          "populated": 2,
+          "blank": 0
+        },
+        "schedule_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_instance_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_tie_breaker": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_tie_breaker_source": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trips_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trips_short_key": {
+          "populated": 2,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "entry:200000061|2026-05-10|6|411|2|8778|2815",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2815|entry_sequence:5",
+          "trips_short_key": "411|2|8778|2815",
+          "schedule_key": "200000061|2026-05-10|6|411|2",
+          "pid": 8778,
+          "entry_number": 2815,
+          "entry_sequence": 5,
+          "trip_tie_breaker": "entry_sequence:5",
+          "trip_tie_breaker_source": "entry_sequence",
+          "h_eid": 2815
+        },
+        {
+          "id": "entry:200000061|2026-05-10|6|411|2|8778|2818",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2818|entry_sequence:5",
+          "trips_short_key": "411|2|8778|2818",
+          "schedule_key": "200000061|2026-05-10|6|411|2",
+          "pid": 8778,
+          "entry_number": 2818,
+          "entry_sequence": 5,
+          "trip_tie_breaker": "entry_sequence:5",
+          "trip_tie_breaker_source": "entry_sequence",
+          "h_eid": 2818
+        }
+      ]
+    },
+    "trip_go": {
+      "record_count": 2,
+      "field_count": 17,
+      "fields": {
+        "entry_number": {
+          "populated": 2,
+          "blank": 0
+        },
+        "entry_sequence": {
+          "populated": 2,
+          "blank": 0
+        },
+        "estimated_start_time": {
+          "populated": 2,
+          "blank": 0
+        },
+        "full_nesting_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "latest_trip_log_record_id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "pid": {
+          "populated": 2,
+          "blank": 0
+        },
+        "rs_current": {
+          "populated": 2,
+          "blank": 0
+        },
+        "rs_diff": {
+          "populated": 2,
+          "blank": 0
+        },
+        "rs_latest_log": {
+          "populated": 2,
+          "blank": 0
+        },
+        "schedule_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "schedule_record_id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_instance_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_record_id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_tie_breaker": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_tie_breaker_source": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trips_key": {
+          "populated": 2,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "trip_go:200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_record_id": "recze5aOT8o3Eewos",
+          "schedule_record_id": "rec4bmPTHYMu294Ca",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2815|entry_sequence:5",
+          "schedule_key": "200000061|2026-05-10|6|411|2",
+          "full_nesting_key": "200000061|2026-05-10|6|08:40:00|200023861|411|2|8778|2815",
+          "pid": 8778,
+          "entry_number": 2815,
+          "entry_sequence": 5,
+          "trip_tie_breaker": "entry_sequence:5",
+          "trip_tie_breaker_source": "entry_sequence",
+          "estimated_start_time": "08:40:00",
+          "rs_current": {
+            "rs_trip_time2": 180,
+            "rs_mins_since_start": 915,
+            "rs_trip_default": 180,
+            "rs_start_time": "08:40:00",
+            "rs_start_time (from last_log)": [
+              "08:40:00"
+            ],
+            "rs_trip_time": 180,
+            "rs_mins_till_start": -915
+          },
+          "latest_trip_log_record_id": "rec8gg6reWlqlDWNW",
+          "rs_latest_log": {
+            "rs_mins_since_start": 915,
+            "rs_mins_till_start": -915,
+            "rs_trip_time": 180,
+            "rs_start_time": "08:40:00",
+            "rs_trip_default": 180,
+            "rs_trip_time2": 180,
+            "rs_run_id": "2026-05-12T20:21:23.187Z"
+          },
+          "rs_diff": {}
+        },
+        {
+          "id": "trip_go:200000061|2026-05-10|6|411|2|8778|2818",
+          "trip_record_id": "recTQsZxnE9g3BxhC",
+          "schedule_record_id": "rec4bmPTHYMu294Ca",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2818|entry_sequence:5",
+          "schedule_key": "200000061|2026-05-10|6|411|2",
+          "full_nesting_key": "200000061|2026-05-10|6|08:40:00|200023861|411|2|8778|2818",
+          "pid": 8778,
+          "entry_number": 2818,
+          "entry_sequence": 5,
+          "trip_tie_breaker": "entry_sequence:5",
+          "trip_tie_breaker_source": "entry_sequence",
+          "estimated_start_time": "08:40:00",
+          "rs_current": {
+            "rs_trip_time2": 180,
+            "rs_mins_since_start": 915,
+            "rs_trip_default": 180,
+            "rs_start_time": "08:40:00",
+            "rs_start_time (from last_log)": [
+              "08:40:00"
+            ],
+            "rs_trip_time": 180,
+            "rs_mins_till_start": -915
+          },
+          "latest_trip_log_record_id": "rec38GBxzjkpAmLat",
+          "rs_latest_log": {
+            "rs_mins_since_start": 915,
+            "rs_mins_till_start": -915,
+            "rs_trip_time": 180,
+            "rs_start_time": "08:40:00",
+            "rs_trip_default": 180,
+            "rs_trip_time2": 180,
+            "rs_run_id": "2026-05-12T20:21:23.187Z"
+          },
+          "rs_diff": {}
+        }
+      ]
+    },
+    "trips": {
+      "record_count": 2,
+      "field_count": 14,
+      "fields": {
+        "entry_number": {
+          "populated": 2,
+          "blank": 0
+        },
+        "entry_sequence": {
+          "populated": 2,
+          "blank": 0
+        },
+        "id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "is_target": {
+          "populated": 2,
+          "blank": 0
+        },
+        "last_seen_at": {
+          "populated": 2,
+          "blank": 0
+        },
+        "latest_ingested_at": {
+          "populated": 2,
+          "blank": 0
+        },
+        "pid": {
+          "populated": 2,
+          "blank": 0
+        },
+        "schedule_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "schedule_record_id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_instance_key": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_record_id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_tie_breaker": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trip_tie_breaker_source": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trips_key": {
+          "populated": 2,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "trip:200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_record_id": "recze5aOT8o3Eewos",
+          "schedule_record_id": "rec4bmPTHYMu294Ca",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2815|entry_sequence:5",
+          "schedule_key": "200000061|2026-05-10|6|411|2",
+          "pid": 8778,
+          "entry_number": 2815,
+          "entry_sequence": 5,
+          "trip_tie_breaker": "entry_sequence:5",
+          "trip_tie_breaker_source": "entry_sequence",
+          "is_target": true,
+          "last_seen_at": "2026-05-10",
+          "latest_ingested_at": "2026-05-10T03:10:45.368Z"
+        },
+        {
+          "id": "trip:200000061|2026-05-10|6|411|2|8778|2818",
+          "trip_record_id": "recTQsZxnE9g3BxhC",
+          "schedule_record_id": "rec4bmPTHYMu294Ca",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2818|entry_sequence:5",
+          "schedule_key": "200000061|2026-05-10|6|411|2",
+          "pid": 8778,
+          "entry_number": 2818,
+          "entry_sequence": 5,
+          "trip_tie_breaker": "entry_sequence:5",
+          "trip_tie_breaker_source": "entry_sequence",
+          "is_target": true,
+          "last_seen_at": "2026-05-10",
+          "latest_ingested_at": "2026-05-10T03:10:45.368Z"
+        }
+      ]
+    },
+    "horses": {
+      "record_count": 2,
+      "field_count": 5,
+      "fields": {
+        "h_eid": {
+          "populated": 2,
+          "blank": 0
+        },
+        "horse": {
+          "populated": 2,
+          "blank": 0
+        },
+        "horse_name": {
+          "populated": 2,
+          "blank": 0
+        },
+        "id": {
+          "populated": 2,
+          "blank": 0
+        },
+        "trips_key": {
+          "populated": 2,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "horse:FORT KNOX",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "horse": "FORT KNOX",
+          "horse_name": "Knox",
+          "h_eid": 2815
+        },
+        {
+          "id": "horse:POPTART",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
+          "horse": "POPTART",
+          "horse_name": "Poptart",
+          "h_eid": 2818
+        }
+      ]
+    },
+    "riders": {
+      "record_count": 1,
+      "field_count": 4,
+      "fields": {
+        "id": {
+          "populated": 1,
+          "blank": 0
+        },
+        "pid": {
+          "populated": 1,
+          "blank": 0
+        },
+        "rider_name": {
+          "populated": 1,
+          "blank": 0
+        },
+        "trips_key": {
+          "populated": 1,
+          "blank": 0
+        }
+      },
+      "samples": [
+        {
+          "id": "rider:8778",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "pid": 8778,
+          "rider_name": "JESSICA HEAP"
+        }
+      ]
+    }
+  },
+  "side_lanes": {
+    "results": {
+      "record_count": 0,
+      "field_count": 0,
+      "fields": {},
+      "samples": []
+    },
+    "alerts": {
+      "record_count": 0,
+      "field_count": 0,
+      "fields": {},
+      "samples": []
+    },
+    "logs": {
+      "schedule_logs": {
+        "record_count": 15,
+        "field_count": 9,
+        "fields": {
+          "calc_status": {
+            "populated": 15,
+            "blank": 0
+          },
+          "changed_fields": {
+            "populated": 2,
+            "blank": 0
+          },
+          "computed_outputs_json": {
+            "populated": 15,
+            "blank": 0
+          },
+          "created_at": {
+            "populated": 15,
+            "blank": 0
+          },
+          "inputs_json": {
+            "populated": 15,
+            "blank": 0
+          },
+          "record_id": {
+            "populated": 15,
+            "blank": 0
+          },
+          "rs_start_time": {
+            "populated": 15,
+            "blank": 0
+          },
+          "source_table": {
+            "populated": 15,
+            "blank": 0
+          },
+          "watch_schedule": {
+            "populated": 15,
+            "blank": 0
+          }
+        },
+        "samples": [
+          {
+            "record_id": "rec3kVxJtr8AwCc68",
+            "source_table": "schedule_logs",
+            "watch_schedule": [
+              "recs3dplSkndOCdPg"
+            ],
+            "created_at": "2026-05-10T20:54:37.984Z",
+            "rs_start_time": "12:05:09",
+            "calc_status": "unchanged",
+            "inputs_json": "{\"watch_schedule\":{\"record_id\":\"recs3dplSkndOCdPg\",\"class_groupxclasses_id\":200035790,\"class_group_id\":200023908,\"class_id\":200025108,\"estimated_start_time\":\"12:05:09\",\"estimated_end_time\":null,\"latest_status\":\"Completed\",\"status\":\"Completed\",\"completed_trips\":25,\"completed_trips_live\":25,\"total_trips\":25,\"tripTarget\":false,\"focusTargetClassId\":null,\"nextTargetClassId\":null,\"perTrip\":null},\"groups_live\":{\"record_id\":\"rec3hdR1vvVtQw4Oi\",\"class_group_id\":200023908,\"day\":\"2026-05-10\",\"estimated_start_time\":\"12:05:09\",\"gone\":25,\"total\":25,\"status\":\"Completed\",\"curr_updated_at\":\"1778449418\",\"ingested_at\":\"2026-05-10T20:45:26.889Z\"},\"heartbeat\":{\"record_id\":\"recr2aS1w9SjKqHYJ\",\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_dow_raw\":\"Sun\",\"shifted_to_next_day\":false,\"mode\":\"DAY\",\"time\":\"04:54 PM\"}}",
+            "computed_outputs_json": "{\"groups_live\":[\"rec3hdR1vvVtQw4Oi\"],\"estimated_start_time\":\"12:05:09\",\"latest_estimated_start_time\":\"12:05:09\",\"___latest_estimated_start_time\":\"12:05:09\",\"latest_status\":\"Completed\",\"status\":\"Completed\",\"completed_trips\":25,\"total_trips\":25,\"latest_ingested_at\":\"2026-05-10T20:45:26.889Z\",\"rs_start_time\":\"12:05:09\",\"rs_end_time\":\"13:20:09\",\"rs_length\":75,\"rs_mins_till_start\":0,\"rs_mins_since_start\":288.85,\"rs_status\":\"Completed\",\"rs_completed_trips\":25,\"rs_trip_default\":3,\"rs_trip_time\":3,\"rs_trip_time2\":3,\"calc_trip_minutes_final\":3,\"calc_trip_minutes_used_default\":true,\"calc_projected_class_minutes\":75,\"calc_start_anchor_text\":\"12:05:09\",\"calc_start_anchor_mins\":725.15}"
+          },
+          {
+            "record_id": "rec950evr7PixKlz0",
+            "source_table": "schedule_logs",
+            "watch_schedule": [
+              "recocqN2ycDrKjUTD"
+            ],
+            "created_at": "2026-05-10T20:54:37.983Z",
+            "rs_start_time": "07:45:08",
+            "calc_status": "unchanged",
+            "inputs_json": "{\"watch_schedule\":{\"record_id\":\"recocqN2ycDrKjUTD\",\"class_groupxclasses_id\":200035730,\"class_group_id\":200023878,\"class_id\":200025175,\"estimated_start_time\":\"07:45:08\",\"estimated_end_time\":null,\"latest_status\":\"Completed\",\"status\":\"Completed\",\"completed_trips\":23,\"completed_trips_live\":23,\"total_trips\":23,\"tripTarget\":true,\"focusTargetClassId\":200024852,\"nextTargetClassId\":null,\"perTrip\":null},\"groups_live\":{\"record_id\":\"recTaanbrzF1kVWrW\",\"class_group_id\":200023878,\"day\":\"2026-05-10\",\"estimated_start_time\":\"07:45:08\",\"gone\":23,\"total\":23,\"status\":\"Completed\",\"curr_updated_at\":\"1778432227\",\"ingested_at\":\"2026-05-10T20:45:26.889Z\"},\"heartbeat\":{\"record_id\":\"recr2aS1w9SjKqHYJ\",\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_dow_raw\":\"Sun\",\"shifted_to_next_day\":false,\"mode\":\"DAY\",\"time\":\"04:54 PM\"}}",
+            "computed_outputs_json": "{\"groups_live\":[\"recTaanbrzF1kVWrW\"],\"estimated_start_time\":\"07:45:08\",\"latest_estimated_start_time\":\"07:45:08\",\"___latest_estimated_start_time\":\"07:45:08\",\"latest_status\":\"Completed\",\"status\":\"Completed\",\"completed_trips\":23,\"total_trips\":23,\"latest_ingested_at\":\"2026-05-10T20:45:26.889Z\",\"rs_start_time\":\"07:45:08\",\"rs_end_time\":\"08:54:08\",\"rs_length\":69,\"rs_mins_till_start\":0,\"rs_mins_since_start\":548.866667,\"rs_status\":\"Completed\",\"rs_completed_trips\":23,\"rs_trip_default\":3,\"rs_trip_time\":3,\"rs_trip_time2\":3,\"calc_trip_minutes_final\":3,\"calc_trip_minutes_used_default\":true,\"calc_projected_class_minutes\":69,\"calc_start_anchor_text\":\"07:45:08\",\"calc_start_anchor_mins\":465.1333333333333}"
+          },
+          {
+            "record_id": "recAl5c7SsTPsnIZB",
+            "source_table": "schedule_logs",
+            "watch_schedule": [
+              "rece4AJ8PUXT0NoDT"
+            ],
+            "created_at": "2026-05-10T20:54:37.984Z",
+            "rs_start_time": "09:50:15",
+            "calc_status": "unchanged",
+            "inputs_json": "{\"watch_schedule\":{\"record_id\":\"rece4AJ8PUXT0NoDT\",\"class_groupxclasses_id\":200035773,\"class_group_id\":200023903,\"class_id\":200024836,\"estimated_start_time\":\"09:50:15\",\"estimated_end_time\":null,\"latest_status\":\"Completed\",\"status\":\"Completed\",\"completed_trips\":20,\"completed_trips_live\":20,\"total_trips\":20,\"tripTarget\":true,\"focusTargetClassId\":200024865,\"nextTargetClassId\":null,\"perTrip\":null},\"groups_live\":{\"record_id\":\"recz4MrsCn5MOymGZ\",\"class_group_id\":200023903,\"day\":\"2026-05-10\",\"estimated_start_time\":\"09:50:15\",\"gone\":20,\"total\":20,\"status\":\"Completed\",\"curr_updated_at\":\"1778443205\",\"ingested_at\":\"2026-05-10T20:45:26.889Z\"},\"heartbeat\":{\"record_id\":\"recr2aS1w9SjKqHYJ\",\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_dow_raw\":\"Sun\",\"shifted_to_next_day\":false,\"mode\":\"DAY\",\"time\":\"04:54 PM\"}}",
+            "computed_outputs_json": "{\"groups_live\":[\"recz4MrsCn5MOymGZ\"],\"estimated_start_time\":\"09:50:15\",\"latest_estimated_start_time\":\"09:50:15\",\"___latest_estimated_start_time\":\"09:50:15\",\"latest_status\":\"Completed\",\"status\":\"Completed\",\"completed_trips\":20,\"total_trips\":20,\"latest_ingested_at\":\"2026-05-10T20:45:26.889Z\",\"rs_start_time\":\"09:50:15\",\"rs_end_time\":\"10:50:15\",\"rs_length\":60,\"rs_mins_till_start\":0,\"rs_mins_since_start\":423.75,\"rs_status\":\"Completed\",\"rs_completed_trips\":20,\"rs_trip_default\":3,\"rs_trip_time\":3,\"rs_trip_time2\":3,\"calc_trip_minutes_final\":3,\"calc_trip_minutes_used_default\":true,\"calc_projected_class_minutes\":60,\"calc_start_anchor_text\":\"09:50:15\",\"calc_start_anchor_mins\":590.25}"
+          }
+        ]
+      },
+      "trip_logs": {
+        "record_count": 2,
+        "field_count": 14,
+        "fields": {
+          "anomalies_json": {
+            "populated": 2,
+            "blank": 0
+          },
+          "calc_mode": {
+            "populated": 2,
+            "blank": 0
+          },
+          "calc_status": {
+            "populated": 2,
+            "blank": 0
+          },
+          "calc_version": {
+            "populated": 2,
+            "blank": 0
+          },
+          "computed_outputs_json": {
+            "populated": 2,
+            "blank": 0
+          },
+          "created_at": {
+            "populated": 2,
+            "blank": 0
+          },
+          "inputs_json": {
+            "populated": 2,
+            "blank": 0
+          },
+          "prior_outputs_json": {
+            "populated": 2,
+            "blank": 0
+          },
+          "record_id": {
+            "populated": 2,
+            "blank": 0
+          },
+          "rs_log": {
+            "populated": 2,
+            "blank": 0
+          },
+          "source_table": {
+            "populated": 2,
+            "blank": 0
+          },
+          "watch_schedule": {
+            "populated": 2,
+            "blank": 0
+          },
+          "watch_trip_record_id": {
+            "populated": 2,
+            "blank": 0
+          },
+          "watch_trips": {
+            "populated": 2,
+            "blank": 0
+          }
+        },
+        "samples": [
+          {
+            "record_id": "rec38GBxzjkpAmLat",
+            "source_table": "trip_logs",
+            "watch_trips": [
+              "recTQsZxnE9g3BxhC"
+            ],
+            "watch_trip_record_id": "recTQsZxnE9g3BxhC",
+            "watch_schedule": [
+              "rec4bmPTHYMu294Ca"
+            ],
+            "created_at": "2026-05-12T20:21:23.187Z",
+            "calc_mode": "promote",
+            "calc_version": "trips_calculator_v2_1",
+            "calc_status": "anomaly",
+            "inputs_json": "{\"normalized\":{\"actual_go\":null,\"actual_order\":null,\"actual_time_minutes\":null,\"actual_time_text\":null,\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time_minutes\":1435,\"app_time_text\":\"11:55 PM\",\"class_id\":null,\"class_number\":411,\"class_status\":null,\"completed_trips\":null,\"entry_number\":2818,\"entryxclasses_uuid\":null,\"estimated_end_time_minutes\":null,\"estimated_end_time_text\":null,\"estimated_go_time_minutes\":null,\"estimated_go_time_text\":null,\"estimated_start_time_minutes\":520,\"estimated_start_time_text\":\"08:40:00\",\"estimated_time_minutes\":null,\"estimated_time_text\":null,\"gone_in\":null,\"h_eid\":\"2818\",\"order_of_go\":null,\"remaining_trips\":null,\"total_trips\":null,\"trip_identity_key\":\"people:411:2818\"},\"raw\":{\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time\":\"11:55 PM\",\"class_number\":411,\"entry_number\":2818,\"estimated_start_time\":\"08:40:00\",\"h_eid\":2818,\"hb_second_pass_reason\":\"err:missing_liveclass_mapping|debug:missing_groups_live_context|debug:missing_getLiveClassData|debug:missing_class_id\",\"schedule_rid\":[\"rec4bmPTHYMu294Ca\"]}}",
+            "prior_outputs_json": "{\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
+            "computed_outputs_json": "{\"rs_class_alert_group_size\":null,\"rs_class_alert_parent\":false,\"rs_class_alert_parent_record_id\":null,\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_running_order_of_go_mins_till\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
+            "anomalies_json": "[\"trip_minutes_default_missing_rate\",\"missing_effective_order\"]",
+            "rs_log": {
+              "rs_mins_since_start": 915,
+              "rs_mins_till_start": -915,
+              "rs_trip_time": 180,
+              "rs_start_time": "08:40:00",
+              "rs_trip_default": 180,
+              "rs_trip_time2": 180,
+              "rs_run_id": "2026-05-12T20:21:23.187Z"
+            }
+          },
+          {
+            "record_id": "rec8gg6reWlqlDWNW",
+            "source_table": "trip_logs",
+            "watch_trips": [
+              "recze5aOT8o3Eewos"
+            ],
+            "watch_trip_record_id": "recze5aOT8o3Eewos",
+            "watch_schedule": [
+              "rec4bmPTHYMu294Ca"
+            ],
+            "created_at": "2026-05-12T20:21:23.187Z",
+            "calc_mode": "promote",
+            "calc_version": "trips_calculator_v2_1",
+            "calc_status": "anomaly",
+            "inputs_json": "{\"normalized\":{\"actual_go\":null,\"actual_order\":null,\"actual_time_minutes\":null,\"actual_time_text\":null,\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time_minutes\":1435,\"app_time_text\":\"11:55 PM\",\"class_id\":null,\"class_number\":411,\"class_status\":null,\"completed_trips\":null,\"entry_number\":2815,\"entryxclasses_uuid\":null,\"estimated_end_time_minutes\":null,\"estimated_end_time_text\":null,\"estimated_go_time_minutes\":null,\"estimated_go_time_text\":null,\"estimated_start_time_minutes\":520,\"estimated_start_time_text\":\"08:40:00\",\"estimated_time_minutes\":null,\"estimated_time_text\":null,\"gone_in\":null,\"h_eid\":\"2815\",\"order_of_go\":null,\"remaining_trips\":null,\"total_trips\":null,\"trip_identity_key\":\"people:411:2815\"},\"raw\":{\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time\":\"11:55 PM\",\"class_number\":411,\"entry_number\":2815,\"estimated_start_time\":\"08:40:00\",\"h_eid\":2815,\"hb_second_pass_reason\":\"err:missing_liveclass_mapping|debug:missing_groups_live_context|debug:missing_getLiveClassData|debug:missing_class_id\",\"schedule_rid\":[\"rec4bmPTHYMu294Ca\"]}}",
+            "prior_outputs_json": "{\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
+            "computed_outputs_json": "{\"rs_class_alert_group_size\":null,\"rs_class_alert_parent\":false,\"rs_class_alert_parent_record_id\":null,\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_running_order_of_go_mins_till\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
+            "anomalies_json": "[\"trip_minutes_default_missing_rate\",\"missing_effective_order\"]",
+            "rs_log": {
+              "rs_mins_since_start": 915,
+              "rs_mins_till_start": -915,
+              "rs_trip_time": 180,
+              "rs_start_time": "08:40:00",
+              "rs_trip_default": 180,
+              "rs_trip_time2": 180,
+              "rs_run_id": "2026-05-12T20:21:23.187Z"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RS185 Single Viewport Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #fff;
+    }
+
+    .rs185,
+    .rs185 * {
+      box-sizing: border-box;
+    }
+
+    .rs185 {
+      --stage-h: clamp(560px, 78svh, 880px);
+      --inner-w: min(91vw, 1680px);
+      --media-col: 42%;
+      --copy-col: 58%;
+      --col-gap: clamp(24px, 4.2vw, 88px);
+      --image-h: calc(var(--stage-h) * 0.98);
+      --copy-w: min(84%, 860px);
+      --copy-gap: clamp(12px, 1.55vw, 26px);
+      --h1-size: clamp(50px, 4.65vw, 92px);
+      --p-size: clamp(17px, 1.45vw, 27px);
+
+      width: 100%;
+      height: var(--stage-h);
+      overflow: hidden;
+      background: #fff;
+      color: #000;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .rs185__inner {
+      width: var(--inner-w);
+      height: var(--stage-h);
+      display: grid;
+      grid-template-columns: var(--media-col) var(--copy-col);
+      column-gap: var(--col-gap);
+      align-items: center;
+    }
+
+    .rs185__media {
+      height: 100%;
+      min-width: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .rs185__image {
+      display: block;
+      width: auto;
+      height: var(--image-h);
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .rs185__copy {
+      width: var(--copy-w);
+      max-width: 860px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: var(--copy-gap);
+    }
+
+    .rs185__h1 {
+      margin: 0;
+      font-family: Outfit, sans-serif;
+      color: #000;
+      font-size: var(--h1-size);
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: -0.065em;
+    }
+
+    .rs185__p {
+      margin: 0;
+      max-width: 760px;
+      font-family: Outfit, sans-serif;
+      color: #000;
+      font-size: var(--p-size);
+      line-height: 1.38;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    @media screen and (min-width: 1440px) {
+      .rs185 {
+        --stage-h: clamp(640px, 76svh, 900px);
+        --inner-w: min(88vw, 1760px);
+        --image-h: calc(var(--stage-h) * 0.97);
+        --h1-size: clamp(66px, 4.95vw, 108px);
+        --p-size: clamp(20px, 1.38vw, 30px);
+      }
+    }
+
+    @media screen and (min-width: 992px) and (max-width: 1279px) {
+      .rs185 {
+        --stage-h: clamp(540px, 78svh, 720px);
+        --inner-w: 92vw;
+        --media-col: 42%;
+        --copy-col: 58%;
+        --col-gap: clamp(24px, 3.2vw, 44px);
+        --image-h: calc(var(--stage-h) * 0.98);
+        --copy-w: 88%;
+        --copy-gap: clamp(10px, 1.4vw, 18px);
+        --h1-size: clamp(42px, 4.35vw, 56px);
+        --p-size: clamp(15px, 1.45vw, 18px);
+      }
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      .rs185 {
+        --stage-h: clamp(560px, 78svh, 760px);
+        --inner-w: 94vw;
+        --media-col: 41%;
+        --copy-col: 59%;
+        --col-gap: clamp(18px, 2.8vw, 28px);
+        --image-h: calc(var(--stage-h) * 0.9);
+        --copy-w: 94%;
+        --copy-gap: 10px;
+        --h1-size: clamp(34px, 4.45vw, 44px);
+        --p-size: clamp(14px, 1.7vw, 16px);
+      }
+
+      .rs185__p {
+        line-height: 1.34;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      .rs185 {
+        --stage-h: 100svh;
+        --inner-w: 96vw;
+        --media-col: 42%;
+        --copy-col: 58%;
+        --col-gap: clamp(8px, 2.2vw, 14px);
+        --image-h: min(72svh, 560px);
+        --copy-w: 98%;
+        --copy-gap: 10px;
+        --h1-size: clamp(24px, 6.4vw, 36px);
+        --p-size: clamp(11px, 3.05vw, 14px);
+      }
+
+      .rs185__p {
+        line-height: 1.32;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="rs185">
+    <div class="rs185__inner">
+      <div class="rs185__media">
+        <img
+          class="rs185__image"
+          src="https://cdn.prod.website-files.com/6a034c204cee22f92347e6b9/6a034cd2ecedfe0ddb03c874_blue.avif"
+          alt=""
+        >
+      </div>
+
+      <div class="rs185__copy">
+        <h1 class="rs185__h1">I built this because being ready matters.</h1>
+        <p class="rs185__p">
+          I am a junior rider and working student. I ride a lot, work a lot, and spend enough time at shows to know when something is making the day harder than it needs to be.
+        </p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

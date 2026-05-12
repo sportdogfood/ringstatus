@@ -1,0 +1,309 @@
+{
+  "generated_at": "2026-05-12T22:11:04.874Z",
+  "source_generated_at": "2026-05-12T20:25:11.456Z",
+  "purpose": "Mark which source fields are display candidates versus keys, evidence, calculator state, or operational metadata.",
+  "note": "This is not a render specification. It prevents raw source JSON from being mistaken for display shape.",
+  "lanes": {
+    "heartbeat": {
+      "record_count": 1,
+      "field_count": 10,
+      "display_candidates": [
+        "app_dow_raw",
+        "app_sql_date",
+        "mode"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [
+        "app_show_id",
+        "hb_at",
+        "heartbeat_id",
+        "show_id",
+        "time"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "record_id"
+        ],
+        "evidence": [],
+        "calculator_state": [],
+        "operational": []
+      }
+    },
+    "show": {
+      "record_count": 2,
+      "field_count": 7,
+      "display_candidates": [],
+      "timing_candidates": [],
+      "data_candidates": [
+        "app_dow_rawv2",
+        "app_show_idv2",
+        "app_sql_datev2",
+        "show_id",
+        "sid",
+        "sql_date"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id"
+        ],
+        "evidence": [],
+        "calculator_state": [],
+        "operational": []
+      }
+    },
+    "rings": {
+      "record_count": 6,
+      "field_count": 8,
+      "display_candidates": [
+        "ringName",
+        "ring_nickname",
+        "ring_number",
+        "status"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [
+        "sid",
+        "sql_date"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "schedule_key"
+        ],
+        "evidence": [],
+        "calculator_state": [],
+        "operational": []
+      }
+    },
+    "groups": {
+      "record_count": 105,
+      "field_count": 15,
+      "display_candidates": [
+        "completed_trips",
+        "group_name",
+        "group_name_tags",
+        "status",
+        "total_trips"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [
+        "class_group_id",
+        "class_group_sequence",
+        "class_groupxclasses_id",
+        "schedule_short"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "schedule_instance_key",
+          "schedule_key",
+          "schedule_record_id"
+        ],
+        "evidence": [
+          "schedule_tie_breaker_source"
+        ],
+        "calculator_state": [
+          "schedule_tie_breaker"
+        ],
+        "operational": []
+      }
+    },
+    "class_start": {
+      "record_count": 105,
+      "field_count": 10,
+      "display_candidates": [],
+      "timing_candidates": [
+        "estimated_start_time"
+      ],
+      "data_candidates": [],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "schedule_instance_key",
+          "schedule_key",
+          "schedule_record_id"
+        ],
+        "evidence": [
+          "latest_schedule_log",
+          "latest_schedule_log_record_id",
+          "schedule_tie_breaker_source"
+        ],
+        "calculator_state": [
+          "schedule_tie_breaker"
+        ],
+        "operational": [
+          "manual_time_override"
+        ]
+      }
+    },
+    "classes": {
+      "record_count": 105,
+      "field_count": 12,
+      "display_candidates": [
+        "class_name",
+        "class_number",
+        "class_type",
+        "schedule_sequencetype"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [
+        "class_id",
+        "class_sequence"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "schedule_instance_key",
+          "schedule_key",
+          "schedule_record_id"
+        ],
+        "evidence": [
+          "schedule_tie_breaker_source"
+        ],
+        "calculator_state": [
+          "schedule_tie_breaker"
+        ],
+        "operational": []
+      }
+    },
+    "entries": {
+      "record_count": 2,
+      "field_count": 11,
+      "display_candidates": [
+        "entry_number",
+        "pid"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [
+        "entry_sequence",
+        "h_eid"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "schedule_key",
+          "trip_instance_key",
+          "trips_key",
+          "trips_short_key"
+        ],
+        "evidence": [
+          "trip_tie_breaker_source"
+        ],
+        "calculator_state": [
+          "trip_tie_breaker"
+        ],
+        "operational": []
+      }
+    },
+    "trip_go": {
+      "record_count": 2,
+      "field_count": 17,
+      "display_candidates": [
+        "entry_number",
+        "pid"
+      ],
+      "timing_candidates": [
+        "estimated_start_time"
+      ],
+      "data_candidates": [
+        "entry_sequence"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "full_nesting_key",
+          "id",
+          "schedule_key",
+          "schedule_record_id",
+          "trip_instance_key",
+          "trip_record_id",
+          "trips_key"
+        ],
+        "evidence": [
+          "latest_trip_log_record_id",
+          "rs_diff",
+          "rs_latest_log",
+          "trip_tie_breaker_source"
+        ],
+        "calculator_state": [
+          "rs_current",
+          "trip_tie_breaker"
+        ],
+        "operational": []
+      }
+    },
+    "trips": {
+      "record_count": 2,
+      "field_count": 14,
+      "display_candidates": [
+        "entry_number",
+        "pid"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [
+        "entry_sequence"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "schedule_key",
+          "schedule_record_id",
+          "trip_instance_key",
+          "trip_record_id",
+          "trips_key"
+        ],
+        "evidence": [
+          "trip_tie_breaker_source"
+        ],
+        "calculator_state": [
+          "trip_tie_breaker"
+        ],
+        "operational": [
+          "is_target",
+          "last_seen_at",
+          "latest_ingested_at"
+        ]
+      }
+    },
+    "horses": {
+      "record_count": 2,
+      "field_count": 5,
+      "display_candidates": [
+        "horse",
+        "horse_name"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [
+        "h_eid"
+      ],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "trips_key"
+        ],
+        "evidence": [],
+        "calculator_state": [],
+        "operational": []
+      }
+    },
+    "riders": {
+      "record_count": 1,
+      "field_count": 4,
+      "display_candidates": [
+        "pid",
+        "rider_name"
+      ],
+      "timing_candidates": [],
+      "data_candidates": [],
+      "not_for_primary_display": {
+        "key": [
+          "id",
+          "trips_key"
+        ],
+        "evidence": [],
+        "calculator_state": [],
+        "operational": []
+      }
+    }
+  }
+}
