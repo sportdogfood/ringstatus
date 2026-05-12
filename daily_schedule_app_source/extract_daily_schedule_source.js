@@ -141,6 +141,7 @@ function tripIdentity(row) {
     pid: firstValue(f.pid),
     entry_number: firstValue(f.entry_number),
     schedule_tie_breaker: firstValue(f.entry_sequence),
+    trip_tie_breaker: firstValue(f.entry_sequence),
   };
   return {
     ...parts,
@@ -424,10 +425,12 @@ function buildSourcePayload(input) {
       trips_key: identity.trips_key,
       trips_short_key: identity.trips_short_key,
       schedule_key: identity.schedule_key,
+      pid: identity.pid,
       entry_number: firstValue(f.entry_number),
+      entry_sequence: identity.trip_tie_breaker,
+      trip_tie_breaker: identity.trip_tie_breaker,
       entry_id: firstValue(f.entry_id),
       h_eid: firstValue(f.h_eid),
-      pid: firstValue(f.pid),
     });
     pushLane("trip_go", `trip_go:${identity.trips_key}`, {
       trip_record_id: id,
@@ -435,6 +438,10 @@ function buildSourcePayload(input) {
       trips_key: identity.trips_key,
       schedule_key: identity.schedule_key,
       full_nesting_key: identity.full_nesting_key,
+      pid: identity.pid,
+      entry_number: identity.entry_number,
+      entry_sequence: identity.trip_tie_breaker,
+      trip_tie_breaker: identity.trip_tie_breaker,
       estimated_start_time: firstValue(f.estimated_start_time),
       estimated_go_time: firstValue(f.estimated_go_time),
       actual_order: firstValue(f.actual_order),
@@ -452,6 +459,10 @@ function buildSourcePayload(input) {
       schedule_record_id: parent ? rowId(parent.row) : null,
       trips_key: identity.trips_key,
       schedule_key: identity.schedule_key,
+      pid: identity.pid,
+      entry_number: identity.entry_number,
+      entry_sequence: identity.trip_tie_breaker,
+      trip_tie_breaker: identity.trip_tie_breaker,
       status: firstValue(f.status),
       completed_trips: firstValue(f.completed_trips),
       total_trips: firstValue(f.total_trips),
@@ -476,7 +487,25 @@ function buildSourcePayload(input) {
 
   validation.duplicate_trips_keys = Object.entries(tripsKeyCounts)
     .filter(([key, count]) => key && count > 1)
-    .map(([key, count]) => ({ key, count }));
+    .map(([key, count]) => {
+      const rows = tripRows
+        .map((row) => ({ row, identity: tripIdentity(row) }))
+        .filter((item) => item.identity.trips_key === key);
+      const tieBreakers = rows
+        .map((item) => item.identity.trip_tie_breaker)
+        .filter((value) => !isBlank(value));
+      const missingTieBreakerRecordIds = rows
+        .filter((item) => isBlank(item.identity.trip_tie_breaker))
+        .map((item) => rowId(item.row));
+      return {
+        key,
+        count,
+        tie_breaker_field: "entry_sequence",
+        tie_breakers: tieBreakers,
+        missing_tie_breaker_record_ids: missingTieBreakerRecordIds,
+        tie_breaker_unique: tieBreakers.length === count && new Set(tieBreakers.map(String)).size === count,
+      };
+    });
 
   for (const row of scheduleRows) {
     const latestLog = latestScheduleLogByScheduleId.get(rowId(row));

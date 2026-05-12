@@ -1,13 +1,13 @@
 {
   "meta": {
-    "generated_at": "2026-05-12T18:45:32.752Z",
+    "generated_at": "2026-05-12T19:41:13.163Z",
     "field_contract_version": "2026-05-12.daily_schedule_app_source.v1",
     "row_counts": {
       "heartbeat": 1,
       "watch_schedule": 105,
       "watch_trips": 2,
       "schedule_logs": 2149,
-      "trip_logs": 3233
+      "trip_logs": 3253
     },
     "note": "Flat source payload only; primary app nesting is intentionally not built here."
   },
@@ -27,16 +27,16 @@
   "lanes": {
     "heartbeat": [
       {
-        "id": "recHc5l0xhRXYVNoh",
-        "record_id": "recHc5l0xhRXYVNoh",
-        "heartbeat_id": "200000062-2026-05-12-1778611504",
-        "hb_at": "2026-05-12T18:45:04.620Z",
+        "id": "reclhHFkzV83ot8ru",
+        "record_id": "reclhHFkzV83ot8ru",
+        "heartbeat_id": "200000062-2026-05-12-1778614743",
+        "hb_at": "2026-05-12T19:39:03.869Z",
         "show_id": 200000062,
         "app_show_id": 200000062,
         "app_sql_date": "2026-05-28",
         "app_dow_raw": "Thu",
         "mode": "DAY",
-        "time": "02:45 PM"
+        "time": "03:39 PM"
       }
     ],
     "show": [
@@ -3678,18 +3678,22 @@
         "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
         "trips_short_key": "411|2|8778|2815",
         "schedule_key": "200000061|2026-05-10|6|411|2",
+        "pid": 8778,
         "entry_number": 2815,
-        "h_eid": 2815,
-        "pid": 8778
+        "entry_sequence": 5,
+        "trip_tie_breaker": 5,
+        "h_eid": 2815
       },
       {
         "id": "entry:200000061|2026-05-10|6|411|2|8778|2818",
         "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
         "trips_short_key": "411|2|8778|2818",
         "schedule_key": "200000061|2026-05-10|6|411|2",
+        "pid": 8778,
         "entry_number": 2818,
-        "h_eid": 2818,
-        "pid": 8778
+        "entry_sequence": 5,
+        "trip_tie_breaker": 5,
+        "h_eid": 2818
       }
     ],
     "trip_go": [
@@ -3700,6 +3704,10 @@
         "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
         "schedule_key": "200000061|2026-05-10|6|411|2",
         "full_nesting_key": "200000061|2026-05-10|6|08:40:00|200023861|411|2|8778|2815",
+        "pid": 8778,
+        "entry_number": 2815,
+        "entry_sequence": 5,
+        "trip_tie_breaker": 5,
         "estimated_start_time": "08:40:00",
         "rs_current": {
           "rs_trip_time2": 180,
@@ -3712,7 +3720,7 @@
           "rs_trip_time": 180,
           "rs_mins_till_start": -915
         },
-        "latest_trip_log_record_id": "reccs79ON97etb8kR",
+        "latest_trip_log_record_id": "recC1AaV20g8lLIsE",
         "rs_latest_log": {
           "rs_mins_since_start": 915,
           "rs_mins_till_start": -915,
@@ -3720,7 +3728,7 @@
           "rs_start_time": "08:40:00",
           "rs_trip_default": 180,
           "rs_trip_time2": 180,
-          "rs_run_id": "2026-05-12T18:39:20.662Z"
+          "rs_run_id": "2026-05-12T19:39:22.646Z"
         },
         "rs_diff": {}
       },
@@ -3731,6 +3739,10 @@
         "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
         "schedule_key": "200000061|2026-05-10|6|411|2",
         "full_nesting_key": "200000061|2026-05-10|6|08:40:00|200023861|411|2|8778|2818",
+        "pid": 8778,
+        "entry_number": 2818,
+        "entry_sequence": 5,
+        "trip_tie_breaker": 5,
         "estimated_start_time": "08:40:00",
         "rs_current": {
           "rs_trip_time2": 180,
@@ -3743,7 +3755,7 @@
           "rs_trip_time": 180,
           "rs_mins_till_start": -915
         },
-        "latest_trip_log_record_id": "rectQXWS2l8GVrATh",
+        "latest_trip_log_record_id": "recBbrGxQZDb347o4",
         "rs_latest_log": {
           "rs_mins_since_start": 915,
           "rs_mins_till_start": -915,
@@ -3751,7 +3763,7 @@
           "rs_start_time": "08:40:00",
           "rs_trip_default": 180,
           "rs_trip_time2": 180,
-          "rs_run_id": "2026-05-12T18:39:20.662Z"
+          "rs_run_id": "2026-05-12T19:39:22.646Z"
         },
         "rs_diff": {}
       }
@@ -3763,6 +3775,10 @@
         "schedule_record_id": "rec4bmPTHYMu294Ca",
         "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
         "schedule_key": "200000061|2026-05-10|6|411|2",
+        "pid": 8778,
+        "entry_number": 2815,
+        "entry_sequence": 5,
+        "trip_tie_breaker": 5,
         "is_target": true,
         "last_seen_at": "2026-05-10",
         "latest_ingested_at": "2026-05-10T03:10:45.368Z"
@@ -3773,6 +3789,10 @@
         "schedule_record_id": "rec4bmPTHYMu294Ca",
         "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
         "schedule_key": "200000061|2026-05-10|6|411|2",
+        "pid": 8778,
+        "entry_number": 2818,
+        "entry_sequence": 5,
+        "trip_tie_breaker": 5,
         "is_target": true,
         "last_seen_at": "2026-05-10",
         "latest_ingested_at": "2026-05-10T03:10:45.368Z"
@@ -3993,35 +4013,7 @@
       ],
       "trip_logs": [
         {
-          "record_id": "reccs79ON97etb8kR",
-          "source_table": "trip_logs",
-          "watch_trips": [
-            "recze5aOT8o3Eewos"
-          ],
-          "watch_trip_record_id": "recze5aOT8o3Eewos",
-          "watch_schedule": [
-            "rec4bmPTHYMu294Ca"
-          ],
-          "created_at": "2026-05-12T18:39:20.662Z",
-          "calc_mode": "promote",
-          "calc_version": "trips_calculator_v2_1",
-          "calc_status": "anomaly",
-          "inputs_json": "{\"normalized\":{\"actual_go\":null,\"actual_order\":null,\"actual_time_minutes\":null,\"actual_time_text\":null,\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time_minutes\":1435,\"app_time_text\":\"11:55 PM\",\"class_id\":null,\"class_number\":411,\"class_status\":null,\"completed_trips\":null,\"entry_number\":2815,\"entryxclasses_uuid\":null,\"estimated_end_time_minutes\":null,\"estimated_end_time_text\":null,\"estimated_go_time_minutes\":null,\"estimated_go_time_text\":null,\"estimated_start_time_minutes\":520,\"estimated_start_time_text\":\"08:40:00\",\"estimated_time_minutes\":null,\"estimated_time_text\":null,\"gone_in\":null,\"h_eid\":\"2815\",\"order_of_go\":null,\"remaining_trips\":null,\"total_trips\":null,\"trip_identity_key\":\"people:411:2815\"},\"raw\":{\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time\":\"11:55 PM\",\"class_number\":411,\"entry_number\":2815,\"estimated_start_time\":\"08:40:00\",\"h_eid\":2815,\"hb_second_pass_reason\":\"err:missing_liveclass_mapping|debug:missing_groups_live_context|debug:missing_getLiveClassData|debug:missing_class_id\",\"schedule_rid\":[\"rec4bmPTHYMu294Ca\"]}}",
-          "prior_outputs_json": "{\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
-          "computed_outputs_json": "{\"rs_class_alert_group_size\":null,\"rs_class_alert_parent\":false,\"rs_class_alert_parent_record_id\":null,\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_running_order_of_go_mins_till\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
-          "anomalies_json": "[\"trip_minutes_default_missing_rate\",\"missing_effective_order\"]",
-          "rs_log": {
-            "rs_mins_since_start": 915,
-            "rs_mins_till_start": -915,
-            "rs_trip_time": 180,
-            "rs_start_time": "08:40:00",
-            "rs_trip_default": 180,
-            "rs_trip_time2": 180,
-            "rs_run_id": "2026-05-12T18:39:20.662Z"
-          }
-        },
-        {
-          "record_id": "rectQXWS2l8GVrATh",
+          "record_id": "recBbrGxQZDb347o4",
           "source_table": "trip_logs",
           "watch_trips": [
             "recTQsZxnE9g3BxhC"
@@ -4030,7 +4022,7 @@
           "watch_schedule": [
             "rec4bmPTHYMu294Ca"
           ],
-          "created_at": "2026-05-12T18:39:20.662Z",
+          "created_at": "2026-05-12T19:39:22.646Z",
           "calc_mode": "promote",
           "calc_version": "trips_calculator_v2_1",
           "calc_status": "anomaly",
@@ -4045,7 +4037,35 @@
             "rs_start_time": "08:40:00",
             "rs_trip_default": 180,
             "rs_trip_time2": 180,
-            "rs_run_id": "2026-05-12T18:39:20.662Z"
+            "rs_run_id": "2026-05-12T19:39:22.646Z"
+          }
+        },
+        {
+          "record_id": "recC1AaV20g8lLIsE",
+          "source_table": "trip_logs",
+          "watch_trips": [
+            "recze5aOT8o3Eewos"
+          ],
+          "watch_trip_record_id": "recze5aOT8o3Eewos",
+          "watch_schedule": [
+            "rec4bmPTHYMu294Ca"
+          ],
+          "created_at": "2026-05-12T19:39:22.646Z",
+          "calc_mode": "promote",
+          "calc_version": "trips_calculator_v2_1",
+          "calc_status": "anomaly",
+          "inputs_json": "{\"normalized\":{\"actual_go\":null,\"actual_order\":null,\"actual_time_minutes\":null,\"actual_time_text\":null,\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time_minutes\":1435,\"app_time_text\":\"11:55 PM\",\"class_id\":null,\"class_number\":411,\"class_status\":null,\"completed_trips\":null,\"entry_number\":2815,\"entryxclasses_uuid\":null,\"estimated_end_time_minutes\":null,\"estimated_end_time_text\":null,\"estimated_go_time_minutes\":null,\"estimated_go_time_text\":null,\"estimated_start_time_minutes\":520,\"estimated_start_time_text\":\"08:40:00\",\"estimated_time_minutes\":null,\"estimated_time_text\":null,\"gone_in\":null,\"h_eid\":\"2815\",\"order_of_go\":null,\"remaining_trips\":null,\"total_trips\":null,\"trip_identity_key\":\"people:411:2815\"},\"raw\":{\"app_show_id\":200000061,\"app_sql_date\":\"2026-05-10\",\"app_time\":\"11:55 PM\",\"class_number\":411,\"entry_number\":2815,\"estimated_start_time\":\"08:40:00\",\"h_eid\":2815,\"hb_second_pass_reason\":\"err:missing_liveclass_mapping|debug:missing_groups_live_context|debug:missing_getLiveClassData|debug:missing_class_id\",\"schedule_rid\":[\"rec4bmPTHYMu294Ca\"]}}",
+          "prior_outputs_json": "{\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
+          "computed_outputs_json": "{\"rs_class_alert_group_size\":null,\"rs_class_alert_parent\":false,\"rs_class_alert_parent_record_id\":null,\"rs_completed_trips\":null,\"rs_end_time\":null,\"rs_go_mins_from_start\":null,\"rs_go_time\":null,\"rs_go_time_from_start\":null,\"rs_gone_in\":null,\"rs_length\":null,\"rs_min_till_go\":null,\"rs_min_to_actual_go\":null,\"rs_mins_since_start\":915,\"rs_mins_till_start\":-915,\"rs_order_of_go\":null,\"rs_running_order_of_go\":null,\"rs_running_order_of_go_mins_till\":null,\"rs_start_time\":\"08:40:00\",\"rs_status\":null,\"rs_trip_default\":180,\"rs_trip_time\":180,\"rs_trip_time2\":180}",
+          "anomalies_json": "[\"trip_minutes_default_missing_rate\",\"missing_effective_order\"]",
+          "rs_log": {
+            "rs_mins_since_start": 915,
+            "rs_mins_till_start": -915,
+            "rs_trip_time": 180,
+            "rs_start_time": "08:40:00",
+            "rs_trip_default": 180,
+            "rs_trip_time2": 180,
+            "rs_run_id": "2026-05-12T19:39:22.646Z"
           }
         }
       ]
@@ -4811,10 +4831,10 @@
     },
     "logs_by_trip_key": {
       "200000061|2026-05-10|6|411|2|8778|2815": [
-        "reccs79ON97etb8kR"
+        "recC1AaV20g8lLIsE"
       ],
       "200000061|2026-05-10|6|411|2|8778|2818": [
-        "rectQXWS2l8GVrATh"
+        "recBbrGxQZDb347o4"
       ]
     }
   },

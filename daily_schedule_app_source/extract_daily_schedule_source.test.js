@@ -132,6 +132,49 @@ test("reports trips that cannot resolve a schedule parent", () => {
   assert.equal(payload.reports.validation.unresolved_trip_parents[0].reason, "missing_schedule_parent");
 });
 
+test("exposes pid and entry_sequence next to trip keys without removing pid from trips_key", () => {
+  const payload = buildSourcePayload({
+    generatedAt: "2026-05-12T12:00:00.000Z",
+    heartbeatRows: [],
+    scheduleRows: [
+      rec("sched", {
+        sid: 200000061,
+        schedule_show_datev2: "2026-05-10",
+        ring_number: 6,
+        class_number: 411,
+        class_group_sequence: 2,
+      }),
+    ],
+    tripRows: [
+      rec("trip", {
+        show_id: 200000061,
+        schedule_show_datev2: "2026-05-10",
+        ring_number: 6,
+        class_number: 411,
+        class_group_sequence: 2,
+        pid: 8778,
+        entry_number: 2815,
+        entry_sequence: 7,
+        watch_schedule: ["sched"],
+      }),
+    ],
+    scheduleLogRows: [],
+    tripLogRows: [],
+  });
+
+  const tripGo = payload.lanes.trip_go[0];
+  const trip = payload.lanes.trips[0];
+  const entry = payload.lanes.entries[0];
+
+  assert.equal(tripGo.trips_key, "200000061|2026-05-10|6|411|2|8778|2815");
+  assert.equal(tripGo.pid, 8778);
+  assert.equal(tripGo.entry_sequence, 7);
+  assert.equal(tripGo.trip_tie_breaker, 7);
+  assert.equal(trip.pid, 8778);
+  assert.equal(entry.pid, 8778);
+  assert.equal(entry.entry_sequence, 7);
+});
+
 test("uses entry_sequence as a duplicate schedule tie breaker without changing schedule_key", () => {
   const payload = buildSourcePayload({
     generatedAt: "2026-05-12T12:00:00.000Z",
