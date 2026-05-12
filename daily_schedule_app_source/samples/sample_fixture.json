@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-05-12T12:00:00.000Z",
+  "heartbeatRows": [
+    {
+      "id": "rechb_sample",
+      "fields": {
+        "heartbeat_id": "hb_sample",
+        "hb_at": "2026-05-12T12:00:00.000Z",
+        "show_id": 200000061,
+        "app_show_id": 200000061,
+        "app_sql_date": "2026-05-10",
+        "app_dow_raw": "Sun",
+        "mode": "DAY",
+        "time": "09:30:00"
+      }
+    }
+  ],
+  "scheduleRows": [
+    {
+      "id": "recsched_sample",
+      "fields": {
+        "sid": 200000061,
+        "show_id": 200000061,
+        "app_show_idv2": 200000061,
+        "schedule_show_datev2": "2026-05-10",
+        "app_sql_datev2": "2026-05-10",
+        "ring_number": 1,
+        "ringName": "International",
+        "ring_nickname": "Ring 1",
+        "class_group_id": 987,
+        "class_group_sequence": 2,
+        "class_groupxclasses_id": 12345,
+        "class_id": 67890,
+        "class_number": 101,
+        "class_name": "Low Adult Jumper",
+        "class_type": "Jumper",
+        "schedule_sequencetype": "Class",
+        "group_name": "Low Adult Jumper",
+        "group_name_tags": "Adult|Jumper",
+        "estimated_start_time": "09:05:00",
+        "status": "scheduled",
+        "total_trips": 20,
+        "completed_trips": 4,
+        "is_target": true
+      }
+    }
+  ],
+  "tripRows": [
+    {
+      "id": "rectrip_sample",
+      "fields": {
+        "show_id": 200000061,
+        "app_show_idv2": 200000061,
+        "schedule_show_datev2": "2026-05-10",
+        "scheduled_date": "2026-05-10",
+        "ring_number": 1,
+        "class_group_id": 987,
+        "class_group_sequence": 2,
+        "class_groupxclasses_id": 12345,
+        "class_id": 67890,
+        "class_number": 101,
+        "class_name": "Low Adult Jumper",
+        "class_type": "Jumper",
+        "group_name": "Low Adult Jumper",
+        "pid": 555,
+        "entry_number": 44,
+        "watch_schedule": ["recsched_sample"],
+        "schedule_rid": "recsched_sample",
+        "estimated_start_time": "09:05:00",
+        "estimated_go_time": "09:20:00",
+        "status": "in_progress",
+        "completed_trips": 4,
+        "total_trips": 20,
+        "gone_in": 4,
+        "rs_go_time": "09:21:00",
+        "rs_min_till_go": 11,
+        "rs_order_of_go": 5,
+        "actual_order": 5,
+        "horse": "Example Horse",
+        "horse_name": "Example Horse",
+        "rider_name": "Example Rider"
+      }
+    }
+  ],
+  "scheduleLogRows": [],
+  "tripLogRows": [
+    {
+      "id": "reclog_sample",
+      "fields": {
+        "watch_trips": ["rectrip_sample"],
+        "watch_trip_record_id": "rectrip_sample",
+        "created_at": "2026-05-12T11:59:00.000Z",
+        "calc_status": "changed",
+        "rs_go_time": "09:21:00",
+        "rs_min_till_go": 11,
+        "rs_order_of_go": 5,
+        "rs_go_time_diff": "same",
+        "computed_outputs_json": "{\"rs_go_time\":\"09:21:00\"}"
+      }
+    }
+  ]
+}

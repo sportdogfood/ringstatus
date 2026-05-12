@@ -1,0 +1,232 @@
+{
+  "meta": {
+    "generated_at": "2026-05-12T12:00:00.000Z",
+    "field_contract_version": "2026-05-12.daily_schedule_app_source.v1",
+    "row_counts": {
+      "heartbeat": 1,
+      "watch_schedule": 1,
+      "watch_trips": 1,
+      "schedule_logs": 0,
+      "trip_logs": 1
+    },
+    "note": "Flat source payload only; primary app nesting is intentionally not built here."
+  },
+  "lane_order": [
+    "heartbeat",
+    "show",
+    "rings",
+    "groups",
+    "class_start",
+    "classes",
+    "entries",
+    "trip_go",
+    "trips",
+    "horses",
+    "riders"
+  ],
+  "lanes": {
+    "heartbeat": [
+      {
+        "id": "rechb_sample",
+        "record_id": "rechb_sample",
+        "heartbeat_id": "hb_sample",
+        "hb_at": "2026-05-12T12:00:00.000Z",
+        "show_id": 200000061,
+        "app_show_id": 200000061,
+        "app_sql_date": "2026-05-10",
+        "app_dow_raw": "Sun",
+        "mode": "DAY",
+        "time": "09:30:00"
+      }
+    ],
+    "show": [
+      {
+        "id": "show:200000061:2026-05-10",
+        "sid": 200000061,
+        "sql_date": "2026-05-10",
+        "show_id": 200000061,
+        "app_show_idv2": 200000061,
+        "app_sql_datev2": "2026-05-10"
+      }
+    ],
+    "rings": [
+      {
+        "id": "ring:200000061:2026-05-10:1",
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "sid": 200000061,
+        "sql_date": "2026-05-10",
+        "ring_number": 1,
+        "ringName": "International",
+        "ring_nickname": "Ring 1",
+        "status": "scheduled"
+      }
+    ],
+    "groups": [
+      {
+        "id": "group:200000061|2026-05-10|1|101|2",
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "schedule_short": "1|101|2",
+        "class_group_id": 987,
+        "class_group_sequence": 2,
+        "class_groupxclasses_id": 12345,
+        "group_name": "Low Adult Jumper",
+        "group_name_tags": "Adult|Jumper",
+        "total_trips": 20,
+        "completed_trips": 4,
+        "status": "scheduled"
+      }
+    ],
+    "class_start": [
+      {
+        "id": "class_start:200000061|2026-05-10|1|101|2",
+        "schedule_record_id": "recsched_sample",
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "estimated_start_time": "09:05:00",
+        "latest_schedule_log": {}
+      }
+    ],
+    "classes": [
+      {
+        "id": "class:200000061|2026-05-10|1|101|2",
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "class_id": 67890,
+        "class_number": 101,
+        "class_sequence": 2,
+        "class_name": "Low Adult Jumper",
+        "class_type": "Jumper",
+        "schedule_sequencetype": "Class"
+      }
+    ],
+    "entries": [
+      {
+        "id": "entry:200000061|2026-05-10|1|101|2|555|44",
+        "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "trips_short_key": "101|2|555|44",
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "entry_number": 44,
+        "pid": 555
+      }
+    ],
+    "trip_go": [
+      {
+        "id": "trip_go:200000061|2026-05-10|1|101|2|555|44",
+        "trip_record_id": "rectrip_sample",
+        "schedule_record_id": "recsched_sample",
+        "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "full_nesting_key": "200000061|2026-05-10|1|09:20:00|987|101|2|555|44",
+        "estimated_start_time": "09:05:00",
+        "estimated_go_time": "09:20:00",
+        "actual_order": 5,
+        "gone_in": 4,
+        "rs_current": {
+          "rs_go_time": "09:21:00",
+          "rs_min_till_go": 11,
+          "rs_order_of_go": 5
+        },
+        "latest_trip_log_record_id": "reclog_sample",
+        "rs_latest_log": {
+          "rs_go_time": "09:21:00",
+          "rs_min_till_go": 11,
+          "rs_order_of_go": 5,
+          "rs_go_time_diff": "same"
+        },
+        "rs_diff": {
+          "rs_go_time_diff": "same"
+        }
+      }
+    ],
+    "trips": [
+      {
+        "id": "trip:200000061|2026-05-10|1|101|2|555|44",
+        "trip_record_id": "rectrip_sample",
+        "schedule_record_id": "recsched_sample",
+        "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "schedule_key": "200000061|2026-05-10|1|101|2",
+        "status": "in_progress",
+        "completed_trips": 4,
+        "total_trips": 20
+      }
+    ],
+    "horses": [
+      {
+        "id": "horse:Example Horse",
+        "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "horse": "Example Horse",
+        "horse_name": "Example Horse"
+      }
+    ],
+    "riders": [
+      {
+        "id": "rider:555",
+        "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "pid": 555,
+        "rider_name": "Example Rider"
+      }
+    ]
+  },
+  "side_lanes": {
+    "results": [],
+    "alerts": [],
+    "logs": {
+      "schedule_logs": [],
+      "trip_logs": [
+        {
+          "record_id": "reclog_sample",
+          "source_table": "trip_logs",
+          "watch_trips": [
+            "rectrip_sample"
+          ],
+          "watch_trip_record_id": "rectrip_sample",
+          "created_at": "2026-05-12T11:59:00.000Z",
+          "calc_status": "changed",
+          "computed_outputs_json": "{\"rs_go_time\":\"09:21:00\"}",
+          "rs_go_time_diff": "same",
+          "rs_log": {
+            "rs_go_time": "09:21:00",
+            "rs_min_till_go": 11,
+            "rs_order_of_go": 5,
+            "rs_go_time_diff": "same"
+          }
+        }
+      ]
+    }
+  },
+  "indexes": {
+    "by_schedule_key": {
+      "200000061|2026-05-10|1|101|2": "recsched_sample"
+    },
+    "by_trips_key": {
+      "200000061|2026-05-10|1|101|2|555|44": "rectrip_sample"
+    },
+    "children_by_parent_key": {
+      "200000061|2026-05-10|1|101|2": [
+        "200000061|2026-05-10|1|101|2|555|44"
+      ]
+    },
+    "by_airtable_record_id": {
+      "recsched_sample": {
+        "lane": "class_start",
+        "schedule_key": "200000061|2026-05-10|1|101|2"
+      },
+      "rectrip_sample": {
+        "lane": "trips",
+        "trips_key": "200000061|2026-05-10|1|101|2|555|44",
+        "schedule_key": "200000061|2026-05-10|1|101|2"
+      }
+    },
+    "logs_by_trip_key": {
+      "200000061|2026-05-10|1|101|2|555|44": [
+        "reclog_sample"
+      ]
+    }
+  },
+  "reports": {
+    "validation": {
+      "unresolved_trip_parents": [],
+      "duplicate_schedule_keys": [],
+      "duplicate_trips_keys": [],
+      "rs_mismatches": []
+    }
+  }
+}

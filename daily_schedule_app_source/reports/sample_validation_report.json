@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-05-12T12:00:00.000Z",
+  "field_contract_version": "2026-05-12.daily_schedule_app_source.v1",
+  "row_counts": {
+    "heartbeat": 1,
+    "watch_schedule": 1,
+    "watch_trips": 1,
+    "schedule_logs": 0,
+    "trip_logs": 1
+  },
+  "validation": {
+    "unresolved_trip_parents": [],
+    "duplicate_schedule_keys": [],
+    "duplicate_trips_keys": [],
+    "rs_mismatches": []
+  }
+}
