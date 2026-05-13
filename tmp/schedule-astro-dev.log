@@ -17,3 +17,6 @@
   Run [36mnpx @astrojs/upgrade[39m to update
 
 [2m08:58:55[22m [34m[200][39m /schedule [2m21ms[22m
+[2m09:00:20[22m [34m[200][39m /schedule [2m7ms[22m
+[2m09:00:21[22m [34m[200][39m /schedule/data/latest/watch_schedule.json [2m72ms[22m
+[2m09:00:21[22m [34m[200][39m /schedule/data/latest/watch_trips.json [2m182ms[22m
