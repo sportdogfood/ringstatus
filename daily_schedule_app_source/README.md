@@ -79,6 +79,20 @@ Feed outputs:
 - `feed/feed.indexed.json`: flat `rows` plus `indexed.rider`, `indexed.horse`, `indexed.status`, `indexed.ring`, `indexed.class_type`, and `indexed.group_name_tags`.
 - `feed/feed.status.json`: derived Ring/Rider/Horse status shape using existing calculator outputs where available.
 
+Build the visual identifier preview:
+
+```powershell
+node .\daily_schedule_app_source\build_visual_identifier_preview.js
+```
+
+Visual identifier outputs:
+
+- `visual_identifier_contract.json`: compact token/status contract for review.
+- `render/visual_identifier_preview.html`: static preview of the identifier language.
+- `render/visual_identifier_preview_model.json`: generated preview model.
+
+The visual preview is not wired into `schedule_preview.html`. It is for reviewing the token system first.
+
 Time policy for feed files:
 
 - Show clock strings such as `estimated_start_time`, `rs_start_time`, and `rs_go_time` are preserved as source display-clock values.
@@ -97,6 +111,8 @@ node .\daily_schedule_app_source\extract_daily_schedule_source.js --fixture .\da
 ```powershell
 node --test .\daily_schedule_app_source\extract_daily_schedule_source.test.js
 node --test .\daily_schedule_app_source\build_feed_files.test.js
+node --test .\daily_schedule_app_source\build_visual_identifier_preview.test.js
 node --check .\daily_schedule_app_source\extract_daily_schedule_source.js
 node --check .\daily_schedule_app_source\build_feed_files.js
+node --check .\daily_schedule_app_source\build_visual_identifier_preview.js
 ```

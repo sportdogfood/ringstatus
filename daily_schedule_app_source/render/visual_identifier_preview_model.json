@@ -1,0 +1,501 @@
+{
+  "meta": {
+    "generated_at": "2026-05-13T22:10:43.377Z",
+    "contract_version": "2026-05-13.v0.1",
+    "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow."
+  },
+  "statusTerms": [
+    {
+      "id": "now",
+      "label": "NOW",
+      "meaning": "Current/live/underway row or scoped current item.",
+      "incoming_terms": [
+        "Now",
+        "Underway",
+        "livenow"
+      ],
+      "shade": "green",
+      "treatment": "filled_badge",
+      "priority": 1
+    },
+    {
+      "id": "next",
+      "label": "NEXT",
+      "meaning": "Immediate next item in a scoped view.",
+      "incoming_terms": [
+        "Next"
+      ],
+      "shade": "blue",
+      "treatment": "outline_badge",
+      "priority": 2
+    },
+    {
+      "id": "following",
+      "label": "FOL",
+      "meaning": "Following item after the immediate next item.",
+      "incoming_terms": [
+        "Following"
+      ],
+      "shade": "blue_muted",
+      "treatment": "outline_badge",
+      "priority": 3
+    },
+    {
+      "id": "upcoming",
+      "label": "UPC",
+      "meaning": "Upcoming/not-started/general coming item.",
+      "incoming_terms": [
+        "Not Started",
+        "Upcoming",
+        "Coming",
+        "upcoming"
+      ],
+      "shade": "slate",
+      "treatment": "quiet_badge",
+      "priority": 4
+    },
+    {
+      "id": "completed",
+      "label": "DONE",
+      "meaning": "Completed/done item.",
+      "incoming_terms": [
+        "Completed",
+        "Done",
+        "completed"
+      ],
+      "shade": "muted",
+      "treatment": "quiet_badge",
+      "priority": 5
+    }
+  ],
+  "statusByIncoming": {
+    "now": "now",
+    "underway": "now",
+    "livenow": "now",
+    "next": "next",
+    "fol": "following",
+    "following": "following",
+    "upc": "upcoming",
+    "not started": "upcoming",
+    "upcoming": "upcoming",
+    "coming": "upcoming",
+    "done": "completed",
+    "completed": "completed"
+  },
+  "tokenGroups": [
+    {
+      "id": "entity",
+      "title": "Entities",
+      "tokens": [
+        {
+          "id": "ring",
+          "label": "RING",
+          "sample": "Ring 6",
+          "treatment": "eyebrow",
+          "shade": "text"
+        },
+        {
+          "id": "group",
+          "label": "GRP",
+          "sample": "Small Pony Hunter",
+          "treatment": "eyebrow",
+          "shade": "muted"
+        },
+        {
+          "id": "class",
+          "label": "CLS",
+          "sample": "411",
+          "treatment": "column",
+          "shade": "text"
+        },
+        {
+          "id": "class_time",
+          "label": "CT",
+          "sample": "8:40A",
+          "treatment": "column",
+          "shade": "muted"
+        },
+        {
+          "id": "pid",
+          "label": "PID",
+          "sample": "8778",
+          "treatment": "tag",
+          "shade": "slate"
+        },
+        {
+          "id": "tenant",
+          "label": "TNT",
+          "sample": "Trainer",
+          "treatment": "tag",
+          "shade": "slate"
+        },
+        {
+          "id": "entry",
+          "label": "ENT",
+          "sample": "2815",
+          "treatment": "column",
+          "shade": "text"
+        },
+        {
+          "id": "trip",
+          "label": "TRIP",
+          "sample": "2815.5",
+          "treatment": "tag",
+          "shade": "slate"
+        },
+        {
+          "id": "trip_time",
+          "label": "GT",
+          "sample": "8:55A",
+          "treatment": "column",
+          "shade": "green"
+        },
+        {
+          "id": "horse",
+          "label": "H",
+          "sample": "Knox",
+          "treatment": "pill",
+          "shade": "slate"
+        },
+        {
+          "id": "rider",
+          "label": "R",
+          "sample": "Heap",
+          "treatment": "pill",
+          "shade": "slate"
+        },
+        {
+          "id": "results",
+          "label": "RES",
+          "sample": "80",
+          "treatment": "tag",
+          "shade": "amber"
+        },
+        {
+          "id": "groom",
+          "label": "GRM",
+          "sample": "Carlos",
+          "treatment": "pill",
+          "shade": "slate"
+        }
+      ]
+    },
+    {
+      "id": "record",
+      "title": "Record State",
+      "tokens": [
+        {
+          "id": "active",
+          "label": "ACT",
+          "incoming_terms": [
+            "Active"
+          ],
+          "treatment": "tiny_text",
+          "shade": "green"
+        },
+        {
+          "id": "inactive",
+          "label": "INACT",
+          "incoming_terms": [
+            "Inactive"
+          ],
+          "treatment": "tiny_text",
+          "shade": "muted"
+        }
+      ]
+    },
+    {
+      "id": "class_type",
+      "title": "Class Type",
+      "tokens": [
+        {
+          "id": "equitation",
+          "label": "EQ",
+          "incoming_terms": [
+            "Equitation"
+          ],
+          "treatment": "tag",
+          "shade": "violet"
+        },
+        {
+          "id": "hunters",
+          "label": "HUN",
+          "incoming_terms": [
+            "Hunters"
+          ],
+          "treatment": "tag",
+          "shade": "teal"
+        },
+        {
+          "id": "jumpers",
+          "label": "JMP",
+          "incoming_terms": [
+            "Jumpers"
+          ],
+          "treatment": "tag",
+          "shade": "amber"
+        }
+      ]
+    },
+    {
+      "id": "flags",
+      "title": "Class And Group Flags",
+      "tokens": [
+        {
+          "id": "is_first_up",
+          "label": "1UP",
+          "incoming_terms": [
+            "is_first_up"
+          ],
+          "treatment": "pill",
+          "shade": "blue"
+        },
+        {
+          "id": "is_handy",
+          "label": "HANDY",
+          "incoming_terms": [
+            "is_handy"
+          ],
+          "treatment": "pill",
+          "shade": "violet"
+        },
+        {
+          "id": "is_warmup",
+          "label": "WARM",
+          "incoming_terms": [
+            "is_warmup"
+          ],
+          "treatment": "pill",
+          "shade": "slate"
+        },
+        {
+          "id": "is_mulligan",
+          "label": "MULL",
+          "incoming_terms": [
+            "is_mulligan"
+          ],
+          "treatment": "pill",
+          "shade": "slate"
+        },
+        {
+          "id": "is_schooling_pony",
+          "label": "PONY",
+          "incoming_terms": [
+            "is_schooling_pony"
+          ],
+          "treatment": "pill",
+          "shade": "teal"
+        },
+        {
+          "id": "is_add_back",
+          "label": "ADD",
+          "incoming_terms": [
+            "is_add_back"
+          ],
+          "treatment": "pill",
+          "shade": "amber"
+        },
+        {
+          "id": "is_classic",
+          "label": "CLSC",
+          "incoming_terms": [
+            "is_classic"
+          ],
+          "treatment": "pill",
+          "shade": "amber"
+        },
+        {
+          "id": "is_usf",
+          "label": "USF",
+          "incoming_terms": [
+            "is_usf"
+          ],
+          "treatment": "pill",
+          "shade": "violet"
+        },
+        {
+          "id": "is_target",
+          "label": "TGT",
+          "incoming_terms": [
+            "is_target"
+          ],
+          "treatment": "filled_badge",
+          "shade": "green"
+        },
+        {
+          "id": "not_target",
+          "label": "NT",
+          "incoming_terms": [
+            "not_target"
+          ],
+          "treatment": "quiet_badge",
+          "shade": "muted"
+        }
+      ]
+    },
+    {
+      "id": "sequences",
+      "title": "Sequences",
+      "tokens": [
+        {
+          "id": "class_sequence",
+          "label": "C#",
+          "sample": "1 2 3 4",
+          "treatment": "mono_text",
+          "shade": "muted"
+        },
+        {
+          "id": "entry_sequence",
+          "label": "E#",
+          "sample": "0 1 2 5 9",
+          "treatment": "mono_text",
+          "shade": "muted"
+        }
+      ]
+    },
+    {
+      "id": "schedule_sequence_type",
+      "title": "Schedule Sequence Type",
+      "tokens": [
+        {
+          "id": "over_fences",
+          "label": "OF",
+          "incoming_terms": [
+            "Over Fences"
+          ],
+          "treatment": "tag",
+          "shade": "teal"
+        },
+        {
+          "id": "flat",
+          "label": "FLAT",
+          "incoming_terms": [
+            "Under Saddle/Flat",
+            "Under Saddle",
+            "Flat"
+          ],
+          "treatment": "tag",
+          "shade": "violet"
+        }
+      ]
+    },
+    {
+      "id": "metrics",
+      "title": "Metrics",
+      "tokens": [
+        {
+          "id": "in",
+          "label": "IN",
+          "sample": "12m",
+          "treatment": "metric",
+          "shade": "green"
+        },
+        {
+          "id": "left",
+          "label": "LEFT",
+          "sample": "9",
+          "treatment": "metric",
+          "shade": "amber"
+        },
+        {
+          "id": "gone",
+          "label": "GONE",
+          "sample": "5",
+          "treatment": "metric",
+          "shade": "muted"
+        },
+        {
+          "id": "oog",
+          "label": "OOG",
+          "sample": "5/14",
+          "treatment": "metric",
+          "shade": "text"
+        },
+        {
+          "id": "late",
+          "label": "LATE",
+          "sample": "52m",
+          "treatment": "filled_badge",
+          "shade": "red"
+        }
+      ]
+    }
+  ],
+  "sampleRows": [
+    {
+      "ring": "Ring 6",
+      "time": "8:40A",
+      "class_number": "411",
+      "class_name": "Small Pony Hunter U/S",
+      "class_type": "HUN",
+      "status": "NOW",
+      "metric": "1/15",
+      "rollups": [
+        {
+          "name": "Knox",
+          "oog": "5/14",
+          "time": "8:55A",
+          "status": "NOW",
+          "status_id": "now"
+        },
+        {
+          "name": "Poptart",
+          "oog": "6/14",
+          "time": "8:58A",
+          "status": "NEXT",
+          "status_id": "next"
+        }
+      ],
+      "status_id": "now"
+    },
+    {
+      "ring": "Ring 6",
+      "time": "10:00A",
+      "class_number": "570",
+      "class_name": "ASPCA Maclay",
+      "class_type": "EQ",
+      "status": "NEXT",
+      "metric": "0/8",
+      "rollups": [
+        {
+          "name": "Shelby",
+          "oog": "2/8",
+          "time": "10:45A",
+          "status": "UPC",
+          "status_id": "upcoming"
+        }
+      ],
+      "status_id": "next"
+    },
+    {
+      "ring": "Ring 6",
+      "time": "10:30A",
+      "class_number": "742",
+      "class_name": "1.10m Junior & Amateur Jumpers",
+      "class_type": "JMP",
+      "status": "FOL",
+      "metric": "0/18",
+      "rollups": [],
+      "status_id": "following"
+    },
+    {
+      "ring": "Ring 6",
+      "time": "7:45A",
+      "class_number": "644",
+      "class_name": "Modified Hunter 2'/2'6\"",
+      "class_type": "HUN",
+      "status": "DONE",
+      "metric": "14/14",
+      "rollups": [
+        {
+          "name": "Darcy",
+          "oog": "12/23",
+          "time": "8:11A",
+          "status": "DONE",
+          "status_id": "completed"
+        }
+      ],
+      "status_id": "completed"
+    }
+  ]
+}

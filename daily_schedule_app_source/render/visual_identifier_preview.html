@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RingStatus Visual Identifier Preview</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b11;
+      --panel: #10141f;
+      --panel-2: #151a29;
+      --line: rgba(255, 255, 255, .08);
+      --text: #e8ecf5;
+      --muted: #9aa3b4;
+      --faint: #687085;
+      --green: #49d17d;
+      --green-bg: rgba(73, 209, 125, .16);
+      --blue: #8fb8ff;
+      --blue-bg: rgba(73, 118, 255, .16);
+      --violet: #c386ff;
+      --violet-bg: rgba(156, 89, 255, .18);
+      --teal: #58dac7;
+      --teal-bg: rgba(88, 218, 199, .16);
+      --amber: #f2c15c;
+      --amber-bg: rgba(242, 193, 92, .16);
+      --red: #ff8d9a;
+      --red-bg: rgba(255, 141, 154, .18);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .page {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 16px 10px 34px;
+    }
+    .topbar {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 8px 2px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    h1, h2 {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+    h1 { font-size: 17px; }
+    .subtle {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 12px;
+    }
+    .scope-token {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 999px;
+      color: var(--muted);
+      font-weight: 750;
+      padding: 7px 10px;
+      white-space: nowrap;
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .85fr);
+      gap: 12px;
+      margin-top: 12px;
+      align-items: start;
+    }
+    .panel, .identifier-section, .ring-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .panel-head, .section-head, .ring-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      min-height: 38px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .panel-head span, .section-head span {
+      color: var(--faint);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .status-map-row {
+      display: grid;
+      grid-template-columns: 58px minmax(120px, .8fr) minmax(180px, 1.2fr) 110px;
+      gap: 10px;
+      align-items: center;
+      min-height: 42px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .status-map-row:last-child { border-bottom: 0; }
+    .status-meaning {
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .status-incoming, .status-treatment, .token-sample {
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .identifier-stack {
+      display: grid;
+      gap: 12px;
+    }
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .token-swatch {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+    .token-swatch:nth-child(2n) { border-right: 0; }
+    .token {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 21px;
+      min-width: 30px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: 0;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .token--column, .token--mono_text, .token--tiny_text {
+      min-width: auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .token--eyebrow {
+      min-width: auto;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      font-size: 10px;
+    }
+    .state {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 22px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+    .state--now {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid rgba(73, 209, 125, .3);
+    }
+    .state--next {
+      background: transparent;
+      color: var(--blue);
+      border: 1px solid rgba(143, 184, 255, .42);
+    }
+    .state--following {
+      background: rgba(143, 184, 255, .07);
+      color: #b6c8ee;
+      border: 1px solid rgba(143, 184, 255, .18);
+    }
+    .state--upcoming {
+      background: rgba(154, 163, 180, .12);
+      color: var(--muted);
+      border: 1px solid rgba(154, 163, 180, .18);
+    }
+    .state--completed {
+      background: rgba(154, 163, 180, .08);
+      color: #767f90;
+      border: 1px solid rgba(154, 163, 180, .12);
+    }
+    .shade--green { color: var(--green); background: var(--green-bg); border: 1px solid rgba(73, 209, 125, .24); }
+    .shade--blue { color: var(--blue); background: var(--blue-bg); border: 1px solid rgba(143, 184, 255, .24); }
+    .shade--blue_muted { color: #b6c8ee; background: rgba(143, 184, 255, .08); border: 1px solid rgba(143, 184, 255, .18); }
+    .shade--slate { color: #d4d9e6; background: rgba(154, 163, 180, .12); border: 1px solid rgba(154, 163, 180, .16); }
+    .shade--muted { color: #8d96a8; background: rgba(154, 163, 180, .08); border: 1px solid rgba(154, 163, 180, .12); }
+    .shade--violet { color: var(--violet); background: var(--violet-bg); border: 1px solid rgba(195, 134, 255, .22); }
+    .shade--teal { color: var(--teal); background: var(--teal-bg); border: 1px solid rgba(88, 218, 199, .22); }
+    .shade--amber { color: var(--amber); background: var(--amber-bg); border: 1px solid rgba(242, 193, 92, .22); }
+    .shade--red { color: var(--red); background: var(--red-bg); border: 1px solid rgba(255, 141, 154, .25); }
+    .shade--text { color: var(--text); background: transparent; border-color: transparent; }
+    .ring-card { position: sticky; top: 10px; }
+    .ring-title {
+      font-size: 15px;
+      font-weight: 850;
+    }
+    .ring-states {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .class-card {
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .01), rgba(255, 255, 255, 0));
+    }
+    .class-card:last-child { border-bottom: 0; }
+    .class-line {
+      display: grid;
+      grid-template-columns: 50px 44px minmax(0, 1fr) 38px 50px 42px;
+      gap: 8px;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 10px;
+    }
+    .c-time, .c-num, .c-type, .c-metric {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .c-num {
+      color: var(--text);
+      text-align: right;
+    }
+    .c-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 850;
+    }
+    .c-type {
+      color: var(--muted);
+      text-align: center;
+    }
+    .c-metric {
+      text-align: right;
+      color: var(--faint);
+    }
+    .rollup-line {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 0 10px 9px 60px;
+      scrollbar-width: thin;
+    }
+    .epill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(154, 163, 180, .16);
+      background: rgba(154, 163, 180, .1);
+      color: var(--text);
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .epill__sep {
+      color: var(--faint);
+    }
+    .epill__oog, .epill__time {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .epill__state {
+      color: var(--faint);
+      font-size: 10px;
+    }
+    .epill--now .epill__state { color: var(--green); }
+    .epill--next .epill__state { color: var(--blue); }
+    .epill--completed .epill__state { color: #777f90; }
+    @media (max-width: 780px) {
+      .page { padding-inline: 8px; }
+      .preview-grid { grid-template-columns: 1fr; }
+      .ring-card { position: static; }
+      .status-map-row {
+        grid-template-columns: 54px minmax(0, 1fr);
+      }
+      .status-incoming, .status-treatment { grid-column: 2; }
+      .token-grid { grid-template-columns: 1fr; }
+      .token-swatch { border-right: 0; }
+    }
+    @media (max-width: 430px) {
+      .class-line {
+        grid-template-columns: 46px 40px minmax(0, 1fr) 32px 48px;
+      }
+      .c-metric { display: none; }
+      .rollup-line { padding-left: 10px; }
+      .ring-states .state--following { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div>
+        <h1>Visual Identifier Preview</h1>
+        <div class="subtle">Generated 2026-05-13T22:10:43.377Z from contract 2026-05-13.v0.1</div>
+      </div>
+      <div class="scope-token">No icons. No schedule wiring.</div>
+    </header>
+
+    <div class="preview-grid">
+      <div class="identifier-stack">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Status Language</h2>
+            <span>normalize first</span>
+          </div>
+          
+    <div class="status-map-row">
+      <div class="state state--now">NOW</div>
+      <div class="status-meaning">Current/live/underway row or scoped current item.</div>
+      <div class="status-incoming">Now / Underway / livenow</div>
+      <div class="status-treatment">filled_badge</div>
+    </div>
+    <div class="status-map-row">
+      <div class="state state--next">NEXT</div>
+      <div class="status-meaning">Immediate next item in a scoped view.</div>
+      <div class="status-incoming">Next</div>
+      <div class="status-treatment">outline_badge</div>
+    </div>
+    <div class="status-map-row">
+      <div class="state state--following">FOL</div>
+      <div class="status-meaning">Following item after the immediate next item.</div>
+      <div class="status-incoming">Following</div>
+      <div class="status-treatment">outline_badge</div>
+    </div>
+    <div class="status-map-row">
+      <div class="state state--upcoming">UPC</div>
+      <div class="status-meaning">Upcoming/not-started/general coming item.</div>
+      <div class="status-incoming">Not Started / Upcoming / Coming / upcoming</div>
+      <div class="status-treatment">quiet_badge</div>
+    </div>
+    <div class="status-map-row">
+      <div class="state state--completed">DONE</div>
+      <div class="status-meaning">Completed/done item.</div>
+      <div class="status-incoming">Completed / Done / completed</div>
+      <div class="status-treatment">quiet_badge</div>
+    </div>
+        </section>
+        
+    <section class="identifier-section">
+      <div class="section-head">
+        <h2>Entities</h2>
+        <span>13 tokens</span>
+      </div>
+      <div class="token-grid">
+        
+    <div class="token-swatch">
+      <span class="token token--eyebrow shade--text">RING</span>
+      <span class="token-sample">Ring 6</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--eyebrow shade--muted">GRP</span>
+      <span class="token-sample">Small Pony Hunter</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--column shade--text">CLS</span>
+      <span class="token-sample">411</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--column shade--muted">CT</span>
+      <span class="token-sample">8:40A</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tag shade--slate">PID</span>
+      <span class="token-sample">8778</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tag shade--slate">TNT</span>
+      <span class="token-sample">Trainer</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--column shade--text">ENT</span>
+      <span class="token-sample">2815</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tag shade--slate">TRIP</span>
+      <span class="token-sample">2815.5</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--column shade--green">GT</span>
+      <span class="token-sample">8:55A</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--slate">H</span>
+      <span class="token-sample">Knox</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--slate">R</span>
+      <span class="token-sample">Heap</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tag shade--amber">RES</span>
+      <span class="token-sample">80</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--slate">GRM</span>
+      <span class="token-sample">Carlos</span>
+    </div>
+      </div>
+    </section>
+    <section class="identifier-section">
+      <div class="section-head">
+        <h2>Record State</h2>
+        <span>2 tokens</span>
+      </div>
+      <div class="token-grid">
+        
+    <div class="token-swatch">
+      <span class="token token--tiny_text shade--green">ACT</span>
+      <span class="token-sample">Active</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tiny_text shade--muted">INACT</span>
+      <span class="token-sample">Inactive</span>
+    </div>
+      </div>
+    </section>
+    <section class="identifier-section">
+      <div class="section-head">
+        <h2>Class Type</h2>
+        <span>3 tokens</span>
+      </div>
+      <div class="token-grid">
+        
+    <div class="token-swatch">
+      <span class="token token--tag shade--violet">EQ</span>
+      <span class="token-sample">Equitation</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tag shade--teal">HUN</span>
+      <span class="token-sample">Hunters</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tag shade--amber">JMP</span>
+      <span class="token-sample">Jumpers</span>
+    </div>
+      </div>
+    </section>
+    <section class="identifier-section">
+      <div class="section-head">
+        <h2>Class And Group Flags</h2>
+        <span>10 tokens</span>
+      </div>
+      <div class="token-grid">
+        
+    <div class="token-swatch">
+      <span class="token token--pill shade--blue">1UP</span>
+      <span class="token-sample">is_first_up</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--violet">HANDY</span>
+      <span class="token-sample">is_handy</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--slate">WARM</span>
+      <span class="token-sample">is_warmup</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--slate">MULL</span>
+      <span class="token-sample">is_mulligan</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--teal">PONY</span>
+      <span class="token-sample">is_schooling_pony</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--amber">ADD</span>
+      <span class="token-sample">is_add_back</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--amber">CLSC</span>
+      <span class="token-sample">is_classic</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--pill shade--violet">USF</span>
+      <span class="token-sample">is_usf</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--filled_badge shade--green">TGT</span>
+      <span class="token-sample">is_target</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--quiet_badge shade--muted">NT</span>
+      <span class="token-sample">not_target</span>
+    </div>
+      </div>
+    </section>
+    <section class="identifier-section">
+      <div class="section-head">
+        <h2>Sequences</h2>
+        <span>2 tokens</span>
+      </div>
+      <div class="token-grid">
+        
+    <div class="token-swatch">
+      <span class="token token--mono_text shade--muted">C#</span>
+      <span class="token-sample">1 2 3 4</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--mono_text shade--muted">E#</span>
+      <span class="token-sample">0 1 2 5 9</span>
+    </div>
+      </div>
+    </section>
+    <section class="identifier-section">
+      <div class="section-head">
+        <h2>Schedule Sequence Type</h2>
+        <span>2 tokens</span>
+      </div>
+      <div class="token-grid">
+        
+    <div class="token-swatch">
+      <span class="token token--tag shade--teal">OF</span>
+      <span class="token-sample">Over Fences</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--tag shade--violet">FLAT</span>
+      <span class="token-sample">Under Saddle/Flat / Under Saddle / Flat</span>
+    </div>
+      </div>
+    </section>
+    <section class="identifier-section">
+      <div class="section-head">
+        <h2>Metrics</h2>
+        <span>5 tokens</span>
+      </div>
+      <div class="token-grid">
+        
+    <div class="token-swatch">
+      <span class="token token--metric shade--green">IN</span>
+      <span class="token-sample">12m</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--metric shade--amber">LEFT</span>
+      <span class="token-sample">9</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--metric shade--muted">GONE</span>
+      <span class="token-sample">5</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--metric shade--text">OOG</span>
+      <span class="token-sample">5/14</span>
+    </div>
+    <div class="token-swatch">
+      <span class="token token--filled_badge shade--red">LATE</span>
+      <span class="token-sample">52m</span>
+    </div>
+      </div>
+    </section>
+      </div>
+
+      <section class="ring-card">
+        <div class="ring-line">
+          <div class="ring-title">Ring 6</div>
+          <div class="ring-states">
+            <span class="state state--now">NOW</span>
+            <span class="state state--next">NEXT</span>
+            <span class="state state--following">FOL</span>
+          </div>
+        </div>
+        
+    <article class="class-card">
+      <div class="class-line">
+        <div class="c-time">8:40A</div>
+        <div class="c-num">411</div>
+        <div class="c-name">Small Pony Hunter U/S</div>
+        <div class="c-type">HUN</div>
+        <div class="state state--now">NOW</div>
+        <div class="c-metric">1/15</div>
+      </div>
+      <div class="rollup-line">
+    <span class="epill epill--now">
+      <span class="epill__name">Knox</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__oog">5/14</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__time">8:55A</span>
+      <span class="epill__state">NOW</span>
+    </span>
+    <span class="epill epill--next">
+      <span class="epill__name">Poptart</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__oog">6/14</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__time">8:58A</span>
+      <span class="epill__state">NEXT</span>
+    </span></div>
+    </article>
+    <article class="class-card">
+      <div class="class-line">
+        <div class="c-time">10:00A</div>
+        <div class="c-num">570</div>
+        <div class="c-name">ASPCA Maclay</div>
+        <div class="c-type">EQ</div>
+        <div class="state state--next">NEXT</div>
+        <div class="c-metric">0/8</div>
+      </div>
+      <div class="rollup-line">
+    <span class="epill epill--upcoming">
+      <span class="epill__name">Shelby</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__oog">2/8</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__time">10:45A</span>
+      <span class="epill__state">UPC</span>
+    </span></div>
+    </article>
+    <article class="class-card">
+      <div class="class-line">
+        <div class="c-time">10:30A</div>
+        <div class="c-num">742</div>
+        <div class="c-name">1.10m Junior &amp; Amateur Jumpers</div>
+        <div class="c-type">JMP</div>
+        <div class="state state--following">FOL</div>
+        <div class="c-metric">0/18</div>
+      </div>
+      
+    </article>
+    <article class="class-card">
+      <div class="class-line">
+        <div class="c-time">7:45A</div>
+        <div class="c-num">644</div>
+        <div class="c-name">Modified Hunter 2'/2'6&quot;</div>
+        <div class="c-type">HUN</div>
+        <div class="state state--completed">DONE</div>
+        <div class="c-metric">14/14</div>
+      </div>
+      <div class="rollup-line">
+    <span class="epill epill--completed">
+      <span class="epill__name">Darcy</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__oog">12/23</span>
+      <span class="epill__sep">.</span>
+      <span class="epill__time">8:11A</span>
+      <span class="epill__state">DONE</span>
+    </span></div>
+    </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
