@@ -2,6 +2,10 @@
 
 This folder is a local, read-only data procurement workspace for the future daily schedule app. It does not create the final nested dataset and does not write to Airtable.
 
+Current dated scope checkpoint:
+
+- `docs/ringstatus_daily_schedule_app_source_scope_2026-05-13_v0.1.md`
+
 Primary lane order:
 
 ```text
