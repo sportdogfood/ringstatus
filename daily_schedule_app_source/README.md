@@ -63,6 +63,25 @@ Outputs:
 - `samples/latest_daily_schedule_app_source.json`
 - `reports/latest_validation_report.json`
 
+Build local feed files from the latest extracted source:
+
+```powershell
+node .\daily_schedule_app_source\build_feed_files.js
+```
+
+Feed outputs:
+
+- `feed/feed.raw.json`: source lanes preserved, no nesting.
+- `feed/feed.indexed.json`: flat `rows` plus `indexed.rider`, `indexed.horse`, `indexed.status`, `indexed.ring`, `indexed.class_type`, and `indexed.group_name_tags`.
+- `feed/feed.status.json`: derived Ring/Rider/Horse status shape using existing calculator outputs where available.
+
+Time policy for feed files:
+
+- Show clock strings such as `estimated_start_time`, `rs_start_time`, and `rs_go_time` are preserved as source display-clock values.
+- The feed builder does not convert those clock strings with `SHOW_TIME_ZONE_OFFSET`.
+- Relative minute fields such as `starts_in_mins` and `go_starts_in_mins` are sourced from calculator `rs_*` values when present.
+- `SHOW_TZ` and `SHOW_TIME_ZONE_OFFSET` are included as metadata so downstream endpoint code can decide whether a true timestamp conversion is needed.
+
 Local fixture mode:
 
 ```powershell
@@ -73,5 +92,7 @@ node .\daily_schedule_app_source\extract_daily_schedule_source.js --fixture .\da
 
 ```powershell
 node --test .\daily_schedule_app_source\extract_daily_schedule_source.test.js
+node --test .\daily_schedule_app_source\build_feed_files.test.js
 node --check .\daily_schedule_app_source\extract_daily_schedule_source.js
+node --check .\daily_schedule_app_source\build_feed_files.js
 ```

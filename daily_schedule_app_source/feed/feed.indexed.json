@@ -1,0 +1,3545 @@
+{
+  "meta": {
+    "generated_at": "2026-05-13T15:28:59.738Z",
+    "source_generated_at": "2026-05-12T20:25:11.456Z",
+    "shape": "indexed_schedule_rows",
+    "note": "Flat rows with indexes for lookup. This is not the final nested app dataset."
+  },
+  "rows": [
+    {
+      "id": "200000061|2026-05-10|1|775|1|cgid:200023878",
+      "source_index": 3,
+      "schedule_record_id": "recocqN2ycDrKjUTD",
+      "schedule_key": "200000061|2026-05-10|1|775|1",
+      "schedule_instance_key": "200000061|2026-05-10|1|775|1|cgid:200023878",
+      "ring_number": "1",
+      "ring_name": "Derby",
+      "group_name": "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+      "group_name_tags": "isFirstUp, target, amateur, junior, jumpers, Over Fences",
+      "class_number": 775,
+      "class_sequence": 1,
+      "class_name": "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:45:08",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 23,
+        "total_trips": 23,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "rec950evr7PixKlz0"
+    },
+    {
+      "id": "200000061|2026-05-10|1|806|2|cgid:200023879",
+      "source_index": 9,
+      "schedule_record_id": "recTI7BjXWhrbV5Yw",
+      "schedule_key": "200000061|2026-05-10|1|806|2",
+      "schedule_instance_key": "200000061|2026-05-10|1|806|2|cgid:200023879",
+      "ring_number": "1",
+      "ring_name": "Derby",
+      "group_name": "$24,999 IDA Development Regional Grand Prix",
+      "group_name_tags": "target, jumpers, Over Fences",
+      "class_number": 806,
+      "class_sequence": 2,
+      "class_name": "$24,999 IDA Development Regional Grand Prix",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:35:12",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 39,
+        "total_trips": 39,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recxax4zAlnp9qkg4"
+    },
+    {
+      "id": "200000061|2026-05-10|3|723|2|cgid:200023880",
+      "source_index": 0,
+      "schedule_record_id": "rec4x2rSLXbPpwqCR",
+      "schedule_key": "200000061|2026-05-10|3|723|2",
+      "schedule_instance_key": "200000061|2026-05-10|3|723|2|cgid:200023880",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b",
+      "group_name_tags": "isFirstUp, target, 1.20m, amateur, junior, jumpers, Over Fences",
+      "class_number": 723,
+      "class_sequence": 2,
+      "class_name": "$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:45:00",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 15,
+        "total_trips": 15,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recvyDsxxb7hYX0tY"
+    },
+    {
+      "id": "200000061|2026-05-10|3|763|3|cgid:200023881",
+      "source_index": 1,
+      "schedule_record_id": "recjVQhpNGpIphY0F",
+      "schedule_key": "200000061|2026-05-10|3|763|3",
+      "schedule_instance_key": "200000061|2026-05-10|3|763|3|cgid:200023881",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "$2,640 M&S 1.15m Junior & Amateur Jumper Classics II2b",
+      "group_name_tags": "target, amateur, junior, jumpers, Over Fences",
+      "class_number": 763,
+      "class_sequence": 3,
+      "class_name": "$1,595 M&S 1.15m Amateur Jumper Classic II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:00:13",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 25,
+        "total_trips": 25,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recUfUnDg8IvnTnt1"
+    },
+    {
+      "id": "200000061|2026-05-10|3|743|3|cgid:200023881",
+      "source_index": 8,
+      "schedule_record_id": "recMT7ja7hvSFeo8x",
+      "schedule_key": "200000061|2026-05-10|3|743|3",
+      "schedule_instance_key": "200000061|2026-05-10|3|743|3|cgid:200023881",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "$2,640 M&S 1.15m Junior & Amateur Jumper Classics II2b",
+      "group_name_tags": "target, amateur, junior, jumpers, Over Fences",
+      "class_number": 743,
+      "class_sequence": 3,
+      "class_name": "$1,595 M&S 1.15m Junior Jumper Classic II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:05:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 25,
+        "total_trips": 25,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|742|4|cgid:200023882",
+      "source_index": 7,
+      "schedule_record_id": "recLmC6USajHypEzd",
+      "schedule_key": "200000061|2026-05-10|3|742|4",
+      "schedule_instance_key": "200000061|2026-05-10|3|742|4|cgid:200023882",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "1.10m Junior & Amateur Jumpers II2d",
+      "group_name_tags": "target, 1.10m, amateur, junior, II2d, jumpers, Over Fences",
+      "class_number": 742,
+      "class_sequence": 4,
+      "class_name": "1.10m Junior Jumper II2d",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:17:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 15,
+        "total_trips": 15,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|762|4|cgid:200023882",
+      "source_index": 4,
+      "schedule_record_id": "recrRvXzTJ7YJMmlO",
+      "schedule_key": "200000061|2026-05-10|3|762|4",
+      "schedule_instance_key": "200000061|2026-05-10|3|762|4|cgid:200023882",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "1.10m Junior & Amateur Jumpers II2d",
+      "group_name_tags": "target, 1.10m, amateur, junior, II2d, jumpers, Over Fences",
+      "class_number": 762,
+      "class_sequence": 4,
+      "class_name": "1.10m Amateur Jumper II2d",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:40:09",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 15,
+        "total_trips": 15,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recDU8zn6ArVoLp5P"
+    },
+    {
+      "id": "200000061|2026-05-10|3|767|5|cgid:200023883",
+      "source_index": 5,
+      "schedule_record_id": "recEktKyNu7DjiOc3",
+      "schedule_key": "200000061|2026-05-10|3|767|5",
+      "schedule_instance_key": "200000061|2026-05-10|3|767|5|cgid:200023883",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "$2,640 1.0m Junior & Amateur Jumper Classics II2b",
+      "group_name_tags": "target, 1.0m, amateur, junior, jumpers, Over Fences",
+      "class_number": 767,
+      "class_sequence": 5,
+      "class_name": "$1,595 1.0m Amateur Jumper Classic II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "11:11:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 27,
+        "total_trips": 27,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|739|5|cgid:200023883",
+      "source_index": 6,
+      "schedule_record_id": "recKwL4KOR6Du67qQ",
+      "schedule_key": "200000061|2026-05-10|3|739|5",
+      "schedule_instance_key": "200000061|2026-05-10|3|739|5|cgid:200023883",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "$2,640 1.0m Junior & Amateur Jumper Classics II2b",
+      "group_name_tags": "target, 1.0m, amateur, junior, jumpers, Over Fences",
+      "class_number": 739,
+      "class_sequence": 5,
+      "class_name": "$1,595 1.0m Junior Jumper Classic II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "11:11:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 27,
+        "total_trips": 27,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|792|6|cgid:200023896",
+      "source_index": 2,
+      "schedule_record_id": "reckAYCdFHylr08MP",
+      "schedule_key": "200000061|2026-05-10|3|792|6",
+      "schedule_instance_key": "200000061|2026-05-10|3|792|6|cgid:200023896",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "Hopeful Jumper (.85m) II2d",
+      "group_name_tags": "target, hopeful, .85m, II2d, jumpers, Over Fences",
+      "class_number": 792,
+      "class_sequence": 6,
+      "class_name": "Hopeful Jumper (.85m) II2d",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:35:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 11,
+        "total_trips": 11,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|815|7|cgid:200023897",
+      "source_index": 17,
+      "schedule_record_id": "recKeTVcfpBP7jI63",
+      "schedule_key": "200000061|2026-05-10|3|815|7",
+      "schedule_instance_key": "200000061|2026-05-10|3|815|7|cgid:200023897",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "$250 .85m Jumper Classic II2b",
+      "group_name_tags": "target, .85m, jumpers, Over Fences",
+      "class_number": 815,
+      "class_sequence": 7,
+      "class_name": "$250 .85m Jumper Classic II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:15:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 19,
+        "total_trips": 19,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|685|8|cgid:200026493",
+      "source_index": 11,
+      "schedule_record_id": "recesGc3TMP6C41OO",
+      "schedule_key": "200000061|2026-05-10|3|685|8",
+      "schedule_instance_key": "200000061|2026-05-10|3|685|8|cgid:200026493",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "WIHS Large/Medium Pony Jumper II2b",
+      "group_name_tags": "target, pony, large, medium, wihs, jumpers, Over Fences",
+      "class_number": 685,
+      "class_sequence": 8,
+      "class_name": "WIHS Large/Medium Pony Jumper II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "15:30:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 11,
+        "total_trips": 11,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|682|9|cgid:200023898",
+      "source_index": 16,
+      "schedule_record_id": "recEsvxCuyxvtkbOp",
+      "schedule_key": "200000061|2026-05-10|3|682|9",
+      "schedule_instance_key": "200000061|2026-05-10|3|682|9|cgid:200023898",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "WIHS Small Pony Jumper II2b",
+      "group_name_tags": "target, pony, small, wihs, jumpers, Over Fences",
+      "class_number": 682,
+      "class_sequence": 9,
+      "class_name": "WIHS Small Pony Jumper II2b",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "16:20:07",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 8,
+        "total_trips": 8,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|3|992|10|cgid:200025066",
+      "source_index": 19,
+      "schedule_record_id": "rec1RKcjoMIYx4tBS",
+      "schedule_key": "200000061|2026-05-10|3|992|10",
+      "schedule_instance_key": "200000061|2026-05-10|3|992|10|cgid:200025066",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "Mulligan Class",
+      "group_name_tags": "mulligan, hunters, Over Fences",
+      "class_number": 992,
+      "class_sequence": 10,
+      "class_name": "Mulligan Class",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "start": {
+        "time": "16:33:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|555|14|cgid:200024449",
+      "source_index": 87,
+      "schedule_record_id": "rec2Rkk48KTWrpUHJ",
+      "schedule_key": "200000062|2026-05-28|3|555|14",
+      "schedule_instance_key": "200000062|2026-05-28|3|555|14|cgid:200024449",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "THIS Children's Medal",
+      "class_number": 555,
+      "class_sequence": 14,
+      "class_name": "THIS Children's Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|530|9|cgid:200024444",
+      "source_index": 88,
+      "schedule_record_id": "rec2t2w8lOJdqAtgf",
+      "schedule_key": "200000062|2026-05-28|3|530|9",
+      "schedule_instance_key": "200000062|2026-05-28|3|530|9|cgid:200024444",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "Hamel Foundation NHS 3'3' Medal",
+      "class_number": 530,
+      "class_sequence": 9,
+      "class_name": "Hamel Foundation NHS 3'3' Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|585|13|cgid:200024448",
+      "source_index": 89,
+      "schedule_record_id": "rec5V1cqFCSPOePjH",
+      "schedule_key": "200000062|2026-05-28|3|585|13",
+      "schedule_instance_key": "200000062|2026-05-28|3|585|13|cgid:200024448",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "USEF/NCEA Junior Hunter Seat Medal",
+      "class_number": 585,
+      "class_sequence": 13,
+      "class_name": "USEF/NCEA Junior Hunter Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|545|7|cgid:200024442",
+      "source_index": 90,
+      "schedule_record_id": "recd92mGmGjZRj9ZR",
+      "schedule_key": "200000062|2026-05-28|3|545|7",
+      "schedule_instance_key": "200000062|2026-05-28|3|545|7|cgid:200024442",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "USHJA Jumping Seat Medal 3'3\"",
+      "class_number": 545,
+      "class_sequence": 7,
+      "class_name": "USHJA Jumping Seat Medal 3'3\"",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|546|8|cgid:200024443",
+      "source_index": 91,
+      "schedule_record_id": "recjDLuOp0kxz98SU",
+      "schedule_key": "200000062|2026-05-28|3|546|8",
+      "schedule_instance_key": "200000062|2026-05-28|3|546|8|cgid:200024443",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "USHJA 3'3\" Adult Amateur Jumper Seat Medal",
+      "class_number": 546,
+      "class_sequence": 8,
+      "class_name": "USHJA 3'3\" Adult Amateur Jumper Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|570|12|cgid:200024447",
+      "source_index": 92,
+      "schedule_record_id": "reclG1wv4Jab6H2fI",
+      "schedule_key": "200000062|2026-05-28|3|570|12",
+      "schedule_instance_key": "200000062|2026-05-28|3|570|12|cgid:200024447",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "ASPCA Maclay",
+      "class_number": 570,
+      "class_sequence": 12,
+      "class_name": "ASPCA Maclay",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|550|11|cgid:200024446",
+      "source_index": 93,
+      "schedule_record_id": "recmFHqmQJQfa1UZz",
+      "schedule_key": "200000062|2026-05-28|3|550|11",
+      "schedule_instance_key": "200000062|2026-05-28|3|550|11|cgid:200024446",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "Dover Saddlery USEF Hunter Seat Medal",
+      "class_number": 550,
+      "class_sequence": 11,
+      "class_name": "Dover Saddlery USEF Hunter Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|590|6|cgid:200024441",
+      "source_index": 94,
+      "schedule_record_id": "recqh0pQrVd2zoCaC",
+      "schedule_key": "200000062|2026-05-28|3|590|6",
+      "schedule_instance_key": "200000062|2026-05-28|3|590|6|cgid:200024441",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "Platinum Performance/USEF Talent Search 1*",
+      "class_number": 590,
+      "class_sequence": 6,
+      "class_name": "Platinum Performance/USEF Talent Search 1*",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|535|10|cgid:200024445",
+      "source_index": 95,
+      "schedule_record_id": "recLJ7RMNtAXS4D47",
+      "schedule_key": "200000062|2026-05-28|3|535|10",
+      "schedule_instance_key": "200000062|2026-05-28|3|535|10|cgid:200024445",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "USHJA 3'3\" Hunter Seat Medal",
+      "class_number": 535,
+      "class_sequence": 10,
+      "class_name": "USHJA 3'3\" Hunter Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|581|5|cgid:200024440",
+      "source_index": 96,
+      "schedule_record_id": "recSYnKDicSIuCppm",
+      "schedule_key": "200000062|2026-05-28|3|581|5",
+      "schedule_instance_key": "200000062|2026-05-28|3|581|5|cgid:200024440",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "WIHS Jumper Phase",
+      "class_number": 581,
+      "class_sequence": 5,
+      "class_name": "WIHS Jumper Phase",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|540|22|cgid:200025073",
+      "source_index": 97,
+      "schedule_record_id": "rectPrZtjAButGbQj",
+      "schedule_key": "200000062|2026-05-28|3|540|22",
+      "schedule_instance_key": "200000062|2026-05-28|3|540|22|cgid:200025073",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "M&S USEF Pony Medal",
+      "class_number": 540,
+      "class_sequence": 22,
+      "class_name": "M&S USEF Pony Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|560|20|cgid:200024455",
+      "source_index": 98,
+      "schedule_record_id": "reczwyWVAiDwjOwmC",
+      "schedule_key": "200000062|2026-05-28|3|560|20",
+      "schedule_instance_key": "200000062|2026-05-28|3|560|20|cgid:200024455",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "NHS/THIS Adult Medal",
+      "class_number": 560,
+      "class_sequence": 20,
+      "class_name": "NHS/THIS Adult Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|529|18|cgid:200024453",
+      "source_index": 99,
+      "schedule_record_id": "rechqiiZm1Y3trRkM",
+      "schedule_key": "200000062|2026-05-28|3|529|18",
+      "schedule_instance_key": "200000062|2026-05-28|3|529|18|cgid:200024453",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "M&S Children's Medal",
+      "class_number": 529,
+      "class_sequence": 18,
+      "class_name": "M&S Children's Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|565|15|cgid:200024450",
+      "source_index": 100,
+      "schedule_record_id": "reciR9WzOCd7nPxkh",
+      "schedule_key": "200000062|2026-05-28|3|565|15",
+      "schedule_instance_key": "200000062|2026-05-28|3|565|15|cgid:200024450",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "Ariat Adult Medal",
+      "class_number": 565,
+      "class_sequence": 15,
+      "class_name": "Ariat Adult Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|525|17|cgid:200024452",
+      "source_index": 101,
+      "schedule_record_id": "recivXE0ebF1zjRJq",
+      "schedule_key": "200000062|2026-05-28|3|525|17",
+      "schedule_instance_key": "200000062|2026-05-28|3|525|17|cgid:200024452",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "SFHJA Junior Medal (Flat Phase)",
+      "class_number": 525,
+      "class_sequence": 17,
+      "class_name": "SFHJA Junior Medal (Flat Phase)",
+      "class_type": "Equitation",
+      "sequence_type": "Under Saddle/Flat",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|531|19|cgid:200024454",
+      "source_index": 102,
+      "schedule_record_id": "recor1IEEnEKUZfSH",
+      "schedule_key": "200000062|2026-05-28|3|531|19",
+      "schedule_instance_key": "200000062|2026-05-28|3|531|19|cgid:200024454",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "M&S Adult Medal",
+      "class_number": 531,
+      "class_sequence": 19,
+      "class_name": "M&S Adult Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|575|21|cgid:200024456",
+      "source_index": 103,
+      "schedule_record_id": "recqdc6QDUDuLLCEk",
+      "schedule_key": "200000062|2026-05-28|3|575|21",
+      "schedule_instance_key": "200000062|2026-05-28|3|575|21|cgid:200024456",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "USEF Adult Equitation 3'3\"",
+      "class_number": 575,
+      "class_sequence": 21,
+      "class_name": "USEF Adult Equitation 3'3\"",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000062|2026-05-28|3|527|16|cgid:200024451",
+      "source_index": 104,
+      "schedule_record_id": "recS85UUNBg5djXdp",
+      "schedule_key": "200000062|2026-05-28|3|527|16",
+      "schedule_instance_key": "200000062|2026-05-28|3|527|16|cgid:200024451",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "group_name": "SFHJA Adult Medal (Flat Phase)",
+      "class_number": 527,
+      "class_sequence": 16,
+      "class_name": "SFHJA Adult Medal (Flat Phase)",
+      "class_type": "Equitation",
+      "sequence_type": "Under Saddle/Flat",
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|530|2|cgid:200023886",
+      "source_index": 18,
+      "schedule_record_id": "recZsFiV8x4Y17mE0",
+      "schedule_key": "200000061|2026-05-10|4|530|2",
+      "schedule_instance_key": "200000061|2026-05-10|4|530|2|cgid:200023886",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Hamel Foundation/NHS 3'3\" Medal",
+      "group_name_tags": "isFirstUp, target, 3', 3'3\", medal, Over Fences",
+      "class_number": 530,
+      "class_sequence": 2,
+      "class_name": "Hamel Foundation/NHS 3'3\" Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:50:09",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 8,
+        "total_trips": 8,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recaTIdawA1Z42OnJ"
+    },
+    {
+      "id": "200000061|2026-05-10|4|585|3|cgid:200023884",
+      "source_index": 15,
+      "schedule_record_id": "recERjbCdbTffmu9n",
+      "schedule_key": "200000061|2026-05-10|4|585|3",
+      "schedule_instance_key": "200000061|2026-05-10|4|585|3|cgid:200023884",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "NCEA/USEF Junior Hunter Seat Medal",
+      "group_name_tags": "target, medal, junior, seat, Over Fences",
+      "class_number": 585,
+      "class_sequence": 3,
+      "class_name": "NCEA/USEF Junior Hunter Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:30:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 4,
+        "total_trips": 4,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|535|4|cgid:200026496",
+      "source_index": 86,
+      "schedule_record_id": "rec4qVUyEB2tT3qIP",
+      "schedule_key": "200000061|2026-05-10|4|535|4",
+      "schedule_instance_key": "200000061|2026-05-10|4|535|4|cgid:200026496",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+      "class_number": 535,
+      "class_sequence": 4,
+      "class_name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:40:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 3,
+        "total_trips": 3,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|535|4|cgid:200023885",
+      "source_index": 14,
+      "schedule_record_id": "recotAXxare3c9pD8",
+      "schedule_key": "200000061|2026-05-10|4|535|4",
+      "schedule_instance_key": "200000061|2026-05-10|4|535|4|cgid:200023885",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+      "group_name_tags": "target, 3', 3'3\", medal, seat, ushja, Over Fences",
+      "class_number": 535,
+      "class_sequence": 4,
+      "class_name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:00:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 3,
+        "total_trips": 3,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|570|5|cgid:200023887",
+      "source_index": 10,
+      "schedule_record_id": "recwqlkuEYmrzPr2J",
+      "schedule_key": "200000061|2026-05-10|4|570|5",
+      "schedule_instance_key": "200000061|2026-05-10|4|570|5|cgid:200023887",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "ASPCA Maclay",
+      "group_name_tags": "target, maclay, Over Fences",
+      "class_number": 570,
+      "class_sequence": 5,
+      "class_name": "ASPCA Maclay",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:40:00",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 7,
+        "total_trips": 7,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recKk9Tjb7Z0muacj"
+    },
+    {
+      "id": "200000061|2026-05-10|4|550|6|cgid:200023888",
+      "source_index": 12,
+      "schedule_record_id": "recmPS6FLfg6R6uN8",
+      "schedule_key": "200000061|2026-05-10|4|550|6",
+      "schedule_instance_key": "200000061|2026-05-10|4|550|6|cgid:200023888",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Dover Saddlery/USEF Hunter Seat Medal",
+      "group_name_tags": "target, medal, dover, seat, Over Fences",
+      "class_number": 550,
+      "class_sequence": 6,
+      "class_name": "Dover Saddlery/USEF Hunter Seat Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:20:09",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 7,
+        "total_trips": 7,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recmI76AK6A1QHbBm"
+    },
+    {
+      "id": "200000061|2026-05-10|4|555|7|cgid:200023889",
+      "source_index": 13,
+      "schedule_record_id": "recn0a367VVyjSid8",
+      "schedule_key": "200000061|2026-05-10|4|555|7",
+      "schedule_instance_key": "200000061|2026-05-10|4|555|7|cgid:200023889",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "THIS Children's Medal",
+      "group_name_tags": "target, medal, children's, Over Fences",
+      "class_number": 555,
+      "class_sequence": 7,
+      "class_name": "THIS Children's Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "11:25:09",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 11,
+        "total_trips": 11,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recmVkGcO93Lxee99"
+    },
+    {
+      "id": "200000061|2026-05-10|4|565|8|cgid:200023891",
+      "source_index": 23,
+      "schedule_record_id": "recbZf5Pz5bJjDnv3",
+      "schedule_key": "200000061|2026-05-10|4|565|8",
+      "schedule_instance_key": "200000061|2026-05-10|4|565|8|cgid:200023891",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Ariat Adult Medal",
+      "group_name_tags": "target, adult, medal, Over Fences",
+      "class_number": 565,
+      "class_sequence": 8,
+      "class_name": "Ariat Adult Medal",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "12:12:08",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 2,
+        "total_trips": 2,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|525|9|cgid:200023890",
+      "source_index": 20,
+      "schedule_record_id": "recsxFSxinb8cLTEF",
+      "schedule_key": "200000061|2026-05-10|4|525|9",
+      "schedule_instance_key": "200000061|2026-05-10|4|525|9|cgid:200023890",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "SFHJA Junior/Adult Amatuer Medal (Flat Phase)",
+      "group_name_tags": "target, usf, adult, medal, junior, flat, Under Saddle/Flat",
+      "class_number": 525,
+      "class_sequence": 9,
+      "class_name": "SFHJA Junior/Adult Amatuer Medal (Flat Phase)",
+      "class_type": "Equitation",
+      "sequence_type": "Under Saddle/Flat",
+      "start": {
+        "time": "12:21:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|699|10|cgid:200023894",
+      "source_index": 22,
+      "schedule_record_id": "rec28na3cikgKZZdf",
+      "schedule_key": "200000061|2026-05-10|4|699|10",
+      "schedule_instance_key": "200000061|2026-05-10|4|699|10|cgid:200023894",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Itty Bitty Jumpers (.60-.65m) II2d",
+      "group_name_tags": "target, 60-.65m, II2d, jumpers, Over Fences",
+      "class_number": 699,
+      "class_sequence": 10,
+      "class_name": "Itty Bitty Jumper Jr/Am (.60-.65m)  II2d",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:00:13",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 12,
+        "total_trips": 12,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|696|10|cgid:200023894",
+      "source_index": 31,
+      "schedule_record_id": "recpJJknzNIg8X7Nq",
+      "schedule_key": "200000061|2026-05-10|4|696|10",
+      "schedule_instance_key": "200000061|2026-05-10|4|696|10|cgid:200023894",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Itty Bitty Jumpers (.60-.65m) II2d",
+      "group_name_tags": "target, 60-.65m, II2d, jumpers, Over Fences",
+      "class_number": 696,
+      "class_sequence": 10,
+      "class_name": "Itty Bitty Jumper Open (.60-.65m) II2d",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:00:13",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 12,
+        "total_trips": 12,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|785|11|cgid:200023895",
+      "source_index": 27,
+      "schedule_record_id": "rechtkwwDNVND8y2V",
+      "schedule_key": "200000061|2026-05-10|4|785|11",
+      "schedule_instance_key": "200000061|2026-05-10|4|785|11|cgid:200023895",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Puddle Jumpers (.80m) II2d",
+      "group_name_tags": "target, puddle, II2d, jumpers, Over Fences",
+      "class_number": 785,
+      "class_sequence": 11,
+      "class_name": "Puddle Jumper Open (.80m) II2d",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:05:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 19,
+        "total_trips": 19,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|797|11|cgid:200023895",
+      "source_index": 32,
+      "schedule_record_id": "recqkdi5jKVXL1aFi",
+      "schedule_key": "200000061|2026-05-10|4|797|11",
+      "schedule_instance_key": "200000061|2026-05-10|4|797|11|cgid:200023895",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Puddle Jumpers (.80m) II2d",
+      "group_name_tags": "target, puddle, II2d, jumpers, Over Fences",
+      "class_number": 797,
+      "class_sequence": 11,
+      "class_name": "Puddle Jumper Junior/Amateur (.80m) II2d",
+      "class_type": "Jumpers",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:05:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 19,
+        "total_trips": 19,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|4|993|12|cgid:200025067",
+      "source_index": 28,
+      "schedule_record_id": "reciUR9zFVhxlsziy",
+      "schedule_key": "200000061|2026-05-10|4|993|12",
+      "schedule_instance_key": "200000061|2026-05-10|4|993|12|cgid:200025067",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "group_name": "Mulligan Class",
+      "group_name_tags": "mulligan, hunters, Over Fences",
+      "class_number": 993,
+      "class_sequence": 12,
+      "class_name": "Mulligan Class",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "start": {
+        "time": "15:16:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|144|1|cgid:200023919",
+      "source_index": 34,
+      "schedule_record_id": "recr93MHDfbHvw6hS",
+      "schedule_key": "200000061|2026-05-10|5|144|1",
+      "schedule_instance_key": "200000061|2026-05-10|5|144|1|cgid:200023919",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Cross Rail Equitation Flat",
+      "group_name_tags": "isFirstUp, target, usf, flat, Under Saddle/Flat",
+      "class_number": 144,
+      "class_sequence": 1,
+      "class_name": "Cross Rail Equitation Flat",
+      "class_type": "Equitation",
+      "sequence_type": "Under Saddle/Flat",
+      "start": {
+        "time": "07:30:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|140|2|cgid:200023921",
+      "source_index": 29,
+      "schedule_record_id": "recmtt5GG9V95Ap4u",
+      "schedule_key": "200000061|2026-05-10|5|140|2",
+      "schedule_instance_key": "200000061|2026-05-10|5|140|2|cgid:200023921",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Cross Rail Equitation",
+      "group_name_tags": "isFirstUp, warmup, hunters, Over Fences",
+      "class_number": 140,
+      "class_sequence": 2,
+      "class_name": "Cross Rail Warm Up",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:40:10",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 14,
+        "total_trips": 14,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|145|2|cgid:200023921",
+      "source_index": 36,
+      "schedule_record_id": "recIBWLnHI3XU4go9",
+      "schedule_key": "200000061|2026-05-10|5|145|2",
+      "schedule_instance_key": "200000061|2026-05-10|5|145|2|cgid:200023921",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Cross Rail Equitation",
+      "group_name_tags": "isFirstUp, target, Over Fences",
+      "class_number": 145,
+      "class_sequence": 2,
+      "class_name": "Cross Rail Equitation",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:40:10",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 14,
+        "total_trips": 14,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|146|2|cgid:200023921",
+      "source_index": 37,
+      "schedule_record_id": "recKsAKE910Tvzpt7",
+      "schedule_key": "200000061|2026-05-10|5|146|2",
+      "schedule_instance_key": "200000061|2026-05-10|5|146|2|cgid:200023921",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Cross Rail Equitation",
+      "group_name_tags": "isFirstUp, target, Over Fences",
+      "class_number": 146,
+      "class_sequence": 2,
+      "class_name": "Cross Rail Equitation",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:40:10",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 14,
+        "total_trips": 14,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|604|3|cgid:200023922",
+      "source_index": 33,
+      "schedule_record_id": "recr9zauvcDXEJ5d0",
+      "schedule_key": "200000061|2026-05-10|5|604|3",
+      "schedule_instance_key": "200000061|2026-05-10|5|604|3|cgid:200023922",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Stirrup Equitation Flat",
+      "group_name_tags": "isFirstUp, target, usf, stirrup, flat, Under Saddle/Flat",
+      "class_number": 604,
+      "class_sequence": 3,
+      "class_name": "Stirrup Equitation Flat",
+      "class_type": "Equitation",
+      "sequence_type": "Under Saddle/Flat",
+      "start": {
+        "time": "08:05:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|606|4|cgid:200023924",
+      "source_index": 21,
+      "schedule_record_id": "recyOAUUbZVknUjHO",
+      "schedule_key": "200000061|2026-05-10|5|606|4",
+      "schedule_instance_key": "200000061|2026-05-10|5|606|4|cgid:200023924",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Short Stirrup Equitation",
+      "group_name_tags": "target, short, stirrup, Over Fences",
+      "class_number": 606,
+      "class_sequence": 4,
+      "class_name": "Stirrup Equitation",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:35:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 9,
+        "total_trips": 9,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|614|4|cgid:200023924",
+      "source_index": 35,
+      "schedule_record_id": "recrfzfsKOYERVfeO",
+      "schedule_key": "200000061|2026-05-10|5|614|4",
+      "schedule_instance_key": "200000061|2026-05-10|5|614|4|cgid:200023924",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Short Stirrup Equitation",
+      "group_name_tags": "warmup, short, stirrup, hunters, Over Fences",
+      "class_number": 614,
+      "class_sequence": 4,
+      "class_name": "Stirrup Warm Up",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:35:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 9,
+        "total_trips": 9,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|605|4|cgid:200023924",
+      "source_index": 38,
+      "schedule_record_id": "recMOM56Sn7LLsWAi",
+      "schedule_key": "200000061|2026-05-10|5|605|4",
+      "schedule_instance_key": "200000061|2026-05-10|5|605|4|cgid:200023924",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Short Stirrup Equitation",
+      "group_name_tags": "target, short, stirrup, Over Fences",
+      "class_number": 605,
+      "class_sequence": 4,
+      "class_name": "Stirrup Equitation",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:35:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 9,
+        "total_trips": 9,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|394|5|cgid:200023900",
+      "source_index": 24,
+      "schedule_record_id": "recbmvK9R7S96haCt",
+      "schedule_key": "200000061|2026-05-10|5|394|5",
+      "schedule_instance_key": "200000061|2026-05-10|5|394|5|cgid:200023900",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Amateur Owner Hunter 3'3\"/3'6\"",
+      "group_name_tags": "target, owner, 3', 3'3\", 3'6\", amateur, hunters, Over Fences",
+      "class_number": 394,
+      "class_sequence": 5,
+      "class_name": "Amateur Owner Hunter 3'3\"/3'6\"",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:25:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 18,
+        "total_trips": 18,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|395|5|cgid:200023900",
+      "source_index": 25,
+      "schedule_record_id": "reccPi72qEuDwvpMg",
+      "schedule_key": "200000061|2026-05-10|5|395|5",
+      "schedule_instance_key": "200000061|2026-05-10|5|395|5|cgid:200023900",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Amateur Owner Hunter 3'3\"/3'6\"",
+      "group_name_tags": "handy, owner, 3', 3'3\", 3'6\", amateur, hunters, Over Fences",
+      "class_number": 395,
+      "class_sequence": 5,
+      "class_name": "Amateur Owner Hunter 3'3\"/3'6\" Handy",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:25:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 18,
+        "total_trips": 18,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|210|5|cgid:200023900",
+      "source_index": 26,
+      "schedule_record_id": "recgzTQvhUZ5dLqo5",
+      "schedule_key": "200000061|2026-05-10|5|210|5",
+      "schedule_instance_key": "200000061|2026-05-10|5|210|5|cgid:200023900",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Amateur Owner Hunter 3'3\"/3'6\"",
+      "group_name_tags": "add_back, owner, 3', 3'3\", 3'6\", amateur, hunters, Over Fences",
+      "class_number": 210,
+      "class_sequence": 5,
+      "class_name": "Add Back Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:25:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 18,
+        "total_trips": 18,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|909|5|cgid:200023900",
+      "source_index": 30,
+      "schedule_record_id": "recos9Ngu8lwlMGj4",
+      "schedule_key": "200000061|2026-05-10|5|909|5",
+      "schedule_instance_key": "200000061|2026-05-10|5|909|5|cgid:200023900",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Amateur Owner Hunter 3'3\"/3'6\"",
+      "group_name_tags": "classic, owner, 3', 3'3\", 3'6\", amateur, hunters, Over Fences",
+      "class_number": 909,
+      "class_sequence": 5,
+      "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:25:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 18,
+        "total_trips": 18,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|210|6|cgid:200023903",
+      "source_index": 39,
+      "schedule_record_id": "recOSdrkOQVo5DIZu",
+      "schedule_key": "200000061|2026-05-10|5|210|6",
+      "schedule_instance_key": "200000061|2026-05-10|5|210|6|cgid:200023903",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'6\"",
+      "group_name_tags": "add_back, 3', 3'6\", junior, hunters, Over Fences",
+      "class_number": 210,
+      "class_sequence": 6,
+      "class_name": "Add Back Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:50:15",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 20,
+        "total_trips": 20,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|309|6|cgid:200023903",
+      "source_index": 43,
+      "schedule_record_id": "rece4AJ8PUXT0NoDT",
+      "schedule_key": "200000061|2026-05-10|5|309|6",
+      "schedule_instance_key": "200000061|2026-05-10|5|309|6|cgid:200023903",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'6\"",
+      "group_name_tags": "target, 3', 3'6\", junior, hunters, Over Fences",
+      "class_number": 309,
+      "class_sequence": 6,
+      "class_name": "Junior Hunter 3'6\"",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:50:15",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 20,
+        "total_trips": 20,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recAl5c7SsTPsnIZB"
+    },
+    {
+      "id": "200000061|2026-05-10|5|909|6|cgid:200023903",
+      "source_index": 46,
+      "schedule_record_id": "recnW42otfcKkiAmm",
+      "schedule_key": "200000061|2026-05-10|5|909|6",
+      "schedule_instance_key": "200000061|2026-05-10|5|909|6|cgid:200023903",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'6\"",
+      "group_name_tags": "classic, 3', 3'6\", junior, hunters, Over Fences",
+      "class_number": 909,
+      "class_sequence": 6,
+      "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:50:15",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 20,
+        "total_trips": 20,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|310|6|cgid:200023903",
+      "source_index": 58,
+      "schedule_record_id": "rec0QYc2jzwZU4LCF",
+      "schedule_key": "200000061|2026-05-10|5|310|6",
+      "schedule_instance_key": "200000061|2026-05-10|5|310|6|cgid:200023903",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'6\"",
+      "group_name_tags": "handy, 3', 3'6\", junior, hunters, Over Fences",
+      "class_number": 310,
+      "class_sequence": 6,
+      "class_name": "Junior Hunter 3'6\" Handy",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "09:50:15",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 20,
+        "total_trips": 20,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|340|7|cgid:200023905",
+      "source_index": 41,
+      "schedule_record_id": "reczVmlbB2xiRn3Ku",
+      "schedule_key": "200000061|2026-05-10|5|340|7",
+      "schedule_instance_key": "200000061|2026-05-10|5|340|7|cgid:200023905",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'3\"",
+      "group_name_tags": "handy, 3', 3'3\", junior, hunters, Over Fences",
+      "class_number": 340,
+      "class_sequence": 7,
+      "class_name": "Junior Hunter 3'3\" Handy",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:20:15",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 28,
+        "total_trips": 28,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|339|7|cgid:200023905",
+      "source_index": 44,
+      "schedule_record_id": "reciU4Ky0BJ5vNGJR",
+      "schedule_key": "200000061|2026-05-10|5|339|7",
+      "schedule_instance_key": "200000061|2026-05-10|5|339|7|cgid:200023905",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'3\"",
+      "group_name_tags": "target, 3', 3'3\", junior, hunters, Over Fences",
+      "class_number": 339,
+      "class_sequence": 7,
+      "class_name": "Junior Hunter 3'3\"",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:20:15",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 28,
+        "total_trips": 28,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|210|7|cgid:200023905",
+      "source_index": 48,
+      "schedule_record_id": "recqMuXS9sTVv8Hjo",
+      "schedule_key": "200000061|2026-05-10|5|210|7",
+      "schedule_instance_key": "200000061|2026-05-10|5|210|7|cgid:200023905",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'3\"",
+      "group_name_tags": "add_back, 3', 3'3\", junior, hunters, Over Fences",
+      "class_number": 210,
+      "class_sequence": 7,
+      "class_name": "Add Back Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:20:15",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 28,
+        "total_trips": 28,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|909|7|cgid:200023905",
+      "source_index": 51,
+      "schedule_record_id": "recIMdl8NqL4yHTNF",
+      "schedule_key": "200000061|2026-05-10|5|909|7",
+      "schedule_instance_key": "200000061|2026-05-10|5|909|7|cgid:200023905",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Junior Hunter 3'3\"",
+      "group_name_tags": "classic, 3', 3'3\", junior, hunters, Over Fences",
+      "class_number": 909,
+      "class_sequence": 7,
+      "class_name": "$1,000 Junior/Amateur Owner 3'3\"/3'6\" Hunter Classic",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:20:15",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 28,
+        "total_trips": 28,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|315|8|cgid:200023908",
+      "source_index": 40,
+      "schedule_record_id": "recs3dplSkndOCdPg",
+      "schedule_key": "200000061|2026-05-10|5|315|8",
+      "schedule_instance_key": "200000061|2026-05-10|5|315|8|cgid:200023908",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Children's Hunter",
+      "group_name_tags": "target, children's, hunters, Over Fences",
+      "class_number": 315,
+      "class_sequence": 8,
+      "class_name": "Children's Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "12:05:09",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 25,
+        "total_trips": 25,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "rec3kVxJtr8AwCc68"
+    },
+    {
+      "id": "200000061|2026-05-10|5|659|8|cgid:200023908",
+      "source_index": 45,
+      "schedule_record_id": "recmGVwBrRRHlERbo",
+      "schedule_key": "200000061|2026-05-10|5|659|8",
+      "schedule_instance_key": "200000061|2026-05-10|5|659|8|cgid:200023908",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Children's Hunter",
+      "group_name_tags": "warmup, children's, hunters, Over Fences",
+      "class_number": 659,
+      "class_sequence": 8,
+      "class_name": "Warm Up Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "12:05:09",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 25,
+        "total_trips": 25,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|314|8|cgid:200023908",
+      "source_index": 47,
+      "schedule_record_id": "recoysocQBUtoFlFy",
+      "schedule_key": "200000061|2026-05-10|5|314|8",
+      "schedule_instance_key": "200000061|2026-05-10|5|314|8|cgid:200023908",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Children's Hunter",
+      "group_name_tags": "target, children's, hunters, Over Fences",
+      "class_number": 314,
+      "class_sequence": 8,
+      "class_name": "Children's Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "12:05:09",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 25,
+        "total_trips": 25,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recDqKX6ZJh00fMdV"
+    },
+    {
+      "id": "200000061|2026-05-10|5|502|10|cgid:200023910",
+      "source_index": 59,
+      "schedule_record_id": "rec1nRMYHbHa40WHp",
+      "schedule_key": "200000061|2026-05-10|5|502|10",
+      "schedule_instance_key": "200000061|2026-05-10|5|502|10|cgid:200023910",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Child/Adult Amateur Equitation 2'6\" Flat",
+      "group_name_tags": "target, usf, adult, amateur, flat, Under Saddle/Flat",
+      "class_number": 502,
+      "class_sequence": 10,
+      "class_name": "Child/Adult Amateur Equitation 2'6\" Flat",
+      "class_type": "Equitation",
+      "sequence_type": "Under Saddle/Flat",
+      "start": {
+        "time": "13:00:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|659|9|cgid:200023909",
+      "source_index": 42,
+      "schedule_record_id": "rec8chdknOAPY9W24",
+      "schedule_key": "200000061|2026-05-10|5|659|9",
+      "schedule_instance_key": "200000061|2026-05-10|5|659|9|cgid:200023909",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Adult Amateur Hunter",
+      "group_name_tags": "warmup, adult, amateur, hunters, Over Fences",
+      "class_number": 659,
+      "class_sequence": 9,
+      "class_name": "Warm Up Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:22:39",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 8,
+        "total_trips": 8,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|285|9|cgid:200023909",
+      "source_index": 56,
+      "schedule_record_id": "recV7bfPXPoWaECKz",
+      "schedule_key": "200000061|2026-05-10|5|285|9",
+      "schedule_instance_key": "200000061|2026-05-10|5|285|9|cgid:200023909",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Adult Amateur Hunter",
+      "group_name_tags": "target, adult, amateur, hunters, Over Fences",
+      "class_number": 285,
+      "class_sequence": 9,
+      "class_name": "Adult Amateur Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:22:39",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 8,
+        "total_trips": 8,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|284|9|cgid:200023909",
+      "source_index": 57,
+      "schedule_record_id": "recYXxvNkbBPyZo18",
+      "schedule_key": "200000061|2026-05-10|5|284|9",
+      "schedule_instance_key": "200000061|2026-05-10|5|284|9|cgid:200023909",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Adult Amateur Hunter",
+      "group_name_tags": "target, adult, amateur, hunters, Over Fences",
+      "class_number": 284,
+      "class_sequence": 9,
+      "class_name": "Adult Amateur Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:22:39",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 8,
+        "total_trips": 8,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|504|11|cgid:200023911",
+      "source_index": 49,
+      "schedule_record_id": "recFxJKVNNs5avJfg",
+      "schedule_key": "200000061|2026-05-10|5|504|11",
+      "schedule_instance_key": "200000061|2026-05-10|5|504|11|cgid:200023911",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Child/Adult Amateur Equitation 2'6\"",
+      "group_name_tags": "target, adult, amateur, Over Fences",
+      "class_number": 504,
+      "class_sequence": 11,
+      "class_name": "Child/Adult Amateur Equitation 2'6\"",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Upcoming",
+      "start": {
+        "time": "13:52:40",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 2,
+        "total_trips": 4,
+        "left_trips": 2,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|653|11|cgid:200023911",
+      "source_index": 53,
+      "schedule_record_id": "recM9YmupYlt4GyJT",
+      "schedule_key": "200000061|2026-05-10|5|653|11",
+      "schedule_instance_key": "200000061|2026-05-10|5|653|11|cgid:200023911",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Child/Adult Amateur Equitation 2'6\"",
+      "group_name_tags": "warmup, adult, amateur, hunters, Over Fences",
+      "class_number": 653,
+      "class_sequence": 11,
+      "class_name": "Warm Up Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Upcoming",
+      "start": {
+        "time": "13:52:40",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 2,
+        "total_trips": 4,
+        "left_trips": 2,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|503|11|cgid:200023911",
+      "source_index": 55,
+      "schedule_record_id": "recUfGK9NTJXMUrKF",
+      "schedule_key": "200000061|2026-05-10|5|503|11",
+      "schedule_instance_key": "200000061|2026-05-10|5|503|11|cgid:200023911",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Child/Adult Amateur Equitation 2'6\"",
+      "group_name_tags": "target, adult, amateur, Over Fences",
+      "class_number": 503,
+      "class_sequence": 11,
+      "class_name": "Child/Adult Amateur Equitation 2'6\"",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Upcoming",
+      "start": {
+        "time": "13:52:40",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 2,
+        "total_trips": 4,
+        "left_trips": 2,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|994|14|cgid:200025068",
+      "source_index": 67,
+      "schedule_record_id": "recpxUt9KVmfQf3oM",
+      "schedule_key": "200000061|2026-05-10|5|994|14",
+      "schedule_instance_key": "200000061|2026-05-10|5|994|14|cgid:200025068",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Mulligan Class",
+      "group_name_tags": "mulligan, hunters, Over Fences",
+      "class_number": 994,
+      "class_sequence": 14,
+      "class_name": "Mulligan Class",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "start": {
+        "time": "14:00:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|320|12|cgid:200023912",
+      "source_index": 50,
+      "schedule_record_id": "recFB5cIna1pUtOAp",
+      "schedule_key": "200000061|2026-05-10|5|320|12",
+      "schedule_instance_key": "200000061|2026-05-10|5|320|12|cgid:200023912",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Low Children's Hunter",
+      "group_name_tags": "target, low, children's, hunters, Over Fences",
+      "class_number": 320,
+      "class_sequence": 12,
+      "class_name": "Low Children's Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:08:21",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 10,
+        "total_trips": 10,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|653|12|cgid:200023912",
+      "source_index": 52,
+      "schedule_record_id": "recJrnV7izOqoPub9",
+      "schedule_key": "200000061|2026-05-10|5|653|12",
+      "schedule_instance_key": "200000061|2026-05-10|5|653|12|cgid:200023912",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Low Children's Hunter",
+      "group_name_tags": "warmup, low, children's, hunters, Over Fences",
+      "class_number": 653,
+      "class_sequence": 12,
+      "class_name": "Warm Up Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:08:21",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 10,
+        "total_trips": 10,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|319|12|cgid:200023912",
+      "source_index": 54,
+      "schedule_record_id": "recNfMWxR6xZA86gF",
+      "schedule_key": "200000061|2026-05-10|5|319|12",
+      "schedule_instance_key": "200000061|2026-05-10|5|319|12|cgid:200023912",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Low Children's Hunter",
+      "group_name_tags": "target, low, children's, hunters, Over Fences",
+      "class_number": 319,
+      "class_sequence": 12,
+      "class_name": "Low Children's Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:08:21",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 10,
+        "total_trips": 10,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|300|13|cgid:200023913",
+      "source_index": 60,
+      "schedule_record_id": "rectI5udq9PqYoSbD",
+      "schedule_key": "200000061|2026-05-10|5|300|13",
+      "schedule_instance_key": "200000061|2026-05-10|5|300|13|cgid:200023913",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Low Adult Hunter",
+      "group_name_tags": "target, adult, low, hunters, Over Fences",
+      "class_number": 300,
+      "class_sequence": 13,
+      "class_name": "Low Adult Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:29:49",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 10,
+        "total_trips": 10,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|653|13|cgid:200023913",
+      "source_index": 61,
+      "schedule_record_id": "recvHDGJWVvKZf433",
+      "schedule_key": "200000061|2026-05-10|5|653|13",
+      "schedule_instance_key": "200000061|2026-05-10|5|653|13|cgid:200023913",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Low Adult Hunter",
+      "group_name_tags": "warmup, adult, low, hunters, Over Fences",
+      "class_number": 653,
+      "class_sequence": 13,
+      "class_name": "Warm Up Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:29:49",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 10,
+        "total_trips": 10,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|5|299|13|cgid:200023913",
+      "source_index": 66,
+      "schedule_record_id": "recn9SQ7jKG3tVMnN",
+      "schedule_key": "200000061|2026-05-10|5|299|13",
+      "schedule_instance_key": "200000061|2026-05-10|5|299|13|cgid:200023913",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "group_name": "Low Adult Hunter",
+      "group_name_tags": "target, adult, low, hunters, Over Fences",
+      "class_number": 299,
+      "class_sequence": 13,
+      "class_name": "Low Adult Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "14:29:49",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 10,
+        "total_trips": 10,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|644|1|cgid:200023925",
+      "source_index": 65,
+      "schedule_record_id": "rec8ahxMbO73HzZ8c",
+      "schedule_key": "200000061|2026-05-10|6|644|1",
+      "schedule_instance_key": "200000061|2026-05-10|6|644|1|cgid:200023925",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Modified Hunter 2'/2'6\"",
+      "group_name_tags": "isFirstUp, target, 2'/2'6\", hunters, Over Fences",
+      "class_number": 644,
+      "class_sequence": 1,
+      "class_name": "Modified Hunter 2'/2'6\"",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:45:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 13,
+        "total_trips": 14,
+        "left_trips": 1,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|652|1|cgid:200023925",
+      "source_index": 68,
+      "schedule_record_id": "recpc3mXhBD3mgWc5",
+      "schedule_key": "200000061|2026-05-10|6|652|1",
+      "schedule_instance_key": "200000061|2026-05-10|6|652|1|cgid:200023925",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Modified Hunter 2'/2'6\"",
+      "group_name_tags": "isFirstUp, warmup, 2'/2'6\", hunters, Over Fences",
+      "class_number": 652,
+      "class_sequence": 1,
+      "class_name": "Warm Up Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:45:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 13,
+        "total_trips": 14,
+        "left_trips": 1,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|645|1|cgid:200023925",
+      "source_index": 69,
+      "schedule_record_id": "recRHO8ZWoGbjwyRO",
+      "schedule_key": "200000061|2026-05-10|6|645|1",
+      "schedule_instance_key": "200000061|2026-05-10|6|645|1|cgid:200023925",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Modified Hunter 2'/2'6\"",
+      "group_name_tags": "isFirstUp, target, 2'/2'6\", hunters, Over Fences",
+      "class_number": 645,
+      "class_sequence": 1,
+      "class_name": "Modified Hunter 2'/2'6\"",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "07:45:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 13,
+        "total_trips": 14,
+        "left_trips": 1,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|411|2|cgid:200023861",
+      "source_index": 64,
+      "schedule_record_id": "rec4bmPTHYMu294Ca",
+      "schedule_key": "200000061|2026-05-10|6|411|2",
+      "schedule_instance_key": "200000061|2026-05-10|6|411|2|cgid:200023861",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Small Pony Hunter U/S",
+      "group_name_tags": "target, usf, pony, small, U/S, hunters, Under Saddle/Flat",
+      "class_number": 411,
+      "class_sequence": 2,
+      "class_name": "Small Pony Hunter U/S",
+      "class_type": "Hunters",
+      "sequence_type": "Under Saddle/Flat",
+      "start": {
+        "time": "08:40:00",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recljSTMMbcL1eKBz",
+      "trips": [
+        {
+          "trip_record_id": "recze5aOT8o3Eewos",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2815|entry_sequence:5",
+          "pid": 8778,
+          "entry_number": 2815,
+          "entry_sequence": 5,
+          "rider_name": "JESSICA HEAP",
+          "horse": "Knox",
+          "latest_trip_log_record_id": "rec8gg6reWlqlDWNW"
+        },
+        {
+          "trip_record_id": "recTQsZxnE9g3BxhC",
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2818|entry_sequence:5",
+          "pid": 8778,
+          "entry_number": 2818,
+          "entry_sequence": 5,
+          "rider_name": "JESSICA HEAP",
+          "horse": "Poptart",
+          "latest_trip_log_record_id": "rec38GBxzjkpAmLat"
+        }
+      ]
+    },
+    {
+      "id": "200000061|2026-05-10|6|415|3|cgid:200023927",
+      "source_index": 62,
+      "schedule_record_id": "recyMKT4ONBVlLtyA",
+      "schedule_key": "200000061|2026-05-10|6|415|3",
+      "schedule_instance_key": "200000061|2026-05-10|6|415|3|cgid:200023927",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Small Pony Hunter",
+      "group_name_tags": "handy, pony, small, hunters, Over Fences",
+      "class_number": 415,
+      "class_sequence": 3,
+      "class_name": "Small Pony Handy Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:59:10",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 33,
+        "total_trips": 33,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|414|3|cgid:200023927",
+      "source_index": 63,
+      "schedule_record_id": "reczSo4WI2HXDqIBQ",
+      "schedule_key": "200000061|2026-05-10|6|414|3",
+      "schedule_instance_key": "200000061|2026-05-10|6|414|3|cgid:200023927",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Small Pony Hunter",
+      "group_name_tags": "target, pony, small, hunters, Over Fences",
+      "class_number": 414,
+      "class_sequence": 3,
+      "class_name": "Small Pony Conformation Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:59:10",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 33,
+        "total_trips": 33,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "recHelLx4qNb9BS4W"
+    },
+    {
+      "id": "200000061|2026-05-10|6|906|3|cgid:200023927",
+      "source_index": 71,
+      "schedule_record_id": "recz2KXXoTS0kNIld",
+      "schedule_key": "200000061|2026-05-10|6|906|3",
+      "schedule_instance_key": "200000061|2026-05-10|6|906|3|cgid:200023927",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Small Pony Hunter",
+      "group_name_tags": "classic, pony, small, hunters, Over Fences",
+      "class_number": 906,
+      "class_sequence": 3,
+      "class_name": "$500 Small Pony Hunter Classic",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "08:59:10",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 33,
+        "total_trips": 33,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|424|4|cgid:200023928",
+      "source_index": 74,
+      "schedule_record_id": "rec8wareFbK9RP2v7",
+      "schedule_key": "200000061|2026-05-10|6|424|4",
+      "schedule_instance_key": "200000061|2026-05-10|6|424|4|cgid:200023928",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Medium Pony Hunter",
+      "group_name_tags": "target, pony, medium, hunters, Over Fences",
+      "class_number": 424,
+      "class_sequence": 4,
+      "class_name": "Medium Pony Conformation Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:50:12",
+        "source": "schedule_logs.latest_schedule_log.rs_start_time"
+      },
+      "progress": {
+        "completed_trips": 26,
+        "total_trips": 26,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      },
+      "latest_schedule_log_record_id": "receXwLlKaq8cZ2Lf"
+    },
+    {
+      "id": "200000061|2026-05-10|6|907|4|cgid:200023928",
+      "source_index": 80,
+      "schedule_record_id": "recOzGmCWCZkq8XHE",
+      "schedule_key": "200000061|2026-05-10|6|907|4",
+      "schedule_instance_key": "200000061|2026-05-10|6|907|4|cgid:200023928",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Medium Pony Hunter",
+      "group_name_tags": "classic, pony, medium, hunters, Over Fences",
+      "class_number": 907,
+      "class_sequence": 4,
+      "class_name": "$500 Medium/Large Pony Hunter Classic",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:50:12",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 26,
+        "total_trips": 26,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|425|4|cgid:200023928",
+      "source_index": 82,
+      "schedule_record_id": "recTqG0uKgSnXoXX6",
+      "schedule_key": "200000061|2026-05-10|6|425|4",
+      "schedule_instance_key": "200000061|2026-05-10|6|425|4|cgid:200023928",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Medium Pony Hunter",
+      "group_name_tags": "handy, pony, medium, hunters, Over Fences",
+      "class_number": 425,
+      "class_sequence": 4,
+      "class_name": "Medium Pony Handy Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "10:50:12",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 26,
+        "total_trips": 26,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|907|5|cgid:200023929",
+      "source_index": 76,
+      "schedule_record_id": "recg36hkMo8LJS7cp",
+      "schedule_key": "200000061|2026-05-10|6|907|5",
+      "schedule_instance_key": "200000061|2026-05-10|6|907|5|cgid:200023929",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Large Pony Hunter",
+      "group_name_tags": "classic, pony, large, hunters, Over Fences",
+      "class_number": 907,
+      "class_sequence": 5,
+      "class_name": "$500 Medium/Large Pony Hunter Classic",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "12:25:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 22,
+        "total_trips": 22,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|435|5|cgid:200023929",
+      "source_index": 79,
+      "schedule_record_id": "recGye0eAacTVUEEJ",
+      "schedule_key": "200000061|2026-05-10|6|435|5",
+      "schedule_instance_key": "200000061|2026-05-10|6|435|5|cgid:200023929",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Large Pony Hunter",
+      "group_name_tags": "handy, pony, large, hunters, Over Fences",
+      "class_number": 435,
+      "class_sequence": 5,
+      "class_name": "Large Pony Handy Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "12:25:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 22,
+        "total_trips": 22,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|434|5|cgid:200023929",
+      "source_index": 84,
+      "schedule_record_id": "recVejA25lioeILQg",
+      "schedule_key": "200000061|2026-05-10|6|434|5",
+      "schedule_instance_key": "200000061|2026-05-10|6|434|5|cgid:200023929",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Large Pony Hunter",
+      "group_name_tags": "target, pony, large, hunters, Over Fences",
+      "class_number": 434,
+      "class_sequence": 5,
+      "class_name": "Large Pony Conformation Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "12:25:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 22,
+        "total_trips": 22,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|441|6|cgid:200023930",
+      "source_index": 70,
+      "schedule_record_id": "recvTcU6h7rXu4gqe",
+      "schedule_key": "200000061|2026-05-10|6|441|6",
+      "schedule_instance_key": "200000061|2026-05-10|6|441|6|cgid:200023930",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Green Pony Hunter U/S",
+      "group_name_tags": "target, usf, pony, green, U/S, hunters, Under Saddle/Flat",
+      "class_number": 441,
+      "class_sequence": 6,
+      "class_name": "Green Pony Hunter U/S",
+      "class_type": "Hunters",
+      "sequence_type": "Under Saddle/Flat",
+      "start": {
+        "time": "12:50:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|444|7|cgid:200023931",
+      "source_index": 77,
+      "schedule_record_id": "reckX52SrP2VSOufR",
+      "schedule_key": "200000061|2026-05-10|6|444|7",
+      "schedule_instance_key": "200000061|2026-05-10|6|444|7|cgid:200023931",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Green Pony Hunter",
+      "group_name_tags": "target, pony, green, hunters, Over Fences",
+      "class_number": 444,
+      "class_sequence": 7,
+      "class_name": "Green Pony Conformation Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:55:10",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 12,
+        "total_trips": 12,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|445|7|cgid:200023931",
+      "source_index": 83,
+      "schedule_record_id": "recTv4IDoZBFKTAYJ",
+      "schedule_key": "200000061|2026-05-10|6|445|7",
+      "schedule_instance_key": "200000061|2026-05-10|6|445|7|cgid:200023931",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Green Pony Hunter",
+      "group_name_tags": "target, pony, green, hunters, Over Fences",
+      "class_number": 445,
+      "class_sequence": 7,
+      "class_name": "Green Pony Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "13:55:10",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 12,
+        "total_trips": 12,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|995|9|cgid:200025069",
+      "source_index": 72,
+      "schedule_record_id": "recA3lmuIT6lK7UVw",
+      "schedule_key": "200000061|2026-05-10|6|995|9",
+      "schedule_instance_key": "200000061|2026-05-10|6|995|9|cgid:200025069",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Mulligan Class",
+      "group_name_tags": "mulligan, hunters, Over Fences",
+      "class_number": 995,
+      "class_sequence": 9,
+      "class_name": "Mulligan Class",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "start": {
+        "time": "14:33:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|528|10|cgid:200023934",
+      "source_index": 78,
+      "schedule_record_id": "recDx6J02rz0FvN0u",
+      "schedule_key": "200000061|2026-05-10|6|528|10",
+      "schedule_instance_key": "200000061|2026-05-10|6|528|10|cgid:200023934",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "SFHJA Children's Pony Medal (Flat Phase) **3 To Fill**",
+      "group_name_tags": "target, usf, medal, pony, children's, flat, Under Saddle/Flat",
+      "class_number": 528,
+      "class_sequence": 10,
+      "class_name": "SFHJA Children's Pony Medal (Flat Phase) **3 To Fill**",
+      "class_type": "Equitation",
+      "sequence_type": "Under Saddle/Flat",
+      "start": {
+        "time": "15:00:00",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|408|8|cgid:200023932",
+      "source_index": 73,
+      "schedule_record_id": "rec5GklPIKndFVLJ8",
+      "schedule_key": "200000061|2026-05-10|6|408|8",
+      "schedule_instance_key": "200000061|2026-05-10|6|408|8|cgid:200023932",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Children's Hunter Pony",
+      "group_name_tags": "target, pony, children's, hunters, Over Fences",
+      "class_number": 408,
+      "class_sequence": 8,
+      "class_name": "Children's Hunter Pony",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "15:00:13",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 13,
+        "total_trips": 13,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|654|8|cgid:200023932",
+      "source_index": 75,
+      "schedule_record_id": "receUK4IKSncNM61c",
+      "schedule_key": "200000061|2026-05-10|6|654|8",
+      "schedule_instance_key": "200000061|2026-05-10|6|654|8|cgid:200023932",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Children's Hunter Pony",
+      "group_name_tags": "warmup, pony, children's, hunters, Over Fences",
+      "class_number": 654,
+      "class_sequence": 8,
+      "class_name": "Warm Up Hunter",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "15:00:13",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 13,
+        "total_trips": 13,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|409|8|cgid:200023932",
+      "source_index": 85,
+      "schedule_record_id": "recYdBx4LiSkjuuoB",
+      "schedule_key": "200000061|2026-05-10|6|409|8",
+      "schedule_instance_key": "200000061|2026-05-10|6|409|8|cgid:200023932",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "Children's Hunter Pony",
+      "group_name_tags": "target, pony, children's, hunters, Over Fences",
+      "class_number": 409,
+      "class_sequence": 8,
+      "class_name": "Children's Hunter Pony",
+      "class_type": "Hunters",
+      "sequence_type": "Over Fences",
+      "status": "Completed",
+      "start": {
+        "time": "15:00:13",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 13,
+        "total_trips": 13,
+        "left_trips": 0,
+        "source": "watch_schedule/groups"
+      }
+    },
+    {
+      "id": "200000061|2026-05-10|6|532|9|cgid:200023933",
+      "source_index": 81,
+      "schedule_record_id": "recQ0Z1DVdbuR3qxl",
+      "schedule_key": "200000061|2026-05-10|6|532|9",
+      "schedule_instance_key": "200000061|2026-05-10|6|532|9|cgid:200023933",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "group_name": "M&S Children's Pony Medal **3 To Fill**",
+      "group_name_tags": "target, medal, pony, children's, Over Fences",
+      "class_number": 532,
+      "class_sequence": 9,
+      "class_name": "M&S Children's Pony Medal **3 To Fill**",
+      "class_type": "Equitation",
+      "sequence_type": "Over Fences",
+      "status": "Upcoming",
+      "start": {
+        "time": "15:00:51",
+        "source": "watch_schedule.estimated_start_time"
+      },
+      "progress": {
+        "completed_trips": 0,
+        "total_trips": 2,
+        "left_trips": 2,
+        "source": "watch_schedule/groups"
+      }
+    }
+  ],
+  "indexed": {
+    "rider": {
+      "JESSICA HEAP": [
+        "200000061|2026-05-10|6|411|2|cgid:200023861"
+      ]
+    },
+    "horse": {
+      "Knox": [
+        "200000061|2026-05-10|6|411|2|cgid:200023861"
+      ],
+      "Poptart": [
+        "200000061|2026-05-10|6|411|2|cgid:200023861"
+      ]
+    },
+    "status": {
+      "Completed": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|1|806|2|cgid:200023879",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|3|815|7|cgid:200023897",
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|535|4|cgid:200026496",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|4|570|5|cgid:200023887",
+        "200000061|2026-05-10|4|550|6|cgid:200023888",
+        "200000061|2026-05-10|4|555|7|cgid:200023889",
+        "200000061|2026-05-10|4|565|8|cgid:200023891",
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894",
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895",
+        "200000061|2026-05-10|5|140|2|cgid:200023921",
+        "200000061|2026-05-10|5|145|2|cgid:200023921",
+        "200000061|2026-05-10|5|146|2|cgid:200023921",
+        "200000061|2026-05-10|5|606|4|cgid:200023924",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|605|4|cgid:200023924",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905",
+        "200000061|2026-05-10|5|315|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|8|cgid:200023908",
+        "200000061|2026-05-10|5|314|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913",
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|906|3|cgid:200023927",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|425|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|5|cgid:200023929",
+        "200000061|2026-05-10|6|435|5|cgid:200023929",
+        "200000061|2026-05-10|6|434|5|cgid:200023929",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|654|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932"
+      ],
+      "Upcoming": [
+        "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|503|11|cgid:200023911",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ]
+    },
+    "ring": {
+      "1": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|1|806|2|cgid:200023879"
+      ],
+      "3": [
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|3|815|7|cgid:200023897",
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|3|992|10|cgid:200025066",
+        "200000062|2026-05-28|3|555|14|cgid:200024449",
+        "200000062|2026-05-28|3|530|9|cgid:200024444",
+        "200000062|2026-05-28|3|585|13|cgid:200024448",
+        "200000062|2026-05-28|3|545|7|cgid:200024442",
+        "200000062|2026-05-28|3|546|8|cgid:200024443",
+        "200000062|2026-05-28|3|570|12|cgid:200024447",
+        "200000062|2026-05-28|3|550|11|cgid:200024446",
+        "200000062|2026-05-28|3|590|6|cgid:200024441",
+        "200000062|2026-05-28|3|535|10|cgid:200024445",
+        "200000062|2026-05-28|3|581|5|cgid:200024440",
+        "200000062|2026-05-28|3|540|22|cgid:200025073",
+        "200000062|2026-05-28|3|560|20|cgid:200024455",
+        "200000062|2026-05-28|3|529|18|cgid:200024453",
+        "200000062|2026-05-28|3|565|15|cgid:200024450",
+        "200000062|2026-05-28|3|525|17|cgid:200024452",
+        "200000062|2026-05-28|3|531|19|cgid:200024454",
+        "200000062|2026-05-28|3|575|21|cgid:200024456",
+        "200000062|2026-05-28|3|527|16|cgid:200024451"
+      ],
+      "4": [
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|535|4|cgid:200026496",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|4|570|5|cgid:200023887",
+        "200000061|2026-05-10|4|550|6|cgid:200023888",
+        "200000061|2026-05-10|4|555|7|cgid:200023889",
+        "200000061|2026-05-10|4|565|8|cgid:200023891",
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894",
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895",
+        "200000061|2026-05-10|4|993|12|cgid:200025067"
+      ],
+      "5": [
+        "200000061|2026-05-10|5|144|1|cgid:200023919",
+        "200000061|2026-05-10|5|140|2|cgid:200023921",
+        "200000061|2026-05-10|5|145|2|cgid:200023921",
+        "200000061|2026-05-10|5|146|2|cgid:200023921",
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|5|606|4|cgid:200023924",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|605|4|cgid:200023924",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905",
+        "200000061|2026-05-10|5|315|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|8|cgid:200023908",
+        "200000061|2026-05-10|5|314|8|cgid:200023908",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|503|11|cgid:200023911",
+        "200000061|2026-05-10|5|994|14|cgid:200025068",
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913"
+      ],
+      "6": [
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|906|3|cgid:200023927",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|425|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|5|cgid:200023929",
+        "200000061|2026-05-10|6|435|5|cgid:200023929",
+        "200000061|2026-05-10|6|434|5|cgid:200023929",
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931",
+        "200000061|2026-05-10|6|995|9|cgid:200025069",
+        "200000061|2026-05-10|6|528|10|cgid:200023934",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|654|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ]
+    },
+    "class_type": {
+      "Jumpers": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|1|806|2|cgid:200023879",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|3|815|7|cgid:200023897",
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894",
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895"
+      ],
+      "Hunters": [
+        "200000061|2026-05-10|3|992|10|cgid:200025066",
+        "200000061|2026-05-10|4|993|12|cgid:200025067",
+        "200000061|2026-05-10|5|140|2|cgid:200023921",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905",
+        "200000061|2026-05-10|5|315|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|8|cgid:200023908",
+        "200000061|2026-05-10|5|314|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|994|14|cgid:200025068",
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913",
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|906|3|cgid:200023927",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|425|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|5|cgid:200023929",
+        "200000061|2026-05-10|6|435|5|cgid:200023929",
+        "200000061|2026-05-10|6|434|5|cgid:200023929",
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931",
+        "200000061|2026-05-10|6|995|9|cgid:200025069",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|654|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932"
+      ],
+      "Equitation": [
+        "200000062|2026-05-28|3|555|14|cgid:200024449",
+        "200000062|2026-05-28|3|530|9|cgid:200024444",
+        "200000062|2026-05-28|3|585|13|cgid:200024448",
+        "200000062|2026-05-28|3|545|7|cgid:200024442",
+        "200000062|2026-05-28|3|546|8|cgid:200024443",
+        "200000062|2026-05-28|3|570|12|cgid:200024447",
+        "200000062|2026-05-28|3|550|11|cgid:200024446",
+        "200000062|2026-05-28|3|590|6|cgid:200024441",
+        "200000062|2026-05-28|3|535|10|cgid:200024445",
+        "200000062|2026-05-28|3|581|5|cgid:200024440",
+        "200000062|2026-05-28|3|540|22|cgid:200025073",
+        "200000062|2026-05-28|3|560|20|cgid:200024455",
+        "200000062|2026-05-28|3|529|18|cgid:200024453",
+        "200000062|2026-05-28|3|565|15|cgid:200024450",
+        "200000062|2026-05-28|3|525|17|cgid:200024452",
+        "200000062|2026-05-28|3|531|19|cgid:200024454",
+        "200000062|2026-05-28|3|575|21|cgid:200024456",
+        "200000062|2026-05-28|3|527|16|cgid:200024451",
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|535|4|cgid:200026496",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|4|570|5|cgid:200023887",
+        "200000061|2026-05-10|4|550|6|cgid:200023888",
+        "200000061|2026-05-10|4|555|7|cgid:200023889",
+        "200000061|2026-05-10|4|565|8|cgid:200023891",
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|5|144|1|cgid:200023919",
+        "200000061|2026-05-10|5|145|2|cgid:200023921",
+        "200000061|2026-05-10|5|146|2|cgid:200023921",
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|5|606|4|cgid:200023924",
+        "200000061|2026-05-10|5|605|4|cgid:200023924",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "200000061|2026-05-10|5|503|11|cgid:200023911",
+        "200000061|2026-05-10|6|528|10|cgid:200023934",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ]
+    },
+    "group_name_tags": {
+      "isFirstUp": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|5|144|1|cgid:200023919",
+        "200000061|2026-05-10|5|140|2|cgid:200023921",
+        "200000061|2026-05-10|5|145|2|cgid:200023921",
+        "200000061|2026-05-10|5|146|2|cgid:200023921",
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925"
+      ],
+      "target": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|1|806|2|cgid:200023879",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|3|815|7|cgid:200023897",
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|4|570|5|cgid:200023887",
+        "200000061|2026-05-10|4|550|6|cgid:200023888",
+        "200000061|2026-05-10|4|555|7|cgid:200023889",
+        "200000061|2026-05-10|4|565|8|cgid:200023891",
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894",
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895",
+        "200000061|2026-05-10|5|144|1|cgid:200023919",
+        "200000061|2026-05-10|5|145|2|cgid:200023921",
+        "200000061|2026-05-10|5|146|2|cgid:200023921",
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|5|606|4|cgid:200023924",
+        "200000061|2026-05-10|5|605|4|cgid:200023924",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|315|8|cgid:200023908",
+        "200000061|2026-05-10|5|314|8|cgid:200023908",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "200000061|2026-05-10|5|503|11|cgid:200023911",
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913",
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|434|5|cgid:200023929",
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931",
+        "200000061|2026-05-10|6|528|10|cgid:200023934",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ],
+      "amateur": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|503|11|cgid:200023911"
+      ],
+      "junior": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905"
+      ],
+      "jumpers": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|1|806|2|cgid:200023879",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|3|815|7|cgid:200023897",
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894",
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895"
+      ],
+      "Over Fences": [
+        "200000061|2026-05-10|1|775|1|cgid:200023878",
+        "200000061|2026-05-10|1|806|2|cgid:200023879",
+        "200000061|2026-05-10|3|723|2|cgid:200023880",
+        "200000061|2026-05-10|3|763|3|cgid:200023881",
+        "200000061|2026-05-10|3|743|3|cgid:200023881",
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883",
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|3|815|7|cgid:200023897",
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|3|992|10|cgid:200025066",
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|4|570|5|cgid:200023887",
+        "200000061|2026-05-10|4|550|6|cgid:200023888",
+        "200000061|2026-05-10|4|555|7|cgid:200023889",
+        "200000061|2026-05-10|4|565|8|cgid:200023891",
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894",
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895",
+        "200000061|2026-05-10|4|993|12|cgid:200025067",
+        "200000061|2026-05-10|5|140|2|cgid:200023921",
+        "200000061|2026-05-10|5|145|2|cgid:200023921",
+        "200000061|2026-05-10|5|146|2|cgid:200023921",
+        "200000061|2026-05-10|5|606|4|cgid:200023924",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|605|4|cgid:200023924",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905",
+        "200000061|2026-05-10|5|315|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|8|cgid:200023908",
+        "200000061|2026-05-10|5|314|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|503|11|cgid:200023911",
+        "200000061|2026-05-10|5|994|14|cgid:200025068",
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913",
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|906|3|cgid:200023927",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|425|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|5|cgid:200023929",
+        "200000061|2026-05-10|6|435|5|cgid:200023929",
+        "200000061|2026-05-10|6|434|5|cgid:200023929",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931",
+        "200000061|2026-05-10|6|995|9|cgid:200025069",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|654|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ],
+      "1.20m": [
+        "200000061|2026-05-10|3|723|2|cgid:200023880"
+      ],
+      "1.10m": [
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882"
+      ],
+      "II2d": [
+        "200000061|2026-05-10|3|742|4|cgid:200023882",
+        "200000061|2026-05-10|3|762|4|cgid:200023882",
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894",
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895"
+      ],
+      "1.0m": [
+        "200000061|2026-05-10|3|767|5|cgid:200023883",
+        "200000061|2026-05-10|3|739|5|cgid:200023883"
+      ],
+      "hopeful": [
+        "200000061|2026-05-10|3|792|6|cgid:200023896"
+      ],
+      ".85m": [
+        "200000061|2026-05-10|3|792|6|cgid:200023896",
+        "200000061|2026-05-10|3|815|7|cgid:200023897"
+      ],
+      "pony": [
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|906|3|cgid:200023927",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|425|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|5|cgid:200023929",
+        "200000061|2026-05-10|6|435|5|cgid:200023929",
+        "200000061|2026-05-10|6|434|5|cgid:200023929",
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931",
+        "200000061|2026-05-10|6|528|10|cgid:200023934",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|654|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ],
+      "large": [
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|6|907|5|cgid:200023929",
+        "200000061|2026-05-10|6|435|5|cgid:200023929",
+        "200000061|2026-05-10|6|434|5|cgid:200023929"
+      ],
+      "medium": [
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|425|4|cgid:200023928"
+      ],
+      "wihs": [
+        "200000061|2026-05-10|3|685|8|cgid:200026493",
+        "200000061|2026-05-10|3|682|9|cgid:200023898"
+      ],
+      "small": [
+        "200000061|2026-05-10|3|682|9|cgid:200023898",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|906|3|cgid:200023927"
+      ],
+      "mulligan": [
+        "200000061|2026-05-10|3|992|10|cgid:200025066",
+        "200000061|2026-05-10|4|993|12|cgid:200025067",
+        "200000061|2026-05-10|5|994|14|cgid:200025068",
+        "200000061|2026-05-10|6|995|9|cgid:200025069"
+      ],
+      "hunters": [
+        "200000061|2026-05-10|3|992|10|cgid:200025066",
+        "200000061|2026-05-10|4|993|12|cgid:200025067",
+        "200000061|2026-05-10|5|140|2|cgid:200023921",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905",
+        "200000061|2026-05-10|5|315|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|8|cgid:200023908",
+        "200000061|2026-05-10|5|314|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|994|14|cgid:200025068",
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913",
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|414|3|cgid:200023927",
+        "200000061|2026-05-10|6|906|3|cgid:200023927",
+        "200000061|2026-05-10|6|424|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|425|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|5|cgid:200023929",
+        "200000061|2026-05-10|6|435|5|cgid:200023929",
+        "200000061|2026-05-10|6|434|5|cgid:200023929",
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931",
+        "200000061|2026-05-10|6|995|9|cgid:200025069",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|654|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932"
+      ],
+      "3'": [
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905"
+      ],
+      "3'3\"": [
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|5|339|7|cgid:200023905",
+        "200000061|2026-05-10|5|210|7|cgid:200023905",
+        "200000061|2026-05-10|5|909|7|cgid:200023905"
+      ],
+      "medal": [
+        "200000061|2026-05-10|4|530|2|cgid:200023886",
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|4|550|6|cgid:200023888",
+        "200000061|2026-05-10|4|555|7|cgid:200023889",
+        "200000061|2026-05-10|4|565|8|cgid:200023891",
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|6|528|10|cgid:200023934",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ],
+      "seat": [
+        "200000061|2026-05-10|4|585|3|cgid:200023884",
+        "200000061|2026-05-10|4|535|4|cgid:200023885",
+        "200000061|2026-05-10|4|550|6|cgid:200023888"
+      ],
+      "ushja": [
+        "200000061|2026-05-10|4|535|4|cgid:200023885"
+      ],
+      "maclay": [
+        "200000061|2026-05-10|4|570|5|cgid:200023887"
+      ],
+      "dover": [
+        "200000061|2026-05-10|4|550|6|cgid:200023888"
+      ],
+      "children's": [
+        "200000061|2026-05-10|4|555|7|cgid:200023889",
+        "200000061|2026-05-10|5|315|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|8|cgid:200023908",
+        "200000061|2026-05-10|5|314|8|cgid:200023908",
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|6|528|10|cgid:200023934",
+        "200000061|2026-05-10|6|408|8|cgid:200023932",
+        "200000061|2026-05-10|6|654|8|cgid:200023932",
+        "200000061|2026-05-10|6|409|8|cgid:200023932",
+        "200000061|2026-05-10|6|532|9|cgid:200023933"
+      ],
+      "adult": [
+        "200000061|2026-05-10|4|565|8|cgid:200023891",
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|285|9|cgid:200023909",
+        "200000061|2026-05-10|5|284|9|cgid:200023909",
+        "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|503|11|cgid:200023911",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913"
+      ],
+      "usf": [
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|5|144|1|cgid:200023919",
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|528|10|cgid:200023934"
+      ],
+      "flat": [
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|5|144|1|cgid:200023919",
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|6|528|10|cgid:200023934"
+      ],
+      "Under Saddle/Flat": [
+        "200000061|2026-05-10|4|525|9|cgid:200023890",
+        "200000061|2026-05-10|5|144|1|cgid:200023919",
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|5|502|10|cgid:200023910",
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|528|10|cgid:200023934"
+      ],
+      "60-.65m": [
+        "200000061|2026-05-10|4|699|10|cgid:200023894",
+        "200000061|2026-05-10|4|696|10|cgid:200023894"
+      ],
+      "puddle": [
+        "200000061|2026-05-10|4|785|11|cgid:200023895",
+        "200000061|2026-05-10|4|797|11|cgid:200023895"
+      ],
+      "warmup": [
+        "200000061|2026-05-10|5|140|2|cgid:200023921",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|659|8|cgid:200023908",
+        "200000061|2026-05-10|5|659|9|cgid:200023909",
+        "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|654|8|cgid:200023932"
+      ],
+      "stirrup": [
+        "200000061|2026-05-10|5|604|3|cgid:200023922",
+        "200000061|2026-05-10|5|606|4|cgid:200023924",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|605|4|cgid:200023924"
+      ],
+      "short": [
+        "200000061|2026-05-10|5|606|4|cgid:200023924",
+        "200000061|2026-05-10|5|614|4|cgid:200023924",
+        "200000061|2026-05-10|5|605|4|cgid:200023924"
+      ],
+      "owner": [
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900"
+      ],
+      "3'6\"": [
+        "200000061|2026-05-10|5|394|5|cgid:200023900",
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|309|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|310|6|cgid:200023903"
+      ],
+      "handy": [
+        "200000061|2026-05-10|5|395|5|cgid:200023900",
+        "200000061|2026-05-10|5|310|6|cgid:200023903",
+        "200000061|2026-05-10|5|340|7|cgid:200023905",
+        "200000061|2026-05-10|6|415|3|cgid:200023927",
+        "200000061|2026-05-10|6|425|4|cgid:200023928",
+        "200000061|2026-05-10|6|435|5|cgid:200023929"
+      ],
+      "add_back": [
+        "200000061|2026-05-10|5|210|5|cgid:200023900",
+        "200000061|2026-05-10|5|210|6|cgid:200023903",
+        "200000061|2026-05-10|5|210|7|cgid:200023905"
+      ],
+      "classic": [
+        "200000061|2026-05-10|5|909|5|cgid:200023900",
+        "200000061|2026-05-10|5|909|6|cgid:200023903",
+        "200000061|2026-05-10|5|909|7|cgid:200023905",
+        "200000061|2026-05-10|6|906|3|cgid:200023927",
+        "200000061|2026-05-10|6|907|4|cgid:200023928",
+        "200000061|2026-05-10|6|907|5|cgid:200023929"
+      ],
+      "low": [
+        "200000061|2026-05-10|5|320|12|cgid:200023912",
+        "200000061|2026-05-10|5|653|12|cgid:200023912",
+        "200000061|2026-05-10|5|319|12|cgid:200023912",
+        "200000061|2026-05-10|5|300|13|cgid:200023913",
+        "200000061|2026-05-10|5|653|13|cgid:200023913",
+        "200000061|2026-05-10|5|299|13|cgid:200023913"
+      ],
+      "2'/2'6\"": [
+        "200000061|2026-05-10|6|644|1|cgid:200023925",
+        "200000061|2026-05-10|6|652|1|cgid:200023925",
+        "200000061|2026-05-10|6|645|1|cgid:200023925"
+      ],
+      "U/S": [
+        "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "200000061|2026-05-10|6|441|6|cgid:200023930"
+      ],
+      "green": [
+        "200000061|2026-05-10|6|441|6|cgid:200023930",
+        "200000061|2026-05-10|6|444|7|cgid:200023931",
+        "200000061|2026-05-10|6|445|7|cgid:200023931"
+      ]
+    }
+  }
+}

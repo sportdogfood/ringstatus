@@ -1,0 +1,401 @@
+{
+  "meta": {
+    "generated_at": "2026-05-13T15:28:59.738Z",
+    "source_generated_at": "2026-05-12T20:25:11.456Z",
+    "shape": "derived_status_from_calculator_outputs"
+  },
+  "time_policy": {
+    "show_timezone": "America/New_York",
+    "show_time_zone_offset_mins": -240,
+    "convert_show_clock_strings": false,
+    "note": "Clock strings from show/Airtable source rows are preserved. Relative minute fields come from calculator rs_* outputs when present."
+  },
+  "alert_defaults": {
+    "ring_walk_lead_mins": 0,
+    "ring_walk_offset_mins": 0,
+    "ring_walk_total_mins": 0
+  },
+  "by_ring": {
+    "1": {
+      "as_of": "04:24 PM",
+      "ring_number": "1",
+      "ring_name": "Derby",
+      "now": {
+        "schedule_instance_key": "200000061|2026-05-10|1|806|2|cgid:200023879",
+        "schedule_key": "200000061|2026-05-10|1|806|2",
+        "ring_number": "1",
+        "ring_name": "Derby",
+        "group_name": "$24,999 IDA Development Regional Grand Prix",
+        "class_number": 806,
+        "class_name": "$24,999 IDA Development Regional Grand Prix",
+        "class_type": "Jumpers",
+        "status": "Completed",
+        "start": {
+          "time": "09:35:12",
+          "source": "schedule_logs.latest_schedule_log.rs_start_time"
+        },
+        "progress": {
+          "completed_trips": 39,
+          "total_trips": 39,
+          "left_trips": 0,
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|1|775|1|cgid:200023878",
+          "class_number": 775,
+          "class_name": "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+          "status": "Completed",
+          "progress": {
+            "completed_trips": 23,
+            "total_trips": 23,
+            "left_trips": 0,
+            "source": "watch_schedule/groups"
+          }
+        }
+      },
+      "next": null,
+      "following": null
+    },
+    "3": {
+      "as_of": "04:24 PM",
+      "ring_number": "3",
+      "ring_name": "Covered",
+      "now": {
+        "schedule_instance_key": "200000062|2026-05-28|3|527|16|cgid:200024451",
+        "schedule_key": "200000062|2026-05-28|3|527|16",
+        "ring_number": "3",
+        "ring_name": "Covered",
+        "group_name": "SFHJA Adult Medal (Flat Phase)",
+        "class_number": 527,
+        "class_name": "SFHJA Adult Medal (Flat Phase)",
+        "class_type": "Equitation",
+        "progress": {
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000062|2026-05-28|3|575|21|cgid:200024456",
+          "class_number": 575,
+          "class_name": "USEF Adult Equitation 3'3\"",
+          "progress": {
+            "source": "watch_schedule/groups"
+          }
+        }
+      },
+      "next": null,
+      "following": null
+    },
+    "4": {
+      "as_of": "04:24 PM",
+      "ring_number": "4",
+      "ring_name": "Village",
+      "now": {
+        "schedule_instance_key": "200000061|2026-05-10|4|993|12|cgid:200025067",
+        "schedule_key": "200000061|2026-05-10|4|993|12",
+        "ring_number": "4",
+        "ring_name": "Village",
+        "group_name": "Mulligan Class",
+        "class_number": 993,
+        "class_name": "Mulligan Class",
+        "class_type": "Hunters",
+        "start": {
+          "time": "15:16:00",
+          "source": "watch_schedule.estimated_start_time"
+        },
+        "progress": {
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|4|797|11|cgid:200023895",
+          "class_number": 797,
+          "class_name": "Puddle Jumper Junior/Amateur (.80m) II2d",
+          "status": "Completed",
+          "progress": {
+            "completed_trips": 19,
+            "total_trips": 19,
+            "left_trips": 0,
+            "source": "watch_schedule/groups"
+          }
+        }
+      },
+      "next": null,
+      "following": null
+    },
+    "5": {
+      "as_of": "04:24 PM",
+      "ring_number": "5",
+      "ring_name": "Hunter 1",
+      "now": {
+        "schedule_instance_key": "200000061|2026-05-10|5|504|11|cgid:200023911",
+        "schedule_key": "200000061|2026-05-10|5|504|11",
+        "ring_number": "5",
+        "ring_name": "Hunter 1",
+        "group_name": "Child/Adult Amateur Equitation 2'6\"",
+        "class_number": 504,
+        "class_name": "Child/Adult Amateur Equitation 2'6\"",
+        "class_type": "Equitation",
+        "status": "Upcoming",
+        "start": {
+          "time": "13:52:40",
+          "source": "watch_schedule.estimated_start_time"
+        },
+        "progress": {
+          "completed_trips": 2,
+          "total_trips": 4,
+          "left_trips": 2,
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|5|284|9|cgid:200023909",
+          "class_number": 284,
+          "class_name": "Adult Amateur Hunter",
+          "status": "Completed",
+          "progress": {
+            "completed_trips": 8,
+            "total_trips": 8,
+            "left_trips": 0,
+            "source": "watch_schedule/groups"
+          }
+        }
+      },
+      "next": {
+        "schedule_instance_key": "200000061|2026-05-10|5|653|11|cgid:200023911",
+        "schedule_key": "200000061|2026-05-10|5|653|11",
+        "ring_number": "5",
+        "ring_name": "Hunter 1",
+        "group_name": "Child/Adult Amateur Equitation 2'6\"",
+        "class_number": 653,
+        "class_name": "Warm Up Hunter",
+        "class_type": "Hunters",
+        "status": "Upcoming",
+        "start": {
+          "time": "13:52:40",
+          "source": "watch_schedule.estimated_start_time"
+        },
+        "progress": {
+          "completed_trips": 2,
+          "total_trips": 4,
+          "left_trips": 2,
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|5|504|11|cgid:200023911",
+          "class_number": 504,
+          "class_name": "Child/Adult Amateur Equitation 2'6\"",
+          "status": "Upcoming",
+          "progress": {
+            "completed_trips": 2,
+            "total_trips": 4,
+            "left_trips": 2,
+            "source": "watch_schedule/groups"
+          }
+        }
+      },
+      "following": {
+        "schedule_instance_key": "200000061|2026-05-10|5|503|11|cgid:200023911",
+        "schedule_key": "200000061|2026-05-10|5|503|11",
+        "ring_number": "5",
+        "ring_name": "Hunter 1",
+        "group_name": "Child/Adult Amateur Equitation 2'6\"",
+        "class_number": 503,
+        "class_name": "Child/Adult Amateur Equitation 2'6\"",
+        "class_type": "Equitation",
+        "status": "Upcoming",
+        "start": {
+          "time": "13:52:40",
+          "source": "watch_schedule.estimated_start_time"
+        },
+        "progress": {
+          "completed_trips": 2,
+          "total_trips": 4,
+          "left_trips": 2,
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|5|653|11|cgid:200023911",
+          "class_number": 653,
+          "class_name": "Warm Up Hunter",
+          "status": "Upcoming",
+          "progress": {
+            "completed_trips": 2,
+            "total_trips": 4,
+            "left_trips": 2,
+            "source": "watch_schedule/groups"
+          }
+        }
+      }
+    },
+    "6": {
+      "as_of": "04:24 PM",
+      "ring_number": "6",
+      "ring_name": "Hunter 2",
+      "now": {
+        "schedule_instance_key": "200000061|2026-05-10|6|532|9|cgid:200023933",
+        "schedule_key": "200000061|2026-05-10|6|532|9",
+        "ring_number": "6",
+        "ring_name": "Hunter 2",
+        "group_name": "M&S Children's Pony Medal **3 To Fill**",
+        "class_number": 532,
+        "class_name": "M&S Children's Pony Medal **3 To Fill**",
+        "class_type": "Equitation",
+        "status": "Upcoming",
+        "start": {
+          "time": "15:00:51",
+          "source": "watch_schedule.estimated_start_time"
+        },
+        "progress": {
+          "completed_trips": 0,
+          "total_trips": 2,
+          "left_trips": 2,
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|6|409|8|cgid:200023932",
+          "class_number": 409,
+          "class_name": "Children's Hunter Pony",
+          "status": "Completed",
+          "progress": {
+            "completed_trips": 13,
+            "total_trips": 13,
+            "left_trips": 0,
+            "source": "watch_schedule/groups"
+          }
+        }
+      },
+      "next": null,
+      "following": null
+    }
+  },
+  "by_rider": {
+    "JESSICA HEAP": {
+      "as_of": "04:24 PM",
+      "rider_name": "JESSICA HEAP",
+      "now": {
+        "schedule_instance_key": "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "schedule_key": "200000061|2026-05-10|6|411|2",
+        "ring_number": "6",
+        "ring_name": "Hunter 2",
+        "group_name": "Small Pony Hunter U/S",
+        "class_number": 411,
+        "class_name": "Small Pony Hunter U/S",
+        "class_type": "Hunters",
+        "start": {
+          "time": "08:40:00",
+          "source": "schedule_logs.latest_schedule_log.rs_start_time"
+        },
+        "progress": {
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|6|645|1|cgid:200023925",
+          "class_number": 645,
+          "class_name": "Modified Hunter 2'/2'6\"",
+          "status": "Completed",
+          "progress": {
+            "completed_trips": 13,
+            "total_trips": 14,
+            "left_trips": 1,
+            "source": "watch_schedule/groups"
+          }
+        },
+        "trip": {
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2815|entry_sequence:5",
+          "pid": 8778,
+          "entry_number": 2815,
+          "rider_name": "JESSICA HEAP",
+          "horse": "Knox"
+        }
+      },
+      "next": null,
+      "following": null
+    }
+  },
+  "by_horse": {
+    "Knox": {
+      "as_of": "04:24 PM",
+      "horse": "Knox",
+      "now": {
+        "schedule_instance_key": "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "schedule_key": "200000061|2026-05-10|6|411|2",
+        "ring_number": "6",
+        "ring_name": "Hunter 2",
+        "group_name": "Small Pony Hunter U/S",
+        "class_number": 411,
+        "class_name": "Small Pony Hunter U/S",
+        "class_type": "Hunters",
+        "start": {
+          "time": "08:40:00",
+          "source": "schedule_logs.latest_schedule_log.rs_start_time"
+        },
+        "progress": {
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|6|645|1|cgid:200023925",
+          "class_number": 645,
+          "class_name": "Modified Hunter 2'/2'6\"",
+          "status": "Completed",
+          "progress": {
+            "completed_trips": 13,
+            "total_trips": 14,
+            "left_trips": 1,
+            "source": "watch_schedule/groups"
+          }
+        },
+        "trip": {
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2815",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2815|entry_sequence:5",
+          "pid": 8778,
+          "entry_number": 2815,
+          "rider_name": "JESSICA HEAP",
+          "horse": "Knox"
+        }
+      },
+      "next": null,
+      "following": null
+    },
+    "Poptart": {
+      "as_of": "04:24 PM",
+      "horse": "Poptart",
+      "now": {
+        "schedule_instance_key": "200000061|2026-05-10|6|411|2|cgid:200023861",
+        "schedule_key": "200000061|2026-05-10|6|411|2",
+        "ring_number": "6",
+        "ring_name": "Hunter 2",
+        "group_name": "Small Pony Hunter U/S",
+        "class_number": 411,
+        "class_name": "Small Pony Hunter U/S",
+        "class_type": "Hunters",
+        "start": {
+          "time": "08:40:00",
+          "source": "schedule_logs.latest_schedule_log.rs_start_time"
+        },
+        "progress": {
+          "source": "watch_schedule/groups"
+        },
+        "previous_class": {
+          "schedule_instance_key": "200000061|2026-05-10|6|645|1|cgid:200023925",
+          "class_number": 645,
+          "class_name": "Modified Hunter 2'/2'6\"",
+          "status": "Completed",
+          "progress": {
+            "completed_trips": 13,
+            "total_trips": 14,
+            "left_trips": 1,
+            "source": "watch_schedule/groups"
+          }
+        },
+        "trip": {
+          "trips_key": "200000061|2026-05-10|6|411|2|8778|2818",
+          "trip_instance_key": "200000061|2026-05-10|6|411|2|8778|2818|entry_sequence:5",
+          "pid": 8778,
+          "entry_number": 2818,
+          "rider_name": "JESSICA HEAP",
+          "horse": "Poptart"
+        }
+      },
+      "next": null,
+      "following": null
+    }
+  }
+}
