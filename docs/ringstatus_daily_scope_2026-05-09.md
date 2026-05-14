@@ -5,6 +5,18 @@
 **Primary mode focus:** `DAY`  
 **Transition scopes:** `DAY -> NIGHT`, `OVERNIGHT -> DAY`
 
+## 2026-05-14 Early SGL Payload Capture
+
+When a fresh SGL endpoint returns a usable payload, the lane should preserve the complete source payload in `early_sgl_payloads` before row-level normalization or Airtable write filtering. Airtable rows are the operational projection; the early payload files are the source evidence and fallback cache.
+
+This applies to:
+
+- successful day-scoped `/schedule?date=...` payloads, stored in `early_sgl_payloads/schedule`
+- successful forward-day schedule payloads through the show `end_date`, also stored in `early_sgl_payloads/schedule`
+- successful `/people/{pid}` person/show payloads, stored in `early_sgl_payloads/people`
+
+The cache should include all usable data SGL returned, not only classes or trips that currently produce writable rows. Group-only schedule items, enrichment identifiers, show-day lists, totals, and person/show trip context may be needed later for diagnostics, fallback matching, or field decisions.
+
 ## 2026-05-11 Heartbeat Controls
 
 The current heartbeat/tagger mode is now visible as two separate values:

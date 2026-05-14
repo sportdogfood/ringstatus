@@ -1,7 +1,7 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.11.4  
-**Date:** 2026-05-11  
+**Version:** v2026.05.14.1  
+**Date:** 2026-05-14  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
 
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.14.1 | 2026-05-14 | Clarified the early SGL payload capture contract: when fresh SGL endpoints return usable data, store the complete successful payload in `early_sgl_payloads` before normalization or row filtering, including forward-day schedule payloads and full person/show people payloads. |
 | v2026.05.11.4 | 2026-05-11 | Replaced the old derived/formula-first identity guidance with writable key fields for `watch_schedule` and `watch_trips`: `schedule_key`, `schedule_short`, `trips_key`, `trips_short_key`, and `full_nesting_key`. `cgid` and start time remain important nesting/enrichment dimensions but are not part of the operational match keys. |
 | v2026.05.11.1 | 2026-05-11 | Added heartbeat/show manual controls: `shows.mode_control` is the owner-facing lever for `AUTO`/blank, `DAY`, `NIGHT`, `OVERNIGHT`, `IDLE`, and `OFF`; `shows.is_default_show_manual_override` confirms a suspicious default show date; heartbeat writes `clock_mode`, effective `mode`, `mode_source`, `mode_reason`, `default_show_date_status`, and `default_show_date_reason`. Unconfirmed default show-date guard failures move the effective mode to `OFF` and the slot orchestrator blocks heavy lanes. |
 | v2026.05.11.2 | 2026-05-11 | Audited `watch_schedule` date/show fields. `heartbeat.show_id`/`app_show_id`/`app_sql_date`/`app_dow_raw` are current app-control scope; `watch_schedule.show_id`/`show_date`/`schedule_show_datev2` are row-owned schedule identity; `watch_schedule.app_show_idv2`/`app_sql_datev2`/`app_dow_rawv2` are row scope snapshots. `tagger.js` must not globally rebind `watch_schedule.heartbeat` to the newest heartbeat unless the row's stored show/date scope matches the heartbeat app scope. See `docs/watch_schedule_field_audit_2026-05-11.md`. |
@@ -67,6 +68,7 @@ The goal is to populate useful records before live data exists, then enrich thos
 - Stale data should be handled at the record, lane, or scope level, not by clearing individual fields.
 - `{}` is never a successful SGL payload.
 - Small or shape-mismatched payloads must be logged and blocked from destructive writes.
+- When SGL returns a usable fresh payload, capture the complete source payload in the appropriate `early_sgl_payloads` folder before normalization, filtering, or Airtable write decisions narrow the data.
 - Existing good Airtable data must not be overwritten by empty, null, or soft-throttled payloads.
 - Shows link resolution failures should be logged and the lane should continue where safe.
 - Do not add Airtable fields unless the owner approves the field and purpose.
@@ -272,7 +274,7 @@ Reason:
 
 When heartbeat mode shifts from `DAY` to `NIGHT` and `shifted_to_next_day = true`, the next-day schedule lane should create or refresh minimum viable `watch_schedule` rows from the day-scoped schedule payload or approved fallback payloads. Missing live-only or class-detail-only fields are expected at that point. The next actual live day should rely on the liveclassv2 paths, gated by `groups_live`, to populate richer fields.
 
-When a fresh schedule payload succeeds, the schedule lane should proceed with that payload for the scoped date, store it in `early_sgl_payloads/schedule`, then opportunistically try each remaining show day through `end_date` and store each successful forward-day payload there as fallback support. These forward-day cache fetches are support artifacts; they should not drive same-run Airtable writes for a different date.
+When a fresh schedule payload succeeds, the schedule lane should proceed with that payload for the scoped date, store the complete raw usable payload in `early_sgl_payloads/schedule`, then opportunistically try each remaining show day through `end_date` and store each successful forward-day payload there as fallback support. These forward-day cache fetches are support artifacts; they should not drive same-run Airtable writes for a different date.
 
 This boundary does not remove day-of live enrichment. `ListAjax`, `groups_live`, `getLiveClassStatus`, `ClassStatus`, and `getLiveClassData` remain same-day live paths and must stay separate from pre-live next-day schedule population.
 
@@ -489,14 +491,14 @@ For show `200000061`, useful daily schedule cache targets are:
 2026-05-10
 ```
 
-Successful schedule payloads should be stored as early JSON fallback files. These fallback files are not the source of truth when fresh SGL data is available, but they are useful when a needed schedule payload later fails, soft-throttles, or returns an unusable body.
+Successful schedule payloads should be stored as early JSON fallback files. Store the whole usable SGL payload, not only the rows that are currently writable to Airtable, because group-only rows, enrichment identifiers, show-day lists, totals, and other context may become useful for later matching or review. These fallback files are not the source of truth when fresh SGL data is available, but they are useful when a needed schedule payload later fails, soft-throttles, or returns an unusable body.
 
 The `/people/{pid}` endpoint is show/week scoped rather than day scoped. A single successful people payload can contain enough full-week trip detail to help pre-live trip creation and fallback matching.
 
 People payload rule:
 
 - keep trying for fresh people data because it changes frequently
-- store the last successful people payload as fallback
+- store the complete last successful people payload as fallback in `early_sgl_payloads/people`
 - never let an old fallback overwrite newer successful data
 - log when fallback data is used
 - treat fallback data as pre-live support, not same-day live authority
