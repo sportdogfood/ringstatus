@@ -166,7 +166,41 @@ function normalizeKey(value) {
   return String(value).trim();
 }
 
+function keyPart(value) {
+  if (isBlank(value)) return "";
+  return String(value).trim();
+}
+
+function joinKeyParts(parts) {
+  if (parts.some((part) => !keyPart(part))) return "";
+  return parts.map(keyPart).join("|");
+}
+
+function classSequenceFromKey(key) {
+  const parts = String(key || "").split("|");
+  return parts.length >= 5 ? keyPart(parts[4]) : "";
+}
+
+function buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence }) {
+  return {
+    scheduleKey: joinKeyParts([sid, sqlDate, ringNumber, classNumber, classSequence]),
+    scheduleShort: joinKeyParts([ringNumber, classNumber, classSequence]),
+  };
+}
+
+function buildTripKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence, pid, entryNumber, time, cgid }) {
+  return {
+    ...buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence }),
+    tripsKey: joinKeyParts([sid, sqlDate, ringNumber, classNumber, classSequence, pid, entryNumber]),
+    tripsShortKey: joinKeyParts([classNumber, classSequence, pid, entryNumber]),
+    fullNestingKey: joinKeyParts([sid, sqlDate, ringNumber, time, cgid, classNumber, classSequence, pid, entryNumber]),
+  };
+}
+
 function tripRowKeyFromFields(fields = {}) {
+  const tripsKey = normalizeKey(firstValue(fields.trips_key));
+  if (tripsKey) return tripsKey;
+
   return buildPeopleTripKey({
     classNumber: firstValue(fields.class_number),
     entryNumber: firstValue(fields.entry_number),
@@ -652,11 +686,14 @@ async function fetchShowRecordId(appShowId) {
 }
 
 async function fetchWatchScheduleRows() {
+  const fieldSet = await fetchTableFieldSet(TABLE_WATCH_SCHEDULE).catch(() => new Set());
   return airtableList(TABLE_WATCH_SCHEDULE, {
     view: VIEW_WATCH_SCHEDULE,
     pageSize: 100,
     "fields[]": [
       "record_id",
+      "schedule_key",
+      "schedule_short",
       "show_id",
       "class_groupxclasses_id",
       "class_group_id",
@@ -677,7 +714,7 @@ async function fetchWatchScheduleRows() {
       "schedule_show_datev2",
       " scheduled_date",
       "show_date",
-    ],
+    ].filter((fieldName) => !fieldSet.size || fieldSet.has(fieldName)),
   });
 }
 
@@ -1803,6 +1840,18 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   const resolvedScheduleDate = resolveTripScheduleDate(row);
   const resolvedScheduledDate = resolvedScheduleDate;
   const isActiveForScope = resolvedScheduledDate === heartbeat.app_sql_date;
+  const classSequence = keyPart(row.class_sequence) || classSequenceFromKey(row.schedule_key) || "1";
+  const tripKeys = buildTripKeyParts({
+    sid: heartbeat.app_show_id,
+    sqlDate: resolvedScheduleDate || heartbeat.app_sql_date,
+    ringNumber: row.ring_number,
+    classNumber: row.class_number,
+    classSequence,
+    pid: row.pid,
+    entryNumber: row.entry_number,
+    time: row.estimated_start_time,
+    cgid: row.class_group_id,
+  });
   const maybeSet = (name, value) => {
     if (!watchTripsFieldSet.has(name)) return;
     setIfPresent(fields, name, value);
@@ -1812,6 +1861,12 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("shows", showRecordId ? [showRecordId] : undefined);
   maybeSet("watch_schedule", row.watch_schedule_record_id ? [row.watch_schedule_record_id] : undefined);
   maybeSet("entryxclasses_uuid", row.entryxclasses_uuid);
+  maybeSet("schedule_key", tripKeys.scheduleKey);
+  maybeSet("schedule_short", tripKeys.scheduleShort);
+  maybeSet("trips_key", tripKeys.tripsKey);
+  maybeSet("trips_short_key", tripKeys.tripsShortKey);
+  maybeSet("full_nesting_key", tripKeys.fullNestingKey);
+  maybeSet("class_sequence", classSequence);
   maybeSet("show_id", heartbeat.app_show_id);
   maybeSet("show_date", resolvedScheduleDate || heartbeat.app_sql_date);
   maybeSet("app_show_id", heartbeat.app_show_id);
@@ -2334,10 +2389,24 @@ async function main() {
   const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
 
   for (const row of scopedRows) {
-    const key = normalizeKey(row.trip_key || row.entryxclasses_uuid);
+    const classSequence = keyPart(row.class_sequence) || classSequenceFromKey(row.schedule_key) || "1";
+    const tripKeys = buildTripKeyParts({
+      sid: heartbeat.app_show_id,
+      sqlDate: resolveTripScheduleDate(row) || heartbeat.app_sql_date,
+      ringNumber: row.ring_number,
+      classNumber: row.class_number,
+      classSequence,
+      pid: row.pid,
+      entryNumber: row.entry_number,
+      time: row.estimated_start_time,
+      cgid: row.class_group_id,
+    });
+    const legacyKey = normalizeKey(row.trip_key || row.entryxclasses_uuid);
+    const key = normalizeKey(tripKeys.tripsKey || legacyKey);
     if (!key) continue;
     keepKeySet.add(key);
-    const existing = existingByKey.get(key);
+    if (legacyKey) keepKeySet.add(legacyKey);
+    const existing = existingByKey.get(key) || existingByKey.get(legacyKey);
     const fields = buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet);
     if (existing && applyManualTimeOverrideToTripFields(fields, existing)) {
       manualTimeOverrideGuard.preserved += 1;

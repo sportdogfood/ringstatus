@@ -6,6 +6,16 @@ const {
 
 assert.strictEqual(
   tripRowKeyFromFields({
+    trips_key: "200000061|2026-05-10|3|723|1|8778|2807",
+    class_number: 723,
+    entry_number: 2807,
+  }),
+  "200000061|2026-05-10|3|723|1|8778|2807",
+  "watch_trips matching should prefer writable trips_key"
+);
+
+assert.strictEqual(
+  tripRowKeyFromFields({
     entryxclasses_uuid: "REAL-UUID",
     class_number: 715,
     entry_number: 3160,

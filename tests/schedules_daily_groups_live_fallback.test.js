@@ -8,6 +8,16 @@ const {
 
 assert.strictEqual(
   scheduleRowKeyFromFields({
+    schedule_key: "200000061|2026-05-07|5|770|1",
+    class_group_id: 200023690,
+    class_number: 770,
+  }),
+  "200000061|2026-05-07|5|770|1",
+  "watch_schedule matching should prefer writable schedule_key"
+);
+
+assert.strictEqual(
+  scheduleRowKeyFromFields({
     class_group_id: 200023690,
     class_number: 770,
     class_groupxclasses_id: 200035393,
@@ -65,13 +75,16 @@ const fieldMeta = {
     "scheduled_date",
     "class_id",
     "inactive",
+    "schedule_key",
+    "schedule_short",
+    "class_sequence",
   ]),
   actualByTrim: new Map(),
 };
 
 const fields = buildCurrentFields(
   overlay.rows[0],
-  { app_sql_datev2: "2026-05-07", scope_run_id: "test" },
+  { app_show_idv2: 200000061, app_sql_datev2: "2026-05-07", scope_run_id: "test" },
   "recHeartbeat",
   null,
   "2026-05-07T12:00:00.000Z",
@@ -96,10 +109,13 @@ assert.strictEqual(fields.latest_status, "In Progress");
 assert.strictEqual(fields.total_trips, 42);
 assert.strictEqual(fields.completed_trips, 7);
 assert.strictEqual(fields.class_id, 200025008);
+assert.strictEqual(fields.schedule_key, "200000061|2026-05-07|5|770|1");
+assert.strictEqual(fields.schedule_short, "5|770|1");
+assert.strictEqual(fields.class_sequence, "1");
 
 const noLiveFields = buildCurrentFields(
   { fields: { class_group_id: 1, class_number: 2 } },
-  { app_sql_datev2: "2026-05-07", scope_run_id: "test" },
+  { app_show_idv2: 200000061, app_sql_datev2: "2026-05-07", scope_run_id: "test" },
   "recHeartbeat",
   null,
   "2026-05-07T12:00:00.000Z",

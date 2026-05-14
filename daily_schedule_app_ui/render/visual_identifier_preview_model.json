@@ -1,8 +1,30 @@
 {
   "meta": {
-    "generated_at": "2026-05-13T22:10:43.377Z",
+    "generated_at": "2026-05-14T17:01:48.893Z",
     "contract_version": "2026-05-13.v0.1",
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow."
+  },
+  "ringAbbreviations": {
+    "Derby": "DRB",
+    "Annex": "ANX",
+    "Covered": "CVR",
+    "Village": "VIL",
+    "Hunter 1": "H1",
+    "Hunter 2": "H2",
+    "Intl": "INTL",
+    "Grand": "GRN",
+    "Rost": "RST",
+    "Mogavero": "MOG",
+    "Denemethy": "DEN",
+    "Ring 6": "R6",
+    "Ring 7": "R7",
+    "Ring 8": "R8",
+    "Ring 9": "R9",
+    "Ring 10": "R10",
+    "Ring 11": "R11",
+    "Ring 12": "R12",
+    "South Ring": "SR",
+    "30 Ring": "30R"
   },
   "statusTerms": [
     {
@@ -433,19 +455,25 @@
       "rollups": [
         {
           "name": "Knox",
-          "oog": "5/14",
           "time": "8:55A",
+          "oog": "5/14",
+          "in": "15m",
+          "walk": "2m",
           "status": "NOW",
           "status_id": "now"
         },
         {
           "name": "Poptart",
-          "oog": "6/14",
           "time": "8:58A",
+          "oog": "6/14",
+          "in": "18m",
+          "walk": "2m",
           "status": "NEXT",
           "status_id": "next"
         }
       ],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
       "status_id": "now"
     },
     {
@@ -458,13 +486,17 @@
       "metric": "0/8",
       "rollups": [
         {
-          "name": "Shelby",
-          "oog": "2/8",
+          "name": "Darcy",
           "time": "10:45A",
+          "oog": "2/22",
+          "in": "40m",
+          "walk": "2m",
           "status": "UPC",
           "status_id": "upcoming"
         }
       ],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
       "status_id": "next"
     },
     {
@@ -476,6 +508,8 @@
       "status": "FOL",
       "metric": "0/18",
       "rollups": [],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
       "status_id": "following"
     },
     {
@@ -488,14 +522,112 @@
       "metric": "14/14",
       "rollups": [
         {
-          "name": "Darcy",
-          "oog": "12/23",
+          "name": "Calgary",
           "time": "8:11A",
+          "oog": "12/23",
+          "in": "",
+          "walk": "",
           "status": "DONE",
           "status_id": "completed"
         }
       ],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
       "status_id": "completed"
     }
-  ]
+  ],
+  "timeRows": [
+    {
+      "ring": "Ring 6",
+      "time": "7:45A",
+      "class_number": "644",
+      "class_name": "Modified Hunter 2'/2'6\"",
+      "class_type": "HUN",
+      "status": "DONE",
+      "metric": "14/14",
+      "rollups": [
+        {
+          "name": "Calgary",
+          "time": "8:11A",
+          "oog": "12/23",
+          "in": "",
+          "walk": "",
+          "status": "DONE",
+          "status_id": "completed"
+        }
+      ],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
+      "status_id": "completed"
+    },
+    {
+      "ring": "Ring 6",
+      "time": "8:40A",
+      "class_number": "411",
+      "class_name": "Small Pony Hunter U/S",
+      "class_type": "HUN",
+      "status": "NOW",
+      "metric": "1/15",
+      "rollups": [
+        {
+          "name": "Knox",
+          "time": "8:55A",
+          "oog": "5/14",
+          "in": "15m",
+          "walk": "2m",
+          "status": "NOW",
+          "status_id": "now"
+        },
+        {
+          "name": "Poptart",
+          "time": "8:58A",
+          "oog": "6/14",
+          "in": "18m",
+          "walk": "2m",
+          "status": "NEXT",
+          "status_id": "next"
+        }
+      ],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
+      "status_id": "now"
+    },
+    {
+      "ring": "Ring 6",
+      "time": "10:00A",
+      "class_number": "570",
+      "class_name": "ASPCA Maclay",
+      "class_type": "EQ",
+      "status": "NEXT",
+      "metric": "0/8",
+      "rollups": [
+        {
+          "name": "Darcy",
+          "time": "10:45A",
+          "oog": "2/22",
+          "in": "40m",
+          "walk": "2m",
+          "status": "UPC",
+          "status_id": "upcoming"
+        }
+      ],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
+      "status_id": "next"
+    },
+    {
+      "ring": "Ring 6",
+      "time": "10:30A",
+      "class_number": "742",
+      "class_name": "1.10m Junior & Amateur Jumpers",
+      "class_type": "JMP",
+      "status": "FOL",
+      "metric": "0/18",
+      "rollups": [],
+      "ring_number": "6",
+      "ring_abbrev": "R6",
+      "status_id": "following"
+    }
+  ],
+  "ringWalk": null
 }

@@ -25,6 +25,34 @@ function htmlEscape(value) {
     .replace(/"/g, "&quot;");
 }
 
+function timeSort(value) {
+  const text = String(value || "");
+  const match = text.match(/^(\d{1,2}):(\d{2})([AP])?/i);
+  if (!match) return 999999;
+  let hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const suffix = String(match[3] || "").toUpperCase();
+  if (suffix === "P" && hour < 12) hour += 12;
+  if (suffix === "A" && hour === 12) hour = 0;
+  return hour * 60 + minute;
+}
+
+function ringNumberFromRow(row) {
+  return String(row?.ring_number || row?.ring || "").replace(/^\D+/, "").trim();
+}
+
+function ringAbbreviationFromRow(row, abbreviations) {
+  const ringLabel = String(row?.ring || "").trim();
+  if (ringLabel && abbreviations?.[ringLabel]) return abbreviations[ringLabel];
+  const ringNumber = ringNumberFromRow(row);
+  if (ringNumber) {
+    const ringName = `Ring ${ringNumber}`;
+    if (abbreviations?.[ringName]) return abbreviations[ringName];
+    return `R${ringNumber}`;
+  }
+  return "";
+}
+
 function buildStatusByIncoming(statusTerms) {
   const map = new Map();
   for (const term of statusTerms || []) {
@@ -45,10 +73,13 @@ function buildPreviewModel(contract) {
   const statusTerms = [...(contract.status_terms || [])].sort((a, b) => Number(a.priority || 99) - Number(b.priority || 99));
   const statusByIncoming = buildStatusByIncoming(statusTerms);
   const tokenGroups = contract.token_groups || [];
+  const ringAbbreviations = contract.ring_abbreviations || {};
   const sampleRows = (contract.sample_rows || []).map((row) => {
     const status = normalizeStatusTerm(row.status, statusByIncoming);
     return {
       ...row,
+      ring_number: ringNumberFromRow(row),
+      ring_abbrev: ringAbbreviationFromRow(row, ringAbbreviations),
       status: status?.label || row.status,
       status_id: status?.id || null,
       rollups: (row.rollups || []).map((rollup) => {
@@ -68,10 +99,13 @@ function buildPreviewModel(contract) {
       contract_version: contract?.meta?.version || null,
       purpose: contract?.meta?.purpose || null,
     },
+    ringAbbreviations,
     statusTerms,
     statusByIncoming,
     tokenGroups,
     sampleRows,
+    timeRows: [...sampleRows].sort((a, b) => timeSort(a.time) - timeSort(b.time) || Number(a.ring_number || 0) - Number(b.ring_number || 0)),
+    ringWalk: sampleRows.find((row) => !isBlank(row.ring_walk))?.ring_walk || null,
   };
 }
 
@@ -85,6 +119,10 @@ function tokenClass(token) {
 
 function statusClass(statusId) {
   return ["state", statusId ? `state--${statusId}` : "state--unknown"].join(" ");
+}
+
+function renderCellValue(value) {
+  return isBlank(value) ? '<span class="cell-empty" aria-hidden="true"></span>' : htmlEscape(value);
 }
 
 function renderStatusTerm(term) {
@@ -122,12 +160,15 @@ function renderTokenGroup(group) {
 function renderRollup(rollup) {
   return `
     <span class="epill ${rollup.status_id ? `epill--${htmlEscape(rollup.status_id)}` : ""}">
-      <span class="epill__name">${htmlEscape(rollup.name)}</span>
-      <span class="epill__sep">.</span>
-      <span class="epill__oog">${htmlEscape(rollup.oog)}</span>
-      <span class="epill__sep">.</span>
-      <span class="epill__time">${htmlEscape(rollup.time)}</span>
-      <span class="epill__state">${htmlEscape(rollup.status)}</span>
+      <span class="epill__name">${renderCellValue(rollup.name)}</span>
+      <span class="epill__sep" aria-hidden="true"></span>
+      <span class="epill__time">${renderCellValue(rollup.time)}</span>
+      <span class="epill__sep" aria-hidden="true"></span>
+      <span class="epill__oog">${renderCellValue(rollup.oog)}</span>
+      <span class="epill__sep" aria-hidden="true"></span>
+      <span class="epill__metric">In: ${renderCellValue(rollup.in)}</span>
+      <span class="epill__sep" aria-hidden="true"></span>
+      <span class="epill__metric">Walk: ${renderCellValue(rollup.walk)}</span>
     </span>`;
 }
 
@@ -135,14 +176,27 @@ function renderSampleRow(row) {
   return `
     <article class="class-card">
       <div class="class-line">
-        <div class="c-time">${htmlEscape(row.time)}</div>
-        <div class="c-num">${htmlEscape(row.class_number)}</div>
-        <div class="c-name">${htmlEscape(row.class_name)}</div>
-        <div class="c-type">${htmlEscape(row.class_type)}</div>
-        <div class="${statusClass(row.status_id)}">${htmlEscape(row.status)}</div>
-        <div class="c-metric">${htmlEscape(row.metric || "")}</div>
+        <div class="time-col c-time"><span class="time-mark time-mark--${htmlEscape(row.status_id || "unknown")}" aria-hidden="true"></span><span>${renderCellValue(row.time)}</span></div>
+        <div class="class-num-col c-num">${renderCellValue(row.class_number)}</div>
+        <div class="class-name-col c-name">${renderCellValue(row.class_name)}</div>
+        <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
+        <div class="status-col"><span class="cell-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
+        <div class="trips-col"><span class="trip-metric">${renderCellValue(row.metric)}</span></div>
       </div>
       ${(row.rollups || []).length ? `<div class="rollup-line">${row.rollups.map(renderRollup).join("")}</div>` : ""}
+    </article>`;
+}
+
+function renderTimeRow(row) {
+  return `
+    <article class="time-line">
+      <div class="time-col c-time"><span class="time-mark time-mark--${htmlEscape(row.status_id || "unknown")}" aria-hidden="true"></span><span>${renderCellValue(row.time)}</span></div>
+      <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
+      <div class="class-num-col c-num">${renderCellValue(row.class_number)}</div>
+      <div class="class-name-col c-name">${renderCellValue(row.class_name)}</div>
+      <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
+      <div class="status-col"><span class="cell-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
+      <div class="trips-col"><span class="trip-metric">${renderCellValue(row.metric)}</span></div>
     </article>`;
 }
 
@@ -150,6 +204,7 @@ function renderVisualIdentifierHtml(model) {
   const statusRows = model.statusTerms.map(renderStatusTerm).join("");
   const tokenGroups = model.tokenGroups.map(renderTokenGroup).join("");
   const ringRows = model.sampleRows.map(renderSampleRow).join("");
+  const timeRows = model.timeRows.map(renderTimeRow).join("");
 
   return `<!doctype html>
 <html lang="en">
@@ -179,6 +234,7 @@ function renderVisualIdentifierHtml(model) {
       --amber-bg: rgba(242, 193, 92, .16);
       --red: #ff8d9a;
       --red-bg: rgba(255, 141, 154, .18);
+      --token-radius: 6px;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -206,6 +262,7 @@ function renderVisualIdentifierHtml(model) {
       margin: 0;
       font-size: 15px;
       letter-spacing: 0;
+      font-weight: 650;
     }
     h1 { font-size: 17px; }
     .subtle {
@@ -218,7 +275,7 @@ function renderVisualIdentifierHtml(model) {
       background: var(--panel);
       border-radius: 999px;
       color: var(--muted);
-      font-weight: 750;
+      font-weight: 650;
       padding: 7px 10px;
       white-space: nowrap;
     }
@@ -229,7 +286,7 @@ function renderVisualIdentifierHtml(model) {
       margin-top: 12px;
       align-items: start;
     }
-    .panel, .identifier-section, .ring-card {
+    .panel, .identifier-section, .ring-card, .time-card {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -247,7 +304,7 @@ function renderVisualIdentifierHtml(model) {
     .panel-head span, .section-head span {
       color: var(--faint);
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 620;
       text-transform: uppercase;
     }
     .status-map-row {
@@ -261,7 +318,7 @@ function renderVisualIdentifierHtml(model) {
     }
     .status-map-row:last-child { border-bottom: 0; }
     .status-meaning {
-      font-weight: 700;
+      font-weight: 620;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -299,7 +356,7 @@ function renderVisualIdentifierHtml(model) {
       border-radius: 999px;
       padding: 3px 7px;
       font-size: 11px;
-      font-weight: 850;
+      font-weight: 700;
       letter-spacing: 0;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
@@ -331,7 +388,7 @@ function renderVisualIdentifierHtml(model) {
       padding: 3px 8px;
       border-radius: 999px;
       font-size: 11px;
-      font-weight: 850;
+      font-weight: 700;
       letter-spacing: 0;
       white-space: nowrap;
     }
@@ -371,14 +428,42 @@ function renderVisualIdentifierHtml(model) {
     .shade--red { color: var(--red); background: var(--red-bg); border: 1px solid rgba(255, 141, 154, .25); }
     .shade--text { color: var(--text); background: transparent; border-color: transparent; }
     .ring-card { position: sticky; top: 10px; }
+    .right-stack {
+      display: grid;
+      gap: 12px;
+      align-self: start;
+      position: sticky;
+      top: 10px;
+    }
+    .right-stack .ring-card {
+      position: static;
+    }
     .ring-title {
       font-size: 15px;
-      font-weight: 850;
+      font-weight: 620;
     }
-    .ring-states {
-      display: flex;
-      gap: 5px;
+    .ring-walk {
+      min-width: 62px;
+      min-height: 23px;
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      color: var(--muted);
+      background: rgba(154, 163, 180, .1);
+      border: 1px solid rgba(154, 163, 180, .14);
+      font-size: 11px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+    .ring-walk:empty {
+      visibility: hidden;
+    }
+    .cell-empty {
+      display: inline-block;
+      width: 1ch;
+      height: 1em;
     }
     .class-card {
       border-bottom: 1px solid var(--line);
@@ -387,18 +472,80 @@ function renderVisualIdentifierHtml(model) {
     .class-card:last-child { border-bottom: 0; }
     .class-line {
       display: grid;
-      grid-template-columns: 50px 44px minmax(0, 1fr) 38px 50px 42px;
-      gap: 8px;
+      grid-template-columns: 6ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+      gap: 3px;
       align-items: center;
-      min-height: 44px;
-      padding: 8px 10px;
+      min-height: 38px;
+      padding: 7px 8px;
     }
-    .c-time, .c-num, .c-type, .c-metric {
+    .time-line {
+      display: grid;
+      grid-template-columns: 6ch 4.5ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+      gap: 3px;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .time-line:last-child { border-bottom: 0; }
+    .time-col,
+    .ring-num-col,
+    .class-num-col,
+    .class-type-col,
+    .status-col,
+    .trips-col {
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .time-col {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .time-mark {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--faint);
+      opacity: .8;
+      flex: 0 0 auto;
+    }
+    .time-mark--now {
+      width: 5px;
+      height: 5px;
+      background: var(--green);
+      box-shadow: 0 0 0 2px rgba(73, 209, 125, .11);
+      opacity: 1;
+    }
+    .time-mark--next {
+      background: var(--blue);
+      opacity: .95;
+    }
+    .time-mark--following {
+      background: #b6c8ee;
+      opacity: .75;
+    }
+    .time-mark--upcoming {
+      background: var(--muted);
+      opacity: .55;
+    }
+    .time-mark--completed {
+      background: #697185;
+      opacity: .38;
+    }
+    .c-time, .c-num, .c-type, .trip-metric {
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 650;
       color: var(--muted);
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
+    }
+    .ring-num-col {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
     }
     .c-num {
       color: var(--text);
@@ -410,21 +557,74 @@ function renderVisualIdentifierHtml(model) {
       text-overflow: ellipsis;
       white-space: nowrap;
       font-size: 12px;
-      font-weight: 850;
+      font-weight: 680;
+    }
+    .class-type-col,
+    .status-col,
+    .trips-col {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .cell-token,
+    .trip-metric {
+      width: 100%;
+      min-width: 0;
+      min-height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      padding: 2px 4px;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .cell-token,
+    .trip-metric,
+    .ring-token {
+      border-radius: var(--token-radius);
+    }
+    .ring-token {
+      width: 100%;
+      min-width: 0;
+      min-height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 4px;
+      color: var(--muted);
+      background: rgba(154, 163, 180, .08);
+      border: 1px solid rgba(154, 163, 180, .12);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
     .c-type {
       color: var(--muted);
-      text-align: center;
+      background: rgba(154, 163, 180, .08);
+      border: 1px solid rgba(154, 163, 180, .12);
     }
-    .c-metric {
+    .trips-col {
       text-align: right;
-      color: var(--faint);
+    }
+    .trip-metric {
+      color: var(--amber);
+      border: 1px solid rgba(242, 193, 92, .22);
+      background: rgba(242, 193, 92, .1);
     }
     .rollup-line {
       display: flex;
+      justify-content: flex-end;
       gap: 6px;
       overflow-x: auto;
-      padding: 0 10px 9px 60px;
+      padding: 0 8px 8px 8px;
       scrollbar-width: thin;
     }
     .epill {
@@ -438,27 +638,40 @@ function renderVisualIdentifierHtml(model) {
       color: var(--text);
       padding: 4px 8px;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 650;
       white-space: nowrap;
     }
     .epill__sep {
-      color: var(--faint);
+      width: 2px;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(154, 163, 180, .48);
+      flex: 0 0 auto;
     }
-    .epill__oog, .epill__time {
+    .epill__oog, .epill__time, .epill__metric {
       color: var(--muted);
       font-variant-numeric: tabular-nums;
     }
-    .epill__state {
-      color: var(--faint);
-      font-size: 10px;
+    .epill__name {
+      min-width: 44px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .epill--now .epill__state { color: var(--green); }
-    .epill--next .epill__state { color: var(--blue); }
-    .epill--completed .epill__state { color: #777f90; }
+    .epill__time,
+    .epill__oog,
+    .epill__metric {
+      min-width: 38px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .epill__metric { min-width: 52px; }
+    .epill--now { border-color: rgba(73, 209, 125, .24); }
+    .epill--next { border-color: rgba(143, 184, 255, .26); }
+    .epill--completed { color: #8d96a8; }
     @media (max-width: 780px) {
       .page { padding-inline: 8px; }
       .preview-grid { grid-template-columns: 1fr; }
-      .ring-card { position: static; }
+      .right-stack { position: static; }
       .status-map-row {
         grid-template-columns: 54px minmax(0, 1fr);
       }
@@ -468,11 +681,14 @@ function renderVisualIdentifierHtml(model) {
     }
     @media (max-width: 430px) {
       .class-line {
-        grid-template-columns: 46px 40px minmax(0, 1fr) 32px 48px;
+        grid-template-columns: 6ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+        gap: 3px;
       }
-      .c-metric { display: none; }
-      .rollup-line { padding-left: 10px; }
-      .ring-states .state--following { display: none; }
+      .time-line {
+        grid-template-columns: 6ch 4.5ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+        gap: 3px;
+      }
+      .rollup-line { padding-left: 8px; }
     }
   </style>
 </head>
@@ -498,17 +714,23 @@ function renderVisualIdentifierHtml(model) {
         ${tokenGroups}
       </div>
 
-      <section class="ring-card">
-        <div class="ring-line">
-          <div class="ring-title">Ring 6</div>
-          <div class="ring-states">
-            <span class="state state--now">NOW</span>
-            <span class="state state--next">NEXT</span>
-            <span class="state state--following">FOL</span>
+      <div class="right-stack">
+        <section class="ring-card">
+          <div class="ring-line">
+            <div class="ring-title">Ring 6</div>
+            <div class="ring-walk">${model.ringWalk ? `WALK ${htmlEscape(model.ringWalk)}` : ""}</div>
           </div>
-        </div>
-        ${ringRows}
-      </section>
+          ${ringRows}
+        </section>
+
+        <section class="time-card">
+          <div class="ring-line">
+            <div class="ring-title">Time</div>
+            <div class="ring-walk"></div>
+          </div>
+          ${timeRows}
+        </section>
+      </div>
     </div>
   </main>
 </body>

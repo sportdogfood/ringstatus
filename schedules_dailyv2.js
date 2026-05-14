@@ -170,6 +170,28 @@ function normalizeKey(value) {
   return String(value).trim();
 }
 
+function keyPart(value) {
+  if (isBlank(value)) return "";
+  return String(value).trim();
+}
+
+function joinKeyParts(parts) {
+  if (parts.some((part) => !keyPart(part))) return "";
+  return parts.map(keyPart).join("|");
+}
+
+function buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence }) {
+  return {
+    scheduleKey: joinKeyParts([sid, sqlDate, ringNumber, classNumber, classSequence]),
+    scheduleShort: joinKeyParts([ringNumber, classNumber, classSequence]),
+  };
+}
+
+function classSequenceFromKey(key) {
+  const parts = String(key || "").split("|");
+  return parts.length >= 5 ? keyPart(parts[4]) : "";
+}
+
 function chunk(items, size) {
   const out = [];
   for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
@@ -1128,6 +1150,9 @@ function clearResolvedField(fields, fieldMeta, logicalName) {
 }
 
 function scheduleRowKeyFromFields(fields = {}) {
+  const scheduleKey = normalizeKey(firstValue(fields.schedule_key));
+  if (scheduleKey) return scheduleKey;
+
   const classGroupId = numOrNull(fields.class_group_id);
   const classNumber = numOrNull(fields.class_number);
   if (classGroupId !== null && classNumber !== null) {
@@ -1474,6 +1499,29 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
     }
     setResolvedField(fields, watchScheduleFieldMeta, "latest_ingested_at", pickFirst(groupsLiveDetail.ingested_at, groupsLiveDetail.curr_updated_at));
   }
+  const classSequence = keyPart(normalizedRow.class_sequence) || classSequenceFromKey(fields.schedule_key) || "1";
+  const scheduleKeys = buildScheduleKeyParts({
+    sid: pickFirst(fields.show_id, scope.app_show_idv2),
+    sqlDate: pickFirst(resolvedScheduledDate, fields.app_sql_datev2, scope.app_sql_datev2),
+    ringNumber: fields.ring_number,
+    classNumber: fields.class_number,
+    classSequence,
+  });
+  if (scheduleKeys.scheduleKey) setResolvedField(fields, watchScheduleFieldMeta, "schedule_key", scheduleKeys.scheduleKey);
+  if (scheduleKeys.scheduleShort) setResolvedField(fields, watchScheduleFieldMeta, "schedule_short", scheduleKeys.scheduleShort);
+  setResolvedField(fields, watchScheduleFieldMeta, "class_sequence", classSequence);
+  const fullNestingKey = joinKeyParts([
+    pickFirst(fields.show_id, scope.app_show_idv2),
+    pickFirst(resolvedScheduledDate, fields.app_sql_datev2, scope.app_sql_datev2),
+    fields.ring_number,
+    fields.estimated_start_time,
+    fields.class_group_id,
+    fields.class_number,
+    classSequence,
+    fields.pid,
+    fields.entry_number,
+  ]);
+  if (fullNestingKey) setResolvedField(fields, watchScheduleFieldMeta, "full_nesting_key", fullNestingKey);
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
   fields.run_tag = scope.app_sql_datev2;
@@ -2026,14 +2074,36 @@ async function runDaily() {
   const keepKeySet = new Set();
   const keepRecordIdSet = new Set();
   const actualScheduleShowDateByKey = new Map();
+  const classSequenceCounters = new Map();
 
   for (const row of scopedRows) {
-    const key = normalizeKey(row.key);
+    const seedFields = row?.fields || {};
+    const sequenceGroupKey = joinKeyParts([
+      scope.app_show_idv2,
+      scope.app_sql_datev2,
+      seedFields.ring_number,
+      seedFields.class_number,
+    ]) || normalizeKey(row.key);
+    const nextSequence = (classSequenceCounters.get(sequenceGroupKey) || 0) + 1;
+    classSequenceCounters.set(sequenceGroupKey, nextSequence);
+    row.class_sequence = String(nextSequence);
+    const rowKeyParts = buildScheduleKeyParts({
+      sid: pickFirst(seedFields.show_id, scope.app_show_idv2),
+      sqlDate: pickFirst(toIsoDateOnly(seedFields.schedule_show_datev2), seedFields.app_sql_datev2, scope.app_sql_datev2),
+      ringNumber: seedFields.ring_number,
+      classNumber: seedFields.class_number,
+      classSequence: row.class_sequence,
+    });
+    const legacyKey = normalizeKey(row.key);
+    const key = normalizeKey(rowKeyParts.scheduleKey || legacyKey);
     if (!key) continue;
     keepKeySet.add(key);
-    actualScheduleShowDateByKey.set(key, resolveActualScheduleShowDate(row));
+    if (legacyKey) keepKeySet.add(legacyKey);
+    const actualScheduleShowDate = resolveActualScheduleShowDate(row);
+    actualScheduleShowDateByKey.set(key, actualScheduleShowDate);
+    if (legacyKey) actualScheduleShowDateByKey.set(legacyKey, actualScheduleShowDate);
 
-    const existing = existingByKey.get(key);
+    const existing = existingByKey.get(key) || existingByKey.get(legacyKey);
     if (existing) keepRecordIdSet.add(existing.id);
     const fields = buildCurrentFields(
       row,

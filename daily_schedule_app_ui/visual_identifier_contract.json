@@ -4,6 +4,28 @@
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow.",
     "style_reference": "Dense, symmetric, small-screen rows with compact text tokens. No icon-only status controls."
   },
+  "ring_abbreviations": {
+    "Derby": "DRB",
+    "Annex": "ANX",
+    "Covered": "CVR",
+    "Village": "VIL",
+    "Hunter 1": "H1",
+    "Hunter 2": "H2",
+    "Intl": "INTL",
+    "Grand": "GRN",
+    "Rost": "RST",
+    "Mogavero": "MOG",
+    "Denemethy": "DEN",
+    "Ring 6": "R6",
+    "Ring 7": "R7",
+    "Ring 8": "R8",
+    "Ring 9": "R9",
+    "Ring 10": "R10",
+    "Ring 11": "R11",
+    "Ring 12": "R12",
+    "South Ring": "SR",
+    "30 Ring": "30R"
+  },
   "status_terms": [
     {
       "id": "now",
@@ -142,8 +164,8 @@
       "status": "NOW",
       "metric": "1/15",
       "rollups": [
-        { "name": "Knox", "oog": "5/14", "time": "8:55A", "status": "NOW" },
-        { "name": "Poptart", "oog": "6/14", "time": "8:58A", "status": "NEXT" }
+        { "name": "Knox", "time": "8:55A", "oog": "5/14", "in": "15m", "walk": "2m", "status": "NOW" },
+        { "name": "Poptart", "time": "8:58A", "oog": "6/14", "in": "18m", "walk": "2m", "status": "NEXT" }
       ]
     },
     {
@@ -155,7 +177,7 @@
       "status": "NEXT",
       "metric": "0/8",
       "rollups": [
-        { "name": "Shelby", "oog": "2/8", "time": "10:45A", "status": "UPC" }
+        { "name": "Darcy", "time": "10:45A", "oog": "2/22", "in": "40m", "walk": "2m", "status": "UPC" }
       ]
     },
     {
@@ -177,7 +199,7 @@
       "status": "DONE",
       "metric": "14/14",
       "rollups": [
-        { "name": "Darcy", "oog": "12/23", "time": "8:11A", "status": "DONE" }
+        { "name": "Calgary", "time": "8:11A", "oog": "12/23", "in": "", "walk": "", "status": "DONE" }
       ]
     }
   ]
