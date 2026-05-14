@@ -1272,7 +1272,7 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
     ? scheduleInfo.default_app_sql_date_is
     : candidateAppSqlDate;
   const finalAppDowRaw = strictDowRaw(dowName(dayOfWeekUtc(finalAppSqlDate)), "derived_app_dow_raw");
-  const shiftedToNextDay = setToDefault ? false : baseContext.mode === "NIGHT";
+  const shiftedToNextDay = baseContext.mode === "NIGHT";
   const appSqlDateSource = setToDefault
     ? "default_day"
     : baseContext.mode === "NIGHT"
@@ -1318,9 +1318,9 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
   const setToDefault = currentSource === "default_day"
     ? true
     : boolValue(baseContext.current_set_to_default_app_sql_date);
-  const shiftedToNextDay = setToDefault
-    ? false
-    : (boolValue(baseContext.current_shifted_to_next_day) || baseContext.mode === "NIGHT");
+  const shiftedToNextDay = baseContext.mode === "NIGHT"
+    ? true
+    : boolValue(baseContext.current_shifted_to_next_day);
   const defaultAppSqlDateIs = strictSqlDate(
     pickFirst(baseContext.current_default_app_sql_date_is, finalAppSqlDate),
     "default_app_sql_date_is"

@@ -990,7 +990,7 @@ async function buildAppContext(clock, mode) {
       const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
       if (!validCandidate && scheduleInfo.defaultAppSqlDateIs) {
         appSqlDate = scheduleInfo.defaultAppSqlDateIs;
-        shiftedToNextDay = false;
+        shiftedToNextDay = mode === "NIGHT";
         setToDefaultAppSqlDate = true;
         appSqlDateSource = "default_day";
       }
