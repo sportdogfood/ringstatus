@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-05-14T17:01:48.893Z",
+    "generated_at": "2026-05-14T20:26:02.289Z",
     "contract_version": "2026-05-13.v0.1",
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow."
   },
@@ -454,18 +454,18 @@
       "metric": "1/15",
       "rollups": [
         {
-          "name": "Knox",
+          "horse": "Knox",
           "time": "8:55A",
-          "oog": "5/14",
+          "order": "5/14",
           "in": "15m",
           "walk": "2m",
           "status": "NOW",
           "status_id": "now"
         },
         {
-          "name": "Poptart",
+          "horse": "Poptart",
           "time": "8:58A",
-          "oog": "6/14",
+          "order": "6/14",
           "in": "18m",
           "walk": "2m",
           "status": "NEXT",
@@ -486,9 +486,9 @@
       "metric": "0/8",
       "rollups": [
         {
-          "name": "Darcy",
+          "horse": "Darcy",
           "time": "10:45A",
-          "oog": "2/22",
+          "order": "2/22",
           "in": "40m",
           "walk": "2m",
           "status": "UPC",
@@ -522,9 +522,9 @@
       "metric": "14/14",
       "rollups": [
         {
-          "name": "Calgary",
+          "horse": "Calgary",
           "time": "8:11A",
-          "oog": "12/23",
+          "order": "12/23",
           "in": "",
           "walk": "",
           "status": "DONE",
@@ -547,9 +547,9 @@
       "metric": "14/14",
       "rollups": [
         {
-          "name": "Calgary",
+          "horse": "Calgary",
           "time": "8:11A",
-          "oog": "12/23",
+          "order": "12/23",
           "in": "",
           "walk": "",
           "status": "DONE",
@@ -570,18 +570,18 @@
       "metric": "1/15",
       "rollups": [
         {
-          "name": "Knox",
+          "horse": "Knox",
           "time": "8:55A",
-          "oog": "5/14",
+          "order": "5/14",
           "in": "15m",
           "walk": "2m",
           "status": "NOW",
           "status_id": "now"
         },
         {
-          "name": "Poptart",
+          "horse": "Poptart",
           "time": "8:58A",
-          "oog": "6/14",
+          "order": "6/14",
           "in": "18m",
           "walk": "2m",
           "status": "NEXT",
@@ -602,9 +602,9 @@
       "metric": "0/8",
       "rollups": [
         {
-          "name": "Darcy",
+          "horse": "Darcy",
           "time": "10:45A",
-          "oog": "2/22",
+          "order": "2/22",
           "in": "40m",
           "walk": "2m",
           "status": "UPC",

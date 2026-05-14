@@ -53,7 +53,7 @@ const contract = {
       class_name: "Small Pony Hunter U/S",
       class_type: "EQ",
       status: "NOW",
-      rollups: [{ name: "Knox", time: "8:55A", oog: "5/14", in: "15m", walk: "2m", status: "NOW" }],
+      rollups: [{ horse: "LongHorseName", time: "8:55A", order: "5/14", in: "15m", walk: "2m", status: "NOW" }],
     },
   ],
 };
@@ -98,24 +98,34 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /trip-metric/);
   assert.match(html, /time-mark/);
   assert.match(html, /time-mark--now/);
-  assert.match(html, /epill__sep/);
-  assert.doesNotMatch(html, /epill__sep">\\./);
+  assert.match(html, /rollup-row/);
+  assert.doesNotMatch(html, /epill__sep/);
 });
 
-test("renderVisualIdentifierHtml keeps compact rollups in name time oog in walk order", () => {
+test("renderVisualIdentifierHtml keeps compact rollups in horse time order in walk order", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
-  const rollup = html.slice(html.indexOf('<span class="epill epill--now">'), html.indexOf("</span></div>", html.indexOf('<span class="epill epill--now">')));
+  const rollup = html.slice(html.indexOf('<span class="rollup-row rollup-row--now">'), html.indexOf("</span></div>", html.indexOf('<span class="rollup-row rollup-row--now">')));
 
-  assert.match(html, /epill__name">Knox/);
-  assert.match(html, /epill__time">8:55A/);
-  assert.match(html, /epill__oog">5\/14/);
-  assert.match(html, /epill__metric">In: 15m/);
-  assert.match(html, /epill__metric">Walk: 2m/);
+  assert.match(html, /rollup-cell rollup-cell--horse">LongHorseName/);
+  assert.match(html, /rollup-cell rollup-cell--time">8:55A/);
+  assert.match(html, /rollup-cell rollup-cell--order">5\/14/);
+  assert.match(html, /rollup-cell rollup-cell--in">In: 15m/);
+  assert.match(html, /rollup-cell rollup-cell--walk">Walk: 2m/);
   assert.doesNotMatch(html, /epill__state/);
-  assert.ok(rollup.indexOf("epill__name") < rollup.indexOf("epill__time"));
-  assert.ok(rollup.indexOf("epill__time") < rollup.indexOf("epill__oog"));
-  assert.ok(rollup.indexOf("epill__oog") < rollup.indexOf("In: 15m"));
+  assert.ok(rollup.indexOf("rollup-cell--horse") < rollup.indexOf("rollup-cell--time"));
+  assert.ok(rollup.indexOf("rollup-cell--time") < rollup.indexOf("rollup-cell--order"));
+  assert.ok(rollup.indexOf("rollup-cell--order") < rollup.indexOf("In: 15m"));
   assert.ok(rollup.indexOf("In: 15m") < rollup.indexOf("Walk: 2m"));
+});
+
+test("renderVisualIdentifierHtml locks rollup table widths and shared radius", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /grid-template-columns: 9ch 6ch 5ch 5ch 6ch;/);
+  assert.match(html, /border-radius: var\(--token-radius\);/);
+  assert.match(html, /max-width: 9ch;/);
+  assert.match(html, /text-overflow: ellipsis;/);
+  assert.doesNotMatch(html, /\.rollup-row[\s\S]*?border-radius: 999px;/);
 });
 
 test("renderVisualIdentifierHtml preserves fixed cells when row values are empty", () => {
@@ -128,7 +138,7 @@ test("renderVisualIdentifierHtml preserves fixed cells when row values are empty
     class_type: "",
     status: "",
     metric: "",
-    rollups: [{ name: "Darcy", time: "10:45A", oog: "2/22", in: "40m", walk: "2m", status: "UPC" }],
+    rollups: [{ horse: "Darcy", time: "10:45A", order: "2/22", in: "40m", walk: "2m", status: "UPC" }],
   });
 
   const html = renderVisualIdentifierHtml(buildPreviewModel(payload));

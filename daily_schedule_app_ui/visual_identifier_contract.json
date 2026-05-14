@@ -164,8 +164,8 @@
       "status": "NOW",
       "metric": "1/15",
       "rollups": [
-        { "name": "Knox", "time": "8:55A", "oog": "5/14", "in": "15m", "walk": "2m", "status": "NOW" },
-        { "name": "Poptart", "time": "8:58A", "oog": "6/14", "in": "18m", "walk": "2m", "status": "NEXT" }
+        { "horse": "Knox", "time": "8:55A", "order": "5/14", "in": "15m", "walk": "2m", "status": "NOW" },
+        { "horse": "Poptart", "time": "8:58A", "order": "6/14", "in": "18m", "walk": "2m", "status": "NEXT" }
       ]
     },
     {
@@ -177,7 +177,7 @@
       "status": "NEXT",
       "metric": "0/8",
       "rollups": [
-        { "name": "Darcy", "time": "10:45A", "oog": "2/22", "in": "40m", "walk": "2m", "status": "UPC" }
+        { "horse": "Darcy", "time": "10:45A", "order": "2/22", "in": "40m", "walk": "2m", "status": "UPC" }
       ]
     },
     {
@@ -199,7 +199,7 @@
       "status": "DONE",
       "metric": "14/14",
       "rollups": [
-        { "name": "Calgary", "time": "8:11A", "oog": "12/23", "in": "", "walk": "", "status": "DONE" }
+        { "horse": "Calgary", "time": "8:11A", "order": "12/23", "in": "", "walk": "", "status": "DONE" }
       ]
     }
   ]

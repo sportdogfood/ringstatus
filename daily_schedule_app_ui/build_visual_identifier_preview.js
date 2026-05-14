@@ -158,17 +158,15 @@ function renderTokenGroup(group) {
 }
 
 function renderRollup(rollup) {
+  const horse = rollup.horse || rollup.name;
+  const order = rollup.order || rollup.oog;
   return `
-    <span class="epill ${rollup.status_id ? `epill--${htmlEscape(rollup.status_id)}` : ""}">
-      <span class="epill__name">${renderCellValue(rollup.name)}</span>
-      <span class="epill__sep" aria-hidden="true"></span>
-      <span class="epill__time">${renderCellValue(rollup.time)}</span>
-      <span class="epill__sep" aria-hidden="true"></span>
-      <span class="epill__oog">${renderCellValue(rollup.oog)}</span>
-      <span class="epill__sep" aria-hidden="true"></span>
-      <span class="epill__metric">In: ${renderCellValue(rollup.in)}</span>
-      <span class="epill__sep" aria-hidden="true"></span>
-      <span class="epill__metric">Walk: ${renderCellValue(rollup.walk)}</span>
+    <span class="rollup-row ${rollup.status_id ? `rollup-row--${htmlEscape(rollup.status_id)}` : ""}">
+      <span class="rollup-cell rollup-cell--horse">${renderCellValue(horse)}</span>
+      <span class="rollup-cell rollup-cell--time">${renderCellValue(rollup.time)}</span>
+      <span class="rollup-cell rollup-cell--order">${renderCellValue(order)}</span>
+      <span class="rollup-cell rollup-cell--in">In: ${renderCellValue(rollup.in)}</span>
+      <span class="rollup-cell rollup-cell--walk">Walk: ${renderCellValue(rollup.walk)}</span>
     </span>`;
 }
 
@@ -627,47 +625,44 @@ function renderVisualIdentifierHtml(model) {
       padding: 0 8px 8px 8px;
       scrollbar-width: thin;
     }
-    .epill {
-      display: inline-flex;
+    .rollup-row {
+      display: inline-grid;
+      grid-template-columns: 9ch 6ch 5ch 5ch 6ch;
+      column-gap: 4px;
       align-items: center;
-      gap: 6px;
       min-height: 24px;
-      border-radius: 999px;
+      border-radius: var(--token-radius);
       border: 1px solid rgba(154, 163, 180, .16);
       background: rgba(154, 163, 180, .1);
       color: var(--text);
-      padding: 4px 8px;
+      padding: 3px 6px;
       font-size: 11px;
       font-weight: 650;
       white-space: nowrap;
-    }
-    .epill__sep {
-      width: 2px;
-      height: 2px;
-      border-radius: 999px;
-      background: rgba(154, 163, 180, .48);
-      flex: 0 0 auto;
-    }
-    .epill__oog, .epill__time, .epill__metric {
-      color: var(--muted);
       font-variant-numeric: tabular-nums;
     }
-    .epill__name {
-      min-width: 44px;
+    .rollup-cell {
+      min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
     }
-    .epill__time,
-    .epill__oog,
-    .epill__metric {
-      min-width: 38px;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .rollup-cell--horse {
+      max-width: 9ch;
+      color: #b6c8ee;
     }
-    .epill__metric { min-width: 52px; }
-    .epill--now { border-color: rgba(73, 209, 125, .24); }
-    .epill--next { border-color: rgba(143, 184, 255, .26); }
-    .epill--completed { color: #8d96a8; }
+    .rollup-cell--time,
+    .rollup-cell--order {
+      text-align: center;
+    }
+    .rollup-cell--in,
+    .rollup-cell--walk {
+      text-align: left;
+    }
+    .rollup-row--now { border-color: rgba(73, 209, 125, .24); }
+    .rollup-row--next { border-color: rgba(143, 184, 255, .26); }
+    .rollup-row--completed { color: #8d96a8; }
     @media (max-width: 780px) {
       .page { padding-inline: 8px; }
       .preview-grid { grid-template-columns: 1fr; }
