@@ -157,6 +157,7 @@
   "sample_rows": [
     {
       "ring": "Ring 6",
+      "group": "Small Pony Hunter",
       "time": "8:40A",
       "class_number": "411",
       "class_name": "Small Pony Hunter U/S",
@@ -164,12 +165,13 @@
       "status": "NOW",
       "metric": "1/15",
       "rollups": [
-        { "horse": "Knox", "time": "8:55A", "order": "5/14", "in": "15m", "walk": "2m", "status": "NOW" },
-        { "horse": "Poptart", "time": "8:58A", "order": "6/14", "in": "18m", "walk": "2m", "status": "NEXT" }
+        { "horse": "Knox", "rider": "Heap", "time": "8:55A", "order": "5/14", "in": "15m", "walk": "2m", "status": "NOW" },
+        { "horse": "Poptart", "rider": "Michaels", "time": "8:58A", "order": "6/14", "in": "18m", "walk": "2m", "status": "NEXT" }
       ]
     },
     {
       "ring": "Ring 6",
+      "group": "ASPCA Maclay",
       "time": "10:00A",
       "class_number": "570",
       "class_name": "ASPCA Maclay",
@@ -177,11 +179,12 @@
       "status": "NEXT",
       "metric": "0/8",
       "rollups": [
-        { "horse": "Darcy", "time": "10:45A", "order": "2/22", "in": "40m", "walk": "2m", "status": "UPC" }
+        { "horse": "Darcy", "rider": "Rizzo", "time": "10:45A", "order": "2/22", "in": "40m", "walk": "2m", "status": "UPC" }
       ]
     },
     {
       "ring": "Ring 6",
+      "group": "Junior & Amateur Jumpers",
       "time": "10:30A",
       "class_number": "742",
       "class_name": "1.10m Junior & Amateur Jumpers",
@@ -192,6 +195,7 @@
     },
     {
       "ring": "Ring 6",
+      "group": "Modified Hunter",
       "time": "7:45A",
       "class_number": "644",
       "class_name": "Modified Hunter 2'/2'6\"",
@@ -199,7 +203,7 @@
       "status": "DONE",
       "metric": "14/14",
       "rollups": [
-        { "horse": "Calgary", "time": "8:11A", "order": "12/23", "in": "", "walk": "", "status": "DONE" }
+        { "horse": "Calgary", "rider": "Baker", "time": "8:11A", "order": "12/23", "in": "", "walk": "", "status": "DONE" }
       ]
     }
   ]

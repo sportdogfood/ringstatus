@@ -161,7 +161,7 @@ function renderRollup(rollup) {
   const horse = rollup.horse || rollup.name;
   const order = rollup.order || rollup.oog;
   return `
-    <span class="rollup-row ${rollup.status_id ? `rollup-row--${htmlEscape(rollup.status_id)}` : ""}">
+    <span class="rollup-row ${rollup.status_id ? `rollup-row--${htmlEscape(rollup.status_id)}` : ""}" data-horse="${htmlEscape(horse || "")}" data-rider="${htmlEscape(rollup.rider || "")}" data-rollup-status="${htmlEscape(rollup.status || "")}" data-rollup-status-id="${htmlEscape(rollup.status_id || "")}">
       <span class="rollup-cell rollup-cell--horse">${renderCellValue(horse)}</span>
       <span class="rollup-cell rollup-cell--time">${renderCellValue(rollup.time)}</span>
       <span class="rollup-cell rollup-cell--order">${renderCellValue(order)}</span>
@@ -170,12 +170,33 @@ function renderRollup(rollup) {
     </span>`;
 }
 
+function rowBandClass(row) {
+  return ["schedule-band", row.status_id ? `schedule-band--${row.status_id}` : "schedule-band--unknown"].join(" ");
+}
+
+function rowDataAttrs(row) {
+  const rollups = row.rollups || [];
+  const horses = rollups.map((rollup) => rollup.horse || rollup.name).filter((value) => !isBlank(value)).join("|");
+  const riders = rollups.map((rollup) => rollup.rider).filter((value) => !isBlank(value)).join("|");
+  return [
+    `data-ring="${htmlEscape(row.ring_abbrev || row.ring_number || "")}"`,
+    `data-group="${htmlEscape(row.group || "")}"`,
+    `data-status="${htmlEscape(row.status || "")}"`,
+    `data-status-id="${htmlEscape(row.status_id || "")}"`,
+    `data-class-type="${htmlEscape(row.class_type || "")}"`,
+    `data-class-number="${htmlEscape(row.class_number || "")}"`,
+    `data-horses="${htmlEscape(horses)}"`,
+    `data-riders="${htmlEscape(riders)}"`,
+  ].join(" ");
+}
+
 function renderSampleRow(row) {
   return `
-    <article class="class-card">
+    <article class="class-card ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="class-line">
         <div class="time-col c-time"><span class="time-mark time-mark--${htmlEscape(row.status_id || "unknown")}" aria-hidden="true"></span><span>${renderCellValue(row.time)}</span></div>
-        <div class="class-num-col c-num">${renderCellValue(row.class_number)}</div>
+        <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
+        <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
         <div class="class-name-col c-name">${renderCellValue(row.class_name)}</div>
         <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
         <div class="status-col"><span class="cell-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
@@ -187,14 +208,15 @@ function renderSampleRow(row) {
 
 function renderTimeRow(row) {
   return `
-    <article class="time-line">
+    <article class="time-line ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="time-col c-time"><span class="time-mark time-mark--${htmlEscape(row.status_id || "unknown")}" aria-hidden="true"></span><span>${renderCellValue(row.time)}</span></div>
       <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
-      <div class="class-num-col c-num">${renderCellValue(row.class_number)}</div>
+      <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
       <div class="class-name-col c-name">${renderCellValue(row.class_name)}</div>
       <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
       <div class="status-col"><span class="cell-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
       <div class="trips-col"><span class="trip-metric">${renderCellValue(row.metric)}</span></div>
+      ${(row.rollups || []).length ? `<div class="time-rollup-cell">${row.rollups.map(renderRollup).join("")}</div>` : ""}
     </article>`;
 }
 
@@ -359,22 +381,10 @@ function renderVisualIdentifierHtml(model) {
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
     }
-    .token--column, .token--mono_text, .token--tiny_text {
+    .token--column, .token--mono_text, .token--tiny_text, .token--eyebrow {
       min-width: auto;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      border: 0;
-      font-variant-numeric: tabular-nums;
-    }
-    .token--eyebrow {
-      min-width: auto;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      border: 0;
-      color: var(--muted);
-      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: var(--token-radius);
     }
     .state {
       justify-self: start;
@@ -468,9 +478,30 @@ function renderVisualIdentifierHtml(model) {
       background: linear-gradient(180deg, rgba(255, 255, 255, .01), rgba(255, 255, 255, 0));
     }
     .class-card:last-child { border-bottom: 0; }
+    .schedule-band {
+      position: relative;
+      isolation: isolate;
+    }
+    .schedule-band::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: var(--token-radius);
+      border: 1px solid transparent;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .schedule-band--now::before {
+      border-color: rgba(73, 209, 125, .34);
+      background: rgba(73, 209, 125, .035);
+    }
+    .schedule-band--next::before {
+      border-color: rgba(143, 184, 255, .18);
+      background: rgba(143, 184, 255, .025);
+    }
     .class-line {
       display: grid;
-      grid-template-columns: 6ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+      grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
       gap: 3px;
       align-items: center;
       min-height: 38px;
@@ -582,9 +613,28 @@ function renderVisualIdentifierHtml(model) {
       font-variant-numeric: tabular-nums;
     }
     .cell-token,
+    .class-num-token,
     .trip-metric,
     .ring-token {
       border-radius: var(--token-radius);
+    }
+    .class-num-token {
+      width: 100%;
+      min-width: 0;
+      min-height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 4px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .12);
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
     .ring-token {
       width: 100%;
@@ -623,6 +673,15 @@ function renderVisualIdentifierHtml(model) {
       gap: 6px;
       overflow-x: auto;
       padding: 0 8px 8px 8px;
+      scrollbar-width: thin;
+    }
+    .time-rollup-cell {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      overflow-x: auto;
+      padding-top: 2px;
       scrollbar-width: thin;
     }
     .rollup-row {
@@ -676,7 +735,7 @@ function renderVisualIdentifierHtml(model) {
     }
     @media (max-width: 430px) {
       .class-line {
-        grid-template-columns: 6ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+        grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
         gap: 3px;
       }
       .time-line {
@@ -698,17 +757,6 @@ function renderVisualIdentifierHtml(model) {
     </header>
 
     <div class="preview-grid">
-      <div class="identifier-stack">
-        <section class="panel">
-          <div class="panel-head">
-            <h2>Status Language</h2>
-            <span>normalize first</span>
-          </div>
-          ${statusRows}
-        </section>
-        ${tokenGroups}
-      </div>
-
       <div class="right-stack">
         <section class="ring-card">
           <div class="ring-line">
@@ -725,6 +773,17 @@ function renderVisualIdentifierHtml(model) {
           </div>
           ${timeRows}
         </section>
+      </div>
+
+      <div class="identifier-stack">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Status Language</h2>
+            <span>normalize first</span>
+          </div>
+          ${statusRows}
+        </section>
+        ${tokenGroups}
       </div>
     </div>
   </main>

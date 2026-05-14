@@ -153,22 +153,10 @@
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
     }
-    .token--column, .token--mono_text, .token--tiny_text {
+    .token--column, .token--mono_text, .token--tiny_text, .token--eyebrow {
       min-width: auto;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      border: 0;
-      font-variant-numeric: tabular-nums;
-    }
-    .token--eyebrow {
-      min-width: auto;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      border: 0;
-      color: var(--muted);
-      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: var(--token-radius);
     }
     .state {
       justify-self: start;
@@ -262,9 +250,30 @@
       background: linear-gradient(180deg, rgba(255, 255, 255, .01), rgba(255, 255, 255, 0));
     }
     .class-card:last-child { border-bottom: 0; }
+    .schedule-band {
+      position: relative;
+      isolation: isolate;
+    }
+    .schedule-band::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: var(--token-radius);
+      border: 1px solid transparent;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .schedule-band--now::before {
+      border-color: rgba(73, 209, 125, .34);
+      background: rgba(73, 209, 125, .035);
+    }
+    .schedule-band--next::before {
+      border-color: rgba(143, 184, 255, .18);
+      background: rgba(143, 184, 255, .025);
+    }
     .class-line {
       display: grid;
-      grid-template-columns: 6ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+      grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
       gap: 3px;
       align-items: center;
       min-height: 38px;
@@ -376,9 +385,28 @@
       font-variant-numeric: tabular-nums;
     }
     .cell-token,
+    .class-num-token,
     .trip-metric,
     .ring-token {
       border-radius: var(--token-radius);
+    }
+    .class-num-token {
+      width: 100%;
+      min-width: 0;
+      min-height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 4px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .12);
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
     .ring-token {
       width: 100%;
@@ -417,6 +445,15 @@
       gap: 6px;
       overflow-x: auto;
       padding: 0 8px 8px 8px;
+      scrollbar-width: thin;
+    }
+    .time-rollup-cell {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      overflow-x: auto;
+      padding-top: 2px;
       scrollbar-width: thin;
     }
     .rollup-row {
@@ -470,7 +507,7 @@
     }
     @media (max-width: 430px) {
       .class-line {
-        grid-template-columns: 6ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
+        grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
         gap: 3px;
       }
       .time-line {
@@ -486,12 +523,174 @@
     <header class="topbar">
       <div>
         <h1>Visual Identifier Preview</h1>
-        <div class="subtle">Generated 2026-05-14T20:26:02.289Z from contract 2026-05-13.v0.1</div>
+        <div class="subtle">Generated 2026-05-14T23:58:36.037Z from contract 2026-05-13.v0.1</div>
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
 
     <div class="preview-grid">
+      <div class="right-stack">
+        <section class="ring-card">
+          <div class="ring-line">
+            <div class="ring-title">Ring 6</div>
+            <div class="ring-walk"></div>
+          </div>
+          
+    <article class="class-card schedule-band schedule-band--now" data-ring="R6" data-group="Small Pony Hunter" data-status="NOW" data-status-id="now" data-class-type="HUN" data-class-number="411" data-horses="Knox|Poptart" data-riders="Heap|Michaels">
+      <div class="class-line">
+        <div class="time-col c-time"><span class="time-mark time-mark--now" aria-hidden="true"></span><span>8:40A</span></div>
+        <div class="ring-num-col"><span class="ring-token">R6</span></div>
+        <div class="class-num-col"><span class="class-num-token">411</span></div>
+        <div class="class-name-col c-name">Small Pony Hunter U/S</div>
+        <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
+        <div class="status-col"><span class="cell-token state state--now">NOW</span></div>
+        <div class="trips-col"><span class="trip-metric">1/15</span></div>
+      </div>
+      <div class="rollup-line">
+    <span class="rollup-row rollup-row--now" data-horse="Knox" data-rider="Heap" data-rollup-status="NOW" data-rollup-status-id="now">
+      <span class="rollup-cell rollup-cell--horse">Knox</span>
+      <span class="rollup-cell rollup-cell--time">8:55A</span>
+      <span class="rollup-cell rollup-cell--order">5/14</span>
+      <span class="rollup-cell rollup-cell--in">In: 15m</span>
+      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
+    </span>
+    <span class="rollup-row rollup-row--next" data-horse="Poptart" data-rider="Michaels" data-rollup-status="NEXT" data-rollup-status-id="next">
+      <span class="rollup-cell rollup-cell--horse">Poptart</span>
+      <span class="rollup-cell rollup-cell--time">8:58A</span>
+      <span class="rollup-cell rollup-cell--order">6/14</span>
+      <span class="rollup-cell rollup-cell--in">In: 18m</span>
+      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
+    </span></div>
+    </article>
+    <article class="class-card schedule-band schedule-band--next" data-ring="R6" data-group="ASPCA Maclay" data-status="NEXT" data-status-id="next" data-class-type="EQ" data-class-number="570" data-horses="Darcy" data-riders="Rizzo">
+      <div class="class-line">
+        <div class="time-col c-time"><span class="time-mark time-mark--next" aria-hidden="true"></span><span>10:00A</span></div>
+        <div class="ring-num-col"><span class="ring-token">R6</span></div>
+        <div class="class-num-col"><span class="class-num-token">570</span></div>
+        <div class="class-name-col c-name">ASPCA Maclay</div>
+        <div class="class-type-col"><span class="cell-token c-type">EQ</span></div>
+        <div class="status-col"><span class="cell-token state state--next">NEXT</span></div>
+        <div class="trips-col"><span class="trip-metric">0/8</span></div>
+      </div>
+      <div class="rollup-line">
+    <span class="rollup-row rollup-row--upcoming" data-horse="Darcy" data-rider="Rizzo" data-rollup-status="UPC" data-rollup-status-id="upcoming">
+      <span class="rollup-cell rollup-cell--horse">Darcy</span>
+      <span class="rollup-cell rollup-cell--time">10:45A</span>
+      <span class="rollup-cell rollup-cell--order">2/22</span>
+      <span class="rollup-cell rollup-cell--in">In: 40m</span>
+      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
+    </span></div>
+    </article>
+    <article class="class-card schedule-band schedule-band--following" data-ring="R6" data-group="Junior &amp; Amateur Jumpers" data-status="FOL" data-status-id="following" data-class-type="JMP" data-class-number="742" data-horses="" data-riders="">
+      <div class="class-line">
+        <div class="time-col c-time"><span class="time-mark time-mark--following" aria-hidden="true"></span><span>10:30A</span></div>
+        <div class="ring-num-col"><span class="ring-token">R6</span></div>
+        <div class="class-num-col"><span class="class-num-token">742</span></div>
+        <div class="class-name-col c-name">1.10m Junior &amp; Amateur Jumpers</div>
+        <div class="class-type-col"><span class="cell-token c-type">JMP</span></div>
+        <div class="status-col"><span class="cell-token state state--following">FOL</span></div>
+        <div class="trips-col"><span class="trip-metric">0/18</span></div>
+      </div>
+      
+    </article>
+    <article class="class-card schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-class-number="644" data-horses="Calgary" data-riders="Baker">
+      <div class="class-line">
+        <div class="time-col c-time"><span class="time-mark time-mark--completed" aria-hidden="true"></span><span>7:45A</span></div>
+        <div class="ring-num-col"><span class="ring-token">R6</span></div>
+        <div class="class-num-col"><span class="class-num-token">644</span></div>
+        <div class="class-name-col c-name">Modified Hunter 2'/2'6&quot;</div>
+        <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
+        <div class="status-col"><span class="cell-token state state--completed">DONE</span></div>
+        <div class="trips-col"><span class="trip-metric">14/14</span></div>
+      </div>
+      <div class="rollup-line">
+    <span class="rollup-row rollup-row--completed" data-horse="Calgary" data-rider="Baker" data-rollup-status="DONE" data-rollup-status-id="completed">
+      <span class="rollup-cell rollup-cell--horse">Calgary</span>
+      <span class="rollup-cell rollup-cell--time">8:11A</span>
+      <span class="rollup-cell rollup-cell--order">12/23</span>
+      <span class="rollup-cell rollup-cell--in">In: <span class="cell-empty" aria-hidden="true"></span></span>
+      <span class="rollup-cell rollup-cell--walk">Walk: <span class="cell-empty" aria-hidden="true"></span></span>
+    </span></div>
+    </article>
+        </section>
+
+        <section class="time-card">
+          <div class="ring-line">
+            <div class="ring-title">Time</div>
+            <div class="ring-walk"></div>
+          </div>
+          
+    <article class="time-line schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-class-number="644" data-horses="Calgary" data-riders="Baker">
+      <div class="time-col c-time"><span class="time-mark time-mark--completed" aria-hidden="true"></span><span>7:45A</span></div>
+      <div class="ring-num-col"><span class="ring-token">R6</span></div>
+      <div class="class-num-col"><span class="class-num-token">644</span></div>
+      <div class="class-name-col c-name">Modified Hunter 2'/2'6&quot;</div>
+      <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
+      <div class="status-col"><span class="cell-token state state--completed">DONE</span></div>
+      <div class="trips-col"><span class="trip-metric">14/14</span></div>
+      <div class="time-rollup-cell">
+    <span class="rollup-row rollup-row--completed" data-horse="Calgary" data-rider="Baker" data-rollup-status="DONE" data-rollup-status-id="completed">
+      <span class="rollup-cell rollup-cell--horse">Calgary</span>
+      <span class="rollup-cell rollup-cell--time">8:11A</span>
+      <span class="rollup-cell rollup-cell--order">12/23</span>
+      <span class="rollup-cell rollup-cell--in">In: <span class="cell-empty" aria-hidden="true"></span></span>
+      <span class="rollup-cell rollup-cell--walk">Walk: <span class="cell-empty" aria-hidden="true"></span></span>
+    </span></div>
+    </article>
+    <article class="time-line schedule-band schedule-band--now" data-ring="R6" data-group="Small Pony Hunter" data-status="NOW" data-status-id="now" data-class-type="HUN" data-class-number="411" data-horses="Knox|Poptart" data-riders="Heap|Michaels">
+      <div class="time-col c-time"><span class="time-mark time-mark--now" aria-hidden="true"></span><span>8:40A</span></div>
+      <div class="ring-num-col"><span class="ring-token">R6</span></div>
+      <div class="class-num-col"><span class="class-num-token">411</span></div>
+      <div class="class-name-col c-name">Small Pony Hunter U/S</div>
+      <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
+      <div class="status-col"><span class="cell-token state state--now">NOW</span></div>
+      <div class="trips-col"><span class="trip-metric">1/15</span></div>
+      <div class="time-rollup-cell">
+    <span class="rollup-row rollup-row--now" data-horse="Knox" data-rider="Heap" data-rollup-status="NOW" data-rollup-status-id="now">
+      <span class="rollup-cell rollup-cell--horse">Knox</span>
+      <span class="rollup-cell rollup-cell--time">8:55A</span>
+      <span class="rollup-cell rollup-cell--order">5/14</span>
+      <span class="rollup-cell rollup-cell--in">In: 15m</span>
+      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
+    </span>
+    <span class="rollup-row rollup-row--next" data-horse="Poptart" data-rider="Michaels" data-rollup-status="NEXT" data-rollup-status-id="next">
+      <span class="rollup-cell rollup-cell--horse">Poptart</span>
+      <span class="rollup-cell rollup-cell--time">8:58A</span>
+      <span class="rollup-cell rollup-cell--order">6/14</span>
+      <span class="rollup-cell rollup-cell--in">In: 18m</span>
+      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
+    </span></div>
+    </article>
+    <article class="time-line schedule-band schedule-band--next" data-ring="R6" data-group="ASPCA Maclay" data-status="NEXT" data-status-id="next" data-class-type="EQ" data-class-number="570" data-horses="Darcy" data-riders="Rizzo">
+      <div class="time-col c-time"><span class="time-mark time-mark--next" aria-hidden="true"></span><span>10:00A</span></div>
+      <div class="ring-num-col"><span class="ring-token">R6</span></div>
+      <div class="class-num-col"><span class="class-num-token">570</span></div>
+      <div class="class-name-col c-name">ASPCA Maclay</div>
+      <div class="class-type-col"><span class="cell-token c-type">EQ</span></div>
+      <div class="status-col"><span class="cell-token state state--next">NEXT</span></div>
+      <div class="trips-col"><span class="trip-metric">0/8</span></div>
+      <div class="time-rollup-cell">
+    <span class="rollup-row rollup-row--upcoming" data-horse="Darcy" data-rider="Rizzo" data-rollup-status="UPC" data-rollup-status-id="upcoming">
+      <span class="rollup-cell rollup-cell--horse">Darcy</span>
+      <span class="rollup-cell rollup-cell--time">10:45A</span>
+      <span class="rollup-cell rollup-cell--order">2/22</span>
+      <span class="rollup-cell rollup-cell--in">In: 40m</span>
+      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
+    </span></div>
+    </article>
+    <article class="time-line schedule-band schedule-band--following" data-ring="R6" data-group="Junior &amp; Amateur Jumpers" data-status="FOL" data-status-id="following" data-class-type="JMP" data-class-number="742" data-horses="" data-riders="">
+      <div class="time-col c-time"><span class="time-mark time-mark--following" aria-hidden="true"></span><span>10:30A</span></div>
+      <div class="ring-num-col"><span class="ring-token">R6</span></div>
+      <div class="class-num-col"><span class="class-num-token">742</span></div>
+      <div class="class-name-col c-name">1.10m Junior &amp; Amateur Jumpers</div>
+      <div class="class-type-col"><span class="cell-token c-type">JMP</span></div>
+      <div class="status-col"><span class="cell-token state state--following">FOL</span></div>
+      <div class="trips-col"><span class="trip-metric">0/18</span></div>
+      
+    </article>
+        </section>
+      </div>
+
       <div class="identifier-stack">
         <section class="panel">
           <div class="panel-head">
@@ -742,132 +941,6 @@
     </div>
       </div>
     </section>
-      </div>
-
-      <div class="right-stack">
-        <section class="ring-card">
-          <div class="ring-line">
-            <div class="ring-title">Ring 6</div>
-            <div class="ring-walk"></div>
-          </div>
-          
-    <article class="class-card">
-      <div class="class-line">
-        <div class="time-col c-time"><span class="time-mark time-mark--now" aria-hidden="true"></span><span>8:40A</span></div>
-        <div class="class-num-col c-num">411</div>
-        <div class="class-name-col c-name">Small Pony Hunter U/S</div>
-        <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-        <div class="status-col"><span class="cell-token state state--now">NOW</span></div>
-        <div class="trips-col"><span class="trip-metric">1/15</span></div>
-      </div>
-      <div class="rollup-line">
-    <span class="rollup-row rollup-row--now">
-      <span class="rollup-cell rollup-cell--horse">Knox</span>
-      <span class="rollup-cell rollup-cell--time">8:55A</span>
-      <span class="rollup-cell rollup-cell--order">5/14</span>
-      <span class="rollup-cell rollup-cell--in">In: 15m</span>
-      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
-    </span>
-    <span class="rollup-row rollup-row--next">
-      <span class="rollup-cell rollup-cell--horse">Poptart</span>
-      <span class="rollup-cell rollup-cell--time">8:58A</span>
-      <span class="rollup-cell rollup-cell--order">6/14</span>
-      <span class="rollup-cell rollup-cell--in">In: 18m</span>
-      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
-    </span></div>
-    </article>
-    <article class="class-card">
-      <div class="class-line">
-        <div class="time-col c-time"><span class="time-mark time-mark--next" aria-hidden="true"></span><span>10:00A</span></div>
-        <div class="class-num-col c-num">570</div>
-        <div class="class-name-col c-name">ASPCA Maclay</div>
-        <div class="class-type-col"><span class="cell-token c-type">EQ</span></div>
-        <div class="status-col"><span class="cell-token state state--next">NEXT</span></div>
-        <div class="trips-col"><span class="trip-metric">0/8</span></div>
-      </div>
-      <div class="rollup-line">
-    <span class="rollup-row rollup-row--upcoming">
-      <span class="rollup-cell rollup-cell--horse">Darcy</span>
-      <span class="rollup-cell rollup-cell--time">10:45A</span>
-      <span class="rollup-cell rollup-cell--order">2/22</span>
-      <span class="rollup-cell rollup-cell--in">In: 40m</span>
-      <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
-    </span></div>
-    </article>
-    <article class="class-card">
-      <div class="class-line">
-        <div class="time-col c-time"><span class="time-mark time-mark--following" aria-hidden="true"></span><span>10:30A</span></div>
-        <div class="class-num-col c-num">742</div>
-        <div class="class-name-col c-name">1.10m Junior &amp; Amateur Jumpers</div>
-        <div class="class-type-col"><span class="cell-token c-type">JMP</span></div>
-        <div class="status-col"><span class="cell-token state state--following">FOL</span></div>
-        <div class="trips-col"><span class="trip-metric">0/18</span></div>
-      </div>
-      
-    </article>
-    <article class="class-card">
-      <div class="class-line">
-        <div class="time-col c-time"><span class="time-mark time-mark--completed" aria-hidden="true"></span><span>7:45A</span></div>
-        <div class="class-num-col c-num">644</div>
-        <div class="class-name-col c-name">Modified Hunter 2'/2'6&quot;</div>
-        <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-        <div class="status-col"><span class="cell-token state state--completed">DONE</span></div>
-        <div class="trips-col"><span class="trip-metric">14/14</span></div>
-      </div>
-      <div class="rollup-line">
-    <span class="rollup-row rollup-row--completed">
-      <span class="rollup-cell rollup-cell--horse">Calgary</span>
-      <span class="rollup-cell rollup-cell--time">8:11A</span>
-      <span class="rollup-cell rollup-cell--order">12/23</span>
-      <span class="rollup-cell rollup-cell--in">In: <span class="cell-empty" aria-hidden="true"></span></span>
-      <span class="rollup-cell rollup-cell--walk">Walk: <span class="cell-empty" aria-hidden="true"></span></span>
-    </span></div>
-    </article>
-        </section>
-
-        <section class="time-card">
-          <div class="ring-line">
-            <div class="ring-title">Time</div>
-            <div class="ring-walk"></div>
-          </div>
-          
-    <article class="time-line">
-      <div class="time-col c-time"><span class="time-mark time-mark--completed" aria-hidden="true"></span><span>7:45A</span></div>
-      <div class="ring-num-col"><span class="ring-token">R6</span></div>
-      <div class="class-num-col c-num">644</div>
-      <div class="class-name-col c-name">Modified Hunter 2'/2'6&quot;</div>
-      <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-      <div class="status-col"><span class="cell-token state state--completed">DONE</span></div>
-      <div class="trips-col"><span class="trip-metric">14/14</span></div>
-    </article>
-    <article class="time-line">
-      <div class="time-col c-time"><span class="time-mark time-mark--now" aria-hidden="true"></span><span>8:40A</span></div>
-      <div class="ring-num-col"><span class="ring-token">R6</span></div>
-      <div class="class-num-col c-num">411</div>
-      <div class="class-name-col c-name">Small Pony Hunter U/S</div>
-      <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-      <div class="status-col"><span class="cell-token state state--now">NOW</span></div>
-      <div class="trips-col"><span class="trip-metric">1/15</span></div>
-    </article>
-    <article class="time-line">
-      <div class="time-col c-time"><span class="time-mark time-mark--next" aria-hidden="true"></span><span>10:00A</span></div>
-      <div class="ring-num-col"><span class="ring-token">R6</span></div>
-      <div class="class-num-col c-num">570</div>
-      <div class="class-name-col c-name">ASPCA Maclay</div>
-      <div class="class-type-col"><span class="cell-token c-type">EQ</span></div>
-      <div class="status-col"><span class="cell-token state state--next">NEXT</span></div>
-      <div class="trips-col"><span class="trip-metric">0/8</span></div>
-    </article>
-    <article class="time-line">
-      <div class="time-col c-time"><span class="time-mark time-mark--following" aria-hidden="true"></span><span>10:30A</span></div>
-      <div class="ring-num-col"><span class="ring-token">R6</span></div>
-      <div class="class-num-col c-num">742</div>
-      <div class="class-name-col c-name">1.10m Junior &amp; Amateur Jumpers</div>
-      <div class="class-type-col"><span class="cell-token c-type">JMP</span></div>
-      <div class="status-col"><span class="cell-token state state--following">FOL</span></div>
-      <div class="trips-col"><span class="trip-metric">0/18</span></div>
-    </article>
-        </section>
       </div>
     </div>
   </main>

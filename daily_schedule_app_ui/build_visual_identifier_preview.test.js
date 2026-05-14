@@ -48,12 +48,13 @@ const contract = {
   sample_rows: [
     {
       ring: "Ring 6",
+      group: "Small Pony Hunter",
       time: "8:40A",
       class_number: "411",
       class_name: "Small Pony Hunter U/S",
       class_type: "EQ",
       status: "NOW",
-      rollups: [{ horse: "LongHorseName", time: "8:55A", order: "5/14", in: "15m", walk: "2m", status: "NOW" }],
+      rollups: [{ horse: "LongHorseName", rider: "Test Rider", time: "8:55A", order: "5/14", in: "15m", walk: "2m", status: "NOW" }],
     },
   ],
 };
@@ -89,7 +90,9 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
 
   assert.match(html, /time-col/);
+  assert.match(html, /ring-num-col/);
   assert.match(html, /class-num-col/);
+  assert.match(html, /class-num-token/);
   assert.match(html, /class-name-col/);
   assert.match(html, /class-type-col/);
   assert.match(html, /status-col/);
@@ -102,9 +105,45 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.doesNotMatch(html, /epill__sep/);
 });
 
+test("renderVisualIdentifierHtml renders identical rollup rows under ring and time views", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+  const timeCard = html.slice(html.indexOf('<section class="time-card">'), html.indexOf("</section>", html.indexOf('<section class="time-card">')));
+
+  assert.match(html, /rollup-line/);
+  assert.match(html, /time-rollup-cell/);
+  assert.match(timeCard, /time-rollup-cell/);
+  assert.match(timeCard, /LongHorseName/);
+  assert.match(timeCard, /rollup-cell rollup-cell--time">8:55A/);
+});
+
+test("renderVisualIdentifierHtml adds band classes and filter-ready row attributes", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /schedule-band schedule-band--now/);
+  assert.match(html, /data-ring="R6"/);
+  assert.match(html, /data-group="Small Pony Hunter"/);
+  assert.match(html, /data-status="NOW"/);
+  assert.match(html, /data-status-id="now"/);
+  assert.match(html, /data-class-type="EQ"/);
+  assert.match(html, /data-class-number="411"/);
+  assert.match(html, /data-horses="LongHorseName"/);
+  assert.match(html, /data-riders="Test Rider"/);
+  assert.match(html, /\.schedule-band--now::before/);
+  assert.match(html, /rgba\(73, 209, 125, \.34\)/);
+});
+
+test("renderVisualIdentifierHtml keeps horse and rider filter data on hidden rollup attributes", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /data-horse="LongHorseName"/);
+  assert.match(html, /data-rider="Test Rider"/);
+  assert.match(html, /data-rollup-status="NOW"/);
+  assert.match(html, /data-rollup-status-id="now"/);
+  assert.doesNotMatch(html, />Test Rider</);
+});
+
 test("renderVisualIdentifierHtml keeps compact rollups in horse time order in walk order", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
-  const rollup = html.slice(html.indexOf('<span class="rollup-row rollup-row--now">'), html.indexOf("</span></div>", html.indexOf('<span class="rollup-row rollup-row--now">')));
 
   assert.match(html, /rollup-cell rollup-cell--horse">LongHorseName/);
   assert.match(html, /rollup-cell rollup-cell--time">8:55A/);
@@ -112,10 +151,7 @@ test("renderVisualIdentifierHtml keeps compact rollups in horse time order in wa
   assert.match(html, /rollup-cell rollup-cell--in">In: 15m/);
   assert.match(html, /rollup-cell rollup-cell--walk">Walk: 2m/);
   assert.doesNotMatch(html, /epill__state/);
-  assert.ok(rollup.indexOf("rollup-cell--horse") < rollup.indexOf("rollup-cell--time"));
-  assert.ok(rollup.indexOf("rollup-cell--time") < rollup.indexOf("rollup-cell--order"));
-  assert.ok(rollup.indexOf("rollup-cell--order") < rollup.indexOf("In: 15m"));
-  assert.ok(rollup.indexOf("In: 15m") < rollup.indexOf("Walk: 2m"));
+  assert.match(html, /rollup-row--now[\s\S]*rollup-cell--horse[\s\S]*rollup-cell--time[\s\S]*rollup-cell--order[\s\S]*In: 15m[\s\S]*Walk: 2m/);
 });
 
 test("renderVisualIdentifierHtml locks rollup table widths and shared radius", () => {
@@ -128,6 +164,14 @@ test("renderVisualIdentifierHtml locks rollup table widths and shared radius", (
   assert.doesNotMatch(html, /\.rollup-row[\s\S]*?border-radius: 999px;/);
 });
 
+test("renderVisualIdentifierHtml gives outlined token treatments horizontal padding", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /\.token--column, \.token--mono_text, \.token--tiny_text, \.token--eyebrow \{/);
+  assert.match(html, /padding: 3px 7px;/);
+  assert.match(html, /border-radius: var\(--token-radius\);/);
+});
+
 test("renderVisualIdentifierHtml preserves fixed cells when row values are empty", () => {
   const payload = JSON.parse(JSON.stringify(contract));
   payload.sample_rows.push({
@@ -138,7 +182,7 @@ test("renderVisualIdentifierHtml preserves fixed cells when row values are empty
     class_type: "",
     status: "",
     metric: "",
-    rollups: [{ horse: "Darcy", time: "10:45A", order: "2/22", in: "40m", walk: "2m", status: "UPC" }],
+    rollups: [{ horse: "Darcy", rider: "Hidden Rider", time: "10:45A", order: "2/22", in: "40m", walk: "2m", status: "UPC" }],
   });
 
   const html = renderVisualIdentifierHtml(buildPreviewModel(payload));
@@ -169,7 +213,15 @@ test("renderVisualIdentifierHtml includes a time-only view using the same row da
   assert.match(html, /time-line/);
   assert.match(html, /ring-num-col/);
   assert.match(html, /ring-token/);
+  assert.match(html, /class-num-token/);
   assert.match(html, /--token-radius/);
   assert.match(html, /R6/);
   assert.match(html, /Ring 6/);
+});
+
+test("renderVisualIdentifierHtml places compact schedule views before identifier reference", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.ok(html.indexOf('<section class="ring-card">') < html.indexOf("<h2>Status Language</h2>"));
+  assert.ok(html.indexOf('<section class="time-card">') < html.indexOf("<h2>Status Language</h2>"));
 });

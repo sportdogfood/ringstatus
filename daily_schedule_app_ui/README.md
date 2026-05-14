@@ -44,13 +44,13 @@ node .\daily_schedule_app_ui\build_visual_identifier_preview.js
 
 ## Current Display Rules
 
-Ring view class rows keep this strict six-column shape:
+Ring view class rows keep this strict seven-column shape:
 
 ```text
-time | class_number | class_name | class_type | status | trips
+time | ring | class_number | class_name | class_type | status | trips
 ```
 
-Time view rows reuse the same data and add only the ring abbreviation:
+Time view rows reuse the same row and rollup display:
 
 ```text
 time | ring | class_number | class_name | class_type | status | trips
