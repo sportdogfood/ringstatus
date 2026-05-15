@@ -42,7 +42,7 @@ Locked compact schedule display scope:
 SCHEDULE_DISPLAY_SCOPE.md
 ```
 
-Use this scope before creating any schedule-by-ring, schedule-by-time, filtered, modal, or detail display. The row skeleton, token geometry, rollup geometry, typography, and spacing must remain identical across every surface.
+Use this scope before creating any schedule-by-ring, schedule-by-time, filtered, modal, detail, search, or bottom-nav display. The row skeleton, token geometry, rollup geometry, typography, and spacing must remain identical across every surface. The locked bottom nav is `START | PRO | HORSES`; `FOCUS`, `TIME`, and `THREADS` live inside Start.
 
 Build it with:
 

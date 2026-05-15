@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-05-15T14:06:14.444Z",
+    "generated_at": "2026-05-15T14:47:13.511Z",
     "contract_version": "2026-05-13.v0.1",
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow."
   },

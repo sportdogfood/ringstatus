@@ -39,6 +39,245 @@ The preview builder is the current implementation reference. This document recor
 
 ## Views
 
+## Bottom Navigation
+
+The app uses a fixed bottom navigation to define the primary screens. These destinations are locked because they map to the schedule skeletons and scoped variants already defined here.
+
+Bottom nav order:
+
+```text
+START | PRO | HORSES
+```
+
+Rules:
+
+- Bottom nav changes the primary screen, not the row styling.
+- Every destination that renders schedule rows must reuse the locked schedule skeleton.
+- Do not create a separate visual language for Start, Pro, Horses, Start subviews, modals, filtered rows, or drilldowns.
+- Status controls, ring rails, horse rails, AM/PM/1UP quick filters, and the Team toggle remain in-page controls; they are not bottom nav items.
+- Flyups/modals are not wired yet, but their future schedule content must reuse the same class row and trip rollup components.
+
+### START
+
+Default screen.
+
+Purpose:
+
+```text
+device session start / endpoint trigger hub
+```
+
+Primary display:
+
+```text
+show context -> start/restart session -> endpoint trigger buttons
+```
+
+Start is the entry point for beginning a user device session.
+
+Start session behavior:
+
+- `Start Session` starts a new session on the user's device.
+- Starting a session pulls the needed show/app details from the required endpoint(s).
+- Pulled details are saved to device memory for 7 days.
+- This device memory must survive closing the tab in Apple Edge; do not rely on tab-only state.
+- Starting a session sends a webhook back to RingStatus.
+- Once a session is active, a `Restart Session` button appears.
+- `Restart Session` starts a new session again, refreshes device memory, and sends the session webhook again.
+
+Start trigger buttons:
+
+- Other buttons on Start act as endpoint triggers.
+- A trigger button pulls its required endpoint first.
+- After the endpoint response is available and device memory is updated as needed, the user is sent to the designated page/subview.
+- Trigger buttons should not navigate to a stale page before the endpoint pull completes.
+- Trigger buttons should not change the locked row skeleton used by the destination.
+
+Start header/context should show the current show/session identity, for example:
+
+```text
+CRT Daily Show
+sid 200000054 | 2026-03-15
+generated 2026-03-15T22:30:04-04:00
+```
+
+Start contains these subviews/sections:
+
+```text
+FOCUS
+TIME
+THREADS
+```
+
+These are not bottom nav destinations. They live inside Start.
+
+#### FOCUS
+
+Purpose:
+
+```text
+what you need to know now
+```
+
+Primary display:
+
+```text
+highest-priority current context -> locked class rows -> related trip rollups -> active horse/context detail when needed
+```
+
+Focus is a dedicated now-only screen. It should reduce the app to the immediate operational context: current class, next class, active horse/trip matches, first-up items, alerts that matter now, or thread/context items that require current attention.
+
+Focus rules:
+
+- Focus is not the full schedule.
+- Focus is not the horse roster.
+- Focus is not the alerts feed.
+- Focus is a filtered/current attention surface.
+- Any schedule row inside Focus must use the locked class row and trip rollup skeleton.
+- Active-horse-detail may appear in Focus, but it is app-wide context display, not the editable HORSES profile UI.
+
+#### TIME
+
+Purpose:
+
+```text
+schedule sorted by time across all rings
+```
+
+Primary display:
+
+```text
+time-sorted class rows -> trip rollups
+```
+
+This screen uses Schedule By Time exactly as defined below. It must not use different token padding, class number styling, class type styling, time styling, or rollup styling.
+
+#### THREADS
+
+Purpose:
+
+```text
+saved context / comments / outbound share
+```
+
+Primary display:
+
+```text
+saved schedule context -> related class rows -> related trip rollups -> attached comments
+```
+
+Threads are saved by long-pressing a screen/context inside Start or elsewhere. Threads may originate from Start, Time, Schedule, Horses, Pro, selected ring, selected class, selected trip rollup, selected rider, selected group, or alerts context.
+
+Thread rules:
+
+- A Thread is saved by user action; it is not an automatic notification.
+- A Thread can carry user comments.
+- A Thread can include an email-out action connected only to the user's mobile device flow.
+- Any schedule records inside a Thread must use the same class row and trip rollup components.
+- Thread detail must not introduce a different schedule table style.
+
+### PRO
+
+Purpose:
+
+```text
+full schedule by ring
+```
+
+Primary display:
+
+```text
+ring card -> class cards -> trip rollups
+```
+
+This screen uses Schedule By Ring exactly as defined below. Ring rail buttons act as horizontal anchors, not data filters.
+
+### HORSES
+
+Purpose:
+
+```text
+horse scoped schedule
+```
+
+Primary display:
+
+```text
+horse filter rail/search -> matching full class rows -> related trip rollups
+```
+
+Horses is the primary team-related screen for showing only rows with related trip rollups and then narrowing by horse. It must still show the full class context: time, ring, class_number, class_name, class_type, status band, and trip rollups.
+
+Rows without related trip rollups can be hidden on this screen, but the rows that remain must keep the same skeleton.
+
+### ALERTS
+
+Alerts are not notifications.
+
+Alerts are an endpoint feed rendered in the app:
+
+```text
+alerts endpoint -> alerts feed screen/surface -> alert rows/actions
+```
+
+Alerts may be reachable from Start, Thread, or a secondary surface. They are not currently a locked bottom-nav destination.
+
+Alert rules:
+
+- Do not treat alerts as device push notifications.
+- The app renders alerts generated by the backend/feed.
+- Alert rows may include an SMS out button.
+- The SMS out button assists setup to the user's mobile device; it does not silently send hidden notifications.
+- Alert rows may include a subscribe icon.
+- The subscribe icon acts as an email subscribe request.
+- Upon receipt, RingStatus backend applies the subscription state.
+- If the user is already receiving the alert/email subscription, the subscribe icon must already appear active.
+- If an alert includes schedule context, that context must render with the same locked class row and trip rollup skeleton.
+
+### Datasets That May Need Views
+
+These datasets must be acknowledged in the app model even if they do not become bottom-nav destinations:
+
+```text
+RIDERS
+GROUPS
+CLASSES
+RINGS
+RESULTS
+```
+
+Potential roles:
+
+- RIDERS: searchable/filterable person scope, likely related to Horses and Thread.
+- GROUPS: class grouping scope, useful for schedule drilldown and status rollup.
+- CLASSES: class-number/class-name scope, useful for detail modal and direct lookup.
+- RINGS: schedule anchor scope, currently represented by the Pro screen and ring rail.
+- RESULTS: future completed/results scope; not required for the current skeleton but must not force a separate row style later.
+
+If any of these become a page, modal, search result, or filter target, schedule rows inside them must reuse the same locked class row and trip rollup skeleton.
+
+### Non-Nav Surfaces
+
+These are not bottom nav destinations:
+
+```text
+FOCUS
+TIME
+THREADS
+NOW / NEXT / DONE
+1UP / AM / PM
+Team toggle
+ring rail
+horse rail
+search / lookup
+detail modal
+alerts feed
+status legend
+settings/help
+```
+
+These remain controls, overlays, or secondary surfaces inside the primary destinations.
+
 ### Schedule By Ring
 
 The Ring view groups classes under a ring card. The ring card header shows:
