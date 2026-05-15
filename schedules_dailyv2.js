@@ -41,6 +41,8 @@ const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const FETCH_CONCURRENCY = Math.max(1, Number(process.env.FETCH_CONCURRENCY || "4"));
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
+const HOTPATCH_APP_SHOW_ID = strOrNull(process.env.HOTPATCH_APP_SHOW_ID);
+const HOTPATCH_APP_SQL_DATE = toIsoDateOnly(process.env.HOTPATCH_APP_SQL_DATE);
 const SYNC_ACTIVE_GROUPS_FROM_SCHEDULE = String(process.env.SYNC_ACTIVE_GROUPS_FROM_SCHEDULE || "0") === "1";
 const VALID_DOW_RAW = new Set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
 const VALID_MODES = new Set(["DAY", "NIGHT", "OVERNIGHT"]);
@@ -637,6 +639,28 @@ async function fetchJson(url, audit = {}) {
     transport: fetched.transport,
   });
   return json;
+}
+
+function extractPayloadShowId(payload) {
+  return numOrNull(pickFirst(payload?.show?.show_id, payload?.show_id));
+}
+
+function extractPayloadShowDate(payload) {
+  return toIsoDateOnly(pickFirst(payload?.show_date, payload?.showDate, payload?.show?.show_date));
+}
+
+function assertSchedulePayloadScope(payload, scope, source) {
+  const expectedShowId = numOrNull(scope?.app_show_idv2);
+  const expectedDate = toIsoDateOnly(scope?.app_sql_datev2);
+  const payloadShowId = extractPayloadShowId(payload);
+  const payloadDate = extractPayloadShowDate(payload);
+
+  if (expectedShowId !== null && payloadShowId !== null && payloadShowId !== expectedShowId) {
+    throw new Error(`schedule_payload_show_id_conflict source=${source} expected=${expectedShowId} actual=${payloadShowId}`);
+  }
+  if (expectedDate && payloadDate && payloadDate !== expectedDate) {
+    throw new Error(`schedule_payload_show_date_conflict source=${source} expected=${expectedDate} actual=${payloadDate}`);
+  }
 }
 
 function escapeRegExp(value) {
@@ -1250,6 +1274,24 @@ function candidateDateFromMode(rawSqlDate, mode) {
   return strictSqlDate(rawSqlDate, "sql_date");
 }
 
+function hasHotpatchScopeOverride() {
+  return HOTPATCH_APP_SHOW_ID || HOTPATCH_APP_SQL_DATE;
+}
+
+function assertHotpatchScopeMatches(baseContext) {
+  if (!hasHotpatchScopeOverride()) return;
+  if (!HOTPATCH_APP_SHOW_ID || !HOTPATCH_APP_SQL_DATE) {
+    throw new Error("HOTPATCH_APP_SHOW_ID and HOTPATCH_APP_SQL_DATE must be set together");
+  }
+  const showId = Number(HOTPATCH_APP_SHOW_ID);
+  if (!Number.isFinite(showId)) {
+    throw new Error(`HOTPATCH_APP_SHOW_ID must be numeric: ${HOTPATCH_APP_SHOW_ID}`);
+  }
+  if (showId !== baseContext.app_show_idv2) {
+    throw new Error(`HOTPATCH_APP_SHOW_ID mismatch: heartbeat=${baseContext.app_show_idv2} override=${showId}`);
+  }
+}
+
 function isValidAppSqlDate(candidateDate, scheduleInfo) {
   if (scheduleInfo.valid_dates.length) {
     return scheduleInfo.valid_dates.includes(candidateDate);
@@ -1267,13 +1309,18 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
   const scheduleInfo = extractScheduleDefaultInfo(emptyPayload);
   const candidateAppSqlDate = candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode);
   const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
-  const setToDefault = !validCandidate;
-  const finalAppSqlDate = setToDefault
+  assertHotpatchScopeMatches(baseContext);
+  const setToDefault = hasHotpatchScopeOverride() ? false : !validCandidate;
+  const finalAppSqlDate = hasHotpatchScopeOverride()
+    ? HOTPATCH_APP_SQL_DATE
+    : setToDefault
     ? scheduleInfo.default_app_sql_date_is
     : candidateAppSqlDate;
   const finalAppDowRaw = strictDowRaw(dowName(dayOfWeekUtc(finalAppSqlDate)), "derived_app_dow_raw");
   const shiftedToNextDay = baseContext.mode === "NIGHT";
-  const appSqlDateSource = setToDefault
+  const appSqlDateSource = hasHotpatchScopeOverride()
+    ? "hotpatch_env_override"
+    : setToDefault
     ? "default_day"
     : baseContext.mode === "NIGHT"
     ? "night_shift"
@@ -1305,8 +1352,9 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
 
 function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
   const candidateAppSqlDate = candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode);
+  assertHotpatchScopeMatches(baseContext);
   const finalAppSqlDate = strictSqlDate(
-    pickFirst(baseContext.current_app_sql_date, candidateAppSqlDate),
+    pickFirst(HOTPATCH_APP_SQL_DATE, baseContext.current_app_sql_date, candidateAppSqlDate),
     "app_sql_date"
   );
   const inferredAppDowRaw = dowName(dayOfWeekUtc(finalAppSqlDate));
@@ -1315,7 +1363,9 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
     "app_dow_raw"
   );
   const currentSource = strOrNull(baseContext.current_app_sql_date_source);
-  const setToDefault = currentSource === "default_day"
+  const setToDefault = hasHotpatchScopeOverride()
+    ? false
+    : currentSource === "default_day"
     ? true
     : boolValue(baseContext.current_set_to_default_app_sql_date);
   const shiftedToNextDay = baseContext.mode === "NIGHT"
@@ -1325,7 +1375,7 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
     pickFirst(baseContext.current_default_app_sql_date_is, finalAppSqlDate),
     "default_app_sql_date_is"
   );
-  const appSqlDateSource = currentSource || (
+  const appSqlDateSource = hasHotpatchScopeOverride() ? "hotpatch_env_override" : currentSource || (
     setToDefault
       ? "default_day"
       : baseContext.mode === "NIGHT"
@@ -1951,6 +2001,11 @@ async function runDaily() {
     if (!datedFallback.ok) throw error;
     datedPayload = datedFallback.payload;
   }
+  assertSchedulePayloadScope(
+    datedPayload,
+    scope,
+    datedFallback?.ok ? "dated_schedule_fallback" : "dated_schedule"
+  );
 
   const datedResult = {
     ok: true,

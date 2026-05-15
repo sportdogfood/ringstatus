@@ -5,6 +5,7 @@ const {
   buildPreviewModel,
   normalizeStatusTerm,
   renderVisualIdentifierHtml,
+  renderRails,
 } = require("./build_visual_identifier_preview");
 
 const contract = {
@@ -96,6 +97,7 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /class-name-col/);
   assert.match(html, /class-type-col/);
   assert.match(html, /status-col/);
+  assert.match(html, /status-token state state--now/);
   assert.match(html, /trips-col/);
   assert.match(html, /cell-token/);
   assert.match(html, /trip-metric/);
@@ -103,6 +105,27 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /time-mark--now/);
   assert.match(html, /rollup-row/);
   assert.doesNotMatch(html, /epill__sep/);
+});
+
+test("renderVisualIdentifierHtml uses normalized state styling for row status tokens", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /class="cell-token status-token state state--now">NOW/);
+  assert.match(html, /\.state \{[\s\S]*border-radius: var\(--token-radius\);/);
+  assert.match(html, /\.status-token \{[\s\S]*min-width: 44px;[\s\S]*border-radius: var\(--token-radius\);/);
+});
+
+test("renderVisualIdentifierHtml keeps class number width identical in ring and time rows", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+  const classLineCss = html.includes(".class-line {") ? html.slice(html.indexOf(".class-line {"), html.indexOf("}", html.indexOf(".class-line {")) + 1) : "";
+  const timeLineCss = html.slice(html.indexOf(".time-line {"), html.indexOf("}", html.indexOf(".time-line {")) + 1);
+
+  assert.match(html, /--schedule-cols: 6ch 4\.5ch 4ch minmax\(0, 1fr\) 4ch 6\.75ch 6ch;/);
+  assert.match(html, /\.schedule-line \{[\s\S]*grid-template-columns: var\(--schedule-cols\);/);
+  assert.match(html, /schedule-line class-line/);
+  assert.match(html, /schedule-line time-line/);
+  assert.doesNotMatch(classLineCss, /grid-template-columns:/);
+  assert.doesNotMatch(timeLineCss, /grid-template-columns:/);
 });
 
 test("renderVisualIdentifierHtml renders identical rollup rows under ring and time views", () => {
@@ -130,6 +153,7 @@ test("renderVisualIdentifierHtml adds band classes and filter-ready row attribut
   assert.match(html, /data-riders="Test Rider"/);
   assert.match(html, /\.schedule-band--now::before/);
   assert.match(html, /rgba\(73, 209, 125, \.34\)/);
+  assert.match(html, /background: transparent;/);
 });
 
 test("renderVisualIdentifierHtml keeps horse and rider filter data on hidden rollup attributes", () => {
@@ -156,12 +180,13 @@ test("renderVisualIdentifierHtml keeps compact rollups in horse time order in wa
 
 test("renderVisualIdentifierHtml locks rollup table widths and shared radius", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+  const rollupCss = html.slice(html.indexOf(".rollup-row {"), html.indexOf(".rollup-cell {"));
 
   assert.match(html, /grid-template-columns: 9ch 6ch 5ch 5ch 6ch;/);
   assert.match(html, /border-radius: var\(--token-radius\);/);
   assert.match(html, /max-width: 9ch;/);
   assert.match(html, /text-overflow: ellipsis;/);
-  assert.doesNotMatch(html, /\.rollup-row[\s\S]*?border-radius: 999px;/);
+  assert.doesNotMatch(rollupCss, /border-radius: 999px;/);
 });
 
 test("renderVisualIdentifierHtml gives outlined token treatments horizontal padding", () => {
@@ -224,4 +249,24 @@ test("renderVisualIdentifierHtml places compact schedule views before identifier
 
   assert.ok(html.indexOf('<section class="ring-card">') < html.indexOf("<h2>Status Language</h2>"));
   assert.ok(html.indexOf('<section class="time-card">') < html.indexOf("<h2>Status Language</h2>"));
+});
+
+test("renderRails creates ring anchors and horse filters from row data", () => {
+  const rails = renderRails(buildPreviewModel(contract));
+
+  assert.match(rails, /data-rail-row="rings"/);
+  assert.match(rails, /data-ring-anchor="R6"/);
+  assert.match(rails, /data-rail-row="horses"/);
+  assert.match(rails, /data-horse-filter="LongHorseName"/);
+});
+
+test("renderVisualIdentifierHtml keeps ring rail as anchors and horse rail as filter behavior", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /data-ring-anchor="R6"/);
+  assert.match(html, /scrollIntoView/);
+  assert.match(html, /data-horse-filter="LongHorseName"/);
+  assert.match(html, /body\.dataset\.horseFilter/);
+  assert.match(html, /band\.classList\.toggle\("is-filter-hidden", !bandMatches\)/);
+  assert.match(html, /rollup\.classList\.toggle\("is-filter-hidden", !rollupMatches\)/);
 });

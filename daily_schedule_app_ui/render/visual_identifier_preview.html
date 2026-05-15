@@ -27,6 +27,7 @@
       --red: #ff8d9a;
       --red-bg: rgba(255, 141, 154, .18);
       --token-radius: 6px;
+      --schedule-cols: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 6.75ch 6ch;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -65,7 +66,7 @@
     .scope-token {
       border: 1px solid var(--line);
       background: var(--panel);
-      border-radius: 999px;
+      border-radius: var(--token-radius);
       color: var(--muted);
       font-weight: 650;
       padding: 7px 10px;
@@ -77,6 +78,40 @@
       gap: 12px;
       margin-top: 12px;
       align-items: start;
+    }
+    .rail-stack {
+      display: grid;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .rail-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 2px 0 4px;
+      scrollbar-width: thin;
+    }
+    .rail-button {
+      flex: 0 0 auto;
+      min-height: 25px;
+      border-radius: var(--token-radius);
+      border: 1px solid rgba(154, 163, 180, .18);
+      background: rgba(154, 163, 180, .08);
+      color: var(--muted);
+      padding: 4px 8px;
+      font: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .rail-button.is-active {
+      color: var(--text);
+      border-color: rgba(143, 184, 255, .34);
+    }
+    .rail-row[data-rail-row="horses"] .rail-button.is-active {
+      border-color: rgba(73, 209, 125, .34);
+      color: #b6f0c8;
     }
     .panel, .identifier-section, .ring-card, .time-card {
       background: var(--panel);
@@ -145,7 +180,7 @@
       justify-content: center;
       min-height: 21px;
       min-width: 30px;
-      border-radius: 999px;
+      border-radius: var(--token-radius);
       padding: 3px 7px;
       font-size: 11px;
       font-weight: 700;
@@ -166,7 +201,7 @@
       min-width: 44px;
       min-height: 22px;
       padding: 3px 8px;
-      border-radius: 999px;
+      border-radius: var(--token-radius);
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0;
@@ -265,27 +300,25 @@
     }
     .schedule-band--now::before {
       border-color: rgba(73, 209, 125, .34);
-      background: rgba(73, 209, 125, .035);
+      background: transparent;
     }
     .schedule-band--next::before {
       border-color: rgba(143, 184, 255, .18);
-      background: rgba(143, 184, 255, .025);
+      background: transparent;
     }
-    .class-line {
+    .schedule-band.is-filter-hidden,
+    .rollup-row.is-filter-hidden {
+      display: none;
+    }
+    .schedule-line {
       display: grid;
-      grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
+      grid-template-columns: var(--schedule-cols);
       gap: 3px;
       align-items: center;
       min-height: 38px;
       padding: 7px 8px;
     }
     .time-line {
-      display: grid;
-      grid-template-columns: 6ch 4.5ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
-      gap: 3px;
-      align-items: center;
-      min-height: 38px;
-      padding: 7px 8px;
       border-bottom: 1px solid var(--line);
     }
     .time-line:last-child { border-bottom: 0; }
@@ -383,6 +416,14 @@
       overflow: hidden;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
+    }
+    .status-token {
+      width: auto;
+      min-width: 44px;
+      padding: 3px 8px;
+      border-radius: var(--token-radius);
+      font-size: 11px;
+      font-weight: 700;
     }
     .cell-token,
     .class-num-token,
@@ -506,14 +547,6 @@
       .token-swatch { border-right: 0; }
     }
     @media (max-width: 430px) {
-      .class-line {
-        grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
-        gap: 3px;
-      }
-      .time-line {
-        grid-template-columns: 6ch 4.5ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
-        gap: 3px;
-      }
       .rollup-line { padding-left: 8px; }
     }
   </style>
@@ -523,10 +556,16 @@
     <header class="topbar">
       <div>
         <h1>Visual Identifier Preview</h1>
-        <div class="subtle">Generated 2026-05-14T23:58:36.037Z from contract 2026-05-13.v0.1</div>
+        <div class="subtle">Generated 2026-05-15T00:28:34.822Z from contract 2026-05-13.v0.1</div>
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
+
+    
+    <section class="rail-stack" aria-label="Schedule navigation and horse filters">
+      <div class="rail-row" data-rail-row="rings" aria-label="Ring anchors"><button class="rail-button is-active" type="button" data-ring-anchor="" aria-pressed="true">All</button><button class="rail-button" type="button" data-ring-anchor="R6" aria-pressed="false">R6</button></div>
+      <div class="rail-row" data-rail-row="horses" aria-label="Horse filters"><button class="rail-button is-active" type="button" data-horse-filter="" aria-pressed="true">All Horses</button><button class="rail-button" type="button" data-horse-filter="Knox" aria-pressed="false">Knox</button><button class="rail-button" type="button" data-horse-filter="Poptart" aria-pressed="false">Poptart</button><button class="rail-button" type="button" data-horse-filter="Darcy" aria-pressed="false">Darcy</button><button class="rail-button" type="button" data-horse-filter="Calgary" aria-pressed="false">Calgary</button></div>
+    </section>
 
     <div class="preview-grid">
       <div class="right-stack">
@@ -537,13 +576,13 @@
           </div>
           
     <article class="class-card schedule-band schedule-band--now" data-ring="R6" data-group="Small Pony Hunter" data-status="NOW" data-status-id="now" data-class-type="HUN" data-class-number="411" data-horses="Knox|Poptart" data-riders="Heap|Michaels">
-      <div class="class-line">
+      <div class="schedule-line class-line">
         <div class="time-col c-time"><span class="time-mark time-mark--now" aria-hidden="true"></span><span>8:40A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">411</span></div>
         <div class="class-name-col c-name">Small Pony Hunter U/S</div>
         <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-        <div class="status-col"><span class="cell-token state state--now">NOW</span></div>
+        <div class="status-col"><span class="cell-token status-token state state--now">NOW</span></div>
         <div class="trips-col"><span class="trip-metric">1/15</span></div>
       </div>
       <div class="rollup-line">
@@ -563,13 +602,13 @@
     </span></div>
     </article>
     <article class="class-card schedule-band schedule-band--next" data-ring="R6" data-group="ASPCA Maclay" data-status="NEXT" data-status-id="next" data-class-type="EQ" data-class-number="570" data-horses="Darcy" data-riders="Rizzo">
-      <div class="class-line">
+      <div class="schedule-line class-line">
         <div class="time-col c-time"><span class="time-mark time-mark--next" aria-hidden="true"></span><span>10:00A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">570</span></div>
         <div class="class-name-col c-name">ASPCA Maclay</div>
         <div class="class-type-col"><span class="cell-token c-type">EQ</span></div>
-        <div class="status-col"><span class="cell-token state state--next">NEXT</span></div>
+        <div class="status-col"><span class="cell-token status-token state state--next">NEXT</span></div>
         <div class="trips-col"><span class="trip-metric">0/8</span></div>
       </div>
       <div class="rollup-line">
@@ -582,25 +621,25 @@
     </span></div>
     </article>
     <article class="class-card schedule-band schedule-band--following" data-ring="R6" data-group="Junior &amp; Amateur Jumpers" data-status="FOL" data-status-id="following" data-class-type="JMP" data-class-number="742" data-horses="" data-riders="">
-      <div class="class-line">
+      <div class="schedule-line class-line">
         <div class="time-col c-time"><span class="time-mark time-mark--following" aria-hidden="true"></span><span>10:30A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">742</span></div>
         <div class="class-name-col c-name">1.10m Junior &amp; Amateur Jumpers</div>
         <div class="class-type-col"><span class="cell-token c-type">JMP</span></div>
-        <div class="status-col"><span class="cell-token state state--following">FOL</span></div>
+        <div class="status-col"><span class="cell-token status-token state state--following">FOL</span></div>
         <div class="trips-col"><span class="trip-metric">0/18</span></div>
       </div>
       
     </article>
     <article class="class-card schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-class-number="644" data-horses="Calgary" data-riders="Baker">
-      <div class="class-line">
+      <div class="schedule-line class-line">
         <div class="time-col c-time"><span class="time-mark time-mark--completed" aria-hidden="true"></span><span>7:45A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">644</span></div>
         <div class="class-name-col c-name">Modified Hunter 2'/2'6&quot;</div>
         <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-        <div class="status-col"><span class="cell-token state state--completed">DONE</span></div>
+        <div class="status-col"><span class="cell-token status-token state state--completed">DONE</span></div>
         <div class="trips-col"><span class="trip-metric">14/14</span></div>
       </div>
       <div class="rollup-line">
@@ -620,13 +659,13 @@
             <div class="ring-walk"></div>
           </div>
           
-    <article class="time-line schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-class-number="644" data-horses="Calgary" data-riders="Baker">
+    <article class="schedule-line time-line schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-class-number="644" data-horses="Calgary" data-riders="Baker">
       <div class="time-col c-time"><span class="time-mark time-mark--completed" aria-hidden="true"></span><span>7:45A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">644</span></div>
       <div class="class-name-col c-name">Modified Hunter 2'/2'6&quot;</div>
       <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-      <div class="status-col"><span class="cell-token state state--completed">DONE</span></div>
+      <div class="status-col"><span class="cell-token status-token state state--completed">DONE</span></div>
       <div class="trips-col"><span class="trip-metric">14/14</span></div>
       <div class="time-rollup-cell">
     <span class="rollup-row rollup-row--completed" data-horse="Calgary" data-rider="Baker" data-rollup-status="DONE" data-rollup-status-id="completed">
@@ -637,13 +676,13 @@
       <span class="rollup-cell rollup-cell--walk">Walk: <span class="cell-empty" aria-hidden="true"></span></span>
     </span></div>
     </article>
-    <article class="time-line schedule-band schedule-band--now" data-ring="R6" data-group="Small Pony Hunter" data-status="NOW" data-status-id="now" data-class-type="HUN" data-class-number="411" data-horses="Knox|Poptart" data-riders="Heap|Michaels">
+    <article class="schedule-line time-line schedule-band schedule-band--now" data-ring="R6" data-group="Small Pony Hunter" data-status="NOW" data-status-id="now" data-class-type="HUN" data-class-number="411" data-horses="Knox|Poptart" data-riders="Heap|Michaels">
       <div class="time-col c-time"><span class="time-mark time-mark--now" aria-hidden="true"></span><span>8:40A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">411</span></div>
       <div class="class-name-col c-name">Small Pony Hunter U/S</div>
       <div class="class-type-col"><span class="cell-token c-type">HUN</span></div>
-      <div class="status-col"><span class="cell-token state state--now">NOW</span></div>
+      <div class="status-col"><span class="cell-token status-token state state--now">NOW</span></div>
       <div class="trips-col"><span class="trip-metric">1/15</span></div>
       <div class="time-rollup-cell">
     <span class="rollup-row rollup-row--now" data-horse="Knox" data-rider="Heap" data-rollup-status="NOW" data-rollup-status-id="now">
@@ -661,13 +700,13 @@
       <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
     </span></div>
     </article>
-    <article class="time-line schedule-band schedule-band--next" data-ring="R6" data-group="ASPCA Maclay" data-status="NEXT" data-status-id="next" data-class-type="EQ" data-class-number="570" data-horses="Darcy" data-riders="Rizzo">
+    <article class="schedule-line time-line schedule-band schedule-band--next" data-ring="R6" data-group="ASPCA Maclay" data-status="NEXT" data-status-id="next" data-class-type="EQ" data-class-number="570" data-horses="Darcy" data-riders="Rizzo">
       <div class="time-col c-time"><span class="time-mark time-mark--next" aria-hidden="true"></span><span>10:00A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">570</span></div>
       <div class="class-name-col c-name">ASPCA Maclay</div>
       <div class="class-type-col"><span class="cell-token c-type">EQ</span></div>
-      <div class="status-col"><span class="cell-token state state--next">NEXT</span></div>
+      <div class="status-col"><span class="cell-token status-token state state--next">NEXT</span></div>
       <div class="trips-col"><span class="trip-metric">0/8</span></div>
       <div class="time-rollup-cell">
     <span class="rollup-row rollup-row--upcoming" data-horse="Darcy" data-rider="Rizzo" data-rollup-status="UPC" data-rollup-status-id="upcoming">
@@ -678,13 +717,13 @@
       <span class="rollup-cell rollup-cell--walk">Walk: 2m</span>
     </span></div>
     </article>
-    <article class="time-line schedule-band schedule-band--following" data-ring="R6" data-group="Junior &amp; Amateur Jumpers" data-status="FOL" data-status-id="following" data-class-type="JMP" data-class-number="742" data-horses="" data-riders="">
+    <article class="schedule-line time-line schedule-band schedule-band--following" data-ring="R6" data-group="Junior &amp; Amateur Jumpers" data-status="FOL" data-status-id="following" data-class-type="JMP" data-class-number="742" data-horses="" data-riders="">
       <div class="time-col c-time"><span class="time-mark time-mark--following" aria-hidden="true"></span><span>10:30A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">742</span></div>
       <div class="class-name-col c-name">1.10m Junior &amp; Amateur Jumpers</div>
       <div class="class-type-col"><span class="cell-token c-type">JMP</span></div>
-      <div class="status-col"><span class="cell-token state state--following">FOL</span></div>
+      <div class="status-col"><span class="cell-token status-token state state--following">FOL</span></div>
       <div class="trips-col"><span class="trip-metric">0/18</span></div>
       
     </article>
@@ -944,5 +983,49 @@
       </div>
     </div>
   </main>
+  <script>
+    (() => {
+      const setActive = (buttons, activeButton) => {
+        buttons.forEach((button) => {
+          const active = button === activeButton;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      };
+
+      const ringButtons = [...document.querySelectorAll("[data-ring-anchor]")];
+      ringButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const ring = button.dataset.ringAnchor;
+          setActive(ringButtons, button);
+          const target = ring
+            ? document.querySelector(`.schedule-band[data-ring="${CSS.escape(ring)}"]`)
+            : document.querySelector(".right-stack");
+          target?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      const horseButtons = [...document.querySelectorAll("[data-horse-filter]")];
+      const applyHorseFilter = (horse) => {
+        document.body.dataset.horseFilter = horse || "";
+        document.querySelectorAll(".schedule-band").forEach((band) => {
+          const horses = (band.dataset.horses || "").split("|").filter(Boolean);
+          const bandMatches = !horse || horses.includes(horse);
+          band.classList.toggle("is-filter-hidden", !bandMatches);
+          band.querySelectorAll(".rollup-row").forEach((rollup) => {
+            const rollupMatches = !horse || rollup.dataset.horse === horse;
+            rollup.classList.toggle("is-filter-hidden", !rollupMatches);
+          });
+        });
+      };
+
+      horseButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setActive(horseButtons, button);
+          applyHorseFilter(button.dataset.horseFilter);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

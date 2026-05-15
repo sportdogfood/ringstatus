@@ -193,13 +193,13 @@ function rowDataAttrs(row) {
 function renderSampleRow(row) {
   return `
     <article class="class-card ${rowBandClass(row)}" ${rowDataAttrs(row)}>
-      <div class="class-line">
+      <div class="schedule-line class-line">
         <div class="time-col c-time"><span class="time-mark time-mark--${htmlEscape(row.status_id || "unknown")}" aria-hidden="true"></span><span>${renderCellValue(row.time)}</span></div>
         <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
         <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
         <div class="class-name-col c-name">${renderCellValue(row.class_name)}</div>
         <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
-        <div class="status-col"><span class="cell-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
+        <div class="status-col"><span class="cell-token status-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
         <div class="trips-col"><span class="trip-metric">${renderCellValue(row.metric)}</span></div>
       </div>
       ${(row.rollups || []).length ? `<div class="rollup-line">${row.rollups.map(renderRollup).join("")}</div>` : ""}
@@ -208,16 +208,43 @@ function renderSampleRow(row) {
 
 function renderTimeRow(row) {
   return `
-    <article class="time-line ${rowBandClass(row)}" ${rowDataAttrs(row)}>
+    <article class="schedule-line time-line ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="time-col c-time"><span class="time-mark time-mark--${htmlEscape(row.status_id || "unknown")}" aria-hidden="true"></span><span>${renderCellValue(row.time)}</span></div>
       <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
       <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
       <div class="class-name-col c-name">${renderCellValue(row.class_name)}</div>
       <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
-      <div class="status-col"><span class="cell-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
+      <div class="status-col"><span class="cell-token status-token ${statusClass(row.status_id)}">${renderCellValue(row.status)}</span></div>
       <div class="trips-col"><span class="trip-metric">${renderCellValue(row.metric)}</span></div>
       ${(row.rollups || []).length ? `<div class="time-rollup-cell">${row.rollups.map(renderRollup).join("")}</div>` : ""}
     </article>`;
+}
+
+function uniqueValues(values) {
+  return [...new Set(values.filter((value) => !isBlank(value)).map((value) => String(value).trim()))];
+}
+
+function renderRailButton({ label, value, rail, active = false }) {
+  return `<button class="rail-button${active ? " is-active" : ""}" type="button" data-${rail}="${htmlEscape(value)}" aria-pressed="${active ? "true" : "false"}">${htmlEscape(label)}</button>`;
+}
+
+function renderRails(model) {
+  const ringValues = uniqueValues(model.sampleRows.map((row) => row.ring_abbrev || row.ring_number));
+  const horseValues = uniqueValues(model.sampleRows.flatMap((row) => (row.rollups || []).map((rollup) => rollup.horse || rollup.name)));
+  const ringButtons = [
+    renderRailButton({ label: "All", value: "", rail: "ring-anchor", active: true }),
+    ...ringValues.map((ring) => renderRailButton({ label: ring, value: ring, rail: "ring-anchor" })),
+  ].join("");
+  const horseButtons = [
+    renderRailButton({ label: "All Horses", value: "", rail: "horse-filter", active: true }),
+    ...horseValues.map((horse) => renderRailButton({ label: horse, value: horse, rail: "horse-filter" })),
+  ].join("");
+
+  return `
+    <section class="rail-stack" aria-label="Schedule navigation and horse filters">
+      <div class="rail-row" data-rail-row="rings" aria-label="Ring anchors">${ringButtons}</div>
+      <div class="rail-row" data-rail-row="horses" aria-label="Horse filters">${horseButtons}</div>
+    </section>`;
 }
 
 function renderVisualIdentifierHtml(model) {
@@ -225,6 +252,7 @@ function renderVisualIdentifierHtml(model) {
   const tokenGroups = model.tokenGroups.map(renderTokenGroup).join("");
   const ringRows = model.sampleRows.map(renderSampleRow).join("");
   const timeRows = model.timeRows.map(renderTimeRow).join("");
+  const rails = renderRails(model);
 
   return `<!doctype html>
 <html lang="en">
@@ -255,6 +283,7 @@ function renderVisualIdentifierHtml(model) {
       --red: #ff8d9a;
       --red-bg: rgba(255, 141, 154, .18);
       --token-radius: 6px;
+      --schedule-cols: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 6.75ch 6ch;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -293,7 +322,7 @@ function renderVisualIdentifierHtml(model) {
     .scope-token {
       border: 1px solid var(--line);
       background: var(--panel);
-      border-radius: 999px;
+      border-radius: var(--token-radius);
       color: var(--muted);
       font-weight: 650;
       padding: 7px 10px;
@@ -305,6 +334,40 @@ function renderVisualIdentifierHtml(model) {
       gap: 12px;
       margin-top: 12px;
       align-items: start;
+    }
+    .rail-stack {
+      display: grid;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .rail-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 2px 0 4px;
+      scrollbar-width: thin;
+    }
+    .rail-button {
+      flex: 0 0 auto;
+      min-height: 25px;
+      border-radius: var(--token-radius);
+      border: 1px solid rgba(154, 163, 180, .18);
+      background: rgba(154, 163, 180, .08);
+      color: var(--muted);
+      padding: 4px 8px;
+      font: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .rail-button.is-active {
+      color: var(--text);
+      border-color: rgba(143, 184, 255, .34);
+    }
+    .rail-row[data-rail-row="horses"] .rail-button.is-active {
+      border-color: rgba(73, 209, 125, .34);
+      color: #b6f0c8;
     }
     .panel, .identifier-section, .ring-card, .time-card {
       background: var(--panel);
@@ -373,7 +436,7 @@ function renderVisualIdentifierHtml(model) {
       justify-content: center;
       min-height: 21px;
       min-width: 30px;
-      border-radius: 999px;
+      border-radius: var(--token-radius);
       padding: 3px 7px;
       font-size: 11px;
       font-weight: 700;
@@ -394,7 +457,7 @@ function renderVisualIdentifierHtml(model) {
       min-width: 44px;
       min-height: 22px;
       padding: 3px 8px;
-      border-radius: 999px;
+      border-radius: var(--token-radius);
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0;
@@ -493,27 +556,25 @@ function renderVisualIdentifierHtml(model) {
     }
     .schedule-band--now::before {
       border-color: rgba(73, 209, 125, .34);
-      background: rgba(73, 209, 125, .035);
+      background: transparent;
     }
     .schedule-band--next::before {
       border-color: rgba(143, 184, 255, .18);
-      background: rgba(143, 184, 255, .025);
+      background: transparent;
     }
-    .class-line {
+    .schedule-band.is-filter-hidden,
+    .rollup-row.is-filter-hidden {
+      display: none;
+    }
+    .schedule-line {
       display: grid;
-      grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
+      grid-template-columns: var(--schedule-cols);
       gap: 3px;
       align-items: center;
       min-height: 38px;
       padding: 7px 8px;
     }
     .time-line {
-      display: grid;
-      grid-template-columns: 6ch 4.5ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
-      gap: 3px;
-      align-items: center;
-      min-height: 38px;
-      padding: 7px 8px;
       border-bottom: 1px solid var(--line);
     }
     .time-line:last-child { border-bottom: 0; }
@@ -611,6 +672,14 @@ function renderVisualIdentifierHtml(model) {
       overflow: hidden;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
+    }
+    .status-token {
+      width: auto;
+      min-width: 44px;
+      padding: 3px 8px;
+      border-radius: var(--token-radius);
+      font-size: 11px;
+      font-weight: 700;
     }
     .cell-token,
     .class-num-token,
@@ -734,14 +803,6 @@ function renderVisualIdentifierHtml(model) {
       .token-swatch { border-right: 0; }
     }
     @media (max-width: 430px) {
-      .class-line {
-        grid-template-columns: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch 5ch 6ch;
-        gap: 3px;
-      }
-      .time-line {
-        grid-template-columns: 6ch 4.5ch 3ch minmax(0, 1fr) 4ch 5ch 6ch;
-        gap: 3px;
-      }
       .rollup-line { padding-left: 8px; }
     }
   </style>
@@ -755,6 +816,8 @@ function renderVisualIdentifierHtml(model) {
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
+
+    ${rails}
 
     <div class="preview-grid">
       <div class="right-stack">
@@ -787,6 +850,50 @@ function renderVisualIdentifierHtml(model) {
       </div>
     </div>
   </main>
+  <script>
+    (() => {
+      const setActive = (buttons, activeButton) => {
+        buttons.forEach((button) => {
+          const active = button === activeButton;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      };
+
+      const ringButtons = [...document.querySelectorAll("[data-ring-anchor]")];
+      ringButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const ring = button.dataset.ringAnchor;
+          setActive(ringButtons, button);
+          const target = ring
+            ? document.querySelector(\`.schedule-band[data-ring="\${CSS.escape(ring)}"]\`)
+            : document.querySelector(".right-stack");
+          target?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      const horseButtons = [...document.querySelectorAll("[data-horse-filter]")];
+      const applyHorseFilter = (horse) => {
+        document.body.dataset.horseFilter = horse || "";
+        document.querySelectorAll(".schedule-band").forEach((band) => {
+          const horses = (band.dataset.horses || "").split("|").filter(Boolean);
+          const bandMatches = !horse || horses.includes(horse);
+          band.classList.toggle("is-filter-hidden", !bandMatches);
+          band.querySelectorAll(".rollup-row").forEach((rollup) => {
+            const rollupMatches = !horse || rollup.dataset.horse === horse;
+            rollup.classList.toggle("is-filter-hidden", !rollupMatches);
+          });
+        });
+      };
+
+      horseButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setActive(horseButtons, button);
+          applyHorseFilter(button.dataset.horseFilter);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>`;
 }
@@ -843,4 +950,5 @@ module.exports = {
   buildPreviewModel,
   normalizeStatusTerm,
   renderVisualIdentifierHtml,
+  renderRails,
 };

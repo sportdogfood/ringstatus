@@ -121,6 +121,8 @@ const AT_RETRY_MAX_MS   = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const LAST_KNOWN_CLOCK_MAX_AGE_MIN = Math.max(1, Number(process.env.LAST_KNOWN_CLOCK_MAX_AGE_MIN || "360") || 360);
 const LAST_KNOWN_HEARTBEAT_LOOKBACK = Math.max(1, Number(process.env.LAST_KNOWN_HEARTBEAT_LOOKBACK || "100") || 100);
 const FORCE_MODE        = String(process.env.FORCE_MODE || "").trim().toUpperCase();
+const HOTPATCH_APP_SHOW_ID = strOrNull(process.env.HOTPATCH_APP_SHOW_ID);
+const HOTPATCH_APP_SQL_DATE = toIsoDateOnly(process.env.HOTPATCH_APP_SQL_DATE);
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 const HB_TZ             = process.env.HB_TIMEZONE || "America/New_York";
 const DEFAULT_TAGGER_STATE_PATH = "C:\\actions-runner\\ringstatus\\tagger_runtime_state.json";
@@ -704,6 +706,27 @@ function buildScheduleEmptyEndpoint(appShowId) {
   return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
 }
 
+function hasHotpatchScopeOverride() {
+  return HOTPATCH_APP_SHOW_ID || HOTPATCH_APP_SQL_DATE;
+}
+
+function applyHotpatchClockOverride(clock) {
+  if (!hasHotpatchScopeOverride()) return clock;
+  if (!HOTPATCH_APP_SHOW_ID || !HOTPATCH_APP_SQL_DATE) {
+    throw new Error("HOTPATCH_APP_SHOW_ID and HOTPATCH_APP_SQL_DATE must be set together");
+  }
+  const showId = Number(HOTPATCH_APP_SHOW_ID);
+  if (!Number.isFinite(showId)) {
+    throw new Error(`HOTPATCH_APP_SHOW_ID must be numeric: ${HOTPATCH_APP_SHOW_ID}`);
+  }
+  return {
+    ...clock,
+    showId,
+    showDate: HOTPATCH_APP_SQL_DATE,
+    source: `${clock?.source || "clock"}+hotpatch_scope_override`,
+  };
+}
+
 function extractScheduleDefaultInfo(payload) {
   const show = payload?.show && typeof payload.show === "object" ? payload.show : {};
   const showAppName = strOrNull(pickFirst(show.show_name, payload?.show_name));
@@ -1009,6 +1032,19 @@ async function buildAppContext(clock, mode) {
   // endpoint is transiently unavailable or missing expected fields.
   if (!defaultAppSqlDateIs && appSqlDate) {
     defaultAppSqlDateIs = appSqlDate;
+  }
+
+  if (hasHotpatchScopeOverride()) {
+    appShowId = Number(HOTPATCH_APP_SHOW_ID);
+    if (!Number.isFinite(appShowId)) {
+      throw new Error(`HOTPATCH_APP_SHOW_ID must be numeric: ${HOTPATCH_APP_SHOW_ID}`);
+    }
+    appSqlDate = HOTPATCH_APP_SQL_DATE;
+    candidateAppSqlDate = HOTPATCH_APP_SQL_DATE;
+    shiftedToNextDay = mode === "NIGHT";
+    setToDefaultAppSqlDate = false;
+    defaultAppSqlDateIs = HOTPATCH_APP_SQL_DATE;
+    appSqlDateSource = "hotpatch_env_override";
   }
 
   const appDowRaw = dowName(dayOfWeekUtc(appSqlDate));
@@ -1519,7 +1555,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
 
 (async () => {
   try {
-    const clk = await getClockSafe();
+    const clk = applyHotpatchClockOverride(await getClockSafe());
     const clockMode = deriveModeFromClock(clk);
     const preliminaryShowControl = await fetchShowsModeControl(clk.showId);
     const forcedMode = FORCE_MODE ? normalizeMode(FORCE_MODE) : null;
