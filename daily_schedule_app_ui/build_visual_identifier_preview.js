@@ -619,6 +619,10 @@ function renderVisualIdentifierHtml(model) {
       background: linear-gradient(180deg, rgba(255, 255, 255, .01), rgba(255, 255, 255, 0));
     }
     .class-card:last-child { border-bottom: 0; }
+    .ring-card .schedule-band:nth-of-type(even),
+    .time-card .schedule-band:nth-of-type(even) {
+      background: rgba(255, 255, 255, .012);
+    }
     .schedule-band {
       position: relative;
       isolation: isolate;

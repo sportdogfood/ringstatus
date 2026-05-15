@@ -204,6 +204,8 @@ test("renderVisualIdentifierHtml adds band classes and filter-ready row attribut
   assert.match(html, /data-horses="LongHorseName"/);
   assert.match(html, /data-riders="Test Rider"/);
   assert.match(html, /\.schedule-band--now::before/);
+  assert.match(html, /\.ring-card \.schedule-band:nth-of-type\(even\),\n    \.time-card \.schedule-band:nth-of-type\(even\) \{/);
+  assert.match(html, /background: rgba\(255, 255, 255, \.012\);/);
   assert.match(html, /rgba\(73, 209, 125, \.34\)/);
   assert.match(html, /background: transparent;/);
 });
