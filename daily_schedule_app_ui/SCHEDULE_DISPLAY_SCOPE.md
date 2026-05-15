@@ -110,7 +110,7 @@ Shared schedule rows:
 display: grid;
 grid-template-columns: var(--schedule-cols);
 column-gap: 3px;
-row-gap: 2px;
+row-gap: 3px;
 align-items: center;
 min-height: 38px;
 padding: 8px 10px;
@@ -121,7 +121,7 @@ Ring class cards own their outer spacing:
 ```css
 .class-card.schedule-band {
   display: grid;
-  row-gap: 2px;
+  row-gap: 3px;
   padding: 8px 10px;
 }
 ```
@@ -463,4 +463,3 @@ Preview:
 ```text
 http://127.0.0.1:8765/render/visual_identifier_preview.html
 ```
-

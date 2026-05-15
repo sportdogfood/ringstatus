@@ -771,7 +771,7 @@ function renderVisualIdentifierHtml(model) {
     }
     .class-card.schedule-band {
       display: grid;
-      row-gap: 2px;
+      row-gap: 3px;
       padding: 8px 10px;
     }
     .schedule-band::before {
@@ -807,7 +807,7 @@ function renderVisualIdentifierHtml(model) {
       display: grid;
       grid-template-columns: var(--schedule-cols);
       column-gap: 3px;
-      row-gap: 2px;
+      row-gap: 3px;
       align-items: center;
       min-height: 38px;
       padding: 8px 10px;

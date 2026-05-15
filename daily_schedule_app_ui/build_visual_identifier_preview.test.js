@@ -321,8 +321,8 @@ test("renderVisualIdentifierHtml keeps compact rollups in horse time order only"
   assert.doesNotMatch(html, /&nbsp;5\/14/);
   assert.match(html, /\.rollup-cell--time \{[\s\S]*font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;[\s\S]*font-weight: 560;/);
   assert.doesNotMatch(orderCss, /font-family: "Roboto Mono"/);
-  assert.match(html, /\.class-card\.schedule-band \{[\s\S]*row-gap: 2px;[\s\S]*padding: 8px 10px;/);
-  assert.match(html, /\.schedule-line \{[\s\S]*column-gap: 3px;[\s\S]*row-gap: 2px;[\s\S]*padding: 8px 10px;/);
+  assert.match(html, /\.class-card\.schedule-band \{[\s\S]*row-gap: 3px;[\s\S]*padding: 8px 10px;/);
+  assert.match(html, /\.schedule-line \{[\s\S]*column-gap: 3px;[\s\S]*row-gap: 3px;[\s\S]*padding: 8px 10px;/);
   assert.match(html, /\.class-card \.schedule-line \{[\s\S]*min-height: 22px;[\s\S]*padding: 0;/);
   assert.match(html, /\.rollup-line \{[\s\S]*padding: 0;/);
   assert.match(html, /\.time-rollup-cell \{[\s\S]*padding-top: 0;/);
