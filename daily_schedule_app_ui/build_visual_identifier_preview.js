@@ -570,11 +570,14 @@ function renderVisualIdentifierHtml(model) {
     .ring-title {
       font-size: 14px;
       font-weight: 620;
+      flex: 0 0 auto;
     }
     .ring-eyebrow {
       display: flex;
       align-items: center;
       gap: 8px;
+      justify-content: flex-end;
+      flex: 1 1 auto;
       min-width: 0;
       margin-left: auto;
     }
@@ -607,7 +610,7 @@ function renderVisualIdentifierHtml(model) {
       white-space: nowrap;
     }
     .ring-walk:empty {
-      visibility: hidden;
+      display: none;
     }
     .cell-empty {
       display: inline-block;

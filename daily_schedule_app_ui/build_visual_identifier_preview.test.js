@@ -1,4 +1,5 @@
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
 const test = require("node:test");
 
 const {
@@ -285,9 +286,22 @@ test("renderVisualIdentifierHtml uses ring walk in the eyebrow instead of status
 
   assert.match(html, /ring-eyebrow/);
   assert.match(html, /ring-status-controls/);
+  assert.match(html, /\.ring-title \{[\s\S]*flex: 0 0 auto;/);
+  assert.match(html, /\.ring-eyebrow \{[\s\S]*justify-content: flex-end;[\s\S]*flex: 1 1 auto;/);
   assert.match(html, /ring-walk/);
+  assert.match(html, /\.ring-walk:empty \{[\s\S]*display: none;/);
   assert.match(html, /WALK 5m/);
   assert.doesNotMatch(html, /ring-states/);
+});
+
+test("visual_identifier_contract gives key class and group flags distinct shades", () => {
+  const actualContract = JSON.parse(fs.readFileSync("./daily_schedule_app_ui/visual_identifier_contract.json", "utf8"));
+  const flags = actualContract.token_groups.find((group) => group.id === "flags").tokens;
+  const targetIds = ["is_warmup", "is_mulligan", "is_add_back", "is_classic", "is_usf", "is_handy"];
+  const shades = targetIds.map((id) => flags.find((token) => token.id === id).shade);
+
+  assert.deepEqual(shades, ["slate", "red", "amber", "green", "blue", "violet"]);
+  assert.equal(new Set(shades).size, targetIds.length);
 });
 
 test("renderVisualIdentifierHtml uses identical status controls in Ring and Time eyebrows", () => {

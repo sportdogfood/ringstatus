@@ -281,11 +281,14 @@
     .ring-title {
       font-size: 14px;
       font-weight: 620;
+      flex: 0 0 auto;
     }
     .ring-eyebrow {
       display: flex;
       align-items: center;
       gap: 8px;
+      justify-content: flex-end;
+      flex: 1 1 auto;
       min-width: 0;
       margin-left: auto;
     }
@@ -318,7 +321,7 @@
       white-space: nowrap;
     }
     .ring-walk:empty {
-      visibility: hidden;
+      display: none;
     }
     .cell-empty {
       display: inline-block;
@@ -569,7 +572,7 @@
     <header class="topbar">
       <div>
         <h1>Visual Identifier Preview</h1>
-        <div class="subtle">Generated 2026-05-15T10:53:46.400Z from contract 2026-05-13.v0.1</div>
+        <div class="subtle">Generated 2026-05-15T11:09:33.642Z from contract 2026-05-13.v0.1</div>
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
@@ -875,7 +878,7 @@
       <span class="token-sample">is_warmup</span>
     </div>
     <div class="token-swatch">
-      <span class="token token--pill shade--slate">MULL</span>
+      <span class="token token--pill shade--red">MULL</span>
       <span class="token-sample">is_mulligan</span>
     </div>
     <div class="token-swatch">
@@ -887,11 +890,11 @@
       <span class="token-sample">is_add_back</span>
     </div>
     <div class="token-swatch">
-      <span class="token token--pill shade--amber">CLSC</span>
+      <span class="token token--pill shade--green">CLSC</span>
       <span class="token-sample">is_classic</span>
     </div>
     <div class="token-swatch">
-      <span class="token token--pill shade--violet">USF</span>
+      <span class="token token--pill shade--blue">USF</span>
       <span class="token-sample">is_usf</span>
     </div>
     <div class="token-swatch">

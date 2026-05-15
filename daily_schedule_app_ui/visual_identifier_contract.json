@@ -117,11 +117,11 @@
         { "id": "is_first_up", "label": "1UP", "incoming_terms": ["is_first_up"], "treatment": "pill", "shade": "blue" },
         { "id": "is_handy", "label": "HANDY", "incoming_terms": ["is_handy"], "treatment": "pill", "shade": "violet" },
         { "id": "is_warmup", "label": "WARM", "incoming_terms": ["is_warmup"], "treatment": "pill", "shade": "slate" },
-        { "id": "is_mulligan", "label": "MULL", "incoming_terms": ["is_mulligan"], "treatment": "pill", "shade": "slate" },
+        { "id": "is_mulligan", "label": "MULL", "incoming_terms": ["is_mulligan"], "treatment": "pill", "shade": "red" },
         { "id": "is_schooling_pony", "label": "PONY", "incoming_terms": ["is_schooling_pony"], "treatment": "pill", "shade": "teal" },
         { "id": "is_add_back", "label": "ADD", "incoming_terms": ["is_add_back"], "treatment": "pill", "shade": "amber" },
-        { "id": "is_classic", "label": "CLSC", "incoming_terms": ["is_classic"], "treatment": "pill", "shade": "amber" },
-        { "id": "is_usf", "label": "USF", "incoming_terms": ["is_usf"], "treatment": "pill", "shade": "violet" },
+        { "id": "is_classic", "label": "CLSC", "incoming_terms": ["is_classic"], "treatment": "pill", "shade": "green" },
+        { "id": "is_usf", "label": "USF", "incoming_terms": ["is_usf"], "treatment": "pill", "shade": "blue" },
         { "id": "is_target", "label": "TGT", "incoming_terms": ["is_target"], "treatment": "filled_badge", "shade": "green" },
         { "id": "not_target", "label": "NT", "incoming_terms": ["not_target"], "treatment": "quiet_badge", "shade": "muted" }
       ]

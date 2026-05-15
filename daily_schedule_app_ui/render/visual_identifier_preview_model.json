@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-05-15T10:53:46.400Z",
+    "generated_at": "2026-05-15T11:09:33.642Z",
     "contract_version": "2026-05-13.v0.1",
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow."
   },
@@ -297,7 +297,7 @@
             "is_mulligan"
           ],
           "treatment": "pill",
-          "shade": "slate"
+          "shade": "red"
         },
         {
           "id": "is_schooling_pony",
@@ -324,7 +324,7 @@
             "is_classic"
           ],
           "treatment": "pill",
-          "shade": "amber"
+          "shade": "green"
         },
         {
           "id": "is_usf",
@@ -333,7 +333,7 @@
             "is_usf"
           ],
           "treatment": "pill",
-          "shade": "violet"
+          "shade": "blue"
         },
         {
           "id": "is_target",
