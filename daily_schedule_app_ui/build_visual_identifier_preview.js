@@ -875,6 +875,11 @@ function renderVisualIdentifierHtml(model) {
     .rollup-cell--order {
       text-align: center;
     }
+    .rollup-cell--time,
+    .rollup-cell--order {
+      border-left: 1px solid rgba(154, 163, 180, .22);
+      padding-left: 5px;
+    }
     .rollup-row--now { border-color: rgba(73, 209, 125, .24); }
     .rollup-row--next { border-color: rgba(143, 184, 255, .26); }
     .rollup-row--completed { color: #8d96a8; }

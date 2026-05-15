@@ -233,6 +233,7 @@ test("renderVisualIdentifierHtml keeps compact rollups in horse time order only"
   assert.match(html, /rollup-cell rollup-cell--horse">LongHorseName/);
   assert.match(html, /rollup-cell rollup-cell--time">8:55A/);
   assert.match(html, /rollup-cell rollup-cell--order">5\/14/);
+  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*border-left: 1px solid rgba\(154, 163, 180, \.22\);[\s\S]*padding-left: 5px;/);
   assert.doesNotMatch(html, /rollup-cell--in/);
   assert.doesNotMatch(html, /rollup-cell--walk/);
   assert.doesNotMatch(html, /In: /);
