@@ -292,6 +292,26 @@ function renderTimeRow(row) {
     </article>`;
 }
 
+function renderClassOverviewModal(row) {
+  return `
+    <section class="modal-preview" aria-label="Class overview modal visual">
+      <div class="overview-modal">
+        <div class="modal-head">
+          <button class="modal-action modal-action--quiet" type="button">Close</button>
+          <div class="modal-title">Class Overview</div>
+          <button class="modal-action" type="button">Class Detail</button>
+        </div>
+        <div class="modal-body">
+          ${renderSampleRow(row)}
+        </div>
+        <div class="modal-actions" aria-label="Class overview actions">
+          <button class="rail-button" type="button">Save to Thread</button>
+          <button class="rail-button" type="button">Share</button>
+        </div>
+      </div>
+    </section>`;
+}
+
 function uniqueValues(values) {
   return [...new Set(values.filter((value) => !isBlank(value)).map((value) => String(value).trim()))];
 }
@@ -343,6 +363,7 @@ function renderVisualIdentifierHtml(model) {
   const tokenGroups = model.tokenGroups.map(renderTokenGroup).join("");
   const ringRows = model.sampleRows.map(renderSampleRow).join("");
   const timeRows = model.timeRows.map(renderTimeRow).join("");
+  const classOverviewModal = renderClassOverviewModal(model.sampleRows[0]);
   const rails = renderRails(model);
   const ringStatusControls = renderRingStatusControls(model);
 

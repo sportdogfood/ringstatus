@@ -207,6 +207,46 @@ PRO detail behavior:
 - Schedule rows or rollups shown inside a modal or full detail page must reuse the locked skeleton.
 - Detail modals and full detail pages must not create alternate token sizing or alternate schedule table styling.
 
+Class overview modal:
+
+- Opens when the user clicks/taps a class row in PRO.
+- The modal is an overview, not the full class detail page.
+- The modal must include a clear close action.
+- Closing returns the user to the same PRO scroll/context state.
+- The modal must include a link to the actual class detail page.
+- The class detail page must include a clear `<-- back` control pointing back to PRO.
+- The modal should show the selected class identity:
+
+```text
+ring
+time
+class_number
+class_name
+class_type
+status
+schedule_sequence_type-derived class_name shade
+```
+
+- The modal should show related trip rollups using the locked trip rollup skeleton:
+
+```text
+horse | time | order
+```
+
+- The modal may include actions:
+
+```text
+Close
+Class Detail
+Save to Thread
+Share to person
+```
+
+- `Save to Thread` creates or updates a Thread from this selected class context.
+- `Share to person` opens the user's device message composer with rendered class information prefilled; the user must choose/confirm recipient and manually send.
+- The modal must not create a larger card-heavy class table style.
+- The class identity line and related trip rollups must stay visually compatible with the locked PRO skeleton.
+
 PRO lookup behavior:
 
 - Ring eyebrow may include an app-native RingStatus lookup action.
