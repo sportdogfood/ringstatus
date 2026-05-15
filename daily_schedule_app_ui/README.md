@@ -22,6 +22,30 @@ This UI folder must not define:
 - active runner or heartbeat behavior
 - final app nesting
 
+## Project Overview
+
+The app is a compact daily schedule display for RingStatus. The base schedule skeleton is locked and must remain visually consistent across `START`, `PRO`, `HORSES`, Start subviews, filters, modals, detail pages, and future lookup surfaces.
+
+Primary navigation:
+
+```text
+START | PRO | HORSES
+```
+
+`START` begins or restarts a device session, stores required session details in device memory for 7 days, sends the session webhook, and hosts subviews such as `FOCUS`, `TIME`, and `THREADS`.
+
+`PRO` is the full schedule surface. It owns the schedule-by-ring view, class/trip overview modals, and links to full detail pages. Detail pages opened from `PRO` must include a clear `<-- back` path to `PRO`.
+
+`HORSES` is the feed-backed tenant horse roster/profile surface. Horses default inactive, become active when matched to trips, and active horses are automatically favorited. Unfavorite acts as an ignore attribute that hides horse detail app-wide. Profile editing belongs here only.
+
+App-native RingStatus lookup:
+
+```text
+ring eyebrow action -> lookup command modal -> selected command -> lookup endpoint -> in-app response
+```
+
+This replaces the SMS-only text flow for in-app use. The modal should list valid supported command combinations, call a RingStatus lookup endpoint, and render the same kind of `As of / Now / Next / Following` response inside the app. SMS compose can remain a future helper, but the primary app behavior should not require texting. A final prepopulated helper action can open the user's message composer when they want to text rendered information to another person; the user must choose/confirm the recipient and manually send.
+
 ## Current Preview
 
 Visual identifier contract:

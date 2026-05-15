@@ -192,6 +192,39 @@ ring card -> class cards -> trip rollups
 
 This screen uses Schedule By Ring exactly as defined below. Ring rail buttons act as horizontal anchors, not data filters.
 
+PRO detail behavior:
+
+- PRO contains detail modals for selected schedule entities.
+- Detail modals can open from class rows, trip rollups, ring context, class context, or related dataset context.
+- Clicking a class row opens a class overview modal.
+- The class overview modal includes a link to the class detail page.
+- Clicking a trip rollup opens a trip overview modal.
+- The trip overview modal includes links to horse detail and rider detail.
+- A PRO detail modal must include a clear close action.
+- A PRO detail modal may include a link to the actual full detail page.
+- The full detail page must show a clear `<-- back` control.
+- The `<-- back` control from a PRO-originated detail page must point back to PRO.
+- Schedule rows or rollups shown inside a modal or full detail page must reuse the locked skeleton.
+- Detail modals and full detail pages must not create alternate token sizing or alternate schedule table styling.
+
+PRO lookup behavior:
+
+- Ring eyebrow may include an app-native RingStatus lookup action.
+- The action opens a lookup command modal.
+- The lookup command modal lists valid supported command combinations for the current context.
+- Command options may be generated from current ring, visible horses, visible riders, and supported backend lookup vocabulary.
+- Selecting a command calls a RingStatus lookup endpoint from inside the app.
+- The endpoint response should render in-app, not require device SMS.
+- Expected response shape follows the existing SMS service concept: `As of ...`, `Now`, `Next`, and `Following`.
+- The response may be saved to Threads or linked to related class/trip/horse/rider detail later.
+- Do not show unsupported command combinations.
+- Do not silently send SMS from this action.
+- A future SMS compose helper may exist as a separate assisted action, but app-native lookup is the preferred in-app flow.
+- The final prepopulated helper action can support texting the rendered information to another person.
+- This share-to-person action should open the user's device message composer with the selected information prefilled.
+- The user must choose/confirm the recipient and manually send.
+- Share-to-person must not be confused with RingStatus lookup, RingStatus alerts, subscriptions, or backend notifications.
+
 ### HORSES
 
 Purpose:
