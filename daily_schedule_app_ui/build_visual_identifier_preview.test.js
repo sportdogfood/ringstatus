@@ -246,9 +246,10 @@ test("renderVisualIdentifierHtml locks rollup table widths and shared radius", (
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
   const rollupCss = html.slice(html.indexOf(".rollup-row {"), html.indexOf(".rollup-cell {"));
 
-  assert.match(html, /grid-template-columns: minmax\(0, max-content\) 6ch 5ch;/);
+  assert.match(html, /grid-template-columns: minmax\(0, max-content\) minmax\(6ch, 6ch\) minmax\(5ch, 5ch\);/);
   assert.match(html, /border-radius: var\(--token-radius\);/);
   assert.match(html, /max-width: 8ch;/);
+  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*overflow: visible;[\s\S]*text-overflow: clip;/);
   assert.match(html, /text-overflow: ellipsis;/);
   assert.doesNotMatch(rollupCss, /border-radius: 999px;/);
 });

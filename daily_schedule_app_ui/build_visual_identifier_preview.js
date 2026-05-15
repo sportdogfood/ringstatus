@@ -846,7 +846,7 @@ function renderVisualIdentifierHtml(model) {
     }
     .rollup-row {
       display: inline-grid;
-      grid-template-columns: minmax(0, max-content) 6ch 5ch;
+      grid-template-columns: minmax(0, max-content) minmax(6ch, 6ch) minmax(5ch, 5ch);
       column-gap: 4px;
       align-items: center;
       min-height: 24px;
@@ -874,6 +874,10 @@ function renderVisualIdentifierHtml(model) {
     .rollup-cell--time,
     .rollup-cell--order {
       text-align: center;
+      width: 100%;
+      min-width: 0;
+      overflow: visible;
+      text-overflow: clip;
     }
     .rollup-cell--time,
     .rollup-cell--order {
