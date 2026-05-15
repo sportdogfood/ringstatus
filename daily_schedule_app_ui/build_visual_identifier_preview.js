@@ -190,7 +190,7 @@ function renderTimeValue(value) {
         <circle cx="8" cy="8" r="5.75"></circle>
         <path d="M8 4.75v3.4l2.25 1.35"></path>
       </svg>
-    </span>${renderAlignedTimeText(value)}`;
+    </span><span class="time-value">${renderAlignedTimeText(value)}</span>`;
 }
 
 function renderStatusTerm(term) {
@@ -769,6 +769,11 @@ function renderVisualIdentifierHtml(model) {
       position: relative;
       isolation: isolate;
     }
+    .class-card.schedule-band {
+      display: grid;
+      row-gap: 2px;
+      padding: 8px 10px;
+    }
     .schedule-band::before {
       content: "";
       position: absolute;
@@ -801,10 +806,15 @@ function renderVisualIdentifierHtml(model) {
     .schedule-line {
       display: grid;
       grid-template-columns: var(--schedule-cols);
-      gap: 3px;
+      column-gap: 3px;
+      row-gap: 2px;
       align-items: center;
       min-height: 38px;
-      padding: 7px 8px;
+      padding: 8px 10px;
+    }
+    .class-card .schedule-line {
+      min-height: 22px;
+      padding: 0;
     }
     .time-line {
       border-bottom: 1px solid var(--line);
@@ -822,10 +832,11 @@ function renderVisualIdentifierHtml(model) {
       min-width: 0;
       width: 100%;
       justify-self: stretch;
-      display: inline-flex;
+      display: grid;
+      grid-template-columns: 11px minmax(6ch, 6ch);
       align-items: center;
-      justify-content: flex-end;
-      gap: 3px;
+      justify-content: end;
+      column-gap: 3px;
       text-align: right;
       overflow: visible;
       padding: 0;
@@ -834,18 +845,18 @@ function renderVisualIdentifierHtml(model) {
       white-space: nowrap;
     }
     .time-clock {
-      width: 9px;
-      height: 9px;
-      flex: 0 0 9px;
+      width: 11px;
+      height: 11px;
+      justify-self: center;
       opacity: .72;
       color: currentColor;
       overflow: visible;
     }
     .time-clock svg {
       display: block;
-      width: 9px;
-      height: 9px;
-      min-width: 9px;
+      width: 11px;
+      height: 11px;
+      min-width: 11px;
       fill: none;
       stroke: currentColor;
       stroke-width: 1.6;
@@ -853,9 +864,16 @@ function renderVisualIdentifierHtml(model) {
       stroke-linejoin: round;
       overflow: visible;
     }
+    .time-value {
+      min-width: 0;
+      display: block;
+      text-align: right;
+      overflow: visible;
+      white-space: nowrap;
+    }
     .c-time, .c-num, .c-type, .trip-metric {
       font-size: 10px;
-      font-weight: 650;
+      font-weight: 560;
       color: var(--muted);
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
@@ -900,12 +918,13 @@ function renderVisualIdentifierHtml(model) {
     .slot-token {
       width: 100%;
       min-width: 0;
-      min-height: 22px;
+      min-height: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 2px 4px;
+      padding: 1px 4px;
       border-radius: var(--token-radius);
+      font-weight: 560;
       line-height: 1;
       overflow: hidden;
       white-space: nowrap;
@@ -915,14 +934,14 @@ function renderVisualIdentifierHtml(model) {
     .trip-metric {
       width: 100%;
       min-width: 0;
-      min-height: 22px;
+      min-height: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 2px 4px;
+      padding: 1px 4px;
       border-radius: var(--token-radius);
-      font-size: 9px;
-      font-weight: 700;
+      font-size: 9.5px;
+      font-weight: 560;
       line-height: 1;
       overflow: hidden;
       white-space: nowrap;
@@ -932,15 +951,13 @@ function renderVisualIdentifierHtml(model) {
       color: var(--text);
       background: rgba(255, 255, 255, .06);
       border: 1px solid rgba(255, 255, 255, .12);
-      font-size: 10px;
-      font-weight: 750;
+      font-size: 9.5px;
     }
     .ring-token {
       color: var(--ring);
       background: var(--ring-bg);
       border: 1px solid rgba(168, 199, 255, .2);
-      font-size: 10px;
-      font-weight: 700;
+      font-size: 9.5px;
     }
     .c-type {
       color: var(--muted);
@@ -979,7 +996,7 @@ function renderVisualIdentifierHtml(model) {
       justify-content: flex-end;
       gap: 6px;
       overflow-x: auto;
-      padding: 0 8px 8px 8px;
+      padding: 0;
       scrollbar-width: thin;
     }
     .time-rollup-cell {
@@ -988,7 +1005,7 @@ function renderVisualIdentifierHtml(model) {
       justify-content: flex-end;
       gap: 6px;
       overflow-x: auto;
-      padding-top: 2px;
+      padding-top: 0;
       scrollbar-width: thin;
     }
     .rollup-row {
@@ -999,21 +1016,21 @@ function renderVisualIdentifierHtml(model) {
       flex: 0 0 auto;
       align-items: stretch;
       box-sizing: border-box;
-      min-height: 24px;
-      height: 24px;
+      min-height: 20px;
+      height: 20px;
       border-radius: var(--token-radius);
       border: 1px solid rgba(154, 163, 180, .16);
       background: rgba(154, 163, 180, .1);
       color: var(--text);
       padding: 0;
-      font-size: 10px;
-      font-weight: 650;
+      font-size: 9px;
+      font-weight: 560;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
     }
     .rollup-cell {
       min-width: 0;
-      min-height: 22px;
+      min-height: 18px;
       height: 100%;
       display: flex;
       align-items: center;
@@ -1040,7 +1057,7 @@ function renderVisualIdentifierHtml(model) {
     }
     .rollup-cell--time {
       font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-      font-weight: 500;
+      font-weight: 560;
       color: #c2d2f2;
     }
     .rollup-cell--time,

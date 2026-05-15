@@ -36,6 +36,14 @@ Generated preview:
 render/visual_identifier_preview.html
 ```
 
+Locked compact schedule display scope:
+
+```text
+SCHEDULE_DISPLAY_SCOPE.md
+```
+
+Use this scope before creating any schedule-by-ring, schedule-by-time, filtered, modal, or detail display. The row skeleton, token geometry, rollup geometry, typography, and spacing must remain identical across every surface.
+
 Build it with:
 
 ```powershell
