@@ -166,6 +166,10 @@ function modifierClass(prefix, value) {
   return key ? `${prefix}--${key}` : "";
 }
 
+function isDoneRow(row) {
+  return row?.status_id === "completed" || row?.status_id === "done" || row?.status === "DONE";
+}
+
 function renderCellValue(value) {
   return isBlank(value) ? '<span class="cell-empty" aria-hidden="true"></span>' : htmlEscape(value);
 }
@@ -258,7 +262,8 @@ function rowDataAttrs(row) {
 
 function renderSampleRow(row) {
   const timeClass = modifierClass("time-status", row.status_id);
-  const sequenceClass = modifierClass("sequence-shade", row.schedule_sequence_type_shade);
+  const sequenceClass = isDoneRow(row) ? "" : modifierClass("sequence-shade", row.schedule_sequence_type_shade);
+  const classTypeClass = modifierClass("class-type-shade", row.class_type);
   return `
     <article class="class-card ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="schedule-line class-line">
@@ -266,7 +271,7 @@ function renderSampleRow(row) {
         <div class="ring-num-col"><span class="slot-token ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
         <div class="class-num-col"><span class="slot-token class-num-token">${renderCellValue(row.class_number)}</span></div>
         <div class="class-name-col c-name ${htmlEscape(sequenceClass)}">${renderCellValue(row.class_name)}</div>
-        <div class="class-type-col"><span class="slot-token cell-token c-type">${renderCellValue(row.class_type)}</span></div>
+        <div class="class-type-col"><span class="slot-token cell-token c-type ${htmlEscape(classTypeClass)}">${renderCellValue(row.class_type)}</span></div>
       </div>
       ${(row.rollups || []).length ? `<div class="rollup-line">${row.rollups.map(renderRollup).join("")}</div>` : ""}
     </article>`;
@@ -274,14 +279,15 @@ function renderSampleRow(row) {
 
 function renderTimeRow(row) {
   const timeClass = modifierClass("time-status", row.status_id);
-  const sequenceClass = modifierClass("sequence-shade", row.schedule_sequence_type_shade);
+  const sequenceClass = isDoneRow(row) ? "" : modifierClass("sequence-shade", row.schedule_sequence_type_shade);
+  const classTypeClass = modifierClass("class-type-shade", row.class_type);
   return `
     <article class="schedule-line time-line ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="time-col c-time ${htmlEscape(timeClass)}">${renderTimeValue(row.time)}</div>
       <div class="ring-num-col"><span class="slot-token ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
       <div class="class-num-col"><span class="slot-token class-num-token">${renderCellValue(row.class_number)}</span></div>
       <div class="class-name-col c-name ${htmlEscape(sequenceClass)}">${renderCellValue(row.class_name)}</div>
-      <div class="class-type-col"><span class="slot-token cell-token c-type">${renderCellValue(row.class_type)}</span></div>
+      <div class="class-type-col"><span class="slot-token cell-token c-type ${htmlEscape(classTypeClass)}">${renderCellValue(row.class_type)}</span></div>
       ${(row.rollups || []).length ? `<div class="time-rollup-cell">${row.rollups.map(renderRollup).join("")}</div>` : ""}
     </article>`;
 }
@@ -321,11 +327,10 @@ function renderRails(model) {
       <div class="filter-actions" aria-label="Filter actions">
         <div class="quick-filter-group" aria-label="Quick filters">${quickFilters}</div>
         <button class="rollup-switch" type="button" data-rollup-only-toggle aria-pressed="false">
-          <span class="rollup-switch__label">Trips</span>
+          <span class="rollup-switch__label">Team</span>
           <span class="rollup-switch__track" aria-hidden="true">
             <span class="rollup-switch__thumb"></span>
           </span>
-          <span class="rollup-switch__state" data-switch-state>OFF</span>
         </button>
       </div>
       <div class="rail-row" data-rail-row="rings" aria-label="Ring anchors">${ringButtons}</div>
@@ -363,6 +368,7 @@ function renderVisualIdentifierHtml(model) {
       --green: #49d17d;
       --green-bg: rgba(73, 209, 125, .16);
       --blue: #8fb8ff;
+      --blue-muted: #b6c8ee;
       --blue-bg: rgba(73, 118, 255, .16);
       --violet: #c386ff;
       --violet-bg: rgba(156, 89, 255, .18);
@@ -493,11 +499,6 @@ function renderVisualIdentifierHtml(model) {
       transform: translateX(0);
       transition: transform .14s ease, background .14s ease;
     }
-    .rollup-switch__state {
-      min-width: 22px;
-      text-align: right;
-      color: var(--faint);
-    }
     .rollup-switch.is-active {
       color: #b6f0c8;
       border-color: rgba(73, 209, 125, .34);
@@ -506,9 +507,6 @@ function renderVisualIdentifierHtml(model) {
     .rollup-switch.is-active .rollup-switch__thumb {
       transform: translateX(15px);
       background: var(--green);
-    }
-    .rollup-switch.is-active .rollup-switch__state {
-      color: var(--green);
     }
     .rail-row {
       display: flex;
@@ -545,20 +543,22 @@ function renderVisualIdentifierHtml(model) {
       border-color: rgba(73, 209, 125, .48);
     }
     .ring-status-controls .rail-button[data-status-filter="NEXT"] {
-      border-color: rgba(143, 184, 255, .34);
+      background: var(--blue-bg);
+      border-color: rgba(143, 184, 255, .24);
       color: var(--blue);
     }
     .ring-status-controls .rail-button[data-status-filter="NEXT"].is-active {
-      background: rgba(73, 118, 255, .16);
-      border-color: rgba(143, 184, 255, .5);
+      background: rgba(73, 118, 255, .18);
+      border-color: rgba(143, 184, 255, .42);
     }
     .ring-status-controls .rail-button[data-status-filter="DONE"] {
-      border-color: rgba(154, 163, 180, .2);
-      color: #8d96a8;
+      background: rgba(154, 163, 180, .12);
+      border-color: rgba(154, 163, 180, .16);
+      color: #d4d9e6;
     }
     .ring-status-controls .rail-button[data-status-filter="DONE"].is-active {
       background: rgba(154, 163, 180, .14);
-      border-color: rgba(154, 163, 180, .34);
+      border-color: rgba(154, 163, 180, .3);
     }
     .rail-row[data-rail-row="horses"] .rail-button.is-active {
       border-color: rgba(73, 209, 125, .34);
@@ -670,7 +670,7 @@ function renderVisualIdentifierHtml(model) {
     }
     .state--following {
       background: rgba(143, 184, 255, .07);
-      color: #b6c8ee;
+      color: var(--blue-muted);
       border: 1px solid rgba(143, 184, 255, .18);
     }
     .state--upcoming {
@@ -685,7 +685,7 @@ function renderVisualIdentifierHtml(model) {
     }
     .shade--green { color: var(--green); background: var(--green-bg); border: 1px solid rgba(73, 209, 125, .24); }
     .shade--blue { color: var(--blue); background: var(--blue-bg); border: 1px solid rgba(143, 184, 255, .24); }
-    .shade--blue_muted { color: #b6c8ee; background: rgba(143, 184, 255, .08); border: 1px solid rgba(143, 184, 255, .18); }
+    .shade--blue_muted { color: var(--blue-muted); background: rgba(143, 184, 255, .08); border: 1px solid rgba(143, 184, 255, .18); }
     .shade--slate { color: #d4d9e6; background: rgba(154, 163, 180, .12); border: 1px solid rgba(154, 163, 180, .16); }
     .shade--muted { color: #8d96a8; background: rgba(154, 163, 180, .08); border: 1px solid rgba(154, 163, 180, .12); }
     .shade--violet { color: var(--violet); background: var(--violet-bg); border: 1px solid rgba(195, 134, 255, .22); }
@@ -808,7 +808,6 @@ function renderVisualIdentifierHtml(model) {
       border-bottom: 1px solid var(--line);
     }
     .time-line:last-child { border-bottom: 0; }
-    .time-col,
     .ring-num-col,
     .class-num-col,
     .class-type-col {
@@ -818,19 +817,22 @@ function renderVisualIdentifierHtml(model) {
       white-space: nowrap;
     }
     .time-col {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
+      min-width: 0;
+      justify-self: start;
+      display: inline;
       text-align: left;
       overflow: visible;
-      padding-block: 0;
+      padding: 0;
       min-height: 0;
       height: auto;
+      white-space: nowrap;
     }
     .time-clock {
       width: 9px;
       height: 9px;
-      flex: 0 0 9px;
+      display: inline-block;
+      vertical-align: -1px;
+      margin-right: 3px;
       opacity: .72;
       color: currentColor;
       overflow: visible;
@@ -937,11 +939,27 @@ function renderVisualIdentifierHtml(model) {
       background: rgba(154, 163, 180, .08);
       border: 1px solid rgba(154, 163, 180, .12);
     }
+    .class-type-shade--hun {
+      color: var(--teal);
+      background: var(--teal-bg);
+      border-color: rgba(88, 218, 199, .22);
+    }
+    .class-type-shade--eq {
+      color: var(--violet);
+      background: var(--violet-bg);
+      border-color: rgba(195, 134, 255, .22);
+    }
+    .class-type-shade--jmp {
+      color: var(--amber);
+      background: var(--amber-bg);
+      border-color: rgba(242, 193, 92, .22);
+    }
     .time-status--now { color: var(--green); }
     .time-status--next { color: var(--blue); }
-    .time-status--following { color: #b6c8ee; }
+    .time-status--following { color: var(--blue-muted); }
     .time-status--upcoming { color: var(--muted); }
-    .time-status--completed { color: #767f90; }
+    .time-status--completed,
+    .time-status--done { color: var(--text); }
     .sequence-shade--teal { color: var(--teal); }
     .sequence-shade--violet { color: var(--violet); }
     .sequence-shade--green { color: var(--green); }
@@ -993,7 +1011,7 @@ function renderVisualIdentifierHtml(model) {
     }
     .rollup-cell--horse {
       max-width: calc(8ch + (var(--rollup-cell-x) * 2));
-      color: #b6c8ee;
+      color: var(--blue-muted);
     }
     .rollup-cell--time,
     .rollup-cell--order {
@@ -1116,7 +1134,6 @@ function renderVisualIdentifierHtml(model) {
       const statusButtons = [...document.querySelectorAll("[data-status-filter]")];
       const quickFilterButtons = [...document.querySelectorAll("[data-quick-filter]")];
       const rollupOnlyToggle = document.querySelector("[data-rollup-only-toggle]");
-      const rollupOnlyState = document.querySelector("[data-switch-state]");
       let activeHorse = "";
       let activeStatus = "";
       let activeQuickFilter = "";
@@ -1176,7 +1193,6 @@ function renderVisualIdentifierHtml(model) {
         activeRollupOnly = !activeRollupOnly;
         rollupOnlyToggle.classList.toggle("is-active", activeRollupOnly);
         rollupOnlyToggle.setAttribute("aria-pressed", activeRollupOnly ? "true" : "false");
-        if (rollupOnlyState) rollupOnlyState.textContent = activeRollupOnly ? "ON" : "OFF";
         applyFilters();
       });
     })();
