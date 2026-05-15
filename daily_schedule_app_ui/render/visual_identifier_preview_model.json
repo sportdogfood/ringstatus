@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-05-15T14:47:13.511Z",
+    "generated_at": "2026-05-15T20:34:22.171Z",
     "contract_version": "2026-05-13.v0.1",
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow."
   },
@@ -446,8 +446,16 @@
   "sampleRows": [
     {
       "ring": "Ring 6",
+      "ring_late": "42m late",
+      "ring_takes": "takes 5m",
       "group": "Small Pony Hunter",
       "time": "8:40A",
+      "walk_time": "8m",
+      "trips": "45",
+      "gone": "22",
+      "left": "23",
+      "class_metric_one": "1",
+      "class_metric_two": "15",
       "class_number": "411",
       "class_name": "Small Pony Hunter U/S",
       "class_type": "HUN",
@@ -457,7 +465,8 @@
       "rollups": [
         {
           "horse": "Knox",
-          "rider": "Heap",
+          "rider": "Lainey",
+          "entry_number": "10002",
           "time": "8:55A",
           "order": "5/14",
           "in": "15m",
@@ -468,6 +477,7 @@
         {
           "horse": "Poptart",
           "rider": "Michaels",
+          "entry_number": "10003",
           "time": "8:58A",
           "order": "6/14",
           "in": "18m",
@@ -655,8 +665,16 @@
     },
     {
       "ring": "Ring 6",
+      "ring_late": "42m late",
+      "ring_takes": "takes 5m",
       "group": "Small Pony Hunter",
       "time": "8:40A",
+      "walk_time": "8m",
+      "trips": "45",
+      "gone": "22",
+      "left": "23",
+      "class_metric_one": "1",
+      "class_metric_two": "15",
       "class_number": "411",
       "class_name": "Small Pony Hunter U/S",
       "class_type": "HUN",
@@ -666,7 +684,8 @@
       "rollups": [
         {
           "horse": "Knox",
-          "rider": "Heap",
+          "rider": "Lainey",
+          "entry_number": "10002",
           "time": "8:55A",
           "order": "5/14",
           "in": "15m",
@@ -677,6 +696,7 @@
         {
           "horse": "Poptart",
           "rider": "Michaels",
+          "entry_number": "10003",
           "time": "8:58A",
           "order": "6/14",
           "in": "18m",

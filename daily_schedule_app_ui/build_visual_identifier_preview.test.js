@@ -69,14 +69,21 @@ const contract = {
   sample_rows: [
     {
       ring: "Ring 6",
+      ring_late: "42m late",
+      ring_takes: "takes 5m",
       group: "Small Pony Hunter",
       time: "8:40A",
+      trips: "45",
+      gone: "22",
+      left: "23",
+      class_metric_one: "1",
+      class_metric_two: "15",
       class_number: "411",
       class_name: "Small Pony Hunter U/S",
       class_type: "HUN",
       schedule_sequence_type: "Over Fences",
       status: "NOW",
-      rollups: [{ horse: "LongHorseName", rider: "Test Rider", time: "8:55A", order: "5/14", in: "15m", walk: "2m", status: "NOW" }],
+      rollups: [{ horse: "LongHorseName", rider: "Test Rider", entry_number: "10002", time: "8:55A", order: "5/14", starts_in: "15m", leave_in: "2m", status: "NOW" }],
     },
     {
       ring: "Ring 6",
@@ -206,6 +213,26 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.doesNotMatch(html, /\.time-col,\n    \.ring-num-col/);
   assert.match(html, /time-status--now/);
   assert.match(html, /time-clock/);
+  assert.match(html, /Class Overview/);
+  assert.doesNotMatch(html, /Class Detail/);
+  assert.match(html, /Save to Thread/);
+  assert.match(html, /modal-action--icon[\s\S]*aria-label="Close"[\s\S]*<svg viewBox="0 0 16 16"/);
+  assert.match(html, /\.modal-action--icon \{[\s\S]*width: 24px;[\s\S]*justify-content: center;/);
+  assert.match(html, /modal-output-label">RING/);
+  assert.match(html, /modal-output-label">GROUP/);
+  assert.match(html, /modal-output-label">TRIPS/);
+  assert.match(html, /modal-label-row[\s\S]*modal-label-time">time<\/div>[\s\S]*modal-label-number">number<\/div>[\s\S]*modal-label-name">name<\/div>[\s\S]*modal-label-order">order<\/div>[\s\S]*modal-label-starts">starts-or-ends<\/div>[\s\S]*modal-label-leave">leave<\/div>/);
+  assert.equal((html.match(/class="modal-label-row"/g) || []).length, 3);
+  assert.match(html, /\.modal-output-label \{[\s\S]*position: absolute;[\s\S]*clip: rect\(0 0 0 0\);/);
+  assert.match(html, /\.modal-output-section \.schedule-line \{[\s\S]*min-height: 22px;[\s\S]*padding: 0;/);
+  assert.match(html, /modal-key-col/);
+  assert.match(html, /Ring 6 \{42m late\} \{takes 5m\}/);
+  assert.match(html, /LongHorseName \+ Test Rider/);
+  assert.match(html, /10002/);
+  assert.doesNotMatch(html, /modal-output-label">Last/);
+  assert.doesNotMatch(html, /Start: 8:40A/);
+  assert.doesNotMatch(html, /Go: 8:55A/);
+  assert.doesNotMatch(html, /Last: Score: 80/);
   assert.match(html, /<\/span><span class="time-value">8:40A<\/span>/);
   assert.doesNotMatch(html, /<\/span>&nbsp;8:40A/);
   assert.match(html, /\.time-col \{[\s\S]*width: 100%;[\s\S]*justify-self: stretch;[\s\S]*display: grid;[\s\S]*grid-template-columns: 11px minmax\(6ch, 6ch\);[\s\S]*align-items: center;[\s\S]*justify-content: end;[\s\S]*column-gap: 3px;[\s\S]*text-align: right;[\s\S]*overflow: visible;[\s\S]*padding: 0;[\s\S]*min-height: 22px;[\s\S]*height: 22px;[\s\S]*white-space: nowrap;/);
@@ -221,6 +248,16 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /\.time-status--following \{ color: var\(--blue-muted\); \}/);
   assert.match(html, /\.time-status--completed,\n    \.time-status--done \{ color: var\(--text\); \}/);
   assert.match(html, /\.c-name \{[\s\S]*min-height: 22px;[\s\S]*height: 22px;[\s\S]*display: flex;[\s\S]*align-items: center;/);
+  assert.match(html, /--modal-overview-cols: minmax\(8ch, 8ch\) 6ch minmax\(0, 1fr\) 5ch 6ch 6ch;/);
+  assert.match(html, /\.modal-key-col \{[\s\S]*width: 100%;/);
+  assert.match(html, /\.modal-name-span \{[\s\S]*grid-column: span 3;/);
+  assert.match(html, /@media \(max-width: 390px\) \{[\s\S]*\.modal-output-section \.schedule-line \{[\s\S]*grid-template-columns: minmax\(8ch, 8ch\) 6ch 5ch 6ch 6ch;/);
+  assert.match(html, /\.modal-label-row \{[\s\S]*font-size: 12px;/);
+  assert.match(html, /\.modal-label-cell \{[\s\S]*font-size: 8px;/);
+  assert.match(html, /\.modal-label-time,\n    \.modal-label-number,\n    \.modal-label-name,\n    \.modal-label-order,\n    \.modal-label-starts,\n    \.modal-label-leave \{ text-align: center; \}/);
+  assert.match(html, /@media \(max-width: 390px\) \{[\s\S]*\.modal-label-name \{[\s\S]*display: none;/);
+  assert.match(html, /@media \(max-width: 390px\) \{[\s\S]*\.modal-class-line \.class-name-col \{[\s\S]*grid-column: 2 \/ -1;[\s\S]*grid-row: 2;/);
+  assert.doesNotMatch(html, /\.modal-class-line \.c-time,[\s\S]*font-size: 9\.5px;/);
   assert.match(html, /rollup-row/);
   assert.match(html, /time-value/);
   assert.doesNotMatch(html, /time-mark/);
@@ -332,8 +369,8 @@ test("renderVisualIdentifierHtml keeps compact rollups in horse time order only"
   assert.doesNotMatch(html, /padding-left: 7px;/);
   assert.doesNotMatch(html, /rollup-cell--in/);
   assert.doesNotMatch(html, /rollup-cell--walk/);
-  assert.doesNotMatch(html, /In: /);
-  assert.doesNotMatch(html, /Walk/);
+  assert.doesNotMatch(html, /In: 15m/);
+  assert.doesNotMatch(html, /Walk: 2m/);
   assert.doesNotMatch(html, /epill__state/);
   assert.match(html, /rollup-row--now[\s\S]*rollup-cell--horse[\s\S]*rollup-cell--time[\s\S]*rollup-cell--order/);
 });
@@ -374,13 +411,15 @@ test("renderVisualIdentifierHtml preserves fixed cells when row values are empty
   });
 
   const html = renderVisualIdentifierHtml(buildPreviewModel(payload));
+  const darcyRowStart = html.indexOf('data-horses="Darcy"');
+  const darcyRow = darcyRowStart === -1 ? "" : html.slice(darcyRowStart, html.indexOf("</article>", darcyRowStart));
 
   assert.match(html, /cell-empty/);
   assert.match(html, /Darcy/);
   assert.match(html, /10:45A/);
   assert.match(html, /2\/22/);
-  assert.doesNotMatch(html, /In: 40m/);
-  assert.doesNotMatch(html, /Walk: 2m/);
+  assert.doesNotMatch(darcyRow, /In: 40m/);
+  assert.doesNotMatch(darcyRow, /Walk: 2m/);
 });
 
 test("renderVisualIdentifierHtml uses ring walk in the eyebrow instead of status pills", () => {

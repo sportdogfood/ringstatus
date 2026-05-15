@@ -193,6 +193,32 @@ function renderTimeValue(value) {
     </span><span class="time-value">${renderAlignedTimeText(value)}</span>`;
 }
 
+function renderOrderOfGoValue(rollup) {
+  if (!isBlank(rollup?.order_of_go)) return rollup.order_of_go;
+  const order = rollup?.order || rollup?.oog;
+  return isBlank(order) ? "" : String(order).split("/")[0].trim();
+}
+
+function renderRingNameValue(row) {
+  const ringName = row.ring_name || row.ring;
+  const parts = [ringName];
+  if (!isBlank(row.ring_late)) parts.push(`{${row.ring_late}}`);
+  if (!isBlank(row.ring_takes)) parts.push(`{${row.ring_takes}}`);
+  return parts.filter((value) => !isBlank(value)).join(" ");
+}
+
+function renderModalLabelRow() {
+  return `
+              <div class="modal-label-row" aria-hidden="true">
+                <div class="modal-label-cell modal-label-time">time</div>
+                <div class="modal-label-cell modal-label-number">number</div>
+                <div class="modal-label-cell modal-label-name">name</div>
+                <div class="modal-label-cell modal-label-order">order</div>
+                <div class="modal-label-cell modal-label-starts">starts-or-ends</div>
+                <div class="modal-label-cell modal-label-leave">leave</div>
+              </div>`;
+}
+
 function renderStatusTerm(term) {
   return `
     <div class="status-map-row">
@@ -277,6 +303,25 @@ function renderSampleRow(row) {
     </article>`;
 }
 
+function renderClassLine(row, overrides = {}) {
+  const timeClass = modifierClass("time-status", row.status_id);
+  const sequenceClass = isDoneRow(row) ? "" : modifierClass("sequence-shade", row.schedule_sequence_type_shade);
+  const classTypeClass = modifierClass("class-type-shade", row.class_type);
+  const keyClass = overrides.keyClass || "class-num-token";
+  const finalCell = overrides.finalAsClassType
+    ? `<span class="slot-token cell-token c-type ${htmlEscape(classTypeClass)}">${renderCellValue(overrides.finalValue ?? row.class_type)}</span>`
+    : `<span class="modal-metric">${renderCellValue(overrides.finalValue)}</span>`;
+  return `
+      <div class="schedule-line class-line modal-class-line">
+        <div class="time-col c-time ${htmlEscape(timeClass)}">${renderTimeValue(overrides.time ?? row.time)}</div>
+        <div class="modal-key-col"><span class="slot-token ${htmlEscape(keyClass)}">${renderCellValue(overrides.keyValue)}</span></div>
+        <div class="class-name-col c-name ${overrides.nameSpanMetrics ? "modal-name-span" : ""} ${htmlEscape(sequenceClass)}">${renderCellValue(overrides.className ?? row.class_name)}</div>
+        ${overrides.nameSpanMetrics ? "" : `<div class="modal-metric-col"><span class="modal-metric">${renderCellValue(overrides.metricOne)}</span></div>
+        <div class="modal-metric-col"><span class="modal-metric">${renderCellValue(overrides.metricTwo)}</span></div>`}
+        <div class="class-type-col">${finalCell}</div>
+      </div>`;
+}
+
 function renderTimeRow(row) {
   const timeClass = modifierClass("time-status", row.status_id);
   const sequenceClass = isDoneRow(row) ? "" : modifierClass("sequence-shade", row.schedule_sequence_type_shade);
@@ -293,16 +338,60 @@ function renderTimeRow(row) {
 }
 
 function renderClassOverviewModal(row) {
+  const tripLines = (row.rollups || []).slice(0, 2).map((rollup) => `
+              ${renderClassLine(row, {
+                time: rollup.time,
+                keyValue: rollup.entry_number,
+                className: [rollup.horse || rollup.name, rollup.rider].filter((value) => !isBlank(value)).join(" + "),
+                metricOne: renderOrderOfGoValue(rollup),
+                metricTwo: rollup.starts_in || rollup.in,
+                finalValue: rollup.leave_in || rollup.walk,
+              })}`).join("");
   return `
     <section class="modal-preview" aria-label="Class overview modal visual">
       <div class="overview-modal">
         <div class="modal-head">
-          <button class="modal-action modal-action--quiet" type="button">Close</button>
+          <div class="${statusClass(row.status_id)}">${renderCellValue(row.status)}</div>
           <div class="modal-title">Class Overview</div>
-          <button class="modal-action" type="button">Class Detail</button>
+          <button class="modal-action modal-action--icon modal-action--quiet" type="button" aria-label="Close">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M4.25 4.25l7.5 7.5M11.75 4.25l-7.5 7.5"></path>
+            </svg>
+          </button>
         </div>
         <div class="modal-body">
-          ${renderSampleRow(row)}
+          <div class="modal-output-list" aria-label="Expanded class overview outputs">
+            <div class="modal-output-section">
+              <div class="modal-output-label">RING</div>
+              ${renderModalLabelRow()}
+              ${renderClassLine(row, {
+                keyValue: row.ring_number,
+                keyClass: "ring-token",
+                className: renderRingNameValue(row),
+                metricOne: row.trips,
+                metricTwo: row.gone,
+                finalValue: row.left,
+              })}
+            </div>
+
+            <div class="modal-output-section">
+              <div class="modal-output-label">GROUP</div>
+              ${renderModalLabelRow()}
+              ${renderClassLine(row, {
+                keyValue: row.class_number,
+                className: row.class_name,
+                nameSpanMetrics: true,
+                finalValue: row.class_type,
+                finalAsClassType: true,
+              })}
+            </div>
+
+            <div class="modal-output-section">
+              <div class="modal-output-label">TRIPS</div>
+              ${renderModalLabelRow()}
+              ${tripLines}
+            </div>
+          </div>
         </div>
         <div class="modal-actions" aria-label="Class overview actions">
           <button class="rail-button" type="button">Save to Thread</button>
@@ -403,6 +492,7 @@ function renderVisualIdentifierHtml(model) {
       --red-bg: rgba(255, 141, 154, .18);
       --token-radius: 6px;
       --schedule-cols: minmax(8ch, 8ch) 4.5ch 4ch minmax(0, 1fr) 4ch;
+      --modal-overview-cols: minmax(8ch, 8ch) 6ch minmax(0, 1fr) 5ch 6ch 6ch;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -727,6 +817,180 @@ function renderVisualIdentifierHtml(model) {
     .right-stack .ring-card {
       position: static;
     }
+    .modal-preview {
+      background: rgba(3, 6, 14, .86);
+      border: 1px solid rgba(143, 184, 255, .16);
+      border-radius: 8px;
+      padding: 8px;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, .38);
+    }
+    .overview-modal {
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+    .modal-head {
+      min-height: 38px;
+      display: grid;
+      grid-template-columns: minmax(56px, max-content) minmax(0, 1fr) minmax(78px, max-content);
+      align-items: center;
+      gap: 8px;
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-title {
+      min-width: 0;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 620;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .modal-action {
+      min-height: 24px;
+      border-radius: var(--token-radius);
+      border: 1px solid rgba(143, 184, 255, .22);
+      background: rgba(73, 118, 255, .12);
+      color: var(--blue);
+      padding: 3px 7px;
+      font: inherit;
+      font-size: 10px;
+      font-weight: 560;
+      white-space: nowrap;
+    }
+    .modal-action--quiet {
+      color: var(--muted);
+      background: rgba(154, 163, 180, .08);
+      border-color: rgba(154, 163, 180, .16);
+    }
+    .modal-action--icon {
+      width: 24px;
+      min-width: 24px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-action--icon svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+    }
+    .modal-body .class-card {
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-body .class-card::before {
+      inset: 3px;
+    }
+    .modal-output-list {
+      display: grid;
+      gap: 6px;
+      padding: 7px 10px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-label-row {
+      display: grid;
+      grid-template-columns: var(--modal-overview-cols);
+      column-gap: 3px;
+      align-items: center;
+      color: var(--faint);
+      font-size: 12px;
+      font-weight: 560;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .modal-label-cell {
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 8px;
+    }
+    .modal-label-time,
+    .modal-label-number,
+    .modal-label-name,
+    .modal-label-order,
+    .modal-label-starts,
+    .modal-label-leave { text-align: center; }
+    .modal-output-section {
+      display: grid;
+      gap: 3px;
+    }
+    .modal-output-section .schedule-line {
+      grid-template-columns: var(--modal-overview-cols);
+      min-height: 22px;
+      padding: 0;
+    }
+    .modal-output-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+      color: var(--faint);
+      font-size: 9.5px;
+      font-weight: 560;
+      text-transform: uppercase;
+    }
+    .modal-output-line {
+      min-width: 0;
+      min-height: 21px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      color: var(--text);
+      background: rgba(154, 163, 180, .08);
+      border: 1px solid rgba(154, 163, 180, .12);
+      border-radius: var(--token-radius);
+      font-size: 10px;
+      font-weight: 560;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .modal-output-line--primary {
+      color: var(--blue);
+      background: rgba(73, 118, 255, .1);
+      border-color: rgba(143, 184, 255, .18);
+    }
+    .modal-output-line span {
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 7px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1;
+      border-left: 1px solid rgba(182, 200, 238, .22);
+    }
+    .modal-output-line span:first-child {
+      border-left: 0;
+    }
+    .modal-output-strong {
+      color: var(--blue-muted);
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      padding: 7px 8px;
+    }
+    .modal-actions .rail-button {
+      min-height: 24px;
+      padding: 3px 7px;
+      font-size: 10px;
+      font-weight: 560;
+    }
     .ring-title {
       font-size: 14px;
       font-weight: 620;
@@ -843,6 +1107,7 @@ function renderVisualIdentifierHtml(model) {
     .time-line:last-child { border-bottom: 0; }
     .ring-num-col,
     .class-num-col,
+    .modal-metric-col,
     .class-type-col {
       min-width: 0;
       width: 100%;
@@ -931,10 +1196,27 @@ function renderVisualIdentifierHtml(model) {
       font-weight: 560;
       padding-left: 3px;
     }
+    .modal-name-span {
+      grid-column: span 3;
+    }
     .class-type-col {
       display: inline-flex;
       justify-content: center;
       align-items: center;
+    }
+    .modal-metric-col {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-key-col {
+      min-width: 0;
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
     }
     .slot-token {
       width: 100%;
@@ -952,7 +1234,8 @@ function renderVisualIdentifierHtml(model) {
       font-variant-numeric: tabular-nums;
     }
     .cell-token,
-    .trip-metric {
+    .trip-metric,
+    .modal-metric {
       width: 100%;
       min-width: 0;
       min-height: 20px;
@@ -967,6 +1250,11 @@ function renderVisualIdentifierHtml(model) {
       overflow: hidden;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
+    }
+    .modal-metric {
+      color: var(--muted);
+      background: rgba(154, 163, 180, .06);
+      border: 1px solid rgba(154, 163, 180, .1);
     }
     .class-num-token {
       color: var(--text);
@@ -1102,6 +1390,28 @@ function renderVisualIdentifierHtml(model) {
     @media (max-width: 430px) {
       .rollup-line { padding-left: 8px; }
     }
+    @media (max-width: 390px) {
+      .modal-output-section .schedule-line {
+        grid-template-columns: minmax(8ch, 8ch) 6ch 5ch 6ch 6ch;
+        row-gap: 2px;
+      }
+      .modal-label-row {
+        grid-template-columns: minmax(8ch, 8ch) 6ch 5ch 6ch 6ch;
+      }
+      .modal-label-name {
+        display: none;
+      }
+      .modal-class-line .class-name-col {
+        grid-column: 2 / -1;
+        grid-row: 2;
+        height: 18px;
+        min-height: 18px;
+        padding-left: 0;
+      }
+      .modal-name-span {
+        grid-column: 2 / -1;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1139,6 +1449,8 @@ function renderVisualIdentifierHtml(model) {
           </div>
           ${timeRows}
         </section>
+
+        ${classOverviewModal}
       </div>
 
       <div class="identifier-stack">

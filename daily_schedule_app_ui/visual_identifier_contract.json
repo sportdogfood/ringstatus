@@ -157,8 +157,16 @@
   "sample_rows": [
     {
       "ring": "Ring 6",
+      "ring_late": "42m late",
+      "ring_takes": "takes 5m",
       "group": "Small Pony Hunter",
       "time": "8:40A",
+      "walk_time": "8m",
+      "trips": "45",
+      "gone": "22",
+      "left": "23",
+      "class_metric_one": "1",
+      "class_metric_two": "15",
       "class_number": "411",
       "class_name": "Small Pony Hunter U/S",
       "class_type": "HUN",
@@ -166,8 +174,8 @@
       "status": "NOW",
       "metric": "1/15",
       "rollups": [
-        { "horse": "Knox", "rider": "Heap", "time": "8:55A", "order": "5/14", "in": "15m", "walk": "2m", "status": "NOW" },
-        { "horse": "Poptart", "rider": "Michaels", "time": "8:58A", "order": "6/14", "in": "18m", "walk": "2m", "status": "NEXT" }
+        { "horse": "Knox", "rider": "Lainey", "entry_number": "10002", "time": "8:55A", "order": "5/14", "in": "15m", "walk": "2m", "status": "NOW" },
+        { "horse": "Poptart", "rider": "Michaels", "entry_number": "10003", "time": "8:58A", "order": "6/14", "in": "18m", "walk": "2m", "status": "NEXT" }
       ]
     },
     {

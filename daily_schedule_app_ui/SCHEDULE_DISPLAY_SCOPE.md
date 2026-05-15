@@ -192,29 +192,26 @@ ring card -> class cards -> trip rollups
 
 This screen uses Schedule By Ring exactly as defined below. Ring rail buttons act as horizontal anchors, not data filters.
 
-PRO detail behavior:
+PRO modal behavior:
 
-- PRO contains detail modals for selected schedule entities.
-- Detail modals can open from class rows, trip rollups, ring context, class context, or related dataset context.
+- PRO contains compact overview modals for selected schedule entities.
+- Overview modals can open from class rows, trip rollups, ring context, class context, or related dataset context.
 - Clicking a class row opens a class overview modal.
-- The class overview modal includes a link to the class detail page.
+- The class overview modal is now locked as the class detail surface for this UI scope.
+- Do not create an additional class detail card or class detail page from the class overview modal.
 - Clicking a trip rollup opens a trip overview modal.
 - The trip overview modal includes links to horse detail and rider detail.
-- A PRO detail modal must include a clear close action.
-- A PRO detail modal may include a link to the actual full detail page.
-- The full detail page must show a clear `<-- back` control.
-- The `<-- back` control from a PRO-originated detail page must point back to PRO.
-- Schedule rows or rollups shown inside a modal or full detail page must reuse the locked skeleton.
-- Detail modals and full detail pages must not create alternate token sizing or alternate schedule table styling.
+- A PRO overview modal must include a clear close action.
+- Schedule rows or rollups shown inside a modal must reuse the locked skeleton.
+- Overview modals must not create alternate token sizing, alternate schedule table styling, or separate card-heavy detail layouts.
 
 Class overview modal:
 
 - Opens when the user clicks/taps a class row in PRO.
-- The modal is an overview, not the full class detail page.
+- The modal is locked as the class detail surface for this UI scope.
 - The modal must include a clear close action.
 - Closing returns the user to the same PRO scroll/context state.
-- The modal must include a link to the actual class detail page.
-- The class detail page must include a clear `<-- back` control pointing back to PRO.
+- Do not add a separate class detail card or class detail page.
 - The modal should show the selected class identity:
 
 ```text
@@ -237,7 +234,6 @@ horse | time | order
 
 ```text
 Close
-Class Detail
 Save to Thread
 Share to person
 ```

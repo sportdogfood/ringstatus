@@ -34,7 +34,7 @@ START | PRO | HORSES
 
 `START` begins or restarts a device session, stores required session details in device memory for 7 days, sends the session webhook, and hosts subviews such as `FOCUS`, `TIME`, and `THREADS`.
 
-`PRO` is the full schedule surface. It owns the schedule-by-ring view, class/trip overview modals, and links to full detail pages. Detail pages opened from `PRO` must include a clear `<-- back` path to `PRO`.
+`PRO` is the full schedule surface. It owns the schedule-by-ring view and the locked class/trip overview modal surfaces. The class overview modal is the class detail surface for this UI scope; do not create an additional class detail card or class detail page from it.
 
 `PRO` must also include a print/PDF task for a fully rendered two-column schedule by Ring on 8.5 x 11 paper. Phone preview is a print-page preview, not a phone-optimized reading layout; the user may need to scroll vertically and horizontally to inspect the printed-page layout.
 
