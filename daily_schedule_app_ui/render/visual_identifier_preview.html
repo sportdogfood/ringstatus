@@ -392,8 +392,37 @@
       white-space: nowrap;
     }
     .time-col {
-      display: block;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
       text-align: left;
+      overflow: hidden;
+    }
+    .time-clock {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      opacity: .72;
+      color: currentColor;
+      overflow: visible;
+    }
+    .time-clock svg {
+      display: block;
+      width: 9px;
+      height: 9px;
+      min-width: 9px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      overflow: visible;
+    }
+    .time-text {
+      min-width: 0;
+      flex: 1 1 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .c-time, .c-num, .c-type, .trip-metric {
       font-size: 10px;
@@ -572,7 +601,7 @@
     <header class="topbar">
       <div>
         <h1>Visual Identifier Preview</h1>
-        <div class="subtle">Generated 2026-05-15T11:09:33.642Z from contract 2026-05-13.v0.1</div>
+        <div class="subtle">Generated 2026-05-15T11:15:42.690Z from contract 2026-05-13.v0.1</div>
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
@@ -596,7 +625,12 @@
           
     <article class="class-card schedule-band schedule-band--now" data-ring="R6" data-group="Small Pony Hunter" data-status="NOW" data-status-id="now" data-class-type="HUN" data-sequence-type="U/S" data-class-number="411" data-horses="Knox|Poptart" data-riders="Heap|Michaels">
       <div class="schedule-line class-line">
-        <div class="time-col c-time time-status--now">8:40A</div>
+        <div class="time-col c-time time-status--now"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">8:40A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">411</span></div>
         <div class="class-name-col c-name sequence-shade--violet">Small Pony Hunter U/S</div>
@@ -616,7 +650,12 @@
     </article>
     <article class="class-card schedule-band schedule-band--next" data-ring="R6" data-group="ASPCA Maclay" data-status="NEXT" data-status-id="next" data-class-type="EQ" data-sequence-type="OVF" data-class-number="570" data-horses="Darcy" data-riders="Rizzo">
       <div class="schedule-line class-line">
-        <div class="time-col c-time time-status--next">10:00A</div>
+        <div class="time-col c-time time-status--next"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">10:00A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">570</span></div>
         <div class="class-name-col c-name sequence-shade--teal">ASPCA Maclay</div>
@@ -631,7 +670,12 @@
     </article>
     <article class="class-card schedule-band schedule-band--following" data-ring="R6" data-group="Junior &amp; Amateur Jumpers" data-status="FOL" data-status-id="following" data-class-type="JMP" data-sequence-type="OVF" data-class-number="742" data-horses="" data-riders="">
       <div class="schedule-line class-line">
-        <div class="time-col c-time time-status--following">10:30A</div>
+        <div class="time-col c-time time-status--following"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">10:30A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">742</span></div>
         <div class="class-name-col c-name sequence-shade--teal">1.10m Junior &amp; Amateur Jumpers</div>
@@ -641,7 +685,12 @@
     </article>
     <article class="class-card schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-sequence-type="OVF" data-class-number="644" data-horses="Calgary" data-riders="Baker">
       <div class="schedule-line class-line">
-        <div class="time-col c-time time-status--completed">7:45A</div>
+        <div class="time-col c-time time-status--completed"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">7:45A</span></div>
         <div class="ring-num-col"><span class="ring-token">R6</span></div>
         <div class="class-num-col"><span class="class-num-token">644</span></div>
         <div class="class-name-col c-name sequence-shade--teal">Modified Hunter 2'/2'6&quot;</div>
@@ -666,7 +715,12 @@
           </div>
           
     <article class="schedule-line time-line schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-sequence-type="OVF" data-class-number="644" data-horses="Calgary" data-riders="Baker">
-      <div class="time-col c-time time-status--completed">7:45A</div>
+      <div class="time-col c-time time-status--completed"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">7:45A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">644</span></div>
       <div class="class-name-col c-name sequence-shade--teal">Modified Hunter 2'/2'6&quot;</div>
@@ -679,7 +733,12 @@
     </span></div>
     </article>
     <article class="schedule-line time-line schedule-band schedule-band--now" data-ring="R6" data-group="Small Pony Hunter" data-status="NOW" data-status-id="now" data-class-type="HUN" data-sequence-type="U/S" data-class-number="411" data-horses="Knox|Poptart" data-riders="Heap|Michaels">
-      <div class="time-col c-time time-status--now">8:40A</div>
+      <div class="time-col c-time time-status--now"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">8:40A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">411</span></div>
       <div class="class-name-col c-name sequence-shade--violet">Small Pony Hunter U/S</div>
@@ -697,7 +756,12 @@
     </span></div>
     </article>
     <article class="schedule-line time-line schedule-band schedule-band--next" data-ring="R6" data-group="ASPCA Maclay" data-status="NEXT" data-status-id="next" data-class-type="EQ" data-sequence-type="OVF" data-class-number="570" data-horses="Darcy" data-riders="Rizzo">
-      <div class="time-col c-time time-status--next">10:00A</div>
+      <div class="time-col c-time time-status--next"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">10:00A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">570</span></div>
       <div class="class-name-col c-name sequence-shade--teal">ASPCA Maclay</div>
@@ -710,7 +774,12 @@
     </span></div>
     </article>
     <article class="schedule-line time-line schedule-band schedule-band--following" data-ring="R6" data-group="Junior &amp; Amateur Jumpers" data-status="FOL" data-status-id="following" data-class-type="JMP" data-sequence-type="OVF" data-class-number="742" data-horses="" data-riders="">
-      <div class="time-col c-time time-status--following">10:30A</div>
+      <div class="time-col c-time time-status--following"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">10:30A</span></div>
       <div class="ring-num-col"><span class="ring-token">R6</span></div>
       <div class="class-num-col"><span class="class-num-token">742</span></div>
       <div class="class-name-col c-name sequence-shade--teal">1.10m Junior &amp; Amateur Jumpers</div>

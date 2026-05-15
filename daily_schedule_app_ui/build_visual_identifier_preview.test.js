@@ -122,7 +122,7 @@ test("renderVisualIdentifierHtml uses text tokens and no icon-only status contro
   assert.match(html, /DONE/);
   assert.match(html, /Ring 6/);
   assert.match(html, /Small Pony Hunter U\/S/);
-  assert.doesNotMatch(html, /<svg/i);
+  assert.match(html, /class="time-clock" aria-hidden="true"[\s\S]*<svg viewBox="0 0 16 16"/);
   assert.doesNotMatch(html, /ring_btn--icon/);
 });
 
@@ -139,6 +139,12 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /\.c-name \{[\s\S]*font-weight: 560;[\s\S]*padding-left: 3px;/);
   assert.match(html, /cell-token/);
   assert.match(html, /time-status--now/);
+  assert.match(html, /time-clock/);
+  assert.match(html, /time-text">8:40A/);
+  assert.match(html, /\.time-col \{[\s\S]*display: inline-flex;[\s\S]*gap: 3px;/);
+  assert.match(html, /\.time-clock \{[\s\S]*flex: 0 0 9px;[\s\S]*overflow: visible;/);
+  assert.match(html, /\.time-clock svg \{[\s\S]*min-width: 9px;[\s\S]*overflow: visible;/);
+  assert.match(html, /\.time-text \{[\s\S]*flex: 1 1 auto;[\s\S]*text-overflow: ellipsis;/);
   assert.match(html, /rollup-row/);
   assert.doesNotMatch(html, /time-mark/);
   assert.doesNotMatch(html, /sequence-type-col/);

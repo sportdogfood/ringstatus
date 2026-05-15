@@ -153,6 +153,15 @@ function renderCellValue(value) {
   return isBlank(value) ? '<span class="cell-empty" aria-hidden="true"></span>' : htmlEscape(value);
 }
 
+function renderTimeValue(value) {
+  return `<span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span><span class="time-text">${renderCellValue(value)}</span>`;
+}
+
 function renderStatusTerm(term) {
   return `
     <div class="status-map-row">
@@ -223,7 +232,7 @@ function renderSampleRow(row) {
   return `
     <article class="class-card ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="schedule-line class-line">
-        <div class="time-col c-time ${htmlEscape(timeClass)}">${renderCellValue(row.time)}</div>
+        <div class="time-col c-time ${htmlEscape(timeClass)}">${renderTimeValue(row.time)}</div>
         <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
         <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
         <div class="class-name-col c-name ${htmlEscape(sequenceClass)}">${renderCellValue(row.class_name)}</div>
@@ -238,7 +247,7 @@ function renderTimeRow(row) {
   const sequenceClass = modifierClass("sequence-shade", row.schedule_sequence_type_shade);
   return `
     <article class="schedule-line time-line ${rowBandClass(row)}" ${rowDataAttrs(row)}>
-      <div class="time-col c-time ${htmlEscape(timeClass)}">${renderCellValue(row.time)}</div>
+      <div class="time-col c-time ${htmlEscape(timeClass)}">${renderTimeValue(row.time)}</div>
       <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
       <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
       <div class="class-name-col c-name ${htmlEscape(sequenceClass)}">${renderCellValue(row.class_name)}</div>
@@ -681,8 +690,37 @@ function renderVisualIdentifierHtml(model) {
       white-space: nowrap;
     }
     .time-col {
-      display: block;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
       text-align: left;
+      overflow: hidden;
+    }
+    .time-clock {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      opacity: .72;
+      color: currentColor;
+      overflow: visible;
+    }
+    .time-clock svg {
+      display: block;
+      width: 9px;
+      height: 9px;
+      min-width: 9px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      overflow: visible;
+    }
+    .time-text {
+      min-width: 0;
+      flex: 1 1 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .c-time, .c-num, .c-type, .trip-metric {
       font-size: 10px;
