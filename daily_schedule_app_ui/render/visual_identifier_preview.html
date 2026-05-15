@@ -548,7 +548,7 @@
     }
     .rollup-row {
       display: inline-grid;
-      grid-template-columns: minmax(0, max-content) 6ch 5ch;
+      grid-template-columns: minmax(0, max-content) minmax(6ch, 6ch) minmax(5ch, 5ch);
       column-gap: 4px;
       align-items: center;
       min-height: 24px;
@@ -576,6 +576,10 @@
     .rollup-cell--time,
     .rollup-cell--order {
       text-align: center;
+      width: 100%;
+      min-width: 0;
+      overflow: visible;
+      text-overflow: clip;
     }
     .rollup-cell--time,
     .rollup-cell--order {
@@ -606,7 +610,7 @@
     <header class="topbar">
       <div>
         <h1>Visual Identifier Preview</h1>
-        <div class="subtle">Generated 2026-05-15T11:17:15.277Z from contract 2026-05-13.v0.1</div>
+        <div class="subtle">Generated 2026-05-15T11:21:01.261Z from contract 2026-05-13.v0.1</div>
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
