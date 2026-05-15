@@ -118,6 +118,7 @@ test("buildPreviewModel groups status and identifier tokens", () => {
 test("renderVisualIdentifierHtml uses text tokens and no icon-only status controls", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
 
+  assert.match(html, /http-equiv="Cache-Control" content="no-store"/);
   assert.match(html, /NOW/);
   assert.match(html, /DONE/);
   assert.match(html, /Ring 6/);

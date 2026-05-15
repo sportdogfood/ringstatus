@@ -301,6 +301,9 @@ function renderVisualIdentifierHtml(model) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>RingStatus Visual Identifier Preview</title>
   <style>
     :root {
