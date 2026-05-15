@@ -145,7 +145,7 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /\.time-col \{[\s\S]*display: inline-flex;[\s\S]*gap: 3px;/);
   assert.match(html, /\.time-clock \{[\s\S]*flex: 0 0 9px;[\s\S]*overflow: visible;/);
   assert.match(html, /\.time-clock svg \{[\s\S]*min-width: 9px;[\s\S]*overflow: visible;/);
-  assert.match(html, /\.time-text \{[\s\S]*flex: 1 1 auto;[\s\S]*text-overflow: ellipsis;/);
+  assert.match(html, /\.time-text \{[\s\S]*min-width: max-content;[\s\S]*text-overflow: clip;/);
   assert.match(html, /rollup-row/);
   assert.doesNotMatch(html, /time-mark/);
   assert.doesNotMatch(html, /sequence-type-col/);
@@ -169,7 +169,7 @@ test("renderVisualIdentifierHtml keeps class number width identical in ring and 
   const classLineCss = html.includes(".class-line {") ? html.slice(html.indexOf(".class-line {"), html.indexOf("}", html.indexOf(".class-line {")) + 1) : "";
   const timeLineCss = html.slice(html.indexOf(".time-line {"), html.indexOf("}", html.indexOf(".time-line {")) + 1);
 
-  assert.match(html, /--schedule-cols: 6ch 4\.5ch 4ch minmax\(0, 1fr\) 4ch;/);
+  assert.match(html, /--schedule-cols: 7\.4ch 4\.5ch 4ch minmax\(0, 1fr\) 4ch;/);
   assert.match(html, /\.schedule-line \{[\s\S]*grid-template-columns: var\(--schedule-cols\);/);
   assert.match(html, /schedule-line class-line/);
   assert.match(html, /schedule-line time-line/);
@@ -209,6 +209,9 @@ test("renderVisualIdentifierHtml adds band classes and filter-ready row attribut
   assert.match(html, /data-sequence-type="OVF"/);
   assert.match(html, /class-name-col c-name sequence-shade--teal/);
   assert.match(html, /data-class-number="411"/);
+  assert.match(html, /data-period="am"/);
+  assert.match(html, /data-first-up="false"/);
+  assert.match(html, /data-has-rollups="true"/);
   assert.match(html, /data-horses="LongHorseName"/);
   assert.match(html, /data-riders="Test Rider"/);
   assert.match(html, /\.schedule-band--now::before/);
@@ -234,7 +237,7 @@ test("renderVisualIdentifierHtml keeps compact rollups in horse time order only"
   assert.match(html, /rollup-cell rollup-cell--horse">LongHorseName/);
   assert.match(html, /rollup-cell rollup-cell--time">8:55A/);
   assert.match(html, /rollup-cell rollup-cell--order">5\/14/);
-  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*border-left: 1px solid rgba\(154, 163, 180, \.22\);[\s\S]*padding-left: 5px;/);
+  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*border-left: 1px solid rgba\(182, 200, 238, \.4\);[\s\S]*padding-left: 6px;/);
   assert.doesNotMatch(html, /rollup-cell--in/);
   assert.doesNotMatch(html, /rollup-cell--walk/);
   assert.doesNotMatch(html, /In: /);
@@ -347,6 +350,14 @@ test("renderRails creates ring anchors and horse filters from row data", () => {
   const rails = renderRails(buildPreviewModel(contract));
 
   assert.match(rails, /data-rail-row="rings"/);
+  assert.match(rails, /filter-actions/);
+  assert.match(rails, /quick-filter-group/);
+  assert.match(rails, /data-quick-filter="first_up"/);
+  assert.match(rails, /data-quick-filter="am"/);
+  assert.match(rails, /data-quick-filter="pm"/);
+  assert.match(rails, /data-rollup-only-toggle/);
+  assert.match(rails, /aria-pressed="false"/);
+  assert.match(rails, /data-switch-state>OFF/);
   assert.match(rails, /data-ring-anchor="R6"/);
   assert.match(rails, /data-rail-row="horses"/);
   assert.match(rails, /data-horse-filter="LongHorseName"/);
@@ -362,11 +373,36 @@ test("renderVisualIdentifierHtml keeps ring rail as anchors and horse rail as fi
   assert.match(html, /data-ring-anchor="R6"/);
   assert.match(html, /scrollIntoView/);
   assert.match(html, /data-horse-filter="LongHorseName"/);
+  assert.match(html, /data-has-rollups="false"/);
   assert.match(html, /body\.dataset\.horseFilter/);
   assert.match(html, /activeHorse === horse \? "" : horse/);
   assert.match(html, /activeStatus === status \? "" : status/);
+  assert.match(html, /let activeQuickFilter = ""/);
+  assert.match(html, /body\.dataset\.quickFilter = activeQuickFilter/);
+  assert.match(html, /activeQuickFilter === "first_up" && band\.dataset\.firstUp === "true"/);
+  assert.match(html, /activeQuickFilter === "am" && band\.dataset\.period === "am"/);
+  assert.match(html, /activeQuickFilter === "pm" && band\.dataset\.period === "pm"/);
+  assert.match(html, /activeQuickFilter === quickFilter \? "" : quickFilter/);
+  assert.match(html, /let activeRollupOnly = false/);
+  assert.match(html, /body\.dataset\.rollupOnly = activeRollupOnly \? "true" : ""/);
+  assert.match(html, /band\.dataset\.hasRollups === "true"/);
+  assert.match(html, /horseMatches && statusMatches && quickMatches && rollupOnlyMatches/);
+  assert.match(html, /rollupOnlyToggle\.classList\.toggle\("is-active", activeRollupOnly\)/);
+  assert.match(html, /rollupOnlyState\.textContent = activeRollupOnly \? "ON" : "OFF"/);
   assert.match(html, /setActive\(horseButtons, activeHorse \? button : null\)/);
   assert.match(html, /setActiveByValue\(statusButtons, "statusFilter", activeStatus\)/);
   assert.match(html, /band\.classList\.toggle\("is-filter-hidden", !bandMatches\)/);
   assert.match(html, /rollup\.classList\.toggle\("is-filter-hidden", !rollupMatches\)/);
+});
+
+test("renderVisualIdentifierHtml styles the trip-related switch as a left-right toggle", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /\.filter-actions \{[\s\S]*justify-content: flex-end;/);
+  assert.match(html, /\.quick-filter-group \{[\s\S]*display: inline-flex;[\s\S]*gap: 5px;/);
+  assert.match(html, /\.quick-filter-group \.rail-button\.is-active \{[\s\S]*color: var\(--blue\);/);
+  assert.match(html, /\.rollup-switch \{[\s\S]*border-radius: var\(--token-radius\);[\s\S]*padding: 4px 8px;/);
+  assert.match(html, /\.rollup-switch__track \{[\s\S]*width: 30px;[\s\S]*border-radius: var\(--token-radius\);/);
+  assert.match(html, /\.rollup-switch__thumb \{[\s\S]*transform: translateX\(0\);/);
+  assert.match(html, /\.rollup-switch\.is-active \.rollup-switch__thumb \{[\s\S]*transform: translateX\(15px\);/);
 });

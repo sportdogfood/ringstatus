@@ -37,6 +37,23 @@ function timeSort(value) {
   return hour * 60 + minute;
 }
 
+function timePeriod(value) {
+  const match = String(value || "").trim().match(/[AP]$/i);
+  if (!match) return "";
+  return match[0].toUpperCase() === "A" ? "am" : "pm";
+}
+
+function isFirstUpRollup(rollup) {
+  if (rollup?.is_first_up === true) return true;
+  const order = String(rollup?.order || rollup?.oog || "").trim();
+  return /^1\s*\//.test(order);
+}
+
+function rowHasFirstUp(row) {
+  if (row?.is_first_up === true) return true;
+  return (row?.rollups || []).some(isFirstUpRollup);
+}
+
 function ringNumberFromRow(row) {
   return String(row?.ring_number || row?.ring || "").replace(/^\D+/, "").trim();
 }
@@ -221,6 +238,9 @@ function rowDataAttrs(row) {
     `data-class-type="${htmlEscape(row.class_type || "")}"`,
     `data-sequence-type="${htmlEscape(row.schedule_sequence_type || "")}"`,
     `data-class-number="${htmlEscape(row.class_number || "")}"`,
+    `data-period="${htmlEscape(timePeriod(row.time))}"`,
+    `data-first-up="${rowHasFirstUp(row) ? "true" : "false"}"`,
+    `data-has-rollups="${rollups.length ? "true" : "false"}"`,
     `data-horses="${htmlEscape(horses)}"`,
     `data-riders="${htmlEscape(riders)}"`,
   ].join(" ");
@@ -280,9 +300,24 @@ function renderRails(model) {
   const horseValues = uniqueValues(model.sampleRows.flatMap((row) => (row.rollups || []).map((rollup) => rollup.horse || rollup.name)));
   const ringButtons = ringValues.map((ring) => renderRailButton({ label: ring, value: ring, rail: "ring-anchor" })).join("");
   const horseButtons = horseValues.map((horse) => renderRailButton({ label: horse, value: horse, rail: "horse-filter" })).join("");
+  const quickFilters = [
+    { label: "1UP", value: "first_up" },
+    { label: "AM", value: "am" },
+    { label: "PM", value: "pm" },
+  ].map((filter) => renderRailButton({ label: filter.label, value: filter.value, rail: "quick-filter" })).join("");
 
   return `
     <section class="rail-stack" aria-label="Schedule navigation and horse filters">
+      <div class="filter-actions" aria-label="Filter actions">
+        <div class="quick-filter-group" aria-label="Quick filters">${quickFilters}</div>
+        <button class="rollup-switch" type="button" data-rollup-only-toggle aria-pressed="false">
+          <span class="rollup-switch__label">Trips</span>
+          <span class="rollup-switch__track" aria-hidden="true">
+            <span class="rollup-switch__thumb"></span>
+          </span>
+          <span class="rollup-switch__state" data-switch-state>OFF</span>
+        </button>
+      </div>
       <div class="rail-row" data-rail-row="rings" aria-label="Ring anchors">${ringButtons}</div>
       <div class="rail-row" data-rail-row="horses" aria-label="Horse filters">${horseButtons}</div>
     </section>`;
@@ -328,7 +363,7 @@ function renderVisualIdentifierHtml(model) {
       --red: #ff8d9a;
       --red-bg: rgba(255, 141, 154, .18);
       --token-radius: 6px;
-      --schedule-cols: 6ch 4.5ch 4ch minmax(0, 1fr) 4ch;
+      --schedule-cols: 7.4ch 4.5ch 4ch minmax(0, 1fr) 4ch;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -384,6 +419,86 @@ function renderVisualIdentifierHtml(model) {
       display: grid;
       gap: 6px;
       margin-top: 10px;
+    }
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      min-width: 0;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: thin;
+    }
+    .quick-filter-group {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .quick-filter-group .rail-button {
+      min-height: 25px;
+      padding: 4px 8px;
+      font-size: 10px;
+      border-color: rgba(143, 184, 255, .2);
+    }
+    .quick-filter-group .rail-button.is-active {
+      color: var(--blue);
+      border-color: rgba(143, 184, 255, .42);
+      background: rgba(73, 118, 255, .16);
+    }
+    .rollup-switch {
+      flex: 0 0 auto;
+      min-height: 25px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: var(--token-radius);
+      border: 1px solid rgba(154, 163, 180, .18);
+      background: rgba(154, 163, 180, .08);
+      color: var(--muted);
+      padding: 4px 8px;
+      font: inherit;
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: 0;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .rollup-switch__track {
+      width: 30px;
+      height: 15px;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+      border-radius: var(--token-radius);
+      border: 1px solid rgba(154, 163, 180, .18);
+      background: rgba(9, 11, 17, .45);
+    }
+    .rollup-switch__thumb {
+      width: 9px;
+      height: 9px;
+      border-radius: calc(var(--token-radius) - 2px);
+      background: #8d96a8;
+      transform: translateX(0);
+      transition: transform .14s ease, background .14s ease;
+    }
+    .rollup-switch__state {
+      min-width: 22px;
+      text-align: right;
+      color: var(--faint);
+    }
+    .rollup-switch.is-active {
+      color: #b6f0c8;
+      border-color: rgba(73, 209, 125, .34);
+      background: rgba(73, 209, 125, .1);
+    }
+    .rollup-switch.is-active .rollup-switch__thumb {
+      transform: translateX(15px);
+      background: var(--green);
+    }
+    .rollup-switch.is-active .rollup-switch__state {
+      color: var(--green);
     }
     .rail-row {
       display: flex;
@@ -720,10 +835,10 @@ function renderVisualIdentifierHtml(model) {
       overflow: visible;
     }
     .time-text {
-      min-width: 0;
-      flex: 1 1 auto;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      min-width: max-content;
+      flex: 0 0 auto;
+      overflow: visible;
+      text-overflow: clip;
     }
     .c-time, .c-num, .c-type, .trip-metric {
       font-size: 10px;
@@ -884,8 +999,8 @@ function renderVisualIdentifierHtml(model) {
     }
     .rollup-cell--time,
     .rollup-cell--order {
-      border-left: 1px solid rgba(154, 163, 180, .22);
-      padding-left: 5px;
+      border-left: 1px solid rgba(182, 200, 238, .4);
+      padding-left: 6px;
     }
     .rollup-row--now { border-color: rgba(73, 209, 125, .24); }
     .rollup-row--next { border-color: rgba(143, 184, 255, .26); }
@@ -989,17 +1104,29 @@ function renderVisualIdentifierHtml(model) {
 
       const horseButtons = [...document.querySelectorAll("[data-horse-filter]")];
       const statusButtons = [...document.querySelectorAll("[data-status-filter]")];
+      const quickFilterButtons = [...document.querySelectorAll("[data-quick-filter]")];
+      const rollupOnlyToggle = document.querySelector("[data-rollup-only-toggle]");
+      const rollupOnlyState = document.querySelector("[data-switch-state]");
       let activeHorse = "";
       let activeStatus = "";
+      let activeQuickFilter = "";
+      let activeRollupOnly = false;
 
       const applyFilters = () => {
         document.body.dataset.horseFilter = activeHorse;
         document.body.dataset.statusFilter = activeStatus;
+        document.body.dataset.quickFilter = activeQuickFilter;
+        document.body.dataset.rollupOnly = activeRollupOnly ? "true" : "";
         document.querySelectorAll(".schedule-band").forEach((band) => {
           const horses = (band.dataset.horses || "").split("|").filter(Boolean);
           const horseMatches = !activeHorse || horses.includes(activeHorse);
           const statusMatches = !activeStatus || band.dataset.status === activeStatus;
-          const bandMatches = horseMatches && statusMatches;
+          const quickMatches = !activeQuickFilter
+            || (activeQuickFilter === "first_up" && band.dataset.firstUp === "true")
+            || (activeQuickFilter === "am" && band.dataset.period === "am")
+            || (activeQuickFilter === "pm" && band.dataset.period === "pm");
+          const rollupOnlyMatches = !activeRollupOnly || band.dataset.hasRollups === "true";
+          const bandMatches = horseMatches && statusMatches && quickMatches && rollupOnlyMatches;
           band.classList.toggle("is-filter-hidden", !bandMatches);
           band.querySelectorAll(".rollup-row").forEach((rollup) => {
             const rollupMatches = !activeHorse || rollup.dataset.horse === activeHorse;
@@ -1024,6 +1151,23 @@ function renderVisualIdentifierHtml(model) {
           setActiveByValue(statusButtons, "statusFilter", activeStatus);
           applyFilters();
         });
+      });
+
+      quickFilterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const quickFilter = button.dataset.quickFilter;
+          activeQuickFilter = activeQuickFilter === quickFilter ? "" : quickFilter;
+          setActive(quickFilterButtons, activeQuickFilter ? button : null);
+          applyFilters();
+        });
+      });
+
+      rollupOnlyToggle?.addEventListener("click", () => {
+        activeRollupOnly = !activeRollupOnly;
+        rollupOnlyToggle.classList.toggle("is-active", activeRollupOnly);
+        rollupOnlyToggle.setAttribute("aria-pressed", activeRollupOnly ? "true" : "false");
+        if (rollupOnlyState) rollupOnlyState.textContent = activeRollupOnly ? "ON" : "OFF";
+        applyFilters();
       });
     })();
   </script>
