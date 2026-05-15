@@ -699,7 +699,8 @@ function renderVisualIdentifierHtml(model) {
       text-overflow: ellipsis;
       white-space: nowrap;
       font-size: 11px;
-      font-weight: 680;
+      font-weight: 560;
+      padding-left: 3px;
     }
     .class-type-col {
       display: inline-flex;

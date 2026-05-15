@@ -287,9 +287,11 @@
       align-items: center;
       gap: 8px;
       min-width: 0;
+      margin-left: auto;
     }
     .ring-status-controls {
       display: flex;
+      justify-content: flex-end;
       gap: 5px;
       overflow-x: auto;
       min-width: 0;
@@ -339,7 +341,11 @@
       border-radius: var(--token-radius);
       border: 1px solid transparent;
       pointer-events: none;
-      z-index: -1;
+      z-index: 0;
+    }
+    .schedule-band > * {
+      position: relative;
+      z-index: 1;
     }
     .schedule-band--now::before {
       border-color: rgba(73, 209, 125, .34);
@@ -347,6 +353,10 @@
     }
     .schedule-band--next::before {
       border-color: rgba(143, 184, 255, .18);
+      background: transparent;
+    }
+    .schedule-band--completed::before {
+      border-color: rgba(154, 163, 180, .18);
       background: transparent;
     }
     .schedule-band.is-filter-hidden,
@@ -400,7 +410,8 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       font-size: 11px;
-      font-weight: 680;
+      font-weight: 560;
+      padding-left: 3px;
     }
     .class-type-col {
       display: inline-flex;
@@ -490,9 +501,6 @@
       padding: 0 8px 8px 8px;
       scrollbar-width: thin;
     }
-    .rollup-line:has(.rollup-row:nth-child(2)) {
-      justify-content: flex-start;
-    }
     .time-rollup-cell {
       grid-column: 1 / -1;
       display: flex;
@@ -501,9 +509,6 @@
       overflow-x: auto;
       padding-top: 2px;
       scrollbar-width: thin;
-    }
-    .time-rollup-cell:has(.rollup-row:nth-child(2)) {
-      justify-content: flex-start;
     }
     .rollup-row {
       display: inline-grid;
@@ -560,7 +565,7 @@
     <header class="topbar">
       <div>
         <h1>Visual Identifier Preview</h1>
-        <div class="subtle">Generated 2026-05-15T02:24:32.243Z from contract 2026-05-13.v0.1</div>
+        <div class="subtle">Generated 2026-05-15T02:42:45.575Z from contract 2026-05-13.v0.1</div>
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
@@ -647,7 +652,10 @@
         <section class="time-card">
           <div class="ring-line">
             <div class="ring-title">Time</div>
-            <div class="ring-walk"></div>
+            <div class="ring-eyebrow">
+              <div class="ring-status-controls" aria-label="Status filters and indicator legend"><button class="rail-button" type="button" data-status-filter="NOW" aria-pressed="false">NOW</button><button class="rail-button" type="button" data-status-filter="NEXT" aria-pressed="false">NEXT</button><button class="rail-button" type="button" data-status-filter="DONE" aria-pressed="false">DONE</button></div>
+              <div class="ring-walk"></div>
+            </div>
           </div>
           
     <article class="schedule-line time-line schedule-band schedule-band--completed" data-ring="R6" data-group="Modified Hunter" data-status="DONE" data-status-id="completed" data-class-type="HUN" data-sequence-type="OVF" data-class-number="644" data-horses="Calgary" data-riders="Baker">
@@ -967,6 +975,13 @@
           button.setAttribute("aria-pressed", active ? "true" : "false");
         });
       };
+      const setActiveByValue = (buttons, attribute, activeValue) => {
+        buttons.forEach((button) => {
+          const active = Boolean(activeValue) && button.dataset[attribute] === activeValue;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      };
 
       const ringButtons = [...document.querySelectorAll("[data-ring-anchor]")];
       let activeRing = "";
@@ -1017,7 +1032,7 @@
         button.addEventListener("click", () => {
           const status = button.dataset.statusFilter;
           activeStatus = activeStatus === status ? "" : status;
-          setActive(statusButtons, activeStatus ? button : null);
+          setActiveByValue(statusButtons, "statusFilter", activeStatus);
           applyFilters();
         });
       });

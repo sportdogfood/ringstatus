@@ -22,6 +22,13 @@ const contract = {
       treatment: "filled_badge",
     },
     {
+      id: "next",
+      label: "NEXT",
+      incoming_terms: ["Next"],
+      shade: "blue",
+      treatment: "outline_badge",
+    },
+    {
       id: "done",
       label: "DONE",
       incoming_terms: ["Completed", "Done", "completed"],
@@ -66,6 +73,28 @@ const contract = {
       status: "NOW",
       rollups: [{ horse: "LongHorseName", rider: "Test Rider", time: "8:55A", order: "5/14", in: "15m", walk: "2m", status: "NOW" }],
     },
+    {
+      ring: "Ring 6",
+      group: "ASPCA Maclay",
+      time: "10:00A",
+      class_number: "570",
+      class_name: "ASPCA Maclay",
+      class_type: "EQ",
+      schedule_sequence_type: "Over Fences",
+      status: "NEXT",
+      rollups: [],
+    },
+    {
+      ring: "Ring 6",
+      group: "Modified Hunter",
+      time: "7:45A",
+      class_number: "644",
+      class_name: "Modified Hunter",
+      class_type: "HUN",
+      schedule_sequence_type: "Over Fences",
+      status: "DONE",
+      rollups: [],
+    },
   ],
 };
 
@@ -80,7 +109,7 @@ test("normalizeStatusTerm maps endpoint-specific terms to compact labels", () =>
 test("buildPreviewModel groups status and identifier tokens", () => {
   const model = buildPreviewModel(contract);
 
-  assert.equal(model.statusTerms.length, 2);
+  assert.equal(model.statusTerms.length, 3);
   assert.equal(model.tokenGroups.length, 3);
   assert.equal(model.sampleRows[0].status, "NOW");
 });
@@ -106,6 +135,7 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /class-name-col/);
   assert.match(html, /class-type-col/);
   assert.match(html, /sequence-shade--teal/);
+  assert.match(html, /\.c-name \{[\s\S]*font-weight: 560;[\s\S]*padding-left: 3px;/);
   assert.match(html, /cell-token/);
   assert.match(html, /time-status--now/);
   assert.match(html, /rollup-row/);
@@ -150,13 +180,13 @@ test("renderVisualIdentifierHtml renders identical rollup rows under ring and ti
   assert.match(timeCard, /rollup-cell rollup-cell--time">8:55A/);
 });
 
-test("renderVisualIdentifierHtml right-aligns single rollup and left-aligns multiple scrollable rollups", () => {
+test("renderVisualIdentifierHtml right-aligns trip rollups", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
 
   assert.match(html, /\.rollup-line \{[\s\S]*justify-content: flex-end;[\s\S]*overflow-x: auto;/);
-  assert.match(html, /\.rollup-line:has\(\.rollup-row:nth-child\(2\)\) \{[\s\S]*justify-content: flex-start;/);
   assert.match(html, /\.time-rollup-cell \{[\s\S]*justify-content: flex-end;[\s\S]*overflow-x: auto;/);
-  assert.match(html, /\.time-rollup-cell:has\(\.rollup-row:nth-child\(2\)\) \{[\s\S]*justify-content: flex-start;/);
+  assert.doesNotMatch(html, /\.rollup-line:has\(\.rollup-row:nth-child\(2\)\)/);
+  assert.doesNotMatch(html, /\.time-rollup-cell:has\(\.rollup-row:nth-child\(2\)\)/);
 });
 
 test("renderVisualIdentifierHtml adds band classes and filter-ready row attributes", () => {
@@ -311,7 +341,7 @@ test("renderVisualIdentifierHtml keeps ring rail as anchors and horse rail as fi
   assert.match(html, /activeHorse === horse \? "" : horse/);
   assert.match(html, /activeStatus === status \? "" : status/);
   assert.match(html, /setActive\(horseButtons, activeHorse \? button : null\)/);
-  assert.match(html, /setActive\(statusButtons, activeStatus \? button : null\)/);
+  assert.match(html, /setActiveByValue\(statusButtons, "statusFilter", activeStatus\)/);
   assert.match(html, /band\.classList\.toggle\("is-filter-hidden", !bandMatches\)/);
   assert.match(html, /rollup\.classList\.toggle\("is-filter-hidden", !rollupMatches\)/);
 });
