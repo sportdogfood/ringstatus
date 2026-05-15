@@ -13,6 +13,10 @@ const contract = {
   meta: { version: "test" },
   ring_abbreviations: {
     "Ring 6": "R6",
+    Intl: "INTL",
+    Grand: "GRA",
+    "Hunter 1": "H1",
+    Derby: "DER",
   },
   status_terms: [
     {
@@ -96,6 +100,50 @@ const contract = {
       status: "DONE",
       rollups: [],
     },
+    {
+      ring: "Intl",
+      group: "International Derby",
+      time: "11:45A",
+      class_number: "901",
+      class_name: "International Hunter Derby",
+      class_type: "HUN",
+      schedule_sequence_type: "Over Fences",
+      status: "UPC",
+      rollups: [],
+    },
+    {
+      ring: "Grand",
+      group: "Grand Prix",
+      time: "12:30P",
+      class_number: "120",
+      class_name: "Grand Prix Table II",
+      class_type: "JMP",
+      schedule_sequence_type: "Over Fences",
+      status: "UPC",
+      rollups: [],
+    },
+    {
+      ring: "Hunter 1",
+      group: "Green Hunter",
+      time: "1:15P",
+      class_number: "305",
+      class_name: "Green Hunter Stake",
+      class_type: "HUN",
+      schedule_sequence_type: "Over Fences",
+      status: "UPC",
+      rollups: [],
+    },
+    {
+      ring: "Derby",
+      group: "Derby Field",
+      time: "2:00P",
+      class_number: "777",
+      class_name: "National Derby",
+      class_type: "EQ",
+      schedule_sequence_type: "Under Saddle/Flat",
+      status: "UPC",
+      rollups: [],
+    },
   ],
 };
 
@@ -134,6 +182,10 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /ring-num-col/);
   assert.match(html, /class-num-col/);
   assert.match(html, /slot-token ring-token/);
+  assert.match(html, /slot-token ring-token">INTL/);
+  assert.match(html, /slot-token ring-token">GRA/);
+  assert.match(html, /slot-token ring-token">H1/);
+  assert.match(html, /slot-token ring-token">DER/);
   assert.match(html, /slot-token class-num-token/);
   assert.match(html, /slot-token cell-token c-type/);
   assert.match(html, /class-num-token/);
@@ -148,21 +200,25 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /\.c-name \{[\s\S]*font-weight: 560;[\s\S]*padding-left: 3px;/);
   assert.match(html, /cell-token/);
   assert.match(html, /\.slot-token \{[\s\S]*width: 100%;[\s\S]*min-width: 0;[\s\S]*min-height: 22px;[\s\S]*padding: 2px 4px;[\s\S]*border-radius: var\(--token-radius\);/);
+  assert.match(html, /--ring: #a8c7ff;/);
+  assert.match(html, /--ring-bg: rgba\(92, 142, 255, \.11\);/);
+  assert.match(html, /\.ring-token \{[\s\S]*color: var\(--ring\);[\s\S]*background: var\(--ring-bg\);[\s\S]*border: 1px solid rgba\(168, 199, 255, \.2\);/);
   assert.doesNotMatch(html, /\.time-col,\n    \.ring-num-col/);
   assert.match(html, /time-status--now/);
   assert.match(html, /time-clock/);
   assert.match(html, /<\/span>8:40A/);
   assert.doesNotMatch(html, /<\/span>&nbsp;8:40A/);
-  assert.match(html, /\.time-col \{[\s\S]*justify-self: start;[\s\S]*display: inline;[\s\S]*overflow: visible;[\s\S]*padding: 0;[\s\S]*min-height: 0;[\s\S]*height: auto;[\s\S]*white-space: nowrap;/);
-  assert.match(html, /\.time-clock \{[\s\S]*display: inline-block;[\s\S]*vertical-align: -1px;[\s\S]*margin-right: 3px;[\s\S]*overflow: visible;/);
+  assert.match(html, /\.time-col \{[\s\S]*width: 100%;[\s\S]*justify-self: stretch;[\s\S]*display: inline-flex;[\s\S]*align-items: center;[\s\S]*justify-content: flex-end;[\s\S]*gap: 3px;[\s\S]*text-align: right;[\s\S]*overflow: visible;[\s\S]*padding: 0;[\s\S]*min-height: 22px;[\s\S]*height: 22px;[\s\S]*white-space: nowrap;/);
+  assert.match(html, /\.time-clock \{[\s\S]*flex: 0 0 9px;[\s\S]*overflow: visible;/);
   assert.match(html, /\.time-clock svg \{[\s\S]*min-width: 9px;[\s\S]*overflow: visible;/);
-  assert.match(html, /\.c-time \{[\s\S]*font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;[\s\S]*font-size: 11px;[\s\S]*font-weight: 500;[\s\S]*padding: 0;[\s\S]*background: transparent;[\s\S]*border: 0;/);
+  assert.match(html, /\.c-time \{[\s\S]*font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;[\s\S]*font-size: 12px;[\s\S]*font-weight: 560;[\s\S]*line-height: 1\.35;[\s\S]*padding: 0;[\s\S]*background: transparent;[\s\S]*border: 0;/);
   assert.match(html, /\.class-type-shade--hun \{[\s\S]*color: var\(--teal\);[\s\S]*background: var\(--teal-bg\);/);
   assert.match(html, /\.class-type-shade--eq \{[\s\S]*color: var\(--violet\);[\s\S]*background: var\(--violet-bg\);/);
   assert.match(html, /\.class-type-shade--jmp \{[\s\S]*color: var\(--amber\);[\s\S]*background: var\(--amber-bg\);/);
   assert.match(html, /--blue-muted: #b6c8ee;/);
   assert.match(html, /\.time-status--following \{ color: var\(--blue-muted\); \}/);
   assert.match(html, /\.time-status--completed,\n    \.time-status--done \{ color: var\(--text\); \}/);
+  assert.match(html, /\.c-name \{[\s\S]*min-height: 22px;[\s\S]*height: 22px;[\s\S]*display: flex;[\s\S]*align-items: center;/);
   assert.match(html, /rollup-row/);
   assert.doesNotMatch(html, /time-text/);
   assert.doesNotMatch(html, /time-mark/);
@@ -263,8 +319,8 @@ test("renderVisualIdentifierHtml keeps compact rollups in horse time order only"
   assert.doesNotMatch(html, /&nbsp;5\/14/);
   assert.match(html, /\.rollup-cell--time \{[\s\S]*font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;[\s\S]*font-weight: 500;/);
   assert.doesNotMatch(orderCss, /font-family: "Roboto Mono"/);
-  assert.match(html, /\.rollup-row \{[\s\S]*--rollup-cell-x: 7px;[\s\S]*flex: 0 0 auto;/);
-  assert.match(html, /\.rollup-cell \{[\s\S]*padding: 0 var\(--rollup-cell-x\);/);
+  assert.match(html, /\.rollup-row \{[\s\S]*--rollup-cell-x: 7px;[\s\S]*flex: 0 0 auto;[\s\S]*align-items: stretch;[\s\S]*height: 24px;[\s\S]*padding: 0;/);
+  assert.match(html, /\.rollup-cell \{[\s\S]*min-height: 22px;[\s\S]*height: 100%;[\s\S]*display: flex;[\s\S]*align-items: center;[\s\S]*line-height: 1;[\s\S]*padding: 0 var\(--rollup-cell-x\);/);
   assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*border-left: 1px solid rgba\(182, 200, 238, \.4\);/);
   assert.doesNotMatch(html, /padding-left: 7px;/);
   assert.doesNotMatch(html, /rollup-cell--in/);
@@ -283,7 +339,7 @@ test("renderVisualIdentifierHtml locks rollup table widths and shared radius", (
   assert.match(html, /column-gap: 0;/);
   assert.match(html, /border-radius: var\(--token-radius\);/);
   assert.match(html, /max-width: calc\(8ch \+ \(var\(--rollup-cell-x\) \* 2\)\);/);
-  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*overflow: visible;[\s\S]*text-overflow: clip;/);
+  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*justify-content: center;[\s\S]*overflow: visible;[\s\S]*text-overflow: clip;/);
   assert.match(html, /text-overflow: ellipsis;/);
   assert.doesNotMatch(rollupCss, /border-radius: 999px;/);
 });
@@ -366,6 +422,10 @@ test("renderVisualIdentifierHtml includes a time-only view using the same row da
   assert.match(html, /class-num-token/);
   assert.match(html, /--token-radius/);
   assert.match(html, /R6/);
+  assert.match(html, /INTL/);
+  assert.match(html, /GRA/);
+  assert.match(html, /H1/);
+  assert.match(html, /DER/);
   assert.match(html, /Ring 6/);
 });
 
@@ -387,11 +447,15 @@ test("renderRails creates ring anchors and horse filters from row data", () => {
   assert.match(rails, /data-quick-filter="pm"/);
   assert.match(rails, /data-rollup-only-toggle/);
   assert.match(rails, /aria-pressed="false"/);
-  assert.match(rails, />Team</);
+  assert.match(rails, /rollup-switch__track[\s\S]*rollup-switch__label">Team/);
   assert.doesNotMatch(rails, /data-switch-state/);
   assert.doesNotMatch(rails, />OFF</);
   assert.doesNotMatch(rails, />Trips</);
   assert.match(rails, /data-ring-anchor="R6"/);
+  assert.match(rails, /data-ring-anchor="INTL"/);
+  assert.match(rails, /data-ring-anchor="GRA"/);
+  assert.match(rails, /data-ring-anchor="H1"/);
+  assert.match(rails, /data-ring-anchor="DER"/);
   assert.match(rails, /data-rail-row="horses"/);
   assert.match(rails, /data-horse-filter="LongHorseName"/);
   assert.doesNotMatch(rails, /All Status/);

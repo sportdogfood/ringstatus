@@ -5,14 +5,14 @@
     "style_reference": "Dense, symmetric, small-screen rows with compact text tokens. No icon-only status controls."
   },
   "ring_abbreviations": {
-    "Derby": "DRB",
+    "Derby": "DER",
     "Annex": "ANX",
     "Covered": "CVR",
     "Village": "VIL",
     "Hunter 1": "H1",
     "Hunter 2": "H2",
     "Intl": "INTL",
-    "Grand": "GRN",
+    "Grand": "GRA",
     "Rost": "RST",
     "Mogavero": "MOG",
     "Denemethy": "DEN",
@@ -209,6 +209,54 @@
       "rollups": [
         { "horse": "Calgary", "rider": "Baker", "time": "8:11A", "order": "12/23", "in": "", "walk": "", "status": "DONE" }
       ]
+    },
+    {
+      "ring": "Intl",
+      "group": "International Derby",
+      "time": "11:45A",
+      "class_number": "901",
+      "class_name": "International Hunter Derby",
+      "class_type": "HUN",
+      "schedule_sequence_type": "Over Fences",
+      "status": "UPC",
+      "metric": "",
+      "rollups": []
+    },
+    {
+      "ring": "Grand",
+      "group": "Grand Prix",
+      "time": "12:30P",
+      "class_number": "120",
+      "class_name": "Grand Prix Table II",
+      "class_type": "JMP",
+      "schedule_sequence_type": "Over Fences",
+      "status": "UPC",
+      "metric": "",
+      "rollups": []
+    },
+    {
+      "ring": "Hunter 1",
+      "group": "Green Hunter",
+      "time": "1:15P",
+      "class_number": "305",
+      "class_name": "Green Hunter Stake",
+      "class_type": "HUN",
+      "schedule_sequence_type": "Over Fences",
+      "status": "UPC",
+      "metric": "",
+      "rollups": []
+    },
+    {
+      "ring": "Derby",
+      "group": "Derby Field",
+      "time": "2:00P",
+      "class_number": "777",
+      "class_name": "National Derby",
+      "class_type": "EQ",
+      "schedule_sequence_type": "Under Saddle/Flat",
+      "status": "UPC",
+      "metric": "",
+      "rollups": []
     }
   ]
 }

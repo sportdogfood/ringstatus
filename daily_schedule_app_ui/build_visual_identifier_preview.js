@@ -327,10 +327,10 @@ function renderRails(model) {
       <div class="filter-actions" aria-label="Filter actions">
         <div class="quick-filter-group" aria-label="Quick filters">${quickFilters}</div>
         <button class="rollup-switch" type="button" data-rollup-only-toggle aria-pressed="false">
-          <span class="rollup-switch__label">Team</span>
           <span class="rollup-switch__track" aria-hidden="true">
             <span class="rollup-switch__thumb"></span>
           </span>
+          <span class="rollup-switch__label">Team</span>
         </button>
       </div>
       <div class="rail-row" data-rail-row="rings" aria-label="Ring anchors">${ringButtons}</div>
@@ -370,6 +370,8 @@ function renderVisualIdentifierHtml(model) {
       --blue: #8fb8ff;
       --blue-muted: #b6c8ee;
       --blue-bg: rgba(73, 118, 255, .16);
+      --ring: #a8c7ff;
+      --ring-bg: rgba(92, 142, 255, .11);
       --violet: #c386ff;
       --violet-bg: rgba(156, 89, 255, .18);
       --teal: #58dac7;
@@ -818,21 +820,23 @@ function renderVisualIdentifierHtml(model) {
     }
     .time-col {
       min-width: 0;
-      justify-self: start;
-      display: inline;
-      text-align: left;
+      width: 100%;
+      justify-self: stretch;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 3px;
+      text-align: right;
       overflow: visible;
       padding: 0;
-      min-height: 0;
-      height: auto;
+      min-height: 22px;
+      height: 22px;
       white-space: nowrap;
     }
     .time-clock {
       width: 9px;
       height: 9px;
-      display: inline-block;
-      vertical-align: -1px;
-      margin-right: 3px;
+      flex: 0 0 9px;
       opacity: .72;
       color: currentColor;
       overflow: visible;
@@ -858,10 +862,10 @@ function renderVisualIdentifierHtml(model) {
     }
     .c-time {
       font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-      font-size: 11px;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 560;
       letter-spacing: 0;
-      line-height: 1;
+      line-height: 1.35;
       padding: 0;
       background: transparent;
       border: 0;
@@ -877,6 +881,10 @@ function renderVisualIdentifierHtml(model) {
     }
     .c-name {
       min-width: 0;
+      min-height: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -928,9 +936,9 @@ function renderVisualIdentifierHtml(model) {
       font-weight: 750;
     }
     .ring-token {
-      color: var(--muted);
-      background: rgba(154, 163, 180, .08);
-      border: 1px solid rgba(154, 163, 180, .12);
+      color: var(--ring);
+      background: var(--ring-bg);
+      border: 1px solid rgba(168, 199, 255, .2);
       font-size: 10px;
       font-weight: 700;
     }
@@ -989,13 +997,15 @@ function renderVisualIdentifierHtml(model) {
       grid-template-columns: minmax(0, max-content) minmax(calc(6ch + (var(--rollup-cell-x) * 2)), calc(6ch + (var(--rollup-cell-x) * 2))) minmax(calc(5ch + (var(--rollup-cell-x) * 2)), calc(5ch + (var(--rollup-cell-x) * 2)));
       column-gap: 0;
       flex: 0 0 auto;
-      align-items: center;
+      align-items: stretch;
+      box-sizing: border-box;
       min-height: 24px;
+      height: 24px;
       border-radius: var(--token-radius);
       border: 1px solid rgba(154, 163, 180, .16);
       background: rgba(154, 163, 180, .1);
       color: var(--text);
-      padding: 3px 0;
+      padding: 0;
       font-size: 10px;
       font-weight: 650;
       white-space: nowrap;
@@ -1003,18 +1013,25 @@ function renderVisualIdentifierHtml(model) {
     }
     .rollup-cell {
       min-width: 0;
+      min-height: 22px;
+      height: 100%;
+      display: flex;
+      align-items: center;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      line-height: 1;
       color: var(--muted);
       padding: 0 var(--rollup-cell-x);
     }
     .rollup-cell--horse {
       max-width: calc(8ch + (var(--rollup-cell-x) * 2));
+      justify-content: flex-start;
       color: var(--blue-muted);
     }
     .rollup-cell--time,
     .rollup-cell--order {
+      justify-content: center;
       text-align: center;
       width: 100%;
       min-width: 0;

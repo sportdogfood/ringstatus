@@ -22,6 +22,8 @@
       --blue: #8fb8ff;
       --blue-muted: #b6c8ee;
       --blue-bg: rgba(73, 118, 255, .16);
+      --ring: #a8c7ff;
+      --ring-bg: rgba(92, 142, 255, .11);
       --violet: #c386ff;
       --violet-bg: rgba(156, 89, 255, .18);
       --teal: #58dac7;
@@ -470,21 +472,23 @@
     }
     .time-col {
       min-width: 0;
-      justify-self: start;
-      display: inline;
-      text-align: left;
+      width: 100%;
+      justify-self: stretch;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 3px;
+      text-align: right;
       overflow: visible;
       padding: 0;
-      min-height: 0;
-      height: auto;
+      min-height: 22px;
+      height: 22px;
       white-space: nowrap;
     }
     .time-clock {
       width: 9px;
       height: 9px;
-      display: inline-block;
-      vertical-align: -1px;
-      margin-right: 3px;
+      flex: 0 0 9px;
       opacity: .72;
       color: currentColor;
       overflow: visible;
@@ -510,10 +514,10 @@
     }
     .c-time {
       font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-      font-size: 11px;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 560;
       letter-spacing: 0;
-      line-height: 1;
+      line-height: 1.35;
       padding: 0;
       background: transparent;
       border: 0;
@@ -529,6 +533,10 @@
     }
     .c-name {
       min-width: 0;
+      min-height: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -580,9 +588,9 @@
       font-weight: 750;
     }
     .ring-token {
-      color: var(--muted);
-      background: rgba(154, 163, 180, .08);
-      border: 1px solid rgba(154, 163, 180, .12);
+      color: var(--ring);
+      background: var(--ring-bg);
+      border: 1px solid rgba(168, 199, 255, .2);
       font-size: 10px;
       font-weight: 700;
     }
@@ -641,13 +649,15 @@
       grid-template-columns: minmax(0, max-content) minmax(calc(6ch + (var(--rollup-cell-x) * 2)), calc(6ch + (var(--rollup-cell-x) * 2))) minmax(calc(5ch + (var(--rollup-cell-x) * 2)), calc(5ch + (var(--rollup-cell-x) * 2)));
       column-gap: 0;
       flex: 0 0 auto;
-      align-items: center;
+      align-items: stretch;
+      box-sizing: border-box;
       min-height: 24px;
+      height: 24px;
       border-radius: var(--token-radius);
       border: 1px solid rgba(154, 163, 180, .16);
       background: rgba(154, 163, 180, .1);
       color: var(--text);
-      padding: 3px 0;
+      padding: 0;
       font-size: 10px;
       font-weight: 650;
       white-space: nowrap;
@@ -655,18 +665,25 @@
     }
     .rollup-cell {
       min-width: 0;
+      min-height: 22px;
+      height: 100%;
+      display: flex;
+      align-items: center;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      line-height: 1;
       color: var(--muted);
       padding: 0 var(--rollup-cell-x);
     }
     .rollup-cell--horse {
       max-width: calc(8ch + (var(--rollup-cell-x) * 2));
+      justify-content: flex-start;
       color: var(--blue-muted);
     }
     .rollup-cell--time,
     .rollup-cell--order {
+      justify-content: center;
       text-align: center;
       width: 100%;
       min-width: 0;
@@ -706,7 +723,7 @@
     <header class="topbar">
       <div>
         <h1>Visual Identifier Preview</h1>
-        <div class="subtle">Generated 2026-05-15T12:44:45.069Z from contract 2026-05-13.v0.1</div>
+        <div class="subtle">Generated 2026-05-15T13:20:16.012Z from contract 2026-05-13.v0.1</div>
       </div>
       <div class="scope-token">No icons. No schedule wiring.</div>
     </header>
@@ -716,13 +733,13 @@
       <div class="filter-actions" aria-label="Filter actions">
         <div class="quick-filter-group" aria-label="Quick filters"><button class="rail-button" type="button" data-quick-filter="first_up" aria-pressed="false">1UP</button><button class="rail-button" type="button" data-quick-filter="am" aria-pressed="false">AM</button><button class="rail-button" type="button" data-quick-filter="pm" aria-pressed="false">PM</button></div>
         <button class="rollup-switch" type="button" data-rollup-only-toggle aria-pressed="false">
-          <span class="rollup-switch__label">Team</span>
           <span class="rollup-switch__track" aria-hidden="true">
             <span class="rollup-switch__thumb"></span>
           </span>
+          <span class="rollup-switch__label">Team</span>
         </button>
       </div>
-      <div class="rail-row" data-rail-row="rings" aria-label="Ring anchors"><button class="rail-button" type="button" data-ring-anchor="R6" aria-pressed="false">R6</button></div>
+      <div class="rail-row" data-rail-row="rings" aria-label="Ring anchors"><button class="rail-button" type="button" data-ring-anchor="R6" aria-pressed="false">R6</button><button class="rail-button" type="button" data-ring-anchor="INTL" aria-pressed="false">INTL</button><button class="rail-button" type="button" data-ring-anchor="GRA" aria-pressed="false">GRA</button><button class="rail-button" type="button" data-ring-anchor="H1" aria-pressed="false">H1</button><button class="rail-button" type="button" data-ring-anchor="DER" aria-pressed="false">DER</button></div>
       <div class="rail-row" data-rail-row="horses" aria-label="Horse filters"><button class="rail-button" type="button" data-horse-filter="Knox" aria-pressed="false">Knox</button><button class="rail-button" type="button" data-horse-filter="Poptart" aria-pressed="false">Poptart</button><button class="rail-button" type="button" data-horse-filter="Darcy" aria-pressed="false">Darcy</button><button class="rail-button" type="button" data-horse-filter="Calgary" aria-pressed="false">Calgary</button></div>
     </section>
 
@@ -817,6 +834,66 @@
       <span class="rollup-cell rollup-cell--order">12/23</span>
     </span></div>
     </article>
+    <article class="class-card schedule-band schedule-band--upcoming" data-ring="INTL" data-group="International Derby" data-status="UPC" data-status-id="upcoming" data-class-type="HUN" data-sequence-type="OVF" data-class-number="901" data-period="am" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="schedule-line class-line">
+        <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>11:45A</div>
+        <div class="ring-num-col"><span class="slot-token ring-token">INTL</span></div>
+        <div class="class-num-col"><span class="slot-token class-num-token">901</span></div>
+        <div class="class-name-col c-name sequence-shade--teal">International Hunter Derby</div>
+        <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--hun">HUN</span></div>
+      </div>
+      
+    </article>
+    <article class="class-card schedule-band schedule-band--upcoming" data-ring="GRA" data-group="Grand Prix" data-status="UPC" data-status-id="upcoming" data-class-type="JMP" data-sequence-type="OVF" data-class-number="120" data-period="pm" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="schedule-line class-line">
+        <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>12:30P</div>
+        <div class="ring-num-col"><span class="slot-token ring-token">GRA</span></div>
+        <div class="class-num-col"><span class="slot-token class-num-token">120</span></div>
+        <div class="class-name-col c-name sequence-shade--teal">Grand Prix Table II</div>
+        <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--jmp">JMP</span></div>
+      </div>
+      
+    </article>
+    <article class="class-card schedule-band schedule-band--upcoming" data-ring="H1" data-group="Green Hunter" data-status="UPC" data-status-id="upcoming" data-class-type="HUN" data-sequence-type="OVF" data-class-number="305" data-period="pm" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="schedule-line class-line">
+        <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>1:15P</div>
+        <div class="ring-num-col"><span class="slot-token ring-token">H1</span></div>
+        <div class="class-num-col"><span class="slot-token class-num-token">305</span></div>
+        <div class="class-name-col c-name sequence-shade--teal">Green Hunter Stake</div>
+        <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--hun">HUN</span></div>
+      </div>
+      
+    </article>
+    <article class="class-card schedule-band schedule-band--upcoming" data-ring="DER" data-group="Derby Field" data-status="UPC" data-status-id="upcoming" data-class-type="EQ" data-sequence-type="U/S" data-class-number="777" data-period="pm" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="schedule-line class-line">
+        <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>2:00P</div>
+        <div class="ring-num-col"><span class="slot-token ring-token">DER</span></div>
+        <div class="class-num-col"><span class="slot-token class-num-token">777</span></div>
+        <div class="class-name-col c-name sequence-shade--violet">National Derby</div>
+        <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--eq">EQ</span></div>
+      </div>
+      
+    </article>
         </section>
 
         <section class="time-card">
@@ -898,6 +975,58 @@
       <div class="class-num-col"><span class="slot-token class-num-token">742</span></div>
       <div class="class-name-col c-name sequence-shade--teal">1.10m Junior &amp; Amateur Jumpers</div>
       <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--jmp">JMP</span></div>
+      
+    </article>
+    <article class="schedule-line time-line schedule-band schedule-band--upcoming" data-ring="INTL" data-group="International Derby" data-status="UPC" data-status-id="upcoming" data-class-type="HUN" data-sequence-type="OVF" data-class-number="901" data-period="am" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>11:45A</div>
+      <div class="ring-num-col"><span class="slot-token ring-token">INTL</span></div>
+      <div class="class-num-col"><span class="slot-token class-num-token">901</span></div>
+      <div class="class-name-col c-name sequence-shade--teal">International Hunter Derby</div>
+      <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--hun">HUN</span></div>
+      
+    </article>
+    <article class="schedule-line time-line schedule-band schedule-band--upcoming" data-ring="GRA" data-group="Grand Prix" data-status="UPC" data-status-id="upcoming" data-class-type="JMP" data-sequence-type="OVF" data-class-number="120" data-period="pm" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>12:30P</div>
+      <div class="ring-num-col"><span class="slot-token ring-token">GRA</span></div>
+      <div class="class-num-col"><span class="slot-token class-num-token">120</span></div>
+      <div class="class-name-col c-name sequence-shade--teal">Grand Prix Table II</div>
+      <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--jmp">JMP</span></div>
+      
+    </article>
+    <article class="schedule-line time-line schedule-band schedule-band--upcoming" data-ring="H1" data-group="Green Hunter" data-status="UPC" data-status-id="upcoming" data-class-type="HUN" data-sequence-type="OVF" data-class-number="305" data-period="pm" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>1:15P</div>
+      <div class="ring-num-col"><span class="slot-token ring-token">H1</span></div>
+      <div class="class-num-col"><span class="slot-token class-num-token">305</span></div>
+      <div class="class-name-col c-name sequence-shade--teal">Green Hunter Stake</div>
+      <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--hun">HUN</span></div>
+      
+    </article>
+    <article class="schedule-line time-line schedule-band schedule-band--upcoming" data-ring="DER" data-group="Derby Field" data-status="UPC" data-status-id="upcoming" data-class-type="EQ" data-sequence-type="U/S" data-class-number="777" data-period="pm" data-first-up="false" data-has-rollups="false" data-horses="" data-riders="">
+      <div class="time-col c-time time-status--upcoming"><span class="time-clock" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false">
+        <circle cx="8" cy="8" r="5.75"></circle>
+        <path d="M8 4.75v3.4l2.25 1.35"></path>
+      </svg>
+    </span>2:00P</div>
+      <div class="ring-num-col"><span class="slot-token ring-token">DER</span></div>
+      <div class="class-num-col"><span class="slot-token class-num-token">777</span></div>
+      <div class="class-name-col c-name sequence-shade--violet">National Derby</div>
+      <div class="class-type-col"><span class="slot-token cell-token c-type class-type-shade--eq">EQ</span></div>
       
     </article>
         </section>
