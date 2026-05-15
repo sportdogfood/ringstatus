@@ -225,6 +225,21 @@ PRO lookup behavior:
 - The user must choose/confirm the recipient and manually send.
 - Share-to-person must not be confused with RingStatus lookup, RingStatus alerts, subscriptions, or backend notifications.
 
+PRO print/PDF task:
+
+- PRO must include a print button.
+- The print button prints/exports the PRO schedule to PDF.
+- The PDF layout is a fully rendered schedule by Ring.
+- The printed page target is 8.5 x 11 paper.
+- The print layout is two columns.
+- The print layout must be usable from phone and desktop.
+- The phone preview is not a mobile reading layout.
+- The phone preview is a print-page preview showing what the final printed page will look like.
+- On phone, the user may need to scroll vertically and horizontally to inspect the full print page preview.
+- Do not collapse the print preview into a phone-optimized single-column schedule.
+- Expect obstacles around browser print behavior, mobile PDF preview, scaling, page size, and preserving the two-column layout. Treat this as a dedicated implementation task, not a side effect of the normal PRO screen.
+- The print/PDF layout may use print-specific CSS, but schedule row geometry and token language must remain consistent with the locked skeleton unless print constraints explicitly require a documented exception.
+
 ### HORSES
 
 Purpose:

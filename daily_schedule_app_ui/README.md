@@ -36,6 +36,8 @@ START | PRO | HORSES
 
 `PRO` is the full schedule surface. It owns the schedule-by-ring view, class/trip overview modals, and links to full detail pages. Detail pages opened from `PRO` must include a clear `<-- back` path to `PRO`.
 
+`PRO` must also include a print/PDF task for a fully rendered two-column schedule by Ring on 8.5 x 11 paper. Phone preview is a print-page preview, not a phone-optimized reading layout; the user may need to scroll vertically and horizontally to inspect the printed-page layout.
+
 `HORSES` is the feed-backed tenant horse roster/profile surface. Horses default inactive, become active when matched to trips, and active horses are automatically favorited. Unfavorite acts as an ignore attribute that hides horse detail app-wide. Profile editing belongs here only.
 
 App-native RingStatus lookup:
