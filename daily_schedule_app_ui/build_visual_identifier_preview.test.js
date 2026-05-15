@@ -133,20 +133,26 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /time-col/);
   assert.match(html, /ring-num-col/);
   assert.match(html, /class-num-col/);
+  assert.match(html, /slot-token ring-token/);
+  assert.match(html, /slot-token class-num-token/);
+  assert.match(html, /slot-token cell-token c-type/);
   assert.match(html, /class-num-token/);
   assert.match(html, /class-name-col/);
   assert.match(html, /class-type-col/);
   assert.match(html, /sequence-shade--teal/);
   assert.match(html, /\.c-name \{[\s\S]*font-weight: 560;[\s\S]*padding-left: 3px;/);
   assert.match(html, /cell-token/);
+  assert.match(html, /\.slot-token \{[\s\S]*width: 100%;[\s\S]*min-width: 0;[\s\S]*min-height: 22px;[\s\S]*padding: 2px 4px;[\s\S]*border-radius: var\(--token-radius\);/);
   assert.match(html, /time-status--now/);
   assert.match(html, /time-clock/);
-  assert.match(html, /time-text">8:40A/);
-  assert.match(html, /\.time-col \{[\s\S]*display: inline-flex;[\s\S]*gap: 3px;/);
+  assert.match(html, /<\/span>8:40A/);
+  assert.doesNotMatch(html, /<\/span>&nbsp;8:40A/);
+  assert.match(html, /\.time-col \{[\s\S]*display: inline-flex;[\s\S]*gap: 3px;[\s\S]*overflow: visible;[\s\S]*padding-block: 0;[\s\S]*min-height: 0;[\s\S]*height: auto;/);
   assert.match(html, /\.time-clock \{[\s\S]*flex: 0 0 9px;[\s\S]*overflow: visible;/);
   assert.match(html, /\.time-clock svg \{[\s\S]*min-width: 9px;[\s\S]*overflow: visible;/);
-  assert.match(html, /\.time-text \{[\s\S]*min-width: max-content;[\s\S]*text-overflow: clip;/);
+  assert.match(html, /\.c-time \{[\s\S]*font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;[\s\S]*font-size: 11px;[\s\S]*font-weight: 500;[\s\S]*padding: 0;[\s\S]*background: transparent;[\s\S]*border: 0;/);
   assert.match(html, /rollup-row/);
+  assert.doesNotMatch(html, /time-text/);
   assert.doesNotMatch(html, /time-mark/);
   assert.doesNotMatch(html, /sequence-type-col/);
   assert.doesNotMatch(html, /sequence-token/);
@@ -169,7 +175,7 @@ test("renderVisualIdentifierHtml keeps class number width identical in ring and 
   const classLineCss = html.includes(".class-line {") ? html.slice(html.indexOf(".class-line {"), html.indexOf("}", html.indexOf(".class-line {")) + 1) : "";
   const timeLineCss = html.slice(html.indexOf(".time-line {"), html.indexOf("}", html.indexOf(".time-line {")) + 1);
 
-  assert.match(html, /--schedule-cols: 7\.4ch 4\.5ch 4ch minmax\(0, 1fr\) 4ch;/);
+  assert.match(html, /--schedule-cols: minmax\(8ch, 8ch\) 4\.5ch 4ch minmax\(0, 1fr\) 4ch;/);
   assert.match(html, /\.schedule-line \{[\s\S]*grid-template-columns: var\(--schedule-cols\);/);
   assert.match(html, /schedule-line class-line/);
   assert.match(html, /schedule-line time-line/);
@@ -233,11 +239,20 @@ test("renderVisualIdentifierHtml keeps horse and rider filter data on hidden rol
 
 test("renderVisualIdentifierHtml keeps compact rollups in horse time order only", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+  const orderCssStart = html.indexOf(".rollup-cell--order {");
+  const orderCss = orderCssStart === -1 ? "" : html.slice(orderCssStart, html.indexOf("}", orderCssStart) + 1);
 
   assert.match(html, /rollup-cell rollup-cell--horse">LongHorseName/);
   assert.match(html, /rollup-cell rollup-cell--time">8:55A/);
   assert.match(html, /rollup-cell rollup-cell--order">5\/14/);
-  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*border-left: 1px solid rgba\(182, 200, 238, \.4\);[\s\S]*padding-left: 6px;/);
+  assert.doesNotMatch(html, /&nbsp;8:55A/);
+  assert.doesNotMatch(html, /&nbsp;5\/14/);
+  assert.match(html, /\.rollup-cell--time \{[\s\S]*font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;[\s\S]*font-weight: 500;/);
+  assert.doesNotMatch(orderCss, /font-family: "Roboto Mono"/);
+  assert.match(html, /\.rollup-row \{[\s\S]*--rollup-cell-x: 7px;[\s\S]*flex: 0 0 auto;/);
+  assert.match(html, /\.rollup-cell \{[\s\S]*padding: 0 var\(--rollup-cell-x\);/);
+  assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*border-left: 1px solid rgba\(182, 200, 238, \.4\);/);
+  assert.doesNotMatch(html, /padding-left: 7px;/);
   assert.doesNotMatch(html, /rollup-cell--in/);
   assert.doesNotMatch(html, /rollup-cell--walk/);
   assert.doesNotMatch(html, /In: /);
@@ -250,9 +265,10 @@ test("renderVisualIdentifierHtml locks rollup table widths and shared radius", (
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
   const rollupCss = html.slice(html.indexOf(".rollup-row {"), html.indexOf(".rollup-cell {"));
 
-  assert.match(html, /grid-template-columns: minmax\(0, max-content\) minmax\(6ch, 6ch\) minmax\(5ch, 5ch\);/);
+  assert.match(html, /grid-template-columns: minmax\(0, max-content\) minmax\(calc\(6ch \+ \(var\(--rollup-cell-x\) \* 2\)\), calc\(6ch \+ \(var\(--rollup-cell-x\) \* 2\)\)\) minmax\(calc\(5ch \+ \(var\(--rollup-cell-x\) \* 2\)\), calc\(5ch \+ \(var\(--rollup-cell-x\) \* 2\)\)\);/);
+  assert.match(html, /column-gap: 0;/);
   assert.match(html, /border-radius: var\(--token-radius\);/);
-  assert.match(html, /max-width: 8ch;/);
+  assert.match(html, /max-width: calc\(8ch \+ \(var\(--rollup-cell-x\) \* 2\)\);/);
   assert.match(html, /\.rollup-cell--time,\n    \.rollup-cell--order \{[\s\S]*overflow: visible;[\s\S]*text-overflow: clip;/);
   assert.match(html, /text-overflow: ellipsis;/);
   assert.doesNotMatch(rollupCss, /border-radius: 999px;/);

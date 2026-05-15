@@ -170,13 +170,23 @@ function renderCellValue(value) {
   return isBlank(value) ? '<span class="cell-empty" aria-hidden="true"></span>' : htmlEscape(value);
 }
 
+function renderAlignedTimeText(value) {
+  if (isBlank(value)) return renderCellValue(value);
+  return htmlEscape(String(value).trim());
+}
+
+function renderAlignedOrderText(value) {
+  if (isBlank(value)) return renderCellValue(value);
+  return htmlEscape(String(value).trim());
+}
+
 function renderTimeValue(value) {
   return `<span class="time-clock" aria-hidden="true">
       <svg viewBox="0 0 16 16" focusable="false">
         <circle cx="8" cy="8" r="5.75"></circle>
         <path d="M8 4.75v3.4l2.25 1.35"></path>
       </svg>
-    </span><span class="time-text">${renderCellValue(value)}</span>`;
+    </span>${renderAlignedTimeText(value)}`;
 }
 
 function renderStatusTerm(term) {
@@ -217,8 +227,8 @@ function renderRollup(rollup) {
   return `
     <span class="rollup-row ${rollup.status_id ? `rollup-row--${htmlEscape(rollup.status_id)}` : ""}" data-horse="${htmlEscape(horse || "")}" data-rider="${htmlEscape(rollup.rider || "")}" data-rollup-status="${htmlEscape(rollup.status || "")}" data-rollup-status-id="${htmlEscape(rollup.status_id || "")}">
       <span class="rollup-cell rollup-cell--horse">${renderCellValue(horse)}</span>
-      <span class="rollup-cell rollup-cell--time">${renderCellValue(rollup.time)}</span>
-      <span class="rollup-cell rollup-cell--order">${renderCellValue(order)}</span>
+      <span class="rollup-cell rollup-cell--time">${renderAlignedTimeText(rollup.time)}</span>
+      <span class="rollup-cell rollup-cell--order">${renderAlignedOrderText(order)}</span>
     </span>`;
 }
 
@@ -253,10 +263,10 @@ function renderSampleRow(row) {
     <article class="class-card ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="schedule-line class-line">
         <div class="time-col c-time ${htmlEscape(timeClass)}">${renderTimeValue(row.time)}</div>
-        <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
-        <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
+        <div class="ring-num-col"><span class="slot-token ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
+        <div class="class-num-col"><span class="slot-token class-num-token">${renderCellValue(row.class_number)}</span></div>
         <div class="class-name-col c-name ${htmlEscape(sequenceClass)}">${renderCellValue(row.class_name)}</div>
-        <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
+        <div class="class-type-col"><span class="slot-token cell-token c-type">${renderCellValue(row.class_type)}</span></div>
       </div>
       ${(row.rollups || []).length ? `<div class="rollup-line">${row.rollups.map(renderRollup).join("")}</div>` : ""}
     </article>`;
@@ -268,10 +278,10 @@ function renderTimeRow(row) {
   return `
     <article class="schedule-line time-line ${rowBandClass(row)}" ${rowDataAttrs(row)}>
       <div class="time-col c-time ${htmlEscape(timeClass)}">${renderTimeValue(row.time)}</div>
-      <div class="ring-num-col"><span class="ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
-      <div class="class-num-col"><span class="class-num-token">${renderCellValue(row.class_number)}</span></div>
+      <div class="ring-num-col"><span class="slot-token ring-token">${renderCellValue(row.ring_abbrev || row.ring_number)}</span></div>
+      <div class="class-num-col"><span class="slot-token class-num-token">${renderCellValue(row.class_number)}</span></div>
       <div class="class-name-col c-name ${htmlEscape(sequenceClass)}">${renderCellValue(row.class_name)}</div>
-      <div class="class-type-col"><span class="cell-token c-type">${renderCellValue(row.class_type)}</span></div>
+      <div class="class-type-col"><span class="slot-token cell-token c-type">${renderCellValue(row.class_type)}</span></div>
       ${(row.rollups || []).length ? `<div class="time-rollup-cell">${row.rollups.map(renderRollup).join("")}</div>` : ""}
     </article>`;
 }
@@ -363,7 +373,7 @@ function renderVisualIdentifierHtml(model) {
       --red: #ff8d9a;
       --red-bg: rgba(255, 141, 154, .18);
       --token-radius: 6px;
-      --schedule-cols: 7.4ch 4.5ch 4ch minmax(0, 1fr) 4ch;
+      --schedule-cols: minmax(8ch, 8ch) 4.5ch 4ch minmax(0, 1fr) 4ch;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -812,7 +822,10 @@ function renderVisualIdentifierHtml(model) {
       align-items: center;
       gap: 3px;
       text-align: left;
-      overflow: hidden;
+      overflow: visible;
+      padding-block: 0;
+      min-height: 0;
+      height: auto;
     }
     .time-clock {
       width: 9px;
@@ -834,18 +847,22 @@ function renderVisualIdentifierHtml(model) {
       stroke-linejoin: round;
       overflow: visible;
     }
-    .time-text {
-      min-width: max-content;
-      flex: 0 0 auto;
-      overflow: visible;
-      text-overflow: clip;
-    }
     .c-time, .c-num, .c-type, .trip-metric {
       font-size: 10px;
       font-weight: 650;
       color: var(--muted);
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
+    }
+    .c-time {
+      font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1;
+      padding: 0;
+      background: transparent;
+      border: 0;
     }
     .ring-num-col {
       display: inline-flex;
@@ -870,6 +887,20 @@ function renderVisualIdentifierHtml(model) {
       justify-content: center;
       align-items: center;
     }
+    .slot-token {
+      width: 100%;
+      min-width: 0;
+      min-height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 4px;
+      border-radius: var(--token-radius);
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
     .cell-token,
     .trip-metric {
       width: 100%;
@@ -878,8 +909,8 @@ function renderVisualIdentifierHtml(model) {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border-radius: 6px;
       padding: 2px 4px;
+      border-radius: var(--token-radius);
       font-size: 9px;
       font-weight: 700;
       line-height: 1;
@@ -887,47 +918,19 @@ function renderVisualIdentifierHtml(model) {
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
     }
-    .cell-token,
-    .class-num-token,
-    .trip-metric,
-    .ring-token {
-      border-radius: var(--token-radius);
-    }
     .class-num-token {
-      width: 100%;
-      min-width: 0;
-      min-height: 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px 4px;
       color: var(--text);
       background: rgba(255, 255, 255, .06);
       border: 1px solid rgba(255, 255, 255, .12);
       font-size: 10px;
       font-weight: 750;
-      line-height: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
     }
     .ring-token {
-      width: 100%;
-      min-width: 0;
-      min-height: 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px 4px;
       color: var(--muted);
       background: rgba(154, 163, 180, .08);
       border: 1px solid rgba(154, 163, 180, .12);
       font-size: 10px;
       font-weight: 700;
-      line-height: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
     }
     .c-type {
       color: var(--muted);
@@ -963,16 +966,18 @@ function renderVisualIdentifierHtml(model) {
       scrollbar-width: thin;
     }
     .rollup-row {
+      --rollup-cell-x: 7px;
       display: inline-grid;
-      grid-template-columns: minmax(0, max-content) minmax(6ch, 6ch) minmax(5ch, 5ch);
-      column-gap: 4px;
+      grid-template-columns: minmax(0, max-content) minmax(calc(6ch + (var(--rollup-cell-x) * 2)), calc(6ch + (var(--rollup-cell-x) * 2))) minmax(calc(5ch + (var(--rollup-cell-x) * 2)), calc(5ch + (var(--rollup-cell-x) * 2)));
+      column-gap: 0;
+      flex: 0 0 auto;
       align-items: center;
       min-height: 24px;
       border-radius: var(--token-radius);
       border: 1px solid rgba(154, 163, 180, .16);
       background: rgba(154, 163, 180, .1);
       color: var(--text);
-      padding: 3px 6px;
+      padding: 3px 0;
       font-size: 10px;
       font-weight: 650;
       white-space: nowrap;
@@ -984,9 +989,10 @@ function renderVisualIdentifierHtml(model) {
       text-overflow: ellipsis;
       white-space: nowrap;
       color: var(--muted);
+      padding: 0 var(--rollup-cell-x);
     }
     .rollup-cell--horse {
-      max-width: 8ch;
+      max-width: calc(8ch + (var(--rollup-cell-x) * 2));
       color: #b6c8ee;
     }
     .rollup-cell--time,
@@ -997,10 +1003,14 @@ function renderVisualIdentifierHtml(model) {
       overflow: visible;
       text-overflow: clip;
     }
+    .rollup-cell--time {
+      font-family: "Roboto Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-weight: 500;
+      color: #c2d2f2;
+    }
     .rollup-cell--time,
     .rollup-cell--order {
       border-left: 1px solid rgba(182, 200, 238, .4);
-      padding-left: 6px;
     }
     .rollup-row--now { border-color: rgba(73, 209, 125, .24); }
     .rollup-row--next { border-color: rgba(143, 184, 255, .26); }
