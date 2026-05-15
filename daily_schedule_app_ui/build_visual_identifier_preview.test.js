@@ -45,6 +45,14 @@ const contract = {
         { id: "equitation", label: "EQ", incoming_terms: ["Equitation"], treatment: "tag" },
       ],
     },
+    {
+      id: "schedule_sequence_type",
+      title: "Schedule Sequence Type",
+      tokens: [
+        { id: "over_fences", label: "OVF", incoming_terms: ["Over Fences"], treatment: "tag", shade: "teal" },
+        { id: "flat", label: "U/S", incoming_terms: ["Under Saddle/Flat"], treatment: "tag", shade: "violet" },
+      ],
+    },
   ],
   sample_rows: [
     {
@@ -53,7 +61,8 @@ const contract = {
       time: "8:40A",
       class_number: "411",
       class_name: "Small Pony Hunter U/S",
-      class_type: "EQ",
+      class_type: "HUN",
+      schedule_sequence_type: "Over Fences",
       status: "NOW",
       rollups: [{ horse: "LongHorseName", rider: "Test Rider", time: "8:55A", order: "5/14", in: "15m", walk: "2m", status: "NOW" }],
     },
@@ -72,7 +81,7 @@ test("buildPreviewModel groups status and identifier tokens", () => {
   const model = buildPreviewModel(contract);
 
   assert.equal(model.statusTerms.length, 2);
-  assert.equal(model.tokenGroups.length, 2);
+  assert.equal(model.tokenGroups.length, 3);
   assert.equal(model.sampleRows[0].status, "NOW");
 });
 
@@ -96,23 +105,25 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /class-num-token/);
   assert.match(html, /class-name-col/);
   assert.match(html, /class-type-col/);
-  assert.match(html, /status-col/);
-  assert.match(html, /status-token state state--now/);
-  assert.match(html, /trips-col/);
+  assert.match(html, /sequence-shade--teal/);
   assert.match(html, /cell-token/);
-  assert.match(html, /trip-metric/);
-  assert.match(html, /time-mark/);
-  assert.match(html, /time-mark--now/);
+  assert.match(html, /time-status--now/);
   assert.match(html, /rollup-row/);
+  assert.doesNotMatch(html, /time-mark/);
+  assert.doesNotMatch(html, /sequence-type-col/);
+  assert.doesNotMatch(html, /sequence-token/);
+  assert.doesNotMatch(html, /status-col/);
+  assert.doesNotMatch(html, /trips-col/);
   assert.doesNotMatch(html, /epill__sep/);
 });
 
-test("renderVisualIdentifierHtml uses normalized state styling for row status tokens", () => {
+test("renderVisualIdentifierHtml moves normalized status tokens to the ring eyebrow controls", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
 
-  assert.match(html, /class="cell-token status-token state state--now">NOW/);
-  assert.match(html, /\.state \{[\s\S]*border-radius: var\(--token-radius\);/);
-  assert.match(html, /\.status-token \{[\s\S]*min-width: 44px;[\s\S]*border-radius: var\(--token-radius\);/);
+  assert.match(html, /ring-status-controls/);
+  assert.match(html, /data-status-filter="NOW"/);
+  assert.doesNotMatch(html, /data-rail-row="status"/);
+  assert.doesNotMatch(html, /status-token/);
 });
 
 test("renderVisualIdentifierHtml keeps class number width identical in ring and time rows", () => {
@@ -120,7 +131,7 @@ test("renderVisualIdentifierHtml keeps class number width identical in ring and 
   const classLineCss = html.includes(".class-line {") ? html.slice(html.indexOf(".class-line {"), html.indexOf("}", html.indexOf(".class-line {")) + 1) : "";
   const timeLineCss = html.slice(html.indexOf(".time-line {"), html.indexOf("}", html.indexOf(".time-line {")) + 1);
 
-  assert.match(html, /--schedule-cols: 6ch 4\.5ch 4ch minmax\(0, 1fr\) 4ch 6\.75ch 6ch;/);
+  assert.match(html, /--schedule-cols: 6ch 4\.5ch 4ch minmax\(0, 1fr\) 4ch;/);
   assert.match(html, /\.schedule-line \{[\s\S]*grid-template-columns: var\(--schedule-cols\);/);
   assert.match(html, /schedule-line class-line/);
   assert.match(html, /schedule-line time-line/);
@@ -139,6 +150,15 @@ test("renderVisualIdentifierHtml renders identical rollup rows under ring and ti
   assert.match(timeCard, /rollup-cell rollup-cell--time">8:55A/);
 });
 
+test("renderVisualIdentifierHtml right-aligns single rollup and left-aligns multiple scrollable rollups", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+
+  assert.match(html, /\.rollup-line \{[\s\S]*justify-content: flex-end;[\s\S]*overflow-x: auto;/);
+  assert.match(html, /\.rollup-line:has\(\.rollup-row:nth-child\(2\)\) \{[\s\S]*justify-content: flex-start;/);
+  assert.match(html, /\.time-rollup-cell \{[\s\S]*justify-content: flex-end;[\s\S]*overflow-x: auto;/);
+  assert.match(html, /\.time-rollup-cell:has\(\.rollup-row:nth-child\(2\)\) \{[\s\S]*justify-content: flex-start;/);
+});
+
 test("renderVisualIdentifierHtml adds band classes and filter-ready row attributes", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
 
@@ -147,7 +167,9 @@ test("renderVisualIdentifierHtml adds band classes and filter-ready row attribut
   assert.match(html, /data-group="Small Pony Hunter"/);
   assert.match(html, /data-status="NOW"/);
   assert.match(html, /data-status-id="now"/);
-  assert.match(html, /data-class-type="EQ"/);
+  assert.match(html, /data-class-type="HUN"/);
+  assert.match(html, /data-sequence-type="OVF"/);
+  assert.match(html, /class-name-col c-name sequence-shade--teal/);
   assert.match(html, /data-class-number="411"/);
   assert.match(html, /data-horses="LongHorseName"/);
   assert.match(html, /data-riders="Test Rider"/);
@@ -166,25 +188,27 @@ test("renderVisualIdentifierHtml keeps horse and rider filter data on hidden rol
   assert.doesNotMatch(html, />Test Rider</);
 });
 
-test("renderVisualIdentifierHtml keeps compact rollups in horse time order in walk order", () => {
+test("renderVisualIdentifierHtml keeps compact rollups in horse time order only", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
 
   assert.match(html, /rollup-cell rollup-cell--horse">LongHorseName/);
   assert.match(html, /rollup-cell rollup-cell--time">8:55A/);
   assert.match(html, /rollup-cell rollup-cell--order">5\/14/);
-  assert.match(html, /rollup-cell rollup-cell--in">In: 15m/);
-  assert.match(html, /rollup-cell rollup-cell--walk">Walk: 2m/);
+  assert.doesNotMatch(html, /rollup-cell--in/);
+  assert.doesNotMatch(html, /rollup-cell--walk/);
+  assert.doesNotMatch(html, /In: /);
+  assert.doesNotMatch(html, /Walk/);
   assert.doesNotMatch(html, /epill__state/);
-  assert.match(html, /rollup-row--now[\s\S]*rollup-cell--horse[\s\S]*rollup-cell--time[\s\S]*rollup-cell--order[\s\S]*In: 15m[\s\S]*Walk: 2m/);
+  assert.match(html, /rollup-row--now[\s\S]*rollup-cell--horse[\s\S]*rollup-cell--time[\s\S]*rollup-cell--order/);
 });
 
 test("renderVisualIdentifierHtml locks rollup table widths and shared radius", () => {
   const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
   const rollupCss = html.slice(html.indexOf(".rollup-row {"), html.indexOf(".rollup-cell {"));
 
-  assert.match(html, /grid-template-columns: 9ch 6ch 5ch 5ch 6ch;/);
+  assert.match(html, /grid-template-columns: minmax\(0, max-content\) 6ch 5ch;/);
   assert.match(html, /border-radius: var\(--token-radius\);/);
-  assert.match(html, /max-width: 9ch;/);
+  assert.match(html, /max-width: 8ch;/);
   assert.match(html, /text-overflow: ellipsis;/);
   assert.doesNotMatch(rollupCss, /border-radius: 999px;/);
 });
@@ -205,6 +229,7 @@ test("renderVisualIdentifierHtml preserves fixed cells when row values are empty
     class_number: "",
     class_name: "",
     class_type: "",
+    schedule_sequence_type: "",
     status: "",
     metric: "",
     rollups: [{ horse: "Darcy", rider: "Hidden Rider", time: "10:45A", order: "2/22", in: "40m", walk: "2m", status: "UPC" }],
@@ -216,8 +241,8 @@ test("renderVisualIdentifierHtml preserves fixed cells when row values are empty
   assert.match(html, /Darcy/);
   assert.match(html, /10:45A/);
   assert.match(html, /2\/22/);
-  assert.match(html, /In: 40m/);
-  assert.match(html, /Walk: 2m/);
+  assert.doesNotMatch(html, /In: 40m/);
+  assert.doesNotMatch(html, /Walk: 2m/);
 });
 
 test("renderVisualIdentifierHtml uses ring walk in the eyebrow instead of status pills", () => {
@@ -226,9 +251,21 @@ test("renderVisualIdentifierHtml uses ring walk in the eyebrow instead of status
 
   const html = renderVisualIdentifierHtml(buildPreviewModel(payload));
 
+  assert.match(html, /ring-eyebrow/);
+  assert.match(html, /ring-status-controls/);
   assert.match(html, /ring-walk/);
   assert.match(html, /WALK 5m/);
   assert.doesNotMatch(html, /ring-states/);
+});
+
+test("renderVisualIdentifierHtml uses identical status controls in Ring and Time eyebrows", () => {
+  const html = renderVisualIdentifierHtml(buildPreviewModel(contract));
+  const ringCard = html.slice(html.indexOf('<section class="ring-card">'), html.indexOf("</section>", html.indexOf('<section class="ring-card">')));
+  const timeCard = html.slice(html.indexOf('<section class="time-card">'), html.indexOf("</section>", html.indexOf('<section class="time-card">')));
+
+  assert.match(ringCard, /ring-status-controls[\s\S]*data-status-filter="NOW"[\s\S]*data-status-filter="NEXT"[\s\S]*data-status-filter="DONE"/);
+  assert.match(timeCard, /ring-status-controls[\s\S]*data-status-filter="NOW"[\s\S]*data-status-filter="NEXT"[\s\S]*data-status-filter="DONE"/);
+  assert.match(html, /setActiveByValue\(statusButtons, "statusFilter", activeStatus\)/);
 });
 
 test("renderVisualIdentifierHtml includes a time-only view using the same row data plus ring number", () => {
@@ -258,6 +295,10 @@ test("renderRails creates ring anchors and horse filters from row data", () => {
   assert.match(rails, /data-ring-anchor="R6"/);
   assert.match(rails, /data-rail-row="horses"/);
   assert.match(rails, /data-horse-filter="LongHorseName"/);
+  assert.doesNotMatch(rails, /All Status/);
+  assert.doesNotMatch(rails, /All Horses/);
+  assert.doesNotMatch(rails, /data-ring-anchor=""/);
+  assert.doesNotMatch(rails, /data-horse-filter=""/);
 });
 
 test("renderVisualIdentifierHtml keeps ring rail as anchors and horse rail as filter behavior", () => {
@@ -267,6 +308,10 @@ test("renderVisualIdentifierHtml keeps ring rail as anchors and horse rail as fi
   assert.match(html, /scrollIntoView/);
   assert.match(html, /data-horse-filter="LongHorseName"/);
   assert.match(html, /body\.dataset\.horseFilter/);
+  assert.match(html, /activeHorse === horse \? "" : horse/);
+  assert.match(html, /activeStatus === status \? "" : status/);
+  assert.match(html, /setActive\(horseButtons, activeHorse \? button : null\)/);
+  assert.match(html, /setActive\(statusButtons, activeStatus \? button : null\)/);
   assert.match(html, /band\.classList\.toggle\("is-filter-hidden", !bandMatches\)/);
   assert.match(html, /rollup\.classList\.toggle\("is-filter-hidden", !rollupMatches\)/);
 });

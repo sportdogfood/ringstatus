@@ -138,8 +138,8 @@
       "id": "schedule_sequence_type",
       "title": "Schedule Sequence Type",
       "tokens": [
-        { "id": "over_fences", "label": "OF", "incoming_terms": ["Over Fences"], "treatment": "tag", "shade": "teal" },
-        { "id": "flat", "label": "FLAT", "incoming_terms": ["Under Saddle/Flat", "Under Saddle", "Flat"], "treatment": "tag", "shade": "violet" }
+        { "id": "over_fences", "label": "OVF", "incoming_terms": ["Over Fences"], "treatment": "tag", "shade": "teal" },
+        { "id": "flat", "label": "U/S", "incoming_terms": ["Under Saddle/Flat", "Under Saddle", "Flat"], "treatment": "tag", "shade": "violet" }
       ]
     },
     {
@@ -162,6 +162,7 @@
       "class_number": "411",
       "class_name": "Small Pony Hunter U/S",
       "class_type": "HUN",
+      "schedule_sequence_type": "Under Saddle/Flat",
       "status": "NOW",
       "metric": "1/15",
       "rollups": [
@@ -176,6 +177,7 @@
       "class_number": "570",
       "class_name": "ASPCA Maclay",
       "class_type": "EQ",
+      "schedule_sequence_type": "Over Fences",
       "status": "NEXT",
       "metric": "0/8",
       "rollups": [
@@ -189,6 +191,7 @@
       "class_number": "742",
       "class_name": "1.10m Junior & Amateur Jumpers",
       "class_type": "JMP",
+      "schedule_sequence_type": "Over Fences",
       "status": "FOL",
       "metric": "0/18",
       "rollups": []
@@ -200,6 +203,7 @@
       "class_number": "644",
       "class_name": "Modified Hunter 2'/2'6\"",
       "class_type": "HUN",
+      "schedule_sequence_type": "Over Fences",
       "status": "DONE",
       "metric": "14/14",
       "rollups": [

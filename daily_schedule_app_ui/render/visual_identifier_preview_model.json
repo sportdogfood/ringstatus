@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-05-15T00:28:34.822Z",
+    "generated_at": "2026-05-15T02:24:32.243Z",
     "contract_version": "2026-05-13.v0.1",
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow."
   },
@@ -381,7 +381,7 @@
       "tokens": [
         {
           "id": "over_fences",
-          "label": "OF",
+          "label": "OVF",
           "incoming_terms": [
             "Over Fences"
           ],
@@ -390,7 +390,7 @@
         },
         {
           "id": "flat",
-          "label": "FLAT",
+          "label": "U/S",
           "incoming_terms": [
             "Under Saddle/Flat",
             "Under Saddle",
@@ -451,6 +451,7 @@
       "class_number": "411",
       "class_name": "Small Pony Hunter U/S",
       "class_type": "HUN",
+      "schedule_sequence_type": "U/S",
       "status": "NOW",
       "metric": "1/15",
       "rollups": [
@@ -477,6 +478,8 @@
       ],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "flat",
+      "schedule_sequence_type_shade": "violet",
       "status_id": "now"
     },
     {
@@ -486,6 +489,7 @@
       "class_number": "570",
       "class_name": "ASPCA Maclay",
       "class_type": "EQ",
+      "schedule_sequence_type": "OVF",
       "status": "NEXT",
       "metric": "0/8",
       "rollups": [
@@ -502,6 +506,8 @@
       ],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "over_fences",
+      "schedule_sequence_type_shade": "teal",
       "status_id": "next"
     },
     {
@@ -511,11 +517,14 @@
       "class_number": "742",
       "class_name": "1.10m Junior & Amateur Jumpers",
       "class_type": "JMP",
+      "schedule_sequence_type": "OVF",
       "status": "FOL",
       "metric": "0/18",
       "rollups": [],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "over_fences",
+      "schedule_sequence_type_shade": "teal",
       "status_id": "following"
     },
     {
@@ -525,6 +534,7 @@
       "class_number": "644",
       "class_name": "Modified Hunter 2'/2'6\"",
       "class_type": "HUN",
+      "schedule_sequence_type": "OVF",
       "status": "DONE",
       "metric": "14/14",
       "rollups": [
@@ -541,6 +551,8 @@
       ],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "over_fences",
+      "schedule_sequence_type_shade": "teal",
       "status_id": "completed"
     }
   ],
@@ -552,6 +564,7 @@
       "class_number": "644",
       "class_name": "Modified Hunter 2'/2'6\"",
       "class_type": "HUN",
+      "schedule_sequence_type": "OVF",
       "status": "DONE",
       "metric": "14/14",
       "rollups": [
@@ -568,6 +581,8 @@
       ],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "over_fences",
+      "schedule_sequence_type_shade": "teal",
       "status_id": "completed"
     },
     {
@@ -577,6 +592,7 @@
       "class_number": "411",
       "class_name": "Small Pony Hunter U/S",
       "class_type": "HUN",
+      "schedule_sequence_type": "U/S",
       "status": "NOW",
       "metric": "1/15",
       "rollups": [
@@ -603,6 +619,8 @@
       ],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "flat",
+      "schedule_sequence_type_shade": "violet",
       "status_id": "now"
     },
     {
@@ -612,6 +630,7 @@
       "class_number": "570",
       "class_name": "ASPCA Maclay",
       "class_type": "EQ",
+      "schedule_sequence_type": "OVF",
       "status": "NEXT",
       "metric": "0/8",
       "rollups": [
@@ -628,6 +647,8 @@
       ],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "over_fences",
+      "schedule_sequence_type_shade": "teal",
       "status_id": "next"
     },
     {
@@ -637,11 +658,14 @@
       "class_number": "742",
       "class_name": "1.10m Junior & Amateur Jumpers",
       "class_type": "JMP",
+      "schedule_sequence_type": "OVF",
       "status": "FOL",
       "metric": "0/18",
       "rollups": [],
       "ring_number": "6",
       "ring_abbrev": "R6",
+      "schedule_sequence_type_id": "over_fences",
+      "schedule_sequence_type_shade": "teal",
       "status_id": "following"
     }
   ],
