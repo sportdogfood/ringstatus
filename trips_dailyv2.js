@@ -1890,6 +1890,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
 
   maybeSet("heartbeat", [heartbeat.recordId]);
   maybeSet("shows", showRecordId ? [showRecordId] : undefined);
+  Object.assign(fields, buildScopeFieldPatch(watchTripsFieldSet, heartbeat));
   maybeSet("watch_schedule", row.watch_schedule_record_id ? [row.watch_schedule_record_id] : undefined);
   maybeSet("entryxclasses_uuid", row.entryxclasses_uuid);
   maybeSet("schedule_key", tripKeys.scheduleKey);
@@ -1962,6 +1963,7 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
 
   maybeSet("heartbeat", []);
   maybeSet("watch_schedule", []);
+  Object.assign(fields, buildScopeFieldPatch(watchTripsFieldSet, heartbeat));
   maybeSet("show_id", heartbeat.app_show_id);
   maybeSet("show_date", heartbeat.app_sql_date);
   maybeSet("app_show_id", heartbeat.app_show_id);
