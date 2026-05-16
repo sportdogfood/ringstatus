@@ -1930,6 +1930,7 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
   };
 
   maybeSet("heartbeat", []);
+  maybeSet("watch_schedule", []);
   maybeSet("is_current_scope", false);
   maybeSet("scope_status", droppedScopeStatus);
   maybeSet("inactive", true);
@@ -2581,6 +2582,7 @@ if (require.main === module) {
 
 module.exports = {
   applyManualTimeOverrideToTripFields,
+  buildDroppedFields,
   hasManualTimeOverride,
   tripRowKeyFromFields,
 };

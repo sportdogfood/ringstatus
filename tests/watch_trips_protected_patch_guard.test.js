@@ -52,6 +52,24 @@ for (const script of scripts) {
     );
   }
 
+  if (script === "trips_dailyv2.js") {
+    const protectedSetMatch = source.match(
+      /const\s+PROTECTED_WATCH_TRIPS_FIELDS\s*=\s*new\s+Set\s*\(\[[\s\S]*?\]\);/
+    );
+    assert.ok(protectedSetMatch, `${script} must expose its protected field set`);
+    const protectedSetSource = protectedSetMatch[0];
+
+    assert.ok(
+      !/["']watch_schedule["']/.test(protectedSetSource),
+      `${script} must allow blank watch_schedule patches so dropped trips can be unlinked`
+    );
+
+    assert.ok(
+      !/["']heartbeat["']/.test(protectedSetSource),
+      `${script} must allow blank heartbeat patches so dropped trips can be unlinked`
+    );
+  }
+
   assert.ok(
     /delete\s+fields\s*\[\s*fieldName\s*\]/.test(source),
     `${script} must remove blank protected fields before patching`
