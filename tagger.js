@@ -1722,7 +1722,23 @@ async function resolveHeartbeatTargetDecision() {
     }),
     shifted_to_next_day: boolValue(fields[FIELD_SHIFTED_NEXT_DAY]),
     set_to_default_app_sql_date: boolValue(fields[FIELD_SET_TO_DEFAULT_APP_SQL_DATE]),
+    mode_control: normalizeControlMode(fields[FIELD_MODE_CONTROL]),
+    mode_control_reason: null,
+    is_default_show_manual_override: boolValue(fields[FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE]),
     show_name: strOrNull(fields[FIELD_SHOW_NAME_BASE]),
+  };
+}
+
+function modeControlFromTargetDecision(heartbeatTargetDecision) {
+  if (!heartbeatTargetDecision?.record_id) return null;
+  return {
+    found: true,
+    record_id: heartbeatTargetDecision.record_id,
+    matched_count: 1,
+    mode_control: heartbeatTargetDecision?.mode_control || null,
+    mode_control_reason: heartbeatTargetDecision?.mode_control_reason || null,
+    is_default_show_manual_override: boolValue(heartbeatTargetDecision?.is_default_show_manual_override),
+    source_table: heartbeatTargetDecision.table,
   };
 }
 
@@ -1942,12 +1958,12 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     };
     const clk = applyHotpatchClockOverride(applyHeartbeatTargetClockOverride(rawClock, heartbeatTargetDecision));
     const clockMode = deriveModeFromClock(clk);
-    const preliminaryShowControl = await fetchShowsModeControl(clk.showId);
+    const targetShowControl = modeControlFromTargetDecision(heartbeatTargetDecision);
+    const preliminaryShowControl = targetShowControl || await fetchShowsModeControl(clk.showId);
     const forcedMode = FORCE_MODE ? normalizeMode(FORCE_MODE) : null;
     const appCtx = await buildAppContext(clk);
-    const showControl = preliminaryShowControl?.found
-      ? preliminaryShowControl
-      : await fetchShowsModeControl(appCtx.appShowId);
+    const showControl = targetShowControl
+      || (preliminaryShowControl?.found ? preliminaryShowControl : await fetchShowsModeControl(appCtx.appShowId));
     const modeDecision = decideEffectiveMode({
       clockMode,
       forcedMode,

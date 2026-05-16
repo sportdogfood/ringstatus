@@ -44,6 +44,12 @@ assert.ok(
   "tagger must support record-targeted focused show heartbeat snapshots"
 );
 
+assert.ok(
+  tagger.includes("modeControlFromTargetDecision") &&
+    tagger.includes("heartbeatTargetDecision?.mode_control"),
+  "tagger mode control must use the focused show target before legacy shows rows"
+);
+
 const focusedShowsRunner = fs.readFileSync(path.resolve(__dirname, "..", "run_tagger_task_focused_shows.ps1"), "utf8");
 assert.ok(
   focusedShowsRunner.includes("HEARTBEAT_TARGET_SHOW_RECORD_ID") &&
