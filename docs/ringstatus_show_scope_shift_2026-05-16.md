@@ -218,6 +218,59 @@ It must carry copied scope fields:
 
 Trip lanes must use the focused customer when constructing `/people/{pid}` endpoints.
 
+### `active_alerts`: `class_tills`
+
+`class_tills` is the first calculator-owned triggered alert workflow.
+
+Intent:
+
+```text
+Create one thread when a watched class reaches each configured pre-start timing milestone.
+```
+
+Operational source:
+
+- `active_alerts.alert_id = class_tills`
+- `active_alerts.active = true`
+- linked `trigger_tags` define the actual timing windows
+- `watch_schedule` supplies the class row and copied scope fields
+- `schedules_calculatorv2.js` owns detection and direct `thread_logs` creation
+
+The workflow must not depend on Airtable Automations for deciding whether an alert fired or for creating the durable thread event. Airtable Automations may be used later only as optional notification/display plumbing after the runner has created the idempotent thread row.
+
+Current required copied scope inputs:
+
+- `customer_id`
+- `focus_day`
+- `ring_collection`
+- `show_scope_key`
+
+The thread idempotency key is:
+
+```text
+thread_static_id = show_scope_key|schedule_key|class_tills|trigger_name
+```
+
+Examples of `trigger_name` values are the linked `trigger_tags` records, such as `run_60_till` or `run_45_till`. If the desired business milestone is 40 minutes instead of 45 minutes, update the Airtable `trigger_tags` configuration first; do not make the calculator substitute 40 for an Airtable tag that still says 45.
+
+The runner writes `thread_logs` directly with available linked context:
+
+- `thread_static_id`
+- `thread_source`
+- `thread_name`
+- `run_id`
+- `run_time`
+- `active_alerts`
+- `alert_templates`
+- `active_tenants`
+- `heartbeat`
+- `watch_schedule`
+- `schedule_logs`
+- timing/status fields such as `rs_start_time`, `rs_mins_till_start`, `rs_status`
+- the fired trigger checkbox such as `run_60_till` or `run_45_till`
+
+If `class_tills` is not active, its linked trigger tags must not create schedule-log trigger hits or thread rows.
+
 ## Endpoint Ownership
 
 ### Schedule

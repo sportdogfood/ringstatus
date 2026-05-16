@@ -8,6 +8,8 @@ const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule
 const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 const TABLE_SCHEDULE_LOGS = process.env.TABLE_SCHEDULE_LOGS || "schedule_logs";
 const TABLE_TRIGGER_TAGS = process.env.TABLE_TRIGGER_TAGS || "trigger_tags";
+const TABLE_ACTIVE_ALERTS = process.env.TABLE_ACTIVE_ALERTS || "active_alerts";
+const TABLE_THREAD_LOGS = process.env.TABLE_THREAD_LOGS || "thread_logs";
 
 const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "enrich";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
@@ -24,6 +26,8 @@ const CALC_MODE = String(process.env.CALC_MODE || "shadow").trim().toLowerCase()
   : "shadow";
 const CALC_VERSION = String(process.env.CALC_VERSION || "schedules_calculator_v2_1").trim();
 const DEFAULT_TRIP_MINUTES = Number(process.env.DEFAULT_TRIP_MINUTES || "3");
+const CLASS_TILLS_ALERT_ID = process.env.CLASS_TILLS_ALERT_ID || "class_tills";
+const CLASS_TILLS_DIRECT_THREADS = String(process.env.CLASS_TILLS_DIRECT_THREADS || "1") === "1";
 const TRACE_ENABLED = String(process.env.SCHEDULES_CALCULATOR_TRACE || "0") === "1";
 const TRACE_LOG_PATH = path.join(
   process.env.RUNNER_LOG_DIR || "C:\\actions-runner\\ringstatus",
@@ -522,6 +526,43 @@ async function fetchActiveTriggerTags(sourceTableName) {
     .sort((a, b) => a.priority - b.priority || String(a.trigger_name || "").localeCompare(String(b.trigger_name || "")));
 }
 
+async function fetchActiveAlertConfig(alertId) {
+  const rows = await airtableList(TABLE_ACTIVE_ALERTS, {
+    maxRecords: 1,
+    filterByFormula: `AND({alert_id}='${String(alertId).replace(/'/g, "\\'")}', {active}=1)`,
+    "fields[]": [
+      "alert_id",
+      "active",
+      "trigger_tags",
+      "alert_templates",
+      "active_tenants",
+      "total",
+    ],
+  });
+
+  const row = rows[0] || null;
+  if (!row) return null;
+  const fields = row.fields || {};
+  return {
+    recordId: row.id,
+    alert_id: strOrNull(fields.alert_id),
+    active: boolValue(fields.active),
+    triggerTagIds: new Set(linkIds(fields.trigger_tags)),
+    alertTemplateIds: linkIds(fields.alert_templates),
+    activeTenantIds: linkIds(fields.active_tenants),
+    total: numOrNull(fields.total),
+  };
+}
+
+async function fetchAlertTriggerIds(alertId) {
+  const rows = await airtableList(TABLE_ACTIVE_ALERTS, {
+    maxRecords: 1,
+    filterByFormula: `{alert_id}='${String(alertId).replace(/'/g, "\\'")}'`,
+    "fields[]": ["trigger_tags"],
+  });
+  return new Set(linkIds(rows[0]?.fields?.trigger_tags));
+}
+
 async function fetchPriorScheduleLogMap(triggerTags) {
   const requestedFields = new Set(["watch_schedule", "created_at"]);
   requestedFields.add("rs_start_time");
@@ -678,9 +719,16 @@ function normalizeWatchScheduleRow(record) {
   const fields = record?.fields || {};
   return {
     recordId: record.id,
+    schedule_key: strOrNull(fields.schedule_key),
     record_id: strOrNull(fields.record_id) || record.id,
     heartbeatLinkId: firstLinkId(fields.heartbeat),
     showsLinkId: firstLinkId(fields.shows),
+    showLinkId: firstLinkId(fields.show),
+    customer_id: numOrNull(fields.customer_id),
+    focus_day: toIsoDateOnly(fields.focus_day),
+    ring_collection: strOrNull(fields.ring_collection),
+    show_scope_key: strOrNull(fields.show_scope_key),
+    show_id: numOrNull(fields.show_id),
     class_groupxclasses_id: numOrNull(fields.class_groupxclasses_id),
     class_group_id: numOrNull(fields.class_group_id),
     class_id: numOrNull(fields.class_id),
@@ -965,6 +1013,78 @@ function applyTriggerTags(fields, triggerTags, triggerContext, scheduleLogFieldS
   return fired;
 }
 
+function buildShowScopeKey(row, heartbeatContext) {
+  const direct = strOrNull(row.show_scope_key);
+  if (direct) return direct;
+  return [
+    row.customer_id ?? "",
+    row.show_id ?? row.app_show_idv2 ?? heartbeatContext.app_show_id ?? "",
+    row.focus_day ?? row.schedule_show_datev2 ?? row.app_sql_datev2 ?? heartbeatContext.app_sql_date ?? "",
+  ].join("|");
+}
+
+function buildClassTillsThreadStaticId(row, heartbeatContext, trigger) {
+  return [
+    buildShowScopeKey(row, heartbeatContext),
+    row.schedule_key || row.record_id || row.recordId,
+    CLASS_TILLS_ALERT_ID,
+    strOrNull(trigger?.trigger_name) || strOrNull(trigger?.output_field) || "trigger",
+  ].join("|");
+}
+
+async function fetchExistingThreadStaticIds() {
+  const rows = await airtableList(TABLE_THREAD_LOGS, {
+    maxRecords: Math.max(MAX_RECORDS * 20, 1000),
+    "fields[]": ["thread_static_id"],
+  });
+  return new Set(rows.map((row) => strOrNull(row?.fields?.thread_static_id)).filter(Boolean));
+}
+
+function buildClassTillsThreadFields({
+  row,
+  heartbeatContext,
+  computation,
+  trigger,
+  activeAlertConfig,
+  scheduleLogId,
+  scheduleLogKey,
+  threadLogFieldSet,
+}) {
+  const fields = {};
+  const nowIso = new Date().toISOString();
+  const outputField = strOrNull(trigger?.output_field);
+  const threadStaticId = buildClassTillsThreadStaticId(row, heartbeatContext, trigger);
+
+  setIfPresent(fields, threadLogFieldSet.has("thread_static_id") ? "thread_static_id" : "", threadStaticId);
+  setIfPresent(fields, threadLogFieldSet.has("thread_source") ? "thread_source" : "", "schedules_calculatorv2:class_tills");
+  setIfPresent(fields, threadLogFieldSet.has("thread_name") ? "thread_name" : "", [
+    CLASS_TILLS_ALERT_ID,
+    strOrNull(trigger?.trigger_name) || outputField,
+    row.class_number ?? "",
+  ].filter((part) => !isBlank(part)).join("|"));
+  setIfPresent(fields, threadLogFieldSet.has("run_id") ? "run_id" : "", heartbeatContext.scope_run_id || heartbeatContext.heartbeat_record_id);
+  setIfPresent(fields, threadLogFieldSet.has("run_time") ? "run_time" : "", nowIso);
+  setIfPresent(fields, threadLogFieldSet.has("calc_log_key") ? "calc_log_key" : "", scheduleLogKey);
+  setIfPresent(fields, threadLogFieldSet.has("active_alerts") ? "active_alerts" : "", activeAlertConfig?.recordId ? [activeAlertConfig.recordId] : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("alert_templates") ? "alert_templates" : "", activeAlertConfig?.alertTemplateIds?.length ? activeAlertConfig.alertTemplateIds : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("active_tenants") ? "active_tenants" : "", activeAlertConfig?.activeTenantIds?.length ? activeAlertConfig.activeTenantIds : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("heartbeat") ? "heartbeat" : "", heartbeatContext.heartbeat_record_id ? [heartbeatContext.heartbeat_record_id] : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("watch_schedule") ? "watch_schedule" : "", row.recordId ? [row.recordId] : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("schedule_logs") ? "schedule_logs" : "", scheduleLogId ? [scheduleLogId] : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("rs_start_time") ? "rs_start_time" : "", computation.startAnchorText);
+  setIfPresent(fields, threadLogFieldSet.has("rs_end_time") ? "rs_end_time" : "", computation.endFromProjection);
+  setIfPresent(fields, threadLogFieldSet.has("rs_status") ? "rs_status" : "", computation.latestStatusFinal);
+  setIfPresent(fields, threadLogFieldSet.has("rs_mins_till_start") ? "rs_mins_till_start" : "", computation.minsTillStart);
+  setIfPresent(fields, threadLogFieldSet.has("rs_length") ? "rs_length" : "", computation.projectedClassMinutes);
+  setIfPresent(fields, threadLogFieldSet.has("total_trips") ? "total_trips" : "", computation.totalTripsFinal);
+  setIfPresent(fields, threadLogFieldSet.has("rs_completed_trips") ? "rs_completed_trips" : "", computation.completedTripsLive);
+  setIfPresent(fields, threadLogFieldSet.has("class_id") ? "class_id" : "", row.class_id);
+  setIfPresent(fields, threadLogFieldSet.has("class_group_id") ? "class_group_id" : "", row.class_group_id);
+  if (outputField && threadLogFieldSet.has(outputField)) fields[outputField] = true;
+
+  return fields;
+}
+
 function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, calcStatus, skipReason, scheduleLogFieldSet, triggerTags, priorLogFields) {
   const fields = {};
   const nowIso = new Date().toISOString();
@@ -1162,13 +1282,29 @@ async function main() {
   }
 
   traceStage("fetch_metadata_start");
-  const [watchScheduleFieldSet, scheduleLogFieldSet, activeTriggerTags] = await Promise.all([
+  const [watchScheduleFieldSet, scheduleLogFieldSet, threadLogFieldSet, classTillsAlertConfig, classTillsTriggerIdsAll, rawActiveTriggerTags] = await Promise.all([
     fetchTableFieldSet(TABLE_WATCH_SCHEDULE),
     fetchTableFieldSet(TABLE_SCHEDULE_LOGS),
+    fetchTableFieldSet(TABLE_THREAD_LOGS).catch(() => new Set()),
+    CLASS_TILLS_DIRECT_THREADS ? fetchActiveAlertConfig(CLASS_TILLS_ALERT_ID).catch(() => null) : Promise.resolve(null),
+    CLASS_TILLS_DIRECT_THREADS ? fetchAlertTriggerIds(CLASS_TILLS_ALERT_ID).catch(() => new Set()) : Promise.resolve(new Set()),
     fetchActiveTriggerTags(TABLE_SCHEDULE_LOGS).catch(() => []),
   ]);
+  const activeTriggerTags = rawActiveTriggerTags.filter((trigger) => (
+    !classTillsTriggerIdsAll.has(trigger.recordId) || Boolean(classTillsAlertConfig?.active)
+  ));
+  const classTillsTriggerTags = classTillsAlertConfig?.active
+    ? activeTriggerTags.filter((trigger) => classTillsAlertConfig.triggerTagIds.has(trigger.recordId))
+    : [];
+  const existingThreadStaticIds = CLASS_TILLS_DIRECT_THREADS && classTillsAlertConfig?.active
+    ? await fetchExistingThreadStaticIds().catch(() => new Set())
+    : new Set();
   const priorScheduleLogByWatchId = await fetchPriorScheduleLogMap(activeTriggerTags).catch(() => new Map());
-  traceStage("fetch_metadata_done", { trigger_tags_active: activeTriggerTags.length });
+  traceStage("fetch_metadata_done", {
+    trigger_tags_active: activeTriggerTags.length,
+    class_tills_active: Boolean(classTillsAlertConfig?.active),
+    class_tills_trigger_tags: classTillsTriggerTags.length,
+  });
 
   const targetDays = new Set(
     watchRows
@@ -1203,6 +1339,8 @@ async function main() {
     let skippedRows = 0;
     let changedRows = 0;
     let triggerHits = 0;
+    let classTillsThreadCandidates = 0;
+    let classTillsThreadsSkippedExisting = 0;
     let manualTimeOverridePreserved = 0;
 
     traceStage("process_batch_start", { batch: batchName, rows: batchRows.length });
@@ -1239,22 +1377,62 @@ async function main() {
       }).length;
       logRecords.push({ fields: logFields });
 
-      patchWork.push({ row, groupRow, computation });
+      const firedClassTillsTriggers = classTillsTriggerTags.filter((trigger) => {
+        const outputField = strOrNull(trigger?.output_field);
+        return outputField && fieldsHasTruthy(logFields, outputField);
+      });
+      classTillsThreadCandidates += firedClassTillsTriggers.length;
+
+      patchWork.push({ row, groupRow, computation, firedClassTillsTriggers });
     }
 
     let logCreateResult = { okRows: 0, failedRows: [], createdRecords: [] };
     if (!DRY_RUN) {
       logCreateResult = await airtableCreateRecords(TABLE_SCHEDULE_LOGS, logRecords);
     }
+    const logIdByKey = new Map(
+      (logCreateResult.createdRecords || [])
+        .map((record) => [strOrNull(record?.fields?.calc_log_key), record?.id])
+        .filter(([key, id]) => Boolean(key && id))
+    );
+
+    const threadRecords = [];
+    if (CLASS_TILLS_DIRECT_THREADS && classTillsAlertConfig?.active && threadLogFieldSet.size) {
+      for (let index = 0; index < patchWork.length; index += 1) {
+        const item = patchWork[index];
+        if (!item.firedClassTillsTriggers.length) continue;
+        const scheduleLogKey = strOrNull(logRecords[index]?.fields?.calc_log_key);
+        const scheduleLogId = logIdByKey.get(scheduleLogKey) || null;
+        for (const trigger of item.firedClassTillsTriggers) {
+          const threadStaticId = buildClassTillsThreadStaticId(item.row, heartbeatContext, trigger);
+          if (existingThreadStaticIds.has(threadStaticId)) {
+            classTillsThreadsSkippedExisting += 1;
+            continue;
+          }
+          existingThreadStaticIds.add(threadStaticId);
+          threadRecords.push({
+            fields: buildClassTillsThreadFields({
+              row: item.row,
+              heartbeatContext,
+              computation: item.computation,
+              trigger,
+              activeAlertConfig: classTillsAlertConfig,
+              scheduleLogId,
+              scheduleLogKey,
+              threadLogFieldSet,
+            }),
+          });
+        }
+      }
+    }
+
+    let threadCreateResult = { okRows: 0, failedRows: [], createdRecords: [] };
+    if (!DRY_RUN && threadRecords.length) {
+      threadCreateResult = await airtableCreateRecords(TABLE_THREAD_LOGS, threadRecords);
+    }
 
     const patchUpdates = [];
     if (CALC_MODE === "promote") {
-      const logIdByKey = new Map(
-        (logCreateResult.createdRecords || [])
-          .map((record) => [strOrNull(record?.fields?.calc_log_key), record?.id])
-          .filter(([key, id]) => Boolean(key && id))
-      );
-
       for (let index = 0; index < patchWork.length; index += 1) {
         const item = patchWork[index];
         const logId = logIdByKey.get(strOrNull(logRecords[index]?.fields?.calc_log_key)) || null;
@@ -1298,6 +1476,11 @@ async function main() {
       logs_planned: logRecords.length,
       logs_created: DRY_RUN ? 0 : logCreateResult.okRows,
       log_failures: logCreateResult.failedRows.length,
+      class_tills_thread_candidates: classTillsThreadCandidates,
+      class_tills_threads_planned: threadRecords.length,
+      class_tills_threads_created: DRY_RUN ? 0 : threadCreateResult.okRows,
+      class_tills_threads_skipped_existing: classTillsThreadsSkippedExisting,
+      class_tills_thread_failures: threadCreateResult.failedRows.length,
       patches_planned: patchUpdates.length,
       patches_applied: DRY_RUN ? 0 : patchResult.okRows,
       patch_failures: patchResult.failedRows.length,
@@ -1333,6 +1516,13 @@ async function main() {
     changed_rows: sumBatch("changed_rows"),
     trigger_tags_active: activeTriggerTags.length,
     trigger_hits: sumBatch("trigger_hits"),
+    class_tills_active: Boolean(classTillsAlertConfig?.active),
+    class_tills_trigger_tags: classTillsTriggerTags.length,
+    class_tills_thread_candidates: sumBatch("class_tills_thread_candidates"),
+    class_tills_threads_planned: sumBatch("class_tills_threads_planned"),
+    class_tills_threads_created: sumBatch("class_tills_threads_created"),
+    class_tills_threads_skipped_existing: sumBatch("class_tills_threads_skipped_existing"),
+    class_tills_thread_failures: sumBatch("class_tills_thread_failures"),
     logs_planned: sumBatch("logs_planned"),
     logs_created: sumBatch("logs_created"),
     log_failures: sumBatch("log_failures"),
