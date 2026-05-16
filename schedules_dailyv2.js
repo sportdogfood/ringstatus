@@ -168,14 +168,14 @@ function buildScopeKey(appShowId, appSqlDate, appDowRaw, shiftedToNextDay) {
   ].join("|");
 }
 
-function buildScheduleEndpoint(appSqlDate, appShowId) {
+function buildScheduleEndpoint(appSqlDate, appShowId, customerId = CUSTOMER_ID) {
   if (isBlank(appSqlDate) || isBlank(appShowId)) return null;
-  return `${SGL_BASE_URL}/schedule?date=${encodeURIComponent(appSqlDate)}&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  return `${SGL_BASE_URL}/schedule?date=${encodeURIComponent(appSqlDate)}&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(customerId)}`;
 }
 
-function buildScheduleEmptyEndpoint(appShowId) {
+function buildScheduleEmptyEndpoint(appShowId, customerId = CUSTOMER_ID) {
   if (isBlank(appShowId)) return null;
-  return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(customerId)}`;
 }
 
 function normalizeKey(value) {
@@ -1028,6 +1028,7 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
   }
 
   const appShowId = scope?.app_show_idv2;
+  const customerId = scope?.customer_id || CUSTOMER_ID;
   const currentDate = scope?.app_sql_datev2;
   const endDate = scope?.show_app_sql_end_date;
   const epochSeconds = Math.floor(Date.now() / 1000);
@@ -1042,7 +1043,7 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
   }
 
   for (const scheduleDate of forwardScheduleDates(currentDate, endDate)) {
-    const url = buildScheduleEndpoint(scheduleDate, appShowId);
+    const url = buildScheduleEndpoint(scheduleDate, appShowId, customerId);
     const item = { date: scheduleDate, url, ok: false, file_path: null, reason: null };
     try {
       const payload = await fetchJson(url, {
@@ -1977,7 +1978,7 @@ async function runDaily() {
     ? await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set())
     : new Set();
 
-  const emptyUrl = buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2);
+  const emptyUrl = buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2, baseHeartbeatContext.customer_id || CUSTOMER_ID);
   let emptyPayload = null;
   let emptyPingError = null;
   let scope = null;
@@ -2017,7 +2018,7 @@ async function runDaily() {
     }]);
   }
 
-  const datedUrl = buildScheduleEndpoint(scope.app_sql_datev2, scope.app_show_idv2);
+  const datedUrl = buildScheduleEndpoint(scope.app_sql_datev2, scope.app_show_idv2, scope.customer_id || CUSTOMER_ID);
   let datedPayload = null;
   let datedFetchError = null;
   let datedFallback = null;

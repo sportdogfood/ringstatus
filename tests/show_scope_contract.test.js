@@ -65,6 +65,13 @@ assert.ok(
   "schedules_dailyv2 must consume heartbeat app_sql_date instead of recalculating a NIGHT shift"
 );
 
+assert.ok(
+  schedulesDaily.includes("buildScheduleEndpoint(scope.app_sql_datev2, scope.app_show_idv2, scope.customer_id || CUSTOMER_ID)") &&
+    schedulesDaily.includes("buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2, baseHeartbeatContext.customer_id || CUSTOMER_ID)") &&
+    schedulesDaily.includes("const customerId = scope?.customer_id || CUSTOMER_ID"),
+  "schedules_dailyv2 schedule endpoints must use heartbeat customer_id before global CUSTOMER_ID fallback"
+);
+
 const focusedShowsRunner = fs.readFileSync(path.resolve(__dirname, "..", "run_tagger_task_focused_shows.ps1"), "utf8");
 assert.ok(
   focusedShowsRunner.includes("HEARTBEAT_TARGET_SHOW_RECORD_ID") &&
