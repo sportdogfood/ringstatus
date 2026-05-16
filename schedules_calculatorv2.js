@@ -594,6 +594,7 @@ async function fetchActiveAlertConfigs(alertFamily) {
       "alert_templates",
       "active_tenants",
       "ww_tenants",
+      "ww_profiles",
       "alert_milestone1 (from ww_tenants)",
       "alert_milestone2 (from ww_tenants)",
       "total",
@@ -612,6 +613,7 @@ async function fetchActiveAlertConfigs(alertFamily) {
         alertTemplateIds: linkIds(fields.alert_templates),
         activeTenantIds: linkIds(fields.active_tenants),
         wwTenantIds: linkIds(fields.ww_tenants),
+        wwProfileIds: linkIds(fields.ww_profiles),
         milestoneSlot: resolveClassTillsMilestoneSlot(fields.alert_id),
         milestone1: firstNumberValue(fields["alert_milestone1 (from ww_tenants)"]),
         milestone2: firstNumberValue(fields["alert_milestone2 (from ww_tenants)"]),
@@ -620,6 +622,174 @@ async function fetchActiveAlertConfigs(alertFamily) {
     })
     .filter((config) => config.active)
     .filter((config) => isClassTillsAlert(config));
+}
+
+function normalizeClassTillsProfile(row) {
+  const fields = row?.fields || {};
+  return {
+    recordId: row.id,
+    profileName: strOrNull(fields.profile_name),
+    profileUID: strOrNull(fields.profileUID),
+    tenantProfileKey: strOrNull(fields.tenant_profile_key),
+    active: boolValue(fields.active),
+    activeTenantIds: linkIds(fields.active_tenants),
+    wwTenantIds: linkIds(fields.ww_tenants),
+    activeAlertIds: linkIds(fields.active_alerts),
+    activeSubscriberIds: linkIds(fields.active_subscribers),
+    milestone1: firstNumberValue(fields.alert_milestone1),
+    milestone2: firstNumberValue(fields.alert_milestone2),
+    riderIds: linkIds(fields.ww_riders),
+    trainerIds: linkIds(fields.ww_trainers),
+    groomIds: linkIds(fields.ww_grooms),
+    horseIds: linkIds(fields.ww_horses),
+  };
+}
+
+async function fetchClassTillsProfiles() {
+  const fieldSet = await fetchTableFieldSet(TABLE_WW_PROFILES);
+  const fields = [
+    "profile_name",
+    "profileUID",
+    "tenant_profile_key",
+    "active",
+    "active_tenants",
+    "ww_tenants",
+    "active_alerts",
+    "active_subscribers",
+    "alert_milestone1",
+    "alert_milestone2",
+    "ww_riders",
+    "ww_trainers",
+    "ww_grooms",
+    "ww_horses",
+  ].filter((fieldName) => fieldSet.has(fieldName));
+
+  const rows = await airtableList(TABLE_WW_PROFILES, {
+    maxRecords: Math.max(MAX_RECORDS * 2, 1000),
+    "fields[]": fields,
+  });
+
+  return rows.map(normalizeClassTillsProfile);
+}
+
+function profileMilestoneValue(profile, milestoneSlot) {
+  if (milestoneSlot === "alert_milestone1") return numOrNull(profile?.milestone1);
+  if (milestoneSlot === "alert_milestone2") return numOrNull(profile?.milestone2);
+  return null;
+}
+
+function buildTenantProfileKey(profile) {
+  const direct = strOrNull(profile?.tenantProfileKey);
+  if (direct) return direct;
+  const profilePart = strOrNull(profile?.profileUID) || strOrNull(profile?.recordId);
+  const tenantPart = firstLinkId(profile?.wwTenantIds) || firstLinkId(profile?.activeTenantIds);
+  return [tenantPart, profilePart].filter(Boolean).join("|") || strOrNull(profile?.recordId);
+}
+
+function buildClassTillsProfileConfigs(alertConfigs, profiles) {
+  const profilesById = new Map((profiles || []).map((profile) => [profile.recordId, profile]));
+  const out = [];
+
+  for (const config of alertConfigs || []) {
+    if (!config.milestoneSlot) continue;
+    for (const profileId of config.wwProfileIds || []) {
+      const profile = profilesById.get(profileId);
+      if (!profile?.active) continue;
+      if (!profile.activeSubscriberIds.length) continue;
+      if (!profile.activeAlertIds.includes(config.recordId) && !config.wwProfileIds.includes(profile.recordId)) continue;
+      const milestoneValue = profileMilestoneValue(profile, config.milestoneSlot);
+      if (milestoneValue === null) continue;
+      out.push({
+        ...config,
+        profile,
+        tenantProfileKey: buildTenantProfileKey(profile),
+        milestoneValue,
+      });
+    }
+  }
+
+  return out;
+}
+
+function normalizeWatchTripRow(row) {
+  const fields = row?.fields || {};
+  return {
+    recordId: row.id,
+    activeTenantIds: linkIds(fields.active_tenants),
+    wwTenantIds: linkIds(fields.ww_tenants),
+    riderIds: linkIds(fields.ww_riders),
+    trainerIds: linkIds(fields.ww_trainers),
+    groomIds: linkIds(fields.ww_grooms),
+    horseIds: linkIds(fields.ww_horses),
+  };
+}
+
+async function fetchWatchTripsById(watchRows) {
+  const tripIds = uniqueIds((watchRows || []).flatMap((row) => row.watch_trips_link_ids || []));
+  if (!tripIds.length) return new Map();
+
+  const fieldSet = await fetchTableFieldSet(TABLE_WATCH_TRIPS);
+  const fields = [
+    "active_tenants",
+    "ww_tenants",
+    "ww_riders",
+    "ww_trainers",
+    "ww_grooms",
+    "ww_horses",
+  ].filter((fieldName) => fieldSet.has(fieldName));
+  const byId = new Map();
+
+  for (const idBatch of chunk(tripIds, 40)) {
+    const filterByFormula = `OR(${idBatch.map((id) => `RECORD_ID()='${id}'`).join(",")})`;
+    const rows = await airtableList(TABLE_WATCH_TRIPS, {
+      maxRecords: idBatch.length,
+      filterByFormula,
+      "fields[]": fields,
+    });
+    for (const row of rows) byId.set(row.id, normalizeWatchTripRow(row));
+  }
+
+  return byId;
+}
+
+function profileHasTripScope(profile) {
+  return Boolean(
+    profile?.riderIds?.length ||
+    profile?.trainerIds?.length ||
+    profile?.groomIds?.length ||
+    profile?.horseIds?.length
+  );
+}
+
+function tripMatchesTenantScope(trip, profileConfig) {
+  const activeTenantIds = uniqueIds([
+    ...(profileConfig.activeTenantIds || []),
+    ...(profileConfig.profile?.activeTenantIds || []),
+  ]);
+  const wwTenantIds = uniqueIds([
+    ...(profileConfig.wwTenantIds || []),
+    ...(profileConfig.profile?.wwTenantIds || []),
+  ]);
+  if (activeTenantIds.length && hasAnyId(trip?.activeTenantIds, activeTenantIds)) return true;
+  if (wwTenantIds.length && hasAnyId(trip?.wwTenantIds, wwTenantIds)) return true;
+  return !activeTenantIds.length && !wwTenantIds.length;
+}
+
+function tripMatchesProfileScope(trip, profile) {
+  if (!profileHasTripScope(profile)) return true;
+  return hasAnyId(trip?.riderIds, profile.riderIds) ||
+    hasAnyId(trip?.trainerIds, profile.trainerIds) ||
+    hasAnyId(trip?.groomIds, profile.groomIds) ||
+    hasAnyId(trip?.horseIds, profile.horseIds);
+}
+
+function qualifiedTripIds(row, profileConfig, watchTripById) {
+  return uniqueIds(row?.watch_trips_link_ids || [])
+    .map((tripId) => watchTripById.get(tripId))
+    .filter(Boolean)
+    .filter((trip) => tripMatchesTenantScope(trip, profileConfig))
+    .filter((trip) => tripMatchesProfileScope(trip, profileConfig.profile))
+    .map((trip) => trip.recordId);
 }
 
 async function fetchAlertTriggerIds(alertFamily) {
@@ -1107,6 +1277,7 @@ function buildClassTillsThreadStaticId(row, heartbeatContext, event) {
     row.schedule_key || row.record_id || row.recordId,
     strOrNull(event?.activeAlertConfig?.alert_id) || CLASS_TILLS_ALERT_FAMILY,
     getClassTillsEventKey(event),
+    strOrNull(event?.tenantProfileKey),
   ].join("|");
 }
 
@@ -1143,12 +1314,15 @@ function buildClassTillsThreadFields({
   const outputField = strOrNull(trigger?.output_field);
   const alertId = strOrNull(activeAlertConfig?.alert_id) || CLASS_TILLS_ALERT_FAMILY;
   const threadStaticId = buildClassTillsThreadStaticId(row, heartbeatContext, event);
+  const qualifiedTrips = uniqueIds(event?.qualifiedTripIds || row.watch_trips_link_ids || []);
+  const profile = event?.profile || null;
 
   setIfPresent(fields, threadLogFieldSet.has("thread_static_id") ? "thread_static_id" : "", threadStaticId);
   setIfPresent(fields, threadLogFieldSet.has("thread_source") ? "thread_source" : "", "schedules_calculatorv2:class_tills");
   setIfPresent(fields, threadLogFieldSet.has("thread_name") ? "thread_name" : "", [
     alertId,
     getClassTillsEventKey(event),
+    event?.tenantProfileKey,
     row.class_number ?? "",
   ].filter((part) => !isBlank(part)).join("|"));
   setIfPresent(fields, threadLogFieldSet.has("run_id") ? "run_id" : "", heartbeatContext.scope_run_id || heartbeatContext.heartbeat_record_id);
@@ -1158,11 +1332,16 @@ function buildClassTillsThreadFields({
   setIfPresent(fields, threadLogFieldSet.has("alert_templates") ? "alert_templates" : "", activeAlertConfig?.alertTemplateIds?.length ? activeAlertConfig.alertTemplateIds : undefined);
   setIfPresent(fields, threadLogFieldSet.has("active_tenants") ? "active_tenants" : "", activeAlertConfig?.activeTenantIds?.length ? activeAlertConfig.activeTenantIds : undefined);
   setIfPresent(fields, threadLogFieldSet.has("ww_tenants") ? "ww_tenants" : "", activeAlertConfig?.wwTenantIds?.length ? activeAlertConfig.wwTenantIds : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("ww_profiles") ? "ww_profiles" : "", profile?.recordId ? [profile.recordId] : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("active_subscribers") ? "active_subscribers" : "", profile?.activeSubscriberIds?.length ? profile.activeSubscriberIds : undefined);
   setIfPresent(fields, threadLogFieldSet.has("trigger_tags") ? "trigger_tags" : "", trigger?.recordId ? [trigger.recordId] : undefined);
   setIfPresent(fields, threadLogFieldSet.has("heartbeat") ? "heartbeat" : "", heartbeatContext.heartbeat_record_id ? [heartbeatContext.heartbeat_record_id] : undefined);
   setIfPresent(fields, threadLogFieldSet.has("watch_schedule") ? "watch_schedule" : "", row.recordId ? [row.recordId] : undefined);
-  setIfPresent(fields, threadLogFieldSet.has("watch_trips") ? "watch_trips" : "", row.watch_trips_link_ids?.length ? row.watch_trips_link_ids : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("watch_trips") ? "watch_trips" : "", qualifiedTrips.length ? qualifiedTrips : undefined);
   setIfPresent(fields, threadLogFieldSet.has("schedule_logs") ? "schedule_logs" : "", scheduleLogId ? [scheduleLogId] : undefined);
+  setIfPresent(fields, threadLogFieldSet.has("qualified_trip_count") ? "qualified_trip_count" : "", qualifiedTrips.length);
+  setIfPresent(fields, threadLogFieldSet.has("alert_scope") ? "alert_scope" : "", event?.profile ? "trip_qualified_profile_class" : "class");
+  setIfPresent(fields, threadLogFieldSet.has("tenant_profile_key") ? "tenant_profile_key" : "", event?.tenantProfileKey);
   setIfPresent(fields, threadLogFieldSet.has("customer_id") ? "customer_id" : "", row.customer_id);
   setIfPresent(fields, threadLogFieldSet.has("show_id") ? "show_id" : "", row.show_id ?? row.app_show_idv2 ?? heartbeatContext.app_show_id);
   setIfPresent(fields, threadLogFieldSet.has("focus_day") ? "focus_day" : "", row.focus_day ?? row.schedule_show_datev2 ?? row.app_sql_datev2 ?? heartbeatContext.app_sql_date);
@@ -1382,11 +1561,12 @@ async function main() {
   }
 
   traceStage("fetch_metadata_start");
-  const [watchScheduleFieldSet, scheduleLogFieldSet, threadLogFieldSet, classTillsAlertConfigs, classTillsTriggerIdsAll, rawActiveTriggerTags] = await Promise.all([
+  const [watchScheduleFieldSet, scheduleLogFieldSet, threadLogFieldSet, classTillsAlertConfigs, classTillsProfiles, classTillsTriggerIdsAll, rawActiveTriggerTags] = await Promise.all([
     fetchTableFieldSet(TABLE_WATCH_SCHEDULE),
     fetchTableFieldSet(TABLE_SCHEDULE_LOGS),
     fetchTableFieldSet(TABLE_THREAD_LOGS).catch(() => new Set()),
     CLASS_TILLS_DIRECT_THREADS ? fetchActiveAlertConfigs(CLASS_TILLS_ALERT_FAMILY).catch(() => []) : Promise.resolve([]),
+    CLASS_TILLS_DIRECT_THREADS ? fetchClassTillsProfiles().catch(() => []) : Promise.resolve([]),
     CLASS_TILLS_DIRECT_THREADS ? fetchAlertTriggerIds(CLASS_TILLS_ALERT_FAMILY).catch(() => new Set()) : Promise.resolve(new Set()),
     fetchActiveTriggerTags(TABLE_SCHEDULE_LOGS).catch(() => []),
   ]);
@@ -1401,14 +1581,9 @@ async function main() {
       .filter((trigger) => classTillsTriggerIdsAll.has(trigger.recordId))
       .map((trigger) => [trigger.recordId, trigger])
   );
-  const dynamicClassTillsConfigs = classTillsAlertConfigs
-    .filter((config) => config.milestoneSlot)
-    .map((config) => ({
-      ...config,
-      milestoneValue: config.milestoneSlot === "alert_milestone1" ? config.milestone1 : config.milestone2,
-    }))
-    .filter((config) => numOrNull(config.milestoneValue) !== null);
-  const useDynamicClassTills = dynamicClassTillsConfigs.length > 0;
+  const dynamicClassTillsAlertConfigs = classTillsAlertConfigs.filter((config) => config.milestoneSlot);
+  const dynamicClassTillsProfileConfigs = buildClassTillsProfileConfigs(dynamicClassTillsAlertConfigs, classTillsProfiles);
+  const useDynamicClassTills = dynamicClassTillsProfileConfigs.length > 0;
   const activeTriggerTags = rawActiveTriggerTags.filter((trigger) => (
     !classTillsTriggerIdsAll.has(trigger.recordId) || (!useDynamicClassTills && classTillsAlertByTriggerId.has(trigger.recordId))
   ));
@@ -1423,7 +1598,8 @@ async function main() {
     trigger_tags_active: activeTriggerTags.length,
     class_tills_active: Boolean(classTillsAlertConfigs.length),
     class_tills_active_alerts: classTillsAlertConfigs.length,
-    class_tills_dynamic_alerts: dynamicClassTillsConfigs.length,
+    class_tills_dynamic_alerts: dynamicClassTillsAlertConfigs.length,
+    class_tills_dynamic_profiles: dynamicClassTillsProfileConfigs.length,
     class_tills_trigger_tags: classTillsTriggerTags.length,
   });
 
@@ -1450,6 +1626,9 @@ async function main() {
   }
 
   const groupsById = buildGroupsLiveMap(groupsRows);
+  const watchTripById = CLASS_TILLS_DIRECT_THREADS && classTillsAlertConfigs.length
+    ? await fetchWatchTripsById(watchRows).catch(() => new Map())
+    : new Map();
   const rowsWithTrips = watchRows.filter((row) => row.watch_trips_count > 0);
   const rowsWithoutTrips = watchRows.filter((row) => row.watch_trips_count <= 0);
 
@@ -1508,18 +1687,24 @@ async function main() {
         milestoneSlot: null,
         milestoneValue: null,
       }));
-      const dynamicClassTillsEvents = dynamicClassTillsConfigs.filter((config) => {
+      const dynamicClassTillsEvents = dynamicClassTillsProfileConfigs.filter((config) => {
         return isInDynamicMilestoneRange(computation.minsTillStart, config.milestoneValue);
       }).map((config) => {
         const triggerId = Array.from(config.triggerTagIds)[0] || null;
+        const tripIds = qualifiedTripIds(row, config, watchTripById);
+        if (!tripIds.length) return null;
         return {
           dynamic: true,
           trigger: triggerId ? classTillsTriggerById.get(triggerId) || { recordId: triggerId } : null,
           activeAlertConfig: config,
           milestoneSlot: config.milestoneSlot,
           milestoneValue: config.milestoneValue,
+          profile: config.profile,
+          activeSubscriberIds: config.profile?.activeSubscriberIds || [],
+          tenantProfileKey: config.tenantProfileKey,
+          qualifiedTripIds: tripIds,
         };
-      });
+      }).filter(Boolean);
       const firedClassTillsEvents = [...fixedClassTillsEvents, ...dynamicClassTillsEvents];
       classTillsThreadCandidates += firedClassTillsEvents.length;
 
@@ -1660,7 +1845,8 @@ async function main() {
     trigger_hits: sumBatch("trigger_hits"),
     class_tills_active: Boolean(classTillsAlertConfigs.length),
     class_tills_active_alerts: classTillsAlertConfigs.length,
-    class_tills_dynamic_alerts: dynamicClassTillsConfigs.length,
+    class_tills_dynamic_alerts: dynamicClassTillsAlertConfigs.length,
+    class_tills_dynamic_profiles: dynamicClassTillsProfileConfigs.length,
     class_tills_trigger_tags: classTillsTriggerTags.length,
     class_tills_thread_candidates: sumBatch("class_tills_thread_candidates"),
     class_tills_threads_planned: sumBatch("class_tills_threads_planned"),
