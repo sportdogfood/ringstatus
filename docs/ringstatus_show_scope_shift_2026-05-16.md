@@ -225,7 +225,7 @@ Trip lanes must use the focused customer when constructing `/people/{pid}` endpo
 Intent:
 
 ```text
-Create one thread when a watched class reaches each configured pre-start timing milestone.
+Create one thread for one subscribed profile when a watched class reaches that profile's configured pre-start timing milestone and has tenant-related trips.
 ```
 
 Operational source:
@@ -233,8 +233,10 @@ Operational source:
 - `active_alerts` view `active_alerts`
 - `active_alerts.rec_name = class_tills` or `active_alerts.alert_id` starts with `class_tills_`
 - `active_alerts.active = true`
-- linked `trigger_tags` define the actual timing window for that alert action
-- `watch_schedule` supplies the class row and copied scope fields
+- linked `trigger_tags` identify the alert lane; dynamic profile milestones define the actual timing window
+- linked `ww_profiles` define which profiles are subscribed to that alert lane
+- `watch_schedule` supplies the class clock and copied scope fields
+- linked `watch_trips` supply the tenant trip rollup and profile trip eligibility
 - `schedules_calculatorv2.js` owns detection and direct `thread_logs` creation
 
 The workflow must not depend on Airtable Automations for deciding whether an alert fired or for creating the durable thread event. Airtable Automations may be used later only as optional notification/display plumbing after the runner has created the idempotent thread row.
@@ -249,28 +251,21 @@ Current required copied scope inputs:
 The thread idempotency key is:
 
 ```text
-thread_static_id = show_scope_key|schedule_key|alert_id|trigger_name
+thread_static_id = show_scope_key|schedule_key|alert_id|milestone_slot|tenant_profile_key
 ```
 
-Fixed examples:
+Dynamic profile milestone examples:
 
 ```text
-show_scope_key|schedule_key|class_tills_60|run_60_till
-show_scope_key|schedule_key|class_tills_45|run_45_till
+show_scope_key|schedule_key|class_tills_milestone1|alert_milestone1|tenant_profile_key
+show_scope_key|schedule_key|class_tills_milestone2|alert_milestone2|tenant_profile_key
 ```
 
-Dynamic tenant milestone examples:
+Each split `active_alerts` record carries its own linked `trigger_tags`, `alert_templates`, `active_tenants`, `ww_tenants`, and subscribed `ww_profiles`.
 
-```text
-show_scope_key|schedule_key|class_tills_milestone1|alert_milestone1
-show_scope_key|schedule_key|class_tills_milestone2|alert_milestone2
-```
+For `alert_id = class_tills_milestone1`, `schedules_calculatorv2.js` reads `alert_milestone1` from each linked `ww_profiles` record.
 
-Each split `active_alerts` record carries its own linked `trigger_tags`, `alert_templates`, `active_tenants`, and `ww_tenants`.
-
-For `alert_id = class_tills_milestone1`, `schedules_calculatorv2.js` reads `alert_milestone1` from linked `ww_tenants`.
-
-For `alert_id = class_tills_milestone2`, `schedules_calculatorv2.js` reads `alert_milestone2` from linked `ww_tenants`.
+For `alert_id = class_tills_milestone2`, `schedules_calculatorv2.js` reads `alert_milestone2` from each linked `ww_profiles` record.
 
 When active dynamic milestone records exist, they take precedence over fixed `class_tills_45` / `class_tills_60` records. This avoids duplicate thread creation while allowing the old fixed records to remain in Airtable during transition.
 
@@ -280,7 +275,17 @@ The dynamic runner treats a milestone as hit when `rs_mins_till_start` falls int
 milestone - 4 <= rs_mins_till_start <= milestone + 1
 ```
 
-For example, tenant milestone `65` listens at `61..66`; tenant milestone `38` listens at `34..39`.
+For example, profile milestone `65` listens at `61..66`; profile milestone `38` listens at `34..39`.
+
+Eligibility:
+
+- no linked `watch_trips`, no alert
+- no tenant-matching trips, no alert
+- no linked subscribed `ww_profiles`, no alert
+- no active `active_subscribers` on the subscribed profile, no alert
+- no profile milestone value for the lane, no alert
+- if the profile has rider/trainer/groom/horse scope links, only trips matching that profile scope qualify
+- if the profile has no rider/trainer/groom/horse scope links, the tenant trip rollup qualifies
 
 The runner writes `thread_logs` directly with available linked context:
 
@@ -293,11 +298,16 @@ The runner writes `thread_logs` directly with available linked context:
 - `alert_templates`
 - `active_tenants`
 - `ww_tenants`
+- `ww_profiles`
+- `active_subscribers`
 - `trigger_tags`
 - `heartbeat`
 - `watch_schedule`
 - `watch_trips`
 - `schedule_logs`
+- `qualified_trip_count`
+- `alert_scope`
+- `tenant_profile_key`
 - `customer_id`
 - `show_id`
 - `focus_day`
