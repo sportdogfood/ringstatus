@@ -10,6 +10,8 @@ const TABLE_SCHEDULE_LOGS = process.env.TABLE_SCHEDULE_LOGS || "schedule_logs";
 const TABLE_TRIGGER_TAGS = process.env.TABLE_TRIGGER_TAGS || "trigger_tags";
 const TABLE_ACTIVE_ALERTS = process.env.TABLE_ACTIVE_ALERTS || "active_alerts";
 const TABLE_THREAD_LOGS = process.env.TABLE_THREAD_LOGS || "thread_logs";
+const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
+const TABLE_WW_PROFILES = process.env.TABLE_WW_PROFILES || "ww_profiles";
 
 const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "enrich";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
@@ -133,6 +135,16 @@ function linkIds(value) {
   return raw
     .map((item) => String(item || "").trim())
     .filter(Boolean);
+}
+
+function uniqueIds(value) {
+  return Array.from(new Set(linkIds(value)));
+}
+
+function hasAnyId(left, right) {
+  const rightSet = new Set(linkIds(right));
+  if (!rightSet.size) return false;
+  return linkIds(left).some((id) => rightSet.has(id));
 }
 
 function boolValue(value) {
