@@ -1319,10 +1319,10 @@ function relinkSupportsArchive(tableName) {
   return tableName === TABLE_WATCH_SCHEDULE || tableName === TABLE_WATCH_TRIPS;
 }
 
-function recordIsScopeInactive(fields = {}) {
-  if (boolValue(fields?.[FIELD_INACTIVE]) === true) return true;
+function recordIsScopeInactive(tableName, fields = {}) {
   const scopeStatus = strOrNull(airtableValueName(fields?.[FIELD_SCOPE_STATUS]));
-  return scopeStatus ? scopeStatus.toLowerCase() === "dropped" : false;
+  if (scopeStatus && scopeStatus.toLowerCase() === "dropped") return true;
+  return tableName === TABLE_WATCH_TRIPS && boolValue(fields?.[FIELD_INACTIVE]) === true;
 }
 
 function archiveFieldPatch(tableName, fields = {}, desiredArchive) {
@@ -1374,7 +1374,7 @@ function classifyRelinkForTable(tableName, fields, heartbeatId, appCtx) {
     const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
     return { action: alreadyCorrect ? "keep" : "link", current };
   }
-  if (recordIsScopeInactive(fields)) {
+  if (recordIsScopeInactive(tableName, fields)) {
     const current = currentHeartbeatLinkIds(fields?.[FIELD_LINK_HEARTBEAT]);
     return {
       action: current.length ? "clear" : "skip",
