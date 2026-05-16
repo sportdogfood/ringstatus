@@ -1840,7 +1840,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   const resolvedScheduleDate = resolveTripScheduleDate(row);
   const resolvedScheduledDate = resolvedScheduleDate;
   const isActiveForScope = resolvedScheduledDate === heartbeat.app_sql_date;
-  const classSequence = keyPart(row.class_sequence) || classSequenceFromKey(row.schedule_key) || "1";
+  const classSequence = classSequenceFromKey(row.schedule_key);
   const tripKeys = buildTripKeyParts({
     sid: heartbeat.app_show_id,
     sqlDate: resolvedScheduleDate || heartbeat.app_sql_date,
@@ -1866,7 +1866,6 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("trips_key", tripKeys.tripsKey);
   maybeSet("trips_short_key", tripKeys.tripsShortKey);
   maybeSet("full_nesting_key", tripKeys.fullNestingKey);
-  maybeSet("class_sequence", classSequence);
   maybeSet("show_id", heartbeat.app_show_id);
   maybeSet("show_date", resolvedScheduleDate || heartbeat.app_sql_date);
   maybeSet("app_show_id", heartbeat.app_show_id);
@@ -2406,9 +2405,14 @@ async function main() {
   };
   const keepKeySet = new Set();
   const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
+  let skippedMissingScheduleSequence = 0;
 
   for (const row of scopedRows) {
-    const classSequence = keyPart(row.class_sequence) || classSequenceFromKey(row.schedule_key) || "1";
+    const classSequence = classSequenceFromKey(row.schedule_key);
+    if (!classSequence) {
+      skippedMissingScheduleSequence += 1;
+      continue;
+    }
     const tripKeys = buildTripKeyParts({
       sid: heartbeat.app_show_id,
       sqlDate: resolveTripScheduleDate(row) || heartbeat.app_sql_date,
@@ -2531,6 +2535,7 @@ async function main() {
     watch_schedule_classes: scheduleByClassId.size,
     normalized_rows: normalizedRows.length,
     unique_rows: scopedRows.length,
+    skipped_missing_schedule_sequence: skippedMissingScheduleSequence,
     filtered_out_scheduled_date_mismatch: uniqueRows.size - scopedRows.length,
     people_failures: peopleFailures,
     soft_payload_samples: softPayloadSamples.slice(0, 10),
