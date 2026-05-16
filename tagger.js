@@ -53,6 +53,7 @@ if (!AIRTABLE_TOKEN) throw new Error("Missing AIRTABLE_TOKEN");
 if (!AIRTABLE_BASE_ID) throw new Error("Missing AIRTABLE_BASE_ID");
 
 const TABLE_HEARTBEAT      = process.env.TABLE_HEARTBEAT || "heartbeat";
+const TABLE_SHOW_TARGET    = process.env.TABLE_SHOW_TARGET || process.env.TABLE_SHOW || "show";
 const TABLE_SHOWS          = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_WATCH_TRIPS    = process.env.TABLE_WATCH_TRIPS || "watch_trips";
@@ -63,13 +64,15 @@ const TABLE_WATCH_RINGS    = process.env.TABLE_WATCH_RINGS || "watch_rings";
 const TABLE_PUBLISH_QUEUE  = process.env.TABLE_PUBLISH_QUEUE || process.env.PUBLISH_QUEUE_TABLE || "publish_queue";
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
-
-const RING_ENDPOINT = `${SGL_BASE_URL}/ring?customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+const VIEW_SHOW_TARGET = process.env.VIEW_SHOW_TARGET || "heartbeat";
 
 const FIELD_LINK_HEARTBEAT     = process.env.FIELD_LINK_HEARTBEAT || "heartbeat";
 const FIELD_SHOW_ID            = process.env.FIELD_SHOW_ID || "show_id";
 const FIELD_NEW_APP_SHOW_ID    = process.env.FIELD_NEW_APP_SHOW_ID || "new_app_show_id";
 const FIELD_NEW_APP_SHOW_ID_AT = process.env.FIELD_NEW_APP_SHOW_ID_AT || "new_app_show_id_at";
+const FIELD_CUSTOMER_ID        = process.env.FIELD_CUSTOMER_ID || "customer_id";
+const FIELD_CUSTOMER_ID_OVERRIDE = process.env.FIELD_CUSTOMER_ID_OVERRIDE || "customer_id_override";
+const FIELD_SHOW_TARGET_HEARTBEAT = process.env.FIELD_SHOW_TARGET_HEARTBEAT || "heartbeat";
 
 const FIELD_MODE             = process.env.FIELD_MODE || "mode";
 const FIELD_EPOCH            = process.env.FIELD_EPOCH || "epoch";
@@ -123,6 +126,9 @@ const LAST_KNOWN_HEARTBEAT_LOOKBACK = Math.max(1, Number(process.env.LAST_KNOWN_
 const FORCE_MODE        = String(process.env.FORCE_MODE || "").trim().toUpperCase();
 const HOTPATCH_APP_SHOW_ID = strOrNull(process.env.HOTPATCH_APP_SHOW_ID);
 const HOTPATCH_APP_SQL_DATE = toIsoDateOnly(process.env.HOTPATCH_APP_SQL_DATE);
+const HEARTBEAT_TARGET_APP_SHOW_ID = strOrNull(process.env.HEARTBEAT_TARGET_APP_SHOW_ID || process.env.HEARTBEAT_HOTPATCH_APP_SHOW_ID);
+const HEARTBEAT_TARGET_SQL_DATES = parseSqlDateSet(process.env.HEARTBEAT_TARGET_SQL_DATES || process.env.HEARTBEAT_HOTPATCH_APP_SQL_DATES);
+const HEARTBEAT_TARGET_CUSTOMER_ID = strOrNull(process.env.HEARTBEAT_TARGET_CUSTOMER_ID || process.env.HEARTBEAT_HOTPATCH_CUSTOMER_ID);
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 const HB_TZ             = process.env.HB_TIMEZONE || "America/New_York";
 const DEFAULT_TAGGER_STATE_PATH = "C:\\actions-runner\\ringstatus\\tagger_runtime_state.json";
@@ -531,6 +537,10 @@ async function airtableListAll({ table, view, fields }) {
   return out;
 }
 
+async function airtableListAllStrict({ table, view, fields }) {
+  return await airtableListAll({ table, view, fields });
+}
+
 async function airtableListSome({ table, view, fields, maxRecords, sortField, sortDirection = "desc" }) {
   const url = new URL(airtableUrl(table));
   if (view) url.searchParams.set("view", view);
@@ -701,13 +711,67 @@ function compareSqlDate(left, right) {
   return 0;
 }
 
-function buildScheduleEmptyEndpoint(appShowId) {
+function buildScheduleEmptyEndpoint(appShowId, customerId = CUSTOMER_ID) {
   if (isBlank(appShowId)) return null;
-  return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(customerId)}`;
+}
+
+function buildRingEndpoint(customerId = CUSTOMER_ID) {
+  return `${SGL_BASE_URL}/ring?customer_id=${encodeURIComponent(customerId)}`;
+}
+
+function parseSqlDateSet(value) {
+  const out = new Set();
+  for (const item of String(value || "").split(/[,\s;]+/)) {
+    const iso = toIsoDateOnly(item);
+    if (iso) out.add(iso);
+  }
+  return out;
 }
 
 function hasHotpatchScopeOverride() {
   return HOTPATCH_APP_SHOW_ID || HOTPATCH_APP_SQL_DATE;
+}
+
+function heartbeatTargetDateSet(decision = null) {
+  const values = decision?.target_sql_dates || Array.from(HEARTBEAT_TARGET_SQL_DATES);
+  const out = new Set();
+  for (const item of values || []) {
+    const iso = toIsoDateOnly(item);
+    if (iso) out.add(iso);
+  }
+  return out;
+}
+
+function hasHeartbeatTargetDateWindow(decision = null) {
+  return Boolean((decision?.show_id || HEARTBEAT_TARGET_APP_SHOW_ID) && heartbeatTargetDateSet(decision).size);
+}
+
+function heartbeatTargetShowId(decision = null) {
+  const showId = Number(decision?.show_id ?? HEARTBEAT_TARGET_APP_SHOW_ID);
+  if (!Number.isFinite(showId)) {
+    throw new Error(`Heartbeat target show_id must be numeric: ${decision?.show_id ?? HEARTBEAT_TARGET_APP_SHOW_ID}`);
+  }
+  return showId;
+}
+
+function heartbeatTargetCustomerId(fallback = CUSTOMER_ID) {
+  if (!HEARTBEAT_TARGET_CUSTOMER_ID) return fallback;
+  const customerId = Number(HEARTBEAT_TARGET_CUSTOMER_ID);
+  if (!Number.isFinite(customerId)) {
+    throw new Error(`HEARTBEAT_TARGET_CUSTOMER_ID must be numeric: ${HEARTBEAT_TARGET_CUSTOMER_ID}`);
+  }
+  return customerId;
+}
+
+function heartbeatTargetDateForContext(rawSqlDate, candidateAppSqlDate, decision = null) {
+  if (!hasHeartbeatTargetDateWindow(decision)) return null;
+  const dateSet = heartbeatTargetDateSet(decision);
+  const candidate = toIsoDateOnly(candidateAppSqlDate);
+  if (candidate && dateSet.has(candidate)) return candidate;
+  const raw = toIsoDateOnly(rawSqlDate);
+  if (raw && dateSet.has(raw)) return raw;
+  return null;
 }
 
 function applyHotpatchClockOverride(clock) {
@@ -724,6 +788,23 @@ function applyHotpatchClockOverride(clock) {
     showId,
     showDate: HOTPATCH_APP_SQL_DATE,
     source: `${clock?.source || "clock"}+hotpatch_scope_override`,
+  };
+}
+
+function applyHeartbeatTargetClockOverride(clock, decision = null) {
+  if (!hasHeartbeatTargetDateWindow(decision)) return clock;
+  const dateSet = heartbeatTargetDateSet(decision);
+  const rawSqlDate = toIsoDateOnly(clock?.sqlDate);
+  if (!rawSqlDate || !dateSet.has(rawSqlDate)) return clock;
+  const showId = heartbeatTargetShowId(decision);
+  const customerId = decision?.customer_id ?? heartbeatTargetCustomerId();
+  return {
+    ...clock,
+    showId,
+    showDate: rawSqlDate,
+    customerId,
+    showDecision: decision || null,
+    source: `${clock?.source || "clock"}+heartbeat_target_date_window`,
   };
 }
 
@@ -866,18 +947,19 @@ function pickClockFromPayload(payload) {
   };
 }
 
-async function getClockSafe() {
+async function getClockSafe(customerId = CUSTOMER_ID) {
   const systemClock = buildFallbackClock();
+  const ringEndpoint = buildRingEndpoint(customerId);
 
   try {
-    const fetched = await fetchTextWithConfiguredTransport(RING_ENDPOINT, async (endpoint) => {
+    const fetched = await fetchTextWithConfiguredTransport(ringEndpoint, async (endpoint) => {
       const response = await fetchWithTimeout(endpoint, { method: "GET" });
       const text = await response.text();
       return { response, text, endpoint };
     });
     const res = fetched.response;
     const txt = fetched.text;
-    const endpoint = fetched.endpoint || RING_ENDPOINT;
+    const endpoint = fetched.endpoint || ringEndpoint;
 
     if (!res.ok) {
       return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_http", {
@@ -943,12 +1025,12 @@ async function getClockSafe() {
     }
 
     persistLastKnownClock(endpointClock, "endpoint", {
-      endpoint: RING_ENDPOINT
+      endpoint: ringEndpoint
     });
 
     if (LOG_ACCEPTED_ENDPOINT) {
       logInfo("endpoint_clock_accepted", {
-        endpoint: RING_ENDPOINT,
+        endpoint: ringEndpoint,
         endpoint_show_id: endpointClock.showId,
         endpoint_show_date: endpointClock.showDate,
         endpoint_sql_date: endpointClock.sqlDate,
@@ -960,7 +1042,7 @@ async function getClockSafe() {
     return endpointClock;
   } catch (e) {
     return await fallbackToBestKnownClock(systemClock, "endpoint_fallback_fetch_error", {
-      endpoint: RING_ENDPOINT,
+      endpoint: ringEndpoint,
       error_name: e?.name || null,
       error_message: String(e?.message || e).slice(0, 240),
       system_sql_date: systemClock.sqlDate,
@@ -1000,7 +1082,8 @@ async function buildAppContext(clock, mode) {
     shiftedToNextDay = false;
   }
 
-  const emptyScheduleEndpoint = buildScheduleEmptyEndpoint(appShowId);
+  const customerId = clock.customerId ?? CUSTOMER_ID;
+  const emptyScheduleEndpoint = buildScheduleEmptyEndpoint(appShowId, customerId);
   if (emptyScheduleEndpoint) {
     try {
       const emptySchedulePayload = await fetchJson(emptyScheduleEndpoint);
@@ -1032,6 +1115,21 @@ async function buildAppContext(clock, mode) {
   // endpoint is transiently unavailable or missing expected fields.
   if (!defaultAppSqlDateIs && appSqlDate) {
     defaultAppSqlDateIs = appSqlDate;
+  }
+
+  const decision = clock.showDecision || null;
+  const heartbeatTargetAppSqlDate = heartbeatTargetDateForContext(clock.sqlDate, candidateAppSqlDate, decision);
+  if (heartbeatTargetAppSqlDate) {
+    appShowId = heartbeatTargetShowId(decision);
+    appSqlDate = heartbeatTargetAppSqlDate;
+    shiftedToNextDay = mode === "NIGHT" && appSqlDate === candidateAppSqlDate;
+    setToDefaultAppSqlDate = false;
+    defaultAppSqlDateIs = heartbeatTargetAppSqlDate;
+    const sortedDates = Array.from(heartbeatTargetDateSet(decision)).sort();
+    showAppSqlStartDate = decision?.start_date || sortedDates[0] || heartbeatTargetAppSqlDate;
+    showAppSqlEndDate = decision?.end_date || sortedDates[sortedDates.length - 1] || heartbeatTargetAppSqlDate;
+    showAppName = decision?.show_name || showAppName;
+    appSqlDateSource = "heartbeat_target_date_window";
   }
 
   if (hasHotpatchScopeOverride()) {
@@ -1337,7 +1435,18 @@ async function findShowsMatchInView(appShowId) {
 async function findShowsMatchAnywhere(appShowId) {
   const rows = await airtableListAll({
     table: TABLE_SHOWS,
-    fields: [FIELD_SHOW_ID, FIELD_APP_SHOW_ID, FIELD_LINK_HEARTBEAT]
+    fields: [
+      FIELD_SHOW_ID,
+      FIELD_APP_SHOW_ID,
+      FIELD_LINK_HEARTBEAT,
+      FIELD_CUSTOMER_ID,
+      FIELD_CUSTOMER_ID_OVERRIDE,
+      FIELD_SHOW_START_DATE_BASE,
+      FIELD_SHOW_END_DATE_BASE,
+      FIELD_SHOW_NAME_BASE,
+      FIELD_MODE_CONTROL,
+      FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE,
+    ]
   });
 
   const matches = rows.filter(r => matchesShowRow(r.fields || {}, appShowId));
@@ -1346,6 +1455,110 @@ async function findShowsMatchAnywhere(appShowId) {
     rows,
     matches,
     match: matches[0] || null
+  };
+}
+
+function numericFieldOrNull(value) {
+  if (value === null || value === undefined || String(value).trim() === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function resolveShowCustomerId(fields) {
+  return numericFieldOrNull(fields?.[FIELD_CUSTOMER_ID]) ??
+    numericFieldOrNull(fields?.[FIELD_CUSTOMER_ID_OVERRIDE]);
+}
+
+async function findFocusedShowTarget() {
+  const fields = [
+    FIELD_SHOW_ID,
+    FIELD_CUSTOMER_ID,
+    FIELD_SHOW_START_DATE_BASE,
+    FIELD_SHOW_END_DATE_BASE,
+    FIELD_SHOW_NAME_BASE,
+    FIELD_SHOW_TARGET_HEARTBEAT,
+    FIELD_MODE_CONTROL,
+    FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE,
+  ];
+
+  let rows = [];
+  try {
+    rows = await airtableListAll({ table: TABLE_SHOW_TARGET, view: VIEW_SHOW_TARGET, fields });
+  } catch (e) {
+    const message = String(e?.message || e);
+    if (!/view|INVALID_REQUEST_UNKNOWN/i.test(message)) throw e;
+    const allRows = await airtableListAll({ table: TABLE_SHOW_TARGET, fields });
+    rows = allRows.filter(row => boolValue(row.fields?.[FIELD_SHOW_TARGET_HEARTBEAT]));
+    logWarn("show_target_view_unavailable_using_heartbeat_field", {
+      table: TABLE_SHOW_TARGET,
+      requested_view: VIEW_SHOW_TARGET,
+      matched_rows: rows.length,
+      error_message: message.slice(0, 240),
+    });
+  }
+
+  const selected = rows.filter(row => {
+    const fields = row.fields || {};
+    return hasValue(fields[FIELD_SHOW_ID]) &&
+      hasValue(fields[FIELD_CUSTOMER_ID]) &&
+      hasValue(fields[FIELD_SHOW_START_DATE_BASE]) &&
+      hasValue(fields[FIELD_SHOW_END_DATE_BASE]);
+  });
+
+  if (selected.length !== 1) {
+    throw new Error(`${TABLE_SHOW_TARGET}/${VIEW_SHOW_TARGET} must expose exactly one focused show row with show_id, customer_id, start_date, and end_date; found ${selected.length}`);
+  }
+
+  return selected[0];
+}
+
+async function resolveHeartbeatTargetDecision() {
+  let targetRecord = null;
+  try {
+    targetRecord = await findFocusedShowTarget();
+  } catch (e) {
+    if (!hasHeartbeatTargetDateWindow()) throw e;
+  }
+
+  if (!targetRecord && !hasHeartbeatTargetDateWindow()) return null;
+
+  let fields = targetRecord?.fields || {};
+  let appShowId = numericFieldOrNull(fields[FIELD_SHOW_ID]);
+  if (appShowId === null && hasHeartbeatTargetDateWindow()) {
+    appShowId = heartbeatTargetShowId();
+    const lookup = await findShowsMatchAnywhere(appShowId);
+    if (!lookup.match) {
+      throw new Error(`Heartbeat target show_id ${appShowId} was not found in ${TABLE_SHOWS}`);
+    }
+    fields = lookup.match.fields || {};
+  }
+
+  const customerId = resolveShowCustomerId(fields);
+  if (!Number.isFinite(customerId)) {
+    throw new Error(`Heartbeat target show_id ${appShowId} has no numeric ${FIELD_CUSTOMER_ID} or ${FIELD_CUSTOMER_ID_OVERRIDE}`);
+  }
+
+  const targetDates = new Set(HEARTBEAT_TARGET_SQL_DATES);
+  const startDate = toIsoDateOnly(fields[FIELD_SHOW_START_DATE_BASE]);
+  const endDate = toIsoDateOnly(fields[FIELD_SHOW_END_DATE_BASE]);
+  if (startDate && endDate) {
+    let cursor = Date.parse(`${startDate}T00:00:00Z`);
+    const endMs = Date.parse(`${endDate}T00:00:00Z`);
+    while (Number.isFinite(cursor) && cursor <= endMs) {
+      targetDates.add(new Date(cursor).toISOString().slice(0, 10));
+      cursor += 24 * 60 * 60 * 1000;
+    }
+  }
+  const sortedDates = Array.from(targetDates).sort();
+  return {
+    record_id: targetRecord?.id || null,
+    table: targetRecord ? TABLE_SHOW_TARGET : TABLE_SHOWS,
+    show_id: appShowId,
+    customer_id: customerId,
+    target_sql_dates: sortedDates,
+    start_date: startDate,
+    end_date: endDate,
+    show_name: strOrNull(fields[FIELD_SHOW_NAME_BASE]),
   };
 }
 
@@ -1461,6 +1674,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       table: TABLE_SHOWS,
       found_in_view: viewLookup.rows.length,
       matched_show_id: appShowId,
+      matched_record_id: match.id,
       updated_existing: 1,
       created_new: 0
     };
@@ -1509,6 +1723,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       table: TABLE_SHOWS,
       found_in_view: viewLookup.rows.length,
       matched_show_id: appShowId,
+      matched_record_id: match.id,
       updated_existing: 1,
       created_new: 0,
       recovered_from_out_of_view_match: 1
@@ -1540,14 +1755,13 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     });
   }
 
-  if (!DRY_RUN) {
-    await airtableCreateRecord(TABLE_SHOWS, createFields);
-  }
+  const createdRecord = DRY_RUN ? null : await airtableCreateRecord(TABLE_SHOWS, createFields);
 
   return {
     table: TABLE_SHOWS,
     found_in_view: viewLookup.rows.length,
     matched_show_id: appShowId,
+    matched_record_id: createdRecord?.id || null,
     updated_existing: 0,
     created_new: 1
   };
@@ -1555,7 +1769,14 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
 
 (async () => {
   try {
-    const clk = applyHotpatchClockOverride(await getClockSafe());
+    const heartbeatTargetDecision = await resolveHeartbeatTargetDecision();
+    const clockCustomerId = heartbeatTargetDecision?.customer_id ?? CUSTOMER_ID;
+    const rawClock = {
+      ...(await getClockSafe(clockCustomerId)),
+      customerId: clockCustomerId,
+      showDecision: heartbeatTargetDecision,
+    };
+    const clk = applyHotpatchClockOverride(applyHeartbeatTargetClockOverride(rawClock, heartbeatTargetDecision));
     const clockMode = deriveModeFromClock(clk);
     const preliminaryShowControl = await fetchShowsModeControl(clk.showId);
     const forcedMode = FORCE_MODE ? normalizeMode(FORCE_MODE) : null;
@@ -1619,8 +1840,10 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     const results = [];
     const warnings = [];
 
+    let showsSyncResult = null;
     try {
-      results.push(await syncShowsHeartbeat(heartbeatRecord, appCtx, mode));
+      showsSyncResult = await syncShowsHeartbeat(heartbeatRecord, appCtx, mode);
+      results.push(showsSyncResult);
     } catch (e) {
       const msg = String(e?.message || e).slice(0, 240);
       warnings.push(`shows: ${msg}`);

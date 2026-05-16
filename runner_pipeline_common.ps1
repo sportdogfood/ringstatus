@@ -1,5 +1,102 @@
 $ErrorActionPreference = 'Stop'
 
+function ConvertTo-SqlDateList {
+    param(
+        [string]$StartDate,
+        [string]$EndDate
+    )
+
+    $start = [datetime]::ParseExact($StartDate, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+    $end = [datetime]::ParseExact($EndDate, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+    if ($end -lt $start) {
+        throw "Show end_date is before start_date: $StartDate -> $EndDate"
+    }
+
+    $dates = @()
+    for ($day = $start; $day -le $end; $day = $day.AddDays(1)) {
+        $dates += $day.ToString('yyyy-MM-dd')
+    }
+    return $dates
+}
+
+function Resolve-HeartbeatTargetShow {
+    param(
+        [string]$BaseId,
+        [string]$ShowId,
+        [string]$TableName = 'show',
+        [string]$ViewName = 'heartbeat'
+    )
+
+    $token = [Environment]::GetEnvironmentVariable('AIRTABLE_TOKEN', 'Process')
+    if ([string]::IsNullOrWhiteSpace($token)) {
+        $token = [Environment]::GetEnvironmentVariable('AIRTABLE_TOKEN', 'User')
+    }
+    if ([string]::IsNullOrWhiteSpace($token)) {
+        throw "AIRTABLE_TOKEN is required to resolve HEARTBEAT_TARGET_APP_SHOW_ID from shows"
+    }
+
+    $encodedBase = [uri]::EscapeDataString($BaseId)
+    $encodedTable = [uri]::EscapeDataString($TableName)
+    $url = "https://api.airtable.com/v0/$encodedBase/$encodedTable"
+    $queryParts = @()
+    if (-not [string]::IsNullOrWhiteSpace($ViewName)) {
+        $queryParts += "view=$([uri]::EscapeDataString($ViewName))"
+    }
+    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'show_name', 'heartbeat')) {
+        $queryParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
+    }
+    $requestUri = "$url`?$($queryParts -join '&')"
+
+    $headers = @{ Authorization = "Bearer $token" }
+    try {
+        $response = Invoke-RestMethod -Method Get -Uri $requestUri -Headers $headers
+        $records = @($response.records)
+    }
+    catch {
+        $fallbackParts = @()
+        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'show_name', 'heartbeat')) {
+            $fallbackParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
+        }
+        $fallbackUri = "$url`?$($fallbackParts -join '&')"
+        $response = Invoke-RestMethod -Method Get -Uri $fallbackUri -Headers $headers
+        $records = @($response.records | Where-Object { $_.fields.heartbeat -eq $true })
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($ShowId)) {
+        $records = @($records | Where-Object { [string]$_.fields.show_id -eq $ShowId })
+    }
+
+    if ($records.Count -lt 1) {
+        throw "No focused show record found in $TableName/$ViewName"
+    }
+    if ($records.Count -gt 1) {
+        throw "Multiple focused show records found in $TableName/$ViewName"
+    }
+
+    $fields = $records[0].fields
+    $customerId = $fields.customer_id
+    if ([string]::IsNullOrWhiteSpace([string]$customerId)) {
+        throw "focused show record has no customer_id"
+    }
+
+    $startDate = [string]$fields.start_date
+    $endDate = [string]$fields.end_date
+    if ([string]::IsNullOrWhiteSpace($startDate) -or [string]::IsNullOrWhiteSpace($endDate)) {
+        throw "focused show record must have start_date and end_date"
+    }
+
+    $dateList = ConvertTo-SqlDateList -StartDate $startDate -EndDate $endDate
+    return [pscustomobject]@{
+        RecordId = $records[0].id
+        ShowId = [string]$fields.show_id
+        CustomerId = [string]$customerId
+        StartDate = $startDate
+        EndDate = $endDate
+        SqlDates = $dateList
+        ShowName = [string]$fields.show_name
+    }
+}
+
 function Initialize-RunnerDefaults {
     param([string]$ScriptRoot)
 
@@ -10,6 +107,16 @@ function Initialize-RunnerDefaults {
     $env:AIRTABLE_TABLE    = 'tblCnHDB4IVtxqulo'
     $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
     $env:CUSTOMER_ID       = '15'
+
+    $targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
+    if ($targetShow) {
+        $env:HEARTBEAT_TARGET_APP_SHOW_ID = $targetShow.ShowId
+        $env:HEARTBEAT_TARGET_SQL_DATES = ($targetShow.SqlDates -join ',')
+        $todaySqlDate = Get-Date -Format 'yyyy-MM-dd'
+        if ($targetShow.SqlDates -contains $todaySqlDate) {
+            $env:CUSTOMER_ID = $targetShow.CustomerId
+        }
+    }
 
     $sglEnvNames = @(
         'SGL_AUTHORIZATION',
