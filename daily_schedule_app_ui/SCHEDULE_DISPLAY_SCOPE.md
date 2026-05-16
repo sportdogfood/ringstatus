@@ -1,11 +1,26 @@
 # Schedule Display Scope
 
 Locked: 2026-05-15
+Scope version: 2026-05-15.v1.0
 
 This document locks the compact schedule display system for `daily_schedule_app_ui`.
-It applies to schedule-by-ring, schedule-by-time, future filtered views, future detail modals, and any page that renders these same schedule records.
+It applies to schedule-by-ring, schedule-by-time, filters, Start subviews, PRO, HORSES, Threads, Focus, alerts, lookup responses, print/PDF preview, and any modal or page that renders these same schedule records.
 
 This is a UI/display contract only. Do not change Airtable extraction, source workflow, source keys, runner behavior, or feed generation from this scope.
+
+## Full Scope Lock
+
+Version `2026-05-15.v1.0` locks the current compact display system:
+
+- Primary nav is `START | PRO | HORSES`.
+- `FOCUS`, `TIME`, and `THREADS` live under `START`.
+- `PRO` owns schedule-by-ring, schedule-by-time, filters, lookup actions, print/PDF preview, and the locked class modal.
+- The class overview modal is the class detail surface for this UI scope. Do not create another class detail card or class detail page from it.
+- The class modal uses the three-section shape: Ring summary, Group/Class summary, Trips rows.
+- Each modal section owns its own label row, with labels in the same slots as the values they describe.
+- Under `<390px`, modal name values drop to a second row after the empty time column; the `Name` label is hidden.
+- The X closer is a simple fixed-width SVG icon button.
+- Main schedule rows, modal rows, filters, future pages, and print/PDF schedule rows must not drift into separate token sizing, radius, padding, font, or table geometry.
 
 ## Non-Negotiable Rule
 

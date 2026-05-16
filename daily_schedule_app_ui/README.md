@@ -2,6 +2,8 @@
 
 This folder owns the display/design preview work for the future daily schedule app.
 
+Current locked UI scope: `2026-05-15.v1.0`
+
 It is separate from `daily_schedule_app_source`, which owns Airtable extraction, flat source lanes, feeds, validation, and calculator provenance.
 
 ## Boundary
@@ -25,6 +27,8 @@ This UI folder must not define:
 ## Project Overview
 
 The app is a compact daily schedule display for RingStatus. The base schedule skeleton is locked and must remain visually consistent across `START`, `PRO`, `HORSES`, Start subviews, filters, modals, detail pages, and future lookup surfaces.
+
+Scope `2026-05-15.v1.0` locks the compact schedule system, primary nav, class modal, modal label rows, responsive modal name behavior, and the rule that future schedule surfaces must reuse the same visual geometry.
 
 Primary navigation:
 

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "2026-05-13.v0.1",
+    "version": "2026-05-15.v1.0",
     "purpose": "Visual identifier contract for daily schedule app preview. This is UI language only and does not define source keys, nesting, or endpoint workflow.",
     "style_reference": "Dense, symmetric, small-screen rows with compact text tokens. No icon-only status controls."
   },

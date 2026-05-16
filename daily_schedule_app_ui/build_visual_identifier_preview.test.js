@@ -217,11 +217,14 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.doesNotMatch(html, /Class Detail/);
   assert.match(html, /Save to Thread/);
   assert.match(html, /modal-action--icon[\s\S]*aria-label="Close"[\s\S]*<svg viewBox="0 0 16 16"/);
-  assert.match(html, /\.modal-action--icon \{[\s\S]*width: 24px;[\s\S]*justify-content: center;/);
+  assert.match(html, /\.modal-head \{[\s\S]*grid-template-columns: minmax\(56px, max-content\) minmax\(0, 1fr\) 24px;/);
+  assert.match(html, /\.modal-action--icon \{[\s\S]*width: 24px;[\s\S]*justify-content: center;[\s\S]*justify-self: end;/);
   assert.match(html, /modal-output-label">RING/);
   assert.match(html, /modal-output-label">GROUP/);
   assert.match(html, /modal-output-label">TRIPS/);
-  assert.match(html, /modal-label-row[\s\S]*modal-label-time">time<\/div>[\s\S]*modal-label-number">number<\/div>[\s\S]*modal-label-name">name<\/div>[\s\S]*modal-label-order">order<\/div>[\s\S]*modal-label-starts">starts-or-ends<\/div>[\s\S]*modal-label-leave">leave<\/div>/);
+  assert.match(html, /modal-label-row[\s\S]*modal-label-time">Time<\/div>[\s\S]*modal-label-number">No<\/div>[\s\S]*modal-label-name ">Name<\/div>[\s\S]*modal-label-order">Trips<\/div>[\s\S]*modal-label-starts">Gone<\/div>[\s\S]*modal-label-leave">Left<\/div>/);
+  assert.match(html, /modal-label-name modal-name-span">Name<\/div>[\s\S]*modal-label-leave">Type<\/div>/);
+  assert.match(html, /modal-label-order">Order<\/div>[\s\S]*modal-label-starts">In or Ends<\/div>[\s\S]*modal-label-leave">Leave<\/div>/);
   assert.equal((html.match(/class="modal-label-row"/g) || []).length, 3);
   assert.match(html, /\.modal-output-label \{[\s\S]*position: absolute;[\s\S]*clip: rect\(0 0 0 0\);/);
   assert.match(html, /\.modal-output-section \.schedule-line \{[\s\S]*min-height: 22px;[\s\S]*padding: 0;/);
@@ -254,7 +257,7 @@ test("renderVisualIdentifierHtml keeps the Ring row fixed-column contract", () =
   assert.match(html, /@media \(max-width: 390px\) \{[\s\S]*\.modal-output-section \.schedule-line \{[\s\S]*grid-template-columns: minmax\(8ch, 8ch\) 6ch 5ch 6ch 6ch;/);
   assert.match(html, /\.modal-label-row \{[\s\S]*font-size: 12px;/);
   assert.match(html, /\.modal-label-cell \{[\s\S]*font-size: 8px;/);
-  assert.match(html, /\.modal-label-time,\n    \.modal-label-number,\n    \.modal-label-name,\n    \.modal-label-order,\n    \.modal-label-starts,\n    \.modal-label-leave \{ text-align: center; \}/);
+  assert.match(html, /\.modal-label-time,\n    \.modal-label-number,\n    \.modal-label-name,\n    \.modal-label-order,\n    \.modal-label-starts,\n    \.modal-label-leave \{ text-align: left; \}/);
   assert.match(html, /@media \(max-width: 390px\) \{[\s\S]*\.modal-label-name \{[\s\S]*display: none;/);
   assert.match(html, /@media \(max-width: 390px\) \{[\s\S]*\.modal-class-line \.class-name-col \{[\s\S]*grid-column: 2 \/ -1;[\s\S]*grid-row: 2;/);
   assert.doesNotMatch(html, /\.modal-class-line \.c-time,[\s\S]*font-size: 9\.5px;/);

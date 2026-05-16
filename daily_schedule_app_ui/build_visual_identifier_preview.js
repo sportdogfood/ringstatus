@@ -207,15 +207,15 @@ function renderRingNameValue(row) {
   return parts.filter((value) => !isBlank(value)).join(" ");
 }
 
-function renderModalLabelRow() {
+function renderModalLabelRow({ metricOne = "", metricTwo = "", final = "", nameSpanMetrics = false } = {}) {
   return `
               <div class="modal-label-row" aria-hidden="true">
-                <div class="modal-label-cell modal-label-time">time</div>
-                <div class="modal-label-cell modal-label-number">number</div>
-                <div class="modal-label-cell modal-label-name">name</div>
-                <div class="modal-label-cell modal-label-order">order</div>
-                <div class="modal-label-cell modal-label-starts">starts-or-ends</div>
-                <div class="modal-label-cell modal-label-leave">leave</div>
+                <div class="modal-label-cell modal-label-time">Time</div>
+                <div class="modal-label-cell modal-label-number">No</div>
+                <div class="modal-label-cell modal-label-name ${nameSpanMetrics ? "modal-name-span" : ""}">Name</div>
+                ${nameSpanMetrics ? "" : `<div class="modal-label-cell modal-label-order">${htmlEscape(metricOne)}</div>
+                <div class="modal-label-cell modal-label-starts">${htmlEscape(metricTwo)}</div>`}
+                <div class="modal-label-cell modal-label-leave">${htmlEscape(final)}</div>
               </div>`;
 }
 
@@ -363,7 +363,7 @@ function renderClassOverviewModal(row) {
           <div class="modal-output-list" aria-label="Expanded class overview outputs">
             <div class="modal-output-section">
               <div class="modal-output-label">RING</div>
-              ${renderModalLabelRow()}
+              ${renderModalLabelRow({ metricOne: "Trips", metricTwo: "Gone", final: "Left" })}
               ${renderClassLine(row, {
                 keyValue: row.ring_number,
                 keyClass: "ring-token",
@@ -376,7 +376,7 @@ function renderClassOverviewModal(row) {
 
             <div class="modal-output-section">
               <div class="modal-output-label">GROUP</div>
-              ${renderModalLabelRow()}
+              ${renderModalLabelRow({ final: "Type", nameSpanMetrics: true })}
               ${renderClassLine(row, {
                 keyValue: row.class_number,
                 className: row.class_name,
@@ -388,7 +388,7 @@ function renderClassOverviewModal(row) {
 
             <div class="modal-output-section">
               <div class="modal-output-label">TRIPS</div>
-              ${renderModalLabelRow()}
+              ${renderModalLabelRow({ metricOne: "Order", metricTwo: "In or Ends", final: "Leave" })}
               ${tripLines}
             </div>
           </div>
@@ -833,7 +833,7 @@ function renderVisualIdentifierHtml(model) {
     .modal-head {
       min-height: 38px;
       display: grid;
-      grid-template-columns: minmax(56px, max-content) minmax(0, 1fr) minmax(78px, max-content);
+      grid-template-columns: minmax(56px, max-content) minmax(0, 1fr) 24px;
       align-items: center;
       gap: 8px;
       padding: 7px 8px;
@@ -872,6 +872,7 @@ function renderVisualIdentifierHtml(model) {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      justify-self: end;
     }
     .modal-action--icon svg {
       width: 12px;
@@ -917,7 +918,7 @@ function renderVisualIdentifierHtml(model) {
     .modal-label-name,
     .modal-label-order,
     .modal-label-starts,
-    .modal-label-leave { text-align: center; }
+    .modal-label-leave { text-align: left; }
     .modal-output-section {
       display: grid;
       gap: 3px;
