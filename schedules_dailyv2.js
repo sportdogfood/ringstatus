@@ -1298,7 +1298,6 @@ function extractScheduleDefaultInfo(payload) {
 }
 
 function candidateDateFromMode(rawSqlDate, mode) {
-  if (mode === "NIGHT") return addDaysSql(rawSqlDate, 1);
   return strictSqlDate(rawSqlDate, "sql_date");
 }
 
@@ -1335,7 +1334,10 @@ function isValidAppSqlDate(candidateDate, scheduleInfo) {
 
 function resolveHeartbeatScope(baseContext, emptyPayload) {
   const scheduleInfo = extractScheduleDefaultInfo(emptyPayload);
-  const candidateAppSqlDate = candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode);
+  const candidateAppSqlDate = strictSqlDate(
+    pickFirst(baseContext.current_app_sql_date, candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode)),
+    "app_sql_date"
+  );
   const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
   assertHotpatchScopeMatches(baseContext);
   const setToDefault = hasHotpatchScopeOverride() ? false : !validCandidate;
@@ -1345,14 +1347,12 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
     ? scheduleInfo.default_app_sql_date_is
     : candidateAppSqlDate;
   const finalAppDowRaw = strictDowRaw(dowName(dayOfWeekUtc(finalAppSqlDate)), "derived_app_dow_raw");
-  const shiftedToNextDay = baseContext.mode === "NIGHT";
+  const shiftedToNextDay = boolValue(baseContext.current_shifted_to_next_day);
   const appSqlDateSource = hasHotpatchScopeOverride()
     ? "hotpatch_env_override"
     : setToDefault
     ? "default_day"
-    : baseContext.mode === "NIGHT"
-    ? "night_shift"
-    : "raw_day";
+    : strOrNull(baseContext.current_app_sql_date_source) || "heartbeat_app_sql_date";
 
   return {
     heartbeat_record_id: baseContext.heartbeat_record_id,
@@ -1384,7 +1384,10 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
 }
 
 function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
-  const candidateAppSqlDate = candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode);
+  const candidateAppSqlDate = strictSqlDate(
+    pickFirst(baseContext.current_app_sql_date, candidateDateFromMode(baseContext.raw_sql_date, baseContext.mode)),
+    "app_sql_date"
+  );
   assertHotpatchScopeMatches(baseContext);
   const finalAppSqlDate = strictSqlDate(
     pickFirst(HOTPATCH_APP_SQL_DATE, baseContext.current_app_sql_date, candidateAppSqlDate),
@@ -1401,9 +1404,7 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
     : currentSource === "default_day"
     ? true
     : boolValue(baseContext.current_set_to_default_app_sql_date);
-  const shiftedToNextDay = baseContext.mode === "NIGHT"
-    ? true
-    : boolValue(baseContext.current_shifted_to_next_day);
+  const shiftedToNextDay = boolValue(baseContext.current_shifted_to_next_day);
   const defaultAppSqlDateIs = strictSqlDate(
     pickFirst(baseContext.current_default_app_sql_date_is, finalAppSqlDate),
     "default_app_sql_date_is"
@@ -1411,9 +1412,7 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
   const appSqlDateSource = hasHotpatchScopeOverride() ? "hotpatch_env_override" : currentSource || (
     setToDefault
       ? "default_day"
-      : baseContext.mode === "NIGHT"
-      ? "night_shift"
-      : "raw_day"
+      : "heartbeat_app_sql_date"
   );
 
   return {

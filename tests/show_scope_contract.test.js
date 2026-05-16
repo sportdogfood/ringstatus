@@ -50,6 +50,21 @@ assert.ok(
   "tagger mode control must use the focused show target before legacy shows rows"
 );
 
+assert.ok(
+  tagger.includes("if (decision || heartbeatTargetAppSqlDate)") &&
+    tagger.includes("appSqlDate = decision.focus_day") &&
+    !tagger.includes("addDaysSql(decision.focus_day"),
+  "focused show focus_day must be the heartbeat app_sql_date; shifted_to_next_day must not add another day"
+);
+
+const schedulesDaily = fs.readFileSync(path.resolve(__dirname, "..", "schedules_dailyv2.js"), "utf8");
+assert.ok(
+  schedulesDaily.includes("pickFirst(baseContext.current_app_sql_date, candidateDateFromMode") &&
+    schedulesDaily.includes('strOrNull(baseContext.current_app_sql_date_source) || "heartbeat_app_sql_date"') &&
+    !schedulesDaily.includes('baseContext.mode === "NIGHT"\n    ? "night_shift"'),
+  "schedules_dailyv2 must consume heartbeat app_sql_date instead of recalculating a NIGHT shift"
+);
+
 const focusedShowsRunner = fs.readFileSync(path.resolve(__dirname, "..", "run_tagger_task_focused_shows.ps1"), "utf8");
 assert.ok(
   focusedShowsRunner.includes("HEARTBEAT_TARGET_SHOW_RECORD_ID") &&
