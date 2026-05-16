@@ -36,6 +36,9 @@ const {
 const {
   classifyWatchTripsHeartbeatRelink,
 } = require("./lib/watch_trips_scope_relink");
+const {
+  buildShowScopeKey,
+} = require("./lib/show_scope");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -72,6 +75,10 @@ const FIELD_NEW_APP_SHOW_ID_AT = process.env.FIELD_NEW_APP_SHOW_ID_AT || "new_ap
 const FIELD_CUSTOMER_ID        = process.env.FIELD_CUSTOMER_ID || "customer_id";
 const FIELD_CUSTOMER_ID_OVERRIDE = process.env.FIELD_CUSTOMER_ID_OVERRIDE || "customer_id_override";
 const FIELD_SHOW_TARGET_HEARTBEAT = process.env.FIELD_SHOW_TARGET_HEARTBEAT || "heartbeat";
+const FIELD_HEARTBEAT_FOCUS_DAY = process.env.FIELD_HEARTBEAT_FOCUS_DAY || "focus_day";
+const FIELD_RING_COLLECTION = process.env.FIELD_RING_COLLECTION || "ring_collection";
+const FIELD_SHOW_SCOPE_KEY = process.env.FIELD_SHOW_SCOPE_KEY || "show_scope_key";
+const FIELD_LINK_SHOW = process.env.FIELD_LINK_SHOW || "show";
 
 const FIELD_MODE             = process.env.FIELD_MODE || "mode";
 const FIELD_EPOCH            = process.env.FIELD_EPOCH || "epoch";
@@ -129,6 +136,7 @@ const LAST_KNOWN_HEARTBEAT_LOOKBACK = Math.max(1, Number(process.env.LAST_KNOWN_
 const FORCE_MODE        = String(process.env.FORCE_MODE || "").trim().toUpperCase();
 const HOTPATCH_APP_SHOW_ID = strOrNull(process.env.HOTPATCH_APP_SHOW_ID);
 const HOTPATCH_APP_SQL_DATE = toIsoDateOnly(process.env.HOTPATCH_APP_SQL_DATE);
+const HEARTBEAT_TARGET_SHOW_RECORD_ID = strOrNull(process.env.HEARTBEAT_TARGET_SHOW_RECORD_ID || process.env.SHOW_RECORD_ID);
 const HEARTBEAT_TARGET_APP_SHOW_ID = strOrNull(process.env.HEARTBEAT_TARGET_APP_SHOW_ID || process.env.HEARTBEAT_HOTPATCH_APP_SHOW_ID);
 const HEARTBEAT_TARGET_SQL_DATES = parseSqlDateSet(process.env.HEARTBEAT_TARGET_SQL_DATES || process.env.HEARTBEAT_HOTPATCH_APP_SQL_DATES);
 const HEARTBEAT_TARGET_CUSTOMER_ID = strOrNull(process.env.HEARTBEAT_TARGET_CUSTOMER_ID || process.env.HEARTBEAT_HOTPATCH_CUSTOMER_ID);
@@ -1180,6 +1188,15 @@ async function buildAppContext(clock) {
     appSqlDateSource,
     candidateAppSqlDate,
     defaultShowDateGuard,
+    customerId: decision?.customer_id ?? customerId,
+    focusDay: decision?.focus_day || appSqlDate,
+    ringCollection: decision?.ring_collection || null,
+    showScopeKey: buildShowScopeKey({
+      customerId: decision?.customer_id ?? customerId,
+      showId: appShowId,
+      focusDay: decision?.focus_day || appSqlDate,
+    }),
+    showRecordId: decision?.record_id || null,
   };
 
   if (LOG_TRANSITIONS) {
@@ -1189,6 +1206,11 @@ async function buildAppContext(clock) {
       raw_show_date: clock.showDate ?? null,
       raw_sql_date: clock.sqlDate,
       raw_time: clock.time,
+      customer_id: appCtx.customerId,
+      focus_day: appCtx.focusDay,
+      ring_collection: appCtx.ringCollection,
+      show_scope_key: appCtx.showScopeKey,
+      show_record_id: appCtx.showRecordId,
       app_show_id: appShowId,
       app_sql_date: appSqlDate,
       app_dow_raw: appDowRaw,
@@ -1242,6 +1264,11 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
   };
 
   maybeSet(FIELD_DEFAULT_APP_SQL_DATE_IS, appCtx.defaultAppSqlDateIs);
+  maybeSet(FIELD_CUSTOMER_ID, appCtx.customerId);
+  maybeSet(FIELD_HEARTBEAT_FOCUS_DAY, appCtx.focusDay);
+  maybeSet(FIELD_RING_COLLECTION, appCtx.ringCollection);
+  maybeSet(FIELD_SHOW_SCOPE_KEY, appCtx.showScopeKey);
+  maybeSet(FIELD_LINK_SHOW, appCtx.showRecordId ? [appCtx.showRecordId] : undefined);
   maybeSet(FIELD_SHOW_APP_SQL_START_DATE, appCtx.showAppSqlStartDate);
   maybeSet(FIELD_SHOW_APP_SQL_END_DATE, appCtx.showAppSqlEndDate);
   maybeSet(FIELD_SHOW_APP_NAME, appCtx.showAppName);
@@ -1255,6 +1282,10 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
   if (DRY_RUN) {
     logInfo("heartbeat_create_dry_run", {
       heartbeat_id: fields[HEARTBEAT_ID_FIELD],
+      customer_id: fields[FIELD_CUSTOMER_ID] ?? null,
+      focus_day: fields[FIELD_HEARTBEAT_FOCUS_DAY] ?? null,
+      ring_collection: fields[FIELD_RING_COLLECTION] ?? null,
+      show_scope_key: fields[FIELD_SHOW_SCOPE_KEY] ?? null,
       raw_show_id: fields[HEARTBEAT_SHOW_ID],
       raw_sql_date: fields[HEARTBEAT_SQL_DATE],
       app_show_id: fields[FIELD_APP_SHOW_ID],
@@ -1289,6 +1320,11 @@ function persistLatestHeartbeatContext(heartbeatRecord, appCtx, mode) {
       version: 1,
       saved_at: new Date().toISOString(),
       heartbeat_record_id: heartbeatRecord?.id || null,
+      customer_id: appCtx?.customerId ?? null,
+      focus_day: appCtx?.focusDay ?? null,
+      ring_collection: appCtx?.ringCollection ?? null,
+      show_scope_key: appCtx?.showScopeKey ?? null,
+      show_record_id: appCtx?.showRecordId ?? null,
       app_show_id: appCtx?.appShowId ?? null,
       app_sql_date: appCtx?.appSqlDate ?? null,
       app_dow_raw: appCtx?.appDowRaw ?? null,
@@ -1560,6 +1596,7 @@ async function findFocusedShowTarget() {
     FIELD_SHIFTED_NEXT_DAY,
     FIELD_SET_TO_DEFAULT_APP_SQL_DATE,
     FIELD_SHOW_NAME_BASE,
+    FIELD_RING_COLLECTION,
     FIELD_SHOW_TARGET_HEARTBEAT,
     FIELD_MODE_CONTROL,
     FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE,
@@ -1583,6 +1620,12 @@ async function findFocusedShowTarget() {
 
   const heartbeatRows = rows.filter(row => boolValue(row.fields?.[FIELD_SHOW_TARGET_HEARTBEAT]));
   if (heartbeatRows.length) rows = heartbeatRows;
+
+  if (HEARTBEAT_TARGET_SHOW_RECORD_ID) {
+    rows = rows.filter(row => row.id === HEARTBEAT_TARGET_SHOW_RECORD_ID);
+  } else if (HEARTBEAT_TARGET_APP_SHOW_ID) {
+    rows = rows.filter(row => String(row.fields?.[FIELD_SHOW_ID] ?? "").trim() === String(HEARTBEAT_TARGET_APP_SHOW_ID).trim());
+  }
 
   const selected = rows.filter(row => {
     const fields = row.fields || {};
@@ -1646,6 +1689,12 @@ async function resolveHeartbeatTargetDecision() {
     start_date: startDate,
     end_date: endDate,
     focus_day: focusDay,
+    ring_collection: strOrNull(fields[FIELD_RING_COLLECTION]),
+    show_scope_key: buildShowScopeKey({
+      customerId,
+      showId: appShowId,
+      focusDay,
+    }),
     shifted_to_next_day: boolValue(fields[FIELD_SHIFTED_NEXT_DAY]),
     set_to_default_app_sql_date: boolValue(fields[FIELD_SET_TO_DEFAULT_APP_SQL_DATE]),
     show_name: strOrNull(fields[FIELD_SHOW_NAME_BASE]),
@@ -1905,6 +1954,11 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       raw_show_date: clk.showDate ?? null,
       raw_sql_date: clk.sqlDate,
       raw_time: clk.time,
+      customer_id: appCtx.customerId,
+      focus_day: appCtx.focusDay,
+      ring_collection: appCtx.ringCollection,
+      show_scope_key: appCtx.showScopeKey,
+      show_record_id: appCtx.showRecordId,
       app_show_id: appCtx.appShowId,
       app_sql_date: appCtx.appSqlDate,
       app_dow_raw: appCtx.appDowRaw,
@@ -1968,6 +2022,10 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     console.log(JSON.stringify({
       ok: true,
       heartbeat_record_id: heartbeatRecord.id,
+      customer_id: appCtx.customerId,
+      focus_day: appCtx.focusDay,
+      ring_collection: appCtx.ringCollection,
+      show_scope_key: appCtx.showScopeKey,
       heartbeat_app_show_id: appCtx.appShowId,
       heartbeat_app_sql_date: appCtx.appSqlDate,
       heartbeat_app_dow_raw: appCtx.appDowRaw,

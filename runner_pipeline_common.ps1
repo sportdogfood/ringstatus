@@ -36,6 +36,7 @@ function Resolve-HeartbeatTargetShow {
     param(
         [string]$BaseId,
         [string]$ShowId,
+        [string]$RecordId,
         [string]$TableName = 'show',
         [string]$ViewName = 'heartbeat'
     )
@@ -55,7 +56,11 @@ function Resolve-HeartbeatTargetShow {
     if (-not [string]::IsNullOrWhiteSpace($ViewName)) {
         $queryParts += "view=$([uri]::EscapeDataString($ViewName))"
     }
-    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'heartbeat')) {
+    if ([string]::IsNullOrWhiteSpace($RecordId)) {
+        $RecordId = [Environment]::GetEnvironmentVariable('HEARTBEAT_TARGET_SHOW_RECORD_ID', 'Process')
+    }
+
+    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
         $queryParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
     }
     $requestUri = "$url`?$($queryParts -join '&')"
@@ -73,12 +78,16 @@ function Resolve-HeartbeatTargetShow {
     }
     catch {
         $fallbackParts = @()
-        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'heartbeat')) {
+        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
             $fallbackParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
         }
         $fallbackUri = "$url`?$($fallbackParts -join '&')"
         $response = Invoke-RestMethod -Method Get -Uri $fallbackUri -Headers $headers
         $records = @($response.records | Where-Object { $_.fields.heartbeat -eq $true })
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($RecordId)) {
+        $records = @($records | Where-Object { [string]$_.id -eq $RecordId })
     }
 
     if (-not [string]::IsNullOrWhiteSpace($ShowId)) {
@@ -126,6 +135,7 @@ function Resolve-HeartbeatTargetShow {
         ShowDates = $showDateList
         SqlDates = $heartbeatDateList
         ShowName = [string]$fields.show_name
+        RingCollection = [string]$fields.ring_collection
     }
 }
 
@@ -142,6 +152,7 @@ function Initialize-RunnerDefaults {
 
     $targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
     if ($targetShow) {
+        $env:HEARTBEAT_TARGET_SHOW_RECORD_ID = $targetShow.RecordId
         $env:HEARTBEAT_TARGET_APP_SHOW_ID = $targetShow.ShowId
         $env:HEARTBEAT_TARGET_SQL_DATES = ($targetShow.SqlDates -join ',')
         if ($targetShow.ShowDates -contains $targetShow.FocusDay) {

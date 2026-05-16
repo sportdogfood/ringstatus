@@ -10,6 +10,7 @@ $env:CUSTOMER_ID       = '15'
 . (Join-Path (Split-Path -Parent $PSCommandPath) 'runner_pipeline_common.ps1')
 $targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
 if ($targetShow) {
+    $env:HEARTBEAT_TARGET_SHOW_RECORD_ID = $targetShow.RecordId
     $env:HEARTBEAT_TARGET_APP_SHOW_ID = $targetShow.ShowId
     $env:HEARTBEAT_TARGET_SQL_DATES = ($targetShow.SqlDates -join ',')
     if ($targetShow.ShowDates -contains $targetShow.FocusDay) {
