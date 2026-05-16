@@ -1886,6 +1886,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("is_current_scope", true);
   maybeSet("scope_status", currentScopeStatus);
   maybeSet("inactive", !isActiveForScope);
+  maybeSet("archive", false);
   maybeSet("last_seen_at", dateOnly);
   maybeSet("dropped_at", null);
   maybeSet("run_id", heartbeat.scope_run_id);
@@ -1931,9 +1932,26 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
 
   maybeSet("heartbeat", []);
   maybeSet("watch_schedule", []);
+  maybeSet("show_id", heartbeat.app_show_id);
+  maybeSet("show_date", heartbeat.app_sql_date);
+  maybeSet("app_show_id", heartbeat.app_show_id);
+  maybeSet("app_sql_date", heartbeat.app_sql_date);
+  maybeSet("app_sid", heartbeat.app_show_id);
+  maybeSet("app_dt", heartbeat.app_sql_date);
+  maybeSet("app_time", heartbeat.app_time);
+  maybeSet("mode", heartbeat.mode);
+  maybeSet("date", heartbeat.app_sql_date);
+  maybeSet("dow_raw", heartbeat.app_dow_raw);
+  maybeSet("shifted_to_next_day", heartbeat.shifted_to_next_day);
+  maybeSet("app_show_idv2", heartbeat.app_show_id);
+  maybeSet("app_sql_datev2", heartbeat.app_sql_date);
+  maybeSet("app_dow_rawv2", heartbeat.app_dow_raw);
+  maybeSet("shifted_to_next_dayv2", heartbeat.shifted_to_next_day);
+  maybeSet("scope_run_id", heartbeat.scope_run_id);
   maybeSet("is_current_scope", false);
   maybeSet("scope_status", droppedScopeStatus);
   maybeSet("inactive", true);
+  maybeSet("archive", true);
   maybeSet("dropped_at", dateOnly);
   maybeSet("run_id", heartbeat.scope_run_id);
   maybeSet("run_time", nowIso);

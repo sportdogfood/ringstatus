@@ -2,8 +2,8 @@
 // heartbeat modes: DAY / NIGHT / OVERNIGHT / IDLE / OFF
 // - raw clock always comes from endpoint, or system time with a bounded last-known show fallback
 // - mode logic is based only on app_time as provided by the endpoint/system fallback
-// - DAY/NIGHT/OVERNIGHT first produce a candidate app_sql_date from raw sql_date
-// - candidate app_sql_date may then be overridden to the schedule default day from /schedule?date=00/00/00
+// - mode is written for cadence/orchestration only; it does not choose app_sql_date
+// - app_sql_date comes from focused show controls, explicit overrides, or raw sql_date/default metadata
 // - heartbeat owns the final app_sql_date, app_dow_raw, shifted_to_next_day, and app-date provenance fields
 // - shows table: match by show_id/app_show_id or create if missing
 // - shows table heartbeat link is overwritten to latest heartbeat only
@@ -28,7 +28,6 @@ const {
   boolValue,
   computeDefaultShowDateGuard,
   decideEffectiveMode,
-  modeForDateContext,
   normalizeControlMode,
 } = require("./lib/default_show_date_guard");
 const {
@@ -98,12 +97,16 @@ const FIELD_MODE_SOURCE = process.env.FIELD_MODE_SOURCE || "mode_source";
 const FIELD_MODE_REASON = process.env.FIELD_MODE_REASON || "mode_reason";
 const FIELD_DEFAULT_SHOW_DATE_STATUS = process.env.FIELD_DEFAULT_SHOW_DATE_STATUS || "default_show_date_status";
 const FIELD_DEFAULT_SHOW_DATE_REASON = process.env.FIELD_DEFAULT_SHOW_DATE_REASON || "default_show_date_reason";
+const FIELD_ARCHIVE = process.env.FIELD_ARCHIVE || "archive";
+const FIELD_INACTIVE = process.env.FIELD_INACTIVE || "inactive";
+const FIELD_SCOPE_STATUS = process.env.FIELD_SCOPE_STATUS || "scope_status";
 const FIELD_MODE_CONTROL = process.env.FIELD_MODE_CONTROL || "mode_control";
 const FIELD_MODE_CONTROL_REASON = process.env.FIELD_MODE_CONTROL_REASON || "mode_control_reason";
 const FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE = process.env.FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE || "is_default_show_manual_override";
 const FIELD_SHOW_NAME_BASE = process.env.FIELD_SHOW_NAME_BASE || "show_name";
 const FIELD_SHOW_START_DATE_BASE = process.env.FIELD_SHOW_START_DATE_BASE || "start_date";
 const FIELD_SHOW_END_DATE_BASE = process.env.FIELD_SHOW_END_DATE_BASE || "end_date";
+const FIELD_SHOW_FOCUS_DAY = process.env.FIELD_SHOW_FOCUS_DAY || "focus_day";
 
 const HEARTBEAT_ID_FIELD   = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
 const HEARTBEAT_SHOW_ID    = process.env.HEARTBEAT_SHOW_ID || "show_id";
@@ -177,6 +180,12 @@ function isBlank(v) {
 
 function strOrNull(v) {
   return isBlank(v) ? null : String(v).trim();
+}
+
+function airtableValueName(v) {
+  if (Array.isArray(v)) return v.length ? airtableValueName(v[0]) : null;
+  if (v && typeof v === "object" && "name" in v) return v.name;
+  return v;
 }
 
 function toFiniteNumber(v) {
@@ -763,11 +772,19 @@ function heartbeatTargetCustomerId(fallback = CUSTOMER_ID) {
 function heartbeatTargetDateForContext(rawSqlDate, candidateAppSqlDate, decision = null) {
   if (!hasHeartbeatTargetDateWindow(decision)) return null;
   const dateSet = heartbeatTargetDateSet(decision);
-  const candidate = toIsoDateOnly(candidateAppSqlDate);
-  if (candidate && dateSet.has(candidate)) return candidate;
   const raw = toIsoDateOnly(rawSqlDate);
   if (raw && dateSet.has(raw)) return raw;
+  const candidate = toIsoDateOnly(candidateAppSqlDate);
+  if (candidate && dateSet.has(candidate)) return candidate;
   return null;
+}
+
+function sqlDateInRange(sqlDate, startDate, endDate) {
+  const date = toIsoDateOnly(sqlDate);
+  const start = toIsoDateOnly(startDate);
+  const end = toIsoDateOnly(endDate);
+  if (!date || !start || !end) return false;
+  return compareSqlDate(date, start) >= 0 && compareSqlDate(date, end) <= 0;
 }
 
 function applyHotpatchClockOverride(clock) {
@@ -1047,7 +1064,7 @@ async function getClockSafe(customerId = CUSTOMER_ID) {
   }
 }
 
-async function buildAppContext(clock, mode) {
+async function buildAppContext(clock) {
   const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
 
   let appShowId = clock.showId ?? null;
@@ -1059,24 +1076,7 @@ async function buildAppContext(clock, mode) {
   let showAppSqlStartDate = null;
   let showAppSqlEndDate = null;
   let showAppName = null;
-  let appSqlDateSource = mode === "NIGHT" ? "night_shift" : "raw_day";
-
-  if (mode === "DAY") {
-    appShowId = clock.showId ?? null;
-    candidateAppSqlDate = clock.sqlDate;
-    appSqlDate = candidateAppSqlDate;
-    shiftedToNextDay = false;
-  } else if (mode === "NIGHT") {
-    appShowId = clock.showId ?? null;
-    candidateAppSqlDate = addDaysSql(clock.sqlDate, 1) || clock.sqlDate;
-    appSqlDate = candidateAppSqlDate;
-    shiftedToNextDay = true;
-  } else if (mode === "OVERNIGHT") {
-    appShowId = clock.showId ?? null;
-    candidateAppSqlDate = clock.sqlDate;
-    appSqlDate = candidateAppSqlDate;
-    shiftedToNextDay = false;
-  }
+  let appSqlDateSource = "raw_day";
 
   const customerId = clock.customerId ?? CUSTOMER_ID;
   const emptyScheduleEndpoint = buildScheduleEmptyEndpoint(appShowId, customerId);
@@ -1092,7 +1092,7 @@ async function buildAppContext(clock, mode) {
       const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
       if (!validCandidate && scheduleInfo.defaultAppSqlDateIs) {
         appSqlDate = scheduleInfo.defaultAppSqlDateIs;
-        shiftedToNextDay = mode === "NIGHT";
+        shiftedToNextDay = false;
         setToDefaultAppSqlDate = true;
         appSqlDateSource = "default_day";
       }
@@ -1117,15 +1117,30 @@ async function buildAppContext(clock, mode) {
   const heartbeatTargetAppSqlDate = heartbeatTargetDateForContext(clock.sqlDate, candidateAppSqlDate, decision);
   if (heartbeatTargetAppSqlDate) {
     appShowId = heartbeatTargetShowId(decision);
-    appSqlDate = heartbeatTargetAppSqlDate;
-    shiftedToNextDay = mode === "NIGHT" && appSqlDate === candidateAppSqlDate;
-    setToDefaultAppSqlDate = false;
-    defaultAppSqlDateIs = heartbeatTargetAppSqlDate;
     const sortedDates = Array.from(heartbeatTargetDateSet(decision)).sort();
     showAppSqlStartDate = decision?.start_date || sortedDates[0] || heartbeatTargetAppSqlDate;
     showAppSqlEndDate = decision?.end_date || sortedDates[sortedDates.length - 1] || heartbeatTargetAppSqlDate;
     showAppName = decision?.show_name || showAppName;
-    appSqlDateSource = "heartbeat_target_date_window";
+    if (decision) {
+      shiftedToNextDay = !!decision.shifted_to_next_day;
+      setToDefaultAppSqlDate = !!decision.set_to_default_app_sql_date;
+      if (setToDefaultAppSqlDate) {
+        if (!defaultAppSqlDateIs) {
+          throw new Error(`Focused show ${appShowId} requested ${FIELD_SET_TO_DEFAULT_APP_SQL_DATE} but no default app sql date was resolved`);
+        }
+        appSqlDate = defaultAppSqlDateIs;
+        appSqlDateSource = "show_focus_default_day";
+      } else {
+        appSqlDate = shiftedToNextDay
+          ? (addDaysSql(decision.focus_day, 1) || decision.focus_day)
+          : decision.focus_day;
+        defaultAppSqlDateIs = appSqlDate;
+        appSqlDateSource = shiftedToNextDay ? "show_focus_shifted_day" : "show_focus_day";
+      }
+      if (!sqlDateInRange(appSqlDate, decision.start_date, decision.end_date)) {
+        throw new Error(`Focused show ${appShowId} resolved app_sql_date ${appSqlDate} outside ${decision.start_date}..${decision.end_date}`);
+      }
+    }
   }
 
   if (hasHotpatchScopeOverride()) {
@@ -1135,7 +1150,7 @@ async function buildAppContext(clock, mode) {
     }
     appSqlDate = HOTPATCH_APP_SQL_DATE;
     candidateAppSqlDate = HOTPATCH_APP_SQL_DATE;
-    shiftedToNextDay = mode === "NIGHT";
+    shiftedToNextDay = false;
     setToDefaultAppSqlDate = false;
     defaultAppSqlDateIs = HOTPATCH_APP_SQL_DATE;
     appSqlDateSource = "hotpatch_env_override";
@@ -1152,7 +1167,6 @@ async function buildAppContext(clock, mode) {
   });
 
   const appCtx = {
-    effectiveMode: mode,
     dowRaw,
     appShowId,
     appSqlDate,
@@ -1171,7 +1185,6 @@ async function buildAppContext(clock, mode) {
   if (LOG_TRANSITIONS) {
     logInfo("app_context_computed", {
       source: clock.source,
-      mode,
       raw_show_id: clock.showId ?? null,
       raw_show_date: clock.showDate ?? null,
       raw_sql_date: clock.sqlDate,
@@ -1302,11 +1315,30 @@ function currentHeartbeatLinkIds(v) {
   return v.map(x => typeof x === "string" ? x : x?.id).filter(Boolean);
 }
 
+function relinkSupportsArchive(tableName) {
+  return tableName === TABLE_WATCH_SCHEDULE || tableName === TABLE_WATCH_TRIPS;
+}
+
+function recordIsScopeInactive(fields = {}) {
+  if (boolValue(fields?.[FIELD_INACTIVE]) === true) return true;
+  const scopeStatus = strOrNull(airtableValueName(fields?.[FIELD_SCOPE_STATUS]));
+  return scopeStatus ? scopeStatus.toLowerCase() === "dropped" : false;
+}
+
+function archiveFieldPatch(tableName, fields = {}, desiredArchive) {
+  if (!relinkSupportsArchive(tableName)) return {};
+  const currentArchive = boolValue(fields?.[FIELD_ARCHIVE]) === true;
+  return currentArchive === desiredArchive ? {} : { [FIELD_ARCHIVE]: desiredArchive };
+}
+
 function relinkFieldsForTable(tableName) {
   if (tableName !== TABLE_WATCH_SCHEDULE && tableName !== TABLE_WATCH_TRIPS) return [FIELD_LINK_HEARTBEAT];
   if (tableName === TABLE_WATCH_TRIPS) {
     return [
       FIELD_LINK_HEARTBEAT,
+      FIELD_ARCHIVE,
+      FIELD_INACTIVE,
+      FIELD_SCOPE_STATUS,
       "show_id",
       "app_show_idv2",
       "app_sql_datev2",
@@ -1321,6 +1353,9 @@ function relinkFieldsForTable(tableName) {
   }
   return [
     FIELD_LINK_HEARTBEAT,
+    FIELD_ARCHIVE,
+    FIELD_INACTIVE,
+    FIELD_SCOPE_STATUS,
     "show_id",
     "app_show_idv2",
     "app_sql_datev2",
@@ -1339,6 +1374,15 @@ function classifyRelinkForTable(tableName, fields, heartbeatId, appCtx) {
     const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
     return { action: alreadyCorrect ? "keep" : "link", current };
   }
+  if (recordIsScopeInactive(fields)) {
+    const current = currentHeartbeatLinkIds(fields?.[FIELD_LINK_HEARTBEAT]);
+    return {
+      action: current.length ? "clear" : "skip",
+      current,
+      matches_scope: false,
+      scope_inactive: true,
+    };
+  }
   if (tableName === TABLE_WATCH_TRIPS) {
     return classifyWatchTripsHeartbeatRelink(fields, appCtx, heartbeatId);
   }
@@ -1356,15 +1400,37 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
   let kept = 0;
   let skippedScopeMismatch = 0;
   let clearedScopeMismatch = 0;
+  let linkedHeartbeat = 0;
+  let markedArchive = 0;
+  let clearedArchive = 0;
 
   for (const r of rows) {
     const decision = classifyRelinkForTable(tableName, r.fields || {}, heartbeatId, appCtx);
+    const shouldArchive = decision.action === "skip" || decision.action === "clear";
+    const archivePatch = archiveFieldPatch(tableName, r.fields || {}, shouldArchive);
+    if (FIELD_ARCHIVE in archivePatch) {
+      if (archivePatch[FIELD_ARCHIVE]) markedArchive++;
+      else clearedArchive++;
+    }
+
     if (decision.action === "keep") {
       kept++;
+      if (Object.keys(archivePatch).length) {
+        updates.push({
+          id: r.id,
+          fields: archivePatch
+        });
+      }
       continue;
     }
     if (decision.action === "skip") {
       skippedScopeMismatch++;
+      if (Object.keys(archivePatch).length) {
+        updates.push({
+          id: r.id,
+          fields: archivePatch
+        });
+      }
       continue;
     }
     if (decision.action === "clear") {
@@ -1372,15 +1438,18 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
       updates.push({
         id: r.id,
         fields: {
-          [FIELD_LINK_HEARTBEAT]: []
+          [FIELD_LINK_HEARTBEAT]: [],
+          ...archivePatch
         }
       });
       continue;
     }
+    linkedHeartbeat++;
     updates.push({
       id: r.id,
       fields: {
-        [FIELD_LINK_HEARTBEAT]: [heartbeatId]
+        [FIELD_LINK_HEARTBEAT]: [heartbeatId],
+        ...archivePatch
       }
     });
   }
@@ -1392,9 +1461,11 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
   const summary = {
     table: tableName,
     found_in_view: rows.length,
-    relinked: updates.length - clearedScopeMismatch,
+    relinked: linkedHeartbeat,
     cleared_scope_mismatch: clearedScopeMismatch,
     skipped_scope_mismatch: skippedScopeMismatch,
+    marked_archive: markedArchive,
+    cleared_archive: clearedArchive,
     kept
   };
 
@@ -1471,6 +1542,9 @@ async function findFocusedShowTarget() {
     FIELD_CUSTOMER_ID,
     FIELD_SHOW_START_DATE_BASE,
     FIELD_SHOW_END_DATE_BASE,
+    FIELD_SHOW_FOCUS_DAY,
+    FIELD_SHIFTED_NEXT_DAY,
+    FIELD_SET_TO_DEFAULT_APP_SQL_DATE,
     FIELD_SHOW_NAME_BASE,
     FIELD_SHOW_TARGET_HEARTBEAT,
     FIELD_MODE_CONTROL,
@@ -1537,17 +1611,17 @@ async function resolveHeartbeatTargetDecision() {
     throw new Error(`Heartbeat target show_id ${appShowId} has no numeric ${FIELD_CUSTOMER_ID} or ${FIELD_CUSTOMER_ID_OVERRIDE}`);
   }
 
-  const targetDates = new Set(HEARTBEAT_TARGET_SQL_DATES);
   const startDate = toIsoDateOnly(fields[FIELD_SHOW_START_DATE_BASE]);
   const endDate = toIsoDateOnly(fields[FIELD_SHOW_END_DATE_BASE]);
-  if (startDate && endDate) {
-    let cursor = Date.parse(`${startDate}T00:00:00Z`);
-    const endMs = Date.parse(`${endDate}T00:00:00Z`);
-    while (Number.isFinite(cursor) && cursor <= endMs) {
-      targetDates.add(new Date(cursor).toISOString().slice(0, 10));
-      cursor += 24 * 60 * 60 * 1000;
-    }
+  const focusDay = toIsoDateOnly(fields[FIELD_SHOW_FOCUS_DAY]);
+  if (!focusDay) {
+    throw new Error(`Focused show ${appShowId} has no ${FIELD_SHOW_FOCUS_DAY}`);
   }
+  if (!sqlDateInRange(focusDay, startDate, endDate)) {
+    throw new Error(`Focused show ${appShowId} ${FIELD_SHOW_FOCUS_DAY} ${focusDay} is outside ${startDate}..${endDate}`);
+  }
+  const targetDates = new Set();
+  targetDates.add(focusDay);
   const sortedDates = Array.from(targetDates).sort();
   return {
     record_id: targetRecord?.id || null,
@@ -1557,6 +1631,9 @@ async function resolveHeartbeatTargetDecision() {
     target_sql_dates: sortedDates,
     start_date: startDate,
     end_date: endDate,
+    focus_day: focusDay,
+    shifted_to_next_day: boolValue(fields[FIELD_SHIFTED_NEXT_DAY]),
+    set_to_default_app_sql_date: boolValue(fields[FIELD_SET_TO_DEFAULT_APP_SQL_DATE]),
     show_name: strOrNull(fields[FIELD_SHOW_NAME_BASE]),
   };
 }
@@ -1779,8 +1856,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     const clockMode = deriveModeFromClock(clk);
     const preliminaryShowControl = await fetchShowsModeControl(clk.showId);
     const forcedMode = FORCE_MODE ? normalizeMode(FORCE_MODE) : null;
-    const dateContextMode = modeForDateContext(forcedMode || preliminaryShowControl.mode_control, clockMode);
-    const appCtx = await buildAppContext(clk, dateContextMode);
+    const appCtx = await buildAppContext(clk);
     const showControl = preliminaryShowControl?.found
       ? preliminaryShowControl
       : await fetchShowsModeControl(appCtx.appShowId);
@@ -1793,7 +1869,6 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     const mode = modeDecision.mode;
     const intervalMin = intervalMinutesForMode(mode);
     appCtx.effectiveMode = mode;
-    appCtx.dateContextMode = dateContextMode;
     appCtx.clockMode = clockMode;
     appCtx.modeSource = modeDecision.mode_source;
     appCtx.modeReason = modeDecision.mode_reason;

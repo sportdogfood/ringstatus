@@ -12,8 +12,7 @@ $targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
 if ($targetShow) {
     $env:HEARTBEAT_TARGET_APP_SHOW_ID = $targetShow.ShowId
     $env:HEARTBEAT_TARGET_SQL_DATES = ($targetShow.SqlDates -join ',')
-    $todaySqlDate = Get-Date -Format 'yyyy-MM-dd'
-    if ($targetShow.SqlDates -contains $todaySqlDate) {
+    if ($targetShow.ShowDates -contains $targetShow.FocusDay) {
         $env:CUSTOMER_ID = $targetShow.CustomerId
     }
 }

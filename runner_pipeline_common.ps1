@@ -19,6 +19,19 @@ function ConvertTo-SqlDateList {
     return $dates
 }
 
+function Test-SqlDateInRange {
+    param(
+        [string]$SqlDate,
+        [string]$StartDate,
+        [string]$EndDate
+    )
+
+    $date = [datetime]::ParseExact($SqlDate, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+    $start = [datetime]::ParseExact($StartDate, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+    $end = [datetime]::ParseExact($EndDate, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+    return ($date -ge $start -and $date -le $end)
+}
+
 function Resolve-HeartbeatTargetShow {
     param(
         [string]$BaseId,
@@ -42,7 +55,7 @@ function Resolve-HeartbeatTargetShow {
     if (-not [string]::IsNullOrWhiteSpace($ViewName)) {
         $queryParts += "view=$([uri]::EscapeDataString($ViewName))"
     }
-    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'show_name', 'heartbeat')) {
+    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'heartbeat')) {
         $queryParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
     }
     $requestUri = "$url`?$($queryParts -join '&')"
@@ -60,7 +73,7 @@ function Resolve-HeartbeatTargetShow {
     }
     catch {
         $fallbackParts = @()
-        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'show_name', 'heartbeat')) {
+        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'heartbeat')) {
             $fallbackParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
         }
         $fallbackUri = "$url`?$($fallbackParts -join '&')"
@@ -87,18 +100,31 @@ function Resolve-HeartbeatTargetShow {
 
     $startDate = [string]$fields.start_date
     $endDate = [string]$fields.end_date
+    $focusDay = [string]$fields.focus_day
     if ([string]::IsNullOrWhiteSpace($startDate) -or [string]::IsNullOrWhiteSpace($endDate)) {
         throw "focused show record must have start_date and end_date"
     }
+    if ([string]::IsNullOrWhiteSpace($focusDay)) {
+        throw "focused show record must have focus_day"
+    }
+    if (-not (Test-SqlDateInRange -SqlDate $focusDay -StartDate $startDate -EndDate $endDate)) {
+        throw "focused show focus_day is outside start_date/end_date: $focusDay"
+    }
 
-    $dateList = ConvertTo-SqlDateList -StartDate $startDate -EndDate $endDate
+    $showDateList = ConvertTo-SqlDateList -StartDate $startDate -EndDate $endDate
+    $heartbeatDateList = @($focusDay)
+
     return [pscustomobject]@{
         RecordId = $records[0].id
         ShowId = [string]$fields.show_id
         CustomerId = [string]$customerId
         StartDate = $startDate
         EndDate = $endDate
-        SqlDates = $dateList
+        FocusDay = $focusDay
+        ShiftedToNextDay = [bool]$fields.shifted_to_next_day
+        SetToDefaultAppSqlDate = [bool]$fields.set_to_default_app_sql_date
+        ShowDates = $showDateList
+        SqlDates = $heartbeatDateList
         ShowName = [string]$fields.show_name
     }
 }
@@ -118,8 +144,7 @@ function Initialize-RunnerDefaults {
     if ($targetShow) {
         $env:HEARTBEAT_TARGET_APP_SHOW_ID = $targetShow.ShowId
         $env:HEARTBEAT_TARGET_SQL_DATES = ($targetShow.SqlDates -join ',')
-        $todaySqlDate = Get-Date -Format 'yyyy-MM-dd'
-        if ($targetShow.SqlDates -contains $todaySqlDate) {
+        if ($targetShow.ShowDates -contains $targetShow.FocusDay) {
             $env:CUSTOMER_ID = $targetShow.CustomerId
         }
     }
