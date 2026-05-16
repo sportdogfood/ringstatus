@@ -1650,6 +1650,19 @@ function rowScheduledDateMatchesScope(normalizedRow, scope) {
   return resolvedScheduledDate === scope.app_sql_datev2;
 }
 
+function existingScheduleRowMatchesScope(row, scope) {
+  const fields = row?.fields || {};
+  const rowShowId = numOrNull(pickFirst(fields.show_id, fields.app_show_idv2, fields.sid));
+  if (rowShowId !== null && rowShowId !== numOrNull(scope?.app_show_idv2)) return false;
+
+  const rowDate = toIsoDateOnly(
+    pickFirst(fields.schedule_show_datev2, fields.app_sql_datev2, fields.show_date, fields.scheduled_date)
+  );
+  if (rowDate && rowDate !== scope?.app_sql_datev2) return false;
+
+  return true;
+}
+
 function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue, watchScheduleFieldMeta) {
   const fields = {
     heartbeat: [],
@@ -2248,6 +2261,8 @@ async function runDaily() {
   for (const row of existingRows) {
     const key = scheduleRowKeyFromFields(row?.fields || {});
     if (!key) continue;
+    if (!existingScheduleRowMatchesScope(row, scope)) continue;
+    if (boolValue(row?.fields?.inactive) || firstValue(row?.fields?.dropped_at)) continue;
 
     const hasCurrentMarkers =
       heartbeatViewIdSet.has(row.id) ||

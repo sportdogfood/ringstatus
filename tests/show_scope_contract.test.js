@@ -72,6 +72,13 @@ assert.ok(
   "schedules_dailyv2 schedule endpoints must use heartbeat customer_id before global CUSTOMER_ID fallback"
 );
 
+assert.ok(
+  schedulesDaily.includes("function existingScheduleRowMatchesScope") &&
+    schedulesDaily.includes("if (!existingScheduleRowMatchesScope(row, scope)) continue;") &&
+    schedulesDaily.includes("if (boolValue(row?.fields?.inactive) || firstValue(row?.fields?.dropped_at)) continue;"),
+  "schedules_dailyv2 must not drop existing watch_schedule rows outside the current schedule scope or rows already dropped"
+);
+
 const focusedShowsRunner = fs.readFileSync(path.resolve(__dirname, "..", "run_tagger_task_focused_shows.ps1"), "utf8");
 assert.ok(
   focusedShowsRunner.includes("HEARTBEAT_TARGET_SHOW_RECORD_ID") &&
