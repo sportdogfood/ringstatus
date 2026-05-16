@@ -1,7 +1,7 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.15.1  
-**Date:** 2026-05-15  
+**Version:** v2026.05.16.1
+**Date:** 2026-05-16
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
 
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.16.1 | 2026-05-16 | Added the focused `show` source-of-truth shift. Active show/day/customer scope must now start from the manually managed `show` table, copied scope fields must be written to downstream tables, `LiveClassData` is deprecated/reference-only, and `classsignup_url` remains evidence unless separately promoted. See `docs/ringstatus_show_scope_shift_2026-05-16.md`. |
 | v2026.05.15.1 | 2026-05-15 | Added the absolute source-input contract: do not invent or substitute dates, show IDs, customer IDs, endpoints, field names, or payload values. Unknowns must remain unknown and be surfaced in logs/run summaries. Manual schedule HTML misses must alert with searched runner/repo locations and expected filename shapes. |
 | v2026.05.14.1 | 2026-05-14 | Clarified the early SGL payload capture contract: when fresh SGL endpoints return usable data, store the complete successful payload in `early_sgl_payloads` before normalization or row filtering, including forward-day schedule payloads and full person/show people payloads. |
 | v2026.05.11.4 | 2026-05-11 | Replaced the old derived/formula-first identity guidance with writable key fields for `watch_schedule` and `watch_trips`: `schedule_key`, `schedule_short`, `trips_key`, `trips_short_key`, and `full_nesting_key`. `cgid` and start time remain important nesting/enrichment dimensions but are not part of the operational match keys. |
@@ -60,6 +61,39 @@ This document defines the current RingStatus pipeline scope for:
 - critical field ownership
 
 The goal is to populate useful records before live data exists, then enrich those records safely once same-day live data becomes available.
+
+## 2026-05-16 Focused Show Scope Shift
+
+The active show/day/customer decision now starts from the manually managed `show` table. This is a major operating shift away from endpoint-default guessing and away from using heartbeat lookups as durable identity.
+
+Read and apply the focused scope contract before changing runner scope, endpoint construction, active-record filters, copied scope fields, or liveclass/classsignup handling:
+
+```text
+docs/ringstatus_show_scope_shift_2026-05-16.md
+```
+
+Current focused scope key shape:
+
+```text
+show_scope_key = customer_id|show_id|focus_day
+```
+
+Downstream active tables must carry copied scope fields:
+
+- `customer_id`
+- `focus_day`
+- `ring_collection`
+- `show_scope_key`
+- `show`
+
+Tables in scope:
+
+- `watch_schedule`
+- `watch_trips`
+- `watch_rings`
+- `active_tenants`
+
+Heartbeat remains an execution snapshot and cadence pointer. It does not own durable row identity.
 
 ## Non-Negotiable Rules
 
@@ -166,15 +200,17 @@ Live-ready means the class/group is day-of and live data is published.
 Live feed availability gate:
 
 ```text
-/homepage/getLiveClassStatus?datetimestamp={CACHE_BUSTER}&customer_id=15
+/homepage/getLiveClassStatus?datetimestamp={CACHE_BUSTER}&customer_id={CUSTOMER_ID}
 ```
 
 This endpoint must return `true` before the liveclassv2 same-day lanes are considered available.
 
+`LIVECLASS_BASE_URI` means the customer-specific liveclass base URI from confirmed customer metadata or explicit config. Do not infer the customer path from the current show id, prior customer, or endpoint defaults.
+
 Group feed source:
 
 ```text
-/iphonev2/index.php/esp/liveclassv2/ListAjax?from_wp_api=true
+{LIVECLASS_BASE_URI}/ListAjax?from_wp_api=true
 ```
 
 This populates `groups_live`.
@@ -234,7 +270,7 @@ Soft-blocked behavior:
 | `ClassStatus` liveclassv2 endpoint | day-of only | group/class live status | Useful for status, gone, total, estimated start, ring/date. |
 | `getLiveClassData` liveclassv2 endpoint | day-of only | class live trip rows | Useful for order, gone-in, actual order, rider/horse/entry number. |
 | `/classes/{class_id}` | separate enrichment only | class detail | Not reliable for schedule population. `schedules_dailyv2.js` must not ping this endpoint while building next-day schedule rows. |
-| `/classsignup/{class_group_id}` | day-of/enrichment | order fallback when usable | Payload may contain unusable/null entry fields. Validate shape. |
+| `/classsignup/{class_group_id}` | evidence/reference unless promoted | signup payload evidence | Not a fallback for missing `getLiveClassData`. Payload may contain unusable/null entry fields. Validate shape before any operational use. |
 
 ## Schedule Lane Endpoint Boundary
 
@@ -245,7 +281,7 @@ This lane must continue running throughout the day outside the liveclassv2 enric
 For each scoped show/date, the schedule lane must make one primary schedule request:
 
 ```text
-/schedule?date={YYYY-MM-DD}&show_id={SHOW_ID}&customer_id=15
+/schedule?date={YYYY-MM-DD}&show_id={SHOW_ID}&customer_id={CUSTOMER_ID}
 ```
 
 That request must run through the local PowerShell fetch path so the local environment, proxy behavior, and headers match the runner context.
@@ -266,7 +302,7 @@ tmp/sgl_schedule_samples
 The schedule lane must not ping this endpoint while building schedule rows:
 
 ```text
-/classes/{class_id}/?show_id={SHOW_ID}&customer_id=15
+/classes/{class_id}/?show_id={SHOW_ID}&customer_id={CUSTOMER_ID}
 ```
 
 Reason:
@@ -288,7 +324,7 @@ This lane must continue running throughout the day outside the liveclassv2 enric
 For each active tenant/person, the trips lane must make one primary people request:
 
 ```text
-/people/{PID}?pid={PID}&show_id={SHOW_ID}&customer_id=15
+/people/{PID}?pid={PID}&show_id={SHOW_ID}&customer_id={CUSTOMER_ID}
 ```
 
 That request must run through the local PowerShell fetch path so the local environment, proxy behavior, and headers match the runner context.
@@ -309,7 +345,7 @@ tmp/sgl_people_retest
 The trips lane must not ping this endpoint while building pre-live trip rows:
 
 ```text
-/classes/{class_id}/?show_id={SHOW_ID}&customer_id=15
+/classes/{class_id}/?show_id={SHOW_ID}&customer_id={CUSTOMER_ID}
 ```
 
 Reason:
@@ -334,7 +370,7 @@ In this sequence, "classes" means liveclassv2 class identifiers exposed through 
 The class-scoped live trip endpoint is:
 
 ```text
-https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&cgid={CLASS_GROUP_ID}
+{LIVECLASS_BASE_URI}/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&cgid={CLASS_GROUP_ID}
 ```
 
 The endpoint also accepts the cache-buster form `&t={CACHE_BUSTER}`. When `class_group_id` is known from `ListAjax`, include `cgid` because it makes the class/group pairing explicit and matches the observed working call shape.
@@ -470,7 +506,7 @@ schedule endpoint date = 2026-05-08
 Schedule fetch pattern:
 
 ```text
-https://sglapi.wellingtoninternational.com/schedule?date={YYYY-MM-DD}&show_id={SHOW_ID}&customer_id=15
+https://sglapi.wellingtoninternational.com/schedule?date={YYYY-MM-DD}&show_id={SHOW_ID}&customer_id={CUSTOMER_ID}
 ```
 
 Schedule fetch policy:
@@ -587,7 +623,7 @@ Manual HTML fallback rules:
 Pattern:
 
 ```text
-https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus?datetimestamp={CACHE_BUSTER}&customer_id=15
+https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus?datetimestamp={CACHE_BUSTER}&customer_id={CUSTOMER_ID}
 ```
 
 Expected result:
@@ -603,7 +639,7 @@ If this does not return `true`, same-day liveclassv2 detail pings should not run
 Pattern:
 
 ```text
-https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax?from_wp_api=true
+{LIVECLASS_BASE_URI}/ListAjax?from_wp_api=true
 ```
 
 Current role:
@@ -624,13 +660,13 @@ Required validation:
 Pattern:
 
 ```text
-https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus?from_wp_api=true&class_group_id={CLASS_GROUP_ID}&show_id={SHOW_ID}&from_live_class=true
+{LIVECLASS_BASE_URI}/ClassStatus?from_wp_api=true&class_group_id={CLASS_GROUP_ID}&show_id={SHOW_ID}&from_live_class=true
 ```
 
 Alternate observed form:
 
 ```text
-https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus?from_wp_api=true&class_group_id={CLASS_GROUP_ID}&class_id={CLASS_ID}&show_id={SHOW_ID}&from_live_class=0
+{LIVECLASS_BASE_URI}/ClassStatus?from_wp_api=true&class_group_id={CLASS_GROUP_ID}&class_id={CLASS_ID}&show_id={SHOW_ID}&from_live_class=0
 ```
 
 Current implementation note:
@@ -657,13 +693,13 @@ Observed useful fields:
 Pattern:
 
 ```text
-https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&t={CACHE_BUSTER}
+{LIVECLASS_BASE_URI}/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&t={CACHE_BUSTER}
 ```
 
 Preferred constructed pattern:
 
 ```text
-https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&cgid={CLASS_GROUP_ID}
+{LIVECLASS_BASE_URI}/getLiveClassData?show_id={SHOW_ID}&cid={CLASS_ID}&cgid={CLASS_GROUP_ID}
 ```
 
 The endpoint should be constructed from known `show_id`, `class_id`, and `class_group_id`. If `watch_trips.getLiveClassData` is populated, that field may be used as the explicit endpoint for the row, provided it is a `getLiveClassData` URL with a usable `cid`.

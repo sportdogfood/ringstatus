@@ -16,7 +16,6 @@ jobs:
       SHOWTIME_URL: ${{ secrets.SHOWTIME_URL }}
       AIRTABLE_TABLE: tblCnHDB4IVtxqulo
       AIRTABLE_VIEW_HOT: viwATt1y2RKpn2FSZ
-      CUSTOMER_ID: "15"
       DRY_RUN: "0"
       CALC_MODE: promote
       WATCH_VIEW: heartbeat
@@ -26,6 +25,61 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Resolve focused show scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs = require("fs");
+
+          (async () => {
+            const baseId = process.env.AIRTABLE_BASE_ID;
+            const token = process.env.AIRTABLE_TOKEN;
+            const tableName = process.env.TABLE_SHOW_TARGET || "show";
+            if (!baseId || !token) throw new Error("Missing AIRTABLE_BASE_ID or AIRTABLE_TOKEN");
+
+            const params = new URLSearchParams({
+              pageSize: "100",
+              maxRecords: "3",
+              filterByFormula: "{heartbeat}",
+            });
+            for (const field of ["show_id", "customer_id", "focus_day", "heartbeat"]) {
+              params.append("fields[]", field);
+            }
+
+            const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}?${params}`;
+            const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+            const body = await response.text();
+            if (!response.ok) throw new Error(`Focused show lookup failed ${response.status}: ${body}`);
+            const payload = JSON.parse(body);
+            const rows = payload.records || [];
+            if (rows.length !== 1) {
+              throw new Error(`Expected exactly one focused show row with heartbeat checked; found ${rows.length}`);
+            }
+            const row = rows[0];
+            const fields = row.fields || {};
+            const showId = fields.show_id;
+            const customerId = fields.customer_id;
+            const focusDay = fields.focus_day;
+            if (!showId) throw new Error("Focused show row missing show_id");
+            if (!customerId) throw new Error("Focused show row missing customer_id");
+            if (!focusDay) throw new Error("Focused show row missing focus_day");
+
+            const lines = [
+              `CUSTOMER_ID=${customerId}`,
+              `HEARTBEAT_TARGET_CUSTOMER_ID=${customerId}`,
+              `HEARTBEAT_TARGET_APP_SHOW_ID=${showId}`,
+              `HEARTBEAT_TARGET_SHOW_RECORD_ID=${row.id}`,
+              `HEARTBEAT_TARGET_SQL_DATES=${focusDay}`,
+            ];
+            fs.appendFileSync(process.env.GITHUB_ENV, `${lines.join("\n")}\n`);
+            console.log(`Focused show scope: customer_id=${customerId} show_id=${showId} focus_day=${focusDay} record_id=${row.id}`);
+          })().catch((error) => {
+            console.error(error.stack || error.message);
+            process.exit(1);
+          });
+          NODE
 
       - name: Run full ringstatus pipeline
         shell: bash

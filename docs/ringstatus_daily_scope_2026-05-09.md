@@ -5,6 +5,56 @@
 **Primary mode focus:** `DAY`  
 **Transition scopes:** `DAY -> NIGHT`, `OVERNIGHT -> DAY`
 
+## 2026-05-16 Focused Show Source Of Truth
+
+The daily operating scope now starts from the manually managed `show` table. Before heartbeat, schedule, trips, rings, active tenants, scheduler, or publisher lanes run, the active scope must be resolved from the focused `show` record.
+
+Canonical focused scope fields:
+
+- `show.show_id`
+- `show.customer_id`
+- `show.focus_day`
+- `show.heartbeat`
+- `show.shifted_to_next_day`
+- `show.set_to_default_app_sql_date`
+- `show.mode_control`
+- `show.is_default_show_manual_override`
+- `show.ring_collection`
+
+Derived focused scope key:
+
+```text
+show_scope_key = customer_id|show_id|focus_day
+```
+
+The following tables must carry copied scope fields for filtering and diagnostics:
+
+- `heartbeat`
+- `watch_schedule`
+- `watch_trips`
+- `watch_rings`
+- `active_tenants`
+
+Required copied fields:
+
+- `customer_id`
+- `focus_day`
+- `ring_collection`
+- `show_scope_key`
+- `show`
+
+Do not rely on heartbeat lookup fields as durable identity because heartbeat records clear and reappear. Do not use endpoint default show/date/customer responses to override the focused `show` record.
+
+The full contract for this shift is documented in:
+
+```text
+docs/ringstatus_show_scope_shift_2026-05-16.md
+```
+
+Endpoint construction must use focused `customer_id`, not hardcoded customer `15`, after the focused show has been resolved.
+
+`watch_trips.getLiveClassData` is the operational liveclass endpoint field. `LiveClassData` is deprecated/reference-only. `classsignup_url` is evidence/reference unless a future scope update promotes it with tests and payload-shape validation.
+
 ## 2026-05-14 Early SGL Payload Capture
 
 When a fresh SGL endpoint returns a usable payload, the lane should preserve the complete source payload in `early_sgl_payloads` before row-level normalization or Airtable write filtering. Airtable rows are the operational projection; the early payload files are the source evidence and fallback cache.
@@ -126,7 +176,7 @@ When heartbeat mode changes from `DAY` to `NIGHT` and `shifted_to_next_day = tru
 Schedule requirements:
 
 - Use the local PowerShell fetch path first.
-- Ping one day-scoped `/schedule?date={target_date}&show_id={show_id}&customer_id=15` endpoint.
+- Ping one day-scoped `/schedule?date={target_date}&show_id={show_id}&customer_id={customer_id}` endpoint.
 - If successful, write/refresh tomorrow's minimum viable `watch_schedule` rows from that payload.
 - Store the successful payload in `early_sgl_payloads/schedule`.
 - Try remaining show dates and store successful forward-day payloads for fallback support.
