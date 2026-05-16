@@ -230,9 +230,10 @@ Create one thread when a watched class reaches each configured pre-start timing 
 
 Operational source:
 
-- `active_alerts.alert_id = class_tills`
+- `active_alerts` view `active_alerts`
+- `active_alerts.rec_name = class_tills` or `active_alerts.alert_id` starts with `class_tills_`
 - `active_alerts.active = true`
-- linked `trigger_tags` define the actual timing windows
+- linked `trigger_tags` define the actual timing window for that alert action
 - `watch_schedule` supplies the class row and copied scope fields
 - `schedules_calculatorv2.js` owns detection and direct `thread_logs` creation
 
@@ -248,10 +249,38 @@ Current required copied scope inputs:
 The thread idempotency key is:
 
 ```text
-thread_static_id = show_scope_key|schedule_key|class_tills|trigger_name
+thread_static_id = show_scope_key|schedule_key|alert_id|trigger_name
 ```
 
-Examples of `trigger_name` values are the linked `trigger_tags` records, such as `run_60_till` or `run_45_till`. If the desired business milestone is 40 minutes instead of 45 minutes, update the Airtable `trigger_tags` configuration first; do not make the calculator substitute 40 for an Airtable tag that still says 45.
+Fixed examples:
+
+```text
+show_scope_key|schedule_key|class_tills_60|run_60_till
+show_scope_key|schedule_key|class_tills_45|run_45_till
+```
+
+Dynamic tenant milestone examples:
+
+```text
+show_scope_key|schedule_key|class_tills_milestone1|alert_milestone1
+show_scope_key|schedule_key|class_tills_milestone2|alert_milestone2
+```
+
+Each split `active_alerts` record carries its own linked `trigger_tags`, `alert_templates`, `active_tenants`, and `ww_tenants`.
+
+For `alert_id = class_tills_milestone1`, `schedules_calculatorv2.js` reads `alert_milestone1` from linked `ww_tenants`.
+
+For `alert_id = class_tills_milestone2`, `schedules_calculatorv2.js` reads `alert_milestone2` from linked `ww_tenants`.
+
+When active dynamic milestone records exist, they take precedence over fixed `class_tills_45` / `class_tills_60` records. This avoids duplicate thread creation while allowing the old fixed records to remain in Airtable during transition.
+
+The dynamic runner treats a milestone as hit when `rs_mins_till_start` falls into this cadence window:
+
+```text
+milestone - 4 <= rs_mins_till_start <= milestone + 1
+```
+
+For example, tenant milestone `65` listens at `61..66`; tenant milestone `38` listens at `34..39`.
 
 The runner writes `thread_logs` directly with available linked context:
 
@@ -263,9 +292,20 @@ The runner writes `thread_logs` directly with available linked context:
 - `active_alerts`
 - `alert_templates`
 - `active_tenants`
+- `ww_tenants`
+- `trigger_tags`
 - `heartbeat`
 - `watch_schedule`
+- `watch_trips`
 - `schedule_logs`
+- `customer_id`
+- `show_id`
+- `focus_day`
+- `ring_collection`
+- `show_scope_key`
+- `show`
+- `alert_milestone_slot`
+- `alert_milestone_value`
 - timing/status fields such as `rs_start_time`, `rs_mins_till_start`, `rs_status`
 - the fired trigger checkbox such as `run_60_till` or `run_45_till`
 
