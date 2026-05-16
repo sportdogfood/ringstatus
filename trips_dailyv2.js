@@ -2026,7 +2026,7 @@ async function main() {
     wwRidersFieldSet,
     wwHorsesFieldSet,
   ] = await Promise.all([
-    fetchTableFieldSet(TABLE_WATCH_TRIPS),
+    fetchTableWritableFieldSet(TABLE_WATCH_TRIPS),
     fetchScopeStatusChoices(TABLE_WATCH_TRIPS).catch(() => new Set()),
     fetchShowRecordId(heartbeat.app_show_id).catch(() => null),
     fetchWatchScheduleRows(),
