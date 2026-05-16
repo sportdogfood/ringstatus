@@ -76,6 +76,12 @@ const MANUAL_SCHEDULE_HTML_DIR = String(
   path.join(MANUAL_SGL_PAYLOAD_ROOT, "schedule-html")
 ).trim();
 const REPO_MANUAL_SGL_PAYLOAD_ROOT = path.join(__dirname, "manual_sgl_payloads");
+const DEFAULT_SCHEDULE_HTML_FALLBACK_DIRS = [
+  MANUAL_SGL_PAYLOAD_ROOT,
+  MANUAL_SCHEDULE_HTML_DIR,
+  REPO_MANUAL_SGL_PAYLOAD_ROOT,
+  path.join(REPO_MANUAL_SGL_PAYLOAD_ROOT, "schedule-html"),
+];
 const DEFAULT_SCHEDULE_FALLBACK_DIRS = [
   EARLY_SCHEDULE_PAYLOAD_DIR,
   MANUAL_SGL_PAYLOAD_ROOT,
@@ -681,17 +687,30 @@ function scheduleFallbackDirs() {
 function scheduleHtmlFallbackDirs() {
   const raw = strOrNull(process.env.SGL_SCHEDULE_HTML_FALLBACK_DIRS);
   const values = raw
-    ? raw.split(path.delimiter)
-    : [
-        MANUAL_SGL_PAYLOAD_ROOT,
-        MANUAL_SCHEDULE_HTML_DIR,
-        REPO_MANUAL_SGL_PAYLOAD_ROOT,
-        path.join(REPO_MANUAL_SGL_PAYLOAD_ROOT, "schedule-html"),
-      ];
+    ? [...raw.split(path.delimiter), ...DEFAULT_SCHEDULE_HTML_FALLBACK_DIRS]
+    : DEFAULT_SCHEDULE_HTML_FALLBACK_DIRS;
 
   return [...new Set(values
     .map((value) => strOrNull(value))
     .filter(Boolean))];
+}
+
+function scheduleHtmlLookupSummary(appShowId, appSqlDate) {
+  const dateHyphen = String(appSqlDate || "");
+  const dateUnderscore = dateHyphen.replace(/-/g, "_");
+  const showText = String(appShowId || "");
+  return {
+    searched_dirs: scheduleHtmlFallbackDirs().map((dirPath) => ({
+      dir_path: dirPath,
+      exists: fs.existsSync(dirPath),
+    })),
+    expected_filename_shapes: [
+      `schedule_html_${dateHyphen}_show_${showText}_EPOCH.html`,
+      `schedule_html_${dateHyphen}_show_id_${showText}_EPOCH.html`,
+      `schedule_html_${dateUnderscore}_show_${showText}_EPOCH.html`,
+      `schedule_html_${dateUnderscore}_show_id_${showText}_EPOCH.html`,
+    ],
+  };
 }
 
 function collectFilesRecursive(dirPath, out = []) {
@@ -885,11 +904,14 @@ function parseScheduleHtmlTimeOverlay(htmlText) {
 
 function applyScheduleHtmlTimeOverlay(rows, appShowId, appSqlDate) {
   const candidates = candidateScheduleHtmlFiles(appShowId, appSqlDate);
+  const lookup = scheduleHtmlLookupSummary(appShowId, appSqlDate);
   const summary = {
     ok: false,
     skipped: candidates.length === 0,
     reason: candidates.length === 0 ? "no_matching_manual_schedule_html" : null,
+    alert: candidates.length === 0 ? "manual_schedule_html_missing" : null,
     manual_schedule_html_dir: MANUAL_SCHEDULE_HTML_DIR,
+    manual_schedule_html_lookup: lookup,
     file_path: candidates[0]?.filePath || null,
     body_length: candidates[0]?.size || null,
     parsed_rows: 0,
@@ -907,6 +929,7 @@ function applyScheduleHtmlTimeOverlay(rows, appShowId, appSqlDate) {
       summary.ok = true;
       summary.skipped = false;
       summary.reason = null;
+      summary.alert = null;
       summary.file_path = candidate.filePath;
       summary.body_length = candidate.size;
       summary.parsed_rows = parsed.parsedRows.length;
@@ -945,6 +968,7 @@ function applyScheduleHtmlTimeOverlay(rows, appShowId, appSqlDate) {
   }
 
   summary.reason = "manual_schedule_html_parse_failed";
+  summary.alert = "manual_schedule_html_parse_failed";
   return { rows, summary };
 }
 
@@ -2365,5 +2389,6 @@ module.exports = {
   normalizeHtmlScheduleTimeText,
   parseScheduleHtmlTimeOverlay,
   runDaily,
+  scheduleHtmlFallbackDirs,
   scheduleRowKeyFromFields,
 };

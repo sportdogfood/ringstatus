@@ -109,6 +109,14 @@ Manual fallbacks during the day:
 - People JSON may be supplied directly in `manual_sgl_payloads` or an approved `manual_sgl_payloads/people` folder.
 - Schedule HTML may be supplied directly in `manual_sgl_payloads` or an approved `manual_sgl_payloads/schedule-html` folder, and is only for manually added schedule HTML time extraction.
 
+Absolute source-input contract:
+
+- Never invent or substitute dates, show IDs, customer IDs, endpoints, field names, or payload values.
+- Every operational value must be one of: user-provided input, live Airtable metadata/row data, source payload data, a local file path that exists, environment/config input, or a deterministic derivation from those confirmed inputs.
+- Unknown values must stay unknown and be surfaced in logs or run summaries. They must not be filled with placeholders or nearby examples from a prior incident.
+- If manual schedule HTML cannot be found for the target `app_sql_datev2`/`app_sql_date` and `show_id`, the schedule lane must alert with the searched directories and expected filename shapes.
+- Manual schedule HTML lookup must include both runner-side and repo-local locations: `manual_sgl_payloads`, `manual_sgl_payloads/schedule-html`, and their configured runner equivalents.
+
 ## DAY -> NIGHT Transition
 
 This is the most critical transition for pre-live population.

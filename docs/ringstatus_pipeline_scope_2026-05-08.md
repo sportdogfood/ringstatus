@@ -1,7 +1,7 @@
 # RingStatus Pipeline Scope
 
-**Version:** v2026.05.14.1  
-**Date:** 2026-05-14  
+**Version:** v2026.05.15.1  
+**Date:** 2026-05-15  
 **Status:** EVOLVING PIPELINE  
 **Owner review required:** Yes, before changing cadence, identifiers, writable fields, or live endpoint behavior.
 
@@ -27,6 +27,7 @@ Do not treat inferred behavior as permanent. If SGL payload shape changes, log t
 
 | Version | Date | Change |
 | --- | --- | --- |
+| v2026.05.15.1 | 2026-05-15 | Added the absolute source-input contract: do not invent or substitute dates, show IDs, customer IDs, endpoints, field names, or payload values. Unknowns must remain unknown and be surfaced in logs/run summaries. Manual schedule HTML misses must alert with searched runner/repo locations and expected filename shapes. |
 | v2026.05.14.1 | 2026-05-14 | Clarified the early SGL payload capture contract: when fresh SGL endpoints return usable data, store the complete successful payload in `early_sgl_payloads` before normalization or row filtering, including forward-day schedule payloads and full person/show people payloads. |
 | v2026.05.11.4 | 2026-05-11 | Replaced the old derived/formula-first identity guidance with writable key fields for `watch_schedule` and `watch_trips`: `schedule_key`, `schedule_short`, `trips_key`, `trips_short_key`, and `full_nesting_key`. `cgid` and start time remain important nesting/enrichment dimensions but are not part of the operational match keys. |
 | v2026.05.11.1 | 2026-05-11 | Added heartbeat/show manual controls: `shows.mode_control` is the owner-facing lever for `AUTO`/blank, `DAY`, `NIGHT`, `OVERNIGHT`, `IDLE`, and `OFF`; `shows.is_default_show_manual_override` confirms a suspicious default show date; heartbeat writes `clock_mode`, effective `mode`, `mode_source`, `mode_reason`, `default_show_date_status`, and `default_show_date_reason`. Unconfirmed default show-date guard failures move the effective mode to `OFF` and the slot orchestrator blocks heavy lanes. |
