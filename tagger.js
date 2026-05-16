@@ -537,10 +537,6 @@ async function airtableListAll({ table, view, fields }) {
   return out;
 }
 
-async function airtableListAllStrict({ table, view, fields }) {
-  return await airtableListAll({ table, view, fields });
-}
-
 async function airtableListSome({ table, view, fields, maxRecords, sortField, sortDirection = "desc" }) {
   const url = new URL(airtableUrl(table));
   if (view) url.searchParams.set("view", view);
@@ -1496,6 +1492,9 @@ async function findFocusedShowTarget() {
       error_message: message.slice(0, 240),
     });
   }
+
+  const heartbeatRows = rows.filter(row => boolValue(row.fields?.[FIELD_SHOW_TARGET_HEARTBEAT]));
+  if (heartbeatRows.length) rows = heartbeatRows;
 
   const selected = rows.filter(row => {
     const fields = row.fields || {};

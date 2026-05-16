@@ -51,6 +51,12 @@ function Resolve-HeartbeatTargetShow {
     try {
         $response = Invoke-RestMethod -Method Get -Uri $requestUri -Headers $headers
         $records = @($response.records)
+        if ([string]::IsNullOrWhiteSpace($ShowId)) {
+            $heartbeatRecords = @($records | Where-Object { $_.fields.heartbeat -eq $true })
+            if ($heartbeatRecords.Count -gt 0) {
+                $records = $heartbeatRecords
+            }
+        }
     }
     catch {
         $fallbackParts = @()
