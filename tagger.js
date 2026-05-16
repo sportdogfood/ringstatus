@@ -1331,6 +1331,12 @@ function archiveFieldPatch(tableName, fields = {}, desiredArchive) {
   return currentArchive === desiredArchive ? {} : { [FIELD_ARCHIVE]: desiredArchive };
 }
 
+function activeRelinkFieldPatch(tableName, fields = {}, decision = {}) {
+  if (tableName !== TABLE_WATCH_SCHEDULE) return {};
+  if (decision.action !== "keep" && decision.action !== "link") return {};
+  return boolValue(fields?.[FIELD_INACTIVE]) === true ? { [FIELD_INACTIVE]: false } : {};
+}
+
 function relinkFieldsForTable(tableName) {
   if (tableName !== TABLE_WATCH_SCHEDULE && tableName !== TABLE_WATCH_TRIPS) return [FIELD_LINK_HEARTBEAT];
   if (tableName === TABLE_WATCH_TRIPS) {
@@ -1403,11 +1409,16 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
   let linkedHeartbeat = 0;
   let markedArchive = 0;
   let clearedArchive = 0;
+  let clearedInactive = 0;
 
   for (const r of rows) {
     const decision = classifyRelinkForTable(tableName, r.fields || {}, heartbeatId, appCtx);
     const shouldArchive = decision.action === "skip" || decision.action === "clear";
     const archivePatch = archiveFieldPatch(tableName, r.fields || {}, shouldArchive);
+    const activePatch = activeRelinkFieldPatch(tableName, r.fields || {}, decision);
+    if (FIELD_INACTIVE in activePatch && activePatch[FIELD_INACTIVE] === false) {
+      clearedInactive++;
+    }
     if (FIELD_ARCHIVE in archivePatch) {
       if (archivePatch[FIELD_ARCHIVE]) markedArchive++;
       else clearedArchive++;
@@ -1415,10 +1426,11 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
 
     if (decision.action === "keep") {
       kept++;
-      if (Object.keys(archivePatch).length) {
+      const patch = { ...archivePatch, ...activePatch };
+      if (Object.keys(patch).length) {
         updates.push({
           id: r.id,
-          fields: archivePatch
+          fields: patch
         });
       }
       continue;
@@ -1449,7 +1461,8 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
       id: r.id,
       fields: {
         [FIELD_LINK_HEARTBEAT]: [heartbeatId],
-        ...archivePatch
+        ...archivePatch,
+        ...activePatch
       }
     });
   }
@@ -1466,6 +1479,7 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
     skipped_scope_mismatch: skippedScopeMismatch,
     marked_archive: markedArchive,
     cleared_archive: clearedArchive,
+    cleared_inactive: clearedInactive,
     kept
   };
 
