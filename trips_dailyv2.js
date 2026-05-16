@@ -18,6 +18,10 @@ const {
 const {
   fetchTextWithConfiguredTransport,
 } = require("./lib/sgl_fetch_adapter");
+const {
+  buildAirtableFieldMeta,
+  buildScopeFieldPatch,
+} = require("./lib/scope_fields");
 
 const BASE_URL = String(
   process.env.SGL_DATA_BASE_URL ||
@@ -608,6 +612,23 @@ async function fetchTableFieldSet(tableName) {
   return new Set(Array.isArray(table?.fields) ? table.fields.map((field) => String(field?.name || "").trim()).filter(Boolean) : []);
 }
 
+async function fetchTableWritableFieldSet(tableName) {
+  const response = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+  });
+
+  if (!response.ok) {
+    const body = await response.text().catch(() => "");
+    throw new Error(`Airtable meta failed (${response.status}) ${tableName}: ${body}`);
+  }
+
+  const json = await response.json().catch(() => ({}));
+  const table = Array.isArray(json?.tables)
+    ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
+    : null;
+  return buildAirtableFieldMeta(Array.isArray(table?.fields) ? table.fields : []).writableNames;
+}
+
 async function fetchScopeStatusChoices(tableName) {
   const response = await fetchWithRetry(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`, {
     headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
@@ -645,6 +666,11 @@ async function fetchLatestHeartbeat() {
       "shifted_to_next_day",
       "mode",
       "time",
+      "customer_id",
+      "focus_day",
+      "ring_collection",
+      "show_scope_key",
+      "show",
     ],
   });
 
@@ -671,6 +697,11 @@ async function fetchLatestHeartbeat() {
     shifted_to_next_day: boolValue(fields.shifted_to_next_day),
     mode: strOrNull(fields.mode),
     app_time: strOrNull(fields.time),
+    customer_id: numOrNull(fields.customer_id),
+    focus_day: toIsoDateOnly(fields.focus_day),
+    ring_collection: strOrNull(fields.ring_collection),
+    show_scope_key: strOrNull(fields.show_scope_key),
+    show_record_id: firstValue(fields.show) || null,
   };
 }
 

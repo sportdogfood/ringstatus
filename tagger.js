@@ -39,6 +39,9 @@ const {
 const {
   buildShowScopeKey,
 } = require("./lib/show_scope");
+const {
+  buildScopeFieldPatch,
+} = require("./lib/scope_fields");
 
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -154,6 +157,19 @@ const LOG_ACCEPTED_ENDPOINT = String(process.env.LOG_ACCEPTED_ENDPOINT || "1") =
 const LOG_TRANSITIONS       = String(process.env.LOG_TRANSITIONS || "1") === "1";
 const LOG_SHOWS_SYNC        = String(process.env.LOG_SHOWS_SYNC || "1") === "1";
 const LOG_RELINK_SUMMARY    = String(process.env.LOG_RELINK_SUMMARY || "0") === "1";
+
+const SCOPE_FIELD_RELINK_TABLES = new Set([
+  TABLE_ACTIVE_TENANTS,
+  TABLE_WATCH_RINGS,
+  TABLE_WATCH_TRIPS,
+]);
+const SCOPE_RELINK_FIELDS = new Set([
+  "customer_id",
+  FIELD_HEARTBEAT_FOCUS_DAY,
+  FIELD_RING_COLLECTION,
+  FIELD_SHOW_SCOPE_KEY,
+  FIELD_LINK_SHOW,
+]);
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -1373,6 +1389,11 @@ function activeRelinkFieldPatch(tableName, fields = {}, decision = {}) {
   return boolValue(fields?.[FIELD_INACTIVE]) === true ? { [FIELD_INACTIVE]: false } : {};
 }
 
+function relinkScopeFieldPatch(tableName, appCtx = null) {
+  if (!SCOPE_FIELD_RELINK_TABLES.has(tableName)) return {};
+  return buildScopeFieldPatch(SCOPE_RELINK_FIELDS, appCtx || {});
+}
+
 function relinkFieldsForTable(tableName) {
   if (tableName !== TABLE_WATCH_SCHEDULE && tableName !== TABLE_WATCH_TRIPS) return [FIELD_LINK_HEARTBEAT];
   if (tableName === TABLE_WATCH_TRIPS) {
@@ -1462,7 +1483,8 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
 
     if (decision.action === "keep") {
       kept++;
-      const patch = { ...archivePatch, ...activePatch };
+      const scopePatch = relinkScopeFieldPatch(tableName, appCtx);
+      const patch = { ...archivePatch, ...activePatch, ...scopePatch };
       if (Object.keys(patch).length) {
         updates.push({
           id: r.id,
@@ -1493,12 +1515,14 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
       continue;
     }
     linkedHeartbeat++;
+    const scopePatch = relinkScopeFieldPatch(tableName, appCtx);
     updates.push({
       id: r.id,
       fields: {
         [FIELD_LINK_HEARTBEAT]: [heartbeatId],
         ...archivePatch,
-        ...activePatch
+        ...activePatch,
+        ...scopePatch
       }
     });
   }

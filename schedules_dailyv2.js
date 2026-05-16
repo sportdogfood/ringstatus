@@ -12,6 +12,11 @@ const {
 const {
   fetchTextWithConfiguredTransport,
 } = require("./lib/sgl_fetch_adapter");
+const {
+  buildAirtableFieldMeta,
+  buildScopeFieldPatch,
+  writableFieldName,
+} = require("./lib/scope_fields");
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -1086,6 +1091,11 @@ async function fetchLatestHeartbeat() {
       "show_app_sql_end_date",
       "show_app_sql_start_date",
       "app_sql_date_source",
+      "customer_id",
+      "focus_day",
+      "ring_collection",
+      "show_scope_key",
+      "show",
     ],
   });
 
@@ -1166,23 +1176,12 @@ async function fetchTableFieldMeta(tableName) {
     ? json.tables.find((item) => String(item?.name || "").trim() === tableName)
     : null;
 
-  const names = new Set();
-  const actualByTrim = new Map();
-
-  for (const field of Array.isArray(table?.fields) ? table.fields : []) {
-    const actualName = String(field?.name || "");
-    const trimmedName = actualName.trim();
-    if (!trimmedName) continue;
-    names.add(trimmedName);
-    if (!actualByTrim.has(trimmedName)) actualByTrim.set(trimmedName, actualName);
-  }
-
-  return { names, actualByTrim };
+  return buildAirtableFieldMeta(Array.isArray(table?.fields) ? table.fields : []);
 }
 
 function resolveFieldName(fieldMeta, logicalName) {
   if (!fieldMeta || !logicalName) return null;
-  return fieldMeta.actualByTrim?.get(logicalName) || (fieldMeta.names?.has(logicalName) ? logicalName : null);
+  return writableFieldName(fieldMeta, logicalName);
 }
 
 function setResolvedField(fields, fieldMeta, logicalName, value) {
@@ -1271,6 +1270,11 @@ function buildBaseHeartbeatContext(record) {
     current_show_app_sql_end_date: strOrNull(fields.show_app_sql_end_date),
     current_show_app_name: strOrNull(fields.show_app_name),
     current_app_sql_date_source: strOrNull(fields.app_sql_date_source),
+    customer_id: numOrNull(fields.customer_id),
+    focus_day: toIsoDateOnly(fields.focus_day),
+    ring_collection: strOrNull(fields.ring_collection),
+    show_scope_key: strOrNull(fields.show_scope_key),
+    show_record_id: firstValue(fields.show) || null,
   };
 }
 
@@ -1371,6 +1375,11 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
     show_app_name: scheduleInfo.show_app_name,
     app_sql_date_source: appSqlDateSource,
     candidate_app_sql_date: candidateAppSqlDate,
+    customer_id: baseContext.customer_id,
+    focus_day: baseContext.focus_day,
+    ring_collection: baseContext.ring_collection,
+    show_scope_key: baseContext.show_scope_key,
+    show_record_id: baseContext.show_record_id,
   };
 }
 
@@ -1430,6 +1439,11 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
     candidate_app_sql_date: candidateAppSqlDate,
     scope_resolution_source: "heartbeat_current_fields_fallback",
     scope_resolution_error: strOrNull(reason),
+    customer_id: baseContext.customer_id,
+    focus_day: baseContext.focus_day,
+    ring_collection: baseContext.ring_collection,
+    show_scope_key: baseContext.show_scope_key,
+    show_record_id: baseContext.show_record_id,
   };
 }
 
@@ -1596,6 +1610,7 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
     fields.entry_number,
   ]);
   if (fullNestingKey) setResolvedField(fields, watchScheduleFieldMeta, "full_nesting_key", fullNestingKey);
+  Object.assign(fields, buildScopeFieldPatch(watchScheduleFieldMeta, scope));
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
   fields.run_tag = scope.app_sql_datev2;
@@ -1644,6 +1659,7 @@ function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue, watchSche
     run_tag: scope.app_sql_datev2,
     record_state: "existing",
   };
+  Object.assign(fields, buildScopeFieldPatch(watchScheduleFieldMeta, scope));
   setResolvedField(fields, watchScheduleFieldMeta, "inactive", true);
   if (scopeStatusValue) fields.scope_status = scopeStatusValue;
   return fields;
