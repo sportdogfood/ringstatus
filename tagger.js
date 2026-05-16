@@ -1140,7 +1140,7 @@ async function buildAppContext(clock) {
 
   const decision = clock.showDecision || null;
   const heartbeatTargetAppSqlDate = heartbeatTargetDateForContext(clock.sqlDate, candidateAppSqlDate, decision);
-  if (heartbeatTargetAppSqlDate) {
+  if (decision || heartbeatTargetAppSqlDate) {
     appShowId = heartbeatTargetShowId(decision);
     const sortedDates = Array.from(heartbeatTargetDateSet(decision)).sort();
     showAppSqlStartDate = decision?.start_date || sortedDates[0] || heartbeatTargetAppSqlDate;
@@ -1156,11 +1156,9 @@ async function buildAppContext(clock) {
         appSqlDate = defaultAppSqlDateIs;
         appSqlDateSource = "show_focus_default_day";
       } else {
-        appSqlDate = shiftedToNextDay
-          ? (addDaysSql(decision.focus_day, 1) || decision.focus_day)
-          : decision.focus_day;
+        appSqlDate = decision.focus_day;
         defaultAppSqlDateIs = appSqlDate;
-        appSqlDateSource = shiftedToNextDay ? "show_focus_shifted_day" : "show_focus_day";
+        appSqlDateSource = "show_focus_day";
       }
       if (!sqlDateInRange(appSqlDate, decision.start_date, decision.end_date)) {
         throw new Error(`Focused show ${appShowId} resolved app_sql_date ${appSqlDate} outside ${decision.start_date}..${decision.end_date}`);
