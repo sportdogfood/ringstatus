@@ -743,18 +743,28 @@ function buildProfilewiseClassTillsConfigs(alertConfigs, profiles) {
   return out;
 }
 
-function buildDefaultClassTillsConfigs(alertConfigs, profiles) {
+function firstClassTillsTrigger(config, triggerById) {
+  for (const triggerId of config?.triggerTagIds || []) {
+    const trigger = triggerById?.get(triggerId);
+    if (trigger) return trigger;
+  }
+  return null;
+}
+
+function buildDefaultClassTillsConfigs(alertConfigs, profiles, triggerById = new Map()) {
   const out = [];
   for (const config of (alertConfigs || []).filter((item) => !item.isProfilewise)) {
     if (!config.milestoneSlot) continue;
     const milestoneValue = numOrNull(config.alertMilestoneValue);
-    if (milestoneValue === null) continue;
+    const trigger = firstClassTillsTrigger(config, triggerById);
+    if (milestoneValue === null && !trigger) continue;
     for (const profile of profiles || []) {
       if (!profileEligibleForClassTills(profile)) continue;
       if (!profileMatchesClassTillsTenant(profile, config)) continue;
       out.push({
         ...config,
         profile,
+        trigger,
         tenantProfileKey: buildTenantProfileKey(profile),
         milestoneValue,
       });
@@ -778,10 +788,10 @@ function classTillsCandidateWins(candidate, current) {
   return Boolean(candidate?.isProfilewise) && !current?.isProfilewise;
 }
 
-function buildClassTillsProfileConfigs(alertConfigs, profiles) {
+function buildClassTillsProfileConfigs(alertConfigs, profiles, triggerById = new Map()) {
   const ranked = new Map();
   const candidates = [
-    ...buildDefaultClassTillsConfigs(alertConfigs, profiles),
+    ...buildDefaultClassTillsConfigs(alertConfigs, profiles, triggerById),
     ...buildProfilewiseClassTillsConfigs(alertConfigs, profiles),
   ];
   for (const candidate of candidates) {
@@ -791,6 +801,11 @@ function buildClassTillsProfileConfigs(alertConfigs, profiles) {
     if (classTillsCandidateWins(candidate, current)) ranked.set(key, candidate);
   }
   return Array.from(ranked.values());
+}
+
+function classTillsConfigMatches(config, computation, triggerContext) {
+  if (config?.trigger) return evaluateTriggerTag(config.trigger, triggerContext);
+  return isInDynamicMilestoneRange(computation.minsTillStart, config?.milestoneValue);
 }
 
 function normalizeWatchTripRow(row) {
@@ -1664,10 +1679,21 @@ async function main() {
       .map((trigger) => [trigger.recordId, trigger])
   );
   const dynamicClassTillsAlertConfigs = classTillsAlertConfigs.filter((config) => config.milestoneSlot);
-  const dynamicClassTillsProfileConfigs = buildClassTillsProfileConfigs(dynamicClassTillsAlertConfigs, classTillsProfiles);
+  const dynamicClassTillsProfileConfigs = buildClassTillsProfileConfigs(
+    dynamicClassTillsAlertConfigs,
+    classTillsProfiles,
+    classTillsTriggerById
+  );
   const useDynamicClassTills = dynamicClassTillsProfileConfigs.length > 0;
+  const defaultClassTillsTriggerIds = new Set(
+    dynamicClassTillsAlertConfigs
+      .filter((config) => !config.isProfilewise)
+      .flatMap((config) => Array.from(config.triggerTagIds || []))
+  );
   const activeTriggerTags = rawActiveTriggerTags.filter((trigger) => (
-    !classTillsTriggerIdsAll.has(trigger.recordId) || (!useDynamicClassTills && classTillsAlertByTriggerId.has(trigger.recordId))
+    !classTillsTriggerIdsAll.has(trigger.recordId) ||
+    defaultClassTillsTriggerIds.has(trigger.recordId) ||
+    (!useDynamicClassTills && classTillsAlertByTriggerId.has(trigger.recordId))
   ));
   const classTillsTriggerTags = useDynamicClassTills
     ? []
@@ -1741,6 +1767,8 @@ async function main() {
       if (groupRow && computation.manualTimeOverride && strOrNull(groupRow.estimated_start_time)) {
         manualTimeOverridePreserved += 1;
       }
+      const priorLogFields = priorScheduleLogByWatchId.get(row.recordId) || null;
+      const triggerContext = buildTriggerEvaluationContext(row, groupRow, heartbeatContext, computation, priorLogFields);
 
       const logFields = buildScheduleLogFields(
         row,
@@ -1751,7 +1779,7 @@ async function main() {
         skipReason,
         scheduleLogFieldSet,
         activeTriggerTags,
-        priorScheduleLogByWatchId.get(row.recordId) || null
+        priorLogFields
       );
       triggerHits += activeTriggerTags.filter((trigger) => {
         const outputField = strOrNull(trigger?.output_field);
@@ -1770,14 +1798,14 @@ async function main() {
         milestoneValue: null,
       }));
       const dynamicClassTillsEvents = dynamicClassTillsProfileConfigs.filter((config) => {
-        return isInDynamicMilestoneRange(computation.minsTillStart, config.milestoneValue);
+        return classTillsConfigMatches(config, computation, triggerContext);
       }).map((config) => {
-        const triggerId = Array.from(config.triggerTagIds)[0] || null;
+        const triggerId = config.trigger?.recordId || Array.from(config.triggerTagIds)[0] || null;
         const tripIds = qualifiedTripIds(row, config, watchTripById);
         if (!tripIds.length) return null;
         return {
           dynamic: true,
-          trigger: triggerId ? classTillsTriggerById.get(triggerId) || { recordId: triggerId } : null,
+          trigger: config.trigger || (triggerId ? classTillsTriggerById.get(triggerId) || { recordId: triggerId } : null),
           activeAlertConfig: config,
           milestoneSlot: config.milestoneSlot,
           milestoneValue: config.milestoneValue,

@@ -48,6 +48,12 @@ assert.ok(
 );
 
 assert.ok(
+  source.includes("firstClassTillsTrigger") &&
+    source.includes("classTillsConfigMatches"),
+  "class_tills default configs must evaluate their linked trigger_tags range"
+);
+
+assert.ok(
   !source.includes("alert_milestone1 (from ww_tenants)") &&
     !source.includes("alert_milestone2 (from ww_tenants)"),
   "class_tills must not request removed active_alerts rollup field names"
