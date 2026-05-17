@@ -1370,13 +1370,17 @@ function relinkSupportsArchive(tableName) {
   return tableName === TABLE_WATCH_SCHEDULE || tableName === TABLE_WATCH_TRIPS;
 }
 
-function recordIsScopeInactive(tableName, fields = {}) {
-  if (boolValue(fields?.[FIELD_ARCHIVE]) === true) return true;
-  if (strOrNull(airtableValueName(fields?.dropped_at))) return true;
+function scopeInactiveReason(tableName, fields = {}) {
+  if (boolValue(fields?.[FIELD_ARCHIVE]) === true) return "archive";
+  if (strOrNull(airtableValueName(fields?.dropped_at))) return "dropped";
   const scopeStatus = strOrNull(airtableValueName(fields?.[FIELD_SCOPE_STATUS]));
-  if (scopeStatus && scopeStatus.toLowerCase() === "dropped") return true;
-  if (boolValue(fields?.[FIELD_INACTIVE]) === true) return true;
-  return false;
+  if (scopeStatus && scopeStatus.toLowerCase() === "dropped") return "dropped";
+  if (boolValue(fields?.[FIELD_INACTIVE]) === true) return "inactive";
+  return null;
+}
+
+function recordIsScopeInactive(tableName, fields = {}) {
+  return scopeInactiveReason(tableName, fields) !== null;
 }
 
 function archiveFieldPatch(tableName, fields = {}, desiredArchive) {
@@ -1441,13 +1445,16 @@ function classifyRelinkForTable(tableName, fields, heartbeatId, appCtx) {
     const alreadyCorrect = current.length === 1 && current[0] === heartbeatId;
     return { action: alreadyCorrect ? "keep" : "link", current };
   }
-  if (recordIsScopeInactive(tableName, fields)) {
+  const inactiveReason = scopeInactiveReason(tableName, fields);
+  if (inactiveReason) {
     const current = currentHeartbeatLinkIds(fields?.[FIELD_LINK_HEARTBEAT]);
     return {
       action: current.length ? "clear" : "skip",
       current,
       matches_scope: false,
       scope_inactive: true,
+      inactive_reason: inactiveReason,
+      auto_archive: inactiveReason !== "dropped",
     };
   }
   if (tableName === TABLE_WATCH_TRIPS) {
@@ -1474,8 +1481,8 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
 
   for (const r of rows) {
     const decision = classifyRelinkForTable(tableName, r.fields || {}, heartbeatId, appCtx);
-    const shouldArchive = decision.action === "skip" || decision.action === "clear";
-    const archivePatch = archiveFieldPatch(tableName, r.fields || {}, shouldArchive);
+    const shouldArchive = (decision.action === "skip" || decision.action === "clear") && decision.auto_archive !== false;
+    const archivePatch = decision.auto_archive === false ? {} : archiveFieldPatch(tableName, r.fields || {}, shouldArchive);
     const activePatch = activeRelinkFieldPatch(tableName, r.fields || {}, decision);
     if (FIELD_INACTIVE in activePatch && activePatch[FIELD_INACTIVE] === false) {
       clearedInactive++;
