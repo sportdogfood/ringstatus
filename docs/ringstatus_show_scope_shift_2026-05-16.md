@@ -412,6 +412,16 @@ Confirmed on 2026-05-16:
 - `watch_trips.LiveClassData` is deprecated/reference-only
 - `watch_trips.classsignup_url` was populated, but current formula output was malformed and not operational
 
+## Nightly Handoff Runbook
+
+Before any future DAY/NIGHT transition diagnosis, cleanup, or live write, use:
+
+```text
+docs/ringstatus_nightly_handoff_runbook_2026-05-16.md
+```
+
+This runbook is now the preflight checklist for repeated nightly workflow issues. It records the 2026-05-16 -> 2026-05-17 `watch_trips` incident, including the exact stale keys that remained active because they were hidden from the writer view during the prior cleanup window and then protected by the current-date cross-date drop guard.
+
 ## Open Work
 
 1. Make all heavy lanes derive customer/show/day scope from `show` or heartbeat copied fields, not hardcoded defaults.
@@ -420,3 +430,4 @@ Confirmed on 2026-05-16:
 4. Decide whether `classsignup_url` remains reference-only or gets a tested operational role.
 5. Remove or ignore deprecated `LiveClassData` in downstream app/feed surfaces.
 6. Add recurrent validation that every active downstream record has `customer_id`, `focus_day`, `ring_collection`, `show_scope_key`, and `show`.
+7. Add a dedicated stale prior-date `watch_trips` cleanup lane with explicit `show_id`, `customer_id`, and `cleanup_date` inputs; do not rely on the current focused-date trip refresh to clean prior-date rows.

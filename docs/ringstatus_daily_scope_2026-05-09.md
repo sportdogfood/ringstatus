@@ -51,6 +51,14 @@ The full contract for this shift is documented in:
 docs/ringstatus_show_scope_shift_2026-05-16.md
 ```
 
+Nightly handoff and repeated transition troubleshooting must start with:
+
+```text
+docs/ringstatus_nightly_handoff_runbook_2026-05-16.md
+```
+
+The handoff runbook is the required preflight for the known DAY/NIGHT trouble pattern: focused-date refresh, prior-date stale rows, heartbeat/view filter drift, and cleanup separation.
+
 Endpoint construction must use focused `customer_id`, not hardcoded customer `15`, after the focused show has been resolved.
 
 `watch_trips.getLiveClassData` is the operational liveclass endpoint field. `LiveClassData` is deprecated/reference-only. `classsignup_url` is evidence/reference unless a future scope update promotes it with tests and payload-shape validation.
