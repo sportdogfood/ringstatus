@@ -193,16 +193,18 @@ function joinKeyParts(parts) {
   return parts.map(keyPart).join("|");
 }
 
-function buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence }) {
-  return {
-    scheduleKey: joinKeyParts([sid, sqlDate, ringNumber, classNumber, classSequence]),
-    scheduleShort: joinKeyParts([ringNumber, classNumber, classSequence]),
-  };
+function joinKeyPartsWithOptional(requiredParts, optionalParts = []) {
+  const base = joinKeyParts(requiredParts);
+  if (!base) return "";
+  const extras = optionalParts.map(keyPart).filter(Boolean);
+  return extras.length ? [base, ...extras].join("|") : base;
 }
 
-function classSequenceFromKey(key) {
-  const parts = String(key || "").split("|");
-  return parts.length >= 5 ? keyPart(parts[4]) : "";
+function buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, tieBreaker }) {
+  return {
+    scheduleKey: joinKeyPartsWithOptional([sid, sqlDate, ringNumber, classNumber], [tieBreaker]),
+    scheduleShort: joinKeyPartsWithOptional([ringNumber, classNumber], [tieBreaker]),
+  };
 }
 
 function chunk(items, size) {
@@ -1210,6 +1212,43 @@ function scheduleRowKeyFromFields(fields = {}) {
   return normalizeKey(pickFirst(fields.class_groupxclasses_id, fields.class_id));
 }
 
+function scheduleRowCandidateKeysFromFields(fields = {}) {
+  const keys = new Set();
+  const add = (value) => {
+    const key = normalizeKey(value);
+    if (key) keys.add(key);
+  };
+
+  const scheduleKey = normalizeKey(firstValue(fields.schedule_key));
+  add(scheduleKey);
+  const scheduleKeyParts = scheduleKey ? scheduleKey.split("|").map(keyPart) : [];
+  if (scheduleKeyParts.length >= 4) add(scheduleKeyParts.slice(0, 4).join("|"));
+
+  const baseParts = buildScheduleKeyParts({
+    sid: pickFirst(fields.show_id, fields.app_show_idv2, fields.app_sid),
+    sqlDate: pickFirst(toIsoDateOnly(fields.schedule_show_datev2), fields.app_sql_datev2, fields.sql_date, fields.schedule_date),
+    ringNumber: fields.ring_number,
+    classNumber: fields.class_number,
+  });
+  add(baseParts.scheduleKey);
+  const realTieBreaker = keyPart(fields.class_group_sequence);
+  if (realTieBreaker) {
+    add(buildScheduleKeyParts({
+      sid: pickFirst(fields.show_id, fields.app_show_idv2, fields.app_sid),
+      sqlDate: pickFirst(toIsoDateOnly(fields.schedule_show_datev2), fields.app_sql_datev2, fields.sql_date, fields.schedule_date),
+      ringNumber: fields.ring_number,
+      classNumber: fields.class_number,
+      tieBreaker: realTieBreaker,
+    }).scheduleKey);
+  }
+
+  const classGroupId = numOrNull(fields.class_group_id);
+  const classNumber = numOrNull(fields.class_number);
+  if (classGroupId !== null && classNumber !== null) add(`${classGroupId}_${classNumber}`);
+  add(pickFirst(fields.class_groupxclasses_id, fields.class_id));
+  return [...keys];
+}
+
 function splitNumericStrings(value) {
   const raw = Array.isArray(value) ? value : String(value || "").split(",");
   return raw
@@ -1587,28 +1626,27 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
     }
     setResolvedField(fields, watchScheduleFieldMeta, "latest_ingested_at", pickFirst(groupsLiveDetail.ingested_at, groupsLiveDetail.curr_updated_at));
   }
-  const classSequence = keyPart(normalizedRow.class_sequence) || classSequenceFromKey(fields.schedule_key) || "1";
+  const scheduleTieBreaker = keyPart(normalizedRow.schedule_key_tie_breaker);
   const scheduleKeys = buildScheduleKeyParts({
     sid: pickFirst(fields.show_id, scope.app_show_idv2),
     sqlDate: pickFirst(resolvedScheduledDate, fields.app_sql_datev2, scope.app_sql_datev2),
     ringNumber: fields.ring_number,
     classNumber: fields.class_number,
-    classSequence,
+    tieBreaker: scheduleTieBreaker,
   });
   if (scheduleKeys.scheduleKey) setResolvedField(fields, watchScheduleFieldMeta, "schedule_key", scheduleKeys.scheduleKey);
   if (scheduleKeys.scheduleShort) setResolvedField(fields, watchScheduleFieldMeta, "schedule_short", scheduleKeys.scheduleShort);
-  setResolvedField(fields, watchScheduleFieldMeta, "class_sequence", classSequence);
-  const fullNestingKey = joinKeyParts([
+  const fullNestingParts = [
     pickFirst(fields.show_id, scope.app_show_idv2),
     pickFirst(resolvedScheduledDate, fields.app_sql_datev2, scope.app_sql_datev2),
     fields.ring_number,
     fields.estimated_start_time,
     fields.class_group_id,
     fields.class_number,
-    classSequence,
-    fields.pid,
-    fields.entry_number,
-  ]);
+  ];
+  if (scheduleTieBreaker) fullNestingParts.push(scheduleTieBreaker);
+  fullNestingParts.push(fields.pid, fields.entry_number);
+  const fullNestingKey = joinKeyParts(fullNestingParts);
   if (fullNestingKey) setResolvedField(fields, watchScheduleFieldMeta, "full_nesting_key", fullNestingKey);
   Object.assign(fields, buildScopeFieldPatch(watchScheduleFieldMeta, scope));
   fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
@@ -2156,10 +2194,10 @@ async function runDaily() {
 
   const groupedExisting = new Map();
   for (const row of existingRows) {
-    const key = scheduleRowKeyFromFields(row?.fields || {});
-    if (!key) continue;
-    if (!groupedExisting.has(key)) groupedExisting.set(key, []);
-    groupedExisting.get(key).push(row);
+    for (const key of scheduleRowCandidateKeysFromFields(row?.fields || {})) {
+      if (!groupedExisting.has(key)) groupedExisting.set(key, []);
+      groupedExisting.get(key).push(row);
+    }
   }
 
   const existingByKey = new Map();
@@ -2182,25 +2220,46 @@ async function runDaily() {
   const keepKeySet = new Set();
   const keepRecordIdSet = new Set();
   const actualScheduleShowDateByKey = new Map();
-  const classSequenceCounters = new Map();
+  const scheduleBaseKeyCounts = new Map();
+  for (const row of scopedRows) {
+    const seedFields = row?.fields || {};
+    const rowBaseKey = buildScheduleKeyParts({
+      sid: pickFirst(seedFields.show_id, scope.app_show_idv2),
+      sqlDate: pickFirst(toIsoDateOnly(seedFields.schedule_show_datev2), seedFields.app_sql_datev2, scope.app_sql_datev2),
+      ringNumber: seedFields.ring_number,
+      classNumber: seedFields.class_number,
+    }).scheduleKey || normalizeKey(row.key);
+    if (!rowBaseKey) continue;
+    scheduleBaseKeyCounts.set(rowBaseKey, (scheduleBaseKeyCounts.get(rowBaseKey) || 0) + 1);
+  }
+  const skippedMissingScheduleTieBreaker = [];
 
   for (const row of scopedRows) {
     const seedFields = row?.fields || {};
-    const sequenceGroupKey = joinKeyParts([
-      scope.app_show_idv2,
-      scope.app_sql_datev2,
-      seedFields.ring_number,
-      seedFields.class_number,
-    ]) || normalizeKey(row.key);
-    const nextSequence = (classSequenceCounters.get(sequenceGroupKey) || 0) + 1;
-    classSequenceCounters.set(sequenceGroupKey, nextSequence);
-    row.class_sequence = String(nextSequence);
+    const baseScheduleKey = buildScheduleKeyParts({
+      sid: pickFirst(seedFields.show_id, scope.app_show_idv2),
+      sqlDate: pickFirst(toIsoDateOnly(seedFields.schedule_show_datev2), seedFields.app_sql_datev2, scope.app_sql_datev2),
+      ringNumber: seedFields.ring_number,
+      classNumber: seedFields.class_number,
+    }).scheduleKey || normalizeKey(row.key);
+    const needsTieBreaker = baseScheduleKey && (scheduleBaseKeyCounts.get(baseScheduleKey) || 0) > 1;
+    const scheduleTieBreaker = needsTieBreaker ? keyPart(seedFields.class_group_sequence) : "";
+    if (needsTieBreaker && !scheduleTieBreaker) {
+      skippedMissingScheduleTieBreaker.push({
+        base_key: baseScheduleKey,
+        class_number: seedFields.class_number ?? null,
+        ring_number: seedFields.ring_number ?? null,
+        class_group_id: seedFields.class_group_id ?? null,
+      });
+      continue;
+    }
+    row.schedule_key_tie_breaker = scheduleTieBreaker;
     const rowKeyParts = buildScheduleKeyParts({
       sid: pickFirst(seedFields.show_id, scope.app_show_idv2),
       sqlDate: pickFirst(toIsoDateOnly(seedFields.schedule_show_datev2), seedFields.app_sql_datev2, scope.app_sql_datev2),
       ringNumber: seedFields.ring_number,
       classNumber: seedFields.class_number,
-      classSequence: row.class_sequence,
+      tieBreaker: scheduleTieBreaker,
     });
     const legacyKey = normalizeKey(row.key);
     const key = normalizeKey(rowKeyParts.scheduleKey || legacyKey);
@@ -2293,6 +2352,8 @@ async function runDaily() {
     heartbeat_patch_fields: heartbeatChangedFields,
     row_count: scopedRows.length,
     filtered_out_scheduled_date_mismatch: chosen.rows.length - scopedRows.length,
+    skipped_missing_schedule_tie_breaker: skippedMissingScheduleTieBreaker.length,
+    skipped_missing_schedule_tie_breaker_samples: skippedMissingScheduleTieBreaker.slice(0, 10),
     dropped_due_to_schedule_show_date_mismatch: droppedForScheduleShowDateMismatch,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,

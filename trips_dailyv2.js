@@ -180,24 +180,32 @@ function joinKeyParts(parts) {
   return parts.map(keyPart).join("|");
 }
 
-function classSequenceFromKey(key) {
+function joinKeyPartsWithOptional(requiredParts, optionalParts = []) {
+  const base = joinKeyParts(requiredParts);
+  if (!base) return "";
+  const extras = optionalParts.map(keyPart).filter(Boolean);
+  return extras.length ? [base, ...extras].join("|") : base;
+}
+
+function scheduleTieBreakerFromKey(key) {
   const parts = String(key || "").split("|");
   return parts.length >= 5 ? keyPart(parts[4]) : "";
 }
 
-function buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence }) {
+function buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, tieBreaker }) {
   return {
-    scheduleKey: joinKeyParts([sid, sqlDate, ringNumber, classNumber, classSequence]),
-    scheduleShort: joinKeyParts([ringNumber, classNumber, classSequence]),
+    scheduleKey: joinKeyPartsWithOptional([sid, sqlDate, ringNumber, classNumber], [tieBreaker]),
+    scheduleShort: joinKeyPartsWithOptional([ringNumber, classNumber], [tieBreaker]),
   };
 }
 
-function buildTripKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence, pid, entryNumber, time, cgid }) {
+function buildTripKeyParts({ sid, sqlDate, ringNumber, classNumber, tieBreaker, pid, entryNumber, time, cgid }) {
+  const scheduleKeys = buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, tieBreaker });
   return {
-    ...buildScheduleKeyParts({ sid, sqlDate, ringNumber, classNumber, classSequence }),
-    tripsKey: joinKeyParts([sid, sqlDate, ringNumber, classNumber, classSequence, pid, entryNumber]),
-    tripsShortKey: joinKeyParts([classNumber, classSequence, pid, entryNumber]),
-    fullNestingKey: joinKeyParts([sid, sqlDate, ringNumber, time, cgid, classNumber, classSequence, pid, entryNumber]),
+    ...scheduleKeys,
+    tripsKey: joinKeyPartsWithOptional([sid, sqlDate, ringNumber, classNumber, pid, entryNumber], [tieBreaker]),
+    tripsShortKey: joinKeyPartsWithOptional([classNumber, pid, entryNumber], [tieBreaker]),
+    fullNestingKey: joinKeyPartsWithOptional([sid, sqlDate, ringNumber, time, cgid, classNumber, pid, entryNumber], [tieBreaker]),
   };
 }
 
@@ -209,6 +217,44 @@ function tripRowKeyFromFields(fields = {}) {
     classNumber: firstValue(fields.class_number),
     entryNumber: firstValue(fields.entry_number),
   }) || normalizeKey(firstValue(fields.entryxclasses_uuid));
+}
+
+function tripRowCandidateKeysFromFields(fields = {}) {
+  const keys = new Set();
+  const add = (value) => {
+    const key = normalizeKey(value);
+    if (key) keys.add(key);
+  };
+
+  const tripsKey = normalizeKey(firstValue(fields.trips_key));
+  add(tripsKey);
+  const parts = tripsKey ? tripsKey.split("|").map(keyPart) : [];
+  if (parts.length === 7) add([...parts.slice(0, 4), ...parts.slice(5)].join("|"));
+
+  const common = {
+    sid: pickFirst(fields.show_id, fields.app_show_id, fields.app_show_idv2, fields.app_sid),
+    sqlDate: pickFirst(
+      toIsoDateOnly(fields.schedule_show_datev2),
+      toIsoDateOnly(fields.scheduled_date),
+      fields.show_date,
+      fields.app_sql_date,
+      fields.app_sql_datev2
+    ),
+    ringNumber: fields.ring_number,
+    classNumber: fields.class_number,
+    pid: fields.pid,
+    entryNumber: fields.entry_number,
+  };
+  add(buildTripKeyParts(common).tripsKey);
+  const realTieBreaker = keyPart(fields.class_group_sequence);
+  if (realTieBreaker) add(buildTripKeyParts({ ...common, tieBreaker: realTieBreaker }).tripsKey);
+
+  add(buildPeopleTripKey({
+    classNumber: firstValue(fields.class_number),
+    entryNumber: firstValue(fields.entry_number),
+  }));
+  add(firstValue(fields.entryxclasses_uuid));
+  return [...keys];
 }
 
 function normalizePidToken(value) {
@@ -1885,13 +1931,13 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   const resolvedScheduleDate = resolveTripScheduleDate(row);
   const resolvedScheduledDate = resolvedScheduleDate;
   const isActiveForScope = resolvedScheduledDate === heartbeat.app_sql_date;
-  const classSequence = classSequenceFromKey(row.schedule_key);
+  const scheduleTieBreaker = scheduleTieBreakerFromKey(row.schedule_key);
   const tripKeys = buildTripKeyParts({
     sid: heartbeat.app_show_id,
     sqlDate: resolvedScheduleDate || heartbeat.app_sql_date,
     ringNumber: row.ring_number,
     classNumber: row.class_number,
-    classSequence,
+    tieBreaker: scheduleTieBreaker,
     pid: row.pid,
     entryNumber: row.entry_number,
     time: row.estimated_start_time,
@@ -2445,10 +2491,10 @@ async function main() {
 
   const groupedExisting = new Map();
   for (const row of existingRows) {
-    const key = tripRowKeyFromFields(row?.fields || {});
-    if (!key) continue;
-    if (!groupedExisting.has(key)) groupedExisting.set(key, []);
-    groupedExisting.get(key).push(row);
+    for (const key of tripRowCandidateKeysFromFields(row?.fields || {})) {
+      if (!groupedExisting.has(key)) groupedExisting.set(key, []);
+      groupedExisting.get(key).push(row);
+    }
   }
 
   const existingByKey = new Map();
@@ -2467,12 +2513,20 @@ async function main() {
   };
   const keepKeySet = new Set();
   const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
-  let skippedMissingScheduleSequence = 0;
+  let skippedMissingScheduleTieBreaker = 0;
+  const skippedMissingScheduleTieBreakerSamples = [];
 
   for (const row of scopedRows) {
-    const classSequence = classSequenceFromKey(row.schedule_key);
-    if (!classSequence) {
-      skippedMissingScheduleSequence += 1;
+    const scheduleTieBreaker = scheduleTieBreakerFromKey(row.schedule_key);
+    if (row.schedule_key && String(row.schedule_key).split("|").length > 5 && !scheduleTieBreaker) {
+      skippedMissingScheduleTieBreaker += 1;
+      if (skippedMissingScheduleTieBreakerSamples.length < 10) {
+        skippedMissingScheduleTieBreakerSamples.push({
+          schedule_key: row.schedule_key,
+          class_number: row.class_number ?? null,
+          entry_number: row.entry_number ?? null,
+        });
+      }
       continue;
     }
     const tripKeys = buildTripKeyParts({
@@ -2480,7 +2534,7 @@ async function main() {
       sqlDate: resolveTripScheduleDate(row) || heartbeat.app_sql_date,
       ringNumber: row.ring_number,
       classNumber: row.class_number,
-      classSequence,
+      tieBreaker: scheduleTieBreaker,
       pid: row.pid,
       entryNumber: row.entry_number,
       time: row.estimated_start_time,
