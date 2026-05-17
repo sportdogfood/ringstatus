@@ -75,8 +75,7 @@ assert.strictEqual(
   "skip"
 );
 
-assert.strictEqual(
-  classifyWatchTripsHeartbeatRelink(
+const droppedDecision = classifyWatchTripsHeartbeatRelink(
     {
       app_show_idv2: 200000062,
       schedule_show_datev2: "2026-05-28",
@@ -85,8 +84,27 @@ assert.strictEqual(
     },
     appCtx,
     "recNew"
-  ).action,
-  "clear"
 );
+assert.strictEqual(droppedDecision.action, "clear");
+assert.strictEqual(droppedDecision.inactive_reason, "dropped");
+assert.strictEqual(
+  droppedDecision.auto_archive,
+  false,
+  "dropped_at is a review signal; archive must be checked manually for dropped rows"
+);
+
+const inactiveDecision = classifyWatchTripsHeartbeatRelink(
+  {
+    app_show_idv2: 200000062,
+    schedule_show_datev2: "2026-05-28",
+    inactive: true,
+    heartbeat: ["recOldInactive"],
+  },
+  appCtx,
+  "recNew"
+);
+assert.strictEqual(inactiveDecision.action, "clear");
+assert.strictEqual(inactiveDecision.inactive_reason, "inactive");
+assert.strictEqual(inactiveDecision.auto_archive, true);
 
 console.log("watch_trips_scope_relink tests passed");
