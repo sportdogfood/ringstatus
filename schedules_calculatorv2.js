@@ -566,6 +566,17 @@ function resolveClassTillsMilestoneSlot(alertId) {
   return null;
 }
 
+function resolveActiveAlertMilestoneValue(fields, milestoneSlot) {
+  const rowDefault = firstNumberValue(pickFirst(
+    fields?.alert_milestone_value,
+    fields?.default_milestone_value
+  ));
+  if (rowDefault !== null) return rowDefault;
+  if (milestoneSlot === "alert_milestone1") return firstNumberValue(fields?.alert_milestone1);
+  if (milestoneSlot === "alert_milestone2") return firstNumberValue(fields?.alert_milestone2);
+  return null;
+}
+
 function dynamicMilestoneRange(milestoneValue) {
   const milestone = numOrNull(milestoneValue);
   if (milestone === null) return null;
@@ -583,40 +594,49 @@ function isInDynamicMilestoneRange(currentValue, milestoneValue) {
 }
 
 async function fetchActiveAlertConfigs(alertFamily) {
+  const fieldSet = await fetchTableFieldSet(TABLE_ACTIVE_ALERTS);
+  const fields = [
+    "alert_id",
+    "active",
+    "rec_name",
+    "trigger_tags",
+    "alert_templates",
+    "active_tenants",
+    "ww_tenants",
+    "ww_profiles",
+    "is_profilewise",
+    "alert_priority",
+    "alert_milestone_value",
+    "default_milestone_value",
+    "alert_milestone1",
+    "alert_milestone2",
+    "total",
+  ].filter((fieldName) => fieldSet.has(fieldName));
+
   const rows = await airtableList(TABLE_ACTIVE_ALERTS, {
     view: VIEW_ACTIVE_ALERTS,
     maxRecords: MAX_RECORDS,
-    "fields[]": [
-      "alert_id",
-      "active",
-      "rec_name",
-      "trigger_tags",
-      "alert_templates",
-      "active_tenants",
-      "ww_tenants",
-      "ww_profiles",
-      "alert_milestone1 (from ww_tenants)",
-      "alert_milestone2 (from ww_tenants)",
-      "total",
-    ],
+    "fields[]": fields,
   });
 
   return rows
     .map((row) => {
       const fields = row.fields || {};
+      const milestoneSlot = resolveClassTillsMilestoneSlot(fields.alert_id);
       return {
         recordId: row.id,
         alert_id: strOrNull(fields.alert_id),
         rec_name: strOrNull(fields.rec_name),
         active: boolValue(fields.active),
+        isProfilewise: boolValue(fields.is_profilewise),
+        alertPriority: numOrNull(fields.alert_priority) ?? 9999,
         triggerTagIds: new Set(linkIds(fields.trigger_tags)),
         alertTemplateIds: linkIds(fields.alert_templates),
         activeTenantIds: linkIds(fields.active_tenants),
         wwTenantIds: linkIds(fields.ww_tenants),
         wwProfileIds: linkIds(fields.ww_profiles),
-        milestoneSlot: resolveClassTillsMilestoneSlot(fields.alert_id),
-        milestone1: firstNumberValue(fields["alert_milestone1 (from ww_tenants)"]),
-        milestone2: firstNumberValue(fields["alert_milestone2 (from ww_tenants)"]),
+        milestoneSlot,
+        alertMilestoneValue: resolveActiveAlertMilestoneValue(fields, milestoneSlot),
         total: numOrNull(fields.total),
       };
     })
@@ -686,18 +706,30 @@ function buildTenantProfileKey(profile) {
   return [tenantPart, profilePart].filter(Boolean).join("|") || strOrNull(profile?.recordId);
 }
 
-function buildClassTillsProfileConfigs(alertConfigs, profiles) {
+function profileMatchesClassTillsTenant(profile, config) {
+  const configActiveTenantIds = uniqueIds(config?.activeTenantIds || []);
+  const configWwTenantIds = uniqueIds(config?.wwTenantIds || []);
+  if (!configActiveTenantIds.length && !configWwTenantIds.length) return true;
+  if (configActiveTenantIds.length && hasAnyId(profile?.activeTenantIds, configActiveTenantIds)) return true;
+  if (configWwTenantIds.length && hasAnyId(profile?.wwTenantIds, configWwTenantIds)) return true;
+  return false;
+}
+
+function profileEligibleForClassTills(profile) {
+  return Boolean(profile?.active && profile?.activeSubscriberIds?.length);
+}
+
+function buildProfilewiseClassTillsConfigs(alertConfigs, profiles) {
   const profilesById = new Map((profiles || []).map((profile) => [profile.recordId, profile]));
   const out = [];
 
-  for (const config of alertConfigs || []) {
+  for (const config of (alertConfigs || []).filter((item) => item.isProfilewise)) {
     if (!config.milestoneSlot) continue;
     for (const profileId of config.wwProfileIds || []) {
       const profile = profilesById.get(profileId);
-      if (!profile?.active) continue;
-      if (!profile.activeSubscriberIds.length) continue;
+      if (!profileEligibleForClassTills(profile)) continue;
       if (!profile.activeAlertIds.includes(config.recordId) && !config.wwProfileIds.includes(profile.recordId)) continue;
-      const milestoneValue = profileMilestoneValue(profile, config.milestoneSlot);
+      const milestoneValue = profileMilestoneValue(profile, config.milestoneSlot) ?? config.alertMilestoneValue;
       if (milestoneValue === null) continue;
       out.push({
         ...config,
@@ -709,6 +741,56 @@ function buildClassTillsProfileConfigs(alertConfigs, profiles) {
   }
 
   return out;
+}
+
+function buildDefaultClassTillsConfigs(alertConfigs, profiles) {
+  const out = [];
+  for (const config of (alertConfigs || []).filter((item) => !item.isProfilewise)) {
+    if (!config.milestoneSlot) continue;
+    const milestoneValue = numOrNull(config.alertMilestoneValue);
+    if (milestoneValue === null) continue;
+    for (const profile of profiles || []) {
+      if (!profileEligibleForClassTills(profile)) continue;
+      if (!profileMatchesClassTillsTenant(profile, config)) continue;
+      out.push({
+        ...config,
+        profile,
+        tenantProfileKey: buildTenantProfileKey(profile),
+        milestoneValue,
+      });
+    }
+  }
+  return out;
+}
+
+function classTillsProfileConfigKey(config) {
+  return [
+    strOrNull(config?.tenantProfileKey) || strOrNull(config?.profile?.recordId),
+    strOrNull(config?.milestoneSlot),
+  ].join("|");
+}
+
+function classTillsCandidateWins(candidate, current) {
+  if (!current) return true;
+  const candidatePriority = numOrNull(candidate?.alertPriority) ?? 9999;
+  const currentPriority = numOrNull(current?.alertPriority) ?? 9999;
+  if (candidatePriority !== currentPriority) return candidatePriority < currentPriority;
+  return Boolean(candidate?.isProfilewise) && !current?.isProfilewise;
+}
+
+function buildClassTillsProfileConfigs(alertConfigs, profiles) {
+  const ranked = new Map();
+  const candidates = [
+    ...buildDefaultClassTillsConfigs(alertConfigs, profiles),
+    ...buildProfilewiseClassTillsConfigs(alertConfigs, profiles),
+  ];
+  for (const candidate of candidates) {
+    const key = classTillsProfileConfigKey(candidate);
+    if (!key || key === "|") continue;
+    const current = ranked.get(key);
+    if (classTillsCandidateWins(candidate, current)) ranked.set(key, candidate);
+  }
+  return Array.from(ranked.values());
 }
 
 function normalizeWatchTripRow(row) {
