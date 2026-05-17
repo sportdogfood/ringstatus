@@ -1,0 +1,1689 @@
+[
+    {
+        "class_id": 200001448,
+        "number": 139,
+        "name": "Cross Rail Warm Up",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001449,
+        "number": 140,
+        "name": "Cross Rail Warm Up",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001429,
+        "number": 141,
+        "name": "Cross Rail Hunter U/S (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001243,
+        "number": 142,
+        "name": "Cross Rail Hunter (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001381,
+        "number": 143,
+        "name": "Cross Rail Hunter (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001236,
+        "number": 144,
+        "name": "Cross Rail Equitation Flat (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001224,
+        "number": 145,
+        "name": "Cross Rail Equitation (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001350,
+        "number": 146,
+        "name": "Cross Rail Equitation (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001419,
+        "number": 176,
+        "name": "USHJA Hunter 2' U/S",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001261,
+        "number": 177,
+        "name": "USHJA Hunter 2'",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001364,
+        "number": 178,
+        "name": "USHJA Hunter 2'",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001387,
+        "number": 179,
+        "name": "USHJA Hunter 2'",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001346,
+        "number": 180,
+        "name": "USHJA Hunter 2'",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001391,
+        "number": 181,
+        "name": "USHJA Hunter 2'3\" U/S",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001271,
+        "number": 182,
+        "name": "USHJA Hunter 2'3\"",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001358,
+        "number": 183,
+        "name": "USHJA Hunter 2'3\"",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001265,
+        "number": 184,
+        "name": "USHJA Hunter 2'3\"",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001278,
+        "number": 185,
+        "name": "USHJA Hunter 2'3\"",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001392,
+        "number": 186,
+        "name": "USHJA Hunter 2'6\"/2'9\"/3' U/S",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001425,
+        "number": 187,
+        "name": "USHJA Hunter 2'6\"/2'9\"/3'",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001396,
+        "number": 188,
+        "name": "USHJA Hunter 2'6\"/2'9\"/3'",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001327,
+        "number": 189,
+        "name": "USHJA Hunter 3'/2'9\"/2'6\"",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001305,
+        "number": 190,
+        "name": "USHJA Hunter 3'/2'9\"/2'6\"",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001341,
+        "number": 216,
+        "name": "Take2 Thoroughbred Hunter U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001307,
+        "number": 217,
+        "name": "Take2 Thoroughbred Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001253,
+        "number": 218,
+        "name": "Take2 Thoroughbred Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001431,
+        "number": 219,
+        "name": "Take2 Thoroughbred Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001423,
+        "number": 220,
+        "name": "Take2 Thoroughbred Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001348,
+        "number": 221,
+        "name": "USHJA Hunter 3' U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001405,
+        "number": 222,
+        "name": "USHJA Hunter 3'",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001409,
+        "number": 223,
+        "name": "USHJA Hunter 3'",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001209,
+        "number": 224,
+        "name": "USHJA Hunter 3'",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001443,
+        "number": 225,
+        "name": "USHJA Hunter 3'",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001232,
+        "number": 231,
+        "name": "USHJA Hunter 2'6\" U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001408,
+        "number": 232,
+        "name": "USHJA Hunter 2'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001279,
+        "number": 233,
+        "name": "USHJA Hunter 2'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001319,
+        "number": 234,
+        "name": "USHJA Hunter 2'6\" ",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001401,
+        "number": 235,
+        "name": "USHJA Hunter 2'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001384,
+        "number": 271,
+        "name": "Amateur Owner Hunter 3'6\" U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001288,
+        "number": 272,
+        "name": "Amateur Owner Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001427,
+        "number": 273,
+        "name": "Amateur Owner Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001304,
+        "number": 274,
+        "name": "Amateur Owner Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001436,
+        "number": 275,
+        "name": "Amateur Owner Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001326,
+        "number": 281,
+        "name": "Adult Amateur Hunter U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001297,
+        "number": 282,
+        "name": "Adult Amateur Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001403,
+        "number": 283,
+        "name": "Adult Amateur Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001280,
+        "number": 284,
+        "name": "Adult Amateur Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001228,
+        "number": 285,
+        "name": "Adult Amateur Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001393,
+        "number": 296,
+        "name": "Low Adult Hunter U/S",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001332,
+        "number": 297,
+        "name": "Low Adult Hunter",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001398,
+        "number": 298,
+        "name": "Low Adult Hunter",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001378,
+        "number": 299,
+        "name": "Low Adult Hunter",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001395,
+        "number": 300,
+        "name": "Low Adult Hunter",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001320,
+        "number": 301,
+        "name": "Junior/Amateur Owner Hunter 3'3\"/3'6\" U/S",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001421,
+        "number": 302,
+        "name": "Junior/Amateur Hunter 3'3\"/3'6\"",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001289,
+        "number": 303,
+        "name": "Junior/Amateur Hunter 3'3\"/3'6\"",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001352,
+        "number": 304,
+        "name": "Junior/Amateur Hunter 3'3\"/3'6\"",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001414,
+        "number": 305,
+        "name": "Junior/Amateur Hunter 3'3\"/3'6\"",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001430,
+        "number": 311,
+        "name": "Child/Adult Hunter U/S",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001404,
+        "number": 312,
+        "name": "Child/Adult Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001337,
+        "number": 313,
+        "name": "Child/Adult Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001216,
+        "number": 314,
+        "name": "Child/Adult Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001267,
+        "number": 315,
+        "name": "Child/Adult Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001406,
+        "number": 316,
+        "name": "Low Children's Hunter U/S",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001426,
+        "number": 317,
+        "name": "Low Children's Hunter",
+        "entry_count": 7,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001300,
+        "number": 318,
+        "name": "Low Children's Hunter",
+        "entry_count": 7,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001213,
+        "number": 319,
+        "name": "Low Children's Hunter",
+        "entry_count": 7,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001444,
+        "number": 320,
+        "name": "Low Children's Hunter",
+        "entry_count": 7,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001389,
+        "number": 336,
+        "name": "Junior Hunter 3'3\" U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001211,
+        "number": 337,
+        "name": "Junior Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001379,
+        "number": 338,
+        "name": "Junior Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001331,
+        "number": 339,
+        "name": "Junior Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001324,
+        "number": 340,
+        "name": "Junior Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001269,
+        "number": 376,
+        "name": "Amateur Owner Hunter 3'3\" U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001248,
+        "number": 377,
+        "name": "Amateur Owner Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001351,
+        "number": 378,
+        "name": "Amateur Owner Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001363,
+        "number": 379,
+        "name": "Amateur Owner Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001225,
+        "number": 380,
+        "name": "Amateur Owner Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001214,
+        "number": 381,
+        "name": "Performance Hunter 3'6\" U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001433,
+        "number": 382,
+        "name": "Performance Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001250,
+        "number": 383,
+        "name": "Performance Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001215,
+        "number": 384,
+        "name": "Performance Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001402,
+        "number": 385,
+        "name": "Performance Hunter 3'6\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001415,
+        "number": 386,
+        "name": "Performance Hunter 3'3\" U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001386,
+        "number": 387,
+        "name": "Performance Hunter 3'3\"",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001276,
+        "number": 388,
+        "name": "Performance Hunter 3'3\"",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001234,
+        "number": 389,
+        "name": "Performance Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001432,
+        "number": 390,
+        "name": "Performance Hunter 3'3\"",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001357,
+        "number": 405,
+        "name": "Children's Pony Hunter U/S",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001244,
+        "number": 406,
+        "name": "Children's Pony Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001299,
+        "number": 407,
+        "name": "Children's Pony Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001356,
+        "number": 408,
+        "name": "Children's Pony Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001239,
+        "number": 409,
+        "name": "Children's Pony Hunter",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001274,
+        "number": 411,
+        "name": "Pony Hunter U/S",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001283,
+        "number": 412,
+        "name": "Pony Hunter",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001359,
+        "number": 413,
+        "name": "Pony Hunter",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001270,
+        "number": 414,
+        "name": "Pony Conformation Hunter",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001438,
+        "number": 415,
+        "name": "Pony Hunter",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001330,
+        "number": 441,
+        "name": "Green Pony Hunter U/S",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001255,
+        "number": 442,
+        "name": "Green Pony Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001323,
+        "number": 443,
+        "name": "Green Pony Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001412,
+        "number": 444,
+        "name": "Green Pony Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001375,
+        "number": 445,
+        "name": "Green Pony Hunter",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001284,
+        "number": 502,
+        "name": "Child/Adult Amateur Equitation 2'6\" Flat",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001411,
+        "number": 503,
+        "name": "Child/Adult Amateur Equitation 2'6\"",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001292,
+        "number": 504,
+        "name": "Child/Adult Amateur Equitation 2'6\"",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001373,
+        "number": 509,
+        "name": "11 & Under Equitation Flat",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001442,
+        "number": 510,
+        "name": "11 & Under Equitation",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001413,
+        "number": 511,
+        "name": "11 & Under Equitation",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001242,
+        "number": 512,
+        "name": "14 & Under Equitation Flat",
+        "entry_count": 7,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001315,
+        "number": 513,
+        "name": "14 & Under Equitation (11&U: 2'6\"/12-14: 2'9\")",
+        "entry_count": 7,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001334,
+        "number": 514,
+        "name": "14 & Under Equitation (11&U: 2'6\"/12-14: 2'9\")",
+        "entry_count": 7,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001230,
+        "number": 515,
+        "name": "15-17 Equitation Flat",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001218,
+        "number": 516,
+        "name": "15-17 Equitation (3')",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001321,
+        "number": 517,
+        "name": "15-17 Equitation (3')",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001314,
+        "number": 518,
+        "name": "Adult Amateur Equitation Flat",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001345,
+        "number": 519,
+        "name": "Adult Amateur Equitation (3')",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001410,
+        "number": 520,
+        "name": "Adult Amateur Equitation (3')",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001388,
+        "number": 525,
+        "name": "SFHJA Junior/Adult Amateur Medal Flat Phase",
+        "entry_count": 13,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001310,
+        "number": 526,
+        "name": "SFHJA Pony Medal Flat Phase ",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001382,
+        "number": 527,
+        "name": "SFHJA Adult Medal Flat Phase",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001259,
+        "number": 530,
+        "name": "USHJA 3'3\" Hunter Seat Medal **3 To Fill**",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001343,
+        "number": 535,
+        "name": "Hamel Foundation/NHS 3'3\" Medal",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001257,
+        "number": 540,
+        "name": "USEF Pony Medal",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001277,
+        "number": 541,
+        "name": "WIHS Pony Equitation",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001424,
+        "number": 545,
+        "name": "USHJA 3'3\" Junior/Adult Amateur Jumping Seat Medal",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001377,
+        "number": 550,
+        "name": "Dover/USEF Hunter Seat Medal ",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001435,
+        "number": 555,
+        "name": "THIS National Children's Medal",
+        "entry_count": 12,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001227,
+        "number": 560,
+        "name": "NHS THIS Adult Medal",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001399,
+        "number": 565,
+        "name": "Ariat National Adult Medal",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001263,
+        "number": 570,
+        "name": "ASPCA Maclay",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001417,
+        "number": 580,
+        "name": "WIHS Hunter Phase ",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001296,
+        "number": 581,
+        "name": "WIHS Jumper Phase ",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001223,
+        "number": 582,
+        "name": "WIHS Overall",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001294,
+        "number": 590,
+        "name": "Plat. Perf. Show Jumping Talent Search 1*  ",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001342,
+        "number": 601,
+        "name": "Stirrup Hunter U/S ",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001256,
+        "number": 602,
+        "name": "Stirrup Hunter ",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001336,
+        "number": 603,
+        "name": "Stirrup Hunter",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001360,
+        "number": 604,
+        "name": "Stirrup Equitation Flat",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001369,
+        "number": 605,
+        "name": "Stirrup Equitation",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001344,
+        "number": 606,
+        "name": "Stirrup Equitation ",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001368,
+        "number": 607,
+        "name": "Leadline",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001329,
+        "number": 608,
+        "name": "Walk (Academy)",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001282,
+        "number": 609,
+        "name": "Walk/Trot (Academy)",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001254,
+        "number": 610,
+        "name": "Walk/Trot Pleasure (Academy)",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001335,
+        "number": 611,
+        "name": "Walk/Trot Jump (Academy)",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001251,
+        "number": 612,
+        "name": "Walk (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001385,
+        "number": 613,
+        "name": "Walk/Trot (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001266,
+        "number": 614,
+        "name": "Walk/Trot Pleasure (Academy)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001293,
+        "number": 615,
+        "name": "Walk/Trot Jump (Academy)",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001231,
+        "number": 620,
+        "name": "Hunter Pleasure Pony",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001210,
+        "number": 621,
+        "name": "Hunter Pleasure Pony",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001219,
+        "number": 630,
+        "name": "Hunter Pleasure Horse",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001302,
+        "number": 631,
+        "name": "Hunter Pleasure Horse",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001437,
+        "number": 650,
+        "name": "Warm Up",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001370,
+        "number": 651,
+        "name": "Warm Up",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001340,
+        "number": 652,
+        "name": "Warm Up",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001328,
+        "number": 653,
+        "name": "Warm Up",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001264,
+        "number": 654,
+        "name": "Warm Up",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001322,
+        "number": 655,
+        "name": "Warm Up",
+        "entry_count": 8,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001420,
+        "number": 656,
+        "name": "Warm Up ",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001366,
+        "number": 657,
+        "name": "Warm Up",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001212,
+        "number": 658,
+        "name": "Warm Up",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001339,
+        "number": 659,
+        "name": "Warm Up",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001268,
+        "number": 660,
+        "name": "Warm Up ",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001422,
+        "number": 661,
+        "name": "Warm Up",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001220,
+        "number": 662,
+        "name": "Warm Up",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001245,
+        "number": 663,
+        "name": "Warm Up",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001222,
+        "number": 664,
+        "name": "Warm Up",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001374,
+        "number": 665,
+        "name": "Warm Up",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001306,
+        "number": 667,
+        "name": "Warm Up",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001291,
+        "number": 668,
+        "name": "Warm Up",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001372,
+        "number": 680,
+        "name": "Pony Jumper (Table II)",
+        "entry_count": 11,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001362,
+        "number": 681,
+        "name": "Pony Jumper II2b",
+        "entry_count": 11,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001400,
+        "number": 682,
+        "name": "Pony Jumper II2d",
+        "entry_count": 12,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001371,
+        "number": 683,
+        "name": "WIHS Pony Jumper II2b",
+        "entry_count": 16,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001303,
+        "number": 700,
+        "name": "1.40m Jumper Table II2d",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001397,
+        "number": 701,
+        "name": "1.40m Jumper Table II2b",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001298,
+        "number": 710,
+        "name": "High Schooling Jumper (1.20m) II2.1",
+        "entry_count": 8,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001333,
+        "number": 711,
+        "name": "High Schooling Jumper (1.20m) II2b",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001247,
+        "number": 712,
+        "name": "High Schooling Jumper (1.20m) II2.1",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001286,
+        "number": 715,
+        "name": "Low Schooling Jumper (1.10m) II2b",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001240,
+        "number": 716,
+        "name": "Low Schooling Jumper (1.10m) II2.1",
+        "entry_count": 15,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001258,
+        "number": 717,
+        "name": "Low Schooling Jumper (1.10m) II2.1",
+        "entry_count": 14,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001285,
+        "number": 718,
+        "name": "Low Schooling Jumper (1.10m) II2b",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001241,
+        "number": 720,
+        "name": "1.20m Amateur/Junior Jumper II2.1",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001229,
+        "number": 722,
+        "name": "1.20m Amateur/Junior Jumper II2b",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001309,
+        "number": 723,
+        "name": "1.20m Amateur/Junior Jumper II2b",
+        "entry_count": 11,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001252,
+        "number": 737,
+        "name": "1.0m Junior Jumper II2b",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001361,
+        "number": 738,
+        "name": "1.0m Junior Jumper II2d",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001281,
+        "number": 739,
+        "name": "$1,500 1.0m Junior/Amatuer Jumper Classic II2b",
+        "entry_count": 8,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001262,
+        "number": 740,
+        "name": "1.10m Junior Jumper II2.1",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001440,
+        "number": 742,
+        "name": "1.10m Junior Jumper II2b",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001290,
+        "number": 743,
+        "name": "$1,500  NAL/WIHS 1.10m Junior Jumper Classic II2b",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001407,
+        "number": 747,
+        "name": "Take2 Thoroughbred Jumper (1.0m) II2d",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001354,
+        "number": 748,
+        "name": "Take2 Thoroughbred Jumper (1.0m) II2b",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001317,
+        "number": 749,
+        "name": "Take2 Thoroughbred Jumper (1.0m) II2b",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001273,
+        "number": 750,
+        "name": "Training Jumper (.95m) II2b",
+        "entry_count": 11,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001353,
+        "number": 751,
+        "name": "Training Jumper (.95m) II2d",
+        "entry_count": 8,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001246,
+        "number": 752,
+        "name": "Training Jumper (.95m) II2d",
+        "entry_count": 6,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001376,
+        "number": 753,
+        "name": "Training Jumper (.95m) II2b",
+        "entry_count": 4,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001445,
+        "number": 754,
+        "name": ".90m Young Jumper (Table II)",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001275,
+        "number": 755,
+        "name": "1.10m Young Jumper (Table II)",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001233,
+        "number": 756,
+        "name": "1.20m Young Jumper II2b",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001221,
+        "number": 757,
+        "name": "1.30m Young Jumper II2b",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001446,
+        "number": 758,
+        "name": "1.0m Young Jumper (Table II)",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001390,
+        "number": 760,
+        "name": "1.10m Amateur Jumper II2.1",
+        "entry_count": 12,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001416,
+        "number": 762,
+        "name": "1.10m Amateur Jumper II2b",
+        "entry_count": 1,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001447,
+        "number": 763,
+        "name": "$1,500  NAL/WIHS 1.10m Junior/Amateur Jumper Classic II2b",
+        "entry_count": 19,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001434,
+        "number": 765,
+        "name": "1.0m Amateur Jumper II2b",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001365,
+        "number": 766,
+        "name": "1.0m Amateur Jumper II2d",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001380,
+        "number": 767,
+        "name": "$1,500 1.0m Amateur Jumper Classic II2b",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001311,
+        "number": 770,
+        "name": "1.30m Jumper (II2b)",
+        "entry_count": 12,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001367,
+        "number": 771,
+        "name": "1.30m Jumper (II2d)",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001295,
+        "number": 773,
+        "name": "1.30m Jumper (II2b)",
+        "entry_count": 13,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001301,
+        "number": 780,
+        "name": "Training Jumper (1.0m) II2d",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001313,
+        "number": 781,
+        "name": "Training Jumper (1.0m) II2b",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001428,
+        "number": 782,
+        "name": "Training Jumper (1.0m) II2b",
+        "entry_count": 12,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001347,
+        "number": 783,
+        "name": "Training Jumper (1.0m) II2b",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001355,
+        "number": 784,
+        "name": "Training Jumper (1.0m) II2b",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001260,
+        "number": 790,
+        "name": "Hopeful Jumper (.85m) II2d",
+        "entry_count": 11,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001272,
+        "number": 791,
+        "name": "Hopeful Jumper (.85m) II2b",
+        "entry_count": 12,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001383,
+        "number": 792,
+        "name": "Hopeful Jumper (.85m) II2d",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001308,
+        "number": 793,
+        "name": "Hopeful Jumper (.85m) II2b",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001349,
+        "number": 795,
+        "name": "Puddle Jumper (No Oxers/Combinations) (.70m) II2d",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001217,
+        "number": 796,
+        "name": "Puddle Jumper (No Oxers/Combinations) (.70m) II2b",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001318,
+        "number": 797,
+        "name": "Puddle Jumper (No Oxers/Combinations) (.70m) II2d",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001418,
+        "number": 798,
+        "name": "Puddle Jumper (No Oxers/Combinations) (.70m) II2b",
+        "entry_count": 5,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001439,
+        "number": 800,
+        "name": "Cross Rail Jumper (Table II) (Opportunity)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001338,
+        "number": 801,
+        "name": "Cross Rail Jumper (Table II) (Opportunity)",
+        "entry_count": 2,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001325,
+        "number": 802,
+        "name": "Cross Rail Jumper (Table II) (Opportunity)",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001238,
+        "number": 803,
+        "name": "Cross Rail Jumper (Table II) (Opportunity)",
+        "entry_count": 3,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001249,
+        "number": 810,
+        "name": "Tad Pole Jumper (.80m) II2d",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001312,
+        "number": 811,
+        "name": "Tad Pole Jumper (.80m) II2b",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001287,
+        "number": 812,
+        "name": "Tad Pole Jumper (.80m) II2d",
+        "entry_count": 9,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001226,
+        "number": 813,
+        "name": "Tad Pole Jumper (.80m) II2b",
+        "entry_count": 9,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001235,
+        "number": 902,
+        "name": "$500 NAL/WIHS Child/Adult Hunter Classic **4 To Fill**",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001316,
+        "number": 904,
+        "name": "$500 NAL/WIHS Adult Amateur Hunter Classic",
+        "entry_count": 0,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001441,
+        "number": 907,
+        "name": "$1,000 USHJA National Hunter Derby (Hunt & Go)",
+        "entry_count": 10,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001237,
+        "number": 925,
+        "name": "$500 USHJA 2'6\"/2'9\" Jr/Am Hunter Derby (Hunt & Go)",
+        "entry_count": 9,
+        "sponsor": ""
+    },
+    {
+        "class_id": 200001394,
+        "number": 990,
+        "name": "Mulligan Jumper",
+        "entry_count": 1,
+        "sponsor": ""
+    }
+]
