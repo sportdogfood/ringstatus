@@ -263,6 +263,8 @@ function toIsoDateOnly(value) {
 function resolveTripScheduleDate(source) {
   if (!source || typeof source !== "object") return null;
   return toIsoDateOnly(pickFirst(
+    firstValue(source.app_sql_datev2),
+    firstValue(source.app_sql_date),
     firstValue(source.schedule_show_datev2),
     firstValue(source.scheduled_date),
     firstValue(source[" scheduled_date"]),
@@ -726,6 +728,14 @@ async function fetchWatchScheduleRows() {
       "schedule_key",
       "schedule_short",
       "show_id",
+      "app_show_idv2",
+      "app_sql_datev2",
+      "app_dow_rawv2",
+      "customer_id",
+      "focus_day",
+      "ring_collection",
+      "show_scope_key",
+      "show",
       "class_groupxclasses_id",
       "class_group_id",
       "class_id",
@@ -745,6 +755,9 @@ async function fetchWatchScheduleRows() {
       "schedule_show_datev2",
       " scheduled_date",
       "show_date",
+      "archive",
+      "inactive",
+      "dropped_at",
     ].filter((fieldName) => !fieldSet.size || fieldSet.has(fieldName)),
   });
 }
@@ -938,7 +951,8 @@ function pickWritableFields(fieldSet, values) {
 }
 
 function buildPeopleEndpoint(sourceId, heartbeat) {
-  return `${BASE_URL}/people/${encodeURIComponent(sourceId)}?pid=${encodeURIComponent(sourceId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(CUSTOMER_ID)}`;
+  const customerId = heartbeat.customer_id ?? CUSTOMER_ID;
+  return `${BASE_URL}/people/${encodeURIComponent(sourceId)}?pid=${encodeURIComponent(sourceId)}&show_id=${encodeURIComponent(heartbeat.app_show_id)}&customer_id=${encodeURIComponent(customerId)}`;
 }
 
 function escapeRegExp(value) {
@@ -1999,9 +2013,23 @@ function rowScheduledDateMatchesScope(row, heartbeat) {
 
 function scheduleRowMatchesHeartbeat(row, heartbeat) {
   const fields = row?.fields || {};
-  const rowShowId = numOrNull(fields.show_id);
+  if (boolValue(fields.archive) || boolValue(fields.inactive) || !isBlank(fields.dropped_at)) return false;
+  const rowShowId = numOrNull(fields.show_id) ?? numOrNull(fields.app_show_idv2);
   const rowDate = resolveTripScheduleDate(fields);
   return rowShowId === heartbeat.app_show_id && rowDate === heartbeat.app_sql_date;
+}
+
+function tripRowMatchesHeartbeat(row, heartbeat) {
+  const fields = row?.fields || {};
+  const rowShowId = numOrNull(fields.show_id) ?? numOrNull(fields.app_show_idv2) ?? numOrNull(fields.app_show_id);
+  const rowDate = resolveTripScheduleDate(fields);
+  return rowShowId === heartbeat.app_show_id && rowDate === heartbeat.app_sql_date;
+}
+
+function scheduleJoinClassCount(scheduleByClassId) {
+  const classIdCount = scheduleByClassId instanceof Map ? scheduleByClassId.size : 0;
+  const classNumberCount = scheduleByClassId?.byClassNumber instanceof Map ? scheduleByClassId.byClassNumber.size : 0;
+  return Math.max(classIdCount, classNumberCount);
 }
 
 async function main() {
@@ -2045,6 +2073,7 @@ async function main() {
   const targetScheduleRows = scopedScheduleRows.filter((row) => boolValue(row?.fields?.is_target));
   const scheduleRowsForTripJoin = targetScheduleRows.length ? targetScheduleRows : scopedScheduleRows;
   const scheduleByClassId = buildScheduleMap(scheduleRowsForTripJoin);
+  const scheduleJoinClasses = scheduleJoinClassCount(scheduleByClassId);
   const activeTenantMap = new Map();
   for (const row of activeTenantRows) {
     if (!row?.tenant_id || activeTenantMap.has(row.tenant_id)) continue;
@@ -2482,6 +2511,7 @@ async function main() {
   if (!scopedRows.length) {
     const dropUpdates = [];
     for (const row of heartbeatViewRows) {
+      if (!tripRowMatchesHeartbeat(row, heartbeat)) continue;
       dropUpdates.push({
         id: row.id,
         fields: buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, watchTripsFieldSet),
@@ -2496,7 +2526,7 @@ async function main() {
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
       active_tenant_ids: activeTenantIds.length,
-      watch_schedule_classes: scheduleByClassId.size,
+      watch_schedule_classes: scheduleJoinClasses,
       normalized_rows: normalizedRows.length,
       filtered_out_scheduled_date_mismatch: uniqueRows.size,
       outside_schedule_count: outsideSchedule.length,
@@ -2544,6 +2574,7 @@ async function main() {
 
   const dropUpdates = [];
   for (const row of heartbeatViewRows) {
+    if (!tripRowMatchesHeartbeat(row, heartbeat)) continue;
     const key = tripRowKeyFromFields(row?.fields || {});
     if (!key || keepKeySet.has(key)) continue;
     dropUpdates.push({
@@ -2565,7 +2596,7 @@ async function main() {
     scoped_watch_schedule_rows: scopedScheduleRows.length,
     target_watch_schedule_rows: targetScheduleRows.length,
     watch_schedule_join_rows: scheduleRowsForTripJoin.length,
-    watch_schedule_classes: scheduleByClassId.size,
+    watch_schedule_classes: scheduleJoinClasses,
     normalized_rows: normalizedRows.length,
     unique_rows: scopedRows.length,
     skipped_missing_schedule_sequence: skippedMissingScheduleSequence,
