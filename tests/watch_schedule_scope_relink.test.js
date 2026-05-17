@@ -82,4 +82,19 @@ assert.strictEqual(
   "skip"
 );
 
+assert.strictEqual(
+  classifyWatchScheduleHeartbeatRelink(
+    {
+      app_show_idv2: 200000062,
+      app_sql_datev2: "2026-05-28",
+      app_dow_rawv2: "Thu",
+      archive: true,
+      heartbeat: ["recOldArchived"],
+    },
+    appCtx,
+    "recNew"
+  ).action,
+  "clear"
+);
+
 console.log("watch_schedule_scope_relink tests passed");

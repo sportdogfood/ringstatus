@@ -77,7 +77,6 @@ const fieldMeta = {
     "inactive",
     "schedule_key",
     "schedule_short",
-    "class_sequence",
   ]),
   actualByTrim: new Map(),
 };
@@ -109,9 +108,12 @@ assert.strictEqual(fields.latest_status, "In Progress");
 assert.strictEqual(fields.total_trips, 42);
 assert.strictEqual(fields.completed_trips, 7);
 assert.strictEqual(fields.class_id, 200025008);
-assert.strictEqual(fields.schedule_key, "200000061|2026-05-07|5|770|1");
-assert.strictEqual(fields.schedule_short, "5|770|1");
-assert.strictEqual(fields.class_sequence, "1");
+assert.strictEqual(fields.schedule_key, "200000061|2026-05-07|5|770");
+assert.strictEqual(fields.schedule_short, "5|770");
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(fields, "class_sequence"),
+  "schedule writer must not invent class_sequence"
+);
 
 const noLiveFields = buildCurrentFields(
   { fields: { class_group_id: 1, class_number: 2 } },

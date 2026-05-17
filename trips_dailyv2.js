@@ -229,7 +229,10 @@ function tripRowCandidateKeysFromFields(fields = {}) {
   const tripsKey = normalizeKey(firstValue(fields.trips_key));
   add(tripsKey);
   const parts = tripsKey ? tripsKey.split("|").map(keyPart) : [];
-  if (parts.length === 7) add([...parts.slice(0, 4), ...parts.slice(5)].join("|"));
+  if (parts.length === 7) {
+    add([...parts.slice(0, 4), ...parts.slice(5)].join("|"));
+    add([...parts.slice(0, 4), ...parts.slice(5), parts[4]].join("|"));
+  }
 
   const common = {
     sid: pickFirst(fields.show_id, fields.app_show_id, fields.app_show_idv2, fields.app_sid),
@@ -2513,15 +2516,15 @@ async function main() {
   };
   const keepKeySet = new Set();
   const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
-  let skippedMissingScheduleTieBreaker = 0;
-  const skippedMissingScheduleTieBreakerSamples = [];
+  let skippedMalformedScheduleKey = 0;
+  const skippedMalformedScheduleKeySamples = [];
 
   for (const row of scopedRows) {
     const scheduleTieBreaker = scheduleTieBreakerFromKey(row.schedule_key);
     if (row.schedule_key && String(row.schedule_key).split("|").length > 5 && !scheduleTieBreaker) {
-      skippedMissingScheduleTieBreaker += 1;
-      if (skippedMissingScheduleTieBreakerSamples.length < 10) {
-        skippedMissingScheduleTieBreakerSamples.push({
+      skippedMalformedScheduleKey += 1;
+      if (skippedMalformedScheduleKeySamples.length < 10) {
+        skippedMalformedScheduleKeySamples.push({
           schedule_key: row.schedule_key,
           class_number: row.class_number ?? null,
           entry_number: row.entry_number ?? null,
@@ -2653,7 +2656,8 @@ async function main() {
     watch_schedule_classes: scheduleJoinClasses,
     normalized_rows: normalizedRows.length,
     unique_rows: scopedRows.length,
-    skipped_missing_schedule_sequence: skippedMissingScheduleSequence,
+    skipped_malformed_schedule_key: skippedMalformedScheduleKey,
+    skipped_malformed_schedule_key_samples: skippedMalformedScheduleKeySamples,
     filtered_out_scheduled_date_mismatch: uniqueRows.size - scopedRows.length,
     people_failures: peopleFailures,
     soft_payload_samples: softPayloadSamples.slice(0, 10),
@@ -2723,6 +2727,7 @@ if (require.main === module) {
 
 module.exports = {
   applyManualTimeOverrideToTripFields,
+  buildTripKeyParts,
   buildDroppedFields,
   hasManualTimeOverride,
   tripRowKeyFromFields,

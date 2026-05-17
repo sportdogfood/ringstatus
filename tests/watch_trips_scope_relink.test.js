@@ -75,4 +75,18 @@ assert.strictEqual(
   "skip"
 );
 
+assert.strictEqual(
+  classifyWatchTripsHeartbeatRelink(
+    {
+      app_show_idv2: 200000062,
+      schedule_show_datev2: "2026-05-28",
+      dropped_at: "2026-05-17",
+      heartbeat: ["recOldDropped"],
+    },
+    appCtx,
+    "recNew"
+  ).action,
+  "clear"
+);
+
 console.log("watch_trips_scope_relink tests passed");

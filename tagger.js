@@ -1371,9 +1371,12 @@ function relinkSupportsArchive(tableName) {
 }
 
 function recordIsScopeInactive(tableName, fields = {}) {
+  if (boolValue(fields?.[FIELD_ARCHIVE]) === true) return true;
+  if (strOrNull(airtableValueName(fields?.dropped_at))) return true;
   const scopeStatus = strOrNull(airtableValueName(fields?.[FIELD_SCOPE_STATUS]));
   if (scopeStatus && scopeStatus.toLowerCase() === "dropped") return true;
-  return tableName === TABLE_WATCH_TRIPS && boolValue(fields?.[FIELD_INACTIVE]) === true;
+  if (boolValue(fields?.[FIELD_INACTIVE]) === true) return true;
+  return false;
 }
 
 function archiveFieldPatch(tableName, fields = {}, desiredArchive) {
@@ -1395,12 +1398,13 @@ function relinkScopeFieldPatch(tableName, appCtx = null) {
 
 function relinkFieldsForTable(tableName) {
   if (tableName !== TABLE_WATCH_SCHEDULE && tableName !== TABLE_WATCH_TRIPS) return [FIELD_LINK_HEARTBEAT];
-  if (tableName === TABLE_WATCH_TRIPS) {
-    return [
-      FIELD_LINK_HEARTBEAT,
-      FIELD_ARCHIVE,
-      FIELD_INACTIVE,
-      FIELD_SCOPE_STATUS,
+    if (tableName === TABLE_WATCH_TRIPS) {
+      return [
+        FIELD_LINK_HEARTBEAT,
+        FIELD_ARCHIVE,
+        FIELD_INACTIVE,
+        "dropped_at",
+        FIELD_SCOPE_STATUS,
       "show_id",
       "app_show_idv2",
       "app_sql_datev2",
@@ -1417,6 +1421,7 @@ function relinkFieldsForTable(tableName) {
     FIELD_LINK_HEARTBEAT,
     FIELD_ARCHIVE,
     FIELD_INACTIVE,
+    "dropped_at",
     FIELD_SCOPE_STATUS,
     "show_id",
     "app_show_idv2",
