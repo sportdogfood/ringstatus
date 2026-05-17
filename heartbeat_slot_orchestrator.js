@@ -411,10 +411,12 @@ async function runOrchestrator() {
         upstreamOk = false;
         scheduleDueFailed = true;
         appendEvent({ ok: false, event: "schedule_downstream_blocked", reason: "schedules_dailyv2_failed" });
-      } else if (schedulesCalcDue) {
-        const schedulesCalcResult = runNodeScript("schedules_calculatorv2.js");
-        if (!schedulesCalcResult.ok) upstreamOk = false;
       }
+    }
+
+    if (!scheduleDueFailed && schedulesCalcDue) {
+      const schedulesCalcResult = runNodeScript("schedules_calculatorv2.js");
+      if (!schedulesCalcResult.ok) upstreamOk = false;
     }
 
     let tripsOk = true;

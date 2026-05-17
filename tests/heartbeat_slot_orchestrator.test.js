@@ -37,7 +37,13 @@ assert.ok(
 
 assert.ok(
   orchestrator.includes('DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "A,B,C,D"'),
-  "schedules_calculatorv2 must run after any due schedules_dailyv2 slot so groups_live overlays are promoted"
+  "schedules_calculatorv2 must be eligible on every DAY heartbeat slot"
+);
+
+assert.ok(
+  orchestrator.includes("if (!scheduleDueFailed && schedulesCalcDue)") &&
+    !orchestrator.includes("} else if (schedulesCalcDue) {"),
+  "schedules_calculatorv2 must run whenever its own slot is due, not only when schedules_dailyv2 is due"
 );
 
 assert.ok(
