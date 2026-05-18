@@ -43,7 +43,7 @@ jobs:
               pageSize: "100",
               filterByFormula: "{heartbeat}",
             });
-            for (const field of ["show_id", "customer_id", "focus_day", "heartbeat"]) {
+            for (const field of ["show_id", "customer_id", "focus_day", "start_date", "end_date", "heartbeat"]) {
               params.append("fields[]", field);
             }
 
@@ -53,7 +53,17 @@ jobs:
             if (!response.ok) throw new Error(`Focused show lookup failed ${response.status}: ${body}`);
             const payload = JSON.parse(body);
             const rows = payload.records || [];
-            const activeShows = rows.map((row) => {
+            const today = new Intl.DateTimeFormat("en-CA", {
+              timeZone: "America/New_York",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            }).format(new Date());
+            const inActiveWindow = (fields) => {
+              if (!fields.start_date || !fields.end_date) return true;
+              return String(fields.start_date) <= today && today <= String(fields.end_date);
+            };
+            const activeShows = rows.filter((row) => inActiveWindow(row.fields || {})).map((row) => {
               const fields = row.fields || {};
               const showId = fields.show_id;
               const customerId = fields.customer_id;

@@ -117,6 +117,7 @@ const FIELD_SHOW_NAME_BASE = process.env.FIELD_SHOW_NAME_BASE || "show_name";
 const FIELD_SHOW_START_DATE_BASE = process.env.FIELD_SHOW_START_DATE_BASE || "start_date";
 const FIELD_SHOW_END_DATE_BASE = process.env.FIELD_SHOW_END_DATE_BASE || "end_date";
 const FIELD_SHOW_FOCUS_DAY = process.env.FIELD_SHOW_FOCUS_DAY || "focus_day";
+const FIELD_MANUAL_DAY_COUNT = process.env.FIELD_MANUAL_DAY_COUNT || "manual_day_count";
 
 const SCOPE_STATUS_NO_ACTIVE_FEEDS = "no-active-feeds";
 
@@ -1123,13 +1124,14 @@ async function buildAppContext(clock) {
   let showAppSqlStartDate = null;
   let showAppSqlEndDate = null;
   let showAppName = null;
+  let manualDayCount = null;
   let enrichedShowAppSqlStartDate = null;
   let enrichedShowAppSqlEndDate = null;
   let enrichedShowAppName = null;
   let appSqlDateSource = "raw_day";
 
   const customerId = clock.customerId ?? CUSTOMER_ID;
-  if (!decision?.noActiveFeeds) {
+  if (!decision) {
     const scheduleInfo = await fetchScheduleDefaultInfoForShow(appShowId, customerId, { candidateAppSqlDate });
     defaultAppSqlDateIs = scheduleInfo.defaultAppSqlDateIs;
     showAppSqlStartDate = scheduleInfo.showAppSqlStartDate;
@@ -1165,6 +1167,7 @@ async function buildAppContext(clock) {
     showAppSqlStartDate = null;
     showAppSqlEndDate = null;
     showAppName = null;
+    manualDayCount = null;
     appSqlDateSource = SCOPE_STATUS_NO_ACTIVE_FEEDS;
   } else if (decision || heartbeatTargetAppSqlDate) {
     appShowId = heartbeatTargetShowId(decision);
@@ -1181,6 +1184,7 @@ async function buildAppContext(clock) {
     showAppSqlStartDate = decision?.start_date || showAppSqlStartDate || sortedDates[0] || heartbeatTargetAppSqlDate;
     showAppSqlEndDate = decision?.end_date || showAppSqlEndDate || sortedDates[sortedDates.length - 1] || heartbeatTargetAppSqlDate;
     showAppName = decision?.show_name || showAppName;
+    manualDayCount = decision?.manual_day_count ?? null;
     if (decision) {
       shiftedToNextDay = !!decision.shifted_to_next_day;
       setToDefaultAppSqlDate = !!decision.set_to_default_app_sql_date;
@@ -1221,6 +1225,7 @@ async function buildAppContext(clock) {
     defaultAppSqlDateIs,
     showAppSqlStartDate,
     showAppSqlEndDate,
+    manualDayCount,
     setToDefaultAppSqlDate,
   });
 
@@ -1235,6 +1240,7 @@ async function buildAppContext(clock) {
     showAppSqlStartDate,
     showAppSqlEndDate,
     showAppName,
+    manualDayCount,
     appSqlDateSource,
     candidateAppSqlDate,
     defaultShowDateGuard,
@@ -1275,6 +1281,7 @@ async function buildAppContext(clock) {
       show_app_sql_start_date: showAppSqlStartDate,
       show_app_sql_end_date: showAppSqlEndDate,
       show_app_name: showAppName,
+      manual_day_count: manualDayCount,
       app_sql_date_source: appSqlDateSource,
       candidate_app_sql_date: candidateAppSqlDate,
       default_show_date_guard: defaultShowDateGuard,
@@ -1673,6 +1680,7 @@ function noActiveFeedsDecision() {
     target_sql_dates: [],
     start_date: null,
     end_date: null,
+    manual_day_count: null,
     focus_day: null,
     ring_collection: null,
     show_scope_key: "",
@@ -1685,6 +1693,13 @@ function noActiveFeedsDecision() {
   };
 }
 
+function isFocusedShowInActiveWindow(fields, nowSqlDate) {
+  const startDate = toIsoDateOnly(fields?.[FIELD_SHOW_START_DATE_BASE]);
+  const endDate = toIsoDateOnly(fields?.[FIELD_SHOW_END_DATE_BASE]);
+  if (!startDate || !endDate) return true;
+  return sqlDateInRange(nowSqlDate, startDate, endDate);
+}
+
 async function findFocusedShowTarget() {
   const fields = [
     FIELD_SHOW_ID,
@@ -1692,6 +1707,7 @@ async function findFocusedShowTarget() {
     FIELD_SHOW_START_DATE_BASE,
     FIELD_SHOW_END_DATE_BASE,
     FIELD_SHOW_FOCUS_DAY,
+    FIELD_MANUAL_DAY_COUNT,
     FIELD_SHIFTED_NEXT_DAY,
     FIELD_SET_TO_DEFAULT_APP_SQL_DATE,
     FIELD_SHOW_NAME_BASE,
@@ -1700,6 +1716,7 @@ async function findFocusedShowTarget() {
     FIELD_MODE_CONTROL,
     FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE,
   ];
+  const nowSqlDate = formatSqlDateFromMs(Date.now(), HB_TZ);
 
   let rows = [];
   try {
@@ -1730,7 +1747,8 @@ async function findFocusedShowTarget() {
     const fields = row.fields || {};
     return hasValue(fields[FIELD_SHOW_ID]) &&
       hasValue(fields[FIELD_CUSTOMER_ID]) &&
-      hasValue(fields[FIELD_SHOW_FOCUS_DAY]);
+      hasValue(fields[FIELD_SHOW_FOCUS_DAY]) &&
+      isFocusedShowInActiveWindow(fields, nowSqlDate);
   });
 
   if (selected.length === 0 && !HEARTBEAT_TARGET_SHOW_RECORD_ID && !HEARTBEAT_TARGET_APP_SHOW_ID) {
@@ -1787,6 +1805,7 @@ async function resolveHeartbeatTargetDecision() {
     target_sql_dates: sortedDates,
     start_date: startDate,
     end_date: endDate,
+    manual_day_count: numericFieldOrNull(fields[FIELD_MANUAL_DAY_COUNT]),
     focus_day: focusDay,
     ring_collection: strOrNull(fields[FIELD_RING_COLLECTION]),
     show_scope_key: buildShowScopeKey({

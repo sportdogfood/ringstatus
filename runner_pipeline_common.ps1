@@ -32,6 +32,10 @@ function Test-SqlDateInRange {
     return ($date -ge $start -and $date -le $end)
 }
 
+function Get-TodaySqlDate {
+    return [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([datetime]::UtcNow, 'Eastern Standard Time').ToString('yyyy-MM-dd')
+}
+
 function Resolve-HeartbeatTargetShow {
     param(
         [string]$BaseId,
@@ -60,7 +64,7 @@ function Resolve-HeartbeatTargetShow {
         $RecordId = [Environment]::GetEnvironmentVariable('HEARTBEAT_TARGET_SHOW_RECORD_ID', 'Process')
     }
 
-    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
+    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'manual_day_count', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
         $queryParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
     }
     $requestUri = "$url`?$($queryParts -join '&')"
@@ -78,7 +82,7 @@ function Resolve-HeartbeatTargetShow {
     }
     catch {
         $fallbackParts = @()
-        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
+        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'manual_day_count', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
             $fallbackParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
         }
         $fallbackUri = "$url`?$($fallbackParts -join '&')"
@@ -93,6 +97,15 @@ function Resolve-HeartbeatTargetShow {
     if (-not [string]::IsNullOrWhiteSpace($ShowId)) {
         $records = @($records | Where-Object { [string]$_.fields.show_id -eq $ShowId })
     }
+
+    $todaySqlDate = Get-TodaySqlDate
+    $records = @($records | Where-Object {
+        $startDate = [string]$_.fields.start_date
+        $endDate = [string]$_.fields.end_date
+        [string]::IsNullOrWhiteSpace($startDate) -or
+            [string]::IsNullOrWhiteSpace($endDate) -or
+            (Test-SqlDateInRange -SqlDate $todaySqlDate -StartDate $startDate -EndDate $endDate)
+    })
 
     if ($records.Count -lt 1) {
         return [pscustomobject]@{

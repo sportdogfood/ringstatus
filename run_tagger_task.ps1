@@ -8,7 +8,18 @@ $env:AIRTABLE_TABLE    = 'tblCnHDB4IVtxqulo'
 $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
 $env:CUSTOMER_ID       = '15'
 . (Join-Path (Split-Path -Parent $PSCommandPath) 'runner_pipeline_common.ps1')
-$targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
+$targetShow = $null
+try {
+    $targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
+}
+catch {
+    $message = [string]$_.Exception.Message
+    if ($message -like 'Multiple focused show records found*' -and [string]::IsNullOrWhiteSpace($env:HEARTBEAT_TARGET_SHOW_RECORD_ID)) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path (Split-Path -Parent $PSCommandPath) 'run_tagger_task_focused_shows.ps1')
+        exit $LASTEXITCODE
+    }
+    throw
+}
 if ($targetShow -and $targetShow.NoActiveFeeds) {
     $env:HEARTBEAT_NO_ACTIVE_FEEDS = 'true'
     Remove-Item Env:HEARTBEAT_TARGET_SHOW_RECORD_ID -ErrorAction SilentlyContinue

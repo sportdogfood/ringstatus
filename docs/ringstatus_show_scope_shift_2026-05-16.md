@@ -38,10 +38,14 @@ Minimum owner-managed fields:
 - `customer_id`
 - `focus_day`
 - `heartbeat`
+
+Optional owner-managed controls:
+
 - `shifted_to_next_day`
 - `set_to_default_app_sql_date`
 - `mode_control`
 - `is_default_show_manual_override`
+- `manual_day_count`
 
 Generated or enriched fields may include:
 
@@ -71,7 +75,19 @@ Example from the current focused show:
 10002|200000006|2026-05-16
 ```
 
-Exactly one `show` record should have `heartbeat` checked for a single-scope run. If there are zero or multiple focused records, heartbeat and heavy lanes should fail before writing downstream rows.
+Each active show is represented by one `show` record with `heartbeat` checked. Multi-show operation is one heartbeat/pipeline pass per active `show` record.
+
+An active `show` row must also be inside its stated date window when both `start_date` and `end_date` are present. The link-carrying rule is:
+
+```text
+start_date <= today <= end_date
+```
+
+If today is before `start_date` or after `end_date`, that `show` row is staged or expired even if `heartbeat` remains checked. It should not receive a fresh heartbeat link or relink downstream rows. If no checked rows qualify after this date-window filter, tagger writes `scope_status = no-active-feeds`.
+
+If the `show` heartbeat view has zero active rows, tagger still writes a heartbeat record with `scope_status = no-active-feeds` and skips downstream schedule/trips/rings relinks and heavy work for that pass.
+
+`manual_day_count` is manually owned. It is the expected inclusive count of show days from `start_date` through `end_date`; for example Wednesday through Sunday is `5`. Because off-season show windows vary, the code must compare against this field when present and surface `manual_day_count_mismatch` as suspicious evidence. The code must not invent the expected day count when the field is blank.
 
 ### `customers`
 
@@ -102,6 +118,7 @@ Heartbeat must copy the focused show values into writable fields:
 - `ring_collection`
 - `show_scope_key`
 - `show`
+- `scope_status` only when the run has no active focused feeds
 
 Trusted focus fields on heartbeat:
 
@@ -112,6 +129,8 @@ Trusted focus fields on heartbeat:
 - `show_scope_key`: copied from `show`
 
 Mode is still used for cadence and lane timing. Mode must not guess the focused show/date when `show` has explicit controls.
+
+`mode_control` now lives on `show`. Stale log labels using `shows_*` should be treated as legacy naming only and replaced with `show_*` naming during cleanup.
 
 ## Downstream Copied Scope Fields
 

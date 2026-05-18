@@ -22,16 +22,27 @@ if ([string]::IsNullOrWhiteSpace($token)) {
 $encodedBase = [uri]::EscapeDataString($baseId)
 $encodedTable = [uri]::EscapeDataString($tableName)
 $queryParts = @("view=$([uri]::EscapeDataString($viewName))")
-foreach ($field in @('show_id', 'customer_id', 'focus_day', 'heartbeat')) {
+foreach ($field in @('show_id', 'customer_id', 'focus_day', 'start_date', 'end_date', 'heartbeat')) {
     $queryParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
 }
 $uri = "https://api.airtable.com/v0/$encodedBase/$encodedTable`?$($queryParts -join '&')"
 $headers = @{ Authorization = "Bearer $token" }
+$todaySqlDate = [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([datetime]::UtcNow, 'Eastern Standard Time').ToString('yyyy-MM-dd')
+
+function Test-ShowRecordInActiveWindow {
+    param($Record)
+    $startDate = [string]$Record.fields.start_date
+    $endDate = [string]$Record.fields.end_date
+    if ([string]::IsNullOrWhiteSpace($startDate) -or [string]::IsNullOrWhiteSpace($endDate)) {
+        return $true
+    }
+    return ($todaySqlDate -ge $startDate -and $todaySqlDate -le $endDate)
+}
 
 $records = @()
 do {
     $response = Invoke-RestMethod -Method Get -Uri $uri -Headers $headers
-    $records += @($response.records | Where-Object { $_.fields.heartbeat -eq $true })
+    $records += @($response.records | Where-Object { $_.fields.heartbeat -eq $true -and (Test-ShowRecordInActiveWindow $_) })
     if ($response.offset) {
         $uri = "https://api.airtable.com/v0/$encodedBase/$encodedTable`?$($queryParts -join '&')&offset=$([uri]::EscapeDataString($response.offset))"
     } else {

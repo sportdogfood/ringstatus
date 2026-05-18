@@ -69,4 +69,31 @@ assert.deepStrictEqual(
 assert.strictEqual(modeForDateContext("OFF", "NIGHT"), "NIGHT");
 assert.strictEqual(modeForDateContext("OVERNIGHT", "DAY"), "OVERNIGHT");
 
+{
+  const matchingManualCount = computeDefaultShowDateGuard({
+    rawSqlDate: "2026-05-14",
+    appSqlDate: "2026-05-15",
+    defaultAppSqlDateIs: "2026-05-15",
+    showAppSqlStartDate: "2026-05-14",
+    showAppSqlEndDate: "2026-05-18",
+    manualDayCount: 5,
+    setToDefaultAppSqlDate: true,
+  });
+  assert.strictEqual(matchingManualCount.default_show_date_metrics.actual_day_count, 5);
+  assert.strictEqual(matchingManualCount.default_show_date_reason, "ok");
+}
+
+{
+  const mismatchedManualCount = computeDefaultShowDateGuard({
+    rawSqlDate: "2026-05-14",
+    appSqlDate: "2026-05-15",
+    defaultAppSqlDateIs: "2026-05-15",
+    showAppSqlStartDate: "2026-05-14",
+    showAppSqlEndDate: "2026-05-18",
+    manualDayCount: 4,
+    setToDefaultAppSqlDate: true,
+  });
+  assert.ok(mismatchedManualCount.default_show_date_reason.includes("manual_day_count_mismatch"));
+}
+
 console.log("default_show_date_guard tests passed");
