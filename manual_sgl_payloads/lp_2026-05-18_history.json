@@ -1,0 +1,1730 @@
+{
+    "competitions": [
+        {
+            "competitionId": "7129",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. NOVEMBER I (7129)",
+            "startDate": "11/7/2025",
+            "endDate": "11/9/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/lHuL3pU8gIg",
+            "sections": [
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "656",
+                            "classTitle": "656 - Warm Up Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/LT7KVlapDYg",
+                            "horse": {
+                                "name": "NAVIGATOR",
+                                "usefHorseId": "5805986",
+                                "link": "https://www.usef.org/search/horses/display/b6b6Wpbu1MA?year=2025"
+                            },
+                            "entries": 15,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "20.00",
+                            "backNumber": "471"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "6489",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FALL \"A\" CIRCUIT II (6489)",
+            "startDate": "10/16/2025",
+            "endDate": "10/19/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/PNV4_gDm1Rw",
+            "sections": [
+                {
+                    "sectionName": "USHJA HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "182",
+                            "classTitle": "182 - USHJA Hunter 2'/2'3 - FP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/HW0NzGtwMEM",
+                            "horse": {
+                                "name": "TROUBLESHOOT",
+                                "usefHorseId": "5859450",
+                                "link": "https://www.usef.org/search/horses/display/Q4kCSFHIKFs?year=2025"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "475"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "656",
+                            "classTitle": "656 - Warm Up Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/gAKGt6DKLRc",
+                            "horse": {
+                                "name": "TROUBLESHOOT",
+                                "usefHorseId": "5859450",
+                                "link": "https://www.usef.org/search/horses/display/Q4kCSFHIKFs?year=2025"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "475"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "2807",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FLORIDA STATE FALL (2807)",
+            "startDate": "9/18/2025",
+            "endDate": "9/21/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/RVjzteXC9dc",
+            "sections": [
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "570",
+                            "classTitle": "570 - ASPCA Maclay",
+                            "classUrl": "https://www.usef.org/search/competitions/class/iW9PR2XwlBI",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 11,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "6371",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A (6371)",
+            "startDate": "8/28/2025",
+            "endDate": "8/31/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/Fr_giG9vIvQ",
+            "sections": [
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "525",
+                            "classTitle": "525 - SFHJA Junior Medal (Flat Phase)",
+                            "classUrl": "https://www.usef.org/search/competitions/class/Siuk5IvMkUY",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 8,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        },
+                        {
+                            "classCode": "570",
+                            "classTitle": "570 - ASPCA Maclay",
+                            "classUrl": "https://www.usef.org/search/competitions/class/QYhGy-k1T4g",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 6,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "658",
+                            "classTitle": "658 - Warm Up Hunter 3'",
+                            "classUrl": "https://www.usef.org/search/competitions/class/FjZcoSZoX0Q",
+                            "horse": {
+                                "name": "KOBERLIN FH",
+                                "usefHorseId": "5802679",
+                                "link": "https://www.usef.org/search/horses/display/yGH-B_EsY6E?year=2024"
+                            },
+                            "entries": 2,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "1061"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "COMBINED HUNTER EQUITATION - 17/U",
+                    "classes": [
+                        {
+                            "classCode": "512",
+                            "classTitle": "512 - 12-17 Equitation Flat",
+                            "classUrl": "https://www.usef.org/search/competitions/class/tdHnKS109p4",
+                            "horse": {
+                                "name": "SIR SANTINO",
+                                "usefHorseId": "5504287",
+                                "link": "https://www.usef.org/search/horses/display/ZCKWvF9vErM?year=2024"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "20.00",
+                            "money": "0.00",
+                            "backNumber": "739"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "USEF/NCEA Junior Hunter Seat Medal",
+                    "classes": [
+                        {
+                            "classCode": "585",
+                            "classTitle": "585 - USEF/NCEA Junior Hunter Seat Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/E8JOgoCN_eI",
+                            "horse": {
+                                "name": "SIR SANTINO",
+                                "usefHorseId": "5504287",
+                                "link": "https://www.usef.org/search/horses/display/ZCKWvF9vErM?year=2024"
+                            },
+                            "entries": 1,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "739"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "307815",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II (307815)",
+            "startDate": "8/14/2025",
+            "endDate": "8/17/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/CQVrTlJOvAk",
+            "sections": [
+                {
+                    "sectionName": "PONY HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "415",
+                            "classTitle": "415 - Pony Hunter Handy",
+                            "classUrl": "https://www.usef.org/search/competitions/class/Spe54iRyVtA",
+                            "horse": {
+                                "name": "BRIGHTON",
+                                "usefHorseId": "5356986",
+                                "link": "https://www.usef.org/search/horses/display/7BY-ibGLTQE?year=2025"
+                            },
+                            "entries": 2,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "852"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "530",
+                            "classTitle": "530 - Hamel Foundation/NHS 3'3  Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/DDVZvANOqL0",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "USHJA 3'3\" HUNTER SEAT MEDAL",
+                    "classes": [
+                        {
+                            "classCode": "535",
+                            "classTitle": "535 - USHJA 3'3  Hunter Seat Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/UviVD61cn-I",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "5.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "USHJA HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "222",
+                            "classTitle": "222 - USHJA Hunter 2'9  & 3'",
+                            "classUrl": "https://www.usef.org/search/competitions/class/c2dXf2f3bNA",
+                            "horse": {
+                                "name": "CENTO FOREVER",
+                                "usefHorseId": "5531258",
+                                "link": "https://www.usef.org/search/horses/display/5xBmmKo-p5U?year=2024"
+                            },
+                            "entries": 8,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "30.00",
+                            "backNumber": "694"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "340305",
+            "competitionName": "WEC OCALA SUMMER #4 (340305)",
+            "startDate": "7/1/2025",
+            "endDate": "7/6/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/kiC6aImjz9k",
+            "sections": [
+                {
+                    "sectionName": "JUNIOR HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "100",
+                            "classTitle": "100 - $400 Junior Hunter 3'6 FP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/-FmWJx58pnQ",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "5748"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "247",
+                            "classTitle": "247 - USHJA Hunter 3'3",
+                            "classUrl": "https://www.usef.org/search/competitions/class/X2KdtJsRMSo",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 12,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "5748"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "548",
+                            "classTitle": "548 - World Equestrian Center Premier Cup 3'6",
+                            "classUrl": "https://www.usef.org/search/competitions/class/JREUKQdWKF0",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "5748"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "COMBINED HUNTER EQUITATION - 17/U",
+                    "classes": [
+                        {
+                            "classCode": "505",
+                            "classTitle": "505 - Equitation 12-14 2'9'/15-17 3'3 Flat",
+                            "classUrl": "https://www.usef.org/search/competitions/class/U7Sz-m7XfPk",
+                            "horse": {
+                                "name": "MAHALO",
+                                "usefHorseId": "5814560",
+                                "link": "https://www.usef.org/search/horses/display/Y7hFHkVwDaI?year=2024"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "20.00",
+                            "money": "0.00",
+                            "backNumber": "2956"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "5029",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. JUNE I (5029)",
+            "startDate": "5/30/2025",
+            "endDate": "6/1/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/xcSoRv1meVE",
+            "sections": [
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "530",
+                            "classTitle": "530 - Hamel Foundation/NHS 3'3  Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/I6g5FsO8Pak",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 14,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                    "classes": [
+                        {
+                            "classCode": "550",
+                            "classTitle": "550 - Dover Saddlery/USEF Hunter Seat Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/IVznsJgpD_E",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "5.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "340245",
+            "competitionName": "ESP JUNE EQUITATION DAY #1 (340245)",
+            "startDate": "5/29/2025",
+            "endDate": "5/29/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/B6B2bNcpdUg",
+            "sections": [
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "530",
+                            "classTitle": "530 - Hamel Foundation NHS 3'3' Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/lfAnUKk0aQ8",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 11,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                    "classes": [
+                        {
+                            "classCode": "550",
+                            "classTitle": "550 - Dover Saddlery USEF Hunter Seat Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/N0ac1z45TeM",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "5.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "USHJA 3'3 JUMPING SEAT MEDAL",
+                    "classes": [
+                        {
+                            "classCode": "545",
+                            "classTitle": "545 - USHJA Jumping Seat Medal 3'3",
+                            "classUrl": "https://www.usef.org/search/competitions/class/y-CE_1S2i7M",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 6,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "6.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "133"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "327488",
+            "competitionName": "SFHJA MAY II SHOW (327488)",
+            "startDate": "5/17/2025",
+            "endDate": "5/18/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/mKKrYbxb1T8",
+            "sections": [
+                {
+                    "sectionName": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                    "classes": [
+                        {
+                            "classCode": "550",
+                            "classTitle": "550 - Dover/USEF Hunter Seat Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/NGXtJjT7k5s",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "5.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "1356"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "PONY HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "412",
+                            "classTitle": "412 - Small/Medium Pony Hunter - FP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/qdoPuRZ-C-s",
+                            "horse": {
+                                "name": "BELIEVE IN BLUE",
+                                "usefHorseId": "5010509",
+                                "link": "https://www.usef.org/search/horses/display/qd0-mZmCg4o?year=2024"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "28.00",
+                            "backNumber": "1172"
+                        },
+                        {
+                            "classCode": "413",
+                            "classTitle": "413 - Small/Medium Pony Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/eQ2ic-UK76Q",
+                            "horse": {
+                                "name": "BELIEVE IN BLUE",
+                                "usefHorseId": "5010509",
+                                "link": "https://www.usef.org/search/horses/display/qd0-mZmCg4o?year=2024"
+                            },
+                            "entries": 6,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "24.00",
+                            "backNumber": "1172"
+                        },
+                        {
+                            "classCode": "414",
+                            "classTitle": "414 - Small/Medium Pony Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/5kRbaAi8p-E",
+                            "horse": {
+                                "name": "BELIEVE IN BLUE",
+                                "usefHorseId": "5010509",
+                                "link": "https://www.usef.org/search/horses/display/qd0-mZmCg4o?year=2024"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "20.00",
+                            "backNumber": "1172"
+                        },
+                        {
+                            "classCode": null,
+                            "classTitle": "PHSMC - Pony Hunter - Small/Medium - CHAMPIONSHIP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/aQ5oMiAiAOo",
+                            "horse": {
+                                "name": "BELIEVE IN BLUE",
+                                "usefHorseId": "5010509",
+                                "link": "https://www.usef.org/search/horses/display/qd0-mZmCg4o?year=2024"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "30.00",
+                            "zonePoints": "30.00",
+                            "money": "0.00",
+                            "backNumber": "1172"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "405",
+                            "classTitle": "405 - Children's Pony Hunter U/S",
+                            "classUrl": "https://www.usef.org/search/competitions/class/nt7cbyQU-c8",
+                            "horse": {
+                                "name": "JUSTAMERE'S LA-DI-DA",
+                                "usefHorseId": "4981647",
+                                "link": "https://www.usef.org/search/horses/display/YtpYUQuL1Uk?year=2024"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "1171"
+                        },
+                        {
+                            "classCode": "406",
+                            "classTitle": "406 - Children's Pony Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/RknaIMqsygE",
+                            "horse": {
+                                "name": "JUSTAMERE'S LA-DI-DA",
+                                "usefHorseId": "4981647",
+                                "link": "https://www.usef.org/search/horses/display/YtpYUQuL1Uk?year=2024"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "1171"
+                        },
+                        {
+                            "classCode": "409",
+                            "classTitle": "409 - Children's Pony Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/Nl9h_ZYoxBQ",
+                            "horse": {
+                                "name": "JUSTAMERE'S LA-DI-DA",
+                                "usefHorseId": "4981647",
+                                "link": "https://www.usef.org/search/horses/display/YtpYUQuL1Uk?year=2024"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "1171"
+                        },
+                        {
+                            "classCode": "960",
+                            "classTitle": "960 - $500 USHJA Zone 4 Children's Pony Handy Hunter Challenge",
+                            "classUrl": "https://www.usef.org/search/competitions/class/qicfTARJO7o",
+                            "horse": {
+                                "name": "JUSTAMERE'S LA-DI-DA",
+                                "usefHorseId": "4981647",
+                                "link": "https://www.usef.org/search/horses/display/YtpYUQuL1Uk?year=2024"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "1171"
+                        },
+                        {
+                            "classCode": null,
+                            "classTitle": "CPHC - Children's Pony Hunter - CHAMPIONSHIP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/AB6du2cenUs",
+                            "horse": {
+                                "name": "JUSTAMERE'S LA-DI-DA",
+                                "usefHorseId": "4981647",
+                                "link": "https://www.usef.org/search/horses/display/YtpYUQuL1Uk?year=2024"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "30.00",
+                            "money": "0.00",
+                            "backNumber": "1171"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "654",
+                            "classTitle": "654 - Warm Up",
+                            "classUrl": "https://www.usef.org/search/competitions/class/gP2NlDZB4C4",
+                            "horse": {
+                                "name": "JUSTAMERE'S LA-DI-DA",
+                                "usefHorseId": "4981647",
+                                "link": "https://www.usef.org/search/horses/display/YtpYUQuL1Uk?year=2024"
+                            },
+                            "entries": 4,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "16.00",
+                            "backNumber": "1171"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "HUNTER EQUITATION 12-14",
+                    "classes": [
+                        {
+                            "classCode": "514",
+                            "classTitle": "514 - 12-14 Equitation (2'9 )",
+                            "classUrl": "https://www.usef.org/search/competitions/class/_OU7c9bstJs",
+                            "horse": {
+                                "name": "BON BROWN",
+                                "usefHorseId": "5497224",
+                                "link": "https://www.usef.org/search/horses/display/9mze4f0kbgo?year=2024"
+                            },
+                            "entries": 4,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "20.00",
+                            "zonePoints": "20.00",
+                            "money": "0.00",
+                            "backNumber": "1219"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "330610",
+            "competitionName": "SFHJA MAY I (330610)",
+            "startDate": "5/16/2025",
+            "endDate": "5/16/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/l4SNuhQN5ig",
+            "sections": [
+                {
+                    "sectionName": "USHJA 3'3\" JUNIOR JUMPING SEAT MEDAL",
+                    "classes": [
+                        {
+                            "classCode": "545",
+                            "classTitle": "545 - USHJA 3'3 Junior Jumping Seat Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/fHm7JTnx8eM",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "3.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "1356"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "4397",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 5 (4397)",
+            "startDate": "5/8/2025",
+            "endDate": "5/11/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/WR5_ywlWER4",
+            "sections": [
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "570",
+                            "classTitle": "570 - ASPCA Maclay",
+                            "classUrl": "https://www.usef.org/search/competitions/class/nTEbmCkgDNU",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 10,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "3076"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                    "classes": [
+                        {
+                            "classCode": "550",
+                            "classTitle": "550 - Dover Saddlery/USEF Hunter Seat Medal",
+                            "classUrl": "https://www.usef.org/search/competitions/class/0YOSrO3ZaDE",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 10,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "10.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "3076"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "5028",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 3 (5028)",
+            "startDate": "4/15/2025",
+            "endDate": "4/19/2025",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/UDuZc53VBwc",
+            "sections": [
+                {
+                    "sectionName": "Misc Equitation",
+                    "classes": [
+                        {
+                            "classCode": "525",
+                            "classTitle": "525 - SFHJA Junior/Adult Amateur Medal (Flat Phase)",
+                            "classUrl": "https://www.usef.org/search/competitions/class/l66YUtqaJwM",
+                            "horse": {
+                                "name": "ODDUR VAN BEAUGAARDE",
+                                "usefHorseId": "5782114",
+                                "link": "https://www.usef.org/search/horses/display/PcqjirLOqXs?year=2025"
+                            },
+                            "entries": 11,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "3076"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "316542",
+            "competitionName": "HOLIDAY FESTIVAL II (316542)",
+            "startDate": "12/12/2024",
+            "endDate": "12/15/2024",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/d72ZkVTMjcY",
+            "sections": [
+                {
+                    "sectionName": "HUNTER EQUITATION 12-14",
+                    "classes": [
+                        {
+                            "classCode": "512",
+                            "classTitle": "512 - 12-14 Equitation Flat",
+                            "classUrl": "https://www.usef.org/search/competitions/class/MApeBoO3daQ",
+                            "horse": {
+                                "name": "BALOUNA",
+                                "usefHorseId": "6009188",
+                                "link": "https://www.usef.org/search/horses/display/lnjxdWdygGA?year=2025"
+                            },
+                            "entries": 8,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "20.00",
+                            "zonePoints": "20.00",
+                            "money": "0.00",
+                            "backNumber": "2420"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "230675",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER III (230675)",
+            "startDate": "8/22/2024",
+            "endDate": "8/25/2024",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/EdfW1FFoOSc",
+            "sections": [
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "651",
+                            "classTitle": "651 - Warm Up Hunter (Coded)",
+                            "classUrl": "https://www.usef.org/search/competitions/class/C1SqtfQ_vLE",
+                            "horse": {
+                                "name": "SIR SANTINO",
+                                "usefHorseId": "5504287",
+                                "link": "https://www.usef.org/search/horses/display/ZCKWvF9vErM?year=2024"
+                            },
+                            "entries": 4,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "739"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "CHILDREN/ADULT AMATEUR HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "285",
+                            "classTitle": "285 - Child/Adult Amateur Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/k3IXm36ke5o",
+                            "horse": {
+                                "name": "SIR SANTINO",
+                                "usefHorseId": "5504287",
+                                "link": "https://www.usef.org/search/horses/display/ZCKWvF9vErM?year=2024"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "739"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "322723",
+            "competitionName": "HOLIDAY FESTIVAL III (322723)",
+            "startDate": "12/20/2023",
+            "endDate": "12/23/2023",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/s_Mg-pI0KwY",
+            "sections": [
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "409",
+                            "classTitle": "409 - Small/Medium Children's Pony Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/mLdhrS2MIB0",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2024"
+                            },
+                            "entries": 6,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "12.00",
+                            "backNumber": "2859"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "319687",
+            "competitionName": "HITS ON THE HUDSON IV (319687)",
+            "startDate": "7/19/2023",
+            "endDate": "7/23/2023",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/651leMhq3-g",
+            "sections": [
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "557",
+                            "classTitle": "557 - SAUGERTIES CHILD HUNTER O/F",
+                            "classUrl": "https://www.usef.org/search/competitions/class/K3-yPDaMIPE",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 17,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "679"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "6845",
+            "competitionName": "SARATOGA CLASSIC I (6845)",
+            "startDate": "6/14/2023",
+            "endDate": "6/18/2023",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/XjVLZ1y0wyE",
+            "sections": [
+                {
+                    "sectionName": "GREEN PONY HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "124",
+                            "classTitle": "124 - $100 GREEN PONY HUNTER",
+                            "classUrl": "https://www.usef.org/search/competitions/class/B_BbTLf2N_k",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 6,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "40.00",
+                            "backNumber": "812"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "USHJA HUNTER 2'0\"",
+                    "classes": [
+                        {
+                            "classCode": "604",
+                            "classTitle": "604 - USHJA HUNTER 2' O/F",
+                            "classUrl": "https://www.usef.org/search/competitions/class/7x4optq9_IE",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 15,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "22.00",
+                            "money": "0.00",
+                            "backNumber": "1041"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "748",
+            "competitionName": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW (748)",
+            "startDate": "5/13/2023",
+            "endDate": "5/14/2023",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/Nj1U6czDLwk",
+            "sections": [
+                {
+                    "sectionName": "GREEN PONY HUNTER",
+                    "classes": [
+                        {
+                            "classCode": "16",
+                            "classTitle": "16 - GREEN PONY HUNTER - MODEL",
+                            "classUrl": "https://www.usef.org/search/competitions/class/gWtzM2mBtN0",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "7.50",
+                            "zonePoints": "7.50",
+                            "money": "0.00",
+                            "backNumber": "128"
+                        },
+                        {
+                            "classCode": "18",
+                            "classTitle": "18 - GREEN PONY HUNTER FP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/GLW_sDI1jbg",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "120.00",
+                            "backNumber": "128"
+                        },
+                        {
+                            "classCode": "19",
+                            "classTitle": "19 - GREEN PONY HUNTER",
+                            "classUrl": "https://www.usef.org/search/competitions/class/EXZWvgKyKKk",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "120.00",
+                            "backNumber": "128"
+                        },
+                        {
+                            "classCode": "20",
+                            "classTitle": "20 - GREEN PONY HUNTER - CONFORMATION",
+                            "classUrl": "https://www.usef.org/search/competitions/class/J4uB6e1iQxI",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "15.00",
+                            "zonePoints": "15.00",
+                            "money": "120.00",
+                            "backNumber": "128"
+                        },
+                        {
+                            "classCode": null,
+                            "classTitle": "GPHCH - GREEN PONY HUNTERS CHAMPIONSHIP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/zsxDbyVP3Vc",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "30.00",
+                            "zonePoints": "30.00",
+                            "money": "0.00",
+                            "backNumber": "128"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "PONY HUNTER-SMALL",
+                    "classes": [
+                        {
+                            "classCode": "24",
+                            "classTitle": "24 - Small Pony Handy Hunter O/F",
+                            "classUrl": "https://www.usef.org/search/competitions/class/eLIJbL3TSxo",
+                            "horse": {
+                                "name": "Q-2",
+                                "usefHorseId": "4966146",
+                                "link": "https://www.usef.org/search/horses/display/TqFT93I55xY?year=2021"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "23.00",
+                            "zonePoints": "18.00",
+                            "money": "75.00",
+                            "backNumber": "217"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "1762",
+            "competitionName": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 1 (1762)",
+            "startDate": "4/4/2023",
+            "endDate": "4/8/2023",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/TpQgxPODb84",
+            "sections": [
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "658",
+                            "classTitle": "658 - Warm Up Hunter",
+                            "classUrl": "https://www.usef.org/search/competitions/class/Ip-phzhNHMo",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 4,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "968"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "247834",
+            "competitionName": "HOLIDAY FESTIVAL I (247834)",
+            "startDate": "12/12/2022",
+            "endDate": "12/14/2022",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/4BRDid2Nntk",
+            "sections": [
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "406",
+                            "classTitle": "406 - Children's Hunter Pony",
+                            "classUrl": "https://www.usef.org/search/competitions/class/h3lL2Fo4B34",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 2,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "2275"
+                        },
+                        {
+                            "classCode": "408",
+                            "classTitle": "408 - Children's Hunter Pony",
+                            "classUrl": "https://www.usef.org/search/competitions/class/TrZNmfnfH74",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2023"
+                            },
+                            "entries": 2,
+                            "placing": "1, Natl Points Bad",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "2275"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "965",
+            "competitionName": "CHEMUNG COUNTY CLASSIC HORSE SHOW (965)",
+            "startDate": "7/21/2022",
+            "endDate": "7/23/2022",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/pR_hvenoCL8",
+            "sections": [
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "401",
+                            "classTitle": "401 - $500 M&S Childrens Pony Hunter Classic 2'/2'6",
+                            "classUrl": "https://www.usef.org/search/competitions/class/pAbgkB18LlQ",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "21.25",
+                            "money": "150.00",
+                            "backNumber": "160"
+                        },
+                        {
+                            "classCode": "95",
+                            "classTitle": "95 - Childrens Hunter Pony - Combined  U/S",
+                            "classUrl": "https://www.usef.org/search/competitions/class/54sRGkfwLQQ",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "17.00",
+                            "money": "0.00",
+                            "backNumber": "160"
+                        },
+                        {
+                            "classCode": "97",
+                            "classTitle": "97 - Childrens Hunter Pony - Combined O/F",
+                            "classUrl": "https://www.usef.org/search/competitions/class/_8b1y2CyP6E",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "17.00",
+                            "money": "35.00",
+                            "backNumber": "160"
+                        },
+                        {
+                            "classCode": "98",
+                            "classTitle": "98 - Childrens Hunter Pony - Combined O/F",
+                            "classUrl": "https://www.usef.org/search/competitions/class/SDpVlXz24uE",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "17.00",
+                            "money": "35.00",
+                            "backNumber": "160"
+                        },
+                        {
+                            "classCode": "99",
+                            "classTitle": "99 - Childrens Hunter Pony - Combined O/F",
+                            "classUrl": "https://www.usef.org/search/competitions/class/ewHp-yXtEgI",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "17.00",
+                            "money": "35.00",
+                            "backNumber": "160"
+                        },
+                        {
+                            "classCode": null,
+                            "classTitle": "CHPCH - Children's Hunter Pony - Combined Championship",
+                            "classUrl": "https://www.usef.org/search/competitions/class/spoa0AIR-7Q",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 7,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "34.00",
+                            "money": "0.00",
+                            "backNumber": "160"
+                        },
+                        {
+                            "classCode": "95",
+                            "classTitle": "95 - Children's Hunter Pony U/S",
+                            "classUrl": "https://www.usef.org/search/competitions/class/2Jsd_Vw4bX0",
+                            "horse": {
+                                "name": "Q-2",
+                                "usefHorseId": "4966146",
+                                "link": "https://www.usef.org/search/horses/display/TqFT93I55xY?year=2021"
+                            },
+                            "entries": 4,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "16.00",
+                            "money": "0.00",
+                            "backNumber": "106"
+                        },
+                        {
+                            "classCode": "98",
+                            "classTitle": "98 - Children's Hunter Pony",
+                            "classUrl": "https://www.usef.org/search/competitions/class/oMjNr1cO_-0",
+                            "horse": {
+                                "name": "Q-2",
+                                "usefHorseId": "4966146",
+                                "link": "https://www.usef.org/search/horses/display/TqFT93I55xY?year=2021"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "16.00",
+                            "money": "35.00",
+                            "backNumber": "106"
+                        },
+                        {
+                            "classCode": "99",
+                            "classTitle": "99 - Children's Hunter Pony",
+                            "classUrl": "https://www.usef.org/search/competitions/class/YuEKJSPO2_Q",
+                            "horse": {
+                                "name": "Q-2",
+                                "usefHorseId": "4966146",
+                                "link": "https://www.usef.org/search/horses/display/TqFT93I55xY?year=2021"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "16.00",
+                            "money": "35.00",
+                            "backNumber": "106"
+                        },
+                        {
+                            "classCode": null,
+                            "classTitle": "CHCP - Children's Hunter Pony Championship",
+                            "classUrl": "https://www.usef.org/search/competitions/class/BWryA4xDM-w",
+                            "horse": {
+                                "name": "Q-2",
+                                "usefHorseId": "4966146",
+                                "link": "https://www.usef.org/search/horses/display/TqFT93I55xY?year=2021"
+                            },
+                            "entries": 6,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "32.00",
+                            "money": "0.00",
+                            "backNumber": "106"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "6674",
+            "competitionName": "HUCK FINN CLASSIC (6674)",
+            "startDate": "7/16/2022",
+            "endDate": "7/17/2022",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/DRGAMlyzyFU",
+            "sections": [
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "95",
+                            "classTitle": "95 - Children's Hunter Pony U/S",
+                            "classUrl": "https://www.usef.org/search/competitions/class/2zeIMDKdQKE",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "13.00",
+                            "money": "0.00",
+                            "backNumber": "160"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "464",
+            "competitionName": "SMITHTOWN HUNT (464)",
+            "startDate": "6/11/2022",
+            "endDate": "6/12/2022",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/f_44_U-YL8Q",
+            "sections": [
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "161",
+                            "classTitle": "161 - Childrens Hunter Pony (Sm/Med) U/S",
+                            "classUrl": "https://www.usef.org/search/competitions/class/6UJK5CQdzUQ",
+                            "horse": {
+                                "name": "SUMMERWOOD'S BLUE STEEL",
+                                "usefHorseId": "5348808",
+                                "link": "https://www.usef.org/search/horses/display/cL6c44_riuA?year=2022"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "0.00",
+                            "backNumber": "432"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "1918",
+            "competitionName": "WEF 7  (1918)",
+            "startDate": "2/22/2022",
+            "endDate": "2/27/2022",
+            "state": "FL",
+            "zone": "4",
+            "viewUrl": "https://www.usef.org/search/competitions/display/7SLnZoJzXhY",
+            "sections": [
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "2886",
+                            "classTitle": "2886 - Small/Medium Children's Hunter Pony (Sec. B)",
+                            "classUrl": "https://www.usef.org/search/competitions/class/-XLamd_nJpA",
+                            "horse": {
+                                "name": "FARNLEY CORTLAND",
+                                "usefHorseId": "5062007",
+                                "link": "https://www.usef.org/search/horses/display/XthyNbV9XQc?year=2022"
+                            },
+                            "entries": 15,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "25.00",
+                            "money": "0.00",
+                            "backNumber": "5854"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "6675",
+            "competitionName": "MARK TWAIN FESTIVAL (6675)",
+            "startDate": "7/20/2021",
+            "endDate": "7/21/2021",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/3zrunE0j_0I",
+            "sections": [
+                {
+                    "sectionName": "CHILDRENS HUNTER-PONY",
+                    "classes": [
+                        {
+                            "classCode": "97",
+                            "classTitle": "97 - Children's Hunter Pony",
+                            "classUrl": "https://www.usef.org/search/competitions/class/QMVZkIONWmc",
+                            "horse": {
+                                "name": "Q-2",
+                                "usefHorseId": "4966146",
+                                "link": "https://www.usef.org/search/horses/display/TqFT93I55xY?year=2021"
+                            },
+                            "entries": 5,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "15.00",
+                            "money": "35.00",
+                            "backNumber": "106"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "340539",
+            "competitionName": "PRINCETON SHOW JUMPING MAY III (340539)",
+            "startDate": "5/19/2021",
+            "endDate": "5/23/2021",
+            "state": "NJ",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/6VGJaQkjNBk",
+            "sections": [
+                {
+                    "sectionName": "PONY HUNTER-SMALL",
+                    "classes": [
+                        {
+                            "classCode": "204",
+                            "classTitle": "204 - Small Pony Handy Hunter 2'3",
+                            "classUrl": "https://www.usef.org/search/competitions/class/22JkePkO2uU",
+                            "horse": {
+                                "name": "Q-2",
+                                "usefHorseId": "4966146",
+                                "link": "https://www.usef.org/search/horses/display/TqFT93I55xY?year=2021"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "28.00",
+                            "zonePoints": "18.00",
+                            "money": "70.50",
+                            "backNumber": "2062"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "3589",
+            "competitionName": "OLD SALEM FARM SEPTEMBER (3589)",
+            "startDate": "8/29/2020",
+            "endDate": "8/30/2020",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/p_tIQWtcHvU",
+            "sections": [
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "11",
+                            "classTitle": "11 - SHORT STIRRUP WALK TROT CANTER",
+                            "classUrl": "https://www.usef.org/search/competitions/class/mZYm47DCj08",
+                            "horse": {
+                                "name": "GOOD GOLLY MISS HOLLY",
+                                "usefHorseId": "5575483",
+                                "link": "https://www.usef.org/search/horses/display/GhUBl3ehoMs?year=2020"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "1014"
+                        },
+                        {
+                            "classCode": null,
+                            "classTitle": "CH1 - SHORT STIRRUP CHAMPIONSHIP",
+                            "classUrl": "https://www.usef.org/search/competitions/class/-WB9ECBRX1I",
+                            "horse": {
+                                "name": "GOOD GOLLY MISS HOLLY",
+                                "usefHorseId": "5575483",
+                                "link": "https://www.usef.org/search/horses/display/GhUBl3ehoMs?year=2020"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "1014"
+                        }
+                    ]
+                },
+                {
+                    "sectionName": "Walk/Trot classes (exempt non-member fee)",
+                    "classes": [
+                        {
+                            "classCode": "10",
+                            "classTitle": "10 - SHORT STIRRUP WALK TROT",
+                            "classUrl": "https://www.usef.org/search/competitions/class/ow9QZTJx8os",
+                            "horse": {
+                                "name": "GOOD GOLLY MISS HOLLY",
+                                "usefHorseId": "5575483",
+                                "link": "https://www.usef.org/search/horses/display/GhUBl3ehoMs?year=2020"
+                            },
+                            "entries": 3,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "1014"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "competitionId": "3",
+            "competitionName": "OLD SALEM FARM DECEMBER (3)",
+            "startDate": "12/24/2019",
+            "endDate": "12/29/2019",
+            "state": "NY",
+            "zone": "2",
+            "viewUrl": "https://www.usef.org/search/competitions/display/jE7XqrncVoc",
+            "sections": [
+                {
+                    "sectionName": "MISC. HUNTER (No points earned)",
+                    "classes": [
+                        {
+                            "classCode": "13",
+                            "classTitle": "13 - SHORT STIRRUP CROSS RAILS",
+                            "classUrl": "https://www.usef.org/search/competitions/class/DVva5Fj2g_M",
+                            "horse": {
+                                "name": "GOOD GOLLY MISS HOLLY",
+                                "usefHorseId": "5575483",
+                                "link": "https://www.usef.org/search/horses/display/GhUBl3ehoMs?year=2020"
+                            },
+                            "entries": 2,
+                            "placing": "1, Natl Points Good",
+                            "natlPoints": "0.00",
+                            "zonePoints": "0.00",
+                            "money": "0.00",
+                            "backNumber": "747"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
