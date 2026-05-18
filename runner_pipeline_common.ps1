@@ -95,7 +95,21 @@ function Resolve-HeartbeatTargetShow {
     }
 
     if ($records.Count -lt 1) {
-        throw "No focused show record found in $TableName/$ViewName"
+        return [pscustomobject]@{
+            NoActiveFeeds = $true
+            RecordId = $null
+            ShowId = $null
+            CustomerId = $null
+            StartDate = $null
+            EndDate = $null
+            FocusDay = $null
+            ShiftedToNextDay = $false
+            SetToDefaultAppSqlDate = $false
+            ShowDates = @()
+            SqlDates = @()
+            ShowName = $null
+            RingCollection = $null
+        }
     }
     if ($records.Count -gt 1) {
         throw "Multiple focused show records found in $TableName/$ViewName"
@@ -110,17 +124,18 @@ function Resolve-HeartbeatTargetShow {
     $startDate = [string]$fields.start_date
     $endDate = [string]$fields.end_date
     $focusDay = [string]$fields.focus_day
-    if ([string]::IsNullOrWhiteSpace($startDate) -or [string]::IsNullOrWhiteSpace($endDate)) {
-        throw "focused show record must have start_date and end_date"
-    }
     if ([string]::IsNullOrWhiteSpace($focusDay)) {
         throw "focused show record must have focus_day"
     }
-    if (-not (Test-SqlDateInRange -SqlDate $focusDay -StartDate $startDate -EndDate $endDate)) {
+    if (-not [string]::IsNullOrWhiteSpace($startDate) -and -not [string]::IsNullOrWhiteSpace($endDate) -and -not (Test-SqlDateInRange -SqlDate $focusDay -StartDate $startDate -EndDate $endDate)) {
         throw "focused show focus_day is outside start_date/end_date: $focusDay"
     }
 
-    $showDateList = ConvertTo-SqlDateList -StartDate $startDate -EndDate $endDate
+    $showDateList = if (-not [string]::IsNullOrWhiteSpace($startDate) -and -not [string]::IsNullOrWhiteSpace($endDate)) {
+        ConvertTo-SqlDateList -StartDate $startDate -EndDate $endDate
+    } else {
+        @($focusDay)
+    }
     $heartbeatDateList = @($focusDay)
 
     return [pscustomobject]@{
@@ -136,6 +151,7 @@ function Resolve-HeartbeatTargetShow {
         SqlDates = $heartbeatDateList
         ShowName = [string]$fields.show_name
         RingCollection = [string]$fields.ring_collection
+        NoActiveFeeds = $false
     }
 }
 
@@ -151,10 +167,19 @@ function Initialize-RunnerDefaults {
     $env:CUSTOMER_ID       = '15'
 
     $targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
-    if ($targetShow) {
+    if ($targetShow -and $targetShow.NoActiveFeeds) {
+        $env:HEARTBEAT_NO_ACTIVE_FEEDS = 'true'
+        Remove-Item Env:HEARTBEAT_TARGET_SHOW_RECORD_ID -ErrorAction SilentlyContinue
+        Remove-Item Env:HEARTBEAT_TARGET_APP_SHOW_ID -ErrorAction SilentlyContinue
+        Remove-Item Env:HEARTBEAT_TARGET_SQL_DATES -ErrorAction SilentlyContinue
+        Remove-Item Env:HEARTBEAT_TARGET_CUSTOMER_ID -ErrorAction SilentlyContinue
+    }
+    elseif ($targetShow) {
+        Remove-Item Env:HEARTBEAT_NO_ACTIVE_FEEDS -ErrorAction SilentlyContinue
         $env:HEARTBEAT_TARGET_SHOW_RECORD_ID = $targetShow.RecordId
         $env:HEARTBEAT_TARGET_APP_SHOW_ID = $targetShow.ShowId
         $env:HEARTBEAT_TARGET_SQL_DATES = ($targetShow.SqlDates -join ',')
+        $env:HEARTBEAT_TARGET_CUSTOMER_ID = $targetShow.CustomerId
         if ($targetShow.ShowDates -contains $targetShow.FocusDay) {
             $env:CUSTOMER_ID = $targetShow.CustomerId
         }

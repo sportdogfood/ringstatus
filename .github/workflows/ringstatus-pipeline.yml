@@ -41,7 +41,6 @@ jobs:
 
             const params = new URLSearchParams({
               pageSize: "100",
-              maxRecords: "3",
               filterByFormula: "{heartbeat}",
             });
             for (const field of ["show_id", "customer_id", "focus_day", "heartbeat"]) {
@@ -54,27 +53,39 @@ jobs:
             if (!response.ok) throw new Error(`Focused show lookup failed ${response.status}: ${body}`);
             const payload = JSON.parse(body);
             const rows = payload.records || [];
-            if (rows.length !== 1) {
-              throw new Error(`Expected exactly one focused show row with heartbeat checked; found ${rows.length}`);
+            const activeShows = rows.map((row) => {
+              const fields = row.fields || {};
+              const showId = fields.show_id;
+              const customerId = fields.customer_id;
+              const focusDay = fields.focus_day;
+              if (!showId) throw new Error(`Focused show row ${row.id} missing show_id`);
+              if (!customerId) throw new Error(`Focused show row ${row.id} missing customer_id`);
+              if (!focusDay) throw new Error(`Focused show row ${row.id} missing focus_day`);
+              return {
+                record_id: row.id,
+                show_id: showId,
+                customer_id: customerId,
+                focus_day: focusDay,
+              };
+            });
+
+            if (activeShows.length === 0) {
+              fs.appendFileSync(process.env.GITHUB_ENV, "HEARTBEAT_NO_ACTIVE_FEEDS=true\nHEARTBEAT_ACTIVE_SHOWS_JSON=[]\n");
+              console.log("No focused show rows with heartbeat checked; tagger will write no-active-feeds heartbeat.");
+              return;
             }
-            const row = rows[0];
-            const fields = row.fields || {};
-            const showId = fields.show_id;
-            const customerId = fields.customer_id;
-            const focusDay = fields.focus_day;
-            if (!showId) throw new Error("Focused show row missing show_id");
-            if (!customerId) throw new Error("Focused show row missing customer_id");
-            if (!focusDay) throw new Error("Focused show row missing focus_day");
 
             const lines = [
-              `CUSTOMER_ID=${customerId}`,
-              `HEARTBEAT_TARGET_CUSTOMER_ID=${customerId}`,
-              `HEARTBEAT_TARGET_APP_SHOW_ID=${showId}`,
-              `HEARTBEAT_TARGET_SHOW_RECORD_ID=${row.id}`,
-              `HEARTBEAT_TARGET_SQL_DATES=${focusDay}`,
+              "HEARTBEAT_NO_ACTIVE_FEEDS=false",
+              `HEARTBEAT_ACTIVE_SHOWS_JSON=${JSON.stringify(activeShows)}`,
+              `CUSTOMER_ID=${activeShows[0].customer_id}`,
+              `HEARTBEAT_TARGET_CUSTOMER_ID=${activeShows[0].customer_id}`,
+              `HEARTBEAT_TARGET_APP_SHOW_ID=${activeShows[0].show_id}`,
+              `HEARTBEAT_TARGET_SHOW_RECORD_ID=${activeShows[0].record_id}`,
+              `HEARTBEAT_TARGET_SQL_DATES=${activeShows[0].focus_day}`,
             ];
             fs.appendFileSync(process.env.GITHUB_ENV, `${lines.join("\n")}\n`);
-            console.log(`Focused show scope: customer_id=${customerId} show_id=${showId} focus_day=${focusDay} record_id=${row.id}`);
+            console.log(`Focused show rows: ${activeShows.length}`);
           })().catch((error) => {
             console.error(error.stack || error.message);
             process.exit(1);
@@ -85,7 +96,6 @@ jobs:
         shell: bash
         run: |
           set -u
-          deferred_failed=0
 
           run_step() {
             local label="$1"
@@ -106,17 +116,56 @@ jobs:
             fi
           }
 
-          run_step "TAGGER" "tagger.js"
-          run_step "HEARTBEAT_PATTERNS" "heartbeat_patterns.js"
-          run_step "SCHEDULES_DAILYV2" "schedules_dailyv2.js"
-          run_step "SCHEDULES_CALCULATORV2" "schedules_calculatorv2.js" "1"
-          run_step "TRIPS_DAILYV2" "trips_dailyv2.js"
-          run_step "TRIPS_TAGGER" "trips_tagger.js"
-          run_step "TRIPS_CALCULATORV2" "trips_calculatorv2.js" "1"
+          run_pipeline_for_current_show() {
+            deferred_failed=0
 
-          if [ "${deferred_failed}" = "1" ]; then
-            echo "Skipping publisher because deferred steps failed."
-            exit 1
+            run_step "TAGGER" "tagger.js"
+
+            if [ "${HEARTBEAT_NO_ACTIVE_FEEDS:-false}" = "true" ]; then
+              echo "No active focused shows; heartbeat was written with no-active-feeds. Skipping downstream lanes."
+              return 0
+            fi
+
+            run_step "HEARTBEAT_PATTERNS" "heartbeat_patterns.js"
+            run_step "SCHEDULES_DAILYV2" "schedules_dailyv2.js"
+            run_step "SCHEDULES_CALCULATORV2" "schedules_calculatorv2.js" "1"
+            run_step "TRIPS_DAILYV2" "trips_dailyv2.js"
+            run_step "TRIPS_TAGGER" "trips_tagger.js"
+            run_step "TRIPS_CALCULATORV2" "trips_calculatorv2.js" "1"
+
+            if [ "${deferred_failed}" = "1" ]; then
+              echo "Skipping publisher because deferred steps failed."
+              exit 1
+            fi
+
+            run_step "PUBLISH" "publisher.js"
+          }
+
+          if [ "${HEARTBEAT_NO_ACTIVE_FEEDS:-false}" = "true" ]; then
+            run_pipeline_for_current_show
+            exit 0
           fi
 
-          run_step "PUBLISH" "publisher.js"
+          active_show_rows=$(node - <<'NODE'
+          const rows = JSON.parse(process.env.HEARTBEAT_ACTIVE_SHOWS_JSON || "[]");
+          for (const row of rows) {
+            console.log(Buffer.from(JSON.stringify(row), "utf8").toString("base64"));
+          }
+          NODE
+          )
+
+          for row in ${active_show_rows}; do # for row in active_shows
+            eval "$(ROW_B64="${row}" node - <<'NODE'
+            const row = JSON.parse(Buffer.from(process.env.ROW_B64, "base64").toString("utf8"));
+            const quote = (value) => String(value ?? "").replace(/'/g, "'\\''");
+            console.log(`export HEARTBEAT_NO_ACTIVE_FEEDS='false'`);
+            console.log(`export CUSTOMER_ID='${quote(row.customer_id)}'`);
+            console.log(`export HEARTBEAT_TARGET_CUSTOMER_ID='${quote(row.customer_id)}'`);
+            console.log(`export HEARTBEAT_TARGET_APP_SHOW_ID='${quote(row.show_id)}'`);
+            console.log(`export HEARTBEAT_TARGET_SHOW_RECORD_ID='${quote(row.record_id)}'`);
+            console.log(`export HEARTBEAT_TARGET_SQL_DATES='${quote(row.focus_day)}'`);
+            NODE
+            )"
+            echo "Focused show scope: customer_id=${CUSTOMER_ID} show_id=${HEARTBEAT_TARGET_APP_SHOW_ID} focus_day=${HEARTBEAT_TARGET_SQL_DATES} record_id=${HEARTBEAT_TARGET_SHOW_RECORD_ID}"
+            run_pipeline_for_current_show
+          done

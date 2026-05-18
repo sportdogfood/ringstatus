@@ -40,14 +40,23 @@ do {
 } while ($uri)
 
 if ($records.Count -lt 1) {
-    throw "No focused show records found in $tableName/$viewName"
+    Write-Host "No focused show records found in $tableName/$viewName; writing no-active-feeds heartbeat."
+    $env:HEARTBEAT_NO_ACTIVE_FEEDS = 'true'
+    Remove-Item Env:HEARTBEAT_TARGET_SHOW_RECORD_ID -ErrorAction SilentlyContinue
+    Remove-Item Env:HEARTBEAT_TARGET_APP_SHOW_ID -ErrorAction SilentlyContinue
+    Remove-Item Env:HEARTBEAT_TARGET_SQL_DATES -ErrorAction SilentlyContinue
+    Remove-Item Env:HEARTBEAT_TARGET_CUSTOMER_ID -ErrorAction SilentlyContinue
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $runTaskPath
+    exit $LASTEXITCODE
 }
 
 $failures = @()
 foreach ($record in $records) {
     $env:HEARTBEAT_TARGET_SHOW_RECORD_ID = $record.id
     $env:HEARTBEAT_TARGET_APP_SHOW_ID = [string]$record.fields.show_id
+    $env:HEARTBEAT_TARGET_CUSTOMER_ID = [string]$record.fields.customer_id
     $env:CUSTOMER_ID = [string]$record.fields.customer_id
+    Remove-Item Env:HEARTBEAT_NO_ACTIVE_FEEDS -ErrorAction SilentlyContinue
 
     Write-Host "Running focused show $($record.id) show_id=$($record.fields.show_id) customer_id=$($record.fields.customer_id) focus_day=$($record.fields.focus_day)"
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $runTaskPath
@@ -62,6 +71,8 @@ foreach ($record in $records) {
 }
 
 Remove-Item Env:HEARTBEAT_TARGET_SHOW_RECORD_ID -ErrorAction SilentlyContinue
+Remove-Item Env:HEARTBEAT_TARGET_CUSTOMER_ID -ErrorAction SilentlyContinue
+Remove-Item Env:HEARTBEAT_NO_ACTIVE_FEEDS -ErrorAction SilentlyContinue
 
 if ($failures.Count -gt 0) {
     $failures | ConvertTo-Json -Depth 4 | Write-Error

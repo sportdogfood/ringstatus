@@ -9,10 +9,19 @@ $env:AIRTABLE_VIEW_HOT = 'viwATt1y2RKpn2FSZ'
 $env:CUSTOMER_ID       = '15'
 . (Join-Path (Split-Path -Parent $PSCommandPath) 'runner_pipeline_common.ps1')
 $targetShow = Resolve-HeartbeatTargetShow -BaseId $env:AIRTABLE_BASE_ID
-if ($targetShow) {
+if ($targetShow -and $targetShow.NoActiveFeeds) {
+    $env:HEARTBEAT_NO_ACTIVE_FEEDS = 'true'
+    Remove-Item Env:HEARTBEAT_TARGET_SHOW_RECORD_ID -ErrorAction SilentlyContinue
+    Remove-Item Env:HEARTBEAT_TARGET_APP_SHOW_ID -ErrorAction SilentlyContinue
+    Remove-Item Env:HEARTBEAT_TARGET_SQL_DATES -ErrorAction SilentlyContinue
+    Remove-Item Env:HEARTBEAT_TARGET_CUSTOMER_ID -ErrorAction SilentlyContinue
+}
+elseif ($targetShow) {
+    Remove-Item Env:HEARTBEAT_NO_ACTIVE_FEEDS -ErrorAction SilentlyContinue
     $env:HEARTBEAT_TARGET_SHOW_RECORD_ID = $targetShow.RecordId
     $env:HEARTBEAT_TARGET_APP_SHOW_ID = $targetShow.ShowId
     $env:HEARTBEAT_TARGET_SQL_DATES = ($targetShow.SqlDates -join ',')
+    $env:HEARTBEAT_TARGET_CUSTOMER_ID = $targetShow.CustomerId
     if ($targetShow.ShowDates -contains $targetShow.FocusDay) {
         $env:CUSTOMER_ID = $targetShow.CustomerId
     }

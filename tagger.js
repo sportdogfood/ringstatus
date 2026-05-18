@@ -118,6 +118,8 @@ const FIELD_SHOW_START_DATE_BASE = process.env.FIELD_SHOW_START_DATE_BASE || "st
 const FIELD_SHOW_END_DATE_BASE = process.env.FIELD_SHOW_END_DATE_BASE || "end_date";
 const FIELD_SHOW_FOCUS_DAY = process.env.FIELD_SHOW_FOCUS_DAY || "focus_day";
 
+const SCOPE_STATUS_NO_ACTIVE_FEEDS = "no-active-feeds";
+
 const HEARTBEAT_ID_FIELD   = process.env.HEARTBEAT_ID_FIELD || "heartbeat_id";
 const HEARTBEAT_SHOW_ID    = process.env.HEARTBEAT_SHOW_ID || "show_id";
 const HEARTBEAT_SHOW_DATE  = process.env.HEARTBEAT_SHOW_DATE || "show_date";
@@ -143,6 +145,7 @@ const HEARTBEAT_TARGET_SHOW_RECORD_ID = strOrNull(process.env.HEARTBEAT_TARGET_S
 const HEARTBEAT_TARGET_APP_SHOW_ID = strOrNull(process.env.HEARTBEAT_TARGET_APP_SHOW_ID || process.env.HEARTBEAT_HOTPATCH_APP_SHOW_ID);
 const HEARTBEAT_TARGET_SQL_DATES = parseSqlDateSet(process.env.HEARTBEAT_TARGET_SQL_DATES || process.env.HEARTBEAT_HOTPATCH_APP_SQL_DATES);
 const HEARTBEAT_TARGET_CUSTOMER_ID = strOrNull(process.env.HEARTBEAT_TARGET_CUSTOMER_ID || process.env.HEARTBEAT_HOTPATCH_CUSTOMER_ID);
+const HEARTBEAT_NO_ACTIVE_FEEDS = boolValue(process.env.HEARTBEAT_NO_ACTIVE_FEEDS);
 const DRY_RUN           = String(process.env.DRY_RUN || "0") === "1";
 const HB_TZ             = process.env.HB_TIMEZONE || "America/New_York";
 const DEFAULT_TAGGER_STATE_PATH = "C:\\actions-runner\\ringstatus\\tagger_runtime_state.json";
@@ -865,6 +868,24 @@ function extractScheduleDefaultInfo(payload) {
   };
 }
 
+async function fetchScheduleDefaultInfoForShow(appShowId, customerId, context = {}) {
+  const endpoint = buildScheduleEmptyEndpoint(appShowId, customerId);
+  if (!endpoint) return {};
+  try {
+    const payload = await fetchJson(endpoint);
+    return extractScheduleDefaultInfo(payload);
+  } catch (e) {
+    logWarn(isSoftPayloadError(e) ? "schedule_default_soft_payload" : "schedule_default_lookup_failed", {
+      endpoint,
+      app_show_id: appShowId,
+      candidate_app_sql_date: context.candidateAppSqlDate ?? null,
+      error_message: String(e?.message || e).slice(0, 240),
+      ...(isSoftPayloadError(e) ? softPayloadLogFields(e) : {})
+    });
+    return {};
+  }
+}
+
 function isValidAppSqlDate(candidateDate, scheduleInfo) {
   if (!candidateDate) return false;
   if (Array.isArray(scheduleInfo?.validDates) && scheduleInfo.validDates.length) {
@@ -1091,6 +1112,7 @@ async function getClockSafe(customerId = CUSTOMER_ID) {
 
 async function buildAppContext(clock) {
   const dowRaw = dowName(dayOfWeekUtc(clock.sqlDate));
+  const decision = clock.showDecision || null;
 
   let appShowId = clock.showId ?? null;
   let appSqlDate = clock.sqlDate;
@@ -1101,34 +1123,28 @@ async function buildAppContext(clock) {
   let showAppSqlStartDate = null;
   let showAppSqlEndDate = null;
   let showAppName = null;
+  let enrichedShowAppSqlStartDate = null;
+  let enrichedShowAppSqlEndDate = null;
+  let enrichedShowAppName = null;
   let appSqlDateSource = "raw_day";
 
   const customerId = clock.customerId ?? CUSTOMER_ID;
-  const emptyScheduleEndpoint = buildScheduleEmptyEndpoint(appShowId, customerId);
-  if (emptyScheduleEndpoint) {
-    try {
-      const emptySchedulePayload = await fetchJson(emptyScheduleEndpoint);
-      const scheduleInfo = extractScheduleDefaultInfo(emptySchedulePayload);
-      defaultAppSqlDateIs = scheduleInfo.defaultAppSqlDateIs;
-      showAppSqlStartDate = scheduleInfo.showAppSqlStartDate;
-      showAppSqlEndDate = scheduleInfo.showAppSqlEndDate;
-      showAppName = scheduleInfo.showAppName;
+  if (!decision?.noActiveFeeds) {
+    const scheduleInfo = await fetchScheduleDefaultInfoForShow(appShowId, customerId, { candidateAppSqlDate });
+    defaultAppSqlDateIs = scheduleInfo.defaultAppSqlDateIs;
+    showAppSqlStartDate = scheduleInfo.showAppSqlStartDate;
+    showAppSqlEndDate = scheduleInfo.showAppSqlEndDate;
+    showAppName = scheduleInfo.showAppName;
+    enrichedShowAppSqlStartDate = scheduleInfo.showAppSqlStartDate || null;
+    enrichedShowAppSqlEndDate = scheduleInfo.showAppSqlEndDate || null;
+    enrichedShowAppName = scheduleInfo.showAppName || null;
 
-      const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
-      if (!validCandidate && scheduleInfo.defaultAppSqlDateIs) {
-        appSqlDate = scheduleInfo.defaultAppSqlDateIs;
-        shiftedToNextDay = false;
-        setToDefaultAppSqlDate = true;
-        appSqlDateSource = "default_day";
-      }
-    } catch (e) {
-      logWarn(isSoftPayloadError(e) ? "schedule_default_soft_payload" : "schedule_default_lookup_failed", {
-        endpoint: emptyScheduleEndpoint,
-        app_show_id: appShowId,
-        candidate_app_sql_date: candidateAppSqlDate,
-        error_message: String(e?.message || e).slice(0, 240),
-        ...(isSoftPayloadError(e) ? softPayloadLogFields(e) : {})
-      });
+    const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
+    if (!validCandidate && scheduleInfo.defaultAppSqlDateIs) {
+      appSqlDate = scheduleInfo.defaultAppSqlDateIs;
+      shiftedToNextDay = false;
+      setToDefaultAppSqlDate = true;
+      appSqlDateSource = "default_day";
     }
   }
 
@@ -1138,13 +1154,32 @@ async function buildAppContext(clock) {
     defaultAppSqlDateIs = appSqlDate;
   }
 
-  const decision = clock.showDecision || null;
   const heartbeatTargetAppSqlDate = heartbeatTargetDateForContext(clock.sqlDate, candidateAppSqlDate, decision);
-  if (decision || heartbeatTargetAppSqlDate) {
+  if (decision?.noActiveFeeds) {
+    appShowId = null;
+    appSqlDate = clock.sqlDate;
+    candidateAppSqlDate = clock.sqlDate;
+    shiftedToNextDay = false;
+    setToDefaultAppSqlDate = false;
+    defaultAppSqlDateIs = clock.sqlDate;
+    showAppSqlStartDate = null;
+    showAppSqlEndDate = null;
+    showAppName = null;
+    appSqlDateSource = SCOPE_STATUS_NO_ACTIVE_FEEDS;
+  } else if (decision || heartbeatTargetAppSqlDate) {
     appShowId = heartbeatTargetShowId(decision);
+    const decisionCustomerId = decision?.customer_id ?? heartbeatTargetCustomerId(customerId);
+    const scheduleInfo = await fetchScheduleDefaultInfoForShow(appShowId, decisionCustomerId, { candidateAppSqlDate });
+    if (scheduleInfo.defaultAppSqlDateIs) defaultAppSqlDateIs = scheduleInfo.defaultAppSqlDateIs;
+    if (scheduleInfo.showAppSqlStartDate) showAppSqlStartDate = scheduleInfo.showAppSqlStartDate;
+    if (scheduleInfo.showAppSqlEndDate) showAppSqlEndDate = scheduleInfo.showAppSqlEndDate;
+    if (scheduleInfo.showAppName) showAppName = scheduleInfo.showAppName;
+    if (scheduleInfo.showAppSqlStartDate) enrichedShowAppSqlStartDate = scheduleInfo.showAppSqlStartDate;
+    if (scheduleInfo.showAppSqlEndDate) enrichedShowAppSqlEndDate = scheduleInfo.showAppSqlEndDate;
+    if (scheduleInfo.showAppName) enrichedShowAppName = scheduleInfo.showAppName;
     const sortedDates = Array.from(heartbeatTargetDateSet(decision)).sort();
-    showAppSqlStartDate = decision?.start_date || sortedDates[0] || heartbeatTargetAppSqlDate;
-    showAppSqlEndDate = decision?.end_date || sortedDates[sortedDates.length - 1] || heartbeatTargetAppSqlDate;
+    showAppSqlStartDate = decision?.start_date || showAppSqlStartDate || sortedDates[0] || heartbeatTargetAppSqlDate;
+    showAppSqlEndDate = decision?.end_date || showAppSqlEndDate || sortedDates[sortedDates.length - 1] || heartbeatTargetAppSqlDate;
     showAppName = decision?.show_name || showAppName;
     if (decision) {
       shiftedToNextDay = !!decision.shifted_to_next_day;
@@ -1160,8 +1195,8 @@ async function buildAppContext(clock) {
         defaultAppSqlDateIs = appSqlDate;
         appSqlDateSource = "show_focus_day";
       }
-      if (!sqlDateInRange(appSqlDate, decision.start_date, decision.end_date)) {
-        throw new Error(`Focused show ${appShowId} resolved app_sql_date ${appSqlDate} outside ${decision.start_date}..${decision.end_date}`);
+      if (!sqlDateInRange(appSqlDate, showAppSqlStartDate, showAppSqlEndDate)) {
+        throw new Error(`Focused show ${appShowId} resolved app_sql_date ${appSqlDate} outside ${showAppSqlStartDate}..${showAppSqlEndDate}`);
       }
     }
   }
@@ -1212,6 +1247,11 @@ async function buildAppContext(clock) {
       focusDay: decision?.focus_day || appSqlDate,
     }),
     showRecordId: decision?.record_id || null,
+    scopeStatus: decision?.noActiveFeeds ? SCOPE_STATUS_NO_ACTIVE_FEEDS : null,
+    noActiveFeeds: !!decision?.noActiveFeeds,
+    enrichedShowAppSqlStartDate,
+    enrichedShowAppSqlEndDate,
+    enrichedShowAppName,
   };
 
   if (LOG_TRANSITIONS) {
@@ -1283,6 +1323,7 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
   maybeSet(FIELD_HEARTBEAT_FOCUS_DAY, appCtx.focusDay);
   maybeSet(FIELD_RING_COLLECTION, appCtx.ringCollection);
   maybeSet(FIELD_SHOW_SCOPE_KEY, appCtx.showScopeKey);
+  maybeSet(FIELD_SCOPE_STATUS, appCtx.scopeStatus);
   maybeSet(FIELD_LINK_SHOW, appCtx.showRecordId ? [appCtx.showRecordId] : undefined);
   maybeSet(FIELD_SHOW_APP_SQL_START_DATE, appCtx.showAppSqlStartDate);
   maybeSet(FIELD_SHOW_APP_SQL_END_DATE, appCtx.showAppSqlEndDate);
@@ -1301,6 +1342,7 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
       focus_day: fields[FIELD_HEARTBEAT_FOCUS_DAY] ?? null,
       ring_collection: fields[FIELD_RING_COLLECTION] ?? null,
       show_scope_key: fields[FIELD_SHOW_SCOPE_KEY] ?? null,
+      scope_status: fields[FIELD_SCOPE_STATUS] ?? null,
       raw_show_id: fields[HEARTBEAT_SHOW_ID],
       raw_sql_date: fields[HEARTBEAT_SQL_DATE],
       app_show_id: fields[FIELD_APP_SHOW_ID],
@@ -1621,6 +1663,28 @@ function resolveShowCustomerId(fields) {
     numericFieldOrNull(fields?.[FIELD_CUSTOMER_ID_OVERRIDE]);
 }
 
+function noActiveFeedsDecision() {
+  return {
+    noActiveFeeds: true,
+    record_id: null,
+    table: TABLE_SHOW_TARGET,
+    show_id: null,
+    customer_id: null,
+    target_sql_dates: [],
+    start_date: null,
+    end_date: null,
+    focus_day: null,
+    ring_collection: null,
+    show_scope_key: "",
+    shifted_to_next_day: false,
+    set_to_default_app_sql_date: false,
+    mode_control: null,
+    mode_control_reason: SCOPE_STATUS_NO_ACTIVE_FEEDS,
+    is_default_show_manual_override: false,
+    show_name: null,
+  };
+}
+
 async function findFocusedShowTarget() {
   const fields = [
     FIELD_SHOW_ID,
@@ -1666,12 +1730,15 @@ async function findFocusedShowTarget() {
     const fields = row.fields || {};
     return hasValue(fields[FIELD_SHOW_ID]) &&
       hasValue(fields[FIELD_CUSTOMER_ID]) &&
-      hasValue(fields[FIELD_SHOW_START_DATE_BASE]) &&
-      hasValue(fields[FIELD_SHOW_END_DATE_BASE]);
+      hasValue(fields[FIELD_SHOW_FOCUS_DAY]);
   });
 
+  if (selected.length === 0 && !HEARTBEAT_TARGET_SHOW_RECORD_ID && !HEARTBEAT_TARGET_APP_SHOW_ID) {
+    return null;
+  }
+
   if (selected.length !== 1) {
-    throw new Error(`${TABLE_SHOW_TARGET}/${VIEW_SHOW_TARGET} must expose exactly one focused show row with show_id, customer_id, start_date, and end_date; found ${selected.length}`);
+    throw new Error(`${TABLE_SHOW_TARGET}/${VIEW_SHOW_TARGET} must expose exactly one focused show row with show_id, customer_id, and focus_day for this tagger pass; found ${selected.length}`);
   }
 
   return selected[0];
@@ -1685,17 +1752,14 @@ async function resolveHeartbeatTargetDecision() {
     if (!hasHeartbeatTargetDateWindow()) throw e;
   }
 
-  if (!targetRecord && !hasHeartbeatTargetDateWindow()) return null;
+  if (!targetRecord && !hasHeartbeatTargetDateWindow()) {
+    return noActiveFeedsDecision();
+  }
 
   let fields = targetRecord?.fields || {};
   let appShowId = numericFieldOrNull(fields[FIELD_SHOW_ID]);
   if (appShowId === null && hasHeartbeatTargetDateWindow()) {
-    appShowId = heartbeatTargetShowId();
-    const lookup = await findShowsMatchAnywhere(appShowId);
-    if (!lookup.match) {
-      throw new Error(`Heartbeat target show_id ${appShowId} was not found in ${TABLE_SHOWS}`);
-    }
-    fields = lookup.match.fields || {};
+    throw new Error(`Heartbeat target show_id ${heartbeatTargetShowId()} was not found in ${TABLE_SHOW_TARGET}/${VIEW_SHOW_TARGET}`);
   }
 
   const customerId = resolveShowCustomerId(fields);
@@ -1709,7 +1773,7 @@ async function resolveHeartbeatTargetDecision() {
   if (!focusDay) {
     throw new Error(`Focused show ${appShowId} has no ${FIELD_SHOW_FOCUS_DAY}`);
   }
-  if (!sqlDateInRange(focusDay, startDate, endDate)) {
+  if (startDate && endDate && !sqlDateInRange(focusDay, startDate, endDate)) {
     throw new Error(`Focused show ${appShowId} ${FIELD_SHOW_FOCUS_DAY} ${focusDay} is outside ${startDate}..${endDate}`);
   }
   const targetDates = new Set();
@@ -1717,7 +1781,7 @@ async function resolveHeartbeatTargetDecision() {
   const sortedDates = Array.from(targetDates).sort();
   return {
     record_id: targetRecord?.id || null,
-    table: targetRecord ? TABLE_SHOW_TARGET : TABLE_SHOWS,
+    table: TABLE_SHOW_TARGET,
     show_id: appShowId,
     customer_id: customerId,
     target_sql_dates: sortedDates,
@@ -1740,6 +1804,18 @@ async function resolveHeartbeatTargetDecision() {
 }
 
 function modeControlFromTargetDecision(heartbeatTargetDecision) {
+  if (heartbeatTargetDecision?.noActiveFeeds) {
+    return {
+      found: true,
+      record_id: null,
+      matched_count: 0,
+      mode_control: null,
+      mode_control_reason: SCOPE_STATUS_NO_ACTIVE_FEEDS,
+      is_default_show_manual_override: false,
+      source_table: heartbeatTargetDecision.table || TABLE_SHOW_TARGET,
+    };
+  }
+
   if (!heartbeatTargetDecision?.record_id) return null;
   return {
     found: true,
@@ -1957,6 +2033,41 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
   };
 }
 
+async function syncFocusedShowTarget(appCtx) {
+  if (!appCtx.showRecordId || appCtx.noActiveFeeds) {
+    return {
+      table: TABLE_SHOW_TARGET,
+      updated_existing: 0,
+      skipped: appCtx.noActiveFeeds ? SCOPE_STATUS_NO_ACTIVE_FEEDS : "missing_show_record_id"
+    };
+  }
+
+  const updateFields = {};
+  if (appCtx.enrichedShowAppSqlStartDate) updateFields[FIELD_SHOW_START_DATE_BASE] = appCtx.enrichedShowAppSqlStartDate;
+  if (appCtx.enrichedShowAppSqlEndDate) updateFields[FIELD_SHOW_END_DATE_BASE] = appCtx.enrichedShowAppSqlEndDate;
+  if (appCtx.enrichedShowAppName) updateFields[FIELD_SHOW_NAME_BASE] = appCtx.enrichedShowAppName;
+
+  if (!Object.keys(updateFields).length) {
+    return {
+      table: TABLE_SHOW_TARGET,
+      updated_existing: 0,
+      skipped: "no_enriched_show_fields"
+    };
+  }
+
+  if (!DRY_RUN) {
+    await airtableUpdateRecord(TABLE_SHOW_TARGET, appCtx.showRecordId, updateFields);
+  }
+
+  return {
+    table: TABLE_SHOW_TARGET,
+    matched_record_id: appCtx.showRecordId,
+    updated_existing: DRY_RUN ? 0 : 1,
+    dry_run: DRY_RUN ? 1 : 0,
+    enriched_fields: Object.keys(updateFields)
+  };
+}
+
 (async () => {
   try {
     const heartbeatTargetDecision = await resolveHeartbeatTargetDecision();
@@ -1988,7 +2099,7 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     appCtx.modeReason = modeDecision.mode_reason;
     appCtx.defaultShowDateStatus = modeDecision.default_show_date_status;
     appCtx.defaultShowDateReason = appCtx.defaultShowDateGuard?.default_show_date_reason || "ok";
-    appCtx.showsModeControl = showControl;
+    appCtx.showModeControl = showControl;
 
     logInfo("run_summary_pre_write", {
       mode,
@@ -1996,10 +2107,10 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       mode_source: modeDecision.mode_source,
       mode_reason: modeDecision.mode_reason,
       forced_mode: forcedMode,
-      shows_mode_control: showControl?.mode_control || null,
-      shows_mode_control_reason: showControl?.mode_control_reason || null,
+      show_mode_control: showControl?.mode_control || null,
+      show_mode_control_reason: showControl?.mode_control_reason || null,
       is_default_show_manual_override: !!showControl?.is_default_show_manual_override,
-      shows_control_record_id: showControl?.record_id || null,
+      show_control_record_id: showControl?.record_id || null,
       source: clk.source,
       raw_show_id: clk.showId ?? null,
       raw_show_date: clk.showDate ?? null,
@@ -2033,40 +2144,63 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
     const results = [];
     const warnings = [];
 
-    let showsSyncResult = null;
-    try {
-      showsSyncResult = await syncShowsHeartbeat(heartbeatRecord, appCtx, mode);
-      results.push(showsSyncResult);
-    } catch (e) {
-      const msg = String(e?.message || e).slice(0, 240);
-      warnings.push(`shows: ${msg}`);
-      logError("shows_sync_failed", {
-        heartbeat_record_id: heartbeatRecord?.id || null,
-        app_show_id: appCtx.appShowId,
-        app_sql_date: appCtx.appSqlDate,
-        error_message: msg
+    if (appCtx.noActiveFeeds) {
+      results.push({
+        table: TABLE_SHOW_TARGET,
+        scope_status: SCOPE_STATUS_NO_ACTIVE_FEEDS,
+        skipped: "no_active_feeds"
       });
-    }
-
-    for (const tableName of [
-      TABLE_WATCH_SCHEDULE,
-      TABLE_WATCH_TRIPS,
-      TABLE_SCHEDULER,
-      TABLE_ACTIVE_TENANTS,
-      TABLE_ACTIVE_ALERTS,
-      TABLE_PUBLISH_QUEUE,
-      TABLE_WATCH_RINGS
-    ]) {
+    } else {
       try {
-        results.push(await relinkHeartbeatView(tableName, heartbeatRecord.id, appCtx));
+        results.push(await syncFocusedShowTarget(appCtx));
       } catch (e) {
         const msg = String(e?.message || e).slice(0, 240);
-        warnings.push(`${tableName}: ${msg}`);
-        logError("relink_failed", {
-          table: tableName,
-          heartbeat_record_id: heartbeatRecord?.id || null,
+        warnings.push(`show: ${msg}`);
+        logError("show_sync_failed", {
+          show_record_id: appCtx.showRecordId,
+          app_show_id: appCtx.appShowId,
+          app_sql_date: appCtx.appSqlDate,
           error_message: msg
         });
+      }
+
+      let showsSyncResult = null;
+      try {
+        showsSyncResult = await syncShowsHeartbeat(heartbeatRecord, appCtx, mode);
+        results.push(showsSyncResult);
+      } catch (e) {
+        const msg = String(e?.message || e).slice(0, 240);
+        warnings.push(`shows: ${msg}`);
+        logError("shows_sync_failed", {
+          heartbeat_record_id: heartbeatRecord?.id || null,
+          app_show_id: appCtx.appShowId,
+          app_sql_date: appCtx.appSqlDate,
+          error_message: msg
+        });
+      }
+    }
+
+    if (!appCtx.noActiveFeeds) {
+      for (const tableName of [
+        TABLE_WATCH_SCHEDULE,
+        TABLE_WATCH_TRIPS,
+        TABLE_SCHEDULER,
+        TABLE_ACTIVE_TENANTS,
+        TABLE_ACTIVE_ALERTS,
+        TABLE_PUBLISH_QUEUE,
+        TABLE_WATCH_RINGS
+      ]) {
+        try {
+          results.push(await relinkHeartbeatView(tableName, heartbeatRecord.id, appCtx));
+        } catch (e) {
+          const msg = String(e?.message || e).slice(0, 240);
+          warnings.push(`${tableName}: ${msg}`);
+          logError("relink_failed", {
+            table: tableName,
+            heartbeat_record_id: heartbeatRecord?.id || null,
+            error_message: msg
+          });
+        }
       }
     }
 
@@ -2077,6 +2211,8 @@ async function syncShowsHeartbeat(heartbeatRecord, appCtx, mode) {
       focus_day: appCtx.focusDay,
       ring_collection: appCtx.ringCollection,
       show_scope_key: appCtx.showScopeKey,
+      scope_status: appCtx.scopeStatus,
+      no_active_feeds: appCtx.noActiveFeeds,
       heartbeat_app_show_id: appCtx.appShowId,
       heartbeat_app_sql_date: appCtx.appSqlDate,
       heartbeat_app_dow_raw: appCtx.appDowRaw,
