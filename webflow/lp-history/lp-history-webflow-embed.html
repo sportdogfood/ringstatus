@@ -1,0 +1,76 @@
+<!-- LP History Webflow Embed - generated from 20260518_lp_history.json -->
+<div id="lp-history-app" class="lp-history-app">
+  <div class="lp-shell">
+    <header class="lp-header">
+      <div class="lp-header-copy">
+        <h1>Lainey in the Ring</h1>
+        <p class="lp-subtitle">All USEF Ride History</p>
+      </div>
+      <div class="lp-header-tools">
+        <div class="lp-summary-row">
+          <p data-lp-summary>Loading results...</p>
+          <button class="lp-filter-toggle" type="button" data-filter-toggle aria-expanded="false">Filter</button>
+        </div>
+        <div class="lp-date-filter" data-date-filter hidden aria-label="Overview date range">
+          <button class="lp-date-filter-close" type="button" data-filter-close aria-label="Close filter">×</button>
+          <label>
+            <span>From</span>
+            <input class="lp-date-input" type="date" data-overview-start>
+          </label>
+          <div>
+            <span>To</span>
+            <strong data-overview-end>Latest</strong>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="lp-tabs" aria-label="Competition history sections">
+      <button class="lp-tab lp-theme-overview is-active" type="button" data-tab="overview" aria-selected="true">
+        <span class="lp-tab-value">Overview</span>
+        <span class="lp-tab-label">Summary</span>
+      </button>
+      <button class="lp-tab lp-theme-videos" type="button" data-tab="videos" aria-selected="false">
+        <span class="lp-tab-value" data-tab-count="videos"></span>
+        <span class="lp-tab-label">Videos</span>
+      </button>
+      <button class="lp-tab lp-theme-horses" type="button" data-tab="horses" aria-selected="false">
+        <span class="lp-tab-value" data-tab-count="horses"></span>
+        <span class="lp-tab-label">Horses</span>
+      </button>
+      <button class="lp-tab lp-theme-competitions" type="button" data-tab="competitions" aria-selected="false">
+        <span class="lp-tab-value" data-tab-count="competitions"></span>
+        <span class="lp-tab-label">Competitions</span>
+      </button>
+      <button class="lp-tab lp-theme-classes" type="button" data-tab="classes" aria-selected="false">
+        <span class="lp-tab-value" data-tab-count="classes"></span>
+        <span class="lp-tab-label">Classes</span>
+      </button>
+    </nav>
+
+    <main class="lp-content">
+      <section class="lp-panel is-active" data-panel="overview"></section>
+      <section class="lp-panel" data-panel="videos"></section>
+      <section class="lp-panel" data-panel="horses"></section>
+      <section class="lp-panel" data-panel="competitions"></section>
+      <section class="lp-panel" data-panel="classes"></section>
+    </main>
+  </div>
+
+  <div class="lp-modal" data-modal hidden>
+    <div class="lp-modal-backdrop" data-modal-close></div>
+    <section class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="lp-modal-title" tabindex="-1">
+      <button class="lp-modal-close" type="button" data-modal-close aria-label="Close detail">×</button>
+      <div data-modal-content></div>
+    </section>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history.css">
+<script>
+  window.LP_HISTORY_CONFIG = {
+    historyUrl: "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history-history.json",
+    layerUrl: "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history-layer.json"
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history.js"></script>
