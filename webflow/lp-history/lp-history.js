@@ -578,7 +578,6 @@
       sectionTitle("All horses", horses.length + " shown", "", filterToggleMarkup("all:horses")),
       allControlsMarkup("horses", state.horses),
       horseCollection(horses),
-      editPanel("horses", state.horses),
       "</section>"
     ].join("");
   }
@@ -595,7 +594,6 @@
       sectionTitle("All videos", "", "", filterToggleMarkup("all:videos")),
       allControlsMarkup("videos", state.videos),
       videoList(videos),
-      editPanel("videos", state.videos),
       "</section>"
     ].join("");
   }
@@ -608,7 +606,6 @@
       sectionTitle("Competitions", "", "", filterToggleMarkup("all:competitions")),
       allControlsMarkup("competitions", state.competitions),
       competitionCollection(competitions, viewControls.competitions),
-      editPanel("competitions", state.competitions),
       "</section>"
     ].join("");
   }
@@ -621,7 +618,6 @@
       sectionTitle("Classes", "", "", filterToggleMarkup("all:classes")),
       allControlsMarkup("classes", state.classRows),
       classCollection(classes, viewControls.classes),
-      editPanel("classes", state.classRows),
       "</section>"
     ].join("");
   }
@@ -737,7 +733,6 @@
         ["recordState", "Record state", "single", recordState("competitions", competition.competitionId), [["active", "Active"], ["inactive", "Inactive"]]],
         ["status", "Status", "multi", layerStatusValues("competitions", competition.competitionId), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
         ["type", "Type", "multi", competitionLayer.type || [], ["Hunters", "Jumpers", "Equitation"]],
-        ["class_sequences", "Class sequences", "single", competitionLayer.class_sequences || "", ["Over Fences", "Under Saddle/Flat"]],
         ["tags", "Tags", "multi", competitionLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));

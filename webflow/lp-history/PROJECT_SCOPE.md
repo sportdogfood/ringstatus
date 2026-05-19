@@ -146,6 +146,15 @@ Edit mode:
 
 ## Enrichment Fields
 
+Filter-oriented enrichment fields:
+- Competition `type` is a higher-level competition filter. It classifies the competition context as Hunters, Jumpers, and/or Equitation.
+- Class `type` is a higher-level class filter. It classifies the class context as Hunters, Jumpers, and/or Equitation.
+- Class `class_sequences` is a higher-level class filter. It is a single choice describing the class sequence as Over Fences or Under Saddle/Flat.
+- Horse `horseType` is a higher-level horse filter. It is a single choice for Pony or Horse.
+- Horse `disciplines` is a higher-level horse filter. It can include Hunters, Jumpers, and/or Equitation.
+- These filter fields are not visibility controls. Visibility remains governed by `recordState` and `status`.
+- Tags are descriptive/search facets. They do not replace the higher-level Type, Class sequence, Horse type, or Disciplines fields.
+
 Horses:
 - `recordState`: active/inactive, single choice.
 - `status`: overview/favorite/ignore, multiple choice.
@@ -164,11 +173,14 @@ Competitions:
 - `recordState`: active/inactive, single choice.
 - `status`: overview/favorite/ignore, multiple choice.
 - `type`: Hunters/Jumpers/Equitation, multiple choice.
-- `class_sequences`: Over Fences or Under Saddle/Flat, single choice.
 - `tags`: seat/maclay/uset/ushja/wihs/3'3"/3'6"/classic/handy, multiple choice.
 
 Classes:
-- Same enrichment shape as competitions.
+- `recordState`: active/inactive, single choice.
+- `status`: overview/favorite/ignore, multiple choice.
+- `type`: Hunters/Jumpers/Equitation, multiple choice.
+- `class_sequences`: Over Fences or Under Saddle/Flat, single choice.
+- `tags`: seat/maclay/uset/ushja/wihs/3'3"/3'6"/classic/handy, multiple choice.
 
 Videos:
 - `recordState`: active/inactive, single choice.
