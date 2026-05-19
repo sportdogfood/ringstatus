@@ -54,8 +54,39 @@
   renderOverview();
 
   root.addEventListener("click", (event) => {
+    if (event.target.closest("[data-modal-close]")) {
+      closeModal();
+      return;
+    }
+
     if (event.target.closest("[data-theme-color]")) {
       event.stopPropagation();
+      return;
+    }
+
+    const editChoice = event.target.closest(".lp-edit-choice, .lp-edit-checkbox");
+    if (editChoice) {
+      const input = editChoice.querySelector("[data-layer-field]");
+      if (input && editMode) {
+        event.preventDefault();
+        event.stopPropagation();
+        const isMulti = !!input.dataset.layerMulti;
+        if (input.type === "radio") {
+          input.checked = true;
+          setLayerValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, input.value);
+        } else if (input.type === "checkbox") {
+          input.checked = !input.checked;
+          if (isMulti) {
+            setLayerMultiValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, input.value, input.checked);
+          } else {
+            setLayerValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, input.checked);
+          }
+        }
+        if (["status", "recordState"].includes(input.dataset.layerField)) {
+          renderLayerScope(input.dataset.layerKind);
+        }
+        updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
+      }
       return;
     }
 
@@ -187,9 +218,6 @@
       return;
     }
 
-    if (event.target.closest("[data-modal-close]")) {
-      closeModal();
-    }
   });
 
   root.addEventListener("keydown", (event) => {
