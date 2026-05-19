@@ -1,4 +1,4 @@
-  @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap");
 
   #lp-history-app,
   #lp-history-app * {
@@ -151,12 +151,12 @@
   #lp-history-app .lp-date-filter {
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: flex-end;
     gap: 10px;
     flex: 0 0 auto;
-    width: min(100%, 340px);
-    max-width: 340px;
+    width: min(100%, 430px);
+    max-width: 430px;
     padding: 10px;
     border: 1px solid var(--lp-border);
     border-radius: 8px;
@@ -196,6 +196,52 @@
     line-height: 0.9em;
     letter-spacing: -0.02em;
     text-transform: uppercase;
+  }
+
+  #lp-history-app .lp-year-filter {
+    display: grid;
+    gap: 9px;
+    width: 100%;
+    padding-right: 30px;
+  }
+
+  #lp-history-app .lp-year-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    justify-content: flex-end;
+  }
+
+  #lp-history-app .lp-year-pill {
+    min-height: 34px;
+    padding: 8px 13px;
+    border: 1px solid var(--lp-border);
+    border-radius: 999px;
+    background: var(--lp-surface);
+    color: var(--lp-ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 0.95em;
+    letter-spacing: -0.06em;
+    box-shadow: var(--lp-button-shadow);
+    transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  #lp-history-app .lp-year-pill:hover,
+  #lp-history-app .lp-year-pill:focus-visible {
+    border-color: rgba(0, 0, 0, 0.18);
+    background: var(--lp-soft);
+    box-shadow: var(--lp-raised-shadow);
+    transform: translateY(-1px);
+    outline: none;
+  }
+
+  #lp-history-app .lp-year-pill.is-active {
+    border-color: #46332b;
+    background: #46332b;
+    color: #fff;
   }
 
   #lp-history-app .lp-date-filter strong,
@@ -1617,6 +1663,10 @@
       text-align: left;
     }
 
+    #lp-history-app .lp-year-pills {
+      justify-content: flex-start;
+    }
+
     #lp-history-app .lp-tabs {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1699,6 +1749,7 @@
 
     #lp-history-app .lp-date-filter label,
     #lp-history-app .lp-date-filter div,
+    #lp-history-app .lp-year-filter,
     #lp-history-app .lp-date-input,
     #lp-history-app .lp-date-filter strong {
       width: 100%;

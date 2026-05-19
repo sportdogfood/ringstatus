@@ -11,15 +11,11 @@
           <p data-lp-summary>Loading results...</p>
           <button class="lp-filter-toggle" type="button" data-filter-toggle aria-expanded="false">Filter</button>
         </div>
-        <div class="lp-date-filter" data-date-filter hidden aria-label="Overview date range">
+        <div class="lp-date-filter" data-date-filter hidden aria-label="Overview year filter">
           <button class="lp-date-filter-close" type="button" data-filter-close aria-label="Close filter">x</button>
-          <label>
-            <span>From</span>
-            <input class="lp-date-input" type="date" data-overview-start>
-          </label>
-          <div>
-            <span>To</span>
-            <strong data-overview-end>Latest</strong>
+          <div class="lp-year-filter">
+            <span>Years</span>
+            <div class="lp-year-pills" data-overview-years></div>
           </div>
         </div>
       </div>
@@ -69,6 +65,9 @@
       <div data-modal-content></div>
     </section>
   </div>
+
+  
+  <script type="application/json" id="lp-global-tag-rules">[{"name_tag":"15-17","tag_class":"age","match_type":"regex","match_pattern":"\\b15-17\\b"},{"name_tag":"U/S","tag_class":"type","match_type":"regex","match_pattern":"\\bU/S\\b"},{"name_tag":"16-17","tag_class":"age","match_type":"regex","match_pattern":"\\b16-17\\b"},{"name_tag":"15 & Under","tag_class":"age","match_type":"regex","match_pattern":"\\b15 & Under\\b"},{"name_tag":"14 & Under","tag_class":"age","match_type":"regex","match_pattern":"\\b14 & Under\\b"},{"name_tag":"medal","tag_class":"key","match_type":"regex","match_pattern":"\\bmedal\\b"},{"name_tag":"3'3\"","tag_class":"height","match_type":"regex","match_pattern":"3'3\""},{"name_tag":"1.0m","tag_class":"height","match_type":"regex","match_pattern":"\\b1.0m\\b"},{"name_tag":"1.20m","tag_class":"height","match_type":"regex","match_pattern":"\\b1.20m\\b"},{"name_tag":"1.10m","tag_class":"height","match_type":"regex","match_pattern":"\\b1\\.10m\\b"},{"name_tag":"1.40m","tag_class":"height","match_type":"regex","match_pattern":"\\b1.40m\\b"},{"name_tag":"2'/2'6\"","tag_class":"height","match_type":"regex","match_pattern":"2'\\/2'6\""},{"name_tag":".90m","tag_class":"height","match_type":"regex","match_pattern":"\\.90m\\b"},{"name_tag":"low","tag_class":"height","match_type":"regex","match_pattern":"\\blow\\b"},{"name_tag":"medium","tag_class":"size","match_type":"regex","match_pattern":"\\bmedium\\b"},{"name_tag":".95m","tag_class":"height","match_type":"regex","match_pattern":".95m\\b"},{"name_tag":".85m","tag_class":"height","match_type":"regex","match_pattern":".85m\\b"},{"name_tag":"amateur","tag_class":"level","match_type":"regex","match_pattern":"\\bamateur\\b"},{"name_tag":"pony","tag_class":"key","match_type":"regex","match_pattern":"\\bpony\\b"},{"name_tag":"large","tag_class":"size","match_type":"regex","match_pattern":"\\blarge\\b"},{"name_tag":"children's","tag_class":"level","match_type":"regex","match_pattern":"\\bchildren'?s\\b"},{"name_tag":"junior","tag_class":"level","match_type":"regex","match_pattern":"\\bjunior\\b"},{"name_tag":"1.45m","tag_class":"height","match_type":"regex","match_pattern":"\\b1.45m\\b"},{"name_tag":"dover","tag_class":"skill","match_type":"regex","match_pattern":"\\bdover\\b"},{"name_tag":"seat","tag_class":"skill","match_type":"regex","match_pattern":"\\bseat\\b"},{"name_tag":"maclay","tag_class":"skill","match_type":"regex","match_pattern":"\\bmaclay\\b"},{"name_tag":"uset","tag_class":"skill","match_type":"regex","match_pattern":"\\buset\\b"},{"name_tag":"ushja","tag_class":"skill","match_type":"regex","match_pattern":"\\bushja\\b"},{"name_tag":"wihs","tag_class":"skill","match_type":"regex","match_pattern":"\\bwihs\\b"},{"name_tag":"flat","tag_class":"type","match_type":"regex","match_pattern":"\\bflat\\b"},{"name_tag":"3'6\"","tag_class":"height","match_type":"regex","match_pattern":"3'6\""},{"name_tag":"classic","tag_class":"target","match_type":"checkbox_true","match_pattern":""},{"name_tag":"handy","tag_class":"target","match_type":"checkbox_true","match_pattern":""},{"name_tag":"mulligan","tag_class":"target","match_type":"checkbox_true","match_pattern":""},{"name_tag":"schooling_pony","tag_class":"target","match_type":"checkbox_true","match_pattern":""},{"name_tag":"usf","tag_class":"target","match_type":"checkbox_true","match_pattern":""},{"name_tag":"hunters","tag_class":"class_types","match_type":"regex","match_pattern":"\\bhunters\\b"},{"name_tag":"jumpers","tag_class":"class_types","match_type":"regex","match_pattern":"\\bjumpers\\b"},{"name_tag":"equitation","tag_class":"class_types","match_type":"regex","match_pattern":"\\bequitation\\b"},{"name_tag":"Over Fences","tag_class":"class_sequences","match_type":"regex","match_pattern":"\\bOver Fences\\b"},{"name_tag":"Under Saddle/Flat","tag_class":"class_sequences","match_type":"regex","match_pattern":"\\bUnder Saddle/Flat\\b"},{"name_tag":"3'9\"","tag_class":"height","match_type":"regex","match_pattern":"3'9\""},{"name_tag":"3'","tag_class":"height","match_type":"regex","match_pattern":"3'"}]</script>
 </div>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history.css">

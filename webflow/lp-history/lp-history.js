@@ -2,14 +2,19 @@
   const root = document.getElementById("lp-history-app");
   if (!root) return;
 
-  const payload = JSON.parse(root.querySelector("#lp-history-data").textContent);
-  const layerScript = root.querySelector("#lp-history-layer");
-  const layerSeed = layerScript ? JSON.parse(layerScript.textContent) : emptyLayer();
+  const config = window.LP_HISTORY_CONFIG || JSON.parse(root.querySelector("#lp-history-config").textContent);
+  const [payload, layer] = await Promise.all([
+    fetch(config.historyUrl).then((response) => {
+      if (!response.ok) throw new Error("History feed failed: " + response.status);
+      return response.json();
+    }),
+    fetch(config.layerUrl).then((response) => response.ok ? response.json() : emptyLayer()).catch(emptyLayer)
+  ]);
   const editMode = new URLSearchParams(window.location.search).has("key");
   const layerStorageKey = "lp-history-layer-draft";
   const themeStorageKey = "lp-history-theme-colors";
   const themeColors = loadThemeColors();
-  const state = normalize(payload, loadStoredLayer(layerSeed));
+  const state = normalize(payload, loadStoredLayer(layer));
   root.classList.toggle("is-edit-mode", editMode);
   root.classList.add("is-overview-active");
   applyThemeColors();
@@ -17,10 +22,7 @@
     competitions: { sort: "desc", month: "all", year: "all" },
     classes: { sort: "desc", month: "all", year: "all" }
   };
-  const overviewRange = {
-    start: defaultOverviewStart(),
-    end: state.dateRange.endIso
-  };
+  const overviewYears = new Set(defaultOverviewYears());
   const allControls = {
     competitions: { sort: "desc", month: "all", year: "all" },
     classes: { sort: "desc", month: "all", year: "all" },
@@ -84,6 +86,19 @@
 
     if (event.target.closest("[data-filter-close]")) {
       setDateFilterOpen(false);
+      return;
+    }
+
+    const overviewYear = event.target.closest("[data-overview-year]");
+    if (overviewYear) {
+      const year = overviewYear.dataset.overviewYear;
+      if (overviewYears.has(year)) {
+        overviewYears.delete(year);
+      } else {
+        overviewYears.add(year);
+      }
+      renderShell();
+      renderOverview();
       return;
     }
 
@@ -209,14 +224,6 @@
       return;
     }
 
-    const overviewStart = event.target.closest("[data-overview-start]");
-    if (overviewStart) {
-      overviewRange.start = overviewStart.value || state.dateRange.startIso;
-      renderShell();
-      renderOverview();
-      return;
-    }
-
     const allFilter = event.target.closest("[data-all-filter]");
     if (allFilter) {
       const target = allFilter.dataset.allFilter;
@@ -241,12 +248,6 @@
   });
 
   root.addEventListener("input", (event) => {
-    const overviewStart = event.target.closest("[data-overview-start]");
-    if (overviewStart) {
-      overviewRange.start = overviewStart.value || state.dateRange.startIso;
-      renderShell();
-      renderOverview();
-    }
     const themeColor = event.target.closest("[data-theme-color]");
     if (themeColor) {
       setThemeColor(themeColor.dataset.themeColor, themeColor.value);
@@ -489,14 +490,12 @@
         ? state.dateRange.start + " to " + state.dateRange.end
         : "Competition results";
 
-    const startInput = root.querySelector("[data-overview-start]");
-    const endLabel = root.querySelector("[data-overview-end]");
-    if (startInput) {
-      startInput.min = state.dateRange.startIso;
-      startInput.max = state.dateRange.endIso;
-      startInput.value = overviewRange.start || state.dateRange.startIso;
+    const yearWrap = root.querySelector("[data-overview-years]");
+    if (yearWrap) {
+      yearWrap.innerHTML = overviewYearOptions().map((year) => (
+        '<button class="lp-year-pill' + (overviewYears.has(year) ? " is-active" : "") + '" type="button" data-overview-year="' + escapeAttr(year) + '" aria-pressed="' + (overviewYears.has(year) ? "true" : "false") + '">' + escapeHtml(year) + "</button>"
+      )).join("");
     }
-    if (endLabel) endLabel.textContent = state.dateRange.end || "Latest";
 
     root.querySelector('[data-tab-count="horses"]').textContent = state.counts.horses;
     root.querySelector('[data-tab-count="videos"]').textContent = state.videos.length;
@@ -1230,11 +1229,12 @@
   }
 
   function filterOverviewRange(items) {
-    const start = parseDate(overviewRange.start || state.dateRange.startIso);
-    const end = parseDate(overviewRange.end || state.dateRange.endIso);
+    const selected = Array.from(overviewYears);
+    if (!selected.length) return items;
     return items.filter((item) => {
-      const value = Number(item.sortDate || 0);
-      return (!start || value >= start) && (!end || value <= end);
+      const date = new Date(item.sortDate || 0);
+      if (!Number.isFinite(date.getTime())) return false;
+      return selected.includes(String(date.getFullYear()));
     });
   }
 
@@ -1261,15 +1261,22 @@
     });
   }
 
-  function defaultOverviewStart() {
-    const requested = "2026-01-01";
-    const min = parseDate(state.dateRange.startIso);
-    const max = parseDate(state.dateRange.endIso);
-    const target = parseDate(requested);
-    if (!target || !min || !max) return state.dateRange.startIso;
-    if (target < min) return state.dateRange.startIso;
-    if (target > max) return state.dateRange.startIso;
-    return requested;
+  function overviewYearOptions() {
+    const years = unique([
+      ...state.classRows,
+      ...state.competitions,
+      ...state.videos
+    ].map((item) => {
+      const date = new Date(item.sortDate || 0);
+      return Number.isFinite(date.getTime()) ? String(date.getFullYear()) : null;
+    }).filter(Boolean)).sort((a, b) => Number(b) - Number(a));
+    return years.length ? years : ["2026", "2025"];
+  }
+
+  function defaultOverviewYears() {
+    const available = new Set(overviewYearOptions());
+    const defaults = ["2026", "2025"].filter((year) => available.has(year));
+    return defaults.length ? defaults : overviewYearOptions().slice(0, 2);
   }
 
   function monthOptions(items, selected) {
