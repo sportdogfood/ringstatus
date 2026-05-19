@@ -1,0 +1,6 @@
+name = "ringstatus-lp-history-enrichment"
+main = "src/index.js"
+compatibility_date = "2026-05-19"
+
+[observability]
+enabled = true
