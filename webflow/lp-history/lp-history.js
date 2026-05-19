@@ -1492,25 +1492,7 @@
   }
 
   function rowWithActions(kind, id, rowMarkup) {
-    if (!editMode) return rowMarkup;
-    return [
-      '<div class="lp-row-wrap">',
-      rowMarkup,
-      listEditActions(kind, id),
-      "</div>"
-    ].join("");
-  }
-
-  function listEditActions(kind, id) {
-    const status = layerStatus(kind, id);
-    const name = "lp-row-" + slugify(kind + "-" + id + "-status");
-    return [
-      '<div class="lp-row-actions" aria-label="Inline edit">',
-      '<label class="lp-row-action" title="Overview" aria-label="Overview"><input type="radio" name="' + escapeAttr(name) + '" data-layer-field="status" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="overview"' + (status === "overview" ? " checked" : "") + ">Over</label>",
-      '<label class="lp-row-action" title="Favorite" aria-label="Favorite"><input type="radio" name="' + escapeAttr(name) + '" data-layer-field="status" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="favorite"' + (status === "favorite" ? " checked" : "") + ">Fav</label>",
-      '<label class="lp-row-action" title="Ignore" aria-label="Ignore"><input type="radio" name="' + escapeAttr(name) + '" data-layer-field="status" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="ignore"' + (status === "ignore" ? " checked" : "") + ">Hide</label>",
-      "</div>"
-    ].join("");
+    return rowMarkup;
   }
 
   function horseImage(horse) {
