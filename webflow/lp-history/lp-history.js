@@ -15,6 +15,7 @@
   const themeStorageKey = "lp-history-theme-colors";
   const themeColors = loadThemeColors();
   const state = normalize(payload, loadStoredLayer(layer));
+  const globalTagRules = JSON.parse(root.querySelector("#lp-global-tag-rules")?.textContent || "[]");
   root.classList.toggle("is-edit-mode", editMode);
   root.classList.add("is-overview-active");
   applyThemeColors();
@@ -23,6 +24,7 @@
     classes: { sort: "desc", month: "all", year: "all" }
   };
   const overviewYears = new Set(defaultOverviewYears());
+  const globalTags = new Set();
   const allControls = {
     competitions: { sort: "desc", month: "all", year: "all" },
     classes: { sort: "desc", month: "all", year: "all" },
@@ -115,6 +117,18 @@
         overviewYears.delete(year);
       } else {
         overviewYears.add(year);
+      }
+      renderDataScope();
+      return;
+    }
+
+    const globalTag = event.target.closest("[data-global-tag]");
+    if (globalTag) {
+      const tag = globalTag.dataset.globalTag;
+      if (globalTags.has(tag)) {
+        globalTags.delete(tag);
+      } else {
+        globalTags.add(tag);
       }
       renderDataScope();
       return;
@@ -506,15 +520,23 @@
   }
 
   function renderShell() {
+    const scopedDateRange = currentDateRange();
     root.querySelector("[data-lp-summary]").textContent =
-      state.dateRange.start && state.dateRange.end
-        ? state.dateRange.start + " to " + state.dateRange.end
+      scopedDateRange.start && scopedDateRange.end
+        ? scopedDateRange.start + " to " + scopedDateRange.end
         : "Competition results";
 
     const yearWrap = root.querySelector("[data-overview-years]");
     if (yearWrap) {
       yearWrap.innerHTML = overviewYearOptions().map((year) => (
         '<button class="lp-year-pill' + (overviewYears.has(year) ? " is-active" : "") + '" type="button" data-overview-year="' + escapeAttr(year) + '" aria-pressed="' + (overviewYears.has(year) ? "true" : "false") + '">' + escapeHtml(year) + "</button>"
+      )).join("");
+    }
+
+    const tagWrap = root.querySelector("[data-global-tags]");
+    if (tagWrap) {
+      tagWrap.innerHTML = globalTagOptions().map((tag) => (
+        '<button class="lp-year-pill lp-tag-pill' + (globalTags.has(tag.name) ? " is-active" : "") + '" type="button" data-global-tag="' + escapeAttr(tag.name) + '" aria-pressed="' + (globalTags.has(tag.name) ? "true" : "false") + '" style="' + escapeAttr(tagStyle(tag.tagClass)) + '">' + escapeHtml(tag.name) + "</button>"
       )).join("");
     }
 
@@ -854,6 +876,7 @@
     const classCompetitionIds = new Set(currentClasses().map((row) => row.competitionId));
     return visibleItems("competitions", state.competitions)
       .filter((competition) => inSelectedYears(competition))
+      .filter((competition) => matchesGlobalTags(competition) || state.classRows.some((row) => row.competitionId === competition.competitionId && inSelectedYears(row) && matchesGlobalTags(row)))
       .filter((competition) => classCompetitionIds.has(competition.competitionId));
   }
 
@@ -863,7 +886,9 @@
   }
 
   function currentVideos() {
-    return filterDataScope(visibleItems("videos", state.videos));
+    return visibleItems("videos", state.videos)
+      .filter((video) => inSelectedYears(video))
+      .filter((video) => matchesGlobalTags(video) || state.classRows.some((row) => row.id === video.classId && inSelectedYears(row) && matchesGlobalTags(row)));
   }
 
   function currentCounts() {
@@ -872,6 +897,20 @@
       videos: currentVideos().length,
       competitions: currentCompetitions().length,
       classes: currentClasses().length
+    };
+  }
+
+  function currentDateRange() {
+    const items = [
+      ...currentClasses(),
+      ...currentCompetitions(),
+      ...currentVideos()
+    ].filter((item) => Number.isFinite(Number(item.sortDate)) && Number(item.sortDate) > 0);
+    if (!items.length) return { start: "", end: "" };
+    const dates = items.map((item) => item.sortDate);
+    return {
+      start: formatDate(new Date(Math.min(...dates))),
+      end: formatDate(new Date(Math.max(...dates)))
     };
   }
 
@@ -1389,11 +1428,7 @@
   }
 
   function filterDataScope(items) {
-    const selected = Array.from(overviewYears);
-    if (!selected.length) return items;
-    return items.filter((item) => {
-      return inSelectedYears(item);
-    });
+    return items.filter((item) => inSelectedYears(item) && matchesGlobalTags(item));
   }
 
   function filterOverviewRange(items) {
@@ -1406,6 +1441,119 @@
     const date = new Date(item.sortDate || 0);
     if (!Number.isFinite(date.getTime())) return false;
     return selected.includes(String(date.getFullYear()));
+  }
+
+  function matchesGlobalTags(item) {
+    const selected = Array.from(globalTags);
+    if (!selected.length) return true;
+    const tags = itemTags(item);
+    return selected.some((tag) => tags.has(tag));
+  }
+
+  function itemTags(item) {
+    const values = new Set();
+    if (!item) return values;
+    collectTagText(values, item.autoTags);
+    collectTagText(values, item.layer?.tags);
+    collectTagText(values, item.layer?.autoTags);
+    collectTagText(values, item.layer?.type);
+    collectTagText(values, item.layer?.class_sequences);
+    collectTagText(values, item.layer?.disciplines);
+    collectTagText(values, item.layer?.horseType);
+    collectAutoTags(values, [
+      item.classTitle,
+      item.competitionName,
+      item.name,
+      item.title,
+      item.horse?.name,
+      item.horse,
+      item.competition,
+      item.classTitle
+    ].filter(Boolean).join(" "));
+    if (item.classes) {
+      item.classes.forEach((row) => itemTags(row).forEach((tag) => values.add(tag)));
+    }
+    return values;
+  }
+
+  function collectTagText(values, raw) {
+    const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
+    list.forEach((value) => {
+      const text = normalizeTag(value);
+      if (text) values.add(text);
+    });
+  }
+
+  function collectAutoTags(values, text) {
+    const haystack = String(text || "");
+    globalTagRules.forEach((rule) => {
+      const name = normalizeTag(rule.name_tag);
+      if (!name) return;
+      if (rule.match_type === "regex" && rule.match_pattern) {
+        try {
+          if (new RegExp(rule.match_pattern, "i").test(haystack)) values.add(name);
+        } catch (error) {}
+      }
+    });
+  }
+
+  function normalizeTag(value) {
+    return String(value || "").trim().toLowerCase();
+  }
+
+  function globalTagOptions() {
+    const tagClassByName = new Map();
+    globalTagRules.forEach((rule) => {
+      const name = normalizeTag(rule.name_tag);
+      if (name) tagClassByName.set(name, normalizeTag(rule.tag_class) || "tag");
+    });
+    const fromRules = Array.from(tagClassByName.keys());
+    const fromLayer = [
+      ...Object.values(state.layer.horses || {}),
+      ...Object.values(state.layer.competitions || {}),
+      ...Object.values(state.layer.classes || {}),
+      ...Object.values(state.layer.videos || {})
+    ].flatMap((entry) => [
+      ...(Array.isArray(entry.tags) ? entry.tags : []),
+      ...(Array.isArray(entry.autoTags) ? entry.autoTags : [])
+    ].map(normalizeTag).filter(Boolean));
+    return unique([...fromRules, ...fromLayer]).sort().slice(0, 48).map((name) => ({
+      name,
+      tagClass: tagClassByName.get(name) || "manual"
+    }));
+  }
+
+  function tagStyle(tagClass) {
+    const color = tagClassColor(tagClass);
+    return "--lp-tag-bg:" + hexToRgba(color, 0.12) + ";--lp-tag-border:" + hexToRgba(color, 0.24) + ";--lp-tag-active:" + color + ";--lp-tag-active-text:" + tagClassTextColor(color) + ";";
+  }
+
+  function tagClassColor(tagClass) {
+    const palette = {
+      age: "#6c5ce7",
+      type: "#0f766e",
+      key: "#0057B8",
+      height: "#8B5A2B",
+      size: "#b45309",
+      level: "#D71920",
+      skill: "#4e1f76",
+      target: "#00843D",
+      class_types: "#005c2a",
+      class_sequences: "#8f1116",
+      manual: "#46332b",
+      tag: "#46332b"
+    };
+    return palette[normalizeTag(tagClass)] || "#46332b";
+  }
+
+  function tagClassTextColor(hex) {
+    const value = String(hex || "").replace("#", "");
+    const number = parseInt(value, 16);
+    if (!Number.isFinite(number)) return "#ffffff";
+    const r = (number >> 16) & 255;
+    const g = (number >> 8) & 255;
+    const b = number & 255;
+    return ((r * 299 + g * 587 + b * 114) / 1000) > 150 ? "#000000" : "#ffffff";
   }
 
   function horsesForRows(rows) {
@@ -1743,6 +1891,9 @@
   function mockVideos(classRows, horses) {
     return classRows.slice(0, 16).map((row, index) => ({
       id: "mock-video-" + (index + 1),
+      classId: row.id,
+      horseId: row.horseId,
+      competitionId: row.competitionId,
       title: row.classTitle,
       horse: row.horse.name || horses[index % horses.length]?.name || "Horse",
       competition: row.competitionName,

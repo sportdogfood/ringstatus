@@ -10,14 +10,21 @@
         <div class="lp-summary-row">
           <p data-lp-summary>Loading results...</p>
         </div>
-        <div class="lp-date-filter" data-date-filter aria-label="Overview year filter">
-          <div class="lp-year-filter">
-            <span>Years</span>
-            <div class="lp-year-pills" data-overview-years></div>
-          </div>
-        </div>
       </div>
     </header>
+
+    <section class="lp-global-filter-section" aria-label="Global history filters">
+      <div class="lp-date-filter" data-date-filter>
+        <div class="lp-year-filter">
+          <span>Years</span>
+          <div class="lp-year-pills" data-overview-years></div>
+        </div>
+        <div class="lp-year-filter lp-tag-filter">
+          <span>Tags</span>
+          <div class="lp-year-pills lp-tag-pills" data-global-tags></div>
+        </div>
+      </div>
+    </section>
 
     <nav class="lp-tabs" aria-label="Competition history sections">
       <button class="lp-tab lp-theme-overview is-active" type="button" data-tab="overview" aria-selected="true">

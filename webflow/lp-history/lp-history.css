@@ -67,8 +67,7 @@
     justify-content: space-between;
     gap: 24px;
     align-items: flex-start;
-    padding-bottom: 22px;
-    border-bottom: 1px solid var(--lp-border);
+    padding-bottom: 12px;
   }
 
   #lp-history-app .lp-header-copy {
@@ -119,6 +118,22 @@
     flex-wrap: wrap;
   }
 
+  #lp-history-app .lp-summary-row p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 0.95em;
+    letter-spacing: -0.02em;
+  }
+
+  #lp-history-app .lp-global-filter-section {
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--lp-border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.64);
+    box-shadow: var(--lp-card-shadow);
+  }
+
   #lp-history-app .lp-filter-toggle {
     min-height: 30px;
     padding: 6px 11px;
@@ -149,10 +164,9 @@
   }
 
   #lp-history-app .lp-date-filter {
-    display: flex;
+    display: grid;
     align-items: flex-start;
-    justify-content: flex-end;
-    gap: 10px;
+    gap: 14px;
     flex: 0 0 auto;
     width: 100%;
     max-width: none;
@@ -161,7 +175,7 @@
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    text-align: right;
+    text-align: left;
   }
 
   #lp-history-app .lp-date-filter label,
@@ -189,9 +203,9 @@
     display: flex;
     flex-wrap: nowrap;
     gap: 7px;
-    justify-content: flex-end;
+    justify-content: flex-start;
     overflow-x: auto;
-    padding-bottom: 3px;
+    padding: 2px 0 5px;
     scrollbar-width: thin;
   }
 
@@ -226,6 +240,18 @@
     border-color: #46332b;
     background: #46332b;
     color: #fff;
+  }
+
+  #lp-history-app .lp-date-filter .lp-tag-pill {
+    border-color: var(--lp-tag-border, var(--lp-border));
+    background: var(--lp-tag-bg, var(--lp-surface));
+    color: #000000;
+  }
+
+  #lp-history-app .lp-date-filter .lp-tag-pill.is-active {
+    border-color: var(--lp-tag-active, #46332b);
+    background: var(--lp-tag-active, #46332b);
+    color: var(--lp-tag-active-text, #ffffff);
   }
 
   #lp-history-app .lp-date-filter strong,
@@ -1655,7 +1681,7 @@
     #lp-history-app .lp-header {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 8px;
     }
 
     #lp-history-app .lp-header-tools {
@@ -1670,15 +1696,8 @@
       justify-content: flex-start;
     }
 
-    #lp-history-app .lp-date-filter {
-      width: 100%;
-      max-width: none;
-      justify-content: flex-start;
-      text-align: left;
-    }
-
-    #lp-history-app .lp-date-filter .lp-year-pills {
-      justify-content: flex-start;
+    #lp-history-app .lp-global-filter-section {
+      padding: 12px;
     }
 
     #lp-history-app .lp-tabs {
