@@ -113,7 +113,6 @@
         if (["status", "recordState"].includes(input.dataset.layerField)) {
           renderLayerScope(input.dataset.layerKind);
         }
-        updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
       }
       return;
     }
@@ -300,7 +299,6 @@
       if (["status", "recordState"].includes(layerField.dataset.layerField)) {
         renderLayerScope(layerField.dataset.layerKind);
       }
-      updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
       return;
     }
   });
@@ -331,7 +329,6 @@
       if (["status", "recordState"].includes(layerField.dataset.layerField)) {
         renderLayerScope(layerField.dataset.layerKind);
       }
-      updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
     }
   });
 
@@ -1133,7 +1130,7 @@
     reader.onload = () => {
       setLayerValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, String(reader.result || ""));
       renderLayerScope(input.dataset.layerKind);
-      updateEditStatus("Image saved in draft layer. Saving to Airtable...");
+      updateEditStatus(config.airtable ? "Saving image to Airtable..." : "Saving image through enrichment endpoint...");
     };
     reader.onerror = () => updateEditStatus("Image upload could not be read.");
     reader.readAsDataURL(file);
@@ -1152,7 +1149,7 @@
     const key = kind + ":" + id;
     window.clearTimeout(saveTimers.get(key));
     saveTimers.set(key, window.setTimeout(() => saveEnrichment(kind, id), 450));
-    updateEditStatus("Draft saved in this browser. Saving to Airtable...");
+    updateEditStatus(config.airtable ? "Saving to Airtable..." : "Saving through enrichment endpoint...");
   }
 
   async function saveEnrichment(kind, id) {
@@ -1377,6 +1374,12 @@
     });
   }
 
+  function initialEditStatus() {
+    if (config.airtable) return "Changes save to Airtable.";
+    if (enrichmentUrl) return "Changes save through the enrichment endpoint.";
+    return "Changes save in this browser.";
+  }
+
   function renderLayerScope(kind) {
     if (kind === "horses") renderHorses();
     if (kind === "competitions") renderCompetitions();
@@ -1401,13 +1404,12 @@
       '<section class="lp-edit-panel" aria-label="' + escapeAttr(kind) + ' edit layer">',
       '<div class="lp-edit-head"><h4>Edit ' + escapeHtml(kind) + '</h4><div class="lp-edit-actions">',
       '<button class="lp-edit-button" type="button" data-layer-action="copy">Copy JSON</button>',
-      '<button class="lp-edit-button" type="button" data-layer-action="export">Export layer.json</button>',
       '<button class="lp-edit-button" type="button" data-layer-action="clear-draft">Clear draft</button>',
       "</div></div>",
       '<div class="lp-edit-rows">',
       rows,
       "</div>",
-      '<p class="lp-edit-status" data-edit-status>Draft saves in this browser. Export layer.json when ready.</p>',
+      '<p class="lp-edit-status" data-edit-status>' + escapeHtml(initialEditStatus()) + "</p>",
       '<textarea class="lp-edit-textarea" data-layer-output hidden readonly>' + escapeHtml(JSON.stringify(state.layer, null, 2)) + "</textarea>",
       "</section>"
     ].join("");
@@ -1421,7 +1423,7 @@
       '<div class="lp-edit-grid">',
       editGroups(kind, id, fields),
       "</div>",
-      '<p class="lp-edit-status" data-edit-status>Draft saves in this browser.</p>',
+      '<p class="lp-edit-status" data-edit-status>' + escapeHtml(initialEditStatus()) + "</p>",
       "</section>"
     ].join("");
   }
