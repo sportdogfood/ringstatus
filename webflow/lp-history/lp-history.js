@@ -1008,7 +1008,7 @@
     const className = "lp-edit-field" + (isTextArea ? " is-wide" : "");
     const attrs = ' data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '"';
     return [
-      '<label class="' + className + '"><span>' + escapeHtml(label) + "</span>",
+      '<label class="' + className + '">' + (isMulti ? "" : '<span>' + escapeHtml(label) + "</span>"),
       isMulti
         ? multiField(kind, id, field, Array.isArray(value) ? value : [], choices)
         : isCheckbox
