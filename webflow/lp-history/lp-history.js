@@ -1160,6 +1160,12 @@
     if (!payload) return;
     debug("enrichment save", payload.recordType, payload.recordKey);
     try {
+      if (config.airtable) {
+        await saveEnrichmentToAirtable(payload);
+        updateEditStatus("Saved to Airtable.");
+        return;
+      }
+
       const response = await fetch(enrichmentUrl, {
         method: "POST",
         headers: {
@@ -1178,6 +1184,65 @@
       console.error("[lp-history] enrichment save failed", error);
       updateEditStatus("Saved in browser only. Airtable save failed; check console [lp-history].");
     }
+  }
+
+  async function saveEnrichmentToAirtable(payload) {
+    const airtable = config.airtable || {};
+    const baseId = airtable.baseId;
+    const tableName = airtable.tableName;
+    const token = airtable.token;
+    if (!baseId || !tableName || !token) {
+      throw new Error("Missing Airtable config: baseId, tableName, and token are required.");
+    }
+
+    const fields = compactFields({
+      ...(payload.data || {}),
+      record_key: payload.recordKey,
+      record_type: payload.recordType,
+      record_state: payload.recordState || "active",
+      status: payload.status || [],
+      payload_json: JSON.stringify(payload.data || {}),
+      raw_payload: JSON.stringify(payload),
+      updated_at: new Date().toISOString()
+    });
+    const baseUrl = "https://api.airtable.com/v0/" + encodeURIComponent(baseId) + "/" + encodeURIComponent(tableName);
+    const headers = {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json"
+    };
+    const formula = "{record_key} = " + airtableFormulaString(payload.recordKey);
+    const lookupUrl = baseUrl + "?maxRecords=1&filterByFormula=" + encodeURIComponent(formula);
+    const lookup = await fetch(lookupUrl, { headers });
+    const lookupJson = await lookup.json().catch(() => ({}));
+    if (!lookup.ok) {
+      throw new Error("Airtable lookup failed: " + lookup.status + " " + JSON.stringify(lookupJson));
+    }
+
+    const existingId = lookupJson.records?.[0]?.id;
+    const saveUrl = existingId ? baseUrl + "/" + encodeURIComponent(existingId) : baseUrl;
+    const save = await fetch(saveUrl, {
+      method: existingId ? "PATCH" : "POST",
+      headers,
+      body: JSON.stringify(existingId ? { fields } : { records: [{ fields }] })
+    });
+    const saveJson = await save.json().catch(() => ({}));
+    if (!save.ok) {
+      throw new Error("Airtable save failed: " + save.status + " " + JSON.stringify(saveJson));
+    }
+    debug("airtable saved", existingId ? existingId : saveJson.records?.[0]?.id);
+  }
+
+  function compactFields(fields) {
+    return Object.fromEntries(Object.entries(fields).filter(([, value]) => (
+      value !== undefined &&
+      value !== null &&
+      value !== "" &&
+      (!Array.isArray(value) || value.length > 0)
+    )));
+  }
+
+  function airtableFormulaString(value) {
+    return '"' + String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"';
   }
 
   function enrichmentPayload(kind, id) {
