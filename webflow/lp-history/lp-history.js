@@ -2,7 +2,10 @@
   const root = document.getElementById("lp-history-app");
   if (!root) return;
 
-  const config = window.LP_HISTORY_CONFIG || JSON.parse(root.querySelector("#lp-history-config").textContent);
+  const embeddedConfig = root.querySelector("#lp-history-config");
+  const embeddedGlobalTagRules = root.querySelector("#lp-global-tag-rules")?.textContent || "[]";
+  const config = window.LP_HISTORY_CONFIG || JSON.parse(embeddedConfig?.textContent || "{}");
+  root.innerHTML = appShellMarkup();
   const [payload, layer] = await Promise.all([
     fetch(config.historyUrl).then((response) => {
       if (!response.ok) throw new Error("History feed failed: " + response.status);
@@ -17,7 +20,7 @@
   const themeStorageKey = "lp-history-theme-colors";
   const themeColors = loadThemeColors();
   const state = normalize(payload, loadStoredLayer(layer));
-  const globalTagRules = JSON.parse(root.querySelector("#lp-global-tag-rules")?.textContent || "[]");
+  const globalTagRules = JSON.parse(embeddedGlobalTagRules);
   root.classList.toggle("is-edit-mode", editMode);
   root.classList.add("is-overview-active");
   applyThemeColors();
@@ -320,6 +323,49 @@
       renderAllPanel(target);
     }
   });
+
+  function appShellMarkup() {
+    return [
+      '<div class="lp-shell">',
+      '<header class="lp-header">',
+      '<div class="lp-header-copy">',
+      '<h1>Lainey in the Ring</h1>',
+      '<p class="lp-subtitle">All USEF Ride History</p>',
+      "</div>",
+      '<div class="lp-header-tools">',
+      '<div class="lp-summary-row"><p data-lp-summary>Loading results...</p></div>',
+      "</div>",
+      "</header>",
+      '<section class="lp-global-filter-section" aria-label="Global history filters">',
+      '<div class="lp-date-filter" data-date-filter>',
+      '<div class="lp-year-filter"><span>Years</span><div class="lp-year-pills" data-overview-years></div></div>',
+      '<div class="lp-year-filter lp-tag-filter"><span>Tags</span><div class="lp-year-pills lp-tag-pills" data-global-tags></div></div>',
+      "</div>",
+      "</section>",
+      '<nav class="lp-tabs" aria-label="Competition history sections">',
+      '<button class="lp-tab lp-theme-overview is-active" type="button" data-tab="overview" aria-selected="true"><span class="lp-tab-value">Overview</span><span class="lp-tab-label">Summary</span><span class="lp-tab-color"><input type="color" data-theme-color="overview" value="#46332b" aria-label="Overview color"></span></button>',
+      '<button class="lp-tab lp-theme-videos" type="button" data-tab="videos" aria-selected="false"><span class="lp-tab-value" data-tab-count="videos"></span><span class="lp-tab-label">Videos</span><span class="lp-tab-color"><input type="color" data-theme-color="videos" value="#003d80" aria-label="Videos color"></span></button>',
+      '<button class="lp-tab lp-theme-horses" type="button" data-tab="horses" aria-selected="false"><span class="lp-tab-value" data-tab-count="horses"></span><span class="lp-tab-label">Horses</span><span class="lp-tab-color"><input type="color" data-theme-color="horses" value="#005c2a" aria-label="Horses color"></span></button>',
+      '<button class="lp-tab lp-theme-competitions" type="button" data-tab="competitions" aria-selected="false"><span class="lp-tab-value" data-tab-count="competitions"></span><span class="lp-tab-label">Competitions</span><span class="lp-tab-color"><input type="color" data-theme-color="competitions" value="#4e1f76" aria-label="Competitions color"></span></button>',
+      '<button class="lp-tab lp-theme-classes" type="button" data-tab="classes" aria-selected="false"><span class="lp-tab-value" data-tab-count="classes"></span><span class="lp-tab-label">Classes</span><span class="lp-tab-color"><input type="color" data-theme-color="classes" value="#8f1116" aria-label="Classes color"></span></button>',
+      "</nav>",
+      '<main class="lp-content">',
+      '<section class="lp-panel is-active" data-panel="overview"></section>',
+      '<section class="lp-panel" data-panel="videos"></section>',
+      '<section class="lp-panel" data-panel="horses"></section>',
+      '<section class="lp-panel" data-panel="competitions"></section>',
+      '<section class="lp-panel" data-panel="classes"></section>',
+      "</main>",
+      "</div>",
+      '<div class="lp-modal" data-modal hidden>',
+      '<div class="lp-modal-backdrop" data-modal-close></div>',
+      '<section class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="lp-modal-title" tabindex="-1">',
+      '<button class="lp-modal-close" type="button" data-modal-close aria-label="Close detail">x</button>',
+      '<div data-modal-content></div>',
+      "</section>",
+      "</div>"
+    ].join("");
+  }
 
   function emptyLayer() {
     return { version: 1, updatedAt: "", horses: {}, competitions: {}, classes: {}, videos: {} };
