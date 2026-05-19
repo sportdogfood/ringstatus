@@ -14,6 +14,7 @@
   const embeddedConfig = root.querySelector("#lp-history-config");
   const embeddedGlobalTagRules = root.querySelector("#lp-global-tag-rules")?.textContent || "[]";
   const config = window.LP_HISTORY_CONFIG || JSON.parse(embeddedConfig?.textContent || "{}");
+  const enrichmentUrl = config.enrichmentUrl || "https://ringstatus-lp-history-enrichment.gombcg.workers.dev/lp-history/enrichment";
   debug("config", config);
   root.innerHTML = appShellMarkup();
   const [payload, layer] = await Promise.all([
@@ -54,6 +55,7 @@
     videos: { sort: "desc", month: "all", year: "all" },
     horses: { sort: "desc", month: "all", year: "all", search: "", type: "all" }
   };
+  const saveTimers = new Map();
   const sectionFilterState = {};
   let singleFieldCounter = 0;
   const viewControls = {
@@ -1087,6 +1089,7 @@
     }
     state.layer.updatedAt = new Date().toISOString();
     persistLayer();
+    queueEnrichmentSave(kind, id);
   }
 
   function favoriteMarker(kind, id) {
@@ -1116,6 +1119,7 @@
     }
     state.layer.updatedAt = new Date().toISOString();
     persistLayer();
+    queueEnrichmentSave(kind, id);
   }
 
   function handleLayerFile(input) {
@@ -1129,7 +1133,7 @@
     reader.onload = () => {
       setLayerValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, String(reader.result || ""));
       renderLayerScope(input.dataset.layerKind);
-      updateEditStatus("Image saved in draft layer. Export layer.json when ready.");
+      updateEditStatus("Image saved in draft layer. Saving to Airtable...");
     };
     reader.onerror = () => updateEditStatus("Image upload could not be read.");
     reader.readAsDataURL(file);
@@ -1141,6 +1145,126 @@
     } catch (error) {
       updateEditStatus("Could not save draft in this browser.");
     }
+  }
+
+  function queueEnrichmentSave(kind, id) {
+    if (!editMode || !editKey || !kind || !id) return;
+    const key = kind + ":" + id;
+    window.clearTimeout(saveTimers.get(key));
+    saveTimers.set(key, window.setTimeout(() => saveEnrichment(kind, id), 450));
+    updateEditStatus("Draft saved in this browser. Saving to Airtable...");
+  }
+
+  async function saveEnrichment(kind, id) {
+    const payload = enrichmentPayload(kind, id);
+    if (!payload) return;
+    debug("enrichment save", payload.recordType, payload.recordKey);
+    try {
+      const response = await fetch(enrichmentUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Edit-Key": editKey
+        },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) {
+        throw new Error("Worker save failed: " + response.status + " " + JSON.stringify(result));
+      }
+      debug("enrichment saved", result.record);
+      updateEditStatus("Saved to Airtable.");
+    } catch (error) {
+      console.error("[lp-history] enrichment save failed", error);
+      updateEditStatus("Saved in browser only. Airtable save failed; check console [lp-history].");
+    }
+  }
+
+  function enrichmentPayload(kind, id) {
+    const recordType = singularKind(kind);
+    const layer = { ...layerFor(kind, id) };
+    const base = {
+      kind: "lp-history",
+      source: "lp-history-webflow",
+      source_id: id,
+      record_state: recordState(kind, id),
+      status: layerStatusValues(kind, id)
+    };
+
+    if (kind === "horses") {
+      const horse = state.horses.find((item) => item.id === id) || {};
+      return payloadFor(recordType, id, {
+        ...base,
+        horse: horse.name || layer.show_name || id,
+        barn_name: layer.barn_name || "",
+        show_name: layer.show_name || horse.name || "",
+        horse_type: layer.horseType || "",
+        horse_disciplines: layer.disciplines || [],
+        horse_color: layer.color || "",
+        horse_gender: layer.gender || "",
+        horse_age: layer.age || "",
+        image_url: layer.imageUrl || layer.imageUrl_2 || "",
+        notes: layer.notes || ""
+      });
+    }
+
+    if (kind === "competitions") {
+      const competition = state.competitions.find((item) => item.competitionId === id) || {};
+      return payloadFor(recordType, id, {
+        ...base,
+        competition: competition.competitionName || id,
+        competition_type: layer.type || [],
+        tags: layer.tags || [],
+        notes: layer.notes || ""
+      });
+    }
+
+    if (kind === "classes") {
+      const row = state.classRows.find((item) => item.id === id) || {};
+      return payloadFor(recordType, id, {
+        ...base,
+        class: row.classTitle || id,
+        horse: row.horse?.name || "",
+        competition: row.competitionName || "",
+        class_type: layer.type || [],
+        class_sequence: layer.class_sequences || "",
+        tags: layer.tags || [],
+        notes: layer.notes || ""
+      });
+    }
+
+    if (kind === "videos") {
+      const video = state.videos.find((item) => item.id === id) || {};
+      return payloadFor(recordType, id, {
+        ...base,
+        video: video.title || id,
+        horse: video.horse || "",
+        competition: video.competition || "",
+        class: video.classTitle || "",
+        video_url: layer.videoUrl || "",
+        embed_url: layer.embedUrl || "",
+        thumbnail_url: layer.thumbnailUrl || "",
+        playlist: layer.playlist || "",
+        tags: layer.tags || [],
+        notes: layer.notes || ""
+      });
+    }
+
+    return null;
+  }
+
+  function payloadFor(recordType, id, data) {
+    return {
+      recordType,
+      recordKey: recordType + ":" + id,
+      recordState: data.record_state || "active",
+      status: data.status || [],
+      data
+    };
+  }
+
+  function singularKind(kind) {
+    return { horses: "horse", competitions: "competition", classes: "class", videos: "video" }[kind] || kind;
   }
 
   function handleLayerAction(button) {
