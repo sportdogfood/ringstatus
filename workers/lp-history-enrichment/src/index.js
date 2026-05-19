@@ -3,15 +3,49 @@ const JSON_HEADERS = {
 };
 
 const REQUIRED_ENV = [
-  "LP_HISTORY_EDIT_KEY",
-  "AIRTABLE_API_KEY",
-  "AIRTABLE_BASE_ID",
-  "AIRTABLE_TABLE_NAME",
+  ["LP_HISTORY_EDIT_KEY"],
+  ["AIRTABLE_API_KEY", "AIRTABLE_TOKEN"],
+  ["AIRTABLE_BASE_ID"],
+  ["AIRTABLE_TABLE_NAME", "AIRTABLE_TABLE"],
 ];
 
 const ALLOWED_RECORD_TYPES = new Set(["horse", "competition", "class", "video"]);
 const ALLOWED_RECORD_STATES = new Set(["active", "inactive"]);
 const ALLOWED_STATUS = new Set(["overview", "favorite", "ignore"]);
+const AIRTABLE_FIELDS = [
+  "record_key",
+  "record_type",
+  "payload_json",
+  "horse",
+  "barn_name",
+  "show_name",
+  "raw_payload",
+  "status",
+  "kind",
+  "source",
+  "competition_type",
+  "video",
+  "source_id",
+  "record_state",
+  "class_type",
+  "class_sequence",
+  "horse_type",
+  "horse_disciplines",
+  "horse_color",
+  "class",
+  "competition",
+  "horse_gender",
+  "horse_age",
+  "image_url",
+  "video_url",
+  "embed_url",
+  "thumbnail_url",
+  "playlist",
+  "group_tags",
+  "tags",
+  "notes",
+  "updated_at",
+];
 
 export default {
   async fetch(request, env) {
@@ -104,18 +138,49 @@ function normalizePayload(body) {
   }
 
   const now = new Date().toISOString();
+  const passthrough = pickAirtableFields({
+    ...data,
+    ...body,
+  });
+
   return {
     ok: true,
     value: {
+      ...passthrough,
       record_key: recordKey,
       record_type: recordType,
       record_state: recordState,
       status,
       payload_json: JSON.stringify(data),
+      raw_payload: JSON.stringify(body),
       updated_at: now,
-      source: "lp-history-edit",
+      source: passthrough.source || "lp-history-edit",
     },
   };
+}
+
+function pickAirtableFields(source) {
+  const fields = {};
+
+  for (const field of AIRTABLE_FIELDS) {
+    if (source[field] !== undefined && source[field] !== null && source[field] !== "") {
+      fields[field] = normalizeFieldValue(source[field]);
+    }
+  }
+
+  return fields;
+}
+
+function normalizeFieldValue(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
+
+  if (isPlainObject(value)) {
+    return JSON.stringify(value);
+  }
+
+  return value;
 }
 
 async function upsertAirtableRecord(fields, env) {
@@ -161,12 +226,12 @@ async function findAirtableRecord(recordKey, env) {
 }
 
 function airtableUrl(env, suffix = "") {
-  return `https://api.airtable.com/v0/${encodeURIComponent(env.AIRTABLE_BASE_ID)}/${encodeURIComponent(env.AIRTABLE_TABLE_NAME)}${suffix}`;
+  return `https://api.airtable.com/v0/${encodeURIComponent(env.AIRTABLE_BASE_ID)}/${encodeURIComponent(getEnvValue(env, "AIRTABLE_TABLE_NAME", "AIRTABLE_TABLE"))}${suffix}`;
 }
 
 function airtableHeaders(env) {
   return {
-    Authorization: `Bearer ${env.AIRTABLE_API_KEY}`,
+    Authorization: `Bearer ${getEnvValue(env, "AIRTABLE_API_KEY", "AIRTABLE_TOKEN")}`,
     "Content-Type": "application/json",
   };
 }
@@ -176,7 +241,12 @@ function airtableFormulaString(value) {
 }
 
 function getMissingEnv(env) {
-  return REQUIRED_ENV.filter((key) => !env[key]);
+  return REQUIRED_ENV.filter((aliases) => !aliases.some((key) => env[key])).map((aliases) => aliases.join(" or "));
+}
+
+function getEnvValue(env, ...aliases) {
+  const key = aliases.find((alias) => env[alias]);
+  return key ? env[key] : "";
 }
 
 function jsonResponse(payload, status, request, env) {

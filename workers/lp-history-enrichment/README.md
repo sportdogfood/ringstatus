@@ -26,11 +26,59 @@ npx wrangler secret put AIRTABLE_BASE_ID
 npx wrangler secret put AIRTABLE_TABLE_NAME
 ```
 
+Aliases also supported:
+
+```text
+AIRTABLE_TOKEN -> AIRTABLE_API_KEY
+AIRTABLE_TABLE -> AIRTABLE_TABLE_NAME
+```
+
 Optional:
 
 ```powershell
 npx wrangler secret put ALLOWED_ORIGIN
 ```
+
+## Airtable Field Contract
+
+The Airtable field contract is fixed from `lp_history_enrichment-Grid view (3).csv`:
+
+```text
+record_key
+record_type
+payload_json
+horse
+barn_name
+show_name
+raw_payload
+status
+kind
+source
+competition_type
+video
+source_id
+record_state
+class_type
+class_sequence
+horse_type
+horse_disciplines
+horse_color
+class
+competition
+horse_gender
+horse_age
+image_url
+video_url
+embed_url
+thumbnail_url
+playlist
+group_tags
+tags
+notes
+updated_at
+```
+
+The Worker writes only these fields. Additional client payload keys are ignored except inside `raw_payload`.
 
 ## Payload Contract
 
