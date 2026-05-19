@@ -2,18 +2,17 @@
   const root = document.getElementById("lp-history-app");
   if (!root) return;
 
-  const config = window.LP_HISTORY_CONFIG || JSON.parse(root.querySelector("#lp-history-config").textContent);
-  const [payload, layer] = await Promise.all([
-    fetch(config.historyUrl).then((response) => {
-      if (!response.ok) throw new Error("History feed failed: " + response.status);
-      return response.json();
-    }),
-    fetch(config.layerUrl).then((response) => response.ok ? response.json() : emptyLayer()).catch(emptyLayer)
-  ]);
+  const payload = JSON.parse(root.querySelector("#lp-history-data").textContent);
+  const layerScript = root.querySelector("#lp-history-layer");
+  const layerSeed = layerScript ? JSON.parse(layerScript.textContent) : emptyLayer();
   const editMode = new URLSearchParams(window.location.search).has("key");
   const layerStorageKey = "lp-history-layer-draft";
-  const state = normalize(payload, loadStoredLayer(layer));
+  const themeStorageKey = "lp-history-theme-colors";
+  const themeColors = loadThemeColors();
+  const state = normalize(payload, loadStoredLayer(layerSeed));
   root.classList.toggle("is-edit-mode", editMode);
+  root.classList.add("is-overview-active");
+  applyThemeColors();
   const overviewControls = {
     competitions: { sort: "desc", month: "all", year: "all" },
     classes: { sort: "desc", month: "all", year: "all" }
@@ -54,6 +53,11 @@
   renderOverview();
 
   root.addEventListener("click", (event) => {
+    if (event.target.closest("[data-theme-color]")) {
+      event.stopPropagation();
+      return;
+    }
+
     const tab = event.target.closest("[data-tab]");
     if (tab) {
       selectTab(tab.dataset.tab);
@@ -199,6 +203,12 @@
       return;
     }
 
+    const themeColor = event.target.closest("[data-theme-color]");
+    if (themeColor) {
+      setThemeColor(themeColor.dataset.themeColor, themeColor.value);
+      return;
+    }
+
     const overviewStart = event.target.closest("[data-overview-start]");
     if (overviewStart) {
       overviewRange.start = overviewStart.value || state.dateRange.startIso;
@@ -236,6 +246,11 @@
       overviewRange.start = overviewStart.value || state.dateRange.startIso;
       renderShell();
       renderOverview();
+    }
+    const themeColor = event.target.closest("[data-theme-color]");
+    if (themeColor) {
+      setThemeColor(themeColor.dataset.themeColor, themeColor.value);
+      return;
     }
     const allFilter = event.target.closest("[data-all-filter]");
     if (allFilter) {
@@ -305,6 +320,54 @@
       classes: { ...normalizedBase.classes, ...normalizedDraft.classes },
       videos: { ...normalizedBase.videos, ...normalizedDraft.videos }
     };
+  }
+
+  function defaultThemeColors() {
+    return {
+      overview: "#46332b",
+      videos: "#003d80",
+      horses: "#005c2a",
+      competitions: "#4e1f76",
+      classes: "#8f1116"
+    };
+  }
+
+  function loadThemeColors() {
+    const defaults = defaultThemeColors();
+    try {
+      const stored = JSON.parse(window.localStorage.getItem(themeStorageKey) || "{}");
+      return { ...defaults, ...stored };
+    } catch (error) {
+      return defaults;
+    }
+  }
+
+  function setThemeColor(key, value) {
+    if (!themeColors[key] || !/^#[0-9a-f]{6}$/i.test(value)) return;
+    themeColors[key] = value;
+    try {
+      window.localStorage.setItem(themeStorageKey, JSON.stringify(themeColors));
+    } catch (error) {}
+    applyThemeColors();
+  }
+
+  function applyThemeColors() {
+    Object.entries(themeColors).forEach(([key, color]) => {
+      root.style.setProperty("--lp-active-" + key, color);
+      root.style.setProperty("--lp-shade-" + key, hexToRgba(color, key === "classes" ? 0.035 : 0.06));
+      root.style.setProperty("--lp-shade-" + key + "-hover", hexToRgba(color, key === "classes" ? 0.08 : 0.11));
+      if (key === "classes") root.style.setProperty("--lp-shade-classes-row", hexToRgba(color, 0.025));
+    });
+  }
+
+  function hexToRgba(hex, alpha) {
+    const value = String(hex || "").replace("#", "");
+    const number = parseInt(value, 16);
+    if (!Number.isFinite(number)) return "rgba(0, 0, 0, " + alpha + ")";
+    const r = (number >> 16) & 255;
+    const g = (number >> 8) & 255;
+    const b = number & 255;
+    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
   }
 
   function normalize(data, layer = emptyLayer()) {
@@ -439,6 +502,10 @@
     root.querySelector('[data-tab-count="videos"]').textContent = state.videos.length;
     root.querySelector('[data-tab-count="competitions"]').textContent = state.counts.competitions;
     root.querySelector('[data-tab-count="classes"]').textContent = state.counts.classes;
+    root.querySelectorAll("[data-theme-color]").forEach((input) => {
+      const key = input.dataset.themeColor;
+      if (themeColors[key]) input.value = themeColors[key];
+    });
   }
 
   function setDateFilterOpen(isOpen) {
@@ -572,6 +639,7 @@
 
   function selectTab(tabName) {
     ensurePanelRendered(tabName);
+    root.classList.toggle("is-overview-active", tabName === "overview");
     root.querySelectorAll("[data-tab]").forEach((tab) => {
       const isActive = tab.dataset.tab === tabName;
       tab.classList.toggle("is-active", isActive);
@@ -698,14 +766,14 @@
     const video = state.videos.find((item) => item.id === videoId);
     if (!video) return;
     const videoLayer = layerFor("videos", video.id);
-    const head = [
+    openModal([
+      '<div class="lp-video-detail-media">',
+      videoEmbed(video),
+      "</div>",
       '<div class="lp-detail-head">',
       '<h3 id="lp-modal-title">' + escapeHtml(video.title) + "</h3>",
       '<p class="lp-muted">' + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</p>",
-      "</div>"
-    ].join("");
-    openModal([
-      detailHero(videoEmbed(video), head),
+      "</div>",
       detailList([
         ["Time", escapeHtml(video.time)],
         ["Horse", escapeHtml(video.horse)],
@@ -965,7 +1033,7 @@
       isMulti
         ? multiField(kind, id, field, Array.isArray(value) ? value : [], choices)
         : isCheckbox
-        ? '<span class="lp-edit-checkbox"><input type="checkbox"' + attrs + (value ? " checked" : "") + "> " + escapeHtml(label) + "</span>"
+        ? '<span class="lp-edit-checkbox"><input type="checkbox"' + attrs + (value ? " checked" : "") + '><span class="lp-edit-pill">' + escapeHtml(label) + "</span></span>"
         : isFile
           ? '<input class="lp-edit-input" type="file" accept="image/*"' + attrs + ">"
         : isTextArea
@@ -981,7 +1049,7 @@
       choices.map((choice) => [
         '<label class="lp-edit-choice">',
         '<input type="checkbox" data-layer-multi="true" data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="' + escapeAttr(choice) + '"' + (selected.includes(choice) ? " checked" : "") + ">",
-        escapeHtml(choice),
+        '<span class="lp-edit-pill">' + escapeHtml(choice) + "</span>",
         "</label>"
       ].join("")).join(""),
       "</span>"
