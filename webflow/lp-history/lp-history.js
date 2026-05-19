@@ -227,7 +227,10 @@
       } else if (layerField.dataset.layerMulti) {
         setLayerMultiValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value, layerField.checked);
       } else {
-        setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.type === "checkbox" ? layerField.checked : layerField.value);
+        setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerInputValue(layerField));
+      }
+      if (["status", "recordState"].includes(layerField.dataset.layerField)) {
+        renderLayerScope(layerField.dataset.layerKind);
       }
       updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
       return;
@@ -255,7 +258,10 @@
       } else if (layerField.dataset.layerMulti) {
         setLayerMultiValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value, layerField.checked);
       } else {
-        setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.type === "checkbox" ? layerField.checked : layerField.value);
+        setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerInputValue(layerField));
+      }
+      if (["status", "recordState"].includes(layerField.dataset.layerField)) {
+        renderLayerScope(layerField.dataset.layerKind);
       }
       updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
     }
@@ -499,10 +505,11 @@
     const rangedClasses = filterOverviewRange(visibleClasses(state.classRows));
     const rangedCompetitions = filterOverviewRange(visibleItems("competitions", state.competitions));
     const rangedVideos = filterOverviewRange(visibleItems("videos", state.videos));
-    const topHorses = horsesForRows(rangedClasses).filter((horse) => hasRibbon(horse.classes)).slice(0, 5);
-    const overviewVideos = rangedVideos.slice(0, 5);
-    const recentCompetitions = filterOverviewItems(rangedCompetitions, overviewControls.competitions).slice(0, 5);
-    const notableClasses = filterOverviewItems(rangedClasses, overviewControls.classes).slice(0, 5);
+    const rangedHorses = horsesForRows(rangedClasses).filter((horse) => isActiveRecord("horses", horse.id) && !isIgnored("horses", horse.id));
+    const topHorses = overviewSubset("horses", rangedHorses, rangedHorses.filter((horse) => hasRibbon(horse.classes))).slice(0, 5);
+    const overviewVideos = overviewSubset("videos", rangedVideos, rangedVideos).slice(0, 5);
+    const recentCompetitions = filterOverviewItems(overviewSubset("competitions", rangedCompetitions, rangedCompetitions), overviewControls.competitions).slice(0, 5);
+    const notableClasses = filterOverviewItems(overviewSubset("classes", rangedClasses, rangedClasses), overviewControls.classes).slice(0, 5);
 
     panels.overview.innerHTML = [
       '<section class="lp-section-block lp-overview-section lp-theme-videos">',
@@ -533,7 +540,7 @@
   function renderHorses() {
     renderedPanels.add("horses");
     const baseHorses = visibleItems("horses", state.horses);
-    const favoriteHorses = baseHorses.filter((horse) => isFavorite("horses", horse.id) || hasRibbon(horse.classes)).slice(0, 5);
+    const favoriteHorses = favoriteSubset("horses", baseHorses, baseHorses.filter((horse) => hasRibbon(horse.classes))).slice(0, 5);
     const horses = filterHorses(baseHorses, allControls.horses);
     panels.horses.innerHTML = [
       '<section class="lp-section-block lp-theme-horses">',
@@ -550,7 +557,7 @@
   function renderVideos() {
     renderedPanels.add("videos");
     const baseVideos = visibleItems("videos", state.videos);
-    const favoriteVideos = baseVideos.filter((video) => isFavorite("videos", video.id)).concat(baseVideos).filter(uniqueById).slice(0, 5);
+    const favoriteVideos = favoriteSubset("videos", baseVideos, baseVideos).slice(0, 5);
     const videos = filterOverviewItems(baseVideos, allControls.videos);
     panels.videos.innerHTML = [
       '<section class="lp-section-block lp-theme-videos">',
@@ -671,10 +678,8 @@
         ["gender", "Gender", "text", horseLayer.gender || ""],
         ["disciplines", "Disciplines", "text", horseLayer.disciplines || horse.type || ""],
         ["age", "Age", "number", horseLayer.age || ""],
-        ["active", "Active", "checkbox", horseLayer.active || false],
-        ["inactive", "Inactive", "checkbox", horseLayer.inactive || false],
-        ["favorite", "Favorite", "checkbox", horseLayer.favorite || false],
-        ["ignore", "Ignore", "checkbox", horseLayer.ignore || false]
+        ["recordState", "Record state", "single", recordState("horses", horse.id), [["active", "Active"], ["inactive", "Inactive"]]],
+        ["status", "Status", "single", layerStatus("horses", horse.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]]
       ])
     ].join(""));
   }
@@ -699,10 +704,8 @@
       classList(rows, { showCompetition: false }),
       "</section>",
       editDetail("competitions", competition.competitionId, [
-        ["active", "Active", "checkbox", competitionLayer.active || false],
-        ["inactive", "Inactive", "checkbox", competitionLayer.inactive || false],
-        ["favorite", "Favorite", "checkbox", competitionLayer.favorite || false],
-        ["ignore", "Ignore", "checkbox", competitionLayer.ignore || false],
+        ["recordState", "Record state", "single", recordState("competitions", competition.competitionId), [["active", "Active"], ["inactive", "Inactive"]]],
+        ["status", "Status", "single", layerStatus("competitions", competition.competitionId), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
         ["type", "Type", "multi", competitionLayer.type || [], ["Hunters", "Jumpers", "Equitation"]],
         ["class_sequences", "Class sequences", "multi", competitionLayer.class_sequences || [], ["Over Fences", "Under Saddle/Flat"]],
         ["tags", "Tags", "multi", competitionLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
@@ -732,10 +735,8 @@
       ]),
       "</section>",
       editDetail("classes", row.id, [
-        ["active", "Active", "checkbox", classLayer.active || false],
-        ["inactive", "Inactive", "checkbox", classLayer.inactive || false],
-        ["favorite", "Favorite", "checkbox", classLayer.favorite || false],
-        ["ignore", "Ignore", "checkbox", classLayer.ignore || false],
+        ["recordState", "Record state", "single", recordState("classes", row.id), [["active", "Active"], ["inactive", "Inactive"]]],
+        ["status", "Status", "single", layerStatus("classes", row.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
         ["type", "Type", "multi", classLayer.type || [], ["Hunters", "Jumpers", "Equitation"]],
         ["class_sequences", "Class sequences", "multi", classLayer.class_sequences || [], ["Over Fences", "Under Saddle/Flat"]],
         ["tags", "Tags", "multi", classLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
@@ -766,10 +767,8 @@
         ["embedUrl", "Embed URL", "url", videoLayer.embedUrl || ""],
         ["thumbnailUrl", "Thumbnail URL", "url", videoLayer.thumbnailUrl || ""],
         ["playlist", "Playlist", "url", videoLayer.playlist || "https://www.youtube.com/playlist?list=PLO6hUJNO-oM0BL4s8Y60jDoDr43q8T5tD"],
-        ["active", "Active", "checkbox", videoLayer.active || false],
-        ["inactive", "Inactive", "checkbox", videoLayer.inactive || false],
-        ["ignore", "Ignore", "checkbox", videoLayer.ignore || false],
-        ["favorite", "Favorite", "checkbox", videoLayer.favorite || false],
+        ["recordState", "Record state", "single", recordState("videos", video.id), [["active", "Active"], ["inactive", "Inactive"]]],
+        ["status", "Status", "single", layerStatus("videos", video.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
         ["tags", "Tags", "multi", videoLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));
@@ -789,11 +788,17 @@
   }
 
   function visibleItems(kind, items) {
-    return items.filter((item) => !isIgnored(kind, itemId(kind, item)));
+    return items.filter((item) => {
+      const id = itemId(kind, item);
+      return isActiveRecord(kind, id) && !isIgnored(kind, id);
+    });
   }
 
   function visibleClasses(rows) {
     return rows.filter((row) =>
+      isActiveRecord("classes", row.id) &&
+      isActiveRecord("horses", row.horseId) &&
+      isActiveRecord("competitions", row.competitionId) &&
       !isIgnored("classes", row.id) &&
       !isIgnored("horses", row.horseId) &&
       !isIgnored("competitions", row.competitionId)
@@ -821,17 +826,68 @@
     return bucket[id] || (bucket[id] = {});
   }
 
+  function layerStatus(kind, id) {
+    const entry = state.layer[kind] && state.layer[kind][id];
+    if (!entry) return "";
+    if (entry.status) return entry.status;
+    if (entry.ignore) return "ignore";
+    if (entry.favorite) return "favorite";
+    if (entry.overview) return "overview";
+    return "";
+  }
+
+  function recordState(kind, id) {
+    const entry = state.layer[kind] && state.layer[kind][id];
+    if (!entry) return "active";
+    if (entry.recordState) return entry.recordState;
+    if (entry.inactive) return "inactive";
+    return "active";
+  }
+
+  function isActiveRecord(kind, id) {
+    return recordState(kind, id) !== "inactive";
+  }
+
   function isIgnored(kind, id) {
-    return !!(state.layer[kind] && state.layer[kind][id] && state.layer[kind][id].ignore);
+    return layerStatus(kind, id) === "ignore";
   }
 
   function isFavorite(kind, id) {
-    return !!(state.layer[kind] && state.layer[kind][id] && state.layer[kind][id].favorite);
+    return layerStatus(kind, id) === "favorite";
+  }
+
+  function isOverviewStatus(kind, id) {
+    return layerStatus(kind, id) === "overview";
+  }
+
+  function overviewSubset(kind, items, fallback) {
+    const selected = items.filter((item) => isOverviewStatus(kind, itemId(kind, item)));
+    return selected.length ? selected : fallback;
+  }
+
+  function favoriteSubset(kind, items, fallback) {
+    const selected = items.filter((item) => isFavorite(kind, itemId(kind, item)));
+    return selected.length ? selected : fallback;
+  }
+
+  function layerInputValue(input) {
+    if (input.type === "checkbox") return input.checked;
+    if (input.type === "radio") return input.checked ? input.value : "";
+    return input.value;
   }
 
   function setLayerValue(kind, id, field, value) {
     if (!editMode || !kind || !id || !field) return;
     const entry = layerFor(kind, id);
+    if (field === "status") {
+      delete entry.overview;
+      delete entry.favorite;
+      delete entry.ignore;
+    }
+    if (field === "recordState") {
+      delete entry.active;
+      delete entry.inactive;
+    }
     if (value === false || value === "" || value === null || value === undefined) {
       delete entry[field];
     } else {
@@ -939,12 +995,11 @@
     if (!editMode) return "";
     const rows = items.map((item) => {
       const id = itemId(kind, item);
-      const entry = layerFor(kind, id);
       return [
-        '<div class="lp-edit-row' + (entry.ignore ? " lp-ignored" : "") + '">',
+        '<div class="lp-edit-row' + (isIgnored(kind, id) ? " lp-ignored" : "") + '">',
         '<div class="lp-edit-title">' + escapeHtml(itemTitle(kind, item)) + "</div>",
-        '<label class="lp-edit-check"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="favorite"' + (entry.favorite ? " checked" : "") + '> Favorite</label>',
-        '<label class="lp-edit-check"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="ignore"' + (entry.ignore ? " checked" : "") + '> Ignore</label>',
+        singleField(kind, id, "recordState", recordState(kind, id), [["active", "Active"], ["inactive", "Inactive"]]),
+        singleField(kind, id, "status", layerStatus(kind, id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]),
         "</div>"
       ].join("");
     }).join("");
@@ -979,7 +1034,8 @@
 
   function editGroups(kind, id, fields) {
     const grouped = [
-      ["Status", fields.filter(([field]) => ["active", "inactive", "favorite", "ignore"].includes(field))],
+      ["Record state", fields.filter(([field]) => field === "recordState")],
+      ["Status", fields.filter(([field]) => field === "status")],
       ["Media", fields.filter(([field]) => ["imageUrl", "imageUrl_2", "image_upload", "videoUrl", "embedUrl", "thumbnailUrl", "playlist"].includes(field))],
       ["Profile", fields.filter(([field]) => ["barn_name", "show_name", "color", "gender", "disciplines", "age"].includes(field))],
       ["Type", fields.filter(([field]) => field === "type")],
@@ -1017,9 +1073,11 @@
     const isTextArea = type === "textarea";
     const isCheckbox = type === "checkbox";
     const isMulti = type === "multi";
+    const isSingle = type === "single";
     const isFile = type === "file";
     const attrs = ' data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '"';
     if (isMulti) return multiField(kind, id, field, Array.isArray(value) ? value : [], choices);
+    if (isSingle) return singleField(kind, id, field, value || "", choices);
     if (isCheckbox) return '<label class="lp-edit-checkbox"><input type="checkbox"' + attrs + (value ? " checked" : "") + '><span class="lp-edit-pill">' + escapeHtml(label) + "</span></label>";
     if (isFile) return '<input class="lp-edit-input" type="file" accept="image/*"' + attrs + ">";
     if (isTextArea) return '<textarea class="lp-edit-textarea"' + attrs + ">" + escapeHtml(value || "") + "</textarea>";
@@ -1035,6 +1093,24 @@
         '<span class="lp-edit-pill">' + escapeHtml(choice) + "</span>",
         "</label>"
       ].join("")).join(""),
+      "</span>"
+    ].join("");
+  }
+
+  function singleField(kind, id, field, selected, choices) {
+    const name = "lp-" + slugify(kind + "-" + id + "-" + field);
+    return [
+      '<span class="lp-edit-choice-row">',
+      choices.map((choice) => {
+        const value = Array.isArray(choice) ? choice[0] : choice;
+        const label = Array.isArray(choice) ? choice[1] : choice;
+        return [
+          '<label class="lp-edit-choice">',
+          '<input type="radio" data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" name="' + escapeAttr(name) + '" value="' + escapeAttr(value) + '"' + (selected === value ? " checked" : "") + ">",
+          '<span class="lp-edit-pill">' + escapeHtml(label) + "</span>",
+          "</label>"
+        ].join("");
+      }).join(""),
       "</span>"
     ].join("");
   }
@@ -1426,11 +1502,13 @@
   }
 
   function listEditActions(kind, id) {
-    const entry = layerFor(kind, id);
+    const status = layerStatus(kind, id);
+    const name = "lp-row-" + slugify(kind + "-" + id + "-status");
     return [
       '<div class="lp-row-actions" aria-label="Inline edit">',
-      '<label class="lp-row-action" title="Favorite" aria-label="Favorite"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="favorite"' + (entry.favorite ? " checked" : "") + ">✅</label>",
-      '<label class="lp-row-action" title="Ignore" aria-label="Ignore"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="ignore"' + (entry.ignore ? " checked" : "") + ">❌</label>",
+      '<label class="lp-row-action" title="Overview" aria-label="Overview"><input type="radio" name="' + escapeAttr(name) + '" data-layer-field="status" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="overview"' + (status === "overview" ? " checked" : "") + ">Over</label>",
+      '<label class="lp-row-action" title="Favorite" aria-label="Favorite"><input type="radio" name="' + escapeAttr(name) + '" data-layer-field="status" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="favorite"' + (status === "favorite" ? " checked" : "") + ">Fav</label>",
+      '<label class="lp-row-action" title="Ignore" aria-label="Ignore"><input type="radio" name="' + escapeAttr(name) + '" data-layer-field="status" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="ignore"' + (status === "ignore" ? " checked" : "") + ">Hide</label>",
       "</div>"
     ].join("");
   }
