@@ -1,21 +1,39 @@
 (async () => {
+  const debug = (...args) => console.info("[lp-history]", ...args);
+  const fail = (stage, error) => {
+    console.error("[lp-history]", stage, error);
+    const root = document.getElementById("lp-history-app");
+    if (root) root.textContent = "LP history failed to load. Check console for [lp-history].";
+  };
+
+  try {
   const root = document.getElementById("lp-history-app");
   if (!root) return;
+  debug("boot", { href: window.location.href });
 
   const embeddedConfig = root.querySelector("#lp-history-config");
   const embeddedGlobalTagRules = root.querySelector("#lp-global-tag-rules")?.textContent || "[]";
   const config = window.LP_HISTORY_CONFIG || JSON.parse(embeddedConfig?.textContent || "{}");
+  debug("config", config);
   root.innerHTML = appShellMarkup();
   const [payload, layer] = await Promise.all([
     fetch(config.historyUrl).then((response) => {
       if (!response.ok) throw new Error("History feed failed: " + response.status);
+      debug("history fetch", response.status, config.historyUrl);
       return response.json();
     }),
-    fetch(config.layerUrl).then((response) => response.ok ? response.json() : emptyLayer()).catch(emptyLayer)
+    fetch(config.layerUrl).then((response) => {
+      debug("layer fetch", response.status, config.layerUrl);
+      return response.ok ? response.json() : emptyLayer();
+    }).catch((error) => {
+      console.warn("[lp-history] layer fetch failed, using empty layer", error);
+      return emptyLayer();
+    })
   ]);
-  const lpParams = new URLSearchParams(window.location.search);
-  const editKey = lpParams.get("key") || "";
+  const hashParams = new URLSearchParams(String(window.location.hash || "").replace(/^#/, ""));
+  const editKey = hashParams.get("key") || "";
   const editMode = !!editKey;
+  debug("edit mode", editMode ? "on" : "off");
   const layerStorageKey = "lp-history-layer-draft";
   const themeStorageKey = "lp-history-theme-colors";
   const themeColors = loadThemeColors();
@@ -59,6 +77,7 @@
 
   renderShell();
   renderOverview();
+  debug("render complete", currentCounts());
 
   root.addEventListener("click", (event) => {
     if (event.target.closest("[data-modal-close]")) {
@@ -2107,5 +2126,8 @@
 
   function escapeAttr(value) {
     return escapeHtml(value).replace(/\x60/g, "&#096;");
+  }
+  } catch (error) {
+    fail("boot failed", error);
   }
 })();
