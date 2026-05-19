@@ -694,12 +694,14 @@
     box-shadow: var(--lp-card-shadow);
     color: #000000;
     display: inline-flex;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
-    gap: 5px;
+    gap: 0;
     line-height: 0.95em;
     min-height: 30px;
+    min-width: 34px;
     padding: 6px 9px;
+    justify-content: center;
     white-space: nowrap;
   }
 
@@ -1911,6 +1913,28 @@
     padding: 0;
   }
 
+  #lp-history-app .lp-edit-row-field {
+    grid-template-columns: minmax(110px, 150px) minmax(0, 1fr);
+  }
+
+  #lp-history-app .lp-edit-row-value {
+    align-items: center;
+    color: #000000;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  #lp-history-app .lp-edit-row-value .lp-edit-input,
+  #lp-history-app .lp-edit-row-value .lp-edit-textarea {
+    max-width: 420px;
+  }
+
+  #lp-history-app .lp-edit-row-value .lp-edit-textarea {
+    max-width: 100%;
+  }
+
   #lp-history-app .lp-edit-group {
     align-items: start;
     background: #ffffff;
@@ -2062,20 +2086,20 @@
     align-items: center;
     background: #ffffff;
     border: 1px solid var(--lp-border);
-    border-radius: 999px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    box-shadow: none;
     color: #000000;
     cursor: pointer;
     display: inline-flex;
     font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     justify-content: center;
     line-height: 0.95em;
     letter-spacing: -0.06em;
-    min-height: 28px;
-    min-width: 58px;
-    padding: 7px 10px;
+    min-height: 26px;
+    min-width: 0;
+    padding: 6px 9px;
     text-align: center;
     transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
     white-space: nowrap;
@@ -2086,14 +2110,15 @@
     background: #46332b;
     border-color: #46332b;
     color: #ffffff;
-    box-shadow: 0 6px 12px rgba(70, 51, 43, 0.18);
+    box-shadow: none;
   }
 
   #lp-history-app .lp-edit-pill:hover,
   #lp-history-app .lp-edit-checkbox input:focus-visible + .lp-edit-pill,
   #lp-history-app .lp-edit-choice input:focus-visible + .lp-edit-pill {
-    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.09);
-    transform: translateY(-1px);
+    border-color: rgba(0, 0, 0, 0.22);
+    box-shadow: none;
+    transform: none;
   }
 
   @media (min-width: 720px) {

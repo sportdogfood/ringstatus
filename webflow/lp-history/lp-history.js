@@ -989,37 +989,41 @@
     ];
     return grouped
       .filter(([, groupFields]) => groupFields.length)
-      .map(([title, groupFields]) => [
-        '<div class="lp-edit-group lp-edit-group-' + escapeAttr(slugify(title)) + (groupFields.some(([, , type]) => type === "multi") ? " is-wide" : "") + '">',
-        '<h5 class="lp-edit-group-title">' + escapeHtml(title) + "</h5>",
-        '<div class="lp-edit-group-fields">',
-        groupFields.map(([field, label, type, value, choices]) => editField(kind, id, field, label, type, value, choices)).join(""),
-        "</div>",
-        "</div>"
-      ].join(""))
+      .map(([title, groupFields]) => editGroupRows(kind, id, title, groupFields))
       .join("");
   }
 
-  function editField(kind, id, field, label, type, value, choices = []) {
+  function editGroupRows(kind, id, title, fields) {
+    if (title === "Status") {
+      return editRow(title, fields.map(([field, label, type, value]) => editControl(kind, id, field, label, type, value)).join(""));
+    }
+    if (fields.length === 1 && fields[0][2] === "multi") {
+      const [field, label, type, value, choices] = fields[0];
+      return editRow(title || label, editControl(kind, id, field, label, type, value, choices));
+    }
+    return fields.map(([field, label, type, value, choices]) => editRow(label, editControl(kind, id, field, label, type, value, choices))).join("");
+  }
+
+  function editRow(label, control) {
+    return [
+      '<div class="lp-row is-static is-detail lp-edit-row-field">',
+      '<span class="lp-row-title">' + escapeHtml(label) + "</span>",
+      '<span class="lp-row-meta lp-edit-row-value">' + control + "</span>",
+      "</div>"
+    ].join("");
+  }
+
+  function editControl(kind, id, field, label, type, value, choices = []) {
     const isTextArea = type === "textarea";
     const isCheckbox = type === "checkbox";
     const isMulti = type === "multi";
     const isFile = type === "file";
-    const className = "lp-edit-field" + (isTextArea ? " is-wide" : "");
     const attrs = ' data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '"';
-    return [
-      '<label class="' + className + '">' + (isMulti ? "" : '<span>' + escapeHtml(label) + "</span>"),
-      isMulti
-        ? multiField(kind, id, field, Array.isArray(value) ? value : [], choices)
-        : isCheckbox
-        ? '<span class="lp-edit-checkbox"><input type="checkbox"' + attrs + (value ? " checked" : "") + '><span class="lp-edit-pill">' + escapeHtml(label) + "</span></span>"
-        : isFile
-          ? '<input class="lp-edit-input" type="file" accept="image/*"' + attrs + ">"
-        : isTextArea
-          ? '<textarea class="lp-edit-textarea"' + attrs + ">" + escapeHtml(value || "") + "</textarea>"
-          : '<input class="lp-edit-input" type="' + escapeAttr(type || "text") + '" value="' + escapeAttr(value || "") + '"' + attrs + ">",
-      "</label>"
-    ].join("");
+    if (isMulti) return multiField(kind, id, field, Array.isArray(value) ? value : [], choices);
+    if (isCheckbox) return '<label class="lp-edit-checkbox"><input type="checkbox"' + attrs + (value ? " checked" : "") + '><span class="lp-edit-pill">' + escapeHtml(label) + "</span></label>";
+    if (isFile) return '<input class="lp-edit-input" type="file" accept="image/*"' + attrs + ">";
+    if (isTextArea) return '<textarea class="lp-edit-textarea"' + attrs + ">" + escapeHtml(value || "") + "</textarea>";
+    return '<input class="lp-edit-input" type="' + escapeAttr(type || "text") + '" value="' + escapeAttr(value || "") + '"' + attrs + ">";
   }
 
   function multiField(kind, id, field, selected, choices) {
@@ -1425,8 +1429,8 @@
     const entry = layerFor(kind, id);
     return [
       '<div class="lp-row-actions" aria-label="Inline edit">',
-      '<label class="lp-row-action"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="favorite"' + (entry.favorite ? " checked" : "") + "> Favorite</label>",
-      '<label class="lp-row-action"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="ignore"' + (entry.ignore ? " checked" : "") + "> Ignore</label>",
+      '<label class="lp-row-action" title="Favorite" aria-label="Favorite"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="favorite"' + (entry.favorite ? " checked" : "") + ">✅</label>",
+      '<label class="lp-row-action" title="Ignore" aria-label="Ignore"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="ignore"' + (entry.ignore ? " checked" : "") + ">❌</label>",
       "</div>"
     ].join("");
   }
