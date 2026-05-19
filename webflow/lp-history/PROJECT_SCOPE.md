@@ -58,7 +58,18 @@ Overview:
 - Once any records in a section are marked `status: overview`, that section uses only those overview records.
 - Records marked inactive or ignore are hidden.
 - Year pills filter the underlying data. Default active years are 2025 and 2026.
+- Year pills are global app state, not just Overview controls. Counts, lists, aggregates, detail rows, and Overview all use the selected-year data scope.
 - Sections appear in this order: Videos, Horses, Latest competitions, Latest classes.
+
+Global filters:
+- Global filters are cumulative.
+- Selected years narrow records by date.
+- Selected tags will narrow records by manual tags or autoTags.
+- A record must pass the selected years and selected tags to appear.
+- If no tags are selected, tags do not restrict results.
+- Example: selecting `2026` and `pony` means only records in 2026 that are tagged or related to tagged `pony` data appear.
+- For horses and competitions, tag matching should include their related class rows.
+- For videos, tag matching should include video metadata and linked class/horse/competition context when available.
 
 Videos:
 - Favorites carousel at top.
