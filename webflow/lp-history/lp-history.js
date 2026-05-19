@@ -2,16 +2,21 @@
   const root = document.getElementById("lp-history-app");
   if (!root) return;
 
-  const payload = JSON.parse(root.querySelector("#lp-history-data").textContent);
-  const layerScript = root.querySelector("#lp-history-layer");
-  const layerSeed = layerScript ? JSON.parse(layerScript.textContent) : emptyLayer();
+  const config = window.LP_HISTORY_CONFIG || JSON.parse(root.querySelector("#lp-history-config").textContent);
+  const [payload, layer] = await Promise.all([
+    fetch(config.historyUrl).then((response) => {
+      if (!response.ok) throw new Error("History feed failed: " + response.status);
+      return response.json();
+    }),
+    fetch(config.layerUrl).then((response) => response.ok ? response.json() : emptyLayer()).catch(emptyLayer)
+  ]);
   const lpParams = new URLSearchParams(window.location.search);
-  const editKey = lpParams.get("lp_edit_key") || "";
+  const editKey = lpParams.get("key") || "";
   const editMode = !!editKey;
   const layerStorageKey = "lp-history-layer-draft";
   const themeStorageKey = "lp-history-theme-colors";
   const themeColors = loadThemeColors();
-  const state = normalize(payload, loadStoredLayer(layerSeed));
+  const state = normalize(payload, loadStoredLayer(layer));
   const globalTagRules = JSON.parse(root.querySelector("#lp-global-tag-rules")?.textContent || "[]");
   root.classList.toggle("is-edit-mode", editMode);
   root.classList.add("is-overview-active");
