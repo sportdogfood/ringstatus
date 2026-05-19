@@ -1,0 +1,13 @@
+{
+  "url": "https://ringstatus-lp-history-enrichment.gombcg.workers.dev/lp-history/enrichment",
+  "headers": {
+    "sec-ch-ua-platform": "\"Windows\"",
+    "x-edit-key": "2525",
+    "referer": "https://ringstatus.com/",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.7390.37 Safari/537.36",
+    "sec-ch-ua": "\"HeadlessChrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+    "content-type": "application/json",
+    "sec-ch-ua-mobile": "?0"
+  },
+  "body": "{\"recordType\":\"video\",\"recordKey\":\"video:mock-video-1\",\"recordState\":\"active\",\"status\":[\"favorite\"],\"data\":{\"kind\":\"lp-history\",\"source\":\"lp-history-webflow\",\"source_id\":\"mock-video-1\",\"record_state\":\"active\",\"status\":[\"favorite\"],\"video\":\"401 - Schooling Pony\",\"horse\":\"FORT KNOX\",\"competition\":\"EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 4 (7179)\",\"class\":\"401 - Schooling Pony\",\"video_url\":\"\",\"embed_url\":\"\",\"thumbnail_url\":\"\",\"playlist\":\"\",\"tags\":[],\"notes\":\"\"}}"
+}

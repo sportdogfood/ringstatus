@@ -103,8 +103,17 @@ async function handleEnrichmentWrite(request, env) {
     return jsonResponse({ ok: false, error: "invalid_payload", details: normalized.errors }, 400, request, env);
   }
 
-  const result = await upsertAirtableRecord(normalized.value, env);
-  return jsonResponse({ ok: true, record: result }, 200, request, env);
+  try {
+    const result = await upsertAirtableRecord(normalized.value, env);
+    return jsonResponse({ ok: true, record: result }, 200, request, env);
+  } catch (error) {
+    return jsonResponse(
+      { ok: false, error: "airtable_write_failed", message: String(error?.message || error) },
+      502,
+      request,
+      env,
+    );
+  }
 }
 
 function normalizePayload(body) {
