@@ -218,7 +218,13 @@
 
     const layerField = event.target.closest("[data-layer-field]");
     if (layerField) {
-      setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value);
+      if (layerField.type === "file") {
+        handleLayerFile(layerField);
+      } else if (layerField.dataset.layerMulti) {
+        setLayerMultiValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value, layerField.checked);
+      } else {
+        setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.type === "checkbox" ? layerField.checked : layerField.value);
+      }
       updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
       return;
     }
@@ -241,7 +247,13 @@
     }
     const layerField = event.target.closest("[data-layer-field]");
     if (layerField) {
-      setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value);
+      if (layerField.type === "file") {
+        handleLayerFile(layerField);
+      } else if (layerField.dataset.layerMulti) {
+        setLayerMultiValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value, layerField.checked);
+      } else {
+        setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.type === "checkbox" ? layerField.checked : layerField.value);
+      }
       updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
     }
   });
@@ -581,12 +593,17 @@
   function openHorse(horseId) {
     const horse = state.horses.find((item) => item.id === horseId);
     if (!horse) return;
-    openModal([
+    const horseLayer = layerFor("horses", horse.id);
+    const imageUrl = horseImage(horse);
+    const head = [
       '<div class="lp-detail-head">',
       '<h3 id="lp-modal-title">' + escapeHtml(horse.name) + "</h3>",
       '<p class="lp-muted">USEF ' + escapeHtml(horse.id) + outboundLink(horse.link, "Horse profile") + "</p>",
       placementGrid(horse.classes),
-      "</div>",
+      "</div>"
+    ].join("");
+    openModal([
+      imageUrl ? detailHero('<img src="' + escapeAttr(imageUrl) + '" alt="">', head) : head,
       '<div class="lp-metric-line">',
       miniMetric(horse.classes.length, "Classes"),
       miniMetric(horse.competitions.size, "Competitions"),
@@ -596,11 +613,19 @@
       classList(horse.classes, { showHorse: false }),
       "</section>",
       editDetail("horses", horse.id, [
-        ["imageUrl", "Image URL", "url", horse.layer.imageUrl || ""],
-        ["gender", "Gender", "text", horse.layer.gender || ""],
-        ["type", "Type", "text", horse.layer.type || horse.type || ""],
-        ["profileUrl", "Profile URL", "url", horse.layer.profileUrl || ""],
-        ["notes", "Notes", "textarea", horse.layer.notes || ""]
+        ["imageUrl", "Image URL", "url", horseLayer.imageUrl || ""],
+        ["imageUrl_2", "Image URL 2", "url", horseLayer.imageUrl_2 || ""],
+        ["image_upload", "Upload image", "file", ""],
+        ["barn_name", "Barn name", "text", horseLayer.barn_name || ""],
+        ["show_name", "Show name", "text", horseLayer.show_name || horse.name || ""],
+        ["color", "Color", "text", horseLayer.color || ""],
+        ["gender", "Gender", "text", horseLayer.gender || ""],
+        ["disciplines", "Disciplines", "text", horseLayer.disciplines || horse.type || ""],
+        ["age", "Age", "number", horseLayer.age || ""],
+        ["active", "Active", "checkbox", horseLayer.active || false],
+        ["inactive", "Inactive", "checkbox", horseLayer.inactive || false],
+        ["favorite", "Favorite", "checkbox", horseLayer.favorite || false],
+        ["ignore", "Ignore", "checkbox", horseLayer.ignore || false]
       ])
     ].join(""));
   }
@@ -608,6 +633,7 @@
   function openCompetition(competitionId) {
     const competition = state.competitions.find((item) => item.competitionId === competitionId);
     if (!competition) return;
+    const competitionLayer = layerFor("competitions", competition.competitionId);
     const rows = state.classRows.filter((row) => row.competitionId === competitionId);
     openModal([
       '<div class="lp-detail-head">',
@@ -624,8 +650,13 @@
       classList(rows, { showCompetition: false }),
       "</section>",
       editDetail("competitions", competition.competitionId, [
-        ["favoriteLabel", "Favorite label", "text", competition.layer.favoriteLabel || ""],
-        ["notes", "Notes", "textarea", competition.layer.notes || ""]
+        ["active", "Active", "checkbox", competitionLayer.active || false],
+        ["inactive", "Inactive", "checkbox", competitionLayer.inactive || false],
+        ["favorite", "Favorite", "checkbox", competitionLayer.favorite || false],
+        ["ignore", "Ignore", "checkbox", competitionLayer.ignore || false],
+        ["type", "Type", "multi", competitionLayer.type || [], ["Hunters", "Jumpers", "Equitation"]],
+        ["class_sequences", "Class sequences", "multi", competitionLayer.class_sequences || [], ["Over Fences", "Under Saddle/Flat"]],
+        ["tags", "Tags", "multi", competitionLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));
   }
@@ -633,6 +664,7 @@
   function openClass(classId) {
     const row = state.classRows.find((item) => item.id === classId);
     if (!row) return;
+    const classLayer = layerFor("classes", row.id);
     openModal([
       '<div class="lp-detail-head">',
       '<h3 id="lp-modal-title">' + escapeHtml(row.classTitle) + "</h3>",
@@ -651,8 +683,13 @@
       ]),
       "</section>",
       editDetail("classes", row.id, [
-        ["favoriteLabel", "Favorite label", "text", row.layer.favoriteLabel || ""],
-        ["notes", "Notes", "textarea", row.layer.notes || ""]
+        ["active", "Active", "checkbox", classLayer.active || false],
+        ["inactive", "Inactive", "checkbox", classLayer.inactive || false],
+        ["favorite", "Favorite", "checkbox", classLayer.favorite || false],
+        ["ignore", "Ignore", "checkbox", classLayer.ignore || false],
+        ["type", "Type", "multi", classLayer.type || [], ["Hunters", "Jumpers", "Equitation"]],
+        ["class_sequences", "Class sequences", "multi", classLayer.class_sequences || [], ["Over Fences", "Under Saddle/Flat"]],
+        ["tags", "Tags", "multi", classLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));
   }
@@ -660,12 +697,15 @@
   function openVideo(videoId) {
     const video = state.videos.find((item) => item.id === videoId);
     if (!video) return;
-    openModal([
+    const videoLayer = layerFor("videos", video.id);
+    const head = [
       '<div class="lp-detail-head">',
       '<h3 id="lp-modal-title">' + escapeHtml(video.title) + "</h3>",
       '<p class="lp-muted">' + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</p>",
-      "</div>",
-      mockVideoPlayer(video),
+      "</div>"
+    ].join("");
+    openModal([
+      detailHero(videoEmbed(video), head),
       detailList([
         ["Time", escapeHtml(video.time)],
         ["Horse", escapeHtml(video.horse)],
@@ -673,9 +713,15 @@
         ["Class", escapeHtml(video.classTitle)]
       ]),
       editDetail("videos", video.id, [
-        ["videoUrl", "Video URL", "url", video.layer.videoUrl || ""],
-        ["thumbnailUrl", "Thumbnail URL", "url", video.layer.thumbnailUrl || ""],
-        ["notes", "Notes", "textarea", video.layer.notes || ""]
+        ["videoUrl", "Video URL", "url", videoLayer.videoUrl || ""],
+        ["embedUrl", "Embed URL", "url", videoLayer.embedUrl || ""],
+        ["thumbnailUrl", "Thumbnail URL", "url", videoLayer.thumbnailUrl || ""],
+        ["playlist", "Playlist", "url", videoLayer.playlist || "https://www.youtube.com/playlist?list=PLO6hUJNO-oM0BL4s8Y60jDoDr43q8T5tD"],
+        ["active", "Active", "checkbox", videoLayer.active || false],
+        ["inactive", "Inactive", "checkbox", videoLayer.inactive || false],
+        ["ignore", "Ignore", "checkbox", videoLayer.ignore || false],
+        ["favorite", "Favorite", "checkbox", videoLayer.favorite || false],
+        ["tags", "Tags", "multi", videoLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));
   }
@@ -744,6 +790,38 @@
     }
     state.layer.updatedAt = new Date().toISOString();
     persistLayer();
+  }
+
+  function setLayerMultiValue(kind, id, field, value, checked) {
+    if (!editMode || !kind || !id || !field) return;
+    const entry = layerFor(kind, id);
+    const existing = Array.isArray(entry[field]) ? entry[field] : [];
+    const next = checked
+      ? unique(existing.concat(value))
+      : existing.filter((item) => item !== value);
+    if (next.length) {
+      entry[field] = next;
+    } else {
+      delete entry[field];
+    }
+    state.layer.updatedAt = new Date().toISOString();
+    persistLayer();
+  }
+
+  function handleLayerFile(input) {
+    if (!editMode || !input.files || !input.files[0]) return;
+    const file = input.files[0];
+    if (!file.type || !file.type.startsWith("image/")) {
+      updateEditStatus("Choose an image file.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setLayerValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, String(reader.result || ""));
+      updateEditStatus("Image saved in draft layer. Export layer.json when ready.");
+    };
+    reader.onerror = () => updateEditStatus("Image upload could not be read.");
+    reader.readAsDataURL(file);
   }
 
   function persistLayer() {
@@ -845,23 +923,45 @@
       '<button class="lp-edit-button" type="button" data-layer-action="export">Export layer.json</button>',
       "</div></div>",
       '<div class="lp-edit-grid">',
-      fields.map(([field, label, type, value]) => editField(kind, id, field, label, type, value)).join(""),
+      fields.map(([field, label, type, value, choices]) => editField(kind, id, field, label, type, value, choices)).join(""),
       "</div>",
       '<p class="lp-edit-status" data-edit-status>Draft saves in this browser. Export layer.json when ready.</p>',
       "</section>"
     ].join("");
   }
 
-  function editField(kind, id, field, label, type, value) {
+  function editField(kind, id, field, label, type, value, choices = []) {
     const isTextArea = type === "textarea";
+    const isCheckbox = type === "checkbox";
+    const isMulti = type === "multi";
+    const isFile = type === "file";
     const className = "lp-edit-field" + (isTextArea ? " is-wide" : "");
     const attrs = ' data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '"';
     return [
       '<label class="' + className + '"><span>' + escapeHtml(label) + "</span>",
-      isTextArea
-        ? '<textarea class="lp-edit-textarea"' + attrs + ">" + escapeHtml(value || "") + "</textarea>"
-        : '<input class="lp-edit-input" type="' + escapeAttr(type || "text") + '" value="' + escapeAttr(value || "") + '"' + attrs + ">",
+      isMulti
+        ? multiField(kind, id, field, Array.isArray(value) ? value : [], choices)
+        : isCheckbox
+        ? '<span class="lp-edit-checkbox"><input type="checkbox"' + attrs + (value ? " checked" : "") + "> " + escapeHtml(label) + "</span>"
+        : isFile
+          ? '<input class="lp-edit-input" type="file" accept="image/*"' + attrs + ">"
+        : isTextArea
+          ? '<textarea class="lp-edit-textarea"' + attrs + ">" + escapeHtml(value || "") + "</textarea>"
+          : '<input class="lp-edit-input" type="' + escapeAttr(type || "text") + '" value="' + escapeAttr(value || "") + '"' + attrs + ">",
       "</label>"
+    ].join("");
+  }
+
+  function multiField(kind, id, field, selected, choices) {
+    return [
+      '<span class="lp-edit-choice-row">',
+      choices.map((choice) => [
+        '<label class="lp-edit-choice">',
+        '<input type="checkbox" data-layer-multi="true" data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="' + escapeAttr(choice) + '"' + (selected.includes(choice) ? " checked" : "") + ">",
+        escapeHtml(choice),
+        "</label>"
+      ].join("")).join(""),
+      "</span>"
     ].join("");
   }
 
@@ -921,7 +1021,7 @@
       if (showHorse) meta.push(escapeHtml(row.horse.name || "Unknown"));
       if (showCompetition) meta.push(escapeHtml(row.competitionName));
       const detail = escapeHtml(dateRange(row.competition));
-      return [
+      return rowWithActions("classes", row.id, [
         '<button class="lp-row" type="button" data-open-class="' + escapeAttr(row.id) + '">',
         "<span>",
         '<span class="lp-row-title">' + escapeHtml(row.classTitle) + "</span>",
@@ -930,7 +1030,7 @@
         "</span>",
         ribbonForRow(row),
         "</button>"
-      ].join("");
+      ].join(""));
     }).join("");
   }
 
@@ -1144,7 +1244,7 @@
   }
 
   function videoCard(video) {
-    const thumbnail = video.layer.thumbnailUrl;
+    const thumbnail = layerFor("videos", video.id).thumbnailUrl;
     return [
       '<button class="lp-video-card" type="button" data-open-video="' + escapeAttr(video.id) + '">',
       '<div class="lp-video-thumb" aria-hidden="true">' + (thumbnail ? '<img src="' + escapeAttr(thumbnail) + '" alt="">' : "") + "</div>",
@@ -1158,24 +1258,24 @@
 
   function videoList(videos) {
     if (!videos.length) return '<p class="lp-empty">No videos available.</p>';
-    return videos.map((video) => [
+    return videos.map((video) => rowWithActions("videos", video.id, [
       '<button class="lp-row" type="button" data-open-video="' + escapeAttr(video.id) + '">',
       '<span><span class="lp-row-title">' + escapeHtml(video.title) + "</span>",
       '<span class="lp-row-meta">' + escapeHtml(video.time) + "  -  " + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</span>",
       "</span>",
       "</button>"
-    ].join("")).join("");
+    ].join(""))).join("");
   }
 
   function competitionRow(competition) {
     const rows = state.classRows.filter((row) => row.competitionId === competition.competitionId);
-    return [
+    return rowWithActions("competitions", competition.competitionId, [
       '<button class="lp-row" type="button" data-open-competition="' + escapeAttr(competition.competitionId) + '">',
       '<span><span class="lp-row-title">' + escapeHtml(competition.competitionName) + "</span>",
       '<span class="lp-row-meta">' + escapeHtml(dateRange(competition)) + "  -  " + escapeHtml(competition.state || "") + "  -  Zone " + escapeHtml(competition.zone || "") + "</span></span>",
       ribbonForRows(rows),
       "</button>"
-    ].join("");
+    ].join(""));
   }
 
   function competitionCard(competition) {
@@ -1208,17 +1308,17 @@
   }
 
   function compactHorseButton(horse) {
-    return [
+    return rowWithActions("horses", horse.id, [
       '<button class="lp-row lp-horse-row" type="button" data-open-horse="' + escapeAttr(horse.id) + '">',
       '<span><span class="lp-row-title">' + escapeHtml(horse.name) + "</span>",
       '<span class="lp-row-meta">' + horse.competitions.size + " shows  -  " + horse.classes.length + " classes</span></span>",
       placementStrip(horse.classes),
       "</button>"
-    ].join("");
+    ].join(""));
   }
 
   function horseCard(horse) {
-    const imageUrl = horse.layer.imageUrl;
+    const imageUrl = horseImage(horse);
     return [
       '<button class="lp-video-card lp-horse-video-card" type="button" data-open-horse="' + escapeAttr(horse.id) + '">',
       '<div class="lp-video-thumb" aria-hidden="true">',
@@ -1231,6 +1331,31 @@
       "</div>",
       "</button>"
     ].join("");
+  }
+
+  function rowWithActions(kind, id, rowMarkup) {
+    if (!editMode) return rowMarkup;
+    return [
+      '<div class="lp-row-wrap">',
+      rowMarkup,
+      listEditActions(kind, id),
+      "</div>"
+    ].join("");
+  }
+
+  function listEditActions(kind, id) {
+    const entry = layerFor(kind, id);
+    return [
+      '<div class="lp-row-actions" aria-label="Inline edit">',
+      '<label class="lp-row-action"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="favorite"' + (entry.favorite ? " checked" : "") + "> Favorite</label>",
+      '<label class="lp-row-action"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="ignore"' + (entry.ignore ? " checked" : "") + "> Ignore</label>",
+      "</div>"
+    ].join("");
+  }
+
+  function horseImage(horse) {
+    const layer = layerFor("horses", horse.id);
+    return layer.imageUrl || layer.image_upload || layer.imageUrl_2 || "";
   }
 
   function placementGrid(rows) {
@@ -1346,6 +1471,17 @@
     rail.scrollBy({ left: direction * step, behavior: "smooth" });
   }
 
+  function detailHero(mediaMarkup, headMarkup) {
+    return [
+      '<div class="lp-detail-hero">',
+      '<div class="lp-detail-hero-media">',
+      mediaMarkup,
+      "</div>",
+      headMarkup,
+      "</div>"
+    ].join("");
+  }
+
   function mockVideos(classRows, horses) {
     return classRows.slice(0, 16).map((row, index) => ({
       id: "mock-video-" + (index + 1),
@@ -1359,7 +1495,7 @@
   }
 
   function mockVideoPlayer(video) {
-    const thumbnail = video.layer.thumbnailUrl;
+    const thumbnail = layerFor("videos", video.id).thumbnailUrl;
     return [
       '<div class="lp-video-player" role="img" aria-label="Mock video preview">',
       thumbnail ? '<img src="' + escapeAttr(thumbnail) + '" alt="">' : "",
@@ -1367,6 +1503,26 @@
       '<div class="lp-video-time">' + escapeHtml(video.time) + "</div>",
       "</div>"
     ].join("");
+  }
+
+  function videoEmbed(video) {
+    const videoLayer = layerFor("videos", video.id);
+    const videoUrl = videoLayer.embedUrl || toYouTubeEmbedUrl(videoLayer.videoUrl) || videoLayer.videoUrl;
+    if (!videoUrl) return mockVideoPlayer(video);
+    if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(videoUrl)) {
+      return '<video src="' + escapeAttr(videoUrl) + '" controls playsinline></video>';
+    }
+    return '<iframe src="' + escapeAttr(videoUrl) + '" title="' + escapeAttr(video.title) + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+  }
+
+  function toYouTubeEmbedUrl(url) {
+    if (!url) return "";
+    const text = String(url).trim();
+    const watch = text.match(/[?&]v=([A-Za-z0-9_-]+)/);
+    if (watch) return "https://www.youtube.com/embed/" + watch[1];
+    const short = text.match(/youtu\.be\/([A-Za-z0-9_-]+)/);
+    if (short) return "https://www.youtube.com/embed/" + short[1];
+    return text.includes("youtube.com/embed/") ? text : "";
   }
 
   function mockVideoTime(index) {

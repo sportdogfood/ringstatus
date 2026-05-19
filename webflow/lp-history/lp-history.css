@@ -592,6 +592,56 @@
     outline: none;
   }
 
+  #lp-history-app .lp-row-wrap {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-bottom: 1px solid var(--lp-border);
+  }
+
+  #lp-history-app .lp-row-wrap .lp-row {
+    border-bottom: 0;
+  }
+
+  #lp-history-app.is-edit-mode .lp-row-wrap {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+  }
+
+  #lp-history-app .lp-row-actions {
+    align-items: center;
+    display: none;
+    gap: 7px;
+    justify-content: flex-end;
+    padding: 8px 12px;
+  }
+
+  #lp-history-app.is-edit-mode .lp-row-actions {
+    display: flex;
+  }
+
+  #lp-history-app .lp-row-action {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--lp-border);
+    border-radius: 999px;
+    box-shadow: var(--lp-card-shadow);
+    color: #000000;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 600;
+    gap: 5px;
+    line-height: 0.95em;
+    min-height: 30px;
+    padding: 6px 9px;
+    white-space: nowrap;
+  }
+
+  #lp-history-app .lp-row-action input {
+    height: 14px;
+    width: 14px;
+  }
+
   #lp-history-app .lp-row.is-static {
     cursor: default;
   }
@@ -1079,6 +1129,14 @@
     overflow: hidden;
   }
 
+  #lp-history-app .lp-video-player iframe,
+  #lp-history-app .lp-video-player video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   #lp-history-app .lp-video-play {
     display: grid;
     place-items: center;
@@ -1265,7 +1323,7 @@
     position: sticky;
     top: 0;
     float: right;
-    z-index: 1;
+    z-index: 5;
     width: 38px;
     height: 38px;
     border: 1px solid var(--lp-border);
@@ -1280,6 +1338,57 @@
   #lp-history-app .lp-detail-head {
     margin-right: 50px;
     margin-bottom: 18px;
+  }
+
+  #lp-history-app .lp-detail-hero {
+    position: relative;
+    min-height: 360px;
+    margin: -24px -24px 18px;
+    overflow: hidden;
+    background: var(--lp-video-placeholder);
+    border-radius: 8px 8px 0 0;
+  }
+
+  #lp-history-app .lp-detail-hero-media {
+    position: absolute;
+    inset: 0;
+  }
+
+  #lp-history-app .lp-detail-hero-media img,
+  #lp-history-app .lp-detail-hero-media iframe,
+  #lp-history-app .lp-detail-hero-media video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+  }
+
+  #lp-history-app .lp-detail-hero-media .lp-video-player {
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  #lp-history-app .lp-detail-hero .lp-detail-head {
+    position: absolute;
+    left: 24px;
+    right: 84px;
+    bottom: 24px;
+    z-index: 1;
+    margin: 0;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 8px;
+    box-shadow: var(--lp-raised-shadow);
+  }
+
+  #lp-history-app .lp-detail-hero .lp-detail-head h3,
+  #lp-history-app .lp-detail-hero .lp-detail-head .lp-muted {
+    color: #000000;
   }
 
   #lp-history-app .lp-detail-head h3 {
@@ -1709,6 +1818,44 @@
     width: 100%;
   }
 
+  #lp-history-app .lp-edit-checkbox {
+    align-items: center;
+    display: inline-flex;
+    gap: 8px;
+    min-height: 42px;
+  }
+
+  #lp-history-app .lp-edit-checkbox input {
+    height: 18px;
+    width: 18px;
+  }
+
+  #lp-history-app .lp-edit-choice-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 42px;
+  }
+
+  #lp-history-app .lp-edit-choice {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--lp-border);
+    border-radius: 999px;
+    display: inline-flex;
+    gap: 6px;
+    min-height: 32px;
+    padding: 7px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 0.95em;
+  }
+
+  #lp-history-app .lp-edit-choice input {
+    height: 15px;
+    width: 15px;
+  }
+
   #lp-history-app .lp-edit-textarea {
     min-height: 84px;
     resize: vertical;
@@ -1727,6 +1874,12 @@
     height: 100%;
     object-fit: cover;
     width: 100%;
+  }
+
+  #lp-history-app .lp-detail-hero-media .lp-video-play,
+  #lp-history-app .lp-detail-hero-media .lp-video-time {
+    position: relative;
+    z-index: 1;
   }
 
   #lp-history-app .lp-ignored {
