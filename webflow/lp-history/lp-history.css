@@ -1698,7 +1698,7 @@
   }
 
   #lp-history-app .lp-edit-head {
-    align-items: center;
+    align-items: flex-start;
     background: #f7f8fa;
     display: flex;
     gap: 10px;
@@ -1782,9 +1782,32 @@
 
   #lp-history-app .lp-edit-grid {
     display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
     padding: 16px;
+  }
+
+  #lp-history-app .lp-edit-group {
+    background: rgba(175, 175, 175, 0.06);
+    border: 1px solid var(--lp-border);
+    border-radius: 8px;
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  #lp-history-app .lp-edit-group-title {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 0.95em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  #lp-history-app .lp-edit-group-fields {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   #lp-history-app .lp-edit-field {
@@ -1820,9 +1843,19 @@
 
   #lp-history-app .lp-edit-checkbox {
     align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--lp-border);
+    border-radius: 999px;
+    box-shadow: var(--lp-card-shadow);
     display: inline-flex;
     gap: 8px;
-    min-height: 42px;
+    justify-content: center;
+    min-height: 34px;
+    padding: 8px 11px;
+    width: fit-content;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 0.95em;
   }
 
   #lp-history-app .lp-edit-checkbox input {
@@ -1849,6 +1882,33 @@
     font-size: 13px;
     font-weight: 600;
     line-height: 0.95em;
+  }
+
+  #lp-history-app .lp-edit-checkbox:has(input:checked),
+  #lp-history-app .lp-edit-choice:has(input:checked) {
+    background: #46332b;
+    border-color: #46332b;
+    color: #ffffff;
+  }
+
+  #lp-history-app .lp-edit-choice input,
+  #lp-history-app .lp-edit-checkbox input {
+    accent-color: #46332b;
+  }
+
+  @media (min-width: 720px) {
+    #lp-history-app .lp-edit-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #lp-history-app .lp-edit-group.is-wide,
+    #lp-history-app .lp-edit-field.is-wide {
+      grid-column: 1 / -1;
+    }
+
+    #lp-history-app .lp-edit-group-fields {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   #lp-history-app .lp-edit-choice input {

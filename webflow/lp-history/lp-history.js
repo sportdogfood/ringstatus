@@ -923,11 +923,34 @@
       '<button class="lp-edit-button" type="button" data-layer-action="export">Export layer.json</button>',
       "</div></div>",
       '<div class="lp-edit-grid">',
-      fields.map(([field, label, type, value, choices]) => editField(kind, id, field, label, type, value, choices)).join(""),
+      editGroups(kind, id, fields),
       "</div>",
       '<p class="lp-edit-status" data-edit-status>Draft saves in this browser. Export layer.json when ready.</p>',
       "</section>"
     ].join("");
+  }
+
+  function editGroups(kind, id, fields) {
+    const grouped = [
+      ["Status", fields.filter(([field]) => ["active", "inactive", "favorite", "ignore"].includes(field))],
+      ["Media", fields.filter(([field]) => ["imageUrl", "imageUrl_2", "image_upload", "videoUrl", "embedUrl", "thumbnailUrl", "playlist"].includes(field))],
+      ["Profile", fields.filter(([field]) => ["barn_name", "show_name", "color", "gender", "disciplines", "age"].includes(field))],
+      ["Type", fields.filter(([field]) => field === "type")],
+      ["Class sequence", fields.filter(([field]) => field === "class_sequences")],
+      ["Tags", fields.filter(([field]) => field === "tags")],
+      ["Notes", fields.filter(([field]) => field === "notes" || field === "favoriteLabel")]
+    ];
+    return grouped
+      .filter(([, groupFields]) => groupFields.length)
+      .map(([title, groupFields]) => [
+        '<div class="lp-edit-group' + (groupFields.some(([, , type]) => type === "multi") ? " is-wide" : "") + '">',
+        '<h5 class="lp-edit-group-title">' + escapeHtml(title) + "</h5>",
+        '<div class="lp-edit-group-fields">',
+        groupFields.map(([field, label, type, value, choices]) => editField(kind, id, field, label, type, value, choices)).join(""),
+        "</div>",
+        "</div>"
+      ].join(""))
+      .join("");
   }
 
   function editField(kind, id, field, label, type, value, choices = []) {
@@ -938,7 +961,7 @@
     const className = "lp-edit-field" + (isTextArea ? " is-wide" : "");
     const attrs = ' data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '"';
     return [
-      '<label class="' + className + '"><span>' + escapeHtml(label) + "</span>",
+      '<label class="' + className + '">' + (isCheckbox ? "" : '<span>' + escapeHtml(label) + "</span>"),
       isMulti
         ? multiField(kind, id, field, Array.isArray(value) ? value : [], choices)
         : isCheckbox
