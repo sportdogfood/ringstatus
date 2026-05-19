@@ -185,7 +185,7 @@
     padding-right: 0;
   }
 
-  #lp-history-app .lp-year-pills {
+  #lp-history-app .lp-date-filter .lp-year-pills {
     display: flex;
     flex-wrap: nowrap;
     gap: 7px;
@@ -195,7 +195,7 @@
     scrollbar-width: thin;
   }
 
-  #lp-history-app .lp-year-pill {
+  #lp-history-app .lp-date-filter .lp-year-pill {
     flex: 0 0 auto;
     min-height: 34px;
     padding: 8px 13px;
@@ -213,8 +213,8 @@
     transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   }
 
-  #lp-history-app .lp-year-pill:hover,
-  #lp-history-app .lp-year-pill:focus-visible {
+  #lp-history-app .lp-date-filter .lp-year-pill:hover,
+  #lp-history-app .lp-date-filter .lp-year-pill:focus-visible {
     border-color: rgba(0, 0, 0, 0.18);
     background: var(--lp-soft);
     box-shadow: var(--lp-raised-shadow);
@@ -222,7 +222,7 @@
     outline: none;
   }
 
-  #lp-history-app .lp-year-pill.is-active {
+  #lp-history-app .lp-date-filter .lp-year-pill.is-active {
     border-color: #46332b;
     background: #46332b;
     color: #fff;
@@ -703,8 +703,16 @@
   }
 
   #lp-history-app .lp-row-action input {
-    height: 14px;
-    width: 14px;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #lp-history-app .lp-row-action:has(input:checked) {
+    background: #46332b;
+    border-color: #46332b;
+    color: #ffffff;
+    box-shadow: var(--lp-token-shadow);
   }
 
   #lp-history-app .lp-row.is-static {
@@ -1653,7 +1661,7 @@
       text-align: left;
     }
 
-    #lp-history-app .lp-year-pills {
+    #lp-history-app .lp-date-filter .lp-year-pills {
       justify-content: flex-start;
     }
 

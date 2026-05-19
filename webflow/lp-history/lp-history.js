@@ -1712,6 +1712,13 @@
     return parts.map((part) => encodeURIComponent(String(part ?? ""))).join("__");
   }
 
+  function slugify(value) {
+    return String(value ?? "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "group";
+  }
+
   function escapeHtml(value) {
     return String(value ?? "")
       .replace(/&/g, "&amp;")
