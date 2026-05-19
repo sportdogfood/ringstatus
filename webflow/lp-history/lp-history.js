@@ -902,6 +902,8 @@
   }
 
   function overviewSubset(kind, items, fallback) {
+    const hasExplicitOverview = Object.keys(state.layer[kind] || {}).some((id) => isOverviewStatus(kind, id));
+    if (!hasExplicitOverview) return fallback;
     return items.filter((item) => isOverviewStatus(kind, itemId(kind, item)));
   }
 
