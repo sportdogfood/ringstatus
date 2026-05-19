@@ -116,8 +116,7 @@
       } else {
         overviewYears.add(year);
       }
-      renderShell();
-      renderOverview();
+      renderDataScope();
       return;
     }
 
@@ -519,10 +518,11 @@
       )).join("");
     }
 
-    root.querySelector('[data-tab-count="horses"]').textContent = state.counts.horses;
-    root.querySelector('[data-tab-count="videos"]').textContent = state.videos.length;
-    root.querySelector('[data-tab-count="competitions"]').textContent = state.counts.competitions;
-    root.querySelector('[data-tab-count="classes"]').textContent = state.counts.classes;
+    const counts = currentCounts();
+    root.querySelector('[data-tab-count="horses"]').textContent = counts.horses;
+    root.querySelector('[data-tab-count="videos"]').textContent = counts.videos;
+    root.querySelector('[data-tab-count="competitions"]').textContent = counts.competitions;
+    root.querySelector('[data-tab-count="classes"]').textContent = counts.classes;
     root.querySelectorAll("[data-theme-color]").forEach((input) => {
       const key = input.dataset.themeColor;
       if (themeColors[key]) input.value = themeColors[key];
@@ -531,10 +531,10 @@
 
   function renderOverview() {
     renderedPanels.add("overview");
-    const rangedClasses = filterOverviewRange(visibleClasses(state.classRows));
-    const rangedCompetitions = filterOverviewRange(visibleItems("competitions", state.competitions));
-    const rangedVideos = filterOverviewRange(visibleItems("videos", state.videos));
-    const rangedHorses = horsesForRows(rangedClasses).filter((horse) => isActiveRecord("horses", horse.id) && !isIgnored("horses", horse.id));
+    const rangedClasses = currentClasses();
+    const rangedCompetitions = currentCompetitions();
+    const rangedVideos = currentVideos();
+    const rangedHorses = currentHorses();
     const topHorses = overviewSubset("horses", rangedHorses, rangedHorses.filter((horse) => hasRibbon(horse.classes))).slice(0, 5);
     const overviewVideos = overviewSubset("videos", rangedVideos, rangedVideos).slice(0, 5);
     const recentCompetitions = filterOverviewItems(overviewSubset("competitions", rangedCompetitions, rangedCompetitions), overviewControls.competitions).slice(0, 5);
@@ -553,13 +553,13 @@
       "</section>",
       '<section class="lp-section-block lp-overview-section lp-theme-competitions">',
       sectionTitle("Latest competitions", "", "", filterToggleMarkup("overview:competitions")),
-      overviewControlsMarkup("competitions", state.competitions),
+      overviewControlsMarkup("competitions", rangedCompetitions),
       competitionCollection(recentCompetitions, viewControls.overviewCompetitions),
       seeAll("competitions", "See all competitions ->"),
       "</section>",
       '<section class="lp-section-block lp-overview-section lp-theme-classes">',
       sectionTitle("Latest classes", "", "", filterToggleMarkup("overview:classes")),
-      overviewControlsMarkup("classes", state.classRows),
+      overviewControlsMarkup("classes", rangedClasses),
       classCollection(notableClasses, viewControls.overviewClasses, { detailMode: "dateRange" }),
       seeAll("classes", "See all classes ->"),
       "</section>"
@@ -568,15 +568,15 @@
 
   function renderHorses() {
     renderedPanels.add("horses");
-    const baseHorses = visibleItems("horses", state.horses);
+    const baseHorses = currentHorses();
     const favoriteHorses = favoriteSubset("horses", baseHorses, baseHorses.filter((horse) => hasRibbon(horse.classes))).slice(0, 5);
     const horses = filterHorses(baseHorses, allControls.horses);
     panels.horses.innerHTML = [
       '<section class="lp-section-block lp-theme-horses">',
-      sectionTitle("Horses", state.horses.length + " total", "", videoNavMarkup("all-horses")),
+      sectionTitle("Horses", baseHorses.length + " total", "", videoNavMarkup("all-horses")),
       horseCarousel(favoriteHorses, "all-horses"),
       sectionTitle("All horses", horses.length + " shown", "", filterToggleMarkup("all:horses")),
-      allControlsMarkup("horses", state.horses),
+      allControlsMarkup("horses", baseHorses),
       horseCollection(horses),
       "</section>"
     ].join("");
@@ -584,15 +584,15 @@
 
   function renderVideos() {
     renderedPanels.add("videos");
-    const baseVideos = visibleItems("videos", state.videos);
+    const baseVideos = currentVideos();
     const favoriteVideos = favoriteSubset("videos", baseVideos, baseVideos).slice(0, 5);
     const videos = filterOverviewItems(baseVideos, allControls.videos);
     panels.videos.innerHTML = [
       '<section class="lp-section-block lp-theme-videos">',
-      sectionTitle("Videos", state.videos.length + " total", "", videoNavMarkup("all-favorites")),
+      sectionTitle("Videos", baseVideos.length + " total", "", videoNavMarkup("all-favorites")),
       videoCarousel(favoriteVideos, "all-favorites", { hideControls: true }),
       sectionTitle("All videos", "", "", filterToggleMarkup("all:videos")),
-      allControlsMarkup("videos", state.videos),
+      allControlsMarkup("videos", baseVideos),
       videoList(videos),
       "</section>"
     ].join("");
@@ -600,11 +600,12 @@
 
   function renderCompetitions() {
     renderedPanels.add("competitions");
-    const competitions = filterOverviewItems(visibleItems("competitions", state.competitions), allControls.competitions);
+    const baseCompetitions = currentCompetitions();
+    const competitions = filterOverviewItems(baseCompetitions, allControls.competitions);
     panels.competitions.innerHTML = [
       '<section class="lp-section-block lp-theme-competitions">',
       sectionTitle("Competitions", "", "", filterToggleMarkup("all:competitions")),
-      allControlsMarkup("competitions", state.competitions),
+      allControlsMarkup("competitions", baseCompetitions),
       competitionCollection(competitions, viewControls.competitions),
       "</section>"
     ].join("");
@@ -612,11 +613,12 @@
 
   function renderClasses() {
     renderedPanels.add("classes");
-    const classes = filterOverviewItems(visibleClasses(state.classRows), allControls.classes);
+    const baseClasses = currentClasses();
+    const classes = filterOverviewItems(baseClasses, allControls.classes);
     panels.classes.innerHTML = [
       '<section class="lp-section-block lp-theme-classes">',
       sectionTitle("Classes", "", "", filterToggleMarkup("all:classes")),
-      allControlsMarkup("classes", state.classRows),
+      allControlsMarkup("classes", baseClasses),
       classCollection(classes, viewControls.classes),
       "</section>"
     ].join("");
@@ -627,6 +629,20 @@
     if (target === "classes") renderClasses();
     if (target === "videos") renderVideos();
     if (target === "horses") renderHorses();
+  }
+
+  function renderDataScope() {
+    renderShell();
+    renderedPanels.delete("overview");
+    renderedPanels.delete("videos");
+    renderedPanels.delete("horses");
+    renderedPanels.delete("competitions");
+    renderedPanels.delete("classes");
+    renderOverview();
+    if (root.querySelector('[data-panel="videos"]')?.classList.contains("is-active")) renderVideos();
+    if (root.querySelector('[data-panel="horses"]')?.classList.contains("is-active")) renderHorses();
+    if (root.querySelector('[data-panel="competitions"]')?.classList.contains("is-active")) renderCompetitions();
+    if (root.querySelector('[data-panel="classes"]')?.classList.contains("is-active")) renderClasses();
   }
 
   function renderFilterScope(key) {
@@ -671,7 +687,7 @@
   }
 
   function openHorse(horseId) {
-    const horse = state.horses.find((item) => item.id === horseId);
+    const horse = currentHorses().find((item) => item.id === horseId) || state.horses.find((item) => item.id === horseId);
     if (!horse) return;
     const horseLayer = layerFor("horses", horse.id);
     const imageUrl = horseImage(horse);
@@ -711,10 +727,10 @@
   }
 
   function openCompetition(competitionId) {
-    const competition = state.competitions.find((item) => item.competitionId === competitionId);
+    const competition = currentCompetitions().find((item) => item.competitionId === competitionId) || state.competitions.find((item) => item.competitionId === competitionId);
     if (!competition) return;
     const competitionLayer = layerFor("competitions", competition.competitionId);
-    const rows = state.classRows.filter((row) => row.competitionId === competitionId);
+    const rows = currentClasses().filter((row) => row.competitionId === competitionId);
     openModal([
       '<div class="lp-detail-head">',
       '<h3 id="lp-modal-title">' + escapeHtml(competition.competitionName) + "</h3>",
@@ -739,7 +755,7 @@
   }
 
   function openClass(classId) {
-    const row = state.classRows.find((item) => item.id === classId);
+    const row = currentClasses().find((item) => item.id === classId) || state.classRows.find((item) => item.id === classId);
     if (!row) return;
     const classLayer = layerFor("classes", row.id);
     openModal([
@@ -770,7 +786,7 @@
   }
 
   function openVideo(videoId) {
-    const video = state.videos.find((item) => item.id === videoId);
+    const video = currentVideos().find((item) => item.id === videoId) || state.videos.find((item) => item.id === videoId);
     if (!video) return;
     const videoLayer = layerFor("videos", video.id);
     openModal([
@@ -828,6 +844,35 @@
       !isIgnored("horses", row.horseId) &&
       !isIgnored("competitions", row.competitionId)
     );
+  }
+
+  function currentClasses() {
+    return filterDataScope(visibleClasses(state.classRows));
+  }
+
+  function currentCompetitions() {
+    const classCompetitionIds = new Set(currentClasses().map((row) => row.competitionId));
+    return visibleItems("competitions", state.competitions)
+      .filter((competition) => inSelectedYears(competition))
+      .filter((competition) => classCompetitionIds.has(competition.competitionId));
+  }
+
+  function currentHorses() {
+    return horsesForRows(currentClasses())
+      .filter((horse) => isActiveRecord("horses", horse.id) && !isIgnored("horses", horse.id));
+  }
+
+  function currentVideos() {
+    return filterDataScope(visibleItems("videos", state.videos));
+  }
+
+  function currentCounts() {
+    return {
+      horses: currentHorses().length,
+      videos: currentVideos().length,
+      competitions: currentCompetitions().length,
+      classes: currentClasses().length
+    };
   }
 
   function itemId(kind, item) {
@@ -1343,14 +1388,24 @@
       .sort((a, b) => controls.sort === "desc" ? b.sortDate - a.sortDate : a.sortDate - b.sortDate);
   }
 
-  function filterOverviewRange(items) {
+  function filterDataScope(items) {
     const selected = Array.from(overviewYears);
     if (!selected.length) return items;
     return items.filter((item) => {
-      const date = new Date(item.sortDate || 0);
-      if (!Number.isFinite(date.getTime())) return false;
-      return selected.includes(String(date.getFullYear()));
+      return inSelectedYears(item);
     });
+  }
+
+  function filterOverviewRange(items) {
+    return filterDataScope(items);
+  }
+
+  function inSelectedYears(item) {
+    const selected = Array.from(overviewYears);
+    if (!selected.length) return true;
+    const date = new Date(item.sortDate || 0);
+    if (!Number.isFinite(date.getTime())) return false;
+    return selected.includes(String(date.getFullYear()));
   }
 
   function horsesForRows(rows) {
@@ -1481,7 +1536,7 @@
   }
 
   function competitionRow(competition) {
-    const rows = state.classRows.filter((row) => row.competitionId === competition.competitionId);
+    const rows = currentClasses().filter((row) => row.competitionId === competition.competitionId);
     return rowWithActions("competitions", competition.competitionId, [
       '<button class="lp-row" type="button" data-open-competition="' + escapeAttr(competition.competitionId) + '">',
       '<span>' + titleWithStatus(competition.competitionName, "competitions", competition.competitionId),
@@ -1492,7 +1547,7 @@
   }
 
   function competitionCard(competition) {
-    const rows = state.classRows.filter((row) => row.competitionId === competition.competitionId);
+    const rows = currentClasses().filter((row) => row.competitionId === competition.competitionId);
     return [
       '<button class="lp-click-card" type="button" data-open-competition="' + escapeAttr(competition.competitionId) + '">',
       '<div class="lp-metric-line">',
