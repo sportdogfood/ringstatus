@@ -525,7 +525,7 @@
     openModal([
       '<div class="lp-detail-head">',
       '<h3 id="lp-modal-title">' + escapeHtml(competition.competitionName) + "</h3>",
-      '<p class="lp-muted">' + escapeHtml(dateRange(competition)) + " · " + escapeHtml(competition.state || "") + " · Zone " + escapeHtml(competition.zone || "") + outboundLink(competition.viewUrl, "Competition page") + "</p>",
+      '<p class="lp-muted">' + escapeHtml(dateRange(competition)) + "  -  " + escapeHtml(competition.state || "") + "  -  Zone " + escapeHtml(competition.zone || "") + outboundLink(competition.viewUrl, "Competition page") + "</p>",
       placementGrid(rows),
       "</div>",
       '<div class="lp-metric-line">',
@@ -568,7 +568,7 @@
     openModal([
       '<div class="lp-detail-head">',
       '<h3 id="lp-modal-title">' + escapeHtml(video.title) + "</h3>",
-      '<p class="lp-muted">' + escapeHtml(video.horse) + " · " + escapeHtml(video.competition) + "</p>",
+      '<p class="lp-muted">' + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</p>",
       "</div>",
       mockVideoPlayer(video),
       detailList([
@@ -615,7 +615,7 @@
         if (showCompetition) {
           cells.push('<td><button class="lp-class-button" type="button" data-open-competition="' + escapeAttr(row.competitionId) + '">' + escapeHtml(row.competitionName) + '</button><br><span class="lp-row-meta">' + escapeHtml(dateRange(row.competition)) + "</span></td>");
         }
-        cells.push("<td>" + placementToken(row) + '<span class="lp-row-meta">' + escapeHtml(valueOrDash(row.entries)) + " entries · #" + escapeHtml(valueOrDash(row.backNumber)) + "</span></td>");
+        cells.push("<td>" + placementToken(row) + '<span class="lp-row-meta">' + escapeHtml(valueOrDash(row.entries)) + " entries  -  #" + escapeHtml(valueOrDash(row.backNumber)) + "</span></td>");
         return "<tr>" + cells.join("") + "</tr>";
       }).join(""),
       "</tbody></table>"
@@ -629,7 +629,7 @@
       detailTableRow("Entries", escapeHtml(valueOrDash(row.entries))),
       detailTableRow("Back #", escapeHtml(valueOrDash(row.backNumber))),
       detailTableRow("Horse", '<button class="lp-class-button" type="button" data-open-horse="' + escapeAttr(row.horseId) + '">' + escapeHtml(row.horse.name || "Unknown") + '</button><br><span class="lp-row-meta">USEF ' + escapeHtml(row.horseId) + "</span>" + outboundLink(row.horse.link, "Horse profile")),
-      detailTableRow("Competition", '<button class="lp-class-button" type="button" data-open-competition="' + escapeAttr(row.competitionId) + '">' + escapeHtml(row.competitionName) + '</button><br><span class="lp-row-meta">' + escapeHtml(dateRange(row.competition)) + " · " + escapeHtml(row.competition.state || "") + " · Zone " + escapeHtml(row.competition.zone || "") + "</span>" + outboundLink(row.competition.viewUrl, "Competition page")),
+      detailTableRow("Competition", '<button class="lp-class-button" type="button" data-open-competition="' + escapeAttr(row.competitionId) + '">' + escapeHtml(row.competitionName) + '</button><br><span class="lp-row-meta">' + escapeHtml(dateRange(row.competition)) + "  -  " + escapeHtml(row.competition.state || "") + "  -  Zone " + escapeHtml(row.competition.zone || "") + "</span>" + outboundLink(row.competition.viewUrl, "Competition page")),
       detailTableRow("Class code", escapeHtml(valueOrDash(row.classCode))),
       detailTableRow("USEF link", row.classUrl ? '<a class="lp-link" href="' + escapeAttr(row.classUrl) + '" target="_blank" rel="noopener noreferrer">usef</a>' : "-"),
       "</tbody></table>"
@@ -653,7 +653,7 @@
         '<button class="lp-row" type="button" data-open-class="' + escapeAttr(row.id) + '">',
         "<span>",
         '<span class="lp-row-title">' + escapeHtml(row.classTitle) + "</span>",
-        meta.length ? '<span class="lp-row-meta">' + meta.join(" · ") + "</span>" : "",
+        meta.length ? '<span class="lp-row-meta">' + meta.join("  -  ") + "</span>" : "",
         '<span class="lp-row-meta">' + detail + "</span>",
         "</span>",
         ribbonForRow(row),
@@ -715,7 +715,7 @@
       "</div>"
       ].join(""),
       '<div class="lp-overview-controls" data-section-filter-panel="' + escapeAttr(key) + '"' + (isOpen ? "" : " hidden") + ">",
-      '<button class="lp-section-filter-close" type="button" data-section-filter-close="' + escapeAttr(key) + '" aria-label="Close filter">×</button>',
+      '<button class="lp-section-filter-close" type="button" data-section-filter-close="' + escapeAttr(key) + '" aria-label="Close filter">x</button>',
       isHorseFilter ? [
         '<input class="lp-control lp-control-input" type="search" data-' + scope + '-filter="' + escapeAttr(target) + '" data-filter-field="search" value="' + escapeAttr(controls.search || "") + '" placeholder="Search horse name" aria-label="Search horses by name">',
         '<select class="lp-control lp-control-select" data-' + scope + '-filter="' + escapeAttr(target) + '" data-filter-field="type" aria-label="Filter horses by type">',
@@ -877,7 +877,7 @@
       '<div class="lp-video-thumb" aria-hidden="true"></div>',
       '<div class="lp-video-body">',
       "<h4>" + escapeHtml(video.title) + "</h4>",
-      '<p class="lp-row-meta">' + escapeHtml(video.horse) + " · " + escapeHtml(video.competition) + "</p>",
+      '<p class="lp-row-meta">' + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</p>",
       "</div>",
       "</button>"
     ].join("");
@@ -888,7 +888,7 @@
     return videos.map((video) => [
       '<button class="lp-row" type="button" data-open-video="' + escapeAttr(video.id) + '">',
       '<span><span class="lp-row-title">' + escapeHtml(video.title) + "</span>",
-      '<span class="lp-row-meta">' + escapeHtml(video.time) + " · " + escapeHtml(video.horse) + " · " + escapeHtml(video.competition) + "</span>",
+      '<span class="lp-row-meta">' + escapeHtml(video.time) + "  -  " + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</span>",
       "</span>",
       "</button>"
     ].join("")).join("");
@@ -899,7 +899,7 @@
     return [
       '<button class="lp-row" type="button" data-open-competition="' + escapeAttr(competition.competitionId) + '">',
       '<span><span class="lp-row-title">' + escapeHtml(competition.competitionName) + "</span>",
-      '<span class="lp-row-meta">' + escapeHtml(dateRange(competition)) + " · " + escapeHtml(competition.state || "") + " · Zone " + escapeHtml(competition.zone || "") + "</span></span>",
+      '<span class="lp-row-meta">' + escapeHtml(dateRange(competition)) + "  -  " + escapeHtml(competition.state || "") + "  -  Zone " + escapeHtml(competition.zone || "") + "</span></span>",
       ribbonForRows(rows),
       "</button>"
     ].join("");
@@ -913,7 +913,7 @@
       miniMetric(rows.length, "Classes"),
       "</div>",
       "<h3>" + escapeHtml(competition.competitionName) + "</h3>",
-      '<p class="lp-row-meta">' + escapeHtml(dateRange(competition)) + " · " + escapeHtml(competition.state || "") + " · Zone " + escapeHtml(competition.zone || "") + "</p>",
+      '<p class="lp-row-meta">' + escapeHtml(dateRange(competition)) + "  -  " + escapeHtml(competition.state || "") + "  -  Zone " + escapeHtml(competition.zone || "") + "</p>",
       "</button>"
     ].join("");
   }
@@ -929,7 +929,7 @@
       miniMetric(valueOrDash(row.entries), "Entries"),
       miniMetric(valueOrDash(row.backNumber), "Back #"),
       "</div>",
-      '<p class="lp-row-meta">' + escapeHtml(row.horse.name || "Unknown") + " · " + escapeHtml(row.competitionName) + "</p>",
+      '<p class="lp-row-meta">' + escapeHtml(row.horse.name || "Unknown") + "  -  " + escapeHtml(row.competitionName) + "</p>",
       "</button>"
     ].join("");
   }
@@ -938,7 +938,7 @@
     return [
       '<button class="lp-row lp-horse-row" type="button" data-open-horse="' + escapeAttr(horse.id) + '">',
       '<span><span class="lp-row-title">' + escapeHtml(horse.name) + "</span>",
-      '<span class="lp-row-meta">' + horse.competitions.size + " shows · " + horse.classes.length + " classes</span></span>",
+      '<span class="lp-row-meta">' + horse.competitions.size + " shows  -  " + horse.classes.length + " classes</span></span>",
       placementStrip(horse.classes),
       "</button>"
     ].join("");
@@ -953,7 +953,7 @@
       "</div>",
       '<div class="lp-video-body">',
       "<h4>" + escapeHtml(horse.name) + "</h4>",
-      '<p class="lp-row-meta">' + horse.competitions.size + " shows · " + horse.classes.length + " classes</p>",
+      '<p class="lp-row-meta">' + horse.competitions.size + " shows  -  " + horse.classes.length + " classes</p>",
       "</div>",
       "</button>"
     ].join("");
@@ -1087,7 +1087,7 @@
   function mockVideoPlayer(video) {
     return [
       '<div class="lp-video-player" role="img" aria-label="Mock video preview">',
-      '<div class="lp-video-play">▶</div>',
+      '<div class="lp-video-play">Play</div>',
       '<div class="lp-video-time">' + escapeHtml(video.time) + "</div>",
       "</div>"
     ].join("");
@@ -1120,8 +1120,8 @@
     const current = viewControls[viewKey] || "list";
     return [
       '<span class="lp-view-toggle" aria-label="View mode">',
-      '<button class="lp-view-button' + (current === "grid" ? " is-active" : "") + '" type="button" data-view-toggle="' + escapeAttr(viewKey) + '" data-view-mode="grid" aria-label="Grid view">▦</button>',
-      '<button class="lp-view-button' + (current === "list" ? " is-active" : "") + '" type="button" data-view-toggle="' + escapeAttr(viewKey) + '" data-view-mode="list" aria-label="List view">☰</button>',
+      '<button class="lp-view-button' + (current === "grid" ? " is-active" : "") + '" type="button" data-view-toggle="' + escapeAttr(viewKey) + '" data-view-mode="grid" aria-label="Grid view">Grid</button>',
+      '<button class="lp-view-button' + (current === "list" ? " is-active" : "") + '" type="button" data-view-toggle="' + escapeAttr(viewKey) + '" data-view-mode="list" aria-label="List view">List</button>',
       "</span>"
     ].join("");
   }
@@ -1153,7 +1153,7 @@
   }
 
   function outboundLink(url, label) {
-    return url ? ' · <a class="lp-link" href="' + escapeAttr(url) + '" target="_blank" rel="noopener noreferrer">usef</a>' : "";
+    return url ? '  -  <a class="lp-link" href="' + escapeAttr(url) + '" target="_blank" rel="noopener noreferrer">usef</a>' : "";
   }
 
   function dateRange(competition) {
