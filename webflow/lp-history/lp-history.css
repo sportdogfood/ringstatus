@@ -1936,6 +1936,14 @@
     padding: 0;
   }
 
+  #lp-history-app .lp-edit-group-status .lp-edit-group-fields {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+
   #lp-history-app .lp-edit-field {
     align-items: center;
     display: grid;
@@ -1946,8 +1954,20 @@
     padding: 10px 16px;
   }
 
+  #lp-history-app .lp-edit-group-status .lp-edit-field {
+    display: inline-flex;
+    flex: 0 0 auto;
+    grid-template-columns: none;
+    min-height: 0;
+    padding: 0;
+  }
+
   #lp-history-app .lp-edit-field:nth-child(even) {
     background: rgba(0, 0, 0, 0.025);
+  }
+
+  #lp-history-app .lp-edit-group-status .lp-edit-field:nth-child(even) {
+    background: transparent;
   }
 
   #lp-history-app .lp-edit-field.is-wide {
