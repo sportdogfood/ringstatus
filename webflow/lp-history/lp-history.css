@@ -760,11 +760,24 @@
   }
 
   #lp-history-app .lp-row-title {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 15px;
     font-weight: 600;
     line-height: 0.95em;
     letter-spacing: -0.06em;
+    min-width: 0;
+  }
+
+  #lp-history-app .lp-status-icon {
+    display: inline-flex;
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: #46332b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+    flex: 0 0 9px;
   }
 
   #lp-history-app .lp-row-meta {
@@ -1921,9 +1934,10 @@
     align-items: center;
     color: #000000;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
     min-width: 0;
+    overflow: hidden;
   }
 
   #lp-history-app .lp-edit-row-value .lp-edit-input,
@@ -2074,9 +2088,14 @@
 
   #lp-history-app .lp-edit-choice-row {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
     min-height: 42px;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 1px 6px;
+    scrollbar-width: thin;
     width: 100%;
     justify-content: flex-start;
   }

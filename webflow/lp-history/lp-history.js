@@ -874,8 +874,7 @@
   }
 
   function overviewSubset(kind, items, fallback) {
-    const selected = items.filter((item) => isOverviewStatus(kind, itemId(kind, item)));
-    return selected.length ? selected : fallback;
+    return items.filter((item) => isOverviewStatus(kind, itemId(kind, item)));
   }
 
   function favoriteSubset(kind, items, fallback) {
@@ -908,6 +907,14 @@
     }
     state.layer.updatedAt = new Date().toISOString();
     persistLayer();
+  }
+
+  function favoriteMarker(kind, id) {
+    return isFavorite(kind, id) ? '<span class="lp-status-icon" aria-label="Favorite" title="Favorite"></span>' : "";
+  }
+
+  function titleWithStatus(label, kind, id) {
+    return '<span class="lp-row-title">' + escapeHtml(label) + favoriteMarker(kind, id) + "</span>";
   }
 
   function setLayerMultiValue(kind, id, field, value, checked) {
@@ -1197,7 +1204,7 @@
       return rowWithActions("classes", row.id, [
         '<button class="lp-row" type="button" data-open-class="' + escapeAttr(row.id) + '">',
         "<span>",
-        '<span class="lp-row-title">' + escapeHtml(row.classTitle) + "</span>",
+        titleWithStatus(row.classTitle, "classes", row.id),
         meta.length ? '<span class="lp-row-meta">' + meta.join("  -  ") + "</span>" : "",
         '<span class="lp-row-meta">' + detail + "</span>",
         "</span>",
@@ -1430,7 +1437,7 @@
       '<button class="lp-video-card" type="button" data-open-video="' + escapeAttr(video.id) + '">',
       '<div class="lp-video-thumb" aria-hidden="true">' + (thumbnail ? '<img src="' + escapeAttr(thumbnail) + '" alt="">' : "") + "</div>",
       '<div class="lp-video-body">',
-      "<h4>" + escapeHtml(video.title) + "</h4>",
+      "<h4>" + escapeHtml(video.title) + favoriteMarker("videos", video.id) + "</h4>",
       '<p class="lp-row-meta">' + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</p>",
       "</div>",
       "</button>"
@@ -1441,7 +1448,7 @@
     if (!videos.length) return '<p class="lp-empty">No videos available.</p>';
     return videos.map((video) => rowWithActions("videos", video.id, [
       '<button class="lp-row" type="button" data-open-video="' + escapeAttr(video.id) + '">',
-      '<span><span class="lp-row-title">' + escapeHtml(video.title) + "</span>",
+      '<span>' + titleWithStatus(video.title, "videos", video.id),
       '<span class="lp-row-meta">' + escapeHtml(video.time) + "  -  " + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</span>",
       "</span>",
       "</button>"
@@ -1452,7 +1459,7 @@
     const rows = state.classRows.filter((row) => row.competitionId === competition.competitionId);
     return rowWithActions("competitions", competition.competitionId, [
       '<button class="lp-row" type="button" data-open-competition="' + escapeAttr(competition.competitionId) + '">',
-      '<span><span class="lp-row-title">' + escapeHtml(competition.competitionName) + "</span>",
+      '<span>' + titleWithStatus(competition.competitionName, "competitions", competition.competitionId),
       '<span class="lp-row-meta">' + escapeHtml(dateRange(competition)) + "  -  " + escapeHtml(competition.state || "") + "  -  Zone " + escapeHtml(competition.zone || "") + "</span></span>",
       ribbonForRows(rows),
       "</button>"
@@ -1466,7 +1473,7 @@
       '<div class="lp-metric-line">',
       miniMetric(rows.length, "Classes"),
       "</div>",
-      "<h3>" + escapeHtml(competition.competitionName) + "</h3>",
+      "<h3>" + escapeHtml(competition.competitionName) + favoriteMarker("competitions", competition.competitionId) + "</h3>",
       '<p class="lp-row-meta">' + escapeHtml(dateRange(competition)) + "  -  " + escapeHtml(competition.state || "") + "  -  Zone " + escapeHtml(competition.zone || "") + "</p>",
       "</button>"
     ].join("");
@@ -1476,7 +1483,7 @@
     return [
       '<button class="lp-click-card" type="button" data-open-class="' + escapeAttr(row.id) + '">',
       '<div class="lp-card-head">',
-      "<h3>" + escapeHtml(row.classTitle) + "</h3>",
+      "<h3>" + escapeHtml(row.classTitle) + favoriteMarker("classes", row.id) + "</h3>",
       placementToken(row),
       "</div>",
       '<div class="lp-metric-line">',
@@ -1491,7 +1498,7 @@
   function compactHorseButton(horse) {
     return rowWithActions("horses", horse.id, [
       '<button class="lp-row lp-horse-row" type="button" data-open-horse="' + escapeAttr(horse.id) + '">',
-      '<span><span class="lp-row-title">' + escapeHtml(horse.name) + "</span>",
+      '<span>' + titleWithStatus(horse.name, "horses", horse.id),
       '<span class="lp-row-meta">' + horse.competitions.size + " shows  -  " + horse.classes.length + " classes</span></span>",
       placementStrip(horse.classes),
       "</button>"
@@ -1507,7 +1514,7 @@
       placementStrip(horse.classes),
       "</div>",
       '<div class="lp-video-body">',
-      "<h4>" + escapeHtml(horse.name) + "</h4>",
+      "<h4>" + escapeHtml(horse.name) + favoriteMarker("horses", horse.id) + "</h4>",
       '<p class="lp-row-meta">' + horse.competitions.size + " shows  -  " + horse.classes.length + " classes</p>",
       "</div>",
       "</button>"
