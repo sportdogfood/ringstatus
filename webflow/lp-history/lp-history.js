@@ -47,8 +47,6 @@
   const modal = root.querySelector("[data-modal]");
   const modalCard = root.querySelector(".lp-modal-card");
   const modalContent = root.querySelector("[data-modal-content]");
-  const filterToggle = root.querySelector("[data-filter-toggle]");
-  const dateFilter = root.querySelector("[data-date-filter]");
   const renderedPanels = new Set();
 
   renderShell();
@@ -75,17 +73,6 @@
     const videoNav = event.target.closest("[data-video-nav]");
     if (videoNav) {
       moveVideoRail(videoNav);
-      return;
-    }
-
-    const filterToggleButton = event.target.closest("[data-filter-toggle]");
-    if (filterToggleButton) {
-      setDateFilterOpen(dateFilter.hidden);
-      return;
-    }
-
-    if (event.target.closest("[data-filter-close]")) {
-      setDateFilterOpen(false);
       return;
     }
 
@@ -507,12 +494,6 @@
     });
   }
 
-  function setDateFilterOpen(isOpen) {
-    dateFilter.hidden = !isOpen;
-    filterToggle.classList.toggle("is-active", isOpen);
-    filterToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  }
-
   function renderOverview() {
     renderedPanels.add("overview");
     const rangedClasses = filterOverviewRange(visibleClasses(state.classRows));
@@ -670,7 +651,8 @@
       "</div>"
     ].join("");
     openModal([
-      imageUrl ? detailHero('<img src="' + escapeAttr(imageUrl) + '" alt="">', head) : head,
+      detailHero(horseDetailMedia(imageUrl), ""),
+      head,
       '<div class="lp-metric-line">',
       miniMetric(horse.classes.length, "Classes"),
       miniMetric(horse.competitions.size, "Competitions"),
@@ -885,6 +867,7 @@
     const reader = new FileReader();
     reader.onload = () => {
       setLayerValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, String(reader.result || ""));
+      renderLayerScope(input.dataset.layerKind);
       updateEditStatus("Image saved in draft layer. Export layer.json when ready.");
     };
     reader.onerror = () => updateEditStatus("Image upload could not be read.");
@@ -985,14 +968,11 @@
     if (!editMode) return "";
     return [
       '<section class="lp-edit-detail lp-edit-panel">',
-      '<div class="lp-edit-head"><h4>Enrichment</h4><div class="lp-edit-actions">',
-      '<button class="lp-edit-button" type="button" data-layer-action="copy">Copy JSON</button>',
-      '<button class="lp-edit-button" type="button" data-layer-action="export">Export layer.json</button>',
-      "</div></div>",
+      '<div class="lp-edit-head"><h4>Enrichment</h4></div>',
       '<div class="lp-edit-grid">',
       editGroups(kind, id, fields),
       "</div>",
-      '<p class="lp-edit-status" data-edit-status>Draft saves in this browser. Export layer.json when ready.</p>',
+      '<p class="lp-edit-status" data-edit-status>Draft saves in this browser.</p>',
       "</section>"
     ].join("");
   }
@@ -1010,7 +990,7 @@
     return grouped
       .filter(([, groupFields]) => groupFields.length)
       .map(([title, groupFields]) => [
-        '<div class="lp-edit-group' + (groupFields.some(([, , type]) => type === "multi") ? " is-wide" : "") + '">',
+        '<div class="lp-edit-group lp-edit-group-' + escapeAttr(slugify(title)) + (groupFields.some(([, , type]) => type === "multi") ? " is-wide" : "") + '">',
         '<h5 class="lp-edit-group-title">' + escapeHtml(title) + "</h5>",
         '<div class="lp-edit-group-fields">',
         groupFields.map(([field, label, type, value, choices]) => editField(kind, id, field, label, type, value, choices)).join(""),
@@ -1028,7 +1008,7 @@
     const className = "lp-edit-field" + (isTextArea ? " is-wide" : "");
     const attrs = ' data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '"';
     return [
-      '<label class="' + className + '">' + (isCheckbox ? "" : '<span>' + escapeHtml(label) + "</span>"),
+      '<label class="' + className + '"><span>' + escapeHtml(label) + "</span>",
       isMulti
         ? multiField(kind, id, field, Array.isArray(value) ? value : [], choices)
         : isCheckbox
@@ -1456,6 +1436,12 @@
     return layer.imageUrl || layer.image_upload || layer.imageUrl_2 || "";
   }
 
+  function horseDetailMedia(imageUrl) {
+    return imageUrl
+      ? '<img src="' + escapeAttr(imageUrl) + '" alt="">'
+      : '<div class="lp-horse-detail-placeholder" aria-hidden="true"></div>';
+  }
+
   function placementGrid(rows) {
     const counts = placementCounts(rows);
     const hasNumericPlacement = Object.values(counts).some((count) => count > 0);
@@ -1575,7 +1561,7 @@
       '<div class="lp-detail-hero-media">',
       mediaMarkup,
       "</div>",
-      headMarkup,
+      headMarkup || "",
       "</div>"
     ].join("");
   }
