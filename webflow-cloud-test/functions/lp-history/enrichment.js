@@ -52,7 +52,7 @@ export async function onRequest({ request, env }) {
       env: {
         hasAirtableToken: !!env.AIRTABLE_TOKEN,
         hasAirtableBaseId: !!(env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE),
-        table: env.AIRTABLE_TABLE || ""
+        table: env.AIRTABLE_TABLE_LP || env.AIRTABLE_TABLE || ""
       }
     });
   }
@@ -125,7 +125,7 @@ function validatePayload(payload) {
 function airtableConfig(env) {
   const token = env.AIRTABLE_TOKEN;
   const baseId = env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE;
-  const table = env.AIRTABLE_TABLE;
+  const table = env.AIRTABLE_TABLE_LP || env.AIRTABLE_TABLE;
   if (!token) return { ok: false, error: "missing_airtable_token" };
   if (!baseId) return { ok: false, error: "missing_airtable_base_id" };
   if (!table) return { ok: false, error: "missing_airtable_table" };
