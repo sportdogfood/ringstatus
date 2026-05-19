@@ -110,8 +110,8 @@ async function handleEnrichmentWrite(request, env) {
 function normalizePayload(body) {
   const errors = [];
   const recordType = normalizeString(body.recordType || body.type);
-  const recordKey = normalizeString(body.recordKey || body.key || body.id);
-  const recordState = normalizeString(body.recordState || body.state || "active");
+  const recordKey = normalizeKey(body.recordKey || body.record_key || body.key || body.id);
+  const recordState = normalizeString(body.recordState || body.record_state || body.state || "active");
   const rawStatus = Array.isArray(body.status) ? body.status : body.status ? [body.status] : [];
   const status = Array.from(new Set(rawStatus.map(normalizeString).filter(Boolean)));
   const data = isPlainObject(body.data) ? body.data : {};
@@ -275,6 +275,10 @@ function corsHeaders(request, env) {
 
 function normalizeString(value) {
   return String(value || "").trim().toLowerCase();
+}
+
+function normalizeKey(value) {
+  return String(value || "").trim();
 }
 
 function isPlainObject(value) {
