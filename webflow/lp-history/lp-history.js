@@ -10,7 +10,10 @@
     }),
     fetch(config.layerUrl).then((response) => response.ok ? response.json() : emptyLayer()).catch(emptyLayer)
   ]);
-  const state = normalize(payload, layer);
+  const editMode = new URLSearchParams(window.location.search).has("key");
+  const layerStorageKey = "lp-history-layer-draft";
+  const state = normalize(payload, loadStoredLayer(layer));
+  root.classList.toggle("is-edit-mode", editMode);
   const overviewControls = {
     competitions: { sort: "desc", month: "all", year: "all" },
     classes: { sort: "desc", month: "all", year: "all" }
@@ -140,6 +143,19 @@
       return;
     }
 
+    const layerAction = event.target.closest("[data-layer-action]");
+    if (layerAction) {
+      handleLayerAction(layerAction);
+      return;
+    }
+
+    const layerToggle = event.target.closest("[data-layer-toggle]");
+    if (layerToggle) {
+      setLayerValue(layerToggle.dataset.layerKind, layerToggle.dataset.layerId, layerToggle.dataset.layerField, layerToggle.checked);
+      renderLayerScope(layerToggle.dataset.layerKind);
+      return;
+    }
+
     const horseButton = event.target.closest("[data-open-horse]");
     if (horseButton) {
       openHorse(horseButton.dataset.openHorse);
@@ -197,6 +213,14 @@
       const field = allFilter.dataset.filterField;
       allControls[target][field] = allFilter.value;
       renderAllPanel(target);
+      return;
+    }
+
+    const layerField = event.target.closest("[data-layer-field]");
+    if (layerField) {
+      setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value);
+      updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
+      return;
     }
   });
 
@@ -213,6 +237,12 @@
       const field = allFilter.dataset.filterField;
       allControls[target][field] = allFilter.value;
       renderAllPanel(target);
+      return;
+    }
+    const layerField = event.target.closest("[data-layer-field]");
+    if (layerField) {
+      setLayerValue(layerField.dataset.layerKind, layerField.dataset.layerId, layerField.dataset.layerField, layerField.value);
+      updateEditStatus("Draft saved in this browser. Export layer.json when ready.");
     }
   });
 
@@ -227,13 +257,50 @@
   });
 
   function emptyLayer() {
-    return { version: 1, horses: {}, competitions: {}, classes: {}, videos: {} };
+    return { version: 1, updatedAt: "", horses: {}, competitions: {}, classes: {}, videos: {} };
+  }
+
+  function normalizeLayer(layer) {
+    return {
+      ...emptyLayer(),
+      ...(layer || {}),
+      horses: { ...((layer || {}).horses || {}) },
+      competitions: { ...((layer || {}).competitions || {}) },
+      classes: { ...((layer || {}).classes || {}) },
+      videos: { ...((layer || {}).videos || {}) }
+    };
+  }
+
+  function loadStoredLayer(seed) {
+    const base = normalizeLayer(seed);
+    try {
+      const stored = window.localStorage.getItem(layerStorageKey);
+      if (!stored) return base;
+      return mergeLayer(base, JSON.parse(stored));
+    } catch (error) {
+      return base;
+    }
+  }
+
+  function mergeLayer(base, draft) {
+    const normalizedBase = normalizeLayer(base);
+    const normalizedDraft = normalizeLayer(draft);
+    return {
+      ...normalizedBase,
+      ...normalizedDraft,
+      horses: { ...normalizedBase.horses, ...normalizedDraft.horses },
+      competitions: { ...normalizedBase.competitions, ...normalizedDraft.competitions },
+      classes: { ...normalizedBase.classes, ...normalizedDraft.classes },
+      videos: { ...normalizedBase.videos, ...normalizedDraft.videos }
+    };
   }
 
   function normalize(data, layer = emptyLayer()) {
+    layer = normalizeLayer(layer);
     const source = data.state || data;
     const competitions = (source.competitions || []).map((competition) => ({
       ...competition,
+      layer: layer.competitions?.[competition.competitionId] || {},
       sortDate: parseDate(competition.endDate || competition.startDate),
       sections: competition.sections || []
     }));
@@ -259,6 +326,7 @@
           ]);
           const row = {
             id: classId,
+            layer: layer.classes?.[classId] || {},
             competitionId: competition.competitionId,
             competitionName: competition.competitionName,
             competition,
@@ -282,6 +350,7 @@
           if (!horseMap.has(horseId)) {
             horseMap.set(horseId, {
               id: horseId,
+              layer: layer.horses?.[horseId] || {},
               name: horse.name || "Unknown horse",
               link: horse.link,
               classes: [],
@@ -305,7 +374,8 @@
 
     const horses = Array.from(horseMap.values()).map((horse) => ({
       ...horse,
-      type: horseType(horse)
+      type: horse.layer.type || horseType(horse),
+      gender: horse.layer.gender || ""
     })).sort((a, b) => {
       if (b.classes.length !== a.classes.length) return b.classes.length - a.classes.length;
       return a.name.localeCompare(b.name);
@@ -318,7 +388,11 @@
       classRows,
       horses,
       sections,
-      videos: mockVideos(classRows, horses),
+      layer,
+      videos: mockVideos(classRows, horses).map((video) => ({
+        ...video,
+        layer: layer.videos?.[video.id] || {}
+      })),
       counts: {
         competitions: competitions.length,
         classes: classRows.length,
@@ -363,9 +437,9 @@
 
   function renderOverview() {
     renderedPanels.add("overview");
-    const rangedClasses = filterOverviewRange(state.classRows);
-    const rangedCompetitions = filterOverviewRange(state.competitions);
-    const rangedVideos = filterOverviewRange(state.videos);
+    const rangedClasses = filterOverviewRange(visibleClasses(state.classRows));
+    const rangedCompetitions = filterOverviewRange(visibleItems("competitions", state.competitions));
+    const rangedVideos = filterOverviewRange(visibleItems("videos", state.videos));
     const topHorses = horsesForRows(rangedClasses).filter((horse) => hasRibbon(horse.classes)).slice(0, 5);
     const overviewVideos = rangedVideos.slice(0, 5);
     const recentCompetitions = filterOverviewItems(rangedCompetitions, overviewControls.competitions).slice(0, 5);
@@ -399,8 +473,9 @@
 
   function renderHorses() {
     renderedPanels.add("horses");
-    const favoriteHorses = state.horses.filter((horse) => hasRibbon(horse.classes)).slice(0, 5);
-    const horses = filterHorses(state.horses, allControls.horses);
+    const baseHorses = visibleItems("horses", state.horses);
+    const favoriteHorses = baseHorses.filter((horse) => isFavorite("horses", horse.id) || hasRibbon(horse.classes)).slice(0, 5);
+    const horses = filterHorses(baseHorses, allControls.horses);
     panels.horses.innerHTML = [
       '<section class="lp-section-block lp-theme-horses">',
       sectionTitle("Horses", state.horses.length + " total", "", videoNavMarkup("all-horses")),
@@ -408,14 +483,16 @@
       sectionTitle("All horses", horses.length + " shown", "", filterToggleMarkup("all:horses")),
       allControlsMarkup("horses", state.horses),
       horseCollection(horses),
+      editPanel("horses", state.horses),
       "</section>"
     ].join("");
   }
 
   function renderVideos() {
     renderedPanels.add("videos");
-    const favoriteVideos = state.videos.slice(0, 5);
-    const videos = filterOverviewItems(state.videos, allControls.videos);
+    const baseVideos = visibleItems("videos", state.videos);
+    const favoriteVideos = baseVideos.filter((video) => isFavorite("videos", video.id)).concat(baseVideos).filter(uniqueById).slice(0, 5);
+    const videos = filterOverviewItems(baseVideos, allControls.videos);
     panels.videos.innerHTML = [
       '<section class="lp-section-block lp-theme-videos">',
       sectionTitle("Videos", state.videos.length + " total", "", videoNavMarkup("all-favorites")),
@@ -423,30 +500,33 @@
       sectionTitle("All videos", "", "", filterToggleMarkup("all:videos")),
       allControlsMarkup("videos", state.videos),
       videoList(videos),
+      editPanel("videos", state.videos),
       "</section>"
     ].join("");
   }
 
   function renderCompetitions() {
     renderedPanels.add("competitions");
-    const competitions = filterOverviewItems(state.competitions, allControls.competitions);
+    const competitions = filterOverviewItems(visibleItems("competitions", state.competitions), allControls.competitions);
     panels.competitions.innerHTML = [
       '<section class="lp-section-block lp-theme-competitions">',
       sectionTitle("Competitions", "", "", filterToggleMarkup("all:competitions")),
       allControlsMarkup("competitions", state.competitions),
       competitionCollection(competitions, viewControls.competitions),
+      editPanel("competitions", state.competitions),
       "</section>"
     ].join("");
   }
 
   function renderClasses() {
     renderedPanels.add("classes");
-    const classes = filterOverviewItems(state.classRows, allControls.classes);
+    const classes = filterOverviewItems(visibleClasses(state.classRows), allControls.classes);
     panels.classes.innerHTML = [
       '<section class="lp-section-block lp-theme-classes">',
       sectionTitle("Classes", "", "", filterToggleMarkup("all:classes")),
       allControlsMarkup("classes", state.classRows),
       classCollection(classes, viewControls.classes),
+      editPanel("classes", state.classRows),
       "</section>"
     ].join("");
   }
@@ -514,7 +594,14 @@
       '<section class="lp-section-block" style="margin-top:16px">',
       sectionTitle("Classes", horse.classes.length + " rows"),
       classList(horse.classes, { showHorse: false }),
-      "</section>"
+      "</section>",
+      editDetail("horses", horse.id, [
+        ["imageUrl", "Image URL", "url", horse.layer.imageUrl || ""],
+        ["gender", "Gender", "text", horse.layer.gender || ""],
+        ["type", "Type", "text", horse.layer.type || horse.type || ""],
+        ["profileUrl", "Profile URL", "url", horse.layer.profileUrl || ""],
+        ["notes", "Notes", "textarea", horse.layer.notes || ""]
+      ])
     ].join(""));
   }
 
@@ -535,7 +622,11 @@
       '<section class="lp-section-block" style="margin-top:16px">',
       sectionTitle("Classes", rows.length + " rows"),
       classList(rows, { showCompetition: false }),
-      "</section>"
+      "</section>",
+      editDetail("competitions", competition.competitionId, [
+        ["favoriteLabel", "Favorite label", "text", competition.layer.favoriteLabel || ""],
+        ["notes", "Notes", "textarea", competition.layer.notes || ""]
+      ])
     ].join(""));
   }
 
@@ -558,7 +649,11 @@
         ["Entries", escapeHtml(valueOrDash(row.entries))],
         ["USEF link", row.classUrl ? '<a class="lp-link" href="' + escapeAttr(row.classUrl) + '" target="_blank" rel="noopener noreferrer">usef</a>' : "-"]
       ]),
-      "</section>"
+      "</section>",
+      editDetail("classes", row.id, [
+        ["favoriteLabel", "Favorite label", "text", row.layer.favoriteLabel || ""],
+        ["notes", "Notes", "textarea", row.layer.notes || ""]
+      ])
     ].join(""));
   }
 
@@ -576,6 +671,11 @@
         ["Horse", escapeHtml(video.horse)],
         ["Competition", escapeHtml(video.competition)],
         ["Class", escapeHtml(video.classTitle)]
+      ]),
+      editDetail("videos", video.id, [
+        ["videoUrl", "Video URL", "url", video.layer.videoUrl || ""],
+        ["thumbnailUrl", "Thumbnail URL", "url", video.layer.thumbnailUrl || ""],
+        ["notes", "Notes", "textarea", video.layer.notes || ""]
       ])
     ].join(""));
   }
@@ -591,6 +691,178 @@
     modal.hidden = true;
     modalContent.innerHTML = "";
     document.documentElement.style.overflow = "";
+  }
+
+  function visibleItems(kind, items) {
+    return items.filter((item) => !isIgnored(kind, itemId(kind, item)));
+  }
+
+  function visibleClasses(rows) {
+    return rows.filter((row) =>
+      !isIgnored("classes", row.id) &&
+      !isIgnored("horses", row.horseId) &&
+      !isIgnored("competitions", row.competitionId)
+    );
+  }
+
+  function itemId(kind, item) {
+    if (kind === "horses") return item.id;
+    if (kind === "competitions") return item.competitionId;
+    if (kind === "classes") return item.id;
+    if (kind === "videos") return item.id;
+    return item.id;
+  }
+
+  function itemTitle(kind, item) {
+    if (kind === "horses") return item.name;
+    if (kind === "competitions") return item.competitionName;
+    if (kind === "classes") return item.classTitle;
+    if (kind === "videos") return item.title;
+    return "Item";
+  }
+
+  function layerFor(kind, id) {
+    const bucket = state.layer[kind] || (state.layer[kind] = {});
+    return bucket[id] || (bucket[id] = {});
+  }
+
+  function isIgnored(kind, id) {
+    return !!(state.layer[kind] && state.layer[kind][id] && state.layer[kind][id].ignore);
+  }
+
+  function isFavorite(kind, id) {
+    return !!(state.layer[kind] && state.layer[kind][id] && state.layer[kind][id].favorite);
+  }
+
+  function setLayerValue(kind, id, field, value) {
+    if (!editMode || !kind || !id || !field) return;
+    const entry = layerFor(kind, id);
+    if (value === false || value === "" || value === null || value === undefined) {
+      delete entry[field];
+    } else {
+      entry[field] = value;
+    }
+    state.layer.updatedAt = new Date().toISOString();
+    persistLayer();
+  }
+
+  function persistLayer() {
+    try {
+      window.localStorage.setItem(layerStorageKey, JSON.stringify(state.layer));
+    } catch (error) {
+      updateEditStatus("Could not save draft in this browser.");
+    }
+  }
+
+  function handleLayerAction(button) {
+    if (!editMode) return;
+    const action = button.dataset.layerAction;
+    if (action === "export") {
+      downloadLayer();
+      updateEditStatus("Exported layer.json.");
+      return;
+    }
+    if (action === "copy") {
+      copyLayer(button);
+      return;
+    }
+    if (action === "clear-draft") {
+      window.localStorage.removeItem(layerStorageKey);
+      updateEditStatus("Local draft cleared. Reload to restore the repo layer.");
+    }
+  }
+
+  function downloadLayer() {
+    const blob = new Blob([JSON.stringify(state.layer, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "lp-history-layer.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function copyLayer(button) {
+    const text = JSON.stringify(state.layer, null, 2);
+    try {
+      await navigator.clipboard.writeText(text);
+      updateEditStatus("Copied layer JSON.");
+    } catch (error) {
+      button.closest(".lp-edit-panel, .lp-edit-detail")?.querySelector("[data-layer-output]")?.removeAttribute("hidden");
+      updateEditStatus("Clipboard blocked. Copy the visible JSON.");
+    }
+  }
+
+  function updateEditStatus(message) {
+    root.querySelectorAll("[data-edit-status]").forEach((status) => {
+      status.textContent = message;
+    });
+  }
+
+  function renderLayerScope(kind) {
+    if (kind === "horses") renderHorses();
+    if (kind === "competitions") renderCompetitions();
+    if (kind === "classes") renderClasses();
+    if (kind === "videos") renderVideos();
+    renderOverview();
+  }
+
+  function editPanel(kind, items) {
+    if (!editMode) return "";
+    const rows = items.map((item) => {
+      const id = itemId(kind, item);
+      const entry = layerFor(kind, id);
+      return [
+        '<div class="lp-edit-row' + (entry.ignore ? " lp-ignored" : "") + '">',
+        '<div class="lp-edit-title">' + escapeHtml(itemTitle(kind, item)) + "</div>",
+        '<label class="lp-edit-check"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="favorite"' + (entry.favorite ? " checked" : "") + '> Favorite</label>',
+        '<label class="lp-edit-check"><input type="checkbox" data-layer-toggle data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" data-layer-field="ignore"' + (entry.ignore ? " checked" : "") + '> Ignore</label>',
+        "</div>"
+      ].join("");
+    }).join("");
+    return [
+      '<section class="lp-edit-panel" aria-label="' + escapeAttr(kind) + ' edit layer">',
+      '<div class="lp-edit-head"><h4>Edit ' + escapeHtml(kind) + '</h4><div class="lp-edit-actions">',
+      '<button class="lp-edit-button" type="button" data-layer-action="copy">Copy JSON</button>',
+      '<button class="lp-edit-button" type="button" data-layer-action="export">Export layer.json</button>',
+      '<button class="lp-edit-button" type="button" data-layer-action="clear-draft">Clear draft</button>',
+      "</div></div>",
+      '<div class="lp-edit-rows">',
+      rows,
+      "</div>",
+      '<p class="lp-edit-status" data-edit-status>Draft saves in this browser. Export layer.json when ready.</p>',
+      '<textarea class="lp-edit-textarea" data-layer-output hidden readonly>' + escapeHtml(JSON.stringify(state.layer, null, 2)) + "</textarea>",
+      "</section>"
+    ].join("");
+  }
+
+  function editDetail(kind, id, fields) {
+    if (!editMode) return "";
+    return [
+      '<section class="lp-edit-detail lp-edit-panel">',
+      '<div class="lp-edit-head"><h4>Enrichment</h4><div class="lp-edit-actions">',
+      '<button class="lp-edit-button" type="button" data-layer-action="copy">Copy JSON</button>',
+      '<button class="lp-edit-button" type="button" data-layer-action="export">Export layer.json</button>',
+      "</div></div>",
+      '<div class="lp-edit-grid">',
+      fields.map(([field, label, type, value]) => editField(kind, id, field, label, type, value)).join(""),
+      "</div>",
+      '<p class="lp-edit-status" data-edit-status>Draft saves in this browser. Export layer.json when ready.</p>',
+      "</section>"
+    ].join("");
+  }
+
+  function editField(kind, id, field, label, type, value) {
+    const isTextArea = type === "textarea";
+    const className = "lp-edit-field" + (isTextArea ? " is-wide" : "");
+    const attrs = ' data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '"';
+    return [
+      '<label class="' + className + '"><span>' + escapeHtml(label) + "</span>",
+      isTextArea
+        ? '<textarea class="lp-edit-textarea"' + attrs + ">" + escapeHtml(value || "") + "</textarea>"
+        : '<input class="lp-edit-input" type="' + escapeAttr(type || "text") + '" value="' + escapeAttr(value || "") + '"' + attrs + ">",
+      "</label>"
+    ].join("");
   }
 
   function classTable(rows, options = {}) {
@@ -872,9 +1144,10 @@
   }
 
   function videoCard(video) {
+    const thumbnail = video.layer.thumbnailUrl;
     return [
       '<button class="lp-video-card" type="button" data-open-video="' + escapeAttr(video.id) + '">',
-      '<div class="lp-video-thumb" aria-hidden="true"></div>',
+      '<div class="lp-video-thumb" aria-hidden="true">' + (thumbnail ? '<img src="' + escapeAttr(thumbnail) + '" alt="">' : "") + "</div>",
       '<div class="lp-video-body">',
       "<h4>" + escapeHtml(video.title) + "</h4>",
       '<p class="lp-row-meta">' + escapeHtml(video.horse) + "  -  " + escapeHtml(video.competition) + "</p>",
@@ -945,10 +1218,11 @@
   }
 
   function horseCard(horse) {
+    const imageUrl = horse.layer.imageUrl;
     return [
       '<button class="lp-video-card lp-horse-video-card" type="button" data-open-horse="' + escapeAttr(horse.id) + '">',
       '<div class="lp-video-thumb" aria-hidden="true">',
-      '<div class="lp-horse-thumb" aria-hidden="true"></div>',
+      imageUrl ? '<img src="' + escapeAttr(imageUrl) + '" alt="">' : '<div class="lp-horse-thumb" aria-hidden="true"></div>',
       placementStrip(horse.classes),
       "</div>",
       '<div class="lp-video-body">',
@@ -1085,8 +1359,10 @@
   }
 
   function mockVideoPlayer(video) {
+    const thumbnail = video.layer.thumbnailUrl;
     return [
       '<div class="lp-video-player" role="img" aria-label="Mock video preview">',
+      thumbnail ? '<img src="' + escapeAttr(thumbnail) + '" alt="">' : "",
       '<div class="lp-video-play">Play</div>',
       '<div class="lp-video-time">' + escapeHtml(video.time) + "</div>",
       "</div>"
@@ -1186,6 +1462,10 @@
 
   function unique(values) {
     return Array.from(new Set(values));
+  }
+
+  function uniqueById(item, index, items) {
+    return items.findIndex((candidate) => candidate.id === item.id) === index;
   }
 
   function stableId(parts) {

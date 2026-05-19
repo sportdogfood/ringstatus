@@ -1,12 +1,7 @@
-# LP History Webflow Assets
+# LP History Webflow Embed
 
-Paste `lp-history-webflow-embed.html` into a Webflow Embed block.
+Small Webflow embed loader plus repo-hosted CSS, JS, history JSON, and editable layer JSON.
 
-Assets are expected at:
+Use `lp-history-webflow-embed.html` inside a Webflow Embed block after these files are pushed to `main`.
 
-- https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history.css
-- https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history.js
-- https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history-history.json
-- https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/lp-history/lp-history-layer.json
-
-Update `lp-history-layer.json` for favorites, ignores, profile data, images, and video metadata. Keep `lp-history-history.json` factual/read-only.
+Append `?key=edit` to enable inline edit mode. Edit mode stores a browser draft and can export/copy `lp-history-layer.json`.
