@@ -14,7 +14,7 @@
   const embeddedConfig = root.querySelector("#lp-history-config");
   const embeddedGlobalTagRules = root.querySelector("#lp-global-tag-rules")?.textContent || "[]";
   const config = window.LP_HISTORY_CONFIG || JSON.parse(embeddedConfig?.textContent || "{}");
-  const enrichmentUrl = config.enrichmentUrl || "https://ringstatus-lp-history-enrichment.gombcg.workers.dev/lp-history/enrichment";
+  const enrichmentUrl = config.enrichmentUrl || "/lp-history/enrichment";
   debug("config", config);
   root.innerHTML = appShellMarkup();
   const [payload, layer] = await Promise.all([
@@ -1130,7 +1130,7 @@
     reader.onload = () => {
       setLayerValue(input.dataset.layerKind, input.dataset.layerId, input.dataset.layerField, String(reader.result || ""));
       renderLayerScope(input.dataset.layerKind);
-      updateEditStatus(config.airtable ? "Saving image to Airtable..." : "Saving image through enrichment endpoint...");
+      updateEditStatus("Saving image to Airtable...");
     };
     reader.onerror = () => updateEditStatus("Image upload could not be read.");
     reader.readAsDataURL(file);
@@ -1145,11 +1145,18 @@
   }
 
   function queueEnrichmentSave(kind, id) {
-    if (!editMode || !editKey || !kind || !id) return;
+    if (!editMode || !kind || !id) {
+      debug("enrichment queue skipped", { editMode, kind, id });
+      return;
+    }
+    if (!enrichmentUrl && !config.airtable) {
+      debug("enrichment queue skipped: no save endpoint", { kind, id });
+      return;
+    }
     const key = kind + ":" + id;
     window.clearTimeout(saveTimers.get(key));
     saveTimers.set(key, window.setTimeout(() => saveEnrichment(kind, id), 450));
-    updateEditStatus(config.airtable ? "Saving to Airtable..." : "Saving through enrichment endpoint...");
+    updateEditStatus("Saving to Airtable...");
   }
 
   async function saveEnrichment(kind, id) {
@@ -1159,27 +1166,29 @@
     try {
       if (config.airtable) {
         await saveEnrichmentToAirtable(payload);
-        updateEditStatus("Saved to Airtable.");
+        updateEditStatus("Saved to Airtable at " + statusTime() + ".");
         return;
       }
 
+      const headers = {
+        "Content-Type": "application/json"
+      };
+      if (editKey) headers["X-Edit-Key"] = editKey;
+      debug("enrichment post", { url: enrichmentUrl, recordKey: payload.recordKey, recordType: payload.recordType });
       const response = await fetch(enrichmentUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Edit-Key": editKey
-        },
+        headers,
         body: JSON.stringify(payload)
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) {
-        throw new Error("Worker save failed: " + response.status + " " + JSON.stringify(result));
+        throw new Error("Enrichment save failed: " + response.status + " " + JSON.stringify(result));
       }
       debug("enrichment saved", result.record);
-      updateEditStatus("Saved to Airtable.");
+      updateEditStatus("Saved to Airtable at " + statusTime() + saveActionLabel(result.record, result.log) + ".");
     } catch (error) {
       console.error("[lp-history] enrichment save failed", error);
-      updateEditStatus("Saved in browser only. Airtable save failed; check console [lp-history].");
+      updateEditStatus("Saved in browser only. Airtable save failed at " + statusTime() + "; check console [lp-history].");
     }
   }
 
@@ -1376,8 +1385,19 @@
 
   function initialEditStatus() {
     if (config.airtable) return "Changes save to Airtable.";
-    if (enrichmentUrl) return "Changes save through the enrichment endpoint.";
+    if (enrichmentUrl) return "Changes save to Airtable through Webflow Cloud.";
     return "Changes save in this browser.";
+  }
+
+  function statusTime() {
+    return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" });
+  }
+
+  function saveActionLabel(record, log) {
+    const parts = [];
+    if (record && record.action) parts.push(record.action);
+    if (log && log.action) parts.push(log.action);
+    return parts.length ? " (" + parts.join(", ") + ")" : "";
   }
 
   function renderLayerScope(kind) {
