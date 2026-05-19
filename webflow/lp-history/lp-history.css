@@ -1935,6 +1935,10 @@
     max-width: 100%;
   }
 
+  #lp-history-app .lp-edit-row-value .lp-edit-input[type="number"] {
+    max-width: 86px;
+  }
+
   #lp-history-app .lp-edit-group {
     align-items: start;
     background: #ffffff;

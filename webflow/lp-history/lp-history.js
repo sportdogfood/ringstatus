@@ -30,6 +30,7 @@
     horses: { sort: "desc", month: "all", year: "all", search: "", type: "all" }
   };
   const sectionFilterState = {};
+  let singleFieldCounter = 0;
   const viewControls = {
     overviewCompetitions: "list",
     overviewClasses: "list",
@@ -674,12 +675,13 @@
         ["image_upload", "Upload image", "file", ""],
         ["barn_name", "Barn name", "text", horseLayer.barn_name || ""],
         ["show_name", "Show name", "text", horseLayer.show_name || horse.name || ""],
-        ["color", "Color", "text", horseLayer.color || ""],
-        ["gender", "Gender", "text", horseLayer.gender || ""],
-        ["disciplines", "Disciplines", "text", horseLayer.disciplines || horse.type || ""],
+        ["horseType", "Type", "single", horseLayer.horseType || "", ["Pony", "Horse"]],
+        ["color", "Color", "single", horseLayer.color || "", ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"]],
+        ["gender", "Gender", "single", horseLayer.gender || "", ["Gelding", "Mare"]],
+        ["disciplines", "Disciplines", "multi", Array.isArray(horseLayer.disciplines) ? horseLayer.disciplines : [], ["Hunters", "Jumpers", "Equitation"]],
         ["age", "Age", "number", horseLayer.age || ""],
         ["recordState", "Record state", "single", recordState("horses", horse.id), [["active", "Active"], ["inactive", "Inactive"]]],
-        ["status", "Status", "single", layerStatus("horses", horse.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]]
+        ["status", "Status", "multi", layerStatusValues("horses", horse.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]]
       ])
     ].join(""));
   }
@@ -705,9 +707,9 @@
       "</section>",
       editDetail("competitions", competition.competitionId, [
         ["recordState", "Record state", "single", recordState("competitions", competition.competitionId), [["active", "Active"], ["inactive", "Inactive"]]],
-        ["status", "Status", "single", layerStatus("competitions", competition.competitionId), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
+        ["status", "Status", "multi", layerStatusValues("competitions", competition.competitionId), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
         ["type", "Type", "multi", competitionLayer.type || [], ["Hunters", "Jumpers", "Equitation"]],
-        ["class_sequences", "Class sequences", "multi", competitionLayer.class_sequences || [], ["Over Fences", "Under Saddle/Flat"]],
+        ["class_sequences", "Class sequences", "single", competitionLayer.class_sequences || "", ["Over Fences", "Under Saddle/Flat"]],
         ["tags", "Tags", "multi", competitionLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));
@@ -736,9 +738,9 @@
       "</section>",
       editDetail("classes", row.id, [
         ["recordState", "Record state", "single", recordState("classes", row.id), [["active", "Active"], ["inactive", "Inactive"]]],
-        ["status", "Status", "single", layerStatus("classes", row.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
+        ["status", "Status", "multi", layerStatusValues("classes", row.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
         ["type", "Type", "multi", classLayer.type || [], ["Hunters", "Jumpers", "Equitation"]],
-        ["class_sequences", "Class sequences", "multi", classLayer.class_sequences || [], ["Over Fences", "Under Saddle/Flat"]],
+        ["class_sequences", "Class sequences", "single", classLayer.class_sequences || "", ["Over Fences", "Under Saddle/Flat"]],
         ["tags", "Tags", "multi", classLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));
@@ -768,7 +770,7 @@
         ["thumbnailUrl", "Thumbnail URL", "url", videoLayer.thumbnailUrl || ""],
         ["playlist", "Playlist", "url", videoLayer.playlist || "https://www.youtube.com/playlist?list=PLO6hUJNO-oM0BL4s8Y60jDoDr43q8T5tD"],
         ["recordState", "Record state", "single", recordState("videos", video.id), [["active", "Active"], ["inactive", "Inactive"]]],
-        ["status", "Status", "single", layerStatus("videos", video.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
+        ["status", "Status", "multi", layerStatusValues("videos", video.id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]],
         ["tags", "Tags", "multi", videoLayer.tags || [], ["seat", "maclay", "uset", "ushja", "wihs", "3'3\"", "3'6\"", "classic", "handy"]]
       ])
     ].join(""));
@@ -829,18 +831,29 @@
   function layerStatus(kind, id) {
     const entry = state.layer[kind] && state.layer[kind][id];
     if (!entry) return "";
-    if (entry.status) return entry.status;
+    if (entry.status) return Array.isArray(entry.status) ? entry.status[0] || "" : entry.status;
     if (entry.ignore) return "ignore";
     if (entry.favorite) return "favorite";
     if (entry.overview) return "overview";
     return "";
   }
 
+  function layerStatusValues(kind, id) {
+    const entry = state.layer[kind] && state.layer[kind][id];
+    if (!entry) return [];
+    if (Array.isArray(entry.status)) return entry.status;
+    if (entry.status) return [entry.status];
+    return [
+      entry.overview ? "overview" : "",
+      entry.favorite ? "favorite" : "",
+      entry.ignore ? "ignore" : ""
+    ].filter(Boolean);
+  }
+
   function recordState(kind, id) {
     const entry = state.layer[kind] && state.layer[kind][id];
     if (!entry) return "active";
     if (entry.recordState) return entry.recordState;
-    if (entry.inactive) return "inactive";
     return "active";
   }
 
@@ -849,15 +862,15 @@
   }
 
   function isIgnored(kind, id) {
-    return layerStatus(kind, id) === "ignore";
+    return layerStatusValues(kind, id).includes("ignore");
   }
 
   function isFavorite(kind, id) {
-    return layerStatus(kind, id) === "favorite";
+    return layerStatusValues(kind, id).includes("favorite");
   }
 
   function isOverviewStatus(kind, id) {
-    return layerStatus(kind, id) === "overview";
+    return layerStatusValues(kind, id).includes("overview");
   }
 
   function overviewSubset(kind, items, fallback) {
@@ -900,6 +913,11 @@
   function setLayerMultiValue(kind, id, field, value, checked) {
     if (!editMode || !kind || !id || !field) return;
     const entry = layerFor(kind, id);
+    if (field === "status") {
+      delete entry.overview;
+      delete entry.favorite;
+      delete entry.ignore;
+    }
     const existing = Array.isArray(entry[field]) ? entry[field] : [];
     const next = checked
       ? unique(existing.concat(value))
@@ -999,7 +1017,7 @@
         '<div class="lp-edit-row' + (isIgnored(kind, id) ? " lp-ignored" : "") + '">',
         '<div class="lp-edit-title">' + escapeHtml(itemTitle(kind, item)) + "</div>",
         singleField(kind, id, "recordState", recordState(kind, id), [["active", "Active"], ["inactive", "Inactive"]]),
-        singleField(kind, id, "status", layerStatus(kind, id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]),
+        multiField(kind, id, "status", layerStatusValues(kind, id), [["overview", "Overview"], ["favorite", "Favorite"], ["ignore", "Ignore"]]),
         "</div>"
       ].join("");
     }).join("");
@@ -1037,7 +1055,7 @@
       ["Record state", fields.filter(([field]) => field === "recordState")],
       ["Status", fields.filter(([field]) => field === "status")],
       ["Media", fields.filter(([field]) => ["imageUrl", "imageUrl_2", "image_upload", "videoUrl", "embedUrl", "thumbnailUrl", "playlist"].includes(field))],
-      ["Profile", fields.filter(([field]) => ["barn_name", "show_name", "color", "gender", "disciplines", "age"].includes(field))],
+      ["Profile", fields.filter(([field]) => ["barn_name", "show_name", "horseType", "color", "gender", "disciplines", "age"].includes(field))],
       ["Type", fields.filter(([field]) => field === "type")],
       ["Class sequence", fields.filter(([field]) => field === "class_sequences")],
       ["Tags", fields.filter(([field]) => field === "tags")],
@@ -1051,7 +1069,7 @@
 
   function editGroupRows(kind, id, title, fields) {
     if (title === "Status") {
-      return editRow(title, fields.map(([field, label, type, value]) => editControl(kind, id, field, label, type, value)).join(""));
+      return editRow(title, fields.map(([field, label, type, value, choices]) => editControl(kind, id, field, label, type, value, choices)).join(""));
     }
     if (fields.length === 1 && fields[0][2] === "multi") {
       const [field, label, type, value, choices] = fields[0];
@@ -1087,18 +1105,23 @@
   function multiField(kind, id, field, selected, choices) {
     return [
       '<span class="lp-edit-choice-row">',
-      choices.map((choice) => [
-        '<label class="lp-edit-choice">',
-        '<input type="checkbox" data-layer-multi="true" data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="' + escapeAttr(choice) + '"' + (selected.includes(choice) ? " checked" : "") + ">",
-        '<span class="lp-edit-pill">' + escapeHtml(choice) + "</span>",
-        "</label>"
-      ].join("")).join(""),
+      choices.map((choice) => {
+        const value = Array.isArray(choice) ? choice[0] : choice;
+        const label = Array.isArray(choice) ? choice[1] : choice;
+        return [
+          '<label class="lp-edit-choice">',
+          '<input type="checkbox" data-layer-multi="true" data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" value="' + escapeAttr(value) + '"' + (selected.includes(value) ? " checked" : "") + ">",
+          '<span class="lp-edit-pill">' + escapeHtml(label) + "</span>",
+          "</label>"
+        ].join("");
+      }).join(""),
       "</span>"
     ].join("");
   }
 
   function singleField(kind, id, field, selected, choices) {
-    const name = "lp-" + slugify(kind + "-" + id + "-" + field);
+    const name = "lp-" + slugify(kind + "-" + id + "-" + field) + "-" + (++singleFieldCounter);
+    const selectedValue = Array.isArray(selected) ? (selected[0] || "") : selected;
     return [
       '<span class="lp-edit-choice-row">',
       choices.map((choice) => {
@@ -1106,7 +1129,7 @@
         const label = Array.isArray(choice) ? choice[1] : choice;
         return [
           '<label class="lp-edit-choice">',
-          '<input type="radio" data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" name="' + escapeAttr(name) + '" value="' + escapeAttr(value) + '"' + (selected === value ? " checked" : "") + ">",
+          '<input type="radio" data-layer-field="' + escapeAttr(field) + '" data-layer-kind="' + escapeAttr(kind) + '" data-layer-id="' + escapeAttr(id) + '" name="' + escapeAttr(name) + '" value="' + escapeAttr(value) + '"' + (selectedValue === value ? " checked" : "") + ">",
           '<span class="lp-edit-pill">' + escapeHtml(label) + "</span>",
           "</label>"
         ].join("");
