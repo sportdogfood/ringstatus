@@ -569,10 +569,9 @@
 
   function renderShell() {
     const scopedDateRange = currentDateRange();
-    root.querySelector("[data-lp-summary]").textContent =
-      scopedDateRange.start && scopedDateRange.end
-        ? scopedDateRange.start + " to " + scopedDateRange.end
-        : "Competition results";
+    setText("[data-lp-summary]", scopedDateRange.start && scopedDateRange.end
+      ? scopedDateRange.start + " to " + scopedDateRange.end
+      : "Competition results");
 
     const yearWrap = root.querySelector("[data-overview-years]");
     if (yearWrap) {
@@ -589,14 +588,19 @@
     }
 
     const counts = currentCounts();
-    root.querySelector('[data-tab-count="horses"]').textContent = counts.horses;
-    root.querySelector('[data-tab-count="videos"]').textContent = counts.videos;
-    root.querySelector('[data-tab-count="competitions"]').textContent = counts.competitions;
-    root.querySelector('[data-tab-count="classes"]').textContent = counts.classes;
+    setText('[data-tab-count="horses"]', counts.horses);
+    setText('[data-tab-count="videos"]', counts.videos);
+    setText('[data-tab-count="competitions"]', counts.competitions);
+    setText('[data-tab-count="classes"]', counts.classes);
     root.querySelectorAll("[data-theme-color]").forEach((input) => {
       const key = input.dataset.themeColor;
       if (themeColors[key]) input.value = themeColors[key];
     });
+  }
+
+  function setText(selector, value) {
+    const el = root.querySelector(selector);
+    if (el) el.textContent = value;
   }
 
   function renderOverview() {
