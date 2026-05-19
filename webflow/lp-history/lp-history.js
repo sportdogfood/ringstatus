@@ -32,8 +32,8 @@
     })
   ]);
   const hashParams = new URLSearchParams(String(window.location.hash || "").replace(/^#/, ""));
-  const editKey = hashParams.get("key") || "";
-  const editMode = !!editKey;
+  const editKey = config.editKey || hashParams.get("key") || "";
+  const editMode = config.mode === "edit" || !!editKey;
   debug("edit mode", editMode ? "on" : "off");
   const layerStorageKey = "lp-history-layer-draft";
   const themeStorageKey = "lp-history-theme-colors";
