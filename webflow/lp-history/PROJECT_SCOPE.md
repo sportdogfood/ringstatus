@@ -28,7 +28,7 @@ Generator:
 
 Preview URL:
 - `http://127.0.0.1:8787/lp-history-webflow-hydrate-template.html`
-- Edit mode: `http://127.0.0.1:8787/lp-history-webflow-hydrate-template.html?key=edit`
+- Edit mode: `http://127.0.0.1:8787/lp-history-webflow-hydrate-template.html?lp_edit_key=YOUR_EDIT_KEY`
 
 ## Embed Contract
 
@@ -150,7 +150,7 @@ Status does not replace record state:
 - Status controls curation and emphasis.
 
 Edit mode:
-- Enabled by `?key=edit`.
+- Enabled by `?lp_edit_key=YOUR_EDIT_KEY`.
 - Saves draft changes to browser `localStorage`.
 - Export/copy can produce an updated `lp-history-layer.json`.
 - The page does not directly write to GitHub or Webflow.
@@ -285,7 +285,7 @@ The public UI should read combined source + layer data, but layer data should re
 ## Save/Publish Workflow
 
 Current workflow:
-1. Open local edit URL with `?key=edit`.
+1. Open local edit URL with `?lp_edit_key=YOUR_EDIT_KEY`.
 2. Make inline curation/enrichment edits.
 3. Draft saves to browser localStorage.
 4. Copy/export layer JSON.
@@ -301,7 +301,7 @@ Important limitation:
 Not in scope yet:
 - Full CMS backend.
 - Direct GitHub writes from the browser.
-- Authentication beyond the simple `?key=edit` edit-mode gate.
+- Authentication beyond the simple `?lp_edit_key=YOUR_EDIT_KEY` edit-mode gate.
 - Live fetch from USEF or RingStatus runtime endpoints.
 - Rebuilding as a framework app.
 - Reintroducing money or points aggregates.
@@ -310,7 +310,7 @@ Not in scope yet:
 
 Before treating a change as ready:
 - Preview loads at `http://127.0.0.1:8787/lp-history-webflow-hydrate-template.html`.
-- Edit mode loads at the same URL with `?key=edit`.
+- Edit mode loads at the same URL with `?lp_edit_key=YOUR_EDIT_KEY`.
 - Top tabs switch correctly.
 - Overview shows default content until a section has explicit overview selections.
 - Once a section has explicit overview selections, Overview shows only those selected records for that section.

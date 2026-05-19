@@ -4,6 +4,6 @@ Small Webflow embed loader plus repo-hosted CSS, JS, history JSON, and editable 
 
 Use `lp-history-webflow-embed.html` inside a Webflow Embed block after these files are pushed to `main`.
 
-Append `?key=edit` to enable inline edit mode. Edit mode stores a browser draft and can export/copy `lp-history-layer.json`.
+Append `?lp_edit_key=YOUR_EDIT_KEY` to enable inline edit mode. Edit mode stores a browser draft and can export/copy `lp-history-layer.json`.
 
 Project scope and locked behavior live in `PROJECT_SCOPE.md`.
