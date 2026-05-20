@@ -16,7 +16,7 @@ export const GET = async () => {
       table: env.AIRTABLE_TABLE_LP || env.AIRTABLE_TABLE || "",
       horsesTable: env.AIRTABLE_WW_HORSES_TABLE || env.AIRTABLE_HORSES_TABLE || "ww_horses",
       horsesView: env.AIRTABLE_WW_HORSES_VIEW || env.AIRTABLE_HORSES_VIEW || "8778-tack-horses",
-      horsesChangeLog: env.AIRTABLE_HORSES_CHANGE_LOG_TABLE || "horses_change_log"
+      horsesChangeLog: env.AIRTABLE_HORSES_CHANGE_LOG_TABLE || "horses_change_log_writes"
     }
   });
 };

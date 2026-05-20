@@ -6,7 +6,7 @@ import { env } from "cloudflare:workers";
 
 const DEFAULT_TABLE = "ww_horses";
 const DEFAULT_VIEW = "8778-tack-horses";
-const DEFAULT_LOG_TABLE = "horses_change_log";
+const DEFAULT_LOG_TABLE = "horses_change_log_writes";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
