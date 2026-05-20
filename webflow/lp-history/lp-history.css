@@ -66,6 +66,15 @@
     border-radius: 8px;
   }
 
+  #lp-history-app .lp-profile-shell {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  #lp-history-app .lp-profile-shell .lp-shell {
+    width: 100%;
+  }
+
   #lp-history-app .lp-header {
     display: flex;
     justify-content: space-between;

@@ -350,6 +350,22 @@
 
   function appShellMarkup() {
     return [
+      '<div class="lp-profile-shell">',
+      profileTabsMarkup(),
+      '<main class="lp-content lp-profile-content">',
+      profilePanelMarkup("home", false, "Home", "Profile", [
+        ["Name", "Lainey in the Ring"],
+        ["Title", "All USEF Ride History"],
+        ["Subtitle", "Profile overview"],
+        ["Location", "Wellington, FL"],
+        ["Bio main photo", "Ready for profile media"]
+      ]),
+      profilePanelMarkup("bio", false, "Bio", "Profile", [
+        ["Education", "Field ready"],
+        ["Awards", "Field ready"],
+        ["Story", "Field ready"]
+      ]),
+      '<section class="lp-panel lp-profile-panel is-active" data-profile-panel="riding">',
       '<div class="lp-shell">',
       '<header class="lp-header">',
       '<div class="lp-header-copy">',
@@ -366,34 +382,13 @@
       '<div class="lp-year-filter lp-tag-filter"><span>Tags</span><div class="lp-year-pills lp-tag-pills" data-global-tags></div></div>',
       "</div>",
       "</section>",
-      profileTabsMarkup(),
-      '<main class="lp-content lp-profile-content">',
-      profilePanelMarkup("home", false, "Home", "Profile", [
-        ["Name", "Lainey in the Ring"],
-        ["Title", "All USEF Ride History"],
-        ["Subtitle", "Profile overview"],
-        ["Location", "Wellington, FL"],
-        ["Bio main photo", "Ready for profile media"]
-      ]),
-      profilePanelMarkup("bio", false, "Bio", "Profile", [
-        ["Education", "Field ready"],
-        ["Awards", "Field ready"],
-        ["Story", "Field ready"]
-      ]),
-      '<section class="lp-panel lp-profile-panel is-active" data-profile-panel="riding">',
-      '<nav class="lp-tabs lp-history-tabs" aria-label="Competition history sections">',
-      '<button class="lp-tab lp-theme-overview is-active" type="button" data-tab="overview" aria-selected="true"><span class="lp-tab-value">Overview</span><span class="lp-tab-label">Summary</span><span class="lp-tab-color"><input type="color" data-theme-color="overview" value="#46332b" aria-label="Overview color"></span></button>',
-      '<button class="lp-tab lp-theme-videos" type="button" data-tab="videos" aria-selected="false"><span class="lp-tab-value" data-tab-count="videos"></span><span class="lp-tab-label">Videos</span><span class="lp-tab-color"><input type="color" data-theme-color="videos" value="#003d80" aria-label="Videos color"></span></button>',
-      '<button class="lp-tab lp-theme-horses" type="button" data-tab="horses" aria-selected="false"><span class="lp-tab-value" data-tab-count="horses"></span><span class="lp-tab-label">Horses</span><span class="lp-tab-color"><input type="color" data-theme-color="horses" value="#005c2a" aria-label="Horses color"></span></button>',
-      '<button class="lp-tab lp-theme-competitions" type="button" data-tab="competitions" aria-selected="false"><span class="lp-tab-value" data-tab-count="competitions"></span><span class="lp-tab-label">Competitions</span><span class="lp-tab-color"><input type="color" data-theme-color="competitions" value="#4e1f76" aria-label="Competitions color"></span></button>',
-      '<button class="lp-tab lp-theme-classes" type="button" data-tab="classes" aria-selected="false"><span class="lp-tab-value" data-tab-count="classes"></span><span class="lp-tab-label">Classes</span><span class="lp-tab-color"><input type="color" data-theme-color="classes" value="#8f1116" aria-label="Classes color"></span></button>',
-      "</nav>",
       '<div class="lp-history-panels">',
       '<section class="lp-panel is-active" data-panel="overview"></section>',
       '<section class="lp-panel" data-panel="videos"></section>',
       '<section class="lp-panel" data-panel="horses"></section>',
       '<section class="lp-panel" data-panel="competitions"></section>',
       '<section class="lp-panel" data-panel="classes"></section>',
+      "</div>",
       "</div>",
       "</section>",
       profilePanelMarkup("horses-profile", false, "Horses", "Profile", [
