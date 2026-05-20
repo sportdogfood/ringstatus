@@ -427,10 +427,10 @@
       '<nav class="lp-tabs lp-profile-tabs" aria-label="Profile sections">',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="home" aria-selected="false"><span class="lp-tab-value">Home</span><span class="lp-tab-label">Profile</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="bio" aria-selected="false"><span class="lp-tab-value">Bio</span><span class="lp-tab-label">Profile</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview is-active" type="button" data-profile-tab="riding" aria-selected="true"><span class="lp-tab-value">Riding</span><span class="lp-tab-label">History</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="horses" aria-selected="false"><span class="lp-tab-value">Horses</span><span class="lp-tab-label">LP History</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="videos" aria-selected="false"><span class="lp-tab-value">Videos</span><span class="lp-tab-label">LP History</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="contact" aria-selected="false"><span class="lp-tab-value">Contact</span><span class="lp-tab-label">Info</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-competitions is-active" type="button" data-profile-tab="riding" aria-selected="true"><span class="lp-tab-value">Riding</span><span class="lp-tab-label">History</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-horses" type="button" data-profile-tab="horses" aria-selected="false"><span class="lp-tab-value">Horses</span><span class="lp-tab-label">LP History</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-videos" type="button" data-profile-tab="videos" aria-selected="false"><span class="lp-tab-value">Videos</span><span class="lp-tab-label">LP History</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-classes" type="button" data-profile-tab="contact" aria-selected="false"><span class="lp-tab-value">Contact</span><span class="lp-tab-label">Info</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="blank" aria-selected="false"><span class="lp-tab-value">Blank</span><span class="lp-tab-label">Tab</span></button>',
       "</nav>"
     ].join("");

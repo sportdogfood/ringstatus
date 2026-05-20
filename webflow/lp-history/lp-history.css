@@ -78,7 +78,8 @@
 
   #lp-history-app .lp-profile-panel[data-profile-panel="riding"] .lp-shell {
     display: grid;
-    gap: 14px;
+    gap: 10px;
+    padding-top: 18px;
   }
 
   #lp-history-app .lp-header {
@@ -92,7 +93,7 @@
   #lp-history-app .lp-riding-header {
     align-items: flex-end;
     margin: 0;
-    padding: 18px 20px;
+    padding: 12px 14px;
     border: 1px solid var(--lp-border);
     border-radius: 8px;
     background: var(--lp-surface);
@@ -143,16 +144,16 @@
   }
 
   #lp-history-app .lp-riding-header h1 {
-    font-size: clamp(28px, 3vw, 44px);
+    font-size: clamp(24px, 2.4vw, 34px);
   }
 
   #lp-history-app .lp-riding-header .lp-subtitle {
     margin-bottom: 0;
-    font-size: 15px;
+    font-size: 13px;
   }
 
   #lp-history-app .lp-riding-header .lp-summary-row p {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
   }
 
@@ -245,7 +246,7 @@
     width: fit-content;
     max-width: 100%;
     min-width: 0;
-    padding: 12px;
+    padding: 10px;
     border: 1px solid var(--lp-border);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.72);
