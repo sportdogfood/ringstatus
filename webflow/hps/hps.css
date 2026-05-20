@@ -1,1 +1,90 @@
-/* Intentionally empty: HPS visual styling comes from ../packing-worksheet/styles.css. */
+/* HPS uses the shared worksheet stylesheet. These are HPS-only list refinements. */
+
+#hps-app .th-group {
+  border-top: 1px solid var(--lp-border);
+}
+
+#hps-app .th-group:first-child {
+  border-top: 0;
+}
+
+#hps-app .th-group-label {
+  padding: 12px 16px 7px;
+  background: var(--lp-surface);
+  color: var(--lp-muted);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 0.95em;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+#hps-app .th-horse-row {
+  min-height: 50px;
+  padding: 11px 16px;
+}
+
+#hps-app .th-horse-row .packing-row-meta {
+  margin-top: 5px;
+}
+
+#hps-app .th-detail-section .lp-detail-head {
+  margin-bottom: 10px;
+}
+
+#hps-app .lp-modal-card {
+  width: min(680px, calc(100vw - 20px));
+  padding: 18px 14px 14px;
+}
+
+#hps-app .lp-modal-title {
+  padding-right: 48px;
+}
+
+#hps-app .lp-modal-close {
+  right: 14px;
+  top: 14px;
+}
+
+#hps-app .th-detail-section {
+  margin-top: 14px;
+}
+
+#hps-app .th-detail-section .lp-section-title {
+  min-height: 48px;
+  padding: 9px 12px;
+}
+
+#hps-app .th-detail-section .lp-list {
+  overflow: hidden;
+}
+
+#hps-app .th-detail-section .lp-row.is-detail.packing-control-row {
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 7px;
+  min-height: 34px;
+  padding: 8px 12px;
+}
+
+#hps-app .th-detail-section .lp-row.is-detail.packing-control-row .lp-row-title,
+#hps-app .th-detail-section .lp-row.is-detail.packing-control-row .lp-row-meta {
+  min-width: 0;
+}
+
+#hps-app .th-detail-section .packing-inline-choices,
+#hps-app .th-detail-section .lp-edit-choice-row {
+  gap: 6px;
+}
+
+@media (max-width: 640px) {
+  #hps-app .lp-modal-card {
+    width: calc(100vw - 14px);
+    max-height: calc(100vh - 14px);
+    padding: 14px 10px 10px;
+  }
+
+  #hps-app .th-detail-section .lp-row.is-detail.packing-control-row {
+    grid-template-columns: 96px minmax(0, 1fr);
+    padding: 7px 8px;
+  }
+}
