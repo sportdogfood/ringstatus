@@ -8,7 +8,8 @@
     records: [],
     query: "",
     saveTimers: new Map(),
-    activeRecordId: ""
+    activeRecordId: "",
+    detailStatus: ""
   };
 
   root.innerHTML = shell();
@@ -115,6 +116,7 @@
           <h3>Detail</h3>
         </div>
         <div class="lp-list" data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
+          ${detailSaveStatus()}
           ${detailStateRow(record.id, currentState)}
           ${detailEditRow("show_name", "Show name", showName)}
           ${detailEditRow("barn_name", "Barn name", barnName)}
@@ -132,6 +134,15 @@
 
   function detailTextRow(label, value) {
     return detailRow(label, escapeHtml(value));
+  }
+
+  function detailSaveStatus() {
+    return `
+      <div class="lp-row is-static is-detail packing-control-row th-save-status-row">
+        <span class="lp-row-title">Save</span>
+        <span class="lp-row-meta" data-th-detail-status>${escapeHtml(state.detailStatus || "Changes save to Airtable.")}</span>
+      </div>
+    `;
   }
 
   function detailStateRow(recordId, currentState) {
@@ -282,6 +293,7 @@
 
   async function saveRecordChange(record, change) {
     setStatus("Saving change...");
+    setDetailStatus("Saving change...");
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -301,10 +313,14 @@
         throw new Error(result.detail || result.error || `Save failed: ${response.status}`);
       }
       record.fields[change.fieldName] = result.updated?.value ?? change.newValue;
-      setStatus(`Saved to Airtable at ${new Date().toLocaleTimeString()} (updated, logged).`);
+      const message = `Saved to Airtable at ${new Date().toLocaleTimeString()} (updated, logged).`;
+      setStatus(message);
+      setDetailStatus(message);
     } catch (error) {
       console.error("[8778-tack-horses]", error);
-      setStatus("Save failed. Check console.");
+      const message = "Save failed. Check console.";
+      setStatus(message);
+      setDetailStatus(message);
     }
   }
 
@@ -337,6 +353,7 @@
     const record = state.records.find((item) => item.id === recordId);
     if (!record) return;
     state.activeRecordId = recordId;
+    state.detailStatus = "Changes save to Airtable.";
     els.modalContent.innerHTML = detail(record);
     els.modal.hidden = false;
     document.body.style.overflow = "hidden";
@@ -416,6 +433,12 @@
 
   function setStatus(message) {
     if (els.status) els.status.textContent = message;
+  }
+
+  function setDetailStatus(message) {
+    state.detailStatus = message;
+    const detailStatus = root.querySelector("[data-th-detail-status]");
+    if (detailStatus) detailStatus.textContent = message;
   }
 
   function firstValue(fields, names) {
