@@ -68,9 +68,9 @@
       <button class="lp-row th-horse-row" type="button" data-open-horse="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
         <span class="th-row-main">
           <span class="lp-row-title">${escapeHtml(name)}</span>
-          ${meta ? `<span class="lp-row-meta">${meta}</span>` : ""}
+          ${meta ? `<span class="lp-row-meta th-row-submeta">${meta}</span>` : ""}
         </span>
-        <span class="lp-pill">Detail</span>
+        <span class="lp-pill th-detail-pill">Detail</span>
       </button>
     `;
   }
@@ -260,7 +260,7 @@
               <div class="lp-section-title">
                 <h3>Horses</h3>
                 <div class="lp-section-actions">
-                  <span class="lp-section-count" data-th-count>0 shown</span>
+                  <span class="lp-section-count" data-th-count>0</span>
                 </div>
               </div>
               <div class="th-toolbar">

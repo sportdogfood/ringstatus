@@ -1,6 +1,6 @@
 #lp-history-app .th-toolbar {
-  padding: 16px 24px;
-  background: rgba(0, 100, 44, 0.08);
+  padding: 18px 22px;
+  background: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -64,6 +64,42 @@
   outline-offset: 2px;
 }
 
+#lp-history-app .th-horse-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 74px;
+  padding: 0 24px;
+}
+
+#lp-history-app .th-horse-row .lp-row-title {
+  font-size: 22px;
+}
+
+#lp-history-app .th-row-submeta {
+  display: none;
+}
+
+#lp-history-app .th-detail-pill {
+  min-width: 156px;
+  min-height: 42px;
+  justify-content: center;
+  border-radius: 999px;
+  background: #46332b;
+  color: #ffffff;
+  box-shadow: 0 14px 30px rgba(70, 51, 43, 0.22);
+}
+
+#lp-history-app .lp-theme-horses .lp-section-title {
+  background: #0057b8;
+}
+
+#lp-history-app .lp-theme-horses .lp-section-title h3 {
+  color: #ffffff;
+}
+
+#lp-history-app .lp-theme-horses .lp-section-count {
+  color: #ffffff;
+}
+
 #lp-history-app .th-link {
   color: #0057b8;
   display: inline-block;
@@ -80,6 +116,16 @@
 
   #lp-history-app .th-edit-row {
     grid-template-columns: 1fr;
+  }
+
+  #lp-history-app .th-horse-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 76px;
+    padding: 0 16px;
+  }
+
+  #lp-history-app .th-detail-pill {
+    min-width: 118px;
   }
 
   #lp-history-app .th-row-fields {
