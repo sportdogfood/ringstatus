@@ -69,6 +69,7 @@
   #lp-history-app .lp-profile-shell {
     width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
+    padding-bottom: 110px;
   }
 
   #lp-history-app .lp-profile-shell .lp-shell {
@@ -142,12 +143,12 @@
   }
 
   #lp-history-app .lp-global-filter-section {
-    margin: 0 0 18px;
-    padding: 14px 16px;
-    border: 1px solid var(--lp-border);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.64);
-    box-shadow: var(--lp-card-shadow);
+    margin: 0 0 14px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   #lp-history-app .lp-filter-toggle {
@@ -180,9 +181,10 @@
   }
 
   #lp-history-app .lp-date-filter {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
-    gap: 14px;
+    gap: 10px;
     flex: 0 0 auto;
     width: 100%;
     max-width: none;
@@ -211,8 +213,18 @@
   #lp-history-app .lp-year-filter {
     display: grid;
     gap: 8px;
-    width: 100%;
-    padding-right: 0;
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--lp-border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: var(--lp-card-shadow);
+  }
+
+  #lp-history-app .lp-year-filter[hidden] {
+    display: none;
   }
 
   #lp-history-app .lp-date-filter .lp-year-pills {
@@ -294,9 +306,19 @@
   }
 
   #lp-history-app .lp-profile-tabs {
+    position: fixed;
+    right: max(16px, calc((100vw - 1180px) / 2));
+    bottom: 16px;
+    left: max(16px, calc((100vw - 1180px) / 2));
+    z-index: 50;
     grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 8px;
-    padding: 14px 0 8px;
+    padding: 10px;
+    border: 1px solid var(--lp-border);
+    border-radius: 8px;
+    background: rgba(247, 248, 250, 0.94);
+    box-shadow: var(--lp-shadow);
+    backdrop-filter: blur(12px);
   }
 
   #lp-history-app .lp-profile-tabs .lp-tab {
@@ -1079,6 +1101,13 @@
     padding: 16px;
   }
 
+  #lp-history-app .lp-video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    padding: 16px;
+  }
+
   #lp-history-app .lp-video-shell {
     padding: 16px;
   }
@@ -1742,7 +1771,7 @@
     }
 
     #lp-history-app .lp-global-filter-section {
-      padding: 12px;
+      padding: 0;
     }
 
     #lp-history-app .lp-tabs {
@@ -1751,6 +1780,7 @@
 
     #lp-history-app .lp-profile-tabs {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow-x: auto;
     }
 
     #lp-history-app .lp-grid {
@@ -1825,7 +1855,11 @@
     }
 
     #lp-history-app .lp-profile-tabs {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(96px, 1fr));
+      right: 10px;
+      bottom: 10px;
+      left: 10px;
+      padding: 8px;
     }
 
     #lp-history-app .lp-date-filter {

@@ -383,36 +383,21 @@
       "</div>",
       "</section>",
       '<div class="lp-history-panels">',
-      '<section class="lp-panel is-active" data-panel="overview"></section>',
-      '<section class="lp-panel" data-panel="videos"></section>',
-      '<section class="lp-panel" data-panel="horses"></section>',
+      '<section data-panel="overview"></section>',
       '<section class="lp-panel" data-panel="competitions"></section>',
       '<section class="lp-panel" data-panel="classes"></section>',
       "</div>",
       "</div>",
       "</section>",
-      profilePanelMarkup("horses-profile", false, "Horses", "Profile", [
-        ["Horse profiles", "Profile-card feed ready"],
-        ["Images", "Use enrichment image URLs"],
-        ["Type", "Pony / horse profile fields"],
-        ["Disciplines", "Hunters, jumpers, equitation"]
-      ]),
-      profilePanelMarkup("media", false, "Media", "Photos and video", [
-        ["Photos", "Gallery feed ready"],
-        ["Videos", "Video links and playlists"],
-        ["Carousel", "Favorite media display"],
-        ["Testimonials", "Field ready"]
-      ]),
-      profilePanelMarkup("resume", false, "Resume", "USEF and results", [
-        ["USEF ID", "Ready for profile field"],
-        ["Rider ID", "Ready for profile field"],
-        ["Basket sync", "Import fields ready"],
-        ["Display groups", "Local / Rated / National templates"]
-      ]),
+      '<section class="lp-panel lp-profile-panel" data-profile-panel="horses"><div data-panel="horses"></div></section>',
+      '<section class="lp-panel lp-profile-panel" data-profile-panel="videos"><div data-panel="videos"></div></section>',
       profilePanelMarkup("contact", false, "Contact", "Profile", [
         ["Email", "Field ready"],
         ["Phone", "Field ready"],
         ["Contact form", "Submit label ready"]
+      ]),
+      profilePanelMarkup("blank", false, "Blank", "Tab", [
+        ["Blank tab", "Ready for next section"]
       ]),
       "</main>",
       "</div>",
@@ -432,10 +417,10 @@
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="home" aria-selected="false"><span class="lp-tab-value">Home</span><span class="lp-tab-label">Profile</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="bio" aria-selected="false"><span class="lp-tab-value">Bio</span><span class="lp-tab-label">Profile</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview is-active" type="button" data-profile-tab="riding" aria-selected="true"><span class="lp-tab-value">Riding</span><span class="lp-tab-label">History</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="horses-profile" aria-selected="false"><span class="lp-tab-value">Horses</span><span class="lp-tab-label">Profile</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="media" aria-selected="false"><span class="lp-tab-value">Media</span><span class="lp-tab-label">Photos / Video</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="resume" aria-selected="false"><span class="lp-tab-value">Resume</span><span class="lp-tab-label">USEF</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="horses" aria-selected="false"><span class="lp-tab-value">Horses</span><span class="lp-tab-label">LP History</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="videos" aria-selected="false"><span class="lp-tab-value">Videos</span><span class="lp-tab-label">LP History</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="contact" aria-selected="false"><span class="lp-tab-value">Contact</span><span class="lp-tab-label">Info</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="blank" aria-selected="false"><span class="lp-tab-value">Blank</span><span class="lp-tab-label">Tab</span></button>',
       "</nav>"
     ].join("");
   }
@@ -669,10 +654,13 @@
     }
 
     const tagWrap = root.querySelector("[data-global-tags]");
+    const tagSection = tagWrap ? tagWrap.closest(".lp-tag-filter") : null;
     if (tagWrap) {
-      tagWrap.innerHTML = globalTagOptions().map((tag) => (
+      const tags = globalTagOptions();
+      tagWrap.innerHTML = tags.map((tag) => (
         '<button class="lp-year-pill lp-tag-pill' + (globalTags.has(tag.name) ? " is-active" : "") + '" type="button" data-global-tag="' + escapeAttr(tag.name) + '" aria-pressed="' + (globalTags.has(tag.name) ? "true" : "false") + '" style="' + escapeAttr(tagStyle(tag.tagClass)) + '">' + escapeHtml(tag.name) + "</button>"
       )).join("");
+      if (tagSection) tagSection.hidden = !tags.length;
     }
 
     const counts = currentCounts();
@@ -731,15 +719,12 @@
   function renderHorses() {
     renderedPanels.add("horses");
     const baseHorses = currentHorses();
-    const favoriteHorses = favoriteSubset("horses", baseHorses, baseHorses.filter((horse) => hasRibbon(horse.classes))).slice(0, 5);
     const horses = filterHorses(baseHorses, allControls.horses);
     panels.horses.innerHTML = [
       '<section class="lp-section-block lp-theme-horses">',
-      sectionTitle("Horses", baseHorses.length + " total", "", videoNavMarkup("all-horses")),
-      horseCarousel(favoriteHorses, "all-horses"),
-      sectionTitle("All horses", horses.length + " shown", "", filterToggleMarkup("all:horses")),
+      sectionTitle("Horses", horses.length + " shown", "", filterToggleMarkup("all:horses")),
       allControlsMarkup("horses", baseHorses),
-      horseCollection(horses),
+      horseGrid(horses),
       "</section>"
     ].join("");
   }
@@ -753,9 +738,9 @@
       '<section class="lp-section-block lp-theme-videos">',
       sectionTitle("Videos", baseVideos.length + " total", "", videoNavMarkup("all-favorites")),
       videoCarousel(favoriteVideos, "all-favorites", { hideControls: true }),
-      sectionTitle("All videos", "", "", filterToggleMarkup("all:videos")),
+      sectionTitle("All videos", videos.length + " shown", "", filterToggleMarkup("all:videos")),
       allControlsMarkup("videos", baseVideos),
-      videoList(videos),
+      videoGrid(videos),
       "</section>"
     ].join("");
   }
@@ -841,6 +826,8 @@
   }
 
   function selectProfileTab(tabName) {
+    if (tabName === "horses") ensurePanelRendered("horses");
+    if (tabName === "videos") ensurePanelRendered("videos");
     root.querySelectorAll("[data-profile-tab]").forEach((tab) => {
       const isActive = tab.dataset.profileTab === tabName;
       tab.classList.toggle("is-active", isActive);
@@ -1691,6 +1678,11 @@
     return horses.map(compactHorseButton).join("");
   }
 
+  function horseGrid(horses) {
+    if (!horses.length) return '<p class="lp-empty">No horses available.</p>';
+    return '<div class="lp-horse-grid">' + horses.map(horseCard).join("") + "</div>";
+  }
+
   function horseCarousel(horses, scope) {
     if (!horses.length) return '<p class="lp-empty">No ribboned horses available.</p>';
     return [
@@ -2044,6 +2036,11 @@
       "</span>",
       "</button>"
     ].join(""))).join("");
+  }
+
+  function videoGrid(videos) {
+    if (!videos.length) return '<p class="lp-empty">No videos available.</p>';
+    return '<div class="lp-video-grid">' + videos.map(videoCard).join("") + "</div>";
   }
 
   function competitionRow(competition) {
