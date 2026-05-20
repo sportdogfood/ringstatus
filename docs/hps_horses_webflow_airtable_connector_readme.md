@@ -42,6 +42,77 @@ tenant_id=19676 -> ww_horses view hps_19676
 
 Only active tenants listed in `active_tenants` should be allowed. If a requested tenant id is not active, the API should return an error and should not load or save horse data.
 
+### HPS Profile Field Contract
+
+Read fields:
+
+```text
+horse
+horse_id
+show_name
+pid
+last_modified_time
+tenant_id
+airtable_id
+```
+
+Editable fields:
+
+```text
+barn_name
+emergency_no
+emergency_contact
+rider_list
+horse_note
+trainer_id
+horse_types
+horse_disciplines
+horse_age
+horse_colors
+horse_genders
+horse_profile_tabs
+emergency_phone
+emergency_contacts
+tenant_img
+active
+priority
+ww_grooms
+ww_exercisers
+```
+
+Action fields:
+
+```text
+stall_card_input_print
+```
+
+Membership fields:
+
+```text
+wec_horses_link
+lists
+```
+
+Deferred fields:
+
+```text
+active_subscribers
+ww_riders
+horse_profile_tabs_link
+```
+
+Linked field references:
+
+```text
+tenant_id -> ww_tenants
+trainer_id -> ww_trainers
+horse_disciplines -> horse_disciplines_link
+horse_colors -> horse_colors_link
+horse_genders -> horse_genders_link
+```
+
+The API must reject POST writes for fields outside the editable field list.
+
 ### Horses Source
 
 The source table remains:

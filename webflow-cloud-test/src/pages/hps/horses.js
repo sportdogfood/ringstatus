@@ -10,6 +10,38 @@ const DEFAULT_LOG_TABLE = "hp_cls";
 const DEFAULT_ACTIVE_TENANTS_TABLE = "active_tenants";
 const DEFAULT_ACTIVE_TENANTS_VIEW = "active_tenants";
 const TENANT_FIELD_CANDIDATES = ["tenant_id", "tenantId", "Tenant ID", "pid", "PID", "path_tenant"];
+const PROFILE_READ_FIELDS = ["horse", "horse_id", "show_name", "pid", "last_modified_time", "tenant_id", "airtable_id"];
+const PROFILE_EDITABLE_FIELDS = [
+  "barn_name",
+  "emergency_no",
+  "emergency_contact",
+  "rider_list",
+  "horse_note",
+  "trainer_id",
+  "horse_types",
+  "horse_disciplines",
+  "horse_age",
+  "horse_colors",
+  "horse_genders",
+  "horse_profile_tabs",
+  "emergency_phone",
+  "emergency_contacts",
+  "tenant_img",
+  "active",
+  "priority",
+  "ww_grooms",
+  "ww_exercisers"
+];
+const PROFILE_ACTION_FIELDS = ["stall_card_input_print"];
+const PROFILE_MEMBERSHIP_FIELDS = ["wec_horses_link", "lists"];
+const PROFILE_DEFERRED_FIELDS = ["active_subscribers", "ww_riders", "horse_profile_tabs_link"];
+const PROFILE_LINKED_FIELD_MAP = {
+  tenant_id: "ww_tenants",
+  trainer_id: "ww_trainers",
+  horse_disciplines: "horse_disciplines_link",
+  horse_colors: "horse_colors_link",
+  horse_genders: "horse_genders_link"
+};
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -39,6 +71,7 @@ export const GET = async ({ request }) => {
         table: airtable.horsesTable,
         view
       },
+      profileContract: profileContract(),
       count: records.length,
       records
     });
@@ -286,7 +319,21 @@ function validateChange(payload) {
   if (!payload || typeof payload !== "object") return { ok: false, error: "invalid_payload" };
   if (!payload.horseRecordId) return { ok: false, error: "missing_horse_record_id" };
   if (!payload.fieldName) return { ok: false, error: "missing_field_name" };
+  if (!PROFILE_EDITABLE_FIELDS.includes(String(payload.fieldName).trim())) {
+    return { ok: false, error: "field_not_allowed" };
+  }
   return { ok: true };
+}
+
+function profileContract() {
+  return {
+    readFields: PROFILE_READ_FIELDS,
+    editableFields: PROFILE_EDITABLE_FIELDS,
+    actionFields: PROFILE_ACTION_FIELDS,
+    membershipFields: PROFILE_MEMBERSHIP_FIELDS,
+    deferredFields: PROFILE_DEFERRED_FIELDS,
+    linkedFieldMap: PROFILE_LINKED_FIELD_MAP
+  };
 }
 
 function getTenantIdFromUrl(url) {
