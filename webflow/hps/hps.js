@@ -11,6 +11,7 @@
     saveTimers: new Map(),
     activeRecordId: "",
     detailTab: "overview",
+    moduleOpen: true,
     detailStatus: ""
   };
 
@@ -20,6 +21,8 @@
     count: Array.from(root.querySelectorAll("[data-th-count]")),
     status: root.querySelector("[data-th-status]"),
     list: root.querySelector("[data-th-list]"),
+    moduleShell: root.querySelector("[data-hps-module-shell]"),
+    moduleToggle: root.querySelector("[data-hps-toggle]"),
     modal: root.querySelector("[data-modal]"),
     modalCard: root.querySelector(".lp-modal-card"),
     modalContent: root.querySelector("[data-modal-content]")
@@ -28,6 +31,7 @@
   root.addEventListener("click", handleClick);
   root.addEventListener("input", handleInput);
   root.addEventListener("change", handleChange);
+  updateModuleOpen();
 
   await load();
 
@@ -305,6 +309,12 @@
   }
 
   function handleClick(event) {
+    if (event.target.closest("[data-hps-toggle]")) {
+      state.moduleOpen = !state.moduleOpen;
+      updateModuleOpen();
+      return;
+    }
+
     if (event.target.closest("[data-modal-close]")) {
       closeModal();
       return;
@@ -482,6 +492,14 @@
     if (panel) panel.hidden = !panel.hidden;
   }
 
+  function updateModuleOpen() {
+    root.classList.toggle("is-hps-open", state.moduleOpen);
+    if (els.moduleShell) els.moduleShell.hidden = !state.moduleOpen;
+    if (els.moduleToggle) {
+      els.moduleToggle.setAttribute("aria-expanded", state.moduleOpen ? "true" : "false");
+    }
+  }
+
   function filteredRecords() {
     if (!state.query) return state.records;
     return state.records.filter((record) => {
@@ -492,7 +510,12 @@
 
   function shell() {
     return `
-      <div class="lp-shell">
+      <button class="lp-tab packing-tab packing-theme-horses th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
+        <span class="lp-tab-value" data-th-count>0</span>
+        <span class="lp-tab-label">Horses</span>
+      </button>
+
+      <div class="lp-shell th-hps-shell" data-hps-module-shell>
         <header class="lp-header">
           <div class="lp-header-copy">
             <h1>HPS Horses</h1>

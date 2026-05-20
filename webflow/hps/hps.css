@@ -8,6 +8,22 @@
   border-top: 0;
 }
 
+#hps-app {
+  display: grid;
+  justify-content: end;
+  gap: 10px;
+}
+
+#hps-app .th-hps-toggle {
+  justify-self: end;
+  width: min(220px, 100%);
+}
+
+#hps-app .th-hps-shell {
+  width: min(400px, 100%);
+  margin-left: auto;
+}
+
 #hps-app .th-group-label {
   padding: 12px 16px 7px;
   background: var(--lp-surface);
