@@ -106,6 +106,7 @@
     const name = firstValue(fields, ["show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
     const showName = firstValue(fields, ["show_name", "horse", "name", "Horse", "Name"]);
     const barnName = firstValue(fields, ["barn_name", "Barn Name", "barn"]);
+    const ignore = firstValue(fields, ["ignore", "Ignore"]);
     const usef = firstValue(fields, ["usef", "USEF", "usef_id", "USEF ID"]);
     const color = firstValue(fields, ["color", "horse_color", "Color"]);
     const gender = firstValue(fields, ["gender", "horse_gender", "Gender"]);
@@ -140,14 +141,14 @@
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
             ${detailEditRow("show_name", "Show name", showName)}
             ${detailEditRow("barn_name", "Barn name", barnName)}
-            ${detailTextRow("USEF", usef || "-")}
+            ${detailChoiceRow("ignore", "Ignore", truthy(ignore) ? "Active" : "Inactive", ["Active", "Inactive"])}
           </div>
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
             ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
             ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
             ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
-            ${detailEditRow("horse_age", "Age", age, "number")}
             ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
+            ${detailEditRow("horse_age", "Age", age, "number")}
           </div>
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
             ${detailEditRow("emergency_contact", "Emergency contact", emergencyContact)}
@@ -156,6 +157,7 @@
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "team" ? " is-active" : ""}" data-profile-panel="team">
             ${detailEditRow("rider_list", "Rider list", riderList)}
             ${detailEditRow("trainer_id", "Trainer", trainer)}
+            ${detailTextRow("USEF", usef || "-")}
           </div>
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "print" ? " is-active" : ""}" data-profile-panel="print">
             ${detailPrintRow(record.id, {
@@ -195,7 +197,7 @@
         <span class="lp-field-label">Stall card</span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
-            <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-toggle="${escapeAttr(recordId)}">Stall card</button>
+            <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-toggle="${escapeAttr(recordId)}">Print</button>
           </span>
           <div class="th-stall-card-panel" data-stall-card-panel="${escapeAttr(recordId)}" hidden>
             <input class="lp-edit-input" type="text" value="${escapeAttr(values.barnName)}" data-stall-card-field="barnName" aria-label="Barn name">
