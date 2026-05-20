@@ -368,7 +368,7 @@
       "</section>",
       profileTabsMarkup(),
       '<main class="lp-content lp-profile-content">',
-      profilePanelMarkup("home", true, "Home", "Profile", [
+      profilePanelMarkup("home", false, "Home", "Profile", [
         ["Name", "Lainey in the Ring"],
         ["Title", "All USEF Ride History"],
         ["Subtitle", "Profile overview"],
@@ -380,7 +380,7 @@
         ["Awards", "Field ready"],
         ["Story", "Field ready"]
       ]),
-      '<section class="lp-panel lp-profile-panel" data-profile-panel="riding">',
+      '<section class="lp-panel lp-profile-panel is-active" data-profile-panel="riding">',
       '<nav class="lp-tabs lp-history-tabs" aria-label="Competition history sections">',
       '<button class="lp-tab lp-theme-overview is-active" type="button" data-tab="overview" aria-selected="true"><span class="lp-tab-value">Overview</span><span class="lp-tab-label">Summary</span><span class="lp-tab-color"><input type="color" data-theme-color="overview" value="#46332b" aria-label="Overview color"></span></button>',
       '<button class="lp-tab lp-theme-videos" type="button" data-tab="videos" aria-selected="false"><span class="lp-tab-value" data-tab-count="videos"></span><span class="lp-tab-label">Videos</span><span class="lp-tab-color"><input type="color" data-theme-color="videos" value="#003d80" aria-label="Videos color"></span></button>',
@@ -434,9 +434,9 @@
   function profileTabsMarkup() {
     return [
       '<nav class="lp-tabs lp-profile-tabs" aria-label="Profile sections">',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview is-active" type="button" data-profile-tab="home" aria-selected="true"><span class="lp-tab-value">Home</span><span class="lp-tab-label">Profile</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="home" aria-selected="false"><span class="lp-tab-value">Home</span><span class="lp-tab-label">Profile</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="bio" aria-selected="false"><span class="lp-tab-value">Bio</span><span class="lp-tab-label">Profile</span></button>',
-      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="riding" aria-selected="false"><span class="lp-tab-value">Riding</span><span class="lp-tab-label">History</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview is-active" type="button" data-profile-tab="riding" aria-selected="true"><span class="lp-tab-value">Riding</span><span class="lp-tab-label">History</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="horses-profile" aria-selected="false"><span class="lp-tab-value">Horses</span><span class="lp-tab-label">Profile</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="media" aria-selected="false"><span class="lp-tab-value">Media</span><span class="lp-tab-label">Photos / Video</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="resume" aria-selected="false"><span class="lp-tab-value">Resume</span><span class="lp-tab-label">USEF</span></button>',

@@ -286,11 +286,13 @@
 
   #lp-history-app .lp-profile-tabs {
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    padding-bottom: 10px;
+    gap: 8px;
+    padding: 14px 0 8px;
   }
 
   #lp-history-app .lp-profile-tabs .lp-tab {
-    min-height: 76px;
+    min-height: 58px;
+    padding: 10px;
   }
 
   #lp-history-app .lp-history-tabs {
@@ -450,7 +452,13 @@
   }
 
   #lp-history-app .lp-profile-tabs .lp-tab-value {
-    font-size: clamp(20px, 2.1vw, 30px);
+    min-height: 20px;
+    font-size: clamp(18px, 1.7vw, 24px);
+  }
+
+  #lp-history-app .lp-profile-tabs .lp-tab-label {
+    margin-top: 5px;
+    font-size: 9px;
   }
 
   #lp-history-app .lp-tab-color {
