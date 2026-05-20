@@ -318,7 +318,8 @@
       setDetailStatus(message);
     } catch (error) {
       console.error("[8778-tack-horses]", error);
-      const message = "Save failed. Check console.";
+      const detail = error instanceof Error ? error.message : String(error);
+      const message = `Save failed: ${detail}`;
       setStatus(message);
       setDetailStatus(message);
     }
@@ -450,14 +451,13 @@
 
   function recordState(record) {
     const fields = record.fields || {};
-    if (Object.prototype.hasOwnProperty.call(fields, "inactive")) {
-      return truthy(fields.inactive) ? "inactive" : "active";
-    }
+    if (!Object.prototype.hasOwnProperty.call(fields, "record_state")) return truthy(fields.inactive) ? "inactive" : "active";
     const value = String(firstValue(fields, ["record_state", "Record State", "state", "State", "status", "Status"]) || "inactive").trim().toLowerCase();
     return value === "active" ? "active" : "inactive";
   }
 
   function recordStateField(fields) {
+    if (!Object.prototype.hasOwnProperty.call(fields, "record_state")) return "inactive";
     return ["inactive", "record_state", "Record State", "state", "State", "status", "Status"].find((name) => Object.prototype.hasOwnProperty.call(fields, name)) || "record_state";
   }
 
