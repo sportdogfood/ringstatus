@@ -15,9 +15,10 @@
   const embeddedGlobalTagRules = root.querySelector("#lp-global-tag-rules")?.textContent || "[]";
   const config = window.LP_HISTORY_CONFIG || JSON.parse(embeddedConfig?.textContent || "{}");
   const enrichmentUrl = config.enrichmentUrl || "/lp-history/enrichment";
+  const profileUrl = config.profileUrl || "";
   debug("config", config);
   root.innerHTML = appShellMarkup();
-  const [payload, layer] = await Promise.all([
+  const [payload, layer, profilePayload] = await Promise.all([
     fetch(config.historyUrl).then((response) => {
       if (!response.ok) throw new Error("History feed failed: " + response.status);
       debug("history fetch", response.status, config.historyUrl);
@@ -29,7 +30,14 @@
     }).catch((error) => {
       console.warn("[lp-history] layer fetch failed, using empty layer", error);
       return emptyLayer();
-    })
+    }),
+    profileUrl ? fetch(profileUrl).then((response) => {
+      debug("profile fetch", response.status, profileUrl);
+      return response.ok ? response.json() : emptyProfileContent();
+    }).catch((error) => {
+      console.warn("[lp-history] profile fetch failed, using static profile panels", error);
+      return emptyProfileContent();
+    }) : Promise.resolve(emptyProfileContent())
   ]);
   const hashParams = new URLSearchParams(String(window.location.hash || "").replace(/^#/, ""));
   const editKey = config.editKey || hashParams.get("key") || "";
@@ -39,6 +47,7 @@
   const themeStorageKey = "lp-history-theme-colors";
   const themeColors = loadThemeColors();
   const state = normalize(payload, loadStoredLayer(layer));
+  const profileContent = normalizeProfileContent(profilePayload);
   const globalTagRules = JSON.parse(embeddedGlobalTagRules);
   root.classList.toggle("is-edit-mode", editMode);
   root.classList.add("is-overview-active");
@@ -78,6 +87,7 @@
   const renderedPanels = new Set();
 
   renderShell();
+  renderProfilePanels();
   renderOverview();
   debug("render complete", currentCounts());
 
@@ -367,7 +377,7 @@
       ]),
       '<section class="lp-panel lp-profile-panel is-active" data-profile-panel="riding">',
       '<div class="lp-shell">',
-      '<header class="lp-header">',
+      '<header class="lp-header lp-riding-header">',
       '<div class="lp-header-copy">',
       '<h1>Lainey in the Ring</h1>',
       '<p class="lp-subtitle">All USEF Ride History</p>',
@@ -442,6 +452,47 @@
 
   function emptyLayer() {
     return { version: 1, updatedAt: "", horses: {}, competitions: {}, classes: {}, videos: {} };
+  }
+
+  function emptyProfileContent() {
+    return { ok: true, records: [] };
+  }
+
+  function normalizeArray(value) {
+    if (Array.isArray(value)) return value;
+    if (!value) return [];
+    return String(value).split(",").map((item) => item.trim()).filter(Boolean);
+  }
+
+  function normalizeProfileContent(payload) {
+    const groups = {};
+    const records = Array.isArray(payload?.records) ? payload.records : [];
+    records.forEach((record) => {
+      const fields = record.fields || {};
+      const type = String(fields.record_type || fields.type || "").trim().toLowerCase();
+      if (!type) return;
+      const stateValue = String(fields.state || fields.record_state || "active").trim().toLowerCase();
+      if (stateValue === "inactive" || stateValue === "ignore") return;
+      if (!groups[type]) groups[type] = [];
+      groups[type].push({
+        id: record.id,
+        recordKey: String(fields.record_key || record.id || "").trim(),
+        type,
+        title: String(fields.title || fields.name || fields.record_key || record.id || "").trim(),
+        subtitle: String(fields.subtitle || "").trim(),
+        body: String(fields.body || fields.description || fields.notes || "").trim(),
+        imageUrl: String(fields.image_url || "").trim(),
+        videoUrl: String(fields.video_url || "").trim(),
+        sortOrder: Number(fields.sort_order || 0),
+        status: normalizeArray(fields.status),
+        tags: normalizeArray(fields.tags),
+        fields
+      });
+    });
+    Object.values(groups).forEach((items) => {
+      items.sort((a, b) => (a.sortOrder - b.sortOrder) || a.title.localeCompare(b.title));
+    });
+    return groups;
   }
 
   function normalizeLayer(layer) {
@@ -679,6 +730,39 @@
     if (el) el.textContent = value;
   }
 
+  function renderProfilePanels() {
+    renderProfilePanelFromContent("home", "Home", "Profile");
+    renderProfilePanelFromContent("bio", "Bio", "Profile");
+    renderProfilePanelFromContent("contact", "Contact", "Info");
+    renderProfilePanelFromContent("blank", "Blank", "Tab");
+  }
+
+  function renderProfilePanelFromContent(type, title, countLabel) {
+    const panel = root.querySelector('[data-profile-panel="' + type + '"]');
+    const records = profileContent[type] || [];
+    if (!panel || !records.length) return;
+    panel.innerHTML = [
+      '<section class="lp-section-block lp-overview-section lp-theme-overview">',
+      sectionTitle(title, countLabel),
+      '<div class="lp-list">',
+      records.map(profileContentRow).join(""),
+      "</div>",
+      "</section>"
+    ].join("");
+  }
+
+  function profileContentRow(record) {
+    const meta = [record.subtitle, record.body, record.tags.join(", ")].filter(Boolean).join(" - ");
+    return [
+      '<div class="lp-row is-static">',
+      '<span>',
+      '<span class="lp-row-title">' + escapeHtml(record.title || record.recordKey || "Untitled") + "</span>",
+      meta ? '<span class="lp-row-meta">' + escapeHtml(meta) + "</span>" : "",
+      "</span>",
+      "</div>"
+    ].join("");
+  }
+
   function renderOverview() {
     renderedPanels.add("overview");
     const rangedClasses = currentClasses();
@@ -835,6 +919,14 @@
     });
     root.querySelectorAll("[data-profile-panel]").forEach((panel) => {
       panel.classList.toggle("is-active", panel.dataset.profilePanel === tabName);
+    });
+    scrollProfileToTop();
+  }
+
+  function scrollProfileToTop() {
+    requestAnimationFrame(() => {
+      const top = root.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top, behavior: "auto" });
     });
   }
 

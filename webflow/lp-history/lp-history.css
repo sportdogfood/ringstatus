@@ -76,12 +76,27 @@
     width: 100%;
   }
 
+  #lp-history-app .lp-profile-panel[data-profile-panel="riding"] .lp-shell {
+    display: grid;
+    gap: 14px;
+  }
+
   #lp-history-app .lp-header {
     display: flex;
     justify-content: space-between;
     gap: 24px;
     align-items: flex-start;
     padding-bottom: 12px;
+  }
+
+  #lp-history-app .lp-riding-header {
+    align-items: flex-end;
+    margin: 0;
+    padding: 18px 20px;
+    border: 1px solid var(--lp-border);
+    border-radius: 8px;
+    background: var(--lp-surface);
+    box-shadow: var(--lp-card-shadow);
   }
 
   #lp-history-app .lp-header-copy {
@@ -125,6 +140,20 @@
     font-weight: 600;
     line-height: 0.95em;
     letter-spacing: -0.06em;
+  }
+
+  #lp-history-app .lp-riding-header h1 {
+    font-size: clamp(28px, 3vw, 44px);
+  }
+
+  #lp-history-app .lp-riding-header .lp-subtitle {
+    margin-bottom: 0;
+    font-size: 15px;
+  }
+
+  #lp-history-app .lp-riding-header .lp-summary-row p {
+    font-size: 15px;
+    font-weight: 600;
   }
 
   #lp-history-app .lp-summary-row {
