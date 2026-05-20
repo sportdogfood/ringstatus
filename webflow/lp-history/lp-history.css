@@ -284,6 +284,23 @@
     padding: 20px 0;
   }
 
+  #lp-history-app .lp-profile-tabs {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    padding-bottom: 10px;
+  }
+
+  #lp-history-app .lp-profile-tabs .lp-tab {
+    min-height: 76px;
+  }
+
+  #lp-history-app .lp-history-tabs {
+    padding-top: 0;
+  }
+
+  #lp-history-app .lp-profile-panel > .lp-section-block {
+    overflow: hidden;
+  }
+
   #lp-history-app .lp-tab {
     display: flex;
     flex-direction: column;
@@ -430,6 +447,10 @@
     line-height: 0.9em;
     letter-spacing: -0.02em;
     text-transform: uppercase;
+  }
+
+  #lp-history-app .lp-profile-tabs .lp-tab-value {
+    font-size: clamp(20px, 2.1vw, 30px);
   }
 
   #lp-history-app .lp-tab-color {
@@ -1711,6 +1732,10 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    #lp-history-app .lp-profile-tabs {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     #lp-history-app .lp-grid {
       grid-template-columns: 1fr;
     }
@@ -1780,6 +1805,10 @@
 
     #lp-history-app .lp-tab {
       min-height: 78px;
+    }
+
+    #lp-history-app .lp-profile-tabs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     #lp-history-app .lp-date-filter {

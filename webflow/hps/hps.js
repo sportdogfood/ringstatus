@@ -11,15 +11,19 @@
     saveTimers: new Map(),
     activeRecordId: "",
     detailTab: "overview",
+    listDrawerOpen: true,
     detailStatus: ""
   };
 
   root.innerHTML = shell();
+  updateListDrawer();
 
   const els = {
     count: Array.from(root.querySelectorAll("[data-th-count]")),
     status: root.querySelector("[data-th-status]"),
     list: root.querySelector("[data-th-list]"),
+    listDrawer: root.querySelector("[data-list-drawer]"),
+    listDrawerToggle: root.querySelector("[data-toggle-list-drawer]"),
     modal: root.querySelector("[data-modal]"),
     modalCard: root.querySelector(".lp-modal-card"),
     modalContent: root.querySelector("[data-modal-content]")
@@ -310,6 +314,18 @@
       return;
     }
 
+    if (event.target.closest("[data-toggle-list-drawer]")) {
+      state.listDrawerOpen = !state.listDrawerOpen;
+      updateListDrawer();
+      return;
+    }
+
+    if (event.target.closest("[data-close-list-drawer]")) {
+      state.listDrawerOpen = false;
+      updateListDrawer();
+      return;
+    }
+
     const stateButton = event.target.closest("[data-toggle-state]");
     if (stateButton) {
       toggleRecordState(stateButton.dataset.toggleState, stateButton.dataset.nextState);
@@ -482,6 +498,17 @@
     if (panel) panel.hidden = !panel.hidden;
   }
 
+  function updateListDrawer() {
+    root.classList.toggle("is-list-drawer-open", state.listDrawerOpen);
+    const toggle = root.querySelector("[data-toggle-list-drawer]");
+    const drawer = root.querySelector("[data-list-drawer]");
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", state.listDrawerOpen ? "true" : "false");
+      toggle.textContent = state.listDrawerOpen ? "Hide list" : "Show list";
+    }
+    if (drawer) drawer.setAttribute("aria-hidden", state.listDrawerOpen ? "false" : "true");
+  }
+
   function filteredRecords() {
     if (!state.query) return state.records;
     return state.records.filter((record) => {
@@ -498,6 +525,7 @@
             <h1>HPS Horses</h1>
             <p class="lp-subtitle">Horse profiles and status</p>
           </div>
+          <button class="lp-edit-button th-drawer-toggle" type="button" data-toggle-list-drawer aria-expanded="true">Hide list</button>
         </header>
 
         <nav class="lp-tabs" aria-label="Tack horse sections">
@@ -509,7 +537,8 @@
 
         <main class="lp-content">
           <section class="lp-panel is-active">
-            <section class="lp-section-block packing-theme-horses">
+            <div class="th-drawer-backdrop" data-close-list-drawer></div>
+            <section class="lp-section-block packing-theme-horses th-list-drawer" data-list-drawer aria-hidden="false">
               <div class="lp-section-title packing-section-title">
                 <h3>Horses</h3>
               </div>

@@ -117,6 +117,12 @@
       return;
     }
 
+    const profileTab = event.target.closest("[data-profile-tab]");
+    if (profileTab) {
+      selectProfileTab(profileTab.dataset.profileTab);
+      return;
+    }
+
     const tab = event.target.closest("[data-tab]");
     if (tab) {
       selectTab(tab.dataset.tab);
@@ -360,19 +366,59 @@
       '<div class="lp-year-filter lp-tag-filter"><span>Tags</span><div class="lp-year-pills lp-tag-pills" data-global-tags></div></div>',
       "</div>",
       "</section>",
-      '<nav class="lp-tabs" aria-label="Competition history sections">',
+      profileTabsMarkup(),
+      '<main class="lp-content lp-profile-content">',
+      profilePanelMarkup("home", true, "Home", "Profile", [
+        ["Name", "Lainey in the Ring"],
+        ["Title", "All USEF Ride History"],
+        ["Subtitle", "Profile overview"],
+        ["Location", "Wellington, FL"],
+        ["Bio main photo", "Ready for profile media"]
+      ]),
+      profilePanelMarkup("bio", false, "Bio", "Profile", [
+        ["Education", "Field ready"],
+        ["Awards", "Field ready"],
+        ["Story", "Field ready"]
+      ]),
+      '<section class="lp-panel lp-profile-panel" data-profile-panel="riding">',
+      '<nav class="lp-tabs lp-history-tabs" aria-label="Competition history sections">',
       '<button class="lp-tab lp-theme-overview is-active" type="button" data-tab="overview" aria-selected="true"><span class="lp-tab-value">Overview</span><span class="lp-tab-label">Summary</span><span class="lp-tab-color"><input type="color" data-theme-color="overview" value="#46332b" aria-label="Overview color"></span></button>',
       '<button class="lp-tab lp-theme-videos" type="button" data-tab="videos" aria-selected="false"><span class="lp-tab-value" data-tab-count="videos"></span><span class="lp-tab-label">Videos</span><span class="lp-tab-color"><input type="color" data-theme-color="videos" value="#003d80" aria-label="Videos color"></span></button>',
       '<button class="lp-tab lp-theme-horses" type="button" data-tab="horses" aria-selected="false"><span class="lp-tab-value" data-tab-count="horses"></span><span class="lp-tab-label">Horses</span><span class="lp-tab-color"><input type="color" data-theme-color="horses" value="#005c2a" aria-label="Horses color"></span></button>',
       '<button class="lp-tab lp-theme-competitions" type="button" data-tab="competitions" aria-selected="false"><span class="lp-tab-value" data-tab-count="competitions"></span><span class="lp-tab-label">Competitions</span><span class="lp-tab-color"><input type="color" data-theme-color="competitions" value="#4e1f76" aria-label="Competitions color"></span></button>',
       '<button class="lp-tab lp-theme-classes" type="button" data-tab="classes" aria-selected="false"><span class="lp-tab-value" data-tab-count="classes"></span><span class="lp-tab-label">Classes</span><span class="lp-tab-color"><input type="color" data-theme-color="classes" value="#8f1116" aria-label="Classes color"></span></button>',
       "</nav>",
-      '<main class="lp-content">',
+      '<div class="lp-history-panels">',
       '<section class="lp-panel is-active" data-panel="overview"></section>',
       '<section class="lp-panel" data-panel="videos"></section>',
       '<section class="lp-panel" data-panel="horses"></section>',
       '<section class="lp-panel" data-panel="competitions"></section>',
       '<section class="lp-panel" data-panel="classes"></section>',
+      "</div>",
+      "</section>",
+      profilePanelMarkup("horses-profile", false, "Horses", "Profile", [
+        ["Horse profiles", "Profile-card feed ready"],
+        ["Images", "Use enrichment image URLs"],
+        ["Type", "Pony / horse profile fields"],
+        ["Disciplines", "Hunters, jumpers, equitation"]
+      ]),
+      profilePanelMarkup("media", false, "Media", "Photos and video", [
+        ["Photos", "Gallery feed ready"],
+        ["Videos", "Video links and playlists"],
+        ["Carousel", "Favorite media display"],
+        ["Testimonials", "Field ready"]
+      ]),
+      profilePanelMarkup("resume", false, "Resume", "USEF and results", [
+        ["USEF ID", "Ready for profile field"],
+        ["Rider ID", "Ready for profile field"],
+        ["Basket sync", "Import fields ready"],
+        ["Display groups", "Local / Rated / National templates"]
+      ]),
+      profilePanelMarkup("contact", false, "Contact", "Profile", [
+        ["Email", "Field ready"],
+        ["Phone", "Field ready"],
+        ["Contact form", "Submit label ready"]
+      ]),
       "</main>",
       "</div>",
       '<div class="lp-modal" data-modal hidden>',
@@ -382,6 +428,35 @@
       '<div data-modal-content></div>',
       "</section>",
       "</div>"
+    ].join("");
+  }
+
+  function profileTabsMarkup() {
+    return [
+      '<nav class="lp-tabs lp-profile-tabs" aria-label="Profile sections">',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview is-active" type="button" data-profile-tab="home" aria-selected="true"><span class="lp-tab-value">Home</span><span class="lp-tab-label">Profile</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="bio" aria-selected="false"><span class="lp-tab-value">Bio</span><span class="lp-tab-label">Profile</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="riding" aria-selected="false"><span class="lp-tab-value">Riding</span><span class="lp-tab-label">History</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="horses-profile" aria-selected="false"><span class="lp-tab-value">Horses</span><span class="lp-tab-label">Profile</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="media" aria-selected="false"><span class="lp-tab-value">Media</span><span class="lp-tab-label">Photos / Video</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="resume" aria-selected="false"><span class="lp-tab-value">Resume</span><span class="lp-tab-label">USEF</span></button>',
+      '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="contact" aria-selected="false"><span class="lp-tab-value">Contact</span><span class="lp-tab-label">Info</span></button>',
+      "</nav>"
+    ].join("");
+  }
+
+  function profilePanelMarkup(key, isActive, title, count, rows) {
+    return [
+      '<section class="lp-panel lp-profile-panel' + (isActive ? " is-active" : "") + '" data-profile-panel="' + escapeHtml(key) + '">',
+      '<section class="lp-section-block lp-overview-section lp-theme-overview">',
+      sectionTitle(title, count),
+      '<div class="lp-list">',
+      rows.map((row) => (
+        '<div class="lp-row is-static"><span><span class="lp-row-title">' + escapeHtml(row[0]) + '</span><span class="lp-row-meta">' + escapeHtml(row[1]) + "</span></span></div>"
+      )).join(""),
+      "</div>",
+      "</section>",
+      "</section>"
     ].join("");
   }
 
@@ -767,6 +842,17 @@
     });
     root.querySelectorAll("[data-panel]").forEach((panel) => {
       panel.classList.toggle("is-active", panel.dataset.panel === tabName);
+    });
+  }
+
+  function selectProfileTab(tabName) {
+    root.querySelectorAll("[data-profile-tab]").forEach((tab) => {
+      const isActive = tab.dataset.profileTab === tabName;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+    root.querySelectorAll("[data-profile-panel]").forEach((panel) => {
+      panel.classList.toggle("is-active", panel.dataset.profilePanel === tabName);
     });
   }
 
