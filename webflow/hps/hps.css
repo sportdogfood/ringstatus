@@ -28,17 +28,9 @@
   margin-top: 5px;
 }
 
-#hps-app .th-detail-section .lp-detail-head {
-  margin-bottom: 10px;
-}
-
 #hps-app .lp-modal-card {
   width: min(680px, calc(100vw - 20px));
   padding: 18px 14px 14px;
-}
-
-#hps-app .lp-modal-title {
-  padding-right: 48px;
 }
 
 #hps-app .lp-modal-close {
@@ -48,27 +40,6 @@
 
 #hps-app .th-detail-section {
   margin-top: 14px;
-}
-
-#hps-app .th-detail-section .lp-section-title {
-  min-height: 48px;
-  padding: 9px 12px;
-}
-
-#hps-app .th-detail-section .lp-list {
-  overflow: hidden;
-}
-
-#hps-app .th-detail-section .lp-row.is-detail.packing-control-row {
-  grid-template-columns: 118px minmax(0, 1fr);
-  gap: 7px;
-  min-height: 34px;
-  padding: 8px 12px;
-}
-
-#hps-app .th-detail-section .lp-row.is-detail.packing-control-row .lp-row-title,
-#hps-app .th-detail-section .lp-row.is-detail.packing-control-row .lp-row-meta {
-  min-width: 0;
 }
 
 #hps-app .th-detail-section .packing-inline-choices,
@@ -83,7 +54,7 @@
     padding: 14px 10px 10px;
   }
 
-  #hps-app .th-detail-section .lp-row.is-detail.packing-control-row {
+  #hps-app .th-detail-section .lp-field-row {
     grid-template-columns: 96px minmax(0, 1fr);
     padding: 7px 8px;
   }

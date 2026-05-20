@@ -2371,6 +2371,86 @@ body {
   margin-bottom: 5px;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-profile-head {
+  margin: 0 48px 14px 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-profile-title {
+  margin: 0 0 6px;
+  color: var(--lp-ink);
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 0.95em;
+  letter-spacing: -0.02em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-profile-subtitle {
+  margin: 0;
+  color: var(--lp-muted);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.05em;
+  letter-spacing: -0.02em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-profile-panel {
+  overflow: hidden;
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 8px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-grid {
+  display: grid;
+  width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 12px;
+  border-top: 1px solid var(--lp-border);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-row:first-child {
+  border-top: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-row:nth-child(even) {
+  background: rgba(175, 175, 175, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-label,
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-value {
+  min-width: 0;
+  font-family: inherit;
+  letter-spacing: -0.02em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-label {
+  color: var(--lp-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 0.95em;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-value {
+  color: var(--lp-ink);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.05em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-field-value .lp-edit-choice-row {
+  gap: 7px;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-detail-group-title {
   margin: 10px 0 5px;
   font-size: 13px;

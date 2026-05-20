@@ -111,18 +111,16 @@
     const age = firstValue(fields, ["horse_age", "age", "Age"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
+    const subtitle = [usef ? `USEF ${usef}` : "", recordKey].filter(Boolean).join(" - ");
 
     return `
-      <div class="lp-detail-head">
-        <h2 class="lp-modal-title">${escapeHtml(name)}</h2>
-        <p class="lp-row-meta">${[usef ? `USEF ${usef}` : "", recordKey].filter(Boolean).map(escapeHtml).join(" - ")}</p>
+      <div class="lp-profile-head">
+        <h2 class="lp-profile-title">${escapeHtml(name)}</h2>
+        <p class="lp-profile-subtitle">${escapeHtml(subtitle)}</p>
       </div>
 
-      <section class="lp-section-block packing-theme-horses packing-detail th-detail-section">
-        <div class="lp-section-title packing-section-title">
-          <h3>Detail</h3>
-        </div>
-        <div class="lp-list" data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
+      <section class="lp-profile-panel packing-theme-horses packing-detail th-detail-section">
+        <div class="lp-field-grid" data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
           ${detailSaveStatus()}
           ${detailStateRow(record.id, currentState)}
           ${detailEditRow("show_name", "Show name", showName)}
@@ -145,18 +143,18 @@
 
   function detailSaveStatus() {
     return `
-      <div class="lp-row is-static is-detail packing-control-row th-save-status-row">
-        <span class="lp-row-title">Save</span>
-        <span class="lp-row-meta" data-th-detail-status>${escapeHtml(state.detailStatus || "Changes save to Airtable.")}</span>
+      <div class="lp-field-row th-save-status-row">
+        <span class="lp-field-label">Save</span>
+        <span class="lp-field-value" data-th-detail-status>${escapeHtml(state.detailStatus || "Changes save to Airtable.")}</span>
       </div>
     `;
   }
 
   function detailStateRow(recordId, currentState) {
     return `
-      <div class="lp-row is-static is-detail packing-control-row th-detail-edit">
-        <span class="lp-row-title">State</span>
-        <span class="lp-row-meta">
+      <div class="lp-field-row th-detail-edit">
+        <span class="lp-field-label">State</span>
+        <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             ${["active", "inactive"].map((choice) => `
               <label class="lp-edit-choice">
@@ -172,18 +170,18 @@
 
   function detailRow(label, value) {
     return `
-      <div class="lp-row is-static is-detail packing-control-row">
-        <span class="lp-row-title">${escapeHtml(label)}</span>
-        <span class="lp-row-meta">${value}</span>
+      <div class="lp-field-row">
+        <span class="lp-field-label">${escapeHtml(label)}</span>
+        <span class="lp-field-value">${value}</span>
       </div>
     `;
   }
 
   function detailEditRow(fieldName, label, value, type = "text") {
     return `
-      <div class="lp-row is-static is-detail packing-control-row th-detail-edit">
-        <span class="lp-row-title">${escapeHtml(label)}</span>
-        <span class="lp-row-meta">
+      <div class="lp-field-row th-detail-edit">
+        <span class="lp-field-label">${escapeHtml(label)}</span>
+        <span class="lp-field-value">
           <input class="lp-edit-input th-input" type="${escapeAttr(type)}" data-th-field="${escapeAttr(fieldName)}" value="${escapeAttr(value)}">
         </span>
       </div>
@@ -194,9 +192,9 @@
     const current = String(value || "").trim().toLowerCase();
     const name = `choice-${fieldName}`;
     return `
-      <div class="lp-row is-static is-detail packing-control-row th-detail-edit">
-        <span class="lp-row-title">${escapeHtml(label)}</span>
-        <span class="lp-row-meta">
+      <div class="lp-field-row th-detail-edit">
+        <span class="lp-field-label">${escapeHtml(label)}</span>
+        <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             ${choices.map((choice) => {
               const checked = current === choice.toLowerCase() ? " checked" : "";
@@ -216,9 +214,9 @@
   function detailMultiChoiceRow(fieldName, label, value, choices) {
     const current = new Set(String(value || "").split(",").map((item) => item.trim().toLowerCase()).filter(Boolean));
     return `
-      <div class="lp-row is-static is-detail packing-control-row th-detail-edit">
-        <span class="lp-row-title">${escapeHtml(label)}</span>
-        <span class="lp-row-meta">
+      <div class="lp-field-row th-detail-edit">
+        <span class="lp-field-label">${escapeHtml(label)}</span>
+        <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             ${choices.map((choice) => {
               const checked = current.has(choice.toLowerCase()) ? " checked" : "";
