@@ -553,3 +553,498 @@ pid
 ```
 
 The implementation should use the confirmed field name rather than guessing.
+
+## HPS Mobile Drawer/Profile Layout Lock
+
+Status: local preview lock, created in `webflow/hps/hps.js` and `webflow/hps/hps.css`.
+
+This section documents the current HPS preview structure so future work does not drift back into improvised spacing or fake shell offsets.
+
+### Current HPS Shell Structure
+
+The horse list opener and the list panel must live inside one wrapper:
+
+```html
+<div class="th-hps-module">
+  <button class="th-hps-toggle">...</button>
+  <div class="lp-shell th-hps-shell" data-hps-module-shell>
+    <main class="lp-content">...</main>
+  </div>
+</div>
+```
+
+The wrapper is the moving unit. Do not position the toggle and the list independently.
+
+### Drawer Behavior
+
+- `.th-hps-module` is fixed at the top right.
+- `.th-hps-module` uses horizontal flex and aligns children to the top.
+- Closed state: wrapper sits offscreen to the right.
+- Open state: `#hps-app.is-hps-open .th-hps-module` moves the wrapper onscreen.
+- The toggle is a flex child, not an absolute child.
+- The shell is a flex child, not a fake spacer.
+- `.lp-content` is static inside the shell. Do not use absolute/relative positioning on `.lp-content` for this drawer.
+
+### Shell Spacing Rules
+
+The shared `.lp-shell` class brings inherited padding and border that do not work for this drawer. HPS overrides this intentionally:
+
+```css
+#hps-app .th-hps-shell {
+  padding: 0;
+  border: 0;
+}
+```
+
+Do not reintroduce shell padding/border as a layout spacer. If the drawer needs spacing, add it to the correct child.
+
+### Toggle Contract
+
+The opener must not use the shared tab class stack.
+
+Use:
+
+```html
+<button class="th-hps-toggle">
+  <span class="th-hps-toggle-count" data-th-count>0</span>
+  <span class="th-hps-toggle-label">Horses</span>
+</button>
+```
+
+Do not use:
+
+```text
+lp-tab packing-tab packing-theme-horses th-hps-toggle
+```
+
+The opener count should render as `64` over `Horses`, not `64 shown Horses`.
+
+### Hidden Public Shell Pieces
+
+Inside the HPS list drawer, these shared shell pieces are hidden:
+
+```text
+.lp-header
+.lp-tabs
+.lp-section-title.packing-section-title
+```
+
+The list drawer should start with the sticky search toolbar and then the horse list.
+
+### Sticky List Body
+
+- `.packing-tools.th-toolbar` is sticky at the top of the list panel.
+- `.lp-list` scrolls under the sticky toolbar.
+- The list panel is capped to the HPS drawer width.
+
+### Modal/Profile Structure
+
+The detail modal inner content is a four-row grid:
+
+```text
+top
+tabs
+body
+footer
+```
+
+The HPS detail markup uses:
+
+```html
+<div class="lp-profile-shell">
+  <div class="lp-profile-head th-profile-top">...</div>
+  <div class="lp-profile-tabs th-profile-tabs">...</div>
+  <section class="lp-profile-panel">...</section>
+  <div class="lp-profile-modal-footer th-profile-footer">...</div>
+</div>
+```
+
+The modal card is capped at `400px`, offset from the right by `16px`, and has `min-height: 95vh`.
+
+The close button is absolute and must stay above modal content:
+
+```css
+#hps-app .lp-modal-close {
+  position: absolute;
+  z-index: 201;
+}
+```
+
+### Modal Body Grid
+
+The modal body and active tab panel are one-column grids aligned to the top:
+
+```text
+display: grid
+grid-auto-rows: auto
+align-content: start
+place-content: start stretch
+```
+
+Editable field rows in the profile body are fixed to `63px`.
+
+Profile body row padding is controlled in the HPS CSS only. Do not re-add nested left/right padding through shared shell or record wrappers.
+
+### Footer/State Row
+
+The state row and save status row are grouped in:
+
+```html
+<div class="lp-profile-modal-footer th-profile-footer">...</div>
+```
+
+The active/inactive state row is currently hidden in the modal footer.
+
+The save status footer remains visible.
+
+### Verification For This Layout
+
+Before publishing a change to this layout:
+
+1. Open `http://127.0.0.1:8822/webflow/hps/hps-preview.html`.
+2. Confirm the drawer opens/closes as one flex unit.
+3. Confirm the opener moves with the drawer.
+4. Confirm the list loads 64 horses for tenant `8778`.
+5. Confirm clicking a horse opens the 400px right modal.
+6. Confirm modal tabs do not break the four-row structure.
+7. Run:
+
+```powershell
+node --check webflow\hps\hps.js
+```
+
+Do not push or publish this layout without rechecking the preview.
+
+## Step By Step: Duplicate HPS For A Similar Connector
+
+Use this when creating a similar Webflow/Airtable connector for another dataset, such as riders, trainers, trips, packing, turnout, or tack.
+
+The goal is to reuse the HPS pattern without copying HPS-specific data assumptions into the new module.
+
+### 1. Define The New Connector Name
+
+Choose one short connector prefix.
+
+Examples:
+
+```text
+hps
+rps
+tps
+pack
+tack
+turnout
+```
+
+Decide these names before coding:
+
+```text
+connector prefix
+root id
+window config name
+api path
+source Airtable table
+source Airtable view rule
+change log table
+Webflow page slug
+static asset folder
+```
+
+Example HPS values:
+
+```text
+prefix: hps
+root id: hps-app
+config: window.HPS_CONFIG
+api path: /test/hps/horses
+source table: ww_horses
+view rule: hps_<tenant_id>
+change log table: hp_cls
+page slug: hps-8778
+asset folder: webflow/hps
+```
+
+### 2. Confirm Airtable Tables And Views
+
+For a tenant-scoped connector, create or confirm:
+
+```text
+source table
+tenant view
+change log table
+active_tenants table/view if tenant gating is required
+```
+
+For HPS:
+
+```text
+source table: ww_horses
+tenant view: hps_8778
+change log table: hp_cls
+tenant list: active_tenants / active_tenants
+```
+
+For a new connector, do not guess the field names. Confirm:
+
+```text
+primary record name field
+record id/key field
+tenant id field
+editable fields
+checkbox fields
+linked-record fields
+lookup fields
+fields allowed for PATCH
+fields allowed for logs
+```
+
+### 3. Define The Allowed Fields
+
+Create the allowed edit field list before enabling saves.
+
+For each field, define:
+
+```text
+field name in Airtable
+input type
+display label
+allowed choices if pill/select
+whether it is writable
+whether it should be logged
+```
+
+Do not PATCH lookup fields, formulas, rollups, or display-only fields.
+
+If a field has both a string version and linked-record version, decide which one the app writes. Document it before implementing.
+
+### 4. Copy The Frontend Folder
+
+Copy the HPS frontend folder only after the data contract is clear.
+
+Example:
+
+```text
+webflow/hps
+-> webflow/<new-prefix>
+```
+
+Rename files:
+
+```text
+hps.js
+hps.css
+hps-preview.html
+hps-8778-webflow-embed.html
+```
+
+to:
+
+```text
+<new-prefix>.js
+<new-prefix>.css
+<new-prefix>-preview.html
+<new-prefix>-<tenant_id>-webflow-embed.html
+```
+
+### 5. Rename Public App Names
+
+Update only public-facing names first:
+
+```text
+#hps-app
+window.HPS_CONFIG
+HPS Horses
+Horse profiles and status
+/test/hps/horses
+webflow/hps/hps.css
+webflow/hps/hps.js
+```
+
+Do not rename shared CSS classes such as:
+
+```text
+lp-*
+packing-*
+```
+
+Those are shared brand/skeleton hooks unless a planned global CSS alias pass is approved.
+
+### 6. Update The Webflow Embed
+
+Every Webflow page needs:
+
+```html
+<div id="<root-id>">Loading...</div>
+
+<script>
+  window.<CONFIG_NAME> = {
+    tenantId: "<tenant_id>",
+    apiUrl: "https://ringstatus.webflow.io/test/<connector>/<route>"
+  };
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@<commit-sha>/webflow/packing-worksheet/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@<commit-sha>/webflow/<connector>/<connector>.css">
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@<commit-sha>/webflow/<connector>/<connector>.js"></script>
+```
+
+For tenant pages, change only:
+
+```text
+tenantId
+page slug/title
+optional visible title/subtitle
+```
+
+Do not create a separate JS file per tenant unless the behavior is actually different.
+
+### 7. Copy Or Create The API Route
+
+Create the matching Webflow Cloud route.
+
+Example HPS source:
+
+```text
+webflow-cloud-test/src/pages/hps/horses.js
+```
+
+New connector example:
+
+```text
+webflow-cloud-test/src/pages/<connector>/<route>.js
+```
+
+Update:
+
+```text
+table name
+view name rule
+tenant validation
+allowed fields
+change log table
+change log field names
+response source labels
+health output
+```
+
+### 8. Add Environment Variables
+
+Use connector-specific env names.
+
+Example HPS:
+
+```text
+AIRTABLE_HPS_HORSES_TABLE=ww_horses
+AIRTABLE_HPS_VIEW_PREFIX=hps_
+AIRTABLE_HPS_CHANGE_LOG_TABLE=hp_cls
+AIRTABLE_HPS_ACTIVE_TENANTS_TABLE=active_tenants
+AIRTABLE_HPS_ACTIVE_TENANTS_VIEW=active_tenants
+```
+
+For a new connector, create the same pattern with the new prefix.
+
+Do not reuse HPS env names for another module.
+
+### 9. Update Health Output
+
+Add the new connector to:
+
+```text
+webflow-cloud-test/src/pages/health.js
+```
+
+Health should confirm:
+
+```text
+endpoint
+source table
+view prefix or fixed view
+change log table
+active tenant table/view if used
+```
+
+### 10. Verify GET Before PATCH
+
+Test GET first:
+
+```powershell
+Invoke-RestMethod "https://ringstatus.webflow.io/test/<connector>/<route>?tenantId=<tenant_id>"
+```
+
+Confirm:
+
+```text
+ok=true
+tenantId matches
+source table matches
+source view matches
+records load
+record count is expected
+```
+
+Do not test PATCH until GET and allowed fields are confirmed.
+
+### 11. Verify Local Preview
+
+Open the local preview:
+
+```text
+http://127.0.0.1:8822/webflow/<connector>/<connector>-preview.html
+```
+
+Confirm:
+
+```text
+records load
+list opens/closes
+search works
+detail modal opens
+tabs do not break layout
+save footer is visible
+styling still uses shared CSS cadence
+```
+
+### 12. Verify One Controlled Edit
+
+Only after approval, test one small edit.
+
+Confirm:
+
+```text
+source table record updates
+change log table gets one row
+tenant_id is logged
+field name is logged
+old/new values are logged if available
+no disallowed fields are accepted
+```
+
+### 13. Publish
+
+After local preview and live endpoint pass:
+
+```text
+commit
+push
+copy commit SHA
+update Webflow embed asset URLs
+publish Webflow
+test published page
+```
+
+### 14. Connector Duplication Checklist
+
+Before calling a duplicate connector stable:
+
+1. Data contract is documented.
+2. Allowed fields are documented.
+3. Webflow embed uses the new root/config/API.
+4. JS/CSS public names use the new connector name.
+5. Shared CSS classes remain intact.
+6. API route uses the correct Airtable table/view/log table.
+7. Health reports the connector.
+8. GET returns the expected records.
+9. Local preview loads.
+10. Published Webflow page loads.
+11. One approved PATCH writes the table and log.
+12. README is updated with exact page, endpoint, and table names.

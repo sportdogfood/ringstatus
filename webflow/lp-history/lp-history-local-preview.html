@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LP History Local Preview</title>
+  <link rel="stylesheet" href="./lp-history.css">
+</head>
+<body>
+  <div id="lp-history-app">Loading LP history...</div>
+  <script>
+    window.LP_HISTORY_CONFIG = {
+      mode: "edit",
+      historyUrl: "./lp-history-history.json",
+      layerUrl: "./lp-history-layer.json",
+      enrichmentUrl: "https://ringstatus.webflow.io/test/lp-history/enrichment",
+      profileUrl: "https://ringstatus.webflow.io/test/lp-profile/content"
+    };
+  </script>
+  <script src="./lp-history.js"></script>
+</body>
+</html>

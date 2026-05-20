@@ -40,7 +40,7 @@ export const POST = async ({ request }) => {
   const airtable = airtableConfig();
   if (!airtable.ok) return json({ ok: false, error: airtable.error }, 500);
 
-  const payload = await readJson(request);
+  const payload = normalizePayload(await readJson(request));
   const validation = validatePayload(payload);
   if (!validation.ok) return json({ ok: false, error: validation.error }, 400);
 
@@ -105,22 +105,19 @@ async function listAirtableRecords(airtable) {
 }
 
 async function upsertContentRecord(airtable, schema, payload) {
-  const recordKey = String(payload.record_key || payload.recordKey || "").trim();
-  const recordType = String(payload.record_type || payload.recordType || "").trim();
+  const recordKey = payload.recordKey;
+  const recordType = payload.recordType;
   const fields = filterAirtableFields(schema, airtable.table, compactFields({
-    ...objectValue(payload.fields),
+    ...objectValue(payload.data),
     record_key: recordKey,
     record_type: recordType,
-    title: payload.title,
-    subtitle: payload.subtitle,
-    body: payload.body,
-    image_url: payload.image_url,
-    video_url: payload.video_url,
-    sort_order: numericOrOriginal(payload.sort_order),
-    state: payload.state,
-    status: normalizeArray(payload.status),
-    tags: normalizeArray(payload.tags),
-    metadata_json: payload.metadata_json || JSON.stringify(objectValue(payload.metadata || {})),
+    state: payload.recordState,
+    record_state: payload.recordState,
+    status: payload.status,
+    tags: payload.tags,
+    payload_json: JSON.stringify(payload.data || {}),
+    raw_payload: JSON.stringify(payload.raw || {}),
+    metadata_json: JSON.stringify(objectValue(payload.metadata || {})),
     updated_at: new Date().toISOString()
   }));
 
@@ -159,8 +156,8 @@ async function upsertContentRecord(airtable, schema, payload) {
 
 async function createChangeLogRecord(airtable, schema, payload, saved) {
   const changedAt = new Date().toISOString();
-  const recordKey = String(payload.record_key || payload.recordKey || "").trim();
-  const recordType = String(payload.record_type || payload.recordType || "").trim();
+  const recordKey = payload.recordKey;
+  const recordType = payload.recordType;
   const fields = filterAirtableFields(schema, airtable.logTable, compactFields({
     record_key: `log:${recordKey}:${Date.now()}`,
     source_record_key: recordKey,
@@ -168,7 +165,9 @@ async function createChangeLogRecord(airtable, schema, payload, saved) {
     field_name: payload.field_name || payload.fieldName || "",
     old_value: stringifyValue(payload.old_value ?? payload.oldValue),
     new_value: stringifyValue(payload.new_value ?? payload.newValue),
-    change_payload: JSON.stringify(payload),
+    change_payload: JSON.stringify(payload.raw || payload),
+    payload_json: JSON.stringify(payload.data || {}),
+    raw_payload: JSON.stringify(payload.raw || {}),
     changed_at: changedAt,
     source: payload.source || "lp-profile-content",
     page_url: payload.page_url || payload.pageUrl || "",
@@ -220,9 +219,51 @@ async function getBaseSchema(airtable) {
 
 function validatePayload(payload) {
   if (!payload || typeof payload !== "object") return { ok: false, error: "invalid_payload" };
-  if (!String(payload.record_key || payload.recordKey || "").trim()) return { ok: false, error: "missing_record_key" };
-  if (!String(payload.record_type || payload.recordType || "").trim()) return { ok: false, error: "missing_record_type" };
+  if (!payload.recordKey) return { ok: false, error: "missing_record_key" };
+  if (!payload.recordType) return { ok: false, error: "missing_record_type" };
   return { ok: true };
+}
+
+function normalizePayload(payload) {
+  const raw = payload && typeof payload === "object" ? payload : {};
+  const data = objectValue(raw.data);
+  const fields = objectValue(raw.fields);
+  const mergedData = {
+    ...fields,
+    ...data
+  };
+  const recordType = String(raw.recordType || raw.record_type || data.record_type || fields.record_type || "").trim();
+  const sourceId = String(data.source_id || fields.source_id || raw.source_id || "").trim();
+  const recordKey = String(raw.recordKey || raw.record_key || data.record_key || fields.record_key || (recordType && sourceId ? `${recordType}:${sourceId}` : "")).trim();
+  const recordState = String(raw.recordState || raw.record_state || data.record_state || data.state || fields.record_state || fields.state || "active").trim() || "active";
+  const status = normalizeArray(raw.status || data.status || fields.status);
+  const tags = normalizeArray(raw.tags || data.tags || fields.tags);
+  return {
+    recordKey,
+    recordType,
+    recordState,
+    status,
+    tags,
+    data: {
+      ...mergedData,
+      record_key: recordKey,
+      record_type: recordType,
+      record_state: recordState,
+      status,
+      tags
+    },
+    metadata: objectValue(raw.metadata),
+    field_name: raw.field_name || raw.fieldName || "",
+    fieldName: raw.fieldName || raw.field_name || "",
+    old_value: raw.old_value ?? raw.oldValue,
+    oldValue: raw.oldValue ?? raw.old_value,
+    new_value: raw.new_value ?? raw.newValue,
+    newValue: raw.newValue ?? raw.new_value,
+    source: raw.source || data.source || "lp-profile-content",
+    page_url: raw.page_url || raw.pageUrl || data.page_url || "",
+    pageUrl: raw.pageUrl || raw.page_url || data.page_url || "",
+    raw
+  };
 }
 
 async function readJson(request) {
