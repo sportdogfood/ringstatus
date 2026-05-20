@@ -78,6 +78,12 @@ hp_cls
 
 Audit rows must include `tenant_id` so edits are isolated and traceable by tenant.
 
+The primary human-readable log label field is:
+
+```text
+change_label
+```
+
 Required log behavior:
 
 1. PATCH the source horse record in `ww_horses`.

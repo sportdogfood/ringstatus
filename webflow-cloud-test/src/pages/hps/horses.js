@@ -203,7 +203,7 @@ async function createChangeLogRecord(airtable, schema, payload, updated) {
     throw new Error(`field_not_found_in_${airtable.logTable}: tenant_id`);
   }
   const fields = filterAirtableFields(schema, airtable.logTable, compactFields({
-    horse: `${payload.horseName || payload.horseKey || payload.horseRecordId || "horse"} - ${payload.fieldName}`,
+    change_label: `${payload.horseName || payload.horseKey || payload.horseRecordId || "horse"} - ${payload.fieldName}`,
     tenant_id: payload.tenantId,
     change_key: changeKey,
     horse_record_id: payload.horseRecordId,
