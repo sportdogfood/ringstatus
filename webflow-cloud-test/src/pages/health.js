@@ -2,8 +2,9 @@ export const config = {
   runtime: "edge"
 };
 
-export const GET = async ({ locals }) => {
-  const env = locals?.runtime?.env || {};
+import { env } from "cloudflare:workers";
+
+export const GET = async () => {
   return json({
     ok: true,
     service: "webflow-cloud-test",

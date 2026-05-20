@@ -2,6 +2,8 @@ export const config = {
   runtime: "edge"
 };
 
+import { env } from "cloudflare:workers";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
@@ -45,27 +47,27 @@ const AIRTABLE_FIELDS = new Set([
 
 export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
 
-export const GET = async ({ locals }) => {
-  const env = getEnv(locals);
+export const GET = async () => {
+  const runtimeEnv = getEnv();
   return json({
     ok: true,
     service: "lp-history-enrichment",
     method: "POST",
     env: {
-      hasAirtableToken: !!env.AIRTABLE_TOKEN,
-      hasAirtableBaseId: !!(env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE),
-      table: env.AIRTABLE_TABLE_LP || env.AIRTABLE_TABLE || ""
+      hasAirtableToken: !!runtimeEnv.AIRTABLE_TOKEN,
+      hasAirtableBaseId: !!(runtimeEnv.AIRTABLE_BASE_ID || runtimeEnv.AIRTABLE_BASE),
+      table: runtimeEnv.AIRTABLE_TABLE_LP || runtimeEnv.AIRTABLE_TABLE || ""
     }
   });
 };
 
-export const POST = async ({ request, locals }) => {
+export const POST = async ({ request }) => {
   const payload = await readJson(request);
   const normalized = normalizePayload(payload);
   const validation = validatePayload(normalized);
   if (!validation.ok) return json({ ok: false, error: validation.error }, 400);
 
-  const airtable = airtableConfig(getEnv(locals));
+  const airtable = airtableConfig(getEnv());
   if (!airtable.ok) return json({ ok: false, error: airtable.error }, 500);
 
   try {
@@ -88,8 +90,8 @@ export const POST = async ({ request, locals }) => {
   }
 };
 
-function getEnv(locals) {
-  return locals?.runtime?.env || {};
+function getEnv() {
+  return env || {};
 }
 
 async function readJson(request) {
