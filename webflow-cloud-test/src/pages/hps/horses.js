@@ -29,6 +29,7 @@ const PROFILE_EDITABLE_FIELDS = [
   "tenant_img",
   "active",
   "priority",
+  "ignore",
   "ww_grooms",
   "ww_exercisers"
 ];
@@ -311,6 +312,9 @@ function airtableFieldValue(fieldName, value) {
   if (fieldName === "horse_age" || fieldName === "age" || fieldName === "Age") {
     const number = Number(value);
     return Number.isFinite(number) && String(value).trim() !== "" ? number : value;
+  }
+  if (fieldName === "ignore") {
+    return String(value || "").trim().toLowerCase() === "active";
   }
   return value;
 }
