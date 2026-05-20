@@ -128,57 +128,63 @@
     const activeTab = state.detailTab || "overview";
 
     return `
-      <div class="lp-profile-head">
-        <h2 class="lp-profile-title">${escapeHtml(name)}</h2>
-        <p class="lp-profile-subtitle">${escapeHtml(subtitle)}</p>
-      </div>
+      <div class="lp-profile-shell">
+        <div class="lp-profile-head th-profile-top">
+          <h2 class="lp-profile-title">${escapeHtml(name)}</h2>
+          <p class="lp-profile-subtitle">${escapeHtml(subtitle)}</p>
+        </div>
 
-      <section class="lp-profile-panel packing-theme-horses packing-detail th-detail-section">
-        <div class="lp-profile-tabs" role="tablist" aria-label="Horse profile sections">
+        <div class="lp-profile-tabs th-profile-tabs" role="tablist" aria-label="Horse profile sections">
           ${profileTab("overview", "Overview", activeTab)}
           ${profileTab("profile", "Profile", activeTab)}
           ${profileTab("contacts", "Contacts", activeTab)}
           ${profileTab("team", "Team", activeTab)}
           ${profileTab("print", "Print", activeTab)}
         </div>
-        <div data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
-          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
-            ${detailEditRow("show_name", "Show name", showName)}
-            ${detailEditRow("barn_name", "Barn name", barnName)}
-            ${detailChoiceRow("ignore", "Ignore", truthy(ignore) ? "Ignore" : "Include", ["Include", "Ignore"])}
+
+        <section class="lp-profile-panel packing-theme-horses packing-detail th-detail-section">
+          <div data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
+            <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
+              ${detailEditRow("show_name", "Show name", showName)}
+              ${detailEditRow("barn_name", "Barn name", barnName)}
+              ${detailChoiceRow("ignore", "Ignore", truthy(ignore) ? "Ignore" : "Include", ["Include", "Ignore"])}
+            </div>
+            <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
+              ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
+              ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
+              ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
+              ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
+              ${detailEditRow("horse_age", "Age", age, "number")}
+            </div>
+            <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
+              ${detailEditRow("emergency_contact", "Emergency contact", emergencyContact)}
+              ${detailEditRow("emergency_phone", "Emergency phone", emergencyPhone)}
+            </div>
+            <div class="lp-field-grid lp-profile-tab-panel${activeTab === "team" ? " is-active" : ""}" data-profile-panel="team">
+              ${detailEditRow("rider_list", "Rider list", riderList)}
+              ${detailEditRow("trainer_id", "Trainer", trainer)}
+              ${detailTextRow("USEF", usef || "-")}
+            </div>
+            <div class="lp-field-grid lp-profile-tab-panel${activeTab === "print" ? " is-active" : ""}" data-profile-panel="print">
+              ${detailPrintRow(record.id, {
+                barnName: barnName || name,
+                showName: showName || name,
+                colorGender: [color, gender].filter(Boolean).join(" "),
+                emergencyContact,
+                emergencyPhone,
+                stallCardInput
+              })}
+            </div>
           </div>
-          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
-            ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
-            ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
-            ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
-            ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
-            ${detailEditRow("horse_age", "Age", age, "number")}
-          </div>
-          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
-            ${detailEditRow("emergency_contact", "Emergency contact", emergencyContact)}
-            ${detailEditRow("emergency_phone", "Emergency phone", emergencyPhone)}
-          </div>
-          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "team" ? " is-active" : ""}" data-profile-panel="team">
-            ${detailEditRow("rider_list", "Rider list", riderList)}
-            ${detailEditRow("trainer_id", "Trainer", trainer)}
-            ${detailTextRow("USEF", usef || "-")}
-          </div>
-          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "print" ? " is-active" : ""}" data-profile-panel="print">
-            ${detailPrintRow(record.id, {
-              barnName: barnName || name,
-              showName: showName || name,
-              colorGender: [color, gender].filter(Boolean).join(" "),
-              emergencyContact,
-              emergencyPhone,
-              stallCardInput
-            })}
-          </div>
+        </section>
+
+        <div class="lp-profile-modal-footer th-profile-footer">
           <div class="lp-field-grid lp-profile-state-grid">
             ${detailStateRow(record.id, currentState)}
           </div>
+          ${detailSaveStatus(record.id)}
         </div>
-        ${detailSaveStatus(record.id)}
-      </section>
+      </div>
     `;
   }
 
@@ -494,7 +500,6 @@
 
   function updateModuleOpen() {
     root.classList.toggle("is-hps-open", state.moduleOpen);
-    if (els.moduleShell) els.moduleShell.hidden = !state.moduleOpen;
     if (els.moduleToggle) {
       els.moduleToggle.setAttribute("aria-expanded", state.moduleOpen ? "true" : "false");
     }
@@ -510,43 +515,46 @@
 
   function shell() {
     return `
-      <button class="lp-tab packing-tab packing-theme-horses th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
-        <span class="lp-tab-value" data-th-count>0</span>
-        <span class="lp-tab-label">Horses</span>
-      </button>
+      <div class="th-hps-module">
+        <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
+          <span class="th-hps-toggle-count" data-th-count>0</span>
+          <span class="th-hps-toggle-label">Horses</span>
+        </button>
 
-      <div class="lp-shell th-hps-shell" data-hps-module-shell>
-        <header class="lp-header">
-          <div class="lp-header-copy">
-            <h1>HPS Horses</h1>
-            <p class="lp-subtitle">Horse profiles and status</p>
-          </div>
-        </header>
+        <div class="lp-shell th-hps-shell" data-hps-module-shell>
+          <header class="lp-header">
+            <div class="lp-header-copy">
+              <h1>HPS Horses</h1>
+              <p class="lp-subtitle">Horse profiles and status</p>
+            </div>
+          </header>
 
-        <nav class="lp-tabs" aria-label="Tack horse sections">
-          <button class="lp-tab packing-tab packing-theme-horses is-active" type="button" aria-selected="true">
-            <span class="lp-tab-value" data-th-count>0</span>
-            <span class="lp-tab-label">Horses</span>
-          </button>
-        </nav>
+          <nav class="lp-tabs" aria-label="Tack horse sections">
+            <button class="lp-tab packing-tab packing-theme-horses is-active" type="button" aria-selected="true">
+              <span class="lp-tab-value" data-th-count>0</span>
+              <span class="lp-tab-label">Horses</span>
+            </button>
+          </nav>
 
-        <main class="lp-content">
-          <section class="lp-panel is-active">
-            <section class="lp-section-block packing-theme-horses">
-              <div class="lp-section-title packing-section-title">
-                <h3>Horses</h3>
-              </div>
-              <div class="packing-tools th-toolbar">
-                <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
-              </div>
-              <div id="sectionRows" class="lp-list" data-th-list></div>
+          <main class="lp-content">
+            <section class="lp-panel is-active">
+              <section class="lp-section-block packing-theme-horses">
+                <div class="lp-section-title packing-section-title">
+                  <h3>Horses</h3>
+                </div>
+                <div class="packing-tools th-toolbar">
+                  <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
+                </div>
+                <div id="sectionRows" class="lp-list" data-th-list></div>
+              </section>
             </section>
-          </section>
-        </main>
-        <footer class="lp-summary-row lp-shell-footer">
-          <p data-th-status>Loading...</p>
-        </footer>
+          </main>
+        </div>
       </div>
+
+      <footer class="lp-summary-row lp-shell-footer th-hps-status-footer">
+        <p data-th-status>Loading...</p>
+      </footer>
 
       <div class="lp-modal" data-modal hidden>
         <div class="lp-modal-backdrop" data-modal-close></div>
@@ -560,7 +568,7 @@
 
   function setCounts(count) {
     els.count.forEach((el) => {
-      el.textContent = el.classList.contains("lp-tab-value") ? String(count) : `${count} shown`;
+      el.textContent = el.classList.contains("lp-tab-value") || el.classList.contains("th-hps-toggle-count") ? String(count) : `${count} shown`;
     });
   }
 

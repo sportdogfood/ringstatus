@@ -14,14 +14,219 @@
   gap: 10px;
 }
 
+#hps-app .th-hps-module {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: min(500px, calc(100vw + 100px));
+  height: 100vh;
+  transition: right 180ms ease;
+}
+
+#hps-app.is-hps-open .th-hps-module {
+  right: 0;
+}
+
+#hps-app .th-hps-status-footer {
+  position: fixed;
+  right: 16px;
+  bottom: 10px;
+  z-index: 99;
+}
+
 #hps-app .th-hps-toggle {
-  justify-self: end;
-  width: min(220px, 100%);
+  appearance: none;
+  flex: 0 0 100px;
+  margin-top: 10px;
+  margin-right: 16px;
+  z-index: 101;
+  display: grid;
+  gap: 4px;
+  width: min(100px, 100%);
+  min-height: 78px;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #0b63c7;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  box-shadow: var(--lp-card-shadow);
+}
+
+#hps-app .th-hps-toggle-count {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 0.95em;
+  letter-spacing: -0.04em;
+}
+
+#hps-app .th-hps-toggle-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 0.95em;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
 }
 
 #hps-app .th-hps-shell {
-  width: min(400px, 100%);
+  flex: 0 0 min(400px, 100vw);
+  width: min(400px, 100vw);
   margin-left: auto;
+  padding: 0;
+  border: 0;
+  display: block;
+}
+
+#hps-app .lp-content {
+  position: static;
+  z-index: 100;
+  width: min(400px, 100vw);
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-right: 0;
+}
+
+#hps-app .packing-tools.th-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 101;
+}
+
+#hps-app .lp-modal {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#hps-app .lp-modal-card {
+  position: relative;
+  right: 0;
+  margin-left: auto;
+  margin-right: 16px;
+  width: min(400px, 100vw);
+  min-height: 95vh;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#hps-app .lp-modal-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  z-index: 201;
+}
+
+#hps-app [data-modal-content] {
+  width: 100%;
+  min-height: calc(95vh - 20px);
+}
+
+#hps-app .lp-profile-shell {
+  display: grid;
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 10px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  row-gap: 1rem;
+  min-height: calc(95vh - 20px);
+}
+
+#hps-app .lp-profile-head {
+  margin-right: 0;
+  margin-bottom: 0;
+  padding-left: 10px;
+}
+
+#hps-app .lp-profile-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: auto;
+  align-content: start;
+  justify-content: start;
+  place-content: start stretch;
+  min-height: 0;
+  overflow-y: auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#hps-app .lp-profile-panel [data-th-record] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#hps-app .lp-profile-tab-panel {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: auto;
+  align-content: start;
+  justify-content: start;
+  place-content: start stretch;
+}
+
+#hps-app .lp-profile-panel .lp-field-row.th-detail-edit {
+  width: 100%;
+  height: 63px;
+  max-height: 63px;
+}
+
+#hps-app .th-profile-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+#hps-app .th-profile-footer .lp-profile-state-grid {
+  display: none;
+  margin-top: 0;
+}
+
+#hps-app .th-profile-footer .lp-field-row.th-detail-edit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  height: auto;
+  max-height: 63px;
+  padding: 6px 12px 5px;
+}
+
+#hps-app .th-profile-footer .lp-field-value {
+  width: 100%;
+}
+
+#hps-app .th-profile-footer .lp-edit-choice-row {
+  width: 100%;
+  min-height: 31px;
+  padding: 0;
+  align-items: center;
+}
+
+#hps-app .th-profile-footer .lp-edit-choice {
+  min-width: 0;
+}
+
+#hps-app .th-profile-footer .lp-edit-pill {
+  min-height: 31px;
+  min-width: 74px;
+  padding: 6px 9px;
+  justify-content: center;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#hps-app .lp-profile-footer {
+  margin-top: 0;
+}
+
+#hps-app .th-hps-shell > .lp-header,
+#hps-app .th-hps-shell > .lp-tabs,
+#hps-app .th-hps-shell .lp-section-title.packing-section-title {
+  display: none;
 }
 
 #hps-app .th-group-label {
@@ -45,13 +250,27 @@
   margin-top: 5px;
 }
 
-#hps-app .th-detail-section {
-  margin-top: 14px;
-}
-
 #hps-app .th-detail-section .packing-inline-choices,
 #hps-app .th-detail-section .lp-edit-choice-row {
   gap: 6px;
+}
+
+#hps-app .lp-profile-panel .packing-inline-choices,
+#hps-app .th-profile-footer .packing-inline-choices {
+  display: flex;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+#hps-app .lp-profile-panel .lp-edit-choice,
+#hps-app .th-profile-footer .lp-edit-choice {
+  flex: 0 0 auto;
+}
+
+#hps-app .lp-profile-panel .lp-edit-pill,
+#hps-app .th-profile-footer .lp-edit-pill {
+  white-space: nowrap;
 }
 
 #hps-app .th-action-pill {
