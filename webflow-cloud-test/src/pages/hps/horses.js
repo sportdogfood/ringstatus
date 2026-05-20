@@ -314,7 +314,8 @@ function airtableFieldValue(fieldName, value) {
     return Number.isFinite(number) && String(value).trim() !== "" ? number : value;
   }
   if (fieldName === "ignore") {
-    return String(value || "").trim().toLowerCase() === "active";
+    const normalized = String(value || "").trim().toLowerCase();
+    return ["ignore", "ignored", "true", "1", "yes", "y"].includes(normalized);
   }
   return value;
 }

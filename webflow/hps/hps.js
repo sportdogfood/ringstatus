@@ -141,7 +141,7 @@
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
             ${detailEditRow("show_name", "Show name", showName)}
             ${detailEditRow("barn_name", "Barn name", barnName)}
-            ${detailChoiceRow("ignore", "Ignore", truthy(ignore) ? "Active" : "Inactive", ["Active", "Inactive"])}
+            ${detailChoiceRow("ignore", "Ignore", truthy(ignore) ? "Ignore" : "Include", ["Include", "Ignore"])}
           </div>
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
             ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
