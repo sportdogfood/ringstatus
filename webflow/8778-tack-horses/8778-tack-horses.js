@@ -1,5 +1,5 @@
 (async () => {
-  const root = document.getElementById("tack-horses-app") || document.getElementById("packing-app") || document.getElementById("lp-history-app");
+  const root = document.getElementById("tack-horses-app");
   if (!root) return;
 
   const config = window.TACK_HORSES_CONFIG || {};
@@ -404,7 +404,7 @@
               <div class="lp-section-title packing-section-title">
                 <h3>Horses</h3>
                 <div class="lp-section-actions">
-                  <button class="lp-filter-toggle th-section-pill" type="button">PDF SECTION</button>
+                  <button class="lp-filter-toggle th-section-pill" type="button">HORSE LIST</button>
                 </div>
               </div>
               <div class="packing-tools th-toolbar">
