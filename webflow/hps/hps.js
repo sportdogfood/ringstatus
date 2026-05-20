@@ -116,6 +116,7 @@
     const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
     const riderList = firstValue(fields, ["rider_list", "Rider List"]);
     const trainer = firstValue(fields, ["trainer_id", "trainer", "Trainer"]);
+    const stallCardInput = firstValue(fields, ["stall_card_input_print", "Stall Card Input Print"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
     const subtitle = [usef ? `USEF ${usef}` : "", recordKey].filter(Boolean).join(" - ");
@@ -133,20 +134,20 @@
           ${profileTab("profile", "Profile", activeTab)}
           ${profileTab("contacts", "Contacts", activeTab)}
           ${profileTab("team", "Team", activeTab)}
-          ${profileTab("system", "System", activeTab)}
+          ${profileTab("print", "Print", activeTab)}
         </div>
         <div data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
-            ${detailStateRow(record.id, currentState)}
             ${detailEditRow("show_name", "Show name", showName)}
             ${detailEditRow("barn_name", "Barn name", barnName)}
+            ${detailTextRow("USEF", usef || "-")}
           </div>
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
-            ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
-            ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
             ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
+            ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
             ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
             ${detailEditRow("horse_age", "Age", age, "number")}
+            ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
           </div>
           <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
             ${detailEditRow("emergency_contact", "Emergency contact", emergencyContact)}
@@ -156,12 +157,21 @@
             ${detailEditRow("rider_list", "Rider list", riderList)}
             ${detailEditRow("trainer_id", "Trainer", trainer)}
           </div>
-          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "system" ? " is-active" : ""}" data-profile-panel="system">
-            ${detailTextRow("USEF", usef || "-")}
-            ${record.id ? detailRow("Airtable", `<a class="th-link" href="https://airtable.com/${escapeAttr(record.id)}" target="_blank" rel="noopener">airtable</a>`) : ""}
+          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "print" ? " is-active" : ""}" data-profile-panel="print">
+            ${detailPrintRow(record.id, {
+              barnName: barnName || name,
+              showName: showName || name,
+              colorGender: [color, gender].filter(Boolean).join(" "),
+              emergencyContact,
+              emergencyPhone,
+              stallCardInput
+            })}
+          </div>
+          <div class="lp-field-grid lp-profile-state-grid">
+            ${detailStateRow(record.id, currentState)}
           </div>
         </div>
-        ${detailSaveStatus()}
+        ${detailSaveStatus(record.id)}
       </section>
     `;
   }
@@ -179,10 +189,32 @@
     return detailRow(label, escapeHtml(value));
   }
 
-  function detailSaveStatus() {
+  function detailPrintRow(recordId, values) {
+    return `
+      <div class="lp-field-row">
+        <span class="lp-field-label">Stall card</span>
+        <span class="lp-field-value">
+          <span class="lp-edit-choice-row packing-inline-choices">
+            <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-toggle="${escapeAttr(recordId)}">Stall card</button>
+          </span>
+          <div class="th-stall-card-panel" data-stall-card-panel="${escapeAttr(recordId)}" hidden>
+            <input class="lp-edit-input" type="text" value="${escapeAttr(values.barnName)}" data-stall-card-field="barnName" aria-label="Barn name">
+            <input class="lp-edit-input" type="text" value="${escapeAttr(values.showName)}" data-stall-card-field="showName" aria-label="Show name">
+            <input class="lp-edit-input" type="text" value="${escapeAttr(values.colorGender)}" data-stall-card-field="colorGender" aria-label="Color gender">
+            <input class="lp-edit-input" type="text" value="${escapeAttr(values.emergencyContact)}" data-stall-card-field="emergencyContact" aria-label="Emergency contact">
+            <input class="lp-edit-input" type="text" value="${escapeAttr(values.emergencyPhone)}" data-stall-card-field="emergencyPhone" aria-label="Emergency phone">
+            <button class="lp-edit-button th-print-button" type="button" data-stall-card-print="${escapeAttr(recordId)}">Print</button>
+          </div>
+        </span>
+      </div>
+    `;
+  }
+
+  function detailSaveStatus(recordId) {
     return `
       <div class="lp-profile-footer th-save-status-row">
         <span data-th-detail-status>${escapeHtml(state.detailStatus || "Changes save to Airtable.")}</span>
+        ${recordId ? `<a class="th-link" href="https://airtable.com/${escapeAttr(recordId)}" target="_blank" rel="noopener">Airtable</a>` : ""}
       </div>
     `;
   }
@@ -285,6 +317,18 @@
     const profileTabButton = event.target.closest("[data-profile-tab]");
     if (profileTabButton) {
       switchProfileTab(profileTabButton.dataset.profileTab);
+      return;
+    }
+
+    const stallCardToggle = event.target.closest("[data-stall-card-toggle]");
+    if (stallCardToggle) {
+      toggleStallCardPanel(stallCardToggle.dataset.stallCardToggle);
+      return;
+    }
+
+    const stallCardPrint = event.target.closest("[data-stall-card-print]");
+    if (stallCardPrint) {
+      window.print();
       return;
     }
 
@@ -431,6 +475,11 @@
     });
   }
 
+  function toggleStallCardPanel(recordId) {
+    const panel = root.querySelector(`[data-stall-card-panel="${cssEscape(recordId)}"]`);
+    if (panel) panel.hidden = !panel.hidden;
+  }
+
   function filteredRecords() {
     if (!state.query) return state.records;
     return state.records.filter((record) => {
@@ -445,7 +494,7 @@
         <header class="lp-header">
           <div class="lp-header-copy">
             <h1>HPS Horses</h1>
-            <p class="lp-subtitle">Horse profile system</p>
+            <p class="lp-subtitle">Horse profiles and status</p>
           </div>
         </header>
 
@@ -461,9 +510,6 @@
             <section class="lp-section-block packing-theme-horses">
               <div class="lp-section-title packing-section-title">
                 <h3>Horses</h3>
-                <div class="lp-section-actions">
-                  <button class="lp-filter-toggle th-section-pill" type="button">HORSE LIST</button>
-                </div>
               </div>
               <div class="packing-tools th-toolbar">
                 <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
@@ -472,7 +518,7 @@
             </section>
           </section>
         </main>
-        <footer class="lp-summary-row th-summary-footer">
+        <footer class="lp-summary-row lp-shell-footer">
           <p data-th-status>Loading...</p>
         </footer>
       </div>
