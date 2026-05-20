@@ -254,7 +254,7 @@
               <div class="lp-section-title">
                 <h3>Horses</h3>
                 <div class="lp-section-actions">
-                  <span class="lp-section-count" data-th-count>0 shown</span>
+                  <span class="th-section-pill">PDF SECTION</span>
                 </div>
               </div>
               <div class="th-toolbar">
