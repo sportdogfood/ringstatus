@@ -1,0 +1,188 @@
+export const config = {
+  runtime: "edge"
+};
+
+import { env } from "cloudflare:workers";
+
+const DEFAULT_TABLE = "ww_horses";
+const DEFAULT_VIEW = "8778-tack-horses";
+const DEFAULT_LOG_TABLE = "horses_change_log";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type,Authorization"
+};
+
+export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
+
+export const GET = async () => {
+  const airtable = getAirtableConfig();
+  if (!airtable.ok) return json({ ok: false, error: airtable.error }, 500);
+
+  try {
+    const records = await listAirtableRecords(airtable, airtable.table, airtable.view);
+    return json({
+      ok: true,
+      source: {
+        table: airtable.table,
+        view: airtable.view
+      },
+      count: records.length,
+      records
+    });
+  } catch (error) {
+    console.error("[8778-tack-horses] load failed", error);
+    return json({
+      ok: false,
+      error: "airtable_load_failed",
+      detail: error instanceof Error ? error.message : String(error)
+    }, 502);
+  }
+};
+
+export const POST = async ({ request }) => {
+  const airtable = getAirtableConfig();
+  if (!airtable.ok) return json({ ok: false, error: airtable.error }, 500);
+
+  const payload = await readJson(request);
+  const validation = validateChange(payload);
+  if (!validation.ok) return json({ ok: false, error: validation.error }, 400);
+
+  try {
+    const logged = await createChangeLogRecord(airtable, payload);
+    return json({
+      ok: true,
+      action: "logged",
+      log: logged
+    });
+  } catch (error) {
+    console.error("[8778-tack-horses] log failed", error);
+    return json({
+      ok: false,
+      error: "airtable_log_failed",
+      detail: error instanceof Error ? error.message : String(error)
+    }, 502);
+  }
+};
+
+function getAirtableConfig() {
+  const token = env.AIRTABLE_TOKEN;
+  const baseId = env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE;
+  const table = env.AIRTABLE_WW_HORSES_TABLE || env.AIRTABLE_HORSES_TABLE || DEFAULT_TABLE;
+  const view = env.AIRTABLE_WW_HORSES_VIEW || env.AIRTABLE_HORSES_VIEW || DEFAULT_VIEW;
+  const logTable = env.AIRTABLE_HORSES_CHANGE_LOG_TABLE || DEFAULT_LOG_TABLE;
+
+  if (!token) return { ok: false, error: "missing_airtable_token" };
+  if (!baseId) return { ok: false, error: "missing_airtable_base_id" };
+
+  return { ok: true, token, baseId, table, view, logTable };
+}
+
+async function listAirtableRecords(airtable, table, view) {
+  const records = [];
+  let offset = "";
+  do {
+    const url = airtableUrl(airtable.baseId, table);
+    url.searchParams.set("pageSize", "100");
+    if (view) url.searchParams.set("view", view);
+    if (offset) url.searchParams.set("offset", offset);
+
+    const response = await fetch(url, { headers: airtableHeaders(airtable.token) });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(`list ${response.status}: ${JSON.stringify(result)}`);
+    }
+
+    records.push(...(result.records || []).map((record) => ({
+      id: record.id,
+      createdTime: record.createdTime,
+      fields: record.fields || {}
+    })));
+    offset = result.offset || "";
+  } while (offset);
+
+  return records;
+}
+
+async function createChangeLogRecord(airtable, payload) {
+  const changedAt = new Date().toISOString();
+  const fields = compactFields({
+    horse_record_id: payload.horseRecordId,
+    horse_key: payload.horseKey,
+    horse_name: payload.horseName,
+    field_name: payload.fieldName,
+    old_value: stringifyValue(payload.oldValue),
+    new_value: stringifyValue(payload.newValue),
+    changed_at: changedAt,
+    source: payload.source || "8778-tack-horses",
+    raw_payload: JSON.stringify(payload)
+  });
+
+  const response = await fetch(airtableUrl(airtable.baseId, airtable.logTable), {
+    method: "POST",
+    headers: {
+      ...airtableHeaders(airtable.token),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ records: [{ fields }], typecast: true })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`log ${response.status}: ${JSON.stringify(result)}`);
+  }
+
+  return {
+    id: result.records?.[0]?.id || "",
+    changedAt
+  };
+}
+
+function validateChange(payload) {
+  if (!payload || typeof payload !== "object") return { ok: false, error: "invalid_payload" };
+  if (!payload.horseRecordId && !payload.horseKey) return { ok: false, error: "missing_horse_identifier" };
+  if (!payload.fieldName) return { ok: false, error: "missing_field_name" };
+  return { ok: true };
+}
+
+async function readJson(request) {
+  const text = await request.text();
+  if (!text) return {};
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {};
+  }
+}
+
+function airtableUrl(baseId, table) {
+  return new URL(`https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(table)}`);
+}
+
+function airtableHeaders(token) {
+  return { Authorization: `Bearer ${token}` };
+}
+
+function compactFields(fields) {
+  return Object.fromEntries(Object.entries(fields).filter(([, value]) => (
+    value !== undefined &&
+    value !== null &&
+    value !== ""
+  )));
+}
+
+function stringifyValue(value) {
+  if (value === undefined || value === null) return "";
+  if (typeof value === "string") return value;
+  return JSON.stringify(value);
+}
+
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data, null, 2) + "\n", {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  });
+}
