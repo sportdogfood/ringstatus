@@ -96,10 +96,10 @@
     const showName = firstValue(fields, ["show_name", "horse", "name", "Horse", "Name"]);
     const barnName = firstValue(fields, ["barn_name", "Barn Name", "barn"]);
     const usef = firstValue(fields, ["usef", "USEF", "usef_id", "USEF ID"]);
-    const color = firstValue(fields, ["horse_color", "color", "Color"]);
-    const gender = firstValue(fields, ["horse_gender", "gender", "Gender"]);
+    const color = firstValue(fields, ["color", "horse_color", "Color"]);
+    const gender = firstValue(fields, ["gender", "horse_gender", "Gender"]);
     const type = firstValue(fields, ["horse_type", "type", "Type"]);
-    const disciplines = firstValue(fields, ["disciplines", "horse_disciplines", "Discipline", "Disciplines"]);
+    const disciplines = firstValue(fields, ["disciplines", "discipline", "horse_disciplines", "Discipline", "Disciplines"]);
     const age = firstValue(fields, ["horse_age", "age", "Age"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
@@ -118,8 +118,8 @@
           ${detailStateRow(record.id, currentState)}
           ${detailEditRow("show_name", "Show name", showName)}
           ${detailEditRow("barn_name", "Barn name", barnName)}
-          ${detailChoiceRow("horse_color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
-          ${detailChoiceRow("horse_gender", "Gender", gender, ["Gelding", "Mare"])}
+          ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
+          ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
           ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
           ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
           ${detailEditRow("horse_age", "Age", age, "number")}
@@ -300,8 +300,8 @@
       if (!response.ok || !result.ok) {
         throw new Error(result.detail || result.error || `Save failed: ${response.status}`);
       }
-      record.fields[change.fieldName] = change.newValue;
-      setStatus(`Saved to horses_change_log at ${new Date().toLocaleTimeString()}.`);
+      record.fields[change.fieldName] = result.updated?.value ?? change.newValue;
+      setStatus(`Saved to Airtable at ${new Date().toLocaleTimeString()} (updated, logged).`);
     } catch (error) {
       console.error("[8778-tack-horses]", error);
       setStatus("Save failed. Check console.");
@@ -313,11 +313,12 @@
     if (!record) return;
     const fields = record.fields || {};
     const fieldName = recordStateField(fields);
-    const oldValue = fields[fieldName] || recordState(record);
-    const name = firstValue(fields, ["show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
+    const oldValue = fields[fieldName] ?? recordState(record);
+    const name = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
+    const nextValue = fieldName === "inactive" ? nextState === "inactive" : nextState;
 
-    fields[fieldName] = nextState;
+    fields[fieldName] = nextValue;
     render();
     if (state.activeRecordId === record.id && !els.modal.hidden) {
       els.modalContent.innerHTML = detail(record);
@@ -326,7 +327,7 @@
     await saveRecordChange(record, {
       fieldName,
       oldValue,
-      newValue: nextState,
+      newValue: nextValue,
       horseKey: recordKey,
       horseName: name
     });
@@ -426,12 +427,21 @@
 
   function recordState(record) {
     const fields = record.fields || {};
+    if (Object.prototype.hasOwnProperty.call(fields, "inactive")) {
+      return truthy(fields.inactive) ? "inactive" : "active";
+    }
     const value = String(firstValue(fields, ["record_state", "Record State", "state", "State", "status", "Status"]) || "inactive").trim().toLowerCase();
     return value === "active" ? "active" : "inactive";
   }
 
   function recordStateField(fields) {
-    return ["record_state", "Record State", "state", "State", "status", "Status"].find((name) => Object.prototype.hasOwnProperty.call(fields, name)) || "record_state";
+    return ["inactive", "record_state", "Record State", "state", "State", "status", "Status"].find((name) => Object.prototype.hasOwnProperty.call(fields, name)) || "record_state";
+  }
+
+  function truthy(value) {
+    if (typeof value === "boolean") return value;
+    const normalized = String(value || "").trim().toLowerCase();
+    return ["1", "true", "yes", "y", "inactive"].includes(normalized);
   }
 
   function escapeHtml(value) {

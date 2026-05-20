@@ -50,17 +50,20 @@ export const POST = async ({ request }) => {
   if (!validation.ok) return json({ ok: false, error: validation.error }, 400);
 
   try {
-    const logged = await createChangeLogRecord(airtable, payload);
+    const schema = await getBaseSchema(airtable);
+    const updated = await updateHorseRecord(airtable, schema, payload);
+    const logged = await createChangeLogRecord(airtable, schema, payload, updated);
     return json({
       ok: true,
-      action: "logged",
+      action: "updated_logged",
+      updated,
       log: logged
     });
   } catch (error) {
-    console.error("[8778-tack-horses] log failed", error);
+    console.error("[8778-tack-horses] save failed", error);
     return json({
       ok: false,
-      error: "airtable_log_failed",
+      error: "airtable_save_failed",
       detail: error instanceof Error ? error.message : String(error)
     }, 502);
   }
@@ -105,9 +108,43 @@ async function listAirtableRecords(airtable, table, view) {
   return records;
 }
 
-async function createChangeLogRecord(airtable, payload) {
+async function updateHorseRecord(airtable, schema, payload) {
+  const fieldName = String(payload.fieldName || "").trim();
+  if (schema?.tables?.[airtable.table] && !schema.tables[airtable.table].has(fieldName)) {
+    throw new Error(`field_not_found_in_${airtable.table}: ${fieldName}`);
+  }
+
+  const value = airtableFieldValue(fieldName, payload.newValue);
+  const response = await fetch(`${airtableUrl(airtable.baseId, airtable.table)}/${encodeURIComponent(payload.horseRecordId)}`, {
+    method: "PATCH",
+    headers: {
+      ...airtableHeaders(airtable.token),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      fields: { [fieldName]: value },
+      typecast: true
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`update ${response.status}: ${JSON.stringify(result)}`);
+  }
+
+  return {
+    id: result.id || payload.horseRecordId,
+    fieldName,
+    value: result.fields?.[fieldName] ?? value,
+    action: "updated"
+  };
+}
+
+async function createChangeLogRecord(airtable, schema, payload, updated) {
   const changedAt = new Date().toISOString();
-  const fields = compactFields({
+  const changeKey = `horse:${payload.horseRecordId || payload.horseKey}:${payload.fieldName}:${Date.now()}`;
+  const fields = filterAirtableFields(schema, airtable.logTable, compactFields({
+    horse: `${payload.horseName || payload.horseKey || payload.horseRecordId || "horse"} - ${payload.fieldName}`,
+    change_key: changeKey,
     horse_record_id: payload.horseRecordId,
     horse_key: payload.horseKey,
     horse_name: payload.horseName,
@@ -116,8 +153,16 @@ async function createChangeLogRecord(airtable, payload) {
     new_value: stringifyValue(payload.newValue),
     changed_at: changedAt,
     source: payload.source || "8778-tack-horses",
-    raw_payload: JSON.stringify(payload)
-  });
+    raw_payload: JSON.stringify({
+      ...payload,
+      update_action: updated?.action || "",
+      update_record_id: updated?.id || ""
+    })
+  }));
+
+  if (!Object.keys(fields).length) {
+    throw new Error(`no_matching_log_fields_in_${airtable.logTable}`);
+  }
 
   const response = await fetch(airtableUrl(airtable.baseId, airtable.logTable), {
     method: "POST",
@@ -134,8 +179,45 @@ async function createChangeLogRecord(airtable, payload) {
 
   return {
     id: result.records?.[0]?.id || "",
+    changeKey,
+    fieldCount: Object.keys(fields).length,
     changedAt
   };
+}
+
+async function getBaseSchema(airtable) {
+  try {
+    const response = await fetch(`https://api.airtable.com/v0/meta/bases/${encodeURIComponent(airtable.baseId)}/tables`, {
+      headers: airtableHeaders(airtable.token)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) return null;
+    const tables = {};
+    for (const table of result.tables || []) {
+      tables[table.name] = new Set((table.fields || []).map((field) => field.name));
+      tables[table.id] = tables[table.name];
+    }
+    return { tables };
+  } catch {
+    return null;
+  }
+}
+
+function filterAirtableFields(schema, table, fields) {
+  const allowed = schema?.tables?.[table];
+  if (!allowed) return fields;
+  return Object.fromEntries(Object.entries(fields).filter(([field]) => allowed.has(field)));
+}
+
+function airtableFieldValue(fieldName, value) {
+  if (fieldName === "disciplines" || fieldName === "horse_disciplines") {
+    return String(value || "").split(",").map((item) => item.trim()).filter(Boolean);
+  }
+  if (fieldName === "horse_age" || fieldName === "age" || fieldName === "Age") {
+    const number = Number(value);
+    return Number.isFinite(number) && String(value).trim() !== "" ? number : value;
+  }
+  return value;
 }
 
 function validateChange(payload) {
