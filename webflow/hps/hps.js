@@ -11,12 +11,11 @@
     saveTimers: new Map(),
     activeRecordId: "",
     detailTab: "overview",
-    listDrawerOpen: true,
+    listDrawerOpen: false,
     detailStatus: ""
   };
 
   root.innerHTML = shell();
-  updateListDrawer();
 
   const els = {
     count: Array.from(root.querySelectorAll("[data-th-count]")),
@@ -24,14 +23,13 @@
     list: root.querySelector("[data-th-list]"),
     listDrawer: root.querySelector("[data-list-drawer]"),
     listDrawerToggle: root.querySelector("[data-toggle-list-drawer]"),
-    modal: root.querySelector("[data-modal]"),
-    modalCard: root.querySelector(".lp-modal-card"),
-    modalContent: root.querySelector("[data-modal-content]")
+    drawerDetail: root.querySelector("[data-drawer-detail]")
   };
 
   root.addEventListener("click", handleClick);
   root.addEventListener("input", handleInput);
   root.addEventListener("change", handleChange);
+  updateListDrawer();
 
   await load();
 
@@ -67,6 +65,7 @@
     els.list.innerHTML = records.length
       ? groupedRows(records)
       : `<div class="lp-row is-static">No horses found.</div>`;
+    updateListDrawer();
   }
 
   function groupedRows(records) {
@@ -179,6 +178,15 @@
         </div>
         ${detailSaveStatus(record.id)}
       </section>
+    `;
+  }
+
+  function detailSheet(record) {
+    return `
+      <div class="th-detail-sheet-head">
+        <button class="lp-modal-close th-detail-sheet-close" type="button" data-close-detail-sheet aria-label="Close detail">x</button>
+      </div>
+      ${detail(record)}
     `;
   }
 
@@ -309,8 +317,8 @@
   }
 
   function handleClick(event) {
-    if (event.target.closest("[data-modal-close]")) {
-      closeModal();
+    if (event.target.closest("[data-close-detail-sheet]")) {
+      closeDetailSheet();
       return;
     }
 
@@ -353,6 +361,7 @@
     const horseButton = event.target.closest("[data-open-horse]");
     if (horseButton) {
       openHorse(horseButton.dataset.openHorse);
+      return;
     }
   }
 
@@ -448,8 +457,8 @@
 
     fields[fieldName] = nextValue;
     render();
-    if (state.activeRecordId === record.id && !els.modal.hidden) {
-      els.modalContent.innerHTML = detail(record);
+    if (state.activeRecordId === record.id && root.classList.contains("is-detail-sheet-open")) {
+      els.drawerDetail.innerHTML = detailSheet(record);
     }
 
     await saveRecordChange(record, {
@@ -467,18 +476,17 @@
     state.activeRecordId = recordId;
     state.detailTab = "overview";
     state.detailStatus = "Changes save to Airtable.";
-    els.modalContent.innerHTML = detail(record);
-    els.modal.hidden = false;
-    document.body.style.overflow = "hidden";
-    requestAnimationFrame(() => els.modalCard?.focus());
+    state.listDrawerOpen = true;
+    els.drawerDetail.innerHTML = detailSheet(record);
+    root.classList.add("is-detail-sheet-open");
+    updateListDrawer();
   }
 
-  function closeModal() {
+  function closeDetailSheet() {
     state.activeRecordId = "";
     state.detailTab = "overview";
-    els.modal.hidden = true;
-    els.modalContent.innerHTML = "";
-    document.body.style.overflow = "";
+    root.classList.remove("is-detail-sheet-open");
+    els.drawerDetail.innerHTML = "";
   }
 
   function switchProfileTab(tabId) {
@@ -504,9 +512,9 @@
     const drawer = root.querySelector("[data-list-drawer]");
     if (toggle) {
       toggle.setAttribute("aria-expanded", state.listDrawerOpen ? "true" : "false");
-      toggle.textContent = state.listDrawerOpen ? "Hide list" : "Show list";
     }
     if (drawer) drawer.setAttribute("aria-hidden", state.listDrawerOpen ? "false" : "true");
+    if (!state.listDrawerOpen) closeDetailSheet();
   }
 
   function filteredRecords() {
@@ -519,48 +527,26 @@
 
   function shell() {
     return `
-      <div class="lp-shell">
-        <header class="lp-header">
-          <div class="lp-header-copy">
-            <h1>HPS Horses</h1>
-            <p class="lp-subtitle">Horse profiles and status</p>
-          </div>
-          <button class="lp-edit-button th-drawer-toggle" type="button" data-toggle-list-drawer aria-expanded="true">Hide list</button>
-        </header>
-
-        <nav class="lp-tabs" aria-label="Tack horse sections">
-          <button class="lp-tab packing-tab packing-theme-horses is-active" type="button" aria-selected="true">
-            <span class="lp-tab-value" data-th-count>0</span>
-            <span class="lp-tab-label">Horses</span>
-          </button>
-        </nav>
-
-        <main class="lp-content">
-          <section class="lp-panel is-active">
-            <div class="th-drawer-backdrop" data-close-list-drawer></div>
-            <section class="lp-section-block packing-theme-horses th-list-drawer" data-list-drawer aria-hidden="false">
-              <div class="lp-section-title packing-section-title">
-                <h3>Horses</h3>
-              </div>
-              <div class="packing-tools th-toolbar">
-                <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
-              </div>
-              <div id="sectionRows" class="lp-list" data-th-list></div>
-            </section>
-          </section>
-        </main>
-        <footer class="lp-summary-row lp-shell-footer">
-          <p data-th-status>Loading...</p>
-        </footer>
+      <div class="th-module-shell">
+        <button class="lp-tab packing-tab packing-theme-horses th-drawer-toggle" type="button" data-toggle-list-drawer aria-expanded="false">
+          <span class="lp-tab-value" data-th-count>0</span>
+          <span class="lp-tab-label">Horses</span>
+        </button>
+        <p class="th-module-status" data-th-status>Loading...</p>
       </div>
 
-      <div class="lp-modal" data-modal hidden>
-        <div class="lp-modal-backdrop" data-modal-close></div>
-        <section class="lp-modal-card" role="dialog" aria-modal="true" tabindex="-1">
-          <button class="lp-modal-close" type="button" data-modal-close aria-label="Close detail">x</button>
-          <div data-modal-content></div>
-        </section>
-      </div>
+      <div class="th-drawer-backdrop" data-close-list-drawer></div>
+      <section class="lp-section-block packing-theme-horses th-list-drawer" data-list-drawer aria-hidden="true">
+        <div class="lp-section-title packing-section-title th-drawer-head">
+          <h3>Horses</h3>
+          <button class="lp-edit-button th-drawer-head-button" type="button" data-toggle-list-drawer>Hide</button>
+        </div>
+        <div class="packing-tools th-toolbar">
+          <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
+        </div>
+        <div id="sectionRows" class="lp-list" data-th-list></div>
+        <div class="th-drawer-detail-sheet" data-drawer-detail></div>
+      </section>
     `;
   }
 
