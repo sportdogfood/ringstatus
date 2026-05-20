@@ -174,6 +174,76 @@ Before declaring the HPS connector ready:
 8. Confirm every edit writes one row to `hp_cls` with `tenant_id`.
 9. Confirm local preview and live Webflow Cloud endpoint still preserve the existing visual style.
 
+## Current Workflow Review
+
+The current workflow has four separate responsibilities:
+
+1. Airtable owns tenant and horse data.
+2. Webflow Cloud owns tenant-scoped API access.
+3. The static Webflow page owns the tenant-specific embed config.
+4. The browser app owns display, inline edits, active/inactive toggles, and visible save feedback.
+
+The stable flow should be:
+
+```text
+Webflow page hps_8778
+  -> embed passes tenantId=8778
+  -> GET /test/hps/horses?tenantId=8778
+  -> API confirms 8778 exists in active_tenants / active_tenants
+  -> API loads ww_horses / hps_8778
+  -> browser shows only 8778 horses
+  -> browser POST includes tenantId=8778
+  -> API confirms the horse is still in ww_horses / hps_8778
+  -> API PATCHes ww_horses
+  -> API writes hp_cls with tenant_id=8778
+```
+
+Minor workflow rules:
+
+- Keep Webflow page creation manual until the first tenant page is stable.
+- Keep one reusable HPS JS/API pair; do not fork per tenant.
+- Keep `ww_horses` as the source table.
+- Keep `hps_<tenant_id>` as the tenant view naming rule.
+- Keep `hp_cls` as the HPS change-log table.
+- Keep the shared brand stylesheet as the visual contract.
+- Do not add feature expansion until tenant isolation, save behavior, and logging are verified live.
+
+## Stability Gate
+
+The project is stable only after all of these are true:
+
+1. `https://ringstatus.webflow.io/test/health` reports:
+
+```text
+hpsEndpoint=/test/hps/horses
+hpsHorsesTable=ww_horses
+hpsViewPrefix=hps_
+hpsChangeLog=hp_cls
+hpsActiveTenantsTable=active_tenants
+hpsActiveTenantsView=active_tenants
+```
+
+2. `GET /test/hps/horses?tenantId=8778` returns records from `ww_horses / hps_8778`.
+3. A bad or inactive tenant id is rejected.
+4. The `hps_8778` Webflow page loads with `#hps-app` and `window.HPS_CONFIG.tenantId = "8778"`.
+5. Active/inactive toggle writes `ww_horses.inactive`.
+6. A detail field edit PATCHes `ww_horses`.
+7. Each save creates one `hp_cls` row with `tenant_id`.
+8. The browser shows success or server error feedback in the detail modal.
+
+Until this gate passes, do not add new display fields, filters, sorting, tenant dashboards, bulk edits, or new page variants.
+
+## Future Tasks After Stability
+
+Add these only after the stability gate passes:
+
+1. Add a tenant setup checklist for creating a new Webflow page such as `hps_19676`.
+2. Add a tenant smoke-test script for `tenantId`, expected view, record count, and active tenant validation.
+3. Add a controlled live-edit verification script that can update a harmless field and confirm the matching `hp_cls` row.
+4. Add clearer health output for active tenant field detection once the actual field name is confirmed.
+5. Consider adding horse-specific CSS aliases only if we need to remove internal `packing-*` class names without changing visuals.
+6. Add future UI tasks only after the first tenant page is stable.
+
 ## Open Schema Confirmation
 
 Before final live validation, confirm the actual active tenant id field name in `active_tenants`.
