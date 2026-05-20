@@ -10,6 +10,7 @@
     query: "",
     saveTimers: new Map(),
     activeRecordId: "",
+    detailTab: "overview",
     detailStatus: ""
   };
 
@@ -46,7 +47,9 @@
       }
       state.records = data.records || [];
       render();
-      setStatus(`Loaded ${state.records.length} horses from ${data.source?.view || "view"} for tenant ${data.tenantId || tenantId}.`);
+      const sourceView = data.source?.view || `hps_${tenantId}`;
+      const sourceTable = data.source?.table || "ww_horses";
+      setStatus(`${sourceTable} - ${sourceView} | Loaded ${state.records.length} horses from ${sourceView} for tenant ${data.tenantId || tenantId}.`);
     } catch (error) {
       console.error("[hps]", error);
       els.list.innerHTML = `<div class="lp-row is-static">Horses failed to load. Check console for [hps].</div>`;
@@ -109,9 +112,14 @@
     const type = firstValue(fields, ["horse_type", "type", "Type"]);
     const disciplines = firstValue(fields, ["disciplines", "discipline", "horse_disciplines", "Discipline", "Disciplines"]);
     const age = firstValue(fields, ["horse_age", "age", "Age"]);
+    const emergencyContact = firstValue(fields, ["emergency_contact", "emergency_contacts", "Emergency Contact"]);
+    const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
+    const riderList = firstValue(fields, ["rider_list", "Rider List"]);
+    const trainer = firstValue(fields, ["trainer_id", "trainer", "Trainer"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
     const subtitle = [usef ? `USEF ${usef}` : "", recordKey].filter(Boolean).join(" - ");
+    const activeTab = state.detailTab || "overview";
 
     return `
       <div class="lp-profile-head">
@@ -120,20 +128,50 @@
       </div>
 
       <section class="lp-profile-panel packing-theme-horses packing-detail th-detail-section">
-        <div class="lp-field-grid" data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
-          ${detailSaveStatus()}
-          ${detailStateRow(record.id, currentState)}
-          ${detailEditRow("show_name", "Show name", showName)}
-          ${detailEditRow("barn_name", "Barn name", barnName)}
-          ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
-          ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
-          ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
-          ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
-          ${detailEditRow("horse_age", "Age", age, "number")}
-          ${detailTextRow("USEF", usef || "-")}
-          ${record.id ? detailRow("Airtable", `<a class="th-link" href="https://airtable.com/${escapeAttr(record.id)}" target="_blank" rel="noopener">airtable</a>`) : ""}
+        <div class="lp-profile-tabs" role="tablist" aria-label="Horse profile sections">
+          ${profileTab("overview", "Overview", activeTab)}
+          ${profileTab("profile", "Profile", activeTab)}
+          ${profileTab("contacts", "Contacts", activeTab)}
+          ${profileTab("team", "Team", activeTab)}
+          ${profileTab("system", "System", activeTab)}
         </div>
+        <div data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
+          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
+            ${detailStateRow(record.id, currentState)}
+            ${detailEditRow("show_name", "Show name", showName)}
+            ${detailEditRow("barn_name", "Barn name", barnName)}
+          </div>
+          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
+            ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
+            ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
+            ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
+            ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
+            ${detailEditRow("horse_age", "Age", age, "number")}
+          </div>
+          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
+            ${detailEditRow("emergency_contact", "Emergency contact", emergencyContact)}
+            ${detailEditRow("emergency_phone", "Emergency phone", emergencyPhone)}
+          </div>
+          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "team" ? " is-active" : ""}" data-profile-panel="team">
+            ${detailEditRow("rider_list", "Rider list", riderList)}
+            ${detailEditRow("trainer_id", "Trainer", trainer)}
+          </div>
+          <div class="lp-field-grid lp-profile-tab-panel${activeTab === "system" ? " is-active" : ""}" data-profile-panel="system">
+            ${detailTextRow("USEF", usef || "-")}
+            ${record.id ? detailRow("Airtable", `<a class="th-link" href="https://airtable.com/${escapeAttr(record.id)}" target="_blank" rel="noopener">airtable</a>`) : ""}
+          </div>
+        </div>
+        ${detailSaveStatus()}
       </section>
+    `;
+  }
+
+  function profileTab(tabId, label, activeTab) {
+    const isActive = activeTab === tabId;
+    return `
+      <button class="lp-profile-tab${isActive ? " is-active" : ""}" type="button" role="tab" aria-selected="${isActive ? "true" : "false"}" data-profile-tab="${escapeAttr(tabId)}">
+        ${escapeHtml(label)}
+      </button>
     `;
   }
 
@@ -143,9 +181,8 @@
 
   function detailSaveStatus() {
     return `
-      <div class="lp-field-row th-save-status-row">
-        <span class="lp-field-label">Save</span>
-        <span class="lp-field-value" data-th-detail-status>${escapeHtml(state.detailStatus || "Changes save to Airtable.")}</span>
+      <div class="lp-profile-footer th-save-status-row">
+        <span data-th-detail-status>${escapeHtml(state.detailStatus || "Changes save to Airtable.")}</span>
       </div>
     `;
   }
@@ -242,6 +279,12 @@
     const stateButton = event.target.closest("[data-toggle-state]");
     if (stateButton) {
       toggleRecordState(stateButton.dataset.toggleState, stateButton.dataset.nextState);
+      return;
+    }
+
+    const profileTabButton = event.target.closest("[data-profile-tab]");
+    if (profileTabButton) {
+      switchProfileTab(profileTabButton.dataset.profileTab);
       return;
     }
 
@@ -360,6 +403,7 @@
     const record = state.records.find((item) => item.id === recordId);
     if (!record) return;
     state.activeRecordId = recordId;
+    state.detailTab = "overview";
     state.detailStatus = "Changes save to Airtable.";
     els.modalContent.innerHTML = detail(record);
     els.modal.hidden = false;
@@ -369,9 +413,22 @@
 
   function closeModal() {
     state.activeRecordId = "";
+    state.detailTab = "overview";
     els.modal.hidden = true;
     els.modalContent.innerHTML = "";
     document.body.style.overflow = "";
+  }
+
+  function switchProfileTab(tabId) {
+    state.detailTab = tabId || "overview";
+    root.querySelectorAll("[data-profile-tab]").forEach((button) => {
+      const isActive = button.dataset.profileTab === state.detailTab;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+    root.querySelectorAll("[data-profile-panel]").forEach((panel) => {
+      panel.classList.toggle("is-active", panel.dataset.profilePanel === state.detailTab);
+    });
   }
 
   function filteredRecords() {
@@ -388,12 +445,7 @@
         <header class="lp-header">
           <div class="lp-header-copy">
             <h1>HPS Horses</h1>
-            <p class="lp-subtitle">ww_horses - hps_${escapeHtml(tenantId || "tenant")}</p>
-          </div>
-          <div class="lp-header-tools">
-            <div class="lp-summary-row">
-              <p data-th-status>Loading...</p>
-            </div>
+            <p class="lp-subtitle">Horse profile system</p>
           </div>
         </header>
 
@@ -420,6 +472,9 @@
             </section>
           </section>
         </main>
+        <footer class="lp-summary-row th-summary-footer">
+          <p data-th-status>Loading...</p>
+        </footer>
       </div>
 
       <div class="lp-modal" data-modal hidden>

@@ -8,6 +8,10 @@
   border-top: 0;
 }
 
+#hps-app .lp-shell {
+  padding: 12px;
+}
+
 #hps-app .th-group-label {
   padding: 12px 16px 7px;
   background: var(--lp-surface);
@@ -28,14 +32,30 @@
   margin-top: 5px;
 }
 
+#hps-app .th-summary-footer {
+  margin-top: 10px;
+}
+
+#hps-app .th-summary-footer p {
+  font-size: 11px;
+  line-height: 1.05em;
+}
+
+#hps-app .lp-modal {
+  align-items: flex-start;
+  padding: 8px 10px;
+}
+
 #hps-app .lp-modal-card {
   width: min(680px, calc(100vw - 20px));
-  padding: 18px 14px 14px;
+  min-height: 90vh;
+  max-height: calc(100vh - 16px);
+  padding: 10px 14px 10px;
 }
 
 #hps-app .lp-modal-close {
   right: 14px;
-  top: 14px;
+  top: 6px;
 }
 
 #hps-app .th-detail-section {
@@ -48,14 +68,18 @@
 }
 
 @media (max-width: 640px) {
+  #hps-app .lp-shell {
+    padding: 6px;
+  }
+
   #hps-app .lp-modal-card {
     width: calc(100vw - 14px);
+    min-height: calc(100vh - 14px);
     max-height: calc(100vh - 14px);
-    padding: 14px 10px 10px;
+    padding: 8px 10px;
   }
 
   #hps-app .th-detail-section .lp-field-row {
-    grid-template-columns: 96px minmax(0, 1fr);
     padding: 7px 8px;
   }
 }
