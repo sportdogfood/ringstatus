@@ -57,20 +57,14 @@
   function row(record) {
     const fields = record.fields || {};
     const name = firstValue(fields, ["show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
-    const barnName = firstValue(fields, ["barn_name", "Barn Name", "barn"]);
-    const usef = firstValue(fields, ["usef", "USEF", "usef_id", "USEF ID"]);
-    const color = firstValue(fields, ["horse_color", "color", "Color"]);
-    const gender = firstValue(fields, ["horse_gender", "gender", "Gender"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
-    const meta = [barnName, usef ? `USEF ${usef}` : ""].filter(Boolean).map(escapeHtml).join(" - ");
 
     return `
       <button class="lp-row th-horse-row" type="button" data-open-horse="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
         <span class="th-row-main">
           <span class="lp-row-title">${escapeHtml(name)}</span>
-          ${meta ? `<span class="lp-row-meta th-row-submeta">${meta}</span>` : ""}
         </span>
-        <span class="lp-pill th-detail-pill">Detail</span>
+        <span class="th-detail-pill">Detail</span>
       </button>
     `;
   }
@@ -260,7 +254,7 @@
               <div class="lp-section-title">
                 <h3>Horses</h3>
                 <div class="lp-section-actions">
-                  <span class="lp-section-count" data-th-count>0</span>
+                  <span class="lp-section-count" data-th-count>0 shown</span>
                 </div>
               </div>
               <div class="th-toolbar">
