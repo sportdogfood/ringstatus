@@ -89,7 +89,7 @@ Required log behavior:
 
 The Webflow page is still created manually. The embed must be tenant-specific and should be copied into the static page for that tenant.
 
-For the `hps_8778` page:
+Confirmed working drop for the `hps_8778` page:
 
 ```html
 <div id="hps-app">Loading horses...</div>
@@ -101,9 +101,9 @@ For the `hps_8778` page:
   };
 </script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@<commit-sha>/webflow/packing-worksheet/styles.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@<commit-sha>/webflow/hps/hps.css">
-<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@<commit-sha>/webflow/hps/hps.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@a65bbf3/webflow/packing-worksheet/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@a65bbf3/webflow/hps/hps.css">
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@a65bbf3/webflow/hps/hps.js"></script>
 ```
 
 For another tenant, only the static page name and `tenantId` should change:
@@ -116,6 +116,127 @@ window.HPS_CONFIG = {
 ```
 
 Use pinned commit URLs while testing. Move back to `@main` only after confirming jsDelivr has refreshed.
+
+Do not leave the placeholder string `<commit-sha>` in Webflow. If the embed contains `ringstatus@<commit-sha>`, the JS will not load and the page will remain stuck at `Loading horses...`.
+
+## Connection Setup Steps
+
+Follow these steps to create or repair the `hps_8778` connection.
+
+### 1. Confirm Airtable Setup
+
+Confirm these Airtable objects exist:
+
+```text
+ww_horses
+ww_horses view hps_8778
+active_tenants
+active_tenants view active_tenants
+hp_cls
+```
+
+Confirm tenant `8778` appears in `active_tenants / active_tenants`.
+
+### 2. Confirm Webflow Cloud Environment Variables
+
+Set these in Webflow Cloud:
+
+```text
+AIRTABLE_BASE_ID=<base id>
+AIRTABLE_TOKEN=<token>
+AIRTABLE_HPS_HORSES_TABLE=ww_horses
+AIRTABLE_HPS_VIEW_PREFIX=hps_
+AIRTABLE_HPS_CHANGE_LOG_TABLE=hp_cls
+AIRTABLE_HPS_ACTIVE_TENANTS_TABLE=active_tenants
+AIRTABLE_HPS_ACTIVE_TENANTS_VIEW=active_tenants
+```
+
+Redeploy Webflow Cloud after changing env vars.
+
+### 3. Confirm Webflow Cloud Health
+
+Open:
+
+```text
+https://ringstatus.webflow.io/test/health
+```
+
+Confirm:
+
+```text
+hpsEndpoint=/test/hps/horses
+hpsHorsesTable=ww_horses
+hpsViewPrefix=hps_
+hpsChangeLog=hp_cls
+hpsActiveTenantsTable=active_tenants
+hpsActiveTenantsView=active_tenants
+```
+
+### 4. Confirm HPS API Data
+
+Open:
+
+```text
+https://ringstatus.webflow.io/test/hps/horses?tenantId=8778
+```
+
+Confirm:
+
+```text
+ok=true
+tenantId=8778
+source.table=ww_horses
+source.view=hps_8778
+count > 0
+```
+
+For the first successful `hps_8778` test, this endpoint returned 64 records.
+
+### 5. Create The Static Webflow Page
+
+Create the static Webflow page manually.
+
+Recommended page slug:
+
+```text
+hps-8778
+```
+
+Recommended page title:
+
+```text
+hps_8778
+```
+
+Add one Webflow Embed element containing the full confirmed drop from the Webflow Embed Contract section above.
+
+### 6. Publish And Test The Webflow Page
+
+Publish Webflow and open:
+
+```text
+https://ringstatus.com/hps-8778
+```
+
+Expected result:
+
+- page does not stay on `Loading horses...`
+- header shows `HPS Horses`
+- subtitle shows `ww_horses - hps_8778`
+- list loads horses from `ww_horses / hps_8778`
+- Active and Inactive groups render
+
+### 7. Verify Save Behavior
+
+Only after the page loads correctly:
+
+1. Open one horse detail modal.
+2. Make a controlled detail edit.
+3. Confirm the browser shows save feedback.
+4. Confirm `ww_horses` changed.
+5. Confirm `hp_cls` has one log row with `tenant_id=8778`.
+
+Active/inactive toggles must write the real `ww_horses.inactive` checkbox.
 
 ## Frontend Naming
 
@@ -243,6 +364,105 @@ Add these only after the stability gate passes:
 4. Add clearer health output for active tenant field detection once the actual field name is confirmed.
 5. Consider adding horse-specific CSS aliases only if we need to remove internal `packing-*` class names without changing visuals.
 6. Add future UI tasks only after the first tenant page is stable.
+
+## Pattern For Similar Connectors
+
+Use this pattern when creating another tenant-scoped Webflow/Airtable connector.
+
+### Connector Naming
+
+Pick one short connector prefix and use it consistently:
+
+```text
+prefix: hps
+root id: <prefix>-app
+config: window.<PREFIX>_CONFIG
+api path: /test/<prefix>/horses
+static assets: webflow/<prefix>/<prefix>.js and webflow/<prefix>/<prefix>.css
+log table: <prefix>_cls or another explicit connector log table
+```
+
+For HPS:
+
+```text
+root id: hps-app
+config: window.HPS_CONFIG
+api path: /test/hps/horses
+static assets: webflow/hps/hps.js and webflow/hps/hps.css
+log table: hp_cls
+```
+
+### Tenant Isolation Rule
+
+Every similar connector should use the same isolation shape:
+
+```text
+Webflow static page passes tenantId
+API validates tenantId against active_tenants
+API builds source view from tenantId
+API loads only that view
+API rejects saves for records outside that view
+API logs tenant_id on every edit
+```
+
+### Airtable View Naming
+
+Use deterministic view names:
+
+```text
+<connector_prefix>_<tenant_id>
+```
+
+Examples:
+
+```text
+hps_8778
+hps_19676
+```
+
+Do not create one-off view names that cannot be derived from the tenant id.
+
+### Webflow Embed Template
+
+For another HPS tenant, copy the working embed and change only `tenantId` and the Webflow page slug/title.
+
+Example for tenant `19676`:
+
+```html
+<div id="hps-app">Loading horses...</div>
+
+<script>
+  window.HPS_CONFIG = {
+    tenantId: "19676",
+    apiUrl: "https://ringstatus.webflow.io/test/hps/horses"
+  };
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@a65bbf3/webflow/packing-worksheet/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@a65bbf3/webflow/hps/hps.css">
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@a65bbf3/webflow/hps/hps.js"></script>
+```
+
+The matching Airtable view must be:
+
+```text
+ww_horses / hps_19676
+```
+
+### Minimum Checklist For A New Tenant
+
+For each new tenant:
+
+1. Add tenant to `active_tenants / active_tenants`.
+2. Create the Airtable source view, such as `ww_horses / hps_19676`.
+3. Create the Webflow static page, such as `hps-19676`.
+4. Paste the embed with `tenantId: "19676"`.
+5. Publish Webflow.
+6. Test `GET /test/hps/horses?tenantId=19676`.
+7. Test the published page loads data.
+8. Test one controlled edit and confirm `hp_cls.tenant_id`.
+
+Do not fork the JS/API unless the connector has a different data model or behavior. Prefer one reusable connector with tenant-specific embed config.
 
 ## Open Schema Confirmation
 
