@@ -1,106 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RS Skeleton Contract Preview</title>
-  <link rel="stylesheet" href="./rs-global.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RS Skeleton Base</title>
+  <link rel="stylesheet" href="./rs-global.css" />
 </head>
 <body>
-<nav class="rs-nav" id="data-nav-root" aria-label="Main navigation">
-  <div class="rs-nav-inner">
-    <a class="rs-logo" href="#" aria-label="RingStatus home">RS</a>
-    <div class="rs-nav-links">
-      <button class="rs-nav-button" id="data-mega-toggle" type="button" aria-expanded="false" aria-controls="data-mega-menu">Apps</button>
-      <button class="rs-nav-button" id="data-drawer-toggle" type="button" aria-expanded="false" aria-controls="data-drawer-menu">Tools</button>
-      <a class="rs-nav-link" href="#">Pricing</a>
-      <a class="rs-nav-link" href="#">Contact</a>
+  <nav class="rs-nav" id="data-nav-root" aria-label="Main navigation">
+    <div class="rs-nav-inner">
+      <a class="rs-logo" href="#" aria-label="RingStatus home">RS</a>
+      <div class="rs-nav-links">
+        <button class="rs-nav-button" id="data-mega-toggle" type="button" aria-expanded="false" aria-controls="data-mega-menu">Apps</button>
+        <button class="rs-nav-button" id="data-drawer-toggle" type="button" aria-expanded="false" aria-controls="data-drawer-menu">Tools</button>
+        <a class="rs-nav-link" href="#">Pricing</a>
+        <a class="rs-nav-link" href="#">Contact</a>
+      </div>
     </div>
-  </div>
-  <div class="rs-mega" id="data-mega-menu" aria-hidden="true"><div class="rs-mega-inner">
-    <div class="rs-mega-intro"><p class="rs-content-kicker">Mega Dropdown</p><h2 class="rs-mega-title">Full Width Apps Menu</h2><p class="rs-mega-text">Full viewport dropdown. Inner content remains capped.</p></div>
-    <div class="rs-mega-col"><p class="rs-content-kicker">Core</p><a href="#">Show Schedule App</a><a href="#">SMS Alerts</a><a href="#">Two-Way Realtime</a></div>
-    <div class="rs-mega-col"><p class="rs-content-kicker">Boards</p><a href="#">Feed Board</a><a href="#">Show Board</a><a href="#">Turnout Board</a></div>
-    <div class="rs-mega-col"><p class="rs-content-kicker">Support</p><a href="#">Tack App</a><a href="#">Reminders App</a><a href="#">Shipping App</a></div>
-  </div></div>
-</nav>
-<div class="rs-nav-scrim" id="data-nav-scrim" aria-hidden="true"></div>
-<aside class="rs-drawer" id="data-drawer-menu" aria-hidden="true" aria-label="Tools drawer"><div class="rs-drawer-inner">
-  <div class="rs-drawer-head"><div><p class="rs-content-kicker">Right Drawer</p><h2 class="rs-drawer-title">Tools Menu</h2><p class="rs-drawer-text">Opens from the right and locks the viewport. No separate mobile version.</p></div><button class="rs-drawer-close" id="data-drawer-close" type="button">×</button></div>
-  <div class="rs-drawer-list"><a href="#">RingWaze</a><a href="#">BarnTools</a><a href="#">Packing Lists</a><a href="#">Reminders</a><a href="#">Account Dashboard</a></div>
-</div></aside>
+    <div class="rs-mega" id="data-mega-menu" aria-hidden="true">
+      <div class="rs-mega-inner">
+        <div class="rs-mega-intro">
+          <p class="rs-content-kicker">Apps</p>
+          <h2 class="rs-mega-title">RingStatus Systems</h2>
+          <p class="rs-mega-text">Shared shell, separate sections, and one global stylesheet.</p>
+        </div>
+        <div class="rs-mega-col">
+          <p class="rs-content-kicker">Core</p>
+          <a href="#">Schedule</a>
+          <a href="#">Alerts</a>
+          <a href="#">Boards</a>
+        </div>
+        <div class="rs-mega-col">
+          <p class="rs-content-kicker">Tools</p>
+          <a href="#">RingWaze</a>
+          <a href="#">BarnTools</a>
+          <a href="#">Packing Lists</a>
+        </div>
+        <div class="rs-mega-col">
+          <p class="rs-content-kicker">Support</p>
+          <a href="#">Docs</a>
+          <a href="#">Contact</a>
+          <a href="#">Account</a>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-<main class="rs-main">
-  <div class="rs-group-label">Group 1 · Split sections</div>
-  <section class="rs-section is-hero"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Hero Section</p><h1>Built to Scale Cleanly</h1><p>Full-width section, one smart padding layer, centered max-width container, readable content width.</p></div><div class="rs-visual">visual / media area</div></div></div></div></div></section>
-  <section class="rs-section"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Split Section</p><h2>Padding Has One Owner</h2><p>The responsive horizontal spacing lives on rs-section-padding.</p></div><div class="rs-visual">visual / media area</div></div></div></div></div></section>
-  <section class="rs-section"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Split Section</p><h2>Same Shell Every Time</h2><p>The wrapper pattern stays consistent.</p><p class="rs-small">This is the T/small text reference.</p></div><div class="rs-visual">visual / media area</div></div></div></div></div></section>
+  <div class="rs-nav-scrim" id="data-nav-scrim" aria-hidden="true"></div>
 
-  <div class="rs-group-label">Group 2 · No-split sections</div>
-  <section class="rs-section is-nosplit"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">No Split</p><h2>Single Content Block</h2><p>No image column. Same shell.</p></div></div></div></div></div></section>
-  <section class="rs-section is-nosplit is-centered"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Centered</p><h2>Centered No Split</h2><p>Only alignment changes.</p></div></div></div></div></div></section>
-  <section class="rs-section is-nosplit is-wide"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Wide</p><h2>Wide No Split</h2><p>Content block can fill the interior while paragraphs keep readable line length.</p></div></div></div></div></div></section>
+  <aside class="rs-drawer" id="data-drawer-menu" aria-hidden="true" aria-label="Tools drawer">
+    <div class="rs-drawer-inner">
+      <div class="rs-drawer-head">
+        <div>
+          <p class="rs-content-kicker">Tools</p>
+          <h2 class="rs-drawer-title">Drawer Menu</h2>
+          <p class="rs-drawer-text">This uses the same global script file and locks the viewport while open.</p>
+        </div>
+        <button class="rs-drawer-close" id="data-drawer-close" type="button" aria-label="Close drawer">x</button>
+      </div>
+      <div class="rs-drawer-list">
+        <a href="#">RingWaze</a>
+        <a href="#">BarnTools</a>
+        <a href="#">Packing Lists</a>
+        <a href="#">Account Dashboard</a>
+      </div>
+    </div>
+  </aside>
 
-  <div class="rs-group-label">Group 3 · Overlay sections</div>
-  <section class="rs-section is-overlay is-overlay-center"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Overlay Center</p><h2>Centered Over Image</h2><p>Full-screen media with centered content overlay.</p></div></div></div></div></div></section>
-  <section class="rs-section is-overlay is-overlay-left"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Overlay Left</p><h2>Left Over Image</h2><p>Content aligns left while media fills the section.</p></div></div></div></div></div></section>
-  <section class="rs-section is-overlay is-overlay-bottom-left"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Overlay Bottom Left</p><h2>Bottom Left Over Image</h2><p>Content anchors to bottom-left.</p></div></div></div></div></div></section>
+  <main class="rs-main">
+    <section class="rs-section is-hero">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Hero Section</p>
+                <h1>RS Skeleton Base</h1>
+                <p>Full-width section, centered max-width container, one responsive padding layer, and readable content width.</p>
+              </div>
+              <div class="rs-visual">visual / media area</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="rs-group-label">Group 4 · Stacked content sections</div>
-  <section class="rs-section is-stack"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-stack-head"><p class="rs-content-kicker">Form Section</p><h2>Header Above Form</h2><p>Header block above a form panel.</p></div><div class="rs-stack-panel"><div class="rs-form-grid"><div class="rs-field">Name field</div><div class="rs-field">Email field</div><div class="rs-field is-wide">Message field</div><div class="rs-button">Submit button</div></div></div></div></div></div></div></section>
-  <section class="rs-section is-stack"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-stack-head"><p class="rs-content-kicker">Card Grid</p><h2>Header Above Card Grid</h2><p>Grid is interior content only.</p></div><div class="rs-stack-panel"><div class="rs-card-grid"><article class="rs-card"><h3 class="rs-card-title">Card One</h3><p class="rs-card-text">Grid item content.</p></article><article class="rs-card"><h3 class="rs-card-title">Card Two</h3><p class="rs-card-text">Grid item content.</p></article><article class="rs-card"><h3 class="rs-card-title">Card Three</h3><p class="rs-card-text">Grid item content.</p></article></div></div></div></div></div></div></section>
-  <section class="rs-section is-stack"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-stack-head"><p class="rs-content-kicker">Carousel</p><h2>Header Above Carousel</h2><p>Horizontal scrolling cards.</p></div><div class="rs-stack-panel"><div class="rs-carousel"><article class="rs-card"><h3 class="rs-card-title">Slide One</h3><p class="rs-card-text">Carousel content.</p></article><article class="rs-card"><h3 class="rs-card-title">Slide Two</h3><p class="rs-card-text">Carousel content.</p></article><article class="rs-card"><h3 class="rs-card-title">Slide Three</h3><p class="rs-card-text">Carousel content.</p></article><article class="rs-card"><h3 class="rs-card-title">Slide Four</h3><p class="rs-card-text">Carousel content.</p></article></div></div></div></div></div></div></section>
+    <section class="rs-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Shell Contract</p>
+                <h2>Padding Has One Owner</h2>
+                <p>The responsive horizontal spacing lives on rs-section-padding. Other wrappers preserve layout responsibility without adding side padding.</p>
+              </div>
+              <div class="rs-visual">content module</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="rs-group-label">Group 5 · Wildcard sticky examples</div>
-  <section class="rs-section is-wildcard"><div class="rs-wildcard-sticky"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">About Us</p><h2>Built From The Rail</h2><p>Sticky story panel with a left scrolling proof-card rail.</p><div class="rs-pill-row"><span class="rs-tag">show-day tools</span><span class="rs-tag">mobile-first</span><span class="rs-tag">barn-aware</span></div></div></div></div></div></div></div><div class="rs-wildcard-scroll-layer"><article class="rs-wildcard-card"><div><p class="rs-content-kicker">Why It Exists</p><h3>Shows Move Fast</h3><p>People need what is happening now.</p></div><div class="rs-wildcard-number">01 / 03</div></article><article class="rs-wildcard-card"><div><p class="rs-content-kicker">What We Build</p><h3>Thin Useful Tools</h3><p>Fast screens for schedule, alerts, and boards.</p></div><div class="rs-wildcard-number">02 / 03</div></article><article class="rs-wildcard-card"><div><p class="rs-content-kicker">Who It Serves</p><h3>Riders Barns Grooms</h3><p>Built for moving show days.</p></div><div class="rs-wildcard-number">03 / 03</div></article></div></section>
+    <section class="rs-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Typography</p>
+                <h2>H, P, and T Styles</h2>
+                <p>P style is used for primary supporting copy under headings.</p>
+                <div class="rs-type-sample">
+                  <h3>H Style</h3>
+                  <p>P style remains regular weight with compact line height.</p>
+                  <p class="rs-type-t">T style is smaller utility text with a taller line height for notes, captions, and interface details.</p>
+                  <div class="rs-type-meta">
+                    <span>H: weight 600, line-height 0.95, letter-spacing -0.05em</span>
+                    <span>P: weight 400, line-height 1.23</span>
+                    <span>T: weight 400, line-height 1.6</span>
+                  </div>
+                </div>
+              </div>
+              <div class="rs-visual">typography reference</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  <section class="rs-section is-wildcard" style="background:#f3f6fb;"><div class="rs-wildcard-sticky"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Blogs Page</p><h2>Field Notes From The Show</h2><p>Sticky archive/header area with scrolling post cards.</p><div class="rs-pill-row"><span class="rs-tag">show prep</span><span class="rs-tag">ring timing</span><span class="rs-tag">barn tools</span></div></div></div></div></div></div></div><div class="rs-wildcard-scroll-layer"><article class="rs-wildcard-card"><div><div class="rs-blog-card-meta">Guide · 6 min</div><h3>When Ring Time Drifts</h3><p>Reduce confusion when schedules drift.</p></div></article><article class="rs-wildcard-card"><div><div class="rs-blog-card-meta">Workflow · 4 min</div><h3>Why Barn Boards Move</h3><p>Show-day logistics change fast.</p></div></article></div></section>
+  <footer class="rs-footer">
+    <span>RS footer</span>
+  </footer>
 
-  <section class="rs-section is-wildcard" style="background:#f5f7f2;"><div class="rs-wildcard-sticky"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-content"><p class="rs-content-kicker">Products Page</p><h2>Tools For The Show Day</h2><p>Sticky product-family intro with scrolling product cards.</p><div class="rs-pill-row"><span class="rs-tag">schedule</span><span class="rs-tag">sms</span><span class="rs-tag">barn boards</span></div></div></div></div></div></div></div><div class="rs-wildcard-scroll-layer"><article class="rs-wildcard-card"><div><div class="rs-product-card-media">product visual</div><div class="rs-product-card-meta">Core · Schedule</div><h3>Show Schedule App</h3><p>Clean mobile layer for riders and teams.</p><div class="rs-product-price">GO / PRO</div></div><div class="rs-product-action">View product</div></article><article class="rs-wildcard-card"><div><div class="rs-product-card-media">product visual</div><div class="rs-product-card-meta">Add-on · Alerts</div><h3>SMS Alerts</h3><p>Simple text updates for ring movement.</p><div class="rs-product-price">Add-on</div></div><div class="rs-product-action">View product</div></article></div></section>
-
-  <div class="rs-group-label">Group 8 · Basic layout sections</div>
-  <section class="rs-section is-stack"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-stack-head"><p class="rs-content-kicker">Viewport List</p><h2>Header Above Scroll List</h2><p>The list container has its own viewport height and internal vertical overflow.</p></div><div class="rs-list-viewport-panel"><div class="rs-list-viewport-head"><h3 class="rs-card-title">Scrollable Item List</h3><span class="rs-list-row-status">12 items</span></div><div class="rs-list-scroll"><div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 01</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Active</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 02</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 03</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 04</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 05</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 06</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 07</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 08</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 09</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 10</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 11</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-list-row"><div><h4 class="rs-list-row-title">Item 12</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div></div></div></div></div></div></div></section>
-
-  <section class="rs-section is-stack"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-stack-head"><p class="rs-content-kicker">Full Page List</p><h2>Header Above Expanding List</h2><p>List fills available page width and reveals rows in chunks of 10.</p></div><div class="rs-full-list-panel" data-list-limit="10"><div class="rs-full-list-head"><h3 class="rs-card-title">Full Width Item List</h3><span class="rs-list-row-status">24 items</span></div><div class="rs-full-list"><div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 01</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Active</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 02</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 03</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 04</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 05</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 06</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 07</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 08</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 09</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 10</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 11</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 12</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 13</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 14</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 15</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 16</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 17</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 18</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 19</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 20</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 21</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 22</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 23</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
-<div class="rs-full-list-row"><div><h4 class="rs-list-row-title">Item 24</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div></div><div class="rs-full-list-actions"><button class="rs-list-toggle-button" type="button" data-list-toggle>See 10 more</button><button class="rs-list-toggle-button" type="button" data-list-less>See less</button></div></div></div></div></div></div></section>
-
-  <section class="rs-section is-stack"><div class="rs-section-container"><div class="rs-section-padding"><div class="rs-content-container"><div class="rs-content-flex"><div class="rs-stack-head"><p class="rs-content-kicker">Pricing Cards</p><h2>Plan Layout</h2><p>Use for GO, PRO, and add-on comparisons.</p></div><div class="rs-pricing-grid"><article class="rs-price-card"><div><p class="rs-content-kicker">Level 1</p><h3>GO</h3><p>Simple schedule access.</p></div><div class="rs-product-price">Base</div></article><article class="rs-price-card"><div><p class="rs-content-kicker">Level 2</p><h3>PRO</h3><p>Deeper realtime features.</p></div><div class="rs-product-price">Upgrade</div></article><article class="rs-price-card"><div><p class="rs-content-kicker">Add-ons</p><h3>SMS</h3><p>Alerts and two-way realtime.</p></div><div class="rs-product-price">Add-on</div></article></div></div></div></div></div></section>
-</main>
-
-<footer class="rs-footer is-mock-full"><div class="rs-footer-inner"><div class="rs-footer-content"><p class="rs-content-kicker">Mock Footer</p><h2>Full Viewport Footer</h2><p>This footer fills the viewport when it scrolls into view.</p></div></div></footer>
-<script src="./rs-scripts.js"></script>
+  <script src="./rs-scripts.js"></script>
 </body>
 </html>

@@ -93,18 +93,10 @@ Behavior:
 rs-global.css       global stylesheet only
 rs-scripts.js       all JavaScript only
 rs-standalone.html  local preview
-rs-webflow-embed.html Webflow HTML reference
 ```
 
 ## Included Template Groups
 
-- Split sections
-- No-split sections
-- Overlay sections
-- Stacked form/grid/carousel sections
-- Wildcard sticky sections
-- Blog/product wildcard examples
-- Basic layout sections
-- Viewport scroll list
-- Expanding list with `See 10 more / See less`
-- Mock full-viewport footer
+- Base split sections
+- Nav mega and drawer behavior
+- H/P/T typography examples

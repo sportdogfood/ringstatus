@@ -1,19 +1,15 @@
-# README_HANDOFF.md
+# RS Skeleton Handoff
 
-## RS Skeleton Handoff
+Version: 2026-05-21
+Status: Runtime base only
 
-Version: 2026-05-21  
-Status: Contract locked
+## Runtime Files
 
-## Files
+- `rs-standalone.html` - local preview and canonical base markup.
+- `rs-global.css` - global stylesheet only.
+- `rs-scripts.js` - JavaScript behaviors only.
 
-- `RS_SKELETON_CONTRACT.md` — locked rules.
-- `README_HANDOFF.md` — human/runner handoff.
-- `README_NEW_SKELETON_PROMPT.md` — prompt for starting a new skeleton project.
-- `rs-global.css` — global stylesheet.
-- `rs-scripts.js` — JavaScript behaviors.
-- `rs-standalone.html` — local browser preview.
-- `rs-webflow-embed.html` — Webflow embed reference.
+Use these three files as the runtime source of truth.
 
 ## First Review
 
@@ -43,45 +39,24 @@ rs-section
 - `rs-content-flex`: layout behavior.
 - `rs-content`: readable content width.
 
-## Webflow Setup
-
-Load CSS globally:
-
-```html
-<link rel="stylesheet" href="https://YOUR-HOST/rs-global.css">
-```
-
-Load JS globally:
-
-```html
-<script defer src="https://YOUR-HOST/rs-scripts.js"></script>
-```
-
-Then paste section HTML from:
-
-```txt
-rs-webflow-embed.html
-```
-
 ## Do Not Do
 
-- Do not duplicate global CSS in every embed.
+- Do not duplicate global CSS in HTML sections.
 - Do not change wrapper order.
 - Do not add side padding to multiple wrappers.
 - Do not create a different mobile nav.
-- Do not add JS for static layout.
-- Do not modify global variables unless versioning the contract.
+- Do not add inline JavaScript.
+- Do not reintroduce diagnostic template styling into the runtime base.
 
 ## Runner Checklist
 
+- [ ] `rs-standalone.html` links to `rs-global.css`.
+- [ ] `rs-standalone.html` links to `rs-scripts.js`.
 - [ ] CSS is separate.
 - [ ] JS is separate.
-- [ ] Standalone preview opens locally.
-- [ ] Webflow embed is HTML-only reference.
 - [ ] Wrapper order is preserved.
 - [ ] Padding only lives on `rs-section-padding`.
 - [ ] H/P/T typography appears.
-- [ ] Nav mega opens.
-- [ ] Drawer opens and locks viewport.
-- [ ] Expanding list reveals 10 rows at a time.
+- [ ] Nav opens mega and drawer.
+- [ ] Drawer locks viewport.
 - [ ] Mobile stacks cleanly.

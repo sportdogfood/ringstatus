@@ -3,14 +3,11 @@
 ## Ready-To-Paste Prompt
 
 ```txt
-Create a new RS skeleton project from the locked files:
+Create a new RS skeleton project from the runtime base files:
 
-- RS_SKELETON_CONTRACT.md
-- README_HANDOFF.md
+- rs-standalone.html
 - rs-global.css
 - rs-scripts.js
-- rs-standalone.html
-- rs-webflow-embed.html
 
 First build the base exactly. Do not add new modifications until the base renders.
 
@@ -32,6 +29,7 @@ Do not rewrite the shell.
 Do not inline global CSS.
 Do not inline JS.
 Do not create a separate mobile nav.
+Use only the three runtime files as implementation source.
 
 The base must include visible H, P, and T/small typography examples.
 
@@ -44,12 +42,10 @@ After base confirmation, add new layouts only through modifier classes or new te
 [ ] CSS is in rs-global.css.
 [ ] JS is in rs-scripts.js.
 [ ] Standalone HTML links to both.
-[ ] Webflow embed references the same structure.
 [ ] Wrapper order is preserved.
 [ ] Padding is owned by rs-section-padding.
 [ ] Typography tokens remain intact.
 [ ] Nav opens mega and drawer.
 [ ] Drawer locks viewport.
-[ ] Expandable list works.
 [ ] Mobile stacks cleanly.
 ```
