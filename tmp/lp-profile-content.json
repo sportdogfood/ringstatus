@@ -1,0 +1,971 @@
+{
+  "ok": true,
+  "source": {
+    "table": "lp_profile_content"
+  },
+  "count": 96,
+  "records": [
+    {
+      "id": "rec0YnOyrZeoOgv18",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Rounded",
+        "Field": "buttonStyle",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "rec1H5l7D0dZsMjcY",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Any other achievenmts in high school — typo: “achievements”",
+        "Field": "education item 3",
+        "Input or styling": "input",
+        "Page": "bio"
+      }
+    },
+    {
+      "id": "rec1gArqgeezxrYNX",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "#0ea5e9",
+        "Field": "primaryColor",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "rec1l3i0VPn0fosGv",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty",
+        "Field": "story block 1 image",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "rec2YCvnJLYHoWNHo",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Card",
+        "Field": "story block 1 background",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "rec3Nw5wbGQeiYeAj",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "XL",
+        "Field": "resume name fontSize",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "rec40lYYCtHb5iNSI",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Center",
+        "Field": "resume name alignment",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "rec7F228jHsmRBNGV",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Class of 2020",
+        "Field": "class text",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "rec7caiVyvIdNXoBn",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "{class}",
+        "Field": "titleTemplate",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "rec87dfISE2eSG1gi",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Jumping Seat Candidate",
+        "Field": "resume subtitle",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "rec8HhMy72ySzgK1R",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Inter",
+        "Field": "font",
+        "Input or styling": "styling",
+        "Page": "main"
+      }
+    },
+    {
+      "id": "rec8uMdWvj0TlIzv2",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "LAINEY POSA",
+        "Field": "resume name",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "rec9ZFbEmGTptRQC3",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Show dots enabled",
+        "Field": "slideshow dots",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recAFJbuIMEXzhBum",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "borderRadius",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recAJHLDX1EzmPZQz",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "1",
+        "Field": "version",
+        "Input or styling": "input",
+        "Page": "editor"
+      }
+    },
+    {
+      "id": "recAWN70uM2KoOA75",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Normal",
+        "Field": "contentSpacing",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recAvhN0Uyg7VJOZ6",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "USEF: ___",
+        "Field": "resume USEF",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recB9Qh3teTXlDRPx",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty",
+        "Field": "email",
+        "Input or styling": "input",
+        "Page": "main"
+      }
+    },
+    {
+      "id": "recBekDk0oQZaGlTY",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "#f59e0b",
+        "Field": "accentColor",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recBuje5LQnQJr11e",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "story shadow",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recCdKGHanzREcxQX",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty array",
+        "Field": "photos",
+        "Input or styling": "input",
+        "Page": "media"
+      }
+    },
+    {
+      "id": "recCf8E5Ymnzx6uUu",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Side",
+        "Field": "imagePosition",
+        "Input or styling": "styling",
+        "Page": "contact"
+      }
+    },
+    {
+      "id": "recDMWMYxb00vdc5l",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "slideshow height",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recDegdoZNBtmtSaH",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Awards",
+        "Field": "awards title",
+        "Input or styling": "input",
+        "Page": "bio"
+      }
+    },
+    {
+      "id": "recE7yfIPFYMfLnvG",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "3",
+        "Field": "speed",
+        "Input or styling": "styling",
+        "Page": "carousel"
+      }
+    },
+    {
+      "id": "recE9WC13Wq9pL4Sx",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "#ffffff",
+        "Field": "backgroundColor",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recEC3A3ThpVG7Wmw",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "TRUE",
+        "Field": "loop",
+        "Input or styling": "styling",
+        "Page": "carousel"
+      }
+    },
+    {
+      "id": "recEgRCwmi2jaLKbX",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Class of 2026",
+        "Field": "resume class",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recFEhJUUofKRQ1SJ",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "FALSE",
+        "Field": "slideshow autoPlay",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recFyABgfqI5KYmmc",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Normal",
+        "Field": "lineHeight",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recGgYsF92CH8tnPJ",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty placeholder",
+        "Field": "story block 2 title",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recH6HDP6lidNGV5u",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Split-left",
+        "Field": "story imageLayout",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recHScGabY686VWhC",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "story block 2 shadow",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recIYMGQJB4xrSZgE",
+      "createdTime": "2026-05-18T22:36:21.000Z",
+      "fields": {
+        "Note": "Empty",
+        "Field": "title",
+        "Input or styling": "input",
+        "Page": "main",
+        "status": "status             // overview, favorite, ignore"
+      }
+    },
+    {
+      "id": "recJiRADds1F5q19l",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "List your awards",
+        "Field": "awards item 1",
+        "Input or styling": "input",
+        "Page": "bio"
+      }
+    },
+    {
+      "id": "recJuhiIvfEd2ydwk",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "3",
+        "Field": "slideshow speed",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recKu9FQ6SfxA8eMV",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty",
+        "Field": "subtitle",
+        "Input or styling": "input",
+        "Page": "main"
+      }
+    },
+    {
+      "id": "recLKyn3l0qgifpkU",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "#1f2937",
+        "Field": "textColor",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recLusrqCaALc0ofl",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Large",
+        "Field": "headingSize",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recM0kaiDAWvSEwsE",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Award",
+        "Field": "awards item 2",
+        "Input or styling": "input",
+        "Page": "bio"
+      }
+    },
+    {
+      "id": "recMs7oPukS8mJ1Hw",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "To bottom-right",
+        "Field": "gradientDirection",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recNLOQuSIEi5FsJU",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty",
+        "Field": "phone",
+        "Input or styling": "input",
+        "Page": "main"
+      }
+    },
+    {
+      "id": "recNnSVcbOAXDRttZ",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Center",
+        "Field": "resume class alignment",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recOYniVGQlrzeOcY",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Card",
+        "Field": "story background",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recObZeLDCiUPMut8",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Please tell us your first story",
+        "Field": "story content",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recPA0gHuvoWrOt1G",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "FALSE",
+        "Field": "showEmptyFields",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recPj308Tw1Uvbytw",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Show captions enabled",
+        "Field": "slideshow captions",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recQTErSfuP0nxcaR",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Null",
+        "Field": "scrollToElementId",
+        "Input or styling": "input",
+        "Page": "editor"
+      }
+    },
+    {
+      "id": "recQZpsnMUkCrE1YB",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Card",
+        "Field": "story block 2 background",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recTIy0cAne3GYc2e",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Rearing horse image URL",
+        "Field": "bioMainPhoto",
+        "Input or styling": "input",
+        "Page": "main"
+      }
+    },
+    {
+      "id": "recTVsJOH5vTOeaZt",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty placeholder",
+        "Field": "story block 1 content",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recU1yJsO3UY68Z7K",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "story block 1 borderRadius",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recWgsnfvUa8FuajN",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Base",
+        "Field": "resume class fontSize",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recWyN2CZzyrb6WPB",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "None",
+        "Field": "story block 1 imageLayout",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recXHyu3tRtYx3dK7",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "story borderRadius",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recXkngMjJXNZYccN",
+      "createdTime": "2026-05-18T22:36:21.000Z",
+      "fields": {
+        "Note": "LAINEY POSA",
+        "Field": "name",
+        "Input or styling": "input",
+        "Page": "main"
+      }
+    },
+    {
+      "id": "recZ1QWoXXmM6k3FS",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Base",
+        "Field": "class fontSize",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recZ9lPmidAcInNRM",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "My way into Equestrian",
+        "Field": "story title",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recZKXg4xNxATTjnv",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty array",
+        "Field": "videos",
+        "Input or styling": "input",
+        "Page": "media"
+      }
+    },
+    {
+      "id": "recZl1SrIPl3bFAap",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "3xl",
+        "Field": "name fontSize",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recZqiyyIgGX7Ox0w",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Standard",
+        "Field": "pageWidth",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recabE4L1fndSo3Fr",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Subtle pattern",
+        "Field": "backgroundStyle",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recapy1BfOWPavYnF",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "story block 2 borderRadius",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recbRUzgZWpM9acVx",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "My GPA",
+        "Field": "education item 2",
+        "Input or styling": "input",
+        "Page": "bio"
+      }
+    },
+    {
+      "id": "recbl8Qf8OfYxaiC9",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "bodySize",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recbxfAnvWijliMkO",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "{year}",
+        "Field": "dateTemplate",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "reccLDtzScN2gNwH5",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty",
+        "Field": "story block 2 image",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "reccXwyNp3kgAKqQP",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Show arrows enabled",
+        "Field": "slideshow arrows",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "reccoWBxxyQEKkrYN",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "LAINEY POSA",
+        "Field": "name text",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recdZQjJsBmwNW308",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty placeholder",
+        "Field": "story block 1 title",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recdy7eRgdj9oFwlE",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "FALSE",
+        "Field": "autoPlay",
+        "Input or styling": "styling",
+        "Page": "carousel"
+      }
+    },
+    {
+      "id": "receNMw00S9g7rP5b",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Rearing horse image URL",
+        "Field": "story image",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recgF5lFMZBJGjm2q",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Phone",
+        "Field": "resume phone",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recgsD5fZ9bXmErTR",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "email@gmail.com",
+        "Field": "resume email",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "rechA3SdoojICPd4b",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Education",
+        "Field": "education title",
+        "Input or styling": "input",
+        "Page": "bio"
+      }
+    },
+    {
+      "id": "reciQVHB1mxhp71zs",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty array",
+        "Field": "trainers",
+        "Input or styling": "input",
+        "Page": "media"
+      }
+    },
+    {
+      "id": "reckUWRdKdYK8rKb0",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Send Message",
+        "Field": "submitButtonText",
+        "Input or styling": "input",
+        "Page": "contact"
+      }
+    },
+    {
+      "id": "reclh6DuQWeir1jDj",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "0",
+        "Field": "editorScrollRatio",
+        "Input or styling": "input",
+        "Page": "editor"
+      }
+    },
+    {
+      "id": "reclnKqHo0hLrCJIm",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Placing, national points, zone points, money, and horse",
+        "Field": "descriptionTemplate",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recm16kzBbRuA8Kpx",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Enabled",
+        "Field": "autoSyncBasket",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recnMMsKHv7WF290T",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Home",
+        "Field": "currentPage",
+        "Input or styling": "input",
+        "Page": "editor"
+      }
+    },
+    {
+      "id": "recnPeH7zEdHBcini",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Subheading",
+        "Field": "name style",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "reco368yun5P9XMGn",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Medium",
+        "Field": "story block 1 shadow",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recoduzP1jPX5umM9",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Small",
+        "Field": "cardShadow",
+        "Input or styling": "styling",
+        "Page": "theme"
+      }
+    },
+    {
+      "id": "recozDGFrhYTJAzBp",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Center",
+        "Field": "name alignment",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recp0lxvFkc5JUfuc",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty",
+        "Field": "location",
+        "Input or styling": "input",
+        "Page": "main"
+      }
+    },
+    {
+      "id": "recqlbu7NRWriyCeh",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty array",
+        "Field": "slideshow images",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "recrJkz8uBLND65iC",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "{competition}",
+        "Field": "organizationTemplate",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recsr6uDPRxwhLWDT",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty placeholder",
+        "Field": "story block 2 content",
+        "Input or styling": "input",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "rectlBewXpCX48vSw",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "None",
+        "Field": "groupBy",
+        "Input or styling": "styling",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "rectlSHHecDl4tECE",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Heading",
+        "Field": "class style",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    },
+    {
+      "id": "rectuWkkM8t5PIS0w",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty array",
+        "Field": "importedBasketIds",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recwuwV033ZXbRv4q",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "San Jose, CA",
+        "Field": "resume location",
+        "Input or styling": "input",
+        "Page": "resume"
+      }
+    },
+    {
+      "id": "recx5a1NowMvAG4yS",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Empty array",
+        "Field": "testimonials",
+        "Input or styling": "input",
+        "Page": "media"
+      }
+    },
+    {
+      "id": "recyIpG5LtxjnPBMG",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "My High School",
+        "Field": "education item 1",
+        "Input or styling": "input",
+        "Page": "bio"
+      }
+    },
+    {
+      "id": "recz5pcPzR0GKF4Vm",
+      "createdTime": "2026-05-18T22:36:26.000Z",
+      "fields": {
+        "Note": "Center",
+        "Field": "class alignment",
+        "Input or styling": "styling",
+        "Page": "home"
+      }
+    }
+  ]
+}
+

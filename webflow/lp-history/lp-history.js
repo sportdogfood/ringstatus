@@ -90,6 +90,7 @@
   renderShell();
   renderProfilePanels();
   renderOverview();
+  renderRidingNestedPanels();
   debug("render complete", currentCounts());
 
   root.addEventListener("click", (event) => {
@@ -125,6 +126,12 @@
           renderLayerScope(input.dataset.layerKind);
         }
       }
+      return;
+    }
+
+    const nestedTab = event.target.closest("[data-nested-tab]");
+    if (nestedTab) {
+      selectNestedTab(nestedTab.dataset.nestedGroup, nestedTab.dataset.nestedTab);
       return;
     }
 
@@ -378,30 +385,23 @@
       ]),
       '<section class="lp-panel lp-profile-panel is-active" data-profile-panel="riding">',
       '<div class="lp-shell">',
-      '<header class="lp-header lp-riding-header">',
-      '<div class="lp-header-copy">',
-      '<h1>Lainey in the Ring</h1>',
-      '<p class="lp-subtitle">All USEF Ride History</p>',
-      "</div>",
-      '<div class="lp-header-tools">',
-      '<div class="lp-summary-row"><p data-lp-summary>Loading results...</p></div>',
-      "</div>",
-      "</header>",
-      '<section class="lp-global-filter-section" aria-label="Global history filters">',
-      '<div class="lp-date-filter" data-date-filter>',
-      '<div class="lp-year-filter"><span>Years</span><div class="lp-year-pills" data-overview-years></div></div>',
-      '<div class="lp-year-filter lp-tag-filter"><span>Tags</span><div class="lp-year-pills lp-tag-pills" data-global-tags></div></div>',
+      '<section class="lp-section-block lp-riding-shell-section lp-theme-competitions">',
+      ridingTopSection(),
+      "</section>",
+      profileInlineTabsSection("riding"),
+      bottomNavOffset(),
       "</div>",
       "</section>",
-      '<div class="lp-history-panels">',
-      '<section data-panel="overview"></section>',
-      '<section class="lp-panel" data-panel="competitions"></section>',
-      '<section class="lp-panel" data-panel="classes"></section>',
-      "</div>",
-      "</div>",
+      '<section class="lp-panel lp-profile-panel" data-profile-panel="horses">',
+      profileTopSection("Horses", "LP History", "", true, "horses"),
+      profileInlineTabsSection("horses"),
+      bottomNavOffset(),
       "</section>",
-      '<section class="lp-panel lp-profile-panel" data-profile-panel="horses"><div data-panel="horses"></div></section>',
-      '<section class="lp-panel lp-profile-panel" data-profile-panel="videos"><div data-panel="videos"></div></section>',
+      '<section class="lp-panel lp-profile-panel" data-profile-panel="videos">',
+      profileTopSection("Videos", "LP History", "", true, "videos"),
+      profileInlineTabsSection("videos"),
+      bottomNavOffset(),
+      "</section>",
       profilePanelMarkup("contact", false, "Contact", "Profile", [
         ["Email", "Field ready"],
         ["Phone", "Field ready"],
@@ -422,9 +422,10 @@
     ].join("");
   }
 
-  function profileTabsMarkup() {
+  function profileTabsMarkup(variant = "") {
+    const inlineClass = variant === "inline" ? " lp-profile-tabs-inline" : "";
     return [
-      '<nav class="lp-tabs lp-profile-tabs" aria-label="Profile sections">',
+      '<nav class="lp-tabs lp-profile-tabs' + inlineClass + '" aria-label="Profile sections">',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="home" aria-selected="false"><span class="lp-tab-value">Home</span><span class="lp-tab-label">Profile</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-overview" type="button" data-profile-tab="bio" aria-selected="false"><span class="lp-tab-value">Bio</span><span class="lp-tab-label">Profile</span></button>',
       '<button class="lp-tab lp-profile-tab lp-theme-competitions is-active" type="button" data-profile-tab="riding" aria-selected="true"><span class="lp-tab-value">Riding</span><span class="lp-tab-label">History</span></button>',
@@ -439,16 +440,93 @@
   function profilePanelMarkup(key, isActive, title, count, rows) {
     return [
       '<section class="lp-panel lp-profile-panel' + (isActive ? " is-active" : "") + '" data-profile-panel="' + escapeHtml(key) + '">',
-      '<section class="lp-section-block lp-overview-section lp-theme-overview">',
-      sectionTitle(title, count),
-      '<div class="lp-list">',
-      rows.map((row) => (
-        '<div class="lp-row is-static"><span><span class="lp-row-title">' + escapeHtml(row[0]) + '</span><span class="lp-row-meta">' + escapeHtml(row[1]) + "</span></span></div>"
-      )).join(""),
-      "</div>",
-      "</section>",
+      profileTopSection(title, count, "", ["home", "bio", "contact"].includes(key)),
+      profileInlineTabsSection(key),
+      bottomNavOffset(),
       "</section>"
     ].join("");
+  }
+
+  function profileTopSection(title, label, body = "", hasHero = false, theme = "overview") {
+    return [
+      '<section class="lp-section-block lp-section-top lp-theme-' + escapeAttr(theme) + '">',
+      '<div class="lp-section-top-inner">',
+      hasHero ? '<div class="lp-section-hero-placeholder" aria-hidden="true"></div>' : "",
+      '<div class="lp-section-hero-copy">',
+      '<h1>' + escapeHtml(title) + "</h1>",
+      '<p>' + escapeHtml(label || "") + "</p>",
+      body ? '<p class="lp-section-hero-body">' + escapeHtml(body) + "</p>" : "",
+      "</div>",
+      "</div>",
+      "</section>"
+    ].join("");
+  }
+
+  function ridingTopSection() {
+    return [
+      '<section class="lp-section-block lp-section-top lp-theme-competitions">',
+      '<div class="lp-section-top-inner">',
+      '<div class="lp-section-hero-placeholder" aria-hidden="true"></div>',
+      '<div class="lp-riding-hero-filters" aria-label="Global history filters">',
+      '<div class="lp-year-filter"><div class="lp-year-pills" data-overview-years></div><span>Years</span></div>',
+      '<div class="lp-year-filter lp-tag-filter"><div class="lp-year-pills lp-tag-pills" data-global-tags></div><span>Tags</span></div>',
+      "</div>",
+      '<div class="lp-section-hero-copy">',
+      "<h1>Riding</h1>",
+      "<p>History</p>",
+      "</div>",
+      "</div>",
+      "</section>"
+    ].join("");
+  }
+
+  function profileInlineTabsSection(group) {
+    const tabs = group === "riding" ? [
+      ["competitions", "Competitions", "LP History", "competitions"],
+      ["classes", "Classes", "LP History", "classes"],
+      ["horses", "Horses", "LP History", "horses"],
+      ["videos", "Videos", "LP History", "videos"]
+    ] : group === "horses" ? [
+      ["ponies", "Ponies", "LP History", "horses"],
+      ["horses", "Horses", "LP History", "horses"],
+      ["owned", "Owned", "LP History", "horses"],
+      ["hacked", "Hacked", "LP History", "horses"]
+    ] : group === "videos" ? [
+      ["featured", "Featured", "Videos", "videos"],
+      ["training", "Training", "Videos", "videos"],
+      ["shows", "Shows", "Videos", "videos"]
+    ] : group === "bio" ? [
+      ["about", "About me", "Profile", "overview"],
+      ["working", "Working", "Profile", "overview"],
+      ["school", "School", "Profile", "overview"],
+      ["fun", "For Fun", "Profile", "overview"]
+    ] : [
+      ["home", "Home", "Profile", "overview"],
+      ["bio", "Bio", "Profile", "overview"],
+      ["riding", "Riding", "History", "competitions"],
+      ["horses", "Horses", "LP History", "horses"],
+      ["videos", "Videos", "LP History", "videos"],
+      ["contact", "Contact", "Info", "classes"],
+      ["blank", "Blank", "Tab", "overview"]
+    ];
+    return [
+      '<section class="lp-section-block lp-home-inline-tabs lp-theme-overview" data-nested-tabs="' + escapeAttr(group) + '">',
+      '<nav class="lp-tabs lp-profile-tabs lp-profile-tabs-inline" aria-label="' + escapeAttr(group) + ' nested sections">',
+      tabs.map(([key, title, label, theme], index) => (
+        '<button class="lp-tab lp-profile-tab lp-theme-' + escapeAttr(theme) + (index === 0 ? " is-active" : "") + '" type="button" data-nested-group="' + escapeAttr(group) + '" data-nested-tab="' + escapeAttr(key) + '" aria-selected="' + (index === 0 ? "true" : "false") + '"><span class="lp-tab-value">' + escapeHtml(title) + '</span><span class="lp-tab-label">' + escapeHtml(label) + "</span></button>"
+      )).join(""),
+      "</nav>",
+      '<div class="lp-nested-panels">',
+      tabs.map(([key], index) => (
+        '<div class="lp-nested-panel' + (index === 0 ? " is-active" : "") + '" data-nested-panel="' + escapeAttr(key) + '"></div>'
+      )).join(""),
+      "</div>",
+      "</section>"
+    ].join("");
+  }
+
+  function bottomNavOffset() {
+    return '<div class="lp-bottom-nav-offset" aria-hidden="true"></div>';
   }
 
   function emptyLayer() {
@@ -470,18 +548,21 @@
     const records = Array.isArray(payload?.records) ? payload.records : [];
     records.forEach((record) => {
       const fields = record.fields || {};
-      const type = String(fields.record_type || fields.type || "").trim().toLowerCase();
+      const type = String(fields.record_type || fields.type || fields.Page || "").trim().toLowerCase();
       if (!type) return;
       const stateValue = String(fields.state || fields.record_state || "active").trim().toLowerCase();
       if (stateValue === "inactive" || stateValue === "ignore") return;
       if (!groups[type]) groups[type] = [];
       groups[type].push({
         id: record.id,
-        recordKey: String(fields.record_key || record.id || "").trim(),
+        recordKey: String(fields.record_key || fields.Field || record.id || "").trim(),
         type,
-        title: String(fields.title || fields.name || fields.record_key || record.id || "").trim(),
+        title: String(fields.title || fields.name || fields.Field || fields.record_key || record.id || "").trim(),
         subtitle: String(fields.subtitle || "").trim(),
-        body: String(fields.body || fields.description || fields.notes || "").trim(),
+        body: String(fields.body || fields.description || fields.notes || fields.Note || "").trim(),
+        field: String(fields.Field || fields.record_key || "").trim(),
+        note: String(fields.Note || fields.body || fields.description || fields.notes || "").trim(),
+        kind: String(fields["Input or styling"] || fields.kind || "").trim(),
         imageUrl: String(fields.image_url || "").trim(),
         videoUrl: String(fields.video_url || "").trim(),
         sortOrder: Number(fields.sort_order || 0),
@@ -741,14 +822,49 @@
   function renderProfilePanelFromContent(type, title, countLabel) {
     const panel = root.querySelector('[data-profile-panel="' + type + '"]');
     const records = profileContent[type] || [];
-    if (!panel || !records.length) return;
+    if (!panel) return;
+    if (type === "home") {
+      panel.innerHTML = [
+        profileTopSection("Home", "Profile", "", true),
+        profileInlineTabsSection("home"),
+        bottomNavOffset()
+      ].join("");
+      return;
+    }
+    if (type === "bio") {
+      panel.innerHTML = [
+        profileTopSection("Bio", "Profile", "", true),
+        profileInlineTabsSection("bio"),
+        bottomNavOffset()
+      ].join("");
+      return;
+    }
+    if (type === "contact") {
+      panel.innerHTML = [
+        profileTopSection("Contact", "Info", "", true),
+        contactFormSection(),
+        bottomNavOffset()
+      ].join("");
+      return;
+    }
+    if (type === "blank") {
+      panel.innerHTML = [
+        profileTopSection("Blank", "Tab", "", true),
+        profileInlineTabsSection("blank"),
+        bottomNavOffset()
+      ].join("");
+      return;
+    }
+    const inputRecords = records.filter((record) => String(record.kind || "").toLowerCase() !== "styling");
+    const byField = new Map(records.map((record) => [String(record.field || "").toLowerCase(), record]));
+    const h1Record = byField.get("name text") || byField.get("story title") || inputRecords[0];
+    const pRecord = byField.get("class text") || byField.get("awards title") || inputRecords.find((record) => record !== h1Record);
+    const h1 = h1Record?.note || title;
+    const p = pRecord?.note || countLabel;
+    const bodyRecord = byField.get("story content") || inputRecords.find((record) => record !== h1Record && record !== pRecord);
+    const details = bodyRecord?.note || "";
     panel.innerHTML = [
-      '<section class="lp-section-block lp-overview-section lp-theme-overview">',
-      sectionTitle(title, countLabel),
-      '<div class="lp-list">',
-      records.map(profileContentRow).join(""),
-      "</div>",
-      "</section>"
+      profileTopSection(h1, p, details, ["home", "bio", "contact"].includes(type))
     ].join("");
   }
 
@@ -775,43 +891,118 @@
     const recentCompetitions = filterOverviewItems(overviewSubset("competitions", rangedCompetitions, rangedCompetitions), overviewControls.competitions).slice(0, 5);
     const notableClasses = filterOverviewItems(overviewSubset("classes", rangedClasses, rangedClasses), overviewControls.classes).slice(0, 5);
 
-    panels.overview.innerHTML = [
-      '<section class="lp-section-block lp-overview-section lp-theme-videos">',
-      sectionTitle("Videos", overviewVideos.length + " shown", "", videoNavMarkup("overview")),
-      videoCarousel(overviewVideos.slice(0, 5), "overview", { hideControls: true }),
-      seeAll("videos", "More videos ->"),
-      "</section>",
-      '<section class="lp-section-block lp-overview-section lp-theme-horses">',
-      sectionTitle("Horses", topHorses.length + " shown", "", videoNavMarkup("overview-horses")),
-      horseCarousel(topHorses, "overview-horses"),
-      seeAll("horses", "See all horses ->"),
-      "</section>",
-      '<section class="lp-section-block lp-overview-section lp-theme-competitions">',
-      sectionTitle("Latest competitions", "", "", filterToggleMarkup("overview:competitions")),
-      overviewControlsMarkup("competitions", rangedCompetitions),
-      competitionCollection(recentCompetitions, viewControls.overviewCompetitions),
-      seeAll("competitions", "See all competitions ->"),
-      "</section>",
-      '<section class="lp-section-block lp-overview-section lp-theme-classes">',
-      sectionTitle("Latest classes", "", "", filterToggleMarkup("overview:classes")),
-      overviewControlsMarkup("classes", rangedClasses),
-      classCollection(notableClasses, viewControls.overviewClasses, { detailMode: "dateRange" }),
-      seeAll("classes", "See all classes ->"),
-      "</section>"
-    ].join("");
+    if (panels.overview) {
+      panels.overview.innerHTML = [
+        '<section class="lp-section-block lp-overview-section lp-theme-videos">',
+        sectionTitle("Videos", overviewVideos.length + " shown", "", videoNavMarkup("overview")),
+        videoCarousel(overviewVideos.slice(0, 5), "overview", { hideControls: true }),
+        seeAll("videos", "More videos ->"),
+        "</section>",
+        '<section class="lp-section-block lp-overview-section lp-theme-horses">',
+        sectionTitle("Horses", topHorses.length + " shown", "", videoNavMarkup("overview-horses")),
+        horseCarousel(topHorses, "overview-horses"),
+        seeAll("horses", "See all horses ->"),
+        "</section>",
+        '<section class="lp-section-block lp-overview-section lp-theme-competitions">',
+        sectionTitle("Latest competitions", "", "", filterToggleMarkup("overview:competitions")),
+        overviewControlsMarkup("competitions", rangedCompetitions),
+        competitionCollection(recentCompetitions, viewControls.overviewCompetitions),
+        seeAll("competitions", "See all competitions ->"),
+        "</section>",
+        '<section class="lp-section-block lp-overview-section lp-theme-classes">',
+        sectionTitle("Latest classes", "", "", filterToggleMarkup("overview:classes")),
+        overviewControlsMarkup("classes", rangedClasses),
+        classCollection(notableClasses, viewControls.overviewClasses, { detailMode: "dateRange" }),
+        seeAll("classes", "See all classes ->"),
+        "</section>"
+      ].join("");
+    }
+    renderRidingNestedPanels();
+  }
+
+  function renderRidingNestedPanels() {
+    const section = root.querySelector('[data-nested-tabs="riding"]');
+    if (!section) return;
+    const videosPanel = section.querySelector('[data-nested-panel="videos"]');
+    const horsesPanel = section.querySelector('[data-nested-panel="horses"]');
+    if (videosPanel) {
+      const videos = overviewSubset("videos", currentVideos(), currentVideos()).slice(0, 5);
+      videosPanel.innerHTML = [
+        '<section class="lp-section-block lp-theme-videos">',
+        sectionTitle("Videos", videos.length + " shown", "", videoNavMarkup("riding-videos")),
+        videoCarousel(videos, "riding-videos", { hideControls: true }),
+        "</section>"
+      ].join("");
+    }
+    if (horsesPanel) {
+      const current = currentHorses();
+      const ribbonHorses = current.filter((horse) => hasRibbon(horse.classes));
+      const horses = overviewSubset("horses", current, ribbonHorses.length ? ribbonHorses : current).slice(0, 5);
+      horsesPanel.innerHTML = [
+        '<section class="lp-section-block lp-theme-horses">',
+        sectionTitle("Horses", horses.length + " shown", "", videoNavMarkup("riding-horses")),
+        horseCarousel(horses, "riding-horses"),
+        "</section>"
+      ].join("");
+    }
+    const competitionsPanel = section.querySelector('[data-nested-panel="competitions"]');
+    if (competitionsPanel) {
+      const competitions = filterOverviewItems(currentCompetitions(), allControls.competitions).slice(0, 12);
+      competitionsPanel.innerHTML = [
+        '<section class="lp-section-block lp-theme-competitions">',
+        sectionTitle("Competitions", competitions.length + " shown", "", filterToggleMarkup("all:competitions")),
+        competitionCollection(competitions, viewControls.competitions),
+        "</section>"
+      ].join("");
+    }
+    const classesPanel = section.querySelector('[data-nested-panel="classes"]');
+    if (classesPanel) {
+      const classes = filterOverviewItems(currentClasses(), allControls.classes).slice(0, 12);
+      classesPanel.innerHTML = [
+        '<section class="lp-section-block lp-theme-classes">',
+        sectionTitle("Classes", classes.length + " shown", "", filterToggleMarkup("all:classes")),
+        classCollection(classes, viewControls.classes),
+        "</section>"
+      ].join("");
+    }
   }
 
   function renderHorses() {
     renderedPanels.add("horses");
     const baseHorses = currentHorses();
     const horses = filterHorses(baseHorses, allControls.horses);
-    panels.horses.innerHTML = [
-      '<section class="lp-section-block lp-theme-horses">',
-      sectionTitle("Horses", horses.length + " shown", "", filterToggleMarkup("all:horses")),
-      allControlsMarkup("horses", baseHorses),
-      horseGrid(horses),
-      "</section>"
-    ].join("");
+    if (panels.horses) {
+      panels.horses.innerHTML = [
+        '<section class="lp-section-block lp-theme-horses">',
+        sectionTitle("Horses", horses.length + " shown", "", filterToggleMarkup("all:horses")),
+        allControlsMarkup("horses", baseHorses),
+        horseGrid(horses),
+        "</section>"
+      ].join("");
+    }
+    renderHorseNestedPanels();
+  }
+
+  function renderHorseNestedPanels() {
+    const section = root.querySelector('[data-nested-tabs="horses"]');
+    if (!section) return;
+    const horses = filterHorses(currentHorses(), allControls.horses);
+    const groups = {
+      ponies: horses.filter(isKnownPony),
+      horses: horses.filter((horse) => !isKnownPony(horse)),
+      owned: horses.filter(isOwnedHorse),
+      hacked: horses.filter((horse) => !isOwnedHorse(horse))
+    };
+    Object.entries(groups).forEach(([key, rows]) => {
+      const panel = section.querySelector('[data-nested-panel="' + key + '"]');
+      if (!panel) return;
+      panel.innerHTML = [
+        '<section class="lp-section-block lp-theme-horses">',
+        sectionTitle(key === "ponies" ? "Ponies" : key === "owned" ? "Owned" : key === "hacked" ? "Hacked" : "Horses", rows.length + " shown"),
+        horseGrid(rows),
+        "</section>"
+      ].join("");
+    });
   }
 
   function renderVideos() {
@@ -819,15 +1010,42 @@
     const baseVideos = currentVideos();
     const favoriteVideos = favoriteSubset("videos", baseVideos, baseVideos).slice(0, 5);
     const videos = filterOverviewItems(baseVideos, allControls.videos);
-    panels.videos.innerHTML = [
-      '<section class="lp-section-block lp-theme-videos">',
-      sectionTitle("Videos", baseVideos.length + " total", "", videoNavMarkup("all-favorites")),
-      videoCarousel(favoriteVideos, "all-favorites", { hideControls: true }),
-      sectionTitle("All videos", videos.length + " shown", "", filterToggleMarkup("all:videos")),
-      allControlsMarkup("videos", baseVideos),
-      videoGrid(videos),
-      "</section>"
-    ].join("");
+    if (panels.videos) {
+      panels.videos.innerHTML = [
+        '<section class="lp-section-block lp-theme-videos">',
+        sectionTitle("All videos", videos.length + " shown", "", filterToggleMarkup("all:videos")),
+        allControlsMarkup("videos", baseVideos),
+        videoGrid(videos),
+        "</section>"
+      ].join("");
+    }
+    renderVideoNestedPanels();
+  }
+
+  function renderVideoNestedPanels() {
+    const section = root.querySelector('[data-nested-tabs="videos"]');
+    if (!section) return;
+    const videos = currentVideos();
+    const groups = {
+      featured: mockVideoSet(videos, 0),
+      training: mockVideoSet(videos, 1),
+      shows: mockVideoSet(videos, 2)
+    };
+    Object.entries(groups).forEach(([key, rows]) => {
+      const panel = section.querySelector('[data-nested-panel="' + key + '"]');
+      if (!panel) return;
+      panel.innerHTML = [
+        '<section class="lp-section-block lp-theme-videos">',
+        sectionTitle(key === "featured" ? "Featured" : key === "training" ? "Training" : "Shows", rows.length + " shown"),
+        videoGrid(rows),
+        "</section>"
+      ].join("");
+    });
+  }
+
+  function mockVideoSet(videos, offset) {
+    const source = videos.length ? videos : state.videos;
+    return source.slice(offset, offset + 6);
   }
 
   function renderCompetitions() {
@@ -871,6 +1089,7 @@
     renderedPanels.delete("competitions");
     renderedPanels.delete("classes");
     renderOverview();
+    renderRidingNestedPanels();
     if (root.querySelector('[data-panel="videos"]')?.classList.contains("is-active")) renderVideos();
     if (root.querySelector('[data-panel="horses"]')?.classList.contains("is-active")) renderHorses();
     if (root.querySelector('[data-panel="competitions"]')?.classList.contains("is-active")) renderCompetitions();
@@ -922,6 +1141,19 @@
       panel.classList.toggle("is-active", panel.dataset.profilePanel === tabName);
     });
     scrollProfileToTop();
+  }
+
+  function selectNestedTab(group, tabName) {
+    const section = Array.from(root.querySelectorAll("[data-nested-tabs]")).find((item) => item.dataset.nestedTabs === group);
+    if (!section) return;
+    section.querySelectorAll("[data-nested-tab]").forEach((tab) => {
+      const isActive = tab.dataset.nestedTab === tabName;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+    section.querySelectorAll("[data-nested-panel]").forEach((panel) => {
+      panel.classList.toggle("is-active", panel.dataset.nestedPanel === tabName);
+    });
   }
 
   function scrollProfileToTop() {
@@ -1114,6 +1346,22 @@
   function currentHorses() {
     return horsesForRows(currentClasses())
       .filter((horse) => isActiveRecord("horses", horse.id) && !isIgnored("horses", horse.id));
+  }
+
+  function isOwnedHorse(horse) {
+    const name = normalizeText(horse.name);
+    return name.includes("oddur") || name.includes("troubleshoot");
+  }
+
+  function isKnownPony(horse) {
+    const layerType = normalizeText(layerFor("horses", horse.id).horseType || layerFor("horses", horse.id).type || horse.type || "");
+    if (layerType === "pony") return true;
+    if (layerType === "horse") return false;
+    return horse.classes.some((row) => normalizeText([row.classTitle, row.sectionName].filter(Boolean).join(" ")).includes("pony"));
+  }
+
+  function normalizeText(value) {
+    return String(value || "").trim().toLowerCase();
   }
 
   function currentVideos() {
@@ -2429,12 +2677,7 @@
   }
 
   function detailList(rows) {
-    return '<div class="lp-detail-list">' + rows.filter(Boolean).map(([label, value]) => [
-      '<div class="lp-detail-row">',
-      '<div class="lp-detail-label">' + escapeHtml(label) + "</div>",
-      '<div class="lp-detail-value">' + value + "</div>",
-      "</div>"
-    ].join("")).join("") + "</div>";
+    return '<div class="lp-detail-list">' + staticRowList(rows) + "</div>";
   }
 
   function staticRowList(rows) {
