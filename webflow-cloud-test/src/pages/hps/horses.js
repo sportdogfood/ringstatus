@@ -13,25 +13,13 @@ const TENANT_FIELD_CANDIDATES = ["tenant_id", "tenantId", "Tenant ID", "pid", "P
 const PROFILE_READ_FIELDS = ["horse", "horse_id", "show_name", "pid", "last_modified_time", "tenant_id", "airtable_id"];
 const PROFILE_EDITABLE_FIELDS = [
   "barn_name",
-  "emergency_no",
-  "emergency_contact",
-  "rider_list",
-  "horse_note",
-  "trainer_id",
-  "horse_types",
-  "horse_disciplines",
-  "horse_age",
   "horse_colors",
   "horse_genders",
-  "horse_profile_tabs",
   "emergency_phone",
   "emergency_contacts",
-  "tenant_img",
-  "active",
-  "priority",
-  "ignore",
-  "ww_grooms",
-  "ww_exercisers"
+  "horse_disciplines",
+  "horse_age",
+  "horse_note"
 ];
 const PROFILE_ACTION_FIELDS = ["stall_card_input_print"];
 const PROFILE_MEMBERSHIP_FIELDS = ["wec_horses_link", "lists"];

@@ -5,6 +5,7 @@
   const config = window.HPS_CONFIG || {};
   const tenantId = String(config.tenantId || "").trim();
   const apiUrl = config.apiUrl || "/hps/horses";
+  const refreshIntervalMinutes = Number(config.refreshIntervalMinutes || 5);
   const state = {
     records: [],
     query: "",
@@ -34,15 +35,16 @@
   updateModuleOpen();
 
   await load();
+  startAutoRefresh();
 
-  async function load() {
+  async function load(options = {}) {
     if (!tenantId) {
       els.list.innerHTML = `<div class="lp-row is-static">HPS tenant id is missing from the Webflow embed.</div>`;
       setStatus("Missing tenant id.");
       return;
     }
 
-    setStatus(`Loading ww_horses for tenant ${tenantId}...`);
+    if (!options.silent) setStatus(`Loading ww_horses for tenant ${tenantId}...`);
     try {
       const response = await fetch(requestUrl());
       const data = await response.json();
@@ -51,6 +53,7 @@
       }
       state.records = data.records || [];
       render();
+      refreshActiveDetail();
       const sourceView = data.source?.view || `hps_${tenantId}`;
       const sourceTable = data.source?.table || "ww_horses";
       setStatus(`${sourceTable} - ${sourceView} | Loaded ${state.records.length} horses from ${sourceView} for tenant ${data.tenantId || tenantId}.`);
@@ -59,6 +62,27 @@
       els.list.innerHTML = `<div class="lp-row is-static">Horses failed to load. Check console for [hps].</div>`;
       setStatus("Load failed.");
     }
+  }
+
+  function startAutoRefresh() {
+    if (!Number.isFinite(refreshIntervalMinutes) || refreshIntervalMinutes <= 0) return;
+    window.setInterval(() => {
+      if (document.hidden) return;
+      load({ silent: true });
+    }, refreshIntervalMinutes * 60 * 1000);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) load({ silent: true });
+    });
+  }
+
+  function refreshActiveDetail() {
+    if (!state.activeRecordId || els.modal.hidden) return;
+    const record = state.records.find((item) => item.id === state.activeRecordId);
+    if (!record) {
+      closeModal();
+      return;
+    }
+    els.modalContent.innerHTML = detail(record);
   }
 
   function render() {
@@ -100,7 +124,7 @@
           <button class="packing-horse-detail-trigger" type="button" data-open-horse="${escapeAttr(record.id)}">
             <span class="lp-row-title">${escapeHtml(name)}</span>
           </button>
-        <button class="lp-achievement packing-token ${currentState === "active" ? "is-packed" : "is-need"} th-state-pill" type="button" data-toggle-state="${escapeAttr(record.id)}" data-next-state="${escapeAttr(nextState)}">${escapeHtml(currentState)}</button>
+        <span class="lp-achievement packing-token ${currentState === "active" ? "is-packed" : "is-need"} th-state-pill" aria-label="App state pending distinct fields">${escapeHtml(currentState)}</span>
       </div>
     `;
   }
@@ -112,12 +136,13 @@
     const barnName = firstValue(fields, ["barn_name", "Barn Name", "barn"]);
     const ignore = firstValue(fields, ["ignore", "Ignore"]);
     const usef = firstValue(fields, ["usef", "USEF", "usef_id", "USEF ID"]);
-    const color = firstValue(fields, ["color", "horse_color", "Color"]);
-    const gender = firstValue(fields, ["gender", "horse_gender", "Gender"]);
-    const type = firstValue(fields, ["horse_type", "type", "Type"]);
-    const disciplines = firstValue(fields, ["disciplines", "discipline", "horse_disciplines", "Discipline", "Disciplines"]);
+    const color = firstValue(fields, ["horse_colors", "color", "horse_color", "Color"]);
+    const gender = firstValue(fields, ["horse_genders", "gender", "horse_gender", "Gender"]);
+    const type = firstValue(fields, ["horse_types", "horse_type", "type", "Type"]);
+    const disciplines = firstValue(fields, ["horse_disciplines", "disciplines", "discipline", "Discipline", "Disciplines"]);
     const age = firstValue(fields, ["horse_age", "age", "Age"]);
-    const emergencyContact = firstValue(fields, ["emergency_contact", "emergency_contacts", "Emergency Contact"]);
+    const note = firstValue(fields, ["horse_note", "Horse Note"]);
+    const emergencyContact = firstValue(fields, ["emergency_contacts", "emergency_contact", "Emergency Contact"]);
     const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
     const riderList = firstValue(fields, ["rider_list", "Rider List"]);
     const trainer = firstValue(fields, ["trainer_id", "trainer", "Trainer"]);
@@ -145,19 +170,18 @@
         <section class="lp-profile-panel packing-theme-horses packing-detail th-detail-section">
           <div data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
-              ${detailEditRow("show_name", "Show name", showName)}
+              ${detailTextRow("Show name", showName || "-")}
               ${detailEditRow("barn_name", "Barn name", barnName)}
-              ${detailChoiceRow("ignore", "Ignore", truthy(ignore) ? "Ignore" : "Include", ["Include", "Ignore"])}
+              ${detailEditRow("horse_note", "Note", note)}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
-              ${detailChoiceRow("horse_type", "Type", type, ["Pony", "Horse"])}
-              ${detailChoiceRow("gender", "Gender", gender, ["Gelding", "Mare"])}
-              ${detailMultiChoiceRow("disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
-              ${detailChoiceRow("color", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
+              ${detailChoiceRow("horse_genders", "Gender", gender, ["Gelding", "Mare"])}
+              ${detailMultiChoiceRow("horse_disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
+              ${detailChoiceRow("horse_colors", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
               ${detailEditRow("horse_age", "Age", age, "number")}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
-              ${detailEditRow("emergency_contact", "Emergency contact", emergencyContact)}
+              ${detailEditRow("emergency_contacts", "Emergency contact", emergencyContact)}
               ${detailEditRow("emergency_phone", "Emergency phone", emergencyPhone)}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "team" ? " is-active" : ""}" data-profile-panel="team">
@@ -238,10 +262,9 @@
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             ${["active", "inactive"].map((choice) => `
-              <label class="lp-edit-choice">
-                <input type="radio" name="record-state-${escapeAttr(recordId)}" data-toggle-state="${escapeAttr(recordId)}" data-next-state="${escapeAttr(choice)}"${currentState === choice ? " checked" : ""}>
-                <span class="lp-edit-pill">${escapeHtml(choice)}</span>
-              </label>
+              <span class="lp-edit-choice">
+                <span class="lp-edit-pill${currentState === choice ? " is-active" : ""}">${escapeHtml(choice)}</span>
+              </span>
             `).join("")}
           </span>
         </span>
@@ -321,14 +344,13 @@
       return;
     }
 
-    if (event.target.closest("[data-modal-close]")) {
-      closeModal();
+    if (event.target.closest("[data-th-refresh]")) {
+      load();
       return;
     }
 
-    const stateButton = event.target.closest("[data-toggle-state]");
-    if (stateButton) {
-      toggleRecordState(stateButton.dataset.toggleState, stateButton.dataset.nextState);
+    if (event.target.closest("[data-modal-close]")) {
+      closeModal();
       return;
     }
 
@@ -436,31 +458,6 @@
     }
   }
 
-  async function toggleRecordState(recordId, nextState) {
-    const record = state.records.find((item) => item.id === recordId);
-    if (!record) return;
-    const fields = record.fields || {};
-    const fieldName = recordStateField(fields);
-    const oldValue = fields[fieldName] ?? recordState(record);
-    const name = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
-    const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
-    const nextValue = fieldName === "inactive" ? nextState === "inactive" : nextState;
-
-    fields[fieldName] = nextValue;
-    render();
-    if (state.activeRecordId === record.id && !els.modal.hidden) {
-      els.modalContent.innerHTML = detail(record);
-    }
-
-    await saveRecordChange(record, {
-      fieldName,
-      oldValue,
-      newValue: nextValue,
-      horseKey: recordKey,
-      horseName: name
-    });
-  }
-
   function openHorse(recordId) {
     const record = state.records.find((item) => item.id === recordId);
     if (!record) return;
@@ -544,6 +541,7 @@
                 </div>
                 <div class="packing-tools th-toolbar">
                   <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
+                  <button class="th-refresh-button" type="button" data-th-refresh>Refresh</button>
                 </div>
                 <div id="sectionRows" class="lp-list" data-th-list></div>
               </section>

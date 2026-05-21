@@ -715,6 +715,148 @@ node --check webflow\hps\hps.js
 
 Do not push or publish this layout without rechecking the preview.
 
+## HPS State And Refresh Contract
+
+Status: locked definitions, implementation staged in HPS frontend/API where fields currently exist.
+
+### Distinct State Definitions
+
+These names must remain separate. Do not overload one Airtable field or one UI label to mean multiple states.
+
+```text
+app_active / app_inactive
+```
+
+Purpose: HPS app visibility/status.
+
+Behavior:
+
+```text
+app_active   -> the horse is active for the HPS app workflow
+app_inactive -> the horse is inactive for the HPS app workflow
+```
+
+This is the app-level status that should be sent to Airtable after the distinct Airtable fields are created and confirmed.
+
+```text
+app_include / app_ignore
+```
+
+Purpose: quick include/ignore workflow.
+
+Behavior:
+
+```text
+app_include -> include this horse in the current app workflow
+app_ignore  -> ignore this horse for now
+```
+
+This is not the same as app active/inactive. It is a workflow include/ignore concept.
+
+```text
+record_active / record_inactive
+```
+
+Purpose: source/record lifecycle status.
+
+Behavior:
+
+```text
+record_active   -> source record is active
+record_inactive -> source record is inactive
+```
+
+This is not related to HPS app active/inactive unless a future source contract explicitly maps it.
+
+### Current Implementation Guard
+
+Until the distinct Airtable fields exist and are confirmed, the HPS list state pill is display-only. It must not POST the older overloaded `inactive` field.
+
+The allowed editable field list is currently:
+
+```text
+barn_name
+horse_colors
+horse_genders
+emergency_phone
+emergency_contacts
+horse_disciplines
+horse_age
+horse_note
+```
+
+`show_name` is display-only and must not be modified by HPS.
+
+### Change Logging
+
+HPS changes write directly to:
+
+```text
+ww_horses
+```
+
+Successful edits are logged to:
+
+```text
+hp_cls
+```
+
+The change log captures the changed field through:
+
+```text
+field_name
+old_value
+new_value
+tenant_id
+raw_payload
+```
+
+No separate `hp_cls` fields are required for `app_active`, `app_ignore`, or `record_active` unless reporting needs them later.
+
+### Refresh Behavior
+
+The app gets fresh data by rerunning GET against:
+
+```text
+/test/hps/horses?tenantId=<tenant_id>
+```
+
+Refresh behavior:
+
+```text
+On app load: GET
+Manual Refresh button: GET immediately
+Every refreshIntervalMinutes while page is open and visible: GET
+When browser tab becomes visible again: GET
+```
+
+Default interval:
+
+```text
+5 minutes
+```
+
+Webflow embed setting:
+
+```js
+window.HPS_CONFIG = {
+  tenantId: "8778",
+  apiUrl: "https://ringstatus.webflow.io/test/hps/horses",
+  refreshIntervalMinutes: 5
+};
+```
+
+Safari/iOS rule:
+
+```text
+If the tab is closed, the app is not running.
+No auto refresh happens.
+No background Airtable polling happens.
+When the user opens the page again, the app runs a fresh GET.
+```
+
+If Safari keeps the tab open but backgrounds it, timers may be paused or throttled. The app compensates by refreshing when the tab becomes visible again.
+
 ## Step By Step: Duplicate HPS For A Similar Connector
 
 Use this when creating a similar Webflow/Airtable connector for another dataset, such as riders, trainers, trips, packing, turnout, or tack.
