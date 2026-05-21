@@ -14,9 +14,10 @@
     saveTimers: new Map(),
     activeRecordId: "",
     detailTab: "overview",
-      moduleOpen: true,
+    moduleOpen: true,
     detailStatus: "",
-    activeGroup: "active"
+    activeGroup: "active",
+    activePrints: new Set()
   };
 
   root.innerHTML = shell();
@@ -594,8 +595,14 @@
   }
 
   function openStallCardPdf(recordId) {
+    if (state.activePrints.has(recordId)) {
+      setPrintStatus(recordId, "PDF is already opening...");
+      return;
+    }
+
     const record = state.records.find((item) => item.id === recordId);
     if (!record) return;
+    state.activePrints.add(recordId);
 
     const fields = record.fields || {};
     const horseName = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "horse";
@@ -612,10 +619,12 @@
     if (opened) {
       setPrintStatus(record.id, "PDF opened.");
       setDetailStatus("PDF opened.");
+      window.setTimeout(() => state.activePrints.delete(recordId), 5000);
       return;
     }
 
     setPrintStatus(record.id, "Popup blocked. Open PDF link from the browser prompt.");
+    window.setTimeout(() => state.activePrints.delete(recordId), 5000);
     window.location.href = pdfUrl.toString();
   }
 
