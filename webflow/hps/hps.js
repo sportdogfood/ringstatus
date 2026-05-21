@@ -517,14 +517,17 @@
   function shell() {
     return `
       <div class="th-hps-module">
-        <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
-          <span class="th-hps-toggle-count" data-th-count>0</span>
-          <span class="th-hps-toggle-label">Horses</span>
-          <span class="th-hps-toggle-groups" aria-label="Horse list sections">
-            <span class="th-hps-toggle-group is-active" role="button" tabindex="0" data-hps-group-jump="active" aria-pressed="true">Active</span>
-            <span class="th-hps-toggle-group" role="button" tabindex="0" data-hps-group-jump="inactive" aria-pressed="false">Inactive</span>
-          </span>
-        </button>
+        <div class="th-hps-opener">
+          <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
+            <span class="th-hps-toggle-count" data-th-count>0</span>
+            <span class="th-hps-toggle-label">Horses</span>
+          </button>
+          <div class="th-hps-controls" aria-label="Horse list controls">
+            <button class="th-hps-control is-active" type="button" data-hps-group-jump="active" aria-pressed="true">Active</button>
+            <button class="th-hps-control" type="button" data-hps-group-jump="inactive" aria-pressed="false">Inactive</button>
+            <button class="th-hps-control" type="button" data-th-refresh>Refresh</button>
+          </div>
+        </div>
 
         <div class="lp-shell th-hps-shell" data-hps-module-shell>
           <header class="lp-header">
@@ -549,7 +552,6 @@
                 </div>
                 <div class="packing-tools th-toolbar">
                   <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
-                  <button class="th-refresh-button" type="button" data-th-refresh>Refresh</button>
                 </div>
                 <div id="sectionRows" class="lp-list" data-th-list></div>
               </section>
@@ -595,6 +597,14 @@
   }
 
   function openStallCardPdf(recordId) {
+    window.__HPS_PRINT_LOCKS = window.__HPS_PRINT_LOCKS || new Map();
+    const lockKey = `${tenantId}:${recordId}`;
+    const lastPrintAt = window.__HPS_PRINT_LOCKS.get(lockKey) || 0;
+    if (Date.now() - lastPrintAt < 7000) {
+      setPrintStatus(recordId, "PDF is already opening...");
+      return;
+    }
+
     if (state.activePrints.has(recordId)) {
       setPrintStatus(recordId, "PDF is already opening...");
       return;
@@ -603,6 +613,7 @@
     const record = state.records.find((item) => item.id === recordId);
     if (!record) return;
     state.activePrints.add(recordId);
+    window.__HPS_PRINT_LOCKS.set(lockKey, Date.now());
 
     const fields = record.fields || {};
     const horseName = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "horse";
@@ -619,12 +630,18 @@
     if (opened) {
       setPrintStatus(record.id, "PDF opened.");
       setDetailStatus("PDF opened.");
-      window.setTimeout(() => state.activePrints.delete(recordId), 5000);
+      window.setTimeout(() => {
+        state.activePrints.delete(recordId);
+        window.__HPS_PRINT_LOCKS.delete(lockKey);
+      }, 7000);
       return;
     }
 
     setPrintStatus(record.id, "Popup blocked. Open PDF link from the browser prompt.");
-    window.setTimeout(() => state.activePrints.delete(recordId), 5000);
+    window.setTimeout(() => {
+      state.activePrints.delete(recordId);
+      window.__HPS_PRINT_LOCKS.delete(lockKey);
+    }, 7000);
     window.location.href = pdfUrl.toString();
   }
 
