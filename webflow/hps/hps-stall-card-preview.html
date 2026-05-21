@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HPS Stall Card Preview</title>
+  <link rel="stylesheet" href="./hps-stall-card.css">
+</head>
+<body>
+  <div id="hps-stall-card">Loading stall card...</div>
+  <script>
+    window.HPS_STALL_CARD_CONFIG = {
+      tenantId: "8778",
+      apiUrl: "https://ringstatus.webflow.io/test/hps/horses",
+      logoUrl: "https://cdn.prod.website-files.com/6982268b7543ac3c80151266/6a0f3a68a0919117ccce7188_CWF%20CASTLEWOOD%20FARM.svg"
+    };
+  </script>
+  <script src="./hps-stall-card.js"></script>
+</body>
+</html>
