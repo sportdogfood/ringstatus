@@ -14,8 +14,9 @@
     saveTimers: new Map(),
     activeRecordId: "",
     detailTab: "overview",
-    moduleOpen: true,
-    detailStatus: ""
+      moduleOpen: true,
+    detailStatus: "",
+    activeGroup: "active"
   };
 
   root.innerHTML = shell();
@@ -106,8 +107,9 @@
 
   function groupRows(label, records) {
     if (!records.length) return "";
+    const groupKey = label.toLowerCase();
     return `
-      <div class="th-group">
+      <div class="th-group" data-hps-group="${escapeAttr(groupKey)}">
         <div class="th-group-label">${escapeHtml(label)}</div>
         ${records.map((record) => row(record)).join("")}
       </div>
@@ -325,6 +327,13 @@
   }
 
   function handleClick(event) {
+    const groupAnchor = event.target.closest("[data-hps-group-jump]");
+    if (groupAnchor) {
+      scrollToGroup(groupAnchor.dataset.hpsGroupJump);
+      event.stopPropagation();
+      return;
+    }
+
     if (event.target.closest("[data-hps-toggle]")) {
       state.moduleOpen = !state.moduleOpen;
       updateModuleOpen();
@@ -478,6 +487,24 @@
     }
   }
 
+  function scrollToGroup(groupKey) {
+    state.activeGroup = groupKey || "active";
+    updateGroupJumpState();
+    const target = root.querySelector(`[data-hps-group="${cssEscape(state.activeGroup)}"]`);
+    const scroller = root.querySelector(".lp-content");
+    if (target && scroller) {
+      scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+    }
+  }
+
+  function updateGroupJumpState() {
+    root.querySelectorAll("[data-hps-group-jump]").forEach((button) => {
+      const isActive = button.dataset.hpsGroupJump === state.activeGroup;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+
   function filteredRecords() {
     if (!state.query) return state.records;
     return state.records.filter((record) => {
@@ -492,6 +519,10 @@
         <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
           <span class="th-hps-toggle-count" data-th-count>0</span>
           <span class="th-hps-toggle-label">Horses</span>
+          <span class="th-hps-toggle-groups" aria-label="Horse list sections">
+            <span class="th-hps-toggle-group is-active" role="button" tabindex="0" data-hps-group-jump="active" aria-pressed="true">Active</span>
+            <span class="th-hps-toggle-group" role="button" tabindex="0" data-hps-group-jump="inactive" aria-pressed="false">Inactive</span>
+          </span>
         </button>
 
         <div class="lp-shell th-hps-shell" data-hps-module-shell>

@@ -74,6 +74,29 @@
   text-transform: uppercase;
 }
 
+#hps-app .th-hps-toggle-groups {
+  display: flex;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+#hps-app .th-hps-toggle-group {
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#hps-app .th-hps-toggle-group.is-active {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 #hps-app .th-hps-shell {
   flex: 0 0 min(400px, 100vw);
   width: min(400px, 100vw);
@@ -87,6 +110,7 @@
   position: static;
   z-index: 100;
   width: min(400px, 100vw);
+  height: 100vh;
   max-height: 100vh;
   overflow-y: auto;
   padding-right: 0;
