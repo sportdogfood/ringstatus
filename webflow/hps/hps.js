@@ -6,6 +6,8 @@
   const tenantId = String(config.tenantId || "").trim();
   const apiUrl = config.apiUrl || "/hps/horses";
   const refreshIntervalMinutes = Number(config.refreshIntervalMinutes || 5);
+  const stallCardUrl = config.stallCardUrl || "https://ringstatus.com/hps-stall-card";
+  const pdfWorkerUrl = config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/";
   const state = {
     records: [],
     query: "",
@@ -146,7 +148,6 @@
     const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
     const riderList = firstValue(fields, ["rider_list", "Rider List"]);
     const trainer = firstValue(fields, ["trainer_id", "trainer", "Trainer"]);
-    const stallCardInput = firstValue(fields, ["stall_card_input_print", "Stall Card Input Print"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
     const subtitle = [usef ? `USEF ${usef}` : "", recordKey].filter(Boolean).join(" - ");
@@ -190,14 +191,7 @@
               ${detailTextRow("USEF", usef || "-")}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "print" ? " is-active" : ""}" data-profile-panel="print">
-              ${detailPrintRow(record.id, {
-                barnName: barnName || name,
-                showName: showName || name,
-                colorGender: [color, gender].filter(Boolean).join(" "),
-                emergencyContact,
-                emergencyPhone,
-                stallCardInput
-              })}
+              ${detailPrintRow(record.id)}
             </div>
           </div>
         </section>
@@ -225,22 +219,15 @@
     return detailRow(label, escapeHtml(value));
   }
 
-  function detailPrintRow(recordId, values) {
+  function detailPrintRow(recordId) {
     return `
       <div class="lp-field-row">
         <span class="lp-field-label">Stall card</span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
-            <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-toggle="${escapeAttr(recordId)}">Print</button>
+            <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-print="${escapeAttr(recordId)}">Print</button>
           </span>
-          <div class="th-stall-card-panel" data-stall-card-panel="${escapeAttr(recordId)}" hidden>
-            <input class="lp-edit-input" type="text" value="${escapeAttr(values.barnName)}" data-stall-card-field="barnName" aria-label="Barn name">
-            <input class="lp-edit-input" type="text" value="${escapeAttr(values.showName)}" data-stall-card-field="showName" aria-label="Show name">
-            <input class="lp-edit-input" type="text" value="${escapeAttr(values.colorGender)}" data-stall-card-field="colorGender" aria-label="Color gender">
-            <input class="lp-edit-input" type="text" value="${escapeAttr(values.emergencyContact)}" data-stall-card-field="emergencyContact" aria-label="Emergency contact">
-            <input class="lp-edit-input" type="text" value="${escapeAttr(values.emergencyPhone)}" data-stall-card-field="emergencyPhone" aria-label="Emergency phone">
-            <button class="lp-edit-button th-print-button" type="button" data-stall-card-print="${escapeAttr(recordId)}">Print</button>
-          </div>
+          <span class="th-print-status" data-stall-card-status="${escapeAttr(recordId)}">Generates a PDF from the current horse profile.</span>
         </span>
       </div>
     `;
@@ -360,15 +347,9 @@
       return;
     }
 
-    const stallCardToggle = event.target.closest("[data-stall-card-toggle]");
-    if (stallCardToggle) {
-      toggleStallCardPanel(stallCardToggle.dataset.stallCardToggle);
-      return;
-    }
-
     const stallCardPrint = event.target.closest("[data-stall-card-print]");
     if (stallCardPrint) {
-      window.print();
+      openStallCardPdf(stallCardPrint.dataset.stallCardPrint);
       return;
     }
 
@@ -490,11 +471,6 @@
     });
   }
 
-  function toggleStallCardPanel(recordId) {
-    const panel = root.querySelector(`[data-stall-card-panel="${cssEscape(recordId)}"]`);
-    if (panel) panel.hidden = !panel.hidden;
-  }
-
   function updateModuleOpen() {
     root.classList.toggle("is-hps-open", state.moduleOpen);
     if (els.moduleToggle) {
@@ -584,6 +560,44 @@
     state.detailStatus = message;
     const detailStatus = root.querySelector("[data-th-detail-status]");
     if (detailStatus) detailStatus.textContent = message;
+  }
+
+  function openStallCardPdf(recordId) {
+    const record = state.records.find((item) => item.id === recordId);
+    if (!record) return;
+
+    const fields = record.fields || {};
+    const horseName = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "horse";
+    const printUrl = new URL(stallCardUrl, window.location.href);
+    printUrl.searchParams.set("tenantId", tenantId);
+    printUrl.searchParams.set("horseRecordId", record.id);
+
+    const pdfUrl = new URL(pdfWorkerUrl);
+    pdfUrl.searchParams.set("url", printUrl.toString());
+    pdfUrl.searchParams.set("filename", `${safeFilename(horseName)}-stall-card.pdf`);
+
+    setPrintStatus(record.id, "Creating PDF...");
+    const opened = window.open(pdfUrl.toString(), "_blank", "noopener");
+    if (opened) {
+      setPrintStatus(record.id, "PDF opened.");
+      setDetailStatus("PDF opened.");
+      return;
+    }
+
+    setPrintStatus(record.id, "Popup blocked. Open PDF link from the browser prompt.");
+    window.location.href = pdfUrl.toString();
+  }
+
+  function setPrintStatus(recordId, message) {
+    const status = root.querySelector(`[data-stall-card-status="${cssEscape(recordId)}"]`);
+    if (status) status.textContent = message;
+  }
+
+  function safeFilename(value) {
+    return String(value || "horse")
+      .trim()
+      .replace(/[^\w.-]+/g, "_")
+      .replace(/^_+|_+$/g, "") || "horse";
   }
 
   function firstValue(fields, names) {

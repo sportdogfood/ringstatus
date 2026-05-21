@@ -857,6 +857,69 @@ When the user opens the page again, the app runs a fresh GET.
 
 If Safari keeps the tab open but backgrounds it, timers may be paused or throttled. The app compensates by refreshing when the tab becomes visible again.
 
+### Stall Card Print/PDF Workflow
+
+The HPS Print tab must not capture or print the current HPS modal/page.
+
+Correct workflow:
+
+```text
+User opens a horse profile
+User clicks Print tab
+User clicks Print
+HPS builds a print-only stall-card URL with tenantId and horseRecordId
+HPS sends that URL to the PDF worker
+PDF worker renders the print-only Webflow page
+PDF opens in a new tab/window
+```
+
+The print-only Webflow page is:
+
+```text
+https://ringstatus.com/hps-stall-card
+```
+
+The PDF worker is:
+
+```text
+https://ringstatus-pdf.gombcg.workers.dev/
+```
+
+The HPS embed config should include:
+
+```js
+window.HPS_CONFIG = {
+  tenantId: "8778",
+  apiUrl: "https://ringstatus.webflow.io/test/hps/horses",
+  refreshIntervalMinutes: 5,
+  stallCardUrl: "https://ringstatus.com/hps-stall-card",
+  pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/"
+};
+```
+
+The Print tab is read-only. It does not show print-specific inputs. If the stall-card data is wrong, the user should update the normal HPS profile fields first, then print.
+
+The PDF URL shape is:
+
+```text
+https://ringstatus-pdf.gombcg.workers.dev/?url=<encoded hps-stall-card URL>&filename=<horse>-stall-card.pdf
+```
+
+The print-only page receives:
+
+```text
+tenantId
+horseRecordId
+```
+
+The print-only page loads fresh data from:
+
+```text
+/test/hps/horses?tenantId=<tenant_id>
+```
+
+Then it renders only the 5.5in x 3.75in stall card.
+
 ## Step By Step: Duplicate HPS For A Similar Connector
 
 Use this when creating a similar Webflow/Airtable connector for another dataset, such as riders, trainers, trips, packing, turnout, or tack.
