@@ -561,11 +561,11 @@
             </section>
           </main>
         </div>
-      </div>
 
-      <footer class="lp-summary-row lp-shell-footer th-hps-status-footer">
-        <p data-th-status>Loading...</p>
-      </footer>
+        <footer class="lp-summary-row lp-shell-footer th-hps-status-footer">
+          <p data-th-status>Loading...</p>
+        </footer>
+      </div>
 
       <div class="lp-modal" data-modal hidden>
         <div class="lp-modal-backdrop" data-modal-close></div>
