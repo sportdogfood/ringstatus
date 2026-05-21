@@ -45,20 +45,22 @@
     const colorGender = [color, gender].filter(Boolean).join(" ");
 
     root.innerHTML = `
-      <div class="hps-stall-page">
-        <div class="hps-stall-card">
-          <div class="hps-stall-logo">
-            ${logoUrl ? `<img src="${escapeAttr(logoUrl)}" alt="Castlewood Farm" onerror="this.style.display='none'">` : ""}
-          </div>
-          <div class="hps-stall-main">
-            <div class="hps-stall-barn">${escapeHtml(barnName || "Horse")}</div>
-            <div class="hps-stall-show">${escapeHtml(showName || "")}</div>
-            <div class="hps-stall-meta">${escapeHtml(colorGender || "")}</div>
-          </div>
-          <div class="hps-stall-emergency">
-            <div class="hps-stall-em-label">*Emergency Contact*</div>
-            <div class="hps-stall-em-name">${escapeHtml(emergencyName || "")}</div>
-            <div class="hps-stall-em-phone">${escapeHtml(emergencyPhone || "")}</div>
+      <div class="hps-stall-sheet">
+        <div class="hps-stall-page">
+          <div class="hps-stall-card">
+            <div class="hps-stall-logo">
+              ${logoUrl ? `<img src="${escapeAttr(logoUrl)}" alt="Castlewood Farm" onerror="this.style.display='none'">` : ""}
+            </div>
+            <div class="hps-stall-main">
+              <div class="hps-stall-barn">${escapeHtml(barnName || "Horse")}</div>
+              <div class="hps-stall-show">${escapeHtml(showName || "")}</div>
+              <div class="hps-stall-meta">${escapeHtml(colorGender || "")}</div>
+            </div>
+            <div class="hps-stall-emergency">
+              <div class="hps-stall-em-label">*Emergency Contact*</div>
+              <div class="hps-stall-em-name">${escapeHtml(emergencyName || "")}</div>
+              <div class="hps-stall-em-phone">${escapeHtml(emergencyPhone || "")}</div>
+            </div>
           </div>
         </div>
       </div>

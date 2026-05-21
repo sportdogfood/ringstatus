@@ -359,7 +359,10 @@
 
     const stallCardPrint = event.target.closest("[data-stall-card-print]");
     if (stallCardPrint) {
-      openStallCardPdf(stallCardPrint.dataset.stallCardPrint);
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      openStallCardPdf(stallCardPrint.dataset.stallCardPrint, stallCardPrint);
       return;
     }
 
@@ -596,7 +599,12 @@
     if (detailStatus) detailStatus.textContent = message;
   }
 
-  function openStallCardPdf(recordId) {
+  function openStallCardPdf(recordId, button) {
+    if (button?.dataset.hpsPrintOpening === "true") {
+      setPrintStatus(recordId, "PDF is already opening...");
+      return;
+    }
+
     window.__HPS_PRINT_LOCKS = window.__HPS_PRINT_LOCKS || new Map();
     const lockKey = `${tenantId}:${recordId}`;
     const lastPrintAt = window.__HPS_PRINT_LOCKS.get(lockKey) || 0;
@@ -612,6 +620,7 @@
 
     const record = state.records.find((item) => item.id === recordId);
     if (!record) return;
+    if (button) button.dataset.hpsPrintOpening = "true";
     state.activePrints.add(recordId);
     window.__HPS_PRINT_LOCKS.set(lockKey, Date.now());
 
@@ -633,6 +642,7 @@
       window.setTimeout(() => {
         state.activePrints.delete(recordId);
         window.__HPS_PRINT_LOCKS.delete(lockKey);
+        if (button) delete button.dataset.hpsPrintOpening;
       }, 7000);
       return;
     }
@@ -641,6 +651,7 @@
     window.setTimeout(() => {
       state.activePrints.delete(recordId);
       window.__HPS_PRINT_LOCKS.delete(lockKey);
+      if (button) delete button.dataset.hpsPrintOpening;
     }, 7000);
     window.location.href = pdfUrl.toString();
   }

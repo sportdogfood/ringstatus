@@ -38,17 +38,22 @@
   z-index: 99;
 }
 
-#hps-app .th-hps-toggle {
-  appearance: none;
+#hps-app .th-hps-opener {
   flex: 0 0 100px;
   margin-top: 10px;
   margin-right: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+#hps-app .th-hps-toggle {
+  appearance: none;
   z-index: 101;
   display: grid;
   gap: 4px;
   width: min(100px, 100%);
-  min-height: 92px;
-  padding: 14px 12px 12px;
+  min-height: 78px;
+  padding: 14px 12px;
   border: 0;
   border-radius: 8px;
   background: #0b63c7;
@@ -74,29 +79,35 @@
   text-transform: uppercase;
 }
 
-#hps-app .th-hps-toggle-groups {
+#hps-app .th-hps-controls {
   display: flex;
-  gap: 6px;
-  margin-top: 8px;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
 }
 
-#hps-app .th-hps-toggle-group {
+#hps-app .th-hps-control {
+  appearance: none;
   display: inline-flex;
   align-items: center;
-  min-height: 18px;
-  padding: 3px 0;
-  color: rgba(255, 255, 255, 0.72);
+  min-height: 28px;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: var(--lp-ink);
   cursor: pointer;
-  font-size: 10px;
+  font-family: inherit;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-#hps-app .th-hps-toggle-group.is-active {
-  color: #ffffff;
+#hps-app .th-hps-control.is-active {
+  color: #0b63c7;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -125,26 +136,8 @@
   top: 0;
   z-index: 101;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-}
-
-#hps-app .th-refresh-button {
-  min-height: 31px;
-  padding: 6px 10px;
-  border: 1px solid rgba(24, 31, 29, 0.2);
-  border-radius: 8px;
-  background: #ffffff;
-  color: var(--lp-ink);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 0.95em;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
-  white-space: nowrap;
 }
 
 #hps-app .lp-modal {
@@ -376,17 +369,20 @@
     right: 0;
   }
 
+  #hps-app .th-hps-opener {
+    width: 100%;
+    margin: 8px 12px 0;
+    gap: 8px;
+  }
+
   #hps-app .th-hps-toggle {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas:
-      "count label"
-      "groups groups";
+    grid-template-areas: "count label";
     align-items: end;
     gap: 4px 8px;
     width: calc(100vw - 24px);
     min-height: 72px;
-    margin: 8px 12px;
     padding: 11px 12px 10px;
   }
 
@@ -400,9 +396,8 @@
     padding-bottom: 4px;
   }
 
-  #hps-app .th-hps-toggle-groups {
-    grid-area: groups;
-    margin-top: 4px;
+  #hps-app .th-hps-controls {
+    padding: 0 2px;
   }
 
   #hps-app .th-hps-shell,
@@ -412,18 +407,14 @@
   }
 
   #hps-app .lp-content {
-    height: calc(100dvh - 88px);
-    max-height: calc(100dvh - 88px);
+    height: calc(100dvh - 116px);
+    max-height: calc(100dvh - 116px);
   }
 
   #hps-app .packing-tools.th-toolbar {
     grid-template-columns: minmax(0, 1fr);
     gap: 6px;
     padding: 8px 10px;
-  }
-
-  #hps-app .th-refresh-button {
-    justify-self: start;
   }
 
   #hps-app .th-horse-row {
