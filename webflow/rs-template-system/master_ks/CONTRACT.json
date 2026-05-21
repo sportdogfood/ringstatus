@@ -1,0 +1,49 @@
+{
+  "contract": "RS Skeleton Contract v2",
+  "status": "locked",
+  "approved_source": "00_APPROVED_BASE_DO_NOT_REBUILD.html",
+  "forbidden_sources": [
+    "colored teaching exercise",
+    "shaded diagnostic canvas",
+    "loose Downloads rs-scripts.js",
+    "memory reconstruction",
+    "simplified skeleton approximation"
+  ],
+  "required_files": [
+    "rs-standalone.html",
+    "rs-webflow-embed.html",
+    "rs-global.css",
+    "rs-scripts.js"
+  ],
+  "required_shell_order": [
+    "rs-section",
+    "rs-section-container",
+    "rs-section-padding",
+    "rs-content-container",
+    "rs-content-flex",
+    "rs-content"
+  ],
+  "typography": {
+    "font_family": "Outfit, Inter, Arial, sans-serif",
+    "heading_weight": "600",
+    "heading_line_height": "0.95",
+    "heading_letter_spacing": "-0.05em",
+    "paragraph_line_height": "1.23",
+    "small_text_line_height": "1.6"
+  },
+  "sticky_required_patterns": [
+    ".rs-section.is-wildcard",
+    "min-height:260svh",
+    ".rs-wildcard-sticky",
+    "position:sticky",
+    "top:0",
+    ".rs-wildcard-scroll-layer",
+    "margin-top:-100svh"
+  ],
+  "nav_required": [
+    "rs-logo",
+    "rs-mega",
+    "rs-drawer",
+    "body.is-nav-locked"
+  ]
+}

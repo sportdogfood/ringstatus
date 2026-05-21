@@ -1,0 +1,57 @@
+[
+  {
+    "file": "00_APPROVED_BASE_DO_NOT_REBUILD.html",
+    "bytes": 22449,
+    "sha256": "e385af71a5d7ac4afc2bd8569b9cc6c6d1160990cd5a884254ca823c03c05245"
+  },
+  {
+    "file": "CONTRACT.json",
+    "bytes": 1190,
+    "sha256": "bb0c2e5b92d098f745ba877df10b0dc3d37aa3c03181abe59d206b01b617a985"
+  },
+  {
+    "file": "DEPRECATED_DO_NOT_USE.md",
+    "bytes": 522,
+    "sha256": "51afb620fe6c0e305382639c76c9f6193b1f6e849732acc8b967b23dd5e542ea"
+  },
+  {
+    "file": "README_HANDOFF.md",
+    "bytes": 2299,
+    "sha256": "cdba03202b2c229856d4316635e8eadeb0c403fa08d2b01de8ddefbc44c0dde0"
+  },
+  {
+    "file": "README_NEW_SKELETON_PROMPT.md",
+    "bytes": 1966,
+    "sha256": "9ec78d18ba8a6f0b17eb771cede2c8033dd19544d7514ddc2c1e941cd416a25a"
+  },
+  {
+    "file": "RS_SKELETON_CONTRACT.md",
+    "bytes": 3071,
+    "sha256": "b76732b26485ea6d267e23da9c18ede2936541f644ad9c2bd83e45237a61a94f"
+  },
+  {
+    "file": "rs-global.css",
+    "bytes": 14092,
+    "sha256": "48c4f2cab087a43330f776563f7b1c2ccada07de1567cf16af8c62426b043ab2"
+  },
+  {
+    "file": "rs-scripts.js",
+    "bytes": 2467,
+    "sha256": "11cf4fb26ee21977745da445d312e8d2f09cdbb43ccb2c9f924fcaaf72e65556"
+  },
+  {
+    "file": "rs-standalone.html",
+    "bytes": 22449,
+    "sha256": "e385af71a5d7ac4afc2bd8569b9cc6c6d1160990cd5a884254ca823c03c05245"
+  },
+  {
+    "file": "rs-webflow-embed.html",
+    "bytes": 22452,
+    "sha256": "0097731be495f6dfddf7508a993c3d521b75735e31539309ad95f3120aeaf727"
+  },
+  {
+    "file": "VALIDATION_CHECKLIST.md",
+    "bytes": 1829,
+    "sha256": "676c0c2340ba49fff32a2a5aebb2219341f53fc83614d42ab825f8389c822c6d"
+  }
+]
