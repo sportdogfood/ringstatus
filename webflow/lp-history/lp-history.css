@@ -3277,10 +3277,6 @@
   color: var(--lp-tag-active-text, #ffffff);
 }
 
-#lp-history-app .lp-profile-panel {
-  padding-bottom: 66px !important;
-}
-
 #lp-history-app .lp-bottom-nav-offset {
   display: block;
   width: 100%;

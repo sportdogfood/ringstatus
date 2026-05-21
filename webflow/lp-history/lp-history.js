@@ -529,6 +529,20 @@
     return '<div class="lp-bottom-nav-offset" aria-hidden="true"></div>';
   }
 
+  function contactFormSection() {
+    return [
+      '<section class="lp-section-block lp-contact-form-section lp-theme-classes">',
+      sectionTitle("Contact"),
+      '<form class="lp-contact-form">',
+      '<label><span>Name</span><input class="lp-edit-input" type="text" name="name" autocomplete="name"></label>',
+      '<label><span>Email</span><input class="lp-edit-input" type="email" name="email" autocomplete="email"></label>',
+      '<label><span>Message</span><textarea class="lp-edit-textarea" name="message" rows="5"></textarea></label>',
+      '<button class="lp-edit-button" type="submit">Send</button>',
+      "</form>",
+      "</section>"
+    ].join("");
+  }
+
   function emptyLayer() {
     return { version: 1, updatedAt: "", horses: {}, competitions: {}, classes: {}, videos: {} };
   }
