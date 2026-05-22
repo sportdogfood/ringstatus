@@ -19,7 +19,8 @@
     moduleOpen: true,
     detailStatus: "",
     activeGroup: "active",
-    activePrints: new Set()
+    activePrints: new Set(),
+    sessionPrefs: loadSessionPrefs()
   };
 
   root.innerHTML = shell();
@@ -156,6 +157,7 @@
     const trainer = firstValue(fields, ["trainer_id", "trainer", "Trainer"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
+    const sessionState = sessionRecordState(record.id);
     const subtitle = [usef ? `USEF ${usef}` : "", recordKey].filter(Boolean).join(" - ");
     const activeTab = state.detailTab || "overview";
 
@@ -178,6 +180,8 @@
           <div data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
               ${detailTextRow("Show name", showName || "-")}
+              ${detailAppStateRow(record.id, currentState)}
+              ${detailSessionStateRow(record.id, sessionState)}
               ${detailEditRow("barn_name", "Barn name", barnName)}
               ${detailLongTextRow("horse_note", "Note", note)}
             </div>
@@ -250,14 +254,35 @@
   }
 
   function detailStateRow(recordId, currentState) {
+    return detailAppStateRow(recordId, currentState);
+  }
+
+  function detailAppStateRow(recordId, currentState) {
     return `
       <div class="lp-field-row th-detail-edit">
-        <span class="lp-field-label">State</span>
+        <span class="lp-field-label">App state</span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             ${["active", "inactive"].map((choice) => `
               <span class="lp-edit-choice">
-                <span class="lp-edit-pill${currentState === choice ? " is-active" : ""}">${escapeHtml(choice)}</span>
+                <button class="lp-edit-pill${currentState === choice ? " is-active" : ""}" type="button" data-app-state="${escapeAttr(choice)}" data-app-state-record="${escapeAttr(recordId)}">${escapeHtml(choice)}</button>
+              </span>
+            `).join("")}
+          </span>
+        </span>
+      </div>
+    `;
+  }
+
+  function detailSessionStateRow(recordId, currentState) {
+    return `
+      <div class="lp-field-row th-detail-edit">
+        <span class="lp-field-label">Session</span>
+        <span class="lp-field-value">
+          <span class="lp-edit-choice-row packing-inline-choices">
+            ${["include", "ignore"].map((choice) => `
+              <span class="lp-edit-choice">
+                <button class="lp-edit-pill${currentState === choice ? " is-active" : ""}" type="button" data-session-state="${escapeAttr(choice)}" data-session-state-record="${escapeAttr(recordId)}">${escapeHtml(choice)}</button>
               </span>
             `).join("")}
           </span>

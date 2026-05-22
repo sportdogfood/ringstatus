@@ -20,6 +20,8 @@ const PROFILE_EDITABLE_FIELDS = [
   "horse_disciplines",
   "horse_age",
   "hands",
+  "app_active",
+  "app_inactive",
   "horse_note"
 ];
 const PROFILE_ACTION_FIELDS = ["stall_card_input_print"];
@@ -301,6 +303,10 @@ function airtableFieldValue(fieldName, value) {
   if (fieldName === "horse_age" || fieldName === "age" || fieldName === "Age" || fieldName === "hands" || fieldName === "Hands") {
     const number = Number(value);
     return Number.isFinite(number) && String(value).trim() !== "" ? number : value;
+  }
+  if (fieldName === "app_active" || fieldName === "app_inactive") {
+    const normalized = String(value || "").trim().toLowerCase();
+    return value === true || ["true", "1", "yes", "y", "active", "inactive"].includes(normalized);
   }
   if (fieldName === "ignore") {
     const normalized = String(value || "").trim().toLowerCase();
