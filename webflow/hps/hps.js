@@ -220,7 +220,7 @@
   }
 
   function detailTextRow(label, value) {
-    return detailRow(label, `<span class="th-readonly-value">${escapeHtml(value)}</span>`);
+    return detailRow(label, `<input class="lp-edit-input th-input th-readonly-input" type="text" value="${escapeAttr(value)}" readonly tabindex="-1">`);
   }
 
   function detailPrintRow(recordId, printBatch) {
@@ -235,7 +235,7 @@
               <span class="lp-edit-pill">REQUEST TO PRINT</span>
             </label>
           </span>
-          <span class="th-print-status" data-stall-card-status="${escapeAttr(recordId)}"></span>
+          <span class="th-print-status" data-stall-card-status="${escapeAttr(recordId)}">${printBatch ? "Requested" : ""}</span>
         </span>
       </div>
     `;
@@ -485,6 +485,9 @@
         throw new Error(result.detail || result.error || `Save failed: ${response.status}`);
       }
       record.fields[change.fieldName] = result.updated?.value ?? change.newValue;
+      if (change.fieldName === "print_batch") {
+        setPrintStatus(record.id, change.newValue ? `Requested: ${formatTimestamp(new Date())}` : "");
+      }
       const message = `Saved to Airtable at ${new Date().toLocaleTimeString()} (updated, logged).`;
       setStatus(message);
       setDetailStatus(message);
@@ -537,6 +540,7 @@
     root.classList.toggle("is-hps-open", state.moduleOpen);
     document.querySelectorAll("[data-hps-toggle]").forEach((toggle) => {
       toggle.setAttribute("aria-expanded", state.moduleOpen ? "true" : "false");
+      toggle.classList.toggle("is-active", state.moduleOpen);
     });
   }
 
