@@ -224,6 +224,16 @@
   max-height: 63px;
 }
 
+#hps-app .lp-profile-panel .lp-field-row.th-detail-note {
+  height: 132px;
+  max-height: none;
+}
+
+#hps-app .lp-profile-panel .th-note-input {
+  min-height: 96px;
+  resize: vertical;
+}
+
 #hps-app .lp-profile-panel .lp-field-row:not(.th-detail-edit) {
   width: 100%;
   min-height: 63px;

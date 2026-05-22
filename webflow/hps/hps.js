@@ -178,7 +178,7 @@
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
               ${detailTextRow("Show name", showName || "-")}
               ${detailEditRow("barn_name", "Barn name", barnName)}
-              ${detailEditRow("horse_note", "Note", note)}
+              ${detailLongTextRow("horse_note", "Note", note)}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
               ${detailChoiceRow("horse_genders", "Gender", gender, ["Gelding", "Mare"])}
@@ -279,6 +279,17 @@
         <span class="lp-field-label">${escapeHtml(label)}</span>
         <span class="lp-field-value">
           <input class="lp-edit-input th-input" type="${escapeAttr(type)}" data-th-field="${escapeAttr(fieldName)}" value="${escapeAttr(value)}">
+        </span>
+      </div>
+    `;
+  }
+
+  function detailLongTextRow(fieldName, label, value) {
+    return `
+      <div class="lp-field-row th-detail-edit th-detail-note">
+        <span class="lp-field-label">${escapeHtml(label)}</span>
+        <span class="lp-field-value">
+          <textarea class="lp-edit-input th-input th-note-input" data-th-field="${escapeAttr(fieldName)}" rows="4">${escapeHtml(value)}</textarea>
         </span>
       </div>
     `;
