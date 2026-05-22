@@ -55,6 +55,10 @@
   width: max-content;
 }
 
+#hps-app.is-hps-open .th-hps-opener {
+  right: calc(min(390px, calc(100vw - 16px)) + 8px);
+}
+
 #hps-app .th-hps-toggle {
   appearance: none;
   z-index: 101;
@@ -397,6 +401,12 @@
   #hps-app .th-hps-opener {
     width: max-content;
     max-width: calc(100vw - 32px);
+  }
+
+  #hps-app.is-hps-open .th-hps-opener {
+    top: auto;
+    right: 16px;
+    bottom: 16px;
   }
 
   #hps-app .th-hps-toggle {
