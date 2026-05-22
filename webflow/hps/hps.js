@@ -153,6 +153,7 @@
     const note = firstValue(fields, ["horse_note", "Horse Note"]);
     const emergencyContact = firstValue(fields, ["emergency_contacts", "emergency_contact", "Emergency Contact"]);
     const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
+    const printBatch = truthy(fields.print_batch);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
     const sessionState = sessionRecordState(record.id);
@@ -194,7 +195,7 @@
               ${detailEditRow("emergency_phone", "Emergency phone", emergencyPhone)}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "print" ? " is-active" : ""}" data-profile-panel="print">
-              ${detailPrintRow(record.id)}
+              ${detailPrintRow(record.id, printBatch)}
             </div>
           </div>
         </section>
@@ -222,15 +223,19 @@
     return detailRow(label, `<span class="th-readonly-value">${escapeHtml(value)}</span>`);
   }
 
-  function detailPrintRow(recordId) {
+  function detailPrintRow(recordId, printBatch) {
     return `
       <div class="lp-field-row">
         <span class="lp-field-label">Stall card</span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
-            <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-print="${escapeAttr(recordId)}">Print</button>
+            <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-print="${escapeAttr(recordId)}">PRINT NOW</button>
+            <label class="lp-edit-choice">
+              <input type="checkbox" data-th-field="print_batch" data-th-boolean="true" value="true"${printBatch ? " checked" : ""}>
+              <span class="lp-edit-pill">REQUEST TO PRINT</span>
+            </label>
           </span>
-          <span class="th-print-status" data-stall-card-status="${escapeAttr(recordId)}">Generates a PDF from the current horse profile.</span>
+          <span class="th-print-status" data-stall-card-status="${escapeAttr(recordId)}"></span>
         </span>
       </div>
     `;
@@ -441,7 +446,9 @@
 
     const fieldName = input.dataset.thField;
     const oldValue = record.fields?.[fieldName] ?? "";
-    const newValue = input.dataset.thMulti
+    const newValue = input.dataset.thBoolean
+      ? input.checked
+      : input.dataset.thMulti
       ? Array.from(rowEl.querySelectorAll(`[data-th-field="${cssEscape(fieldName)}"][data-th-multi]:checked`)).map((item) => item.value).join(", ")
       : input.value;
     if (String(oldValue) === String(newValue)) return;

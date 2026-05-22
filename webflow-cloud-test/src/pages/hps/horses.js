@@ -22,6 +22,7 @@ const PROFILE_EDITABLE_FIELDS = [
   "hands",
   "app_active",
   "app_inactive",
+  "print_batch",
   "horse_note"
 ];
 const PROFILE_ACTION_FIELDS = ["stall_card_input_print"];
@@ -304,7 +305,7 @@ function airtableFieldValue(fieldName, value) {
     const number = Number(value);
     return Number.isFinite(number) && String(value).trim() !== "" ? number : value;
   }
-  if (fieldName === "app_active" || fieldName === "app_inactive") {
+  if (fieldName === "app_active" || fieldName === "app_inactive" || fieldName === "print_batch") {
     const normalized = String(value || "").trim().toLowerCase();
     return value === true || ["true", "1", "yes", "y", "active", "inactive"].includes(normalized);
   }
