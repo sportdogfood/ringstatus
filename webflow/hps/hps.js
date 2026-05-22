@@ -637,9 +637,8 @@
     pdfUrl.searchParams.set("filename", `${safeFilename(horseName)}-stall-card.pdf`);
 
     setPrintStatus(record.id, "Creating PDF...");
-    const opened = window.open("about:blank", "_blank", "noopener");
+    const opened = window.open(pdfUrl.toString(), "_blank");
     if (opened) {
-      opened.location.href = pdfUrl.toString();
       setPrintStatus(record.id, "PDF opened.");
       setDetailStatus("PDF opened.");
       window.setTimeout(() => {
@@ -650,13 +649,13 @@
       return;
     }
 
-    setPrintStatus(record.id, "Popup blocked. Open PDF link from the browser prompt.");
+    setPrintStatus(record.id, "Popup blocked. Allow popups and press Print again.");
+    setDetailStatus("Popup blocked. HPS stayed open.");
     window.setTimeout(() => {
       state.activePrints.delete(recordId);
       window.__HPS_PRINT_LOCKS.delete(lockKey);
       if (button) delete button.dataset.hpsPrintOpening;
     }, 7000);
-    window.location.href = pdfUrl.toString();
   }
 
   function setPrintStatus(recordId, message) {
