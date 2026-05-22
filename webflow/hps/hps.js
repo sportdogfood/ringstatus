@@ -132,7 +132,7 @@
           <button class="packing-horse-detail-trigger" type="button" data-open-horse="${escapeAttr(record.id)}">
             <span class="lp-row-title">${escapeHtml(name)}</span>
           </button>
-        <span class="lp-achievement packing-token ${currentState === "active" ? "is-packed" : "is-need"} th-state-pill" aria-label="App state pending distinct fields">${escapeHtml(currentState)}</span>
+        <span class="lp-achievement packing-token ${currentState === "active" ? "is-packed" : "is-need"} th-state-pill" aria-label="App status">${escapeHtml(currentState)}</span>
       </div>
     `;
   }
@@ -260,7 +260,7 @@
   function detailAppStateRow(recordId, currentState) {
     return `
       <div class="lp-field-row th-detail-edit">
-        <span class="lp-field-label">App state</span>
+        <span class="lp-field-label">App status</span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             ${["active", "inactive"].map((choice) => `
@@ -277,7 +277,7 @@
   function detailSessionStateRow(recordId, currentState) {
     return `
       <div class="lp-field-row th-detail-edit">
-        <span class="lp-field-label">Session</span>
+        <span class="lp-field-label">Session view</span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             ${["include", "ignore"].map((choice) => `
