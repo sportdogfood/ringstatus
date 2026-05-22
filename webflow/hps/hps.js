@@ -153,13 +153,11 @@
     const note = firstValue(fields, ["horse_note", "Horse Note"]);
     const emergencyContact = firstValue(fields, ["emergency_contacts", "emergency_contact", "Emergency Contact"]);
     const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
-    const riderList = firstValue(fields, ["rider_list", "Rider List"]);
-    const trainer = firstValue(fields, ["trainer_id", "trainer", "Trainer"]);
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const currentState = recordState(record);
     const sessionState = sessionRecordState(record.id);
     const subtitle = [usef ? `USEF ${usef}` : "", recordKey].filter(Boolean).join(" - ");
-    const activeTab = state.detailTab || "overview";
+    const activeTab = validProfileTab(state.detailTab);
 
     return `
       <div class="lp-profile-shell">
@@ -172,7 +170,6 @@
           ${profileTab("overview", "Overview", activeTab)}
           ${profileTab("profile", "Profile", activeTab)}
           ${profileTab("contacts", "Contacts", activeTab)}
-          ${profileTab("team", "Team", activeTab)}
           ${profileTab("print", "Print", activeTab)}
         </div>
 
@@ -195,11 +192,6 @@
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
               ${detailEditRow("emergency_contacts", "Emergency contact", emergencyContact)}
               ${detailEditRow("emergency_phone", "Emergency phone", emergencyPhone)}
-            </div>
-            <div class="lp-field-grid lp-profile-tab-panel${activeTab === "team" ? " is-active" : ""}" data-profile-panel="team">
-              ${detailEditRow("rider_list", "Rider list", riderList)}
-              ${detailEditRow("trainer_id", "Trainer", trainer)}
-              ${detailTextRow("USEF", usef || "-")}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "print" ? " is-active" : ""}" data-profile-panel="print">
               ${detailPrintRow(record.id)}
@@ -519,7 +511,7 @@
   }
 
   function switchProfileTab(tabId) {
-    state.detailTab = tabId || "overview";
+    state.detailTab = validProfileTab(tabId);
     root.querySelectorAll("[data-profile-tab]").forEach((button) => {
       const isActive = button.dataset.profileTab === state.detailTab;
       button.classList.toggle("is-active", isActive);
@@ -528,6 +520,10 @@
     root.querySelectorAll("[data-profile-panel]").forEach((panel) => {
       panel.classList.toggle("is-active", panel.dataset.profilePanel === state.detailTab);
     });
+  }
+
+  function validProfileTab(tabId) {
+    return ["overview", "profile", "contacts", "print"].includes(tabId) ? tabId : "overview";
   }
 
   function updateModuleOpen() {
