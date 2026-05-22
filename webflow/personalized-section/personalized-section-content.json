@@ -1,0 +1,45 @@
+{
+  "defaultSeason": "fall",
+  "fallback": "No activities matched this profile yet.",
+  "seasons": {
+    "fall": {
+      "label": "Fall",
+      "headline": "I love when its {season} season",
+      "intro": "In the {season} I like to do these activities",
+      "activities": [
+        {
+          "title": "Trail running",
+          "description": "Short fall runs that fit around show-day prep.",
+          "tags": ["running", "fall"]
+        },
+        {
+          "title": "Ridge hikes",
+          "description": "Cool-weather hikes for active weekends.",
+          "tags": ["hiking", "fall"]
+        },
+        {
+          "title": "Barn walks",
+          "description": "Low-key fall movement for barn days.",
+          "tags": ["walking", "fall"]
+        }
+      ]
+    },
+    "summer": {
+      "label": "Summer",
+      "headline": "I love when its {season} season",
+      "intro": "In the {season} I like to do these activities",
+      "activities": [
+        {
+          "title": "Morning runs",
+          "description": "Early mileage before the heat builds.",
+          "tags": ["running", "summer"]
+        },
+        {
+          "title": "Lake hikes",
+          "description": "Shaded routes with water stops.",
+          "tags": ["hiking", "summer"]
+        }
+      ]
+    }
+  }
+}

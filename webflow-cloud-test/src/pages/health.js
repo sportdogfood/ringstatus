@@ -10,6 +10,7 @@ export const GET = async () => {
     service: "webflow-cloud-test",
     enrichmentEndpoint: "/test/lp-history/enrichment",
     profileContentEndpoint: "/test/lp-profile/content",
+    personalizedSectionEndpoint: "/test/personalized-section/content",
     horsesEndpoint: "/test/8778-tack-horses/horses",
     hpsEndpoint: "/test/hps/horses",
     env: {
