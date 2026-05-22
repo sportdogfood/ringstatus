@@ -148,6 +148,7 @@
     const type = firstValue(fields, ["horse_types", "horse_type", "type", "Type"]);
     const disciplines = firstValue(fields, ["horse_disciplines", "disciplines", "discipline", "Discipline", "Disciplines"]);
     const age = firstValue(fields, ["horse_age", "age", "Age"]);
+    const hands = firstValue(fields, ["hands", "Hands"]);
     const note = firstValue(fields, ["horse_note", "Horse Note"]);
     const emergencyContact = firstValue(fields, ["emergency_contacts", "emergency_contact", "Emergency Contact"]);
     const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
@@ -185,6 +186,7 @@
               ${detailMultiChoiceRow("horse_disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
               ${detailChoiceRow("horse_colors", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
               ${detailEditRow("horse_age", "Age", age, "number")}
+              ${detailEditRow("hands", "Hands", hands, "number")}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
               ${detailEditRow("emergency_contacts", "Emergency contact", emergencyContact)}
