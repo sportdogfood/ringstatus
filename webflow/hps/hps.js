@@ -1,6 +1,8 @@
 (async () => {
   const root = document.getElementById("hps-app");
   if (!root) return;
+  if (root.dataset.hpsMounted === "true") return;
+  root.dataset.hpsMounted = "true";
 
   const config = window.HPS_CONFIG || {};
   const tenantId = String(config.tenantId || "").trim();
@@ -635,8 +637,9 @@
     pdfUrl.searchParams.set("filename", `${safeFilename(horseName)}-stall-card.pdf`);
 
     setPrintStatus(record.id, "Creating PDF...");
-    const opened = window.open(pdfUrl.toString(), "_blank", "noopener");
+    const opened = window.open("about:blank", "_blank", "noopener");
     if (opened) {
+      opened.location.href = pdfUrl.toString();
       setPrintStatus(record.id, "PDF opened.");
       setDetailStatus("PDF opened.");
       window.setTimeout(() => {

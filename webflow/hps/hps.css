@@ -17,18 +17,18 @@
 #hps-app .th-hps-module {
   position: fixed;
   top: 0;
-  right: -384px;
+  right: -400px;
   z-index: 100;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  width: min(500px, calc(100vw + 100px));
+  width: min(516px, calc(100vw + 100px));
   height: 100vh;
   transition: right 180ms ease;
 }
 
 #hps-app.is-hps-open .th-hps-module {
-  right: 0;
+  right: 16px;
 }
 
 #hps-app .th-hps-status-footer {
@@ -36,8 +36,13 @@
   right: 16px;
   bottom: 10px;
   z-index: 99;
+  display: none;
   max-width: calc(100% - 32px);
   text-align: right;
+}
+
+#hps-app.is-hps-open .th-hps-status-footer {
+  display: flex;
 }
 
 #hps-app .th-hps-opener {
@@ -229,6 +234,8 @@
   display: flex;
   align-items: center;
   min-height: 31px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 #hps-app .th-profile-footer {
