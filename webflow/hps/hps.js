@@ -227,7 +227,7 @@
   }
 
   function detailTextRow(label, value) {
-    return detailRow(label, escapeHtml(value));
+    return detailRow(label, `<span class="th-readonly-value">${escapeHtml(value)}</span>`);
   }
 
   function detailPrintRow(recordId) {
