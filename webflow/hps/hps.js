@@ -65,7 +65,7 @@
       refreshActiveDetail();
       const sourceView = data.source?.view || `hps_${tenantId}`;
       const sourceTable = data.source?.table || "ww_horses";
-      setStatus(`${sourceTable} - ${sourceView} | Loaded ${state.records.length} horses from ${sourceView} for tenant ${data.tenantId || tenantId}.`);
+      setStatus(`Updated ${formatTimestamp(new Date())} | ${state.records.length} horses | ${sourceView}`);
     } catch (error) {
       console.error("[hps]", error);
       els.list.innerHTML = `<div class="lp-row is-static">Horses failed to load. Check console for [hps].</div>`;
@@ -185,7 +185,7 @@
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
               ${detailChoiceRow("horse_genders", "Gender", gender, ["Gelding", "Mare"])}
-              ${detailMultiChoiceRow("horse_disciplines", "Discipline", disciplines, ["Hunters", "Jumpers", "Equitation"])}
+              ${detailMultiChoiceRow("horse_disciplines", "Discipline", disciplines, ["Hunter", "Jumper", "Equitation"])}
               ${detailChoiceRow("horse_colors", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
               ${detailEditRow("horse_age", "Age", age, "number")}
               ${detailEditRow("hands", "Hands", hands, "number")}
@@ -225,7 +225,7 @@
 
   function detailPrintRow(recordId, printBatch) {
     return `
-      <div class="lp-field-row">
+      <div class="lp-field-row th-detail-edit">
         <span class="lp-field-label">Stall card</span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
@@ -290,7 +290,7 @@
 
   function detailRow(label, value) {
     return `
-      <div class="lp-field-row">
+      <div class="lp-field-row th-detail-edit">
         <span class="lp-field-label">${escapeHtml(label)}</span>
         <span class="lp-field-value">${value}</span>
       </div>
@@ -676,6 +676,16 @@
   function setStatus(message) {
     if (els.status) els.status.textContent = message;
     if (els.listMeta) els.listMeta.textContent = message;
+  }
+
+  function formatTimestamp(date) {
+    return date.toLocaleString([], {
+      month: "numeric",
+      day: "numeric",
+      year: "2-digit",
+      hour: "numeric",
+      minute: "2-digit"
+    });
   }
 
   function setDetailStatus(message) {

@@ -264,8 +264,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: 43px;
-  padding: 10px 16px;
+  min-height: 31px;
+  padding: 8px 16px;
   border: 1px solid rgba(24, 31, 29, 0.18);
   border-radius: 8px;
   background: #ffffff;
@@ -404,9 +404,7 @@
   }
 
   #hps-app.is-hps-open .th-hps-opener {
-    top: auto;
-    right: 16px;
-    bottom: 16px;
+    display: none;
   }
 
   #hps-app .th-hps-toggle {
