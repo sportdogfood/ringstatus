@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RS Component - Top Navigation</title>
+  <link rel="stylesheet" href="../assets/rs-global.css"/>
+</head>
+<body>
+<nav class="rs-nav" id="data-nav-root" aria-label="Main navigation">
+  <div class="rs-nav-inner">
+    <a class="rs-logo" href="#" aria-label="RingStatus home">RS</a>
+    <div class="rs-nav-links">
+      <button class="rs-nav-button" id="data-mega-toggle" type="button" aria-expanded="false" aria-controls="data-mega-menu">Apps</button>
+      <button class="rs-nav-button" id="data-drawer-toggle" type="button" aria-expanded="false" aria-controls="data-drawer-menu">Tools</button>
+      <a class="rs-nav-link" href="#">Pricing</a>
+      <a class="rs-nav-link" href="#">Contact</a>
+    </div>
+  </div>
+  <div class="rs-mega" id="data-mega-menu" aria-hidden="true"><div class="rs-mega-inner">
+    <div class="rs-mega-intro"><p class="rs-content-kicker">Mega Dropdown</p><h2 class="rs-mega-title">Full Width Apps Menu</h2><p class="rs-mega-text">Full viewport dropdown. Inner content remains capped.</p></div>
+    <div class="rs-mega-col"><p class="rs-content-kicker">Core</p><a href="#">Show Schedule App</a><a href="#">SMS Alerts</a><a href="#">Two-Way Realtime</a></div>
+    <div class="rs-mega-col"><p class="rs-content-kicker">Boards</p><a href="#">Feed Board</a><a href="#">Show Board</a><a href="#">Turnout Board</a></div>
+    <div class="rs-mega-col"><p class="rs-content-kicker">Support</p><a href="#">Tack App</a><a href="#">Reminders App</a><a href="#">Shipping App</a></div>
+  </div></div>
+</nav>
+<div class="rs-nav-scrim" id="data-nav-scrim" aria-hidden="true"></div>
+<aside class="rs-drawer" id="data-drawer-menu" aria-hidden="true" aria-label="Tools drawer"><div class="rs-drawer-inner">
+  <div class="rs-drawer-head"><div><p class="rs-content-kicker">Right Drawer</p><h2 class="rs-drawer-title">Tools Menu</h2><p class="rs-drawer-text">Opens from the right and locks the viewport. No separate mobile version.</p></div><button class="rs-drawer-close" id="data-drawer-close" type="button">×</button></div>
+  <div class="rs-drawer-list"><a href="#">RingWaze</a><a href="#">BarnTools</a><a href="#">Packing Lists</a><a href="#">Reminders</a><a href="#">Account Dashboard</a></div>
+</div></aside>
+<script src="../assets/rs-scripts.js"></script>
+</body>
+</html>
