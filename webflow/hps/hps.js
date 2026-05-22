@@ -36,6 +36,7 @@
     modalContent: root.querySelector("[data-modal-content]")
   };
 
+  document.addEventListener("click", handleDocumentClick);
   root.addEventListener("click", handleClick);
   root.addEventListener("input", handleInput);
   root.addEventListener("change", handleChange);
@@ -375,14 +376,20 @@
       return;
     }
 
-    if (event.target.closest("[data-hps-toggle]")) {
-      state.moduleOpen = !state.moduleOpen;
-      updateModuleOpen();
+    if (event.target.closest("[data-th-refresh]")) {
+      load();
       return;
     }
 
-    if (event.target.closest("[data-th-refresh]")) {
-      load();
+    const appStateButton = event.target.closest("[data-app-state]");
+    if (appStateButton) {
+      setAppState(appStateButton.dataset.appStateRecord, appStateButton.dataset.appState);
+      return;
+    }
+
+    const sessionStateButton = event.target.closest("[data-session-state]");
+    if (sessionStateButton) {
+      setSessionState(sessionStateButton.dataset.sessionStateRecord, sessionStateButton.dataset.sessionState);
       return;
     }
 
@@ -526,9 +533,49 @@
 
   function updateModuleOpen() {
     root.classList.toggle("is-hps-open", state.moduleOpen);
-    if (els.moduleToggle) {
-      els.moduleToggle.setAttribute("aria-expanded", state.moduleOpen ? "true" : "false");
-    }
+    document.querySelectorAll("[data-hps-toggle]").forEach((toggle) => {
+      toggle.setAttribute("aria-expanded", state.moduleOpen ? "true" : "false");
+    });
+  }
+
+  async function setAppState(recordId, nextState) {
+    const record = state.records.find((item) => item.id === recordId);
+    if (!record) return;
+    const currentState = recordState(record);
+    if (currentState === nextState) return;
+    const activeValue = nextState === "active";
+    await saveRecordChange(record, {
+      fieldName: "app_active",
+      oldValue: record.fields?.app_active ?? "",
+      newValue: activeValue,
+      horseKey: record.id,
+      horseName: firstValue(record.fields || {}, ["barn_name", "show_name", "horse"]) || record.id
+    });
+    await saveRecordChange(record, {
+      fieldName: "app_inactive",
+      oldValue: record.fields?.app_inactive ?? "",
+      newValue: !activeValue,
+      horseKey: record.id,
+      horseName: firstValue(record.fields || {}, ["barn_name", "show_name", "horse"]) || record.id
+    });
+    record.fields.app_active = activeValue;
+    record.fields.app_inactive = !activeValue;
+    render();
+    refreshActiveDetail();
+  }
+
+  function setSessionState(recordId, nextState) {
+    state.sessionPrefs[recordId] = nextState === "ignore" ? "ignore" : "include";
+    saveSessionPrefs();
+    refreshActiveDetail();
+  }
+
+  function handleDocumentClick(event) {
+    const toggle = event.target.closest("[data-hps-toggle]");
+    if (!toggle) return;
+    event.preventDefault();
+    state.moduleOpen = !state.moduleOpen;
+    updateModuleOpen();
   }
 
   function scrollToGroup(groupKey) {
@@ -559,19 +606,14 @@
 
   function shell() {
     return `
-      <div class="th-hps-module">
-        <div class="th-hps-opener">
-          <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
-            <span class="th-hps-toggle-count" data-th-count>0</span>
-            <span class="th-hps-toggle-label">Horses</span>
-          </button>
-          <div class="th-hps-controls" aria-label="Horse list controls">
-            <button class="th-hps-control is-active" type="button" data-hps-group-jump="active" aria-pressed="true">Active</button>
-            <button class="th-hps-control" type="button" data-hps-group-jump="inactive" aria-pressed="false">Inactive</button>
-            <button class="th-hps-control" type="button" data-th-refresh>Refresh</button>
-          </div>
-        </div>
+      <div class="th-hps-opener">
+        <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
+          <span class="th-hps-toggle-count" data-th-count>0</span>
+          <span class="th-hps-toggle-label">Horses</span>
+        </button>
+      </div>
 
+      <div class="th-hps-module">
         <div class="lp-shell th-hps-shell" data-hps-module-shell>
           <header class="lp-header">
             <div class="lp-header-copy">
@@ -594,6 +636,11 @@
                   <h3>Horses</h3>
                 </div>
                 <div class="packing-tools th-toolbar">
+                  <div class="th-hps-controls" aria-label="Horse list controls">
+                    <button class="th-hps-control is-active" type="button" data-hps-group-jump="active" aria-pressed="true">Active</button>
+                    <button class="th-hps-control" type="button" data-hps-group-jump="inactive" aria-pressed="false">Inactive</button>
+                    <button class="th-hps-control" type="button" data-th-refresh>Refresh</button>
+                  </div>
                   <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
                 </div>
                 <div id="sectionRows" class="lp-list" data-th-list></div>
@@ -717,14 +764,33 @@
 
   function recordState(record) {
     const fields = record.fields || {};
-    if (!Object.prototype.hasOwnProperty.call(fields, "record_state")) return truthy(fields.inactive) ? "inactive" : "active";
-    const value = String(firstValue(fields, ["record_state", "Record State", "state", "State", "status", "Status"]) || "inactive").trim().toLowerCase();
-    return value === "active" ? "active" : "inactive";
+    if (truthy(fields.app_inactive)) return "inactive";
+    if (truthy(fields.app_active)) return "active";
+    return "active";
   }
 
-  function recordStateField(fields) {
-    if (!Object.prototype.hasOwnProperty.call(fields, "record_state")) return "inactive";
-    return ["inactive", "record_state", "Record State", "state", "State", "status", "Status"].find((name) => Object.prototype.hasOwnProperty.call(fields, name)) || "record_state";
+  function sessionRecordState(recordId) {
+    return state.sessionPrefs[recordId] === "ignore" ? "ignore" : "include";
+  }
+
+  function sessionStorageKey() {
+    return `hps_session_prefs_${tenantId || "default"}`;
+  }
+
+  function loadSessionPrefs() {
+    try {
+      return JSON.parse(window.sessionStorage.getItem(sessionStorageKey()) || "{}") || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveSessionPrefs() {
+    try {
+      window.sessionStorage.setItem(sessionStorageKey(), JSON.stringify(state.sessionPrefs));
+    } catch {
+      /* Session preferences are optional. */
+    }
   }
 
   function truthy(value) {
