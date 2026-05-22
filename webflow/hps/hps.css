@@ -17,14 +17,15 @@
 #hps-app .th-hps-module {
   position: fixed;
   top: 0;
-  right: 16px;
+  right: 0;
   z-index: 100;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;
-  width: min(400px, calc(100vw - 32px));
-  height: 100dvh;
-  transform: translateX(calc(100% + 16px));
+  grid-template-rows: minmax(0, 1fr);
+  width: min(390px, calc(100vw - 16px));
+  max-height: 100dvh;
+  overflow: hidden;
+  transform: translateX(100%);
   transition: transform 180ms ease;
 }
 
@@ -32,17 +33,17 @@
   transform: translateX(0);
 }
 
-#hps-app .th-hps-status-footer {
-  position: relative;
-  z-index: 99;
-  display: none;
+#hps-app .th-hps-list-meta {
+  display: block;
   width: 100%;
-  max-width: 100%;
-  text-align: right;
-}
-
-#hps-app.is-hps-open .th-hps-status-footer {
-  display: flex;
+  margin-top: 0;
+  padding: 8px 16px;
+  border-top: 1px solid var(--lp-border);
+  background: #f0f0f0;
+  color: var(--lp-muted);
+  font-size: 10px;
+  line-height: 1.1em;
+  text-align: left;
 }
 
 #hps-app .th-hps-opener {
@@ -51,38 +52,42 @@
   right: 16px;
   z-index: 102;
   display: grid;
-  width: 100px;
+  width: max-content;
 }
 
 #hps-app .th-hps-toggle {
   appearance: none;
   z-index: 101;
-  display: grid;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 4px;
-  width: min(100px, 100%);
-  min-height: 78px;
-  padding: 14px 12px;
+  width: max-content;
+  min-width: 104px;
+  min-height: 28px;
+  padding: 0 10px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 999px;
   background: #0b63c7;
   color: #ffffff;
   cursor: pointer;
   font-family: inherit;
   text-align: left;
   box-shadow: var(--lp-card-shadow);
+  justify-content: center;
 }
 
 #hps-app .th-hps-toggle-count {
-  font-size: 32px;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 0.95em;
+  line-height: 1;
   letter-spacing: -0.04em;
 }
 
 #hps-app .th-hps-toggle-label {
   font-size: 12px;
   font-weight: 600;
-  line-height: 0.95em;
+  line-height: 1;
   letter-spacing: -0.04em;
   text-transform: uppercase;
 }
@@ -92,7 +97,7 @@
   flex-direction: row;
   gap: 16px;
   align-items: center;
-  width: 100%;
+  width: max-content;
 }
 
 #hps-app .th-hps-control {
@@ -100,7 +105,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 28px;
-  padding: 6px 0;
+  padding: 0;
   border: 0;
   background: transparent;
   color: var(--lp-ink);
@@ -145,7 +150,9 @@
   z-index: 101;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
   align-items: center;
+  padding: 10px 16px 8px;
 }
 
 #hps-app .lp-modal {
@@ -305,7 +312,7 @@
 
 #hps-app .th-group-label {
   padding: 12px 16px 7px;
-  background: var(--lp-surface);
+  background: #f0f0f0;
   color: var(--lp-muted);
   font-size: 12px;
   font-weight: 600;
@@ -375,37 +382,27 @@
 }
 
 @media (max-width: 640px) {
-  #hps-app .th-hps-status-footer {
-    max-width: 100%;
-  }
-
-  #hps-app .th-hps-status-footer p {
-    font-size: 11px;
-    line-height: 1.1;
-  }
-
   #hps-app .th-hps-opener {
-    width: 100px;
+    width: max-content;
+    max-width: calc(100vw - 32px);
   }
 
   #hps-app .th-hps-toggle {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: none;
-    align-items: start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 4px;
-    width: 100px;
-    min-height: 78px;
-    padding: 14px 12px;
+    width: max-content;
+    min-width: 104px;
+    min-height: 28px;
+    padding: 0 10px;
   }
 
   #hps-app .th-hps-toggle-count {
-    grid-area: auto;
-    font-size: 30px;
+    font-size: 20px;
   }
 
   #hps-app .th-hps-toggle-label {
-    grid-area: auto;
     padding-bottom: 0;
   }
 
@@ -423,7 +420,7 @@
   #hps-app .packing-tools.th-toolbar {
     grid-template-columns: minmax(0, 1fr);
     gap: 6px;
-    padding: 8px 16px;
+    padding: 10px 16px 8px;
   }
 
   #hps-app .th-horse-row {

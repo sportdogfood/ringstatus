@@ -29,6 +29,7 @@
     count: Array.from(root.querySelectorAll("[data-th-count]")),
     status: root.querySelector("[data-th-status]"),
     list: root.querySelector("[data-th-list]"),
+    listMeta: root.querySelector("[data-th-list-meta]"),
     moduleShell: root.querySelector("[data-hps-module-shell]"),
     moduleToggle: root.querySelector("[data-hps-toggle]"),
     modal: root.querySelector("[data-modal]"),
@@ -102,12 +103,10 @@
   }
 
   function groupedRows(records) {
-    const active = records.filter((record) => recordState(record) === "active");
-    const inactive = records.filter((record) => recordState(record) !== "active");
-    return [
-      groupRows("Active", active),
-      groupRows("Inactive", inactive)
-    ].filter(Boolean).join("");
+    return groupRows(
+      state.activeGroup === "inactive" ? "Inactive" : "Active",
+      records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"))
+    );
   }
 
   function groupRows(label, records) {
@@ -371,7 +370,7 @@
   function handleClick(event) {
     const groupAnchor = event.target.closest("[data-hps-group-jump]");
     if (groupAnchor) {
-      scrollToGroup(groupAnchor.dataset.hpsGroupJump);
+      setListGroup(groupAnchor.dataset.hpsGroupJump);
       event.stopPropagation();
       return;
     }
@@ -578,14 +577,11 @@
     updateModuleOpen();
   }
 
-  function scrollToGroup(groupKey) {
+  function setListGroup(groupKey) {
     state.activeGroup = groupKey || "active";
     updateGroupJumpState();
-    const target = root.querySelector(`[data-hps-group="${cssEscape(state.activeGroup)}"]`);
-    const scroller = root.querySelector(".lp-content");
-    if (target && scroller) {
-      scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
-    }
+    render();
+    root.querySelector(".lp-content")?.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function updateGroupJumpState() {
@@ -597,8 +593,9 @@
   }
 
   function filteredRecords() {
-    if (!state.query) return state.records;
-    return state.records.filter((record) => {
+    const records = state.records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"));
+    if (!state.query) return records;
+    return records.filter((record) => {
       const fields = record.fields || {};
       return Object.values(fields).some((value) => String(value).toLowerCase().includes(state.query));
     });
@@ -644,14 +641,11 @@
                   <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
                 </div>
                 <div id="sectionRows" class="lp-list" data-th-list></div>
+                <div class="th-hps-list-meta" data-th-list-meta>Loading...</div>
               </section>
             </section>
           </main>
         </div>
-
-        <footer class="lp-summary-row lp-shell-footer th-hps-status-footer">
-          <p data-th-status>Loading...</p>
-        </footer>
       </div>
 
       <div class="lp-modal" data-modal hidden>
@@ -678,6 +672,7 @@
 
   function setStatus(message) {
     if (els.status) els.status.textContent = message;
+    if (els.listMeta) els.listMeta.textContent = message;
   }
 
   function setDetailStatus(message) {
