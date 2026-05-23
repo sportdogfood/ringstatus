@@ -69,34 +69,48 @@
   width: max-content;
   min-width: 104px;
   min-height: 28px;
+  height: 28px;
   padding: 0 10px;
-  border: 0;
+  border: 1px solid #005c2a;
   border-radius: 999px;
-  background: #0b63c7;
+  background: #005c2a;
   color: #ffffff;
   cursor: pointer;
   font-family: inherit;
   text-align: left;
-  box-shadow: var(--lp-card-shadow);
+  box-shadow: var(--lp-token-shadow);
   justify-content: center;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 #hps-app.is-hps-open .th-hps-toggle {
-  background: #6f7470;
+  background: #005c2a;
+  border-color: #005c2a;
+}
+
+#hps-app .th-hps-toggle.is-active,
+#hps-app .lp-tab.th-hps-toggle.is-active,
+#hps-app .packing-tab.th-hps-toggle.is-active,
+#hps-app .packing-theme-horses.th-hps-toggle.is-active {
+  background: #005c2a !important;
+  border-color: #005c2a !important;
+  color: #ffffff !important;
+  box-shadow: var(--lp-token-shadow) !important;
 }
 
 #hps-app .th-hps-toggle-count {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 0.95em;
+  letter-spacing: -0.06em;
 }
 
 #hps-app .th-hps-toggle-label {
   font-size: 12px;
   font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  line-height: 0.95em;
+  letter-spacing: -0.06em;
   text-transform: uppercase;
 }
 
@@ -160,7 +174,7 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 6px;
   align-items: center;
-  padding: 10px 130px 8px 16px;
+  padding: 10px 16px 8px;
 }
 
 #hps-app .lp-modal {
@@ -331,8 +345,15 @@
 
 #hps-app .th-horse-row {
   align-items: center;
-  min-height: 50px;
-  padding: 11px 16px;
+  min-height: 44px;
+  padding: 8px 12px;
+}
+
+#hps-app .th-horse-row .lp-row-title {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 0.95em;
+  letter-spacing: -0.06em;
 }
 
 #hps-app .th-horse-row .packing-row-meta {
@@ -382,11 +403,13 @@
 
 #hps-app .th-print-status {
   display: block;
-  margin-top: 6px;
-  color: var(--lp-muted);
+  margin-top: 3px;
+  color: var(--lp-ink);
   font-size: 11px;
   font-weight: 400;
   line-height: 1.1;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 @media (max-width: 640px) {
@@ -407,7 +430,7 @@
   }
 
   #hps-app .th-hps-toggle-count {
-    font-size: 20px;
+    font-size: 12px;
   }
 
   #hps-app .th-hps-toggle-label {
@@ -428,12 +451,12 @@
   #hps-app .packing-tools.th-toolbar {
     grid-template-columns: minmax(0, 1fr);
     gap: 6px;
-    padding: 10px 130px 8px 16px;
+    padding: 10px 16px 8px;
   }
 
   #hps-app .th-horse-row {
-    min-height: 54px;
-    padding: 12px 16px;
+    min-height: 44px;
+    padding: 8px 12px;
   }
 
   #hps-app .lp-modal {

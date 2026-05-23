@@ -178,10 +178,10 @@
           <div data-th-record="${escapeAttr(record.id)}" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
               ${detailTextRow("Show name", showName || "-")}
-              ${detailAppStateRow(record.id, currentState)}
-              ${detailSessionStateRow(record.id, sessionState)}
               ${detailEditRow("barn_name", "Barn name", barnName)}
+              ${detailSessionStateRow(record.id, sessionState)}
               ${detailLongTextRow("horse_note", "Note", note)}
+              ${detailAppStateRow(record.id, currentState)}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
               ${detailChoiceRow("horse_genders", "Gender", gender, ["Gelding", "Mare"])}
@@ -226,7 +226,10 @@
   function detailPrintRow(recordId, printBatch) {
     return `
       <div class="lp-field-row th-detail-edit">
-        <span class="lp-field-label">Stall card</span>
+        <span class="lp-field-label">
+          <span>Stall card</span>
+          <span class="th-print-status" data-stall-card-status="${escapeAttr(recordId)}">${printBatch ? "Requested" : ""}</span>
+        </span>
         <span class="lp-field-value">
           <span class="lp-edit-choice-row packing-inline-choices">
             <button class="lp-edit-pill th-action-pill" type="button" data-stall-card-print="${escapeAttr(recordId)}">PRINT NOW</button>
@@ -235,7 +238,6 @@
               <span class="lp-edit-pill">REQUEST TO PRINT</span>
             </label>
           </span>
-          <span class="th-print-status" data-stall-card-status="${escapeAttr(recordId)}">${printBatch ? "Requested" : ""}</span>
         </span>
       </div>
     `;
