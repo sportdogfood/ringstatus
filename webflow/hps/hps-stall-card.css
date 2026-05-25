@@ -1,6 +1,7 @@
 :root {
   --hps-sheet-w: 8.5in;
   --hps-sheet-h: 11in;
+  --hps-sheet-margin: 0.15in;
   --hps-card-w: 5.5in;
   --hps-card-h: 3.75in;
   --hps-card-frame: #a9cdf2;
@@ -32,6 +33,7 @@ body {
   height: var(--hps-sheet-h);
   justify-content: end;
   align-content: start;
+  padding: var(--hps-sheet-margin) var(--hps-sheet-margin) 0 0;
   background: #ffffff;
 }
 
@@ -151,5 +153,6 @@ body {
   #hps-stall-card {
     display: block;
     min-height: 0;
+    padding: 0;
   }
 }

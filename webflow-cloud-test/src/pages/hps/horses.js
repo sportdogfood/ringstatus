@@ -215,11 +215,13 @@ function findFeedHorseId(fields, horseIndex) {
 }
 
 function feedSortLabel(fields) {
+  const type = firstValue(fields, ["feedType", "feed_type", "type"]);
+  const typeOrder = { grain: "1", supplement: "2", hay: "3" };
   return [
-    firstValue(fields, ["slot_order", "sort", "order"]),
-    firstValue(fields, ["slot", "feed_slot", "time"]),
-    firstValue(fields, ["feed_type", "type"]),
-    firstValue(fields, ["feed", "feed_name", "ration"])
+    typeOrder[String(type || "").trim().toLowerCase()] || "9",
+    type,
+    firstValue(fields, ["feedName", "feed_name", "feed", "ration"]),
+    firstValue(fields, ["uid", "assignmentId"])
   ].map((value) => stringifyValue(value)).join(" ");
 }
 

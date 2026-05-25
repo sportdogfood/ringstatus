@@ -264,12 +264,13 @@
         <table class="th-feed-table">
           <thead>
             <tr>
-              <th scope="col">Slot</th>
               <th scope="col">Type</th>
               <th scope="col">Feed</th>
-              <th scope="col">Qty</th>
+              <th scope="col">AM</th>
+              <th scope="col">Mid</th>
+              <th scope="col">PM</th>
+              <th scope="col">Total</th>
               <th scope="col">Unit</th>
-              <th scope="col">Notes</th>
             </tr>
           </thead>
           <tbody>
@@ -283,12 +284,13 @@
   function feedRow(fields) {
     return `
       <tr>
-        <td>${escapeHtml(feedValue(fields, ["slot", "feed_slot", "time"]))}</td>
-        <td>${escapeHtml(feedValue(fields, ["feed_type", "type", "ration_type"]))}</td>
-        <td>${escapeHtml(feedValue(fields, ["feed", "feed_name", "ration", "item"]))}</td>
-        <td>${escapeHtml(feedValue(fields, ["qty", "quantity", "amount", "scoops", "dirty_qty", "dirty_scoops"]))}</td>
-        <td>${escapeHtml(feedValue(fields, ["unit", "measure", "default_measure"]))}</td>
-        <td>${escapeHtml(feedValue(fields, ["note", "notes", "feed_note"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["feedType", "feed_type", "type", "ration_type"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["feedName", "feed_name", "feed", "ration", "item"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["am", "AM"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["midday", "mid", "MD"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["pm", "PM"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["quantity", "qty", "amount"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["quantityMeasure", "defaultQuantityMeasure", "short_uom", "unit", "measure"]))}</td>
       </tr>
     `;
   }

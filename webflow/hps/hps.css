@@ -383,6 +383,13 @@
   white-space: nowrap;
 }
 
+#hps-app .lp-profile-panel button.lp-edit-pill.is-active,
+#hps-app .th-profile-footer button.lp-edit-pill.is-active {
+  background: #46332b;
+  border-color: #46332b;
+  color: #ffffff;
+}
+
 #hps-app .th-feed-table-wrap {
   width: 100%;
   overflow-x: auto;
