@@ -264,12 +264,10 @@
         <table class="th-feed-table">
           <thead>
             <tr>
-              <th scope="col">Type</th>
               <th scope="col">Feed</th>
               <th scope="col">AM</th>
               <th scope="col">Mid</th>
               <th scope="col">PM</th>
-              <th scope="col">Total</th>
               <th scope="col">Unit</th>
             </tr>
           </thead>
@@ -284,12 +282,10 @@
   function feedRow(fields) {
     return `
       <tr>
-        <td>${escapeHtml(feedValue(fields, ["feedType", "feed_type", "type", "ration_type"]))}</td>
         <td>${escapeHtml(feedValue(fields, ["feedName", "feed_name", "feed", "ration", "item"]))}</td>
         <td>${escapeHtml(feedValue(fields, ["am", "AM"]))}</td>
         <td>${escapeHtml(feedValue(fields, ["midday", "mid", "MD"]))}</td>
         <td>${escapeHtml(feedValue(fields, ["pm", "PM"]))}</td>
-        <td>${escapeHtml(feedValue(fields, ["quantity", "qty", "amount"]))}</td>
         <td>${escapeHtml(feedValue(fields, ["quantityMeasure", "defaultQuantityMeasure", "short_uom", "unit", "measure"]))}</td>
       </tr>
     `;

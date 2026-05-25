@@ -19,7 +19,7 @@
     renderMessage("Loading stall card...");
     const url = new URL(apiUrl, window.location.href);
     url.searchParams.set("tenantId", tenantId);
-    const response = await fetch(url);
+    const response = await fetchWithTimeout(url.toString(), 15000);
     const data = await response.json();
     if (!response.ok || !data.ok) {
       throw new Error(data.detail || data.error || `Load failed: ${response.status}`);
@@ -69,6 +69,12 @@
 
   function renderMessage(message) {
     root.innerHTML = `<div class="hps-stall-message">${escapeHtml(message)}</div>`;
+  }
+
+  function fetchWithTimeout(url, timeoutMs) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { signal: controller.signal }).finally(() => window.clearTimeout(timer));
   }
 
   function firstValue(fields, names) {
