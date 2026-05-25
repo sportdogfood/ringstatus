@@ -16,7 +16,7 @@
     saveTimers: new Map(),
     activeRecordId: "",
     detailTab: "overview",
-    moduleOpen: true,
+    moduleOpen: false,
     detailStatus: "",
     activeGroup: "active",
     activePrints: new Set(),
@@ -170,6 +170,7 @@
         <div class="lp-profile-tabs th-profile-tabs" role="tablist" aria-label="Horse profile sections">
           ${profileTab("overview", "Overview", activeTab)}
           ${profileTab("profile", "Profile", activeTab)}
+          ${profileTab("feed", "Feed", activeTab)}
           ${profileTab("contacts", "Contacts", activeTab)}
           ${profileTab("print", "Print", activeTab)}
         </div>
@@ -189,6 +190,9 @@
               ${detailChoiceRow("horse_colors", "Color", color, ["Black", "Bay", "Chestnut", "Grey", "Paint", "Palomino", "Liverchestnut"])}
               ${detailEditRow("horse_age", "Age", age, "number")}
               ${detailEditRow("hands", "Hands", hands, "number")}
+            </div>
+            <div class="lp-field-grid lp-profile-tab-panel${activeTab === "feed" ? " is-active" : ""}" data-profile-panel="feed">
+              ${detailFeedTable(record.feedPlan || [])}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "contacts" ? " is-active" : ""}" data-profile-panel="contacts">
               ${detailEditRow("emergency_contacts", "Emergency contact", emergencyContact)}
@@ -241,6 +245,58 @@
         </span>
       </div>
     `;
+  }
+
+  function detailFeedTable(feedPlan) {
+    if (!feedPlan.length) {
+      return `
+        <div class="lp-field-row th-detail-edit th-feed-empty">
+          <span class="lp-field-label">Feed</span>
+          <span class="lp-field-value">
+            <span class="th-feed-empty-text">No feed plan.</span>
+          </span>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="th-feed-table-wrap" aria-label="Feed plan">
+        <table class="th-feed-table">
+          <thead>
+            <tr>
+              <th scope="col">Slot</th>
+              <th scope="col">Type</th>
+              <th scope="col">Feed</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${feedPlan.map((item) => feedRow(item.fields || {})).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function feedRow(fields) {
+    return `
+      <tr>
+        <td>${escapeHtml(feedValue(fields, ["slot", "feed_slot", "time"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["feed_type", "type", "ration_type"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["feed", "feed_name", "ration", "item"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["qty", "quantity", "amount", "scoops", "dirty_qty", "dirty_scoops"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["unit", "measure", "default_measure"]))}</td>
+        <td>${escapeHtml(feedValue(fields, ["note", "notes", "feed_note"]))}</td>
+      </tr>
+    `;
+  }
+
+  function feedValue(fields, names) {
+    const value = firstValue(fields, names);
+    if (Array.isArray(value)) return value.join(", ");
+    return value || "-";
   }
 
   function detailSaveStatus(recordId) {
@@ -535,7 +591,7 @@
   }
 
   function validProfileTab(tabId) {
-    return ["overview", "profile", "contacts", "print"].includes(tabId) ? tabId : "overview";
+    return ["overview", "profile", "feed", "contacts", "print"].includes(tabId) ? tabId : "overview";
   }
 
   function updateModuleOpen() {
@@ -613,7 +669,7 @@
   function shell() {
     return `
       <div class="th-hps-opener">
-        <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="true">
+        <button class="th-hps-toggle" type="button" data-hps-toggle aria-expanded="false">
           <span class="th-hps-toggle-count" data-th-count>0</span>
           <span class="th-hps-toggle-label">Horses</span>
         </button>
@@ -778,8 +834,8 @@
 
   function recordState(record) {
     const fields = record.fields || {};
-    if (truthy(fields.app_inactive)) return "inactive";
-    if (truthy(fields.app_active)) return "active";
+    if (checkboxValue(fields.app_inactive)) return "inactive";
+    if (checkboxValue(fields.app_active)) return "active";
     return "active";
   }
 
@@ -811,6 +867,12 @@
     if (typeof value === "boolean") return value;
     const normalized = String(value || "").trim().toLowerCase();
     return ["1", "true", "yes", "y", "inactive"].includes(normalized);
+  }
+
+  function checkboxValue(value) {
+    if (typeof value === "boolean") return value;
+    const normalized = String(value || "").trim().toLowerCase();
+    return ["1", "true", "yes", "y"].includes(normalized);
   }
 
   function escapeHtml(value) {

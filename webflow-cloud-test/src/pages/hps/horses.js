@@ -7,9 +7,11 @@ import { env } from "cloudflare:workers";
 const DEFAULT_HORSES_TABLE = "ww_horses";
 const DEFAULT_VIEW_PREFIX = "hps_";
 const DEFAULT_LOG_TABLE = "hp_cls";
+const DEFAULT_FEED_PLAN_TABLE = "hp_feed_plan";
 const DEFAULT_ACTIVE_TENANTS_TABLE = "active_tenants";
 const DEFAULT_ACTIVE_TENANTS_VIEW = "active_tenants";
 const TENANT_FIELD_CANDIDATES = ["tenant_id", "tenantId", "Tenant ID", "pid", "PID", "path_tenant"];
+const FEED_HORSE_FIELD_CANDIDATES = ["horse_record_id", "horseRecordId", "horse_airtable_id", "airtable_id", "horse_id", "horse", "horses", "ww_horses", "horse_link", "horse_links"];
 const PROFILE_READ_FIELDS = ["horse", "horse_id", "show_name", "pid", "last_modified_time", "tenant_id", "airtable_id"];
 const PROFILE_EDITABLE_FIELDS = [
   "barn_name",
@@ -56,6 +58,7 @@ export const GET = async ({ request }) => {
     const activeTenant = await requireActiveTenant(airtable, tenantId);
     const view = tenantView(airtable, tenantId);
     const records = await listAirtableRecords(airtable, airtable.horsesTable, view);
+    const feedPlan = await loadFeedPlanByHorse(airtable, tenantId, records);
     return json({
       ok: true,
       tenantId,
@@ -66,7 +69,10 @@ export const GET = async ({ request }) => {
       },
       profileContract: profileContract(),
       count: records.length,
-      records
+      records: records.map((record) => ({
+        ...record,
+        feedPlan: feedPlan.get(record.id) || []
+      }))
     });
   } catch (error) {
     console.error("[hps] load failed", error);
@@ -120,6 +126,8 @@ function getAirtableConfig() {
   const horsesTable = env.AIRTABLE_HPS_HORSES_TABLE || env.AIRTABLE_WW_HORSES_TABLE || env.AIRTABLE_HORSES_TABLE || DEFAULT_HORSES_TABLE;
   const viewPrefix = env.AIRTABLE_HPS_VIEW_PREFIX || DEFAULT_VIEW_PREFIX;
   const logTable = env.AIRTABLE_HPS_CHANGE_LOG_TABLE || DEFAULT_LOG_TABLE;
+  const feedPlanTable = env.AIRTABLE_HPS_FEED_PLAN_TABLE || DEFAULT_FEED_PLAN_TABLE;
+  const feedPlanView = env.AIRTABLE_HPS_FEED_PLAN_VIEW || "";
   const activeTenantsTable = env.AIRTABLE_HPS_ACTIVE_TENANTS_TABLE || DEFAULT_ACTIVE_TENANTS_TABLE;
   const activeTenantsView = env.AIRTABLE_HPS_ACTIVE_TENANTS_VIEW || DEFAULT_ACTIVE_TENANTS_VIEW;
 
@@ -133,9 +141,86 @@ function getAirtableConfig() {
     horsesTable,
     viewPrefix,
     logTable,
+    feedPlanTable,
+    feedPlanView,
     activeTenantsTable,
     activeTenantsView
   };
+}
+
+async function loadFeedPlanByHorse(airtable, tenantId, horseRecords) {
+  const grouped = new Map(horseRecords.map((record) => [record.id, []]));
+  if (!airtable.feedPlanTable) return grouped;
+
+  let records = [];
+  try {
+    records = await listAirtableRecords(airtable, airtable.feedPlanTable, airtable.feedPlanView);
+  } catch (error) {
+    console.warn("[hps] feed plan load skipped", error);
+    return grouped;
+  }
+
+  const horseIndex = buildHorseIndex(horseRecords);
+  for (const record of records) {
+    const fields = record.fields || {};
+    if (!recordMatchesTenant(fields, tenantId)) continue;
+    const horseId = findFeedHorseId(fields, horseIndex);
+    if (!horseId || !grouped.has(horseId)) continue;
+    grouped.get(horseId).push({
+      id: record.id,
+      fields
+    });
+  }
+
+  for (const rows of grouped.values()) {
+    rows.sort((a, b) => feedSortLabel(a.fields).localeCompare(feedSortLabel(b.fields), undefined, { numeric: true }));
+  }
+
+  return grouped;
+}
+
+function buildHorseIndex(records) {
+  const index = new Map();
+  for (const record of records) {
+    const fields = record.fields || {};
+    const keys = [
+      record.id,
+      firstValue(fields, ["airtable_id", "horse_id", "record_key", "horse_key", "source_id", "horse", "show_name", "barn_name"])
+    ];
+    for (const key of keys) {
+      const normalized = normalizeLookupKey(key);
+      if (normalized) index.set(normalized, record.id);
+    }
+  }
+  return index;
+}
+
+function recordMatchesTenant(fields, tenantId) {
+  const tenantValue = firstValue(fields, TENANT_FIELD_CANDIDATES);
+  if (!tenantValue) return true;
+  const values = Array.isArray(tenantValue) ? tenantValue : [tenantValue];
+  return values.map(normalizeTenantId).includes(tenantId);
+}
+
+function findFeedHorseId(fields, horseIndex) {
+  for (const fieldName of FEED_HORSE_FIELD_CANDIDATES) {
+    const value = fields[fieldName];
+    const values = Array.isArray(value) ? value : [value];
+    for (const item of values) {
+      const match = horseIndex.get(normalizeLookupKey(item));
+      if (match) return match;
+    }
+  }
+  return "";
+}
+
+function feedSortLabel(fields) {
+  return [
+    firstValue(fields, ["slot_order", "sort", "order"]),
+    firstValue(fields, ["slot", "feed_slot", "time"]),
+    firstValue(fields, ["feed_type", "type"]),
+    firstValue(fields, ["feed", "feed_name", "ration"])
+  ].map((value) => stringifyValue(value)).join(" ");
 }
 
 async function requireActiveTenant(airtable, tenantId) {
@@ -307,7 +392,7 @@ function airtableFieldValue(fieldName, value) {
   }
   if (fieldName === "app_active" || fieldName === "app_inactive" || fieldName === "print_batch") {
     const normalized = String(value || "").trim().toLowerCase();
-    return value === true || ["true", "1", "yes", "y", "active", "inactive"].includes(normalized);
+    return value === true || ["true", "1", "yes", "y"].includes(normalized);
   }
   if (fieldName === "ignore") {
     const normalized = String(value || "").trim().toLowerCase();
@@ -333,6 +418,11 @@ function profileContract() {
     actionFields: PROFILE_ACTION_FIELDS,
     membershipFields: PROFILE_MEMBERSHIP_FIELDS,
     deferredFields: PROFILE_DEFERRED_FIELDS,
+    feedPlan: {
+      table: DEFAULT_FEED_PLAN_TABLE,
+      mode: "read_only",
+      horseMatchFields: FEED_HORSE_FIELD_CANDIDATES
+    },
     linkedFieldMap: PROFILE_LINKED_FIELD_MAP
   };
 }
@@ -371,6 +461,10 @@ function firstValue(fields, names) {
 
 function normalizeTenantId(value) {
   return String(value || "").trim();
+}
+
+function normalizeLookupKey(value) {
+  return String(value || "").trim().toLowerCase();
 }
 
 function airtableUrl(baseId, table) {

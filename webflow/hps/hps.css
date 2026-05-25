@@ -383,6 +383,46 @@
   white-space: nowrap;
 }
 
+#hps-app .th-feed-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--lp-border);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+#hps-app .th-feed-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  color: var(--lp-ink);
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+#hps-app .th-feed-table th,
+#hps-app .th-feed-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--lp-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+#hps-app .th-feed-table th {
+  background: #f0f0f0;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+#hps-app .th-feed-table tr:last-child td {
+  border-bottom: 0;
+}
+
+#hps-app .th-feed-empty .lp-field-value {
+  color: var(--lp-muted);
+  font-size: 12px;
+}
+
 #hps-app .th-action-pill {
   appearance: none;
 }
