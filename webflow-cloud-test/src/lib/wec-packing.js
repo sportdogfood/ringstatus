@@ -135,14 +135,19 @@ export async function stateReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, worksheetItems, worksheetHorses] = await Promise.all([
+  const [waves, worksheetItems, worksheetHorses, horses] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_packing_items.id, tables.wec_packing_items.view),
-    listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view)
+    listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view),
+    listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view)
   ]);
 
   const selectedWave = selectWave(waves, packWaveId);
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
+  const normalizedHorses = horses
+    .filter((record) => !selectedShowId || includesLinkedId(record.fields.wec_show, selectedShowId))
+    .map(normalizeRosterHorse)
+    .sort(compareHorseRosterRows);
   const filteredItems = selectedWave ? worksheetItems.filter((record) => (
     isActiveWorksheetRow(record) &&
     includesLinkedId(record.fields.pack_wave, selectedWave.id) &&
@@ -172,11 +177,13 @@ export async function stateReport(airtable, requestUrl) {
     },
     wave: selectedWave ? normalizeWave(selectedWave) : null,
     availableWaves: waves.map(normalizeWave).sort((a, b) => compareNumber(a.sortOrder, b.sortOrder)),
+    horses: normalizedHorses,
     sections: buildSections(items),
     counts: {
       waves: waves.length,
       worksheetItems: items.length,
-      horseMembers: filteredHorses.length
+      horseMembers: filteredHorses.length,
+      horses: normalizedHorses.length
     },
     needsGeneration: items.length === 0,
     items
@@ -339,6 +346,22 @@ function normalizeHorseMember(record) {
   };
 }
 
+function normalizeRosterHorse(record) {
+  const fields = record.fields || {};
+  const recordState = stringField(fields.record_state || (fields.active ? "active" : "inactive")) || "inactive";
+  return {
+    id: record.id,
+    name: stringField(fields.barn_name || fields.horse || fields.show_name),
+    showName: stringField(fields.show_name || fields.horse),
+    recordState,
+    active: recordState === "active",
+    sortOrder: numberField(fields.sort_order),
+    weekIds: linkedIds(fields.wec_weeks),
+    sourcePackItemIds: linkedIds(fields.wec_pack_items),
+    notes: stringField(fields.notes)
+  };
+}
+
 function buildSections(items) {
   const sections = new Map();
   for (const item of items) {
@@ -443,6 +466,10 @@ function compareWorksheetRows(a, b) {
 
 function compareHorseRows(a, b) {
   return compareNumber(a.sortOrder, b.sortOrder) || a.id.localeCompare(b.id);
+}
+
+function compareHorseRosterRows(a, b) {
+  return compareNumber(a.sortOrder, b.sortOrder) || a.name.localeCompare(b.name);
 }
 
 function compareNumber(a, b) {
