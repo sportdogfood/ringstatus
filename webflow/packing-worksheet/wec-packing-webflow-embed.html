@@ -7,11 +7,18 @@
     packWaveId: "",
     apiBaseUrl: "https://ringstatus.webflow.io/test/wec-packing"
   };
+
+  window.setTimeout(function () {
+    var root = document.getElementById("wec-packing-app");
+    if (root && root.textContent.indexOf("Loading packing worksheet") !== -1) {
+      root.textContent = "WEC Packing embed assets are not loaded yet. Confirm the Git commit/CDN URLs and Webflow Cloud route before publishing.";
+    }
+  }, 4000);
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@REPLACE_WITH_COMMIT/webflow/packing-worksheet/styles.css">
-<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@REPLACE_WITH_COMMIT/webflow/packing-worksheet/wec-packing.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/packing-worksheet/styles.css">
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/packing-worksheet/wec-packing.js"></script>
