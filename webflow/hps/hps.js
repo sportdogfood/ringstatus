@@ -19,6 +19,7 @@
     moduleOpen: false,
     detailStatus: "",
     activeGroup: "active",
+    feedOpen: new Set(),
     activePrints: new Set(),
     sessionPrefs: loadSessionPrefs()
   };
@@ -103,10 +104,63 @@
   }
 
   function groupedRows(records) {
+    if (state.activeGroup === "feed") {
+      return feedGroupRows(records);
+    }
+
     return groupRows(
       state.activeGroup === "inactive" ? "Inactive" : "Active",
       records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"))
     );
+  }
+
+  function feedGroupRows(records) {
+    if (!records.length) return "";
+    return `
+      <div class="th-group" data-hps-group="feed">
+        <div class="th-group-label">FEED</div>
+        ${records.map((record) => feedHorseRow(record)).join("")}
+      </div>
+    `;
+  }
+
+  function feedHorseRow(record) {
+    const fields = record.fields || {};
+    const name = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
+    const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
+    const isOpen = state.feedOpen.has(record.id);
+    const feedPlan = record.feedPlan || [];
+
+    return `
+      <div class="lp-row packing-row packing-horse-row th-horse-row th-feed-horse-row" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
+        <button class="packing-horse-detail-trigger" type="button" data-open-horse="${escapeAttr(record.id)}">
+          <span class="lp-row-title">${escapeHtml(name)}</span>
+        </button>
+        <button class="lp-achievement packing-token is-packed th-state-pill th-feed-toggle" type="button" data-feed-toggle="${escapeAttr(record.id)}" aria-expanded="${isOpen ? "true" : "false"}" aria-label="${isOpen ? "Collapse" : "Open"} feed for ${escapeAttr(name)}">${isOpen ? "-" : "+"}</button>
+      </div>
+      ${isOpen ? feedShellLines(feedPlan) : ""}
+    `;
+  }
+
+  function feedShellLines(feedPlan) {
+    if (!feedPlan.length) return "";
+    return `
+      <div class="th-feed-shell-lines">
+        ${feedPlan.map((item) => feedShellLine(item.fields || {})).join("")}
+      </div>
+    `;
+  }
+
+  function feedShellLine(fields) {
+    return `
+      <div class="th-feed-shell-line">
+        <span>${escapeHtml(feedValue(fields, ["feedName", "feed_name", "feed", "ration", "item"]))}</span>
+        <span>${escapeHtml(feedValue(fields, ["am", "AM"]))}</span>
+        <span>${escapeHtml(feedValue(fields, ["midday", "mid", "MD"]))}</span>
+        <span>${escapeHtml(feedValue(fields, ["pm", "PM"]))}</span>
+        <span>${escapeHtml(feedValue(fields, ["quantityMeasure", "defaultQuantityMeasure", "short_uom", "unit", "measure"]))}</span>
+      </div>
+    `;
   }
 
   function groupRows(label, records) {
@@ -180,7 +234,6 @@
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "overview" ? " is-active" : ""}" data-profile-panel="overview">
               ${detailTextRow("Show name", showName || "-")}
               ${detailEditRow("barn_name", "Barn name", barnName)}
-              ${detailSessionStateRow(record.id, sessionState)}
               ${detailLongTextRow("horse_note", "Note", note)}
               ${detailAppStateRow(record.id, currentState)}
             </div>
@@ -428,6 +481,13 @@
       return;
     }
 
+    const feedToggle = event.target.closest("[data-feed-toggle]");
+    if (feedToggle) {
+      toggleFeedRecord(feedToggle.dataset.feedToggle);
+      event.stopPropagation();
+      return;
+    }
+
     if (event.target.closest("[data-th-refresh]")) {
       load();
       return;
@@ -641,10 +701,20 @@
   }
 
   function setListGroup(groupKey) {
-    state.activeGroup = groupKey || "active";
+    state.activeGroup = ["active", "inactive", "feed"].includes(groupKey) ? groupKey : "active";
     updateGroupJumpState();
     render();
     root.querySelector(".lp-content")?.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function toggleFeedRecord(recordId) {
+    if (!recordId) return;
+    if (state.feedOpen.has(recordId)) {
+      state.feedOpen.delete(recordId);
+    } else {
+      state.feedOpen.add(recordId);
+    }
+    render();
   }
 
   function updateGroupJumpState() {
@@ -656,11 +726,16 @@
   }
 
   function filteredRecords() {
-    const records = state.records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"));
+    const records = state.activeGroup === "feed"
+      ? state.records.filter((record) => (record.feedPlan || []).length)
+      : state.records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"));
     if (!state.query) return records;
     return records.filter((record) => {
       const fields = record.fields || {};
-      return Object.values(fields).some((value) => String(value).toLowerCase().includes(state.query));
+      const feedText = (record.feedPlan || [])
+        .flatMap((item) => Object.values(item.fields || {}))
+        .join(" ");
+      return `${Object.values(fields).join(" ")} ${feedText}`.toLowerCase().includes(state.query);
     });
   }
 
@@ -699,6 +774,7 @@
                   <div class="th-hps-controls" aria-label="Horse list controls">
                     <button class="th-hps-control is-active" type="button" data-hps-group-jump="active" aria-pressed="true">Active</button>
                     <button class="th-hps-control" type="button" data-hps-group-jump="inactive" aria-pressed="false">Inactive</button>
+                    <button class="th-hps-control" type="button" data-hps-group-jump="feed" aria-pressed="false">Feed</button>
                     <button class="th-hps-control" type="button" data-th-refresh>Refresh</button>
                   </div>
                   <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
