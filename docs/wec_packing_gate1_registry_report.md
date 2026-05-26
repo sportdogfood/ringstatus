@@ -69,7 +69,7 @@ These WEC tables exist physically and are confirmed by Airtable metadata.
 | --- | --- | --- | --- |
 | `wec_meta` | `tbllJywsOstkqT5yZ` | Grid view | registry |
 | `wec_shows` | `tblrOQ1Lygfb4CeE8` | Grid view | show scope |
-| `wec_ranges` | `tblJyAURsK2GvWjhA` | Grid view | staging/support, unresolved |
+| `wec_ranges` | `tblJyAURsK2GvWjhA` | Grid view | retired/ignored for active packing |
 | `wec_weeks` | `tblnXR9WGc9Y8aTsO` | Grid view | week attendance |
 | `wec_horses` | `tblLvYxEneUuGTLcv` | Grid view | horse roster |
 | `wec_grooms` | `tblHw7hwwIcVZtmiv` | Grid view | groom source/support |
@@ -144,10 +144,9 @@ This confirms that the source/template layer is populated, but the live workshee
    - `AIRTABLE_WEC_PACKING_EVENTS_TABLE`
    - `AIRTABLE_WEC_PACKING_EVENTS_VIEW`
 
-5. `wec_ranges` still needs a decision.
-   - retire
-   - ignore
-   - keep as support/staging history
+5. `wec_ranges` is not used by the active packing app.
+   - `wec_pack_waves` carries week/truck grouping.
+   - Do not build worksheet calculations from `wec_ranges`.
 
 6. `wec_packing_items` and `wec_packing_item_horses` are not yet populated as frozen worksheet snapshots.
 

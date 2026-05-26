@@ -83,7 +83,7 @@ Required decisions:
 - pack wave records exist for Week 1 Truck, Week 3 Truck, and Week 4 Pack-Up or their approved equivalents
 - horse attendance uses `wec_weeks`
 - groom count is wave-level manual or ratio-based
-- `wec_ranges` is ignored, retired, or support-only
+- `wec_ranges` is not used by the active packing app; `wec_pack_waves` is sufficient
 
 Stop condition:
 
@@ -208,4 +208,3 @@ Stop condition:
 - `REPLACE_WITH_COMMIT` remains.
 - URL points to `main` for production.
 - Webflow Cloud route has not been verified.
-

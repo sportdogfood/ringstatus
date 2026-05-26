@@ -237,7 +237,7 @@ Examples:
 - Week 3 Truck
 - Week 4 Pack-Up
 
-This avoids using `ranges` as a confusing proxy for truck/packing operations.
+`wec_ranges` is not part of the active packing model. `wec_pack_waves` is the packing unit and carries the week/truck grouping needed for outbound, mid-show, and return operations.
 
 `wec_pack_waves` should set or calculate:
 
@@ -533,12 +533,11 @@ Before code implementation:
    - `wec_vendors`
    - `wec_local_tags`
    - `wec_place_type`
-8. Confirm whether `wec_ranges` should be retired, ignored, or left as staging/support history.
-9. Confirm the planned `wec_pack_waves` record in `wec_meta`, including `fields_allowed`, then create the table if approved.
-10. Confirm the final `wec_packing_items` fields for frozen worksheet snapshots.
-11. Confirm the final `wec_packing_item_horses` fields for frozen horse-item snapshots.
-12. Confirm the planned `wec_packing_events` record in `wec_meta`, including `fields_allowed`, then create the table if approved.
-13. Confirm `resolution_state` options, including `max`, `kill`, `note`, `purchase_onsite`, and `unresolved`.
+8. Confirm the planned `wec_pack_waves` record in `wec_meta`, including `fields_allowed`, then create the table if approved.
+9. Confirm the final `wec_packing_items` fields for frozen worksheet snapshots.
+10. Confirm the final `wec_packing_item_horses` fields for frozen horse-item snapshots.
+11. Confirm the planned `wec_packing_events` record in `wec_meta`, including `fields_allowed`, then create the table if approved.
+12. Confirm `resolution_state` options, including `max`, `kill`, `note`, `purchase_onsite`, and `unresolved`.
 14. Confirm Webflow Cloud route names.
 15. Confirm whether current prototype files should be archived, replaced, or kept as reference only.
 
