@@ -8,7 +8,7 @@ This note covers the shell-list FEED mode added to HPS. It is read-only and devi
 
 - `webflow/hps/hps.js`
   - Adds the `Feed` shell control.
-  - Adds `feedOpen` session state for per-horse expand/collapse.
+  - Adds `feedClosed` session state for per-horse collapse while FEED opens expanded by default.
   - Renders records with `feedPlan` in a read-only FEED list.
 - `webflow/hps/hps.css`
   - Adds scoped `.th-feed-shell-*` list styles.
@@ -16,7 +16,7 @@ This note covers the shell-list FEED mode added to HPS. It is read-only and devi
 ## Rollback Steps
 
 1. In `webflow/hps/hps.js`, remove the `Feed` button from `.th-hps-controls`.
-2. Remove `feedOpen`, `feedGroupRows`, `feedHorseRow`, `feedShellLines`, `feedShellLine`, `toggleFeedRecord`, and the `[data-feed-toggle]` click handler.
+2. Remove `feedClosed`, `feedGroupRows`, `feedHorseRow`, `feedShellLines`, `feedShellLine`, `visibleFeedPlan`, `hasFeedQuantity`, `hasDisplayValue`, `toggleFeedRecord`, and the `[data-feed-toggle]` click handler.
 3. Restore `filteredRecords()` to only filter by active or inactive app status.
 4. In `webflow/hps/hps.css`, remove `.th-feed-horse-row`, `.th-feed-toggle`, `.th-feed-shell-lines`, `.th-feed-shell-line`, and child span rules.
 5. Re-run `node --check webflow\hps\hps.js`.

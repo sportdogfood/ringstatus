@@ -19,7 +19,7 @@
     moduleOpen: false,
     detailStatus: "",
     activeGroup: "active",
-    feedOpen: new Set(),
+    feedClosed: new Set(),
     activePrints: new Set(),
     sessionPrefs: loadSessionPrefs()
   };
@@ -128,15 +128,15 @@
     const fields = record.fields || {};
     const name = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
     const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
-    const isOpen = state.feedOpen.has(record.id);
-    const feedPlan = record.feedPlan || [];
+    const isOpen = !state.feedClosed.has(record.id);
+    const feedPlan = visibleFeedPlan(record.feedPlan || []);
 
     return `
       <div class="lp-row packing-row packing-horse-row th-horse-row th-feed-horse-row" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
-        <button class="packing-horse-detail-trigger" type="button" data-open-horse="${escapeAttr(record.id)}">
+        <div class="packing-horse-detail-trigger th-feed-name">
           <span class="lp-row-title">${escapeHtml(name)}</span>
-        </button>
-        <button class="lp-achievement packing-token is-packed th-state-pill th-feed-toggle" type="button" data-feed-toggle="${escapeAttr(record.id)}" aria-expanded="${isOpen ? "true" : "false"}" aria-label="${isOpen ? "Collapse" : "Open"} feed for ${escapeAttr(name)}">${isOpen ? "-" : "+"}</button>
+        </div>
+        <button class="th-feed-toggle" type="button" data-feed-toggle="${escapeAttr(record.id)}" aria-expanded="${isOpen ? "true" : "false"}" aria-label="${isOpen ? "Collapse" : "Open"} feed for ${escapeAttr(name)}">${isOpen ? "-" : "+"}</button>
       </div>
       ${isOpen ? feedShellLines(feedPlan) : ""}
     `;
@@ -301,7 +301,8 @@
   }
 
   function detailFeedTable(feedPlan) {
-    if (!feedPlan.length) {
+    const rows = visibleFeedPlan(feedPlan);
+    if (!rows.length) {
       return `
         <div class="lp-field-row th-detail-edit th-feed-empty">
           <span class="lp-field-label">Feed</span>
@@ -325,7 +326,7 @@
             </tr>
           </thead>
           <tbody>
-            ${feedPlan.map((item) => feedRow(item.fields || {})).join("")}
+            ${rows.map((item) => feedRow(item.fields || {})).join("")}
           </tbody>
         </table>
       </div>
@@ -348,6 +349,24 @@
     const value = firstValue(fields, names);
     if (Array.isArray(value)) return value.join(", ");
     return value || "-";
+  }
+
+  function visibleFeedPlan(feedPlan) {
+    return (feedPlan || []).filter((item) => hasFeedQuantity(item.fields || {}));
+  }
+
+  function hasFeedQuantity(fields) {
+    return ["am", "AM", "midday", "mid", "MD", "pm", "PM"].some((name) => {
+      const value = fields[name];
+      if (Array.isArray(value)) return value.some((item) => hasDisplayValue(item));
+      return hasDisplayValue(value);
+    });
+  }
+
+  function hasDisplayValue(value) {
+    if (value === null || value === undefined) return false;
+    const text = String(value).trim();
+    return text !== "" && text !== "-" && text !== "0";
   }
 
   function detailSaveStatus(recordId) {
@@ -709,10 +728,10 @@
 
   function toggleFeedRecord(recordId) {
     if (!recordId) return;
-    if (state.feedOpen.has(recordId)) {
-      state.feedOpen.delete(recordId);
+    if (state.feedClosed.has(recordId)) {
+      state.feedClosed.delete(recordId);
     } else {
-      state.feedOpen.add(recordId);
+      state.feedClosed.add(recordId);
     }
     render();
   }
@@ -727,7 +746,7 @@
 
   function filteredRecords() {
     const records = state.activeGroup === "feed"
-      ? state.records.filter((record) => (record.feedPlan || []).length)
+      ? state.records.filter((record) => visibleFeedPlan(record.feedPlan || []).length)
       : state.records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"));
     if (!state.query) return records;
     return records.filter((record) => {

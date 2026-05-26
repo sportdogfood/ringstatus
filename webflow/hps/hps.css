@@ -370,11 +370,28 @@
   border-bottom: 1px solid var(--lp-border);
 }
 
+#hps-app .th-feed-name {
+  cursor: default;
+}
+
 #hps-app .th-feed-toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 42px;
   width: 42px;
+  min-height: 28px;
   padding-left: 10px;
   padding-right: 10px;
+  border: 0;
+  background: transparent;
+  color: var(--lp-ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 #hps-app .th-feed-shell-lines {
