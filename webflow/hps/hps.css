@@ -374,6 +374,23 @@
   cursor: default;
 }
 
+#hps-app .th-feed-back {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
 #hps-app .th-feed-toggle {
   appearance: none;
   display: inline-flex;
