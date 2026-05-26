@@ -118,7 +118,9 @@
     if (!records.length) return "";
     return `
       <div class="th-group" data-hps-group="feed">
-        <div class="th-group-label">FEED</div>
+        <div class="th-group-label th-feed-group-label">
+          <button class="th-feed-back" type="button" data-hps-group-jump="active" aria-label="Back to active horse list">&lt;- FEED</button>
+        </div>
         ${records.map((record) => feedHorseRow(record)).join("")}
       </div>
     `;
