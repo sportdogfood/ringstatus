@@ -356,6 +356,12 @@
   letter-spacing: -0.06em;
 }
 
+#hps-app button.th-state-pill {
+  appearance: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 #hps-app .th-horse-row .packing-row-meta {
   margin-top: 5px;
 }

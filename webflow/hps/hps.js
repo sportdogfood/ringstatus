@@ -132,7 +132,7 @@
           <button class="packing-horse-detail-trigger" type="button" data-open-horse="${escapeAttr(record.id)}">
             <span class="lp-row-title">${escapeHtml(name)}</span>
           </button>
-        <span class="lp-achievement packing-token ${currentState === "active" ? "is-packed" : "is-need"} th-state-pill" aria-label="App status">${escapeHtml(currentState)}</span>
+        <button class="lp-achievement packing-token ${currentState === "active" ? "is-packed" : "is-need"} th-state-pill" type="button" data-app-state="${escapeAttr(nextState)}" data-app-state-record="${escapeAttr(record.id)}" aria-label="Mark ${escapeAttr(name)} ${escapeAttr(nextState)}">${escapeHtml(currentState)}</button>
       </div>
     `;
   }
