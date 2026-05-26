@@ -40,6 +40,7 @@ export const ENV_TABLES = {
 
 const DEFAULT_META_TABLE = "tbllJywsOstkqT5yZ";
 const DEFAULT_SOURCE_VIEWS = {
+  wec_pack_lists: "Grid view",
   wec_pack_items: "master"
 };
 
@@ -95,15 +96,7 @@ export async function healthReport(airtable) {
       missingFields
     };
   });
-  const envKeys = Object.entries(ENV_TABLES).map(([name, keys]) => ({
-    name,
-    tableKey: keys.table,
-    tableValue: airtable.runtime[keys.table] || "",
-    hasTableValue: !!airtable.runtime[keys.table],
-    viewKey: keys.view,
-    viewValue: airtable.runtime[keys.view] || "",
-    hasViewValue: !!airtable.runtime[keys.view]
-  }));
+  const envKeys = envReportRows(airtable, context.registry);
   return {
     ok: required.every((item) => item.registry && item.physical && item.missingFields.length === 0),
     service: "wec-packing",
@@ -135,15 +128,27 @@ export async function stateReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, worksheetItems, worksheetHorses, horses] = await Promise.all([
+  const [waves, packLists, sourcePackItems, worksheetItems, worksheetHorses, horses] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
+    listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
+    listAirtableRecords(airtable, tables.wec_pack_items.id, tables.wec_pack_items.view),
     listAirtableRecords(airtable, tables.wec_packing_items.id, tables.wec_packing_items.view),
     listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view)
   ]);
 
   const selectedWave = selectWave(waves, packWaveId);
+  const normalizedWave = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
+  const normalizedPackLists = packLists
+    .filter((record) => !record.fields?.ignore)
+    .map(normalizePackList)
+    .sort(comparePackLists);
+  const packListLookup = new Map(normalizedPackLists.map((list) => [list.id, list]));
+  const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
+    const item = normalizeSourcePackItem(record);
+    return [item.id, item];
+  }));
   const normalizedHorses = horses
     .filter((record) => !selectedShowId || includesLinkedId(record.fields.wec_show, selectedShowId))
     .map(normalizeRosterHorse)
@@ -160,8 +165,14 @@ export async function stateReport(airtable, requestUrl) {
   ));
   const horsesByItem = groupByLinkedId(filteredHorses, "packing_item");
   const items = filteredItems
-    .map((record) => normalizePackingItem(record, horsesByItem.get(record.id) || []))
+    .map((record) => decoratePackingItem(
+      normalizePackingItem(record, horsesByItem.get(record.id) || []),
+      packListLookup,
+      sourcePackItemLookup,
+      normalizedWave
+    ))
     .sort(compareWorksheetRows);
+  const lists = buildListSummaries(items, normalizedPackLists);
 
   return {
     ok: true,
@@ -170,17 +181,28 @@ export async function stateReport(airtable, requestUrl) {
       packWaveId: selectedWave?.id || "",
       tables: {
         packWaves: tables.wec_pack_waves.id,
+        packLists: tables.wec_pack_lists.id,
+        packItems: tables.wec_pack_items.id,
         packingItems: tables.wec_packing_items.id,
         packingItemHorses: tables.wec_packing_item_horses.id,
         packingEvents: tables.wec_packing_events.id
       }
     },
-    wave: selectedWave ? normalizeWave(selectedWave) : null,
+    wave: normalizedWave,
     availableWaves: waves.map(normalizeWave).sort((a, b) => compareNumber(a.sortOrder, b.sortOrder)),
     horses: normalizedHorses,
-    sections: buildSections(items),
+    lists,
+    sections: lists.map((list) => ({
+      section: list.id,
+      label: list.label,
+      rows: list.rows,
+      done: list.done,
+      open: list.open
+    })),
     counts: {
       waves: waves.length,
+      packLists: normalizedPackLists.length,
+      sourcePackItems: sourcePackItems.length,
       worksheetItems: items.length,
       horseMembers: filteredHorses.length,
       horses: normalizedHorses.length
@@ -239,9 +261,11 @@ function buildRegistry(records) {
 function buildTableConfig(airtable, registry, schema) {
   const tables = {};
   for (const row of registry.rows) {
-    const envKeys = ENV_TABLES[row.name];
-    const envTableId = envKeys ? clean(airtable.runtime[envKeys.table]) : "";
-    const envView = envKeys ? clean(airtable.runtime[envKeys.view]) : "";
+    const fallbackEnvKeys = ENV_TABLES[row.name] || {};
+    const tableEnvKey = row.tableEnv || fallbackEnvKeys.table || "";
+    const viewEnvKey = row.viewEnv || fallbackEnvKeys.view || "";
+    const envTableId = clean(airtable.runtime[tableEnvKey]);
+    const envView = clean(airtable.runtime[viewEnvKey]);
     const schemaTable = findSchemaTable(schema, row.name, envTableId || row.tableApi || row.tableName);
     tables[row.name] = {
       id: envTableId || row.tableApi || schemaTable?.id || row.tableName,
@@ -250,6 +274,25 @@ function buildTableConfig(airtable, registry, schema) {
     };
   }
   return tables;
+}
+
+function envReportRows(airtable, registry) {
+  return registry.rows
+    .map((row) => {
+      const fallbackEnvKeys = ENV_TABLES[row.name] || {};
+      const tableKey = row.tableEnv || fallbackEnvKeys.table || "";
+      const viewKey = row.viewEnv || fallbackEnvKeys.view || "";
+      return {
+        name: row.name,
+        tableKey,
+        tableValue: tableKey ? airtable.runtime[tableKey] || "" : "",
+        hasTableValue: tableKey ? !!airtable.runtime[tableKey] : false,
+        viewKey,
+        viewValue: viewKey ? airtable.runtime[viewKey] || "" : "",
+        hasViewValue: viewKey ? !!airtable.runtime[viewKey] : false
+      };
+    })
+    .filter((row) => row.tableKey || row.viewKey);
 }
 
 async function getBaseSchema(airtable) {
@@ -301,6 +344,34 @@ function normalizeWave(record) {
   };
 }
 
+function normalizePackList(record) {
+  const fields = record.fields || {};
+  const label = stringField(fields.list) || record.id;
+  return {
+    id: record.id,
+    key: slugify(label),
+    label,
+    shortDescription: stringField(fields.short_description),
+    longDescription: stringField(fields.long_description),
+    itemCount: numberField(fields.list_items_count)
+  };
+}
+
+function normalizeSourcePackItem(record) {
+  const fields = record.fields || {};
+  return {
+    id: record.id,
+    appName: stringField(fields.app_name),
+    listPlan: stringField(fields.list_plan),
+    quantity: numberField(fields.quantity),
+    perHorse: numberField(fields.per_horse),
+    perGroom: numberField(fields.per_groom),
+    horseSpecific: !!fields["horse-specific"],
+    uom: stringField(fields.uom),
+    packListIds: linkedIds(fields.wec_pack_lists)
+  };
+}
+
 function normalizePackingItem(record, horseRecords) {
   const fields = record.fields || {};
   const needed = numberField(fields.quantity_needed ?? fields.quantity_base);
@@ -310,10 +381,8 @@ function normalizePackingItem(record, horseRecords) {
     id: record.id,
     name: stringField(fields.item_name),
     itemId: stringField(fields.item_id),
-    section: stringField(fields.section),
-    category: stringField(fields.category),
     location: stringField(fields.location),
-    listPlan: stringField(fields.list_plan || fields.quantity_mode),
+    listPlan: stringField(fields.list_plan),
     quantityBase: numberField(fields.quantity_base),
     needed,
     packed,
@@ -327,7 +396,22 @@ function normalizePackingItem(record, horseRecords) {
     sortOrder: numberField(fields.sort_order),
     sourcePackItemIds: linkedIds(fields.source_pack_item),
     packListIds: linkedIds(fields.pack_list),
+    packListLabels: [],
     horseMembers: horseRecords.map(normalizeHorseMember).sort(compareHorseRows)
+  };
+}
+
+function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave) {
+  const sourceItems = item.sourcePackItemIds
+    .map((id) => sourcePackItemLookup.get(id))
+    .filter(Boolean);
+  return {
+    ...item,
+    packListLabels: item.packListIds
+      .map((id) => packListLookup.get(id)?.label || "")
+      .filter(Boolean),
+    sourceItems,
+    quantityCalculation: buildQuantityCalculation(item, sourceItems[0], wave)
   };
 }
 
@@ -362,24 +446,162 @@ function normalizeRosterHorse(record) {
   };
 }
 
-function buildSections(items) {
-  const sections = new Map();
-  for (const item of items) {
-    const key = item.section || "unsectioned";
-    const section = sections.get(key) || {
-      section: key,
+function buildListSummaries(items, packLists) {
+  const summaries = new Map();
+  for (const list of packLists) {
+    summaries.set(list.id, {
+      ...list,
       rows: 0,
       done: 0,
       open: 0
-    };
-    section.rows += 1;
-    if (isSatisfied(item)) section.done += 1;
-    sections.set(key, section);
+    });
+  }
+
+  for (const item of items) {
+    const listIds = item.packListIds.length ? item.packListIds : ["unlisted"];
+    for (const id of listIds) {
+      const summary = summaries.get(id) || {
+        id,
+        key: id,
+        label: id === "unlisted" ? "Unlisted" : id,
+        shortDescription: "",
+        longDescription: "",
+        itemCount: 0,
+        rows: 0,
+        done: 0,
+        open: 0
+      };
+      summary.rows += 1;
+      if (isSatisfied(item)) summary.done += 1;
+      summaries.set(id, summary);
+    }
+  }
+
+  return [...summaries.values()]
+    .filter((summary) => summary.rows > 0 || summary.itemCount > 0)
+    .map((summary) => ({
+      ...summary,
+      open: summary.rows - summary.done
+    }));
+}
+
+function buildSections(items) {
+  const sections = new Map();
+  for (const item of items) {
+    const listIds = item.packListIds.length ? item.packListIds : ["unlisted"];
+    for (const key of listIds) {
+      const section = sections.get(key) || {
+        section: key,
+        rows: 0,
+        done: 0,
+        open: 0
+      };
+      section.rows += 1;
+      if (isSatisfied(item)) section.done += 1;
+      sections.set(key, section);
+    }
   }
   return [...sections.values()].map((section) => ({
     ...section,
     open: section.rows - section.done
   }));
+}
+
+function buildQuantityCalculation(item, sourceItem, wave) {
+  const plan = item.listPlan || sourceItem?.listPlan || "";
+  const frozenNeeded = numberField(item.needed);
+  const unit = item.unit || sourceItem?.uom || "";
+
+  if (plan === "per_groom") {
+    const perGroom = numberField(sourceItem?.perGroom || item.quantityBase);
+    const groomCount = numberField(wave?.groomCountFinal);
+    const calculatedNeeded = perGroom * groomCount;
+    return calculationRow({
+      plan,
+      formula: "per_groom * groom_count_final",
+      sourceField: "wec_pack_items.per_groom",
+      multiplierField: "wec_pack_waves.groom_count_final",
+      base: perGroom,
+      multiplier: groomCount,
+      calculatedNeeded,
+      frozenNeeded,
+      unit
+    });
+  }
+
+  if (plan === "per_horse") {
+    const perHorse = numberField(sourceItem?.perHorse || item.quantityBase);
+    const horseCount = numberField(wave?.horseCount);
+    const calculatedNeeded = perHorse * horseCount;
+    return calculationRow({
+      plan,
+      formula: "per_horse * horse_count",
+      sourceField: "wec_pack_items.per_horse",
+      multiplierField: "wec_pack_waves.horse_count",
+      base: perHorse,
+      multiplier: horseCount,
+      calculatedNeeded,
+      frozenNeeded,
+      unit
+    });
+  }
+
+  if (plan === "horse_specific" || plan === "horse-specific") {
+    const calculatedNeeded = item.horseMembers.reduce((sum, horse) => sum + numberField(horse.needed || 1), 0);
+    return calculationRow({
+      plan,
+      formula: "sum(wec_packing_item_horses.quantity_needed)",
+      sourceField: "wec_packing_item_horses.quantity_needed",
+      multiplierField: "active horse item members",
+      base: calculatedNeeded,
+      multiplier: item.horseMembers.length,
+      calculatedNeeded,
+      frozenNeeded,
+      unit
+    });
+  }
+
+  if (plan === "quantity") {
+    const calculatedNeeded = numberField(sourceItem?.quantity || item.quantityBase || frozenNeeded);
+    return calculationRow({
+      plan,
+      formula: "quantity",
+      sourceField: "wec_pack_items.quantity",
+      multiplierField: "",
+      base: calculatedNeeded,
+      multiplier: 1,
+      calculatedNeeded,
+      frozenNeeded,
+      unit
+    });
+  }
+
+  return calculationRow({
+    plan: plan || "unresolved",
+    formula: "quantity_needed",
+    sourceField: "wec_packing_items.quantity_needed",
+    multiplierField: "",
+    base: frozenNeeded,
+    multiplier: 1,
+    calculatedNeeded: frozenNeeded,
+    frozenNeeded,
+    unit
+  });
+}
+
+function calculationRow({ plan, formula, sourceField, multiplierField, base, multiplier, calculatedNeeded, frozenNeeded, unit }) {
+  return {
+    plan,
+    formula,
+    sourceField,
+    multiplierField,
+    base,
+    multiplier,
+    calculatedNeeded,
+    frozenNeeded,
+    unit,
+    matchesFrozen: Math.abs(numberField(calculatedNeeded) - numberField(frozenNeeded)) < 0.0001
+  };
 }
 
 function isSatisfied(item) {
@@ -464,6 +686,10 @@ function compareWorksheetRows(a, b) {
   return compareNumber(a.sortOrder, b.sortOrder) || a.name.localeCompare(b.name);
 }
 
+function comparePackLists(a, b) {
+  return a.label.localeCompare(b.label);
+}
+
 function compareHorseRows(a, b) {
   return compareNumber(a.sortOrder, b.sortOrder) || a.id.localeCompare(b.id);
 }
@@ -474,4 +700,11 @@ function compareHorseRosterRows(a, b) {
 
 function compareNumber(a, b) {
   return (Number(a) || 0) - (Number(b) || 0);
+}
+
+function slugify(value) {
+  return clean(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
 }

@@ -212,6 +212,24 @@ Count math only. Grooms should be treated as operational capacity counts, not na
 needed = wec_pack_items.per_groom * pack_wave.groom_count_final
 ```
 
+The app must show this calculation on the item detail view. The API payload should expose the calculation trace, not just the frozen result:
+
+```json
+{
+  "quantityCalculation": {
+    "plan": "per_groom",
+    "formula": "per_groom * groom_count_final",
+    "sourceField": "wec_pack_items.per_groom",
+    "multiplierField": "wec_pack_waves.groom_count_final",
+    "base": 5,
+    "multiplier": 5,
+    "calculatedNeeded": 25,
+    "frozenNeeded": 25,
+    "matchesFrozen": true
+  }
+}
+```
+
 ## Weeks, Waves, And Scope
 
 `wec_weeks` should represent show/calendar attendance.
@@ -301,12 +319,11 @@ Recommended fields/meaning:
 - source pack item link
 - pack wave link
 - show link
-- section/list
-- category
+- pack list link
 - item name
 - location
 - unit
-- quantity mode/list plan
+- list plan copied from source
 - needed quantity
 - packed quantity
 - left quantity

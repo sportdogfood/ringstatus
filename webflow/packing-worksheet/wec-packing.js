@@ -13,16 +13,6 @@
     detailId: ""
   };
 
-  const sections = [
-    { id: "overview", label: "Overview" },
-    { id: "barn", label: "Barn Master List" },
-    { id: "feed", label: "Grain & Feed Master Log" },
-    { id: "farrier", label: "Farrier & Vet Prep" },
-    { id: "transport", label: "Logistics & Transport" },
-    { id: "daily", label: "Daily Task Guide" },
-    { id: "horses", label: "Horses" }
-  ];
-
   root.classList.toggle("is-edit-mode", config.mode === "edit");
   root.addEventListener("click", handleClick);
   render();
@@ -136,16 +126,16 @@
   function tabsHtml() {
     return `
       <nav class="lp-tabs" aria-label="Packing sections">
-        ${sections.map((section) => {
+        ${tabs().map((section) => {
           const count = section.id === "horses"
             ? horses().filter((horse) => horse.active).length
             : section.id === "overview"
               ? totalOpenRows()
               : sectionCount(section.id);
           return `
-            <button class="lp-tab packing-tab packing-theme-${section.id} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${section.id}">
+            <button class="lp-tab packing-tab packing-theme-${themeKey(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeHtml(section.id)}">
               <span class="lp-tab-value">${count}</span>
-              <span class="lp-tab-label">${escapeHtml(section.label)}</span>
+              <span class="lp-tab-label">${escapeHtml(displayLabel(section.label))}</span>
             </button>
           `;
         }).join("")}
@@ -159,7 +149,7 @@
     if (!state.data) return messagePanel("No state");
     if (state.activeTab === "overview") return overviewHtml();
     if (state.activeTab === "horses") return horsesHtml();
-    return sectionHtml(state.activeTab);
+    return listHtml(state.activeTab);
   }
 
   function messagePanel(title) {
@@ -176,12 +166,12 @@
   }
 
   function overviewHtml() {
-    const rows = sections.filter((section) => !["overview", "horses"].includes(section.id)).map((section) => {
-      const summary = sectionSummary(section.id);
+    const rows = lists().map((list) => {
+      const summary = listSummary(list.id);
       return `
-        <button class="lp-row packing-row" type="button" data-tab="${section.id}">
+        <button class="lp-row packing-row" type="button" data-tab="${escapeHtml(list.id)}">
           <span>
-            <span class="lp-row-title">${escapeHtml(section.label)}</span>
+            <span class="lp-row-title">${escapeHtml(displayLabel(list.label))}</span>
             <span class="lp-row-meta">Rows: ${summary.rows} | Left ${summary.open}</span>
           </span>
           ${tokenHtml(summary.open === 0 && summary.rows > 0 ? "packed" : "open", summary.open === 0 && summary.rows > 0 ? "PACKED" : `LEFT - ${summary.open}`)}
@@ -214,13 +204,13 @@
     `;
   }
 
-  function sectionHtml(sectionId) {
-    const section = sections.find((row) => row.id === sectionId) || { id: sectionId, label: sectionId };
-    const rows = items().filter((item) => item.section === sectionId);
+  function listHtml(listId) {
+    const list = lists().find((row) => row.id === listId) || { id: listId, label: listId };
+    const rows = items().filter((item) => itemBelongsToList(item, listId));
     return `
-      <section class="lp-section-block packing-theme-${section.id}">
+      <section class="lp-section-block packing-theme-${themeKey(list.id)}">
         <div class="lp-section-title packing-section-title">
-          <h3>${escapeHtml(section.label)}</h3>
+          <h3>${escapeHtml(displayLabel(list.label))}</h3>
           <span class="lp-section-count">Rows: ${rows.length} | Left ${rows.filter((row) => !isDone(row)).length}</span>
         </div>
         <div class="lp-list">
@@ -248,9 +238,9 @@
   function itemRowHtml(item) {
     return `
       <button class="lp-row packing-row" type="button" data-item-id="${escapeHtml(item.id)}">
-        <span>
-          <span class="lp-row-title">${escapeHtml(item.name || "Unnamed item")}</span>
-          <span class="lp-row-meta">${escapeHtml(item.category || item.section || "")}</span>
+          <span>
+          <span class="lp-row-title">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</span>
+          <span class="lp-row-meta">${escapeHtml(itemMetaLabel(item))}</span>
         </span>
         <span class="packing-state-stack">
           ${rowTokenHtml(item)}
@@ -311,10 +301,10 @@
   function itemDetailHtml(item) {
     if (!item) return "";
     return `
-      <div class="packing-detail packing-theme-${escapeHtml(item.section || "overview")}">
+      <div class="packing-detail packing-theme-${themeKey(item.packListIds?.[0] || item.section || "overview")}">
         <div class="lp-detail-head">
-          <h3 id="drawerTitle">${escapeHtml(item.name || "Unnamed item")}</h3>
-          <p class="lp-muted">${escapeHtml(item.category || "")}</p>
+          <h3 id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h3>
+          <p class="lp-muted">${escapeHtml(itemMetaLabel(item))}</p>
         </div>
         ${detailGroupHtml("Location", [["Location", item.location || ""]])}
         ${detailGroupHtml("Totals", [
@@ -322,6 +312,7 @@
           ["Packed", number(item.packed)],
           ["Left", number(item.left)]
         ])}
+        ${calculationDetailHtml(item.quantityCalculation)}
         ${detailGroupHtml("Horses", [["Horses", item.horseMembers?.length ? `${item.horseMembers.length} members` : "Not horse-specific"]])}
         <div class="lp-edit-panel packing-edit-panel">
           <div class="lp-edit-head"><h4>Worksheet</h4></div>
@@ -376,16 +367,16 @@
     `;
   }
 
-  function sectionSummary(sectionId) {
-    const apiSummary = (state.data?.sections || []).find((section) => section.section === sectionId);
+  function listSummary(listId) {
+    const apiSummary = lists().find((list) => list.id === listId);
     if (apiSummary) return apiSummary;
-    const rows = items().filter((item) => item.section === sectionId);
+    const rows = items().filter((item) => itemBelongsToList(item, listId));
     const done = rows.filter(isDone).length;
-    return { section: sectionId, rows: rows.length, done, open: rows.length - done };
+    return { id: listId, rows: rows.length, done, open: rows.length - done };
   }
 
   function sectionCount(sectionId) {
-    return sectionSummary(sectionId).rows;
+    return listSummary(sectionId).rows;
   }
 
   function doneRows() {
@@ -412,6 +403,59 @@
     return Array.isArray(state.data?.horses) ? state.data.horses : [];
   }
 
+  function lists() {
+    if (Array.isArray(state.data?.lists) && state.data.lists.length) return state.data.lists;
+    if (Array.isArray(state.data?.sections)) {
+      return state.data.sections.map((section) => ({
+        id: section.section,
+        label: section.label || section.section,
+        rows: section.rows,
+        done: section.done,
+        open: section.open
+      }));
+    }
+    return [];
+  }
+
+  function tabs() {
+    return [
+      { id: "overview", label: "Overview" },
+      ...lists().map((list) => ({ id: list.id, label: list.label })),
+      { id: "horses", label: "Horses" }
+    ];
+  }
+
+  function calculationDetailHtml(calculation) {
+    if (!calculation) return "";
+    const unit = calculation.unit ? ` ${calculation.unit}` : "";
+    const rows = calculation.plan === "per_groom"
+      ? [
+        ["Formula", calculation.formula],
+        ["Per Groom", `${number(calculation.base)}${unit}`],
+        ["Grooms", number(calculation.multiplier)],
+        ["Calculated", `${number(calculation.calculatedNeeded)}${unit}`],
+        ["Worksheet Need", `${number(calculation.frozenNeeded)}${unit}`]
+      ]
+      : [
+        ["Plan", displayLabel(calculation.plan)],
+        ["Formula", calculation.formula],
+        ["Calculated", `${number(calculation.calculatedNeeded)}${unit}`],
+        ["Worksheet Need", `${number(calculation.frozenNeeded)}${unit}`]
+      ];
+    return detailGroupHtml("Calculation", rows);
+  }
+
+  function itemBelongsToList(item, listId) {
+    return item.packListIds?.includes(listId) ||
+      item.section === listId ||
+      (!item.packListIds?.length && !item.section && listId === "unlisted");
+  }
+
+  function itemMetaLabel(item) {
+    return item.packListLabels?.map(displayLabel).join(", ") ||
+      displayLabel(item.category || item.section || item.listPlan || "");
+  }
+
   function number(value) {
     const numeric = Number(value);
     return Number.isFinite(numeric) ? numeric : 0;
@@ -424,5 +468,14 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
+  }
+
+  function displayLabel(value) {
+    const text = String(value || "").replace(/[_-]+/g, " ").trim();
+    return text.replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+  }
+
+  function themeKey(value) {
+    return String(value || "overview").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "overview";
   }
 })();
