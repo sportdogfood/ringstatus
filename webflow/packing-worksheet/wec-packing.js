@@ -9,12 +9,17 @@
     data: null,
     error: "",
     loading: true,
+    saving: false,
+    saveMessage: "",
     detailType: "",
-    detailId: ""
+    detailId: "",
+    addQty: {},
+    actionNotes: {}
   };
 
   root.classList.toggle("is-edit-mode", config.mode === "edit");
   root.addEventListener("click", handleClick);
+  root.addEventListener("input", handleInput);
   render();
   loadState();
 
@@ -24,7 +29,7 @@
     render();
 
     try {
-      const response = await fetch(stateUrl(), { headers: { Accept: "application/json" } });
+      const response = await fetch(endpointUrl("state"), { headers: { Accept: "application/json" } });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) {
         throw new Error(payload.detail || payload.error || `state_${response.status}`);
@@ -38,8 +43,9 @@
     }
   }
 
-  function stateUrl() {
-    const url = new URL(config.stateUrl || `${apiBaseUrl}/state`);
+  function endpointUrl(kind) {
+    const explicit = kind === "state" ? config.stateUrl : kind === "action" ? config.actionUrl : "";
+    const url = new URL(explicit || `${apiBaseUrl}/${kind}`);
     if (config.showId) url.searchParams.set("showId", config.showId);
     if (config.packWaveId) url.searchParams.set("packWaveId", config.packWaveId);
     return url.toString();
@@ -49,6 +55,34 @@
     const close = event.target.closest("[data-close-detail]");
     if (close) {
       closeDetail();
+      return;
+    }
+
+    const packingAction = event.target.closest("[data-packing-action]");
+    if (packingAction) {
+      event.preventDefault();
+      runPackingAction(packingAction);
+      return;
+    }
+
+    const horseMemberAction = event.target.closest("[data-horse-member-state]");
+    if (horseMemberAction) {
+      event.preventDefault();
+      setHorseMemberState(horseMemberAction);
+      return;
+    }
+
+    const sourceFlagAction = event.target.closest("[data-source-flag]");
+    if (sourceFlagAction) {
+      event.preventDefault();
+      setSourceFlag(sourceFlagAction);
+      return;
+    }
+
+    const horseToggle = event.target.closest("[data-horse-toggle]");
+    if (horseToggle) {
+      event.preventDefault();
+      toggleHorseState(horseToggle);
       return;
     }
 
@@ -66,15 +100,139 @@
       state.detailType = "item";
       state.detailId = item.dataset.itemId;
       renderDetail();
+    }
+  }
+
+  function handleInput(event) {
+    const addQty = event.target.closest("[data-add-qty]");
+    if (addQty) {
+      state.addQty[addQty.dataset.addQty] = addQty.value;
       return;
     }
 
-    const horse = event.target.closest("[data-horse-id]");
-    if (horse) {
-      state.detailType = "horse";
-      state.detailId = horse.dataset.horseId;
-      renderDetail();
+    const notes = event.target.closest("[data-action-notes]");
+    if (notes) {
+      state.actionNotes[notes.dataset.actionNotes] = notes.value;
     }
+  }
+
+  async function runPackingAction(button) {
+    const itemId = button.dataset.itemId || state.detailId;
+    const action = button.dataset.packingAction;
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+
+    if (action === "add_quantity") {
+      const quantityDelta = Number(state.addQty[itemId] || 0);
+      if (!Number.isFinite(quantityDelta) || quantityDelta <= 0) {
+        setSaveMessage("Enter a quantity to add.");
+        return;
+      }
+      await postAction({
+        action,
+        itemId,
+        quantityDelta,
+        notes: state.actionNotes[itemId] || ""
+      }, () => {
+        state.addQty[itemId] = "";
+      });
+      return;
+    }
+
+    if (action === "set_pack_state") {
+      const packState = button.dataset.packState;
+      if (packState === "packed" && !window.confirm("Mark this item packed and set packed quantity to the full need?")) return;
+      await postAction({
+        action,
+        itemId,
+        packState,
+        confirmed: packState === "packed",
+        notes: state.actionNotes[itemId] || ""
+      });
+      return;
+    }
+
+    if (action === "set_resolution") {
+      const resolutionState = button.dataset.resolutionState;
+      const label = resolutionState === "clear" ? "clear this decision" : `set decision to ${displayLabel(resolutionState)}`;
+      if (!window.confirm(`Confirm ${label}?`)) return;
+      await postAction({
+        action,
+        itemId,
+        resolutionState,
+        confirmed: true,
+        notes: state.actionNotes[itemId] || ""
+      });
+    }
+  }
+
+  async function setHorseMemberState(button) {
+    const itemHorseId = button.dataset.itemHorseId;
+    const horsePackState = button.dataset.horseMemberState;
+    if (!itemHorseId || !horsePackState) return;
+    await postAction({
+      action: "set_horse_pack_state",
+      itemHorseId,
+      horsePackState
+    });
+  }
+
+  async function toggleHorseState(button) {
+    const horseId = button.dataset.horseId;
+    const nextState = button.dataset.nextState;
+    if (!horseId || !nextState) return;
+    await postAction({
+      action: "set_horse_record_state",
+      horseId,
+      recordState: nextState
+    });
+  }
+
+  async function setSourceFlag(button) {
+    const sourceItemId = button.dataset.sourceItemId;
+    const flagName = button.dataset.sourceFlag;
+    const value = button.dataset.nextValue === "true";
+    if (!sourceItemId || !flagName) return;
+    await postAction({
+      action: "set_source_flag",
+      sourceItemId,
+      flagName,
+      value
+    });
+  }
+
+  async function postAction(payload, afterSave) {
+    state.saving = true;
+    state.saveMessage = "Saving...";
+    render();
+
+    try {
+      const response = await fetch(endpointUrl("action"), {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) {
+        throw new Error(result.detail || result.error || `save_${response.status}`);
+      }
+      if (typeof afterSave === "function") afterSave(result);
+      state.data = result.state || state.data;
+      state.saveMessage = `Saved: ${new Date().toLocaleString()}`;
+    } catch (error) {
+      state.saveMessage = `Save failed: ${error instanceof Error ? error.message : String(error)}`;
+    } finally {
+      state.saving = false;
+      render();
+    }
+  }
+
+  function setSaveMessage(message) {
+    state.saveMessage = message;
+    renderDetail();
   }
 
   function closeDetail() {
@@ -112,12 +270,14 @@
   function statusLine() {
     if (state.loading) return "Loading live Airtable state";
     if (state.error) return "State unavailable";
-    const wave = state.data?.wave?.wave;
-    if (wave) return wave;
-    return "No active pack wave";
+    const wave = state.data?.wave;
+    if (!wave) return "No active pack wave";
+    const countSource = wave.countSource === "manual_lock" ? "Manual lock" : "Current wave";
+    return `${displayLabel(wave.wave || "Pack wave")} | ${countSource}`;
   }
 
   function footerLine() {
+    if (state.saveMessage) return state.saveMessage;
     if (state.error) return state.error;
     if (state.loading) return "Checking live state";
     return `Last checked: ${new Date().toLocaleString()}`;
@@ -133,7 +293,7 @@
               ? totalOpenRows()
               : sectionCount(section.id);
           return `
-            <button class="lp-tab packing-tab packing-theme-${themeKey(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeHtml(section.id)}">
+            <button class="lp-tab packing-tab packing-theme-${themeKey(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
               <span class="lp-tab-value">${count}</span>
               <span class="lp-tab-label">${escapeHtml(displayLabel(section.label))}</span>
             </button>
@@ -169,7 +329,7 @@
     const rows = lists().map((list) => {
       const summary = listSummary(list.id);
       return `
-        <button class="lp-row packing-row" type="button" data-tab="${escapeHtml(list.id)}">
+        <button class="lp-row packing-row" type="button" data-tab="${escapeAttr(list.id)}">
           <span>
             <span class="lp-row-title">${escapeHtml(displayLabel(list.label))}</span>
             <span class="lp-row-meta">Rows: ${summary.rows} | Left ${summary.open}</span>
@@ -237,8 +397,8 @@
 
   function itemRowHtml(item) {
     return `
-      <button class="lp-row packing-row" type="button" data-item-id="${escapeHtml(item.id)}">
-          <span>
+      <button class="lp-row packing-row" type="button" data-item-id="${escapeAttr(item.id)}">
+        <span>
           <span class="lp-row-title">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</span>
           <span class="lp-row-meta">${escapeHtml(itemMetaLabel(item))}</span>
         </span>
@@ -251,8 +411,9 @@
   }
 
   function horseRowHtml(horse) {
+    const nextState = horse.active ? "inactive" : "active";
     return `
-      <button class="lp-row packing-row packing-horse-row" type="button" data-horse-id="${escapeHtml(horse.id)}">
+      <button class="lp-row packing-row packing-horse-row" type="button" data-horse-toggle data-horse-id="${escapeAttr(horse.id)}" data-next-state="${escapeAttr(nextState)}">
         <span class="lp-row-title">${escapeHtml(horse.name || horse.showName || "Unnamed horse")}</span>
         ${tokenHtml(horse.active ? "packed" : "need", horse.active ? "ACTIVE" : "INACTIVE")}
       </button>
@@ -269,14 +430,14 @@
   }
 
   function rowTokenHtml(item) {
-    if (item.resolutionState) return tokenHtml("resolved", item.resolutionState.toUpperCase());
-    if (item.packState === "packed" || number(item.left) === 0 && number(item.needed) > 0) return tokenHtml("packed", "PACKED");
+    if (item.resolutionState) return tokenHtml("resolved", displayLabel(item.resolutionState).toUpperCase());
+    if (item.packState === "packed" || (number(item.left) === 0 && number(item.needed) > 0)) return tokenHtml("packed", "PACKED");
     if (number(item.packed) > 0) return tokenHtml("open", `LEFT - ${number(item.left)}`);
     return tokenHtml("need", `NEED - ${number(item.needed)}`);
   }
 
   function tokenHtml(type, text) {
-    return `<span class="lp-achievement packing-token is-${type}">${escapeHtml(text)}</span>`;
+    return `<span class="lp-achievement packing-token is-${escapeAttr(type)}">${escapeHtml(text)}</span>`;
   }
 
   function renderDetail() {
@@ -301,28 +462,25 @@
   function itemDetailHtml(item) {
     if (!item) return "";
     return `
-      <div class="packing-detail packing-theme-${themeKey(item.packListIds?.[0] || item.section || "overview")}">
+      <div class="packing-detail packing-theme-${themeKey(item.packListIds?.[0] || "overview")}">
         <div class="lp-detail-head">
           <h3 id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h3>
           <p class="lp-muted">${escapeHtml(itemMetaLabel(item))}</p>
         </div>
         ${detailGroupHtml("Location", [["Location", item.location || ""]])}
         ${detailGroupHtml("Totals", [
-          ["Need", number(item.needed)],
-          ["Packed", number(item.packed)],
-          ["Left", number(item.left)]
+          ["Need", quantityLabel(item.needed, item.unit)],
+          ["Packed", quantityLabel(item.packed, item.unit)],
+          ["Left", quantityLabel(item.left, item.unit)]
         ])}
         ${calculationDetailHtml(item.quantityCalculation)}
-        ${detailGroupHtml("Horses", [["Horses", item.horseMembers?.length ? `${item.horseMembers.length} members` : "Not horse-specific"]])}
-        <div class="lp-edit-panel packing-edit-panel">
-          <div class="lp-edit-head"><h4>Worksheet</h4></div>
-          <div class="packing-control-list">
-            ${controlRowHtml("Status", item.packState || "not_packed")}
-            ${controlRowHtml("Packed", `${number(item.packed)}${item.unit ? ` ${item.unit}` : ""}`)}
-            ${controlRowHtml("Decision", item.resolutionState || "none")}
-            ${controlRowHtml("Notes", item.notes || "")}
-          </div>
-        </div>
+        ${detailGroupHtml("Meta", [
+          ["Plan", displayLabel(item.listPlanLabel || item.listPlan || "unresolved")],
+          ["Record State", item.recordState || "active"],
+          ["Source", item.sourceItems?.[0]?.appName || ""]
+        ])}
+        ${worksheetPanelHtml(item)}
+        ${sourcePanelHtml(item)}
       </div>
     `;
   }
@@ -344,6 +502,125 @@
     `;
   }
 
+  function worksheetPanelHtml(item) {
+    return `
+      <div class="lp-edit-panel packing-edit-panel">
+        <div class="lp-edit-head"><h4>Worksheet</h4></div>
+        <div class="lp-edit-grid">
+          ${statusControlHtml(item)}
+          ${packedControlHtml(item)}
+          ${horseMembersControlHtml(item)}
+          ${notesControlHtml(item)}
+          ${decisionControlHtml(item)}
+        </div>
+        <p class="lp-edit-status">${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</p>
+      </div>
+    `;
+  }
+
+  function statusControlHtml(item) {
+    return editGroupHtml("Status", `
+      <span class="lp-edit-choice-row packing-inline-choices">
+        ${choiceButtonHtml({
+          label: "NOT PACKED",
+          active: item.packState !== "packed",
+          attrs: `data-packing-action="set_pack_state" data-item-id="${escapeAttr(item.id)}" data-pack-state="not_packed"`
+        })}
+        ${choiceButtonHtml({
+          label: "PACKED",
+          active: item.packState === "packed",
+          attrs: `data-packing-action="set_pack_state" data-item-id="${escapeAttr(item.id)}" data-pack-state="packed"`
+        })}
+      </span>
+    `);
+  }
+
+  function packedControlHtml(item) {
+    return editGroupHtml("Packed", `
+      <span class="packing-add-control">
+        <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="Add qty" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
+        <button class="lp-edit-button" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}">ADD</button>
+      </span>
+    `);
+  }
+
+  function horseMembersControlHtml(item) {
+    if (!item.horseMembers?.length) return editGroupHtml("Horses", `<span class="lp-row-meta">Not horse-specific</span>`);
+    return editGroupHtml("Horses", `
+      <span class="packing-horse-bindings">
+        ${item.horseMembers.map((member) => {
+          const packed = member.horsePackState === "packed" || number(member.packed) >= number(member.needed);
+          return `
+            <span class="packing-horse-binding-row">
+              <span class="packing-horse-binding-name">${escapeHtml(member.barnName || "Unnamed horse")}</span>
+              <button class="lp-edit-pill packing-horse-binding-toggle ${packed ? "is-active" : ""}" type="button" data-horse-member-state="${packed ? "not_packed" : "packed"}" data-item-horse-id="${escapeAttr(member.id)}">
+                ${packed ? "PACKED" : "NOT PACKED"}
+              </button>
+            </span>
+          `;
+        }).join("")}
+      </span>
+    `, "is-wide");
+  }
+
+  function notesControlHtml(item) {
+    const value = state.actionNotes[item.id] ?? item.notes ?? "";
+    return editGroupHtml("Notes", `<textarea class="lp-edit-textarea" data-action-notes="${escapeAttr(item.id)}">${escapeHtml(value)}</textarea>`, "is-wide");
+  }
+
+  function decisionControlHtml(item) {
+    const decisions = ["max", "kill", "note", "purchase_onsite", "unresolved"];
+    return editGroupHtml("Decision", `
+      <span class="lp-edit-choice-row packing-inline-choices packing-decision-choices">
+        ${decisions.map((decision) => choiceButtonHtml({
+          label: displayLabel(decision).toUpperCase(),
+          active: item.resolutionState === decision,
+          attrs: `data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="${escapeAttr(decision)}"`
+        })).join("")}
+        <button class="lp-edit-pill packing-decision-clear" type="button" data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="clear">CLEAR</button>
+      </span>
+    `);
+  }
+
+  function sourcePanelHtml(item) {
+    const source = item.sourceItems?.[0];
+    if (!source) return "";
+    const flags = source.sourceFlags || {};
+    return `
+      <div class="lp-edit-panel packing-edit-panel">
+        <div class="lp-edit-head"><h4>Source</h4></div>
+        <div class="lp-edit-grid">
+          ${editGroupHtml("Name", `<span class="lp-row-meta">${escapeHtml(source.appName || "")}</span>`)}
+          ${editGroupHtml("Plan", `<span class="lp-row-meta">${escapeHtml(displayLabel(source.listPlanLabel || source.listPlan || ""))}</span>`)}
+          ${editGroupHtml("Inputs", `
+            <span class="lp-edit-choice-row packing-inline-choices">
+              ${sourceFlagButtonHtml(source.id, "ignore", "IGNORE", !!flags.ignore)}
+              ${sourceFlagButtonHtml(source.id, "rename", "RENAME", !!flags.rename)}
+              ${sourceFlagButtonHtml(source.id, "change_lane", "CHANGE LIST", !!flags.changeLane)}
+            </span>
+          `)}
+        </div>
+      </div>
+    `;
+  }
+
+  function sourceFlagButtonHtml(sourceItemId, flagName, label, active) {
+    return `<button class="lp-edit-pill ${active ? "is-active" : ""}" type="button" data-source-flag="${escapeAttr(flagName)}" data-source-item-id="${escapeAttr(sourceItemId)}" data-next-value="${active ? "false" : "true"}">${escapeHtml(label)}</button>`;
+  }
+
+  function choiceButtonHtml({ label, active, attrs }) {
+    return `<button class="lp-edit-pill ${active ? "is-active" : ""}" type="button" ${attrs}>${escapeHtml(label)}</button>`;
+  }
+
+  function editGroupHtml(title, body, extraClass) {
+    return `
+      <div class="lp-edit-group ${extraClass || ""}">
+        <div class="lp-edit-group-title">${escapeHtml(title)}</div>
+        <div class="lp-edit-group-fields">${body}</div>
+      </div>
+    `;
+  }
+
   function detailGroupHtml(title, rows) {
     return `
       <h4 class="packing-detail-group-title">${escapeHtml(title)}</h4>
@@ -354,15 +631,6 @@
             <div class="lp-detail-value">${escapeHtml(value)}</div>
           </div>
         `).join("")}
-      </div>
-    `;
-  }
-
-  function controlRowHtml(label, value) {
-    return `
-      <div class="lp-row is-static is-detail packing-control-row">
-        <span class="lp-row-title">${escapeHtml(label)}</span>
-        <span class="lp-row-meta">${escapeHtml(value)}</span>
       </div>
     `;
   }
@@ -428,22 +696,15 @@
   function calculationDetailHtml(calculation) {
     if (!calculation) return "";
     const unit = calculation.unit ? ` ${calculation.unit}` : "";
-    const rows = calculation.plan === "per_groom"
-      ? [
-        ["Formula", calculation.formula],
-        ["Per Groom", `${number(calculation.base)}${unit}`],
-        ["Grooms", number(calculation.multiplier)],
-        ["Count Source", calculation.countsLocked ? "Manual Lock" : "Current Wave"],
-        ["Calculated", `${number(calculation.calculatedNeeded)}${unit}`],
-        ["Worksheet Need", `${number(calculation.frozenNeeded)}${unit}`]
-      ]
-      : [
-        ["Plan", displayLabel(calculation.plan)],
-        ["Formula", calculation.formula],
-        ["Count Source", calculation.countsLocked ? "Manual Lock" : "Current Wave"],
-        ["Calculated", `${number(calculation.calculatedNeeded)}${unit}`],
-        ["Worksheet Need", `${number(calculation.frozenNeeded)}${unit}`]
-      ];
+    const rows = [
+      ["Plan", displayLabel(calculation.plan)],
+      ["Formula", calculation.formula],
+      ["Base", quantityLabel(calculation.base, unit.trim())],
+      ["Multiplier", number(calculation.multiplier)],
+      ["Count Source", calculation.countsLocked ? "Manual Lock" : "Current Wave"],
+      ["Calculated", quantityLabel(calculation.calculatedNeeded, unit.trim())],
+      ["Worksheet Need", quantityLabel(calculation.frozenNeeded, unit.trim())]
+    ];
     return detailGroupHtml("Calculation", rows);
   }
 
@@ -455,12 +716,21 @@
 
   function itemMetaLabel(item) {
     return item.packListLabels?.map(displayLabel).join(", ") ||
-      displayLabel(item.category || item.section || item.listPlan || "");
+      displayLabel(item.category || item.section || item.listPlanLabel || item.listPlan || "");
+  }
+
+  function quantityLabel(value, unit) {
+    const suffix = unit ? ` ${unit}` : "";
+    return `${number(value)}${suffix}`;
   }
 
   function number(value) {
     const numeric = Number(value);
     return Number.isFinite(numeric) ? numeric : 0;
+  }
+
+  function escapeAttr(value) {
+    return escapeHtml(value);
   }
 
   function escapeHtml(value) {

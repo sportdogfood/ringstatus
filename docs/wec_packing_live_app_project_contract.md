@@ -128,6 +128,7 @@ Core source/template layer:
 
 - `wec_pack_lists`
 - `wec_pack_items`
+- `wec_list_plans`
 
 Show/scope layer:
 
@@ -160,16 +161,18 @@ History layer:
 
 Use the `master` view on `wec_pack_items` as the source set for worksheet generation unless explicitly changed.
 
-`wec_pack_items.list_plan` is the rule field that determines how a source item becomes a worksheet item.
+`wec_list_plans` is the preferred rule source for how a source item becomes a worksheet item.
 
-Known `list_plan` values:
+`wec_pack_items.wec_list_plans` should be used first. `wec_pack_items.list_plan` is a legacy/cache fallback only, because the linked `wec_list_plans` table can store plan logic over time.
+
+Known plan values:
 
 - `quantity`
 - `per_horse`
 - `horse_specific`
 - `per_groom`
 
-Blank `list_plan` means planning is incomplete. The app should not guess behavior for blank-plan rows.
+Blank plan means planning is incomplete. The app should not guess behavior for blank-plan rows.
 
 `purchase_onsite` and `unresolved` should be treated as decision/resolution states in the live worksheet model, not as primary quantity-generation plans.
 
@@ -574,6 +577,7 @@ Before code implementation:
    - `wec_horses`
    - `wec_pack_lists`
    - `wec_pack_items`
+   - `wec_list_plans`
    - `wec_packing_items`
    - `wec_packing_item_horses`
    - `wec_vendors`

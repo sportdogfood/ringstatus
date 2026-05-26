@@ -2712,6 +2712,7 @@ body {
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .lp-edit-group-fields {
   min-width: 0;
   overflow: hidden;
+  padding: 6px 10px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .lp-edit-choice-row {
@@ -2727,6 +2728,19 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .lp-edit-choice {
   align-items: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .lp-edit-pill.is-active {
+  background: #46332b;
+  border-color: #46332b;
+  color: #ffffff;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .packing-decision-choices .lp-edit-pill.is-active,
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .packing-decision-clear {
+  background: #a23b3b;
+  border-color: #a23b3b;
+  color: #ffffff;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .lp-edit-pill {

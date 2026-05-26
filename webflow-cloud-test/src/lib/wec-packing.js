@@ -19,7 +19,15 @@ export const REQUIRED_TABLES = [
   "wec_packing_events"
 ];
 
+const OPTIONAL_TABLES = [
+  "wec_list_plans"
+];
+
 export const ENV_TABLES = {
+  wec_list_plans: {
+    table: "AIRTABLE_WEC_LIST_PLANS_TABLE",
+    view: "AIRTABLE_WEC_LIST_PLANS_VIEW"
+  },
   wec_pack_waves: {
     table: "AIRTABLE_WEC_PACK_WAVES_TABLE",
     view: "AIRTABLE_WEC_PACK_WAVES_VIEW"
@@ -41,7 +49,8 @@ export const ENV_TABLES = {
 const DEFAULT_META_TABLE = "tbllJywsOstkqT5yZ";
 const DEFAULT_SOURCE_VIEWS = {
   wec_pack_lists: "Grid view",
-  wec_pack_items: "master"
+  wec_pack_items: "master",
+  wec_list_plans: "Grid view"
 };
 
 export function runtimeEnv() {
@@ -128,15 +137,20 @@ export async function stateReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, packLists, sourcePackItems, worksheetItems, worksheetHorses, horses] = await Promise.all([
+  const [waves, packLists, sourcePackItems, worksheetItems, worksheetHorses, horses, listPlans] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
     listAirtableRecords(airtable, tables.wec_pack_items.id, tables.wec_pack_items.view),
     listAirtableRecords(airtable, tables.wec_packing_items.id, tables.wec_packing_items.view),
     listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view),
-    listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view)
+    listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
+    listOptionalRecords(airtable, tables.wec_list_plans)
   ]);
 
+  const listPlanLookup = new Map(listPlans.map((record) => {
+    const plan = normalizeListPlan(record);
+    return [plan.id, plan];
+  }));
   const selectedWave = selectWave(waves, packWaveId);
   const waveBase = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
@@ -146,7 +160,7 @@ export async function stateReport(airtable, requestUrl) {
     .sort(comparePackLists);
   const packListLookup = new Map(normalizedPackLists.map((list) => [list.id, list]));
   const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
-    const item = normalizeSourcePackItem(record);
+    const item = normalizeSourcePackItem(record, listPlanLookup);
     return [item.id, item];
   }));
   const normalizedHorses = horses
@@ -169,7 +183,7 @@ export async function stateReport(airtable, requestUrl) {
   const horsesByItem = groupByLinkedId(filteredHorses, "packing_item");
   const items = filteredItems
     .map((record) => decoratePackingItem(
-      normalizePackingItem(record, horsesByItem.get(record.id) || []),
+      normalizePackingItem(record, horsesByItem.get(record.id) || [], listPlanLookup),
       packListLookup,
       sourcePackItemLookup,
       normalizedWave,
@@ -187,6 +201,7 @@ export async function stateReport(airtable, requestUrl) {
         packWaves: tables.wec_pack_waves.id,
         packLists: tables.wec_pack_lists.id,
         packItems: tables.wec_pack_items.id,
+        listPlans: tables.wec_list_plans?.id || "",
         packingItems: tables.wec_packing_items.id,
         packingItemHorses: tables.wec_packing_item_horses.id,
         packingEvents: tables.wec_packing_events.id
@@ -209,7 +224,8 @@ export async function stateReport(airtable, requestUrl) {
       sourcePackItems: sourcePackItems.length,
       worksheetItems: items.length,
       horseMembers: filteredHorses.length,
-      horses: normalizedHorses.length
+      horses: normalizedHorses.length,
+      listPlans: listPlans.length
     },
     needsGeneration: items.length === 0,
     items
@@ -231,16 +247,21 @@ export async function reconcileReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, packLists, sourcePackItems, worksheetItems, worksheetHorses, horses, events] = await Promise.all([
+  const [waves, packLists, sourcePackItems, worksheetItems, worksheetHorses, horses, events, listPlans] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
     listAirtableRecords(airtable, tables.wec_pack_items.id, tables.wec_pack_items.view),
     listAirtableRecords(airtable, tables.wec_packing_items.id, tables.wec_packing_items.view),
     listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
-    listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view)
+    listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view),
+    listOptionalRecords(airtable, tables.wec_list_plans)
   ]);
 
+  const listPlanLookup = new Map(listPlans.map((record) => {
+    const plan = normalizeListPlan(record);
+    return [plan.id, plan];
+  }));
   const selectedWave = selectWave(waves, packWaveId);
   const waveBase = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
@@ -250,7 +271,7 @@ export async function reconcileReport(airtable, requestUrl) {
     .sort(comparePackLists);
   const packListLookup = new Map(normalizedPackLists.map((list) => [list.id, list]));
   const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
-    const item = normalizeSourcePackItem(record);
+    const item = normalizeSourcePackItem(record, listPlanLookup);
     return [item.id, item];
   }));
   const normalizedHorses = horses
@@ -274,7 +295,7 @@ export async function reconcileReport(airtable, requestUrl) {
   const horsesByItem = groupByLinkedId(filteredHorseMembers, "packing_item");
   const items = filteredItems
     .map((record) => decoratePackingItem(
-      normalizePackingItem(record, horsesByItem.get(record.id) || []),
+      normalizePackingItem(record, horsesByItem.get(record.id) || [], listPlanLookup),
       packListLookup,
       sourcePackItemLookup,
       wave,
@@ -370,6 +391,7 @@ export async function reconcileReport(airtable, requestUrl) {
       tables: {
         packWaves: tables.wec_pack_waves.id,
         packItems: tables.wec_pack_items.id,
+        listPlans: tables.wec_list_plans?.id || "",
         packingItems: tables.wec_packing_items.id,
         packingItemHorses: tables.wec_packing_item_horses.id,
         packingEvents: tables.wec_packing_events.id
@@ -403,6 +425,45 @@ export async function reconcileReport(airtable, requestUrl) {
     safeToRemoveHorseMembers,
     blockedHorseMembers,
     quantityMismatches
+  };
+}
+
+export async function actionReport(airtable, requestUrl, payload) {
+  const action = clean(payload?.action);
+  const context = await loadWecContext(airtable);
+  const health = await healthReportFromContext(airtable, context);
+  if (!health.ok) {
+    return {
+      ok: false,
+      error: "wec_setup_incomplete",
+      health
+    };
+  }
+
+  const tables = context.tables;
+  let result;
+  if (action === "add_quantity") {
+    result = await applyAddQuantity(airtable, tables, payload);
+  } else if (action === "set_pack_state") {
+    result = await applyPackState(airtable, tables, payload);
+  } else if (action === "set_resolution") {
+    result = await applyResolutionState(airtable, tables, payload);
+  } else if (action === "set_horse_pack_state") {
+    result = await applyHorsePackState(airtable, tables, payload);
+  } else if (action === "set_horse_record_state") {
+    result = await applyHorseRecordState(airtable, tables, payload);
+  } else if (action === "set_source_flag") {
+    result = await applySourceFlag(airtable, tables, payload);
+  } else {
+    return { ok: false, error: "unknown_action", action };
+  }
+
+  const state = await stateReport(airtable, requestUrl);
+  return {
+    ok: true,
+    action,
+    result,
+    state
   };
 }
 
@@ -467,6 +528,21 @@ function buildTableConfig(airtable, registry, schema) {
       view: envView || DEFAULT_SOURCE_VIEWS[row.name] || ""
     };
   }
+  for (const name of OPTIONAL_TABLES) {
+    if (tables[name]) continue;
+    const fallbackEnvKeys = ENV_TABLES[name] || {};
+    const tableEnvKey = fallbackEnvKeys.table || "";
+    const viewEnvKey = fallbackEnvKeys.view || "";
+    const envTableId = clean(airtable.runtime[tableEnvKey]);
+    const envView = clean(airtable.runtime[viewEnvKey]);
+    const schemaTable = findSchemaTable(schema, name, envTableId || name);
+    if (!envTableId && !schemaTable) continue;
+    tables[name] = {
+      id: envTableId || schemaTable?.id || name,
+      name,
+      view: envView || DEFAULT_SOURCE_VIEWS[name] || ""
+    };
+  }
   return tables;
 }
 
@@ -523,6 +599,275 @@ export async function listAirtableRecords(airtable, table, view = "") {
   return records;
 }
 
+async function listOptionalRecords(airtable, tableConfig) {
+  if (!tableConfig?.id) return [];
+  try {
+    return await listAirtableRecords(airtable, tableConfig.id, tableConfig.view);
+  } catch (error) {
+    console.warn(`[wec-packing] optional table skipped: ${tableConfig.name || tableConfig.id}`, error);
+    return [];
+  }
+}
+
+async function applyAddQuantity(airtable, tables, payload) {
+  const itemId = clean(payload?.itemId || payload?.packingItemId);
+  const delta = Number(payload?.quantityDelta || payload?.delta || 0);
+  if (!itemId) throw new Error("missing_item_id");
+  if (!Number.isFinite(delta) || delta <= 0) throw new Error("quantity_delta_must_be_positive");
+
+  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
+  const fields = record.fields || {};
+  const before = numberField(fields.quantity_packed);
+  const needed = worksheetNeeded(fields);
+  const after = Math.min(needed || before + delta, before + delta);
+  const nextPackState = needed > 0 && after >= needed ? "packed" : "not_packed";
+
+  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, {
+    quantity_packed: after,
+    pack_state: nextPackState
+  });
+  const event = await createPackingEvent(airtable, tables, {
+    eventType: "quantity_add",
+    itemRecord: record,
+    quantityDelta: after - before,
+    quantityBefore: before,
+    quantityAfter: after,
+    packStateBefore: stringField(fields.pack_state || "not_packed"),
+    packStateAfter: nextPackState,
+    decisionBefore: stringField(fields.resolution_state),
+    decisionAfter: stringField(fields.resolution_state),
+    notes: clean(payload?.notes)
+  });
+  return { updated, event };
+}
+
+async function applyPackState(airtable, tables, payload) {
+  const itemId = clean(payload?.itemId || payload?.packingItemId);
+  const nextPackState = clean(payload?.packState || payload?.state);
+  if (!itemId) throw new Error("missing_item_id");
+  if (!["packed", "not_packed"].includes(nextPackState)) throw new Error("invalid_pack_state");
+  if (nextPackState === "packed" && !payload?.confirmed) throw new Error("confirmation_required");
+
+  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
+  const fields = record.fields || {};
+  const beforeQuantity = numberField(fields.quantity_packed);
+  const needed = worksheetNeeded(fields);
+  const afterQuantity = nextPackState === "packed" ? needed : beforeQuantity;
+
+  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, {
+    quantity_packed: afterQuantity,
+    pack_state: nextPackState
+  });
+  const event = await createPackingEvent(airtable, tables, {
+    eventType: nextPackState === "packed" ? "mark_packed" : "mark_not_packed",
+    itemRecord: record,
+    quantityDelta: afterQuantity - beforeQuantity,
+    quantityBefore: beforeQuantity,
+    quantityAfter: afterQuantity,
+    packStateBefore: stringField(fields.pack_state || "not_packed"),
+    packStateAfter: nextPackState,
+    decisionBefore: stringField(fields.resolution_state),
+    decisionAfter: stringField(fields.resolution_state),
+    notes: clean(payload?.notes)
+  });
+  return { updated, event };
+}
+
+async function applyResolutionState(airtable, tables, payload) {
+  const itemId = clean(payload?.itemId || payload?.packingItemId);
+  const nextResolution = clean(payload?.resolutionState || payload?.resolution || payload?.decision);
+  const allowed = ["max", "kill", "note", "purchase_onsite", "unresolved", "clear"];
+  if (!itemId) throw new Error("missing_item_id");
+  if (!allowed.includes(nextResolution)) throw new Error("invalid_resolution_state");
+  if (!payload?.confirmed) throw new Error("confirmation_required");
+
+  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
+  const fields = record.fields || {};
+  const beforeDecision = stringField(fields.resolution_state);
+  const packed = numberField(fields.quantity_packed);
+  const needed = worksheetNeeded(fields);
+  const packStateAfter = packed >= needed && needed > 0 ? "packed" : "not_packed";
+  const updateFields = nextResolution === "clear"
+    ? { resolution_state: null, pack_state: packStateAfter }
+    : { resolution_state: nextResolution, pack_state: "not_packed" };
+
+  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, updateFields);
+  const event = await createPackingEvent(airtable, tables, {
+    eventType: nextResolution === "clear" ? "decision_clear" : `decision_${nextResolution}`,
+    itemRecord: record,
+    quantityDelta: 0,
+    quantityBefore: packed,
+    quantityAfter: packed,
+    packStateBefore: stringField(fields.pack_state || "not_packed"),
+    packStateAfter: updateFields.pack_state,
+    decisionBefore: beforeDecision,
+    decisionAfter: nextResolution === "clear" ? "" : nextResolution,
+    notes: clean(payload?.notes)
+  });
+  return { updated, event };
+}
+
+async function applyHorsePackState(airtable, tables, payload) {
+  const memberId = clean(payload?.itemHorseId || payload?.packingItemHorseId);
+  const nextState = clean(payload?.horsePackState || payload?.state);
+  if (!memberId) throw new Error("missing_item_horse_id");
+  if (!["packed", "not_packed"].includes(nextState)) throw new Error("invalid_horse_pack_state");
+
+  const { record: memberRecord, records: allMembers } = await findRecordInConfiguredView(airtable, tables.wec_packing_item_horses, memberId);
+  const member = normalizeHorseMember(memberRecord);
+  const packingItemId = member.packingItemIds[0];
+  if (!packingItemId) throw new Error("missing_parent_packing_item");
+  const { record: itemRecord } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, packingItemId);
+
+  const before = numberField(memberRecord.fields?.quantity_packed);
+  const memberNeeded = numberField(memberRecord.fields?.quantity_needed || 1);
+  const after = nextState === "packed" ? memberNeeded : 0;
+  const updatedMember = await patchAirtableRecord(airtable, tables.wec_packing_item_horses.id, memberId, {
+    quantity_packed: after,
+    horse_pack_state: nextState
+  });
+
+  const rolledMembers = allMembers
+    .filter((record) => includesLinkedId(record.fields?.packing_item, packingItemId))
+    .map((record) => record.id === memberId
+      ? { ...record, fields: { ...record.fields, quantity_packed: after, horse_pack_state: nextState } }
+      : record);
+  const packedTotal = rolledMembers.reduce((sum, record) => sum + numberField(record.fields?.quantity_packed), 0);
+  const neededTotal = rolledMembers.reduce((sum, record) => sum + numberField(record.fields?.quantity_needed || 1), 0);
+  const parentPackState = neededTotal > 0 && packedTotal >= neededTotal ? "packed" : "not_packed";
+  const updatedParent = await patchAirtableRecord(airtable, tables.wec_packing_items.id, packingItemId, {
+    quantity_packed: packedTotal,
+    pack_state: parentPackState
+  });
+
+  const event = await createPackingEvent(airtable, tables, {
+    eventType: nextState === "packed" ? "mark_packed" : "mark_not_packed",
+    itemRecord,
+    memberRecord,
+    quantityDelta: after - before,
+    quantityBefore: before,
+    quantityAfter: after,
+    packStateBefore: stringField(memberRecord.fields?.horse_pack_state || "not_packed"),
+    packStateAfter: nextState,
+    decisionBefore: "",
+    decisionAfter: "",
+    notes: clean(payload?.notes)
+  });
+  return { updatedMember, updatedParent, event };
+}
+
+async function applyHorseRecordState(airtable, tables, payload) {
+  const horseId = clean(payload?.horseId);
+  const nextState = clean(payload?.recordState || payload?.state);
+  if (!horseId) throw new Error("missing_horse_id");
+  if (!["active", "inactive"].includes(nextState)) throw new Error("invalid_horse_record_state");
+  const { record } = await findRecordInConfiguredView(airtable, tables.wec_horses, horseId);
+  const updated = await patchAirtableRecord(airtable, tables.wec_horses.id, horseId, {
+    record_state: nextState
+  });
+  return {
+    updated,
+    previousState: stringField(record.fields?.record_state || "inactive")
+  };
+}
+
+async function applySourceFlag(airtable, tables, payload) {
+  const sourceItemId = clean(payload?.sourceItemId);
+  const flagName = clean(payload?.flagName);
+  const nextValue = !!payload?.value;
+  const allowed = {
+    ignore: "ignore",
+    rename: "rename",
+    change_lane: "change_lane"
+  };
+  if (!sourceItemId) throw new Error("missing_source_item_id");
+  if (!allowed[flagName]) throw new Error("invalid_source_flag");
+  await findRecordInConfiguredView(airtable, tables.wec_pack_items, sourceItemId);
+  const updated = await patchAirtableRecord(airtable, tables.wec_pack_items.id, sourceItemId, {
+    [allowed[flagName]]: nextValue
+  });
+  return { updated };
+}
+
+async function findRecordInConfiguredView(airtable, tableConfig, recordId) {
+  if (!tableConfig?.id) throw new Error("missing_table_config");
+  const records = await listAirtableRecords(airtable, tableConfig.id, tableConfig.view);
+  const record = records.find((item) => item.id === recordId);
+  if (!record) throw new Error(`${tableConfig.name || tableConfig.id}_record_not_in_configured_view: ${recordId}`);
+  return { record, records };
+}
+
+async function patchAirtableRecord(airtable, table, recordId, fields) {
+  const response = await fetch(`${airtableUrl(airtable.baseId, table)}/${encodeURIComponent(recordId)}`, {
+    method: "PATCH",
+    headers: {
+      ...airtableHeaders(airtable.token),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ fields, typecast: true })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`patch ${table}/${recordId} ${response.status}: ${JSON.stringify(result)}`);
+  }
+  return {
+    id: result.id || recordId,
+    fields: result.fields || fields
+  };
+}
+
+async function createPackingEvent(airtable, tables, payload) {
+  const itemFields = payload.itemRecord?.fields || {};
+  const memberFields = payload.memberRecord?.fields || {};
+  const eventFields = compactFields({
+    event: `${payload.eventType}:${payload.itemRecord?.id || ""}:${Date.now()}`,
+    show: linkedIds(itemFields.show),
+    pack_wave: linkedIds(itemFields.pack_wave).length ? linkedIds(itemFields.pack_wave) : linkedIds(memberFields.pack_wave),
+    packing_item: payload.itemRecord?.id ? [payload.itemRecord.id] : [],
+    packing_item_horse: payload.memberRecord?.id ? [payload.memberRecord.id] : [],
+    horse: linkedIds(memberFields.horse),
+    event_type: payload.eventType,
+    quantity_delta: payload.quantityDelta,
+    quantity_before: payload.quantityBefore,
+    quantity_after: payload.quantityAfter,
+    pack_state_before: payload.packStateBefore,
+    pack_state_after: payload.packStateAfter,
+    decision_before: payload.decisionBefore,
+    decision_after: payload.decisionAfter,
+    notes: payload.notes,
+    created_at: new Date().toISOString().slice(0, 10),
+    created_by: "webflow"
+  });
+  const response = await fetch(airtableUrl(airtable.baseId, tables.wec_packing_events.id), {
+    method: "POST",
+    headers: {
+      ...airtableHeaders(airtable.token),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ records: [{ fields: eventFields }], typecast: true })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`event ${response.status}: ${JSON.stringify(result)}`);
+  }
+  return {
+    id: result.records?.[0]?.id || "",
+    fields: result.records?.[0]?.fields || eventFields
+  };
+}
+
+function worksheetNeeded(fields) {
+  return numberField(fields?.quantity_needed ?? fields?.quantity_needed_dynamic ?? fields?.quantity_base);
+}
+
+function compactFields(fields) {
+  return Object.fromEntries(Object.entries(fields).filter(([, value]) => {
+    if (value === null) return true;
+    if (Array.isArray(value)) return value.length > 0;
+    return value !== undefined && value !== "";
+  }));
+}
+
 function normalizeWave(record) {
   const fields = record.fields || {};
   return {
@@ -575,12 +920,39 @@ function normalizePackList(record) {
   };
 }
 
-function normalizeSourcePackItem(record) {
+function normalizeListPlan(record) {
   const fields = record.fields || {};
+  const plan = slugify(stringField(fields.plan) || record.id);
+  return {
+    id: record.id,
+    plan,
+    label: stringField(fields.plan) || plan,
+    logic: stringField(fields.logic)
+  };
+}
+
+function resolveListPlan(fields, listPlanLookup) {
+  const planId = linkedIds(fields.wec_list_plans)[0] || "";
+  const linkedPlan = planId ? listPlanLookup.get(planId) : null;
+  const fallbackPlan = slugify(stringField(fields.list_plan));
+  return {
+    id: planId,
+    plan: linkedPlan?.plan || fallbackPlan,
+    label: linkedPlan?.label || stringField(fields.list_plan),
+    logic: linkedPlan?.logic || ""
+  };
+}
+
+function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
+  const fields = record.fields || {};
+  const listPlan = resolveListPlan(fields, listPlanLookup);
   return {
     id: record.id,
     appName: stringField(fields.app_name),
-    listPlan: stringField(fields.list_plan),
+    listPlan: listPlan.plan,
+    listPlanId: listPlan.id,
+    listPlanLabel: listPlan.label,
+    listPlanLogic: listPlan.logic,
     quantity: numberField(fields.quantity),
     perHorse: numberField(fields.per_horse),
     perGroom: numberField(fields.per_groom),
@@ -589,12 +961,26 @@ function normalizeSourcePackItem(record) {
     packListIds: linkedIds(fields.wec_pack_lists),
     horseIds: linkedIds(fields.wec_horses),
     ignored: !!fields.ignore,
-    active: !!fields.active && !fields.inactive && !fields.remove
+    active: !!fields.active && !fields.inactive && !fields.remove,
+    sourceFlags: {
+      ignore: !!fields.ignore,
+      rename: !!fields.rename,
+      changeLane: !!fields.change_lane,
+      inactive: !!fields.inactive,
+      remove: !!fields.remove,
+      needsAttention: !!fields.needs_attention,
+      unresolved: !!fields.unresolved,
+      purchaseOnsite: !!fields.purchase_onsite,
+      maxxed: !!fields.maxxed
+    },
+    note: stringField(fields.note),
+    longDescription: stringField(fields.long_description)
   };
 }
 
-function normalizePackingItem(record, horseRecords) {
+function normalizePackingItem(record, horseRecords, listPlanLookup = new Map()) {
   const fields = record.fields || {};
+  const listPlan = resolveListPlan(fields, listPlanLookup);
   const quantityNeededDynamic = nullableNumberField(fields.quantity_needed_dynamic);
   const quantityNeededFrozen = nullableNumberField(fields.quantity_needed);
   const needed = quantityNeededDynamic ?? quantityNeededFrozen ?? numberField(fields.quantity_base);
@@ -605,7 +991,10 @@ function normalizePackingItem(record, horseRecords) {
     name: stringField(fields.item_name),
     itemId: stringField(fields.item_id),
     location: stringField(fields.location),
-    listPlan: stringField(fields.list_plan),
+    listPlan: listPlan.plan,
+    listPlanId: listPlan.id,
+    listPlanLabel: listPlan.label,
+    listPlanLogic: listPlan.logic,
     quantityBase: numberField(fields.quantity_base),
     quantityNeededDynamic,
     quantityNeededFrozen,
