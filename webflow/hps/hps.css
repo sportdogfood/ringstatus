@@ -326,6 +326,10 @@
   margin-top: 0;
 }
 
+#hps-app .lp-profile-subtitle {
+  display: none;
+}
+
 #hps-app .th-hps-shell > .lp-header,
 #hps-app .th-hps-shell > .lp-tabs,
 #hps-app .th-hps-shell .lp-section-title.packing-section-title {

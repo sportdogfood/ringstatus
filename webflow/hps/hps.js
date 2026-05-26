@@ -139,9 +139,9 @@
 
   function detail(record) {
     const fields = record.fields || {};
-    const name = firstValue(fields, ["show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
     const showName = firstValue(fields, ["show_name", "horse", "name", "Horse", "Name"]);
     const barnName = firstValue(fields, ["barn_name", "Barn Name", "barn"]);
+    const name = barnName || showName || "Unnamed horse";
     const ignore = firstValue(fields, ["ignore", "Ignore"]);
     const usef = firstValue(fields, ["usef", "USEF", "usef_id", "USEF ID"]);
     const color = firstValue(fields, ["horse_colors", "color", "horse_color", "Color"]);
