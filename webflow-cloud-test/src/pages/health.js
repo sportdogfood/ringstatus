@@ -13,8 +13,6 @@ export const GET = async () => {
     personalizedSectionEndpoint: "/test/personalized-section/content",
     horsesEndpoint: "/test/8778-tack-horses/horses",
     hpsEndpoint: "/test/hps/horses",
-    wecPackingEndpoint: "/test/wec-packing/state",
-    wecPackingHealthEndpoint: "/test/wec-packing/health",
     env: {
       hasAirtableToken: !!env.AIRTABLE_TOKEN,
       hasAirtableBaseId: !!(env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE),
@@ -28,8 +26,7 @@ export const GET = async () => {
       hpsViewPrefix: env.AIRTABLE_HPS_VIEW_PREFIX || "hps_",
       hpsChangeLog: env.AIRTABLE_HPS_CHANGE_LOG_TABLE || "hp_cls",
       hpsActiveTenantsTable: env.AIRTABLE_HPS_ACTIVE_TENANTS_TABLE || "active_tenants",
-      hpsActiveTenantsView: env.AIRTABLE_HPS_ACTIVE_TENANTS_VIEW || "active_tenants",
-      wecMetaTable: env.AIRTABLE_WEC_META_TABLE || "tbllJywsOstkqT5yZ"
+      hpsActiveTenantsView: env.AIRTABLE_HPS_ACTIVE_TENANTS_VIEW || "active_tenants"
     }
   });
 };
