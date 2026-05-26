@@ -212,6 +212,184 @@ export async function stateReport(airtable, requestUrl) {
   };
 }
 
+export async function reconcileReport(airtable, requestUrl) {
+  const url = new URL(requestUrl);
+  const showId = clean(url.searchParams.get("showId"));
+  const packWaveId = clean(url.searchParams.get("packWaveId"));
+  const context = await loadWecContext(airtable);
+  const health = await healthReportFromContext(airtable, context);
+  if (!health.ok) {
+    return {
+      ok: false,
+      error: "wec_setup_incomplete",
+      health
+    };
+  }
+
+  const tables = context.tables;
+  const [waves, packLists, sourcePackItems, worksheetItems, worksheetHorses, horses, events] = await Promise.all([
+    listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
+    listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
+    listAirtableRecords(airtable, tables.wec_pack_items.id, tables.wec_pack_items.view),
+    listAirtableRecords(airtable, tables.wec_packing_items.id, tables.wec_packing_items.view),
+    listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view),
+    listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
+    listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view)
+  ]);
+
+  const selectedWave = selectWave(waves, packWaveId);
+  const wave = selectedWave ? normalizeWave(selectedWave) : null;
+  const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
+  const normalizedPackLists = packLists
+    .filter((record) => !record.fields?.ignore)
+    .map(normalizePackList)
+    .sort(comparePackLists);
+  const packListLookup = new Map(normalizedPackLists.map((list) => [list.id, list]));
+  const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
+    const item = normalizeSourcePackItem(record);
+    return [item.id, item];
+  }));
+  const normalizedHorses = horses
+    .filter((record) => !selectedShowId || includesLinkedId(record.fields.wec_show, selectedShowId))
+    .map(normalizeRosterHorse)
+    .sort(compareHorseRosterRows);
+  const waveHorses = normalizedHorses.filter((horse) => isHorseInWave(horse, wave));
+  const waveHorseIds = new Set(waveHorses.map((horse) => horse.id));
+  const filteredItems = selectedWave ? worksheetItems.filter((record) => (
+    isActiveWorksheetRow(record) &&
+    includesLinkedId(record.fields.pack_wave, selectedWave.id) &&
+    (!selectedShowId || includesLinkedId(record.fields.show, selectedShowId))
+  )) : [];
+  const itemIds = new Set(filteredItems.map((record) => record.id));
+  const filteredHorseMembers = worksheetHorses.filter((record) => (
+    itemIds.has(firstLinkedId(record.fields.packing_item)) ||
+    (selectedWave && includesLinkedId(record.fields.pack_wave, selectedWave.id))
+  ));
+  const horsesByItem = groupByLinkedId(filteredHorseMembers, "packing_item");
+  const items = filteredItems
+    .map((record) => decoratePackingItem(
+      normalizePackingItem(record, horsesByItem.get(record.id) || []),
+      packListLookup,
+      sourcePackItemLookup,
+      wave
+    ))
+    .sort(compareWorksheetRows);
+  const packingItemBySourceId = groupFirstByLinkedId(filteredItems, "source_pack_item");
+  const packingItemsById = new Map(filteredItems.map((record) => [record.id, record]));
+  const eventsByHorseMember = groupByLinkedId(events, "packing_item_horse");
+  const orphanHorseMembers = [];
+  const staleHorseMembers = [];
+  const blockedHorseMembers = [];
+
+  for (const record of filteredHorseMembers) {
+    const member = normalizeHorseMember(record);
+    const parentItem = packingItemsById.get(firstLinkedId(record.fields.packing_item));
+    const sourcePackItemIds = member.sourcePackItemIds.length
+      ? member.sourcePackItemIds
+      : linkedIds(parentItem?.fields?.source_pack_item);
+    const sourcePackItemId = sourcePackItemIds[0] || "";
+    const sourceItem = sourcePackItemLookup.get(sourcePackItemId);
+    const eventCount = (eventsByHorseMember.get(record.id) || []).length + member.eventIds.length;
+    const safeToRemove = isSafeToRemoveHorseMember(member, eventCount);
+    const row = horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove);
+    const hasHorse = member.horseIds.length > 0 && !!member.barnName;
+
+    if (!hasHorse) {
+      orphanHorseMembers.push({
+        ...row,
+        reason: "missing_horse_link_or_barn_name"
+      });
+      if (!safeToRemove) blockedHorseMembers.push({ ...row, reason: "orphan_has_progress_or_history" });
+      continue;
+    }
+
+    if (sourcePackItemId && !expectedSourceHorseIds(sourceItem, waveHorseIds).has(member.horseIds[0])) {
+      staleHorseMembers.push({
+        ...row,
+        reason: "horse_no_longer_expected_for_wave_or_source_item"
+      });
+      if (!safeToRemove) blockedHorseMembers.push({ ...row, reason: "stale_has_progress_or_history" });
+    }
+  }
+
+  const existingMemberKeys = new Set(filteredHorseMembers.map((record) => {
+    const member = normalizeHorseMember(record);
+    const sourcePackItemId = member.sourcePackItemIds[0] || linkedIds(packingItemsById.get(firstLinkedId(record.fields.packing_item))?.fields?.source_pack_item)[0] || "";
+    return `${sourcePackItemId}:${member.horseIds[0] || ""}`;
+  }));
+  const missingHorseMembers = [];
+  for (const sourceItem of sourcePackItemLookup.values()) {
+    if (!isHorseSpecificSourceItem(sourceItem)) continue;
+    const packingItem = packingItemBySourceId.get(sourceItem.id);
+    if (!packingItem) continue;
+    for (const horseId of expectedSourceHorseIds(sourceItem, waveHorseIds)) {
+      const key = `${sourceItem.id}:${horseId}`;
+      if (!existingMemberKeys.has(key)) {
+        missingHorseMembers.push({
+          sourcePackItemId: sourceItem.id,
+          sourceItem: sourceItem.appName,
+          packingItemId: packingItem.id,
+          horseId,
+          reason: "expected_horse_member_missing"
+        });
+      }
+    }
+  }
+
+  const quantityMismatches = items
+    .filter((item) => item.quantityCalculation && !item.quantityCalculation.matchesFrozen)
+    .map((item) => ({
+      id: item.id,
+      itemName: item.name,
+      itemId: item.itemId,
+      listPlan: item.quantityCalculation.plan,
+      calculatedNeeded: item.quantityCalculation.calculatedNeeded,
+      frozenNeeded: item.quantityCalculation.frozenNeeded,
+      formula: item.quantityCalculation.formula
+    }));
+  const safeToRemoveHorseMembers = [...orphanHorseMembers, ...staleHorseMembers].filter((row) => row.safeToRemove);
+
+  return {
+    ok: true,
+    dryRun: true,
+    source: {
+      showId: selectedShowId || "",
+      packWaveId: selectedWave?.id || "",
+      tables: {
+        packWaves: tables.wec_pack_waves.id,
+        packItems: tables.wec_pack_items.id,
+        packingItems: tables.wec_packing_items.id,
+        packingItemHorses: tables.wec_packing_item_horses.id,
+        packingEvents: tables.wec_packing_events.id
+      }
+    },
+    wave,
+    waveCounts: {
+      frozenHorseCount: numberField(wave?.horseCount),
+      currentWaveHorseCount: waveHorses.length,
+      horseCountMismatch: !!wave && numberField(wave.horseCount) !== waveHorses.length,
+      groomCountFinal: numberField(wave?.groomCountFinal)
+    },
+    summary: {
+      worksheetItems: items.length,
+      worksheetHorseMembers: filteredHorseMembers.length,
+      currentWaveHorses: waveHorses.length,
+      orphanHorseMembers: orphanHorseMembers.length,
+      staleHorseMembers: staleHorseMembers.length,
+      missingHorseMembers: missingHorseMembers.length,
+      safeToRemoveHorseMembers: safeToRemoveHorseMembers.length,
+      blockedHorseMembers: blockedHorseMembers.length,
+      quantityMismatches: quantityMismatches.length
+    },
+    orphanHorseMembers,
+    staleHorseMembers,
+    missingHorseMembers,
+    safeToRemoveHorseMembers,
+    blockedHorseMembers,
+    quantityMismatches
+  };
+}
+
 async function healthReportFromContext(airtable, context) {
   const required = REQUIRED_TABLES.map((name) => {
     const registryRow = context.registry.byName[name] || null;
@@ -368,7 +546,10 @@ function normalizeSourcePackItem(record) {
     perGroom: numberField(fields.per_groom),
     horseSpecific: !!fields["horse-specific"],
     uom: stringField(fields.uom),
-    packListIds: linkedIds(fields.wec_pack_lists)
+    packListIds: linkedIds(fields.wec_pack_lists),
+    horseIds: linkedIds(fields.wec_horses),
+    ignored: !!fields.ignore,
+    active: !!fields.active && !fields.inactive && !fields.remove
   };
 }
 
@@ -419,9 +600,14 @@ function normalizeHorseMember(record) {
   const fields = record.fields || {};
   return {
     id: record.id,
+    itemHorseId: stringField(fields.item_horse_id),
+    itemHorseKey: stringField(fields.item_horse_key),
+    barnName: stringField(fields["barn_name (from horse)"]),
     horseIds: linkedIds(fields.horse),
     packingItemIds: linkedIds(fields.packing_item),
+    packWaveIds: linkedIds(fields.pack_wave),
     sourcePackItemIds: linkedIds(fields.source_pack_item),
+    eventIds: linkedIds(fields.wec_packing_events),
     needed: numberField(fields.quantity_needed || 1),
     packed: numberField(fields.quantity_packed),
     horsePackState: stringField(fields.horse_pack_state || "not_packed"),
@@ -604,6 +790,46 @@ function calculationRow({ plan, formula, sourceField, multiplierField, base, mul
   };
 }
 
+function isHorseInWave(horse, wave) {
+  if (!horse.active) return false;
+  if (!wave || !wave.includedWeekIds.length) return true;
+  return horse.weekIds.some((weekId) => wave.includedWeekIds.includes(weekId));
+}
+
+function isHorseSpecificSourceItem(sourceItem) {
+  if (!sourceItem || sourceItem.ignored || !sourceItem.active) return false;
+  return sourceItem.horseSpecific || sourceItem.listPlan === "horse_specific" || sourceItem.listPlan === "horse-specific";
+}
+
+function expectedSourceHorseIds(sourceItem, waveHorseIds) {
+  if (!sourceItem) return new Set();
+  return new Set(sourceItem.horseIds.filter((horseId) => waveHorseIds.has(horseId)));
+}
+
+function isSafeToRemoveHorseMember(member, eventCount) {
+  return numberField(member.packed) === 0 &&
+    eventCount === 0 &&
+    member.horsePackState !== "packed";
+}
+
+function horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove) {
+  return {
+    id: member.id,
+    itemHorseId: member.itemHorseId,
+    itemHorseKey: member.itemHorseKey,
+    sourcePackItemId: sourceItem?.id || member.sourcePackItemIds[0] || "",
+    sourceItem: sourceItem?.appName || "",
+    horseIds: member.horseIds,
+    barnName: member.barnName,
+    quantityNeeded: member.needed,
+    quantityPacked: member.packed,
+    horsePackState: member.horsePackState,
+    eventCount,
+    safeToRemove,
+    suggestedAction: safeToRemove ? "remove_from_current_wave" : "review_manually"
+  };
+}
+
 function isSatisfied(item) {
   return item.packState === "packed" || !!item.resolutionState;
 }
@@ -627,6 +853,16 @@ function groupByLinkedId(records, fieldName) {
       const list = grouped.get(id) || [];
       list.push(record);
       grouped.set(id, list);
+    }
+  }
+  return grouped;
+}
+
+function groupFirstByLinkedId(records, fieldName) {
+  const grouped = new Map();
+  for (const record of records) {
+    for (const id of linkedIds(record.fields?.[fieldName])) {
+      if (!grouped.has(id)) grouped.set(id, record);
     }
   }
   return grouped;

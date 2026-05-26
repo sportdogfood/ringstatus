@@ -457,6 +457,28 @@ It should be able to use frozen outbound worksheet snapshots and event history t
 
 This is the core reason to snapshot quantities and store action history.
 
+## Reconcile / Rebalance
+
+Source changes after snapshot generation must not silently rewrite packed work.
+
+Examples:
+
+- a horse cancels
+- a horse moves from one wave to another
+- a temporary/test horse is deleted
+- a wave horse count changes
+- a groom count changes
+
+The app should run a dry-run reconcile before any sweeping change. The reconcile report should classify:
+
+- orphan horse-member rows with no current horse link or barn name
+- stale horse-member rows no longer expected for the selected wave/source item
+- missing horse-member rows now expected from source data
+- item quantity mismatches caused by changed wave/source counts
+- blocked rows that have packed quantity or event history
+
+Rows with no packed quantity and no event history can be proposed for removal from the current wave. Rows with packed quantity or event history must be preserved and reviewed manually.
+
 ## Vendor And Local Guide Usage
 
 `wec_vendors` is shared support data.
