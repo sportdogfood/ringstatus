@@ -4,6 +4,20 @@ Generated from live Airtable API on 2026-05-26.
 
 Updated on 2026-05-26 after adding `fields_allowed`, `const_env`, and env key names to the two planned WEC packing rows.
 
+Updated again on 2026-05-26 after the live Airtable schema was completed.
+
+Current verified status:
+
+- `wec_pack_waves` exists: `tblWUBY7vpNIKaby8`
+- `wec_packing_events` exists: `tblEPLwEYRClYFnar`
+- `wec_packing_items` exists: `tblq1SARyF9aTCpO2`
+- `wec_packing_item_horses` exists: `tbldmrXz8zCHHonYu`
+- Webflow Cloud env keys are present for those four tables.
+- `/wec-packing/health` verifies 10 required WEC tables with no missing required fields.
+- `/wec-packing/state` returns `needsGeneration: true` because `wec_pack_waves` has no wave records yet.
+
+The older "planned rows" notes below are historical context and should not be used as the current implementation gate.
+
 Purpose: inspect `wec_meta` and Airtable metadata before continuing the WEC packing app build.
 
 ## Gate 1 Result
