@@ -138,7 +138,7 @@ export async function stateReport(airtable, requestUrl) {
   ]);
 
   const selectedWave = selectWave(waves, packWaveId);
-  const normalizedWave = selectedWave ? normalizeWave(selectedWave) : null;
+  const waveBase = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
   const normalizedPackLists = packLists
     .filter((record) => !record.fields?.ignore)
@@ -153,6 +153,9 @@ export async function stateReport(airtable, requestUrl) {
     .filter((record) => !selectedShowId || includesLinkedId(record.fields.wec_show, selectedShowId))
     .map(normalizeRosterHorse)
     .sort(compareHorseRosterRows);
+  const waveHorses = normalizedHorses.filter((horse) => isHorseInWave(horse, waveBase));
+  const waveHorseIds = new Set(waveHorses.map((horse) => horse.id));
+  const normalizedWave = withEffectiveWaveCounts(waveBase, waveHorses);
   const filteredItems = selectedWave ? worksheetItems.filter((record) => (
     isActiveWorksheetRow(record) &&
     includesLinkedId(record.fields.pack_wave, selectedWave.id) &&
@@ -169,7 +172,8 @@ export async function stateReport(airtable, requestUrl) {
       normalizePackingItem(record, horsesByItem.get(record.id) || []),
       packListLookup,
       sourcePackItemLookup,
-      normalizedWave
+      normalizedWave,
+      waveHorseIds
     ))
     .sort(compareWorksheetRows);
   const lists = buildListSummaries(items, normalizedPackLists);
@@ -238,7 +242,7 @@ export async function reconcileReport(airtable, requestUrl) {
   ]);
 
   const selectedWave = selectWave(waves, packWaveId);
-  const wave = selectedWave ? normalizeWave(selectedWave) : null;
+  const waveBase = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
   const normalizedPackLists = packLists
     .filter((record) => !record.fields?.ignore)
@@ -253,7 +257,9 @@ export async function reconcileReport(airtable, requestUrl) {
     .filter((record) => !selectedShowId || includesLinkedId(record.fields.wec_show, selectedShowId))
     .map(normalizeRosterHorse)
     .sort(compareHorseRosterRows);
-  const waveHorses = normalizedHorses.filter((horse) => isHorseInWave(horse, wave));
+  const horseLookup = new Map(normalizedHorses.map((horse) => [horse.id, horse]));
+  const waveHorses = normalizedHorses.filter((horse) => isHorseInWave(horse, waveBase));
+  const wave = withEffectiveWaveCounts(waveBase, waveHorses);
   const waveHorseIds = new Set(waveHorses.map((horse) => horse.id));
   const filteredItems = selectedWave ? worksheetItems.filter((record) => (
     isActiveWorksheetRow(record) &&
@@ -271,7 +277,8 @@ export async function reconcileReport(airtable, requestUrl) {
       normalizePackingItem(record, horsesByItem.get(record.id) || []),
       packListLookup,
       sourcePackItemLookup,
-      wave
+      wave,
+      waveHorseIds
     ))
     .sort(compareWorksheetRows);
   const packingItemBySourceId = groupFirstByLinkedId(filteredItems, "source_pack_item");
@@ -289,9 +296,10 @@ export async function reconcileReport(airtable, requestUrl) {
       : linkedIds(parentItem?.fields?.source_pack_item);
     const sourcePackItemId = sourcePackItemIds[0] || "";
     const sourceItem = sourcePackItemLookup.get(sourcePackItemId);
+    const memberHorse = horseLookup.get(member.horseIds[0]);
     const eventCount = (eventsByHorseMember.get(record.id) || []).length + member.eventIds.length;
-    const safeToRemove = isSafeToRemoveHorseMember(member, eventCount);
-    const row = horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove);
+    const safeToRemove = isSafeToRemoveHorseMember(member, eventCount, memberHorse);
+    const row = horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove, memberHorse);
     const hasHorse = member.horseIds.length > 0 && !!member.barnName;
 
     if (!hasHorse) {
@@ -303,10 +311,12 @@ export async function reconcileReport(airtable, requestUrl) {
       continue;
     }
 
-    if (sourcePackItemId && !expectedSourceHorseIds(sourceItem, waveHorseIds).has(member.horseIds[0])) {
+    if (sourcePackItemId && (!expectedSourceHorseIds(sourceItem, waveHorseIds).has(member.horseIds[0]) || !memberHorse?.manualLock)) {
       staleHorseMembers.push({
         ...row,
-        reason: "horse_no_longer_expected_for_wave_or_source_item"
+        reason: memberHorse && !memberHorse.manualLock
+          ? "horse_member_exists_without_horse_lock"
+          : "horse_no_longer_expected_for_wave_or_source_item"
       });
       if (!safeToRemove) blockedHorseMembers.push({ ...row, reason: "stale_has_progress_or_history" });
     }
@@ -323,6 +333,8 @@ export async function reconcileReport(airtable, requestUrl) {
     const packingItem = packingItemBySourceId.get(sourceItem.id);
     if (!packingItem) continue;
     for (const horseId of expectedSourceHorseIds(sourceItem, waveHorseIds)) {
+      const horse = horseLookup.get(horseId);
+      if (!horse?.manualLock) continue;
       const key = `${sourceItem.id}:${horseId}`;
       if (!existingMemberKeys.has(key)) {
         missingHorseMembers.push({
@@ -330,7 +342,7 @@ export async function reconcileReport(airtable, requestUrl) {
           sourceItem: sourceItem.appName,
           packingItemId: packingItem.id,
           horseId,
-          reason: "expected_horse_member_missing"
+          reason: "locked_horse_member_missing"
         });
       }
     }
@@ -366,9 +378,13 @@ export async function reconcileReport(airtable, requestUrl) {
     wave,
     waveCounts: {
       frozenHorseCount: numberField(wave?.horseCount),
+      effectiveHorseCount: numberField(wave?.effectiveHorseCount),
       currentWaveHorseCount: waveHorses.length,
       horseCountMismatch: !!wave && numberField(wave.horseCount) !== waveHorses.length,
-      groomCountFinal: numberField(wave?.groomCountFinal)
+      groomCountFinal: numberField(wave?.groomCountFinal),
+      effectiveGroomCountFinal: numberField(wave?.effectiveGroomCountFinal),
+      manualLock: !!wave?.manualLock,
+      countSource: wave?.countSource || ""
     },
     summary: {
       worksheetItems: items.length,
@@ -514,11 +530,35 @@ function normalizeWave(record) {
     wave: stringField(fields.wave),
     waveType: stringField(fields.wave_type),
     active: !!fields.active,
+    manualLock: !!fields.manual_lock,
     horseCount: numberField(fields.horse_count),
+    groomCountManual: numberField(fields.groom_count_manual),
+    groomRatio: numberField(fields.groom_ratio),
     groomCountFinal: numberField(fields.groom_count_final),
     sortOrder: numberField(fields.sort_order),
     showIds: linkedIds(fields.show),
     includedWeekIds: linkedIds(fields.included_weeks)
+  };
+}
+
+function withEffectiveWaveCounts(wave, waveHorses) {
+  if (!wave) return null;
+  const currentHorseCount = waveHorses.length;
+  const dynamicGroomCountFinal = wave.groomCountManual > 0
+    ? wave.groomCountManual
+    : wave.groomRatio > 0
+      ? Math.ceil(currentHorseCount / wave.groomRatio)
+      : wave.groomCountFinal;
+  const effectiveHorseCount = wave.manualLock ? wave.horseCount : currentHorseCount;
+  const effectiveGroomCountFinal = wave.manualLock ? wave.groomCountFinal : dynamicGroomCountFinal;
+  return {
+    ...wave,
+    currentHorseCount,
+    currentGroomCountFinal: dynamicGroomCountFinal,
+    effectiveHorseCount,
+    effectiveGroomCountFinal,
+    countsLocked: wave.manualLock,
+    countSource: wave.manualLock ? "manual_lock" : "current_wave_scope"
   };
 }
 
@@ -555,7 +595,9 @@ function normalizeSourcePackItem(record) {
 
 function normalizePackingItem(record, horseRecords) {
   const fields = record.fields || {};
-  const needed = numberField(fields.quantity_needed ?? fields.quantity_base);
+  const quantityNeededDynamic = nullableNumberField(fields.quantity_needed_dynamic);
+  const quantityNeededFrozen = nullableNumberField(fields.quantity_needed);
+  const needed = quantityNeededDynamic ?? quantityNeededFrozen ?? numberField(fields.quantity_base);
   const packed = numberField(fields.quantity_packed);
   const left = numberField(fields.quantity_left ?? Math.max(0, needed - packed));
   return {
@@ -565,6 +607,8 @@ function normalizePackingItem(record, horseRecords) {
     location: stringField(fields.location),
     listPlan: stringField(fields.list_plan),
     quantityBase: numberField(fields.quantity_base),
+    quantityNeededDynamic,
+    quantityNeededFrozen,
     needed,
     packed,
     left,
@@ -582,17 +626,25 @@ function normalizePackingItem(record, horseRecords) {
   };
 }
 
-function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave) {
+function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave, waveHorseIds = new Set()) {
   const sourceItems = item.sourcePackItemIds
     .map((id) => sourcePackItemLookup.get(id))
     .filter(Boolean);
-  return {
+  const effectiveNeeded = wave?.countsLocked
+    ? item.quantityNeededFrozen ?? item.needed
+    : item.quantityNeededDynamic ?? item.needed;
+  const effectiveItem = {
     ...item,
-    packListLabels: item.packListIds
+    needed: effectiveNeeded,
+    left: Math.max(0, effectiveNeeded - item.packed)
+  };
+  return {
+    ...effectiveItem,
+    packListLabels: effectiveItem.packListIds
       .map((id) => packListLookup.get(id)?.label || "")
       .filter(Boolean),
     sourceItems,
-    quantityCalculation: buildQuantityCalculation(item, sourceItems[0], wave)
+    quantityCalculation: buildQuantityCalculation(effectiveItem, sourceItems[0], wave, waveHorseIds)
   };
 }
 
@@ -625,6 +677,7 @@ function normalizeRosterHorse(record) {
     showName: stringField(fields.show_name || fields.horse),
     recordState,
     active: recordState === "active",
+    manualLock: !!fields.manual_lock,
     sortOrder: numberField(fields.sort_order),
     weekIds: linkedIds(fields.wec_weeks),
     sourcePackItemIds: linkedIds(fields.wec_pack_items),
@@ -693,57 +746,65 @@ function buildSections(items) {
   }));
 }
 
-function buildQuantityCalculation(item, sourceItem, wave) {
+function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set()) {
   const plan = item.listPlan || sourceItem?.listPlan || "";
   const frozenNeeded = numberField(item.needed);
   const unit = item.unit || sourceItem?.uom || "";
 
   if (plan === "per_groom") {
     const perGroom = numberField(sourceItem?.perGroom || item.quantityBase);
-    const groomCount = numberField(wave?.groomCountFinal);
+    const groomCount = numberField(wave?.effectiveGroomCountFinal ?? wave?.groomCountFinal);
     const calculatedNeeded = perGroom * groomCount;
     return calculationRow({
       plan,
-      formula: "per_groom * groom_count_final",
+      formula: "per_groom * effective_groom_count_final",
       sourceField: "wec_pack_items.per_groom",
-      multiplierField: "wec_pack_waves.groom_count_final",
+      multiplierField: wave?.countsLocked ? "wec_pack_waves.groom_count_final" : "current wave groom count",
       base: perGroom,
       multiplier: groomCount,
       calculatedNeeded,
       frozenNeeded,
-      unit
+      unit,
+      countSource: wave?.countSource || "",
+      countsLocked: !!wave?.countsLocked
     });
   }
 
   if (plan === "per_horse") {
     const perHorse = numberField(sourceItem?.perHorse || item.quantityBase);
-    const horseCount = numberField(wave?.horseCount);
+    const horseCount = numberField(wave?.effectiveHorseCount ?? wave?.horseCount);
     const calculatedNeeded = perHorse * horseCount;
     return calculationRow({
       plan,
-      formula: "per_horse * horse_count",
+      formula: "per_horse * effective_horse_count",
       sourceField: "wec_pack_items.per_horse",
-      multiplierField: "wec_pack_waves.horse_count",
+      multiplierField: wave?.countsLocked ? "wec_pack_waves.horse_count" : "current wave horse count",
       base: perHorse,
       multiplier: horseCount,
       calculatedNeeded,
       frozenNeeded,
-      unit
+      unit,
+      countSource: wave?.countSource || "",
+      countsLocked: !!wave?.countsLocked
     });
   }
 
   if (plan === "horse_specific" || plan === "horse-specific") {
-    const calculatedNeeded = item.horseMembers.reduce((sum, horse) => sum + numberField(horse.needed || 1), 0);
+    const perHorse = numberField(sourceItem?.perHorse || item.quantityBase || 1);
+    const expectedHorseCount = sourceItem ? expectedSourceHorseIds(sourceItem, waveHorseIds).size : item.horseMembers.length;
+    const calculatedNeeded = expectedHorseCount * perHorse;
     return calculationRow({
       plan,
-      formula: "sum(wec_packing_item_horses.quantity_needed)",
-      sourceField: "wec_packing_item_horses.quantity_needed",
-      multiplierField: "active horse item members",
-      base: calculatedNeeded,
-      multiplier: item.horseMembers.length,
+      formula: "eligible_horses * per_horse",
+      sourceField: "wec_pack_items.per_horse",
+      multiplierField: "current eligible horse count",
+      base: perHorse,
+      multiplier: expectedHorseCount,
       calculatedNeeded,
       frozenNeeded,
-      unit
+      unit,
+      countSource: "current_wave_scope",
+      countsLocked: false
     });
   }
 
@@ -775,7 +836,7 @@ function buildQuantityCalculation(item, sourceItem, wave) {
   });
 }
 
-function calculationRow({ plan, formula, sourceField, multiplierField, base, multiplier, calculatedNeeded, frozenNeeded, unit }) {
+function calculationRow({ plan, formula, sourceField, multiplierField, base, multiplier, calculatedNeeded, frozenNeeded, unit, countSource = "", countsLocked = false }) {
   return {
     plan,
     formula,
@@ -786,6 +847,8 @@ function calculationRow({ plan, formula, sourceField, multiplierField, base, mul
     calculatedNeeded,
     frozenNeeded,
     unit,
+    countSource,
+    countsLocked,
     matchesFrozen: Math.abs(numberField(calculatedNeeded) - numberField(frozenNeeded)) < 0.0001
   };
 }
@@ -806,13 +869,14 @@ function expectedSourceHorseIds(sourceItem, waveHorseIds) {
   return new Set(sourceItem.horseIds.filter((horseId) => waveHorseIds.has(horseId)));
 }
 
-function isSafeToRemoveHorseMember(member, eventCount) {
+function isSafeToRemoveHorseMember(member, eventCount, horse) {
   return numberField(member.packed) === 0 &&
     eventCount === 0 &&
-    member.horsePackState !== "packed";
+    member.horsePackState !== "packed" &&
+    !horse?.manualLock;
 }
 
-function horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove) {
+function horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove, horse) {
   return {
     id: member.id,
     itemHorseId: member.itemHorseId,
@@ -821,6 +885,7 @@ function horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove) {
     sourceItem: sourceItem?.appName || "",
     horseIds: member.horseIds,
     barnName: member.barnName,
+    horseManualLock: !!horse?.manualLock,
     quantityNeeded: member.needed,
     quantityPacked: member.packed,
     horsePackState: member.horsePackState,
@@ -912,6 +977,11 @@ function stringField(value) {
 function numberField(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : 0;
+}
+
+function nullableNumberField(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
 }
 
 function clean(value) {

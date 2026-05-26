@@ -433,12 +433,14 @@
         ["Formula", calculation.formula],
         ["Per Groom", `${number(calculation.base)}${unit}`],
         ["Grooms", number(calculation.multiplier)],
+        ["Count Source", calculation.countsLocked ? "Manual Lock" : "Current Wave"],
         ["Calculated", `${number(calculation.calculatedNeeded)}${unit}`],
         ["Worksheet Need", `${number(calculation.frozenNeeded)}${unit}`]
       ]
       : [
         ["Plan", displayLabel(calculation.plan)],
         ["Formula", calculation.formula],
+        ["Count Source", calculation.countsLocked ? "Manual Lock" : "Current Wave"],
         ["Calculated", `${number(calculation.calculatedNeeded)}${unit}`],
         ["Worksheet Need", `${number(calculation.frozenNeeded)}${unit}`]
       ];

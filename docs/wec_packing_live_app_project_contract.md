@@ -193,7 +193,7 @@ needed = wec_pack_items.per_horse * pack_wave.horse_count
 
 `horse_specific`
 
-Named horse membership. Only horses linked to the source item, active, and included in the selected pack wave contribute. Each horse member has its own packed/not packed state.
+Dynamic quantity math. Only horses linked to the source item, active, and included in the selected pack wave contribute to the item quantity.
 
 ```text
 eligible_horses =
@@ -203,6 +203,8 @@ eligible_horses =
 
 needed = eligible_horses.count * item per-horse amount
 ```
+
+`wec_packing_item_horses` is not a full dynamic expansion table. Horse-member rows are created only when a horse is manually locked. Until then, unlocked horses contribute to dynamic counts but do not create individual horse-member worksheet rows.
 
 `per_groom`
 
@@ -269,8 +271,11 @@ Examples:
 - groom count final
 - sort order
 - active state
+- manual lock
 
 Packing math should be generated from the selected pack wave.
+
+When `wec_pack_waves.manual_lock` is unchecked, the app uses current horse/week membership for effective wave counts. When checked, the app uses the stored wave counts as the locked snapshot.
 
 ## Horse Usage
 
@@ -289,7 +294,9 @@ Do not store packing progress directly on `wec_horses`.
 
 For `per_horse` rows, use horses only for count math.
 
-For `horse_specific` rows, use horses as named worksheet members and store their packed state in `wec_packing_item_horses`.
+For `horse_specific` rows, use horses as dynamic count inputs until the horse is locked.
+
+Create `wec_packing_item_horses` only for horses where `wec_horses.manual_lock` is checked. Unlocked horses remain dynamic contributors to item quantities but do not get individual horse-member progress rows.
 
 ## Groom Usage
 
@@ -473,11 +480,11 @@ The app should run a dry-run reconcile before any sweeping change. The reconcile
 
 - orphan horse-member rows with no current horse link or barn name
 - stale horse-member rows no longer expected for the selected wave/source item
-- missing horse-member rows now expected from source data
+- missing horse-member rows now expected for manually locked horses
 - item quantity mismatches caused by changed wave/source counts
 - blocked rows that have packed quantity or event history
 
-Rows with no packed quantity and no event history can be proposed for removal from the current wave. Rows with packed quantity or event history must be preserved and reviewed manually.
+Rows with no packed quantity, no event history, and no locked horse can be proposed for removal from the current wave. Rows with packed quantity, event history, or a locked horse must be preserved and reviewed manually.
 
 ## Vendor And Local Guide Usage
 
