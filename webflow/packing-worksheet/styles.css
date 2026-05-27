@@ -2224,7 +2224,23 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-tabs {
+  grid-template-columns: none;
+  grid-template-rows: repeat(2, minmax(58px, auto));
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(200px, 1fr);
+  align-items: stretch;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
   padding: 10px 0;
+}
+
+@media (max-width: 640px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .lp-tabs {
+    grid-template-rows: minmax(58px, auto);
+    grid-auto-columns: minmax(200px, 44vw);
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-shell-footer {
@@ -2315,20 +2331,35 @@ body {
   background: #ffffff;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-tab-percent {
+  display: block;
+  width: 100%;
+  color: currentColor;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: right;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-tab {
   min-height: 58px;
   padding: 12px;
+  padding-top: 36px;
   justify-content: flex-start;
   gap: 8px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-tab .packing-tab-label {
-  margin-top: 0;
-  opacity: 1;
+  display: block;
+  margin-top: 8px;
+  color: currentColor;
+  opacity: 0.78;
   font-size: 12px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0;
+  font-weight: 400;
+  line-height: 0.9em;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-row {

@@ -296,10 +296,11 @@
           const percent = tabProgressPercent(section);
           return `
             <button class="lp-tab packing-tab ${themeClasses(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
+              <span class="packing-tab-percent">${percent}% COMPLETED</span>
               <span class="packing-tab-progress" aria-label="${escapeAttr(`${percent}% complete`)}">
                 <span class="packing-tab-progress-fill" style="width: ${percent}%"></span>
               </span>
-              <span class="lp-tab-label packing-tab-label">${escapeHtml(`${displayLabel(section.label)} - ${percent}%`)}</span>
+              <span class="lp-tab-label packing-tab-label">${escapeHtml(displayLabel(section.label))}</span>
             </button>
           `;
         }).join("")}
@@ -837,7 +838,7 @@
 
   function tabs() {
     return [
-      { id: "overview", label: "Overview" },
+      { id: "overview", label: "Wave One" },
       ...tabGroups(),
       { id: "horses", label: "Horses" }
     ];
