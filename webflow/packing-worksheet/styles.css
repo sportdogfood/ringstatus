@@ -2227,7 +2227,7 @@ body {
   grid-template-columns: none;
   grid-template-rows: repeat(2, minmax(58px, auto));
   grid-auto-flow: column;
-  grid-auto-columns: minmax(200px, 1fr);
+  grid-auto-columns: 200px;
   align-items: stretch;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -2237,7 +2237,7 @@ body {
 @media (max-width: 640px) {
   :is(#packing-app, #tack-horses-app, #hps-app) .lp-tabs {
     grid-template-rows: minmax(58px, auto);
-    grid-auto-columns: minmax(200px, 44vw);
+    grid-auto-columns: 200px;
     padding-bottom: 12px;
     -webkit-overflow-scrolling: touch;
   }
@@ -2276,6 +2276,11 @@ body {
   color: #ffffff;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-list {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-row-meta {
   display: block;
   margin-top: 5px;
@@ -2302,6 +2307,57 @@ body {
   height: 100%;
   border-radius: inherit;
   background: #46332b;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-row {
+  cursor: default;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-tab-trigger {
+  appearance: none;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-tab-trigger .packing-progress {
+  margin-top: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-row .packing-print-button {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-list-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--lp-border);
+  background: var(--lp-surface);
+  -webkit-overflow-scrolling: touch;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-list-switch {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-list-switch.is-active {
+  border-color: var(--packing-active, #46332b);
+  background: var(--packing-active, #46332b);
+  color: #ffffff;
+  box-shadow: var(--lp-token-shadow);
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-tab-progress {

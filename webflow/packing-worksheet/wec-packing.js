@@ -15,6 +15,7 @@
     detailType: "",
     detailId: "",
     didSetInitialTab: false,
+    activeListByTab: {},
     addQty: {},
     actionNotes: {}
   };
@@ -89,6 +90,21 @@
     if (horseToggle) {
       event.preventDefault();
       toggleHorseState(horseToggle);
+      return;
+    }
+
+    const printAction = event.target.closest("[data-print-section]");
+    if (printAction) {
+      event.preventDefault();
+      printSection(printAction.dataset.printSection);
+      return;
+    }
+
+    const listSwitch = event.target.closest("[data-list-switch]");
+    if (listSwitch) {
+      event.preventDefault();
+      state.activeListByTab[listSwitch.dataset.tabId] = listSwitch.dataset.listSwitch;
+      render();
       return;
     }
 
@@ -279,7 +295,11 @@
     const wave = state.data?.wave;
     if (!wave) return "No active pack wave";
     const countSource = wave.countSource === "manual_lock" ? "Manual lock" : "Current wave";
-    return `${displayLabel(wave.wave || "Pack wave")} | ${countSource}`;
+    return `${currentWaveLabel()} | ${countSource}`;
+  }
+
+  function currentWaveLabel() {
+    return displayLabel(state.data?.wave?.wave || "wave_one");
   }
 
   function footerLine() {
@@ -296,7 +316,7 @@
           const percent = tabProgressPercent(section);
           return `
             <button class="lp-tab packing-tab ${themeClasses(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
-              <span class="packing-tab-percent">${percent}% COMPLETED</span>
+              <span class="packing-tab-percent">${percent}% PACKED</span>
               <span class="packing-tab-progress" aria-label="${escapeAttr(`${percent}% complete`)}">
                 <span class="packing-tab-progress-fill" style="width: ${percent}%"></span>
               </span>
@@ -335,23 +355,21 @@
     const rows = tabGroups().map((summary) => {
       const percent = progressPercent(summary.done, summary.rows);
       return `
-        <button class="lp-row packing-row" type="button" data-tab="${escapeAttr(summary.id)}">
-          <span>
-            <span class="lp-row-title">${escapeHtml(displayLabel(summary.label))}</span>
+        <div class="lp-row packing-row packing-overview-row">
+          <button class="packing-overview-tab-trigger" type="button" data-tab="${escapeAttr(summary.id)}">
             <span class="packing-progress" aria-label="${escapeAttr(`${percent}% complete`)}">
               <span class="packing-progress-fill" style="width: ${percent}%"></span>
             </span>
-          </span>
-          ${tokenHtml(summary.open === 0 && summary.rows > 0 ? "packed" : "open", `${percent}%`)}
-        </button>
+            <span class="lp-row-title">${escapeHtml(displayLabel(summary.label))}</span>
+          </button>
+          <button class="lp-filter-toggle packing-print-button" type="button" data-print-section="${escapeAttr(summary.id)}">PRINT LIST</button>
+        </div>
       `;
     }).join("");
 
     return `
       <section class="lp-section-block packing-theme-overview">
-        <div class="lp-section-title packing-section-title">
-          <h3>Overview</h3>
-        </div>
+        ${sectionTitleHtml(currentWaveLabel(), "overview")}
         <div class="lp-list">
           ${state.data.needsGeneration ? noWaveRowHtml() : rows}
         </div>
@@ -380,13 +398,13 @@
     const groupLists = group?.listIds?.length
       ? group.listIds.map((id) => lists().find((list) => list.id === id)).filter(Boolean)
       : [];
-    if (!groupLists.length) return emptyGroupHtml(group?.label || "No rows");
+    if (!groupLists.length) return emptyGroupHtml(group?.label || "No rows", tabId);
+    const activeList = activeListForGroup(group.id, groupLists);
     return `
       <section class="lp-section-block ${themeClasses(group.id)}">
-        <div class="lp-section-title packing-section-title">
-          <h3>${escapeHtml(displayLabel(group.label))}</h3>
-        </div>
-        ${groupLists.map((list) => listRowsHtml(list, true)).join("")}
+        ${sectionTitleHtml(group.label, group.id)}
+        ${listSwitcherHtml(group.id, groupLists, activeList.id)}
+        ${listRowsHtml(activeList, false)}
       </section>
     `;
   }
@@ -395,9 +413,7 @@
     const list = lists().find((row) => row.id === listId) || { id: listId, label: listId };
     return `
       <section class="lp-section-block ${themeClasses(list.id)}">
-        <div class="lp-section-title packing-section-title">
-          <h3>${escapeHtml(displayLabel(list.label))}</h3>
-        </div>
+        ${sectionTitleHtml(list.label, list.id)}
         ${listRowsHtml(list, false)}
       </section>
     `;
@@ -413,6 +429,26 @@
     `;
   }
 
+  function activeListForGroup(tabId, groupLists) {
+    const selectedId = state.activeListByTab[tabId];
+    return groupLists.find((list) => list.id === selectedId) ||
+      groupLists.find((list) => number(list.open) > 0) ||
+      groupLists[0];
+  }
+
+  function listSwitcherHtml(tabId, groupLists, activeListId) {
+    if (groupLists.length <= 1) return "";
+    return `
+      <div class="packing-list-switcher" aria-label="Packing lists">
+        ${groupLists.map((list) => `
+          <button class="lp-filter-toggle packing-list-switch ${list.id === activeListId ? "is-active" : ""}" type="button" data-tab-id="${escapeAttr(tabId)}" data-list-switch="${escapeAttr(list.id)}">
+            ${escapeHtml(displayLabel(list.label || list.id))}
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
   function listLabelRowHtml(label) {
     return `
       <div class="lp-row is-static">
@@ -421,12 +457,10 @@
     `;
   }
 
-  function emptyGroupHtml(label) {
+  function emptyGroupHtml(label, printTarget) {
     return `
       <section class="lp-section-block">
-        <div class="lp-section-title packing-section-title">
-          <h3>${escapeHtml(displayLabel(label))}</h3>
-        </div>
+        ${sectionTitleHtml(label, printTarget || "overview")}
         <div class="lp-list">
           ${emptyRowHtml("No rows")}
         </div>
@@ -438,14 +472,23 @@
     const rows = horses();
     return `
       <section class="lp-section-block packing-theme-horses">
-        <div class="lp-section-title packing-section-title">
-          <h3>Horses</h3>
-          <span class="lp-section-count">${rows.filter((horse) => horse.active).length}/${rows.length} active</span>
-        </div>
+        ${sectionTitleHtml("Horses", "horses", `<span class="lp-section-count">${rows.filter((horse) => horse.active).length}/${rows.length} active</span>`)}
         <div class="lp-list">
           ${rows.length ? rows.map(horseRowHtml).join("") : emptyRowHtml("No horses")}
         </div>
       </section>
+    `;
+  }
+
+  function sectionTitleHtml(title, printTarget, extraHtml) {
+    return `
+      <div class="lp-section-title packing-section-title">
+        <h3>${escapeHtml(displayLabel(title))}</h3>
+        <span class="lp-section-actions packing-section-title-actions">
+          ${extraHtml || ""}
+          <button class="lp-filter-toggle packing-print-button" type="button" data-print-section="${escapeAttr(printTarget)}">PRINT LIST</button>
+        </span>
+      </div>
     `;
   }
 
@@ -491,6 +534,269 @@
 
   function tokenHtml(type, text) {
     return `<span class="lp-achievement packing-token is-${escapeAttr(type)}">${escapeHtml(text)}</span>`;
+  }
+
+  function printSection(target) {
+    if (!state.data) return;
+    const title = target === "overview" ? "WEC Packing Report" : `${printTargetTitle(target)} Packing List`;
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      state.saveMessage = "Allow pop-ups to print this list.";
+      render();
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(printDocumentHtml(title, printBodyHtml(target)));
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.setTimeout(() => {
+      printWindow.print();
+    }, 250);
+  }
+
+  function printBodyHtml(target) {
+    if (target === "overview") {
+      const pages = tabGroups().map((group) => printPackingPageHtml(group.label, printListSections(group.id))).join("");
+      return `${pages}${printHorsesPageHtml()}`;
+    }
+    if (target === "horses") return printHorsesPageHtml();
+    return printPackingPageHtml(printTargetTitle(target), printListSections(target));
+  }
+
+  function printTargetTitle(target) {
+    if (target === "horses") return "Horses";
+    if (isTabGroupId(target)) {
+      return displayLabel(tabGroups().find((group) => group.id === target)?.label || target.replace(/^tab:/, ""));
+    }
+    return displayLabel(lists().find((list) => list.id === target)?.label || target);
+  }
+
+  function printListSections(target) {
+    if (isTabGroupId(target)) {
+      const group = tabGroups().find((row) => row.id === target);
+      return (group?.listIds || []).map(printListSection).filter(Boolean);
+    }
+    return [printListSection(target)].filter(Boolean);
+  }
+
+  function printListSection(listId) {
+    const list = lists().find((row) => row.id === listId) || { id: listId, label: listId };
+    const rows = items().filter((item) => itemBelongsToList(item, list.id));
+    return {
+      title: displayLabel(list.label || list.id),
+      rows
+    };
+  }
+
+  function printPackingPageHtml(title, sections) {
+    const rows = sections.flatMap((section) => section.rows);
+    const percent = progressPercent(rows.filter(isDone).length, rows.length);
+    return `
+      <section class="packing-print-page">
+        <header class="packing-print-head">
+          <h1>${escapeHtml(displayLabel(title))}</h1>
+          <p>${escapeHtml(statusLine())} | ${percent}% complete | ${escapeHtml(new Date().toLocaleDateString())}</p>
+        </header>
+        <div class="packing-print-columns">
+          ${sections.length ? sections.map(printListColumnHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+        </div>
+      </section>
+    `;
+  }
+
+  function printListColumnHtml(section) {
+    return `
+      <section class="packing-print-list">
+        <h2>${escapeHtml(section.title)}</h2>
+        ${section.rows.length ? section.rows.map(printItemRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+      </section>
+    `;
+  }
+
+  function printItemRowHtml(item) {
+    const horseNames = item.horseMembers?.map((member) => member.barnName).filter(Boolean).join(", ");
+    return `
+      <div class="packing-print-item">
+        <div class="packing-print-item-main">
+          <strong>${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
+          <span>Need: ${escapeHtml(quantityDisplay(item.needed))} | Packed: ${escapeHtml(quantityDisplay(item.packed))} | Left: ${escapeHtml(quantityDisplay(item.left))}</span>
+          ${horseNames ? `<em>${escapeHtml(horseNames)}</em>` : ""}
+        </div>
+        <b>${escapeHtml(printItemStatus(item))}</b>
+      </div>
+    `;
+  }
+
+  function printItemStatus(item) {
+    if (item.resolutionState) return resolutionDisplayLabel(item.resolutionState);
+    if (item.packState === "packed" || (number(item.left) === 0 && number(item.needed) > 0)) return "PACKED";
+    if (number(item.packed) > 0) return `LEFT - ${quantityDisplay(item.left)}`;
+    return `NEED - ${quantityDisplay(item.needed)}`;
+  }
+
+  function printHorsesPageHtml() {
+    const active = horses().filter((horse) => horse.active);
+    const inactive = horses().filter((horse) => !horse.active);
+    const percent = progressPercent(active.length, horses().length);
+    return `
+      <section class="packing-print-page">
+        <header class="packing-print-head">
+          <h1>Horses</h1>
+          <p>${escapeHtml(statusLine())} | ${percent}% active | ${escapeHtml(new Date().toLocaleDateString())}</p>
+        </header>
+        <div class="packing-print-columns">
+          ${printHorseColumnHtml("Active", active)}
+          ${printHorseColumnHtml("Inactive", inactive)}
+        </div>
+      </section>
+    `;
+  }
+
+  function printHorseColumnHtml(title, rows) {
+    return `
+      <section class="packing-print-list">
+        <h2>${escapeHtml(title)}</h2>
+        ${rows.length ? rows.map((horse) => `
+          <div class="packing-print-horse">
+            <strong>${escapeHtml(horse.name || horse.showName || "Unnamed horse")}</strong>
+            <b>${horse.active ? "ACTIVE" : "INACTIVE"}</b>
+          </div>
+        `).join("") : printEmptyPrintSectionHtml("No horses")}
+      </section>
+    `;
+  }
+
+  function printEmptyPrintSectionHtml(label) {
+    return `<div class="packing-print-empty">${escapeHtml(label)}</div>`;
+  }
+
+  function printDocumentHtml(title, body) {
+    return `<!doctype html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>${escapeHtml(title)}</title>
+          <style>${printStyles()}</style>
+        </head>
+        <body>${body}</body>
+      </html>`;
+  }
+
+  function printStyles() {
+    return `
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap");
+      @page { size: Letter; margin: 0.35in; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #ffffff;
+        color: #000000;
+        font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 10px;
+        line-height: 1.12;
+      }
+      .packing-print-page {
+        width: 100%;
+        min-height: 10.3in;
+        break-after: page;
+      }
+      .packing-print-page:last-child { break-after: auto; }
+      .packing-print-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 0.2in;
+        padding-bottom: 0.12in;
+        border-bottom: 2px solid #000000;
+        margin-bottom: 0.16in;
+      }
+      .packing-print-head h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 0.95;
+      }
+      .packing-print-head p {
+        margin: 0;
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .packing-print-columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.16in;
+        align-items: start;
+      }
+      .packing-print-list {
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        overflow: hidden;
+        break-inside: avoid;
+        background: #ffffff;
+      }
+      .packing-print-list h2 {
+        margin: 0;
+        padding: 8px 10px;
+        background: #f0f0f0;
+        border-bottom: 1px solid #d9d9d9;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      .packing-print-item,
+      .packing-print-horse {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: start;
+        padding: 7px 10px;
+        border-bottom: 1px solid #eeeeee;
+      }
+      .packing-print-item:last-child,
+      .packing-print-horse:last-child { border-bottom: 0; }
+      .packing-print-item-main {
+        display: grid;
+        gap: 3px;
+        min-width: 0;
+      }
+      .packing-print-item strong,
+      .packing-print-horse strong {
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      .packing-print-item span,
+      .packing-print-item em {
+        color: #333333;
+        font-style: normal;
+        font-size: 9px;
+        line-height: 1.1;
+      }
+      .packing-print-item b,
+      .packing-print-horse b {
+        padding: 4px 7px;
+        border-radius: 999px;
+        background: #46332b;
+        color: #ffffff;
+        font-size: 8px;
+        font-weight: 600;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .packing-print-empty {
+        padding: 10px;
+        color: #333333;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+    `;
   }
 
   function renderDetail() {
@@ -838,7 +1144,7 @@
 
   function tabs() {
     return [
-      { id: "overview", label: "Wave One" },
+      { id: "overview", label: currentWaveLabel() },
       ...tabGroups(),
       { id: "horses", label: "Horses" }
     ];
@@ -940,7 +1246,7 @@
     const key = themeName(value);
     if (key === "overview") return "packing-theme-overview";
     if (key === "horses") return "packing-theme-horses";
-    return `packing-theme-${key} packing-tone-${toneIndex(value)}`;
+    return `packing-group-${key} packing-tone-${toneIndex(value)}`;
   }
 
   function themeName(value) {
