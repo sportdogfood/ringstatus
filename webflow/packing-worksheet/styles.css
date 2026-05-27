@@ -2942,6 +2942,17 @@ body {
   letter-spacing: -0.02em;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-plan-line {
+  margin-top: 6px;
+  color: var(--lp-ink);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.05em;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-profile-panel {
   overflow: hidden;
   background: var(--lp-surface);

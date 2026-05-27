@@ -1260,6 +1260,7 @@
         <div class="lp-profile-head th-profile-top">
           <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h2>
           <p class="lp-profile-subtitle">${escapeHtml(itemMetaLabel(item))}</p>
+          ${planLineHtml(itemPlanText(item))}
         </div>
 
         <section class="lp-profile-panel packing-detail th-detail-section">
@@ -1288,11 +1289,13 @@
     const progress = horseProgress(horse);
     const searchKey = `horse-detail:${horse.id}`;
     const rows = filterRows(horseItemRows(horse), searchKey, horseItemSearchText);
+    const planText = horsePlanText(horse);
     return `
       <div class="lp-profile-shell packing-detail-shell packing-horse-detail-shell packing-theme-horses">
         <div class="lp-profile-head th-profile-top">
           <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(horse.name || "Unnamed horse")}</h2>
           ${horse.showName ? `<p class="lp-profile-subtitle">${escapeHtml(horse.showName)}</p>` : ""}
+          ${planLineHtml(planText)}
         </div>
 
         <section class="lp-profile-panel packing-detail th-detail-section">
@@ -1337,6 +1340,36 @@
         </button>
       </span>
     `;
+  }
+
+  function planLineHtml(value) {
+    const text = String(value || "").trim();
+    if (!text) return "";
+    return `<div class="packing-plan-line">PLAN: ${escapeHtml(text)}</div>`;
+  }
+
+  function itemPlanText(item) {
+    return displayLabel(
+      item?.listPlanLabel ||
+      item?.listPlan ||
+      item?.quantityCalculation?.plan ||
+      item?.sourceItems?.[0]?.listPlanLabel ||
+      item?.sourceItems?.[0]?.listPlan ||
+      ""
+    );
+  }
+
+  function horsePlanText(horse) {
+    const plans = [];
+    const seen = new Set();
+    for (const row of horseItemRows(horse)) {
+      const label = itemPlanText(row.item);
+      const key = themeKey(label);
+      if (!label || seen.has(key)) continue;
+      seen.add(key);
+      plans.push(label);
+    }
+    return plans.join(", ");
   }
 
   function detailReadRow(label, value) {
