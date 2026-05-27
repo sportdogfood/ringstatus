@@ -2772,7 +2772,10 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-token-button {
   appearance: none;
-  font: inherit;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 0.95em;
   cursor: pointer;
 }
 
@@ -3419,6 +3422,10 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-binding-row:last-child {
   border-bottom: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-detail-info-row {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-binding-name {

@@ -412,7 +412,11 @@ async function fetchScheduleHeartbeatRows() {
       view: VIEW_WATCH_SCHEDULE_HEARTBEAT,
       pageSize: 100,
       "fields[]": [
+        "schedule_key",
         "class_groupxclasses_id",
+        "class_group_id",
+        "class_number",
+        "class_id",
         "heartbeat_rid",
         "app_show_idv2",
         "app_sql_datev2",
@@ -507,10 +511,19 @@ function normalizeSchedulePayload(payload, options) {
 
   function isClassNode(node) {
     if (!isObj(node)) return false;
-    const hasKey = node.class_groupxclasses_id !== undefined || node.classGroupXClassesId !== undefined;
-    const hasClassId = node.class_id !== undefined || node.classId !== undefined || node.id !== undefined;
-    const hasClassNumber = node.class_number !== undefined || node.classNumber !== undefined || node.number !== undefined;
-    return Boolean(hasKey && (hasClassId || hasClassNumber));
+    const classObj = isObj(node.class) ? node.class : undefined;
+    const hasClassId =
+      node.class_id !== undefined ||
+      node.classId !== undefined ||
+      node.id !== undefined ||
+      classObj?.class_id !== undefined ||
+      classObj?.classId !== undefined;
+    const hasClassNumber =
+      node.class_number !== undefined ||
+      node.classNumber !== undefined ||
+      node.number !== undefined ||
+      classObj?.number !== undefined;
+    return Boolean(hasClassId || hasClassNumber);
   }
 
   function walk(node, ctx) {
@@ -557,60 +570,60 @@ function normalizeSchedulePayload(payload, options) {
     if (isClassNode(node)) {
       const classObj = isObj(node.class) ? node.class : undefined;
       const classGroupXClassesId = numOrNull(pickFirst(node.class_groupxclasses_id, node.classGroupXClassesId));
-      if (classGroupXClassesId !== null) {
-        const classRow = {
-          class_groupxclasses_id: classGroupXClassesId,
-          class_group_id: classGroupId !== null ? classGroupId : numOrNull(pickFirst(node.class_group_id, node.classGroupId)),
-          class_id: numOrNull(pickFirst(node.class_id, node.classId, node.id, classObj?.class_id, classObj?.classId)),
-          class_number: numOrNull(pickFirst(node.class_number, node.classNumber, node.number, classObj?.number)),
-          class_name: strOrNull(pickFirst(node.class_name, node.className, node.name, classObj?.name)),
-          class_list: strOrNull(pickFirst(node.class_list, node.classList)),
-          class_type: strOrNull(pickFirst(node.class_type, node.classType, classObj?.class_type, classObj?.classType)),
-          jumper_table: strOrNull(pickFirst(node.jumper_table, node.jumperTable, classObj?.jumper_table, classObj?.jumperTable)),
-          sponsor: strOrNull(pickFirst(node.sponsor, classObj?.sponsor)),
-          schedule_sequencetype: strOrNull(
-            pickFirst(
-              node.schedule_sequencetype,
-              node.scheduleSequenceType,
-              node.sequencetype,
-              node.sequence_type,
-              classObj?.schedule_sequencetype,
-              classObj?.scheduleSequenceType
-            )
-          ),
-          group_has_warmup: pickFirst(node.group_has_warmup, node.groupHasWarmup),
-          is_open_card_warmup: pickFirst(node.is_open_card_warmup, node.isOpenCardWarmup),
-          show_id: showId,
-          show_date: showDate,
-          show_day_key: showDayKey,
-          show_ring_key: showRingKey,
-          ring_number: ringNumber,
-          estimated_start_time: strOrNull(pickFirst(node.estimated_start_time, node.estimatedStartTime)),
-          start_time_default: strOrNull(pickFirst(node.start_time_default, node.startTimeDefault)),
-          estimated_end_time: strOrNull(pickFirst(node.estimated_end_time, node.estimatedEndTime)),
-          total_trips: numOrNull(pickFirst(
-            node.total_trips,
-            node.totalTrips,
-            classRelated?.total_trips,
-            classRelated?.totalTrips,
-            classObj?.total_trips,
-            classObj?.totalTrips
-          )),
-          completed_trips: numOrNull(pickFirst(
-            node.completed_trips,
-            node.completedTrips,
-            classRelated?.completed_trips,
-            classRelated?.completedTrips,
-            classObj?.completed_trips,
-            classObj?.completedTrips,
-            node.gone,
-            classRelated?.gone,
-            classObj?.gone
-          )),
-          grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),
-        };
+      const classRow = {
+        class_groupxclasses_id: classGroupXClassesId,
+        class_group_id: classGroupId !== null ? classGroupId : numOrNull(pickFirst(node.class_group_id, node.classGroupId)),
+        class_id: numOrNull(pickFirst(node.class_id, node.classId, node.id, classObj?.class_id, classObj?.classId)),
+        class_number: numOrNull(pickFirst(node.class_number, node.classNumber, node.number, classObj?.number)),
+        class_name: strOrNull(pickFirst(node.class_name, node.className, node.name, classObj?.name)),
+        class_list: strOrNull(pickFirst(node.class_list, node.classList)),
+        class_type: strOrNull(pickFirst(node.class_type, node.classType, classObj?.class_type, classObj?.classType)),
+        jumper_table: strOrNull(pickFirst(node.jumper_table, node.jumperTable, classObj?.jumper_table, classObj?.jumperTable)),
+        sponsor: strOrNull(pickFirst(node.sponsor, classObj?.sponsor)),
+        schedule_sequencetype: strOrNull(
+          pickFirst(
+            node.schedule_sequencetype,
+            node.scheduleSequenceType,
+            node.sequencetype,
+            node.sequence_type,
+            classObj?.schedule_sequencetype,
+            classObj?.scheduleSequenceType
+          )
+        ),
+        group_has_warmup: pickFirst(node.group_has_warmup, node.groupHasWarmup),
+        is_open_card_warmup: pickFirst(node.is_open_card_warmup, node.isOpenCardWarmup),
+        show_id: showId,
+        show_date: showDate,
+        show_day_key: showDayKey,
+        show_ring_key: showRingKey,
+        ring_number: ringNumber,
+        estimated_start_time: strOrNull(pickFirst(node.estimated_start_time, node.estimatedStartTime)),
+        start_time_default: strOrNull(pickFirst(node.start_time_default, node.startTimeDefault)),
+        estimated_end_time: strOrNull(pickFirst(node.estimated_end_time, node.estimatedEndTime)),
+        total_trips: numOrNull(pickFirst(
+          node.total_trips,
+          node.totalTrips,
+          classRelated?.total_trips,
+          classRelated?.totalTrips,
+          classObj?.total_trips,
+          classObj?.totalTrips
+        )),
+        completed_trips: numOrNull(pickFirst(
+          node.completed_trips,
+          node.completedTrips,
+          classRelated?.completed_trips,
+          classRelated?.completedTrips,
+          classObj?.completed_trips,
+          classObj?.completedTrips,
+          node.gone,
+          classRelated?.gone,
+          classObj?.gone
+        )),
+        grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),
+      };
 
-        const key = normalizeKey(classGroupXClassesId);
+      const key = buildScheduleMachineKey(classRow);
+      if (key) {
         classesById.set(key, mergePreserveJoinKeys(classesById.get(key), classRow));
       }
     }
@@ -783,7 +796,7 @@ async function runNormalizer() {
   const chosen = chooseScheduleVariant(datedResult, emptyResult);
 
   const existingKeys = existingRows
-    .map((record) => normalizeKey(record?.fields?.class_groupxclasses_id))
+    .map((record) => normalizeKey(buildScheduleMachineKey(record?.fields || {})))
     .filter(Boolean);
 
   const keepKeys = chosen.keep_keys.slice();

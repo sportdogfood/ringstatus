@@ -20,7 +20,9 @@ export const REQUIRED_TABLES = [
 ];
 
 const OPTIONAL_TABLES = [
-  "wec_list_plans"
+  "wec_list_plans",
+  "wec_places",
+  "wec_places_tags"
 ];
 
 export const ENV_TABLES = {
@@ -55,7 +57,8 @@ const DEFAULT_SOURCE_VIEWS = {
 
 export function runtimeEnv() {
   const localEnv = globalThis.process?.env || {};
-  return { ...localEnv, ...(env || {}) };
+  const astroEnv = import.meta.env || {};
+  return { ...localEnv, ...astroEnv, ...(env || {}) };
 }
 
 export function json(data, status = 200) {
@@ -138,7 +141,7 @@ export async function stateReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, packLists, homePackLists, sourcePackItems, purchaseOnsiteItems, worksheetItems, worksheetHorses, horses, listPlans, packingEvents] = await Promise.all([
+  const [waves, packLists, homePackLists, sourcePackItems, purchaseOnsiteItems, worksheetItems, worksheetHorses, horses, listPlans, packingEvents, places, placeTags] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
     listOptionalViewRecords(airtable, tables.wec_pack_lists.id, "wec_home"),
@@ -148,13 +151,20 @@ export async function stateReport(airtable, requestUrl) {
     listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
     listOptionalRecords(airtable, tables.wec_list_plans),
-    listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view)
+    listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view),
+    listOptionalRecords(airtable, tables.wec_places),
+    listOptionalRecords(airtable, tables.wec_places_tags)
   ]);
 
   const listPlanLookup = new Map(listPlans.map((record) => {
     const plan = normalizeListPlan(record);
     return [plan.id, plan];
   }));
+  const placeTagLookup = new Map(placeTags.map((record) => {
+    const tag = normalizePlaceTag(record);
+    return [tag.id, tag];
+  }));
+  const placeLookup = buildPlaceLookup(places, placeTagLookup);
   const selectedWave = selectWave(waves, packWaveId, packWaveKey);
   const waveBase = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
@@ -168,7 +178,7 @@ export async function stateReport(airtable, requestUrl) {
     .sort(comparePackLists);
   const packListLookup = new Map([...normalizedPackLists, ...normalizedHomeLists].map((list) => [list.id, list]));
   const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
-    const item = normalizeSourcePackItem(record, listPlanLookup);
+    const item = decorateSourcePackItem(normalizeSourcePackItem(record, listPlanLookup), placeLookup);
     return [item.id, item];
   }));
   const normalizedHorses = horses
@@ -204,6 +214,7 @@ export async function stateReport(airtable, requestUrl) {
     homeLists: normalizedHomeLists,
     purchaseOnsiteItems,
     listPlanLookup,
+    placeLookup,
     packListLookup,
     packingEvents,
     selectedShowId,
@@ -255,7 +266,7 @@ export async function stateReport(airtable, requestUrl) {
   };
 }
 
-function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, packListLookup, packingEvents, selectedShowId, selectedWaveId }) {
+function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, placeLookup, packListLookup, packingEvents, selectedShowId, selectedWaveId }) {
   const purchaseList = homeLists.find((list) => list.key === "purchase_onsite" || slugify(list.label) === "purchase_onsite");
   if (!purchaseList) return [];
   const taskStates = onsiteTaskStatesFromEvents(packingEvents, {
@@ -263,7 +274,7 @@ function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, pack
     packWaveId: selectedWaveId
   });
   const rows = purchaseOnsiteItems
-    .map((record) => normalizePurchaseOnsiteTask(record, listPlanLookup, packListLookup, purchaseList.id, taskStates))
+    .map((record) => normalizePurchaseOnsiteTask(record, listPlanLookup, placeLookup, packListLookup, purchaseList.id, taskStates))
     .sort(compareOnsiteTasks);
   const lists = buildOnsiteListSummaries(rows, packListLookup, purchaseList);
   return [{
@@ -279,9 +290,9 @@ function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, pack
   }];
 }
 
-function normalizePurchaseOnsiteTask(record, listPlanLookup, packListLookup, purchaseListId, taskStates) {
-  const source = normalizeSourcePackItem(record, listPlanLookup);
-  const originalListIds = source.packListIds.filter((id) => id !== purchaseListId);
+function normalizePurchaseOnsiteTask(record, listPlanLookup, placeLookup, packListLookup, purchaseListId, taskStates) {
+  const source = decorateSourcePackItem(normalizeSourcePackItem(record, listPlanLookup), placeLookup);
+  const originalListIds = source.packListIds.filter((id) => id !== purchaseListId && packListLookup.has(id));
   const taskListIds = originalListIds.length ? originalListIds : [purchaseListId];
   const taskState = taskStates.get(source.id) || "task";
   return {
@@ -1733,6 +1744,66 @@ function resolveListPlan(fields, listPlanLookup) {
   };
 }
 
+function normalizePlaceTag(record) {
+  const fields = record.fields || {};
+  return {
+    id: record.id,
+    label: stringField(fields.tag || fields.name)
+  };
+}
+
+function normalizePlace(record, placeTagLookup = new Map()) {
+  const fields = record.fields || {};
+  const localTags = uniqueStrings([
+    ...stringListField(fields.wec_local_tags_rollups || fields.local_tags || fields.tags),
+    ...linkedIds(fields.wec_local_tags).map((id) => placeTagLookup.get(id)?.label || "")
+  ]);
+  return {
+    id: record.id,
+    label: stringField(fields.place || fields.name),
+    itemIds: linkedIds(fields.tack_grocery_items || fields.wec_pack_items),
+    localTags,
+    placeType: stringField(fields.wec_place_type),
+    mapsUrl: stringField(fields.maps_url),
+    phone: stringField(fields.phone),
+    website: stringField(fields.website)
+  };
+}
+
+function buildPlaceLookup(records, placeTagLookup = new Map()) {
+  const lookup = new Map();
+  for (const record of records || []) {
+    const place = normalizePlace(record, placeTagLookup);
+    lookup.set(place.id, place);
+    for (const itemId of place.itemIds || []) {
+      const existing = lookup.get(`item:${itemId}`) || [];
+      existing.push(place);
+      lookup.set(`item:${itemId}`, existing);
+    }
+  }
+  return lookup;
+}
+
+function decorateSourcePackItem(item, placeLookup = new Map()) {
+  const linkedPlaceIds = item.placeIds.length ? item.placeIds : item.vendorIds;
+  const placesFromLinks = linkedPlaceIds.map((id) => placeLookup.get(id)).filter(Boolean);
+  const placesFromReverseLinks = placeLookup.get(`item:${item.id}`) || [];
+  const places = uniqueById([...placesFromLinks, ...placesFromReverseLinks]);
+  return {
+    ...item,
+    placeIds: uniqueStrings([...item.placeIds, ...places.map((place) => place.id)]),
+    placeLabels: uniqueStrings([
+      ...item.placeLabels,
+      ...places.map((place) => place.label)
+    ]),
+    localTags: uniqueStrings([
+      ...item.localTags,
+      ...places.flatMap((place) => place.localTags || [])
+    ]),
+    places
+  };
+}
+
 function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
   const fields = record.fields || {};
   const listPlan = resolveListPlan(fields, listPlanLookup);
@@ -1752,7 +1823,7 @@ function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
     horseIds: linkedIds(fields.wec_horses),
     vendorIds: linkedIds(fields.wec_vendors),
     placeIds: linkedIds(fields.wec_places),
-    placeLabels: stringListField(fields.wec_places_rollup || fields.place_names || fields["place_names (from wec_places)"] || fields.wec_places),
+    placeLabels: stringListField(fields.wec_places_rollup || fields.place_names || fields["place_names (from wec_places)"]),
     localTags: stringListField(fields.wec_local_tags_rollups || fields.local_tags || fields["local_tags (from wec_places)"]),
     ignored: !!fields.ignore,
     active: !!fields.active && !fields.inactive && !fields.remove,
@@ -2274,6 +2345,30 @@ function nullableNumberField(value) {
 
 function clean(value) {
   return String(value ?? "").trim();
+}
+
+function uniqueStrings(values) {
+  const seen = new Set();
+  const result = [];
+  for (const value of values || []) {
+    const text = stringField(value);
+    const key = text.toLowerCase();
+    if (!text || seen.has(key)) continue;
+    seen.add(key);
+    result.push(text);
+  }
+  return result;
+}
+
+function uniqueById(values) {
+  const seen = new Set();
+  const result = [];
+  for (const value of values || []) {
+    if (!value?.id || seen.has(value.id)) continue;
+    seen.add(value.id);
+    result.push(value);
+  }
+  return result;
 }
 
 function compareWorksheetRows(a, b) {

@@ -1500,6 +1500,8 @@
               ${packedControlHtml(item)}
               ${decisionControlHtml(item)}
               ${horseMembersControlHtml(item)}
+              ${detailInfoListControlHtml("Places", itemPlaceLabels(item))}
+              ${detailInfoListControlHtml("Tags", itemLocalTags(item))}
             </div>
           </div>
         </section>
@@ -1573,8 +1575,8 @@
             <div class="lp-field-grid lp-profile-tab-panel is-active">
               ${onsiteTaskStatusControlHtml(task)}
               ${task.longDescription ? editGroupHtml("Details", `<span class="lp-row-meta">${escapeHtml(task.longDescription)}</span>`) : ""}
-              ${onsiteTaskInfoRowHtml("Places", task.placeLabels)}
-              ${onsiteTaskInfoRowHtml("Tags", task.localTags)}
+              ${detailInfoListControlHtml("Places", task.placeLabels)}
+              ${detailInfoListControlHtml("Tags", task.localTags)}
             </div>
           </div>
         </section>
@@ -1607,10 +1609,53 @@
     `);
   }
 
-  function onsiteTaskInfoRowHtml(label, values) {
+  function detailInfoListControlHtml(label, values) {
     const list = Array.isArray(values) ? values.filter(Boolean) : [];
     if (!list.length) return "";
-    return editGroupHtml(label, `<span class="lp-row-meta">${escapeHtml(list.map(displayLabel).join(", "))}</span>`);
+    return editGroupHtml(label, `
+      <span class="packing-horse-bindings packing-detail-info-list">
+        ${uniqueDisplayValues(list).map((value) => `
+          <span class="packing-horse-binding-row packing-detail-info-row">
+            <span class="packing-horse-binding-name">${escapeHtml(displayLabel(value))}</span>
+          </span>
+        `).join("")}
+      </span>
+    `);
+  }
+
+  function itemPlaceLabels(item) {
+    return uniqueDisplayValues([
+      ...(Array.isArray(item?.placeLabels) ? item.placeLabels : []),
+      ...(Array.isArray(item?.places) ? item.places.map((place) => place.label || place.name) : []),
+      ...(Array.isArray(item?.sourceItems) ? item.sourceItems.flatMap((source) => [
+        ...(Array.isArray(source.placeLabels) ? source.placeLabels : []),
+        ...(Array.isArray(source.places) ? source.places.map((place) => place.label || place.name) : [])
+      ]) : [])
+    ]);
+  }
+
+  function itemLocalTags(item) {
+    return uniqueDisplayValues([
+      ...(Array.isArray(item?.localTags) ? item.localTags : []),
+      ...(Array.isArray(item?.places) ? item.places.flatMap((place) => place.localTags || []) : []),
+      ...(Array.isArray(item?.sourceItems) ? item.sourceItems.flatMap((source) => [
+        ...(Array.isArray(source.localTags) ? source.localTags : []),
+        ...(Array.isArray(source.places) ? source.places.flatMap((place) => place.localTags || []) : [])
+      ]) : [])
+    ]);
+  }
+
+  function uniqueDisplayValues(values) {
+    const seen = new Set();
+    const result = [];
+    for (const value of values || []) {
+      const text = String(value || "").trim();
+      const key = text.toLowerCase();
+      if (!text || seen.has(key)) continue;
+      seen.add(key);
+      result.push(text);
+    }
+    return result;
   }
 
   function horseDetailItemRowHtml(row) {
