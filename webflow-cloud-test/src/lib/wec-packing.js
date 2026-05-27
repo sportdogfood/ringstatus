@@ -826,13 +826,16 @@ export async function reconcileReport(airtable, requestUrl) {
     wave,
     waveCounts: {
       frozenHorseCount: numberField(wave?.horseCount),
+      horseSanity: numberField(wave?.horseSanity),
       effectiveHorseCount: numberField(wave?.effectiveHorseCount),
       currentWaveHorseCount: waveHorses.length,
-      horseCountMismatch: !!wave && numberField(wave.horseCount) !== waveHorses.length,
+      horseCountMismatch: !!wave && numberField(wave.horseCount) !== numberField(wave.effectiveHorseCount),
       groomCountFinal: numberField(wave?.groomCountFinal),
+      groomSanity: numberField(wave?.groomSanity),
       effectiveGroomCountFinal: numberField(wave?.effectiveGroomCountFinal),
       manualLock: !!wave?.manualLock,
-      countSource: wave?.countSource || ""
+      countSource: wave?.countSource || "",
+      groomCountSource: wave?.groomCountSource || ""
     },
     summary: {
       worksheetItems: items.length,
@@ -1046,7 +1049,7 @@ async function applyAddQuantity(airtable, tables, payload) {
   const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
   const fields = record.fields || {};
   const before = wholeQuantityField(fields.quantity_packed);
-  const needed = worksheetNeeded(fields);
+  const needed = actionNeeded(fields, payload);
   const after = Math.min(needed || before + delta, before + delta);
   const nextPackState = needed > 0 && after >= needed ? "packed" : "not_packed";
 
@@ -1079,7 +1082,7 @@ async function applyPackState(airtable, tables, payload) {
   const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
   const fields = record.fields || {};
   const beforeQuantity = wholeQuantityField(fields.quantity_packed);
-  const needed = worksheetNeeded(fields);
+  const needed = actionNeeded(fields, payload);
   const afterQuantity = nextPackState === "packed" ? needed : beforeQuantity;
 
   const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, {
@@ -1113,7 +1116,7 @@ async function applyResolutionState(airtable, tables, payload) {
   const fields = record.fields || {};
   const beforeDecision = stringField(fields.resolution_state);
   const packed = wholeQuantityField(fields.quantity_packed);
-  const needed = worksheetNeeded(fields);
+  const needed = actionNeeded(fields, payload);
   const packStateAfter = packed >= needed && needed > 0 ? "packed" : "not_packed";
   const updateFields = nextResolution === "clear"
     ? { resolution_state: null, pack_state: packStateAfter }
@@ -1162,7 +1165,9 @@ async function applyItemFieldUpdate(airtable, tables, payload) {
   const fields = { ...(record.fields || {}), ...updateFields };
   if (Object.prototype.hasOwnProperty.call(updateFields, "quantity_packed") || Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed")) {
     const packed = wholeQuantityField(fields.quantity_packed);
-    const needed = worksheetNeeded(fields);
+    const needed = Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed")
+      ? worksheetNeeded(fields)
+      : actionNeeded(fields, payload);
     updateFields.pack_state = needed > 0 && packed >= needed ? "packed" : "not_packed";
   }
 
@@ -1323,6 +1328,11 @@ function worksheetNeeded(fields) {
   return wholeQuantityField(fields?.quantity_needed ?? fields?.quantity_needed_dynamic ?? fields?.quantity_base);
 }
 
+function actionNeeded(fields, payload) {
+  const effectiveNeeded = wholeQuantityField(payload?.effectiveNeeded ?? payload?.needed);
+  return effectiveNeeded > 0 ? effectiveNeeded : worksheetNeeded(fields);
+}
+
 function compactFields(fields) {
   return Object.fromEntries(Object.entries(fields).filter(([, value]) => {
     if (value === null) return true;
@@ -1345,9 +1355,12 @@ function normalizeWave(record) {
     deadlineDate: stringField(fields.deadline_date),
     daysTill: numberField(fields.days_till),
     horseCount: numberField(fields.horse_count),
+    horseSanity: numberField(fields.horse_sanity),
+    groomCountMode: stringField(fields.groom_count_mode),
     groomCountManual: numberField(fields.groom_count_manual),
     groomRatio: numberField(fields.groom_ratio),
     groomCountFinal: numberField(fields.groom_count_final),
+    groomSanity: numberField(fields.groom_sanity),
     sortOrder: numberField(fields.sort_order),
     showIds: linkedIds(fields.show),
     includedWeekIds: linkedIds(fields.included_weeks)
@@ -1356,22 +1369,37 @@ function normalizeWave(record) {
 
 function withEffectiveWaveCounts(wave, waveHorses) {
   if (!wave) return null;
-  const currentHorseCount = waveHorses.length;
-  const dynamicGroomCountFinal = wave.groomCountManual > 0
+  const linkedHorseCount = waveHorses.length;
+  const currentHorseCount = wave.horseSanity > 0 ? wave.horseSanity : linkedHorseCount;
+  const manualGroomCount = wave.groomCountManual > 0
     ? wave.groomCountManual
-    : wave.groomRatio > 0
-      ? Math.ceil(currentHorseCount / wave.groomRatio)
-      : wave.groomCountFinal;
+    : slugify(wave.groomCountMode) === "manual" && wave.groomCountFinal > 0
+      ? wave.groomCountFinal
+      : 0;
+  const ratioGroomCount = wave.groomRatio > 0
+    ? Math.ceil(currentHorseCount / wave.groomRatio)
+    : 0;
+  const dynamicGroomCountFinal = manualGroomCount || wave.groomSanity || ratioGroomCount || wave.groomCountFinal;
   const effectiveHorseCount = wave.manualLock ? wave.horseCount : currentHorseCount;
   const effectiveGroomCountFinal = wave.manualLock ? wave.groomCountFinal : dynamicGroomCountFinal;
   return {
     ...wave,
+    linkedHorseCount,
     currentHorseCount,
     currentGroomCountFinal: dynamicGroomCountFinal,
     effectiveHorseCount,
     effectiveGroomCountFinal,
     countsLocked: wave.manualLock,
-    countSource: wave.manualLock ? "manual_lock" : "current_wave_scope"
+    countSource: wave.manualLock ? "manual_lock" : (wave.horseSanity > 0 ? "horse_sanity" : "current_wave_scope"),
+    groomCountSource: wave.manualLock
+      ? "manual_lock"
+      : manualGroomCount
+        ? (wave.groomCountManual > 0 ? "groom_count_manual" : "groom_count_final_manual")
+        : wave.groomSanity
+          ? "groom_sanity"
+          : wave.groomRatio
+            ? "groom_ratio"
+            : "groom_count_final"
   };
 }
 
@@ -1493,9 +1521,10 @@ function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave, w
   const sourceItems = item.sourcePackItemIds
     .map((id) => sourcePackItemLookup.get(id))
     .filter(Boolean);
+  const quantityCalculation = buildQuantityCalculation(item, sourceItems[0], wave, waveHorseIds);
   const effectiveNeeded = wave?.countsLocked
     ? item.quantityNeededFrozen ?? item.needed
-    : item.quantityNeededDynamic ?? item.needed;
+    : calculatedNeededForUnlockedItem(item, quantityCalculation);
   const effectiveItem = {
     ...item,
     needed: wholeQuantityField(effectiveNeeded),
@@ -1507,8 +1536,20 @@ function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave, w
       .map((id) => packListLookup.get(id)?.label || "")
       .filter(Boolean),
     sourceItems,
-    quantityCalculation: buildQuantityCalculation(effectiveItem, sourceItems[0], wave, waveHorseIds)
+    quantityCalculation: {
+      ...quantityCalculation,
+      appliedNeeded: effectiveItem.needed,
+      matchesApplied: Math.abs(numberField(quantityCalculation.calculatedNeeded) - numberField(effectiveItem.needed)) < 0.0001
+    }
   };
+}
+
+function calculatedNeededForUnlockedItem(item, calculation) {
+  const plan = slugify(calculation?.plan);
+  if (["per_groom", "per_horse", "horse_specific", "horse-specific", "quantity"].includes(plan)) {
+    return wholeQuantityField(calculation.calculatedNeeded);
+  }
+  return item.quantityNeededDynamic ?? item.needed;
 }
 
 function normalizeHorseMember(record) {
@@ -1648,7 +1689,13 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set
       plan,
       formula: "per_groom * effective_groom_count_final",
       sourceField: "wec_pack_items.per_groom",
-      multiplierField: wave?.countsLocked ? "wec_pack_waves.groom_count_final" : "current wave groom count",
+      multiplierField: wave?.countsLocked
+        ? "wec_pack_waves.groom_count_final"
+        : wave?.groomCountSource === "groom_count_final_manual"
+          ? "wec_pack_waves.groom_count_final"
+          : wave?.groomCountSource === "groom_sanity"
+            ? "wec_pack_waves.groom_sanity"
+            : "current wave groom count",
       base: perGroom,
       multiplier: groomCount,
       calculatedNeeded,
@@ -1667,7 +1714,11 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set
       plan,
       formula: "per_horse * effective_horse_count",
       sourceField: "wec_pack_items.per_horse",
-      multiplierField: wave?.countsLocked ? "wec_pack_waves.horse_count" : "current wave horse count",
+      multiplierField: wave?.countsLocked
+        ? "wec_pack_waves.horse_count"
+        : wave?.countSource === "horse_sanity"
+          ? "wec_pack_waves.horse_sanity"
+          : "current wave horse count",
       base: perHorse,
       multiplier: horseCount,
       calculatedNeeded,

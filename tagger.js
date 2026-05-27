@@ -621,6 +621,31 @@ async function airtableCreateRecord(table, fields) {
   return json;
 }
 
+function unknownAirtableFieldName(error) {
+  const msg = String(error?.message || "");
+  const match = msg.match(/Unknown field name:\s*\\?"([^"\\]+)\\?"/i);
+  return match ? match[1] : null;
+}
+
+async function createHeartbeatRecord(fields) {
+  try {
+    return await airtableCreateRecord(TABLE_HEARTBEAT, fields);
+  } catch (e) {
+    const unknownField = unknownAirtableFieldName(e);
+    if (unknownField !== FIELD_SCOPE_STATUS || !(unknownField in fields)) {
+      throw e;
+    }
+    const retryFields = { ...fields };
+    delete retryFields[unknownField];
+    logWarn("heartbeat_create_retry_without_optional_field", {
+      table: TABLE_HEARTBEAT,
+      omitted_field: unknownField,
+      error_message: String(e?.message || e).slice(0, 240),
+    });
+    return await airtableCreateRecord(TABLE_HEARTBEAT, retryFields);
+  }
+}
+
 async function airtableUpdateRecord(table, recordId, fields) {
   const res = await fetchWithRetry(`${airtableUrl(table)}/${recordId}`, {
     method: "PATCH",
@@ -1373,7 +1398,7 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
     return { id: "recDRYRUNHEARTBEAT", fields };
   }
 
-  return await airtableCreateRecord(TABLE_HEARTBEAT, fields);
+  return await createHeartbeatRecord(fields);
 }
 
 function persistLatestHeartbeatContext(heartbeatRecord, appCtx, mode) {

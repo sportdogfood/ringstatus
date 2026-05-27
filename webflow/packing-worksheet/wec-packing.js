@@ -42,7 +42,7 @@
       if (!response.ok || !payload.ok) {
         throw new Error(payload.detail || payload.error || `state_${response.status}`);
       }
-      state.data = payload;
+      state.data = normalizeStatePayload(payload);
       if (!state.didSetInitialTab) {
         state.activeTab = "overview";
         state.didSetInitialTab = true;
@@ -259,6 +259,7 @@
     await postAction({
       action: "update_item_fields",
       itemId,
+      effectiveNeeded: item.needed,
       fields
     }, () => {
       delete state.inlineEditValues[inlineEditKey(itemId, "lp-row-title")];
@@ -293,6 +294,7 @@
         action: "add_quantity",
         itemId,
         quantityDelta,
+        effectiveNeeded: item.needed,
         notes: state.actionNotes[itemId] || ""
       }, null, {
         pendingKey,
@@ -311,6 +313,7 @@
         action,
         itemId,
         packState,
+        effectiveNeeded: item.needed,
         confirmed: packState === "packed",
         notes: state.actionNotes[itemId] || ""
       });
@@ -325,6 +328,7 @@
         action,
         itemId,
         resolutionState,
+        effectiveNeeded: item.needed,
         confirmed: true,
         notes: state.actionNotes[itemId] || ""
       });
@@ -387,7 +391,7 @@
         throw new Error(result.detail || result.error || `save_${response.status}`);
       }
       if (typeof afterSave === "function") afterSave(result);
-      state.data = result.state || state.data;
+      state.data = normalizeStatePayload(result.state || state.data);
       if (options.preserveItemQuantities) preserveItemQuantities(options.preserveItemQuantities);
       state.saveMessage = `Saved: ${new Date().toLocaleString()}`;
     } catch (error) {
