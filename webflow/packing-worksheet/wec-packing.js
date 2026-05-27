@@ -559,16 +559,21 @@
 
   function totalsRowHtml(item) {
     return editGroupHtml("Totals", `
-      <span class="lp-edit-choice-row packing-inline-choices packing-totals">
-        ${totalPillHtml("Need", quantityLabel(item.needed, item.unit))}
-        ${totalPillHtml("Packed", quantityLabel(item.packed, item.unit))}
-        ${totalPillHtml("Left", quantityLabel(item.left, item.unit))}
+      <span class="packing-totals">
+        ${totalBoxHtml("need", item.needed)}
+        ${totalBoxHtml("packed", item.packed)}
+        ${totalBoxHtml("left", item.left)}
       </span>
     `, "packing-totals-row");
   }
 
-  function totalPillHtml(label, value) {
-    return `<span class="lp-edit-pill packing-static-pill">${escapeHtml(label)} ${escapeHtml(value)}</span>`;
+  function totalBoxHtml(label, value) {
+    return `
+      <span class="packing-total-box">
+        <span class="packing-total-value">${escapeHtml(quantityDisplay(value))}</span>
+        <span class="packing-total-label">${escapeHtml(label)}</span>
+      </span>
+    `;
   }
 
   function statusControlHtml(item) {
@@ -591,7 +596,7 @@
   function packedControlHtml(item) {
     return editGroupHtml("Packed", `
       <span class="packing-add-control">
-        <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="Add qty" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
+        <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
         <button class="lp-edit-pill" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}">ADD</button>
       </span>
     `);
@@ -622,11 +627,11 @@
   }
 
   function decisionControlHtml(item) {
-    const decisions = ["max", "kill", "purchase_onsite", "unresolved"];
+    const decisions = ["max", "kill", "purchase_onsite"];
     return editGroupHtml("Decision", `
       <span class="lp-edit-choice-row packing-inline-choices packing-decision-choices">
         ${decisions.map((decision) => choiceButtonHtml({
-          label: displayLabel(decision).toUpperCase(),
+          label: decision === "purchase_onsite" ? "ONSITE" : displayLabel(decision).toUpperCase(),
           active: item.resolutionState === decision,
           attrs: `data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="${escapeAttr(decision)}"`
         })).join("")}

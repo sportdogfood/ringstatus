@@ -2521,6 +2521,7 @@ body {
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-field-grid {
   display: grid;
   width: 100%;
+  gap: 3px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) [data-th-record] {
@@ -2964,13 +2965,61 @@ body {
 
 :is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row.th-detail-edit {
   width: 100%;
-  height: 63px;
-  max-height: 63px;
+  min-height: 63px;
+  height: auto;
+  max-height: none;
+  align-content: start;
+  row-gap: 3px;
 }
 
 :is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row.th-detail-edit.is-wide {
   height: auto;
   max-height: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-totals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 86px));
+  gap: 6px;
+  align-items: start;
+  justify-content: start;
+  max-width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-total-box {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-total-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 86px;
+  height: 40px;
+  min-height: 40px;
+  padding: 6px 9px;
+  border: 1px solid rgba(24, 31, 29, 0.2);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(24, 31, 29, 0.04);
+  color: var(--lp-ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 0.95em;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-total-label {
+  color: var(--lp-ink);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-transform: lowercase;
 }
 
 :is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row.th-detail-note {
