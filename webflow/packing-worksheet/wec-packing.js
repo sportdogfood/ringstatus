@@ -95,6 +95,13 @@
       return;
     }
 
+    const printHorseAction = event.target.closest("[data-print-horse]");
+    if (printHorseAction) {
+      event.preventDefault();
+      printHorseList(printHorseAction.dataset.printHorse);
+      return;
+    }
+
     const printAction = event.target.closest("[data-print-section]");
     if (printAction) {
       event.preventDefault();
@@ -519,6 +526,9 @@
       <section class="lp-section-block packing-theme-horses">
         ${sectionTitleHtml("Horses", "horses")}
         <div class="lp-list">
+          <div class="lp-row is-static packing-horse-label-row">
+            <span class="lp-row-title">ACTIVE</span>
+          </div>
           ${rows.length ? rows.map(horseRowHtml).join("") : emptyRowHtml("No horses")}
         </div>
       </section>
@@ -580,10 +590,17 @@
   }
 
   function horseRowHtml(horse) {
+    const progress = horseProgress(horse);
     return `
-      <button class="lp-row packing-row packing-horse-row" type="button" data-horse-detail="${escapeAttr(horse.id)}">
-        <span class="lp-row-title">${escapeHtml(horse.name || horse.showName || "Unnamed horse")}</span>
-      </button>
+      <div class="lp-row packing-row packing-horse-row" data-horse-detail="${escapeAttr(horse.id)}">
+        <span class="packing-overview-tab-trigger packing-horse-detail-trigger">
+          <span class="packing-progress" aria-label="${escapeAttr(`${progress.percent}% packed`)}">
+            <span class="packing-progress-fill" style="width: ${progress.percent}%"></span>
+          </span>
+          <span class="lp-row-title">${escapeHtml(horseDisplayName(horse))}</span>
+        </span>
+        <button class="lp-filter-toggle packing-print-button" type="button" data-print-horse="${escapeAttr(horse.id)}">PRINT LIST</button>
+      </div>
     `;
   }
 
@@ -619,6 +636,27 @@
 
     printWindow.document.open();
     printWindow.document.write(printDocumentHtml(title, printBodyHtml(target)));
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.setTimeout(() => {
+      printWindow.print();
+    }, 250);
+  }
+
+  function printHorseList(horseId) {
+    if (!state.data) return;
+    const horse = horses().find((row) => row.id === horseId);
+    if (!horse) return;
+    const title = `${horseDisplayName(horse)} Packing List`;
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      state.saveMessage = "Allow pop-ups to print this list.";
+      render();
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(printDocumentHtml(title, printHorsePackingPageHtml(horse)));
     printWindow.document.close();
     printWindow.focus();
     printWindow.setTimeout(() => {
@@ -721,6 +759,48 @@
           ${printHorseColumnHtml("Horses", columns[1])}
         </div>
       </section>
+    `;
+  }
+
+  function printHorsePackingPageHtml(horse) {
+    const rows = horseItemRows(horse);
+    const columns = splitRows(rows);
+    const progress = horseProgress(horse);
+    return `
+      <section class="packing-print-page">
+        <header class="packing-print-head">
+          <h1>${escapeHtml(horseDisplayName(horse))}</h1>
+          <p>${escapeHtml(currentWaveLabel())} | ${progress.percent}% packed | ${escapeHtml(new Date().toLocaleDateString())}</p>
+        </header>
+        <div class="packing-print-columns">
+          ${printHorsePackingColumnHtml("Items", columns[0])}
+          ${printHorsePackingColumnHtml("Items", columns[1])}
+        </div>
+      </section>
+    `;
+  }
+
+  function printHorsePackingColumnHtml(title, rows) {
+    return `
+      <section class="packing-print-list">
+        <h2>${escapeHtml(title)}</h2>
+        ${rows.length ? rows.map(printHorsePackingItemHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+      </section>
+    `;
+  }
+
+  function printHorsePackingItemHtml(row) {
+    const needed = number(row.member.needed);
+    const packed = number(row.member.packed);
+    const left = Math.max(0, needed - packed);
+    return `
+      <div class="packing-print-item">
+        <div class="packing-print-item-main">
+          <strong>${escapeHtml(displayLabel(row.item.name || "Unnamed item"))}</strong>
+          <span>Need: ${escapeHtml(quantityDisplay(needed))} | Packed: ${escapeHtml(quantityDisplay(packed))} | Left: ${escapeHtml(quantityDisplay(left))}</span>
+        </div>
+        <b>${escapeHtml(isHorseMemberPacked(row.member) ? "PACKED" : `LEFT - ${quantityDisplay(left || needed)}`)}</b>
+      </div>
     `;
   }
 
@@ -1159,8 +1239,36 @@
     return items().flatMap((item) => Array.isArray(item.horseMembers) ? item.horseMembers : []);
   }
 
+  function horseProgress(horse) {
+    const rows = horseItemRows(horse);
+    return {
+      done: rows.filter((row) => isHorseMemberPacked(row.member)).length,
+      rows: rows.length,
+      percent: progressPercent(rows.filter((row) => isHorseMemberPacked(row.member)).length, rows.length)
+    };
+  }
+
+  function horseItemRows(horse) {
+    return items().flatMap((item) => {
+      const members = Array.isArray(item.horseMembers) ? item.horseMembers : [];
+      return members
+        .filter((member) => horseMemberBelongsToHorse(member, horse))
+        .map((member) => ({ item, member }));
+    });
+  }
+
+  function horseMemberBelongsToHorse(member, horse) {
+    if (!member || !horse) return false;
+    if (Array.isArray(member.horseIds) && member.horseIds.includes(horse.id)) return true;
+    return themeKey(member.barnName) === themeKey(horseDisplayName(horse));
+  }
+
   function isHorseMemberPacked(member) {
     return member.horsePackState === "packed" || number(member.packed) >= number(member.needed);
+  }
+
+  function horseDisplayName(horse) {
+    return horse.name || horse.barnName || horse.showName || "Unnamed horse";
   }
 
   function lists() {
