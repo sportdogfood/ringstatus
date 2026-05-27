@@ -16,6 +16,7 @@
     detailId: "",
     didSetInitialTab: false,
     activeListByTab: {},
+    searchBySection: {},
     inlineEditByList: {},
     inlineEditValues: {},
     addQty: {},
@@ -150,6 +151,19 @@
   }
 
   function handleInput(event) {
+    const sectionSearch = event.target.closest("[data-section-search]");
+    if (sectionSearch) {
+      const selectionStart = sectionSearch.selectionStart ?? sectionSearch.value.length;
+      const selectionEnd = sectionSearch.selectionEnd ?? sectionSearch.value.length;
+      state.searchBySection[sectionSearch.dataset.sectionSearch] = sectionSearch.value;
+      render({
+        focusSearchKey: sectionSearch.dataset.sectionSearch,
+        selectionStart,
+        selectionEnd
+      });
+      return;
+    }
+
     const addQty = event.target.closest("[data-add-qty]");
     if (addQty) {
       state.addQty[addQty.dataset.addQty] = addQty.value;
@@ -300,7 +314,7 @@
     renderDetail();
   }
 
-  function render() {
+  function render(options = {}) {
     root.innerHTML = `
       <div class="lp-shell">
         <header class="lp-header">
@@ -324,6 +338,17 @@
       </div>
     `;
     renderDetail();
+    if (options.focusSearchKey) restoreSearchFocus(options);
+  }
+
+  function restoreSearchFocus(options) {
+    const input = Array.from(root.querySelectorAll("[data-section-search]"))
+      .find((element) => element.dataset.sectionSearch === options.focusSearchKey);
+    if (!input) return;
+    input.focus({ preventScroll: true });
+    if (typeof input.setSelectionRange === "function") {
+      input.setSelectionRange(options.selectionStart, options.selectionEnd);
+    }
   }
 
   function statusLine() {
@@ -389,7 +414,9 @@
   }
 
   function overviewHtml() {
-    const rows = tabGroups().map((summary) => {
+    const searchKey = "overview";
+    const summaries = filterRows(tabGroups(), searchKey, overviewSearchText);
+    const rows = summaries.map((summary) => {
       const percent = progressPercent(summary.done, summary.rows);
       return `
         <div class="lp-row packing-row packing-overview-row">
@@ -408,7 +435,8 @@
       <section class="lp-section-block packing-theme-overview">
         ${sectionTitleHtml(currentWaveLabel(), "overview")}
         <div class="lp-list">
-          ${state.data.needsGeneration ? noWaveRowHtml() : rows}
+          ${sectionSearchHtml(searchKey)}
+          ${state.data.needsGeneration ? noWaveRowHtml() : rows || emptyRowHtml("No rows")}
         </div>
       </section>
     `;
@@ -441,7 +469,7 @@
       <section class="lp-section-block ${themeClasses(group.id)}">
         ${sectionTitleHtml(group.label, group.id)}
         ${listSwitcherHtml(group.id, groupLists, activeList.id)}
-        ${listRowsHtml(activeList, false)}
+        ${listRowsHtml(activeList, group.id)}
       </section>
     `;
   }
@@ -451,16 +479,17 @@
     return `
       <section class="lp-section-block ${themeClasses(list.id)}">
         ${sectionTitleHtml(list.label, list.id)}
-        ${listRowsHtml(list, false)}
+        ${listRowsHtml(list, list.id)}
       </section>
     `;
   }
 
-  function listRowsHtml(list, includeLabel) {
-    const rows = items().filter((item) => itemBelongsToList(item, list.id));
+  function listRowsHtml(list, searchKey) {
+    const rows = filterRows(items().filter((item) => itemBelongsToList(item, list.id)), searchKey, itemSearchText);
     const editMode = state.inlineEditByList[list.id] || {};
     return `
       <div class="lp-list">
+        ${sectionSearchHtml(searchKey)}
         ${listLabelRowHtml(list)}
         ${rows.length ? rows.map((item) => itemRowHtml(item, editMode)).join("") : emptyRowHtml("No rows")}
       </div>
@@ -521,13 +550,15 @@
   }
 
   function horsesHtml() {
-    const rows = activeWaveHorses();
+    const searchKey = "horses";
+    const rows = filterRows(activeWaveHorses(), searchKey, horseSearchText);
     return `
       <section class="lp-section-block packing-theme-horses">
         ${sectionTitleHtml("Horses", "horses")}
         <div class="lp-list">
+          ${sectionSearchHtml(searchKey)}
           <div class="lp-row is-static packing-horse-label-row">
-            <span class="lp-row-title">ACTIVE</span>
+            <span class="lp-row-title">${escapeHtml(displayLabel(`${currentWaveLabel()} horses`))}</span>
           </div>
           ${rows.length ? rows.map(horseRowHtml).join("") : emptyRowHtml("No horses")}
         </div>
@@ -545,6 +576,44 @@
         </span>
       </div>
     `;
+  }
+
+  function sectionSearchHtml(searchKey) {
+    return `
+      <div class="packing-section-search">
+        <input class="lp-edit-input packing-section-search-input" type="search" placeholder="Search this section" value="${escapeAttr(sectionSearchValue(searchKey))}" data-section-search="${escapeAttr(searchKey)}">
+      </div>
+    `;
+  }
+
+  function sectionSearchValue(searchKey) {
+    return state.searchBySection[searchKey] || "";
+  }
+
+  function filterRows(rows, searchKey, textGetter) {
+    const query = sectionSearchValue(searchKey).trim().toLowerCase();
+    if (!query) return rows;
+    return rows.filter((row) => textGetter(row).toLowerCase().includes(query));
+  }
+
+  function overviewSearchText(summary) {
+    return [summary.label, summary.id].filter(Boolean).join(" ");
+  }
+
+  function itemSearchText(item) {
+    return [
+      item.name,
+      item.itemId,
+      item.location,
+      item.listPlanLabel,
+      ...(Array.isArray(item.packListLabels) ? item.packListLabels : []),
+      ...(Array.isArray(item.horseMembers) ? item.horseMembers.map((member) => member.barnName) : []),
+      ...(Array.isArray(item.sourceItems) ? item.sourceItems.map((source) => `${source.appName || ""} ${source.longDescription || ""}`) : [])
+    ].filter(Boolean).join(" ");
+  }
+
+  function horseSearchText(horse) {
+    return [horse.name, horse.barnName, horse.showName, horse.notes].filter(Boolean).join(" ");
   }
 
   function itemRowHtml(item, editMode) {
@@ -1227,7 +1296,38 @@
   }
 
   function activeWaveHorses() {
-    return horses().filter((horse) => horse.active || String(horse.recordState || "").toLowerCase() === "active");
+    const members = horseMemberRows();
+    if (!members.length) {
+      return horses().filter((horse) => horse.active || String(horse.recordState || "").toLowerCase() === "active");
+    }
+
+    const horseIds = new Set();
+    const horseKeys = new Set();
+    const sortByHorseId = new Map();
+    const sortByHorseKey = new Map();
+
+    for (const member of members) {
+      const sortOrder = number(member.sortOrder);
+      if (Array.isArray(member.horseIds)) {
+        for (const horseId of member.horseIds) {
+          horseIds.add(horseId);
+          if (!sortByHorseId.has(horseId)) sortByHorseId.set(horseId, sortOrder);
+        }
+      }
+      const horseKey = themeKey(member.barnName);
+      if (horseKey) {
+        horseKeys.add(horseKey);
+        if (!sortByHorseKey.has(horseKey)) sortByHorseKey.set(horseKey, sortOrder);
+      }
+    }
+
+    return horses()
+      .filter((horse) => horseIds.has(horse.id) || horseKeys.has(themeKey(horseDisplayName(horse))))
+      .map((horse) => ({
+        ...horse,
+        waveSortOrder: sortByHorseId.get(horse.id) ?? sortByHorseKey.get(themeKey(horseDisplayName(horse))) ?? number(horse.sortOrder)
+      }))
+      .sort((a, b) => number(a.waveSortOrder) - number(b.waveSortOrder) || horseDisplayName(a).localeCompare(horseDisplayName(b)));
   }
 
   function horsePackingPercent() {
@@ -1236,7 +1336,15 @@
   }
 
   function horseMemberRows() {
-    return items().flatMap((item) => Array.isArray(item.horseMembers) ? item.horseMembers : []);
+    return items()
+      .flatMap((item) => Array.isArray(item.horseMembers) ? item.horseMembers : [])
+      .filter(horseMemberBelongsToCurrentWave);
+  }
+
+  function horseMemberBelongsToCurrentWave(member) {
+    const waveId = currentWaveId();
+    if (!waveId || !Array.isArray(member.packWaveIds) || !member.packWaveIds.length) return true;
+    return member.packWaveIds.includes(waveId);
   }
 
   function horseProgress(horse) {
@@ -1252,6 +1360,7 @@
     return items().flatMap((item) => {
       const members = Array.isArray(item.horseMembers) ? item.horseMembers : [];
       return members
+        .filter(horseMemberBelongsToCurrentWave)
         .filter((member) => horseMemberBelongsToHorse(member, horse))
         .map((member) => ({ item, member }));
     });
@@ -1269,6 +1378,10 @@
 
   function horseDisplayName(horse) {
     return horse.name || horse.barnName || horse.showName || "Unnamed horse";
+  }
+
+  function currentWaveId() {
+    return state.data?.wave?.id || state.data?.wave?.packWaveId || "";
   }
 
   function lists() {
@@ -1345,8 +1458,8 @@
   function tabs() {
     return [
       { id: "overview", label: currentWaveLabel() },
-      ...tabGroups(),
-      { id: "horses", label: "Horses" }
+      { id: "horses", label: "Horses" },
+      ...tabGroups()
     ];
   }
 

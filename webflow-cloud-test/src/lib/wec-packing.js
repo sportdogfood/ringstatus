@@ -878,6 +878,8 @@ function normalizeWave(record) {
     waveType: stringField(fields.wave_type),
     active: !!fields.active,
     manualLock: !!fields.manual_lock,
+    deadlineDate: stringField(fields.deadline_date),
+    daysTill: numberField(fields.days_till),
     horseCount: numberField(fields.horse_count),
     groomCountManual: numberField(fields.groom_count_manual),
     groomRatio: numberField(fields.groom_ratio),

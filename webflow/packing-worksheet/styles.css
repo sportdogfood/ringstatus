@@ -2301,9 +2301,32 @@ body {
   color: #ffffff;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-print-button {
+  min-width: 86px;
+  letter-spacing: 0;
+  text-align: center;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-list {
   padding-top: 8px;
   padding-bottom: 8px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-section-search {
+  padding: 12px 28px;
+  border-bottom: 1px solid var(--lp-border);
+  background: var(--lp-surface);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-section-search-input {
+  width: 100%;
+  max-width: none;
+  height: 54px;
+  min-height: 54px;
+  padding: 0 18px;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-row-meta {
@@ -2500,6 +2523,16 @@ body {
 }
 
 @media (max-width: 640px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-section-search {
+    padding: 10px 14px;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-section-search-input {
+    height: 48px;
+    min-height: 48px;
+    font-size: 20px;
+  }
+
   :is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-row,
   :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-row,
   :is(#packing-app, #tack-horses-app, #hps-app) .packing-list-action-row {
