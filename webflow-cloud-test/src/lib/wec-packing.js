@@ -293,6 +293,11 @@ function printItemBelongsToList(item, listId) {
 function printPackingPageHtml(report, title, sections) {
   const rows = sections.flatMap((section) => section.rows);
   const percent = progressPercent(rows.filter(isSatisfied).length, rows.length);
+  const chunks = printSectionChunks(sections);
+  return chunks.map((chunk) => printPackingPageChunkHtml(report, title, chunk, percent)).join("");
+}
+
+function printPackingPageChunkHtml(report, title, sections, percent) {
   return `
     <section class="packing-print-page">
       <header class="packing-print-head">
@@ -308,7 +313,7 @@ function printPackingPageHtml(report, title, sections) {
 
 function printListColumnHtml(section) {
   return `
-    <section class="packing-print-list">
+    <section class="packing-print-list ${printDensityClass(section.rows)}">
       <h2>${escapeHtml(section.title)}</h2>
       ${section.rows.length ? section.rows.map(printItemRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
     </section>
@@ -316,23 +321,24 @@ function printListColumnHtml(section) {
 }
 
 function printItemRowHtml(item) {
-  const horseNames = (item.horseMembers || []).map((member) => member.barnName).filter(Boolean).join(", ");
+  const packed = isSatisfied(item);
   return `
-    <div class="packing-print-item">
+    <div class="packing-print-item ${packed ? "is-packed" : ""}">
       <div class="packing-print-item-main">
-        <strong>${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
-        ${horseNames ? `<em>${escapeHtml(horseNames)}</em>` : ""}
+        <strong class="packing-print-item-name">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
       </div>
-      <b>${escapeHtml(printItemStatus(item))}</b>
+      <span class="packing-print-metrics">${printQuantityMetricsHtml(item.needed, item.packed, item.left)}</span>
+      <span class="packing-print-scratch" aria-hidden="true"></span>
     </div>
   `;
 }
 
-function printItemStatus(item) {
-  if (item.resolutionState) return resolutionDisplayLabel(item.resolutionState);
-  if (item.packState === "packed" || (numberField(item.left) === 0 && numberField(item.needed) > 0)) return "PACKED";
-  if (numberField(item.packed) > 0) return `LEFT: ${quantityDisplay(item.left)}`;
-  return `NEED: ${quantityDisplay(item.needed)}`;
+function printQuantityMetricsHtml(needed, packed, left) {
+  return [
+    `Need: ${quantityDisplay(needed)}`,
+    `Packed: ${quantityDisplay(packed)}`,
+    `Left: ${quantityDisplay(left)}`
+  ].map(escapeHtml).join(" ");
 }
 
 function printHorsesPageHtml(report) {
@@ -376,7 +382,7 @@ function printHorsePackingPageHtml(report, horseId) {
 
 function printHorsePackingColumnHtml(title, rows) {
   return `
-    <section class="packing-print-list">
+    <section class="packing-print-list ${printDensityClass(rows)}">
       <h2>${escapeHtml(title)}</h2>
       ${rows.length ? rows.map(printHorsePackingItemHtml).join("") : printEmptyPrintSectionHtml("No rows")}
     </section>
@@ -384,19 +390,24 @@ function printHorsePackingColumnHtml(title, rows) {
 }
 
 function printHorsePackingItemHtml(row) {
+  const needed = numberField(row.member?.needed);
+  const packed = numberField(row.member?.packed);
+  const left = Math.max(0, needed - packed);
+  const done = isHorseMemberPacked(row.member);
   return `
-    <div class="packing-print-item">
+    <div class="packing-print-item ${done ? "is-packed" : ""}">
       <div class="packing-print-item-main">
-        <strong>${escapeHtml(displayLabel(row.item?.name || "Unnamed item"))}</strong>
+        <strong class="packing-print-item-name">${escapeHtml(displayLabel(row.item?.name || "Unnamed item"))}</strong>
       </div>
-      <b>${escapeHtml(isHorseMemberPacked(row.member) ? "PACKED" : "NOT PACKED")}</b>
+      <span class="packing-print-metrics">${printQuantityMetricsHtml(needed, packed, left)}</span>
+      <span class="packing-print-scratch" aria-hidden="true"></span>
     </div>
   `;
 }
 
 function printHorseColumnHtml(title, rows) {
   return `
-    <section class="packing-print-list">
+    <section class="packing-print-list ${printDensityClass(rows)}">
       <h2>${escapeHtml(title)}</h2>
       ${rows.length ? rows.map((horse) => `
         <div class="packing-print-horse">
@@ -453,6 +464,20 @@ function splitRows(rows) {
   return [rows.slice(0, middle), rows.slice(middle)];
 }
 
+function printSectionChunks(sections) {
+  const chunks = [];
+  for (let index = 0; index < sections.length; index += 2) {
+    chunks.push(sections.slice(index, index + 2));
+  }
+  return chunks.length ? chunks : [[]];
+}
+
+function printDensityClass(rows = []) {
+  if (rows.length >= 22) return "is-ultra-dense";
+  if (rows.length >= 14) return "is-dense";
+  return "";
+}
+
 function printEmptyPrintSectionHtml(label) {
   return `<div class="packing-print-empty">${escapeHtml(label)}</div>`;
 }
@@ -460,7 +485,11 @@ function printEmptyPrintSectionHtml(label) {
 function printStatusLine(report, percent) {
   const wave = displayLabel(report.wave?.wave || "wave_one");
   const days = report.wave?.daysTill ? `${quantityDisplay(report.wave.daysTill)} days remaining` : "days remaining not set";
-  return `${wave} | ${days} | ${percent}% packed | ${new Date().toLocaleDateString()}`;
+  return `${wave} | ${days} | ${percent}% packed | Printed: ${printDateDisplay()}`;
+}
+
+function printDateDisplay() {
+  return new Date().toLocaleDateString("en-US", { timeZone: "America/New_York" });
 }
 
 function printDocumentHtml(title, body) {
@@ -529,6 +558,7 @@ function printStyles() {
       border-radius: 8px;
       overflow: hidden;
       break-inside: avoid;
+      page-break-inside: avoid;
       background: #ffffff;
     }
     .packing-print-list h2 {
@@ -544,11 +574,14 @@ function printStyles() {
     .packing-print-item,
     .packing-print-horse {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) auto 0.42in;
       gap: 8px;
       align-items: center;
       padding: 7px 10px;
       border-bottom: 1px solid #eeeeee;
+    }
+    .packing-print-horse {
+      grid-template-columns: minmax(0, 1fr);
     }
     .packing-print-item:last-child,
     .packing-print-horse:last-child { border-bottom: 0; }
@@ -564,23 +597,54 @@ function printStyles() {
       line-height: 1;
       text-transform: uppercase;
     }
-    .packing-print-item em {
-      color: #333333;
-      font-style: normal;
-      font-size: 9px;
-      line-height: 1.1;
+    .packing-print-item.is-packed .packing-print-item-name {
+      opacity: 0.6;
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
     }
-    .packing-print-item b,
-    .packing-print-horse b {
-      padding: 4px 7px;
-      border-radius: 999px;
-      background: #46332b;
-      color: #ffffff;
-      font-size: 8px;
+    .packing-print-metrics {
+      color: #333333;
+      font-size: 9px;
       font-weight: 600;
-      line-height: 1;
-      text-transform: uppercase;
+      line-height: 1.1;
+      text-align: right;
       white-space: nowrap;
+    }
+    .packing-print-scratch {
+      display: block;
+      width: 0.42in;
+      height: 0.2in;
+      border: 1px solid #cfcfcf;
+      border-radius: 3px;
+      background: #ffffff;
+    }
+    .packing-print-list.is-dense h2 {
+      padding: 6px 8px;
+      font-size: 11px;
+    }
+    .packing-print-list.is-dense .packing-print-item,
+    .packing-print-list.is-dense .packing-print-horse {
+      padding: 5px 8px;
+      gap: 6px;
+    }
+    .packing-print-list.is-ultra-dense h2 {
+      padding: 5px 7px;
+      font-size: 10px;
+    }
+    .packing-print-list.is-ultra-dense .packing-print-item,
+    .packing-print-list.is-ultra-dense .packing-print-horse {
+      padding: 3px 7px;
+      gap: 5px;
+    }
+    .packing-print-list.is-ultra-dense .packing-print-item strong,
+    .packing-print-list.is-ultra-dense .packing-print-horse strong {
+      font-size: 9px;
+    }
+    .packing-print-list.is-ultra-dense .packing-print-metrics {
+      font-size: 7px;
+    }
+    .packing-print-list.is-ultra-dense .packing-print-scratch {
+      height: 0.15in;
     }
     .packing-print-empty {
       padding: 10px;
@@ -810,6 +874,8 @@ export async function actionReport(airtable, requestUrl, payload) {
     result = await applyPackState(airtable, tables, payload);
   } else if (action === "set_resolution") {
     result = await applyResolutionState(airtable, tables, payload);
+  } else if (action === "update_item_fields") {
+    result = await applyItemFieldUpdate(airtable, tables, payload);
   } else if (action === "set_horse_pack_state") {
     result = await applyHorsePackState(airtable, tables, payload);
   } else if (action === "set_horse_record_state") {
@@ -1067,6 +1133,41 @@ async function applyResolutionState(airtable, tables, payload) {
     notes: clean(payload?.notes)
   });
   return { updated, event };
+}
+
+async function applyItemFieldUpdate(airtable, tables, payload) {
+  const itemId = clean(payload?.itemId || payload?.packingItemId);
+  if (!itemId) throw new Error("missing_item_id");
+
+  const incoming = payload?.fields || {};
+  const updateFields = {};
+  if (Object.prototype.hasOwnProperty.call(incoming, "item_name")) {
+    const name = clean(incoming.item_name);
+    if (!name) throw new Error("item_name_required");
+    updateFields.item_name = name;
+  }
+  if (Object.prototype.hasOwnProperty.call(incoming, "quantity_packed")) {
+    const packed = Number(incoming.quantity_packed);
+    if (!Number.isFinite(packed) || packed < 0) throw new Error("quantity_packed_invalid");
+    updateFields.quantity_packed = packed;
+  }
+  if (Object.prototype.hasOwnProperty.call(incoming, "quantity_needed")) {
+    const needed = Number(incoming.quantity_needed);
+    if (!Number.isFinite(needed) || needed < 0) throw new Error("quantity_needed_invalid");
+    updateFields.quantity_needed = needed;
+  }
+  if (!Object.keys(updateFields).length) throw new Error("no_allowed_fields");
+
+  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
+  const fields = { ...(record.fields || {}), ...updateFields };
+  if (Object.prototype.hasOwnProperty.call(updateFields, "quantity_packed") || Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed")) {
+    const packed = numberField(fields.quantity_packed);
+    const needed = worksheetNeeded(fields);
+    updateFields.pack_state = needed > 0 && packed >= needed ? "packed" : "not_packed";
+  }
+
+  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, updateFields);
+  return { updated };
 }
 
 async function applyHorsePackState(airtable, tables, payload) {

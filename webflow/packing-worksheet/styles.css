@@ -2547,6 +2547,14 @@ body {
   cursor: default;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-row.is-inline-editing .packing-inline-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-main {
   display: grid;
   gap: 8px;
@@ -2555,9 +2563,11 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-edit-fields {
   display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
   gap: 8px;
+  margin-left: auto;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-edit-box {
@@ -2575,7 +2585,7 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-title-input {
-  width: min(280px, 100%);
+  width: min(360px, 100%);
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-quantity-input {
@@ -2591,6 +2601,19 @@ body {
   letter-spacing: 0;
   text-align: center;
   text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-save {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-save.is-pending {
+  color: var(--lp-muted);
+  cursor: wait;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-section-title {

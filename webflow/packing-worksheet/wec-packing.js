@@ -132,6 +132,13 @@
       return;
     }
 
+    const inlineSave = event.target.closest("[data-inline-save-item]");
+    if (inlineSave) {
+      event.preventDefault();
+      saveInlineEdit(inlineSave);
+      return;
+    }
+
     if (event.target.closest("[data-inline-edit-field]")) {
       return;
     }
@@ -196,8 +203,71 @@
   function toggleListInlineEdit(listId, field) {
     if (!listId || !field) return;
     state.inlineEditByList[listId] = state.inlineEditByList[listId] || {};
-    state.inlineEditByList[listId][field] = !state.inlineEditByList[listId][field];
+    const editMode = state.inlineEditByList[listId];
+    const nextActive = !editMode[field];
+    if (field === "lp-row-title") {
+      editMode["lp-row-title"] = nextActive;
+      if (nextActive) {
+        editMode.quantity_packed_override = false;
+        editMode.quantity_needed_override = false;
+      }
+    } else {
+      editMode[field] = nextActive;
+      if (nextActive) editMode["lp-row-title"] = false;
+    }
     render();
+  }
+
+  async function saveInlineEdit(button) {
+    const itemId = button.dataset.inlineSaveItem;
+    const listId = button.dataset.listId;
+    const item = items().find((row) => row.id === itemId);
+    if (!item || !listId) return;
+    const editMode = state.inlineEditByList[listId] || {};
+    const fields = {};
+    if (editMode["lp-row-title"]) {
+      const itemName = String(inlineEditValue(item, "lp-row-title") || "").trim();
+      if (!itemName) {
+        setSaveMessage("Title cannot be blank.");
+        return;
+      }
+      fields.item_name = itemName;
+    }
+    if (editMode.quantity_packed_override) {
+      const packed = Number(inlineEditValue(item, "quantity_packed_override"));
+      if (!Number.isFinite(packed) || packed < 0) {
+        setSaveMessage("Packed must be zero or greater.");
+        return;
+      }
+      fields.quantity_packed = packed;
+    }
+    if (editMode.quantity_needed_override) {
+      const needed = Number(inlineEditValue(item, "quantity_needed_override"));
+      if (!Number.isFinite(needed) || needed < 0) {
+        setSaveMessage("Needed must be zero or greater.");
+        return;
+      }
+      fields.quantity_needed = needed;
+    }
+    if (!Object.keys(fields).length) {
+      setSaveMessage("Choose title, packed, or needed before saving.");
+      return;
+    }
+    const pendingKey = pendingActionKey("update_item_fields", itemId);
+    if (state.pendingActions[pendingKey]) return;
+    state.pendingActions[pendingKey] = "save";
+    await postAction({
+      action: "update_item_fields",
+      itemId,
+      fields
+    }, () => {
+      delete state.inlineEditValues[inlineEditKey(itemId, "lp-row-title")];
+      delete state.inlineEditValues[inlineEditKey(itemId, "quantity_packed_override")];
+      delete state.inlineEditValues[inlineEditKey(itemId, "quantity_needed_override")];
+    }, {
+      pendingKey,
+      message: "Saving item..."
+    });
   }
 
   async function runPackingAction(button) {
@@ -544,7 +614,7 @@
       <div class="lp-list">
         ${listLabelRowHtml(list)}
         ${sectionSearchHtml(searchKey)}
-        ${rows.length ? rows.map((item) => itemRowHtml(item, editMode)).join("") : emptyRowHtml("No rows")}
+        ${rows.length ? rows.map((item) => itemRowHtml(item, editMode, list.id)).join("") : emptyRowHtml("No rows")}
       </div>
     `;
   }
@@ -632,10 +702,10 @@
     `;
   }
 
-  function sectionSearchHtml(searchKey) {
+  function sectionSearchHtml(searchKey, placeholder = "Search this section") {
     return `
       <div class="packing-section-search">
-        <input class="lp-edit-input packing-section-search-input" type="search" placeholder="Search this section" value="${escapeAttr(sectionSearchValue(searchKey))}" data-section-search="${escapeAttr(searchKey)}">
+        <input class="lp-edit-input packing-section-search-input" type="search" placeholder="${escapeAttr(placeholder)}" value="${escapeAttr(sectionSearchValue(searchKey))}" data-section-search="${escapeAttr(searchKey)}">
       </div>
     `;
   }
@@ -670,7 +740,18 @@
     return [horse.name, horse.barnName, horse.showName, horse.notes].filter(Boolean).join(" ");
   }
 
-  function itemRowHtml(item, editMode) {
+  function horseItemSearchText(row) {
+    return [
+      row.item?.name,
+      row.item?.itemId,
+      row.item?.location,
+      row.item?.listPlanLabel,
+      row.member?.barnName,
+      row.member?.notes
+    ].filter(Boolean).join(" ");
+  }
+
+  function itemRowHtml(item, editMode, listId) {
     const hasInlineEdit = !!(editMode?.["lp-row-title"] || editMode?.quantity_packed_override || editMode?.quantity_needed_override);
     const rowTag = hasInlineEdit ? "div" : "button";
     const rowAttrs = hasInlineEdit ? "" : `type="button" data-item-id="${escapeAttr(item.id)}"`;
@@ -678,7 +759,7 @@
       <${rowTag} class="lp-row packing-row ${hasInlineEdit ? "is-inline-editing" : ""}" ${rowAttrs}>
         <span class="packing-inline-main">
           ${itemTitleHtml(item, editMode)}
-          ${inlineEditFieldsHtml(item, editMode)}
+          ${inlineEditControlsHtml(item, editMode, listId)}
         </span>
         <span class="packing-state-stack">
           ${rowTokenHtml(item)}
@@ -695,12 +776,20 @@
     return `<span class="lp-row-title">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</span>`;
   }
 
-  function inlineEditFieldsHtml(item, editMode) {
+  function inlineEditControlsHtml(item, editMode, listId) {
     const fields = [];
     if (editMode?.quantity_packed_override) fields.push(inlineQuantityInputHtml(item, "quantity_packed_override", "PACKED"));
     if (editMode?.quantity_needed_override) fields.push(inlineQuantityInputHtml(item, "quantity_needed_override", "NEEDED"));
-    if (!fields.length) return "";
-    return `<span class="packing-inline-edit-fields">${fields.join("")}</span>`;
+    if (!editMode?.["lp-row-title"] && !fields.length) return "";
+    const pending = isPendingAction("update_item_fields", item.id);
+    return `
+      <span class="packing-inline-edit-fields">
+        ${fields.join("")}
+        <button class="packing-hottext packing-inline-save ${pending ? "is-pending" : ""}" type="button" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}" ${pending ? "disabled" : ""}>
+          ${pending ? "SAVING" : "SAVE"}
+        </button>
+      </span>
+    `;
   }
 
   function inlineQuantityInputHtml(item, field, label) {
@@ -825,11 +914,16 @@
   function printPackingPageHtml(title, sections) {
     const rows = sections.flatMap((section) => section.rows);
     const percent = progressPercent(rows.filter(isDone).length, rows.length);
+    const chunks = printSectionChunks(sections);
+    return chunks.map((chunk) => printPackingPageChunkHtml(title, chunk, percent)).join("");
+  }
+
+  function printPackingPageChunkHtml(title, sections, percent) {
     return `
       <section class="packing-print-page">
         <header class="packing-print-head">
           <h1>${escapeHtml(displayLabel(title))}</h1>
-          <p>${escapeHtml(statusLine())} | ${percent}% complete | ${escapeHtml(new Date().toLocaleDateString())}</p>
+          <p>${escapeHtml(statusLine())} | ${percent}% packed | Printed: ${escapeHtml(printDateDisplay())}</p>
         </header>
         <div class="packing-print-columns">
           ${sections.length ? sections.map(printListColumnHtml).join("") : printEmptyPrintSectionHtml("No rows")}
@@ -840,7 +934,7 @@
 
   function printListColumnHtml(section) {
     return `
-      <section class="packing-print-list">
+      <section class="packing-print-list ${printDensityClass(section.rows)}">
         <h2>${escapeHtml(section.title)}</h2>
         ${section.rows.length ? section.rows.map(printItemRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
       </section>
@@ -848,23 +942,24 @@
   }
 
   function printItemRowHtml(item) {
-    const horseNames = item.horseMembers?.map((member) => member.barnName).filter(Boolean).join(", ");
+    const packed = isDone(item);
     return `
-      <div class="packing-print-item">
+      <div class="packing-print-item ${packed ? "is-packed" : ""}">
         <div class="packing-print-item-main">
-          <strong>${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
-          ${horseNames ? `<em>${escapeHtml(horseNames)}</em>` : ""}
+          <strong class="packing-print-item-name">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
         </div>
-        <b>${escapeHtml(printItemStatus(item))}</b>
+        <span class="packing-print-metrics">${printQuantityMetricsHtml(item.needed, item.packed, item.left)}</span>
+        <span class="packing-print-scratch" aria-hidden="true"></span>
       </div>
     `;
   }
 
-  function printItemStatus(item) {
-    if (item.resolutionState) return resolutionDisplayLabel(item.resolutionState);
-    if (item.packState === "packed" || (number(item.left) === 0 && number(item.needed) > 0)) return "PACKED";
-    if (number(item.packed) > 0) return `LEFT: ${quantityDisplay(item.left)}`;
-    return `NEED: ${quantityDisplay(item.needed)}`;
+  function printQuantityMetricsHtml(needed, packed, left) {
+    return [
+      `Need: ${quantityDisplay(needed)}`,
+      `Packed: ${quantityDisplay(packed)}`,
+      `Left: ${quantityDisplay(left)}`
+    ].map(escapeHtml).join(" ");
   }
 
   function printHorsesPageHtml() {
@@ -875,7 +970,7 @@
       <section class="packing-print-page">
         <header class="packing-print-head">
           <h1>Horses</h1>
-          <p>${escapeHtml(statusLine())} | ${percent}% packed | ${escapeHtml(new Date().toLocaleDateString())}</p>
+          <p>${escapeHtml(statusLine())} | ${percent}% packed | Printed: ${escapeHtml(printDateDisplay())}</p>
         </header>
         <div class="packing-print-columns">
           ${printHorseColumnHtml("Horses", columns[0])}
@@ -893,7 +988,7 @@
       <section class="packing-print-page">
         <header class="packing-print-head">
           <h1>${escapeHtml(horseDisplayName(horse))}</h1>
-          <p>${escapeHtml(currentWaveLabel())} | ${progress.percent}% packed | ${escapeHtml(new Date().toLocaleDateString())}</p>
+          <p>${escapeHtml(currentWaveLabel())} | ${progress.percent}% packed | Printed: ${escapeHtml(printDateDisplay())}</p>
         </header>
         <div class="packing-print-columns">
           ${printHorsePackingColumnHtml("Items", columns[0])}
@@ -905,7 +1000,7 @@
 
   function printHorsePackingColumnHtml(title, rows) {
     return `
-      <section class="packing-print-list">
+      <section class="packing-print-list ${printDensityClass(rows)}">
         <h2>${escapeHtml(title)}</h2>
         ${rows.length ? rows.map(printHorsePackingItemHtml).join("") : printEmptyPrintSectionHtml("No rows")}
       </section>
@@ -916,19 +1011,21 @@
     const needed = number(row.member.needed);
     const packed = number(row.member.packed);
     const left = Math.max(0, needed - packed);
+    const done = isHorseMemberPacked(row.member);
     return `
-      <div class="packing-print-item">
+      <div class="packing-print-item ${done ? "is-packed" : ""}">
         <div class="packing-print-item-main">
-          <strong>${escapeHtml(displayLabel(row.item.name || "Unnamed item"))}</strong>
+          <strong class="packing-print-item-name">${escapeHtml(displayLabel(row.item.name || "Unnamed item"))}</strong>
         </div>
-        <b>${escapeHtml(isHorseMemberPacked(row.member) ? "PACKED" : `LEFT: ${quantityDisplay(left || needed)}`)}</b>
+        <span class="packing-print-metrics">${printQuantityMetricsHtml(needed, packed, left)}</span>
+        <span class="packing-print-scratch" aria-hidden="true"></span>
       </div>
     `;
   }
 
   function printHorseColumnHtml(title, rows) {
     return `
-      <section class="packing-print-list">
+      <section class="packing-print-list ${printDensityClass(rows)}">
         <h2>${escapeHtml(title)}</h2>
         ${rows.length ? rows.map((horse) => `
           <div class="packing-print-horse">
@@ -942,6 +1039,24 @@
   function splitRows(rows) {
     const middle = Math.ceil(rows.length / 2);
     return [rows.slice(0, middle), rows.slice(middle)];
+  }
+
+  function printSectionChunks(sections) {
+    const chunks = [];
+    for (let index = 0; index < sections.length; index += 2) {
+      chunks.push(sections.slice(index, index + 2));
+    }
+    return chunks.length ? chunks : [[]];
+  }
+
+  function printDensityClass(rows = []) {
+    if (rows.length >= 22) return "is-ultra-dense";
+    if (rows.length >= 14) return "is-dense";
+    return "";
+  }
+
+  function printDateDisplay() {
+    return new Date().toLocaleDateString("en-US", { timeZone: "America/New_York" });
   }
 
   function printEmptyPrintSectionHtml(label) {
@@ -1012,6 +1127,7 @@
         border-radius: 8px;
         overflow: hidden;
         break-inside: avoid;
+        page-break-inside: avoid;
         background: #ffffff;
       }
       .packing-print-list h2 {
@@ -1027,11 +1143,14 @@
       .packing-print-item,
       .packing-print-horse {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 1fr) auto 0.42in;
         gap: 8px;
-        align-items: start;
+        align-items: center;
         padding: 7px 10px;
         border-bottom: 1px solid #eeeeee;
+      }
+      .packing-print-horse {
+        grid-template-columns: minmax(0, 1fr);
       }
       .packing-print-item:last-child,
       .packing-print-horse:last-child { border-bottom: 0; }
@@ -1047,24 +1166,54 @@
         line-height: 1;
         text-transform: uppercase;
       }
-      .packing-print-item span,
-      .packing-print-item em {
-        color: #333333;
-        font-style: normal;
-        font-size: 9px;
-        line-height: 1.1;
+      .packing-print-item.is-packed .packing-print-item-name {
+        opacity: 0.6;
+        text-decoration: line-through;
+        text-decoration-thickness: 1px;
       }
-      .packing-print-item b,
-      .packing-print-horse b {
-        padding: 4px 7px;
-        border-radius: 999px;
-        background: #46332b;
-        color: #ffffff;
-        font-size: 8px;
+      .packing-print-metrics {
+        color: #333333;
+        font-size: 9px;
         font-weight: 600;
-        line-height: 1;
-        text-transform: uppercase;
+        line-height: 1.1;
+        text-align: right;
         white-space: nowrap;
+      }
+      .packing-print-scratch {
+        display: block;
+        width: 0.42in;
+        height: 0.2in;
+        border: 1px solid #cfcfcf;
+        border-radius: 3px;
+        background: #ffffff;
+      }
+      .packing-print-list.is-dense h2 {
+        padding: 6px 8px;
+        font-size: 11px;
+      }
+      .packing-print-list.is-dense .packing-print-item,
+      .packing-print-list.is-dense .packing-print-horse {
+        padding: 5px 8px;
+        gap: 6px;
+      }
+      .packing-print-list.is-ultra-dense h2 {
+        padding: 5px 7px;
+        font-size: 10px;
+      }
+      .packing-print-list.is-ultra-dense .packing-print-item,
+      .packing-print-list.is-ultra-dense .packing-print-horse {
+        padding: 3px 7px;
+        gap: 5px;
+      }
+      .packing-print-list.is-ultra-dense .packing-print-item strong,
+      .packing-print-list.is-ultra-dense .packing-print-horse strong {
+        font-size: 9px;
+      }
+      .packing-print-list.is-ultra-dense .packing-print-metrics {
+        font-size: 7px;
+      }
+      .packing-print-list.is-ultra-dense .packing-print-scratch {
+        height: 0.15in;
       }
       .packing-print-empty {
         padding: 10px;
@@ -1128,7 +1277,8 @@
   function horseDetailHtml(horse) {
     if (!horse) return "";
     const progress = horseProgress(horse);
-    const rows = horseItemRows(horse);
+    const searchKey = `horse-detail:${horse.id}`;
+    const rows = filterRows(horseItemRows(horse), searchKey, horseItemSearchText);
     return `
       <div class="lp-profile-shell packing-detail-shell packing-horse-detail-shell packing-theme-horses">
         <div class="lp-profile-head th-profile-top">
@@ -1150,6 +1300,7 @@
               <div class="lp-row is-static packing-horse-label-row">
                 <span class="lp-row-title">PACKING ITEMS</span>
               </div>
+              ${sectionSearchHtml(searchKey, "Search packing items")}
               <span class="packing-horse-bindings packing-horse-item-list">
                 ${rows.length ? rows.map(horseDetailItemRowHtml).join("") : `<span class="packing-horse-binding-row"><span class="packing-horse-binding-name">No horse-specific items</span></span>`}
               </span>
@@ -1521,7 +1672,11 @@
         .filter(horseMemberBelongsToCurrentWave)
         .filter((member) => horseMemberBelongsToHorse(member, horse))
         .map((member) => ({ item, member }));
-    });
+    }).sort(compareHorseItemRows);
+  }
+
+  function compareHorseItemRows(a, b) {
+    return displayLabel(a.item?.name || "").localeCompare(displayLabel(b.item?.name || ""), undefined, { sensitivity: "base" });
   }
 
   function horseMemberBelongsToHorse(member, horse) {
@@ -1711,6 +1866,8 @@
 
   function deadlineDisplay(value) {
     if (value === null || value === undefined || value === "") return "Not set";
+    const dateOnly = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (dateOnly) return `${Number(dateOnly[2])}/${Number(dateOnly[3])}/${dateOnly[1]}`;
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return String(value);
     return date.toLocaleDateString();
