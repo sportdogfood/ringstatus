@@ -1932,23 +1932,27 @@ function clean(value) {
 }
 
 function compareWorksheetRows(a, b) {
-  return compareNumber(a.sortOrder, b.sortOrder) || a.name.localeCompare(b.name);
+  return compareText(a.name, b.name) || compareNumber(a.sortOrder, b.sortOrder) || compareText(a.id, b.id);
 }
 
 function comparePackLists(a, b) {
-  return a.label.localeCompare(b.label);
+  return compareText(a.label, b.label) || compareText(a.id, b.id);
 }
 
 function compareHorseRows(a, b) {
-  return compareNumber(a.sortOrder, b.sortOrder) || a.id.localeCompare(b.id);
+  return compareText(a.barnName, b.barnName) || compareNumber(a.sortOrder, b.sortOrder) || compareText(a.id, b.id);
 }
 
 function compareHorseRosterRows(a, b) {
-  return compareNumber(a.sortOrder, b.sortOrder) || a.name.localeCompare(b.name);
+  return compareText(a.name, b.name) || compareNumber(a.sortOrder, b.sortOrder) || compareText(a.id, b.id);
 }
 
 function compareNumber(a, b) {
   return (Number(a) || 0) - (Number(b) || 0);
+}
+
+function compareText(a, b) {
+  return clean(a).localeCompare(clean(b), undefined, { sensitivity: "base" });
 }
 
 function slugify(value) {

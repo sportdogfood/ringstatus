@@ -415,6 +415,9 @@
             <h1>WEC Ocala Packing</h1>
             <p>${escapeHtml(statusLine())}</p>
           </div>
+          <div class="lp-header-tools">
+            <button class="lp-filter-toggle packing-home-button" type="button" data-tab="overview">HOME</button>
+          </div>
         </header>
         ${tabsHtml()}
         <main>${panelHtml()}</main>
@@ -586,12 +589,13 @@
     const groupLists = group?.listIds?.length
       ? group.listIds.map((id) => lists().find((list) => list.id === id)).filter(Boolean)
       : [];
-    if (!groupLists.length) return emptyGroupHtml(group?.label || "No rows", tabId);
-    const activeList = activeListForGroup(group.id, groupLists);
+    const sortedGroupLists = sortListsByLabel(groupLists);
+    if (!sortedGroupLists.length) return emptyGroupHtml(group?.label || "No rows", tabId);
+    const activeList = activeListForGroup(group.id, sortedGroupLists);
     return `
       <section class="lp-section-block ${themeClasses(group.id)}">
         ${sectionTitleHtml(group.label, group.id)}
-        ${listSwitcherHtml(group.id, groupLists, activeList.id)}
+        ${listSwitcherHtml(group.id, sortedGroupLists, activeList.id)}
         ${listRowsHtml(activeList, group.id)}
       </section>
     `;
@@ -608,7 +612,7 @@
   }
 
   function listRowsHtml(list, searchKey) {
-    const rows = filterRows(items().filter((item) => itemBelongsToList(item, list.id)), searchKey, itemSearchText);
+    const rows = sortItemsByName(filterRows(items().filter((item) => itemBelongsToList(item, list.id)), searchKey, itemSearchText));
     const editMode = state.inlineEditByList[list.id] || {};
     return `
       <div class="lp-list">
@@ -628,9 +632,10 @@
 
   function listSwitcherHtml(tabId, groupLists, activeListId) {
     if (groupLists.length <= 1) return "";
+    const sortedLists = sortListsByLabel(groupLists);
     return `
       <div class="packing-list-switcher" aria-label="Packing lists">
-        ${groupLists.map((list) => `
+        ${sortedLists.map((list) => `
           <button class="lp-filter-toggle packing-list-switch ${list.id === activeListId ? "is-active" : ""}" type="button" data-tab-id="${escapeAttr(tabId)}" data-list-switch="${escapeAttr(list.id)}">
             ${escapeHtml(displayLabel(list.label || list.id))}
           </button>
@@ -1637,6 +1642,22 @@
 
   function compareHorseNames(a, b) {
     return horseDisplayName(a).localeCompare(horseDisplayName(b), undefined, { sensitivity: "base" });
+  }
+
+  function sortItemsByName(rows) {
+    return [...rows].sort((a, b) => {
+      const nameCompare = displayLabel(a.name || "").localeCompare(displayLabel(b.name || ""), undefined, { sensitivity: "base" });
+      if (nameCompare) return nameCompare;
+      return String(a.id || "").localeCompare(String(b.id || ""), undefined, { sensitivity: "base" });
+    });
+  }
+
+  function sortListsByLabel(rows) {
+    return [...rows].sort((a, b) => {
+      const labelCompare = displayLabel(a.label || a.id || "").localeCompare(displayLabel(b.label || b.id || ""), undefined, { sensitivity: "base" });
+      if (labelCompare) return labelCompare;
+      return String(a.id || "").localeCompare(String(b.id || ""), undefined, { sensitivity: "base" });
+    });
   }
 
   function horsePackingPercent() {
