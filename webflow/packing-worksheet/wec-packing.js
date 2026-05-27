@@ -58,6 +58,7 @@
     const url = new URL(explicit || apiUrl || `${apiBaseUrl}/${kind}`);
     if (config.showId) url.searchParams.set("showId", config.showId);
     if (config.packWaveId) url.searchParams.set("packWaveId", config.packWaveId);
+    if (config.packWaveKey || config.packWave) url.searchParams.set("packWaveKey", config.packWaveKey || config.packWave);
     return url.toString();
   }
 
