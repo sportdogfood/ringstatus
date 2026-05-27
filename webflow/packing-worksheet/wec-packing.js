@@ -1334,7 +1334,6 @@
         <div class="lp-profile-head th-profile-top">
           <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h2>
           <p class="lp-profile-subtitle">${escapeHtml(itemMetaLabel(item))}</p>
-          ${planLineHtml(itemPlanText(item))}
         </div>
 
         <section class="lp-profile-panel packing-detail th-detail-section">
@@ -1350,6 +1349,7 @@
         </section>
 
         <div class="lp-profile-modal-footer th-profile-footer">
+          ${planLineHtml(itemPlanText(item))}
           <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
           </div>
@@ -1369,7 +1369,6 @@
         <div class="lp-profile-head th-profile-top">
           <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(horse.name || "Unnamed horse")}</h2>
           ${horse.showName ? `<p class="lp-profile-subtitle">${escapeHtml(horse.showName)}</p>` : ""}
-          ${planLineHtml(planText)}
         </div>
 
         <section class="lp-profile-panel packing-detail th-detail-section">
@@ -1395,6 +1394,7 @@
         </section>
 
         <div class="lp-profile-modal-footer th-profile-footer">
+          ${planLineHtml(planText)}
           <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
           </div>

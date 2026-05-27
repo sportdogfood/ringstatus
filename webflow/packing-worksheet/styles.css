@@ -2943,7 +2943,8 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-plan-line {
-  margin-top: 6px;
+  margin: 0 0 6px;
+  padding: 0 2px;
   color: var(--lp-ink);
   font-family: inherit;
   font-size: 11px;
