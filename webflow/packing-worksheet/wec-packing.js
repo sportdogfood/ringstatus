@@ -217,7 +217,7 @@
       const rollback = snapshotItemQuantities(itemId);
       state.pendingActions[pendingKey] = true;
       state.addQty[itemId] = "";
-      applyOptimisticAddQuantity(itemId, quantityDelta);
+      const optimistic = applyOptimisticAddQuantity(itemId, quantityDelta);
       await postAction({
         action,
         itemId,
@@ -226,6 +226,7 @@
       }, null, {
         pendingKey,
         message: `Adding ${quantityDisplay(quantityDelta)}...`,
+        preserveItemQuantities: optimistic ? { itemId, ...optimistic } : null,
         rollback: () => restoreItemQuantities(itemId, rollback)
       });
       return;
@@ -313,6 +314,7 @@
       }
       if (typeof afterSave === "function") afterSave(result);
       state.data = result.state || state.data;
+      if (options.preserveItemQuantities) preserveItemQuantities(options.preserveItemQuantities);
       state.saveMessage = `Saved: ${new Date().toLocaleString()}`;
     } catch (error) {
       if (typeof options.rollback === "function") options.rollback();
@@ -1409,7 +1411,7 @@
 
   function applyOptimisticAddQuantity(itemId, quantityDelta) {
     const item = items().find((row) => row.id === itemId);
-    if (!item) return;
+    if (!item) return null;
     const needed = number(item.needed);
     const currentPacked = number(item.packed);
     const nextPacked = needed > 0
@@ -1418,6 +1420,21 @@
     item.packed = nextPacked;
     item.left = Math.max(0, needed - nextPacked);
     if (needed > 0 && item.left === 0) item.packState = "packed";
+    return {
+      packed: item.packed,
+      left: item.left,
+      packState: item.packState
+    };
+  }
+
+  function preserveItemQuantities(snapshot) {
+    if (!snapshot?.itemId) return;
+    const item = items().find((row) => row.id === snapshot.itemId);
+    if (!item) return;
+    if (number(item.packed) >= number(snapshot.packed)) return;
+    item.packed = snapshot.packed;
+    item.left = snapshot.left;
+    item.packState = snapshot.packState;
   }
 
   function horses() {
