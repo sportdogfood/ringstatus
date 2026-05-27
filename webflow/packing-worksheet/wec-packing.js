@@ -20,6 +20,7 @@
     searchBySection: {},
     inlineEditByList: {},
     inlineEditValues: {},
+    pendingActions: {},
     addQty: {},
     actionNotes: {}
   };
@@ -206,18 +207,26 @@
     if (!item) return;
 
     if (action === "add_quantity") {
+      const pendingKey = pendingActionKey(action, itemId);
+      if (state.pendingActions[pendingKey]) return;
       const quantityDelta = Number(state.addQty[itemId] || 0);
       if (!Number.isFinite(quantityDelta) || quantityDelta <= 0) {
         setSaveMessage("Enter a quantity to add.");
         return;
       }
+      const rollback = snapshotItemQuantities(itemId);
+      state.pendingActions[pendingKey] = true;
+      state.addQty[itemId] = "";
+      applyOptimisticAddQuantity(itemId, quantityDelta);
       await postAction({
         action,
         itemId,
         quantityDelta,
         notes: state.actionNotes[itemId] || ""
-      }, () => {
-        state.addQty[itemId] = "";
+      }, null, {
+        pendingKey,
+        message: `Adding ${quantityDisplay(quantityDelta)}...`,
+        rollback: () => restoreItemQuantities(itemId, rollback)
       });
       return;
     }
@@ -284,9 +293,9 @@
     });
   }
 
-  async function postAction(payload, afterSave) {
+  async function postAction(payload, afterSave, options = {}) {
     state.saving = true;
-    state.saveMessage = "Saving...";
+    state.saveMessage = options.message || "Saving...";
     render();
 
     try {
@@ -306,8 +315,10 @@
       state.data = result.state || state.data;
       state.saveMessage = `Saved: ${new Date().toLocaleString()}`;
     } catch (error) {
+      if (typeof options.rollback === "function") options.rollback();
       state.saveMessage = `Save failed: ${error instanceof Error ? error.message : String(error)}`;
     } finally {
+      if (options.pendingKey) delete state.pendingActions[options.pendingKey];
       state.saving = false;
       render();
     }
@@ -1359,6 +1370,46 @@
 
   function items() {
     return Array.isArray(state.data?.items) ? state.data.items : [];
+  }
+
+  function pendingActionKey(action, id) {
+    return `${action || ""}:${id || ""}`;
+  }
+
+  function isPendingAction(action, id) {
+    return !!state.pendingActions[pendingActionKey(action, id)];
+  }
+
+  function snapshotItemQuantities(itemId) {
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return null;
+    return {
+      packed: item.packed,
+      left: item.left,
+      packState: item.packState
+    };
+  }
+
+  function restoreItemQuantities(itemId, snapshot) {
+    if (!snapshot) return;
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+    item.packed = snapshot.packed;
+    item.left = snapshot.left;
+    item.packState = snapshot.packState;
+  }
+
+  function applyOptimisticAddQuantity(itemId, quantityDelta) {
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+    const needed = number(item.needed);
+    const currentPacked = number(item.packed);
+    const nextPacked = needed > 0
+      ? Math.min(needed, currentPacked + quantityDelta)
+      : currentPacked + quantityDelta;
+    item.packed = nextPacked;
+    item.left = Math.max(0, needed - nextPacked);
+    if (needed > 0 && item.left === 0) item.packState = "packed";
   }
 
   function horses() {
