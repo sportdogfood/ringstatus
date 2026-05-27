@@ -1277,7 +1277,6 @@ function calculationRow({ plan, formula, sourceField, multiplierField, base, mul
 }
 
 function isHorseInWave(horse, wave) {
-  if (!horse.active) return false;
   if (!wave || !wave.includedWeekIds.length) return true;
   return horse.weekIds.some((weekId) => wave.includedWeekIds.includes(weekId));
 }

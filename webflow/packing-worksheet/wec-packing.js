@@ -356,8 +356,7 @@
     if (state.error) return "State unavailable";
     const wave = state.data?.wave;
     if (!wave) return "No active pack wave";
-    const countSource = wave.countSource === "manual_lock" ? "Manual lock" : "Current wave";
-    return `${currentWaveLabel()} | ${countSource}`;
+    return `${currentWaveLabel()} | departs: ${deadlineDisplay(wave.deadlineDate)} | ${daysRemainingDisplay(wave.daysTill)}`;
   }
 
   function currentWaveLabel() {
@@ -436,6 +435,7 @@
         ${sectionTitleHtml(currentWaveLabel(), "overview")}
         <div class="lp-list">
           ${sectionSearchHtml(searchKey)}
+          ${waveOverviewCountsHtml()}
           ${state.data.needsGeneration ? noWaveRowHtml() : rows || emptyRowHtml("No rows")}
         </div>
       </section>
@@ -451,6 +451,30 @@
         </span>
         ${tokenHtml("need", "NEED - 0")}
       </div>
+    `;
+  }
+
+  function waveOverviewCountsHtml() {
+    const wave = state.data?.wave;
+    if (!wave) return "";
+    return `
+      <div class="lp-row is-static packing-wave-count-row">
+        <span class="packing-wave-counts">
+          ${waveCountStatHtml("HORSE COUNT", wave.horseCount)}
+          ${waveCountStatHtml("GROOM MANUAL", wave.groomCountManual)}
+          ${waveCountStatHtml("GROOM RATIO", wave.groomRatio)}
+          ${waveCountStatHtml("GROOM FINAL", wave.groomCountFinal)}
+        </span>
+      </div>
+    `;
+  }
+
+  function waveCountStatHtml(label, value) {
+    return `
+      <span class="packing-wave-count">
+        <span class="packing-wave-count-value">${escapeHtml(quantityDisplay(value))}</span>
+        <span class="packing-wave-count-label">${escapeHtml(label)}</span>
+      </span>
     `;
   }
 
@@ -1510,6 +1534,18 @@
       ? Math.round(numeric)
       : Math.ceil(numeric - 0.000001);
     return String(cleaned);
+  }
+
+  function deadlineDisplay(value) {
+    if (value === null || value === undefined || value === "") return "Not set";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return date.toLocaleDateString();
+  }
+
+  function daysRemainingDisplay(value) {
+    if (value === null || value === undefined || value === "") return "days remaining not set";
+    return `${quantityDisplay(value)} days remaining`;
   }
 
   function inlineEditKey(itemId, field) {
