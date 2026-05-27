@@ -206,10 +206,10 @@
     const item = items().find((row) => row.id === itemId);
     if (!item) return;
 
-    if (action === "add_quantity") {
-      const pendingKey = pendingActionKey(action, itemId);
+    if (action === "add_quantity" || action === "add_one") {
+      const pendingKey = pendingActionKey("add_quantity", itemId);
       if (state.pendingActions[pendingKey]) return;
-      const quantityDelta = Number(state.addQty[itemId] || 0);
+      const quantityDelta = action === "add_one" ? 1 : Number(state.addQty[itemId] || 0);
       if (!Number.isFinite(quantityDelta) || quantityDelta <= 0) {
         setSaveMessage("Enter a quantity to add.");
         return;
@@ -219,7 +219,7 @@
       state.addQty[itemId] = "";
       const optimistic = applyOptimisticAddQuantity(itemId, quantityDelta);
       await postAction({
-        action,
+        action: "add_quantity",
         itemId,
         quantityDelta,
         notes: state.actionNotes[itemId] || ""
@@ -1228,6 +1228,7 @@
           <span class="packing-add-label">QUANTITY</span>
         </span>
         <button class="lp-edit-pill ${pending ? "is-active is-pending" : ""}" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD</button>
+        <button class="lp-edit-pill ${pending ? "is-active is-pending" : ""}" type="button" data-packing-action="add_one" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD + 1</button>
       </span>
     `, "packing-add-row");
   }
