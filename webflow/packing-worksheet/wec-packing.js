@@ -14,6 +14,7 @@
     saveMessage: "",
     detailType: "",
     detailId: "",
+    didSetInitialTab: false,
     addQty: {},
     actionNotes: {}
   };
@@ -36,6 +37,10 @@
         throw new Error(payload.detail || payload.error || `state_${response.status}`);
       }
       state.data = payload;
+      if (!state.didSetInitialTab) {
+        state.activeTab = "overview";
+        state.didSetInitialTab = true;
+      }
     } catch (error) {
       state.error = error instanceof Error ? error.message : String(error);
     } finally {
@@ -155,7 +160,7 @@
 
     if (action === "set_resolution") {
       const resolutionState = button.dataset.resolutionState;
-      const label = resolutionState === "clear" ? "clear this decision" : `set decision to ${displayLabel(resolutionState)}`;
+      const label = resolutionState === "clear" ? "clear this decision" : `set decision to ${resolutionDisplayLabel(resolutionState)}`;
       if (!window.confirm(`Confirm ${label}?`)) return;
       await postAction({
         action,
@@ -288,15 +293,13 @@
     return `
       <nav class="lp-tabs" aria-label="Packing sections">
         ${tabs().map((section) => {
-          const count = section.id === "horses"
-            ? horses().filter((horse) => horse.active).length
-            : section.id === "overview"
-              ? totalOpenRows()
-              : number(section.rows ?? sectionCount(section.id));
+          const percent = tabProgressPercent(section);
           return `
             <button class="lp-tab packing-tab ${themeClasses(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
-              <span class="lp-tab-value">${count}</span>
-              <span class="lp-tab-label">${escapeHtml(displayLabel(section.label))}</span>
+              <span class="packing-tab-progress" aria-label="${escapeAttr(`${percent}% complete`)}">
+                <span class="packing-tab-progress-fill" style="width: ${percent}%"></span>
+              </span>
+              <span class="lp-tab-label packing-tab-label">${escapeHtml(`${displayLabel(section.label)} - ${percent}%`)}</span>
             </button>
           `;
         }).join("")}
@@ -329,13 +332,16 @@
 
   function overviewHtml() {
     const rows = tabGroups().map((summary) => {
+      const percent = progressPercent(summary.done, summary.rows);
       return `
         <button class="lp-row packing-row" type="button" data-tab="${escapeAttr(summary.id)}">
           <span>
             <span class="lp-row-title">${escapeHtml(displayLabel(summary.label))}</span>
-            <span class="lp-row-meta">Rows: ${summary.rows} | Left ${summary.open}</span>
+            <span class="packing-progress" aria-label="${escapeAttr(`${percent}% complete`)}">
+              <span class="packing-progress-fill" style="width: ${percent}%"></span>
+            </span>
           </span>
-          ${tokenHtml(summary.open === 0 && summary.rows > 0 ? "packed" : "open", summary.open === 0 && summary.rows > 0 ? "PACKED" : `LEFT - ${summary.open}`)}
+          ${tokenHtml(summary.open === 0 && summary.rows > 0 ? "packed" : "open", `${percent}%`)}
         </button>
       `;
     }).join("");
@@ -344,7 +350,6 @@
       <section class="lp-section-block packing-theme-overview">
         <div class="lp-section-title packing-section-title">
           <h3>Overview</h3>
-          <span class="lp-section-count">${doneRows()}/${totalRows()} done</span>
         </div>
         <div class="lp-list">
           ${state.data.needsGeneration ? noWaveRowHtml() : rows}
@@ -477,7 +482,7 @@
   }
 
   function rowTokenHtml(item) {
-    if (item.resolutionState) return tokenHtml("resolved", displayLabel(item.resolutionState).toUpperCase());
+    if (item.resolutionState) return tokenHtml("resolved", resolutionDisplayLabel(item.resolutionState));
     if (item.packState === "packed" || (number(item.left) === 0 && number(item.needed) > 0)) return tokenHtml("packed", "PACKED");
     if (number(item.packed) > 0) return tokenHtml("open", `LEFT - ${quantityDisplay(item.left)}`);
     return tokenHtml("need", `NEED - ${quantityDisplay(item.needed)}`);
@@ -630,16 +635,30 @@
   }
 
   function decisionControlHtml(item) {
-    const decisions = ["max", "kill", "purchase_onsite"];
+    const maxFlowActive = isMaxConflictState(item.resolutionState);
     return editGroupHtml("Decision", `
       <span class="lp-edit-choice-row packing-inline-choices packing-decision-choices">
+        ${choiceButtonHtml({
+          label: "MAX",
+          active: maxFlowActive,
+          attrs: `data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="max"`
+        })}
+      </span>
+    `) + (maxFlowActive ? maxConflictControlHtml(item) : "");
+  }
+
+  function maxConflictControlHtml(item) {
+    const decisions = ["kill", "purchase_onsite", "unresolved"];
+    return editGroupHtml("Conflict", `
+      <span class="lp-edit-choice-row packing-inline-choices packing-decision-choices packing-conflict-choices">
         ${decisions.map((decision) => choiceButtonHtml({
-          label: decision === "purchase_onsite" ? "ONSITE" : displayLabel(decision).toUpperCase(),
+          label: resolutionDisplayLabel(decision),
           active: item.resolutionState === decision,
           attrs: `data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="${escapeAttr(decision)}"`
         })).join("")}
+        <a class="lp-edit-pill packing-sms-pill" href="${escapeAttr(smsConflictHref(item))}">SMS</a>
       </span>
-    `);
+    `, "packing-conflict-row");
   }
 
   function sourcePanelHtml(item) {
@@ -717,6 +736,20 @@
 
   function totalOpenRows() {
     return totalRows() - doneRows();
+  }
+
+  function progressPercent(done, rows) {
+    const total = number(rows);
+    if (total <= 0) return 0;
+    return Math.max(0, Math.min(100, Math.round((number(done) / total) * 100)));
+  }
+
+  function tabProgressPercent(section) {
+    if (section.id === "horses") {
+      return progressPercent(horses().filter((horse) => horse.active).length, horses().length);
+    }
+    if (section.id === "overview") return progressPercent(doneRows(), totalRows());
+    return progressPercent(section.done, section.rows ?? sectionCount(section.id));
   }
 
   function isDone(item) {
@@ -857,6 +890,27 @@
       ? Math.round(numeric)
       : Math.ceil(numeric - 0.000001);
     return String(cleaned);
+  }
+
+  function isMaxConflictState(value) {
+    return ["max", "kill", "purchase_onsite", "unresolved"].includes(String(value || ""));
+  }
+
+  function resolutionDisplayLabel(value) {
+    if (value === "kill") return "REMOVE";
+    if (value === "purchase_onsite") return "ONSITE";
+    if (value === "unresolved") return "UNRESOLVED";
+    return displayLabel(value).toUpperCase();
+  }
+
+  function smsConflictHref(item) {
+    const body = [
+      `WEC Packing Conflict: ${displayLabel(item.name || "Unnamed item")}`,
+      `NEED: ${quantityDisplay(item.needed)}, PACKED: ${quantityDisplay(item.packed)}, LEFT ${quantityDisplay(item.left)}`,
+      "reply",
+      "REMOVE | ONSITE | UNRESOLVED"
+    ].join("\n");
+    return `sms:?&body=${encodeURIComponent(body)}`;
   }
 
   function escapeAttr(value) {
