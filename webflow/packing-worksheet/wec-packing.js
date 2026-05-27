@@ -434,8 +434,8 @@
       <section class="lp-section-block packing-theme-overview">
         ${sectionTitleHtml(currentWaveLabel(), "overview")}
         <div class="lp-list">
-          ${sectionSearchHtml(searchKey)}
           ${waveOverviewCountsHtml()}
+          ${sectionSearchHtml(searchKey)}
           ${state.data.needsGeneration ? noWaveRowHtml() : rows || emptyRowHtml("No rows")}
         </div>
       </section>
@@ -461,7 +461,6 @@
       <div class="lp-row is-static packing-wave-count-row">
         <span class="packing-wave-counts">
           ${waveCountStatHtml("HORSE COUNT", wave.horseCount)}
-          ${waveCountStatHtml("GROOM MANUAL", wave.groomCountManual)}
           ${waveCountStatHtml("GROOM RATIO", wave.groomRatio)}
           ${waveCountStatHtml("GROOM FINAL", wave.groomCountFinal)}
         </span>
@@ -513,8 +512,8 @@
     const editMode = state.inlineEditByList[list.id] || {};
     return `
       <div class="lp-list">
-        ${sectionSearchHtml(searchKey)}
         ${listLabelRowHtml(list)}
+        ${sectionSearchHtml(searchKey)}
         ${rows.length ? rows.map((item) => itemRowHtml(item, editMode)).join("") : emptyRowHtml("No rows")}
       </div>
     `;
@@ -546,6 +545,7 @@
       <div class="lp-row is-static packing-list-action-row">
         <span class="lp-row-title">${escapeHtml(displayLabel(list.label || list.id))}</span>
         <span class="packing-list-action-hottext" aria-label="Inline edit fields">
+          <span class="packing-hottext-prefix">EDIT:</span>
           ${listEditHotText(list.id, "lp-row-title", "TITLE", editMode["lp-row-title"])}
           ${listEditHotText(list.id, "quantity_packed_override", "PACKED", editMode.quantity_packed_override)}
           ${listEditHotText(list.id, "quantity_needed_override", "NEEDED", editMode.quantity_needed_override)}
@@ -580,10 +580,10 @@
       <section class="lp-section-block packing-theme-horses">
         ${sectionTitleHtml("Horses", "horses")}
         <div class="lp-list">
-          ${sectionSearchHtml(searchKey)}
           <div class="lp-row is-static packing-horse-label-row">
             <span class="lp-row-title">${escapeHtml(displayLabel(`${currentWaveLabel()} horses`))}</span>
           </div>
+          ${sectionSearchHtml(searchKey)}
           ${rows.length ? rows.map(horseRowHtml).join("") : emptyRowHtml("No horses")}
         </div>
       </section>
@@ -1098,18 +1098,55 @@
 
   function horseDetailHtml(horse) {
     if (!horse) return "";
+    const progress = horseProgress(horse);
+    const rows = horseItemRows(horse);
     return `
-      <div class="packing-detail packing-theme-horses">
-        <div class="lp-detail-head">
-          <h3 id="drawerTitle">${escapeHtml(horse.name || "Unnamed horse")}</h3>
-          <p class="lp-muted">${escapeHtml(horse.showName || "")}</p>
+      <div class="lp-profile-shell packing-detail-shell packing-horse-detail-shell packing-theme-horses">
+        <div class="lp-profile-head th-profile-top">
+          <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(horse.name || "Unnamed horse")}</h2>
+          ${horse.showName ? `<p class="lp-profile-subtitle">${escapeHtml(horse.showName)}</p>` : ""}
         </div>
-        ${detailGroupHtml("Meta", [
-          ["Record State", horse.recordState || "inactive"],
-          ["Weeks", horse.weekIds?.length || 0],
-          ["Items", horse.sourcePackItemIds?.length || 0]
-        ])}
+
+        <section class="lp-profile-panel packing-detail th-detail-section">
+          <div data-th-record="${escapeAttr(horse.id)}" data-th-name="${escapeAttr(horse.name || "")}">
+            <div class="lp-field-grid lp-profile-tab-panel is-active">
+              <div class="lp-row is-static packing-horse-progress-row">
+                <span class="packing-horse-progress-main">
+                  <span class="packing-tab-percent packing-horse-progress-percent">${escapeHtml(`${progress.percent}% PACKED`)}</span>
+                  <span class="packing-progress" aria-label="${escapeAttr(`${progress.percent}% packed`)}">
+                    <span class="packing-progress-fill" style="width: ${progress.percent}%"></span>
+                  </span>
+                </span>
+              </div>
+              <div class="lp-row is-static packing-horse-label-row">
+                <span class="lp-row-title">PACKING ITEMS</span>
+              </div>
+              <span class="packing-horse-bindings packing-horse-item-list">
+                ${rows.length ? rows.map(horseDetailItemRowHtml).join("") : `<span class="packing-horse-binding-row"><span class="packing-horse-binding-name">No horse-specific items</span></span>`}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <div class="lp-profile-modal-footer th-profile-footer">
+          <div class="lp-profile-footer">
+            <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
+          </div>
+        </div>
       </div>
+    `;
+  }
+
+  function horseDetailItemRowHtml(row) {
+    const packed = isHorseMemberPacked(row.member);
+    const nextState = packed ? "not_packed" : "packed";
+    return `
+      <span class="packing-horse-binding-row packing-horse-pack-row">
+        <span class="packing-horse-binding-name">${escapeHtml(displayLabel(row.item?.name || "Unnamed item"))}</span>
+        <button class="lp-achievement packing-token ${packed ? "is-packed" : "is-need"}" type="button" data-horse-member-state="${escapeAttr(nextState)}" data-item-horse-id="${escapeAttr(row.member.id)}">
+          ${packed ? "PACKED" : "NOT PACKED"}
+        </button>
+      </span>
     `;
   }
 
@@ -1482,9 +1519,17 @@
   function tabs() {
     return [
       { id: "overview", label: currentWaveLabel() },
-      { id: "horses", label: "Horses" },
+      { id: "horses", label: horsesTabLabel() },
       ...tabGroups()
     ];
+  }
+
+  function horsesTabLabel() {
+    if (state.detailType === "horse" && state.detailId) {
+      const horse = horses().find((row) => row.id === state.detailId);
+      if (horse) return horseDisplayName(horse);
+    }
+    return "Horses";
   }
 
   function isTabGroupId(value) {
@@ -1513,8 +1558,39 @@
   }
 
   function itemMetaLabel(item) {
-    return item.packListLabels?.map(displayLabel).join(", ") ||
-      displayLabel(item.category || item.section || item.listPlanLabel || item.listPlan || "");
+    const parts = itemBreadcrumbParts(item);
+    return parts.length ? parts.join(" > ") : displayLabel(item.category || item.section || item.listPlanLabel || item.listPlan || "");
+  }
+
+  function itemBreadcrumbParts(item) {
+    const list = primaryListForItem(item);
+    const tabLabel = list ? listTabLabels(list)[0] : "";
+    const listLabel = list?.label || item.packListLabels?.[0] || item.section || item.category || "";
+    const itemLabel = item.name || "";
+    const seen = new Set();
+    return [tabLabel, listLabel, itemLabel]
+      .map(displayLabel)
+      .filter((part) => {
+        const key = part.toLowerCase();
+        if (!part || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+  }
+
+  function primaryListForItem(item) {
+    const ids = Array.isArray(item.packListIds) ? item.packListIds : [];
+    for (const id of ids) {
+      const list = lists().find((row) => row.id === id);
+      if (list) return list;
+    }
+    const labels = Array.isArray(item.packListLabels) ? item.packListLabels : [];
+    for (const label of labels) {
+      const normalized = String(label || "").trim().toLowerCase();
+      const list = lists().find((row) => String(row.label || row.id || "").trim().toLowerCase() === normalized);
+      if (list) return list;
+    }
+    return null;
   }
 
   function quantityLabel(value, unit) {
