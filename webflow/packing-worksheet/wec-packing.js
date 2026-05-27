@@ -215,7 +215,7 @@
         return;
       }
       const rollback = snapshotItemQuantities(itemId);
-      state.pendingActions[pendingKey] = true;
+      state.pendingActions[pendingKey] = action;
       state.addQty[itemId] = "";
       const optimistic = applyOptimisticAddQuantity(itemId, quantityDelta);
       await postAction({
@@ -1221,14 +1221,15 @@
 
   function packedControlHtml(item) {
     const pending = isPendingAction("add_quantity", item.id);
+    const pendingSource = pendingActionSource("add_quantity", item.id);
     return editGroupHtml("Packed", `
       <span class="packing-add-control">
         <span class="packing-add-box">
           <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
           <span class="packing-add-label">QUANTITY</span>
         </span>
-        <button class="lp-edit-pill ${pending ? "is-active is-pending" : ""}" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD</button>
-        <button class="lp-edit-pill ${pending ? "is-active is-pending" : ""}" type="button" data-packing-action="add_one" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD + 1</button>
+        <button class="lp-edit-pill ${pending && pendingSource === "add_quantity" ? "is-active is-pending" : ""}" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD</button>
+        <button class="lp-edit-pill ${pending && pendingSource === "add_one" ? "is-active is-pending" : ""}" type="button" data-packing-action="add_one" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD + 1</button>
       </span>
     `, "packing-add-row");
   }
@@ -1389,6 +1390,10 @@
 
   function isPendingAction(action, id) {
     return !!state.pendingActions[pendingActionKey(action, id)];
+  }
+
+  function pendingActionSource(action, id) {
+    return state.pendingActions[pendingActionKey(action, id)] || "";
   }
 
   function snapshotItemQuantities(itemId) {

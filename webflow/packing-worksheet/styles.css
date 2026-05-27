@@ -3231,7 +3231,7 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-add-control {
   display: grid;
-  grid-template-columns: minmax(96px, 126px) auto;
+  grid-template-columns: minmax(96px, 126px) auto auto;
   gap: 6px;
   align-items: start;
   justify-content: start;
