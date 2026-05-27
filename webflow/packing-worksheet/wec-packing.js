@@ -258,10 +258,10 @@
         </footer>
         <div class="lp-modal" id="packingDetail" hidden aria-hidden="true">
           <div class="lp-modal-backdrop" data-close-detail></div>
-          <article class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+          <section class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
             <button class="lp-modal-close" type="button" data-close-detail aria-label="Close detail">x</button>
             <div id="packingDetailContent" data-modal-content></div>
-          </article>
+          </section>
         </div>
       </div>
     `;
@@ -375,22 +375,43 @@
       ? group.listIds.map((id) => lists().find((list) => list.id === id)).filter(Boolean)
       : [];
     if (!groupLists.length) return emptyGroupHtml(group?.label || "No rows");
-    return groupLists.map((list) => listSectionHtml(list.id)).join("");
+    return `
+      <section class="lp-section-block ${themeClasses(group.id)}">
+        <div class="lp-section-title packing-section-title">
+          <h3>${escapeHtml(displayLabel(group.label))}</h3>
+        </div>
+        ${groupLists.map((list) => listRowsHtml(list, true)).join("")}
+      </section>
+    `;
   }
 
   function listSectionHtml(listId) {
     const list = lists().find((row) => row.id === listId) || { id: listId, label: listId };
-    const rows = items().filter((item) => itemBelongsToList(item, listId));
     return `
       <section class="lp-section-block ${themeClasses(list.id)}">
         <div class="lp-section-title packing-section-title">
           <h3>${escapeHtml(displayLabel(list.label))}</h3>
-          <span class="lp-section-count">Rows: ${rows.length} | Left ${rows.filter((row) => !isDone(row)).length}</span>
         </div>
-        <div class="lp-list">
-          ${rows.length ? rows.map(itemRowHtml).join("") : emptyRowHtml("No rows")}
-        </div>
+        ${listRowsHtml(list, false)}
       </section>
+    `;
+  }
+
+  function listRowsHtml(list, includeLabel) {
+    const rows = items().filter((item) => itemBelongsToList(item, list.id));
+    return `
+      <div class="lp-list">
+        ${includeLabel ? listLabelRowHtml(list.label) : ""}
+        ${rows.length ? rows.map(itemRowHtml).join("") : emptyRowHtml("No rows")}
+      </div>
+    `;
+  }
+
+  function listLabelRowHtml(label) {
+    return `
+      <div class="lp-row is-static">
+        <span class="lp-row-title">${escapeHtml(displayLabel(label))}</span>
+      </div>
     `;
   }
 
@@ -399,7 +420,6 @@
       <section class="lp-section-block">
         <div class="lp-section-title packing-section-title">
           <h3>${escapeHtml(displayLabel(label))}</h3>
-          <span class="lp-section-count">Rows: 0 | Left 0</span>
         </div>
         <div class="lp-list">
           ${emptyRowHtml("No rows")}
@@ -428,7 +448,6 @@
       <button class="lp-row packing-row" type="button" data-item-id="${escapeAttr(item.id)}">
         <span>
           <span class="lp-row-title">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</span>
-          <span class="lp-row-meta">${escapeHtml(itemMetaLabel(item))}</span>
         </span>
         <span class="packing-state-stack">
           ${rowTokenHtml(item)}
@@ -496,14 +515,13 @@
           <p class="lp-profile-subtitle">${escapeHtml(itemMetaLabel(item))}</p>
         </div>
 
-        <section class="lp-profile-panel th-detail-section">
+        <section class="lp-profile-panel packing-detail th-detail-section">
           <div data-th-record="${escapeAttr(item.id)}" data-th-name="${escapeAttr(item.name || "")}">
             <div class="lp-field-grid lp-profile-tab-panel is-active">
               ${totalsRowHtml(item)}
               ${statusControlHtml(item)}
               ${packedControlHtml(item)}
               ${horseMembersControlHtml(item)}
-              ${notesControlHtml(item)}
               ${decisionControlHtml(item)}
             </div>
           </div>
@@ -531,22 +549,6 @@
           ["Weeks", horse.weekIds?.length || 0],
           ["Items", horse.sourcePackItemIds?.length || 0]
         ])}
-      </div>
-    `;
-  }
-
-  function worksheetPanelHtml(item) {
-    return `
-      <div class="lp-edit-panel packing-edit-panel">
-        <div class="lp-edit-head"><h4>Worksheet</h4></div>
-        <div class="lp-edit-grid">
-          ${statusControlHtml(item)}
-          ${packedControlHtml(item)}
-          ${decisionControlHtml(item)}
-          ${horseMembersControlHtml(item)}
-          ${notesControlHtml(item)}
-        </div>
-        <p class="lp-edit-status">${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</p>
       </div>
     `;
   }
@@ -590,13 +592,13 @@
     return editGroupHtml("Packed", `
       <span class="packing-add-control">
         <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="Add qty" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
-        <button class="lp-edit-button" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}">ADD</button>
+        <button class="lp-edit-pill" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}">ADD</button>
       </span>
     `);
   }
 
   function horseMembersControlHtml(item) {
-    if (!item.horseMembers?.length) return editGroupHtml("Horses", `<span class="lp-edit-pill packing-static-pill">NOT HORSE SPECIFIC</span>`);
+    if (!item.horseMembers?.length) return editGroupHtml("Horses", `<span class="lp-edit-pill is-active packing-static-pill">NOT HORSE SPECIFIC</span>`);
     return editGroupHtml("Horses", `
       <span class="packing-horse-bindings">
         ${item.horseMembers.map((member) => {
@@ -616,7 +618,7 @@
 
   function notesControlHtml(item) {
     const value = state.actionNotes[item.id] ?? item.notes ?? "";
-    return editGroupHtml("Notes", `<textarea class="lp-edit-textarea" data-action-notes="${escapeAttr(item.id)}">${escapeHtml(value)}</textarea>`, "is-wide");
+    return editGroupHtml("Notes", `<textarea class="lp-edit-input th-input th-note-input" rows="4" data-action-notes="${escapeAttr(item.id)}">${escapeHtml(value)}</textarea>`, "th-detail-note");
   }
 
   function decisionControlHtml(item) {
@@ -659,7 +661,7 @@
   }
 
   function choiceButtonHtml({ label, active, attrs }) {
-    return `<button class="lp-edit-pill ${active ? "is-active" : ""}" type="button" ${attrs}>${escapeHtml(label)}</button>`;
+    return `<span class="lp-edit-choice"><button class="lp-edit-pill ${active ? "is-active" : ""}" type="button" ${attrs}>${escapeHtml(label)}</button></span>`;
   }
 
   function editGroupHtml(title, body, extraClass) {

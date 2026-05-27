@@ -1703,13 +1703,13 @@
 
     :is(#packing-app, #tack-horses-app, #hps-app) .lp-row:has(.lp-achievement) {
       grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
+      align-items: center;
       gap: 10px;
     }
 
     :is(#packing-app, #tack-horses-app, #hps-app) .lp-row:has(.lp-achievement) .lp-achievement {
-      align-self: start;
-      margin-top: 1px;
+      align-self: center;
+      margin-top: 0;
     }
 
     :is(#packing-app, #tack-horses-app, #hps-app) .lp-view-toggle {
@@ -2831,12 +2831,6 @@ body {
   color: #ffffff;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .lp-edit-pill {
-  min-width: max-content;
-  min-height: 24px;
-  padding: 5px 8px;
-}
-
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-detail .packing-static-pill {
   cursor: default;
   pointer-events: none;
@@ -2874,8 +2868,6 @@ body {
   border-radius: 8px;
   box-shadow: none;
   font-size: 11px;
-  min-height: 24px;
-  padding: 5px 8px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-binding-toggle.is-active {
@@ -2892,13 +2884,13 @@ body {
   margin-top: 16px;
 }
 
-/* HPS modal/profile shell reused by WEC packing detail. */
-#packing-app .lp-modal {
+/* Shared HPS/WEC modal profile shell. Keep these selectors aligned with HPS. */
+:is(#hps-app, #packing-app) .lp-modal {
   padding-left: 0;
   padding-right: 0;
 }
 
-#packing-app .lp-modal-card {
+:is(#hps-app, #packing-app) .lp-modal-card {
   position: relative;
   right: 0;
   margin-left: auto;
@@ -2909,37 +2901,40 @@ body {
   padding-right: 0;
 }
 
-#packing-app .lp-modal-close {
+:is(#hps-app, #packing-app) .lp-modal-close {
   position: absolute;
   top: 6px;
   right: 8px;
   z-index: 201;
-  float: none;
 }
 
-#packing-app [data-modal-content] {
+:is(#hps-app, #packing-app) [data-modal-content] {
   width: 100%;
   min-height: calc(95vh - 20px);
 }
 
-#packing-app .lp-profile-shell {
+:is(#hps-app, #packing-app) .lp-profile-shell {
   display: grid;
   width: 100%;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 16px;
+  padding-right: 10px;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  row-gap: 8px;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  row-gap: 1rem;
   min-height: calc(95vh - 20px);
 }
 
-#packing-app .lp-profile-head {
-  margin-right: 0;
-  margin-bottom: 0;
-  padding-left: 0;
+#packing-app .packing-detail-shell {
+  grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
-#packing-app .lp-profile-panel {
+:is(#hps-app, #packing-app) .lp-profile-head {
+  margin-right: 0;
+  margin-bottom: 0;
+  padding-left: 10px;
+}
+
+:is(#hps-app, #packing-app) .lp-profile-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-auto-rows: auto;
@@ -2952,12 +2947,12 @@ body {
   padding-right: 0;
 }
 
-#packing-app .lp-profile-panel [data-th-record] {
+:is(#hps-app, #packing-app) .lp-profile-panel [data-th-record] {
   padding-left: 0;
   padding-right: 0;
 }
 
-#packing-app .lp-profile-tab-panel {
+:is(#hps-app, #packing-app) .lp-profile-tab-panel {
   grid-template-columns: minmax(0, 1fr);
   grid-auto-rows: auto;
   align-content: start;
@@ -2965,35 +2960,77 @@ body {
   place-content: start stretch;
 }
 
-#packing-app .lp-profile-panel .lp-field-row.th-detail-edit {
+:is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row.th-detail-edit {
   width: 100%;
-  min-height: 54px;
-  padding: 7px 8px 6px;
+  height: 63px;
+  max-height: 63px;
 }
 
-#packing-app .lp-profile-panel .lp-field-row.th-detail-edit.is-wide {
+:is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row.th-detail-edit.is-wide {
   height: auto;
   max-height: none;
 }
 
-#packing-app .lp-profile-panel .lp-field-value {
+:is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row.th-detail-note {
+  height: 132px;
+  max-height: none;
+}
+
+:is(#hps-app, #packing-app) .lp-profile-panel .th-note-input {
+  min-height: 96px;
+  resize: vertical;
+}
+
+:is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row:not(.th-detail-edit) {
+  width: 100%;
+  min-height: 63px;
+  padding: 10px 12px 9px;
+}
+
+:is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row:not(.th-detail-edit) .lp-field-value {
   display: flex;
   align-items: center;
   min-height: 31px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
-#packing-app .lp-profile-panel .lp-edit-choice-row,
-#packing-app .lp-profile-panel .packing-inline-choices {
+:is(#hps-app, #packing-app) .th-profile-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+:is(#hps-app, #packing-app) .th-profile-footer .lp-profile-state-grid {
+  display: none;
+  margin-top: 0;
+}
+
+:is(#hps-app, #packing-app) .th-profile-footer .lp-field-row.th-detail-edit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  height: auto;
+  max-height: 63px;
+  padding: 6px 12px 5px;
+}
+
+:is(#hps-app, #packing-app) .th-profile-footer .lp-field-value {
+  width: 100%;
+}
+
+:is(#hps-app, #packing-app) .th-profile-footer .lp-edit-choice-row {
   width: 100%;
   min-height: 31px;
   padding: 0;
   align-items: center;
 }
 
-#packing-app .lp-profile-panel .lp-edit-pill,
-#packing-app .lp-profile-panel .lp-edit-button {
+:is(#hps-app, #packing-app) .th-profile-footer .lp-edit-choice {
+  min-width: 0;
+}
+
+:is(#hps-app, #packing-app) .th-profile-footer .lp-edit-pill {
   min-height: 31px;
   min-width: 74px;
   padding: 6px 9px;
@@ -3002,64 +3039,80 @@ body {
   text-transform: uppercase;
 }
 
-#packing-app .packing-add-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+:is(#hps-app, #packing-app) .lp-profile-footer {
+  margin-top: 0;
 }
 
-#packing-app .packing-add-control .lp-edit-input {
-  width: 86px;
+:is(#hps-app, #packing-app) .lp-profile-subtitle {
+  display: none;
 }
 
-#packing-app .packing-totals-row .lp-field-value {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-#packing-app .packing-totals {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+:is(#hps-app, #packing-app) .th-detail-section .packing-inline-choices,
+:is(#hps-app, #packing-app) .th-detail-section .lp-edit-choice-row {
   gap: 6px;
-  width: 100%;
 }
 
-#packing-app .packing-total-pill {
-  display: grid;
-  grid-template-rows: 19px 9px;
-  gap: 2px;
-  min-width: 0;
-  min-height: 34px;
-  padding: 5px 7px;
-  border: 1px solid rgba(24, 31, 29, 0.18);
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px rgba(24, 31, 29, 0.035);
+:is(#hps-app, #packing-app) .lp-profile-panel .packing-inline-choices,
+:is(#hps-app, #packing-app) .th-profile-footer .packing-inline-choices {
+  display: flex;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
-#packing-app .packing-total-value {
-  display: block;
-  min-width: 0;
-  overflow: hidden;
-  color: #000000;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 0.95em;
-  letter-spacing: -0.04em;
-  text-overflow: ellipsis;
+:is(#hps-app, #packing-app) .lp-profile-panel .lp-edit-choice,
+:is(#hps-app, #packing-app) .th-profile-footer .lp-edit-choice {
+  flex: 0 0 auto;
+}
+
+:is(#hps-app, #packing-app) .lp-profile-panel .lp-edit-pill,
+:is(#hps-app, #packing-app) .th-profile-footer .lp-edit-pill {
   white-space: nowrap;
 }
 
-#packing-app .packing-total-label {
-  display: block;
-  color: #000000;
-  font-size: 9px;
-  font-weight: 400;
-  line-height: 0.9em;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
+:is(#hps-app, #packing-app) .lp-profile-panel button.lp-edit-pill.is-active,
+:is(#hps-app, #packing-app) .th-profile-footer button.lp-edit-pill.is-active {
+  background: #46332b;
+  border-color: #46332b;
+  color: #ffffff;
 }
 
-#packing-app .lp-profile-footer {
-  margin-top: 0;
+:is(#hps-app, #packing-app) .packing-decision-choices button.lp-edit-pill.is-active {
+  background: #a23b3b;
+  border-color: #a23b3b;
+  color: #ffffff;
+}
+
+:is(#hps-app, #packing-app) .packing-static-pill {
+  cursor: default;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  :is(#hps-app, #packing-app) .lp-modal {
+    padding: 6px 0;
+  }
+
+  :is(#hps-app, #packing-app) .lp-modal-card {
+    width: calc(100vw - 32px);
+    min-height: calc(100dvh - 12px);
+    max-height: calc(100dvh - 12px);
+    margin-right: 16px;
+  }
+
+  :is(#hps-app, #packing-app) [data-modal-content],
+  :is(#hps-app, #packing-app) .lp-profile-shell {
+    min-height: calc(100dvh - 32px);
+  }
+
+  :is(#hps-app, #packing-app) .lp-profile-shell {
+    padding-left: 16px;
+    padding-right: 10px;
+    row-gap: 10px;
+  }
+
+  :is(#hps-app, #packing-app) .lp-profile-tabs {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
