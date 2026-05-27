@@ -331,8 +331,8 @@ function printItemRowHtml(item) {
 function printItemStatus(item) {
   if (item.resolutionState) return resolutionDisplayLabel(item.resolutionState);
   if (item.packState === "packed" || (numberField(item.left) === 0 && numberField(item.needed) > 0)) return "PACKED";
-  if (numberField(item.packed) > 0) return `LEFT - ${quantityDisplay(item.left)}`;
-  return `NEED - ${quantityDisplay(item.needed)}`;
+  if (numberField(item.packed) > 0) return `LEFT: ${quantityDisplay(item.left)}`;
+  return `NEED: ${quantityDisplay(item.needed)}`;
 }
 
 function printHorsesPageHtml(report) {

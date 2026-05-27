@@ -479,7 +479,7 @@
           <span class="lp-row-title">No pack wave</span>
           <span class="lp-row-meta">Rows: 0 | Left 0</span>
         </span>
-        ${tokenHtml("need", "NEED - 0")}
+        ${tokenHtml("need", "NEED: 0")}
       </div>
     `;
   }
@@ -739,8 +739,8 @@
   function rowTokenHtml(item) {
     if (item.resolutionState) return tokenHtml("resolved", resolutionDisplayLabel(item.resolutionState));
     if (item.packState === "packed" || (number(item.left) === 0 && number(item.needed) > 0)) return tokenHtml("packed", "PACKED");
-    if (number(item.packed) > 0) return tokenHtml("open", `LEFT - ${quantityDisplay(item.left)}`);
-    return tokenHtml("need", `NEED - ${quantityDisplay(item.needed)}`);
+    if (number(item.packed) > 0) return tokenHtml("open", `LEFT: ${quantityDisplay(item.left)}`);
+    return tokenHtml("need", `NEED: ${quantityDisplay(item.needed)}`);
   }
 
   function tokenHtml(type, text) {
@@ -863,8 +863,8 @@
   function printItemStatus(item) {
     if (item.resolutionState) return resolutionDisplayLabel(item.resolutionState);
     if (item.packState === "packed" || (number(item.left) === 0 && number(item.needed) > 0)) return "PACKED";
-    if (number(item.packed) > 0) return `LEFT - ${quantityDisplay(item.left)}`;
-    return `NEED - ${quantityDisplay(item.needed)}`;
+    if (number(item.packed) > 0) return `LEFT: ${quantityDisplay(item.left)}`;
+    return `NEED: ${quantityDisplay(item.needed)}`;
   }
 
   function printHorsesPageHtml() {
@@ -921,7 +921,7 @@
         <div class="packing-print-item-main">
           <strong>${escapeHtml(displayLabel(row.item.name || "Unnamed item"))}</strong>
         </div>
-        <b>${escapeHtml(isHorseMemberPacked(row.member) ? "PACKED" : `LEFT - ${quantityDisplay(left || needed)}`)}</b>
+        <b>${escapeHtml(isHorseMemberPacked(row.member) ? "PACKED" : `LEFT: ${quantityDisplay(left || needed)}`)}</b>
       </div>
     `;
   }
@@ -1450,7 +1450,9 @@
   function activeWaveHorses() {
     const members = horseMemberRows();
     if (!members.length) {
-      return horses().filter((horse) => horse.active || String(horse.recordState || "").toLowerCase() === "active");
+      return horses()
+        .filter((horse) => horse.active || String(horse.recordState || "").toLowerCase() === "active")
+        .sort(compareHorseNames);
     }
 
     const horseIds = new Set();
@@ -1479,7 +1481,11 @@
         ...horse,
         waveSortOrder: sortByHorseId.get(horse.id) ?? sortByHorseKey.get(themeKey(horseDisplayName(horse))) ?? number(horse.sortOrder)
       }))
-      .sort((a, b) => number(a.waveSortOrder) - number(b.waveSortOrder) || horseDisplayName(a).localeCompare(horseDisplayName(b)));
+      .sort(compareHorseNames);
+  }
+
+  function compareHorseNames(a, b) {
+    return horseDisplayName(a).localeCompare(horseDisplayName(b), undefined, { sensitivity: "base" });
   }
 
   function horsePackingPercent() {

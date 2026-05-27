@@ -2253,9 +2253,9 @@ body {
   grid-template-columns: none;
   grid-template-rows: repeat(2, minmax(58px, auto));
   grid-auto-flow: column;
-  grid-auto-columns: 200px;
+  grid-auto-columns: minmax(0, calc((100% - 30px) / 4));
   align-items: stretch;
-  overflow-x: auto;
+  overflow-x: visible;
   overscroll-behavior-x: contain;
   padding: 10px 0 18px;
 }
@@ -2264,6 +2264,7 @@ body {
   :is(#packing-app, #tack-horses-app, #hps-app) .lp-tabs {
     grid-template-rows: minmax(58px, auto);
     grid-auto-columns: 200px;
+    overflow-x: auto;
     padding-bottom: 12px;
     -webkit-overflow-scrolling: touch;
   }
