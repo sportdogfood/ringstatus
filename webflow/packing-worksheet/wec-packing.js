@@ -596,14 +596,17 @@
   function packedControlHtml(item) {
     return editGroupHtml("Packed", `
       <span class="packing-add-control">
-        <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
+        <span class="packing-add-box">
+          <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
+          <span class="packing-add-label">QUANTITY</span>
+        </span>
         <button class="lp-edit-pill" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}">ADD</button>
       </span>
-    `);
+    `, "packing-add-row");
   }
 
   function horseMembersControlHtml(item) {
-    if (!item.horseMembers?.length) return editGroupHtml("Horses", `<span class="lp-edit-pill is-active packing-static-pill">NOT HORSE SPECIFIC</span>`);
+    if (!item.horseMembers?.length) return "";
     return editGroupHtml("Horses", `
       <span class="packing-horse-bindings">
         ${item.horseMembers.map((member) => {

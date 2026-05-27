@@ -719,7 +719,13 @@
   }
 
   :is(#packing-app, #tack-horses-app, #hps-app) .lp-row.is-static {
+    background: #f0f0f0;
     cursor: default;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .lp-row.packing-row,
+  :is(#packing-app, #tack-horses-app, #hps-app) .lp-row.is-static {
+    text-transform: uppercase;
   }
 
   :is(#packing-app, #tack-horses-app, #hps-app) .lp-row.is-detail {
@@ -2573,7 +2579,7 @@ body {
   font-weight: 600;
   line-height: 1;
   padding-left: 10px;
-  padding-top: 0;
+  padding-top: 2px;
   text-transform: uppercase;
 }
 
@@ -2765,24 +2771,50 @@ body {
   display: grid;
   grid-template-columns: minmax(64px, 86px) auto;
   gap: 6px;
-  align-items: center;
+  align-items: start;
   justify-content: start;
   max-width: 100%;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-control .lp-edit-input {
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-box {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
   min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-control .lp-edit-input {
+  width: 86px;
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-control .lp-edit-input[type="number"] {
+  width: 86px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-total-value,
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-control .lp-edit-input {
+  box-sizing: border-box;
+  width: 86px;
   height: 40px;
   min-height: 40px;
   padding: 6px 9px;
   border: 1px solid rgba(24, 31, 29, 0.2);
   border-radius: 8px;
+  background: #ffffff;
   box-shadow: inset 0 0 0 1px rgba(24, 31, 29, 0.04);
+  color: var(--lp-ink);
+  font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   line-height: 0.95em;
   letter-spacing: -0.02em;
   text-align: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-control .lp-edit-input::placeholder {
+  color: var(--lp-ink);
+  opacity: 1;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-add-control .lp-edit-button {
@@ -2851,8 +2883,13 @@ body {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
-  padding: 5px 0;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--lp-border);
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-binding-row:nth-child(even) {
+  background: rgba(175, 175, 175, 0.07);
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-binding-row:last-child {
@@ -2868,9 +2905,16 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-binding-toggle {
-  border-radius: 8px;
-  box-shadow: none;
+  min-width: 104px;
+  border-radius: 999px;
+  background: #46332b;
+  border-color: #46332b;
+  color: #ffffff;
+  box-shadow: var(--lp-token-shadow);
   font-size: 11px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-binding-toggle.is-active {
@@ -2989,6 +3033,7 @@ body {
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-total-box {
   display: grid;
   gap: 4px;
+  justify-items: center;
   min-width: 0;
 }
 
@@ -2996,30 +3041,26 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 86px;
-  height: 40px;
-  min-height: 40px;
-  padding: 6px 9px;
-  border: 1px solid rgba(24, 31, 29, 0.2);
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px rgba(24, 31, 29, 0.04);
-  color: var(--lp-ink);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 0.95em;
-  letter-spacing: -0.02em;
-  text-align: center;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .packing-total-label {
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-total-label,
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-label {
+  display: block;
+  width: 86px;
   color: var(--lp-ink);
   font-size: 10px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.02em;
+  padding-left: 0;
+  padding-top: 2px;
   text-align: center;
-  text-transform: lowercase;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-totals-row > .lp-field-label,
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-add-row > .lp-field-label {
+  display: none;
 }
 
 :is(#hps-app, #packing-app) .lp-profile-panel .lp-field-row.th-detail-note {
