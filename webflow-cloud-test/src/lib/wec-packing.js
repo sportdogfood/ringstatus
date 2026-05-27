@@ -138,14 +138,17 @@ export async function stateReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, packLists, sourcePackItems, worksheetItems, worksheetHorses, horses, listPlans] = await Promise.all([
+  const [waves, packLists, homePackLists, sourcePackItems, purchaseOnsiteItems, worksheetItems, worksheetHorses, horses, listPlans, packingEvents] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
+    listOptionalViewRecords(airtable, tables.wec_pack_lists.id, "wec_home"),
     listAirtableRecords(airtable, tables.wec_pack_items.id, tables.wec_pack_items.view),
+    listOptionalViewRecords(airtable, tables.wec_pack_items.id, "wec_purchase_onsite"),
     listAirtableRecords(airtable, tables.wec_packing_items.id, tables.wec_packing_items.view),
     listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
-    listOptionalRecords(airtable, tables.wec_list_plans)
+    listOptionalRecords(airtable, tables.wec_list_plans),
+    listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view)
   ]);
 
   const listPlanLookup = new Map(listPlans.map((record) => {
@@ -159,7 +162,11 @@ export async function stateReport(airtable, requestUrl) {
     .filter((record) => !record.fields?.ignore)
     .map(normalizePackList)
     .sort(comparePackLists);
-  const packListLookup = new Map(normalizedPackLists.map((list) => [list.id, list]));
+  const normalizedHomeLists = homePackLists
+    .filter((record) => !record.fields?.ignore)
+    .map(normalizePackList)
+    .sort(comparePackLists);
+  const packListLookup = new Map([...normalizedPackLists, ...normalizedHomeLists].map((list) => [list.id, list]));
   const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
     const item = normalizeSourcePackItem(record, listPlanLookup);
     return [item.id, item];
@@ -193,6 +200,15 @@ export async function stateReport(airtable, requestUrl) {
     .sort(compareWorksheetRows);
   const lists = buildListSummaries(items, normalizedPackLists);
   const tabGroups = buildTabSummaries(lists);
+  const homeModules = buildHomeModules({
+    homeLists: normalizedHomeLists,
+    purchaseOnsiteItems,
+    listPlanLookup,
+    packListLookup,
+    packingEvents,
+    selectedShowId,
+    selectedWaveId: selectedWave?.id || ""
+  });
 
   return {
     ok: true,
@@ -215,6 +231,7 @@ export async function stateReport(airtable, requestUrl) {
     horses: normalizedHorses,
     lists,
     tabGroups,
+    homeModules,
     sections: lists.map((list) => ({
       section: list.id,
       label: list.label,
@@ -225,6 +242,8 @@ export async function stateReport(airtable, requestUrl) {
     counts: {
       waves: waves.length,
       packLists: normalizedPackLists.length,
+      homePackLists: normalizedHomeLists.length,
+      purchaseOnsiteItems: purchaseOnsiteItems.length,
       sourcePackItems: sourcePackItems.length,
       worksheetItems: items.length,
       horseMembers: filteredHorses.length,
@@ -234,6 +253,107 @@ export async function stateReport(airtable, requestUrl) {
     needsGeneration: items.length === 0,
     items
   };
+}
+
+function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, packListLookup, packingEvents, selectedShowId, selectedWaveId }) {
+  const purchaseList = homeLists.find((list) => list.key === "purchase_onsite" || slugify(list.label) === "purchase_onsite");
+  if (!purchaseList) return [];
+  const taskStates = onsiteTaskStatesFromEvents(packingEvents, {
+    showId: selectedShowId,
+    packWaveId: selectedWaveId
+  });
+  const rows = purchaseOnsiteItems
+    .map((record) => normalizePurchaseOnsiteTask(record, listPlanLookup, packListLookup, purchaseList.id, taskStates))
+    .sort(compareOnsiteTasks);
+  const lists = buildOnsiteListSummaries(rows, packListLookup, purchaseList);
+  return [{
+    id: "purchase_onsite",
+    listId: purchaseList.id,
+    label: purchaseList.label || "purchase_onsite",
+    type: "task_list",
+    rows: rows.length,
+    done: rows.filter((row) => row.taskState === "done").length,
+    open: rows.filter((row) => row.taskState !== "done").length,
+    lists,
+    tasks: rows
+  }];
+}
+
+function normalizePurchaseOnsiteTask(record, listPlanLookup, packListLookup, purchaseListId, taskStates) {
+  const source = normalizeSourcePackItem(record, listPlanLookup);
+  const originalListIds = source.packListIds.filter((id) => id !== purchaseListId);
+  const taskListIds = originalListIds.length ? originalListIds : [purchaseListId];
+  const taskState = taskStates.get(source.id) || "task";
+  return {
+    id: source.id,
+    name: source.appName,
+    listPlan: source.listPlan || "purchase_onsite",
+    listPlanLabel: source.listPlanLabel || "purchase_onsite",
+    taskState,
+    done: taskState === "done",
+    packListIds: taskListIds,
+    packListLabels: taskListIds.map((id) => packListLookup.get(id)?.label || "").filter(Boolean),
+    purchaseListId,
+    vendorIds: source.vendorIds,
+    placeIds: source.placeIds,
+    placeLabels: source.placeLabels,
+    localTags: source.localTags,
+    note: source.note,
+    longDescription: source.longDescription
+  };
+}
+
+function buildOnsiteListSummaries(tasks, packListLookup, purchaseList) {
+  const listIds = new Set(tasks.flatMap((task) => task.packListIds || []));
+  if (!listIds.size) listIds.add(purchaseList.id);
+  return [...listIds].map((id) => {
+    const rows = tasks.filter((task) => (task.packListIds || []).includes(id));
+    const list = packListLookup.get(id) || (id === purchaseList.id ? purchaseList : { id, label: id });
+    return {
+      id,
+      key: slugify(list.label || id),
+      label: list.label || id,
+      rows: rows.length,
+      done: rows.filter((row) => row.taskState === "done").length,
+      open: rows.filter((row) => row.taskState !== "done").length
+    };
+  }).filter((list) => list.rows > 0).sort(comparePackLists);
+}
+
+function onsiteTaskStatesFromEvents(records, context = {}) {
+  const states = new Map();
+  const relevant = [...(records || [])]
+    .filter((record) => ["onsite_task_done", "onsite_task_reopen"].includes(stringField(record.fields?.event_type)))
+    .filter((record) => eventMatchesContext(record, context))
+    .sort((a, b) => compareText(a.createdTime, b.createdTime) || compareText(stringField(a.fields?.event), stringField(b.fields?.event)));
+  for (const record of relevant) {
+    const sourceItemId = onsiteTaskEventSourceId(record);
+    if (!sourceItemId) continue;
+    states.set(sourceItemId, stringField(record.fields?.event_type) === "onsite_task_done" ? "done" : "task");
+  }
+  return states;
+}
+
+function eventMatchesContext(record, context = {}) {
+  const fields = record.fields || {};
+  const packWaveIds = linkedIds(fields.pack_wave);
+  const showIds = linkedIds(fields.show);
+  if (context.packWaveId && packWaveIds.length && !packWaveIds.includes(context.packWaveId)) return false;
+  if (context.showId && showIds.length && !showIds.includes(context.showId)) return false;
+  return true;
+}
+
+function onsiteTaskEventSourceId(record) {
+  const event = stringField(record.fields?.event);
+  const eventMatch = event.match(/^onsite_task_(?:done|reopen):(rec[a-zA-Z0-9]+):/);
+  if (eventMatch) return eventMatch[1];
+  const notes = stringField(record.fields?.notes);
+  const noteMatch = notes.match(/source_pack_item:\s*(rec[a-zA-Z0-9]+)/);
+  return noteMatch?.[1] || "";
+}
+
+function compareOnsiteTasks(a, b) {
+  return compareText(a.name, b.name) || compareText(a.id, b.id);
 }
 
 export function printReportHtml(report, requestUrl) {
@@ -257,6 +377,7 @@ function printBodyHtml(report, target) {
     return `${pages}${printHorsesPageHtml(report)}`;
   }
   if (target === "horses") return printHorsesPageHtml(report);
+  if (String(target || "").startsWith("home:")) return printHomeModulePageHtml(report, target);
   return printPackingPageHtml(report, printTargetTitle(report, target), printListSections(report, target));
 }
 
@@ -264,6 +385,9 @@ function printTargetTitle(report, target) {
   if (target === "horses") return "Horses";
   if (String(target || "").startsWith("tab:")) {
     return displayLabel((report.tabGroups || []).find((group) => group.id === target)?.label || target.replace(/^tab:/, ""));
+  }
+  if (String(target || "").startsWith("home:")) {
+    return displayLabel((report.homeModules || []).find((module) => `home:${module.id}` === target)?.label || target.replace(/^home:/, ""));
   }
   return displayLabel((report.lists || []).find((list) => list.id === target)?.label || target);
 }
@@ -377,6 +501,54 @@ function printHorsePackingPageHtml(report, horseId) {
         ${printHorsePackingColumnHtml("Items", columns[1])}
       </div>
     </section>
+  `;
+}
+
+function printHomeModulePageHtml(report, target) {
+  const moduleId = String(target || "").replace(/^home:/, "");
+  const module = (report.homeModules || []).find((row) => row.id === moduleId);
+  if (!module) return printPackingPageHtml(report, printTargetTitle(report, target), []);
+  const sections = (module.lists || []).map((list) => ({
+    title: displayLabel(list.label || list.id),
+    rows: (module.tasks || []).filter((task) => (task.packListIds || []).includes(list.id))
+  })).filter((section) => section.rows.length);
+  const percent = progressPercent(numberField(module.done), numberField(module.rows));
+  return printHomeTaskPageChunkHtml(report, module.label, sections, percent);
+}
+
+function printHomeTaskPageChunkHtml(report, title, sections, percent) {
+  return `
+    <section class="packing-print-page">
+      <header class="packing-print-head">
+        <h1>${escapeHtml(displayLabel(title))}</h1>
+        <p>${escapeHtml(printStatusLine(report, percent))}</p>
+      </header>
+      <div class="packing-print-columns">
+        ${sections.length ? sections.map(printHomeTaskColumnHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+      </div>
+    </section>
+  `;
+}
+
+function printHomeTaskColumnHtml(section) {
+  return `
+    <section class="packing-print-list ${printDensityClass(section.rows)}">
+      <h2>${escapeHtml(section.title)}</h2>
+      ${section.rows.length ? section.rows.map(printHomeTaskRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+    </section>
+  `;
+}
+
+function printHomeTaskRowHtml(task) {
+  const done = task.taskState === "done";
+  return `
+    <div class="packing-print-item ${done ? "is-packed" : ""}">
+      <div class="packing-print-item-main">
+        <strong class="packing-print-item-name">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</strong>
+      </div>
+      <span class="packing-print-metrics">${done ? "Done" : "Task"}</span>
+      <span class="packing-print-scratch" aria-hidden="true"></span>
+    </div>
   `;
 }
 
@@ -885,6 +1057,8 @@ export async function actionReport(airtable, requestUrl, payload) {
     result = await applyHorseRecordState(airtable, tables, payload);
   } else if (action === "set_source_flag") {
     result = await applySourceFlag(airtable, tables, payload);
+  } else if (action === "set_onsite_task_state") {
+    result = await applyOnsiteTaskState(airtable, tables, payload);
   } else if (action !== "session_start") {
     return { ok: false, error: "unknown_action", action };
   }
@@ -1117,6 +1291,16 @@ async function listOptionalRecords(airtable, tableConfig) {
   }
 }
 
+async function listOptionalViewRecords(airtable, tableId, view) {
+  if (!tableId || !view) return [];
+  try {
+    return await listAirtableRecords(airtable, tableId, view);
+  } catch (error) {
+    console.warn(`[wec-packing] optional view skipped: ${tableId}/${view}`, error);
+    return [];
+  }
+}
+
 async function applyAddQuantity(airtable, tables, payload) {
   const itemId = clean(payload?.itemId || payload?.packingItemId);
   const delta = wholeQuantityField(payload?.quantityDelta || payload?.delta || 0);
@@ -1334,6 +1518,34 @@ async function applySourceFlag(airtable, tables, payload) {
   return { updated };
 }
 
+async function applyOnsiteTaskState(airtable, tables, payload) {
+  const sourceItemId = clean(payload?.sourceItemId);
+  const taskState = clean(payload?.taskState || payload?.state);
+  if (!sourceItemId) throw new Error("missing_source_item_id");
+  if (!["task", "done"].includes(taskState)) throw new Error("invalid_onsite_task_state");
+
+  const sourceRecords = await listAirtableRecords(airtable, tables.wec_pack_items.id, "wec_purchase_onsite");
+  const sourceRecord = sourceRecords.find((record) => record.id === sourceItemId);
+  if (!sourceRecord) throw new Error(`wec_purchase_onsite_record_not_in_view: ${sourceItemId}`);
+
+  const eventType = taskState === "done" ? "onsite_task_done" : "onsite_task_reopen";
+  const event = await createPackingEvent(airtable, tables, {
+    eventType,
+    eventSubjectId: sourceItemId,
+    showIds: clean(payload?.showId) ? [clean(payload.showId)] : [],
+    packWaveIds: clean(payload?.packWaveId) ? [clean(payload.packWaveId)] : [],
+    quantityDelta: 0,
+    quantityBefore: 0,
+    quantityAfter: 0,
+    notes: [
+      `source_pack_item: ${sourceItemId}`,
+      `item: ${stringField(sourceRecord.fields?.app_name)}`,
+      `task_state: ${taskState}`
+    ].join("\n")
+  });
+  return { event, taskState };
+}
+
 async function findRecordInConfiguredView(airtable, tableConfig, recordId) {
   if (!tableConfig?.id) throw new Error("missing_table_config");
   const records = await listAirtableRecords(airtable, tableConfig.id, tableConfig.view);
@@ -1364,8 +1576,9 @@ async function patchAirtableRecord(airtable, table, recordId, fields) {
 async function createPackingEvent(airtable, tables, payload) {
   const itemFields = payload.itemRecord?.fields || {};
   const memberFields = payload.memberRecord?.fields || {};
+  const subjectId = payload.eventSubjectId || payload.itemRecord?.id || "";
   const eventFields = compactFields({
-    event: `${payload.eventType}:${payload.itemRecord?.id || ""}:${Date.now()}`,
+    event: `${payload.eventType}:${subjectId}:${Date.now()}`,
     show: payload.showIds || linkedIds(itemFields.show),
     pack_wave: payload.packWaveIds || (linkedIds(itemFields.pack_wave).length ? linkedIds(itemFields.pack_wave) : linkedIds(memberFields.pack_wave)),
     packing_item: payload.itemRecord?.id ? [payload.itemRecord.id] : [],
@@ -1537,6 +1750,10 @@ function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
     uom: stringField(fields.uom),
     packListIds: linkedIds(fields.wec_pack_lists),
     horseIds: linkedIds(fields.wec_horses),
+    vendorIds: linkedIds(fields.wec_vendors),
+    placeIds: linkedIds(fields.wec_places),
+    placeLabels: stringListField(fields.wec_places_rollup || fields.place_names || fields["place_names (from wec_places)"] || fields.wec_places),
+    localTags: stringListField(fields.wec_local_tags_rollups || fields.local_tags || fields["local_tags (from wec_places)"]),
     ignored: !!fields.ignore,
     active: !!fields.active && !fields.inactive && !fields.remove,
     sourceFlags: {

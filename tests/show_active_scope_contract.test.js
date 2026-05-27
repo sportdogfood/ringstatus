@@ -6,6 +6,8 @@ const root = path.resolve(__dirname, "..");
 const tagger = fs.readFileSync(path.join(root, "tagger.js"), "utf8");
 const defaultShowDateGuard = fs.readFileSync(path.join(root, "lib", "default_show_date_guard.js"), "utf8");
 const runnerCommon = fs.readFileSync(path.join(root, "runner_pipeline_common.ps1"), "utf8");
+const schedulesDaily = fs.readFileSync(path.join(root, "schedules_dailyv2.js"), "utf8");
+const tripsDaily = fs.readFileSync(path.join(root, "trips_dailyv2.js"), "utf8");
 const runTaggerTask = fs.readFileSync(path.join(root, "run_tagger_task.ps1"), "utf8");
 const focusedRunner = fs.readFileSync(path.join(root, "run_tagger_task_focused_shows.ps1"), "utf8");
 const workflow = fs.readFileSync(path.join(root, ".github", "workflows", "ringstatus-pipeline.yml"), "utf8");
@@ -63,6 +65,21 @@ assert.ok(
     tagger.includes("shiftedToNextDay &&") &&
     tagger.includes("focusDay === tomorrowSqlDate"),
   "tagger must allow a manually shifted NIGHT focused show for tomorrow even when today is before start_date"
+);
+
+assert.ok(
+  schedulesDaily.includes("fields.is_current_scope = true;") &&
+    schedulesDaily.includes('setResolvedField(fields, watchScheduleFieldMeta, "archive", false);') &&
+    schedulesDaily.includes('setResolvedField(fields, watchScheduleFieldMeta, "inactive", false);') &&
+    schedulesDaily.includes("fields.dropped_at = null;"),
+  "schedules_dailyv2 must clear archive/inactive/dropped_at when a schedule row is confirmed in the current feed"
+);
+
+assert.ok(
+  tripsDaily.includes("async function syncActiveTableLinks") &&
+    tripsDaily.includes("summary.error = String(e?.message || e).slice(0, 500);") &&
+    tripsDaily.includes("return summary;"),
+  "trips_dailyv2 active table link sync must be nonfatal so active_groups access cannot block watch_trips writes"
 );
 
 assert.ok(

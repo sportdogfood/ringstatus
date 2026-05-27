@@ -1656,6 +1656,7 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   fields.is_current_scope = true;
   fields.scope_run_id = scope.scope_run_id;
   setResolvedField(fields, watchScheduleFieldMeta, "inactive", false);
+  setResolvedField(fields, watchScheduleFieldMeta, "archive", false);
   if (scopeStatusValue) fields.scope_status = scopeStatusValue;
   fields.last_seen_at = dateOnly;
   fields.dropped_at = null;

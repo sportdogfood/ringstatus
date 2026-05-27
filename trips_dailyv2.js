@@ -1523,23 +1523,32 @@ async function syncActiveTableLinks({
     return summary;
   }
 
-  const [groupRows, classRows, entryRows] = await Promise.all([
-    fetchScopedActiveRows(
-      TABLE_ACTIVE_GROUPS,
-      ["app_sid", "class_group_id", "inactive", "active_classes"],
-      scopeAppSid
-    ),
-    fetchScopedActiveRows(
-      TABLE_ACTIVE_CLASSES,
-      ["app_sid", "class_id", "class_group_id", "inactive", "active_groups", "active_entries"],
-      scopeAppSid
-    ),
-    fetchScopedActiveRows(
-      TABLE_ACTIVE_ENTRIES,
-      ["app_sid", "entry_id", "inactive", "active_classes"],
-      scopeAppSid
-    ),
-  ]);
+  let groupRows = [];
+  let classRows = [];
+  let entryRows = [];
+  try {
+    [groupRows, classRows, entryRows] = await Promise.all([
+      fetchScopedActiveRows(
+        TABLE_ACTIVE_GROUPS,
+        ["app_sid", "class_group_id", "inactive", "active_classes"],
+        scopeAppSid
+      ),
+      fetchScopedActiveRows(
+        TABLE_ACTIVE_CLASSES,
+        ["app_sid", "class_id", "class_group_id", "inactive", "active_groups", "active_entries"],
+        scopeAppSid
+      ),
+      fetchScopedActiveRows(
+        TABLE_ACTIVE_ENTRIES,
+        ["app_sid", "entry_id", "inactive", "active_classes"],
+        scopeAppSid
+      ),
+    ]);
+  } catch (e) {
+    summary.skipped = true;
+    summary.error = String(e?.message || e).slice(0, 500);
+    return summary;
+  }
 
   const activeGroups = groupRows.filter((row) => !boolValue(row?.fields?.inactive));
   const activeClasses = classRows.filter((row) => !boolValue(row?.fields?.inactive));

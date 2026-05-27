@@ -16,6 +16,7 @@
     detailType: "",
     detailId: "",
     didSetInitialTab: false,
+    activeHomeModule: "",
     activeListByTab: {},
     searchBySection: {},
     inlineEditByList: {},
@@ -152,6 +153,13 @@
       return;
     }
 
+    const onsiteTaskAction = event.target.closest("[data-onsite-task-state]");
+    if (onsiteTaskAction) {
+      event.preventDefault();
+      setOnsiteTaskState(onsiteTaskAction);
+      return;
+    }
+
     const horseMemberAction = event.target.closest("[data-horse-member-state]");
     if (horseMemberAction) {
       event.preventDefault();
@@ -187,6 +195,17 @@
       return;
     }
 
+    const homeModule = event.target.closest("[data-home-module]");
+    if (homeModule) {
+      event.preventDefault();
+      state.activeHomeModule = homeModule.dataset.homeModule;
+      state.activeTab = "overview";
+      state.detailType = "";
+      state.detailId = "";
+      render();
+      return;
+    }
+
     const listSwitch = event.target.closest("[data-list-switch]");
     if (listSwitch) {
       event.preventDefault();
@@ -216,9 +235,18 @@
     const tab = event.target.closest("[data-tab]");
     if (tab) {
       state.activeTab = tab.dataset.tab;
+      if (state.activeTab === "overview") state.activeHomeModule = "";
       state.detailType = "";
       state.detailId = "";
       render();
+      return;
+    }
+
+    const onsiteDetail = event.target.closest("[data-onsite-task-detail]");
+    if (onsiteDetail) {
+      state.detailType = "onsite";
+      state.detailId = onsiteDetail.dataset.onsiteTaskDetail;
+      renderDetail();
       return;
     }
 
@@ -416,6 +444,28 @@
     });
   }
 
+  async function setOnsiteTaskState(button) {
+    const sourceItemId = button.dataset.sourceItemId;
+    const taskState = button.dataset.onsiteTaskState;
+    if (!sourceItemId || !taskState) return;
+    const pendingKey = pendingActionKey("set_onsite_task_state", sourceItemId);
+    if (state.pendingActions[pendingKey]) return;
+    state.pendingActions[pendingKey] = taskState;
+    const snapshot = snapshotOnsiteTaskState(sourceItemId);
+    applyLocalOnsiteTaskState(sourceItemId, taskState);
+    await postAction({
+      action: "set_onsite_task_state",
+      sourceItemId,
+      taskState,
+      showId: state.data?.source?.showId || "",
+      packWaveId: state.data?.source?.packWaveId || ""
+    }, null, {
+      pendingKey,
+      message: taskState === "done" ? "Marking done..." : "Reopening task...",
+      rollback: () => restoreOnsiteTaskState(snapshot)
+    });
+  }
+
   async function toggleHorseState(button) {
     const horseId = button.dataset.horseId;
     const nextState = button.dataset.nextState;
@@ -594,19 +644,24 @@
   }
 
   function overviewHtml() {
+    if (state.activeHomeModule) return homeModuleHtml(state.activeHomeModule);
     const searchKey = "overview";
-    const summaries = filterRows(tabGroups(), searchKey, overviewSearchText);
+    const summaries = filterRows([...tabGroups(), ...homeModuleSummaries()], searchKey, overviewSearchText);
     const rows = summaries.map((summary) => {
       const percent = progressPercent(summary.done, summary.rows);
+      const triggerAttr = summary.homeModule
+        ? `data-home-module="${escapeAttr(summary.id)}"`
+        : `data-tab="${escapeAttr(summary.id)}"`;
+      const printTarget = summary.homeModule ? `home:${summary.id}` : summary.id;
       return `
         <div class="lp-row packing-row packing-overview-row">
-          <button class="packing-overview-tab-trigger" type="button" data-tab="${escapeAttr(summary.id)}">
+          <button class="packing-overview-tab-trigger" type="button" ${triggerAttr}>
             <span class="packing-progress" aria-label="${escapeAttr(`${percent}% complete`)}">
               <span class="packing-progress-fill" style="width: ${percent}%"></span>
             </span>
             <span class="lp-row-title">${escapeHtml(displayLabel(summary.label))}</span>
           </button>
-          <button class="lp-filter-toggle packing-print-button" type="button" data-print-section="${escapeAttr(summary.id)}">PRINT LIST</button>
+          <button class="lp-filter-toggle packing-print-button" type="button" data-print-section="${escapeAttr(printTarget)}">PRINT LIST</button>
         </div>
       `;
     }).join("");
@@ -619,6 +674,20 @@
           ${sectionSearchHtml(searchKey)}
           ${state.data.needsGeneration ? noWaveRowHtml() : rows || emptyRowHtml("No rows")}
         </div>
+      </section>
+    `;
+  }
+
+  function homeModuleHtml(moduleId) {
+    const module = homeModules().find((row) => row.id === moduleId);
+    if (!module) return emptyGroupHtml("No rows", "overview");
+    const moduleLists = sortListsByLabel(module.lists || []);
+    const activeList = activeListForGroup(module.id, moduleLists);
+    return `
+      <section class="lp-section-block ${themeClasses(module.id)}">
+        ${sectionTitleHtml(module.label, `home:${module.id}`)}
+        ${listSwitcherHtml(module.id, moduleLists, activeList?.id || "")}
+        ${onsiteTaskRowsHtml(module, activeList)}
       </section>
     `;
   }
@@ -697,6 +766,42 @@
         ${listLabelRowHtml(list)}
         ${sectionSearchHtml(searchKey)}
         ${rows.length ? rows.map((item) => itemRowHtml(item, editMode, list.id)).join("") : emptyRowHtml("No rows")}
+      </div>
+    `;
+  }
+
+  function onsiteTaskRowsHtml(module, list) {
+    const searchKey = module.id;
+    const rows = sortOnsiteTasks(filterRows((module.tasks || []).filter((task) => onsiteTaskBelongsToList(task, list?.id)), searchKey, onsiteTaskSearchText));
+    return `
+      <div class="lp-list">
+        ${onsiteListLabelRowHtml(list || module)}
+        ${sectionSearchHtml(searchKey)}
+        ${rows.length ? rows.map(onsiteTaskRowHtml).join("") : emptyRowHtml("No tasks")}
+      </div>
+    `;
+  }
+
+  function onsiteListLabelRowHtml(list) {
+    return `
+      <div class="lp-row is-static packing-list-action-row">
+        <span class="lp-row-title">${escapeHtml(displayLabel(list?.label || list?.id || "Purchase onsite"))}</span>
+      </div>
+    `;
+  }
+
+  function onsiteTaskRowHtml(task) {
+    const done = task.taskState === "done";
+    const pending = isPendingAction("set_onsite_task_state", task.id);
+    const nextState = done ? "task" : "done";
+    return `
+      <div class="lp-row packing-row packing-onsite-row">
+        <button class="packing-overview-tab-trigger packing-onsite-detail-trigger" type="button" data-onsite-task-detail="${escapeAttr(task.id)}">
+          <span class="lp-row-title">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</span>
+        </button>
+        <button class="lp-achievement packing-token packing-token-button ${done ? "is-packed" : "is-need"} ${pending ? "is-pending" : ""}" type="button" data-onsite-task-state="${escapeAttr(nextState)}" data-source-item-id="${escapeAttr(task.id)}" ${pending ? `disabled aria-busy="true"` : ""}>
+          ${pending ? "SAVING" : done ? "DONE" : "TASK"}
+        </button>
       </div>
     `;
   }
@@ -966,6 +1071,7 @@
       return `${pages}${printHorsesPageHtml()}`;
     }
     if (target === "horses") return printHorsesPageHtml();
+    if (String(target || "").startsWith("home:")) return printHomeModulePrintHtml(target);
     return printPackingPageHtml(printTargetTitle(target), printListSections(target));
   }
 
@@ -974,7 +1080,55 @@
     if (isTabGroupId(target)) {
       return displayLabel(tabGroups().find((group) => group.id === target)?.label || target.replace(/^tab:/, ""));
     }
+    if (String(target || "").startsWith("home:")) {
+      return displayLabel(homeModules().find((module) => `home:${module.id}` === target)?.label || target.replace(/^home:/, ""));
+    }
     return displayLabel(lists().find((list) => list.id === target)?.label || target);
+  }
+
+  function printHomeModulePrintHtml(target) {
+    const moduleId = String(target || "").replace(/^home:/, "");
+    const module = homeModules().find((row) => row.id === moduleId);
+    if (!module) return printPackingPageHtml(printTargetTitle(target), []);
+    const sections = (module.lists || []).map((list) => ({
+      title: displayLabel(list.label || list.id),
+      rows: (module.tasks || []).filter((task) => (task.packListIds || []).includes(list.id))
+    })).filter((section) => section.rows.length);
+    const rows = sections.flatMap((section) => section.rows);
+    const percent = progressPercent(rows.filter((task) => task.taskState === "done").length, rows.length);
+    return `
+      <section class="packing-print-page">
+        <header class="packing-print-head">
+          <h1>${escapeHtml(displayLabel(module.label || "Purchase Onsite"))}</h1>
+          <p>${escapeHtml(statusLine())} | ${percent}% packed | Printed: ${escapeHtml(printDateDisplay())}</p>
+        </header>
+        <div class="packing-print-columns">
+          ${sections.length ? sections.map(printHomeTaskColumnHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+        </div>
+      </section>
+    `;
+  }
+
+  function printHomeTaskColumnHtml(section) {
+    return `
+      <section class="packing-print-list ${printDensityClass(section.rows)}">
+        <h2>${escapeHtml(section.title)}</h2>
+        ${section.rows.length ? section.rows.map(printHomeTaskRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+      </section>
+    `;
+  }
+
+  function printHomeTaskRowHtml(task) {
+    const done = task.taskState === "done";
+    return `
+      <div class="packing-print-item ${done ? "is-packed" : ""}">
+        <div class="packing-print-item-main">
+          <strong class="packing-print-item-name">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</strong>
+        </div>
+        <span class="packing-print-metrics">${done ? "Done" : "Task"}</span>
+        <span class="packing-print-scratch" aria-hidden="true"></span>
+      </div>
+    `;
   }
 
   function printListSections(target) {
@@ -1324,7 +1478,9 @@
     modal.setAttribute("aria-hidden", "false");
     content.innerHTML = state.detailType === "horse"
       ? horseDetailHtml(horses().find((horse) => horse.id === state.detailId))
-      : itemDetailHtml(items().find((item) => item.id === state.detailId));
+      : state.detailType === "onsite"
+        ? onsiteTaskDetailHtml(onsiteTasks().find((task) => task.id === state.detailId))
+        : itemDetailHtml(items().find((item) => item.id === state.detailId));
   }
 
   function itemDetailHtml(item) {
@@ -1401,6 +1557,60 @@
         </div>
       </div>
     `;
+  }
+
+  function onsiteTaskDetailHtml(task) {
+    if (!task) return "";
+    return `
+      <div class="lp-profile-shell packing-detail-shell packing-theme-overview">
+        <div class="lp-profile-head th-profile-top">
+          <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</h2>
+          <p class="lp-profile-subtitle">Purchase Onsite</p>
+        </div>
+
+        <section class="lp-profile-panel packing-detail th-detail-section">
+          <div data-th-record="${escapeAttr(task.id)}" data-th-name="${escapeAttr(task.name || "")}">
+            <div class="lp-field-grid lp-profile-tab-panel is-active">
+              ${onsiteTaskStatusControlHtml(task)}
+              ${task.longDescription ? editGroupHtml("Details", `<span class="lp-row-meta">${escapeHtml(task.longDescription)}</span>`) : ""}
+              ${onsiteTaskInfoRowHtml("Places", task.placeLabels)}
+              ${onsiteTaskInfoRowHtml("Tags", task.localTags)}
+            </div>
+          </div>
+        </section>
+
+        <div class="lp-profile-modal-footer th-profile-footer">
+          ${planLineHtml(task.listPlanLabel || task.listPlan)}
+          <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
+            <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function onsiteTaskStatusControlHtml(task) {
+    const done = task.taskState === "done";
+    return editGroupHtml("Task", `
+      <span class="lp-edit-choice-row packing-inline-choices">
+        ${choiceButtonHtml({
+          label: "TASK",
+          active: !done,
+          attrs: `data-onsite-task-state="task" data-source-item-id="${escapeAttr(task.id)}"`
+        })}
+        ${choiceButtonHtml({
+          label: "DONE",
+          active: done,
+          attrs: `data-onsite-task-state="done" data-source-item-id="${escapeAttr(task.id)}"`
+        })}
+      </span>
+    `);
+  }
+
+  function onsiteTaskInfoRowHtml(label, values) {
+    const list = Array.isArray(values) ? values.filter(Boolean) : [];
+    if (!list.length) return "";
+    return editGroupHtml(label, `<span class="lp-row-meta">${escapeHtml(list.map(displayLabel).join(", "))}</span>`);
   }
 
   function horseDetailItemRowHtml(row) {
@@ -1649,6 +1859,118 @@
 
   function items() {
     return Array.isArray(state.data?.items) ? state.data.items : [];
+  }
+
+  function homeModules() {
+    return Array.isArray(state.data?.homeModules) ? state.data.homeModules : [];
+  }
+
+  function homeModuleSummaries() {
+    return homeModules().map((module) => ({
+      id: module.id,
+      label: module.label,
+      rows: module.rows,
+      done: module.done,
+      open: module.open,
+      homeModule: true
+    }));
+  }
+
+  function onsiteTasks() {
+    return homeModules().flatMap((module) => Array.isArray(module.tasks) ? module.tasks : []);
+  }
+
+  function onsiteTaskBelongsToList(task, listId) {
+    if (!listId) return true;
+    return Array.isArray(task?.packListIds) && task.packListIds.includes(listId);
+  }
+
+  function onsiteTaskSearchText(task) {
+    return [
+      task?.name,
+      task?.longDescription,
+      task?.note,
+      ...(Array.isArray(task?.packListLabels) ? task.packListLabels : []),
+      ...(Array.isArray(task?.placeLabels) ? task.placeLabels : []),
+      ...(Array.isArray(task?.localTags) ? task.localTags : [])
+    ].filter(Boolean).join(" ");
+  }
+
+  function sortOnsiteTasks(rows) {
+    return [...rows].sort((a, b) => {
+      const nameCompare = displayLabel(a.name || "").localeCompare(displayLabel(b.name || ""), undefined, { sensitivity: "base" });
+      if (nameCompare) return nameCompare;
+      return String(a.id || "").localeCompare(String(b.id || ""), undefined, { sensitivity: "base" });
+    });
+  }
+
+  function snapshotOnsiteTaskState(sourceItemId) {
+    const modules = homeModules();
+    const task = onsiteTasks().find((row) => row.id === sourceItemId);
+    if (!task) return null;
+    return {
+      sourceItemId,
+      taskState: task.taskState,
+      done: task.done,
+      modules: modules.map((module) => ({
+        id: module.id,
+        rows: module.rows,
+        done: module.done,
+        open: module.open,
+        lists: (module.lists || []).map((list) => ({
+          id: list.id,
+          rows: list.rows,
+          done: list.done,
+          open: list.open
+        }))
+      }))
+    };
+  }
+
+  function applyLocalOnsiteTaskState(sourceItemId, taskState) {
+    for (const module of homeModules()) {
+      const task = (module.tasks || []).find((row) => row.id === sourceItemId);
+      if (!task) continue;
+      task.taskState = taskState;
+      task.done = taskState === "done";
+      recomputeOnsiteModule(module);
+    }
+  }
+
+  function restoreOnsiteTaskState(snapshot) {
+    if (!snapshot) return;
+    const task = onsiteTasks().find((row) => row.id === snapshot.sourceItemId);
+    if (task) {
+      task.taskState = snapshot.taskState;
+      task.done = snapshot.done;
+    }
+    for (const moduleSnapshot of snapshot.modules || []) {
+      const module = homeModules().find((row) => row.id === moduleSnapshot.id);
+      if (!module) continue;
+      module.rows = moduleSnapshot.rows;
+      module.done = moduleSnapshot.done;
+      module.open = moduleSnapshot.open;
+      for (const listSnapshot of moduleSnapshot.lists || []) {
+        const list = (module.lists || []).find((row) => row.id === listSnapshot.id);
+        if (!list) continue;
+        list.rows = listSnapshot.rows;
+        list.done = listSnapshot.done;
+        list.open = listSnapshot.open;
+      }
+    }
+  }
+
+  function recomputeOnsiteModule(module) {
+    const tasks = Array.isArray(module.tasks) ? module.tasks : [];
+    module.rows = tasks.length;
+    module.done = tasks.filter((task) => task.taskState === "done").length;
+    module.open = tasks.length - module.done;
+    for (const list of module.lists || []) {
+      const rows = tasks.filter((task) => onsiteTaskBelongsToList(task, list.id));
+      list.rows = rows.length;
+      list.done = rows.filter((task) => task.taskState === "done").length;
+      list.open = rows.length - list.done;
+    }
   }
 
   function pendingActionKey(action, id) {

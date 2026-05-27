@@ -2770,6 +2770,17 @@ body {
   white-space: nowrap;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-token-button {
+  appearance: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-token-button:disabled {
+  cursor: wait;
+  opacity: 0.86;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-token-meta {
   color: var(--lp-muted);
   font-size: 10px;
