@@ -126,6 +126,7 @@ export async function stateReport(airtable, requestUrl) {
   const url = new URL(requestUrl);
   const showId = clean(url.searchParams.get("showId"));
   const packWaveId = clean(url.searchParams.get("packWaveId"));
+  const packWaveKey = clean(url.searchParams.get("packWaveKey") || url.searchParams.get("packWave") || url.searchParams.get("wave"));
   const context = await loadWecContext(airtable);
   const health = await healthReportFromContext(airtable, context);
   if (!health.ok) {
@@ -151,7 +152,7 @@ export async function stateReport(airtable, requestUrl) {
     const plan = normalizeListPlan(record);
     return [plan.id, plan];
   }));
-  const selectedWave = selectWave(waves, packWaveId);
+  const selectedWave = selectWave(waves, packWaveId, packWaveKey);
   const waveBase = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
   const normalizedPackLists = packLists
@@ -198,6 +199,7 @@ export async function stateReport(airtable, requestUrl) {
     source: {
       showId: selectedShowId || "",
       packWaveId: selectedWave?.id || "",
+      packWaveKey: normalizeWave(selectedWave)?.key || "",
       tables: {
         packWaves: tables.wec_pack_waves.id,
         packLists: tables.wec_pack_lists.id,
@@ -238,6 +240,7 @@ export async function reconcileReport(airtable, requestUrl) {
   const url = new URL(requestUrl);
   const showId = clean(url.searchParams.get("showId"));
   const packWaveId = clean(url.searchParams.get("packWaveId"));
+  const packWaveKey = clean(url.searchParams.get("packWaveKey") || url.searchParams.get("packWave") || url.searchParams.get("wave"));
   const context = await loadWecContext(airtable);
   const health = await healthReportFromContext(airtable, context);
   if (!health.ok) {
@@ -264,7 +267,7 @@ export async function reconcileReport(airtable, requestUrl) {
     const plan = normalizeListPlan(record);
     return [plan.id, plan];
   }));
-  const selectedWave = selectWave(waves, packWaveId);
+  const selectedWave = selectWave(waves, packWaveId, packWaveKey);
   const waveBase = selectedWave ? normalizeWave(selectedWave) : null;
   const selectedShowId = showId || firstLinkedId(selectedWave?.fields?.show);
   const normalizedPackLists = packLists
@@ -390,6 +393,7 @@ export async function reconcileReport(airtable, requestUrl) {
     source: {
       showId: selectedShowId || "",
       packWaveId: selectedWave?.id || "",
+      packWaveKey: normalizeWave(selectedWave)?.key || "",
       tables: {
         packWaves: tables.wec_pack_waves.id,
         packItems: tables.wec_pack_items.id,
@@ -871,10 +875,13 @@ function compactFields(fields) {
 }
 
 function normalizeWave(record) {
+  if (!record) return null;
   const fields = record.fields || {};
+  const wave = stringField(fields.wave || fields.wave_key || fields.key || fields.Name || record.id);
   return {
     id: record.id,
-    wave: stringField(fields.wave),
+    key: slugify(fields.wave_key || fields.key || wave),
+    wave,
     waveType: stringField(fields.wave_type),
     active: !!fields.active,
     manualLock: !!fields.manual_lock,
@@ -1328,9 +1335,46 @@ function isActiveWorksheetRow(record) {
   return recordState === "active";
 }
 
-function selectWave(waves, packWaveId) {
+function selectWave(waves, packWaveId, packWaveKey = "") {
   if (packWaveId) return waves.find((record) => record.id === packWaveId) || null;
+  if (packWaveKey) {
+    const targets = waveKeyAliases(packWaveKey);
+    return waves.find((record) => waveRecordKeys(record).some((key) => targets.includes(key))) || null;
+  }
   return waves.find((record) => !!record.fields?.active) || waves[0] || null;
+}
+
+function waveRecordKeys(record) {
+  const fields = record.fields || {};
+  const keys = [
+    record.id,
+    fields.wave_key,
+    fields.key,
+    fields.wave,
+    fields.Name
+  ].flatMap(waveKeyAliases).filter(Boolean);
+  return Array.from(new Set(keys));
+}
+
+function waveKeyAliases(value) {
+  const key = slugify(value);
+  if (!key) return [];
+  const aliases = new Set([key]);
+  const wordToNumber = {
+    one: "1",
+    two: "2",
+    three: "3",
+    four: "4",
+    five: "5"
+  };
+  const numberToWord = Object.fromEntries(Object.entries(wordToNumber).map(([word, numberValue]) => [numberValue, word]));
+  for (const [word, numberValue] of Object.entries(wordToNumber)) {
+    aliases.add(key.replace(new RegExp(`(^|_)${word}($|_)`, "g"), `$1${numberValue}$2`));
+  }
+  for (const [numberValue, word] of Object.entries(numberToWord)) {
+    aliases.add(key.replace(new RegExp(`(^|_)${numberValue}($|_)`, "g"), `$1${word}$2`));
+  }
+  return Array.from(aliases);
 }
 
 function groupByLinkedId(records, fieldName) {
