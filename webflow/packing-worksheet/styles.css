@@ -3045,6 +3045,48 @@ body {
   letter-spacing: -0.02em;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-detail-shell .lp-profile-modal-footer {
+  align-self: end;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-save-meta {
+  min-height: 44px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-save-meta.is-saving {
+  color: var(--lp-ink);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-save-meta.is-saving::before {
+  content: "";
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(70, 51, 43, 0.22);
+  border-top-color: #46332b;
+  border-radius: 999px;
+  animation: packing-save-spin 0.75s linear infinite;
+  flex: 0 0 auto;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-save-meta.is-success {
+  color: var(--lp-ink);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-save-meta.is-error {
+  color: #a23b3b;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .lp-edit-pill.is-pending {
+  cursor: wait;
+  opacity: 1;
+}
+
+@keyframes packing-save-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-modal {
   align-items: flex-start;
   padding: 8px 10px;

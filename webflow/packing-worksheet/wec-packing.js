@@ -391,6 +391,13 @@
     return `Last checked: ${new Date().toLocaleString()}`;
   }
 
+  function saveMetaClass() {
+    if (state.saving) return "is-saving";
+    if (state.saveMessage && state.saveMessage.toLowerCase().startsWith("save failed")) return "is-error";
+    if (state.saveMessage && state.saveMessage.toLowerCase().startsWith("saved")) return "is-success";
+    return "";
+  }
+
   function tabsHtml() {
     return `
       <nav class="lp-tabs" aria-label="Packing sections">
@@ -1108,7 +1115,7 @@
         </section>
 
         <div class="lp-profile-modal-footer th-profile-footer">
-          <div class="lp-profile-footer">
+          <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
           </div>
         </div>
@@ -1149,7 +1156,7 @@
         </section>
 
         <div class="lp-profile-modal-footer th-profile-footer">
-          <div class="lp-profile-footer">
+          <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
           </div>
         </div>
@@ -1211,13 +1218,14 @@
   }
 
   function packedControlHtml(item) {
+    const pending = isPendingAction("add_quantity", item.id);
     return editGroupHtml("Packed", `
       <span class="packing-add-control">
         <span class="packing-add-box">
           <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
           <span class="packing-add-label">QUANTITY</span>
         </span>
-        <button class="lp-edit-pill" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}">ADD</button>
+        <button class="lp-edit-pill ${pending ? "is-active is-pending" : ""}" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD</button>
       </span>
     `, "packing-add-row");
   }
