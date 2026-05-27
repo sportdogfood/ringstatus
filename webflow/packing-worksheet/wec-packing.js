@@ -518,11 +518,11 @@
         <section class="lp-profile-panel packing-detail th-detail-section">
           <div data-th-record="${escapeAttr(item.id)}" data-th-name="${escapeAttr(item.name || "")}">
             <div class="lp-field-grid lp-profile-tab-panel is-active">
-              ${totalsRowHtml(item)}
               ${statusControlHtml(item)}
+              ${totalsRowHtml(item)}
               ${packedControlHtml(item)}
-              ${horseMembersControlHtml(item)}
               ${decisionControlHtml(item)}
+              ${horseMembersControlHtml(item)}
             </div>
           </div>
         </section>
