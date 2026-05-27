@@ -236,6 +236,362 @@ export async function stateReport(airtable, requestUrl) {
   };
 }
 
+export function printReportHtml(report, requestUrl) {
+  const url = new URL(requestUrl);
+  const target = clean(url.searchParams.get("target") || "overview");
+  const horseId = clean(url.searchParams.get("horseId"));
+  const title = horseId
+    ? `${displayLabel(printHorseName(report.horses.find((horse) => horse.id === horseId)))} Packing List`
+    : target === "overview"
+      ? "WEC Packing Report"
+      : `${printTargetTitle(report, target)} Packing List`;
+  const body = horseId
+    ? printHorsePackingPageHtml(report, horseId)
+    : printBodyHtml(report, target);
+  return printDocumentHtml(title, body);
+}
+
+function printBodyHtml(report, target) {
+  if (target === "overview") {
+    const pages = (report.tabGroups || []).map((group) => printPackingPageHtml(report, group.label, printListSections(report, group.id))).join("");
+    return `${pages}${printHorsesPageHtml(report)}`;
+  }
+  if (target === "horses") return printHorsesPageHtml(report);
+  return printPackingPageHtml(report, printTargetTitle(report, target), printListSections(report, target));
+}
+
+function printTargetTitle(report, target) {
+  if (target === "horses") return "Horses";
+  if (String(target || "").startsWith("tab:")) {
+    return displayLabel((report.tabGroups || []).find((group) => group.id === target)?.label || target.replace(/^tab:/, ""));
+  }
+  return displayLabel((report.lists || []).find((list) => list.id === target)?.label || target);
+}
+
+function printListSections(report, target) {
+  if (String(target || "").startsWith("tab:")) {
+    const group = (report.tabGroups || []).find((row) => row.id === target);
+    return (group?.listIds || []).map((listId) => printListSection(report, listId)).filter(Boolean);
+  }
+  return [printListSection(report, target)].filter(Boolean);
+}
+
+function printListSection(report, listId) {
+  const list = (report.lists || []).find((row) => row.id === listId) || { id: listId, label: listId };
+  const rows = (report.items || []).filter((item) => printItemBelongsToList(item, list.id));
+  return {
+    title: displayLabel(list.label || list.id),
+    rows
+  };
+}
+
+function printItemBelongsToList(item, listId) {
+  const ids = Array.isArray(item.packListIds) ? item.packListIds : [];
+  return ids.includes(listId) || item.section === listId || (!ids.length && !item.section && listId === "unlisted");
+}
+
+function printPackingPageHtml(report, title, sections) {
+  const rows = sections.flatMap((section) => section.rows);
+  const percent = progressPercent(rows.filter(isSatisfied).length, rows.length);
+  return `
+    <section class="packing-print-page">
+      <header class="packing-print-head">
+        <h1>${escapeHtml(displayLabel(title))}</h1>
+        <p>${escapeHtml(printStatusLine(report, percent))}</p>
+      </header>
+      <div class="packing-print-columns">
+        ${sections.length ? sections.map(printListColumnHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+      </div>
+    </section>
+  `;
+}
+
+function printListColumnHtml(section) {
+  return `
+    <section class="packing-print-list">
+      <h2>${escapeHtml(section.title)}</h2>
+      ${section.rows.length ? section.rows.map(printItemRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+    </section>
+  `;
+}
+
+function printItemRowHtml(item) {
+  const horseNames = (item.horseMembers || []).map((member) => member.barnName).filter(Boolean).join(", ");
+  return `
+    <div class="packing-print-item">
+      <div class="packing-print-item-main">
+        <strong>${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
+        ${horseNames ? `<em>${escapeHtml(horseNames)}</em>` : ""}
+      </div>
+      <b>${escapeHtml(printItemStatus(item))}</b>
+    </div>
+  `;
+}
+
+function printItemStatus(item) {
+  if (item.resolutionState) return resolutionDisplayLabel(item.resolutionState);
+  if (item.packState === "packed" || (numberField(item.left) === 0 && numberField(item.needed) > 0)) return "PACKED";
+  if (numberField(item.packed) > 0) return `LEFT - ${quantityDisplay(item.left)}`;
+  return `NEED - ${quantityDisplay(item.needed)}`;
+}
+
+function printHorsesPageHtml(report) {
+  const rows = activePrintHorses(report);
+  const columns = splitRows(rows);
+  const members = horseMemberRows(report);
+  const percent = progressPercent(members.filter(isHorseMemberPacked).length, members.length);
+  return `
+    <section class="packing-print-page">
+      <header class="packing-print-head">
+        <h1>Horses</h1>
+        <p>${escapeHtml(printStatusLine(report, percent))}</p>
+      </header>
+      <div class="packing-print-columns">
+        ${printHorseColumnHtml("Horses", columns[0])}
+        ${printHorseColumnHtml("Horses", columns[1])}
+      </div>
+    </section>
+  `;
+}
+
+function printHorsePackingPageHtml(report, horseId) {
+  const horse = (report.horses || []).find((row) => row.id === horseId);
+  if (!horse) return printEmptyPrintSectionHtml("No horse");
+  const rows = horseItemRows(report, horse);
+  const columns = splitRows(rows);
+  const percent = progressPercent(rows.filter((row) => isHorseMemberPacked(row.member)).length, rows.length);
+  return `
+    <section class="packing-print-page">
+      <header class="packing-print-head">
+        <h1>${escapeHtml(printHorseName(horse))}</h1>
+        <p>${escapeHtml(printStatusLine(report, percent))}</p>
+      </header>
+      <div class="packing-print-columns">
+        ${printHorsePackingColumnHtml("Items", columns[0])}
+        ${printHorsePackingColumnHtml("Items", columns[1])}
+      </div>
+    </section>
+  `;
+}
+
+function printHorsePackingColumnHtml(title, rows) {
+  return `
+    <section class="packing-print-list">
+      <h2>${escapeHtml(title)}</h2>
+      ${rows.length ? rows.map(printHorsePackingItemHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+    </section>
+  `;
+}
+
+function printHorsePackingItemHtml(row) {
+  return `
+    <div class="packing-print-item">
+      <div class="packing-print-item-main">
+        <strong>${escapeHtml(displayLabel(row.item?.name || "Unnamed item"))}</strong>
+      </div>
+      <b>${escapeHtml(isHorseMemberPacked(row.member) ? "PACKED" : "NOT PACKED")}</b>
+    </div>
+  `;
+}
+
+function printHorseColumnHtml(title, rows) {
+  return `
+    <section class="packing-print-list">
+      <h2>${escapeHtml(title)}</h2>
+      ${rows.length ? rows.map((horse) => `
+        <div class="packing-print-horse">
+          <strong>${escapeHtml(printHorseName(horse))}</strong>
+        </div>
+      `).join("") : printEmptyPrintSectionHtml("No horses")}
+    </section>
+  `;
+}
+
+function activePrintHorses(report) {
+  const members = horseMemberRows(report);
+  if (!members.length) return (report.horses || []).filter((horse) => horse.active || String(horse.recordState || "").toLowerCase() === "active");
+  const horseIds = new Set();
+  const horseKeys = new Set();
+  for (const member of members) {
+    for (const horseId of member.horseIds || []) horseIds.add(horseId);
+    if (member.barnName) horseKeys.add(slugify(member.barnName));
+  }
+  return (report.horses || [])
+    .filter((horse) => horseIds.has(horse.id) || horseKeys.has(slugify(printHorseName(horse))))
+    .sort((a, b) => compareNumber(a.sortOrder, b.sortOrder) || printHorseName(a).localeCompare(printHorseName(b)));
+}
+
+function horseMemberRows(report) {
+  return (report.items || []).flatMap((item) => Array.isArray(item.horseMembers) ? item.horseMembers : []);
+}
+
+function horseItemRows(report, horse) {
+  return (report.items || []).flatMap((item) => {
+    const members = Array.isArray(item.horseMembers) ? item.horseMembers : [];
+    return members
+      .filter((member) => horseMemberBelongsToHorse(member, horse))
+      .map((member) => ({ item, member }));
+  });
+}
+
+function horseMemberBelongsToHorse(member, horse) {
+  if (!member || !horse) return false;
+  if (Array.isArray(member.horseIds) && member.horseIds.includes(horse.id)) return true;
+  return slugify(member.barnName) === slugify(printHorseName(horse));
+}
+
+function isHorseMemberPacked(member) {
+  return member.horsePackState === "packed" || numberField(member.packed) >= numberField(member.needed);
+}
+
+function printHorseName(horse) {
+  return horse?.name || horse?.barnName || horse?.showName || "Unnamed horse";
+}
+
+function splitRows(rows) {
+  const middle = Math.ceil(rows.length / 2);
+  return [rows.slice(0, middle), rows.slice(middle)];
+}
+
+function printEmptyPrintSectionHtml(label) {
+  return `<div class="packing-print-empty">${escapeHtml(label)}</div>`;
+}
+
+function printStatusLine(report, percent) {
+  const wave = displayLabel(report.wave?.wave || "wave_one");
+  const days = report.wave?.daysTill ? `${quantityDisplay(report.wave.daysTill)} days remaining` : "days remaining not set";
+  return `${wave} | ${days} | ${percent}% packed | ${new Date().toLocaleDateString()}`;
+}
+
+function printDocumentHtml(title, body) {
+  return `<!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>${escapeHtml(title)}</title>
+        <style>${printStyles()}</style>
+      </head>
+      <body>${body}</body>
+    </html>`;
+}
+
+function printStyles() {
+  return `
+    @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap");
+    @page { size: Letter; margin: 0.35in; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: #000000;
+      font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 10px;
+      line-height: 1.12;
+    }
+    .packing-print-page {
+      width: 100%;
+      min-height: 10.3in;
+      break-after: page;
+    }
+    .packing-print-page:last-child { break-after: auto; }
+    .packing-print-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 0.2in;
+      padding-bottom: 0.12in;
+      border-bottom: 2px solid #000000;
+      margin-bottom: 0.16in;
+    }
+    .packing-print-head h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 0.95;
+    }
+    .packing-print-head p {
+      max-width: 4.8in;
+      margin: 0;
+      font-size: 9px;
+      font-weight: 600;
+      text-align: right;
+      text-transform: uppercase;
+    }
+    .packing-print-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.16in;
+      align-items: start;
+    }
+    .packing-print-list {
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      overflow: hidden;
+      break-inside: avoid;
+      background: #ffffff;
+    }
+    .packing-print-list h2 {
+      margin: 0;
+      padding: 8px 10px;
+      background: #f0f0f0;
+      border-bottom: 1px solid #d9d9d9;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .packing-print-item,
+    .packing-print-horse {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 7px 10px;
+      border-bottom: 1px solid #eeeeee;
+    }
+    .packing-print-item:last-child,
+    .packing-print-horse:last-child { border-bottom: 0; }
+    .packing-print-item-main {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+    .packing-print-item strong,
+    .packing-print-horse strong {
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .packing-print-item em {
+      color: #333333;
+      font-style: normal;
+      font-size: 9px;
+      line-height: 1.1;
+    }
+    .packing-print-item b,
+    .packing-print-horse b {
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: #46332b;
+      color: #ffffff;
+      font-size: 8px;
+      font-weight: 600;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .packing-print-empty {
+      padding: 10px;
+      color: #333333;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+  `;
+}
+
 export async function reconcileReport(airtable, requestUrl) {
   const url = new URL(requestUrl);
   const showId = clean(url.searchParams.get("showId"));

@@ -5,6 +5,7 @@
   const config = window.WEC_PACKING_CONFIG || {};
   const apiUrl = String(config.apiUrl || "").trim();
   const apiBaseUrl = String(config.apiBaseUrl || "https://ringstatus.webflow.io/test/wec-packing").replace(/\/$/, "");
+  const pdfWorkerUrl = String(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/").trim();
   const state = {
     activeTab: "overview",
     data: null,
@@ -56,10 +57,14 @@
   function endpointUrl(kind) {
     const explicit = kind === "state" ? config.stateUrl : kind === "action" ? config.actionUrl : "";
     const url = new URL(explicit || apiUrl || `${apiBaseUrl}/${kind}`);
+    addContextParams(url);
+    return url.toString();
+  }
+
+  function addContextParams(url) {
     if (config.showId) url.searchParams.set("showId", config.showId);
     if (config.packWaveId) url.searchParams.set("packWaveId", config.packWaveId);
     if (config.packWaveKey || config.packWave) url.searchParams.set("packWaveKey", config.packWaveKey || config.packWave);
-    return url.toString();
   }
 
   function handleClick(event) {
@@ -123,6 +128,10 @@
     if (listEdit) {
       event.preventDefault();
       toggleListInlineEdit(listEdit.dataset.listId, listEdit.dataset.listEditField);
+      return;
+    }
+
+    if (event.target.closest("[data-inline-edit-field]")) {
       return;
     }
 
@@ -721,41 +730,42 @@
   function printSection(target) {
     if (!state.data) return;
     const title = target === "overview" ? "WEC Packing Report" : `${printTargetTitle(target)} Packing List`;
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) {
-      state.saveMessage = "Allow pop-ups to print this list.";
-      render();
-      return;
-    }
-
-    printWindow.document.open();
-    printWindow.document.write(printDocumentHtml(title, printBodyHtml(target)));
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.setTimeout(() => {
-      printWindow.print();
-    }, 250);
+    openPackingPdf({
+      target,
+      filename: `${safeFilename(`${currentWaveLabel()} ${title}`)}.pdf`
+    });
   }
 
   function printHorseList(horseId) {
     if (!state.data) return;
     const horse = horses().find((row) => row.id === horseId);
     if (!horse) return;
-    const title = `${horseDisplayName(horse)} Packing List`;
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) {
-      state.saveMessage = "Allow pop-ups to print this list.";
+    openPackingPdf({
+      horseId,
+      filename: `${safeFilename(`${currentWaveLabel()} ${horseDisplayName(horse)} Packing List`)}.pdf`
+    });
+  }
+
+  function openPackingPdf(options) {
+    const printUrl = new URL(config.printUrl || `${apiBaseUrl}/print`, window.location.href);
+    addContextParams(printUrl);
+    if (options.target) printUrl.searchParams.set("target", options.target);
+    if (options.horseId) printUrl.searchParams.set("horseId", options.horseId);
+
+    const pdfUrl = new URL(pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/");
+    pdfUrl.searchParams.set("url", printUrl.toString());
+    pdfUrl.searchParams.set("filename", options.filename || "wec-packing.pdf");
+
+    state.saveMessage = "Creating PDF...";
+    render();
+    const opened = window.open(pdfUrl.toString(), "_blank");
+    if (opened) {
+      state.saveMessage = "PDF opened.";
       render();
       return;
     }
-
-    printWindow.document.open();
-    printWindow.document.write(printDocumentHtml(title, printHorsePackingPageHtml(horse)));
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.setTimeout(() => {
-      printWindow.print();
-    }, 250);
+    state.saveMessage = "Popup blocked. Allow popups and press Print again.";
+    render();
   }
 
   function printBodyHtml(target) {
@@ -823,7 +833,6 @@
       <div class="packing-print-item">
         <div class="packing-print-item-main">
           <strong>${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
-          <span>Need: ${escapeHtml(quantityDisplay(item.needed))} | Packed: ${escapeHtml(quantityDisplay(item.packed))} | Left: ${escapeHtml(quantityDisplay(item.left))}</span>
           ${horseNames ? `<em>${escapeHtml(horseNames)}</em>` : ""}
         </div>
         <b>${escapeHtml(printItemStatus(item))}</b>
@@ -891,7 +900,6 @@
       <div class="packing-print-item">
         <div class="packing-print-item-main">
           <strong>${escapeHtml(displayLabel(row.item.name || "Unnamed item"))}</strong>
-          <span>Need: ${escapeHtml(quantityDisplay(needed))} | Packed: ${escapeHtml(quantityDisplay(packed))} | Left: ${escapeHtml(quantityDisplay(left))}</span>
         </div>
         <b>${escapeHtml(isHorseMemberPacked(row.member) ? "PACKED" : `LEFT - ${quantityDisplay(left || needed)}`)}</b>
       </div>
@@ -1661,6 +1669,13 @@
       "REMOVE | ONSITE | UNRESOLVED"
     ].join("\n");
     return `sms:?&body=${encodeURIComponent(body)}`;
+  }
+
+  function safeFilename(value) {
+    return String(value || "wec-packing")
+      .trim()
+      .replace(/[^\w.-]+/g, "_")
+      .replace(/^_+|_+$/g, "") || "wec-packing";
   }
 
   function escapeAttr(value) {
