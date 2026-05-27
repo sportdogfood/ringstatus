@@ -21,6 +21,8 @@ function firstNonBlank(value) {
 function deriveSglTokenPrefix(token) {
   try {
     const decoded = Buffer.from(token, "base64").toString("ascii");
+    const sourcePrefix = decoded.match(/^\d{8}[A-Za-z0-9]?/);
+    if (sourcePrefix) return sourcePrefix[0];
     const match = decoded.match(/^[A-Za-z0-9]+/);
     return match ? match[0].slice(0, 16) : "";
   } catch {

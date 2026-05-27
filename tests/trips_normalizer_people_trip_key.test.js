@@ -37,6 +37,7 @@ const peoplePayloads = new Map([
         class_number: 715,
         horse: "MARKANTO A",
         rider_name: "TANNER KOROTKIN",
+        _: "Mjk2NjUzMjV2ariIyyCQZPDv7zbOun9FgTDI3QkcOx/cVS9pqXo5GQ0lNngLH21XXxq0SFQyQf31lxLEK+tt9or4yVi6+MyVXZ61a1n9ISsBo434LDaiy8AAV/Cz5Rqb4wkI8t1908kwnimmbY3v3oKpcv+ys2k1du22eE+SsjVU1HRBrkS+mzmmmEnl/CwvegmFf4fh31p15umFfpD5JuTEFKwr/cQ6tn51TQ==",
       },
     ],
   }],
@@ -53,6 +54,8 @@ assert.strictEqual(result.unique_row_count, 1);
 const row = result.normalized_rows[0];
 assert.strictEqual(row.trip_key, "people:715:3160");
 assert.strictEqual(row.entryxclasses_uuid, null);
+assert.strictEqual(row.sgl_token_prefix, "29665325v");
+assert.strictEqual(row.sgl_token_length, row.sgl_token_raw.length);
 assert.ok(
   result.unique_rows_by_key.has("people:715:3160"),
   "dedupe should use people trip key when class_number + entry_number exist"

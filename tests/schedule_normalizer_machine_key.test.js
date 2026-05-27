@@ -58,6 +58,7 @@ const resultWithoutClassGroupXClassesId = normalizeSchedulePayload({
       class_group_id: 200023690,
       class_number: 770,
       class_name: "1.30m Open Jumper II2.1",
+      _: "Mjk2NjUzMjV2ariIyyCQZPDv7zbOun9FgTDI3QkcOx/cVS9pqXo5GQ0lNngLH21XXxq0SFQyQf31lxLEK+tt9or4yVi6+MyVXZ61a1n9ISsBo434LDaiy8AAV/Cz5Rqb4wkI8t1908kwnimmbY3v3oKpcv+ys2k1du22eE+SsjVU1HRBrkS+mzmmmEnl/CwvegmFf4fh31p15umFfpD5JuTEFKwr/cQ6tn51TQ==",
     },
   ],
 }, {
@@ -76,6 +77,16 @@ assert.strictEqual(
   resultWithoutClassGroupXClassesId.rows[0].key,
   "200023690_770",
   "missing class_groupxclasses_id must still use the locked class_group_id + class_number machine key"
+);
+assert.strictEqual(
+  resultWithoutClassGroupXClassesId.rows[0].fields.sgl_token_prefix,
+  "29665325v",
+  "schedule rows should monitor the source SGL token prefix without using it for keys"
+);
+assert.strictEqual(
+  resultWithoutClassGroupXClassesId.rows[0].fields.sgl_token_length,
+  resultWithoutClassGroupXClassesId.rows[0].fields.sgl_token_raw.length,
+  "schedule token length should be the raw token character length"
 );
 
 console.log("schedule_normalizer_machine_key tests passed");
