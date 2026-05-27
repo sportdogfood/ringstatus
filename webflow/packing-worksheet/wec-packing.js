@@ -22,7 +22,8 @@
     inlineEditValues: {},
     pendingActions: {},
     addQty: {},
-    actionNotes: {}
+    actionNotes: {},
+    sessionEventSent: false
   };
 
   root.classList.toggle("is-edit-mode", config.mode === "edit");
@@ -47,6 +48,7 @@
         state.activeTab = "overview";
         state.didSetInitialTab = true;
       }
+      queueSessionStartEvent();
     } catch (error) {
       state.error = error instanceof Error ? error.message : String(error);
     } finally {
@@ -66,6 +68,44 @@
     if (config.showId) url.searchParams.set("showId", config.showId);
     if (config.packWaveId) url.searchParams.set("packWaveId", config.packWaveId);
     if (config.packWaveKey || config.packWave) url.searchParams.set("packWaveKey", config.packWaveKey || config.packWave);
+  }
+
+  function queueSessionStartEvent() {
+    if (state.sessionEventSent || !state.data?.ok) return;
+    const session = currentSession();
+    if (!session.isNew) return;
+    state.sessionEventSent = true;
+    fetch(endpointUrl("action"), {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "session_start",
+        sessionId: session.id,
+        clientUrl: window.location.href
+      })
+    }).catch(() => {});
+  }
+
+  function currentSession() {
+    const key = "wecPackingSessionId";
+    try {
+      const existing = window.sessionStorage.getItem(key);
+      if (existing) return { id: existing, isNew: false };
+      const id = createSessionId();
+      window.sessionStorage.setItem(key, id);
+      return { id, isNew: true };
+    } catch (error) {
+      if (!state.sessionId) state.sessionId = createSessionId();
+      return { id: state.sessionId, isNew: true };
+    }
+  }
+
+  function createSessionId() {
+    const random = Math.random().toString(36).slice(2, 10);
+    return `wec_${Date.now().toString(36)}_${random}`;
   }
 
   function normalizeStatePayload(payload) {

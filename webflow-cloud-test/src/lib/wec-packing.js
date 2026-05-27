@@ -885,17 +885,94 @@ export async function actionReport(airtable, requestUrl, payload) {
     result = await applyHorseRecordState(airtable, tables, payload);
   } else if (action === "set_source_flag") {
     result = await applySourceFlag(airtable, tables, payload);
-  } else {
+  } else if (action !== "session_start") {
     return { ok: false, error: "unknown_action", action };
   }
 
   const state = await stateReport(airtable, requestUrl);
+  if (action === "session_start") {
+    result = await applySessionStart(airtable, tables, payload, state);
+  }
   return {
     ok: true,
     action,
     result,
     state
   };
+}
+
+async function applySessionStart(airtable, tables, payload, state) {
+  const sessionId = clean(payload?.sessionId || "unknown_session").slice(0, 120);
+  const wave = state?.wave || {};
+  const showId = clean(state?.source?.showId);
+  const packWaveId = clean(state?.source?.packWaveId);
+  const baseNotes = [
+    `session: ${sessionId}`,
+    `wave: ${wave.key || wave.wave || ""}`,
+    `client_url: ${clean(payload?.clientUrl).slice(0, 300)}`,
+    waveCountNoteLine(wave)
+  ].filter(Boolean).join("\n");
+
+  const sessionEvent = await createPackingEvent(airtable, tables, {
+    eventType: "session_start",
+    showIds: showId ? [showId] : [],
+    packWaveIds: packWaveId ? [packWaveId] : [],
+    quantityDelta: 0,
+    quantityBefore: 0,
+    quantityAfter: 0,
+    notes: baseNotes
+  });
+
+  const countNotes = waveCountChangeNotes(wave);
+  let countEvent = null;
+  if (countNotes) {
+    countEvent = await createPackingEvent(airtable, tables, {
+      eventType: "wave_count_change",
+      showIds: showId ? [showId] : [],
+      packWaveIds: packWaveId ? [packWaveId] : [],
+      quantityDelta: 0,
+      quantityBefore: 0,
+      quantityAfter: 0,
+      notes: [
+        `session: ${sessionId}`,
+        `wave: ${wave.key || wave.wave || ""}`,
+        countNotes
+      ].filter(Boolean).join("\n")
+    });
+  }
+
+  return {
+    sessionEvent,
+    countEvent,
+    countChanged: !!countEvent
+  };
+}
+
+function waveCountNoteLine(wave) {
+  if (!wave) return "";
+  return [
+    `horse_count=${quantityDisplay(wave.horseCount)}`,
+    `horse_sanity=${quantityDisplay(wave.horseSanity)}`,
+    `effective_horse_count=${quantityDisplay(wave.effectiveHorseCount)}`,
+    `groom_ratio=${quantityDisplay(wave.groomRatio)}`,
+    `groom_count_final=${quantityDisplay(wave.groomCountFinal)}`,
+    `groom_sanity=${quantityDisplay(wave.groomSanity)}`,
+    `effective_groom_count_final=${quantityDisplay(wave.effectiveGroomCountFinal)}`,
+    `count_source=${wave.countSource || ""}`,
+    `groom_count_source=${wave.groomCountSource || ""}`
+  ].join("; ");
+}
+
+function waveCountChangeNotes(wave) {
+  if (!wave || wave.countsLocked) return "";
+  const changes = [];
+  if (numberField(wave.horseCount) !== numberField(wave.effectiveHorseCount)) {
+    changes.push(`horse_count changed: stored=${quantityDisplay(wave.horseCount)} current=${quantityDisplay(wave.effectiveHorseCount)} source=${wave.countSource || ""}`);
+  }
+  if (numberField(wave.groomCountFinal) !== numberField(wave.effectiveGroomCountFinal)) {
+    changes.push(`groom_count changed: stored=${quantityDisplay(wave.groomCountFinal)} current=${quantityDisplay(wave.effectiveGroomCountFinal)} source=${wave.groomCountSource || ""}`);
+  }
+  return changes.join("\n");
 }
 
 async function healthReportFromContext(airtable, context) {
@@ -1289,8 +1366,8 @@ async function createPackingEvent(airtable, tables, payload) {
   const memberFields = payload.memberRecord?.fields || {};
   const eventFields = compactFields({
     event: `${payload.eventType}:${payload.itemRecord?.id || ""}:${Date.now()}`,
-    show: linkedIds(itemFields.show),
-    pack_wave: linkedIds(itemFields.pack_wave).length ? linkedIds(itemFields.pack_wave) : linkedIds(memberFields.pack_wave),
+    show: payload.showIds || linkedIds(itemFields.show),
+    pack_wave: payload.packWaveIds || (linkedIds(itemFields.pack_wave).length ? linkedIds(itemFields.pack_wave) : linkedIds(memberFields.pack_wave)),
     packing_item: payload.itemRecord?.id ? [payload.itemRecord.id] : [],
     packing_item_horse: payload.memberRecord?.id ? [payload.memberRecord.id] : [],
     horse: linkedIds(memberFields.horse),
