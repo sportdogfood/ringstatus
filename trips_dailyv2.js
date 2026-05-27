@@ -2019,6 +2019,10 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("rider_name", row.rider_name);
   maybeSet("rider_id", row.rider_id);
   maybeSet("placing", row.placing);
+  maybeSet("sgl_token_raw", row.sgl_token_raw);
+  maybeSet("sgl_token_prefix", row.sgl_token_prefix);
+  maybeSet("sgl_token_length", row.sgl_token_length);
+  maybeSet("sgl_token_hash", row.sgl_token_hash);
   maybeSet("schedule_show_datev2", resolvedScheduleDate);
   maybeSet("scheduled_date", resolvedScheduledDate);
   maybeSet("is_missing", false);

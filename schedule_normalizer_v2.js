@@ -7,6 +7,7 @@ const {
 const {
   fetchTextWithConfiguredTransport,
 } = require("./lib/sgl_fetch_adapter");
+const { buildSglTokenFields } = require("./sgl_token_utils");
 
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN || "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
@@ -225,6 +226,11 @@ function mergeGroupOntoClass(classRow, groupRow) {
   if (groupRow.ring_number !== undefined && merged.ring_number === undefined) merged.ring_number = groupRow.ring_number;
   if (groupRow.show_id !== undefined && merged.show_id === undefined) merged.show_id = groupRow.show_id;
   if (groupRow.show_date && !merged.show_date) merged.show_date = groupRow.show_date;
+  for (const fieldName of ["sgl_token_raw", "sgl_token_prefix", "sgl_token_length", "sgl_token_hash"]) {
+    if (groupRow[fieldName] !== undefined && merged[fieldName] === undefined) {
+      merged[fieldName] = groupRow[fieldName];
+    }
+  }
 
   return merged;
 }
@@ -561,6 +567,7 @@ function normalizeSchedulePayload(payload, options) {
         group_has_warmup: pickFirst(node.group_has_warmup, node.groupHasWarmup),
         is_open_card_warmup: pickFirst(node.is_open_card_warmup, node.isOpenCardWarmup),
         grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),
+        ...buildSglTokenFields(node._),
       };
 
       const key = normalizeKey(classGroupId);
@@ -620,6 +627,7 @@ function normalizeSchedulePayload(payload, options) {
           classObj?.gone
         )),
         grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),
+        ...buildSglTokenFields(pickFirst(node._, classObj?._)),
       };
 
       const key = buildScheduleMachineKey(classRow);
@@ -662,6 +670,10 @@ function normalizeSchedulePayload(payload, options) {
     setIfPresent(fields, "estimated_end_time", merged.estimated_end_time);
     setIfPresent(fields, "total_trips", merged.total_trips);
     setIfPresent(fields, "completed_trips", merged.completed_trips);
+    setIfPresent(fields, "sgl_token_raw", merged.sgl_token_raw);
+    setIfPresent(fields, "sgl_token_prefix", merged.sgl_token_prefix);
+    setIfPresent(fields, "sgl_token_length", merged.sgl_token_length);
+    setIfPresent(fields, "sgl_token_hash", merged.sgl_token_hash);
     setIfPresent(fields, "app_show_idv2", scope.app_show_idv2);
     setIfPresent(fields, "app_sql_datev2", scope.app_sql_datev2);
     setIfPresent(fields, "app_dow_rawv2", scope.app_dow_rawv2);

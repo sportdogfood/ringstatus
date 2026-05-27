@@ -1,3 +1,5 @@
+const { buildSglTokenFields } = require("./sgl_token_utils");
+
 function isBlank(value) {
   return value === null ||
     value === undefined ||
@@ -192,6 +194,7 @@ function normalizePeopleTripRow(raw, ownerPid) {
     placing: numOrNull(raw?.placing) ?? undefined,
     order_of_go: numOrNull(raw?.order_of_go ?? raw?.orderOfGo) ?? undefined,
     status: strOrNull(raw?.status ?? raw?.class_status ?? raw?.classStatus) ?? undefined,
+    ...buildSglTokenFields(raw?._),
   };
 }
 
@@ -247,6 +250,10 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
         placing: trip.placing,
         order_of_go: trip.order_of_go,
         status: trip.status || schedule.status,
+        sgl_token_raw: trip.sgl_token_raw,
+        sgl_token_prefix: trip.sgl_token_prefix,
+        sgl_token_length: trip.sgl_token_length,
+        sgl_token_hash: trip.sgl_token_hash,
         watch_schedule_record_id: schedule.recordId,
       };
 
