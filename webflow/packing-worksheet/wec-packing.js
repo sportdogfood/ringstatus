@@ -16,6 +16,8 @@
     detailId: "",
     didSetInitialTab: false,
     activeListByTab: {},
+    inlineEditByList: {},
+    inlineEditValues: {},
     addQty: {},
     actionNotes: {}
   };
@@ -108,12 +110,27 @@
       return;
     }
 
+    const listEdit = event.target.closest("[data-list-edit-field]");
+    if (listEdit) {
+      event.preventDefault();
+      toggleListInlineEdit(listEdit.dataset.listId, listEdit.dataset.listEditField);
+      return;
+    }
+
     const tab = event.target.closest("[data-tab]");
     if (tab) {
       state.activeTab = tab.dataset.tab;
       state.detailType = "";
       state.detailId = "";
       render();
+      return;
+    }
+
+    const horseDetail = event.target.closest("[data-horse-detail]");
+    if (horseDetail) {
+      state.detailType = "horse";
+      state.detailId = horseDetail.dataset.horseDetail;
+      renderDetail();
       return;
     }
 
@@ -135,7 +152,20 @@
     const notes = event.target.closest("[data-action-notes]");
     if (notes) {
       state.actionNotes[notes.dataset.actionNotes] = notes.value;
+      return;
     }
+
+    const inlineEdit = event.target.closest("[data-inline-edit-field]");
+    if (inlineEdit) {
+      state.inlineEditValues[inlineEditKey(inlineEdit.dataset.itemId, inlineEdit.dataset.inlineEditField)] = inlineEdit.value;
+    }
+  }
+
+  function toggleListInlineEdit(listId, field) {
+    if (!listId || !field) return;
+    state.inlineEditByList[listId] = state.inlineEditByList[listId] || {};
+    state.inlineEditByList[listId][field] = !state.inlineEditByList[listId][field];
+    render();
   }
 
   async function runPackingAction(button) {
@@ -421,10 +451,11 @@
 
   function listRowsHtml(list, includeLabel) {
     const rows = items().filter((item) => itemBelongsToList(item, list.id));
+    const editMode = state.inlineEditByList[list.id] || {};
     return `
       <div class="lp-list">
-        ${includeLabel ? listLabelRowHtml(list.label) : ""}
-        ${rows.length ? rows.map(itemRowHtml).join("") : emptyRowHtml("No rows")}
+        ${listLabelRowHtml(list)}
+        ${rows.length ? rows.map((item) => itemRowHtml(item, editMode)).join("") : emptyRowHtml("No rows")}
       </div>
     `;
   }
@@ -449,11 +480,25 @@
     `;
   }
 
-  function listLabelRowHtml(label) {
+  function listLabelRowHtml(list) {
+    const editMode = state.inlineEditByList[list.id] || {};
     return `
-      <div class="lp-row is-static">
-        <span class="lp-row-title">${escapeHtml(displayLabel(label))}</span>
+      <div class="lp-row is-static packing-list-action-row">
+        <span class="lp-row-title">${escapeHtml(displayLabel(list.label || list.id))}</span>
+        <span class="packing-list-action-hottext" aria-label="Inline edit fields">
+          ${listEditHotText(list.id, "lp-row-title", "TITLE", editMode["lp-row-title"])}
+          ${listEditHotText(list.id, "quantity_packed_override", "PACKED", editMode.quantity_packed_override)}
+          ${listEditHotText(list.id, "quantity_needed_override", "NEEDED", editMode.quantity_needed_override)}
+        </span>
       </div>
+    `;
+  }
+
+  function listEditHotText(listId, field, label, active) {
+    return `
+      <span class="packing-hottext ${active ? "is-active" : ""}" role="button" tabindex="0" data-list-id="${escapeAttr(listId)}" data-list-edit-field="${escapeAttr(field)}">
+        ${escapeHtml(label)}
+      </span>
     `;
   }
 
@@ -469,10 +514,10 @@
   }
 
   function horsesHtml() {
-    const rows = horses();
+    const rows = activeWaveHorses();
     return `
       <section class="lp-section-block packing-theme-horses">
-        ${sectionTitleHtml("Horses", "horses", `<span class="lp-section-count">${rows.filter((horse) => horse.active).length}/${rows.length} active</span>`)}
+        ${sectionTitleHtml("Horses", "horses")}
         <div class="lp-list">
           ${rows.length ? rows.map(horseRowHtml).join("") : emptyRowHtml("No horses")}
         </div>
@@ -492,26 +537,52 @@
     `;
   }
 
-  function itemRowHtml(item) {
+  function itemRowHtml(item, editMode) {
+    const hasInlineEdit = !!(editMode?.["lp-row-title"] || editMode?.quantity_packed_override || editMode?.quantity_needed_override);
+    const rowTag = hasInlineEdit ? "div" : "button";
+    const rowAttrs = hasInlineEdit ? "" : `type="button" data-item-id="${escapeAttr(item.id)}"`;
     return `
-      <button class="lp-row packing-row" type="button" data-item-id="${escapeAttr(item.id)}">
-        <span>
-          <span class="lp-row-title">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</span>
+      <${rowTag} class="lp-row packing-row ${hasInlineEdit ? "is-inline-editing" : ""}" ${rowAttrs}>
+        <span class="packing-inline-main">
+          ${itemTitleHtml(item, editMode)}
+          ${inlineEditFieldsHtml(item, editMode)}
         </span>
         <span class="packing-state-stack">
           ${rowTokenHtml(item)}
           <span class="packing-token-meta">Need: ${quantityDisplay(item.needed)}</span>
         </span>
-      </button>
+      </${rowTag}>
+    `;
+  }
+
+  function itemTitleHtml(item, editMode) {
+    if (editMode?.["lp-row-title"]) {
+      return `<input class="lp-edit-input packing-inline-title-input" type="text" value="${escapeAttr(inlineEditValue(item, "lp-row-title"))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="lp-row-title">`;
+    }
+    return `<span class="lp-row-title">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</span>`;
+  }
+
+  function inlineEditFieldsHtml(item, editMode) {
+    const fields = [];
+    if (editMode?.quantity_packed_override) fields.push(inlineQuantityInputHtml(item, "quantity_packed_override", "PACKED"));
+    if (editMode?.quantity_needed_override) fields.push(inlineQuantityInputHtml(item, "quantity_needed_override", "NEEDED"));
+    if (!fields.length) return "";
+    return `<span class="packing-inline-edit-fields">${fields.join("")}</span>`;
+  }
+
+  function inlineQuantityInputHtml(item, field, label) {
+    return `
+      <span class="packing-inline-edit-box">
+        <input class="lp-edit-input packing-inline-quantity-input" type="number" min="0" step="1" inputmode="numeric" value="${escapeAttr(inlineEditValue(item, field))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="${escapeAttr(field)}">
+        <span class="packing-inline-edit-label">${escapeHtml(label)}</span>
+      </span>
     `;
   }
 
   function horseRowHtml(horse) {
-    const nextState = horse.active ? "inactive" : "active";
     return `
-      <button class="lp-row packing-row packing-horse-row" type="button" data-horse-toggle data-horse-id="${escapeAttr(horse.id)}" data-next-state="${escapeAttr(nextState)}">
+      <button class="lp-row packing-row packing-horse-row" type="button" data-horse-detail="${escapeAttr(horse.id)}">
         <span class="lp-row-title">${escapeHtml(horse.name || horse.showName || "Unnamed horse")}</span>
-        ${tokenHtml(horse.active ? "packed" : "need", horse.active ? "ACTIVE" : "INACTIVE")}
       </button>
     `;
   }
@@ -636,18 +707,18 @@
   }
 
   function printHorsesPageHtml() {
-    const active = horses().filter((horse) => horse.active);
-    const inactive = horses().filter((horse) => !horse.active);
-    const percent = progressPercent(active.length, horses().length);
+    const rows = activeWaveHorses();
+    const columns = splitRows(rows);
+    const percent = horsePackingPercent();
     return `
       <section class="packing-print-page">
         <header class="packing-print-head">
           <h1>Horses</h1>
-          <p>${escapeHtml(statusLine())} | ${percent}% active | ${escapeHtml(new Date().toLocaleDateString())}</p>
+          <p>${escapeHtml(statusLine())} | ${percent}% packed | ${escapeHtml(new Date().toLocaleDateString())}</p>
         </header>
         <div class="packing-print-columns">
-          ${printHorseColumnHtml("Active", active)}
-          ${printHorseColumnHtml("Inactive", inactive)}
+          ${printHorseColumnHtml("Horses", columns[0])}
+          ${printHorseColumnHtml("Horses", columns[1])}
         </div>
       </section>
     `;
@@ -660,11 +731,15 @@
         ${rows.length ? rows.map((horse) => `
           <div class="packing-print-horse">
             <strong>${escapeHtml(horse.name || horse.showName || "Unnamed horse")}</strong>
-            <b>${horse.active ? "ACTIVE" : "INACTIVE"}</b>
           </div>
         `).join("") : printEmptyPrintSectionHtml("No horses")}
       </section>
     `;
+  }
+
+  function splitRows(rows) {
+    const middle = Math.ceil(rows.length / 2);
+    return [rows.slice(0, middle), rows.slice(middle)];
   }
 
   function printEmptyPrintSectionHtml(label) {
@@ -1053,7 +1128,7 @@
 
   function tabProgressPercent(section) {
     if (section.id === "horses") {
-      return progressPercent(horses().filter((horse) => horse.active).length, horses().length);
+      return horsePackingPercent();
     }
     if (section.id === "overview") return progressPercent(doneRows(), totalRows());
     return progressPercent(section.done, section.rows ?? sectionCount(section.id));
@@ -1069,6 +1144,23 @@
 
   function horses() {
     return Array.isArray(state.data?.horses) ? state.data.horses : [];
+  }
+
+  function activeWaveHorses() {
+    return horses().filter((horse) => horse.active || String(horse.recordState || "").toLowerCase() === "active");
+  }
+
+  function horsePackingPercent() {
+    const rows = horseMemberRows();
+    return progressPercent(rows.filter(isHorseMemberPacked).length, rows.length);
+  }
+
+  function horseMemberRows() {
+    return items().flatMap((item) => Array.isArray(item.horseMembers) ? item.horseMembers : []);
+  }
+
+  function isHorseMemberPacked(member) {
+    return member.horsePackState === "packed" || number(member.packed) >= number(member.needed);
   }
 
   function lists() {
@@ -1197,6 +1289,23 @@
       ? Math.round(numeric)
       : Math.ceil(numeric - 0.000001);
     return String(cleaned);
+  }
+
+  function inlineEditKey(itemId, field) {
+    return `${itemId || ""}:${field || ""}`;
+  }
+
+  function inlineEditValue(item, field) {
+    const key = inlineEditKey(item.id, field);
+    if (Object.prototype.hasOwnProperty.call(state.inlineEditValues, key)) return state.inlineEditValues[key];
+    if (field === "lp-row-title") return displayLabel(item.name || "");
+    if (field === "quantity_packed_override") {
+      return item.quantityPackedOverride ?? item.quantity_packed_override ?? item.packed ?? "";
+    }
+    if (field === "quantity_needed_override") {
+      return item.quantityNeededOverride ?? item.quantity_needed_override ?? item.needed ?? "";
+    }
+    return "";
   }
 
   function isMaxConflictState(value) {

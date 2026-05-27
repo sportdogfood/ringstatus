@@ -2208,15 +2208,40 @@
    modal, and edit-control cadence intact while mapping the new worksheet tabs. */
 body {
   margin: 0;
+  min-height: 100dvh;
   background: #f7f8fa;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) {
+  min-height: 100dvh;
   padding: 0;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   padding: 12px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) main > .lp-section-block {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) main > .lp-section-block > .lp-list {
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-header {
@@ -2310,6 +2335,8 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
   cursor: default;
 }
 
@@ -2358,6 +2385,120 @@ body {
   background: var(--packing-active, #46332b);
   color: #ffffff;
   box-shadow: var(--lp-token-shadow);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-list-action-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-list-action-hottext {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-hottext {
+  color: var(--lp-ink);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-hottext.is-active {
+  color: var(--packing-active, #46332b);
+  text-decoration-thickness: 2px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-row.is-inline-editing {
+  cursor: default;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-main {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-edit-fields {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-edit-box {
+  display: grid;
+  gap: 3px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-title-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-quantity-input {
+  height: 36px;
+  min-height: 36px;
+  padding: 6px 9px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-title-input {
+  width: min(280px, 100%);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-quantity-input {
+  width: 92px;
+  text-align: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-inline-edit-label {
+  color: var(--lp-ink);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-section-title {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-section-title h3 {
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-section-title-actions {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-row,
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-list-action-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-overview-tab-trigger,
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-list-action-hottext {
+    min-width: 0;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-list-action-hottext {
+    overflow-x: auto;
+  }
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-tab-progress {
@@ -2420,7 +2561,7 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-row {
   align-items: center;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-horse-detail-trigger {
