@@ -1722,7 +1722,19 @@ function isFocusedShowInActiveWindow(fields, nowSqlDate) {
   const startDate = toIsoDateOnly(fields?.[FIELD_SHOW_START_DATE_BASE]);
   const endDate = toIsoDateOnly(fields?.[FIELD_SHOW_END_DATE_BASE]);
   if (!startDate || !endDate) return true;
-  return sqlDateInRange(nowSqlDate, startDate, endDate);
+  if (sqlDateInRange(nowSqlDate, startDate, endDate)) return true;
+
+  const focusDay = toIsoDateOnly(fields?.[FIELD_SHOW_FOCUS_DAY]);
+  const tomorrowSqlDate = addDaysSql(nowSqlDate, 1);
+  const shiftedToNextDay = boolValue(fields?.[FIELD_SHIFTED_NEXT_DAY]);
+  const modeControl = normalizeControlMode(fields?.[FIELD_MODE_CONTROL]);
+  return Boolean(
+    shiftedToNextDay &&
+    modeControl === "NIGHT" &&
+    focusDay &&
+    tomorrowSqlDate &&
+    focusDay === tomorrowSqlDate
+  );
 }
 
 async function findFocusedShowTarget() {

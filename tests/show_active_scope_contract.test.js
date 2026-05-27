@@ -51,9 +51,18 @@ assert.ok(
   runnerCommon.includes("NoActiveFeeds = $true") &&
     runnerCommon.includes("manual_day_count") &&
     runnerCommon.includes("Get-TodaySqlDate") &&
+    runnerCommon.includes("Get-TomorrowSqlDate") &&
+    runnerCommon.includes("$shiftedToNextDay -and $modeControl -eq 'NIGHT' -and $focusDay -eq $tomorrowSqlDate") &&
     runnerCommon.includes("HEARTBEAT_NO_ACTIVE_FEEDS") &&
     !runnerCommon.includes('throw "No focused show record found in $TableName/$ViewName"'),
-  "local runner must continue tagger with HEARTBEAT_NO_ACTIVE_FEEDS when show/heartbeat has zero rows"
+  "local runner must continue tagger with HEARTBEAT_NO_ACTIVE_FEEDS when show/heartbeat has zero rows, except an explicit shifted NIGHT focus_day for tomorrow"
+);
+
+assert.ok(
+  tagger.includes('modeControl === "NIGHT"') &&
+    tagger.includes("shiftedToNextDay &&") &&
+    tagger.includes("focusDay === tomorrowSqlDate"),
+  "tagger must allow a manually shifted NIGHT focused show for tomorrow even when today is before start_date"
 );
 
 assert.ok(

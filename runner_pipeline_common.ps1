@@ -36,6 +36,10 @@ function Get-TodaySqlDate {
     return [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([datetime]::UtcNow, 'Eastern Standard Time').ToString('yyyy-MM-dd')
 }
 
+function Get-TomorrowSqlDate {
+    return [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([datetime]::UtcNow, 'Eastern Standard Time').AddDays(1).ToString('yyyy-MM-dd')
+}
+
 function Resolve-HeartbeatTargetShow {
     param(
         [string]$BaseId,
@@ -64,7 +68,7 @@ function Resolve-HeartbeatTargetShow {
         $RecordId = [Environment]::GetEnvironmentVariable('HEARTBEAT_TARGET_SHOW_RECORD_ID', 'Process')
     }
 
-    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'manual_day_count', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
+    foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'manual_day_count', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'mode_control', 'show_name', 'ring_collection', 'heartbeat')) {
         $queryParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
     }
     $requestUri = "$url`?$($queryParts -join '&')"
@@ -82,7 +86,7 @@ function Resolve-HeartbeatTargetShow {
     }
     catch {
         $fallbackParts = @()
-        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'manual_day_count', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'show_name', 'ring_collection', 'heartbeat')) {
+        foreach ($field in @('show_id', 'customer_id', 'start_date', 'end_date', 'manual_day_count', 'focus_day', 'shifted_to_next_day', 'set_to_default_app_sql_date', 'mode_control', 'show_name', 'ring_collection', 'heartbeat')) {
             $fallbackParts += "fields%5B%5D=$([uri]::EscapeDataString($field))"
         }
         $fallbackUri = "$url`?$($fallbackParts -join '&')"
@@ -99,12 +103,21 @@ function Resolve-HeartbeatTargetShow {
     }
 
     $todaySqlDate = Get-TodaySqlDate
+    $tomorrowSqlDate = Get-TomorrowSqlDate
     $records = @($records | Where-Object {
         $startDate = [string]$_.fields.start_date
         $endDate = [string]$_.fields.end_date
-        [string]::IsNullOrWhiteSpace($startDate) -or
-            [string]::IsNullOrWhiteSpace($endDate) -or
-            (Test-SqlDateInRange -SqlDate $todaySqlDate -StartDate $startDate -EndDate $endDate)
+        if ([string]::IsNullOrWhiteSpace($startDate) -or [string]::IsNullOrWhiteSpace($endDate)) {
+            return $true
+        }
+        if (Test-SqlDateInRange -SqlDate $todaySqlDate -StartDate $startDate -EndDate $endDate) {
+            return $true
+        }
+
+        $focusDay = [string]$_.fields.focus_day
+        $modeControl = ([string]$_.fields.mode_control).Trim().ToUpperInvariant()
+        $shiftedToNextDay = [bool]$_.fields.shifted_to_next_day
+        return ($shiftedToNextDay -and $modeControl -eq 'NIGHT' -and $focusDay -eq $tomorrowSqlDate)
     })
 
     if ($records.Count -lt 1) {
@@ -160,6 +173,7 @@ function Resolve-HeartbeatTargetShow {
         FocusDay = $focusDay
         ShiftedToNextDay = [bool]$fields.shifted_to_next_day
         SetToDefaultAppSqlDate = [bool]$fields.set_to_default_app_sql_date
+        ModeControl = [string]$fields.mode_control
         ShowDates = $showDateList
         SqlDates = $heartbeatDateList
         ShowName = [string]$fields.show_name

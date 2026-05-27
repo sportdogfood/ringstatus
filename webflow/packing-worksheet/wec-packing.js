@@ -68,6 +68,36 @@
     if (config.packWaveKey || config.packWave) url.searchParams.set("packWaveKey", config.packWaveKey || config.packWave);
   }
 
+  function normalizeStatePayload(payload) {
+    if (!payload || !Array.isArray(payload.items)) return payload;
+    const countsLocked = !!payload.wave?.countsLocked;
+    return {
+      ...payload,
+      items: payload.items.map((item) => normalizeStateItem(item, countsLocked))
+    };
+  }
+
+  function normalizeStateItem(item, countsLocked) {
+    if (!item || countsLocked) return item;
+    const calculation = item.quantityCalculation || {};
+    const plan = themeKey(calculation.plan || item.listPlan);
+    const calculatedPlans = ["per_groom", "per_horse", "horse_specific", "horse-specific", "quantity"];
+    if (!calculatedPlans.includes(plan) || calculation.calculatedNeeded === undefined) return item;
+    const needed = wholeQuantityNumber(calculation.calculatedNeeded);
+    const packed = wholeQuantityNumber(item.packed);
+    const left = Math.max(0, needed - packed);
+    return {
+      ...item,
+      needed,
+      left,
+      packState: needed > 0 && packed >= needed ? "packed" : item.packState,
+      quantityCalculation: {
+        ...calculation,
+        appliedNeeded: needed
+      }
+    };
+  }
+
   function handleClick(event) {
     const close = event.target.closest("[data-close-detail]");
     if (close) {
@@ -571,9 +601,9 @@
     return `
       <div class="lp-row is-static packing-wave-count-row">
         <span class="packing-wave-counts">
-          ${waveCountStatHtml("HORSE COUNT", wave.horseCount)}
+          ${waveCountStatHtml("HORSE COUNT", wave.effectiveHorseCount ?? wave.currentHorseCount ?? wave.horseCount)}
           ${waveCountStatHtml("GROOM RATIO", wave.groomRatio)}
-          ${waveCountStatHtml("GROOM FINAL", wave.groomCountFinal)}
+          ${waveCountStatHtml("GROOM FINAL", wave.effectiveGroomCountFinal ?? wave.currentGroomCountFinal ?? wave.groomCountFinal)}
         </span>
       </div>
     `;
