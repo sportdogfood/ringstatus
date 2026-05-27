@@ -234,7 +234,7 @@
       fields.item_name = itemName;
     }
     if (editMode.quantity_packed_override) {
-      const packed = Number(inlineEditValue(item, "quantity_packed_override"));
+      const packed = wholeQuantityNumber(inlineEditValue(item, "quantity_packed_override"));
       if (!Number.isFinite(packed) || packed < 0) {
         setSaveMessage("Packed must be zero or greater.");
         return;
@@ -242,7 +242,7 @@
       fields.quantity_packed = packed;
     }
     if (editMode.quantity_needed_override) {
-      const needed = Number(inlineEditValue(item, "quantity_needed_override"));
+      const needed = wholeQuantityNumber(inlineEditValue(item, "quantity_needed_override"));
       if (!Number.isFinite(needed) || needed < 0) {
         setSaveMessage("Needed must be zero or greater.");
         return;
@@ -279,7 +279,7 @@
     if (action === "add_quantity" || action === "add_one") {
       const pendingKey = pendingActionKey("add_quantity", itemId);
       if (state.pendingActions[pendingKey]) return;
-      const quantityDelta = action === "add_one" ? 1 : Number(state.addQty[itemId] || 0);
+      const quantityDelta = action === "add_one" ? 1 : wholeQuantityNumber(state.addQty[itemId] || 0);
       if (!Number.isFinite(quantityDelta) || quantityDelta <= 0) {
         setSaveMessage("Enter a quantity to add.");
         return;
@@ -1856,12 +1856,16 @@
   }
 
   function quantityDisplay(value) {
+    const cleaned = wholeQuantityNumber(value);
+    return String(cleaned);
+  }
+
+  function wholeQuantityNumber(value) {
     const numeric = number(value);
-    if (numeric <= 0) return "0";
-    const cleaned = Math.abs(numeric - Math.round(numeric)) < 0.000001
+    if (numeric <= 0) return 0;
+    return Math.abs(numeric - Math.round(numeric)) < 0.000001
       ? Math.round(numeric)
       : Math.ceil(numeric - 0.000001);
-    return String(cleaned);
   }
 
   function deadlineDisplay(value) {
@@ -1887,10 +1891,10 @@
     if (Object.prototype.hasOwnProperty.call(state.inlineEditValues, key)) return state.inlineEditValues[key];
     if (field === "lp-row-title") return displayLabel(item.name || "");
     if (field === "quantity_packed_override") {
-      return item.quantityPackedOverride ?? item.quantity_packed_override ?? item.packed ?? "";
+      return quantityDisplay(item.quantityPackedOverride ?? item.quantity_packed_override ?? item.packed ?? "");
     }
     if (field === "quantity_needed_override") {
-      return item.quantityNeededOverride ?? item.quantity_needed_override ?? item.needed ?? "";
+      return quantityDisplay(item.quantityNeededOverride ?? item.quantity_needed_override ?? item.needed ?? "");
     }
     return "";
   }

@@ -2544,7 +2544,13 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-row.is-inline-editing {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
   cursor: default;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-row.is-inline-editing .packing-state-stack {
+  display: none;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-row.is-inline-editing .packing-inline-main {

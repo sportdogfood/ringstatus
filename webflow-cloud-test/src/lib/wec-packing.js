@@ -1039,13 +1039,13 @@ async function listOptionalRecords(airtable, tableConfig) {
 
 async function applyAddQuantity(airtable, tables, payload) {
   const itemId = clean(payload?.itemId || payload?.packingItemId);
-  const delta = Number(payload?.quantityDelta || payload?.delta || 0);
+  const delta = wholeQuantityField(payload?.quantityDelta || payload?.delta || 0);
   if (!itemId) throw new Error("missing_item_id");
   if (!Number.isFinite(delta) || delta <= 0) throw new Error("quantity_delta_must_be_positive");
 
   const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
   const fields = record.fields || {};
-  const before = numberField(fields.quantity_packed);
+  const before = wholeQuantityField(fields.quantity_packed);
   const needed = worksheetNeeded(fields);
   const after = Math.min(needed || before + delta, before + delta);
   const nextPackState = needed > 0 && after >= needed ? "packed" : "not_packed";
@@ -1078,7 +1078,7 @@ async function applyPackState(airtable, tables, payload) {
 
   const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
   const fields = record.fields || {};
-  const beforeQuantity = numberField(fields.quantity_packed);
+  const beforeQuantity = wholeQuantityField(fields.quantity_packed);
   const needed = worksheetNeeded(fields);
   const afterQuantity = nextPackState === "packed" ? needed : beforeQuantity;
 
@@ -1112,7 +1112,7 @@ async function applyResolutionState(airtable, tables, payload) {
   const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
   const fields = record.fields || {};
   const beforeDecision = stringField(fields.resolution_state);
-  const packed = numberField(fields.quantity_packed);
+  const packed = wholeQuantityField(fields.quantity_packed);
   const needed = worksheetNeeded(fields);
   const packStateAfter = packed >= needed && needed > 0 ? "packed" : "not_packed";
   const updateFields = nextResolution === "clear"
@@ -1147,12 +1147,12 @@ async function applyItemFieldUpdate(airtable, tables, payload) {
     updateFields.item_name = name;
   }
   if (Object.prototype.hasOwnProperty.call(incoming, "quantity_packed")) {
-    const packed = Number(incoming.quantity_packed);
+    const packed = wholeQuantityField(incoming.quantity_packed);
     if (!Number.isFinite(packed) || packed < 0) throw new Error("quantity_packed_invalid");
     updateFields.quantity_packed = packed;
   }
   if (Object.prototype.hasOwnProperty.call(incoming, "quantity_needed")) {
-    const needed = Number(incoming.quantity_needed);
+    const needed = wholeQuantityField(incoming.quantity_needed);
     if (!Number.isFinite(needed) || needed < 0) throw new Error("quantity_needed_invalid");
     updateFields.quantity_needed = needed;
   }
@@ -1161,7 +1161,7 @@ async function applyItemFieldUpdate(airtable, tables, payload) {
   const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
   const fields = { ...(record.fields || {}), ...updateFields };
   if (Object.prototype.hasOwnProperty.call(updateFields, "quantity_packed") || Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed")) {
-    const packed = numberField(fields.quantity_packed);
+    const packed = wholeQuantityField(fields.quantity_packed);
     const needed = worksheetNeeded(fields);
     updateFields.pack_state = needed > 0 && packed >= needed ? "packed" : "not_packed";
   }
@@ -1182,8 +1182,8 @@ async function applyHorsePackState(airtable, tables, payload) {
   if (!packingItemId) throw new Error("missing_parent_packing_item");
   const { record: itemRecord } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, packingItemId);
 
-  const before = numberField(memberRecord.fields?.quantity_packed);
-  const memberNeeded = numberField(memberRecord.fields?.quantity_needed || 1);
+  const before = wholeQuantityField(memberRecord.fields?.quantity_packed);
+  const memberNeeded = wholeQuantityField(memberRecord.fields?.quantity_needed || 1);
   const after = nextState === "packed" ? memberNeeded : 0;
   const updatedMember = await patchAirtableRecord(airtable, tables.wec_packing_item_horses.id, memberId, {
     quantity_packed: after,
@@ -1195,8 +1195,8 @@ async function applyHorsePackState(airtable, tables, payload) {
     .map((record) => record.id === memberId
       ? { ...record, fields: { ...record.fields, quantity_packed: after, horse_pack_state: nextState } }
       : record);
-  const packedTotal = rolledMembers.reduce((sum, record) => sum + numberField(record.fields?.quantity_packed), 0);
-  const neededTotal = rolledMembers.reduce((sum, record) => sum + numberField(record.fields?.quantity_needed || 1), 0);
+  const packedTotal = rolledMembers.reduce((sum, record) => sum + wholeQuantityField(record.fields?.quantity_packed), 0);
+  const neededTotal = rolledMembers.reduce((sum, record) => sum + wholeQuantityField(record.fields?.quantity_needed || 1), 0);
   const parentPackState = neededTotal > 0 && packedTotal >= neededTotal ? "packed" : "not_packed";
   const updatedParent = await patchAirtableRecord(airtable, tables.wec_packing_items.id, packingItemId, {
     quantity_packed: packedTotal,
@@ -1320,7 +1320,7 @@ async function createPackingEvent(airtable, tables, payload) {
 }
 
 function worksheetNeeded(fields) {
-  return numberField(fields?.quantity_needed ?? fields?.quantity_needed_dynamic ?? fields?.quantity_base);
+  return wholeQuantityField(fields?.quantity_needed ?? fields?.quantity_needed_dynamic ?? fields?.quantity_base);
 }
 
 function compactFields(fields) {
@@ -1453,11 +1453,13 @@ function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
 function normalizePackingItem(record, horseRecords, listPlanLookup = new Map()) {
   const fields = record.fields || {};
   const listPlan = resolveListPlan(fields, listPlanLookup);
-  const quantityNeededDynamic = nullableNumberField(fields.quantity_needed_dynamic);
-  const quantityNeededFrozen = nullableNumberField(fields.quantity_needed);
-  const needed = quantityNeededDynamic ?? quantityNeededFrozen ?? numberField(fields.quantity_base);
-  const packed = numberField(fields.quantity_packed);
-  const left = numberField(fields.quantity_left ?? Math.max(0, needed - packed));
+  const quantityNeededDynamicRaw = nullableNumberField(fields.quantity_needed_dynamic);
+  const quantityNeededFrozenRaw = nullableNumberField(fields.quantity_needed);
+  const quantityNeededDynamic = quantityNeededDynamicRaw === null ? null : wholeQuantityField(quantityNeededDynamicRaw);
+  const quantityNeededFrozen = quantityNeededFrozenRaw === null ? null : wholeQuantityField(quantityNeededFrozenRaw);
+  const needed = quantityNeededDynamic ?? quantityNeededFrozen ?? wholeQuantityField(fields.quantity_base);
+  const packed = wholeQuantityField(fields.quantity_packed);
+  const left = wholeQuantityField(fields.quantity_left ?? Math.max(0, needed - packed));
   return {
     id: record.id,
     name: stringField(fields.item_name),
@@ -1467,7 +1469,7 @@ function normalizePackingItem(record, horseRecords, listPlanLookup = new Map()) 
     listPlanId: listPlan.id,
     listPlanLabel: listPlan.label,
     listPlanLogic: listPlan.logic,
-    quantityBase: numberField(fields.quantity_base),
+    quantityBase: wholeQuantityField(fields.quantity_base),
     quantityNeededDynamic,
     quantityNeededFrozen,
     needed,
@@ -1496,8 +1498,8 @@ function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave, w
     : item.quantityNeededDynamic ?? item.needed;
   const effectiveItem = {
     ...item,
-    needed: effectiveNeeded,
-    left: Math.max(0, effectiveNeeded - item.packed)
+    needed: wholeQuantityField(effectiveNeeded),
+    left: wholeQuantityField(Math.max(0, effectiveNeeded - item.packed))
   };
   return {
     ...effectiveItem,
@@ -1521,8 +1523,8 @@ function normalizeHorseMember(record) {
     packWaveIds: linkedIds(fields.pack_wave),
     sourcePackItemIds: linkedIds(fields.source_pack_item),
     eventIds: linkedIds(fields.wec_packing_events),
-    needed: numberField(fields.quantity_needed || 1),
-    packed: numberField(fields.quantity_packed),
+    needed: wholeQuantityField(fields.quantity_needed || 1),
+    packed: wholeQuantityField(fields.quantity_packed),
     horsePackState: stringField(fields.horse_pack_state || "not_packed"),
     notes: stringField(fields.notes),
     sortOrder: numberField(fields.sort_order)
@@ -1641,7 +1643,7 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set
   if (plan === "per_groom") {
     const perGroom = numberField(sourceItem?.perGroom || item.quantityBase);
     const groomCount = numberField(wave?.effectiveGroomCountFinal ?? wave?.groomCountFinal);
-    const calculatedNeeded = perGroom * groomCount;
+    const calculatedNeeded = wholeQuantityField(perGroom * groomCount);
     return calculationRow({
       plan,
       formula: "per_groom * effective_groom_count_final",
@@ -1660,7 +1662,7 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set
   if (plan === "per_horse") {
     const perHorse = numberField(sourceItem?.perHorse || item.quantityBase);
     const horseCount = numberField(wave?.effectiveHorseCount ?? wave?.horseCount);
-    const calculatedNeeded = perHorse * horseCount;
+    const calculatedNeeded = wholeQuantityField(perHorse * horseCount);
     return calculationRow({
       plan,
       formula: "per_horse * effective_horse_count",
@@ -1679,7 +1681,7 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set
   if (plan === "horse_specific" || plan === "horse-specific") {
     const perHorse = numberField(sourceItem?.perHorse || item.quantityBase || 1);
     const expectedHorseCount = sourceItem ? expectedSourceHorseIds(sourceItem, waveHorseIds).size : item.horseMembers.length;
-    const calculatedNeeded = expectedHorseCount * perHorse;
+    const calculatedNeeded = wholeQuantityField(expectedHorseCount * perHorse);
     return calculationRow({
       plan,
       formula: "eligible_horses * per_horse",
@@ -1696,7 +1698,7 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set
   }
 
   if (plan === "quantity") {
-    const calculatedNeeded = numberField(sourceItem?.quantity || item.quantityBase || frozenNeeded);
+    const calculatedNeeded = wholeQuantityField(sourceItem?.quantity || item.quantityBase || frozenNeeded);
     return calculationRow({
       plan,
       formula: "quantity",
@@ -1715,9 +1717,9 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorseIds = new Set
     formula: "quantity_needed",
     sourceField: "wec_packing_items.quantity_needed",
     multiplierField: "",
-    base: frozenNeeded,
+    base: wholeQuantityField(frozenNeeded),
     multiplier: 1,
-    calculatedNeeded: frozenNeeded,
+    calculatedNeeded: wholeQuantityField(frozenNeeded),
     frozenNeeded,
     unit
   });
@@ -1906,6 +1908,18 @@ function stringListField(value) {
 function numberField(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : 0;
+}
+
+function wholeQuantityField(value) {
+  const number = numberField(value);
+  if (number <= 0) return 0;
+  return Math.abs(number - Math.round(number)) < 0.000001
+    ? Math.round(number)
+    : Math.ceil(number - 0.000001);
+}
+
+function quantityDisplay(value) {
+  return String(wholeQuantityField(value));
 }
 
 function nullableNumberField(value) {
