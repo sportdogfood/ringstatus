@@ -6,6 +6,9 @@
   }
 
   :is(#packing-app, #tack-horses-app, #hps-app) {
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
     --lp-bg: #f7f8fa;
     --lp-ink: #000000;
     --lp-muted: #000000;
@@ -83,6 +86,13 @@
     max-width: 620px;
     margin-left: auto;
     text-align: right;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .packing-home-button {
+    position: fixed;
+    top: 12px;
+    right: max(12px, calc((100vw - 840px) / 2 + 12px));
+    z-index: 900;
   }
 
   :is(#packing-app, #tack-horses-app, #hps-app) h1 {

@@ -288,6 +288,7 @@
       state.pendingActions[pendingKey] = action;
       state.addQty[itemId] = "";
       const optimistic = applyOptimisticAddQuantity(itemId, quantityDelta);
+      render();
       await postAction({
         action: "add_quantity",
         itemId,
@@ -296,6 +297,7 @@
       }, null, {
         pendingKey,
         message: `Adding ${quantityDisplay(quantityDelta)}...`,
+        quietStart: true,
         preserveItemQuantities: optimistic ? { itemId, ...optimistic } : null,
         rollback: () => restoreItemQuantities(itemId, rollback)
       });
@@ -365,9 +367,11 @@
   }
 
   async function postAction(payload, afterSave, options = {}) {
-    state.saving = true;
-    state.saveMessage = options.message || "Saving...";
-    render();
+    if (!options.quietStart) {
+      state.saving = true;
+      state.saveMessage = options.message || "Saving...";
+      render();
+    }
 
     try {
       const response = await fetch(endpointUrl("action"), {
