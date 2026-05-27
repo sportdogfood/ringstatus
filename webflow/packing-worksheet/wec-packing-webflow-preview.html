@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WEC Packing Preview</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=wec-preview-7">
   </head>
   <body>
     <div id="packing-app">Loading WEC packing...</div>
@@ -12,7 +12,7 @@
     <script>
       window.WEC_PACKING_CONFIG = {
         mode: "edit",
-        apiBaseUrl: "https://ringstatus.webflow.io/test/wec-packing",
+        apiUrl: "https://ringstatus.webflow.io/test/wec-packing",
         stateUrl: "https://ringstatus.webflow.io/test/wec-packing/state",
         actionUrl: "https://ringstatus.webflow.io/test/wec-packing/action",
         healthUrl: "https://ringstatus.webflow.io/test/wec-packing/health",
@@ -20,6 +20,6 @@
         packWaveId: ""
       };
     </script>
-    <script src="./wec-packing.js" defer></script>
+    <script src="./wec-packing.js?v=wec-preview-7" defer></script>
   </body>
 </html>

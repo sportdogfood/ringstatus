@@ -13,6 +13,7 @@ export const GET = async () => {
     personalizedSectionEndpoint: "/test/personalized-section/content",
     horsesEndpoint: "/test/8778-tack-horses/horses",
     hpsEndpoint: "/test/hps/horses",
+    wecPackingEndpoint: "/test/wec-packing",
     wecPackingHealthEndpoint: "/test/wec-packing/health",
     wecPackingStateEndpoint: "/test/wec-packing/state",
     env: {

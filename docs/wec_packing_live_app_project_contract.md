@@ -556,9 +556,11 @@ Server responsibilities:
 
 Do not write directly from browser to Airtable.
 
-## Implementation Gates
+## Implementation Checks
 
-Use `wec_meta` as the first implementation gate. The registry is the current WEC system index and should drive table discovery instead of relying on stale file notes.
+Use `wec_meta` as the first implementation check. The registry is the current WEC system index and should drive table discovery instead of relying on stale file notes.
+
+WEC is a privately shared URL app. Do not add tenant gates, login gates, role gates, or active-tenant validation unless explicitly requested later. The table/view settings only define which Airtable records are visible to this worksheet and which records are eligible for writes.
 
 Before code implementation:
 

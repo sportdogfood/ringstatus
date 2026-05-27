@@ -191,6 +191,7 @@ export async function stateReport(airtable, requestUrl) {
     ))
     .sort(compareWorksheetRows);
   const lists = buildListSummaries(items, normalizedPackLists);
+  const tabGroups = buildTabSummaries(lists);
 
   return {
     ok: true,
@@ -211,6 +212,7 @@ export async function stateReport(airtable, requestUrl) {
     availableWaves: waves.map(normalizeWave).sort((a, b) => compareNumber(a.sortOrder, b.sortOrder)),
     horses: normalizedHorses,
     lists,
+    tabGroups,
     sections: lists.map((list) => ({
       section: list.id,
       label: list.label,
@@ -910,10 +912,14 @@ function withEffectiveWaveCounts(wave, waveHorses) {
 function normalizePackList(record) {
   const fields = record.fields || {};
   const label = stringField(fields.list) || record.id;
+  const tabs = stringListField(fields.tabs);
   return {
     id: record.id,
     key: slugify(label),
     label,
+    tabs,
+    tabKey: slugify(tabs[0] || label),
+    tabLabel: tabs[0] || label,
     shortDescription: stringField(fields.short_description),
     longDescription: stringField(fields.long_description),
     itemCount: numberField(fields.list_items_count)
@@ -1111,6 +1117,32 @@ function buildListSummaries(items, packLists) {
       ...summary,
       open: summary.rows - summary.done
     }));
+}
+
+function buildTabSummaries(lists) {
+  const summaries = new Map();
+  for (const list of lists) {
+    const tabLabels = list.tabs?.length ? list.tabs : [list.label];
+    for (const tabLabel of tabLabels) {
+      const key = slugify(tabLabel || list.label) || list.key || list.id;
+      const id = `tab:${key}`;
+      const summary = summaries.get(id) || {
+        id,
+        key,
+        label: tabLabel || list.label,
+        listIds: [],
+        rows: 0,
+        done: 0,
+        open: 0
+      };
+      summary.listIds.push(list.id);
+      summary.rows += list.rows;
+      summary.done += list.done;
+      summary.open += list.open;
+      summaries.set(id, summary);
+    }
+  }
+  return [...summaries.values()];
 }
 
 function buildSections(items) {
@@ -1361,6 +1393,12 @@ function splitLines(value) {
 function stringField(value) {
   if (Array.isArray(value)) return value.map(stringField).filter(Boolean).join(", ");
   return clean(value);
+}
+
+function stringListField(value) {
+  if (Array.isArray(value)) return value.map(stringField).filter(Boolean);
+  const single = stringField(value);
+  return single ? [single] : [];
 }
 
 function numberField(value) {

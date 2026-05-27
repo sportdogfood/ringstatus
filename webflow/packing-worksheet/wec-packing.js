@@ -3,6 +3,7 @@
   if (!root) return;
 
   const config = window.WEC_PACKING_CONFIG || {};
+  const apiUrl = String(config.apiUrl || "").trim();
   const apiBaseUrl = String(config.apiBaseUrl || "https://ringstatus.webflow.io/test/wec-packing").replace(/\/$/, "");
   const state = {
     activeTab: "overview",
@@ -45,7 +46,7 @@
 
   function endpointUrl(kind) {
     const explicit = kind === "state" ? config.stateUrl : kind === "action" ? config.actionUrl : "";
-    const url = new URL(explicit || `${apiBaseUrl}/${kind}`);
+    const url = new URL(explicit || apiUrl || `${apiBaseUrl}/${kind}`);
     if (config.showId) url.searchParams.set("showId", config.showId);
     if (config.packWaveId) url.searchParams.set("packWaveId", config.packWaveId);
     return url.toString();
@@ -259,7 +260,7 @@
           <div class="lp-modal-backdrop" data-close-detail></div>
           <article class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
             <button class="lp-modal-close" type="button" data-close-detail aria-label="Close detail">x</button>
-            <div id="packingDetailContent"></div>
+            <div id="packingDetailContent" data-modal-content></div>
           </article>
         </div>
       </div>
@@ -291,9 +292,9 @@
             ? horses().filter((horse) => horse.active).length
             : section.id === "overview"
               ? totalOpenRows()
-              : sectionCount(section.id);
+              : number(section.rows ?? sectionCount(section.id));
           return `
-            <button class="lp-tab packing-tab packing-theme-${themeKey(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
+            <button class="lp-tab packing-tab ${themeClasses(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
               <span class="lp-tab-value">${count}</span>
               <span class="lp-tab-label">${escapeHtml(displayLabel(section.label))}</span>
             </button>
@@ -309,6 +310,7 @@
     if (!state.data) return messagePanel("No state");
     if (state.activeTab === "overview") return overviewHtml();
     if (state.activeTab === "horses") return horsesHtml();
+    if (isTabGroupId(state.activeTab)) return tabGroupHtml(state.activeTab);
     return listHtml(state.activeTab);
   }
 
@@ -326,12 +328,11 @@
   }
 
   function overviewHtml() {
-    const rows = lists().map((list) => {
-      const summary = listSummary(list.id);
+    const rows = tabGroups().map((summary) => {
       return `
-        <button class="lp-row packing-row" type="button" data-tab="${escapeAttr(list.id)}">
+        <button class="lp-row packing-row" type="button" data-tab="${escapeAttr(summary.id)}">
           <span>
-            <span class="lp-row-title">${escapeHtml(displayLabel(list.label))}</span>
+            <span class="lp-row-title">${escapeHtml(displayLabel(summary.label))}</span>
             <span class="lp-row-meta">Rows: ${summary.rows} | Left ${summary.open}</span>
           </span>
           ${tokenHtml(summary.open === 0 && summary.rows > 0 ? "packed" : "open", summary.open === 0 && summary.rows > 0 ? "PACKED" : `LEFT - ${summary.open}`)}
@@ -365,16 +366,43 @@
   }
 
   function listHtml(listId) {
+    return listSectionHtml(listId);
+  }
+
+  function tabGroupHtml(tabId) {
+    const group = tabGroups().find((row) => row.id === tabId);
+    const groupLists = group?.listIds?.length
+      ? group.listIds.map((id) => lists().find((list) => list.id === id)).filter(Boolean)
+      : [];
+    if (!groupLists.length) return emptyGroupHtml(group?.label || "No rows");
+    return groupLists.map((list) => listSectionHtml(list.id)).join("");
+  }
+
+  function listSectionHtml(listId) {
     const list = lists().find((row) => row.id === listId) || { id: listId, label: listId };
     const rows = items().filter((item) => itemBelongsToList(item, listId));
     return `
-      <section class="lp-section-block packing-theme-${themeKey(list.id)}">
+      <section class="lp-section-block ${themeClasses(list.id)}">
         <div class="lp-section-title packing-section-title">
           <h3>${escapeHtml(displayLabel(list.label))}</h3>
           <span class="lp-section-count">Rows: ${rows.length} | Left ${rows.filter((row) => !isDone(row)).length}</span>
         </div>
         <div class="lp-list">
           ${rows.length ? rows.map(itemRowHtml).join("") : emptyRowHtml("No rows")}
+        </div>
+      </section>
+    `;
+  }
+
+  function emptyGroupHtml(label) {
+    return `
+      <section class="lp-section-block">
+        <div class="lp-section-title packing-section-title">
+          <h3>${escapeHtml(displayLabel(label))}</h3>
+          <span class="lp-section-count">Rows: 0 | Left 0</span>
+        </div>
+        <div class="lp-list">
+          ${emptyRowHtml("No rows")}
         </div>
       </section>
     `;
@@ -404,7 +432,7 @@
         </span>
         <span class="packing-state-stack">
           ${rowTokenHtml(item)}
-          <span class="packing-token-meta">Need: ${number(item.needed)}</span>
+          <span class="packing-token-meta">Need: ${quantityDisplay(item.needed)}</span>
         </span>
       </button>
     `;
@@ -432,8 +460,8 @@
   function rowTokenHtml(item) {
     if (item.resolutionState) return tokenHtml("resolved", displayLabel(item.resolutionState).toUpperCase());
     if (item.packState === "packed" || (number(item.left) === 0 && number(item.needed) > 0)) return tokenHtml("packed", "PACKED");
-    if (number(item.packed) > 0) return tokenHtml("open", `LEFT - ${number(item.left)}`);
-    return tokenHtml("need", `NEED - ${number(item.needed)}`);
+    if (number(item.packed) > 0) return tokenHtml("open", `LEFT - ${quantityDisplay(item.left)}`);
+    return tokenHtml("need", `NEED - ${quantityDisplay(item.needed)}`);
   }
 
   function tokenHtml(type, text) {
@@ -462,25 +490,30 @@
   function itemDetailHtml(item) {
     if (!item) return "";
     return `
-      <div class="packing-detail packing-theme-${themeKey(item.packListIds?.[0] || "overview")}">
-        <div class="lp-detail-head">
-          <h3 id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h3>
-          <p class="lp-muted">${escapeHtml(itemMetaLabel(item))}</p>
+      <div class="lp-profile-shell packing-detail-shell ${themeClasses(item.packListIds?.[0] || "overview")}">
+        <div class="lp-profile-head th-profile-top">
+          <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h2>
+          <p class="lp-profile-subtitle">${escapeHtml(itemMetaLabel(item))}</p>
         </div>
-        ${detailGroupHtml("Location", [["Location", item.location || ""]])}
-        ${detailGroupHtml("Totals", [
-          ["Need", quantityLabel(item.needed, item.unit)],
-          ["Packed", quantityLabel(item.packed, item.unit)],
-          ["Left", quantityLabel(item.left, item.unit)]
-        ])}
-        ${calculationDetailHtml(item.quantityCalculation)}
-        ${detailGroupHtml("Meta", [
-          ["Plan", displayLabel(item.listPlanLabel || item.listPlan || "unresolved")],
-          ["Record State", item.recordState || "active"],
-          ["Source", item.sourceItems?.[0]?.appName || ""]
-        ])}
-        ${worksheetPanelHtml(item)}
-        ${sourcePanelHtml(item)}
+
+        <section class="lp-profile-panel th-detail-section">
+          <div data-th-record="${escapeAttr(item.id)}" data-th-name="${escapeAttr(item.name || "")}">
+            <div class="lp-field-grid lp-profile-tab-panel is-active">
+              ${totalsRowHtml(item)}
+              ${statusControlHtml(item)}
+              ${packedControlHtml(item)}
+              ${horseMembersControlHtml(item)}
+              ${notesControlHtml(item)}
+              ${decisionControlHtml(item)}
+            </div>
+          </div>
+        </section>
+
+        <div class="lp-profile-modal-footer th-profile-footer">
+          <div class="lp-profile-footer">
+            <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -509,13 +542,31 @@
         <div class="lp-edit-grid">
           ${statusControlHtml(item)}
           ${packedControlHtml(item)}
+          ${decisionControlHtml(item)}
           ${horseMembersControlHtml(item)}
           ${notesControlHtml(item)}
-          ${decisionControlHtml(item)}
         </div>
         <p class="lp-edit-status">${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</p>
       </div>
     `;
+  }
+
+  function detailReadRow(label, value) {
+    return editGroupHtml(label, `<input class="lp-edit-input th-input th-readonly-input" type="text" value="${escapeAttr(value)}" readonly tabindex="-1">`);
+  }
+
+  function totalsRowHtml(item) {
+    return editGroupHtml("Totals", `
+      <span class="lp-edit-choice-row packing-inline-choices packing-totals">
+        ${totalPillHtml("Need", quantityLabel(item.needed, item.unit))}
+        ${totalPillHtml("Packed", quantityLabel(item.packed, item.unit))}
+        ${totalPillHtml("Left", quantityLabel(item.left, item.unit))}
+      </span>
+    `, "packing-totals-row");
+  }
+
+  function totalPillHtml(label, value) {
+    return `<span class="lp-edit-pill packing-static-pill">${escapeHtml(label)} ${escapeHtml(value)}</span>`;
   }
 
   function statusControlHtml(item) {
@@ -545,7 +596,7 @@
   }
 
   function horseMembersControlHtml(item) {
-    if (!item.horseMembers?.length) return editGroupHtml("Horses", `<span class="lp-row-meta">Not horse-specific</span>`);
+    if (!item.horseMembers?.length) return editGroupHtml("Horses", `<span class="lp-edit-pill packing-static-pill">NOT HORSE SPECIFIC</span>`);
     return editGroupHtml("Horses", `
       <span class="packing-horse-bindings">
         ${item.horseMembers.map((member) => {
@@ -569,7 +620,7 @@
   }
 
   function decisionControlHtml(item) {
-    const decisions = ["max", "kill", "note", "purchase_onsite", "unresolved"];
+    const decisions = ["max", "kill", "purchase_onsite", "unresolved"];
     return editGroupHtml("Decision", `
       <span class="lp-edit-choice-row packing-inline-choices packing-decision-choices">
         ${decisions.map((decision) => choiceButtonHtml({
@@ -577,7 +628,6 @@
           active: item.resolutionState === decision,
           attrs: `data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="${escapeAttr(decision)}"`
         })).join("")}
-        <button class="lp-edit-pill packing-decision-clear" type="button" data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="clear">CLEAR</button>
       </span>
     `);
   }
@@ -614,17 +664,17 @@
 
   function editGroupHtml(title, body, extraClass) {
     return `
-      <div class="lp-edit-group ${extraClass || ""}">
-        <div class="lp-edit-group-title">${escapeHtml(title)}</div>
-        <div class="lp-edit-group-fields">${body}</div>
+      <div class="lp-field-row th-detail-edit ${extraClass || ""}">
+        <span class="lp-field-label">${escapeHtml(title)}</span>
+        <span class="lp-field-value">${body}</span>
       </div>
     `;
   }
 
-  function detailGroupHtml(title, rows) {
+  function detailGroupHtml(title, rows, extraClass) {
     return `
       <h4 class="packing-detail-group-title">${escapeHtml(title)}</h4>
-      <div class="lp-detail-list">
+      <div class="lp-detail-list ${extraClass || ""}">
         ${rows.map(([label, value]) => `
           <div class="lp-detail-row">
             <div class="lp-detail-label">${escapeHtml(label)}</div>
@@ -677,6 +727,7 @@
       return state.data.sections.map((section) => ({
         id: section.section,
         label: section.label || section.section,
+        tabs: [],
         rows: section.rows,
         done: section.done,
         open: section.open
@@ -685,12 +736,72 @@
     return [];
   }
 
+  function tabGroups() {
+    if (Array.isArray(state.data?.tabGroups) && state.data.tabGroups.length) {
+      return state.data.tabGroups.map(normalizeTabGroup).filter((group) => group.listIds.length);
+    }
+
+    const groups = new Map();
+    for (const list of lists()) {
+      for (const label of listTabLabels(list)) {
+        const key = themeKey(label || list.label || list.id);
+        const id = `tab:${key}`;
+        const group = groups.get(id) || {
+          id,
+          key,
+          label: label || list.label || list.id,
+          listIds: [],
+          rows: 0,
+          done: 0,
+          open: 0
+        };
+        group.listIds.push(list.id);
+        group.rows += number(list.rows);
+        group.done += number(list.done);
+        group.open += number(list.open);
+        groups.set(id, group);
+      }
+    }
+    return [...groups.values()];
+  }
+
+  function normalizeTabGroup(group) {
+    const key = themeKey(group.key || group.label || group.id);
+    const id = group.id || `tab:${key}`;
+    const explicitListIds = Array.isArray(group.listIds) ? group.listIds : [];
+    const inferredListIds = explicitListIds.length
+      ? explicitListIds
+      : lists()
+        .filter((list) => listTabLabels(list).some((label) => `tab:${themeKey(label)}` === id))
+        .map((list) => list.id);
+    return {
+      id,
+      key,
+      label: group.label || group.key || id.replace(/^tab:/, ""),
+      listIds: inferredListIds,
+      rows: number(group.rows),
+      done: number(group.done),
+      open: number(group.open)
+    };
+  }
+
+  function listTabLabels(list) {
+    if (Array.isArray(list.tabs) && list.tabs.length) return list.tabs;
+    if (typeof list.tabs === "string" && list.tabs.trim()) return [list.tabs.trim()];
+    if (list.tabLabel) return [list.tabLabel];
+    return [list.label || list.id];
+  }
+
   function tabs() {
     return [
       { id: "overview", label: "Overview" },
-      ...lists().map((list) => ({ id: list.id, label: list.label })),
+      ...tabGroups(),
       { id: "horses", label: "Horses" }
     ];
+  }
+
+  function isTabGroupId(value) {
+    return String(value || "").startsWith("tab:");
   }
 
   function calculationDetailHtml(calculation) {
@@ -721,12 +832,21 @@
 
   function quantityLabel(value, unit) {
     const suffix = unit ? ` ${unit}` : "";
-    return `${number(value)}${suffix}`;
+    return `${quantityDisplay(value)}${suffix}`;
   }
 
   function number(value) {
     const numeric = Number(value);
     return Number.isFinite(numeric) ? numeric : 0;
+  }
+
+  function quantityDisplay(value) {
+    const numeric = number(value);
+    if (numeric <= 0) return "0";
+    const cleaned = Math.abs(numeric - Math.round(numeric)) < 0.000001
+      ? Math.round(numeric)
+      : Math.ceil(numeric - 0.000001);
+    return String(cleaned);
   }
 
   function escapeAttr(value) {
@@ -749,5 +869,34 @@
 
   function themeKey(value) {
     return String(value || "overview").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "overview";
+  }
+
+  function themeClasses(value) {
+    const key = themeName(value);
+    if (key === "overview") return "packing-theme-overview";
+    if (key === "horses") return "packing-theme-horses";
+    return `packing-theme-${key} packing-tone-${toneIndex(value)}`;
+  }
+
+  function themeName(value) {
+    const raw = String(value || "overview");
+    if (raw === "overview" || raw === "horses") return raw;
+    if (isTabGroupId(raw)) {
+      const group = tabGroups().find((row) => row.id === raw);
+      return themeKey(group?.label || raw.replace(/^tab:/, ""));
+    }
+    const list = lists().find((row) => row.id === raw);
+    if (list) return themeKey(listTabLabels(list)[0] || list.label || list.key || raw);
+    return themeKey(raw.replace(/^tab:/, ""));
+  }
+
+  function toneIndex(value) {
+    const groups = tabGroups();
+    const groupIndex = isTabGroupId(value)
+      ? groups.findIndex((group) => group.id === value)
+      : groups.findIndex((group) => group.listIds.includes(value));
+    if (groupIndex >= 0) return groupIndex % 10;
+    const index = lists().findIndex((list) => list.id === value);
+    return index >= 0 ? index % 10 : 0;
   }
 })();
