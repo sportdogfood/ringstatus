@@ -543,10 +543,8 @@
             <h1>WEC Ocala Packing</h1>
             <p class="packing-header-status">${escapeHtml(statusLine())}</p>
           </div>
-          <div class="lp-header-tools">
-            <button class="lp-filter-toggle packing-home-button" type="button" data-tab="overview">HOME</button>
-          </div>
         </header>
+        <button class="lp-filter-toggle packing-home-button" type="button" data-tab="overview">HOME</button>
         ${tabsHtml()}
         <main>${panelHtml()}</main>
         <footer class="lp-shell-footer">
