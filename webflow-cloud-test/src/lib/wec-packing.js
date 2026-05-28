@@ -2406,6 +2406,15 @@ function displayLabel(value) {
   return text.replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function slugify(value) {
   return clean(value)
     .toLowerCase()
