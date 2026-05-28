@@ -5,6 +5,26 @@
 **Primary mode focus:** `DAY`  
 **Transition scopes:** `DAY -> NIGHT`, `OVERNIGHT -> DAY`
 
+## 2026-05-28 DAY -> NIGHT Incident Log
+
+The 2026-05-28 transition did not run as a smooth `DAY -> NIGHT` handoff. The incident log is required preflight reading before changing heartbeat, focused show, schedule, or trips scope logic again:
+
+```text
+docs/ringstatus_daily_log_2026-05-28.md
+```
+
+The confirmed correction is that `show.heartbeat` view membership owns the focused scope. The heartbeat row primary fields must copy that focused scope directly:
+
+```text
+heartbeat.show_id = show.heartbeat.show_id
+heartbeat.show_date = show.heartbeat.focus_day
+heartbeat.sql_date = show.heartbeat.focus_day
+heartbeat.app_show_id = show.heartbeat.show_id
+heartbeat.app_sql_date = show.heartbeat.focus_day
+```
+
+Do not add new gates around `tomorrow`, `mode_control`, `shifted_to_next_day`, endpoint `show_id`, endpoint `sql_date`, or legacy `shows` when a row is present in `show.heartbeat`.
+
 ## 2026-05-16 Focused Show Source Of Truth
 
 The daily operating scope now starts from the manually managed `show` table. Before heartbeat, schedule, trips, rings, active tenants, scheduler, or publisher lanes run, the active scope must be resolved from the focused `show` record.

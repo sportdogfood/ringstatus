@@ -30,9 +30,9 @@ assert.ok(
   tagger.includes("hasValue(fields[FIELD_SHOW_ID])") &&
     tagger.includes("hasValue(fields[FIELD_CUSTOMER_ID])") &&
     tagger.includes("hasValue(fields[FIELD_SHOW_FOCUS_DAY])") &&
-    tagger.includes("isFocusedShowInActiveWindow(fields, nowSqlDate)") &&
+    !tagger.includes("isFocusedShowInActiveWindow(fields, nowSqlDate)") &&
     !tagger.includes("hasValue(fields[FIELD_SHOW_START_DATE_BASE]) &&\n      hasValue(fields[FIELD_SHOW_END_DATE_BASE])"),
-  "focused show minimum must be show_id, customer_id, and focus_day; start/end/show_name are enrichment fields, but active relinks require today within start_date..end_date when both are present"
+  "focused show selection must trust show/heartbeat view membership; minimum fields are show_id, customer_id, and focus_day"
 );
 
 assert.ok(
@@ -52,19 +52,16 @@ assert.ok(
 assert.ok(
   runnerCommon.includes("NoActiveFeeds = $true") &&
     runnerCommon.includes("manual_day_count") &&
-    runnerCommon.includes("Get-TodaySqlDate") &&
-    runnerCommon.includes("Get-TomorrowSqlDate") &&
-    runnerCommon.includes("$shiftedToNextDay -and $modeControl -eq 'NIGHT' -and $focusDay -eq $tomorrowSqlDate") &&
+    !runnerCommon.includes("$shiftedToNextDay -and $modeControl -eq 'NIGHT' -and $focusDay -eq $tomorrowSqlDate") &&
     runnerCommon.includes("HEARTBEAT_NO_ACTIVE_FEEDS") &&
     !runnerCommon.includes('throw "No focused show record found in $TableName/$ViewName"'),
-  "local runner must continue tagger with HEARTBEAT_NO_ACTIVE_FEEDS when show/heartbeat has zero rows, except an explicit shifted NIGHT focus_day for tomorrow"
+  "local runner must continue tagger with HEARTBEAT_NO_ACTIVE_FEEDS only when show/heartbeat has zero rows; heartbeat view membership is the focused-show selector"
 );
 
 assert.ok(
-  tagger.includes('modeControl === "NIGHT"') &&
-    tagger.includes("shiftedToNextDay &&") &&
-    tagger.includes("focusDay === tomorrowSqlDate"),
-  "tagger must allow a manually shifted NIGHT focused show for tomorrow even when today is before start_date"
+  !tagger.includes('modeControl === "NIGHT" &&\n    focusDay') &&
+    !tagger.includes("focusDay === tomorrowSqlDate"),
+  "tagger must not require mode_control=NIGHT to accept a row already present in show/heartbeat"
 );
 
 assert.ok(

@@ -102,24 +102,6 @@ function Resolve-HeartbeatTargetShow {
         $records = @($records | Where-Object { [string]$_.fields.show_id -eq $ShowId })
     }
 
-    $todaySqlDate = Get-TodaySqlDate
-    $tomorrowSqlDate = Get-TomorrowSqlDate
-    $records = @($records | Where-Object {
-        $startDate = [string]$_.fields.start_date
-        $endDate = [string]$_.fields.end_date
-        if ([string]::IsNullOrWhiteSpace($startDate) -or [string]::IsNullOrWhiteSpace($endDate)) {
-            return $true
-        }
-        if (Test-SqlDateInRange -SqlDate $todaySqlDate -StartDate $startDate -EndDate $endDate) {
-            return $true
-        }
-
-        $focusDay = [string]$_.fields.focus_day
-        $modeControl = ([string]$_.fields.mode_control).Trim().ToUpperInvariant()
-        $shiftedToNextDay = [bool]$_.fields.shifted_to_next_day
-        return ($shiftedToNextDay -and $modeControl -eq 'NIGHT' -and $focusDay -eq $tomorrowSqlDate)
-    })
-
     if ($records.Count -lt 1) {
         return [pscustomobject]@{
             NoActiveFeeds = $true

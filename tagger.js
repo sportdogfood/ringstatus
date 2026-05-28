@@ -1324,11 +1324,15 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
     throw new Error("Heartbeat create missing sqlDate/epoch");
   }
 
+  const heartbeatShowId = appCtx.appShowId ?? clock?.showId ?? null;
+  const heartbeatSqlDate = appCtx.appSqlDate || sqlDate;
+  const heartbeatShowDate = appCtx.appSqlDate || clock?.showDate || null;
+
   const fields = {
-    [HEARTBEAT_ID_FIELD]: `${clock?.showId ?? "unknown"}-${sqlDate}-${epoch}`,
-    [HEARTBEAT_SHOW_ID]: clock?.showId ?? null,
-    [HEARTBEAT_SHOW_DATE]: clock?.showDate ?? null,
-    [HEARTBEAT_SQL_DATE]: sqlDate,
+    [HEARTBEAT_ID_FIELD]: `${heartbeatShowId ?? "unknown"}-${heartbeatSqlDate}-${epoch}`,
+    [HEARTBEAT_SHOW_ID]: heartbeatShowId,
+    [HEARTBEAT_SHOW_DATE]: heartbeatShowDate,
+    [HEARTBEAT_SQL_DATE]: heartbeatSqlDate,
     [HEARTBEAT_TIME]: clock?.time ?? null,
 
     [FIELD_MODE]: mode,
@@ -1375,8 +1379,8 @@ async function createHeartbeat(clock, mode, intervalMin, appCtx) {
       ring_collection: fields[FIELD_RING_COLLECTION] ?? null,
       show_scope_key: fields[FIELD_SHOW_SCOPE_KEY] ?? null,
       scope_status: fields[FIELD_SCOPE_STATUS] ?? null,
-      raw_show_id: fields[HEARTBEAT_SHOW_ID],
-      raw_sql_date: fields[HEARTBEAT_SQL_DATE],
+      show_id: fields[HEARTBEAT_SHOW_ID],
+      sql_date: fields[HEARTBEAT_SQL_DATE],
       app_show_id: fields[FIELD_APP_SHOW_ID],
       app_sql_date: fields[FIELD_APP_SQL_DATE],
       app_dow_raw: fields[FIELD_APP_DOW_RAW],
@@ -1718,25 +1722,6 @@ function noActiveFeedsDecision() {
   };
 }
 
-function isFocusedShowInActiveWindow(fields, nowSqlDate) {
-  const startDate = toIsoDateOnly(fields?.[FIELD_SHOW_START_DATE_BASE]);
-  const endDate = toIsoDateOnly(fields?.[FIELD_SHOW_END_DATE_BASE]);
-  if (!startDate || !endDate) return true;
-  if (sqlDateInRange(nowSqlDate, startDate, endDate)) return true;
-
-  const focusDay = toIsoDateOnly(fields?.[FIELD_SHOW_FOCUS_DAY]);
-  const tomorrowSqlDate = addDaysSql(nowSqlDate, 1);
-  const shiftedToNextDay = boolValue(fields?.[FIELD_SHIFTED_NEXT_DAY]);
-  const modeControl = normalizeControlMode(fields?.[FIELD_MODE_CONTROL]);
-  return Boolean(
-    shiftedToNextDay &&
-    modeControl === "NIGHT" &&
-    focusDay &&
-    tomorrowSqlDate &&
-    focusDay === tomorrowSqlDate
-  );
-}
-
 async function findFocusedShowTarget() {
   const fields = [
     FIELD_SHOW_ID,
@@ -1753,8 +1738,6 @@ async function findFocusedShowTarget() {
     FIELD_MODE_CONTROL,
     FIELD_IS_DEFAULT_SHOW_MANUAL_OVERRIDE,
   ];
-  const nowSqlDate = formatSqlDateFromMs(Date.now(), HB_TZ);
-
   let rows = [];
   try {
     rows = await airtableListAll({ table: TABLE_SHOW_TARGET, view: VIEW_SHOW_TARGET, fields });
@@ -1784,8 +1767,7 @@ async function findFocusedShowTarget() {
     const fields = row.fields || {};
     return hasValue(fields[FIELD_SHOW_ID]) &&
       hasValue(fields[FIELD_CUSTOMER_ID]) &&
-      hasValue(fields[FIELD_SHOW_FOCUS_DAY]) &&
-      isFocusedShowInActiveWindow(fields, nowSqlDate);
+      hasValue(fields[FIELD_SHOW_FOCUS_DAY]);
   });
 
   if (selected.length === 0 && !HEARTBEAT_TARGET_SHOW_RECORD_ID && !HEARTBEAT_TARGET_APP_SHOW_ID) {

@@ -57,6 +57,14 @@ assert.ok(
   "focused show focus_day must be the heartbeat app_sql_date; shifted_to_next_day must not add another day"
 );
 
+assert.ok(
+  tagger.includes("const heartbeatShowId = appCtx.appShowId ?? clock?.showId ?? null;") &&
+    tagger.includes("const heartbeatSqlDate = appCtx.appSqlDate || sqlDate;") &&
+    tagger.includes("[HEARTBEAT_SHOW_ID]: heartbeatShowId") &&
+    tagger.includes("[HEARTBEAT_SQL_DATE]: heartbeatSqlDate"),
+  "heartbeat primary show_id/sql_date must come from show.heartbeat focus scope before endpoint clock fallback"
+);
+
 const schedulesDaily = fs.readFileSync(path.resolve(__dirname, "..", "schedules_dailyv2.js"), "utf8");
 assert.ok(
   schedulesDaily.includes("pickFirst(baseContext.current_app_sql_date, candidateDateFromMode") &&
