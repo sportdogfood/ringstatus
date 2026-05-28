@@ -425,46 +425,41 @@ function printItemBelongsToList(item, listId) {
   return ids.includes(listId) || item.section === listId || (!ids.length && !item.section && listId === "unlisted");
 }
 
-const PRINT_ROWS_PER_PAGE = 20;
+const PRINT_RECORDS_PER_PAGE = 11;
 
 function printPackingPageHtml(report, title, sections) {
   const rows = sections.flatMap((section) => section.rows);
   const percent = progressPercent(rows.filter(isSatisfied).length, rows.length);
-  const pages = sections.flatMap((section) => printQuantitySectionPages(report, title, section, percent, printItemTableRowData));
-  return pages.length ? pages.join("") : printEmptyPageHtml(report, title, percent, "No rows");
+  const pages = sections.flatMap((section) => printQuantitySectionPageContents(section, printItemTableRowData));
+  return printPageContents(report, title, percent, pages.length ? pages : [printEmptyPrintSectionHtml("No rows")]);
 }
 
 function printEmptyPageHtml(report, title, percent, label) {
-  return `
-    <section class="packing-print-page">
-      ${printGlobalHeaderHtml(report, title, percent)}
-      ${printEmptyPrintSectionHtml(label)}
-    </section>
-  `;
+  return printPageContents(report, title, percent, [printEmptyPrintSectionHtml(label)]);
 }
 
-function printQuantitySectionPages(report, title, section, percent, rowMapper) {
-  const rows = Array.isArray(section.rows) ? section.rows : [];
-  const chunks = chunkRows(rows, PRINT_ROWS_PER_PAGE);
-  if (!chunks.length) {
-    return [`
-      <section class="packing-print-page">
-        ${printGlobalHeaderHtml(report, title, percent)}
-        ${printQuantityTableHtml(section.title, [], { continued: false, rowMapper })}
-      </section>
-    `];
-  }
-  return chunks.map((chunk, index) => `
+function printPageContents(report, title, percent, pages) {
+  return pages.map((content, index) => `
     <section class="packing-print-page">
       ${printGlobalHeaderHtml(report, title, percent)}
-      ${printQuantityTableHtml(section.title, chunk, {
-        continued: index > 0,
-        pageNumber: index + 1,
-        pageCount: chunks.length,
-        rowMapper
-      })}
+      ${content}
+      ${printFooterHtml(index + 1)}
     </section>
-  `);
+  `).join("");
+}
+
+function printQuantitySectionPageContents(section, rowMapper) {
+  const rows = Array.isArray(section.rows) ? section.rows : [];
+  const chunks = chunkRows(rows, PRINT_RECORDS_PER_PAGE);
+  if (!chunks.length) {
+    return [printQuantityTableHtml(section.title, [], { continued: false, rowMapper })];
+  }
+  return chunks.map((chunk, index) => printQuantityTableHtml(section.title, chunk, {
+    continued: index > 0,
+    pageNumber: index + 1,
+    pageCount: chunks.length,
+    rowMapper
+  }));
 }
 
 function printQuantityTableHtml(title, rows, options = {}) {
@@ -481,18 +476,14 @@ function printQuantityTableHtml(title, rows, options = {}) {
         <thead>
           <tr>
             <th scope="col">NAME</th>
-            <th scope="col">DATE</th>
-            <th scope="col">NEEDED</th>
-            <th scope="col"></th>
-            <th scope="col">PACKED</th>
-            <th scope="col"></th>
-            <th scope="col">LEFT</th>
-            <th scope="col"></th>
+            <th scope="col" colspan="2">NEEDED</th>
+            <th scope="col" colspan="2">PACKED</th>
+            <th scope="col" colspan="2">LEFT</th>
             <th scope="col">INITIAL</th>
           </tr>
         </thead>
         <tbody>
-          ${rows.length ? rows.map((row) => printQuantityTableRows(rowMapper(row))).join("") : printEmptyTableRowHtml()}
+          ${rows.length ? rows.map((row, index) => printQuantityTableRows(rowMapper(row), index)).join("") : printEmptyTableRowHtml()}
         </tbody>
       </table>
     </section>
@@ -502,35 +493,35 @@ function printQuantityTableHtml(title, rows, options = {}) {
 function printQuantityTableColgroupHtml() {
   return `
     <colgroup>
-      <col style="width:40%">
-      <col style="width:7.5%">
-      <col style="width:7.5%">
-      <col style="width:7.5%">
-      <col style="width:7.5%">
-      <col style="width:7.5%">
-      <col style="width:7.5%">
-      <col style="width:7.5%">
-      <col style="width:7.5%">
+      <col style="width:36%">
+      <col style="width:9%">
+      <col style="width:8%">
+      <col style="width:9%">
+      <col style="width:8%">
+      <col style="width:9%">
+      <col style="width:8%">
+      <col style="width:13%">
     </colgroup>
   `;
 }
 
-function printQuantityTableRows(row) {
+function printQuantityTableRows(row, index = 0) {
   const done = Boolean(row.done);
+  const zebraClass = index % 2 ? " is-zebra" : "";
+  const name = row.name || "Unnamed item";
   return `
-    <tr class="packing-print-data-row ${done ? "is-packed" : ""}">
-      <td class="packing-print-name-cell">${escapeHtml(printUpperLabel(row.name || "Unnamed item"))}</td>
-      <td class="packing-print-date-cell">${escapeHtml(row.date || "")}</td>
-      <td class="packing-print-number">${escapeHtml(printTableValue(row.needed))}</td>
-      <td class="packing-print-check-cell"><span class="packing-print-check"></span></td>
-      <td class="packing-print-number">${escapeHtml(printTableValue(row.packed))}</td>
-      <td class="packing-print-check-cell"><span class="packing-print-check"></span></td>
-      <td class="packing-print-number">${escapeHtml(printTableValue(row.left))}</td>
-      <td class="packing-print-check-cell"><span class="packing-print-check"></span></td>
-      <td class="packing-print-initial-cell">${escapeHtml(row.initial || "")}</td>
+    <tr class="packing-print-data-row${done ? " is-packed" : ""}${zebraClass}">
+      <td class="packing-print-name-cell">${escapeHtml(printUpperLabel(name))}</td>
+      <td class="packing-print-number">${escapeHtml(printTableValue(row.needed))}<span class="packing-print-cell-label">need</span></td>
+      <td class="packing-print-mark-cell"><span class="packing-print-cell-label">ok</span></td>
+      <td class="packing-print-number">${escapeHtml(printTableValue(row.packed))}<span class="packing-print-cell-label">packed</span></td>
+      <td class="packing-print-mark-cell"><span class="packing-print-cell-label">ok</span></td>
+      <td class="packing-print-number">${escapeHtml(printTableValue(row.left))}<span class="packing-print-cell-label">left</span></td>
+      <td class="packing-print-mark-cell"><span class="packing-print-cell-label">ok</span></td>
+      <td class="packing-print-initial-cell"><span class="packing-print-cell-label">initial</span></td>
     </tr>
-    <tr class="packing-print-notes-row">
-      <td colspan="9">${escapeHtml(row.notes || "")}</td>
+    <tr class="packing-print-notes-row${zebraClass}">
+      <td colspan="8">${escapeHtml(row.notes || "")}<span class="packing-print-notes-meta">{${escapeHtml(clean(name).toLowerCase())}} + notes + date</span></td>
     </tr>
   `;
 }
@@ -564,10 +555,10 @@ function printHorseItemTableRowData(row) {
 function printEmptyTableRowHtml() {
   return `
     <tr class="packing-print-data-row">
-      <td class="packing-print-name-cell" colspan="9">NO ROWS</td>
+      <td class="packing-print-name-cell" colspan="8">NO ROWS</td>
     </tr>
     <tr class="packing-print-notes-row">
-      <td colspan="9"></td>
+      <td colspan="8"></td>
     </tr>
   `;
 }
@@ -576,12 +567,7 @@ function printHorsesPageHtml(report) {
   const rows = activePrintHorses(report);
   const members = horseMemberRows(report);
   const percent = progressPercent(members.filter(isHorseMemberPacked).length, members.length);
-  return `
-    <section class="packing-print-page">
-      ${printGlobalHeaderHtml(report, "Horses", percent)}
-      ${printHorseTableHtml("Horses", rows)}
-    </section>
-  `;
+  return printPageContents(report, "Horses", percent, [printHorseTableHtml("Horses", rows)]);
 }
 
 function printHorsePackingPageHtml(report, horseId) {
@@ -593,7 +579,7 @@ function printHorsePackingPageHtml(report, horseId) {
     title: `${printHorseName(horse)} Items`,
     rows
   };
-  return printQuantitySectionPages(report, printHorseName(horse), section, percent, printHorseItemTableRowData).join("");
+  return printPageContents(report, printHorseName(horse), percent, printQuantitySectionPageContents(section, printHorseItemTableRowData));
 }
 
 function printHomeModulePageHtml(report, target) {
@@ -605,66 +591,31 @@ function printHomeModulePageHtml(report, target) {
     rows: (module.tasks || []).filter((task) => (task.packListIds || []).includes(list.id))
   })).filter((section) => section.rows.length);
   const percent = progressPercent(numberField(module.done), numberField(module.rows));
-  const pages = sections.flatMap((section) => printTaskSectionPages(report, module.label, section, percent));
-  return pages.length ? pages.join("") : printEmptyPageHtml(report, module.label, percent, "No rows");
+  const pages = sections.flatMap(printTaskSectionPageContents);
+  return pages.length ? printPageContents(report, module.label, percent, pages) : printEmptyPageHtml(report, module.label, percent, "No rows");
 }
 
-function printTaskSectionPages(report, title, section, percent) {
+function printTaskSectionPageContents(section) {
   const rows = Array.isArray(section.rows) ? section.rows : [];
-  const chunks = chunkRows(rows, PRINT_ROWS_PER_PAGE);
-  if (!chunks.length) return [printEmptyPageHtml(report, title, percent, "No rows")];
-  return chunks.map((chunk, index) => `
-    <section class="packing-print-page">
-      ${printGlobalHeaderHtml(report, title, percent)}
-      ${printTaskTableHtml(section.title, chunk, {
-        continued: index > 0,
-        pageNumber: index + 1,
-        pageCount: chunks.length
-      })}
-    </section>
-  `);
+  const chunks = chunkRows(rows, PRINT_RECORDS_PER_PAGE);
+  if (!chunks.length) return [printEmptyPrintSectionHtml("No rows")];
+  return chunks.map((chunk, index) => printQuantityTableHtml(section.title, chunk, {
+    continued: index > 0,
+    pageNumber: index + 1,
+    pageCount: chunks.length,
+    rowMapper: printTaskRowData
+  }));
 }
 
-function printTaskTableHtml(title, rows, options = {}) {
-  const continued = Boolean(options.continued);
-  return `
-    <section class="packing-print-list">
-      <div class="packing-print-list-head">
-        <h2>${escapeHtml(printUpperLabel(title))}</h2>
-        ${continued ? `<p>${escapeHtml(`CONTINUED ${options.pageNumber || ""} OF ${options.pageCount || ""}`.trim())}</p>` : ""}
-      </div>
-      <table class="packing-print-table">
-        ${printQuantityTableColgroupHtml()}
-        <thead>
-          <tr>
-            <th scope="col">NAME</th>
-            <th scope="col">DATE</th>
-            <th scope="col">TASK</th>
-            <th scope="col"></th>
-            <th scope="col">DONE</th>
-            <th scope="col"></th>
-            <th scope="col">STATUS</th>
-            <th scope="col"></th>
-            <th scope="col">INITIAL</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows.length ? rows.map(printTaskTableRows).join("") : printEmptyTableRowHtml()}
-        </tbody>
-      </table>
-    </section>
-  `;
-}
-
-function printTaskTableRows(task) {
+function printTaskRowData(task) {
   const done = task.taskState === "done";
-  return printQuantityTableRows({
+  return {
     name: task.name || "Unnamed task",
     needed: done ? "" : "TASK",
     packed: done ? "DONE" : "",
     left: done ? "" : "OPEN",
     done
-  });
+  };
 }
 
 function printHorseTableHtml(title, rows) {
@@ -749,10 +700,19 @@ function printTableValue(value) {
 function printGlobalHeaderHtml(report, title, percent) {
   return `
     <header class="packing-print-head">
-      <h1>${escapeHtml(displayLabel(title))}</h1>
+      <h1>${escapeHtml(printPageTitle(title))}</h1>
       <p>${escapeHtml(printStatusLine(report, percent))}</p>
     </header>
   `;
+}
+
+function printFooterHtml(pageNumber) {
+  return `<footer class="packing-print-footer">printed: page ${escapeHtml(pageNumber)} + ${escapeHtml(printDateDisplay())}</footer>`;
+}
+
+function printPageTitle(title) {
+  const label = displayLabel(title).replace(/\s+Packing\s+List$/i, "").trim();
+  return /\sList$/i.test(label) ? label : `${label} List`;
 }
 
 function printEmptyPrintSectionHtml(label) {
@@ -760,9 +720,13 @@ function printEmptyPrintSectionHtml(label) {
 }
 
 function printStatusLine(report, percent) {
-  const wave = displayLabel(report.wave?.wave || "wave_one");
-  const days = report.wave?.daysTill ? `${quantityDisplay(report.wave.daysTill)} days remaining` : "days remaining not set";
-  return `${wave} | ${days} | ${percent}% packed | Printed: ${printDateDisplay()}`;
+  return `${printWaveKey(report)} | printed ${printDateDisplay()}`;
+}
+
+function printWaveKey(report) {
+  return clean(report.wave?.wave || "wave_one")
+    .toLowerCase()
+    .replace(/[_\s]+/g, "-");
 }
 
 function printDateDisplay() {
