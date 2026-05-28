@@ -2008,6 +2008,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("class_groupxclasses_id", row.class_groupxclasses_id);
   maybeSet("ring_number", row.ring_number);
   maybeSet("estimated_start_time", row.estimated_start_time);
+  maybeSet("schedule_starttime", row.schedule_starttime);
   maybeSet("estimated_end_time", row.estimated_end_time);
   maybeSet("total_trips", row.total_trips);
   maybeSet("completed_trips", row.completed_trips);

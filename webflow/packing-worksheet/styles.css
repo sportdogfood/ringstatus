@@ -3760,3 +3760,61 @@ body {
     padding-right: 0;
   }
 }
+
+/* WEC packing shell constraints. These stay app-scoped because shared lp-* rules also serve HPS. */
+#packing-app {
+  width: 100% !important;
+  max-width: 840px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  overflow-x: hidden;
+}
+
+#packing-app .lp-shell {
+  width: 100% !important;
+  max-width: 840px !important;
+  overflow-x: hidden;
+}
+
+#packing-app .packing-header-status {
+  margin: 0;
+  font-size: clamp(15px, 1.8vw, 20px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+#packing-app .packing-home-button {
+  display: inline-flex;
+  position: fixed;
+  top: 10px;
+  right: max(10px, calc((100vw - 840px) / 2 + 10px));
+  z-index: 2147483000;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+@media (min-width: 641px) {
+  #packing-app .lp-tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(58px, auto));
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 640px) {
+  #packing-app .lp-tabs {
+    grid-template-columns: none;
+    grid-template-rows: minmax(58px, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 200px;
+    overflow-x: auto;
+  }
+
+  #packing-app .packing-header-status {
+    font-size: 15px;
+  }
+}

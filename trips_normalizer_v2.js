@@ -193,6 +193,7 @@ function normalizePeopleTripRow(raw, ownerPid) {
     rider_id: numOrNull(raw?.rider_id ?? raw?.riderId) ?? undefined,
     placing: numOrNull(raw?.placing) ?? undefined,
     order_of_go: numOrNull(raw?.order_of_go ?? raw?.orderOfGo) ?? undefined,
+    schedule_starttime: strOrNull(raw?.schedule_starttime ?? raw?.scheduleStarttime ?? raw?.schedule_start_time) ?? undefined,
     status: strOrNull(raw?.status ?? raw?.class_status ?? raw?.classStatus) ?? undefined,
     ...buildSglTokenFields(raw?._),
   };
@@ -249,6 +250,7 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
         rider_id: trip.rider_id,
         placing: trip.placing,
         order_of_go: trip.order_of_go,
+        schedule_starttime: trip.schedule_starttime,
         status: trip.status || schedule.status,
         sgl_token_raw: trip.sgl_token_raw,
         sgl_token_prefix: trip.sgl_token_prefix,

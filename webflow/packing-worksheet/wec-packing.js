@@ -541,7 +541,7 @@
         <header class="lp-header">
           <div class="lp-header-copy">
             <h1>WEC Ocala Packing</h1>
-            <p>${escapeHtml(statusLine())}</p>
+            <p class="packing-header-status">${escapeHtml(statusLine())}</p>
           </div>
           <div class="lp-header-tools">
             <button class="lp-filter-toggle packing-home-button" type="button" data-tab="overview">HOME</button>
@@ -646,7 +646,7 @@
   function overviewHtml() {
     if (state.activeHomeModule) return homeModuleHtml(state.activeHomeModule);
     const searchKey = "overview";
-    const summaries = filterRows([...tabGroups(), ...homeModuleSummaries()], searchKey, overviewSearchText);
+    const summaries = filterRows([...homeModuleSummaries(), ...tabGroups()], searchKey, overviewSearchText);
     const rows = summaries.map((summary) => {
       const percent = progressPercent(summary.done, summary.rows);
       const triggerAttr = summary.homeModule
