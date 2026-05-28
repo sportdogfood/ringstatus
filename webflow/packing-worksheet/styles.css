@@ -3784,6 +3784,20 @@ body {
   letter-spacing: -0.02em;
 }
 
+#packing-app .lp-header-copy {
+  flex: 1 1 100%;
+  width: 100%;
+  max-width: 100%;
+}
+
+#packing-app .lp-header-tools {
+  flex: 0 0 0;
+  width: 0;
+  max-width: 0;
+  margin: 0;
+  overflow: visible;
+}
+
 #packing-app .packing-home-button {
   display: inline-flex;
   position: fixed;

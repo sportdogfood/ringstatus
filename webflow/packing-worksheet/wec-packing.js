@@ -1049,20 +1049,32 @@
     if (options.target) printUrl.searchParams.set("target", options.target);
     if (options.horseId) printUrl.searchParams.set("horseId", options.horseId);
 
-    const pdfUrl = new URL(pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/");
-    pdfUrl.searchParams.set("url", printUrl.toString());
-    pdfUrl.searchParams.set("filename", options.filename || "wec-packing.pdf");
-
-    state.saveMessage = "Creating PDF...";
-    render();
-    const opened = window.open(pdfUrl.toString(), "_blank");
-    if (opened) {
-      state.saveMessage = "PDF opened.";
+    const opened = window.open("about:blank", "_blank");
+    if (!opened) {
+      state.saveMessage = "Popup blocked. Allow popups and press Print again.";
       render();
       return;
     }
-    state.saveMessage = "Popup blocked. Allow popups and press Print again.";
+
+    const targetUrl = isLocalPrintUrl(printUrl)
+      ? printUrl
+      : packingPdfWorkerUrl(printUrl, options.filename || "wec-packing.pdf");
+    state.saveMessage = isLocalPrintUrl(printUrl) ? "Opening print preview..." : "Creating PDF...";
     render();
+    opened.location.href = targetUrl.toString();
+    state.saveMessage = isLocalPrintUrl(printUrl) ? "Print preview opened." : "PDF opened.";
+    render();
+  }
+
+  function packingPdfWorkerUrl(printUrl, filename) {
+    const pdfUrl = new URL(pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/");
+    pdfUrl.searchParams.set("url", printUrl.toString());
+    pdfUrl.searchParams.set("filename", filename);
+    return pdfUrl;
+  }
+
+  function isLocalPrintUrl(url) {
+    return ["127.0.0.1", "localhost", "::1"].includes(url.hostname);
   }
 
   function printBodyHtml(target) {
