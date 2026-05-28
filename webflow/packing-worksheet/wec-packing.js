@@ -1046,6 +1046,7 @@
     addContextParams(printUrl);
     if (options.target) printUrl.searchParams.set("target", options.target);
     if (options.horseId) printUrl.searchParams.set("horseId", options.horseId);
+    const pdfSourceUrl = pdfWorkerSafePrintUrl(printUrl);
 
     const opened = window.open("about:blank", "_blank");
     if (!opened) {
@@ -1054,14 +1055,20 @@
       return;
     }
 
-    const targetUrl = isLocalPrintUrl(printUrl)
-      ? printUrl
-      : packingPdfWorkerUrl(printUrl, options.filename || "wec-packing.pdf");
-    state.saveMessage = isLocalPrintUrl(printUrl) ? "Opening print preview..." : "Creating PDF...";
+    const targetUrl = isLocalPrintUrl(pdfSourceUrl)
+      ? pdfSourceUrl
+      : packingPdfWorkerUrl(pdfSourceUrl, options.filename || "wec-packing.pdf");
+    state.saveMessage = isLocalPrintUrl(pdfSourceUrl) ? "Opening print preview..." : "Creating PDF...";
     render();
     opened.location.href = targetUrl.toString();
-    state.saveMessage = isLocalPrintUrl(printUrl) ? "Print preview opened." : "PDF opened.";
+    state.saveMessage = isLocalPrintUrl(pdfSourceUrl) ? "Print preview opened." : "PDF opened.";
     render();
+  }
+
+  function pdfWorkerSafePrintUrl(printUrl) {
+    const safeUrl = new URL(printUrl.toString());
+    if (safeUrl.hostname === "ringstatus.webflow.io") safeUrl.hostname = "ringstatus.com";
+    return safeUrl;
   }
 
   function packingPdfWorkerUrl(printUrl, filename) {

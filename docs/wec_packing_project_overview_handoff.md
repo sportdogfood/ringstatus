@@ -190,7 +190,7 @@ Current embed shape:
     stateUrl: "https://ringstatus.webflow.io/test/wec-packing/state",
     actionUrl: "https://ringstatus.webflow.io/test/wec-packing/action",
     healthUrl: "https://ringstatus.webflow.io/test/wec-packing/health",
-    printUrl: "https://ringstatus.webflow.io/test/wec-packing/print",
+    printUrl: "https://ringstatus.com/test/wec-packing/print",
     pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
     showId: "",
     packWaveId: "",
@@ -600,10 +600,13 @@ Printing intent:
 - horse print should print one horse's assigned packing list
 - purchase onsite should print as a task list
 - output should include print date
-- many lists should fit on 8.5 x 11
-- many sections should split into two columns
-- dense horse-specific sections may require two pages
-- scratch boxes may be added to printed rows
+- print through the Cloudflare PDF worker for iPhone/mobile reliability
+- print one section over however many pages it needs, then print the next section
+- do not pack unrelated sections into two columns
+- each printed page must include the global header
+- if a section continues onto another page, repeat the section header and mark it continued
+- row output must be table-based with aligned columns
+- do not print inline metric strings like `Need: 1 Packed: 0 Left: 1`
 
 Known conflict:
 
@@ -613,17 +616,27 @@ Known local limitation:
 
 The Cloudflare PDF worker cannot fetch `127.0.0.1`. Local print worker testing requires deployed/externally reachable URLs or a separate local PDF path.
 
-Open print refinements:
-
-- remove unnecessary subline metrics under print rows where requested
-- row format should be closer to:
+Approved packing print row format:
 
 ```text
-name | need: 5 packed: 4 left: 1 | scratch box
+Header
+Section header
+NAME | DATE | NEEDED | [ ] | PACKED | [ ] | LEFT | [ ] | INITIAL
+record row
+notes row
 ```
 
-- horse-specific print sections may need three-column horse rows and possible line-through when packed
-- shrink-to-fit logic must prevent awkward page spillover
+Print row rules:
+
+- each record prints two rows
+- row one is 40% name and 60% meta columns
+- row two is 100% notes
+- all name columns align
+- all meta columns align
+- all inner meta columns align
+- all meta columns are the same width except for name and notes
+- row heights are fixed enough to fit the page width; page spill is allowed
+- quantity values must be whole numbers, never decimals
 
 ## Known Potential Conflicts
 
@@ -992,4 +1005,3 @@ Still needs live verification:
 - production CDN commit pin
 - full Airtable write and event proof
 - mobile PDF path through Cloudflare worker
-

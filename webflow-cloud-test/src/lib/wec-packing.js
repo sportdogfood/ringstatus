@@ -425,72 +425,161 @@ function printItemBelongsToList(item, listId) {
   return ids.includes(listId) || item.section === listId || (!ids.length && !item.section && listId === "unlisted");
 }
 
+const PRINT_ROWS_PER_PAGE = 20;
+
 function printPackingPageHtml(report, title, sections) {
   const rows = sections.flatMap((section) => section.rows);
   const percent = progressPercent(rows.filter(isSatisfied).length, rows.length);
-  const chunks = printSectionChunks(sections);
-  return chunks.map((chunk) => printPackingPageChunkHtml(report, title, chunk, percent)).join("");
+  const pages = sections.flatMap((section) => printQuantitySectionPages(report, title, section, percent, printItemTableRowData));
+  return pages.length ? pages.join("") : printEmptyPageHtml(report, title, percent, "No rows");
 }
 
-function printPackingPageChunkHtml(report, title, sections, percent) {
+function printEmptyPageHtml(report, title, percent, label) {
   return `
     <section class="packing-print-page">
-      <header class="packing-print-head">
-        <h1>${escapeHtml(displayLabel(title))}</h1>
-        <p>${escapeHtml(printStatusLine(report, percent))}</p>
-      </header>
-      <div class="packing-print-columns">
-        ${sections.length ? sections.map(printListColumnHtml).join("") : printEmptyPrintSectionHtml("No rows")}
-      </div>
+      ${printGlobalHeaderHtml(report, title, percent)}
+      ${printEmptyPrintSectionHtml(label)}
     </section>
   `;
 }
 
-function printListColumnHtml(section) {
+function printQuantitySectionPages(report, title, section, percent, rowMapper) {
+  const rows = Array.isArray(section.rows) ? section.rows : [];
+  const chunks = chunkRows(rows, PRINT_ROWS_PER_PAGE);
+  if (!chunks.length) {
+    return [`
+      <section class="packing-print-page">
+        ${printGlobalHeaderHtml(report, title, percent)}
+        ${printQuantityTableHtml(section.title, [], { continued: false, rowMapper })}
+      </section>
+    `];
+  }
+  return chunks.map((chunk, index) => `
+    <section class="packing-print-page">
+      ${printGlobalHeaderHtml(report, title, percent)}
+      ${printQuantityTableHtml(section.title, chunk, {
+        continued: index > 0,
+        pageNumber: index + 1,
+        pageCount: chunks.length,
+        rowMapper
+      })}
+    </section>
+  `);
+}
+
+function printQuantityTableHtml(title, rows, options = {}) {
+  const continued = Boolean(options.continued);
+  const rowMapper = options.rowMapper || ((row) => row);
   return `
-    <section class="packing-print-list ${printDensityClass(section.rows)}">
-      <h2>${escapeHtml(section.title)}</h2>
-      ${section.rows.length ? section.rows.map(printItemRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+    <section class="packing-print-list">
+      <div class="packing-print-list-head">
+        <h2>${escapeHtml(printUpperLabel(title))}</h2>
+        ${continued ? `<p>${escapeHtml(`CONTINUED ${options.pageNumber || ""} OF ${options.pageCount || ""}`.trim())}</p>` : ""}
+      </div>
+      <table class="packing-print-table">
+        ${printQuantityTableColgroupHtml()}
+        <thead>
+          <tr>
+            <th scope="col">NAME</th>
+            <th scope="col">DATE</th>
+            <th scope="col">NEEDED</th>
+            <th scope="col"></th>
+            <th scope="col">PACKED</th>
+            <th scope="col"></th>
+            <th scope="col">LEFT</th>
+            <th scope="col"></th>
+            <th scope="col">INITIAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.length ? rows.map((row) => printQuantityTableRows(rowMapper(row))).join("") : printEmptyTableRowHtml()}
+        </tbody>
+      </table>
     </section>
   `;
 }
 
-function printItemRowHtml(item) {
-  const packed = isSatisfied(item);
+function printQuantityTableColgroupHtml() {
   return `
-    <div class="packing-print-item ${packed ? "is-packed" : ""}">
-      <div class="packing-print-item-main">
-        <strong class="packing-print-item-name">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</strong>
-      </div>
-      <span class="packing-print-metrics">${printQuantityMetricsHtml(item.needed, item.packed, item.left)}</span>
-      <span class="packing-print-scratch" aria-hidden="true"></span>
-    </div>
+    <colgroup>
+      <col style="width:40%">
+      <col style="width:7.5%">
+      <col style="width:7.5%">
+      <col style="width:7.5%">
+      <col style="width:7.5%">
+      <col style="width:7.5%">
+      <col style="width:7.5%">
+      <col style="width:7.5%">
+      <col style="width:7.5%">
+    </colgroup>
   `;
 }
 
-function printQuantityMetricsHtml(needed, packed, left) {
-  return [
-    `Need: ${quantityDisplay(needed)}`,
-    `Packed: ${quantityDisplay(packed)}`,
-    `Left: ${quantityDisplay(left)}`
-  ].map(escapeHtml).join(" ");
+function printQuantityTableRows(row) {
+  const done = Boolean(row.done);
+  return `
+    <tr class="packing-print-data-row ${done ? "is-packed" : ""}">
+      <td class="packing-print-name-cell">${escapeHtml(printUpperLabel(row.name || "Unnamed item"))}</td>
+      <td class="packing-print-date-cell">${escapeHtml(row.date || "")}</td>
+      <td class="packing-print-number">${escapeHtml(printTableValue(row.needed))}</td>
+      <td class="packing-print-check-cell"><span class="packing-print-check"></span></td>
+      <td class="packing-print-number">${escapeHtml(printTableValue(row.packed))}</td>
+      <td class="packing-print-check-cell"><span class="packing-print-check"></span></td>
+      <td class="packing-print-number">${escapeHtml(printTableValue(row.left))}</td>
+      <td class="packing-print-check-cell"><span class="packing-print-check"></span></td>
+      <td class="packing-print-initial-cell">${escapeHtml(row.initial || "")}</td>
+    </tr>
+    <tr class="packing-print-notes-row">
+      <td colspan="9">${escapeHtml(row.notes || "")}</td>
+    </tr>
+  `;
+}
+
+function printItemTableRowData(item) {
+  const needed = numberField(item?.needed);
+  const packed = numberField(item?.packed);
+  const left = Math.max(0, numberField(item?.left || needed - packed));
+  return {
+    name: item?.name || "Unnamed item",
+    needed,
+    packed,
+    left,
+    done: isSatisfied(item)
+  };
+}
+
+function printHorseItemTableRowData(row) {
+  const needed = numberField(row.member?.needed);
+  const packed = numberField(row.member?.packed);
+  const left = Math.max(0, needed - packed);
+  return {
+    name: row.item?.name || "Unnamed item",
+    needed,
+    packed,
+    left,
+    done: isHorseMemberPacked(row.member)
+  };
+}
+
+function printEmptyTableRowHtml() {
+  return `
+    <tr class="packing-print-data-row">
+      <td class="packing-print-name-cell" colspan="9">NO ROWS</td>
+    </tr>
+    <tr class="packing-print-notes-row">
+      <td colspan="9"></td>
+    </tr>
+  `;
 }
 
 function printHorsesPageHtml(report) {
   const rows = activePrintHorses(report);
-  const columns = splitRows(rows);
   const members = horseMemberRows(report);
   const percent = progressPercent(members.filter(isHorseMemberPacked).length, members.length);
   return `
     <section class="packing-print-page">
-      <header class="packing-print-head">
-        <h1>Horses</h1>
-        <p>${escapeHtml(printStatusLine(report, percent))}</p>
-      </header>
-      <div class="packing-print-columns">
-        ${printHorseColumnHtml("Horses", columns[0])}
-        ${printHorseColumnHtml("Horses", columns[1])}
-      </div>
+      ${printGlobalHeaderHtml(report, "Horses", percent)}
+      ${printHorseTableHtml("Horses", rows)}
     </section>
   `;
 }
@@ -499,20 +588,12 @@ function printHorsePackingPageHtml(report, horseId) {
   const horse = (report.horses || []).find((row) => row.id === horseId);
   if (!horse) return printEmptyPrintSectionHtml("No horse");
   const rows = horseItemRows(report, horse);
-  const columns = splitRows(rows);
   const percent = progressPercent(rows.filter((row) => isHorseMemberPacked(row.member)).length, rows.length);
-  return `
-    <section class="packing-print-page">
-      <header class="packing-print-head">
-        <h1>${escapeHtml(printHorseName(horse))}</h1>
-        <p>${escapeHtml(printStatusLine(report, percent))}</p>
-      </header>
-      <div class="packing-print-columns">
-        ${printHorsePackingColumnHtml("Items", columns[0])}
-        ${printHorsePackingColumnHtml("Items", columns[1])}
-      </div>
-    </section>
-  `;
+  const section = {
+    title: `${printHorseName(horse)} Items`,
+    rows
+  };
+  return printQuantitySectionPages(report, printHorseName(horse), section, percent, printHorseItemTableRowData).join("");
 }
 
 function printHomeModulePageHtml(report, target) {
@@ -524,79 +605,83 @@ function printHomeModulePageHtml(report, target) {
     rows: (module.tasks || []).filter((task) => (task.packListIds || []).includes(list.id))
   })).filter((section) => section.rows.length);
   const percent = progressPercent(numberField(module.done), numberField(module.rows));
-  return printHomeTaskPageChunkHtml(report, module.label, sections, percent);
+  const pages = sections.flatMap((section) => printTaskSectionPages(report, module.label, section, percent));
+  return pages.length ? pages.join("") : printEmptyPageHtml(report, module.label, percent, "No rows");
 }
 
-function printHomeTaskPageChunkHtml(report, title, sections, percent) {
-  return `
+function printTaskSectionPages(report, title, section, percent) {
+  const rows = Array.isArray(section.rows) ? section.rows : [];
+  const chunks = chunkRows(rows, PRINT_ROWS_PER_PAGE);
+  if (!chunks.length) return [printEmptyPageHtml(report, title, percent, "No rows")];
+  return chunks.map((chunk, index) => `
     <section class="packing-print-page">
-      <header class="packing-print-head">
-        <h1>${escapeHtml(displayLabel(title))}</h1>
-        <p>${escapeHtml(printStatusLine(report, percent))}</p>
-      </header>
-      <div class="packing-print-columns">
-        ${sections.length ? sections.map(printHomeTaskColumnHtml).join("") : printEmptyPrintSectionHtml("No rows")}
-      </div>
+      ${printGlobalHeaderHtml(report, title, percent)}
+      ${printTaskTableHtml(section.title, chunk, {
+        continued: index > 0,
+        pageNumber: index + 1,
+        pageCount: chunks.length
+      })}
     </section>
-  `;
+  `);
 }
 
-function printHomeTaskColumnHtml(section) {
+function printTaskTableHtml(title, rows, options = {}) {
+  const continued = Boolean(options.continued);
   return `
-    <section class="packing-print-list ${printDensityClass(section.rows)}">
-      <h2>${escapeHtml(section.title)}</h2>
-      ${section.rows.length ? section.rows.map(printHomeTaskRowHtml).join("") : printEmptyPrintSectionHtml("No rows")}
+    <section class="packing-print-list">
+      <div class="packing-print-list-head">
+        <h2>${escapeHtml(printUpperLabel(title))}</h2>
+        ${continued ? `<p>${escapeHtml(`CONTINUED ${options.pageNumber || ""} OF ${options.pageCount || ""}`.trim())}</p>` : ""}
+      </div>
+      <table class="packing-print-table">
+        ${printQuantityTableColgroupHtml()}
+        <thead>
+          <tr>
+            <th scope="col">NAME</th>
+            <th scope="col">DATE</th>
+            <th scope="col">TASK</th>
+            <th scope="col"></th>
+            <th scope="col">DONE</th>
+            <th scope="col"></th>
+            <th scope="col">STATUS</th>
+            <th scope="col"></th>
+            <th scope="col">INITIAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.length ? rows.map(printTaskTableRows).join("") : printEmptyTableRowHtml()}
+        </tbody>
+      </table>
     </section>
   `;
 }
 
-function printHomeTaskRowHtml(task) {
+function printTaskTableRows(task) {
   const done = task.taskState === "done";
+  return printQuantityTableRows({
+    name: task.name || "Unnamed task",
+    needed: done ? "" : "TASK",
+    packed: done ? "DONE" : "",
+    left: done ? "" : "OPEN",
+    done
+  });
+}
+
+function printHorseTableHtml(title, rows) {
   return `
-    <div class="packing-print-item ${done ? "is-packed" : ""}">
-      <div class="packing-print-item-main">
-        <strong class="packing-print-item-name">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</strong>
+    <section class="packing-print-list">
+      <div class="packing-print-list-head">
+        <h2>${escapeHtml(printUpperLabel(title))}</h2>
       </div>
-      <span class="packing-print-metrics">${done ? "Done" : "Task"}</span>
-      <span class="packing-print-scratch" aria-hidden="true"></span>
-    </div>
-  `;
-}
-
-function printHorsePackingColumnHtml(title, rows) {
-  return `
-    <section class="packing-print-list ${printDensityClass(rows)}">
-      <h2>${escapeHtml(title)}</h2>
-      ${rows.length ? rows.map(printHorsePackingItemHtml).join("") : printEmptyPrintSectionHtml("No rows")}
-    </section>
-  `;
-}
-
-function printHorsePackingItemHtml(row) {
-  const needed = numberField(row.member?.needed);
-  const packed = numberField(row.member?.packed);
-  const left = Math.max(0, needed - packed);
-  const done = isHorseMemberPacked(row.member);
-  return `
-    <div class="packing-print-item ${done ? "is-packed" : ""}">
-      <div class="packing-print-item-main">
-        <strong class="packing-print-item-name">${escapeHtml(displayLabel(row.item?.name || "Unnamed item"))}</strong>
-      </div>
-      <span class="packing-print-metrics">${printQuantityMetricsHtml(needed, packed, left)}</span>
-      <span class="packing-print-scratch" aria-hidden="true"></span>
-    </div>
-  `;
-}
-
-function printHorseColumnHtml(title, rows) {
-  return `
-    <section class="packing-print-list ${printDensityClass(rows)}">
-      <h2>${escapeHtml(title)}</h2>
-      ${rows.length ? rows.map((horse) => `
-        <div class="packing-print-horse">
-          <strong>${escapeHtml(printHorseName(horse))}</strong>
-        </div>
-      `).join("") : printEmptyPrintSectionHtml("No horses")}
+      <table class="packing-print-horse-table">
+        <tbody>
+          ${rows.length ? rows.map((horse) => `
+            <tr>
+              <td>${escapeHtml(printUpperLabel(printHorseName(horse)))}</td>
+            </tr>
+          `).join("") : `<tr><td>NO HORSES</td></tr>`}
+        </tbody>
+      </table>
     </section>
   `;
 }
@@ -642,23 +727,32 @@ function printHorseName(horse) {
   return horse?.name || horse?.barnName || horse?.showName || "Unnamed horse";
 }
 
-function splitRows(rows) {
-  const middle = Math.ceil(rows.length / 2);
-  return [rows.slice(0, middle), rows.slice(middle)];
-}
-
-function printSectionChunks(sections) {
+function chunkRows(rows, size) {
   const chunks = [];
-  for (let index = 0; index < sections.length; index += 2) {
-    chunks.push(sections.slice(index, index + 2));
+  for (let index = 0; index < rows.length; index += size) {
+    chunks.push(rows.slice(index, index + size));
   }
-  return chunks.length ? chunks : [[]];
+  return chunks;
 }
 
-function printDensityClass(rows = []) {
-  if (rows.length >= 22) return "is-ultra-dense";
-  if (rows.length >= 14) return "is-dense";
-  return "";
+function printUpperLabel(value) {
+  return displayLabel(value).toUpperCase();
+}
+
+function printTableValue(value) {
+  const text = clean(value);
+  if (!text) return "";
+  const number = Number(text);
+  return Number.isFinite(number) ? quantityDisplay(number) : printUpperLabel(text);
+}
+
+function printGlobalHeaderHtml(report, title, percent) {
+  return `
+    <header class="packing-print-head">
+      <h1>${escapeHtml(displayLabel(title))}</h1>
+      <p>${escapeHtml(printStatusLine(report, percent))}</p>
+    </header>
+  `;
 }
 
 function printEmptyPrintSectionHtml(label) {
@@ -730,104 +824,120 @@ function printStyles() {
       text-align: right;
       text-transform: uppercase;
     }
-    .packing-print-columns {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.16in;
-      align-items: start;
-    }
     .packing-print-list {
       border: 1px solid #d9d9d9;
       border-radius: 8px;
       overflow: hidden;
-      break-inside: avoid;
-      page-break-inside: avoid;
       background: #ffffff;
     }
-    .packing-print-list h2 {
-      margin: 0;
-      padding: 8px 10px;
+    .packing-print-list-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.12in;
+      min-height: 0.28in;
+      padding: 0 0.1in;
       background: #f0f0f0;
       border-bottom: 1px solid #d9d9d9;
+    }
+    .packing-print-list-head h2 {
+      margin: 0;
       font-size: 12px;
       font-weight: 600;
       line-height: 1;
       text-transform: uppercase;
     }
-    .packing-print-item,
-    .packing-print-horse {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto 0.42in;
-      gap: 8px;
-      align-items: center;
-      padding: 7px 10px;
-      border-bottom: 1px solid #eeeeee;
-    }
-    .packing-print-horse {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .packing-print-item:last-child,
-    .packing-print-horse:last-child { border-bottom: 0; }
-    .packing-print-item-main {
-      display: grid;
-      gap: 3px;
-      min-width: 0;
-    }
-    .packing-print-item strong,
-    .packing-print-horse strong {
-      font-size: 11px;
+    .packing-print-list-head p {
+      margin: 0;
+      color: #333333;
+      font-size: 8px;
       font-weight: 600;
       line-height: 1;
       text-transform: uppercase;
     }
-    .packing-print-item.is-packed .packing-print-item-name {
+    .packing-print-table,
+    .packing-print-horse-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .packing-print-table th {
+      height: 0.22in;
+      padding: 0 0.05in;
+      border-bottom: 1px solid #d9d9d9;
+      color: #333333;
+      font-size: 7px;
+      font-weight: 600;
+      line-height: 1;
+      text-align: center;
+      text-transform: uppercase;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .packing-print-table th:first-child {
+      padding-left: 0.1in;
+      text-align: left;
+    }
+    .packing-print-data-row td {
+      height: 0.3in;
+      padding: 0 0.05in;
+      border-bottom: 1px solid #eeeeee;
+      font-size: 9px;
+      font-weight: 600;
+      line-height: 1;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+    .packing-print-name-cell {
+      padding-left: 0.1in !important;
+      text-align: left;
+    }
+    .packing-print-data-row.is-packed .packing-print-name-cell {
       opacity: 0.6;
       text-decoration: line-through;
       text-decoration-thickness: 1px;
     }
-    .packing-print-metrics {
-      color: #333333;
-      font-size: 9px;
-      font-weight: 600;
-      line-height: 1.1;
-      text-align: right;
-      white-space: nowrap;
+    .packing-print-date-cell,
+    .packing-print-number,
+    .packing-print-initial-cell {
+      text-align: center;
     }
-    .packing-print-scratch {
-      display: block;
-      width: 0.42in;
-      height: 0.2in;
+    .packing-print-check-cell {
+      text-align: center;
+    }
+    .packing-print-check {
+      display: inline-block;
+      width: 0.36in;
+      height: 0.18in;
       border: 1px solid #cfcfcf;
       border-radius: 3px;
       background: #ffffff;
+      vertical-align: middle;
     }
-    .packing-print-list.is-dense h2 {
-      padding: 6px 8px;
-      font-size: 11px;
-    }
-    .packing-print-list.is-dense .packing-print-item,
-    .packing-print-list.is-dense .packing-print-horse {
-      padding: 5px 8px;
-      gap: 6px;
-    }
-    .packing-print-list.is-ultra-dense h2 {
-      padding: 5px 7px;
-      font-size: 10px;
-    }
-    .packing-print-list.is-ultra-dense .packing-print-item,
-    .packing-print-list.is-ultra-dense .packing-print-horse {
-      padding: 3px 7px;
-      gap: 5px;
-    }
-    .packing-print-list.is-ultra-dense .packing-print-item strong,
-    .packing-print-list.is-ultra-dense .packing-print-horse strong {
-      font-size: 9px;
-    }
-    .packing-print-list.is-ultra-dense .packing-print-metrics {
+    .packing-print-notes-row td {
+      height: 0.18in;
+      padding: 0 0.1in;
+      border-bottom: 1px solid #eeeeee;
+      color: #333333;
       font-size: 7px;
+      font-weight: 400;
+      line-height: 1;
+      vertical-align: middle;
     }
-    .packing-print-list.is-ultra-dense .packing-print-scratch {
-      height: 0.15in;
+    .packing-print-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+    .packing-print-horse-table td {
+      height: 0.3in;
+      padding: 0 0.1in;
+      border-bottom: 1px solid #eeeeee;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .packing-print-horse-table tr:last-child td {
+      border-bottom: 0;
     }
     .packing-print-empty {
       padding: 10px;
