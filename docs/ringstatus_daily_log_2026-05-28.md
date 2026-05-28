@@ -131,6 +131,97 @@ show_scope_key == customer_id|show_id|focus_day
 4. If endpoint raw values disagree with focused `show.heartbeat`, do not treat that as a conflict.
    The focused `show.heartbeat` row wins for scope identity.
 
+## Tomorrow Record Population Contract
+
+Read this before changing schedule/trips population again.
+
+### `watch_schedule`
+
+For a `show.heartbeat` row like:
+
+```text
+focus_day=2026-05-29
+start_date=2026-05-29
+end_date=2026-05-31
+```
+
+Expected behavior:
+
+```text
+Load/write schedule rows for 2026-05-29, 2026-05-30, and 2026-05-31.
+Only focus_day rows are is_current_scope = checked.
+All non-focus show-window days are present but is_current_scope = unchecked.
+```
+
+On the next day, when `focus_day` moves to `2026-05-30`:
+
+```text
+Ping 2026-05-30 schedule fresh.
+Update/write 2026-05-30 rows.
+Mark 2026-05-30 rows is_current_scope = checked.
+Clear is_current_scope from every other schedule day.
+If previously loaded 2026-05-30 rows are missing from the fresh feed, mark them dropped.
+Do not silently delete dropped rows.
+```
+
+### `watch_trips`
+
+Process each `active_tenants` record independently.
+
+For each tenant:
+
+```text
+Ping the tenant people feed.
+If the payload has no trips, write a no_trips record to automation_errs and write nothing to watch_trips.
+If the payload has trips, write those trips to watch_trips.
+Trip rows matching focus_day are is_current_scope = checked.
+Trip rows for other show-window days are still written, but is_current_scope = unchecked.
+No schedule/link/matching rule should block trip row creation.
+One tenant must not block another tenant.
+```
+
+Important interpretation:
+
+```text
+No trips means the tenant is not riding this week.
+Trips on a non-focus day means the tenant is riding this week, just not on focus_day.
+```
+
+## Post-Payload Enrichment Notes
+
+These steps happen after payload record population. They must not block schedule/trip row creation.
+
+Primary goal:
+
+```text
+Fill estimated_start_time where possible until live feeds provide complete data.
+```
+
+Allowed enrichment path:
+
+```text
+If watch_trips.schedule_starttime is not blank:
+  copy it to watch_trips.estimated_start_time
+  try to patch matching watch_schedule.estimated_start_time
+
+Use existing full-week watch_trips evidence first:
+  class_number
+  class_name
+  class_id
+  schedule_starttime
+
+Use class_numbers / class_names lookup tables to patch missing:
+  class_number
+  class_name
+  class_id
+  est_start / estimated_start_time when available
+
+Only after class identity is strong enough:
+  try the full class endpoint to recover estimated_start_time
+```
+
+This is a temporary schedule-completion lane before live data starts feeding reliably. Once live feeds supply complete schedule timing, this becomes fallback/enrichment only.
+
 ## Airtable Review Filters
 
 ### `watch_schedule`
