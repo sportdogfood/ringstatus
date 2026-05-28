@@ -110,7 +110,7 @@ assert.ok(
 
 assert.ok(
   source.includes("classes_endpoint_unreliable_for_schedule_lane") &&
-    source.includes("const scopedRowsBase = chosen.rows.filter"),
+    source.includes("chosen.rows.filter((row) => rowScheduledDateMatchesScope(row, scope))"),
   "schedule rows should come directly from schedule payload/fallback without class endpoint enrichment"
 );
 

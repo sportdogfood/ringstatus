@@ -178,6 +178,11 @@ function buildScheduleEmptyEndpoint(appShowId, customerId = CUSTOMER_ID) {
   return `${SGL_BASE_URL}/schedule?date=00/00/00&show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(customerId)}`;
 }
 
+function buildClassListEndpoint(appShowId, customerId = CUSTOMER_ID) {
+  if (isBlank(appShowId)) return null;
+  return `${SGL_BASE_URL}/classes?show_id=${encodeURIComponent(appShowId)}&customer_id=${encodeURIComponent(customerId)}`;
+}
+
 function normalizeKey(value) {
   if (isBlank(value)) return "";
   return String(value).trim();
@@ -647,6 +652,46 @@ async function fetchJson(url, audit = {}) {
     }
     throw error;
   }
+  await recordPayloadPingAudit(endpoint, response, text, {
+    ...audit,
+    transport: fetched.transport,
+  });
+  return json;
+}
+
+async function fetchClassListJson(url, audit = {}) {
+  let fetched = null;
+  try {
+    fetched = await fetchTextWithConfiguredTransport(url, async (endpoint) => {
+      const response = await fetchWithRetry(endpoint, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
+      const text = await response.text().catch(() => "");
+      return { response, text, endpoint };
+    });
+  } catch (error) {
+    await recordSoftPayloadAudit(error, url, audit);
+    throw error;
+  }
+
+  const { response, text } = fetched;
+  const endpoint = fetched.endpoint || url;
+  if (!response.ok) {
+    throw new Error(`Fetch failed (${response.status}): ${text.slice(0, 1200)}`);
+  }
+
+  let json = null;
+  try {
+    json = JSON.parse(text);
+  } catch {
+    throw new Error(`Class list response was not valid JSON. First 1200 chars:\n${text.slice(0, 1200)}`);
+  }
+
+  if (!classCatalogRowsFromPayload(json).length) {
+    throw new Error(`Class list payload did not include classes[]: endpoint=${endpoint}`);
+  }
+
   await recordPayloadPingAudit(endpoint, response, text, {
     ...audit,
     transport: fetched.transport,
@@ -1689,6 +1734,82 @@ function rowScheduledDateMatchesScope(normalizedRow, scope) {
   return resolvedScheduledDate === scope.app_sql_datev2;
 }
 
+function classCatalogRowsFromPayload(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.classes)) return payload.classes;
+  return [];
+}
+
+function buildClassIdByNumberFromClassesPayload(payload) {
+  const byNumber = new Map();
+  const conflicts = [];
+  const conflictedNumbers = new Set();
+
+  for (const row of classCatalogRowsFromPayload(payload)) {
+    const classNumber = numOrNull(pickFirst(row?.number, row?.class_number, row?.classNumber));
+    const classId = numOrNull(pickFirst(row?.class_id, row?.classId, row?.id));
+    if (classNumber === null || classId === null) continue;
+
+    const key = String(classNumber);
+    const existing = byNumber.get(key);
+    if (existing && existing.class_id !== classId) {
+      conflicts.push({
+        class_number: classNumber,
+        class_ids: [existing.class_id, classId],
+      });
+      conflictedNumbers.add(key);
+      byNumber.delete(key);
+      continue;
+    }
+
+    if (!conflictedNumbers.has(key)) {
+      byNumber.set(key, {
+        class_id: classId,
+        class_number: classNumber,
+        class_name: strOrNull(pickFirst(row?.name, row?.class_name, row?.className)),
+        entry_count: numOrNull(row?.entry_count),
+      });
+    }
+  }
+
+  return {
+    byNumber,
+    catalog_rows: classCatalogRowsFromPayload(payload).length,
+    usable_rows: byNumber.size,
+    conflicts,
+  };
+}
+
+function applyClassListIdEnrichment(rows, classIdByNumber) {
+  let enriched = 0;
+  const nextRows = (rows || []).map((row) => {
+    const fields = row?.fields || {};
+    if (!isBlank(fields.class_id)) return row;
+
+    const classNumber = numOrNull(fields.class_number);
+    if (classNumber === null) return row;
+
+    const match = classIdByNumber?.get?.(String(classNumber));
+    if (!match?.class_id) return row;
+
+    enriched += 1;
+    return {
+      ...row,
+      fields: {
+        ...fields,
+        class_id: match.class_id,
+      },
+      class_id_enrichment: {
+        source: "classes_list",
+        class_number: classNumber,
+        class_id: match.class_id,
+      },
+    };
+  });
+
+  return { rows: nextRows, enriched };
+}
+
 function existingScheduleRowMatchesScope(row, scope) {
   const fields = row?.fields || {};
   const rowShowId = numOrNull(pickFirst(fields.show_id, fields.app_show_idv2, fields.sid));
@@ -2154,7 +2275,47 @@ async function runDaily() {
     enriched_rows: 0,
     failures: [],
   };
-  const scopedRowsBase = chosen.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
+  let scopedRowsBase = chosen.rows.filter((row) => rowScheduledDateMatchesScope(row, scope));
+  const classListEndpoint = buildClassListEndpoint(scope.app_show_idv2, scope.customer_id || CUSTOMER_ID);
+  const classListEnrichment = {
+    skipped: true,
+    reason: "no_rows_needing_class_id",
+    endpoint: classListEndpoint,
+    catalog_rows: 0,
+    usable_rows: 0,
+    enriched_rows: 0,
+    conflicts: [],
+    error: null,
+  };
+  const needsClassIdEnrichment = scopedRowsBase.some((row) =>
+    isBlank(row?.fields?.class_id) && numOrNull(row?.fields?.class_number) !== null
+  );
+  if (needsClassIdEnrichment && classListEndpoint) {
+    try {
+      const classListPayload = await fetchClassListJson(classListEndpoint, {
+        automation_key: `schedules_dailyv2|classes_list|${scope.app_show_idv2}`,
+        automation_name: "schedules_dailyv2_classes_list",
+        source: "classes_list",
+        app_show_id: scope.app_show_idv2,
+        app_sql_date: scope.app_sql_datev2,
+        run_id: runId,
+        last_run: dateOnly,
+      });
+      const catalog = buildClassIdByNumberFromClassesPayload(classListPayload);
+      const overlay = applyClassListIdEnrichment(scopedRowsBase, catalog.byNumber);
+      scopedRowsBase = overlay.rows;
+      classListEnrichment.skipped = false;
+      classListEnrichment.reason = "exact_class_number_match";
+      classListEnrichment.catalog_rows = catalog.catalog_rows;
+      classListEnrichment.usable_rows = catalog.usable_rows;
+      classListEnrichment.enriched_rows = overlay.enriched;
+      classListEnrichment.conflicts = catalog.conflicts.slice(0, 10);
+    } catch (error) {
+      classListEnrichment.skipped = true;
+      classListEnrichment.reason = "classes_list_fetch_failed";
+      classListEnrichment.error = String(error?.message || error).slice(0, 500);
+    }
+  }
   const scheduleHtmlTimeOverlay = applyScheduleHtmlTimeOverlay(
     scopedRowsBase,
     scope.app_show_idv2,
@@ -2386,6 +2547,7 @@ async function runDaily() {
         enriched_rows: classEndpointEnrichment.enriched_rows,
         failures: classEndpointEnrichment.failures,
       },
+      classes_list_enrichment: classListEnrichment,
       schedule_html_time_overlay: scheduleHtmlTimeOverlay.summary,
       groups_live_fallback: {
         table: TABLE_GROUPS_LIVE,
@@ -2474,8 +2636,11 @@ if (require.main === module) {
 
 module.exports = {
   applyGroupsLiveFallback,
+  applyClassListIdEnrichment,
   applyScheduleHtmlTimeOverlay,
+  buildClassIdByNumberFromClassesPayload,
   buildCurrentFields,
+  buildClassListEndpoint,
   applyPreliveEstimatedStartTimeGuard,
   hasManualTimeOverride,
   isSuspiciousPreliveEstimatedStartTime,
