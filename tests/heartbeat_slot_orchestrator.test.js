@@ -16,12 +16,12 @@ const heartbeatLane = fs.readFileSync(heartbeatLanePath, "utf8");
 const monitor = fs.readFileSync(monitorPath, "utf8");
 
 assert.ok(
-  orchestrator.includes('DEFAULT_TRIPS_DAILY_SLOTS = "A,C"'),
-  "trips_dailyv2 must default to heartbeat slots A/C"
+  orchestrator.includes('DEFAULT_TRIPS_DAILY_SLOTS = "A,B,C,D"'),
+  "trips_dailyv2 must default to every heartbeat slot"
 );
 
 assert.ok(
-  orchestrator.includes('DEFAULT_TRIPS_TAGGER_SLOTS = "C"'),
+  orchestrator.includes('DEFAULT_TRIPS_TAGGER_SLOTS = "A,C"'),
   "trips_tagger must default to a slower class-detail/classsignup slot"
 );
 
@@ -33,6 +33,11 @@ assert.ok(
 assert.ok(
   orchestrator.includes('DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS = "A,C"'),
   "NIGHT schedules_dailyv2 must run on A/C before trips so next-day schedule exists"
+);
+
+assert.ok(
+  orchestrator.includes('DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS = "A,B,C,D"'),
+  "shifted NIGHT trips_dailyv2 must default to every heartbeat slot"
 );
 
 assert.ok(

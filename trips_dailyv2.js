@@ -49,6 +49,29 @@ const VIEW_WATCH_TRIPS = process.env.VIEW_WATCH_TRIPS || "heartbeat";
 const VIEW_ACTIVE_TENANTS = process.env.VIEW_ACTIVE_TENANTS || "active_tenants";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 
+const WATCH_TRIPS_HEARTBEAT_FIELDS = [
+  "trips_key",
+  "entryxclasses_uuid",
+  "show_id",
+  "show_date",
+  "app_show_id",
+  "app_show_idv2",
+  "app_sql_date",
+  "app_sql_datev2",
+  "schedule_show_datev2",
+  "scheduled_date",
+  "ring_number",
+  "class_number",
+  "pid",
+  "entry_number",
+  "heartbeat",
+  "watch_schedule",
+  "is_current_scope",
+  "inactive",
+  "archive",
+  "dropped_at",
+];
+
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
 const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
@@ -856,7 +879,7 @@ async function fetchHeartbeatViewTripRows() {
   return airtableList(TABLE_WATCH_TRIPS, {
     view: VIEW_WATCH_TRIPS,
     pageSize: 100,
-    "fields[]": ["entryxclasses_uuid", "entry_number", "class_number", "heartbeat", "is_current_scope"],
+    "fields[]": WATCH_TRIPS_HEARTBEAT_FIELDS,
   });
 }
 
@@ -2745,4 +2768,5 @@ module.exports = {
   buildDroppedFields,
   hasManualTimeOverride,
   tripRowKeyFromFields,
+  WATCH_TRIPS_HEARTBEAT_FIELDS,
 };
