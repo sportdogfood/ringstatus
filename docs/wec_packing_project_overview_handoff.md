@@ -607,6 +607,8 @@ Printing intent:
 - if a section continues onto another page, repeat the section header and mark it continued
 - row output must be table-based with aligned columns
 - do not print inline metric strings like `Need: 1 Packed: 0 Left: 1`
+- locked capacity is 11 records per printed page for WEC list PDFs
+- each printed page includes a small footer: `printed: page {n} + {date}`
 
 Known conflict:
 
@@ -621,7 +623,7 @@ Approved packing print row format:
 ```text
 Header
 Section header
-NAME | DATE | NEEDED | [ ] | PACKED | [ ] | LEFT | [ ] | INITIAL
+NAME | NEEDED | [ ] | PACKED | [ ] | LEFT | [ ] | INITIAL
 record row
 notes row
 ```
@@ -634,8 +636,11 @@ Print row rules:
 - all name columns align
 - all meta columns align
 - all inner meta columns align
-- all meta columns are the same width except for name and notes
-- row heights are fixed enough to fit the page width; page spill is allowed
+- no Date column
+- no inner pseudo boxes inside writable cells
+- all meta columns align to the locked worksheet grid
+- row heights are locked to support handwriting
+- page spill is calculated before rendering at 11 records per page
 - quantity values must be whole numbers, never decimals
 
 ## Known Potential Conflicts

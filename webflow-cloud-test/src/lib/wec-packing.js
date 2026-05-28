@@ -749,7 +749,7 @@ function printDocumentHtml(title, body) {
 function printStyles() {
   return `
     @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap");
-    @page { size: Letter; margin: 0.35in; }
+    @page { size: Letter; margin: 0; }
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -760,8 +760,10 @@ function printStyles() {
       line-height: 1.12;
     }
     .packing-print-page {
-      width: 100%;
-      min-height: 10.3in;
+      position: relative;
+      width: 8.5in;
+      min-height: 11in;
+      padding: 0.25in;
       break-after: page;
     }
     .packing-print-page:last-child { break-after: auto; }
@@ -772,25 +774,27 @@ function printStyles() {
       gap: 0.2in;
       padding-bottom: 0.12in;
       border-bottom: 2px solid #000000;
-      margin-bottom: 0.16in;
+      margin-bottom: 0;
     }
     .packing-print-head h1 {
       margin: 0;
       font-size: 24px;
       font-weight: 600;
       line-height: 0.95;
+      letter-spacing: -0.06em;
     }
     .packing-print-head p {
       max-width: 4.8in;
       margin: 0;
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 600;
+      line-height: 1.1;
       text-align: right;
       text-transform: uppercase;
     }
     .packing-print-list {
-      border: 1px solid #d9d9d9;
-      border-radius: 8px;
+      border: 0;
+      border-radius: 0;
       overflow: hidden;
       background: #ffffff;
     }
@@ -799,14 +803,14 @@ function printStyles() {
       align-items: center;
       justify-content: space-between;
       gap: 0.12in;
-      min-height: 0.28in;
-      padding: 0 0.1in;
+      min-height: 0.34in;
+      padding: 0 0.04in;
       background: #f0f0f0;
-      border-bottom: 1px solid #d9d9d9;
+      border: 0;
     }
     .packing-print-list-head h2 {
       margin: 0;
-      font-size: 12px;
+      font-size: 15px;
       font-weight: 600;
       line-height: 1;
       text-transform: uppercase;
@@ -826,11 +830,12 @@ function printStyles() {
       table-layout: fixed;
     }
     .packing-print-table th {
-      height: 0.22in;
-      padding: 0 0.05in;
-      border-bottom: 1px solid #d9d9d9;
-      color: #333333;
-      font-size: 7px;
+      height: 0.23in;
+      padding: 0 0.025in;
+      border: 1px solid #000000;
+      background: #000000;
+      color: #ffffff;
+      font-size: 10px;
       font-weight: 600;
       line-height: 1;
       text-align: center;
@@ -839,21 +844,34 @@ function printStyles() {
       white-space: nowrap;
     }
     .packing-print-table th:first-child {
-      padding-left: 0.1in;
+      padding-left: 0.04in;
       text-align: left;
     }
     .packing-print-data-row td {
-      height: 0.3in;
-      padding: 0 0.05in;
-      border-bottom: 1px solid #eeeeee;
-      font-size: 9px;
+      height: 0.34in;
+      padding: 0 0.025in 0.03in;
+      border-top: 1px solid #bdbdbd;
+      border-right: 1px solid #dddddd;
+      border-bottom: 1px solid #dddddd;
+      border-left: 1px solid #dddddd;
+      font-size: 13px;
       font-weight: 600;
       line-height: 1;
       text-transform: uppercase;
       vertical-align: middle;
     }
+    .packing-print-data-row td:first-child {
+      border-left-color: #bdbdbd;
+    }
+    .packing-print-data-row td:last-child {
+      border-right-color: #bdbdbd;
+    }
+    .packing-print-data-row.is-zebra td,
+    .packing-print-notes-row.is-zebra td {
+      background: #f6f6f6;
+    }
     .packing-print-name-cell {
-      padding-left: 0.1in !important;
+      padding-left: 0.04in !important;
       text-align: left;
     }
     .packing-print-data-row.is-packed .packing-print-name-cell {
@@ -861,35 +879,56 @@ function printStyles() {
       text-decoration: line-through;
       text-decoration-thickness: 1px;
     }
-    .packing-print-date-cell,
     .packing-print-number,
-    .packing-print-initial-cell {
+    .packing-print-initial-cell,
+    .packing-print-mark-cell {
+      position: relative;
       text-align: center;
     }
-    .packing-print-check-cell {
-      text-align: center;
-    }
-    .packing-print-check {
-      display: inline-block;
-      width: 0.36in;
-      height: 0.18in;
-      border: 1px solid #cfcfcf;
-      border-radius: 3px;
-      background: #ffffff;
-      vertical-align: middle;
+    .packing-print-cell-label {
+      position: absolute;
+      right: 0.025in;
+      bottom: 0.025in;
+      color: #777777;
+      font-size: 5px;
+      font-weight: 500;
+      line-height: 1;
+      text-transform: uppercase;
     }
     .packing-print-notes-row td {
-      height: 0.18in;
-      padding: 0 0.1in;
-      border-bottom: 1px solid #eeeeee;
+      position: relative;
+      height: 0.46in;
+      padding: 0 0.04in 0.03in;
+      border-top: 0;
+      border-right: 1px solid #bdbdbd;
+      border-bottom: 1px solid #bdbdbd;
+      border-left: 1px solid #bdbdbd;
       color: #333333;
-      font-size: 7px;
+      font-size: 10px;
       font-weight: 400;
       line-height: 1;
       vertical-align: middle;
     }
-    .packing-print-table tbody tr:last-child td {
-      border-bottom: 0;
+    .packing-print-notes-meta {
+      position: absolute;
+      right: 0.05in;
+      bottom: 0.04in;
+      color: #555555;
+      font-size: 6px;
+      font-weight: 500;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .packing-print-footer {
+      position: absolute;
+      right: 0.25in;
+      bottom: 0.14in;
+      padding-top: 0.08in;
+      color: #555555;
+      font-size: 8px;
+      font-weight: 600;
+      line-height: 1;
+      text-transform: uppercase;
     }
     .packing-print-horse-table td {
       height: 0.3in;
