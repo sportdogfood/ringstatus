@@ -2203,6 +2203,12 @@ function isSatisfied(item) {
   return item.packState === "packed" || !!item.resolutionState;
 }
 
+function progressPercent(done, rows) {
+  const total = numberField(rows);
+  if (total <= 0) return 0;
+  return Math.max(0, Math.min(100, Math.round((numberField(done) / total) * 100)));
+}
+
 function isActiveWorksheetRow(record) {
   const fields = record.fields || {};
   if (fields.ignore) return false;
@@ -2393,6 +2399,11 @@ function compareNumber(a, b) {
 
 function compareText(a, b) {
   return clean(a).localeCompare(clean(b), undefined, { sensitivity: "base" });
+}
+
+function displayLabel(value) {
+  const text = clean(value).replace(/[_-]+/g, " ").trim();
+  return text.replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 }
 
 function slugify(value) {

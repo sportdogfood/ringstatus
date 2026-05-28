@@ -3798,7 +3798,7 @@ body {
   position: fixed;
   top: 10px;
   right: max(10px, calc((100vw - 840px) / 2 + 10px));
-  z-index: 2147483000;
+  z-index: 900;
   align-items: center;
   justify-content: center;
   background: #ffffff;
