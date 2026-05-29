@@ -46,10 +46,10 @@ assert.ok(
 );
 
 assert.ok(
-  orchestrator.includes('DEFAULT_LIVE_GROUPS_SLOTS = "B"') &&
+  orchestrator.includes('DEFAULT_LIVE_GROUPS_SLOTS = "A,B,C,D"') &&
     orchestrator.includes('mode === "DAY"') &&
     orchestrator.includes('runNodeScript("live_groups_daily.js")'),
-  "live_groups_daily must run only in DAY mode on the live groups slot"
+  "live_groups_daily must run only in DAY mode on every heartbeat slot"
 );
 
 assert.ok(
