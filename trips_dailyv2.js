@@ -2191,8 +2191,6 @@ async function main() {
     scheduleRows,
     activeTenantRows,
     wwTrainerRecordIdByPid,
-    activeClassesFieldSet,
-    activeEntriesFieldSet,
     wwRidersFieldSet,
     wwHorsesFieldSet,
   ] = await Promise.all([
@@ -2202,12 +2200,12 @@ async function main() {
     fetchWatchScheduleRows(),
     fetchActiveTenantRows(),
     fetchWwTrainerRecordIdByPid().catch(() => new Map()),
-    fetchTableFieldSet(TABLE_ACTIVE_CLASSES),
-    fetchTableFieldSet(TABLE_ACTIVE_ENTRIES),
     fetchTableFieldSet(TABLE_WW_RIDERS),
     fetchTableFieldSet(TABLE_WW_HORSES),
   ]);
   const activeGroupsFieldSet = new Set();
+  const activeClassesFieldSet = new Set();
+  const activeEntriesFieldSet = new Set();
 
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
@@ -2231,29 +2229,6 @@ async function main() {
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
     }));
-    return;
-  }
-
-  if (!scopedScheduleRows.length) {
-    console.log(JSON.stringify({
-      ok: true,
-      dry_run: DRY_RUN,
-      run_status: "NOOP",
-      reason: "No current watch_schedule rows matched heartbeat scope",
-      app_show_id: heartbeat.app_show_id,
-      app_sql_date: heartbeat.app_sql_date,
-      watch_schedule_rows: scheduleRows.length,
-      scoped_watch_schedule_rows: 0,
-      active_tenant_ids: activeTenantIds.length,
-      writes: {
-        created: 0,
-        updated: 0,
-        dropped: 0,
-        create_failures: [],
-        update_failures: [],
-        drop_failures: [],
-      },
-    }, null, 2));
     return;
   }
 
@@ -2522,47 +2497,29 @@ async function main() {
     });
   }
 
-  const classSync = await upsertActiveByKey({
-    tableName: TABLE_ACTIVE_CLASSES,
-    fieldSet: activeClassesFieldSet,
-    fieldKey: "key",
-    fieldPid: "pid",
-    fieldAppSid: "app_sid",
-    fieldInactive: "inactive",
-    fieldRunId: "run_id",
-    fieldLastRun: "last_run",
-    fieldNewFlag: "new_class_id",
-    fieldPidMismatch: "pid_mismatch",
-    rows: [...uniqueClassRows.values()],
-    scopePid: null,
-    scopeAppSid: heartbeat.app_show_id,
-    scopeByPid: false,
-    runId,
-    lastRun: dateOnly,
-  });
+  const classSync = {
+    skipped: true,
+    reason: "active_tables_deprecated",
+    table: TABLE_ACTIVE_CLASSES,
+    created_planned: 0,
+    updated_planned: 0,
+    inactivated_planned: 0,
+    writes: { created: 0, updated: 0, inactivated: 0, create_failures: [], update_failures: [], inactivate_failures: [] },
+  };
 
-  const entrySync = await upsertActiveByKey({
-    tableName: TABLE_ACTIVE_ENTRIES,
-    fieldSet: activeEntriesFieldSet,
-    fieldKey: "key",
-    fieldPid: "pid",
-    fieldAppSid: "app_sid",
-    fieldInactive: "inactive",
-    fieldRunId: "run_id",
-    fieldLastRun: "last_run",
-    fieldNewFlag: "new_entry",
-    fieldPidMismatch: "pid_mismatch",
-    rows: [...uniqueEntryRows.values()],
-    scopePid: null,
-    scopeAppSid: heartbeat.app_show_id,
-    scopeByPid: false,
-    runId,
-    lastRun: dateOnly,
-  });
+  const entrySync = {
+    skipped: true,
+    reason: "active_tables_deprecated",
+    table: TABLE_ACTIVE_ENTRIES,
+    created_planned: 0,
+    updated_planned: 0,
+    inactivated_planned: 0,
+    writes: { created: 0, updated: 0, inactivated: 0, create_failures: [], update_failures: [], inactivate_failures: [] },
+  };
 
   const activeGroupSync = {
     skipped: true,
-    reason: "active_groups_deprecated",
+    reason: "active_tables_deprecated",
     table: "active_groups",
     created_planned: 0,
     updated_planned: 0,
@@ -2579,7 +2536,7 @@ async function main() {
 
   const activeLinkSync = {
     skipped: true,
-    reason: "active_groups_deprecated",
+    reason: "active_tables_deprecated",
     active_groups_to_classes: { planned: 0, updated: 0, failures: [] },
     active_classes_to_groups: { planned: 0, updated: 0, failures: [] },
     active_entries_to_classes: { planned: 0, updated: 0, failures: [] },
@@ -2689,7 +2646,7 @@ async function main() {
       ok: true,
       dry_run: DRY_RUN,
       run_status: "NOOP",
-      reason: "No people trips matched current watch_schedule class ids",
+      reason: "No writable people trips found",
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
       active_tenant_ids: activeTenantIds.length,
@@ -2698,6 +2655,8 @@ async function main() {
       filtered_out_scheduled_date_mismatch: 0,
       skipped_invalid_scheduled_date: skippedInvalidScheduledDate,
       outside_schedule_count: outsideSchedule.length,
+      active_classes: classSync,
+      active_entries: entrySync,
       empty_tenant_ids: emptyTenantIds,
       tenant_summaries: tenantSummaries,
       people_failures: peopleFailures,
@@ -2784,6 +2743,8 @@ async function main() {
     tenant_summaries: tenantSummaries,
     outside_schedule_count: outsideSchedule.length,
     active_groups: activeGroupSync,
+    active_classes: classSync,
+    active_entries: entrySync,
     active_links: activeLinkSync,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,

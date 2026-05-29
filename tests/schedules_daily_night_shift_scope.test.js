@@ -1,6 +1,7 @@
 const assert = require("assert");
 const {
   resolveHeartbeatScopeFromCurrentHeartbeat,
+  showHeartbeatTargetDate,
 } = require("../schedules_dailyv2");
 
 const scope = resolveHeartbeatScopeFromCurrentHeartbeat({
@@ -34,5 +35,28 @@ assert.strictEqual(scope.mode, "NIGHT");
 assert.strictEqual(scope.shifted_to_next_dayv2, true);
 assert.strictEqual(scope.app_sql_datev2, "2026-05-30");
 assert.strictEqual(scope.app_sql_date_source, "night_shifted_next_day");
+
+const oneDayAfterFive = showHeartbeatTargetDate({
+  focus_day: "2026-05-28",
+  start_date: "2026-05-28",
+  end_date: "2026-05-28",
+}, new Date("2026-05-28T21:30:00.000Z"));
+assert.strictEqual(oneDayAfterFive.target_date, null);
+assert.strictEqual(oneDayAfterFive.proposed_target_date, "2026-05-29");
+assert.strictEqual(oneDayAfterFive.reason, "target_date_outside_show_window");
+
+const threeDayAfterFive = showHeartbeatTargetDate({
+  focus_day: "2026-05-29",
+  start_date: "2026-05-29",
+  end_date: "2026-05-31",
+}, new Date("2026-05-29T21:30:00.000Z"));
+assert.strictEqual(threeDayAfterFive.target_date, "2026-05-30");
+
+const threeDayDayWindow = showHeartbeatTargetDate({
+  focus_day: "2026-05-30",
+  start_date: "2026-05-29",
+  end_date: "2026-05-31",
+}, new Date("2026-05-30T14:30:00.000Z"));
+assert.strictEqual(threeDayDayWindow.target_date, "2026-05-30");
 
 console.log("schedules_daily_night_shift_scope tests passed");

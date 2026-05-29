@@ -30,6 +30,7 @@ const SGL_BASE_URL = String(
 ).trim().replace(/\/+$/, "");
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
+const TABLE_SHOW_TARGET = process.env.TABLE_SHOW_TARGET || process.env.TABLE_SHOW || "show";
 const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
@@ -37,8 +38,10 @@ const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
+const VIEW_SHOW_TARGET = process.env.VIEW_SHOW_TARGET || "heartbeat";
 const VIEW_WATCH_SCHEDULE_HEARTBEAT = process.env.VIEW_WATCH_SCHEDULE_HEARTBEAT || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
+const SCHEDULE_SCOPE_TIMEZONE = process.env.SCHEDULE_SCOPE_TIMEZONE || "America/New_York";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const AT_RETRY_ATTEMPTS = Number(process.env.AT_RETRY_ATTEMPTS || "3");
@@ -274,6 +277,54 @@ function addDaysSql(sqlDate, days) {
   if (!Number.isFinite(ms)) throw new Error(`Invalid heartbeat sql_date: ${base}`);
   const next = new Date(ms + days * 86400000);
   return next.toISOString().slice(0, 10);
+}
+
+function localMinutesForScheduleScope(now = new Date(), timeZone = SCHEDULE_SCOPE_TIMEZONE) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+  }).formatToParts(now);
+  const hour = Number(parts.find((part) => part.type === "hour")?.value);
+  const minute = Number(parts.find((part) => part.type === "minute")?.value);
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) {
+    throw new Error(`Unable to resolve local schedule scope time for ${timeZone}`);
+  }
+  return hour * 60 + minute;
+}
+
+function showHeartbeatTargetDate(fields, now = new Date()) {
+  const focusDay = strictSqlDate(toIsoDateOnly(fields?.focus_day), "show.focus_day");
+  const startDate = strictSqlDate(toIsoDateOnly(fields?.start_date), "show.start_date");
+  const endDate = strictSqlDate(toIsoDateOnly(fields?.end_date), "show.end_date");
+  const minutes = localMinutesForScheduleScope(now);
+  const isDayWindow = minutes >= 6 * 60 && minutes < 17 * 60;
+  const targetDate = isDayWindow ? focusDay : addDaysSql(focusDay, 1);
+
+  if (compareSqlDate(targetDate, startDate) < 0 || compareSqlDate(targetDate, endDate) > 0) {
+    return {
+      target_date: null,
+      focus_day: focusDay,
+      start_date: startDate,
+      end_date: endDate,
+      is_day_window: isDayWindow,
+      skipped: true,
+      reason: "target_date_outside_show_window",
+      proposed_target_date: targetDate,
+    };
+  }
+
+  return {
+    target_date: targetDate,
+    focus_day: focusDay,
+    start_date: startDate,
+    end_date: endDate,
+    is_day_window: isDayWindow,
+    skipped: false,
+    reason: null,
+    proposed_target_date: targetDate,
+  };
 }
 
 function compareSqlDate(left, right) {
@@ -1152,6 +1203,50 @@ async function fetchLatestHeartbeat() {
   }
 
   return rows[0];
+}
+
+async function fetchShowTargetRows() {
+  return airtableList(TABLE_SHOW_TARGET, {
+    view: VIEW_SHOW_TARGET,
+    pageSize: 100,
+    "fields[]": [
+      "show_id",
+      "customer_id",
+      "focus_day",
+      "start_date",
+      "end_date",
+      "heartbeat",
+      "show_rid",
+    ],
+  });
+}
+
+function buildShowTargetBaseContext(heartbeatContext, showRow, targetInfo) {
+  const fields = showRow?.fields || {};
+  const appShowId = numOrNull(fields.show_id);
+  if (appShowId === null) throw new Error(`show/${VIEW_SHOW_TARGET} row ${showRow?.id || "unknown"} missing show_id`);
+  const customerId = numOrNull(fields.customer_id) ?? heartbeatContext.customer_id ?? CUSTOMER_ID;
+  const appDowRaw = strictDowRaw(dowName(dayOfWeekUtc(targetInfo.target_date)), "show_target_app_dow_raw");
+
+  return {
+    ...heartbeatContext,
+    app_show_idv2: appShowId,
+    raw_sql_date: targetInfo.focus_day,
+    current_app_sql_date: targetInfo.target_date,
+    current_app_dow_raw: appDowRaw,
+    current_shifted_to_next_day: !targetInfo.is_day_window,
+    current_set_to_default_app_sql_date: false,
+    current_default_app_sql_date_is: targetInfo.focus_day,
+    current_show_app_sql_start_date: targetInfo.start_date,
+    current_show_app_sql_end_date: targetInfo.end_date,
+    current_app_sql_date_source: "show_heartbeat_target",
+    customer_id: customerId,
+    focus_day: targetInfo.focus_day,
+    show_record_id: showRow.id,
+    show_scope_key: `${customerId}|${appShowId}|${targetInfo.focus_day}`,
+    show_target_record_id: showRow.id,
+    show_target: targetInfo,
+  };
 }
 
 async function fetchWatchScheduleScopeStatusChoices() {
@@ -2151,25 +2246,19 @@ async function upsertActiveGroups({
   return summary;
 }
 
-async function runDaily() {
-  requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
-  requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
-
-  const nowIso = new Date().toISOString();
-  const dateOnly = nowIso.slice(0, 10);
-  const runId = buildNumericRunId(nowIso);
-
-  const heartbeatRecord = await fetchLatestHeartbeat();
-  const baseHeartbeatContext = buildBaseHeartbeatContext(heartbeatRecord);
-  const scopeStatusChoices = await fetchWatchScheduleScopeStatusChoices().catch(() => new Set());
-  const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
-  const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
-  const heartbeatFieldSet = await fetchHeartbeatFieldSet().catch(() => new Set());
-  const watchScheduleFieldMeta = await fetchTableFieldMeta(TABLE_WATCH_SCHEDULE);
-  const activeGroupsFieldSet = SYNC_ACTIVE_GROUPS_FROM_SCHEDULE
-    ? await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set())
-    : new Set();
-
+async function runScheduleForBaseContext({
+  heartbeatRecord,
+  baseHeartbeatContext,
+  nowIso,
+  dateOnly,
+  runId,
+  currentScopeStatus,
+  droppedScopeStatus,
+  heartbeatFieldSet,
+  watchScheduleFieldMeta,
+  activeGroupsFieldSet,
+  patchHeartbeat = true,
+}) {
   const emptyUrl = buildScheduleEmptyEndpoint(baseHeartbeatContext.app_show_idv2, baseHeartbeatContext.customer_id || CUSTOMER_ID);
   let emptyPayload = null;
   let emptyPingError = null;
@@ -2203,7 +2292,7 @@ async function runDaily() {
   const heartbeatPatchFields = buildHeartbeatPatchFields(scope, heartbeatFieldSet);
   const heartbeatChangedFields = diffHeartbeatFields(heartbeatRecord?.fields || {}, heartbeatPatchFields);
 
-  if (!DRY_RUN && Object.keys(heartbeatChangedFields).length) {
+  if (patchHeartbeat && !DRY_RUN && Object.keys(heartbeatChangedFields).length) {
     await airtablePatchRecords(TABLE_HEARTBEAT, [{
       id: heartbeatRecord.id,
       fields: heartbeatChangedFields,
@@ -2594,7 +2683,9 @@ async function runDaily() {
     },
   };
 
-  const activeGroupRows = buildActiveGroupRows(scopedRows, scope, runId, dateOnly, activeGroupsFieldSet);
+  const activeGroupRows = activeGroupsFieldSet.size
+    ? buildActiveGroupRows(scopedRows, scope, runId, dateOnly, activeGroupsFieldSet)
+    : [];
   summary.active_groups.created_planned = activeGroupRows.length;
 
   if (DRY_RUN) {
@@ -2633,6 +2724,98 @@ async function runDaily() {
   return summary;
 }
 
+async function runDaily() {
+  requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
+  requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
+
+  const nowIso = new Date().toISOString();
+  const dateOnly = nowIso.slice(0, 10);
+  const runId = buildNumericRunId(nowIso);
+
+  const heartbeatRecord = await fetchLatestHeartbeat();
+  const fallbackHeartbeatContext = buildBaseHeartbeatContext(heartbeatRecord);
+  const scopeStatusChoices = await fetchWatchScheduleScopeStatusChoices().catch(() => new Set());
+  const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
+  const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
+  const heartbeatFieldSet = await fetchHeartbeatFieldSet().catch(() => new Set());
+  const watchScheduleFieldMeta = await fetchTableFieldMeta(TABLE_WATCH_SCHEDULE);
+  const activeGroupsFieldSet = SYNC_ACTIVE_GROUPS_FROM_SCHEDULE
+    ? await fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set())
+    : new Set();
+
+  let showTargetRows = [];
+  let showTargetFetchError = null;
+  try {
+    showTargetRows = await fetchShowTargetRows();
+  } catch (error) {
+    showTargetFetchError = String(error?.message || error);
+  }
+
+  const skippedShowTargets = [];
+  const showTargetContexts = [];
+  for (const row of showTargetRows) {
+    const targetInfo = showHeartbeatTargetDate(row.fields, new Date(nowIso));
+    if (targetInfo.skipped) {
+      skippedShowTargets.push({
+        record_id: row.id,
+        show_id: numOrNull(row.fields?.show_id),
+        ...targetInfo,
+      });
+      continue;
+    }
+    showTargetContexts.push(buildShowTargetBaseContext(fallbackHeartbeatContext, row, targetInfo));
+  }
+
+  const contexts = showTargetContexts.length ? showTargetContexts : [fallbackHeartbeatContext];
+  const patchHeartbeat = contexts.length === 1;
+  const results = [];
+  for (const baseHeartbeatContext of contexts) {
+    results.push(await runScheduleForBaseContext({
+      heartbeatRecord,
+      baseHeartbeatContext,
+      nowIso,
+      dateOnly,
+      runId,
+      currentScopeStatus,
+      droppedScopeStatus,
+      heartbeatFieldSet,
+      watchScheduleFieldMeta,
+      activeGroupsFieldSet,
+      patchHeartbeat,
+    }));
+  }
+
+  if (results.length === 1) {
+    return {
+      ...results[0],
+      show_target_scope: {
+        table: TABLE_SHOW_TARGET,
+        view: VIEW_SHOW_TARGET,
+        rows: showTargetRows.length,
+        valid_rows: showTargetContexts.length,
+        skipped_rows: skippedShowTargets,
+        fetch_error: showTargetFetchError,
+        source: showTargetContexts.length ? "show_heartbeat" : "latest_heartbeat_fallback",
+      },
+    };
+  }
+
+  return {
+    ok: results.every((result) => result.ok),
+    dry_run: DRY_RUN,
+    source: "show_heartbeat_multi",
+    show_target_scope: {
+      table: TABLE_SHOW_TARGET,
+      view: VIEW_SHOW_TARGET,
+      rows: showTargetRows.length,
+      valid_rows: showTargetContexts.length,
+      skipped_rows: skippedShowTargets,
+      fetch_error: showTargetFetchError,
+    },
+    results,
+  };
+}
+
 async function main() {
   const result = await runDaily();
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
@@ -2663,6 +2846,7 @@ module.exports = {
   applyPreliveEstimatedStartTimeGuard,
   hasManualTimeOverride,
   isSuspiciousPreliveEstimatedStartTime,
+  showHeartbeatTargetDate,
   normalizeHtmlScheduleTimeText,
   parseScheduleHtmlTimeOverlay,
   resolveHeartbeatScope,

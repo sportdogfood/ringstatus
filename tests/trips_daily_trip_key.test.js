@@ -1,4 +1,6 @@
 const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
 
 const {
   buildCurrentFields,
@@ -7,6 +9,16 @@ const {
   selectTripRowsForWriteScope,
   tripRowKeyFromFields,
 } = require("../trips_dailyv2");
+
+const tripsDailySource = fs.readFileSync(path.resolve(__dirname, "..", "trips_dailyv2.js"), "utf8");
+assert.ok(
+  !tripsDailySource.includes("No current watch_schedule rows matched heartbeat scope"),
+  "watch_trips must not no-op just because watch_schedule has no current rows"
+);
+assert.ok(
+  tripsDailySource.includes('reason: "active_tables_deprecated"'),
+  "active_groups/classes/entries must remain deprecated and skipped in trips_dailyv2"
+);
 
 assert.strictEqual(
   tripRowKeyFromFields({
