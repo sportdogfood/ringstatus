@@ -65,7 +65,8 @@ assert.ok(
 );
 
 assert.ok(
-  schedulesDaily.includes("fields.is_current_scope = true;") &&
+  schedulesDaily.includes("const isCurrentScope = options.isCurrentScope !== false;") &&
+    schedulesDaily.includes("fields.is_current_scope = isCurrentScope;") &&
     schedulesDaily.includes('setResolvedField(fields, watchScheduleFieldMeta, "archive", false);') &&
     schedulesDaily.includes('setResolvedField(fields, watchScheduleFieldMeta, "inactive", false);') &&
     schedulesDaily.includes("fields.dropped_at = null;"),

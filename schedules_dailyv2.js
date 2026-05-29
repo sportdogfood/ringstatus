@@ -1117,6 +1117,11 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
     current: null,
     forward: [],
   };
+  Object.defineProperty(summary, "forwardPayloads", {
+    value: [],
+    enumerable: false,
+    writable: true,
+  });
 
   if (!PREFETCH_FORWARD_SCHEDULES) return summary;
   if (DRY_RUN) {
@@ -1157,6 +1162,7 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
       item.ok = true;
       item.file_path = writeResult.file_path;
       item.body_length = writeResult.body_length;
+      summary.forwardPayloads.push({ date: scheduleDate, payload });
     } catch (error) {
       item.reason = String(error?.reason || error?.message || error).slice(0, 300);
     }
@@ -1164,6 +1170,18 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
   }
 
   return summary;
+}
+
+function scopeForScheduleDate(scope, scheduleDate, source = "forward_schedule_cache") {
+  return {
+    ...scope,
+    app_sql_datev2: scheduleDate,
+    app_dow_rawv2: dowName(dayOfWeekUtc(scheduleDate)),
+    shifted_to_next_dayv2: false,
+    scope_key: buildScopeKey(scope.app_show_idv2, scheduleDate, dowName(dayOfWeekUtc(scheduleDate)), false),
+    app_sql_date_source: source,
+    scope_resolution_source: source,
+  };
 }
 
 async function fetchLatestHeartbeat() {
@@ -1725,8 +1743,20 @@ function hasManualTimeOverride(fields) {
   return boolValue(fields?.manual_time_overide) || boolValue(fields?.manual_time_override);
 }
 
-function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordId, nowIso, dateOnly, recordState, scopeStatusValue, watchScheduleFieldMeta) {
+function buildCurrentFields(
+  normalizedRow,
+  scope,
+  heartbeatRecordId,
+  showRecordId,
+  nowIso,
+  dateOnly,
+  recordState,
+  scopeStatusValue,
+  watchScheduleFieldMeta,
+  options = {}
+) {
   const fields = { ...normalizedRow.fields };
+  const isCurrentScope = options.isCurrentScope !== false;
   const classDetail = normalizedRow?.class_detail || null;
   const groupsLiveDetail = normalizedRow?.groups_live_detail || null;
   const groupsLiveDay = toIsoDateOnly(groupsLiveDetail?.day);
@@ -1808,11 +1838,11 @@ function buildCurrentFields(normalizedRow, scope, heartbeatRecordId, showRecordI
   const fullNestingKey = joinKeyParts(fullNestingParts);
   if (fullNestingKey) setResolvedField(fields, watchScheduleFieldMeta, "full_nesting_key", fullNestingKey);
   Object.assign(fields, buildScopeFieldPatch(watchScheduleFieldMeta, scope));
-  fields.heartbeat = heartbeatRecordId ? [heartbeatRecordId] : [];
+  fields.heartbeat = isCurrentScope && heartbeatRecordId ? [heartbeatRecordId] : [];
   fields.record_state = recordState;
   fields.run_tag = scope.app_sql_datev2;
   fields.last_updated_at = nowIso;
-  fields.is_current_scope = true;
+  fields.is_current_scope = isCurrentScope;
   fields.scope_run_id = scope.scope_run_id;
   setResolvedField(fields, watchScheduleFieldMeta, "inactive", false);
   setResolvedField(fields, watchScheduleFieldMeta, "archive", false);
@@ -2478,6 +2508,16 @@ async function runScheduleForBaseContext({
 
   const createRecords = [];
   const updateRecords = [];
+  const forwardScheduleWriteSummary = {
+    enabled: PREFETCH_FORWARD_SCHEDULES,
+    dates_seen: 0,
+    rows_seen: 0,
+    rows_written: 0,
+    creates_planned: 0,
+    updates_planned: 0,
+    skipped_missing_schedule_tie_breaker: 0,
+    skipped_missing_schedule_tie_breaker_samples: [],
+  };
   const estimatedStartTimeGuard = {
     enabled: String(scope.mode || "").toUpperCase() === "NIGHT" && boolValue(scope.shifted_to_next_dayv2),
     valid_min: PRELIVE_ESTIMATED_START_TIME_MIN,
@@ -2585,6 +2625,93 @@ async function runScheduleForBaseContext({
     }
   }
 
+  for (const forwardItem of schedulePayloadCache.forwardPayloads || []) {
+    const forwardDate = toIsoDateOnly(forwardItem?.date);
+    if (!forwardDate || !forwardItem?.payload) continue;
+    const forwardScope = scopeForScheduleDate(scope, forwardDate);
+    const forwardResult = normalizeSchedulePayload(forwardItem.payload, {
+      scope: forwardScope,
+      source: "forward_schedule_cache",
+      generatedAt: nowIso,
+      generatedDate: dateOnly,
+    });
+    let forwardRows = forwardResult.rows.filter((row) => rowScheduledDateMatchesScope(row, forwardScope));
+    forwardScheduleWriteSummary.dates_seen += 1;
+    forwardScheduleWriteSummary.rows_seen += forwardRows.length;
+
+    const forwardBaseKeyCounts = new Map();
+    for (const row of forwardRows) {
+      const seedFields = row?.fields || {};
+      const rowBaseKey = buildScheduleKeyParts({
+        sid: pickFirst(seedFields.show_id, forwardScope.app_show_idv2),
+        sqlDate: pickFirst(toIsoDateOnly(seedFields.schedule_show_datev2), seedFields.app_sql_datev2, forwardScope.app_sql_datev2),
+        ringNumber: seedFields.ring_number,
+        classNumber: seedFields.class_number,
+      }).scheduleKey || normalizeKey(row.key);
+      if (!rowBaseKey) continue;
+      forwardBaseKeyCounts.set(rowBaseKey, (forwardBaseKeyCounts.get(rowBaseKey) || 0) + 1);
+    }
+
+    for (const row of forwardRows) {
+      const seedFields = row?.fields || {};
+      const baseScheduleKey = buildScheduleKeyParts({
+        sid: pickFirst(seedFields.show_id, forwardScope.app_show_idv2),
+        sqlDate: pickFirst(toIsoDateOnly(seedFields.schedule_show_datev2), seedFields.app_sql_datev2, forwardScope.app_sql_datev2),
+        ringNumber: seedFields.ring_number,
+        classNumber: seedFields.class_number,
+      }).scheduleKey || normalizeKey(row.key);
+      const needsTieBreaker = baseScheduleKey && (forwardBaseKeyCounts.get(baseScheduleKey) || 0) > 1;
+      const scheduleTieBreaker = needsTieBreaker ? keyPart(seedFields.class_group_sequence) : "";
+      if (needsTieBreaker && !scheduleTieBreaker) {
+        forwardScheduleWriteSummary.skipped_missing_schedule_tie_breaker += 1;
+        if (forwardScheduleWriteSummary.skipped_missing_schedule_tie_breaker_samples.length < 10) {
+          forwardScheduleWriteSummary.skipped_missing_schedule_tie_breaker_samples.push({
+            date: forwardDate,
+            base_key: baseScheduleKey,
+            class_number: seedFields.class_number ?? null,
+            ring_number: seedFields.ring_number ?? null,
+            class_group_id: seedFields.class_group_id ?? null,
+          });
+        }
+        continue;
+      }
+
+      row.schedule_key_tie_breaker = scheduleTieBreaker;
+      const rowKeyParts = buildScheduleKeyParts({
+        sid: pickFirst(seedFields.show_id, forwardScope.app_show_idv2),
+        sqlDate: pickFirst(toIsoDateOnly(seedFields.schedule_show_datev2), seedFields.app_sql_datev2, forwardScope.app_sql_datev2),
+        ringNumber: seedFields.ring_number,
+        classNumber: seedFields.class_number,
+        tieBreaker: scheduleTieBreaker,
+      });
+      const legacyKey = normalizeKey(row.key);
+      const key = normalizeKey(rowKeyParts.scheduleKey || legacyKey);
+      if (!key) continue;
+
+      const existing = existingByKey.get(key) || existingByKey.get(legacyKey);
+      const fields = buildCurrentFields(
+        row,
+        forwardScope,
+        null,
+        showRecordId,
+        nowIso,
+        dateOnly,
+        existing ? "prefetch_existing" : "prefetch_new",
+        null,
+        watchScheduleFieldMeta,
+        { isCurrentScope: false }
+      );
+      if (existing) {
+        updateRecords.push({ id: existing.id, fields });
+        forwardScheduleWriteSummary.updates_planned += 1;
+      } else {
+        createRecords.push({ fields });
+        forwardScheduleWriteSummary.creates_planned += 1;
+      }
+      forwardScheduleWriteSummary.rows_written += 1;
+    }
+  }
+
   const dropUpdates = [];
   let droppedForScheduleShowDateMismatch = 0;
   for (const row of existingRows) {
@@ -2663,6 +2790,7 @@ async function runScheduleForBaseContext({
         matched_rows: groupsLiveMatchedRows,
         error: groupsLiveError,
       },
+      forward_schedule_writes: forwardScheduleWriteSummary,
     },
     writes: {
       created: 0,
@@ -2855,4 +2983,5 @@ module.exports = {
   runDaily,
   scheduleHtmlFallbackDirs,
   scheduleRowKeyFromFields,
+  scopeForScheduleDate,
 };

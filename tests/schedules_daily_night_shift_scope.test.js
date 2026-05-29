@@ -1,7 +1,9 @@
 const assert = require("assert");
 const {
+  buildCurrentFields,
   resolveHeartbeatScopeFromCurrentHeartbeat,
   showHeartbeatTargetDate,
+  scopeForScheduleDate,
 } = require("../schedules_dailyv2");
 
 const scope = resolveHeartbeatScopeFromCurrentHeartbeat({
@@ -58,5 +60,36 @@ const threeDayDayWindow = showHeartbeatTargetDate({
   end_date: "2026-05-31",
 }, new Date("2026-05-30T14:30:00.000Z"));
 assert.strictEqual(threeDayDayWindow.target_date, "2026-05-30");
+
+const forwardScope = scopeForScheduleDate(scope, "2026-05-31");
+const forwardFields = buildCurrentFields(
+  {
+    fields: {
+      show_id: 200000063,
+      schedule_show_datev2: "2026-05-31",
+      scheduled_date: "2026-05-31",
+      show_date: "2026-05-31",
+      ring_number: 1,
+      class_number: 540,
+      class_group_id: 200024552,
+      group_name: "M&S USEF Pony Medal",
+    },
+  },
+  forwardScope,
+  null,
+  "recShow",
+  "2026-05-29T21:30:00.000Z",
+  "2026-05-29",
+  "prefetch_new",
+  null,
+  new Set(["is_current_scope", "heartbeat", "dropped_at", "inactive", "archive", "scheduled_date", "schedule_date"]),
+  { isCurrentScope: false }
+);
+assert.strictEqual(forwardFields.is_current_scope, false);
+assert.deepStrictEqual(forwardFields.heartbeat, []);
+assert.strictEqual(forwardFields.dropped_at, null);
+assert.strictEqual(forwardFields.inactive, false);
+assert.strictEqual(forwardFields.archive, false);
+assert.strictEqual(forwardFields.scheduled_date, "2026-05-31");
 
 console.log("schedules_daily_night_shift_scope tests passed");
