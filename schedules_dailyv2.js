@@ -1417,6 +1417,17 @@ function isValidAppSqlDate(candidateDate, scheduleInfo) {
   return true;
 }
 
+function resolveNightShiftedScheduleDate(baseContext, candidateDate, endDate) {
+  if (String(baseContext?.mode || "").toUpperCase() !== "NIGHT") return candidateDate;
+  if (!boolValue(baseContext?.current_shifted_to_next_day)) return candidateDate;
+
+  const baseDate = strictSqlDate(pickFirst(baseContext.focus_day, candidateDate), "focus_day");
+  const nextDate = addDaysSql(baseDate, 1);
+  if (compareSqlDate(candidateDate, nextDate) >= 0) return candidateDate;
+  if (endDate && compareSqlDate(nextDate, endDate) > 0) return candidateDate;
+  return nextDate;
+}
+
 function resolveHeartbeatScope(baseContext, emptyPayload) {
   const scheduleInfo = extractScheduleDefaultInfo(emptyPayload);
   const candidateAppSqlDate = strictSqlDate(
@@ -1426,15 +1437,20 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
   const validCandidate = isValidAppSqlDate(candidateAppSqlDate, scheduleInfo);
   assertHotpatchScopeMatches(baseContext);
   const setToDefault = hasHotpatchScopeOverride() ? false : !validCandidate;
-  const finalAppSqlDate = hasHotpatchScopeOverride()
+  const baseFinalAppSqlDate = hasHotpatchScopeOverride()
     ? HOTPATCH_APP_SQL_DATE
     : setToDefault
     ? scheduleInfo.default_app_sql_date_is
     : candidateAppSqlDate;
+  const finalAppSqlDate = hasHotpatchScopeOverride()
+    ? baseFinalAppSqlDate
+    : resolveNightShiftedScheduleDate(baseContext, baseFinalAppSqlDate, scheduleInfo.show_app_sql_end_date);
   const finalAppDowRaw = strictDowRaw(dowName(dayOfWeekUtc(finalAppSqlDate)), "derived_app_dow_raw");
   const shiftedToNextDay = boolValue(baseContext.current_shifted_to_next_day);
   const appSqlDateSource = hasHotpatchScopeOverride()
     ? "hotpatch_env_override"
+    : finalAppSqlDate !== baseFinalAppSqlDate
+    ? "night_shifted_next_day"
     : setToDefault
     ? "default_day"
     : strOrNull(baseContext.current_app_sql_date_source) || "heartbeat_app_sql_date";
@@ -1474,8 +1490,11 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
     "app_sql_date"
   );
   assertHotpatchScopeMatches(baseContext);
+  const shiftedCandidateAppSqlDate = hasHotpatchScopeOverride()
+    ? candidateAppSqlDate
+    : resolveNightShiftedScheduleDate(baseContext, candidateAppSqlDate, baseContext.current_show_app_sql_end_date);
   const finalAppSqlDate = strictSqlDate(
-    pickFirst(HOTPATCH_APP_SQL_DATE, baseContext.current_app_sql_date, candidateAppSqlDate),
+    pickFirst(HOTPATCH_APP_SQL_DATE, shiftedCandidateAppSqlDate, baseContext.current_app_sql_date, candidateAppSqlDate),
     "app_sql_date"
   );
   const inferredAppDowRaw = dowName(dayOfWeekUtc(finalAppSqlDate));
@@ -1494,7 +1513,7 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
     pickFirst(baseContext.current_default_app_sql_date_is, finalAppSqlDate),
     "default_app_sql_date_is"
   );
-  const appSqlDateSource = hasHotpatchScopeOverride() ? "hotpatch_env_override" : currentSource || (
+  const appSqlDateSource = hasHotpatchScopeOverride() ? "hotpatch_env_override" : finalAppSqlDate !== candidateAppSqlDate ? "night_shifted_next_day" : currentSource || (
     setToDefault
       ? "default_day"
       : "heartbeat_app_sql_date"
@@ -2646,6 +2665,9 @@ module.exports = {
   isSuspiciousPreliveEstimatedStartTime,
   normalizeHtmlScheduleTimeText,
   parseScheduleHtmlTimeOverlay,
+  resolveHeartbeatScope,
+  resolveHeartbeatScopeFromCurrentHeartbeat,
+  resolveNightShiftedScheduleDate,
   runDaily,
   scheduleHtmlFallbackDirs,
   scheduleRowKeyFromFields,
