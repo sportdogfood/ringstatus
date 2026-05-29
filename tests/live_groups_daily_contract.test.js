@@ -49,6 +49,19 @@ assert.ok(
 );
 
 assert.ok(
+  source.includes("attachLiveGroupLinks") &&
+    source.includes("row.watch_schedule = scheduleIds") &&
+    source.includes("row.watch_trips = tripIds"),
+  "live_groups_daily must bind watch_schedule and watch_trips links before upsert"
+);
+
+assert.ok(
+  source.includes('TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule"') &&
+    source.includes('TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips"'),
+  "live_groups_daily must read watch_schedule and watch_trips directly for link binding"
+);
+
+assert.ok(
   source.includes("live_groups_status_false") &&
     source.includes("live_groups_no_focus_rows") &&
     source.includes("logAutomationEvent"),

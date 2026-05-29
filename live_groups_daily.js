@@ -6,6 +6,8 @@ const TABLE_SHOW = process.env.TABLE_SHOW_TARGET || process.env.TABLE_SHOW || "s
 const VIEW_SHOW_HEARTBEAT = process.env.VIEW_SHOW_HEARTBEAT || "heartbeat";
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_LIVE_GROUPS = process.env.TABLE_LIVE_GROUPS || "live_groups";
+const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
+const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
@@ -104,6 +106,65 @@ function keyPart(value) {
 
 function buildLiveGroupsKey({ showId, focusDay, customerId, ringNumber, classGroupId }) {
   return [showId, focusDay, customerId, ringNumber, classGroupId].map(keyPart).join("|");
+}
+
+function escapeFormulaString(value) {
+  return String(value ?? "").replace(/'/g, "\\'");
+}
+
+function showScopeFormula(showId) {
+  const sid = Number(showId);
+  return `OR({show_id}=${sid},{app_show_idv2}=${sid},{app_show_id}=${sid})`;
+}
+
+function scheduleDateScopeFormula(sqlDate) {
+  const day = escapeFormulaString(sqlDate);
+  return [
+    `{scheduled_date}='${day}'`,
+    `{app_sql_datev2}='${day}'`,
+    `{schedule_show_datev2}='${day}'`,
+    `{show_date}='${day}'`,
+    `DATETIME_FORMAT({focus_day}, 'YYYY-MM-DD')='${day}'`,
+  ].join(",");
+}
+
+function tripDateScopeFormula(sqlDate) {
+  const day = escapeFormulaString(sqlDate);
+  return [
+    `{scheduled_date}='${day}'`,
+    `{app_sql_datev2}='${day}'`,
+    `{app_sql_date}='${day}'`,
+    `DATETIME_FORMAT({show_date}, 'YYYY-MM-DD')='${day}'`,
+    `DATETIME_FORMAT({schedule_show_datev2}, 'YYYY-MM-DD')='${day}'`,
+    `DATETIME_FORMAT({focus_day}, 'YYYY-MM-DD')='${day}'`,
+  ].join(",");
+}
+
+function recordIsUsable(fields = {}) {
+  return !boolValue(fields.archive) &&
+    !boolValue(fields.inactive) &&
+    !strOrNull(fields.dropped_at);
+}
+
+function splitStoredList(value) {
+  return String(value || "")
+    .split(/[,\n]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function numberSet(value) {
+  return new Set(
+    splitStoredList(value)
+      .map((item) => Number(item))
+      .filter((item) => Number.isFinite(item))
+  );
+}
+
+function numbersOverlap(set, value) {
+  if (!set.size) return true;
+  const num = numOrNull(value);
+  return num !== null && set.has(num);
 }
 
 function airtableHeaders(extra = {}) {
@@ -423,6 +484,132 @@ async function logAutomationEvent({ scope, errorType, message }) {
   await airtableCreate(TABLE_AUTOMATION_ERRS, [{ fields }]);
 }
 
+async function fetchWatchScheduleForScope(scope) {
+  return airtableList(TABLE_WATCH_SCHEDULE, {
+    pageSize: 100,
+    filterByFormula: `AND(${showScopeFormula(scope.show_id)},OR(${scheduleDateScopeFormula(scope.focus_day)}))`,
+    "fields[]": [
+      "show_id",
+      "app_show_idv2",
+      "app_show_id",
+      "scheduled_date",
+      "app_sql_datev2",
+      "schedule_show_datev2",
+      "show_date",
+      "focus_day",
+      "ring_number",
+      "class_group_id",
+      "class_number",
+      "archive",
+      "inactive",
+      "dropped_at",
+    ],
+  });
+}
+
+async function fetchWatchTripsForScope(scope) {
+  return airtableList(TABLE_WATCH_TRIPS, {
+    pageSize: 100,
+    filterByFormula: `AND(${showScopeFormula(scope.show_id)},OR(${tripDateScopeFormula(scope.focus_day)}))`,
+    "fields[]": [
+      "show_id",
+      "app_show_idv2",
+      "app_show_id",
+      "scheduled_date",
+      "app_sql_datev2",
+      "app_sql_date",
+      "show_date",
+      "schedule_show_datev2",
+      "focus_day",
+      "ring_number",
+      "class_group_id",
+      "class_id",
+      "class_number",
+      "entry_number",
+      "rider_name",
+      "horse",
+      "archive",
+      "inactive",
+      "dropped_at",
+    ],
+  });
+}
+
+function matchingWatchScheduleIds(row, watchScheduleRows) {
+  const classNumbers = numberSet(row.class_numbers);
+  const rowGroupId = numOrNull(row.class_group_id);
+  const rowRing = numOrNull(row.ring_number);
+  if (rowGroupId === null) return [];
+
+  return watchScheduleRows
+    .filter((record) => {
+      const fields = record.fields || {};
+      if (!recordIsUsable(fields)) return false;
+      if (numOrNull(fields.class_group_id) !== rowGroupId) return false;
+      const scheduleRing = numOrNull(fields.ring_number);
+      if (rowRing !== null && scheduleRing !== null && scheduleRing !== rowRing) return false;
+      return numbersOverlap(classNumbers, fields.class_number);
+    })
+    .map((record) => record.id);
+}
+
+function matchingWatchTripIds(row, watchTripRows) {
+  const classIds = numberSet(row.class_ids);
+  const classNumbers = numberSet(row.class_numbers);
+  const rowGroupId = numOrNull(row.class_group_id);
+  const rowRing = numOrNull(row.ring_number);
+  if (rowGroupId === null) return [];
+
+  return watchTripRows
+    .filter((record) => {
+      const fields = record.fields || {};
+      if (!recordIsUsable(fields)) return false;
+      if (numOrNull(fields.class_group_id) !== rowGroupId) return false;
+      const tripRing = numOrNull(fields.ring_number);
+      if (rowRing !== null && tripRing !== null && tripRing !== rowRing) return false;
+      if (classIds.size && numbersOverlap(classIds, fields.class_id)) return true;
+      if (classNumbers.size && numbersOverlap(classNumbers, fields.class_number)) return true;
+      return !classIds.size && !classNumbers.size;
+    })
+    .map((record) => record.id);
+}
+
+async function attachLiveGroupLinks(rows, scope, writable) {
+  if (!rows.length || (!writable.has("watch_schedule") && !writable.has("watch_trips"))) {
+    return { watch_schedule_matches: 0, watch_trips_matches: 0 };
+  }
+
+  const [watchScheduleRows, watchTripRows] = await Promise.all([
+    writable.has("watch_schedule") ? fetchWatchScheduleForScope(scope) : Promise.resolve([]),
+    writable.has("watch_trips") ? fetchWatchTripsForScope(scope) : Promise.resolve([]),
+  ]);
+
+  let scheduleMatchCount = 0;
+  let tripMatchCount = 0;
+  for (const row of rows) {
+    const scheduleIds = writable.has("watch_schedule")
+      ? matchingWatchScheduleIds(row, watchScheduleRows)
+      : undefined;
+    const tripIds = writable.has("watch_trips")
+      ? matchingWatchTripIds(row, watchTripRows)
+      : undefined;
+
+    if (scheduleIds) {
+      row.watch_schedule = scheduleIds;
+      scheduleMatchCount += scheduleIds.length;
+    }
+    if (tripIds) {
+      row.watch_trips = tripIds;
+      tripMatchCount += tripIds.length;
+    }
+  }
+
+  return {
+    watch_schedule_matches: scheduleMatchCount,
+    watch_trips_matches: tripMatchCount,
+  };
+}
+
 async function upsertLiveGroups(rows, writable) {
   if (!rows.length) return { created: 0, updated: 0 };
 
@@ -558,6 +745,7 @@ async function main() {
 
   const liveFieldMap = await tableFieldMap(TABLE_LIVE_GROUPS);
   const liveWritable = writableFields(liveFieldMap);
+  const linkResult = await attachLiveGroupLinks(rows, scope, liveWritable);
   const result = await upsertLiveGroups(rows, liveWritable);
 
   console.log(JSON.stringify({
@@ -570,6 +758,8 @@ async function main() {
     created: result.created,
     updated: result.updated,
     dropped: result.dropped,
+    watch_schedule_matches: linkResult.watch_schedule_matches,
+    watch_trips_matches: linkResult.watch_trips_matches,
     dry_run: DRY_RUN,
   }));
 }
