@@ -38,7 +38,6 @@ const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const TABLE_ACTIVE_TENANTS = process.env.TABLE_ACTIVE_TENANTS || "active_tenants";
 const TABLE_ACTIVE_CLASSES = process.env.TABLE_ACTIVE_CLASSES || "active_classes";
 const TABLE_ACTIVE_ENTRIES = process.env.TABLE_ACTIVE_ENTRIES || "active_entries";
-const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
 const TABLE_WW_RIDERS = process.env.TABLE_WW_RIDERS || "ww_riders";
 const TABLE_WW_HORSES = process.env.TABLE_WW_HORSES || "ww_horses";
 const TABLE_WW_TRAINERS = process.env.TABLE_WW_TRAINERS || "ww_trainers";
@@ -2194,7 +2193,6 @@ async function main() {
     wwTrainerRecordIdByPid,
     activeClassesFieldSet,
     activeEntriesFieldSet,
-    activeGroupsFieldSet,
     wwRidersFieldSet,
     wwHorsesFieldSet,
   ] = await Promise.all([
@@ -2206,10 +2204,10 @@ async function main() {
     fetchWwTrainerRecordIdByPid().catch(() => new Map()),
     fetchTableFieldSet(TABLE_ACTIVE_CLASSES),
     fetchTableFieldSet(TABLE_ACTIVE_ENTRIES),
-    fetchTableFieldSet(TABLE_ACTIVE_GROUPS).catch(() => new Set()),
     fetchTableFieldSet(TABLE_WW_RIDERS),
     fetchTableFieldSet(TABLE_WW_HORSES),
   ]);
+  const activeGroupsFieldSet = new Set();
 
   const currentScopeStatus = scopeStatusChoices.has("current") ? "current" : null;
   const droppedScopeStatus = scopeStatusChoices.has("dropped") ? "dropped" : null;
@@ -2562,22 +2560,31 @@ async function main() {
     lastRun: dateOnly,
   });
 
-  const activeGroupSync = await upsertActiveGroups({
-    tableName: TABLE_ACTIVE_GROUPS,
-    fieldSet: activeGroupsFieldSet,
-    rows: [...uniqueGroupRows.values()],
-    scopeAppSid: heartbeat.app_show_id,
-    runId,
-    lastRun: dateOnly,
-  });
+  const activeGroupSync = {
+    skipped: true,
+    reason: "active_groups_deprecated",
+    table: "active_groups",
+    created_planned: 0,
+    updated_planned: 0,
+    inactivated_planned: 0,
+    writes: {
+      created: 0,
+      updated: 0,
+      inactivated: 0,
+      create_failures: [],
+      update_failures: [],
+      inactivate_failures: [],
+    },
+  };
 
-  const activeLinkSync = await syncActiveTableLinks({
-    scopeAppSid: heartbeat.app_show_id,
-    activeGroupsFieldSet,
-    activeClassesFieldSet,
-    activeEntriesFieldSet,
-    entryClassKeysByEntryKey,
-  });
+  const activeLinkSync = {
+    skipped: true,
+    reason: "active_groups_deprecated",
+    active_groups_to_classes: { planned: 0, updated: 0, failures: [] },
+    active_classes_to_groups: { planned: 0, updated: 0, failures: [] },
+    active_entries_to_classes: { planned: 0, updated: 0, failures: [] },
+    active_classes_to_entries: { planned: 0, updated: 0, failures: [] },
+  };
 
   const emptyTenantIds = tenantSummaries
     .filter((item) => item.empty_payload)
