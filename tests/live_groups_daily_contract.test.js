@@ -19,6 +19,11 @@ assert.ok(
 );
 
 assert.ok(
+  source.includes('TABLE_LIVE_GROUP_CHANGES = process.env.TABLE_LIVE_GROUP_CHANGES || "live_group_changes"'),
+  "live_groups_daily must write group-level change logs to live_group_changes"
+);
+
+assert.ok(
   source.includes('if (mode !== "DAY")') &&
     source.includes('reason: "mode_not_day"'),
   "live_groups_daily must skip outside DAY mode"
@@ -46,6 +51,23 @@ assert.ok(
   source.includes("fields.dropped_at = RUN_AT") &&
     source.includes("dropped: droppedUpdates.length"),
   "live_groups_daily must mark same-scope rows missing from a successful payload as dropped"
+);
+
+assert.ok(
+  source.includes("LIVE_GROUP_CHANGE_FIELDS") &&
+    source.includes('"estimated_start_time"') &&
+    source.includes('"gone"') &&
+    source.includes("logLiveGroupChanges"),
+  "live_groups_daily must log only selected group-level field changes"
+);
+
+assert.ok(
+  source.includes("field_changed") &&
+    source.includes("old_value") &&
+    source.includes("new_value") &&
+    source.includes("changed_at") &&
+    source.includes("live_groups: ["),
+  "live_groups_daily must append linkable live_group_changes rows with before/after values"
 );
 
 assert.ok(

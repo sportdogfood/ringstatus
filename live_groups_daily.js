@@ -6,6 +6,7 @@ const TABLE_SHOW = process.env.TABLE_SHOW_TARGET || process.env.TABLE_SHOW || "s
 const VIEW_SHOW_HEARTBEAT = process.env.VIEW_SHOW_HEARTBEAT || "heartbeat";
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_LIVE_GROUPS = process.env.TABLE_LIVE_GROUPS || "live_groups";
+const TABLE_LIVE_GROUP_CHANGES = process.env.TABLE_LIVE_GROUP_CHANGES || "live_group_changes";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
@@ -35,6 +36,11 @@ const LIVE_GROUPS_WRITABLE_TYPES = new Set([
   "dateTime",
   "multipleRecordLinks",
 ]);
+
+const LIVE_GROUP_CHANGE_FIELDS = [
+  "estimated_start_time",
+  "gone",
+];
 
 const RUN_AT = new Date().toISOString();
 const RUN_ID = Date.now();
@@ -275,6 +281,50 @@ function pickWritable(fields, writableSet) {
     out[name] = value;
   }
   return out;
+}
+
+function changeValue(value) {
+  if (isBlank(value)) return "";
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  if (typeof value === "boolean") return value ? "true" : "false";
+  return String(firstValue(value)).trim();
+}
+
+function buildLiveGroupChangeRows({ incomingRow, existingRecord, fieldsToWatch }) {
+  const existingFields = existingRecord?.fields || {};
+  const liveGroupId = existingRecord?.id;
+  if (!liveGroupId) return [];
+
+  const changes = [];
+  for (const fieldName of fieldsToWatch) {
+    const oldValue = changeValue(existingFields[fieldName]);
+    const newValue = changeValue(incomingRow[fieldName]);
+    if (oldValue === newValue) continue;
+
+    changes.push({
+      change_key: [
+        incomingRow.live_groups_key,
+        fieldName,
+        oldValue || "blank",
+        newValue || "blank",
+        RUN_ID,
+      ].join("|"),
+      live_groups: [liveGroupId],
+      show: incomingRow.show,
+      show_id: incomingRow.show_id,
+      focus_day: incomingRow.live_focus_day || incomingRow.day,
+      class_group_id: incomingRow.class_group_id,
+      group_name: incomingRow.group_name,
+      ring_number: incomingRow.ring_number,
+      field_changed: fieldName,
+      old_value: oldValue,
+      new_value: newValue,
+      changed_at: RUN_AT,
+      run_tag: `live_groups_daily|${RUN_ID}|group_change`,
+    });
+  }
+
+  return changes;
 }
 
 async function resolveHeartbeatShow() {
@@ -610,6 +660,17 @@ async function attachLiveGroupLinks(rows, scope, writable) {
   };
 }
 
+async function logLiveGroupChanges(changeRows) {
+  if (!changeRows.length) return 0;
+  const fieldMap = await tableFieldMap(TABLE_LIVE_GROUP_CHANGES);
+  const writable = writableFields(fieldMap);
+  const records = changeRows
+    .map((fields) => ({ fields: pickWritable(fields, writable) }))
+    .filter((record) => Object.keys(record.fields).length);
+  await airtableCreate(TABLE_LIVE_GROUP_CHANGES, records);
+  return records.length;
+}
+
 async function upsertLiveGroups(rows, writable) {
   if (!rows.length) return { created: 0, updated: 0 };
 
@@ -617,6 +678,7 @@ async function upsertLiveGroups(rows, writable) {
   const day = rows[0].day;
   const customerId = rows[0].customer_id;
   const fetchFields = ["live_groups_key"];
+  for (const fieldName of LIVE_GROUP_CHANGE_FIELDS) fetchFields.push(fieldName);
   if (writable.has("is_cuurent_scope")) fetchFields.push("is_cuurent_scope");
   if (writable.has("is_current_scope")) fetchFields.push("is_current_scope");
   if (writable.has("dropped_at")) fetchFields.push("dropped_at");
@@ -628,18 +690,24 @@ async function upsertLiveGroups(rows, writable) {
   const byKey = new Map();
   for (const row of existingRows) {
     const key = strOrNull(row.fields?.live_groups_key);
-    if (key) byKey.set(key, row.id);
+    if (key) byKey.set(key, row);
   }
 
   const creates = [];
   const updates = [];
+  const changeRows = [];
   const currentKeys = new Set();
   for (const row of rows) {
     currentKeys.add(row.live_groups_key);
     const fields = pickWritable(row, writable);
-    const existingId = byKey.get(row.live_groups_key);
-    if (existingId) {
-      updates.push({ id: existingId, fields });
+    const existingRecord = byKey.get(row.live_groups_key);
+    if (existingRecord) {
+      updates.push({ id: existingRecord.id, fields });
+      changeRows.push(...buildLiveGroupChangeRows({
+        incomingRow: row,
+        existingRecord,
+        fieldsToWatch: LIVE_GROUP_CHANGE_FIELDS,
+      }));
     } else {
       creates.push({ fields });
     }
@@ -660,7 +728,22 @@ async function upsertLiveGroups(rows, writable) {
   await airtableUpdate(TABLE_LIVE_GROUPS, updates);
   await airtableCreate(TABLE_LIVE_GROUPS, creates);
   await airtableUpdate(TABLE_LIVE_GROUPS, droppedUpdates);
-  return { created: creates.length, updated: updates.length, dropped: droppedUpdates.length };
+  let changesLogged = 0;
+  try {
+    changesLogged = await logLiveGroupChanges(changeRows);
+  } catch (error) {
+    console.warn(JSON.stringify({
+      ok: false,
+      event: "live_group_changes_failed",
+      error: String(error?.message || error).slice(0, 800),
+    }));
+  }
+  return {
+    created: creates.length,
+    updated: updates.length,
+    dropped: droppedUpdates.length,
+    changes_logged: changesLogged,
+  };
 }
 
 async function main() {
@@ -758,6 +841,7 @@ async function main() {
     created: result.created,
     updated: result.updated,
     dropped: result.dropped,
+    changes_logged: result.changes_logged,
     watch_schedule_matches: linkResult.watch_schedule_matches,
     watch_trips_matches: linkResult.watch_trips_matches,
     dry_run: DRY_RUN,
