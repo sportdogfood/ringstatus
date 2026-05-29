@@ -63,8 +63,8 @@ assert.strictEqual(
 assert.strictEqual(row.sgl_token_prefix, "29665325v");
 assert.strictEqual(row.sgl_token_length, row.sgl_token_raw.length);
 assert.ok(
-  result.unique_rows_by_key.has("people:715:3160"),
-  "dedupe should use people trip key when class_number + entry_number exist"
+  result.unique_rows_by_key.has("8778|people:715:3160"),
+  "dedupe should use tenant + people trip key when class_number + entry_number exist"
 );
 assert.ok(
   !result.unique_rows_by_key.has("fallback:8778:3160:715:markanto_a"),
@@ -112,5 +112,72 @@ assert.strictEqual(choppyResult.normalized_rows[0].horse, "INSIDER BH");
 assert.strictEqual(choppyResult.normalized_rows[0].rider_name, "VICTORIA ROTSAERT");
 assert.strictEqual(choppyResult.normalized_rows[0].class_group_id, 200023690);
 assert.strictEqual(choppyResult.normalized_rows[0].ring_number, 1);
+
+const unmatchedScheduleResult = normalizeTripsForScope({
+  sourceIds: [19676],
+  peoplePayloads: new Map([[
+    19676,
+    {
+      trips: [
+        {
+          class_id: null,
+          class_number: 550,
+          class_name: "Dover Saddlery/USEF Hunter Seat Medal",
+          class_type: "Equitation",
+          entry_number: 2,
+          horse: "JASON",
+          rider_name: "ZOEY BURTON",
+          ring: 5,
+          ring_id: 48,
+          ring_name: "GDF Hunter Ring 1",
+          scheduled_date: "2026-05-31T00:00:00.000Z",
+          schedule_starttime: "08:36:00",
+        },
+      ],
+    },
+  ]]),
+  scheduleByClassId: buildScheduleMap([]),
+});
+
+assert.strictEqual(
+  unmatchedScheduleResult.row_count,
+  1,
+  "people trips must still create watch_trips rows when no matching watch_schedule row exists"
+);
+assert.strictEqual(unmatchedScheduleResult.outside_schedule.length, 1);
+assert.strictEqual(unmatchedScheduleResult.unique_row_count, 1);
+assert.ok(unmatchedScheduleResult.unique_rows_by_key.has("19676|people:550:2"));
+assert.strictEqual(unmatchedScheduleResult.normalized_rows[0].trip_key, "people:550:2");
+assert.strictEqual(unmatchedScheduleResult.normalized_rows[0].schedule_show_datev2, "2026-05-31");
+assert.strictEqual(unmatchedScheduleResult.normalized_rows[0].ring_number, 5);
+assert.strictEqual(unmatchedScheduleResult.normalized_rows[0].class_number, 550);
+assert.strictEqual(unmatchedScheduleResult.normalized_rows[0].class_name, "Dover Saddlery/USEF Hunter Seat Medal");
+assert.strictEqual(unmatchedScheduleResult.normalized_rows[0].estimated_start_time, "08:36:00");
+assert.strictEqual(unmatchedScheduleResult.normalized_rows[0].watch_schedule_record_id, undefined);
+
+const invalidDateResult = normalizeTripsForScope({
+  sourceIds: [19676],
+  peoplePayloads: new Map([[
+    19676,
+    {
+      trips: [
+        {
+          class_number: 999,
+          entry_number: 1,
+          horse: "BAD DATE",
+          rider_name: "DATE GUARD",
+          scheduled_date: "0000-00-00",
+        },
+      ],
+    },
+  ]]),
+  scheduleByClassId: buildScheduleMap([]),
+});
+
+assert.strictEqual(
+  invalidDateResult.normalized_rows[0].scheduled_date,
+  undefined,
+  "0000-00-00 must not be treated as a writable Airtable date"
+);
 
 console.log("trips_normalizer_people_trip_key tests passed");

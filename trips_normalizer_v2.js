@@ -71,8 +71,15 @@ function toIsoDateOnly(value) {
   if (isBlank(value)) return null;
   if (value instanceof Date) return value.toISOString().slice(0, 10);
   const text = String(value).trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
-  if (/^\d{4}-\d{2}-\d{2}T/.test(text)) return text.slice(0, 10);
+  const isoText = /^\d{4}-\d{2}-\d{2}$/.test(text)
+    ? text
+    : (/^\d{4}-\d{2}-\d{2}T/.test(text) ? text.slice(0, 10) : null);
+  if (isoText) {
+    const parsedIso = new Date(`${isoText}T00:00:00.000Z`);
+    return Number.isFinite(parsedIso.getTime()) && parsedIso.toISOString().slice(0, 10) === isoText
+      ? isoText
+      : null;
+  }
   const parsed = Date.parse(text);
   return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
 }
@@ -189,6 +196,11 @@ function normalizePeopleTripRow(raw, ownerPid) {
     class_name: String(raw?.class_name ?? raw?.className ?? "").trim(),
     class_number: classNumber,
     class_group_id: numOrNull(raw?.class_group_id ?? raw?.classGroupId) ?? undefined,
+    class_type: strOrNull(raw?.class_type ?? raw?.classType) ?? undefined,
+    ring_number: numOrNull(raw?.ring_number ?? raw?.ringNumber ?? raw?.ring) ?? undefined,
+    ring_id: numOrNull(raw?.ring_id ?? raw?.ringId) ?? undefined,
+    ring_name: strOrNull(raw?.ring_name ?? raw?.ringName) ?? undefined,
+    scheduled_date: toIsoDateOnly(raw?.scheduled_date ?? raw?.scheduledDate ?? raw?.show_date ?? raw?.showDate ?? raw?.day) ?? undefined,
     rider_name: String(raw?.rider_name ?? raw?.riderName ?? "").trim(),
     rider_id: numOrNull(raw?.rider_id ?? raw?.riderId) ?? undefined,
     placing: numOrNull(raw?.placing) ?? undefined,
@@ -217,7 +229,6 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
       const schedule = findScheduleForTrip(scheduleByClassId, trip);
       if (!schedule) {
         outsideSchedule.push(`${trip.class_id ?? trip.class_number}|${trip.trip_key || trip.entryxclasses_uuid}`);
-        continue;
       }
 
       const row = {
@@ -228,40 +239,40 @@ function normalizeTripsForScope({ sourceIds = [], trainerPids = [], peoplePayloa
         entry_id: trip.entry_id,
         entry_number: trip.entry_number,
         horse: trip.horse,
-        class_id: schedule.class_id ?? trip.class_id,
-        class_number: schedule.class_number ?? trip.class_number,
-        class_name: schedule.class_name || trip.class_name,
-        schedule_sequencetype: schedule.schedule_sequencetype,
-        class_type: schedule.class_type,
-        class_group_id: schedule.class_group_id ?? trip.class_group_id,
-        group_name: schedule.group_name,
-        class_groupxclasses_id: schedule.class_groupxclasses_id,
-        ring_number: schedule.ring_number,
-        estimated_start_time: schedule.estimated_start_time,
-        estimated_end_time: schedule.estimated_end_time,
-        total_trips: schedule.total_trips,
-        completed_trips: schedule.completed_trips,
-        class_group_sequence: schedule.class_group_sequence,
-        schedule_key: schedule.schedule_key,
-        schedule_short: schedule.schedule_short,
-        class_sequence: schedule.class_sequence,
-        schedule_show_datev2: schedule.schedule_show_datev2,
+        class_id: schedule?.class_id ?? trip.class_id,
+        class_number: schedule?.class_number ?? trip.class_number,
+        class_name: schedule?.class_name || trip.class_name,
+        schedule_sequencetype: schedule?.schedule_sequencetype,
+        class_type: schedule?.class_type || trip.class_type,
+        class_group_id: schedule?.class_group_id ?? trip.class_group_id,
+        group_name: schedule?.group_name,
+        class_groupxclasses_id: schedule?.class_groupxclasses_id,
+        ring_number: schedule?.ring_number ?? trip.ring_number,
+        estimated_start_time: schedule?.estimated_start_time || trip.schedule_starttime,
+        estimated_end_time: schedule?.estimated_end_time,
+        total_trips: schedule?.total_trips,
+        completed_trips: schedule?.completed_trips,
+        class_group_sequence: schedule?.class_group_sequence,
+        schedule_key: schedule?.schedule_key,
+        schedule_short: schedule?.schedule_short,
+        class_sequence: schedule?.class_sequence,
+        schedule_show_datev2: schedule?.schedule_show_datev2 || trip.scheduled_date,
         rider_name: trip.rider_name,
         rider_id: trip.rider_id,
         placing: trip.placing,
         order_of_go: trip.order_of_go,
         schedule_starttime: trip.schedule_starttime,
-        status: trip.status || schedule.status,
+        status: trip.status || schedule?.status,
         sgl_token_raw: trip.sgl_token_raw,
         sgl_token_prefix: trip.sgl_token_prefix,
         sgl_token_length: trip.sgl_token_length,
         sgl_token_hash: trip.sgl_token_hash,
-        watch_schedule_record_id: schedule.recordId,
+        watch_schedule_record_id: schedule?.recordId,
       };
 
       normalizedRows.push(row);
       keptCount += 1;
-      const key = normalizeKey(row.trip_key || row.entryxclasses_uuid);
+      const key = normalizeKey([row.pid, row.trip_key || row.entryxclasses_uuid].filter((part) => !isBlank(part)).join("|"));
       if (key && !uniqueRows.has(key)) uniqueRows.set(key, row);
     }
     sourceRowCounts[String(sourceId)] = keptCount;

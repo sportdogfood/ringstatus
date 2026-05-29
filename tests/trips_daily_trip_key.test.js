@@ -1,7 +1,10 @@
 const assert = require("assert");
 
 const {
+  buildCurrentFields,
+  buildDuplicateTripArchiveUpdates,
   buildTripKeyParts,
+  selectTripRowsForWriteScope,
   tripRowKeyFromFields,
 } = require("../trips_dailyv2");
 
@@ -84,6 +87,125 @@ assert.strictEqual(
   }),
   "people:715:3160",
   "legacy fallback rows should match the new people trip key when the pair exists"
+);
+
+const writeRows = selectTripRowsForWriteScope(new Map([
+  ["focus", { scheduled_date: "2026-05-29", class_number: 715 }],
+  ["forward", { scheduled_date: "2026-05-31", class_number: 550 }],
+  ["invalid", { scheduled_date: "0000-00-00", class_number: 999 }],
+]), { app_sql_date: "2026-05-29" });
+
+assert.deepStrictEqual(
+  writeRows.map((row) => row.class_number),
+  [715, 550],
+  "watch_trips writes must keep non-focus show trip rows instead of filtering them out"
+);
+
+const nonFocusFields = buildCurrentFields(
+  {
+    scheduled_date: "2026-05-31",
+    ring_number: 5,
+    class_number: 550,
+    entry_number: 2,
+    pid: 19676,
+  },
+  {
+    recordId: "recHeartbeat",
+    app_show_id: 200000063,
+    app_sql_date: "2026-05-29",
+    app_time: "17:00:00",
+    app_dow_raw: "Friday",
+    shifted_to_next_day: true,
+    scope_run_id: "run-1",
+    mode: "NIGHT",
+  },
+  "recShow",
+  "2026-05-29T21:00:00.000Z",
+  "2026-05-29",
+  "current",
+  new Set([
+    "heartbeat",
+    "shows",
+    "show_id",
+    "show_date",
+    "app_show_id",
+    "app_sql_date",
+    "app_show_idv2",
+    "app_sql_datev2",
+    "schedule_show_datev2",
+    "scheduled_date",
+    "trips_key",
+    "is_current_scope",
+    "inactive",
+    "archive",
+    "dropped_at",
+    "pid",
+    "entry_number",
+    "ring_number",
+    "class_number",
+  ])
+);
+
+assert.strictEqual(
+  nonFocusFields.is_current_scope,
+  false,
+  "non-focus show trip rows should be retained but not marked current"
+);
+assert.strictEqual(
+  nonFocusFields.inactive,
+  false,
+  "non-focus show trip rows should not be archived/inactivated just because they are not focus_day"
+);
+assert.strictEqual(
+  nonFocusFields.show_date,
+  "2026-05-31",
+  "trip row show_date should preserve its scheduled date"
+);
+assert.strictEqual(
+  nonFocusFields.schedule_show_datev2,
+  "2026-05-31",
+  "trip row schedule_show_datev2 should preserve its scheduled date"
+);
+
+const duplicateArchives = buildDuplicateTripArchiveUpdates(
+  [
+    { id: "recKeep", fields: { trips_key: "show|date|ring|class|pid|entry", is_current_scope: true } },
+    { id: "recDrop", fields: { trips_key: "show|date|ring|class|pid|entry" } },
+    { id: "recArchived", fields: { trips_key: "show|date|ring|class|pid|entry", archive: true } },
+  ],
+  new Set(["recKeep"]),
+  "2026-05-29T21:00:00.000Z",
+  "2026-05-29",
+  new Set(["is_current_scope", "inactive", "archive", "dropped_at", "run_time", "last_seen_at"])
+);
+
+assert.deepStrictEqual(
+  duplicateArchives,
+  [
+    {
+      id: "recDrop",
+      fields: {
+        is_current_scope: false,
+        inactive: true,
+        archive: true,
+        dropped_at: "2026-05-29",
+        run_time: "2026-05-29T21:00:00.000Z",
+        last_seen_at: "2026-05-29",
+      },
+    },
+    {
+      id: "recArchived",
+      fields: {
+        is_current_scope: false,
+        inactive: true,
+        archive: true,
+        dropped_at: "2026-05-29",
+        run_time: "2026-05-29T21:00:00.000Z",
+        last_seen_at: "2026-05-29",
+      },
+    },
+  ],
+  "duplicate trip keys should fully archive every extra row"
 );
 
 console.log("trips_daily_trip_key tests passed");

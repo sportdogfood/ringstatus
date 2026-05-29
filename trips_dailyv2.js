@@ -326,8 +326,15 @@ function toIsoDateOnly(value) {
   if (isBlank(value)) return null;
   if (value instanceof Date) return value.toISOString().slice(0, 10);
   const text = String(value).trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
-  if (/^\d{4}-\d{2}-\d{2}T/.test(text)) return text.slice(0, 10);
+  const isoText = /^\d{4}-\d{2}-\d{2}$/.test(text)
+    ? text
+    : (/^\d{4}-\d{2}-\d{2}T/.test(text) ? text.slice(0, 10) : null);
+  if (isoText) {
+    const parsedIso = new Date(`${isoText}T00:00:00.000Z`);
+    return Number.isFinite(parsedIso.getTime()) && parsedIso.toISOString().slice(0, 10) === isoText
+      ? isoText
+      : null;
+  }
   const parsed = Date.parse(text);
   return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
 }
@@ -953,6 +960,9 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
   if (!rows.length) return null;
   const scored = rows.map((row, index) => {
     let score = 0;
+    if (boolValue(row?.fields?.archive) || boolValue(row?.fields?.inactive) || !isBlank(row?.fields?.dropped_at)) {
+      score -= 100;
+    }
     if (heartbeatViewIdSet.has(row.id)) score += 10;
     if (boolValue(row?.fields?.is_current_scope)) score += 5;
     if (firstValue(row?.fields?.heartbeat)) score += 3;
@@ -961,6 +971,50 @@ function chooseExistingWinner(rows, heartbeatViewIdSet) {
   });
   scored.sort((a, b) => b.score - a.score);
   return scored[0].row;
+}
+
+function buildDuplicateTripArchiveUpdates(existingRows, heartbeatViewIdSet, nowIso, dateOnly, watchTripsFieldSet) {
+  const grouped = new Map();
+  for (const row of existingRows || []) {
+    const fields = row?.fields || {};
+    const key = normalizeKey(firstValue(fields.trips_key)) || tripRowKeyFromFields(fields);
+    if (!key) continue;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(row);
+  }
+
+  const updates = [];
+  const maybeSet = (fields, name, value) => {
+    if (!watchTripsFieldSet.has(name)) return;
+    setIfPresent(fields, name, value);
+  };
+
+  for (const rows of grouped.values()) {
+    const activeRows = rows.filter((row) => {
+      const fields = row?.fields || {};
+      return !boolValue(fields.archive) && !boolValue(fields.inactive) && isBlank(fields.dropped_at);
+    });
+    if (rows.length <= 1) continue;
+
+    const winner = chooseExistingWinner(activeRows.length ? activeRows : rows, heartbeatViewIdSet);
+    for (const row of rows) {
+      if (!winner || row.id === winner.id) continue;
+      const currentFields = row?.fields || {};
+      if (boolValue(currentFields.archive) && boolValue(currentFields.inactive) && !isBlank(currentFields.dropped_at)) {
+        continue;
+      }
+      const fields = {};
+      maybeSet(fields, "is_current_scope", false);
+      maybeSet(fields, "inactive", true);
+      maybeSet(fields, "archive", true);
+      maybeSet(fields, "dropped_at", dateOnly);
+      maybeSet(fields, "run_time", nowIso);
+      maybeSet(fields, "last_seen_at", dateOnly);
+      updates.push({ id: row.id, fields });
+    }
+  }
+
+  return updates;
 }
 
 async function fetchJson(url, audit = {}) {
@@ -2009,9 +2063,9 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("app_dow_rawv2", heartbeat.app_dow_raw);
   maybeSet("shifted_to_next_dayv2", heartbeat.shifted_to_next_day);
   maybeSet("scope_run_id", heartbeat.scope_run_id);
-  maybeSet("is_current_scope", true);
+  maybeSet("is_current_scope", isActiveForScope);
   maybeSet("scope_status", currentScopeStatus);
-  maybeSet("inactive", !isActiveForScope);
+  maybeSet("inactive", false);
   maybeSet("archive", false);
   maybeSet("last_seen_at", dateOnly);
   maybeSet("dropped_at", null);
@@ -2095,6 +2149,10 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
 function rowScheduledDateMatchesScope(row, heartbeat) {
   const resolvedScheduledDate = resolveTripScheduleDate(row);
   return resolvedScheduledDate === heartbeat.app_sql_date;
+}
+
+function selectTripRowsForWriteScope(uniqueRows) {
+  return [...uniqueRows.values()].filter((row) => resolveTripScheduleDate(row));
 }
 
 function scheduleRowMatchesHeartbeat(row, heartbeat) {
@@ -2542,6 +2600,13 @@ async function main() {
     const winner = chooseExistingWinner(rows, heartbeatViewIdSet);
     if (winner) existingByKey.set(key, winner);
   }
+  const duplicateArchiveUpdates = buildDuplicateTripArchiveUpdates(
+    existingRows,
+    heartbeatViewIdSet,
+    nowIso,
+    dateOnly,
+    watchTripsFieldSet
+  );
 
   const createRecords = [];
   const updateRecords = [];
@@ -2552,7 +2617,8 @@ async function main() {
     samples: [],
   };
   const keepKeySet = new Set();
-  const scopedRows = [...uniqueRows.values()].filter((row) => rowScheduledDateMatchesScope(row, heartbeat));
+  const scopedRows = selectTripRowsForWriteScope(uniqueRows, heartbeat);
+  const skippedInvalidScheduledDate = uniqueRows.size - scopedRows.length;
   let skippedMalformedScheduleKey = 0;
   const skippedMalformedScheduleKeySamples = [];
 
@@ -2622,12 +2688,14 @@ async function main() {
       active_tenant_ids: activeTenantIds.length,
       watch_schedule_classes: scheduleJoinClasses,
       normalized_rows: normalizedRows.length,
-      filtered_out_scheduled_date_mismatch: uniqueRows.size,
+      filtered_out_scheduled_date_mismatch: 0,
+      skipped_invalid_scheduled_date: skippedInvalidScheduledDate,
       outside_schedule_count: outsideSchedule.length,
       empty_tenant_ids: emptyTenantIds,
       tenant_summaries: tenantSummaries,
       people_failures: peopleFailures,
       drops_planned: dropUpdates.length,
+      duplicate_archives_planned: duplicateArchiveUpdates.length,
       active_groups: activeGroupSync,
     active_links: activeLinkSync,
     manual_time_override_guard: manualTimeOverrideGuard,
@@ -2635,9 +2703,11 @@ async function main() {
         created: 0,
         updated: 0,
         dropped: 0,
+        duplicate_archived: 0,
         create_failures: [],
         update_failures: [],
         drop_failures: [],
+        duplicate_archive_failures: [],
       },
       schedule_date_backfill: {
         planned: 0,
@@ -2648,11 +2718,14 @@ async function main() {
 
     if (!DRY_RUN) {
       const dropResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, dropUpdates);
+      const duplicateArchiveResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, duplicateArchiveUpdates);
       const backfillRows = await fetchTripScheduleBackfillRows(heartbeat.app_show_id);
       const backfillUpdates = buildTripScheduleBackfillUpdates(backfillRows, watchTripsFieldSet);
       const backfillResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, backfillUpdates);
       emptySummary.writes.dropped = dropResult.okRows;
+      emptySummary.writes.duplicate_archived = duplicateArchiveResult.okRows;
       emptySummary.writes.drop_failures = dropResult.failedRows;
+      emptySummary.writes.duplicate_archive_failures = duplicateArchiveResult.failedRows;
       emptySummary.schedule_date_backfill.planned = backfillUpdates.length;
       emptySummary.schedule_date_backfill.updated = backfillResult.okRows;
       emptySummary.schedule_date_backfill.failures = backfillResult.failedRows;
@@ -2695,7 +2768,8 @@ async function main() {
     unique_rows: scopedRows.length,
     skipped_malformed_schedule_key: skippedMalformedScheduleKey,
     skipped_malformed_schedule_key_samples: skippedMalformedScheduleKeySamples,
-    filtered_out_scheduled_date_mismatch: uniqueRows.size - scopedRows.length,
+    filtered_out_scheduled_date_mismatch: 0,
+    skipped_invalid_scheduled_date: skippedInvalidScheduledDate,
     people_failures: peopleFailures,
     soft_payload_samples: softPayloadSamples.slice(0, 10),
     partial_people_payload_failures: softPayloadSamples.length,
@@ -2707,6 +2781,7 @@ async function main() {
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
     drops_planned: dropUpdates.length,
+    duplicate_archives_planned: duplicateArchiveUpdates.length,
     existing_show_rows: existingRows.length,
     heartbeat_view_rows: heartbeatViewRows.length,
     manual_time_override_guard: manualTimeOverrideGuard,
@@ -2714,9 +2789,11 @@ async function main() {
       created: 0,
       updated: 0,
       dropped: 0,
+      duplicate_archived: 0,
       create_failures: [],
       update_failures: [],
       drop_failures: [],
+      duplicate_archive_failures: [],
     },
     schedule_date_backfill: {
       planned: 0,
@@ -2733,13 +2810,16 @@ async function main() {
     const createResult = await airtableCreateRecords(TABLE_WATCH_TRIPS, createRecords);
     const updateResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, updateRecords);
     const dropResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, dropUpdates);
+    const duplicateArchiveResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, duplicateArchiveUpdates);
     const backfillResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, backfillUpdates);
     summary.writes.created = createResult.okRows;
     summary.writes.updated = updateResult.okRows;
     summary.writes.dropped = dropResult.okRows;
+    summary.writes.duplicate_archived = duplicateArchiveResult.okRows;
     summary.writes.create_failures = createResult.failedRows;
     summary.writes.update_failures = updateResult.failedRows;
     summary.writes.drop_failures = dropResult.failedRows;
+    summary.writes.duplicate_archive_failures = duplicateArchiveResult.failedRows;
     summary.schedule_date_backfill.updated = backfillResult.okRows;
     summary.schedule_date_backfill.failures = backfillResult.failedRows;
   }
@@ -2764,9 +2844,12 @@ if (require.main === module) {
 
 module.exports = {
   applyManualTimeOverrideToTripFields,
+  buildCurrentFields,
+  buildDuplicateTripArchiveUpdates,
   buildTripKeyParts,
   buildDroppedFields,
   hasManualTimeOverride,
+  selectTripRowsForWriteScope,
   tripRowKeyFromFields,
   WATCH_TRIPS_HEARTBEAT_FIELDS,
 };
