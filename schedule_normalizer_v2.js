@@ -199,6 +199,7 @@ function mergePreserveJoinKeys(prev, next) {
   if (prev.show_ring_key && !next.show_ring_key) merged.show_ring_key = prev.show_ring_key;
   if (prev.show_day_key && !next.show_day_key) merged.show_day_key = prev.show_day_key;
   if (prev.ring_number !== undefined && next.ring_number === undefined) merged.ring_number = prev.ring_number;
+  if (prev.day_number !== undefined && next.day_number === undefined) merged.day_number = prev.day_number;
   if (prev.grouped_class !== undefined && next.grouped_class === undefined) merged.grouped_class = prev.grouped_class;
 
   return merged;
@@ -224,6 +225,7 @@ function mergeGroupOntoClass(classRow, groupRow) {
   if (groupRow.show_day_key && !merged.show_day_key) merged.show_day_key = groupRow.show_day_key;
   if (groupRow.show_ring_key && !merged.show_ring_key) merged.show_ring_key = groupRow.show_ring_key;
   if (groupRow.ring_number !== undefined && merged.ring_number === undefined) merged.ring_number = groupRow.ring_number;
+  if (groupRow.day_number !== undefined && merged.day_number === undefined) merged.day_number = groupRow.day_number;
   if (groupRow.show_id !== undefined && merged.show_id === undefined) merged.show_id = groupRow.show_id;
   if (groupRow.show_date && !merged.show_date) merged.show_date = groupRow.show_date;
   for (const fieldName of ["sgl_token_raw", "sgl_token_prefix", "sgl_token_length", "sgl_token_hash"]) {
@@ -564,6 +566,7 @@ function normalizeSchedulePayload(payload, options) {
         show_day_key: showDayKey,
         show_ring_key: showRingKey,
         ring_number: ringNumber,
+        day_number: numOrNull(pickFirst(node.day_number, node.dayNumber)),
         group_has_warmup: pickFirst(node.group_has_warmup, node.groupHasWarmup),
         is_open_card_warmup: pickFirst(node.is_open_card_warmup, node.isOpenCardWarmup),
         grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),
@@ -604,6 +607,7 @@ function normalizeSchedulePayload(payload, options) {
         show_day_key: showDayKey,
         show_ring_key: showRingKey,
         ring_number: ringNumber,
+        day_number: numOrNull(pickFirst(node.day_number, node.dayNumber, classObj?.day_number, classObj?.dayNumber)),
         estimated_start_time: strOrNull(pickFirst(node.estimated_start_time, node.estimatedStartTime)),
         start_time_default: strOrNull(pickFirst(node.start_time_default, node.startTimeDefault)),
         estimated_end_time: strOrNull(pickFirst(node.estimated_end_time, node.estimatedEndTime)),
@@ -660,6 +664,7 @@ function normalizeSchedulePayload(payload, options) {
     setIfPresent(fields, "show_id", merged.show_id);
     setIfPresent(fields, "show_date", merged.show_date);
     setIfPresent(fields, "ring_number", merged.ring_number);
+    setIfPresent(fields, "day_number", merged.day_number);
     setIfPresent(fields, "class_group_sequence", merged.class_group_sequence);
     setIfPresent(fields, "group_name", merged.group_name);
     setIfPresent(fields, "class_number", merged.class_number);
