@@ -222,6 +222,37 @@ Only after class identity is strong enough:
 
 This is a temporary schedule-completion lane before live data starts feeding reliably. Once live feeds supply complete schedule timing, this becomes fallback/enrichment only.
 
+## Live Detail Lane Contract
+
+`live_groups_daily.js` is the discovery/binding runner. It populates current `live_groups`, marks dropped/current scope, and binds `watch_schedule` / `watch_trips`. It should not store full class rosters from `getLiveClassData`.
+
+The next detail runner starts from `live_groups` and only keeps rows for our linked `watch_trips`.
+
+Cadence:
+
+```text
+has_json detail view: slots A,C
+is_live detail view: slots A,B,C,D
+```
+
+Processing rules:
+
+```text
+Only ping detail rows where live_groups.watch_trips is not empty.
+Do not store unrelated riders from getLiveClassData.
+Use linked watch_trips as the rider/entry allowlist.
+Update OOG, Actual_OOG, and Gone directly to watch_trips from has_json pulls.
+Update Scr, Pos, and Gone directly to watch_trips from is_live pulls.
+Log only changes to the new live detail log table.
+```
+
+Stop condition:
+
+```text
+Because Gone is row-level and not available as a reliable live_groups filter, the detail runner must inspect linked watch_trips.
+If all linked watch_trips for a live_groups row are Gone=1 or otherwise no longer actionable, skip future detail pings for that live_groups row.
+```
+
 ## Airtable Review Filters
 
 ### `watch_schedule`
