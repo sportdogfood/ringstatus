@@ -6,17 +6,17 @@ const scriptPath = path.resolve(__dirname, "..", "schedules_dailyv2.js");
 const script = fs.readFileSync(scriptPath, "utf8");
 
 assert.ok(
-  script.includes("emptyPayload = await fetchJson(emptyUrl);"),
+  script.includes("emptyPayload = await fetchJson(emptyUrl, {"),
   "schedules_dailyv2 must still attempt the empty schedule ping"
 );
 
 assert.ok(
-  /catch\s*\(error\)\s*\{\s*emptyPingError\s*=\s*String\(error\?\.message\s*\|\|\s*error\);\s*\}/.test(script),
+  /catch\s*\(error\)\s*\{[\s\S]*emptyPingError\s*=\s*String\(error\?\.message\s*\|\|\s*error\);[\s\S]*\}/.test(script),
   "empty schedule ping failures must be recorded but must not hard-stop the dated schedule lane"
 );
 
 assert.ok(
-  script.includes("const datedPayload = await fetchJson(datedUrl);"),
+  script.includes("datedPayload = await fetchJson(datedUrl, {"),
   "dated schedule fetch must remain the authoritative fetch and keep its fail-fast behavior"
 );
 

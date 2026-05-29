@@ -57,7 +57,7 @@ const overlay = applyGroupsLiveFallback(rows, groupsById);
 assert.strictEqual(overlay.matched, 1, "groups_live should match by class_group_id");
 
 const fieldMeta = {
-  names: new Set([
+  writableNames: new Set([
     "groups_live",
     "ring_number",
     "show_date",
@@ -78,7 +78,7 @@ const fieldMeta = {
     "schedule_key",
     "schedule_short",
   ]),
-  actualByTrim: new Map(),
+  writableByTrim: new Map(),
 };
 
 const fields = buildCurrentFields(
