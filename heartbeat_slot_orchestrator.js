@@ -34,6 +34,7 @@ const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
 const DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "A,B,C,D";
 const DEFAULT_LIVE_GROUPS_SLOTS = "A,B,C,D";
+const DEFAULT_LIVE_CLASS_DETAIL_SLOTS = "A,B,C,D";
 const DEFAULT_PUBLISHER_SLOTS = "A,B,C,D";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
@@ -42,6 +43,7 @@ const LOG_PATH = process.env.ORCH_LOG_PATH || path.join(LOG_DIR, "heartbeat-slot
 const LOCK_PATH = process.env.ORCH_LOCK_PATH || path.join(LOG_DIR, "heartbeat-slot-orchestrator.lock");
 const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "30") || 30);
 const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
+const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DETAIL || "0") === "1";
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
@@ -53,6 +55,7 @@ const SCRIPT_LOG_FILES = {
   "trips_tagger.js": "trips-tagger.log",
   "trips_calculatorv2.js": "trips-calculatorv2.log",
   "live_groups_daily.js": "live-groups-daily.log",
+  "live_class_detail.js": "live-class-detail.log",
   "publisher.js": "publisher.log",
 };
 
@@ -404,6 +407,9 @@ async function runOrchestrator() {
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
     const liveGroupsDue = mode === "DAY"
       && slotIsDue(slot, process.env.ORCH_LIVE_GROUPS_SLOTS, DEFAULT_LIVE_GROUPS_SLOTS);
+    const liveClassDetailDue = mode === "DAY"
+      && !DISABLE_LIVE_CLASS_DETAIL
+      && slotIsDue(slot, process.env.ORCH_LIVE_CLASS_DETAIL_SLOTS, DEFAULT_LIVE_CLASS_DETAIL_SLOTS);
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
 
     let upstreamOk = true;
@@ -460,6 +466,11 @@ async function runOrchestrator() {
       if (!liveGroupsResult.ok) upstreamOk = false;
     }
 
+    if (liveClassDetailDue) {
+      const liveClassDetailResult = runNodeScript("live_class_detail.js");
+      if (!liveClassDetailResult.ok) upstreamOk = false;
+    }
+
     if (publisherDue && upstreamOk) {
       runNodeScript("publisher.js");
     } else if (publisherDue) {
@@ -480,6 +491,7 @@ async function runOrchestrator() {
         trips_tagger: tripsTaggerDue,
         trips_calculator: tripsCalcDue,
         live_groups: liveGroupsDue,
+        live_class_detail: liveClassDetailDue,
         publisher: publisherDue,
       },
     });
