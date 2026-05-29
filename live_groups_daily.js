@@ -396,6 +396,9 @@ function normalizePayloadRows(payload, scope) {
         run_tag: `live_groups_daily|${RUN_ID}|${scope.show_id}|${scope.focus_day}`,
         is_live: boolValue(item?.is_live),
         has_JSON: boolValue(item?.has_JSON),
+        is_cuurent_scope: true,
+        is_current_scope: true,
+        dropped_at: null,
         status: strOrNull(item?.status),
       });
     }
@@ -426,10 +429,14 @@ async function upsertLiveGroups(rows, writable) {
   const showId = rows[0].show_id;
   const day = rows[0].day;
   const customerId = rows[0].customer_id;
+  const fetchFields = ["live_groups_key"];
+  if (writable.has("is_cuurent_scope")) fetchFields.push("is_cuurent_scope");
+  if (writable.has("is_current_scope")) fetchFields.push("is_current_scope");
+  if (writable.has("dropped_at")) fetchFields.push("dropped_at");
   const existingRows = await airtableList(TABLE_LIVE_GROUPS, {
     pageSize: 100,
     filterByFormula: `AND({show_id}=${showId},{customer_id}=${customerId},{day}='${day}')`,
-    "fields[]": ["live_groups_key"],
+    "fields[]": fetchFields,
   });
   const byKey = new Map();
   for (const row of existingRows) {
@@ -439,7 +446,9 @@ async function upsertLiveGroups(rows, writable) {
 
   const creates = [];
   const updates = [];
+  const currentKeys = new Set();
   for (const row of rows) {
+    currentKeys.add(row.live_groups_key);
     const fields = pickWritable(row, writable);
     const existingId = byKey.get(row.live_groups_key);
     if (existingId) {
@@ -449,9 +458,22 @@ async function upsertLiveGroups(rows, writable) {
     }
   }
 
+  const droppedUpdates = [];
+  for (const row of existingRows) {
+    const key = strOrNull(row.fields?.live_groups_key);
+    if (!key || currentKeys.has(key)) continue;
+
+    const fields = {};
+    if (writable.has("is_cuurent_scope")) fields.is_cuurent_scope = false;
+    if (writable.has("is_current_scope")) fields.is_current_scope = false;
+    if (writable.has("dropped_at") && !strOrNull(row.fields?.dropped_at)) fields.dropped_at = RUN_AT;
+    if (Object.keys(fields).length) droppedUpdates.push({ id: row.id, fields });
+  }
+
   await airtableUpdate(TABLE_LIVE_GROUPS, updates);
   await airtableCreate(TABLE_LIVE_GROUPS, creates);
-  return { created: creates.length, updated: updates.length };
+  await airtableUpdate(TABLE_LIVE_GROUPS, droppedUpdates);
+  return { created: creates.length, updated: updates.length, dropped: droppedUpdates.length };
 }
 
 async function main() {
@@ -547,6 +569,7 @@ async function main() {
     rows: rows.length,
     created: result.created,
     updated: result.updated,
+    dropped: result.dropped,
     dry_run: DRY_RUN,
   }));
 }

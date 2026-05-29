@@ -37,6 +37,18 @@ assert.ok(
 );
 
 assert.ok(
+  source.includes("is_cuurent_scope: true") &&
+    source.includes("dropped_at: null"),
+  "live_groups_daily must mark rows seen in the latest successful payload current and clear dropped_at"
+);
+
+assert.ok(
+  source.includes("fields.dropped_at = RUN_AT") &&
+    source.includes("dropped: droppedUpdates.length"),
+  "live_groups_daily must mark same-scope rows missing from a successful payload as dropped"
+);
+
+assert.ok(
   source.includes("live_groups_status_false") &&
     source.includes("live_groups_no_focus_rows") &&
     source.includes("logAutomationEvent"),
