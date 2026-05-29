@@ -33,6 +33,7 @@ const DEFAULT_TRIPS_CALCULATOR_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
 const DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "A,B,C,D";
+const DEFAULT_LIVE_GROUPS_SLOTS = "B";
 const DEFAULT_PUBLISHER_SLOTS = "A,B,C,D";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
@@ -51,6 +52,7 @@ const SCRIPT_LOG_FILES = {
   "trips_dailyv2.js": "trips-dailyv2.log",
   "trips_tagger.js": "trips-tagger.log",
   "trips_calculatorv2.js": "trips-calculatorv2.log",
+  "live_groups_daily.js": "live-groups-daily.log",
   "publisher.js": "publisher.log",
 };
 
@@ -400,6 +402,8 @@ async function runOrchestrator() {
     const tripsDailyDue = slotIsDue(slot, tripsDailySlots, tripsDailyDefaultSlots);
     const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
+    const liveGroupsDue = mode === "DAY"
+      && slotIsDue(slot, process.env.ORCH_LIVE_GROUPS_SLOTS, DEFAULT_LIVE_GROUPS_SLOTS);
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
 
     let upstreamOk = true;
@@ -451,6 +455,11 @@ async function runOrchestrator() {
       if (!tripsCalcResult.ok) upstreamOk = false;
     }
 
+    if (liveGroupsDue) {
+      const liveGroupsResult = runNodeScript("live_groups_daily.js");
+      if (!liveGroupsResult.ok) upstreamOk = false;
+    }
+
     if (publisherDue && upstreamOk) {
       runNodeScript("publisher.js");
     } else if (publisherDue) {
@@ -470,6 +479,7 @@ async function runOrchestrator() {
         trips_daily: tripsDailyDue,
         trips_tagger: tripsTaggerDue,
         trips_calculator: tripsCalcDue,
+        live_groups: liveGroupsDue,
         publisher: publisherDue,
       },
     });

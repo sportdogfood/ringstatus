@@ -46,6 +46,13 @@ assert.ok(
 );
 
 assert.ok(
+  orchestrator.includes('DEFAULT_LIVE_GROUPS_SLOTS = "B"') &&
+    orchestrator.includes('mode === "DAY"') &&
+    orchestrator.includes('runNodeScript("live_groups_daily.js")'),
+  "live_groups_daily must run only in DAY mode on the live groups slot"
+);
+
+assert.ok(
   orchestrator.includes("if (!scheduleDueFailed && schedulesCalcDue)") &&
     !orchestrator.includes("} else if (schedulesCalcDue) {"),
   "schedules_calculatorv2 must run whenever its own slot is due, not only when schedules_dailyv2 is due"

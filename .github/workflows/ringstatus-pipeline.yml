@@ -142,6 +142,7 @@ jobs:
             run_step "TRIPS_DAILYV2" "trips_dailyv2.js"
             run_step "TRIPS_TAGGER" "trips_tagger.js"
             run_step "TRIPS_CALCULATORV2" "trips_calculatorv2.js" "1"
+            run_step "LIVE_GROUPS_DAILY" "live_groups_daily.js" "1"
 
             if [ "${deferred_failed}" = "1" ]; then
               echo "Skipping publisher because deferred steps failed."

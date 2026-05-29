@@ -45,6 +45,7 @@ Invoke-RunnerPipeline `
         'lib/watch_schedule_scope_relink.js',
         'lib/watch_trips_scope_relink.js',
         'lib/watch_trips_scope.js',
-        'heartbeat_slot_orchestrator.js'
+        'heartbeat_slot_orchestrator.js',
+        'live_groups_daily.js'
     ) `
     -Steps $steps

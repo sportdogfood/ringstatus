@@ -232,6 +232,7 @@ Write-PipelineEvent @{
         'trips_dailyv2.js',
         'trips_tagger.js',
         'trips_calculator.js',
+        'live_groups_daily.js',
         'publisher.js'
     )
 }
@@ -243,6 +244,7 @@ Run-Step -Label 'SCHEDULES_CALCULATORV2' -ScriptName 'schedules_calculatorv2.js'
 Run-Step -Label 'TRIPS_DAILYV2'          -ScriptName 'trips_dailyv2.js'          -LogPath "$logDir\trips-dailyv2.log"
 Run-Step -Label 'TRIPS_TAGGER'           -ScriptName 'trips_tagger.js'           -LogPath "$logDir\trips-tagger.log"
 Run-Step -Label 'TRIPS_CALCULATORV2'     -ScriptName 'trips_calculatorv2.js'     -LogPath "$logDir\trips-calculatorv2.log" -ContinueOnError
+Run-Step -Label 'LIVE_GROUPS_DAILY'      -ScriptName 'live_groups_daily.js'      -LogPath "$logDir\live-groups-daily.log" -ContinueOnError
 
 if ($script:DeferredStepFailures.Count -gt 0) {
     Write-PipelineEvent @{
