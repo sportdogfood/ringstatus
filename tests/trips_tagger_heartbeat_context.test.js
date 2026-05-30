@@ -25,6 +25,11 @@ assert.ok(
 );
 
 assert.ok(
+  !/mode === "NIGHT"[\s\S]{0,140}shiftSqlDateText/.test(source),
+  "trips_tagger ring fallback must not derive app_sql_date by NIGHT +1"
+);
+
+assert.ok(
   source.includes("if (class_id === null)") && source.includes("classEndpoint = null;"),
   "trips_tagger should not ping malformed class detail endpoints when class_id is null"
 );

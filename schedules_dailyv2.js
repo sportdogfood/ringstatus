@@ -2795,24 +2795,14 @@ async function runScheduleForBaseContext({
       inactivated_planned: 0,
       writes: { created: 0, updated: 0, inactivated: 0, create_failures: [], update_failures: [], inactivate_failures: [] },
       skipped: true,
+      reason: "active_tables_deprecated",
     },
   };
 
-  const activeGroupRows = activeGroupsFieldSet.size
-    ? buildActiveGroupRows(scopedRows, scope, runId, dateOnly, activeGroupsFieldSet)
-    : [];
-  summary.active_groups.created_planned = activeGroupRows.length;
+  const activeGroupRows = [];
+  summary.active_groups.created_planned = 0;
 
   if (DRY_RUN) {
-    if (activeGroupsFieldSet.size) {
-      summary.active_groups = await upsertActiveGroups({
-        fieldSet: activeGroupsFieldSet,
-        rows: activeGroupRows,
-        scopeAppSid: scope.app_show_idv2,
-        runId,
-        lastRun: dateOnly,
-      });
-    }
     return summary;
   }
 
@@ -2826,16 +2816,6 @@ async function runScheduleForBaseContext({
   summary.writes.create_failures = createResult.failedRows;
   summary.writes.update_failures = updateResult.failedRows;
   summary.writes.drop_failures = dropResult.failedRows;
-  if (activeGroupsFieldSet.size) {
-    summary.active_groups = await upsertActiveGroups({
-      fieldSet: activeGroupsFieldSet,
-      rows: activeGroupRows,
-      scopeAppSid: scope.app_show_idv2,
-      runId,
-      lastRun: dateOnly,
-    });
-  }
-
   return summary;
 }
 

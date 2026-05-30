@@ -81,6 +81,13 @@ assert.ok(
 );
 
 assert.ok(
+  schedulesDaily.includes('reason: "active_tables_deprecated"') &&
+    !schedulesDaily.includes("await upsertActiveGroups(") &&
+    !schedulesDaily.includes("buildActiveGroupRows(scopedRows"),
+  "schedules_dailyv2 must not write deprecated active_groups"
+);
+
+assert.ok(
   focusedRunner.includes("HEARTBEAT_NO_ACTIVE_FEEDS") &&
     focusedRunner.includes("No focused show records found") &&
     focusedRunner.includes("Test-ShowRecordInActiveWindow") &&

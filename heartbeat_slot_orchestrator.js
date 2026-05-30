@@ -27,7 +27,6 @@ const HEARTBEAT_INTERVAL_FIELD = process.env.HEARTBEAT_INTERVAL_FIELD || process
 const HEARTBEAT_SHIFTED_NEXT_DAY_FIELD = process.env.HEARTBEAT_SHIFTED_NEXT_DAY_FIELD || process.env.FIELD_SHIFTED_NEXT_DAY || "shifted_to_next_day";
 
 const DEFAULT_TRIPS_DAILY_SLOTS = "A,B,C,D";
-const DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS = "A,B,C,D";
 const DEFAULT_TRIPS_TAGGER_SLOTS = "A,C";
 const DEFAULT_TRIPS_CALCULATOR_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
@@ -385,7 +384,6 @@ async function runOrchestrator() {
     }
 
     const shiftedToNextDay = boolValue(heartbeat?.fields?.[HEARTBEAT_SHIFTED_NEXT_DAY_FIELD]);
-    const isNightShiftedNextDay = mode === "NIGHT" && shiftedToNextDay;
 
     const schedulesDailyDefaultSlots = mode === "NIGHT"
       ? DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS
@@ -396,12 +394,8 @@ async function runOrchestrator() {
     const schedulesDailyDue = slotIsDue(slot, schedulesDailySlots, schedulesDailyDefaultSlots);
     const schedulesCalcDue = mode === "DAY"
       && slotIsDue(slot, process.env.ORCH_SCHEDULES_CALCULATOR_SLOTS, DEFAULT_SCHEDULES_CALCULATOR_SLOTS);
-    const tripsDailyDefaultSlots = isNightShiftedNextDay
-      ? DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS
-      : DEFAULT_TRIPS_DAILY_SLOTS;
-    const tripsDailySlots = isNightShiftedNextDay
-      ? (process.env.ORCH_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS || process.env.ORCH_TRIPS_DAILY_SLOTS)
-      : process.env.ORCH_TRIPS_DAILY_SLOTS;
+    const tripsDailyDefaultSlots = DEFAULT_TRIPS_DAILY_SLOTS;
+    const tripsDailySlots = process.env.ORCH_TRIPS_DAILY_SLOTS;
     const tripsDailyDue = slotIsDue(slot, tripsDailySlots, tripsDailyDefaultSlots);
     const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);

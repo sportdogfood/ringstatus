@@ -53,10 +53,12 @@ assert.ok(
 assert.ok(
   tagger.includes("if (decision || heartbeatTargetAppSqlDate)") &&
     tagger.includes("resolveFocusedShowAppSqlDate") &&
-    tagger.includes("const shifted = addDaysSql(base, 1)") &&
     tagger.includes("focus_day: targetFocusDay") &&
-    tagger.includes("appSqlDate = decision.focus_day"),
-  "focused show target must apply shifted_to_next_day within the show start/end window before heartbeat app_sql_date is written"
+    tagger.includes("appSqlDate = decision.focus_day") &&
+    tagger.includes('appSqlDateSource = "show_heartbeat_target"') &&
+    !tagger.includes('appSqlDateSource = "show_focus_day"') &&
+    !tagger.includes('appSqlDateSource = "show_focus_default_day"'),
+  "focused show target must use show.focus_day directly and mark heartbeat scope as show_heartbeat_target"
 );
 
 assert.ok(

@@ -874,16 +874,8 @@ async function fetchAppContextFromRing() {
   let app_sql_date = raw_sql_date;
   let shifted_to_next_day = false;
 
-  if (mode === "NIGHT") {
-    app_sql_date = shiftSqlDateText(raw_sql_date, 1);
-    if (!app_sql_date) throw new Error(`unable to shift sql_date text: ${raw_sql_date}`);
-    shifted_to_next_day = true;
-  }
-
-  if (mode === "DAY" || mode === "OVERNIGHT") {
-    app_sql_date = raw_sql_date;
-    shifted_to_next_day = false;
-  }
+  app_sql_date = raw_sql_date;
+  shifted_to_next_day = false;
 
   return {
     app_show_id,

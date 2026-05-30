@@ -24,7 +24,7 @@ const scope = resolveHeartbeatScopeFromCurrentHeartbeat({
   current_show_app_sql_start_date: "2026-05-29",
   current_show_app_sql_end_date: "2026-05-31",
   current_show_app_name: "2026 ESP June I",
-  current_app_sql_date_source: "show_focus_day",
+  current_app_sql_date_source: "show_heartbeat_target",
   customer_id: 15,
   focus_day: "2026-05-29",
   ring_collection: null,
@@ -36,7 +36,7 @@ assert.strictEqual(scope.app_show_idv2, 200000063);
 assert.strictEqual(scope.mode, "NIGHT");
 assert.strictEqual(scope.shifted_to_next_dayv2, true);
 assert.strictEqual(scope.app_sql_datev2, "2026-05-29");
-assert.strictEqual(scope.app_sql_date_source, "show_focus_day");
+assert.strictEqual(scope.app_sql_date_source, "show_heartbeat_target");
 
 const oneDayAfterFive = showHeartbeatTargetDate({
   focus_day: "2026-05-28",

@@ -844,11 +844,6 @@ function sqlDateInRange(sqlDate, startDate, endDate) {
 function resolveFocusedShowAppSqlDate(focusDay, startDate, endDate, shiftedToNextDay) {
   const base = toIsoDateOnly(focusDay);
   if (!base) return null;
-  if (!shiftedToNextDay) return base;
-  const shifted = addDaysSql(base, 1);
-  if (shifted && startDate && endDate && sqlDateInRange(shifted, startDate, endDate)) {
-    return shifted;
-  }
   return base;
 }
 
@@ -1224,17 +1219,9 @@ async function buildAppContext(clock) {
     if (decision) {
       shiftedToNextDay = !!decision.shifted_to_next_day;
       setToDefaultAppSqlDate = !!decision.set_to_default_app_sql_date;
-      if (setToDefaultAppSqlDate) {
-        if (!defaultAppSqlDateIs) {
-          throw new Error(`Focused show ${appShowId} requested ${FIELD_SET_TO_DEFAULT_APP_SQL_DATE} but no default app sql date was resolved`);
-        }
-        appSqlDate = defaultAppSqlDateIs;
-        appSqlDateSource = "show_focus_default_day";
-      } else {
-        appSqlDate = decision.focus_day;
-        defaultAppSqlDateIs = appSqlDate;
-        appSqlDateSource = "show_focus_day";
-      }
+      appSqlDate = decision.focus_day;
+      defaultAppSqlDateIs = appSqlDate;
+      appSqlDateSource = "show_heartbeat_target";
       if (!sqlDateInRange(appSqlDate, showAppSqlStartDate, showAppSqlEndDate)) {
         throw new Error(`Focused show ${appShowId} resolved app_sql_date ${appSqlDate} outside ${showAppSqlStartDate}..${showAppSqlEndDate}`);
       }

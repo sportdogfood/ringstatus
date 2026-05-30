@@ -36,8 +36,10 @@ assert.ok(
 );
 
 assert.ok(
-  orchestrator.includes('DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS = "A,B,C,D"'),
-  "shifted NIGHT trips_dailyv2 must default to every heartbeat slot"
+  !orchestrator.includes("DEFAULT_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS") &&
+    !orchestrator.includes("ORCH_TRIPS_DAILY_NIGHT_SHIFTED_SLOTS") &&
+    orchestrator.includes("const tripsDailyDefaultSlots = DEFAULT_TRIPS_DAILY_SLOTS;"),
+  "shifted_to_next_day must not change trips_dailyv2 cadence"
 );
 
 assert.ok(
