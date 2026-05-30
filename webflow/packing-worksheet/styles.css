@@ -2914,6 +2914,90 @@ body {
   --packing-shade: rgba(122, 59, 89, 0.08);
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 50px;
+  padding: 0 16px;
+  background-color: #f8f9fb;
+  font-family: Outfit, sans-serif;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-section-tabs {
+  margin-bottom: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link {
+  appearance: none;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 4px 24px;
+  border: 1px solid #e1e6f0;
+  border-radius: 100px;
+  background-color: #fff;
+  color: #627183;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab {
+  color: var(--rsa-tab-active);
+  background-color: var(--rsa-tab-shade);
+  border-color: var(--rsa-tab-active);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-filter {
+  color: #fff;
+  background-color: var(--rsa-tab-active);
+  border-color: var(--rsa-tab-active);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-overview {
+  --rsa-tab-active: #46332b;
+  --rsa-tab-shade: rgba(70, 51, 43, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-barn {
+  --rsa-tab-active: #003d80;
+  --rsa-tab-shade: rgba(0, 87, 184, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-tack,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-horses {
+  --rsa-tab-active: #0057b8;
+  --rsa-tab-shade: rgba(0, 87, 184, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-health {
+  --rsa-tab-active: #4e1f76;
+  --rsa-tab-shade: rgba(111, 45, 168, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-show {
+  --rsa-tab-active: #005c2a;
+  --rsa-tab-shade: rgba(0, 132, 61, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-grooming {
+  --rsa-tab-active: #8b5a2b;
+  --rsa-tab-shade: rgba(139, 90, 43, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-feed {
+  --rsa-tab-active: #4f6f2a;
+  --rsa-tab-shade: rgba(79, 111, 42, 0.08);
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-edit-panel {
   display: block;
 }

@@ -601,16 +601,11 @@
 
   function tabsHtml() {
     return `
-      <nav class="lp-tabs" aria-label="Packing sections">
+      <nav class="rsa-list-action-menu packing-section-tabs" aria-label="Packing sections">
         ${tabs().map((section) => {
-          const percent = tabProgressPercent(section);
           return `
-            <button class="lp-tab packing-tab ${themeClasses(section.id)} ${state.activeTab === section.id ? "is-active" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
-              <span class="packing-tab-percent">${percent}% PACKED</span>
-              <span class="packing-tab-progress" aria-label="${escapeAttr(`${percent}% complete`)}">
-                <span class="packing-tab-progress-fill" style="width: ${percent}%"></span>
-              </span>
-              <span class="lp-tab-label packing-tab-label">${escapeHtml(displayLabel(section.label))}</span>
+            <button class="rs-tab-link is-section-tab ${escapeAttr(rsaSectionClass(section.id))} ${state.activeTab === section.id ? "is-filter" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
+              <span>${escapeHtml(displayLabel(section.label))}</span>
             </button>
           `;
         }).join("")}
@@ -2470,6 +2465,18 @@
     if (key === "overview") return "packing-theme-overview";
     if (key === "horses") return "packing-theme-horses";
     return `packing-group-${key} packing-tone-${toneIndex(value)}`;
+  }
+
+  function rsaSectionClass(value) {
+    const key = themeName(value);
+    if (key.includes("barn")) return "is-barn";
+    if (key.includes("tack")) return "is-tack";
+    if (key.includes("health")) return "is-health";
+    if (key.includes("show")) return "is-show";
+    if (key.includes("groom")) return "is-grooming";
+    if (key.includes("feed")) return "is-feed";
+    if (key.includes("horse")) return "is-horses";
+    return "is-overview";
   }
 
   function themeName(value) {
