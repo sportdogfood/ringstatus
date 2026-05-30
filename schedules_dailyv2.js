@@ -1954,6 +1954,27 @@ function existingScheduleRowMatchesScope(row, scope) {
   return true;
 }
 
+function existingScheduleRowMatchesShow(row, scope) {
+  const fields = row?.fields || {};
+  const rowShowId = numOrNull(pickFirst(fields.show_id, fields.app_show_idv2, fields.sid));
+  const scopeShowId = numOrNull(scope?.app_show_idv2);
+  return rowShowId !== null && scopeShowId !== null && rowShowId === scopeShowId;
+}
+
+function buildOutOfScopeFields(scope, nowIso, dateOnly, watchScheduleFieldMeta) {
+  const fields = {
+    heartbeat: [],
+    is_current_scope: false,
+    dropped_at: null,
+    last_updated_at: nowIso,
+    run_tag: scope.app_sql_datev2,
+    record_state: "existing",
+  };
+  setResolvedField(fields, watchScheduleFieldMeta, "inactive", false);
+  setResolvedField(fields, watchScheduleFieldMeta, "archive", false);
+  return fields;
+}
+
 function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue, watchScheduleFieldMeta) {
   const fields = {
     heartbeat: [],
@@ -2700,11 +2721,11 @@ async function runScheduleForBaseContext({
   }
 
   const dropUpdates = [];
+  const outOfScopeCurrentUpdates = [];
   let droppedForScheduleShowDateMismatch = 0;
   for (const row of existingRows) {
     const key = scheduleRowKeyFromFields(row?.fields || {});
     if (!key) continue;
-    if (!existingScheduleRowMatchesScope(row, scope)) continue;
     if (boolValue(row?.fields?.inactive) || firstValue(row?.fields?.dropped_at)) continue;
 
     const hasCurrentMarkers =
@@ -2712,6 +2733,16 @@ async function runScheduleForBaseContext({
       boolValue(row?.fields?.is_current_scope) ||
       !!firstValue(row?.fields?.heartbeat);
     if (!hasCurrentMarkers) continue;
+
+    if (!existingScheduleRowMatchesScope(row, scope)) {
+      if (existingScheduleRowMatchesShow(row, scope)) {
+        outOfScopeCurrentUpdates.push({
+          id: row.id,
+          fields: buildOutOfScopeFields(scope, nowIso, dateOnly, watchScheduleFieldMeta),
+        });
+      }
+      continue;
+    }
 
     if (keepRecordIdSet.has(row.id)) continue;
 
@@ -2741,6 +2772,7 @@ async function runScheduleForBaseContext({
     dropped_due_to_schedule_show_date_mismatch: droppedForScheduleShowDateMismatch,
     creates_planned: createRecords.length,
     updates_planned: updateRecords.length,
+    current_scope_clears_planned: outOfScopeCurrentUpdates.length,
     drops_planned: dropUpdates.length,
     existing_show_rows: existingRows.length,
     heartbeat_view_rows: heartbeatViewRows.length,
@@ -2782,6 +2814,7 @@ async function runScheduleForBaseContext({
     writes: {
       created: 0,
       updated: 0,
+      current_scope_cleared: 0,
       dropped: 0,
       create_failures: [],
       update_failures: [],
@@ -2808,13 +2841,18 @@ async function runScheduleForBaseContext({
 
   const createResult = await airtableCreateRecords(TABLE_WATCH_SCHEDULE, createRecords);
   const updateResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, updateRecords);
+  const currentScopeClearResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, outOfScopeCurrentUpdates);
   const dropResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, dropUpdates);
 
   summary.writes.created = createResult.okRows;
   summary.writes.updated = updateResult.okRows;
+  summary.writes.current_scope_cleared = currentScopeClearResult.okRows;
   summary.writes.dropped = dropResult.okRows;
   summary.writes.create_failures = createResult.failedRows;
-  summary.writes.update_failures = updateResult.failedRows;
+  summary.writes.update_failures = [
+    ...updateResult.failedRows,
+    ...currentScopeClearResult.failedRows,
+  ];
   summary.writes.drop_failures = dropResult.failedRows;
   return summary;
 }
@@ -2937,6 +2975,7 @@ module.exports = {
   applyScheduleHtmlTimeOverlay,
   buildClassIdByNumberFromClassesPayload,
   buildCurrentFields,
+  buildOutOfScopeFields,
   buildClassListEndpoint,
   applyPreliveEstimatedStartTimeGuard,
   hasManualTimeOverride,

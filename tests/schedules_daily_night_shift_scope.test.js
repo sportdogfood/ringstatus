@@ -1,6 +1,7 @@
 const assert = require("assert");
 const {
   buildCurrentFields,
+  buildOutOfScopeFields,
   resolveHeartbeatScopeFromCurrentHeartbeat,
   showHeartbeatTargetDate,
   scopeForScheduleDate,
@@ -94,5 +95,18 @@ assert.strictEqual(forwardFields.dropped_at, null);
 assert.strictEqual(forwardFields.inactive, false);
 assert.strictEqual(forwardFields.archive, false);
 assert.strictEqual(forwardFields.scheduled_date, "2026-05-31");
+
+const oldScopeFields = buildOutOfScopeFields(
+  { app_sql_datev2: "2026-05-31" },
+  "2026-05-30T21:40:00.000Z",
+  "2026-05-30",
+  new Set(["heartbeat", "is_current_scope", "dropped_at", "inactive", "archive", "run_tag", "last_updated_at", "record_state"])
+);
+assert.deepStrictEqual(oldScopeFields.heartbeat, []);
+assert.strictEqual(oldScopeFields.is_current_scope, false);
+assert.strictEqual(oldScopeFields.dropped_at, null);
+assert.strictEqual(oldScopeFields.inactive, false);
+assert.strictEqual(oldScopeFields.archive, false);
+assert.strictEqual(oldScopeFields.run_tag, "2026-05-31");
 
 console.log("schedules_daily_night_shift_scope tests passed");

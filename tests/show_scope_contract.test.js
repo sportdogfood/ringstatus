@@ -86,9 +86,10 @@ assert.ok(
 
 assert.ok(
   schedulesDaily.includes("function existingScheduleRowMatchesScope") &&
-    schedulesDaily.includes("if (!existingScheduleRowMatchesScope(row, scope)) continue;") &&
+    schedulesDaily.includes("outOfScopeCurrentUpdates.push") &&
+    schedulesDaily.includes("buildOutOfScopeFields(scope, nowIso, dateOnly, watchScheduleFieldMeta)") &&
     schedulesDaily.includes("if (boolValue(row?.fields?.inactive) || firstValue(row?.fields?.dropped_at)) continue;"),
-  "schedules_dailyv2 must not drop existing watch_schedule rows outside the current schedule scope or rows already dropped"
+  "schedules_dailyv2 must clear prior-date current scope rows without marking them dropped"
 );
 
 const focusedShowsRunner = fs.readFileSync(path.resolve(__dirname, "..", "run_tagger_task_focused_shows.ps1"), "utf8");
