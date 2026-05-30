@@ -1096,13 +1096,13 @@ function nextSqlDate(sqlDate) {
   return addDaysSql(sqlDate, 1);
 }
 
-function forwardScheduleDates(startDate, endDate) {
+function showWindowScheduleDates(startDate, endDate, excludeDate = null) {
   const dates = [];
   if (!startDate || !endDate) return dates;
-  let current = nextSqlDate(startDate);
+  let current = startDate;
   let guard = 0;
   while (compareSqlDate(current, endDate) <= 0 && guard < MAX_FORWARD_SCHEDULE_PREFETCH_DAYS) {
-    dates.push(current);
+    if (current !== excludeDate) dates.push(current);
     current = nextSqlDate(current);
     guard += 1;
   }
@@ -1133,6 +1133,7 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
   const appShowId = scope?.app_show_idv2;
   const customerId = scope?.customer_id || CUSTOMER_ID;
   const currentDate = scope?.app_sql_datev2;
+  const startDate = scope?.show_app_sql_start_date || currentDate;
   const endDate = scope?.show_app_sql_end_date;
   const epochSeconds = Math.floor(Date.now() / 1000);
 
@@ -1145,7 +1146,7 @@ async function cacheSuccessfulSchedulePayloads(scope, currentPayload, { runId = 
     };
   }
 
-  for (const scheduleDate of forwardScheduleDates(currentDate, endDate)) {
+  for (const scheduleDate of showWindowScheduleDates(startDate, endDate, currentDate)) {
     const url = buildScheduleEndpoint(scheduleDate, appShowId, customerId);
     const item = { date: scheduleDate, url, ok: false, file_path: null, reason: null };
     try {

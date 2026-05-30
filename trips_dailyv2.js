@@ -32,6 +32,7 @@ const BASE_URL = String(
 ).trim().replace(/\/+$/, "");
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
+const TABLE_SHOW_TARGET = process.env.TABLE_SHOW_TARGET || process.env.TABLE_SHOW || "show";
 const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
@@ -46,6 +47,7 @@ const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_e
 const VIEW_WATCH_SCHEDULE = process.env.VIEW_WATCH_SCHEDULE || "heartbeat";
 const VIEW_WATCH_TRIPS = process.env.VIEW_WATCH_TRIPS || "heartbeat";
 const VIEW_ACTIVE_TENANTS = process.env.VIEW_ACTIVE_TENANTS || "active_tenants";
+const VIEW_SHOW_TARGET = process.env.VIEW_SHOW_TARGET || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 
 const WATCH_TRIPS_HEARTBEAT_FIELDS = [
@@ -77,6 +79,7 @@ const AT_RETRY_BASE_MS = Number(process.env.AT_RETRY_BASE_MS || "400");
 const AT_RETRY_MAX_MS = Number(process.env.AT_RETRY_MAX_MS || "2000");
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const FETCH_CONCURRENCY = Math.max(1, Number(process.env.FETCH_CONCURRENCY || "4"));
+const TRIPS_SCOPE_TIMEZONE = process.env.TRIPS_SCOPE_TIMEZONE || process.env.SCHEDULE_SCOPE_TIMEZONE || "America/New_York";
 const SGL_PAYLOAD_ROOT = String(process.env.SGL_PAYLOAD_ROOT || "C:\\actions-runner\\ringstatus").trim();
 const EARLY_SGL_PAYLOAD_ROOT = String(
   process.env.EARLY_SGL_PAYLOAD_ROOT ||
@@ -185,6 +188,80 @@ function boolValue(value) {
   if (raw === false || raw === 0 || raw === null || raw === undefined) return false;
   const text = String(raw).trim().toLowerCase();
   return text === "true" || text === "1" || text === "yes" || text === "checked";
+}
+
+function addDaysSql(sqlDate, days) {
+  const text = toIsoDateOnly(sqlDate);
+  if (!text || !/^\d{4}-\d{2}-\d{2}$/.test(text)) throw new Error(`Invalid sql_date: ${sqlDate}`);
+  const ms = Date.parse(`${text}T00:00:00.000Z`);
+  if (!Number.isFinite(ms)) throw new Error(`Invalid sql_date: ${text}`);
+  return new Date(ms + days * 86400000).toISOString().slice(0, 10);
+}
+
+function compareSqlDate(left, right) {
+  const a = toIsoDateOnly(left);
+  const b = toIsoDateOnly(right);
+  if (!a || !b || !/^\d{4}-\d{2}-\d{2}$/.test(a) || !/^\d{4}-\d{2}-\d{2}$/.test(b)) {
+    throw new Error(`Invalid sql_date comparison: ${left} ${right}`);
+  }
+  if (a < b) return -1;
+  if (a > b) return 1;
+  return 0;
+}
+
+function dayNameForSqlDate(sqlDate) {
+  const text = toIsoDateOnly(sqlDate);
+  const date = new Date(`${text}T00:00:00.000Z`);
+  return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][date.getUTCDay()];
+}
+
+function localMinutesForTripsScope(now = new Date(), timeZone = TRIPS_SCOPE_TIMEZONE) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+  }).formatToParts(now);
+  const hour = Number(parts.find((part) => part.type === "hour")?.value);
+  const minute = Number(parts.find((part) => part.type === "minute")?.value);
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) {
+    throw new Error(`Unable to resolve local trips scope time for ${timeZone}`);
+  }
+  return hour * 60 + minute;
+}
+
+function showHeartbeatTargetDate(fields, now = new Date()) {
+  const focusDay = toIsoDateOnly(fields?.focus_day);
+  const startDate = toIsoDateOnly(fields?.start_date);
+  const endDate = toIsoDateOnly(fields?.end_date);
+  if (!focusDay || !startDate || !endDate) {
+    return { skipped: true, reason: "missing_show_target_date", target_date: null };
+  }
+  const minutes = localMinutesForTripsScope(now);
+  const isDayWindow = minutes >= 6 * 60 && minutes < 17 * 60;
+  const targetDate = isDayWindow ? focusDay : addDaysSql(focusDay, 1);
+  if (compareSqlDate(targetDate, startDate) < 0 || compareSqlDate(targetDate, endDate) > 0) {
+    return {
+      skipped: true,
+      reason: "target_date_outside_show_window",
+      focus_day: focusDay,
+      start_date: startDate,
+      end_date: endDate,
+      target_date: null,
+      proposed_target_date: targetDate,
+      is_day_window: isDayWindow,
+    };
+  }
+  return {
+    skipped: false,
+    reason: null,
+    focus_day: focusDay,
+    start_date: startDate,
+    end_date: endDate,
+    target_date: targetDate,
+    proposed_target_date: targetDate,
+    is_day_window: isDayWindow,
+  };
 }
 
 function normalizeKey(value) {
@@ -637,6 +714,34 @@ async function recordPayloadPingAudit(endpoint, response, text, audit = {}) {
   });
 }
 
+async function recordNoTripsAudit({ tenantId, endpoint, heartbeat, runId, lastRun, source }) {
+  const appShowId = heartbeat?.app_show_id ?? null;
+  const appSqlDate = heartbeat?.app_sql_date || null;
+  return createAutomationErr({
+    automation_key: [
+      "trips_dailyv2",
+      "no_trips",
+      appShowId ?? "show_unknown",
+      appSqlDate || "date_unknown",
+      tenantId,
+    ].join("|").slice(0, 1000),
+    automation_name: "trips_dailyv2",
+    error_type: "no_trips",
+    app_sql_date: appSqlDate,
+    run_id: runId,
+    last_run: lastRun,
+    resolved: true,
+    message: [
+      `endpoint=${endpoint || ""}`,
+      `source=${source || ""}`,
+      "message=no_trips_in_people_payload",
+    ].join(" "),
+    pid: numOrNull(tenantId),
+    app_show_id: appShowId,
+    people_show_id: appShowId,
+  });
+}
+
 async function airtablePatchRecords(tableName, updates) {
   const safeUpdates = sanitizeWatchTripsPatchUpdates(tableName, updates);
   if (!safeUpdates.length) return { okRows: 0, failedRows: [] };
@@ -783,6 +888,107 @@ async function fetchLatestHeartbeat() {
     show_scope_key: strOrNull(fields.show_scope_key),
     show_record_id: firstValue(fields.show) || null,
   };
+}
+
+async function fetchShowTargetRows() {
+  return airtableList(TABLE_SHOW_TARGET, {
+    view: VIEW_SHOW_TARGET,
+    pageSize: 100,
+    "fields[]": [
+      "show_id",
+      "customer_id",
+      "focus_day",
+      "start_date",
+      "end_date",
+      "heartbeat",
+      "show_rid",
+    ],
+  });
+}
+
+async function resolveHeartbeatScopesFromShowTarget(latestHeartbeat, now = new Date()) {
+  let rows = [];
+  try {
+    rows = await fetchShowTargetRows();
+  } catch (error) {
+    return [{
+      heartbeat: latestHeartbeat,
+      show_target_scope: {
+        table: TABLE_SHOW_TARGET,
+        view: VIEW_SHOW_TARGET,
+        rows: 0,
+        valid_rows: 0,
+        fetch_error: String(error?.message || error),
+        source: "latest_heartbeat_fallback",
+      },
+    }];
+  }
+
+  const skippedRows = [];
+  const valid = [];
+  for (const row of rows) {
+    const fields = row?.fields || {};
+    const targetInfo = showHeartbeatTargetDate(fields, now);
+    const showId = numOrNull(fields.show_id);
+    if (targetInfo.skipped || showId === null) {
+      skippedRows.push({
+        record_id: row.id,
+        show_id: showId,
+        ...targetInfo,
+      });
+      continue;
+    }
+    valid.push({ row, fields, targetInfo, showId });
+  }
+
+  if (!valid.length) {
+    return [{
+      heartbeat: latestHeartbeat,
+      show_target_scope: {
+        table: TABLE_SHOW_TARGET,
+        view: VIEW_SHOW_TARGET,
+        rows: rows.length,
+        valid_rows: 0,
+        skipped_rows: skippedRows,
+        source: "latest_heartbeat_fallback",
+      },
+    }];
+  }
+
+  return valid.map((selected) => {
+    const customerId = numOrNull(selected.fields.customer_id) ?? latestHeartbeat.customer_id ?? CUSTOMER_ID;
+    const targetDate = selected.targetInfo.target_date;
+    return {
+      heartbeat: {
+        ...latestHeartbeat,
+        app_show_id: selected.showId,
+        app_sql_date: targetDate,
+        app_dow_raw: dayNameForSqlDate(targetDate),
+        shifted_to_next_day: !selected.targetInfo.is_day_window,
+        customer_id: customerId,
+        focus_day: selected.targetInfo.focus_day,
+        show_record_id: selected.row.id,
+        show_scope_key: `${customerId}|${selected.showId}|${selected.targetInfo.focus_day}`,
+        scope_run_id: `${latestHeartbeat.scope_run_id}|show:${selected.showId}|${targetDate}`,
+      },
+      show_target_scope: {
+        table: TABLE_SHOW_TARGET,
+        view: VIEW_SHOW_TARGET,
+        rows: rows.length,
+        valid_rows: valid.length,
+        selected_record_id: selected.row.id,
+        selected_show_id: selected.showId,
+        selected_target_date: targetDate,
+        skipped_rows: skippedRows,
+        source: "show_heartbeat_target",
+      },
+    };
+  });
+}
+
+async function resolveHeartbeatFromShowTarget(latestHeartbeat, now = new Date()) {
+  const scopes = await resolveHeartbeatScopesFromShowTarget(latestHeartbeat, now);
+  return scopes[0];
 }
 
 async function fetchShowRecordId(appShowId) {
@@ -2036,7 +2242,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
     setIfPresent(fields, name, value);
   };
 
-  maybeSet("heartbeat", [heartbeat.recordId]);
+  if (isActiveForScope) maybeSet("heartbeat", [heartbeat.recordId]);
   maybeSet("shows", showRecordId ? [showRecordId] : undefined);
   Object.assign(fields, buildScopeFieldPatch(watchTripsFieldSet, heartbeat));
   maybeSet("watch_schedule", row.watch_schedule_record_id ? [row.watch_schedule_record_id] : undefined);
@@ -2114,8 +2320,6 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
     setIfPresent(fields, name, value);
   };
 
-  maybeSet("heartbeat", []);
-  maybeSet("watch_schedule", []);
   Object.assign(fields, buildScopeFieldPatch(watchTripsFieldSet, heartbeat));
   maybeSet("show_id", heartbeat.app_show_id);
   maybeSet("show_date", heartbeat.app_sql_date);
@@ -2175,15 +2379,8 @@ function scheduleJoinClassCount(scheduleByClassId) {
   return Math.max(classIdCount, classNumberCount);
 }
 
-async function main() {
-  requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
-  requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
-
-  const nowIso = new Date().toISOString();
-  const dateOnly = nowIso.slice(0, 10);
-  const runId = buildNumericRunId(nowIso);
-
-  const heartbeat = await fetchLatestHeartbeat();
+async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, runId }) {
+  const heartbeat = heartbeatScope.heartbeat;
   const [
     watchTripsFieldSet,
     scopeStatusChoices,
@@ -2222,14 +2419,14 @@ async function main() {
   const activeTenantIds = [...activeTenantMap.keys()];
 
   if (!activeTenantIds.length) {
-    console.log(JSON.stringify({
+    return {
       ok: true,
       run_status: "NOOP",
       reason: "No active tenant_id values found from active_tenants view",
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
-    }));
-    return;
+      show_target_scope: heartbeatScope.show_target_scope,
+    };
   }
 
   const peopleFailures = [];
@@ -2345,7 +2542,7 @@ async function main() {
   }
 
   if (softPayloadSamples.length && preparedTenants.length === 0) {
-    console.log(JSON.stringify({
+    return {
       ok: false,
       dry_run: DRY_RUN,
       run_status: "SOFT_PAYLOAD_BLOCKED",
@@ -2353,13 +2550,12 @@ async function main() {
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
       active_tenant_ids: activeTenantIds.length,
+      show_target_scope: heartbeatScope.show_target_scope,
       people_failures: peopleFailures,
       tenant_summaries: tenantSummaries,
       soft_payload_samples: softPayloadSamples.slice(0, 10),
       writes_blocked: true,
-    }, null, 2));
-    process.exitCode = 1;
-    return;
+    };
   }
 
   for (const prepared of preparedTenants) {
@@ -2546,6 +2742,17 @@ async function main() {
   const emptyTenantIds = tenantSummaries
     .filter((item) => item.empty_payload)
     .map((item) => item.tenant_id);
+  const noTripsAudits = [];
+  for (const item of tenantSummaries.filter((summary) => summary.empty_payload)) {
+    noTripsAudits.push(await recordNoTripsAudit({
+      tenantId: item.tenant_id,
+      endpoint: item.endpoint,
+      heartbeat,
+      runId,
+      lastRun: dateOnly,
+      source: item.source,
+    }));
+  }
 
   const existingRows = await fetchExistingTripsForShow(heartbeat.app_show_id);
   const heartbeatViewRows = await fetchHeartbeatViewTripRows().catch(() => []);
@@ -2650,6 +2857,7 @@ async function main() {
       app_show_id: heartbeat.app_show_id,
       app_sql_date: heartbeat.app_sql_date,
       active_tenant_ids: activeTenantIds.length,
+      show_target_scope: heartbeatScope.show_target_scope,
       watch_schedule_classes: scheduleJoinClasses,
       normalized_rows: normalizedRows.length,
       filtered_out_scheduled_date_mismatch: 0,
@@ -2658,6 +2866,7 @@ async function main() {
       active_classes: classSync,
       active_entries: entrySync,
       empty_tenant_ids: emptyTenantIds,
+      no_trips_audits: noTripsAudits,
       tenant_summaries: tenantSummaries,
       people_failures: peopleFailures,
       drops_planned: dropUpdates.length,
@@ -2701,8 +2910,7 @@ async function main() {
       emptySummary.schedule_date_backfill.planned = backfillUpdates.length;
     }
 
-    console.log(JSON.stringify(emptySummary, null, 2));
-    return;
+    return emptySummary;
   }
 
   const dropUpdates = [];
@@ -2724,6 +2932,7 @@ async function main() {
     app_dow_raw: heartbeat.app_dow_raw,
     shifted_to_next_day: heartbeat.shifted_to_next_day,
     mode: heartbeat.mode,
+    show_target_scope: heartbeatScope.show_target_scope,
     active_tenant_ids: activeTenantIds.length,
     watch_schedule_rows: scheduleRows.length,
     scoped_watch_schedule_rows: scopedScheduleRows.length,
@@ -2740,6 +2949,7 @@ async function main() {
     soft_payload_samples: softPayloadSamples.slice(0, 10),
     partial_people_payload_failures: softPayloadSamples.length,
     empty_tenant_ids: emptyTenantIds,
+    no_trips_audits: noTripsAudits,
     tenant_summaries: tenantSummaries,
     outside_schedule_count: outsideSchedule.length,
     active_groups: activeGroupSync,
@@ -2792,7 +3002,46 @@ async function main() {
     summary.schedule_date_backfill.failures = backfillResult.failedRows;
   }
 
-  console.log(JSON.stringify(summary, null, 2));
+  return summary;
+}
+
+async function main() {
+  requireEnv("AIRTABLE_TOKEN", AIRTABLE_TOKEN);
+  requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
+
+  const nowIso = new Date().toISOString();
+  const dateOnly = nowIso.slice(0, 10);
+  const runId = buildNumericRunId(nowIso);
+  const latestHeartbeat = await fetchLatestHeartbeat();
+  const heartbeatScopes = await resolveHeartbeatScopesFromShowTarget(latestHeartbeat, new Date(nowIso));
+  const results = [];
+
+  for (const heartbeatScope of heartbeatScopes) {
+    results.push(await runTripsForHeartbeatScope({
+      heartbeatScope,
+      nowIso,
+      dateOnly,
+      runId,
+    }));
+  }
+
+  const output = results.length === 1
+    ? results[0]
+    : {
+        ok: results.every((result) => result.ok),
+        dry_run: DRY_RUN,
+        source: "show_heartbeat_multi",
+        show_target_scope: {
+          table: TABLE_SHOW_TARGET,
+          view: VIEW_SHOW_TARGET,
+          rows: results[0]?.show_target_scope?.rows ?? 0,
+          valid_rows: results.length,
+        },
+        results,
+      };
+
+  if (!output.ok) process.exitCode = 1;
+  console.log(JSON.stringify(output, null, 2));
 }
 
 if (require.main === module) {

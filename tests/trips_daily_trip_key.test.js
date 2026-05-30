@@ -19,6 +19,18 @@ assert.ok(
   tripsDailySource.includes('reason: "active_tables_deprecated"'),
   "active_groups/classes/entries must remain deprecated and skipped in trips_dailyv2"
 );
+assert.ok(
+  tripsDailySource.includes("resolveHeartbeatScopesFromShowTarget"),
+  "watch_trips must resolve every valid show.heartbeat row instead of only one"
+);
+assert.ok(
+  tripsDailySource.includes('source: "show_heartbeat_multi"'),
+  "watch_trips must report multi-show heartbeat processing when more than one show is active"
+);
+assert.ok(
+  !tripsDailySource.includes("currently processes the first valid show target per run"),
+  "watch_trips must not leave the multi-show heartbeat case as a known caveat"
+);
 
 assert.strictEqual(
   tripRowKeyFromFields({
@@ -177,6 +189,33 @@ assert.strictEqual(
   nonFocusFields.schedule_show_datev2,
   "2026-05-31",
   "trip row schedule_show_datev2 should preserve its scheduled date"
+);
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(nonFocusFields, "heartbeat"),
+  "non-current show trip rows should not overwrite or clear heartbeat links"
+);
+
+const droppedFields = require("../trips_dailyv2").buildDroppedFields(
+  {
+    app_show_id: 200000063,
+    app_sql_date: "2026-05-30",
+    app_dow_raw: "Saturday",
+    shifted_to_next_day: true,
+    scope_run_id: "run-1",
+    mode: "NIGHT",
+  },
+  "2026-05-29T21:00:00.000Z",
+  "2026-05-29",
+  "dropped",
+  new Set(["heartbeat", "watch_schedule", "is_current_scope", "inactive", "archive", "dropped_at"])
+);
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(droppedFields, "heartbeat"),
+  "dropped trip rows must preserve existing heartbeat links"
+);
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(droppedFields, "watch_schedule"),
+  "dropped trip rows must preserve existing watch_schedule links"
 );
 
 const duplicateArchives = buildDuplicateTripArchiveUpdates(
