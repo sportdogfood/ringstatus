@@ -1,6 +1,6 @@
 const assert = require("assert");
 
-const { buildDroppedFields } = require("../trips_dailyv2");
+const { buildDroppedFields, preserveExistingLinkFields } = require("../trips_dailyv2");
 
 const allWritableFields = new Set([
   "heartbeat",
@@ -8,6 +8,7 @@ const allWritableFields = new Set([
   "is_current_scope",
   "scope_status",
   "inactive",
+  "archive",
   "dropped_at",
   "run_id",
   "run_time",
@@ -22,16 +23,14 @@ const droppedFields = buildDroppedFields(
   allWritableFields
 );
 
-assert.deepStrictEqual(
-  droppedFields.watch_schedule,
-  [],
-  "dropped trips must clear watch_schedule links so schedule rollups do not count stale trips"
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(droppedFields, "watch_schedule"),
+  "dropped trips must not clear watch_schedule links"
 );
 
-assert.deepStrictEqual(
-  droppedFields.heartbeat,
-  [],
-  "dropped trips must clear heartbeat links"
+assert.ok(
+  !Object.prototype.hasOwnProperty.call(droppedFields, "heartbeat"),
+  "dropped trips must not clear heartbeat links"
 );
 
 assert.strictEqual(droppedFields.scope_status, "dropped");
@@ -49,6 +48,26 @@ const noWatchScheduleField = buildDroppedFields(
 assert.ok(
   !Object.prototype.hasOwnProperty.call(noWatchScheduleField, "watch_schedule"),
   "drop patch must only write watch_schedule when the live table exposes that field"
+);
+
+assert.deepStrictEqual(
+  preserveExistingLinkFields(droppedFields, {
+    heartbeat: ["recHeartbeat"],
+    watch_schedule: ["recSchedule"],
+  }),
+  {
+    is_current_scope: false,
+    scope_status: "dropped",
+    inactive: true,
+    archive: true,
+    dropped_at: "2026-05-15",
+    run_id: "run-123",
+    run_time: "2026-05-15T12:00:00.000Z",
+    last_seen_at: "2026-05-15",
+    heartbeat: ["recHeartbeat"],
+    watch_schedule: ["recSchedule"],
+  },
+  "drop patches must preserve existing relationship links when applying an update"
 );
 
 console.log("watch_trips_dropped_link_clear tests passed");

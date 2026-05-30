@@ -60,13 +60,13 @@ for (const script of scripts) {
     const protectedSetSource = protectedSetMatch[0];
 
     assert.ok(
-      !/["']watch_schedule["']/.test(protectedSetSource),
-      `${script} must allow blank watch_schedule patches so dropped trips can be unlinked`
+      source.includes("preserveExistingLinkFields"),
+      `${script} must preserve relationship links when updating watch_trips`
     );
 
     assert.ok(
-      !/["']heartbeat["']/.test(protectedSetSource),
-      `${script} must allow blank heartbeat patches so dropped trips can be unlinked`
+      !/watch_schedule\s*:\s*\[\]/.test(source) && !/heartbeat\s*:\s*\[\]/.test(source),
+      `${script} must not clear watch_trips relationship links`
     );
   }
 

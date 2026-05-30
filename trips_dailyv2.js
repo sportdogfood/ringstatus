@@ -1215,6 +1215,7 @@ function buildDuplicateTripArchiveUpdates(existingRows, heartbeatViewIdSet, nowI
       maybeSet(fields, "dropped_at", dateOnly);
       maybeSet(fields, "run_time", nowIso);
       maybeSet(fields, "last_seen_at", dateOnly);
+      preserveExistingLinkFields(fields, currentFields);
       updates.push({ id: row.id, fields });
     }
   }
@@ -1771,6 +1772,16 @@ function sameLinkIds(left, right) {
   return JSON.stringify(normalizeLinkIds(left)) === JSON.stringify(normalizeLinkIds(right));
 }
 
+function preserveExistingLinkFields(fields, existingFields = {}, linkFieldNames = ["heartbeat", "watch_schedule"]) {
+  if (!fields || !existingFields) return fields;
+  for (const fieldName of linkFieldNames) {
+    if (Object.prototype.hasOwnProperty.call(fields, fieldName)) continue;
+    const existingLinks = normalizeLinkIds(existingFields[fieldName]);
+    if (existingLinks.length) fields[fieldName] = existingLinks;
+  }
+  return fields;
+}
+
 async function fetchScopedActiveRows(tableName, fieldNames, scopeAppSid) {
   const rows = await airtableList(tableName, {
     pageSize: 100,
@@ -2242,7 +2253,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
     setIfPresent(fields, name, value);
   };
 
-  if (isActiveForScope) maybeSet("heartbeat", [heartbeat.recordId]);
+  maybeSet("heartbeat", heartbeat.recordId ? [heartbeat.recordId] : undefined);
   maybeSet("shows", showRecordId ? [showRecordId] : undefined);
   Object.assign(fields, buildScopeFieldPatch(watchTripsFieldSet, heartbeat));
   maybeSet("watch_schedule", row.watch_schedule_record_id ? [row.watch_schedule_record_id] : undefined);
@@ -2824,6 +2835,7 @@ async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, run
     if (legacyKey) keepKeySet.add(legacyKey);
     const existing = existingByKey.get(key) || existingByKey.get(legacyKey);
     const fields = buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, currentScopeStatus, watchTripsFieldSet);
+    if (existing) preserveExistingLinkFields(fields, existing.fields);
     if (existing && applyManualTimeOverrideToTripFields(fields, existing)) {
       manualTimeOverrideGuard.preserved += 1;
       if (manualTimeOverrideGuard.samples.length < 10) {
@@ -2843,9 +2855,11 @@ async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, run
     const dropUpdates = [];
     for (const row of heartbeatViewRows) {
       if (!tripRowMatchesHeartbeat(row, heartbeat)) continue;
+      const fields = buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, watchTripsFieldSet);
+      preserveExistingLinkFields(fields, row.fields);
       dropUpdates.push({
         id: row.id,
-        fields: buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, watchTripsFieldSet),
+        fields,
       });
     }
 
@@ -2918,9 +2932,11 @@ async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, run
     if (!tripRowMatchesHeartbeat(row, heartbeat)) continue;
     const key = tripRowKeyFromFields(row?.fields || {});
     if (!key || keepKeySet.has(key)) continue;
+    const fields = buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, watchTripsFieldSet);
+    preserveExistingLinkFields(fields, row.fields);
     dropUpdates.push({
       id: row.id,
-      fields: buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, watchTripsFieldSet),
+      fields,
     });
   }
 
@@ -3066,6 +3082,7 @@ module.exports = {
   buildTripKeyParts,
   buildDroppedFields,
   hasManualTimeOverride,
+  preserveExistingLinkFields,
   selectTripRowsForWriteScope,
   tripRowKeyFromFields,
   WATCH_TRIPS_HEARTBEAT_FIELDS,

@@ -6,6 +6,7 @@ const {
   buildCurrentFields,
   buildDuplicateTripArchiveUpdates,
   buildTripKeyParts,
+  preserveExistingLinkFields,
   selectTripRowsForWriteScope,
   tripRowKeyFromFields,
 } = require("../trips_dailyv2");
@@ -190,9 +191,10 @@ assert.strictEqual(
   "2026-05-31",
   "trip row schedule_show_datev2 should preserve its scheduled date"
 );
-assert.ok(
-  !Object.prototype.hasOwnProperty.call(nonFocusFields, "heartbeat"),
-  "non-current show trip rows should not overwrite or clear heartbeat links"
+assert.deepStrictEqual(
+  nonFocusFields.heartbeat,
+  ["recHeartbeat"],
+  "active non-current show-window trip rows must still keep the heartbeat link"
 );
 
 const droppedFields = require("../trips_dailyv2").buildDroppedFields(
@@ -218,16 +220,26 @@ assert.ok(
   "dropped trip rows must preserve existing watch_schedule links"
 );
 
+const preservedLinks = preserveExistingLinkFields(
+  { is_current_scope: false },
+  { heartbeat: ["recHeartbeat"], watch_schedule: ["recSchedule"] }
+);
+assert.deepStrictEqual(
+  preservedLinks,
+  { is_current_scope: false, heartbeat: ["recHeartbeat"], watch_schedule: ["recSchedule"] },
+  "watch_trips updates must explicitly preserve existing relationship links"
+);
+
 const duplicateArchives = buildDuplicateTripArchiveUpdates(
   [
     { id: "recKeep", fields: { trips_key: "show|date|ring|class|pid|entry", is_current_scope: true } },
-    { id: "recDrop", fields: { trips_key: "show|date|ring|class|pid|entry" } },
-    { id: "recArchived", fields: { trips_key: "show|date|ring|class|pid|entry", archive: true } },
+    { id: "recDrop", fields: { trips_key: "show|date|ring|class|pid|entry", heartbeat: ["recHeartbeat"], watch_schedule: ["recSchedule"] } },
+    { id: "recArchived", fields: { trips_key: "show|date|ring|class|pid|entry", archive: true, watch_schedule: ["recScheduleOld"] } },
   ],
   new Set(["recKeep"]),
   "2026-05-29T21:00:00.000Z",
   "2026-05-29",
-  new Set(["is_current_scope", "inactive", "archive", "dropped_at", "run_time", "last_seen_at"])
+  new Set(["heartbeat", "watch_schedule", "is_current_scope", "inactive", "archive", "dropped_at", "run_time", "last_seen_at"])
 );
 
 assert.deepStrictEqual(
@@ -242,6 +254,8 @@ assert.deepStrictEqual(
         dropped_at: "2026-05-29",
         run_time: "2026-05-29T21:00:00.000Z",
         last_seen_at: "2026-05-29",
+        heartbeat: ["recHeartbeat"],
+        watch_schedule: ["recSchedule"],
       },
     },
     {
@@ -253,10 +267,11 @@ assert.deepStrictEqual(
         dropped_at: "2026-05-29",
         run_time: "2026-05-29T21:00:00.000Z",
         last_seen_at: "2026-05-29",
+        watch_schedule: ["recScheduleOld"],
       },
     },
   ],
-  "duplicate trip keys should fully archive every extra row"
+  "duplicate trip keys should archive extra rows without breaking existing relationship links"
 );
 
 console.log("trips_daily_trip_key tests passed");
