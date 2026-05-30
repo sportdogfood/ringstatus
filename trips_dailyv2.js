@@ -238,7 +238,7 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
     return { skipped: true, reason: "missing_show_target_date", target_date: null };
   }
   const shiftedToNextDay = boolValue(fields?.shifted_to_next_day);
-  const targetDate = shiftedToNextDay ? addDaysSql(focusDay, 1) : focusDay;
+  const targetDate = focusDay;
   if (compareSqlDate(targetDate, startDate) < 0 || compareSqlDate(targetDate, endDate) > 0) {
     return {
       skipped: true,
@@ -249,7 +249,7 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
       target_date: null,
       proposed_target_date: targetDate,
       shifted_to_next_day: shiftedToNextDay,
-      is_day_window: !shiftedToNextDay,
+      is_day_window: true,
     };
   }
   return {
@@ -261,7 +261,7 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
     target_date: targetDate,
     proposed_target_date: targetDate,
     shifted_to_next_day: shiftedToNextDay,
-    is_day_window: !shiftedToNextDay,
+    is_day_window: true,
   };
 }
 
@@ -966,7 +966,7 @@ async function resolveHeartbeatScopesFromShowTarget(latestHeartbeat, now = new D
         app_show_id: selected.showId,
         app_sql_date: targetDate,
         app_dow_raw: dayNameForSqlDate(targetDate),
-        shifted_to_next_day: !selected.targetInfo.is_day_window,
+        shifted_to_next_day: boolValue(selected.targetInfo.shifted_to_next_day),
         customer_id: customerId,
         focus_day: selected.targetInfo.focus_day,
         show_record_id: selected.row.id,

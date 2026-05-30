@@ -35,8 +35,8 @@ const scope = resolveHeartbeatScopeFromCurrentHeartbeat({
 assert.strictEqual(scope.app_show_idv2, 200000063);
 assert.strictEqual(scope.mode, "NIGHT");
 assert.strictEqual(scope.shifted_to_next_dayv2, true);
-assert.strictEqual(scope.app_sql_datev2, "2026-05-30");
-assert.strictEqual(scope.app_sql_date_source, "night_shifted_next_day");
+assert.strictEqual(scope.app_sql_datev2, "2026-05-29");
+assert.strictEqual(scope.app_sql_date_source, "show_focus_day");
 
 const oneDayAfterFive = showHeartbeatTargetDate({
   focus_day: "2026-05-28",
@@ -44,9 +44,9 @@ const oneDayAfterFive = showHeartbeatTargetDate({
   end_date: "2026-05-28",
   shifted_to_next_day: true,
 }, new Date("2026-05-28T21:30:00.000Z"));
-assert.strictEqual(oneDayAfterFive.target_date, null);
-assert.strictEqual(oneDayAfterFive.proposed_target_date, "2026-05-29");
-assert.strictEqual(oneDayAfterFive.reason, "target_date_outside_show_window");
+assert.strictEqual(oneDayAfterFive.target_date, "2026-05-28");
+assert.strictEqual(oneDayAfterFive.proposed_target_date, "2026-05-28");
+assert.strictEqual(oneDayAfterFive.reason, null);
 
 const threeDayAfterFive = showHeartbeatTargetDate({
   focus_day: "2026-05-29",
@@ -54,7 +54,7 @@ const threeDayAfterFive = showHeartbeatTargetDate({
   end_date: "2026-05-31",
   shifted_to_next_day: true,
 }, new Date("2026-05-29T21:30:00.000Z"));
-assert.strictEqual(threeDayAfterFive.target_date, "2026-05-30");
+assert.strictEqual(threeDayAfterFive.target_date, "2026-05-29");
 
 const threeDayDayWindow = showHeartbeatTargetDate({
   focus_day: "2026-05-29",
@@ -62,7 +62,7 @@ const threeDayDayWindow = showHeartbeatTargetDate({
   end_date: "2026-05-31",
   shifted_to_next_day: true,
 }, new Date("2026-05-30T14:30:00.000Z"));
-assert.strictEqual(threeDayDayWindow.target_date, "2026-05-30");
+assert.strictEqual(threeDayDayWindow.target_date, "2026-05-29");
 
 const forwardScope = scopeForScheduleDate(scope, "2026-05-31");
 const forwardFields = buildCurrentFields(

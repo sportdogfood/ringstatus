@@ -134,8 +134,8 @@ assert.strictEqual(
     end_date: "2026-05-31",
     shifted_to_next_day: true,
   }, new Date("2026-05-30T10:30:00.000Z")).target_date,
-  "2026-05-30",
-  "watch_trips show target must follow shifted_to_next_day, not local 6am clock"
+  "2026-05-29",
+  "watch_trips show target must follow focus_day; shifted_to_next_day is metadata only"
 );
 
 const nonFocusFields = buildCurrentFields(
