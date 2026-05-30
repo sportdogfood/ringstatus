@@ -19,6 +19,8 @@
     activeHomeModule: "",
     activeListByTab: {},
     searchBySection: {},
+    activeToolByList: {},
+    filterByList: {},
     inlineEditByList: {},
     inlineEditValues: {},
     pendingActions: {},
@@ -214,6 +216,34 @@
       return;
     }
 
+    const toolToggle = event.target.closest("[data-rsa-toggle]");
+    if (toolToggle) {
+      event.preventDefault();
+      const key = toolToggle.dataset.rsaScope || state.activeTab || "overview";
+      const nextTool = toolToggle.dataset.rsaToggle;
+      state.activeToolByList[key] = state.activeToolByList[key] === nextTool ? "" : nextTool;
+      render();
+      return;
+    }
+
+    const toolClose = event.target.closest("[data-rsa-close]");
+    if (toolClose) {
+      event.preventDefault();
+      const key = toolClose.dataset.rsaScope || state.activeTab || "overview";
+      state.activeToolByList[key] = "";
+      render();
+      return;
+    }
+
+    const filterToggle = event.target.closest("[data-rsa-filter]");
+    if (filterToggle) {
+      event.preventDefault();
+      const key = filterToggle.dataset.rsaScope || state.activeTab || "overview";
+      state.filterByList[key] = filterToggle.dataset.rsaFilter || "all";
+      render();
+      return;
+    }
+
     const listEdit = event.target.closest("[data-list-edit-field]");
     if (listEdit) {
       event.preventDefault();
@@ -269,9 +299,10 @@
   function handleInput(event) {
     const sectionSearch = event.target.closest("[data-section-search]");
     if (sectionSearch) {
-      const selectionStart = sectionSearch.selectionStart ?? sectionSearch.value.length;
-      const selectionEnd = sectionSearch.selectionEnd ?? sectionSearch.value.length;
-      state.searchBySection[sectionSearch.dataset.sectionSearch] = sectionSearch.value;
+      const value = sectionSearch.value ?? sectionSearch.textContent ?? "";
+      const selectionStart = sectionSearch.selectionStart ?? value.length;
+      const selectionEnd = sectionSearch.selectionEnd ?? value.length;
+      state.searchBySection[sectionSearch.dataset.sectionSearch] = value;
       render({
         focusSearchKey: sectionSearch.dataset.sectionSearch,
         selectionStart,
@@ -302,6 +333,14 @@
     if (!listId || !field) return;
     state.inlineEditByList[listId] = state.inlineEditByList[listId] || {};
     const editMode = state.inlineEditByList[listId];
+    if (field === "quantity_inputs") {
+      const nextActive = !(editMode.quantity_packed_override || editMode.quantity_needed_override);
+      editMode["lp-row-title"] = false;
+      editMode.quantity_packed_override = nextActive;
+      editMode.quantity_needed_override = nextActive;
+      render();
+      return;
+    }
     const nextActive = !editMode[field];
     if (field === "lp-row-title") {
       editMode["lp-row-title"] = nextActive;
@@ -537,19 +576,28 @@
 
   function render(options = {}) {
     root.innerHTML = `
-      <div class="lp-shell">
-        <header class="lp-header">
-          <div class="lp-header-copy">
-            <h1>WEC Ocala Packing</h1>
-            <p class="packing-header-status">${escapeHtml(statusLine())}</p>
+      <div class="rsa-dashboard">
+        <div class="rsa-banner">
+          <div class="rsa-banner-header">
+            <div class="rsa-head-right">
+              <h5 class="rsa-report-title">WEC PACK LIST</h5>
+              <div class="rsa-report-subtitle">${escapeHtml(statusLine())}</div>
+            </div>
+            <div class="rsa-head-left is-hidden">
+              <h5 class="rsa-report-title">WEC PACK LIST</h5>
+              <div class="rsa-report-subtitle">${escapeHtml(statusLine())}</div>
+            </div>
           </div>
-        </header>
-        <button class="lp-filter-toggle packing-home-button" type="button" data-tab="overview">HOME</button>
-        ${tabsHtml()}
-        <main>${panelHtml()}</main>
-        <footer class="lp-shell-footer">
-          <p>${escapeHtml(footerLine())}</p>
-        </footer>
+        </div>
+        <div class="rsa-dashboard-block">
+          <div class="rsa-dashboard-container">
+            <div class="rsa-main-grid">
+              ${tabsHtml()}
+              ${panelHtml()}
+            </div>
+          </div>
+        </div>
+        <div class="mobile-bottom-spacing"></div>
         <div class="lp-modal" id="packingDetail" hidden aria-hidden="true">
           <div class="lp-modal-backdrop" data-close-detail></div>
           <section class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
@@ -614,13 +662,13 @@
   }
 
   function panelHtml() {
-    if (state.loading) return messagePanel("Loading");
-    if (state.error) return messagePanel("Unable to load packing state");
-    if (!state.data) return messagePanel("No state");
-    if (state.activeTab === "overview") return overviewHtml();
-    if (state.activeTab === "horses") return horsesHtml();
-    if (isTabGroupId(state.activeTab)) return tabGroupHtml(state.activeTab);
-    return listHtml(state.activeTab);
+    if (state.loading) return rsaMessagePanel("Loading");
+    if (state.error) return rsaMessagePanel("Unable to load packing state");
+    if (!state.data) return rsaMessagePanel("No state");
+    if (state.activeTab === "overview") return rsaOverviewHtml();
+    if (state.activeTab === "horses") return rsaHorsesHtml();
+    if (isTabGroupId(state.activeTab)) return rsaTabGroupHtml(state.activeTab);
+    return rsaSingleListHtml(state.activeTab);
   }
 
   function messagePanel(title) {
@@ -634,6 +682,380 @@
         </div>
       </section>
     `;
+  }
+
+  function rsaMessagePanel(title) {
+    return `
+      <div class="rsa-lists-module">
+        <div class="rsa-lists-content">
+          <div class="rsa-list-content">
+            <div class="table-module">
+              <div class="rsa-list-header">
+                <div class="rsa-messages-text">
+                  <h4 class="heading-2">${escapeHtml(displayLabel(title))}</h4>
+                </div>
+              </div>
+              <div class="rsa-messages">
+                <div class="rsa-messages-text">
+                  <div>${escapeHtml(state.error || statusLine())}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaOverviewHtml() {
+    if (state.activeHomeModule) return rsaHomeModuleHtml(state.activeHomeModule);
+    const summaries = filterRows([...homeModuleSummaries(), ...tabGroups()], "overview", overviewSearchText);
+    return rsaDataModuleHtml({
+      title: currentWaveLabel(),
+      printTarget: "overview",
+      searchKey: "overview",
+      filterKey: "overview",
+      rowsHtml: summaries.length ? summaries.map(rsaOverviewRowHtml).join("") : rsaEmptyTableRowHtml("No rows"),
+      labelActionsHtml: `
+        <div class="rs-text-link is-label">open</div>
+        <div class="rs-text-link is-label">print</div>
+      `
+    });
+  }
+
+  function rsaHomeModuleHtml(moduleId) {
+    const module = homeModules().find((row) => row.id === moduleId);
+    if (!module) return rsaMessagePanel("No rows");
+    const moduleLists = sortListsByLabel(module.lists || []);
+    const activeList = activeListForGroup(module.id, moduleLists);
+    const rows = sortOnsiteTasks(filterRows((module.tasks || []).filter((task) => onsiteTaskBelongsToList(task, activeList?.id)), module.id, onsiteTaskSearchText));
+    return `
+      <div class="rsa-lists-module">
+        ${rsaListSwitcherHtml(module.id, moduleLists, activeList?.id || "")}
+        <div class="rsa-lists-content">
+          <div class="rsa-list-content">
+            ${rsaDataModuleHtml({
+              title: activeList?.label || module.label || "Purchase onsite",
+              printTarget: `home:${module.id}`,
+              searchKey: module.id,
+              filterKey: activeList?.id || module.id,
+              rowsHtml: rows.length ? rows.map(rsaOnsiteRowHtml).join("") : rsaEmptyTableRowHtml("No tasks"),
+              labelActionsHtml: ""
+            })}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaTabGroupHtml(tabId) {
+    const group = tabGroups().find((row) => row.id === tabId);
+    const groupLists = group?.listIds?.length
+      ? group.listIds.map((id) => lists().find((list) => list.id === id)).filter(Boolean)
+      : [];
+    const sortedGroupLists = sortListsByLabel(groupLists);
+    if (!sortedGroupLists.length) return rsaMessagePanel(group?.label || "No rows");
+    const activeList = activeListForGroup(group.id, sortedGroupLists);
+    return `
+      <div class="rsa-lists-module">
+        ${rsaListSwitcherHtml(group.id, sortedGroupLists, activeList.id)}
+        <div class="rsa-lists-content">
+          <div class="rsa-list-content">
+            ${rsaListTableHtml(activeList, group.id)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaSingleListHtml(listId) {
+    const list = lists().find((row) => row.id === listId) || { id: listId, label: listId };
+    return `
+      <div class="rsa-lists-module">
+        <div class="rsa-lists-content">
+          <div class="rsa-list-content">
+            ${rsaListTableHtml(list, list.id)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaHorsesHtml() {
+    const rows = filterRows(activeWaveHorses(), "horses", horseSearchText);
+    return rsaDataModuleHtml({
+      title: `${currentWaveLabel()} horses`,
+      printTarget: "horses",
+      searchKey: "horses",
+      filterKey: "horses",
+      rowsHtml: rows.length ? rows.map(rsaHorseRowHtml).join("") : rsaEmptyTableRowHtml("No horses"),
+      labelActionsHtml: `<div class="rs-text-link is-label">print</div>`
+    });
+  }
+
+  function rsaListTableHtml(list, tabId) {
+    const editMode = state.inlineEditByList[list.id] || {};
+    const rows = rsaApplyListFilter(
+      sortItemsByName(filterRows(items().filter((item) => itemBelongsToList(item, list.id)), list.id, itemSearchText)),
+      list.id
+    );
+    return rsaDataModuleHtml({
+      title: list.label || list.id,
+      printTarget: list.id,
+      searchKey: list.id,
+      filterKey: list.id,
+      rowsHtml: rows.length ? rows.map((item) => rsaItemRowHtml(item, editMode, list.id)).join("") : rsaEmptyTableRowHtml("No rows"),
+      labelActionsHtml: `
+        <div class="rs-text-link is-label">edit</div>
+        <div class="rs-text-link is-label">input</div>
+      `
+    });
+  }
+
+  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, rowsHtml, labelActionsHtml }) {
+    const activeTool = state.activeToolByList[filterKey] || "";
+    return `
+      <div class="table-module">
+        <div class="rsa-list-header">
+          <div class="rsa-item-row is-grid2">
+            <div class="rsa-item-block-left">
+              <div class="rsa-item-text">
+                <h4 class="rsa-head">${escapeHtml(displayLabel(title))}</h4>
+                <div class="rs-text-linline" data-list-id="${escapeAttr(filterKey)}" data-list-edit-field="lp-row-title">edit</div>
+              </div>
+            </div>
+            <div class="rsa-item-block-right">
+              <div class="rsa-action-block is-grid3">
+                <div class="rs-text-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>
+                <div class="rs-text-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>
+                <div class="rs-text-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        ${rsaSearchHtml(searchKey, filterKey, activeTool === "search")}
+        ${rsaFilterHtml(filterKey, activeTool === "filter")}
+        <div class="rsa-tables">
+          <div class="rsa-table">
+            ${rsaTableLabelRowHtml(labelActionsHtml)}
+            <div class="rsa-list-padding">
+              ${rowsHtml}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaListSwitcherHtml(tabId, groupLists, activeListId) {
+    if (!groupLists.length) return "";
+    return `
+      <div class="rsa-list-action-menu is-switcher">
+        ${groupLists.map((list) => `
+          <a href="#" class="rs-tab-link is-switcher ${list.id === activeListId ? "is-active" : ""}" data-tab-id="${escapeAttr(tabId)}" data-list-switch="${escapeAttr(list.id)}">
+            <div>${escapeHtml(displayLabel(list.label || list.id))}</div>
+          </a>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function rsaSearchHtml(searchKey, scopeKey, active) {
+    return `
+      <div class="rsa-messages is-search ${active ? "is-active" : ""}">
+        <div class="rsa-messages-text is-search">
+          <input class="rs-search-input" type="search" value="${escapeAttr(sectionSearchValue(searchKey))}" placeholder="search" data-section-search="${escapeAttr(searchKey)}">
+        </div>
+        <div class="rsa-closer">
+          <div class="rs-text-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaFilterHtml(scopeKey, active) {
+    const activeFilter = state.filterByList[scopeKey] || "all";
+    const filters = [
+      ["all", "ALL"],
+      ["packed", "PACKED"],
+      ["need", "NEED"],
+      ["onsite", "ONSITE"],
+      ["open", "OPEN"]
+    ];
+    return `
+      <div class="rsa-list-action-menu ${active ? "is-active" : ""}">
+        ${filters.map(([key, label]) => `
+          <a href="#" data-rsa-filter="${escapeAttr(key)}" data-rsa-scope="${escapeAttr(scopeKey)}" class="rs-tab-link ${activeFilter === key ? "is-filter" : ""}">
+            <div>${escapeHtml(label)}</div>
+          </a>
+        `).join("")}
+        <div class="rsa-closer">
+          <div class="rs-text-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaTableLabelRowHtml(actionsHtml) {
+    return `
+      <div class="rsa-item-row is-grid2 is-label">
+        <div class="rsa-item-block-left">
+          <div class="rsa-item-text">
+            <div class="rs-table-title is-label">ITEM</div>
+          </div>
+        </div>
+        <div class="rsa-item-block-right">
+          <div class="rs-quantity-block is-grid4 is-label">
+            <div class="rs-text is-label">NEED</div>
+            <div class="rs-text is-label">PACKED</div>
+            <div class="rs-text is-label">LEFT</div>
+            <div class="rs-input-spacer is-label">INPUT</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaItemRowHtml(item, editMode, listId) {
+    const editingTitle = !!editMode?.["lp-row-title"];
+    const editingQty = !!(editMode?.quantity_packed_override || editMode?.quantity_needed_override);
+    const packed = isDone(item);
+    return `
+      <div class="rsa-item-row is-grid2 ${editingTitle ? "is-title-editing" : ""} ${editingQty ? "is-qty-editing" : ""}">
+        <div class="rsa-item-block-left" data-item-id="${escapeAttr(item.id)}">
+          <div class="rsa-item-text">
+            <div class="indication-color bg-primary-green"></div>
+            <div class="rs-table-title rsa-row-title-text">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</div>
+            <input class="rs-table-title is-inline rsa-row-title-input" type="text" value="${escapeAttr(inlineEditValue(item, "lp-row-title"))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="lp-row-title">
+            <div class="rs-text-linline" data-list-id="${escapeAttr(listId)}" data-list-edit-field="lp-row-title">edit</div>
+          </div>
+        </div>
+        <div class="rsa-item-block-right">
+          <div class="rs-quantity-block is-grid4">
+            ${rsaQuantityCellHtml(item, "quantity_needed_override", item.needed, editMode?.quantity_needed_override)}
+            ${rsaQuantityCellHtml(item, "quantity_packed_override", item.packed, editMode?.quantity_packed_override)}
+            <div class="rs-text">${escapeHtml(quantityDisplay(item.left))}</div>
+            <div class="rs-input-inline">
+              <span class="rsa-row-input-action" data-list-id="${escapeAttr(listId)}" data-list-edit-field="quantity_inputs">input</span>
+              <span class="rs-text-link is-save" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}">save</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaQuantityCellHtml(item, field, value, editing) {
+    if (!editing) return `<div class="rs-text rsa-row-qty-text">${escapeHtml(quantityDisplay(value))}</div>`;
+    return `<input class="rs-text is-inline rsa-row-qty-input" type="number" min="0" step="1" inputmode="numeric" value="${escapeAttr(inlineEditValue(item, field))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="${escapeAttr(field)}">`;
+  }
+
+  function rsaOnsiteRowHtml(task) {
+    const done = task.taskState === "done";
+    const pending = isPendingAction("set_onsite_task_state", task.id);
+    const nextState = done ? "task" : "done";
+    return `
+      <div class="rsa-item-row is-grid2">
+        <div class="rsa-item-block-left" data-onsite-task-detail="${escapeAttr(task.id)}">
+          <div class="rsa-item-text">
+          <div class="indication-color ${done ? "bg-primary-green" : "bg-primary-blue"}"></div>
+            <div class="rs-table-title">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</div>
+            <div class="rs-text-linline"></div>
+          </div>
+        </div>
+        <div class="rsa-item-block-right">
+          <div class="rs-quantity-block is-grid4">
+            <div class="rs-text"></div>
+            <div class="rs-text"></div>
+            <div class="rs-text"></div>
+            <div class="rs-input-inline ${pending ? "is-active" : ""}" data-onsite-task-state="${escapeAttr(nextState)}" data-source-item-id="${escapeAttr(task.id)}">${pending ? "saving" : done ? "task" : "done"}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaHorseRowHtml(horse) {
+    const progress = horseProgress(horse);
+    return `
+      <div class="rsa-item-row is-grid2">
+        <div class="rsa-item-block-left" data-horse-detail="${escapeAttr(horse.id)}">
+          <div class="rsa-item-text">
+          <div class="indication-color ${progress.percent >= 100 ? "bg-primary-green" : "bg-primary-blue"}"></div>
+            <div class="rs-table-title">${escapeHtml(displayLabel(horseDisplayName(horse)))}</div>
+            <div class="rs-text-linline">${escapeHtml(`${progress.percent}%`)}</div>
+          </div>
+        </div>
+        <div class="rsa-item-block-right">
+          <div class="rs-quantity-block is-grid4">
+            <div class="rs-text">${escapeHtml(quantityDisplay(progress.rows))}</div>
+            <div class="rs-text">${escapeHtml(quantityDisplay(progress.done))}</div>
+            <div class="rs-text">${escapeHtml(quantityDisplay(Math.max(0, progress.rows - progress.done)))}</div>
+            <div class="rs-input-inline is-print" data-print-horse="${escapeAttr(horse.id)}">print</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaOverviewRowHtml(summary) {
+    const percent = progressPercent(summary.done, summary.rows);
+    const triggerAttr = summary.homeModule
+      ? `data-home-module="${escapeAttr(summary.id)}"`
+      : `data-tab="${escapeAttr(summary.id)}"`;
+    const printTarget = summary.homeModule ? `home:${summary.id}` : summary.id;
+    return `
+      <div class="rsa-item-row is-grid2">
+        <div class="rsa-item-block-left" ${triggerAttr}>
+          <div class="rsa-item-text">
+          <div class="indication-color ${percent >= 100 ? "bg-primary-green" : "bg-primary-blue"}"></div>
+            <div class="rs-table-title">${escapeHtml(displayLabel(summary.label || summary.id))}</div>
+            <div class="rs-text-linline">${escapeHtml(`${percent}%`)}</div>
+          </div>
+        </div>
+        <div class="rsa-item-block-right">
+          <div class="rs-quantity-block is-grid4">
+            <div class="rs-text">${escapeHtml(quantityDisplay(summary.rows))}</div>
+            <div class="rs-text">${escapeHtml(quantityDisplay(summary.done))}</div>
+            <div class="rs-text">${escapeHtml(quantityDisplay(summary.open))}</div>
+            <div class="rs-input-inline is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaEmptyTableRowHtml(label) {
+    return `
+      <div class="rsa-item-row is-grid2">
+        <div class="rsa-item-block-left">
+          <div class="rsa-item-text">
+            <div class="indication-color is-hidden"></div>
+            <div class="rs-table-title">${escapeHtml(label)}</div>
+            <div class="rs-text-linline"></div>
+          </div>
+        </div>
+        <div class="rsa-item-block-right">
+          <div class="rs-quantity-block is-grid4"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaItemStatusLabel(item) {
+    if (item.resolutionState) return resolutionDisplayLabel(item.resolutionState);
+    if (isDone(item)) return "PACKED";
+    if (number(item.packed) > 0) return "OPEN";
+    return "NEED";
+  }
+
+  function rsaApplyListFilter(rows, filterKey) {
+    const filter = state.filterByList[filterKey] || "all";
+    if (filter === "packed") return rows.filter(isDone);
+    if (filter === "need") return rows.filter((item) => !isDone(item) && number(item.packed) <= 0);
+    if (filter === "onsite") return rows.filter((item) => item.resolutionState === "purchase_onsite");
+    if (filter === "open") return rows.filter((item) => !isDone(item));
+    return rows;
   }
 
   function overviewHtml() {

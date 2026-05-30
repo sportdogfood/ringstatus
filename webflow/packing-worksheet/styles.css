@@ -2914,42 +2914,6 @@ body {
   --packing-shade: rgba(122, 59, 89, 0.08);
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  min-height: 50px;
-  padding: 0 16px;
-  background-color: #f8f9fb;
-  font-family: Outfit, sans-serif;
-}
-
-:is(#packing-app, #tack-horses-app, #hps-app) .packing-section-tabs {
-  margin-bottom: 0;
-}
-
-:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link {
-  appearance: none;
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  padding: 4px 24px;
-  border: 1px solid #e1e6f0;
-  border-radius: 100px;
-  background-color: #fff;
-  color: #627183;
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 20px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab {
   color: var(--rsa-tab-active);
   background-color: var(--rsa-tab-shade);
@@ -2996,6 +2960,285 @@ body {
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-feed {
   --rsa-tab-active: #4f6f2a;
   --rsa-tab-shade: rgba(79, 111, 42, 0.08);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-switcher {
+  text-decoration: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu {
+  height: 50px;
+  min-height: 50px;
+  max-height: 50px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.packing-section-tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-main-grid,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block.is-grid4 {
+  display: grid;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row {
+  padding: 16px 24px;
+  align-items: center;
+  gap: 0;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  font-size: 14px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-grid2 {
+  width: 100%;
+  min-height: 45px;
+  padding: 0;
+  place-content: center space-between;
+  place-items: center stretch;
+  gap: 4px;
+  grid-template-columns: 0.6fr 0.4fr;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-lists-module {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-block-left,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-block-right {
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-text {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-padding .rsa-row-title-text {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block.is-grid4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer {
+  color: #172a41;
+  text-align: center;
+  text-decoration: underline;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline.is-label,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline.is-label,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer.is-label {
+  color: inherit;
+  cursor: default;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .indication-color.is-hidden {
+  visibility: hidden;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-title-editing .rsa-row-input-action,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rsa-row-input-action {
+  display: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-action-block.is-grid3 {
+  max-width: none;
+  width: auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header {
+  display: block;
+  min-height: 44px;
+  padding: 0 16px;
+  justify-content: space-between;
+  align-items: center;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  grid-template-columns: 1fr 120px;
+  grid-template-rows: auto;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background-color: #fff;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header > .rsa-item-row {
+  grid-column: 1 / -1;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header .rsa-item-text {
+  grid-template-columns: max-content max-content;
+  justify-content: start;
+  width: max-content;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-head {
+  margin: 0;
+  color: #172a41;
+  font-family: Outfit, sans-serif;
+  font-size: clamp(18px, 2.4vw, 24px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard-block {
+  overflow: visible;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .table-module {
+  position: relative;
+  overflow: visible;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-tables {
+  overflow: visible;
+}
+
+@media screen and (max-width: 991px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header {
+    display: grid;
+    padding-right: 12px;
+    padding-left: 12px;
+    grid-auto-columns: 1fr;
+    gap: 4px;
+    grid-template-columns: 1fr 120px;
+    grid-template-rows: auto;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-grid2 {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header {
+    padding-right: 10px;
+    padding-left: 10px;
+    gap: 4px;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row {
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid rgb(225, 230, 240);
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-grid2 {
+    padding-right: 10px;
+    padding-left: 10px;
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+  }
+}
+
+@media screen and (max-width: 479px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header {
+    min-height: 45px;
+    padding-right: 8px;
+    padding-left: 8px;
+    gap: 4px;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row {
+    gap: 4px;
+    grid-template-columns: 1fr;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-grid2 {
+    padding-right: 8px;
+    padding-left: 8px;
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-lists-module {
+    overflow: hidden;
+  }
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link.is-print {
+  background: #f3f3f3;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .table-module > .rsa-messages.is-search,
+:is(#packing-app, #tack-horses-app, #hps-app) .table-module > .rsa-list-action-menu {
+  display: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .table-module > .rsa-messages.is-search.is-active,
+:is(#packing-app, #tack-horses-app, #hps-app) .table-module > .rsa-list-action-menu.is-active {
+  display: flex;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-padding .rsa-item-row:nth-child(even) {
+  background: #f8f9fb;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .indication-color {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 100px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .bg-primary-green {
+  background: #01dda5;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .bg-primary-blue {
+  background: #763ff9;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .bg-primary-rose {
+  background: #ff4b7a;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row .rsa-row-title-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row .rsa-row-qty-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row .rs-text-link.is-save {
+  display: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-title-editing .rsa-row-title-text,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rsa-row-qty-text {
+  display: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-title-editing .rsa-row-title-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rsa-row-qty-input {
+  display: block;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-title-editing .rs-text-link.is-save,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rs-text-link.is-save {
+  display: flex;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .mobile-bottom-spacing {
+  display: block;
+  height: 60px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-edit-panel {
@@ -3851,7 +4094,8 @@ body {
   max-width: 840px !important;
   margin-right: auto !important;
   margin-left: auto !important;
-  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 #packing-app .lp-shell {

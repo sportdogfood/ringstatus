@@ -47,19 +47,19 @@ assert.strictEqual(
   "keep"
 );
 
-assert.strictEqual(
-  classifyWatchTripsHeartbeatRelink(
-    {
-      app_show_idv2: 200000061,
-      schedule_show_datev2: "2026-05-10",
-      "app_sql_date (from heartbeat)": ["2026-05-28"],
-      heartbeat: ["recCurrentWrong"],
-    },
-    appCtx,
-    "recNew"
-  ).action,
-  "clear"
+const mismatchedTripDecision = classifyWatchTripsHeartbeatRelink(
+  {
+    app_show_idv2: 200000061,
+    schedule_show_datev2: "2026-05-10",
+    "app_sql_date (from heartbeat)": ["2026-05-28"],
+    heartbeat: ["recCurrentWrong"],
+  },
+  appCtx,
+  "recNew"
 );
+assert.strictEqual(mismatchedTripDecision.action, "clear");
+assert.strictEqual(mismatchedTripDecision.auto_archive, false);
+assert.strictEqual(mismatchedTripDecision.deactivate_current_scope, true);
 
 assert.strictEqual(
   classifyWatchTripsHeartbeatRelink(

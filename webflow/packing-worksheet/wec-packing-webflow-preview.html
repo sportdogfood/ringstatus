@@ -3,8 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
     <title>WEC Packing Preview</title>
-    <link rel="stylesheet" href="./styles.css?v=wec-preview-95">
+    <link rel="stylesheet" href="http://127.0.0.1:8795/css/normalize.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8795/css/webflow.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8795/css/rsa-stylesheets.webflow.css">
+    <script>
+      const WEC_LOCAL_PREVIEW_VERSION = Date.now();
+      document.write(`<link rel="stylesheet" href="./styles.css?v=${WEC_LOCAL_PREVIEW_VERSION}">`);
+    </script>
   </head>
   <body>
     <div id="packing-app">Loading WEC packing...</div>
@@ -23,6 +30,8 @@
         packWaveKey: "wave_one"
       };
     </script>
-    <script src="./wec-packing.js?v=wec-preview-95" defer></script>
+    <script>
+      document.write(`<script src="./wec-packing.js?v=${WEC_LOCAL_PREVIEW_VERSION}" defer><\/script>`);
+    </script>
   </body>
 </html>

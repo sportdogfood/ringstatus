@@ -52,20 +52,20 @@ assert.strictEqual(
   "keep"
 );
 
-assert.strictEqual(
-  classifyWatchScheduleHeartbeatRelink(
-    {
-      app_show_idv2: 200000061,
-      app_sql_datev2: "2026-05-10",
-      app_dow_rawv2: "Sun",
-      "app_sql_date (from heartbeat)": ["2026-05-28"],
-      heartbeat: ["recCurrentWrong"],
-    },
-    appCtx,
-    "recNew"
-  ).action,
-  "clear"
+const mismatchedScheduleDecision = classifyWatchScheduleHeartbeatRelink(
+  {
+    app_show_idv2: 200000061,
+    app_sql_datev2: "2026-05-10",
+    app_dow_rawv2: "Sun",
+    "app_sql_date (from heartbeat)": ["2026-05-28"],
+    heartbeat: ["recCurrentWrong"],
+  },
+  appCtx,
+  "recNew"
 );
+assert.strictEqual(mismatchedScheduleDecision.action, "clear");
+assert.strictEqual(mismatchedScheduleDecision.auto_archive, false);
+assert.strictEqual(mismatchedScheduleDecision.deactivate_current_scope, true);
 
 assert.strictEqual(
   classifyWatchScheduleHeartbeatRelink(

@@ -237,9 +237,8 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
   if (!focusDay || !startDate || !endDate) {
     return { skipped: true, reason: "missing_show_target_date", target_date: null };
   }
-  const minutes = localMinutesForTripsScope(now);
-  const isDayWindow = minutes >= 6 * 60 && minutes < 17 * 60;
-  const targetDate = isDayWindow ? focusDay : addDaysSql(focusDay, 1);
+  const shiftedToNextDay = boolValue(fields?.shifted_to_next_day);
+  const targetDate = shiftedToNextDay ? addDaysSql(focusDay, 1) : focusDay;
   if (compareSqlDate(targetDate, startDate) < 0 || compareSqlDate(targetDate, endDate) > 0) {
     return {
       skipped: true,
@@ -249,7 +248,8 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
       end_date: endDate,
       target_date: null,
       proposed_target_date: targetDate,
-      is_day_window: isDayWindow,
+      shifted_to_next_day: shiftedToNextDay,
+      is_day_window: !shiftedToNextDay,
     };
   }
   return {
@@ -260,7 +260,8 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
     end_date: endDate,
     target_date: targetDate,
     proposed_target_date: targetDate,
-    is_day_window: isDayWindow,
+    shifted_to_next_day: shiftedToNextDay,
+    is_day_window: !shiftedToNextDay,
   };
 }
 
@@ -900,6 +901,7 @@ async function fetchShowTargetRows() {
       "focus_day",
       "start_date",
       "end_date",
+      "shifted_to_next_day",
       "heartbeat",
       "show_rid",
     ],
@@ -968,7 +970,7 @@ async function resolveHeartbeatScopesFromShowTarget(latestHeartbeat, now = new D
         customer_id: customerId,
         focus_day: selected.targetInfo.focus_day,
         show_record_id: selected.row.id,
-        show_scope_key: `${customerId}|${selected.showId}|${selected.targetInfo.focus_day}`,
+        show_scope_key: `${customerId}|${selected.showId}|${targetDate}`,
         scope_run_id: `${latestHeartbeat.scope_run_id}|show:${selected.showId}|${targetDate}`,
       },
       show_target_scope: {
@@ -2284,7 +2286,7 @@ function buildCurrentFields(row, heartbeat, showRecordId, nowIso, dateOnly, curr
   maybeSet("inactive", false);
   maybeSet("archive", false);
   maybeSet("last_seen_at", dateOnly);
-  maybeSet("dropped_at", null);
+  if (watchTripsFieldSet.has("dropped_at")) fields.dropped_at = null;
   maybeSet("run_id", heartbeat.scope_run_id);
   maybeSet("run_time", nowIso);
   maybeSet("pid", row.pid);
@@ -3084,6 +3086,7 @@ module.exports = {
   hasManualTimeOverride,
   preserveExistingLinkFields,
   selectTripRowsForWriteScope,
+  showHeartbeatTargetDate,
   tripRowKeyFromFields,
   WATCH_TRIPS_HEARTBEAT_FIELDS,
 };

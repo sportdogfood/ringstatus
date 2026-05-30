@@ -298,9 +298,8 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
   const focusDay = strictSqlDate(toIsoDateOnly(fields?.focus_day), "show.focus_day");
   const startDate = strictSqlDate(toIsoDateOnly(fields?.start_date), "show.start_date");
   const endDate = strictSqlDate(toIsoDateOnly(fields?.end_date), "show.end_date");
-  const minutes = localMinutesForScheduleScope(now);
-  const isDayWindow = minutes >= 6 * 60 && minutes < 17 * 60;
-  const targetDate = isDayWindow ? focusDay : addDaysSql(focusDay, 1);
+  const shiftedToNextDay = boolValue(fields?.shifted_to_next_day);
+  const targetDate = shiftedToNextDay ? addDaysSql(focusDay, 1) : focusDay;
 
   if (compareSqlDate(targetDate, startDate) < 0 || compareSqlDate(targetDate, endDate) > 0) {
     return {
@@ -308,7 +307,8 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
       focus_day: focusDay,
       start_date: startDate,
       end_date: endDate,
-      is_day_window: isDayWindow,
+      is_day_window: !shiftedToNextDay,
+      shifted_to_next_day: shiftedToNextDay,
       skipped: true,
       reason: "target_date_outside_show_window",
       proposed_target_date: targetDate,
@@ -320,7 +320,8 @@ function showHeartbeatTargetDate(fields, now = new Date()) {
     focus_day: focusDay,
     start_date: startDate,
     end_date: endDate,
-    is_day_window: isDayWindow,
+    is_day_window: !shiftedToNextDay,
+    shifted_to_next_day: shiftedToNextDay,
     skipped: false,
     reason: null,
     proposed_target_date: targetDate,
@@ -1234,6 +1235,7 @@ async function fetchShowTargetRows() {
       "focus_day",
       "start_date",
       "end_date",
+      "shifted_to_next_day",
       "heartbeat",
       "show_rid",
     ],
@@ -1262,7 +1264,7 @@ function buildShowTargetBaseContext(heartbeatContext, showRow, targetInfo) {
     customer_id: customerId,
     focus_day: targetInfo.focus_day,
     show_record_id: showRow.id,
-    show_scope_key: `${customerId}|${appShowId}|${targetInfo.focus_day}`,
+    show_scope_key: `${customerId}|${appShowId}|${targetInfo.target_date}`,
     show_target_record_id: showRow.id,
     show_target: targetInfo,
   };

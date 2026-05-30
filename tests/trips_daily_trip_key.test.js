@@ -8,6 +8,7 @@ const {
   buildTripKeyParts,
   preserveExistingLinkFields,
   selectTripRowsForWriteScope,
+  showHeartbeatTargetDate,
   tripRowKeyFromFields,
 } = require("../trips_dailyv2");
 
@@ -126,6 +127,17 @@ assert.deepStrictEqual(
   "watch_trips writes must keep non-focus show trip rows instead of filtering them out"
 );
 
+assert.strictEqual(
+  showHeartbeatTargetDate({
+    focus_day: "2026-05-29",
+    start_date: "2026-05-29",
+    end_date: "2026-05-31",
+    shifted_to_next_day: true,
+  }, new Date("2026-05-30T10:30:00.000Z")).target_date,
+  "2026-05-30",
+  "watch_trips show target must follow shifted_to_next_day, not local 6am clock"
+);
+
 const nonFocusFields = buildCurrentFields(
   {
     scheduled_date: "2026-05-31",
@@ -180,6 +192,11 @@ assert.strictEqual(
   nonFocusFields.inactive,
   false,
   "non-focus show trip rows should not be archived/inactivated just because they are not focus_day"
+);
+assert.strictEqual(
+  nonFocusFields.dropped_at,
+  null,
+  "current trip updates must explicitly clear stale dropped_at values"
 );
 assert.strictEqual(
   nonFocusFields.show_date,

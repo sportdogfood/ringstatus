@@ -534,6 +534,19 @@ function shapePublishedContent(datasetKey, rows) {
   };
 }
 
+function publishedRowsCount(contentObj) {
+  if (Array.isArray(contentObj)) return contentObj.length;
+  if (Array.isArray(contentObj?.records)) return contentObj.records.length;
+  if (Array.isArray(contentObj?.rows)) return contentObj.rows.length;
+  return null;
+}
+
+function protectsPublishedRowsFromEmptySource(nextContentObj, previousContentObj) {
+  const nextCount = publishedRowsCount(nextContentObj);
+  const previousCount = publishedRowsCount(previousContentObj);
+  return nextCount === 0 && Number.isFinite(previousCount) && previousCount > 0;
+}
+
 //////////////////////
 // 4) Airtable REST
 //////////////////////
@@ -857,6 +870,10 @@ async function prepareBulkRow(row, pqRecords, epochSec) {
     const pre = await preflightGetJson(publishedUrl);
 
     if (pre.ok) {
+      if (protectsPublishedRowsFromEmptySource(built.contentObj, pre.json)) {
+        console.log(`warn: ${built.datasetKey} source returned 0 rows; preserving existing ${normalized}`);
+        continue;
+      }
       const same = stableStringify(pre.json) === stableStringify(built.contentObj);
       if (!same) {
         changedFiles.push({
@@ -895,6 +912,10 @@ async function prepareDifferRow(row, pqRecords, epochSec) {
     const pre = await preflightGetJson(publishedUrl);
 
     if (pre.ok) {
+      if (protectsPublishedRowsFromEmptySource(built.contentObj, pre.json)) {
+        console.log(`warn: ${built.datasetKey} source returned 0 rows; preserving existing ${normalized}`);
+        continue;
+      }
       const same = stableStringify(pre.json) === stableStringify(built.contentObj);
       if (!same) {
         changedFiles.push({

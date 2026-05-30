@@ -173,6 +173,68 @@ function numbersOverlap(set, value) {
   return num !== null && set.has(num);
 }
 
+function valuesDiffer(oldValue, newValue) {
+  return changeValue(oldValue) !== changeValue(newValue);
+}
+
+function pairedClassIdForRow(row, watchFields = {}) {
+  if (!isBlank(watchFields.class_id)) return undefined;
+  const classNumbers = splitStoredList(row.class_numbers);
+  const classIds = splitStoredList(row.class_ids);
+  if (!classIds.length) return undefined;
+
+  if (classIds.length === 1 && classNumbers.length <= 1) return numOrNull(classIds[0]);
+
+  const watchClassNumber = strOrNull(watchFields.class_number);
+  if (!watchClassNumber || classIds.length !== classNumbers.length) return undefined;
+
+  const index = classNumbers.findIndex((value) => value === watchClassNumber);
+  return index >= 0 ? numOrNull(classIds[index]) : undefined;
+}
+
+function setChangedField(out, writable, existingFields, fieldName, value) {
+  if (!writable.has(fieldName) || value === undefined || value === null) return;
+  if (!valuesDiffer(existingFields[fieldName], value)) return;
+  out[fieldName] = value;
+}
+
+function liveGroupWatchPropagationValues(row) {
+  return {
+    estimated_start_time: row.estimated_start_time,
+    status: row.status,
+    completed_trips: row.gone,
+    total_trips: row.total,
+    ring_number: row.ring_number,
+    group_name: row.group_name,
+  };
+}
+
+function buildWatchPropagationFields(row, record, writable, { includeRsCompletedTrips = false } = {}) {
+  const existingFields = record.fields || {};
+  const out = {};
+  const manualTimeOverride = boolValue(existingFields.manual_time_override);
+  const propagationValues = liveGroupWatchPropagationValues(row);
+
+  if (!manualTimeOverride) {
+    setChangedField(out, writable, existingFields, "estimated_start_time", propagationValues.estimated_start_time);
+  }
+
+  setChangedField(out, writable, existingFields, "status", propagationValues.status);
+  setChangedField(out, writable, existingFields, "completed_trips", propagationValues.completed_trips);
+  setChangedField(out, writable, existingFields, "total_trips", propagationValues.total_trips);
+  setChangedField(out, writable, existingFields, "ring_number", propagationValues.ring_number);
+  setChangedField(out, writable, existingFields, "group_name", propagationValues.group_name);
+
+  const classId = pairedClassIdForRow(row, existingFields);
+  setChangedField(out, writable, existingFields, "class_id", classId);
+
+  if (includeRsCompletedTrips) {
+    setChangedField(out, writable, existingFields, "rs_completed_trips", row.gone);
+  }
+
+  return out;
+}
+
 function airtableHeaders(extra = {}) {
   return {
     Authorization: `Bearer ${AIRTABLE_TOKEN}`,
@@ -550,6 +612,13 @@ async function fetchWatchScheduleForScope(scope) {
       "ring_number",
       "class_group_id",
       "class_number",
+      "class_id",
+      "estimated_start_time",
+      "status",
+      "completed_trips",
+      "total_trips",
+      "group_name",
+      "manual_time_override",
       "archive",
       "inactive",
       "dropped_at",
@@ -578,6 +647,13 @@ async function fetchWatchTripsForScope(scope) {
       "entry_number",
       "rider_name",
       "horse",
+      "estimated_start_time",
+      "status",
+      "completed_trips",
+      "total_trips",
+      "rs_completed_trips",
+      "group_name",
+      "manual_time_override",
       "archive",
       "inactive",
       "dropped_at",
@@ -585,7 +661,7 @@ async function fetchWatchTripsForScope(scope) {
   });
 }
 
-function matchingWatchScheduleIds(row, watchScheduleRows) {
+function matchingWatchScheduleRecords(row, watchScheduleRows) {
   const classNumbers = numberSet(row.class_numbers);
   const rowGroupId = numOrNull(row.class_group_id);
   const rowRing = numOrNull(row.ring_number);
@@ -600,10 +676,14 @@ function matchingWatchScheduleIds(row, watchScheduleRows) {
       if (rowRing !== null && scheduleRing !== null && scheduleRing !== rowRing) return false;
       return numbersOverlap(classNumbers, fields.class_number);
     })
-    .map((record) => record.id);
+    .filter(Boolean);
 }
 
-function matchingWatchTripIds(row, watchTripRows) {
+function matchingWatchScheduleIds(row, watchScheduleRows) {
+  return matchingWatchScheduleRecords(row, watchScheduleRows).map((record) => record.id);
+}
+
+function matchingWatchTripRecords(row, watchTripRows) {
   const classIds = numberSet(row.class_ids);
   const classNumbers = numberSet(row.class_numbers);
   const rowGroupId = numOrNull(row.class_group_id);
@@ -621,43 +701,99 @@ function matchingWatchTripIds(row, watchTripRows) {
       if (classNumbers.size && numbersOverlap(classNumbers, fields.class_number)) return true;
       return !classIds.size && !classNumbers.size;
     })
-    .map((record) => record.id);
+    .filter(Boolean);
 }
 
-async function attachLiveGroupLinks(rows, scope, writable) {
-  if (!rows.length || (!writable.has("watch_schedule") && !writable.has("watch_trips"))) {
-    return { watch_schedule_matches: 0, watch_trips_matches: 0 };
+function matchingWatchTripIds(row, watchTripRows) {
+  return matchingWatchTripRecords(row, watchTripRows).map((record) => record.id);
+}
+
+function addMergedUpdate(updateMap, id, fields) {
+  if (!id || !Object.keys(fields).length) return;
+  const existing = updateMap.get(id) || {};
+  updateMap.set(id, { ...existing, ...fields });
+}
+
+async function propagateLiveGroupWatchRows(rows, scope, writable) {
+  if (!rows.length) {
+    return {
+      watch_schedule_matches: 0,
+      watch_trips_matches: 0,
+      watch_schedule_updates: 0,
+      watch_trips_updates: 0,
+    };
   }
 
-  const [watchScheduleRows, watchTripRows] = await Promise.all([
-    writable.has("watch_schedule") ? fetchWatchScheduleForScope(scope) : Promise.resolve([]),
-    writable.has("watch_trips") ? fetchWatchTripsForScope(scope) : Promise.resolve([]),
+  const [
+    watchScheduleRows,
+    watchTripRows,
+    watchScheduleFieldMap,
+    watchTripFieldMap,
+  ] = await Promise.all([
+    fetchWatchScheduleForScope(scope),
+    fetchWatchTripsForScope(scope),
+    tableFieldMap(TABLE_WATCH_SCHEDULE),
+    tableFieldMap(TABLE_WATCH_TRIPS),
   ]);
+  const watchScheduleWritable = writableFields(watchScheduleFieldMap);
+  const watchTripWritable = writableFields(watchTripFieldMap);
+  const scheduleUpdates = new Map();
+  const tripUpdates = new Map();
 
   let scheduleMatchCount = 0;
   let tripMatchCount = 0;
   for (const row of rows) {
-    const scheduleIds = writable.has("watch_schedule")
-      ? matchingWatchScheduleIds(row, watchScheduleRows)
-      : undefined;
-    const tripIds = writable.has("watch_trips")
-      ? matchingWatchTripIds(row, watchTripRows)
-      : undefined;
+    const scheduleRecords = matchingWatchScheduleRecords(row, watchScheduleRows);
+    const tripRecords = matchingWatchTripRecords(row, watchTripRows);
+    const scheduleIds = scheduleRecords.map((record) => record.id);
+    const tripIds = tripRecords.map((record) => record.id);
 
-    if (scheduleIds) {
+    if (writable.has("watch_schedule")) {
       row.watch_schedule = scheduleIds;
-      scheduleMatchCount += scheduleIds.length;
     }
-    if (tripIds) {
+    if (writable.has("watch_trips")) {
       row.watch_trips = tripIds;
-      tripMatchCount += tripIds.length;
+    }
+
+    scheduleMatchCount += scheduleIds.length;
+    tripMatchCount += tripIds.length;
+
+    for (const record of scheduleRecords) {
+      addMergedUpdate(
+        scheduleUpdates,
+        record.id,
+        buildWatchPropagationFields(row, record, watchScheduleWritable)
+      );
+    }
+
+    for (const record of tripRecords) {
+      addMergedUpdate(
+        tripUpdates,
+        record.id,
+        buildWatchPropagationFields(row, record, watchTripWritable, { includeRsCompletedTrips: true })
+      );
     }
   }
+
+  await airtableUpdate(
+    TABLE_WATCH_SCHEDULE,
+    [...scheduleUpdates.entries()].map(([id, fields]) => ({ id, fields }))
+  );
+  await airtableUpdate(
+    TABLE_WATCH_TRIPS,
+    [...tripUpdates.entries()].map(([id, fields]) => ({ id, fields }))
+  );
 
   return {
     watch_schedule_matches: scheduleMatchCount,
     watch_trips_matches: tripMatchCount,
+    watch_schedule_updates: scheduleUpdates.size,
+    watch_trips_updates: tripUpdates.size,
   };
+}
+
+async function attachLiveGroupLinks(rows, scope, writable) {
+  return propagateLiveGroupWatchRows(rows, scope, writable);
 }
 
 async function logLiveGroupChanges(changeRows) {
@@ -831,7 +967,7 @@ async function main() {
   const linkResult = await attachLiveGroupLinks(rows, scope, liveWritable);
   const result = await upsertLiveGroups(rows, liveWritable);
 
-  console.log(JSON.stringify({
+  const summary = {
     ok: true,
     event: "live_groups_upserted",
     show_id: scope.show_id,
@@ -844,15 +980,31 @@ async function main() {
     changes_logged: result.changes_logged,
     watch_schedule_matches: linkResult.watch_schedule_matches,
     watch_trips_matches: linkResult.watch_trips_matches,
+    watch_schedule_updates: linkResult.watch_schedule_updates,
+    watch_trips_updates: linkResult.watch_trips_updates,
     dry_run: DRY_RUN,
-  }));
+  };
+  console.log(JSON.stringify(summary));
+  return summary;
 }
 
-main().catch((error) => {
-  console.error(JSON.stringify({
-    ok: false,
-    event: "live_groups_failed",
-    error: String(error?.stack || error?.message || error).slice(0, 5000),
-  }));
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(JSON.stringify({
+      ok: false,
+      event: "live_groups_failed",
+      error: String(error?.stack || error?.message || error).slice(0, 5000),
+    }));
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  buildWatchPropagationFields,
+  liveGroupWatchPropagationValues,
+  main,
+  matchingWatchScheduleRecords,
+  matchingWatchTripRecords,
+  pairedClassIdForRow,
+  propagateLiveGroupWatchRows,
+};

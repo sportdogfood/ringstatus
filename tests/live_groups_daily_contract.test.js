@@ -78,6 +78,21 @@ assert.ok(
 );
 
 assert.ok(
+  source.includes("propagateLiveGroupWatchRows") &&
+    source.includes("watch_schedule_updates") &&
+    source.includes("watch_trips_updates"),
+  "live_groups_daily must propagate live group values into watch_schedule and watch_trips"
+);
+
+assert.ok(
+  source.includes("completed_trips: row.gone") &&
+    source.includes("total_trips: row.total") &&
+    source.includes("estimated_start_time: row.estimated_start_time") &&
+    source.includes("status: row.status"),
+  "live_groups_daily must map ListAjax estimated_start_time/status/gone/total to watch rows"
+);
+
+assert.ok(
   source.includes('TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule"') &&
     source.includes('TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips"'),
   "live_groups_daily must read watch_schedule and watch_trips directly for link binding"

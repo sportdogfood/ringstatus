@@ -841,6 +841,17 @@ function sqlDateInRange(sqlDate, startDate, endDate) {
   return compareSqlDate(date, start) >= 0 && compareSqlDate(date, end) <= 0;
 }
 
+function resolveFocusedShowAppSqlDate(focusDay, startDate, endDate, shiftedToNextDay) {
+  const base = toIsoDateOnly(focusDay);
+  if (!base) return null;
+  if (!shiftedToNextDay) return base;
+  const shifted = addDaysSql(base, 1);
+  if (shifted && startDate && endDate && sqlDateInRange(shifted, startDate, endDate)) {
+    return shifted;
+  }
+  return base;
+}
+
 function applyHotpatchClockOverride(clock) {
   if (!hasHotpatchScopeOverride()) return clock;
   if (!HOTPATCH_APP_SHOW_ID || !HOTPATCH_APP_SQL_DATE) {
@@ -1486,6 +1497,7 @@ function relinkFieldsForTable(tableName) {
         FIELD_ARCHIVE,
         FIELD_INACTIVE,
         "dropped_at",
+        "is_current_scope",
         FIELD_SCOPE_STATUS,
       "show_id",
       "app_show_idv2",
@@ -1504,6 +1516,7 @@ function relinkFieldsForTable(tableName) {
     FIELD_ARCHIVE,
     FIELD_INACTIVE,
     "dropped_at",
+    "is_current_scope",
     FIELD_SCOPE_STATUS,
     "show_id",
     "app_show_idv2",
@@ -1594,11 +1607,13 @@ async function relinkHeartbeatView(tableName, heartbeatId, appCtx = null) {
     }
     if (decision.action === "clear") {
       clearedScopeMismatch++;
+      const scopeDeactivatePatch = decision.deactivate_current_scope ? { is_current_scope: false } : {};
       updates.push({
         id: r.id,
         fields: {
           [FIELD_LINK_HEARTBEAT]: [],
-          ...archivePatch
+          ...archivePatch,
+          ...scopeDeactivatePatch
         }
       });
       continue;
@@ -1813,8 +1828,10 @@ async function resolveHeartbeatTargetDecision() {
   if (startDate && endDate && !sqlDateInRange(focusDay, startDate, endDate)) {
     throw new Error(`Focused show ${appShowId} ${FIELD_SHOW_FOCUS_DAY} ${focusDay} is outside ${startDate}..${endDate}`);
   }
+  const shiftedToNextDay = boolValue(fields[FIELD_SHIFTED_NEXT_DAY]);
+  const targetFocusDay = resolveFocusedShowAppSqlDate(focusDay, startDate, endDate, shiftedToNextDay);
   const targetDates = new Set();
-  targetDates.add(focusDay);
+  targetDates.add(targetFocusDay);
   const sortedDates = Array.from(targetDates).sort();
   return {
     record_id: targetRecord?.id || null,
@@ -1825,14 +1842,14 @@ async function resolveHeartbeatTargetDecision() {
     start_date: startDate,
     end_date: endDate,
     manual_day_count: numericFieldOrNull(fields[FIELD_MANUAL_DAY_COUNT]),
-    focus_day: focusDay,
+    focus_day: targetFocusDay,
     ring_collection: strOrNull(fields[FIELD_RING_COLLECTION]),
     show_scope_key: buildShowScopeKey({
       customerId,
       showId: appShowId,
-      focusDay,
+      focusDay: targetFocusDay,
     }),
-    shifted_to_next_day: boolValue(fields[FIELD_SHIFTED_NEXT_DAY]),
+    shifted_to_next_day: shiftedToNextDay,
     set_to_default_app_sql_date: boolValue(fields[FIELD_SET_TO_DEFAULT_APP_SQL_DATE]),
     mode_control: normalizeControlMode(fields[FIELD_MODE_CONTROL]),
     mode_control_reason: null,

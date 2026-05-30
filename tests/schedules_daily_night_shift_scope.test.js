@@ -42,6 +42,7 @@ const oneDayAfterFive = showHeartbeatTargetDate({
   focus_day: "2026-05-28",
   start_date: "2026-05-28",
   end_date: "2026-05-28",
+  shifted_to_next_day: true,
 }, new Date("2026-05-28T21:30:00.000Z"));
 assert.strictEqual(oneDayAfterFive.target_date, null);
 assert.strictEqual(oneDayAfterFive.proposed_target_date, "2026-05-29");
@@ -51,13 +52,15 @@ const threeDayAfterFive = showHeartbeatTargetDate({
   focus_day: "2026-05-29",
   start_date: "2026-05-29",
   end_date: "2026-05-31",
+  shifted_to_next_day: true,
 }, new Date("2026-05-29T21:30:00.000Z"));
 assert.strictEqual(threeDayAfterFive.target_date, "2026-05-30");
 
 const threeDayDayWindow = showHeartbeatTargetDate({
-  focus_day: "2026-05-30",
+  focus_day: "2026-05-29",
   start_date: "2026-05-29",
   end_date: "2026-05-31",
+  shifted_to_next_day: true,
 }, new Date("2026-05-30T14:30:00.000Z"));
 assert.strictEqual(threeDayDayWindow.target_date, "2026-05-30");
 
