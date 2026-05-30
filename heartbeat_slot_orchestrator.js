@@ -237,7 +237,7 @@ function slotFromFields(fields = {}) {
   return active.length === 1 ? active[0] : null;
 }
 
-function runNodeScript(scriptName) {
+function runNodeScript(scriptName, extraEnv = {}) {
   const startedAt = Date.now();
   const scriptPath = path.resolve(__dirname, scriptName);
   const label = scriptName.replace(/\.js$/i, "").toUpperCase();
@@ -246,7 +246,7 @@ function runNodeScript(scriptName) {
 
   const result = spawnSync(process.execPath, [scriptPath], {
     cwd: __dirname,
-    env: process.env,
+    env: { ...process.env, ...extraEnv },
     encoding: "utf8",
     windowsHide: true,
   });
@@ -467,7 +467,10 @@ async function runOrchestrator() {
     }
 
     if (liveClassDetailDue) {
-      const liveClassDetailResult = runNodeScript("live_class_detail.js");
+      const liveClassDetailResult = runNodeScript("live_class_detail.js", {
+        ORCH_CURRENT_MODE: mode,
+        ORCH_CURRENT_SLOT: slot,
+      });
       if (!liveClassDetailResult.ok) upstreamOk = false;
     }
 

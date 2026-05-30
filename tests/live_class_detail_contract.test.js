@@ -35,6 +35,14 @@ assert.ok(
 );
 
 assert.ok(
+  detail.includes("ORCH_CURRENT_MODE") &&
+    detail.includes("ORCH_CURRENT_SLOT") &&
+    orchestrator.includes("ORCH_CURRENT_MODE: mode") &&
+    orchestrator.includes("ORCH_CURRENT_SLOT: slot"),
+  "detail lane must use orchestrator-provided mode and slot when orchestrated"
+);
+
+assert.ok(
   detail.includes("watch_trips") &&
     detail.includes("only keeps linked watch_trips") &&
     detail.includes("updateWatchTripsFirst"),

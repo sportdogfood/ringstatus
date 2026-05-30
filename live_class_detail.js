@@ -443,14 +443,20 @@ function tripIsActionable(trip) {
 async function processLiveGroup(liveGroup, source, watchWritable, logWritable) {
   const fields = liveGroup.fields || {};
   const linkedTripIds = asArray(fields.watch_trips).map(String).filter(Boolean);
-  if (!linkedTripIds.length) return { pings: 0, matched: 0, trip_updates: 0, logs: 0 };
+  if (!linkedTripIds.length) {
+    return { pings: 0, matched: 0, trip_updates: 0, logs: 0, skipped_no_linked_trips: 1, skipped_no_actionable_trips: 0, skipped_missing_mapping: 0 };
+  }
 
   const linkedTrips = (await fetchLinkedTrips(linkedTripIds)).filter(tripIsActionable);
-  if (!linkedTrips.length) return { pings: 0, matched: 0, trip_updates: 0, logs: 0 };
+  if (!linkedTrips.length) {
+    return { pings: 0, matched: 0, trip_updates: 0, logs: 0, skipped_no_linked_trips: 0, skipped_no_actionable_trips: 1, skipped_missing_mapping: 0 };
+  }
 
   const showId = numOrNull(fields.show_id);
   const classIds = numberList(fields.class_ids);
-  if (showId === null || !classIds.length) return { pings: 0, matched: 0, trip_updates: 0, logs: 0 };
+  if (showId === null || !classIds.length) {
+    return { pings: 0, matched: 0, trip_updates: 0, logs: 0, skipped_no_linked_trips: 0, skipped_no_actionable_trips: 0, skipped_missing_mapping: 1 };
+  }
 
   let pings = 0;
   let matched = 0;
@@ -484,7 +490,7 @@ async function processLiveGroup(liveGroup, source, watchWritable, logWritable) {
     console.warn(JSON.stringify({ ok: false, event: "live_class_logs_failed", error: String(error?.message || error).slice(0, 800) }));
   }
 
-  return { pings, matched, trip_updates: tripUpdates.length, logs: logs.length };
+  return { pings, matched, trip_updates: tripUpdates.length, logs: logs.length, skipped_no_linked_trips: 0, skipped_no_actionable_trips: 0, skipped_missing_mapping: 0 };
 }
 
 async function processView(view) {
@@ -496,13 +502,25 @@ async function processView(view) {
   const logWritable = writableFields(logFieldMap);
   const liveGroups = await listLiveGroups(view.name);
 
-  const totals = { rows: liveGroups.length, pings: 0, matched: 0, trip_updates: 0, logs: 0 };
+  const totals = {
+    rows: liveGroups.length,
+    pings: 0,
+    matched: 0,
+    trip_updates: 0,
+    logs: 0,
+    skipped_no_linked_trips: 0,
+    skipped_no_actionable_trips: 0,
+    skipped_missing_mapping: 0,
+  };
   for (const liveGroup of liveGroups) {
     const result = await processLiveGroup(liveGroup, view.source, watchWritable, logWritable);
     totals.pings += result.pings;
     totals.matched += result.matched;
     totals.trip_updates += result.trip_updates;
     totals.logs += result.logs;
+    totals.skipped_no_linked_trips += result.skipped_no_linked_trips || 0;
+    totals.skipped_no_actionable_trips += result.skipped_no_actionable_trips || 0;
+    totals.skipped_missing_mapping += result.skipped_missing_mapping || 0;
   }
   return totals;
 }
@@ -512,23 +530,26 @@ async function main() {
   requireEnv("AIRTABLE_BASE_ID", AIRTABLE_BASE_ID);
 
   if (DISABLED) {
-    console.log(JSON.stringify({ ok: true, event: "live_class_detail_disabled" }));
-    return;
+    const summary = { ok: true, event: "live_class_detail_disabled" };
+    console.log(JSON.stringify(summary));
+    return summary;
   }
 
   const heartbeat = await latestHeartbeat();
   const fields = heartbeat?.fields || {};
-  const mode = String(fields[HEARTBEAT_MODE_FIELD] || "").toUpperCase();
-  const slot = slotFromFields(fields);
+  const mode = String(process.env.ORCH_CURRENT_MODE || fields[HEARTBEAT_MODE_FIELD] || "").toUpperCase();
+  const slot = String(process.env.ORCH_CURRENT_SLOT || slotFromFields(fields) || "").toUpperCase() || null;
   if (mode !== "DAY" || !slot) {
-    console.log(JSON.stringify({ ok: true, event: "live_class_detail_skipped", reason: "mode_or_slot", mode, slot }));
-    return;
+    const summary = { ok: true, event: "live_class_detail_skipped", reason: "mode_or_slot", mode, slot };
+    console.log(JSON.stringify(summary));
+    return summary;
   }
 
   const selected = selectedViewsForSlot(slot);
   if (!selected.length) {
-    console.log(JSON.stringify({ ok: true, event: "live_class_detail_skipped", reason: "no_due_views", mode, slot }));
-    return;
+    const summary = { ok: true, event: "live_class_detail_skipped", reason: "no_due_views", mode, slot };
+    console.log(JSON.stringify(summary));
+    return summary;
   }
 
   const results = [];
@@ -537,21 +558,36 @@ async function main() {
     results.push({ source: view.source, view: view.name, ...totals });
   }
 
-  console.log(JSON.stringify({
+  const summary = {
     ok: true,
     event: "live_class_detail_completed",
     mode,
     slot,
     dry_run: DRY_RUN,
     results,
-  }));
+  };
+  console.log(JSON.stringify(summary));
+  return summary;
 }
 
-main().catch((error) => {
-  console.error(JSON.stringify({
-    ok: false,
-    event: "live_class_detail_failed",
-    error: String(error?.stack || error?.message || error).slice(0, 5000),
-  }));
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(JSON.stringify({
+      ok: false,
+      event: "live_class_detail_failed",
+      error: String(error?.stack || error?.message || error).slice(0, 5000),
+    }));
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  main,
+  processView,
+  processLiveGroup,
+  selectedViewsForSlot,
+  tripIsActionable,
+  tripMatchesPayloadRow,
+  updateTargetsForSource,
+  updateWatchTripsFirst,
+};
