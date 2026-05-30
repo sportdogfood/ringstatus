@@ -86,24 +86,52 @@ const forwardFields = buildCurrentFields(
   "2026-05-29",
   "prefetch_new",
   null,
-  new Set(["is_current_scope", "heartbeat", "dropped_at", "inactive", "archive", "scheduled_date", "schedule_date"]),
+  new Set(["is_current_scope", "is_target", "heartbeat", "dropped_at", "inactive", "archive", "scheduled_date", "schedule_date"]),
   { isCurrentScope: false }
 );
 assert.strictEqual(forwardFields.is_current_scope, false);
+assert.strictEqual(forwardFields.is_target, false);
 assert.deepStrictEqual(forwardFields.heartbeat, []);
 assert.strictEqual(forwardFields.dropped_at, null);
 assert.strictEqual(forwardFields.inactive, false);
 assert.strictEqual(forwardFields.archive, false);
 assert.strictEqual(forwardFields.scheduled_date, "2026-05-31");
 
+const currentFields = buildCurrentFields(
+  {
+    fields: {
+      show_id: 200000063,
+      schedule_show_datev2: "2026-05-31",
+      scheduled_date: "2026-05-31",
+      show_date: "2026-05-31",
+      ring_number: 1,
+      class_number: 540,
+      class_group_id: 200024552,
+      group_name: "M&S USEF Pony Medal",
+    },
+  },
+  scopeForScheduleDate(scope, "2026-05-31"),
+  "recHeartbeat",
+  "recShow",
+  "2026-05-29T21:30:00.000Z",
+  "2026-05-29",
+  "existing",
+  null,
+  new Set(["is_current_scope", "is_target", "heartbeat", "dropped_at", "inactive", "archive", "scheduled_date", "schedule_date"])
+);
+assert.strictEqual(currentFields.is_current_scope, true);
+assert.strictEqual(currentFields.is_target, true);
+assert.deepStrictEqual(currentFields.heartbeat, ["recHeartbeat"]);
+
 const oldScopeFields = buildOutOfScopeFields(
   { app_sql_datev2: "2026-05-31" },
   "2026-05-30T21:40:00.000Z",
   "2026-05-30",
-  new Set(["heartbeat", "is_current_scope", "dropped_at", "inactive", "archive", "run_tag", "last_updated_at", "record_state"])
+  new Set(["heartbeat", "is_current_scope", "is_target", "dropped_at", "inactive", "archive", "run_tag", "last_updated_at", "record_state"])
 );
 assert.deepStrictEqual(oldScopeFields.heartbeat, []);
 assert.strictEqual(oldScopeFields.is_current_scope, false);
+assert.strictEqual(oldScopeFields.is_target, false);
 assert.strictEqual(oldScopeFields.dropped_at, null);
 assert.strictEqual(oldScopeFields.inactive, false);
 assert.strictEqual(oldScopeFields.archive, false);

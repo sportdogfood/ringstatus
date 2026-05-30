@@ -95,7 +95,9 @@ forward_schedule_writes.dates_seen=0
 
 ```text
 2026-05-31 rows -> is_current_scope checked
+2026-05-31 rows -> is_target checked
 2026-05-30 rows -> is_current_scope unchecked
+2026-05-30 rows -> is_target unchecked
 ```
 
 `dropped_at` should only be set when a `2026-05-31` row that previously existed is missing from the fresh `2026-05-31` payload.
@@ -195,6 +197,8 @@ active_entries not used
 
 ## Known Errors To Confirm Fixed
 
+These are blockers for the next rollover workflow. Confirm each item before running another manual rollover.
+
 ```text
 ERROR: heartbeat date moved by NIGHT, OVERNIGHT, endpoint clock, or shifted_to_next_day
 FIXED WHEN: app_sql_date always equals show.focus_day and source is show_heartbeat_target
@@ -205,9 +209,42 @@ FIXED WHEN: schedule endpoint date equals show.focus_day
 ERROR: old watch_schedule rows stayed is_current_scope checked after rollover
 FIXED WHEN: same-show non-focus rows are is_current_scope unchecked and heartbeat link cleared
 
+ERROR: current watch_schedule rows were created but hidden from TODAY view because is_target was blank
+FIXED WHEN: focus-day rows are is_current_scope checked and is_target checked
+
 ERROR: rows were cleared before fresh focus-day rows were created/updated
 FIXED WHEN: logs show creates/updates complete before current_scope_cleared
 
 ERROR: active_groups, active_classes, or active_entries blocked or shaped schedule output
 FIXED WHEN: they are skipped/not used and never determine watch_schedule scope
 ```
+
+## Required Preflight Before Next Rollover
+
+Before changing `show.focus_day` again, confirm:
+
+```text
+1. latest heartbeat row uses show.focus_day
+2. latest heartbeat row has app_sql_date_source=show_heartbeat_target
+3. schedules_dailyv2.js writes focus-day rows with is_current_scope=true
+4. schedules_dailyv2.js writes focus-day rows with is_target=true
+5. schedules_dailyv2.js clears same-show non-focus rows with is_current_scope=false and is_target=false
+6. fresh focus-day creates/updates run before current-scope clears
+7. Airtable TODAY watch_schedule view returns rows under the standard filter
+```
+
+## Known Troubleshooting Check
+
+If the TODAY `watch_schedule` view appears empty after rollover, first remove only the `is_target` filter.
+
+Expected interpretation:
+
+```text
+Rows appear after removing is_target:
+  records exist, but is_target is blank/false or the filter is excluding them
+
+Rows still do not appear after removing is_target:
+  continue tracing heartbeat scope, schedule runner execution, and schedule row writes
+```
+
+This check separates missing records from records hidden by view filters.

@@ -1830,6 +1830,7 @@ function buildCurrentFields(
   fields.run_tag = scope.app_sql_datev2;
   fields.last_updated_at = nowIso;
   fields.is_current_scope = isCurrentScope;
+  fields.is_target = isCurrentScope;
   fields.scope_run_id = scope.scope_run_id;
   setResolvedField(fields, watchScheduleFieldMeta, "inactive", false);
   setResolvedField(fields, watchScheduleFieldMeta, "archive", false);
@@ -1965,6 +1966,7 @@ function buildOutOfScopeFields(scope, nowIso, dateOnly, watchScheduleFieldMeta) 
   const fields = {
     heartbeat: [],
     is_current_scope: false,
+    is_target: false,
     dropped_at: null,
     last_updated_at: nowIso,
     run_tag: scope.app_sql_datev2,
@@ -1979,6 +1981,7 @@ function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue, watchSche
   const fields = {
     heartbeat: [],
     is_current_scope: false,
+    is_target: false,
     dropped_at: dateOnly,
     last_updated_at: nowIso,
     run_tag: scope.app_sql_datev2,
