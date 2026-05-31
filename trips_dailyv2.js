@@ -419,14 +419,14 @@ function toIsoDateOnly(value) {
 function resolveTripScheduleDate(source) {
   if (!source || typeof source !== "object") return null;
   return toIsoDateOnly(pickFirst(
-    firstValue(source.app_sql_datev2),
-    firstValue(source.app_sql_date),
     firstValue(source.schedule_show_datev2),
     firstValue(source.scheduled_date),
     firstValue(source[" scheduled_date"]),
     firstValue(source["schedule_show_datev2 (from watch_schedule)"]),
     firstValue(source.show_date),
-    firstValue(source.date)
+    firstValue(source.date),
+    firstValue(source.app_sql_datev2),
+    firstValue(source.app_sql_date)
   ));
 }
 
@@ -2362,6 +2362,45 @@ function buildDroppedFields(heartbeat, nowIso, dateOnly, droppedScopeStatus, wat
   return fields;
 }
 
+function tripRowMatchesShow(row, heartbeat) {
+  const fields = row?.fields || {};
+  const rowShowId = numOrNull(fields.show_id) ?? numOrNull(fields.app_show_idv2) ?? numOrNull(fields.app_show_id);
+  return rowShowId !== null && rowShowId === heartbeat.app_show_id;
+}
+
+function tripRowIsOpenScope(fields = {}) {
+  return !boolValue(fields.archive) && !boolValue(fields.inactive) && isBlank(fields.dropped_at);
+}
+
+function buildWatchTripsScopeSyncUpdates(rows, heartbeat, watchTripsFieldSet) {
+  const updates = [];
+  const focusDay = toIsoDateOnly(heartbeat?.focus_day) || toIsoDateOnly(heartbeat?.app_sql_date);
+  const scopeDate = toIsoDateOnly(heartbeat?.app_sql_date) || focusDay;
+  const maybeSet = (fields, name, value) => {
+    if (!watchTripsFieldSet.has(name)) return;
+    setIfPresent(fields, name, value);
+  };
+
+  for (const row of rows || []) {
+    if (!tripRowMatchesShow(row, heartbeat)) continue;
+    const currentFields = row?.fields || {};
+    const rowDate = resolveTripScheduleDate(currentFields);
+    const shouldBeCurrent = tripRowIsOpenScope(currentFields) && rowDate === scopeDate;
+    const nextFields = {};
+
+    Object.assign(nextFields, buildScopeFieldPatch(watchTripsFieldSet, { ...heartbeat, focus_day: focusDay }));
+    maybeSet(nextFields, "is_current_scope", shouldBeCurrent);
+
+    const diff = {};
+    for (const [name, value] of Object.entries(nextFields)) {
+      if (!sameValue(currentFields?.[name], value)) diff[name] = value;
+    }
+    if (Object.keys(diff).length) updates.push({ id: row.id, fields: diff });
+  }
+
+  return updates;
+}
+
 function rowScheduledDateMatchesScope(row, heartbeat) {
   const resolvedScheduledDate = resolveTripScheduleDate(row);
   return resolvedScheduledDate === heartbeat.app_sql_date;
@@ -2890,15 +2929,17 @@ async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, run
       active_groups: activeGroupSync,
     active_links: activeLinkSync,
     manual_time_override_guard: manualTimeOverrideGuard,
-    writes: {
+      writes: {
         created: 0,
         updated: 0,
         dropped: 0,
         duplicate_archived: 0,
+        scope_synced: 0,
         create_failures: [],
         update_failures: [],
         drop_failures: [],
         duplicate_archive_failures: [],
+        scope_sync_failures: [],
       },
       schedule_date_backfill: {
         planned: 0,
@@ -2913,10 +2954,15 @@ async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, run
       const backfillRows = await fetchTripScheduleBackfillRows(heartbeat.app_show_id);
       const backfillUpdates = buildTripScheduleBackfillUpdates(backfillRows, watchTripsFieldSet);
       const backfillResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, backfillUpdates);
+      const scopeSyncRows = await fetchExistingTripsForShow(heartbeat.app_show_id);
+      const scopeSyncUpdates = buildWatchTripsScopeSyncUpdates(scopeSyncRows, heartbeat, watchTripsFieldSet);
+      const scopeSyncResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, scopeSyncUpdates);
       emptySummary.writes.dropped = dropResult.okRows;
       emptySummary.writes.duplicate_archived = duplicateArchiveResult.okRows;
+      emptySummary.writes.scope_synced = scopeSyncResult.okRows;
       emptySummary.writes.drop_failures = dropResult.failedRows;
       emptySummary.writes.duplicate_archive_failures = duplicateArchiveResult.failedRows;
+      emptySummary.writes.scope_sync_failures = scopeSyncResult.failedRows;
       emptySummary.schedule_date_backfill.planned = backfillUpdates.length;
       emptySummary.schedule_date_backfill.updated = backfillResult.okRows;
       emptySummary.schedule_date_backfill.failures = backfillResult.failedRows;
@@ -2986,10 +3032,12 @@ async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, run
       updated: 0,
       dropped: 0,
       duplicate_archived: 0,
+      scope_synced: 0,
       create_failures: [],
       update_failures: [],
       drop_failures: [],
       duplicate_archive_failures: [],
+      scope_sync_failures: [],
     },
     schedule_date_backfill: {
       planned: 0,
@@ -3008,14 +3056,19 @@ async function runTripsForHeartbeatScope({ heartbeatScope, nowIso, dateOnly, run
     const dropResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, dropUpdates);
     const duplicateArchiveResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, duplicateArchiveUpdates);
     const backfillResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, backfillUpdates);
+    const scopeSyncRows = await fetchExistingTripsForShow(heartbeat.app_show_id);
+    const scopeSyncUpdates = buildWatchTripsScopeSyncUpdates(scopeSyncRows, heartbeat, watchTripsFieldSet);
+    const scopeSyncResult = await airtablePatchRecords(TABLE_WATCH_TRIPS, scopeSyncUpdates);
     summary.writes.created = createResult.okRows;
     summary.writes.updated = updateResult.okRows;
     summary.writes.dropped = dropResult.okRows;
     summary.writes.duplicate_archived = duplicateArchiveResult.okRows;
+    summary.writes.scope_synced = scopeSyncResult.okRows;
     summary.writes.create_failures = createResult.failedRows;
     summary.writes.update_failures = updateResult.failedRows;
     summary.writes.drop_failures = dropResult.failedRows;
     summary.writes.duplicate_archive_failures = duplicateArchiveResult.failedRows;
+    summary.writes.scope_sync_failures = scopeSyncResult.failedRows;
     summary.schedule_date_backfill.updated = backfillResult.okRows;
     summary.schedule_date_backfill.failures = backfillResult.failedRows;
   }
@@ -3081,10 +3134,12 @@ module.exports = {
   applyManualTimeOverrideToTripFields,
   buildCurrentFields,
   buildDuplicateTripArchiveUpdates,
+  buildWatchTripsScopeSyncUpdates,
   buildTripKeyParts,
   buildDroppedFields,
   hasManualTimeOverride,
   preserveExistingLinkFields,
+  resolveTripScheduleDate,
   selectTripRowsForWriteScope,
   showHeartbeatTargetDate,
   tripRowKeyFromFields,

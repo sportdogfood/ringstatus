@@ -5,8 +5,10 @@ const path = require("path");
 const {
   buildCurrentFields,
   buildDuplicateTripArchiveUpdates,
+  buildWatchTripsScopeSyncUpdates,
   buildTripKeyParts,
   preserveExistingLinkFields,
+  resolveTripScheduleDate,
   selectTripRowsForWriteScope,
   showHeartbeatTargetDate,
   tripRowKeyFromFields,
@@ -212,6 +214,68 @@ assert.deepStrictEqual(
   nonFocusFields.heartbeat,
   ["recHeartbeat"],
   "active non-current show-window trip rows must still keep the heartbeat link"
+);
+
+assert.strictEqual(
+  resolveTripScheduleDate({
+    scheduled_date: "2026-05-31",
+    show_date: "2026-05-31",
+    app_sql_date: "2026-05-29",
+    app_sql_datev2: "2026-05-29",
+  }),
+  "2026-05-31",
+  "watch_trips schedule date resolution must prefer real trip date fields over heartbeat scope date fields"
+);
+
+const tripScopeSyncUpdates = buildWatchTripsScopeSyncUpdates(
+  [
+    {
+      id: "recOldOpen",
+      fields: {
+        show_id: 200000063,
+        scheduled_date: "2026-05-30",
+        focus_day: "2026-05-30",
+        is_current_scope: true,
+      },
+    },
+    {
+      id: "recCurrentOpen",
+      fields: {
+        show_id: 200000063,
+        scheduled_date: "2026-05-31",
+        focus_day: "2026-05-30",
+        is_current_scope: false,
+      },
+    },
+    {
+      id: "recCurrentClosed",
+      fields: {
+        show_id: 200000063,
+        scheduled_date: "2026-05-31",
+        focus_day: "2026-05-30",
+        is_current_scope: true,
+        dropped_at: "2026-05-30",
+        inactive: true,
+        archive: true,
+      },
+    },
+  ],
+  {
+    app_show_id: 200000063,
+    app_sql_date: "2026-05-31",
+    focus_day: "2026-05-31",
+    customer_id: 15,
+  },
+  new Set(["focus_day", "customer_id", "is_current_scope"])
+);
+assert.deepStrictEqual(
+  tripScopeSyncUpdates,
+  [
+    { id: "recOldOpen", fields: { customer_id: 15, focus_day: "2026-05-31", is_current_scope: false } },
+    { id: "recCurrentOpen", fields: { customer_id: 15, focus_day: "2026-05-31", is_current_scope: true } },
+    { id: "recCurrentClosed", fields: { customer_id: 15, focus_day: "2026-05-31", is_current_scope: false } },
+  ],
+  "watch_trips scope sync must stamp current focus_day and only mark open focus-day trips current"
 );
 
 const droppedFields = require("../trips_dailyv2").buildDroppedFields(

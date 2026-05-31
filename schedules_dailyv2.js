@@ -2014,7 +2014,16 @@ function resolveActualScheduleShowDate(normalizedRow) {
 function resolveExistingScheduleShowDate(row) {
   const fields = row?.fields || {};
   return toIsoDateOnly(
-    pickFirst(fields.schedule_show_datev2, fields.show_date)
+    pickFirst(
+      fields.schedule_show_datev2,
+      fields.scheduled_date,
+      fields[" scheduled_date"],
+      fields["schedule_show_datev2 (from watch_schedule)"],
+      fields.show_date,
+      fields.schedule_date,
+      fields.sql_date,
+      fields.app_sql_datev2
+    )
   );
 }
 
@@ -2152,6 +2161,39 @@ function buildDroppedFields(scope, nowIso, dateOnly, scopeStatusValue, watchSche
   setResolvedField(fields, watchScheduleFieldMeta, "inactive", true);
   if (scopeStatusValue) fields.scope_status = scopeStatusValue;
   return fields;
+}
+
+function rowIsOpenScope(fields = {}) {
+  return !boolValue(fields.archive) && !boolValue(fields.inactive) && isBlank(firstValue(fields.dropped_at));
+}
+
+function buildWatchScheduleScopeSyncUpdates(rows, scope, heartbeatRecordId, nowIso, watchScheduleFieldMeta) {
+  const updates = [];
+  const scopeDate = toIsoDateOnly(scope?.app_sql_datev2) || toIsoDateOnly(scope?.focus_day);
+  const focusDay = scopeDate || toIsoDateOnly(scope?.focus_day);
+
+  for (const row of rows || []) {
+    if (!existingScheduleRowMatchesShow(row, scope)) continue;
+    const currentFields = row?.fields || {};
+    const rowDate = resolveExistingScheduleShowDate(row);
+    const shouldBeCurrent = rowIsOpenScope(currentFields) && rowDate === scopeDate;
+    const nextFields = {};
+
+    Object.assign(nextFields, buildScopeFieldPatch(watchScheduleFieldMeta, { ...scope, focus_day: focusDay }));
+    setResolvedField(nextFields, watchScheduleFieldMeta, "heartbeat", shouldBeCurrent && heartbeatRecordId ? [heartbeatRecordId] : []);
+    setResolvedField(nextFields, watchScheduleFieldMeta, "is_current_scope", shouldBeCurrent);
+    setResolvedField(nextFields, watchScheduleFieldMeta, "is_target", shouldBeCurrent);
+    setResolvedField(nextFields, watchScheduleFieldMeta, "last_updated_at", nowIso);
+    setResolvedField(nextFields, watchScheduleFieldMeta, "run_tag", scopeDate);
+
+    const diff = {};
+    for (const [name, value] of Object.entries(nextFields)) {
+      if (!sameValue(currentFields?.[name], value)) diff[name] = value;
+    }
+    if (Object.keys(diff).length) updates.push({ id: row.id, fields: diff });
+  }
+
+  return updates;
 }
 
 function minTimeText(left, right) {
@@ -3001,9 +3043,11 @@ async function runScheduleForBaseContext({
       updated: 0,
       current_scope_cleared: 0,
       dropped: 0,
+      scope_synced: 0,
       create_failures: [],
       update_failures: [],
       drop_failures: [],
+      scope_sync_failures: [],
     },
     estimated_start_time_guard: estimatedStartTimeGuard,
     active_groups: {
@@ -3028,17 +3072,28 @@ async function runScheduleForBaseContext({
   const updateResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, updateRecords);
   const currentScopeClearResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, outOfScopeCurrentUpdates);
   const dropResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, dropUpdates);
+  const scopeSyncRows = await fetchExistingRowsForShow(scope.app_show_idv2);
+  const scopeSyncUpdates = buildWatchScheduleScopeSyncUpdates(
+    scopeSyncRows,
+    scope,
+    heartbeatRecord?.id,
+    nowIso,
+    watchScheduleFieldMeta
+  );
+  const scopeSyncResult = await airtablePatchRecords(TABLE_WATCH_SCHEDULE, scopeSyncUpdates);
 
   summary.writes.created = createResult.okRows;
   summary.writes.updated = updateResult.okRows;
   summary.writes.current_scope_cleared = currentScopeClearResult.okRows;
   summary.writes.dropped = dropResult.okRows;
+  summary.writes.scope_synced = scopeSyncResult.okRows;
   summary.writes.create_failures = createResult.failedRows;
   summary.writes.update_failures = [
     ...updateResult.failedRows,
     ...currentScopeClearResult.failedRows,
   ];
   summary.writes.drop_failures = dropResult.failedRows;
+  summary.writes.scope_sync_failures = scopeSyncResult.failedRows;
   return summary;
 }
 
@@ -3161,6 +3216,7 @@ module.exports = {
   buildClassIdByNumberFromClassesPayload,
   buildCurrentFields,
   buildOutOfScopeFields,
+  buildWatchScheduleScopeSyncUpdates,
   buildClassListEndpoint,
   candidateScheduleFallbackFiles,
   loadScheduleFallbackPayload,

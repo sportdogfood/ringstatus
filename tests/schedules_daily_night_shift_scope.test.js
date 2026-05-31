@@ -2,6 +2,7 @@ const assert = require("assert");
 const {
   buildCurrentFields,
   buildOutOfScopeFields,
+  buildWatchScheduleScopeSyncUpdates,
   resolveHeartbeatScopeFromCurrentHeartbeat,
   showHeartbeatTargetDate,
   scopeForScheduleDate,
@@ -136,5 +137,89 @@ assert.strictEqual(oldScopeFields.dropped_at, null);
 assert.strictEqual(oldScopeFields.inactive, false);
 assert.strictEqual(oldScopeFields.archive, false);
 assert.strictEqual(oldScopeFields.run_tag, "2026-05-31");
+
+const scopeSyncUpdates = buildWatchScheduleScopeSyncUpdates(
+  [
+    {
+      id: "recOldOpen",
+      fields: {
+        show_id: 200000063,
+        schedule_show_datev2: "2026-05-30",
+        focus_day: "2026-05-30",
+        is_current_scope: true,
+        is_target: true,
+        heartbeat: ["recHeartbeat"],
+      },
+    },
+    {
+      id: "recCurrentOpen",
+      fields: {
+        show_id: 200000063,
+        schedule_show_datev2: "2026-05-31",
+        focus_day: "2026-05-30",
+        is_current_scope: false,
+        is_target: false,
+      },
+    },
+    {
+      id: "recCurrentClosed",
+      fields: {
+        show_id: 200000063,
+        schedule_show_datev2: "2026-05-31",
+        focus_day: "2026-05-30",
+        is_current_scope: true,
+        is_target: true,
+        dropped_at: "2026-05-30",
+        inactive: true,
+      },
+    },
+  ],
+  scopeForScheduleDate(scope, "2026-05-31"),
+  "recHeartbeat",
+  "2026-05-31T11:00:00.000Z",
+  new Set(["focus_day", "customer_id", "heartbeat", "is_current_scope", "is_target", "last_updated_at", "run_tag"])
+);
+assert.deepStrictEqual(
+  scopeSyncUpdates,
+  [
+    {
+      id: "recOldOpen",
+      fields: {
+        customer_id: 15,
+        focus_day: "2026-05-31",
+        heartbeat: [],
+        is_current_scope: false,
+        is_target: false,
+        last_updated_at: "2026-05-31T11:00:00.000Z",
+        run_tag: "2026-05-31",
+      },
+    },
+    {
+      id: "recCurrentOpen",
+      fields: {
+        customer_id: 15,
+        focus_day: "2026-05-31",
+        heartbeat: ["recHeartbeat"],
+        is_current_scope: true,
+        is_target: true,
+        last_updated_at: "2026-05-31T11:00:00.000Z",
+        run_tag: "2026-05-31",
+      },
+    },
+    {
+      id: "recCurrentClosed",
+      fields: {
+        customer_id: 15,
+        focus_day: "2026-05-31",
+        heartbeat: [],
+        is_current_scope: false,
+        is_target: false,
+        last_updated_at: "2026-05-31T11:00:00.000Z",
+        run_tag: "2026-05-31",
+      },
+    },
+  ],
+  "watch_schedule scope sync must stamp current focus_day and clear stale current/target markers"
+);
 
 console.log("schedules_daily_night_shift_scope tests passed");
