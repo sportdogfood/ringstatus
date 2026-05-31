@@ -106,7 +106,33 @@ const rows = normalizeLiveRingSnapshots(payload, {
 assert.strictEqual(rows.length, 1, "live_rings must create one row per ring snapshot, not one per upcoming class");
 
 assert.deepStrictEqual(
-  rows[0].fields,
+  pick(rows[0].fields, [
+    "ring_key",
+    "response_ready",
+    "is_latest",
+    "show",
+    "show_id",
+    "focus_day",
+    "ring_number",
+    "ring_id",
+    "ring_name",
+    "is_current_scope",
+    "dropped_at",
+    "as_of",
+    "last_seen_at",
+    "ring_query_key",
+    "live_group",
+    "live_class_group_id",
+    "live_status",
+    "live_start_time",
+    "live_gone",
+    "live_total",
+    "live_progress",
+    "next_group",
+    "next_class_group_id",
+    "next_start_time",
+    "ring_state",
+  ]),
   {
     ring_key: "15|200000063|2026-05-31|3",
     response_ready: true,
@@ -137,6 +163,8 @@ assert.deepStrictEqual(
   "live_rings must store ring state plus one live pointer and one next pointer"
 );
 
+assert.ok(rows[0].fields.payload_hash, "live_rings must store a payload hash for change detection");
+
 assert.ok(
   !JSON.stringify(rows[0].fields).includes("200024676"),
   "live_rings must not expand/store the second upcoming class as the next pointer"
@@ -153,3 +181,9 @@ assert.ok(
 );
 
 console.log("live_rings_contract tests passed");
+
+function pick(source, names) {
+  const out = {};
+  for (const name of names) out[name] = source[name];
+  return out;
+}
