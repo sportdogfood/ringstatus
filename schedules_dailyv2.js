@@ -2180,9 +2180,9 @@ function buildWatchScheduleScopeSyncUpdates(rows, scope, heartbeatRecordId, nowI
     const nextFields = {};
 
     Object.assign(nextFields, buildScopeFieldPatch(watchScheduleFieldMeta, { ...scope, focus_day: focusDay }));
-    setResolvedField(nextFields, watchScheduleFieldMeta, "heartbeat", shouldBeCurrent && heartbeatRecordId ? [heartbeatRecordId] : []);
-    setResolvedField(nextFields, watchScheduleFieldMeta, "is_current_scope", shouldBeCurrent);
-    setResolvedField(nextFields, watchScheduleFieldMeta, "is_target", shouldBeCurrent);
+    nextFields.heartbeat = shouldBeCurrent && heartbeatRecordId ? [heartbeatRecordId] : [];
+    nextFields.is_current_scope = shouldBeCurrent;
+    nextFields.is_target = shouldBeCurrent;
     setResolvedField(nextFields, watchScheduleFieldMeta, "last_updated_at", nowIso);
     setResolvedField(nextFields, watchScheduleFieldMeta, "run_tag", scopeDate);
 
