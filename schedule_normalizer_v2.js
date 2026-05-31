@@ -201,6 +201,9 @@ function mergePreserveJoinKeys(prev, next) {
   if (prev.ring_number !== undefined && next.ring_number === undefined) merged.ring_number = prev.ring_number;
   if (prev.day_number !== undefined && next.day_number === undefined) merged.day_number = prev.day_number;
   if (prev.grouped_class !== undefined && next.grouped_class === undefined) merged.grouped_class = prev.grouped_class;
+  if (prev.estimated_start_time && !next.estimated_start_time) merged.estimated_start_time = prev.estimated_start_time;
+  if (prev.start_time_default && !next.start_time_default) merged.start_time_default = prev.start_time_default;
+  if (prev.estimated_end_time && !next.estimated_end_time) merged.estimated_end_time = prev.estimated_end_time;
 
   return merged;
 }
@@ -219,10 +222,13 @@ function mergeGroupOntoClass(classRow, groupRow) {
   if (groupRow.is_open_card_warmup !== undefined && merged.is_open_card_warmup === undefined) {
     merged.is_open_card_warmup = groupRow.is_open_card_warmup;
   }
-  if (groupRow.grouped_class !== undefined && merged.grouped_class === undefined) {
-    merged.grouped_class = groupRow.grouped_class;
-  }
-  if (groupRow.show_day_key && !merged.show_day_key) merged.show_day_key = groupRow.show_day_key;
+    if (groupRow.grouped_class !== undefined && merged.grouped_class === undefined) {
+      merged.grouped_class = groupRow.grouped_class;
+    }
+    if (groupRow.estimated_start_time && !merged.estimated_start_time) merged.estimated_start_time = groupRow.estimated_start_time;
+    if (groupRow.start_time_default && !merged.start_time_default) merged.start_time_default = groupRow.start_time_default;
+    if (groupRow.estimated_end_time && !merged.estimated_end_time) merged.estimated_end_time = groupRow.estimated_end_time;
+    if (groupRow.show_day_key && !merged.show_day_key) merged.show_day_key = groupRow.show_day_key;
   if (groupRow.show_ring_key && !merged.show_ring_key) merged.show_ring_key = groupRow.show_ring_key;
   if (groupRow.ring_number !== undefined && merged.ring_number === undefined) merged.ring_number = groupRow.ring_number;
   if (groupRow.day_number !== undefined && merged.day_number === undefined) merged.day_number = groupRow.day_number;
@@ -567,6 +573,9 @@ function normalizeSchedulePayload(payload, options) {
         show_ring_key: showRingKey,
         ring_number: ringNumber,
         day_number: numOrNull(pickFirst(node.day_number, node.dayNumber)),
+        estimated_start_time: strOrNull(pickFirst(node.estimated_start_time, node.estimatedStartTime)),
+        start_time_default: strOrNull(pickFirst(node.start_time_default, node.startTimeDefault)),
+        estimated_end_time: strOrNull(pickFirst(node.estimated_end_time, node.estimatedEndTime)),
         group_has_warmup: pickFirst(node.group_has_warmup, node.groupHasWarmup),
         is_open_card_warmup: pickFirst(node.is_open_card_warmup, node.isOpenCardWarmup),
         grouped_class: pickFirst(classRelated?.grouped_class, classRelated?.groupedClass, node.grouped_class, node.groupedClass),

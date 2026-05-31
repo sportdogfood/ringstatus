@@ -95,4 +95,48 @@ assert.strictEqual(
   "schedule token length should be the raw token character length"
 );
 
+const groupedTimeResult = normalizeSchedulePayload({
+  show: { show_id: 200000063 },
+  show_date: "2026-05-31",
+  rings: [
+    {
+      ring_number: 1,
+      classes: [
+        {
+          class_group_id: 200024660,
+          group_name: "1.20m Open Jumper II2d",
+          estimated_start_time: "08:00:00",
+          start_time_default: "08:00:00",
+          class_list: "712",
+          classes: [
+            {
+              class_groupxclasses_id: 200036462,
+              class_group_id: 200024660,
+              class_number: 712,
+              class_name: "1.20m Open Jumper II2d",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}, {
+  scope: {
+    ...scope,
+    app_show_idv2: 200000063,
+    app_sql_datev2: "2026-05-31",
+    app_dow_rawv2: "Sun",
+  },
+  source: "test",
+  generatedAt: "2026-05-30T22:00:00.000Z",
+  generatedDate: "2026-05-30",
+});
+
+assert.strictEqual(groupedTimeResult.rows.length, 1);
+assert.strictEqual(
+  groupedTimeResult.rows[0].fields.estimated_start_time,
+  "08:00:00",
+  "class rows must inherit group-level estimated_start_time from SGL schedule payloads"
+);
+
 console.log("schedule_normalizer_machine_key tests passed");
