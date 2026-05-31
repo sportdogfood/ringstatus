@@ -61,6 +61,7 @@ const metaTables = [
     field("watch_trips", "multipleRecordLinks"),
     field("show_id", "number"),
     field("focus_day", "date"),
+    field("is_cuurent_scope", "checkbox"),
     field("class_group_id", "number"),
     field("class_id", "number"),
     field("entry_number", "number"),
@@ -151,6 +152,20 @@ global.fetch = async (url, init = {}) => {
       dropped_at: "",
     })] });
   }
+  if (tableName === "live_classes") {
+    return jsonResponse({ records: [
+      record("lc_current", {
+        show_id: 200000063,
+        focus_day: "2026-05-30",
+        is_cuurent_scope: false,
+      }),
+      record("lc_old", {
+        show_id: 200000063,
+        focus_day: "2026-05-29",
+        is_cuurent_scope: true,
+      }),
+    ] });
+  }
   if (tableName === "watch_trips" && maybeRecordId) {
     if (maybeRecordId === "wt_hit") {
       return jsonResponse(record("wt_hit", {
@@ -221,10 +236,20 @@ assert.equal(typeof mod.main, "function", "live_class_detail must export main fo
   const logWrite = writes.find((write) => write.method === "POST" && write.tableName === "live_classes");
   assert.ok(logWrite, "live_classes must receive change logs");
   assert.equal(logWrite.records.length, 3);
+  assert.ok(
+    logWrite.records.every((item) => item.fields.focus_day === "2026-05-30" && item.fields.is_cuurent_scope === true),
+    "new live_classes rows must carry current focus_day and is_cuurent_scope"
+  );
   assert.deepEqual(
     logWrite.records.map((item) => item.fields.field_changed).sort(),
     ["gone", "pos", "scr"]
   );
+  const staleClassPatch = writes.find((write) => write.method === "PATCH" && write.tableName === "live_classes");
+  assert.ok(staleClassPatch, "older live_classes rows for the same show must be marked not current");
+  assert.deepEqual(staleClassPatch.records, [
+    { id: "lc_current", fields: { is_cuurent_scope: true } },
+    { id: "lc_old", fields: { is_cuurent_scope: false } },
+  ]);
 
   writes.length = 0;
   process.env.ORCH_CURRENT_SLOT = "A";

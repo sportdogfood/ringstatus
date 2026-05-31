@@ -67,6 +67,7 @@ const metaTables = [
     field("show", "multipleRecordLinks"),
     field("show_id", "number"),
     field("focus_day", "date"),
+    field("is_cuurent_scope", "checkbox"),
     field("class_group_id", "number"),
     field("group_name", "singleLineText"),
     field("ring_number", "number"),
@@ -210,6 +211,20 @@ global.fetch = async (url, init = {}) => {
       dropped_at: "",
     })] });
   }
+  if (tableName === "live_group_changes") {
+    return jsonResponse({ records: [
+      record("lgc_current", {
+        show_id: 200000063,
+        focus_day: "2026-05-30",
+        is_cuurent_scope: false,
+      }),
+      record("lgc_old", {
+        show_id: 200000063,
+        focus_day: "2026-05-29",
+        is_cuurent_scope: true,
+      }),
+    ] });
+  }
   if (tableName === "watch_schedule") {
     return jsonResponse({ records: [
       record("ws_rec", {
@@ -302,6 +317,20 @@ assert.equal(typeof mod.main, "function", "live_groups_daily must export main fo
   assert.ok(livePatch, "live_groups must still be refreshed");
   assert.deepEqual(livePatch.records[0].fields.watch_schedule, ["ws_rec", "ws_manual"]);
   assert.deepEqual(livePatch.records[0].fields.watch_trips, ["wt_rec"]);
+
+  const changeWrite = airtableWrites.find((write) => write.method === "POST" && write.tableName === "live_group_changes");
+  assert.ok(changeWrite, "live_group_changes must receive group change logs");
+  assert.ok(
+    changeWrite.records.every((item) => item.fields.focus_day === "2026-05-30" && item.fields.is_cuurent_scope === true),
+    "new live_group_changes rows must carry current focus_day and is_cuurent_scope"
+  );
+
+  const staleChangePatch = airtableWrites.find((write) => write.method === "PATCH" && write.tableName === "live_group_changes");
+  assert.ok(staleChangePatch, "older live_group_changes rows for the same show must be marked not current");
+  assert.deepEqual(staleChangePatch.records, [
+    { id: "lgc_current", fields: { is_cuurent_scope: true } },
+    { id: "lgc_old", fields: { is_cuurent_scope: false } },
+  ]);
 
   const writable = new Set([
     "estimated_start_time",

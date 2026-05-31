@@ -369,6 +369,8 @@ function buildLogFields({ liveGroup, trip, classId, source, endpoint, payloadRow
     watch_trips: [trip.id],
     show_id: numOrNull(liveFields.show_id),
     focus_day: toIsoDateOnly(liveFields.live_focus_day),
+    is_cuurent_scope: true,
+    is_current_scope: true,
     class_group_id: numOrNull(liveFields.class_group_id),
     class_id: numOrNull(classId),
     entry_number: numOrNull(tripFields.entry_number ?? payloadRow.ENo),
@@ -430,6 +432,49 @@ async function fetchLinkedTrips(ids) {
     }
   }
   return out;
+}
+
+async function clearStaleLiveClassScope(scopes, logWritable) {
+  if (!logWritable.has("is_cuurent_scope") && !logWritable.has("is_current_scope")) return 0;
+
+  const uniqueScopes = new Map();
+  for (const scope of scopes) {
+    const showId = numOrNull(scope.show_id);
+    const focusDay = toIsoDateOnly(scope.focus_day);
+    if (showId === null || !focusDay) continue;
+    uniqueScopes.set(`${showId}|${focusDay}`, { showId, focusDay });
+  }
+
+  let total = 0;
+  for (const scope of uniqueScopes.values()) {
+    const fetchFields = ["show_id", "focus_day"];
+    if (logWritable.has("is_cuurent_scope")) fetchFields.push("is_cuurent_scope");
+    if (logWritable.has("is_current_scope")) fetchFields.push("is_current_scope");
+    const rows = await airtableList(TABLE_LIVE_CLASSES, {
+      pageSize: 100,
+      filterByFormula: `{show_id}=${scope.showId}`,
+      "fields[]": fetchFields,
+    });
+
+    const updates = [];
+    for (const row of rows) {
+      const rowDay = toIsoDateOnly(row.fields?.focus_day);
+      const fields = {};
+
+      if (rowDay === scope.focusDay) {
+        if (logWritable.has("is_cuurent_scope") && !boolValue(row.fields?.is_cuurent_scope)) fields.is_cuurent_scope = true;
+        if (logWritable.has("is_current_scope") && !boolValue(row.fields?.is_current_scope)) fields.is_current_scope = true;
+      } else {
+        if (logWritable.has("is_cuurent_scope") && boolValue(row.fields?.is_cuurent_scope)) fields.is_cuurent_scope = false;
+        if (logWritable.has("is_current_scope") && boolValue(row.fields?.is_current_scope)) fields.is_current_scope = false;
+      }
+
+      if (Object.keys(fields).length) updates.push({ id: row.id, fields });
+    }
+    await airtableUpdate(TABLE_LIVE_CLASSES, updates);
+    total += updates.length;
+  }
+  return total;
 }
 
 function tripIsActionable(trip) {
@@ -501,6 +546,11 @@ async function processView(view) {
   const watchWritable = writableFields(watchFieldMap);
   const logWritable = writableFields(logFieldMap);
   const liveGroups = await listLiveGroups(view.name);
+  const liveScopes = liveGroups.map((liveGroup) => ({
+    show_id: liveGroup.fields?.show_id,
+    focus_day: liveGroup.fields?.live_focus_day,
+  }));
+  await clearStaleLiveClassScope(liveScopes, logWritable);
 
   const totals = {
     rows: liveGroups.length,

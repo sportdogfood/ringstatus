@@ -375,6 +375,8 @@ function buildLiveGroupChangeRows({ incomingRow, existingRecord, fieldsToWatch }
       show: incomingRow.show,
       show_id: incomingRow.show_id,
       focus_day: incomingRow.live_focus_day || incomingRow.day,
+      is_cuurent_scope: true,
+      is_current_scope: true,
       class_group_id: incomingRow.class_group_id,
       group_name: incomingRow.group_name,
       ring_number: incomingRow.ring_number,
@@ -797,7 +799,6 @@ async function attachLiveGroupLinks(rows, scope, writable) {
 }
 
 async function logLiveGroupChanges(changeRows) {
-  if (!changeRows.length) return 0;
   const fieldMap = await tableFieldMap(TABLE_LIVE_GROUP_CHANGES);
   const writable = writableFields(fieldMap);
   const records = changeRows
@@ -805,6 +806,39 @@ async function logLiveGroupChanges(changeRows) {
     .filter((record) => Object.keys(record.fields).length);
   await airtableCreate(TABLE_LIVE_GROUP_CHANGES, records);
   return records.length;
+}
+
+async function clearStaleLiveGroupChangeScope({ showId, focusDay }) {
+  const fieldMap = await tableFieldMap(TABLE_LIVE_GROUP_CHANGES);
+  const writable = writableFields(fieldMap);
+  if (!writable.has("is_cuurent_scope") && !writable.has("is_current_scope")) return 0;
+
+  const fetchFields = ["show_id", "focus_day"];
+  if (writable.has("is_cuurent_scope")) fetchFields.push("is_cuurent_scope");
+  if (writable.has("is_current_scope")) fetchFields.push("is_current_scope");
+  const rows = await airtableList(TABLE_LIVE_GROUP_CHANGES, {
+    pageSize: 100,
+    filterByFormula: `{show_id}=${Number(showId)}`,
+    "fields[]": fetchFields,
+  });
+
+  const updates = [];
+  for (const row of rows) {
+    const rowDay = toIsoDateOnly(row.fields?.focus_day);
+    const fields = {};
+
+    if (rowDay === focusDay) {
+      if (writable.has("is_cuurent_scope") && !boolValue(row.fields?.is_cuurent_scope)) fields.is_cuurent_scope = true;
+      if (writable.has("is_current_scope") && !boolValue(row.fields?.is_current_scope)) fields.is_current_scope = true;
+    } else {
+      if (writable.has("is_cuurent_scope") && boolValue(row.fields?.is_cuurent_scope)) fields.is_cuurent_scope = false;
+      if (writable.has("is_current_scope") && boolValue(row.fields?.is_current_scope)) fields.is_current_scope = false;
+    }
+
+    if (Object.keys(fields).length) updates.push({ id: row.id, fields });
+  }
+  await airtableUpdate(TABLE_LIVE_GROUP_CHANGES, updates);
+  return updates.length;
 }
 
 async function upsertLiveGroups(rows, writable) {
@@ -822,6 +856,15 @@ async function upsertLiveGroups(rows, writable) {
     pageSize: 100,
     filterByFormula: `AND({show_id}=${showId},{customer_id}=${customerId},{day}='${day}')`,
     "fields[]": fetchFields,
+  });
+  const staleScopeFields = ["live_groups_key", "live_focus_day", "day"];
+  if (writable.has("is_cuurent_scope")) staleScopeFields.push("is_cuurent_scope");
+  if (writable.has("is_current_scope")) staleScopeFields.push("is_current_scope");
+  if (writable.has("dropped_at")) staleScopeFields.push("dropped_at");
+  const scopedRowsForShow = await airtableList(TABLE_LIVE_GROUPS, {
+    pageSize: 100,
+    filterByFormula: `AND({show_id}=${showId},{customer_id}=${customerId})`,
+    "fields[]": staleScopeFields,
   });
   const byKey = new Map();
   for (const row of existingRows) {
@@ -860,6 +903,23 @@ async function upsertLiveGroups(rows, writable) {
     if (writable.has("dropped_at") && !strOrNull(row.fields?.dropped_at)) fields.dropped_at = RUN_AT;
     if (Object.keys(fields).length) droppedUpdates.push({ id: row.id, fields });
   }
+  const seenDropIds = new Set(droppedUpdates.map((row) => row.id));
+  for (const row of scopedRowsForShow) {
+    if (seenDropIds.has(row.id)) continue;
+    const rowDay = toIsoDateOnly(row.fields?.live_focus_day) || toIsoDateOnly(row.fields?.day);
+    if (rowDay === day) continue;
+    if (strOrNull(row.fields?.dropped_at)) continue;
+    if (!boolValue(row.fields?.is_cuurent_scope) && !boolValue(row.fields?.is_current_scope)) continue;
+
+    const fields = {};
+    if (writable.has("is_cuurent_scope")) fields.is_cuurent_scope = false;
+    if (writable.has("is_current_scope")) fields.is_current_scope = false;
+    if (writable.has("dropped_at")) fields.dropped_at = RUN_AT;
+    if (Object.keys(fields).length) {
+      droppedUpdates.push({ id: row.id, fields });
+      seenDropIds.add(row.id);
+    }
+  }
 
   await airtableUpdate(TABLE_LIVE_GROUPS, updates);
   await airtableCreate(TABLE_LIVE_GROUPS, creates);
@@ -867,6 +927,7 @@ async function upsertLiveGroups(rows, writable) {
   let changesLogged = 0;
   try {
     changesLogged = await logLiveGroupChanges(changeRows);
+    await clearStaleLiveGroupChangeScope({ showId, focusDay: day });
   } catch (error) {
     console.warn(JSON.stringify({
       ok: false,
