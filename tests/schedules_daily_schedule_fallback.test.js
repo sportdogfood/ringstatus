@@ -7,6 +7,7 @@ const {
   parseScheduleHtmlTimeOverlay,
   schedulePayloadStats,
   scheduleHtmlFallbackDirs,
+  manualScheduleFallbackDirs,
   shouldUseScheduleFallbackForStrippedTimes,
 } = require("../schedules_dailyv2");
 
@@ -79,8 +80,14 @@ assert.ok(
 
 assert.ok(
   source.includes("loadScheduleAttachmentPayload") &&
+    source.includes("loadManualScheduleFallbackPayload") &&
     source.includes("schedules_dailyv2_full_payload_attachment"),
-  "show.full_schedule_payload_file attachment should be an accepted full-payload source"
+  "show.full_schedule_payload_file attachment and manual payload files should be accepted full-payload sources"
+);
+
+assert.ok(
+  manualScheduleFallbackDirs().every((dirPath) => !dirPath.includes("early_sgl_payloads")),
+  "manual full schedule payload lookup must not choose stripped early_sgl_payloads cache files"
 );
 
 assert.ok(

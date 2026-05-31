@@ -883,6 +883,21 @@ function scheduleFallbackDirs() {
     .filter(Boolean))];
 }
 
+function manualScheduleFallbackDirs() {
+  const raw = strOrNull(process.env.MANUAL_SCHEDULE_FALLBACK_DIRS);
+  const values = raw
+    ? raw.split(path.delimiter)
+    : [
+        MANUAL_SGL_PAYLOAD_ROOT,
+        MANUAL_SCHEDULE_PAYLOAD_DIR,
+        REPO_MANUAL_SGL_PAYLOAD_ROOT,
+      ];
+
+  return [...new Set(values
+    .map((value) => strOrNull(value))
+    .filter(Boolean))];
+}
+
 function scheduleHtmlFallbackDirs() {
   const raw = strOrNull(process.env.SGL_SCHEDULE_HTML_FALLBACK_DIRS);
   const values = raw
@@ -927,14 +942,14 @@ function collectFilesRecursive(dirPath, out = []) {
   return out;
 }
 
-function candidateScheduleFallbackFiles(appShowId, appSqlDate) {
+function candidateScheduleFallbackFiles(appShowId, appSqlDate, dirs = scheduleFallbackDirs()) {
   const showText = escapeRegExp(appShowId);
   const dateHyphen = escapeRegExp(appSqlDate);
   const dateUnderscore = escapeRegExp(String(appSqlDate || "").replace(/-/g, "_"));
   const scheduleJson = new RegExp(`^schedule_(?:${dateHyphen}|${dateUnderscore})_show(?:_id)?_${showText}_[0-9]+\\.json$`, "i");
 
   const candidates = [];
-  for (const dirPath of scheduleFallbackDirs()) {
+  for (const dirPath of dirs) {
     for (const filePath of collectFilesRecursive(dirPath)) {
       const name = path.basename(filePath);
       if (name.endsWith(".pretty.json")) continue;
@@ -973,6 +988,55 @@ function loadScheduleFallbackPayload(appShowId, appSqlDate) {
           },
         },
         lane: "schedules_dailyv2_fallback",
+        endpoint: candidate.filePath,
+        expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
+      });
+      return {
+        ok: true,
+        payload,
+        file_path: candidate.filePath,
+        body_length: Buffer.byteLength(text || "", "utf8"),
+        mtime_ms: candidate.mtimeMs,
+      };
+    } catch (error) {
+      failures.push({
+        file_path: candidate.filePath,
+        reason: String(error?.message || error).slice(0, 300),
+      });
+    }
+  }
+
+  return {
+    ok: false,
+    file_path: null,
+    body_length: null,
+    failures,
+  };
+}
+
+function loadManualScheduleFallbackPayload(appShowId, appSqlDate) {
+  const candidates = candidateScheduleFallbackFiles(appShowId, appSqlDate, manualScheduleFallbackDirs());
+  const failures = [];
+
+  for (const candidate of candidates) {
+    let text = "";
+    try {
+      text = fs.readFileSync(candidate.filePath, "utf8");
+      const payload = JSON.parse(text);
+      assertValidPayload({
+        payload,
+        text,
+        response: {
+          status: 200,
+          headers: {
+            get(name) {
+              return String(name || "").toLowerCase() === "content-length"
+                ? String(Buffer.byteLength(text || "", "utf8"))
+                : null;
+            },
+          },
+        },
+        lane: "schedules_dailyv2_manual_fallback",
         endpoint: candidate.filePath,
         expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
       });
@@ -1673,6 +1737,10 @@ function resolveHeartbeatScope(baseContext, emptyPayload) {
     ring_collection: baseContext.ring_collection,
     show_scope_key: baseContext.show_scope_key,
     show_record_id: baseContext.show_record_id,
+    has_full_schedule_payload: boolValue(baseContext.has_full_schedule_payload),
+    full_schedule_payload_file: Array.isArray(baseContext.full_schedule_payload_file)
+      ? baseContext.full_schedule_payload_file
+      : [],
   };
 }
 
@@ -1736,6 +1804,10 @@ function resolveHeartbeatScopeFromCurrentHeartbeat(baseContext, reason) {
     ring_collection: baseContext.ring_collection,
     show_scope_key: baseContext.show_scope_key,
     show_record_id: baseContext.show_record_id,
+    has_full_schedule_payload: boolValue(baseContext.has_full_schedule_payload),
+    full_schedule_payload_file: Array.isArray(baseContext.full_schedule_payload_file)
+      ? baseContext.full_schedule_payload_file
+      : [],
   };
 }
 
@@ -2460,7 +2532,7 @@ async function runScheduleForBaseContext({
   if (!datedFallback?.ok && boolValue(scope.has_full_schedule_payload)) {
     let manualFallback = await loadScheduleAttachmentPayload(scope);
     if (!manualFallback.ok) {
-      manualFallback = loadScheduleFallbackPayload(scope.app_show_idv2, scope.app_sql_datev2);
+      manualFallback = loadManualScheduleFallbackPayload(scope.app_show_idv2, scope.app_sql_datev2);
     }
     if (manualFallback.ok) {
       assertSchedulePayloadScope(manualFallback.payload, scope, "dated_schedule_manual_fallback");
@@ -3090,7 +3162,12 @@ module.exports = {
   buildCurrentFields,
   buildOutOfScopeFields,
   buildClassListEndpoint,
+  candidateScheduleFallbackFiles,
+  loadScheduleFallbackPayload,
+  loadManualScheduleFallbackPayload,
+  manualScheduleFallbackDirs,
   schedulePayloadStats,
+  scheduleFallbackDirs,
   loadScheduleAttachmentPayload,
   shouldUseScheduleFallbackForStrippedTimes,
   applyPreliveEstimatedStartTimeGuard,
