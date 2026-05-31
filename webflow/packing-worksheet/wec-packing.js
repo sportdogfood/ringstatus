@@ -1124,7 +1124,8 @@
       rowsHtml: rows.length ? rowsHtml : rsaEmptyTableRowHtml("No rows"),
       tableLabel: mode === "search_list" ? "item" : "list",
       tableActionLabel: mode === "search_list" ? "input" : "print",
-      showFilter: false
+      showFilter: false,
+      headerFilter: true
     }), rsaFilterHtml("overview", true, overviewFilterOptions(), { closable: false }));
   }
 
@@ -1184,7 +1185,8 @@
       rowsHtml: rows.length ? rows.map(rsaHorseRowHtml).join("") : rsaEmptyTableRowHtml("No horses"),
       tableLabel: "horse",
       tableActionLabel: "print",
-      showFilter: false
+      showFilter: false,
+      headerFilter: true
     }), rsaFilterHtml("horses", true, horseFilterOptions(), { closable: false }));
   }
 
@@ -1262,9 +1264,10 @@
     return `<div class="rs-quantity-block-2 is-grid4">${innerHtml}</div>`;
   }
 
-  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", showFilter = true, filterOptions }) {
+  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", showFilter = true, headerFilter = false, filterOptions }) {
     const storedActiveTool = state.activeToolByList[filterKey] || "";
     const activeTool = showFilter || storedActiveTool !== "filter" ? storedActiveTool : "";
+    const showHeaderFilter = showFilter || headerFilter;
     const resolvedCommentScope = commentScope || rsaCommentScope("section", filterKey, title);
     return `
       <div class="rsa-content">
@@ -1276,8 +1279,8 @@
             `),
             rightHtml: `
               <div class="rsa-action-block is-grid3">
+                ${showHeaderFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
                 <div class="rs-text-link-2 rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>
-                ${showFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
                 <div class="rs-text-link-2 rsa-text is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
               </div>
             `
@@ -1352,8 +1355,7 @@
     });
   }
 
-  function rsaFilterHtml(scopeKey, active, options, settings = {}) {
-    const closable = settings.closable !== false;
+  function rsaFilterHtml(scopeKey, active, options) {
     const filters = options || [
       ["all", "ALL"],
       ["packed", "PACKED"],
@@ -1372,11 +1374,6 @@
               <div>${escapeHtml(label)}</div>
             </div>
           `).join("")}
-          ${closable ? `
-            <div class="rsa-closer">
-              <div class="rs-text-link rsa-text is-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
-            </div>
-          ` : ""}
         </div>
       </div>
     `;
