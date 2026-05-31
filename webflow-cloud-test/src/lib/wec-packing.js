@@ -22,7 +22,8 @@ export const REQUIRED_TABLES = [
 const OPTIONAL_TABLES = [
   "wec_list_plans",
   "wec_places",
-  "wec_places_tags"
+  "wec_places_tags",
+  "wec_commenting"
 ];
 
 export const ENV_TABLES = {
@@ -45,6 +46,10 @@ export const ENV_TABLES = {
   wec_packing_events: {
     table: "AIRTABLE_WEC_PACKING_EVENTS_TABLE",
     view: "AIRTABLE_WEC_PACKING_EVENTS_VIEW"
+  },
+  wec_commenting: {
+    table: "AIRTABLE_WEC_COMMENTING_TABLE",
+    view: "AIRTABLE_WEC_COMMENTING_VIEW"
   }
 };
 
@@ -141,7 +146,7 @@ export async function stateReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, packLists, homePackLists, sourcePackItems, purchaseOnsiteItems, worksheetItems, worksheetHorses, horses, listPlans, packingEvents, places, placeTags] = await Promise.all([
+  const [waves, packLists, homePackLists, sourcePackItems, purchaseOnsiteItems, worksheetItems, worksheetHorses, horses, listPlans, packingEvents, packingComments, places, placeTags] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
     listOptionalViewRecords(airtable, tables.wec_pack_lists.id, "wec_home"),
@@ -152,6 +157,7 @@ export async function stateReport(airtable, requestUrl) {
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
     listOptionalRecords(airtable, tables.wec_list_plans),
     listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view),
+    listOptionalRecords(airtable, tables.wec_commenting),
     listOptionalRecords(airtable, tables.wec_places),
     listOptionalRecords(airtable, tables.wec_places_tags)
   ]);
@@ -220,6 +226,14 @@ export async function stateReport(airtable, requestUrl) {
     selectedShowId,
     selectedWaveId: selectedWave?.id || ""
   });
+  const commentFilter = {
+    selectedWaveId: selectedWave?.id || "",
+    itemIds
+  };
+  const comments = mergeComments(
+    commentsFromCommentingTable(packingComments, commentFilter),
+    commentsFromEvents(packingEvents, commentFilter)
+  );
 
   return {
     ok: true,
@@ -234,7 +248,8 @@ export async function stateReport(airtable, requestUrl) {
         listPlans: tables.wec_list_plans?.id || "",
         packingItems: tables.wec_packing_items.id,
         packingItemHorses: tables.wec_packing_item_horses.id,
-        packingEvents: tables.wec_packing_events.id
+        packingEvents: tables.wec_packing_events.id,
+        commenting: tables.wec_commenting?.id || ""
       }
     },
     wave: normalizedWave,
@@ -262,6 +277,7 @@ export async function stateReport(airtable, requestUrl) {
       listPlans: listPlans.length
     },
     needsGeneration: items.length === 0,
+    comments,
     items
   };
 }
@@ -288,6 +304,138 @@ function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, plac
     lists,
     tasks: rows
   }];
+}
+
+function commentsFromEvents(events, { selectedWaveId, itemIds } = {}) {
+  const selectedItems = itemIds instanceof Set ? itemIds : new Set();
+  return (events || [])
+    .map(normalizePackingComment)
+    .filter(Boolean)
+    .filter((comment) => commentBelongsToWave(comment, selectedWaveId, selectedItems));
+}
+
+function commentsFromCommentingTable(records, { selectedWaveId, itemIds } = {}) {
+  const selectedItems = itemIds instanceof Set ? itemIds : new Set();
+  return (records || [])
+    .map(normalizeCommentingRecord)
+    .filter(Boolean)
+    .filter((comment) => commentBelongsToWave(comment, selectedWaveId, selectedItems));
+}
+
+function commentBelongsToWave(comment, selectedWaveId, selectedItems) {
+  if (!selectedWaveId) return true;
+  if (comment.packWaveIds.includes(selectedWaveId)) return true;
+  return comment.scopeType === "item" && selectedItems.has(comment.scopeId);
+}
+
+function mergeComments(...groups) {
+  const seen = new Set();
+  const comments = [];
+  for (const comment of groups.flat()) {
+    const key = [
+      comment.sourceTable || "",
+      comment.id || "",
+      comment.scopeType || "",
+      comment.scopeId || "",
+      comment.createdTime || "",
+      comment.comment || ""
+    ].join("|");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    comments.push(comment);
+  }
+  return comments;
+}
+
+function normalizeCommentingRecord(record) {
+  const fields = record.fields || {};
+  const parsed = parseCommentNotes(fields.notes);
+  const linkedItemId = firstLinkedId(fields.packing_item);
+  const linkedWaveId = firstLinkedId(fields.pack_wave);
+  const linkedHorseId = firstLinkedId(fields.horse);
+  const linkedItemHorseId = firstLinkedId(fields.packing_item_horse);
+  const status = slugify(fields.comment_status || fields.status || "active");
+  if (status === "deleted") return null;
+  const scopeType = slugify(fields.scope_type || fields.comment_scope || parsed.scopeType)
+    || (linkedItemId ? "item" : linkedItemHorseId ? "item_horse" : linkedHorseId ? "horse" : linkedWaveId ? "wave" : "");
+  const scopeId = clean(fields.scope_id || fields.comment_scope_id || parsed.scopeId)
+    || linkedItemId
+    || linkedItemHorseId
+    || linkedHorseId
+    || linkedWaveId
+    || "";
+  const comment = stringField(fields.comment || parsed.comment || fields.notes);
+  if (!scopeType || !scopeId || !comment) return null;
+  return {
+    id: record.id,
+    sourceTable: "wec_commenting",
+    createdTime: record.createdTime || stringField(fields.Created || fields.created_at),
+    updatedTime: stringField(fields.updated_at),
+    scopeType,
+    scopeId,
+    scopeLabel: stringField(fields.scope_label || fields.comment_scope_label || parsed.scopeLabel),
+    comment,
+    commentStatus: status || "active",
+    createdBy: stringField(fields.created_by || "webflow"),
+    updatedBy: stringField(fields.updated_by),
+    packWaveIds: linkedIds(fields.pack_wave),
+    itemIds: linkedIds(fields.packing_item),
+    itemHorseIds: linkedIds(fields.packing_item_horse),
+    horseIds: linkedIds(fields.horse)
+  };
+}
+
+function normalizePackingComment(record) {
+  const fields = record.fields || {};
+  const eventType = stringField(fields.event_type);
+  if (eventType !== "comment_add" && !eventType.startsWith("comment_")) return null;
+  const parsed = parseCommentNotes(fields.notes);
+  const linkedItemId = firstLinkedId(fields.packing_item);
+  const linkedWaveId = firstLinkedId(fields.pack_wave);
+  const scopeType = parsed.scopeType || (eventType === "comment_add" ? "" : eventType.replace(/^comment_/, "")) || (linkedItemId ? "item" : "wave");
+  const scopeId = parsed.scopeId || linkedItemId || linkedWaveId || "";
+  const comment = parsed.comment || stringField(fields.notes);
+  if (!scopeType || !scopeId || !comment) return null;
+  return {
+    id: record.id,
+    sourceTable: "wec_packing_events",
+    createdTime: record.createdTime || stringField(fields.created_at),
+    scopeType,
+    scopeId,
+    scopeLabel: parsed.scopeLabel,
+    comment,
+    createdBy: stringField(fields.created_by || "webflow"),
+    packWaveIds: linkedIds(fields.pack_wave),
+    itemIds: linkedIds(fields.packing_item)
+  };
+}
+
+function parseCommentNotes(value) {
+  const lines = String(value || "").split(/\r?\n/);
+  const meta = {};
+  const body = [];
+  let inBody = false;
+  for (const line of lines) {
+    if (!inBody) {
+      if (!line.trim()) {
+        inBody = true;
+        continue;
+      }
+      const match = line.match(/^comment_(scope|scope_id|scope_label):\s*(.*)$/i);
+      if (match) {
+        meta[match[1].toLowerCase()] = clean(match[2]);
+        continue;
+      }
+      inBody = true;
+    }
+    body.push(line);
+  }
+  return {
+    scopeType: clean(meta.scope),
+    scopeId: clean(meta.scope_id),
+    scopeLabel: clean(meta.scope_label),
+    comment: body.join("\n").trim()
+  };
 }
 
 function normalizePurchaseOnsiteTask(record, listPlanLookup, placeLookup, packListLookup, purchaseListId, taskStates) {
@@ -871,7 +1019,7 @@ function printStyles() {
       background: #f6f6f6;
     }
     .packing-print-name-cell {
-      padding-left: 0.04in !important;
+      padding-left: 0.04in;
       text-align: left;
     }
     .packing-print-data-row.is-packed .packing-print-name-cell {
@@ -1183,6 +1331,10 @@ export async function actionReport(airtable, requestUrl, payload) {
     result = await applySourceFlag(airtable, tables, payload);
   } else if (action === "set_onsite_task_state") {
     result = await applyOnsiteTaskState(airtable, tables, payload);
+  } else if (action === "add_comment") {
+    result = await applyCommentEvent(airtable, context, payload);
+  } else if (action === "update_comment") {
+    result = await applyCommentUpdate(airtable, context, payload);
   } else if (action !== "session_start") {
     return { ok: false, error: "unknown_action", action };
   }
@@ -1197,6 +1349,138 @@ export async function actionReport(airtable, requestUrl, payload) {
     result,
     state
   };
+}
+
+async function applyCommentEvent(airtable, context, payload) {
+  const tables = context.tables;
+  const scopeType = slugify(payload?.scopeType);
+  const scopeId = clean(payload?.scopeId);
+  const scopeLabel = clean(payload?.scopeLabel);
+  const comment = clean(payload?.comment || payload?.notes);
+  const allowedScopes = ["item", "section", "tab", "wave"];
+  if (!allowedScopes.includes(scopeType)) throw new Error("invalid_comment_scope");
+  if (!scopeId) throw new Error("missing_comment_scope_id");
+  if (!comment) throw new Error("comment_required");
+
+  const itemId = clean(payload?.itemId || (scopeType === "item" ? scopeId : ""));
+  const itemRecord = itemId
+    ? (await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId)).record
+    : null;
+  const packWaveId = clean(payload?.packWaveId || (scopeType === "wave" ? scopeId : ""));
+  const showId = clean(payload?.showId);
+  if (tables.wec_commenting?.id) {
+    const commentRecord = await createWecComment(airtable, context, {
+      scopeType,
+      scopeId,
+      scopeLabel,
+      comment,
+      itemRecord,
+      showIds: showId ? [showId] : undefined,
+      packWaveIds: packWaveId ? [packWaveId] : undefined
+    });
+    return { comment: commentRecord, table: "wec_commenting" };
+  }
+  const event = await createPackingEvent(airtable, tables, {
+    eventType: "comment_add",
+    eventSubjectId: `${scopeType}:${scopeId}`,
+    itemRecord,
+    showIds: showId ? [showId] : undefined,
+    packWaveIds: packWaveId ? [packWaveId] : undefined,
+    quantityDelta: 0,
+    quantityBefore: 0,
+    quantityAfter: 0,
+    notes: formatCommentNotes({
+      scopeType,
+      scopeId,
+      scopeLabel,
+      comment
+    })
+  });
+  return { event, table: "wec_packing_events" };
+}
+
+async function applyCommentUpdate(airtable, context, payload) {
+  const tables = context.tables;
+  const commentId = clean(payload?.commentId);
+  const scopeType = slugify(payload?.scopeType);
+  const scopeId = clean(payload?.scopeId);
+  const scopeLabel = clean(payload?.scopeLabel);
+  const comment = clean(payload?.comment || payload?.notes);
+  if (!tables.wec_commenting?.id) throw new Error("commenting_table_not_configured");
+  if (!commentId) throw new Error("missing_comment_id");
+  if (!comment) throw new Error("comment_required");
+  const fieldNames = tableFieldNames(context, tables.wec_commenting);
+  const fields = fieldsAllowedBySchema(compactFields({
+    comment,
+    notes: formatCommentNotes({
+      scopeType,
+      scopeId,
+      scopeLabel,
+      comment
+    }),
+    comment_status: "edited",
+    updated_at: new Date().toISOString().slice(0, 10),
+    updated_by: "webflow"
+  }), fieldNames);
+  const updated = await patchAirtableRecord(airtable, tables.wec_commenting.id, commentId, fields);
+  return { comment: updated, table: "wec_commenting" };
+}
+
+function formatCommentNotes({ scopeType, scopeId, scopeLabel, comment }) {
+  return [
+    `comment_scope: ${scopeType}`,
+    `comment_scope_id: ${scopeId}`,
+    `comment_scope_label: ${scopeLabel || scopeId}`,
+    "",
+    comment
+  ].join("\n");
+}
+
+async function createWecComment(airtable, context, payload) {
+  const tables = context.tables;
+  const fields = compactFields({
+    event: `comment:${payload.scopeType}:${payload.scopeId}:${Date.now()}`,
+    show: payload.showIds,
+    pack_wave: payload.packWaveIds,
+    packing_item: payload.itemRecord?.id ? [payload.itemRecord.id] : [],
+    event_type: "comment_add",
+    scope_type: payload.scopeType,
+    scope_id: payload.scopeId,
+    scope_label: payload.scopeLabel,
+    comment_status: "active",
+    comment: payload.comment,
+    notes: formatCommentNotes(payload),
+    created_at: new Date().toISOString().slice(0, 10),
+    created_by: "webflow"
+  });
+  const fieldNames = tableFieldNames(context, tables.wec_commenting);
+  const commentFields = fieldsAllowedBySchema(fields, fieldNames);
+  const response = await fetch(airtableUrl(airtable.baseId, tables.wec_commenting.id), {
+    method: "POST",
+    headers: {
+      ...airtableHeaders(airtable.token),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ records: [{ fields: commentFields }], typecast: true })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`comment ${response.status}: ${JSON.stringify(result)}`);
+  }
+  return {
+    id: result.records?.[0]?.id || "",
+    fields: result.records?.[0]?.fields || commentFields
+  };
+}
+
+function tableFieldNames(context, tableConfig) {
+  const schemaTable = findSchemaTable(context.schema, tableConfig?.name, tableConfig?.id);
+  return new Set((schemaTable?.fields || []).map((field) => field.name));
+}
+
+function fieldsAllowedBySchema(fields, fieldNames) {
+  if (!fieldNames?.size) return fields;
+  return Object.fromEntries(Object.entries(fields).filter(([name]) => fieldNames.has(name)));
 }
 
 async function applySessionStart(airtable, tables, payload, state) {

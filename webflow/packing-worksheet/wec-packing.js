@@ -22,10 +22,14 @@
     activeToolByList: {},
     filterByList: {},
     inlineEditByList: {},
+    inlineEditByItem: {},
     inlineEditValues: {},
     pendingActions: {},
     addQty: {},
     actionNotes: {},
+    commentDraftByScope: {},
+    commentEditById: {},
+    commentEditValues: {},
     sessionEventSent: false
   };
 
@@ -244,10 +248,35 @@
       return;
     }
 
+    const commentAdd = event.target.closest("[data-rsa-comment-add]");
+    if (commentAdd) {
+      event.preventDefault();
+      addScopedComment(commentAdd);
+      return;
+    }
+
+    const commentSave = event.target.closest("[data-rsa-comment-save]");
+    if (commentSave) {
+      event.preventDefault();
+      saveScopedComment(commentSave);
+      return;
+    }
+
+    const commentEdit = event.target.closest("[data-rsa-comment-edit]");
+    if (commentEdit) {
+      event.preventDefault();
+      toggleScopedCommentEdit(commentEdit);
+      return;
+    }
+
     const listEdit = event.target.closest("[data-list-edit-field]");
     if (listEdit) {
       event.preventDefault();
-      toggleListInlineEdit(listEdit.dataset.listId, listEdit.dataset.listEditField);
+      if (listEdit.dataset.itemId) {
+        toggleItemInlineEdit(listEdit.dataset.itemId, listEdit.dataset.listEditField);
+      } else {
+        toggleListInlineEdit(listEdit.dataset.listId, listEdit.dataset.listEditField);
+      }
       return;
     }
 
@@ -323,6 +352,19 @@
       return;
     }
 
+    const commentInput = event.target.closest("[data-rsa-comment-input]");
+    if (commentInput) {
+      const panel = commentInput.closest("[data-rsa-comment-scope]");
+      if (panel) state.commentDraftByScope[commentScopeKey(panel.dataset.rsaCommentScope, panel.dataset.rsaCommentId)] = commentInput.value;
+      return;
+    }
+
+    const commentEditInput = event.target.closest("[data-rsa-comment-edit-input]");
+    if (commentEditInput) {
+      state.commentEditValues[commentEditInput.dataset.rsaCommentEditInput] = commentEditInput.value;
+      return;
+    }
+
     const inlineEdit = event.target.closest("[data-inline-edit-field]");
     if (inlineEdit) {
       state.inlineEditValues[inlineEditKey(inlineEdit.dataset.itemId, inlineEdit.dataset.inlineEditField)] = inlineEdit.value;
@@ -355,12 +397,37 @@
     render();
   }
 
+  function toggleItemInlineEdit(itemId, field) {
+    if (!itemId || !field) return;
+    state.inlineEditByItem[itemId] = state.inlineEditByItem[itemId] || {};
+    const editMode = state.inlineEditByItem[itemId];
+    if (field === "quantity_inputs") {
+      const nextActive = !(editMode.quantity_packed_override || editMode.quantity_needed_override);
+      editMode["lp-row-title"] = false;
+      editMode.quantity_needed_override = nextActive;
+      editMode.quantity_packed_override = nextActive;
+      render();
+      return;
+    }
+    const nextActive = !editMode[field];
+    if (field === "lp-row-title") {
+      editMode["lp-row-title"] = nextActive;
+      if (nextActive) {
+        editMode.quantity_needed_override = false;
+        editMode.quantity_packed_override = false;
+      }
+    } else {
+      editMode[field] = nextActive;
+      if (nextActive) editMode["lp-row-title"] = false;
+    }
+    render();
+  }
+
   async function saveInlineEdit(button) {
     const itemId = button.dataset.inlineSaveItem;
-    const listId = button.dataset.listId;
     const item = items().find((row) => row.id === itemId);
-    if (!item || !listId) return;
-    const editMode = state.inlineEditByList[listId] || {};
+    if (!item) return;
+    const editMode = state.inlineEditByItem[itemId] || {};
     const fields = {};
     if (editMode["lp-row-title"]) {
       const itemName = String(inlineEditValue(item, "lp-row-title") || "").trim();
@@ -402,9 +469,90 @@
       delete state.inlineEditValues[inlineEditKey(itemId, "lp-row-title")];
       delete state.inlineEditValues[inlineEditKey(itemId, "quantity_packed_override")];
       delete state.inlineEditValues[inlineEditKey(itemId, "quantity_needed_override")];
+      delete state.inlineEditByItem[itemId];
     }, {
       pendingKey,
       message: "Saving item..."
+    });
+  }
+
+  async function addScopedComment(button) {
+    const panel = button.closest("[data-rsa-comment-scope]");
+    if (!panel) return;
+    const scopeType = panel.dataset.rsaCommentScope || "";
+    const scopeId = panel.dataset.rsaCommentId || "";
+    const scopeLabel = panel.dataset.rsaCommentLabel || "";
+    const input = panel.querySelector("[data-rsa-comment-input]");
+    const comment = String(input?.value || "").trim();
+    if (!scopeType || !scopeId) {
+      setSaveMessage("Comment scope is missing.");
+      return;
+    }
+    if (!comment) {
+      setSaveMessage("Comment cannot be blank.");
+      return;
+    }
+    const scopeKey = commentScopeKey(scopeType, scopeId);
+    const pendingKey = pendingActionKey("add_comment", scopeKey);
+    if (state.pendingActions[pendingKey]) return;
+    state.pendingActions[pendingKey] = "comment";
+    await postAction({
+      action: "add_comment",
+      scopeType,
+      scopeId,
+      scopeLabel,
+      itemId: scopeType === "item" ? scopeId : "",
+      showId: state.data?.source?.showId || "",
+      packWaveId: currentWaveId(),
+      packWaveKey: state.data?.source?.packWaveKey || "",
+      comment
+    }, () => {
+      delete state.commentDraftByScope[scopeKey];
+    }, {
+      pendingKey,
+      message: "Saving comment..."
+    });
+  }
+
+  function toggleScopedCommentEdit(button) {
+    const commentId = button.dataset.rsaCommentEdit || "";
+    if (!commentId) return;
+    const active = !!state.commentEditById[commentId];
+    state.commentEditById = active ? {} : { [commentId]: true };
+    if (!active && state.commentEditValues[commentId] === undefined) {
+      state.commentEditValues[commentId] = button.dataset.rsaCommentText || "";
+    }
+    render();
+  }
+
+  async function saveScopedComment(button) {
+    const commentId = button.dataset.rsaCommentSave || "";
+    const panel = button.closest("[data-rsa-comment-scope]");
+    if (!commentId || !panel) return;
+    const scopeType = panel.dataset.rsaCommentScope || "";
+    const scopeId = panel.dataset.rsaCommentId || "";
+    const scopeLabel = panel.dataset.rsaCommentLabel || "";
+    const comment = String(state.commentEditValues[commentId] || "").trim();
+    if (!comment) {
+      setSaveMessage("Comment cannot be blank.");
+      return;
+    }
+    const pendingKey = pendingActionKey("update_comment", commentId);
+    if (state.pendingActions[pendingKey]) return;
+    state.pendingActions[pendingKey] = "comment";
+    await postAction({
+      action: "update_comment",
+      commentId,
+      scopeType,
+      scopeId,
+      scopeLabel,
+      comment
+    }, () => {
+      delete state.commentEditById[commentId];
+      delete state.commentEditValues[commentId];
+    }, {
+      pendingKey,
+      message: "Saving comment..."
     });
   }
 
@@ -565,7 +713,7 @@
 
   function setSaveMessage(message) {
     state.saveMessage = message;
-    renderDetail();
+    render();
   }
 
   function closeDetail() {
@@ -577,33 +725,50 @@
   function render(options = {}) {
     root.innerHTML = `
       <div class="rsa-dashboard">
-        <div class="rsa-banner">
-          <div class="rsa-banner-header">
-            <div class="rsa-head-right">
-              <h5 class="rsa-report-title">WEC PACK LIST</h5>
-              <div class="rsa-report-subtitle">${escapeHtml(statusLine())}</div>
-            </div>
-            <div class="rsa-head-left is-hidden">
-              <h5 class="rsa-report-title">WEC PACK LIST</h5>
-              <div class="rsa-report-subtitle">${escapeHtml(statusLine())}</div>
-            </div>
-          </div>
-        </div>
         <div class="rsa-dashboard-block">
           <div class="rsa-dashboard-container">
             <div class="rsa-main-grid">
-              ${tabsHtml()}
-              ${panelHtml()}
+              <div class="rsa-top">
+                <div class="rsa-padding">
+                  <div class="rsa-padding-bottom">
+                    <div class="rsa-banner-header">
+                      <div class="rsa-head-right">
+                        <h5 class="rsa-report-title rsa-H1">WEC PACK LIST</h5>
+                        <div class="rsa-report-subtitle rsa-text">${escapeHtml(statusLine())}</div>
+                      </div>
+                      <div class="rsa-head-left is-hidden">
+                        <h5 class="rsa-report-title rsa-H1">WEC PACK LIST</h5>
+                        <div class="rsa-report-subtitle rsa-text">${escapeHtml(statusLine())}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rsa-actions">
+                <div class="rsa-padding">
+                  ${tabsHtml()}
+                </div>
+              </div>
+              <div class="rsa-body">
+                ${panelHtml()}
+              </div>
+              <div class="rsa-bottom">
+                <div class="rsa-padding">
+                  <div class="rsa-messages">
+                    <div class="rsa-text is-xs">${escapeHtml(footerLine())}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="mobile-bottom-spacing"></div>
-        <div class="lp-modal" id="packingDetail" hidden aria-hidden="true">
-          <div class="lp-modal-backdrop" data-close-detail></div>
-          <section class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
-            <button class="lp-modal-close" type="button" data-close-detail aria-label="Close detail">x</button>
-            <div id="packingDetailContent" data-modal-content></div>
-          </section>
+          <div class="mobile-bottom-spacing"></div>
+          <div class="lp-modal" id="packingDetail" hidden aria-hidden="true">
+            <div class="lp-modal-backdrop" data-close-detail></div>
+            <section class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
+              <button class="lp-modal-close" type="button" data-close-detail aria-label="Close detail">x</button>
+              <div id="packingDetailContent" data-modal-content></div>
+            </section>
+          </div>
         </div>
       </div>
     `;
@@ -649,15 +814,15 @@
 
   function tabsHtml() {
     return `
-      <nav class="rsa-list-action-menu packing-section-tabs" aria-label="Packing sections">
+      <div class="rsa-list-action-menu packing-section-tabs">
         ${tabs().map((section) => {
           return `
-            <button class="rs-tab-link is-section-tab ${escapeAttr(rsaSectionClass(section.id))} ${state.activeTab === section.id ? "is-filter" : ""}" type="button" data-tab="${escapeAttr(section.id)}">
-              <span>${escapeHtml(displayLabel(section.label))}</span>
-            </button>
+            <div class="rs-tab-link rsa-text is-link is-section-tab ${escapeAttr(rsaSectionClass(section.id))} ${state.activeTab === section.id ? "is-active" : ""}" data-tab="${escapeAttr(section.id)}">
+              <div>${escapeHtml(displayLabel(section.label))}</div>
+            </div>
           `;
         }).join("")}
-      </nav>
+      </div>
     `;
   }
 
@@ -685,42 +850,39 @@
   }
 
   function rsaMessagePanel(title) {
-    return `
-      <div class="rsa-lists-module">
-        <div class="rsa-lists-content">
-          <div class="rsa-list-content">
-            <div class="table-module">
-              <div class="rsa-list-header">
-                <div class="rsa-messages-text">
-                  <h4 class="heading-2">${escapeHtml(displayLabel(title))}</h4>
-                </div>
-              </div>
-              <div class="rsa-messages">
-                <div class="rsa-messages-text">
-                  <div>${escapeHtml(state.error || statusLine())}</div>
-                </div>
-              </div>
+    return rsaPanelShellHtml(`
+      <div class="rsa-content">
+        <div class="rsa-top">
+          ${rsaPaddedGridRowHtml({
+            leftHtml: rsaTitleTextHtml(`<h4 class="rsa-head rsa-H2">${escapeHtml(displayLabel(title))}</h4>`)
+          })}
+        </div>
+        <div class="rsa-bottom">
+          <div class="rsa-padding">
+            <div class="rsa-messages">
+              <div class="rsa-text is-xs">${escapeHtml(state.error || statusLine())}</div>
             </div>
           </div>
         </div>
       </div>
-    `;
+    `);
   }
 
   function rsaOverviewHtml() {
     if (state.activeHomeModule) return rsaHomeModuleHtml(state.activeHomeModule);
     const summaries = filterRows([...homeModuleSummaries(), ...tabGroups()], "overview", overviewSearchText);
-    return rsaDataModuleHtml({
+    return rsaPanelShellHtml(rsaDataModuleHtml({
       title: currentWaveLabel(),
       printTarget: "overview",
       searchKey: "overview",
       filterKey: "overview",
+      commentScope: rsaCommentScope("wave", currentWaveId() || "wave", currentWaveLabel()),
       rowsHtml: summaries.length ? summaries.map(rsaOverviewRowHtml).join("") : rsaEmptyTableRowHtml("No rows"),
       labelActionsHtml: `
-        <div class="rs-text-link is-label">open</div>
-        <div class="rs-text-link is-label">print</div>
+        <div class="rs-text-link rsa-text is-xs is-label">open</div>
+        <div class="rs-text-link rsa-text is-xs is-label">print</div>
       `
-    });
+    }));
   }
 
   function rsaHomeModuleHtml(moduleId) {
@@ -730,21 +892,18 @@
     const activeList = activeListForGroup(module.id, moduleLists);
     const rows = sortOnsiteTasks(filterRows((module.tasks || []).filter((task) => onsiteTaskBelongsToList(task, activeList?.id)), module.id, onsiteTaskSearchText));
     return `
-      <div class="rsa-lists-module">
-        ${rsaListSwitcherHtml(module.id, moduleLists, activeList?.id || "")}
-        <div class="rsa-lists-content">
-          <div class="rsa-list-content">
-            ${rsaDataModuleHtml({
-              title: activeList?.label || module.label || "Purchase onsite",
-              printTarget: `home:${module.id}`,
-              searchKey: module.id,
-              filterKey: activeList?.id || module.id,
-              rowsHtml: rows.length ? rows.map(rsaOnsiteRowHtml).join("") : rsaEmptyTableRowHtml("No tasks"),
-              labelActionsHtml: ""
-            })}
-          </div>
-        </div>
-      </div>
+      ${rsaPanelShellHtml(
+        rsaDataModuleHtml({
+          title: activeList?.label || module.label || "Purchase onsite",
+          printTarget: `home:${module.id}`,
+          searchKey: module.id,
+          filterKey: activeList?.id || module.id,
+          commentScope: rsaCommentScope("section", activeList?.id || module.id, activeList?.label || module.label || "Purchase onsite"),
+          rowsHtml: rows.length ? rows.map(rsaOnsiteRowHtml).join("") : rsaEmptyTableRowHtml("No tasks"),
+          labelActionsHtml: ""
+        }),
+        rsaListSwitcherHtml(module.id, moduleLists, activeList?.id || "")
+      )}
     `;
   }
 
@@ -757,44 +916,34 @@
     if (!sortedGroupLists.length) return rsaMessagePanel(group?.label || "No rows");
     const activeList = activeListForGroup(group.id, sortedGroupLists);
     return `
-      <div class="rsa-lists-module">
-        ${rsaListSwitcherHtml(group.id, sortedGroupLists, activeList.id)}
-        <div class="rsa-lists-content">
-          <div class="rsa-list-content">
-            ${rsaListTableHtml(activeList, group.id)}
-          </div>
-        </div>
-      </div>
+      ${rsaPanelShellHtml(
+        rsaListTableHtml(activeList, group.id),
+        rsaListSwitcherHtml(group.id, sortedGroupLists, activeList.id)
+      )}
     `;
   }
 
   function rsaSingleListHtml(listId) {
     const list = lists().find((row) => row.id === listId) || { id: listId, label: listId };
     return `
-      <div class="rsa-lists-module">
-        <div class="rsa-lists-content">
-          <div class="rsa-list-content">
-            ${rsaListTableHtml(list, list.id)}
-          </div>
-        </div>
-      </div>
+      ${rsaPanelShellHtml(rsaListTableHtml(list, list.id))}
     `;
   }
 
   function rsaHorsesHtml() {
     const rows = filterRows(activeWaveHorses(), "horses", horseSearchText);
-    return rsaDataModuleHtml({
+    return rsaPanelShellHtml(rsaDataModuleHtml({
       title: `${currentWaveLabel()} horses`,
       printTarget: "horses",
       searchKey: "horses",
       filterKey: "horses",
+      commentScope: rsaCommentScope("tab", "horses", "Horses"),
       rowsHtml: rows.length ? rows.map(rsaHorseRowHtml).join("") : rsaEmptyTableRowHtml("No horses"),
-      labelActionsHtml: `<div class="rs-text-link is-label">print</div>`
-    });
+      labelActionsHtml: `<div class="rs-text-link rsa-text is-xs is-label">print</div>`
+    }));
   }
 
   function rsaListTableHtml(list, tabId) {
-    const editMode = state.inlineEditByList[list.id] || {};
     const rows = rsaApplyListFilter(
       sortItemsByName(filterRows(items().filter((item) => itemBelongsToList(item, list.id)), list.id, itemSearchText)),
       list.id
@@ -804,42 +953,120 @@
       printTarget: list.id,
       searchKey: list.id,
       filterKey: list.id,
-      rowsHtml: rows.length ? rows.map((item) => rsaItemRowHtml(item, editMode, list.id)).join("") : rsaEmptyTableRowHtml("No rows"),
+      commentScope: isTabGroupId(tabId)
+        ? rsaCommentScope("tab", tabId, tabGroups().find((group) => group.id === tabId)?.label || list.label || tabId)
+        : rsaCommentScope("section", list.id, list.label || list.id),
+      rowsHtml: rows.length ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, list.id)).join("") : rsaEmptyTableRowHtml("No rows"),
       labelActionsHtml: `
-        <div class="rs-text-link is-label">edit</div>
-        <div class="rs-text-link is-label">input</div>
+        <div class="rs-text-link rsa-text is-xs is-label">edit</div>
+        <div class="rs-text-link rsa-text is-xs is-label">input</div>
       `
     });
   }
 
-  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, rowsHtml, labelActionsHtml }) {
-    const activeTool = state.activeToolByList[filterKey] || "";
+  function rsaPanelShellHtml(contentHtml, actionsHtml = "") {
     return `
-      <div class="table-module">
-        <div class="rsa-list-header">
-          <div class="rsa-item-row is-grid2">
-            <div class="rsa-item-block-left">
-              <div class="rsa-item-text">
-                <h4 class="rsa-head">${escapeHtml(displayLabel(title))}</h4>
-                <div class="rs-text-linline" data-list-id="${escapeAttr(filterKey)}" data-list-edit-field="lp-row-title">edit</div>
-              </div>
-            </div>
-            <div class="rsa-item-block-right">
-              <div class="rsa-action-block is-grid3">
-                <div class="rs-text-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>
-                <div class="rs-text-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>
-                <div class="rs-text-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
-              </div>
-            </div>
+      ${actionsHtml ? `<div class="rsa-actions">${actionsHtml}</div>` : ""}
+      <div class="rsa-body">
+        ${contentHtml}
+      </div>
+      <div class="rsa-bottom">
+        <div class="rsa-padding">
+          <div class="rsa-messages">
+        <div class="rsa-text is-xs">${escapeHtml(footerLine())}</div>
           </div>
         </div>
-        ${rsaSearchHtml(searchKey, filterKey, activeTool === "search")}
-        ${rsaFilterHtml(filterKey, activeTool === "filter")}
-        <div class="rsa-tables">
-          <div class="rsa-table">
-            ${rsaTableLabelRowHtml(labelActionsHtml)}
-            <div class="rsa-list-padding">
-              ${rowsHtml}
+      </div>
+    `;
+  }
+
+  function rsaPaddedGridRowHtml(options = {}) {
+    const paddingClass = options.paddingClass ? ` ${options.paddingClass}` : "";
+    return `
+      <div class="rsa-padding${paddingClass}">
+        ${rsaGridRowHtml(options)}
+      </div>
+    `;
+  }
+
+  function rsaGridRowHtml({ leftHtml = "", rightHtml = "", rowClass = "is-grid2", leftAttrs = "", rightAttrs = "" } = {}) {
+    const rowClasses = ["rsa-item-row-2", rowClass].filter(Boolean).join(" ");
+    const leftAttributeText = leftAttrs ? ` ${leftAttrs}` : "";
+    const rightAttributeText = rightAttrs ? ` ${rightAttrs}` : "";
+    return `
+      <div class="${rowClasses}">
+        <div class="rsa-item-block-left"${leftAttributeText}>
+          ${leftHtml}
+        </div>
+        <div class="rsa-item-block-right"${rightAttributeText}>
+          ${rightHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function rsaItemTextHtml(innerHtml) {
+    return `<div class="rsa-item-text">${innerHtml}</div>`;
+  }
+
+  function rsaTitleTextHtml(innerHtml) {
+    return `<div class="rsa-item-text is-title-row">${innerHtml}</div>`;
+  }
+
+  function rsaQuantityBlockHtml(innerHtml) {
+    return `<div class="rs-quantity-block-2 is-grid4">${innerHtml}</div>`;
+  }
+
+  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml }) {
+    const activeTool = state.activeToolByList[filterKey] || "";
+    const resolvedCommentScope = commentScope || rsaCommentScope("section", filterKey, title);
+    return `
+      <div class="rsa-content">
+        <div class="rsa-top">
+          ${rsaPaddedGridRowHtml({
+            leftHtml: rsaTitleTextHtml(`
+              <h4 class="rsa-head rsa-H2">${escapeHtml(displayLabel(title))}</h4>
+              <div class="rs-text-linline rsa-text is-inline-edit" data-list-id="${escapeAttr(filterKey)}" data-list-edit-field="lp-row-title">edit</div>
+            `),
+            rightHtml: `
+              <div class="rsa-action-block is-grid3">
+                <div class="rs-text-link-2 rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>
+                <div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>
+                <div class="rs-text-link-2 rsa-text is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
+              </div>
+            `
+          })}
+        </div>
+        <div class="rsa-body">
+          <div class="rsa-actions">
+            ${rsaSearchHtml(searchKey, filterKey, activeTool === "search")}
+            ${rsaFilterHtml(filterKey, activeTool === "filter")}
+          </div>
+          <div class="rsa-content">
+            <div class="rsa-top is-hidden"></div>
+            <div class="rsa-body">
+              <div class="rsa-padding is-none">
+                <div class="rsa-table">
+                  <div class="rsa-table-head">
+                    ${rsaTableLabelRowHtml(labelActionsHtml)}
+                  </div>
+                  <div class="rsa-table-body">
+                    ${rowsHtml}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rsa-bottom">
+              <div class="rsa-padding">
+                <div class="rsa-messages">
+                  <div class="rsa-text is-xs">${escapeHtml(footerLine())}</div>
+                </div>
+              </div>
+            </div>
+            <div class="rsa-comm">
+              <div class="rsa-padding is-none">
+                ${rsaCommentPanelHtml(resolvedCommentScope)}
+              </div>
             </div>
           </div>
         </div>
@@ -850,27 +1077,34 @@
   function rsaListSwitcherHtml(tabId, groupLists, activeListId) {
     if (!groupLists.length) return "";
     return `
-      <div class="rsa-list-action-menu is-switcher">
-        ${groupLists.map((list) => `
-          <a href="#" class="rs-tab-link is-switcher ${list.id === activeListId ? "is-active" : ""}" data-tab-id="${escapeAttr(tabId)}" data-list-switch="${escapeAttr(list.id)}">
-            <div>${escapeHtml(displayLabel(list.label || list.id))}</div>
-          </a>
-        `).join("")}
+      <div class="rsa-padding">
+        <div class="rsa-list-action-menu">
+          ${groupLists.map((list) => `
+            <div class="rs-tab-link rsa-text is-link ${list.id === activeListId ? "is-active" : ""}" data-tab-id="${escapeAttr(tabId)}" data-list-switch="${escapeAttr(list.id)}">
+              <div>${escapeHtml(displayLabel(list.label || list.id))}</div>
+            </div>
+          `).join("")}
+        </div>
       </div>
     `;
   }
 
   function rsaSearchHtml(searchKey, scopeKey, active) {
-    return `
-      <div class="rsa-messages is-search ${active ? "is-active" : ""}">
+    return rsaPaddedGridRowHtml({
+      paddingClass: active ? "" : "is-hidden",
+      rowClass: "is-search-grid",
+      leftHtml: `
         <div class="rsa-messages-text is-search">
           <input class="rs-search-input" type="search" value="${escapeAttr(sectionSearchValue(searchKey))}" placeholder="search" data-section-search="${escapeAttr(searchKey)}">
         </div>
-        <div class="rsa-closer">
-          <div class="rs-text-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
+      `,
+      rightHtml: `
+        <div class="rsa-action-block is-grid3">
+          <div class="rs-text-link rsa-text is-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
+          <div class="rs-text-link-2 rsa-text is-link" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(scopeKey)}">search</div>
         </div>
-      </div>
-    `;
+      `
+    });
   }
 
   function rsaFilterHtml(scopeKey, active) {
@@ -883,119 +1117,101 @@
       ["open", "OPEN"]
     ];
     return `
-      <div class="rsa-list-action-menu ${active ? "is-active" : ""}">
-        ${filters.map(([key, label]) => `
-          <a href="#" data-rsa-filter="${escapeAttr(key)}" data-rsa-scope="${escapeAttr(scopeKey)}" class="rs-tab-link ${activeFilter === key ? "is-filter" : ""}">
-            <div>${escapeHtml(label)}</div>
-          </a>
-        `).join("")}
-        <div class="rsa-closer">
-          <div class="rs-text-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
+      <div class="rsa-padding ${active ? "" : "is-hidden"}">
+        <div class="rsa-list-action-menu">
+          ${filters.map(([key, label]) => `
+            <div data-rsa-filter="${escapeAttr(key)}" data-rsa-scope="${escapeAttr(scopeKey)}" class="rs-tab-link rsa-text is-link ${activeFilter === key ? "is-active" : ""}">
+              <div>${escapeHtml(label)}</div>
+            </div>
+          `).join("")}
+          <div class="rsa-closer">
+            <div class="rs-text-link rsa-text is-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
+          </div>
         </div>
       </div>
     `;
   }
 
   function rsaTableLabelRowHtml(actionsHtml) {
-    return `
-      <div class="rsa-item-row is-grid2 is-label">
-        <div class="rsa-item-block-left">
-          <div class="rsa-item-text">
-            <div class="rs-table-title is-label">ITEM</div>
-          </div>
-        </div>
-        <div class="rsa-item-block-right">
-          <div class="rs-quantity-block is-grid4 is-label">
-            <div class="rs-text is-label">NEED</div>
-            <div class="rs-text is-label">PACKED</div>
-            <div class="rs-text is-label">LEFT</div>
-            <div class="rs-input-spacer is-label">INPUT</div>
-          </div>
-        </div>
-      </div>
-    `;
+    return rsaGridRowHtml({
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color is-spacer"></div>
+        <div class="rs-table-title rsa-text is-xs is-label">item</div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        <div class="rs-text-2 rsa-text is-xs is-label">need</div>
+        <div class="rs-text-2 rsa-text is-xs is-label">packed</div>
+        <div class="rs-text-2 rsa-text is-xs is-label">left</div>
+        <div class="rs-input-spacer rsa-text is-xs is-label">input</div>
+      `)
+    });
   }
 
   function rsaItemRowHtml(item, editMode, listId) {
     const editingTitle = !!editMode?.["lp-row-title"];
     const editingQty = !!(editMode?.quantity_packed_override || editMode?.quantity_needed_override);
-    const packed = isDone(item);
-    return `
-      <div class="rsa-item-row is-grid2 ${editingTitle ? "is-title-editing" : ""} ${editingQty ? "is-qty-editing" : ""}">
-        <div class="rsa-item-block-left" data-item-id="${escapeAttr(item.id)}">
-          <div class="rsa-item-text">
-            <div class="indication-color bg-primary-green"></div>
-            <div class="rs-table-title rsa-row-title-text">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</div>
-            <input class="rs-table-title is-inline rsa-row-title-input" type="text" value="${escapeAttr(inlineEditValue(item, "lp-row-title"))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="lp-row-title">
-            <div class="rs-text-linline" data-list-id="${escapeAttr(listId)}" data-list-edit-field="lp-row-title">edit</div>
-          </div>
+    return rsaGridRowHtml({
+      rowClass: `is-grid2 ${editingTitle ? "is-title-editing" : ""} ${editingQty ? "is-qty-editing" : ""}`,
+      leftAttrs: `data-item-id="${escapeAttr(item.id)}"`,
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color bg-primary-green"></div>
+        <div class="rs-table-title rsa-row-title-text rsa-text is-line-item">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</div>
+        <input class="rs-table-title rsa-text is-inline-edit is-inline rsa-row-title-input" type="text" value="${escapeAttr(inlineEditValue(item, "lp-row-title"))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="lp-row-title">
+        <div class="rs-text-linline rsa-text is-inline-edit" data-item-id="${escapeAttr(item.id)}" data-list-id="${escapeAttr(listId)}" data-list-edit-field="lp-row-title">edit</div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        ${rsaQuantityCellHtml(item, "quantity_needed_override", item.needed, editMode?.quantity_needed_override)}
+        ${rsaQuantityCellHtml(item, "quantity_packed_override", item.packed, editMode?.quantity_packed_override)}
+        <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(item.left))}</div>
+        <div class="rs-input-inline rsa-text is-inline-input is-link ${editingQty ? "is-active" : ""}" data-item-id="${escapeAttr(item.id)}" data-list-id="${escapeAttr(listId)}" data-list-edit-field="quantity_inputs">
+          <span class="rsa-row-input-action rsa-text is-inline-input is-link">input</span>
+          <span class="rs-text-link rsa-text is-inline-input is-link is-save" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}">save</span>
         </div>
-        <div class="rsa-item-block-right">
-          <div class="rs-quantity-block is-grid4">
-            ${rsaQuantityCellHtml(item, "quantity_needed_override", item.needed, editMode?.quantity_needed_override)}
-            ${rsaQuantityCellHtml(item, "quantity_packed_override", item.packed, editMode?.quantity_packed_override)}
-            <div class="rs-text">${escapeHtml(quantityDisplay(item.left))}</div>
-            <div class="rs-input-inline">
-              <span class="rsa-row-input-action" data-list-id="${escapeAttr(listId)}" data-list-edit-field="quantity_inputs">input</span>
-              <span class="rs-text-link is-save" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}">save</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+      `)
+    });
   }
 
   function rsaQuantityCellHtml(item, field, value, editing) {
-    if (!editing) return `<div class="rs-text rsa-row-qty-text">${escapeHtml(quantityDisplay(value))}</div>`;
-    return `<input class="rs-text is-inline rsa-row-qty-input" type="number" min="0" step="1" inputmode="numeric" value="${escapeAttr(inlineEditValue(item, field))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="${escapeAttr(field)}">`;
+    if (!editing) return `<div class="rs-text-2 rsa-row-qty-text rsa-text is-number">${escapeHtml(quantityDisplay(value))}</div>`;
+    return `<input class="rs-text-2 rsa-text is-number is-inline rsa-row-qty-input" type="number" min="0" step="1" inputmode="numeric" value="${escapeAttr(inlineEditValue(item, field))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="${escapeAttr(field)}">`;
   }
 
   function rsaOnsiteRowHtml(task) {
     const done = task.taskState === "done";
     const pending = isPendingAction("set_onsite_task_state", task.id);
     const nextState = done ? "task" : "done";
-    return `
-      <div class="rsa-item-row is-grid2">
-        <div class="rsa-item-block-left" data-onsite-task-detail="${escapeAttr(task.id)}">
-          <div class="rsa-item-text">
-          <div class="indication-color ${done ? "bg-primary-green" : "bg-primary-blue"}"></div>
-            <div class="rs-table-title">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</div>
-            <div class="rs-text-linline"></div>
-          </div>
-        </div>
-        <div class="rsa-item-block-right">
-          <div class="rs-quantity-block is-grid4">
-            <div class="rs-text"></div>
-            <div class="rs-text"></div>
-            <div class="rs-text"></div>
-            <div class="rs-input-inline ${pending ? "is-active" : ""}" data-onsite-task-state="${escapeAttr(nextState)}" data-source-item-id="${escapeAttr(task.id)}">${pending ? "saving" : done ? "task" : "done"}</div>
-          </div>
-        </div>
-      </div>
-    `;
+    return rsaGridRowHtml({
+      leftAttrs: `data-onsite-task-detail="${escapeAttr(task.id)}"`,
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color ${done ? "bg-primary-green" : "bg-primary-blue"}"></div>
+        <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</div>
+        <div class="rs-text-linline rsa-text is-xs"></div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-input-inline rsa-text is-inline-input is-link ${pending ? "is-active" : ""}" data-onsite-task-state="${escapeAttr(nextState)}" data-source-item-id="${escapeAttr(task.id)}">${pending ? "saving" : done ? "task" : "done"}</div>
+      `)
+    });
   }
 
   function rsaHorseRowHtml(horse) {
     const progress = horseProgress(horse);
-    return `
-      <div class="rsa-item-row is-grid2">
-        <div class="rsa-item-block-left" data-horse-detail="${escapeAttr(horse.id)}">
-          <div class="rsa-item-text">
-          <div class="indication-color ${progress.percent >= 100 ? "bg-primary-green" : "bg-primary-blue"}"></div>
-            <div class="rs-table-title">${escapeHtml(displayLabel(horseDisplayName(horse)))}</div>
-            <div class="rs-text-linline">${escapeHtml(`${progress.percent}%`)}</div>
-          </div>
-        </div>
-        <div class="rsa-item-block-right">
-          <div class="rs-quantity-block is-grid4">
-            <div class="rs-text">${escapeHtml(quantityDisplay(progress.rows))}</div>
-            <div class="rs-text">${escapeHtml(quantityDisplay(progress.done))}</div>
-            <div class="rs-text">${escapeHtml(quantityDisplay(Math.max(0, progress.rows - progress.done)))}</div>
-            <div class="rs-input-inline is-print" data-print-horse="${escapeAttr(horse.id)}">print</div>
-          </div>
-        </div>
-      </div>
-    `;
+    return rsaGridRowHtml({
+      leftAttrs: `data-horse-detail="${escapeAttr(horse.id)}"`,
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color ${progress.percent >= 100 ? "bg-primary-green" : "bg-primary-blue"}"></div>
+        <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(horseDisplayName(horse)))}</div>
+        <div class="rs-text-linline rsa-text is-xs">${escapeHtml(`${progress.percent}%`)}</div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(progress.rows))}</div>
+        <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(progress.done))}</div>
+        <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(Math.max(0, progress.rows - progress.done)))}</div>
+        <div class="rs-input-inline rsa-text is-inline-input is-link is-print" data-print-horse="${escapeAttr(horse.id)}">print</div>
+      `)
+    });
   }
 
   function rsaOverviewRowHtml(summary) {
@@ -1004,39 +1220,101 @@
       ? `data-home-module="${escapeAttr(summary.id)}"`
       : `data-tab="${escapeAttr(summary.id)}"`;
     const printTarget = summary.homeModule ? `home:${summary.id}` : summary.id;
+    return rsaGridRowHtml({
+      leftAttrs: triggerAttr,
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color ${percent >= 100 ? "bg-primary-green" : "bg-primary-blue"}"></div>
+        <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(summary.label || summary.id))}</div>
+        <div class="rs-text-linline rsa-text is-xs">${escapeHtml(`${percent}%`)}</div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.rows))}</div>
+        <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.done))}</div>
+        <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.open))}</div>
+        <div class="rs-input-inline rsa-text is-inline-input is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
+      `)
+    });
+  }
+
+  function rsaEmptyTableRowHtml(label) {
+    return rsaGridRowHtml({
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color is-hidden"></div>
+        <div class="rs-table-title rsa-text is-line-item">${escapeHtml(label)}</div>
+        <div class="rs-text-linline rsa-text is-xs"></div>
+      `),
+      rightHtml: rsaQuantityBlockHtml("")
+    });
+  }
+
+  function rsaCommentScope(type, id, label) {
+    return {
+      type: type || "section",
+      id: id || type || "comment",
+      label: label || id || type || "comment"
+    };
+  }
+
+  function commentScopeKey(type, id) {
+    return `${type || "section"}:${id || ""}`;
+  }
+
+  function commentsForScope(scope) {
+    const key = commentScopeKey(scope.type, scope.id);
+    return (Array.isArray(state.data?.comments) ? state.data.comments : [])
+      .filter((comment) => commentScopeKey(comment.scopeType, comment.scopeId) === key)
+      .sort((a, b) => String(b.createdTime || "").localeCompare(String(a.createdTime || "")));
+  }
+
+  function rsaCommentPanelHtml(scope) {
+    const key = commentScopeKey(scope.type, scope.id);
+    const comments = commentsForScope(scope);
+    const pending = state.pendingActions[pendingActionKey("add_comment", key)];
+    const draft = state.commentDraftByScope[key] || "";
     return `
-      <div class="rsa-item-row is-grid2">
-        <div class="rsa-item-block-left" ${triggerAttr}>
-          <div class="rsa-item-text">
-          <div class="indication-color ${percent >= 100 ? "bg-primary-green" : "bg-primary-blue"}"></div>
-            <div class="rs-table-title">${escapeHtml(displayLabel(summary.label || summary.id))}</div>
-            <div class="rs-text-linline">${escapeHtml(`${percent}%`)}</div>
+      <div class="rsa-comment-panel" data-rsa-comment-scope="${escapeAttr(scope.type)}" data-rsa-comment-id="${escapeAttr(scope.id)}" data-rsa-comment-label="${escapeAttr(scope.label)}">
+        <div class="rsa-comment rsa-comment-head">
+          <div class="rsa-comment-wrapper">
+            <div class="rsa-comment-text rsa-text is-xs">Comments</div>
+            <div class="rsa-comment-scope rsa-text is-xs">${escapeHtml(displayLabel(scope.type))}</div>
+            <div class="rs-text-linline rsa-text is-inline-edit" data-rsa-comment-add>${pending ? "saving" : "add"}</div>
           </div>
         </div>
-        <div class="rsa-item-block-right">
-          <div class="rs-quantity-block is-grid4">
-            <div class="rs-text">${escapeHtml(quantityDisplay(summary.rows))}</div>
-            <div class="rs-text">${escapeHtml(quantityDisplay(summary.done))}</div>
-            <div class="rs-text">${escapeHtml(quantityDisplay(summary.open))}</div>
-            <div class="rs-input-inline is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
-          </div>
+        <div class="rsa-comment-list">
+          ${comments.length ? comments.map(rsaCommentItemHtml).join("") : rsaCommentEmptyHtml(scope)}
+        </div>
+        <textarea class="rsa-comment-input rsa-text" rows="2" placeholder="comment" data-rsa-comment-input>${escapeHtml(draft)}</textarea>
+      </div>
+    `;
+  }
+
+  function rsaCommentItemHtml(comment) {
+    const editable = comment.sourceTable === "wec_commenting";
+    const editing = !!state.commentEditById[comment.id];
+    const pending = state.pendingActions[pendingActionKey("update_comment", comment.id)];
+    const value = state.commentEditValues[comment.id] ?? comment.comment ?? "";
+    return `
+      <div class="rsa-comment rsa-comment-item">
+        <div class="rsa-comment-wrapper">
+          ${editing
+            ? `<textarea class="rsa-comment-input rsa-text" rows="2" data-rsa-comment-edit-input="${escapeAttr(comment.id)}">${escapeHtml(value)}</textarea>`
+            : `<div class="rsa-comment-text rsa-text">${escapeHtml(comment.comment || "")}</div>`}
+          <div class="rsa-comment-meta rsa-text is-xs">${escapeHtml(comment.createdBy || "webflow")}</div>
+          ${editable
+            ? editing
+              ? `<div class="rs-text-linline rsa-text is-inline-edit" data-rsa-comment-save="${escapeAttr(comment.id)}">${pending ? "saving" : "save"}</div>`
+              : `<div class="rs-text-linline rsa-text is-inline-edit" data-rsa-comment-edit="${escapeAttr(comment.id)}" data-rsa-comment-text="${escapeAttr(comment.comment || "")}">edit</div>`
+            : ""}
         </div>
       </div>
     `;
   }
 
-  function rsaEmptyTableRowHtml(label) {
+  function rsaCommentEmptyHtml(scope) {
     return `
-      <div class="rsa-item-row is-grid2">
-        <div class="rsa-item-block-left">
-          <div class="rsa-item-text">
-            <div class="indication-color is-hidden"></div>
-            <div class="rs-table-title">${escapeHtml(label)}</div>
-            <div class="rs-text-linline"></div>
-          </div>
-        </div>
-        <div class="rsa-item-block-right">
-          <div class="rs-quantity-block is-grid4"></div>
+      <div class="rsa-comment rsa-comment-item">
+        <div class="rsa-comment-wrapper">
+          <div class="rsa-comment-text rsa-text is-xs">No ${escapeHtml(displayLabel(scope.type))} comments</div>
         </div>
       </div>
     `;
@@ -1922,8 +2200,8 @@
     return `
       <div class="lp-profile-shell packing-detail-shell ${themeClasses(item.packListIds?.[0] || "overview")}">
         <div class="lp-profile-head th-profile-top">
-          <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h2>
-          <p class="lp-profile-subtitle">${escapeHtml(itemMetaLabel(item))}</p>
+          <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h2>
+          <p class="lp-profile-subtitle rsa-p">${escapeHtml(itemMetaLabel(item))}</p>
         </div>
 
         <section class="lp-profile-panel packing-detail th-detail-section">
@@ -1940,9 +2218,11 @@
           </div>
         </section>
 
+        ${rsaCommentPanelHtml(rsaCommentScope("item", item.id, item.name || "Unnamed item"))}
+
         <div class="lp-profile-modal-footer th-profile-footer">
           ${planLineHtml(itemPlanText(item))}
-          <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
+          <div class="lp-profile-footer packing-save-meta rsa-p ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
           </div>
         </div>
@@ -1959,8 +2239,8 @@
     return `
       <div class="lp-profile-shell packing-detail-shell packing-horse-detail-shell packing-theme-horses">
         <div class="lp-profile-head th-profile-top">
-          <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(horse.name || "Unnamed horse")}</h2>
-          ${horse.showName ? `<p class="lp-profile-subtitle">${escapeHtml(horse.showName)}</p>` : ""}
+          <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(horse.name || "Unnamed horse")}</h2>
+          ${horse.showName ? `<p class="lp-profile-subtitle rsa-p">${escapeHtml(horse.showName)}</p>` : ""}
         </div>
 
         <section class="lp-profile-panel packing-detail th-detail-section">
@@ -1987,7 +2267,7 @@
 
         <div class="lp-profile-modal-footer th-profile-footer">
           ${planLineHtml(planText)}
-          <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
+          <div class="lp-profile-footer packing-save-meta rsa-p ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
           </div>
         </div>
@@ -2000,8 +2280,8 @@
     return `
       <div class="lp-profile-shell packing-detail-shell packing-theme-overview">
         <div class="lp-profile-head th-profile-top">
-          <h2 class="lp-profile-title" id="drawerTitle">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</h2>
-          <p class="lp-profile-subtitle">Purchase Onsite</p>
+          <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</h2>
+          <p class="lp-profile-subtitle rsa-p">Purchase Onsite</p>
         </div>
 
         <section class="lp-profile-panel packing-detail th-detail-section">
@@ -2017,7 +2297,7 @@
 
         <div class="lp-profile-modal-footer th-profile-footer">
           ${planLineHtml(task.listPlanLabel || task.listPlan)}
-          <div class="lp-profile-footer packing-save-meta ${saveMetaClass()}">
+          <div class="lp-profile-footer packing-save-meta rsa-p ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
           </div>
         </div>
@@ -2108,7 +2388,7 @@
   function planLineHtml(value) {
     const text = String(value || "").trim();
     if (!text) return "";
-    return `<div class="packing-plan-line">PLAN: ${escapeHtml(text)}</div>`;
+    return `<div class="packing-plan-line rsa-text is-caps">PLAN: ${escapeHtml(text)}</div>`;
   }
 
   function itemPlanText(item) {
@@ -2136,7 +2416,7 @@
   }
 
   function detailReadRow(label, value) {
-    return editGroupHtml(label, `<input class="lp-edit-input th-input th-readonly-input" type="text" value="${escapeAttr(value)}" readonly tabindex="-1">`);
+    return editGroupHtml(label, `<input class="lp-edit-input th-input th-readonly-input rsa-text" type="text" value="${escapeAttr(value)}" readonly tabindex="-1">`);
   }
 
   function totalsRowHtml(item) {
@@ -2181,11 +2461,11 @@
     return editGroupHtml("Packed", `
       <span class="packing-add-control">
         <span class="packing-add-box">
-          <input class="lp-edit-input" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
-          <span class="packing-add-label">QUANTITY</span>
+          <input class="lp-edit-input rsa-text" type="number" min="0" step="1" inputmode="numeric" placeholder="0" value="${escapeAttr(state.addQty[item.id] || "")}" data-add-qty="${escapeAttr(item.id)}">
+          <span class="packing-add-label rsa-text is-caps">QUANTITY</span>
         </span>
-        <button class="lp-edit-pill ${pending && pendingSource === "add_quantity" ? "is-active is-pending" : ""}" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD</button>
-        <button class="lp-edit-pill ${pending && pendingSource === "add_one" ? "is-active is-pending" : ""}" type="button" data-packing-action="add_one" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD + 1</button>
+        <button class="lp-edit-pill rsa-text is-caps ${pending && pendingSource === "add_quantity" ? "is-active is-pending" : ""}" type="button" data-packing-action="add_quantity" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD</button>
+        <button class="lp-edit-pill rsa-text is-caps ${pending && pendingSource === "add_one" ? "is-active is-pending" : ""}" type="button" data-packing-action="add_one" data-item-id="${escapeAttr(item.id)}" ${pending ? `disabled aria-busy="true"` : ""}>ADD + 1</button>
       </span>
     `, "packing-add-row");
   }
@@ -2199,7 +2479,7 @@
           return `
             <span class="packing-horse-binding-row">
               <span class="packing-horse-binding-name">${escapeHtml(member.barnName || "Unnamed horse")}</span>
-              <button class="lp-edit-pill packing-horse-binding-toggle ${packed ? "is-active" : ""}" type="button" data-horse-member-state="${packed ? "not_packed" : "packed"}" data-item-horse-id="${escapeAttr(member.id)}">
+              <button class="lp-edit-pill packing-horse-binding-toggle rsa-text is-caps ${packed ? "is-active" : ""}" type="button" data-horse-member-state="${packed ? "not_packed" : "packed"}" data-item-horse-id="${escapeAttr(member.id)}">
                 ${packed ? "PACKED" : "NOT PACKED"}
               </button>
             </span>
@@ -2211,7 +2491,7 @@
 
   function notesControlHtml(item) {
     const value = state.actionNotes[item.id] ?? item.notes ?? "";
-    return editGroupHtml("Notes", `<textarea class="lp-edit-input th-input th-note-input" rows="4" data-action-notes="${escapeAttr(item.id)}">${escapeHtml(value)}</textarea>`, "th-detail-note");
+    return editGroupHtml("Notes", `<textarea class="lp-edit-input th-input th-note-input rsa-text" rows="4" data-action-notes="${escapeAttr(item.id)}">${escapeHtml(value)}</textarea>`, "th-detail-note");
   }
 
   function decisionControlHtml(item) {
@@ -2236,7 +2516,7 @@
           active: item.resolutionState === decision,
           attrs: `data-packing-action="set_resolution" data-item-id="${escapeAttr(item.id)}" data-resolution-state="${escapeAttr(decision)}"`
         })).join("")}
-        <a class="lp-edit-pill packing-sms-pill" href="${escapeAttr(smsConflictHref(item))}">SMS</a>
+        <a class="lp-edit-pill packing-sms-pill rsa-text is-caps" href="${escapeAttr(smsConflictHref(item))}">SMS</a>
       </span>
     `, "packing-conflict-row");
   }
@@ -2249,8 +2529,8 @@
       <div class="lp-edit-panel packing-edit-panel">
         <div class="lp-edit-head"><h4>Source</h4></div>
         <div class="lp-edit-grid">
-          ${editGroupHtml("Name", `<span class="lp-row-meta">${escapeHtml(source.appName || "")}</span>`)}
-          ${editGroupHtml("Plan", `<span class="lp-row-meta">${escapeHtml(displayLabel(source.listPlanLabel || source.listPlan || ""))}</span>`)}
+          ${editGroupHtml("Name", `<span class="lp-row-meta rsa-p">${escapeHtml(source.appName || "")}</span>`)}
+          ${editGroupHtml("Plan", `<span class="lp-row-meta rsa-p">${escapeHtml(displayLabel(source.listPlanLabel || source.listPlan || ""))}</span>`)}
           ${editGroupHtml("Inputs", `
             <span class="lp-edit-choice-row packing-inline-choices">
               ${sourceFlagButtonHtml(source.id, "ignore", "IGNORE", !!flags.ignore)}
@@ -2264,18 +2544,18 @@
   }
 
   function sourceFlagButtonHtml(sourceItemId, flagName, label, active) {
-    return `<button class="lp-edit-pill ${active ? "is-active" : ""}" type="button" data-source-flag="${escapeAttr(flagName)}" data-source-item-id="${escapeAttr(sourceItemId)}" data-next-value="${active ? "false" : "true"}">${escapeHtml(label)}</button>`;
+    return `<button class="lp-edit-pill rsa-text is-caps ${active ? "is-active" : ""}" type="button" data-source-flag="${escapeAttr(flagName)}" data-source-item-id="${escapeAttr(sourceItemId)}" data-next-value="${active ? "false" : "true"}">${escapeHtml(label)}</button>`;
   }
 
   function choiceButtonHtml({ label, active, attrs }) {
-    return `<span class="lp-edit-choice"><button class="lp-edit-pill ${active ? "is-active" : ""}" type="button" ${attrs}>${escapeHtml(label)}</button></span>`;
+    return `<span class="lp-edit-choice"><button class="lp-edit-pill rsa-text is-caps ${active ? "is-active" : ""}" type="button" ${attrs}>${escapeHtml(label)}</button></span>`;
   }
 
   function editGroupHtml(title, body, extraClass) {
     return `
       <div class="lp-field-row th-detail-edit ${extraClass || ""}">
-        <span class="lp-field-label">${escapeHtml(title)}</span>
-        <span class="lp-field-value">${body}</span>
+        <span class="lp-field-label rsa-text is-caps">${escapeHtml(title)}</span>
+        <span class="lp-field-value rsa-p">${body}</span>
       </div>
     `;
   }

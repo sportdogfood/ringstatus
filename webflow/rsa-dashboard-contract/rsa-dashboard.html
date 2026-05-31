@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RSA Dashboard Contract</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./rsa-dashboard.css">
 </head>
 <body>
@@ -31,12 +34,14 @@
           <div class="rsa-actions" data-rsa-filter-row>
             <div class="rsa-padding">
               <div class="rsa-list-action-menu">
-                <div class="rsa-tab-link is-current" data-rsa-tab><div class="rsa-text is-link">ALL</div></div>
-                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">ACTIVE</div></div>
-                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">LEFT</div></div>
-                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">PACKED</div></div>
-                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">IGNORE</div></div>
-                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">COMMENTS</div></div>
+                <div class="rsa-tab-link is-current" data-rsa-tab><div class="rsa-text is-link">WAVE ONE</div></div>
+                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">HORSES</div></div>
+                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">BARN</div></div>
+                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">SHOW</div></div>
+                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">TACK</div></div>
+                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">GROOMING</div></div>
+                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">HEALTH</div></div>
+                <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">FEED</div></div>
               </div>
             </div>
           </div>
@@ -48,7 +53,7 @@
                   <div class="rsa-item-row is-category">
                     <div class="rsa-item-block is-left">
                       <div class="rsa-item-text">
-                        <div class="rsa-head rsa-H2">Barn Hardware</div>
+                        <div class="rsa-head rsa-H2">Blankets</div>
                         <div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div>
                       </div>
                     </div>
@@ -82,12 +87,12 @@
 
                 <div class="rsa-actions rsa-panel" data-rsa-panel="filter" hidden>
                   <div class="rsa-padding">
-                    <div class="rsa-list-action-menu">
+                      <div class="rsa-list-action-menu">
                       <div class="rsa-tab-link is-current" data-rsa-tab><div class="rsa-text is-link">ALL</div></div>
-                      <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">ACTIVE</div></div>
-                      <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">LEFT</div></div>
                       <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">PACKED</div></div>
-                      <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">IGNORE</div></div>
+                      <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">NEED</div></div>
+                      <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">ONSITE</div></div>
+                      <div class="rsa-tab-link" data-rsa-tab><div class="rsa-text is-link">OPEN</div></div>
                     </div>
                   </div>
                 </div>
@@ -114,45 +119,45 @@
                   <div class="rsa-body">
                     <div class="rsa-padding is-none">
                       <div class="rsa-body" data-rsa-items>
-                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_barn_banner" data-status="active" data-comment-count="1">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>BARN BANNER</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>10</div><div class="rsa-table-value rsa-text is-number" data-packed>10</div><div class="rsa-table-value rsa-text is-number" data-left>0</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_cooler" data-status="not_packed" data-comment-count="1" data-breadcrumb="Show > Blankets > Cooler">
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>COOLER</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>23</div><div class="rsa-table-value rsa-text is-number" data-packed>0</div><div class="rsa-table-value rsa-text is-number" data-left>23</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
-                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_extension_cord" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>EXTENSION CORD</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>8</div><div class="rsa-table-value rsa-text is-number" data-packed>6</div><div class="rsa-table-value rsa-text is-number" data-left>2</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_fly_sheet" data-status="not_packed" data-breadcrumb="Show > Blankets > Fly Sheet">
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>FLY SHEET</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>8</div><div class="rsa-table-value rsa-text is-number" data-packed>0</div><div class="rsa-table-value rsa-text is-number" data-left>8</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
-                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_zip_ties" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>ZIP TIES</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>30</div><div class="rsa-table-value rsa-text is-number" data-packed>12</div><div class="rsa-table-value rsa-text is-number" data-left>18</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_rain_sheet" data-status="not_packed" data-breadcrumb="Show > Blankets > Rain Sheet">
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>RAIN SHEET</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>8</div><div class="rsa-table-value rsa-text is-number" data-packed>0</div><div class="rsa-table-value rsa-text is-number" data-left>8</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
-                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_stall_chain" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>STALL CHAIN</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>6</div><div class="rsa-table-value rsa-text is-number" data-packed>6</div><div class="rsa-table-value rsa-text is-number" data-left>0</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_scrim" data-status="packed" data-breadcrumb="Show > Blankets > Scrim">
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>SCRIM</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>19</div><div class="rsa-table-value rsa-text is-number" data-packed>19</div><div class="rsa-table-value rsa-text is-number" data-left>0</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
-                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_fan" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>FAN</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>5</div><div class="rsa-table-value rsa-text is-number" data-packed>3</div><div class="rsa-table-value rsa-text is-number" data-left>2</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                        <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_sheet" data-status="not_packed" data-breadcrumb="Show > Blankets > Sheet">
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>SHEET</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>37</div><div class="rsa-table-value rsa-text is-number" data-packed>0</div><div class="rsa-table-value rsa-text is-number" data-left>37</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
                         <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_water_bucket" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>WATER BUCKET</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>12</div><div class="rsa-table-value rsa-text is-number" data-packed>9</div><div class="rsa-table-value rsa-text is-number" data-left>3</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>BARN BANNER</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>10</div><div class="rsa-table-value rsa-text is-number" data-packed>10</div><div class="rsa-table-value rsa-text is-number" data-left>10</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
                         <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_feed_tub" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>FEED TUB</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>8</div><div class="rsa-table-value rsa-text is-number" data-packed>8</div><div class="rsa-table-value rsa-text is-number" data-left>0</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>BARN BANNER</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>10</div><div class="rsa-table-value rsa-text is-number" data-packed>10</div><div class="rsa-table-value rsa-text is-number" data-left>10</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
                         <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_pitchfork" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>PITCHFORK</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>4</div><div class="rsa-table-value rsa-text is-number" data-packed>2</div><div class="rsa-table-value rsa-text is-number" data-left>2</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>BARN BANNER</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>10</div><div class="rsa-table-value rsa-text is-number" data-packed>10</div><div class="rsa-table-value rsa-text is-number" data-left>10</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
                         <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_broom" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>BROOM</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>4</div><div class="rsa-table-value rsa-text is-number" data-packed>4</div><div class="rsa-table-value rsa-text is-number" data-left>0</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>BARN BANNER</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>10</div><div class="rsa-table-value rsa-text is-number" data-packed>10</div><div class="rsa-table-value rsa-text is-number" data-left>10</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
                         <div class="rsa-item-row is-item" data-rsa-row data-record-id="rec_muck_tub" data-status="active">
-                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>MUCK TUB</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
-                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>3</div><div class="rsa-table-value rsa-text is-number" data-packed>1</div><div class="rsa-table-value rsa-text is-number" data-left>2</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
+                          <div class="rsa-item-block is-left"><div class="rsa-item-text"><div class="rsa-indicator is-green"></div><div class="rsa-table-title rsa-text is-line-item" data-rsa-name>BARN BANNER</div><div class="rsa-control-link is-inline rsa-text is-inline-edit" data-rsa-edit>edit</div></div></div>
+                          <div class="rsa-item-block is-right"><div class="rsa-quantity-block is-grid4"><div class="rsa-table-value rsa-text is-number" data-need>10</div><div class="rsa-table-value rsa-text is-number" data-packed>10</div><div class="rsa-table-value rsa-text is-number" data-left>10</div><div class="rsa-control-input rsa-text is-inline-input is-link" contenteditable="true" data-input>input</div></div></div>
                         </div>
                       </div>
                     </div>

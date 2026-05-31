@@ -115,6 +115,35 @@
 
     if (event.target.closest("[data-rsa-comment-add]")) {
       addComment();
+      return;
+    }
+
+    const packState = event.target.closest("[data-rsa-pack-state]");
+    if (packState) {
+      queueWrite(state.activeRecordId, { pack_state: packState.getAttribute("data-rsa-pack-state") }, packState);
+      root.querySelectorAll("[data-rsa-pack-state]").forEach((item) => item.classList.remove("is-active"));
+      packState.classList.add("is-active");
+      return;
+    }
+
+    const addQty = event.target.closest("[data-rsa-add-qty]");
+    if (addQty) {
+      const input = root.querySelector("[data-rsa-add-qty-input]");
+      const value = Number(input?.value || 0);
+      queueWrite(state.activeRecordId, { quantity_add: Number.isFinite(value) ? value : 0 }, addQty);
+      return;
+    }
+
+    const addOne = event.target.closest("[data-rsa-add-one]");
+    if (addOne) {
+      queueWrite(state.activeRecordId, { quantity_add: 1 }, addOne);
+      return;
+    }
+
+    const decision = event.target.closest("[data-rsa-decision]");
+    if (decision) {
+      queueWrite(state.activeRecordId, { decision: decision.getAttribute("data-rsa-decision") }, decision);
+      decision.classList.toggle("is-active");
     }
   }
 
@@ -250,55 +279,75 @@
   }
 
   function detailHtml(record) {
-    const checked = (value) => record.status === value ? " checked" : "";
+    const left = Math.max(0, record.need - record.packed);
     return `
-      <div class="rsa-detail" data-rsa-detail="${escapeAttr(record.id)}">
-        <div class="rsa-detail-head">
-          <div class="rsa-H2">${escapeHtml(record.name)}</div>
-          <div class="rsa-text is-xs" data-rsa-detail-status>Changes save to Airtable.</div>
+      <div class="rsa-profile-shell" data-rsa-detail="${escapeAttr(record.id)}">
+        <div class="rsa-profile-head">
+          <div class="rsa-profile-title rsa-H2">${escapeHtml(record.name)}</div>
+          <div class="rsa-profile-subtitle rsa-text">Show &gt; Barn Hardware &gt; ${escapeHtml(record.name)}</div>
         </div>
 
-        <div class="rsa-detail-list">
-          ${detailRow("Need", record.need)}
-          ${detailRow("Packed", record.packed)}
-          ${detailRow("Left", record.left)}
-        </div>
+        <section class="rsa-profile-panel">
+          <div class="rsa-field-grid">
+            <div class="rsa-field-row rsa-status-row">
+              <div class="rsa-field-value">
+                <button class="rsa-edit-pill rsa-text is-link ${record.status !== "packed" ? "is-active" : ""}" type="button" data-rsa-pack-state="not_packed">NOT PACKED</button>
+                <button class="rsa-edit-pill rsa-text is-link ${record.status === "packed" ? "is-active" : ""}" type="button" data-rsa-pack-state="packed">PACKED</button>
+              </div>
+              <div class="rsa-field-label rsa-text is-xs">STATUS</div>
+            </div>
 
-        <div class="rsa-edit-panel">
-          <div class="rsa-edit-row">
-            <div class="rsa-edit-label rsa-text is-xs">packed</div>
-            <input class="rsa-edit-field rsa-text is-number" type="number" min="0" max="${record.need}" value="${record.packed}" data-rsa-field="quantity_packed" data-record-id="${escapeAttr(record.id)}">
-          </div>
-          <div class="rsa-edit-row">
-            <div class="rsa-edit-label rsa-text is-xs">state</div>
-            <div class="rsa-edit-choices">
-              <label class="rsa-edit-choice"><input type="radio" name="state-${escapeAttr(record.id)}" value="active" data-rsa-choice="record_state" data-record-id="${escapeAttr(record.id)}"${checked("active")}><span class="rsa-edit-pill rsa-text is-link">active</span></label>
-              <label class="rsa-edit-choice"><input type="radio" name="state-${escapeAttr(record.id)}" value="inactive" data-rsa-choice="record_state" data-record-id="${escapeAttr(record.id)}"${checked("inactive")}><span class="rsa-edit-pill rsa-text is-link">inactive</span></label>
-              <label class="rsa-edit-choice"><input type="radio" name="state-${escapeAttr(record.id)}" value="ignore" data-rsa-choice="record_state" data-record-id="${escapeAttr(record.id)}"${checked("ignore")}><span class="rsa-edit-pill rsa-text is-link">ignore</span></label>
+            <div class="rsa-field-row rsa-totals-row">
+              <div class="rsa-totals">
+                ${totalBoxHtml("NEED", record.need)}
+                ${totalBoxHtml("PACKED", record.packed)}
+                ${totalBoxHtml("LEFT", left)}
+              </div>
+            </div>
+
+            <div class="rsa-field-row rsa-add-row">
+              <div class="rsa-add-control">
+                <span class="rsa-add-box">
+                  <input class="rsa-add-input rsa-text is-number" type="number" min="0" step="1" inputmode="numeric" value="0" data-rsa-add-qty-input>
+                  <span class="rsa-total-label rsa-text is-xs">QUANTITY</span>
+                </span>
+                <button class="rsa-edit-pill rsa-text is-link" type="button" data-rsa-add-qty>ADD</button>
+                <button class="rsa-edit-pill rsa-text is-link" type="button" data-rsa-add-one>ADD+1</button>
+              </div>
+            </div>
+
+            <div class="rsa-field-row rsa-decision-row">
+              <button class="rsa-edit-pill rsa-text is-link" type="button" data-rsa-decision="max">MAX</button>
+              <div class="rsa-field-label rsa-text is-xs">DECISION</div>
+            </div>
+
+            <div class="rsa-comment-panel" data-rsa-comments>
+              <div class="rsa-comment-head">
+                <div class="rsa-text is-xs">comments</div>
+                <div class="rsa-text is-link" data-rsa-comment-add>add</div>
+              </div>
+              <div class="rsa-comment-list" data-rsa-comment-list>
+                ${record.commentCount ? `<div class="rsa-comment-item"><div class="rsa-text">Existing Airtable comments: ${record.commentCount}</div><div class="rsa-text is-xs">source</div></div>` : ""}
+              </div>
+              <div class="rsa-comment-input rsa-text" contenteditable="true" data-rsa-comment-input>comment</div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="rsa-comment-panel" data-rsa-comments>
-          <div class="rsa-comment-head">
-            <div class="rsa-text is-xs">comments</div>
-            <div class="rsa-text is-link" data-rsa-comment-add>add</div>
-          </div>
-          <div class="rsa-comment-list" data-rsa-comment-list>
-            ${record.commentCount ? `<div class="rsa-comment-item"><div class="rsa-text">Existing Airtable comments: ${record.commentCount}</div><div class="rsa-text is-xs">source</div></div>` : ""}
-          </div>
-          <div class="rsa-comment-input rsa-text" contenteditable="true" data-rsa-comment-input>comment</div>
+        <div class="rsa-profile-footer">
+          <div class="rsa-plan-line rsa-text is-xs">PLAN: PER HORSE</div>
+          <div class="rsa-save-meta rsa-text" data-rsa-detail-status>Changes save to Airtable through Webflow Cloud.</div>
         </div>
       </div>
     `;
   }
 
-  function detailRow(label, value) {
+  function totalBoxHtml(label, value) {
     return `
-      <div class="rsa-detail-row">
-        <div class="rsa-detail-label rsa-text is-xs">${escapeHtml(label)}</div>
-        <div class="rsa-detail-value rsa-text">${escapeHtml(String(value))}</div>
-      </div>
+      <span class="rsa-total-box">
+        <span class="rsa-total-value rsa-text is-number">${escapeHtml(String(value))}</span>
+        <span class="rsa-total-label rsa-text is-xs">${escapeHtml(label)}</span>
+      </span>
     `;
   }
 

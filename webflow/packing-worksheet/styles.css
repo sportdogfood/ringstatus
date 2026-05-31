@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap");
 
   :is(#packing-app, #tack-horses-app, #hps-app),
   :is(#packing-app, #tack-horses-app, #hps-app) * {
@@ -7,6 +7,7 @@
 
   :is(#packing-app, #tack-horses-app, #hps-app) {
     width: 100%;
+    min-width: 393px;
     max-width: 840px;
     margin: 0 auto;
     --lp-bg: #f7f8fa;
@@ -40,6 +41,19 @@
     --lp-active-horses: #005c2a;
     --lp-active-competitions: #4e1f76;
     --lp-active-classes: #8f1116;
+    --rsa-min-viewport: 393px;
+    --rsa-max-viewport: 840px;
+    --rsa-pad-x: clamp(8px, 2.5vw, 16px);
+    --rsa-action-min: clamp(42px, 7vw, 50px);
+    --rsa-row-min: clamp(42px, 7vw, 48px);
+    --rsa-pill-y: clamp(4px, 1.4vw, 7px);
+    --rsa-pill-x: clamp(10px, 3vw, 24px);
+    --rsa-cell-y: clamp(6px, 1.8vw, 8px);
+    --rsa-cell-x: clamp(4px, 1.6vw, 12px);
+    --rsa-right-col: clamp(200px, 52vw, 300px);
+    --rsa-search-col: clamp(132px, 28vw, 200px);
+    --rsa-item-icon-col: clamp(14px, 4vw, 24px);
+    --rsa-item-gap: 6px;
     color: var(--lp-ink);
     font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-weight: 400;
@@ -2304,7 +2318,7 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .is-hidden {
-  display: none !important;
+  display: none;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-section-title .lp-filter-toggle {
@@ -2966,6 +2980,145 @@ body {
   text-decoration: none;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-active {
+  color: #fff;
+  background-color: var(--rsa-tab-active, #763ff9);
+  border-color: var(--rsa-tab-active, #763ff9);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-top,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-bottom {
+  min-height: 50px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-top.is-hidden {
+  display: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: stretch;
+  min-height: 50px;
+  padding: 0 16px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding.is-hidden {
+  display: none;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding.is-none {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding-bottom {
+  background-color: #fff;
+  border-bottom: 1px solid #e1e6f0;
+  flex: 0 auto;
+  margin-left: 0;
+  padding: 16px 0;
+  overflow: hidden;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2 {
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 16px 24px;
+  font-size: 14px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid {
+  grid-template-columns: 1fr 200px;
+  padding: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-grid2 {
+  grid-template-columns: 1fr 300px;
+  place-content: center space-between;
+  place-items: center stretch;
+  width: 100%;
+  min-height: 45px;
+  padding: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block-2 {
+  display: grid;
+  position: relative;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-auto-columns: 1fr;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block-2.is-grid4 {
+  gap: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2 {
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  min-width: 45px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2.is-label {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2 {
+  color: #25364e;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: #fff;
+  border: 1px #000;
+  border-radius: 100px;
+  min-width: 60px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 8px 12px;
+  font-size: 11px;
+  line-height: 20px;
+  text-decoration: underline;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment {
+  grid-template-rows: auto;
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding: 0;
+  font-size: 14px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-text {
+  flex: 1;
+  min-width: 100px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 8px 12px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu {
   height: 50px;
   min-height: 50px;
@@ -2979,6 +3132,8 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-main-grid,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment,
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block.is-grid4 {
   display: grid;
@@ -3046,6 +3201,20 @@ body {
   cursor: pointer;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline .rsa-row-input-action,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline .rs-text-link.is-save {
+  width: max-content;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline.is-label,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline.is-label,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer.is-label {
@@ -3053,7 +3222,7 @@ body {
   cursor: default;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .indication-color.is-hidden {
+:is(#packing-app, #tack-horses-app, #hps-app) .indication-color.is-spacer {
   visibility: hidden;
 }
 
@@ -3154,6 +3323,11 @@ body {
 }
 
 @media screen and (max-width: 479px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header {
+    flex-flow: row;
+    align-items: center;
+  }
+
   :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header {
     min-height: 45px;
     padding-right: 8px;
@@ -3174,6 +3348,351 @@ body {
 
   :is(#packing-app, #tack-horses-app, #hps-app) .rsa-lists-module {
     overflow: hidden;
+  }
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard-container {
+  width: 100%;
+  min-width: var(--rsa-min-viewport);
+  max-width: var(--rsa-max-viewport);
+  margin-inline: auto;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-main-grid {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  gap: 0;
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard-block,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-main-grid > *,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-body,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-content,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-body,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comm {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table {
+  width: 100%;
+  overflow: visible;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: #fff;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding {
+  min-height: var(--rsa-action-min);
+  padding-inline: var(--rsa-pad-x);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding.is-none {
+  padding-inline: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding-bottom {
+  padding-block: var(--rsa-pad-x);
+  padding-inline: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link {
+  flex: 0 0 auto;
+  min-height: 32px;
+  height: 32px;
+  max-height: 32px;
+  padding: var(--rsa-pill-y) var(--rsa-pill-x);
+  align-items: center;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu {
+  min-height: var(--rsa-action-min);
+  height: auto;
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2 {
+  min-width: 0;
+  padding: 0;
+  gap: 0;
+  grid-template-rows: auto;
+  border-bottom: 1px solid #e1e6f0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-grid2 {
+  grid-template-columns: minmax(180px, 1fr) var(--rsa-right-col);
+  min-height: var(--rsa-row-min);
+  padding-inline: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid {
+  grid-template-columns: minmax(0, 1fr) max-content;
+  column-gap: var(--rsa-pad-x);
+  padding: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid > .rsa-item-block-left,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rsa-messages-text.is-search,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-search-input {
+  width: 100%;
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-search-input {
+  box-sizing: border-box;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid > .rsa-item-block-right {
+  width: max-content;
+  min-width: max-content;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rsa-action-block.is-grid3 {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: clamp(18px, 4vw, 32px);
+  justify-content: end;
+  width: max-content;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link-2 {
+  width: max-content;
+  max-width: none;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-block-left,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-block-right,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-text,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block-2 {
+  min-width: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-block-right,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block-2 {
+  width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-text {
+  grid-template-columns: var(--rsa-item-icon-col) minmax(0, max-content) auto;
+  gap: var(--rsa-item-gap);
+  justify-content: start;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-text > .rs-text-linline {
+  justify-self: start;
+  width: max-content;
+  max-width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block-2 > .rs-input-inline {
+  justify-self: center;
+  width: max-content;
+  max-width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-text.is-title-row {
+  grid-template-columns: minmax(0, max-content) auto;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-text.is-title-row > .rsa-head {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block-2 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-table-title,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2.is-label {
+  min-width: 0;
+  padding: var(--rsa-cell-y) var(--rsa-cell-x);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer {
+  padding: var(--rsa-cell-y) var(--rsa-cell-x);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-panel {
+  width: 100%;
+  border-top: 1px solid #e1e6f0;
+  background: #fff;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-panel .rsa-comment {
+  border-bottom: 1px solid #e1e6f0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-panel .rsa-comment-wrapper {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
+  gap: var(--rsa-item-gap);
+  align-items: center;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-panel .rsa-comment-item .rsa-comment-wrapper {
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-panel .rsa-comment-text {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-scope,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-meta {
+  min-width: 0;
+  padding: var(--rsa-cell-y) var(--rsa-cell-x);
+  font-size: clamp(10px, 1.5vw, 12px);
+  line-height: 1.25;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-input {
+  display: block;
+  width: 100%;
+  min-height: var(--rsa-row-min);
+  padding: var(--rsa-cell-y) var(--rsa-pad-x);
+  border: 0;
+  border-bottom: 1px solid #e1e6f0;
+  border-radius: 0;
+  outline: 0;
+  resize: vertical;
+  font: inherit;
+  line-height: 1.25;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-H1,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-H2 {
+  font-family: Outfit, sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.07em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-H5 {
+  font-family: Outfit, sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.07em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-p {
+  font-family: Outfit, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.05em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-text {
+  font-family: Outfit, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.03em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-text.is-xs {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.03em;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .is-caps {
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-text.is-link {
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-text.is-line-item {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-text.is-inline-edit,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-text.is-inline-input {
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-text.is-number {
+  font-weight: 500;
+  text-align: center;
+}
+
+@media screen and (max-width: 479px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) {
+    --rsa-right-col: 200px;
+    --rsa-search-col: clamp(132px, 34vw, 150px);
+    --rsa-cell-x: 3px;
+    --rsa-item-gap: 6px;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-grid2 {
+    grid-template-columns: minmax(180px, 1fr) var(--rsa-right-col);
+    padding-inline: 0;
+  }
+
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid {
+    grid-template-columns: minmax(0, 1fr) max-content;
+  }
+}
+
+@media screen and (max-width: 392px) {
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard,
+  :is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard-container {
+    width: var(--rsa-min-viewport);
+    min-width: var(--rsa-min-viewport);
+    max-width: var(--rsa-min-viewport);
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -3217,22 +3736,31 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row .rsa-row-title-input,
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row .rsa-row-qty-input,
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row .rs-text-link.is-save {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row .rs-text-link.is-save,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2 .rsa-row-title-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2 .rsa-row-qty-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2 .rs-text-link.is-save {
   display: none;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-title-editing .rsa-row-title-text,
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rsa-row-qty-text {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rsa-row-qty-text,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-title-editing .rsa-row-title-text,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-qty-editing .rsa-row-qty-text {
   display: none;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-title-editing .rsa-row-title-input,
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rsa-row-qty-input {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rsa-row-qty-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-title-editing .rsa-row-title-input,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-qty-editing .rsa-row-qty-input {
   display: block;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-title-editing .rs-text-link.is-save,
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rs-text-link.is-save {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row.is-qty-editing .rs-text-link.is-save,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-title-editing .rs-text-link.is-save,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-qty-editing .rs-text-link.is-save {
   display: flex;
 }
 
@@ -4090,17 +4618,17 @@ body {
 
 /* WEC packing shell constraints. These stay app-scoped because shared lp-* rules also serve HPS. */
 #packing-app {
-  width: 100% !important;
-  max-width: 840px !important;
-  margin-right: auto !important;
-  margin-left: auto !important;
+  width: 100%;
+  max-width: 840px;
+  margin-right: auto;
+  margin-left: auto;
   overflow-x: clip;
   overflow-y: visible;
 }
 
 #packing-app .lp-shell {
-  width: 100% !important;
-  max-width: 840px !important;
+  width: 100%;
+  max-width: 840px;
   overflow-x: hidden;
 }
 
@@ -4130,6 +4658,37 @@ body {
   align-items: center;
   justify-content: center;
   background: #ffffff;
+}
+
+#packing-app .lp-profile-title.rsa-H1,
+#packing-app .lp-profile-title.rsa-H2 {
+  font-family: Outfit, sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.07em;
+}
+
+#packing-app .lp-profile-subtitle.rsa-p,
+#packing-app .lp-profile-footer.rsa-p,
+#packing-app .lp-field-value.rsa-p {
+  font-family: Outfit, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.05em;
+}
+
+#packing-app .lp-field-label.rsa-text,
+#packing-app .lp-edit-pill.rsa-text,
+#packing-app .lp-edit-input.rsa-text,
+#packing-app .packing-plan-line.rsa-text,
+#packing-app .packing-add-label.rsa-text {
+  font-family: Outfit, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.03em;
 }
 
 @media (min-width: 641px) {
