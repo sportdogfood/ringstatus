@@ -3168,6 +3168,7 @@ body {
   height: 50px;
   min-height: 50px;
   max-height: 50px;
+  padding: 3px 6px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.packing-section-tabs {
@@ -3479,7 +3480,7 @@ body {
   max-height: none;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-inline: 0;
+  padding: 3px 6px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu .rsa-closer {

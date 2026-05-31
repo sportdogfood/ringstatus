@@ -1,0 +1,437 @@
+# WEC Packing Current Project Overview
+
+Last updated: 2026-05-31
+
+This is the current operating overview for the WEC packing dashboard. It documents the exact embed, source files, integration boundaries, open tasks, and known troubleshooting issues after the RSA/Webflow styling lock and the Wave One/Horses filter changes.
+
+## Current Status
+
+The WEC packing dashboard is a mobile-first Webflow embed that renders live Airtable-backed packing lists, horse lists, approved lists, comments, detail modals, inline quantity changes, and print links.
+
+The app is not local-only state. Airtable is both the data source and the write destination. The browser can optimistically update and can hold failed saves locally, but saved truth must round-trip through Webflow Cloud to Airtable.
+
+Current live asset pin:
+
+```text
+asset commit: ab77f2214e6b934d838271bd772932c63cdcfa70
+embed commit: 01854f0
+```
+
+Current important behavior:
+
+- Wave One shows an always-open list mode menu above the section block: `PACKING`, `APPROVED`, `SEARCH`.
+- Horses shows an always-open horse filter menu above the section block: `ALL`, `WAVE 1`, `WAVE 2`, `NOT GOING`.
+- Those menus are not controlled by `FILTER` and are not closeable.
+- Regular packing sections still use the section-level `SEARCH`, `FILTER`, and `PRINT` controls.
+- Print endpoint is live and returned `200` for `https://ringstatus.com/test/wec-packing/print?packWaveKey=wave_one&target=overview`.
+- Failed browser writes are queued in device storage and can retry/export/email instead of silently disappearing.
+
+## Paste-Ready Webflow Embed
+
+Use this full embed. It includes the locked RSA/Webflow CSS file copied from the approved template, followed by the WEC packing override CSS and JS.
+
+```html
+<div id="packing-app">Loading WEC packing...</div>
+
+<script>
+  window.WEC_PACKING_CONFIG = {
+    mode: "edit",
+    apiUrl: "https://ringstatus.com/test/wec-packing",
+    stateUrl: "https://ringstatus.com/test/wec-packing/state",
+    actionUrl: "https://ringstatus.com/test/wec-packing/action",
+    healthUrl: "https://ringstatus.com/test/wec-packing/health",
+    printUrl: "https://ringstatus.com/test/wec-packing/print",
+    pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
+    showId: "",
+    packWaveId: "",
+    packWaveKey: "wave_one"
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@ab77f2214e6b934d838271bd772932c63cdcfa70/webflow/packing-worksheet/rsa-stylesheets.locked.css?v=wec-20260531-ab77f22">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@ab77f2214e6b934d838271bd772932c63cdcfa70/webflow/packing-worksheet/styles.css?v=wec-20260531-ab77f22">
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@ab77f2214e6b934d838271bd772932c63cdcfa70/webflow/packing-worksheet/wec-packing.js?v=wec-20260531-ab77f22" defer></script>
+```
+
+Repo file:
+
+```text
+webflow/packing-worksheet/wec-packing-webflow-embed.html
+```
+
+Do not open the embed fragment as the only visual proof unless it includes the locked base CSS. The embed is intended for Webflow, but it now carries the locked base CSS so direct file review is less misleading.
+
+## Source Files
+
+Frontend:
+
+```text
+webflow/packing-worksheet/rsa-stylesheets.locked.css
+webflow/packing-worksheet/styles.css
+webflow/packing-worksheet/wec-packing.js
+webflow/packing-worksheet/wec-packing-webflow-preview.html
+webflow/packing-worksheet/wec-packing-webflow-embed.html
+```
+
+Locked RSA/Webflow CSS source:
+
+```text
+C:\Users\gombc\Documents\Codex\2026-05-19\review-these-and-we-will-start\wec-layout-prototype\css\rsa-stylesheets.webflow.css
+```
+
+Locked CSS SHA-256:
+
+```text
+FA5A6FA5747257D287D793BC4271856E3907DCAEF9E0F19AE10FADA86079FA07
+```
+
+Webflow Cloud routes:
+
+```text
+webflow-cloud-test/src/lib/wec-packing.js
+webflow-cloud-test/src/pages/wec-packing/index.js
+webflow-cloud-test/src/pages/wec-packing/state.js
+webflow-cloud-test/src/pages/wec-packing/action.js
+webflow-cloud-test/src/pages/wec-packing/health.js
+webflow-cloud-test/src/pages/wec-packing/print.js
+webflow-cloud-test/src/pages/wec-packing/reconcile.js
+```
+
+## Architecture
+
+Read path:
+
+```text
+Webflow embed
+  -> WEC_PACKING_CONFIG.stateUrl
+  -> /test/wec-packing/state
+  -> webflow-cloud-test/src/lib/wec-packing.js stateReport()
+  -> Airtable registry/table reads
+  -> normalized wave/lists/items/horses/comments/homeModules
+  -> browser render
+```
+
+Write path:
+
+```text
+User action in browser
+  -> postAction(payload)
+  -> WEC_PACKING_CONFIG.actionUrl
+  -> /test/wec-packing/action
+  -> actionReport()
+  -> validate action
+  -> patch current Airtable record
+  -> append event/comment record when applicable
+  -> return refreshed state
+  -> browser render
+```
+
+Print path:
+
+```text
+Print button
+  -> printUrl with packWaveKey/target/horseId
+  -> /test/wec-packing/print
+  -> server-rendered printable HTML
+  -> PDF worker for non-local URLs
+```
+
+Browser assets must not contain Airtable credentials. All Airtable reads and writes go through Webflow Cloud.
+
+## Airtable Tables
+
+Required logical tables from the current server library:
+
+```text
+wec_meta
+wec_shows
+wec_weeks
+wec_horses
+wec_pack_lists
+wec_pack_items
+wec_pack_waves
+wec_packing_items
+wec_packing_item_horses
+wec_packing_events
+```
+
+Optional/support tables:
+
+```text
+wec_list_plans
+wec_places
+wec_places_tags
+wec_commenting
+```
+
+Important current table roles:
+
+- `wec_pack_lists`: source list definitions, packing tabs, home/approved modules.
+- `wec_pack_items`: source item catalog and approved-list source records.
+- `wec_pack_waves`: active pack wave, show/wave deadline, count context.
+- `wec_weeks`: owner-approved count calculations stay here where already established.
+- `wec_horses`: roster source for Wave 1, Wave 2, Not Going filters.
+- `wec_packing_items`: current worksheet state for item quantities and decisions.
+- `wec_packing_item_horses`: current horse-specific packing state.
+- `wec_packing_events`: event history for quantity, decision, horse, task, and session events.
+- `wec_commenting`: current comment records for item/section/tab/wave scopes.
+
+## Current Write Actions
+
+The action endpoint currently recognizes:
+
+```text
+session_start
+add_quantity
+set_pack_state
+set_resolution
+update_item_fields
+set_horse_pack_state
+set_horse_record_state
+set_source_flag
+set_onsite_task_state
+add_comment
+update_comment
+```
+
+Expected write behavior:
+
+- Quantity adds patch `wec_packing_items.quantity_packed` and update `pack_state`.
+- Pack state changes patch `wec_packing_items` and create event history.
+- Decision changes patch `wec_packing_items.resolution_state` and create event history.
+- Inline item edits patch only allowed fields on `wec_packing_items`.
+- Horse-specific packed state patches `wec_packing_item_horses`, rolls up parent `wec_packing_items`, and creates event history.
+- Horse record state patches `wec_horses.record_state`.
+- Source flags patch allowed fields on `wec_pack_items`.
+- Onsite task state creates an event against the source item from `wec_purchase_onsite`.
+- Comment add/edit writes to `wec_commenting` when configured, otherwise comment add falls back to `wec_packing_events`.
+
+Failed writes:
+
+- Stored locally under `wecPackingFailedActions:v1`.
+- Retried automatically when state loads and when browser returns online.
+- Footer exposes retry/export/email only when failures exist.
+- Export creates a JSON file with action payloads so details are not lost.
+
+## Current UI Contract
+
+Do not replace this with a new layout system.
+
+Locked shell pattern:
+
+```text
+rsa-dashboard
+  rsa-dashboard-block
+    rsa-dashboard-container
+      rsa-main-grid
+        rsa-top
+        rsa-actions
+        rsa-body
+        rsa-bottom
+```
+
+Row pattern:
+
+```text
+rsa-padding
+rsa-item-row-2 is-grid2
+rsa-item-block-left
+rsa-item-block-right
+```
+
+Typography defaults:
+
+```text
+Outfit
+rsa-H1
+rsa-H2
+rsa-H5
+rsa-p
+rsa-text
+rsa-text is-xs
+rsa-text is-xxs
+rsa-text is-link
+rsa-text is-line-item
+rsa-text is-inline-edit
+rsa-text is-number
+rsa-text is-inline-input is-link
+is-caps
+```
+
+Current special view rules:
+
+- Main top section tabs keep their category colors.
+- Body/list filter active state is scoped separately.
+- Wave One and Horses list menus are always open, above the section body, and not closeable.
+- Regular list filters still open through `FILTER`.
+- Empty body-level `rsa-actions` renders as `rsa-actions is-hidden` to preserve the skeleton.
+- Search rows now carry `is-grid2 is-search-grid` so they inherit the locked left/right grid scaling.
+
+## Open Tasks
+
+High priority:
+
+- Verify the pasted Webflow embed after replacing the Webflow custom code.
+- Verify direct phone behavior for quantity add and failed-save queue.
+- Run one real Airtable write proof for `add_quantity`: before record, action response, Airtable after record, event evidence, refresh evidence.
+- Run one real Airtable comment proof for `add_comment` and `update_comment` in `wec_commenting`.
+- Confirm print buttons from the pasted Webflow page open PDF/print output on phone.
+- Confirm the PDF worker result is usable on iPhone.
+
+Data/model:
+
+- Confirm whether list groups should derive fully from `wec_pack_lists` active/list views.
+- Confirm final `wec_pack_lists` view for editable/active list management, including `wec_wave_lists` if that remains the intended view.
+- Confirm `Purchase Onsite` and `Needs Attention` remain approved lists and not packing lists.
+- Confirm Search remains a synthetic all-items actionable view, not an Airtable list record.
+- Confirm whether `Needs Attention` should be driven by `resolution_state = note/attn` or a dedicated list/module.
+
+Horse/Wave:
+
+- Keep existing `wec_weeks` count calculations.
+- Use `wec_horses` Wave 1 / Wave 2 / Not Going fields for horse roster list filters.
+- Confirm no extra horse-specific current-state rows are generated without approval.
+- Define return-wave behavior separately before implementing.
+
+Styling:
+
+- Review the pasted Webflow page at mobile width and max width after the locked CSS embed.
+- Confirm search row, table head, line item rows, and comments are still on the locked `is-grid2` scale.
+- Remove any remaining style rules that are acting as shims instead of combos on locked classes.
+
+Print:
+
+- Validate overview, tab, section, approved-list, and horse print targets.
+- Confirm whether print should go direct to printable HTML or through PDF worker for every non-local click.
+- Add date printed if still desired.
+
+## Known Troubleshooting
+
+### Direct file looks wrong
+
+Cause: opening an embed fragment as `file://` can miss the Webflow base CSS if the embed does not carry it.
+
+Current mitigation: `wec-packing-webflow-embed.html` now includes `rsa-stylesheets.locked.css` before `styles.css`.
+
+### jsDelivr returns 404 for a new pinned commit
+
+Cause: new commit has not reached jsDelivr or stale 404 is cached.
+
+Check:
+
+```powershell
+Invoke-WebRequest -Method Head "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@COMMIT/webflow/packing-worksheet/wec-packing.js"
+```
+
+Purge:
+
+```text
+https://purge.jsdelivr.net/gh/sportdogfood/ringstatus@COMMIT/webflow/packing-worksheet/wec-packing.js
+```
+
+Do not paste a new embed until all pinned CDN asset URLs return `200`.
+
+### Print button appears dead
+
+Likely causes:
+
+- JS asset URL is 404 or stale.
+- Browser popup is blocked.
+- The PDF worker cannot fetch the print URL.
+- The page is opened from a stale fragment after repinning.
+
+Checks:
+
+```powershell
+Invoke-WebRequest "https://ringstatus.com/test/wec-packing/print?packWaveKey=wave_one&target=overview"
+```
+
+Expected: HTTP `200` and printable HTML.
+
+### Save failed / load failed
+
+Likely causes:
+
+- Webflow Cloud route not deployed.
+- Airtable env vars missing.
+- Airtable table registry/field mismatch.
+- Network drop on mobile.
+
+Current client behavior:
+
+- Failed writes are queued on device.
+- The UI must not look saved if Airtable did not accept the write.
+- Retry/export/email appears when pending failures exist.
+
+### Live page differs from local preview
+
+Likely causes:
+
+- Webflow embed still points to an old asset commit.
+- Webflow Cloud has not deployed the backend route changes.
+- jsDelivr cached a stale file.
+- User is viewing a cached Webflow page.
+
+Verification order:
+
+1. Check embed file commit and pasted Webflow code.
+2. Check CDN asset URLs return `200`.
+3. Check `/test/wec-packing/state?packWaveKey=wave_one`.
+4. Check `/test/wec-packing/print?packWaveKey=wave_one&target=overview`.
+5. Check browser console errors.
+
+## Verification Commands
+
+Frontend syntax:
+
+```powershell
+node --check webflow\packing-worksheet\wec-packing.js
+```
+
+Cloud library syntax:
+
+```powershell
+node --check webflow-cloud-test\src\lib\wec-packing.js
+```
+
+Local preview:
+
+```text
+http://127.0.0.1:8792/wec-packing-webflow-preview.html
+```
+
+Local state:
+
+```text
+http://127.0.0.1:4331/wec-packing/state?packWaveKey=wave_one
+```
+
+Live state:
+
+```text
+https://ringstatus.com/test/wec-packing/state?packWaveKey=wave_one
+```
+
+Live print:
+
+```text
+https://ringstatus.com/test/wec-packing/print?packWaveKey=wave_one&target=overview
+```
+
+## Stop Conditions
+
+Stop and confirm before:
+
+- changing Airtable field/table names
+- adding direct browser-to-Airtable writes
+- replacing the RSA/Webflow skeleton
+- adding a new design system
+- adding a new modal pattern
+- making return-wave assumptions
+- changing `wec_weeks` count formulas
+- treating `Purchase Onsite` or `Needs Attention` as normal packing lists without approval
+- hiding failed writes from the user

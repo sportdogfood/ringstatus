@@ -1275,7 +1275,7 @@
               <div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-list-id="${escapeAttr(filterKey)}" data-list-edit-field="lp-row-title">edit</div>
             `),
             rightHtml: `
-              <div class="rsa-action-block is-grid3 ${showFilter ? "" : "is-two-actions"}">
+              <div class="rsa-action-block is-grid3">
                 <div class="rs-text-link-2 rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>
                 ${showFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
                 <div class="rs-text-link-2 rsa-text is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
