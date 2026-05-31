@@ -1124,8 +1124,8 @@
       rowsHtml: rows.length ? rowsHtml : rsaEmptyTableRowHtml("No rows"),
       tableLabel: mode === "search_list" ? "item" : "list",
       tableActionLabel: mode === "search_list" ? "input" : "print",
-      filterOptions: overviewFilterOptions()
-    }));
+      showFilter: false
+    }), rsaFilterHtml("overview", true, overviewFilterOptions(), { closable: false }));
   }
 
   function rsaHomeModuleHtml(moduleId) {
@@ -1184,8 +1184,8 @@
       rowsHtml: rows.length ? rows.map(rsaHorseRowHtml).join("") : rsaEmptyTableRowHtml("No horses"),
       tableLabel: "horse",
       tableActionLabel: "print",
-      filterOptions: horseFilterOptions()
-    }));
+      showFilter: false
+    }), rsaFilterHtml("horses", true, horseFilterOptions(), { closable: false }));
   }
 
   function rsaListTableHtml(list, tabId) {
@@ -1338,7 +1338,7 @@
   function rsaSearchHtml(searchKey, scopeKey, active) {
     return rsaPaddedGridRowHtml({
       paddingClass: active ? "" : "is-hidden",
-      rowClass: "is-search-grid",
+      rowClass: "is-grid2 is-search-grid",
       leftHtml: `
         <div class="rsa-messages-text is-search">
           <input class="rs-search-input" type="search" value="${escapeAttr(sectionSearchValue(searchKey))}" placeholder="search" data-section-search="${escapeAttr(searchKey)}">
@@ -1352,7 +1352,8 @@
     });
   }
 
-  function rsaFilterHtml(scopeKey, active, options) {
+  function rsaFilterHtml(scopeKey, active, options, settings = {}) {
+    const closable = settings.closable !== false;
     const filters = options || [
       ["all", "ALL"],
       ["packed", "PACKED"],
@@ -1371,9 +1372,11 @@
               <div>${escapeHtml(label)}</div>
             </div>
           `).join("")}
-          <div class="rsa-closer">
-            <div class="rs-text-link rsa-text is-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
-          </div>
+          ${closable ? `
+            <div class="rsa-closer">
+              <div class="rs-text-link rsa-text is-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
+            </div>
+          ` : ""}
         </div>
       </div>
     `;

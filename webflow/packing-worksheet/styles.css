@@ -3520,8 +3520,6 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid {
-  grid-template-columns: minmax(0, 1fr) var(--rsa-right-col);
-  column-gap: var(--rsa-pad-x);
   padding: 0;
 }
 
@@ -3865,7 +3863,7 @@ body {
   }
 
   :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid {
-    grid-template-columns: minmax(0, 1fr) var(--rsa-right-col);
+    padding-inline: 0;
   }
 }
 
