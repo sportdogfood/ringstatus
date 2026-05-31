@@ -773,6 +773,101 @@ function assertSchedulePayloadScope(payload, scope, source) {
   }
 }
 
+function schedulePayloadStats(payload) {
+  const stats = {
+    rows: 0,
+    estimated_start_time: 0,
+    start_time_default: 0,
+    estimated_end_time: 0,
+    class_id: 0,
+    total_trips: 0,
+  };
+
+  const rings = Array.isArray(payload?.rings) ? payload.rings : [];
+  for (const ring of rings) {
+    const classes = Array.isArray(ring?.classes) ? ring.classes : [];
+    for (const row of classes) {
+      stats.rows += 1;
+      if (strOrNull(row?.estimated_start_time)) stats.estimated_start_time += 1;
+      if (strOrNull(row?.start_time_default)) stats.start_time_default += 1;
+      if (strOrNull(row?.estimated_end_time)) stats.estimated_end_time += 1;
+      if (numOrNull(row?.class_id) !== null) stats.class_id += 1;
+      if (numOrNull(row?.total_trips) !== null) stats.total_trips += 1;
+    }
+  }
+
+  return stats;
+}
+
+function shouldUseScheduleFallbackForStrippedTimes(livePayload, fallbackPayload) {
+  const liveStats = schedulePayloadStats(livePayload);
+  const fallbackStats = schedulePayloadStats(fallbackPayload);
+  return liveStats.rows > 0 &&
+    liveStats.estimated_start_time === 0 &&
+    fallbackStats.rows > 0 &&
+    fallbackStats.estimated_start_time > 0;
+}
+
+function showSchedulePayloadAttachments(scope) {
+  const value = scope?.full_schedule_payload_file;
+  return Array.isArray(value) ? value.filter((item) => item?.url) : [];
+}
+
+async function loadScheduleAttachmentPayload(scope) {
+  const attachments = showSchedulePayloadAttachments(scope);
+  if (!attachments.length) {
+    return {
+      ok: false,
+      reason: "no_full_schedule_payload_attachment",
+      file_path: null,
+      body_length: null,
+    };
+  }
+
+  const failures = [];
+  for (const attachment of attachments) {
+    try {
+      const response = await fetchWithRetry(attachment.url, {
+        headers: { Accept: "application/json, text/plain, */*" },
+      });
+      const text = await response.text();
+      if (!response.ok) {
+        throw new Error(`attachment_fetch_failed status=${response.status}`);
+      }
+      const payload = JSON.parse(text);
+      assertValidPayload({
+        payload,
+        text,
+        response,
+        lane: "schedules_dailyv2_full_payload_attachment",
+        endpoint: attachment.filename || attachment.url,
+        expectedTopLevelKeys: ["show", "show_date", "showDate", "show_days_list", "rings", "schedule", "classes", "class_groups"],
+      });
+      return {
+        ok: true,
+        payload,
+        file_path: attachment.filename || attachment.url,
+        attachment_url: attachment.url,
+        body_length: Buffer.byteLength(text || "", "utf8"),
+        reason: "show_full_schedule_payload_attachment",
+      };
+    } catch (error) {
+      failures.push({
+        file_path: attachment.filename || attachment.url || null,
+        reason: String(error?.message || error).slice(0, 300),
+      });
+    }
+  }
+
+  return {
+    ok: false,
+    reason: "full_schedule_payload_attachment_failed",
+    file_path: null,
+    body_length: null,
+    failures,
+  };
+}
+
 function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -1228,16 +1323,6 @@ async function fetchShowTargetRows() {
   return airtableList(TABLE_SHOW_TARGET, {
     view: VIEW_SHOW_TARGET,
     pageSize: 100,
-    "fields[]": [
-      "show_id",
-      "customer_id",
-      "focus_day",
-      "start_date",
-      "end_date",
-      "shifted_to_next_day",
-      "heartbeat",
-      "show_rid",
-    ],
   });
 }
 
@@ -1266,6 +1351,10 @@ function buildShowTargetBaseContext(heartbeatContext, showRow, targetInfo) {
     show_scope_key: `${customerId}|${appShowId}|${targetInfo.target_date}`,
     show_target_record_id: showRow.id,
     show_target: targetInfo,
+    has_full_schedule_payload: boolValue(fields.has_full_schedule_payload),
+    full_schedule_payload_file: Array.isArray(fields.full_schedule_payload_file)
+      ? fields.full_schedule_payload_file
+      : [],
   };
 }
 
@@ -2368,6 +2457,24 @@ async function runScheduleForBaseContext({
     scope,
     datedFallback?.ok ? "dated_schedule_fallback" : "dated_schedule"
   );
+  if (!datedFallback?.ok && boolValue(scope.has_full_schedule_payload)) {
+    let manualFallback = await loadScheduleAttachmentPayload(scope);
+    if (!manualFallback.ok) {
+      manualFallback = loadScheduleFallbackPayload(scope.app_show_idv2, scope.app_sql_datev2);
+    }
+    if (manualFallback.ok) {
+      assertSchedulePayloadScope(manualFallback.payload, scope, "dated_schedule_manual_fallback");
+      if (shouldUseScheduleFallbackForStrippedTimes(datedPayload, manualFallback.payload)) {
+        datedFallback = {
+          ...manualFallback,
+          reason: "live_schedule_stripped_times",
+          live_stats: schedulePayloadStats(datedPayload),
+          fallback_stats: schedulePayloadStats(manualFallback.payload),
+        };
+        datedPayload = manualFallback.payload;
+      }
+    }
+  }
 
   const datedResult = {
     ok: true,
@@ -2376,6 +2483,9 @@ async function runScheduleForBaseContext({
     fetch_error: datedFetchError,
     fallback_file: datedFallback?.file_path || null,
     fallback_body_length: datedFallback?.body_length || null,
+    fallback_reason: datedFallback?.reason || null,
+    live_payload_stats: datedFallback?.live_stats || schedulePayloadStats(datedPayload),
+    fallback_payload_stats: datedFallback?.fallback_stats || null,
     ...normalizeSchedulePayload(datedPayload, {
       scope,
       source: datedFallback?.ok ? "dated_schedule_fallback" : "dated_schedule",
@@ -2980,6 +3090,9 @@ module.exports = {
   buildCurrentFields,
   buildOutOfScopeFields,
   buildClassListEndpoint,
+  schedulePayloadStats,
+  loadScheduleAttachmentPayload,
+  shouldUseScheduleFallbackForStrippedTimes,
   applyPreliveEstimatedStartTimeGuard,
   hasManualTimeOverride,
   isSuspiciousPreliveEstimatedStartTime,

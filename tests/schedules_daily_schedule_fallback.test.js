@@ -5,7 +5,9 @@ const {
   applyScheduleHtmlTimeOverlay,
   normalizeHtmlScheduleTimeText,
   parseScheduleHtmlTimeOverlay,
+  schedulePayloadStats,
   scheduleHtmlFallbackDirs,
+  shouldUseScheduleFallbackForStrippedTimes,
 } = require("../schedules_dailyv2");
 
 const source = fs.readFileSync(path.resolve(__dirname, "..", "schedules_dailyv2.js"), "utf8");
@@ -65,6 +67,20 @@ assert.ok(
 assert.ok(
   source.includes("dated_schedule_fallback"),
   "fallback-backed schedule runs should be identified in run output"
+);
+
+assert.ok(
+  source.includes("live_schedule_stripped_times") &&
+    source.includes("shouldUseScheduleFallbackForStrippedTimes") &&
+    source.includes("has_full_schedule_payload") &&
+    source.includes("full_schedule_payload_file"),
+  "fallback-backed schedule runs should take over when the show row explicitly marks a full manual payload available"
+);
+
+assert.ok(
+  source.includes("loadScheduleAttachmentPayload") &&
+    source.includes("schedules_dailyv2_full_payload_attachment"),
+  "show.full_schedule_payload_file attachment should be an accepted full-payload source"
 );
 
 assert.ok(
@@ -147,6 +163,45 @@ assert.ok(
   missingOverlay.summary.manual_schedule_html_lookup.expected_filename_shapes.includes(
     "schedule_html_2099-01-01_show_999999999_EPOCH.html"
   )
+);
+
+const strippedPayload = {
+  rings: [{
+    classes: [{
+      class_group_id: 200024660,
+      class_number: 712,
+      estimated_start_time: null,
+      start_time_default: null,
+    }],
+  }],
+};
+const enrichedManualPayload = {
+  rings: [{
+    classes: [{
+      class_group_id: 200024660,
+      class_number: 712,
+      estimated_start_time: "08:00:00",
+      start_time_default: "08:00:00",
+    }],
+  }],
+};
+assert.deepStrictEqual(schedulePayloadStats(strippedPayload), {
+  rows: 1,
+  estimated_start_time: 0,
+  start_time_default: 0,
+  estimated_end_time: 0,
+  class_id: 0,
+  total_trips: 0,
+});
+assert.equal(
+  shouldUseScheduleFallbackForStrippedTimes(strippedPayload, enrichedManualPayload),
+  true,
+  "manual schedule preview payload should be used when live schedule is stripped of times"
+);
+assert.equal(
+  shouldUseScheduleFallbackForStrippedTimes(enrichedManualPayload, strippedPayload),
+  false,
+  "manual schedule preview payload must not replace a live schedule that already has times"
 );
 
 console.log("schedules_daily_schedule_fallback tests passed");
