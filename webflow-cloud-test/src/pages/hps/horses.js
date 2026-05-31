@@ -62,6 +62,26 @@ export const GET = async ({ request }) => {
   try {
     const activeTenant = await requireActiveTenant(airtable, tenantId);
     const view = tenantView(airtable, tenantId);
+    const horseRecordId = getHorseRecordIdFromUrl(request.url);
+    if (horseRecordId) {
+      const record = await requireHorseInTenantView(airtable, tenantId, horseRecordId);
+      return json({
+        ok: true,
+        tenantId,
+        activeTenant,
+        source: {
+          table: airtable.horsesTable,
+          view
+        },
+        profileContract: profileContract(),
+        count: 1,
+        records: [{
+          ...record,
+          feedPlan: []
+        }]
+      });
+    }
+
     const records = await listAirtableRecords(airtable, airtable.horsesTable, view);
     const feedPlan = await loadFeedPlanByHorse(airtable, tenantId, records);
     return json({
@@ -491,6 +511,11 @@ function profileContract() {
 function getTenantIdFromUrl(url) {
   const parsed = new URL(url);
   return normalizeTenantId(parsed.searchParams.get("tenantId") || parsed.searchParams.get("tenant_id"));
+}
+
+function getHorseRecordIdFromUrl(url) {
+  const parsed = new URL(url);
+  return String(parsed.searchParams.get("horseRecordId") || parsed.searchParams.get("recordId") || "").trim();
 }
 
 function validateTenantId(tenantId) {

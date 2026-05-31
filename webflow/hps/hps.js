@@ -923,7 +923,7 @@
 
   function openStallCardPdf(recordId, button) {
     if (button?.dataset.hpsPrintOpening === "true") {
-      setPrintStatus(recordId, "PDF is already opening...");
+      setPrintStatus(recordId, "Print page is already opening...");
       return;
     }
 
@@ -931,12 +931,12 @@
     const lockKey = `${tenantId}:${recordId}`;
     const lastPrintAt = window.__HPS_PRINT_LOCKS.get(lockKey) || 0;
     if (Date.now() - lastPrintAt < 7000) {
-      setPrintStatus(recordId, "PDF is already opening...");
+      setPrintStatus(recordId, "Print page is already opening...");
       return;
     }
 
     if (state.activePrints.has(recordId)) {
-      setPrintStatus(recordId, "PDF is already opening...");
+      setPrintStatus(recordId, "Print page is already opening...");
       return;
     }
 
@@ -946,21 +946,16 @@
     state.activePrints.add(recordId);
     window.__HPS_PRINT_LOCKS.set(lockKey, Date.now());
 
-    const fields = record.fields || {};
-    const horseName = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "horse";
     const printUrl = new URL(stallCardUrl, window.location.href);
     printUrl.searchParams.set("tenantId", tenantId);
     printUrl.searchParams.set("horseRecordId", record.id);
+    printUrl.searchParams.set("autoprint", "1");
 
-    const pdfUrl = new URL(pdfWorkerUrl);
-    pdfUrl.searchParams.set("url", printUrl.toString());
-    pdfUrl.searchParams.set("filename", `${safeFilename(horseName)}-stall-card.pdf`);
-
-    setPrintStatus(record.id, "Creating PDF...");
-    const opened = window.open(pdfUrl.toString(), "_blank");
+    setPrintStatus(record.id, "Opening print page...");
+    const opened = window.open(printUrl.toString(), "_blank");
     if (opened) {
-      setPrintStatus(record.id, "PDF opened.");
-      setDetailStatus("PDF opened.");
+      setPrintStatus(record.id, "Print page opened.");
+      setDetailStatus("Print page opened.");
       window.setTimeout(() => {
         state.activePrints.delete(recordId);
         window.__HPS_PRINT_LOCKS.delete(lockKey);

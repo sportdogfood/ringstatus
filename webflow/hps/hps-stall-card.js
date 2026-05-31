@@ -16,9 +16,10 @@
   }
 
   try {
-    renderMessage("Loading stall card...");
+    renderMessage("Preparing stall card...");
     const url = new URL(apiUrl, window.location.href);
     url.searchParams.set("tenantId", tenantId);
+    url.searchParams.set("horseRecordId", horseRecordId);
     const response = await fetchWithTimeout(url.toString(), 15000);
     const data = await response.json();
     if (!response.ok || !data.ok) {
