@@ -10,6 +10,7 @@ const TABLE_LIVE_GROUPS = process.env.TABLE_LIVE_GROUPS || "live_groups";
 const VIEW_SHOW_HEARTBEAT = process.env.VIEW_SHOW_HEARTBEAT || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
+const LOCAL_TIME_ZONE = process.env.LOCAL_TIME_ZONE || process.env.TZ || "America/New_York";
 const DRY_RUN = String(process.env.DRY_RUN || "0") === "1";
 const LIVE_SCORE_WIDGET_URL = process.env.LIVE_SCORE_WIDGET_URL ||
   "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget";
@@ -79,6 +80,18 @@ function snapshotKeyFromQueryKey(queryKey, asOf) {
   const stamp = strOrNull(asOf);
   if (!queryKey || !stamp) return "";
   return `${queryKey}|${stamp}`;
+}
+
+function formatAsOfTime(value, timeZone = LOCAL_TIME_ZONE) {
+  const stamp = strOrNull(value);
+  if (!stamp) return null;
+  const date = new Date(stamp);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
 }
 
 function airtableHeaders(extra = {}) {
@@ -223,6 +236,66 @@ function progressText(item) {
   return `${gone}/${total}`;
 }
 
+function timeValue(item, names) {
+  for (const name of names) {
+    const value = strOrNull(item?.[name]);
+    if (value) return value;
+  }
+  return null;
+}
+
+function zonedOffsetMs(utcMs, timeZone = LOCAL_TIME_ZONE) {
+  const date = new Date(utcMs);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const hour = Number(values.hour === "24" ? "0" : values.hour);
+  const wallMs = Date.UTC(
+    Number(values.year),
+    Number(values.month) - 1,
+    Number(values.day),
+    hour,
+    Number(values.minute),
+    Number(values.second)
+  );
+  return wallMs - utcMs;
+}
+
+function localDateTimeUtcMs(dateText, timeText, timeZone = LOCAL_TIME_ZONE) {
+  const date = toIsoDateOnly(dateText);
+  const time = strOrNull(timeText);
+  if (!date || !time) return null;
+  const match = /^(\d{1,2}):(\d{2})(?::(\d{2}))?/.exec(time);
+  if (!match) return null;
+  const [year, month, day] = date.split("-").map(Number);
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const second = Number(match[3] || "0");
+  if (![year, month, day, hour, minute, second].every(Number.isFinite)) return null;
+  const approxUtc = Date.UTC(year, month - 1, day, hour, minute, second);
+  return approxUtc - zonedOffsetMs(approxUtc, timeZone);
+}
+
+function minutesUntil(asOf, dateText, timeText) {
+  const asOfMs = Date.parse(strOrNull(asOf) || "");
+  const targetMs = localDateTimeUtcMs(dateText, timeText);
+  if (!Number.isFinite(asOfMs) || targetMs === null) return null;
+  return Math.round((targetMs - asOfMs) / 60000);
+}
+
+function lateStatus(minutesLate) {
+  if (minutesLate === null || minutesLate === undefined) return null;
+  return minutesLate > 0 ? "late" : "on_time";
+}
+
 function normalizeLiveRingSnapshots(payload, context = {}) {
   const rows = [];
   const shows = Array.isArray(payload) ? payload : [];
@@ -249,6 +322,12 @@ function normalizeLiveRingSnapshots(payload, context = {}) {
       const nextLink = liveGroupLinks.get(liveGroupLinkKey(showId, focusDay, ringNumber, nextClassGroupId));
       const ringId = numOrNull(liveItem?.ring_id) ?? numOrNull(nextItem?.ring_id) ?? numOrNull(ringData?.ring_id);
       const ringName = strOrNull(ringData?.name) || strOrNull(liveItem?.ring) || strOrNull(nextItem?.ring);
+      const liveStartTime = timeValue(liveItem, ["estimated_start_time", "start_time", "time"]);
+      const liveEndTime = timeValue(liveItem, ["estimated_end_time", "end_time", "estimated_end", "ends_at"]);
+      const nextStartTime = timeValue(nextItem, ["estimated_start_time", "start_time", "time"]);
+      const liveMinutesToEnd = liveEndTime ? minutesUntil(asOf, focusDay, liveEndTime) : null;
+      const nextMinutesToStart = nextStartTime ? minutesUntil(asOf, focusDay, nextStartTime) : null;
+      const nextLateMinutes = nextMinutesToStart === null ? null : Math.max(0, -nextMinutesToStart);
       const ringKey = buildRingKey({
         customer_id: customerId,
         show_id: showId,
@@ -270,20 +349,28 @@ function normalizeLiveRingSnapshots(payload, context = {}) {
         is_current_scope: true,
         dropped_at: null,
         as_of: asOf,
+        as_of_time: formatAsOfTime(asOf),
         last_seen_at: asOf,
         payload_hash: stableHash(ringData),
         ring_query_key: ringKey,
         live_group: linkOne(liveLink),
         live_class_group_id: liveClassGroupId,
         live_status: strOrNull(liveItem?.status),
-        live_start_time: strOrNull(liveItem?.estimated_start_time),
+        live_start_time: liveStartTime,
         live_gone: numOrNull(liveItem?.gone),
         live_total: numOrNull(liveItem?.total),
         live_progress: progressText(liveItem),
+        live_estimated_end_time: liveEndTime,
+        live_minutes_to_end: liveMinutesToEnd,
         next_group: linkOne(nextLink),
         next_class_group_id: nextClassGroupId,
-        next_start_time: strOrNull(nextItem?.estimated_start_time),
+        next_start_time: nextStartTime,
+        next_minutes_to_start: nextMinutesToStart,
+        next_late_minutes: nextLateMinutes,
+        next_late_status: lateStatus(nextLateMinutes),
         ring_state: ringStateFromBuckets(liveItem, nextItem, completedRows),
+        ring_running_late_minutes: nextLateMinutes,
+        ring_delay_status: lateStatus(nextLateMinutes),
         snapshot_json: JSON.stringify({
           live: liveItem || null,
           next: nextItem || null,
