@@ -3025,6 +3025,12 @@ body {
   border-color: var(--rsa-tab-active, #763ff9);
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-active {
+  color: #fff;
+  background-color: #111827;
+  border-color: #111827;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-top,
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-bottom {
   min-height: 50px;
@@ -3514,7 +3520,7 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid {
-  grid-template-columns: minmax(0, 1fr) max-content;
+  grid-template-columns: minmax(0, 1fr) var(--rsa-right-col);
   column-gap: var(--rsa-pad-x);
   padding: 0;
 }
@@ -3531,22 +3537,27 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid > .rsa-item-block-right {
-  width: max-content;
-  min-width: max-content;
+  width: 100%;
+  min-width: 0;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rsa-action-block.is-grid3 {
   display: grid;
-  grid-template-columns: repeat(2, max-content);
-  gap: clamp(10px, 3vw, 20px);
-  justify-content: end;
-  width: max-content;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0;
+  justify-content: stretch;
+  width: 100%;
+  height: 100%;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link,
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link-2 {
-  width: max-content;
-  min-width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--rsa-row-min);
   max-width: none;
   padding-inline: 0;
   font-size: 10px;
@@ -3687,7 +3698,7 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-panel .rsa-comment-item .rsa-comment-wrapper {
-  grid-template-columns: minmax(0, 1fr) max-content max-content;
+  grid-template-columns: minmax(0, 1fr) max-content max-content max-content;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment-panel .rsa-comment-text {
@@ -3725,6 +3736,29 @@ body {
   resize: vertical;
   font: inherit;
   line-height: 1.25;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-footer-status {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: var(--rsa-item-gap);
+  align-items: center;
+  width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-footer-actions {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(44px, max-content);
+  gap: var(--rsa-item-gap);
+  align-items: stretch;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-footer-actions .rs-text-linline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-H1,
@@ -3831,7 +3865,7 @@ body {
   }
 
   :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid {
-    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-columns: minmax(0, 1fr) var(--rsa-right-col);
   }
 }
 

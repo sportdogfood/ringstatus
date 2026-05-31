@@ -9,6 +9,7 @@
     : "https://ringstatus.webflow.io/test/wec-packing";
   const apiBaseUrl = String(config.apiBaseUrl || defaultApiBaseUrl).replace(/\/$/, "");
   const pdfWorkerUrl = String(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/").trim();
+  const failedActionStorageKey = "wecPackingFailedActions:v1";
   const state = {
     activeTab: "overview",
     data: null,
@@ -34,12 +35,15 @@
     commentEditById: {},
     commentEditValues: {},
     decisionOpenByItem: {},
+    failedActions: loadFailedActions(),
+    retryingFailedActions: false,
     sessionEventSent: false
   };
 
   root.classList.toggle("is-edit-mode", config.mode === "edit");
   root.addEventListener("click", handleClick);
   root.addEventListener("input", handleInput);
+  window.addEventListener("online", () => retryFailedActions({ silent: false }));
   render();
   loadState();
 
@@ -60,6 +64,7 @@
         state.didSetInitialTab = true;
       }
       queueSessionStartEvent();
+      if (state.failedActions.length) retryFailedActions({ silent: true });
     } catch (error) {
       state.error = error instanceof Error ? error.message : String(error);
     } finally {
@@ -153,6 +158,20 @@
     const close = event.target.closest("[data-close-detail]");
     if (close) {
       closeDetail();
+      return;
+    }
+
+    const failedRetry = event.target.closest("[data-rsa-retry-failed]");
+    if (failedRetry) {
+      event.preventDefault();
+      retryFailedActions({ silent: false });
+      return;
+    }
+
+    const failedExport = event.target.closest("[data-rsa-export-failed]");
+    if (failedExport) {
+      event.preventDefault();
+      exportFailedActions();
       return;
     }
 
@@ -719,15 +738,198 @@
       if (typeof afterSave === "function") afterSave(result);
       state.data = normalizeStatePayload(result.state || state.data);
       if (options.preserveItemQuantities) preserveItemQuantities(options.preserveItemQuantities);
+      removeFailedAction(payload);
       state.saveMessage = `Saved: ${new Date().toLocaleString()}`;
     } catch (error) {
       if (typeof options.rollback === "function") options.rollback();
-      state.saveMessage = `Save failed: ${error instanceof Error ? error.message : String(error)}`;
+      queueFailedAction(payload, error);
+      state.saveMessage = `Save failed. Saved on this device: ${state.failedActions.length} pending.`;
     } finally {
       if (options.pendingKey) delete state.pendingActions[options.pendingKey];
       state.saving = false;
       render();
     }
+  }
+
+  async function retryFailedActions({ silent = false } = {}) {
+    if (state.retryingFailedActions) return;
+    state.failedActions = loadFailedActions();
+    if (!state.failedActions.length) return;
+    if (navigator.onLine === false) {
+      state.saveMessage = `Offline. Saved on this device: ${state.failedActions.length} pending.`;
+      render();
+      return;
+    }
+
+    state.retryingFailedActions = true;
+    if (!silent) {
+      state.saveMessage = `Retrying ${state.failedActions.length} saved change${state.failedActions.length === 1 ? "" : "s"}...`;
+      render();
+    }
+
+    const remaining = [];
+    let saved = 0;
+    for (const entry of state.failedActions) {
+      try {
+        const response = await fetch(endpointUrl("action"), {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(entry.payload || {})
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          throw new Error(result.detail || result.error || `save_${response.status}`);
+        }
+        saved += 1;
+        state.data = normalizeStatePayload(result.state || state.data);
+      } catch (error) {
+        remaining.push({
+          ...entry,
+          attempts: number(entry.attempts) + 1,
+          lastError: error instanceof Error ? error.message : String(error),
+          updatedAt: new Date().toISOString()
+        });
+      }
+    }
+
+    state.failedActions = remaining;
+    saveFailedActions(remaining);
+    state.retryingFailedActions = false;
+    if (saved || !silent) {
+      state.saveMessage = remaining.length
+        ? `Saved on this device: ${remaining.length} pending.`
+        : `Retried saved changes: ${saved}.`;
+    }
+    render();
+  }
+
+  function queueFailedAction(payload, error) {
+    const queue = loadFailedActions();
+    const fingerprint = failedActionFingerprint(payload);
+    const now = new Date().toISOString();
+    const existing = queue.find((entry) => entry.fingerprint === fingerprint);
+    const lastError = error instanceof Error ? error.message : String(error);
+    if (existing) {
+      existing.updatedAt = now;
+      existing.lastError = lastError;
+      existing.attempts = number(existing.attempts) + 1;
+    } else {
+      queue.push({
+        id: `fail_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+        fingerprint,
+        createdAt: now,
+        updatedAt: now,
+        attempts: 1,
+        label: failedActionLabel(payload),
+        lastError,
+        payload
+      });
+    }
+    state.failedActions = queue.slice(-100);
+    saveFailedActions(state.failedActions);
+  }
+
+  function removeFailedAction(payload) {
+    const fingerprint = failedActionFingerprint(payload);
+    const queue = loadFailedActions().filter((entry) => entry.fingerprint !== fingerprint);
+    state.failedActions = queue;
+    saveFailedActions(queue);
+  }
+
+  function loadFailedActions() {
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(failedActionStorageKey) || "[]");
+      return Array.isArray(parsed) ? parsed.filter((entry) => entry?.payload?.action) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveFailedActions(queue) {
+    try {
+      window.localStorage.setItem(failedActionStorageKey, JSON.stringify(queue || []));
+    } catch (error) {}
+  }
+
+  function failedActionFingerprint(payload) {
+    return stableStringify(payload || {});
+  }
+
+  function failedActionLabel(payload) {
+    const action = payload?.action || "save";
+    const itemId = payload?.itemId || payload?.packingItemId || payload?.sourceItemId || "";
+    const item = itemId ? items().find((row) => row.id === itemId) : null;
+    const itemName = displayLabel(item?.name || payload?.scopeLabel || payload?.commentId || itemId || "");
+    if (action === "add_quantity") return `Add ${quantityDisplay(payload.quantityDelta)}${itemName ? ` - ${itemName}` : ""}`;
+    if (action === "add_comment") return `Add comment${itemName ? ` - ${itemName}` : ""}`;
+    if (action === "update_comment") return `Edit comment${itemName ? ` - ${itemName}` : ""}`;
+    if (action === "update_item_fields") return `Edit item${itemName ? ` - ${itemName}` : ""}`;
+    if (action === "set_resolution") return `Decision ${resolutionDisplayLabel(payload.resolutionState)}${itemName ? ` - ${itemName}` : ""}`;
+    return `${displayLabel(action)}${itemName ? ` - ${itemName}` : ""}`;
+  }
+
+  function stableStringify(value) {
+    if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`;
+    if (value && typeof value === "object") {
+      return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(",")}}`;
+    }
+    return JSON.stringify(value);
+  }
+
+  function exportFailedActions() {
+    state.failedActions = loadFailedActions();
+    if (!state.failedActions.length) {
+      setSaveMessage("No failed saves to export.");
+      return;
+    }
+    const report = failedActionsReport(state.failedActions);
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `wec-packing-failed-saves-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setSaveMessage(`Exported ${state.failedActions.length} failed save${state.failedActions.length === 1 ? "" : "s"}.`);
+  }
+
+  function failedActionsReport(queue) {
+    return {
+      app: "wec-packing",
+      generatedAt: new Date().toISOString(),
+      pageUrl: window.location.href,
+      actionUrl: endpointUrl("action"),
+      failures: (queue || []).map((entry) => ({
+        id: entry.id,
+        label: entry.label,
+        createdAt: entry.createdAt,
+        updatedAt: entry.updatedAt,
+        attempts: entry.attempts,
+        lastError: entry.lastError,
+        payload: entry.payload
+      }))
+    };
+  }
+
+  function failedActionsEmailHref() {
+    const queue = state.failedActions || [];
+    const body = [
+      "WEC Packing failed saves",
+      `Generated: ${new Date().toLocaleString()}`,
+      `Page: ${window.location.href}`,
+      `Pending: ${queue.length}`,
+      "",
+      ...queue.slice(0, 8).map((entry, index) => `${index + 1}. ${entry.label || entry.payload?.action || "save"} | ${entry.lastError || ""}`),
+      queue.length > 8 ? `...${queue.length - 8} more` : "",
+      "",
+      "Use EXPORT to attach the full JSON file."
+    ].filter((line) => line !== "").join("\n");
+    return `mailto:?subject=${encodeURIComponent("WEC Packing failed saves")}&body=${encodeURIComponent(body)}`;
   }
 
   function setSaveMessage(message) {
@@ -774,7 +976,7 @@
               <div class="rsa-bottom">
                 <div class="rsa-padding">
                   <div class="rsa-messages">
-                    <div class="rsa-text">${escapeHtml(footerLine())}</div>
+                    ${footerStatusHtml()}
                   </div>
                 </div>
               </div>
@@ -819,9 +1021,24 @@
 
   function footerLine() {
     if (state.saveMessage) return state.saveMessage;
+    if (state.failedActions.length) return `Saved on this device: ${state.failedActions.length} pending.`;
     if (state.error) return state.error;
     if (state.loading) return "Checking live state";
     return `Last checked: ${new Date().toLocaleString()}`;
+  }
+
+  function footerStatusHtml(message = footerLine()) {
+    if (!state.failedActions.length) return `<div class="rsa-text">${escapeHtml(message)}</div>`;
+    return `
+      <div class="rsa-footer-status">
+        <div class="rsa-text">${escapeHtml(message)}</div>
+        <div class="rsa-footer-actions">
+          <div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-rsa-retry-failed>${state.retryingFailedActions ? "retrying" : "retry"}</div>
+          <div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-rsa-export-failed>export</div>
+          <a class="rs-text-linline rsa-text is-xxs is-inline-edit" href="${escapeAttr(failedActionsEmailHref())}">email</a>
+        </div>
+      </div>
+    `;
   }
 
   function saveMetaClass() {
@@ -879,7 +1096,7 @@
         <div class="rsa-bottom">
           <div class="rsa-padding">
             <div class="rsa-messages">
-              <div class="rsa-text">${escapeHtml(state.error || statusLine())}</div>
+              ${footerStatusHtml(state.error || statusLine())}
             </div>
           </div>
         </div>
@@ -889,17 +1106,25 @@
 
   function rsaOverviewHtml() {
     if (state.activeHomeModule) return rsaHomeModuleHtml(state.activeHomeModule);
-    const summaries = filterRows([...homeModuleSummaries(), ...tabGroups()], "overview", overviewSearchText);
+    const mode = overviewFilterMode();
+    const rows = mode === "approved"
+      ? filterRows(homeModuleSummaries(), "overview", overviewSearchText)
+      : mode === "search_list"
+        ? sortItemsByName(filterRows(items(), "overview", itemSearchText))
+        : filterRows(tabGroups(), "overview", overviewSearchText);
+    const rowsHtml = mode === "search_list"
+      ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, "overview")).join("")
+      : rows.map(rsaOverviewRowHtml).join("");
     return rsaPanelShellHtml(rsaDataModuleHtml({
       title: currentWaveLabel(),
       printTarget: "overview",
       searchKey: "overview",
       filterKey: "overview",
       commentScope: rsaCommentScope("wave", currentWaveId() || "wave", currentWaveLabel()),
-      rowsHtml: summaries.length ? summaries.map(rsaOverviewRowHtml).join("") : rsaEmptyTableRowHtml("No rows"),
-      tableLabel: "list",
-      tableActionLabel: "print",
-      showFilter: false
+      rowsHtml: rows.length ? rowsHtml : rsaEmptyTableRowHtml("No rows"),
+      tableLabel: mode === "search_list" ? "item" : "list",
+      tableActionLabel: mode === "search_list" ? "input" : "print",
+      filterOptions: overviewFilterOptions()
     }));
   }
 
@@ -993,7 +1218,7 @@
       <div class="rsa-bottom">
         <div class="rsa-padding">
           <div class="rsa-messages">
-        <div class="rsa-text">${escapeHtml(footerLine())}</div>
+        ${footerStatusHtml()}
           </div>
         </div>
       </div>
@@ -1080,7 +1305,7 @@
             <div class="rsa-bottom">
               <div class="rsa-padding">
                 <div class="rsa-messages">
-                  <div class="rsa-text">${escapeHtml(footerLine())}</div>
+                  ${footerStatusHtml()}
                 </div>
               </div>
             </div>
@@ -1120,16 +1345,14 @@
         </div>
       `,
       rightHtml: `
-        <div class="rsa-action-block is-grid3">
+        <div class="rsa-action-block is-grid3 is-search-actions">
           <div class="rs-text-link rsa-text is-link" data-rsa-close data-rsa-scope="${escapeAttr(scopeKey)}">close</div>
-          <div class="rs-text-link-2 rsa-text is-link" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(scopeKey)}">search</div>
         </div>
       `
     });
   }
 
   function rsaFilterHtml(scopeKey, active, options) {
-    const activeFilter = state.filterByList[scopeKey] || "all";
     const filters = options || [
       ["all", "ALL"],
       ["packed", "PACKED"],
@@ -1138,6 +1361,8 @@
       ["attn", "ATTN"],
       ["open", "OPEN"]
     ];
+    const storedFilter = state.filterByList[scopeKey] || "";
+    const activeFilter = filters.some(([key]) => key === storedFilter) ? storedFilter : filters[0][0];
     return `
       <div class="rsa-padding ${active ? "" : "is-hidden"}">
         <div class="rsa-list-action-menu">
@@ -1261,7 +1486,7 @@
   function rsaEmptyTableRowHtml(label) {
     return rsaGridRowHtml({
       leftHtml: rsaItemTextHtml(`
-        <div class="indication-color is-hidden"></div>
+        <div class="indication-color is-spacer"></div>
         <div class="rs-table-title rsa-text is-line-item">${escapeHtml(label)}</div>
         <div class="rs-text-linline rsa-text is-xs"></div>
       `),
@@ -1311,7 +1536,6 @@
           <div class="rsa-comment-wrapper">
             <div class="rsa-comment-text rsa-text">${escapeHtml(title)}</div>
             <div class="rs-text-linline rsa-text is-link is-inline-edit rsa-comment-action" data-rsa-comment-add>${pending ? "saving" : "add"}</div>
-            <a class="rs-text-linline rsa-text is-link is-inline-edit rsa-comment-action" href="${escapeAttr(smsCommentHref(scope))}">sms</a>
           </div>
         </div>
         <div class="rsa-comment-list">
@@ -1329,11 +1553,12 @@
     const value = state.commentEditValues[comment.id] ?? comment.comment ?? "";
     return `
       <div class="rsa-comment rsa-comment-item">
-        <div class="rsa-comment-wrapper">
-          ${editing
-            ? `<textarea class="rsa-comment-input rsa-text" rows="2" data-rsa-comment-edit-input="${escapeAttr(comment.id)}">${escapeHtml(value)}</textarea>`
-            : `<div class="rsa-comment-text rsa-text">${escapeHtml(comment.comment || "")}</div>`}
+          <div class="rsa-comment-wrapper">
+            ${editing
+              ? `<textarea class="rsa-comment-input rsa-text" rows="2" data-rsa-comment-edit-input="${escapeAttr(comment.id)}">${escapeHtml(value)}</textarea>`
+              : `<div class="rsa-comment-text rsa-text">${escapeHtml(comment.comment || "")}</div>`}
           <div class="rsa-comment-meta rsa-text">${escapeHtml(comment.createdBy || "webflow")}</div>
+          <a class="rs-text-linline rsa-text is-xxs is-inline-edit rsa-comment-action" href="${escapeAttr(smsCommentItemHref(comment))}">sms</a>
           ${editable
             ? editing
               ? `<div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-rsa-comment-save="${escapeAttr(comment.id)}">${pending ? "saving" : "save"}</div>`
@@ -2848,14 +3073,23 @@
     ];
   }
 
+  function overviewFilterOptions() {
+    return [
+      ["packing", "PACKING"],
+      ["approved", "APPROVED"],
+      ["search_list", "SEARCH"]
+    ];
+  }
+
+  function overviewFilterMode() {
+    const value = state.filterByList.overview || "packing";
+    return overviewFilterOptions().some(([key]) => key === value) ? value : "packing";
+  }
+
   function horseFilterRows() {
     const rows = horses();
     const filter = state.filterByList.horses || "all";
-    const hasRosterFlags = rows.some((horse) =>
-      Object.prototype.hasOwnProperty.call(horse, "waveOne") ||
-      Object.prototype.hasOwnProperty.call(horse, "waveTwo") ||
-      Object.prototype.hasOwnProperty.call(horse, "notGoing")
-    );
+    const hasRosterFlags = rows.some((horse) => horse.waveOne || horse.waveTwo || horse.notGoing);
     if (!hasRosterFlags) {
       return filterRows(activeWaveHorses(), "horses", horseSearchText).sort(compareHorseNames);
     }
@@ -3198,11 +3432,11 @@
     return displayLabel(value).toUpperCase();
   }
 
-  function smsCommentHref(scope) {
-    const label = commentScopeDisplay(scope);
+  function smsCommentItemHref(comment) {
+    const label = displayLabel(comment.scopeLabel || comment.scopeType || "Comment");
     const body = [
       `WEC Packing Comment: ${label}`,
-      scope?.label && scope.label !== label ? displayLabel(scope.label) : "",
+      comment.comment || "",
       "Reply with note:"
     ].filter(Boolean).join("\n");
     return `sms:?&body=${encodeURIComponent(body)}`;

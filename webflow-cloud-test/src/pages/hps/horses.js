@@ -8,6 +8,7 @@ const DEFAULT_HORSES_TABLE = "ww_horses";
 const DEFAULT_VIEW_PREFIX = "hps_";
 const DEFAULT_LOG_TABLE = "hp_cls";
 const DEFAULT_FEED_PLAN_TABLE = "hp_feed_plan";
+const DEFAULT_WEC_HORSES_TABLE = "wec_horses";
 const DEFAULT_ACTIVE_TENANTS_TABLE = "active_tenants";
 const DEFAULT_ACTIVE_TENANTS_VIEW = "active_tenants";
 const TENANT_FIELD_CANDIDATES = ["tenant_id", "tenantId", "Tenant ID", "pid", "PID", "path_tenant"];
@@ -40,6 +41,7 @@ const PROFILE_LINKED_FIELD_MAP = {
   horse_colors: "horse_colors_link",
   horse_genders: "horse_genders_link"
 };
+const WEC_SUMMER_FIELDS = ["wec_wave_1", "wec_wave_2", "wec_not_going"];
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -101,9 +103,9 @@ export const POST = async ({ request }) => {
 
   try {
     const activeTenant = await requireActiveTenant(airtable, tenantId);
-    await requireHorseInTenantView(airtable, tenantId, payload.horseRecordId);
+    const horseRecord = await requireHorseInTenantView(airtable, tenantId, payload.horseRecordId);
     const schema = await getBaseSchema(airtable);
-    const updated = await updateHorseRecord(airtable, schema, payload);
+    const updated = await updateHorseRecord(airtable, schema, payload, horseRecord);
     const logged = await createChangeLogRecord(airtable, schema, { ...payload, tenantId }, updated);
     return json({
       ok: true,
@@ -131,6 +133,7 @@ function getAirtableConfig() {
   const logTable = env.AIRTABLE_HPS_CHANGE_LOG_TABLE || DEFAULT_LOG_TABLE;
   const feedPlanTable = env.AIRTABLE_HPS_FEED_PLAN_TABLE || DEFAULT_FEED_PLAN_TABLE;
   const feedPlanView = env.AIRTABLE_HPS_FEED_PLAN_VIEW || "";
+  const wecHorsesTable = env.AIRTABLE_HPS_WEC_HORSES_TABLE || env.AIRTABLE_WEC_HORSES_TABLE || DEFAULT_WEC_HORSES_TABLE;
   const activeTenantsTable = env.AIRTABLE_HPS_ACTIVE_TENANTS_TABLE || DEFAULT_ACTIVE_TENANTS_TABLE;
   const activeTenantsView = env.AIRTABLE_HPS_ACTIVE_TENANTS_VIEW || DEFAULT_ACTIVE_TENANTS_VIEW;
 
@@ -146,6 +149,7 @@ function getAirtableConfig() {
     logTable,
     feedPlanTable,
     feedPlanView,
+    wecHorsesTable,
     activeTenantsTable,
     activeTenantsView
   };
@@ -280,7 +284,7 @@ async function listAirtableRecords(airtable, table, view) {
   return records;
 }
 
-async function updateHorseRecord(airtable, schema, payload) {
+async function updateHorseRecord(airtable, schema, payload, horseRecord) {
   const fieldName = String(payload.fieldName || "").trim();
   if (schema?.tables?.[airtable.horsesTable] && !schema.tables[airtable.horsesTable].has(fieldName)) {
     throw new Error(`field_not_found_in_${airtable.horsesTable}: ${fieldName}`);
@@ -303,12 +307,64 @@ async function updateHorseRecord(airtable, schema, payload) {
     throw new Error(`update ${response.status}: ${JSON.stringify(result)}`);
   }
 
+  const linkedUpdates = await updateLinkedWecHorseRecords(airtable, schema, payload, horseRecord, value);
+
   return {
     id: result.id || payload.horseRecordId,
     fieldName,
     value: result.fields?.[fieldName] ?? value,
-    action: "updated"
+    action: "updated",
+    linkedUpdates
   };
+}
+
+async function updateLinkedWecHorseRecords(airtable, schema, payload, horseRecord, value) {
+  const fieldName = String(payload.fieldName || "").trim();
+  if (!WEC_SUMMER_FIELDS.includes(fieldName)) return [];
+
+  const linkedRecordIds = linkedWecHorseRecordIds(horseRecord);
+  if (!linkedRecordIds.length) return [];
+
+  const allowedFields = schema?.tables?.[airtable.wecHorsesTable];
+  if (allowedFields && !allowedFields.has(fieldName)) {
+    throw new Error(`field_not_found_in_${airtable.wecHorsesTable}: ${fieldName}`);
+  }
+
+  const updates = [];
+  for (const recordId of linkedRecordIds) {
+    const response = await fetch(`${airtableUrl(airtable.baseId, airtable.wecHorsesTable)}/${encodeURIComponent(recordId)}`, {
+      method: "PATCH",
+      headers: {
+        ...airtableHeaders(airtable.token),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        fields: { [fieldName]: value },
+        typecast: true
+      })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(`update ${airtable.wecHorsesTable}/${recordId} ${response.status}: ${JSON.stringify(result)}`);
+    }
+    updates.push({
+      table: airtable.wecHorsesTable,
+      id: result.id || recordId,
+      fieldName,
+      value: result.fields?.[fieldName] ?? value,
+      action: "updated"
+    });
+  }
+  return updates;
+}
+
+function linkedWecHorseRecordIds(horseRecord) {
+  const fields = horseRecord?.fields || {};
+  const value = fields.wec_horses_link;
+  const values = Array.isArray(value) ? value : [value];
+  return values
+    .map((item) => String(item || "").trim())
+    .filter((item) => /^rec[A-Za-z0-9]+$/.test(item));
 }
 
 async function createChangeLogRecord(airtable, schema, payload, updated) {
@@ -395,7 +451,7 @@ function airtableFieldValue(fieldName, value) {
     const number = Number(value);
     return Number.isFinite(number) && String(value).trim() !== "" ? number : value;
   }
-  if (fieldName === "app_active" || fieldName === "app_inactive" || fieldName === "print_batch" || fieldName === "wec_wave_1" || fieldName === "wec_wave_2" || fieldName === "wec_not_going") {
+  if (fieldName === "app_active" || fieldName === "app_inactive" || fieldName === "print_batch" || WEC_SUMMER_FIELDS.includes(fieldName)) {
     const normalized = String(value || "").trim().toLowerCase();
     return value === true || ["true", "1", "yes", "y"].includes(normalized);
   }

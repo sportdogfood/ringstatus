@@ -416,7 +416,7 @@
           <span class="lp-edit-choice-row packing-inline-choices">
             ${choices.map(([value, label]) => `
               <span class="lp-edit-choice">
-                <button class="lp-edit-pill${currentState === value ? " is-active" : ""}" type="button" data-wec-summer="${escapeAttr(value)}" data-wec-summer-record="${escapeAttr(recordId)}">${escapeHtml(label)}</button>
+                <button class="lp-edit-pill${currentState[value] ? " is-active" : ""}" type="button" data-wec-summer="${escapeAttr(value)}" data-wec-summer-record="${escapeAttr(recordId)}">${escapeHtml(label)}</button>
               </span>
             `).join("")}
           </span>
@@ -740,13 +740,29 @@
   async function setWecSummer(recordId, nextState) {
     const record = state.records.find((item) => item.id === recordId);
     if (!record) return;
-    const fieldValues = {
-      wec_wave_1: nextState === "wave_1",
-      wec_wave_2: nextState === "wave_2",
-      wec_not_going: nextState === "not_going"
+    const current = wecSummerState(record.fields || {});
+    const fieldValues = { ...current };
+    if (nextState === "wave_1") {
+      fieldValues.wave_1 = !current.wave_1;
+      fieldValues.not_going = false;
+    } else if (nextState === "wave_2") {
+      fieldValues.wave_2 = !current.wave_2;
+      fieldValues.not_going = false;
+    } else if (nextState === "not_going") {
+      fieldValues.not_going = !current.not_going;
+      if (fieldValues.not_going) {
+        fieldValues.wave_1 = false;
+        fieldValues.wave_2 = false;
+      }
+    }
+
+    const fieldMap = {
+      wec_wave_1: fieldValues.wave_1,
+      wec_wave_2: fieldValues.wave_2,
+      wec_not_going: fieldValues.not_going
     };
 
-    for (const [fieldName, newValue] of Object.entries(fieldValues)) {
+    for (const [fieldName, newValue] of Object.entries(fieldMap)) {
       const oldValue = record.fields?.[fieldName] ?? "";
       if (checkboxValue(oldValue) === newValue) continue;
       await saveRecordChange(record, {
@@ -989,10 +1005,11 @@
   }
 
   function wecSummerState(fields) {
-    if (checkboxValue(fields.wec_wave_1)) return "wave_1";
-    if (checkboxValue(fields.wec_wave_2)) return "wave_2";
-    if (checkboxValue(fields.wec_not_going)) return "not_going";
-    return "";
+    return {
+      wave_1: checkboxValue(fields.wec_wave_1),
+      wave_2: checkboxValue(fields.wec_wave_2),
+      not_going: checkboxValue(fields.wec_not_going)
+    };
   }
 
   function sessionRecordState(recordId) {
