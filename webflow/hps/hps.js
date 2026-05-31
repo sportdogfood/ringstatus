@@ -207,6 +207,7 @@
     const age = firstValue(fields, ["horse_age", "age", "Age"]);
     const hands = firstValue(fields, ["hands", "Hands"]);
     const note = firstValue(fields, ["horse_note", "Horse Note"]);
+    const wecSummer = wecSummerState(fields);
     const emergencyContact = firstValue(fields, ["emergency_contacts", "emergency_contact", "Emergency Contact"]);
     const emergencyPhone = firstValue(fields, ["emergency_phone", "emergency_no", "Emergency Phone"]);
     const printBatch = truthy(fields.print_batch);
@@ -238,6 +239,7 @@
               ${detailEditRow("barn_name", "Barn name", barnName)}
               ${detailLongTextRow("horse_note", "Note", note)}
               ${detailAppStateRow(record.id, currentState)}
+              ${detailWecSummerRow(record.id, wecSummer)}
             </div>
             <div class="lp-field-grid lp-profile-tab-panel${activeTab === "profile" ? " is-active" : ""}" data-profile-panel="profile">
               ${detailChoiceRow("horse_genders", "Gender", gender, ["Gelding", "Mare"])}
@@ -401,6 +403,28 @@
     `;
   }
 
+  function detailWecSummerRow(recordId, currentState) {
+    const choices = [
+      ["wave_1", "Wave-1"],
+      ["wave_2", "Wave-2"],
+      ["not_going", "None"]
+    ];
+    return `
+      <div class="lp-field-row th-detail-edit">
+        <span class="lp-field-label">wec-summer</span>
+        <span class="lp-field-value">
+          <span class="lp-edit-choice-row packing-inline-choices">
+            ${choices.map(([value, label]) => `
+              <span class="lp-edit-choice">
+                <button class="lp-edit-pill${currentState === value ? " is-active" : ""}" type="button" data-wec-summer="${escapeAttr(value)}" data-wec-summer-record="${escapeAttr(recordId)}">${escapeHtml(label)}</button>
+              </span>
+            `).join("")}
+          </span>
+        </span>
+      </div>
+    `;
+  }
+
   function detailSessionStateRow(recordId, currentState) {
     return `
       <div class="lp-field-row th-detail-edit">
@@ -517,6 +541,12 @@
     const appStateButton = event.target.closest("[data-app-state]");
     if (appStateButton) {
       setAppState(appStateButton.dataset.appStateRecord, appStateButton.dataset.appState);
+      return;
+    }
+
+    const wecSummerButton = event.target.closest("[data-wec-summer]");
+    if (wecSummerButton) {
+      setWecSummer(wecSummerButton.dataset.wecSummerRecord, wecSummerButton.dataset.wecSummer);
       return;
     }
 
@@ -704,6 +734,30 @@
     record.fields.app_active = activeValue;
     record.fields.app_inactive = !activeValue;
     render();
+    refreshActiveDetail();
+  }
+
+  async function setWecSummer(recordId, nextState) {
+    const record = state.records.find((item) => item.id === recordId);
+    if (!record) return;
+    const fieldValues = {
+      wec_wave_1: nextState === "wave_1",
+      wec_wave_2: nextState === "wave_2",
+      wec_not_going: nextState === "not_going"
+    };
+
+    for (const [fieldName, newValue] of Object.entries(fieldValues)) {
+      const oldValue = record.fields?.[fieldName] ?? "";
+      if (checkboxValue(oldValue) === newValue) continue;
+      await saveRecordChange(record, {
+        fieldName,
+        oldValue,
+        newValue,
+        horseKey: record.id,
+        horseName: firstValue(record.fields || {}, ["barn_name", "show_name", "horse"]) || record.id
+      });
+      record.fields[fieldName] = newValue;
+    }
     refreshActiveDetail();
   }
 
@@ -932,6 +986,13 @@
     if (checkboxValue(fields.app_inactive)) return "inactive";
     if (checkboxValue(fields.app_active)) return "active";
     return "active";
+  }
+
+  function wecSummerState(fields) {
+    if (checkboxValue(fields.wec_wave_1)) return "wave_1";
+    if (checkboxValue(fields.wec_wave_2)) return "wave_2";
+    if (checkboxValue(fields.wec_not_going)) return "not_going";
+    return "";
   }
 
   function sessionRecordState(recordId) {
