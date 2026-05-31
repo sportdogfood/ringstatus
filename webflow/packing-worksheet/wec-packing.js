@@ -3090,14 +3090,14 @@
     const rows = horses();
     const filter = state.filterByList.horses || "all";
     const hasRosterFlags = rows.some((horse) => horse.waveOne || horse.waveTwo || horse.notGoing);
-    if (!hasRosterFlags) {
+    if (filter === "all" || !hasRosterFlags) {
       return filterRows(activeWaveHorses(), "horses", horseSearchText).sort(compareHorseNames);
     }
     const filtered = rows.filter((horse) => {
       if (filter === "wave_one") return !!horse.waveOne && !horse.notGoing;
       if (filter === "wave_two") return !!horse.waveTwo && !horse.notGoing;
       if (filter === "not_going") return !!horse.notGoing;
-      return !!horse.waveOne || !!horse.waveTwo || !!horse.notGoing;
+      return true;
     });
     return filterRows(filtered, "horses", horseSearchText).sort(compareHorseNames);
   }
