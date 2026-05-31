@@ -1211,7 +1211,7 @@
 
   function rsaPanelShellHtml(contentHtml, actionsHtml = "") {
     return `
-      ${actionsHtml ? `<div class="rsa-actions">${actionsHtml}</div>` : ""}
+      <div class="rsa-actions${actionsHtml ? "" : " is-hidden"}">${actionsHtml}</div>
       <div class="rsa-body">
         ${contentHtml}
       </div>
