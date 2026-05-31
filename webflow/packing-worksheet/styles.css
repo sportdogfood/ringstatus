@@ -3025,7 +3025,7 @@ body {
   border-color: var(--rsa-tab-active, #763ff9);
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rs-tab-link.is-section-tab.is-active {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu:not(.packing-section-tabs) > .rs-tab-link.is-active {
   color: #fff;
   background-color: #111827;
   border-color: #111827;
