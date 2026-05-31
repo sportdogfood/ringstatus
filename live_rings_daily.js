@@ -75,6 +75,12 @@ function buildRingKey({ customer_id, customerId, show_id, showId, focus_day, foc
   return [customer, show, focus, ring].join("|");
 }
 
+function snapshotKeyFromQueryKey(queryKey, asOf) {
+  const stamp = strOrNull(asOf);
+  if (!queryKey || !stamp) return "";
+  return `${queryKey}|${stamp}`;
+}
+
 function airtableHeaders(extra = {}) {
   return {
     Authorization: `Bearer ${AIRTABLE_TOKEN}`,
@@ -249,9 +255,10 @@ function normalizeLiveRingSnapshots(payload, context = {}) {
         focus_day: focusDay,
         ring_number: ringNumber,
       });
+      const snapshotKey = snapshotKeyFromQueryKey(ringKey, asOf);
 
       const fields = {
-        ring_key: ringKey,
+        ring_key: snapshotKey,
         response_ready: true,
         is_latest: true,
         show: linkOne(context.show_record_id ?? context.showRecordId),
@@ -293,7 +300,8 @@ function normalizeLiveRingSnapshots(payload, context = {}) {
       fields.dropped_at = null;
 
       rows.push({
-        key: ringKey,
+        key: snapshotKey,
+        query_key: ringKey,
         fields,
         snapshot_hash: fields.snapshot_hash,
       });
@@ -393,16 +401,17 @@ async function buildLiveGroupLinks(scope) {
   return links;
 }
 
-async function upsertLiveRings(rows, writable) {
+async function writeLiveRingSnapshots(rows, writable) {
   if (!rows.length) return { created: 0, updated: 0, dropped: 0 };
   const showId = rows[0].fields.show_id;
   const focusDay = rows[0].fields.focus_day;
-  const currentKeys = new Set(rows.map((row) => row.key));
+  const currentQueryKeys = new Set(rows.map((row) => row.query_key).filter(Boolean));
   const existingRows = await airtableList(TABLE_LIVE_RINGS, {
     pageSize: 100,
     filterByFormula: `{show_id}=${Number(showId)}`,
     "fields[]": [
       "ring_key",
+      "ring_query_key",
       "show_id",
       "focus_day",
       "is_current_scope",
@@ -411,27 +420,21 @@ async function upsertLiveRings(rows, writable) {
       "dropped_at",
     ],
   });
-  const byKey = new Map();
-  for (const row of existingRows) {
-    const key = strOrNull(row.fields?.ring_key);
-    if (key) byKey.set(key, row);
-  }
 
-  const creates = [];
-  const updates = [];
+  const creates = rows.map((row) => ({ fields: pickWritable(row.fields, writable) }));
   const dropped = [];
-  for (const row of rows) {
-    const fields = pickWritable(row.fields, writable);
-    const existing = byKey.get(row.key);
-    if (existing) updates.push({ id: existing.id, fields });
-    else creates.push({ fields });
-  }
 
   for (const row of existingRows) {
-    const key = strOrNull(row.fields?.ring_key);
+    const queryKey = strOrNull(row.fields?.ring_query_key) || strOrNull(row.fields?.ring_key);
     const rowFocusDay = toIsoDateOnly(row.fields?.focus_day);
-    if (!key) continue;
-    if (currentKeys.has(key) && rowFocusDay === focusDay) continue;
+    if (!queryKey) continue;
+    if (currentQueryKeys.has(queryKey) && rowFocusDay === focusDay) {
+      const fields = {};
+      if (writable.has("is_latest")) fields.is_latest = false;
+      if (writable.has("response_ready")) fields.response_ready = false;
+      if (Object.keys(fields).length) dropped.push({ id: row.id, fields });
+      continue;
+    }
     const fields = {};
     if (writable.has("is_current_scope")) fields.is_current_scope = false;
     if (writable.has("is_latest")) fields.is_latest = false;
@@ -440,10 +443,9 @@ async function upsertLiveRings(rows, writable) {
     if (Object.keys(fields).length) dropped.push({ id: row.id, fields });
   }
 
-  await airtableUpdate(TABLE_LIVE_RINGS, updates);
   await airtableCreate(TABLE_LIVE_RINGS, creates);
   await airtableUpdate(TABLE_LIVE_RINGS, dropped);
-  return { created: creates.length, updated: updates.length, dropped: dropped.length };
+  return { created: creates.length, updated: 0, dropped: dropped.length };
 }
 
 async function main() {
@@ -480,10 +482,10 @@ async function main() {
 
   const fieldMap = await tableFieldMap(TABLE_LIVE_RINGS);
   const writable = writableFields(fieldMap);
-  const writeResult = await upsertLiveRings(rows, writable);
+  const writeResult = await writeLiveRingSnapshots(rows, writable);
   const summary = {
     ok: true,
-    event: "live_rings_upserted",
+    event: "live_rings_snapshots_written",
     show_id: scope.show_id,
     customer_id: scope.customer_id,
     focus_day: scope.focus_day,
@@ -504,6 +506,7 @@ module.exports = {
   buildRingKey,
   main,
   normalizeLiveRingSnapshots,
+  snapshotKeyFromQueryKey,
 };
 
 if (require.main === module) {

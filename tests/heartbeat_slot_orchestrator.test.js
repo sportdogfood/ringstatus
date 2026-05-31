@@ -55,6 +55,13 @@ assert.ok(
 );
 
 assert.ok(
+  orchestrator.includes('DEFAULT_LIVE_RINGS_SLOTS = "A,B,C,D"') &&
+    orchestrator.includes('mode === "DAY"') &&
+    orchestrator.includes('runNodeScript("live_rings_daily.js")'),
+  "live_rings_daily must run only in DAY mode on every heartbeat slot"
+);
+
+assert.ok(
   orchestrator.includes("if (!scheduleDueFailed && schedulesCalcDue)") &&
     !orchestrator.includes("} else if (schedulesCalcDue) {"),
   "schedules_calculatorv2 must run whenever its own slot is due, not only when schedules_dailyv2 is due"
@@ -112,8 +119,9 @@ assert.ok(
 
 assert.ok(
   heartbeatLane.includes("SLOT_ORCHESTRATOR") &&
-    heartbeatLane.includes("heartbeat_slot_orchestrator.js"),
-  "heartbeat lane must invoke the slot orchestrator after heartbeat_patterns"
+    heartbeatLane.includes("heartbeat_slot_orchestrator.js") &&
+    heartbeatLane.includes("live_rings_daily.js"),
+  "heartbeat lane must invoke the slot orchestrator and track live_rings_daily"
 );
 
 assert.ok(

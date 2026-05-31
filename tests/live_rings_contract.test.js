@@ -4,12 +4,15 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const liveRingsPath = path.join(root, "live_rings_daily.js");
+const orchestratorPath = path.join(root, "heartbeat_slot_orchestrator.js");
+const workflowPath = path.join(root, ".github", "workflows", "ringstatus-pipeline.yml");
 
 assert.ok(fs.existsSync(liveRingsPath), "live_rings_daily.js must exist");
 
 const {
   buildRingKey,
   normalizeLiveRingSnapshots,
+  snapshotKeyFromQueryKey,
 } = require("../live_rings_daily");
 
 assert.strictEqual(
@@ -20,7 +23,13 @@ assert.strictEqual(
     ring_number: 3,
   }),
   "15|200000063|2026-05-31|3",
-  "live_rings ring_key must be customer_id|show_id|focus_day|ring_number"
+  "live_rings ring_query_key must be customer_id|show_id|focus_day|ring_number"
+);
+
+assert.strictEqual(
+  snapshotKeyFromQueryKey("15|200000063|2026-05-31|3", "2026-05-31T13:35:00.000Z"),
+  "15|200000063|2026-05-31|3|2026-05-31T13:35:00.000Z",
+  "live_rings ring_key must include the snapshot timestamp"
 );
 
 const payload = [
@@ -134,7 +143,7 @@ assert.deepStrictEqual(
     "ring_state",
   ]),
   {
-    ring_key: "15|200000063|2026-05-31|3",
+    ring_key: "15|200000063|2026-05-31|3|2026-05-31T13:35:00.000Z",
     response_ready: true,
     is_latest: true,
     show: ["recShow"],
@@ -171,13 +180,29 @@ assert.ok(
 );
 
 const source = fs.readFileSync(liveRingsPath, "utf8");
+const orchestrator = fs.readFileSync(orchestratorPath, "utf8");
+const workflow = fs.readFileSync(workflowPath, "utf8");
 assert.ok(
   source.includes('TABLE_LIVE_RINGS = process.env.TABLE_LIVE_RINGS || "live_rings"'),
   "live_rings_daily must write to live_rings by default"
 );
 assert.ok(
+  source.includes("writeLiveRingSnapshots") &&
+    !source.includes("async function upsertLiveRings"),
+  "live_rings_daily must append snapshot rows instead of upserting by stable ring key"
+);
+assert.ok(
   source.includes("LiveScoreWidget"),
   "live_rings_daily must use the LiveScoreWidget payload"
+);
+assert.ok(
+  orchestrator.includes('DEFAULT_LIVE_RINGS_SLOTS = "A,B,C,D"') &&
+    orchestrator.includes('runNodeScript("live_rings_daily.js")'),
+  "heartbeat orchestrator must run live_rings_daily on DAY slots"
+);
+assert.ok(
+  workflow.includes('run_step "LIVE_RINGS_DAILY" "live_rings_daily.js" "1"'),
+  "GitHub pipeline must include live_rings_daily"
 );
 
 console.log("live_rings_contract tests passed");

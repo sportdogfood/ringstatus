@@ -33,6 +33,7 @@ const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
 const DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_CALCULATOR_SLOTS = "A,B,C,D";
 const DEFAULT_LIVE_GROUPS_SLOTS = "A,B,C,D";
+const DEFAULT_LIVE_RINGS_SLOTS = "A,B,C,D";
 const DEFAULT_LIVE_CLASS_DETAIL_SLOTS = "A,B,C,D";
 const DEFAULT_PUBLISHER_SLOTS = "A,B,C,D";
 
@@ -54,6 +55,7 @@ const SCRIPT_LOG_FILES = {
   "trips_tagger.js": "trips-tagger.log",
   "trips_calculatorv2.js": "trips-calculatorv2.log",
   "live_groups_daily.js": "live-groups-daily.log",
+  "live_rings_daily.js": "live-rings-daily.log",
   "live_class_detail.js": "live-class-detail.log",
   "publisher.js": "publisher.log",
 };
@@ -401,6 +403,8 @@ async function runOrchestrator() {
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
     const liveGroupsDue = mode === "DAY"
       && slotIsDue(slot, process.env.ORCH_LIVE_GROUPS_SLOTS, DEFAULT_LIVE_GROUPS_SLOTS);
+    const liveRingsDue = mode === "DAY"
+      && slotIsDue(slot, process.env.ORCH_LIVE_RINGS_SLOTS, DEFAULT_LIVE_RINGS_SLOTS);
     const liveClassDetailDue = mode === "DAY"
       && !DISABLE_LIVE_CLASS_DETAIL
       && slotIsDue(slot, process.env.ORCH_LIVE_CLASS_DETAIL_SLOTS, DEFAULT_LIVE_CLASS_DETAIL_SLOTS);
@@ -458,6 +462,11 @@ async function runOrchestrator() {
     if (liveGroupsDue) {
       const liveGroupsResult = runNodeScript("live_groups_daily.js");
       if (!liveGroupsResult.ok) upstreamOk = false;
+    }
+
+    if (liveRingsDue) {
+      const liveRingsResult = runNodeScript("live_rings_daily.js");
+      if (!liveRingsResult.ok) upstreamOk = false;
     }
 
     if (liveClassDetailDue) {
