@@ -1789,7 +1789,10 @@ async function applyResolutionState(airtable, tables, payload) {
   const packStateAfter = packed >= needed && needed > 0 ? "packed" : "not_packed";
   const updateFields = nextResolution === "clear"
     ? { resolution_state: null, pack_state: packStateAfter }
-    : { resolution_state: nextResolution, pack_state: "not_packed" };
+    : {
+        resolution_state: nextResolution,
+        pack_state: nextResolution === "max" ? "packed" : "not_packed"
+      };
 
   const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, updateFields);
   const event = await createPackingEvent(airtable, tables, {
@@ -2343,6 +2346,9 @@ function normalizeRosterHorse(record) {
     showName: stringField(fields.show_name || fields.horse),
     recordState,
     active: recordState === "active",
+    waveOne: !!fields.wec_wave_1,
+    waveTwo: !!fields.wec_wave_2,
+    notGoing: !!fields.wec_not_going,
     manualLock: !!fields.manual_lock,
     sortOrder: numberField(fields.sort_order),
     weekIds: linkedIds(fields.wec_weeks),
