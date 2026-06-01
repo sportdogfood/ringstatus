@@ -206,13 +206,24 @@ export async function stateReport(airtable, requestUrl) {
     includesLinkedId(record.fields.pack_wave, selectedWave.id) &&
     (!selectedShowId || includesLinkedId(record.fields.show, selectedShowId))
   )) : [];
-  const itemIds = new Set(filteredItems.map((record) => record.id));
+  const packingLedger = buildPackingLedgerState(filteredItems);
+  const sourceWorksheetRecords = buildSourceWorksheetRecords({
+    sourceItems: [...sourcePackItemLookup.values()],
+    ledgerState: packingLedger,
+    selectedWave,
+    selectedShowId,
+    packListIds: new Set(normalizedPackLists.map((list) => list.id))
+  });
+  const itemIds = new Set([
+    ...filteredItems.map((record) => record.id),
+    ...sourceWorksheetRecords.map((record) => record.id)
+  ]);
   const filteredHorses = worksheetHorses.filter((record) => (
     itemIds.has(firstLinkedId(record.fields.packing_item)) ||
     (selectedWave && includesLinkedId(record.fields.pack_wave, selectedWave.id))
   ));
   const horsesByItem = groupByLinkedId(filteredHorses, "packing_item");
-  const items = filteredItems
+  const items = sourceWorksheetRecords
     .map((record) => decoratePackingItem(
       normalizePackingItem(record, horsesByItem.get(record.id) || [], listPlanLookup),
       packListLookup,
@@ -1556,13 +1567,13 @@ export async function actionReport(airtable, requestUrl, payload) {
   const tables = context.tables;
   let result;
   if (action === "add_quantity") {
-    result = await applyAddQuantity(airtable, tables, payload);
+    result = await applyAddQuantity(airtable, context, payload);
   } else if (action === "set_pack_state") {
-    result = await applyPackState(airtable, tables, payload);
+    result = await applyPackState(airtable, context, payload);
   } else if (action === "set_resolution") {
-    result = await applyResolutionState(airtable, tables, payload);
+    result = await applyResolutionState(airtable, context, payload);
   } else if (action === "update_item_fields") {
-    result = await applyItemFieldUpdate(airtable, tables, payload);
+    result = await applyItemFieldUpdate(airtable, context, payload);
   } else if (action === "set_horse_pack_state") {
     result = await applyHorsePackState(airtable, tables, payload);
   } else if (action === "set_horse_kit_state") {
@@ -1606,7 +1617,7 @@ async function applyCommentEvent(airtable, context, payload) {
 
   const itemId = clean(payload?.itemId || (scopeType === "item" ? scopeId : ""));
   const itemRecord = itemId
-    ? (await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId)).record
+    ? await findOptionalRecordInConfiguredView(airtable, tables.wec_packing_items, itemId)
     : null;
   const packWaveId = clean(payload?.packWaveId || (scopeType === "wave" ? scopeId : ""));
   const showId = clean(payload?.showId);
@@ -1965,71 +1976,202 @@ async function listOptionalViewRecords(airtable, tableId, view) {
   }
 }
 
-async function applyAddQuantity(airtable, tables, payload) {
+async function resolveSourceActionItem(airtable, context, payload) {
+  const tables = context.tables;
+  const sourceItemId = clean(payload?.sourcePackItemId || payload?.sourceItemId || payload?.itemId || payload?.packingItemId);
+  if (!sourceItemId) throw new Error("missing_source_item_id");
+  let sourceRecord;
+  let legacyPackingRecord = null;
+  try {
+    sourceRecord = (await findRecordInConfiguredView(airtable, tables.wec_pack_items, sourceItemId)).record;
+  } catch (sourceError) {
+    legacyPackingRecord = await findOptionalRecordInConfiguredView(airtable, tables.wec_packing_items, sourceItemId);
+    const legacySourceId = firstLinkedId(legacyPackingRecord?.fields?.source_pack_item);
+    if (!legacySourceId) throw sourceError;
+    sourceRecord = (await findRecordInConfiguredView(airtable, tables.wec_pack_items, legacySourceId)).record;
+  }
+  const sourceItem = normalizeSourcePackItem(sourceRecord);
+  const packWaveId = clean(payload?.packWaveId);
+  const showId = clean(payload?.showId);
+  const ledgerState = await currentSourcePackingState(airtable, tables, sourceRecord.id, {
+    packWaveId,
+    showId
+  });
+  const currentPacked = ledgerState.hasEntries
+    ? ledgerState.packed
+    : wholeQuantityField(payload?.currentPacked ?? legacyPackingRecord?.fields?.quantity_packed);
+  const currentPackState = ledgerState.packState || stringField(legacyPackingRecord?.fields?.pack_state || "not_packed");
+  const currentResolutionState = ledgerState.resolutionState || stringField(legacyPackingRecord?.fields?.resolution_state);
+  const itemName = clean(payload?.itemName)
+    || sourceItemDisplayName(sourceItem)
+    || stringField(legacyPackingRecord?.fields?.item_name)
+    || sourceRecord.id;
+  const packListIds = linkedIds(legacyPackingRecord?.fields?.pack_list).length
+    ? linkedIds(legacyPackingRecord.fields.pack_list)
+    : sourceItem.packListIds;
+  const fields = {
+    item_name: itemName,
+    source_pack_item: [sourceRecord.id],
+    pack_wave: packWaveId ? [packWaveId] : linkedIds(legacyPackingRecord?.fields?.pack_wave),
+    show: showId ? [showId] : linkedIds(legacyPackingRecord?.fields?.show),
+    pack_list: packListIds,
+    quantity_base: sourceQuantityBase(sourceItem),
+    quantity_packed: currentPacked,
+    quantity_needed: ledgerState.quantityNeededFrozen ?? legacyPackingRecord?.fields?.quantity_needed,
+    quantity_needed_dynamic: payload?.effectiveNeeded,
+    pack_state: currentPackState,
+    resolution_state: currentResolutionState,
+    unit: sourceItem.uom,
+    record_state: "active"
+  };
+  return {
+    sourceRecord,
+    sourceItem,
+    legacyPackingRecord,
+    sourceItemId: sourceRecord.id,
+    itemName,
+    packWaveId,
+    showId,
+    packListIds,
+    fields,
+    currentPacked,
+    currentPackState,
+    currentResolutionState
+  };
+}
+
+async function currentSourcePackingState(airtable, tables, sourceItemId, { packWaveId = "", showId = "" } = {}) {
+  const records = await listAirtableRecords(airtable, tables.wec_packing_items.id, tables.wec_packing_items.view);
+  const filtered = records.filter((record) => {
+    const fields = record.fields || {};
+    if (!isActiveWorksheetRow(record)) return false;
+    if (!includesLinkedId(fields.source_pack_item, sourceItemId)) return false;
+    if (packWaveId && linkedIds(fields.pack_wave).length && !includesLinkedId(fields.pack_wave, packWaveId)) return false;
+    if (showId && linkedIds(fields.show).length && !includesLinkedId(fields.show, showId)) return false;
+    return true;
+  });
+  const states = buildPackingLedgerState(filtered);
+  return states.get(sourceItemId) || {
+    hasEntries: false,
+    packed: 0,
+    packState: "not_packed",
+    resolutionState: "",
+    quantityNeededFrozen: null
+  };
+}
+
+async function createPackingLedgerEntry(airtable, context, actionItem, update) {
+  const tables = context.tables;
+  const fieldNames = tableFieldNames(context, tables.wec_packing_items);
+  const quantityDelta = numberField(update.quantityDelta);
+  const fields = fieldsAllowedBySchema(compactFields({
+    item_name: clean(update.itemName) || actionItem.itemName,
+    show: actionItem.showId ? [actionItem.showId] : linkedIds(actionItem.fields.show),
+    pack_wave: actionItem.packWaveId ? [actionItem.packWaveId] : linkedIds(actionItem.fields.pack_wave),
+    pack_list: actionItem.packListIds,
+    source_pack_item: [actionItem.sourceItemId],
+    quantity_base: sourceQuantityBase(actionItem.sourceItem),
+    quantity_packed: quantityDelta,
+    quantity_needed: update.quantityNeeded,
+    pack_state: clean(update.packStateAfter || "not_packed"),
+    resolution_state: clean(update.resolutionStateAfter),
+    unit: actionItem.sourceItem.uom,
+    record_state: "active",
+    notes: clean(update.notes)
+  }), fieldNames);
+  const record = await createAirtableRecord(airtable, tables.wec_packing_items.id, fields);
+  return {
+    ...record,
+    fields: {
+      ...record.fields,
+      show: fields.show || [],
+      pack_wave: fields.pack_wave || [],
+      pack_list: fields.pack_list || [],
+      source_pack_item: fields.source_pack_item || [],
+      item_name: fields.item_name || actionItem.itemName,
+      quantity_packed: numberField(update.quantityAfter),
+      pack_state: update.packStateAfter,
+      resolution_state: update.resolutionStateAfter
+    }
+  };
+}
+
+async function applyAddQuantity(airtable, context, payload) {
+  const tables = context.tables;
   const itemId = clean(payload?.itemId || payload?.packingItemId);
   const delta = wholeQuantityField(payload?.quantityDelta || payload?.delta || 0);
   if (!itemId) throw new Error("missing_item_id");
   if (!Number.isFinite(delta) || delta <= 0) throw new Error("quantity_delta_must_be_positive");
 
-  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
-  const fields = record.fields || {};
-  const before = wholeQuantityField(fields.quantity_packed);
+  const actionItem = await resolveSourceActionItem(airtable, context, payload);
+  const fields = actionItem.fields;
+  const before = actionItem.currentPacked;
   const needed = actionNeeded(fields, payload);
   const after = Math.min(needed || before + delta, before + delta);
   const nextPackState = needed > 0 && after >= needed ? "packed" : "not_packed";
+  const quantityDelta = after - before;
 
-  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, {
-    quantity_packed: after,
-    pack_state: nextPackState
+  const updated = await createPackingLedgerEntry(airtable, context, actionItem, {
+    quantityDelta,
+    quantityAfter: after,
+    packStateAfter: nextPackState,
+    resolutionStateAfter: actionItem.currentResolutionState,
+    notes: clean(payload?.notes)
   });
   const event = await createPackingEvent(airtable, tables, {
     eventType: "quantity_add",
-    itemRecord: record,
-    quantityDelta: after - before,
+    itemRecord: updated,
+    quantityDelta,
     quantityBefore: before,
     quantityAfter: after,
-    packStateBefore: stringField(fields.pack_state || "not_packed"),
+    packStateBefore: actionItem.currentPackState,
     packStateAfter: nextPackState,
-    decisionBefore: stringField(fields.resolution_state),
-    decisionAfter: stringField(fields.resolution_state),
+    decisionBefore: actionItem.currentResolutionState,
+    decisionAfter: actionItem.currentResolutionState,
     notes: clean(payload?.notes)
   });
   return { updated, event };
 }
 
-async function applyPackState(airtable, tables, payload) {
+async function applyPackState(airtable, context, payload) {
+  const tables = context.tables;
   const itemId = clean(payload?.itemId || payload?.packingItemId);
   const nextPackState = clean(payload?.packState || payload?.state);
   if (!itemId) throw new Error("missing_item_id");
   if (!["packed", "not_packed"].includes(nextPackState)) throw new Error("invalid_pack_state");
   if (nextPackState === "packed" && !payload?.confirmed) throw new Error("confirmation_required");
 
-  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
-  const fields = record.fields || {};
-  const beforeQuantity = wholeQuantityField(fields.quantity_packed);
+  const actionItem = await resolveSourceActionItem(airtable, context, payload);
+  const fields = actionItem.fields;
+  const beforeQuantity = actionItem.currentPacked;
   const needed = actionNeeded(fields, payload);
   const afterQuantity = nextPackState === "packed" ? needed : beforeQuantity;
+  const quantityDelta = afterQuantity - beforeQuantity;
 
-  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, {
-    quantity_packed: afterQuantity,
-    pack_state: nextPackState
+  const updated = await createPackingLedgerEntry(airtable, context, actionItem, {
+    quantityDelta,
+    quantityAfter: afterQuantity,
+    packStateAfter: nextPackState,
+    resolutionStateAfter: actionItem.currentResolutionState,
+    notes: clean(payload?.notes)
   });
   const event = await createPackingEvent(airtable, tables, {
     eventType: nextPackState === "packed" ? "mark_packed" : "mark_not_packed",
-    itemRecord: record,
-    quantityDelta: afterQuantity - beforeQuantity,
+    itemRecord: updated,
+    quantityDelta,
     quantityBefore: beforeQuantity,
     quantityAfter: afterQuantity,
-    packStateBefore: stringField(fields.pack_state || "not_packed"),
+    packStateBefore: actionItem.currentPackState,
     packStateAfter: nextPackState,
-    decisionBefore: stringField(fields.resolution_state),
-    decisionAfter: stringField(fields.resolution_state),
+    decisionBefore: actionItem.currentResolutionState,
+    decisionAfter: actionItem.currentResolutionState,
     notes: clean(payload?.notes)
   });
   return { updated, event };
 }
 
-async function applyResolutionState(airtable, tables, payload) {
+async function applyResolutionState(airtable, context, payload) {
+  const tables = context.tables;
   const itemId = clean(payload?.itemId || payload?.packingItemId);
   const nextResolution = clean(payload?.resolutionState || payload?.resolution || payload?.decision);
   const allowed = ["max", "kill", "note", "purchase_onsite", "unresolved", "clear"];
@@ -2037,58 +2179,53 @@ async function applyResolutionState(airtable, tables, payload) {
   if (!allowed.includes(nextResolution)) throw new Error("invalid_resolution_state");
   if (!payload?.confirmed) throw new Error("confirmation_required");
 
-  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
-  const fields = record.fields || {};
-  const beforeDecision = stringField(fields.resolution_state);
-  const packed = wholeQuantityField(fields.quantity_packed);
+  const actionItem = await resolveSourceActionItem(airtable, context, payload);
+  const fields = actionItem.fields;
+  const beforeDecision = actionItem.currentResolutionState;
+  const packed = actionItem.currentPacked;
   const needed = actionNeeded(fields, payload);
   let afterPacked = packed;
-  let updateFields;
+  let afterPackState = actionItem.currentPackState;
+  let afterResolution = nextResolution;
   if (nextResolution === "clear") {
     afterPacked = 0;
-    updateFields = {
-      resolution_state: null,
-      quantity_packed: afterPacked,
-      pack_state: "not_packed"
-    };
+    afterPackState = "not_packed";
+    afterResolution = "";
   } else if (nextResolution === "max") {
     afterPacked = needed;
-    updateFields = {
-      resolution_state: nextResolution,
-      quantity_packed: afterPacked,
-      pack_state: needed > 0 ? "packed" : "not_packed"
-    };
+    afterPackState = needed > 0 ? "packed" : "not_packed";
   } else if (nextResolution === "purchase_onsite") {
     afterPacked = 0;
-    updateFields = {
-      resolution_state: nextResolution,
-      quantity_packed: afterPacked,
-      pack_state: "not_packed"
-    };
+    afterPackState = "not_packed";
   } else {
-    updateFields = {
-      resolution_state: nextResolution,
-      pack_state: packed >= needed && needed > 0 ? "packed" : "not_packed"
-    };
+    afterPackState = packed >= needed && needed > 0 ? "packed" : "not_packed";
   }
+  const quantityDelta = afterPacked - packed;
 
-  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, updateFields);
+  const updated = await createPackingLedgerEntry(airtable, context, actionItem, {
+    quantityDelta,
+    quantityAfter: afterPacked,
+    packStateAfter: afterPackState,
+    resolutionStateAfter: afterResolution,
+    notes: clean(payload?.notes)
+  });
   const event = await createPackingEvent(airtable, tables, {
     eventType: nextResolution === "clear" ? "decision_clear" : `decision_${nextResolution}`,
-    itemRecord: record,
-    quantityDelta: afterPacked - packed,
+    itemRecord: updated,
+    quantityDelta,
     quantityBefore: packed,
     quantityAfter: afterPacked,
-    packStateBefore: stringField(fields.pack_state || "not_packed"),
-    packStateAfter: updateFields.pack_state,
+    packStateBefore: actionItem.currentPackState,
+    packStateAfter: afterPackState,
     decisionBefore: beforeDecision,
-    decisionAfter: nextResolution === "clear" ? "" : nextResolution,
+    decisionAfter: afterResolution,
     notes: clean(payload?.notes)
   });
   return { updated, event };
 }
 
-async function applyItemFieldUpdate(airtable, tables, payload) {
+async function applyItemFieldUpdate(airtable, context, payload) {
+  const tables = context.tables;
   const itemId = clean(payload?.itemId || payload?.packingItemId);
   if (!itemId) throw new Error("missing_item_id");
 
@@ -2111,18 +2248,42 @@ async function applyItemFieldUpdate(airtable, tables, payload) {
   }
   if (!Object.keys(updateFields).length) throw new Error("no_allowed_fields");
 
-  const { record } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, itemId);
-  const fields = { ...(record.fields || {}), ...updateFields };
+  const actionItem = await resolveSourceActionItem(airtable, context, payload);
+  const fields = { ...actionItem.fields, ...updateFields };
+  let afterPacked = actionItem.currentPacked;
+  let quantityDelta = 0;
   if (Object.prototype.hasOwnProperty.call(updateFields, "quantity_packed") || Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed")) {
     const packed = wholeQuantityField(fields.quantity_packed);
     const needed = Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed")
       ? worksheetNeeded(fields)
       : actionNeeded(fields, payload);
+    afterPacked = packed;
+    quantityDelta = afterPacked - actionItem.currentPacked;
     updateFields.pack_state = needed > 0 && packed >= needed ? "packed" : "not_packed";
   }
 
-  const updated = await patchAirtableRecord(airtable, tables.wec_packing_items.id, itemId, updateFields);
-  return { updated };
+  const updated = await createPackingLedgerEntry(airtable, context, actionItem, {
+    itemName: updateFields.item_name,
+    quantityDelta,
+    quantityAfter: afterPacked,
+    quantityNeeded: Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed") ? updateFields.quantity_needed : undefined,
+    packStateAfter: updateFields.pack_state || actionItem.currentPackState,
+    resolutionStateAfter: actionItem.currentResolutionState,
+    notes: "inline edit"
+  });
+  const event = await createPackingEvent(airtable, tables, {
+    eventType: "item_field_update",
+    itemRecord: updated,
+    quantityDelta,
+    quantityBefore: actionItem.currentPacked,
+    quantityAfter: afterPacked,
+    packStateBefore: actionItem.currentPackState,
+    packStateAfter: updateFields.pack_state || actionItem.currentPackState,
+    decisionBefore: actionItem.currentResolutionState,
+    decisionAfter: actionItem.currentResolutionState,
+    notes: Object.keys(updateFields).join(", ")
+  });
+  return { updated, event };
 }
 
 async function applyHorsePackState(airtable, tables, payload) {
