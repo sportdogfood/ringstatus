@@ -547,6 +547,11 @@
       return;
     }
 
+    if (event.target.closest("[data-th-search-clear]")) {
+      clearSearch();
+      return;
+    }
+
     const appStateButton = event.target.closest("[data-app-state]");
     if (appStateButton) {
       setAppState(appStateButton.dataset.appStateRecord, appStateButton.dataset.appState);
@@ -596,7 +601,8 @@
 
   function handleInput(event) {
     if (event.target.matches("[data-th-search]")) {
-      state.query = event.target.value.trim().toLowerCase();
+      state.query = normalizeSearchText(event.target.value);
+      updateSearchClear();
       render();
       return;
     }
@@ -883,12 +889,41 @@
       : state.records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"));
     if (!state.query) return records;
     return records.filter((record) => {
-      const fields = record.fields || {};
-      const feedText = (record.feedPlan || [])
-        .flatMap((item) => Object.values(item.fields || {}))
-        .join(" ");
-      return `${Object.values(fields).join(" ")} ${feedText}`.toLowerCase().includes(state.query);
+      return searchableRecordText(record).includes(state.query);
     });
+  }
+
+  function searchableRecordText(record) {
+    const fields = record.fields || {};
+    const profileText = [
+      firstValue(fields, ["barn_name", "Barn Name", "barn"]),
+      firstValue(fields, ["show_name", "Show Name", "horse", "name", "Horse", "Name"]),
+      Object.values(fields).join(" ")
+    ].join(" ");
+    const feedText = (record.feedPlan || [])
+      .flatMap((item) => Object.values(item.fields || {}))
+      .join(" ");
+    return normalizeSearchText(`${profileText} ${feedText}`);
+  }
+
+  function normalizeSearchText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function clearSearch() {
+    const input = root.querySelector("[data-th-search]");
+    if (input) input.value = "";
+    state.query = "";
+    updateSearchClear();
+    render();
+  }
+
+  function updateSearchClear() {
+    const clearButton = root.querySelector("[data-th-search-clear]");
+    if (clearButton) clearButton.hidden = !state.query;
   }
 
   function shell() {
@@ -929,7 +964,10 @@
                     <button class="th-hps-control" type="button" data-hps-group-jump="feed" aria-pressed="false">Feed</button>
                     <button class="th-hps-control" type="button" data-th-refresh>Refresh</button>
                   </div>
-                  <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
+                  <div class="th-search-wrap">
+                    <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
+                    <button class="th-search-clear" type="button" data-th-search-clear hidden aria-label="Clear search">x</button>
+                  </div>
                 </div>
                 <div id="sectionRows" class="lp-list" data-th-list></div>
                 <div class="th-hps-list-meta" data-th-list-meta>Loading...</div>

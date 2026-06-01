@@ -177,6 +177,37 @@
   padding: 10px 16px 8px;
 }
 
+#hps-app .th-search-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+#hps-app .th-search-wrap .th-search {
+  width: 100%;
+  padding-right: 34px;
+}
+
+#hps-app .th-search-clear {
+  appearance: none;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--lp-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  place-items: center;
+  transform: translateY(-50%);
+}
+
 #hps-app .lp-modal {
   padding-left: 0;
   padding-right: 0;
