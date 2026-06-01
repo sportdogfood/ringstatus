@@ -334,6 +334,13 @@
       return;
     }
 
+    const inlineSave = event.target.closest("[data-inline-save-item]");
+    if (inlineSave) {
+      event.preventDefault();
+      saveInlineEdit(inlineSave);
+      return;
+    }
+
     const listEdit = event.target.closest("[data-list-edit-field]");
     if (listEdit) {
       event.preventDefault();
@@ -342,13 +349,6 @@
       } else {
         toggleListInlineEdit(listEdit.dataset.listId, listEdit.dataset.listEditField);
       }
-      return;
-    }
-
-    const inlineSave = event.target.closest("[data-inline-save-item]");
-    if (inlineSave) {
-      event.preventDefault();
-      saveInlineEdit(inlineSave);
       return;
     }
 
@@ -562,20 +562,22 @@
     }
     const pendingKey = pendingActionKey("update_item_fields", itemId);
     if (state.pendingActions[pendingKey]) return;
+    const snapshot = snapshotItemInlineState(itemId);
     state.pendingActions[pendingKey] = "save";
+    applyOptimisticItemFieldUpdate(itemId, fields);
+    clearItemInlineEdit(itemId);
+    state.saveMessage = "Saving item...";
+    render();
     await postAction({
       action: "update_item_fields",
       itemId,
       effectiveNeeded: item.needed,
       fields
-    }, () => {
-      delete state.inlineEditValues[inlineEditKey(itemId, "lp-row-title")];
-      delete state.inlineEditValues[inlineEditKey(itemId, "quantity_packed_override")];
-      delete state.inlineEditValues[inlineEditKey(itemId, "quantity_needed_override")];
-      delete state.inlineEditByItem[itemId];
-    }, {
+    }, null, {
       pendingKey,
-      message: "Saving item..."
+      message: "Saving item...",
+      quietStart: true,
+      rollback: () => restoreItemInlineState(itemId, snapshot)
     });
   }
 
@@ -1414,11 +1416,7 @@
       commentScope: isTabGroupId(tabId)
         ? rsaCommentScope("tab", tabId, tabGroups().find((group) => group.id === tabId)?.label || list.label || tabId)
         : rsaCommentScope("section", list.id, list.label || list.id),
-      rowsHtml: rows.length ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, list.id)).join("") : rsaEmptyTableRowHtml("No rows"),
-      labelActionsHtml: `
-        <div class="rs-text-link rsa-text is-xs is-label">edit</div>
-        <div class="rs-text-link rsa-text is-xs is-label">input</div>
-      `
+      rowsHtml: rows.length ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, list.id)).join("") : rsaEmptyTableRowHtml("No rows")
     });
   }
 
@@ -3506,6 +3504,59 @@
       packState: item.packState,
       resolutionState: item.resolutionState
     };
+  }
+
+  function snapshotItemInlineState(itemId) {
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return null;
+    return {
+      name: item.name,
+      packed: item.packed,
+      needed: item.needed,
+      left: item.left,
+      packState: item.packState,
+      quantityNeededDynamic: item.quantityNeededDynamic,
+      quantityNeededFrozen: item.quantityNeededFrozen
+    };
+  }
+
+  function restoreItemInlineState(itemId, snapshot) {
+    if (!snapshot) return;
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+    item.name = snapshot.name;
+    item.packed = snapshot.packed;
+    item.needed = snapshot.needed;
+    item.left = snapshot.left;
+    item.packState = snapshot.packState;
+    item.quantityNeededDynamic = snapshot.quantityNeededDynamic;
+    item.quantityNeededFrozen = snapshot.quantityNeededFrozen;
+  }
+
+  function applyOptimisticItemFieldUpdate(itemId, fields) {
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+    if (Object.prototype.hasOwnProperty.call(fields, "item_name")) {
+      item.name = String(fields.item_name || "").trim();
+    }
+    if (Object.prototype.hasOwnProperty.call(fields, "quantity_needed")) {
+      item.needed = wholeQuantityNumber(fields.quantity_needed);
+      item.quantityNeededFrozen = item.needed;
+    }
+    if (Object.prototype.hasOwnProperty.call(fields, "quantity_packed")) {
+      item.packed = wholeQuantityNumber(fields.quantity_packed);
+    }
+    if (Object.prototype.hasOwnProperty.call(fields, "quantity_needed") || Object.prototype.hasOwnProperty.call(fields, "quantity_packed")) {
+      item.left = Math.max(0, number(item.needed) - number(item.packed));
+      item.packState = number(item.needed) > 0 && number(item.packed) >= number(item.needed) ? "packed" : "not_packed";
+    }
+  }
+
+  function clearItemInlineEdit(itemId) {
+    delete state.inlineEditValues[inlineEditKey(itemId, "lp-row-title")];
+    delete state.inlineEditValues[inlineEditKey(itemId, "quantity_packed_override")];
+    delete state.inlineEditValues[inlineEditKey(itemId, "quantity_needed_override")];
+    delete state.inlineEditByItem[itemId];
   }
 
   function restorePackingItemState(itemId, snapshot) {
