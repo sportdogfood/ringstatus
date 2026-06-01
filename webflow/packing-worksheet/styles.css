@@ -3461,6 +3461,10 @@ body {
   background-color: #fff;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-foot {
+  background-color: #fff;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-padding {
   min-height: var(--rsa-action-min);
   padding-inline: var(--rsa-pad-x);
@@ -3756,7 +3760,8 @@ a.rsa-item-row-2 {
   position: relative;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head .rsa-table-label {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head .rsa-table-label,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-foot .rsa-table-label {
   min-width: 0;
   padding: var(--rsa-cell-y) var(--rsa-cell-x);
   font-family: Outfit, sans-serif;
@@ -3781,13 +3786,19 @@ a.rsa-item-row-2 {
   text-decoration: underline;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head .rsa-item-row-2 {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head .rsa-item-row-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-foot .rsa-item-row-2 {
   min-height: 40px;
   height: 40px;
   border-bottom: 1px solid #e1e6f0;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head .rsa-item-block-right .rsa-table-label {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-foot .rsa-item-row-2 {
+  border-top: 1px solid #e1e6f0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head .rsa-item-block-right .rsa-table-label,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-foot .rsa-item-block-right .rsa-table-label {
   text-align: center;
 }
 

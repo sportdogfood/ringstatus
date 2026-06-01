@@ -1307,6 +1307,7 @@
       filterKey: "overview",
       commentScope: rsaCommentScope("wave", currentWaveId() || "wave", currentWaveLabel()),
       rowsHtml: rows.length ? rowsHtml : rsaEmptyTableRowHtml("No rows"),
+      tableFooterHtml: rows.length && !laneMode ? rsaTableFooterHtml(mode === "search_list" ? itemMetricTotals(rows) : overviewMetricTotals(rows)) : "",
       tableLabel: mode === "search_list" ? "item" : "list",
       tableActionLabel: mode === "search_list" ? "input" : isLaneMode ? "open" : "print",
       tableMetricLabels: isLaneMode ? ["", "", ""] : undefined,
@@ -1440,7 +1441,8 @@
       commentScope: isTabGroupId(tabId)
         ? rsaCommentScope("tab", tabId, tabGroups().find((group) => group.id === tabId)?.label || list.label || tabId)
         : rsaCommentScope("section", list.id, list.label || list.id),
-      rowsHtml: rows.length ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, list.id)).join("") : rsaEmptyTableRowHtml("No rows")
+      rowsHtml: rows.length ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, list.id)).join("") : rsaEmptyTableRowHtml("No rows"),
+      tableFooterHtml: rows.length ? rsaTableFooterHtml(itemMetricTotals(rows)) : ""
     });
   }
 
@@ -1512,7 +1514,7 @@
     return `<div class="rs-quantity-block-2 is-grid4 ${extraClass}">${innerHtml}</div>`;
   }
 
-  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", tableMetricLabels, showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions, filterVariant = "" }) {
+  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableFooterHtml = "", tableLabel = "item", tableActionLabel = "input", tableMetricLabels, showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions, filterVariant = "" }) {
     const storedActiveTool = state.activeToolByList[filterKey] || "";
     const activeTool = forceSearchOpen ? "search" : showFilter || storedActiveTool !== "filter" ? storedActiveTool : "";
     const showHeaderFilter = showFilter || headerFilter;
@@ -1556,6 +1558,7 @@
                   <div class="rsa-table-body">
                     ${rowsHtml}
                   </div>
+                  ${tableFooterHtml ? `<div class="rsa-table-foot">${tableFooterHtml}</div>` : ""}
                 </div>
               </div>
             </div>
@@ -1663,6 +1666,40 @@
         <div class="rsa-table-label">${escapeHtml(tableActionLabel)}</div>
       `, "has-inline-qty-action")
     });
+  }
+
+  function rsaTableFooterHtml(totals = {}) {
+    const valueHtml = (value) => `<div class="rsa-table-label rsa-text is-xs is-caps">${escapeHtml(quantityDisplay(value))}</div>`;
+    return rsaGridRowHtml({
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color is-spacer"></div>
+        <div class="rsa-table-label rsa-text is-xs is-caps">total</div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        ${valueHtml(totals.needed)}
+        ${valueHtml(totals.packed)}
+        ${valueHtml(totals.left)}
+        <div class="rsa-table-label"></div>
+      `, "has-inline-qty-action")
+    });
+  }
+
+  function itemMetricTotals(rows = []) {
+    return rows.reduce((acc, item) => {
+      acc.needed += number(item.needed);
+      acc.packed += number(item.packed);
+      acc.left += number(item.left);
+      return acc;
+    }, { needed: 0, packed: 0, left: 0 });
+  }
+
+  function overviewMetricTotals(rows = []) {
+    return rows.reduce((acc, row) => {
+      acc.needed += number(row.rows);
+      acc.packed += number(row.done);
+      acc.left += number(row.open);
+      return acc;
+    }, { needed: 0, packed: 0, left: 0 });
   }
 
   function rsaSortLabelHtml(sortScope, field, label) {
