@@ -13,8 +13,8 @@ The app is not local-only state. Airtable is both the data source and the write 
 Current live asset pin:
 
 ```text
-asset commit: 381a61294f7c65e394081a0e1f13fa34151267ff
-embed commit: local embed file points to 381a612 assets
+asset commit: 15d27bc
+embed commit: local embed file points to 15d27bc assets
 ```
 
 Current Webflow pages:
@@ -53,7 +53,8 @@ Use this full embed. It includes the locked RSA/Webflow CSS file copied from the
     pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
     showId: "",
     packWaveId: "",
-    packWaveKey: "wave_one"
+    packWaveKey: "wave_one",
+    enableHorseNotNeeded: false
   };
 </script>
 
@@ -61,9 +62,9 @@ Use this full embed. It includes the locked RSA/Webflow CSS file copied from the
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@381a61294f7c65e394081a0e1f13fa34151267ff/webflow/packing-worksheet/rsa-stylesheets.locked.css?v=wec-20260601-381a612">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@381a61294f7c65e394081a0e1f13fa34151267ff/webflow/packing-worksheet/styles.css?v=wec-20260601-381a612">
-<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@381a61294f7c65e394081a0e1f13fa34151267ff/webflow/packing-worksheet/wec-packing.js?v=wec-20260601-381a612" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@15d27bc/webflow/packing-worksheet/rsa-stylesheets.locked.css?v=wec-20260601-15d27bc">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@15d27bc/webflow/packing-worksheet/styles.css?v=wec-20260601-15d27bc">
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@15d27bc/webflow/packing-worksheet/wec-packing.js?v=wec-20260601-15d27bc" defer></script>
 ```
 
 Repo file:
