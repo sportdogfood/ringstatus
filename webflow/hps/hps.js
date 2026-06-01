@@ -121,7 +121,9 @@
         <div class="th-group-label th-feed-group-label">
           <button class="th-feed-back" type="button" data-hps-group-jump="active" aria-label="Back to active horse list">&larr; FEED</button>
         </div>
-        ${records.map((record) => feedHorseRow(record)).join("")}
+        <div class="th-feed-list">
+          ${records.map((record) => feedHorseRow(record)).join("")}
+        </div>
       </div>
     `;
   }
@@ -129,18 +131,20 @@
   function feedHorseRow(record) {
     const fields = record.fields || {};
     const name = firstValue(fields, ["barn_name", "Barn Name", "barn", "show_name", "horse", "name", "Horse", "Name"]) || "Unnamed horse";
-    const recordKey = firstValue(fields, ["record_key", "horse_key", "source_id"]) || record.id;
     const isOpen = !state.feedClosed.has(record.id);
     const feedPlan = visibleFeedPlan(record.feedPlan || []);
+    if (!feedPlan.length) return "";
 
     return `
-      <div class="lp-row packing-row packing-horse-row th-horse-row th-feed-horse-row" data-th-key="${escapeAttr(recordKey)}" data-th-name="${escapeAttr(name)}">
-        <div class="packing-horse-detail-trigger th-feed-name">
-          <span class="lp-row-title">${escapeHtml(name)}</span>
+      <div class="th-feed-card" data-th-name="${escapeAttr(name)}">
+        <div class="lp-row packing-row packing-horse-row th-horse-row th-feed-horse-row">
+          <div class="packing-horse-detail-trigger th-feed-name">
+            <span class="lp-row-title">${escapeHtml(name)}</span>
+          </div>
+          <button class="th-feed-toggle" type="button" data-feed-toggle="${escapeAttr(record.id)}" aria-expanded="${isOpen ? "true" : "false"}" aria-label="${isOpen ? "Collapse" : "Open"} feed for ${escapeAttr(name)}">${isOpen ? "-" : "+"}</button>
         </div>
-        <button class="th-feed-toggle" type="button" data-feed-toggle="${escapeAttr(record.id)}" aria-expanded="${isOpen ? "true" : "false"}" aria-label="${isOpen ? "Collapse" : "Open"} feed for ${escapeAttr(name)}">${isOpen ? "-" : "+"}</button>
+        ${isOpen ? feedShellLines(feedPlan) : ""}
       </div>
-      ${isOpen ? feedShellLines(feedPlan) : ""}
     `;
   }
 
@@ -148,6 +152,12 @@
     if (!feedPlan.length) return "";
     return `
       <div class="th-feed-shell-lines">
+        <div class="th-feed-shell-head" aria-hidden="true">
+          <span>Feed</span>
+          <span>AM</span>
+          <span>MID</span>
+          <span>PM</span>
+        </div>
         ${feedPlan.map((item) => feedShellLine(item.fields || {})).join("")}
       </div>
     `;
@@ -160,7 +170,6 @@
         <span>${escapeHtml(feedValue(fields, ["am", "AM"]))}</span>
         <span>${escapeHtml(feedValue(fields, ["midday", "mid", "MD"]))}</span>
         <span>${escapeHtml(feedValue(fields, ["pm", "PM"]))}</span>
-        <span>${escapeHtml(feedValue(fields, ["quantityMeasure", "defaultQuantityMeasure", "short_uom", "unit", "measure"]))}</span>
       </div>
     `;
   }
