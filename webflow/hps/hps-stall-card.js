@@ -30,7 +30,10 @@
     if (!record) throw new Error(`Horse not found in tenant view: ${horseRecordId}`);
 
     renderCard(record.fields || {});
-    if (autoPrint) window.setTimeout(() => window.print(), 250);
+    if (autoPrint) {
+      await waitForPrintAssets();
+      window.setTimeout(() => window.print(), 100);
+    }
   } catch (error) {
     console.error("[hps-stall-card]", error);
     renderMessage(error instanceof Error ? error.message : String(error));
@@ -76,6 +79,37 @@
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), timeoutMs);
     return fetch(url, { signal: controller.signal }).finally(() => window.clearTimeout(timer));
+  }
+
+  async function waitForPrintAssets() {
+    const images = Array.from(root.querySelectorAll("img"));
+    await Promise.all(images.map((image) => waitForImage(image, 3000)));
+    if (document.fonts?.ready) {
+      await Promise.race([document.fonts.ready.catch(() => undefined), delay(1500)]);
+    }
+    await nextFrame();
+    await nextFrame();
+  }
+
+  function waitForImage(image, timeoutMs) {
+    if (!image || (image.complete && image.naturalWidth > 0)) return Promise.resolve();
+    if (image.decode) {
+      return Promise.race([image.decode().catch(() => undefined), delay(timeoutMs)]);
+    }
+    return new Promise((resolve) => {
+      const done = () => resolve();
+      image.addEventListener("load", done, { once: true });
+      image.addEventListener("error", done, { once: true });
+      window.setTimeout(done, timeoutMs);
+    });
+  }
+
+  function nextFrame() {
+    return new Promise((resolve) => window.requestAnimationFrame(() => resolve()));
+  }
+
+  function delay(ms) {
+    return new Promise((resolve) => window.setTimeout(resolve, ms));
   }
 
   function firstValue(fields, names) {
