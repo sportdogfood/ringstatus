@@ -226,6 +226,8 @@ export async function stateReport(airtable, requestUrl) {
   const homeModules = buildHomeModules({
     homeLists: normalizedHomeLists.length ? normalizedHomeLists : activeTaskLists,
     purchaseOnsiteItems,
+    items,
+    sourcePackItemLookup,
     listPlanLookup,
     placeLookup,
     packListLookup,
@@ -239,6 +241,7 @@ export async function stateReport(airtable, requestUrl) {
     items
   });
   const activeListDetails = await buildActiveListDetails(airtable, tables, normalizedActiveLists, {
+    homeModules,
     normalizedPackLists,
     sourcePackItemLookup,
     listPlanLookup,
@@ -304,16 +307,19 @@ export async function stateReport(airtable, requestUrl) {
   };
 }
 
-function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, placeLookup, packListLookup, packingEvents, selectedShowId, selectedWaveId }) {
+function buildHomeModules({ homeLists, purchaseOnsiteItems, items, sourcePackItemLookup, listPlanLookup, placeLookup, packListLookup, packingEvents, selectedShowId, selectedWaveId }) {
   const purchaseList = homeLists.find((list) => list.key === "purchase_onsite" || slugify(list.label) === "purchase_onsite");
   if (!purchaseList) return [];
   const taskStates = onsiteTaskStatesFromEvents(packingEvents, {
     showId: selectedShowId,
     packWaveId: selectedWaveId
   });
-  const rows = purchaseOnsiteItems
-    .map((record) => normalizePurchaseOnsiteTask(record, listPlanLookup, placeLookup, packListLookup, purchaseList.id, taskStates))
-    .sort(compareOnsiteTasks);
+  const staticRows = purchaseOnsiteItems
+    .map((record) => normalizePurchaseOnsiteTask(record, listPlanLookup, placeLookup, packListLookup, purchaseList.id, taskStates));
+  const decisionRows = (items || [])
+    .filter(isPurchaseOnsiteItem)
+    .map((item) => normalizePurchaseOnsiteDecisionTask(item, sourcePackItemLookup, packListLookup, purchaseList.id, taskStates));
+  const rows = mergeTaskRows(staticRows, decisionRows).sort(compareOnsiteTasks);
   const lists = buildOnsiteListSummaries(rows, packListLookup, purchaseList);
   return [{
     id: "purchase_onsite",
@@ -332,7 +338,7 @@ function buildActiveListLanes(activeLists, { homeModules, lists, items }) {
   const laneGroups = new Map();
   const homeModuleLookup = new Map((homeModules || []).map((module) => [slugify(module.id || module.label), module]));
   const listLookup = new Map((lists || []).map((list) => [list.id, list]));
-  const openItems = (items || []).filter((item) => !isSatisfied(item));
+  const unresolvedItems = (items || []).filter(isUnresolvedItem);
 
   for (const list of activeLists || []) {
     const lane = list.lane || "unassigned";
@@ -346,14 +352,14 @@ function buildActiveListLanes(activeLists, { homeModules, lists, items }) {
     const module = homeModuleLookup.get(key);
     const worksheetList = listLookup.get(list.id);
     const isUnresolved = key === "unresolved" || key === "open";
-    const rows = module?.rows ?? worksheetList?.rows ?? (isUnresolved ? openItems.length : list.itemCount);
+    const rows = module?.rows ?? worksheetList?.rows ?? (isUnresolved ? unresolvedItems.length : list.itemCount);
     const done = module?.done ?? worksheetList?.done ?? 0;
-    const open = module?.open ?? worksheetList?.open ?? (isUnresolved ? openItems.length : Math.max(0, rows - done));
+    const open = module?.open ?? worksheetList?.open ?? (isUnresolved ? unresolvedItems.length : Math.max(0, rows - done));
     group.lists.push({
       id: list.id,
       key: list.key,
       lane,
-      label: list.displayLabel || list.listLabel || list.label,
+      label: activeListDisplayLabel(list),
       list: list.label,
       listLabel: list.listLabel,
       displayLabel: list.displayLabel,
@@ -381,10 +387,20 @@ function buildActiveListLanes(activeLists, { homeModules, lists, items }) {
   }));
 }
 
-async function buildActiveListDetails(airtable, tables, activeLists, { normalizedPackLists, sourcePackItemLookup, listPlanLookup, placeTagLookup, items }) {
+async function buildActiveListDetails(airtable, tables, activeLists, { homeModules, normalizedPackLists, sourcePackItemLookup, listPlanLookup, placeTagLookup, items }) {
+  const homeModuleLookup = new Map((homeModules || []).map((module) => [slugify(module.id || module.label), module]));
   const details = await Promise.all((activeLists || []).map(async (list) => {
     let rows = [];
-    if (list.sourceTable === "wec_places" && tables.wec_places?.id) {
+    const key = slugify(list.key || list.label);
+    const module = homeModuleLookup.get(key);
+    if (module?.tasks) {
+      rows = module.tasks.map((task) => ({
+        ...task,
+        type: "task",
+        label: task.name || task.id || "",
+        meta: task.packListLabels?.join(", ") || task.listPlanLabel || ""
+      }));
+    } else if (list.sourceTable === "wec_places" && tables.wec_places?.id) {
       const view = activeListSourceView(list);
       const records = view
         ? await listOptionalViewRecords(airtable, tables.wec_places.id, view)
@@ -394,14 +410,14 @@ async function buildActiveListDetails(airtable, tables, activeLists, { normalize
       rows = (normalizedPackLists || []).map(packListDetailRow);
     } else if (list.key === "item_labels") {
       rows = [...(sourcePackItemLookup?.values?.() || [])].map(sourceItemDetailRow);
-    } else if (list.key === "unresolved") {
-      rows = (items || []).filter((item) => !isSatisfied(item)).map(itemDetailRow);
+    } else if (key === "unresolved" || key === "open") {
+      rows = (items || []).filter(isUnresolvedItem).map(itemDetailRow);
     }
     return {
       id: list.id,
       key: list.key,
       lane: list.lane,
-      label: list.displayLabel || list.listLabel || list.label,
+      label: activeListDisplayLabel(list),
       sourceTable: list.sourceTable,
       sourceView: activeListSourceView(list),
       rows: rows.sort(compareDetailRows)
@@ -414,6 +430,12 @@ function activeListSourceView(list) {
   if (list.sourceView) return list.sourceView;
   if (list.sourceTable === "wec_places" && list.key?.startsWith("places_")) return list.key.replace(/^places_/, "");
   return "";
+}
+
+function activeListDisplayLabel(list) {
+  const key = slugify(list?.key || list?.label || "");
+  if (key === "unresolved" || key === "open") return "Needs Attention";
+  return list?.displayLabel || list?.listLabel || list?.label || "";
 }
 
 function placeDetailRow(place) {
@@ -635,6 +657,48 @@ function normalizePurchaseOnsiteTask(record, listPlanLookup, placeLookup, packLi
     note: source.note,
     longDescription: source.longDescription
   };
+}
+
+function normalizePurchaseOnsiteDecisionTask(item, sourcePackItemLookup, packListLookup, purchaseListId, taskStates) {
+  const source = item.sourcePackItemIds
+    .map((id) => sourcePackItemLookup.get(id))
+    .filter(Boolean)[0];
+  const sourceListIds = (source?.packListIds || []).filter((id) => id !== purchaseListId && packListLookup.has(id));
+  const itemListIds = (item.packListIds || []).filter((id) => id !== purchaseListId && packListLookup.has(id));
+  const taskListIds = itemListIds.length ? itemListIds : sourceListIds.length ? sourceListIds : [purchaseListId];
+  const taskId = source?.id || item.sourcePackItemIds[0] || item.id;
+  const taskState = taskStates.get(taskId) || taskStates.get(item.id) || "task";
+  return {
+    id: taskId,
+    packingItemId: item.id,
+    sourceItemId: source?.id || "",
+    name: source?.appName || item.name,
+    listPlan: "purchase_onsite",
+    listPlanLabel: "purchase_onsite",
+    taskState,
+    done: taskState === "done",
+    packListIds: taskListIds,
+    packListLabels: taskListIds.map((id) => packListLookup.get(id)?.label || "").filter(Boolean),
+    purchaseListId,
+    vendorIds: source?.vendorIds || [],
+    placeIds: source?.placeIds || [],
+    placeLabels: source?.placeLabels || [],
+    localTags: source?.localTags || [],
+    note: item.notes || source?.note || "",
+    longDescription: source?.longDescription || item.notes || ""
+  };
+}
+
+function mergeTaskRows(...groups) {
+  const rowsById = new Map();
+  for (const row of groups.flat()) {
+    if (!row?.id) continue;
+    rowsById.set(row.id, {
+      ...(rowsById.get(row.id) || {}),
+      ...row
+    });
+  }
+  return [...rowsById.values()];
 }
 
 function buildOnsiteListSummaries(tasks, packListLookup, purchaseList) {
@@ -2816,6 +2880,7 @@ function normalizeRosterHorse(record) {
   return {
     id: record.id,
     name: stringField(fields.barn_name || fields.horse || fields.show_name),
+    barnName: stringField(fields.barn_name || fields.horse),
     showName: stringField(fields.show_name || fields.horse),
     recordState,
     active: recordState === "active",
@@ -3075,6 +3140,14 @@ function horseMemberAuditRow(member, sourceItem, eventCount, safeToRemove, horse
 
 function isSatisfied(item) {
   return item.packState === "packed" || !!item.resolutionState;
+}
+
+function isPurchaseOnsiteItem(item) {
+  return item?.resolutionState === "purchase_onsite";
+}
+
+function isUnresolvedItem(item) {
+  return item?.resolutionState === "note" || item?.resolutionState === "unresolved";
 }
 
 function progressPercent(done, rows) {

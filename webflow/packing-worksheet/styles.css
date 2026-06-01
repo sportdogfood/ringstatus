@@ -80,6 +80,7 @@ body {
     --lp-active-classes: #8f1116;
     --rsa-min-viewport: 393px;
     --rsa-max-viewport: 840px;
+    --rsa-page-pad-top: 16px;
     --rsa-pad-x: clamp(8px, 2.5vw, 16px);
     --rsa-action-min: clamp(42px, 7vw, 50px);
     --rsa-row-min: clamp(42px, 7vw, 48px);
@@ -3111,6 +3112,19 @@ body {
   gap: 0;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block.is-flex-h {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  width: 100%;
+  gap: 6px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-quantity-block.is-flex-h.has-open-action {
+  min-height: 40px;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2 {
   text-align: center;
   background-color: #fff;
@@ -3377,6 +3391,7 @@ body {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard-block {
   overflow: visible;
+  padding-top: var(--rsa-page-pad-top);
   padding-inline: 6px;
 }
 
@@ -3486,6 +3501,17 @@ body {
   overflow: visible;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard-container,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-dashboard-block,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-main-grid,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-main-grid > *,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-lists-module,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-content,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-body {
+  overflow: visible;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head {
   position: -webkit-sticky;
   position: sticky;
@@ -3567,7 +3593,7 @@ body {
   background: #fff;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.is-text-filter .rs-tab-link {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.is-text-filter .rs-text-link {
   min-width: 0;
   width: auto;
   height: 32px;
@@ -3578,7 +3604,7 @@ body {
   color: #25364e;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.is-text-filter .rs-tab-link.is-active {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.is-text-filter .rs-text-link.is-active {
   color: #0e1726;
   background: transparent;
   text-decoration: underline;
@@ -4958,21 +4984,29 @@ a.rsa-item-row-2 {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-place-overview-list {
-  display: grid;
   width: 100%;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal {
+  display: block;
+  min-height: 50px;
+  padding: 0;
   border-bottom: 1px solid #e1e6f0;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-row {
-  min-height: 56px;
-  padding: 8px 10px;
-  border-bottom: 1px solid #e1e6f0;
-  grid-template-columns: minmax(96px, 0.35fr) minmax(0, 0.65fr);
-  align-items: start;
-}
-
-:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-row:last-child {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal:last-child {
   border-bottom: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal .rsa-item-block-left {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal .rsa-item-block-right {
+  display: none;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-place-label {
@@ -4983,7 +5017,7 @@ a.rsa-item-row-2 {
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-place-value,
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-place-value-link {
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   line-height: 20px;
 }
 

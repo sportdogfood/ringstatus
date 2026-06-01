@@ -1,9 +1,13 @@
-<div id="wec-packing-print" data-rs-build="443f83cfbf6a1607b5fefe96f840ab6637df94ac">Loading WEC print...</div>
+<div id="wec-packing-print">Loading WEC print...</div>
 
 <script>
   (function () {
     var root = document.getElementById("wec-packing-print");
-    var assetVersion = root && root.dataset.rsBuild ? root.dataset.rsBuild : "443f83cfbf6a1607b5fefe96f840ab6637df94ac";
+    var assetVersion = root && root.dataset.rsBuild ? root.dataset.rsBuild.trim() : "";
+    if (!root || !assetVersion) {
+      if (root) root.textContent = "Missing data-rs-build on #wec-packing-print.";
+      return;
+    }
     var cacheKey = "wec-print-20260601-" + assetVersion;
     var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
 

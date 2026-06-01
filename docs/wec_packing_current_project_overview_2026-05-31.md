@@ -417,6 +417,14 @@ Styling:
 - Redesign locale/place modal cards using the approved modal pattern and existing RSA class contract.
 - Remove any remaining style rules that are acting as shims instead of combos on locked classes.
 
+Class system guardrail:
+
+- Reuse the approved stacked block model: `rsa-padding`, `rsa-item-row-2`, `rsa-item-block-left`, `rsa-item-block-right`, `rs-quantity-block`, `rsa-table-label`, `rs-tab-link`, `rs-text-link`, and `rsa-comment-panel`.
+- Typography stays on approved text classes such as `rsa-H1`, `rsa-H5`, `rsa-p`, `rsa-text`, `is-xs`, `is-xxs`, `is-line-item`, `is-number`, `is-inline-edit`, and `is-inline-input`.
+- Combo classes such as `is-active`, `is-open`, `is-hidden`, `is-caps`, `is-grid2`, `is-flex-h`, `is-modal`, and `is-block` may only make scoped adjustments to the base classes.
+- Do not add empty grid cells to satisfy an old layout. If a row only needs an action such as `OPEN`, use `rs-quantity-block is-flex-h`.
+- Modal content uses the same stacked row/block primitives as the main page; use `is-modal` or `is-block` rather than creating a new table/grid model.
+
 WEC app isolation:
 
 - Treat this app as WEC/packing only: Webflow pages are `rswp`, optional short staging is `rswp2`, and print is `rswp-print`.
@@ -442,6 +450,14 @@ Current mitigation: `wec-packing-webflow-embed.html` now includes `rsa-styleshee
 ### jsDelivr returns 404 for a new pinned commit
 
 Cause: new commit has not reached jsDelivr or stale 404 is cached.
+
+Embed build rule:
+
+- Webflow owns the root element custom attribute.
+- Main page root: `#packing-app` with `data-rs-build="COMMIT_SHA"`.
+- Print page root: `#wec-packing-print` with `data-rs-build="COMMIT_SHA"`.
+- The embed script must read `root.dataset.rsBuild`; do not hardcode a fallback commit in JS.
+- If `data-rs-build` is missing, the embed should fail visibly instead of loading stale assets.
 
 Check:
 
