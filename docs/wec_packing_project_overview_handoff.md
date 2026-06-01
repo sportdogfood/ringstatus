@@ -826,7 +826,7 @@ For each action, verify:
 
 ### WEC app isolation
 
-- Treat this app as WEC/RSWS only: production page `rsws`, optional short staging page `rsws2`, and print page `rsws_print`.
+- Treat this app as WEC/packing only: production page `rswp`, optional short staging page `rswp2`, and print page `rswp-print`.
 - Keep WEC runtime work out of `webflow/hps/hps.js`; HPS is a separate app and can change independently.
 - Do not use HPS, LPS, or LP frontend files as the WEC implementation source. WEC frontend changes belong in `webflow/packing-worksheet/wec-packing.js`, WEC embed files, WEC print files, and WEC Webflow Cloud routes.
 - Audit legacy shared selector scope before changing it. New WEC behavior should be scoped under `#packing-app` unless the owner explicitly approves a shared base CSS change.

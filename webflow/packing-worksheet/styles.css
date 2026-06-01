@@ -3131,7 +3131,8 @@ body {
   font-weight: 500;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link {
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3312,7 +3313,8 @@ body {
   gap: 12px;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link-2 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3326,7 +3328,8 @@ body {
   color: #25364e;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link.is-active {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link.is-active,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link-2.is-active {
   color: #25364e;
   background: transparent;
   border: 0;
@@ -3653,7 +3656,8 @@ a.rsa-item-row-2 {
   height: 100%;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link,
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link-2 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3838,6 +3842,7 @@ a.rsa-item-row-2 {
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-table-title,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer,
@@ -3857,6 +3862,7 @@ a.rsa-item-row-2 {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer {

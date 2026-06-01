@@ -20,9 +20,9 @@ embed commit: local embed file points to 15d27bc assets
 Current Webflow pages:
 
 ```text
-rsws        production page
-rsws2       short staging/safety page when needed
-rsws_print  dedicated print page embed
+rswp        production page
+rswp2       short staging/safety page when needed
+rswp-print  dedicated print page embed
 ```
 
 Current important behavior:
@@ -49,7 +49,7 @@ Use this full embed. It includes the locked RSA/Webflow CSS file copied from the
     actionUrl: "https://ringstatus.com/test/wec-packing/action",
     healthUrl: "https://ringstatus.com/test/wec-packing/health",
     printUrl: "https://ringstatus.com/test/wec-packing/print",
-    printPageUrl: "https://ringstatus.com/rsws_print",
+    printPageUrl: "https://ringstatus.com/rswp-print",
     pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
     showId: "",
     packWaveId: "",
@@ -419,7 +419,7 @@ Styling:
 
 WEC app isolation:
 
-- Treat this app as WEC/RSWS only: Webflow pages are `rsws`, optional short staging is `rsws2`, and print is `rsws_print`.
+- Treat this app as WEC/packing only: Webflow pages are `rswp`, optional short staging is `rswp2`, and print is `rswp-print`.
 - Keep WEC runtime work out of `webflow/hps/hps.js`; HPS is a separate app and may evolve independently.
 - Do not use HPS, LPS, or LP frontend code as the WEC implementation source. WEC changes belong in `webflow/packing-worksheet/wec-packing.js`, WEC embed files, WEC print files, and WEC Webflow Cloud routes only.
 - Audit legacy shared selectors such as `:is(#packing-app, #tack-horses-app, #hps-app)` before changing them. New WEC-specific behavior should be scoped to `#packing-app` unless an explicitly approved shared base rule is being changed.
