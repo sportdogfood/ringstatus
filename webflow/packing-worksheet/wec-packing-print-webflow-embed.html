@@ -1,15 +1,31 @@
-<div id="wec-packing-print">Loading WEC print...</div>
+<div id="wec-packing-print" data-rs-print-version="443f83c">Loading WEC print...</div>
 
 <script>
-  window.WEC_PACKING_PRINT_CONFIG = {
-    apiUrl: "https://ringstatus.com/test/wec-packing/print"
-  };
+  (function () {
+    var root = document.getElementById("wec-packing-print");
+    var assetVersion = root && root.dataset.rsPrintVersion ? root.dataset.rsPrintVersion : "443f83c";
+    var cacheKey = "wec-print-20260601-" + assetVersion;
+    var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
+
+    window.WEC_PACKING_PRINT_CONFIG = {
+      apiUrl: "https://ringstatus.com/test/wec-packing/print"
+    };
+
+    function addStyle(href) {
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+
+    function addScript(src) {
+      var script = document.createElement("script");
+      script.src = src;
+      document.head.appendChild(script);
+    }
+
+    addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+    addStyle(assetBase + "/wec-packing-print.css?v=" + cacheKey);
+    addScript(assetBase + "/wec-packing-print.js?v=" + cacheKey);
+  })();
 </script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@443f83c/webflow/packing-worksheet/wec-packing-print.css?v=wec-print-20260601-443f83c">
-<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@443f83c/webflow/packing-worksheet/wec-packing-print.js?v=wec-print-20260601-443f83c"></script>
-

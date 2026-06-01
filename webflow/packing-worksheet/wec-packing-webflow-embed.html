@@ -1,27 +1,44 @@
-<div id="packing-app">Loading WEC packing...</div>
+<div id="packing-app" data-rs-asset-version="36a9960">Loading WEC packing...</div>
 
 <script>
-  window.WEC_PACKING_CONFIG = {
-    mode: "edit",
-    apiUrl: "https://ringstatus.com/test/wec-packing",
-    stateUrl: "https://ringstatus.com/test/wec-packing/state",
-    actionUrl: "https://ringstatus.com/test/wec-packing/action",
-    healthUrl: "https://ringstatus.com/test/wec-packing/health",
-    printUrl: "https://ringstatus.com/test/wec-packing/print",
-    printPageUrl: "https://ringstatus.com/rsws_print",
-    pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
-    showId: "",
-    packWaveId: "",
-    packWaveKey: "wave_one",
-    enableHorseNotNeeded: false
-  };
+  (function () {
+    var root = document.getElementById("packing-app");
+    var assetVersion = root && root.dataset.rsAssetVersion ? root.dataset.rsAssetVersion : "36a9960";
+    var cacheKey = "wec-20260601-" + assetVersion;
+    var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
+
+    window.WEC_PACKING_CONFIG = {
+      mode: "edit",
+      apiUrl: "https://ringstatus.com/test/wec-packing",
+      stateUrl: "https://ringstatus.com/test/wec-packing/state",
+      actionUrl: "https://ringstatus.com/test/wec-packing/action",
+      healthUrl: "https://ringstatus.com/test/wec-packing/health",
+      printUrl: "https://ringstatus.com/test/wec-packing/print",
+      printPageUrl: "https://ringstatus.com/rswp-print",
+      pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
+      showId: "",
+      packWaveId: "",
+      packWaveKey: "wave_one",
+      enableHorseNotNeeded: false
+    };
+
+    function addStyle(href) {
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+
+    function addScript(src) {
+      var script = document.createElement("script");
+      script.src = src;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+
+    addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+    addStyle(assetBase + "/rsa-stylesheets.locked.css?v=" + cacheKey);
+    addStyle(assetBase + "/styles.css?v=" + cacheKey);
+    addScript(assetBase + "/wec-packing.js?v=" + cacheKey);
+  })();
 </script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@e96ff82/webflow/packing-worksheet/rsa-stylesheets.locked.css?v=wec-20260601-e96ff82">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@e96ff82/webflow/packing-worksheet/styles.css?v=wec-20260601-e96ff82">
-<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@e96ff82/webflow/packing-worksheet/wec-packing.js?v=wec-20260601-e96ff82" defer></script>
-
