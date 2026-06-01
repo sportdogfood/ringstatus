@@ -47,6 +47,7 @@
   };
 
   root.classList.toggle("is-edit-mode", config.mode === "edit");
+  root.addEventListener("pointerup", handlePointerUp);
   root.addEventListener("click", handleClick);
   root.addEventListener("input", handleInput);
   window.addEventListener("online", () => retryFailedActions({ silent: false }));
@@ -252,21 +253,7 @@
     const overviewList = event.target.closest("[data-overview-list]");
     if (overviewList) {
       event.preventDefault();
-      const listId = overviewList.dataset.overviewList || "";
-      const summary = activeLaneListById(listId);
-      const detail = activeListDetailById(listId);
-      state.activeTab = "overview";
-      state.detailType = "";
-      state.detailId = "";
-      if (summary?.lane || detail?.lane) state.filterByList.overview = summary?.lane || detail?.lane;
-      if (summary?.homeModuleId) {
-        state.activeHomeModule = summary.homeModuleId;
-        state.activeOverviewListId = "";
-      } else {
-        state.activeHomeModule = "";
-        state.activeOverviewListId = listId;
-      }
-      render();
+      openOverviewList(overviewList.dataset.overviewList || "");
       return;
     }
 
@@ -407,6 +394,36 @@
       state.detailId = item.dataset.itemId;
       renderDetail();
     }
+  }
+
+  function handlePointerUp(event) {
+    if (event.target.closest("a, button, input, textarea, [data-rsa-filter], [data-rsa-toggle], [data-rsa-sort], [data-list-switch]")) return;
+    const placeDetail = event.target.closest("[data-place-detail]");
+    if (placeDetail) {
+      state.detailType = "place";
+      state.detailId = placeDetail.dataset.placeDetail;
+      renderDetail();
+      return;
+    }
+    const overviewList = event.target.closest("[data-overview-list]");
+    if (overviewList) openOverviewList(overviewList.dataset.overviewList || "");
+  }
+
+  function openOverviewList(listId) {
+    const summary = activeLaneListById(listId);
+    const detail = activeListDetailById(listId);
+    state.activeTab = "overview";
+    state.detailType = "";
+    state.detailId = "";
+    if (summary?.lane || detail?.lane) state.filterByList.overview = summary?.lane || detail?.lane;
+    if (summary?.homeModuleId) {
+      state.activeHomeModule = summary.homeModuleId;
+      state.activeOverviewListId = "";
+    } else {
+      state.activeHomeModule = "";
+      state.activeOverviewListId = listId;
+    }
+    render();
   }
 
   function handleInput(event) {
