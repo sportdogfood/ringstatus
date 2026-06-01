@@ -1,0 +1,196 @@
+:root {
+  --hps-proof-sheet-w: 8.5in;
+  --hps-proof-sheet-h: 11in;
+  --hps-proof-top: 0.15in;
+  --hps-proof-right: 0.15in;
+  --hps-proof-card-w: 5.5in;
+  --hps-proof-card-h: 3.75in;
+  --hps-proof-frame: #a9cdf2;
+  --hps-proof-frame-pad: 0.18in;
+  --hps-proof-bg: #ffffff;
+  --hps-proof-fg: #111111;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--hps-proof-fg);
+}
+
+#hps-print-proof {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.hps-proof-sheet {
+  position: relative;
+  width: var(--hps-proof-sheet-w);
+  height: var(--hps-proof-sheet-h);
+  background: #ffffff;
+}
+
+.hps-proof-page {
+  position: absolute;
+  top: var(--hps-proof-top);
+  right: var(--hps-proof-right);
+  width: var(--hps-proof-card-w);
+  height: var(--hps-proof-card-h);
+  padding: var(--hps-proof-frame-pad);
+  background: var(--hps-proof-frame);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.hps-proof-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0.20in 0.20in 0.16in;
+  background: var(--hps-proof-bg);
+  color: var(--hps-proof-fg);
+  text-align: center;
+}
+
+.hps-proof-logo {
+  display: grid;
+  height: 0.50in;
+  margin-top: 0.02in;
+  place-items: center;
+}
+
+.hps-proof-logo img {
+  display: block;
+  width: auto;
+  height: 48px;
+}
+
+.hps-proof-main {
+  margin-top: 0.06in;
+}
+
+.hps-proof-barn,
+.hps-proof-show,
+.hps-proof-meta {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+.hps-proof-barn {
+  font-size: 42pt;
+  line-height: 1.02;
+}
+
+.hps-proof-show {
+  margin-top: 0.06in;
+  font-size: 16pt;
+  line-height: 1.1;
+}
+
+.hps-proof-meta {
+  margin-top: 0.10in;
+  font-size: 14pt;
+  line-height: 1.1;
+}
+
+.hps-proof-emergency {
+  margin-top: auto;
+  padding-top: 0.10in;
+}
+
+.hps-proof-em-label,
+.hps-proof-em-name,
+.hps-proof-em-phone {
+  font-family: "Avenir Next", Avenir, Helvetica, Arial, sans-serif;
+}
+
+.hps-proof-em-label {
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.hps-proof-em-name,
+.hps-proof-em-phone {
+  margin-top: 0.06in;
+  font-size: 12pt;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.hps-proof-em-phone {
+  margin-top: 0.04in;
+}
+
+.hps-proof-calibration {
+  position: absolute;
+  left: 0.25in;
+  top: 0.25in;
+  display: none;
+  width: 2.8in;
+  padding: 0.08in;
+  border: 1px solid #111111;
+  color: #111111;
+  font: 700 9pt/1.25 Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.hps-proof-sheet.is-calibration .hps-proof-calibration {
+  display: block;
+}
+
+.hps-proof-sheet.is-calibration .hps-proof-page::before {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #111111;
+  content: "";
+  pointer-events: none;
+}
+
+.hps-proof-sheet.is-calibration .hps-proof-page::after {
+  position: absolute;
+  right: 0;
+  bottom: -0.24in;
+  color: #111111;
+  content: "outer border must measure 5.5in x 3.75in";
+  font: 700 8pt/1 Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.hps-proof-message {
+  padding: 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+@media print {
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: var(--hps-proof-sheet-w);
+    height: var(--hps-proof-sheet-h);
+    margin: 0;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  #hps-print-proof {
+    display: block;
+    width: var(--hps-proof-sheet-w);
+    height: var(--hps-proof-sheet-h);
+    min-height: 0;
+    padding: 0;
+  }
+}
