@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>WEC Packing Print</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./wec-packing-print.css">
+  </head>
+  <body>
+    <div id="wec-packing-print">Loading WEC print...</div>
+
+    <script>
+      window.WEC_PACKING_PRINT_CONFIG = {
+        apiUrl: "http://127.0.0.1:4331/wec-packing/print"
+      };
+    </script>
+    <script src="./wec-packing-print.js"></script>
+  </body>
+</html>

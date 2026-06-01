@@ -1,0 +1,22 @@
+#wec-packing-print {
+  min-height: 100vh;
+}
+
+.wec-print-message {
+  padding: 24px;
+  color: #172a41;
+  font-family: Outfit, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+@media print {
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  .wec-print-message {
+    display: none;
+  }
+}

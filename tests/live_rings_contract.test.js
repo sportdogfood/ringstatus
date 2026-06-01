@@ -213,7 +213,7 @@ assert.ok(
 );
 assert.ok(
   orchestrator.includes('DEFAULT_LIVE_RINGS_SLOTS = "A,B,C,D"') &&
-    orchestrator.includes('runNodeScript("live_rings_daily.js")'),
+    /run(?:Node|Due)Script\("live_rings_daily\.js"\)/.test(orchestrator),
   "heartbeat orchestrator must run live_rings_daily on DAY slots"
 );
 assert.ok(

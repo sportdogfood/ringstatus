@@ -3480,6 +3480,9 @@ body {
 }
 
 #packing-app .rsa-list-action-menu {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
   min-height: var(--rsa-action-min);
   height: auto;
   max-height: none;

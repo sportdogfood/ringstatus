@@ -146,9 +146,10 @@ export async function stateReport(airtable, requestUrl) {
   }
 
   const tables = context.tables;
-  const [waves, packLists, homePackLists, sourcePackItems, purchaseOnsiteItems, worksheetItems, worksheetHorses, horses, listPlans, packingEvents, packingComments, places, placeTags] = await Promise.all([
+  const [waves, packLists, activePackLists, homePackLists, sourcePackItems, purchaseOnsiteItems, worksheetItems, worksheetHorses, horses, listPlans, packingEvents, packingComments, places, placeTags] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_pack_lists.id, tables.wec_pack_lists.view),
+    listOptionalViewRecords(airtable, tables.wec_pack_lists.id, "active"),
     listOptionalViewRecords(airtable, tables.wec_pack_lists.id, "wec_home"),
     listAirtableRecords(airtable, tables.wec_pack_items.id, tables.wec_pack_items.view),
     listOptionalViewRecords(airtable, tables.wec_pack_items.id, "wec_purchase_onsite"),
@@ -177,12 +178,18 @@ export async function stateReport(airtable, requestUrl) {
   const normalizedPackLists = packLists
     .filter((record) => !record.fields?.ignore)
     .map(normalizePackList)
+    .filter(isPackingListLane)
     .sort(comparePackLists);
   const normalizedHomeLists = homePackLists
     .filter((record) => !record.fields?.ignore)
     .map(normalizePackList)
     .sort(comparePackLists);
-  const packListLookup = new Map([...normalizedPackLists, ...normalizedHomeLists].map((list) => [list.id, list]));
+  const normalizedActiveLists = activePackLists
+    .filter((record) => !record.fields?.ignore)
+    .map(normalizePackList)
+    .sort(comparePackLists);
+  const activeTaskLists = normalizedActiveLists.filter((list) => list.lane === "task_lists");
+  const packListLookup = new Map([...normalizedPackLists, ...normalizedHomeLists, ...normalizedActiveLists].map((list) => [list.id, list]));
   const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
     const item = decorateSourcePackItem(normalizeSourcePackItem(record, listPlanLookup), placeLookup);
     return [item.id, item];
@@ -217,7 +224,7 @@ export async function stateReport(airtable, requestUrl) {
   const lists = buildListSummaries(items, normalizedPackLists);
   const tabGroups = buildTabSummaries(lists);
   const homeModules = buildHomeModules({
-    homeLists: normalizedHomeLists,
+    homeLists: normalizedHomeLists.length ? normalizedHomeLists : activeTaskLists,
     purchaseOnsiteItems,
     listPlanLookup,
     placeLookup,
@@ -225,6 +232,18 @@ export async function stateReport(airtable, requestUrl) {
     packingEvents,
     selectedShowId,
     selectedWaveId: selectedWave?.id || ""
+  });
+  const activeListLanes = buildActiveListLanes(normalizedActiveLists, {
+    homeModules,
+    lists,
+    items
+  });
+  const activeListDetails = await buildActiveListDetails(airtable, tables, normalizedActiveLists, {
+    normalizedPackLists,
+    sourcePackItemLookup,
+    listPlanLookup,
+    placeTagLookup,
+    items
   });
   const commentFilter = {
     selectedWaveId: selectedWave?.id || "",
@@ -257,6 +276,8 @@ export async function stateReport(airtable, requestUrl) {
     horses: normalizedHorses,
     lists,
     tabGroups,
+    activeListLanes,
+    activeListDetails,
     homeModules,
     sections: lists.map((list) => ({
       section: list.id,
@@ -268,6 +289,7 @@ export async function stateReport(airtable, requestUrl) {
     counts: {
       waves: waves.length,
       packLists: normalizedPackLists.length,
+      activePackLists: normalizedActiveLists.length,
       homePackLists: normalizedHomeLists.length,
       purchaseOnsiteItems: purchaseOnsiteItems.length,
       sourcePackItems: sourcePackItems.length,
@@ -304,6 +326,158 @@ function buildHomeModules({ homeLists, purchaseOnsiteItems, listPlanLookup, plac
     lists,
     tasks: rows
   }];
+}
+
+function buildActiveListLanes(activeLists, { homeModules, lists, items }) {
+  const laneGroups = new Map();
+  const homeModuleLookup = new Map((homeModules || []).map((module) => [slugify(module.id || module.label), module]));
+  const listLookup = new Map((lists || []).map((list) => [list.id, list]));
+  const openItems = (items || []).filter((item) => !isSatisfied(item));
+
+  for (const list of activeLists || []) {
+    const lane = list.lane || "unassigned";
+    const group = laneGroups.get(lane) || {
+      id: lane,
+      lane,
+      label: activeLaneLabel(lane),
+      lists: []
+    };
+    const key = slugify(list.key || list.label);
+    const module = homeModuleLookup.get(key);
+    const worksheetList = listLookup.get(list.id);
+    const isUnresolved = key === "unresolved" || key === "open";
+    const rows = module?.rows ?? worksheetList?.rows ?? (isUnresolved ? openItems.length : list.itemCount);
+    const done = module?.done ?? worksheetList?.done ?? 0;
+    const open = module?.open ?? worksheetList?.open ?? (isUnresolved ? openItems.length : Math.max(0, rows - done));
+    group.lists.push({
+      id: list.id,
+      key: list.key,
+      lane,
+      label: list.displayLabel || list.listLabel || list.label,
+      list: list.label,
+      listLabel: list.listLabel,
+      displayLabel: list.displayLabel,
+      sourceTable: list.sourceTable,
+      sourceView: list.sourceView,
+      localLists: list.localLists,
+      allowed: list.allowed,
+      tabs: list.tabs,
+      rows,
+      done,
+      open,
+      homeModuleId: module?.id || "",
+      printTarget: module ? `home:${module.id}` : worksheetList ? list.id : ""
+    });
+    laneGroups.set(lane, group);
+  }
+
+  return [...laneGroups.values()].sort((a, b) => {
+    const order = activeLaneOrder(a.lane) - activeLaneOrder(b.lane);
+    if (order) return order;
+    return a.label.localeCompare(b.label, undefined, { sensitivity: "base" });
+  }).map((group) => ({
+    ...group,
+    lists: group.lists.sort(comparePackLists)
+  }));
+}
+
+async function buildActiveListDetails(airtable, tables, activeLists, { normalizedPackLists, sourcePackItemLookup, listPlanLookup, placeTagLookup, items }) {
+  const details = await Promise.all((activeLists || []).map(async (list) => {
+    let rows = [];
+    if (list.sourceTable === "wec_places" && tables.wec_places?.id) {
+      const view = activeListSourceView(list);
+      const records = view
+        ? await listOptionalViewRecords(airtable, tables.wec_places.id, view)
+        : await listOptionalRecords(airtable, tables.wec_places);
+      rows = records.map((record) => placeDetailRow(normalizePlace(record, placeTagLookup)));
+    } else if (list.key === "list_labels") {
+      rows = (normalizedPackLists || []).map(packListDetailRow);
+    } else if (list.key === "item_labels") {
+      rows = [...(sourcePackItemLookup?.values?.() || [])].map(sourceItemDetailRow);
+    } else if (list.key === "unresolved") {
+      rows = (items || []).filter((item) => !isSatisfied(item)).map(itemDetailRow);
+    }
+    return {
+      id: list.id,
+      key: list.key,
+      lane: list.lane,
+      label: list.displayLabel || list.listLabel || list.label,
+      sourceTable: list.sourceTable,
+      sourceView: activeListSourceView(list),
+      rows: rows.sort(compareDetailRows)
+    };
+  }));
+  return details;
+}
+
+function activeListSourceView(list) {
+  if (list.sourceView) return list.sourceView;
+  if (list.sourceTable === "wec_places" && list.key?.startsWith("places_")) return list.key.replace(/^places_/, "");
+  return "";
+}
+
+function placeDetailRow(place) {
+  return {
+    id: place.id,
+    type: "place",
+    label: place.label,
+    meta: place.localTags.join(", ") || place.placeType,
+    phone: place.phone,
+    website: place.website,
+    mapsUrl: place.mapsUrl
+  };
+}
+
+function packListDetailRow(list) {
+  return {
+    id: list.id,
+    type: "list",
+    label: list.displayLabel || list.listLabel || list.label,
+    meta: [list.tabs?.join(", "), list.longDescription || list.shortDescription].filter(Boolean).join(" | ")
+  };
+}
+
+function sourceItemDetailRow(item) {
+  return {
+    id: item.id,
+    type: "source_item",
+    label: displayLabel(item.appName || item.name || item.id),
+    meta: [item.listPlanLabel, item.longDescription].filter(Boolean).join(" | ")
+  };
+}
+
+function itemDetailRow(item) {
+  return {
+    id: item.id,
+    type: "item",
+    label: displayLabel(item.name || item.itemId || item.id),
+    meta: [item.location, item.listPlanLabel].filter(Boolean).join(" | ")
+  };
+}
+
+function compareDetailRows(a, b) {
+  return displayLabel(a.label || "").localeCompare(displayLabel(b.label || ""), undefined, { sensitivity: "base" })
+    || String(a.id || "").localeCompare(String(b.id || ""), undefined, { sensitivity: "base" });
+}
+
+function activeLaneLabel(lane) {
+  if (lane === "task_lists") return "Item Tasks";
+  if (lane === "custom") return "Custom";
+  if (lane === "locale") return "Locale";
+  if (lane === "pack_lists") return "Pack Lists";
+  if (lane === "search") return "Search";
+  return displayLabel(lane);
+}
+
+function activeLaneOrder(lane) {
+  const order = {
+    pack_lists: 10,
+    task_lists: 20,
+    custom: 30,
+    locale: 40,
+    search: 50
+  };
+  return order[lane] || 100;
 }
 
 function commentsFromEvents(events, { selectedWaveId, itemIds } = {}) {
@@ -1137,6 +1311,7 @@ export async function reconcileReport(airtable, requestUrl) {
   const normalizedPackLists = packLists
     .filter((record) => !record.fields?.ignore)
     .map(normalizePackList)
+    .filter(isPackingListLane)
     .sort(comparePackLists);
   const packListLookup = new Map(normalizedPackLists.map((list) => [list.id, list]));
   const sourcePackItemLookup = new Map(sourcePackItems.map((record) => {
@@ -2130,14 +2305,27 @@ function normalizePackList(record) {
   return {
     id: record.id,
     key: slugify(label),
+    lane: slugify(fields.lane),
     label,
+    listLabel: stringField(fields.list_label),
+    displayLabel: stringField(fields.display_label),
     tabs,
     tabKey: slugify(tabs[0] || label),
     tabLabel: tabs[0] || label,
     shortDescription: stringField(fields.short_description),
     longDescription: stringField(fields.long_description),
-    itemCount: numberField(fields.list_items_count)
+    itemCount: numberField(fields.count_wec_pack_items ?? fields.list_items_count),
+    sourceTable: stringField(fields.source_table),
+    sourceView: stringField(fields.source_view),
+    localLists: !!fields.local_lists,
+    allowed: !!fields.wec_allowed,
+    includeOnHome: !!fields.include_on_home,
+    display: fields.display !== false
   };
+}
+
+function isPackingListLane(list) {
+  return !list.lane || list.lane === "pack_lists";
 }
 
 function normalizeListPlan(record) {

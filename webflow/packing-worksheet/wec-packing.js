@@ -8,6 +8,10 @@
     ? "https://ringstatus.com/test/wec-packing"
     : "https://ringstatus.webflow.io/test/wec-packing";
   const apiBaseUrl = String(config.apiBaseUrl || defaultApiBaseUrl).replace(/\/$/, "");
+  const defaultPrintPageUrl = ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname)
+    ? "./wec-packing-print-preview.html"
+    : "https://ringstatus.com/wec-packing-print";
+  const printPageUrl = String(config.printPageUrl || defaultPrintPageUrl).trim();
   const pdfWorkerUrl = String(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/").trim();
   const failedActionStorageKey = "wecPackingFailedActions:v1";
   const state = {
@@ -21,6 +25,7 @@
     detailId: "",
     didSetInitialTab: false,
     activeHomeModule: "",
+    activeOverviewListId: "",
     activeListByTab: {},
     searchBySection: {},
     activeToolByList: {},
@@ -236,9 +241,29 @@
     if (homeModule) {
       event.preventDefault();
       state.activeHomeModule = homeModule.dataset.homeModule;
+      state.activeOverviewListId = "";
       state.activeTab = "overview";
       state.detailType = "";
       state.detailId = "";
+      render();
+      return;
+    }
+
+    const overviewList = event.target.closest("[data-overview-list]");
+    if (overviewList) {
+      event.preventDefault();
+      const listId = overviewList.dataset.overviewList || "";
+      const summary = activeLaneListById(listId);
+      state.activeTab = "overview";
+      state.detailType = "";
+      state.detailId = "";
+      if (summary?.homeModuleId) {
+        state.activeHomeModule = summary.homeModuleId;
+        state.activeOverviewListId = "";
+      } else {
+        state.activeHomeModule = "";
+        state.activeOverviewListId = listId;
+      }
       render();
       return;
     }
@@ -275,6 +300,10 @@
       event.preventDefault();
       const key = filterToggle.dataset.rsaScope || state.activeTab || "overview";
       state.filterByList[key] = filterToggle.dataset.rsaFilter || "all";
+      if (key === "overview") {
+        state.activeHomeModule = "";
+        state.activeOverviewListId = "";
+      }
       render();
       return;
     }
@@ -339,6 +368,7 @@
     if (tab) {
       state.activeTab = tab.dataset.tab;
       if (state.activeTab === "overview") state.activeHomeModule = "";
+      if (state.activeTab === "overview") state.activeOverviewListId = "";
       state.detailType = "";
       state.detailId = "";
       render();
@@ -1182,24 +1212,30 @@
 
   function rsaOverviewHtml() {
     if (state.activeHomeModule) return rsaHomeModuleHtml(state.activeHomeModule);
+    if (state.activeOverviewListId) return rsaOverviewListDetailHtml(state.activeOverviewListId);
     const mode = overviewFilterMode();
-    const rows = mode === "approved"
-      ? filterRows(homeModuleSummaries(), "overview", overviewSearchText)
+    const laneMode = activeLaneRows(mode);
+    const rows = laneMode
+      ? filterRows(laneMode, "overview", overviewSearchText)
       : mode === "search_list"
         ? sortTableRows(sortItemsByName(filterRows(items(), "overview", itemSearchText)), "overview")
         : filterRows(tabGroups(), "overview", overviewSearchText);
-    const rowsHtml = mode === "search_list"
+    const rowsHtml = laneMode
+      ? rows.map(rsaLaneRowHtml).join("")
+      : mode === "search_list"
       ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, "overview")).join("")
       : rows.map(rsaOverviewRowHtml).join("");
+    const isLaneMode = !!laneMode;
     return rsaPanelShellHtml(rsaDataModuleHtml({
-      title: currentWaveLabel(),
+      title: overviewModeLabel(mode),
       printTarget: "overview",
       searchKey: "overview",
       filterKey: "overview",
       commentScope: rsaCommentScope("wave", currentWaveId() || "wave", currentWaveLabel()),
       rowsHtml: rows.length ? rowsHtml : rsaEmptyTableRowHtml("No rows"),
       tableLabel: mode === "search_list" ? "item" : "list",
-      tableActionLabel: mode === "search_list" ? "input" : "print",
+      tableActionLabel: mode === "search_list" ? "input" : isLaneMode ? "open" : "print",
+      tableMetricLabels: isLaneMode ? ["", "", ""] : undefined,
       showFilter: false,
       headerFilter: false,
       headerSearch: false,
@@ -1228,6 +1264,37 @@
         rsaListSwitcherHtml(module.id, moduleLists, activeList?.id || "")
       )}
     `;
+  }
+
+  function rsaOverviewListDetailHtml(listId) {
+    const summary = activeLaneListById(listId);
+    if (!summary) {
+      state.activeOverviewListId = "";
+      return rsaOverviewHtml();
+    }
+    if (summary.homeModuleId) return rsaHomeModuleHtml(summary.homeModuleId);
+
+    const rows = overviewListDetailRows(summary);
+    const searchKey = `overview:${summary.id}`;
+    const filteredRows = filterRows(rows, searchKey, overviewDetailSearchText);
+    const rowsHtml = summary.key === "unresolved"
+      ? filteredRows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, "overview")).join("")
+      : filteredRows.map(rsaSimpleDetailRowHtml).join("");
+    return rsaPanelShellHtml(rsaDataModuleHtml({
+      title: summary.label || "List",
+      printTarget: summary.printTarget || "overview",
+      searchKey,
+      filterKey: searchKey,
+      commentScope: rsaCommentScope("section", summary.id, summary.label || "List"),
+      rowsHtml: filteredRows.length ? rowsHtml : rsaEmptyTableRowHtml("No rows"),
+      tableLabel: detailTableLabel(summary),
+      tableActionLabel: detailTableActionLabel(summary),
+      tableMetricLabels: detailTableMetricLabels(summary),
+      showFilter: false,
+      headerFilter: false,
+      headerSearch: true,
+      headerPrint: false
+    }), rsaFilterHtml("overview", true, overviewFilterOptions(), { printTarget: "overview" }));
   }
 
   function rsaTabGroupHtml(tabId) {
@@ -1348,7 +1415,7 @@
     return `<div class="rs-quantity-block-2 is-grid4 ${extraClass}">${innerHtml}</div>`;
   }
 
-  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions }) {
+  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", tableMetricLabels, showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions }) {
     const storedActiveTool = state.activeToolByList[filterKey] || "";
     const activeTool = forceSearchOpen ? "search" : showFilter || storedActiveTool !== "filter" ? storedActiveTool : "";
     const showHeaderFilter = showFilter || headerFilter;
@@ -1356,7 +1423,7 @@
     const headerToolsHtml = `
       ${showHeaderFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
       ${headerSearch ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>` : ""}
-      ${headerPrint ? `<div class="rs-text-link-2 rsa-text is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>` : ""}
+              ${headerPrint ? `<a class="rs-text-link-2 rsa-text is-link is-print" ${printLinkAttrs({ target: printTarget })}>print</a>` : ""}
     `;
     return `
       <div class="rsa-content">
@@ -1384,7 +1451,7 @@
               <div class="rsa-padding is-none">
                 <div class="rsa-table">
                   <div class="rsa-table-head">
-                    ${rsaTableLabelRowHtml(tableLabel, tableActionLabel, filterKey)}
+                    ${rsaTableLabelRowHtml(tableLabel, tableActionLabel, filterKey, tableMetricLabels)}
                   </div>
                   <div class="rsa-table-body">
                     ${rowsHtml}
@@ -1464,25 +1531,29 @@
             </div>
           ` : ""}
           ${config.printTarget ? `
-            <div class="rs-tab-link rsa-text is-link is-print" data-print-section="${escapeAttr(config.printTarget)}">
+            <a class="rs-tab-link rsa-text is-link is-print" ${printLinkAttrs({ target: config.printTarget })}>
               <div>PRINT</div>
-            </div>
+            </a>
           ` : ""}
         </div>
       </div>
     `;
   }
 
-  function rsaTableLabelRowHtml(tableLabel = "item", tableActionLabel = "input", sortScope = "") {
+  function rsaTableLabelRowHtml(tableLabel = "item", tableActionLabel = "input", sortScope = "", metricLabels = ["need", "packed", "left"]) {
+    const [needLabel = "need", packedLabel = "packed", leftLabel = "left"] = Array.isArray(metricLabels) ? metricLabels : ["need", "packed", "left"];
+    const metricLabelHtml = (field, label) => label
+      ? rsaSortLabelHtml(sortScope, field, label)
+      : `<div class="rsa-table-label"></div>`;
     return rsaGridRowHtml({
       leftHtml: rsaItemTextHtml(`
         <div class="indication-color is-spacer"></div>
         ${rsaSortLabelHtml(sortScope, "item", tableLabel)}
       `),
       rightHtml: rsaQuantityBlockHtml(`
-        ${rsaSortLabelHtml(sortScope, "needed", "need")}
-        ${rsaSortLabelHtml(sortScope, "packed", "packed")}
-        ${rsaSortLabelHtml(sortScope, "left", "left")}
+        ${metricLabelHtml("needed", needLabel)}
+        ${metricLabelHtml("packed", packedLabel)}
+        ${metricLabelHtml("left", leftLabel)}
         <div class="rsa-table-label">${escapeHtml(tableActionLabel)}</div>
       `, "has-inline-qty-action")
     });
@@ -1558,7 +1629,7 @@
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(progress.rows))}</div>
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(progress.done))}</div>
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(Math.max(0, progress.rows - progress.done)))}</div>
-        <div class="rs-input-inline rsa-text is-inline-input is-link is-print" data-print-horse="${escapeAttr(horse.id)}">print</div>
+        <a class="rs-input-inline rsa-text is-inline-input is-link is-print" ${printLinkAttrs({ horseId: horse.id })}>print</a>
       `, "has-inline-qty-action")
     });
   }
@@ -1580,7 +1651,45 @@
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.rows))}</div>
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.done))}</div>
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.open))}</div>
-        <div class="rs-input-inline rsa-text is-inline-input is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
+        <a class="rs-input-inline rsa-text is-inline-input is-link is-print" ${printLinkAttrs({ target: printTarget })}>print</a>
+      `, "has-inline-qty-action")
+    });
+  }
+
+  function rsaLaneRowHtml(summary) {
+    const triggerAttr = `data-overview-list="${escapeAttr(summary.id)}"`;
+    return rsaGridRowHtml({
+      leftAttrs: triggerAttr,
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color bg-primary-blue"></div>
+        <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(summary.label || summary.id))}</div>
+        <div class="rs-text-linline rsa-text is-xs"></div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-input-inline rsa-text is-inline-input is-link" data-overview-list="${escapeAttr(summary.id)}">open</div>
+      `, "has-inline-qty-action")
+    });
+  }
+
+  function rsaSimpleDetailRowHtml(row) {
+    const actionUrl = row.mapsUrl || row.website || "";
+    const actionHtml = actionUrl
+      ? `<a class="rs-input-inline rsa-text is-inline-input is-link" href="${escapeAttr(actionUrl)}" target="_blank" rel="noopener">open</a>`
+      : `<div class="rs-input-inline rsa-text is-inline-input is-link"></div>`;
+    return rsaGridRowHtml({
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color bg-primary-blue"></div>
+        <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(row.label || row.id || "Row"))}</div>
+        <div class="rs-text-linline rsa-text is-xs">${escapeHtml(row.meta || "")}</div>
+      `),
+      rightHtml: rsaQuantityBlockHtml(`
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-text-2 rsa-text is-number"></div>
+        <div class="rs-text-2 rsa-text is-number"></div>
+        ${actionHtml}
       `, "has-inline-qty-action")
     });
   }
@@ -1974,6 +2083,8 @@
       item.location,
       item.listPlanLabel,
       ...(Array.isArray(item.packListLabels) ? item.packListLabels : []),
+      ...(Array.isArray(item.placeLabels) ? item.placeLabels : []),
+      ...(Array.isArray(item.localTags) ? item.localTags : []),
       ...(Array.isArray(item.horseMembers) ? item.horseMembers.map((member) => member.barnName) : []),
       ...(Array.isArray(item.sourceItems) ? item.sourceItems.map((source) => `${source.appName || ""} ${source.longDescription || ""}`) : [])
     ].filter(Boolean).join(" ");
@@ -2082,7 +2193,7 @@
   function printSection(target) {
     if (!state.data) return;
     const title = target === "overview" ? "WEC Packing Report" : `${printTargetTitle(target)} Packing List`;
-    openPackingPdf({
+    openPackingPrintPage({
       target,
       filename: `${safeFilename(`${currentWaveLabel()} ${title}`)}.pdf`
     });
@@ -2092,33 +2203,39 @@
     if (!state.data) return;
     const horse = horses().find((row) => row.id === horseId);
     if (!horse) return;
-    openPackingPdf({
+    openPackingPrintPage({
       horseId,
       filename: `${safeFilename(`${currentWaveLabel()} ${horseDisplayName(horse)} Packing List`)}.pdf`
     });
   }
 
-  function openPackingPdf(options) {
-    const printUrl = new URL(config.printUrl || `${apiBaseUrl}/print`, window.location.href);
+  function printLinkAttrs(options) {
+    return `href="${escapeAttr(packingPrintTargetUrl(options).toString())}" target="_blank" rel="noopener"`;
+  }
+
+  function packingPrintTargetUrl(options = {}) {
+    const printUrl = new URL(printPageUrl || config.printUrl || `${apiBaseUrl}/print`, window.location.href);
     addContextParams(printUrl);
     if (options.target) printUrl.searchParams.set("target", options.target);
     if (options.horseId) printUrl.searchParams.set("horseId", options.horseId);
-    const pdfSourceUrl = pdfWorkerSafePrintUrl(printUrl);
+    printUrl.searchParams.set("autoprint", "1");
+    return config.usePdfWorker
+      ? packingPdfWorkerUrl(pdfWorkerSafePrintUrl(printUrl), options.filename || "wec-packing.pdf")
+      : printUrl;
+  }
 
-    const opened = window.open("about:blank", "_blank");
+  function openPackingPrintPage(options) {
+    const targetUrl = packingPrintTargetUrl(options);
+    const opened = window.open(targetUrl.toString(), "_blank", "noopener");
     if (!opened) {
       state.saveMessage = "Popup blocked. Allow popups and press Print again.";
       render();
       return;
     }
 
-    const targetUrl = isLocalPrintUrl(pdfSourceUrl)
-      ? pdfSourceUrl
-      : packingPdfWorkerUrl(pdfSourceUrl, options.filename || "wec-packing.pdf");
-    state.saveMessage = isLocalPrintUrl(pdfSourceUrl) ? "Opening print preview..." : "Creating PDF...";
+    state.saveMessage = config.usePdfWorker ? "Creating PDF..." : "Opening print page...";
     render();
-    opened.location.href = targetUrl.toString();
-    state.saveMessage = isLocalPrintUrl(pdfSourceUrl) ? "Print preview opened." : "PDF opened.";
+    state.saveMessage = config.usePdfWorker ? "PDF opened." : "Print page opened.";
     render();
   }
 
@@ -2133,10 +2250,6 @@
     pdfUrl.searchParams.set("url", printUrl.toString());
     pdfUrl.searchParams.set("filename", filename);
     return pdfUrl;
-  }
-
-  function isLocalPrintUrl(url) {
-    return ["127.0.0.1", "localhost", "::1"].includes(url.hostname);
   }
 
   function printBodyHtml(target) {
@@ -3007,6 +3120,78 @@
     }));
   }
 
+  function activeListLanes() {
+    return Array.isArray(state.data?.activeListLanes) ? state.data.activeListLanes : [];
+  }
+
+  function activeListDetails() {
+    return Array.isArray(state.data?.activeListDetails) ? state.data.activeListDetails : [];
+  }
+
+  function activeLaneGroup(lane) {
+    return activeListLanes().find((group) => group.lane === lane || group.id === lane) || null;
+  }
+
+  function activeLaneRows(lane) {
+    const group = activeLaneGroup(lane);
+    return group ? (Array.isArray(group.lists) ? group.lists : []) : null;
+  }
+
+  function activeLaneListById(listId) {
+    for (const group of activeListLanes()) {
+      const row = (group.lists || []).find((list) => list.id === listId);
+      if (row) return row;
+    }
+    return null;
+  }
+
+  function activeListDetailById(listId) {
+    return activeListDetails().find((detail) => detail.id === listId) || null;
+  }
+
+  function overviewListDetailRows(summary) {
+    if (summary.key === "unresolved") return sortTableRows(items().filter((item) => !isDone(item)), "overview");
+    return activeListDetailById(summary.id)?.rows || [];
+  }
+
+  function overviewDetailSearchText(row) {
+    return [
+      row?.label,
+      row?.meta,
+      row?.phone,
+      row?.website,
+      row?.mapsUrl,
+      row?.name,
+      row?.itemId,
+      row?.location,
+      row?.listPlanLabel
+    ].filter(Boolean).join(" ");
+  }
+
+  function detailTableLabel(summary) {
+    if (summary.key === "unresolved" || summary.key === "item_labels") return "item";
+    if (summary.key === "list_labels") return "list";
+    if (summary.lane === "locale") return "place";
+    return "list";
+  }
+
+  function detailTableActionLabel(summary) {
+    return summary.key === "unresolved" ? "input" : "open";
+  }
+
+  function detailTableMetricLabels(summary) {
+    return summary.key === "unresolved" ? undefined : ["", "", ""];
+  }
+
+  function overviewModeLabel(mode) {
+    if (mode === "packing") return "Pack Lists";
+    if (mode === "task_lists") return "Item Tasks";
+    if (mode === "custom") return "Custom";
+    if (mode === "locale") return "Locale";
+    if (mode === "search_list") return "Search";
+    return currentWaveLabel();
+  }
+
   function onsiteTasks() {
     return homeModules().flatMap((module) => Array.isArray(module.tasks) ? module.tasks : []);
   }
@@ -3332,11 +3517,13 @@
   }
 
   function overviewFilterOptions() {
-    return [
-      ["packing", "PACKING"],
-      ["approved", "APPROVED"],
-      ["search_list", "SEARCH"]
-    ];
+    const lanes = new Set(activeListLanes().map((group) => group.lane || group.id));
+    const options = [["packing", "PACK LISTS"]];
+    if (lanes.has("task_lists")) options.push(["task_lists", "ITEM TASKS"]);
+    if (lanes.has("custom")) options.push(["custom", "CUSTOM"]);
+    if (lanes.has("locale")) options.push(["locale", "LOCALE"]);
+    options.push(["search_list", "SEARCH"]);
+    return options;
   }
 
   function overviewFilterMode() {

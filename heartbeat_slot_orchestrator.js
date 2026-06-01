@@ -47,6 +47,19 @@ const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DET
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
+const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
+const ORCH_ALERT_NO_ACTIVE_FEEDS = String(process.env.ORCH_ALERT_NO_ACTIVE_FEEDS || "1") === "1";
+const ORCH_STEP_OVERRUN_ALERT_MS = Math.max(60000, Number(process.env.ORCH_STEP_OVERRUN_ALERT_MS || "240000") || 240000);
+const WRITABLE_AUTOMATION_ERR_TYPES = new Set([
+  "singleLineText",
+  "multilineText",
+  "number",
+  "date",
+  "dateTime",
+  "checkbox",
+  "singleSelect",
+  "multipleSelects",
+]);
 
 const SCRIPT_LOG_FILES = {
   "schedules_dailyv2.js": "schedules-dailyv2.log",
@@ -96,6 +109,18 @@ function parseSlotSet(value, fallback) {
 function slotIsDue(slot, value, fallback) {
   if (!slot) return false;
   return parseSlotSet(value, fallback).has(String(slot).toUpperCase());
+}
+
+function todayIsoDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function safeJson(value, maxLength = 4000) {
+  try {
+    return JSON.stringify(value).slice(0, maxLength);
+  } catch {
+    return String(value || "").slice(0, maxLength);
+  }
 }
 
 function boolValue(value) {
@@ -206,6 +231,115 @@ async function latestHeartbeat() {
   return rows[0] || null;
 }
 
+async function airtableCreate(tableName, records) {
+  if (!records.length) return [];
+  const response = await fetchWithTimeout(airtableUrl(tableName), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ records }),
+  });
+  const body = await response.text();
+  if (!response.ok) {
+    throw new Error(`Airtable create failed (${response.status}) ${tableName}: ${body.slice(0, 500)}`);
+  }
+  return body ? JSON.parse(body).records || [] : [];
+}
+
+async function tableFieldMap(tableName) {
+  const url = new URL(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`);
+  const response = await fetchWithTimeout(url, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+  });
+  const body = await response.text();
+  if (!response.ok) {
+    throw new Error(`Airtable meta failed (${response.status}) ${tableName}: ${body.slice(0, 500)}`);
+  }
+  const json = body ? JSON.parse(body) : {};
+  const table = (json.tables || []).find((item) => item.name === tableName);
+  if (!table) throw new Error(`Airtable table not found: ${tableName}`);
+  return new Map((table.fields || []).map((field) => [field.name, field]));
+}
+
+async function automationErrWritableFields() {
+  const fieldMap = await tableFieldMap(TABLE_AUTOMATION_ERRS);
+  const names = new Set();
+  for (const [name, field] of fieldMap.entries()) {
+    if (WRITABLE_AUTOMATION_ERR_TYPES.has(field.type)) names.add(name);
+  }
+  return names;
+}
+
+function pickWritable(fields, writable) {
+  const out = {};
+  for (const [key, value] of Object.entries(fields || {})) {
+    if (!writable.has(key)) continue;
+    if (value === undefined || value === null) continue;
+    if (typeof value === "string" && value.trim() === "") continue;
+    out[key] = value;
+  }
+  return out;
+}
+
+async function createAutomationErr(fields) {
+  try {
+    const writable = await automationErrWritableFields();
+    const safeFields = pickWritable(fields, writable);
+    if (!Object.keys(safeFields).length) return { skipped: true, reason: "empty_fields" };
+    const created = await airtableCreate(TABLE_AUTOMATION_ERRS, [{ fields: safeFields }]);
+    appendEvent({
+      ok: true,
+      event: "automation_err_recorded",
+      error_type: fields?.error_type || null,
+      automation_err_id: created[0]?.id || null,
+    });
+    return { ok: true, id: created[0]?.id || null };
+  } catch (error) {
+    appendEvent({
+      ok: false,
+      event: "automation_err_write_failed",
+      error_type: fields?.error_type || null,
+      error: String(error?.message || error).slice(0, 500),
+    });
+    return { ok: false, error: String(error?.message || error).slice(0, 500) };
+  }
+}
+
+async function recordOrchestratorAlert({
+  errorType,
+  message,
+  heartbeat = null,
+  scriptName = null,
+  resolved = false,
+  pid = null,
+  extra = {},
+}) {
+  const fields = heartbeat?.fields || {};
+  const appShowId = numOrNull(fields.app_show_id) ?? numOrNull(fields.show_id);
+  const appSqlDate = strOrNull(fields.app_sql_date) || strOrNull(fields.sql_date);
+  return createAutomationErr({
+    automation_key: [
+      "heartbeat_slot_orchestrator",
+      errorType || "notice",
+      appShowId || "show",
+      appSqlDate || "date",
+      scriptName || "orchestrator",
+      Date.now(),
+    ].join("|").slice(0, 1000),
+    automation_name: "heartbeat_slot_orchestrator",
+    error_type: errorType || "notice",
+    app_sql_date: appSqlDate,
+    run_id: Date.now(),
+    last_run: todayIsoDate(),
+    resolved: !!resolved,
+    message: String(message || safeJson(extra)).slice(0, 10000),
+    app_show_id: appShowId,
+    pid: numOrNull(pid),
+  });
+}
+
 async function showManualOverride(appShowId) {
   const showId = numOrNull(appShowId);
   if (showId === null) return { found: false, is_default_show_manual_override: false };
@@ -284,18 +418,32 @@ function runNodeScript(scriptName, extraEnv = {}) {
     error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
   });
 
-  return { ok, exitCode };
+  return { ok, exitCode, durationMs };
 }
 
 function acquireLock() {
   fs.mkdirSync(path.dirname(LOCK_PATH), { recursive: true });
+  let existingLock = null;
 
   if (fs.existsSync(LOCK_PATH)) {
     const stat = fs.statSync(LOCK_PATH);
     const ageMs = Date.now() - stat.mtimeMs;
+    try {
+      existingLock = JSON.parse(fs.readFileSync(LOCK_PATH, "utf8"));
+    } catch {
+      existingLock = { parse_error: true };
+    }
     if (ageMs > LOCK_STALE_MINUTES * 60 * 1000) {
       fs.rmSync(LOCK_PATH, { force: true });
       appendEvent({ ok: true, event: "stale_lock_removed", lock_path: LOCK_PATH, age_ms: Math.round(ageMs) });
+      appendEvent({
+        ok: true,
+        event: "stale_lock_removed_details",
+        lock_path: LOCK_PATH,
+        lock_age_ms: Math.round(ageMs),
+        lock: existingLock,
+      });
+      existingLock = null;
     }
   }
 
@@ -303,10 +451,28 @@ function acquireLock() {
     const fd = fs.openSync(LOCK_PATH, "wx");
     fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, started_at: new Date().toISOString() }));
     fs.closeSync(fd);
-    return true;
+    return { acquired: true };
   } catch {
-    appendEvent({ ok: true, event: "orchestrator_skipped_locked", lock_path: LOCK_PATH });
-    return false;
+    let lockAgeMs = null;
+    try {
+      lockAgeMs = Math.round(Date.now() - fs.statSync(LOCK_PATH).mtimeMs);
+    } catch {
+      lockAgeMs = null;
+    }
+    appendEvent({
+      ok: true,
+      event: "orchestrator_skipped_locked",
+      lock_path: LOCK_PATH,
+      lock_age_ms: lockAgeMs,
+      lock: existingLock,
+    });
+    return {
+      acquired: false,
+      staleRemoved: false,
+      lockPath: LOCK_PATH,
+      lockAgeMs,
+      existingLock,
+    };
   }
 }
 
@@ -320,7 +486,19 @@ async function runOrchestrator() {
     return;
   }
 
-  if (!acquireLock()) return;
+  const lockResult = acquireLock();
+  if (!lockResult.acquired) {
+    const heartbeat = await latestHeartbeat().catch(() => null);
+    await recordOrchestratorAlert({
+      errorType: lockResult.staleRemoved ? "heartbeat_orchestrator_stale_lock_removed" : "heartbeat_orchestrator_locked",
+      heartbeat,
+      resolved: !!lockResult.staleRemoved,
+      pid: lockResult.existingLock?.pid,
+      message: `${lockResult.staleRemoved ? "Removed stale heartbeat orchestrator lock" : "Heartbeat orchestrator skipped because previous run still held the lock"} | lock_age_ms=${lockResult.lockAgeMs ?? ""} | lock=${safeJson(lockResult.existingLock, 1000)}`,
+      extra: lockResult,
+    });
+    return;
+  }
 
   try {
     const heartbeat = await latestHeartbeat();
@@ -361,6 +539,42 @@ async function runOrchestrator() {
       showAppSqlEndDate: heartbeat?.fields?.show_app_sql_end_date,
       setToDefaultAppSqlDate: heartbeat?.fields?.set_to_default_app_sql_date,
     });
+
+    if (numOrNull(heartbeat?.fields?.app_show_id) === null) {
+      appendEvent({
+        ok: true,
+        event: "orchestrator_noop",
+        reason: "no_active_show_scope",
+        heartbeat_id: heartbeat?.id || null,
+        mode,
+        cadence_seconds: cadenceSeconds,
+      });
+      if (ORCH_ALERT_NO_ACTIVE_FEEDS) {
+        await recordOrchestratorAlert({
+          errorType: "heartbeat_no_active_feeds",
+          heartbeat,
+          resolved: false,
+          message: `Heartbeat has no active show scope; downstream lanes skipped. heartbeat_id=${heartbeat?.id || ""} mode=${mode} cadence_seconds=${cadenceSeconds}`,
+        });
+      }
+      return;
+    }
+
+    async function runDueScript(scriptName, extraEnv = {}) {
+      const result = runNodeScript(scriptName, extraEnv);
+      const overrunThresholdMs = Math.min(ORCH_STEP_OVERRUN_ALERT_MS, Math.max(60000, cadenceSeconds * 1000));
+      if (result.durationMs >= overrunThresholdMs) {
+        await recordOrchestratorAlert({
+          errorType: "heartbeat_lane_step_overrun",
+          heartbeat,
+          scriptName,
+          resolved: false,
+          message: `Heartbeat lane step overran threshold. script=${scriptName} duration_ms=${result.durationMs} threshold_ms=${overrunThresholdMs} slot=${slot} mode=${mode} cadence_seconds=${cadenceSeconds}`,
+          extra: { scriptName, durationMs: result.durationMs, thresholdMs: overrunThresholdMs, slot, mode, cadenceSeconds },
+        });
+      }
+      return result;
+    }
 
     if (DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY && defaultShowDateGuard.check_show_date) {
       const showOverride = await showManualOverride(heartbeat?.fields?.app_show_id);
@@ -414,7 +628,7 @@ async function runOrchestrator() {
     let scheduleDueFailed = false;
 
     if (schedulesDailyDue) {
-      const schedulesDailyResult = runNodeScript("schedules_dailyv2.js");
+      const schedulesDailyResult = await runDueScript("schedules_dailyv2.js");
       if (!schedulesDailyResult.ok) {
         upstreamOk = false;
         scheduleDueFailed = true;
@@ -423,7 +637,7 @@ async function runOrchestrator() {
     }
 
     if (!scheduleDueFailed && schedulesCalcDue) {
-      const schedulesCalcResult = runNodeScript("schedules_calculatorv2.js");
+      const schedulesCalcResult = await runDueScript("schedules_calculatorv2.js");
       if (!schedulesCalcResult.ok) upstreamOk = false;
     }
 
@@ -436,7 +650,7 @@ async function runOrchestrator() {
 
     if (tripsOk && tripsDailyDue) {
       tripsRan = true;
-      const tripsDailyResult = runNodeScript("trips_dailyv2.js");
+      const tripsDailyResult = await runDueScript("trips_dailyv2.js");
       if (!tripsDailyResult.ok) {
         tripsOk = false;
         upstreamOk = false;
@@ -446,7 +660,7 @@ async function runOrchestrator() {
 
     if (tripsOk && tripsTaggerDue) {
       tripsRan = true;
-      const tripsTaggerResult = runNodeScript("trips_tagger.js");
+      const tripsTaggerResult = await runDueScript("trips_tagger.js");
       if (!tripsTaggerResult.ok) {
         tripsOk = false;
         upstreamOk = false;
@@ -455,22 +669,22 @@ async function runOrchestrator() {
     }
 
     if (tripsOk && tripsCalcDue && tripsRan) {
-      const tripsCalcResult = runNodeScript("trips_calculatorv2.js");
+      const tripsCalcResult = await runDueScript("trips_calculatorv2.js");
       if (!tripsCalcResult.ok) upstreamOk = false;
     }
 
     if (liveGroupsDue) {
-      const liveGroupsResult = runNodeScript("live_groups_daily.js");
+      const liveGroupsResult = await runDueScript("live_groups_daily.js");
       if (!liveGroupsResult.ok) upstreamOk = false;
     }
 
     if (liveRingsDue) {
-      const liveRingsResult = runNodeScript("live_rings_daily.js");
+      const liveRingsResult = await runDueScript("live_rings_daily.js");
       if (!liveRingsResult.ok) upstreamOk = false;
     }
 
     if (liveClassDetailDue) {
-      const liveClassDetailResult = runNodeScript("live_class_detail.js", {
+      const liveClassDetailResult = await runDueScript("live_class_detail.js", {
         ORCH_CURRENT_MODE: mode,
         ORCH_CURRENT_SLOT: slot,
       });
@@ -478,7 +692,7 @@ async function runOrchestrator() {
     }
 
     if (publisherDue && upstreamOk) {
-      runNodeScript("publisher.js");
+      await runDueScript("publisher.js");
     } else if (publisherDue) {
       appendEvent({ ok: false, event: "publisher_blocked", reason: "upstream_due_lane_failed" });
     }

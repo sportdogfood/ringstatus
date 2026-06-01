@@ -50,14 +50,14 @@ assert.ok(
 assert.ok(
   orchestrator.includes('DEFAULT_LIVE_GROUPS_SLOTS = "A,B,C,D"') &&
     orchestrator.includes('mode === "DAY"') &&
-    orchestrator.includes('runNodeScript("live_groups_daily.js")'),
+    /run(?:Node|Due)Script\("live_groups_daily\.js"\)/.test(orchestrator),
   "live_groups_daily must run only in DAY mode on every heartbeat slot"
 );
 
 assert.ok(
   orchestrator.includes('DEFAULT_LIVE_RINGS_SLOTS = "A,B,C,D"') &&
     orchestrator.includes('mode === "DAY"') &&
-    orchestrator.includes('runNodeScript("live_rings_daily.js")'),
+    /run(?:Node|Due)Script\("live_rings_daily\.js"\)/.test(orchestrator),
   "live_rings_daily must run only in DAY mode on every heartbeat slot"
 );
 
@@ -73,12 +73,12 @@ assert.ok(
 );
 
 assert.ok(
-  /runNodeScript\("trips_dailyv2\.js"\)[\s\S]+if\s*\(!tripsDailyResult\.ok\)/.test(orchestrator),
+  /run(?:Node|Due)Script\("trips_dailyv2\.js"\)[\s\S]+if\s*\(!tripsDailyResult\.ok\)/.test(orchestrator),
   "trips downstream work must be blocked when trips_dailyv2 fails"
 );
 
 assert.ok(
-  /runNodeScript\("schedules_dailyv2\.js"\)[\s\S]+if\s*\(!schedulesDailyResult\.ok\)/.test(orchestrator),
+  /run(?:Node|Due)Script\("schedules_dailyv2\.js"\)[\s\S]+if\s*\(!schedulesDailyResult\.ok\)/.test(orchestrator),
   "schedule downstream work must be blocked when schedules_dailyv2 fails"
 );
 
@@ -89,13 +89,27 @@ assert.ok(
 );
 
 assert.ok(
-  /if\s*\(publisherDue\s*&&\s*upstreamOk\)\s*\{[\s\S]+runNodeScript\("publisher\.js"\)/.test(orchestrator),
+  /if\s*\(publisherDue\s*&&\s*upstreamOk\)\s*\{[\s\S]+run(?:Node|Due)Script\("publisher\.js"\)/.test(orchestrator),
   "publisher must be blocked when an upstream due lane fails"
 );
 
 assert.ok(
   orchestrator.includes('event: "publisher_blocked"'),
   "publisher block events must be logged when upstream lanes fail"
+);
+
+assert.ok(
+  orchestrator.includes('TABLE_AUTOMATION_ERRS') &&
+    orchestrator.includes('"heartbeat_orchestrator_locked"') &&
+    orchestrator.includes('"heartbeat_lane_step_overrun"') &&
+    orchestrator.includes('"heartbeat_no_active_feeds"'),
+  "heartbeat orchestrator must write automation_errs for lock skips, step overruns, and missing active show scope"
+);
+
+assert.ok(
+  orchestrator.includes('reason: "no_active_show_scope"') &&
+    orchestrator.includes('numOrNull(heartbeat?.fields?.app_show_id) === null'),
+  "heartbeat orchestrator must not run downstream lanes when latest heartbeat has no active show scope"
 );
 
 assert.ok(
