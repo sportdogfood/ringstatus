@@ -2813,12 +2813,106 @@ function decorateSourcePackItem(item, placeLookup = new Map()) {
   };
 }
 
+function buildPackingLedgerState(records) {
+  const states = new Map();
+  for (const record of records || []) {
+    const fields = record.fields || {};
+    const sourceItemId = firstLinkedId(fields.source_pack_item);
+    if (!sourceItemId) continue;
+    const state = states.get(sourceItemId) || {
+      hasEntries: false,
+      packed: 0,
+      name: "",
+      packState: "not_packed",
+      resolutionState: "",
+      quantityNeededFrozen: null,
+      notes: "",
+      sortOrder: 0,
+      updatedAt: ""
+    };
+    state.hasEntries = true;
+    state.packed += numberField(fields.quantity_packed);
+    if (hasNumberField(fields.quantity_needed)) state.quantityNeededFrozen = wholeQuantityField(fields.quantity_needed);
+    const updatedAt = stringField(record.createdTime || fields.Created || fields.created_at || "");
+    const isLatest = !state.updatedAt || updatedAt >= state.updatedAt;
+    if (isLatest) {
+      state.updatedAt = updatedAt;
+      state.name = stringField(fields.item_name) || state.name;
+      state.packState = stringField(fields.pack_state || state.packState);
+      state.resolutionState = stringField(fields.resolution_state);
+      state.notes = stringField(fields.notes);
+      state.sortOrder = numberField(fields.sort_order);
+    }
+    states.set(sourceItemId, state);
+  }
+  for (const state of states.values()) {
+    state.packed = wholeQuantityField(Math.max(0, state.packed));
+  }
+  return states;
+}
+
+function buildSourceWorksheetRecords({ sourceItems, ledgerState, selectedWave, selectedShowId, packListIds }) {
+  if (!selectedWave) return [];
+  return (sourceItems || [])
+    .filter((sourceItem) => isActiveSourceWorksheetItem(sourceItem, packListIds))
+    .map((sourceItem) => sourceItemToWorksheetRecord(sourceItem, ledgerState.get(sourceItem.id), selectedWave, selectedShowId));
+}
+
+function isActiveSourceWorksheetItem(sourceItem, packListIds = new Set()) {
+  if (!sourceItem?.active || sourceItem.ignored) return false;
+  if (!sourceItem.packListIds?.length) return false;
+  if (!packListIds?.size) return true;
+  return sourceItem.packListIds.some((id) => packListIds.has(id));
+}
+
+function sourceItemToWorksheetRecord(sourceItem, state, selectedWave, selectedShowId) {
+  const name = state?.name || sourceItemDisplayName(sourceItem);
+  const quantityBase = sourceQuantityBase(sourceItem);
+  return {
+    id: sourceItem.id,
+    createdTime: state?.updatedAt || "",
+    fields: compactFields({
+      item_name: name,
+      item_id: sourceItem.appName || sourceItem.id,
+      show: selectedShowId ? [selectedShowId] : linkedIds(selectedWave?.fields?.show),
+      pack_wave: selectedWave?.id ? [selectedWave.id] : [],
+      pack_list: sourceItem.packListIds,
+      source_pack_item: [sourceItem.id],
+      quantity_base: quantityBase,
+      quantity_packed: state?.packed || 0,
+      quantity_needed: state?.quantityNeededFrozen ?? null,
+      pack_state: state?.packState || "not_packed",
+      resolution_state: state?.resolutionState || "",
+      unit: sourceItem.uom,
+      record_state: "active",
+      sort_order: sourceItem.sortOrder,
+      notes: state?.notes || sourceItem.note
+    })
+  };
+}
+
+function sourceItemDisplayName(sourceItem) {
+  if (!sourceItem) return "";
+  if (sourceItem.horseSpecific && sourceItem.displayNamePerHorse) return sourceItem.displayNamePerHorse;
+  return sourceItem.displayName || sourceItem.appName || sourceItem.id;
+}
+
+function sourceQuantityBase(sourceItem) {
+  if (!sourceItem) return 0;
+  if (sourceItem.perGroom) return sourceItem.perGroom;
+  if (sourceItem.perHorse) return sourceItem.perHorse;
+  if (sourceItem.quantity) return sourceItem.quantity;
+  return 1;
+}
+
 function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
   const fields = record.fields || {};
   const listPlan = resolveListPlan(fields, listPlanLookup);
   return {
     id: record.id,
     appName: stringField(fields.app_name),
+    displayName: stringField(fields.item_display_name || fields.display_name || fields.label || fields.app_name),
+    displayNamePerHorse: stringField(fields.item_display_name_per_horse),
     listPlan: listPlan.plan,
     listPlanId: listPlan.id,
     listPlanLabel: listPlan.label,
@@ -2836,6 +2930,7 @@ function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
     localTags: stringListField(fields.wec_local_tags_rollups || fields.local_tags || fields["local_tags (from wec_places)"]),
     ignored: !!fields.ignore,
     active: !!fields.active && !fields.inactive && !fields.remove,
+    sortOrder: numberField(fields.sort_order || fields.sorted),
     sourceFlags: {
       ignore: !!fields.ignore,
       rename: !!fields.rename,
