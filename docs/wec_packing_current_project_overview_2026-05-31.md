@@ -399,6 +399,8 @@ Styling:
 
 - Review the pasted Webflow page at mobile width and max width after the locked CSS embed.
 - Confirm search row, table head, line item rows, and comments are still on the locked `is-grid2` scale.
+- Make `rsa-table-head` sticky at the shell top, not inside an internal app-scroll container.
+- Redesign locale/place modal cards using the approved modal pattern and existing RSA class contract.
 - Remove any remaining style rules that are acting as shims instead of combos on locked classes.
 
 Print:
