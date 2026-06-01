@@ -802,6 +802,7 @@
       wec_not_going: record.fields?.wec_not_going ?? ""
     };
     Object.assign(record.fields, fieldMap);
+    render();
     refreshActiveDetail();
     setStatus("Saving change...");
     setDetailStatus("Saving change...");
@@ -823,6 +824,7 @@
       Object.assign(record.fields, previous);
       setDetailStatus("Save failed. Restored previous WEC status.");
       setStatus("Save failed. Restored previous WEC status.");
+      render();
     }
     refreshActiveDetail();
   }
