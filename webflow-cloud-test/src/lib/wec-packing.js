@@ -424,7 +424,8 @@ function placeDetailRow(place) {
     meta: place.localTags.join(", ") || place.placeType,
     phone: place.phone,
     website: place.website,
-    mapsUrl: place.mapsUrl
+    mapsUrl: place.mapsUrl,
+    attributes: place.attributes
   };
 }
 
@@ -2373,8 +2374,66 @@ function normalizePlace(record, placeTagLookup = new Map()) {
     placeType: stringField(fields.wec_place_type),
     mapsUrl: stringField(fields.maps_url),
     phone: stringField(fields.phone),
-    website: stringField(fields.website)
+    website: stringField(fields.website),
+    attributes: placeAttributeRows(fields)
   };
+}
+
+const PLACE_ATTRIBUTE_EXCLUDED_FIELDS = new Set([
+  "place",
+  "name",
+  "wec_local_tags_rollups",
+  "local_tags",
+  "tags",
+  "wec_local_tags",
+  "tack_grocery_items",
+  "wec_pack_items",
+  "wec_place_type",
+  "maps_url",
+  "phone",
+  "website",
+  "location",
+  "count_items",
+  "crt_rec_id",
+  "place_id",
+  "table_api",
+  "table_name",
+  "created",
+  "created_at",
+  "created_by",
+  "record_id"
+]);
+
+function placeAttributeRows(fields) {
+  return Object.entries(fields || {})
+    .map(([field, value]) => {
+      const key = field.toLowerCase();
+      if (PLACE_ATTRIBUTE_EXCLUDED_FIELDS.has(key)) return null;
+      const values = displayableAttributeValues(value).filter((item) => !isRecordIdValue(item));
+      if (!values.length) return null;
+      return {
+        label: placeAttributeLabel(field),
+        value: values.join(", ")
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
+}
+
+function placeAttributeLabel(field) {
+  if (String(field || "").toLowerCase() === "acronym_attributes") return "Attributes";
+  return displayLabel(field);
+}
+
+function displayableAttributeValues(value) {
+  if (Array.isArray(value)) return value.flatMap(displayableAttributeValues);
+  if (value && typeof value === "object") return [];
+  if (typeof value === "boolean") return [value ? "Yes" : "No"];
+  return stringListField(value);
+}
+
+function isRecordIdValue(value) {
+  return /^rec[a-z0-9]{10,}$/i.test(String(value || "").trim());
 }
 
 function buildPlaceLookup(records, placeTagLookup = new Map()) {

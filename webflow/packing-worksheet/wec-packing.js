@@ -26,6 +26,7 @@
     didSetInitialTab: false,
     activeHomeModule: "",
     activeOverviewListId: "",
+    activeOverviewListSummary: null,
     activeListByTab: {},
     searchBySection: {},
     activeToolByList: {},
@@ -47,9 +48,9 @@
   };
 
   root.classList.toggle("is-edit-mode", config.mode === "edit");
-  root.addEventListener("pointerup", handlePointerUp);
   root.addEventListener("click", handleClick);
   root.addEventListener("input", handleInput);
+  window.addEventListener("hashchange", handleHashRoute);
   window.addEventListener("online", () => retryFailedActions({ silent: false }));
   render();
   loadState();
@@ -243,6 +244,7 @@
       event.preventDefault();
       state.activeHomeModule = homeModule.dataset.homeModule;
       state.activeOverviewListId = "";
+      state.activeOverviewListSummary = null;
       state.activeTab = "overview";
       state.detailType = "";
       state.detailId = "";
@@ -292,6 +294,7 @@
       if (key === "overview") {
         state.activeHomeModule = "";
         state.activeOverviewListId = "";
+        state.activeOverviewListSummary = null;
       }
       render();
       return;
@@ -358,6 +361,7 @@
       state.activeTab = tab.dataset.tab;
       if (state.activeTab === "overview") state.activeHomeModule = "";
       if (state.activeTab === "overview") state.activeOverviewListId = "";
+      if (state.activeTab === "overview") state.activeOverviewListSummary = null;
       state.detailType = "";
       state.detailId = "";
       render();
@@ -396,22 +400,18 @@
     }
   }
 
-  function handlePointerUp(event) {
-    if (event.target.closest("a, button, input, textarea, [data-rsa-filter], [data-rsa-toggle], [data-rsa-sort], [data-list-switch]")) return;
-    const placeDetail = event.target.closest("[data-place-detail]");
-    if (placeDetail) {
-      state.detailType = "place";
-      state.detailId = placeDetail.dataset.placeDetail;
-      renderDetail();
-      return;
-    }
-    const overviewList = event.target.closest("[data-overview-list]");
-    if (overviewList) openOverviewList(overviewList.dataset.overviewList || "");
-  }
-
   function openOverviewList(listId) {
     const summary = activeLaneListById(listId);
     const detail = activeListDetailById(listId);
+    const storedSummary = summary || (detail ? {
+      id: detail.id,
+      key: detail.key,
+      lane: detail.lane,
+      label: detail.label,
+      sourceTable: detail.sourceTable,
+      sourceView: detail.sourceView,
+      rows: detail.rows
+    } : null);
     state.activeTab = "overview";
     state.detailType = "";
     state.detailId = "";
@@ -419,9 +419,11 @@
     if (summary?.homeModuleId) {
       state.activeHomeModule = summary.homeModuleId;
       state.activeOverviewListId = "";
+      state.activeOverviewListSummary = null;
     } else {
       state.activeHomeModule = "";
       state.activeOverviewListId = listId;
+      state.activeOverviewListSummary = storedSummary;
     }
     render();
   }
@@ -1072,6 +1074,9 @@
   function closeDetail() {
     state.detailType = "";
     state.detailId = "";
+    if (window.location.hash.startsWith("#wec-place-")) {
+      history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+    }
     renderDetail();
   }
 
@@ -1125,8 +1130,24 @@
         </div>
       </div>
     `;
+    root.dataset.activeOverviewListId = state.activeOverviewListId || "";
+    root.dataset.activeHomeModule = state.activeHomeModule || "";
+    root.dataset.overviewFilter = state.filterByList.overview || "";
     renderDetail();
     if (options.focusSearchKey) restoreSearchFocus(options);
+  }
+
+  function handleHashRoute() {
+    const hash = window.location.hash || "";
+    if (hash.startsWith("#wec-list-")) {
+      openOverviewList(hash.replace("#wec-list-", ""));
+      return;
+    }
+    if (hash.startsWith("#wec-place-")) {
+      state.detailType = "place";
+      state.detailId = hash.replace("#wec-place-", "");
+      renderDetail();
+    }
   }
 
   function restoreSearchFocus(options) {
@@ -1295,7 +1316,8 @@
 
   function rsaOverviewListDetailHtml(listId) {
     const detail = activeListDetailById(listId);
-    const summary = activeLaneListById(listId) || (detail ? {
+    const storedSummary = state.activeOverviewListSummary?.id === listId ? state.activeOverviewListSummary : null;
+    const summary = activeLaneListById(listId) || storedSummary || (detail ? {
       id: detail.id,
       key: detail.key,
       lane: detail.lane,
@@ -1442,6 +1464,20 @@
     `;
   }
 
+  function rsaHotGridLinkHtml({ href = "#", attrs = "", leftHtml = "", rightHtml = "" } = {}) {
+    const attributeText = attrs ? ` ${attrs}` : "";
+    return `
+      <div class="rsa-item-row-2 is-grid2 is-hot-row"${attributeText}>
+        <div class="rsa-item-block-left">
+          ${leftHtml}
+        </div>
+        <div class="rsa-item-block-right">
+          ${rightHtml}
+        </div>
+      </div>
+    `;
+  }
+
   function rsaItemTextHtml(innerHtml, extraClass = "") {
     return `<div class="rsa-item-text ${extraClass}">${innerHtml}</div>`;
   }
@@ -1485,7 +1521,7 @@
           ${labelActionsHtml || ""}
           <div class="rsa-actions">
             ${rsaSearchHtml(searchKey, filterKey, activeTool === "search")}
-            ${showFilter ? rsaFilterHtml(filterKey, activeTool === "filter", filterOptions, { variant: filterVariant }) : ""}
+            ${showFilter ? rsaFilterHtml(filterKey, activeTool === "filter" || filterVariant === "text-links", filterOptions, { variant: filterVariant }) : ""}
           </div>
           <div class="rsa-content">
             <div class="rsa-top is-hidden"></div>
@@ -1701,9 +1737,9 @@
 
   function rsaLaneRowHtml(summary) {
     const triggerAttr = `data-overview-list="${escapeAttr(summary.id)}"`;
-    return rsaGridRowHtml({
-      rowClass: "is-grid2 is-hot-row",
-      rowAttrs: triggerAttr,
+    return rsaHotGridLinkHtml({
+      href: `#wec-list-${summary.id}`,
+      attrs: triggerAttr,
       leftHtml: rsaItemTextHtml(`
         <div class="indication-color bg-primary-blue"></div>
         <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(summary.label || summary.id))}</div>
@@ -1726,9 +1762,7 @@
       : actionUrl
       ? rsaOpenActionHtml(`href="${escapeAttr(actionUrl)}" target="_blank" rel="noopener"`)
       : `<div class="rs-input-inline rsa-text is-inline-input is-link"></div>`;
-    return rsaGridRowHtml({
-      rowClass: `is-grid2 ${isPlace ? "is-hot-row" : ""}`,
-      rowAttrs: isPlace ? `data-place-detail="${escapeAttr(row.id)}"` : "",
+    const rowOptions = {
       leftHtml: rsaItemTextHtml(`
         <div class="indication-color bg-primary-blue"></div>
         <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(row.label || row.id || "Row"))}</div>
@@ -1740,7 +1774,10 @@
         <div class="rs-text-2 rsa-text is-number"></div>
         ${actionHtml}
       `, "has-inline-qty-action")
-    });
+    };
+    return isPlace
+      ? rsaHotGridLinkHtml({ ...rowOptions, href: `#wec-place-${row.id}`, attrs: `data-place-detail="${escapeAttr(row.id)}"` })
+      : rsaGridRowHtml(rowOptions);
   }
 
   function rsaOpenActionHtml(attrs = "") {
@@ -2850,7 +2887,8 @@
         <section class="lp-profile-panel packing-detail wec-detail-section">
           <div data-wec-record="${escapeAttr(place.id)}" data-wec-name="${escapeAttr(place.label || "")}">
             <div class="lp-field-grid lp-profile-tab-panel is-active">
-              ${detailInfoListControlHtml("Attributes", attributes)}
+              ${detailInfoListControlHtml("Tags", attributes)}
+              ${placeAttributeControlsHtml(place.attributes)}
               ${placeTextControlHtml("Phone", place.phone)}
               ${placeClickoutControlHtml("Map", place.mapsUrl)}
               ${placeClickoutControlHtml("Website", place.website)}
@@ -2866,6 +2904,11 @@
         </div>
       </div>
     `;
+  }
+
+  function placeAttributeControlsHtml(attributes) {
+    const rows = Array.isArray(attributes) ? attributes : [];
+    return rows.map((row) => placeTextControlHtml(row.label, row.value)).join("");
   }
 
   function placeTextControlHtml(label, value) {
@@ -3259,6 +3302,7 @@
 
   function overviewListDetailRows(summary) {
     if (summary.key === "unresolved") return sortTableRows(items().filter((item) => !isDone(item)), "overview");
+    if (Array.isArray(summary.rows)) return summary.rows;
     return activeListDetailById(summary.id)?.rows || [];
   }
 
@@ -3275,7 +3319,7 @@
     const seen = new Set();
     for (const row of rows || []) {
       for (const label of overviewDetailFilterLabels(row)) {
-        const key = slugify(label);
+        const key = themeKey(label);
         if (!key || seen.has(key)) continue;
         seen.add(key);
         labels.push([key, displayLabel(label)]);
@@ -3286,7 +3330,7 @@
   }
 
   function overviewDetailFilterKeys(row) {
-    return overviewDetailFilterLabels(row).map(slugify).filter(Boolean);
+    return overviewDetailFilterLabels(row).map(themeKey).filter(Boolean);
   }
 
   function overviewDetailFilterLabels(row) {
