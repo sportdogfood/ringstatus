@@ -1523,9 +1523,9 @@
     const headerActionClass = headerActionCount === 1 ? " is-one-action" : headerActionCount === 2 ? " is-two-actions" : "";
     const resolvedCommentScope = commentScope || rsaCommentScope("section", filterKey, title);
     const headerToolsHtml = `
-      ${showHeaderFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
-      ${headerSearch ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>` : ""}
-              ${headerPrint ? `<a class="rs-text-link-2 rsa-text is-link is-print" ${printLinkAttrs({ target: printTarget })}>print</a>` : ""}
+      ${showHeaderFilter ? `<div class="rs-text-link rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
+      ${headerSearch ? `<div class="rs-text-link rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>` : ""}
+              ${headerPrint ? `<a class="rs-text-link rsa-text is-link is-print" ${printLinkAttrs({ target: printTarget })}>print</a>` : ""}
     `;
     return `
       <div class="rsa-content">
@@ -2959,23 +2959,22 @@
 
   function placeDetailHtml(place) {
     if (!place) return "";
-    const attributes = overviewDetailFilterLabels(place);
+    const tags = overviewDetailFilterLabels(place);
+    const detailRows = placeOverviewRows(place, tags);
     return `
-      <div class="lp-profile-shell packing-detail-shell packing-theme-overview">
+      <div class="lp-profile-shell packing-detail-shell packing-place-detail-shell packing-theme-overview">
         <div class="lp-profile-head wec-profile-top">
           <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(displayLabel(place.label || "Place"))}</h2>
           ${place.meta ? `<p class="lp-profile-subtitle rsa-p">${escapeHtml(displayLabel(place.meta))}</p>` : ""}
         </div>
 
-        <section class="lp-profile-panel packing-detail wec-detail-section">
+        <section class="lp-profile-panel packing-detail wec-detail-section packing-place-detail">
           <div data-wec-record="${escapeAttr(place.id)}" data-wec-name="${escapeAttr(place.label || "")}">
             <div class="lp-field-grid lp-profile-tab-panel is-active">
-              ${detailInfoListControlHtml("Tags", attributes)}
-              ${placeAttributeControlsHtml(place.attributes)}
-              ${placeTextControlHtml("Phone", place.phone)}
-              ${placeClickoutControlHtml("Map", place.mapsUrl)}
-              ${placeClickoutControlHtml("Website", place.website)}
-              ${placeTextControlHtml("Record", place.id)}
+              <div class="packing-place-overview-head rsa-H5 is-caps">Overview</div>
+              <div class="packing-place-overview-list">
+                ${detailRows.length ? detailRows.map(placeOverviewRowHtml).join("") : placeOverviewRowHtml(["Details", "No place details"])}
+              </div>
             </div>
           </div>
         </section>
@@ -2989,21 +2988,35 @@
     `;
   }
 
-  function placeAttributeControlsHtml(attributes) {
-    const rows = Array.isArray(attributes) ? attributes : [];
-    return rows.map((row) => placeTextControlHtml(row.label, row.value)).join("");
+  function placeOverviewRows(place, tags) {
+    const rows = [];
+    const tagText = uniqueDisplayValues(tags).map(displayLabel).join(", ");
+    if (tagText) rows.push(["Tags", tagText]);
+    rows.push(...placeAttributeRows(place.attributes));
+    if (place.phone) rows.push(["Phone", place.phone]);
+    if (place.mapsUrl) rows.push(["Map", place.mapsUrl, "link"]);
+    if (place.website) rows.push(["Website", place.website, "link"]);
+    return rows;
   }
 
-  function placeTextControlHtml(label, value) {
+  function placeAttributeRows(attributes) {
+    return (Array.isArray(attributes) ? attributes : [])
+      .map((row) => [displayLabel(row.label || ""), String(row.value || "").trim()])
+      .filter(([label, value]) => label && value);
+  }
+
+  function placeOverviewRowHtml(row) {
+    const [label, value, type] = row;
     const text = String(value || "").trim();
-    if (!text) return "";
-    return editGroupHtml(label, `<span class="lp-row-meta">${escapeHtml(text)}</span>`);
-  }
-
-  function placeClickoutControlHtml(label, url) {
-    const href = String(url || "").trim();
-    if (!href) return "";
-    return editGroupHtml(label, rsaOpenActionHtml(`href="${escapeAttr(href)}" target="_blank" rel="noopener"`));
+    const valueHtml = type === "link"
+      ? `<a class="packing-place-value-link rsa-text is-link" href="${escapeAttr(text)}" target="_blank" rel="noopener">${escapeHtml(text)}</a>`
+      : `<div class="packing-place-value rsa-text">${escapeHtml(text)}</div>`;
+    return `
+      <div class="packing-place-row rsa-item-row-2 is-grid2">
+        <div class="packing-place-label rsa-text is-xs is-caps">${escapeHtml(displayLabel(label))}</div>
+        ${valueHtml}
+      </div>
+    `;
   }
 
   function onsiteTaskStatusControlHtml(task) {

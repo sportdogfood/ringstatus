@@ -3131,20 +3131,23 @@ body {
   font-weight: 500;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2 {
-  color: #25364e;
-  text-align: center;
-  text-transform: uppercase;
-  background-color: #fff;
-  border: 1px #000;
-  border-radius: 100px;
-  min-width: 60px;
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
   margin-top: 0;
   margin-bottom: 0;
-  padding: 8px 12px;
-  font-size: 11px;
-  line-height: 20px;
+  padding: var(--rsa-cell-y) var(--rsa-cell-x);
+  color: #25364e;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  text-align: center;
+  text-transform: uppercase;
   text-decoration: underline;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-comment {
@@ -3301,6 +3304,32 @@ body {
   grid-template-columns: minmax(0, max-content);
   justify-content: end;
   justify-items: end;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rsa-action-block.is-grid3 {
+  align-items: stretch;
+  justify-content: end;
+  gap: 12px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--rsa-row-min);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: #25364e;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-banner-header .rs-text-link.is-active {
+  color: #25364e;
+  background: transparent;
+  border: 0;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-header {
@@ -3624,8 +3653,7 @@ a.rsa-item-row-2 {
   height: 100%;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link,
-:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link-2 {
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-search-grid .rs-text-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3634,6 +3662,9 @@ a.rsa-item-row-2 {
   min-height: var(--rsa-row-min);
   max-width: none;
   padding-inline: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   font-size: 10px;
   line-height: 12px;
   overflow: visible;
@@ -3806,7 +3837,7 @@ a.rsa-item-row-2 {
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-table-title,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-2,
-:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer,
@@ -3825,7 +3856,7 @@ a.rsa-item-row-2 {
   line-height: 18px;
 }
 
-:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link-2,
+:is(#packing-app, #tack-horses-app, #hps-app) .rs-text-link,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-text-linline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-inline,
 :is(#packing-app, #tack-horses-app, #hps-app) .rs-input-spacer {
@@ -4909,6 +4940,45 @@ a.rsa-item-row-2 {
   min-height: 31px;
   padding-left: 16px;
   padding-right: 16px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-detail .lp-profile-tab-panel {
+  gap: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-overview-head {
+  padding: 0 10px 8px;
+  border-bottom: 1px solid #e1e6f0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-overview-list {
+  display: grid;
+  width: 100%;
+  border-bottom: 1px solid #e1e6f0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-row {
+  min-height: 56px;
+  padding: 8px 10px;
+  border-bottom: 1px solid #e1e6f0;
+  grid-template-columns: minmax(96px, 0.35fr) minmax(0, 0.65fr);
+  align-items: start;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-row:last-child {
+  border-bottom: 0;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-label {
+  padding-top: 2px;
+  white-space: nowrap;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-value,
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-value-link {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 20px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .wec-profile-footer {
