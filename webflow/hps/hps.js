@@ -889,20 +889,20 @@
       : state.records.filter((record) => recordState(record) === (state.activeGroup === "inactive" ? "inactive" : "active"));
     if (!state.query) return records;
     return records.filter((record) => {
-      return searchableRecordText(record).includes(state.query);
+      return searchableRecordText(record, state.activeGroup === "feed").includes(state.query);
     });
   }
 
-  function searchableRecordText(record) {
+  function searchableRecordText(record, includeFeedText = false) {
     const fields = record.fields || {};
     const profileText = [
       firstValue(fields, ["barn_name", "Barn Name", "barn"]),
       firstValue(fields, ["show_name", "Show Name", "horse", "name", "Horse", "Name"]),
-      Object.values(fields).join(" ")
+      firstValue(fields, ["horse", "name", "Horse", "Name"])
     ].join(" ");
-    const feedText = (record.feedPlan || [])
+    const feedText = includeFeedText ? (record.feedPlan || [])
       .flatMap((item) => Object.values(item.fields || {}))
-      .join(" ");
+      .join(" ") : "";
     return normalizeSearchText(`${profileText} ${feedText}`);
   }
 
@@ -965,7 +965,7 @@
                     <button class="th-hps-control" type="button" data-th-refresh>Refresh</button>
                   </div>
                   <div class="th-search-wrap">
-                    <input class="lp-edit-input th-search" type="search" placeholder="Search horses" data-th-search>
+                    <input class="lp-edit-input th-search" type="text" inputmode="search" placeholder="Search horses" data-th-search>
                     <button class="th-search-clear" type="button" data-th-search-clear hidden aria-label="Clear search">x</button>
                   </div>
                 </div>
