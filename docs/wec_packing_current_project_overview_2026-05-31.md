@@ -13,8 +13,16 @@ The app is not local-only state. Airtable is both the data source and the write 
 Current live asset pin:
 
 ```text
-asset commit: ab77f2214e6b934d838271bd772932c63cdcfa70
-embed commit: 01854f0
+asset commit: 381a61294f7c65e394081a0e1f13fa34151267ff
+embed commit: local embed file points to 381a612 assets
+```
+
+Current Webflow pages:
+
+```text
+rswp        production page; keep unchanged until rswp2 passes
+rswp2       safety/test page for the current WEC packing embed
+rswp-print  dedicated print page embed
 ```
 
 Current important behavior:
@@ -41,6 +49,7 @@ Use this full embed. It includes the locked RSA/Webflow CSS file copied from the
     actionUrl: "https://ringstatus.com/test/wec-packing/action",
     healthUrl: "https://ringstatus.com/test/wec-packing/health",
     printUrl: "https://ringstatus.com/test/wec-packing/print",
+    printPageUrl: "https://ringstatus.com/rswp-print",
     pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
     showId: "",
     packWaveId: "",
@@ -52,9 +61,9 @@ Use this full embed. It includes the locked RSA/Webflow CSS file copied from the
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@ab77f2214e6b934d838271bd772932c63cdcfa70/webflow/packing-worksheet/rsa-stylesheets.locked.css?v=wec-20260531-ab77f22">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@ab77f2214e6b934d838271bd772932c63cdcfa70/webflow/packing-worksheet/styles.css?v=wec-20260531-ab77f22">
-<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@ab77f2214e6b934d838271bd772932c63cdcfa70/webflow/packing-worksheet/wec-packing.js?v=wec-20260531-ab77f22" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@381a61294f7c65e394081a0e1f13fa34151267ff/webflow/packing-worksheet/rsa-stylesheets.locked.css?v=wec-20260601-381a612">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@381a61294f7c65e394081a0e1f13fa34151267ff/webflow/packing-worksheet/styles.css?v=wec-20260601-381a612">
+<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@381a61294f7c65e394081a0e1f13fa34151267ff/webflow/packing-worksheet/wec-packing.js?v=wec-20260601-381a612" defer></script>
 ```
 
 Repo file:
@@ -187,24 +196,28 @@ The app is already in live use. Do not clear/reset live quantities, delete rows,
 Live state is calculated from current sources:
 
 ```text
-wec_horses wave flags
-+ wec_pack_waves groom_ratio/manual fields
+wec_pack_waves.count_horses_wave_one for Wave One horse count
++ wec_pack_waves.groom_sanity for groom count
++ wec_horses wave flags for roster/list membership
 + wec_pack_items source item plan/base values
 + current packed/progress rows
 = rendered app state
 ```
 
-`horse_count` on `wec_pack_waves` is stale reference data unless `manual_lock` is checked. For unlocked waves, horse count comes from current going horses:
+`horse_count` and `horse_sanity` on `wec_pack_waves` are stale reference data and must not drive live Wave One behavior unless a future manual-lock rule is explicitly approved. For unlocked Wave One math, the dynamic horse count is `wec_pack_waves.count_horses_wave_one`.
+
+Wave One horse membership is still defined as:
 
 ```text
 wave_one = wec_horses.wec_wave_1 = true and wec_not_going != true
-wave_two = wec_horses.wec_wave_2 = true and wec_not_going != true
 ```
 
-Groom count uses `wec_pack_waves.groom_ratio` when manual groom count is not set:
+Wave Two can later use the equivalent Wave Two count/embed, but it is not the current focus.
+
+Groom count uses `wec_pack_waves.groom_sanity` directly. Do not recalculate this from `groom_ratio` in the app.
 
 ```text
-groom_count = ceil(current_going_horse_count / groom_ratio)
+groom_count = wec_pack_waves.groom_sanity
 ```
 
 ### Plan Semantics

@@ -10,7 +10,7 @@
   const apiBaseUrl = String(config.apiBaseUrl || defaultApiBaseUrl).replace(/\/$/, "");
   const defaultPrintPageUrl = ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname)
     ? "./wec-packing-print-preview.html"
-    : "https://ringstatus.com/wec-packing-print";
+    : "https://ringstatus.com/rswp-print";
   const printPageUrl = String(config.printPageUrl || defaultPrintPageUrl).trim();
   const pdfWorkerUrl = String(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/").trim();
   const failedActionStorageKey = "wecPackingFailedActions:v1";
@@ -92,7 +92,7 @@
   function addContextParams(url) {
     if (config.showId) url.searchParams.set("showId", config.showId);
     if (config.packWaveId) url.searchParams.set("packWaveId", config.packWaveId);
-    if (config.packWaveKey || config.packWave) url.searchParams.set("packWaveKey", config.packWaveKey || config.packWave);
+    url.searchParams.set("packWaveKey", currentPackWaveKey());
   }
 
   function queueSessionStartEvent() {
@@ -1988,11 +1988,10 @@
     if (!wave) return "";
     return `
       <div class="lp-row is-static packing-wave-count-row">
-        <span class="packing-wave-counts">
-          ${waveCountStatHtml("HORSE COUNT", wave.effectiveHorseCount ?? wave.currentHorseCount ?? wave.horseCount)}
-          ${waveCountStatHtml("GROOM RATIO", wave.groomRatio)}
-          ${waveCountStatHtml("GROOM FINAL", wave.effectiveGroomCountFinal ?? wave.currentGroomCountFinal ?? wave.groomCountFinal)}
-        </span>
+          <span class="packing-wave-counts">
+            ${waveCountStatHtml("HORSE COUNT", wave.effectiveHorseCount ?? wave.currentHorseCount ?? wave.horseCount)}
+            ${waveCountStatHtml("GROOM COUNT", wave.effectiveGroomCountFinal ?? wave.currentGroomCountFinal ?? wave.groomSanity)}
+          </span>
       </div>
     `;
   }
@@ -3815,7 +3814,7 @@
 
   function horseFilterRows() {
     const rows = horses();
-    const filter = state.filterByList.horses || "all";
+    const filter = state.filterByList.horses || "wave_one";
     const hasRosterFlags = rows.some((horse) => horse.waveOne || horse.waveTwo || horse.notGoing);
     if (filter === "all" || !hasRosterFlags) {
       return filterRows(activeWaveHorses(), "horses", horseSearchText).sort(compareHorseNames);
@@ -3830,6 +3829,9 @@
   }
 
   function activeWaveHorses() {
+    const currentWaveRows = currentWaveRosterHorses();
+    if (currentWaveRows.length) return currentWaveRows;
+
     const members = horseMemberRows();
     if (!members.length) {
       return horses()
@@ -3864,6 +3866,22 @@
         waveSortOrder: sortByHorseId.get(horse.id) ?? sortByHorseKey.get(themeKey(horseDisplayName(horse))) ?? number(horse.sortOrder)
       }))
       .sort(compareHorseNames);
+  }
+
+  function currentWaveRosterHorses() {
+    const rows = horses();
+    const waveKey = currentPackWaveKey();
+    if (!rows.some((horse) => horse.waveOne || horse.waveTwo || horse.notGoing)) return [];
+    return rows
+      .filter((horse) => {
+        if (waveKey === "wave_two" || waveKey === "wave_2" || waveKey === "two") return !!horse.waveTwo && !horse.notGoing;
+        return !!horse.waveOne && !horse.notGoing;
+      })
+      .sort(compareHorseNames);
+  }
+
+  function currentPackWaveKey() {
+    return themeKey(config.packWaveKey || config.packWave || state.data?.source?.packWaveKey || state.data?.wave?.key || "wave_one") || "wave_one";
   }
 
   function compareHorseNames(a, b) {

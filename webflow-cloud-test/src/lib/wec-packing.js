@@ -1446,10 +1446,10 @@ export async function reconcileReport(airtable, requestUrl) {
     wave,
     waveCounts: {
       frozenHorseCount: numberField(wave?.horseCount),
-      horseSanity: numberField(wave?.horseSanity),
+      countHorsesWaveOne: numberField(wave?.countHorsesWaveOne),
       effectiveHorseCount: numberField(wave?.effectiveHorseCount),
       currentWaveHorseCount: waveHorses.length,
-      horseCountMismatch: !!wave && numberField(wave.horseCount) !== numberField(wave.effectiveHorseCount),
+      horseCountMismatch: !!wave && numberField(wave.countHorsesWaveOne) !== numberField(wave.effectiveHorseCount),
       groomCountFinal: numberField(wave?.groomCountFinal),
       groomSanity: numberField(wave?.groomSanity),
       effectiveGroomCountFinal: numberField(wave?.effectiveGroomCountFinal),
@@ -1709,11 +1709,8 @@ async function applySessionStart(airtable, tables, payload, state) {
 function waveCountNoteLine(wave) {
   if (!wave) return "";
   return [
-    `horse_count=${quantityDisplay(wave.horseCount)}`,
-    `horse_sanity=${quantityDisplay(wave.horseSanity)}`,
+    `count_horses_wave_one=${quantityDisplay(wave.countHorsesWaveOne)}`,
     `effective_horse_count=${quantityDisplay(wave.effectiveHorseCount)}`,
-    `groom_ratio=${quantityDisplay(wave.groomRatio)}`,
-    `groom_count_final=${quantityDisplay(wave.groomCountFinal)}`,
     `groom_sanity=${quantityDisplay(wave.groomSanity)}`,
     `effective_groom_count_final=${quantityDisplay(wave.effectiveGroomCountFinal)}`,
     `count_source=${wave.countSource || ""}`,
@@ -1724,11 +1721,11 @@ function waveCountNoteLine(wave) {
 function waveCountChangeNotes(wave) {
   if (!wave || wave.countsLocked) return "";
   const changes = [];
-  if (numberField(wave.horseCount) !== numberField(wave.effectiveHorseCount)) {
-    changes.push(`horse_count changed: stored=${quantityDisplay(wave.horseCount)} current=${quantityDisplay(wave.effectiveHorseCount)} source=${wave.countSource || ""}`);
+  if (numberField(wave.countHorsesWaveOne) !== numberField(wave.effectiveHorseCount)) {
+    changes.push(`count_horses_wave_one changed: stored=${quantityDisplay(wave.countHorsesWaveOne)} current=${quantityDisplay(wave.effectiveHorseCount)} source=${wave.countSource || ""}`);
   }
-  if (numberField(wave.groomCountFinal) !== numberField(wave.effectiveGroomCountFinal)) {
-    changes.push(`groom_count changed: stored=${quantityDisplay(wave.groomCountFinal)} current=${quantityDisplay(wave.effectiveGroomCountFinal)} source=${wave.groomCountSource || ""}`);
+  if (numberField(wave.groomSanity) !== numberField(wave.effectiveGroomCountFinal)) {
+    changes.push(`groom_sanity changed: stored=${quantityDisplay(wave.groomSanity)} current=${quantityDisplay(wave.effectiveGroomCountFinal)} source=${wave.groomCountSource || ""}`);
   }
   return changes.join("\n");
 }
@@ -2372,6 +2369,7 @@ function normalizeWave(record) {
   if (!record) return null;
   const fields = record.fields || {};
   const wave = stringField(fields.wave || fields.wave_key || fields.key || fields.Name || record.id);
+  const countHorsesWaveOneValue = fields.count_horses_wave_one;
   return {
     id: record.id,
     key: slugify(fields.wave_key || fields.key || wave),
@@ -2382,10 +2380,8 @@ function normalizeWave(record) {
     deadlineDate: stringField(fields.deadline_date),
     daysTill: numberField(fields.days_till),
     horseCount: numberField(fields.horse_count),
-    horseSanity: numberField(fields.horse_sanity),
-    groomCountMode: stringField(fields.groom_count_mode),
-    groomCountManual: numberField(fields.groom_count_manual),
-    groomRatio: numberField(fields.groom_ratio),
+    countHorsesWaveOne: numberField(countHorsesWaveOneValue),
+    countHorsesWaveOneAvailable: hasNumberField(countHorsesWaveOneValue),
     groomCountFinal: numberField(fields.groom_count_final),
     groomSanity: numberField(fields.groom_sanity),
     sortOrder: numberField(fields.sort_order),
@@ -2397,16 +2393,12 @@ function normalizeWave(record) {
 function withEffectiveWaveCounts(wave, waveHorses) {
   if (!wave) return null;
   const linkedHorseCount = waveHorses.length;
-  const currentHorseCount = wave.horseSanity > 0 ? wave.horseSanity : linkedHorseCount;
-  const manualGroomCount = wave.groomCountManual > 0
-    ? wave.groomCountManual
-    : slugify(wave.groomCountMode) === "manual" && wave.groomCountFinal > 0
-      ? wave.groomCountFinal
-      : 0;
-  const ratioGroomCount = wave.groomRatio > 0
-    ? Math.ceil(currentHorseCount / wave.groomRatio)
-    : 0;
-  const dynamicGroomCountFinal = manualGroomCount || wave.groomSanity || ratioGroomCount || wave.groomCountFinal;
+  const waveKey = slugify(wave.key || wave.wave || "");
+  const usesWaveOneCount = (waveKey === "wave_one" || waveKey === "wave_1" || waveKey === "one") && wave.countHorsesWaveOneAvailable;
+  const currentHorseCount = usesWaveOneCount
+    ? wave.countHorsesWaveOne
+    : linkedHorseCount;
+  const dynamicGroomCountFinal = wave.groomSanity;
   const effectiveHorseCount = wave.manualLock ? wave.horseCount : currentHorseCount;
   const effectiveGroomCountFinal = wave.manualLock ? wave.groomCountFinal : dynamicGroomCountFinal;
   return {
@@ -2417,16 +2409,10 @@ function withEffectiveWaveCounts(wave, waveHorses) {
     effectiveHorseCount,
     effectiveGroomCountFinal,
     countsLocked: wave.manualLock,
-    countSource: wave.manualLock ? "manual_lock" : (wave.horseSanity > 0 ? "horse_sanity" : "current_wave_scope"),
+    countSource: wave.manualLock ? "manual_lock" : (usesWaveOneCount ? "count_horses_wave_one" : "current_wave_scope"),
     groomCountSource: wave.manualLock
       ? "manual_lock"
-      : manualGroomCount
-        ? (wave.groomCountManual > 0 ? "groom_count_manual" : "groom_count_final_manual")
-        : wave.groomSanity
-          ? "groom_sanity"
-          : wave.groomRatio
-            ? "groom_ratio"
-            : "groom_count_final"
+      : "groom_sanity"
   };
 }
 
@@ -2929,11 +2915,7 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorses = []) {
       sourceField: "wec_pack_items.per_groom",
       multiplierField: wave?.countsLocked
         ? "wec_pack_waves.groom_count_final"
-        : wave?.groomCountSource === "groom_count_final_manual"
-          ? "wec_pack_waves.groom_count_final"
-          : wave?.groomCountSource === "groom_sanity"
-            ? "wec_pack_waves.groom_sanity"
-            : "current wave groom count",
+        : "wec_pack_waves.groom_sanity",
       base: perGroom,
       multiplier: groomCount,
       calculatedNeeded,
@@ -2954,8 +2936,8 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorses = []) {
       sourceField: "wec_pack_items.per_horse",
       multiplierField: wave?.countsLocked
         ? "wec_pack_waves.horse_count"
-        : wave?.countSource === "horse_sanity"
-          ? "wec_pack_waves.horse_sanity"
+        : wave?.countSource === "count_horses_wave_one"
+          ? "wec_pack_waves.count_horses_wave_one"
           : "current wave horse count",
       base: perHorse,
       multiplier: horseCount,
@@ -3205,6 +3187,12 @@ function stringListField(value) {
 function numberField(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : 0;
+}
+
+function hasNumberField(value) {
+  if (Array.isArray(value)) return value.some(hasNumberField);
+  if (value === undefined || value === null || value === "") return false;
+  return Number.isFinite(Number(value));
 }
 
 function wholeQuantityField(value) {

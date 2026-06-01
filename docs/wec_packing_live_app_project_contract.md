@@ -283,7 +283,7 @@ Examples:
 
 Packing math should be generated from the selected pack wave.
 
-When `wec_pack_waves.manual_lock` is unchecked, the app uses current horse wave flags for effective wave counts. When checked, the app may use the stored wave counts as the locked snapshot. Stale `horse_count` must not drive live behavior for unlocked waves.
+When `wec_pack_waves.manual_lock` is unchecked, Wave One uses `wec_pack_waves.count_horses_wave_one` as the dynamic effective horse count. Horse roster/list membership still comes from `wec_horses.wec_wave_1` checked and `wec_not_going` unchecked. `horse_count` and `horse_sanity` must not drive live Wave One behavior unless a future manual-lock rule is explicitly approved.
 
 ## Horse Usage
 
@@ -317,10 +317,7 @@ Use a wave-level groom count instead.
 Recommended logic:
 
 ```text
-if groom_count_manual is set:
-  groom_count_final = groom_count_manual
-else:
-  groom_count_final = ceil(current_going_horse_count / groom_ratio)
+groom_count_final = wec_pack_waves.groom_sanity
 ```
 
 This supports operational needs like packing for 5 grooms without needing to know whether Jose, Jimmy, or another groom is available, driving, or rotating weeks.
