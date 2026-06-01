@@ -620,13 +620,27 @@
       : input.value;
     if (String(oldValue) === String(newValue)) return;
 
-    await saveRecordChange(record, {
+    if (input.dataset.thBoolean) {
+      record.fields[fieldName] = newValue;
+      if (fieldName === "print_batch") {
+        setPrintStatus(record.id, newValue ? `Requested: ${formatTimestamp(new Date())}` : "");
+      }
+    }
+
+    const result = await saveRecordChange(record, {
       fieldName,
       oldValue,
       newValue,
       horseKey: rowEl.dataset.thKey,
       horseName: rowEl.dataset.thName
     });
+    if (!result?.ok && input.dataset.thBoolean) {
+      record.fields[fieldName] = oldValue;
+      input.checked = checkboxValue(oldValue);
+      if (fieldName === "print_batch") {
+        setPrintStatus(record.id, checkboxValue(oldValue) ? "Requested" : "");
+      }
+    }
   }
 
   async function saveRecordChange(record, change) {
@@ -658,12 +672,14 @@
       const message = `Saved to Airtable at ${new Date().toLocaleTimeString()} (updated, logged).`;
       setStatus(message);
       setDetailStatus(message);
+      return { ok: true, value: record.fields[change.fieldName], result };
     } catch (error) {
       console.error("[hps]", error);
       const detail = error instanceof Error ? error.message : String(error);
       const message = `Save failed: ${detail}`;
       setStatus(message);
       setDetailStatus(message);
+      return { ok: false, error };
     }
   }
 
@@ -717,22 +733,38 @@
     const currentState = recordState(record);
     if (currentState === nextState) return;
     const activeValue = nextState === "active";
-    await saveRecordChange(record, {
+    const previous = {
+      app_active: record.fields?.app_active ?? "",
+      app_inactive: record.fields?.app_inactive ?? ""
+    };
+    record.fields.app_active = activeValue;
+    record.fields.app_inactive = !activeValue;
+    render();
+    refreshActiveDetail();
+    setStatus("Saving change...");
+    setDetailStatus("Saving change...");
+
+    const activeResult = await saveRecordChange(record, {
       fieldName: "app_active",
-      oldValue: record.fields?.app_active ?? "",
+      oldValue: previous.app_active,
       newValue: activeValue,
       horseKey: record.id,
       horseName: firstValue(record.fields || {}, ["barn_name", "show_name", "horse"]) || record.id
     });
-    await saveRecordChange(record, {
+    const inactiveResult = await saveRecordChange(record, {
       fieldName: "app_inactive",
-      oldValue: record.fields?.app_inactive ?? "",
+      oldValue: previous.app_inactive,
       newValue: !activeValue,
       horseKey: record.id,
       horseName: firstValue(record.fields || {}, ["barn_name", "show_name", "horse"]) || record.id
     });
-    record.fields.app_active = activeValue;
-    record.fields.app_inactive = !activeValue;
+
+    if (!activeResult?.ok || !inactiveResult?.ok) {
+      record.fields.app_active = previous.app_active;
+      record.fields.app_inactive = previous.app_inactive;
+      setDetailStatus("Save failed. Restored previous app status.");
+      setStatus("Save failed. Restored previous app status.");
+    }
     render();
     refreshActiveDetail();
   }
@@ -761,18 +793,33 @@
       wec_wave_2: fieldValues.wave_2,
       wec_not_going: fieldValues.not_going
     };
+    const previous = {
+      wec_wave_1: record.fields?.wec_wave_1 ?? "",
+      wec_wave_2: record.fields?.wec_wave_2 ?? "",
+      wec_not_going: record.fields?.wec_not_going ?? ""
+    };
+    Object.assign(record.fields, fieldMap);
+    refreshActiveDetail();
+    setStatus("Saving change...");
+    setDetailStatus("Saving change...");
 
+    let failed = false;
     for (const [fieldName, newValue] of Object.entries(fieldMap)) {
-      const oldValue = record.fields?.[fieldName] ?? "";
+      const oldValue = previous[fieldName] ?? "";
       if (checkboxValue(oldValue) === newValue) continue;
-      await saveRecordChange(record, {
+      const result = await saveRecordChange(record, {
         fieldName,
         oldValue,
         newValue,
         horseKey: record.id,
         horseName: firstValue(record.fields || {}, ["barn_name", "show_name", "horse"]) || record.id
       });
-      record.fields[fieldName] = newValue;
+      if (!result?.ok) failed = true;
+    }
+    if (failed) {
+      Object.assign(record.fields, previous);
+      setDetailStatus("Save failed. Restored previous WEC status.");
+      setStatus("Save failed. Restored previous WEC status.");
     }
     refreshActiveDetail();
   }
