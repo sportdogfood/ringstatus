@@ -191,23 +191,28 @@ needed = wec_pack_items.quantity
 Count math only. Every scoped horse contributes to the quantity. The worksheet does not track named horse packed states for this plan.
 
 ```text
-needed = wec_pack_items.per_horse * pack_wave.horse_count
+needed = wec_pack_items.per_horse * current_going_horse_count
 ```
 
 `horse_specific`
 
-Dynamic quantity math. Only horses linked to the source item, active, and included in the selected pack wave contribute to the item quantity.
+Dynamic horse-kit rollup. Only current going horses linked to the generic source item contribute to the current checklist. This is not unit quantity math.
 
 ```text
-eligible_horses =
-  source_item.wec_horses
-  filtered by active state
-  filtered by wave attendance
+expected_horse_kits =
+  wec_horses
+  filtered by current wave flags
+  filtered by not_going != true
+  filtered by linked wec_pack_items containing the source item
 
-needed = eligible_horses.count * item per-horse amount
+needed = expected_horse_kits.count
+packed = expected_horse_kits where horse_pack_state = packed
+left = needed - packed
 ```
 
-`wec_packing_item_horses` is not a full dynamic expansion table. Horse-member rows are created only when a horse is manually locked. Until then, unlocked horses contribute to dynamic counts but do not create individual horse-member worksheet rows.
+Each horse/source item pair is packed or not packed. The source item label may include quantity detail such as `Bridle (2)`, but the app does not track partial quantity inside the horse-specific row.
+
+`wec_packing_item_horses` stores touched packed/not-packed state for horse kits. Missing rows mean not packed. The app must not bulk-generate every expected row unless that is separately approved.
 
 `per_groom`
 
@@ -278,7 +283,7 @@ Examples:
 
 Packing math should be generated from the selected pack wave.
 
-When `wec_pack_waves.manual_lock` is unchecked, the app uses current horse/week membership for effective wave counts. When checked, the app uses the stored wave counts as the locked snapshot.
+When `wec_pack_waves.manual_lock` is unchecked, the app uses current horse wave flags for effective wave counts. When checked, the app may use the stored wave counts as the locked snapshot. Stale `horse_count` must not drive live behavior for unlocked waves.
 
 ## Horse Usage
 
@@ -297,9 +302,11 @@ Do not store packing progress directly on `wec_horses`.
 
 For `per_horse` rows, use horses only for count math.
 
-For `horse_specific` rows, use horses as dynamic count inputs until the horse is locked.
+For `horse_specific` rows, use horses as dynamic current checklist inputs. `wec_horses.wec_wave_1`, `wec_horses.wec_wave_2`, and `wec_horses.wec_not_going` are the live wave filters.
 
-Create `wec_packing_item_horses` only for horses where `wec_horses.manual_lock` is checked. Unlocked horses remain dynamic contributors to item quantities but do not get individual horse-member progress rows.
+Create or update `wec_packing_item_horses` only when a user changes a horse kit packed state. Missing rows are treated as not packed.
+
+Do not delete stale horse-kit rows. If a horse is removed from a wave, current rollups exclude that horse's kits, but existing state rows and event history remain available for audit.
 
 ## Groom Usage
 
@@ -313,7 +320,7 @@ Recommended logic:
 if groom_count_manual is set:
   groom_count_final = groom_count_manual
 else:
-  groom_count_final = ceil(horse_count / groom_ratio)
+  groom_count_final = ceil(current_going_horse_count / groom_ratio)
 ```
 
 This supports operational needs like packing for 5 grooms without needing to know whether Jose, Jimmy, or another groom is available, driving, or rotating weeks.

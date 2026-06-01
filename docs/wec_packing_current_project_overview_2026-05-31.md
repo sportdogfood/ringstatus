@@ -171,14 +171,106 @@ wec_commenting
 Important current table roles:
 
 - `wec_pack_lists`: source list definitions, packing tabs, home/approved modules.
-- `wec_pack_items`: source item catalog and approved-list source records.
-- `wec_pack_waves`: active pack wave, show/wave deadline, count context.
+- `wec_pack_items`: source item catalog and approved-list source records. It may show reference rollups in Airtable, but it is not the app's stored current-need authority.
+- `wec_pack_waves`: active pack wave, show/wave deadline, count context, and groom ratio. Stale `horse_count` must not drive live behavior unless the wave is explicitly manually locked.
 - `wec_weeks`: owner-approved count calculations stay here where already established.
-- `wec_horses`: roster source for Wave 1, Wave 2, Not Going filters.
-- `wec_packing_items`: current worksheet state for item quantities and decisions.
-- `wec_packing_item_horses`: current horse-specific packing state.
-- `wec_packing_events`: event history for quantity, decision, horse, task, and session events.
-- `wec_commenting`: current comment records for item/section/tab/wave scopes.
+- `wec_horses`: roster source for Wave 1, Wave 2, Not Going filters, and linked generic horse-specific kit items.
+- `wec_packing_items`: current packed/progress state for normal packing items and decisions. It must not be trusted as the live `NEED` authority.
+- `wec_packing_item_horses`: touched packed/not-packed state for horse-specific kit rows. A missing row means not packed.
+- `wec_packing_events`: debit/credit event history for quantity, decision, horse-kit, task, edit, and session events.
+- `wec_commenting`: current comment records for item/section/tab/wave scopes. Replies are not wired unless a later explicit parent-comment field is approved.
+
+## Locked Live Logic As Of 2026-06-01
+
+The app is already in live use. Do not clear/reset live quantities, delete rows, delete comments, or delete events without an explicit scope approval in the same session.
+
+Live state is calculated from current sources:
+
+```text
+wec_horses wave flags
++ wec_pack_waves groom_ratio/manual fields
++ wec_pack_items source item plan/base values
++ current packed/progress rows
+= rendered app state
+```
+
+`horse_count` on `wec_pack_waves` is stale reference data unless `manual_lock` is checked. For unlocked waves, horse count comes from current going horses:
+
+```text
+wave_one = wec_horses.wec_wave_1 = true and wec_not_going != true
+wave_two = wec_horses.wec_wave_2 = true and wec_not_going != true
+```
+
+Groom count uses `wec_pack_waves.groom_ratio` when manual groom count is not set:
+
+```text
+groom_count = ceil(current_going_horse_count / groom_ratio)
+```
+
+### Plan Semantics
+
+`quantity`
+
+- Dynamic `NEED` comes from the source item quantity/base.
+- `PACKED` is current packed progress on `wec_packing_items`.
+
+`per_horse`
+
+- Count math only.
+- `NEED = source per_horse * current going horse count`.
+- No named horse-kit rows.
+
+`per_groom`
+
+- Count math only.
+- `NEED = source per_groom * current groom count`.
+- Current groom count derives from `wec_pack_waves` ratio/manual fields.
+
+`horse_specific`
+
+- Dynamic checklist rollup only, not quantity math.
+- Each going horse has generic linked `wec_pack_items` kit items.
+- Each expected horse + source item pair is one kit row.
+- `NEED = expected horse-kit row count`.
+- `PACKED = packed horse-kit row count`.
+- `LEFT = NEED - PACKED`.
+- The source item name can carry quantity detail, such as `Bridle (2)`. The app does not treat that as a partial quantity input.
+- Missing `wec_packing_item_horses` row means `not_packed`.
+- On first packed tap, the app may create a `wec_packing_item_horses` row for that horse/item/wave.
+- Removing a horse from a wave recalibrates current rollups down by one for that horse's linked kit items. Existing rows/events/comments remain preserved and are excluded from current rollups if no longer current.
+
+### Decisions
+
+`CLEAR`
+
+- Clears packed progress.
+- Sets packed count/state to zero/not packed.
+- Logs a negative quantity delta when packed progress existed.
+
+`MAX`
+
+- Sets packed progress to current dynamic `NEED`.
+- Logs the positive delta from current packed to current need.
+
+`BUY`
+
+- Moves the item to Purchase Onsite.
+- Clears packed progress if any.
+- Logs a negative quantity delta only when packed progress was cleared.
+
+`ATTN`
+
+- Moves the item to Needs Attention.
+- Does not clear packed progress by default.
+- Logs a decision change with zero quantity delta unless a separate clear is used.
+
+### Edit And Comment Logging
+
+- Inline quantity input writes packed progress and should log the debit/credit delta.
+- Inline item label edit currently patches `wec_packing_items`; it must add an `item_edit` event before this is considered fully audited.
+- Comment add writes to `wec_commenting` when configured, with fallback to `wec_packing_events` only if `wec_commenting` is unavailable.
+- Comment edit currently updates the same `wec_commenting` row and marks `comment_status = edited`; it does not yet create a separate audit event.
+- Comment replies are not a current feature. If added, replies should be new `wec_commenting` rows with `event_type = comment_reply` and an explicit parent field.
 
 ## Current Write Actions
 
@@ -191,6 +283,7 @@ set_pack_state
 set_resolution
 update_item_fields
 set_horse_pack_state
+set_horse_kit_state
 set_horse_record_state
 set_source_flag
 set_onsite_task_state
@@ -204,7 +297,7 @@ Expected write behavior:
 - Pack state changes patch `wec_packing_items` and create event history.
 - Decision changes patch `wec_packing_items.resolution_state` and create event history.
 - Inline item edits patch only allowed fields on `wec_packing_items`.
-- Horse-specific packed state patches `wec_packing_item_horses`, rolls up parent `wec_packing_items`, and creates event history.
+- Horse-specific packed state uses dynamic expected horse-kit rows. Missing `wec_packing_item_horses` rows mean not packed; packed taps create/update the touched state row and create event history.
 - Horse record state patches `wec_horses.record_state`.
 - Source flags patch allowed fields on `wec_pack_items`.
 - Onsite task state creates an event against the source item from `wec_purchase_onsite`.
@@ -278,9 +371,12 @@ High priority:
 - Verify the pasted Webflow embed after replacing the Webflow custom code.
 - Verify direct phone behavior for quantity add and failed-save queue.
 - Run one real Airtable write proof for `add_quantity`: before record, action response, Airtable after record, event evidence, refresh evidence.
+- Run one real Airtable write proof for `set_horse_kit_state`: virtual/missing row before, action response, created/updated `wec_packing_item_horses`, event evidence, refresh evidence.
 - Run one real Airtable comment proof for `add_comment` and `update_comment` in `wec_commenting`.
 - Confirm print buttons from the pasted Webflow page open PDF/print output on phone.
 - Confirm the PDF worker result is usable on iPhone.
+- Add audit event for inline item label edit (`item_edit`) if label edits need owner-visible audit.
+- Decide whether comment edits need a separate audit event beyond `comment_status = edited`.
 
 Data/model:
 
@@ -288,13 +384,15 @@ Data/model:
 - Confirm final `wec_pack_lists` view for editable/active list management, including `wec_wave_lists` if that remains the intended view.
 - Confirm `Purchase Onsite` and `Needs Attention` remain approved lists and not packing lists.
 - Confirm Search remains a synthetic all-items actionable view, not an Airtable list record.
-- Confirm whether `Needs Attention` should be driven by `resolution_state = note/attn` or a dedicated list/module.
+- Keep `Needs Attention` driven by decision state unless a dedicated module is explicitly approved.
 
 Horse/Wave:
 
-- Keep existing `wec_weeks` count calculations.
-- Use `wec_horses` Wave 1 / Wave 2 / Not Going fields for horse roster list filters.
-- Confirm no extra horse-specific current-state rows are generated without approval.
+- Keep existing `wec_weeks` count calculations as reference/accounting only where already established.
+- Use `wec_horses` Wave 1 / Wave 2 / Not Going fields for live wave horse counts and roster filters.
+- Replace horse-specific quantity math with dynamic horse-kit rollups.
+- Do not bulk-generate horse-specific state rows. Create `wec_packing_item_horses` only when a user touches a horse kit state.
+- Preserve existing horse-kit rows, comments, and events. Exclude stale rows from current rollups rather than deleting them.
 - Define return-wave behavior separately before implementing.
 
 Styling:

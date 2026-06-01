@@ -767,20 +767,36 @@
 
   async function setHorseMemberState(button) {
     const itemHorseId = button.dataset.itemHorseId;
+    const packingItemId = button.dataset.packingItemId || "";
+    const horseId = button.dataset.horseId || "";
+    const sourcePackItemId = button.dataset.sourcePackItemId || "";
     const horsePackState = button.dataset.horseMemberState;
     if (!itemHorseId || !horsePackState) return;
-    const pendingKey = pendingActionKey("set_horse_pack_state", itemHorseId);
+    const useKitAction = !!packingItemId && !!horseId && !!sourcePackItemId;
+    const action = useKitAction ? "set_horse_kit_state" : "set_horse_pack_state";
+    const pendingKey = pendingActionKey(action, itemHorseId);
     if (state.pendingActions[pendingKey]) return;
     const snapshot = snapshotHorseMemberState(itemHorseId);
     state.pendingActions[pendingKey] = horsePackState;
     applyLocalHorseMemberState(itemHorseId, horsePackState);
     state.saveMessage = horsePackState === "packed" ? "Marking packed..." : "Reopening item...";
     render();
-    await postAction({
-      action: "set_horse_pack_state",
-      itemHorseId,
-      horsePackState
-    }, null, {
+    const payload = useKitAction
+      ? {
+          action,
+          itemHorseId,
+          packingItemId,
+          horseId,
+          sourcePackItemId,
+          packWaveId: currentWaveId(),
+          horsePackState
+        }
+      : {
+          action,
+          itemHorseId,
+          horsePackState
+        };
+    await postAction(payload, null, {
       pendingKey,
       message: horsePackState === "packed" ? "Marking packed..." : "Reopening item...",
       quietStart: true,
@@ -1010,6 +1026,7 @@
     if (action === "add_comment") return `Add comment${itemName ? ` - ${itemName}` : ""}`;
     if (action === "update_comment") return `Edit comment${itemName ? ` - ${itemName}` : ""}`;
     if (action === "update_item_fields") return `Edit item${itemName ? ` - ${itemName}` : ""}`;
+    if (action === "set_horse_kit_state") return `Horse kit${itemName ? ` - ${itemName}` : ""}`;
     if (action === "set_resolution") return `Decision ${resolutionDisplayLabel(payload.resolutionState)}${itemName ? ` - ${itemName}` : ""}`;
     return `${displayLabel(action)}${itemName ? ` - ${itemName}` : ""}`;
   }
@@ -2999,10 +3016,12 @@
   function horseDetailItemRowHtml(row) {
     const packed = isHorseMemberPacked(row.member);
     const nextState = packed ? "not_packed" : "packed";
+    const sourcePackItemId = row.member.sourcePackItemIds?.[0] || row.item?.sourcePackItemIds?.[0] || "";
+    const horseId = row.member.horseIds?.[0] || "";
     return `
       <span class="packing-horse-binding-row packing-horse-pack-row">
         <span class="packing-horse-binding-name">${escapeHtml(displayLabel(row.item?.name || "Unnamed item"))}</span>
-        <button class="lp-achievement packing-token ${packed ? "is-packed" : "is-need"}" type="button" data-horse-member-state="${escapeAttr(nextState)}" data-item-horse-id="${escapeAttr(row.member.id)}">
+        <button class="lp-achievement packing-token ${packed ? "is-packed" : "is-need"}" type="button" data-horse-member-state="${escapeAttr(nextState)}" data-item-horse-id="${escapeAttr(row.member.id)}" data-packing-item-id="${escapeAttr(row.item?.id || "")}" data-horse-id="${escapeAttr(horseId)}" data-source-pack-item-id="${escapeAttr(sourcePackItemId)}">
           ${packed ? "PACKED" : "NOT PACKED"}
         </button>
       </span>
@@ -3100,10 +3119,12 @@
       <span class="packing-horse-bindings">
         ${item.horseMembers.map((member) => {
           const packed = member.horsePackState === "packed" || number(member.packed) >= number(member.needed);
+          const sourcePackItemId = member.sourcePackItemIds?.[0] || item.sourcePackItemIds?.[0] || "";
+          const horseId = member.horseIds?.[0] || "";
           return `
             <span class="packing-horse-binding-row">
               <span class="packing-horse-binding-name">${escapeHtml(member.barnName || "Unnamed horse")}</span>
-              <button class="lp-edit-pill packing-horse-binding-toggle rsa-text is-caps ${packed ? "is-active" : ""}" type="button" data-horse-member-state="${packed ? "not_packed" : "packed"}" data-item-horse-id="${escapeAttr(member.id)}">
+              <button class="lp-edit-pill packing-horse-binding-toggle rsa-text is-caps ${packed ? "is-active" : ""}" type="button" data-horse-member-state="${packed ? "not_packed" : "packed"}" data-item-horse-id="${escapeAttr(member.id)}" data-packing-item-id="${escapeAttr(item.id)}" data-horse-id="${escapeAttr(horseId)}" data-source-pack-item-id="${escapeAttr(sourcePackItemId)}">
                 ${packed ? "PACKED" : "NOT PACKED"}
               </button>
             </span>
@@ -3593,13 +3614,29 @@
   function applyLocalResolutionState(itemId, resolutionState) {
     const item = items().find((row) => row.id === itemId);
     if (!item) return;
+    const needed = number(item.needed);
     if (resolutionState === "clear") {
       item.resolutionState = "";
-      item.packState = isPackedListItem(item) ? "packed" : "not_packed";
+      item.packed = 0;
+      item.left = needed;
+      item.packState = "not_packed";
       return;
     }
     item.resolutionState = resolutionState;
-    item.packState = resolutionState === "max" ? "packed" : "not_packed";
+    if (resolutionState === "max") {
+      item.packed = needed;
+      item.left = 0;
+      item.packState = needed > 0 ? "packed" : "not_packed";
+      return;
+    }
+    if (resolutionState === "purchase_onsite") {
+      item.packed = 0;
+      item.left = needed;
+      item.packState = "not_packed";
+      return;
+    }
+    item.left = Math.max(0, needed - number(item.packed));
+    item.packState = needed > 0 && number(item.packed) >= needed ? "packed" : "not_packed";
   }
 
   function restoreItemQuantities(itemId, snapshot) {
