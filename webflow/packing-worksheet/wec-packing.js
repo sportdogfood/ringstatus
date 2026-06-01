@@ -13,6 +13,7 @@
     : "https://ringstatus.com/rswp-print";
   const printPageUrl = String(config.printPageUrl || defaultPrintPageUrl).trim();
   const pdfWorkerUrl = String(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/").trim();
+  const enableHorseNotNeeded = config.enableHorseNotNeeded === true;
   const failedActionStorageKey = "wecPackingFailedActions:v1";
   const state = {
     activeTab: "overview",
@@ -4062,6 +4063,9 @@
   }
 
   function nextHorseMemberState(currentState) {
+    if (!enableHorseNotNeeded) {
+      return currentState === "packed" ? "not_packed" : "packed";
+    }
     if (currentState === "not_packed") return "not_needed";
     if (currentState === "not_needed") return "packed";
     return "not_packed";
