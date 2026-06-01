@@ -353,8 +353,15 @@
   padding: 8px 12px;
 }
 
+#hps-app .th-horse-row .packing-horse-detail-trigger {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+}
+
 #hps-app .th-horse-row .lp-row-title {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 0.95em;
   letter-spacing: -0.06em;
@@ -367,11 +374,16 @@
 }
 
 #hps-app .th-feed-horse-row {
+  align-items: center;
   border-bottom: 1px solid var(--lp-border);
 }
 
 #hps-app .th-feed-name {
+  align-self: center;
+  display: flex;
+  align-items: center;
   cursor: default;
+  min-height: 28px;
 }
 
 #hps-app .th-feed-back {
@@ -489,8 +501,9 @@
   min-width: 520px;
   border-collapse: collapse;
   color: var(--lp-ink);
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.15;
+  text-transform: uppercase;
 }
 
 #hps-app .th-feed-table th,
