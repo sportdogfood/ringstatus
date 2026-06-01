@@ -2890,7 +2890,7 @@ function normalizeSourcePackItem(record, listPlanLookup = new Map()) {
     placeLabels: stringListField(fields.wec_places_rollup || fields.place_names || fields["place_names (from wec_places)"]),
     localTags: stringListField(fields.wec_local_tags_rollups || fields.local_tags || fields["local_tags (from wec_places)"]),
     ignored: !!fields.ignore,
-    active: !!fields.active && !fields.inactive && !fields.remove,
+    active: (fields.active === undefined ? true : !!fields.active) && !fields.inactive && !fields.remove,
     sortOrder: numberField(fields.sort_order || fields.sorted),
     sourceFlags: {
       ignore: !!fields.ignore,
