@@ -3079,7 +3079,7 @@ body {
 }
 
 #packing-app .rsa-item-row-2.is-search-grid {
-  grid-template-columns: 1fr 200px;
+  grid-template-columns: minmax(0, 1fr) clamp(64px, 16vw, 88px);
   padding: 0;
 }
 
@@ -3526,6 +3526,7 @@ body {
 }
 
 #packing-app .rsa-item-row-2.is-search-grid {
+  grid-template-columns: minmax(0, 1fr) clamp(64px, 16vw, 88px);
   padding: 0;
 }
 
@@ -3551,6 +3552,7 @@ body {
   gap: 0;
   justify-content: stretch;
   width: 100%;
+  min-width: 0;
   height: 100%;
 }
 
@@ -3937,6 +3939,7 @@ body {
   }
 
   #packing-app .rsa-item-row-2.is-search-grid {
+    grid-template-columns: minmax(0, 1fr) 64px;
     padding-inline: 0;
   }
 }

@@ -1674,11 +1674,7 @@ export async function listAirtableRecords(airtable, table, view = "") {
     url.searchParams.set("pageSize", "100");
     if (view) url.searchParams.set("view", view);
     if (offset) url.searchParams.set("offset", offset);
-    const response = await fetch(url, { headers: airtableHeaders(airtable.token) });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(`list ${table} ${response.status}: ${JSON.stringify(result)}`);
-    }
+    const result = await fetchAirtableListPage(airtable, table, url);
     records.push(...(result.records || []).map((record) => ({
       id: record.id,
       createdTime: record.createdTime,
@@ -1687,6 +1683,29 @@ export async function listAirtableRecords(airtable, table, view = "") {
     offset = result.offset || "";
   } while (offset);
   return records;
+}
+
+async function fetchAirtableListPage(airtable, table, url) {
+  const retryDelays = [450, 900, 1800, 3200];
+  let lastError = null;
+  for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
+    const response = await fetch(url, { headers: airtableHeaders(airtable.token) });
+    const result = await response.json().catch(() => ({}));
+    if (response.ok) return result;
+    lastError = new Error(`list ${table} ${response.status}: ${JSON.stringify(result)}`);
+    if (response.status !== 429 && response.status < 500) break;
+    if (attempt >= retryDelays.length) break;
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const delay = Number.isFinite(retryAfter) && retryAfter > 0
+      ? retryAfter * 1000
+      : retryDelays[attempt] + Math.floor(Math.random() * 250);
+    await sleep(delay);
+  }
+  throw lastError;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function listOptionalRecords(airtable, tableConfig) {
