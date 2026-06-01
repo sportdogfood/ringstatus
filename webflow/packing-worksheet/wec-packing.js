@@ -604,6 +604,7 @@
       state.pendingActions[pendingKey] = action;
       state.addQty[itemId] = "";
       const optimistic = applyOptimisticAddQuantity(itemId, quantityDelta);
+      state.saveMessage = `Adding ${quantityDisplay(quantityDelta)}...`;
       render();
       await postAction({
         action: "add_quantity",
@@ -662,10 +663,22 @@
     const itemHorseId = button.dataset.itemHorseId;
     const horsePackState = button.dataset.horseMemberState;
     if (!itemHorseId || !horsePackState) return;
+    const pendingKey = pendingActionKey("set_horse_pack_state", itemHorseId);
+    if (state.pendingActions[pendingKey]) return;
+    const snapshot = snapshotHorseMemberState(itemHorseId);
+    state.pendingActions[pendingKey] = horsePackState;
+    applyLocalHorseMemberState(itemHorseId, horsePackState);
+    state.saveMessage = horsePackState === "packed" ? "Marking packed..." : "Reopening item...";
+    render();
     await postAction({
       action: "set_horse_pack_state",
       itemHorseId,
       horsePackState
+    }, null, {
+      pendingKey,
+      message: horsePackState === "packed" ? "Marking packed..." : "Reopening item...",
+      quietStart: true,
+      rollback: () => restoreHorseMemberState(snapshot)
     });
   }
 
@@ -695,10 +708,22 @@
     const horseId = button.dataset.horseId;
     const nextState = button.dataset.nextState;
     if (!horseId || !nextState) return;
+    const pendingKey = pendingActionKey("set_horse_record_state", horseId);
+    if (state.pendingActions[pendingKey]) return;
+    const snapshot = snapshotHorseRecordState(horseId);
+    state.pendingActions[pendingKey] = nextState;
+    applyLocalHorseRecordState(horseId, nextState);
+    state.saveMessage = nextState === "active" ? "Activating horse..." : "Deactivating horse...";
+    render();
     await postAction({
       action: "set_horse_record_state",
       horseId,
       recordState: nextState
+    }, null, {
+      pendingKey,
+      message: nextState === "active" ? "Activating horse..." : "Deactivating horse...",
+      quietStart: true,
+      rollback: () => restoreHorseRecordState(snapshot)
     });
   }
 
@@ -707,11 +732,23 @@
     const flagName = button.dataset.sourceFlag;
     const value = button.dataset.nextValue === "true";
     if (!sourceItemId || !flagName) return;
+    const pendingKey = pendingActionKey(`set_source_flag:${flagName}`, sourceItemId);
+    if (state.pendingActions[pendingKey]) return;
+    const snapshot = snapshotSourceFlag(sourceItemId);
+    state.pendingActions[pendingKey] = value ? "on" : "off";
+    applyLocalSourceFlag(sourceItemId, flagName, value);
+    state.saveMessage = value ? "Turning on..." : "Turning off...";
+    render();
     await postAction({
       action: "set_source_flag",
       sourceItemId,
       flagName,
       value
+    }, null, {
+      pendingKey,
+      message: value ? "Turning on..." : "Turning off...",
+      quietStart: true,
+      rollback: () => restoreSourceFlag(snapshot)
     });
   }
 
@@ -1028,10 +1065,11 @@
   }
 
   function footerStatusHtml(message = footerLine()) {
-    if (!state.failedActions.length) return `<div class="rsa-text">${escapeHtml(message)}</div>`;
+    const feedbackClass = "rsa-text is-feedback is-xs is-align-right is-align-top";
+    if (!state.failedActions.length) return `<div class="${feedbackClass}">${escapeHtml(message)}</div>`;
     return `
       <div class="rsa-footer-status">
-        <div class="rsa-text">${escapeHtml(message)}</div>
+        <div class="${feedbackClass}">${escapeHtml(message)}</div>
         <div class="rsa-footer-actions">
           <div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-rsa-retry-failed>${state.retryingFailedActions ? "retrying" : "retry"}</div>
           <div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-rsa-export-failed>export</div>
@@ -1125,8 +1163,11 @@
       tableLabel: mode === "search_list" ? "item" : "list",
       tableActionLabel: mode === "search_list" ? "input" : "print",
       showFilter: false,
-      headerFilter: true
-    }), rsaFilterHtml("overview", true, overviewFilterOptions(), { closable: false }));
+      headerFilter: mode !== "search_list",
+      headerSearch: mode !== "search_list",
+      headerPrint: false,
+      forceSearchOpen: mode === "search_list"
+    }), rsaFilterHtml("overview", true, overviewFilterOptions(), { printTarget: "overview" }));
   }
 
   function rsaHomeModuleHtml(moduleId) {
@@ -1252,23 +1293,28 @@
     `;
   }
 
-  function rsaItemTextHtml(innerHtml) {
-    return `<div class="rsa-item-text">${innerHtml}</div>`;
+  function rsaItemTextHtml(innerHtml, extraClass = "") {
+    return `<div class="rsa-item-text ${extraClass}">${innerHtml}</div>`;
   }
 
   function rsaTitleTextHtml(innerHtml) {
     return `<div class="rsa-item-text is-title-row">${innerHtml}</div>`;
   }
 
-  function rsaQuantityBlockHtml(innerHtml) {
-    return `<div class="rs-quantity-block-2 is-grid4">${innerHtml}</div>`;
+  function rsaQuantityBlockHtml(innerHtml, extraClass = "") {
+    return `<div class="rs-quantity-block-2 is-grid4 ${extraClass}">${innerHtml}</div>`;
   }
 
-  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", showFilter = true, headerFilter = false, filterOptions }) {
+  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions }) {
     const storedActiveTool = state.activeToolByList[filterKey] || "";
-    const activeTool = showFilter || storedActiveTool !== "filter" ? storedActiveTool : "";
+    const activeTool = forceSearchOpen ? "search" : showFilter || storedActiveTool !== "filter" ? storedActiveTool : "";
     const showHeaderFilter = showFilter || headerFilter;
     const resolvedCommentScope = commentScope || rsaCommentScope("section", filterKey, title);
+    const headerToolsHtml = `
+      ${showHeaderFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
+      ${headerSearch ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>` : ""}
+      ${headerPrint ? `<div class="rs-text-link-2 rsa-text is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>` : ""}
+    `;
     return `
       <div class="rsa-content">
         <div class="rsa-top">
@@ -1279,9 +1325,7 @@
             `),
             rightHtml: `
               <div class="rsa-action-block is-grid3">
-                ${showHeaderFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
-                <div class="rs-text-link-2 rsa-text is-link ${activeTool === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(filterKey)}">search</div>
-                <div class="rs-text-link-2 rsa-text is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
+                ${headerToolsHtml}
               </div>
             `
           })}
@@ -1355,14 +1399,11 @@
     });
   }
 
-  function rsaFilterHtml(scopeKey, active, options) {
+  function rsaFilterHtml(scopeKey, active, options, config = {}) {
     const filters = options || [
       ["all", "ALL"],
       ["packed", "PACKED"],
-      ["need", "NEED"],
-      ["onsite", "BUY"],
-      ["attn", "ATTN"],
-      ["open", "OPEN"]
+      ["need", "NEED"]
     ];
     const storedFilter = state.filterByList[scopeKey] || "";
     const activeFilter = filters.some(([key]) => key === storedFilter) ? storedFilter : filters[0][0];
@@ -1374,6 +1415,11 @@
               <div>${escapeHtml(label)}</div>
             </div>
           `).join("")}
+          ${config.printTarget ? `
+            <div class="rs-tab-link rsa-text is-link is-print" data-print-section="${escapeAttr(config.printTarget)}">
+              <div>PRINT</div>
+            </div>
+          ` : ""}
         </div>
       </div>
     `;
@@ -1390,7 +1436,7 @@
         <div class="rsa-table-label">packed</div>
         <div class="rsa-table-label">left</div>
         <div class="rsa-table-label">${escapeHtml(tableActionLabel)}</div>
-      `)
+      `, "has-inline-qty-action")
     });
   }
 
@@ -1404,17 +1450,18 @@
         <div class="indication-color bg-primary-green"></div>
         <div class="rs-table-title rsa-row-title-text rsa-text is-line-item">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</div>
         <input class="rs-table-title rsa-text is-inline-edit is-inline rsa-row-title-input" type="text" value="${escapeAttr(inlineEditValue(item, "lp-row-title"))}" data-item-id="${escapeAttr(item.id)}" data-inline-edit-field="lp-row-title">
-        <div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-item-id="${escapeAttr(item.id)}" data-list-id="${escapeAttr(listId)}" data-list-edit-field="lp-row-title">edit</div>
-      `),
+        <div class="rs-text-linline rsa-text is-xxs is-inline-edit rsa-row-title-action" data-item-id="${escapeAttr(item.id)}" data-list-id="${escapeAttr(listId)}" data-list-edit-field="lp-row-title">edit</div>
+        <div class="rs-text-linline rsa-text is-xxs is-inline-edit is-save is-title-save" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}">save</div>
+      `, "has-inline-title-action"),
       rightHtml: rsaQuantityBlockHtml(`
         ${rsaQuantityCellHtml(item, "quantity_needed_override", item.needed, editMode?.quantity_needed_override)}
         ${rsaQuantityCellHtml(item, "quantity_packed_override", item.packed, editMode?.quantity_packed_override)}
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(item.left))}</div>
         <div class="rs-input-inline rsa-text is-xxs is-inline-input is-link ${editingQty ? "is-active" : ""}" data-item-id="${escapeAttr(item.id)}" data-list-id="${escapeAttr(listId)}" data-list-edit-field="quantity_inputs">
           <span class="rsa-row-input-action rsa-text is-xxs is-inline-input is-link">input</span>
-          <span class="rs-text-link rsa-text is-xxs is-inline-input is-link is-save" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}">save</span>
+          <span class="rs-text-link rsa-text is-xxs is-inline-input is-link is-save is-qty-save" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}">save</span>
         </div>
-      `)
+      `, "has-inline-qty-action")
     });
   }
 
@@ -1439,7 +1486,7 @@
         <div class="rs-text-2 rsa-text is-number"></div>
         <div class="rs-text-2 rsa-text is-number"></div>
         <div class="rs-input-inline rsa-text is-inline-input is-link ${pending ? "is-active" : ""}" data-onsite-task-state="${escapeAttr(nextState)}" data-source-item-id="${escapeAttr(task.id)}">${pending ? "saving" : done ? "task" : "done"}</div>
-      `)
+      `, "has-inline-qty-action")
     });
   }
 
@@ -1457,7 +1504,7 @@
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(progress.done))}</div>
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(Math.max(0, progress.rows - progress.done)))}</div>
         <div class="rs-input-inline rsa-text is-inline-input is-link is-print" data-print-horse="${escapeAttr(horse.id)}">print</div>
-      `)
+      `, "has-inline-qty-action")
     });
   }
 
@@ -1479,7 +1526,7 @@
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.done))}</div>
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(summary.open))}</div>
         <div class="rs-input-inline rsa-text is-inline-input is-link is-print" data-print-section="${escapeAttr(printTarget)}">print</div>
-      `)
+      `, "has-inline-qty-action")
     });
   }
 
@@ -2459,13 +2506,13 @@
     if (!item) return "";
     return `
       <div class="lp-profile-shell packing-detail-shell ${themeClasses(item.packListIds?.[0] || "overview")}">
-        <div class="lp-profile-head th-profile-top">
+        <div class="lp-profile-head wec-profile-top">
           <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(displayLabel(item.name || "Unnamed item"))}</h2>
           <p class="lp-profile-subtitle rsa-p">${escapeHtml(itemMetaLabel(item))}</p>
         </div>
 
-        <section class="lp-profile-panel packing-detail th-detail-section">
-          <div data-th-record="${escapeAttr(item.id)}" data-th-name="${escapeAttr(item.name || "")}">
+        <section class="lp-profile-panel packing-detail wec-detail-section">
+          <div data-wec-record="${escapeAttr(item.id)}" data-wec-name="${escapeAttr(item.name || "")}">
             <div class="lp-field-grid lp-profile-tab-panel is-active">
               ${statusControlHtml(item)}
               ${totalsRowHtml(item)}
@@ -2480,7 +2527,7 @@
 
         ${rsaCommentPanelHtml(rsaCommentScope("item", item.id, item.name || "Unnamed item"))}
 
-        <div class="lp-profile-modal-footer th-profile-footer">
+        <div class="lp-profile-modal-footer wec-profile-footer">
           ${planLineHtml(itemPlanText(item))}
           <div class="lp-profile-footer packing-save-meta rsa-p ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
@@ -2498,13 +2545,13 @@
     const planText = horsePlanText(horse);
     return `
       <div class="lp-profile-shell packing-detail-shell packing-horse-detail-shell packing-theme-horses">
-        <div class="lp-profile-head th-profile-top">
+        <div class="lp-profile-head wec-profile-top">
           <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(horse.name || "Unnamed horse")}</h2>
           ${horse.showName ? `<p class="lp-profile-subtitle rsa-p">${escapeHtml(horse.showName)}</p>` : ""}
         </div>
 
-        <section class="lp-profile-panel packing-detail th-detail-section">
-          <div data-th-record="${escapeAttr(horse.id)}" data-th-name="${escapeAttr(horse.name || "")}">
+        <section class="lp-profile-panel packing-detail wec-detail-section">
+          <div data-wec-record="${escapeAttr(horse.id)}" data-wec-name="${escapeAttr(horse.name || "")}">
             <div class="lp-field-grid lp-profile-tab-panel is-active">
               <div class="lp-row is-static packing-horse-progress-row">
                 <span class="packing-horse-progress-main">
@@ -2525,7 +2572,7 @@
           </div>
         </section>
 
-        <div class="lp-profile-modal-footer th-profile-footer">
+        <div class="lp-profile-modal-footer wec-profile-footer">
           ${planLineHtml(planText)}
           <div class="lp-profile-footer packing-save-meta rsa-p ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
@@ -2539,13 +2586,13 @@
     if (!task) return "";
     return `
       <div class="lp-profile-shell packing-detail-shell packing-theme-overview">
-        <div class="lp-profile-head th-profile-top">
+        <div class="lp-profile-head wec-profile-top">
           <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(displayLabel(task.name || "Unnamed task"))}</h2>
           <p class="lp-profile-subtitle rsa-p">Purchase Onsite</p>
         </div>
 
-        <section class="lp-profile-panel packing-detail th-detail-section">
-          <div data-th-record="${escapeAttr(task.id)}" data-th-name="${escapeAttr(task.name || "")}">
+        <section class="lp-profile-panel packing-detail wec-detail-section">
+          <div data-wec-record="${escapeAttr(task.id)}" data-wec-name="${escapeAttr(task.name || "")}">
             <div class="lp-field-grid lp-profile-tab-panel is-active">
               ${onsiteTaskStatusControlHtml(task)}
               ${task.longDescription ? editGroupHtml("Details", `<span class="lp-row-meta">${escapeHtml(task.longDescription)}</span>`) : ""}
@@ -2555,7 +2602,7 @@
           </div>
         </section>
 
-        <div class="lp-profile-modal-footer th-profile-footer">
+        <div class="lp-profile-modal-footer wec-profile-footer">
           ${planLineHtml(task.listPlanLabel || task.listPlan)}
           <div class="lp-profile-footer packing-save-meta rsa-p ${saveMetaClass()}">
             <span>${escapeHtml(state.saveMessage || "Changes save to Airtable through Webflow Cloud.")}</span>
@@ -2676,7 +2723,7 @@
   }
 
   function detailReadRow(label, value) {
-    return editGroupHtml(label, `<input class="lp-edit-input th-input th-readonly-input rsa-text" type="text" value="${escapeAttr(value)}" readonly tabindex="-1">`);
+    return editGroupHtml(label, `<input class="lp-edit-input wec-input wec-readonly-input rsa-text" type="text" value="${escapeAttr(value)}" readonly tabindex="-1">`);
   }
 
   function totalsRowHtml(item) {
@@ -2751,7 +2798,7 @@
 
   function notesControlHtml(item) {
     const value = state.actionNotes[item.id] ?? item.notes ?? "";
-    return editGroupHtml("Notes", `<textarea class="lp-edit-input th-input th-note-input rsa-text" rows="4" data-action-notes="${escapeAttr(item.id)}">${escapeHtml(value)}</textarea>`, "th-detail-note");
+    return editGroupHtml("Notes", `<textarea class="lp-edit-input wec-input wec-note-input rsa-text" rows="4" data-action-notes="${escapeAttr(item.id)}">${escapeHtml(value)}</textarea>`, "wec-detail-note");
   }
 
   function decisionControlHtml(item) {
@@ -2818,7 +2865,7 @@
 
   function editGroupHtml(title, body, extraClass) {
     return `
-      <div class="lp-field-row th-detail-edit ${extraClass || ""}">
+      <div class="lp-field-row wec-detail-edit ${extraClass || ""}">
         <span class="lp-field-label rsa-text is-caps">${escapeHtml(title)}</span>
         <span class="lp-field-value rsa-p">${body}</span>
       </div>
@@ -3058,6 +3105,115 @@
     item.packed = snapshot.packed;
     item.left = snapshot.left;
     item.packState = snapshot.packState;
+  }
+
+  function snapshotHorseMemberState(itemHorseId) {
+    for (const item of items()) {
+      const member = (item.horseMembers || []).find((row) => row.id === itemHorseId);
+      if (!member) continue;
+      return {
+        itemId: item.id,
+        itemPacked: item.packed,
+        itemLeft: item.left,
+        itemPackState: item.packState,
+        itemHorseId,
+        memberPacked: member.packed,
+        memberPackState: member.horsePackState
+      };
+    }
+    return null;
+  }
+
+  function applyLocalHorseMemberState(itemHorseId, horsePackState) {
+    for (const item of items()) {
+      const member = (item.horseMembers || []).find((row) => row.id === itemHorseId);
+      if (!member) continue;
+      member.horsePackState = horsePackState;
+      member.packed = horsePackState === "packed" ? number(member.needed || 1) || 1 : 0;
+      const members = item.horseMembers || [];
+      const packedTotal = members.reduce((sum, row) => sum + number(row.packed), 0);
+      const neededTotal = members.reduce((sum, row) => sum + (number(row.needed) || 1), 0);
+      item.packed = packedTotal;
+      item.left = Math.max(0, neededTotal - packedTotal);
+      item.packState = neededTotal > 0 && packedTotal >= neededTotal ? "packed" : "not_packed";
+      return;
+    }
+  }
+
+  function restoreHorseMemberState(snapshot) {
+    if (!snapshot) return;
+    const item = items().find((row) => row.id === snapshot.itemId);
+    const member = item?.horseMembers?.find((row) => row.id === snapshot.itemHorseId);
+    if (!item || !member) return;
+    member.packed = snapshot.memberPacked;
+    member.horsePackState = snapshot.memberPackState;
+    item.packed = snapshot.itemPacked;
+    item.left = snapshot.itemLeft;
+    item.packState = snapshot.itemPackState;
+  }
+
+  function snapshotHorseRecordState(horseId) {
+    const horse = horses().find((row) => row.id === horseId);
+    if (!horse) return null;
+    return {
+      horseId,
+      active: horse.active,
+      recordState: horse.recordState
+    };
+  }
+
+  function applyLocalHorseRecordState(horseId, recordState) {
+    const horse = horses().find((row) => row.id === horseId);
+    if (!horse) return;
+    horse.recordState = recordState;
+    horse.active = recordState === "active";
+  }
+
+  function restoreHorseRecordState(snapshot) {
+    if (!snapshot) return;
+    const horse = horses().find((row) => row.id === snapshot.horseId);
+    if (!horse) return;
+    horse.recordState = snapshot.recordState;
+    horse.active = snapshot.active;
+  }
+
+  function snapshotSourceFlag(sourceItemId) {
+    const refs = sourceItemRefs(sourceItemId).map((source) => ({
+      source,
+      flags: { ...(source.sourceFlags || {}) }
+    }));
+    return { sourceItemId, refs };
+  }
+
+  function applyLocalSourceFlag(sourceItemId, flagName, value) {
+    const key = sourceFlagStateKey(flagName);
+    if (!key) return;
+    for (const source of sourceItemRefs(sourceItemId)) {
+      source.sourceFlags = source.sourceFlags || {};
+      source.sourceFlags[key] = value;
+    }
+  }
+
+  function restoreSourceFlag(snapshot) {
+    if (!snapshot) return;
+    for (const ref of snapshot.refs || []) {
+      ref.source.sourceFlags = { ...ref.flags };
+    }
+  }
+
+  function sourceItemRefs(sourceItemId) {
+    const refs = [];
+    for (const item of items()) {
+      for (const source of item.sourceItems || []) {
+        if (source.id === sourceItemId) refs.push(source);
+      }
+    }
+    return refs;
+  }
+
+  function sourceFlagStateKey(flagName) {
+    if (flagName === "change_lane") return "changeLane";
+    return ["ignore", "rename"].includes(flagName) ? flagName : "";
   }
 
   function horses() {
