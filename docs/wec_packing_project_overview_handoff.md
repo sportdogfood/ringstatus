@@ -824,6 +824,14 @@ For each action, verify:
 - Verify no overflow in inline edit rows.
 - Verify all caps/zebra rows remain consistent.
 
+### WEC app isolation
+
+- Treat this app as WEC/RSWS only: production page `rsws`, optional short staging page `rsws2`, and print page `rsws_print`.
+- Keep WEC runtime work out of `webflow/hps/hps.js`; HPS is a separate app and can change independently.
+- Do not use HPS, LPS, or LP frontend files as the WEC implementation source. WEC frontend changes belong in `webflow/packing-worksheet/wec-packing.js`, WEC embed files, WEC print files, and WEC Webflow Cloud routes.
+- Audit legacy shared selector scope before changing it. New WEC behavior should be scoped under `#packing-app` unless the owner explicitly approves a shared base CSS change.
+- Treat any existing HPS, LPS, or LP diff as unrelated during WEC work unless the owner explicitly requests those app changes.
+
 ## Runner Handoff: Build A Similar Project With This Pattern
 
 Use this sequence for a similar Webflow/Airtable live app.

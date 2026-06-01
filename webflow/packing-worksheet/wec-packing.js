@@ -10,7 +10,7 @@
   const apiBaseUrl = String(config.apiBaseUrl || defaultApiBaseUrl).replace(/\/$/, "");
   const defaultPrintPageUrl = ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname)
     ? "./wec-packing-print-preview.html"
-    : "https://ringstatus.com/rswp-print";
+    : "https://ringstatus.com/rsws_print";
   const printPageUrl = String(config.printPageUrl || defaultPrintPageUrl).trim();
   const pdfWorkerUrl = String(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/").trim();
   const enableHorseNotNeeded = config.enableHorseNotNeeded === true;

@@ -20,9 +20,9 @@ embed commit: local embed file points to 381a612 assets
 Current Webflow pages:
 
 ```text
-rswp        production page; keep unchanged until rswp2 passes
-rswp2       safety/test page for the current WEC packing embed
-rswp-print  dedicated print page embed
+rsws        production page
+rsws2       short staging/safety page when needed
+rsws_print  dedicated print page embed
 ```
 
 Current important behavior:
@@ -49,7 +49,7 @@ Use this full embed. It includes the locked RSA/Webflow CSS file copied from the
     actionUrl: "https://ringstatus.com/test/wec-packing/action",
     healthUrl: "https://ringstatus.com/test/wec-packing/health",
     printUrl: "https://ringstatus.com/test/wec-packing/print",
-    printPageUrl: "https://ringstatus.com/rswp-print",
+    printPageUrl: "https://ringstatus.com/rsws_print",
     pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
     showId: "",
     packWaveId: "",
@@ -415,6 +415,14 @@ Styling:
 - Make `rsa-table-head` sticky at the shell top, not inside an internal app-scroll container.
 - Redesign locale/place modal cards using the approved modal pattern and existing RSA class contract.
 - Remove any remaining style rules that are acting as shims instead of combos on locked classes.
+
+WEC app isolation:
+
+- Treat this app as WEC/RSWS only: Webflow pages are `rsws`, optional short staging is `rsws2`, and print is `rsws_print`.
+- Keep WEC runtime work out of `webflow/hps/hps.js`; HPS is a separate app and may evolve independently.
+- Do not use HPS, LPS, or LP frontend code as the WEC implementation source. WEC changes belong in `webflow/packing-worksheet/wec-packing.js`, WEC embed files, WEC print files, and WEC Webflow Cloud routes only.
+- Audit legacy shared selectors such as `:is(#packing-app, #tack-horses-app, #hps-app)` before changing them. New WEC-specific behavior should be scoped to `#packing-app` unless an explicitly approved shared base rule is being changed.
+- Treat any HPS, LPS, or LP file diff during WEC work as unrelated unless the owner explicitly asks for that app in the same turn.
 
 Print:
 
