@@ -39,6 +39,7 @@
     addQty: {},
     actionNotes: {},
     commentDraftByScope: {},
+    commentComposerByScope: {},
     commentEditById: {},
     commentEditValues: {},
     decisionOpenByItem: {},
@@ -593,11 +594,16 @@
       setSaveMessage("Comment scope is missing.");
       return;
     }
+    const scopeKey = commentScopeKey(scopeType, scopeId);
+    if (!state.commentComposerByScope[scopeKey]) {
+      state.commentComposerByScope = { [scopeKey]: true };
+      render();
+      return;
+    }
     if (!comment) {
       setSaveMessage("Comment cannot be blank.");
       return;
     }
-    const scopeKey = commentScopeKey(scopeType, scopeId);
     const pendingKey = pendingActionKey("add_comment", scopeKey);
     if (state.pendingActions[pendingKey]) return;
     state.pendingActions[pendingKey] = "comment";
@@ -613,6 +619,7 @@
       comment
     }, () => {
       delete state.commentDraftByScope[scopeKey];
+      delete state.commentComposerByScope[scopeKey];
     }, {
       pendingKey,
       message: "Saving comment..."
@@ -1829,6 +1836,7 @@
     const comments = commentsForScope(scope);
     const pending = state.pendingActions[pendingActionKey("add_comment", key)];
     const draft = state.commentDraftByScope[key] || "";
+    const composerOpen = !!state.commentComposerByScope[key];
     const scopeName = commentScopeDisplay(scope);
     const title = `All ${scopeName} comments`;
     return `
@@ -1836,13 +1844,13 @@
         <div class="rsa-comment rsa-comment-head">
           <div class="rsa-comment-wrapper">
             <div class="rsa-comment-text rsa-text">${escapeHtml(title)}</div>
-            <div class="rs-text-linline rsa-text is-link is-inline-edit rsa-comment-action" data-rsa-comment-add>${pending ? "saving" : "add"}</div>
+            <div class="rs-text-linline rsa-text is-link is-inline-edit rsa-comment-action" data-rsa-comment-add>${pending ? "saving" : composerOpen ? "save" : "add"}</div>
           </div>
         </div>
         <div class="rsa-comment-list">
           ${comments.length ? comments.map(rsaCommentItemHtml).join("") : rsaCommentEmptyHtml(scope)}
         </div>
-        <textarea class="rsa-comment-input rsa-text" rows="2" placeholder="${escapeAttr(`${scopeName} comment`)}" data-rsa-comment-input>${escapeHtml(draft)}</textarea>
+        ${composerOpen ? `<textarea class="rsa-comment-input rsa-text" rows="2" placeholder="${escapeAttr(`${scopeName} comment`)}" data-rsa-comment-input>${escapeHtml(draft)}</textarea>` : ""}
       </div>
     `;
   }

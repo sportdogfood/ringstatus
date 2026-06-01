@@ -1594,9 +1594,7 @@ async function applyCommentUpdate(airtable, context, payload) {
       scopeLabel,
       comment
     }),
-    comment_status: "edited",
-    updated_at: new Date().toISOString().slice(0, 10),
-    updated_by: "webflow"
+    comment_status: "edited"
   }), fieldNames);
   const updated = await patchAirtableRecord(airtable, tables.wec_commenting.id, commentId, fields);
   return { comment: updated, table: "wec_commenting" };
