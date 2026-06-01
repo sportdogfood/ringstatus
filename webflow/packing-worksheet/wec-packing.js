@@ -254,9 +254,11 @@
       event.preventDefault();
       const listId = overviewList.dataset.overviewList || "";
       const summary = activeLaneListById(listId);
+      const detail = activeListDetailById(listId);
       state.activeTab = "overview";
       state.detailType = "";
       state.detailId = "";
+      if (summary?.lane || detail?.lane) state.filterByList.overview = summary?.lane || detail?.lane;
       if (summary?.homeModuleId) {
         state.activeHomeModule = summary.homeModuleId;
         state.activeOverviewListId = "";
@@ -387,6 +389,14 @@
     if (horseDetail) {
       state.detailType = "horse";
       state.detailId = horseDetail.dataset.horseDetail;
+      renderDetail();
+      return;
+    }
+
+    const placeDetail = event.target.closest("[data-place-detail]");
+    if (placeDetail) {
+      state.detailType = "place";
+      state.detailId = placeDetail.dataset.placeDetail;
       renderDetail();
       return;
     }
@@ -1253,21 +1263,29 @@
     return `
       ${rsaPanelShellHtml(
         rsaDataModuleHtml({
-          title: activeList?.label || module.label || "Purchase onsite",
+          title: module.label || "Purchase onsite",
           printTarget: `home:${module.id}`,
           searchKey: module.id,
           filterKey: activeList?.id || module.id,
           commentScope: rsaCommentScope("section", activeList?.id || module.id, activeList?.label || module.label || "Purchase onsite"),
           rowsHtml: rows.length ? rows.map(rsaOnsiteRowHtml).join("") : rsaEmptyTableRowHtml("No tasks"),
-          labelActionsHtml: ""
+          labelActionsHtml: rsaListSwitcherHtml(module.id, moduleLists, activeList?.id || "")
         }),
-        rsaListSwitcherHtml(module.id, moduleLists, activeList?.id || "")
+        rsaFilterHtml("overview", true, overviewFilterOptions(), { printTarget: "overview" })
       )}
     `;
   }
 
   function rsaOverviewListDetailHtml(listId) {
-    const summary = activeLaneListById(listId);
+    const detail = activeListDetailById(listId);
+    const summary = activeLaneListById(listId) || (detail ? {
+      id: detail.id,
+      key: detail.key,
+      lane: detail.lane,
+      label: detail.label,
+      sourceTable: detail.sourceTable,
+      sourceView: detail.sourceView
+    } : null);
     if (!summary) {
       state.activeOverviewListId = "";
       return rsaOverviewHtml();
@@ -1276,7 +1294,8 @@
 
     const rows = overviewListDetailRows(summary);
     const searchKey = `overview:${summary.id}`;
-    const filteredRows = filterRows(rows, searchKey, overviewDetailSearchText);
+    const filterOptions = overviewDetailFilterOptions(summary, rows);
+    const filteredRows = filterOverviewDetailRows(summary, rows, searchKey);
     const rowsHtml = summary.key === "unresolved"
       ? filteredRows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, "overview")).join("")
       : filteredRows.map(rsaSimpleDetailRowHtml).join("");
@@ -1290,10 +1309,12 @@
       tableLabel: detailTableLabel(summary),
       tableActionLabel: detailTableActionLabel(summary),
       tableMetricLabels: detailTableMetricLabels(summary),
-      showFilter: false,
-      headerFilter: false,
+      showFilter: filterOptions.length > 1,
+      headerFilter: filterOptions.length > 1,
       headerSearch: true,
-      headerPrint: false
+      headerPrint: false,
+      filterOptions,
+      filterVariant: "text-links"
     }), rsaFilterHtml("overview", true, overviewFilterOptions(), { printTarget: "overview" }));
   }
 
@@ -1387,12 +1408,13 @@
     `;
   }
 
-  function rsaGridRowHtml({ leftHtml = "", rightHtml = "", rowClass = "is-grid2", leftAttrs = "", rightAttrs = "" } = {}) {
+  function rsaGridRowHtml({ leftHtml = "", rightHtml = "", rowClass = "is-grid2", rowAttrs = "", leftAttrs = "", rightAttrs = "" } = {}) {
     const rowClasses = ["rsa-item-row-2", rowClass].filter(Boolean).join(" ");
+    const rowAttributeText = rowAttrs ? ` ${rowAttrs}` : "";
     const leftAttributeText = leftAttrs ? ` ${leftAttrs}` : "";
     const rightAttributeText = rightAttrs ? ` ${rightAttrs}` : "";
     return `
-      <div class="${rowClasses}">
+      <div class="${rowClasses}"${rowAttributeText}>
         <div class="rsa-item-block-left"${leftAttributeText}>
           ${leftHtml}
         </div>
@@ -1415,10 +1437,12 @@
     return `<div class="rs-quantity-block-2 is-grid4 ${extraClass}">${innerHtml}</div>`;
   }
 
-  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", tableMetricLabels, showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions }) {
+  function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableLabel = "item", tableActionLabel = "input", tableMetricLabels, showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions, filterVariant = "" }) {
     const storedActiveTool = state.activeToolByList[filterKey] || "";
     const activeTool = forceSearchOpen ? "search" : showFilter || storedActiveTool !== "filter" ? storedActiveTool : "";
     const showHeaderFilter = showFilter || headerFilter;
+    const headerActionCount = [showHeaderFilter, headerSearch, headerPrint].filter(Boolean).length;
+    const headerActionClass = headerActionCount === 1 ? " is-one-action" : headerActionCount === 2 ? " is-two-actions" : "";
     const resolvedCommentScope = commentScope || rsaCommentScope("section", filterKey, title);
     const headerToolsHtml = `
       ${showHeaderFilter ? `<div class="rs-text-link-2 rsa-text is-link ${activeTool === "filter" ? "is-active" : ""}" data-rsa-toggle="filter" data-rsa-scope="${escapeAttr(filterKey)}">filter</div>` : ""}
@@ -1434,16 +1458,17 @@
               <div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-list-id="${escapeAttr(filterKey)}" data-list-edit-field="lp-row-title">edit</div>
             `),
             rightHtml: `
-              <div class="rsa-action-block is-grid3">
+              <div class="rsa-action-block is-grid3${headerActionClass}">
                 ${headerToolsHtml}
               </div>
             `
           })}
         </div>
         <div class="rsa-body">
+          ${labelActionsHtml || ""}
           <div class="rsa-actions">
             ${rsaSearchHtml(searchKey, filterKey, activeTool === "search")}
-            ${showFilter ? rsaFilterHtml(filterKey, activeTool === "filter", filterOptions) : ""}
+            ${showFilter ? rsaFilterHtml(filterKey, activeTool === "filter", filterOptions, { variant: filterVariant }) : ""}
           </div>
           <div class="rsa-content">
             <div class="rsa-top is-hidden"></div>
@@ -1517,9 +1542,10 @@
     ];
     const storedFilter = state.filterByList[scopeKey] || "";
     const activeFilter = filters.some(([key]) => key === storedFilter) ? storedFilter : filters[0][0];
+    const variantClass = config.variant === "text-links" ? " is-text-filter" : "";
     return `
       <div class="rsa-padding ${active ? "" : "is-hidden"}">
-        <div class="rsa-list-action-menu">
+        <div class="rsa-list-action-menu${variantClass}">
           ${filters.map(([key, label]) => `
             <div data-rsa-filter="${escapeAttr(key)}" data-rsa-scope="${escapeAttr(scopeKey)}" class="rs-tab-link rsa-text is-link ${activeFilter === key ? "is-active" : ""}">
               <div>${escapeHtml(label)}</div>
@@ -1659,7 +1685,8 @@
   function rsaLaneRowHtml(summary) {
     const triggerAttr = `data-overview-list="${escapeAttr(summary.id)}"`;
     return rsaGridRowHtml({
-      leftAttrs: triggerAttr,
+      rowClass: "is-grid2 is-hot-row",
+      rowAttrs: triggerAttr,
       leftHtml: rsaItemTextHtml(`
         <div class="indication-color bg-primary-blue"></div>
         <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(summary.label || summary.id))}</div>
@@ -1669,17 +1696,22 @@
         <div class="rs-text-2 rsa-text is-number"></div>
         <div class="rs-text-2 rsa-text is-number"></div>
         <div class="rs-text-2 rsa-text is-number"></div>
-        <div class="rs-input-inline rsa-text is-inline-input is-link" data-overview-list="${escapeAttr(summary.id)}">open</div>
+        ${rsaOpenActionHtml()}
       `, "has-inline-qty-action")
     });
   }
 
   function rsaSimpleDetailRowHtml(row) {
+    const isPlace = row.type === "place";
     const actionUrl = row.mapsUrl || row.website || "";
-    const actionHtml = actionUrl
-      ? `<a class="rs-input-inline rsa-text is-inline-input is-link" href="${escapeAttr(actionUrl)}" target="_blank" rel="noopener">open</a>`
+    const actionHtml = isPlace
+      ? rsaOpenActionHtml()
+      : actionUrl
+      ? rsaOpenActionHtml(`href="${escapeAttr(actionUrl)}" target="_blank" rel="noopener"`)
       : `<div class="rs-input-inline rsa-text is-inline-input is-link"></div>`;
     return rsaGridRowHtml({
+      rowClass: `is-grid2 ${isPlace ? "is-hot-row" : ""}`,
+      rowAttrs: isPlace ? `data-place-detail="${escapeAttr(row.id)}"` : "",
       leftHtml: rsaItemTextHtml(`
         <div class="indication-color bg-primary-blue"></div>
         <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(row.label || row.id || "Row"))}</div>
@@ -1692,6 +1724,12 @@
         ${actionHtml}
       `, "has-inline-qty-action")
     });
+  }
+
+  function rsaOpenActionHtml(attrs = "") {
+    const attributeText = attrs ? ` ${attrs}` : "";
+    const tag = attrs.includes("href=") ? "a" : "div";
+    return `<${tag} class="rs-input-inline rsa-text is-inline-input is-link is-open-action"${attributeText}>open <span class="rsa-open-icon" aria-hidden="true"></span></${tag}>`;
   }
 
   function rsaEmptyTableRowHtml(label) {
@@ -2667,7 +2705,9 @@
       ? horseDetailHtml(horses().find((horse) => horse.id === state.detailId))
       : state.detailType === "onsite"
         ? onsiteTaskDetailHtml(onsiteTasks().find((task) => task.id === state.detailId))
-        : itemDetailHtml(items().find((item) => item.id === state.detailId));
+        : state.detailType === "place"
+          ? placeDetailHtml(placeDetailRecord(state.detailId))
+          : itemDetailHtml(items().find((item) => item.id === state.detailId));
   }
 
   function itemDetailHtml(item) {
@@ -2778,6 +2818,49 @@
         </div>
       </div>
     `;
+  }
+
+  function placeDetailHtml(place) {
+    if (!place) return "";
+    const attributes = overviewDetailFilterLabels(place);
+    return `
+      <div class="lp-profile-shell packing-detail-shell packing-theme-overview">
+        <div class="lp-profile-head wec-profile-top">
+          <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(displayLabel(place.label || "Place"))}</h2>
+          ${place.meta ? `<p class="lp-profile-subtitle rsa-p">${escapeHtml(displayLabel(place.meta))}</p>` : ""}
+        </div>
+
+        <section class="lp-profile-panel packing-detail wec-detail-section">
+          <div data-wec-record="${escapeAttr(place.id)}" data-wec-name="${escapeAttr(place.label || "")}">
+            <div class="lp-field-grid lp-profile-tab-panel is-active">
+              ${detailInfoListControlHtml("Attributes", attributes)}
+              ${placeTextControlHtml("Phone", place.phone)}
+              ${placeClickoutControlHtml("Map", place.mapsUrl)}
+              ${placeClickoutControlHtml("Website", place.website)}
+              ${placeTextControlHtml("Record", place.id)}
+            </div>
+          </div>
+        </section>
+
+        <div class="lp-profile-modal-footer wec-profile-footer">
+          <div class="lp-profile-footer packing-save-meta rsa-p ${saveMetaClass()}">
+            <span>${escapeHtml(state.saveMessage || "Place details are from Airtable.")}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function placeTextControlHtml(label, value) {
+    const text = String(value || "").trim();
+    if (!text) return "";
+    return editGroupHtml(label, `<span class="lp-row-meta">${escapeHtml(text)}</span>`);
+  }
+
+  function placeClickoutControlHtml(label, url) {
+    const href = String(url || "").trim();
+    if (!href) return "";
+    return editGroupHtml(label, rsaOpenActionHtml(`href="${escapeAttr(href)}" target="_blank" rel="noopener"`));
   }
 
   function onsiteTaskStatusControlHtml(task) {
@@ -3149,9 +3232,51 @@
     return activeListDetails().find((detail) => detail.id === listId) || null;
   }
 
+  function placeDetailRecord(placeId) {
+    for (const detail of activeListDetails()) {
+      const place = (detail.rows || []).find((row) => row.type === "place" && row.id === placeId);
+      if (place) return place;
+    }
+    return null;
+  }
+
   function overviewListDetailRows(summary) {
     if (summary.key === "unresolved") return sortTableRows(items().filter((item) => !isDone(item)), "overview");
     return activeListDetailById(summary.id)?.rows || [];
+  }
+
+  function filterOverviewDetailRows(summary, rows, searchKey) {
+    const searchedRows = filterRows(rows, searchKey, overviewDetailSearchText);
+    const activeFilter = state.filterByList[searchKey] || "all";
+    if (summary.lane !== "locale" || activeFilter === "all") return searchedRows;
+    return searchedRows.filter((row) => overviewDetailFilterKeys(row).includes(activeFilter));
+  }
+
+  function overviewDetailFilterOptions(summary, rows) {
+    if (summary.lane !== "locale") return [];
+    const labels = [];
+    const seen = new Set();
+    for (const row of rows || []) {
+      for (const label of overviewDetailFilterLabels(row)) {
+        const key = slugify(label);
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        labels.push([key, displayLabel(label)]);
+      }
+    }
+    labels.sort((a, b) => a[1].localeCompare(b[1], undefined, { sensitivity: "base" }));
+    return [["all", "ALL"], ...labels];
+  }
+
+  function overviewDetailFilterKeys(row) {
+    return overviewDetailFilterLabels(row).map(slugify).filter(Boolean);
+  }
+
+  function overviewDetailFilterLabels(row) {
+    return String(row?.meta || "")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
   }
 
   function overviewDetailSearchText(row) {

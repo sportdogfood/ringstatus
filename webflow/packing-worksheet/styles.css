@@ -3293,6 +3293,12 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+#packing-app .rsa-action-block.is-grid3.is-one-action {
+  grid-template-columns: minmax(0, max-content);
+  justify-content: end;
+  justify-items: end;
+}
+
 #packing-app .rsa-list-header {
   display: block;
   min-height: 44px;
@@ -3327,6 +3333,10 @@ body {
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.03em;
+}
+
+#packing-app .rsa-banner-header {
+  padding-bottom: 4px;
 }
 
 #packing-app .rsa-dashboard-block {
@@ -3510,6 +3520,28 @@ body {
   border-radius: 0;
 }
 
+#packing-app .rsa-list-action-menu.is-text-filter {
+  gap: 12px;
+  background: #fff;
+}
+
+#packing-app .rsa-list-action-menu.is-text-filter .rs-tab-link {
+  min-width: 0;
+  width: auto;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: #25364e;
+}
+
+#packing-app .rsa-list-action-menu.is-text-filter .rs-tab-link.is-active {
+  color: #0e1726;
+  background: transparent;
+  text-decoration: underline;
+}
+
 #packing-app .rsa-item-row-2 {
   min-width: 0;
   padding: 0;
@@ -3520,6 +3552,15 @@ body {
 
 #packing-app .rsa-table-body .rsa-item-row-2:nth-child(even) {
   background-color: #f8f9fb;
+}
+
+#packing-app .rsa-item-row-2.is-hot-row {
+  cursor: pointer;
+}
+
+#packing-app .rsa-item-row-2.is-hot-row .rsa-item-block-left,
+#packing-app .rsa-item-row-2.is-hot-row .rsa-item-block-right {
+  cursor: pointer;
 }
 
 #packing-app .rsa-item-row-2.is-grid2 {
@@ -3604,6 +3645,34 @@ body {
   justify-self: center;
   width: max-content;
   max-width: 100%;
+}
+
+#packing-app .rs-input-inline.is-open-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#packing-app .rsa-open-icon {
+  display: inline-block;
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: translateY(-1px);
+}
+
+#packing-app .rsa-open-icon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 10px;
+  height: 1px;
+  background: currentColor;
+  transform: rotate(-45deg);
+  transform-origin: right center;
 }
 
 #packing-app .rsa-item-text.has-inline-title-action {
