@@ -1,4 +1,17 @@
-/* HPS uses the shared worksheet stylesheet. These are HPS-only list refinements. */
+/* HPS owns its app surface. Shared class names are internal hooks, not dependencies. */
+
+#hps-app {
+  --lp-ink: #000000;
+  --lp-muted: #181f1d;
+  --lp-border: rgba(24, 31, 29, 0.12);
+  --lp-soft: #ffffff;
+  --lp-card-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+  --lp-token-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  --packing-active: #005c2a;
+  --packing-shade: #f0f0f0;
+  color: var(--lp-ink);
+  font-family: Outfit, sans-serif;
+}
 
 #hps-app .th-group {
   border-top: 1px solid var(--lp-border);
@@ -347,7 +360,31 @@
   text-transform: uppercase;
 }
 
+#hps-app .lp-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 10px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--lp-border);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+#hps-app .lp-row:nth-of-type(even) {
+  background: rgba(175, 175, 175, 0.07);
+}
+
+#hps-app .lp-row:last-child {
+  border-bottom: 0;
+}
+
 #hps-app .th-horse-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   min-height: 44px;
   padding: 8px 12px;
@@ -369,11 +406,39 @@
 
 #hps-app button.th-state-pill {
   appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 104px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--lp-border);
+  border-radius: 999px;
+  color: #ffffff;
   cursor: pointer;
   font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 0.95em;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: var(--lp-token-shadow);
+}
+
+#hps-app button.th-state-pill.is-packed {
+  background: #005c2a;
+  border-color: #005c2a;
+}
+
+#hps-app button.th-state-pill.is-need {
+  background: #46332b;
+  border-color: #46332b;
 }
 
 #hps-app .th-feed-horse-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   border-bottom: 1px solid var(--lp-border);
 }
