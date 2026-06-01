@@ -574,6 +574,7 @@
       action: "update_item_fields",
       itemId,
       effectiveNeeded: item.needed,
+      ...actionItemPayload(item),
       fields
     }, null, {
       pendingKey,
@@ -694,6 +695,7 @@
         itemId,
         quantityDelta,
         effectiveNeeded: item.needed,
+        ...actionItemPayload(item),
         notes: state.actionNotes[itemId] || ""
       }, null, {
         pendingKey,
@@ -720,6 +722,7 @@
         itemId,
         packState,
         effectiveNeeded: item.needed,
+        ...actionItemPayload(item),
         confirmed: packState === "packed",
         notes: state.actionNotes[itemId] || ""
       }, null, {
@@ -747,6 +750,7 @@
         itemId,
         resolutionState,
         effectiveNeeded: item.needed,
+        ...actionItemPayload(item),
         confirmed: true,
         notes: state.actionNotes[itemId] || ""
       }, () => {
@@ -790,6 +794,7 @@
           horseId,
           sourcePackItemId,
           packWaveId: currentWaveId(),
+          showId: state.data?.source?.showId || "",
           horsePackState
         }
       : {
@@ -4221,6 +4226,21 @@
 
   function currentWaveId() {
     return state.data?.wave?.id || state.data?.wave?.packWaveId || "";
+  }
+
+  function actionItemPayload(item) {
+    return {
+      sourcePackItemId: sourcePackItemIdForItem(item),
+      itemName: item?.name || "",
+      showId: state.data?.source?.showId || "",
+      packWaveId: currentWaveId(),
+      packListIds: Array.isArray(item?.packListIds) ? item.packListIds : [],
+      currentPacked: number(item?.packed)
+    };
+  }
+
+  function sourcePackItemIdForItem(item) {
+    return item?.sourcePackItemIds?.[0] || item?.sourceItems?.[0]?.id || item?.id || "";
   }
 
   function lists() {

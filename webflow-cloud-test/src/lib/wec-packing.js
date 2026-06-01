@@ -2006,7 +2006,10 @@ async function resolveSourceActionItem(airtable, context, payload) {
     || sourceItemDisplayName(sourceItem)
     || stringField(legacyPackingRecord?.fields?.item_name)
     || sourceRecord.id;
-  const packListIds = linkedIds(legacyPackingRecord?.fields?.pack_list).length
+  const payloadPackListIds = Array.isArray(payload?.packListIds) ? payload.packListIds.map(clean).filter(Boolean) : [];
+  const packListIds = payloadPackListIds.length
+    ? payloadPackListIds
+    : linkedIds(legacyPackingRecord?.fields?.pack_list).length
     ? linkedIds(legacyPackingRecord.fields.pack_list)
     : sourceItem.packListIds;
   const fields = {
@@ -2342,77 +2345,26 @@ async function applyHorseKitState(airtable, context, payload) {
   const horseId = clean(payload?.horseId);
   const sourcePackItemId = clean(payload?.sourcePackItemId);
   const packWaveId = clean(payload?.packWaveId);
+  const showId = clean(payload?.showId);
   const nextState = clean(payload?.horsePackState || payload?.state);
   if (!packingItemId) throw new Error("missing_packing_item_id");
   if (!horseId) throw new Error("missing_horse_id");
   if (!sourcePackItemId) throw new Error("missing_source_pack_item_id");
   if (!["packed", "not_packed", "not_needed"].includes(nextState)) throw new Error("invalid_horse_pack_state");
 
-  const { record: itemRecord } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, packingItemId);
   const { record: horseRecord } = await findRecordInConfiguredView(airtable, tables.wec_horses, horseId);
   const sourceRecord = tables.wec_pack_items?.id
     ? (await findRecordInConfiguredView(airtable, tables.wec_pack_items, sourcePackItemId)).record
     : null;
-  const memberRecords = await listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view);
-  const existingMember = memberRecords.find((record) => {
-    const fields = record.fields || {};
-    const sameHorse = includesLinkedId(fields.horse, horseId);
-    const samePackingItem = includesLinkedId(fields.packing_item, packingItemId);
-    const sameSource = !linkedIds(fields.source_pack_item).length || includesLinkedId(fields.source_pack_item, sourcePackItemId);
-    const sameWave = !packWaveId || !linkedIds(fields.pack_wave).length || includesLinkedId(fields.pack_wave, packWaveId);
-    return sameHorse && samePackingItem && sameSource && sameWave;
-  });
-
-  const beforeState = stringField(existingMember?.fields?.horse_pack_state || "not_packed");
-  const before = beforeState !== "not_needed" && (beforeState === "packed" || wholeQuantityField(existingMember?.fields?.quantity_packed) > 0) ? 1 : 0;
-  const after = nextState === "packed" ? 1 : 0;
-  if (!existingMember && nextState === "not_packed") {
-    return { noChange: true, state: nextState };
-  }
-  if (existingMember && before === after && beforeState === nextState) {
-    return { noChange: true, state: nextState, updatedMember: existingMember };
-  }
-
-  let memberRecord;
-  if (existingMember) {
-    memberRecord = await patchAirtableRecord(airtable, tables.wec_packing_item_horses.id, existingMember.id, {
-      quantity_packed: after,
-      horse_pack_state: nextState
-    });
-  } else {
-    const fieldNames = tableFieldNames(context, tables.wec_packing_item_horses);
-    const createFields = fieldsAllowedBySchema(compactFields({
-      horse: [horseId],
-      packing_item: [packingItemId],
-      pack_wave: packWaveId ? [packWaveId] : linkedIds(itemRecord.fields?.pack_wave),
-      source_pack_item: [sourcePackItemId],
-      quantity_needed: 1,
-      quantity_packed: after,
-      horse_pack_state: nextState,
-      sort_order: numberField(horseRecord.fields?.sort_order)
-    }), fieldNames);
-    memberRecord = await createAirtableRecord(airtable, tables.wec_packing_item_horses.id, createFields);
-  }
-
   const event = await createPackingEvent(airtable, tables, {
     eventType: horseMemberEventType(nextState, "horse_kit"),
     eventSubjectId: `${packingItemId}:${horseId}:${sourcePackItemId}`,
-    itemRecord,
-    memberRecord: {
-      id: memberRecord.id || existingMember?.id || "",
-      fields: {
-        ...(existingMember?.fields || {}),
-        ...(memberRecord.fields || {}),
-        horse: [horseId],
-        packing_item: [packingItemId],
-        pack_wave: packWaveId ? [packWaveId] : linkedIds(itemRecord.fields?.pack_wave),
-        source_pack_item: [sourcePackItemId]
-      }
-    },
-    quantityDelta: after - before,
-    quantityBefore: before,
-    quantityAfter: after,
-    packStateBefore: beforeState,
+    showIds: showId ? [showId] : [],
+    packWaveIds: packWaveId ? [packWaveId] : [],
+    quantityDelta: 0,
+    quantityBefore: 0,
+    quantityAfter: 0,
+    packStateBefore: "",
     packStateAfter: nextState,
     decisionBefore: "",
     decisionAfter: "",
@@ -2423,7 +2375,7 @@ async function applyHorseKitState(airtable, context, payload) {
       clean(payload?.notes)
     ].filter(Boolean).join("\n")
   });
-  return { updatedMember: memberRecord, event };
+  return { event, loggedOnly: true };
 }
 
 async function applyHorseRecordState(airtable, tables, payload) {
@@ -2493,6 +2445,15 @@ async function findRecordInConfiguredView(airtable, tableConfig, recordId) {
   const record = records.find((item) => item.id === recordId);
   if (!record) throw new Error(`${tableConfig.name || tableConfig.id}_record_not_in_configured_view: ${recordId}`);
   return { record, records };
+}
+
+async function findOptionalRecordInConfiguredView(airtable, tableConfig, recordId) {
+  if (!recordId || !tableConfig?.id) return null;
+  try {
+    return (await findRecordInConfiguredView(airtable, tableConfig, recordId)).record;
+  } catch {
+    return null;
+  }
 }
 
 async function patchAirtableRecord(airtable, table, recordId, fields) {
@@ -2880,7 +2841,7 @@ function sourceItemToWorksheetRecord(sourceItem, state, selectedWave, selectedSh
       source_pack_item: [sourceItem.id],
       quantity_base: quantityBase,
       quantity_packed: state?.packed || 0,
-      quantity_needed: state?.quantityNeededFrozen ?? null,
+      quantity_needed: state?.quantityNeededFrozen ?? undefined,
       pack_state: state?.packState || "not_packed",
       resolution_state: state?.resolutionState || "",
       unit: sourceItem.uom,
@@ -3554,6 +3515,7 @@ function quantityDisplay(value) {
 }
 
 function nullableNumberField(value) {
+  if (value === undefined || value === null || value === "") return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
 }
