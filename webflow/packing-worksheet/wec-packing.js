@@ -779,7 +779,7 @@
     const snapshot = snapshotHorseMemberState(itemHorseId);
     state.pendingActions[pendingKey] = horsePackState;
     applyLocalHorseMemberState(itemHorseId, horsePackState);
-    state.saveMessage = horsePackState === "packed" ? "Marking packed..." : "Reopening item...";
+    state.saveMessage = horseMemberSavingMessage(horsePackState);
     render();
     const payload = useKitAction
       ? {
@@ -798,7 +798,7 @@
         };
     await postAction(payload, null, {
       pendingKey,
-      message: horsePackState === "packed" ? "Marking packed..." : "Reopening item...",
+      message: horseMemberSavingMessage(horsePackState),
       quietStart: true,
       rollback: () => restoreHorseMemberState(snapshot)
     });
@@ -1234,7 +1234,7 @@
         ${tabs().map((section) => {
           return `
             <div class="rs-tab-link rsa-text is-link is-section-tab ${escapeAttr(rsaSectionClass(section.id))} ${state.activeTab === section.id ? "is-active" : ""}" data-tab="${escapeAttr(section.id)}">
-              <div>${escapeHtml(displayLabel(section.label))}</div>
+              <div>${escapeHtml(displayLabel(sectionNavLabel(section)))}</div>
             </div>
           `;
         }).join("")}
@@ -1415,13 +1415,13 @@
       filterKey: "horses",
       commentScope: rsaCommentScope("tab", "horses", "Horses"),
       rowsHtml: rows.length ? rows.map(rsaHorseRowHtml).join("") : rsaEmptyTableRowHtml("No horses"),
-      tableLabel: "horse",
+      tableLabel: `horses (${rows.length})`,
       tableActionLabel: "print",
       showFilter: false,
       headerFilter: false,
       headerSearch: false,
       headerPrint: false
-    }), rsaFilterHtml("horses", true, horseFilterOptions(), { searchScope: "horses", printTarget: "horses" }));
+    }), rsaFilterHtml("horses", true, horseFilterOptions(), { defaultFilter: "wave_one", searchScope: "horses", printTarget: "horses" }));
   }
 
   function rsaListTableHtml(list, tabId) {
@@ -1616,7 +1616,12 @@
       ["packed", "PACKED"]
     ];
     const storedFilter = state.filterByList[scopeKey] || "";
-    const activeFilter = filters.some(([key]) => key === storedFilter) ? storedFilter : filters[0][0];
+    const defaultFilter = config.defaultFilter || filters[0][0];
+    const activeFilter = filters.some(([key]) => key === storedFilter)
+      ? storedFilter
+      : filters.some(([key]) => key === defaultFilter)
+        ? defaultFilter
+        : filters[0][0];
     const variantClass = config.variant === "text-links" ? " is-text-filter" : "";
     return `
       <div class="rsa-padding ${active ? "" : "is-hidden"}">
@@ -1870,6 +1875,24 @@
         ${composerOpen ? `<textarea class="rsa-comment-input rsa-text" rows="2" placeholder="${escapeAttr(`${scopeName} comment`)}" data-rsa-comment-input>${escapeHtml(draft)}</textarea>` : ""}
       </div>
     `;
+  }
+
+  function horseRosterCounts() {
+    const rows = horses();
+    const waveOne = rows.filter((horse) => !!horse.waveOne && !horse.notGoing).length;
+    const waveTwo = rows.filter((horse) => !!horse.waveTwo && !horse.notGoing).length;
+    const notGoing = rows.filter((horse) => !!horse.notGoing).length;
+    return {
+      all: rows.length,
+      wave_one: waveOne,
+      wave_two: waveTwo,
+      not_going: notGoing
+    };
+  }
+
+  function currentWaveHorseCount() {
+    const counts = horseRosterCounts();
+    return currentPackWaveKey() === "wave_two" ? counts.wave_two : counts.wave_one;
   }
 
   function rsaCommentItemHtml(comment) {
@@ -3013,15 +3036,15 @@
   }
 
   function horseDetailItemRowHtml(row) {
-    const packed = isHorseMemberPacked(row.member);
-    const nextState = packed ? "not_packed" : "packed";
+    const displayState = horseMemberDisplayState(row.member);
+    const nextState = nextHorseMemberState(displayState);
     const sourcePackItemId = row.member.sourcePackItemIds?.[0] || row.item?.sourcePackItemIds?.[0] || "";
     const horseId = row.member.horseIds?.[0] || "";
     return `
       <span class="packing-horse-binding-row packing-horse-pack-row">
         <span class="packing-horse-binding-name">${escapeHtml(displayLabel(row.item?.name || "Unnamed item"))}</span>
-        <button class="lp-achievement packing-token ${packed ? "is-packed" : "is-need"}" type="button" data-horse-member-state="${escapeAttr(nextState)}" data-item-horse-id="${escapeAttr(row.member.id)}" data-packing-item-id="${escapeAttr(row.item?.id || "")}" data-horse-id="${escapeAttr(horseId)}" data-source-pack-item-id="${escapeAttr(sourcePackItemId)}">
-          ${packed ? "PACKED" : "NOT PACKED"}
+        <button class="lp-achievement packing-token ${escapeAttr(horseMemberTokenClass(displayState))}" type="button" data-horse-member-state="${escapeAttr(nextState)}" data-item-horse-id="${escapeAttr(row.member.id)}" data-packing-item-id="${escapeAttr(row.item?.id || "")}" data-horse-id="${escapeAttr(horseId)}" data-source-pack-item-id="${escapeAttr(sourcePackItemId)}">
+          ${escapeHtml(horseMemberStateLabel(displayState))}
         </button>
       </span>
     `;
@@ -3700,7 +3723,7 @@
       member.packed = horsePackState === "packed" ? number(member.needed || 1) || 1 : 0;
       const members = item.horseMembers || [];
       const packedTotal = members.reduce((sum, row) => sum + number(row.packed), 0);
-      const neededTotal = members.reduce((sum, row) => sum + (number(row.needed) || 1), 0);
+      const neededTotal = members.reduce((sum, row) => sum + horseMemberNeededCount(row), 0);
       item.packed = packedTotal;
       item.left = Math.max(0, neededTotal - packedTotal);
       item.packState = neededTotal > 0 && packedTotal >= neededTotal ? "packed" : "not_packed";
@@ -3789,11 +3812,12 @@
   }
 
   function horseFilterOptions() {
+    const counts = horseRosterCounts();
     return [
-      ["all", "ALL"],
-      ["wave_one", "WAVE 1"],
-      ["wave_two", "WAVE 2"],
-      ["not_going", "NOT GOING"]
+      ["all", `ALL (${counts.all})`],
+      ["wave_one", `WAVE 1 (${counts.wave_one})`],
+      ["wave_two", `WAVE 2 (${counts.wave_two})`],
+      ["not_going", `NOT GOING (${counts.not_going})`]
     ];
   }
 
@@ -3816,7 +3840,10 @@
     const rows = horses();
     const filter = state.filterByList.horses || "wave_one";
     const hasRosterFlags = rows.some((horse) => horse.waveOne || horse.waveTwo || horse.notGoing);
-    if (filter === "all" || !hasRosterFlags) {
+    if (filter === "all") {
+      return filterRows(rows, "horses", horseSearchText).sort(compareHorseNames);
+    }
+    if (!hasRosterFlags) {
       return filterRows(activeWaveHorses(), "horses", horseSearchText).sort(compareHorseNames);
     }
     const filtered = rows.filter((horse) => {
@@ -3932,7 +3959,8 @@
 
   function horsePackingPercent() {
     const rows = horseMemberRows();
-    return progressPercent(rows.filter(isHorseMemberPacked).length, rows.length);
+    const neededRows = rows.filter((member) => !isHorseMemberNotNeeded(member));
+    return progressPercent(neededRows.filter(isHorseMemberPacked).length, neededRows.length);
   }
 
   function horseMemberRows() {
@@ -3949,10 +3977,12 @@
 
   function horseProgress(horse) {
     const rows = horseItemRows(horse);
+    const neededRows = rows.filter((row) => !isHorseMemberNotNeeded(row.member));
+    const packedRows = neededRows.filter((row) => isHorseMemberPacked(row.member));
     return {
-      done: rows.filter((row) => isHorseMemberPacked(row.member)).length,
-      rows: rows.length,
-      percent: progressPercent(rows.filter((row) => isHorseMemberPacked(row.member)).length, rows.length)
+      done: packedRows.length,
+      rows: neededRows.length,
+      percent: progressPercent(packedRows.length, neededRows.length)
     };
   }
 
@@ -3977,7 +4007,43 @@
   }
 
   function isHorseMemberPacked(member) {
-    return member.horsePackState === "packed" || number(member.packed) >= number(member.needed);
+    return !isHorseMemberNotNeeded(member) && (member.horsePackState === "packed" || number(member.packed) >= horseMemberNeededCount(member));
+  }
+
+  function isHorseMemberNotNeeded(member) {
+    return member?.horsePackState === "not_needed";
+  }
+
+  function horseMemberNeededCount(member) {
+    if (isHorseMemberNotNeeded(member)) return 0;
+    return number(member?.needed) || 1;
+  }
+
+  function horseMemberDisplayState(member) {
+    if (isHorseMemberNotNeeded(member)) return "not_needed";
+    return isHorseMemberPacked(member) ? "packed" : "not_packed";
+  }
+
+  function nextHorseMemberState(currentState) {
+    if (currentState === "not_packed") return "not_needed";
+    if (currentState === "not_needed") return "packed";
+    return "not_packed";
+  }
+
+  function horseMemberStateLabel(currentState) {
+    if (currentState === "not_needed") return "NOT NEEDED";
+    return currentState === "packed" ? "PACKED" : "NOT PACKED";
+  }
+
+  function horseMemberTokenClass(currentState) {
+    if (currentState === "not_needed") return "is-not-needed";
+    return currentState === "packed" ? "is-packed" : "is-need";
+  }
+
+  function horseMemberSavingMessage(horsePackState) {
+    if (horsePackState === "packed") return "Marking packed...";
+    if (horsePackState === "not_needed") return "Marking not needed...";
+    return "Reopening item...";
   }
 
   function horseDisplayName(horse) {
@@ -4072,7 +4138,11 @@
       const horse = horses().find((row) => row.id === state.detailId);
       if (horse) return horseDisplayName(horse);
     }
-    return "Horses";
+    return `Horses (${currentWaveHorseCount()})`;
+  }
+
+  function sectionNavLabel(section) {
+    return section.id === "horses" ? horsesTabLabel() : section.label;
   }
 
   function isTabGroupId(value) {

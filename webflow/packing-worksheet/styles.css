@@ -2859,6 +2859,11 @@ body {
   border-color: #46332b;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-token.is-not-needed {
+  background: #667085;
+  border-color: #667085;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-token.is-resolved {
   background: #4e1f76;
   border-color: #4e1f76;
@@ -3452,7 +3457,7 @@ body {
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-table-head {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 40;
   background-color: #fff;
 }
 
@@ -5036,14 +5041,14 @@ a.rsa-item-row-2 {
   max-width: 840px;
   margin-right: auto;
   margin-left: auto;
-  overflow-x: clip;
+  overflow-x: visible;
   overflow-y: visible;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .lp-shell {
   width: 100%;
   max-width: 840px;
-  overflow-x: hidden;
+  overflow-x: visible;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-header-status {
