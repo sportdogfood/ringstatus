@@ -3607,6 +3607,9 @@ body {
 }
 
 #packing-app .rsa-item-text.has-inline-title-action > .rsa-row-title-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   position: static;
   min-height: var(--rsa-row-min);
   padding: 0;
@@ -3672,6 +3675,18 @@ body {
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
+}
+
+#packing-app .rsa-table-head button.rsa-table-label {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+#packing-app .rsa-table-head button.rsa-table-label.is-active {
+  text-decoration: underline;
 }
 
 #packing-app .rsa-table-head .rsa-item-row-2 {

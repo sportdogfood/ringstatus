@@ -25,6 +25,7 @@
     searchBySection: {},
     activeToolByList: {},
     filterByList: {},
+    sortByList: {},
     inlineEditByList: {},
     inlineEditByItem: {},
     inlineEditValues: {},
@@ -274,6 +275,19 @@
       event.preventDefault();
       const key = filterToggle.dataset.rsaScope || state.activeTab || "overview";
       state.filterByList[key] = filterToggle.dataset.rsaFilter || "all";
+      render();
+      return;
+    }
+
+    const sortToggle = event.target.closest("[data-rsa-sort]");
+    if (sortToggle) {
+      event.preventDefault();
+      const key = sortToggle.dataset.rsaScope || state.activeTab || "overview";
+      const field = sortToggle.dataset.rsaSort || "";
+      const current = state.sortByList[key] || {};
+      const firstDirection = field === "left" ? "desc" : "asc";
+      const direction = current.field === field ? (current.direction === "asc" ? "desc" : "asc") : firstDirection;
+      state.sortByList[key] = { field, direction };
       render();
       return;
     }
@@ -625,6 +639,13 @@
     if (action === "set_pack_state") {
       const packState = button.dataset.packState;
       if (packState === "packed" && !window.confirm("Mark this item packed and set packed quantity to the full need?")) return;
+      const pendingKey = pendingActionKey("set_pack_state", itemId);
+      if (state.pendingActions[pendingKey]) return;
+      const snapshot = snapshotPackingItemState(itemId);
+      state.pendingActions[pendingKey] = packState;
+      applyLocalPackState(itemId, packState);
+      state.saveMessage = packState === "packed" ? "Marking packed..." : "Marking not packed...";
+      render();
       await postAction({
         action,
         itemId,
@@ -632,6 +653,11 @@
         effectiveNeeded: item.needed,
         confirmed: packState === "packed",
         notes: state.actionNotes[itemId] || ""
+      }, null, {
+        pendingKey,
+        message: packState === "packed" ? "Marking packed..." : "Marking not packed...",
+        quietStart: true,
+        rollback: () => restorePackingItemState(itemId, snapshot)
       });
       return;
     }
@@ -640,6 +666,13 @@
       const resolutionState = button.dataset.resolutionState;
       const label = resolutionState === "clear" ? "clear this decision" : `set decision to ${resolutionDisplayLabel(resolutionState)}`;
       if (!window.confirm(`Confirm ${label}?`)) return;
+      const pendingKey = pendingActionKey("set_resolution", itemId);
+      if (state.pendingActions[pendingKey]) return;
+      const snapshot = snapshotPackingItemState(itemId);
+      state.pendingActions[pendingKey] = resolutionState;
+      applyLocalResolutionState(itemId, resolutionState);
+      state.saveMessage = "Saving decision...";
+      render();
       await postAction({
         action,
         itemId,
@@ -649,6 +682,11 @@
         notes: state.actionNotes[itemId] || ""
       }, () => {
         delete state.decisionOpenByItem[itemId];
+      }, {
+        pendingKey,
+        message: "Saving decision...",
+        quietStart: true,
+        rollback: () => restorePackingItemState(itemId, snapshot)
       });
     }
   }
@@ -1148,7 +1186,7 @@
     const rows = mode === "approved"
       ? filterRows(homeModuleSummaries(), "overview", overviewSearchText)
       : mode === "search_list"
-        ? sortItemsByName(filterRows(items(), "overview", itemSearchText))
+        ? sortTableRows(sortItemsByName(filterRows(items(), "overview", itemSearchText)), "overview")
         : filterRows(tabGroups(), "overview", overviewSearchText);
     const rowsHtml = mode === "search_list"
       ? rows.map((item) => rsaItemRowHtml(item, state.inlineEditByItem[item.id] || {}, "overview")).join("")
@@ -1163,8 +1201,8 @@
       tableLabel: mode === "search_list" ? "item" : "list",
       tableActionLabel: mode === "search_list" ? "input" : "print",
       showFilter: false,
-      headerFilter: mode !== "search_list",
-      headerSearch: mode !== "search_list",
+      headerFilter: false,
+      headerSearch: false,
       headerPrint: false,
       forceSearchOpen: mode === "search_list"
     }), rsaFilterHtml("overview", true, overviewFilterOptions(), { printTarget: "overview" }));
@@ -1227,13 +1265,18 @@
       tableLabel: "horse",
       tableActionLabel: "print",
       showFilter: false,
-      headerFilter: true
-    }), rsaFilterHtml("horses", true, horseFilterOptions(), { closable: false }));
+      headerFilter: false,
+      headerSearch: false,
+      headerPrint: false
+    }), rsaFilterHtml("horses", true, horseFilterOptions(), { searchScope: "horses", printTarget: "horses" }));
   }
 
   function rsaListTableHtml(list, tabId) {
-    const rows = rsaApplyListFilter(
-      sortItemsByName(filterRows(items().filter((item) => itemBelongsToList(item, list.id)), list.id, itemSearchText)),
+    const rows = sortTableRows(
+      rsaApplyListFilter(
+        sortItemsByName(filterRows(items().filter((item) => itemBelongsToList(item, list.id)), list.id, itemSearchText)),
+        list.id
+      ),
       list.id
     );
     return rsaDataModuleHtml({
@@ -1341,7 +1384,7 @@
               <div class="rsa-padding is-none">
                 <div class="rsa-table">
                   <div class="rsa-table-head">
-                    ${rsaTableLabelRowHtml(tableLabel, tableActionLabel)}
+                    ${rsaTableLabelRowHtml(tableLabel, tableActionLabel, filterKey)}
                   </div>
                   <div class="rsa-table-body">
                     ${rowsHtml}
@@ -1402,8 +1445,8 @@
   function rsaFilterHtml(scopeKey, active, options, config = {}) {
     const filters = options || [
       ["all", "ALL"],
-      ["packed", "PACKED"],
-      ["need", "NEED"]
+      ["need", "NEED"],
+      ["packed", "PACKED"]
     ];
     const storedFilter = state.filterByList[scopeKey] || "";
     const activeFilter = filters.some(([key]) => key === storedFilter) ? storedFilter : filters[0][0];
@@ -1415,6 +1458,11 @@
               <div>${escapeHtml(label)}</div>
             </div>
           `).join("")}
+          ${config.searchScope ? `
+            <div class="rs-tab-link rsa-text is-link ${state.activeToolByList[config.searchScope] === "search" ? "is-active" : ""}" data-rsa-toggle="search" data-rsa-scope="${escapeAttr(config.searchScope)}">
+              <div>SEARCH</div>
+            </div>
+          ` : ""}
           ${config.printTarget ? `
             <div class="rs-tab-link rsa-text is-link is-print" data-print-section="${escapeAttr(config.printTarget)}">
               <div>PRINT</div>
@@ -1425,19 +1473,26 @@
     `;
   }
 
-  function rsaTableLabelRowHtml(tableLabel = "item", tableActionLabel = "input") {
+  function rsaTableLabelRowHtml(tableLabel = "item", tableActionLabel = "input", sortScope = "") {
     return rsaGridRowHtml({
       leftHtml: rsaItemTextHtml(`
         <div class="indication-color is-spacer"></div>
-        <div class="rsa-table-label">${escapeHtml(tableLabel)}</div>
+        ${rsaSortLabelHtml(sortScope, "item", tableLabel)}
       `),
       rightHtml: rsaQuantityBlockHtml(`
-        <div class="rsa-table-label">need</div>
-        <div class="rsa-table-label">packed</div>
-        <div class="rsa-table-label">left</div>
+        ${rsaSortLabelHtml(sortScope, "needed", "need")}
+        ${rsaSortLabelHtml(sortScope, "packed", "packed")}
+        ${rsaSortLabelHtml(sortScope, "left", "left")}
         <div class="rsa-table-label">${escapeHtml(tableActionLabel)}</div>
       `, "has-inline-qty-action")
     });
+  }
+
+  function rsaSortLabelHtml(sortScope, field, label) {
+    const activeSort = state.sortByList[sortScope] || {};
+    const activeClass = activeSort.field === field ? " is-active" : "";
+    const dirAttr = activeSort.field === field ? ` data-sort-dir="${escapeAttr(activeSort.direction)}"` : "";
+    return `<button type="button" class="rsa-table-label rsa-text is-xs is-caps${activeClass}" data-rsa-sort="${escapeAttr(field)}" data-rsa-scope="${escapeAttr(sortScope)}"${dirAttr}>${escapeHtml(label)}</button>`;
   }
 
   function rsaItemRowHtml(item, editMode, listId) {
@@ -1636,7 +1691,7 @@
   function rsaApplyListFilter(rows, filterKey) {
     const filter = state.filterByList[filterKey] || "all";
     if (filter === "packed") return rows.filter(isPackedListItem);
-    if (filter === "need") return rows.filter((item) => !isDone(item) && number(item.packed) <= 0);
+    if (filter === "need") return rows.filter((item) => !isDone(item));
     if (filter === "onsite") return rows.filter((item) => item.resolutionState === "purchase_onsite");
     if (filter === "attn") return rows.filter((item) => item.resolutionState === "note");
     if (filter === "open") return rows.filter((item) => !isDone(item));
@@ -2925,11 +2980,12 @@
   }
 
   function isDone(item) {
-    return item.packState === "packed" || !!item.resolutionState;
+    return isPackedListItem(item) || !!item.resolutionState;
   }
 
   function isPackedListItem(item) {
-    return item.packState === "packed" || item.resolutionState === "max";
+    const needed = number(item.needed);
+    return (needed > 0 && number(item.packed) >= needed) || item.resolutionState === "max";
   }
 
   function items() {
@@ -3068,6 +3124,52 @@
       left: item.left,
       packState: item.packState
     };
+  }
+
+  function snapshotPackingItemState(itemId) {
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return null;
+    return {
+      packed: item.packed,
+      left: item.left,
+      packState: item.packState,
+      resolutionState: item.resolutionState
+    };
+  }
+
+  function restorePackingItemState(itemId, snapshot) {
+    if (!snapshot) return;
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+    item.packed = snapshot.packed;
+    item.left = snapshot.left;
+    item.packState = snapshot.packState;
+    item.resolutionState = snapshot.resolutionState;
+  }
+
+  function applyLocalPackState(itemId, packState) {
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+    const needed = number(item.needed);
+    item.packState = packState;
+    if (packState === "packed") {
+      item.packed = needed;
+      item.left = 0;
+    } else {
+      item.left = Math.max(0, needed - number(item.packed));
+    }
+  }
+
+  function applyLocalResolutionState(itemId, resolutionState) {
+    const item = items().find((row) => row.id === itemId);
+    if (!item) return;
+    if (resolutionState === "clear") {
+      item.resolutionState = "";
+      item.packState = isPackedListItem(item) ? "packed" : "not_packed";
+      return;
+    }
+    item.resolutionState = resolutionState;
+    item.packState = resolutionState === "max" ? "packed" : "not_packed";
   }
 
   function restoreItemQuantities(itemId, snapshot) {
@@ -3305,6 +3407,32 @@
       if (nameCompare) return nameCompare;
       return String(a.id || "").localeCompare(String(b.id || ""), undefined, { sensitivity: "base" });
     });
+  }
+
+  function sortTableRows(rows, sortScope) {
+    const activeSort = state.sortByList[sortScope] || {};
+    if (!activeSort.field) return rows;
+    const direction = activeSort.direction === "desc" ? -1 : 1;
+    return [...rows].sort((a, b) => {
+      const aValue = tableSortValue(a, activeSort.field);
+      const bValue = tableSortValue(b, activeSort.field);
+      if (typeof aValue === "number" || typeof bValue === "number") {
+        const numericCompare = (number(aValue) - number(bValue)) * direction;
+        if (numericCompare) return numericCompare;
+      } else {
+        const textCompare = String(aValue || "").localeCompare(String(bValue || ""), undefined, { sensitivity: "base" }) * direction;
+        if (textCompare) return textCompare;
+      }
+      return String(a.id || "").localeCompare(String(b.id || ""), undefined, { sensitivity: "base" });
+    });
+  }
+
+  function tableSortValue(row, field) {
+    if (field === "item") return displayLabel(row.name || row.label || row.id || "");
+    if (field === "needed") return row.needed ?? row.need ?? row.rows ?? 0;
+    if (field === "packed") return row.packed ?? row.done ?? 0;
+    if (field === "left") return row.left ?? row.open ?? 0;
+    return "";
   }
 
   function sortListsByLabel(rows) {
