@@ -1,11 +1,15 @@
 /* HPS owns its app surface. Shared class names are internal hooks, not dependencies. */
 
 #hps-app {
+  --lp-bg: #f7f8fa;
   --lp-ink: #000000;
-  --lp-muted: #181f1d;
-  --lp-border: rgba(24, 31, 29, 0.12);
-  --lp-soft: #ffffff;
-  --lp-card-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+  --lp-muted: #000000;
+  --lp-border: #f7f8fa;
+  --lp-soft: #f7f8fa;
+  --lp-surface: #ffffff;
+  --lp-shadow: 0 18px 48px rgba(30, 39, 35, 0.12);
+  --lp-card-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  --lp-raised-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
   --lp-token-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
   --packing-active: #005c2a;
   --packing-shade: #f0f0f0;
@@ -188,6 +192,245 @@
   gap: 6px;
   align-items: center;
   padding: 10px 16px 8px;
+}
+
+#hps-app .packing-section-search {
+  padding: 12px 28px;
+  border-bottom: 1px solid var(--lp-border);
+  background: var(--lp-surface);
+}
+
+#hps-app .packing-section-search-input {
+  width: 100%;
+  max-width: none;
+  height: 36px;
+  min-height: 36px;
+  padding: 0 18px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+#hps-app .lp-modal[hidden] {
+  display: none;
+}
+
+#hps-app .lp-modal {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 10px;
+}
+
+#hps-app .lp-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 31, 29, 0.62);
+}
+
+#hps-app .lp-modal-card {
+  position: relative;
+  width: min(680px, calc(100vw - 20px));
+  min-height: 90vh;
+  max-height: calc(100vh - 16px);
+  overflow: auto;
+  padding: 10px 14px 10px;
+  background: var(--lp-surface);
+  border-radius: 8px;
+  box-shadow: var(--lp-card-shadow);
+}
+
+#hps-app .lp-modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  z-index: 5;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--lp-border);
+  border-radius: 999px;
+  background: var(--lp-soft);
+  color: var(--lp-ink);
+  cursor: pointer;
+}
+
+#hps-app .lp-profile-title {
+  margin: 0 0 6px;
+  color: var(--lp-ink);
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 0.95em;
+  letter-spacing: -0.02em;
+}
+
+#hps-app .lp-profile-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 10px 10px 9px;
+  border-bottom: 1px solid var(--lp-border);
+  background: #ffffff;
+  scrollbar-width: thin;
+}
+
+#hps-app .lp-profile-tab {
+  appearance: none;
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 7px 10px;
+  border: 1px solid rgba(24, 31, 29, 0.18);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--lp-ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 0.95em;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#hps-app .lp-profile-tab.is-active {
+  background: #46332b;
+  border-color: #46332b;
+  color: #ffffff;
+}
+
+#hps-app .lp-field-grid {
+  display: grid;
+  width: 100%;
+  gap: 3px;
+}
+
+#hps-app .lp-profile-tab-panel {
+  display: none;
+}
+
+#hps-app .lp-profile-tab-panel.is-active {
+  display: grid;
+}
+
+#hps-app .lp-field-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 3px;
+  align-items: start;
+  min-height: 0;
+  padding: 8px 12px 7px;
+  border-top: 1px solid var(--lp-border);
+}
+
+#hps-app .lp-field-row:first-child {
+  border-top: 0;
+}
+
+#hps-app .lp-field-row:nth-child(even) {
+  background: rgba(175, 175, 175, 0.08);
+}
+
+#hps-app .lp-field-label,
+#hps-app .lp-field-value {
+  min-width: 0;
+  font-family: inherit;
+  letter-spacing: -0.02em;
+}
+
+#hps-app .lp-field-label {
+  order: 2;
+  color: var(--lp-ink);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  padding-left: 10px;
+  padding-top: 2px;
+  text-transform: uppercase;
+}
+
+#hps-app .lp-field-value {
+  order: 1;
+  color: var(--lp-ink);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.05em;
+}
+
+#hps-app .lp-edit-input,
+#hps-app .lp-edit-textarea {
+  background: #ffffff;
+  border: 1px solid rgba(24, 31, 29, 0.18);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(24, 31, 29, 0.035);
+  color: #000000;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1em;
+  min-height: 34px;
+  padding: 8px 10px;
+  text-align: left;
+  width: 100%;
+}
+
+#hps-app .lp-edit-input:focus,
+#hps-app .lp-edit-textarea:focus {
+  border-color: #46332b;
+  box-shadow: 0 0 0 3px rgba(70, 51, 43, 0.12);
+  outline: none;
+}
+
+#hps-app .lp-edit-choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#hps-app .lp-edit-choice-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  min-height: 42px;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 1px 6px;
+  scrollbar-width: thin;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+#hps-app .lp-edit-choice {
+  display: inline-flex;
+  min-width: 0;
+}
+
+#hps-app .lp-edit-pill {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(24, 31, 29, 0.2);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(24, 31, 29, 0.04);
+  color: #000000;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 0.95em;
+  letter-spacing: -0.06em;
+  min-height: 26px;
+  min-width: 0;
+  padding: 6px 9px;
+  text-align: center;
+  transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+  white-space: nowrap;
 }
 
 #hps-app .lp-modal {
@@ -391,10 +634,19 @@
 }
 
 #hps-app .th-horse-row .packing-horse-detail-trigger {
+  appearance: none;
   align-self: center;
   display: flex;
   align-items: center;
+  min-width: 0;
   min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
 }
 
 #hps-app .th-horse-row .lp-row-title {
