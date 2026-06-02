@@ -1,5 +1,8 @@
 #wec-packing-print {
-  min-height: 100vh;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  overflow: visible;
 }
 
 .wec-print-message {
@@ -14,6 +17,28 @@
   @page {
     size: letter;
     margin: 0;
+  }
+
+  html,
+  body,
+  #wec-packing-print {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    overflow: visible;
+    background: #fff;
+  }
+
+  .packing-print-page {
+    page-break-after: always;
+    page-break-inside: avoid;
+    break-after: page;
+    break-inside: avoid;
+  }
+
+  .packing-print-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
   }
 
   .wec-print-message {

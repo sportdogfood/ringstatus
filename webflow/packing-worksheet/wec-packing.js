@@ -893,10 +893,11 @@
   }
 
   async function postAction(payload, afterSave, options = {}) {
+    const viewSnapshot = captureViewState();
     if (!options.quietStart) {
       state.saving = true;
       state.saveMessage = options.message || "Saving...";
-      render();
+      render({ preservePosition: true });
     }
 
     try {
@@ -912,8 +913,10 @@
       if (!response.ok || !result.ok) {
         throw new Error(result.detail || result.error || `save_${response.status}`);
       }
-      if (typeof afterSave === "function") afterSave(result);
       state.data = normalizeStatePayload(result.state || state.data);
+      mergeReturnedActionRecord(result, payload);
+      restoreViewState(viewSnapshot);
+      if (typeof afterSave === "function") afterSave(result);
       if (options.preserveItemQuantities) preserveItemQuantities(options.preserveItemQuantities);
       removeFailedAction(payload);
       state.saveMessage = `Saved: ${new Date().toLocaleString()}`;
@@ -924,7 +927,7 @@
     } finally {
       if (options.pendingKey) delete state.pendingActions[options.pendingKey];
       state.saving = false;
-      render();
+      render({ preservePosition: true });
     }
   }
 
@@ -962,6 +965,7 @@
         }
         saved += 1;
         state.data = normalizeStatePayload(result.state || state.data);
+        mergeReturnedActionRecord(result, entry.payload || {});
       } catch (error) {
         remaining.push({
           ...entry,
@@ -980,7 +984,120 @@
         ? `Saved on this device: ${remaining.length} pending.`
         : `Retried saved changes: ${saved}.`;
     }
-    render();
+    render({ preservePosition: true });
+  }
+
+  function captureViewState() {
+    return {
+      activeTab: state.activeTab,
+      activeHomeModule: state.activeHomeModule,
+      activeOverviewListId: state.activeOverviewListId,
+      activeOverviewListSummary: state.activeOverviewListSummary ? { ...state.activeOverviewListSummary } : null,
+      detailType: state.detailType,
+      detailId: state.detailId,
+      activeToolByList: { ...state.activeToolByList },
+      activeListByTab: { ...state.activeListByTab },
+      filterByList: { ...state.filterByList },
+      searchByList: { ...state.searchByList }
+    };
+  }
+
+  function restoreViewState(snapshot) {
+    if (!snapshot) return;
+    state.activeTab = snapshot.activeTab || state.activeTab;
+    state.activeHomeModule = snapshot.activeHomeModule || state.activeHomeModule;
+    state.activeOverviewListId = snapshot.activeOverviewListId || state.activeOverviewListId;
+    state.activeOverviewListSummary = snapshot.activeOverviewListSummary || state.activeOverviewListSummary;
+    state.detailType = snapshot.detailType || state.detailType;
+    state.detailId = snapshot.detailId || state.detailId;
+    state.activeToolByList = { ...snapshot.activeToolByList };
+    state.activeListByTab = { ...snapshot.activeListByTab };
+    state.filterByList = { ...snapshot.filterByList };
+    state.searchByList = { ...snapshot.searchByList };
+  }
+
+  function captureRenderPosition() {
+    const modalCard = root.querySelector(".lp-modal-card");
+    return {
+      scrollX: window.scrollX || 0,
+      scrollY: window.scrollY || 0,
+      modalScrollTop: modalCard?.scrollTop || 0,
+      modalScrollLeft: modalCard?.scrollLeft || 0
+    };
+  }
+
+  function restoreRenderPosition(snapshot) {
+    if (!snapshot) return;
+    requestAnimationFrame(() => {
+      const modalCard = root.querySelector(".lp-modal-card");
+      if (state.detailType && modalCard) {
+        modalCard.scrollTop = snapshot.modalScrollTop || 0;
+        modalCard.scrollLeft = snapshot.modalScrollLeft || 0;
+        return;
+      }
+      window.scrollTo({
+        left: snapshot.scrollX || 0,
+        top: snapshot.scrollY || 0,
+        behavior: "auto"
+      });
+    });
+  }
+
+  function mergeReturnedActionRecord(result, payload = {}) {
+    if (!["add_comment", "update_comment"].includes(payload.action)) return;
+    const returned = result?.result?.comment;
+    if (!returned?.id) return;
+    const comment = normalizeReturnedComment(returned, payload, result?.result?.table);
+    if (!comment) return;
+    const comments = Array.isArray(state.data?.comments) ? state.data.comments.slice() : [];
+    const index = comments.findIndex((row) => row.id === comment.id && row.sourceTable === comment.sourceTable);
+    if (index >= 0) {
+      comments[index] = { ...comments[index], ...comment };
+    } else {
+      comments.unshift(comment);
+    }
+    state.data = {
+      ...(state.data || {}),
+      comments
+    };
+  }
+
+  function normalizeReturnedComment(record, payload = {}, table = "wec_commenting") {
+    const fields = record.fields || {};
+    const scopeType = themeKey(fields.scope_type || payload.scopeType || "");
+    const scopeId = String(fields.scope_id || payload.scopeId || "");
+    const comment = String(fields.comment || payload.comment || "").trim();
+    if (!scopeType || !scopeId || !comment) return null;
+    return {
+      id: record.id,
+      sourceTable: table || "wec_commenting",
+      createdTime: record.createdTime || fields.Created || fields.created_at || new Date().toISOString(),
+      updatedTime: fields.updated_at || "",
+      scopeType,
+      scopeId,
+      scopeLabel: fields.scope_label || payload.scopeLabel || "",
+      comment,
+      commentStatus: fields.comment_status || "active",
+      createdBy: fields.created_by || "webflow",
+      updatedBy: fields.updated_by || "",
+      packWaveIds: idsFromAirtableField(fields.pack_wave || payload.packWaveId),
+      itemIds: idsFromAirtableField(fields.packing_item || (payload.itemId ? [payload.itemId] : [])),
+      itemHorseIds: idsFromAirtableField(fields.packing_item_horse),
+      horseIds: idsFromAirtableField(fields.horse)
+    };
+  }
+
+  function idsFromAirtableField(value) {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value.map((entry) => {
+        if (typeof entry === "string") return entry;
+        return entry?.id || "";
+      }).filter(Boolean);
+    }
+    if (typeof value === "string") return [value].filter(Boolean);
+    if (typeof value === "object" && value.id) return [value.id];
+    return [];
   }
 
   function queueFailedAction(payload, error) {
@@ -1125,6 +1242,7 @@
   }
 
   function render(options = {}) {
+    const positionSnapshot = options.preservePosition ? captureRenderPosition() : null;
     root.innerHTML = `
       <div class="rsa-dashboard">
         <div class="rsa-dashboard-block">
@@ -1179,6 +1297,7 @@
     root.dataset.overviewFilter = state.filterByList.overview || "";
     renderDetail();
     if (options.focusSearchKey) restoreSearchFocus(options);
+    restoreRenderPosition(positionSnapshot);
     requestAnimationFrame(scrollActiveFiltersIntoView);
   }
 

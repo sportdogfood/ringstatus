@@ -225,6 +225,10 @@ export async function stateReport(airtable, requestUrl) {
     itemIds.has(firstLinkedId(record.fields.source_pack_item)) ||
     (selectedWave && includesLinkedId(record.fields.pack_wave, selectedWave.id))
   ));
+  const horseKitStateLookup = horseKitStatesFromEvents(packingEvents, {
+    packWaveId: selectedWave?.id || "",
+    showId: selectedShowId
+  });
   const horsesByItem = groupHorseMembersByWorksheetItem(filteredHorses);
   const items = sourceWorksheetRecords
     .map((record) => decoratePackingItem(
@@ -232,7 +236,8 @@ export async function stateReport(airtable, requestUrl) {
       packListLookup,
       sourcePackItemLookup,
       normalizedWave,
-      waveHorses
+      waveHorses,
+      horseKitStateLookup
     ))
     .sort(compareWorksheetRows);
   const lists = buildListSummaries(items, normalizedPackLists);
@@ -744,6 +749,46 @@ function onsiteTaskStatesFromEvents(records, context = {}) {
     states.set(sourceItemId, stringField(record.fields?.event_type) === "onsite_task_done" ? "done" : "task");
   }
   return states;
+}
+
+function horseKitStatesFromEvents(records, context = {}) {
+  const states = new Map();
+  const relevant = [...(records || [])]
+    .filter((record) => ["horse_kit_packed", "horse_kit_not_needed", "horse_kit_reopened"].includes(stringField(record.fields?.event_type)))
+    .filter((record) => eventMatchesContext(record, context))
+    .sort((a, b) => compareText(a.createdTime, b.createdTime) || compareText(stringField(a.fields?.event), stringField(b.fields?.event)));
+  for (const record of relevant) {
+    const ids = horseKitEventIds(record);
+    if (!ids.sourcePackItemId || !ids.horseId) continue;
+    const eventType = stringField(record.fields?.event_type);
+    const horsePackState = eventType === "horse_kit_packed"
+      ? "packed"
+      : eventType === "horse_kit_not_needed"
+        ? "not_needed"
+        : "not_packed";
+    states.set(`${ids.sourcePackItemId}:${ids.horseId}`, {
+      horsePackState,
+      packed: horsePackState === "packed" ? 1 : 0,
+      eventId: record.id,
+      updatedAt: record.createdTime || stringField(record.fields?.created_at)
+    });
+  }
+  return states;
+}
+
+function horseKitEventIds(record) {
+  const fields = record.fields || {};
+  const notes = stringField(fields.notes);
+  return {
+    sourcePackItemId: noteRecordId(notes, "source_pack_item"),
+    horseId: firstLinkedId(fields.horse) || noteRecordId(notes, "horse_id"),
+    packingItemId: noteRecordId(notes, "packing_item")
+  };
+}
+
+function noteRecordId(notes, label) {
+  const pattern = new RegExp(`${label}:\\s*(rec[a-zA-Z0-9]+)`);
+  return notes.match(pattern)?.[1] || "";
 }
 
 function eventMatchesContext(record, context = {}) {
@@ -1415,6 +1460,10 @@ export async function reconcileReport(airtable, requestUrl) {
     itemIds.has(firstLinkedId(record.fields.packing_item)) ||
     (selectedWave && includesLinkedId(record.fields.pack_wave, selectedWave.id))
   ));
+  const horseKitStateLookup = horseKitStatesFromEvents(events, {
+    packWaveId: selectedWave?.id || "",
+    showId: selectedShowId
+  });
   const horsesByItem = groupByLinkedId(filteredHorseMembers, "packing_item");
   const items = filteredItems
     .map((record) => decoratePackingItem(
@@ -1422,7 +1471,8 @@ export async function reconcileReport(airtable, requestUrl) {
       packListLookup,
       sourcePackItemLookup,
       wave,
-      waveHorses
+      waveHorses,
+      horseKitStateLookup
     ))
     .sort(compareWorksheetRows);
   const packingItemBySourceId = groupFirstByLinkedId(filteredItems, "source_pack_item");
@@ -2156,7 +2206,7 @@ async function applyPackState(airtable, context, payload) {
   const fields = actionItem.fields;
   const beforeQuantity = actionItem.currentPacked;
   const needed = actionNeeded(fields, payload);
-  const afterQuantity = nextPackState === "packed" ? needed : beforeQuantity;
+  const afterQuantity = nextPackState === "packed" ? needed : 0;
   const quantityDelta = afterQuantity - beforeQuantity;
 
   const updated = await createPackingLedgerEntry(airtable, context, actionItem, {
@@ -2383,36 +2433,20 @@ async function applyHorseKitState(airtable, context, payload) {
   const sourceRecord = tables.wec_pack_items?.id
     ? (await findRecordInConfiguredView(airtable, tables.wec_pack_items, sourcePackItemId)).record
     : null;
-  const existingMembers = await listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view);
-  const existingMember = existingMembers.find((record) => {
-    const fields = record.fields || {};
-    if (!includesLinkedId(fields.horse, horseId)) return false;
-    if (!includesLinkedId(fields.source_pack_item, sourcePackItemId)) return false;
-    if (packWaveId && linkedIds(fields.pack_wave).length && !includesLinkedId(fields.pack_wave, packWaveId)) return false;
-    return true;
-  });
-  const beforeState = stringField(existingMember?.fields?.horse_pack_state || "not_packed");
-  const before = beforeState === "not_needed" ? 0 : wholeQuantityField(existingMember?.fields?.quantity_packed);
+  const events = await listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view);
+  const previous = horseKitStatesFromEvents(events, {
+    packWaveId,
+    showId
+  }).get(`${sourcePackItemId}:${horseId}`);
+  const beforeState = previous?.horsePackState || "not_packed";
+  const before = beforeState === "packed" ? 1 : 0;
   const after = nextState === "packed" ? 1 : 0;
-  const fieldNames = tableFieldNames(context, tables.wec_packing_item_horses);
-  const memberFields = fieldsAllowedBySchema(compactFields({
-    horse: [horseId],
-    pack_wave: packWaveId ? [packWaveId] : [],
-    source_pack_item: [sourcePackItemId],
-    quantity_needed: 1,
-    quantity_packed: after,
-    horse_pack_state: nextState,
-    notes: clean(payload?.notes)
-  }), fieldNames);
-  const updatedMember = existingMember
-    ? await patchAirtableRecord(airtable, tables.wec_packing_item_horses.id, existingMember.id, memberFields)
-    : await createAirtableRecord(airtable, tables.wec_packing_item_horses.id, memberFields);
   const event = await createPackingEvent(airtable, tables, {
     eventType: horseMemberEventType(nextState, "horse_kit"),
-    eventSubjectId: updatedMember.id || `${packingItemId}:${horseId}:${sourcePackItemId}`,
-    memberRecord: updatedMember,
+    eventSubjectId: `${sourcePackItemId}:${horseId}`,
     showIds: showId ? [showId] : [],
     packWaveIds: packWaveId ? [packWaveId] : [],
+    horseIds: [horseId],
     quantityDelta: after - before,
     quantityBefore: before,
     quantityAfter: after,
@@ -2422,12 +2456,14 @@ async function applyHorseKitState(airtable, context, payload) {
     decisionAfter: "",
     notes: [
       `source_pack_item: ${sourcePackItemId}`,
+      `horse_id: ${horseId}`,
+      `packing_item: ${packingItemId}`,
       `source_item: ${stringField(sourceRecord?.fields?.app_name)}`,
       `horse: ${stringField(horseRecord.fields?.barn_name || horseRecord.fields?.horse || horseRecord.fields?.show_name)}`,
       clean(payload?.notes)
     ].filter(Boolean).join("\n")
   });
-  return { updatedMember, event };
+  return { event };
 }
 
 async function applyHorseRecordState(airtable, tables, payload) {
@@ -2556,7 +2592,7 @@ async function createPackingEvent(airtable, tables, payload) {
     pack_wave: payload.packWaveIds || (linkedIds(itemFields.pack_wave).length ? linkedIds(itemFields.pack_wave) : linkedIds(memberFields.pack_wave)),
     packing_item: payload.itemRecord?.id ? [payload.itemRecord.id] : [],
     packing_item_horse: payload.memberRecord?.id ? [payload.memberRecord.id] : [],
-    horse: linkedIds(memberFields.horse),
+    horse: payload.horseIds || linkedIds(memberFields.horse),
     event_type: payload.eventType,
     quantity_delta: payload.quantityDelta,
     quantity_before: payload.quantityBefore,
@@ -3008,14 +3044,14 @@ function normalizePackingItem(record, horseRecords, listPlanLookup = new Map()) 
   };
 }
 
-function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave, waveHorses = []) {
+function decoratePackingItem(item, packListLookup, sourcePackItemLookup, wave, waveHorses = [], horseKitStateLookup = new Map()) {
   const sourceItems = item.sourcePackItemIds
     .map((id) => sourcePackItemLookup.get(id))
     .filter(Boolean);
   const sourceItem = sourceItems[0];
   const horseSpecific = isHorseSpecificPlan(item, sourceItem);
   const horseMembers = horseSpecific
-    ? expectedHorseKitMembers(item, sourceItem, wave, waveHorses)
+    ? expectedHorseKitMembers(item, sourceItem, wave, waveHorses, horseKitStateLookup)
     : item.horseMembers;
   const itemForCalculation = { ...item, horseMembers };
   const quantityCalculation = buildQuantityCalculation(itemForCalculation, sourceItem, wave, waveHorses);
@@ -3054,7 +3090,7 @@ function isHorseSpecificPlan(item, sourceItem) {
   return plan === "horse_specific" || plan === "horse-specific" || !!sourceItem?.horseSpecific;
 }
 
-function expectedHorseKitMembers(item, sourceItem, wave, waveHorses = []) {
+function expectedHorseKitMembers(item, sourceItem, wave, waveHorses = [], horseKitStateLookup = new Map()) {
   const sourcePackItemId = sourceItem?.id || item.sourcePackItemIds[0] || "";
   const expectedHorses = expectedHorsesForSourceItem(sourceItem, waveHorses);
   const existingByHorseId = new Map();
@@ -3066,17 +3102,22 @@ function expectedHorseKitMembers(item, sourceItem, wave, waveHorses = []) {
   }
   return expectedHorses.map((horse) => {
     const existing = existingByHorseId.get(horse.id);
+    const eventState = sourcePackItemId && horse.id
+      ? horseKitStateLookup.get(`${sourcePackItemId}:${horse.id}`)
+      : null;
     if (existing) {
+      const horsePackState = eventState?.horsePackState || stringField(existing.horsePackState) || "not_packed";
       return {
         ...existing,
         needed: 1,
-        packed: isPackedHorseMember(existing) ? 1 : 0,
-        horsePackState: stringField(existing.horsePackState) || "not_packed",
+        packed: horsePackState === "packed" ? 1 : 0,
+        horsePackState,
         barnName: existing.barnName || horse.name,
         packWaveIds: existing.packWaveIds.length ? existing.packWaveIds : (wave?.id ? [wave.id] : []),
         sourcePackItemIds: existing.sourcePackItemIds.length ? existing.sourcePackItemIds : (sourcePackItemId ? [sourcePackItemId] : [])
       };
     }
+    const horsePackState = eventState?.horsePackState || "not_packed";
     return {
       id: `virtual:${item.id}:${horse.id}:${sourcePackItemId}`,
       virtual: true,
@@ -3088,8 +3129,8 @@ function expectedHorseKitMembers(item, sourceItem, wave, waveHorses = []) {
       packWaveIds: wave?.id ? [wave.id] : [],
       sourcePackItemIds: sourcePackItemId ? [sourcePackItemId] : [],
       needed: 1,
-      packed: 0,
-      horsePackState: "not_packed",
+      packed: horsePackState === "packed" ? 1 : 0,
+      horsePackState,
       notes: "",
       sortOrder: horse.sortOrder
     };
