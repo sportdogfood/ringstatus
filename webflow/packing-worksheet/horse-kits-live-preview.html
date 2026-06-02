@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>WEC Horse Kits Live Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      const WEC_LOCAL_PREVIEW_VERSION = Date.now();
+      document.write(`<link rel="stylesheet" href="./rsa-stylesheets.locked.css?v=${WEC_LOCAL_PREVIEW_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./styles.css?v=${WEC_LOCAL_PREVIEW_VERSION}">`);
+    </script>
+  </head>
+  <body>
+    <div id="packing-app">Loading WEC horse kits...</div>
+
+    <script>
+      window.WEC_PACKING_CONFIG = {
+        mode: "edit",
+        apiUrl: "http://127.0.0.1:4331/wec-packing",
+        stateUrl: "http://127.0.0.1:4331/wec-packing/state",
+        actionUrl: "http://127.0.0.1:4331/wec-packing/action",
+        healthUrl: "http://127.0.0.1:4331/wec-packing/health",
+        printUrl: "http://127.0.0.1:4331/wec-packing/print",
+        printPageUrl: "http://127.0.0.1:8792/wec-packing-print-preview.html",
+        pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
+        showId: "",
+        packWaveId: "",
+        packWaveKey: "wave_one",
+        initialTab: "horse_kits",
+        enableHorseKitLane: true,
+        enableHorseNotNeeded: true
+      };
+    </script>
+    <script>
+      document.write(`<script src="./wec-packing.js?v=${WEC_LOCAL_PREVIEW_VERSION}" defer><\/script>`);
+    </script>
+  </body>
+</html>

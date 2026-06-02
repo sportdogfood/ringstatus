@@ -14,6 +14,8 @@
   const printPageUrl = String(config.printPageUrl || defaultPrintPageUrl).trim();
   const pdfWorkerUrl = String(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/").trim();
   const enableHorseNotNeeded = config.enableHorseNotNeeded === true;
+  const enableHorseKitLane = config.enableHorseKitLane === true;
+  const configuredInitialTab = String(config.initialTab || "").trim();
   const failedActionStorageKey = "wecPackingFailedActions:v1";
   const state = {
     activeTab: "overview",
@@ -70,7 +72,7 @@
       }
       state.data = normalizeStatePayload(payload);
       if (!state.didSetInitialTab) {
-        state.activeTab = "overview";
+        state.activeTab = initialActiveTab();
         state.didSetInitialTab = true;
       }
       queueSessionStartEvent();
@@ -1392,6 +1394,7 @@
     if (!state.data) return rsaMessagePanel("No state");
     if (state.activeTab === "overview") return rsaOverviewHtml();
     if (state.activeTab === "horses") return rsaHorsesHtml();
+    if (enableHorseKitLane && state.activeTab === "horse_kits") return rsaHorseKitsHtml();
     if (isTabGroupId(state.activeTab)) return rsaTabGroupHtml(state.activeTab);
     return rsaSingleListHtml(state.activeTab);
   }
@@ -1592,6 +1595,25 @@
       headerSearch: false,
       headerPrint: false
     }), rsaFilterHtml("horses", true, horseFilterOptions(), { defaultFilter: "wave_one", searchScope: "horses", printTarget: "horses" }));
+  }
+
+  function rsaHorseKitsHtml() {
+    const rows = horseFilterRows("horse_kits");
+    return rsaPanelShellHtml(rsaDataModuleHtml({
+      title: "Horse Kits",
+      printTarget: "horses",
+      searchKey: "horse_kits",
+      filterKey: "horse_kits",
+      commentScope: rsaCommentScope("tab", "horse_kits", "Horse Kits"),
+      rowsHtml: rows.length ? rows.map(rsaHorseKitRowHtml).join("") : rsaEmptyTableRowHtml("No horse kits"),
+      tableLabel: `horses (${rows.length})`,
+      tableActionLabel: "open",
+      tableMetricLabels: null,
+      showFilter: false,
+      headerFilter: false,
+      headerSearch: false,
+      headerPrint: false
+    }), rsaFilterHtml("horse_kits", true, horseFilterOptions(), { defaultFilter: "wave_one", searchScope: "horse_kits", printTarget: "horses" }));
   }
 
   function rsaListTableHtml(list, tabId) {
@@ -1964,6 +1986,21 @@
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(Math.max(0, progress.rows - progress.done)))}</div>
         <a class="rs-input-inline rsa-text is-inline-input is-link is-print" ${printLinkAttrs({ horseId: horse.id })}>print</a>
       `, "has-inline-qty-action")
+    });
+  }
+
+  function rsaHorseKitRowHtml(horse) {
+    const progress = horseProgress(horse);
+    return rsaGridRowHtml({
+      rowAttrs: `data-horse-detail="${escapeAttr(horse.id)}"`,
+      leftHtml: rsaItemTextHtml(`
+        <div class="indication-color ${progress.percent >= 100 ? "bg-primary-green" : "bg-primary-blue"}"></div>
+        <div class="rs-table-title rsa-text is-line-item">${escapeHtml(displayLabel(horseDisplayName(horse)))}</div>
+        <div class="rs-text-linline rsa-text is-xs">${escapeHtml(`${progress.percent}% Packed`)}</div>
+      `),
+      rightHtml: rsaFlexActionBlockHtml(`
+        <div class="rs-input-inline rsa-text is-inline-input is-link is-open-action">open</div>
+      `, "has-open-action")
     });
   }
 
@@ -4210,15 +4247,15 @@
     return overviewFilterOptions().some(([key]) => key === value) ? value : "packing";
   }
 
-  function horseFilterRows() {
+  function horseFilterRows(scope = "horses") {
     const rows = horses();
-    const filter = state.filterByList.horses || "wave_one";
+    const filter = state.filterByList[scope] || "wave_one";
     const hasRosterFlags = rows.some((horse) => horse.waveOne || horse.waveTwo || horse.notGoing);
     if (filter === "all") {
-      return filterRows(rows, "horses", horseSearchText).sort(compareHorseNames);
+      return filterRows(rows, scope, horseSearchText).sort(compareHorseNames);
     }
     if (!hasRosterFlags) {
-      return filterRows(activeWaveHorses(), "horses", horseSearchText).sort(compareHorseNames);
+      return filterRows(activeWaveHorses(), scope, horseSearchText).sort(compareHorseNames);
     }
     const filtered = rows.filter((horse) => {
       if (filter === "wave_one") return !!horse.waveOne && !horse.notGoing;
@@ -4226,7 +4263,7 @@
       if (filter === "not_going") return !!horse.notGoing;
       return true;
     });
-    return filterRows(filtered, "horses", horseSearchText).sort(compareHorseNames);
+    return filterRows(filtered, scope, horseSearchText).sort(compareHorseNames);
   }
 
   function activeWaveHorses() {
@@ -4518,9 +4555,13 @@
   }
 
   function tabs() {
-    return [
+    const baseTabs = [
       { id: "overview", label: currentWaveLabel() },
-      { id: "horses", label: horsesTabLabel() },
+      { id: "horses", label: horsesTabLabel() }
+    ];
+    if (enableHorseKitLane) baseTabs.push({ id: "horse_kits", label: "Horse Kits" });
+    return [
+      ...baseTabs,
       ...tabGroups()
     ];
   }
@@ -4531,6 +4572,16 @@
 
   function sectionNavLabel(section) {
     return section.id === "horses" ? horsesTabLabel() : section.label;
+  }
+
+  function initialActiveTab() {
+    if (enableHorseKitLane && configuredInitialTab === "horse_kits") return "horse_kits";
+    if (configuredInitialTab === "horses") return "horses";
+    if (configuredInitialTab === "overview") return "overview";
+    if (configuredInitialTab && (isTabGroupId(configuredInitialTab) || lists().some((list) => list.id === configuredInitialTab))) {
+      return configuredInitialTab;
+    }
+    return "overview";
   }
 
   function isTabGroupId(value) {
