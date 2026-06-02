@@ -1,0 +1,153 @@
+:root {
+  --hps-print-w: 5.5in;
+  --hps-print-h: 3.75in;
+  --hps-print-frame: #a9cdf2;
+  --hps-print-frame-pad: 0.18in;
+  --hps-print-bg: #ffffff;
+  --hps-print-fg: #111111;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: var(--hps-print-w);
+  min-height: var(--hps-print-h);
+  margin: 0;
+  background: #ffffff;
+  color: var(--hps-print-fg);
+}
+
+#hps-print-card {
+  display: grid;
+  width: var(--hps-print-w);
+  min-height: var(--hps-print-h);
+  padding: 0;
+  background: #ffffff;
+}
+
+.hps-print-page {
+  width: var(--hps-print-w);
+  height: var(--hps-print-h);
+  padding: var(--hps-print-frame-pad);
+  background: var(--hps-print-frame);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.hps-print-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0.20in 0.20in 0.16in;
+  background: var(--hps-print-bg);
+  color: var(--hps-print-fg);
+  text-align: center;
+}
+
+.hps-print-logo {
+  display: grid;
+  height: 0.50in;
+  margin-top: 0.02in;
+  place-items: center;
+}
+
+.hps-print-logo img {
+  display: block;
+  width: auto;
+  height: 48px;
+}
+
+.hps-print-main {
+  margin-top: 0.06in;
+}
+
+.hps-print-barn,
+.hps-print-show,
+.hps-print-meta {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+.hps-print-barn {
+  font-size: 42pt;
+  line-height: 1.02;
+}
+
+.hps-print-show {
+  margin-top: 0.06in;
+  font-size: 16pt;
+  line-height: 1.1;
+}
+
+.hps-print-meta {
+  margin-top: 0.10in;
+  font-size: 14pt;
+  line-height: 1.1;
+}
+
+.hps-print-emergency {
+  margin-top: auto;
+  padding-top: 0.10in;
+}
+
+.hps-print-em-label,
+.hps-print-em-name,
+.hps-print-em-phone {
+  font-family: "Avenir Next", Avenir, Helvetica, Arial, sans-serif;
+}
+
+.hps-print-em-label {
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.hps-print-em-name,
+.hps-print-em-phone {
+  margin-top: 0.06in;
+  font-size: 12pt;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.hps-print-em-phone {
+  margin-top: 0.04in;
+}
+
+.hps-print-message {
+  padding: 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+@media print {
+  @page {
+    size: 5.5in 3.75in;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: var(--hps-print-w);
+    height: var(--hps-print-h);
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  #hps-print-card {
+    display: block;
+    width: var(--hps-print-w);
+    height: var(--hps-print-h);
+    min-height: 0;
+    padding: 0;
+  }
+}

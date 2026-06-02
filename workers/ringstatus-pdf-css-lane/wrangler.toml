@@ -1,0 +1,10 @@
+name = "ringstatus-pdf-css-lane"
+main = "src/index.js"
+compatibility_date = "2026-06-02"
+
+[observability]
+enabled = true
+
+# Secrets/vars required before deploy:
+# wrangler secret put CF_BROWSER_TOKEN
+# wrangler secret put CF_ACCOUNT_ID

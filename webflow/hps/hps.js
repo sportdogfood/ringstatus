@@ -10,6 +10,8 @@
   const refreshIntervalMinutes = Number(config.refreshIntervalMinutes || 5);
   const stallCardUrl = config.stallCardUrl || "https://ringstatus.com/hps-stall-card";
   const pdfWorkerUrl = config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/";
+  const printMode = String(config.printMode || "page").trim().toLowerCase();
+  const pdfWorkerLane = String(config.pdfWorkerLane || "css").trim().toLowerCase();
   const state = {
     records: [],
     query: "",
@@ -1045,16 +1047,29 @@
     state.activePrints.add(recordId);
     window.__HPS_PRINT_LOCKS.set(lockKey, Date.now());
 
-    const printUrl = new URL(stallCardUrl, window.location.href);
-    printUrl.searchParams.set("tenantId", tenantId);
-    printUrl.searchParams.set("horseRecordId", record.id);
-    printUrl.searchParams.set("autoprint", "1");
+    const sourceUrl = new URL(stallCardUrl, window.location.href);
+    sourceUrl.searchParams.set("tenantId", tenantId);
+    sourceUrl.searchParams.set("horseRecordId", record.id);
 
-    setPrintStatus(record.id, "Opening print page...");
-    const opened = window.open(printUrl.toString(), "_blank");
+    let targetUrl = sourceUrl;
+    let openingMessage = "Opening print page...";
+    let openedMessage = "Print page opened.";
+    if (printMode === "pdf") {
+      targetUrl = new URL(pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/", window.location.href);
+      targetUrl.searchParams.set("url", sourceUrl.toString());
+      targetUrl.searchParams.set("filename", `${safeFilename(firstValue(record.fields || {}, ["barn_name", "show_name", "horse", "name"]) || record.id)}-stall-card.pdf`);
+      targetUrl.searchParams.set("lane", pdfWorkerLane || "css");
+      openingMessage = "Opening stall card PDF...";
+      openedMessage = "Stall card PDF opened.";
+    } else {
+      sourceUrl.searchParams.set("autoprint", "1");
+    }
+
+    setPrintStatus(record.id, openingMessage);
+    const opened = window.open(targetUrl.toString(), "_blank");
     if (opened) {
-      setPrintStatus(record.id, "Print page opened.");
-      setDetailStatus("Print page opened.");
+      setPrintStatus(record.id, openedMessage);
+      setDetailStatus(openedMessage);
       window.setTimeout(() => {
         state.activePrints.delete(recordId);
         window.__HPS_PRINT_LOCKS.delete(lockKey);
