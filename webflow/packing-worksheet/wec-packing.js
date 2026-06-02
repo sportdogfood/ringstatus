@@ -1167,6 +1167,7 @@
     root.dataset.overviewFilter = state.filterByList.overview || "";
     renderDetail();
     if (options.focusSearchKey) restoreSearchFocus(options);
+    requestAnimationFrame(scrollActiveFiltersIntoView);
   }
 
   function handleHashRoute() {
@@ -1190,6 +1191,12 @@
     if (typeof input.setSelectionRange === "function") {
       input.setSelectionRange(options.selectionStart, options.selectionEnd);
     }
+  }
+
+  function scrollActiveFiltersIntoView() {
+    root.querySelectorAll(".rsa-list-action-menu.is-text-filter [data-rsa-filter].is-active").forEach((element) => {
+      element.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    });
   }
 
   function statusLine() {
@@ -1552,7 +1559,7 @@
   function rsaDataModuleHtml({ title, printTarget, searchKey, filterKey, commentScope, rowsHtml, labelActionsHtml, tableFooterHtml = "", tableLabel = "item", tableActionLabel = "input", tableMetricLabels, showFilter = true, headerFilter = false, headerSearch = true, headerPrint = true, forceSearchOpen = false, filterOptions, filterVariant = "" }) {
     const storedActiveTool = state.activeToolByList[filterKey] || "";
     const activeTool = forceSearchOpen ? "search" : showFilter || storedActiveTool !== "filter" ? storedActiveTool : "";
-    const showHeaderFilter = showFilter || headerFilter;
+    const showHeaderFilter = headerFilter || (showFilter && filterVariant !== "text-links");
     const headerActionCount = [showHeaderFilter, headerSearch, headerPrint].filter(Boolean).length;
     const headerActionClass = headerActionCount === 1 ? " is-one-action" : headerActionCount === 2 ? " is-two-actions" : "";
     const resolvedCommentScope = commentScope || rsaCommentScope("section", filterKey, title);
@@ -1751,9 +1758,12 @@
 
   function rsaSortLabelHtml(sortScope, field, label) {
     const activeSort = state.sortByList[sortScope] || {};
-    const activeClass = activeSort.field === field ? " is-active" : "";
-    const dirAttr = activeSort.field === field ? ` data-sort-dir="${escapeAttr(activeSort.direction)}"` : "";
-    return `<button type="button" class="rsa-table-label rsa-text is-xs is-caps${activeClass}" data-rsa-sort="${escapeAttr(field)}" data-rsa-scope="${escapeAttr(sortScope)}"${dirAttr}>${escapeHtml(label)}</button>`;
+    const isActive = activeSort.field === field;
+    const direction = activeSort.direction === "desc" ? "desc" : "asc";
+    const activeClass = isActive ? " is-active" : "";
+    const dirAttr = isActive ? ` data-sort-dir="${escapeAttr(direction)}" aria-sort="${direction === "desc" ? "descending" : "ascending"}"` : "";
+    const visibleLabel = isActive ? `${label} ${direction}` : label;
+    return `<button type="button" class="rsa-table-label rsa-text is-xs is-caps${activeClass}" data-rsa-sort="${escapeAttr(field)}" data-rsa-scope="${escapeAttr(sortScope)}"${dirAttr}>${escapeHtml(visibleLabel)}</button>`;
   }
 
   function rsaItemRowHtml(item, editMode, listId) {
@@ -3038,12 +3048,6 @@
           <div data-wec-record="${escapeAttr(place.id)}" data-wec-name="${escapeAttr(place.label || "")}">
             <div class="lp-profile-tab-panel is-active">
               <div class="rsa-table packing-place-overview-list">
-                <div class="rsa-table-head">
-                  ${rsaGridRowHtml({
-                    rowClass: "is-modal",
-                    leftHtml: `<div class="rsa-table-label rsa-text is-xs is-caps">overview</div>`
-                  })}
-                </div>
                 <div class="rsa-table-body">
                   ${detailRows.length ? detailRows.map(placeOverviewRowHtml).join("") : placeOverviewRowHtml({ layout: "single", cells: [{ label: "Details", value: "No place details" }] })}
                 </div>
@@ -3072,27 +3076,29 @@
       if (index < 0) return null;
       return remaining.splice(index, 1)[0];
     };
-    const addSingle = (row, type = "") => {
+    const addSingle = (row, type = "", rowClass = "") => {
       if (!row?.value) return;
-      rows.push({ layout: "single", cells: [{ ...row, type }] });
+      rows.push({ layout: "single", rowClass, cells: [{ ...row, type }] });
     };
-    const addPair = (left, right) => {
+    const addPair = (left, right, rowClass = "") => {
       const cells = [left, right].filter((row) => row?.value);
-      if (cells.length) rows.push({ layout: "pair", cells });
+      if (cells.length) rows.push({ layout: "pair", rowClass, cells });
     };
 
     addSingle(tagText ? { label: "Tags", value: tagText } : null);
-    addSingle(takeRow("Overview"));
+    takeRow("Overview");
     addPair(takeRow("Distance"), takeRow("Drive", "Duration"));
-    addSingle(takeRow("Address"));
+    const addressRow = takeRow("Address");
     addPair(takeRow("Rating"), takeRow("Reviews"));
     const phoneRow = takeRow("Phone");
     addPair(place.phone ? { label: "Phone", value: place.phone } : phoneRow, takeRow("Price"));
     addSingle(takeRow("Vendor Focus"));
     addPair(
       place.mapsUrl ? { label: "Map", value: place.mapsUrl, type: "link" } : null,
-      place.website ? { label: "Website", value: place.website, type: "link" } : null
+      place.website ? { label: "Website", value: place.website, type: "link" } : null,
+      "is-action-row"
     );
+    addSingle(addressRow, "", "is-address-row");
     remaining.forEach((row) => addSingle(row));
     return rows;
   }
@@ -3120,8 +3126,9 @@
 
   function placeOverviewRowHtml(row) {
     const layout = row?.layout === "pair" ? "is-pair" : "is-single";
+    const rowClass = row?.rowClass ? ` ${row.rowClass}` : "";
     return rsaGridRowHtml({
-      rowClass: `is-modal ${layout}`,
+      rowClass: `is-modal ${layout}${rowClass}`,
       leftHtml: `
         ${row?.cells?.length ? row.cells.map(placeOverviewCellHtml).join("") : placeOverviewCellHtml({ label: "Details", value: "No place details" })}
       `
