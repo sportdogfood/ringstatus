@@ -112,6 +112,86 @@ body {
   background: #eef4ff;
 }
 
+#packing-app .hk-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  background: #fff;
+  border-top: 1px solid #dbe3ee;
+  border-bottom: 1px solid #dbe3ee;
+}
+
+#packing-app .hk-data-table {
+  width: 100%;
+  min-width: 372px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#packing-app .hk-data-table th,
+#packing-app .hk-data-table td {
+  height: 38px;
+  padding: 0 6px;
+  border-bottom: 1px solid #dbe3ee;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#packing-app .hk-data-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 34px;
+  background: #fff;
+}
+
+#packing-app .hk-data-table tbody tr:nth-child(even) td {
+  background: #f7f8fa;
+}
+
+#packing-app .hk-data-table tbody tr.is-active td {
+  background: #eef4ff;
+}
+
+#packing-app .hk-data-table .hk-row-gutter {
+  width: 28px;
+  padding: 0 4px;
+  color: #627187;
+  text-align: center;
+}
+
+#packing-app .hk-data-table th:nth-child(2),
+#packing-app .hk-data-table td:nth-child(2) {
+  width: 28%;
+}
+
+#packing-app .hk-data-table th:nth-child(3),
+#packing-app .hk-data-table td:nth-child(3) {
+  width: 28%;
+}
+
+#packing-app .hk-data-table th:nth-child(4),
+#packing-app .hk-data-table td:nth-child(4) {
+  width: 54px;
+  text-align: right;
+}
+
+#packing-app .hk-data-table th:nth-child(5),
+#packing-app .hk-data-table td:nth-child(5) {
+  width: 42px;
+  text-align: right;
+}
+
+#packing-app .hk-data-table th:nth-child(6),
+#packing-app .hk-data-table td:nth-child(6) {
+  width: 46px;
+  text-align: right;
+}
+
 #packing-app .hk-table-grid {
   display: grid;
   grid-template-columns: minmax(96px, 1.1fr) minmax(92px, 1.1fr) minmax(48px, 0.5fr) minmax(40px, 0.45fr) minmax(44px, 0.45fr);
@@ -256,6 +336,15 @@ body {
 }
 
 @media (max-width: 520px) {
+  #packing-app .hk-data-table {
+    min-width: 393px;
+  }
+
+  #packing-app .hk-data-table th,
+  #packing-app .hk-data-table td {
+    padding: 0 5px;
+  }
+
   #packing-app .hk-table-grid {
     grid-template-columns: minmax(92px, 1.2fr) minmax(72px, 0.9fr) minmax(36px, 0.45fr) minmax(34px, 0.4fr) minmax(42px, 0.45fr);
     gap: 4px;

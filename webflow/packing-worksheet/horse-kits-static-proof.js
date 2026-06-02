@@ -56,7 +56,7 @@
       state = await fetchJson(`${config.apiUrl}?packWaveKey=${encodeURIComponent(config.packWaveKey)}`);
       retainSelection();
       ui.error = "";
-      ui.status = "Loaded static kit proof.";
+      ui.status = sourceStatusText();
     } catch (error) {
       ui.error = error.message || String(error);
     } finally {
@@ -217,6 +217,26 @@
     return counts;
   }
 
+  function sourceCounts() {
+    const counts = state?.counts || {};
+    return {
+      horses: Number(counts.visibleHorses ?? waveOneHorses().length) || waveOneHorses().length,
+      kitItems: Number(counts.kitItems ?? staticItems().length) || staticItems().length,
+      links: Number(counts.packingRows ?? (state?.packingRows || []).length) || 0,
+      logs: (state?.changes || []).length
+    };
+  }
+
+  function sourceStatusText() {
+    const counts = sourceCounts();
+    const stack = activeStackRows()
+      .filter((row) => row.tableName || row.physicalTableName)
+      .sort((a, b) => Number(a.stack || 0) - Number(b.stack || 0))
+      .map((row) => row.tableName || row.physicalTableName)
+      .join(" > ");
+    return `Airtable: ${counts.horses} horses | ${counts.kitItems} kit items | ${counts.links} links | ${counts.logs} logs${stack ? ` | ${stack}` : ""}`;
+  }
+
   function selectedHorsePackingRowIds(horseId = ui.selectedHorseId) {
     const horse = (state?.allHorses || state?.horses || []).find((candidate) => candidate.id === horseId) || null;
     const ids = new Set();
@@ -239,6 +259,7 @@
     const horses = waveOneHorses();
     const horseStack = stackRowForRole("entity_1");
     const itemStack = stackRowForRole("entity_2");
+    const countsFromSource = sourceCounts();
     const showHorseSection = shouldRenderRole("entity_1");
     const showItemSection = true;
     const showLogSection = shouldRenderRole("logs");
@@ -246,7 +267,7 @@
       <div class="rsa-dashboard-block hk-proof-root">
         <div class="rsa-padding hk-proof-header">
           <div class="rsa-H1 hk-proof-title">HORSE KITS</div>
-          <div class="rsa-text rsa-report-subtitle hk-proof-subtitle">Wave One | ${horses.length} horses | ${staticItems().length} kit items</div>
+          <div class="rsa-text rsa-report-subtitle hk-proof-subtitle">Wave One | ${countsFromSource.horses} horses | ${countsFromSource.kitItems} kit items | ${countsFromSource.links} links</div>
         </div>
         <div class="rsa-padding">
           <div class="rsa-messages">
@@ -260,30 +281,34 @@
   }
 
   function horseListHtml(horses, horseStack) {
+    const source = sourceCounts();
     return `
       <section class="table-module hk-proof-section">
         <div class="rsa-padding">
           <div class="rsa-banner-header">
             <div class="rsa-head-left">
               <div class="rsa-H5 is-caps">${escapeHtml(stackTitle(horseStack, "Horses"))}</div>
-              <div class="rsa-text is-xs">${horses.length} Wave One horses</div>
+              <div class="rsa-text is-xs">${source.horses} Wave One horses | ${source.links} active links</div>
             </div>
             <button class="rs-text-link rsa-text is-link is-xxs" data-action="reload" type="button">RELOAD</button>
           </div>
         </div>
-        <div class="rsa-table-head hk-table-head">
-          <div class="rsa-item-row-2 hk-table-grid">
-            <div class="rsa-item-block-left">
-              <div class="rsa-table-label rsa-text is-xs is-caps">HORSE</div>
-            </div>
-            <div class="rsa-table-label rsa-text is-xs is-caps">SHOW</div>
-            <div class="rsa-table-label rsa-text is-xs is-caps">PACKED</div>
-            <div class="rsa-table-label rsa-text is-xs is-caps">LEFT</div>
-            <div class="rsa-table-label rsa-text is-xs is-caps">OPEN</div>
-          </div>
-        </div>
-        <div class="rsa-table-body">
-          ${horses.map(horseRowHtml).join("") || `<div class="rsa-item-row-2"><div class="rsa-text">No Wave One horses.</div></div>`}
+        <div class="hk-table-wrap" role="region" aria-label="Horse kit table">
+          <table class="hk-data-table">
+            <thead>
+              <tr>
+                <th class="hk-row-gutter rsa-text is-xs">#</th>
+                <th class="rsa-table-label rsa-text is-xs is-caps">HORSE</th>
+                <th class="rsa-table-label rsa-text is-xs is-caps">SHOW</th>
+                <th class="rsa-table-label rsa-text is-xs is-caps">PACKED</th>
+                <th class="rsa-table-label rsa-text is-xs is-caps">LEFT</th>
+                <th class="rsa-table-label rsa-text is-xs is-caps">OPEN</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${horses.map(horseRowHtml).join("") || `<tr><td colspan="6"><div class="rsa-text">No Wave One horses.</div></td></tr>`}
+            </tbody>
+          </table>
         </div>
       </section>
     `;
@@ -293,15 +318,14 @@
     const counts = rollup(horse.id);
     const active = horse.id === ui.selectedHorseId;
     return `
-      <button class="rsa-item-row-2 hk-table-grid is-hot-row hk-proof-hot-row ${active ? "is-active" : ""}" data-action="select-horse" data-horse-id="${horse.id}" type="button">
-        <div class="rsa-item-block-left">
-          <div class="rsa-text is-line-item">${escapeHtml(horse.name)}</div>
-        </div>
-        <div class="rsa-text is-xs hk-table-secondary">${escapeHtml(horse.showName || horse.barnName || "")}</div>
-        <div class="rsa-text is-number">${counts.packed}/${counts.total}</div>
-        <div class="rsa-text is-number">${counts.left}</div>
-        <div class="rsa-text is-link is-xxs">OPEN</div>
-      </button>
+      <tr class="hk-proof-hot-row ${active ? "is-active" : ""}" data-action="select-horse" data-horse-id="${horse.id}">
+        <td class="hk-row-gutter rsa-text is-xs">${index + 1}</td>
+        <td><div class="rsa-text is-line-item">${escapeHtml(horse.name)}</div></td>
+        <td><div class="rsa-text is-xs hk-table-secondary">${escapeHtml(horse.showName || horse.barnName || "")}</div></td>
+        <td><div class="rsa-text is-number">${counts.packed}/${counts.total}</div></td>
+        <td><div class="rsa-text is-number">${counts.left}</div></td>
+        <td><div class="rsa-text is-link is-xxs">OPEN</div></td>
+      </tr>
     `;
   }
 
