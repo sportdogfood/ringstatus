@@ -129,6 +129,30 @@ body {
   border-spacing: 0;
 }
 
+#packing-app .hk-data-table .hk-col-gutter {
+  width: 28px;
+}
+
+#packing-app .hk-data-table .hk-col-horse {
+  width: 30%;
+}
+
+#packing-app .hk-data-table .hk-col-show {
+  width: 30%;
+}
+
+#packing-app .hk-data-table .hk-col-packed {
+  width: 54px;
+}
+
+#packing-app .hk-data-table .hk-col-left {
+  width: 42px;
+}
+
+#packing-app .hk-data-table .hk-col-open {
+  width: 48px;
+}
+
 #packing-app .hk-data-table th,
 #packing-app .hk-data-table td {
   height: 38px;
@@ -158,37 +182,17 @@ body {
 }
 
 #packing-app .hk-data-table .hk-row-gutter {
-  width: 28px;
   padding: 0 4px;
   color: #627187;
   text-align: center;
 }
 
-#packing-app .hk-data-table th:nth-child(2),
-#packing-app .hk-data-table td:nth-child(2) {
-  width: 28%;
-}
-
-#packing-app .hk-data-table th:nth-child(3),
-#packing-app .hk-data-table td:nth-child(3) {
-  width: 28%;
-}
-
 #packing-app .hk-data-table th:nth-child(4),
-#packing-app .hk-data-table td:nth-child(4) {
-  width: 54px;
-  text-align: right;
-}
-
+#packing-app .hk-data-table td:nth-child(4),
 #packing-app .hk-data-table th:nth-child(5),
-#packing-app .hk-data-table td:nth-child(5) {
-  width: 42px;
-  text-align: right;
-}
-
+#packing-app .hk-data-table td:nth-child(5),
 #packing-app .hk-data-table th:nth-child(6),
 #packing-app .hk-data-table td:nth-child(6) {
-  width: 46px;
   text-align: right;
 }
 

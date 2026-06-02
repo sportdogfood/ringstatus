@@ -295,6 +295,14 @@
         </div>
         <div class="hk-table-wrap" role="region" aria-label="Horse kit table">
           <table class="hk-data-table">
+            <colgroup>
+              <col class="hk-col-gutter">
+              <col class="hk-col-horse">
+              <col class="hk-col-show">
+              <col class="hk-col-packed">
+              <col class="hk-col-left">
+              <col class="hk-col-open">
+            </colgroup>
             <thead>
               <tr>
                 <th class="hk-row-gutter rsa-text is-xs">#</th>
