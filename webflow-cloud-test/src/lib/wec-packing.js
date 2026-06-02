@@ -58,6 +58,9 @@ const DEFAULT_SOURCE_VIEWS = {
   wec_pack_lists: "Grid view",
   wec_list_plans: "Grid view"
 };
+const OPTIONAL_LEGACY_FIELDS_BY_TABLE = {
+  wec_pack_waves: new Set(["groom_count_final", "horse_sanity"])
+};
 
 export function runtimeEnv() {
   const localEnv = globalThis.process?.env || {};
@@ -102,7 +105,7 @@ export async function healthReport(airtable) {
     const schemaTable = findSchemaTable(context.schema, name, tableId);
     const allowedFields = registryRow?.fieldsAllowed || [];
     const schemaFields = new Set((schemaTable?.fields || []).map((field) => field.name));
-    const missingFields = allowedFields.filter((field) => !schemaFields.has(field));
+    const missingFields = requiredMissingFields(name, allowedFields, schemaFields);
     return {
       name,
       tableId,
@@ -1812,7 +1815,7 @@ async function healthReportFromContext(airtable, context) {
     const schemaTable = findSchemaTable(context.schema, name, tableId);
     const allowedFields = registryRow?.fieldsAllowed || [];
     const schemaFields = new Set((schemaTable?.fields || []).map((field) => field.name));
-    const missingFields = allowedFields.filter((field) => !schemaFields.has(field));
+    const missingFields = requiredMissingFields(name, allowedFields, schemaFields);
     return {
       name,
       tableId,
@@ -1826,6 +1829,11 @@ async function healthReportFromContext(airtable, context) {
     ok: required.every((item) => item.registry && item.physical && item.missingFields.length === 0),
     required
   };
+}
+
+function requiredMissingFields(tableName, allowedFields, schemaFields) {
+  const optionalLegacy = OPTIONAL_LEGACY_FIELDS_BY_TABLE[tableName] || new Set();
+  return allowedFields.filter((field) => !schemaFields.has(field) && !optionalLegacy.has(field));
 }
 
 function buildRegistry(records) {
@@ -2613,7 +2621,7 @@ function normalizeWave(record) {
     horseCount: numberField(fields.horse_count),
     countHorsesWaveOne: numberField(countHorsesWaveOneValue),
     countHorsesWaveOneAvailable: hasNumberField(countHorsesWaveOneValue),
-    groomCountFinal: numberField(fields.groom_count_final),
+    groomCountFinal: numberField(fields.groom_sanity),
     groomSanity: numberField(fields.groom_sanity),
     sortOrder: numberField(fields.sort_order),
     showIds: linkedIds(fields.show),
@@ -2631,7 +2639,7 @@ function withEffectiveWaveCounts(wave, waveHorses) {
     : linkedHorseCount;
   const dynamicGroomCountFinal = wave.groomSanity;
   const effectiveHorseCount = wave.manualLock ? wave.horseCount : currentHorseCount;
-  const effectiveGroomCountFinal = wave.manualLock ? wave.groomCountFinal : dynamicGroomCountFinal;
+  const effectiveGroomCountFinal = dynamicGroomCountFinal;
   return {
     ...wave,
     linkedHorseCount,
@@ -2641,9 +2649,7 @@ function withEffectiveWaveCounts(wave, waveHorses) {
     effectiveGroomCountFinal,
     countsLocked: wave.manualLock,
     countSource: wave.manualLock ? "manual_lock" : (usesWaveOneCount ? "count_horses_wave_one" : "current_wave_scope"),
-    groomCountSource: wave.manualLock
-      ? "manual_lock"
-      : "groom_sanity"
+    groomCountSource: "groom_sanity"
   };
 }
 
@@ -3267,9 +3273,7 @@ function buildQuantityCalculation(item, sourceItem, wave, waveHorses = []) {
       plan,
       formula: "per_groom * effective_groom_count_final",
       sourceField: "wec_pack_items.per_groom",
-      multiplierField: wave?.countsLocked
-        ? "wec_pack_waves.groom_count_final"
-        : "wec_pack_waves.groom_sanity",
+      multiplierField: "wec_pack_waves.groom_sanity",
       base: perGroom,
       multiplier: groomCount,
       calculatedNeeded,
