@@ -56,7 +56,6 @@ export const ENV_TABLES = {
 const DEFAULT_META_TABLE = "tbllJywsOstkqT5yZ";
 const DEFAULT_SOURCE_VIEWS = {
   wec_pack_lists: "Grid view",
-  wec_pack_items: "master",
   wec_list_plans: "Grid view"
 };
 
@@ -2874,6 +2873,7 @@ function isActiveSourceWorksheetItem(sourceItem, packListIds = new Set()) {
 function sourceItemToWorksheetRecord(sourceItem, state, selectedWave, selectedShowId) {
   const name = state?.name || sourceItemDisplayName(sourceItem);
   const quantityBase = sourceQuantityBase(sourceItem);
+  const packListIds = isTaskOnlySourceItem(sourceItem) ? [] : sourceItem.packListIds;
   return {
     id: sourceItem.id,
     createdTime: state?.updatedAt || "",
@@ -2882,7 +2882,7 @@ function sourceItemToWorksheetRecord(sourceItem, state, selectedWave, selectedSh
       item_id: sourceItem.appName || sourceItem.id,
       show: selectedShowId ? [selectedShowId] : linkedIds(selectedWave?.fields?.show),
       pack_wave: selectedWave?.id ? [selectedWave.id] : [],
-      pack_list: sourceItem.packListIds,
+      pack_list: packListIds,
       source_pack_item: [sourceItem.id],
       quantity_base: quantityBase,
       quantity_packed: state?.packed || 0,
@@ -2895,6 +2895,16 @@ function sourceItemToWorksheetRecord(sourceItem, state, selectedWave, selectedSh
       notes: state?.notes || sourceItem.note
     })
   };
+}
+
+function isTaskOnlySourceItem(sourceItem) {
+  const plan = slugify(sourceItem?.listPlan);
+  return plan === "purchase_onsite" ||
+    plan === "unresolved" ||
+    plan === "needs_attention" ||
+    !!sourceItem?.sourceFlags?.purchaseOnsite ||
+    !!sourceItem?.sourceFlags?.unresolved ||
+    !!sourceItem?.sourceFlags?.needsAttention;
 }
 
 function sourceItemDisplayName(sourceItem) {
