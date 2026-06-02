@@ -3589,25 +3589,39 @@ body {
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.is-text-filter {
-  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  gap: clamp(16px, 4vw, 28px);
+  overflow-x: auto;
+  overflow-y: hidden;
   background: #fff;
+  -webkit-overflow-scrolling: touch;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.is-text-filter .rs-text-link {
-  min-width: 0;
+  flex: 0 0 auto;
+  min-width: max-content;
   width: auto;
+  max-width: none;
   height: 32px;
   padding: 0;
+  overflow: visible;
   background: transparent;
   border: 0;
   border-radius: 0;
   color: #25364e;
+  text-overflow: clip;
+  white-space: nowrap;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-list-action-menu.is-text-filter .rs-text-link.is-active {
   color: #0e1726;
   background: transparent;
+  font-weight: 500;
   text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2 {
@@ -4990,7 +5004,9 @@ a.rsa-item-row-2 {
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal {
   display: block;
   min-height: 50px;
+  max-height: 50px;
   padding: 0;
+  overflow: hidden;
   border-bottom: 1px solid #e1e6f0;
 }
 
@@ -5002,22 +5018,51 @@ a.rsa-item-row-2 {
   display: block;
   width: 100%;
   min-width: 0;
-  padding: 10px 12px;
+  min-height: 50px;
+  max-height: 50px;
+  padding: 0;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal .rsa-item-block-right {
   display: none;
 }
 
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal.is-pair .rsa-item-block-left {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .packing-place-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 50px;
+  max-height: 50px;
+  padding: 5px 12px;
+}
+
+:is(#packing-app, #tack-horses-app, #hps-app) .rsa-item-row-2.is-modal.is-pair .packing-place-cell + .packing-place-cell {
+  border-left: 1px solid #e1e6f0;
+}
+
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-place-label {
-  padding-top: 2px;
+  min-width: 0;
+  padding-top: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-place-value,
 :is(#packing-app, #tack-horses-app, #hps-app) .packing-place-value-link {
+  display: inline-flex;
+  align-items: center;
   min-width: 0;
-  overflow-wrap: break-word;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   line-height: 20px;
 }
 

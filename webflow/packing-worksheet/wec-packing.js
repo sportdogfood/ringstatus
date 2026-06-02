@@ -1342,8 +1342,8 @@
       tableActionLabel: "open",
       tableMetricLabels: null,
       showFilter: filterOptions.length > 1,
-      headerFilter: filterOptions.length > 1,
-      headerSearch: true,
+      headerFilter: false,
+      headerSearch: false,
       headerPrint: false,
       filterOptions,
       filterVariant: "text-links"
@@ -1954,13 +1954,25 @@
         <div class="rsa-comment rsa-comment-head">
           <div class="rsa-comment-wrapper">
             <div class="rsa-comment-text rsa-text">${escapeHtml(title)}</div>
-            <div class="rs-text-linline rsa-text is-link is-inline-edit rsa-comment-action" data-rsa-comment-add>${pending ? "saving" : composerOpen ? "save" : "add"}</div>
+            ${composerOpen ? "" : `<div class="rs-text-linline rsa-text is-link is-inline-edit rsa-comment-action" data-rsa-comment-add>add</div>`}
           </div>
         </div>
+        ${composerOpen ? rsaCommentComposerHtml(scope, draft, pending) : ""}
         <div class="rsa-comment-list">
-          ${comments.length ? comments.map(rsaCommentItemHtml).join("") : rsaCommentEmptyHtml(scope)}
+          ${comments.length ? comments.map((comment) => rsaCommentItemHtml(comment, composerOpen)).join("") : rsaCommentEmptyHtml(scope)}
         </div>
-        ${composerOpen ? `<textarea class="rsa-comment-input rsa-text" rows="2" placeholder="${escapeAttr(`${scopeName} comment`)}" data-rsa-comment-input>${escapeHtml(draft)}</textarea>` : ""}
+      </div>
+    `;
+  }
+
+  function rsaCommentComposerHtml(scope, draft, pending) {
+    const scopeName = commentScopeDisplay(scope);
+    return `
+      <div class="rsa-comment rsa-comment-composer">
+        <div class="rsa-comment-wrapper">
+          <textarea class="rsa-comment-input rsa-text" rows="2" placeholder="${escapeAttr(`${scopeName} comment`)}" data-rsa-comment-input>${escapeHtml(draft)}</textarea>
+          <div class="rs-text-linline rsa-text is-link is-inline-edit rsa-comment-action is-save" data-rsa-comment-add>${pending ? "saving" : "save"}</div>
+        </div>
       </div>
     `;
   }
@@ -1983,19 +1995,23 @@
     return currentPackWaveKey() === "wave_two" ? counts.wave_two : counts.wave_one;
   }
 
-  function rsaCommentItemHtml(comment) {
-    const editable = comment.sourceTable === "wec_commenting";
+  function rsaCommentItemHtml(comment, composerOpen = false) {
+    const editable = comment.sourceTable === "wec_commenting" && !composerOpen;
     const editing = !!state.commentEditById[comment.id];
     const pending = state.pendingActions[pendingActionKey("update_comment", comment.id)];
     const value = state.commentEditValues[comment.id] ?? comment.comment ?? "";
+    const createdBy = String(comment.createdBy || "").trim();
+    const metaHtml = createdBy && !/^webflow$/i.test(createdBy)
+      ? `<div class="rsa-comment-meta rsa-text">${escapeHtml(createdBy)}</div>`
+      : "";
     return `
       <div class="rsa-comment rsa-comment-item">
           <div class="rsa-comment-wrapper">
             ${editing
               ? `<textarea class="rsa-comment-input rsa-text" rows="2" data-rsa-comment-edit-input="${escapeAttr(comment.id)}">${escapeHtml(value)}</textarea>`
               : `<div class="rsa-comment-text rsa-text">${escapeHtml(comment.comment || "")}</div>`}
-          <div class="rsa-comment-meta rsa-text">${escapeHtml(comment.createdBy || "webflow")}</div>
-          <a class="rs-text-linline rsa-text is-xxs is-inline-edit rsa-comment-action" href="${escapeAttr(smsCommentItemHref(comment))}">sms</a>
+          ${composerOpen ? "" : metaHtml}
+          ${composerOpen ? "" : `<a class="rs-text-linline rsa-text is-xxs is-inline-edit rsa-comment-action" href="${escapeAttr(smsCommentItemHref(comment))}">sms</a>`}
           ${editable
             ? editing
               ? `<div class="rs-text-linline rsa-text is-xxs is-inline-edit" data-rsa-comment-save="${escapeAttr(comment.id)}">${pending ? "saving" : "save"}</div>`
@@ -3029,7 +3045,7 @@
                   })}
                 </div>
                 <div class="rsa-table-body">
-                  ${detailRows.length ? detailRows.map(placeOverviewRowHtml).join("") : placeOverviewRowHtml(["Details", "No place details"])}
+                  ${detailRows.length ? detailRows.map(placeOverviewRowHtml).join("") : placeOverviewRowHtml({ layout: "single", cells: [{ label: "Details", value: "No place details" }] })}
                 </div>
               </div>
             </div>
@@ -3048,11 +3064,36 @@
   function placeOverviewRows(place, tags) {
     const rows = [];
     const tagText = uniqueDisplayValues(tags).map(displayLabel).join(", ");
-    if (tagText) rows.push(["Tags", tagText]);
-    rows.push(...placeAttributeRows(place.attributes));
-    if (place.phone) rows.push(["Phone", place.phone]);
-    if (place.mapsUrl) rows.push(["Map", place.mapsUrl, "link"]);
-    if (place.website) rows.push(["Website", place.website, "link"]);
+    const attributeRows = placeAttributeRows(place.attributes).map(([label, value]) => ({ label, value }));
+    const remaining = [...attributeRows];
+    const takeRow = (...labels) => {
+      const keys = labels.map(themeKey);
+      const index = remaining.findIndex((row) => keys.includes(themeKey(row.label)));
+      if (index < 0) return null;
+      return remaining.splice(index, 1)[0];
+    };
+    const addSingle = (row, type = "") => {
+      if (!row?.value) return;
+      rows.push({ layout: "single", cells: [{ ...row, type }] });
+    };
+    const addPair = (left, right) => {
+      const cells = [left, right].filter((row) => row?.value);
+      if (cells.length) rows.push({ layout: "pair", cells });
+    };
+
+    addSingle(tagText ? { label: "Tags", value: tagText } : null);
+    addSingle(takeRow("Overview"));
+    addPair(takeRow("Distance"), takeRow("Drive", "Duration"));
+    addSingle(takeRow("Address"));
+    addPair(takeRow("Rating"), takeRow("Reviews"));
+    const phoneRow = takeRow("Phone");
+    addPair(place.phone ? { label: "Phone", value: place.phone } : phoneRow, takeRow("Price"));
+    addSingle(takeRow("Vendor Focus"));
+    addPair(
+      place.mapsUrl ? { label: "Map", value: place.mapsUrl, type: "link" } : null,
+      place.website ? { label: "Website", value: place.website, type: "link" } : null
+    );
+    remaining.forEach((row) => addSingle(row));
     return rows;
   }
 
@@ -3078,18 +3119,27 @@
   }
 
   function placeOverviewRowHtml(row) {
-    const [label, value, type] = row;
-    const text = String(value || "").trim();
-    const valueHtml = type === "link"
-      ? `<a class="packing-place-value-link rsa-text is-link" href="${escapeAttr(text)}" target="_blank" rel="noopener">${escapeHtml(placeLinkLabel(label))}</a>`
-      : `<div class="packing-place-value rsa-text">${escapeHtml(text)}</div>`;
+    const layout = row?.layout === "pair" ? "is-pair" : "is-single";
     return rsaGridRowHtml({
-      rowClass: "is-modal",
+      rowClass: `is-modal ${layout}`,
       leftHtml: `
-        <div class="packing-place-label rsa-text is-xs is-caps">${escapeHtml(displayLabel(label))}</div>
-        ${valueHtml}
+        ${row?.cells?.length ? row.cells.map(placeOverviewCellHtml).join("") : placeOverviewCellHtml({ label: "Details", value: "No place details" })}
       `
     });
+  }
+
+  function placeOverviewCellHtml(cell) {
+    const label = cell?.label || "Details";
+    const text = String(cell?.value || "").trim();
+    const valueHtml = cell?.type === "link"
+      ? `<a class="packing-place-value-link rsa-text is-link" href="${escapeAttr(text)}" target="_blank" rel="noopener">${escapeHtml(placeLinkLabel(label))}</a>`
+      : `<div class="packing-place-value rsa-text">${escapeHtml(text)}</div>`;
+    return `
+      <div class="packing-place-cell">
+        ${valueHtml}
+        <div class="packing-place-label rsa-text is-xs is-caps">${escapeHtml(displayLabel(label))}</div>
+      </div>
+    `;
   }
 
   function placeLinkLabel(label) {
