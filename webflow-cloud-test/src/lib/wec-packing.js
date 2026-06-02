@@ -2252,6 +2252,9 @@ async function applyItemFieldUpdate(airtable, context, payload) {
   if (!Object.keys(updateFields).length) throw new Error("no_allowed_fields");
 
   const actionItem = await resolveSourceActionItem(airtable, context, payload);
+  if (Object.prototype.hasOwnProperty.call(updateFields, "quantity_needed")) {
+    await applySourceQuantityUpdateForQuantityPlan(airtable, context, actionItem, updateFields.quantity_needed);
+  }
   const fields = { ...actionItem.fields, ...updateFields };
   let afterPacked = actionItem.currentPacked;
   let quantityDelta = 0;
@@ -2287,6 +2290,22 @@ async function applyItemFieldUpdate(airtable, context, payload) {
     notes: Object.keys(updateFields).join(", ")
   });
   return { updated, event };
+}
+
+async function applySourceQuantityUpdateForQuantityPlan(airtable, context, actionItem, needed) {
+  const plan = slugify(actionItem?.sourceItem?.listPlan || actionItem?.fields?.list_plan || "");
+  if (plan !== "quantity") throw new Error("quantity_needed_not_editable_for_dynamic_plan");
+
+  const tables = context.tables;
+  const fieldNames = tableFieldNames(context, tables.wec_pack_items);
+  const fields = fieldsAllowedBySchema({ quantity: needed }, fieldNames);
+  if (!Object.keys(fields).length) throw new Error("wec_pack_items_quantity_field_missing");
+
+  const updated = await patchAirtableRecord(airtable, tables.wec_pack_items.id, actionItem.sourceItemId, fields);
+  actionItem.sourceItem.quantity = needed;
+  actionItem.fields.quantity_base = needed;
+  actionItem.fields.quantity_needed_dynamic = needed;
+  return updated;
 }
 
 async function applyHorsePackState(airtable, tables, payload) {

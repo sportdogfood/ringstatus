@@ -504,13 +504,21 @@
 
   function toggleItemInlineEdit(itemId, field) {
     if (!itemId || !field) return;
+    const item = items().find((row) => row.id === itemId);
+    const canEditNeeded = canEditItemNeed(item);
     state.inlineEditByItem[itemId] = state.inlineEditByItem[itemId] || {};
     const editMode = state.inlineEditByItem[itemId];
     if (field === "quantity_inputs") {
       const nextActive = !(editMode.quantity_packed_override || editMode.quantity_needed_override);
       editMode["lp-row-title"] = false;
-      editMode.quantity_needed_override = nextActive;
+      editMode.quantity_needed_override = canEditNeeded ? nextActive : false;
       editMode.quantity_packed_override = nextActive;
+      render();
+      return;
+    }
+    if (field === "quantity_needed_override" && !canEditNeeded) {
+      editMode.quantity_needed_override = false;
+      setSaveMessage("Needed is dynamic for this plan. Change packed only.");
       render();
       return;
     }
@@ -551,6 +559,10 @@
       fields.quantity_packed = packed;
     }
     if (editMode.quantity_needed_override) {
+      if (!canEditItemNeed(item)) {
+        setSaveMessage("Needed is dynamic for this plan. Change packed only.");
+        return;
+      }
       const needed = wholeQuantityNumber(inlineEditValue(item, "quantity_needed_override"));
       if (!Number.isFinite(needed) || needed < 0) {
         setSaveMessage("Needed must be zero or greater.");
@@ -1768,7 +1780,9 @@
 
   function rsaItemRowHtml(item, editMode, listId) {
     const editingTitle = !!editMode?.["lp-row-title"];
-    const editingQty = !!(editMode?.quantity_packed_override || editMode?.quantity_needed_override);
+    const editingNeeded = canEditItemNeed(item) && !!editMode?.quantity_needed_override;
+    const editingPacked = !!editMode?.quantity_packed_override;
+    const editingQty = !!(editingPacked || editingNeeded);
     return rsaGridRowHtml({
       rowClass: `is-grid2 ${editingTitle ? "is-title-editing" : ""} ${editingQty ? "is-qty-editing" : ""}`,
       leftAttrs: `data-item-id="${escapeAttr(item.id)}"`,
@@ -1780,8 +1794,8 @@
         <div class="rs-text-linline rsa-text is-xxs is-inline-edit is-save is-title-save" data-list-id="${escapeAttr(listId)}" data-inline-save-item="${escapeAttr(item.id)}">save</div>
       `, "has-inline-title-action"),
       rightHtml: rsaQuantityBlockHtml(`
-        ${rsaQuantityCellHtml(item, "quantity_needed_override", item.needed, editMode?.quantity_needed_override)}
-        ${rsaQuantityCellHtml(item, "quantity_packed_override", item.packed, editMode?.quantity_packed_override)}
+        ${rsaQuantityCellHtml(item, "quantity_needed_override", item.needed, editingNeeded)}
+        ${rsaQuantityCellHtml(item, "quantity_packed_override", item.packed, editingPacked)}
         <div class="rs-text-2 rsa-text is-number">${escapeHtml(quantityDisplay(item.left))}</div>
         <div class="rs-input-inline rsa-text is-xxs is-inline-input is-link ${editingQty ? "is-active" : ""}" data-item-id="${escapeAttr(item.id)}" data-list-id="${escapeAttr(listId)}" data-list-edit-field="quantity_inputs">
           <span class="rsa-row-input-action rsa-text is-xxs is-inline-input is-link">input</span>
@@ -3479,6 +3493,19 @@
   function isPackedListItem(item) {
     const needed = number(item.needed);
     return (needed > 0 && number(item.packed) >= needed) || item.resolutionState === "max";
+  }
+
+  function canEditItemNeed(item) {
+    return itemPlanKey(item) === "quantity";
+  }
+
+  function itemPlanKey(item) {
+    return themeKey(
+      item?.quantityCalculation?.plan ||
+      item?.listPlan ||
+      item?.sourceItems?.[0]?.listPlan ||
+      ""
+    );
   }
 
   function isUnresolvedItem(item) {
