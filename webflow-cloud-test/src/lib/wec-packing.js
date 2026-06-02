@@ -220,9 +220,10 @@ export async function stateReport(airtable, requestUrl) {
   ]);
   const filteredHorses = worksheetHorses.filter((record) => (
     itemIds.has(firstLinkedId(record.fields.packing_item)) ||
+    itemIds.has(firstLinkedId(record.fields.source_pack_item)) ||
     (selectedWave && includesLinkedId(record.fields.pack_wave, selectedWave.id))
   ));
-  const horsesByItem = groupByLinkedId(filteredHorses, "packing_item");
+  const horsesByItem = groupHorseMembersByWorksheetItem(filteredHorses);
   const items = sourceWorksheetRecords
     .map((record) => decoratePackingItem(
       normalizePackingItem(record, horsesByItem.get(record.id) || [], listPlanLookup),
@@ -2375,15 +2376,40 @@ async function applyHorseKitState(airtable, context, payload) {
   const sourceRecord = tables.wec_pack_items?.id
     ? (await findRecordInConfiguredView(airtable, tables.wec_pack_items, sourcePackItemId)).record
     : null;
+  const existingMembers = await listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view);
+  const existingMember = existingMembers.find((record) => {
+    const fields = record.fields || {};
+    if (!includesLinkedId(fields.horse, horseId)) return false;
+    if (!includesLinkedId(fields.source_pack_item, sourcePackItemId)) return false;
+    if (packWaveId && linkedIds(fields.pack_wave).length && !includesLinkedId(fields.pack_wave, packWaveId)) return false;
+    return true;
+  });
+  const beforeState = stringField(existingMember?.fields?.horse_pack_state || "not_packed");
+  const before = beforeState === "not_needed" ? 0 : wholeQuantityField(existingMember?.fields?.quantity_packed);
+  const after = nextState === "packed" ? 1 : 0;
+  const fieldNames = tableFieldNames(context, tables.wec_packing_item_horses);
+  const memberFields = fieldsAllowedBySchema(compactFields({
+    horse: [horseId],
+    pack_wave: packWaveId ? [packWaveId] : [],
+    source_pack_item: [sourcePackItemId],
+    quantity_needed: 1,
+    quantity_packed: after,
+    horse_pack_state: nextState,
+    notes: clean(payload?.notes)
+  }), fieldNames);
+  const updatedMember = existingMember
+    ? await patchAirtableRecord(airtable, tables.wec_packing_item_horses.id, existingMember.id, memberFields)
+    : await createAirtableRecord(airtable, tables.wec_packing_item_horses.id, memberFields);
   const event = await createPackingEvent(airtable, tables, {
     eventType: horseMemberEventType(nextState, "horse_kit"),
-    eventSubjectId: `${packingItemId}:${horseId}:${sourcePackItemId}`,
+    eventSubjectId: updatedMember.id || `${packingItemId}:${horseId}:${sourcePackItemId}`,
+    memberRecord: updatedMember,
     showIds: showId ? [showId] : [],
     packWaveIds: packWaveId ? [packWaveId] : [],
-    quantityDelta: 0,
-    quantityBefore: 0,
-    quantityAfter: 0,
-    packStateBefore: "",
+    quantityDelta: after - before,
+    quantityBefore: before,
+    quantityAfter: after,
+    packStateBefore: beforeState,
     packStateAfter: nextState,
     decisionBefore: "",
     decisionAfter: "",
@@ -2394,7 +2420,7 @@ async function applyHorseKitState(airtable, context, payload) {
       clean(payload?.notes)
     ].filter(Boolean).join("\n")
   });
-  return { event, loggedOnly: true };
+  return { updatedMember, event };
 }
 
 async function applyHorseRecordState(airtable, tables, payload) {
@@ -3445,6 +3471,22 @@ function groupByLinkedId(records, fieldName) {
   const grouped = new Map();
   for (const record of records) {
     for (const id of linkedIds(record.fields?.[fieldName])) {
+      const list = grouped.get(id) || [];
+      list.push(record);
+      grouped.set(id, list);
+    }
+  }
+  return grouped;
+}
+
+function groupHorseMembersByWorksheetItem(records) {
+  const grouped = new Map();
+  for (const record of records) {
+    const ids = new Set([
+      ...linkedIds(record.fields?.packing_item),
+      ...linkedIds(record.fields?.source_pack_item)
+    ]);
+    for (const id of ids) {
       const list = grouped.get(id) || [];
       list.push(record);
       grouped.set(id, list);
