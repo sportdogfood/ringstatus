@@ -4407,10 +4407,6 @@
   }
 
   function horsesTabLabel() {
-    if (state.detailType === "horse" && state.detailId) {
-      const horse = horses().find((row) => row.id === state.detailId);
-      if (horse) return horseDisplayName(horse);
-    }
     return `Horses (${currentWaveHorseCount()})`;
   }
 
