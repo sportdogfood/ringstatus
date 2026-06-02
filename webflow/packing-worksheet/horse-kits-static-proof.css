@@ -218,59 +218,16 @@ body {
   white-space: nowrap;
 }
 
-#packing-app .hk-drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: rgba(10, 18, 28, 0.12);
-}
-
-#packing-app .hk-drawer {
-  position: fixed;
-  z-index: 1001;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(390px, 100vw);
-  overflow: auto;
-  background: #fff;
-  border-left: 1px solid #dbe3ee;
-  box-shadow: -14px 0 36px rgba(12, 22, 36, 0.18);
-}
-
-#packing-app .hk-drawer .rsa-table-head {
+#packing-app .hk-inline-proof .rsa-table-head {
   position: static;
   z-index: auto;
 }
 
-#packing-app .hk-drawer .rsa-item-row-2.is-grid2 {
+#packing-app .hk-inline-proof .rsa-item-row-2.is-grid2 {
   grid-template-columns: minmax(110px, 1fr) minmax(142px, auto);
 }
 
-#packing-app .hk-drawer-header {
-  position: relative;
-  padding: 10px 48px 8px 12px;
-  border-bottom: 1px solid #dbe3ee;
-}
-
-#packing-app .hk-drawer-close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border: 1px solid #e1e6f0;
-  border-radius: 50%;
-  background: #f8f9fb;
-  color: #111927;
-  font-family: Outfit, sans-serif;
-  font-size: 22px;
-  line-height: 30px;
-  cursor: pointer;
-}
-
-#packing-app .hk-drawer-summary {
+#packing-app .hk-inline-summary {
   border-bottom: 1px solid #e1e6f0;
 }
 
@@ -352,10 +309,6 @@ body {
   #packing-app .hk-table-grid {
     grid-template-columns: minmax(92px, 1.2fr) minmax(72px, 0.9fr) minmax(36px, 0.45fr) minmax(34px, 0.4fr) minmax(42px, 0.45fr);
     gap: 4px;
-  }
-
-  #packing-app .hk-drawer {
-    width: 100vw;
   }
 
   #packing-app .hk-state-actions {

@@ -9,7 +9,6 @@
 
   const ui = {
     selectedHorseId: "",
-    drawerOpen: true,
     loading: false,
     status: "",
     error: ""
@@ -26,12 +25,6 @@
     const action = target.dataset.action;
     if (action === "select-horse") {
       ui.selectedHorseId = target.dataset.horseId || "";
-      ui.drawerOpen = true;
-      render();
-      return;
-    }
-    if (action === "close-drawer") {
-      ui.drawerOpen = false;
       render();
       return;
     }
@@ -229,12 +222,7 @@
 
   function sourceStatusText() {
     const counts = sourceCounts();
-    const stack = activeStackRows()
-      .filter((row) => row.tableName || row.physicalTableName)
-      .sort((a, b) => Number(a.stack || 0) - Number(b.stack || 0))
-      .map((row) => row.tableName || row.physicalTableName)
-      .join(" > ");
-    return `Airtable: ${counts.horses} horses | ${counts.kitItems} kit items | ${counts.links} links | ${counts.logs} logs${stack ? ` | ${stack}` : ""}`;
+    return `Airtable: ${counts.horses} horses | ${counts.kitItems} kit items | ${counts.links} links | ${counts.logs} logs`;
   }
 
   function selectedHorsePackingRowIds(horseId = ui.selectedHorseId) {
@@ -275,7 +263,7 @@
           </div>
         </div>
         ${showHorseSection ? horseListHtml(horses, horseStack) : ""}
-        ${showItemSection && ui.drawerOpen ? drawerHtml(horse, counts, itemStack, showLogSection) : ""}
+        ${showItemSection ? inlineKitProofHtml(horse, counts, itemStack, showLogSection) : ""}
       </div>
     `;
   }
@@ -337,19 +325,21 @@
     `;
   }
 
-  function drawerHtml(horse, counts, itemStack, showLogSection) {
+  function inlineKitProofHtml(horse, counts, itemStack, showLogSection) {
     if (!horse) {
       return "";
     }
     return `
-      <div class="hk-drawer-backdrop" data-action="close-drawer"></div>
-      <aside class="hk-drawer" aria-label="Horse kit detail">
-        <div class="hk-drawer-header">
-          <div class="rsa-H1 hk-drawer-title">${escapeHtml(horse.name)}</div>
-          <div class="rsa-text rsa-report-subtitle hk-drawer-subtitle">${escapeHtml(horse.showName || "Horse kit")}</div>
-          <button class="hk-drawer-close" data-action="close-drawer" type="button" aria-label="Close">x</button>
+      <section class="table-module hk-proof-section hk-inline-proof" aria-label="Selected horse kit proof">
+        <div class="rsa-padding">
+          <div class="rsa-banner-header">
+            <div class="rsa-head-left">
+              <div class="rsa-H5 is-caps">${escapeHtml(horse.name)}</div>
+              <div class="rsa-text is-xs">${escapeHtml(horse.showName || "Horse kit")}</div>
+            </div>
+          </div>
         </div>
-        <div class="hk-drawer-summary">
+        <div class="hk-inline-summary">
           <div class="rsa-item-row-2 hk-metric-row">
             ${metricCellHtml("TOTAL", counts.total)}
             ${metricCellHtml("PACKED", counts.packed)}
@@ -371,7 +361,7 @@
           ${staticItems().map(itemRowHtml).join("") || `<div class="rsa-item-row-2"><div class="rsa-text">No active static kit items.</div></div>`}
         </div>
         ${showLogSection ? drawerLogsHtml() : ""}
-      </aside>
+      </section>
     `;
   }
 
