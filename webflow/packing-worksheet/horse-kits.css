@@ -816,11 +816,11 @@ body {
   }
 
   #packing-app .rs-col-gutter {
-    width: 18px;
+    width: 24px;
   }
 
   #packing-app .rs-col-name {
-    width: calc(100% - 238px);
+    width: calc(100% - 244px);
   }
 
   #packing-app .rs-col-label {
