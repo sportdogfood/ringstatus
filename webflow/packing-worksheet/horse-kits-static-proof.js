@@ -440,14 +440,23 @@
 
   function activeStackRows() {
     const rows = state?.groupStack?.activeRows || [];
-    const allowed = new Set(["header", "primary_tabs", "lane_controls", "secondary_controls", "summary_aggs", "count_aggs", "search", "search_aggs", "main_table", "comments"]);
+    const renderOrder = ["header", "primary_tabs", "summary_aggs", "secondary_controls", "count_aggs", "lane_controls", "search", "main_table", "comments"];
+    const orderIndex = new Map(renderOrder.map((key, index) => [key, index]));
+    const allowed = new Set([...renderOrder, "search_aggs"]);
     const activeRows = rows
       .filter((row) => row && !row.hidden && row.active !== false && allowed.has(row.renderKey))
-      .sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0) || Number(a.sourceIndex || 0) - Number(b.sourceIndex || 0));
+      .sort((a, b) => {
+        const aIndex = orderIndex.has(a.renderKey) ? orderIndex.get(a.renderKey) : renderOrder.length + Number(a.sortOrder || 0);
+        const bIndex = orderIndex.has(b.renderKey) ? orderIndex.get(b.renderKey) : renderOrder.length + Number(b.sortOrder || 0);
+        return aIndex - bIndex || Number(a.sourceIndex || 0) - Number(b.sourceIndex || 0);
+      });
     return activeRows.length ? activeRows : [
       { renderKey: "header", displayLabel: "Header" },
+      { renderKey: "primary_tabs", displayLabel: "Primary Tabs" },
       { renderKey: "summary_aggs", displayLabel: "Horse Kits" },
+      { renderKey: "secondary_controls", displayLabel: "Views" },
       { renderKey: "count_aggs", displayLabel: "" },
+      { renderKey: "lane_controls", displayLabel: "Lane Controls" },
       { renderKey: "search", displayLabel: "Search" },
       { renderKey: "main_table", displayLabel: "Horses" },
       { renderKey: "comments", displayLabel: "Comments" }
@@ -508,7 +517,7 @@
     if (key === "lane_controls") return laneControlsHtml(row);
     if (key === "secondary_controls") return secondaryControlsHtml(row);
     if (key === "summary_aggs") return summaryAggsHtml(row);
-    if (key === "count_aggs") return "";
+    if (key === "count_aggs") return countAggsHtml(row);
     if (key === "search") return searchHtml(row);
     if (key === "search_aggs") return searchAggsHtml(row);
     if (key === "main_table") return tableStackHtml(row, statusText);
@@ -570,7 +579,6 @@
       </div>
       <div class="rs-stack-body">
         <div class="rs-stack-aggs">${stackAggsHtml(summaryAggRows(row), summaryAggValues())}</div>
-        ${secondaryCountAggsHtml()}
         ${searchControlsHtml()}
       </div>
     `, "is-search-aggs");
@@ -589,22 +597,16 @@
 
   function countAggsHtml(row) {
     return stackSectionHtml(row, `
-      <div class="rs-stack-aggs is-counts">${stackAggsHtml(countAggRows(row), tableAggValues())}</div>
+      <div class="rs-secondary-count-aggs"><div class="rs-stack-aggs is-counts">${stackAggsHtml(countAggRows(row), tableAggValues())}</div></div>
     `, "is-count-aggs");
   }
 
   function searchHtml(row) {
     return stackSectionHtml(row, `
       <div class="rs-stack-body">
-        ${secondaryCountAggsHtml()}
         ${searchControlsHtml()}
       </div>
     `, "is-search");
-  }
-
-  function secondaryCountAggsHtml() {
-    const countRow = sourceAggRow("entity_2") || activeStackRows().find((candidate) => candidate.renderKey === "count_aggs");
-    return countRow ? `<div class="rs-secondary-count-aggs"><div class="rs-stack-aggs is-counts">${stackAggsHtml(countAggRows(countRow), tableAggValues())}</div></div>` : "";
   }
 
   function searchControlsHtml() {

@@ -62,8 +62,7 @@ body {
   gap: 8px;
 }
 
-#packing-app .rs-stack-section.is-search,
-#packing-app .rs-stack-section.is-search-aggs {
+#packing-app .rs-stack-section.is-search {
   position: sticky;
   top: 0;
   z-index: 5;
@@ -280,7 +279,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 0 8px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -1325,7 +1324,7 @@ body {
   }
 
   #packing-app .rs-airtable-scroll {
-    padding: 0 4px;
+    padding: 0;
   }
 
   #packing-app .rs-entity-cell {
@@ -1536,4 +1535,36 @@ body {
   font-size: 13px;
   font-weight: 500;
   line-height: 15px;
+}
+
+#packing-app .rs-airtable-grid .rs-col-count,
+#packing-app .rs-airtable-grid th:nth-child(4),
+#packing-app .rs-airtable-grid th:nth-child(5),
+#packing-app .rs-airtable-grid th:nth-child(6),
+#packing-app .rs-airtable-grid td:nth-child(4),
+#packing-app .rs-airtable-grid td:nth-child(5),
+#packing-app .rs-airtable-grid td:nth-child(6) {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+  box-sizing: border-box;
+}
+
+#packing-app .rs-airtable-grid th:nth-child(4),
+#packing-app .rs-airtable-grid th:nth-child(5),
+#packing-app .rs-airtable-grid th:nth-child(6),
+#packing-app .rs-airtable-grid td:nth-child(4),
+#packing-app .rs-airtable-grid td:nth-child(5),
+#packing-app .rs-airtable-grid td:nth-child(6) {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  text-align: center !important;
+  white-space: nowrap;
+}
+
+#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
+#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
+#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head {
+  justify-content: center !important;
+  text-align: center !important;
 }
