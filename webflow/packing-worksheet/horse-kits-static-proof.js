@@ -8,48 +8,50 @@
   };
 
   const ui = {
-    selectedHorseId: "",
+    selectedRecordId: "",
+    drawerOpen: false,
     loading: false,
-    status: "",
     error: ""
   };
 
   let state = null;
+  let records = [];
 
   load();
 
   root.addEventListener("click", (event) => {
     const target = event.target.closest("[data-action]");
     if (!target) return;
-    event.preventDefault();
+
     const action = target.dataset.action;
-    if (action === "select-horse") {
-      ui.selectedHorseId = target.dataset.horseId || "";
+    if (action === "open-record") {
+      ui.selectedRecordId = target.dataset.recordId || "";
+      ui.drawerOpen = true;
       render();
-      return;
     }
-    if (action === "reload") {
-      load();
-      return;
+
+    if (action === "close-drawer") {
+      ui.drawerOpen = false;
+      render();
     }
-    if (action === "set-item-state") {
-      runAction({
-        action: "set_static_kit_item_state",
-        horseId: currentHorse()?.id,
-        kitItemId: target.dataset.kitItemId,
-        packWaveId: state?.wave?.id,
-        packState: target.dataset.packState
-      });
+  });
+
+  root.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && ui.drawerOpen) {
+      ui.drawerOpen = false;
+      render();
     }
   });
 
   async function load() {
-    setBusy("Loading static kit proof...");
+    ui.loading = true;
+    ui.error = "";
+    render();
+
     try {
       state = await fetchJson(`${config.apiUrl}?packWaveKey=${encodeURIComponent(config.packWaveKey)}`);
-      retainSelection();
-      ui.error = "";
-      ui.status = sourceStatusText();
+      records = buildRecords();
+      ui.selectedRecordId = records[0]?.id || "";
     } catch (error) {
       ui.error = error.message || String(error);
     } finally {
@@ -58,37 +60,8 @@
     }
   }
 
-  async function runAction(payload) {
-    if (!payload?.action) return;
-    if (payload.action === "set_static_kit_item_state") {
-      applyOptimisticStaticState(payload);
-      ui.loading = true;
-      ui.status = `Saving ${itemStateLabel(payload.packState)}...`;
-      ui.error = "";
-      render();
-    } else {
-      setBusy("Saving kit item state...");
-    }
-    try {
-      const data = await fetchJson(`${config.apiUrl}?packWaveKey=${encodeURIComponent(config.packWaveKey)}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      state = data.state || data;
-      retainSelection();
-      ui.error = "";
-      ui.status = `Saved ${itemStateLabel(payload.packState)}.`;
-    } catch (error) {
-      ui.error = error.message || String(error);
-    } finally {
-      ui.loading = false;
-      render();
-    }
-  }
-
-  async function fetchJson(url, options = {}) {
-    const response = await fetch(url, options);
+  async function fetchJson(url) {
+    const response = await fetch(url);
     const data = await response.json().catch(() => ({}));
     if (!response.ok || data.ok === false) {
       throw new Error(data.detail || data.error || `${response.status} ${response.statusText}`);
@@ -96,27 +69,35 @@
     return data;
   }
 
-  function setBusy(message) {
-    ui.loading = true;
-    ui.status = message;
-    ui.error = "";
-    render();
-  }
+  function buildRecords() {
+    return waveOneHorses().map((horse) => {
+      const counts = rollup(horse.id);
+      const rowIds = selectedHorsePackingRowIds(horse.id);
+      const logs = (state?.changes || []).filter((change) =>
+        (change.packingKitIds || []).some((id) => rowIds.has(id)) ||
+        String(change.notes || change.label || "").toLowerCase().includes(String(horse.name || "").toLowerCase())
+      );
 
-  function retainSelection() {
-    const horses = waveOneHorses();
-    if (!horses.some((horse) => horse.id === ui.selectedHorseId)) {
-      const macho = horses.find((horse) => [horse.name, horse.barnName, horse.showName].join(" ").toLowerCase().includes("macho"));
-      ui.selectedHorseId = macho?.id || horses[0]?.id || "";
-    }
+      return {
+        id: horse.id,
+        title: horse.name || "Untitled",
+        fields: [
+          { label: "Horse", value: horse.name },
+          { label: "Show", value: horse.showName || horse.barnName || "" },
+          { label: "Wave", value: "Wave One" },
+          { label: "Packed", value: `${counts.packed}/${counts.total}`, numeric: true },
+          { label: "Left", value: counts.left, numeric: true },
+          { label: "Not Needed", value: counts.notNeeded, numeric: true },
+          { label: "Kit Items", value: counts.total, numeric: true },
+          { label: "Active Links", value: rowIds.size, numeric: true },
+          { label: "Logs", value: logs.length, numeric: true }
+        ]
+      };
+    });
   }
 
   function waveOneHorses() {
     return (state?.allHorses || state?.horses || []).filter((horse) => horse.waveState === "wave_one");
-  }
-
-  function currentHorse() {
-    return (state?.allHorses || state?.horses || []).find((horse) => horse.id === ui.selectedHorseId) || null;
   }
 
   function staticItems() {
@@ -125,72 +106,14 @@
       .sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0) || String(a.label).localeCompare(String(b.label)));
   }
 
-  function activeStackRows() {
-    return (state?.groupStack?.activeRows || []).filter((row) => row.active && !row.hidden);
-  }
-
-  function stackRowForRole(role) {
-    return activeStackRows().find((row) => row.role === role) || null;
-  }
-
-  function shouldRenderRole(role) {
-    const rows = activeStackRows();
-    if (!rows.length) return true;
-    return rows.some((row) => row.role === role);
-  }
-
-  function rowForItem(itemId, horseId = ui.selectedHorseId) {
+  function rowForItem(itemId, horseId) {
     return (state?.packingRows || []).find((row) =>
-      row.horseIds.includes(horseId) &&
-      row.kitItemIds.includes(itemId)
+      (row.horseIds || []).includes(horseId) &&
+      (row.kitItemIds || []).includes(itemId)
     ) || null;
   }
 
-  function applyOptimisticStaticState(payload) {
-    if (!state) return;
-    const horse = currentHorse();
-    const item = (state.kitItems || []).find((candidate) => candidate.id === payload.kitItemId);
-    if (!horse || !item) return;
-    const nextState = payload.packState === "not_needed" ? "not_needed" : payload.packState === "packed" ? "packed" : "not_packed";
-    const quantityNeeded = Number(item.manualQuantity || 1) || 1;
-    const row = rowForItem(item.id);
-    const optimisticRow = {
-      ...(row || {}),
-      id: row?.id || `temp:${horse.id}:${item.id}`,
-      label: `${horse.name} - ${item.label}`,
-      horseIds: [horse.id],
-      horseName: horse.name,
-      kitIds: [],
-      kitLabel: "",
-      kitItemIds: [item.id],
-      itemLabel: item.label,
-      packWaveIds: state.wave?.id ? [state.wave.id] : [],
-      neededState: nextState === "not_needed" ? "not_needed" : "needed",
-      packState: nextState,
-      quantityNeeded,
-      quantityPacked: nextState === "packed" ? quantityNeeded : 0,
-      needed: nextState === "not_needed" ? 0 : quantityNeeded,
-      packed: nextState === "packed" ? quantityNeeded : 0,
-      left: nextState === "not_needed" || nextState === "packed" ? 0 : quantityNeeded,
-      percentPacked: nextState === "packed" ? 100 : 0,
-      inlineAllowed: false,
-      sortOrder: item.sortOrder,
-      notes: "optimistic"
-    };
-    state.packingRows = (state.packingRows || []).filter((candidate) => candidate.id !== optimisticRow.id);
-    if (row?.id) {
-      state.packingRows = state.packingRows.filter((candidate) => candidate.id !== row.id);
-    }
-    state.packingRows.push(optimisticRow);
-    state.changes = [{
-      id: `pending:${Date.now()}`,
-      changeType: nextState === "not_needed" ? "exception_applied" : "quantity_changed",
-      notes: `${horse.name} ${item.label} ${nextState}`,
-      createdBy: "pending"
-    }, ...(state.changes || [])].slice(0, 50);
-  }
-
-  function itemState(item, horseId = ui.selectedHorseId) {
+  function itemState(item, horseId) {
     const row = rowForItem(item.id, horseId);
     if (!row) return "not_packed";
     if (row.packState === "not_needed" || row.neededState === "not_needed") return "not_needed";
@@ -198,7 +121,7 @@
     return "not_packed";
   }
 
-  function rollup(horseId = ui.selectedHorseId) {
+  function rollup(horseId) {
     const items = staticItems();
     const counts = { total: items.length, packed: 0, notNeeded: 0, left: 0 };
     for (const item of items) {
@@ -210,22 +133,7 @@
     return counts;
   }
 
-  function sourceCounts() {
-    const counts = state?.counts || {};
-    return {
-      horses: Number(counts.visibleHorses ?? waveOneHorses().length) || waveOneHorses().length,
-      kitItems: Number(counts.kitItems ?? staticItems().length) || staticItems().length,
-      links: Number(counts.packingRows ?? (state?.packingRows || []).length) || 0,
-      logs: (state?.changes || []).length
-    };
-  }
-
-  function sourceStatusText() {
-    const counts = sourceCounts();
-    return `Airtable: ${counts.horses} horses | ${counts.kitItems} kit items | ${counts.links} links | ${counts.logs} logs`;
-  }
-
-  function selectedHorsePackingRowIds(horseId = ui.selectedHorseId) {
+  function selectedHorsePackingRowIds(horseId) {
     const horse = (state?.allHorses || state?.horses || []).find((candidate) => candidate.id === horseId) || null;
     const ids = new Set();
     for (const row of state?.packingRows || []) {
@@ -237,226 +145,90 @@
   }
 
   function render() {
-    if (!state && ui.loading) {
-      root.innerHTML = `<div class="rsa-dashboard-block"><div class="rsa-padding"><div class="rsa-text">Loading static horse kit proof...</div></div></div>`;
+    if (ui.loading) {
+      root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-airtable-empty">Loading records...</div></div>`;
       return;
     }
-    if (state) retainSelection();
-    const horse = currentHorse();
-    const counts = rollup();
-    const horses = waveOneHorses();
-    const horseStack = stackRowForRole("entity_1");
-    const itemStack = stackRowForRole("entity_2");
-    const countsFromSource = sourceCounts();
-    const showHorseSection = shouldRenderRole("entity_1");
-    const showItemSection = true;
-    const showLogSection = shouldRenderRole("logs");
+
+    if (ui.error) {
+      root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-airtable-empty is-error">${escapeHtml(ui.error)}</div></div>`;
+      return;
+    }
+
+    if (!records.length) {
+      root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-airtable-empty">No records found</div></div>`;
+      return;
+    }
+
+    const selectedRecord = records.find((record) => record.id === ui.selectedRecordId) || records[0];
     root.innerHTML = `
-      <div class="rsa-dashboard-block hk-proof-root">
-        <div class="rsa-padding hk-proof-header">
-          <div class="rsa-H1 hk-proof-title">HORSE KITS</div>
-          <div class="rsa-text rsa-report-subtitle hk-proof-subtitle">Wave One | ${countsFromSource.horses} horses | ${countsFromSource.kitItems} kit items | ${countsFromSource.links} links</div>
+      <div class="rs-airtable-shell">
+        <div class="rs-airtable-scroll">
+          <table class="rs-airtable-grid">
+            <colgroup>
+              <col class="rs-col-gutter">
+              <col class="rs-col-main">
+              <col class="rs-col-mid">
+              <col class="rs-col-count">
+              <col class="rs-col-count">
+              <col class="rs-col-count">
+              <col class="rs-col-count">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="rs-row-gutter">#</th>
+                <th>Horse</th>
+                <th>Show</th>
+                <th>Packed</th>
+                <th>Left</th>
+                <th>Items</th>
+                <th>Logs</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${records.map(recordRowHtml).join("")}
+            </tbody>
+          </table>
         </div>
-        <div class="rsa-padding">
-          <div class="rsa-messages">
-            <div class="rsa-text is-feedback ${ui.error ? "is-error" : ""}">${escapeHtml(ui.error || ui.status || "")}</div>
+
+        <div class="rs-drawer-overlay ${ui.drawerOpen ? "is-open" : ""}" data-action="close-drawer"></div>
+
+        <div class="rs-record-drawer ${ui.drawerOpen ? "is-open" : ""}" aria-label="Record details">
+          <div class="rs-drawer-head">
+            <div class="rs-drawer-title">Record Details</div>
+            <button class="rs-drawer-close" type="button" aria-label="Close" data-action="close-drawer">x</button>
+          </div>
+          <div class="rs-drawer-body">
+            ${selectedRecord ? selectedRecord.fields.map(fieldHtml).join("") : ""}
           </div>
         </div>
-        ${showHorseSection ? horseListHtml(horses, horseStack) : ""}
-        ${showItemSection ? inlineKitProofHtml(horse, counts, itemStack, showLogSection) : ""}
       </div>
     `;
   }
 
-  function horseListHtml(horses, horseStack) {
-    const source = sourceCounts();
+  function recordRowHtml(record, index) {
+    const byLabel = new Map(record.fields.map((field) => [field.label, field.value]));
+    const selected = ui.drawerOpen && record.id === ui.selectedRecordId;
     return `
-      <section class="table-module hk-proof-section">
-        <div class="rsa-padding">
-          <div class="rsa-banner-header">
-            <div class="rsa-head-left">
-              <div class="rsa-H5 is-caps">${escapeHtml(stackTitle(horseStack, "Horses"))}</div>
-              <div class="rsa-text is-xs">${source.horses} Wave One horses | ${source.links} active links</div>
-            </div>
-            <button class="rs-text-link rsa-text is-link is-xxs" data-action="reload" type="button">RELOAD</button>
-          </div>
-        </div>
-        <div class="hk-table-wrap" role="region" aria-label="Horse kit table">
-          <table class="hk-data-table">
-            <colgroup>
-              <col class="hk-col-gutter">
-              <col class="hk-col-horse">
-              <col class="hk-col-show">
-              <col class="hk-col-packed">
-              <col class="hk-col-left">
-              <col class="hk-col-open">
-            </colgroup>
-            <thead>
-              <tr>
-                <th class="hk-row-gutter rsa-text is-xs">#</th>
-                <th class="rsa-table-label rsa-text is-xs is-caps">HORSE</th>
-                <th class="rsa-table-label rsa-text is-xs is-caps">SHOW</th>
-                <th class="rsa-table-label rsa-text is-xs is-caps">PACKED</th>
-                <th class="rsa-table-label rsa-text is-xs is-caps">LEFT</th>
-                <th class="rsa-table-label rsa-text is-xs is-caps">OPEN</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${horses.map(horseRowHtml).join("") || `<tr><td colspan="6"><div class="rsa-text">No Wave One horses.</div></td></tr>`}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    `;
-  }
-
-  function horseRowHtml(horse, index) {
-    const counts = rollup(horse.id);
-    const active = horse.id === ui.selectedHorseId;
-    return `
-      <tr class="hk-proof-hot-row ${active ? "is-active" : ""}" data-action="select-horse" data-horse-id="${horse.id}">
-        <td class="hk-row-gutter rsa-text is-xs">${index + 1}</td>
-        <td><div class="rsa-text is-line-item">${escapeHtml(horse.name)}</div></td>
-        <td><div class="rsa-text is-xs hk-table-secondary">${escapeHtml(horse.showName || horse.barnName || "")}</div></td>
-        <td><div class="rsa-text is-number">${counts.packed}/${counts.total}</div></td>
-        <td><div class="rsa-text is-number">${counts.left}</div></td>
-        <td><div class="rsa-text is-link is-xxs">OPEN</div></td>
+      <tr class="${selected ? "is-selected" : ""}" data-action="open-record" data-record-id="${record.id}" tabindex="0">
+        <td class="rs-row-gutter">${index + 1}</td>
+        <td>${escapeHtml(byLabel.get("Horse") || "")}</td>
+        <td>${escapeHtml(byLabel.get("Show") || "")}</td>
+        <td class="rs-cell-number">${escapeHtml(byLabel.get("Packed") || "")}</td>
+        <td class="rs-cell-number">${escapeHtml(byLabel.get("Left") || "")}</td>
+        <td class="rs-cell-number">${escapeHtml(byLabel.get("Kit Items") || "")}</td>
+        <td class="rs-cell-number">${escapeHtml(byLabel.get("Logs") || "")}</td>
       </tr>
     `;
   }
 
-  function inlineKitProofHtml(horse, counts, itemStack, showLogSection) {
-    if (!horse) {
-      return "";
-    }
+  function fieldHtml(field) {
     return `
-      <section class="table-module hk-proof-section hk-inline-proof" aria-label="Selected horse kit proof">
-        <div class="rsa-padding">
-          <div class="rsa-banner-header">
-            <div class="rsa-head-left">
-              <div class="rsa-H5 is-caps">${escapeHtml(horse.name)}</div>
-              <div class="rsa-text is-xs">${escapeHtml(horse.showName || "Horse kit")}</div>
-            </div>
-          </div>
-        </div>
-        <div class="hk-inline-summary">
-          <div class="rsa-item-row-2 hk-metric-row">
-            ${metricCellHtml("TOTAL", counts.total)}
-            ${metricCellHtml("PACKED", counts.packed)}
-            ${metricCellHtml("LEFT", counts.left)}
-            ${metricCellHtml("NOT NEEDED", counts.notNeeded)}
-          </div>
-        </div>
-        <div class="rsa-table-head hk-drawer-table-head">
-          <div class="rsa-item-row-2 is-grid2">
-            <div class="rsa-item-block-left">
-              <div class="rsa-table-label rsa-text is-xs is-caps">${escapeHtml(stackTitle(itemStack, "KIT ITEMS"))}</div>
-            </div>
-            <div class="rsa-item-block-right">
-              <div class="rsa-table-label rsa-text is-xs is-caps">STATE</div>
-            </div>
-          </div>
-        </div>
-        <div class="rsa-table-body">
-          ${staticItems().map(itemRowHtml).join("") || `<div class="rsa-item-row-2"><div class="rsa-text">No active static kit items.</div></div>`}
-        </div>
-        ${showLogSection ? drawerLogsHtml() : ""}
-      </section>
-    `;
-  }
-
-  function stackTitle(row, fallback) {
-    if (!row?.role) return fallback;
-    if (row.role === "entity_1") return "Horses";
-    if (row.role === "entity_2") return "Kit Items";
-    if (row.role === "kit_list") return "Kit Lists";
-    if (row.role === "links") return "Links";
-    if (row.role === "logs") return "Active Logs";
-    return fallback;
-  }
-
-  function itemRowHtml(item, index) {
-    const stateName = itemState(item);
-    return `
-      <div class="rsa-item-row-2 is-grid2 ${index % 2 ? "is-zebra" : ""}" data-static-kit-item-id="${item.id}">
-        <div class="rsa-item-block-left">
-          <div class="rsa-text is-line-item">${escapeHtml(item.label)}</div>
-          <div class="rsa-text is-xs hk-item-state-text">${escapeHtml(displayStateLabel(stateName))}</div>
-        </div>
-        <div class="rsa-item-block-right hk-state-actions">
-          <button class="rs-tab-link rsa-text is-link ${stateName === "packed" ? "is-active is-packed" : ""}" data-action="set-item-state" data-kit-item-id="${item.id}" data-pack-state="${stateName === "packed" ? "not_packed" : "packed"}" type="button">${stateName === "packed" ? "UNPACK" : "PACK"}</button>
-          <button class="rs-tab-link rsa-text is-link ${stateName === "not_needed" ? "is-active is-not-needed" : ""}" data-action="set-item-state" data-kit-item-id="${item.id}" data-pack-state="not_needed" type="button">NOT NEEDED</button>
-        </div>
+      <div class="rs-record-field">
+        <div class="rs-field-label">${escapeHtml(field.label)}</div>
+        <div class="rs-field-value ${field.numeric ? "rs-cell-number" : ""}">${escapeHtml(field.value)}</div>
       </div>
     `;
-  }
-
-  function metricCellHtml(label, value) {
-    return `
-      <div class="hk-metric-cell">
-        <div class="rsa-text is-number">${escapeHtml(value)}</div>
-        <div class="rsa-text is-xs is-caps">${escapeHtml(label)}</div>
-      </div>
-    `;
-  }
-
-  function drawerLogsHtml() {
-    const rowIds = selectedHorsePackingRowIds();
-    const horseName = String(currentHorse()?.name || "").toLowerCase();
-    const changes = (state?.changes || [])
-      .filter((change) =>
-        (change.packingKitIds || []).some((id) => rowIds.has(id)) ||
-        (horseName && String(change.notes || change.label || "").toLowerCase().includes(horseName))
-      )
-      .slice(0, 6);
-    const logStack = stackRowForRole("logs");
-    return `
-      <section class="hk-drawer-logs">
-        <div class="rsa-table-head">
-          <div class="rsa-item-row-2">
-            <div class="rsa-table-label rsa-text is-xs is-caps">${escapeHtml(stackTitle(logStack, "ACTIVE LOGS"))}</div>
-          </div>
-        </div>
-        <div class="rsa-table-body">
-          ${changes.map((change, index) => `
-          <div class="rsa-item-row-2 is-modal ${index % 2 ? "is-zebra" : ""}">
-            <div class="rsa-item-block-left">
-              <div class="rsa-text is-line-item">${escapeHtml(changeTitle(change))}</div>
-              <div class="rsa-text is-xs">${escapeHtml(changeNotes(change))}</div>
-            </div>
-          </div>`).join("") || `<div class="rsa-item-row-2 is-modal"><div class="rsa-text">No active logs yet.</div></div>`}
-        </div>
-      </section>
-    `;
-  }
-
-  function itemStateLabel(value) {
-    if (value === "packed") return "packed";
-    if (value === "not_needed") return "not needed";
-    if (value === "not_packed") return "not packed";
-    return value || "";
-  }
-
-  function displayStateLabel(value) {
-    if (value === "packed") return "Packed";
-    if (value === "not_needed") return "Not needed";
-    return "Not packed";
-  }
-
-  function changeTitle(change) {
-    const raw = String(change.changeType || "").toLowerCase();
-    const notes = String(change.notes || change.label || "").toLowerCase();
-    if (raw.includes("exception") || notes.includes("not_needed")) return "Not needed";
-    if (notes.includes("not_packed") || notes.includes("unpack")) return "Unpacked";
-    if (notes.includes("packed")) return "Packed";
-    return "Changed";
-  }
-
-  function changeNotes(change) {
-    return String(change.notes || change.label || "")
-      .replace(/_/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
   }
 
   function escapeHtml(value) {
