@@ -441,9 +441,9 @@ body {
 }
 
 #packing-app .rs-kit-progress-label {
-  color: #68707a;
-  font-size: 12px;
-  font-weight: 500;
+  color: #1f2328;
+  font-size: 11px;
+  font-weight: 600;
   line-height: 15px;
   text-align: right;
   text-transform: uppercase;
@@ -461,7 +461,7 @@ body {
   height: 100%;
   min-width: 0;
   border-radius: 999px;
-  background: #cfd4da;
+  background: #006b2f;
 }
 
 #packing-app .rs-add-row {
@@ -683,6 +683,84 @@ body {
   padding: 16px 0 22px;
 }
 
+#packing-app .rs-comments {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0f3;
+}
+
+#packing-app .rs-comments-head {
+  min-width: 0;
+}
+
+#packing-app .rs-comment-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+#packing-app .rs-comment-short,
+#packing-app .rs-comment-input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #cfd4da;
+  border-radius: 4px;
+  background: #fff;
+  color: #1f2328;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  box-sizing: border-box;
+}
+
+#packing-app .rs-comment-short {
+  height: 34px;
+  padding: 0 8px;
+}
+
+#packing-app .rs-comment-input {
+  min-height: 72px;
+  resize: vertical;
+  padding: 8px;
+}
+
+#packing-app .rs-comment-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+#packing-app .rs-comment-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  padding: 8px 0;
+  border-top: 1px solid #edf0f3;
+}
+
+#packing-app .rs-comment-text {
+  min-width: 0;
+  color: #1f2328;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+#packing-app .rs-text-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #1f2328;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 #packing-app .rs-bottom-field {
   padding: 0;
 }
@@ -725,9 +803,37 @@ body {
 }
 
 @media (max-width: 680px) {
+  #packing-app,
+  #horse-kits,
+  #horse-kit-static-proof,
+  #packing-app .rs-airtable-shell {
+    max-width: none;
+  }
+
   #packing-app .rs-airtable-shell {
     border-left: 0;
     border-right: 0;
+  }
+
+  #packing-app .rs-col-gutter {
+    width: 18px;
+  }
+
+  #packing-app .rs-col-name {
+    width: calc(100% - 238px);
+  }
+
+  #packing-app .rs-col-label {
+    width: 58px;
+  }
+
+  #packing-app .rs-col-count {
+    width: 60px;
+  }
+
+  #packing-app .rs-airtable-grid th,
+  #packing-app .rs-airtable-grid td {
+    padding: 0 3px;
   }
 
   #packing-app .rs-open-text {
