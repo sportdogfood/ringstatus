@@ -291,8 +291,9 @@
   }
 
   async function setItemState(button) {
-    const horseId = button.dataset.horseId || selectedHorse()?.id || "";
-    const kitId = button.dataset.kitId || assignedKit(horseId)?.id || "";
+    const horse = selectedHorse();
+    const horseId = button.dataset.horseId || horse?.id || "";
+    const kitId = button.dataset.kitId || assignedKit(horse)?.id || "";
     const kitItemId = button.dataset.kitItemId || "";
     const packState = button.dataset.packState || "";
     if (!horseId || !kitItemId || !packState || !packWaveId()) return;
@@ -330,7 +331,7 @@
   }
 
   async function addKitItem() {
-    const kit = assignedKit(selectedHorse()?.id);
+    const kit = assignedKit(selectedHorse());
     const label = ui.addItemName.trim();
     const quantity = Math.max(1, Number.parseInt(ui.addItemQty || "1", 10) || 1);
     if (!kit?.id || !label) {
@@ -498,6 +499,10 @@
     return Number.isFinite(number) ? number : 0;
   }
 
+  function uniqueStrings(values) {
+    return [...new Set((values || []).map((value) => String(value || "").trim()).filter(Boolean))];
+  }
+
   function activeKits() {
     return (state?.kits || [])
       .filter((kit) => kit.status !== "inactive" && kit.active !== false)
@@ -506,11 +511,15 @@
 
   function assignedKit(horse) {
     const horseId = typeof horse === "string" ? horse : horse?.id || "";
-    const hasLinkedKitItems = typeof horse === "string" ? true : countNumber(horse?.countPakKitItems) > 0 || countNumber(horse?.count_pak_kit_items) > 0;
-    if (!hasLinkedKitItems) return null;
+    const horseKitItemIds = typeof horse === "string" ? [] : uniqueStrings([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
     const rowKitId = (state?.packingRows || []).find((row) => (row.horseIds || []).includes(horseId) && row.kitIds?.length)?.kitIds?.[0] || "";
     const kits = activeKits();
-    return kits.find((kit) => kit.id === rowKitId) || kits.find((kit) => kit.kitItemIds?.length) || kits[0] || null;
+    if (rowKitId) return kits.find((kit) => kit.id === rowKitId) || null;
+    if (!horseKitItemIds.length) return null;
+    return kits.find((kit) => {
+      const kitItemIds = new Set([...(kit.kitItemIds || []), ...(kit.items || []).map((item) => item.id).filter(Boolean)]);
+      return horseKitItemIds.some((id) => kitItemIds.has(id));
+    }) || null;
   }
 
   function horseEligibleForKit(horse) {
@@ -518,6 +527,7 @@
   }
 
   function kitItems(kitId) {
+    if (!kitId) return [];
     const kit = (state?.kits || []).find((candidate) => candidate.id === kitId);
     const nestedItems = (kit?.items || [])
       .filter((item) => item.status !== "inactive" && item.active !== false)
@@ -525,9 +535,9 @@
     if (nestedItems.length) return nestedItems;
     const items = (state?.kitItems || [])
       .filter((item) => item.status !== "inactive" && item.active !== false)
-      .filter((item) => !kitId || (item.kitIds || []).includes(kitId))
+      .filter((item) => (item.kitIds || []).includes(kitId))
       .sort(compareKitItemAlpha);
-    return items.length ? items : (state?.kitItems || []).filter((item) => item.status !== "inactive").sort(compareKitItemAlpha);
+    return items;
   }
 
   function rowForKitItem(itemId, horseId, kitId) {

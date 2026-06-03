@@ -854,7 +854,7 @@ function horseKitHorsePrintHtml(report, horseId, requestUrl) {
   const horse = (report?.horses || report?.allHorses || []).find((row) =>
     row.id === horseId || row.rosterId === horseId || row.writeHorseId === horseId
   );
-  const kit = assignedReportKit(report, horse?.id || horseId);
+  const kit = assignedReportKit(report, horse);
   const rows = horseKitHorsePrintRows(report, horse?.id || horseId, kit?.id);
   const counts = horseKitPrintCounts(report, horse?.id || horseId, kit?.id);
   const percent = counts.needed > 0 ? progressPercent(counts.packed, counts.needed) : 0;
@@ -895,7 +895,7 @@ function horseKitItemPrintState(report, horseId, kitId, itemId) {
 function horseKitPrintRows(report) {
   return (report?.horses || [])
     .map((horse) => {
-      const kit = assignedReportKit(report, horse.id);
+      const kit = assignedReportKit(report, horse);
       const counts = horseKitPrintCounts(report, horse.id, kit?.id);
       return {
         horse: printHorseName(horse),
@@ -909,13 +909,21 @@ function horseKitPrintRows(report) {
     .sort((a, b) => compareText(a.horse, b.horse));
 }
 
-function assignedReportKit(report, horseId) {
+function assignedReportKit(report, horse) {
+  const horseId = typeof horse === "string" ? horse : horse?.id || "";
+  const horseKitItemIds = typeof horse === "string" ? [] : uniqueStrings([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
   const kits = (report?.kits || []).filter((kit) => kit.status !== "inactive" && kit.active !== false);
   const rowKitId = (report?.packingRows || []).find((row) => (row.horseIds || []).includes(horseId) && row.kitIds?.length)?.kitIds?.[0] || "";
-  return kits.find((kit) => kit.id === rowKitId) || kits.find((kit) => kit.kitItemIds?.length) || kits[0] || null;
+  if (rowKitId) return kits.find((kit) => kit.id === rowKitId) || null;
+  if (!horseKitItemIds.length) return null;
+  return kits.find((kit) => {
+    const kitItemIds = new Set([...(kit.kitItemIds || []), ...(kit.items || []).map((item) => item.id).filter(Boolean)]);
+    return horseKitItemIds.some((id) => kitItemIds.has(id));
+  }) || null;
 }
 
 function reportKitItems(report, kitId) {
+  if (!kitId) return [];
   const kit = (report?.kits || []).find((candidate) => candidate.id === kitId);
   const nestedItems = (kit?.items || [])
     .filter((item) => item.status !== "inactive" && item.active !== false)
@@ -923,9 +931,9 @@ function reportKitItems(report, kitId) {
   if (nestedItems.length) return nestedItems;
   const activeItems = (report?.kitItems || []).filter((item) => item.status !== "inactive" && item.active !== false);
   const kitItems = activeItems
-    .filter((item) => !kitId || (item.kitIds || []).includes(kitId))
+    .filter((item) => (item.kitIds || []).includes(kitId))
     .sort((a, b) => compareNumber(a.sortOrder, b.sortOrder) || compareText(itemPrintLabel(a), itemPrintLabel(b)));
-  return kitItems.length ? kitItems : activeItems;
+  return kitItems;
 }
 
 function horseKitPrintCounts(report, horseId, kitId) {
