@@ -178,12 +178,8 @@ body {
   width: 24px;
 }
 
-#packing-app .rs-col-name {
-  width: calc(100% - 272px);
-}
-
-#packing-app .rs-col-label {
-  width: 64px;
+#packing-app .rs-col-entities {
+  width: calc(100% - 216px);
 }
 
 #packing-app .rs-col-count {
@@ -230,43 +226,58 @@ body {
 #packing-app .rs-airtable-grid th:nth-child(4),
 #packing-app .rs-airtable-grid td:nth-child(4),
 #packing-app .rs-airtable-grid th:nth-child(5),
-#packing-app .rs-airtable-grid td:nth-child(5),
-#packing-app .rs-airtable-grid th:nth-child(6),
-#packing-app .rs-airtable-grid td:nth-child(6) {
+#packing-app .rs-airtable-grid td:nth-child(5) {
   text-align: center;
 }
 
-#packing-app .rs-primary-cell {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 5px;
+#packing-app .rs-entity-cell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  align-content: center;
   text-align: left;
 }
 
-#packing-app .rs-primary-cell span:first-child {
+#packing-app .rs-entity-main {
   min-width: 0;
-  flex: 1 1 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
-#packing-app .rs-hot-tag {
-  flex: 0 0 auto;
-  padding: 1px 4px;
-  border: 1px solid #d9dde3;
-  border-radius: 999px;
+#packing-app .rs-entity-horse,
+#packing-app .rs-entity-sub {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#packing-app .rs-entity-horse {
+  flex: 1 1 auto;
+  color: #10233b;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#packing-app .rs-entity-sub {
   color: #68707a;
-  font-size: 9px;
-  font-weight: 600;
-  line-height: 12px;
-  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
 }
 
 #packing-app .rs-open-text {
   flex: 0 0 auto;
   color: #225da7;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  text-decoration: underline;
 }
 
 #packing-app .rs-status {
@@ -819,12 +830,8 @@ body {
     width: 24px;
   }
 
-  #packing-app .rs-col-name {
-    width: calc(100% - 244px);
-  }
-
-  #packing-app .rs-col-label {
-    width: 58px;
+  #packing-app .rs-col-entities {
+    width: calc(100% - 204px);
   }
 
   #packing-app .rs-col-count {
