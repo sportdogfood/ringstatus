@@ -1109,3 +1109,15 @@
 [2m14:01:49[22m [34m[vite][39m [vite] program reload
 [2m17:15:54[22m [34m[vite][39m [vite] program reload
 [2m17:43:12[22m [34m[vite][39m [vite] program reload
+[31m[1m17:54:10[22m [ERROR] [vite][39m [wec-packing] horse kits lane failed Error: list tbl55PtDeopwSWyfw 422: {"error":{"type":"AMBIGUOUS_FIELD_NAMES","message":"Ambiguous field name: \"wec_horses copy\""}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3374:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3356:20)
+    at async Promise.all (index 4)
+    at horseKitLaneReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1920:7)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/horse-kits.js:20:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=34211500:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1348:10)
+    at AstroMiddleware.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1458:18)
+    at AstroHandler.render (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:3428:20)
+[2m17:55:05[22m [34m[vite][39m [vite] program reload

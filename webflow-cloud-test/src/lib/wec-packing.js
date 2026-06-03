@@ -1922,10 +1922,10 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     listHorseKitRecords(airtable, tables.pak_horses_roster),
     listHorseKitRecords(airtable, tables.pak_kits),
     listHorseKitRecords(airtable, tables.pak_kit_items),
-    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [rosterLinkFields.packingKitHorse] }),
+    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [rosterLinkFields.packingKitHorseFieldId] }),
     listOptionalHorseKitRecords(airtable, tables.horse_kit_exceptions),
     listOptionalHorseKitRecords(airtable, tables.horse_kit_changes),
-    listOptionalHorseKitRecords(airtable, tables.wec_commenting, { extraFields: [rosterLinkFields.commentHorse] }),
+    listOptionalHorseKitRecords(airtable, tables.wec_commenting, { extraFields: [rosterLinkFields.commentHorseFieldId] }),
     listOptionalHorseKitRecords(airtable, tables.comment_shorts),
     listOptionalHorseKitRecords(airtable, tables.comment_logs),
     listOptionalHorseKitRecords(airtable, tables.pak_tabs),
@@ -2282,7 +2282,6 @@ const HORSE_KIT_LANE_READ_FIELDS = {
     "horse_packing_kit",
     "pack_wave",
     "horse",
-    "wec_horses copy",
     "horse_kits",
     "horse_kit_item",
     "pak_kits",
@@ -2315,7 +2314,6 @@ const HORSE_KIT_LANE_READ_FIELDS = {
     "event",
     "pack_wave",
     "horse",
-    "wec_horses copy",
     "event_type",
     "scope_type",
     "scope_id",
@@ -2659,7 +2657,7 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
   const [horses, pakKitItems, existingRows] = await Promise.all([
     listHorseKitRecords(airtable, tables.pak_horses_roster),
     listHorseKitRecords(airtable, tables.pak_kit_items),
-    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [horseLinkField] })
+    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [rosterLinkFields.packingKitHorseFieldId] })
   ]);
   const horse = horses.find((record) => record.id === horseId);
   const itemRecord = pakKitItems.find((record) => record.id === kitItemId);
@@ -2733,7 +2731,7 @@ async function applyHorsePackingKitMissingRows(airtable, tables, payload) {
     listHorseKitRecords(airtable, tables.pak_horses_roster),
     listHorseKitRecords(airtable, tables.pak_kits),
     listHorseKitRecords(airtable, tables.pak_kit_items),
-    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [horseLinkField] })
+    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [rosterLinkFields.packingKitHorseFieldId] })
   ]);
   const horse = horses.find((record) => record.id === horseId);
   const kit = kits.find((record) => record.id === kitId);
