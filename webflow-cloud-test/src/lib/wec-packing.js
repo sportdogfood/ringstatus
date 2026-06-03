@@ -78,6 +78,7 @@ export function json(data, status = 200) {
     status,
     headers: {
       ...corsHeaders,
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
       "Content-Type": "application/json; charset=utf-8"
     }
   });

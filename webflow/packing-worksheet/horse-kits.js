@@ -10,6 +10,8 @@
     usePdfWorker: truthy(root.dataset.enablePrintPdf || globalConfig.enablePrintPdf),
     packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
   };
+  const sessionId = root.dataset.sessionId || globalConfig.sessionId || ensureSessionId();
+  root.dataset.sessionId = sessionId;
 
   const ui = {
     selectedHorseId: "",
@@ -30,11 +32,14 @@
     commentText: "",
     commentShortId: "",
     editingCommentId: "",
-    commentsOpen: false
+    commentsOpen: false,
+    sessionEngaged: false
   };
 
   let state = null;
   let records = [];
+  let pollTimer = null;
+  let pollInFlight = false;
   const optimisticItemStates = new Map();
 
   load();
@@ -42,6 +47,7 @@
   root.addEventListener("click", async (event) => {
     const target = event.target.closest("[data-action]");
     if (!target) return;
+    engageSession();
 
     const action = target.dataset.action;
     if (action === "open-horse") {
@@ -150,6 +156,7 @@
 
   root.addEventListener("input", (event) => {
     const input = event.target;
+    engageSession();
     if (input.matches("[data-search]")) {
       ui.search = input.value || "";
       const caret = input.selectionStart || ui.search.length;
@@ -189,26 +196,38 @@
     }
   });
 
-  async function load() {
-    ui.loading = true;
-    ui.error = "";
-    render();
+  async function load(options = {}) {
+    const silent = options.silent === true;
+    if (!silent) {
+      ui.loading = true;
+      ui.error = "";
+      render();
+    }
 
     try {
-      state = await fetchJson(`${config.apiUrl}?packWaveKey=${encodeURIComponent(config.packWaveKey)}`);
+      state = await fetchJson(stateUrl());
       records = buildRecords();
       keepSelectedRecord();
       ui.message = sourceLine();
     } catch (error) {
-      ui.error = error.message || String(error);
+      if (!silent) ui.error = error.message || String(error);
     } finally {
-      ui.loading = false;
+      if (!silent) ui.loading = false;
       render();
     }
   }
 
   async function fetchJson(url, options) {
-    const response = await fetch(url, options);
+    const fetchOptions = {
+      cache: "no-store",
+      ...(options || {}),
+      headers: {
+        "Cache-Control": "no-cache",
+        "X-RS-Session-Id": sessionId,
+        ...((options && options.headers) || {})
+      }
+    };
+    const response = await fetch(url, fetchOptions);
     const data = await response.json().catch(() => ({}));
     if (!response.ok || data.ok === false) {
       throw new Error(data.detail || data.error || `${response.status} ${response.statusText}`);
@@ -217,15 +236,43 @@
   }
 
   async function postAction(payload) {
-    const url = `${config.apiUrl}?packWaveKey=${encodeURIComponent(config.packWaveKey)}`;
-    const data = await fetchJson(url, {
+    const data = await fetchJson(stateUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ ...payload, sessionId })
     });
     state = data.state || state;
     records = buildRecords();
     return data;
+  }
+
+  function stateUrl() {
+    const url = new URL(config.apiUrl, window.location.href);
+    url.searchParams.set("packWaveKey", config.packWaveKey);
+    url.searchParams.set("sessionId", sessionId);
+    url.searchParams.set("_", String(Date.now()));
+    return url.toString();
+  }
+
+  function engageSession() {
+    if (ui.sessionEngaged) return;
+    ui.sessionEngaged = true;
+    startPolling();
+  }
+
+  function startPolling() {
+    if (pollTimer) return;
+    pollTimer = window.setInterval(pollState, 5000);
+  }
+
+  async function pollState() {
+    if (!ui.sessionEngaged || pollInFlight || ui.loading || document.hidden) return;
+    pollInFlight = true;
+    try {
+      await load({ silent: true });
+    } finally {
+      pollInFlight = false;
+    }
   }
 
   async function setItemState(button) {
@@ -252,7 +299,9 @@
         packWaveId: packWaveId(),
         packState
       });
-      optimisticItemStates.delete(optimisticKey);
+      if (storedKitItemState(kitItemId, horseId, kitId) === packState) {
+        optimisticItemStates.delete(optimisticKey);
+      }
       records = buildRecords();
       ui.message = "Saved.";
     } catch (error) {
@@ -469,6 +518,10 @@
   function kitItemState(itemId, horseId, kitId) {
     const optimistic = optimisticItemStates.get(itemStateKey(itemId, horseId, kitId));
     if (optimistic) return optimistic;
+    return storedKitItemState(itemId, horseId, kitId);
+  }
+
+  function storedKitItemState(itemId, horseId, kitId) {
     const row = rowForKitItem(itemId, horseId, kitId);
     if (!row) return "not_packed";
     if (row.neededState === "not_needed" || row.packState === "not_needed") return "not_needed";
@@ -899,6 +952,7 @@
           ${drawerMetricRows().map((agg) => metricHtml(agg.label, aggValue(agg, counts), agg.key)).join("")}
         </div>
       </div>
+      ${commentsHtml(horse)}
       <div class="rs-add-row is-hidden" aria-hidden="true">
         <label class="rs-add-label" for="rs-add-kit-item">add_item</label>
         <input id="rs-add-kit-item" class="rs-add-input" data-add-item-name value="${escapeAttr(ui.addItemName)}" placeholder="Item label">
@@ -952,7 +1006,6 @@
         </div>
         ${items.map((item) => kitItemRowHtml(item, horse, kit)).join("") || `<div class="rs-empty-row">No kit items.</div>`}
       </div>
-      ${commentsHtml(horse)}
       <div class="rs-drawer-bottom">
         <div class="rs-bottom-field">
           <div class="rs-stack-label">Plan:</div>
@@ -1157,6 +1210,19 @@
 
   function truthy(value) {
     return value === true || value === "true" || value === "1" || value === 1;
+  }
+
+  function ensureSessionId() {
+    const key = "rs-horse-kits-session-id";
+    try {
+      const existing = window.sessionStorage?.getItem(key);
+      if (existing) return existing;
+      const created = `hks_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+      window.sessionStorage?.setItem(key, created);
+      return created;
+    } catch (error) {
+      return `hks_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+    }
   }
 
   function formatDate(value) {
