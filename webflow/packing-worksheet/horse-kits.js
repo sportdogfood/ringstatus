@@ -382,6 +382,11 @@
   }
 
   function kitItems(kitId) {
+    const kit = (state?.kits || []).find((candidate) => candidate.id === kitId);
+    const nestedItems = (kit?.items || [])
+      .filter((item) => item.status !== "inactive" && item.active !== false)
+      .sort(compareKitItemAlpha);
+    if (nestedItems.length) return nestedItems;
     const items = (state?.kitItems || [])
       .filter((item) => item.status !== "inactive" && item.active !== false)
       .filter((item) => !kitId || (item.kitIds || []).includes(kitId))

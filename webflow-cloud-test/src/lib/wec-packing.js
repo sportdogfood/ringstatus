@@ -5005,6 +5005,18 @@ function groupByFirstId(rows, fieldName) {
   return grouped;
 }
 
+function groupItemsByLinkedKit(items) {
+  const grouped = new Map();
+  for (const item of items || []) {
+    for (const kitId of item.kitIds || []) {
+      const list = grouped.get(kitId) || [];
+      list.push(item);
+      grouped.set(kitId, list);
+    }
+  }
+  return grouped;
+}
+
 function groupHorseMembersByWorksheetItem(records) {
   const grouped = new Map();
   for (const record of records) {
