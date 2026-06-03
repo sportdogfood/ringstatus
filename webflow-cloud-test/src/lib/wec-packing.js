@@ -1682,7 +1682,10 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     pakKitItemRecords,
     packingKitRecords,
     exceptionRecords,
-    changeRecords
+    changeRecords,
+    commentRecords,
+    commentShortRecords,
+    commentLogRecords
   ] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
@@ -1693,7 +1696,10 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     listOptionalRecords(airtable, tables.pak_kit_items),
     listAirtableRecords(airtable, tables.horse_packing_kits.id),
     listOptionalRecords(airtable, tables.horse_kit_exceptions),
-    listOptionalRecords(airtable, tables.horse_kit_changes)
+    listOptionalRecords(airtable, tables.horse_kit_changes),
+    listOptionalRecords(airtable, tables.wec_commenting),
+    listOptionalRecords(airtable, tables.comment_shorts),
+    listOptionalRecords(airtable, tables.comment_logs)
   ]);
   const usePakKitSource = pakKitRecords.length > 0 || pakKitItemRecords.length > 0;
   const kitRecords = usePakKitSource ? pakKitRecords : legacyKitRecords;
@@ -1732,6 +1738,9 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     : horsesWithCounts;
   const exceptions = exceptionRecords.map(normalizeHorseKitException).sort(compareChangeLikeRows);
   const changes = changeRecords.map(normalizeHorseKitChange).sort(compareChangeLikeRows).slice(0, 50);
+  const comments = commentRecords.map(normalizeHorseKitComment).sort(compareChangeLikeRows);
+  const commentShorts = commentShortRecords.map(normalizeCommentShort).sort(compareCommentShorts);
+  const commentLogs = commentLogRecords.map(normalizeCommentLog).sort(compareChangeLikeRows).slice(0, 50);
 
   return {
     ok: true,
@@ -1761,6 +1770,9 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     packingRows,
     exceptions,
     changes,
+    comments,
+    commentShorts,
+    commentLogs,
     groupStack
   };
 }
@@ -1793,6 +1805,8 @@ export async function horseKitLaneActionReport(airtable, requestUrl, payload) {
     result = await applyHorseKitItemCreate(airtable, tables, payload);
   } else if (action === "move_kit_item") {
     result = await applyHorseKitItemMove(airtable, tables, payload);
+  } else if (action === "save_comment") {
+    result = await applyHorseKitCommentSave(airtable, tables, payload);
   } else {
     return { ok: false, error: "unknown_horse_kit_action", action };
   }
@@ -1819,6 +1833,9 @@ function horseKitLaneTables(context, groupStack = null) {
     horse_packing_kits: physicalTableConfig(context, groupTable("state_links", "horse_packing_kits")),
     horse_kit_exceptions: physicalTableConfig(context, "horse_kit_exceptions", true),
     horse_kit_changes: physicalTableConfig(context, groupTable("change_log", "horse_kit_changes"), true),
+    wec_commenting: physicalTableConfig(context, groupTable("comments", "wec_commenting"), true),
+    comment_shorts: physicalTableConfig(context, "comment_shorts", true),
+    comment_logs: physicalTableConfig(context, "comment_logs", true),
     pak_groups: physicalTableConfig(context, "pak_groups", true)
   };
 }
