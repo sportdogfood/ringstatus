@@ -824,6 +824,8 @@
     const tableScroll = root.querySelector(".rs-airtable-scroll");
     const drawerBody = root.querySelector(".rs-drawer-body");
     return {
+      windowLeft: window.scrollX || window.pageXOffset || 0,
+      windowTop: window.scrollY || window.pageYOffset || 0,
       tableTop: tableScroll ? tableScroll.scrollTop : 0,
       drawerTop: drawerBody ? drawerBody.scrollTop : 0
     };
@@ -832,6 +834,7 @@
   function restoreScrollState(scrollState) {
     if (!scrollState) return;
     requestAnimationFrame(() => {
+      window.scrollTo(scrollState.windowLeft || 0, scrollState.windowTop || 0);
       const tableScroll = root.querySelector(".rs-airtable-scroll");
       const drawerBody = root.querySelector(".rs-drawer-body");
       if (tableScroll) tableScroll.scrollTop = scrollState.tableTop || 0;
@@ -1207,7 +1210,7 @@
   function restoreSearchFocus(caret) {
     const search = root.querySelector("[data-search]");
     if (!search) return;
-    search.focus();
+    focusWithoutScroll(search);
     const position = Math.min(caret, search.value.length);
     if (typeof search.setSelectionRange === "function") {
       search.setSelectionRange(position, position);
@@ -1217,10 +1220,18 @@
   function restoreKitItemSearchFocus(caret) {
     const search = root.querySelector("[data-kit-item-search]");
     if (!search) return;
-    search.focus();
+    focusWithoutScroll(search);
     const position = Math.min(caret, search.value.length);
     if (typeof search.setSelectionRange === "function") {
       search.setSelectionRange(position, position);
+    }
+  }
+
+  function focusWithoutScroll(element) {
+    try {
+      element.focus({ preventScroll: true });
+    } catch (error) {
+      element.focus();
     }
   }
 
