@@ -167,6 +167,11 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 8px 12px;
+}
+
+#packing-app .rs-table-stack-head .rs-stack-label {
+  padding: 0;
 }
 
 #packing-app .rs-table-count-aggs {
@@ -276,9 +281,9 @@ body {
 #packing-app .rs-search-clear {
   position: absolute;
   top: 50%;
-  right: 6px;
-  width: 28px;
-  height: 28px;
+  right: 7px;
+  width: 24px;
+  height: 24px;
   display: none;
   place-items: center;
   transform: translateY(-50%);
@@ -287,14 +292,20 @@ body {
   background: #eef0f2;
   color: #1f2328;
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 400;
   line-height: 1;
   padding: 0;
+  cursor: pointer;
 }
 
 #packing-app .rs-search-clear.is-active {
   display: grid;
+}
+
+#packing-app .rs-search-clear span {
+  display: block;
+  transform: translateY(-1px);
 }
 
 #packing-app .rs-plain-button {
@@ -362,6 +373,7 @@ body {
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 10px;
   font-weight: 600;
+  text-transform: uppercase;
   overflow: visible;
   text-overflow: clip;
 }
@@ -1237,6 +1249,7 @@ body {
 /* Shared drawer system: keep labels, values, inputs, and buttons consistent. */
 #packing-app .rs-field-label,
 #packing-app .rs-add-label,
+#packing-app .rs-kit-item-title,
 #packing-app .rs-comments .rs-field-label {
   margin: 0 0 4px;
   color: #68707a;

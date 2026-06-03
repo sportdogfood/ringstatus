@@ -834,6 +834,9 @@ export function printReportHtml(report, requestUrl) {
 }
 
 export function horseKitPrintHtml(report, requestUrl) {
+  const url = new URL(requestUrl);
+  const horseId = clean(url.searchParams.get("horseId"));
+  if (horseId) return horseKitHorsePrintHtml(report, horseId, requestUrl);
   const title = displayLabel(report?.wave?.wecReportTitle || "Horse Kits");
   const rows = horseKitPrintRows(report);
   const needed = rows.reduce((sum, row) => sum + row.needed, 0);
@@ -844,6 +847,48 @@ export function horseKitPrintHtml(report, requestUrl) {
     .map((chunk, index) => horseKitPrintPageHtml(report, title, percent, chunk, index + 1, Math.max(1, chunks.length)))
     .join("");
   return printDocumentHtml(`${title} Horse Kits`, `${pages}${printAutoScript(requestUrl)}`);
+}
+
+function horseKitHorsePrintHtml(report, horseId, requestUrl) {
+  const horse = (report?.horses || report?.allHorses || []).find((row) =>
+    row.id === horseId || row.rosterId === horseId || row.writeHorseId === horseId
+  );
+  const kit = assignedReportKit(report, horse?.id || horseId);
+  const rows = horseKitHorsePrintRows(report, horse?.id || horseId, kit?.id);
+  const counts = horseKitPrintCounts(report, horse?.id || horseId, kit?.id);
+  const percent = counts.needed > 0 ? progressPercent(counts.packed, counts.needed) : 0;
+  const title = `${printHorseName(horse)} - ${kit?.displayLabel || kit?.label || "Horse Kit"}`;
+  const chunks = chunkRows(rows, 28);
+  const pages = (chunks.length ? chunks : [[]])
+    .map((chunk, index) => horseKitHorsePrintPageHtml(report, title, percent, chunk, index + 1, Math.max(1, chunks.length)))
+    .join("");
+  return printDocumentHtml(`${printHorseName(horse)} Horse Kit Items`, `${pages}${printAutoScript(requestUrl)}`);
+}
+
+function horseKitHorsePrintRows(report, horseId, kitId) {
+  return reportKitItems(report, kitId)
+    .map((item) => {
+      const state = horseKitItemPrintState(report, horseId, kitId, item.id);
+      return {
+        item: itemPrintLabel(item),
+        state,
+        packed: state === "packed",
+        notNeeded: state === "not_needed",
+        sortOrder: item.sortOrder
+      };
+    })
+    .sort((a, b) => compareNumber(a.sortOrder, b.sortOrder) || compareText(a.item, b.item));
+}
+
+function horseKitItemPrintState(report, horseId, kitId, itemId) {
+  const row = (report?.packingRows || []).find((candidate) =>
+    (candidate.horseIds || []).includes(horseId) &&
+    (candidate.kitItemIds || []).includes(itemId) &&
+    (!kitId || !candidate.kitIds?.length || candidate.kitIds.includes(kitId))
+  );
+  if (row?.neededState === "not_needed" || row?.packState === "not_needed") return "not_needed";
+  if (row?.packState === "packed") return "packed";
+  return "not_packed";
 }
 
 function horseKitPrintRows(report) {
@@ -870,6 +915,11 @@ function assignedReportKit(report, horseId) {
 }
 
 function reportKitItems(report, kitId) {
+  const kit = (report?.kits || []).find((candidate) => candidate.id === kitId);
+  const nestedItems = (kit?.items || [])
+    .filter((item) => item.status !== "inactive" && item.active !== false)
+    .sort((a, b) => compareNumber(a.sortOrder, b.sortOrder) || compareText(itemPrintLabel(a), itemPrintLabel(b)));
+  if (nestedItems.length) return nestedItems;
   const activeItems = (report?.kitItems || []).filter((item) => item.status !== "inactive" && item.active !== false);
   const kitItems = activeItems
     .filter((item) => !kitId || (item.kitIds || []).includes(kitId))
@@ -935,6 +985,51 @@ function horseKitPrintPageHtml(report, title, percent, rows, pageNumber, pageCou
       </section>
       ${printFooterHtml(pageNumber)}
     </section>
+  `;
+}
+
+function horseKitHorsePrintPageHtml(report, title, percent, rows, pageNumber, pageCount) {
+  return `
+    <section class="packing-print-page">
+      ${printGlobalHeaderHtml(report, title, percent)}
+      <section class="packing-print-list">
+        <div class="packing-print-list-head">
+          <h2>${escapeHtml(printUpperLabel(`Kit Items ${pageCount > 1 ? `${pageNumber}/${pageCount}` : ""}`))}</h2>
+        </div>
+        <table class="packing-print-table packing-print-kit-items-table">
+          <colgroup>
+            <col style="width: 52%">
+            <col style="width: 16%">
+            <col style="width: 16%">
+            <col style="width: 16%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>ITEM</th>
+              <th>NOT PACKED</th>
+              <th>PACKED</th>
+              <th>NOT NEEDED</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.length ? rows.map((row, index) => horseKitHorsePrintRowHtml(row, index)).join("") : `<tr><td colspan="4">NO KIT ITEMS</td></tr>`}
+          </tbody>
+        </table>
+      </section>
+      ${printFooterHtml(pageNumber)}
+    </section>
+  `;
+}
+
+function horseKitHorsePrintRowHtml(row, index) {
+  const zebraClass = index % 2 ? " is-zebra" : "";
+  return `
+    <tr class="packing-print-data-row${zebraClass}">
+      <td class="packing-print-name-cell">${escapeHtml(printUpperLabel(row.item))}</td>
+      <td class="packing-print-mark-cell">${row.state === "not_packed" ? "X" : ""}</td>
+      <td class="packing-print-mark-cell">${row.state === "packed" ? "X" : ""}</td>
+      <td class="packing-print-mark-cell">${row.state === "not_needed" ? "X" : ""}</td>
+    </tr>
   `;
 }
 

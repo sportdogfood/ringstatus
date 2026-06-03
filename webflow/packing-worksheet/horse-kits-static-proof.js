@@ -592,8 +592,8 @@
     return `
       <div class="rs-airtable-toolbar">
         <div class="rs-search-wrap">
-          <input class="rs-search" type="search" data-search placeholder="Search horses" value="${escapeAttr(ui.search)}">
-          <button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" aria-label="Clear search" data-action="clear-search">&times;</button>
+          <input class="rs-search" type="text" autocomplete="off" data-search placeholder="Search horses" value="${escapeAttr(ui.search)}">
+          <button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" aria-label="Clear search" data-action="clear-search"><span aria-hidden="true">&times;</span></button>
         </div>
       </div>
     `;
@@ -758,14 +758,12 @@
 
   function sortableHeaderHtml(label, key) {
     const active = ui.sortKey === key;
-    const indicator = active ? (ui.sortDir === "desc" ? "desc" : "asc") : "";
     return `
       <button class="rs-sort-head ${active ? "is-active" : ""}" type="button"
         data-action="set-sort"
         data-sort-key="${escapeAttr(key)}"
         aria-label="Sort ${escapeAttr(label)} ${active && ui.sortDir === "asc" ? "descending" : "ascending"}">
         <span>${escapeHtml(label)}</span>
-        <span class="rs-sort-mark" aria-hidden="true">${indicator ? escapeHtml(indicator) : ""}</span>
       </button>
     `;
   }
@@ -815,8 +813,8 @@
       <div class="rs-kit-item-search-row">
         <label class="rs-add-label" for="rs-kit-item-search">search_items</label>
         <div class="rs-search-wrap">
-          <input id="rs-kit-item-search" class="rs-kit-item-search" data-kit-item-search value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items">
-          <button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" aria-label="Clear kit item search" data-action="clear-kit-item-search">&times;</button>
+          <input id="rs-kit-item-search" class="rs-kit-item-search" type="text" autocomplete="off" data-kit-item-search value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items">
+          <button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" aria-label="Clear kit item search" data-action="clear-kit-item-search"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="rs-item-filter-row" role="group" aria-label="Kit item filters">
           ${itemFilterButton("All", "all")}
