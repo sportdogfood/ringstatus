@@ -419,7 +419,8 @@
           <table class="rs-airtable-grid">
             <colgroup>
               <col class="rs-col-gutter">
-              <col class="rs-col-entities">
+              <col class="rs-col-entity">
+              <col class="rs-col-entity">
               <col class="rs-col-count">
               <col class="rs-col-count">
               <col class="rs-col-count">
@@ -427,7 +428,8 @@
             <thead>
               <tr>
                 <th class="rs-row-gutter">#</th>
-                <th>Horse / Kit</th>
+                <th>Horse</th>
+                <th>Kit</th>
                 <th>Need</th>
                 <th>Packed</th>
                 <th>Left</th>
@@ -479,13 +481,13 @@
     return `
       <tr class="${selected ? "is-selected" : ""}" data-action="open-horse" data-horse-id="${record.id}" tabindex="0">
         <td class="rs-row-gutter">${index + 1}</td>
-        <td class="rs-entity-cell">
+        <td class="rs-entity-cell rs-entity-horse-cell">
           <div class="rs-entity-main">
             <span class="rs-entity-horse">${escapeHtml(horseLabel(record.horse))}</span>
             <span class="rs-open-text">Open</span>
           </div>
-          <div class="rs-entity-sub">${escapeHtml(kitDisplayLabel(record.kit))}</div>
         </td>
+        <td class="rs-entity-cell rs-entity-kit-cell"><span class="rs-entity-sub">${escapeHtml(kitDisplayLabel(record.kit))}</span></td>
         <td class="rs-cell-number">${escapeHtml(record.counts.needed)}</td>
         <td class="rs-cell-number">${escapeHtml(record.counts.packed)}</td>
         <td class="rs-cell-number">${escapeHtml(record.counts.left)}</td>
