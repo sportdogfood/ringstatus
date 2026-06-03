@@ -137,12 +137,16 @@ body {
   width: 24px;
 }
 
+#packing-app .rs-col-name {
+  width: calc(100% - 264px);
+}
+
 #packing-app .rs-col-label {
-  width: calc((100% - 132px) / 2);
+  width: 60px;
 }
 
 #packing-app .rs-col-count {
-  width: 44px;
+  width: 60px;
 }
 
 #packing-app .rs-row-gutter {
@@ -176,21 +180,46 @@ body {
 }
 
 #packing-app .rs-cell-number {
-  text-align: right;
+  text-align: center;
   font-variant-numeric: tabular-nums;
+}
+
+#packing-app .rs-airtable-grid th:nth-child(3),
+#packing-app .rs-airtable-grid td:nth-child(3),
+#packing-app .rs-airtable-grid th:nth-child(4),
+#packing-app .rs-airtable-grid td:nth-child(4),
+#packing-app .rs-airtable-grid th:nth-child(5),
+#packing-app .rs-airtable-grid td:nth-child(5),
+#packing-app .rs-airtable-grid th:nth-child(6),
+#packing-app .rs-airtable-grid td:nth-child(6) {
+  text-align: center;
 }
 
 #packing-app .rs-primary-cell {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 5px;
+  text-align: left;
 }
 
 #packing-app .rs-primary-cell span:first-child {
   min-width: 0;
+  flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#packing-app .rs-hot-tag {
+  flex: 0 0 auto;
+  padding: 1px 4px;
+  border: 1px solid #d9dde3;
+  border-radius: 999px;
+  color: #68707a;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 12px;
+  text-transform: uppercase;
 }
 
 #packing-app .rs-open-text {
@@ -657,6 +686,10 @@ body {
   #packing-app .rs-airtable-shell {
     border-left: 0;
     border-right: 0;
+  }
+
+  #packing-app .rs-open-text {
+    display: none;
   }
 
   #packing-app .rs-record-drawer {
