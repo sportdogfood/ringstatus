@@ -15,13 +15,19 @@ body {
   box-sizing: border-box;
 }
 
+#horse-kits,
 #horse-kit-static-proof {
+  width: 100%;
+  max-width: 840px;
   height: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 #packing-app .rs-airtable-shell {
   position: relative;
   width: 100%;
+  max-width: 840px;
   height: 100%;
   overflow: hidden;
   background: #fff;
@@ -143,7 +149,7 @@ body {
 #packing-app .rs-airtable-grid th,
 #packing-app .rs-airtable-grid td {
   height: clamp(36px, 4.2vw, 42px);
-  padding: 0 5px;
+  padding: 0 4px;
   border-right: 1px solid #d9dde3;
   border-bottom: 1px solid #edf0f3;
   color: #1f2328;
@@ -162,7 +168,7 @@ body {
   background: #f4f5f7;
   color: #3e454d;
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   overflow: visible;
   text-overflow: clip;
@@ -173,15 +179,15 @@ body {
 }
 
 #packing-app .rs-col-name {
-  width: calc(100% - 264px);
+  width: calc(100% - 272px);
 }
 
 #packing-app .rs-col-label {
-  width: 60px;
+  width: 64px;
 }
 
 #packing-app .rs-col-count {
-  width: 60px;
+  width: 64px;
 }
 
 #packing-app .rs-row-gutter {
