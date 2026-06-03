@@ -2151,28 +2151,33 @@ function assertHorseKitBlueprintTables(tables) {
 }
 
 function horseKitRosterLinkFields(tables) {
+  const packingKitHorse = linkedRecordField(tables.horse_packing_kits, tables.pak_horses_roster, [
+    "pak_horses_roster",
+    "wec_horses copy"
+  ]);
+  const commentHorse = linkedRecordField(tables.wec_commenting, tables.pak_horses_roster, [
+    "pak_horses_roster",
+    "wec_horses copy"
+  ]);
   return {
-    packingKitHorse: linkedRecordFieldName(tables.horse_packing_kits, tables.pak_horses_roster, [
-      "pak_horses_roster",
-      "wec_horses copy"
-    ]),
-    commentHorse: linkedRecordFieldName(tables.wec_commenting, tables.pak_horses_roster, [
-      "pak_horses_roster",
-      "wec_horses copy"
-    ])
+    packingKitHorse: packingKitHorse.name,
+    packingKitHorseFieldId: packingKitHorse.id,
+    commentHorse: commentHorse.name,
+    commentHorseFieldId: commentHorse.id
   };
 }
 
-function linkedRecordFieldName(tableConfig, targetTableConfig, fallbackNames = []) {
+function linkedRecordField(tableConfig, targetTableConfig, fallbackNames = []) {
   const targetTableId = targetTableConfig?.id || "";
   const schemaFields = tableConfig?.schemaFields || [];
   const linked = schemaFields.find((field) =>
     field.type === "multipleRecordLinks" &&
     field.options?.linkedTableId === targetTableId
   );
-  if (linked?.name) return linked.name;
+  if (linked?.name) return { name: linked.name, id: linked.id || "" };
   const schemaNames = new Set(schemaFields.map((field) => field.name));
-  return fallbackNames.find((name) => schemaNames.has(name)) || "";
+  const name = fallbackNames.find((candidate) => schemaNames.has(candidate)) || "";
+  return { name, id: "" };
 }
 
 function horseKitReadFields(tableConfig, extraFields = []) {
@@ -2550,7 +2555,7 @@ async function applyHorsePackingKitState(airtable, tables, payload) {
     eventType,
     eventSubjectId: rowId,
     packWaveIds: linkedIds(record.fields?.pack_wave),
-    horseIds: linkedIds(record.fields?.horse),
+    horseIds: [],
     quantityDelta: afterQuantity - beforeQuantity,
     quantityBefore: beforeQuantity,
     quantityAfter: afterQuantity,
@@ -2583,7 +2588,7 @@ async function applyHorsePackingKitNeededState(airtable, tables, payload) {
     eventType: "horse_kit_reopened",
     eventSubjectId: rowId,
     packWaveIds: linkedIds(record.fields?.pack_wave),
-    horseIds: linkedIds(record.fields?.horse),
+    horseIds: [],
     quantityDelta: 0,
     quantityBefore: wholeQuantityField(record.fields?.quantity_packed),
     quantityAfter: 0,
@@ -2619,7 +2624,7 @@ async function applyHorsePackingKitQuantity(airtable, tables, payload) {
     eventType: "horse_kit_reopened",
     eventSubjectId: rowId,
     packWaveIds: linkedIds(record.fields?.pack_wave),
-    horseIds: linkedIds(record.fields?.horse),
+    horseIds: [],
     quantityDelta: quantityNeeded - beforeQuantity,
     quantityBefore: beforeQuantity,
     quantityAfter: quantityNeeded,
@@ -2642,35 +2647,32 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
   const kitId = clean(payload?.kitId);
   const kitItemId = clean(payload?.kitItemId);
   const packWaveId = clean(payload?.packWaveId);
+  const rosterLinkFields = horseKitRosterLinkFields(tables);
+  const horseLinkField = rosterLinkFields.packingKitHorse;
   const nextState = slugify(payload?.packState || payload?.state);
   if (!horseId) throw new Error("missing_horse_id");
   if (!kitItemId) throw new Error("missing_kit_item_id");
   if (!packWaveId) throw new Error("missing_pack_wave_id");
+  if (!horseLinkField) throw new Error("missing_horse_packing_kits_roster_link");
   if (!["packed", "not_packed", "not_needed"].includes(nextState)) throw new Error("invalid_static_kit_item_state");
 
-  const [horses, legacyKitItems, pakKitItems, existingRows] = await Promise.all([
-    listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
-    listAirtableRecords(airtable, tables.horse_kit_items.id),
-    listOptionalRecords(airtable, tables.pak_kit_items),
-    listAirtableRecords(airtable, tables.horse_packing_kits.id)
+  const [horses, pakKitItems, existingRows] = await Promise.all([
+    listHorseKitRecords(airtable, tables.pak_horses_roster),
+    listHorseKitRecords(airtable, tables.pak_kit_items),
+    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [horseLinkField] })
   ]);
   const horse = horses.find((record) => record.id === horseId);
-  const kitItems = [
-    ...legacyKitItems.map((record) => ({ ...record, kitSource: "legacy" })),
-    ...pakKitItems.map((record) => ({ ...record, kitSource: "pak" }))
-  ];
-  const itemRecord = kitItems.find((record) => record.id === kitItemId);
+  const itemRecord = pakKitItems.find((record) => record.id === kitItemId);
   if (!horse) throw new Error("horse_not_found");
   if (!itemRecord) throw new Error("kit_item_not_found");
 
   const item = normalizeHorseKitTemplateItem(itemRecord);
-  const usesPakKitSource = itemRecord.kitSource === "pak";
 
   const existing = existingRows.find((record) =>
-    includesLinkedId(record.fields?.horse, horseId) &&
+    includesLinkedId(record.fields?.[horseLinkField], horseId) &&
     includesLinkedId(record.fields?.pack_wave, packWaveId) &&
-    includesLinkedId(usesPakKitSource ? record.fields?.pak_kit_items : record.fields?.horse_kit_item, kitItemId) &&
-    (!kitId || includesLinkedId(usesPakKitSource ? record.fields?.pak_kits : record.fields?.horse_kits, kitId))
+    includesLinkedId(record.fields?.pak_kit_items, kitItemId) &&
+    (!kitId || includesLinkedId(record.fields?.pak_kits, kitId))
   );
 
   const beforeState = stringField(existing?.fields?.pack_state || "not_packed");
@@ -2695,11 +2697,9 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
     const createFields = compactFields({
       horse_packing_kit: `${stringField(horse.fields?.barn_name || horse.fields?.horse || horse.fields?.show_name)} - ${item.displayName || item.name}`,
       pack_wave: [packWaveId],
-      horse: [horseId],
-      horse_kits: !usesPakKitSource && kitId ? [kitId] : undefined,
-      horse_kit_item: !usesPakKitSource ? [kitItemId] : undefined,
-      pak_kits: usesPakKitSource && kitId ? [kitId] : undefined,
-      pak_kit_items: usesPakKitSource ? [kitItemId] : undefined,
+      [horseLinkField]: [horseId],
+      pak_kits: kitId ? [kitId] : undefined,
+      pak_kit_items: [kitItemId],
       sort_order: item.sortOrder,
       ...updateFields
     });
@@ -2710,10 +2710,8 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
   const change = await createHorseKitChange(airtable, tables, {
     changeType: nextState === "not_needed" ? "exception_applied" : "quantity_changed",
     packingKitRecord,
-    kitIds: !usesPakKitSource && kitId ? [kitId] : undefined,
-    itemIds: !usesPakKitSource ? [kitItemId] : undefined,
-    pakKitIds: usesPakKitSource && kitId ? [kitId] : undefined,
-    pakItemIds: usesPakKitSource ? [kitItemId] : undefined,
+    pakKitIds: kitId ? [kitId] : undefined,
+    pakItemIds: [kitItemId],
     oldValue: { pack_state: beforeState, needed_state: beforeNeededState, quantity_packed: beforeQuantity },
     newValue: updateFields,
     notes: `${stringField(horse.fields?.barn_name || horse.fields?.horse || horse.fields?.show_name)} ${item.displayName || item.name} ${nextState}`
@@ -2725,22 +2723,25 @@ async function applyHorsePackingKitMissingRows(airtable, tables, payload) {
   const horseId = clean(payload?.horseId);
   const kitId = clean(payload?.kitId);
   const packWaveId = clean(payload?.packWaveId);
+  const rosterLinkFields = horseKitRosterLinkFields(tables);
+  const horseLinkField = rosterLinkFields.packingKitHorse;
   if (!horseId) throw new Error("missing_horse_id");
   if (!kitId) throw new Error("missing_kit_id");
   if (!packWaveId) throw new Error("missing_pack_wave_id");
+  if (!horseLinkField) throw new Error("missing_horse_packing_kits_roster_link");
   const [horses, kits, kitItems, existingRows] = await Promise.all([
-    listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
-    listAirtableRecords(airtable, tables.horse_kits.id),
-    listAirtableRecords(airtable, tables.horse_kit_items.id),
-    listAirtableRecords(airtable, tables.horse_packing_kits.id)
+    listHorseKitRecords(airtable, tables.pak_horses_roster),
+    listHorseKitRecords(airtable, tables.pak_kits),
+    listHorseKitRecords(airtable, tables.pak_kit_items),
+    listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [horseLinkField] })
   ]);
   const horse = horses.find((record) => record.id === horseId);
   const kit = kits.find((record) => record.id === kitId);
   if (!horse) throw new Error("horse_not_found");
   if (!kit) throw new Error("kit_not_found");
   const present = new Set(existingRows
-    .filter((record) => includesLinkedId(record.fields?.horse, horseId) && includesLinkedId(record.fields?.pack_wave, packWaveId))
-    .map((record) => firstLinkedId(record.fields?.horse_kit_item))
+    .filter((record) => includesLinkedId(record.fields?.[horseLinkField], horseId) && includesLinkedId(record.fields?.pack_wave, packWaveId))
+    .map((record) => firstLinkedId(record.fields?.pak_kit_items))
     .filter(Boolean));
   const itemsToCreate = kitItems
     .map(normalizeHorseKitTemplateItem)
@@ -2750,9 +2751,9 @@ async function applyHorsePackingKitMissingRows(airtable, tables, payload) {
     const fields = {
       horse_packing_kit: `${stringField(horse.fields?.barn_name || horse.fields?.horse || horse.fields?.show_name)} - ${item.displayName || item.name}`,
       pack_wave: [packWaveId],
-      horse: [horseId],
-      horse_kits: [kitId],
-      horse_kit_item: [item.id],
+      [horseLinkField]: [horseId],
+      pak_kits: [kitId],
+      pak_kit_items: [item.id],
       needed_state: "needed",
       pack_state: "not_packed",
       quantity_needed: item.manualQuantity || 1,
@@ -2857,6 +2858,8 @@ async function applyHorseKitCommentSave(airtable, tables, payload) {
   if (!tables.wec_commenting?.id) throw new Error("commenting_table_not_configured");
   const commentId = clean(payload?.commentId);
   const horseId = clean(payload?.horseId || payload?.scopeId);
+  const rosterLinkFields = horseKitRosterLinkFields(tables);
+  const horseLinkField = rosterLinkFields.commentHorse;
   const scopeLabel = clean(payload?.scopeLabel);
   const packWaveId = clean(payload?.packWaveId);
   const commentShortId = clean(payload?.commentShortId);
@@ -2866,6 +2869,7 @@ async function applyHorseKitCommentSave(airtable, tables, payload) {
   const shortText = clean(commentShort?.fields?.display_label || commentShort?.fields?.comment_short);
   const comment = clean(payload?.comment || shortText);
   if (!horseId) throw new Error("missing_comment_horse_id");
+  if (!horseLinkField) throw new Error("missing_comment_roster_link");
   if (!comment) throw new Error("comment_required");
 
   const before = commentId
@@ -2874,7 +2878,7 @@ async function applyHorseKitCommentSave(airtable, tables, payload) {
   const fields = compactFields({
     event: before ? undefined : `comment:horse:${horseId}:${Date.now()}`,
     pack_wave: packWaveId ? [packWaveId] : undefined,
-    horse: [horseId],
+    [horseLinkField]: [horseId],
     event_type: before ? "comment_edit" : "comment_add",
     scope_type: "horse",
     scope_id: horseId,
@@ -3428,10 +3432,6 @@ async function linkedRecordMapByIds(airtable, tableConfig, recordIds = []) {
 
 function uniqueIds(ids = []) {
   return [...new Set(ids.filter(Boolean))];
-}
-
-function uniqueStrings(values = []) {
-  return [...new Set(values.map((value) => clean(value)).filter(Boolean))];
 }
 
 async function resolveSourceActionItem(airtable, context, payload) {

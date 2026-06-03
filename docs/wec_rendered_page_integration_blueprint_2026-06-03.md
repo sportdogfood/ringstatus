@@ -188,7 +188,7 @@ Current data source table groups:
 - `pak_views`: secondary controls.
 - `wec_lanes`: lane controls. Current view: `horse_specific`.
 - `pak_aggs`: aggregate definitions linked to `pak_groups`.
-- `pak_horses_roster`: entity 1 / main table source.
+- `pak_horses_roster`: entity 1 / main table source. For Horse Kits this is the horse entity, always.
 - `pak_kits`: kit/list source.
 - `pak_kit_items`: entity 2 / drawer item source.
 - `horse_packing_kits`: active linking/state table.
@@ -199,11 +199,13 @@ Current data source table groups:
 - `horse_genders`, `horse_disciplines`, `horse_colors`: roster attribute option sources.
 - `horses_change_log`: roster/profile change trail.
 
-Legacy tables are still readable but should not drive new Horse Kits design when the `pak_*` tables exist:
+Legacy tables are not Horse Kits blueprint sources and must not drive this module:
 
 - `horse_kits`
 - `horse_kit_items`
 - `wec_horses`
+
+Do not fallback to these tables for Horse Kits when `pak_groups` defines `physical_table` values. If a needed field is missing, fix Airtable/schema mapping or the `pak_groups` row; do not choose another table in code.
 
 Table aliases used by `pak_groups`:
 
@@ -669,4 +671,3 @@ Last local proof state:
 - Drawer labels: `Search Kit Items`, `Filter Kit Items`, `Kit Items`
 - Search scroll preserved in table and drawer
 - Optimistic UI verified with intercepted POST payload for `set_static_kit_item_state`
-
