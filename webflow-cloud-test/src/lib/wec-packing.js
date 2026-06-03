@@ -1685,7 +1685,11 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     changeRecords,
     commentRecords,
     commentShortRecords,
-    commentLogRecords
+    commentLogRecords,
+    horseGenderRecords,
+    horseDisciplineRecords,
+    horseColorRecords,
+    horseRosterLogRecords
   ] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
@@ -1699,7 +1703,11 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     listOptionalRecords(airtable, tables.horse_kit_changes),
     listOptionalRecords(airtable, tables.wec_commenting),
     listOptionalRecords(airtable, tables.comment_shorts),
-    listOptionalRecords(airtable, tables.comment_logs)
+    listOptionalRecords(airtable, tables.comment_logs),
+    listOptionalRecords(airtable, tables.horse_genders),
+    listOptionalRecords(airtable, tables.horse_disciplines),
+    listOptionalRecords(airtable, tables.horse_colors),
+    listOptionalRecords(airtable, tables.horse_roster_logs)
   ]);
   const usePakKitSource = pakKitRecords.length > 0 || pakKitItemRecords.length > 0;
   const kitRecords = usePakKitSource ? pakKitRecords : legacyKitRecords;
@@ -1741,6 +1749,12 @@ export async function horseKitLaneReport(airtable, requestUrl) {
   const comments = commentRecords.map(normalizeHorseKitComment).sort(compareChangeLikeRows);
   const commentShorts = commentShortRecords.map(normalizeCommentShort).sort(compareCommentShorts);
   const commentLogs = commentLogRecords.map(normalizeCommentLog).sort(compareChangeLikeRows).slice(0, 50);
+  const horseAttributes = [
+    ...horseGenderRecords.map((record) => normalizeHorseAttributeOption(record, "horse_gender", "horse_genders", "horse_genders")),
+    ...horseDisciplineRecords.map((record) => normalizeHorseAttributeOption(record, "horse_disciplines", "horse_disciplines", "horse_disciplines")),
+    ...horseColorRecords.map((record) => normalizeHorseAttributeOption(record, "horse_colors", "horse_colors", "horse_colors"))
+  ].sort(compareHorseAttributes);
+  const horseRosterLogs = horseRosterLogRecords.map(normalizeHorseRosterLog).sort(compareChangeLikeRows).slice(0, 50);
 
   return {
     ok: true,
@@ -1773,6 +1787,8 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     comments,
     commentShorts,
     commentLogs,
+    horseAttributes,
+    horseRosterLogs,
     groupStack
   };
 }
@@ -1807,6 +1823,8 @@ export async function horseKitLaneActionReport(airtable, requestUrl, payload) {
     result = await applyHorseKitItemMove(airtable, tables, payload);
   } else if (action === "save_comment") {
     result = await applyHorseKitCommentSave(airtable, tables, payload);
+  } else if (action === "apply_horse_attribute") {
+    result = await applyHorseRosterAttribute(airtable, context, tables, payload);
   } else {
     return { ok: false, error: "unknown_horse_kit_action", action };
   }
@@ -1836,6 +1854,12 @@ function horseKitLaneTables(context, groupStack = null) {
     wec_commenting: physicalTableConfig(context, groupTable("comments", "wec_commenting"), true),
     comment_shorts: physicalTableConfig(context, "comment_shorts", true),
     comment_logs: physicalTableConfig(context, "comment_logs", true),
+    ww_horses: physicalTableConfig(context, "ww_horses", true),
+    horse_genders: physicalTableConfig(context, "horse_genders", true),
+    horse_disciplines: physicalTableConfig(context, "horse_disciplines", true),
+    horse_colors: physicalTableConfig(context, "horse_colors", true),
+    horse_attributes: physicalTableConfig(context, "horse_attributes", true),
+    horse_roster_logs: physicalTableConfig(context, "horses_change_log", true),
     pak_groups: physicalTableConfig(context, "pak_groups", true)
   };
 }
@@ -2347,6 +2371,109 @@ async function createHorseKitCommentLog(airtable, tables, payload) {
     created_by: "webflow",
     notes: payload.notes
   }));
+}
+
+async function applyHorseRosterAttribute(airtable, context, tables, payload) {
+  if (!tables.pak_horses_roster?.id) throw new Error("horse_roster_table_not_configured");
+  if (!tables.ww_horses?.id) throw new Error("ww_horses_table_not_configured");
+  const horseId = clean(payload?.horseId);
+  const rosterId = clean(payload?.rosterId);
+  const attributeId = clean(payload?.attributeId);
+  const attributeGroup = slugify(payload?.attributeGroup || payload?.group);
+  if (!horseId && !rosterId) throw new Error("missing_roster_horse_id");
+  if (!attributeId) throw new Error("missing_horse_attribute_id");
+
+  const horseRecord = await findPakHorseRosterRecord(airtable, tables, { horseId, rosterId });
+  if (!horseRecord) throw new Error("roster_horse_not_found");
+  const selection = await findHorseAttributeSelection(airtable, tables, attributeId, attributeGroup);
+  if (!selection?.record) throw new Error("horse_attribute_not_found");
+
+  const wwHorseId = linkedIds(horseRecord.fields?.ww_horses)[0];
+  if (!wwHorseId) throw new Error("roster_missing_ww_horse_link");
+  const wwHorse = await findOptionalRecordInConfiguredView(airtable, tables.ww_horses, wwHorseId);
+  if (!wwHorse) throw new Error("ww_horse_not_found");
+
+  const profileFields = tableFieldNames(context, tables.ww_horses);
+  if (!profileFields.has(selection.fieldKey)) throw new Error(`horse_attribute_field_not_found:${selection.fieldKey}`);
+  const beforeValue = linkedIds(wwHorse.fields?.[selection.fieldKey]);
+  const nextValue = [attributeId];
+  const updated = await patchAirtableRecord(airtable, tables.ww_horses.id, wwHorse.id, {
+    [selection.fieldKey]: nextValue
+  });
+  const log = await createHorseRosterLog(airtable, tables, {
+    horseRecord,
+    wwHorse,
+    attributeRecord: selection.record,
+    action: "apply_attribute",
+    fieldKey: selection.fieldKey,
+    oldValue: beforeValue,
+    newValue: nextValue,
+    notes: clean(payload?.notes)
+  });
+  return { updated, log };
+}
+
+async function createHorseRosterLog(airtable, tables, payload) {
+  if (!tables.horse_roster_logs?.id) return null;
+  const horseFields = payload.horseRecord?.fields || {};
+  const scopeLabel = stringField(
+    horseFields.display_horse_barn_name ||
+    horseFields.barn_name ||
+    horseFields.show_name ||
+    horseFields.horse ||
+    payload.horseRecord?.id
+  );
+  return createAirtableRecord(airtable, tables.horse_roster_logs.id, compactFields({
+    change_key: `horse_roster:${payload.action}:${payload.horseRecord?.id || "horse"}:${Date.now()}`,
+    horse_record_id: payload.wwHorse?.id || payload.horseRecord?.id,
+    horse_key: stringField(horseFields.pak_horse_id || payload.horseRecord?.id),
+    horse_name: scopeLabel,
+    source: "webflow_horse_kits",
+    record_key: payload.horseRecord?.id,
+    payload_json: stringifyChangeValue({
+      rosterId: payload.horseRecord?.id,
+      wwHorseId: payload.wwHorse?.id,
+      attributeId: payload.attributeRecord?.id,
+      fieldKey: payload.fieldKey
+    }),
+    status: "applied",
+    field_name: payload.fieldKey,
+    old_value: stringifyChangeValue(payload.oldValue),
+    new_value: stringifyChangeValue(payload.newValue),
+    changed_at: new Date().toISOString(),
+    notes: payload.notes
+  }));
+}
+
+async function findPakHorseRosterRecord(airtable, tables, { horseId, rosterId }) {
+  if (rosterId) {
+    const direct = await findOptionalRecordInConfiguredView(airtable, tables.pak_horses_roster, rosterId);
+    if (direct) return direct;
+  }
+  if (horseId) {
+    const direct = await findOptionalRecordInConfiguredView(airtable, tables.pak_horses_roster, horseId);
+    if (direct) return direct;
+    const records = await listOptionalRecords(airtable, tables.pak_horses_roster);
+    return records.find((record) => includesLinkedId(record.fields?.wec_horses, horseId) || includesLinkedId(record.fields?.ww_horses, horseId)) || null;
+  }
+  return null;
+}
+
+async function findHorseAttributeSelection(airtable, tables, attributeId, attributeGroup) {
+  const candidates = [
+    { group: "horse_gender", fieldKey: "horse_genders", table: tables.horse_genders },
+    { group: "horse_genders", fieldKey: "horse_genders", table: tables.horse_genders },
+    { group: "horse_disciplines", fieldKey: "horse_disciplines", table: tables.horse_disciplines },
+    { group: "horse_colors", fieldKey: "horse_colors", table: tables.horse_colors }
+  ].filter((candidate) => candidate.table?.id);
+  const ordered = attributeGroup
+    ? [...candidates.filter((candidate) => candidate.group === attributeGroup), ...candidates.filter((candidate) => candidate.group !== attributeGroup)]
+    : candidates;
+  for (const candidate of ordered) {
+    const record = await findOptionalRecordInConfiguredView(airtable, candidate.table, attributeId);
+    if (record) return { ...candidate, record };
+  }
+  return null;
 }
 
 async function applyCommentEvent(airtable, context, payload) {
@@ -3982,6 +4109,8 @@ function normalizePakHorseRoster(record) {
     sourcePackItemIds: linkedIds(fields.pack_items),
     pakKitItemIds: linkedIds(fields.pak_kit_items),
     packWaveIds: linkedIds(fields.pack_waves),
+    wwHorseIds: linkedIds(fields.ww_horses),
+    wecHorseIds: linkedIds(fields.wec_horses),
     countPakKitItems: wholeQuantityField(fields.count_pak_kit_items),
     notes: stringField(fields.notes)
   };
@@ -4168,6 +4297,54 @@ function normalizeCommentLog(record) {
     notes: stringField(fields.notes),
     createdTime: record.createdTime || ""
   };
+}
+
+function normalizeHorseAttributeOption(record, group, fieldKey, sourceTable) {
+  const fields = record.fields || {};
+  const label = stringField(
+    fields.display_label ||
+    fields.gender ||
+    fields.discipline ||
+    fields.color ||
+    fields.horse_attribute ||
+    record.id
+  );
+  return {
+    id: record.id,
+    label,
+    attributeGroup: group,
+    attributeKey: fieldKey,
+    sourceTable,
+    status: slugify(fields.status || "active") || "active",
+    active: slugify(fields.status || "active") !== "inactive",
+    sortOrder: numberField(fields.sort_order),
+    notes: stringField(fields.notes),
+    createdTime: record.createdTime || ""
+  };
+}
+
+function normalizeHorseRosterLog(record) {
+  const fields = record.fields || {};
+  return {
+    id: record.id,
+    label: stringField(fields.change_key || fields.record_key || record.id),
+    action: slugify(fields.status || fields.action),
+    horseRecordId: stringField(fields.horse_record_id),
+    horseKey: stringField(fields.horse_key),
+    horseName: stringField(fields.horse_name || fields.barn_name || fields.show_name),
+    source: stringField(fields.source),
+    fieldKey: stringField(fields.field_name),
+    oldValue: stringField(fields.old_value),
+    newValue: stringField(fields.new_value),
+    notes: stringField(fields.notes),
+    createdTime: stringField(fields.changed_at || fields.updated_at || record.createdTime)
+  };
+}
+
+function compareHorseAttributes(a, b) {
+  return Number(a.sortOrder || 0) - Number(b.sortOrder || 0) ||
+    String(a.attributeGroup || "").localeCompare(String(b.attributeGroup || "")) ||
+    String(a.label || "").localeCompare(String(b.label || ""));
 }
 
 function buildListSummaries(items, packLists) {
