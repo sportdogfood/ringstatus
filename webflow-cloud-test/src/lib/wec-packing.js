@@ -1668,7 +1668,10 @@ export async function horseKitLaneReport(airtable, requestUrl) {
   const packWaveKey = clean(url.searchParams.get("packWaveKey") || url.searchParams.get("wave") || "wave_one");
   const pakGroupsView = "horse_specific";
   const context = await loadWecContext(airtable);
-  const tables = horseKitLaneTables(context);
+  const baseTables = horseKitLaneTables(context);
+  const groupRecords = await listOptionalViewRecords(airtable, baseTables.pak_groups.id, pakGroupsView);
+  const groupStack = normalizePakGroupStack(groupRecords, { groupPrefix: "gp" });
+  const tables = horseKitLaneTables(context, groupStack);
   const [
     waveRecords,
     legacyHorseRecords,
@@ -1679,8 +1682,7 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     pakKitItemRecords,
     packingKitRecords,
     exceptionRecords,
-    changeRecords,
-    groupRecords
+    changeRecords
   ] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
@@ -1691,8 +1693,7 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     listOptionalRecords(airtable, tables.pak_kit_items),
     listAirtableRecords(airtable, tables.horse_packing_kits.id),
     listOptionalRecords(airtable, tables.horse_kit_exceptions),
-    listOptionalRecords(airtable, tables.horse_kit_changes),
-    listOptionalViewRecords(airtable, tables.pak_groups.id, pakGroupsView)
+    listOptionalRecords(airtable, tables.horse_kit_changes)
   ]);
   const usePakKitSource = pakKitRecords.length > 0 || pakKitItemRecords.length > 0;
   const kitRecords = usePakKitSource ? pakKitRecords : legacyKitRecords;
@@ -1731,7 +1732,6 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     : horsesWithCounts;
   const exceptions = exceptionRecords.map(normalizeHorseKitException).sort(compareChangeLikeRows);
   const changes = changeRecords.map(normalizeHorseKitChange).sort(compareChangeLikeRows).slice(0, 50);
-  const groupStack = normalizePakGroupStack(groupRecords, { groupPrefix: "gp" });
 
   return {
     ok: true,
@@ -1768,7 +1768,11 @@ export async function horseKitLaneReport(airtable, requestUrl) {
 export async function horseKitLaneActionReport(airtable, requestUrl, payload) {
   const action = clean(payload?.action);
   const context = await loadWecContext(airtable);
-  const tables = horseKitLaneTables(context);
+  const pakGroupsView = "horse_specific";
+  const baseTables = horseKitLaneTables(context);
+  const groupRecords = await listOptionalViewRecords(airtable, baseTables.pak_groups.id, pakGroupsView);
+  const groupStack = normalizePakGroupStack(groupRecords, { groupPrefix: "gp" });
+  const tables = horseKitLaneTables(context, groupStack);
   let result;
 
   if (action === "set_horse_wave") {
@@ -1801,19 +1805,20 @@ export async function horseKitLaneActionReport(airtable, requestUrl, payload) {
   };
 }
 
-function horseKitLaneTables(context) {
+function horseKitLaneTables(context, groupStack = null) {
+  const groupTable = (renderKey, fallbackName) => pakGroupPhysicalTableName(groupStack, renderKey, fallbackName);
   return {
     wec_horses: physicalTableConfig(context, "wec_horses"),
     wec_pack_waves: physicalTableConfig(context, "wec_pack_waves"),
     wec_packing_events: physicalTableConfig(context, "wec_packing_events"),
     horse_kits: physicalTableConfig(context, "horse_kits"),
     horse_kit_items: physicalTableConfig(context, "horse_kit_items"),
-    pak_kits: physicalTableConfig(context, "pak_kits", true),
-    pak_kit_items: physicalTableConfig(context, "pak_kit_items", true),
-    pak_horses_roster: physicalTableConfig(context, "pak_horses_roster", true),
-    horse_packing_kits: physicalTableConfig(context, "horse_packing_kits"),
+    pak_kits: physicalTableConfig(context, groupTable("kit_source", "pak_kits"), true),
+    pak_kit_items: physicalTableConfig(context, groupTable("drawer_items", "pak_kit_items"), true),
+    pak_horses_roster: physicalTableConfig(context, groupTable("main_table", "pak_horses_roster"), true),
+    horse_packing_kits: physicalTableConfig(context, groupTable("state_links", "horse_packing_kits")),
     horse_kit_exceptions: physicalTableConfig(context, "horse_kit_exceptions", true),
-    horse_kit_changes: physicalTableConfig(context, "horse_kit_changes", true),
+    horse_kit_changes: physicalTableConfig(context, groupTable("change_log", "horse_kit_changes"), true),
     pak_groups: physicalTableConfig(context, "pak_groups", true)
   };
 }
@@ -1873,6 +1878,12 @@ function normalizePakGroupRow(record, index = 0) {
     allowAddNew: !!fields.allow_add_new,
     allowInlineEdit: !!fields.allow_inline_edit
   };
+}
+
+function pakGroupPhysicalTableName(groupStack, renderKey, fallbackName) {
+  const normalizedKey = slugify(renderKey);
+  const row = (groupStack?.activeRows || []).find((candidate) => candidate.renderKey === normalizedKey);
+  return row?.physicalTableName || fallbackName;
 }
 
 function physicalTableConfig(context, name, optional = false) {
