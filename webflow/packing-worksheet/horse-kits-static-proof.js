@@ -21,6 +21,8 @@
     search: "",
     itemSearch: "",
     itemFilter: "all",
+    laneKey: "open",
+    secondaryView: config.packWaveKey || "wave_one",
     sortKey: "horse",
     sortDir: "asc",
     addItemName: "",
@@ -70,6 +72,27 @@
 
     if (action === "print-list") {
       openPrintPage();
+      return;
+    }
+
+    if (action === "set-lane") {
+      const laneKey = target.dataset.laneKey || "open";
+      if (laneKey === "print") {
+        openPrintPage();
+        return;
+      }
+      ui.laneKey = laneKey;
+      records = buildRecords();
+      keepSelectedRecord();
+      render();
+      return;
+    }
+
+    if (action === "set-secondary-view") {
+      ui.secondaryView = target.dataset.secondaryView || "all";
+      records = buildRecords();
+      keepSelectedRecord();
+      render();
       return;
     }
 
@@ -174,7 +197,7 @@
     try {
       state = await fetchJson(`${config.apiUrl}?packWaveKey=${encodeURIComponent(config.packWaveKey)}`);
       records = buildRecords();
-      ui.selectedHorseId = ui.selectedHorseId || records[0]?.id || "";
+      keepSelectedRecord();
       ui.message = sourceLine();
     } catch (error) {
       ui.error = error.message || String(error);
@@ -325,7 +348,7 @@
         counts
       };
     });
-    return sortRecords(rows);
+    return sortRecords(rows.filter(recordMatchesLane));
   }
 
   function sortRecords(rows) {
@@ -353,9 +376,9 @@
   }
 
   function visibleHorses() {
-    const sourceHorses = state?.horses?.length ? state.horses : state?.allHorses || [];
+    const sourceHorses = state?.allHorses?.length ? state.allHorses : state?.horses || [];
     const horses = sourceHorses
-      .filter((horse) => state?.horses?.length || horse.waveState === "wave_one" || horse.waveOne || !horse.notGoing)
+      .filter(matchesSecondaryView)
       .sort((a, b) => String(horseLabel(a)).localeCompare(String(horseLabel(b))));
     const query = ui.search.trim().toLowerCase();
     if (!query) return horses;
@@ -367,6 +390,43 @@
       horse.show_name,
       horse.display_horse_barn_name
     ].join(" ").toLowerCase().includes(query));
+  }
+
+  function matchesSecondaryView(horse) {
+    const key = ui.secondaryView || config.packWaveKey || "wave_one";
+    if (!key || key === "all") return true;
+    if (key === "wave_one") return horse.waveState === "wave_one" || horse.waveOne === true || horse.wave_one === true;
+    if (key === "wave_two") return horse.waveState === "wave_two" || horse.waveTwo === true || horse.wave_two === true;
+    if (key === "not_going") return horse.waveState === "not_going" || horse.notGoing === true || horse.not_going === true;
+    return horse.waveState === key || horse[key] === true;
+  }
+
+  function recordMatchesLane(record) {
+    const key = ui.laneKey || "open";
+    if (!key || key === "all" || key === "print") return true;
+    const counts = effectiveRecordCounts(record);
+    if (key === "open" || key === "left") return counts.left > 0;
+    if (key === "need" || key === "needed") return counts.needed > 0;
+    if (key === "packed" || key === "pack") return counts.packed > 0;
+    if (key === "not_needed") return counts.notNeeded > 0;
+    return true;
+  }
+
+  function effectiveRecordCounts(record) {
+    const counts = record?.counts || {};
+    const summary = record?.horse?.kitSummary || record?.horse?.kit_summary || {};
+    return {
+      total: Math.max(countNumber(counts.total), countNumber(summary.total)),
+      needed: Math.max(countNumber(counts.needed), countNumber(summary.needed), countNumber(summary.need)),
+      packed: Math.max(countNumber(counts.packed), countNumber(summary.packed)),
+      notNeeded: Math.max(countNumber(counts.notNeeded), countNumber(summary.notNeeded), countNumber(summary.not_needed)),
+      left: Math.max(countNumber(counts.left), countNumber(summary.left))
+    };
+  }
+
+  function countNumber(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : 0;
   }
 
   function activeKits() {
@@ -426,7 +486,14 @@
   }
 
   function selectedHorse() {
-    return (state?.horses || state?.allHorses || []).find((horse) => horse.id === ui.selectedHorseId) || records[0]?.horse || null;
+    const horses = state?.allHorses?.length ? state.allHorses : state?.horses || [];
+    return horses.find((horse) => horse.id === ui.selectedHorseId) || records[0]?.horse || null;
+  }
+
+  function keepSelectedRecord() {
+    if (!records.some((record) => record.id === ui.selectedHorseId)) {
+      ui.selectedHorseId = records[0]?.id || "";
+    }
   }
 
   function packWaveId() {
@@ -558,7 +625,11 @@
     const lanes = laneControls();
     return stackSectionHtml(row, `
       <div class="rs-stack-tabs is-compact" aria-label="${escapeAttr(row?.displayLabel || "Lane Controls")}">
-        ${lanes.map((lane) => `<button class="rs-stack-pill ${lane.key === "open" ? "is-active" : ""}" type="button" data-lane-key="${escapeAttr(lane.key)}">${escapeHtml(lane.label)}</button>`).join("")}
+        ${lanes.map((lane) => {
+          const key = lane.key || "";
+          const action = key === "print" ? "print-list" : "set-lane";
+          return `<button class="rs-stack-pill ${key === ui.laneKey ? "is-active" : ""}" type="button" data-action="${escapeAttr(action)}" data-lane-key="${escapeAttr(key)}">${escapeHtml(lane.label)}</button>`;
+        }).join("")}
       </div>
     `, "is-lane-controls");
   }
@@ -567,7 +638,7 @@
     const views = secondaryControls();
     return stackSectionHtml(row, `
       <div class="rs-stack-tabs is-compact">
-        ${views.map((view) => `<button class="rs-stack-pill ${view.key === "wave_one" ? "is-active" : ""}" type="button" data-secondary-view="${escapeAttr(view.key)}">${escapeHtml(view.label)}</button>`).join("")}
+        ${views.map((view) => `<button class="rs-stack-pill ${view.key === ui.secondaryView ? "is-active" : ""}" type="button" data-action="set-secondary-view" data-secondary-view="${escapeAttr(view.key)}">${escapeHtml(view.label)}</button>`).join("")}
       </div>
     `, "is-secondary-controls");
   }
@@ -803,6 +874,7 @@
     const counts = rollup(horse.id, kit?.id);
     const items = filteredKitItems(kit?.id);
     const percentPacked = counts.needed > 0 ? Math.round((counts.packed / counts.needed) * 100) : 0;
+    const drawerLabels = drawerItemLabels();
     return `
       <div class="rs-detail-summary">
         <div class="is-hidden" aria-hidden="true">
@@ -842,15 +914,15 @@
         </div>
       </div>
       <div class="rs-kit-item-search-row">
-        <label class="rs-stack-label" for="rs-kit-item-search">search_items</label>
+        <label class="rs-stack-label" for="rs-kit-item-search">${escapeHtml(drawerLabels.search)}</label>
         <div class="rs-search-wrap">
-          <input id="rs-kit-item-search" class="rs-kit-item-search" type="text" autocomplete="off" data-kit-item-search value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items">
+          <input id="rs-kit-item-search" class="rs-kit-item-search" type="text" autocomplete="off" data-kit-item-search value="${escapeAttr(ui.itemSearch)}" placeholder="${escapeAttr(drawerLabels.searchPlaceholder)}">
           <button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" aria-label="Clear kit item search" data-action="clear-kit-item-search"><span aria-hidden="true">&times;</span></button>
         </div>
       </div>
-      <div class="rs-kit-item-row rs-item-filter-row" role="group" aria-label="Kit item filters">
+      <div class="rs-kit-item-row rs-item-filter-row" role="group" aria-label="${escapeAttr(drawerLabels.filter)}">
         <div class="rs-kit-item-main">
-          <div class="rs-stack-label">filter_items</div>
+          <div class="rs-stack-label">${escapeHtml(drawerLabels.filter)}</div>
         </div>
         <div class="rs-kit-actions rs-item-filter-actions">
           ${itemFilterButton("All", "all")}
@@ -862,7 +934,7 @@
       <div class="rs-kit-items">
         <div class="rs-kit-item-row rs-kit-items-head" role="row">
           <div class="rs-kit-item-main">
-            <div class="rs-stack-label">kit_items</div>
+            <div class="rs-stack-label">${escapeHtml(drawerLabels.items)}</div>
           </div>
           <div class="rs-kit-actions">
             <div class="rs-stack-label">Not Packed</div>
@@ -890,6 +962,27 @@
     const entityTwoRow = sourceAggRow("entity_2");
     const drawerAggs = entityTwoRow?.includeOnDrawer ? rowAggRows(entityTwoRow, []) : [];
     return drawerAggs.length ? drawerAggs : countAggRows();
+  }
+
+  function drawerItemLabels() {
+    const row = drawerItemsRow();
+    const itemLabel = row?.displayLabel || row?.tableName || row?.physicalTableName || "Kit Items";
+    return {
+      items: itemLabel,
+      search: `Search ${itemLabel}`,
+      filter: `Filter ${itemLabel}`,
+      searchPlaceholder: `Search ${String(itemLabel).toLowerCase()}`
+    };
+  }
+
+  function drawerItemsRow() {
+    return (state?.groupStack?.activeRows || []).find((row) =>
+      row.renderKey === "drawer_items" ||
+      row.componentKey === "rs-kit-items" ||
+      row.role === "entity_2" ||
+      row.tableName === "pak_kit_items" ||
+      row.physicalTableName === "pak_kit_items"
+    ) || null;
   }
 
   function metricHtml(label, value, keyOverride = "") {
