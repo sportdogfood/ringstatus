@@ -1,4 +1,4 @@
-<main id="packing-app" class="rsa-dashboard" data-rs-build="REPLACE_WITH_PINNED_COMMIT">
+<main id="packing-app" class="rsa-dashboard" data-rs-page="horse-kits">
   <div id="horse-kits" data-pack-wave-key="wave_one">Loading horse kits...</div>
 </main>
 
@@ -6,15 +6,10 @@
   (function () {
     var root = document.getElementById("horse-kits");
     var buildRoot = document.getElementById("packing-app");
-    var assetVersion = buildRoot && buildRoot.dataset.rsBuild ? buildRoot.dataset.rsBuild.trim() : "";
-    if (!root || !assetVersion) {
-      if (root) root.textContent = "Missing data-rs-build on #packing-app.";
-      return;
-    }
-    var cacheKey = "horse-kits-20260603-" + assetVersion;
-    var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
+    var pageKey = buildRoot && buildRoot.dataset.rsPage ? buildRoot.dataset.rsPage.trim() : "current";
+    var buildListUrl = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/packing-worksheet/rs-builds.js";
 
-    root.dataset.apiUrl = "https://ringstatus.com/test/wec-packing/horse-kits";
+    if (!root) return;
 
     function addStyle(href) {
       var link = document.createElement("link");
@@ -23,17 +18,45 @@
       document.head.appendChild(link);
     }
 
-    function addScript(src) {
+    function addScript(src, onload) {
       var script = document.createElement("script");
       script.src = src;
       script.defer = true;
+      if (onload) script.onload = onload;
       document.head.appendChild(script);
     }
 
-    addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
-    addStyle(assetBase + "/rsa-stylesheets.locked.css?v=" + cacheKey);
-    addStyle(assetBase + "/styles.css?v=" + cacheKey);
-    addStyle(assetBase + "/horse-kits.css?v=" + cacheKey);
-    addScript(assetBase + "/horse-kits.js?v=" + cacheKey);
+    function loadHorseKits() {
+      var builds = window.RS_BUILDS || {};
+      var pages = builds.pages || {};
+      var assetVersion = pages[pageKey] || builds.current || "";
+      if (!assetVersion) {
+        root.textContent = "Missing build hash for " + pageKey + ".";
+        return;
+      }
+
+      var cacheKey = "horse-kits-20260603-" + assetVersion;
+      var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
+
+      root.dataset.apiUrl = "https://ringstatus.com/test/wec-packing/horse-kits";
+      root.dataset.packWaveKey = root.dataset.packWaveKey || "wave_one";
+
+      window.WEC_HORSE_KITS_CONFIG = {
+        mode: "edit",
+        apiUrl: "https://ringstatus.com/test/wec-packing/horse-kits",
+        printUrl: "https://ringstatus.com/test/wec-packing/print?mode=horse-kits",
+        pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
+        packWaveKey: root.dataset.packWaveKey,
+        enablePrintPdf: false
+      };
+
+      addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+      addStyle(assetBase + "/rsa-stylesheets.locked.css?v=" + cacheKey);
+      addStyle(assetBase + "/styles.css?v=" + cacheKey);
+      addStyle(assetBase + "/horse-kits.css?v=" + cacheKey);
+      addScript(assetBase + "/horse-kits.js?v=" + cacheKey);
+    }
+
+    addScript(buildListUrl, loadHorseKits);
   })();
 </script>
