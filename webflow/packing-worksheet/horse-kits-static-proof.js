@@ -383,6 +383,20 @@
     return `${counts.visibleHorses || records.length || 0} horses | ${counts.kits || 0} kits | ${counts.kitItems || 0} kit items | ${counts.packingRows || 0} touched rows`;
   }
 
+  function activeStackRows() {
+    const rows = state?.groupStack?.activeRows || [];
+    const allowed = new Set(["header", "primary_tabs", "lane_controls", "secondary_controls", "search_aggs", "main_table", "comments"]);
+    const activeRows = rows
+      .filter((row) => row && !row.hidden && row.active !== false && allowed.has(row.renderKey))
+      .sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0) || Number(a.sourceIndex || 0) - Number(b.sourceIndex || 0));
+    return activeRows.length ? activeRows : [
+      { renderKey: "header", displayLabel: "Header" },
+      { renderKey: "search_aggs", displayLabel: "Horse Kits" },
+      { renderKey: "main_table", displayLabel: "Horses" },
+      { renderKey: "comments", displayLabel: "Comments" }
+    ];
+  }
+
   function render() {
     const scrollState = captureScrollState();
     if (ui.loading) {
@@ -408,39 +422,9 @@
     const statusText = !records.length ? "No horses found" : (ui.error || ui.message || sourceLine());
     root.innerHTML = `
       <div class="rs-airtable-shell">
-        <div class="rs-airtable-toolbar">
-          <div class="rs-search-wrap">
-            <input class="rs-search" type="search" data-search placeholder="Search horses" value="${escapeAttr(ui.search)}">
-            <button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" aria-label="Clear search" data-action="clear-search">&times;</button>
-          </div>
-          <button class="rs-plain-button" type="button" data-action="reload">Refresh</button>
+        <div class="rs-page-stack">
+          ${activeStackRows().map((row) => stackRowHtml(row, statusText)).join("")}
         </div>
-        <div class="rs-airtable-scroll">
-          <table class="rs-airtable-grid">
-            <colgroup>
-              <col class="rs-col-gutter">
-              <col class="rs-col-entity">
-              <col class="rs-col-entity">
-              <col class="rs-col-count">
-              <col class="rs-col-count">
-              <col class="rs-col-count">
-            </colgroup>
-            <thead>
-              <tr>
-                <th class="rs-row-gutter">#</th>
-                <th>Horse</th>
-                <th>Kit</th>
-                <th>Need</th>
-                <th>Packed</th>
-                <th>Left</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${records.map(recordRowHtml).join("")}
-            </tbody>
-          </table>
-        </div>
-        <div class="rs-status ${ui.error ? "is-error" : ""}">${escapeHtml(statusText)}</div>
 
         <div class="rs-drawer-overlay ${ui.drawerOpen ? "is-open" : ""}" data-action="close-drawer"></div>
         <div class="rs-record-drawer ${ui.drawerOpen ? "is-open" : ""}" aria-label="Horse kit details">
@@ -455,6 +439,142 @@
       </div>
     `;
     restoreScrollState(scrollState);
+  }
+
+  function stackRowHtml(row, statusText) {
+    const key = row?.renderKey || "";
+    if (key === "header") return pageHeaderHtml(row);
+    if (key === "primary_tabs") return primaryTabsHtml(row);
+    if (key === "lane_controls") return laneControlsHtml(row);
+    if (key === "secondary_controls") return secondaryControlsHtml(row);
+    if (key === "search_aggs") return searchAggsHtml(row);
+    if (key === "main_table") return tableStackHtml(row, statusText);
+    if (key === "comments") return pageCommentsHtml(row);
+    return "";
+  }
+
+  function stackSectionHtml(row, innerHtml, extraClass = "") {
+    return `
+      <section class="rs-stack-section ${escapeAttr(extraClass)}" data-render-key="${escapeAttr(row?.renderKey || "")}" data-component-key="${escapeAttr(row?.componentKey || "")}">
+        ${innerHtml}
+      </section>
+    `;
+  }
+
+  function pageHeaderHtml(row) {
+    const wave = state?.wave || {};
+    const title = wave.wecReportTitle || wave.reportTitle || "WEC PACK LIST";
+    const subtitle = wave.wecReportSubtitle || wave.reportSubtitle || `${waveLabel(wave)} | departs: ${formatDate(wave.deadlineDate)} | ${wave.daysTill || 0} days remaining`;
+    return stackSectionHtml(row, `
+      <div class="rs-page-header">
+        <div class="rs-page-title">${escapeHtml(title)}</div>
+        <div class="rs-page-subtitle">${escapeHtml(subtitle)}</div>
+      </div>
+    `, "is-header");
+  }
+
+  function primaryTabsHtml(row) {
+    return stackSectionHtml(row, `
+      <div class="rs-stack-tabs">
+        <button class="rs-stack-pill is-active" type="button">HORSE KITS</button>
+      </div>
+    `, "is-primary-tabs");
+  }
+
+  function laneControlsHtml(row) {
+    const counts = state?.counts || {};
+    return stackSectionHtml(row, `
+      <div class="rs-stack-tabs is-compact">
+        <button class="rs-stack-pill is-active" type="button">${escapeHtml(waveLabel(state?.wave))}</button>
+        <button class="rs-stack-pill" type="button">${escapeHtml(counts.visibleHorses || records.length || 0)} HORSES</button>
+        <button class="rs-stack-pill" type="button">${escapeHtml(counts.kitItems || 0)} KIT ITEMS</button>
+      </div>
+    `, "is-lane-controls");
+  }
+
+  function secondaryControlsHtml(row) {
+    const counts = state?.counts || {};
+    return stackSectionHtml(row, `
+      <div class="rs-stack-tabs is-compact">
+        <button class="rs-stack-pill is-active" type="button">ALL (${escapeHtml(counts.visibleHorses || records.length || 0)})</button>
+        <button class="rs-stack-pill" type="button">PACKED (${escapeHtml(counts.packedRows || 0)})</button>
+        <button class="rs-stack-pill" type="button">NOT NEEDED (${escapeHtml(counts.notNeededRows || 0)})</button>
+      </div>
+    `, "is-secondary-controls");
+  }
+
+  function searchAggsHtml(row) {
+    const counts = state?.counts || {};
+    return stackSectionHtml(row, `
+      <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horse Kits")}</div>
+      <div class="rs-stack-aggs">
+        ${stackAggHtml(records.length || counts.visibleHorses || 0, "HORSES")}
+        ${stackAggHtml(counts.kitItems || 0, "KIT ITEMS")}
+        ${stackAggHtml(counts.packingRows || 0, "TOUCHED")}
+      </div>
+      <div class="rs-airtable-toolbar">
+        <div class="rs-search-wrap">
+          <input class="rs-search" type="search" data-search placeholder="Search horses" value="${escapeAttr(ui.search)}">
+          <button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" aria-label="Clear search" data-action="clear-search">&times;</button>
+        </div>
+        <button class="rs-plain-button" type="button" data-action="reload">Refresh</button>
+      </div>
+    `, "is-search-aggs");
+  }
+
+  function stackAggHtml(value, label) {
+    return `
+      <div class="rs-stack-agg">
+        <div class="rs-stack-agg-value">${escapeHtml(value)}</div>
+        <div class="rs-stack-agg-label">${escapeHtml(label)}</div>
+      </div>
+    `;
+  }
+
+  function tableStackHtml(row, statusText) {
+    return stackSectionHtml(row, `
+      <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horses")}</div>
+      <div class="rs-airtable-scroll">
+        <table class="rs-airtable-grid">
+          <colgroup>
+            <col class="rs-col-gutter">
+            <col class="rs-col-entity">
+            <col class="rs-col-entity">
+            <col class="rs-col-count">
+            <col class="rs-col-count">
+            <col class="rs-col-count">
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="rs-row-gutter">#</th>
+              <th>Horse</th>
+              <th>Kit</th>
+              <th>Need</th>
+              <th>Packed</th>
+              <th>Left</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${records.map(recordRowHtml).join("")}
+          </tbody>
+        </table>
+      </div>
+      <div class="rs-status ${ui.error ? "is-error" : ""}">${escapeHtml(statusText)}</div>
+    `, "is-main-table");
+  }
+
+  function pageCommentsHtml(row) {
+    const comments = pageComments();
+    return stackSectionHtml(row, `
+      <div class="rs-comments is-page-comments">
+        <div class="rs-comments-head">
+          <div class="rs-field-label">${escapeHtml(row?.displayLabel || "comments")}</div>
+        </div>
+        <div class="rs-comment-list">
+          ${comments.map(commentRowHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}
+        </div>
+      </div>
+    `, "is-comments");
   }
 
   function captureScrollState() {
@@ -657,12 +777,31 @@
       .sort((a, b) => String(b.createdTime || "").localeCompare(String(a.createdTime || "")));
   }
 
+  function pageComments() {
+    return (state?.comments || [])
+      .filter((comment) => comment.status !== "deleted")
+      .filter((comment) => !(comment.horseIds || []).length)
+      .sort((a, b) => String(b.createdTime || "").localeCompare(String(a.createdTime || "")));
+  }
+
   function commentShorts() {
     return (state?.commentShorts || []).filter((row) => row.active !== false && row.status !== "inactive");
   }
 
   function horseLabel(horse) {
     return horse?.name || horse?.barnName || horse?.showName || "";
+  }
+
+  function waveLabel(wave) {
+    const value = wave?.wave || wave?.waveType || wave?.key || config.packWaveKey || "wave_one";
+    return String(value).replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  function formatDate(value) {
+    if (!value) return "";
+    const [year, month, day] = String(value).split("-");
+    if (!year || !month || !day) return String(value);
+    return `${Number(month)}/${Number(day)}/${year}`;
   }
 
   function kitDisplayLabel(kit) {

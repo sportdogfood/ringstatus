@@ -10,7 +10,7 @@ body {
   width: 100%;
   min-width: 0;
   max-width: 840px;
-  height: 100dvh;
+  min-height: 100dvh;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -19,7 +19,7 @@ body {
 #horse-kit-static-proof {
   width: 100%;
   max-width: 840px;
-  height: 100%;
+  min-height: 100dvh;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -28,15 +28,139 @@ body {
   position: relative;
   width: 100%;
   max-width: 840px;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100dvh;
+  overflow: visible;
   background: #fff;
   border: 1px solid #d9dde3;
 }
 
+#packing-app .rs-page-stack {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+#packing-app .rs-stack-section {
+  min-width: 0;
+  padding: 10px 12px;
+  border-bottom: 1px solid #d9dde3;
+  box-sizing: border-box;
+}
+
+#packing-app .rs-stack-section.is-main-table {
+  padding: 0;
+}
+
+#packing-app .rs-stack-section.is-main-table .rs-stack-label {
+  padding: 8px 12px;
+}
+
+#packing-app .rs-stack-section.is-search-aggs {
+  display: grid;
+  gap: 8px;
+}
+
+#packing-app .rs-page-header {
+  display: grid;
+  gap: 3px;
+}
+
+#packing-app .rs-page-title {
+  color: #05070a;
+  font-size: clamp(25px, 7vw, 36px);
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+#packing-app .rs-page-subtitle {
+  color: #68707a;
+  font-size: clamp(16px, 4.8vw, 22px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+#packing-app .rs-stack-tabs {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#packing-app .rs-stack-tabs.is-compact {
+  gap: 6px;
+}
+
+#packing-app .rs-stack-pill {
+  min-width: 0;
+  min-height: 30px;
+  border: 1px solid #d9dde3;
+  border-radius: 18px;
+  background: #fff;
+  color: #10233b;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0 14px;
+  white-space: nowrap;
+}
+
+#packing-app .rs-stack-pill.is-active {
+  border-color: #10233b;
+  background: #10233b;
+  color: #fff;
+}
+
+#packing-app .rs-stack-label {
+  color: #68707a;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15px;
+  text-transform: uppercase;
+}
+
+#packing-app .rs-stack-aggs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid #d9dde3;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+#packing-app .rs-stack-agg {
+  min-width: 0;
+  padding: 8px 4px;
+  text-align: center;
+  border-right: 1px solid #d9dde3;
+}
+
+#packing-app .rs-stack-agg:last-child {
+  border-right: 0;
+}
+
+#packing-app .rs-stack-agg-value {
+  color: #1f2328;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+#packing-app .rs-stack-agg-label {
+  margin-top: 4px;
+  color: #68707a;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 12px;
+  text-transform: uppercase;
+}
+
 #packing-app .rs-airtable-scroll {
   width: 100%;
-  height: calc(100% - 86px);
+  height: min(620px, 64dvh);
+  min-height: 360px;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -45,13 +169,12 @@ body {
 }
 
 #packing-app .rs-airtable-toolbar {
-  height: 44px;
+  min-height: 42px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px;
-  border-bottom: 1px solid #d9dde3;
+  padding: 0;
   background: #fff;
   box-sizing: border-box;
 }
@@ -300,7 +423,7 @@ body {
 }
 
 #packing-app .rs-drawer-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 8;
   background: rgba(0, 0, 0, 0.16);
@@ -315,13 +438,13 @@ body {
 }
 
 #packing-app .rs-record-drawer {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   z-index: 9;
   width: min(390px, 44vw);
   min-width: 340px;
-  height: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #fff;
