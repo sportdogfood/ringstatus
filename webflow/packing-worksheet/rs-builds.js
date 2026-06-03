@@ -1,6 +1,6 @@
 window.RS_BUILDS = {
-  current: "6fdcea8cd4afcbce6c8bd9d070e6adb7376d4dea",
+  current: "ef9febae011218515d0f79d1732eb6c65ea03299",
   pages: {
-    "horse-kits": "6fdcea8cd4afcbce6c8bd9d070e6adb7376d4dea"
+    "horse-kits": "ef9febae011218515d0f79d1732eb6c65ea03299"
   }
 };
