@@ -357,9 +357,9 @@
     return [...rows].sort((a, b) => {
       if (key === "horse") return compareText(horseLabel(a.horse), horseLabel(b.horse)) * direction;
       if (key === "kit") return compareText(kitDisplayLabel(a.kit), kitDisplayLabel(b.kit)) * direction;
-      if (key === "need") return compareNumber(a.counts?.needed, b.counts?.needed) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
-      if (key === "packed") return compareNumber(a.counts?.packed, b.counts?.packed) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
-      if (key === "left") return compareNumber(a.counts?.left, b.counts?.left) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
+      if (key === "need") return compareNumber(effectiveRecordCounts(a).needed, effectiveRecordCounts(b).needed) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
+      if (key === "packed") return compareNumber(effectiveRecordCounts(a).packed, effectiveRecordCounts(b).packed) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
+      if (key === "left") return compareNumber(effectiveRecordCounts(a).left, effectiveRecordCounts(b).left) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
       return compareText(horseLabel(a.horse), horseLabel(b.horse));
     });
   }
@@ -415,12 +415,16 @@
   function effectiveRecordCounts(record) {
     const counts = record?.counts || {};
     const summary = record?.horse?.kitSummary || record?.horse?.kit_summary || {};
+    const total = countNumber(counts.total) || countNumber(record?.horse?.countPakKitItems) || countNumber(summary.total) || countNumber(state?.counts?.kitItems);
+    const notNeeded = Math.max(countNumber(counts.notNeeded), countNumber(summary.notNeeded), countNumber(summary.not_needed));
+    const packed = Math.max(countNumber(counts.packed), countNumber(summary.packed));
+    const needed = Math.max(0, total - notNeeded);
     return {
-      total: Math.max(countNumber(counts.total), countNumber(summary.total)),
-      needed: Math.max(countNumber(counts.needed), countNumber(summary.needed), countNumber(summary.need)),
-      packed: Math.max(countNumber(counts.packed), countNumber(summary.packed)),
-      notNeeded: Math.max(countNumber(counts.notNeeded), countNumber(summary.notNeeded), countNumber(summary.not_needed)),
-      left: Math.max(countNumber(counts.left), countNumber(summary.left))
+      total,
+      needed,
+      packed,
+      notNeeded,
+      left: Math.max(0, needed - packed)
     };
   }
 
@@ -844,6 +848,7 @@
 
   function recordRowHtml(record, index) {
     const selected = ui.drawerOpen && record.id === ui.selectedHorseId;
+    const counts = effectiveRecordCounts(record);
     return `
       <tr class="${selected ? "is-selected" : ""}" data-action="open-horse" data-horse-id="${record.id}" tabindex="0">
         <td class="rs-row-gutter">${index + 1}</td>
@@ -854,9 +859,9 @@
           </div>
         </td>
         <td class="rs-entity-cell rs-entity-kit-cell"><span class="rs-entity-sub">${escapeHtml(kitDisplayLabel(record.kit))}</span></td>
-        <td class="rs-cell-number">${escapeHtml(record.counts.needed)}</td>
-        <td class="rs-cell-number">${escapeHtml(record.counts.packed)}</td>
-        <td class="rs-cell-number">${escapeHtml(record.counts.left)}</td>
+        <td class="rs-cell-number">${escapeHtml(counts.needed)}</td>
+        <td class="rs-cell-number">${escapeHtml(counts.packed)}</td>
+        <td class="rs-cell-number">${escapeHtml(counts.left)}</td>
       </tr>
     `;
   }
@@ -874,7 +879,7 @@
   }
 
   function detailHtml(horse, kit) {
-    const counts = rollup(horse.id, kit?.id);
+    const counts = effectiveRecordCounts({ horse, kit, counts: rollup(horse.id, kit?.id) });
     const items = filteredKitItems(kit?.id);
     const percentPacked = counts.needed > 0 ? Math.round((counts.packed / counts.needed) * 100) : 0;
     const drawerLabels = drawerItemLabels();
