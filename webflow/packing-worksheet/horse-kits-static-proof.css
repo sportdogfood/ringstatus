@@ -1034,15 +1034,16 @@ body {
 #packing-app .rs-kit-item-main {
   min-width: 0;
   display: grid;
-  grid-template-rows: 14px;
   align-content: start;
 }
 
 #packing-app .rs-kit-item-title {
   color: #68707a;
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15px;
+  padding-bottom: 3px;
+  text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1565,6 +1566,24 @@ body {
 #packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
 #packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
 #packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head {
+  width: 100% !important;
   justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head span,
+#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span,
+#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+#packing-app .rs-airtable-grid .rs-row-gutter {
+  width: 24px !important;
+  min-width: 24px !important;
+  max-width: 24px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   text-align: center !important;
 }
