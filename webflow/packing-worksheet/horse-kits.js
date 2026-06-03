@@ -1,5 +1,5 @@
 (function () {
-  const root = document.getElementById("horse-kit-static-proof");
+  const root = document.getElementById("horse-kits") || document.getElementById("horse-kit-static-proof");
   if (!root) return;
 
   const config = {

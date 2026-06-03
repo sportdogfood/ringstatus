@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>Horse Kits Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      const HORSE_KITS_LOCAL_PREVIEW_VERSION = Date.now();
+      document.write(`<link rel="stylesheet" href="./rsa-stylesheets.locked.css?v=${HORSE_KITS_LOCAL_PREVIEW_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./styles.css?v=${HORSE_KITS_LOCAL_PREVIEW_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./horse-kits.css?v=${HORSE_KITS_LOCAL_PREVIEW_VERSION}-drawer-filters-1">`);
+    </script>
+  </head>
+  <body>
+    <main id="packing-app" class="rsa-dashboard">
+      <div id="horse-kits" data-api-url="http://127.0.0.1:4331/wec-packing/horse-kits" data-pack-wave-key="wave_one">
+        Loading horse kits...
+      </div>
+    </main>
+    <script>
+      document.write(`<script src="./horse-kits.js?v=${HORSE_KITS_LOCAL_PREVIEW_VERSION}-drawer-filters-1" defer><\/script>`);
+    </script>
+  </body>
+</html>

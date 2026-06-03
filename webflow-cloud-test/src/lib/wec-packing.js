@@ -1666,27 +1666,52 @@ export async function horseKitLaneReport(airtable, requestUrl) {
   const url = new URL(requestUrl);
   const packWaveId = clean(url.searchParams.get("packWaveId"));
   const packWaveKey = clean(url.searchParams.get("packWaveKey") || url.searchParams.get("wave") || "wave_one");
+  const pakGroupsView = "horse_specific";
   const context = await loadWecContext(airtable);
   const tables = horseKitLaneTables(context);
-  const [waveRecords, horseRecords, kitRecords, kitItemRecords, packingKitRecords, exceptionRecords, changeRecords, groupRecords] = await Promise.all([
+  const [
+    waveRecords,
+    legacyHorseRecords,
+    pakHorseRosterRecords,
+    legacyKitRecords,
+    legacyKitItemRecords,
+    pakKitRecords,
+    pakKitItemRecords,
+    packingKitRecords,
+    exceptionRecords,
+    changeRecords,
+    groupRecords
+  ] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_pack_waves.id, tables.wec_pack_waves.view),
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
+    listOptionalRecords(airtable, tables.pak_horses_roster),
     listAirtableRecords(airtable, tables.horse_kits.id),
     listAirtableRecords(airtable, tables.horse_kit_items.id),
+    listOptionalRecords(airtable, tables.pak_kits),
+    listOptionalRecords(airtable, tables.pak_kit_items),
     listAirtableRecords(airtable, tables.horse_packing_kits.id),
     listOptionalRecords(airtable, tables.horse_kit_exceptions),
     listOptionalRecords(airtable, tables.horse_kit_changes),
-    listOptionalRecords(airtable, tables.pak_groups)
+    listOptionalViewRecords(airtable, tables.pak_groups.id, pakGroupsView)
   ]);
+  const usePakKitSource = pakKitRecords.length > 0 || pakKitItemRecords.length > 0;
+  const kitRecords = usePakKitSource ? pakKitRecords : legacyKitRecords;
+  const kitItemRecords = usePakKitSource ? pakKitItemRecords : legacyKitItemRecords;
 
   const selectedWaveRecord = selectWave(waveRecords, packWaveId, packWaveKey);
   const selectedWave = selectedWaveRecord ? normalizeWave(selectedWaveRecord) : null;
-  const horses = horseRecords.map(normalizeRosterHorse).sort(compareHorseRosterRows);
+  const usePakHorseRoster = pakHorseRosterRecords.length > 0;
+  const horses = (usePakHorseRoster ? pakHorseRosterRecords : legacyHorseRecords)
+    .map(usePakHorseRoster ? normalizePakHorseRoster : normalizeRosterHorse)
+    .sort(compareHorseRosterRows);
   const kits = kitRecords.map(normalizeHorseKitTemplate).sort(compareKitTemplates);
   const kitItems = kitItemRecords.map(normalizeHorseKitTemplateItem).sort(compareKitItems);
   const kitItemById = new Map(kitItems.map((item) => [item.id, item]));
   const kitById = new Map(kits.map((kit) => [kit.id, kit]));
-  const horseById = new Map(horses.map((horse) => [horse.id, horse]));
+  const horseById = new Map(horses.flatMap((horse) => [
+    [horse.id, horse],
+    ...(horse.writeHorseId && horse.writeHorseId !== horse.id ? [[horse.writeHorseId, horse]] : [])
+  ]));
   const waveById = new Map(waveRecords.map((record) => {
     const wave = normalizeWave(record);
     return [wave.id, wave];
@@ -1713,6 +1738,9 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     source: {
       packWaveId: selectedWave?.id || "",
       packWaveKey: selectedWave?.key || packWaveKey,
+      pakGroupsView,
+      kitSource: usePakKitSource ? "pak" : "legacy",
+      horseSource: usePakHorseRoster ? "pak_horses_roster" : "wec_horses",
       tables: Object.fromEntries(Object.entries(tables).map(([key, table]) => [key, table?.id || ""])),
       tableAliases: PAK_GROUP_TABLE_ALIASES
     },
@@ -1780,6 +1808,9 @@ function horseKitLaneTables(context) {
     wec_packing_events: physicalTableConfig(context, "wec_packing_events"),
     horse_kits: physicalTableConfig(context, "horse_kits"),
     horse_kit_items: physicalTableConfig(context, "horse_kit_items"),
+    pak_kits: physicalTableConfig(context, "pak_kits", true),
+    pak_kit_items: physicalTableConfig(context, "pak_kit_items", true),
+    pak_horses_roster: physicalTableConfig(context, "pak_horses_roster", true),
     horse_packing_kits: physicalTableConfig(context, "horse_packing_kits"),
     horse_kit_exceptions: physicalTableConfig(context, "horse_kit_exceptions", true),
     horse_kit_changes: physicalTableConfig(context, "horse_kit_changes", true),
@@ -1788,9 +1819,9 @@ function horseKitLaneTables(context) {
 }
 
 const PAK_GROUP_TABLE_ALIASES = {
-  pak_horses: "wec_horses",
-  pak_horse_kits_list: "horse_kits",
-  pak_horse_kit_items: "horse_kit_items",
+  pak_horses: "pak_horses_roster",
+  pak_horse_kits_list: "pak_kits",
+  pak_horse_kit_items: "pak_kit_items",
   pak_horse_kit_links: "horse_packing_kits",
   pak_horse_kit_logs: "horse_kit_changes",
   pak_comments: "wec_commenting"
@@ -1801,7 +1832,7 @@ function normalizePakGroupStack(records = [], options = {}) {
   const rows = records
     .map((record, index) => normalizePakGroupRow(record, index))
     .filter((row) => row.groupPrefix === groupPrefix)
-    .sort((a, b) => a.stack - b.stack || a.sourceIndex - b.sourceIndex);
+    .sort((a, b) => a.sortOrder - b.sortOrder || a.stack - b.stack || a.sourceIndex - b.sourceIndex);
   return {
     groupPrefix,
     rows,
@@ -1813,15 +1844,21 @@ function normalizePakGroupStack(records = [], options = {}) {
 function normalizePakGroupRow(record, index = 0) {
   const fields = record.fields || {};
   const tableName = clean(fields.table_name);
+  const physicalTableName = clean(fields.physical_table) || PAK_GROUP_TABLE_ALIASES[tableName] || tableName;
+  const sortOrder = numberField(fields.sort_order);
   return {
     id: record.id,
     sourceIndex: index,
     groupKey: clean(fields.group_key),
     groupPrefix: clean(fields.gp_pre),
     stack: numberField(fields.stack),
+    sortOrder,
     role: slugify(fields.role),
+    renderKey: slugify(fields.render_key),
+    displayLabel: clean(fields.display_label),
+    componentKey: clean(fields.component_key),
     tableName,
-    physicalTableName: PAK_GROUP_TABLE_ALIASES[tableName] || tableName,
+    physicalTableName,
     active: !!fields.active,
     hidden: !!fields.is_hidden,
     drillDown: !!fields.is_drill_down,
@@ -1830,6 +1867,7 @@ function normalizePakGroupRow(record, index = 0) {
     addSearch: !!fields.add_search,
     searchBy: stringListField(fields.search_by),
     addAggregates: !!fields.add_aggregates,
+    pakAggIds: linkedIds(fields.pak_aggs),
     aggregates: stringListField(fields.all_aggregates),
     needsUi: stringListField(fields.needs_ui),
     allowAddNew: !!fields.allow_add_new,
@@ -2007,23 +2045,29 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
   if (!packWaveId) throw new Error("missing_pack_wave_id");
   if (!["packed", "not_packed", "not_needed"].includes(nextState)) throw new Error("invalid_static_kit_item_state");
 
-  const [horses, kitItems, existingRows] = await Promise.all([
+  const [horses, legacyKitItems, pakKitItems, existingRows] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_horses.id, tables.wec_horses.view),
     listAirtableRecords(airtable, tables.horse_kit_items.id),
+    listOptionalRecords(airtable, tables.pak_kit_items),
     listAirtableRecords(airtable, tables.horse_packing_kits.id)
   ]);
   const horse = horses.find((record) => record.id === horseId);
+  const kitItems = [
+    ...legacyKitItems.map((record) => ({ ...record, kitSource: "legacy" })),
+    ...pakKitItems.map((record) => ({ ...record, kitSource: "pak" }))
+  ];
   const itemRecord = kitItems.find((record) => record.id === kitItemId);
   if (!horse) throw new Error("horse_not_found");
   if (!itemRecord) throw new Error("kit_item_not_found");
 
   const item = normalizeHorseKitTemplateItem(itemRecord);
+  const usesPakKitSource = itemRecord.kitSource === "pak";
 
   const existing = existingRows.find((record) =>
     includesLinkedId(record.fields?.horse, horseId) &&
     includesLinkedId(record.fields?.pack_wave, packWaveId) &&
-    includesLinkedId(record.fields?.horse_kit_item, kitItemId) &&
-    (!kitId || includesLinkedId(record.fields?.horse_kits, kitId))
+    includesLinkedId(usesPakKitSource ? record.fields?.pak_kit_items : record.fields?.horse_kit_item, kitItemId) &&
+    (!kitId || includesLinkedId(usesPakKitSource ? record.fields?.pak_kits : record.fields?.horse_kits, kitId))
   );
 
   const beforeState = stringField(existing?.fields?.pack_state || "not_packed");
@@ -2049,8 +2093,10 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
       horse_packing_kit: `${stringField(horse.fields?.barn_name || horse.fields?.horse || horse.fields?.show_name)} - ${item.displayName || item.name}`,
       pack_wave: [packWaveId],
       horse: [horseId],
-      horse_kits: kitId ? [kitId] : undefined,
-      horse_kit_item: [kitItemId],
+      horse_kits: !usesPakKitSource && kitId ? [kitId] : undefined,
+      horse_kit_item: !usesPakKitSource ? [kitItemId] : undefined,
+      pak_kits: usesPakKitSource && kitId ? [kitId] : undefined,
+      pak_kit_items: usesPakKitSource ? [kitItemId] : undefined,
       sort_order: item.sortOrder,
       ...updateFields
     });
@@ -2084,8 +2130,10 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
   const change = await createHorseKitChange(airtable, tables, {
     changeType: nextState === "not_needed" ? "exception_applied" : "quantity_changed",
     packingKitRecord,
-    kitIds: kitId ? [kitId] : undefined,
-    itemIds: [kitItemId],
+    kitIds: !usesPakKitSource && kitId ? [kitId] : undefined,
+    itemIds: !usesPakKitSource ? [kitItemId] : undefined,
+    pakKitIds: usesPakKitSource && kitId ? [kitId] : undefined,
+    pakItemIds: usesPakKitSource ? [kitItemId] : undefined,
     oldValue: { pack_state: beforeState, needed_state: beforeNeededState, quantity_packed: beforeQuantity },
     newValue: updateFields,
     notes: `${stringField(horse.fields?.barn_name || horse.fields?.horse || horse.fields?.show_name)} ${item.displayName || item.name} ${nextState}`
@@ -2169,21 +2217,34 @@ async function applyHorseKitItemCreate(airtable, tables, payload) {
   const quantity = wholeQuantityField(payload?.quantity || payload?.manualQuantity || 1) || 1;
   if (!kitId) throw new Error("missing_kit_id");
   if (!label) throw new Error("missing_kit_item_label");
+  const [legacyKits, pakKits] = await Promise.all([
+    listAirtableRecords(airtable, tables.horse_kits.id),
+    listOptionalRecords(airtable, tables.pak_kits)
+  ]);
+  const usesPakKitSource = pakKits.some((record) => record.id === kitId) || !legacyKits.some((record) => record.id === kitId);
   const fields = {
     kit_item: label,
-    horse_kits: [kitId],
-    display_name: clean(payload?.displayName) || label,
+    horse_kits: usesPakKitSource ? undefined : [kitId],
+    pak_kits: usesPakKitSource ? [kitId] : undefined,
+    display_name: usesPakKitSource ? undefined : clean(payload?.displayName) || label,
+    display_label: usesPakKitSource ? clean(payload?.displayName) || label : undefined,
     manual_quantity: quantity,
     uom: clean(payload?.uom),
     item_status: "active",
-    inline_edit: "allowed",
+    inline_edit: usesPakKitSource ? undefined : "allowed",
     sort_order: wholeQuantityField(payload?.sortOrder)
   };
-  const created = await createAirtableRecord(airtable, tables.horse_kit_items.id, fields);
+  const created = await createAirtableRecord(
+    airtable,
+    usesPakKitSource ? tables.pak_kit_items.id : tables.horse_kit_items.id,
+    compactFields(fields)
+  );
   await createHorseKitChange(airtable, tables, {
     changeType: "kit_item_added",
-    kitIds: [kitId],
-    itemIds: [created.id],
+    kitIds: usesPakKitSource ? undefined : [kitId],
+    itemIds: usesPakKitSource ? undefined : [created.id],
+    pakKitIds: usesPakKitSource ? [kitId] : undefined,
+    pakItemIds: usesPakKitSource ? [created.id] : undefined,
     oldValue: {},
     newValue: fields,
     notes: clean(payload?.notes)
@@ -3191,6 +3252,8 @@ async function createHorseKitChange(airtable, tables, payload) {
     change_type: payload.changeType,
     horse_kits: payload.kitIds || linkedIds(payload.packingKitRecord?.fields?.horse_kits),
     horse_kit_item: payload.itemIds || linkedIds(payload.packingKitRecord?.fields?.horse_kit_item),
+    pak_kits: payload.pakKitIds || linkedIds(payload.packingKitRecord?.fields?.pak_kits),
+    pak_kit_items: payload.pakItemIds || linkedIds(payload.packingKitRecord?.fields?.pak_kit_items),
     horse_packing_kit: payload.packingKitRecord?.id ? [payload.packingKitRecord.id] : payload.packingKitIds,
     horse_kit_exception: payload.exceptionIds,
     old_value: stringifyChangeValue(payload.oldValue),
@@ -3220,8 +3283,8 @@ function horsePackingKitEventNotes(record, payload) {
   return [
     `horse_packing_kit: ${record?.id || ""}`,
     `horse: ${linkedIds(fields.horse).join(",")}`,
-    `kit: ${linkedIds(fields.horse_kits).join(",")}`,
-    `kit_item: ${linkedIds(fields.horse_kit_item).join(",")}`,
+    `kit: ${[...linkedIds(fields.horse_kits), ...linkedIds(fields.pak_kits)].join(",")}`,
+    `kit_item: ${[...linkedIds(fields.horse_kit_item), ...linkedIds(fields.pak_kit_items)].join(",")}`,
     clean(payload?.notes)
   ].filter(Boolean).join("\n");
 }
@@ -3801,6 +3864,8 @@ function normalizeRosterHorse(record) {
   const recordState = stringField(fields.record_state || (fields.active ? "active" : "inactive")) || "inactive";
   return {
     id: record.id,
+    rosterId: record.id,
+    writeHorseId: record.id,
     name: stringField(fields.barn_name || fields.horse || fields.show_name),
     barnName: stringField(fields.barn_name || fields.horse),
     showName: stringField(fields.show_name || fields.horse),
@@ -3817,18 +3882,50 @@ function normalizeRosterHorse(record) {
   };
 }
 
+function normalizePakHorseRoster(record) {
+  const fields = record.fields || {};
+  const linkedHorseId = linkedIds(fields.wec_horses)[0] || record.id;
+  const inactive = !!fields.inactive || !!fields.wec_not_going;
+  const active = fields.active === true || !inactive;
+  return {
+    id: linkedHorseId,
+    rosterId: record.id,
+    writeHorseId: linkedHorseId,
+    pakHorseId: stringField(fields.pak_horse_id),
+    name: stringField(fields.display_horse_barn_name || fields.barn_name || fields.horse || fields.show_name),
+    barnName: stringField(fields.display_horse_barn_name || fields.barn_name || fields.horse),
+    showName: stringField(fields.show_name || fields.horse),
+    recordState: active ? "active" : "inactive",
+    active,
+    waveOne: !!fields.wec_wave_1,
+    waveTwo: !!fields.wec_wave_2,
+    notGoing: !!fields.wec_not_going,
+    manualLock: false,
+    sortOrder: numberField(fields.sort_order),
+    weekIds: linkedIds(fields.wec_weeks),
+    sourcePackItemIds: linkedIds(fields.pack_items),
+    pakKitItemIds: linkedIds(fields.pak_kit_items),
+    packWaveIds: linkedIds(fields.pack_waves),
+    countPakKitItems: wholeQuantityField(fields.count_pak_kit_items),
+    notes: stringField(fields.notes)
+  };
+}
+
 function normalizeHorseKitTemplate(record) {
   const fields = record.fields || {};
   const label = stringField(fields.kit || fields.name || record.id);
+  const displayLabelValue = stringField(fields.display_label || fields.display_name || label);
   return {
     id: record.id,
-    label,
+    label: displayLabelValue || label,
+    name: label,
+    displayLabel: displayLabelValue,
     key: slugify(label || record.id),
     status: slugify(fields.status || "active") || "active",
     active: slugify(fields.status || "active") !== "inactive",
     sortOrder: numberField(fields.sort_order),
     notes: stringField(fields.notes),
-    kitItemIds: linkedIds(fields.horse_kit_items),
+    kitItemIds: [...linkedIds(fields.horse_kit_items), ...linkedIds(fields.pak_kit_items)],
     packingKitIds: linkedIds(fields.horse_packing_kits),
     changeIds: linkedIds(fields.horse_kit_changes)
   };
@@ -3844,7 +3941,7 @@ function normalizeHorseKitTemplateItem(record) {
     name,
     displayName,
     label: displayName || name,
-    kitIds: linkedIds(fields.horse_kits),
+    kitIds: [...linkedIds(fields.horse_kits), ...linkedIds(fields.pak_kits)],
     manualQuantity: wholeQuantityField(fields.manual_quantity || 1) || 1,
     uom: stringField(fields.uom),
     status,
@@ -3862,8 +3959,8 @@ function normalizeHorseKitTemplateItem(record) {
 function normalizeHorsePackingKit(record, lookups = {}) {
   const fields = record.fields || {};
   const horseIds = linkedIds(fields.horse);
-  const kitIds = linkedIds(fields.horse_kits);
-  const kitItemIds = linkedIds(fields.horse_kit_item);
+  const kitIds = linkedIds(fields.pak_kits).length ? linkedIds(fields.pak_kits) : linkedIds(fields.horse_kits);
+  const kitItemIds = linkedIds(fields.pak_kit_items).length ? linkedIds(fields.pak_kit_items) : linkedIds(fields.horse_kit_item);
   const packWaveIds = linkedIds(fields.pack_wave);
   const horse = lookups.horseById?.get(horseIds[0]);
   const kit = lookups.kitById?.get(kitIds[0]);
