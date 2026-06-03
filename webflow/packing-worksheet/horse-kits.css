@@ -887,9 +887,20 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 4px;
-  padding: 6px 0;
+  padding: 8px 8px 9px;
   border-bottom: 1px solid #edf0f3;
   align-items: start;
+  background: #fff;
+  transition: background-color 0.12s ease;
+}
+
+#packing-app .rs-kit-item-row:nth-child(even) {
+  background: #f7f8fa;
+}
+
+#packing-app .rs-kit-item-row:hover,
+#packing-app .rs-kit-item-row:focus-within {
+  background: #e8f4ff;
 }
 
 #packing-app .rs-kit-item-main {

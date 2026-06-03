@@ -376,8 +376,8 @@
     const items = (state?.kitItems || [])
       .filter((item) => item.status !== "inactive" && item.active !== false)
       .filter((item) => !kitId || (item.kitIds || []).includes(kitId))
-      .sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0) || String(kitItemDisplayLabel(a)).localeCompare(String(kitItemDisplayLabel(b))));
-    return items.length ? items : (state?.kitItems || []).filter((item) => item.status !== "inactive");
+      .sort(compareKitItemAlpha);
+    return items.length ? items : (state?.kitItems || []).filter((item) => item.status !== "inactive").sort(compareKitItemAlpha);
   }
 
   function rowForKitItem(itemId, horseId, kitId) {
@@ -1002,6 +1002,10 @@
 
   function kitItemDisplayLabel(item) {
     return item?.displayLabel || item?.displayName || item?.label || item?.name || "";
+  }
+
+  function compareKitItemAlpha(a, b) {
+    return compareText(kitItemDisplayLabel(a), kitItemDisplayLabel(b));
   }
 
   function compareText(a, b) {
