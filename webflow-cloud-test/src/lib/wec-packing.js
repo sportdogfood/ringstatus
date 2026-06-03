@@ -2093,8 +2093,6 @@ export async function horseKitLaneActionReport(airtable, requestUrl, payload) {
     result = await applyHorsePackingKitState(airtable, tables, payload);
   } else if (action === "save_comment") {
     result = await applyHorseKitCommentSave(airtable, tables, payload);
-  } else if (action === "apply_horse_attribute") {
-    result = await applyHorseRosterAttribute(airtable, context, tables, payload);
   } else {
     return { ok: false, error: "unknown_horse_kit_action", action };
   }

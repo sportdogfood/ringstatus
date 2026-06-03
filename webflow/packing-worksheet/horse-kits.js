@@ -140,9 +140,6 @@
       return;
     }
 
-    if (action === "reload") {
-      await load();
-    }
   });
 
   root.addEventListener("input", (event) => {
@@ -193,7 +190,7 @@
       state = await fetchJson(stateUrl());
       records = buildRecords();
       keepSelectedRecord();
-      ui.message = sourceLine();
+      ui.message = "";
     } catch (error) {
       if (!silent) ui.error = error.message || String(error);
     } finally {
@@ -563,11 +560,6 @@
     return state?.source?.packWaveId || state?.wave?.id || "";
   }
 
-  function sourceLine() {
-    const counts = state?.counts || {};
-    return `${counts.visibleHorses || records.length || 0} horses | ${counts.kits || 0} kits | ${counts.kitItems || 0} kit items | ${counts.packingRows || 0} touched rows`;
-  }
-
   function activeStackRows() {
     const rows = state?.groupStack?.activeRows || [];
     const allowed = new Set(["header", "primary_tabs", "summary_aggs", "secondary_controls", "count_aggs", "lane_controls", "search", "search_aggs", "main_table", "comments"]);
@@ -611,7 +603,7 @@
 
     const selected = selectedHorse();
     const kit = assignedKit(selected);
-    const statusText = !records.length ? "No horses found" : (ui.error || ui.message || sourceLine());
+    const statusText = ui.error || (!records.length ? "No horses found" : "");
     root.innerHTML = `
       <div class="rs-airtable-shell">
         <div class="rs-page-stack">
@@ -861,7 +853,7 @@
           </tbody>
         </table>
       </div>
-      <div class="rs-status ${ui.error ? "is-error" : ""}">${escapeHtml(statusText)}</div>
+      ${ui.error || !records.length ? `<div class="rs-status ${ui.error ? "is-error" : ""}">${escapeHtml(statusText)}</div>` : ""}
     `, "is-main-table");
   }
 
