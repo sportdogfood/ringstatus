@@ -2278,6 +2278,77 @@ async function applyHorseKitItemMove(airtable, tables, payload) {
   return { updated };
 }
 
+async function applyHorseKitCommentSave(airtable, tables, payload) {
+  if (!tables.wec_commenting?.id) throw new Error("commenting_table_not_configured");
+  const commentId = clean(payload?.commentId);
+  const horseId = clean(payload?.horseId || payload?.scopeId);
+  const scopeLabel = clean(payload?.scopeLabel);
+  const packWaveId = clean(payload?.packWaveId);
+  const commentShortId = clean(payload?.commentShortId);
+  const commentShort = commentShortId && tables.comment_shorts?.id
+    ? await findOptionalRecordInConfiguredView(airtable, tables.comment_shorts, commentShortId)
+    : null;
+  const shortText = clean(commentShort?.fields?.display_label || commentShort?.fields?.comment_short);
+  const comment = clean(payload?.comment || shortText);
+  if (!horseId) throw new Error("missing_comment_horse_id");
+  if (!comment) throw new Error("comment_required");
+
+  const before = commentId
+    ? await findOptionalRecordInConfiguredView(airtable, tables.wec_commenting, commentId)
+    : null;
+  const fields = compactFields({
+    event: before ? undefined : `comment:horse:${horseId}:${Date.now()}`,
+    pack_wave: packWaveId ? [packWaveId] : undefined,
+    horse: [horseId],
+    event_type: before ? "comment_edit" : "comment_add",
+    scope_type: "horse",
+    scope_id: horseId,
+    scope_label: scopeLabel || horseId,
+    comment_status: before ? "edited" : "active",
+    comment,
+    notes: formatCommentNotes({
+      scopeType: "horse",
+      scopeId: horseId,
+      scopeLabel: scopeLabel || horseId,
+      comment
+    }),
+    created_at: before ? undefined : new Date().toISOString().slice(0, 10),
+    created_by: "webflow"
+  });
+  const saved = before
+    ? await patchAirtableRecord(airtable, tables.wec_commenting.id, before.id, fields)
+    : await createAirtableRecord(airtable, tables.wec_commenting.id, fields);
+  const log = await createHorseKitCommentLog(airtable, tables, {
+    commentRecord: saved,
+    commentShortId,
+    action: before ? "edited" : "created",
+    scopeType: "horse",
+    scopeId: horseId,
+    scopeLabel: scopeLabel || horseId,
+    oldValue: before ? { comment: stringField(before.fields?.comment) } : {},
+    newValue: { comment },
+    notes: clean(payload?.notes)
+  });
+  return { comment: saved, log };
+}
+
+async function createHorseKitCommentLog(airtable, tables, payload) {
+  if (!tables.comment_logs?.id) return null;
+  return createAirtableRecord(airtable, tables.comment_logs.id, compactFields({
+    comment_log: `comment:${payload.action}:${payload.scopeId}:${Date.now()}`,
+    wec_commenting: payload.commentRecord?.id ? [payload.commentRecord.id] : undefined,
+    comment_shorts: payload.commentShortId ? [payload.commentShortId] : undefined,
+    action: payload.action,
+    scope_type: payload.scopeType,
+    scope_id: payload.scopeId,
+    scope_label: payload.scopeLabel,
+    old_value: stringifyChangeValue(payload.oldValue),
+    new_value: stringifyChangeValue(payload.newValue),
+    created_by: "webflow",
+    notes: payload.notes
+  }));
+}
+
 async function applyCommentEvent(airtable, context, payload) {
   const tables = context.tables;
   const scopeType = slugify(payload?.scopeType);
