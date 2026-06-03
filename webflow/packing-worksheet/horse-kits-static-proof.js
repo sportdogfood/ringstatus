@@ -403,7 +403,7 @@
 
   function buildRecords() {
     const rows = visibleHorses().map((horse) => {
-      const kit = horseEligibleForKit(horse) ? assignedKit(horse.id) : null;
+      const kit = horseEligibleForKit(horse) ? assignedKit(horse) : null;
       const counts = rollup(horse.id, kit?.id);
       return {
         id: horse.id,
@@ -504,7 +504,10 @@
       .sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0) || String(kitDisplayLabel(a)).localeCompare(String(kitDisplayLabel(b))));
   }
 
-  function assignedKit(horseId) {
+  function assignedKit(horse) {
+    const horseId = typeof horse === "string" ? horse : horse?.id || "";
+    const hasLinkedKitItems = typeof horse === "string" ? true : countNumber(horse?.countPakKitItems) > 0 || countNumber(horse?.count_pak_kit_items) > 0;
+    if (!hasLinkedKitItems) return null;
     const rowKitId = (state?.packingRows || []).find((row) => (row.horseIds || []).includes(horseId) && row.kitIds?.length)?.kitIds?.[0] || "";
     const kits = activeKits();
     return kits.find((kit) => kit.id === rowKitId) || kits.find((kit) => kit.kitItemIds?.length) || kits[0] || null;
@@ -629,7 +632,7 @@
     }
 
     const selected = selectedHorse();
-    const kit = assignedKit(selected?.id);
+    const kit = assignedKit(selected);
     const statusText = !records.length ? "No horses found" : (ui.error || ui.message || sourceLine());
     root.innerHTML = `
       <div class="rs-airtable-shell">
