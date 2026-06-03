@@ -3934,13 +3934,14 @@ function normalizeHorseKitTemplate(record) {
 function normalizeHorseKitTemplateItem(record) {
   const fields = record.fields || {};
   const name = stringField(fields.kit_item || fields.name || record.id);
-  const displayName = stringField(fields.display_name || name);
+  const displayLabel = stringField(fields.display_label || fields.display_name || name);
   const status = slugify(fields.item_status || "active") || "active";
   return {
     id: record.id,
     name,
-    displayName,
-    label: displayName || name,
+    displayName: displayLabel,
+    displayLabel,
+    label: displayLabel || name,
     kitIds: [...linkedIds(fields.horse_kits), ...linkedIds(fields.pak_kits)],
     manualQuantity: wholeQuantityField(fields.manual_quantity || 1) || 1,
     uom: stringField(fields.uom),
