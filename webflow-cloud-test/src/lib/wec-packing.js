@@ -2138,6 +2138,202 @@ function horseKitLaneTables(context, groupStack = null) {
   };
 }
 
+const HORSE_KIT_LANE_READ_FIELDS = {
+  wec_pack_waves: [
+    "wave",
+    "wave_key",
+    "key",
+    "Name",
+    "wave_type",
+    "active",
+    "manual_lock",
+    "wec_report_title",
+    "wec_report_subtitle",
+    "deadline_date",
+    "days_till",
+    "horse_count",
+    "count_horses_wave_one",
+    "groom_sanity",
+    "sort_order",
+    "show",
+    "included_weeks",
+    "pak_tabs"
+  ],
+  pak_horses_roster: [
+    "pak_horse_id",
+    "display_horse_barn_name",
+    "barn_name",
+    "horse",
+    "show_name",
+    "active",
+    "inactive",
+    "wec_not_going",
+    "wec_wave_1",
+    "wec_wave_2",
+    "sort_order",
+    "wec_weeks",
+    "pack_items",
+    "pak_kit_items",
+    "pack_waves",
+    "ww_horses",
+    "wec_horses",
+    "count_pak_kit_items",
+    "notes"
+  ],
+  pak_kits: [
+    "kit",
+    "name",
+    "display_label",
+    "display_name",
+    "status",
+    "sort_order",
+    "notes",
+    "horse_kit_items",
+    "pak_kit_items",
+    "horse_packing_kits",
+    "horse_kit_changes"
+  ],
+  pak_kit_items: [
+    "kit_item",
+    "name",
+    "display_label",
+    "display_name",
+    "item_status",
+    "horse_kits",
+    "pak_kits",
+    "manual_quantity",
+    "uom",
+    "inline_edit",
+    "sort_order",
+    "notes",
+    "horse_packing_kits",
+    "horse_kit_exceptions",
+    "horse_kit_changes"
+  ],
+  horse_packing_kits: [
+    "horse_packing_kit",
+    "pack_wave",
+    "horse",
+    "wec_horses copy",
+    "horse_kits",
+    "horse_kit_item",
+    "pak_kits",
+    "pak_kit_items",
+    "needed_state",
+    "pack_state",
+    "quantity_needed",
+    "quantity_packed",
+    "sort_order",
+    "notes",
+    "wec_packing_events",
+    "horse_kit_exceptions",
+    "horse_kit_changes"
+  ],
+  horse_kit_changes: [
+    "change",
+    "change_type",
+    "horse_kits",
+    "horse_kit_item",
+    "pak_kits",
+    "pak_kit_items",
+    "horse_packing_kit",
+    "horse_kit_exception",
+    "old_value",
+    "new_value",
+    "created_by",
+    "notes"
+  ],
+  wec_commenting: [
+    "event",
+    "pack_wave",
+    "horse",
+    "wec_horses copy",
+    "event_type",
+    "scope_type",
+    "scope_id",
+    "scope_label",
+    "comment_status",
+    "comment",
+    "notes",
+    "created_at",
+    "created_by"
+  ],
+  comment_shorts: [
+    "display_label",
+    "comment_short",
+    "scope_type",
+    "status",
+    "sort_order",
+    "notes"
+  ],
+  comment_logs: [
+    "comment_log",
+    "action",
+    "scope_type",
+    "scope_id",
+    "scope_label",
+    "wec_commenting",
+    "comment_shorts",
+    "old_value",
+    "new_value",
+    "created_by",
+    "notes"
+  ],
+  pak_tabs: ["tab", "tab_label", "tab_priority", "active", "core", "pack_groups", "pak_views", "wec_pack_waves"],
+  wec_lanes: ["lane", "lane_label", "lane_priority", "active", "entity", "purpose"],
+  pak_views: ["view", "view_label", "pak_tabs", "pak_aggs", "pak_groups"],
+  pak_aggs: ["aggregates", "tab_label", "tab_priority", "active_shade", "active", "pak_views", "pak_groups"],
+  pak_groups: [
+    "group_key",
+    "gp_pre",
+    "stack",
+    "sort_order",
+    "role",
+    "render_key",
+    "display_label",
+    "component_key",
+    "table_name",
+    "physical_table",
+    "active",
+    "is_hidden",
+    "include_on_drawer",
+    "is_drill_down",
+    "add_filter",
+    "filter_by",
+    "add_search",
+    "search_by",
+    "add_aggregates",
+    "pak_aggs",
+    "pak_views",
+    "all_aggregates",
+    "needs_ui",
+    "allow_add_new",
+    "allow_inline_edit"
+  ],
+  horse_genders: ["display_label", "gender", "horse_attribute", "status", "sort_order", "notes"],
+  horse_disciplines: ["display_label", "discipline", "horse_attribute", "status", "sort_order", "notes"],
+  horse_colors: ["display_label", "color", "horse_attribute", "status", "sort_order", "notes"],
+  horses_change_log: [
+    "change_key",
+    "record_key",
+    "status",
+    "action",
+    "horse_record_id",
+    "horse_key",
+    "horse_name",
+    "barn_name",
+    "show_name",
+    "source",
+    "field_name",
+    "old_value",
+    "new_value",
+    "notes",
+    "changed_at",
+    "updated_at"
+  ],
+  ww_horses: ["Slug", "slug", "profile_slug", "profile_url", "url", "link"]
+};
+
 const PAK_GROUP_TABLE_ALIASES = {
   pak_horses: "pak_horses_roster",
   pak_horse_kits_list: "pak_kits",
@@ -2226,7 +2422,9 @@ function physicalTableConfig(context, name, optional = false) {
   return {
     id: tableId,
     name,
-    view: existing?.view || ""
+    view: existing?.view || "",
+    fields: existing?.fields || [],
+    schemaFields: schemaTable?.fields || []
   };
 }
 
@@ -3030,7 +3228,8 @@ function buildTableConfig(airtable, registry, schema) {
     tables[row.name] = {
       id: envTableId || row.tableApi || schemaTable?.id || row.tableName,
       name: row.name,
-      view: envView || DEFAULT_SOURCE_VIEWS[row.name] || ""
+      view: envView || DEFAULT_SOURCE_VIEWS[row.name] || "",
+      fields: row.fieldsAllowed || []
     };
   }
   for (const name of OPTIONAL_TABLES) {
@@ -3045,7 +3244,8 @@ function buildTableConfig(airtable, registry, schema) {
     tables[name] = {
       id: envTableId || schemaTable?.id || name,
       name,
-      view: envView || DEFAULT_SOURCE_VIEWS[name] || ""
+      view: envView || DEFAULT_SOURCE_VIEWS[name] || "",
+      fields: []
     };
   }
   return tables;
@@ -3081,13 +3281,15 @@ async function getBaseSchema(airtable) {
   return result;
 }
 
-export async function listAirtableRecords(airtable, table, view = "") {
+export async function listAirtableRecords(airtable, table, view = "", options = {}) {
   const records = [];
   let offset = "";
+  const fields = uniqueStrings(options.fields || []);
   do {
     const url = airtableUrl(airtable.baseId, table);
     url.searchParams.set("pageSize", "100");
     if (view) url.searchParams.set("view", view);
+    for (const field of fields) url.searchParams.append("fields[]", field);
     if (offset) url.searchParams.set("offset", offset);
     const result = await fetchAirtableListPage(airtable, table, url);
     records.push(...(result.records || []).map((record) => ({
@@ -3123,20 +3325,26 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function listOptionalRecords(airtable, tableConfig) {
+async function listOptionalRecords(airtable, tableConfig, options = {}) {
   if (!tableConfig?.id) return [];
   try {
-    return await listAirtableRecords(airtable, tableConfig.id, tableConfig.view);
+    return await listAirtableRecords(airtable, tableConfig.id, tableConfig.view, {
+      fields: options.fields || tableConfig.fields || []
+    });
   } catch (error) {
     console.warn(`[wec-packing] optional table skipped: ${tableConfig.name || tableConfig.id}`, error);
     return [];
   }
 }
 
-async function listOptionalViewRecords(airtable, tableId, view) {
+async function listOptionalViewRecords(airtable, tableOrConfig, view, options = {}) {
+  const tableConfig = typeof tableOrConfig === "object" ? tableOrConfig : null;
+  const tableId = tableConfig?.id || tableOrConfig;
   if (!tableId || !view) return [];
   try {
-    return await listAirtableRecords(airtable, tableId, view);
+    return await listAirtableRecords(airtable, tableId, view, {
+      fields: options.fields || tableConfig?.fields || []
+    });
   } catch (error) {
     console.warn(`[wec-packing] optional view skipped: ${tableId}/${view}`, error);
     return [];
@@ -3157,6 +3365,10 @@ async function linkedRecordMapByIds(airtable, tableConfig, recordIds = []) {
 
 function uniqueIds(ids = []) {
   return [...new Set(ids.filter(Boolean))];
+}
+
+function uniqueStrings(values = []) {
+  return [...new Set(values.map((value) => clean(value)).filter(Boolean))];
 }
 
 async function resolveSourceActionItem(airtable, context, payload) {
