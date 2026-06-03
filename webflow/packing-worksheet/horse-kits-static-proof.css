@@ -37,7 +37,7 @@ body {
 
 #packing-app .rs-airtable-grid {
   width: 100%;
-  min-width: 680px;
+  min-width: 393px;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
@@ -71,19 +71,19 @@ body {
 }
 
 #packing-app .rs-col-gutter {
-  width: clamp(38px, 5vw, 46px);
+  width: 32px;
 }
 
 #packing-app .rs-col-main {
-  width: clamp(190px, 28vw, 260px);
+  width: auto;
 }
 
 #packing-app .rs-col-mid {
-  width: clamp(150px, 22vw, 220px);
+  width: 104px;
 }
 
 #packing-app .rs-col-count {
-  width: clamp(70px, 10vw, 96px);
+  width: 42px;
 }
 
 #packing-app .rs-row-gutter {
@@ -245,7 +245,7 @@ body {
   }
 
   #packing-app .rs-airtable-grid {
-    min-width: 620px;
+    min-width: 393px;
   }
 
   #packing-app .rs-record-drawer {
