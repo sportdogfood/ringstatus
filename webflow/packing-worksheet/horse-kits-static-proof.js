@@ -976,13 +976,12 @@
   }
 
   function drawerItemsRow() {
-    return (state?.groupStack?.activeRows || []).find((row) =>
-      row.renderKey === "drawer_items" ||
-      row.componentKey === "rs-kit-items" ||
-      row.role === "entity_2" ||
-      row.tableName === "pak_kit_items" ||
-      row.physicalTableName === "pak_kit_items"
-    ) || null;
+    const rows = state?.groupStack?.activeRows || [];
+    return rows.find((row) => row.renderKey === "drawer_items") ||
+      rows.find((row) => row.componentKey === "rs-kit-items") ||
+      rows.find((row) => row.role === "entity_2" && row.includeOnDrawer) ||
+      rows.find((row) => row.role === "entity_2") ||
+      null;
   }
 
   function metricHtml(label, value, keyOverride = "") {
