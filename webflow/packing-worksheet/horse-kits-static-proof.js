@@ -47,9 +47,10 @@
   root.addEventListener("click", async (event) => {
     const target = event.target.closest("[data-action]");
     if (!target) return;
-    engageSession();
 
     const action = target.dataset.action;
+    engageSession();
+    refreshOnClick(action);
     if (action === "open-horse") {
       ui.selectedHorseId = target.dataset.horseId || "";
       ui.drawerOpen = true;
@@ -243,6 +244,7 @@
     });
     state = data.state || state;
     records = buildRecords();
+    requestStateRefresh(1000);
     return data;
   }
 
@@ -273,6 +275,19 @@
     } finally {
       pollInFlight = false;
     }
+  }
+
+  function refreshOnClick(action) {
+    if (action === "set-item-state" || action === "save-comment" || action === "add-kit-item") return;
+    requestStateRefresh();
+  }
+
+  function requestStateRefresh(delay = 0) {
+    if (delay > 0) {
+      window.setTimeout(() => { void pollState(); }, delay);
+      return;
+    }
+    void pollState();
   }
 
   async function setItemState(button) {
