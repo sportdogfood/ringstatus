@@ -384,18 +384,22 @@
   }
 
   function render() {
+    const scrollState = captureScrollState();
     if (ui.loading) {
       root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-airtable-empty">Loading horse kits...</div></div>`;
+      restoreScrollState(scrollState);
       return;
     }
 
     if (ui.error && !state) {
       root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-airtable-empty is-error">${escapeHtml(ui.error)}</div></div>`;
+      restoreScrollState(scrollState);
       return;
     }
 
     if (!records.length && ui.error) {
       root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-airtable-empty is-error">${escapeHtml(ui.error)}</div></div>`;
+      restoreScrollState(scrollState);
       return;
     }
 
@@ -448,6 +452,26 @@
         </div>
       </div>
     `;
+    restoreScrollState(scrollState);
+  }
+
+  function captureScrollState() {
+    const tableScroll = root.querySelector(".rs-airtable-scroll");
+    const drawerBody = root.querySelector(".rs-drawer-body");
+    return {
+      tableTop: tableScroll ? tableScroll.scrollTop : 0,
+      drawerTop: drawerBody ? drawerBody.scrollTop : 0
+    };
+  }
+
+  function restoreScrollState(scrollState) {
+    if (!scrollState) return;
+    requestAnimationFrame(() => {
+      const tableScroll = root.querySelector(".rs-airtable-scroll");
+      const drawerBody = root.querySelector(".rs-drawer-body");
+      if (tableScroll) tableScroll.scrollTop = scrollState.tableTop || 0;
+      if (drawerBody) drawerBody.scrollTop = scrollState.drawerTop || 0;
+    });
   }
 
   function recordRowHtml(record, index) {
@@ -544,7 +568,7 @@
   }
 
   function metricHtml(label, value) {
-    const key = slug(label);
+    const key = String(label || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     return `
       <div class="rs-metric rs-metric-${escapeAttr(key)}">
         <div class="rs-metric-value">${escapeHtml(value)}</div>
