@@ -31,7 +31,8 @@ body {
 #packing-app .rs-airtable-scroll {
   width: 100%;
   height: calc(100% - 86px);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
 }
 
@@ -95,19 +96,19 @@ body {
 
 #packing-app .rs-airtable-grid {
   width: 100%;
-  min-width: 393px;
+  min-width: 0;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: clamp(13px, 1.5vw, 14px);
+  font-size: 12px;
   line-height: 1.25;
 }
 
 #packing-app .rs-airtable-grid th,
 #packing-app .rs-airtable-grid td {
   height: clamp(36px, 4.2vw, 42px);
-  padding: 0 clamp(8px, 1.4vw, 12px);
+  padding: 0 5px;
   border-right: 1px solid #d9dde3;
   border-bottom: 1px solid #edf0f3;
   color: #1f2328;
@@ -126,22 +127,22 @@ body {
   background: #f4f5f7;
   color: #3e454d;
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: clamp(12px, 1.35vw, 13px);
+  font-size: 11px;
   font-weight: 600;
   overflow: visible;
   text-overflow: clip;
 }
 
 #packing-app .rs-col-gutter {
-  width: 32px;
+  width: 24px;
 }
 
 #packing-app .rs-col-label {
-  width: calc((100% - 194px) / 2);
+  width: calc((100% - 132px) / 2);
 }
 
 #packing-app .rs-col-count {
-  width: 54px;
+  width: 44px;
 }
 
 #packing-app .rs-row-gutter {
@@ -152,7 +153,7 @@ body {
   background: #fafafa;
   color: #68707a;
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
 }
 
@@ -356,7 +357,7 @@ body {
 #packing-app .rs-metric-label {
   margin-top: 4px;
   color: #68707a;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   line-height: 1.1;
   text-transform: uppercase;
@@ -656,10 +657,6 @@ body {
   #packing-app .rs-airtable-shell {
     border-left: 0;
     border-right: 0;
-  }
-
-  #packing-app .rs-airtable-grid {
-    min-width: 506px;
   }
 
   #packing-app .rs-record-drawer {
