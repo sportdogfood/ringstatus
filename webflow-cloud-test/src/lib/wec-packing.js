@@ -2104,29 +2104,6 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
     packingKitRecord = updated;
   }
 
-  const afterQuantity = wholeQuantityField(updateFields.quantity_packed);
-  const eventType = nextState === "packed"
-    ? "horse_kit_packed"
-    : nextState === "not_needed"
-      ? "horse_kit_not_needed"
-      : "horse_kit_reopened";
-  const event = await createPackingEvent(airtable, tables, {
-    eventType,
-    eventSubjectId: packingKitRecord.id,
-    packWaveIds: [packWaveId],
-    horseIds: [horseId],
-    quantityDelta: afterQuantity - beforeQuantity,
-    quantityBefore: beforeQuantity,
-    quantityAfter: afterQuantity,
-    packStateBefore: eventPackStateValue(beforeState),
-    packStateAfter: eventPackStateValue(nextState),
-    notes: [
-      `horse: ${stringField(horse.fields?.barn_name || horse.fields?.horse || horse.fields?.show_name)}`,
-      `item: ${item.displayName || item.name}`,
-      `before: ${beforeState}/${beforeNeededState}`,
-      `after: ${nextState}`
-    ].join("\n")
-  });
   const change = await createHorseKitChange(airtable, tables, {
     changeType: nextState === "not_needed" ? "exception_applied" : "quantity_changed",
     packingKitRecord,
@@ -2138,7 +2115,7 @@ async function applyStaticHorseKitItemState(airtable, tables, payload) {
     newValue: updateFields,
     notes: `${stringField(horse.fields?.barn_name || horse.fields?.horse || horse.fields?.show_name)} ${item.displayName || item.name} ${nextState}`
   });
-  return { updated, event, change, created: !existing };
+  return { updated, change, created: !existing };
 }
 
 async function applyHorsePackingKitMissingRows(airtable, tables, payload) {
