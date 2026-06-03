@@ -2244,7 +2244,6 @@ const HORSE_KIT_LANE_READ_FIELDS = {
     "pak_kit_items",
     "pack_waves",
     "ww_horses",
-    "wec_horses",
     "count_pak_kit_items",
     "notes"
   ],
@@ -2281,9 +2280,6 @@ const HORSE_KIT_LANE_READ_FIELDS = {
   horse_packing_kits: [
     "horse_packing_kit",
     "pack_wave",
-    "horse",
-    "horse_kits",
-    "horse_kit_item",
     "pak_kits",
     "pak_kit_items",
     "needed_state",
@@ -2313,7 +2309,6 @@ const HORSE_KIT_LANE_READ_FIELDS = {
   wec_commenting: [
     "event",
     "pack_wave",
-    "horse",
     "event_type",
     "scope_type",
     "scope_id",
