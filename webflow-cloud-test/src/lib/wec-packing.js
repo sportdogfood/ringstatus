@@ -2033,7 +2033,7 @@ export async function horseKitLaneReport(airtable, requestUrl) {
       kitSource: "pak",
       horseSource: "pak_horses_roster",
       horseLinkFields: rosterLinkFields,
-      tables: Object.fromEntries(Object.entries(tables).map(([key, table]) => [key, table?.id || ""])),
+      tables: horseKitSourceTableIds(tables),
       tableAliases: PAK_GROUP_TABLE_ALIASES
     },
     wave: selectedWave,
@@ -2150,6 +2150,33 @@ function assertHorseKitBlueprintTables(tables) {
   }
 }
 
+function horseKitSourceTableIds(tables) {
+  const keys = [
+    "wec_pack_waves",
+    "wec_lanes",
+    "pak_groups",
+    "pak_tabs",
+    "pak_views",
+    "pak_aggs",
+    "pak_horses_roster",
+    "pak_kits",
+    "pak_kit_items",
+    "horse_packing_kits",
+    "horse_kit_exceptions",
+    "horse_kit_changes",
+    "wec_commenting",
+    "comment_shorts",
+    "comment_logs",
+    "ww_horses",
+    "horse_genders",
+    "horse_disciplines",
+    "horse_colors",
+    "horse_attributes",
+    "horse_roster_logs"
+  ];
+  return Object.fromEntries(keys.map((key) => [key, tables[key]?.id || ""]));
+}
+
 function horseKitRosterLinkFields(tables) {
   const packingKitHorse = linkedRecordField(tables.horse_packing_kits, tables.pak_horses_roster, [
     "pak_horses_roster",
@@ -2185,8 +2212,8 @@ function horseKitReadFields(tableConfig, extraFields = []) {
   const defaults = HORSE_KIT_LANE_READ_FIELDS[tableConfig.name] || [];
   const configured = tableConfig.fields || [];
   const fields = uniqueStrings([...configured, ...defaults, ...extraFields]);
-  const schemaNames = new Set((tableConfig.schemaFields || []).map((field) => field.name));
-  return schemaNames.size ? fields.filter((field) => schemaNames.has(field)) : fields;
+  const schemaKeys = new Set((tableConfig.schemaFields || []).flatMap((field) => [field.name, field.id].filter(Boolean)));
+  return schemaKeys.size ? fields.filter((field) => schemaKeys.has(field)) : fields;
 }
 
 async function listHorseKitRecords(airtable, tableConfig, options = {}) {
