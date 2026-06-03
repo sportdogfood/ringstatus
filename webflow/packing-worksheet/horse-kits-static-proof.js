@@ -27,7 +27,8 @@
     addItemQty: "1",
     commentText: "",
     commentShortId: "",
-    editingCommentId: ""
+    editingCommentId: "",
+    commentsOpen: false
   };
 
   let state = null;
@@ -103,6 +104,13 @@
       ui.editingCommentId = comment?.id || "";
       ui.commentText = comment?.comment || "";
       ui.commentShortId = "";
+      ui.commentsOpen = true;
+      render();
+      return;
+    }
+
+    if (action === "toggle-comments") {
+      ui.commentsOpen = !ui.commentsOpen;
       render();
       return;
     }
@@ -290,6 +298,7 @@
       ui.commentText = "";
       ui.commentShortId = "";
       ui.editingCommentId = "";
+      ui.commentsOpen = true;
       ui.message = "Comment saved.";
     } catch (error) {
       ui.error = error.message || String(error);
@@ -899,8 +908,16 @@
           <textarea class="rs-comment-input" data-comment-text placeholder="Comment">${escapeHtml(ui.commentText)}</textarea>
           <button class="rs-plain-button is-primary" type="button" data-action="save-comment" ${ui.savingKey === "comment" ? "disabled" : ""}>Save</button>
         </div>
-        <div class="rs-comment-list">
-          ${comments.map(commentRowHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}
+        <div class="rs-comment-accordion ${ui.commentsOpen ? "is-open" : ""}">
+          <button class="rs-comment-thread-toggle" type="button" data-action="toggle-comments" aria-expanded="${ui.commentsOpen ? "true" : "false"}">
+            <span>Comments (${escapeHtml(comments.length)})</span>
+            <span class="rs-comment-toggle-state">${ui.commentsOpen ? "Close" : "Open"}</span>
+          </button>
+          ${ui.commentsOpen ? `
+            <div class="rs-comment-list is-thread-list">
+              ${comments.map(commentRowHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}
+            </div>
+          ` : ""}
         </div>
       </div>
     `;
@@ -919,14 +936,18 @@
     return (state?.comments || [])
       .filter((comment) => comment.status !== "deleted")
       .filter((comment) => comment.scopeId === horseId || (comment.horseIds || []).includes(horseId))
-      .sort((a, b) => String(b.createdTime || "").localeCompare(String(a.createdTime || "")));
+      .sort(compareCommentsLatest);
   }
 
   function pageComments() {
     return (state?.comments || [])
       .filter((comment) => comment.status !== "deleted")
       .filter((comment) => !(comment.horseIds || []).length)
-      .sort((a, b) => String(b.createdTime || "").localeCompare(String(a.createdTime || "")));
+      .sort(compareCommentsLatest);
+  }
+
+  function compareCommentsLatest(a, b) {
+    return String(b.createdAt || b.createdTime || "").localeCompare(String(a.createdAt || a.createdTime || ""));
   }
 
   function commentShorts() {

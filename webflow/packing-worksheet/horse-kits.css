@@ -1039,13 +1039,64 @@ body {
   grid-template-columns: minmax(0, 1fr);
 }
 
+#packing-app .rs-comment-accordion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border: 1px solid #d9dde3;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+#packing-app .rs-comment-thread-toggle {
+  width: 100%;
+  min-width: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 10px;
+  border: 0;
+  background: #f7f8fa;
+  color: #1f2328;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#packing-app .rs-comment-toggle-state {
+  color: #68707a;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
+#packing-app .rs-comment-list.is-thread-list {
+  min-height: 104px;
+  max-height: 188px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 #packing-app .rs-comment-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
   align-items: start;
-  padding: 8px 0;
+  padding: 8px 10px;
   border-top: 1px solid #edf0f3;
+  background: #fff;
+}
+
+#packing-app .rs-comment-list.is-thread-list .rs-comment-row:nth-child(even) {
+  background: #f7f8fa;
+}
+
+#packing-app .rs-comment-list.is-thread-list .rs-comment-row:hover,
+#packing-app .rs-comment-list.is-thread-list .rs-comment-row:focus-within {
+  background: #e8f4ff;
 }
 
 #packing-app .rs-comment-text {

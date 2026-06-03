@@ -1878,7 +1878,21 @@ export async function horseKitLaneReport(airtable, requestUrl) {
   const kits = kitRecords.map(normalizeHorseKitTemplate).sort(compareKitTemplates);
   const kitItems = kitItemRecords.map(normalizeHorseKitTemplateItem).sort(compareKitItems);
   const kitItemById = new Map(kitItems.map((item) => [item.id, item]));
-  const kitById = new Map(kits.map((kit) => [kit.id, kit]));
+  const kitItemsByKitId = groupItemsByLinkedKit(kitItems);
+  const kitsWithItems = kits.map((kit) => {
+    const linkedItems = kit.kitItemIds.map((id) => kitItemById.get(id)).filter(Boolean);
+    const reverseLinkedItems = kitItemsByKitId.get(kit.id) || [];
+    const items = [...new Map([...linkedItems, ...reverseLinkedItems].map((item) => [item.id, item])).values()]
+      .filter((item) => item.status !== "inactive" && item.active !== false)
+      .sort(compareKitItems);
+    return {
+      ...kit,
+      kitItemIds: items.map((item) => item.id),
+      kitItemCount: items.length,
+      items
+    };
+  });
+  const kitById = new Map(kitsWithItems.map((kit) => [kit.id, kit]));
   const horseById = new Map(horses.flatMap((horse) => [
     [horse.id, horse],
     ...(horse.writeHorseId && horse.writeHorseId !== horse.id ? [[horse.writeHorseId, horse]] : [])
@@ -1927,7 +1941,7 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     counts: {
       horses: horses.length,
       visibleHorses: visibleHorses.length,
-      kits: kits.length,
+      kits: kitsWithItems.length,
       kitItems: kitItems.length,
       packingRows: packingRows.length,
       packedRows: packingRows.filter((row) => row.packState === "packed").length,
@@ -1935,7 +1949,7 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     },
     horses: visibleHorses,
     allHorses: horsesWithCounts,
-    kits,
+    kits: kitsWithItems,
     kitItems,
     packingRows,
     exceptions,
