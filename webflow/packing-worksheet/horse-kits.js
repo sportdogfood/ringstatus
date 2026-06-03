@@ -2,9 +2,13 @@
   const root = document.getElementById("horse-kits") || document.getElementById("horse-kit-static-proof");
   if (!root) return;
 
+  const globalConfig = window.WEC_HORSE_KITS_CONFIG || {};
   const config = {
-    apiUrl: root.dataset.apiUrl || "/wec-packing/horse-kits",
-    packWaveKey: root.dataset.packWaveKey || "wave_one"
+    apiUrl: root.dataset.apiUrl || globalConfig.apiUrl || "/wec-packing/horse-kits",
+    printUrl: root.dataset.printUrl || globalConfig.printUrl || "",
+    pdfWorkerUrl: root.dataset.pdfWorkerUrl || globalConfig.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/",
+    usePdfWorker: truthy(root.dataset.enablePrintPdf || globalConfig.enablePrintPdf),
+    packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
   };
 
   const ui = {
@@ -17,6 +21,8 @@
     search: "",
     itemSearch: "",
     itemFilter: "all",
+    sortKey: "horse",
+    sortDir: "asc",
     addItemName: "",
     addItemQty: "1",
     commentText: "",
@@ -61,6 +67,11 @@
       return;
     }
 
+    if (action === "print-list") {
+      openPrintPage();
+      return;
+    }
+
     if (action === "set-item-state") {
       await setItemState(target);
       return;
@@ -69,6 +80,11 @@
     if (action === "set-item-filter") {
       ui.itemFilter = target.dataset.itemFilter || "all";
       render();
+      return;
+    }
+
+    if (action === "set-sort") {
+      setTableSort(target.dataset.sortKey || "horse");
       return;
     }
 
@@ -290,7 +306,7 @@
   }
 
   function buildRecords() {
-    return visibleHorses().map((horse) => {
+    const rows = visibleHorses().map((horse) => {
       const kit = assignedKit(horse.id);
       const counts = rollup(horse.id, kit?.id);
       return {
@@ -300,6 +316,31 @@
         counts
       };
     });
+    return sortRecords(rows);
+  }
+
+  function sortRecords(rows) {
+    const key = ui.sortKey || "horse";
+    const direction = ui.sortDir === "desc" ? -1 : 1;
+    return [...rows].sort((a, b) => {
+      if (key === "horse") return compareText(horseLabel(a.horse), horseLabel(b.horse)) * direction;
+      if (key === "kit") return compareText(kitDisplayLabel(a.kit), kitDisplayLabel(b.kit)) * direction;
+      if (key === "need") return compareNumber(a.counts?.needed, b.counts?.needed) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
+      if (key === "packed") return compareNumber(a.counts?.packed, b.counts?.packed) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
+      if (key === "left") return compareNumber(a.counts?.left, b.counts?.left) * direction || compareText(horseLabel(a.horse), horseLabel(b.horse));
+      return compareText(horseLabel(a.horse), horseLabel(b.horse));
+    });
+  }
+
+  function setTableSort(key) {
+    if (ui.sortKey === key) {
+      ui.sortDir = ui.sortDir === "asc" ? "desc" : "asc";
+    } else {
+      ui.sortKey = key;
+      ui.sortDir = "asc";
+    }
+    records = sortRecords(records);
+    render();
   }
 
   function visibleHorses() {
@@ -385,13 +426,15 @@
 
   function activeStackRows() {
     const rows = state?.groupStack?.activeRows || [];
-    const allowed = new Set(["header", "primary_tabs", "lane_controls", "secondary_controls", "search_aggs", "main_table", "comments"]);
+    const allowed = new Set(["header", "primary_tabs", "lane_controls", "secondary_controls", "summary_aggs", "count_aggs", "search", "search_aggs", "main_table", "comments"]);
     const activeRows = rows
       .filter((row) => row && !row.hidden && row.active !== false && allowed.has(row.renderKey))
       .sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0) || Number(a.sourceIndex || 0) - Number(b.sourceIndex || 0));
     return activeRows.length ? activeRows : [
       { renderKey: "header", displayLabel: "Header" },
-      { renderKey: "search_aggs", displayLabel: "Horse Kits" },
+      { renderKey: "summary_aggs", displayLabel: "Horse Kits" },
+      { renderKey: "count_aggs", displayLabel: "" },
+      { renderKey: "search", displayLabel: "Search" },
       { renderKey: "main_table", displayLabel: "Horses" },
       { renderKey: "comments", displayLabel: "Comments" }
     ];
@@ -429,7 +472,10 @@
         <div class="rs-drawer-overlay ${ui.drawerOpen ? "is-open" : ""}" data-action="close-drawer"></div>
         <div class="rs-record-drawer ${ui.drawerOpen ? "is-open" : ""}" aria-label="Horse kit details">
           <div class="rs-drawer-head">
-            <div class="rs-drawer-title">${escapeHtml(horseLabel(selected) || "Horse Kit")}</div>
+            <div class="rs-drawer-title-group">
+              <div class="rs-drawer-title">${escapeHtml(horseLabel(selected) || "Horse Kit")}</div>
+              ${selected?.profileUrl ? `<a class="rs-drawer-profile-link" href="${escapeAttr(selected.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : ""}
+            </div>
             <button class="rs-drawer-close" type="button" aria-label="Close" data-action="close-drawer"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="rs-drawer-body">
@@ -447,6 +493,9 @@
     if (key === "primary_tabs") return primaryTabsHtml(row);
     if (key === "lane_controls") return laneControlsHtml(row);
     if (key === "secondary_controls") return secondaryControlsHtml(row);
+    if (key === "summary_aggs") return summaryAggsHtml(row);
+    if (key === "count_aggs") return "";
+    if (key === "search") return searchHtml(row);
     if (key === "search_aggs") return searchAggsHtml(row);
     if (key === "main_table") return tableStackHtml(row, statusText);
     if (key === "comments") return pageCommentsHtml(row);
@@ -463,77 +512,155 @@
 
   function pageHeaderHtml(row) {
     const wave = state?.wave || {};
-    const title = wave.wecReportTitle || wave.reportTitle || "WEC PACK LIST";
-    const subtitle = wave.wecReportSubtitle || wave.reportSubtitle || `${waveLabel(wave)} | departs: ${formatDate(wave.deadlineDate)} | ${wave.daysTill || 0} days remaining`;
+    const title = wave.wecReportTitle || "";
+    const subtitle = wave.wecReportSubtitle || "";
     return stackSectionHtml(row, `
       <div class="rs-page-header">
-        <div class="rs-page-title">${escapeHtml(title)}</div>
-        <div class="rs-page-subtitle">${escapeHtml(subtitle)}</div>
+        ${title ? `<div class="rs-page-title">${escapeHtml(title)}</div>` : ""}
+        ${subtitle ? `<div class="rs-page-subtitle">${escapeHtml(subtitle)}</div>` : ""}
       </div>
     `, "is-header");
   }
 
   function primaryTabsHtml(row) {
+    const tabs = primaryTabs();
     return stackSectionHtml(row, `
-      <div class="rs-stack-tabs">
-        <button class="rs-stack-pill is-active" type="button">HORSE KITS</button>
+      <div class="rs-stack-tabs" role="navigation" aria-label="${escapeAttr(row?.displayLabel || "Primary Tabs")}">
+        ${tabs.map((tab) => `<button class="rs-stack-pill ${tab.key === "horses" ? "is-active" : ""}" type="button" data-primary-tab="${escapeAttr(tab.key)}">${escapeHtml(tab.label)}</button>`).join("")}
       </div>
     `, "is-primary-tabs");
   }
 
   function laneControlsHtml(row) {
-    const counts = state?.counts || {};
+    const lanes = laneControls();
     return stackSectionHtml(row, `
-      <div class="rs-stack-tabs is-compact">
-        <button class="rs-stack-pill is-active" type="button">${escapeHtml(waveLabel(state?.wave))}</button>
-        <button class="rs-stack-pill" type="button">${escapeHtml(counts.visibleHorses || records.length || 0)} HORSES</button>
-        <button class="rs-stack-pill" type="button">${escapeHtml(counts.kitItems || 0)} KIT ITEMS</button>
+      <div class="rs-stack-tabs is-compact" aria-label="${escapeAttr(row?.displayLabel || "Lane Controls")}">
+        ${lanes.map((lane) => `<button class="rs-stack-pill ${lane.key === "open" ? "is-active" : ""}" type="button" data-lane-key="${escapeAttr(lane.key)}">${escapeHtml(lane.label)}</button>`).join("")}
       </div>
     `, "is-lane-controls");
   }
 
   function secondaryControlsHtml(row) {
-    const counts = state?.counts || {};
+    const views = secondaryControls();
     return stackSectionHtml(row, `
       <div class="rs-stack-tabs is-compact">
-        <button class="rs-stack-pill is-active" type="button">ALL (${escapeHtml(counts.visibleHorses || records.length || 0)})</button>
-        <button class="rs-stack-pill" type="button">PACKED (${escapeHtml(counts.packedRows || 0)})</button>
-        <button class="rs-stack-pill" type="button">NOT NEEDED (${escapeHtml(counts.notNeededRows || 0)})</button>
+        ${views.map((view) => `<button class="rs-stack-pill ${view.key === "wave_one" ? "is-active" : ""}" type="button" data-secondary-view="${escapeAttr(view.key)}">${escapeHtml(view.label)}</button>`).join("")}
       </div>
     `, "is-secondary-controls");
   }
 
   function searchAggsHtml(row) {
-    const counts = state?.counts || {};
     return stackSectionHtml(row, `
       <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horse Kits")}</div>
-      <div class="rs-stack-aggs">
-        ${stackAggHtml(records.length || counts.visibleHorses || 0, "HORSES")}
-        ${stackAggHtml(counts.kitItems || 0, "KIT ITEMS")}
-        ${stackAggHtml(counts.packingRows || 0, "TOUCHED")}
-      </div>
+      <div class="rs-stack-aggs">${stackAggsHtml(summaryAggRows(row), summaryAggValues())}</div>
+      ${searchControlsHtml()}
+    `, "is-search-aggs");
+  }
+
+  function summaryAggsHtml(row) {
+    return stackSectionHtml(row, `
+      <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horse Kits")}</div>
+      <div class="rs-stack-aggs">${stackAggsHtml(summaryAggRows(row), summaryAggValues())}</div>
+    `, "is-summary-aggs");
+  }
+
+  function countAggsHtml(row) {
+    return stackSectionHtml(row, `
+      <div class="rs-stack-aggs is-counts">${stackAggsHtml(countAggRows(row), tableAggValues())}</div>
+    `, "is-count-aggs");
+  }
+
+  function searchHtml(row) {
+    return stackSectionHtml(row, searchControlsHtml(), "is-search");
+  }
+
+  function searchControlsHtml() {
+    return `
       <div class="rs-airtable-toolbar">
         <div class="rs-search-wrap">
           <input class="rs-search" type="search" data-search placeholder="Search horses" value="${escapeAttr(ui.search)}">
           <button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" aria-label="Clear search" data-action="clear-search">&times;</button>
         </div>
-        <button class="rs-plain-button" type="button" data-action="reload">Refresh</button>
       </div>
-    `, "is-search-aggs");
+    `;
   }
 
-  function stackAggHtml(value, label) {
+  function stackAggsHtml(aggs, values) {
+    return aggs.map((agg) => stackAggHtml(aggValue(agg, values), agg.label, agg.key, agg.shade)).join("");
+  }
+
+  function stackAggHtml(value, label, key = "", shade = "") {
     return `
-      <div class="rs-stack-agg">
+      <div class="rs-stack-agg ${key ? `is-${escapeAttr(key)}` : ""} ${shade ? `is-shade-${escapeAttr(shade)}` : ""}">
         <div class="rs-stack-agg-value">${escapeHtml(value)}</div>
         <div class="rs-stack-agg-label">${escapeHtml(label)}</div>
       </div>
     `;
   }
 
+  function summaryAggRows(row) {
+    return rowAggRows(sourceAggRow("entity_1") || row, [
+      { key: "horses", label: "HORSES", shade: "brown" },
+      { key: "kit_items", label: "KIT ITEMS", shade: "green" },
+      { key: "touched", label: "TOUCHED", shade: "grey" }
+    ]);
+  }
+
+  function countAggRows(row) {
+    return rowAggRows(sourceAggRow("entity_2") || row || activeStackRows().find((candidate) => candidate.renderKey === "count_aggs"), [
+      { key: "need", label: "NEED", shade: "brown" },
+      { key: "packed", label: "PACKED", shade: "green" },
+      { key: "left", label: "LEFT", shade: "grey" }
+    ]);
+  }
+
+  function rowAggRows(row, fallback) {
+    const aggs = (row?.aggRows || []).filter((agg) => agg && agg.active !== false);
+    return aggs.length ? aggs : fallback;
+  }
+
+  function sourceAggRow(role) {
+    return (state?.groupStack?.activeRows || []).find((row) => row.role === role && row.addAggregates && row.aggRows?.length) || null;
+  }
+
+  function summaryAggValues() {
+    const counts = state?.counts || {};
+    return {
+      horses: records.length || counts.visibleHorses || 0,
+      kit_items: counts.kitItems || 0,
+      touched: counts.packingRows || 0
+    };
+  }
+
+  function tableAggValues() {
+    return records.reduce((totals, record) => {
+      totals.need += Number(record?.counts?.needed || 0);
+      totals.packed += Number(record?.counts?.packed || 0);
+      totals.left += Number(record?.counts?.left || 0);
+      return totals;
+    }, { need: 0, packed: 0, left: 0 });
+  }
+
+  function aggValue(agg, values) {
+    const key = agg?.key || "";
+    if (key === "horses") return values.horses || 0;
+    if (key === "kit_items" || key === "items") return values.kit_items || values.items || 0;
+    if (key === "touched") return values.touched || 0;
+    if (key === "need" || key === "needed") return values.need ?? values.needed ?? 0;
+    if (key === "packed" || key === "pack") return values.packed || 0;
+    if (key === "left") return values.left || 0;
+    if (key === "not_needed") return values.notNeeded || values.not_needed || 0;
+    return values[key] || 0;
+  }
+
   function tableStackHtml(row, statusText) {
+    const countRow = sourceAggRow("entity_2") || activeStackRows().find((candidate) => candidate.renderKey === "count_aggs");
     return stackSectionHtml(row, `
-      <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horses")}</div>
+      <div class="rs-table-stack-head">
+        <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horses")}</div>
+        <button class="rs-plain-button is-primary" type="button" data-action="print-list">Print</button>
+      </div>
+      ${countRow ? `<div class="rs-table-count-aggs"><div class="rs-stack-aggs is-counts">${stackAggsHtml(countAggRows(countRow), tableAggValues())}</div></div>` : ""}
       <div class="rs-airtable-scroll">
         <table class="rs-airtable-grid">
           <colgroup>
@@ -547,11 +674,11 @@
           <thead>
             <tr>
               <th class="rs-row-gutter">#</th>
-              <th>Horse</th>
-              <th>Kit</th>
-              <th>Need</th>
-              <th>Packed</th>
-              <th>Left</th>
+              <th>${sortableHeaderHtml("Horse", "horse")}</th>
+              <th>${sortableHeaderHtml("Kit", "kit")}</th>
+              <th>${sortableHeaderHtml("Need", "need")}</th>
+              <th>${sortableHeaderHtml("Packed", "packed")}</th>
+              <th>${sortableHeaderHtml("Left", "left")}</th>
             </tr>
           </thead>
           <tbody>
@@ -615,6 +742,20 @@
     `;
   }
 
+  function sortableHeaderHtml(label, key) {
+    const active = ui.sortKey === key;
+    const indicator = active ? (ui.sortDir === "desc" ? "desc" : "asc") : "";
+    return `
+      <button class="rs-sort-head ${active ? "is-active" : ""}" type="button"
+        data-action="set-sort"
+        data-sort-key="${escapeAttr(key)}"
+        aria-label="Sort ${escapeAttr(label)} ${active && ui.sortDir === "asc" ? "descending" : "ascending"}">
+        <span>${escapeHtml(label)}</span>
+        <span class="rs-sort-mark" aria-hidden="true">${indicator ? escapeHtml(indicator) : ""}</span>
+      </button>
+    `;
+  }
+
   function detailHtml(horse, kit) {
     const counts = rollup(horse.id, kit?.id);
     const items = filteredKitItems(kit?.id);
@@ -626,9 +767,7 @@
           <div class="rs-field-value">${escapeHtml(kitDisplayLabel(kit) || "No kit")}</div>
         </div>
         <div class="rs-summary-metrics">
-          ${metricHtml("Need", counts.needed)}
-          ${metricHtml("Packed", counts.packed)}
-          ${metricHtml("Left", counts.left)}
+          ${drawerMetricRows().map((agg) => metricHtml(agg.label, aggValue(agg, counts), agg.key)).join("")}
         </div>
         <div class="rs-kit-progress" aria-label="${escapeAttr(percentPacked)}% packed">
           <div class="rs-kit-progress-label">${escapeHtml(percentPacked)}% PACKED</div>
@@ -689,8 +828,14 @@
     `;
   }
 
-  function metricHtml(label, value) {
-    const key = String(label || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  function drawerMetricRows() {
+    const entityTwoRow = sourceAggRow("entity_2");
+    const drawerAggs = entityTwoRow?.includeOnDrawer ? rowAggRows(entityTwoRow, []) : [];
+    return drawerAggs.length ? drawerAggs : countAggRows();
+  }
+
+  function metricHtml(label, value, keyOverride = "") {
+    const key = keyOverride || String(label || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     return `
       <div class="rs-metric rs-metric-${escapeAttr(key)}">
         <div class="rs-metric-value">${escapeHtml(value)}</div>
@@ -788,6 +933,18 @@
     return (state?.commentShorts || []).filter((row) => row.active !== false && row.status !== "inactive");
   }
 
+  function primaryTabs() {
+    return (state?.primaryTabs || []).filter((tab) => tab.active !== false);
+  }
+
+  function laneControls() {
+    return (state?.laneControls || []).filter((lane) => lane.active !== false);
+  }
+
+  function secondaryControls() {
+    return state?.secondaryControls || [];
+  }
+
   function horseLabel(horse) {
     return horse?.name || horse?.barnName || horse?.showName || "";
   }
@@ -795,6 +952,41 @@
   function waveLabel(wave) {
     const value = wave?.wave || wave?.waveType || wave?.key || config.packWaveKey || "wave_one";
     return String(value).replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  function openPrintPage() {
+    const url = printTargetUrl();
+    const opened = window.open(url.toString(), "_blank", "noopener");
+    ui.message = opened ? (config.usePdfWorker ? "Creating PDF..." : "Opening print page...") : "Popup blocked. Allow popups and press Print again.";
+    render();
+  }
+
+  function printTargetUrl() {
+    const printUrl = new URL(config.printUrl || `${config.apiUrl.replace(/\/$/, "")}/print`, window.location.href);
+    printUrl.searchParams.set("packWaveKey", config.packWaveKey);
+    printUrl.searchParams.set("autoprint", "1");
+    return config.usePdfWorker ? pdfWorkerUrl(printSafeUrl(printUrl), `horse-kits-${safeFilename(config.packWaveKey)}.pdf`) : printUrl;
+  }
+
+  function printSafeUrl(printUrl) {
+    const safeUrl = new URL(printUrl.toString());
+    if (safeUrl.hostname === "ringstatus.webflow.io") safeUrl.hostname = "ringstatus.com";
+    return safeUrl;
+  }
+
+  function pdfWorkerUrl(printUrl, filename) {
+    const url = new URL(config.pdfWorkerUrl || "https://ringstatus-pdf.gombcg.workers.dev/");
+    url.searchParams.set("url", printUrl.toString());
+    url.searchParams.set("filename", filename);
+    return url;
+  }
+
+  function safeFilename(value) {
+    return String(value || "horse-kits").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "horse-kits";
+  }
+
+  function truthy(value) {
+    return value === true || value === "true" || value === "1" || value === 1;
   }
 
   function formatDate(value) {
@@ -810,6 +1002,14 @@
 
   function kitItemDisplayLabel(item) {
     return item?.displayLabel || item?.displayName || item?.label || item?.name || "";
+  }
+
+  function compareText(a, b) {
+    return String(a || "").localeCompare(String(b || ""), undefined, { sensitivity: "base", numeric: true });
+  }
+
+  function compareNumber(a, b) {
+    return (Number(a) || 0) - (Number(b) || 0);
   }
 
   function filteredKitItems(kitId) {

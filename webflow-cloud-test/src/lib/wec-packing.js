@@ -833,6 +833,131 @@ export function printReportHtml(report, requestUrl) {
   return printDocumentHtml(title, body);
 }
 
+export function horseKitPrintHtml(report, requestUrl) {
+  const title = displayLabel(report?.wave?.wecReportTitle || "Horse Kits");
+  const rows = horseKitPrintRows(report);
+  const needed = rows.reduce((sum, row) => sum + row.needed, 0);
+  const packed = rows.reduce((sum, row) => sum + row.packed, 0);
+  const percent = needed > 0 ? progressPercent(packed, needed) : 0;
+  const chunks = chunkRows(rows, 28);
+  const pages = (chunks.length ? chunks : [[]])
+    .map((chunk, index) => horseKitPrintPageHtml(report, title, percent, chunk, index + 1, Math.max(1, chunks.length)))
+    .join("");
+  return printDocumentHtml(`${title} Horse Kits`, `${pages}${printAutoScript(requestUrl)}`);
+}
+
+function horseKitPrintRows(report) {
+  return (report?.horses || [])
+    .map((horse) => {
+      const kit = assignedReportKit(report, horse.id);
+      const counts = horseKitPrintCounts(report, horse.id, kit?.id);
+      return {
+        horse: printHorseName(horse),
+        kit: kit?.displayLabel || kit?.label || kit?.name || "",
+        needed: counts.needed,
+        packed: counts.packed,
+        left: counts.left,
+        percent: counts.needed > 0 ? progressPercent(counts.packed, counts.needed) : 0
+      };
+    })
+    .sort((a, b) => compareText(a.horse, b.horse));
+}
+
+function assignedReportKit(report, horseId) {
+  const kits = (report?.kits || []).filter((kit) => kit.status !== "inactive" && kit.active !== false);
+  const rowKitId = (report?.packingRows || []).find((row) => (row.horseIds || []).includes(horseId) && row.kitIds?.length)?.kitIds?.[0] || "";
+  return kits.find((kit) => kit.id === rowKitId) || kits.find((kit) => kit.kitItemIds?.length) || kits[0] || null;
+}
+
+function reportKitItems(report, kitId) {
+  const activeItems = (report?.kitItems || []).filter((item) => item.status !== "inactive" && item.active !== false);
+  const kitItems = activeItems
+    .filter((item) => !kitId || (item.kitIds || []).includes(kitId))
+    .sort((a, b) => compareNumber(a.sortOrder, b.sortOrder) || compareText(itemPrintLabel(a), itemPrintLabel(b)));
+  return kitItems.length ? kitItems : activeItems;
+}
+
+function horseKitPrintCounts(report, horseId, kitId) {
+  const items = reportKitItems(report, kitId);
+  const counts = { needed: items.length, packed: 0, notNeeded: 0, left: items.length };
+  for (const item of items) {
+    const row = (report?.packingRows || []).find((candidate) =>
+      (candidate.horseIds || []).includes(horseId) &&
+      (candidate.kitItemIds || []).includes(item.id) &&
+      (!kitId || !candidate.kitIds?.length || candidate.kitIds.includes(kitId))
+    );
+    const state = row?.neededState === "not_needed" || row?.packState === "not_needed"
+      ? "not_needed"
+      : row?.packState === "packed"
+        ? "packed"
+        : "not_packed";
+    if (state === "packed") counts.packed += 1;
+    if (state === "not_needed") counts.notNeeded += 1;
+  }
+  counts.needed = Math.max(0, items.length - counts.notNeeded);
+  counts.left = Math.max(0, counts.needed - counts.packed);
+  return counts;
+}
+
+function itemPrintLabel(item) {
+  return item?.displayLabel || item?.displayName || item?.label || item?.name || "";
+}
+
+function horseKitPrintPageHtml(report, title, percent, rows, pageNumber, pageCount) {
+  return `
+    <section class="packing-print-page">
+      ${printGlobalHeaderHtml(report, title, percent)}
+      <section class="packing-print-list">
+        <div class="packing-print-list-head">
+          <h2>${escapeHtml(printUpperLabel(`Horse Kits ${pageCount > 1 ? `${pageNumber}/${pageCount}` : ""}`))}</h2>
+        </div>
+        <table class="packing-print-table packing-print-kit-table">
+          <colgroup>
+            <col style="width: 34%">
+            <col style="width: 30%">
+            <col style="width: 12%">
+            <col style="width: 12%">
+            <col style="width: 12%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>HORSE</th>
+              <th>KIT</th>
+              <th>NEED</th>
+              <th>PACKED</th>
+              <th>LEFT</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.length ? rows.map((row, index) => horseKitPrintRowHtml(row, index)).join("") : `<tr><td colspan="5">NO ROWS</td></tr>`}
+          </tbody>
+        </table>
+      </section>
+      ${printFooterHtml(pageNumber)}
+    </section>
+  `;
+}
+
+function horseKitPrintRowHtml(row, index) {
+  const zebraClass = index % 2 ? " is-zebra" : "";
+  return `
+    <tr class="packing-print-data-row${zebraClass}">
+      <td class="packing-print-name-cell">${escapeHtml(printUpperLabel(row.horse))}</td>
+      <td>${escapeHtml(row.kit || "")}</td>
+      <td class="packing-print-number">${escapeHtml(row.needed)}</td>
+      <td class="packing-print-number">${escapeHtml(row.packed)}</td>
+      <td class="packing-print-number">${escapeHtml(row.left)}</td>
+    </tr>
+  `;
+}
+
+function printAutoScript(requestUrl) {
+  const url = new URL(requestUrl);
+  const autoprint = clean(url.searchParams.get("autoprint"));
+  if (!["1", "true", "yes"].includes(autoprint)) return "";
+  return `<script>window.addEventListener("load", function () { window.setTimeout(function () { window.print(); }, 120); });</script>`;
+}
+
 function printBodyHtml(report, target) {
   if (target === "overview") {
     const pages = (report.tabGroups || []).map((group) => printPackingPageHtml(report, group.label, printListSections(report, group.id))).join("");
@@ -1686,6 +1811,10 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     commentRecords,
     commentShortRecords,
     commentLogRecords,
+    pakTabRecords,
+    laneRecords,
+    pakViewRecords,
+    pakAggRecords,
     horseGenderRecords,
     horseDisciplineRecords,
     horseColorRecords,
@@ -1704,20 +1833,47 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     listOptionalRecords(airtable, tables.wec_commenting),
     listOptionalRecords(airtable, tables.comment_shorts),
     listOptionalRecords(airtable, tables.comment_logs),
+    listOptionalRecords(airtable, tables.pak_tabs),
+    listOptionalViewRecords(airtable, tables.wec_lanes?.id, "horse_specific"),
+    listOptionalRecords(airtable, tables.pak_views),
+    listOptionalRecords(airtable, tables.pak_aggs),
     listOptionalRecords(airtable, tables.horse_genders),
     listOptionalRecords(airtable, tables.horse_disciplines),
     listOptionalRecords(airtable, tables.horse_colors),
     listOptionalRecords(airtable, tables.horse_roster_logs)
   ]);
   const usePakKitSource = pakKitRecords.length > 0 || pakKitItemRecords.length > 0;
+  const usePakHorseRoster = pakHorseRosterRecords.length > 0;
   const kitRecords = usePakKitSource ? pakKitRecords : legacyKitRecords;
   const kitItemRecords = usePakKitSource ? pakKitItemRecords : legacyKitItemRecords;
 
   const selectedWaveRecord = selectWave(waveRecords, packWaveId, packWaveKey);
   const selectedWave = selectedWaveRecord ? normalizeWave(selectedWaveRecord) : null;
-  const usePakHorseRoster = pakHorseRosterRecords.length > 0;
+  const selectedWavePakTabIds = new Set(selectedWave?.pakTabIds || []);
+  const primaryTabs = pakTabRecords
+    .map(normalizePakTab)
+    .filter((tab) => tab.active && (!selectedWavePakTabIds.size || selectedWavePakTabIds.has(tab.id)))
+    .sort(comparePakTabs);
+  const laneControls = laneRecords
+    .map(normalizeWecLane)
+    .filter((lane) => lane.active)
+    .sort(compareWecLanes);
+  const secondaryControlPakViewIds = new Set((groupStack.activeRows.find((row) => row.renderKey === "secondary_controls")?.pakViewIds || []));
+  const secondaryControls = pakViewRecords
+    .map(normalizePakView)
+    .filter((view) => secondaryControlPakViewIds.has(view.id))
+    .sort(comparePakViews);
+  const pakAggs = pakAggRecords
+    .map(normalizePakAgg)
+    .filter((agg) => agg.active)
+    .sort(comparePakAggs);
+  const pakAggById = new Map(pakAggs.map((agg) => [agg.id, agg]));
+  const groupStackWithAggs = attachPakAggRows(groupStack, pakAggById);
+  const wwHorseById = usePakHorseRoster
+    ? await linkedRecordMapByIds(airtable, tables.ww_horses, uniqueIds(pakHorseRosterRecords.flatMap((record) => linkedIds(record.fields?.ww_horses))))
+    : new Map();
   const horses = (usePakHorseRoster ? pakHorseRosterRecords : legacyHorseRecords)
-    .map(usePakHorseRoster ? normalizePakHorseRoster : normalizeRosterHorse)
+    .map(usePakHorseRoster ? (record) => normalizePakHorseRoster(record, { wwHorseById }) : normalizeRosterHorse)
     .sort(compareHorseRosterRows);
   const kits = kitRecords.map(normalizeHorseKitTemplate).sort(compareKitTemplates);
   const kitItems = kitItemRecords.map(normalizeHorseKitTemplateItem).sort(compareKitItems);
@@ -1787,9 +1943,13 @@ export async function horseKitLaneReport(airtable, requestUrl) {
     comments,
     commentShorts,
     commentLogs,
+    primaryTabs,
+    laneControls,
+    secondaryControls,
+    pakAggs,
     horseAttributes,
     horseRosterLogs,
-    groupStack
+    groupStack: groupStackWithAggs
   };
 }
 
@@ -1841,6 +2001,7 @@ function horseKitLaneTables(context, groupStack = null) {
   const groupTable = (renderKey, fallbackName) => pakGroupPhysicalTableName(groupStack, renderKey, fallbackName);
   return {
     wec_horses: physicalTableConfig(context, "wec_horses"),
+    wec_lanes: physicalTableConfig(context, "wec_lanes", true),
     wec_pack_waves: physicalTableConfig(context, "wec_pack_waves"),
     wec_packing_events: physicalTableConfig(context, "wec_packing_events"),
     horse_kits: physicalTableConfig(context, "horse_kits"),
@@ -1860,6 +2021,9 @@ function horseKitLaneTables(context, groupStack = null) {
     horse_colors: physicalTableConfig(context, "horse_colors", true),
     horse_attributes: physicalTableConfig(context, "horse_attributes", true),
     horse_roster_logs: physicalTableConfig(context, "horses_change_log", true),
+    pak_tabs: physicalTableConfig(context, "pak_tabs", true),
+    pak_views: physicalTableConfig(context, "pak_views", true),
+    pak_aggs: physicalTableConfig(context, "pak_aggs", true),
     pak_groups: physicalTableConfig(context, "pak_groups", true)
   };
 }
@@ -1907,6 +2071,7 @@ function normalizePakGroupRow(record, index = 0) {
     physicalTableName,
     active: !!fields.active,
     hidden: !!fields.is_hidden,
+    includeOnDrawer: !!fields.include_on_drawer,
     drillDown: !!fields.is_drill_down,
     addFilter: !!fields.add_filter,
     filterBy: stringListField(fields.filter_by),
@@ -1914,10 +2079,25 @@ function normalizePakGroupRow(record, index = 0) {
     searchBy: stringListField(fields.search_by),
     addAggregates: !!fields.add_aggregates,
     pakAggIds: linkedIds(fields.pak_aggs),
+    pakViewIds: linkedIds(fields.pak_views),
     aggregates: stringListField(fields.all_aggregates),
     needsUi: stringListField(fields.needs_ui),
     allowAddNew: !!fields.allow_add_new,
     allowInlineEdit: !!fields.allow_inline_edit
+  };
+}
+
+function attachPakAggRows(groupStack, pakAggById) {
+  const enrich = (row) => ({
+    ...row,
+    aggRows: (row.pakAggIds || []).map((id) => pakAggById.get(id)).filter(Boolean)
+  });
+  const rows = (groupStack?.rows || []).map(enrich);
+  return {
+    ...(groupStack || {}),
+    rows,
+    activeRows: rows.filter((row) => row.active && !row.hidden),
+    hiddenRows: rows.filter((row) => row.hidden)
   };
 }
 
@@ -2853,6 +3033,22 @@ async function listOptionalViewRecords(airtable, tableId, view) {
   }
 }
 
+async function linkedRecordMapByIds(airtable, tableConfig, recordIds = []) {
+  if (!tableConfig?.id || !recordIds.length) return new Map();
+  const records = await Promise.all(recordIds.map(async (recordId) => {
+    const response = await fetch(`${airtableUrl(airtable.baseId, tableConfig.id)}/${encodeURIComponent(recordId)}`, {
+      headers: airtableHeaders(airtable.token)
+    });
+    if (!response.ok) return null;
+    return response.json().catch(() => null);
+  }));
+  return new Map(records.filter(Boolean).map((record) => [record.id, record]));
+}
+
+function uniqueIds(ids = []) {
+  return [...new Set(ids.filter(Boolean))];
+}
+
 async function resolveSourceActionItem(airtable, context, payload) {
   const tables = context.tables;
   const sourceItemId = clean(payload?.sourcePackItemId || payload?.sourceItemId || payload?.itemId || payload?.packingItemId);
@@ -3521,6 +3717,8 @@ function normalizeWave(record) {
     waveType: stringField(fields.wave_type),
     active: !!fields.active,
     manualLock: !!fields.manual_lock,
+    wecReportTitle: stringField(fields.wec_report_title),
+    wecReportSubtitle: stringField(fields.wec_report_subtitle),
     deadlineDate: stringField(fields.deadline_date),
     daysTill: numberField(fields.days_till),
     horseCount: numberField(fields.horse_count),
@@ -3530,8 +3728,89 @@ function normalizeWave(record) {
     groomSanity: numberField(fields.groom_sanity),
     sortOrder: numberField(fields.sort_order),
     showIds: linkedIds(fields.show),
-    includedWeekIds: linkedIds(fields.included_weeks)
+    includedWeekIds: linkedIds(fields.included_weeks),
+    pakTabIds: linkedIds(fields.pak_tabs)
   };
+}
+
+function normalizePakTab(record) {
+  const fields = record.fields || {};
+  const tab = stringField(fields.tab || fields.tab_label || record.id);
+  return {
+    id: record.id,
+    key: slugify(tab),
+    tab,
+    label: stringField(fields.tab_label || tab),
+    priority: numberField(fields.tab_priority),
+    active: !!fields.active,
+    core: !!fields.core,
+    packGroups: !!fields.pack_groups,
+    pakViewIds: linkedIds(fields.pak_views),
+    packWaveIds: linkedIds(fields.wec_pack_waves)
+  };
+}
+
+function comparePakTabs(a, b) {
+  return compareNumber(a.priority, b.priority) || String(a.label || a.key).localeCompare(String(b.label || b.key));
+}
+
+function normalizeWecLane(record) {
+  const fields = record.fields || {};
+  const lane = stringField(fields.lane || fields.lane_label || record.id);
+  return {
+    id: record.id,
+    key: slugify(lane),
+    lane,
+    label: stringField(fields.lane_label || lane),
+    priority: numberField(fields.lane_priority),
+    active: !!fields.active,
+    entity: !!fields.entity,
+    purpose: stringField(fields.purpose)
+  };
+}
+
+function compareWecLanes(a, b) {
+  return compareNumber(a.priority, b.priority) || String(a.label || a.key).localeCompare(String(b.label || b.key));
+}
+
+function normalizePakView(record) {
+  const fields = record.fields || {};
+  const view = stringField(fields.view || fields.view_label || record.id);
+  return {
+    id: record.id,
+    key: slugify(view),
+    view,
+    label: stringField(fields.view_label || view),
+    pakTabIds: linkedIds(fields.pak_tabs),
+    pakAggIds: linkedIds(fields.pak_aggs),
+    pakGroupIds: linkedIds(fields.pak_groups)
+  };
+}
+
+function comparePakViews(a, b) {
+  const order = new Map([["all", 0], ["wave_one", 1], ["wave_two", 2], ["not_going", 3]]);
+  return compareNumber(order.has(a.key) ? order.get(a.key) : 99, order.has(b.key) ? order.get(b.key) : 99) ||
+    String(a.label || a.key).localeCompare(String(b.label || b.key));
+}
+
+function normalizePakAgg(record) {
+  const fields = record.fields || {};
+  const aggregate = stringField(fields.aggregates || fields.tab_label || record.id);
+  return {
+    id: record.id,
+    key: slugify(aggregate),
+    aggregate,
+    label: stringField(fields.tab_label || aggregate),
+    priority: numberField(fields.tab_priority),
+    shade: slugify(fields.active_shade),
+    active: fields.active !== false,
+    pakViewIds: linkedIds(fields.pak_views),
+    pakGroupIds: linkedIds(fields.pak_groups)
+  };
+}
+
+function comparePakAggs(a, b) {
+  return compareNumber(a.priority, b.priority) || String(a.label || a.key).localeCompare(String(b.label || b.key));
 }
 
 function withEffectiveWaveCounts(wave, waveHorses) {
@@ -4085,9 +4364,11 @@ function normalizeRosterHorse(record) {
   };
 }
 
-function normalizePakHorseRoster(record) {
+function normalizePakHorseRoster(record, lookups = {}) {
   const fields = record.fields || {};
   const linkedHorseId = linkedIds(fields.wec_horses)[0] || record.id;
+  const wwHorseIds = linkedIds(fields.ww_horses);
+  const wwHorse = lookups.wwHorseById?.get(wwHorseIds[0]) || null;
   const inactive = !!fields.inactive || !!fields.wec_not_going;
   const active = fields.active === true || !inactive;
   return {
@@ -4109,11 +4390,18 @@ function normalizePakHorseRoster(record) {
     sourcePackItemIds: linkedIds(fields.pack_items),
     pakKitItemIds: linkedIds(fields.pak_kit_items),
     packWaveIds: linkedIds(fields.pack_waves),
-    wwHorseIds: linkedIds(fields.ww_horses),
+    wwHorseIds,
     wecHorseIds: linkedIds(fields.wec_horses),
+    profileUrl: horseProfileUrlFromWwHorse(wwHorse),
+    profileSource: wwHorse ? "ww_horses" : "",
     countPakKitItems: wholeQuantityField(fields.count_pak_kit_items),
     notes: stringField(fields.notes)
   };
+}
+
+function horseProfileUrlFromWwHorse(record) {
+  const fields = record?.fields || {};
+  return stringField(fields.entry_uri || fields.profile_url || fields.search_uri);
 }
 
 function normalizeHorseKitTemplate(record) {
