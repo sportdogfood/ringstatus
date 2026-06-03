@@ -62,6 +62,14 @@ body {
   gap: 8px;
 }
 
+#packing-app .rs-stack-section.is-search,
+#packing-app .rs-stack-section.is-search-aggs {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #fff;
+}
+
 #packing-app .rs-page-header {
   display: grid;
   gap: 3px;
@@ -105,6 +113,7 @@ body {
   line-height: 1;
   padding: 0 14px;
   white-space: nowrap;
+  text-transform: uppercase;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -121,7 +130,23 @@ body {
   font-size: 12px;
   font-weight: 600;
   line-height: 15px;
+  padding-bottom: 3px;
   text-transform: uppercase;
+}
+
+#packing-app .rs-stack-head,
+#packing-app .rs-stack-body {
+  min-width: 0;
+}
+
+#packing-app .rs-stack-head {
+  padding: 0;
+}
+
+#packing-app .rs-stack-body {
+  display: grid;
+  gap: 6px;
+  padding: 0;
 }
 
 #packing-app .rs-stack-aggs {
@@ -174,33 +199,52 @@ body {
   padding: 0;
 }
 
-#packing-app .rs-table-count-aggs {
-  margin-top: 8px;
+#packing-app .rs-secondary-count-aggs {
+  margin-top: 0;
+  padding: 0 0 4px;
 }
 
-#packing-app .rs-table-count-aggs .rs-stack-aggs {
-  border-radius: 6px;
+#packing-app .rs-secondary-count-aggs .rs-stack-aggs {
+  border-radius: 7px;
 }
 
-#packing-app .rs-table-count-aggs .rs-stack-agg {
+#packing-app .rs-secondary-count-aggs .rs-stack-agg {
   display: flex;
-  min-height: 36px;
+  min-height: 34px;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 7px 6px;
 }
 
-#packing-app .rs-table-count-aggs .rs-stack-agg-value {
+#packing-app .rs-secondary-count-aggs .rs-stack-agg-value {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
 }
 
-#packing-app .rs-table-count-aggs .rs-stack-agg-label {
+#packing-app .rs-secondary-count-aggs .rs-stack-agg-label {
   margin-top: 0;
   font-size: 10px;
+  font-weight: 500;
   line-height: 1;
+}
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-need,
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-horses,
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-shade-brown {
+  background: #725f58;
+}
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-packed,
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-shade-green {
+  background: #2f9460;
+}
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-left,
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-shade-grey,
+#packing-app .rs-secondary-count-aggs .rs-stack-agg.is-shade-gray {
+  background: #9aa2aa;
 }
 
 #packing-app .rs-stack-agg.is-items {
@@ -282,14 +326,15 @@ body {
   position: absolute;
   top: 50%;
   right: 7px;
-  width: 24px;
-  height: 24px;
-  display: none;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  display: grid;
   place-items: center;
   transform: translateY(-50%);
   border: 0;
-  border-radius: 50%;
-  background: #eef0f2;
+  border-radius: 0;
+  background: transparent;
   color: #1f2328;
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 20px;
@@ -299,8 +344,8 @@ body {
   cursor: pointer;
 }
 
-#packing-app .rs-search-clear.is-active {
-  display: grid;
+#packing-app .rs-search-clear:not(.is-active) {
+  opacity: 1;
 }
 
 #packing-app .rs-search-clear span {
@@ -371,11 +416,30 @@ body {
   background: #f4f5f7;
   color: #3e454d;
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
+  white-space: nowrap;
   overflow: visible;
   text-overflow: clip;
+}
+
+#packing-app .rs-airtable-grid thead th:nth-child(2),
+#packing-app .rs-airtable-grid thead th:nth-child(3) {
+  text-align: left;
+}
+
+#packing-app .rs-airtable-grid thead th:nth-child(4),
+#packing-app .rs-airtable-grid thead th:nth-child(5),
+#packing-app .rs-airtable-grid thead th:nth-child(6),
+#packing-app .rs-airtable-grid thead th:nth-child(4) .rs-sort-head,
+#packing-app .rs-airtable-grid thead th:nth-child(5) .rs-sort-head,
+#packing-app .rs-airtable-grid thead th:nth-child(6) .rs-sort-head {
+  min-width: 60px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: center;
+  justify-content: center;
 }
 
 #packing-app .rs-sort-head {
@@ -391,6 +455,7 @@ body {
   color: inherit;
   font: inherit;
   text-align: inherit;
+  text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -424,7 +489,38 @@ body {
 }
 
 #packing-app .rs-col-count {
-  width: 72px;
+  width: 60px;
+}
+
+#packing-app .rs-airtable-grid tbody td:nth-child(2),
+#packing-app .rs-airtable-grid tbody td:nth-child(3),
+#packing-app .rs-airtable-grid tbody td:nth-child(4),
+#packing-app .rs-airtable-grid tbody td:nth-child(5),
+#packing-app .rs-airtable-grid tbody td:nth-child(6) {
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 15px;
+  text-decoration: none;
+}
+
+#packing-app .rs-airtable-grid tbody td:nth-child(4),
+#packing-app .rs-airtable-grid tbody td:nth-child(5),
+#packing-app .rs-airtable-grid tbody td:nth-child(6) {
+  min-width: 60px;
+  width: 60px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#packing-app .rs-airtable-grid tbody .rs-entity-horse,
+#packing-app .rs-airtable-grid tbody .rs-entity-sub,
+#packing-app .rs-airtable-grid tbody .rs-cell-number {
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 15px;
+  text-decoration: none;
 }
 
 #packing-app .rs-row-gutter {
@@ -578,10 +674,9 @@ body {
   position: sticky;
   top: 0;
   z-index: 2;
-  height: 58px;
-  min-height: 58px;
+  min-height: 0;
   flex: 0 0 auto;
-  padding: 0 clamp(12px, 2vw, 16px) 0 clamp(16px, 2.4vw, 20px);
+  padding: 10px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -593,18 +688,15 @@ body {
 #packing-app .rs-drawer-title {
   min-width: 0;
   overflow: hidden;
-  color: #1f2328;
-  font-size: clamp(15px, 2vw, 17px);
-  line-height: 1.2;
-  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 #packing-app .rs-drawer-title-group {
   min-width: 0;
-  display: grid;
-  gap: 2px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
 
 #packing-app .rs-drawer-profile-link {
@@ -613,7 +705,7 @@ body {
   overflow: hidden;
   color: #1459a8;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.1;
   text-decoration: underline;
   text-overflow: ellipsis;
@@ -848,9 +940,11 @@ body {
 }
 
 #packing-app .rs-item-filter-row {
-  display: grid;
+  margin-top: 0;
+}
+
+#packing-app .rs-item-filter-actions {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 5px;
 }
 
 #packing-app .rs-item-filter {
@@ -899,7 +993,7 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 4px;
-  padding: 8px 8px 9px;
+  padding: 8px 0 9px;
   border-bottom: 1px solid #edf0f3;
   align-items: start;
   background: #fff;
@@ -913,6 +1007,29 @@ body {
 #packing-app .rs-kit-item-row:hover,
 #packing-app .rs-kit-item-row:focus-within {
   background: #e8f4ff;
+}
+
+#packing-app .rs-kit-items-head,
+#packing-app .rs-kit-items-head:hover,
+#packing-app .rs-kit-items-head:focus-within {
+  padding: 5px 0;
+  border-top: 1px solid #edf0f3;
+  border-bottom: 1px solid #d9dde3;
+  background: #fff;
+}
+
+#packing-app .rs-kit-items-head .rs-kit-actions {
+  align-items: center;
+}
+
+#packing-app .rs-kit-items-head .rs-stack-label {
+  padding-bottom: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#packing-app .rs-kit-items-head .rs-kit-item-main .rs-stack-label {
+  text-align: left;
 }
 
 #packing-app .rs-kit-item-main {
@@ -945,6 +1062,10 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 5px;
   min-height: 26px;
+}
+
+#packing-app .rs-kit-actions.rs-item-filter-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 #packing-app .rs-state-button {
@@ -1248,7 +1369,6 @@ body {
 
 /* Shared drawer system: keep labels, values, inputs, and buttons consistent. */
 #packing-app .rs-field-label,
-#packing-app .rs-add-label,
 #packing-app .rs-kit-item-title,
 #packing-app .rs-comments .rs-field-label {
   margin: 0 0 4px;
@@ -1353,6 +1473,26 @@ body {
   padding: 0 6px;
   font-size: 12px;
   line-height: 15px;
+}
+
+#packing-app .rs-airtable-grid thead th {
+  font-size: 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#packing-app .rs-airtable-grid thead th:nth-child(2),
+#packing-app .rs-airtable-grid thead th:nth-child(3) {
+  text-align: left;
+}
+
+#packing-app .rs-airtable-grid thead th:nth-child(4),
+#packing-app .rs-airtable-grid thead th:nth-child(5),
+#packing-app .rs-airtable-grid thead th:nth-child(6) {
+  min-width: 60px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: center;
 }
 
 #packing-app .rs-airtable-grid .rs-row-gutter {

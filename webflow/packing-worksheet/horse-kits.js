@@ -487,7 +487,7 @@
         <div class="rs-record-drawer ${ui.drawerOpen ? "is-open" : ""}" aria-label="Horse kit details">
           <div class="rs-drawer-head">
             <div class="rs-drawer-title-group">
-              <div class="rs-drawer-title">${escapeHtml(horseLabel(selected) || "Horse Kit")}</div>
+              <div class="rs-drawer-title rs-page-subtitle">${escapeHtml(horseLabel(selected) || "Horse Kit")}</div>
               ${selected?.profileUrl ? `<a class="rs-drawer-profile-link" href="${escapeAttr(selected.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : ""}
             </div>
             <button class="rs-drawer-close" type="button" aria-label="Close" data-action="close-drawer"><span aria-hidden="true">&times;</span></button>
@@ -565,16 +565,25 @@
 
   function searchAggsHtml(row) {
     return stackSectionHtml(row, `
-      <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horse Kits")}</div>
-      <div class="rs-stack-aggs">${stackAggsHtml(summaryAggRows(row), summaryAggValues())}</div>
-      ${searchControlsHtml()}
+      <div class="rs-stack-head">
+        <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horse Kits")}</div>
+      </div>
+      <div class="rs-stack-body">
+        <div class="rs-stack-aggs">${stackAggsHtml(summaryAggRows(row), summaryAggValues())}</div>
+        ${secondaryCountAggsHtml()}
+        ${searchControlsHtml()}
+      </div>
     `, "is-search-aggs");
   }
 
   function summaryAggsHtml(row) {
     return stackSectionHtml(row, `
-      <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horse Kits")}</div>
-      <div class="rs-stack-aggs">${stackAggsHtml(summaryAggRows(row), summaryAggValues())}</div>
+      <div class="rs-stack-head">
+        <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horse Kits")}</div>
+      </div>
+      <div class="rs-stack-body">
+        <div class="rs-stack-aggs">${stackAggsHtml(summaryAggRows(row), summaryAggValues())}</div>
+      </div>
     `, "is-summary-aggs");
   }
 
@@ -585,7 +594,17 @@
   }
 
   function searchHtml(row) {
-    return stackSectionHtml(row, searchControlsHtml(), "is-search");
+    return stackSectionHtml(row, `
+      <div class="rs-stack-body">
+        ${secondaryCountAggsHtml()}
+        ${searchControlsHtml()}
+      </div>
+    `, "is-search");
+  }
+
+  function secondaryCountAggsHtml() {
+    const countRow = sourceAggRow("entity_2") || activeStackRows().find((candidate) => candidate.renderKey === "count_aggs");
+    return countRow ? `<div class="rs-secondary-count-aggs"><div class="rs-stack-aggs is-counts">${stackAggsHtml(countAggRows(countRow), tableAggValues())}</div></div>` : "";
   }
 
   function searchControlsHtml() {
@@ -668,13 +687,11 @@
   }
 
   function tableStackHtml(row, statusText) {
-    const countRow = sourceAggRow("entity_2") || activeStackRows().find((candidate) => candidate.renderKey === "count_aggs");
     return stackSectionHtml(row, `
       <div class="rs-table-stack-head">
         <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "Horses")}</div>
-        <button class="rs-plain-button is-primary" type="button" data-action="print-list">Print</button>
+        <button class="rs-stack-pill" type="button" data-action="print-list">Print</button>
       </div>
-      ${countRow ? `<div class="rs-table-count-aggs"><div class="rs-stack-aggs is-counts">${stackAggsHtml(countAggRows(countRow), tableAggValues())}</div></div>` : ""}
       <div class="rs-airtable-scroll">
         <table class="rs-airtable-grid">
           <colgroup>
@@ -709,7 +726,7 @@
     return stackSectionHtml(row, `
       <div class="rs-comments is-page-comments">
         <div class="rs-comments-head">
-          <div class="rs-field-label">${escapeHtml(row?.displayLabel || "comments")}</div>
+          <div class="rs-stack-label">${escapeHtml(row?.displayLabel || "comments")}</div>
         </div>
         <div class="rs-comment-list">
           ${comments.map(commentRowHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}
@@ -774,18 +791,18 @@
     const percentPacked = counts.needed > 0 ? Math.round((counts.packed / counts.needed) * 100) : 0;
     return `
       <div class="rs-detail-summary">
-        <div>
-          <div class="rs-field-label">Kit</div>
+        <div class="is-hidden" aria-hidden="true">
+          <div class="rs-stack-label">Kit</div>
           <div class="rs-field-value">${escapeHtml(kitDisplayLabel(kit) || "No kit")}</div>
-        </div>
-        <div class="rs-summary-metrics">
-          ${drawerMetricRows().map((agg) => metricHtml(agg.label, aggValue(agg, counts), agg.key)).join("")}
         </div>
         <div class="rs-kit-progress" aria-label="${escapeAttr(percentPacked)}% packed">
           <div class="rs-kit-progress-label">${escapeHtml(percentPacked)}% PACKED</div>
           <div class="rs-kit-progress-track">
             <div class="rs-kit-progress-bar" style="width: ${escapeAttr(Math.min(100, Math.max(0, percentPacked)))}%"></div>
           </div>
+        </div>
+        <div class="rs-summary-metrics">
+          ${drawerMetricRows().map((agg) => metricHtml(agg.label, aggValue(agg, counts), agg.key)).join("")}
         </div>
       </div>
       <div class="rs-add-row is-hidden" aria-hidden="true">
@@ -811,12 +828,17 @@
         </div>
       </div>
       <div class="rs-kit-item-search-row">
-        <label class="rs-add-label" for="rs-kit-item-search">search_items</label>
+        <label class="rs-stack-label" for="rs-kit-item-search">search_items</label>
         <div class="rs-search-wrap">
           <input id="rs-kit-item-search" class="rs-kit-item-search" type="text" autocomplete="off" data-kit-item-search value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items">
           <button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" aria-label="Clear kit item search" data-action="clear-kit-item-search"><span aria-hidden="true">&times;</span></button>
         </div>
-        <div class="rs-item-filter-row" role="group" aria-label="Kit item filters">
+      </div>
+      <div class="rs-kit-item-row rs-item-filter-row" role="group" aria-label="Kit item filters">
+        <div class="rs-kit-item-main">
+          <div class="rs-stack-label">filter_items</div>
+        </div>
+        <div class="rs-kit-actions rs-item-filter-actions">
           ${itemFilterButton("All", "all")}
           ${itemFilterButton("Not Packed", "not_packed")}
           ${itemFilterButton("Packed", "packed")}
@@ -824,16 +846,26 @@
         </div>
       </div>
       <div class="rs-kit-items">
+        <div class="rs-kit-item-row rs-kit-items-head" role="row">
+          <div class="rs-kit-item-main">
+            <div class="rs-stack-label">kit_items</div>
+          </div>
+          <div class="rs-kit-actions">
+            <div class="rs-stack-label">Not Packed</div>
+            <div class="rs-stack-label">Packed</div>
+            <div class="rs-stack-label">Not Needed</div>
+          </div>
+        </div>
         ${items.map((item) => kitItemRowHtml(item, horse, kit)).join("") || `<div class="rs-empty-row">No kit items.</div>`}
       </div>
       ${commentsHtml(horse)}
       <div class="rs-drawer-bottom">
         <div class="rs-bottom-field">
-          <div class="rs-field-label">Plan:</div>
+          <div class="rs-stack-label">Plan:</div>
           <div class="rs-field-value">Horse Specific</div>
         </div>
         <div class="rs-bottom-field">
-          <div class="rs-field-label">System:</div>
+          <div class="rs-stack-label">System:</div>
           <div class="rs-field-value">Changes save to Airtable through Webflow Cloud.</div>
         </div>
       </div>
@@ -901,7 +933,7 @@
     return `
       <div class="rs-comments">
         <div class="rs-comments-head">
-          <div class="rs-field-label">comments</div>
+          <div class="rs-stack-label">comments</div>
         </div>
         <div class="rs-comment-form">
           <select class="rs-comment-short" data-comment-short>
