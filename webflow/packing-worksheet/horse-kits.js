@@ -119,16 +119,6 @@
       return;
     }
 
-    if (action === "add-kit-item") {
-      await addKitItem();
-      return;
-    }
-
-    if (action === "increment-add-qty") {
-      incrementAddQuantity();
-      return;
-    }
-
     if (action === "edit-comment") {
       const comment = horseComments(selectedHorse()?.id).find((row) => row.id === target.dataset.commentId);
       ui.editingCommentId = comment?.id || "";
@@ -164,12 +154,6 @@
       records = buildRecords();
       render();
       restoreSearchFocus(caret);
-    }
-    if (input.matches("[data-add-item-name]")) {
-      ui.addItemName = input.value || "";
-    }
-    if (input.matches("[data-add-item-qty]")) {
-      ui.addItemQty = input.value || "1";
     }
     if (input.matches("[data-kit-item-search]")) {
       ui.itemSearch = input.value || "";
@@ -278,7 +262,7 @@
   }
 
   function refreshOnClick(action) {
-    if (action === "set-item-state" || action === "save-comment" || action === "add-kit-item") return;
+    if (action === "set-item-state" || action === "save-comment") return;
     requestStateRefresh();
   }
 
@@ -295,8 +279,9 @@
     const horseId = button.dataset.horseId || horse?.id || "";
     const kitId = button.dataset.kitId || assignedKit(horse)?.id || "";
     const kitItemId = button.dataset.kitItemId || "";
+    const packingKitId = button.dataset.packingKitId || rowForKitItem(kitItemId, horseId, kitId)?.id || "";
     const packState = button.dataset.packState || "";
-    if (!horseId || !kitItemId || !packState || !packWaveId()) return;
+    if (!horseId || !kitItemId || !kitId || !packState || !packWaveId()) return;
 
     const optimisticKey = itemStateKey(kitItemId, horseId, kitId);
     optimisticItemStates.set(optimisticKey, packState);
@@ -308,7 +293,8 @@
 
     try {
       await postAction({
-        action: "set_static_kit_item_state",
+        action: "set_packing_kit_state",
+        packingKitId,
         horseId,
         kitId,
         kitItemId,
@@ -323,38 +309,6 @@
     } catch (error) {
       optimisticItemStates.delete(optimisticKey);
       records = buildRecords();
-      ui.error = error.message || String(error);
-    } finally {
-      ui.savingKey = "";
-      render();
-    }
-  }
-
-  async function addKitItem() {
-    const kit = assignedKit(selectedHorse());
-    const label = ui.addItemName.trim();
-    const quantity = Math.max(1, Number.parseInt(ui.addItemQty || "1", 10) || 1);
-    if (!kit?.id || !label) {
-      ui.message = "Enter an item name.";
-      render();
-      return;
-    }
-
-    ui.savingKey = "add-kit-item";
-    ui.message = "Adding kit item...";
-    render();
-
-    try {
-      await postAction({
-        action: "create_kit_item",
-        kitId: kit.id,
-        label,
-        manualQuantity: quantity
-      });
-      ui.addItemName = "";
-      ui.addItemQty = "1";
-      ui.message = "Kit item added.";
-    } catch (error) {
       ui.error = error.message || String(error);
     } finally {
       ui.savingKey = "";
@@ -394,12 +348,6 @@
       ui.savingKey = "";
       render();
     }
-  }
-
-  function incrementAddQuantity() {
-    const current = Number.parseInt(ui.addItemQty || "1", 10) || 1;
-    ui.addItemQty = String(Math.min(6, current + 1));
-    render();
   }
 
   function buildRecords() {
@@ -528,16 +476,39 @@
 
   function kitItems(kitId) {
     if (!kitId) return [];
+    const horse = selectedHorse();
+    if (horse?.id) {
+      return assignedKitItemsForHorse(horse, kitId);
+    }
+    return templateKitItems(kitId);
+  }
+
+  function templateKitItems(kitId) {
     const kit = (state?.kits || []).find((candidate) => candidate.id === kitId);
     const nestedItems = (kit?.items || [])
       .filter((item) => item.status !== "inactive" && item.active !== false)
       .sort(compareKitItemAlpha);
     if (nestedItems.length) return nestedItems;
-    const items = (state?.kitItems || [])
+    return (state?.kitItems || [])
       .filter((item) => item.status !== "inactive" && item.active !== false)
       .filter((item) => (item.kitIds || []).includes(kitId))
       .sort(compareKitItemAlpha);
-    return items;
+  }
+
+  function assignedKitItemsForHorse(horse, kitId) {
+    const itemsById = new Map((state?.kitItems || []).map((item) => [item.id, item]));
+    const assignedIds = uniqueStrings([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
+    const sourceItems = assignedIds.length
+      ? assignedIds.map((itemId) => itemsById.get(itemId) || { id: itemId, label: itemId })
+      : templateKitItems(kitId);
+    return sourceItems
+      .filter((item) => !kitId || !(item.kitIds || []).length || (item.kitIds || []).includes(kitId))
+      .map((item) => {
+        const row = rowForKitItem(item.id, horse.id, kitId);
+        return { ...item, packingKitId: row?.id || "", packState: row?.packState || "not_packed", neededState: row?.neededState || "needed" };
+      })
+      .filter((item) => item.id)
+      .sort(compareKitItemAlpha);
   }
 
   function rowForKitItem(itemId, horseId, kitId) {
@@ -564,7 +535,8 @@
 
   function rollup(horseId, kitId) {
     if (!kitId) return { total: 0, needed: 0, packed: 0, notNeeded: 0, left: 0 };
-    const items = kitItems(kitId);
+    const horse = (state?.allHorses || state?.horses || []).find((candidate) => candidate.id === horseId);
+    const items = horse ? assignedKitItemsForHorse(horse, kitId) : templateKitItems(kitId);
     const counts = { total: items.length, needed: items.length, packed: 0, notNeeded: 0, left: items.length };
     for (const item of items) {
       const stateName = kitItemState(item.id, horseId, kitId);
@@ -983,15 +955,6 @@
         </div>
       </div>
       ${commentsHtml(horse)}
-      <div class="rs-add-row is-hidden" aria-hidden="true">
-        <label class="rs-add-label" for="rs-add-kit-item">add_item</label>
-        <input id="rs-add-kit-item" class="rs-add-input" data-add-item-name value="${escapeAttr(ui.addItemName)}" placeholder="Item label">
-        <div class="rs-add-controls">
-          <input class="rs-add-qty" data-add-item-qty value="${escapeAttr(ui.addItemQty)}" type="number" min="1" max="6" step="1">
-          <button class="rs-plain-button" type="button" data-action="increment-add-qty" ${Number(ui.addItemQty || 1) >= 6 ? "disabled" : ""}>ADD +1</button>
-          <button class="rs-plain-button is-primary" type="button" data-action="add-kit-item" ${ui.savingKey === "add-kit-item" ? "disabled" : ""}>ADD</button>
-        </div>
-      </div>
       <div class="rs-decision-row is-hidden" aria-hidden="true">
         <div class="rs-decision-state">
           <button class="rs-plain-button is-primary" type="button" disabled>OPEN</button>
@@ -1119,6 +1082,7 @@
         data-horse-id="${escapeAttr(horse.id)}"
         data-kit-id="${escapeAttr(kit?.id || "")}"
         data-kit-item-id="${escapeAttr(item.id)}"
+        data-packing-kit-id="${escapeAttr(item.packingKitId || rowForKitItem(item.id, horse.id, kit?.id)?.id || "")}"
         data-pack-state="${escapeAttr(value)}"
         ${saving ? "disabled" : ""}>${escapeHtml(label)}</button>
     `;
@@ -1296,12 +1260,6 @@
         item.notes
       ].join(" ").toLowerCase().includes(query);
     });
-  }
-
-  function itemQuantityLabel(item) {
-    const qty = Number(item.manualQuantity || 1);
-    const uom = item.uom || "";
-    return `${qty || 1} ${uom}`.trim();
   }
 
   function itemStateKey(itemId, horseId, kitId) {
