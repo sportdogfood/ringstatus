@@ -1999,6 +1999,7 @@ export async function horseKitLaneReport(airtable, requestUrl) {
       waveById,
       horseLinkField: rosterLinkFields.packingKitHorse
     }))
+    .filter((row) => row.horseIds.length && row.kitItemIds.length)
     .filter((row) => !selectedWave?.id || row.packWaveIds.length === 0 || row.packWaveIds.includes(selectedWave.id))
     .sort(compareHorsePackingRows);
   const rowsByHorse = groupByFirstId(packingRows, "horseIds");
@@ -2880,6 +2881,7 @@ async function applyHorseKitCommentSave(airtable, tables, payload) {
   const horseId = clean(payload?.horseId || payload?.scopeId);
   const rosterLinkFields = horseKitRosterLinkFields(tables);
   const horseLinkField = rosterLinkFields.commentHorse;
+  const horseWriteField = rosterLinkFields.commentHorseFieldId || horseLinkField;
   const scopeLabel = clean(payload?.scopeLabel);
   const packWaveId = clean(payload?.packWaveId);
   const commentShortId = clean(payload?.commentShortId);
@@ -2898,7 +2900,7 @@ async function applyHorseKitCommentSave(airtable, tables, payload) {
   const fields = compactFields({
     event: before ? undefined : `comment:horse:${horseId}:${Date.now()}`,
     pack_wave: packWaveId ? [packWaveId] : undefined,
-    [horseLinkField]: [horseId],
+    [horseWriteField]: [horseId],
     event_type: before ? "comment_edit" : "comment_add",
     scope_type: "horse",
     scope_id: horseId,

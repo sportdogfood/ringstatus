@@ -403,7 +403,7 @@
 
   function buildRecords() {
     const rows = visibleHorses().map((horse) => {
-      const kit = assignedKit(horse.id);
+      const kit = horseEligibleForKit(horse) ? assignedKit(horse.id) : null;
       const counts = rollup(horse.id, kit?.id);
       return {
         id: horse.id,
@@ -477,9 +477,10 @@
   }
 
   function effectiveRecordCounts(record) {
+    if (!record?.kit) return { total: 0, needed: 0, packed: 0, notNeeded: 0, left: 0 };
     const counts = record?.counts || {};
     const summary = record?.horse?.kitSummary || record?.horse?.kit_summary || {};
-    const total = countNumber(counts.total) || countNumber(record?.horse?.countPakKitItems) || countNumber(summary.total) || countNumber(state?.counts?.kitItems);
+    const total = countNumber(counts.total) || countNumber(record?.horse?.countPakKitItems) || countNumber(summary.total);
     const notNeeded = Math.max(countNumber(counts.notNeeded), countNumber(summary.notNeeded), countNumber(summary.not_needed));
     const packed = Math.max(countNumber(counts.packed), countNumber(summary.packed));
     const needed = Math.max(0, total - notNeeded);
@@ -507,6 +508,10 @@
     const rowKitId = (state?.packingRows || []).find((row) => (row.horseIds || []).includes(horseId) && row.kitIds?.length)?.kitIds?.[0] || "";
     const kits = activeKits();
     return kits.find((kit) => kit.id === rowKitId) || kits.find((kit) => kit.kitItemIds?.length) || kits[0] || null;
+  }
+
+  function horseEligibleForKit(horse) {
+    return !(horse?.waveState === "not_going" || horse?.notGoing === true || horse?.not_going === true);
   }
 
   function kitItems(kitId) {
@@ -545,6 +550,7 @@
   }
 
   function rollup(horseId, kitId) {
+    if (!kitId) return { total: 0, needed: 0, packed: 0, notNeeded: 0, left: 0 };
     const items = kitItems(kitId);
     const counts = { total: items.length, needed: items.length, packed: 0, notNeeded: 0, left: items.length };
     for (const item of items) {
