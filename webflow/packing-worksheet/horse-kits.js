@@ -45,6 +45,19 @@
       return;
     }
 
+    if (action === "clear-search") {
+      ui.search = "";
+      records = buildRecords();
+      render();
+      return;
+    }
+
+    if (action === "clear-kit-item-search") {
+      ui.itemSearch = "";
+      render();
+      return;
+    }
+
     if (action === "set-item-state") {
       await setItemState(target);
       return;
@@ -238,7 +251,14 @@
       .sort((a, b) => String(horseLabel(a)).localeCompare(String(horseLabel(b))));
     const query = ui.search.trim().toLowerCase();
     if (!query) return horses;
-    return horses.filter((horse) => [horse.name, horse.barnName, horse.showName].join(" ").toLowerCase().includes(query));
+    return horses.filter((horse) => [
+      horse.name,
+      horse.barnName,
+      horse.showName,
+      horse.barn_name,
+      horse.show_name,
+      horse.display_horse_barn_name
+    ].join(" ").toLowerCase().includes(query));
   }
 
   function activeKits() {
@@ -327,8 +347,11 @@
     root.innerHTML = `
       <div class="rs-airtable-shell">
         <div class="rs-airtable-toolbar">
-          <input class="rs-search" type="search" data-search placeholder="Search horses" value="${escapeAttr(ui.search)}">
-          <button class="rs-plain-button" type="button" data-action="reload">Reload</button>
+          <div class="rs-search-wrap">
+            <input class="rs-search" type="search" data-search placeholder="Search horses" value="${escapeAttr(ui.search)}">
+            <button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" aria-label="Clear search" data-action="clear-search">&times;</button>
+          </div>
+          <button class="rs-plain-button" type="button" data-action="reload">Refresh</button>
         </div>
         <div class="rs-airtable-scroll">
           <table class="rs-airtable-grid">
@@ -431,7 +454,10 @@
       </div>
       <div class="rs-kit-item-search-row">
         <label class="rs-add-label" for="rs-kit-item-search">search_items</label>
-        <input id="rs-kit-item-search" class="rs-kit-item-search" data-kit-item-search value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items">
+        <div class="rs-search-wrap">
+          <input id="rs-kit-item-search" class="rs-kit-item-search" data-kit-item-search value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items">
+          <button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" aria-label="Clear kit item search" data-action="clear-kit-item-search">&times;</button>
+        </div>
         <div class="rs-item-filter-row" role="group" aria-label="Kit item filters">
           ${itemFilterButton("All", "all")}
           ${itemFilterButton("Not Packed", "not_packed")}
