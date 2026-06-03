@@ -598,15 +598,11 @@
 
   function activeStackRows() {
     const rows = state?.groupStack?.activeRows || [];
-    const renderOrder = ["header", "primary_tabs", "summary_aggs", "secondary_controls", "count_aggs", "lane_controls", "search", "main_table", "comments"];
-    const orderIndex = new Map(renderOrder.map((key, index) => [key, index]));
-    const allowed = new Set([...renderOrder, "search_aggs"]);
+    const allowed = new Set(["header", "primary_tabs", "summary_aggs", "secondary_controls", "count_aggs", "lane_controls", "search", "search_aggs", "main_table", "comments"]);
     const activeRows = rows
       .filter((row) => row && !row.hidden && row.active !== false && allowed.has(row.renderKey))
       .sort((a, b) => {
-        const aIndex = orderIndex.has(a.renderKey) ? orderIndex.get(a.renderKey) : renderOrder.length + Number(a.sortOrder || 0);
-        const bIndex = orderIndex.has(b.renderKey) ? orderIndex.get(b.renderKey) : renderOrder.length + Number(b.sortOrder || 0);
-        return aIndex - bIndex || Number(a.sourceIndex || 0) - Number(b.sourceIndex || 0);
+        return Number(a.sortOrder || 0) - Number(b.sortOrder || 0) || Number(a.sourceIndex || 0) - Number(b.sourceIndex || 0);
       });
     return activeRows.length ? activeRows : [
       { renderKey: "header", displayLabel: "Header" },
