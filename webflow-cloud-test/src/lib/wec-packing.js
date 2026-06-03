@@ -4116,6 +4116,60 @@ function normalizeHorseKitChange(record) {
   };
 }
 
+function normalizeHorseKitComment(record) {
+  const fields = record.fields || {};
+  return {
+    id: record.id,
+    label: stringField(fields.scope_label || fields.comment || record.id),
+    comment: stringField(fields.comment),
+    notes: stringField(fields.notes),
+    scopeType: slugify(fields.scope_type),
+    scopeId: stringField(fields.scope_id),
+    scopeLabel: stringField(fields.scope_label),
+    status: slugify(fields.comment_status || "active") || "active",
+    horseIds: linkedIds(fields.horse),
+    packWaveIds: linkedIds(fields.pack_wave),
+    createdBy: stringField(fields.created_by),
+    createdAt: stringField(fields.created_at || record.createdTime),
+    createdTime: record.createdTime || ""
+  };
+}
+
+function normalizeCommentShort(record) {
+  const fields = record.fields || {};
+  const label = stringField(fields.display_label || fields.comment_short || record.id);
+  const status = slugify(fields.status || "active") || "active";
+  return {
+    id: record.id,
+    label,
+    comment: stringField(fields.comment_short || label),
+    scopeType: slugify(fields.scope_type || "horse"),
+    status,
+    active: status !== "inactive",
+    sortOrder: numberField(fields.sort_order),
+    notes: stringField(fields.notes)
+  };
+}
+
+function normalizeCommentLog(record) {
+  const fields = record.fields || {};
+  return {
+    id: record.id,
+    label: stringField(fields.comment_log || record.id),
+    action: slugify(fields.action),
+    scopeType: slugify(fields.scope_type),
+    scopeId: stringField(fields.scope_id),
+    scopeLabel: stringField(fields.scope_label),
+    commentIds: linkedIds(fields.wec_commenting),
+    commentShortIds: linkedIds(fields.comment_shorts),
+    oldValue: stringField(fields.old_value),
+    newValue: stringField(fields.new_value),
+    createdBy: stringField(fields.created_by),
+    notes: stringField(fields.notes),
+    createdTime: record.createdTime || ""
+  };
+}
+
 function buildListSummaries(items, packLists) {
   const summaries = new Map();
   for (const list of packLists) {
@@ -4636,6 +4690,10 @@ function compareHorsePackingRows(a, b) {
 
 function compareChangeLikeRows(a, b) {
   return compareText(b.createdTime, a.createdTime) || compareText(a.label, b.label) || compareText(a.id, b.id);
+}
+
+function compareCommentShorts(a, b) {
+  return compareNumber(a.sortOrder, b.sortOrder) || compareText(a.label, b.label) || compareText(a.id, b.id);
 }
 
 function compareNumber(a, b) {

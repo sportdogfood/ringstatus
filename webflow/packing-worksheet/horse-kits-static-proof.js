@@ -18,7 +18,10 @@
     itemSearch: "",
     itemFilter: "all",
     addItemName: "",
-    addItemQty: "1"
+    addItemQty: "1",
+    commentText: "",
+    commentShortId: "",
+    editingCommentId: ""
   };
 
   let state = null;
@@ -79,6 +82,20 @@
       return;
     }
 
+    if (action === "edit-comment") {
+      const comment = horseComments(selectedHorse()?.id).find((row) => row.id === target.dataset.commentId);
+      ui.editingCommentId = comment?.id || "";
+      ui.commentText = comment?.comment || "";
+      ui.commentShortId = "";
+      render();
+      return;
+    }
+
+    if (action === "save-comment") {
+      await saveComment();
+      return;
+    }
+
     if (action === "reload") {
       await load();
     }
@@ -104,6 +121,17 @@
       const caret = input.selectionStart || ui.itemSearch.length;
       render();
       restoreKitItemSearchFocus(caret);
+    }
+    if (input.matches("[data-comment-text]")) {
+      ui.commentText = input.value || "";
+    }
+    if (input.matches("[data-comment-short]")) {
+      ui.commentShortId = input.value || "";
+      const selected = commentShorts().find((row) => row.id === ui.commentShortId);
+      if (selected && !ui.commentText.trim()) {
+        ui.commentText = selected.label || selected.comment || "";
+        render();
+      }
     }
   });
 
@@ -214,6 +242,39 @@
       ui.addItemName = "";
       ui.addItemQty = "1";
       ui.message = "Kit item added.";
+    } catch (error) {
+      ui.error = error.message || String(error);
+    } finally {
+      ui.savingKey = "";
+      render();
+    }
+  }
+
+  async function saveComment() {
+    const horse = selectedHorse();
+    const comment = ui.commentText.trim();
+    if (!horse?.id || !comment) {
+      ui.message = "Enter a comment.";
+      render();
+      return;
+    }
+    ui.savingKey = "comment";
+    ui.message = "Saving comment...";
+    render();
+    try {
+      await postAction({
+        action: "save_comment",
+        commentId: ui.editingCommentId,
+        horseId: horse.id,
+        scopeLabel: horseLabel(horse),
+        packWaveId: packWaveId(),
+        commentShortId: ui.commentShortId,
+        comment
+      });
+      ui.commentText = "";
+      ui.commentShortId = "";
+      ui.editingCommentId = "";
+      ui.message = "Comment saved.";
     } catch (error) {
       ui.error = error.message || String(error);
     } finally {
@@ -465,6 +526,7 @@
       <div class="rs-kit-items">
         ${items.map((item) => kitItemRowHtml(item, horse, kit)).join("") || `<div class="rs-empty-row">No kit items.</div>`}
       </div>
+      ${commentsHtml(horse)}
       <div class="rs-drawer-bottom">
         <div class="rs-bottom-field">
           <div class="rs-field-label">Plan:</div>
@@ -524,6 +586,49 @@
         data-pack-state="${escapeAttr(value)}"
         ${saving ? "disabled" : ""}>${escapeHtml(label)}</button>
     `;
+  }
+
+  function commentsHtml(horse) {
+    const comments = horseComments(horse.id);
+    const shorts = commentShorts();
+    return `
+      <div class="rs-comments">
+        <div class="rs-comments-head">
+          <div class="rs-field-label">comments</div>
+        </div>
+        <div class="rs-comment-form">
+          <select class="rs-comment-short" data-comment-short>
+            <option value="">comment short</option>
+            ${shorts.map((row) => `<option value="${escapeAttr(row.id)}" ${ui.commentShortId === row.id ? "selected" : ""}>${escapeHtml(row.label)}</option>`).join("")}
+          </select>
+          <textarea class="rs-comment-input" data-comment-text placeholder="Comment">${escapeHtml(ui.commentText)}</textarea>
+          <button class="rs-plain-button is-primary" type="button" data-action="save-comment" ${ui.savingKey === "comment" ? "disabled" : ""}>Save</button>
+        </div>
+        <div class="rs-comment-list">
+          ${comments.map(commentRowHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}
+        </div>
+      </div>
+    `;
+  }
+
+  function commentRowHtml(comment) {
+    return `
+      <div class="rs-comment-row">
+        <div class="rs-comment-text">${escapeHtml(comment.comment)}</div>
+        <button class="rs-text-button" type="button" data-action="edit-comment" data-comment-id="${escapeAttr(comment.id)}">Edit</button>
+      </div>
+    `;
+  }
+
+  function horseComments(horseId) {
+    return (state?.comments || [])
+      .filter((comment) => comment.status !== "deleted")
+      .filter((comment) => comment.scopeId === horseId || (comment.horseIds || []).includes(horseId))
+      .sort((a, b) => String(b.createdTime || "").localeCompare(String(a.createdTime || "")));
+  }
+
+  function commentShorts() {
+    return (state?.commentShorts || []).filter((row) => row.active !== false && row.status !== "inactive");
   }
 
   function horseLabel(horse) {
