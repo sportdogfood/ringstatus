@@ -1587,3 +1587,24 @@ body {
   padding-right: 0 !important;
   text-align: center !important;
 }
+
+#packing-app .rs-secondary-count-aggs .rs-stack-aggs {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg-value,
+#packing-app .rs-secondary-count-aggs .rs-stack-agg-label {
+  display: inline-flex !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}

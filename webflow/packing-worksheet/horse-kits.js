@@ -668,6 +668,18 @@
   }
 
   function tableAggValues() {
+    const counts = state?.counts || {};
+    if (Number.isFinite(Number(counts.kitItems))) {
+      const total = Number(counts.kitItems || 0);
+      const notNeeded = Number(counts.notNeededRows || 0);
+      const packed = Number(counts.packedRows || 0);
+      const need = Math.max(0, total - notNeeded);
+      return {
+        need,
+        packed,
+        left: Math.max(0, need - packed)
+      };
+    }
     return records.reduce((totals, record) => {
       totals.need += Number(record?.counts?.needed || 0);
       totals.packed += Number(record?.counts?.packed || 0);
