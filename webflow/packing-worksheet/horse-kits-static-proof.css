@@ -423,6 +423,20 @@ body {
   text-align: center;
 }
 
+#packing-app .rs-metric-need {
+  border-right-color: rgba(255, 255, 255, 0.32);
+  background: #4b332b;
+}
+
+#packing-app .rs-metric-packed {
+  border-right-color: rgba(255, 255, 255, 0.32);
+  background: #006b2f;
+}
+
+#packing-app .rs-metric-left {
+  background: #68707a;
+}
+
 #packing-app .rs-metric:nth-child(3) {
   border-right: 0;
 }
@@ -443,6 +457,15 @@ body {
   line-height: 1.1;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+#packing-app .rs-metric-need .rs-metric-value,
+#packing-app .rs-metric-packed .rs-metric-value,
+#packing-app .rs-metric-left .rs-metric-value,
+#packing-app .rs-metric-need .rs-metric-label,
+#packing-app .rs-metric-packed .rs-metric-label,
+#packing-app .rs-metric-left .rs-metric-label {
+  color: #fff;
 }
 
 #packing-app .rs-kit-progress {
@@ -587,9 +610,24 @@ body {
 
 #packing-app .rs-item-filter.is-active {
   border-color: #9aa1aa;
-  background: #fff;
-  color: #1f2328;
-  box-shadow: inset 0 0 0 1px #9aa1aa;
+  background: #4b332b;
+  color: #fff;
+  box-shadow: none;
+}
+
+#packing-app .rs-item-filter[data-item-filter="packed"].is-active {
+  border-color: #006b2f;
+  background: #006b2f;
+}
+
+#packing-app .rs-item-filter[data-item-filter="not_needed"].is-active {
+  border-color: #68707a;
+  background: #68707a;
+}
+
+#packing-app .rs-item-filter[data-item-filter="all"].is-active {
+  border-color: #1f2328;
+  background: #1f2328;
 }
 
 #packing-app .rs-kit-items {

@@ -544,8 +544,9 @@
   }
 
   function metricHtml(label, value) {
+    const key = slug(label);
     return `
-      <div class="rs-metric">
+      <div class="rs-metric rs-metric-${escapeAttr(key)}">
         <div class="rs-metric-value">${escapeHtml(value)}</div>
         <div class="rs-metric-label">${escapeHtml(label)}</div>
       </div>
