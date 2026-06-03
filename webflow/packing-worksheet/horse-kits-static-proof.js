@@ -158,10 +158,7 @@
     const kitId = button.dataset.kitId || assignedKit(horseId)?.id || "";
     const kitItemId = button.dataset.kitItemId || "";
     const packState = button.dataset.packState || "";
-    const current = kitItemState(kitItemId, horseId, kitId);
     if (!horseId || !kitItemId || !packState || !packWaveId()) return;
-    if (current === packState && rowForKitItem(kitItemId, horseId, kitId)) return;
-    if (current === "not_packed" && packState === "not_packed" && !rowForKitItem(kitItemId, horseId, kitId)) return;
 
     const optimisticKey = itemStateKey(kitItemId, horseId, kitId);
     optimisticItemStates.set(optimisticKey, packState);
