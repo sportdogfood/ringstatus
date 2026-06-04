@@ -182,7 +182,12 @@ const ITEM_FIELD_NAMES = [
   "wec_return_wave",
   "wec_pack_items",
   "horse_count (from wec_pack_waves)",
+  "count_pak_horse_roster (from wec_pack_wave_one)",
   "groom_sanity (from wec_pack_waves)",
+  "manual_overide",
+  "manual_overide_value",
+  "manual_override",
+  "manual_override_value",
   "active",
   "sort_order",
   "notes"
@@ -853,7 +858,10 @@ function normalizeItem(record, spec, sourceById, wave, links = [], planContext =
     multiplier: numberField(fields.multiplier),
     wildcardKey: stringField(fields.wildcard_key),
     horseCountLookup: wholeQuantityField(fields["horse_count (from wec_pack_waves)"]),
+    perHorseCountLookup: wholeQuantityField(fields["count_pak_horse_roster (from wec_pack_wave_one)"]),
     groomSanityLookup: wholeQuantityField(fields["groom_sanity (from wec_pack_waves)"]),
+    manualOverride: !!(fields.manual_overide || fields.manual_override),
+    manualOverrideValue: wholeQuantityField(fields.manual_overide_value ?? fields.manual_override_value),
     unit: stringField(fields.unit),
     active: fields.active !== false,
     sortOrder: numberField(fields.sort_order),
@@ -891,9 +899,14 @@ function commentMatchesPlan(row, spec, wave, itemIds) {
 
 function computedNeeded(spec, fields, wave, planContext = {}) {
   if (spec.planKey === "quantity") return wholeQuantityField(fields.starting_quantity);
-  const multiplier = numberField(fields.multiplier);
-  if (!multiplier) return 0;
-  if (spec.planKey === "per_horse") return Math.max(0, Math.round(multiplier * waveHorseCount(wave, planContext)));
+  if (fields.manual_overide || fields.manual_override) {
+    return wholeQuantityField(fields.manual_overide_value ?? fields.manual_override_value);
+  }
+  const multiplier = numberField(fields.multiplier) || 1;
+  if (spec.planKey === "per_horse") {
+    const itemHorseCount = numberField(fields["count_pak_horse_roster (from wec_pack_wave_one)"]);
+    return Math.max(0, Math.round(multiplier * (itemHorseCount || waveHorseCount(wave, planContext))));
+  }
   if (spec.planKey === "per_groom") {
     const itemGroomCount = numberField(fields["groom_sanity (from wec_pack_waves)"]);
     return Math.max(0, Math.round(multiplier * (itemGroomCount || waveGroomCount(wave))));
