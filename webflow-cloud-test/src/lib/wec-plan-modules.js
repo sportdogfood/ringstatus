@@ -280,8 +280,8 @@ export async function planReport(airtable, requestUrl, planKey) {
     horseRosterRecords
   ] = await Promise.all([
     listRecords(airtable, tables.wec_pack_waves),
-    listRecords(airtable, tables.source, { view: selectedViewKey || undefined }),
-    listRecords(airtable, tables.items, { view: selectedViewKey || undefined }),
+    listRecords(airtable, tables.source, tableViewOptionsForPlan(spec, selectedViewKey)),
+    listRecords(airtable, tables.items, tableViewOptionsForPlan(spec, selectedViewKey)),
     listRecords(airtable, tables.links),
     listRecords(airtable, tables.logs),
     listOptionalRecords(airtable, tables.pak_tabs),
@@ -300,7 +300,11 @@ export async function planReport(airtable, requestUrl, planKey) {
   const horseRoster = horseRosterRecords.map(normalizeRosterHorse);
   const planContext = {
     selectedViewKey,
-    horseCount: spec.planKey === "per_horse" ? horseCountForView(horseRoster, selectedViewKey, selectedWave) : 0
+    horseCount: spec.planKey === "per_horse"
+      ? horseCountForView(horseRoster, selectedViewKey, selectedWave)
+      : spec.planKey === "per_groom"
+        ? waveHorseCount(selectedWave)
+        : 0
   };
   const sourceRows = sourceRecords.map((record) => normalizeSource(record, spec)).filter((row) => row.active);
   const sourceById = new Map(sourceRows.map((row) => [row.id, row]));
@@ -348,7 +352,7 @@ export async function planReport(airtable, requestUrl, planKey) {
       packWaveKey: selectedWave?.key || packWaveKey,
       selectedViewKey,
       pakGroupsView: spec.planKey,
-      horseSource: spec.planKey === "per_horse" ? "pak_horses_roster" : "",
+      horseSource: ["per_horse", "per_groom"].includes(spec.planKey) ? "pak_horses_roster" : "",
       horseCount: planContext.horseCount,
       tableFamily: {
         source: tables.source.name,
@@ -713,6 +717,12 @@ function assertPlanTables(tables, spec) {
   if (spec.planKey === "per_horse" && !tables.pak_horses_roster?.id) {
     throw new Error(`${spec.planKey}_missing_table:pak_horses_roster`);
   }
+}
+
+function tableViewOptionsForPlan(spec, selectedViewKey) {
+  if (spec.planKey === "per_horse") return {};
+  if (spec.planKey === "per_groom") return {};
+  return { view: selectedViewKey || undefined };
 }
 
 function physicalTableConfig(context, name, optional = false) {

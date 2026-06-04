@@ -15,6 +15,7 @@
     drawerOpen: false,
     selectedHorseId: "",
     addOpen: false,
+    profileTab: "overview",
     saving: false,
     draft: {}
   };
@@ -38,6 +39,7 @@
       ui.selectedHorseId = target.dataset.horseId || "";
       ui.drawerOpen = true;
       ui.addOpen = false;
+      ui.profileTab = "overview";
       ui.draft = draftFromHorse(selectedHorse());
       render();
       return;
@@ -52,8 +54,31 @@
       ui.addOpen = true;
       ui.drawerOpen = true;
       ui.selectedHorseId = "";
+      ui.profileTab = "overview";
       ui.draft = {};
       render();
+      return;
+    }
+    if (action === "set-profile-tab") {
+      ui.profileTab = target.dataset.profileTab || "overview";
+      render();
+      return;
+    }
+    if (action === "set-app-status") {
+      const status = target.dataset.status || "active";
+      ui.draft.active = status === "active";
+      ui.draft.inactive = status === "inactive";
+      render();
+      await saveHorse();
+      return;
+    }
+    if (action === "set-summer-wave") {
+      const wave = target.dataset.wave || "none";
+      ui.draft.wec_wave_1 = wave === "wave_one";
+      ui.draft.wec_wave_2 = wave === "wave_two";
+      ui.draft.wec_not_going = wave === "none";
+      render();
+      await saveHorse();
       return;
     }
     if (action === "clear-search") {
@@ -86,6 +111,14 @@
     }
   });
 
+  root.addEventListener("change", async (event) => {
+    const input = event.target;
+    if (!input.matches("[data-field]")) return;
+    const key = input.dataset.field;
+    ui.draft[key] = input.type === "checkbox" ? input.checked : input.value;
+    if (!ui.addOpen) await saveHorse();
+  });
+
   async function load() {
     ui.loading = true;
     ui.error = "";
@@ -102,10 +135,7 @@
   }
 
   async function saveHorse() {
-    const fields = {};
-    for (const key of state?.allowedFields?.write || []) {
-      if (Object.prototype.hasOwnProperty.call(ui.draft, key)) fields[key] = ui.draft[key];
-    }
+    const fields = changedDraftFields();
     if (!Object.keys(fields).length) return;
     ui.saving = true;
     render();
@@ -130,6 +160,37 @@
       ui.saving = false;
       render();
     }
+  }
+
+  function changedDraftFields() {
+    const allowed = state?.allowedFields?.write || [];
+    const horse = selectedHorse();
+    const fields = {};
+    for (const key of allowed) {
+      if (!Object.prototype.hasOwnProperty.call(ui.draft, key)) continue;
+      if (ui.addOpen || normalizeDraftValue(ui.draft[key]) !== normalizeDraftValue(currentValueForField(horse, key))) {
+        fields[key] = ui.draft[key];
+      }
+    }
+    return fields;
+  }
+
+  function currentValueForField(horse, field) {
+    if (field === "horse") return horse?.name || "";
+    if (field === "barn_name") return horse?.barnName || "";
+    if (field === "show_name") return horse?.showName || "";
+    if (field === "active") return horse?.active !== false;
+    if (field === "inactive") return !!horse?.inactive;
+    if (field === "wec_wave_1") return !!horse?.waveOne;
+    if (field === "wec_wave_2") return !!horse?.waveTwo;
+    if (field === "wec_not_going") return !!horse?.notGoing;
+    if (field === "notes") return horse?.notes || "";
+    return "";
+  }
+
+  function normalizeDraftValue(value) {
+    if (typeof value === "boolean") return value ? "true" : "false";
+    return String(value ?? "").trim();
   }
 
   async function fetchJson(url, options) {
@@ -232,31 +293,85 @@
     const horse = selectedHorse();
     return `<div class="rs-drawer-overlay is-open" data-action="close-drawer" aria-hidden="true"></div>
     <aside class="rs-record-drawer is-open" aria-hidden="false">
-      <div class="rs-drawer-head">
-        <div class="rs-drawer-title-group"><div class="rs-page-subtitle">${escapeHtml(ui.addOpen ? "Add Horse" : horse?.name || "Horse")}</div>${horse?.profileUrl ? `<a class="rs-drawer-profile-link" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : ""}</div>
-        <button class="rs-drawer-close" type="button" data-action="close-drawer" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="rs-drawer-body">
-        ${formHtml(horse)}
-        ${!ui.addOpen ? membershipsHtml(horse) : ""}
-        ${!ui.addOpen ? attributesHtml() : ""}
-        ${!ui.addOpen ? drawerCommentsHtml(horse) : ""}
-        ${!ui.addOpen ? drawerChangeLogHtml(horse) : ""}
+      <div class="rs-horse-profile-shell">
+        <div class="rs-profile-top">
+          <h1 class="rs-profile-title">${escapeHtml(ui.addOpen ? "Add Horse" : horse?.name || "Horse")}</h1>
+          <button class="rs-drawer-close" type="button" data-action="close-drawer" aria-label="Close"><span aria-hidden="true">X</span></button>
+        </div>
+        ${profileTabsHtml()}
+        <div class="rs-drawer-body">
+          ${profilePanelHtml(horse)}
+        </div>
+        <div class="rs-save-note">
+          <span>${escapeHtml(ui.error || (ui.saving ? "Saving changes..." : "Changes save to Airtable."))}</span>
+          <a href="${escapeAttr(horse?.profileUrl || "#")}" target="_blank" rel="noopener">Airtable</a>
+        </div>
       </div>
     </aside>`;
   }
 
-  function formHtml(horse) {
-    const fields = state?.allowedFields?.write || [];
-    return `<div class="rs-detail-panel"><div class="rs-stack-label">Details</div>${fields.map((field) => fieldInput(field)).join("")}<button class="rs-plain-button is-primary" type="button" data-action="save-horse">${ui.saving ? "Saving" : ui.addOpen ? "Add Horse" : "Save Changes"}</button></div>`;
+  function profileTabsHtml() {
+    const tabs = [
+      ["overview", "OVERVIEW"],
+      ["profile", "PROFILE"],
+      ["feed", "FEED"],
+      ["contacts", "CONTACTS"],
+      ["print", "PRINT"]
+    ];
+    return `<div class="rs-profile-tabs">${tabs.map(([key, label]) => `<button class="rs-profile-tab ${ui.profileTab === key ? "is-active" : ""}" type="button" data-action="set-profile-tab" data-profile-tab="${escapeAttr(key)}">${label}</button>`).join("")}</div>`;
   }
 
-  function fieldInput(field) {
+  function profilePanelHtml(horse) {
+    if (ui.profileTab === "profile") return `${attributesHtml()}${membershipsHtml(horse)}`;
+    if (ui.profileTab === "feed") return emptyProfilePanel("Feed", "No feed rows are configured for this entity module.");
+    if (ui.profileTab === "contacts") return drawerCommentsHtml(horse);
+    if (ui.profileTab === "print") return drawerChangeLogHtml(horse);
+    return overviewHtml();
+  }
+
+  function overviewHtml() {
+    return `<div class="rs-profile-card">
+      ${fieldInput("show_name", { label: "SHOW NAME", source: "show_name" })}
+      ${fieldInput("barn_name", { label: "BARN NAME", source: "barn_name" })}
+      ${noteFieldHtml()}
+      ${appStatusHtml()}
+      ${summerStatusHtml()}
+    </div>`;
+  }
+
+  function emptyProfilePanel(label, text) {
+    return `<div class="rs-profile-card"><div class="rs-stack-label">${escapeHtml(label)}</div><div class="rs-empty-row">${escapeHtml(text)}</div></div>`;
+  }
+
+  function fieldInput(field, options = {}) {
     const value = ui.draft[field];
+    const label = options.label || fieldLabel(field);
     if (field === "active" || field === "inactive" || field === "wec_wave_1" || field === "wec_wave_2" || field === "wec_not_going") {
       return `<label class="rs-check-row"><span>${escapeHtml(fieldLabel(field))}</span><input type="checkbox" data-field="${escapeAttr(field)}" ${value ? "checked" : ""}></label>`;
     }
-    return `<label class="rs-field-row"><span class="rs-stack-label">${escapeHtml(fieldLabel(field))}</span><input class="rs-field-input" type="text" data-field="${escapeAttr(field)}" value="${escapeAttr(value || "")}"></label>`;
+    return `<label class="rs-field-row"><input class="rs-field-input" type="text" data-field="${escapeAttr(field)}" value="${escapeAttr(value || "")}"><span class="rs-stack-label">${escapeHtml(label)}</span></label>`;
+  }
+
+  function noteFieldHtml() {
+    const writable = (state?.allowedFields?.write || []).includes("notes");
+    return `<label class="rs-field-row"><textarea class="rs-field-input rs-note-input" ${writable ? `data-field="notes"` : "disabled"}>${escapeHtml(ui.draft.notes || "")}</textarea><span class="rs-stack-label">NOTE</span></label>`;
+  }
+
+  function appStatusHtml() {
+    const active = ui.draft.active !== false && !ui.draft.inactive;
+    return `<div class="rs-segment-block"><div class="rs-segment-row">
+      <button class="rs-segment ${active ? "is-active" : ""}" type="button" data-action="set-app-status" data-status="active">ACTIVE</button>
+      <button class="rs-segment ${!active ? "is-active" : ""}" type="button" data-action="set-app-status" data-status="inactive">INACTIVE</button>
+    </div><div class="rs-stack-label">APP STATUS</div></div>`;
+  }
+
+  function summerStatusHtml() {
+    const wave = ui.draft.wec_wave_1 ? "wave_one" : ui.draft.wec_wave_2 ? "wave_two" : "none";
+    return `<div class="rs-segment-block"><div class="rs-segment-row">
+      <button class="rs-segment ${wave === "wave_one" ? "is-active" : ""}" type="button" data-action="set-summer-wave" data-wave="wave_one">WAVE-1</button>
+      <button class="rs-segment ${wave === "wave_two" ? "is-active" : ""}" type="button" data-action="set-summer-wave" data-wave="wave_two">WAVE-2</button>
+      <button class="rs-segment ${wave === "none" ? "is-active" : ""}" type="button" data-action="set-summer-wave" data-wave="none">NONE</button>
+    </div><div class="rs-stack-label">WEC-SUMMER</div></div>`;
   }
 
   function membershipsHtml(horse) {
@@ -265,9 +380,7 @@
       ["Waves", horse.memberships?.waveKeys || []],
       ["Plans", horse.memberships?.planIds || []],
       ["Pack Lists", horse.memberships?.packListIds || []],
-      ["Pack Waves", horse.memberships?.packWaveIds || []],
-      ["Kits", horse.memberships?.kitIds || []],
-      ["Kit Items", horse.memberships?.kitItemIds || []]
+      ["Pack Waves", horse.memberships?.packWaveIds || []]
     ];
     return `<div class="rs-detail-panel"><div class="rs-stack-label">List Memberships</div>${rows.map(([label, values]) => `<div class="rs-meta-row"><span>${escapeHtml(label)}</span><strong>${escapeHtml(values.length ? values.join(", ") : "None")}</strong></div>`).join("")}</div>`;
   }
