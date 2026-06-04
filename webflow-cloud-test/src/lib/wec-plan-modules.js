@@ -720,6 +720,7 @@ function assertPlanTables(tables, spec) {
 }
 
 function tableViewOptionsForPlan(spec, selectedViewKey) {
+  if (spec.planKey === "quantity") return {};
   if (spec.planKey === "per_horse") return {};
   if (spec.planKey === "per_groom") return {};
   return { view: selectedViewKey || undefined };
