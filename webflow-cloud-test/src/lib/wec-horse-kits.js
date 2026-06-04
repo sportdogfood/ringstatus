@@ -181,6 +181,7 @@ export async function horseKitReport(airtable, requestUrl) {
     }))
     .filter((row) => row.horseIds.length && row.kitItemIds.length)
     .filter((row) => !selectedWave?.id || row.packWaveIds.length === 0 || row.packWaveIds.includes(selectedWave.id))
+    .filter((row) => packingRowMatchesAssignedHorse(row, horseById))
     .map((row) => ({
       id: row.id,
       label: row.label,
@@ -956,6 +957,15 @@ function horseWaveState(horse) {
   if (horse?.waveOne) return "wave_one";
   if (horse?.waveTwo) return "wave_two";
   return "unassigned";
+}
+
+function packingRowMatchesAssignedHorse(row, horseById) {
+  return (row.horseIds || []).some((horseId) => {
+    const horse = horseById.get(horseId);
+    if (!horse) return false;
+    const assignedItemIds = new Set(horse.pakKitItemIds || []);
+    return (row.kitItemIds || []).some((itemId) => assignedItemIds.has(itemId));
+  });
 }
 
 function groupItemsByLinkedKit(items) {
