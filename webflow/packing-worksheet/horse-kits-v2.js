@@ -376,7 +376,7 @@
   function stackRow(row) {
     const key = row.renderKey;
     if (key === "header") return section(row, headerHtml(), "is-header");
-    if (key === "primary_tabs") return section(row, pillsHtml(state?.primaryTabs || [], "", "primary"), "is-primary-tabs");
+    if (key === "primary_tabs") return section(row, pillsHtml(state?.primaryTabs || [], "horses", "primary"), "is-primary-tabs");
     if (key === "lane_controls") return section(row, pillsHtml(laneControls(), ui.laneKey, "lane"), "is-lane-controls");
     if (key === "secondary_controls") return section(row, pillsHtml(state?.secondaryControls || [], ui.secondaryView, "secondary"), "is-secondary-controls");
     if (key === "summary_aggs") return section(row, `<div class="rs-stack-label">${escapeHtml(row.displayLabel || "Horse Kits")}</div><div class="rs-stack-aggs">${summaryAggs()}</div>`, "is-summary-aggs");
