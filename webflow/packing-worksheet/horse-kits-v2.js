@@ -101,6 +101,7 @@
   root.addEventListener("input", (event) => {
     const input = event.target;
     if (input.matches("[data-search]")) {
+      const scroll = captureScroll();
       ui.search = input.value || "";
       const caret = input.selectionStart || ui.search.length;
       rebuild();
@@ -110,18 +111,21 @@
           next.focus();
           next.setSelectionRange(caret, caret);
         }
+        restoreScroll(scroll);
       });
     }
     if (input.matches("[data-kit-item-search]")) {
+      const scroll = captureScroll();
       ui.itemSearch = input.value || "";
       const caret = input.selectionStart || ui.itemSearch.length;
-      render();
+      renderPreservingScroll(scroll);
       requestAnimationFrame(() => {
         const next = root.querySelector("[data-kit-item-search]");
         if (next) {
           next.focus();
           next.setSelectionRange(caret, caret);
         }
+        restoreScroll(scroll);
       });
     }
     if (input.matches("[data-comment-text]")) ui.commentText = input.value || "";
@@ -167,7 +171,7 @@
 
   function rebuild(shouldRender = true) {
     records = sortRows(filteredHorses().map(recordForHorse).filter(matchesLane));
-    if (!records.some((row) => row.id === ui.selectedHorseId)) ui.selectedHorseId = records[0]?.id || "";
+    if (!records.some((row) => row.id === ui.selectedHorseId) && !ui.drawerOpen) ui.selectedHorseId = records[0]?.id || "";
     if (shouldRender) renderPreservingScroll();
   }
 
@@ -279,12 +283,13 @@
   }
 
   async function setItemState(button, scroll) {
-    const horse = selectedHorse();
-    const kit = selectedRecord()?.kit;
+    const record = selectedRecord();
+    const horse = record?.horse;
+    const kit = record?.kit;
     const itemId = button.dataset.kitItemId || "";
     const nextState = button.dataset.packState || "not_packed";
     if (!horse?.id || !kit?.id || !itemId) return;
-    if (!selectedRecord().items.some((item) => item.id === itemId)) return;
+    if (!record.items.some((item) => item.id === itemId)) return;
     const key = stateKey(horse.id, kit.id, itemId);
     const previous = itemState(horse.id, kit.id, itemId);
     optimistic.set(key, nextState);
@@ -326,7 +331,7 @@
     const comment = ui.commentText.trim();
     if (!horse?.id || !comment) return;
     ui.savingKey = "comment";
-    render();
+    renderPreservingScroll(scroll);
     try {
       const result = await fetchJson(apiUrl(), {
         method: "POST",
