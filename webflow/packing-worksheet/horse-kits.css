@@ -1848,3 +1848,82 @@ body {
 #packing-app .rs-record-drawer {
   z-index: 1001 !important;
 }
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg {
+  display: grid !important;
+  grid-template-columns: minmax(4ch, auto) auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg-value {
+  width: auto !important;
+  min-width: 4ch !important;
+  display: block !important;
+  text-align: right !important;
+  overflow: visible !important;
+}
+
+#packing-app .rs-secondary-count-aggs .rs-stack-agg-label {
+  width: auto !important;
+  min-width: 0 !important;
+  display: block !important;
+  text-align: left !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Drawer shell lock: close control owns its column; body never renders under it. */
+#packing-app .rs-record-drawer {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+
+#packing-app .rs-drawer-head {
+  flex: 0 0 64px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 64px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 44px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 14px !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+
+#packing-app .rs-drawer-title-group {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+#packing-app .rs-drawer-close {
+  position: static !important;
+  justify-self: end !important;
+  align-self: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
+}
+
+#packing-app .rs-drawer-body {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 10px 14px 24px !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+
+#packing-app .rs-drawer-body > * {
+  max-width: 100% !important;
+}
