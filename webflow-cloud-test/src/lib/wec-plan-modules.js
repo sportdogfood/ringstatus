@@ -176,6 +176,8 @@ const ITEM_FIELD_NAMES = [
   "multiplier",
   "wildcard_key",
   "unit",
+  "horse_count (from wec_pack_waves)",
+  "groom_sanity (from wec_pack_waves)",
   "active",
   "sort_order",
   "notes"
@@ -840,6 +842,8 @@ function normalizeItem(record, spec, sourceById, wave, links = [], planContext =
     startingQuantity: wholeQuantityField(fields.starting_quantity),
     multiplier: numberField(fields.multiplier),
     wildcardKey: stringField(fields.wildcard_key),
+    horseCountLookup: wholeQuantityField(fields["horse_count (from wec_pack_waves)"]),
+    groomSanityLookup: wholeQuantityField(fields["groom_sanity (from wec_pack_waves)"]),
     unit: stringField(fields.unit),
     active: fields.active !== false,
     sortOrder: numberField(fields.sort_order),
@@ -880,7 +884,10 @@ function computedNeeded(spec, fields, wave, planContext = {}) {
   const multiplier = numberField(fields.multiplier);
   if (!multiplier) return 0;
   if (spec.planKey === "per_horse") return Math.max(0, Math.round(multiplier * waveHorseCount(wave, planContext)));
-  if (spec.planKey === "per_groom") return Math.max(0, Math.round(multiplier * waveGroomCount(wave)));
+  if (spec.planKey === "per_groom") {
+    const itemGroomCount = numberField(fields["groom_sanity (from wec_pack_waves)"]);
+    return Math.max(0, Math.round(multiplier * (itemGroomCount || waveGroomCount(wave))));
+  }
   return 0;
 }
 
