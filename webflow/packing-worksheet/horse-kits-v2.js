@@ -56,7 +56,7 @@
     }
     if (action === "clear-kit-item-search") {
       ui.itemSearch = "";
-      render();
+      renderPreservingScroll(captureScroll());
       return;
     }
     if (action === "set-secondary-view") {
@@ -80,16 +80,17 @@
       return;
     }
     if (action === "set-item-filter") {
+      const scroll = captureScroll();
       ui.itemFilter = target.dataset.itemFilter || "all";
-      render();
+      renderPreservingScroll(scroll);
       return;
     }
     if (action === "set-item-state") {
-      await setItemState(target);
+      await setItemState(target, captureScroll());
       return;
     }
     if (action === "save-comment") {
-      await saveComment();
+      await saveComment(captureScroll());
       return;
     }
     if (action === "print-list") {
@@ -277,7 +278,7 @@
     });
   }
 
-  async function setItemState(button) {
+  async function setItemState(button, scroll) {
     const horse = selectedHorse();
     const kit = selectedRecord()?.kit;
     const itemId = button.dataset.kitItemId || "";
@@ -291,7 +292,7 @@
     ui.drawerOpen = true;
     ui.selectedHorseId = horse.id;
     ui.savingKey = key;
-    renderPreservingScroll();
+    renderPreservingScroll(scroll);
     try {
       const row = packingRow(horse.id, kit.id, itemId);
       const result = await fetchJson(apiUrl(), {
@@ -316,11 +317,11 @@
       rebuild(false);
       ui.drawerOpen = true;
       ui.selectedHorseId = horse.id;
-      renderPreservingScroll();
+      renderPreservingScroll(scroll);
     }
   }
 
-  async function saveComment() {
+  async function saveComment(scroll) {
     const horse = selectedHorse();
     const comment = ui.commentText.trim();
     if (!horse?.id || !comment) return;
@@ -349,12 +350,11 @@
       rebuild(false);
       ui.drawerOpen = true;
       ui.selectedHorseId = horse.id;
-      renderPreservingScroll();
+      renderPreservingScroll(scroll);
     }
   }
 
-  function renderPreservingScroll() {
-    const scroll = captureScroll();
+  function renderPreservingScroll(scroll = captureScroll()) {
     render();
     restoreScroll(scroll);
   }
@@ -372,7 +372,7 @@
   }
 
   function restoreScroll(scroll) {
-    requestAnimationFrame(() => {
+    const apply = () => {
       window.scrollTo(scroll.windowX || 0, scroll.windowY || 0);
       const table = root.querySelector(".rs-airtable-scroll");
       const drawer = root.querySelector(".rs-drawer-body");
@@ -381,7 +381,9 @@
         table.scrollLeft = scroll.tableLeft || 0;
       }
       if (drawer) drawer.scrollTop = scroll.drawerTop || 0;
-    });
+    };
+    requestAnimationFrame(apply);
+    setTimeout(apply, 0);
   }
 
   function render() {
@@ -580,7 +582,10 @@
   }
 
   function selectedRecord() {
-    return records.find((record) => record.id === ui.selectedHorseId) || records[0] || null;
+    const visible = records.find((record) => record.id === ui.selectedHorseId);
+    if (visible) return visible;
+    const horse = (state?.horses || []).find((row) => row.id === ui.selectedHorseId);
+    return horse ? recordForHorse(horse) : records[0] || null;
   }
 
   function selectedHorse() {
