@@ -167,7 +167,7 @@
   function rebuild(shouldRender = true) {
     records = sortRows(filteredHorses().map(recordForHorse).filter(matchesLane));
     if (!records.some((row) => row.id === ui.selectedHorseId)) ui.selectedHorseId = records[0]?.id || "";
-    if (shouldRender) render();
+    if (shouldRender) renderPreservingScroll();
   }
 
   function filteredHorses() {
@@ -287,11 +287,11 @@
     const key = stateKey(horse.id, kit.id, itemId);
     const previous = itemState(horse.id, kit.id, itemId);
     optimistic.set(key, nextState);
-    rebuild();
+    rebuild(false);
     ui.drawerOpen = true;
     ui.selectedHorseId = horse.id;
     ui.savingKey = key;
-    render();
+    renderPreservingScroll();
     try {
       const row = packingRow(horse.id, kit.id, itemId);
       const result = await fetchJson(apiUrl(), {
@@ -313,9 +313,10 @@
       ui.error = error.message || String(error);
     } finally {
       ui.savingKey = "";
-      rebuild();
+      rebuild(false);
       ui.drawerOpen = true;
       ui.selectedHorseId = horse.id;
+      renderPreservingScroll();
     }
   }
 
@@ -345,10 +346,42 @@
       ui.error = error.message || String(error);
     } finally {
       ui.savingKey = "";
-      rebuild();
+      rebuild(false);
       ui.drawerOpen = true;
       ui.selectedHorseId = horse.id;
+      renderPreservingScroll();
     }
+  }
+
+  function renderPreservingScroll() {
+    const scroll = captureScroll();
+    render();
+    restoreScroll(scroll);
+  }
+
+  function captureScroll() {
+    const table = root.querySelector(".rs-airtable-scroll");
+    const drawer = root.querySelector(".rs-drawer-body");
+    return {
+      windowX: window.scrollX || 0,
+      windowY: window.scrollY || 0,
+      tableTop: table ? table.scrollTop : 0,
+      tableLeft: table ? table.scrollLeft : 0,
+      drawerTop: drawer ? drawer.scrollTop : 0
+    };
+  }
+
+  function restoreScroll(scroll) {
+    requestAnimationFrame(() => {
+      window.scrollTo(scroll.windowX || 0, scroll.windowY || 0);
+      const table = root.querySelector(".rs-airtable-scroll");
+      const drawer = root.querySelector(".rs-drawer-body");
+      if (table) {
+        table.scrollTop = scroll.tableTop || 0;
+        table.scrollLeft = scroll.tableLeft || 0;
+      }
+      if (drawer) drawer.scrollTop = scroll.drawerTop || 0;
+    });
   }
 
   function render() {
@@ -370,7 +403,20 @@
   function activeRows() {
     const rows = state?.groupStack?.activeRows || [];
     const allowed = new Set(["header", "primary_tabs", "summary_aggs", "secondary_controls", "count_aggs", "lane_controls", "search", "main_table", "comments"]);
-    return rows.filter((row) => allowed.has(row.renderKey));
+    const order = new Map([
+      ["header", 0],
+      ["primary_tabs", 1],
+      ["summary_aggs", 2],
+      ["secondary_controls", 3],
+      ["count_aggs", 4],
+      ["lane_controls", 5],
+      ["search", 6],
+      ["main_table", 7],
+      ["comments", 8]
+    ]);
+    return rows
+      .filter((row) => allowed.has(row.renderKey))
+      .sort((a, b) => (order.get(a.renderKey) ?? 99) - (order.get(b.renderKey) ?? 99));
   }
 
   function stackRow(row) {
@@ -477,9 +523,10 @@
     const horse = record.horse;
     const kit = record.kit;
     const percent = record.counts.needed ? Math.round((record.counts.packed / record.counts.needed) * 100) : 0;
-    return `<aside class="rs-record-drawer ${ui.drawerOpen ? "is-open" : ""}" aria-hidden="${ui.drawerOpen ? "false" : "true"}">
+    return `<div class="rs-drawer-overlay ${ui.drawerOpen ? "is-open" : ""}" data-action="close-drawer" aria-hidden="true"></div>
+    <aside class="rs-record-drawer ${ui.drawerOpen ? "is-open" : ""}" aria-hidden="${ui.drawerOpen ? "false" : "true"}">
       <div class="rs-drawer-head">
-        <div class="rs-drawer-title-group"><div class="rs-page-subtitle">${escapeHtml(horseLabel(horse))}</div>${horse.profileUrl ? `<a class="rs-profile-link" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : ""}</div>
+        <div class="rs-drawer-title-group"><div class="rs-page-subtitle">${escapeHtml(horseLabel(horse))}</div>${horse.profileUrl ? `<a class="rs-drawer-profile-link" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : ""}</div>
         <button class="rs-drawer-close" type="button" data-action="close-drawer" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="rs-drawer-body">
@@ -487,10 +534,10 @@
           <div class="rs-kit-progress"><div class="rs-kit-progress-label">${percent}% PACKED</div><div class="rs-kit-progress-track"><div class="rs-kit-progress-bar" style="width:${percent}%"></div></div></div>
           <div class="rs-summary-metrics">${agg(record.counts.needed, "NEED", "need", "brown")}${agg(record.counts.packed, "PACKED", "packed", "green")}${agg(record.counts.left, "LEFT", "left", "grey")}</div>
         </div>
-        ${drawerComments(horse)}
         <div class="rs-kit-item-search-row"><label class="rs-stack-label" for="rs-kit-search-v2">SEARCH KIT ITEMS</label><div class="rs-search-wrap"><input id="rs-kit-search-v2" class="rs-kit-item-search" data-kit-item-search autocomplete="off" value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items"><button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" aria-label="Clear kit item search" data-action="clear-kit-item-search"><span aria-hidden="true">&times;</span></button></div></div>
         <div class="rs-kit-item-row rs-item-filter-row"><div class="rs-kit-item-main"><div class="rs-stack-label">FILTER KIT ITEMS</div></div><div class="rs-kit-actions rs-item-filter-actions">${filterButton("All", "all")}${filterButton("Not Packed", "not_packed")}${filterButton("Packed", "packed")}${filterButton("Not Needed", "not_needed")}</div></div>
         <div class="rs-kit-items"><div class="rs-stack-label">KIT ITEMS</div>${filteredItems(record).map((item) => itemRow(item, horse, kit)).join("") || `<div class="rs-empty-row">No kit items.</div>`}</div>
+        ${drawerComments(horse)}
       </div>
     </aside>`;
   }
