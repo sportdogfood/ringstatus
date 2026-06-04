@@ -76,6 +76,61 @@ Shared source rule:
 - Cross-module entities such as horses, waves, tabs, plans, and comments should have one canonical normalized shape and be referenced by page modules.
 - Page-specific state should reference shared entity ids instead of copying full duplicate records where possible.
 
+## Table Naming Families
+
+Use similar naming patterns, but do not overlap table names or responsibilities across plan families. The names below are examples/placeholders and may need to be renamed to prevent conflicts with existing Airtable tables, legacy app tables, or future module boundaries.
+
+Existing shared roster:
+
+- `pak_horses_roster`
+
+`pak_horses_roster` already exists and does not match the example singular naming pattern. Keep this table as-is unless a separate migration is explicitly approved. New module families should adapt to this existing roster instead of renaming it during page/module work.
+
+Example horse kits:
+
+- `pak_kits`
+- `pak_kit_items`
+- kit-specific linking table
+- kit-specific logs table
+- kit-specific lanes if needed
+- kit-specific slots if needed
+
+Example quantity:
+
+- `pak_byqtys`
+- `pak_byqty_items`
+- quantity-specific linking table
+- quantity-specific logs table
+- quantity-specific lanes if needed
+- quantity-specific slots if needed
+
+Example per horse:
+
+- `pak_byhorses`
+- `pak_byhorse_items`
+- per-horse-specific linking table
+- per-horse-specific logs table
+- per-horse-specific lanes if needed
+- per-horse-specific slots if needed
+
+Example per groom:
+
+- `pak_bygrooms`
+- `pak_bygroom_items`
+- per-groom-specific linking table
+- per-groom-specific logs table
+- per-groom-specific lanes if needed
+- per-groom-specific slots if needed
+
+Naming rules:
+
+- No table name should serve two plan families.
+- Links and logs must be named for their plan family.
+- Lanes and slots can follow the same pattern when plan-specific lanes/slots are needed.
+- Shared lookup/source entities can be reused only when they are truly cross-module and documented as shared.
+- Before creating or renaming a table, check existing Airtable names and legacy references.
+- If a proposed name conflicts, rename the new family rather than overloading an existing table.
+
 State request:
 
 ```json
@@ -150,6 +205,28 @@ Still needed for every module:
 
 The API should only request the fields in the manifest. The frontend should never receive unused Airtable fields.
 
+## Two-Way Add/Edit Contract
+
+Some modules are not just state toggles. They are two-way add/edit modules and must be designed as editors from the start.
+
+Known two-way modules:
+
+- `customize_ui`
+- `horse_profiles` / `horses_rosters_ui`
+- `comments_ui`
+- any future admin/config page approved for direct editing
+
+Rules:
+
+- Add and edit are first-class actions.
+- Every add/edit action needs allowed create/write fields.
+- Every add/edit action needs validation before Airtable write.
+- Every add/edit action needs an audit/log row.
+- The UI must distinguish display state from edit state.
+- The current/display table remains the display source.
+- The log table remains the audit trail.
+- Do not use logs as the display source.
+
 ## Pak Groups Blueprint Contract
 
 Each page/view needs these records in `pak_groups`:
@@ -177,6 +254,14 @@ Each `pak_groups` row must define:
 - linked `pak_views` when controls are driven by views
 - linked `pak_aggs` when aggregates are rendered
 - linked entities/link/log rows where state is changed
+
+State blueprint rule:
+
+- `pak_groups` is the only page blueprint that may declare running quantity blocks, item-state blocks, drawer state blocks, or action/control blocks.
+- Do not create separate per-page blueprint JSON files for quantity state or item state.
+- The actual running values must stay in the correct state/link tables.
+- `pak_groups` declares how those state tables are rendered and which component/action pattern is used.
+- Module code may read the `pak_groups` blueprint and then load the approved state/link/log tables, but it must not invent a separate state blueprint in code.
 
 ## Visual Target And Color Contract
 
@@ -247,7 +332,7 @@ Status: next blueprint to create.
 
 Rules:
 
-- Fixed source quantity.
+- Manually set starting quantity, for example `10` or `20`.
 - No horse member logic.
 - Packed count is a quantity counter.
 - Add input uses entered quantity.
@@ -255,6 +340,13 @@ Rules:
 - Clear resets packed quantity.
 - Mark packed sets packed to needed quantity.
 - Left equals needed minus packed.
+- Link/state rows use the set quantity.
+- Logs use debit/credit entries against that quantity.
+- Reversals write the opposite debit/credit.
+- Starting needed quantity can be adjusted later.
+- Quantity adjustments must log old value, new value, and reason.
+- Example adjustment: `20` to `10`, reason: `we do not need as much as expected`.
+- Special exception/list states must be supported, including `unresolved`, `purchase_onsite`, and `packed_max`.
 
 Still needed:
 
@@ -274,9 +366,18 @@ Status: blueprint still needed.
 Rules:
 
 - Count math only.
-- Needed equals source `per_horse` times current scoped horse count.
+- Each item has a multiplier.
+- Wildcard is total scoped horse count.
+- Per-horse quantity/count source comes from the waves table.
+- Needed equals item multiplier times current scoped horse count.
+- Horse count can change and therefore needed can change.
+- Packed total does not change only because needed changes.
 - Does not track named horse packed states.
 - Packed is normal quantity progress against needed.
+- Link/state rows and logs use the current calculated needed quantity.
+- Packing actions use the same debit/credit log pattern as `quantity`.
+- Reversals write the opposite debit/credit.
+- Special exception/list states must be supported, including `unresolved`, `purchase_onsite`, and `packed_max`.
 
 Still needed:
 
@@ -292,8 +393,17 @@ Status: blueprint still needed.
 
 Rules:
 
-- Count math only.
-- Needed equals source `per_groom` times groom count.
+- Dynamic ratio/count math.
+- Per-groom target values come from the waves table.
+- Needed is based on total horses and number/ratio of grooms.
+- Horse count can change.
+- Groom ratio/count can change.
+- Each item includes its own wildcard/multiplier.
+- Total needed is dynamic.
+- Packed total does not change only because needed changes.
+- Packing actions use the same debit/credit log pattern as `quantity`.
+- Reversals write the opposite debit/credit.
+- Special exception/list states must be supported, including `unresolved`, `purchase_onsite`, and `packed_max`.
 - Grooms are operational counts, not named groom assignments unless later approved.
 
 Still needed:
@@ -362,6 +472,7 @@ Still needed:
 - Add comment.
 - Edit comment.
 - Save comment.
+- Two-way add/edit write path.
 - Optional comment short select.
 - Log every write.
 - Full comments page/feed.
@@ -390,6 +501,7 @@ Still needed:
 - Add horse.
 - Edit horse.
 - Apply/edit attributes.
+- Two-way add/edit write path.
 - Log every profile/attribute change.
 - Keep profile state separate from kits, feeding, and turnout.
 
@@ -459,6 +571,7 @@ Still needed:
 - Assign items to lists.
 - Manage `pak_groups` stack rows if approved.
 - Manage views/aggs/control definitions if approved.
+- Two-way add/edit write path.
 - Strong write gating and audit logs.
 
 ## Verification Required Before Any Module Is Called Complete
