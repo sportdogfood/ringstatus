@@ -455,11 +455,8 @@
   }
 
   function assignedKit(horse) {
-    const horseId = typeof horse === "string" ? horse : horse?.id || "";
     const horseKitItemIds = typeof horse === "string" ? [] : uniqueStrings([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
-    const rowKitId = (state?.packingRows || []).find((row) => (row.horseIds || []).includes(horseId) && row.kitIds?.length)?.kitIds?.[0] || "";
     const kits = activeKits();
-    if (rowKitId) return kits.find((kit) => kit.id === rowKitId) || null;
     if (!horseKitItemIds.length) return null;
     return kits.find((kit) => {
       const kitItemIds = new Set([...(kit.kitItemIds || []), ...(kit.items || []).map((item) => item.id).filter(Boolean)]);
@@ -495,9 +492,7 @@
   function assignedKitItemsForHorse(horse, kitId) {
     const itemsById = new Map((state?.kitItems || []).map((item) => [item.id, item]));
     const assignedIds = uniqueStrings([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
-    const sourceItems = assignedIds.length
-      ? assignedIds.map((itemId) => itemsById.get(itemId) || { id: itemId, label: itemId })
-      : templateKitItems(kitId);
+    const sourceItems = assignedIds.map((itemId) => itemsById.get(itemId) || { id: itemId, label: itemId });
     return sourceItems
       .filter((item) => !kitId || !(item.kitIds || []).length || (item.kitIds || []).includes(kitId))
       .map((item) => {

@@ -896,7 +896,7 @@ function horseKitPrintRows(report) {
   return (report?.horses || [])
     .map((horse) => {
       const kit = assignedReportKit(report, horse);
-      const counts = horseKitPrintCounts(report, horse.id, kit?.id);
+      const counts = horseKitPrintCounts(report, horse, kit?.id);
       return {
         horse: printHorseName(horse),
         kit: kit?.displayLabel || kit?.label || kit?.name || "",
@@ -910,11 +910,8 @@ function horseKitPrintRows(report) {
 }
 
 function assignedReportKit(report, horse) {
-  const horseId = typeof horse === "string" ? horse : horse?.id || "";
   const horseKitItemIds = typeof horse === "string" ? [] : uniqueStrings([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
   const kits = (report?.kits || []).filter((kit) => kit.status !== "inactive" && kit.active !== false);
-  const rowKitId = (report?.packingRows || []).find((row) => (row.horseIds || []).includes(horseId) && row.kitIds?.length)?.kitIds?.[0] || "";
-  if (rowKitId) return kits.find((kit) => kit.id === rowKitId) || null;
   if (!horseKitItemIds.length) return null;
   return kits.find((kit) => {
     const kitItemIds = new Set([...(kit.kitItemIds || []), ...(kit.items || []).map((item) => item.id).filter(Boolean)]);
@@ -936,8 +933,13 @@ function reportKitItems(report, kitId) {
   return kitItems;
 }
 
-function horseKitPrintCounts(report, horseId, kitId) {
-  const items = reportKitItems(report, kitId);
+function horseKitPrintCounts(report, horse, kitId) {
+  const horseId = typeof horse === "string" ? horse : horse?.id || "";
+  const assignedIds = typeof horse === "string" ? [] : uniqueStrings([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
+  const itemsById = new Map((report?.kitItems || []).map((item) => [item.id, item]));
+  const items = assignedIds
+    .map((itemId) => itemsById.get(itemId) || { id: itemId })
+    .filter((item) => !kitId || !(item.kitIds || []).length || (item.kitIds || []).includes(kitId));
   const counts = { needed: items.length, packed: 0, notNeeded: 0, left: items.length };
   for (const item of items) {
     const row = (report?.packingRows || []).find((candidate) =>
