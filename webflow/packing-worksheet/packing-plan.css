@@ -1,0 +1,40 @@
+@import url("./horse-kits-static-proof.css");
+
+#packing-plan {
+  width: 100%;
+  max-width: 840px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+#packing-app .rs-drawer-body .rs-add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px;
+}
+
+#packing-app .rs-drawer-body .rs-add-row .rs-stack-label {
+  grid-column: 1 / -1;
+}
+
+#packing-app .rs-comment-row {
+  border-top: 1px solid #e6e9ee;
+  padding: 8px 0;
+}
+
+#packing-app .rs-comment-body {
+  color: #1f2328;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+#packing-app .rs-comment-meta {
+  color: #68707a;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  margin-top: 2px;
+}
