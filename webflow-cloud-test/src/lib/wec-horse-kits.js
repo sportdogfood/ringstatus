@@ -23,6 +23,23 @@ const ENV_TABLES = {
   }
 };
 
+const WAVELESS_HORSE_KIT_VIEWS = new Set(["all", "not_going"]);
+const REQUIRED_HORSE_KIT_STACK_KEYS = [
+  "header",
+  "primary_tabs",
+  "summary_aggs",
+  "secondary_controls",
+  "count_aggs",
+  "lane_controls",
+  "search",
+  "main_table",
+  "drawer_items",
+  "state_links",
+  "change_log",
+  "kit_source",
+  "comments"
+];
+
 export function runtimeEnv() {
   const localEnv = globalThis.process?.env || {};
   const astroEnv = import.meta.env || {};
@@ -52,15 +69,19 @@ export function airtableConfig(runtime = runtimeEnv()) {
 export async function horseKitReport(airtable, requestUrl) {
   const url = new URL(requestUrl);
   const packWaveId = clean(url.searchParams.get("packWaveId"));
-  const packWaveKey = slugify(url.searchParams.get("packWaveKey") || url.searchParams.get("wave") || "wave_one");
-  const horseView = packWaveKey === "all" ? "" : packWaveKey || "wave_one";
+  const packWaveKey = slugify(url.searchParams.get("packWaveKey") || url.searchParams.get("wave"));
+  if (!packWaveId && !packWaveKey) throw new Error("missing_pack_wave_key");
+  const horseView = packWaveKey === "all" ? "" : packWaveKey;
   const pakGroupsView = "horse_specific";
   const context = await loadHorseKitContext(airtable);
   const baseTables = horseKitTables(context);
-  const groupRecords = await listOptionalViewRecords(airtable, baseTables.pak_groups, pakGroupsView, {
+  if (!baseTables.pak_groups?.id) throw new Error("horse_kits_blueprint_missing:pak_groups");
+  const groupRecords = await listHorseKitRecords(airtable, baseTables.pak_groups, {
+    view: pakGroupsView,
     fields: horseKitReadFields(baseTables.pak_groups)
   });
   const groupStack = normalizePakGroupStack(groupRecords, { groupPrefix: "gp" });
+  assertHorseKitBlueprint(groupStack);
   const tables = horseKitTables(context, groupStack);
   assertHorseKitTables(tables);
   const rosterLinkFields = horseKitRosterLinkFields(tables);
@@ -82,17 +103,19 @@ export async function horseKitReport(airtable, requestUrl) {
     listHorseKitRecords(airtable, tables.pak_kits),
     listHorseKitRecords(airtable, tables.pak_kit_items),
     listHorseKitRecords(airtable, tables.horse_packing_kits, { extraFields: [rosterLinkFields.packingKitHorseFieldId] }),
-    listOptionalHorseKitRecords(airtable, tables.wec_commenting, { extraFields: [rosterLinkFields.commentHorseFieldId] }),
+    listHorseKitRecords(airtable, tables.wec_commenting, { extraFields: [rosterLinkFields.commentHorseFieldId] }),
     listOptionalHorseKitRecords(airtable, tables.comment_shorts),
-    listOptionalHorseKitRecords(airtable, tables.pak_tabs),
-    listOptionalViewRecords(airtable, tables.wec_lanes, "horse_specific", {
+    listHorseKitRecords(airtable, tables.pak_tabs),
+    listHorseKitRecords(airtable, tables.wec_lanes, {
+      view: "horse_specific",
       fields: horseKitReadFields(tables.wec_lanes)
     }),
-    listOptionalHorseKitRecords(airtable, tables.pak_views)
+    listHorseKitRecords(airtable, tables.pak_views)
   ]);
 
   const selectedWaveRecord = selectWave(waveRecords, packWaveId, packWaveKey);
   const selectedWave = selectedWaveRecord ? normalizeWave(selectedWaveRecord) : null;
+  if (!selectedWave && !WAVELESS_HORSE_KIT_VIEWS.has(packWaveKey)) throw new Error(`pack_wave_not_found:${packWaveKey || packWaveId}`);
   const selectedWavePakTabIds = new Set(selectedWave?.pakTabIds || []);
   const primaryTabs = tabRecords
     .map(normalizePakTab)
@@ -180,7 +203,7 @@ export async function horseKitReport(airtable, requestUrl) {
       horseLinkField: rosterLinkFields.packingKitHorse
     }))
     .filter((row) => row.horseIds.length && row.kitItemIds.length)
-    .filter((row) => !selectedWave?.id || row.packWaveIds.length === 0 || row.packWaveIds.includes(selectedWave.id))
+    .filter((row) => !selectedWave?.id || row.packWaveIds.includes(selectedWave.id))
     .filter((row) => packingRowMatchesAssignedHorse(row, horseById))
     .map((row) => ({
       id: row.id,
@@ -277,10 +300,13 @@ export async function horseKitActionReport(airtable, requestUrl, payload) {
   const context = await loadHorseKitContext(airtable);
   const pakGroupsView = "horse_specific";
   const baseTables = horseKitTables(context);
-  const groupRecords = await listOptionalViewRecords(airtable, baseTables.pak_groups, pakGroupsView, {
+  if (!baseTables.pak_groups?.id) throw new Error("horse_kits_blueprint_missing:pak_groups");
+  const groupRecords = await listHorseKitRecords(airtable, baseTables.pak_groups, {
+    view: pakGroupsView,
     fields: horseKitReadFields(baseTables.pak_groups)
   });
   const groupStack = normalizePakGroupStack(groupRecords, { groupPrefix: "gp" });
+  assertHorseKitBlueprint(groupStack);
   const tables = horseKitTables(context, groupStack);
   assertHorseKitTables(tables);
   let result;
@@ -311,32 +337,40 @@ async function loadHorseKitContext(airtable) {
 }
 
 function horseKitTables(context, groupStack = null) {
-  const groupTable = (renderKey, defaultName) => pakGroupPhysicalTableName(groupStack, renderKey, defaultName);
+  if (!groupStack) {
+    return {
+      wec_pack_waves: physicalTableConfig(context, "wec_pack_waves"),
+      pak_groups: physicalTableConfig(context, "pak_groups", true)
+    };
+  }
+  const groupTable = (renderKey) => requiredPakGroupPhysicalTableName(groupStack, renderKey);
   return {
-    wec_lanes: physicalTableConfig(context, "wec_lanes", true),
+    wec_lanes: physicalTableConfig(context, groupTable("lane_source")),
     wec_pack_waves: physicalTableConfig(context, "wec_pack_waves"),
-    pak_kits: physicalTableConfig(context, groupTable("kit_source", "pak_kits"), true),
-    pak_kit_items: physicalTableConfig(context, groupTable("drawer_items", "pak_kit_items"), true),
-    pak_horses_roster: physicalTableConfig(context, groupTable("main_table", "pak_horses_roster"), true),
-    horse_packing_kits: physicalTableConfig(context, groupTable("state_links", "horse_packing_kits")),
-    horse_kit_changes: physicalTableConfig(context, groupTable("change_log", "horse_kit_changes"), true),
-    wec_commenting: physicalTableConfig(context, groupTable("comments", "wec_commenting"), true),
+    pak_kits: physicalTableConfig(context, groupTable("kit_source")),
+    pak_kit_items: physicalTableConfig(context, groupTable("drawer_items")),
+    pak_horses_roster: physicalTableConfig(context, groupTable("main_table")),
+    horse_packing_kits: physicalTableConfig(context, groupTable("state_links")),
+    horse_kit_changes: physicalTableConfig(context, groupTable("change_log")),
+    wec_commenting: physicalTableConfig(context, groupTable("comments")),
     comment_shorts: physicalTableConfig(context, "comment_shorts", true),
     pak_tabs: physicalTableConfig(context, "pak_tabs", true),
-    pak_views: physicalTableConfig(context, "pak_views", true),
-    pak_groups: physicalTableConfig(context, "pak_groups", true)
+    pak_views: physicalTableConfig(context, groupTable("secondary_controls")),
+    pak_groups: physicalTableConfig(context, "pak_groups")
   };
 }
 
 function assertHorseKitTables(tables) {
-  for (const key of ["pak_horses_roster", "pak_kits", "pak_kit_items", "horse_packing_kits", "horse_kit_changes"]) {
+  for (const key of ["wec_pack_waves", "wec_lanes", "pak_groups", "pak_tabs", "pak_views", "pak_horses_roster", "pak_kits", "pak_kit_items", "horse_packing_kits", "horse_kit_changes", "wec_commenting"]) {
     if (!tables[key]?.id) throw new Error(`horse_kits_blueprint_missing:${key}`);
   }
 }
 
 function horseKitRosterLinkFields(tables) {
-  const packingKitHorse = linkedRecordField(tables.horse_packing_kits, tables.pak_horses_roster, ["pak_horses_roster"]);
-  const commentHorse = linkedRecordField(tables.wec_commenting, tables.pak_horses_roster, ["pak_horses_roster"]);
+  const packingKitHorse = linkedRecordField(tables.horse_packing_kits, tables.pak_horses_roster);
+  const commentHorse = linkedRecordField(tables.wec_commenting, tables.pak_horses_roster);
+  if (!packingKitHorse.name) throw new Error("missing_horse_packing_kits_roster_link");
+  if (!commentHorse.name) throw new Error("missing_wec_commenting_roster_link");
   return {
     packingKitHorse: packingKitHorse.name,
     packingKitHorseFieldId: packingKitHorse.id,
@@ -345,7 +379,7 @@ function horseKitRosterLinkFields(tables) {
   };
 }
 
-function linkedRecordField(tableConfig, targetTableConfig, defaultNames = []) {
+function linkedRecordField(tableConfig, targetTableConfig) {
   const targetTableId = targetTableConfig?.id || "";
   const schemaFields = tableConfig?.schemaFields || [];
   const linked = schemaFields.find((field) =>
@@ -353,9 +387,7 @@ function linkedRecordField(tableConfig, targetTableConfig, defaultNames = []) {
     field.options?.linkedTableId === targetTableId
   );
   if (linked?.name) return { name: linked.name, id: linked.id || "" };
-  const schemaNames = new Set(schemaFields.map((field) => field.name));
-  const name = defaultNames.find((candidate) => schemaNames.has(candidate)) || "";
-  return { name, id: "" };
+  return { name: "", id: "" };
 }
 
 function horseKitReadFields(tableConfig, extraFields = []) {
@@ -523,15 +555,6 @@ const HORSE_KIT_READ_FIELDS = {
   ]
 };
 
-const PAK_GROUP_TABLE_ALIASES = {
-  pak_horses: "pak_horses_roster",
-  pak_horse_kits_list: "pak_kits",
-  pak_horse_kit_items: "pak_kit_items",
-  pak_horse_kit_links: "horse_packing_kits",
-  pak_horse_kit_logs: "horse_kit_changes",
-  pak_comments: "wec_commenting"
-};
-
 function normalizePakGroupStack(records = [], options = {}) {
   const groupPrefix = clean(options.groupPrefix || "");
   const rows = records
@@ -549,7 +572,7 @@ function normalizePakGroupStack(records = [], options = {}) {
 function normalizePakGroupRow(record, index = 0) {
   const fields = record.fields || {};
   const tableName = clean(fields.table_name);
-  const physicalTableName = clean(fields.physical_table) || PAK_GROUP_TABLE_ALIASES[tableName] || tableName;
+  const physicalTableName = clean(fields.physical_table);
   return {
     id: record.id,
     sourceIndex: index,
@@ -570,10 +593,22 @@ function normalizePakGroupRow(record, index = 0) {
   };
 }
 
-function pakGroupPhysicalTableName(groupStack, renderKey, defaultName) {
+function assertHorseKitBlueprint(groupStack) {
+  const activeKeys = new Set((groupStack.activeRows || []).map((row) => row.renderKey));
+  for (const key of REQUIRED_HORSE_KIT_STACK_KEYS) {
+    if (!activeKeys.has(key)) throw new Error(`horse_kits_blueprint_missing_stack:${key}`);
+  }
+  for (const key of ["main_table", "drawer_items", "state_links", "change_log", "kit_source", "comments", "lane_source", "secondary_controls"]) {
+    requiredPakGroupPhysicalTableName(groupStack, key);
+  }
+}
+
+function requiredPakGroupPhysicalTableName(groupStack, renderKey) {
   const normalizedKey = slugify(renderKey);
-  const row = (groupStack?.activeRows || []).find((candidate) => candidate.renderKey === normalizedKey);
-  return row?.physicalTableName || defaultName;
+  const row = (groupStack?.rows || []).find((candidate) => candidate.renderKey === normalizedKey);
+  if (!row) throw new Error(`horse_kits_blueprint_missing_stack:${normalizedKey}`);
+  if (!row.physicalTableName) throw new Error(`horse_kits_blueprint_missing_physical_table:${normalizedKey}`);
+  return row.physicalTableName;
 }
 
 function physicalTableConfig(context, name, optional = false) {
@@ -922,7 +957,7 @@ function selectWave(waves, packWaveId, packWaveKey = "") {
     const targets = waveKeyAliases(packWaveKey);
     return waves.find((record) => waveRecordKeys(record).some((key) => targets.includes(key))) || null;
   }
-  return waves.find((record) => !!record.fields?.active) || waves[0] || null;
+  return null;
 }
 
 function waveRecordKeys(record) {

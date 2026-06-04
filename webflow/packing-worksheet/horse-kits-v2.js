@@ -1,13 +1,14 @@
 (function () {
-  const root = document.getElementById("horse-kits") || document.getElementById("horse-kit-static-proof");
+  const root = document.getElementById("horse-kits");
   if (!root) return;
 
   const globalConfig = window.WEC_HORSE_KITS_CONFIG || {};
   const config = {
-    apiUrl: root.dataset.apiUrl || globalConfig.apiUrl || "/wec-packing/horse-kits",
+    apiUrl: root.dataset.apiUrl || globalConfig.apiUrl || "",
     printUrl: root.dataset.printUrl || globalConfig.printUrl || "",
-    packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
+    packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || ""
   };
+  const configError = validateConfig();
 
   const ui = {
     loading: true,
@@ -16,7 +17,7 @@
     itemSearch: "",
     itemFilter: "all",
     laneKey: "open",
-    secondaryView: config.packWaveKey || "wave_one",
+    secondaryView: config.packWaveKey,
     selectedHorseId: "",
     drawerOpen: false,
     sortKey: "horse",
@@ -31,7 +32,13 @@
   let records = [];
   const optimistic = new Map();
 
-  load();
+  if (configError) {
+    ui.loading = false;
+    ui.error = configError;
+    render();
+  } else {
+    load();
+  }
 
   root.addEventListener("click", async (event) => {
     const target = event.target.closest("[data-action]");
@@ -60,13 +67,15 @@
       return;
     }
     if (action === "set-secondary-view") {
-      ui.secondaryView = target.dataset.secondaryView || "all";
+      if (!target.dataset.secondaryView) return;
+      ui.secondaryView = target.dataset.secondaryView;
       config.packWaveKey = ui.secondaryView;
       await load();
       return;
     }
     if (action === "set-lane") {
-      const key = target.dataset.laneKey || "open";
+      const key = target.dataset.laneKey;
+      if (!key) return;
       if (key === "print") {
         openPrint();
         return;
@@ -76,12 +85,14 @@
       return;
     }
     if (action === "set-sort") {
-      setSort(target.dataset.sortKey || "horse");
+      if (!target.dataset.sortKey) return;
+      setSort(target.dataset.sortKey);
       return;
     }
     if (action === "set-item-filter") {
       const scroll = captureScroll();
-      ui.itemFilter = target.dataset.itemFilter || "all";
+      if (!target.dataset.itemFilter) return;
+      ui.itemFilter = target.dataset.itemFilter;
       renderPreservingScroll(scroll);
       return;
     }
@@ -144,7 +155,9 @@
     ui.error = "";
     render();
     try {
-      state = await fetchJson(apiUrl());
+      const nextState = await fetchJson(apiUrl());
+      assertState(nextState);
+      state = nextState;
       rebuild(false);
     } catch (error) {
       ui.error = error.message || String(error);
@@ -176,9 +189,9 @@
   }
 
   function filteredHorses() {
-    const horses = state?.horses || [];
+    const horses = state.horses;
     const byView = horses.filter((horse) => {
-      const key = ui.secondaryView || "all";
+      const key = ui.secondaryView;
       if (key === "all") return true;
       if (key === "wave_one") return horse.waveState === "wave_one" || horse.waveOne === true;
       if (key === "wave_two") return horse.waveState === "wave_two" || horse.waveTwo === true;
@@ -203,7 +216,7 @@
   }
 
   function assignedItems(horse) {
-    const ids = unique([...(horse?.pakKitItemIds || []), ...(horse?.pak_kit_item_ids || [])]);
+    const ids = unique(horse?.pakKitItemIds || []);
     if (!ids.length) return [];
     const itemsById = new Map((state?.kitItems || []).map((item) => [item.id, item]));
     return ids
@@ -252,13 +265,13 @@
   }
 
   function matchesLane(record) {
-    const key = ui.laneKey || "open";
+    const key = ui.laneKey;
     if (key === "all") return true;
     if (key === "open" || key === "left") return record.counts.left > 0;
     if (key === "need" || key === "needed") return record.counts.needed > 0;
     if (key === "packed") return record.counts.packed > 0;
     if (key === "not_needed") return record.counts.notNeeded > 0;
-    return true;
+    return false;
   }
 
   function setSort(key) {
@@ -287,8 +300,13 @@
     const horse = record?.horse;
     const kit = record?.kit;
     const itemId = button.dataset.kitItemId || "";
-    const nextState = button.dataset.packState || "not_packed";
+    const nextState = button.dataset.packState || "";
     if (!horse?.id || !kit?.id || !itemId) return;
+    if (!state?.source?.packWaveId) {
+      ui.error = "missing_pack_wave_for_item_state";
+      renderPreservingScroll(scroll);
+      return;
+    }
     if (!record.items.some((item) => item.id === itemId)) return;
     const key = stateKey(horse.id, kit.id, itemId);
     const previous = itemState(horse.id, kit.id, itemId);
@@ -309,11 +327,13 @@
           horseId: horse.id,
           kitId: kit.id,
           kitItemId: itemId,
-          packWaveId: state?.source?.packWaveId || "",
+          packWaveId: state.source.packWaveId,
           packState: nextState
         })
       });
-      state = result.state || state;
+      if (!result.state) throw new Error("missing_state_after_item_update");
+      assertState(result.state);
+      state = result.state;
     } catch (error) {
       optimistic.set(key, previous);
       ui.error = error.message || String(error);
@@ -350,7 +370,9 @@
           comment
         })
       });
-      state = result.state || state;
+      if (!result.state) throw new Error("missing_state_after_comment_save");
+      assertState(result.state);
+      state = result.state;
       ui.commentText = "";
       ui.commentShortId = "";
     } catch (error) {
@@ -399,6 +421,10 @@
   }
 
   function render() {
+    if (ui.error && !state) {
+      root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-stack-section"><div class="rs-status is-error">${escapeHtml(ui.error)}</div></div></div>`;
+      return;
+    }
     if (ui.loading && !state) {
       root.innerHTML = `<div class="rs-airtable-shell"><div class="rs-stack-section"><div class="rs-stack-label">Loading</div></div></div>`;
       return;
@@ -415,7 +441,7 @@
   }
 
   function activeRows() {
-    const rows = state?.groupStack?.activeRows || [];
+    const rows = state.groupStack.activeRows;
     const allowed = new Set(["header", "primary_tabs", "summary_aggs", "secondary_controls", "count_aggs", "lane_controls", "search", "main_table", "comments"]);
     const order = new Map([
       ["header", 0],
@@ -436,10 +462,10 @@
   function stackRow(row) {
     const key = row.renderKey;
     if (key === "header") return section(row, headerHtml(), "is-header");
-    if (key === "primary_tabs") return section(row, pillsHtml(state?.primaryTabs || [], "horses", "primary"), "is-primary-tabs");
+    if (key === "primary_tabs") return section(row, pillsHtml(state.primaryTabs, "horses", "primary"), "is-primary-tabs");
     if (key === "lane_controls") return section(row, pillsHtml(laneControls(), ui.laneKey, "lane"), "is-lane-controls");
-    if (key === "secondary_controls") return section(row, pillsHtml(state?.secondaryControls || [], ui.secondaryView, "secondary"), "is-secondary-controls");
-    if (key === "summary_aggs") return section(row, `<div class="rs-stack-label">${escapeHtml(row.displayLabel || "Horse Kits")}</div><div class="rs-stack-aggs">${summaryAggs()}</div>`, "is-summary-aggs");
+    if (key === "secondary_controls") return section(row, pillsHtml(state.secondaryControls, ui.secondaryView, "secondary"), "is-secondary-controls");
+    if (key === "summary_aggs") return section(row, `<div class="rs-stack-label">${escapeHtml(row.displayLabel)}</div><div class="rs-stack-aggs">${summaryAggs()}</div>`, "is-summary-aggs");
     if (key === "count_aggs") return section(row, `<div class="rs-secondary-count-aggs"><div class="rs-stack-aggs is-counts">${countAggs()}</div></div>`, "is-count-aggs");
     if (key === "search") return section(row, searchHtml(), "is-search");
     if (key === "main_table") return section(row, tableHtml(row), "is-main-table");
@@ -452,8 +478,8 @@
   }
 
   function headerHtml() {
-    const wave = state?.wave || {};
-    return `<div class="rs-page-header"><div class="rs-page-title">${escapeHtml(wave.reportTitle || "WEC PACK")}</div><div class="rs-page-subtitle">${escapeHtml(wave.reportSubtitle || "")}</div></div>`;
+    const wave = state.wave || {};
+    return `<div class="rs-page-header"><div class="rs-page-title">${escapeHtml(wave.reportTitle || "")}</div><div class="rs-page-subtitle">${escapeHtml(wave.reportSubtitle || "")}</div></div>`;
   }
 
   function pillsHtml(rows, activeKey, type) {
@@ -466,7 +492,7 @@
   }
 
   function laneControls() {
-    return (state?.laneControls || []).filter((row) => row.active !== false);
+    return state.laneControls.filter((row) => row.active !== false);
   }
 
   function summaryAggs() {
@@ -504,7 +530,7 @@
 
   function tableHtml(row) {
     return `
-      <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(row.displayLabel || "Horses")}</div><button class="rs-stack-pill" type="button" data-action="print-list">Print</button></div>
+      <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(row.displayLabel)}</div><button class="rs-stack-pill" type="button" data-action="print-list">Print</button></div>
       <div class="rs-airtable-scroll">
         <table class="rs-airtable-grid">
           <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"><col class="rs-col-count"><col class="rs-col-count"></colgroup>
@@ -593,8 +619,8 @@
   }
 
   function commentsPageHtml(row) {
-    const comments = state?.comments || [];
-    return `<div class="rs-comments is-page-comments"><div class="rs-stack-label">${escapeHtml(row.displayLabel || "Comments")}</div>${commentFormHtml("page")}<div class="rs-comment-list">${comments.map(commentHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}</div></div>`;
+    const comments = state.comments;
+    return `<div class="rs-comments is-page-comments"><div class="rs-stack-label">${escapeHtml(row.displayLabel)}</div>${commentFormHtml("page")}<div class="rs-comment-list">${comments.map(commentHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}</div></div>`;
   }
 
   function commentHtml(comment) {
@@ -604,7 +630,7 @@
   function selectedRecord() {
     const visible = records.find((record) => record.id === ui.selectedHorseId);
     if (visible) return visible;
-    const horse = (state?.horses || []).find((row) => row.id === ui.selectedHorseId);
+    const horse = state?.horses?.find((row) => row.id === ui.selectedHorseId);
     return horse ? recordForHorse(horse) : records[0] || null;
   }
 
@@ -621,8 +647,12 @@
   }
 
   function openPrint() {
-    const url = config.printUrl || `${config.apiUrl}/print`;
-    window.open(url, "_blank", "noopener");
+    if (!config.printUrl) {
+      ui.error = "missing_print_url";
+      renderPreservingScroll();
+      return;
+    }
+    window.open(config.printUrl, "_blank", "noopener");
   }
 
   function stateKey(horseId, kitId, itemId) {
@@ -658,6 +688,20 @@
 
   function compareNumber(a, b) {
     return (Number(a) || 0) - (Number(b) || 0);
+  }
+
+  function validateConfig() {
+    if (!config.apiUrl) return "missing_horse_kits_api_url";
+    if (!config.packWaveKey) return "missing_pack_wave_key";
+    return "";
+  }
+
+  function assertState(nextState) {
+    if (!nextState || nextState.ok !== true) throw new Error("invalid_horse_kits_state");
+    for (const key of ["horses", "kits", "kitItems", "packingRows", "comments", "commentShorts", "primaryTabs", "laneControls", "secondaryControls"]) {
+      if (!Array.isArray(nextState[key])) throw new Error(`missing_horse_kits_state:${key}`);
+    }
+    if (!Array.isArray(nextState.groupStack?.activeRows)) throw new Error("missing_horse_kits_state:groupStack.activeRows");
   }
 
   function unique(values) {
