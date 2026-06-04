@@ -1224,3 +1224,18 @@
     at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1348:10)
     at AstroMiddleware.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1458:18)
     at AstroHandler.render (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:3428:20)
+[2m20:30:53[22m [34m[vite][39m [vite] program reload
+[2m20:31:47[22m [34m[vite][39m [vite] program reload
+[2m20:33:33[22m [34m[vite][39m [vite] program reload
+[2m20:34:13[22m [34m[vite][39m [vite] program reload
+[31m[1m20:34:47[22m [ERROR] [vite][39m [wec-packing] horse kits lane failed Error: schema 429: {"errors":[{"error":"RATE_LIMIT_REACHED","message":"Rate limit exceeded. Please try again later"}]}
+    at getBaseSchema (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3350:11)
+    at async Promise.all (index 0)
+    at loadWecContext (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:97:33)
+    at horseKitLaneReportV2 (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:2115:19)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/horse-kits.js:24:9)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=34211500:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1348:10)
+    at AstroMiddleware.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1458:18)
+    at AstroHandler.render (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:3428:20)

@@ -61,7 +61,8 @@
     }
     if (action === "set-secondary-view") {
       ui.secondaryView = target.dataset.secondaryView || "all";
-      rebuild();
+      config.packWaveKey = ui.secondaryView;
+      await load();
       return;
     }
     if (action === "set-lane") {
@@ -159,6 +160,7 @@
   function apiUrl() {
     const url = new URL(config.apiUrl, window.location.href);
     url.searchParams.set("packWaveKey", config.packWaveKey);
+    url.searchParams.set("v", "2");
     return url.toString();
   }
 
@@ -169,7 +171,7 @@
   }
 
   function filteredHorses() {
-    const horses = state?.allHorses?.length ? state.allHorses : state?.horses || [];
+    const horses = state?.horses || [];
     const byView = horses.filter((horse) => {
       const key = ui.secondaryView || "all";
       if (key === "all") return true;
