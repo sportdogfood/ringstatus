@@ -20,7 +20,7 @@ export const GET = async ({ request }) => {
     const report = await horseKitReport(airtable, request.url);
     return json(report, report.ok ? 200 : 409);
   } catch (error) {
-    console.error("[wec-packing] horse kits lane failed", error);
+    console.error("[wec-horse-kits] lane failed", error);
     return json({
       ok: false,
       error: "wec_horse_kits_lane_failed",
@@ -38,7 +38,7 @@ export const POST = async ({ request }) => {
     const report = await horseKitActionReport(airtable, request.url, payload);
     return json(report, report.ok ? 200 : 400);
   } catch (error) {
-    console.error("[wec-packing] horse kits lane action failed", error);
+    console.error("[wec-horse-kits] lane action failed", error);
     return json({
       ok: false,
       error: "wec_horse_kits_lane_action_failed",
