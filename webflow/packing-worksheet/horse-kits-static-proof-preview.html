@@ -4,12 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Horse Kits Static Proof</title>
+    <meta http-equiv="cache-control" content="no-store">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./rsa-stylesheets.locked.css?v=20260602">
-    <link rel="stylesheet" href="./styles.css?v=20260602">
-    <link rel="stylesheet" href="./horse-kits-static-proof.css?v=20260603-session-poll-2">
+    <script>
+      const HORSE_KITS_STATIC_PROOF_VERSION = Date.now();
+      document.write(`<link rel="stylesheet" href="./rsa-stylesheets.locked.css?v=${HORSE_KITS_STATIC_PROOF_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./styles.css?v=${HORSE_KITS_STATIC_PROOF_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./horse-kits-static-proof.css?v=${HORSE_KITS_STATIC_PROOF_VERSION}">`);
+    </script>
   </head>
   <body>
     <script>
@@ -22,6 +26,8 @@
         Loading static horse kit proof...
       </div>
     </main>
-    <script src="./horse-kits-static-proof.js?v=20260603-session-poll-2"></script>
+    <script>
+      document.write(`<script src="./horse-kits-static-proof.js?v=${HORSE_KITS_STATIC_PROOF_VERSION}" defer><\/script>`);
+    </script>
   </body>
 </html>
