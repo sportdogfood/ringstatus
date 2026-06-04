@@ -1578,6 +1578,16 @@ body {
   line-height: 15px;
 }
 
+#packing-app .rs-airtable-grid tbody .rs-entity-kit-cell {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+#packing-app .rs-airtable-grid tbody .rs-entity-kit-cell .rs-entity-sub {
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
 #packing-app .rs-airtable-grid .rs-col-count,
 #packing-app .rs-airtable-grid th:nth-child(4),
 #packing-app .rs-airtable-grid th:nth-child(5),
@@ -1619,7 +1629,15 @@ body {
 #packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span,
 #packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span {
   width: 100% !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
   text-align: center !important;
+}
+
+#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-mark,
+#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-mark,
+#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-mark {
+  display: none !important;
 }
 
 #packing-app .rs-airtable-grid .rs-row-gutter {
@@ -1933,7 +1951,7 @@ body {
 
 /* Kit item rows: label and buttons read as one row. */
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) {
-  grid-template-columns: minmax(92px, 0.85fr) minmax(0, 2.15fr) !important;
+  grid-template-columns: minmax(0, 1fr) !important;
   gap: 8px !important;
   align-items: center !important;
   padding: 8px 8px !important;
@@ -1952,6 +1970,9 @@ body {
 
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) .rs-kit-item-title {
   padding-bottom: 0 !important;
+  width: 100% !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
 }
 
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) .rs-kit-actions {
@@ -1960,9 +1981,15 @@ body {
 
 @media (max-width: 430px) {
   #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) {
-    grid-template-columns: minmax(86px, 0.8fr) minmax(0, 2.2fr) !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 6px !important;
     padding-left: 6px !important;
     padding-right: 6px !important;
+  }
+
+  #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) .rs-kit-item-title {
+    width: 100% !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
   }
 }

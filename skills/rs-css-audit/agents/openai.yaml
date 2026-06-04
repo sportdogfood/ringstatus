@@ -1,0 +1,4 @@
+interface:
+  display_name: "RS CSS Audit"
+  short_description: "Audit existing CSS without redesign"
+  default_prompt: "Use $rs-css-audit to audit and minimally fix existing frontend CSS while preserving the approved template shell."
