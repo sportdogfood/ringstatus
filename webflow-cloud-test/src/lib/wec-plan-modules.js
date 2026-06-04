@@ -306,13 +306,16 @@ export async function planReport(airtable, requestUrl, planKey) {
         ? waveHorseCount(selectedWave)
         : 0
   };
-  const sourceRows = sourceRecords.map((record) => normalizeSource(record, spec)).filter((row) => row.active);
+  const sourceRows = sourceRecords
+    .map((record) => normalizeSource(record, spec))
+    .filter((row) => row.active && sourceMatchesSelectedView(row, selectedViewKey, selectedWave));
   const sourceById = new Map(sourceRows.map((row) => [row.id, row]));
+  const activeSourceIds = new Set(sourceRows.map((row) => row.id));
   const links = linkRecords.map((record) => normalizeLink(record, spec));
   const logs = logRecords.map((record) => normalizeLog(record, spec)).sort(compareChangeLikeRows);
   const itemRows = itemRecords
     .map((record) => normalizeItem(record, spec, sourceById, selectedWave, links, planContext))
-    .filter((row) => row.active)
+    .filter((row) => row.active && itemMatchesActiveSource(row, activeSourceIds))
     .sort(compareItems);
 
   const selectedWavePakTabIds = new Set(selectedWave?.pakTabIds || []);
@@ -336,7 +339,11 @@ export async function planReport(airtable, requestUrl, planKey) {
     .map((lane) => ({ id: lane.id, key: lane.key, label: lane.label, active: lane.active, sortOrder: lane.sortOrder }));
 
   const groupStackForClient = attachAggsToGroupStack(groupStack, aggRecords.map(normalizeAgg).filter((agg) => agg.active));
-  const comments = commentRecords.map(normalizeComment).filter((row) => row.active).sort(compareChangeLikeRows);
+  const itemIds = new Set(itemRows.map((row) => row.id));
+  const comments = commentRecords
+    .map(normalizeComment)
+    .filter((row) => row.active && commentMatchesPlan(row, spec, selectedWave, itemIds))
+    .sort(compareChangeLikeRows);
   const commentShorts = commentShortRecords.map(normalizeCommentShort).filter((row) => row.active).sort(compareCommentShorts);
 
   return {
@@ -847,6 +854,27 @@ function normalizeItem(record, spec, sourceById, wave, links = [], planContext =
   };
 }
 
+function sourceMatchesSelectedView(row, selectedViewKey, wave) {
+  const viewKey = slugify(selectedViewKey || "");
+  if (!row.waveIds.length) return true;
+  if (viewKey === "all" || viewKey === "not_going") return true;
+  if (!wave?.id) return true;
+  return row.waveIds.includes(wave.id);
+}
+
+function itemMatchesActiveSource(row, activeSourceIds) {
+  if (!row.sourceIds.length) return true;
+  return row.sourceIds.some((id) => activeSourceIds.has(id));
+}
+
+function commentMatchesPlan(row, spec, wave, itemIds) {
+  if (row.packWaveIds.length && wave?.id && !row.packWaveIds.includes(wave.id)) return false;
+  if (row.eventType && !row.eventType.startsWith(`${spec.planKey}_comment`)) return false;
+  if (row.scopeType === "item") return itemIds.has(row.scopeId);
+  if (row.scopeType === "plan") return row.scopeId === spec.planKey;
+  return false;
+}
+
 function computedNeeded(spec, fields, wave, planContext = {}) {
   if (spec.planKey === "quantity") return wholeQuantityField(fields.starting_quantity);
   const multiplier = numberField(fields.multiplier);
@@ -1107,6 +1135,7 @@ function normalizeComment(record) {
   return {
     id: record.id,
     label: stringField(fields.scope_label || fields.comment || record.id),
+    eventType: slugify(fields.event_type),
     comment: stringField(fields.comment),
     scopeType: slugify(fields.scope_type || "plan"),
     scopeId: stringField(fields.scope_id),
