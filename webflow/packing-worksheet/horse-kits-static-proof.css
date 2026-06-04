@@ -1616,9 +1616,9 @@ body {
 #packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
 #packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
 #packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head {
-  width: calc(100% - 8px) !important;
+  width: 100% !important;
   min-width: 0 !important;
-  max-width: calc(100% - 8px) !important;
+  max-width: 100% !important;
   box-sizing: border-box !important;
   justify-content: center !important;
   align-items: center !important;
@@ -1747,7 +1747,7 @@ body {
 }
 
 #packing-app .rs-airtable-grid thead th {
-  font-size: 12px !important;
+  font-size: 11px !important;
   font-weight: 600 !important;
   line-height: 15px !important;
   text-transform: uppercase !important;
@@ -1776,8 +1776,12 @@ body {
 #packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head span,
 #packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span,
 #packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span {
+  width: 100% !important;
+  max-width: 100% !important;
   justify-content: center !important;
   text-align: center !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
 }
 
 #packing-app .rs-airtable-grid .rs-row-gutter {
