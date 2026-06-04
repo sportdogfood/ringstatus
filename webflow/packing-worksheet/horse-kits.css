@@ -92,8 +92,11 @@ body {
 #packing-app .rs-stack-tabs {
   min-width: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 #packing-app .rs-stack-tabs.is-compact {
@@ -101,6 +104,7 @@ body {
 }
 
 #packing-app .rs-stack-pill {
+  flex: 0 0 auto;
   min-width: 0;
   min-height: 30px;
   border: 1px solid #d9dde3;

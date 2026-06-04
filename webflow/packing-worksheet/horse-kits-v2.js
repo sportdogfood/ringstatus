@@ -550,7 +550,7 @@
         </div>
         <div class="rs-kit-item-search-row"><label class="rs-stack-label" for="rs-kit-search-v2">SEARCH KIT ITEMS</label><div class="rs-search-wrap"><input id="rs-kit-search-v2" class="rs-kit-item-search" data-kit-item-search autocomplete="off" value="${escapeAttr(ui.itemSearch)}" placeholder="Search kit items"><button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" aria-label="Clear kit item search" data-action="clear-kit-item-search"><span aria-hidden="true">&times;</span></button></div></div>
         <div class="rs-kit-item-row rs-item-filter-row"><div class="rs-kit-item-main"><div class="rs-stack-label">FILTER KIT ITEMS</div></div><div class="rs-kit-actions rs-item-filter-actions">${filterButton("All", "all")}${filterButton("Not Packed", "not_packed")}${filterButton("Packed", "packed")}${filterButton("Not Needed", "not_needed")}</div></div>
-        <div class="rs-kit-items"><div class="rs-stack-label">KIT ITEMS</div>${filteredItems(record).map((item) => itemRow(item, horse, kit)).join("") || `<div class="rs-empty-row">No kit items.</div>`}</div>
+        <div class="rs-kit-items"><div class="rs-stack-label">KIT ITEMS</div>${kitItemsHead()}${filteredItems(record).map((item) => itemRow(item, horse, kit)).join("") || `<div class="rs-empty-row">No kit items.</div>`}</div>
         ${drawerComments(horse)}
       </div>
     </aside>`;
@@ -576,6 +576,10 @@
 
   function filterButton(label, key) {
     return `<button class="rs-item-filter ${ui.itemFilter === key ? "is-active" : ""}" type="button" data-action="set-item-filter" data-item-filter="${escapeAttr(key)}">${escapeHtml(label)}</button>`;
+  }
+
+  function kitItemsHead() {
+    return `<div class="rs-kit-item-row rs-kit-items-head"><div class="rs-kit-item-main"><div class="rs-stack-label">ITEM</div></div><div class="rs-kit-actions"><div class="rs-stack-label">NOT PACKED</div><div class="rs-stack-label">PACKED</div><div class="rs-stack-label">NOT NEEDED</div></div></div>`;
   }
 
   function itemRow(item, horse, kit) {
