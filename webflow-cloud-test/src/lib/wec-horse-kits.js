@@ -214,6 +214,9 @@ export async function horseKitReport(airtable, requestUrl) {
       horseView: horseView || "all_records",
       kitSource: "pak",
       horseSource: "pak_horses_roster",
+      rosterRecordBaseUrl: tables.pak_horses_roster?.id
+        ? `https://airtable.com/${encodeURIComponent(airtable.baseId)}/${encodeURIComponent(tables.pak_horses_roster.id)}/`
+        : "",
       horseLinkFields: rosterLinkFields,
       tables: {
         wec_pack_waves: tables.wec_pack_waves?.id || "",

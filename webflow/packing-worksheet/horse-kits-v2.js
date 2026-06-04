@@ -540,7 +540,7 @@
     return `<div class="rs-drawer-overlay ${ui.drawerOpen ? "is-open" : ""}" data-action="close-drawer" aria-hidden="true"></div>
     <aside class="rs-record-drawer ${ui.drawerOpen ? "is-open" : ""}" aria-hidden="${ui.drawerOpen ? "false" : "true"}">
       <div class="rs-drawer-head">
-        <div class="rs-drawer-title-group"><div class="rs-page-subtitle">${escapeHtml(horseLabel(horse))}</div>${horse.profileUrl ? `<a class="rs-drawer-profile-link" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : ""}</div>
+        <div class="rs-drawer-title-group"><div class="rs-page-subtitle">${escapeHtml(horseLabel(horse))}</div>${horseProfileUrl(horse) ? `<a class="rs-drawer-profile-link" href="${escapeAttr(horseProfileUrl(horse))}" target="_blank" rel="noopener">Open Profile</a>` : ""}</div>
         <button class="rs-drawer-close" type="button" data-action="close-drawer" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="rs-drawer-body">
@@ -631,6 +631,13 @@
 
   function horseLabel(horse) {
     return horse?.barnName || horse?.name || horse?.showName || "";
+  }
+
+  function horseProfileUrl(horse) {
+    if (horse?.profileUrl) return horse.profileUrl;
+    const baseUrl = state?.source?.rosterRecordBaseUrl || "";
+    const rosterId = horse?.rosterId || horse?.id || "";
+    return baseUrl && rosterId ? `${baseUrl}${encodeURIComponent(rosterId)}` : "";
   }
 
   function kitLabel(kit) {
