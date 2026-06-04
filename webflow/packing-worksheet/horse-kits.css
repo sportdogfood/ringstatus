@@ -1606,7 +1606,10 @@ body {
 #packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
 #packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
 #packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head {
-  width: 100% !important;
+  width: calc(100% - 8px) !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 8px) !important;
+  box-sizing: border-box !important;
   justify-content: center !important;
   align-items: center !important;
   text-align: center !important;
