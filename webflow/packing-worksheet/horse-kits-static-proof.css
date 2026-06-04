@@ -1662,3 +1662,189 @@ body {
   margin: 0 !important;
   white-space: nowrap !important;
 }
+
+/* Horse-kits final CSS lock: keep repeated stack parts visually identical. */
+#packing-app .rs-stack-label,
+#packing-app .rs-add-label,
+#packing-app .rs-kit-item-title,
+#packing-app .rs-kit-items-head .rs-stack-label,
+#packing-app .rs-comments .rs-stack-label {
+  margin: 0 !important;
+  padding: 0 0 3px !important;
+  color: #68707a !important;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 15px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0 !important;
+}
+
+#packing-app .rs-stack-tabs {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+#packing-app .rs-stack-pill {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  text-transform: uppercase !important;
+}
+
+#packing-app .rs-stack-aggs,
+#packing-app .rs-summary-metrics {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+#packing-app .rs-stack-agg,
+#packing-app .rs-metric {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+#packing-app .rs-stack-agg-value,
+#packing-app .rs-stack-agg-label,
+#packing-app .rs-metric-value,
+#packing-app .rs-metric-label {
+  width: 100% !important;
+  min-width: 0 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+#packing-app .rs-secondary-count-aggs {
+  padding-bottom: 4px !important;
+}
+
+#packing-app .rs-airtable-grid thead th {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 15px !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+#packing-app .rs-airtable-grid th:nth-child(4),
+#packing-app .rs-airtable-grid th:nth-child(5),
+#packing-app .rs-airtable-grid th:nth-child(6),
+#packing-app .rs-airtable-grid td:nth-child(4),
+#packing-app .rs-airtable-grid td:nth-child(5),
+#packing-app .rs-airtable-grid td:nth-child(6) {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
+#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
+#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head,
+#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head span,
+#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span,
+#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+#packing-app .rs-airtable-grid .rs-row-gutter {
+  position: static !important;
+  left: auto !important;
+  z-index: auto !important;
+  width: 24px !important;
+  min-width: 24px !important;
+  max-width: 24px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  text-align: center !important;
+}
+
+#packing-app .rs-kit-item-row {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#packing-app .rs-kit-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 5px !important;
+}
+
+#packing-app .rs-kit-actions.rs-item-filter-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+#packing-app .rs-state-button,
+#packing-app .rs-item-filter {
+  min-width: 0 !important;
+  height: 34px !important;
+  border-radius: 4px !important;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+#packing-app .rs-search-clear {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#packing-app .rs-comment-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: start !important;
+  padding: 8px 10px !important;
+  border-top: 1px solid #edf0f3 !important;
+  background: #fff !important;
+}
+
+#packing-app .rs-comment-row:nth-child(even) {
+  background: #f7f8fa !important;
+}
+
+#packing-app .rs-comment-row:hover,
+#packing-app .rs-comment-row:focus-within {
+  background: #e8f4ff !important;
+}
+
+#packing-app .rs-comment-body {
+  min-width: 0 !important;
+  color: #1f2328 !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 18px !important;
+}
+
+#packing-app .rs-comment-meta {
+  min-width: 0 !important;
+  color: #68707a !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 15px !important;
+  white-space: nowrap !important;
+}
+
+#packing-app .rs-drawer-overlay {
+  z-index: 1000 !important;
+}
+
+#packing-app .rs-record-drawer {
+  z-index: 1001 !important;
+}
