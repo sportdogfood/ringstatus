@@ -5,12 +5,10 @@ export const config = {
 import {
   airtableConfig,
   corsHeaders,
-  horseKitLaneActionReport,
-  horseKitLaneActionReportV2,
-  horseKitLaneReport,
-  horseKitLaneReportV2,
+  horseKitActionReport,
+  horseKitReport,
   json
-} from "../../lib/wec-packing.js";
+} from "../../lib/wec-horse-kits.js";
 
 export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
 
@@ -19,10 +17,7 @@ export const GET = async ({ request }) => {
   if (!airtable.ok) return json({ ok: false, error: airtable.error }, 500);
 
   try {
-    const url = new URL(request.url);
-    const report = url.searchParams.get("v") === "2"
-      ? await horseKitLaneReportV2(airtable, request.url)
-      : await horseKitLaneReport(airtable, request.url);
+    const report = await horseKitReport(airtable, request.url);
     return json(report, report.ok ? 200 : 409);
   } catch (error) {
     console.error("[wec-packing] horse kits lane failed", error);
@@ -40,10 +35,7 @@ export const POST = async ({ request }) => {
 
   try {
     const payload = await request.json().catch(() => ({}));
-    const url = new URL(request.url);
-    const report = url.searchParams.get("v") === "2"
-      ? await horseKitLaneActionReportV2(airtable, request.url, payload)
-      : await horseKitLaneActionReport(airtable, request.url, payload);
+    const report = await horseKitActionReport(airtable, request.url, payload);
     return json(report, report.ok ? 200 : 400);
   } catch (error) {
     console.error("[wec-packing] horse kits lane action failed", error);
