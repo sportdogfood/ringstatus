@@ -668,7 +668,9 @@ async function applyPackingKitState(airtable, tables, payload) {
 async function saveHorseKitComment(airtable, tables, payload) {
   if (!tables.wec_commenting?.id) throw new Error("commenting_table_not_configured");
   const commentId = clean(payload?.commentId);
-  const horseId = clean(payload?.horseId || payload?.scopeId);
+  const scopeType = slugify(payload?.scopeType || (payload?.horseId ? "horse" : "page")) || "page";
+  const horseId = scopeType === "horse" ? clean(payload?.horseId || payload?.scopeId) : "";
+  const scopeId = clean(payload?.scopeId || horseId || "horse_kits");
   const rosterLinkFields = horseKitRosterLinkFields(tables);
   const horseLinkField = rosterLinkFields.commentHorse;
   const horseWriteField = rosterLinkFields.commentHorseFieldId || horseLinkField;
@@ -680,27 +682,27 @@ async function saveHorseKitComment(airtable, tables, payload) {
     : null;
   const shortText = clean(commentShort?.fields?.display_label || commentShort?.fields?.comment_short);
   const comment = clean(payload?.comment || shortText);
-  if (!horseId) throw new Error("missing_comment_horse_id");
-  if (!horseLinkField) throw new Error("missing_comment_roster_link");
+  if (scopeType === "horse" && !horseId) throw new Error("missing_comment_horse_id");
+  if (scopeType === "horse" && !horseLinkField) throw new Error("missing_comment_roster_link");
   if (!comment) throw new Error("comment_required");
 
   const before = commentId
     ? await findOptionalRecordInConfiguredView(airtable, tables.wec_commenting, commentId)
     : null;
   const fields = compactFields({
-    event: before ? undefined : `horse_kit_comment:${horseId}:${Date.now()}`,
+    event: before ? undefined : `horse_kit_comment:${scopeType}:${scopeId}:${Date.now()}`,
     event_type: before ? undefined : "horse_kit_comment",
-    scope_type: "horse",
-    scope_id: horseId,
-    scope_label: scopeLabel || horseId,
+    scope_type: scopeType,
+    scope_id: scopeId,
+    scope_label: scopeLabel || scopeId,
     comment_status: "active",
     comment,
     pack_wave: packWaveId ? [packWaveId] : [],
-    [horseWriteField]: [horseId],
     created_at: before ? undefined : new Date().toISOString().slice(0, 10),
     created_by: "webflow",
     notes: clean(payload?.notes)
   });
+  if (scopeType === "horse" && horseWriteField) fields[horseWriteField] = [horseId];
   const fieldNames = tableFieldNames(tables.wec_commenting);
   const allowedFields = fieldsAllowedBySchema(fields, fieldNames);
   const saved = commentId

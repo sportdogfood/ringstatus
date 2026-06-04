@@ -1355,3 +1355,4 @@
     at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1348:10)
     at AstroMiddleware.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1458:18)
     at AstroHandler.render (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:3428:20)
+[2m21:34:14[22m [34m[vite][39m [vite] program reload
