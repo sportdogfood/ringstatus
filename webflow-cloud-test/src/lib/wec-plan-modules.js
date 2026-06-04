@@ -115,6 +115,19 @@ const READ_FIELDS = {
     "allow_inline_edit",
     "support_table"
   ],
+  pak_horses_roster: [
+    "display_horse_barn_name",
+    "barn_name",
+    "horse",
+    "show_name",
+    "active",
+    "inactive",
+    "wec_not_going",
+    "wec_wave_1",
+    "wec_wave_2",
+    "pack_waves",
+    "sort_order"
+  ],
   wec_commenting: [
     "event",
     "pack_wave",
@@ -242,6 +255,7 @@ export async function planReport(airtable, requestUrl, planKey) {
   const url = new URL(requestUrl);
   const packWaveId = clean(url.searchParams.get("packWaveId"));
   const packWaveKey = slugify(url.searchParams.get("packWaveKey") || url.searchParams.get("wave") || "wave_one");
+  const selectedViewKey = slugify(url.searchParams.get("viewKey") || url.searchParams.get("view") || packWaveKey);
   const context = await loadContext(airtable);
   const tables = planTables(context, spec);
   assertPlanTables(tables, spec);
@@ -262,11 +276,12 @@ export async function planReport(airtable, requestUrl, planKey) {
     aggRecords,
     laneRecords,
     commentRecords,
-    commentShortRecords
+    commentShortRecords,
+    horseRosterRecords
   ] = await Promise.all([
     listRecords(airtable, tables.wec_pack_waves),
-    listRecords(airtable, tables.source),
-    listRecords(airtable, tables.items),
+    listRecords(airtable, tables.source, { view: selectedViewKey || undefined }),
+    listRecords(airtable, tables.items, { view: selectedViewKey || undefined }),
     listRecords(airtable, tables.links),
     listRecords(airtable, tables.logs),
     listOptionalRecords(airtable, tables.pak_tabs),
@@ -274,17 +289,25 @@ export async function planReport(airtable, requestUrl, planKey) {
     listOptionalRecords(airtable, tables.pak_aggs),
     listOptionalRecords(airtable, tables.lanes),
     listOptionalRecords(airtable, tables.wec_commenting),
-    listOptionalRecords(airtable, tables.comment_shorts)
+    listOptionalRecords(airtable, tables.comment_shorts),
+    spec.planKey === "per_horse"
+      ? listRecords(airtable, tables.pak_horses_roster, { view: selectedViewKey || undefined })
+      : Promise.resolve([])
   ]);
 
   const selectedWaveRecord = selectWave(waveRecords, packWaveId, packWaveKey);
   const selectedWave = normalizeWave(selectedWaveRecord);
+  const horseRoster = horseRosterRecords.map(normalizeRosterHorse);
+  const planContext = {
+    selectedViewKey,
+    horseCount: spec.planKey === "per_horse" ? horseCountForView(horseRoster, selectedViewKey, selectedWave) : 0
+  };
   const sourceRows = sourceRecords.map((record) => normalizeSource(record, spec)).filter((row) => row.active);
   const sourceById = new Map(sourceRows.map((row) => [row.id, row]));
   const links = linkRecords.map((record) => normalizeLink(record, spec));
   const logs = logRecords.map((record) => normalizeLog(record, spec)).sort(compareChangeLikeRows);
   const itemRows = itemRecords
-    .map((record) => normalizeItem(record, spec, sourceById, selectedWave, links))
+    .map((record) => normalizeItem(record, spec, sourceById, selectedWave, links, planContext))
     .filter((row) => row.active)
     .sort(compareItems);
 
@@ -308,7 +331,7 @@ export async function planReport(airtable, requestUrl, planKey) {
     .sort(compareLanes)
     .map((lane) => ({ id: lane.id, key: lane.key, label: lane.label, active: lane.active, sortOrder: lane.sortOrder }));
 
-  const groupStackForClient = attachAggsToGroupStack(groupStack, aggRecords.map(normalizeAgg));
+  const groupStackForClient = attachAggsToGroupStack(groupStack, aggRecords.map(normalizeAgg).filter((agg) => agg.active));
   const comments = commentRecords.map(normalizeComment).filter((row) => row.active).sort(compareChangeLikeRows);
   const commentShorts = commentShortRecords.map(normalizeCommentShort).filter((row) => row.active).sort(compareCommentShorts);
 
@@ -323,7 +346,10 @@ export async function planReport(airtable, requestUrl, planKey) {
     source: {
       packWaveId: selectedWave?.id || "",
       packWaveKey: selectedWave?.key || packWaveKey,
+      selectedViewKey,
       pakGroupsView: spec.planKey,
+      horseSource: spec.planKey === "per_horse" ? "pak_horses_roster" : "",
+      horseCount: planContext.horseCount,
       tableFamily: {
         source: tables.source.name,
         items: tables.items.name,
@@ -346,11 +372,13 @@ export async function planReport(airtable, requestUrl, planKey) {
         pak_aggs: tables.pak_aggs?.id || "",
         wec_commenting: tables.wec_commenting?.id || "",
         comment_shorts: tables.comment_shorts?.id || "",
+        pak_horses_roster: tables.pak_horses_roster?.id || "",
         pak_sessions: tables.pak_sessions?.id || ""
       }
     },
     wave: selectedWave,
     counts: aggregateCounts(itemRows),
+    horseRoster,
     sourceRows,
     items: itemRows,
     links,
@@ -545,14 +573,24 @@ async function savePlanComment(airtable, tables, spec, requestUrl, payload) {
 async function itemActionContext(airtable, tables, spec, requestUrl, itemId) {
   const url = new URL(requestUrl);
   const wave = await selectedWaveFromUrl(airtable, tables, url);
-  const [item, links] = await Promise.all([
+  const selectedViewKey = slugify(url.searchParams.get("viewKey") || url.searchParams.get("view") || url.searchParams.get("packWaveKey") || "wave_one");
+  const [item, links, horseRosterRecords] = await Promise.all([
     findRecord(airtable, tables.items, itemId),
-    listRecords(airtable, tables.links)
+    listRecords(airtable, tables.links),
+    spec.planKey === "per_horse"
+      ? listRecords(airtable, tables.pak_horses_roster, { view: selectedViewKey || undefined })
+      : Promise.resolve([])
   ]);
+  const planContext = {
+    selectedViewKey,
+    horseCount: spec.planKey === "per_horse"
+      ? horseCountForView(horseRosterRecords.map(normalizeRosterHorse), selectedViewKey, wave)
+      : 0
+  };
   const link = links.map((record) => normalizeLink(record, spec)).find((row) =>
     row.itemIds.includes(itemId) && (!wave?.id || !row.waveIds.length || row.waveIds.includes(wave.id))
   ) || null;
-  const normalized = normalizeItem(item, spec, new Map(), wave, link ? [link] : []);
+  const normalized = normalizeItem(item, spec, new Map(), wave, link ? [link] : [], planContext);
   return {
     item,
     link,
@@ -561,6 +599,7 @@ async function itemActionContext(airtable, tables, spec, requestUrl, itemId) {
     packed: normalized.packed,
     left: normalized.left,
     exceptionState: normalized.exceptionState,
+    horseCount: planContext.horseCount,
     linkKey: `${spec.planKey}:${wave?.id || "all"}:${itemId}`
   };
 }
@@ -657,6 +696,7 @@ function planTables(context, spec) {
     pak_sessions: physicalTableConfig(context, "pak_sessions", true),
     wec_commenting: physicalTableConfig(context, "wec_commenting", true),
     comment_shorts: physicalTableConfig(context, "comment_shorts", true),
+    pak_horses_roster: physicalTableConfig(context, "pak_horses_roster", spec.planKey !== "per_horse"),
     source: physicalTableConfig(context, spec.sourceTable),
     items: physicalTableConfig(context, spec.itemTable),
     links: physicalTableConfig(context, spec.linkTable),
@@ -669,6 +709,9 @@ function planTables(context, spec) {
 function assertPlanTables(tables, spec) {
   for (const key of ["wec_pack_waves", "pak_groups", "source", "items", "links", "logs", "lanes"]) {
     if (!tables[key]?.id) throw new Error(`${spec.planKey}_missing_table:${key}`);
+  }
+  if (spec.planKey === "per_horse" && !tables.pak_horses_roster?.id) {
+    throw new Error(`${spec.planKey}_missing_table:pak_horses_roster`);
   }
 }
 
@@ -757,12 +800,12 @@ function normalizeSource(record, spec) {
   };
 }
 
-function normalizeItem(record, spec, sourceById, wave, links = []) {
+function normalizeItem(record, spec, sourceById, wave, links = [], planContext = {}) {
   const fields = record.fields || {};
   const label = stringField(fields.display_label || fields[spec.itemKeyField] || record.id);
   const sourceIds = linkedIds(fields[spec.itemSourceLinkField]);
   const link = findItemLink(links, record.id, wave?.id);
-  const computedNeed = computedNeeded(spec, fields, wave);
+  const computedNeed = computedNeeded(spec, fields, wave, planContext);
   const need = spec.planKey === "quantity"
     ? wholeQuantityField(link?.neededCurrent ?? computedNeed)
     : wholeQuantityField(computedNeed);
@@ -793,16 +836,17 @@ function normalizeItem(record, spec, sourceById, wave, links = []) {
   };
 }
 
-function computedNeeded(spec, fields, wave) {
+function computedNeeded(spec, fields, wave, planContext = {}) {
   if (spec.planKey === "quantity") return wholeQuantityField(fields.starting_quantity);
   const multiplier = numberField(fields.multiplier);
   if (!multiplier) return 0;
-  if (spec.planKey === "per_horse") return Math.max(0, Math.round(multiplier * waveHorseCount(wave)));
+  if (spec.planKey === "per_horse") return Math.max(0, Math.round(multiplier * waveHorseCount(wave, planContext)));
   if (spec.planKey === "per_groom") return Math.max(0, Math.round(multiplier * waveGroomCount(wave)));
   return 0;
 }
 
-function waveHorseCount(wave) {
+function waveHorseCount(wave, planContext = {}) {
+  if (Number.isFinite(planContext.horseCount)) return wholeQuantityField(planContext.horseCount);
   if (!wave) return 0;
   if (wave.key === "wave_one") return wholeQuantityField(wave.countHorsesWaveOne ?? wave.horseCount);
   if (wave.key === "wave_two") return wholeQuantityField(wave.countHorsesWaveTwo ?? wave.horseCount);
@@ -858,6 +902,36 @@ function normalizeLog(record, spec) {
     createdBy: stringField(fields.created_by),
     createdAt: stringField(fields.created_at || record.createdTime)
   };
+}
+
+function normalizeRosterHorse(record) {
+  const fields = record.fields || {};
+  const inactive = !!fields.inactive || !!fields.wec_not_going;
+  return {
+    id: record.id,
+    label: stringField(fields.display_horse_barn_name || fields.barn_name || fields.horse || fields.show_name || record.id),
+    active: fields.active === true || !inactive,
+    inactive,
+    notGoing: !!fields.wec_not_going,
+    waveOne: !!fields.wec_wave_1,
+    waveTwo: !!fields.wec_wave_2,
+    packWaveIds: linkedIds(fields.pack_waves),
+    sortOrder: numberField(fields.sort_order)
+  };
+}
+
+function horseCountForView(horses, selectedViewKey, wave) {
+  const key = slugify(selectedViewKey || wave?.key || "");
+  if (key === "not_going") return 0;
+  return (horses || []).filter((horse) => horseCountsForPacking(horse, key, wave)).length;
+}
+
+function horseCountsForPacking(horse, selectedViewKey, wave) {
+  if (!horse?.active || horse.notGoing) return false;
+  if (selectedViewKey === "wave_one" && horse.waveOne === false && horse.waveTwo === true) return false;
+  if (selectedViewKey === "wave_two" && horse.waveTwo === false && horse.waveOne === true) return false;
+  if (wave?.id && horse.packWaveIds.length && !horse.packWaveIds.includes(wave.id)) return false;
+  return true;
 }
 
 function findItemLink(links, itemId, waveId) {

@@ -33,6 +33,7 @@
         root.dataset.apiUrl = `http://127.0.0.1:4331/wec-packing/${plan}`;
         root.dataset.printUrl = `http://127.0.0.1:4331/wec-packing/${plan}/print`;
         root.dataset.packWaveKey = params.get("packWaveKey") || "wave_one";
+        root.dataset.viewKey = params.get("viewKey") || params.get("packWaveKey") || "wave_one";
       })();
       document.write(`<script src="./packing-plan.js?v=${PACKING_PLAN_PREVIEW_VERSION}" defer><\/script>`);
     </script>

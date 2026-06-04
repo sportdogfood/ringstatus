@@ -7,7 +7,8 @@
     planKey: normalizePlanKey(root.dataset.planKey || globalConfig.planKey || "quantity"),
     apiUrl: root.dataset.apiUrl || globalConfig.apiUrl || "",
     printUrl: root.dataset.printUrl || globalConfig.printUrl || "",
-    packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
+    packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one",
+    viewKey: root.dataset.viewKey || globalConfig.viewKey || root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
   };
   if (!config.apiUrl) config.apiUrl = `/wec-packing/${routeName(config.planKey)}`;
 
@@ -16,7 +17,7 @@
     error: "",
     search: "",
     laneKey: "open",
-    secondaryView: config.packWaveKey || "wave_one",
+    secondaryView: config.viewKey || "wave_one",
     selectedItemId: "",
     drawerOpen: false,
     sortKey: "item",
@@ -56,7 +57,8 @@
     }
     if (action === "set-secondary-view") {
       ui.secondaryView = target.dataset.secondaryView || "all";
-      config.packWaveKey = ui.secondaryView;
+      config.viewKey = ui.secondaryView;
+      if (isWaveView(ui.secondaryView)) config.packWaveKey = ui.secondaryView;
       await load();
       return;
     }
@@ -150,6 +152,7 @@
   function apiUrl() {
     const url = new URL(config.apiUrl, window.location.href);
     url.searchParams.set("packWaveKey", config.packWaveKey);
+    url.searchParams.set("viewKey", config.viewKey || ui.secondaryView || "");
     url.searchParams.set("v", "1");
     return url.toString();
   }
@@ -423,11 +426,7 @@
   }
 
   function aggList(row, values) {
-    const defs = (row.aggs || []).length ? row.aggs : [
-      { key: "need", label: "NEED", shade: "brown" },
-      { key: "packed", label: "PACKED", shade: "green" },
-      { key: "left", label: "LEFT", shade: "grey" }
-    ];
+    const defs = row.aggs || [];
     return defs.map((def) => agg(values[def.key] ?? values[normalizePlanKey(def.key)] ?? 0, def.label || def.key, def.key, def.shade)).join("");
   }
 
@@ -498,7 +497,7 @@
           <div class="rs-kit-actions">${countButton("-1", -1)}${countButton("+1", 1)}${countButton("MAX", 0, "packed_max")}</div>
         </div>
         ${canAdjustNeed ? `<div class="rs-add-row"><label class="rs-stack-label" for="rs-needed-input">NEED</label><input id="rs-needed-input" class="rs-add-input" data-needed-input inputmode="numeric" value="${item.need}"><button class="rs-plain-button" type="button" data-action="set-needed">${ui.savingKey === `needed:${item.id}` ? "SAVING" : "SAVE"}</button></div>` : ""}
-        <div class="rs-decision-row"><div class="rs-stack-label">EXCEPTIONS</div><div class="rs-decision-actions">${exceptionButton("UNRESOLVED", "unresolved")}${exceptionButton("PURCHASE ONSITE", "purchase_onsite")}</div></div>
+        <div class="rs-decision-row"><div class="rs-stack-label">EXCEPTIONS</div><div class="rs-decision-actions">${exceptionButton("UNRESOLVED", "unresolved")}${exceptionButton("PURCHASE ONSITE", "purchase_onsite")}${exceptionButton("NEEDS ATTN", "needs_attention")}</div></div>
         ${drawerComments(item)}
       </div>
     </aside>`;
@@ -546,6 +545,7 @@
   function openPrint() {
     const url = new URL(config.printUrl || `${config.apiUrl}/print`, window.location.href);
     url.searchParams.set("packWaveKey", config.packWaveKey);
+    url.searchParams.set("viewKey", config.viewKey || ui.secondaryView || "");
     window.open(url.toString(), "_blank", "noopener");
   }
 
@@ -589,6 +589,10 @@
 
   function normalizePlanKey(value) {
     return String(value || "").trim().toLowerCase().replace(/-/g, "_");
+  }
+
+  function isWaveView(value) {
+    return ["wave_one", "wave_two"].includes(normalizePlanKey(value));
   }
 
   function compareText(a, b) {

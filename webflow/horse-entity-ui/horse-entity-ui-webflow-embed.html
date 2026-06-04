@@ -1,0 +1,34 @@
+<main id="horse-entity-shell" class="rsa-dashboard">
+  <div id="horse-entity-ui">Loading horse entity UI...</div>
+</main>
+
+<script>
+  (function () {
+    var root = document.getElementById("horse-entity-ui");
+    var assetVersion = "REPLACE_WITH_PINNED_COMMIT";
+    var cacheKey = "horse-entity-ui-20260604-" + assetVersion;
+    var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/horse-entity-ui";
+
+    if (!root) return;
+
+    root.dataset.apiUrl = "https://ringstatus.com/test/horse-entity-ui";
+
+    function addStyle(href) {
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+
+    function addScript(src) {
+      var script = document.createElement("script");
+      script.src = src;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+
+    addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+    addStyle(assetBase + "/horse-entity-ui.css?v=" + cacheKey);
+    addScript(assetBase + "/horse-entity-ui.js?v=" + cacheKey);
+  })();
+</script>
