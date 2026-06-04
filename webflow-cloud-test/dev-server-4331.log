@@ -1344,3 +1344,14 @@
     at AstroHandler.render (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:3428:20)
 [2m21:06:49[22m [34m[vite][39m [vite] program reload
 [2m21:12:42[22m [34m[vite][39m [vite] program reload
+[31m[1m21:19:23[22m [ERROR] [vite][39m [wec-horse-kits] lane failed Error: schema 429: {"errors":[{"error":"RATE_LIMIT_REACHED","message":"Rate limit exceeded. Please try again later"}]}
+    at getBaseSchema (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-horse-kits.js:973:27)
+    at async Promise.all (index 0)
+    at loadHorseKitContext (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-horse-kits.js:300:33)
+    at horseKitReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-horse-kits.js:58:19)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/horse-kits.js:20:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=34211500:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1348:10)
+    at AstroMiddleware.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:1458:18)
+    at AstroHandler.render (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=34211500:3428:20)

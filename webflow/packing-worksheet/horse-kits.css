@@ -4,6 +4,7 @@ body {
   background: #f7f8fa;
   color: #1f2328;
   font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --rs-app-edge-offset: max(calc((100vw - 840px) / 2), 0px);
 }
 
 #packing-app {
@@ -149,6 +150,8 @@ body {
 }
 
 #packing-app .rs-stack-aggs {
+  width: 100%;
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   border: 0;
@@ -158,6 +161,8 @@ body {
 
 #packing-app .rs-stack-agg {
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   padding: 8px 4px;
   text-align: center;
   border-right: 1px solid rgba(255, 255, 255, 0.42);
@@ -170,20 +175,32 @@ body {
 }
 
 #packing-app .rs-stack-agg-value {
+  display: block;
+  width: 100%;
+  min-width: 4ch;
   color: inherit;
   font-size: 20px;
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  text-align: center;
+  white-space: nowrap;
 }
 
 #packing-app .rs-stack-agg-label {
+  display: block;
+  width: 100%;
+  min-width: 0;
   margin-top: 4px;
   color: inherit;
   font-size: 10px;
   font-weight: 600;
   line-height: 12px;
+  text-align: center;
   text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #packing-app .rs-table-stack-head {
@@ -637,7 +654,7 @@ body {
 #packing-app .rs-drawer-overlay {
   position: fixed;
   inset: 0;
-  z-index: 8;
+  z-index: 1000;
   background: rgba(0, 0, 0, 0.16);
   opacity: 0;
   pointer-events: none;
@@ -652,8 +669,8 @@ body {
 #packing-app .rs-record-drawer {
   position: fixed;
   top: 0;
-  right: 0;
-  z-index: 9;
+  right: var(--rs-app-edge-offset);
+  z-index: 1001;
   width: min(390px, 44vw);
   min-width: 340px;
   height: 100dvh;
@@ -662,7 +679,7 @@ body {
   background: #fff;
   border-left: 1px solid #d9dde3;
   box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
-  transform: translateX(100%);
+  transform: translateX(calc(100% + var(--rs-app-edge-offset)));
   transition: transform 0.2s ease;
 }
 
@@ -758,6 +775,7 @@ body {
 
 #packing-app .rs-summary-metrics {
   width: 100%;
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
@@ -769,6 +787,8 @@ body {
 
 #packing-app .rs-metric {
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   padding: 10px 8px;
   border-right: 1px solid #d9dde3;
   background: #fff;
@@ -794,21 +814,32 @@ body {
 }
 
 #packing-app .rs-metric-value {
+  display: block;
+  width: 100%;
+  min-width: 4ch;
   color: #1f2328;
   font-size: 18px;
   font-weight: 600;
   line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
   white-space: nowrap;
 }
 
 #packing-app .rs-metric-label {
+  display: block;
+  width: 100%;
+  min-width: 0;
   margin-top: 4px;
   color: #68707a;
   font-size: 10px;
   font-weight: 600;
   line-height: 1.1;
+  text-align: center;
   text-transform: uppercase;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #packing-app .rs-metric-need .rs-metric-value,

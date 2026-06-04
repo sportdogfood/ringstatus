@@ -90,7 +90,7 @@
       return;
     }
     if (action === "save-comment") {
-      await saveComment(captureScroll());
+      await saveComment(target, captureScroll());
       return;
     }
     if (action === "print-list") {
@@ -326,10 +326,13 @@
     }
   }
 
-  async function saveComment(scroll) {
-    const horse = selectedHorse();
+  async function saveComment(button, scroll) {
+    const scope = button.dataset.commentScope || (ui.drawerOpen ? "horse" : "page");
+    const horse = scope === "horse" ? selectedHorse() : null;
+    const scopeId = scope === "horse" ? horse?.id || "" : "horse_kits";
+    const scopeLabel = scope === "horse" ? horseLabel(horse) : "Horse Kits";
     const comment = ui.commentText.trim();
-    if (!horse?.id || !comment) return;
+    if (!scopeId || !comment) return;
     ui.savingKey = "comment";
     renderPreservingScroll(scroll);
     try {
@@ -338,8 +341,10 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "save_comment",
-          horseId: horse.id,
-          scopeLabel: horseLabel(horse),
+          scopeType: scope,
+          scopeId,
+          horseId: horse?.id || "",
+          scopeLabel,
           packWaveId: state?.source?.packWaveId || "",
           commentShortId: ui.commentShortId,
           comment
@@ -353,8 +358,10 @@
     } finally {
       ui.savingKey = "";
       rebuild(false);
-      ui.drawerOpen = true;
-      ui.selectedHorseId = horse.id;
+      if (scope === "horse" && horse?.id) {
+        ui.drawerOpen = true;
+        ui.selectedHorseId = horse.id;
+      }
       renderPreservingScroll(scroll);
     }
   }
@@ -550,7 +557,11 @@
   }
 
   function drawerComments(horse) {
-    return `<div class="rs-comments"><div class="rs-stack-label">COMMENTS</div><div class="rs-comment-form"><select class="rs-comment-short" data-comment-short><option value="">Comment short</option>${commentShorts().map((row) => `<option value="${escapeAttr(row.id)}" ${ui.commentShortId === row.id ? "selected" : ""}>${escapeHtml(row.label || row.comment || row.id)}</option>`).join("")}</select><textarea class="rs-comment-input" data-comment-text rows="3" placeholder="Add comment">${escapeHtml(ui.commentText)}</textarea><button class="rs-plain-button is-primary" type="button" data-action="save-comment">${ui.savingKey === "comment" ? "Saving" : "Save"}</button></div><div class="rs-comment-list">${horseComments(horse.id).map(commentHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}</div></div>`;
+    return `<div class="rs-comments"><div class="rs-stack-label">COMMENTS</div>${commentFormHtml("horse")}<div class="rs-comment-list">${horseComments(horse.id).map(commentHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}</div></div>`;
+  }
+
+  function commentFormHtml(scope) {
+    return `<div class="rs-comment-form"><select class="rs-comment-short" data-comment-short><option value="">Comment short</option>${commentShorts().map((row) => `<option value="${escapeAttr(row.id)}" ${ui.commentShortId === row.id ? "selected" : ""}>${escapeHtml(row.label || row.comment || row.id)}</option>`).join("")}</select><textarea class="rs-comment-input" data-comment-text rows="3" placeholder="Add comment">${escapeHtml(ui.commentText)}</textarea><button class="rs-plain-button is-primary" type="button" data-action="save-comment" data-comment-scope="${escapeAttr(scope)}">${ui.savingKey === "comment" ? "Saving" : "Add"}</button></div>`;
   }
 
   function filteredItems(record) {
@@ -579,7 +590,7 @@
 
   function commentsPageHtml(row) {
     const comments = state?.comments || [];
-    return `<div class="rs-comments is-page-comments"><div class="rs-stack-label">${escapeHtml(row.displayLabel || "Comments")}</div><div class="rs-comment-list">${comments.map(commentHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}</div></div>`;
+    return `<div class="rs-comments is-page-comments"><div class="rs-stack-label">${escapeHtml(row.displayLabel || "Comments")}</div>${commentFormHtml("page")}<div class="rs-comment-list">${comments.map(commentHtml).join("") || `<div class="rs-empty-row">No comments.</div>`}</div></div>`;
   }
 
   function commentHtml(comment) {
