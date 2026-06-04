@@ -310,6 +310,7 @@
     if (!record.items.some((item) => item.id === itemId)) return;
     const key = stateKey(horse.id, kit.id, itemId);
     const previous = itemState(horse.id, kit.id, itemId);
+    if (previous === nextState) return;
     optimistic.set(key, nextState);
     rebuild(false);
     ui.drawerOpen = true;
@@ -350,7 +351,7 @@
     const scope = button.dataset.commentScope || (ui.drawerOpen ? "horse" : "page");
     const horse = scope === "horse" ? selectedHorse() : null;
     const scopeId = scope === "horse" ? horse?.id || "" : "horse_kits";
-    const scopeLabel = scope === "horse" ? horseLabel(horse) : "Horse Kits";
+    const scopeLabel = scope === "horse" ? horseLabel(horse) : pageScopeLabel();
     const comment = ui.commentText.trim();
     if (!scopeId || !comment) return;
     ui.savingKey = "comment";
@@ -625,6 +626,11 @@
 
   function commentHtml(comment) {
     return `<div class="rs-comment-row"><div class="rs-comment-body">${escapeHtml(comment.comment || comment.label || "")}</div><div class="rs-comment-meta">${escapeHtml(comment.scopeLabel || comment.horseName || "")}</div></div>`;
+  }
+
+  function pageScopeLabel() {
+    const wave = state?.wave || {};
+    return wave.reportTitle || wave.label || state?.source?.packWaveKey || "";
   }
 
   function selectedRecord() {

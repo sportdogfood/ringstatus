@@ -634,6 +634,7 @@ async function applyPackingKitState(airtable, tables, payload) {
   const packWaveId = clean(payload?.packWaveId);
   const nextState = slugify(payload?.packState || payload?.state);
   if (!["packed", "not_packed", "not_needed"].includes(nextState)) throw new Error("invalid_pack_state");
+  if (!packWaveId) throw new Error("missing_pack_wave_id");
   const rosterLinkFields = horseKitRosterLinkFields(tables);
   const horseLinkField = rosterLinkFields.packingKitHorse;
   if (!horseLinkField) throw new Error("missing_horse_packing_kits_roster_link");
@@ -675,6 +676,9 @@ async function applyPackingKitState(airtable, tables, payload) {
     needed_state: nextState === "not_needed" ? "not_needed" : "needed",
     pack_state: nextState
   };
+  if (existing && beforeState === updateFields.pack_state && beforeNeededState === updateFields.needed_state) {
+    return { updated: { id: record.id, fields: record.fields }, change: null, unchanged: true };
+  }
   const updated = existing
     ? await patchAirtableRecord(airtable, tables.horse_packing_kits.id, record.id, updateFields)
     : await createAirtableRecord(airtable, tables.horse_packing_kits.id, compactFields({
