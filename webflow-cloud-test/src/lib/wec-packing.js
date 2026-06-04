@@ -3834,20 +3834,56 @@ async function applyHorseKitState(airtable, context, payload) {
   if (!["packed", "not_packed", "not_needed"].includes(nextState)) throw new Error("invalid_horse_pack_state");
 
   const { record: horseRecord } = await findRecordInConfiguredView(airtable, tables.wec_horses, horseId);
+  const { record: itemRecord } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, packingItemId);
   const sourceRecord = tables.wec_pack_items?.id
     ? (await findRecordInConfiguredView(airtable, tables.wec_pack_items, sourcePackItemId)).record
     : null;
-  const events = await listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view);
+  const [events, allMembers] = await Promise.all([
+    listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view),
+    listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view)
+  ]);
+  const itemHorseKey = legacyHorseMemberKey({ packWaveId, horseRecord, horseId, sourcePackItemId });
+  const existingMember = findHorseKitMemberRecord(allMembers, {
+    itemHorseKey,
+    packingItemId,
+    horseId,
+    sourcePackItemId,
+    packWaveId
+  });
   const previous = horseKitStatesFromEvents(events, {
     packWaveId,
     showId
   }).get(`${sourcePackItemId}:${horseId}`);
-  const beforeState = previous?.horsePackState || "not_packed";
+  const beforeState = previous?.horsePackState || stringField(existingMember?.fields?.horse_pack_state || "not_packed");
   const before = beforeState === "packed" ? 1 : 0;
   const after = nextState === "packed" ? 1 : 0;
+  const memberRecord = await upsertHorseKitMemberRecord(airtable, context, {
+    existingMember,
+    packingItemId,
+    horseId,
+    sourcePackItemId,
+    packWaveId,
+    nextState,
+    quantityPacked: after,
+    itemHorseKey,
+    horseRecord,
+    sourceRecord
+  });
+  const rolledMembers = allMembers
+    .filter((record) => record.id !== memberRecord.id && includesLinkedId(record.fields?.packing_item, packingItemId))
+    .concat(memberRecord);
+  const packedTotal = rolledMembers.reduce((sum, record) => sum + wholeQuantityField(record.fields?.quantity_packed), 0);
+  const neededTotal = rolledMembers.reduce((sum, record) => sum + effectiveHorseMemberNeeded(record.fields), 0);
+  const parentPackState = neededTotal > 0 && packedTotal >= neededTotal ? "packed" : "not_packed";
+  const updatedParent = await patchAirtableRecord(airtable, tables.wec_packing_items.id, packingItemId, {
+    quantity_packed: packedTotal,
+    pack_state: parentPackState
+  });
   const event = await createPackingEvent(airtable, tables, {
     eventType: horseMemberEventType(nextState, "horse_kit"),
     eventSubjectId: `${sourcePackItemId}:${horseId}`,
+    itemRecord,
+    memberRecord,
     showIds: showId ? [showId] : [],
     packWaveIds: packWaveId ? [packWaveId] : [],
     horseIds: [horseId],
@@ -3867,7 +3903,55 @@ async function applyHorseKitState(airtable, context, payload) {
       clean(payload?.notes)
     ].filter(Boolean).join("\n")
   });
-  return { event };
+  return { updatedMember: memberRecord, updatedParent, event, itemHorseKey };
+}
+
+function legacyHorseMemberKey({ packWaveId, horseRecord, horseId, sourcePackItemId }) {
+  const horseKey = stringField(horseRecord?.fields?.wec_horse_id || horseId);
+  return [packWaveId, horseKey, sourcePackItemId].filter(Boolean).join(":").toLowerCase();
+}
+
+function findHorseKitMemberRecord(records = [], criteria = {}) {
+  const key = stringField(criteria.itemHorseKey).toLowerCase();
+  return records.find((record) => {
+    const fields = record.fields || {};
+    const itemHorseId = stringField(fields.item_horse_id).toLowerCase();
+    const itemHorseKey = stringField(fields.item_horse_key).toLowerCase();
+    if (key && (itemHorseId === key || itemHorseKey === key)) return true;
+    return includesLinkedId(fields.packing_item, criteria.packingItemId)
+      && includesLinkedId(fields.horse, criteria.horseId)
+      && includesLinkedId(fields.source_pack_item, criteria.sourcePackItemId)
+      && (!criteria.packWaveId || includesLinkedId(fields.pack_wave, criteria.packWaveId));
+  }) || null;
+}
+
+async function upsertHorseKitMemberRecord(airtable, context, payload) {
+  const tables = context.tables;
+  const fieldNames = tableFieldNames(context, tables.wec_packing_item_horses);
+  const sourceSortOrder = numberField(payload.sourceRecord?.fields?.sort_order);
+  const fields = fieldsAllowedBySchema(compactFields({
+    item_horse_id: payload.itemHorseKey,
+    pack_wave: payload.packWaveId ? [payload.packWaveId] : [],
+    source_pack_item: payload.sourcePackItemId ? [payload.sourcePackItemId] : [],
+    packing_item: payload.packingItemId ? [payload.packingItemId] : [],
+    horse: payload.horseId ? [payload.horseId] : [],
+    quantity_needed: 1,
+    quantity_packed: payload.quantityPacked,
+    horse_pack_state: payload.nextState,
+    sort_order: sourceSortOrder || undefined
+  }), fieldNames);
+
+  if (!Object.keys(fields).length) throw new Error("wec_packing_item_horses_writable_fields_missing");
+  const record = payload.existingMember
+    ? await patchAirtableRecord(airtable, tables.wec_packing_item_horses.id, payload.existingMember.id, fields)
+    : await createAirtableRecord(airtable, tables.wec_packing_item_horses.id, fields);
+  return {
+    id: record.id,
+    fields: {
+      ...(payload.existingMember?.fields || {}),
+      ...(record.fields || fields)
+    }
+  };
 }
 
 async function applyHorseRecordState(airtable, tables, payload) {
