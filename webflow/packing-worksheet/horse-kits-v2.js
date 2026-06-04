@@ -69,7 +69,6 @@
     if (action === "set-secondary-view") {
       if (!target.dataset.secondaryView) return;
       ui.secondaryView = target.dataset.secondaryView;
-      config.packWaveKey = ui.secondaryView;
       await load();
       return;
     }
@@ -178,6 +177,7 @@
   function apiUrl() {
     const url = new URL(config.apiUrl, window.location.href);
     url.searchParams.set("packWaveKey", config.packWaveKey);
+    url.searchParams.set("viewKey", ui.secondaryView || config.packWaveKey);
     url.searchParams.set("v", "2");
     return url.toString();
   }
@@ -456,9 +456,19 @@
       ["main_table", 7],
       ["comments", 8]
     ]);
+    const seen = new Set();
     return rows
       .filter((row) => allowed.has(row.renderKey))
-      .sort((a, b) => (order.get(a.renderKey) ?? 99) - (order.get(b.renderKey) ?? 99));
+      .sort((a, b) => {
+        const byOrder = (order.get(a.renderKey) ?? 99) - (order.get(b.renderKey) ?? 99);
+        if (byOrder) return byOrder;
+        return (Number(a.sortOrder) || 0) - (Number(b.sortOrder) || 0);
+      })
+      .filter((row) => {
+        if (seen.has(row.renderKey)) return false;
+        seen.add(row.renderKey);
+        return true;
+      });
   }
 
   function stackRow(row) {

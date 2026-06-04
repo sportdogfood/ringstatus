@@ -3,40 +3,38 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WEC Packing Plan Preview</title>
+    <title>WEC Packing Home Preview</title>
     <meta http-equiv="cache-control" content="no-store">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
-      const PACKING_PLAN_PREVIEW_VERSION = Date.now();
-      document.write(`<link rel="stylesheet" href="./rsa-stylesheets.locked.css?v=${PACKING_PLAN_PREVIEW_VERSION}">`);
-      document.write(`<link rel="stylesheet" href="./styles.css?v=${PACKING_PLAN_PREVIEW_VERSION}">`);
-      document.write(`<link rel="stylesheet" href="./packing-plan.css?v=${PACKING_PLAN_PREVIEW_VERSION}">`);
+      const PACKING_HOME_PREVIEW_VERSION = Date.now();
+      document.write(`<link rel="stylesheet" href="./rsa-stylesheets.locked.css?v=${PACKING_HOME_PREVIEW_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./styles.css?v=${PACKING_HOME_PREVIEW_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./horse-kits-static-proof.css?v=${PACKING_HOME_PREVIEW_VERSION}">`);
     </script>
   </head>
   <body>
     <script>
       if (window.location.protocol === "file:") {
-        window.location.replace("http://127.0.0.1:8792/packing-plan-preview.html" + window.location.search);
+        window.location.replace("http://127.0.0.1:8792/packing-home-preview.html" + window.location.search);
       }
     </script>
     <main id="packing-app" class="rsa-dashboard">
-      <div id="packing-plan">Loading packing plan...</div>
+      <div id="packing-home">Loading packing home...</div>
     </main>
     <script>
       (function () {
         const params = new URLSearchParams(window.location.search);
-        const plan = (params.get("plan") || "quantity").replace(/_/g, "-");
-        const root = document.getElementById("packing-plan");
-        root.dataset.planKey = plan;
-        root.dataset.apiUrl = `http://127.0.0.1:4331/wec-packing/${plan}`;
-        root.dataset.printUrl = `http://127.0.0.1:4331/wec-packing/${plan}/print`;
+        const root = document.getElementById("packing-home");
+        root.dataset.apiUrl = "http://127.0.0.1:4331/wec-packing/home";
         root.dataset.sessionUrl = "http://127.0.0.1:4331/wec-packing/session";
+        root.dataset.pageBaseUrl = "http://127.0.0.1:8792/packing-home-preview.html";
         root.dataset.packWaveKey = params.get("packWaveKey") || "wave_one";
         root.dataset.viewKey = params.get("viewKey") || params.get("packWaveKey") || "wave_one";
       })();
-      document.write(`<script src="./packing-plan.js?v=${PACKING_PLAN_PREVIEW_VERSION}" defer><\/script>`);
+      document.write(`<script src="./packing-home.js?v=${PACKING_HOME_PREVIEW_VERSION}" defer><\/script>`);
     </script>
   </body>
 </html>

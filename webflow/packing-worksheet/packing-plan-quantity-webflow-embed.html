@@ -1,19 +1,22 @@
 <main id="packing-app" class="rsa-dashboard">
-  <div id="horse-kits" data-pack-wave-key="wave_one">Loading horse kits...</div>
+  <div id="packing-plan" data-plan-key="quantity" data-pack-wave-key="wave_one">Loading quantity...</div>
 </main>
 
 <script>
   (function () {
-    var root = document.getElementById("horse-kits");
+    var root = document.getElementById("packing-plan");
     var builds = window.RS_BUILDS || {};
-    var assetVersion = (builds.pages && builds.pages["horse-kits"]) || builds.current || "main";
-    var cacheKey = "horse-kits-20260603-" + assetVersion;
+    var assetVersion = (builds.pages && builds.pages["packing-plan"]) || (builds.pages && builds.pages.quantity) || builds.current || "main";
+    var cacheKey = "packing-plan-quantity-20260604-" + assetVersion;
     var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
 
     if (!root) return;
 
-    root.dataset.apiUrl = "https://ringstatus.com/test/wec-packing/horse-kits";
+    root.dataset.apiUrl = "https://ringstatus.com/test/wec-packing/quantity";
+    root.dataset.printUrl = "https://ringstatus.com/test/wec-packing/quantity/print";
+    root.dataset.sessionUrl = "https://ringstatus.com/test/wec-packing/session";
     root.dataset.packWaveKey = root.dataset.packWaveKey || "wave_one";
+    root.dataset.viewKey = root.dataset.viewKey || root.dataset.packWaveKey || "wave_one";
 
     function addStyle(href) {
       var link = document.createElement("link");
@@ -32,7 +35,7 @@
     addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
     addStyle(assetBase + "/rsa-stylesheets.locked.css?v=" + cacheKey);
     addStyle(assetBase + "/styles.css?v=" + cacheKey);
-    addStyle(assetBase + "/horse-kits-static-proof.css?v=" + cacheKey);
-    addScript(assetBase + "/horse-kits-v2.js?v=" + cacheKey);
+    addStyle(assetBase + "/packing-plan.css?v=" + cacheKey);
+    addScript(assetBase + "/packing-plan.js?v=" + cacheKey);
   })();
 </script>

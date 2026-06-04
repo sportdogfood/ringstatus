@@ -6,11 +6,14 @@
   const config = {
     planKey: normalizePlanKey(root.dataset.planKey || globalConfig.planKey || "quantity"),
     apiUrl: root.dataset.apiUrl || globalConfig.apiUrl || "",
+    sessionUrl: root.dataset.sessionUrl || globalConfig.sessionUrl || "",
     printUrl: root.dataset.printUrl || globalConfig.printUrl || "",
     packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one",
-    viewKey: root.dataset.viewKey || globalConfig.viewKey || root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
+    viewKey: root.dataset.viewKey || globalConfig.viewKey || root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one",
+    pollMs: Number(root.dataset.pollMs || globalConfig.pollMs || 5000)
   };
   if (!config.apiUrl) config.apiUrl = `/wec-packing/${routeName(config.planKey)}`;
+  if (!config.sessionUrl) config.sessionUrl = "/wec-packing/session";
 
   const ui = {
     loading: true,
@@ -25,19 +28,29 @@
     savingKey: "",
     commentText: "",
     commentShortId: "",
-    sessionKey: sessionKey()
+    sessionKey: sessionKey(),
+    sessionEngaged: false,
+    retryingFailedActions: false
   };
 
   let state = null;
   let records = [];
+  let loadInFlight = false;
+  let pendingLoadOptions = null;
+  let pollTimer = null;
+  let pollInFlight = false;
   const pending = new Set();
+  const failedActionStorageKey = `rsPlanFailedActions:${config.planKey}:v1`;
+  let failedActions = loadFailedActions();
 
   load();
+  window.addEventListener("online", () => retryFailedActions());
 
   root.addEventListener("click", async (event) => {
     const target = event.target.closest("[data-action]");
     if (!target) return;
     const action = target.dataset.action;
+    engageSession();
 
     if (action === "open-item") {
       ui.selectedItemId = target.dataset.itemId || "";
@@ -90,6 +103,7 @@
 
   root.addEventListener("input", (event) => {
     const input = event.target;
+    engageSession();
     if (input.matches("[data-search]")) {
       const scroll = captureScroll();
       ui.search = input.value || "";
@@ -116,26 +130,57 @@
     }
   });
 
-  async function load() {
-    ui.loading = true;
-    ui.error = "";
-    render();
+  async function load(options = {}) {
+    if (loadInFlight) {
+      pendingLoadOptions = options;
+      if (options.silent !== true) {
+        ui.loading = true;
+        ui.error = "";
+        render();
+      }
+      return;
+    }
+    loadInFlight = true;
+    const silent = options.silent === true;
+    if (!silent) {
+      ui.loading = true;
+      ui.error = "";
+      render();
+    }
     try {
-      state = await fetchJson(apiUrl());
+      const requestPackWaveKey = config.packWaveKey;
+      const requestViewKey = config.viewKey;
+      const nextState = await fetchJson(apiUrl());
+      if (requestPackWaveKey !== config.packWaveKey || requestViewKey !== config.viewKey) {
+        pendingLoadOptions = options;
+        return;
+      }
+      state = nextState;
       rebuild(false);
       pingSession();
     } catch (error) {
-      ui.error = error.message || String(error);
-      render();
+      if (!silent) {
+        ui.error = error.message || String(error);
+        render();
+      }
     } finally {
-      ui.loading = false;
-      render();
+      loadInFlight = false;
+      if (pendingLoadOptions) {
+        const nextOptions = pendingLoadOptions;
+        pendingLoadOptions = null;
+        await load(nextOptions);
+        return;
+      }
+      if (!silent) {
+        ui.loading = false;
+        render();
+      }
     }
   }
 
   async function pingSession() {
-    if (!ui.sessionKey || !state?.source?.packWaveId) return;
-    fetchJson(apiUrl(), {
+    if (!ui.sessionKey) return;
+    fetchJson(sessionUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(sessionPayload({ action: "session_ping" }))
@@ -143,7 +188,16 @@
   }
 
   async function fetchJson(url, options) {
-    const response = await fetch(url, options);
+    const fetchOptions = {
+      cache: "no-store",
+      ...(options || {}),
+      headers: {
+        "Cache-Control": "no-cache",
+        "X-RS-Session-Key": ui.sessionKey,
+        ...((options && options.headers) || {})
+      }
+    };
+    const response = await fetch(url, fetchOptions);
     const data = await response.json().catch(() => ({}));
     if (!response.ok || data.ok === false) throw new Error(data.detail || data.error || `${response.status}`);
     return data;
@@ -155,6 +209,43 @@
     url.searchParams.set("viewKey", config.viewKey || ui.secondaryView || "");
     url.searchParams.set("v", "1");
     return url.toString();
+  }
+
+  function sessionUrl() {
+    const url = new URL(config.sessionUrl, window.location.href);
+    url.searchParams.set("packWaveKey", config.packWaveKey);
+    url.searchParams.set("viewKey", config.viewKey || ui.secondaryView || "");
+    return url.toString();
+  }
+
+  function engageSession() {
+    if (ui.sessionEngaged) return;
+    ui.sessionEngaged = true;
+    pingSession();
+    startPolling();
+  }
+
+  function startPolling() {
+    if (pollTimer) return;
+    pollTimer = window.setInterval(pollState, config.pollMs || 5000);
+  }
+
+  async function pollState() {
+    if (!ui.sessionEngaged || pollInFlight || ui.loading || document.hidden) return;
+    pollInFlight = true;
+    try {
+      await load({ silent: true });
+    } finally {
+      pollInFlight = false;
+    }
+  }
+
+  function requestStateRefresh(delay = 0) {
+    if (delay > 0) {
+      window.setTimeout(() => { void pollState(); }, delay);
+      return;
+    }
+    void pollState();
   }
 
   function rebuild(shouldRender = true) {
@@ -219,20 +310,31 @@
     updateLocalItem(item.id, { packed: nextPacked, left: Math.max(0, item.need - nextPacked), exceptionState: exceptionState || item.exceptionState });
     renderPreservingScroll(scroll);
     try {
+      const payload = sessionPayload({
+        action: "set_item_count",
+        itemId: item.id,
+        delta,
+        exceptionState
+      });
       const result = await fetchJson(apiUrl(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sessionPayload({
+        body: JSON.stringify(payload)
+      });
+      state = result.state || state;
+      rebuild(false);
+      requestStateRefresh(1000);
+    } catch (error) {
+      ui.error = error.message || String(error);
+      saveFailedAction({
+        url: apiUrl(),
+        payload: sessionPayload({
           action: "set_item_count",
           itemId: item.id,
           delta,
           exceptionState
-        }))
+        })
       });
-      state = result.state || state;
-      rebuild(false);
-    } catch (error) {
-      ui.error = error.message || String(error);
       await load();
     } finally {
       pending.delete(key);
@@ -255,20 +357,31 @@
     updateLocalItem(item.id, { need: nextNeed, packed: Math.min(item.packed, nextNeed), left: Math.max(0, nextNeed - Math.min(item.packed, nextNeed)) });
     renderPreservingScroll(scroll);
     try {
+      const payload = sessionPayload({
+        action: "adjust_needed",
+        itemId: item.id,
+        needed: nextNeed,
+        reason: "manual_adjustment"
+      });
       const result = await fetchJson(apiUrl(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sessionPayload({
+        body: JSON.stringify(payload)
+      });
+      state = result.state || state;
+      rebuild(false);
+      requestStateRefresh(1000);
+    } catch (error) {
+      ui.error = error.message || String(error);
+      saveFailedAction({
+        url: apiUrl(),
+        payload: sessionPayload({
           action: "adjust_needed",
           itemId: item.id,
           needed: nextNeed,
           reason: "manual_adjustment"
-        }))
+        })
       });
-      state = result.state || state;
-      rebuild(false);
-    } catch (error) {
-      ui.error = error.message || String(error);
       await load();
     } finally {
       pending.delete(key);
@@ -286,24 +399,37 @@
     ui.savingKey = "comment";
     renderPreservingScroll(scroll);
     try {
+      const payload = sessionPayload({
+        action: "save_comment",
+        scopeType: item ? "item" : "plan",
+        scopeId: item?.id || state?.plan?.key || config.planKey,
+        scopeLabel: item?.label || state?.plan?.label || config.planKey,
+        commentShortId: ui.commentShortId,
+        comment
+      });
       const result = await fetchJson(apiUrl(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sessionPayload({
+        body: JSON.stringify(payload)
+      });
+      state = result.state || state;
+      ui.commentText = "";
+      ui.commentShortId = "";
+      rebuild(false);
+      requestStateRefresh(1000);
+    } catch (error) {
+      ui.error = error.message || String(error);
+      saveFailedAction({
+        url: apiUrl(),
+        payload: sessionPayload({
           action: "save_comment",
           scopeType: item ? "item" : "plan",
           scopeId: item?.id || state?.plan?.key || config.planKey,
           scopeLabel: item?.label || state?.plan?.label || config.planKey,
           commentShortId: ui.commentShortId,
           comment
-        }))
+        })
       });
-      state = result.state || state;
-      ui.commentText = "";
-      ui.commentShortId = "";
-      rebuild(false);
-    } catch (error) {
-      ui.error = error.message || String(error);
     } finally {
       ui.savingKey = "";
       renderPreservingScroll(scroll);
@@ -376,9 +502,19 @@
       ["main_table", 7],
       ["comments", 8]
     ]);
+    const seen = new Set();
     return rows
       .filter((row) => order.has(row.renderKey))
-      .sort((a, b) => (order.get(a.renderKey) ?? 99) - (order.get(b.renderKey) ?? 99));
+      .sort((a, b) => {
+        const byOrder = (order.get(a.renderKey) ?? 99) - (order.get(b.renderKey) ?? 99);
+        if (byOrder) return byOrder;
+        return (Number(a.sortOrder) || 0) - (Number(b.sortOrder) || 0);
+      })
+      .filter((row) => {
+        if (seen.has(row.renderKey)) return false;
+        seen.add(row.renderKey);
+        return true;
+      });
   }
 
   function stackRow(row) {
@@ -559,6 +695,51 @@
       currentList: state?.plan?.key || config.planKey,
       currentFilter: ui.secondaryView
     };
+  }
+
+  function saveFailedAction(action) {
+    failedActions.push({
+      ...action,
+      id: `failed:${Date.now()}:${Math.random().toString(16).slice(2)}`,
+      createdAt: new Date().toISOString()
+    });
+    storeFailedActions();
+  }
+
+  async function retryFailedActions() {
+    if (!failedActions.length || ui.retryingFailedActions) return;
+    ui.retryingFailedActions = true;
+    const remaining = [];
+    for (const action of failedActions) {
+      try {
+        await fetchJson(action.url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(action.payload || {})
+        });
+      } catch (error) {
+        remaining.push(action);
+      }
+    }
+    failedActions = remaining;
+    storeFailedActions();
+    ui.retryingFailedActions = false;
+    if (!failedActions.length) requestStateRefresh(250);
+  }
+
+  function loadFailedActions() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(failedActionStorageKey) || "[]");
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function storeFailedActions() {
+    try {
+      localStorage.setItem(failedActionStorageKey, JSON.stringify(failedActions.slice(-50)));
+    } catch (error) {}
   }
 
   function sessionKey() {

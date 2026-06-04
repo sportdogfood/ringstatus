@@ -22,6 +22,7 @@ const ENV_TABLES = {
 };
 
 const WAVELESS_HORSE_KIT_VIEWS = new Set(["all", "not_going"]);
+const DEFAULT_META_TABLE = "tbllJywsOstkqT5yZ";
 const REQUIRED_HORSE_KIT_STACK_KEYS = [
   "header",
   "primary_tabs",
@@ -58,10 +59,9 @@ export function json(data, status = 200) {
 export function airtableConfig(runtime = runtimeEnv()) {
   const token = runtime.AIRTABLE_TOKEN;
   const baseId = runtime.AIRTABLE_BASE_ID || runtime.AIRTABLE_BASE;
-  const metaTable = runtime.AIRTABLE_WEC_META_TABLE;
+  const metaTable = runtime.AIRTABLE_WEC_META_TABLE || DEFAULT_META_TABLE;
   if (!token) return { ok: false, error: "missing_airtable_token" };
   if (!baseId) return { ok: false, error: "missing_airtable_base_id" };
-  if (!metaTable) return { ok: false, error: "missing_airtable_wec_meta_table" };
   return { ok: true, token, baseId, metaTable, runtime };
 }
 
@@ -69,8 +69,9 @@ export async function horseKitReport(airtable, requestUrl) {
   const url = new URL(requestUrl);
   const packWaveId = clean(url.searchParams.get("packWaveId"));
   const packWaveKey = slugify(url.searchParams.get("packWaveKey") || url.searchParams.get("wave"));
+  const selectedViewKey = slugify(url.searchParams.get("viewKey") || url.searchParams.get("view") || packWaveKey);
   if (!packWaveId && !packWaveKey) throw new Error("missing_pack_wave_key");
-  const horseView = packWaveKey === "all" ? "" : packWaveKey;
+  const horseView = selectedViewKey === "all" ? "" : selectedViewKey;
   const pakGroupsView = "horse_specific";
   const context = await loadHorseKitContext(airtable);
   const baseTables = horseKitTables(context);
@@ -226,6 +227,7 @@ export async function horseKitReport(airtable, requestUrl) {
     }))
     .sort(compareChangeLikeRows);
   const commentShorts = commentShortRecords.map(normalizeCommentShort).sort(compareCommentShorts);
+  const packingTotals = horseKitPackingTotals({ horses, kits, kitItems, packingRows });
 
   return {
     ok: true,
@@ -233,6 +235,7 @@ export async function horseKitReport(airtable, requestUrl) {
     source: {
       packWaveId: selectedWave?.id || "",
       packWaveKey: selectedWave?.key || packWaveKey,
+      selectedViewKey,
       pakGroupsView,
       horseView: horseView || "all_records",
       kitSource: "pak",
@@ -269,6 +272,10 @@ export async function horseKitReport(airtable, requestUrl) {
       visibleHorses: horses.length,
       kits: kits.length,
       kitItems: kitItems.length,
+      need: packingTotals.needed,
+      packed: packingTotals.packed,
+      left: packingTotals.left,
+      notNeeded: packingTotals.notNeeded,
       packingRows: packingRows.length
     },
     horses,
@@ -323,6 +330,30 @@ export async function horseKitActionReport(airtable, requestUrl, payload) {
     result,
     state: await horseKitReport(airtable, requestUrl)
   };
+}
+
+export function horseKitPrintHtml(report, requestUrl) {
+  const url = new URL(requestUrl);
+  const horseId = clean(url.searchParams.get("horseId"));
+  const title = horseId
+    ? `${horseKitPrintHorseName(findHorseForPrint(report, horseId))} Kit Items`
+    : `${clean(report?.wave?.reportTitle) || "WEC PACK"} Horse Kits`;
+  const body = horseId
+    ? horseKitPrintHorseBody(report, horseId)
+    : horseKitPrintListBody(report);
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(title)}</title>
+  <style>${horseKitPrintStyles()}</style>
+</head>
+<body>
+  ${body}
+  ${horseKitPrintAutoScript(url)}
+</body>
+</html>`;
 }
 
 async function loadHorseKitContext(airtable) {
@@ -1134,6 +1165,186 @@ async function createAirtableRecord(airtable, table, fields) {
     id: result.records?.[0]?.id || "",
     fields: result.records?.[0]?.fields || fields
   };
+}
+
+function horseKitPrintListBody(report) {
+  const rows = (report?.horses || []).map((horse) => {
+    const kit = horseKitAssignedKit(report, horse);
+    const counts = horseKitPrintCounts(report, horse, kit?.id || "");
+    return {
+      horse: horseKitPrintHorseName(horse),
+      kit: kit?.displayLabel || kit?.label || kit?.name || "",
+      needed: counts.needed,
+      packed: counts.packed,
+      left: counts.left
+    };
+  }).sort((a, b) => compareText(a.horse, b.horse));
+  return `
+    <main class="rs-print-page">
+      ${horseKitPrintHeader(report, "Horse Kits")}
+      <section class="rs-print-section">
+        <div class="rs-print-section-head">HORSE KITS</div>
+        <table class="rs-print-table">
+          <colgroup>
+            <col class="is-name">
+            <col class="is-kit">
+            <col class="is-count">
+            <col class="is-count">
+            <col class="is-count">
+          </colgroup>
+          <thead><tr><th>HORSE</th><th>KIT</th><th>NEED</th><th>PACKED</th><th>LEFT</th></tr></thead>
+          <tbody>${rows.length ? rows.map(horseKitPrintListRow).join("") : `<tr><td colspan="5">NO ROWS</td></tr>`}</tbody>
+        </table>
+      </section>
+    </main>`;
+}
+
+function horseKitPrintHorseBody(report, horseId) {
+  const horse = findHorseForPrint(report, horseId);
+  const kit = horseKitAssignedKit(report, horse);
+  const rows = horseKitPrintHorseRows(report, horse, kit?.id || "");
+  return `
+    <main class="rs-print-page">
+      ${horseKitPrintHeader(report, horseKitPrintHorseName(horse))}
+      <section class="rs-print-section">
+        <div class="rs-print-section-head">KIT ITEMS</div>
+        <table class="rs-print-table">
+          <colgroup>
+            <col class="is-item">
+            <col class="is-state">
+            <col class="is-state">
+            <col class="is-state">
+          </colgroup>
+          <thead><tr><th>ITEM</th><th>NOT PACKED</th><th>PACKED</th><th>NOT NEEDED</th></tr></thead>
+          <tbody>${rows.length ? rows.map(horseKitPrintHorseRow).join("") : `<tr><td colspan="4">NO KIT ITEMS</td></tr>`}</tbody>
+        </table>
+      </section>
+    </main>`;
+}
+
+function horseKitPrintHeader(report, title) {
+  const subtitle = clean(report?.wave?.reportSubtitle || report?.source?.packWaveKey || "");
+  return `<header class="rs-print-head"><h1>${escapeHtml(title)}</h1><div>${escapeHtml(subtitle)}</div></header>`;
+}
+
+function horseKitPrintListRow(row, index) {
+  return `<tr class="${index % 2 ? "is-zebra" : ""}"><td>${escapeHtml(row.horse)}</td><td>${escapeHtml(row.kit)}</td><td>${escapeHtml(row.needed)}</td><td>${escapeHtml(row.packed)}</td><td>${escapeHtml(row.left)}</td></tr>`;
+}
+
+function horseKitPrintHorseRow(row, index) {
+  return `<tr class="${index % 2 ? "is-zebra" : ""}"><td>${escapeHtml(row.label)}</td><td>${row.state === "not_packed" ? "X" : ""}</td><td>${row.state === "packed" ? "X" : ""}</td><td>${row.state === "not_needed" ? "X" : ""}</td></tr>`;
+}
+
+function horseKitPrintHorseRows(report, horse, kitId) {
+  const horseId = horse?.id || "";
+  const itemIds = new Set(horse?.pakKitItemIds || []);
+  const items = (report?.kitItems || [])
+    .filter((item) => itemIds.has(item.id))
+    .filter((item) => !kitId || !item.kitIds?.length || item.kitIds.includes(kitId))
+    .sort((a, b) => compareText(horseKitItemPrintLabel(a), horseKitItemPrintLabel(b)));
+  return items.map((item) => ({
+    label: horseKitItemPrintLabel(item),
+    state: horseKitPrintItemState(report, horseId, item.id, kitId)
+  }));
+}
+
+function horseKitPrintCounts(report, horse, kitId) {
+  const itemIds = new Set(horse?.pakKitItemIds || []);
+  const items = (report?.kitItems || [])
+    .filter((item) => itemIds.has(item.id))
+    .filter((item) => !kitId || !item.kitIds?.length || item.kitIds.includes(kitId));
+  let packed = 0;
+  let notNeeded = 0;
+  for (const item of items) {
+    const state = horseKitPrintItemState(report, horse?.id || "", item.id, kitId);
+    if (state === "packed") packed += 1;
+    if (state === "not_needed") notNeeded += 1;
+  }
+  const needed = Math.max(0, items.length - notNeeded);
+  return { needed, packed, left: Math.max(0, needed - packed), notNeeded };
+}
+
+function horseKitPackingTotals(report) {
+  return (report?.horses || []).reduce((totals, horse) => {
+    const kit = horseKitAssignedKit(report, horse);
+    const counts = horseKitPrintCounts(report, horse, kit?.id || "");
+    totals.needed += counts.needed;
+    totals.packed += counts.packed;
+    totals.left += counts.left;
+    totals.notNeeded += counts.notNeeded;
+    return totals;
+  }, { needed: 0, packed: 0, left: 0, notNeeded: 0 });
+}
+
+function horseKitPrintItemState(report, horseId, itemId, kitId) {
+  const row = (report?.packingRows || []).find((candidate) =>
+    (candidate.horseIds || []).includes(horseId) &&
+    (candidate.kitItemIds || []).includes(itemId) &&
+    (!kitId || !candidate.kitIds?.length || candidate.kitIds.includes(kitId))
+  );
+  if (row?.neededState === "not_needed" || row?.packState === "not_needed") return "not_needed";
+  if (row?.packState === "packed") return "packed";
+  return "not_packed";
+}
+
+function horseKitAssignedKit(report, horse) {
+  const itemIds = new Set(horse?.pakKitItemIds || []);
+  if (!itemIds.size) return null;
+  return (report?.kits || []).find((kit) => (kit.kitItemIds || []).some((id) => itemIds.has(id))) || null;
+}
+
+function findHorseForPrint(report, horseId) {
+  return (report?.horses || []).find((horse) => horse.id === horseId || horse.rosterId === horseId || horse.writeHorseId === horseId) || null;
+}
+
+function horseKitPrintHorseName(horse) {
+  return clean(horse?.barnName || horse?.name || horse?.showName || "Horse");
+}
+
+function horseKitItemPrintLabel(item) {
+  return clean(item?.displayLabel || item?.displayName || item?.label || item?.name || "Item").toUpperCase();
+}
+
+function horseKitPrintAutoScript(url) {
+  const autoprint = slugify(url.searchParams.get("autoprint"));
+  return ["1", "true", "yes"].includes(autoprint)
+    ? `<script>window.addEventListener("load",function(){setTimeout(function(){window.print();},120);});</script>`
+    : "";
+}
+
+function horseKitPrintStyles() {
+  return `
+    @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+    @page { size: Letter; margin: 0.25in; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #111827; font-family: Outfit, Arial, sans-serif; font-size: 11px; }
+    .rs-print-page { width: 100%; }
+    .rs-print-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; padding-bottom: 10px; border-bottom: 2px solid #111827; }
+    .rs-print-head h1 { margin: 0; font-size: 22px; line-height: 1; font-weight: 700; text-transform: uppercase; }
+    .rs-print-head div { font-size: 10px; line-height: 1.2; font-weight: 600; text-transform: uppercase; text-align: right; }
+    .rs-print-section { margin-top: 12px; }
+    .rs-print-section-head { padding: 7px 8px; background: #f3f4f6; border: 1px solid #d8dde5; border-bottom: 0; font-weight: 700; text-transform: uppercase; }
+    .rs-print-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .rs-print-table col.is-name { width: 34%; }
+    .rs-print-table col.is-kit { width: 30%; }
+    .rs-print-table col.is-count { width: 12%; }
+    .rs-print-table col.is-item { width: 52%; }
+    .rs-print-table col.is-state { width: 16%; }
+    .rs-print-table th, .rs-print-table td { border: 1px solid #d8dde5; padding: 8px 7px; vertical-align: middle; }
+    .rs-print-table th { background: #f3f4f6; color: #374151; font-size: 10px; font-weight: 700; text-transform: uppercase; text-align: left; white-space: nowrap; }
+    .rs-print-table th:nth-child(n+3), .rs-print-table td:nth-child(n+3) { text-align: center; }
+    .rs-print-table td { font-size: 12px; font-weight: 500; line-height: 1.15; }
+    .rs-print-table tr.is-zebra td { background: #f8fafc; }
+  `;
+}
+
+function escapeHtml(value) {
+  return clean(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function buildRegistry(records) {

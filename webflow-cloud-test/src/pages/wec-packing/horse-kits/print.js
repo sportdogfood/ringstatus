@@ -5,9 +5,9 @@ export const config = {
 import {
   airtableConfig,
   corsHeaders,
-  horseKitLaneReport,
+  horseKitReport,
   horseKitPrintHtml
-} from "../../../lib/wec-packing.js";
+} from "../../../lib/wec-horse-kits.js";
 
 export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
 
@@ -24,7 +24,7 @@ export const GET = async ({ request }) => {
   }
 
   try {
-    const report = await horseKitLaneReport(airtable, request.url);
+    const report = await horseKitReport(airtable, request.url);
     const html = horseKitPrintHtml(report, request.url);
     return new Response(html, {
       status: report.ok ? 200 : 409,

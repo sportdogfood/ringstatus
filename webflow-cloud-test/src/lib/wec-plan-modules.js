@@ -325,10 +325,12 @@ export async function planReport(airtable, requestUrl, planKey) {
   const activeSourceIds = new Set(sourceRows.map((row) => row.id));
   const links = linkRecords.map((record) => normalizeLink(record, spec));
   const logs = logRecords.map((record) => normalizeLog(record, spec)).sort(compareChangeLikeRows);
-  const itemRows = itemRecords
-    .map((record) => normalizeItem(record, spec, sourceById, selectedWave, links, planContext))
-    .filter((row) => row.active && itemMatchesActiveSource(row, activeSourceIds))
-    .sort(compareItems);
+  const itemRows = selectedViewKey === "not_going"
+    ? []
+    : itemRecords
+      .map((record) => normalizeItem(record, spec, sourceById, selectedWave, links, planContext))
+      .filter((row) => row.active && itemMatchesActiveSource(row, activeSourceIds))
+      .sort(compareItems);
 
   const selectedWavePakTabIds = new Set(selectedWave?.pakTabIds || []);
   const primaryTabs = tabRecords
@@ -446,41 +448,87 @@ export async function planActionReport(airtable, requestUrl, planKey, payload) {
 export async function planPrintHtml(airtable, requestUrl, planKey) {
   const report = await planReport(airtable, requestUrl, planKey);
   const rows = report.items || [];
-  const title = `${report.wave?.reportTitle || "WEC PACK"} - ${report.plan.label}`;
-  const bodyRows = rows.map((row, index) => `
-    <tr>
-      <td>${index + 1}</td>
-      <td>${escapeHtml(row.label)}</td>
-      <td>${escapeHtml(row.sourceLabel || "")}</td>
-      <td>${row.need}</td>
-      <td>${row.packed}</td>
-      <td>${row.left}</td>
-    </tr>`).join("");
+  const url = new URL(requestUrl);
+  const title = `${report.wave?.reportTitle || "WEC PACK"} ${report.plan.label}`;
+  const bodyRows = rows.map((row, index) => planPrintRowHtml(row, index)).join("");
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)}</title>
-  <style>
-    body{font-family:Outfit,Arial,sans-serif;color:#111827;margin:24px}
-    h1{font-size:24px;margin:0 0 4px}
-    p{margin:0 0 18px;color:#68707a}
-    table{width:100%;border-collapse:collapse;font-size:12px}
-    th,td{border:1px solid #d9dde3;padding:8px;text-align:left}
-    th:nth-child(n+4),td:nth-child(n+4){text-align:center}
-    th{background:#f3f4f6;text-transform:uppercase}
-  </style>
+  <style>${planPrintStyles()}</style>
 </head>
 <body>
-  <h1>${escapeHtml(report.plan.label)}</h1>
-  <p>${escapeHtml(report.wave?.label || report.source.packWaveKey || "")}</p>
-  <table>
-    <thead><tr><th>#</th><th>Item</th><th>Source</th><th>Need</th><th>Packed</th><th>Left</th></tr></thead>
-    <tbody>${bodyRows || `<tr><td colspan="6">No items.</td></tr>`}</tbody>
-  </table>
-  <script>window.addEventListener("load",function(){setTimeout(function(){window.print();},150);});</script>
+  <main class="rs-print-page">
+    <header class="rs-print-head">
+      <h1>${escapeHtml(report.plan.label)}</h1>
+      <div>${escapeHtml(report.wave?.reportSubtitle || report.wave?.label || report.source.packWaveKey || "")}</div>
+    </header>
+    <section class="rs-print-section">
+      <div class="rs-print-section-head">${escapeHtml(report.plan.label)}</div>
+      <table class="rs-print-table">
+        <colgroup>
+          <col class="is-index">
+          <col class="is-item">
+          <col class="is-source">
+          <col class="is-count">
+          <col class="is-count">
+          <col class="is-count">
+        </colgroup>
+        <thead><tr><th>#</th><th>ITEM</th><th>SOURCE</th><th>NEED</th><th>PACKED</th><th>LEFT</th></tr></thead>
+        <tbody>${bodyRows || `<tr><td colspan="6">NO ITEMS</td></tr>`}</tbody>
+      </table>
+    </section>
+  </main>
+  ${planPrintAutoScript(url)}
 </body>
 </html>`;
+}
+
+function planPrintRowHtml(row, index) {
+  return `
+    <tr class="${index % 2 ? "is-zebra" : ""}">
+      <td>${index + 1}</td>
+      <td>${escapeHtml(row.label)}</td>
+      <td>${escapeHtml(row.sourceLabel || "")}</td>
+      <td>${escapeHtml(row.need)}</td>
+      <td>${escapeHtml(row.packed)}</td>
+      <td>${escapeHtml(row.left)}</td>
+    </tr>`;
+}
+
+function planPrintAutoScript(url) {
+  const autoprint = slugify(url.searchParams.get("autoprint"));
+  return ["1", "true", "yes"].includes(autoprint)
+    ? `<script>window.addEventListener("load",function(){setTimeout(function(){window.print();},120);});</script>`
+    : "";
+}
+
+function planPrintStyles() {
+  return `
+    @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+    @page { size: Letter; margin: 0.25in; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #111827; font-family: Outfit, Arial, sans-serif; font-size: 11px; }
+    .rs-print-page { width: 100%; }
+    .rs-print-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; padding-bottom: 10px; border-bottom: 2px solid #111827; }
+    .rs-print-head h1 { margin: 0; font-size: 22px; line-height: 1; font-weight: 700; text-transform: uppercase; }
+    .rs-print-head div { font-size: 10px; line-height: 1.2; font-weight: 600; text-transform: uppercase; text-align: right; }
+    .rs-print-section { margin-top: 12px; }
+    .rs-print-section-head { padding: 7px 8px; background: #f3f4f6; border: 1px solid #d8dde5; border-bottom: 0; font-weight: 700; text-transform: uppercase; }
+    .rs-print-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .rs-print-table col.is-index { width: 6%; }
+    .rs-print-table col.is-item { width: 36%; }
+    .rs-print-table col.is-source { width: 28%; }
+    .rs-print-table col.is-count { width: 10%; }
+    .rs-print-table th, .rs-print-table td { border: 1px solid #d8dde5; padding: 8px 7px; vertical-align: middle; }
+    .rs-print-table th { background: #f3f4f6; color: #374151; font-size: 10px; font-weight: 700; text-transform: uppercase; text-align: left; white-space: nowrap; }
+    .rs-print-table th:nth-child(1), .rs-print-table td:nth-child(1),
+    .rs-print-table th:nth-child(n+4), .rs-print-table td:nth-child(n+4) { text-align: center; }
+    .rs-print-table td { font-size: 12px; font-weight: 500; line-height: 1.15; }
+    .rs-print-table tr.is-zebra td { background: #f8fafc; }
+  `;
 }
 
 async function setItemCount(airtable, tables, spec, requestUrl, payload) {
@@ -878,8 +926,9 @@ function normalizeItem(record, spec, sourceById, wave, links = [], planContext =
 
 function sourceMatchesSelectedView(row, selectedViewKey, wave) {
   const viewKey = slugify(selectedViewKey || "");
+  if (viewKey === "not_going") return false;
   if (!row.waveIds.length) return true;
-  if (viewKey === "all" || viewKey === "not_going") return true;
+  if (viewKey === "all") return true;
   if (!wave?.id) return true;
   return row.waveIds.includes(wave.id);
 }
