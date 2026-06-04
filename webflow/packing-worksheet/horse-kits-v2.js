@@ -352,6 +352,7 @@
     const horse = scope === "horse" ? selectedHorse() : null;
     const scopeId = scope === "horse" ? horse?.id || "" : "horse_kits";
     const scopeLabel = scope === "horse" ? horseLabel(horse) : pageScopeLabel();
+    const packWaveId = state.source.packWaveId;
     const comment = ui.commentText.trim();
     if (!scopeId || !comment) return;
     ui.savingKey = "comment";
@@ -366,7 +367,7 @@
           scopeId,
           horseId: horse?.id || "",
           scopeLabel,
-          packWaveId: state?.source?.packWaveId || "",
+          packWaveId,
           commentShortId: ui.commentShortId,
           comment
         })

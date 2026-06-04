@@ -6,8 +6,6 @@ export const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type,Authorization"
 };
 
-const DEFAULT_META_TABLE = "tbllJywsOstkqT5yZ";
-
 const ENV_TABLES = {
   wec_pack_waves: {
     table: "AIRTABLE_WEC_PACK_WAVES_TABLE",
@@ -60,9 +58,10 @@ export function json(data, status = 200) {
 export function airtableConfig(runtime = runtimeEnv()) {
   const token = runtime.AIRTABLE_TOKEN;
   const baseId = runtime.AIRTABLE_BASE_ID || runtime.AIRTABLE_BASE;
-  const metaTable = runtime.AIRTABLE_WEC_META_TABLE || DEFAULT_META_TABLE;
+  const metaTable = runtime.AIRTABLE_WEC_META_TABLE;
   if (!token) return { ok: false, error: "missing_airtable_token" };
   if (!baseId) return { ok: false, error: "missing_airtable_base_id" };
+  if (!metaTable) return { ok: false, error: "missing_airtable_wec_meta_table" };
   return { ok: true, token, baseId, metaTable, runtime };
 }
 
