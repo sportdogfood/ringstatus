@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEC Airtable Blueprint</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; color: #111827; background: #f8fafc; }
+    main { max-width: 1180px; margin: 0 auto; padding: 20px; }
+    h1 { margin: 0 0 6px; font-size: 24px; }
+    h2 { margin: 24px 0 10px; font-size: 16px; text-transform: uppercase; color: #4b5563; }
+    p { margin: 0 0 16px; color: #4b5563; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .card { background: #fff; border: 1px solid #d9dee7; border-radius: 8px; padding: 12px; }
+    .card h3 { margin: 0 0 8px; font-size: 15px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #d9dee7; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid #e5e7eb; text-align: left; font-size: 13px; vertical-align: top; }
+    th { background: #f1f5f9; text-transform: uppercase; color: #374151; font-size: 11px; }
+    code { font-family: Consolas, monospace; font-size: 12px; }
+    .warn { color: #92400e; font-weight: 700; }
+    .muted { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>WEC Airtable Blueprint Snapshot</h1>
+    <p>Read-only snapshot from Airtable control tables. This is not product UI.</p>
+
+    <h2>Instruction Sources</h2>
+    <div class="grid">
+      <section class="card"><h3>Top Tabs</h3><code>pak_tabs</code></section>
+      <section class="card"><h3>Page Stacks</h3><code>pak_groups</code></section>
+      <section class="card"><h3>Secondary Views</h3><code>pak_views</code></section>
+      <section class="card"><h3>Lane Controls</h3><code>wec_lanes</code></section>
+    </div>
+
+    <h2>Top Tabs From Airtable</h2>
+    <table id="tabs"></table>
+
+    <h2>Secondary Views From Airtable</h2>
+    <table id="views"></table>
+
+    <h2>Horse-Specific Lanes From Airtable</h2>
+    <table id="lanes"></table>
+
+    <h2>Plan Stacks From pak_groups</h2>
+    <div id="plans" class="grid"></div>
+  </main>
+
+  <script>
+    const blueprint = {
+      tabs: [
+        ["home", "Home", 1, "pak-home", 1, 1],
+        ["horses", "Horses", 2, "pak-horses", 1, 4],
+        ["grooming", "Grooming", 3, "pak-grooming", 1, 1],
+        ["feed", "Feed", 4, "pak-feed", 1, 1],
+        ["tack", "Tack", 5, "pak-tack", 1, 1],
+        ["show", "Show", 6, "pak-show", 1, 1],
+        ["barn", "Barn", 7, "pak-barn", 1, 1],
+        ["health", "Health", 8, "pak-health", 1, 1]
+      ],
+      views: [
+        ["all", "ALL", 8],
+        ["wave_one", "Wave One", 8],
+        ["wave_two", "Wave Two", 8],
+        ["not_going", "Not Going", 8]
+      ],
+      lanes: [
+        ["all", "ALL", 0, true],
+        ["need", "Need", 1, true],
+        ["packed", "Packed", 2, true],
+        ["left", "Left", 3, true],
+        ["print", "Prnt", 4, false]
+      ],
+      plans: {
+        horse_specific: [
+          [-4, "header", "Header", "wec_pack_waves", "rs-page-header"],
+          [-3, "primary_tabs", "Primary Tabs", "wec_pack_waves", "rs-primary-tabs"],
+          [-2, "lane_controls", "Lane Controls", "wec_lanes", "rs-lane-controls"],
+          [-1, "secondary_controls", "Views", "pak_views", "rs-secondary-controls"],
+          [0, "summary_aggs", "Horse Kits", "pak_horses_roster", "rs-summary-aggs"],
+          [0.25, "count_aggs", "", "pak_kit_items", "rs-count-aggs"],
+          [0.5, "search", "Search", "pak_horses_roster", "rs-search"],
+          [1, "main_table", "Horses", "pak_horses_roster", "rs-horse-table"],
+          [2, "drawer_items", "Kit Items", "pak_kit_items", "rs-kit-items"],
+          [3, "state_links", "Packing State", "horse_packing_kits", "rs-state-links"],
+          [4, "change_log", "Change Log", "horse_kit_changes", "rs-change-log"],
+          [5, "kit_source", "Kits", "pak_kits", "rs-kit-source"],
+          [8, "comments", "Comments", "wec_commenting", "rs-comments"]
+        ],
+        quantity: [
+          [-4, "header", "Header", "wec_pack_waves", "rs-page-header"],
+          [-4, "header", "Header", "wec_pack_waves", "rs-page-header"],
+          [-3, "primary_tabs", "Primary Tabs", "wec_pack_waves", "rs-primary-tabs"],
+          [-2, "summary_aggs", "Quantity", "pak_byqtys", "rs-summary-aggs"],
+          [-1, "secondary_controls", "Views", "pak_views", "rs-secondary-controls"],
+          [-0.5, "secondary_count_aggs", "Quantity Counts", "pak_byqty_items", "rs-secondary-count-aggs"],
+          [0, "lane_controls", "Lane Controls", "pak_byqty_lanes", "rs-lane-controls"],
+          [0.5, "search", "Search", "pak_byqty_items", "rs-search"],
+          [1, "main_table", "Quantity", "pak_byqty_items", "rs-quantity-table"],
+          [2, "state_links", "State Links", "pak_byqty_links", "rs-state-links"],
+          [3, "change_log", "Change Log", "pak_byqty_logs", "rs-change-log"],
+          [4, "item_source", "Quantity Source", "pak_byqtys", "rs-item-source"],
+          [5, "lane_source", "Lanes", "pak_byqty_lanes", "rs-lane-source"],
+          [6, "slot_source", "Slots", "pak_byqty_slots", "rs-slot-source"],
+          [8, "comments", "Comments", "wec_commenting", "rs-comments"]
+        ],
+        per_horse: [
+          [-4, "header", "Header", "wec_pack_waves", "rs-page-header"],
+          [-4, "header", "Header", "wec_pack_waves", "rs-page-header"],
+          [-3, "primary_tabs", "Primary Tabs", "wec_pack_waves", "rs-primary-tabs"],
+          [-2, "summary_aggs", "Per Horse", "pak_byhorses", "rs-summary-aggs"],
+          [-1, "secondary_controls", "Views", "pak_views", "rs-secondary-controls"],
+          [-0.5, "secondary_count_aggs", "Per Horse Counts", "pak_byhorse_items", "rs-secondary-count-aggs"],
+          [0, "lane_controls", "Lane Controls", "pak_byhorse_lanes", "rs-lane-controls"],
+          [0.5, "search", "Search", "pak_byhorse_items", "rs-search"],
+          [1, "main_table", "Per Horse", "pak_byhorse_items", "rs-per-horse-table"],
+          [2, "state_links", "State Links", "pak_byhorse_links", "rs-state-links"],
+          [3, "change_log", "Change Log", "pak_byhorse_logs", "rs-change-log"],
+          [4, "item_source", "Per Horse Source", "pak_byhorses", "rs-item-source"],
+          [5, "lane_source", "Lanes", "pak_byhorse_lanes", "rs-lane-source"],
+          [6, "slot_source", "Slots", "pak_byhorse_slots", "rs-slot-source"],
+          [8, "comments", "Comments", "wec_commenting", "rs-comments"]
+        ],
+        per_groom: [
+          [-4, "header", "Header", "wec_pack_waves", "rs-page-header"],
+          [-4, "header", "Header", "wec_pack_waves", "rs-page-header"],
+          [-3, "primary_tabs", "Primary Tabs", "wec_pack_waves", "rs-primary-tabs"],
+          [-2, "summary_aggs", "Per Groom", "pak_bygrooms", "rs-summary-aggs"],
+          [-1, "secondary_controls", "Views", "pak_views", "rs-secondary-controls"],
+          [-0.5, "secondary_count_aggs", "Per Groom Counts", "pak_bygroom_items", "rs-secondary-count-aggs"],
+          [0, "lane_controls", "Lane Controls", "pak_bygroom_lanes", "rs-lane-controls"],
+          [0.5, "search", "Search", "pak_bygroom_items", "rs-search"],
+          [1, "main_table", "Per Groom", "pak_bygroom_items", "rs-per-groom-table"],
+          [2, "state_links", "State Links", "pak_bygroom_links", "rs-state-links"],
+          [3, "change_log", "Change Log", "pak_bygroom_logs", "rs-change-log"],
+          [4, "item_source", "Per Groom Source", "pak_bygrooms", "rs-item-source"],
+          [5, "lane_source", "Lanes", "pak_bygroom_lanes", "rs-lane-source"],
+          [6, "slot_source", "Slots", "pak_bygroom_slots", "rs-slot-source"],
+          [8, "comments", "Comments", "wec_commenting", "rs-comments"]
+        ]
+      }
+    };
+
+    function table(el, headers, rows) {
+      el.innerHTML = `<thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((v) => `<td>${v ?? ""}</td>`).join("")}</tr>`).join("")}</tbody>`;
+    }
+
+    table(document.getElementById("tabs"), ["tab", "label", "sort", "slug", "group links", "view links"], blueprint.tabs);
+    table(document.getElementById("views"), ["view", "label", "group links"], blueprint.views);
+    table(document.getElementById("lanes"), ["lane", "label", "sort", "active"], blueprint.lanes);
+
+    const planRoot = document.getElementById("plans");
+    Object.entries(blueprint.plans).forEach(([plan, rows]) => {
+      const card = document.createElement("section");
+      card.className = "card";
+      const duplicateHeader = rows.filter((row) => row[1] === "header").length > 1;
+      card.innerHTML = `<h3>${plan}${duplicateHeader ? ' <span class="warn">duplicate header</span>' : ""}</h3><table></table>`;
+      table(card.querySelector("table"), ["sort", "render key", "label", "table", "component"], rows);
+      planRoot.appendChild(card);
+    });
+  </script>
+</body>
+</html>

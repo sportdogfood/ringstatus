@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>WEC Blueprint Preview</title>
+    <script>
+      document.write('<link rel="stylesheet" href="./horse-kits-static-proof.css?v=' + Date.now() + '">');
+    </script>
+    <style>
+      :root {
+        --ink: #111827;
+        --muted: #687384;
+        --line: #d7dde6;
+        --soft: #f3f5f8;
+        --ok: #087b35;
+        --bad: #9f1239;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #f7f8fa;
+        color: var(--ink);
+        font-family: Arial, sans-serif;
+      }
+      main {
+        width: min(1180px, 100%);
+        margin: 0 auto;
+        padding: 18px;
+      }
+      h1 {
+        margin: 0 0 6px;
+        font-size: 24px;
+        line-height: 1.1;
+      }
+      h2 {
+        margin: 22px 0 8px;
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: .02em;
+        text-transform: uppercase;
+      }
+      p {
+        margin: 0 0 14px;
+        color: var(--muted);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+      th, td {
+        padding: 8px;
+        border: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        font-size: 12px;
+      }
+      th {
+        background: var(--soft);
+        color: #374151;
+        text-transform: uppercase;
+      }
+      code {
+        font-family: Consolas, monospace;
+        font-size: 12px;
+      }
+      .ok { color: var(--ok); font-weight: 700; }
+      .bad { color: var(--bad); font-weight: 700; }
+      .muted { color: var(--muted); }
+      .warning {
+        margin: 6px 0;
+        padding: 8px 10px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        color: #7c2d12;
+        font-size: 13px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid var(--line);
+        padding: 10px;
+      }
+      .card strong { display: block; margin-bottom: 6px; }
+      .rs-head-test {
+        background: #fff;
+        border: 1px solid var(--line);
+        padding: 14px;
+      }
+      .rs-head-test .rs-header-copy h1 {
+        margin: 0 0 6px;
+      }
+      .rs-head-test .rs-header-copy p {
+        margin: 0;
+      }
+      .rs-frontend-stage {
+        background: #fff;
+        border: 1px solid var(--line);
+        margin: 10px 0 18px;
+      }
+      .rs-app-frame-wrap {
+        background: #fff;
+        border: 1px solid var(--line);
+        margin: 10px 0 18px;
+      }
+      @media (max-width: 520px) {
+        main { padding: 12px; }
+      }
+      .rs-app-frame {
+        display: block;
+        width: 100%;
+        height: 720px;
+        border: 0;
+        background: #fff;
+      }
+      .rs-frontend-stage .rs-app-header {
+        padding: 18px;
+        border-bottom: 1px solid var(--line);
+      }
+      .rs-frontend-stage .rs-header-copy {
+        display: grid;
+        gap: 6px;
+      }
+      .rs-frontend-stage [data-rs-slot="title"] {
+        color: #050505;
+        font-size: 42px;
+        font-weight: 700;
+        line-height: .95;
+        text-transform: uppercase;
+      }
+      .rs-frontend-stage [data-rs-slot="subtitle"] {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.2;
+      }
+      .rs-render-test-list {
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+      .rs-render-test-row {
+        display: grid;
+        grid-template-columns: minmax(120px, 1fr) repeat(3, minmax(120px, 180px));
+        gap: 8px;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+      }
+      .rs-render-test-row:nth-child(even) { background: var(--soft); }
+      .rs-render-test-name {
+        font-weight: 700;
+        color: #111827;
+      }
+      .rs-test-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: #0f2745;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      .rs-test-button:hover { border-color: #0f2745; }
+      @media (max-width: 620px) {
+        main { padding: 10px; }
+        table { min-width: 720px; }
+        .rs-render-test-row { grid-template-columns: 1fr; }
+        .scroll { overflow-x: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>WEC Blueprint Preview</h1>
+      <p>Read-only. This shows what Airtable says to use before the app renders anything.</p>
+      <div id="status">Loading blueprint...</div>
+      <section id="nav-preview"></section>
+      <section id="app-preview">
+        <h2>App Preview</h2>
+        <div class="rs-app-frame-wrap">
+          <iframe class="rs-app-frame" data-src="./wec-packing-hybrid-preview.html" title="WEC packing app preview"></iframe>
+        </div>
+      </section>
+      <section id="frontend-display"></section>
+      <section id="head-test"></section>
+      <section id="warnings"></section>
+      <section id="blueprint-tests"></section>
+      <section id="tests"></section>
+      <section id="wire-model"></section>
+      <section id="field-model"></section>
+      <section id="indexes"></section>
+      <section id="html-lib"></section>
+      <section id="list-layer"></section>
+      <section id="tables"></section>
+    </main>
+    <script>
+      const API_URL = "http://127.0.0.1:4331/wec-packing/blueprint";
+
+      fetch(API_URL, { cache: "no-store" })
+        .then((response) => response.json())
+        .then(render)
+        .catch((error) => {
+          document.getElementById("status").innerHTML = `<span class="bad">Failed:</span> ${escapeHtml(error.message)}`;
+          loadAppPreview();
+        });
+
+      function render(data) {
+        document.getElementById("status").innerHTML = data.ok
+          ? `<span class="ok">Loaded</span> <span class="muted">${new Date().toLocaleString()}</span>`
+          : `<span class="bad">Failed</span> ${escapeHtml(data.error || "")}`;
+        loadAppPreview();
+
+        const warnings = data.warnings || [];
+        document.getElementById("warnings").innerHTML = warnings.length
+          ? `<h2>Warnings</h2>${warnings.map((warning) => `<div class="warning">${escapeHtml(warning)}</div>`).join("")}`
+          : `<h2>Warnings</h2><p>No index warnings.</p>`;
+
+        renderBlueprintTests(data.tests?.blueprintValidation || []);
+        renderNavPreview(data.tests?.navModel || {});
+        renderHeadTest(data.tests?.headerRender || {});
+        renderHeaderChain(data.tests?.headerChain || {});
+        renderFrontendDisplay(data.tests?.headerChain || {});
+        renderTests(data.tests || {});
+        renderWireModel(data.tests?.wireModel || {});
+        renderFieldModel(data.tests?.fieldsModel || {});
+
+        const indexRoot = document.getElementById("indexes");
+        indexRoot.innerHTML = `<h2>Indexes</h2>`;
+        Object.entries(data.indexes || {}).forEach(([name, index]) => {
+          const rows = (index.rows || []).map((row) => [
+            code(row.key),
+            row.scope,
+            code(row.lookupTable),
+            code(row.lookupView),
+            row.validLookupTable === null ? "" : status(row.validLookupTable),
+            row.validLookupView === null ? "" : status(row.validLookupView),
+            row.required ? "yes" : "",
+            row.active ? "yes" : ""
+          ]);
+          indexRoot.insertAdjacentHTML("beforeend", `<h2>${escapeHtml(name)}</h2><div class="scroll">${table(["key", "scope", "lookup table", "lookup view", "table ok", "view ok", "required", "active"], rows)}</div>`);
+        });
+
+        renderListLayer(data.tables || {});
+        renderHtmlLib(data.tables?.pak_html_lib?.records || []);
+
+        const tableRows = Object.entries(data.tables || {}).map(([name, table]) => [
+          code(name),
+          table.exists ? status(true) : status(false),
+          table.records ? table.records.length : 0,
+          table.fields ? table.fields.length : 0,
+          table.fields ? table.fields.map((field) => field.name).join(", ") : ""
+        ]);
+        document.getElementById("tables").innerHTML = `<h2>Blueprint Tables</h2><div class="scroll">${table(["table", "exists", "records", "field count", "fields"], tableRows)}</div>`;
+      }
+
+      function loadAppPreview() {
+        const frame = document.querySelector("#app-preview iframe[data-src]");
+        if (frame && !frame.src) frame.src = frame.dataset.src;
+      }
+
+      document.addEventListener("click", (event) => {
+        const navRoot = document.querySelector(".rs-nav-preview");
+        if (!navRoot) return;
+        const button = event.target.closest("[data-nav-key]");
+        if (!button || !navRoot.contains(button)) {
+          navRoot.querySelectorAll(".rs-nav-tray").forEach((tray) => tray.hidden = true);
+          navRoot.querySelectorAll(".rs-nav-btn").forEach((btn) => btn.classList.remove("is-active"));
+          return;
+        }
+        const key = button.dataset.navKey;
+        const tray = navRoot.querySelector(`[data-nav-tray="${cssEscape(key)}"]`);
+        const shouldOpen = tray && tray.hidden;
+        navRoot.querySelectorAll(".rs-nav-tray").forEach((item) => item.hidden = true);
+        navRoot.querySelectorAll(".rs-nav-btn").forEach((btn) => btn.classList.remove("is-active"));
+        if (tray && shouldOpen) {
+          tray.hidden = false;
+          button.classList.add("is-active");
+        }
+      });
+
+      function renderNavPreview(nav) {
+        const top = nav.top || [];
+        const trays = nav.trays || {};
+        document.getElementById("nav-preview").innerHTML = `
+          <h2>Navigation Preview</h2>
+          <div class="rs-nav-preview">
+            <div class="rs-nav-top">
+              ${top.map((item) => `<button class="rs-nav-btn" type="button" data-nav-key="${escapeHtml(item.key)}">${escapeHtml(item.label)}</button>`).join("")}
+            </div>
+            ${Object.entries(trays).map(([parent, items]) => `
+              <div class="rs-nav-tray" data-nav-tray="${escapeHtml(parent)}" hidden>
+                ${items.map((item) => `<button class="rs-nav-btn" type="button" data-nav-child="${escapeHtml(item.key)}">${escapeHtml(item.label)}</button>`).join("")}
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function renderHtmlLib(records) {
+        const rows = records.map((record) => [
+          code(record.fields.html_key || ""),
+          code(record.fields.component_key || ""),
+          record.fields.pattern_label || "",
+          code(record.fields.root_element || ""),
+          code(record.fields.root_class || ""),
+          renderRawValue(record.fields.allowed_slots || ""),
+          record.fields.active ? "yes" : ""
+        ]);
+        document.getElementById("html-lib").innerHTML = `
+          <h2>HTML Library</h2>
+          <div class="scroll">${table(["html key", "component", "label", "root", "class", "slots", "active"], rows)}</div>
+        `;
+      }
+
+      function renderHeadTest(header) {
+        const title = header.title || "";
+        const subtitle = header.subtitle || "";
+        const sourceRows = [
+          ["source table", code(header.sourceTable || "")],
+          ["record id", code(header.recordId || "")],
+          ["wave", code(header.wave || "")],
+          ["title field", code("wec_report_title")],
+          ["subtitle field", code("wec_report_subtitle")]
+        ];
+        document.getElementById("head-test").innerHTML = `
+          <h2>Header Render Test</h2>
+          <div class="rs-head-test">
+            <header class="rs-app-header">
+              <div class="rs-header-copy">
+                <h1>${escapeHtml(title)}</h1>
+                <p>${escapeHtml(subtitle)}</p>
+              </div>
+            </header>
+          </div>
+          <div class="scroll">${table(["item", "value"], sourceRows)}</div>
+        `;
+      }
+
+      function renderHeaderChain(chain) {
+        const rows = [
+          ["stack", code(chain.stack?.stackKey || "")],
+          ["component", code(chain.stack?.componentKey || "")],
+          ["html key", code(chain.stack?.htmlKey || "")],
+          ["source table", code(chain.stack?.sourceTable || "")],
+          ["source record", code(chain.stack?.sourceRecordKey || "")],
+          ["title field", code(chain.stack?.titleField || "")],
+          ["subtitle field", code(chain.stack?.subtitleField || "")],
+          ["resolved title", escapeHtml(chain.values?.title || "")],
+          ["resolved subtitle", escapeHtml(chain.values?.subtitle || "")]
+        ];
+        document.getElementById("head-test").insertAdjacentHTML("beforeend", `
+          <h2>Header Chain Test</h2>
+          <div class="rs-head-test">${chain.renderedHtml || ""}</div>
+          <div class="scroll">${table(["step", "value"], rows)}</div>
+        `);
+      }
+
+      function renderFrontendDisplay(chain) {
+        document.getElementById("frontend-display").innerHTML = `
+          <h2>Frontend Display</h2>
+          <div class="rs-frontend-stage">${chain.renderedHtml || ""}</div>
+        `;
+      }
+
+      function renderListLayer(tables) {
+        const itemRows = (tables.pak_items_index?.records || []).map((record) => [
+          code(record.fields.item_family || ""),
+          code(record.fields.source_table || ""),
+          code(record.fields.source_view || ""),
+          code(record.fields.plan_key || ""),
+          record.fields.active ? "yes" : ""
+        ]);
+        const familyRows = (tables.pak_list_family_index?.records || []).map((record) => [
+          code(record.fields.list_key || ""),
+          record.fields.label || "",
+          code(record.fields.scope || ""),
+          code(record.fields.applies_to_entity || ""),
+          record.fields.active ? "yes" : ""
+        ]);
+        const memberRows = (tables.pak_list_members?.records || []).map((record) => [
+          code(record.fields.member_key || ""),
+          code(record.fields.list_key || ""),
+          code(record.fields.member_entity || ""),
+          code(record.fields.member_table || ""),
+          code(record.fields.member_record_id || ""),
+          record.fields.active ? "yes" : ""
+        ]);
+        document.getElementById("list-layer").innerHTML = `
+          <h2>List Layer</h2>
+          <h2>Item Sources</h2>
+          <div class="scroll">${table(["item family", "source table", "source view", "plan", "active"], itemRows)}</div>
+          <h2>List Families</h2>
+          <div class="scroll">${table(["list key", "label", "scope", "applies to", "active"], familyRows)}</div>
+          <h2>List Members</h2>
+          <div class="scroll">${table(["member key", "list key", "entity", "table", "record id", "active"], memberRows)}</div>
+        `;
+      }
+
+      function renderBlueprintTests(tests) {
+        const rows = tests.map((test) => [
+          code(test.key || ""),
+          test.label || "",
+          test.pass ? status(true) : `<span class="bad">fail</span>`,
+          test.detail || ""
+        ]);
+        document.getElementById("blueprint-tests").innerHTML = `
+          <h2>Blueprint Validation Tests</h2>
+          <div class="scroll">${table(["test", "label", "status", "detail"], rows)}</div>
+        `;
+      }
+
+      function renderTests(tests) {
+        const root = document.getElementById("tests");
+        const buttonTest = tests.rosterButtonFields || {};
+        const registry = buttonTest.fieldRegistry || [];
+        const rows = buttonTest.sampleRows || [];
+        const keys = Array.from(new Set(registry.map((record) => record.fields.field_key || record.fields.data_rs_value).filter(Boolean))).sort();
+        const labelByKey = Object.fromEntries(registry.map((record) => {
+          const key = record.fields.field_key || record.fields.data_rs_value || "";
+          return [key, record.fields.field_label || key];
+        }).filter(([key]) => key));
+
+        const registryRows = registry.map((record) => [
+          code(record.fields.field_key || ""),
+          code(record.fields.data_rs_value || ""),
+          record.fields.field_label || "",
+          record.fields.suggest_allowed ? "yes" : "",
+          record.fields.is_alloed ? "yes" : ""
+        ]);
+        const sampleRows = rows.map((row) => [
+          row.horse,
+          ...keys.map((key) => renderRawValue(row.values?.[key]))
+        ]);
+        const renderedRows = rows.map((row) => `
+          <div class="rs-render-test-row">
+            <div class="rs-render-test-name">${escapeHtml(row.horse)}</div>
+            ${keys.map((key) => renderButtonValue(row.values?.[key], key, labelByKey[key])).join("")}
+          </div>
+        `).join("");
+        root.innerHTML = `
+          <h2>Roster Test Fields</h2>
+          <div class="scroll">${table(["field key", "data-rs-value", "button label", "suggest allowed", "is alloed"], registryRows)}</div>
+          <h2>Roster Button Render Test</h2>
+          <div class="rs-render-test-list">${renderedRows}</div>
+          <h2>Roster Test Sample</h2>
+          <div class="scroll">${table(["horse", ...keys], sampleRows)}</div>
+        `;
+      }
+
+      function renderWireModel(model) {
+        const roleRows = (model.roles || []).map((row) => [
+          code(row.wireRole || ""),
+          code(row.scope || ""),
+          row.required ? "yes" : "",
+          row.active ? "yes" : ""
+        ]);
+        const assignmentRows = (model.assignments || []).map((row) => [
+          code(row.wireKey || ""),
+          code(row.wireRole || ""),
+          code(row.pageKey || ""),
+          code(row.scope || ""),
+          code(row.tableSource || ""),
+          code(row.tableSourceView || ""),
+          row.required ? "yes" : "",
+          row.active ? "yes" : ""
+        ]);
+        const draftRows = (model.draftAssignments || []).map((row) => [
+          code(row.wireKey || ""),
+          code(row.scope || ""),
+          code(row.reason || "")
+        ]);
+        document.getElementById("wire-model").innerHTML = `
+          <h2>Wire Model</h2>
+          <h2>Wire Roles</h2>
+          <div class="scroll">${table(["wire role", "scope", "required", "active"], roleRows)}</div>
+          <h2>Wire Assignments</h2>
+          <div class="scroll">${table(["wire key", "wire role", "page key", "scope", "source table", "source view", "required", "active"], assignmentRows)}</div>
+          <h2>Draft Assignments Needed</h2>
+          <div class="scroll">${table(["wire key", "scope", "reason"], draftRows)}</div>
+        `;
+      }
+
+      function renderFieldModel(model) {
+        const groupRows = (model.groups || []).map((group) => [
+          code(group.sourceTable || ""),
+          group.total || 0,
+          group.active || 0,
+          group.allowed || 0,
+          group.suggestAllowed || 0,
+          group.suggestRemove || 0
+        ]);
+        const fieldRows = (model.groups || []).flatMap((group) =>
+          (group.fields || []).map((field) => [
+            code(group.sourceTable || ""),
+            code(field.fieldKey || ""),
+            code(field.fieldId || ""),
+            code(field.dataRsValue || ""),
+            field.fieldLabel || "",
+            field.active ? "yes" : "",
+            field.allowed ? "yes" : "",
+            field.suggestAllowed ? "yes" : "",
+            field.suggestRemove ? "yes" : ""
+          ])
+        );
+        document.getElementById("field-model").innerHTML = `
+          <h2>Field Model</h2>
+          <h2>Field Counts</h2>
+          <div class="scroll">${table(["source table", "total", "active", "allowed", "suggest allowed", "suggest remove"], groupRows)}</div>
+          <h2>Allowed Field Registry</h2>
+          <div class="scroll">${table(["source table", "field key", "field id", "data-rs-value", "label", "active", "allowed", "suggest allowed", "suggest remove"], fieldRows)}</div>
+        `;
+      }
+
+      function renderRawValue(value) {
+        if (value && typeof value === "object") return `<code>${escapeHtml(JSON.stringify(value))}</code>`;
+        return escapeHtml(value || "");
+      }
+
+      function renderButtonValue(value, key, labelOverride) {
+        const fallbackLabel = labelOverride || key;
+        if (value && typeof value === "object" && value.url) {
+          return `<a class="rs-test-button" href="${escapeHtml(value.url)}" target="_blank" rel="noopener" title="${escapeHtml(value.label || fallbackLabel)}">${escapeHtml(fallbackLabel)}</a>`;
+        }
+        if (typeof value === "string" && /^https?:\/\//i.test(value)) {
+          return `<a class="rs-test-button" href="${escapeHtml(value)}" target="_blank" rel="noopener">${escapeHtml(fallbackLabel)}</a>`;
+        }
+        if (value) return `<span>${escapeHtml(value)}</span>`;
+        return `<span class="muted">empty</span>`;
+      }
+
+      function table(headers, rows) {
+        return `<table><thead><tr>${headers.map((header) => `<th>${escapeHtml(header)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${cell ?? ""}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+      }
+
+      function status(ok) {
+        return ok ? `<span class="ok">ok</span>` : `<span class="bad">missing</span>`;
+      }
+
+      function code(value) {
+        return value ? `<code>${escapeHtml(value)}</code>` : "";
+      }
+
+      function cssEscape(value) {
+        if (window.CSS && typeof window.CSS.escape === "function") return CSS.escape(value);
+        return String(value || "").replace(/["\\]/g, "\\$&");
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[char]);
+      }
+    </script>
+  </body>
+</html>

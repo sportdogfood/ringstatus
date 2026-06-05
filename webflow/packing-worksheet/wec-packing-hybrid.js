@@ -409,7 +409,7 @@
   function render() {
     root.className = "rsa-dashboard";
     root.innerHTML = `
-      <div class="lp-shell">
+      <div class="rs-shell">
         ${headerHtml()}
         ${navHtml()}
         <div class="rs-airtable-shell">
@@ -424,8 +424,8 @@
     const title = state?.wave?.reportTitle || "WEC PACK";
     const subtitle = state?.wave?.reportSubtitle || state?.wave?.label || "";
     return `
-      <header class="lp-header">
-        <div class="lp-header-copy">
+      <header class="rs-app-header">
+        <div class="rs-header-copy">
           <h1>${escapeHtml(title)}</h1>
           <p>${escapeHtml(subtitle)}</p>
         </div>
