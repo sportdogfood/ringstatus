@@ -1,0 +1,261 @@
+
+> webflow-cloud-test@0.0.1 dev
+> astro dev --host 127.0.0.1 --port 4331
+
+Using secrets defined in .env
+[2m18:59:07[22m [34m[types][39m Generated [2m2ms[22m
+[42m[1m astro [22m[49m [32mv6.3.5[39m [2mready in[22m 3182 [2mms[22m
+[2m┃[22m Local    [36mhttp://127.0.0.1:4331/[39m
+[2m18:59:07[22m [32mwatching for file changes...[39m
+[2m19:00:02[22m [34m[vite][39m [vite] program reload
+[2m19:00:51[22m [34m[vite][39m [vite] program reload
+[33m[1m19:07:17[22m [WARN] [vite][39m [wec-plan-modules] optional table skipped: pak_byhorse_lanes Error: internal error; reference = ed5peoen50irfr4a53dfq0u2
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1316:22)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1301:20)
+    at listOptionalRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:839:12)
+    at async Promise.all (index 8) {
+  remote: true
+}
+[33m[1m19:07:17[22m [WARN] [vite][39m [wec-plan-modules] optional table skipped: wec_commenting Error: internal error; reference = 6h7icio11t317mhsmvlotlbv
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1316:22)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1301:20)
+    at listOptionalRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:839:12)
+    at async Promise.all (index 9) {
+  remote: true
+}
+[33m[1m19:07:17[22m [WARN] [vite][39m [wec-plan-modules] optional table skipped: pak_tabs Error: internal error; reference = hdn85ha831rco9ddhnnupsn2
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1316:22)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1301:20)
+    at listOptionalRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:839:12)
+    at async Promise.all (index 5) {
+  remote: true
+}
+[33m[1m19:07:17[22m [WARN] [vite][39m [wec-plan-modules] optional table skipped: pak_aggs Error: internal error; reference = 50me0q63gb0tnu2dncl6jmjp
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1316:22)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1301:20)
+    at listOptionalRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:839:12)
+    at async Promise.all (index 7) {
+  remote: true
+}
+[33m[1m19:07:17[22m [WARN] [vite][39m [wec-plan-modules] optional table skipped: pak_views Error: internal error; reference = 4b9r0gbdgdhnifduckeravmi
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1316:22)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1301:20)
+    at listOptionalRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:839:12)
+    at async Promise.all (index 6) {
+  remote: true
+}
+[33m[1m19:07:17[22m [WARN] [vite][39m [wec-plan-modules] optional table skipped: comment_shorts Error: internal error; reference = pm01j4gi9kiqqum0sh74rc1m
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1316:22)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1301:20)
+    at listOptionalRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:839:12)
+    at async Promise.all (index 10) {
+  remote: true
+}
+[2m19:12:33[22m [34m[vite][39m [vite] program reload
+[2m19:20:46[22m [34m[vite][39m [vite] program reload
+[33m[1m19:28:25[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblHzCwKG4RoHj0kH/wec_home Error: list tblHzCwKG4RoHj0kH 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View wec_home not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at async Promise.all (index 3)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:157:203)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1348:10)
+    at AstroMiddleware.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1458:18)
+[33m[1m19:28:26[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_stay Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_stay not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 4)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+[33m[1m19:28:26[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_tack Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_tack not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 5)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+[33m[1m19:28:26[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_dine Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_dine not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 2)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+[33m[1m19:28:27[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblHzCwKG4RoHj0kH/wec_home Error: list tblHzCwKG4RoHj0kH 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View wec_home not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at async Promise.all (index 3)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:157:203)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1348:10)
+[33m[1m19:28:28[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_tack Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_tack not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 5)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+[33m[1m19:28:28[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_dine Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_dine not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 2)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+[33m[1m19:28:28[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_stay Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_stay not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 4)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+[33m[1m19:28:56[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblHzCwKG4RoHj0kH/wec_home Error: list tblHzCwKG4RoHj0kH 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View wec_home not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at async Promise.all (index 3)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:157:203)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1348:10)
+    at AstroMiddleware.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1458:18)
+[33m[1m19:28:58[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_stay Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_stay not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 4)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+[33m[1m19:28:58[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_dine Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_dine not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 2)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+[33m[1m19:28:58[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_tack Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_tack not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 5)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/state.js:14:19)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+[33m[1m19:29:00[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblHzCwKG4RoHj0kH/wec_home Error: list tblHzCwKG4RoHj0kH 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View wec_home not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at async Promise.all (index 3)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:157:203)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1348:10)
+[33m[1m19:29:01[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_tack Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_tack not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 5)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+[33m[1m19:29:01[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_stay Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_stay not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 4)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+[33m[1m19:29:01[22m [WARN] [vite][39m [wec-packing] optional view skipped: tblgEWGXGchl2T8ca/local_dine Error: list tblgEWGXGchl2T8ca 422: {"error":{"type":"VIEW_NAME_NOT_FOUND","message":"View local_dine not found"}}
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3383:17)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3365:20)
+    at listOptionalViewRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:3416:12)
+    at C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:431:11
+    at async Promise.all (index 2)
+    at buildActiveListDetails (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:417:19)
+    at stateReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:268:29)
+    at actionReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-packing.js:1884:17)
+    at Module.POST (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/action.js:15:20)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+[2m19:30:47[22m [34m[vite][39m [vite] program reload
+[2m11:40:25[22m [34m[vite][39m [vite] program reload
+[33m[1m11:41:08[22m [WARN] [router][39m Blocked cross-origin request to /wec-packing/blueprint (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[2m11:55:50[22m [34m[vite][39m [vite] program reload
+[2m12:27:39[22m [34m[vite][39m [vite] program reload
+[2m13:28:05[22m [34m[vite][39m [vite] program reload
+[2m13:36:32[22m [34m[vite][39m [vite] program reload
+[2m14:32:58[22m [34m[vite][39m [vite] program reload
+[2m14:54:50[22m [34m[vite][39m [vite] program reload
+[2m14:55:47[22m [34m[vite][39m [vite] program reload
+[2m15:20:30[22m [34m[vite][39m [vite] program reload
+[2m15:47:39[22m [34m[vite][39m [vite] program reload
+[33m[1m16:58:23[22m [WARN] [vite][39m [wec-plan-modules] optional table skipped: comment_shorts Error: internal error; reference = bh6hvtpnn8p7lrtacj6k36fp
+    at fetchAirtableListPage (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1316:22)
+    at listAirtableRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:1301:20)
+    at listOptionalRecords (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:839:12)
+    at async Promise.all (index 10)
+    at planReport (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/lib/wec-plan-modules.js:293:7)
+    at async Promise.all (index 1)
+    at Module.GET (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/src/pages/wec-packing/home.js:26:50)
+    at renderEndpoint (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-R3GOSWOH.js?v=3669833d:54:18)
+    at PagesHandler.handle (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1490:20)
+    at callMiddleware (C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/webflow-cloud-test/node_modules/.vite/deps_ssr/chunk-4EBCCIVU.js?v=3669833d:1348:10) {
+  remote: true
+}
+[2m17:35:19[22m [34m[vite][39m [vite] program reload
+[2m17:37:59[22m [34m[vite][39m [vite] program reload
+[2m17:38:51[22m [34m[vite][39m [vite] program reload
+[2m17:42:16[22m [34m[vite][39m [vite] program reload
+[2m17:43:43[22m [34m[vite][39m [vite] program reload
