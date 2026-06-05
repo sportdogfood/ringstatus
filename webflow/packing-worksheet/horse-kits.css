@@ -1707,6 +1707,19 @@ body {
   overflow-x: auto !important;
   overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch !important;
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 20 !important;
+  background: #ffffff !important;
+}
+
+@supports not (position: sticky) {
+  #packing-app .rs-stack-tabs {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
 }
 
 #packing-app .rs-stack-pill {
@@ -1744,6 +1757,12 @@ body {
 
 #packing-app .rs-secondary-count-aggs {
   padding-bottom: 4px !important;
+}
+
+#packing-app .rs-stack-section.is-summary-aggs,
+#packing-app .rs-stack-section.is-count-aggs,
+#packing-app .rs-secondary-count-aggs {
+  display: none !important;
 }
 
 #packing-app .rs-airtable-grid thead th {

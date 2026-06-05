@@ -300,24 +300,20 @@
 
       function renderSelectedNavTarget(key) {
         const frame = document.querySelector("#app-preview iframe");
-        if (!frame) return;
+        const value = document.getElementById("app-health-value");
+        const note = document.getElementById("app-health-note");
         const label = window.__rsNavTargetLabels?.[key] || key.replace(/_/g, " ").toUpperCase();
-        frame.onload = updateAppHealth;
-        frame.removeAttribute("src");
-        frame.srcdoc = `
-          <!doctype html>
-          <html><head><meta charset="utf-8"><style>
-            body{font-family:Outfit,Arial,sans-serif;margin:0;color:#10233d}
-            .rs-placeholder{padding:28px;border:1px solid #d6dde6}
-            .rs-placeholder h1{margin:0 0 8px;font-size:22px;line-height:1.1;text-transform:uppercase}
-            .rs-placeholder p{margin:0;color:#66717f;font-size:13px}
-          </style></head><body>
-            <main id="packing-app" class="rs-placeholder">
-              <h1>${escapeHtml(label)}</h1>
-              <p>${escapeHtml(key)} is selected. No rendered page is bound yet.</p>
-            </main>
-          </body></html>
-        `;
+        const setStatus = () => {
+          const value = document.getElementById("app-health-value");
+          const note = document.getElementById("app-health-note");
+          if (value) value.textContent = "Selected";
+          if (note) note.textContent = `${label} is not bound to an approved component yet`;
+        };
+        setStatus();
+        if (!frame) return;
+        frame.removeAttribute("srcdoc");
+        frame.onload = setStatus;
+        frame.src = "about:blank";
       }
 
       function closeNav(navRoot) {

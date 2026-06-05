@@ -17,7 +17,7 @@
     drawerOpen: false,
     selectedHorseId: "",
     addOpen: false,
-    profileTab: initialMode === "attributes" ? "profile" : "overview",
+    profileTab: "overview",
     saving: false,
     draft: {}
   };
@@ -128,12 +128,6 @@
     try {
       state = await fetchJson(apiUrl());
       rebuild(false);
-      if ((initialMode === "profile" || initialMode === "attributes") && records[0]) {
-        ui.selectedHorseId = records[0].id;
-        ui.drawerOpen = true;
-        ui.addOpen = false;
-        ui.profileTab = initialMode === "attributes" ? "profile" : "overview";
-      }
     } catch (error) {
       ui.error = error.message || String(error);
     } finally {
