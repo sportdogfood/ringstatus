@@ -17,6 +17,7 @@
     search: "",
     sortKey: "horse",
     sortDir: "asc",
+    activePrimaryTab: "horses",
     selectedHorseId: "",
     drawerOpen: false,
     itemSearch: "",
@@ -38,6 +39,12 @@
       ui.viewKey = target.dataset.viewKey || config.packWaveKey;
       ui.drawerOpen = false;
       await load();
+      return;
+    }
+    if (action === "set-primary-tab") {
+      ui.activePrimaryTab = target.dataset.tabKey || "horses";
+      ui.drawerOpen = false;
+      render();
       return;
     }
     if (action === "set-lane") {
@@ -322,15 +329,7 @@
         ${headerHtml()}
         ${navHtml()}
         <div class="rs-airtable-shell">
-          <div class="rs-page-stack">
-            ${summaryAggsHtml()}
-            ${secondaryTabsHtml()}
-            ${countAggsHtml()}
-            ${laneTabsHtml()}
-            ${searchHtml()}
-            ${tableHtml()}
-            ${commentsHtml()}
-          </div>
+          ${primaryPanelHtml()}
         </div>
       </div>
       ${drawerHtml()}
@@ -351,8 +350,41 @@
   }
 
   function navHtml() {
-    const tabs = ["HOME", "HORSES", "GROOMING", "FEED", "TACK", "SHOW", "BARN"];
-    return `<section class="rs-stack-section is-primary-tabs"><nav class="rs-stack-tabs">${tabs.map((tab) => `<button class="rs-stack-pill ${tab === "HORSES" ? "is-active" : ""}" type="button">${escapeHtml(tab)}</button>`).join("")}</nav></section>`;
+    const tabs = (state?.primaryTabs || []).length ? state.primaryTabs : [
+      { key: "home", label: "Home" },
+      { key: "horses", label: "Horses" },
+      { key: "grooming", label: "Grooming" },
+      { key: "feed", label: "Feed" },
+      { key: "tack", label: "Tack" },
+      { key: "show", label: "Show" },
+      { key: "barn", label: "Barn" }
+    ];
+    return `<section class="rs-stack-section is-primary-tabs"><nav class="rs-stack-tabs">${tabs.map((tab) => {
+      const key = tab.key || "";
+      return `<button class="rs-stack-pill ${ui.activePrimaryTab === key ? "is-active" : ""}" type="button" data-action="set-primary-tab" data-tab-key="${escapeAttr(key)}">${escapeHtml(tab.label || key)}</button>`;
+    }).join("")}</nav></section>`;
+  }
+
+  function primaryPanelHtml() {
+    if (ui.activePrimaryTab === "horses") {
+      return `<div class="rs-page-stack">
+        ${summaryAggsHtml()}
+        ${secondaryTabsHtml()}
+        ${countAggsHtml()}
+        ${laneTabsHtml()}
+        ${searchHtml()}
+        ${tableHtml()}
+        ${commentsHtml()}
+      </div>`;
+    }
+    const tab = (state?.primaryTabs || []).find((row) => row.key === ui.activePrimaryTab);
+    const label = tab?.label || ui.activePrimaryTab || "Section";
+    return `<div class="rs-page-stack">
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(label)}</div></div>
+        <div class="rs-airtable-empty">No connected hybrid module for ${escapeHtml(label)}.</div>
+      </section>
+    </div>`;
   }
 
   function summaryAggsHtml() {
