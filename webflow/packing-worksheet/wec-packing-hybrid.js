@@ -5,6 +5,10 @@
   const globalConfig = window.WEC_PACKING_HYBRID_CONFIG || {};
   const config = {
     apiUrl: root.dataset.apiUrl || globalConfig.apiUrl || "https://ringstatus.com/test/wec-packing/horse-kits",
+    homeUrl: root.dataset.homeUrl || globalConfig.homeUrl || "",
+    quantityUrl: root.dataset.quantityUrl || globalConfig.quantityUrl || "",
+    perHorseUrl: root.dataset.perHorseUrl || globalConfig.perHorseUrl || "",
+    perGroomUrl: root.dataset.perGroomUrl || globalConfig.perGroomUrl || "",
     printUrl: root.dataset.printUrl || globalConfig.printUrl || "https://ringstatus.com/test/wec-packing/horse-kits/print",
     packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
   };
@@ -12,12 +16,13 @@
   const ui = {
     loading: true,
     error: "",
+    activeModule: "home",
     viewKey: config.packWaveKey,
     laneKey: "open",
     search: "",
     sortKey: "horse",
     sortDir: "asc",
-    activePrimaryTab: "horses",
+    activePrimaryTab: "home",
     selectedHorseId: "",
     drawerOpen: false,
     itemSearch: "",
@@ -26,6 +31,8 @@
   };
 
   let state = null;
+  let homeState = null;
+  let planState = null;
   let rows = [];
   const optimistic = new Map();
 
@@ -42,7 +49,23 @@
       return;
     }
     if (action === "set-primary-tab") {
-      ui.activePrimaryTab = target.dataset.tabKey || "horses";
+      const tabKey = target.dataset.tabKey || "home";
+      ui.activePrimaryTab = tabKey;
+      if (tabKey === "home") await setModule("home");
+      else if (tabKey === "horses") await setModule("horse_kits");
+      else {
+        ui.activeModule = tabKey;
+        ui.drawerOpen = false;
+        render();
+      }
+      return;
+    }
+    if (action === "set-module") {
+      await setModule(target.dataset.moduleKey || "home");
+      return;
+    }
+    if (action === "open-plan-item") {
+      ui.selectedHorseId = target.dataset.itemId || "";
       ui.drawerOpen = false;
       render();
       return;
@@ -112,16 +135,56 @@
     ui.error = "";
     render();
     try {
-      const next = await fetchJson(apiUrl());
-      assertState(next);
-      state = next;
-      rebuild(false);
+      await loadHome();
+      applyActiveModuleFromHome();
     } catch (error) {
       ui.error = error.message || String(error);
     } finally {
       ui.loading = false;
       render();
     }
+  }
+
+  async function setModule(moduleKey) {
+    ui.activeModule = moduleKey;
+    ui.activePrimaryTab = moduleKey === "home" ? "home" : moduleKey === "horse_kits" ? "horses" : ui.activePrimaryTab;
+    ui.drawerOpen = false;
+    ui.error = "";
+    if (!homeState) {
+      await load();
+      return;
+    }
+    applyActiveModuleFromHome();
+    render();
+  }
+
+  async function loadHome() {
+    const nextHome = await fetchJson(homeUrl());
+    if (!nextHome?.ok || !nextHome.reports) throw new Error("invalid_hybrid_home_state");
+    homeState = nextHome;
+  }
+
+  function applyActiveModuleFromHome() {
+    if (ui.activeModule === "home") {
+      state = homeState?.reports?.horse_kits || null;
+      planState = null;
+      rows = [];
+      return;
+    }
+    if (ui.activeModule === "horse_kits") {
+      const next = homeState?.reports?.horse_kits;
+      assertState(next);
+      state = next;
+      planState = null;
+      rebuild(false);
+      return;
+    }
+    const key = normalizeModuleKey(ui.activeModule);
+    const nextPlan = homeState?.reports?.[key];
+    if (!nextPlan?.ok || !Array.isArray(nextPlan.items)) throw new Error(`module_not_ready:${ui.activeModule}`);
+    planState = nextPlan;
+    state = homeState?.reports?.horse_kits || null;
+    rows = [];
   }
 
   async function fetchJson(url, options) {
@@ -133,6 +196,27 @@
 
   function apiUrl() {
     const url = new URL(config.apiUrl, window.location.href);
+    url.searchParams.set("packWaveKey", config.packWaveKey);
+    url.searchParams.set("viewKey", ui.viewKey || config.packWaveKey);
+    url.searchParams.set("v", "hybrid");
+    return url.toString();
+  }
+
+  function homeUrl() {
+    if (config.homeUrl) return withWaveParams(config.homeUrl);
+    return withWaveParams(config.apiUrl.replace(/\/horse-kits\/?$/, "/home"));
+  }
+
+  function planUrl(planKey) {
+    const key = normalizeModuleKey(planKey);
+    const configured = key === "quantity" ? config.quantityUrl : key === "per_horse" ? config.perHorseUrl : key === "per_groom" ? config.perGroomUrl : "";
+    if (configured) return withWaveParams(configured);
+    const route = key === "per_horse" ? "per-horse" : key === "per_groom" ? "per-groom" : "quantity";
+    return withWaveParams(config.apiUrl.replace(/\/horse-kits\/?$/, `/${route}`));
+  }
+
+  function withWaveParams(urlValue) {
+    const url = new URL(urlValue, window.location.href);
     url.searchParams.set("packWaveKey", config.packWaveKey);
     url.searchParams.set("viewKey", ui.viewKey || config.packWaveKey);
     url.searchParams.set("v", "hybrid");
@@ -366,7 +450,10 @@
   }
 
   function primaryPanelHtml() {
-    if (ui.activePrimaryTab === "horses") {
+    if (ui.loading && !homeState) return `<div class="rs-page-stack"><section class="rs-stack-section"><div class="rs-airtable-empty">Loading WEC packing...</div></section></div>`;
+    if (ui.error) return `<div class="rs-page-stack"><section class="rs-stack-section"><div class="rs-airtable-empty is-error">${escapeHtml(ui.error)}</div></section></div>`;
+    if (ui.activeModule === "home") return homePanelHtml();
+    if (ui.activeModule === "horse_kits") {
       return `<div class="rs-page-stack">
         ${summaryAggsHtml()}
         ${secondaryTabsHtml()}
@@ -377,6 +464,7 @@
         ${commentsHtml()}
       </div>`;
     }
+    if (["quantity", "per_horse", "per_groom"].includes(normalizeModuleKey(ui.activeModule))) return planPanelHtml();
     const tab = (state?.primaryTabs || []).find((row) => row.key === ui.activePrimaryTab);
     const label = tab?.label || ui.activePrimaryTab || "Section";
     return `<div class="rs-page-stack">
@@ -385,6 +473,69 @@
         <div class="rs-airtable-empty">No connected hybrid module for ${escapeHtml(label)}.</div>
       </section>
     </div>`;
+  }
+
+  function homePanelHtml() {
+    const modules = homeState?.modules || [];
+    const totals = modules.reduce((sum, module) => {
+      sum.need += number(module.counts?.need);
+      sum.packed += number(module.counts?.packed);
+      sum.left += number(module.counts?.left);
+      return sum;
+    }, { need: 0, packed: 0, left: 0 });
+    return `<div class="rs-page-stack">
+      <section class="rs-stack-section is-summary-aggs"><div class="rs-stack-label">HOME</div><div class="rs-stack-aggs">${agg(totals.need, "NEED", "need")}${agg(totals.packed, "PACKED", "packed")}${agg(totals.left, "LEFT", "left")}</div></section>
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">MODULES</div></div>
+        <div class="rs-kit-items">${modules.map(homeModuleRow).join("")}</div>
+      </section>
+    </div>`;
+  }
+
+  function homeModuleRow(module) {
+    return `<div class="rs-kit-item-row">
+      <div class="rs-kit-item-main">
+        <div class="rs-kit-item-title rs-stack-label">${escapeHtml(module.label || module.key)}</div>
+        <div class="rs-kit-item-meta">${number(module.counts?.need)} NEED / ${number(module.counts?.packed)} PACKED / ${number(module.counts?.left)} LEFT</div>
+      </div>
+      <div class="rs-kit-actions rs-item-filter-actions"><button class="rs-item-filter" type="button" data-action="set-module" data-module-key="${escapeAttr(module.key)}">OPEN</button></div>
+    </div>`;
+  }
+
+  function planPanelHtml() {
+    const report = planState;
+    const planRows = filteredPlanItems(report);
+    const counts = report?.counts || {};
+    return `<div class="rs-page-stack">
+      <section class="rs-stack-section is-summary-aggs"><div class="rs-stack-label">${escapeHtml(report?.plan?.label || ui.activeModule)}</div><div class="rs-stack-aggs">${agg(counts.need, "NEED", "need")}${agg(counts.packed, "PACKED", "packed")}${agg(counts.left, "LEFT", "left")}</div></section>
+      ${searchHtml()}
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(report?.plan?.label || "ITEMS")}</div></div>
+        <div class="rs-airtable-scroll">
+          <table class="rs-airtable-grid">
+            <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-count"><col class="rs-col-count"><col class="rs-col-count"></colgroup>
+            <thead><tr><th class="rs-row-gutter">#</th><th>ITEM</th><th>NEED</th><th>PACKED</th><th>LEFT</th></tr></thead>
+            <tbody>${planRows.map((item, index) => planItemRow(item, index)).join("") || ""}</tbody>
+          </table>
+        </div>
+        ${planRows.length ? "" : `<div class="rs-status">No rows.</div>`}
+      </section>
+    </div>`;
+  }
+
+  function filteredPlanItems(report) {
+    const query = ui.search.trim().toLowerCase();
+    return (report?.items || []).filter((item) => !query || [item.label, item.displayLabel, item.itemLabel].join(" ").toLowerCase().includes(query));
+  }
+
+  function planItemRow(item, index) {
+    return `<tr>
+      <td class="rs-row-gutter">${index + 1}</td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(item.label || item.displayLabel || item.itemLabel || "")}</span></div></td>
+      <td class="rs-cell-number">${number(item.need)}</td>
+      <td class="rs-cell-number">${number(item.packed)}</td>
+      <td class="rs-cell-number">${number(item.left)}</td>
+    </tr>`;
   }
 
   function summaryAggsHtml() {
@@ -597,6 +748,20 @@
 
   function unique(values) {
     return [...new Set(values || [])];
+  }
+
+  function number(value) {
+    const next = Number(value);
+    return Number.isFinite(next) ? next : 0;
+  }
+
+  function normalizeModuleKey(value) {
+    const key = String(value || "").trim().toLowerCase().replace(/-/g, "_");
+    if (key === "horse_kits" || key === "horsekits") return "horse_kits";
+    if (key === "perhorse") return "per_horse";
+    if (key === "pergroom") return "per_groom";
+    if (key === "byqty" || key === "by_quantity") return "quantity";
+    return key;
   }
 
   function escapeHtml(value) {
