@@ -286,7 +286,9 @@
       function activateNavTarget(url) {
         if (!url) return;
         if (url.startsWith("./wec-blueprint-preview.html#")) {
-          window.location.hash = url.split("#")[1] || "";
+          const key = url.split("#")[1] || "";
+          window.location.hash = key;
+          renderSelectedNavTarget(key);
           return;
         }
         const frame = document.querySelector("#app-preview iframe");
@@ -294,6 +296,28 @@
         frame.onload = updateAppHealth;
         if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
         frame.src = url;
+      }
+
+      function renderSelectedNavTarget(key) {
+        const frame = document.querySelector("#app-preview iframe");
+        if (!frame) return;
+        const label = window.__rsNavTargetLabels?.[key] || key.replace(/_/g, " ").toUpperCase();
+        frame.onload = updateAppHealth;
+        frame.removeAttribute("src");
+        frame.srcdoc = `
+          <!doctype html>
+          <html><head><meta charset="utf-8"><style>
+            body{font-family:Outfit,Arial,sans-serif;margin:0;color:#10233d}
+            .rs-placeholder{padding:28px;border:1px solid #d6dde6}
+            .rs-placeholder h1{margin:0 0 8px;font-size:22px;line-height:1.1;text-transform:uppercase}
+            .rs-placeholder p{margin:0;color:#66717f;font-size:13px}
+          </style></head><body>
+            <main id="packing-app" class="rs-placeholder">
+              <h1>${escapeHtml(label)}</h1>
+              <p>${escapeHtml(key)} is selected. No rendered page is bound yet.</p>
+            </main>
+          </body></html>
+        `;
       }
 
       function closeNav(navRoot) {
@@ -304,6 +328,10 @@
       function renderNavPreview(nav) {
         const top = nav.top || [];
         const trays = nav.trays || {};
+        window.__rsNavTargetLabels = Object.fromEntries([
+          ...top,
+          ...Object.values(trays).flat()
+        ].map((item) => [item.key, item.label]));
         document.getElementById("nav-preview").innerHTML = `
           <h2>Navigation Preview</h2>
           <div class="rs-nav-preview">
