@@ -1997,3 +1997,166 @@ body {
     text-overflow: clip !important;
   }
 }
+
+/* Shared WEC shell/body polish. */
+#packing-app .rs-shell {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  overflow-x: visible;
+}
+
+#packing-app .rs-app-header {
+  display: block;
+  padding: 18px 12px 12px;
+  border-bottom: 1px solid #dde3eb;
+  background: #fff;
+}
+
+#packing-app .rs-header-copy {
+  display: grid;
+  gap: 4px;
+}
+
+#packing-app .rs-header-copy h1 {
+  margin: 0;
+  color: #050505;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+#packing-app .rs-header-copy p {
+  margin: 0;
+  color: #687384;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+@media (max-width: 430px) {
+  #packing-app .rs-app-header {
+    padding: 14px 10px 10px;
+  }
+
+  #packing-app .rs-header-copy h1 {
+    font-size: 32px;
+  }
+
+  #packing-app .rs-header-copy p {
+    font-size: 15px;
+  }
+}
+
+/* Shared blueprint navigation. */
+.rs-nav-preview {
+  position: relative;
+  z-index: 10;
+  margin: 10px 0 18px;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  box-shadow: none;
+}
+
+.rs-nav-top,
+.rs-nav-tray {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rs-nav-top::-webkit-scrollbar,
+.rs-nav-tray::-webkit-scrollbar {
+  display: none;
+}
+
+.rs-nav-top {
+  align-items: center;
+  min-height: 52px;
+  padding: 6px 8px;
+}
+
+.rs-nav-btn {
+  flex: 0 0 auto;
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  color: #0f2745;
+  font: 700 12px/1 Arial, sans-serif;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rs-nav-btn:hover {
+  background: #f1f5f9;
+}
+
+.rs-nav-btn.is-active {
+  background: #0f2745;
+  color: #fff;
+}
+
+.rs-nav-tray {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 1px);
+  z-index: 30;
+  align-items: center;
+  min-height: 40px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 4px 0;
+}
+
+.rs-nav-tray .rs-nav-btn {
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  color: #0f2745;
+  font-size: 11px;
+  max-width: 132px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rs-nav-tray .rs-nav-btn:hover {
+  background: #eef3f8;
+}
+
+.rs-nav-tray[hidden] {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .rs-nav-top {
+    min-height: 48px;
+    padding: 5px 6px;
+  }
+
+  .rs-nav-btn {
+    height: 38px;
+    padding: 0 12px;
+  }
+
+  .rs-nav-tray {
+    min-height: 38px;
+    padding: 4px 0;
+  }
+}
