@@ -374,7 +374,10 @@ function normalizeNavRow(record) {
 function navTargetUrl(key) {
   const targets = {
     home: "./packing-home-preview.html",
-    comments: "./wec-blueprint-preview.html#comments",
+    comments: "./horse-entity-ui-preview.html?mode=comments",
+    horse_roster: "./horse-entity-ui-preview.html?mode=roster",
+    horse_profiles: "./horse-entity-ui-preview.html?mode=profile",
+    horse_attributes: "./horse-entity-ui-preview.html?mode=attributes",
     horse_kits: "./horse-kits-static-proof-preview.html",
     quantity: "./packing-plan-preview.html?plan=quantity",
     per_horse: "./packing-plan-preview.html?plan=per_horse",

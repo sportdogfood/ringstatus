@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>Horse Entity UI Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      const HORSE_ENTITY_UI_LOCAL_PREVIEW_VERSION = Date.now();
+      document.write(`<link rel="stylesheet" href="./horse-entity-ui.css?v=${HORSE_ENTITY_UI_LOCAL_PREVIEW_VERSION}">`);
+    </script>
+  </head>
+  <body>
+    <main id="horse-entity-shell" class="rsa-dashboard">
+      <div id="horse-entity-ui" data-api-url="http://127.0.0.1:4331/horse-entity-ui">
+        Loading horse entity UI...
+      </div>
+    </main>
+    <script>
+      document.write(`<script src="./horse-entity-ui.js?v=${HORSE_ENTITY_UI_LOCAL_PREVIEW_VERSION}" defer><\/script>`);
+    </script>
+  </body>
+</html>

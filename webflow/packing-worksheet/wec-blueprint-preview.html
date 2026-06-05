@@ -292,6 +292,7 @@
         const frame = document.querySelector("#app-preview iframe");
         if (!frame) return;
         frame.onload = updateAppHealth;
+        if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
         frame.src = url;
       }
 

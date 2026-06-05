@@ -6,6 +6,8 @@
   const config = {
     apiUrl: root.dataset.apiUrl || globalConfig.apiUrl || "/horse-entity-ui"
   };
+  const params = new URLSearchParams(window.location.search);
+  const initialMode = params.get("mode") || "roster";
 
   const ui = {
     loading: true,
@@ -15,7 +17,7 @@
     drawerOpen: false,
     selectedHorseId: "",
     addOpen: false,
-    profileTab: "overview",
+    profileTab: initialMode === "attributes" ? "profile" : "overview",
     saving: false,
     draft: {}
   };
@@ -126,6 +128,12 @@
     try {
       state = await fetchJson(apiUrl());
       rebuild(false);
+      if ((initialMode === "profile" || initialMode === "attributes") && records[0]) {
+        ui.selectedHorseId = records[0].id;
+        ui.drawerOpen = true;
+        ui.addOpen = false;
+        ui.profileTab = initialMode === "attributes" ? "profile" : "overview";
+      }
     } catch (error) {
       ui.error = error.message || String(error);
     } finally {
