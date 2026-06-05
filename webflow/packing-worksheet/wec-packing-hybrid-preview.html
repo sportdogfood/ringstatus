@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>WEC Packing Hybrid Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      const WEC_PACKING_HYBRID_VERSION = Date.now();
+      document.write(`<link rel="stylesheet" href="./rsa-stylesheets.locked.css?v=${WEC_PACKING_HYBRID_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./styles.css?v=${WEC_PACKING_HYBRID_VERSION}">`);
+      document.write(`<link rel="stylesheet" href="./horse-kits-static-proof.css?v=${WEC_PACKING_HYBRID_VERSION}">`);
+    </script>
+  </head>
+  <body>
+    <main id="packing-app" class="rsa-dashboard" data-api-url="http://127.0.0.1:4331/wec-packing/horse-kits" data-print-url="http://127.0.0.1:4331/wec-packing/horse-kits/print" data-pack-wave-key="wave_one">
+      Loading WEC packing hybrid...
+    </main>
+    <script>
+      document.write(`<script src="./wec-packing-hybrid.js?v=${WEC_PACKING_HYBRID_VERSION}" defer><\/script>`);
+    </script>
+  </body>
+</html>

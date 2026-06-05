@@ -1,0 +1,32 @@
+<main id="packing-app" class="rsa-dashboard" data-api-url="https://ringstatus.com/test/wec-packing/horse-kits" data-print-url="https://ringstatus.com/test/wec-packing/horse-kits/print" data-pack-wave-key="wave_one">
+  Loading WEC packing...
+</main>
+
+<script>
+  (function () {
+    var root = document.getElementById("packing-app");
+    var assetVersion = root && root.dataset.rsBuild ? root.dataset.rsBuild : "main";
+    var cacheKey = "wec-hybrid-20260604-" + assetVersion;
+    var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
+
+    function addStyle(href) {
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    }
+
+    function addScript(src) {
+      var script = document.createElement("script");
+      script.src = src;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+
+    addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+    addStyle(assetBase + "/rsa-stylesheets.locked.css?v=" + cacheKey);
+    addStyle(assetBase + "/styles.css?v=" + cacheKey);
+    addStyle(assetBase + "/horse-kits-static-proof.css?v=" + cacheKey);
+    addScript(assetBase + "/wec-packing-hybrid.js?v=" + cacheKey);
+  })();
+</script>
