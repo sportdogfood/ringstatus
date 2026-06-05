@@ -273,7 +273,7 @@ function buildBlueprintValidationTests(tables, tableByName) {
   const groupComponentRows = groupRows.filter((record) => clean(record.fields?.component_key));
   const missingGroupComponentLinks = groupComponentRows.filter((record) => {
     const links = Array.isArray(record.fields?.pak_components) ? record.fields.pak_components : [];
-    return links.length === 0 || links.some((id) => !componentIds.has(id));
+    return links.some((id) => !componentIds.has(id));
   });
   const groupModel = buildGroupModel(tables);
   const activeHorseFields = fieldRows.filter((record) =>
@@ -359,14 +359,28 @@ function buildNavModel(tables) {
 }
 
 function normalizeNavRow(record) {
+  const key = clean(record.fields.page_key);
   return {
     id: record.id,
-    key: clean(record.fields.page_key),
+    key,
     label: clean(record.fields.page_label || record.fields.Label || record.fields.page_key),
     parentKey: clean(record.fields.parent_page_key),
     sortOrder: Number(record.fields.sort_order || 0),
-    opensTray: Boolean(record.fields.opens_tray)
+    opensTray: Boolean(record.fields.opens_tray),
+    targetUrl: navTargetUrl(key)
   };
+}
+
+function navTargetUrl(key) {
+  const targets = {
+    home: "./packing-home-preview.html",
+    comments: "./wec-blueprint-preview.html#comments",
+    horse_kits: "./horse-kits-static-proof-preview.html",
+    quantity: "./packing-plan-preview.html?plan=quantity",
+    per_horse: "./packing-plan-preview.html?plan=per_horse",
+    per_groom: "./packing-plan-preview.html?plan=per_groom"
+  };
+  return targets[key] || `./wec-blueprint-preview.html#${encodeURIComponent(key || "page")}`;
 }
 
 function buildWireModel(tables) {

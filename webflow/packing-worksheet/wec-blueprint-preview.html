@@ -192,6 +192,7 @@
       <div id="status">Loading blueprint...</div>
       <section id="health"></section>
       <section id="nav-preview"></section>
+      <section id="nav-targets"></section>
       <section id="app-preview">
         <h2>App Preview</h2>
         <div class="rs-app-frame-wrap">
@@ -230,6 +231,7 @@
         loadAppPreview();
 
         renderNavPreview(data.tests?.navModel || {});
+        renderNavTargets(data.tests?.navModel || {});
         renderHeadTest(data.tests?.headerRender || {});
         renderHeaderChain(data.tests?.headerChain || {});
         renderTests(data.tests || {});
@@ -257,6 +259,13 @@
       document.addEventListener("click", (event) => {
         const navRoot = document.querySelector(".rs-nav-preview");
         if (!navRoot) return;
+        const childButton = event.target.closest("[data-nav-child]");
+        if (childButton && navRoot.contains(childButton)) {
+          closeNav(navRoot);
+          childButton.classList.add("is-active");
+          activateNavTarget(childButton.dataset.navUrl || "");
+          return;
+        }
         const button = event.target.closest("[data-nav-key]");
         if (!button || !navRoot.contains(button)) {
           closeNav(navRoot);
@@ -269,8 +278,22 @@
         if (tray && shouldOpen) {
           tray.hidden = false;
           button.classList.add("is-active");
+          return;
         }
+        if (!tray) activateNavTarget(button.dataset.navUrl || "");
       });
+
+      function activateNavTarget(url) {
+        if (!url) return;
+        if (url.startsWith("./wec-blueprint-preview.html#")) {
+          window.location.hash = url.split("#")[1] || "";
+          return;
+        }
+        const frame = document.querySelector("#app-preview iframe");
+        if (!frame) return;
+        frame.onload = updateAppHealth;
+        frame.src = url;
+      }
 
       function closeNav(navRoot) {
         navRoot.querySelectorAll(".rs-nav-tray").forEach((tray) => tray.hidden = true);
@@ -284,14 +307,31 @@
           <h2>Navigation Preview</h2>
           <div class="rs-nav-preview">
             <div class="rs-nav-top">
-              ${top.map((item) => `<button class="rs-nav-btn" type="button" data-nav-key="${escapeHtml(item.key)}">${escapeHtml(item.label)}</button>`).join("")}
+              ${top.map((item) => `<button class="rs-nav-btn" type="button" data-nav-key="${escapeHtml(item.key)}" data-nav-url="${escapeHtml(item.targetUrl || "")}">${escapeHtml(item.label)}</button>`).join("")}
             </div>
             ${Object.entries(trays).map(([parent, items]) => `
               <div class="rs-nav-tray" data-nav-tray="${escapeHtml(parent)}" hidden>
-                ${items.map((item) => `<button class="rs-nav-btn" type="button" data-nav-child="${escapeHtml(item.key)}">${escapeHtml(item.label)}</button>`).join("")}
+                ${items.map((item) => `<button class="rs-nav-btn" type="button" data-nav-child="${escapeHtml(item.key)}" data-nav-url="${escapeHtml(item.targetUrl || "")}">${escapeHtml(item.label)}</button>`).join("")}
               </div>
             `).join("")}
           </div>
+        `;
+      }
+
+      function renderNavTargets(nav) {
+        const rows = [
+          ...(nav.top || []),
+          ...Object.values(nav.trays || {}).flat()
+        ].map((item) => [
+          code(item.key || ""),
+          item.label || "",
+          code(item.parentKey || "top"),
+          item.opensTray ? "tray" : "link",
+          code(item.targetUrl || "")
+        ]);
+        document.getElementById("nav-targets").innerHTML = `
+          <h2>Navigation Targets</h2>
+          <div class="scroll">${table(["key", "label", "parent", "type", "target"], rows)}</div>
         `;
       }
 
