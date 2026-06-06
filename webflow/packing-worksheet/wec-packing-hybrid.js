@@ -23,6 +23,7 @@
     sortKey: "horse",
     sortDir: "asc",
     activePrimaryTab: "home",
+    navTrayKey: "",
     selectedHorseId: "",
     drawerOpen: false,
     itemSearch: "",
@@ -35,6 +36,21 @@
   let planState = null;
   let rows = [];
   const optimistic = new Map();
+  const unboundModules = new Set([
+    "comments",
+    "horse_roster",
+    "horse_profiles",
+    "horse_attributes",
+    "purchase_onsite",
+    "needs_attention",
+    "unresolved",
+    "packed_max",
+    "kit_items",
+    "quantity_items",
+    "per_horse_items",
+    "per_groom_items",
+    "feed_items"
+  ]);
 
   root.addEventListener("click", async (event) => {
     const target = event.target.closest("[data-action]");
@@ -50,11 +66,29 @@
     }
     if (action === "set-primary-tab") {
       const tabKey = target.dataset.tabKey || "home";
+      if (["horses", "counts", "lists", "items"].includes(tabKey)) {
+        ui.navTrayKey = ui.navTrayKey === tabKey ? "" : tabKey;
+        ui.activePrimaryTab = tabKey;
+        render();
+        return;
+      }
+      ui.navTrayKey = "";
       ui.activePrimaryTab = tabKey;
       if (tabKey === "home") await setModule("home");
-      else if (tabKey === "horses") await setModule("horse_kits");
       else {
         ui.activeModule = tabKey;
+        ui.drawerOpen = false;
+        render();
+      }
+      return;
+    }
+    if (action === "set-nav-child") {
+      const moduleKey = target.dataset.moduleKey || "";
+      ui.navTrayKey = "";
+      if (["horse_kits", "quantity", "per_horse", "per_groom"].includes(moduleKey)) {
+        await setModule(moduleKey);
+      } else {
+        ui.activeModule = moduleKey;
         ui.drawerOpen = false;
         render();
       }
@@ -147,7 +181,8 @@
 
   async function setModule(moduleKey) {
     ui.activeModule = moduleKey;
-    ui.activePrimaryTab = moduleKey === "home" ? "home" : moduleKey === "horse_kits" ? "horses" : ui.activePrimaryTab;
+    ui.activePrimaryTab = moduleKey === "home" ? "home" : ["horse_kits", "quantity", "per_horse", "per_groom"].includes(moduleKey) ? "counts" : ui.activePrimaryTab;
+    ui.navTrayKey = "";
     ui.drawerOpen = false;
     ui.error = "";
     if (!homeState) {
@@ -434,19 +469,45 @@
   }
 
   function navHtml() {
-    const tabs = (state?.primaryTabs || []).length ? state.primaryTabs : [
-      { key: "home", label: "Home" },
-      { key: "horses", label: "Horses" },
-      { key: "grooming", label: "Grooming" },
-      { key: "feed", label: "Feed" },
-      { key: "tack", label: "Tack" },
-      { key: "show", label: "Show" },
-      { key: "barn", label: "Barn" }
+    const tabs = [
+      { key: "home", label: "HOME" },
+      { key: "horses", label: "HORSES" },
+      { key: "counts", label: "COUNTS" },
+      { key: "lists", label: "LISTS" },
+      { key: "items", label: "ITEMS" },
+      { key: "comments", label: "COMMENTS" }
     ];
-    return `<section class="rs-stack-section is-primary-tabs"><nav class="rs-stack-tabs">${tabs.map((tab) => {
+    const trays = {
+      horses: [
+        { key: "horse_roster", label: "ROSTER" },
+        { key: "horse_profiles", label: "PROFILES" },
+        { key: "horse_attributes", label: "ATTRIBUTES" }
+      ],
+      counts: [
+        { key: "horse_kits", label: "HORSE KITS" },
+        { key: "quantity", label: "QUANTITY" },
+        { key: "per_horse", label: "PER HORSE" },
+        { key: "per_groom", label: "PER GROOM" }
+      ],
+      lists: [
+        { key: "purchase_onsite", label: "PURCHASE ONSITE" },
+        { key: "needs_attention", label: "NEEDS ATTENTION" },
+        { key: "unresolved", label: "UNRESOLVED" },
+        { key: "packed_max", label: "PACKED MAX" }
+      ],
+      items: [
+        { key: "kit_items", label: "KIT ITEMS" },
+        { key: "quantity_items", label: "QUANTITY ITEMS" },
+        { key: "per_horse_items", label: "PER HORSE ITEMS" },
+        { key: "per_groom_items", label: "PER GROOM ITEMS" },
+        { key: "feed_items", label: "FEED ITEMS" }
+      ]
+    };
+    const trayRows = trays[ui.navTrayKey] || [];
+    return `<section class="rs-stack-section is-primary-tabs"><nav class="rs-stack-tabs is-nav-top">${tabs.map((tab) => {
       const key = tab.key || "";
       return `<button class="rs-stack-pill ${ui.activePrimaryTab === key ? "is-active" : ""}" type="button" data-action="set-primary-tab" data-tab-key="${escapeAttr(key)}">${escapeHtml(tab.label || key)}</button>`;
-    }).join("")}</nav></section>`;
+    }).join("")}</nav>${trayRows.length ? `<nav class="rs-stack-tabs is-compact is-nav-tray">${trayRows.map((row) => `<button class="rs-stack-pill ${ui.activeModule === row.key ? "is-active" : ""}" type="button" data-action="set-nav-child" data-module-key="${escapeAttr(row.key)}">${escapeHtml(row.label)}</button>`).join("")}</nav>` : ""}</section>`;
   }
 
   function primaryPanelHtml() {
@@ -465,6 +526,7 @@
       </div>`;
     }
     if (["quantity", "per_horse", "per_groom"].includes(normalizeModuleKey(ui.activeModule))) return planPanelHtml();
+    if (unboundModules.has(ui.activeModule)) return `<div class="rs-page-stack"></div>`;
     const tab = (state?.primaryTabs || []).find((row) => row.key === ui.activePrimaryTab);
     const label = tab?.label || ui.activePrimaryTab || "Section";
     return `<div class="rs-page-stack">
@@ -508,6 +570,9 @@
     const counts = report?.counts || {};
     return `<div class="rs-page-stack">
       <section class="rs-stack-section is-summary-aggs"><div class="rs-stack-label">${escapeHtml(report?.plan?.label || ui.activeModule)}</div><div class="rs-stack-aggs">${agg(counts.need, "NEED", "need")}${agg(counts.packed, "PACKED", "packed")}${agg(counts.left, "LEFT", "left")}</div></section>
+      ${secondaryTabsHtml()}
+      ${planCountAggsHtml(report)}
+      ${laneTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
         <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(report?.plan?.label || "ITEMS")}</div></div>
@@ -525,7 +590,16 @@
 
   function filteredPlanItems(report) {
     const query = ui.search.trim().toLowerCase();
-    return (report?.items || []).filter((item) => !query || [item.label, item.displayLabel, item.itemLabel].join(" ").toLowerCase().includes(query));
+    return (report?.items || [])
+      .filter(matchesPlanLane)
+      .filter((item) => !query || [item.label, item.displayLabel, item.itemLabel].join(" ").toLowerCase().includes(query));
+  }
+
+  function matchesPlanLane(item) {
+    if (ui.laneKey === "open" || ui.laneKey === "all") return true;
+    if (ui.laneKey === "need" || ui.laneKey === "left") return number(item.left) > 0;
+    if (ui.laneKey === "packed") return number(item.packed) > 0;
+    return true;
   }
 
   function planItemRow(item, index) {
@@ -566,6 +640,11 @@
       return sum;
     }, { need: 0, packed: 0, left: 0 });
     return `<section class="rs-stack-section is-count-aggs"><div class="rs-secondary-count-aggs"><div class="rs-stack-aggs">${agg(totals.need, "NEED", "need")}${agg(totals.packed, "PACKED", "packed")}${agg(totals.left, "LEFT", "left")}</div></div></section>`;
+  }
+
+  function planCountAggsHtml(report) {
+    const counts = report?.counts || {};
+    return `<section class="rs-stack-section is-count-aggs"><div class="rs-secondary-count-aggs"><div class="rs-stack-aggs">${agg(counts.need, "NEED", "need")}${agg(counts.packed, "PACKED", "packed")}${agg(counts.left, "LEFT", "left")}</div></div></section>`;
   }
 
   function laneTabsHtml() {
