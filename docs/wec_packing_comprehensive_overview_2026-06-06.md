@@ -346,6 +346,44 @@ Examples:
 - contacts by type
 - comments by parent or date
 
+Current list registry:
+
+- `pak_list_family_index` defines the list family or filtered list.
+- `pak_list_members` stores membership rows.
+- `pak_fields` stores allowed field decisions for the source tables.
+
+`pak_list_family_index` now includes the capability fields from the working reference:
+
+- `type`
+- `appearance`
+- `source`
+- `pivots`
+- `log`
+- `loads`
+- `navigation`
+- `field_allow`
+- `field_allows`
+- `action_allow`
+- `action_allows`
+- `user_allow`
+- `user_allows`
+- `include_drawer`
+- `drawer_allows`
+- `form`
+- `form_source`
+- `include_progress`
+- `add_aggregate`
+- `aggregates`
+- `comments`
+
+It also includes list-specific source fields:
+
+- `table_source`
+- `table_view`
+- `list_type`
+- `allowed_fields`
+- `sort`
+
 Rules:
 
 - A horse or item is a member of a list or it is not.
@@ -574,4 +612,3 @@ Modules integrate when:
 4. Finish users/comments/sessions before expanding board complexity.
 5. Use Airtable views, counts, rollups, and membership tables before adding frontend logic.
 6. When adding a module, document its source tables, allowed fields, actions, logs, print route, and not-connected states before wiring UI.
-
