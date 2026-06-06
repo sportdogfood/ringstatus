@@ -1537,7 +1537,7 @@ body {
 
 #packing-app .rs-stack-section.is-primary-tabs {
   position: relative;
-  z-index: 40;
+  z-index: 80;
   height: auto;
   overflow: visible;
   padding: 12px 18px;
@@ -1558,13 +1558,23 @@ body {
 }
 
 #packing-app .rs-stack-tabs.is-nav-tray {
-  position: relative;
-  z-index: 50;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 1px);
+  z-index: 90;
   width: 100%;
-  padding-top: 8px;
-  background: transparent;
+  padding: 10px 18px 12px;
+  background: #f8fafc;
   border: 0;
-  box-shadow: none;
+  border-bottom: 1px solid #d9dde3;
+  box-shadow: 0 10px 20px rgba(16, 35, 61, 0.08);
+  box-sizing: border-box;
+}
+
+#packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs.is-nav-tray {
+  gap: 10px;
+  padding: 10px 18px 12px;
 }
 
 #packing-app .rs-stack-section.is-lane-controls {
@@ -1748,6 +1758,11 @@ body {
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row):hover,
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row):focus-within {
   background: #e8f4ff;
+}
+
+#packing-app .rs-drawer-body .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row):hover,
+#packing-app .rs-drawer-body .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row):focus-within {
+  background: #fff;
 }
 
 #packing-app .rs-comment-row {

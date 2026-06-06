@@ -11,6 +11,7 @@
     perGroomUrl: root.dataset.perGroomUrl || globalConfig.perGroomUrl || "",
     horsesUrl: root.dataset.horsesUrl || globalConfig.horsesUrl || "",
     sessionUrl: root.dataset.sessionUrl || globalConfig.sessionUrl || "",
+    sessionEnabled: root.dataset.sessionEnabled === "false" || globalConfig.sessionEnabled === false ? false : true,
     pollMs: number(root.dataset.pollMs || globalConfig.pollMs || 30000),
     sessionIdleMs: number(root.dataset.sessionIdleMs || globalConfig.sessionIdleMs || 600000),
     printUrl: root.dataset.printUrl || globalConfig.printUrl || "https://ringstatus.com/test/wec-packing/horse-kits/print",
@@ -54,18 +55,6 @@
     lastInteractionAt: Date.now(),
     pollTimer: 0
   };
-  const unboundModules = new Set([
-    "purchase_onsite",
-    "needs_attention",
-    "unresolved",
-    "packed_max",
-    "kit_items",
-    "quantity_items",
-    "per_horse_items",
-    "per_groom_items",
-    "feed_items"
-  ]);
-
   root.addEventListener("click", async (event) => {
     const target = event.target.closest("[data-action]");
     if (!target) return;
@@ -86,7 +75,7 @@
     }
     if (action === "set-primary-tab") {
       const tabKey = target.dataset.tabKey || "home";
-      if (["horses", "counts", "lists", "items"].includes(tabKey)) {
+      if (["horses", "counts"].includes(tabKey)) {
         ui.navTrayKey = ui.navTrayKey === tabKey ? "" : tabKey;
         ui.activePrimaryTab = tabKey;
         const defaultModule = defaultModuleForTab(tabKey);
@@ -121,9 +110,11 @@
     }
     if (action === "set-nav-child") {
       const moduleKey = target.dataset.moduleKey || "";
-      ui.navTrayKey = ui.activePrimaryTab;
+      ui.navTrayKey = "";
       if (["horse_kits", "quantity", "per_horse", "per_groom"].includes(moduleKey)) {
         await setModule(moduleKey);
+        ui.navTrayKey = "";
+        render();
       } else {
         ui.activeModule = moduleKey;
         ui.drawerOpen = false;
@@ -163,6 +154,7 @@
     }
     if (action === "open-entity-horse") {
       ui.selectedHorseId = target.dataset.horseId || "";
+      await ensureHorseEntityState();
       ui.entityAddOpen = false;
       ui.entityDraft = entityDraftFromHorse(selectedEntityHorse());
       ui.entityError = "";
@@ -172,6 +164,7 @@
     }
     if (action === "open-add-horse") {
       ui.selectedHorseId = "";
+      await ensureHorseEntityState();
       ui.entityAddOpen = true;
       ui.entityDraft = entityDraftFromHorse(null);
       ui.entityError = "";
@@ -251,8 +244,10 @@
   });
 
   load();
-  queueSessionPing("session_start");
-  startSessionPolling();
+  if (config.sessionEnabled) {
+    queueSessionPing("session_start");
+    startSessionPolling();
+  }
 
   async function load() {
     ui.loading = true;
@@ -416,6 +411,7 @@
   }
 
   function queueSessionPing(reason, extra = {}) {
+    if (!config.sessionEnabled) return;
     session.lastInteractionAt = Date.now();
     if (session.pingInFlight) {
       session.pingAgain = true;
@@ -705,14 +701,12 @@
       { key: "home", label: "HOME" },
       { key: "horses", label: "HORSES" },
       { key: "counts", label: "COUNTS" },
-      { key: "lists", label: "LISTS" },
-      { key: "items", label: "ITEMS" },
       { key: "comments", label: "COMMENTS" }
     ];
     const trays = {
       horses: [
-        { key: "horse_roster", label: "ROSTER" },
-        { key: "horse_profiles", label: "PROFILES" },
+        { key: "horse_roster", label: "ROSTERS" },
+        { key: "horse_profiles", label: "PROFILE" },
         { key: "horse_attributes", label: "ATTRIBUTES" }
       ],
       counts: [
@@ -720,19 +714,6 @@
         { key: "quantity", label: "QUANTITY COUNTS" },
         { key: "per_horse", label: "PER-HORSE ITEMS" },
         { key: "per_groom", label: "GROOM SUPPLIES" }
-      ],
-      lists: [
-        { key: "purchase_onsite", label: "PURCHASE ONSITE" },
-        { key: "needs_attention", label: "NEEDS ATTENTION" },
-        { key: "unresolved", label: "UNRESOLVED" },
-        { key: "packed_max", label: "PACKED MAX" }
-      ],
-      items: [
-        { key: "kit_items", label: "KIT ITEMS" },
-        { key: "quantity_items", label: "QUANTITY ITEMS" },
-        { key: "per_horse_items", label: "PER HORSE ITEMS" },
-        { key: "per_groom_items", label: "PER GROOM ITEMS" },
-        { key: "feed_items", label: "FEED ITEMS" }
       ]
     };
     const trayRows = trays[ui.navTrayKey] || [];
@@ -760,21 +741,7 @@
     if (ui.activeModule === "horse_roster") return horseRosterPanelHtml();
     if (ui.activeModule === "horse_profiles") return horseProfilesPanelHtml();
     if (ui.activeModule === "horse_attributes") return horseAttributesPanelHtml();
-    if (ui.activeModule === "lists_overview") return moduleCollectionHtml("LISTS", [
-      { key: "purchase_onsite", label: "PURCHASE ONSITE" },
-      { key: "needs_attention", label: "NEEDS ATTENTION" },
-      { key: "unresolved", label: "UNRESOLVED" },
-      { key: "packed_max", label: "PACKED MAX" }
-    ]);
-    if (ui.activeModule === "items_overview") return moduleCollectionHtml("ITEMS", [
-      { key: "kit_items", label: "KIT ITEMS" },
-      { key: "quantity_items", label: "QUANTITY ITEMS" },
-      { key: "per_horse_items", label: "PER HORSE ITEMS" },
-      { key: "per_groom_items", label: "GROOM SUPPLIES" },
-      { key: "feed_items", label: "FEED ITEMS" }
-    ]);
     if (ui.activeModule === "comments") return commentsPanelHtml();
-    if (unboundModules.has(ui.activeModule)) return moduleLandingHtml(moduleLabel(ui.activeModule), "Module route is not connected in this preview yet.");
     const tab = (state?.primaryTabs || []).find((row) => row.key === ui.activePrimaryTab);
     const label = tab?.label || ui.activePrimaryTab || "Section";
     return `<div class="rs-page-stack">
@@ -835,47 +802,13 @@
     </div>`;
   }
 
-  function moduleLandingHtml(label, message) {
-    return `<div class="rs-page-stack">
-      <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(label)}</div></div>
-        <div class="rs-airtable-empty">${escapeHtml(message)}</div>
-      </section>
-    </div>`;
-  }
-
-  function horsePlaceholderPanelHtml(label) {
-    return `<div class="rs-page-stack">
-      ${secondaryTabsHtml()}
-      <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(label)}</div></div>
-        <div class="rs-airtable-empty">Module route is not connected in this preview yet.</div>
-      </section>
-    </div>`;
-  }
-
-  function moduleCollectionHtml(label, modules) {
-    return `<div class="rs-page-stack">
-      <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(label)}</div></div>
-        <div class="rs-kit-items">${modules.map((module) => `<div class="rs-kit-item-row">
-          <div class="rs-kit-item-main">
-            <div class="rs-kit-item-title rs-stack-label">${escapeHtml(module.label)}</div>
-            <div class="rs-kit-item-meta">Route not connected in this preview yet.</div>
-          </div>
-          <div class="rs-kit-actions rs-item-filter-actions"><button class="rs-item-filter" type="button" data-action="set-nav-child" data-module-key="${escapeAttr(module.key)}">OPEN</button></div>
-        </div>`).join("")}</div>
-      </section>
-    </div>`;
-  }
-
   function horseRosterPanelHtml() {
     const horses = filteredEntityHorses();
     return `<div class="rs-page-stack">
       ${secondaryTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">ROSTER</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
+        <div class="rs-table-stack-head"><div class="rs-stack-label">PAK HORSES / ROSTERS</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
         <div class="rs-airtable-scroll">
           <table class="rs-airtable-grid">
             <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
@@ -890,7 +823,7 @@
   function rosterRowHtml(horse, index) {
     return `<tr>
       <td class="rs-row-gutter">${index + 1}</td>
-      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><a class="rs-open-text" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">Open</a>${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Profile</a>` : ""}</div></td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><a class="rs-entity-horse" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">${escapeHtml(entityHorseLabel(horse))}</a>${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Profile</a>` : ""}</div></td>
       <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(entityHorseStatus(horse))}</span></td>
       <td class="rs-cell-number">${number((horse.memberships?.kitItemIds || horse.pakKitItemIds || []).length)}</td>
     </tr>`;
@@ -908,7 +841,7 @@
       ${secondaryTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">PROFILES</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
+        <div class="rs-table-stack-head"><div class="rs-stack-label">PAK HORSES / PROFILE</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
         <div class="rs-airtable-scroll">
           <table class="rs-airtable-grid">
             <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
@@ -924,7 +857,7 @@
     const comments = entityHorseComments(horse.id);
     return `<tr>
       <td class="rs-row-gutter">${index + 1}</td>
-      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><a class="rs-open-text" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">Open</a><span class="rs-entity-sub">${escapeHtml(horse.showName || horse.barnName || "")}</span></div></td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><a class="rs-entity-horse" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">${escapeHtml(entityHorseLabel(horse))}</a><span class="rs-entity-sub">${escapeHtml(horse.showName || horse.barnName || "")}</span></div></td>
       <td class="rs-entity-cell">${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : `<span class="rs-entity-sub">No profile link</span>`}</td>
       <td class="rs-cell-number">${comments.length}</td>
     </tr>`;
@@ -937,7 +870,7 @@
       ${secondaryTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">ATTRIBUTES</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
+        <div class="rs-table-stack-head"><div class="rs-stack-label">PAK HORSES / ATTRIBUTES</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
         <div class="rs-airtable-scroll">
           <table class="rs-airtable-grid">
             <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
@@ -953,7 +886,7 @@
   function attributeHorseRowHtml(horse, index) {
     return `<tr>
       <td class="rs-row-gutter">${index + 1}</td>
-      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><a class="rs-open-text" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">Open</a><span class="rs-entity-sub">${escapeHtml(horse.notes || "")}</span></div></td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><a class="rs-entity-horse" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">${escapeHtml(entityHorseLabel(horse))}</a><span class="rs-entity-sub">${escapeHtml(horse.notes || "")}</span></div></td>
       <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(entityHorseWaveLabel(horse))}</span></td>
       <td class="rs-cell-number">${entityHorseComments(horse.id).length}</td>
     </tr>`;
@@ -1039,7 +972,12 @@
   }
 
   function searchHtml() {
-    return `<section class="rs-stack-section is-search"><div class="rs-airtable-toolbar"><div class="rs-search-wrap"><input class="rs-search" type="search" data-search autocomplete="off" placeholder="Search horses" value="${escapeAttr(ui.search)}"><button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" data-action="clear-search" aria-label="Clear search"><span aria-hidden="true">&times;</span></button></div></div></section>`;
+    return `<section class="rs-stack-section is-search"><div class="rs-airtable-toolbar"><div class="rs-search-wrap"><input class="rs-search" type="search" data-search autocomplete="off" placeholder="${escapeAttr(searchPlaceholder())}" value="${escapeAttr(ui.search)}"><button class="rs-search-clear ${ui.search ? "is-active" : ""}" type="button" data-action="clear-search" aria-label="Clear search"><span aria-hidden="true">&times;</span></button></div></div></section>`;
+  }
+
+  function searchPlaceholder() {
+    if (["quantity", "per_horse", "per_groom"].includes(normalizeModuleKey(ui.activeModule))) return "Search items";
+    return "Search horses";
   }
 
   function tableHtml() {
@@ -1231,17 +1169,7 @@
 
   function moduleLabel(key) {
     const labels = {
-      lists_overview: "LISTS",
-      items_overview: "ITEMS",
-      purchase_onsite: "PURCHASE ONSITE",
-      needs_attention: "NEEDS ATTENTION",
-      unresolved: "UNRESOLVED",
-      packed_max: "PACKED MAX",
-      kit_items: "KIT ITEMS",
-      quantity_items: "QUANTITY ITEMS",
-      per_horse_items: "PER-HORSE ITEMS",
-      per_groom_items: "GROOM SUPPLIES",
-      feed_items: "FEED ITEMS"
+      per_groom: "GROOM SUPPLIES"
     };
     return labels[key] || String(key || "MODULE").replace(/_/g, " ").toUpperCase();
   }
@@ -1339,18 +1267,14 @@
   function defaultModuleForTab(tabKey) {
     return {
       horses: "horse_roster",
-      counts: "horse_kits",
-      lists: "lists_overview",
-      items: "items_overview"
+      counts: "horse_kits"
     }[tabKey] || "";
   }
 
   function moduleBelongsToTab(moduleKey, tabKey) {
     const modules = {
       horses: ["horse_roster", "horse_profiles", "horse_attributes"],
-      counts: ["horse_kits", "quantity", "per_horse", "per_groom"],
-      lists: ["lists_overview", "purchase_onsite", "needs_attention", "unresolved", "packed_max"],
-      items: ["items_overview", "kit_items", "quantity_items", "per_horse_items", "per_groom_items", "feed_items"]
+      counts: ["horse_kits", "quantity", "per_horse", "per_groom"]
     };
     return (modules[tabKey] || []).includes(moduleKey);
   }
