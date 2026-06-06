@@ -35,9 +35,9 @@ export const GET = async ({ request }) => {
       source: { packWaveKey, viewKey },
       modules: [
         homeModule("horse_kits", "Horse Kits", kits.counts, kits.source),
-        homeModule("quantity", "Quantity", quantity.counts, quantity.source),
-        homeModule("per_horse", "Per Horse", perHorse.counts, perHorse.source),
-        homeModule("per_groom", "Per Groom", perGroom.counts, perGroom.source)
+        homeModule("quantity", "Quantity Counts", quantity.counts, quantity.source),
+        homeModule("per_horse", "Per-Horse Items", perHorse.counts, perHorse.source),
+        homeModule("per_groom", "Groom Supplies", perGroom.counts, perGroom.source)
       ],
       reports: { horse_kits: kits, quantity, per_horse: perHorse, per_groom: perGroom }
     });

@@ -37,10 +37,6 @@
   let rows = [];
   const optimistic = new Map();
   const unboundModules = new Set([
-    "comments",
-    "horse_roster",
-    "horse_profiles",
-    "horse_attributes",
     "purchase_onsite",
     "needs_attention",
     "unresolved",
@@ -216,7 +212,12 @@
     }
     const key = normalizeModuleKey(ui.activeModule);
     const nextPlan = homeState?.reports?.[key];
-    if (!nextPlan?.ok || !Array.isArray(nextPlan.items)) throw new Error(`module_not_ready:${ui.activeModule}`);
+    if (!nextPlan?.ok || !Array.isArray(nextPlan.items)) {
+      state = homeState?.reports?.horse_kits || null;
+      planState = null;
+      rows = [];
+      return;
+    }
     planState = nextPlan;
     state = homeState?.reports?.horse_kits || null;
     rows = [];
@@ -422,11 +423,14 @@
           packState: nextState
         })
       });
-      if (!result.state) throw new Error("missing_state_after_item_update");
-      assertState(result.state);
-      state = result.state;
-      if (serverItemState(result.state, record.horse.id, record.kit.id, itemId) === nextState) {
-        optimistic.delete(key);
+      if (result.state) {
+        assertState(result.state);
+        state = result.state;
+        if (serverItemState(result.state, record.horse.id, record.kit.id, itemId) === nextState) {
+          optimistic.delete(key);
+        } else {
+          refreshAfterPropagation(key, record.horse.id, record.kit.id, itemId, nextState);
+        }
       } else {
         refreshAfterPropagation(key, record.horse.id, record.kit.id, itemId, nextState);
       }
@@ -485,9 +489,9 @@
       ],
       counts: [
         { key: "horse_kits", label: "HORSE KITS" },
-        { key: "quantity", label: "QUANTITY" },
-        { key: "per_horse", label: "PER HORSE" },
-        { key: "per_groom", label: "PER GROOM" }
+        { key: "quantity", label: "QUANTITY COUNTS" },
+        { key: "per_horse", label: "PER-HORSE ITEMS" },
+        { key: "per_groom", label: "GROOM SUPPLIES" }
       ],
       lists: [
         { key: "purchase_onsite", label: "PURCHASE ONSITE" },
@@ -525,7 +529,11 @@
       </div>`;
     }
     if (["quantity", "per_horse", "per_groom"].includes(normalizeModuleKey(ui.activeModule))) return planPanelHtml();
-    if (unboundModules.has(ui.activeModule)) return `<div class="rs-page-stack"></div>`;
+    if (ui.activeModule === "horse_roster") return horseRosterPanelHtml();
+    if (ui.activeModule === "horse_profiles") return moduleLandingHtml("HORSE PROFILES", "Entity profile input surface is not connected in this preview yet.");
+    if (ui.activeModule === "horse_attributes") return moduleLandingHtml("HORSE ATTRIBUTES", "Entity attribute input surface is not connected in this preview yet.");
+    if (ui.activeModule === "comments") return commentsPanelHtml();
+    if (unboundModules.has(ui.activeModule)) return moduleLandingHtml(moduleLabel(ui.activeModule), "Module route is not connected in this preview yet.");
     const tab = (state?.primaryTabs || []).find((row) => row.key === ui.activePrimaryTab);
     const label = tab?.label || ui.activePrimaryTab || "Section";
     return `<div class="rs-page-stack">
@@ -583,6 +591,57 @@
         ${planRows.length ? "" : `<div class="rs-status">No rows.</div>`}
       </section>
       ${laneTabsHtml()}
+    </div>`;
+  }
+
+  function moduleLandingHtml(label, message) {
+    return `<div class="rs-page-stack">
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(label)}</div></div>
+        <div class="rs-airtable-empty">${escapeHtml(message)}</div>
+      </section>
+    </div>`;
+  }
+
+  function horseRosterPanelHtml() {
+    const horses = state?.horses || [];
+    return `<div class="rs-page-stack">
+      ${secondaryTabsHtml()}
+      ${searchHtml()}
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">ROSTER</div></div>
+        <div class="rs-airtable-scroll">
+          <table class="rs-airtable-grid">
+            <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
+            <thead><tr><th class="rs-row-gutter">#</th><th>HORSE</th><th>STATUS</th><th>ITEMS</th></tr></thead>
+            <tbody>${horses.filter(matchesRosterSearch).map(rosterRowHtml).join("")}</tbody>
+          </table>
+        </div>
+      </section>
+    </div>`;
+  }
+
+  function rosterRowHtml(horse, index) {
+    return `<tr>
+      <td class="rs-row-gutter">${index + 1}</td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(horseLabel(horse))}</span>${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open</a>` : ""}</div></td>
+      <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(horse.notGoing ? "not_going" : horse.status || "active")}</span></td>
+      <td class="rs-cell-number">${number((horse.pakKitItemIds || []).length)}</td>
+    </tr>`;
+  }
+
+  function matchesRosterSearch(horse) {
+    const query = ui.search.trim().toLowerCase();
+    if (!query) return true;
+    return [horse.barnName, horse.name, horse.showName, horse.status].join(" ").toLowerCase().includes(query);
+  }
+
+  function commentsPanelHtml() {
+    return `<div class="rs-page-stack">
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">COMMENTS</div></div>
+        ${commentsHtml()}
+      </section>
     </div>`;
   }
 
@@ -756,6 +815,21 @@
 
   function itemFilter(label, value) {
     return `<button class="rs-item-filter ${ui.itemFilter === value ? "is-active" : ""}" type="button" data-action="set-item-filter" data-item-filter="${escapeAttr(value)}">${escapeHtml(label)}</button>`;
+  }
+
+  function moduleLabel(key) {
+    const labels = {
+      purchase_onsite: "PURCHASE ONSITE",
+      needs_attention: "NEEDS ATTENTION",
+      unresolved: "UNRESOLVED",
+      packed_max: "PACKED MAX",
+      kit_items: "KIT ITEMS",
+      quantity_items: "QUANTITY ITEMS",
+      per_horse_items: "PER-HORSE ITEMS",
+      per_groom_items: "GROOM SUPPLIES",
+      feed_items: "FEED ITEMS"
+    };
+    return labels[key] || String(key || "MODULE").replace(/_/g, " ").toUpperCase();
   }
 
   function section(label, body, modifier) {

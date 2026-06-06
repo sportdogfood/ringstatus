@@ -323,12 +323,13 @@ export async function horseKitActionReport(airtable, requestUrl, payload) {
   } else {
     return { ok: false, error: "unknown_horse_kit_action", action };
   }
+  const nextState = action === "set_packing_kit_state" ? null : await horseKitReport(airtable, requestUrl);
   return {
     ok: true,
     v: 2,
     action,
     result,
-    state: await horseKitReport(airtable, requestUrl)
+    ...(nextState ? { state: nextState } : {})
   };
 }
 

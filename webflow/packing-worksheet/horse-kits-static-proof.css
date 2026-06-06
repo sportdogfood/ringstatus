@@ -1522,219 +1522,59 @@ body {
   gap: 10px;
 }
 
-/* Main table stays dense; drawer global controls must not inflate table rows. */
-#packing-app .rs-airtable-grid th,
-#packing-app .rs-airtable-grid td {
-  height: 42px;
-  padding: 0 6px;
-  font-size: 12px;
-  line-height: 15px;
-}
-
-#packing-app .rs-airtable-grid thead th {
-  color: #68707a;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 15px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-#packing-app .rs-airtable-grid thead th:nth-child(2),
-#packing-app .rs-airtable-grid thead th:nth-child(3) {
-  text-align: left;
-}
-
-#packing-app .rs-airtable-grid thead th:nth-child(4),
-#packing-app .rs-airtable-grid thead th:nth-child(5),
-#packing-app .rs-airtable-grid thead th:nth-child(6) {
-  min-width: 60px;
-  padding-left: 4px;
-  padding-right: 4px;
-  text-align: center;
-}
-
-#packing-app .rs-airtable-grid .rs-row-gutter {
-  padding: 0;
-}
-
-#packing-app .rs-entity-cell {
-  gap: 1px;
-}
-
-#packing-app .rs-entity-main {
-  gap: 8px;
-}
-
-#packing-app .rs-entity-horse {
-  color: #10233b;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 15px;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-#packing-app .rs-entity-sub {
-  color: #68707a;
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 13px;
-}
-
-#packing-app .rs-open-text {
-  color: #225da7;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 15px;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-#packing-app .rs-cell-number {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 15px;
-}
-
-#packing-app .rs-airtable-grid tbody .rs-entity-kit-cell {
-  padding-left: 4px !important;
-  padding-right: 4px !important;
-}
-
-#packing-app .rs-airtable-grid tbody .rs-entity-kit-cell .rs-entity-sub {
-  overflow: visible !important;
-  text-overflow: clip !important;
-}
-
-#packing-app .rs-airtable-grid .rs-col-count,
-#packing-app .rs-airtable-grid th:nth-child(4),
-#packing-app .rs-airtable-grid th:nth-child(5),
-#packing-app .rs-airtable-grid th:nth-child(6),
-#packing-app .rs-airtable-grid td:nth-child(4),
-#packing-app .rs-airtable-grid td:nth-child(5),
-#packing-app .rs-airtable-grid td:nth-child(6) {
-  width: 60px !important;
-  min-width: 60px !important;
-  max-width: 60px !important;
-  box-sizing: border-box;
-}
-
-#packing-app .rs-airtable-grid th:nth-child(4),
-#packing-app .rs-airtable-grid th:nth-child(5),
-#packing-app .rs-airtable-grid th:nth-child(6),
-#packing-app .rs-airtable-grid td:nth-child(4),
-#packing-app .rs-airtable-grid td:nth-child(5),
-#packing-app .rs-airtable-grid td:nth-child(6) {
-  padding-left: 4px !important;
-  padding-right: 4px !important;
-  text-align: center !important;
-  white-space: nowrap;
-}
-
-#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
-#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
-#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center !important;
-}
-
-#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head span,
-#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span,
-#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span {
-  width: 100% !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  text-align: center !important;
-}
-
-#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-mark,
-#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-mark,
-#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-mark {
-  display: none !important;
-}
-
-#packing-app .rs-airtable-grid .rs-row-gutter {
-  width: 24px !important;
-  min-width: 24px !important;
-  max-width: 24px !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  text-align: center !important;
-}
-
-#packing-app .rs-airtable-grid tbody .rs-row-gutter {
-  position: static !important;
-  left: auto !important;
-  z-index: auto !important;
-}
-
-#packing-app .rs-airtable-grid thead .rs-row-gutter {
-  position: static !important;
-  top: auto !important;
-  left: auto !important;
-  z-index: auto !important;
-  background: #f4f5f7 !important;
-}
-
-#packing-app .rs-secondary-count-aggs .rs-stack-aggs {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-}
-
-#packing-app .rs-secondary-count-aggs .rs-stack-agg {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-}
-
-#packing-app .rs-secondary-count-aggs .rs-stack-agg-value,
-#packing-app .rs-secondary-count-aggs .rs-stack-agg-label {
-  display: inline-flex !important;
-  margin: 0 !important;
-  white-space: nowrap !important;
-}
-
-/* Horse-kits final CSS lock: keep repeated stack parts visually identical. */
+/* P0 global component contract: one table, one drawer, one grid/list, one nav stack. */
 #packing-app .rs-stack-label,
 #packing-app .rs-add-label,
 #packing-app .rs-kit-item-title,
 #packing-app .rs-kit-items-head .rs-stack-label,
 #packing-app .rs-comments .rs-stack-label {
-  margin: 0 !important;
-  padding: 0 0 3px !important;
-  color: #68707a !important;
-  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  line-height: 15px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0 !important;
+  margin: 0;
+  padding: 0 0 3px;
+  color: #68707a;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15px;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
-#packing-app .rs-stack-tabs {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+#packing-app .rs-stack-section.is-summary-aggs,
+#packing-app .rs-stack-section.is-count-aggs,
+#packing-app .rs-secondary-count-aggs {
+  display: none;
 }
 
-@supports not (position: sticky) {
-  #packing-app .rs-stack-section.is-lane-controls .rs-stack-tabs {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
+#packing-app .rs-stack-section.is-primary-tabs {
+  position: relative;
+  z-index: 40;
+  height: auto;
+  overflow: visible;
+  padding: 12px 18px;
+  border-bottom: 1px solid #d9dde3;
+  background: #f8fafc;
+}
+
+#packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs,
+#packing-app .rs-stack-section.is-lane-controls .rs-stack-tabs {
+  gap: 10px;
+  padding: 0;
+  scrollbar-width: none;
+}
+
+#packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs::-webkit-scrollbar,
+#packing-app .rs-stack-section.is-lane-controls .rs-stack-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+#packing-app .rs-stack-tabs.is-nav-tray {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  padding-top: 8px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 #packing-app .rs-stack-section.is-lane-controls {
@@ -1749,375 +1589,230 @@ body {
   backdrop-filter: blur(8px);
 }
 
-#packing-app .rs-stack-section.is-lane-controls .rs-stack-tabs {
-  gap: 10px;
-  padding: 0;
-}
-
-#packing-app .rs-stack-section.is-lane-controls .rs-stack-pill {
-  min-height: 38px;
-  padding-inline: 24px;
-}
-
-#packing-app .rs-stack-section.is-primary-tabs {
-  position: relative;
-  z-index: 40;
-  overflow: visible;
-  height: auto;
-  padding: 12px 18px;
-  background: #f8fafc;
-}
-
-#packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs.is-nav-tray {
-  position: relative;
-  top: auto;
-  left: auto;
-  right: auto;
-  z-index: 50;
-  width: 100%;
-  padding: 8px 0;
-  background: transparent;
-  box-shadow: none;
-  border: 0;
-}
-
 #packing-app .rs-stack-pill {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  text-transform: uppercase;
   min-height: 38px;
   padding: 0 24px;
   border-radius: 18px;
-  border: 1px solid #d5dce5;
-  background: #ffffff;
-  color: #10233d;
-  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 13px;
   font-weight: 600;
   line-height: 15px;
-  letter-spacing: 0;
-  box-shadow: 0 1px 2px rgba(16, 35, 61, 0.04), 0 6px 14px rgba(16, 35, 61, 0.05);
-  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
-}
-
-#packing-app .rs-stack-pill.is-active {
-  background: #10233d;
-  border-color: #10233d;
-  color: #ffffff;
-  box-shadow: 0 8px 18px rgba(16, 35, 61, 0.16);
-}
-
-#packing-app .rs-stack-pill:hover {
-  border-color: #b9c3cf;
-  box-shadow: 0 3px 8px rgba(16, 35, 61, 0.10), 0 10px 22px rgba(16, 35, 61, 0.08);
-  transform: translateY(-1px);
-}
-
-#packing-app .rs-stack-pill:active {
-  box-shadow: 0 1px 3px rgba(16, 35, 61, 0.12);
-  transform: translateY(0);
-}
-
-#packing-app .rs-stack-pill:focus-visible {
-  outline: 2px solid rgba(20, 89, 168, 0.32);
-  outline-offset: 2px;
-}
-
-#packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs {
-  gap: 10px;
-  padding: 0;
-}
-
-#packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs.is-nav-tray .rs-stack-pill {
-  box-shadow: 0 8px 18px rgba(16, 35, 61, 0.12);
-}
-
-#packing-app .rs-stack-aggs,
-#packing-app .rs-summary-metrics {
-  width: 100% !important;
-  min-width: 0 !important;
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-}
-
-#packing-app .rs-stack-agg,
-#packing-app .rs-metric {
-  width: 100% !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
-}
-
-#packing-app .rs-stack-agg-value,
-#packing-app .rs-stack-agg-label,
-#packing-app .rs-metric-value,
-#packing-app .rs-metric-label {
-  width: 100% !important;
-  min-width: 0 !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-#packing-app .rs-secondary-count-aggs {
-  padding-bottom: 4px !important;
-}
-
-#packing-app .rs-stack-section.is-summary-aggs,
-#packing-app .rs-stack-section.is-count-aggs,
-#packing-app .rs-secondary-count-aggs {
-  display: none !important;
 }
 
 #packing-app .rs-airtable-grid thead th {
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  line-height: 15px !important;
-  text-transform: uppercase !important;
-  white-space: nowrap !important;
+  color: #68707a;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 15px;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
+#packing-app .rs-airtable-grid .rs-col-gutter,
+#packing-app .rs-airtable-grid .rs-row-gutter {
+  width: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+
+#packing-app .rs-airtable-grid .rs-col-count,
 #packing-app .rs-airtable-grid th:nth-child(4),
 #packing-app .rs-airtable-grid th:nth-child(5),
 #packing-app .rs-airtable-grid th:nth-child(6),
 #packing-app .rs-airtable-grid td:nth-child(4),
 #packing-app .rs-airtable-grid td:nth-child(5),
 #packing-app .rs-airtable-grid td:nth-child(6) {
-  width: 60px !important;
-  min-width: 60px !important;
-  max-width: 60px !important;
-  padding-left: 4px !important;
-  padding-right: 4px !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-  box-sizing: border-box !important;
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  padding-left: 4px;
+  padding-right: 4px;
+  box-sizing: border-box;
+  text-align: center;
+  white-space: nowrap;
 }
 
 #packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
 #packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
-#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head,
-#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head span,
-#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span,
-#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span {
-  width: 100% !important;
-  max-width: 100% !important;
-  justify-content: center !important;
-  text-align: center !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
+#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head {
+  justify-content: center;
+  text-align: center;
 }
 
-#packing-app .rs-airtable-grid .rs-row-gutter {
-  position: static !important;
-  left: auto !important;
-  z-index: auto !important;
-  width: 24px !important;
-  min-width: 24px !important;
-  max-width: 24px !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  text-align: center !important;
+#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head span:first-child,
+#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span:first-child,
+#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span:first-child {
+  overflow: visible;
+  text-overflow: clip;
 }
 
-#packing-app .rs-kit-item-row {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+#packing-app .rs-cell-number,
+#packing-app .rs-airtable-grid tbody .rs-cell-number {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 15px;
+  text-align: center;
+}
+
+#packing-app .rs-entity-horse {
+  color: #10233b;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 15px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+#packing-app .rs-entity-sub,
+#packing-app .rs-open-text {
+  font-size: 11px;
+  line-height: 15px;
+}
+
+#packing-app .rs-record-drawer {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+#packing-app .rs-drawer-head {
+  flex: 0 0 64px;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #fff;
+}
+
+#packing-app .rs-drawer-title-group {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#packing-app .rs-drawer-close {
+  position: static;
+  justify-self: end;
+  align-self: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+}
+
+#packing-app .rs-drawer-body {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 10px 14px 24px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+#packing-app .rs-drawer-body > * {
+  max-width: 100%;
 }
 
 #packing-app .rs-kit-actions {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 5px !important;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
 }
 
 #packing-app .rs-kit-actions.rs-item-filter-actions {
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 #packing-app .rs-state-button,
 #packing-app .rs-item-filter {
-  min-width: 0 !important;
-  height: 34px !important;
-  border-radius: 4px !important;
-  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
+  min-width: 0;
+  height: 34px;
+  border-radius: 4px;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 #packing-app .rs-search-clear {
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-#packing-app .rs-comment-row {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  gap: 8px !important;
-  align-items: start !important;
-  padding: 8px 10px !important;
-  border-top: 1px solid #edf0f3 !important;
-  background: #fff !important;
-}
-
-#packing-app .rs-comment-row:nth-child(even) {
-  background: #f7f8fa !important;
-}
-
-#packing-app .rs-comment-row:hover,
-#packing-app .rs-comment-row:focus-within {
-  background: #e8f4ff !important;
-}
-
-#packing-app .rs-comment-body {
-  min-width: 0 !important;
-  color: #1f2328 !important;
-  font-size: 13px !important;
-  font-weight: 400 !important;
-  line-height: 18px !important;
-}
-
-#packing-app .rs-comment-meta {
-  min-width: 0 !important;
-  color: #68707a !important;
-  font-size: 11px !important;
-  font-weight: 400 !important;
-  line-height: 15px !important;
-  white-space: nowrap !important;
-}
-
-#packing-app .rs-drawer-overlay {
-  z-index: 1000 !important;
-}
-
-#packing-app .rs-record-drawer {
-  z-index: 1001 !important;
-}
-
-#packing-app .rs-secondary-count-aggs .rs-stack-agg {
-  display: grid !important;
-  grid-template-columns: minmax(4ch, auto) auto !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-}
-
-#packing-app .rs-secondary-count-aggs .rs-stack-agg-value {
-  width: auto !important;
-  min-width: 4ch !important;
-  display: block !important;
-  text-align: right !important;
-  overflow: visible !important;
-}
-
-#packing-app .rs-secondary-count-aggs .rs-stack-agg-label {
-  width: auto !important;
-  min-width: 0 !important;
-  display: block !important;
-  text-align: left !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-}
-
-/* Drawer shell lock: close control owns its column; body never renders under it. */
-#packing-app .rs-record-drawer {
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
-  isolation: isolate !important;
-  background: #fff !important;
-  box-sizing: border-box !important;
-}
-
-#packing-app .rs-drawer-head {
-  flex: 0 0 64px !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 64px !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 44px !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 10px 14px !important;
-  background: #fff !important;
-  box-sizing: border-box !important;
-}
-
-#packing-app .rs-drawer-title-group {
-  min-width: 0 !important;
-  max-width: 100% !important;
-}
-
-#packing-app .rs-drawer-close {
-  position: static !important;
-  justify-self: end !important;
-  align-self: center !important;
-  width: 44px !important;
-  height: 44px !important;
-  margin: 0 !important;
-}
-
-#packing-app .rs-drawer-body {
-  flex: 1 1 auto !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  padding: 10px 14px 24px !important;
-  background: #fff !important;
-  box-sizing: border-box !important;
-}
-
-#packing-app .rs-drawer-body > * {
-  max-width: 100% !important;
-}
-
-/* Kit item rows: label and buttons read as one row. */
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) {
-  grid-template-columns: minmax(0, 1fr) !important;
-  gap: 8px !important;
-  align-items: center !important;
-  padding: 8px 8px !important;
-  border-bottom: 1px solid #dfe4ea !important;
-  background: #fff !important;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #dfe4ea;
+  background: #fff;
 }
 
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row):nth-child(even) {
-  background: #f4f6f8 !important;
+  background: #f4f6f8;
 }
 
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row):hover,
 #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row):focus-within {
-  background: #e8f4ff !important;
+  background: #e8f4ff;
 }
 
-#packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) .rs-kit-item-title {
-  padding-bottom: 0 !important;
-  width: 100% !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
+#packing-app .rs-comment-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  padding: 8px 10px;
+  border-top: 1px solid #edf0f3;
+  background: #fff;
 }
 
-#packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) .rs-kit-actions {
-  min-width: 0 !important;
+#packing-app .rs-comment-row:nth-child(even) {
+  background: #f7f8fa;
+}
+
+#packing-app .rs-comment-row:hover,
+#packing-app .rs-comment-row:focus-within {
+  background: #e8f4ff;
+}
+
+#packing-app .rs-comment-body {
+  min-width: 0;
+  color: #1f2328;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+#packing-app .rs-comment-meta {
+  min-width: 0;
+  color: #68707a;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 15px;
+  white-space: nowrap;
 }
 
 @media (max-width: 430px) {
-  #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) {
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 6px !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
+  #packing-app .rs-stack-section.is-primary-tabs,
+  #packing-app .rs-stack-section.is-lane-controls {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  #packing-app .rs-kit-item-row:not(.rs-kit-items-head):not(.rs-item-filter-row) .rs-kit-item-title {
-    width: 100% !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
+  #packing-app .rs-stack-pill {
+    padding: 0 16px;
   }
 }
 

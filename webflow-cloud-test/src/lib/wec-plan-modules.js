@@ -9,7 +9,7 @@ export const corsHeaders = {
 const PLAN_SPECS = {
   quantity: {
     planKey: "quantity",
-    planLabel: "Quantity",
+    planLabel: "Quantity Counts",
     planRecordId: "recBT7H5KeigIrAGK",
     sourceTable: "pak_byqtys",
     itemTable: "pak_byqty_items",
@@ -29,7 +29,7 @@ const PLAN_SPECS = {
   },
   per_horse: {
     planKey: "per_horse",
-    planLabel: "Per Horse",
+    planLabel: "Per-Horse Items",
     planRecordId: "recsrc6x7AdibwbMa",
     sourceTable: "pak_byhorses",
     itemTable: "pak_byhorse_items",
@@ -49,7 +49,7 @@ const PLAN_SPECS = {
   },
   per_groom: {
     planKey: "per_groom",
-    planLabel: "Per Groom",
+    planLabel: "Groom Supplies",
     planRecordId: "recZLWe1SktapDZRZ",
     sourceTable: "pak_bygrooms",
     itemTable: "pak_bygroom_items",
