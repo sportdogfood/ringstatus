@@ -84,7 +84,7 @@
     }
     if (action === "set-nav-child") {
       const moduleKey = target.dataset.moduleKey || "";
-      ui.navTrayKey = "";
+      ui.navTrayKey = ui.activePrimaryTab;
       if (["horse_kits", "quantity", "per_horse", "per_groom"].includes(moduleKey)) {
         await setModule(moduleKey);
       } else {
@@ -182,7 +182,7 @@
   async function setModule(moduleKey) {
     ui.activeModule = moduleKey;
     ui.activePrimaryTab = moduleKey === "home" ? "home" : ["horse_kits", "quantity", "per_horse", "per_groom"].includes(moduleKey) ? "counts" : ui.activePrimaryTab;
-    ui.navTrayKey = "";
+    ui.navTrayKey = ui.activePrimaryTab === "home" ? "" : ui.activePrimaryTab;
     ui.drawerOpen = false;
     ui.error = "";
     if (!homeState) {
@@ -517,12 +517,11 @@
     if (ui.activeModule === "horse_kits") {
       return `<div class="rs-page-stack">
         ${summaryAggsHtml()}
-        ${secondaryTabsHtml()}
         ${countAggsHtml()}
-        ${laneTabsHtml()}
         ${searchHtml()}
         ${tableHtml()}
         ${commentsHtml()}
+        ${laneTabsHtml()}
       </div>`;
     }
     if (["quantity", "per_horse", "per_groom"].includes(normalizeModuleKey(ui.activeModule))) return planPanelHtml();
@@ -570,9 +569,7 @@
     const counts = report?.counts || {};
     return `<div class="rs-page-stack">
       <section class="rs-stack-section is-summary-aggs"><div class="rs-stack-label">${escapeHtml(report?.plan?.label || ui.activeModule)}</div><div class="rs-stack-aggs">${agg(counts.need, "NEED", "need")}${agg(counts.packed, "PACKED", "packed")}${agg(counts.left, "LEFT", "left")}</div></section>
-      ${secondaryTabsHtml()}
       ${planCountAggsHtml(report)}
-      ${laneTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
         <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(report?.plan?.label || "ITEMS")}</div></div>
@@ -585,6 +582,7 @@
         </div>
         ${planRows.length ? "" : `<div class="rs-status">No rows.</div>`}
       </section>
+      ${laneTabsHtml()}
     </div>`;
   }
 

@@ -121,12 +121,31 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 1px 2px rgba(16, 35, 61, 0.04), 0 6px 14px rgba(16, 35, 61, 0.05);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
 }
 
 #packing-app .rs-stack-pill.is-active {
   border-color: #10233b;
   background: #10233b;
   color: #fff;
+  box-shadow: 0 8px 18px rgba(16, 35, 61, 0.16);
+}
+
+#packing-app .rs-stack-pill:hover {
+  border-color: #b9c3cf;
+  box-shadow: 0 3px 8px rgba(16, 35, 61, 0.10), 0 10px 22px rgba(16, 35, 61, 0.08);
+  transform: translateY(-1px);
+}
+
+#packing-app .rs-stack-pill:active {
+  box-shadow: 0 1px 3px rgba(16, 35, 61, 0.12);
+  transform: translateY(0);
+}
+
+#packing-app .rs-stack-pill:focus-visible {
+  outline: 2px solid rgba(20, 89, 168, 0.32);
+  outline-offset: 2px;
 }
 
 #packing-app .rs-stack-label {
@@ -1702,80 +1721,115 @@ body {
 }
 
 #packing-app .rs-stack-tabs {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 @supports not (position: sticky) {
   #packing-app .rs-stack-section.is-lane-controls .rs-stack-tabs {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 
 #packing-app .rs-stack-section.is-lane-controls {
-  position: sticky !important;
-  bottom: 0 !important;
-  z-index: 20 !important;
-  background: #ffffff !important;
+  position: sticky;
+  bottom: 0;
+  z-index: 60;
+  width: 100%;
+  padding: 10px 18px 12px;
+  border-top: 1px solid #dfe5ec;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 -10px 26px rgba(16, 35, 61, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+#packing-app .rs-stack-section.is-lane-controls .rs-stack-tabs {
+  gap: 10px;
+  padding: 0;
+}
+
+#packing-app .rs-stack-section.is-lane-controls .rs-stack-pill {
+  min-height: 38px;
+  padding-inline: 24px;
 }
 
 #packing-app .rs-stack-section.is-primary-tabs {
-  position: relative !important;
-  z-index: 40 !important;
-  overflow: visible !important;
-  padding: 12px 18px !important;
-  background: #f8fafc !important;
+  position: relative;
+  z-index: 40;
+  overflow: visible;
+  height: auto;
+  padding: 12px 18px;
+  background: #f8fafc;
 }
 
 #packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs.is-nav-tray {
-  position: absolute !important;
-  top: calc(100% - 1px) !important;
-  left: 18px !important;
-  right: 18px !important;
-  z-index: 50 !important;
-  width: auto !important;
-  padding: 8px 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  border: 0 !important;
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  z-index: 50;
+  width: 100%;
+  padding: 8px 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
 }
 
 #packing-app .rs-stack-pill {
-  flex: 0 0 auto !important;
-  white-space: nowrap !important;
-  text-transform: uppercase !important;
-  min-height: 38px !important;
-  padding: 0 24px !important;
-  border-radius: 18px !important;
-  border: 1px solid #d5dce5 !important;
-  background: #ffffff !important;
-  color: #10233d !important;
-  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  line-height: 15px !important;
-  letter-spacing: 0 !important;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  text-transform: uppercase;
+  min-height: 38px;
+  padding: 0 24px;
+  border-radius: 18px;
+  border: 1px solid #d5dce5;
+  background: #ffffff;
+  color: #10233d;
+  font-family: Outfit, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 15px;
+  letter-spacing: 0;
+  box-shadow: 0 1px 2px rgba(16, 35, 61, 0.04), 0 6px 14px rgba(16, 35, 61, 0.05);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
 }
 
 #packing-app .rs-stack-pill.is-active {
-  background: #10233d !important;
-  border-color: #10233d !important;
-  color: #ffffff !important;
+  background: #10233d;
+  border-color: #10233d;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(16, 35, 61, 0.16);
+}
+
+#packing-app .rs-stack-pill:hover {
+  border-color: #b9c3cf;
+  box-shadow: 0 3px 8px rgba(16, 35, 61, 0.10), 0 10px 22px rgba(16, 35, 61, 0.08);
+  transform: translateY(-1px);
+}
+
+#packing-app .rs-stack-pill:active {
+  box-shadow: 0 1px 3px rgba(16, 35, 61, 0.12);
+  transform: translateY(0);
+}
+
+#packing-app .rs-stack-pill:focus-visible {
+  outline: 2px solid rgba(20, 89, 168, 0.32);
+  outline-offset: 2px;
 }
 
 #packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs {
-  gap: 10px !important;
-  padding: 0 !important;
+  gap: 10px;
+  padding: 0;
 }
 
 #packing-app .rs-stack-section.is-primary-tabs .rs-stack-tabs.is-nav-tray .rs-stack-pill {
-  box-shadow: 0 8px 18px rgba(16, 35, 61, 0.12) !important;
+  box-shadow: 0 8px 18px rgba(16, 35, 61, 0.12);
 }
 
 #packing-app .rs-stack-aggs,
