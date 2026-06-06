@@ -30,6 +30,10 @@
     navTrayKey: "",
     selectedHorseId: "",
     drawerOpen: false,
+    entityAddOpen: false,
+    entityDraft: {},
+    entitySaving: false,
+    entityError: "",
     itemSearch: "",
     itemFilter: "all",
     savingKey: ""
@@ -92,6 +96,7 @@
           } else {
             ui.activeModule = defaultModule;
             ui.drawerOpen = false;
+            if (moduleBelongsToTab(defaultModule, "horses")) await ensureHorseEntityState();
             applyActiveModuleFromHome();
             render();
           }
@@ -119,6 +124,7 @@
       } else {
         ui.activeModule = moduleKey;
         ui.drawerOpen = false;
+        if (moduleBelongsToTab(moduleKey, "horses")) await ensureHorseEntityState();
         render();
       }
       return;
@@ -148,9 +154,47 @@
       render();
       return;
     }
+    if (action === "open-entity-horse") {
+      ui.selectedHorseId = target.dataset.horseId || "";
+      ui.entityAddOpen = false;
+      ui.entityDraft = entityDraftFromHorse(selectedEntityHorse());
+      ui.entityError = "";
+      ui.drawerOpen = true;
+      render();
+      return;
+    }
+    if (action === "open-add-horse") {
+      ui.selectedHorseId = "";
+      ui.entityAddOpen = true;
+      ui.entityDraft = {};
+      ui.entityError = "";
+      ui.drawerOpen = true;
+      render();
+      return;
+    }
     if (action === "close-drawer") {
       ui.drawerOpen = false;
+      ui.entityAddOpen = false;
+      ui.entityError = "";
       render();
+      return;
+    }
+    if (action === "set-entity-status") {
+      ui.entityDraft.active = target.dataset.status === "active";
+      ui.entityDraft.inactive = target.dataset.status !== "active";
+      render();
+      return;
+    }
+    if (action === "set-entity-wave") {
+      const wave = target.dataset.wave || "";
+      ui.entityDraft.wec_wave_1 = wave === "wave_one";
+      ui.entityDraft.wec_wave_2 = wave === "wave_two";
+      ui.entityDraft.wec_not_going = wave === "not_going";
+      render();
+      return;
+    }
+    if (action === "save-entity-horse") {
+      await saveEntityHorse();
       return;
     }
     if (action === "clear-search") {
@@ -190,6 +234,9 @@
       ui.itemSearch = input.value || "";
       render();
       focusSearch("[data-item-search]", ui.itemSearch.length);
+    }
+    if (input.matches("[data-entity-field]")) {
+      ui.entityDraft[input.dataset.entityField] = input.value || "";
     }
   });
 
@@ -582,6 +629,40 @@
     }
   }
 
+  async function saveEntityHorse() {
+    const fields = entityChangedFields();
+    if (!Object.keys(fields).length) {
+      ui.entityError = "No changes to save.";
+      render();
+      return;
+    }
+    ui.entitySaving = true;
+    ui.entityError = "";
+    render();
+    try {
+      const payload = ui.entityAddOpen
+        ? { action: "add_horse", fields, sessionId: session.key, deviceId: session.deviceId }
+        : { action: "edit_horse", horseId: ui.selectedHorseId, fields, sessionId: session.key, deviceId: session.deviceId };
+      const result = await fetchJson(horsesUrl(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      horseEntityState = result.state || horseEntityState;
+      ui.entityAddOpen = false;
+      ui.selectedHorseId = result.result?.created?.id || result.result?.updated?.id || ui.selectedHorseId;
+      ui.entityDraft = entityDraftFromHorse(selectedEntityHorse());
+      ui.drawerOpen = !!ui.selectedHorseId;
+      render();
+    } catch (error) {
+      ui.entityError = error.message || String(error);
+      render();
+    } finally {
+      ui.entitySaving = false;
+      render();
+    }
+  }
+
   function render() {
     root.className = "rsa-dashboard";
     root.innerHTML = `
@@ -774,7 +855,7 @@
       ${secondaryTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">ROSTER</div></div>
+        <div class="rs-table-stack-head"><div class="rs-stack-label">ROSTER</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
         <div class="rs-airtable-scroll">
           <table class="rs-airtable-grid">
             <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
@@ -789,7 +870,7 @@
   function rosterRowHtml(horse, index) {
     return `<tr>
       <td class="rs-row-gutter">${index + 1}</td>
-      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span>${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open</a>` : ""}</div></td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><a class="rs-open-text" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">Open</a>${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Profile</a>` : ""}</div></td>
       <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(entityHorseStatus(horse))}</span></td>
       <td class="rs-cell-number">${number((horse.memberships?.kitItemIds || horse.pakKitItemIds || []).length)}</td>
     </tr>`;
@@ -807,7 +888,7 @@
       ${secondaryTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">PROFILES</div></div>
+        <div class="rs-table-stack-head"><div class="rs-stack-label">PROFILES</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
         <div class="rs-airtable-scroll">
           <table class="rs-airtable-grid">
             <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
@@ -823,7 +904,7 @@
     const comments = entityHorseComments(horse.id);
     return `<tr>
       <td class="rs-row-gutter">${index + 1}</td>
-      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><span class="rs-entity-sub">${escapeHtml(horse.showName || horse.barnName || "")}</span></div></td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><a class="rs-open-text" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">Open</a><span class="rs-entity-sub">${escapeHtml(horse.showName || horse.barnName || "")}</span></div></td>
       <td class="rs-entity-cell">${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : `<span class="rs-entity-sub">No profile link</span>`}</td>
       <td class="rs-cell-number">${comments.length}</td>
     </tr>`;
@@ -836,7 +917,7 @@
       ${secondaryTabsHtml()}
       ${searchHtml()}
       <section class="rs-stack-section is-main-table">
-        <div class="rs-table-stack-head"><div class="rs-stack-label">ATTRIBUTES</div></div>
+        <div class="rs-table-stack-head"><div class="rs-stack-label">ATTRIBUTES</div><button class="rs-stack-pill" type="button" data-action="open-add-horse">ADD HORSE</button></div>
         <div class="rs-airtable-scroll">
           <table class="rs-airtable-grid">
             <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
@@ -852,7 +933,7 @@
   function attributeHorseRowHtml(horse, index) {
     return `<tr>
       <td class="rs-row-gutter">${index + 1}</td>
-      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><span class="rs-entity-sub">${escapeHtml(horse.notes || "")}</span></div></td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><a class="rs-open-text" href="#" data-action="open-entity-horse" data-horse-id="${escapeAttr(horse.id)}">Open</a><span class="rs-entity-sub">${escapeHtml(horse.notes || "")}</span></div></td>
       <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(entityHorseWaveLabel(horse))}</span></td>
       <td class="rs-cell-number">${entityHorseComments(horse.id).length}</td>
     </tr>`;
@@ -1011,6 +1092,7 @@
   }
 
   function drawerHtml() {
+    if (moduleBelongsToTab(ui.activeModule, "horses")) return entityDrawerHtml();
     const record = selectedRecord();
     if (!record) return "";
     const percent = record.counts.need ? Math.round((record.counts.packed / record.counts.need) * 100) : 0;
@@ -1027,6 +1109,72 @@
           <div class="rs-kit-item-search-row"><label class="rs-stack-label">SEARCH KIT ITEMS</label><div class="rs-search-wrap"><input class="rs-kit-item-search" type="search" data-item-search autocomplete="off" placeholder="Search kit items" value="${escapeAttr(ui.itemSearch)}"><button class="rs-search-clear ${ui.itemSearch ? "is-active" : ""}" type="button" data-action="clear-item-search" aria-label="Clear kit item search"><span aria-hidden="true">&times;</span></button></div></div>
           <div class="rs-kit-item-row rs-item-filter-row"><div class="rs-kit-item-main"><div class="rs-stack-label">FILTER KIT ITEMS</div></div><div class="rs-kit-actions rs-item-filter-actions">${itemFilter("All", "all")}${itemFilter("Not Packed", "not_packed")}${itemFilter("Packed", "packed")}${itemFilter("Not Needed", "not_needed")}</div></div>
           <div class="rs-kit-items"><div class="rs-stack-label">KIT ITEMS</div>${kitItemsHead()}${filteredItems(record).map((item) => kitItemHtml(record, item)).join("") || `<div class="rs-airtable-empty">No kit items.</div>`}</div>
+        </div>
+      </aside>
+    `;
+  }
+
+  function entityDrawerHtml() {
+    if (!ui.drawerOpen) return "";
+    const horse = selectedEntityHorse();
+    if (!horse && !ui.entityAddOpen) return "";
+    const draft = ui.entityDraft || {};
+    const active = draft.active !== false && !draft.inactive;
+    const wave = draft.wec_not_going ? "not_going" : draft.wec_wave_2 ? "wave_two" : draft.wec_wave_1 ? "wave_one" : "";
+    return `
+      <div class="rs-drawer-overlay is-open" data-action="close-drawer" aria-hidden="true"></div>
+      <aside class="rs-record-drawer is-open" aria-hidden="false">
+        <div class="rs-drawer-head">
+          <div class="rs-drawer-title-group">
+            <div class="rs-drawer-title">${escapeHtml(ui.entityAddOpen ? "Add Horse" : entityHorseLabel(horse))}</div>
+            ${horse?.profileUrl ? `<a class="rs-drawer-profile-link" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : ""}
+          </div>
+          <button class="rs-drawer-close" type="button" data-action="close-drawer" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="rs-drawer-body">
+          <div class="rs-kit-item-row">
+            <div class="rs-kit-item-main">
+              <label class="rs-stack-label" for="rs-entity-barn-name">BARN NAME</label>
+              <input id="rs-entity-barn-name" class="rs-search" type="text" data-entity-field="barn_name" value="${escapeAttr(draft.barn_name || "")}">
+            </div>
+          </div>
+          <div class="rs-kit-item-row">
+            <div class="rs-kit-item-main">
+              <label class="rs-stack-label" for="rs-entity-show-name">SHOW NAME</label>
+              <input id="rs-entity-show-name" class="rs-search" type="text" data-entity-field="show_name" value="${escapeAttr(draft.show_name || "")}">
+            </div>
+          </div>
+          <div class="rs-kit-item-row">
+            <div class="rs-kit-item-main">
+              <label class="rs-stack-label" for="rs-entity-notes">NOTES</label>
+              <textarea id="rs-entity-notes" class="rs-search" data-entity-field="notes">${escapeHtml(draft.notes || "")}</textarea>
+            </div>
+          </div>
+          <div class="rs-kit-item-row">
+            <div class="rs-kit-item-main"><div class="rs-stack-label">STATUS</div></div>
+            <div class="rs-kit-actions rs-item-filter-actions">
+              <button class="rs-item-filter ${active ? "is-active" : ""}" type="button" data-action="set-entity-status" data-status="active">ACTIVE</button>
+              <button class="rs-item-filter ${!active ? "is-active" : ""}" type="button" data-action="set-entity-status" data-status="inactive">INACTIVE</button>
+            </div>
+          </div>
+          <div class="rs-kit-item-row">
+            <div class="rs-kit-item-main"><div class="rs-stack-label">WAVE</div></div>
+            <div class="rs-kit-actions rs-item-filter-actions">
+              <button class="rs-item-filter ${wave === "wave_one" ? "is-active" : ""}" type="button" data-action="set-entity-wave" data-wave="wave_one">WAVE ONE</button>
+              <button class="rs-item-filter ${wave === "wave_two" ? "is-active" : ""}" type="button" data-action="set-entity-wave" data-wave="wave_two">WAVE TWO</button>
+              <button class="rs-item-filter ${wave === "not_going" ? "is-active" : ""}" type="button" data-action="set-entity-wave" data-wave="not_going">NOT GOING</button>
+            </div>
+          </div>
+          <div class="rs-kit-item-row">
+            <div class="rs-kit-item-main">
+              <div class="rs-stack-label">SAVE</div>
+              <div class="rs-kit-item-meta">${escapeHtml(ui.entityError || (ui.entitySaving ? "Saving..." : "Changes save to Airtable."))}</div>
+            </div>
+            <div class="rs-kit-actions rs-item-filter-actions">
+              <button class="rs-item-filter is-active" type="button" data-action="save-entity-horse">${ui.entitySaving ? "SAVING" : "SAVE"}</button>
+            </div>
+          </div>
+          ${horse ? `<div class="rs-comments"><div class="rs-stack-label">COMMENTS</div>${entityHorseComments(horse.id).map(commentRowHtml).join("") || `<div class="rs-airtable-empty">No comments.</div>`}</div>` : ""}
         </div>
       </aside>
     `;
@@ -1080,6 +1228,56 @@
   function filteredEntityHorses() {
     const horses = horseEntityState?.horses || state?.horses || [];
     return horses.filter(matchesEntityView).filter(matchesRosterSearch);
+  }
+
+  function selectedEntityHorse() {
+    return (horseEntityState?.horses || []).find((horse) => horse.id === ui.selectedHorseId) || null;
+  }
+
+  function entityDraftFromHorse(horse) {
+    return {
+      barn_name: horse?.barnName || "",
+      show_name: horse?.showName || "",
+      notes: horse?.notes || "",
+      active: horse?.active !== false,
+      inactive: !!horse?.inactive,
+      wec_wave_1: !!horse?.waveOne,
+      wec_wave_2: !!horse?.waveTwo,
+      wec_not_going: !!horse?.notGoing
+    };
+  }
+
+  function entityChangedFields() {
+    const allowed = new Set(horseEntityState?.allowedFields?.[ui.entityAddOpen ? "create" : "write"] || []);
+    const horse = selectedEntityHorse();
+    const fields = {};
+    const draft = ui.entityDraft || {};
+    const candidates = ["barn_name", "show_name", "notes", "active", "inactive", "wec_wave_1", "wec_wave_2", "wec_not_going"];
+    for (const key of candidates) {
+      if (!allowed.has(key) || !Object.prototype.hasOwnProperty.call(draft, key)) continue;
+      const value = normalizeEntityFieldValue(draft[key]);
+      if (ui.entityAddOpen || value !== normalizeEntityFieldValue(entityCurrentValue(horse, key))) {
+        fields[key] = draft[key];
+      }
+    }
+    return fields;
+  }
+
+  function entityCurrentValue(horse, key) {
+    if (key === "barn_name") return horse?.barnName || "";
+    if (key === "show_name") return horse?.showName || "";
+    if (key === "notes") return horse?.notes || "";
+    if (key === "active") return horse?.active !== false;
+    if (key === "inactive") return !!horse?.inactive;
+    if (key === "wec_wave_1") return !!horse?.waveOne;
+    if (key === "wec_wave_2") return !!horse?.waveTwo;
+    if (key === "wec_not_going") return !!horse?.notGoing;
+    return "";
+  }
+
+  function normalizeEntityFieldValue(value) {
+    if (typeof value === "boolean") return value ? "true" : "false";
+    return String(value ?? "").trim();
   }
 
   function matchesEntityView(horse) {

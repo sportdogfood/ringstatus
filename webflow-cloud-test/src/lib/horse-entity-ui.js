@@ -253,6 +253,9 @@ export async function horseEntityActionReport(airtable, requestUrl, payload, ada
 async function addHorse(adapter, schema, payload) {
   const fields = fieldsAllowedBySchema(pickAllowed(payload?.fields || {}, HORSE_ENTITY_ALLOWED_CREATE_FIELDS), schema, ROSTER_TABLE);
   if (!Object.keys(fields).length) throw new Error("no_allowed_horse_create_fields");
+  if (payload?.dryRun === true) {
+    return { dryRun: true, action: "add_horse", fields };
+  }
   const created = await adapter.createRecord(ROSTER_TABLE, fields);
   const logs = [];
   for (const [fieldName, newValue] of Object.entries(fields)) {
@@ -277,6 +280,9 @@ async function editHorse(adapter, schema, payload) {
   if (!before) throw new Error("horse_not_found");
   const fields = fieldsAllowedBySchema(pickAllowed(payload?.fields || {}, HORSE_ENTITY_ALLOWED_WRITE_FIELDS), schema, ROSTER_TABLE);
   if (!Object.keys(fields).length) throw new Error("no_allowed_horse_write_fields");
+  if (payload?.dryRun === true) {
+    return { dryRun: true, action: "edit_horse", horseId, fields };
+  }
   const updated = await adapter.patchRecord(ROSTER_TABLE, horseId, fields);
   const logs = [];
   for (const [fieldName, newValue] of Object.entries(fields)) {
@@ -499,10 +505,9 @@ export function createAirtableAdapter(airtable) {
 }
 
 async function getBaseSchema(airtable) {
-  const response = await fetch(`https://api.airtable.com/v0/meta/bases/${encodeURIComponent(airtable.baseId)}/tables`, {
+  const response = await airtableFetch(`https://api.airtable.com/v0/meta/bases/${encodeURIComponent(airtable.baseId)}/tables`, {
     headers: { Authorization: `Bearer ${airtable.token}` }
-  });
-  if (!response.ok) throw new Error(`airtable_schema_failed:${response.status}`);
+  }, "airtable_schema_failed");
   return response.json();
 }
 
@@ -514,8 +519,7 @@ async function listAirtableRecords(airtable, tableId, view = "", options = {}) {
     if (view) url.searchParams.set("view", view);
     for (const field of options.fields || []) url.searchParams.append("fields[]", field);
     if (offset) url.searchParams.set("offset", offset);
-    const response = await fetch(url, { headers: { Authorization: `Bearer ${airtable.token}` } });
-    if (!response.ok) throw new Error(`airtable_list_failed:${tableId}:${response.status}`);
+    const response = await airtableFetch(url, { headers: { Authorization: `Bearer ${airtable.token}` } }, `airtable_list_failed:${tableId}`);
     const data = await response.json();
     out.push(...(data.records || []));
     offset = data.offset || "";
@@ -524,29 +528,45 @@ async function listAirtableRecords(airtable, tableId, view = "", options = {}) {
 }
 
 async function createAirtableRecord(airtable, tableId, fields) {
-  const response = await fetch(`https://api.airtable.com/v0/${encodeURIComponent(airtable.baseId)}/${encodeURIComponent(tableId)}`, {
+  const response = await airtableFetch(`https://api.airtable.com/v0/${encodeURIComponent(airtable.baseId)}/${encodeURIComponent(tableId)}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${airtable.token}`,
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ fields })
-  });
-  if (!response.ok) throw new Error(`airtable_create_failed:${tableId}:${response.status}`);
+  }, `airtable_create_failed:${tableId}`);
   return response.json();
 }
 
 async function patchAirtableRecord(airtable, tableId, recordId, fields) {
-  const response = await fetch(`https://api.airtable.com/v0/${encodeURIComponent(airtable.baseId)}/${encodeURIComponent(tableId)}/${encodeURIComponent(recordId)}`, {
+  const response = await airtableFetch(`https://api.airtable.com/v0/${encodeURIComponent(airtable.baseId)}/${encodeURIComponent(tableId)}/${encodeURIComponent(recordId)}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${airtable.token}`,
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ fields })
-  });
-  if (!response.ok) throw new Error(`airtable_patch_failed:${tableId}:${response.status}`);
+  }, `airtable_patch_failed:${tableId}`);
   return response.json();
+}
+
+async function airtableFetch(url, options, errorPrefix) {
+  let lastStatus = 0;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const response = await fetch(url, options);
+    if (response.ok) return response;
+    lastStatus = response.status;
+    if (response.status !== 429 && response.status < 500) break;
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const delay = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 350 * (attempt + 1);
+    await sleep(delay);
+  }
+  throw new Error(`${errorPrefix}:${lastStatus}`);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function matchesSearch(horse, query) {
