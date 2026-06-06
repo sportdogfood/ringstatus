@@ -452,6 +452,25 @@ export async function planActionReport(airtable, requestUrl, planKey, payload) {
   };
 }
 
+export async function sessionPingReport(airtable, requestUrl, payload) {
+  const context = await loadContext(airtable);
+  const tables = {
+    pak_sessions: physicalTableConfig(context, "pak_sessions", true)
+  };
+  const session = await ensureSession(airtable, tables, payload);
+  const url = new URL(requestUrl);
+  return {
+    ok: true,
+    v: 1,
+    action: "session_ping",
+    result: session,
+    source: {
+      packWaveKey: url.searchParams.get("packWaveKey") || clean(payload?.packWaveKey) || "wave_one",
+      viewKey: url.searchParams.get("viewKey") || clean(payload?.viewKey) || "wave_one"
+    }
+  };
+}
+
 export async function planPrintHtml(airtable, requestUrl, planKey) {
   const report = await planReport(airtable, requestUrl, planKey);
   const rows = report.items || [];

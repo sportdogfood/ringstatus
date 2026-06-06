@@ -469,12 +469,8 @@ body {
   text-align: left;
 }
 
-#packing-app .rs-airtable-grid thead th:nth-child(4),
-#packing-app .rs-airtable-grid thead th:nth-child(5),
-#packing-app .rs-airtable-grid thead th:nth-child(6),
-#packing-app .rs-airtable-grid thead th:nth-child(4) .rs-sort-head,
-#packing-app .rs-airtable-grid thead th:nth-child(5) .rs-sort-head,
-#packing-app .rs-airtable-grid thead th:nth-child(6) .rs-sort-head {
+#packing-app .rs-airtable-grid thead th.rs-count-head,
+#packing-app .rs-airtable-grid thead th.rs-count-head .rs-sort-head {
   min-width: 60px;
   padding-left: 4px;
   padding-right: 4px;
@@ -544,9 +540,7 @@ body {
   text-decoration: none;
 }
 
-#packing-app .rs-airtable-grid tbody td:nth-child(4),
-#packing-app .rs-airtable-grid tbody td:nth-child(5),
-#packing-app .rs-airtable-grid tbody td:nth-child(6) {
+#packing-app .rs-airtable-grid tbody .rs-cell-number {
   min-width: 60px;
   width: 60px;
   text-align: center;
@@ -598,12 +592,8 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-#packing-app .rs-airtable-grid th:nth-child(4),
-#packing-app .rs-airtable-grid td:nth-child(4),
-#packing-app .rs-airtable-grid th:nth-child(5),
-#packing-app .rs-airtable-grid td:nth-child(5),
-#packing-app .rs-airtable-grid th:nth-child(6),
-#packing-app .rs-airtable-grid td:nth-child(6) {
+#packing-app .rs-airtable-grid .rs-count-head,
+#packing-app .rs-airtable-grid .rs-cell-number {
   text-align: center;
 }
 
@@ -1618,12 +1608,8 @@ body {
 }
 
 #packing-app .rs-airtable-grid .rs-col-count,
-#packing-app .rs-airtable-grid th:nth-child(4),
-#packing-app .rs-airtable-grid th:nth-child(5),
-#packing-app .rs-airtable-grid th:nth-child(6),
-#packing-app .rs-airtable-grid td:nth-child(4),
-#packing-app .rs-airtable-grid td:nth-child(5),
-#packing-app .rs-airtable-grid td:nth-child(6) {
+#packing-app .rs-airtable-grid .rs-count-head,
+#packing-app .rs-airtable-grid .rs-cell-number {
   width: 60px;
   min-width: 60px;
   max-width: 60px;
@@ -1634,16 +1620,12 @@ body {
   white-space: nowrap;
 }
 
-#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head,
-#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head,
-#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head {
+#packing-app .rs-airtable-grid .rs-count-head .rs-sort-head {
   justify-content: center;
   text-align: center;
 }
 
-#packing-app .rs-airtable-grid th:nth-child(4) .rs-sort-head span:first-child,
-#packing-app .rs-airtable-grid th:nth-child(5) .rs-sort-head span:first-child,
-#packing-app .rs-airtable-grid th:nth-child(6) .rs-sort-head span:first-child {
+#packing-app .rs-airtable-grid .rs-count-head .rs-sort-head span:first-child {
   overflow: visible;
   text-overflow: clip;
 }

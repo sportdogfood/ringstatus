@@ -6,7 +6,7 @@ import {
   airtableConfig,
   corsHeaders,
   json,
-  planActionReport
+  sessionPingReport
 } from "../../lib/wec-plan-modules.js";
 
 export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
@@ -20,17 +20,14 @@ export const POST = async ({ request }) => {
     const url = new URL(request.url);
     url.searchParams.set("packWaveKey", url.searchParams.get("packWaveKey") || payload.packWaveKey || "wave_one");
     url.searchParams.set("viewKey", url.searchParams.get("viewKey") || payload.viewKey || "wave_one");
-    const report = await planActionReport(airtable, url.toString(), "quantity", {
+    const report = await sessionPingReport(airtable, url.toString(), {
       ...payload,
       action: "session_ping"
     });
     return json({
       ok: true,
       session: report.result,
-      source: {
-        packWaveKey: url.searchParams.get("packWaveKey"),
-        viewKey: url.searchParams.get("viewKey")
-      }
+      source: report.source
     });
   } catch (error) {
     console.error("[wec-packing-session] failed", error);
