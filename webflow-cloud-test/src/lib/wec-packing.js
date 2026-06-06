@@ -3834,10 +3834,11 @@ async function applyHorseKitState(airtable, context, payload) {
   if (!["packed", "not_packed", "not_needed"].includes(nextState)) throw new Error("invalid_horse_pack_state");
 
   const { record: horseRecord } = await findRecordInConfiguredView(airtable, tables.wec_horses, horseId);
-  const { record: itemRecord } = await findRecordInConfiguredView(airtable, tables.wec_packing_items, packingItemId);
+  const itemRecord = await findOptionalRecordInConfiguredView(airtable, tables.wec_packing_items, packingItemId);
   const sourceRecord = tables.wec_pack_items?.id
     ? (await findRecordInConfiguredView(airtable, tables.wec_pack_items, sourcePackItemId)).record
     : null;
+  const parentPackingItemId = itemRecord?.id || "";
   const [events, allMembers] = await Promise.all([
     listAirtableRecords(airtable, tables.wec_packing_events.id, tables.wec_packing_events.view),
     listAirtableRecords(airtable, tables.wec_packing_item_horses.id, tables.wec_packing_item_horses.view)
@@ -3845,7 +3846,7 @@ async function applyHorseKitState(airtable, context, payload) {
   const itemHorseKey = legacyHorseMemberKey({ packWaveId, horseRecord, horseId, sourcePackItemId });
   const existingMember = findHorseKitMemberRecord(allMembers, {
     itemHorseKey,
-    packingItemId,
+    packingItemId: parentPackingItemId,
     horseId,
     sourcePackItemId,
     packWaveId
@@ -3859,7 +3860,7 @@ async function applyHorseKitState(airtable, context, payload) {
   const after = nextState === "packed" ? 1 : 0;
   const memberRecord = await upsertHorseKitMemberRecord(airtable, context, {
     existingMember,
-    packingItemId,
+    packingItemId: parentPackingItemId,
     horseId,
     sourcePackItemId,
     packWaveId,
@@ -3869,16 +3870,19 @@ async function applyHorseKitState(airtable, context, payload) {
     horseRecord,
     sourceRecord
   });
-  const rolledMembers = allMembers
-    .filter((record) => record.id !== memberRecord.id && includesLinkedId(record.fields?.packing_item, packingItemId))
-    .concat(memberRecord);
-  const packedTotal = rolledMembers.reduce((sum, record) => sum + wholeQuantityField(record.fields?.quantity_packed), 0);
-  const neededTotal = rolledMembers.reduce((sum, record) => sum + effectiveHorseMemberNeeded(record.fields), 0);
-  const parentPackState = neededTotal > 0 && packedTotal >= neededTotal ? "packed" : "not_packed";
-  const updatedParent = await patchAirtableRecord(airtable, tables.wec_packing_items.id, packingItemId, {
-    quantity_packed: packedTotal,
-    pack_state: parentPackState
-  });
+  let updatedParent = null;
+  if (parentPackingItemId) {
+    const rolledMembers = allMembers
+      .filter((record) => record.id !== memberRecord.id && includesLinkedId(record.fields?.packing_item, parentPackingItemId))
+      .concat(memberRecord);
+    const packedTotal = rolledMembers.reduce((sum, record) => sum + wholeQuantityField(record.fields?.quantity_packed), 0);
+    const neededTotal = rolledMembers.reduce((sum, record) => sum + effectiveHorseMemberNeeded(record.fields), 0);
+    const parentPackState = neededTotal > 0 && packedTotal >= neededTotal ? "packed" : "not_packed";
+    updatedParent = await patchAirtableRecord(airtable, tables.wec_packing_items.id, parentPackingItemId, {
+      quantity_packed: packedTotal,
+      pack_state: parentPackState
+    });
+  }
   const event = await createPackingEvent(airtable, tables, {
     eventType: horseMemberEventType(nextState, "horse_kit"),
     eventSubjectId: `${sourcePackItemId}:${horseId}`,
@@ -3897,7 +3901,7 @@ async function applyHorseKitState(airtable, context, payload) {
     notes: [
       `source_pack_item: ${sourcePackItemId}`,
       `horse_id: ${horseId}`,
-      `packing_item: ${packingItemId}`,
+      parentPackingItemId ? `packing_item: ${parentPackingItemId}` : "",
       `source_item: ${stringField(sourceRecord?.fields?.app_name)}`,
       `horse: ${stringField(horseRecord.fields?.barn_name || horseRecord.fields?.horse || horseRecord.fields?.show_name)}`,
       clean(payload?.notes)
@@ -3918,10 +3922,11 @@ function findHorseKitMemberRecord(records = [], criteria = {}) {
     const itemHorseId = stringField(fields.item_horse_id).toLowerCase();
     const itemHorseKey = stringField(fields.item_horse_key).toLowerCase();
     if (key && (itemHorseId === key || itemHorseKey === key)) return true;
-    return includesLinkedId(fields.packing_item, criteria.packingItemId)
-      && includesLinkedId(fields.horse, criteria.horseId)
+    const sameHorseSourceWave = includesLinkedId(fields.horse, criteria.horseId)
       && includesLinkedId(fields.source_pack_item, criteria.sourcePackItemId)
       && (!criteria.packWaveId || includesLinkedId(fields.pack_wave, criteria.packWaveId));
+    if (!sameHorseSourceWave) return false;
+    return !criteria.packingItemId || includesLinkedId(fields.packing_item, criteria.packingItemId);
   }) || null;
 }
 
