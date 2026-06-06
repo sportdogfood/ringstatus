@@ -9,6 +9,7 @@
     quantityUrl: root.dataset.quantityUrl || globalConfig.quantityUrl || "",
     perHorseUrl: root.dataset.perHorseUrl || globalConfig.perHorseUrl || "",
     perGroomUrl: root.dataset.perGroomUrl || globalConfig.perGroomUrl || "",
+    horsesUrl: root.dataset.horsesUrl || globalConfig.horsesUrl || "",
     sessionUrl: root.dataset.sessionUrl || globalConfig.sessionUrl || "",
     pollMs: number(root.dataset.pollMs || globalConfig.pollMs || 30000),
     sessionIdleMs: number(root.dataset.sessionIdleMs || globalConfig.sessionIdleMs || 600000),
@@ -37,6 +38,7 @@
   let state = null;
   let homeState = null;
   let planState = null;
+  let horseEntityState = null;
   let rows = [];
   let silentRefreshInFlight = false;
   const optimistic = new Map();
@@ -70,6 +72,11 @@
     if (action === "set-view") {
       ui.viewKey = target.dataset.viewKey || config.packWaveKey;
       ui.drawerOpen = false;
+      if (moduleBelongsToTab(ui.activeModule, "horses")) {
+        await ensureHorseEntityState();
+        render();
+        return;
+      }
       await load();
       return;
     }
@@ -99,6 +106,7 @@
       else {
         ui.activeModule = tabKey;
         ui.drawerOpen = false;
+        if (tabKey === "comments") await ensureHorseEntityState();
         render();
       }
       return;
@@ -214,6 +222,9 @@
       await load();
       return;
     }
+    if (moduleBelongsToTab(moduleKey, "horses")) {
+      await ensureHorseEntityState();
+    }
     applyActiveModuleFromHome();
     render();
   }
@@ -222,6 +233,17 @@
     const nextHome = await fetchJson(homeUrl());
     if (!nextHome?.ok || !nextHome.reports) throw new Error("invalid_hybrid_home_state");
     homeState = nextHome;
+  }
+
+  async function ensureHorseEntityState() {
+    if (horseEntityState?.ok) return;
+    await loadHorseEntity();
+  }
+
+  async function loadHorseEntity() {
+    const next = await fetchJson(horsesUrl());
+    if (!next?.ok || !Array.isArray(next.horses)) throw new Error("invalid_horse_entity_state");
+    horseEntityState = next;
   }
 
   async function silentRefresh() {
@@ -289,6 +311,11 @@
   function sessionUrl() {
     if (config.sessionUrl) return withWaveParams(config.sessionUrl);
     return withWaveParams(config.apiUrl.replace(/\/horse-kits\/?$/, "/session"));
+  }
+
+  function horsesUrl() {
+    if (config.horsesUrl) return withWaveParams(config.horsesUrl);
+    return withWaveParams(config.apiUrl.replace(/\/horse-kits\/?$/, "/horses"));
   }
 
   function planUrl(planKey) {
@@ -640,8 +667,8 @@
     }
     if (["quantity", "per_horse", "per_groom"].includes(normalizeModuleKey(ui.activeModule))) return planPanelHtml();
     if (ui.activeModule === "horse_roster") return horseRosterPanelHtml();
-    if (ui.activeModule === "horse_profiles") return moduleLandingHtml("HORSE PROFILES", "Entity profile input surface is not connected in this preview yet.");
-    if (ui.activeModule === "horse_attributes") return moduleLandingHtml("HORSE ATTRIBUTES", "Entity attribute input surface is not connected in this preview yet.");
+    if (ui.activeModule === "horse_profiles") return horseProfilesPanelHtml();
+    if (ui.activeModule === "horse_attributes") return horseAttributesPanelHtml();
     if (ui.activeModule === "lists_overview") return moduleCollectionHtml("LISTS", [
       { key: "purchase_onsite", label: "PURCHASE ONSITE" },
       { key: "needs_attention", label: "NEEDS ATTENTION" },
@@ -742,7 +769,7 @@
   }
 
   function horseRosterPanelHtml() {
-    const horses = state?.horses || [];
+    const horses = filteredEntityHorses();
     return `<div class="rs-page-stack">
       ${secondaryTabsHtml()}
       ${searchHtml()}
@@ -762,23 +789,81 @@
   function rosterRowHtml(horse, index) {
     return `<tr>
       <td class="rs-row-gutter">${index + 1}</td>
-      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(horseLabel(horse))}</span>${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open</a>` : ""}</div></td>
-      <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(horse.notGoing ? "not_going" : horse.status || "active")}</span></td>
-      <td class="rs-cell-number">${number((horse.pakKitItemIds || []).length)}</td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span>${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open</a>` : ""}</div></td>
+      <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(entityHorseStatus(horse))}</span></td>
+      <td class="rs-cell-number">${number((horse.memberships?.kitItemIds || horse.pakKitItemIds || []).length)}</td>
     </tr>`;
   }
 
   function matchesRosterSearch(horse) {
     const query = ui.search.trim().toLowerCase();
     if (!query) return true;
-    return [horse.barnName, horse.name, horse.showName, horse.status].join(" ").toLowerCase().includes(query);
+    return [horse.barnName, horse.name, horse.showName, horse.status, horse.notes].join(" ").toLowerCase().includes(query);
+  }
+
+  function horseProfilesPanelHtml() {
+    const horses = filteredEntityHorses();
+    return `<div class="rs-page-stack">
+      ${secondaryTabsHtml()}
+      ${searchHtml()}
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">PROFILES</div></div>
+        <div class="rs-airtable-scroll">
+          <table class="rs-airtable-grid">
+            <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
+            <thead><tr><th class="rs-row-gutter">#</th><th>HORSE</th><th>PROFILE</th><th>COMMENTS</th></tr></thead>
+            <tbody>${horses.map(profileRowHtml).join("")}</tbody>
+          </table>
+        </div>
+      </section>
+    </div>`;
+  }
+
+  function profileRowHtml(horse, index) {
+    const comments = entityHorseComments(horse.id);
+    return `<tr>
+      <td class="rs-row-gutter">${index + 1}</td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><span class="rs-entity-sub">${escapeHtml(horse.showName || horse.barnName || "")}</span></div></td>
+      <td class="rs-entity-cell">${horse.profileUrl ? `<a class="rs-open-text" href="${escapeAttr(horse.profileUrl)}" target="_blank" rel="noopener">Open Profile</a>` : `<span class="rs-entity-sub">No profile link</span>`}</td>
+      <td class="rs-cell-number">${comments.length}</td>
+    </tr>`;
+  }
+
+  function horseAttributesPanelHtml() {
+    const attrs = horseEntityState?.attributes || {};
+    const horses = filteredEntityHorses();
+    return `<div class="rs-page-stack">
+      ${secondaryTabsHtml()}
+      ${searchHtml()}
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">ATTRIBUTES</div></div>
+        <div class="rs-airtable-scroll">
+          <table class="rs-airtable-grid">
+            <colgroup><col class="rs-col-gutter"><col class="rs-col-entity"><col class="rs-col-entity"><col class="rs-col-count"></colgroup>
+            <thead><tr><th class="rs-row-gutter">#</th><th>HORSE</th><th>WAVE</th><th>COMMENTS</th></tr></thead>
+            <tbody>${horses.map(attributeHorseRowHtml).join("")}</tbody>
+          </table>
+        </div>
+        <div class="rs-status">${number(attrs.gender?.length)} gender options | ${number(attrs.disciplines?.length)} discipline options | ${number(attrs.colors?.length)} color options</div>
+      </section>
+    </div>`;
+  }
+
+  function attributeHorseRowHtml(horse, index) {
+    return `<tr>
+      <td class="rs-row-gutter">${index + 1}</td>
+      <td class="rs-entity-cell"><div class="rs-entity-main"><span class="rs-entity-horse">${escapeHtml(entityHorseLabel(horse))}</span><span class="rs-entity-sub">${escapeHtml(horse.notes || "")}</span></div></td>
+      <td class="rs-entity-cell"><span class="rs-entity-sub">${escapeHtml(entityHorseWaveLabel(horse))}</span></td>
+      <td class="rs-cell-number">${entityHorseComments(horse.id).length}</td>
+    </tr>`;
   }
 
   function commentsPanelHtml() {
+    const comments = combinedComments();
     return `<div class="rs-page-stack">
       <section class="rs-stack-section is-main-table">
         <div class="rs-table-stack-head"><div class="rs-stack-label">COMMENTS</div></div>
-        ${commentsHtml()}
+        <div class="rs-comments is-page-comments">${comments.map(commentRowHtml).join("") || `<div class="rs-airtable-empty">No comments.</div>`}</div>
       </section>
     </div>`;
   }
@@ -902,7 +987,27 @@
 
   function commentsHtml() {
     const comments = (state?.comments || []).slice(0, 5);
-    return `<section class="rs-stack-section is-comments"><div class="rs-stack-label">COMMENTS</div>${comments.map((comment) => `<div class="rs-comment-row"><div class="rs-comment-body">${escapeHtml(comment.comment || "")}</div><div class="rs-comment-meta">${escapeHtml(comment.scopeLabel || "")}</div></div>`).join("") || `<div class="rs-airtable-empty">No comments.</div>`}</section>`;
+    return `<section class="rs-stack-section is-comments"><div class="rs-stack-label">COMMENTS</div>${comments.map(commentRowHtml).join("") || `<div class="rs-airtable-empty">No comments.</div>`}</section>`;
+  }
+
+  function combinedComments() {
+    const rows = [
+      ...(state?.comments || []),
+      ...(horseEntityState?.comments || [])
+    ];
+    const seen = new Set();
+    return rows
+      .filter((comment) => {
+        const key = comment.id || `${comment.scopeType || ""}:${comment.scopeId || ""}:${comment.comment || ""}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .sort((a, b) => compareText(b.createdAt || "", a.createdAt || ""));
+  }
+
+  function commentRowHtml(comment) {
+    return `<div class="rs-comment-row"><div class="rs-comment-body">${escapeHtml(comment.comment || "")}</div><div class="rs-comment-meta">${escapeHtml(comment.scopeLabel || comment.scopeType || comment.createdBy || "")}</div></div>`;
   }
 
   function drawerHtml() {
@@ -970,6 +1075,40 @@
       feed_items: "FEED ITEMS"
     };
     return labels[key] || String(key || "MODULE").replace(/_/g, " ").toUpperCase();
+  }
+
+  function filteredEntityHorses() {
+    const horses = horseEntityState?.horses || state?.horses || [];
+    return horses.filter(matchesEntityView).filter(matchesRosterSearch);
+  }
+
+  function matchesEntityView(horse) {
+    if (ui.viewKey === "wave_one") return !!horse.waveOne || includes(horse.memberships?.waveKeys, "wave_one");
+    if (ui.viewKey === "wave_two") return !!horse.waveTwo || includes(horse.memberships?.waveKeys, "wave_two");
+    if (ui.viewKey === "not_going") return !!horse.notGoing;
+    return true;
+  }
+
+  function entityHorseLabel(horse) {
+    return horse?.barnName || horse?.name || horse?.showName || "";
+  }
+
+  function entityHorseStatus(horse) {
+    if (horse?.notGoing) return "not_going";
+    if (horse?.inactive || horse?.active === false) return "inactive";
+    return "active";
+  }
+
+  function entityHorseWaveLabel(horse) {
+    if (horse?.notGoing) return "not_going";
+    if (horse?.waveOne) return "wave_one";
+    if (horse?.waveTwo) return "wave_two";
+    const keys = horse?.memberships?.waveKeys || [];
+    return keys.length ? keys.join(", ") : "";
+  }
+
+  function entityHorseComments(horseId) {
+    return (horseEntityState?.comments || []).filter((comment) => includes(comment.horseIds, horseId));
   }
 
   function defaultModuleForTab(tabKey) {
