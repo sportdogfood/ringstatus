@@ -426,6 +426,13 @@ export async function planActionReport(airtable, requestUrl, planKey, payload) {
   let result;
   if (action === "session_ping") {
     result = await ensureSession(airtable, tables, payload);
+    return {
+      ok: true,
+      v: 1,
+      plan: spec.planKey,
+      action,
+      result
+    };
   } else if (action === "set_item_count") {
     result = await setItemCount(airtable, tables, spec, requestUrl, payload);
   } else if (action === "adjust_needed") {

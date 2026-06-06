@@ -9,6 +9,9 @@
     quantityUrl: root.dataset.quantityUrl || globalConfig.quantityUrl || "",
     perHorseUrl: root.dataset.perHorseUrl || globalConfig.perHorseUrl || "",
     perGroomUrl: root.dataset.perGroomUrl || globalConfig.perGroomUrl || "",
+    sessionUrl: root.dataset.sessionUrl || globalConfig.sessionUrl || "",
+    pollMs: number(root.dataset.pollMs || globalConfig.pollMs || 30000),
+    sessionIdleMs: number(root.dataset.sessionIdleMs || globalConfig.sessionIdleMs || 600000),
     printUrl: root.dataset.printUrl || globalConfig.printUrl || "https://ringstatus.com/test/wec-packing/horse-kits/print",
     packWaveKey: root.dataset.packWaveKey || globalConfig.packWaveKey || "wave_one"
   };
@@ -35,7 +38,16 @@
   let homeState = null;
   let planState = null;
   let rows = [];
+  let silentRefreshInFlight = false;
   const optimistic = new Map();
+  const session = {
+    key: sessionKey(),
+    deviceId: deviceId(),
+    pingInFlight: false,
+    pingAgain: false,
+    lastInteractionAt: Date.now(),
+    pollTimer: 0
+  };
   const unboundModules = new Set([
     "purchase_onsite",
     "needs_attention",
@@ -54,6 +66,7 @@
     if (target.tagName === "A") event.preventDefault();
 
     const action = target.dataset.action;
+    queueSessionPing("click", { action });
     if (action === "set-view") {
       ui.viewKey = target.dataset.viewKey || config.packWaveKey;
       ui.drawerOpen = false;
@@ -65,6 +78,18 @@
       if (["horses", "counts", "lists", "items"].includes(tabKey)) {
         ui.navTrayKey = ui.navTrayKey === tabKey ? "" : tabKey;
         ui.activePrimaryTab = tabKey;
+        const defaultModule = defaultModuleForTab(tabKey);
+        if (!moduleBelongsToTab(ui.activeModule, tabKey) && defaultModule) {
+          if (["horse_kits", "quantity", "per_horse", "per_groom"].includes(defaultModule)) {
+            await setModule(defaultModule);
+          } else {
+            ui.activeModule = defaultModule;
+            ui.drawerOpen = false;
+            applyActiveModuleFromHome();
+            render();
+          }
+          return;
+        }
         render();
         return;
       }
@@ -147,11 +172,13 @@
   root.addEventListener("input", (event) => {
     const input = event.target;
     if (input.matches("[data-search]")) {
+      queueSessionPing("input", { action: "search" });
       ui.search = input.value || "";
       rebuild();
       focusSearch("[data-search]", ui.search.length);
     }
     if (input.matches("[data-item-search]")) {
+      queueSessionPing("input", { action: "item_search" });
       ui.itemSearch = input.value || "";
       render();
       focusSearch("[data-item-search]", ui.itemSearch.length);
@@ -159,6 +186,8 @@
   });
 
   load();
+  queueSessionPing("session_start");
+  startSessionPolling();
 
   async function load() {
     ui.loading = true;
@@ -193,6 +222,20 @@
     const nextHome = await fetchJson(homeUrl());
     if (!nextHome?.ok || !nextHome.reports) throw new Error("invalid_hybrid_home_state");
     homeState = nextHome;
+  }
+
+  async function silentRefresh() {
+    if (silentRefreshInFlight || ui.savingKey) return;
+    silentRefreshInFlight = true;
+    try {
+      await loadHome();
+      applyActiveModuleFromHome();
+      render();
+    } catch (error) {
+      console.warn("[wec-packing] silent refresh failed", error);
+    } finally {
+      silentRefreshInFlight = false;
+    }
   }
 
   function applyActiveModuleFromHome() {
@@ -243,6 +286,11 @@
     return withWaveParams(config.apiUrl.replace(/\/horse-kits\/?$/, "/home"));
   }
 
+  function sessionUrl() {
+    if (config.sessionUrl) return withWaveParams(config.sessionUrl);
+    return withWaveParams(config.apiUrl.replace(/\/horse-kits\/?$/, "/session"));
+  }
+
   function planUrl(planKey) {
     const key = normalizeModuleKey(planKey);
     const configured = key === "quantity" ? config.quantityUrl : key === "per_horse" ? config.perHorseUrl : key === "per_groom" ? config.perGroomUrl : "";
@@ -264,6 +312,63 @@
     url.searchParams.set("packWaveKey", config.packWaveKey);
     url.searchParams.set("viewKey", ui.viewKey || config.packWaveKey);
     return url.toString();
+  }
+
+  function startSessionPolling() {
+    const interval = Math.max(10000, config.pollMs || 30000);
+    if (session.pollTimer) window.clearInterval(session.pollTimer);
+    session.pollTimer = window.setInterval(() => {
+      if (document.visibilityState === "hidden") return;
+      if (Date.now() - session.lastInteractionAt > (config.sessionIdleMs || 600000)) return;
+      queueSessionPing("poll");
+      silentRefresh();
+    }, interval);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        queueSessionPing("visible");
+        silentRefresh();
+      }
+    });
+  }
+
+  function queueSessionPing(reason, extra = {}) {
+    session.lastInteractionAt = Date.now();
+    if (session.pingInFlight) {
+      session.pingAgain = true;
+      return;
+    }
+    sendSessionPing(reason, extra);
+  }
+
+  async function sendSessionPing(reason, extra = {}) {
+    session.pingInFlight = true;
+    session.pingAgain = false;
+    try {
+      await fetchJson(sessionUrl(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "session_ping",
+          sessionKey: session.key,
+          deviceId: session.deviceId,
+          packWaveKey: config.packWaveKey,
+          viewKey: ui.viewKey || config.packWaveKey,
+          currentLane: ui.laneKey || "",
+          currentList: ui.activeModule || "",
+          currentFilter: ui.itemFilter || "",
+          reason,
+          notes: `module:${ui.activeModule || ""};tab:${ui.activePrimaryTab || ""};tray:${ui.navTrayKey || ""}`,
+          ...extra
+        })
+      });
+    } catch (error) {
+      console.warn("[wec-packing] session ping failed", error);
+    } finally {
+      session.pingInFlight = false;
+      if (session.pingAgain) {
+        sendSessionPing("queued");
+      }
+    }
   }
 
   function rebuild(shouldRender = true) {
@@ -420,7 +525,12 @@
           kitId: record.kit.id,
           kitItemId: itemId,
           packWaveId: state.source.packWaveId,
-          packState: nextState
+          packState: nextState,
+          sessionKey: session.key,
+          deviceId: session.deviceId,
+          currentLane: ui.laneKey || "",
+          currentList: ui.activeModule || "",
+          currentFilter: ui.itemFilter || ""
         })
       });
       if (result.state) {
@@ -532,6 +642,19 @@
     if (ui.activeModule === "horse_roster") return horseRosterPanelHtml();
     if (ui.activeModule === "horse_profiles") return moduleLandingHtml("HORSE PROFILES", "Entity profile input surface is not connected in this preview yet.");
     if (ui.activeModule === "horse_attributes") return moduleLandingHtml("HORSE ATTRIBUTES", "Entity attribute input surface is not connected in this preview yet.");
+    if (ui.activeModule === "lists_overview") return moduleCollectionHtml("LISTS", [
+      { key: "purchase_onsite", label: "PURCHASE ONSITE" },
+      { key: "needs_attention", label: "NEEDS ATTENTION" },
+      { key: "unresolved", label: "UNRESOLVED" },
+      { key: "packed_max", label: "PACKED MAX" }
+    ]);
+    if (ui.activeModule === "items_overview") return moduleCollectionHtml("ITEMS", [
+      { key: "kit_items", label: "KIT ITEMS" },
+      { key: "quantity_items", label: "QUANTITY ITEMS" },
+      { key: "per_horse_items", label: "PER HORSE ITEMS" },
+      { key: "per_groom_items", label: "GROOM SUPPLIES" },
+      { key: "feed_items", label: "FEED ITEMS" }
+    ]);
     if (ui.activeModule === "comments") return commentsPanelHtml();
     if (unboundModules.has(ui.activeModule)) return moduleLandingHtml(moduleLabel(ui.activeModule), "Module route is not connected in this preview yet.");
     const tab = (state?.primaryTabs || []).find((row) => row.key === ui.activePrimaryTab);
@@ -599,6 +722,21 @@
       <section class="rs-stack-section is-main-table">
         <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(label)}</div></div>
         <div class="rs-airtable-empty">${escapeHtml(message)}</div>
+      </section>
+    </div>`;
+  }
+
+  function moduleCollectionHtml(label, modules) {
+    return `<div class="rs-page-stack">
+      <section class="rs-stack-section is-main-table">
+        <div class="rs-table-stack-head"><div class="rs-stack-label">${escapeHtml(label)}</div></div>
+        <div class="rs-kit-items">${modules.map((module) => `<div class="rs-kit-item-row">
+          <div class="rs-kit-item-main">
+            <div class="rs-kit-item-title rs-stack-label">${escapeHtml(module.label)}</div>
+            <div class="rs-kit-item-meta">Route not connected in this preview yet.</div>
+          </div>
+          <div class="rs-kit-actions rs-item-filter-actions"><button class="rs-item-filter" type="button" data-action="set-nav-child" data-module-key="${escapeAttr(module.key)}">OPEN</button></div>
+        </div>`).join("")}</div>
       </section>
     </div>`;
   }
@@ -819,6 +957,8 @@
 
   function moduleLabel(key) {
     const labels = {
+      lists_overview: "LISTS",
+      items_overview: "ITEMS",
       purchase_onsite: "PURCHASE ONSITE",
       needs_attention: "NEEDS ATTENTION",
       unresolved: "UNRESOLVED",
@@ -830,6 +970,25 @@
       feed_items: "FEED ITEMS"
     };
     return labels[key] || String(key || "MODULE").replace(/_/g, " ").toUpperCase();
+  }
+
+  function defaultModuleForTab(tabKey) {
+    return {
+      horses: "horse_roster",
+      counts: "horse_kits",
+      lists: "lists_overview",
+      items: "items_overview"
+    }[tabKey] || "";
+  }
+
+  function moduleBelongsToTab(moduleKey, tabKey) {
+    const modules = {
+      horses: ["horse_roster", "horse_profiles", "horse_attributes"],
+      counts: ["horse_kits", "quantity", "per_horse", "per_groom"],
+      lists: ["lists_overview", "purchase_onsite", "needs_attention", "unresolved", "packed_max"],
+      items: ["items_overview", "kit_items", "quantity_items", "per_horse_items", "per_groom_items", "feed_items"]
+    };
+    return (modules[tabKey] || []).includes(moduleKey);
   }
 
   function section(label, body, modifier) {
@@ -913,6 +1072,27 @@
     if (key === "pergroom") return "per_groom";
     if (key === "byqty" || key === "by_quantity") return "quantity";
     return key;
+  }
+
+  function sessionKey() {
+    return storedKey("wecPackingHybridSessionKey", "session");
+  }
+
+  function deviceId() {
+    return storedKey("wecPackingHybridDeviceId", "device");
+  }
+
+  function storedKey(storageKey, prefix) {
+    try {
+      const existing = window.sessionStorage.getItem(storageKey) || window.localStorage.getItem(storageKey);
+      if (existing) return existing;
+      const next = `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+      window.sessionStorage.setItem(storageKey, next);
+      if (prefix === "device") window.localStorage.setItem(storageKey, next);
+      return next;
+    } catch (error) {
+      return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    }
   }
 
   function escapeHtml(value) {
