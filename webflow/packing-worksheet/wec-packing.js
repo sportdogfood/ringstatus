@@ -699,6 +699,7 @@
         return;
       }
       const rollback = snapshotItemQuantities(itemId);
+      const itemPayload = actionItemPayload(item);
       state.pendingActions[pendingKey] = action;
       state.addQty[itemId] = "";
       const optimistic = applyOptimisticAddQuantity(itemId, quantityDelta);
@@ -709,7 +710,7 @@
         itemId,
         quantityDelta,
         effectiveNeeded: item.needed,
-        ...actionItemPayload(item),
+        ...itemPayload,
         notes: state.actionNotes[itemId] || ""
       }, null, {
         pendingKey,

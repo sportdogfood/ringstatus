@@ -1,0 +1,12 @@
+
+> webflow-cloud-test@0.0.1 dev
+> astro dev --host 127.0.0.1 --port 4331
+
+Using secrets defined in .env
+[2m08:22:01[22m [34m[vite][39m Re-optimizing dependencies because lockfile has changed
+[2m08:22:21[22m [34m[types][39m Generated [2m2ms[22m
+[2m08:22:21[22m [34m[vite][39m Re-optimizing dependencies because lockfile has changed
+[2m08:22:21[22m [34m[vite][39m Re-optimizing dependencies because lockfile has changed
+[42m[1m astro [22m[49m [32mv6.3.5[39m [2mready in[22m 26596 [2mms[22m
+[2m┃[22m Local    [36mhttp://127.0.0.1:4331/[39m
+[2m08:22:25[22m [32mwatching for file changes...[39m

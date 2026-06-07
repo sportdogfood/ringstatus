@@ -3,7 +3,7 @@ const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || "";
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
-const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
+const TABLE_LIVE_GROUPS = process.env.TABLE_LIVE_GROUPS || "live_groups";
 const TABLE_WATCH_TRIPS = process.env.TABLE_WATCH_TRIPS || "watch_trips";
 const VIEW_HEARTBEAT = process.env.WATCH_TRIPS_HEALTH_VIEW || process.env.WATCH_VIEW || "heartbeat";
 
@@ -31,7 +31,7 @@ const WATCH_SCHEDULE_FIELDS = [
   "status",
 ];
 
-const GROUPS_LIVE_FIELDS = [
+const LIVE_GROUPS_FIELDS = [
   "estimated_start_time",
   "total",
   "gone",
@@ -219,16 +219,16 @@ async function snapshot() {
   const appShowId = numOrNull(firstValue(heartbeatFields.app_show_id)) ?? numOrNull(heartbeatFields.show_id);
   const appSqlDate = toIsoDateOnly(firstValue(heartbeatFields.app_sql_date)) ?? toIsoDateOnly(heartbeatFields.sql_date);
 
-  const [watchScheduleRows, watchTripsRows, allGroupsLiveRows] = await Promise.all([
+  const [watchScheduleRows, watchTripsRows, allLiveGroupsRows] = await Promise.all([
     airtableList(TABLE_WATCH_SCHEDULE, { view: VIEW_HEARTBEAT, pageSize: 100 }),
     airtableList(TABLE_WATCH_TRIPS, { view: VIEW_HEARTBEAT, pageSize: 100 }),
-    airtableList(TABLE_GROUPS_LIVE, { pageSize: 100 }),
+    airtableList(TABLE_LIVE_GROUPS, { pageSize: 100 }),
   ]);
 
-  const groupsLiveRows = allGroupsLiveRows.filter((row) => {
+  const liveGroupsRows = allLiveGroupsRows.filter((row) => {
     const fields = row.fields || {};
     const showId = numOrNull(fields.show_id);
-    const day = toIsoDateOnly(fields.day);
+    const day = toIsoDateOnly(fields.live_focus_day) || toIsoDateOnly(fields.day);
     return (appShowId === null || showId === appShowId) &&
       (!appSqlDate || day === appSqlDate);
   });
@@ -259,9 +259,9 @@ async function snapshot() {
       rows: watchScheduleRows.length,
       populated: countPopulated(watchScheduleRows, WATCH_SCHEDULE_FIELDS),
     },
-    groups_live: {
-      rows: groupsLiveRows.length,
-      populated: countPopulated(groupsLiveRows, GROUPS_LIVE_FIELDS),
+    live_groups: {
+      rows: liveGroupsRows.length,
+      populated: countPopulated(liveGroupsRows, LIVE_GROUPS_FIELDS),
     },
     watch_trips: {
       rows: watchTripsRows.length,

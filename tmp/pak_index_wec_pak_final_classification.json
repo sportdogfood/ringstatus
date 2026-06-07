@@ -1,0 +1,27 @@
+{
+  "rowCount": 109,
+  "missingMain": 0,
+  "missingRelated": 0,
+  "unrecognizedCount": 0,
+  "unrecognized": [],
+  "summary": {
+    "entities": 10,
+    "excluded": 1,
+    "items": 4,
+    "system": 6,
+    "packing_plans": 28,
+    "sources": 12,
+    "support": 2,
+    "pages": 10,
+    "wires": 3,
+    "sessions": 1,
+    "components": 2,
+    "lists": 3,
+    "fields": 2,
+    "comments": 5,
+    "pivots": 1,
+    "users": 7,
+    "turnout": 4,
+    "feed": 8
+  }
+}

@@ -1,7 +1,7 @@
 const assert = require("assert");
 
 const {
-  applyGroupsLiveFallback,
+  applyLiveGroupsFallback,
   buildCurrentFields,
   scheduleRowKeyFromFields,
 } = require("../schedules_dailyv2");
@@ -40,8 +40,10 @@ const rows = [
 const groupsById = new Map([
   ["200023690", {
     recordId: "recGroupLive",
+    live_groups_key: "200000061|2026-05-07|15|5|200023690",
     class_group_id: 200023690,
     day: "2026-05-07",
+    live_focus_day: "2026-05-07",
     ring_number: 5,
     estimated_start_time: "08:30:00",
     status: "In Progress",
@@ -53,12 +55,12 @@ const groupsById = new Map([
   }],
 ]);
 
-const overlay = applyGroupsLiveFallback(rows, groupsById);
-assert.strictEqual(overlay.matched, 1, "groups_live should match by class_group_id");
+const overlay = applyLiveGroupsFallback(rows, groupsById);
+assert.strictEqual(overlay.matched, 1, "live_groups should match by class_group_id");
 
 const fieldMeta = {
   writableNames: new Set([
-    "groups_live",
+    "live_groups",
     "ring_number",
     "show_date",
     "sql_date",
@@ -93,7 +95,7 @@ const fields = buildCurrentFields(
   fieldMeta
 );
 
-assert.deepStrictEqual(fields.groups_live, ["recGroupLive"]);
+assert.deepStrictEqual(fields.live_groups, ["recGroupLive"]);
 assert.strictEqual(fields.ring_number, 5);
 assert.strictEqual(fields.show_date, "2026-05-07");
 assert.strictEqual(fields.sql_date, "2026-05-07");
@@ -131,4 +133,4 @@ assert.ok(
   "missing live/class values must not clear completed_trips"
 );
 
-console.log("schedules_daily_groups_live_fallback tests passed");
+console.log("schedules_daily_live_groups_fallback tests passed");

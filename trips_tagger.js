@@ -35,7 +35,7 @@ const {
   normalizeClassEndpointWithCgid,
 } = require("./lib/watch_trips_enrichment");
 const {
-  buildGroupsLiveMap,
+  buildLiveGroupsMap,
   buildLiveClassDataEndpoint,
   findLiveClassTrip,
   normalizeLiveClassDataPayload,
@@ -49,7 +49,7 @@ const WATCH_TABLE = process.env.WATCH_TABLE || "watch_trips";
 const WATCH_VIEW  = process.env.WATCH_VIEW || "heartbeat";
 const SHOWS_TABLE = process.env.SHOWS_TABLE || "shows";
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
-const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
+const TABLE_LIVE_GROUPS = process.env.TABLE_LIVE_GROUPS || "live_groups";
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const HEARTBEAT_SORT_FIELD = process.env.HEARTBEAT_SORT_FIELD || "hb_at";
 const MAX_RECORDS = Number(process.env.MAX_RECORDS || "500");
@@ -1127,11 +1127,11 @@ async function fetchShowsMap() {
     let liveGroupsByGroupId = new Map();
     let liveGroupsError = null;
     try {
-      const groupsLiveRows = await airtableList(TABLE_GROUPS_LIVE, null);
-      liveGroupsByGroupId = buildGroupsLiveMap(groupsLiveRows, appCtx);
+      const liveGroupsRows = await airtableList(TABLE_LIVE_GROUPS, null);
+      liveGroupsByGroupId = buildLiveGroupsMap(liveGroupsRows, appCtx);
     } catch (e) {
       liveGroupsError = String(e?.message || e).slice(0, 300);
-      console.log(`endpoint warn: err:groups_live_fetch_failed :: ${liveGroupsError}`);
+      console.log(`endpoint warn: err:live_groups_fetch_failed :: ${liveGroupsError}`);
     }
 
     const liveClassTargets = new Map();
@@ -1571,7 +1571,7 @@ async function fetchShowsMap() {
 
             let reason = "ok:liveclassv2_matched";
             if (order_of_go === null) reason = `${reason}|warn:missing_order_of_go`;
-            if (!liveCtx.group) reason = `${reason}|warn:missing_groups_live_context`;
+            if (!liveCtx.group) reason = `${reason}|warn:missing_live_groups_context`;
             if (liveCtx.group && !liveCtx.group.status) reason = `${reason}|warn:missing_status`;
             if (!linkedShowRecordId) reason = `${reason}|warn:shows_link_missing`;
             setBaseFields(updateFields, observedAt, reason);
@@ -1590,7 +1590,7 @@ async function fetchShowsMap() {
         }
 
         let reason = "err:missing_liveclass_mapping";
-        if (!liveCtx.group) reason = `${reason}|debug:missing_groups_live_context`;
+        if (!liveCtx.group) reason = `${reason}|debug:missing_live_groups_context`;
         if (!getLiveClassDataEndpoint) reason = `${reason}|debug:missing_getLiveClassData`;
         if (getLiveClassDataEndpoint && getLiveClassDataClassId === null) reason = `${reason}|debug:invalid_getLiveClassData`;
         if (class_id === null) reason = `${reason}|debug:missing_class_id`;
@@ -2022,8 +2022,8 @@ async function fetchShowsMap() {
       unique_class_endpoints: uniqueEndpoints.size,
       unique_classsignup_endpoints: uniqueClassSignupEndpoints.size,
       classsignup_endpoints_fetched: classSignupEndpointCache.size,
-      groups_live_fetch_error: liveGroupsError,
-      groups_live_eligible_groups: liveGroupsByGroupId.size,
+      live_groups_fetch_error: liveGroupsError,
+      live_groups_eligible_groups: liveGroupsByGroupId.size,
       unique_liveclass_endpoints: liveClassTargets.size,
       liveclass_endpoint_errors: [...liveClassDataCache.values()].filter((item) => item && !item.ok).length,
       liveclass_attempt_audit: liveClassAttemptAudit,

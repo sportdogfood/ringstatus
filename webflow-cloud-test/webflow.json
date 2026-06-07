@@ -1,5 +1,6 @@
 {
   "cloud": {
-    "framework": "astro"
+    "framework": "astro",
+    "project_id": "d7d97751-20e1-4148-a5cf-ee58671c128a"
   }
 }

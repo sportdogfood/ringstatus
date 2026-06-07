@@ -1,22 +1,22 @@
 const assert = require("assert");
 
 const {
-  buildGroupsLiveMap,
+  buildLiveGroupsMap,
   buildLiveClassDataEndpoint,
   findLiveClassTrip,
   normalizeLiveClassDataPayload,
   resolveLiveClassIdsForTrip,
 } = require("../lib/liveclassv2_enrichment");
 
-const groups = buildGroupsLiveMap([
+const groups = buildLiveGroupsMap([
   {
     id: "recLive",
     fields: {
       class_group_id: 200023694,
       show_id: 200000061,
       day: "2026-05-07",
-      classes: "200024875,200025008",
-      classNumbers: ["711", "712"],
+      class_ids: "200024875,200025008",
+      class_numbers: ["711", "712"],
       has_JSON: "true",
       status: "Underway",
       gone: 27,

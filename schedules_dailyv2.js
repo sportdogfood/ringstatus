@@ -34,7 +34,7 @@ const TABLE_SHOW_TARGET = process.env.TABLE_SHOW_TARGET || process.env.TABLE_SHO
 const TABLE_SHOWS = process.env.TABLE_SHOWS || "shows";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
 const TABLE_ACTIVE_GROUPS = process.env.TABLE_ACTIVE_GROUPS || "active_groups";
-const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
+const TABLE_LIVE_GROUPS = process.env.TABLE_LIVE_GROUPS || "live_groups";
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 
 const VIEW_HEARTBEAT = process.env.VIEW_HEARTBEAT || "heartbeat";
@@ -1570,13 +1570,15 @@ function splitNumericStrings(value) {
     .filter((item) => numOrNull(item) !== null);
 }
 
-function resolveGroupsLiveClassId(groupsLiveDetail, classNumber) {
+function resolveLiveGroupsClassId(liveGroupsDetail, classNumber) {
   const wantedClassNumber = numOrNull(classNumber);
-  if (wantedClassNumber === null || !groupsLiveDetail) return null;
+  if (wantedClassNumber === null || !liveGroupsDetail) return null;
 
-  const classIds = groupsLiveDetail.class_ids || splitNumericStrings(groupsLiveDetail.classes);
-  const classNumbers = groupsLiveDetail.class_numbers || splitNumericStrings(
-    pickFirst(groupsLiveDetail.classNumbers, groupsLiveDetail.class_numbers_list)
+  const classIds = liveGroupsDetail.class_ids || splitNumericStrings(
+    pickFirst(liveGroupsDetail.class_ids, liveGroupsDetail.classes)
+  );
+  const classNumbers = liveGroupsDetail.class_numbers || splitNumericStrings(
+    pickFirst(liveGroupsDetail.class_numbers, liveGroupsDetail.classNumbers, liveGroupsDetail.class_numbers_list)
   );
 
   for (let index = 0; index < classNumbers.length; index += 1) {
@@ -1906,10 +1908,10 @@ function buildCurrentFields(
   const fields = { ...normalizedRow.fields };
   const isCurrentScope = options.isCurrentScope !== false;
   const classDetail = normalizedRow?.class_detail || null;
-  const groupsLiveDetail = normalizedRow?.groups_live_detail || null;
-  const groupsLiveDay = toIsoDateOnly(groupsLiveDetail?.day);
+  const liveGroupsDetail = normalizedRow?.live_groups_detail || null;
+  const liveGroupsDay = toIsoDateOnly(liveGroupsDetail?.live_focus_day) || toIsoDateOnly(liveGroupsDetail?.day);
   const resolvedScheduledDate = toIsoDateOnly(
-    pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date, groupsLiveDay)
+    pickFirst(classDetail?.schedule_date, fields.scheduled_date, fields.schedule_show_datev2, fields.show_date, liveGroupsDay)
   );
   delete fields.scope_status;
   if (resolvedScheduledDate) {
@@ -1928,40 +1930,40 @@ function buildCurrentFields(
   if (completedTrips !== null && completedTrips !== undefined) {
     setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", completedTrips);
   }
-  if (groupsLiveDetail) {
-    if (groupsLiveDetail.recordId) {
-      setResolvedField(fields, watchScheduleFieldMeta, "groups_live", [groupsLiveDetail.recordId]);
+  if (liveGroupsDetail) {
+    if (liveGroupsDetail.recordId) {
+      setResolvedField(fields, watchScheduleFieldMeta, "live_groups", [liveGroupsDetail.recordId]);
     }
-    const resolvedClassId = resolveGroupsLiveClassId(groupsLiveDetail, fields.class_number);
+    const resolvedClassId = resolveLiveGroupsClassId(liveGroupsDetail, fields.class_number);
     if (resolvedClassId !== null && isBlank(fields.class_id)) {
       setResolvedField(fields, watchScheduleFieldMeta, "class_id", resolvedClassId);
     }
-    if (groupsLiveDetail.ring_number !== null && groupsLiveDetail.ring_number !== undefined && isBlank(fields.ring_number)) {
-      setResolvedField(fields, watchScheduleFieldMeta, "ring_number", groupsLiveDetail.ring_number);
+    if (liveGroupsDetail.ring_number !== null && liveGroupsDetail.ring_number !== undefined && isBlank(fields.ring_number)) {
+      setResolvedField(fields, watchScheduleFieldMeta, "ring_number", liveGroupsDetail.ring_number);
     }
-    if (groupsLiveDay) {
-      if (isBlank(fields.show_date)) setResolvedField(fields, watchScheduleFieldMeta, "show_date", groupsLiveDay);
-      if (isBlank(fields.sql_date)) setResolvedField(fields, watchScheduleFieldMeta, "sql_date", groupsLiveDay);
-      if (isBlank(fields.schedule_show_datev2)) setResolvedField(fields, watchScheduleFieldMeta, "schedule_show_datev2", groupsLiveDay);
-      if (isBlank(fields.scheduled_date)) setResolvedField(fields, watchScheduleFieldMeta, "scheduled_date", groupsLiveDay);
-      if (isBlank(fields.schedule_date)) setResolvedField(fields, watchScheduleFieldMeta, "schedule_date", groupsLiveDay);
+    if (liveGroupsDay) {
+      if (isBlank(fields.show_date)) setResolvedField(fields, watchScheduleFieldMeta, "show_date", liveGroupsDay);
+      if (isBlank(fields.sql_date)) setResolvedField(fields, watchScheduleFieldMeta, "sql_date", liveGroupsDay);
+      if (isBlank(fields.schedule_show_datev2)) setResolvedField(fields, watchScheduleFieldMeta, "schedule_show_datev2", liveGroupsDay);
+      if (isBlank(fields.scheduled_date)) setResolvedField(fields, watchScheduleFieldMeta, "scheduled_date", liveGroupsDay);
+      if (isBlank(fields.schedule_date)) setResolvedField(fields, watchScheduleFieldMeta, "schedule_date", liveGroupsDay);
     }
-    if (groupsLiveDetail.estimated_start_time) {
-      setResolvedField(fields, watchScheduleFieldMeta, "estimated_start_time", groupsLiveDetail.estimated_start_time);
-      setResolvedField(fields, watchScheduleFieldMeta, "latest_estimated_start_time", groupsLiveDetail.estimated_start_time);
-      setResolvedField(fields, watchScheduleFieldMeta, "___latest_estimated_start_time", groupsLiveDetail.estimated_start_time);
+    if (liveGroupsDetail.estimated_start_time) {
+      setResolvedField(fields, watchScheduleFieldMeta, "estimated_start_time", liveGroupsDetail.estimated_start_time);
+      setResolvedField(fields, watchScheduleFieldMeta, "latest_estimated_start_time", liveGroupsDetail.estimated_start_time);
+      setResolvedField(fields, watchScheduleFieldMeta, "___latest_estimated_start_time", liveGroupsDetail.estimated_start_time);
     }
-    if (groupsLiveDetail.status) {
-      setResolvedField(fields, watchScheduleFieldMeta, "status", groupsLiveDetail.status);
-      setResolvedField(fields, watchScheduleFieldMeta, "latest_status", groupsLiveDetail.status);
+    if (liveGroupsDetail.status) {
+      setResolvedField(fields, watchScheduleFieldMeta, "status", liveGroupsDetail.status);
+      setResolvedField(fields, watchScheduleFieldMeta, "latest_status", liveGroupsDetail.status);
     }
-    if (groupsLiveDetail.total !== null && groupsLiveDetail.total !== undefined) {
-      setResolvedField(fields, watchScheduleFieldMeta, "total_trips", groupsLiveDetail.total);
+    if (liveGroupsDetail.total !== null && liveGroupsDetail.total !== undefined) {
+      setResolvedField(fields, watchScheduleFieldMeta, "total_trips", liveGroupsDetail.total);
     }
-    if (groupsLiveDetail.gone !== null && groupsLiveDetail.gone !== undefined) {
-      setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", groupsLiveDetail.gone);
+    if (liveGroupsDetail.gone !== null && liveGroupsDetail.gone !== undefined) {
+      setResolvedField(fields, watchScheduleFieldMeta, "completed_trips", liveGroupsDetail.gone);
     }
-    setResolvedField(fields, watchScheduleFieldMeta, "latest_ingested_at", pickFirst(groupsLiveDetail.ingested_at, groupsLiveDetail.curr_updated_at));
+    setResolvedField(fields, watchScheduleFieldMeta, "latest_ingested_at", pickFirst(liveGroupsDetail.ingested_at, liveGroupsDetail.curr_updated_at));
   }
   const scheduleTieBreaker = keyPart(normalizedRow.schedule_key_tie_breaker);
   const scheduleKeys = buildScheduleKeyParts({
@@ -2240,23 +2242,26 @@ function parseTimestampMs(value) {
   return Number.isFinite(ms) ? ms : null;
 }
 
-function groupsLiveRecencyMs(row) {
+function liveGroupsRecencyMs(row) {
   return parseTimestampMs(pickFirst(row?.curr_updated_at, row?.ingested_at, row?.created_time)) || 0;
 }
 
-function chooseGroupsLiveWinner(existing, candidate) {
+function chooseLiveGroupsWinner(existing, candidate) {
   if (!existing) return candidate;
   if (boolValue(candidate?.is_live) && !boolValue(existing?.is_live)) return candidate;
   if (!boolValue(candidate?.is_live) && boolValue(existing?.is_live)) return existing;
-  return groupsLiveRecencyMs(candidate) >= groupsLiveRecencyMs(existing) ? candidate : existing;
+  return liveGroupsRecencyMs(candidate) >= liveGroupsRecencyMs(existing) ? candidate : existing;
 }
 
-async function fetchGroupsLiveRows(appShowId, targetDays) {
-  const fieldSet = await fetchTableFieldSet(TABLE_GROUPS_LIVE).catch(() => new Set());
+async function fetchLiveGroupsRows(appShowId, targetDays) {
+  const fieldSet = await fetchTableFieldSet(TABLE_LIVE_GROUPS).catch(() => new Set());
   const baseFields = [
+    "live_groups_key",
     "class_group_id",
     "show_id",
     "day",
+    "live_focus_day",
+    "customer_id",
     "ring_number",
     "estimated_start_time",
     "gone",
@@ -2266,8 +2271,11 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
     "ingested_at",
     "created_time",
     "is_live",
-    "stop_updating",
+    "is_current_scope",
+    "is_cuurent_scope",
+    "dropped_at",
     "classes",
+    "class_ids",
     "classNumbers",
     "class_numbers",
     "class_numbers_list",
@@ -2289,15 +2297,18 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
       .filter(Boolean)
   );
 
-  const rows = await airtableList(TABLE_GROUPS_LIVE, query);
+  const rows = await airtableList(TABLE_LIVE_GROUPS, query);
   return rows
     .map((row) => {
       const fields = row?.fields || {};
       return {
         recordId: row.id,
+        live_groups_key: strOrNull(fields.live_groups_key),
         class_group_id: numOrNull(fields.class_group_id),
         show_id: numOrNull(fields.show_id),
-        day: toIsoDateOnly(fields.day),
+        day: toIsoDateOnly(fields.live_focus_day) || toIsoDateOnly(fields.day),
+        live_focus_day: toIsoDateOnly(fields.live_focus_day),
+        customer_id: numOrNull(fields.customer_id),
         ring_number: numOrNull(fields.ring_number),
         estimated_start_time: strOrNull(fields.estimated_start_time),
         gone: numOrNull(fields.gone),
@@ -2307,39 +2318,41 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
         ingested_at: strOrNull(fields.ingested_at),
         created_time: strOrNull(fields.created_time),
         is_live: boolValue(fields.is_live),
-        stop_updating: boolValue(fields.stop_updating),
-        class_ids: splitNumericStrings(fields.classes),
-        class_numbers: splitNumericStrings(pickFirst(fields.classNumbers, fields.class_numbers, fields.class_numbers_list)),
+        is_current_scope: boolValue(fields.is_current_scope) || boolValue(fields.is_cuurent_scope),
+        dropped_at: strOrNull(fields.dropped_at),
+        class_ids: splitNumericStrings(pickFirst(fields.class_ids, fields.classes)),
+        class_numbers: splitNumericStrings(pickFirst(fields.class_numbers, fields.classNumbers, fields.class_numbers_list)),
       };
     })
     .filter((row) => row.class_group_id !== null)
     .filter((row) => row.show_id === appShowId)
-    .filter((row) => !row.stop_updating)
+    .filter((row) => !row.dropped_at)
+    .filter((row) => row.is_current_scope || (!fieldSet.has("is_current_scope") && !fieldSet.has("is_cuurent_scope")))
     .filter((row) => !normalizedDays.size || !row.day || normalizedDays.has(row.day));
 }
 
-function buildGroupsLiveMap(rows) {
+function buildLiveGroupsMap(rows) {
   const byGroupId = new Map();
   for (const row of rows || []) {
     const key = normalizeKey(row?.class_group_id);
     if (!key) continue;
-    byGroupId.set(key, chooseGroupsLiveWinner(byGroupId.get(key), row));
+    byGroupId.set(key, chooseLiveGroupsWinner(byGroupId.get(key), row));
   }
   return byGroupId;
 }
 
-function applyGroupsLiveFallback(rows, groupsById) {
+function applyLiveGroupsFallback(rows, groupsById) {
   let matched = 0;
 
   const nextRows = (rows || []).map((row) => {
     const classGroupId = numOrNull(row?.fields?.class_group_id);
-    const groupsLiveDetail = groupsById?.get?.(normalizeKey(classGroupId)) || null;
-    if (!groupsLiveDetail) return row;
+    const liveGroupsDetail = groupsById?.get?.(normalizeKey(classGroupId)) || null;
+    if (!liveGroupsDetail) return row;
 
     matched += 1;
     return {
       ...row,
-      groups_live_detail: groupsLiveDetail,
+      live_groups_detail: liveGroupsDetail,
     };
   });
 
@@ -2695,16 +2708,16 @@ async function runScheduleForBaseContext({
     scope.app_sql_datev2
   );
   let scopedRows = scheduleHtmlTimeOverlay.rows;
-  let groupsLiveRows = [];
-  let groupsLiveMatchedRows = 0;
-  let groupsLiveError = null;
+  let liveGroupsRows = [];
+  let liveGroupsMatchedRows = 0;
+  let liveGroupsError = null;
   try {
-    groupsLiveRows = await fetchGroupsLiveRows(scope.app_show_idv2, new Set([scope.app_sql_datev2]));
-    const groupsLiveOverlay = applyGroupsLiveFallback(scopedRows, buildGroupsLiveMap(groupsLiveRows));
-    scopedRows = groupsLiveOverlay.rows;
-    groupsLiveMatchedRows = groupsLiveOverlay.matched;
+    liveGroupsRows = await fetchLiveGroupsRows(scope.app_show_idv2, new Set([scope.app_sql_datev2]));
+    const liveGroupsOverlay = applyLiveGroupsFallback(scopedRows, buildLiveGroupsMap(liveGroupsRows));
+    scopedRows = liveGroupsOverlay.rows;
+    liveGroupsMatchedRows = liveGroupsOverlay.matched;
   } catch (error) {
-    groupsLiveError = String(error?.message || error);
+    liveGroupsError = String(error?.message || error);
   }
   const showRecordId = await fetchShowRecordId(scope.app_show_idv2).catch(() => null);
   const existingRows = await fetchExistingRowsForShow(scope.app_show_idv2);
@@ -3030,11 +3043,11 @@ async function runScheduleForBaseContext({
       },
       classes_list_enrichment: classListEnrichment,
       schedule_html_time_overlay: scheduleHtmlTimeOverlay.summary,
-      groups_live_fallback: {
-        table: TABLE_GROUPS_LIVE,
-        rows: groupsLiveRows.length,
-        matched_rows: groupsLiveMatchedRows,
-        error: groupsLiveError,
+      live_groups_fallback: {
+        table: TABLE_LIVE_GROUPS,
+        rows: liveGroupsRows.length,
+        matched_rows: liveGroupsMatchedRows,
+        error: liveGroupsError,
       },
       forward_schedule_writes: forwardScheduleWriteSummary,
     },
@@ -3210,7 +3223,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  applyGroupsLiveFallback,
+  applyLiveGroupsFallback,
   applyClassListIdEnrichment,
   applyScheduleHtmlTimeOverlay,
   buildClassIdByNumberFromClassesPayload,

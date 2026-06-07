@@ -5,7 +5,7 @@ const path = require("path");
 
 const TABLE_HEARTBEAT = process.env.TABLE_HEARTBEAT || "heartbeat";
 const TABLE_WATCH_SCHEDULE = process.env.TABLE_WATCH_SCHEDULE || "watch_schedule";
-const TABLE_GROUPS_LIVE = process.env.TABLE_GROUPS_LIVE || "groups_live";
+const TABLE_LIVE_GROUPS = process.env.TABLE_LIVE_GROUPS || "live_groups";
 const TABLE_SCHEDULE_LOGS = process.env.TABLE_SCHEDULE_LOGS || "schedule_logs";
 const TABLE_TRIGGER_TAGS = process.env.TABLE_TRIGGER_TAGS || "trigger_tags";
 const TABLE_ACTIVE_ALERTS = process.env.TABLE_ACTIVE_ALERTS || "active_alerts";
@@ -89,20 +89,32 @@ function pickFirst(...values) {
 }
 
 function splitNumericStrings(value) {
-  const raw = Array.isArray(value) ? value : String(value || "").split(",");
+  let raw = Array.isArray(value) ? value : null;
+  if (!raw) {
+    const text = String(value || "").trim();
+    if (text.startsWith("[") && text.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) raw = parsed;
+      } catch {
+        raw = null;
+      }
+    }
+    if (!raw) raw = text.split(",");
+  }
   return raw
     .map((item) => String(item).trim())
     .filter(Boolean)
     .filter((item) => numOrNull(item) !== null);
 }
 
-function resolveGroupsLiveClassId(groupRow, classNumber) {
+function resolveLiveGroupsClassId(groupRow, classNumber) {
   const wantedClassNumber = numOrNull(classNumber);
   if (wantedClassNumber === null || !groupRow) return null;
 
-  const classIds = groupRow.class_ids || splitNumericStrings(groupRow.classes);
+  const classIds = groupRow.class_ids || splitNumericStrings(pickFirst(groupRow.class_ids, groupRow.classes));
   const classNumbers = groupRow.class_numbers || splitNumericStrings(
-    pickFirst(groupRow.classNumbers, groupRow.class_numbers_list)
+    pickFirst(groupRow.class_numbers, groupRow.classNumbers, groupRow.class_numbers_list)
   );
 
   for (let index = 0; index < classNumbers.length; index += 1) {
@@ -962,12 +974,15 @@ async function fetchWatchScheduleRows() {
   });
 }
 
-async function fetchGroupsLiveRows(appShowId, targetDays) {
-  const fieldSet = await fetchTableFieldSet(TABLE_GROUPS_LIVE);
+async function fetchLiveGroupsRows(appShowId, targetDays) {
+  const fieldSet = await fetchTableFieldSet(TABLE_LIVE_GROUPS);
   const baseFields = [
+    "live_groups_key",
     "class_group_id",
     "show_id",
     "day",
+    "live_focus_day",
+    "customer_id",
     "estimated_start_time",
     "gone",
     "total",
@@ -976,39 +991,22 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
     "ingested_at",
     "created_time",
     "is_live",
+    "is_current_scope",
+    "is_cuurent_scope",
+    "dropped_at",
     "classes",
+    "class_ids",
     "classNumbers",
     "class_numbers",
     "class_numbers_list",
   ];
   const requestedFields = baseFields.filter((fieldName) => fieldSet.has(fieldName));
-  let includeStopUpdating = fieldSet.has("stop_updating");
 
   let rows;
-  try {
-    rows = await airtableList(TABLE_GROUPS_LIVE, {
-      maxRecords: MAX_RECORDS,
-      "fields[]": requestedFields,
-    });
-  } catch (error) {
-    const unknownField = extractUnknownFieldNameFromAirtableError(error);
-    if (!includeStopUpdating || unknownField !== "stop_updating") throw error;
-
-    includeStopUpdating = false;
-    console.log(
-      JSON.stringify({
-        ok: true,
-        event: "groups_live_optional_field_skipped",
-        field_name: "stop_updating",
-        table: TABLE_GROUPS_LIVE,
-      })
-    );
-
-    rows = await airtableList(TABLE_GROUPS_LIVE, {
-      maxRecords: MAX_RECORDS,
-      "fields[]": requestedFields.filter((fieldName) => fieldName !== "stop_updating"),
-    });
-  }
+  rows = await airtableList(TABLE_LIVE_GROUPS, {
+    maxRecords: MAX_RECORDS,
+    "fields[]": requestedFields,
+  });
 
   const normalizedDays = new Set(Array.from(targetDays || []).map((value) => toIsoDateOnly(value)).filter(Boolean));
   return rows
@@ -1016,9 +1014,12 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
       const fields = row?.fields || {};
       return {
         recordId: row.id,
+        live_groups_key: strOrNull(fields.live_groups_key),
         class_group_id: numOrNull(fields.class_group_id),
         show_id: numOrNull(fields.show_id),
-        day: toIsoDateOnly(fields.day),
+        day: toIsoDateOnly(fields.live_focus_day) || toIsoDateOnly(fields.day),
+        live_focus_day: toIsoDateOnly(fields.live_focus_day),
+        customer_id: numOrNull(fields.customer_id),
         estimated_start_time: strOrNull(fields.estimated_start_time),
         gone: numOrNull(fields.gone),
         total: numOrNull(fields.total),
@@ -1027,18 +1028,20 @@ async function fetchGroupsLiveRows(appShowId, targetDays) {
         ingested_at: strOrNull(fields.ingested_at),
         created_time: strOrNull(fields.created_time),
         is_live: boolValue(fields.is_live),
-        stop_updating: includeStopUpdating ? boolValue(fields.stop_updating) : false,
-        class_ids: splitNumericStrings(fields.classes),
-        class_numbers: splitNumericStrings(pickFirst(fields.classNumbers, fields.class_numbers, fields.class_numbers_list)),
+        is_current_scope: boolValue(fields.is_current_scope) || boolValue(fields.is_cuurent_scope),
+        dropped_at: strOrNull(fields.dropped_at),
+        class_ids: splitNumericStrings(pickFirst(fields.class_ids, fields.classes)),
+        class_numbers: splitNumericStrings(pickFirst(fields.class_numbers, fields.classNumbers, fields.class_numbers_list)),
       };
     })
     .filter((row) => row.class_group_id !== null)
-    .filter((row) => !row.stop_updating)
+    .filter((row) => !row.dropped_at)
+    .filter((row) => row.is_current_scope || (!fieldSet.has("is_current_scope") && !fieldSet.has("is_cuurent_scope")))
     .filter((row) => row.show_id === appShowId)
     .filter((row) => !normalizedDays.size || !row.day || normalizedDays.has(row.day));
 }
 
-function buildGroupsLiveMap(rows) {
+function buildLiveGroupsMap(rows) {
   const byGroupId = new Map();
 
   for (const row of rows) {
@@ -1091,7 +1094,7 @@ function normalizeWatchScheduleRow(record) {
     total_trips: numOrNull(fields.total_trips),
     latest_estimated_start_time: strOrNull(fields.latest_estimated_start_time),
     latest_estimated_start_hidden: strOrNull(fields.___latest_estimated_start_time),
-    groups_live_link: firstLinkId(fields.groups_live),
+    live_groups_link: firstLinkId(fields.live_groups),
     schedule_endpoint: strOrNull(fields.schedule_endpoint),
     schedule_empty_endpoint: strOrNull(fields.schedule_empty_endpoint),
     classes_endpointv2: strOrNull(fields.classes_endpointv2),
@@ -1137,11 +1140,11 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
     : null;
   const minsTillStart = startDeltaMins !== null ? Math.max(0, startDeltaMins) : null;
   const minsSinceStart = startDeltaMins !== null ? Math.max(0, -startDeltaMins) : null;
-  const resolvedClassId = resolveGroupsLiveClassId(groupRow, row.class_number);
+  const resolvedClassId = resolveLiveGroupsClassId(groupRow, row.class_number);
   const manualTimeOverride = hasManualTimeOverride(row);
 
   const watchScheduleFields = {
-    groups_live: groupRow ? [groupRow.recordId] : undefined,
+    live_groups: groupRow ? [groupRow.recordId] : undefined,
     class_id: resolvedClassId !== null && isBlank(row.class_id) ? resolvedClassId : undefined,
     estimated_start_time: manualTimeOverride ? undefined : (startLiveText || undefined),
     latest_estimated_start_time: manualTimeOverride ? undefined : (startLiveText || undefined),
@@ -1154,7 +1157,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   };
 
   const changedFields = [];
-  if (groupRow && !sameValue(row.groups_live_link ? [row.groups_live_link] : null, [groupRow.recordId])) changedFields.push("groups_live");
+  if (groupRow && !sameValue(row.live_groups_link ? [row.live_groups_link] : null, [groupRow.recordId])) changedFields.push("live_groups");
   if (watchScheduleFields.class_id !== undefined && !sameValue(row.class_id, watchScheduleFields.class_id)) changedFields.push("class_id");
   if (!manualTimeOverride && startLiveText && !sameValue(row.estimated_start_time, startLiveText)) changedFields.push("estimated_start_time");
   if (!manualTimeOverride && startLiveText && !sameValue(row.latest_estimated_start_time, startLiveText)) changedFields.push("latest_estimated_start_time");
@@ -1166,7 +1169,7 @@ function deriveRowComputation(row, groupRow, heartbeatContext) {
   if (!sameValue(row.latest_ingested_at, pickFirst(groupRow?.ingested_at, groupRow?.curr_updated_at) || null)) changedFields.push("latest_ingested_at");
 
   const priorOutputs = {
-    groups_live: row.groups_live_link ? [row.groups_live_link] : [],
+    live_groups: row.live_groups_link ? [row.live_groups_link] : [],
     class_id: row.class_id,
     estimated_start_time: row.estimated_start_time,
     latest_estimated_start_time: row.latest_estimated_start_time,
@@ -1557,7 +1560,7 @@ function buildScheduleLogFields(row, groupRow, heartbeatContext, computation, ca
       nextTargetClassId: row.nextTargetClassId,
       perTrip: row.perTrip,
     },
-    groups_live: groupRow ? {
+    live_groups: groupRow ? {
       record_id: groupRow.recordId,
       class_group_id: groupRow.class_group_id,
       day: groupRow.day,
@@ -1632,7 +1635,7 @@ async function main() {
     console.log(JSON.stringify({
       ok: true,
       run_status: "NOOP",
-      reason: "groups_live overlay only runs in DAY mode",
+      reason: "live_groups overlay only runs in DAY mode",
       heartbeat_mode: heartbeatContext.mode,
       app_show_id: heartbeatContext.app_show_id,
       app_sql_date: heartbeatContext.app_sql_date,
@@ -1717,12 +1720,12 @@ async function main() {
       .filter(Boolean)
   );
 
-  const groupsRows = await fetchGroupsLiveRows(heartbeatContext.app_show_id, targetDays);
+  const groupsRows = await fetchLiveGroupsRows(heartbeatContext.app_show_id, targetDays);
   if (!groupsRows.length) {
     console.log(JSON.stringify({
       ok: true,
       run_status: "NOOP",
-      reason: "No groups_live rows available for current show/day",
+      reason: "No live_groups rows available for current show/day",
       heartbeat_mode: heartbeatContext.mode,
       app_show_id: heartbeatContext.app_show_id,
       target_days: Array.from(targetDays),
@@ -1733,7 +1736,7 @@ async function main() {
     return;
   }
 
-  const groupsById = buildGroupsLiveMap(groupsRows);
+  const groupsById = buildLiveGroupsMap(groupsRows);
   const watchTripById = CLASS_TILLS_DIRECT_THREADS && classTillsAlertConfigs.length
     ? await fetchWatchTripsById(watchRows).catch(() => new Map())
     : new Map();
@@ -1947,7 +1950,7 @@ async function main() {
     watch_rows: watchRows.length,
     watch_rows_with_trips: rowsWithTrips.length,
     watch_rows_without_trips: rowsWithoutTrips.length,
-    groups_live_rows: groupsRows.length,
+    live_groups_rows: groupsRows.length,
     matched_rows: sumBatch("matched_rows"),
     skipped_rows: sumBatch("skipped_rows"),
     changed_rows: sumBatch("changed_rows"),

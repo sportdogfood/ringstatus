@@ -1,0 +1,429 @@
+{
+  "rowCount": 109,
+  "pivotCandidateCount": 22,
+  "pivotCandidates": [
+    {
+      "id": "rec7qni1skMm7zrJA",
+      "table": "wec_show_lane",
+      "main": "sources",
+      "related": [
+        "source"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "rec07cHMECkIOa1n0",
+      "table": "wec_show_lane_fields",
+      "main": "sources",
+      "related": [
+        "source"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recrKvbOJ07OsRalF",
+      "table": "wec_lanes",
+      "main": "sources",
+      "related": [
+        "source",
+        "lanes"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recCeze3tXZyHyvjg",
+      "table": "pak_byqty_lanes",
+      "main": "packing_plans",
+      "related": [
+        "plan",
+        "quantity",
+        "lanes"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recU1dQK3j9IgXSZJ",
+      "table": "pak_byqty_slots",
+      "main": "packing_plans",
+      "related": [
+        "plan",
+        "quantity",
+        "slots"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recbaw7S9Ux1zP07v",
+      "table": "pak_byhorse_lanes",
+      "main": "packing_plans",
+      "related": [
+        "plan",
+        "per_horse",
+        "lanes"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recnXhSVKqoUvQnsD",
+      "table": "pak_byhorse_slots",
+      "main": "packing_plans",
+      "related": [
+        "plan",
+        "per_horse",
+        "slots"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recojTsVTYtX08gv8",
+      "table": "pak_bygroom_lanes",
+      "main": "packing_plans",
+      "related": [
+        "plan",
+        "per_groom",
+        "lanes"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "reciJDooTNXrBEisx",
+      "table": "pak_bygroom_slots",
+      "main": "packing_plans",
+      "related": [
+        "plan",
+        "per_groom",
+        "slots"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recnmhppxnTnSJLRW",
+      "table": "pak_pivots",
+      "main": "pivots",
+      "related": [
+        "pivot"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recbsxF4xiqR9VBXN",
+      "table": "pak_turnouts",
+      "main": "turnout",
+      "related": [
+        "pivot",
+        "turnout"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recmdcMvRqIdc94H2",
+      "table": "pak_slots",
+      "main": "turnout",
+      "related": [
+        "pivot",
+        "turnout",
+        "slots"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recr23X3uOGCS8aOB",
+      "table": "pak_feed_lists",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "lists"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recA5jJPTi9bRjJVD",
+      "table": "pak_feed_types",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "types"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recU2TEwEhKUXISxw",
+      "table": "pak_feed_lanes",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "lanes"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recT4NS9Kg8smN5IL",
+      "table": "pak_feed_slots",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "slots"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recwYrvwhCJJFnL7d",
+      "table": "pak_turnout_links",
+      "main": "turnout",
+      "related": [
+        "pivot",
+        "turnout",
+        "links"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recN4Y9nyruRWVsgR",
+      "table": "pak_turnout_logs",
+      "main": "turnout",
+      "related": [
+        "pivot",
+        "turnout",
+        "logs"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recnzcj1VZyuTCEdd",
+      "table": "pak_feed_items",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "items"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "reccmXzSA9I0isowy",
+      "table": "pak_feed_rations",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "rations"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recwl3kL60CiYmlkq",
+      "table": "pak_feed_links",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "links"
+      ],
+      "kill": false,
+      "unrecognized": false
+    },
+    {
+      "id": "recszSbPlcNleOLni",
+      "table": "pak_feed_logs",
+      "main": "feed",
+      "related": [
+        "pivot",
+        "feed",
+        "logs"
+      ],
+      "kill": false,
+      "unrecognized": false
+    }
+  ],
+  "groupedCounts": {
+    "entities": 10,
+    "excluded": 1,
+    "items": 4,
+    "system": 6,
+    "packing_plans": 28,
+    "sources": 12,
+    "support": 2,
+    "pages": 10,
+    "wires": 3,
+    "sessions": 1,
+    "components": 2,
+    "lists": 3,
+    "fields": 2,
+    "comments": 5,
+    "pivots": 1,
+    "users": 7,
+    "turnout": 4,
+    "feed": 8
+  },
+  "grouped": {
+    "entities": [
+      "horse_profile_tabs",
+      "wec_horses",
+      "pak_grooms",
+      "pak_horses_roster",
+      "pak_entities",
+      "horse_attributes",
+      "horse_roster_logs",
+      "pak_entities_index",
+      "pak_contacts",
+      "pak_locations"
+    ],
+    "excluded": [
+      "wec_ranges"
+    ],
+    "items": [
+      "wec_pack_items _overflow",
+      "wec_pack_items",
+      "wec_packing_items",
+      "pak_items_index"
+    ],
+    "system": [
+      "wec_meta",
+      "pak_system_index",
+      "wec_allowed",
+      "pak_system_styling",
+      "pak_system_logic",
+      "pak_table_types"
+    ],
+    "packing_plans": [
+      "by_plan",
+      "horse_kit_exceptions",
+      "wec_list_plans",
+      "pak_groups",
+      "pak_kits",
+      "pak_kit_items",
+      "horse_kits",
+      "horse_kit_items",
+      "horse_packing_kits",
+      "horse_kit_changes",
+      "pak_byqtys",
+      "pak_byqty_items",
+      "pak_byqty_links",
+      "pak_byqty_logs",
+      "pak_byqty_lanes",
+      "pak_byqty_slots",
+      "pak_byhorses",
+      "pak_byhorse_items",
+      "pak_byhorse_links",
+      "pak_byhorse_logs",
+      "pak_byhorse_lanes",
+      "pak_byhorse_slots",
+      "pak_bygrooms",
+      "pak_bygroom_items",
+      "pak_bygroom_links",
+      "pak_bygroom_logs",
+      "pak_bygroom_lanes",
+      "pak_bygroom_slots"
+    ],
+    "sources": [
+      "wec_skeleton",
+      "wec_label_events",
+      "wec_weeks",
+      "wec_packing_item_horses",
+      "wec_show_lane",
+      "wec_show_lane_fields",
+      "wec_maps",
+      "wec_tables",
+      "wec_shows",
+      "wec_pack_waves",
+      "wec_lanes",
+      "wec_packing_events"
+    ],
+    "support": [
+      "wec_places",
+      "wec_places_tags"
+    ],
+    "pages": [
+      "pak_page_index",
+      "pak_page_types",
+      "pak_pages",
+      "pak_page_stack_index",
+      "pak_tabs",
+      "pak_views",
+      "pak_aggs",
+      "pak_overview",
+      "pak_page_stack",
+      "pak_sections"
+    ],
+    "wires": [
+      "pak_wire_index",
+      "pak_wire_assignments",
+      "pak_linking"
+    ],
+    "sessions": [
+      "pak_sessions"
+    ],
+    "components": [
+      "pak_components",
+      "pak_html_lib"
+    ],
+    "lists": [
+      "wec_pack_lists",
+      "pak_list_family_index",
+      "pak_list_members"
+    ],
+    "fields": [
+      "pak_field_definitions",
+      "pak_fields"
+    ],
+    "comments": [
+      "comments",
+      "comment_types",
+      "wec_commenting",
+      "comment_shorts",
+      "comment_logs"
+    ],
+    "pivots": [
+      "pak_pivots"
+    ],
+    "users": [
+      "user_roles",
+      "user_types",
+      "pak_users",
+      "user_assignments",
+      "user_assignment",
+      "user_tasks",
+      "user_task"
+    ],
+    "turnout": [
+      "pak_turnouts",
+      "pak_slots",
+      "pak_turnout_links",
+      "pak_turnout_logs"
+    ],
+    "feed": [
+      "pak_feed_lists",
+      "pak_feed_types",
+      "pak_feed_lanes",
+      "pak_feed_slots",
+      "pak_feed_items",
+      "pak_feed_rations",
+      "pak_feed_links",
+      "pak_feed_logs"
+    ]
+  }
+}

@@ -1881,7 +1881,7 @@ export async function actionReport(airtable, requestUrl, payload) {
     return { ok: false, error: "unknown_action", action };
   }
 
-  const skipReturnedState = ["set_pack_state", "set_horse_pack_state", "set_horse_kit_state"].includes(action);
+  const skipReturnedState = shouldSkipReturnedState(action);
   const state = skipReturnedState ? null : await stateReport(airtable, requestUrl);
   if (action === "session_start") {
     result = await applySessionStart(airtable, tables, payload, state);
@@ -1893,6 +1893,10 @@ export async function actionReport(airtable, requestUrl, payload) {
   };
   if (state) report.state = state;
   return report;
+}
+
+export function shouldSkipReturnedState(action) {
+  return ["add_quantity", "set_pack_state", "set_horse_pack_state", "set_horse_kit_state"].includes(action);
 }
 
 export async function horseKitLaneReport(airtable, requestUrl) {
