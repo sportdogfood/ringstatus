@@ -1,0 +1,602 @@
+{
+  "out": {
+    "ok": true,
+    "counts": {
+      "pak_pages": 10,
+      "pak_wire_assignments": 46,
+      "pak_system_styling": 1,
+      "pak_system_logic": 1,
+      "pak_list_members": 6,
+      "pak_contacts": 1,
+      "pak_users": 1,
+      "user_assignment": 1,
+      "user_task": 1,
+      "horse_attributes": 6,
+      "comment_types": 1,
+      "comment_logs": 1,
+      "comments": 1,
+      "pak_byqtys": 1,
+      "pak_byqty_slots": 1,
+      "pak_byhorses": 1,
+      "pak_byhorse_slots": 1,
+      "pak_bygrooms": 1,
+      "pak_bygroom_slots": 1
+    },
+    "proofCounts": {
+      "pak_pages": 0,
+      "pak_wire_assignments": 0,
+      "pak_list_members": 6,
+      "pak_contacts": 1,
+      "pak_users": 1,
+      "user_assignment": 1,
+      "user_task": 1,
+      "horse_attributes": 6,
+      "comment_types": 1,
+      "comment_logs": 1,
+      "comments": 1,
+      "pak_byqtys": 1,
+      "pak_byqty_slots": 1,
+      "pak_byhorses": 1,
+      "pak_byhorse_slots": 1,
+      "pak_bygrooms": 1,
+      "pak_bygroom_slots": 1
+    },
+    "endpoints": [
+      {
+        "key": "home",
+        "http": 200,
+        "ok": true,
+        "rows": 4,
+        "counts": null,
+        "reports": [
+          "horse_kits",
+          "quantity",
+          "per_horse",
+          "per_groom"
+        ],
+        "error": null
+      },
+      {
+        "key": "horses",
+        "http": 200,
+        "ok": true,
+        "rows": 52,
+        "counts": {
+          "horses": 52,
+          "active": 37,
+          "inactive": 15,
+          "comments": 4,
+          "changes": 0
+        },
+        "reports": null,
+        "error": null
+      },
+      {
+        "key": "horse_kits",
+        "http": 200,
+        "ok": true,
+        "rows": 40,
+        "counts": {
+          "horses": 40,
+          "visibleHorses": 40,
+          "kits": 1,
+          "kitItems": 40,
+          "need": 1479,
+          "packed": 6,
+          "left": 1473,
+          "notNeeded": 1,
+          "packingRows": 10
+        },
+        "reports": null,
+        "error": null
+      },
+      {
+        "key": "quantity",
+        "http": 200,
+        "ok": true,
+        "rows": 44,
+        "counts": {
+          "items": 44,
+          "need": 0,
+          "packed": 0,
+          "left": 0,
+          "touched": 0
+        },
+        "reports": null,
+        "error": null
+      },
+      {
+        "key": "per_horse",
+        "http": 200,
+        "ok": true,
+        "rows": 14,
+        "counts": {
+          "items": 14,
+          "need": 532,
+          "packed": 0,
+          "left": 532,
+          "touched": 0
+        },
+        "reports": null,
+        "error": null
+      },
+      {
+        "key": "per_groom",
+        "http": 200,
+        "ok": true,
+        "rows": 37,
+        "counts": {
+          "items": 37,
+          "need": 296,
+          "packed": 10,
+          "left": 286,
+          "touched": 2
+        },
+        "reports": null,
+        "error": null
+      }
+    ],
+    "turnoutTableFound": false
+  },
+  "proofs": {
+    "pak_pages": [],
+    "pak_wire_assignments": [],
+    "pak_list_members": [
+      {
+        "id": "rec5bBGc0mWai8JX7",
+        "key": "proof_route_horse",
+        "fields": {
+          "member_record_id": "rec0b16BIYYqiss9N",
+          "notes": "Proof seed for list membership connection.",
+          "member_key": "proof_route_horse",
+          "active": true,
+          "member_entity": "horse",
+          "member_table": "pak_horses_roster",
+          "list_key": "route_home_to_ocala"
+        }
+      },
+      {
+        "id": "rec5y8EbioxYORYD1",
+        "key": "proof_users_groom",
+        "fields": {
+          "member_record_id": "recZl72f3ysmSJMNN",
+          "notes": "Proof seed for list membership connection.",
+          "member_key": "proof_users_groom",
+          "active": true,
+          "member_entity": "user",
+          "member_table": "pak_users",
+          "list_key": "users"
+        }
+      },
+      {
+        "id": "recYjRAbbV6KCH11Y",
+        "key": "proof_needs_attention_kit_item",
+        "fields": {
+          "member_record_id": "rec13uFjqrfOOP0D9",
+          "notes": "Proof seed for list membership connection.",
+          "member_key": "proof_needs_attention_kit_item",
+          "active": true,
+          "member_entity": "item",
+          "member_table": "pak_kit_items",
+          "list_key": "needs_attention"
+        }
+      },
+      {
+        "id": "reckel6gv6pgSkoQe",
+        "key": "proof_contacts_feed",
+        "fields": {
+          "member_record_id": "reclsfeWTWLQnjA3A",
+          "notes": "Proof seed for list membership connection.",
+          "member_key": "proof_contacts_feed",
+          "active": true,
+          "member_entity": "contact",
+          "member_table": "pak_contacts",
+          "list_key": "contacts"
+        }
+      },
+      {
+        "id": "recpgOGUPRTH0wxw2",
+        "key": "proof_locations_ocala",
+        "fields": {
+          "member_record_id": "recN0Q9yIToy97ejI",
+          "notes": "Proof seed for list membership connection.",
+          "member_key": "proof_locations_ocala",
+          "active": true,
+          "member_entity": "location",
+          "member_table": "pak_locations",
+          "list_key": "locations"
+        }
+      },
+      {
+        "id": "reczfATYX4B30Ge6g",
+        "key": "proof_needs_attention_feed_item",
+        "fields": {
+          "member_record_id": "rec4o6kNH9ZxcLbPI",
+          "notes": "Proof seed for list membership connection.",
+          "member_key": "proof_needs_attention_feed_item",
+          "active": true,
+          "member_entity": "item",
+          "member_table": "feed_items",
+          "list_key": "needs_attention"
+        }
+      }
+    ],
+    "pak_contacts": [
+      {
+        "id": "reclsfeWTWLQnjA3A",
+        "key": "proof_feed_contact",
+        "fields": {
+          "display_name": "Proof Feed Contact",
+          "email": "proof-feed@example.com",
+          "phone_number": "+15555550100",
+          "active": "active",
+          "location_key": "ocala_wec",
+          "contact_type": "feed",
+          "contact_key": "proof_feed_contact",
+          "company": "Proof Vendor",
+          "notes": "Proof seed for contacts list and feed/contact filtering."
+        }
+      }
+    ],
+    "pak_users": [
+      {
+        "id": "recZl72f3ysmSJMNN",
+        "key": "proof_user_groom",
+        "fields": {
+          "phone_number": "+15555550101",
+          "user_key": "proof_user_groom",
+          "display_name": "Proof Groom User",
+          "active": "active",
+          "user_task": [
+            "recsbdAKXLxnq7fs1"
+          ],
+          "user_roles": [
+            "recXrytqShHvSkywt"
+          ],
+          "comment_system_key": "proof_user_groom",
+          "tenant_key": "wec",
+          "email": "proof-user@example.com",
+          "notes": "Proof seed for user entity, comments by user, assignments, and tasks.",
+          "user_types": [
+            "recIhObzLsz2ZIiTi"
+          ],
+          "user_assignment": [
+            "recSshNqwiJIrq1h8"
+          ]
+        }
+      }
+    ],
+    "user_assignment": [
+      {
+        "id": "recSshNqwiJIrq1h8",
+        "key": "proof_assignment_horse_kits",
+        "fields": {
+          "user_assignments": [
+            "recM8CvtY2Fb7qQiw"
+          ],
+          "target_table": "pak_horses_roster",
+          "assignment_scope": "horse_kits",
+          "pak_users": [
+            "recZl72f3ysmSJMNN"
+          ],
+          "status": "open",
+          "notes": "Proof seed: user can be assigned to a packing target.",
+          "assignment_type": "packing",
+          "plan_key": "horse_specific",
+          "target_record_id": "rec0b16BIYYqiss9N",
+          "assignment_label": "Proof Horse Kits Assignment",
+          "assignment_key": "proof_assignment_horse_kits",
+          "active": "active"
+        }
+      }
+    ],
+    "user_task": [
+      {
+        "id": "recsbdAKXLxnq7fs1",
+        "key": "proof_task_review_kit_items",
+        "fields": {
+          "active": "active",
+          "task_label": "Proof Review Kit Items",
+          "user_tasks": [
+            "recPEMonURS2mVIAt"
+          ],
+          "pak_users": [
+            "recZl72f3ysmSJMNN"
+          ],
+          "task_type": "review",
+          "task_scope": "horse_kits",
+          "status": "open",
+          "target_table": "pak_kit_items",
+          "priority": "normal",
+          "task_key": "proof_task_review_kit_items",
+          "target_record_id": "rec13uFjqrfOOP0D9",
+          "notes": "Proof seed: user task against an item source."
+        }
+      }
+    ],
+    "horse_attributes": [
+      {
+        "id": "recQmjRsjrTjMEfgz",
+        "key": "proof_wave_membership",
+        "fields": {
+          "input_type": "select",
+          "notes": "Proof seed for horse profile stack/tab coverage.",
+          "attribute_group": "location_wave",
+          "sort_order": 3,
+          "display_label": "Wave Membership",
+          "status": "active",
+          "attribute_key": "proof_wave_membership",
+          "horse_attribute": "proof_wave_membership"
+        }
+      },
+      {
+        "id": "recSF9MS1L2LfMbvB",
+        "key": "proof_turnout_tab",
+        "fields": {
+          "input_type": "select",
+          "notes": "Proof seed for horse profile stack/tab coverage.",
+          "attribute_group": "board",
+          "sort_order": 5,
+          "display_label": "Turnout Tab",
+          "status": "active",
+          "attribute_key": "proof_turnout_tab",
+          "horse_attribute": "proof_turnout_tab"
+        }
+      },
+      {
+        "id": "recpm55iUoLJ5AMAj",
+        "key": "proof_profile_barn_name",
+        "fields": {
+          "input_type": "text",
+          "notes": "Proof seed for horse profile stack/tab coverage.",
+          "attribute_group": "profile",
+          "sort_order": 1,
+          "display_label": "Barn Name",
+          "status": "active",
+          "attribute_key": "proof_profile_barn_name",
+          "horse_attribute": "proof_profile_barn_name"
+        }
+      },
+      {
+        "id": "recqXmIWA8S94U69x",
+        "key": "proof_feed_tab",
+        "fields": {
+          "input_type": "select",
+          "notes": "Proof seed for horse profile stack/tab coverage.",
+          "attribute_group": "board",
+          "sort_order": 4,
+          "display_label": "Feed Tab",
+          "status": "active",
+          "attribute_key": "proof_feed_tab",
+          "horse_attribute": "proof_feed_tab"
+        }
+      },
+      {
+        "id": "rectNbxJ2vkhh3eBh",
+        "key": "proof_profile_status",
+        "fields": {
+          "input_type": "select",
+          "notes": "Proof seed for horse profile stack/tab coverage.",
+          "attribute_group": "status",
+          "sort_order": 2,
+          "display_label": "App Status",
+          "status": "active",
+          "attribute_key": "proof_profile_status",
+          "horse_attribute": "proof_profile_status"
+        }
+      },
+      {
+        "id": "recvSrBIbKkBtPkwA",
+        "key": "proof_comments_tab",
+        "fields": {
+          "input_type": "text",
+          "notes": "Proof seed for horse profile stack/tab coverage.",
+          "attribute_group": "comments",
+          "sort_order": 6,
+          "display_label": "Comments Tab",
+          "status": "active",
+          "attribute_key": "proof_comments_tab",
+          "horse_attribute": "proof_comments_tab"
+        }
+      }
+    ],
+    "comment_types": [
+      {
+        "id": "rectujejcHyvoxtNu",
+        "key": "proof_horse_comment",
+        "fields": {
+          "status": "active",
+          "notes": "Proof seed for horse comment type.",
+          "scope_type": "horse",
+          "wec_commenting": [
+            "rec2wyamvIu2nQUeU"
+          ],
+          "comment_type": "proof_horse_comment"
+        }
+      }
+    ],
+    "comment_logs": [
+      {
+        "id": "recPWt0UcVmuf31z4",
+        "key": "proof_comment_log_horse",
+        "fields": {
+          "scope_label": "Proof horse comment",
+          "comment_log": "proof_comment_log_horse",
+          "notes": "Proof seed for comment logs.",
+          "wec_commenting": [
+            "rec2wyamvIu2nQUeU"
+          ],
+          "created_by": "codex_seed",
+          "action": "created",
+          "comment_shorts": [
+            "rec22FZDfFtMdVlHf"
+          ],
+          "new_value": "Proof comment log seed.",
+          "scope_id": "rec0b16BIYYqiss9N",
+          "scope_type": "horse"
+        }
+      }
+    ],
+    "comments": [
+      {
+        "id": "rece7wxDnp5tuZedV",
+        "key": "proof_comment_horse",
+        "fields": {
+          "scope_id": "rec0b16BIYYqiss9N",
+          "created_by": "codex_seed",
+          "table_name": "wec_packing_events",
+          "comment_status": "active",
+          "notes": "Proof seed for comments table. Horse stored by scope_id because this comments.horse link points to a different horse table.",
+          "table_api": "tblEPLwEYRClYFnar",
+          "scope_label": "Proof horse comment",
+          "rec_id": "rece7wxDnp5tuZedV",
+          "Created": "2026-06-06T23:22:52.000Z",
+          "scope_type": "item",
+          "updated_at": "2026-06-06T23:22:52.000Z",
+          "comment_key": "proof_comment_horse",
+          "event_type": "comment_add",
+          "pack_wave": [
+            "recsJdJgwzWTGN2lq"
+          ],
+          "comment": "Proof horse-level comment seed.",
+          "created_at": "2026-06-06"
+        }
+      }
+    ],
+    "pak_byqtys": [
+      {
+        "id": "recVjMPj50IrGxnap",
+        "key": "proof_quantity_container",
+        "fields": {
+          "notes": "Proof seed for plan container/index connection.",
+          "pak_tabs": [
+            "rec1DuUUsru4EOZrj"
+          ],
+          "pak_byqty_items": [
+            "rec2UU1r8CIFGqZnd"
+          ],
+          "byqty_key": "proof_quantity_container",
+          "display_label": "Proof Quantity Container",
+          "wec_pack_waves": [
+            "recsJdJgwzWTGN2lq"
+          ],
+          "sort_order": 1,
+          "plan_key": "quantity",
+          "wec_list_plans": [
+            "recBT7H5KeigIrAGK"
+          ],
+          "active": true
+        }
+      }
+    ],
+    "pak_byqty_slots": [
+      {
+        "id": "recHdXiI6VGX1I0tn",
+        "key": "proof_quantity_wave_one",
+        "fields": {
+          "sort_order": 1,
+          "plan_key": "quantity",
+          "slot_start": "wave_one",
+          "notes": "Proof seed for slot connection.",
+          "display_label": "Proof Wave One Slot",
+          "wec_pack_waves": [
+            "recsJdJgwzWTGN2lq"
+          ],
+          "byqty_slot_key": "proof_quantity_wave_one",
+          "active": true,
+          "slot_end": "wave_one"
+        }
+      }
+    ],
+    "pak_byhorses": [
+      {
+        "id": "recfK0cLHAr3eu1Qd",
+        "key": "proof_per_horse_container",
+        "fields": {
+          "plan_key": "per_horse",
+          "notes": "Proof seed for plan container/index connection.",
+          "sort_order": 1,
+          "pak_byhorse_items": [
+            "rec1TY2QULeguxSMj"
+          ],
+          "wec_pack_waves": [
+            "recsJdJgwzWTGN2lq"
+          ],
+          "wec_list_plans": [
+            "recsrc6x7AdibwbMa"
+          ],
+          "display_label": "Proof Per-Horse Container",
+          "active": true,
+          "pak_tabs": [
+            "rec1DuUUsru4EOZrj"
+          ],
+          "byhorse_key": "proof_per_horse_container"
+        }
+      }
+    ],
+    "pak_byhorse_slots": [
+      {
+        "id": "rec66gtBoSSDMvYrq",
+        "key": "proof_per_horse_wave_one",
+        "fields": {
+          "sort_order": 1,
+          "wec_pack_waves": [
+            "recsJdJgwzWTGN2lq"
+          ],
+          "byhorse_slot_key": "proof_per_horse_wave_one",
+          "slot_start": "wave_one",
+          "slot_end": "wave_one",
+          "display_label": "Proof Wave One Slot",
+          "active": true,
+          "plan_key": "per_horse",
+          "notes": "Proof seed for slot connection."
+        }
+      }
+    ],
+    "pak_bygrooms": [
+      {
+        "id": "recCTmNrtuXURZQE8",
+        "key": "proof_per_groom_container",
+        "fields": {
+          "display_label": "Proof Per-Groom Container",
+          "pak_tabs": [
+            "rec1DuUUsru4EOZrj"
+          ],
+          "notes": "Proof seed for plan container/index connection.",
+          "wec_list_plans": [
+            "recZLWe1SktapDZRZ"
+          ],
+          "wec_pack_waves": [
+            "recsJdJgwzWTGN2lq"
+          ],
+          "sort_order": 1,
+          "bygroom_key": "proof_per_groom_container",
+          "pak_bygroom_items": [
+            "rec12VWog3bmeCYlh"
+          ],
+          "active": true,
+          "plan_key": "per_groom"
+        }
+      }
+    ],
+    "pak_bygroom_slots": [
+      {
+        "id": "recVCR50Ottd1XjqC",
+        "key": "proof_per_groom_wave_one",
+        "fields": {
+          "slot_end": "wave_one",
+          "display_label": "Proof Wave One Slot",
+          "slot_start": "wave_one",
+          "bygroom_slot_key": "proof_per_groom_wave_one",
+          "active": true,
+          "wec_pack_waves": [
+            "recsJdJgwzWTGN2lq"
+          ],
+          "notes": "Proof seed for slot connection.",
+          "sort_order": 1,
+          "plan_key": "per_groom"
+        }
+      }
+    ]
+  }
+}
