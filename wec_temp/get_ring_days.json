@@ -1,0 +1,170 @@
+[
+    {
+        "ring_no": "664",
+        "name": "Grand Arena - Brandon",
+        "ring_days": [
+            {
+                "ring_day_no": "3825",
+                "date": "Wednesday, June 3, 2026"
+            },
+            {
+                "ring_day_no": "3826",
+                "date": "Thursday, June 4, 2026"
+            },
+            {
+                "ring_day_no": "3827",
+                "date": "Friday, June 5, 2026"
+            },
+            {
+                "ring_day_no": "3828",
+                "date": "Saturday, June 6, 2026"
+            },
+            {
+                "ring_day_no": "3829",
+                "date": "Sunday, June 7, 2026"
+            }
+        ]
+    },
+    {
+        "ring_no": "665",
+        "name": "Indoor 4 - Gary",
+        "ring_days": [
+            {
+                "ring_day_no": "3830",
+                "date": "Tuesday, June 2, 2026"
+            },
+            {
+                "ring_day_no": "3831",
+                "date": "Wednesday, June 3, 2026"
+            },
+            {
+                "ring_day_no": "3832",
+                "date": "Thursday, June 4, 2026"
+            },
+            {
+                "ring_day_no": "3833",
+                "date": "Friday, June 5, 2026"
+            },
+            {
+                "ring_day_no": "3834",
+                "date": "Saturday, June 6, 2026"
+            },
+            {
+                "ring_day_no": "3835",
+                "date": "Sunday, June 7, 2026"
+            }
+        ]
+    },
+    {
+        "ring_no": "666",
+        "name": "Indoor 1 - Sarah H",
+        "ring_days": [
+            {
+                "ring_day_no": "3836",
+                "date": "Tuesday, June 2, 2026"
+            },
+            {
+                "ring_day_no": "3837",
+                "date": "Wednesday, June 3, 2026"
+            },
+            {
+                "ring_day_no": "3838",
+                "date": "Thursday, June 4, 2026"
+            },
+            {
+                "ring_day_no": "3839",
+                "date": "Friday, June 5, 2026"
+            },
+            {
+                "ring_day_no": "3840",
+                "date": "Saturday, June 6, 2026"
+            },
+            {
+                "ring_day_no": "3841",
+                "date": "Sunday, June 7, 2026"
+            }
+        ]
+    },
+    {
+        "ring_no": "667",
+        "name": "Indoor 2 - Jo",
+        "ring_days": [
+            {
+                "ring_day_no": "3842",
+                "date": "Tuesday, June 2, 2026"
+            },
+            {
+                "ring_day_no": "3843",
+                "date": "Wednesday, June 3, 2026"
+            },
+            {
+                "ring_day_no": "3844",
+                "date": "Thursday, June 4, 2026"
+            },
+            {
+                "ring_day_no": "3845",
+                "date": "Friday, June 5, 2026"
+            },
+            {
+                "ring_day_no": "3846",
+                "date": "Saturday, June 6, 2026"
+            },
+            {
+                "ring_day_no": "3847",
+                "date": "Sunday, June 7, 2026"
+            }
+        ]
+    },
+    {
+        "ring_no": "748",
+        "name": "Jumper Annex - Robbie",
+        "ring_days": [
+            {
+                "ring_day_no": "4282",
+                "date": "Wednesday, June 3, 2026"
+            },
+            {
+                "ring_day_no": "4283",
+                "date": "Thursday, June 4, 2026"
+            },
+            {
+                "ring_day_no": "4284",
+                "date": "Friday, June 5, 2026"
+            },
+            {
+                "ring_day_no": "4285",
+                "date": "Saturday, June 6, 2026"
+            },
+            {
+                "ring_day_no": "4286",
+                "date": "Sunday, June 7, 2026"
+            }
+        ]
+    },
+    {
+        "ring_no": "749",
+        "name": "Hunter 2 - Matt",
+        "ring_days": [
+            {
+                "ring_day_no": "4287",
+                "date": "Wednesday, June 3, 2026"
+            },
+            {
+                "ring_day_no": "4288",
+                "date": "Thursday, June 4, 2026"
+            },
+            {
+                "ring_day_no": "4289",
+                "date": "Friday, June 5, 2026"
+            },
+            {
+                "ring_day_no": "4290",
+                "date": "Saturday, June 6, 2026"
+            },
+            {
+                "ring_day_no": "4291",
+                "date": "Sunday, June 7, 2026"
+            }
+        ]
+    }
+]

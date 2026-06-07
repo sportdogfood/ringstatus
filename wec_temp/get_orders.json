@@ -1,0 +1,53 @@
+[
+    {
+        "show_no": "14905",
+        "ring_no": "665",
+        "ring_day_no": "3835",
+        "ring": "Indoor 4 - Gary",
+        "day": "Sunday, June 7, 2026",
+        "class": "818) .75m Jr/Am Jumper Classic II.2b",
+        "entry": "#2013, Apollonios<br>In ring at 8:23am",
+        "total": "8",
+        "n_to_go": "6",
+        "n_gone": "2",
+        "time": "8:23am",
+        "timestamp": 1780834990,
+        "elapsed": 83,
+        "orders": [],
+        "gone": []
+    },
+    {
+        "show_no": "14905",
+        "ring_no": "666",
+        "ring_day_no": "3841",
+        "ring": "Indoor 1 - Sarah H",
+        "day": "Sunday, June 7, 2026",
+        "class": "412) $3500 Small Junior Hunter Classic 3'6\"",
+        "entry": "#1833, Cortalima Z<br>In ring at 8:20am",
+        "total": "17",
+        "n_to_go": "1",
+        "n_gone": "16",
+        "time": "8:20am",
+        "timestamp": 1780834817,
+        "elapsed": 256,
+        "orders": [],
+        "gone": []
+    },
+    {
+        "show_no": "14905",
+        "ring_no": "667",
+        "ring_day_no": "3847",
+        "ring": "Indoor 2 - Jo",
+        "day": "Sunday, June 7, 2026",
+        "class": "902) Short Stirrup Hunter (11/U) 2'",
+        "entry": "#1189, Swayze<br>In ring at 8:18am",
+        "total": "28",
+        "n_to_go": "21",
+        "n_gone": "7",
+        "time": "8:18am",
+        "timestamp": 1780834729,
+        "elapsed": 344,
+        "orders": [],
+        "gone": []
+    }
+]
