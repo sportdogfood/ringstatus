@@ -1,0 +1,678 @@
+{
+  "baseId": "apptdhhNzduxm5gjn",
+  "actions": [
+    {
+      "action": "created_table",
+      "table": "pak_turnouts",
+      "id": "tbl71hihUOm0OA2vV"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_slots",
+      "id": "tblPMokZ3PByf8tml"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_lists",
+      "id": "tblptJLzk9dhTHTfi"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_types",
+      "id": "tblDIEz2JSquw7R0I"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_lanes",
+      "id": "tbluCyk2AGwqll6sX"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_slots",
+      "id": "tblL0HZLgctl2nSY4"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_turnout_links",
+      "id": "tbl3mQOWY065t7thr"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_turnout_logs",
+      "id": "tblYpY31SEkMRjc0n"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_items",
+      "id": "tblyMGNaiaKBv26Bf"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_rations",
+      "id": "tblOFBfqRR4m4r16z"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_links",
+      "id": "tblK8hQHApGrTVEGX"
+    },
+    {
+      "action": "created_table",
+      "table": "pak_feed_logs",
+      "id": "tblKlZQYOGsb4BjeP"
+    }
+  ],
+  "navy": {
+    "id": "recnf0EMfFnDcWLYC",
+    "barn_name": "Navy",
+    "horse": "NAVIGATOR"
+  },
+  "seeded": [
+    {
+      "action": "created",
+      "table": "pak_turnouts",
+      "id": "rec1tNhtNrZ7j24cO",
+      "fields": {
+        "notes": "Proof turnout location.",
+        "turnout_key": "turnout_paddock_3",
+        "active": true,
+        "display_label": "Turnout Paddock #3"
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_slots",
+      "id": "reccIuexpq5jMNORB",
+      "fields": {
+        "active": true,
+        "slot_key": "turnout_3_4pm",
+        "slot_start": "3:00 PM",
+        "sort_order": 1,
+        "notes": "Proof turnout slot.",
+        "slot_end": "4:00 PM",
+        "display_label": "3-4pm"
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_turnout_links",
+      "id": "recLmAK2sZ9MDeG53",
+      "fields": {
+        "notes": "Navy is in Turnout Paddock #3 from 3-4pm.",
+        "turnout_link_key": "navy_turnout_paddock_3_3_4pm",
+        "status": "assigned",
+        "pak_turnouts": [
+          "rec1tNhtNrZ7j24cO"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "active": true,
+        "pak_slots": [
+          "reccIuexpq5jMNORB"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_turnout_logs",
+      "id": "rec726uhqJ1my2AV1",
+      "fields": {
+        "pak_slots": [
+          "reccIuexpq5jMNORB"
+        ],
+        "turnout_log_key": "navy_turnout_paddock_3_3_4pm_assigned",
+        "pak_turnout_links": [
+          "recLmAK2sZ9MDeG53"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "notes": "Proof log: Navy is in Turnout Paddock #3 from 3-4pm.",
+        "action": "assigned",
+        "pak_turnouts": [
+          "rec1tNhtNrZ7j24cO"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_lists",
+      "id": "recRJdpFkZV2dQXET",
+      "fields": {
+        "display_label": "WEC Feed Plan",
+        "notes": "Proof feed list.",
+        "active": true,
+        "feed_list_key": "wec_feed_plan"
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_slots",
+      "id": "recv4yA5D696giMPx",
+      "fields": {
+        "notes": "AM feed slot.",
+        "feed_slot_key": "am",
+        "slot_start": "AM",
+        "slot_end": "AM",
+        "active": true,
+        "display_label": "AM",
+        "meal_slot": "AM",
+        "sort_order": 1
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_slots",
+      "id": "recT1SIrd0szy2Xr9",
+      "fields": {
+        "notes": "PM feed slot.",
+        "feed_slot_key": "pm",
+        "slot_start": "PM",
+        "slot_end": "PM",
+        "active": true,
+        "display_label": "PM",
+        "meal_slot": "PM",
+        "sort_order": 2
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_types",
+      "id": "recu4RkP5XhNIMnQT",
+      "fields": {
+        "active": true,
+        "display_label": "Grain",
+        "sort_order": 1,
+        "notes": "Feed type.",
+        "feed_type_key": "grain"
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_types",
+      "id": "recBAyCCYBRJxBbyj",
+      "fields": {
+        "active": true,
+        "display_label": "Hay",
+        "sort_order": 2,
+        "notes": "Feed type.",
+        "feed_type_key": "hay"
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_types",
+      "id": "recMRff3LR4FFyq69",
+      "fields": {
+        "active": true,
+        "display_label": "Supplement",
+        "sort_order": 3,
+        "notes": "Feed type.",
+        "feed_type_key": "supplement"
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_items",
+      "id": "recFBJpCo37wZ4ufE",
+      "fields": {
+        "pak_feed_types": [
+          "recu4RkP5XhNIMnQT"
+        ],
+        "notes": "Proof grain item.",
+        "default_uom": "cups",
+        "feed_item_key": "this_grain",
+        "display_label": "thisGrain",
+        "sort_order": 1,
+        "active": true
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_items",
+      "id": "recpnGSFDYjVKW84O",
+      "fields": {
+        "pak_feed_types": [
+          "recBAyCCYBRJxBbyj"
+        ],
+        "notes": "Proof hay item.",
+        "default_uom": "flakes",
+        "feed_item_key": "this_hay",
+        "display_label": "thisHay",
+        "sort_order": 2,
+        "active": true
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_items",
+      "id": "recZ5uguKyD6KCQdj",
+      "fields": {
+        "pak_feed_types": [
+          "recMRff3LR4FFyq69"
+        ],
+        "notes": "Proof supplement item.",
+        "default_uom": "scoops",
+        "feed_item_key": "this_supplement",
+        "display_label": "thisSupplement",
+        "sort_order": 3,
+        "active": true
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_rations",
+      "id": "recqHzhu9yPIoVgFS",
+      "fields": {
+        "uom": "cups",
+        "notes": "Navy eats 2 cups of thisGrain AM.",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "feed_ration_key": "navy_this_grain_am",
+        "active": true,
+        "meal_slot": "AM",
+        "quantity": 2,
+        "pak_feed_items": [
+          "recFBJpCo37wZ4ufE"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_links",
+      "id": "reciF1a15M0dDIpsH",
+      "fields": {
+        "feed_link_key": "navy_this_grain_am",
+        "notes": "Navy eats 2 cups of thisGrain AM.",
+        "pak_feed_lists": [
+          "recRJdpFkZV2dQXET"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "pak_feed_slots": [
+          "recv4yA5D696giMPx"
+        ],
+        "pak_feed_rations": [
+          "recqHzhu9yPIoVgFS"
+        ],
+        "meal_slot": "AM",
+        "uom": "cups",
+        "active": true,
+        "quantity": 2,
+        "pak_feed_items": [
+          "recFBJpCo37wZ4ufE"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_logs",
+      "id": "rech8zzR5K2oFkyhY",
+      "fields": {
+        "notes": "Navy eats 2 cups of thisGrain AM.",
+        "quantity": 2,
+        "uom": "cups",
+        "pak_feed_links": [
+          "reciF1a15M0dDIpsH"
+        ],
+        "action": "assigned",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "meal_slot": "AM",
+        "feed_log_key": "navy_this_grain_am_assigned",
+        "pak_feed_items": [
+          "recFBJpCo37wZ4ufE"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_rations",
+      "id": "recG96wUIgpXFkJvi",
+      "fields": {
+        "uom": "cups",
+        "notes": "Navy eats 2 cups of thisGrain PM.",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "feed_ration_key": "navy_this_grain_pm",
+        "active": true,
+        "meal_slot": "PM",
+        "quantity": 2,
+        "pak_feed_items": [
+          "recFBJpCo37wZ4ufE"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_links",
+      "id": "recuuvQHAYQqMM2fb",
+      "fields": {
+        "feed_link_key": "navy_this_grain_pm",
+        "notes": "Navy eats 2 cups of thisGrain PM.",
+        "pak_feed_lists": [
+          "recRJdpFkZV2dQXET"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "pak_feed_slots": [
+          "recT1SIrd0szy2Xr9"
+        ],
+        "pak_feed_rations": [
+          "recG96wUIgpXFkJvi"
+        ],
+        "meal_slot": "PM",
+        "uom": "cups",
+        "active": true,
+        "quantity": 2,
+        "pak_feed_items": [
+          "recFBJpCo37wZ4ufE"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_logs",
+      "id": "recj0jbzYQF0gPqQ0",
+      "fields": {
+        "notes": "Navy eats 2 cups of thisGrain PM.",
+        "quantity": 2,
+        "uom": "cups",
+        "pak_feed_links": [
+          "recuuvQHAYQqMM2fb"
+        ],
+        "action": "assigned",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "meal_slot": "PM",
+        "feed_log_key": "navy_this_grain_pm_assigned",
+        "pak_feed_items": [
+          "recFBJpCo37wZ4ufE"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_rations",
+      "id": "reczJ4ikYFgZGZjlJ",
+      "fields": {
+        "uom": "flakes",
+        "notes": "Navy gets 2 flakes of thisHay AM.",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "feed_ration_key": "navy_this_hay_am",
+        "active": true,
+        "meal_slot": "AM",
+        "quantity": 2,
+        "pak_feed_items": [
+          "recpnGSFDYjVKW84O"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_links",
+      "id": "recCgMm1dYH1NkUek",
+      "fields": {
+        "feed_link_key": "navy_this_hay_am",
+        "notes": "Navy gets 2 flakes of thisHay AM.",
+        "pak_feed_lists": [
+          "recRJdpFkZV2dQXET"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "pak_feed_slots": [
+          "recv4yA5D696giMPx"
+        ],
+        "pak_feed_rations": [
+          "reczJ4ikYFgZGZjlJ"
+        ],
+        "meal_slot": "AM",
+        "uom": "flakes",
+        "active": true,
+        "quantity": 2,
+        "pak_feed_items": [
+          "recpnGSFDYjVKW84O"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_logs",
+      "id": "recYt1ml997kIe1b3",
+      "fields": {
+        "notes": "Navy gets 2 flakes of thisHay AM.",
+        "quantity": 2,
+        "uom": "flakes",
+        "pak_feed_links": [
+          "recCgMm1dYH1NkUek"
+        ],
+        "action": "assigned",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "meal_slot": "AM",
+        "feed_log_key": "navy_this_hay_am_assigned",
+        "pak_feed_items": [
+          "recpnGSFDYjVKW84O"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_rations",
+      "id": "recPnKBS1qyDQiFIc",
+      "fields": {
+        "uom": "flakes",
+        "notes": "Navy gets 2 flakes of thisHay PM.",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "feed_ration_key": "navy_this_hay_pm",
+        "active": true,
+        "meal_slot": "PM",
+        "quantity": 2,
+        "pak_feed_items": [
+          "recpnGSFDYjVKW84O"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_links",
+      "id": "recrInMKwa1Uk0DxP",
+      "fields": {
+        "feed_link_key": "navy_this_hay_pm",
+        "notes": "Navy gets 2 flakes of thisHay PM.",
+        "pak_feed_lists": [
+          "recRJdpFkZV2dQXET"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "pak_feed_slots": [
+          "recT1SIrd0szy2Xr9"
+        ],
+        "pak_feed_rations": [
+          "recPnKBS1qyDQiFIc"
+        ],
+        "meal_slot": "PM",
+        "uom": "flakes",
+        "active": true,
+        "quantity": 2,
+        "pak_feed_items": [
+          "recpnGSFDYjVKW84O"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_logs",
+      "id": "recAvL3tD9Alcmkp1",
+      "fields": {
+        "notes": "Navy gets 2 flakes of thisHay PM.",
+        "quantity": 2,
+        "uom": "flakes",
+        "pak_feed_links": [
+          "recrInMKwa1Uk0DxP"
+        ],
+        "action": "assigned",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "meal_slot": "PM",
+        "feed_log_key": "navy_this_hay_pm_assigned",
+        "pak_feed_items": [
+          "recpnGSFDYjVKW84O"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_rations",
+      "id": "reco6JFEWcQgI33cT",
+      "fields": {
+        "uom": "scoop",
+        "notes": "Navy gets 1 scoop of thisSupplement AM.",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "feed_ration_key": "navy_this_supplement_am",
+        "active": true,
+        "meal_slot": "AM",
+        "quantity": 1,
+        "pak_feed_items": [
+          "recZ5uguKyD6KCQdj"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_links",
+      "id": "recVhJjmzvIXSEJ6q",
+      "fields": {
+        "feed_link_key": "navy_this_supplement_am",
+        "notes": "Navy gets 1 scoop of thisSupplement AM.",
+        "pak_feed_lists": [
+          "recRJdpFkZV2dQXET"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "pak_feed_slots": [
+          "recv4yA5D696giMPx"
+        ],
+        "pak_feed_rations": [
+          "reco6JFEWcQgI33cT"
+        ],
+        "meal_slot": "AM",
+        "uom": "scoop",
+        "active": true,
+        "quantity": 1,
+        "pak_feed_items": [
+          "recZ5uguKyD6KCQdj"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_logs",
+      "id": "recI6YG3nbvlxGGsr",
+      "fields": {
+        "notes": "Navy gets 1 scoop of thisSupplement AM.",
+        "quantity": 1,
+        "uom": "scoop",
+        "pak_feed_links": [
+          "recVhJjmzvIXSEJ6q"
+        ],
+        "action": "assigned",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "meal_slot": "AM",
+        "feed_log_key": "navy_this_supplement_am_assigned",
+        "pak_feed_items": [
+          "recZ5uguKyD6KCQdj"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_rations",
+      "id": "recuuhvFendXVU6qM",
+      "fields": {
+        "uom": "scoop",
+        "notes": "Navy gets 1 scoop of thisSupplement PM.",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "feed_ration_key": "navy_this_supplement_pm",
+        "active": true,
+        "meal_slot": "PM",
+        "quantity": 1,
+        "pak_feed_items": [
+          "recZ5uguKyD6KCQdj"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_links",
+      "id": "rec2m4bTOszsC8elY",
+      "fields": {
+        "feed_link_key": "navy_this_supplement_pm",
+        "notes": "Navy gets 1 scoop of thisSupplement PM.",
+        "pak_feed_lists": [
+          "recRJdpFkZV2dQXET"
+        ],
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "pak_feed_slots": [
+          "recT1SIrd0szy2Xr9"
+        ],
+        "pak_feed_rations": [
+          "recuuhvFendXVU6qM"
+        ],
+        "meal_slot": "PM",
+        "uom": "scoop",
+        "active": true,
+        "quantity": 1,
+        "pak_feed_items": [
+          "recZ5uguKyD6KCQdj"
+        ]
+      }
+    },
+    {
+      "action": "created",
+      "table": "pak_feed_logs",
+      "id": "recrKalRhbDkeBLSC",
+      "fields": {
+        "notes": "Navy gets 1 scoop of thisSupplement PM.",
+        "quantity": 1,
+        "uom": "scoop",
+        "pak_feed_links": [
+          "rec2m4bTOszsC8elY"
+        ],
+        "action": "assigned",
+        "pak_horses_roster": [
+          "recnf0EMfFnDcWLYC"
+        ],
+        "meal_slot": "PM",
+        "feed_log_key": "navy_this_supplement_pm_assigned",
+        "pak_feed_items": [
+          "recZ5uguKyD6KCQdj"
+        ]
+      }
+    }
+  ]
+}

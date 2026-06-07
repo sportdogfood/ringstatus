@@ -1,0 +1,623 @@
+{
+  "baseId": "apptdhhNzduxm5gjn",
+  "exact": {
+    "pak_horses_roster": {
+      "id": "tblws857HksBVWe7X",
+      "fields": [
+        {
+          "name": "pak_horse_id",
+          "type": "formula"
+        },
+        {
+          "name": "wec_show",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_wave_1",
+          "type": "checkbox"
+        },
+        {
+          "name": "wec_not_going",
+          "type": "checkbox"
+        },
+        {
+          "name": "wec_wave_2",
+          "type": "checkbox"
+        },
+        {
+          "name": "test_button_1",
+          "type": "button"
+        },
+        {
+          "name": "test_button_2",
+          "type": "button"
+        },
+        {
+          "name": "test_button_3",
+          "type": "button"
+        },
+        {
+          "name": "horse",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_name",
+          "type": "multilineText"
+        },
+        {
+          "name": "pak_grooms",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_horses",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "ww_horses",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "count_pack_items",
+          "type": "count"
+        },
+        {
+          "name": "count_wec_horses",
+          "type": "count"
+        },
+        {
+          "name": "count_pak_waves",
+          "type": "count"
+        },
+        {
+          "name": "count_pak_kit_items",
+          "type": "count"
+        },
+        {
+          "name": "pak_kit_items",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "pack_items",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "pack_waves",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_meta",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "active",
+          "type": "checkbox"
+        },
+        {
+          "name": "inactive",
+          "type": "checkbox"
+        },
+        {
+          "name": "horse_packing_kits",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_commenting",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "count_comments",
+          "type": "count"
+        },
+        {
+          "name": "comments",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_packing_item_horses",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "show_name (from ww_horses)",
+          "type": "multipleLookupValues"
+        },
+        {
+          "name": "barn_name (from ww_horses)",
+          "type": "multipleLookupValues"
+        },
+        {
+          "name": "ww_grooms (from ww_horses)",
+          "type": "multipleLookupValues"
+        },
+        {
+          "name": "rec_id",
+          "type": "formula"
+        },
+        {
+          "name": "table_name",
+          "type": "formula"
+        },
+        {
+          "name": "table_api",
+          "type": "formula"
+        },
+        {
+          "name": "display_horse_barn_name",
+          "type": "formula"
+        },
+        {
+          "name": "horse_roster_logs",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_list_plans",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_pack_lists",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "count_pak_kits",
+          "type": "count"
+        },
+        {
+          "name": "pak_kits",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "pak_fields",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    "horses_roster": null,
+    "pak_turnouts": null,
+    "pak_turnout": null,
+    "pak_turnout_links": null,
+    "pak_turnout_link": null,
+    "pak_turnout_logs": null,
+    "pak_turnout_log": null,
+    "pak_tunrout_log": null,
+    "pak_slots": null,
+    "slots": {
+      "id": "tbl2UrgqibbEk4Npm",
+      "fields": [
+        {
+          "name": "rec_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rec_label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rec_class",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "rec_tags",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "rec_id",
+          "type": "number"
+        },
+        {
+          "name": "rec_rid",
+          "type": "formula"
+        },
+        {
+          "name": "master_linking_from",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "master_linking_to",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "ww_profiles",
+          "type": "singleLineText"
+        }
+      ]
+    }
+  },
+  "related": [
+    {
+      "name": "slots",
+      "id": "tbl2UrgqibbEk4Npm",
+      "fields": [
+        {
+          "name": "rec_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rec_label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rec_class",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "rec_tags",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "rec_id",
+          "type": "number"
+        },
+        {
+          "name": "rec_rid",
+          "type": "formula"
+        },
+        {
+          "name": "master_linking_from",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "master_linking_to",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "ww_profiles",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "pak_horses_roster",
+      "id": "tblws857HksBVWe7X",
+      "fields": [
+        {
+          "name": "pak_horse_id",
+          "type": "formula"
+        },
+        {
+          "name": "wec_show",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_wave_1",
+          "type": "checkbox"
+        },
+        {
+          "name": "wec_not_going",
+          "type": "checkbox"
+        },
+        {
+          "name": "wec_wave_2",
+          "type": "checkbox"
+        },
+        {
+          "name": "test_button_1",
+          "type": "button"
+        },
+        {
+          "name": "test_button_2",
+          "type": "button"
+        },
+        {
+          "name": "test_button_3",
+          "type": "button"
+        },
+        {
+          "name": "horse",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_name",
+          "type": "multilineText"
+        },
+        {
+          "name": "pak_grooms",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_horses",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "ww_horses",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "count_pack_items",
+          "type": "count"
+        },
+        {
+          "name": "count_wec_horses",
+          "type": "count"
+        },
+        {
+          "name": "count_pak_waves",
+          "type": "count"
+        },
+        {
+          "name": "count_pak_kit_items",
+          "type": "count"
+        },
+        {
+          "name": "pak_kit_items",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "pack_items",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "pack_waves",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_meta",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "active",
+          "type": "checkbox"
+        },
+        {
+          "name": "inactive",
+          "type": "checkbox"
+        },
+        {
+          "name": "horse_packing_kits",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_commenting",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "count_comments",
+          "type": "count"
+        },
+        {
+          "name": "comments",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_packing_item_horses",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "show_name (from ww_horses)",
+          "type": "multipleLookupValues"
+        },
+        {
+          "name": "barn_name (from ww_horses)",
+          "type": "multipleLookupValues"
+        },
+        {
+          "name": "ww_grooms (from ww_horses)",
+          "type": "multipleLookupValues"
+        },
+        {
+          "name": "rec_id",
+          "type": "formula"
+        },
+        {
+          "name": "table_name",
+          "type": "formula"
+        },
+        {
+          "name": "table_api",
+          "type": "formula"
+        },
+        {
+          "name": "display_horse_barn_name",
+          "type": "formula"
+        },
+        {
+          "name": "horse_roster_logs",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_list_plans",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "wec_pack_lists",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "count_pak_kits",
+          "type": "count"
+        },
+        {
+          "name": "pak_kits",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "pak_fields",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "name": "pak_byqty_slots",
+      "id": "tblZEdZA7snK1sK9d",
+      "fields": [
+        {
+          "name": "byqty_slot_key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "display_label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "plan_key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "wec_pack_waves",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "active",
+          "type": "checkbox"
+        },
+        {
+          "name": "sort_order",
+          "type": "number"
+        },
+        {
+          "name": "slot_start",
+          "type": "singleLineText"
+        },
+        {
+          "name": "slot_end",
+          "type": "singleLineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "pak_byhorse_slots",
+      "id": "tblZjtEeVCk1CnXMx",
+      "fields": [
+        {
+          "name": "byhorse_slot_key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "display_label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "plan_key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "wec_pack_waves",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "active",
+          "type": "checkbox"
+        },
+        {
+          "name": "sort_order",
+          "type": "number"
+        },
+        {
+          "name": "slot_start",
+          "type": "singleLineText"
+        },
+        {
+          "name": "slot_end",
+          "type": "singleLineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "pak_bygroom_slots",
+      "id": "tblElRxAduDs4S5Fq",
+      "fields": [
+        {
+          "name": "bygroom_slot_key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "display_label",
+          "type": "singleLineText"
+        },
+        {
+          "name": "plan_key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "wec_pack_waves",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "name": "active",
+          "type": "checkbox"
+        },
+        {
+          "name": "sort_order",
+          "type": "number"
+        },
+        {
+          "name": "slot_start",
+          "type": "singleLineText"
+        },
+        {
+          "name": "slot_end",
+          "type": "singleLineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        }
+      ]
+    }
+  ],
+  "navyCount": 1,
+  "navy": [
+    {
+      "id": "recnf0EMfFnDcWLYC",
+      "fields": {
+        "show_name (from ww_horses)": [
+          "Navigator"
+        ],
+        "count_comments": 0,
+        "barn_name": "Navy",
+        "wec_not_going": true,
+        "wec_horses": [
+          "recCiQ6jVzPwXTi3a"
+        ],
+        "wec_show": [
+          "rec5Z04dHA5iH2MsQ"
+        ],
+        "horse": "NAVIGATOR",
+        "test_button_3": {
+          "label": "Button",
+          "url": "https://airtable.com/tblws857HksBVWe7X/recnf0EMfFnDcWLYC?blocks=bli79T3TBjRluiO24"
+        },
+        "pak_horse_id": "navy",
+        "count_pack_items": 0,
+        "display_horse_barn_name": "Navy",
+        "count_pak_kit_items": 0,
+        "show_name": "NAVIGATOR",
+        "barn_name (from ww_horses)": [
+          "Navy"
+        ],
+        "ww_horses": [
+          "recuvloEqtD0CxNem"
+        ],
+        "count_wec_horses": 1,
+        "test_button_1": {
+          "label": "Button",
+          "url": "https://www.ringstatus.com/"
+        },
+        "count_pak_waves": 0,
+        "table_api": "tblLvYxEneUuGTLcv",
+        "table_name": "wec_horses",
+        "count_pak_kits": 0,
+        "rec_id": "recnf0EMfFnDcWLYC",
+        "test_button_2": {
+          "label": "Button",
+          "url": "https://www.ringstatus.com/navy"
+        }
+      }
+    }
+  ],
+  "waveOneCount": 40
+}
