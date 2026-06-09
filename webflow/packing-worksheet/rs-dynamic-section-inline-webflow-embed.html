@@ -1,0 +1,31 @@
+<div id="rs-dynamic-section">Loading...</div>
+
+<script>
+  (function () {
+    var root = document.getElementById("rs-dynamic-section");
+    if (!root) return;
+
+    var endpoint = new URL("https://ringstatus.com/test/rs-dynamic-section/content");
+    endpoint.searchParams.set("pageKey", "home");
+    endpoint.searchParams.set("blockKey", "home_hero");
+    endpoint.searchParams.set("_", Date.now());
+
+    root.setAttribute("data-rs-dynamic-status", "loading");
+
+    fetch(endpoint.toString(), { cache: "no-store" })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data || !data.ok) {
+          throw new Error((data && (data.detail || data.error)) || "Render failed");
+        }
+        root.innerHTML = data.html || "";
+        root.setAttribute("data-rs-dynamic-status", "ready");
+      })
+      .catch(function (error) {
+        root.setAttribute("data-rs-dynamic-status", "failed");
+        root.textContent = "Render failed: " + (error && error.message ? error.message : error);
+      });
+  })();
+</script>

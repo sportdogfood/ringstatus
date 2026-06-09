@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>RS Dynamic Section Preview</title>
+    <style>
+      body {
+        margin: 0;
+        background: #f7f8fa;
+        color: #111827;
+        font-family: Outfit, Arial, sans-serif;
+      }
+      main {
+        width: min(960px, 100%);
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .rs-section {
+        width: 100%;
+        border: 1px solid #d7dde6;
+        background: #ffffff;
+      }
+      .rs-section-container,
+      .rs-section-padding,
+      .rs-content-container,
+      .rs-content-flex {
+        width: 100%;
+      }
+      .rs-section-padding {
+        padding: 32px;
+      }
+      .rs-content-flex {
+        display: grid;
+        gap: 18px;
+      }
+      .rs-content,
+      .rs-stack-head,
+      .rs-card-grid,
+      .rs-list-head,
+      .rs-list-rows,
+      .rs-footer-content {
+        border: 1px dashed #d7dde6;
+        padding: 16px;
+      }
+      h2 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.1;
+      }
+      p {
+        margin: 8px 0 0;
+        color: #687384;
+        font-size: 16px;
+        line-height: 1.45;
+      }
+      .rs-dynamic-error {
+        padding: 16px;
+        border: 1px solid #fecaca;
+        background: #fef2f2;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>RS Dynamic Section Preview</h1>
+      <p>Loads one section from Airtable rscom through Webflow Cloud/Astro.</p>
+      <div id="rs-dynamic-section">Loading...</div>
+    </main>
+    <script>
+      window.RS_DYNAMIC_SECTION_CONFIG = {
+        rootSelector: "#rs-dynamic-section",
+        endpointUrl: "http://127.0.0.1:4331/rs-dynamic-section/content",
+        pageKey: "home",
+        blockKey: "home_hero"
+      };
+    </script>
+    <script src="./rs-dynamic-section.js"></script>
+  </body>
+</html>
