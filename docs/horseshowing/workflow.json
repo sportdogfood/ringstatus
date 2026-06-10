@@ -1,0 +1,321 @@
+{
+  "input": {
+    "table": "focus_show",
+    "key": ["show_no", "focus_day"],
+    "fields": {
+      "show_no": "number",
+      "show_start": "date",
+      "show_end": "date",
+      "focus_day": "date",
+      "focus_status_cadence": "text",
+      "focus_day_cadence": "text",
+      "future_days_cadence": "text",
+      "zoom_cadence": "text"
+    },
+    "rule": "focus_day drives the workflow; system_day never overrides focus_day"
+  },
+  "support_tables": {
+    "shows": {
+      "key": "show_no"
+    },
+    "focus_show": {
+      "key": "show_no|focus_day"
+    },
+    "rings": {
+      "key": "ring_no"
+    },
+    "dow": {
+      "key": "dow"
+    },
+    "show_days": {
+      "key": "ring_day_no"
+    },
+    "classes": {
+      "key": "class_no"
+    },
+    "entries": {
+      "key": "entry_no"
+    },
+    "horses": {
+      "key": "horse",
+      "taggable": true
+    },
+    "riders": {
+      "key": "rider",
+      "taggable": true
+    },
+    "trainers": {
+      "key": "trainer",
+      "taggable": true
+    }
+  },
+  "inactive_endpoints": [
+    "show.php",
+    "shows_happening.php",
+    "get_have_times.php",
+    "get_ring_day_oc.php"
+  ],
+  "endpoint_order": {
+    "focus_day_not_system_day": [
+      "class_oog.php",
+      "get_ring_days.php",
+      "update_schedule.php",
+      "counts.php"
+    ],
+    "focus_day_equals_system_day": [
+      "class_oog.php",
+      "get_ring_days.php",
+      "update_schedule.php",
+      "counts.php",
+      "get_rings.php",
+      "get_orders.php"
+    ]
+  },
+  "endpoints": {
+    "get_ring_days.php": {
+      "key": "ring_day_no",
+      "upsert_tables": [
+        "shows",
+        "rings",
+        "dow",
+        "show_days"
+      ],
+      "fields": {
+        "show_no": {
+          "type": "number",
+          "link": "shows.show_no"
+        },
+        "ring_no": {
+          "type": "number",
+          "link": "rings.ring_no"
+        },
+        "ring_name": {
+          "type": "text"
+        },
+        "date_text": {
+          "type": "text"
+        },
+        "ring_day_no": {
+          "type": "number",
+          "link": "show_days.ring_day_no"
+        },
+        "dow": {
+          "type": "formula",
+          "formula": "UPPER(LEFT({date_text}, 3))",
+          "link": "dow.dow"
+        },
+        "iso_date": {
+          "type": "formula"
+        },
+        "focus_day_key": {
+          "type": "formula",
+          "formula": "ring_day_no & \"|\" & dow & \"|\" & iso_date"
+        }
+      }
+    },
+    "update_schedule.php": {
+      "key": "show_no|ring_day_no|class_no",
+      "upsert_tables": [
+        "shows",
+        "rings",
+        "dow",
+        "show_days",
+        "classes"
+      ],
+      "exclude": {
+        "class_no": [
+          0,
+          "0",
+          ""
+        ]
+      },
+      "watch": [
+        "event_id",
+        "oc_id"
+      ],
+      "fields": {
+        "show_no": {
+          "type": "number",
+          "link": "shows.show_no"
+        },
+        "ring_day_no": {
+          "type": "number",
+          "link": "show_days.ring_day_no"
+        },
+        "ring_no": {
+          "type": "number",
+          "link": "rings.ring_no"
+        },
+        "ring_name": {
+          "type": "text"
+        },
+        "date_text": {
+          "type": "text"
+        },
+        "class_no": {
+          "type": "number",
+          "link": "classes.class_no"
+        },
+        "event_id": {
+          "type": "number",
+          "status": "watch"
+        },
+        "event_name": {
+          "type": "text",
+          "process_as": "class_label"
+        },
+        "class_number": {
+          "type": "formula"
+        },
+        "class_payout": {
+          "type": "formula"
+        },
+        "class_name": {
+          "type": "formula"
+        },
+        "time_text": {
+          "type": "text"
+        },
+        "time": {
+          "type": "formula",
+          "source": "time_text",
+          "example": "08:00:00"
+        },
+        "dow": {
+          "type": "formula",
+          "formula": "UPPER(LEFT({date_text}, 3))",
+          "link": "dow.dow"
+        },
+        "focus_day": {
+          "type": "date"
+        },
+        "iso_date": {
+          "type": "formula"
+        },
+        "entry_count": {
+          "type": "number"
+        },
+        "event_type": {
+          "type": "number"
+        },
+        "oc_id": {
+          "type": "number",
+          "status": "watch"
+        },
+        "live_flag": {
+          "type": "number"
+        }
+      }
+    },
+    "counts.php": {
+      "key": "show_no|class_no",
+      "upsert_tables": [
+        "classes"
+      ],
+      "scope": "full_show",
+      "fields": {
+        "class_key": {
+          "type": "formula",
+          "formula": "show_no & \"|\" & class_no"
+        },
+        "show_no": {
+          "type": "number",
+          "link": "shows.show_no"
+        },
+        "class_no": {
+          "type": "number",
+          "link": "classes.class_no"
+        },
+        "class_number": {
+          "type": "number"
+        },
+        "class_name": {
+          "type": "text"
+        },
+        "entry_count": {
+          "type": "number"
+        }
+      }
+    },
+    "class_oog.php": {
+      "key": "class_no|entry_no",
+      "upsert_tables": [
+        "classes",
+        "entries",
+        "horses",
+        "riders",
+        "trainers"
+      ],
+      "fields": {
+        "ring": {
+          "type": "text"
+        },
+        "ring_no": {
+          "type": "number",
+          "link": "rings.ring_no"
+        },
+        "show_days": {
+          "type": "number",
+          "source": "ring_day_no",
+          "link": "show_days.ring_day_no"
+        },
+        "class_order": {
+          "type": "number"
+        },
+        "class_no": {
+          "type": "number",
+          "link": "classes.class_no"
+        },
+        "class_label": {
+          "type": "text"
+        },
+        "class_number": {
+          "type": "formula"
+        },
+        "class_payout": {
+          "type": "formula"
+        },
+        "class_name": {
+          "type": "formula"
+        },
+        "entry_order": {
+          "type": "number"
+        },
+        "entry_no": {
+          "type": "number",
+          "link": "entries.entry_no"
+        },
+        "horse": {
+          "type": "text",
+          "link": "horses.horse"
+        },
+        "rider": {
+          "type": "text",
+          "link": "riders.rider"
+        },
+        "trainer": {
+          "type": "text",
+          "link": "trainers.trainer"
+        },
+        "source": {
+          "type": "text"
+        }
+      }
+    },
+    "get_rings.php": {
+      "key": "show_no|ring_no|ring_day_no|class_no",
+      "when": "focus_day equals system_day",
+      "role": "status_overlay"
+    },
+    "get_orders.php": {
+      "key": "show_no|ring_no|ring_day_no|class_no",
+      "when": "focus_day equals system_day",
+      "role": "status_overlay"
+    }
+  },
+  "formulas": {
+    "class_number": "IF(FIND(\")\", {class_label}) > 0, VALUE(TRIM(LEFT({class_label}, FIND(\")\", {class_label}) - 1))))",
+    "class_payout": "IF(FIND(\"$\", {class_label}) > 0, LEFT(MID({class_label}, FIND(\"$\", {class_label}), LEN({class_label})), FIND(\" \", MID({class_label}, FIND(\"$\", {class_label}), LEN({class_label})) & \" \") - 1))",
+    "class_name": "IF(FIND(\")\", {class_label}) > 0, IF(FIND(\"$\", {class_label}) > 0, TRIM(MID(TRIM(MID({class_label}, FIND(\")\", {class_label}) + 1, LEN({class_label}))), FIND(\" \", TRIM(MID({class_label}, FIND(\")\", {class_label}) + 1, LEN({class_label}))) & \" \") + 1, LEN({class_label}))), TRIM(MID({class_label}, FIND(\")\", {class_label}) + 1, LEN({class_label}))))"
+  }
+}

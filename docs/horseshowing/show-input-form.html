@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Horseshowing Show Input</title>
+  <style>
+    body {
+      margin: 24px;
+      font-family: Arial, sans-serif;
+      color: #17202a;
+      background: #ffffff;
+    }
+    form {
+      max-width: 520px;
+      display: grid;
+      gap: 14px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 720px;
+    }
+    th, td {
+      border: 1px solid #d8dee6;
+      padding: 8px;
+      text-align: left;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+    th {
+      background: #f5f7f9;
+      font-weight: 700;
+    }
+    input, button {
+      height: 38px;
+      box-sizing: border-box;
+      border: 1px solid #b8c2cc;
+      border-radius: 4px;
+      padding: 0 10px;
+      font-size: 15px;
+    }
+    td input {
+      width: 100%;
+    }
+    button {
+      width: 160px;
+      background: #17202a;
+      color: #ffffff;
+      cursor: pointer;
+    }
+    pre {
+      max-width: 720px;
+      white-space: pre-wrap;
+      background: #f5f7f9;
+      border: 1px solid #d8dee6;
+      padding: 12px;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <form id="show-input-form">
+    <table>
+      <thead>
+        <tr>
+          <th>field</th>
+          <th>value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>show_id</td>
+          <td><input name="show_no" value="14906" required></td>
+        </tr>
+        <tr>
+          <td>show_start</td>
+          <td><input name="show_start_date" type="date" value="2026-06-09" required></td>
+        </tr>
+        <tr>
+          <td>show_end</td>
+          <td><input name="show_end_date" type="date" value="2026-06-14" required></td>
+        </tr>
+        <tr>
+          <td>focus_day</td>
+          <td><input name="focus_day" type="date" value="2026-06-10" required></td>
+        </tr>
+        <tr>
+          <td>focus_status_cadence</td>
+          <td><input name="focus_status_cadence" value="1m"></td>
+        </tr>
+        <tr>
+          <td>focus_day_cadence</td>
+          <td><input name="focus_day_cadence" value="5m"></td>
+        </tr>
+        <tr>
+          <td>future_days_cadence</td>
+          <td><input name="future_days_cadence" value="30m"></td>
+        </tr>
+        <tr>
+          <td>zoom_cadence</td>
+          <td><input name="zoom_cadence" value="2m"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="submit">Set Input</button>
+  </form>
+
+  <pre id="result"></pre>
+
+  <script>
+    const endpoint = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
+    const form = document.getElementById("show-input-form");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      result.textContent = "Submitting...";
+      const params = new URLSearchParams(new FormData(form));
+      params.set("action", "set-show-config");
+      try {
+        const response = await fetch(`${endpoint}?${params.toString()}`, { method: "GET" });
+        const text = await response.text();
+        result.textContent = text;
+      } catch (error) {
+        result.textContent = String(error && error.message ? error.message : error);
+      }
+    });
+  </script>
+</body>
+</html>
