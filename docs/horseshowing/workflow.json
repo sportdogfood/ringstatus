@@ -27,8 +27,9 @@
     "dow": {
       "key": "dow"
     },
-    "show_days": {
-      "key": "ring_day_no"
+    "ring_days": {
+      "key": "ring_day_no",
+      "airtable_table": "show_days"
     },
     "classes": {
       "key": "class_no"
@@ -47,6 +48,33 @@
     "trainers": {
       "key": "trainer",
       "taggable": true
+    },
+    "ring_names": {
+      "key": "ring_name",
+      "role": "helper"
+    },
+    "barn_name": {
+      "key": "barn_name",
+      "role": "helper"
+    }
+  },
+  "missing_or_develop_tables": {
+    "class_names": {
+      "key": "class_name",
+      "role": "helper",
+      "status": "not present in Airtable table_index"
+    }
+  },
+  "needs_development": {
+    "class_start_times": {
+      "key": "show_no|focus_day|ring_day_no|class_no|class_start_time",
+      "source": "update_schedule.php",
+      "status": "develop"
+    },
+    "entry_go_times": {
+      "key": "show_no|focus_day|class_no|entry_no|go_time",
+      "source": "future enrichment from status/order payloads",
+      "status": "develop"
     }
   },
   "inactive_endpoints": [
@@ -78,7 +106,7 @@
         "shows",
         "rings",
         "dow",
-        "show_days"
+        "ring_days"
       ],
       "fields": {
         "show_no": {
@@ -97,7 +125,8 @@
         },
         "ring_day_no": {
           "type": "number",
-          "link": "show_days.ring_day_no"
+          "link": "ring_days.ring_day_no",
+          "airtable_link": "show_days.ring_day_no"
         },
         "dow": {
           "type": "formula",
@@ -119,7 +148,7 @@
         "shows",
         "rings",
         "dow",
-        "show_days",
+        "ring_days",
         "classes"
       ],
       "exclude": {
@@ -140,7 +169,8 @@
         },
         "ring_day_no": {
           "type": "number",
-          "link": "show_days.ring_day_no"
+          "link": "ring_days.ring_day_no",
+          "airtable_link": "show_days.ring_day_no"
         },
         "ring_no": {
           "type": "number",
@@ -254,10 +284,12 @@
           "type": "number",
           "link": "rings.ring_no"
         },
-        "show_days": {
+        "ring_day_no": {
           "type": "number",
           "source": "ring_day_no",
-          "link": "show_days.ring_day_no"
+          "canonical_field": "ring_day_no",
+          "link": "ring_days.ring_day_no",
+          "airtable_link": "show_days.ring_day_no"
         },
         "class_order": {
           "type": "number"
@@ -308,7 +340,7 @@
       "role": "status_overlay"
     },
     "get_orders.php": {
-      "key": "show_no|ring_no|ring_day_no|class_no",
+      "key": "show_no|ring_no|ring_day_no|class_text",
       "when": "focus_day equals system_day",
       "role": "status_overlay"
     }
