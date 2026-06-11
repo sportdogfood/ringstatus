@@ -13,7 +13,15 @@ New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
 function Write-WorkflowLog($message) {
   $stamp = (Get-Date).ToString("s")
-  Add-Content -Path $logPath -Value "$stamp $message"
+  $line = "$stamp $message"
+  for ($i = 0; $i -lt 5; $i++) {
+    try {
+      Add-Content -Path $logPath -Value $line
+      return
+    } catch {
+      Start-Sleep -Milliseconds (200 * ($i + 1))
+    }
+  }
 }
 
 function Read-State {

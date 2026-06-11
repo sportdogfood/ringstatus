@@ -621,6 +621,32 @@ async function runOrchestrator() {
       return;
     }
 
+    async function runWecWithoutShowScopeIfDue() {
+      let ran = false;
+      if (
+        ENABLE_WEC_HEARTBEAT
+        && slot
+        && slotIsDue(slot, process.env.ORCH_WEC_HEARTBEAT_SLOTS, DEFAULT_WEC_HEARTBEAT_SLOTS)
+        && intervalDue("wec-focus-workflow", WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES)
+      ) {
+        const result = runPowerShellScript("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
+          WEC_SHOW_NO: process.env.WEC_SHOW_NO || "14906",
+          WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
+        });
+        if (result.ok) markIntervalRun("wec-focus-workflow");
+        ran = true;
+      }
+
+      if (ENABLE_WEC_HEARTBEAT && intervalDue("wec-airtable-controls", WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES)) {
+        const result = runNodeScript("docs/horseshowing/sync-airtable-controls.js", {
+          WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+        });
+        if (result.ok) markIntervalRun("wec-airtable-controls");
+        ran = true;
+      }
+      return ran;
+    }
+
     const defaultShowDateGuard = computeDefaultShowDateGuard({
       rawSqlDate: heartbeat?.fields?.sql_date,
       appSqlDate: heartbeat?.fields?.app_sql_date,
@@ -631,6 +657,7 @@ async function runOrchestrator() {
     });
 
     if (numOrNull(heartbeat?.fields?.app_show_id) === null) {
+      const wecRan = await runWecWithoutShowScopeIfDue();
       appendEvent({
         ok: true,
         event: "orchestrator_noop",
@@ -638,6 +665,7 @@ async function runOrchestrator() {
         heartbeat_id: heartbeat?.id || null,
         mode,
         cadence_seconds: cadenceSeconds,
+        wec_ran: wecRan,
       });
       if (ORCH_ALERT_NO_ACTIVE_FEEDS) {
         await recordOrchestratorAlert({
