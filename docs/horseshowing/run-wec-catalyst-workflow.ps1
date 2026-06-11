@@ -422,6 +422,40 @@ function Invoke-FocusDayOogSync {
   throw "sync-focus-day oog did not complete"
 }
 
+function Invoke-CountsSync {
+  $offset = 0
+  $limit = 100
+  $pages = 0
+  $rows = 0
+  $lastPage = $null
+  do {
+    $page = Invoke-CatalystQuery "sync-counts" @{
+      counts_offset = $offset
+      counts_limit = $limit
+    }
+    if ($page.ok -eq $false) {
+      throw "sync-counts failed: $($page.error)"
+    }
+    $pages += 1
+    $rows += Int-OrZero $page.parsed_rows
+    $lastPage = $page
+    Write-WorkflowLog "sync-counts page=$pages offset=$offset rows=$($page.parsed_rows) total=$($page.total_rows) complete=$(-not $page.has_more)"
+    if (!$page.has_more) { break }
+    $offset = [int]$page.next_offset
+  } while ($pages -lt 20)
+
+  if ($lastPage -and $lastPage.has_more) {
+    throw "sync-counts did not complete"
+  }
+
+  return @{
+    pages = $pages
+    rows = $rows
+    total_rows = Int-OrZero $lastPage.total_rows
+    complete = if ($lastPage) { -not $lastPage.has_more } else { $false }
+  }
+}
+
 function Due($state, $key, $minutes) {
   if ($ForceSync) { return $true }
   if (!$state.ContainsKey($key)) { return $true }
@@ -553,23 +587,38 @@ if (Due $state "sync_ring_days" 30) {
     Write-WecAirtableAlert -AlertType "core_sync_ring_days_failed" -Severity "error" -Message "sync-ring-days failed for show=${ShowNo}: $($ringDays.error)" -Payload $ringDays
     throw "sync-ring-days failed: $($ringDays.error)"
   }
-  $counts = Invoke-CatalystAction "sync-counts"
-  if ($counts.ok -eq $false) {
-    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_counts" -Status "error" -Summary "counts failed show=$ShowNo error=$($counts.error)" -Payload $counts
-    Write-WecAirtableLog -LogType "heartbeat" -CheckName "catalyst_sync_ring_days_counts" -Status "error" -Summary "sync-counts failed show=$ShowNo error=$($counts.error)" -Payload $counts
-    Write-WecAirtableAlert -AlertType "core_sync_counts_failed" -Severity "error" -Message "sync-counts failed for show=${ShowNo}: $($counts.error)" -Payload $counts
-    throw "sync-counts failed: $($counts.error)"
+  try {
+    $counts = Invoke-CountsSync
+  } catch {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_counts" -Status "error" -Summary "counts failed show=$ShowNo error=$($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "catalyst_sync_ring_days_counts" -Status "error" -Summary "sync-counts failed show=$ShowNo error=$($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "core_sync_counts_failed" -Severity "error" -Message "sync-counts failed for show=${ShowNo}: $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      error = $_.Exception.Message
+    }
+    throw
   }
   $state["sync_ring_days"] = $now.ToString("o")
-  Write-WorkflowLog "sync-ring-days rows=$($ringDays.parsed_rows) sync-counts rows=$($counts.parsed_rows)"
-  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_counts" -RecordsSeen (Int-OrZero $counts.parsed_rows) -RecordsChanged (Int-OrZero $counts.parsed_rows) -Summary "counts rows=$($counts.parsed_rows) focus=$($heartbeat.focus_day)" -Payload @{
+  Write-WorkflowLog "sync-ring-days rows=$($ringDays.parsed_rows) sync-counts rows=$($counts.rows) pages=$($counts.pages)"
+  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_counts" -RecordsSeen (Int-OrZero $counts.rows) -RecordsChanged (Int-OrZero $counts.rows) -Summary "counts rows=$($counts.rows) pages=$($counts.pages) total=$($counts.total_rows) focus=$($heartbeat.focus_day)" -Payload @{
     focus_day = $heartbeat.focus_day
-    counts_rows = $counts.parsed_rows
+    counts_rows = $counts.rows
+    counts_pages = $counts.pages
+    counts_total_rows = $counts.total_rows
+    complete = $counts.complete
   }
-  Write-WecAirtableLog -LogType "heartbeat" -CheckName "catalyst_sync_ring_days_counts" -RecordsSeen ((Int-OrZero $ringDays.parsed_rows) + (Int-OrZero $counts.parsed_rows)) -Summary "sync-ring-days rows=$($ringDays.parsed_rows) sync-counts rows=$($counts.parsed_rows)" -Payload @{
+  Write-WecAirtableLog -LogType "heartbeat" -CheckName "catalyst_sync_ring_days_counts" -RecordsSeen ((Int-OrZero $ringDays.parsed_rows) + (Int-OrZero $counts.rows)) -Summary "sync-ring-days rows=$($ringDays.parsed_rows) sync-counts rows=$($counts.rows) pages=$($counts.pages)" -Payload @{
     focus_day = $heartbeat.focus_day
     ring_days_rows = $ringDays.parsed_rows
-    counts_rows = $counts.parsed_rows
+    counts_rows = $counts.rows
+    counts_pages = $counts.pages
+    counts_total_rows = $counts.total_rows
   }
 }
 
