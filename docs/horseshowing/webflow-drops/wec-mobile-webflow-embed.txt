@@ -102,15 +102,21 @@
   }
 
   .subtitle-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    min-width:0;
     width:100%;
+    min-width:0;
   }
 
-  .subtitle-row .subtitle{
+  .subtitle-edit-wrapper{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:7px;
+    min-width:0;
+    width:fit-content;
+    max-width:calc(100% - 70px);
+  }
+
+  .subtitle-edit-wrapper .subtitle{
     min-width:0;
     flex:0 1 auto;
   }
@@ -121,11 +127,10 @@
     border:0;
     background:transparent;
     color:#815374;
-    font-size:9pt;
+    font-size:var(--fs-subtitle);
     font-weight:700;
     line-height:1;
     padding:0;
-    margin-left:auto;
     cursor:pointer;
   }
 
@@ -242,7 +247,7 @@
     background:#fff;
     color:#111;
     padding:8px 12px;
-    font-size:13px;
+    font-size:var(--fs-pill);
     font-weight:700;
     border-radius:999px;
     text-decoration:none;
@@ -253,19 +258,6 @@
   }
 
   .nav-btn.active{
-    border-color:#815374;
-    outline-color:#815374;
-    background:#815374;
-    color:#fff;
-  }
-
-  .filterbar .nav-btn{
-    border:1px solid var(--border);
-    background:#fff;
-    color:#111;
-  }
-
-  .filterbar .nav-btn.active{
     border-color:#815374;
     outline-color:#815374;
     background:#815374;
@@ -459,19 +451,6 @@
     padding:4px 10px calc(10px + env(safe-area-inset-bottom, 0px)) 10px;
   }
 
-  .bottom-nav .nav-btn{
-    border:1px solid var(--border);
-    background:#ffffff2b;
-    color:#111;
-  }
-
-  .bottom-nav .nav-btn.active{
-    border-color:#815374;
-    outline-color:#815374;
-    background:#815374;
-    color:#fff;
-  }
-
   .group .class-list > .c:nth-child(even){
     background: rgba(255,255,255,0.28);
   }
@@ -575,8 +554,10 @@
         <a class="home-pill" href="https://ringstatus.com/wec-print">Print</a>
       </div>
       <div class="subtitle-row">
-        <div class="subtitle" id="subtitle"></div>
-        <button class="subtitle-edit" id="dateEditToggle" type="button">edit</button>
+        <div class="subtitle-edit-wrapper">
+          <div class="subtitle" id="subtitle"></div>
+          <button class="subtitle-edit" id="dateEditToggle" type="button">edit</button>
+        </div>
       </div>
       <div class="date-edit-panel" id="dateEditPanel">
         <button class="date-next-btn" id="dateNextBtn" type="button"></button>
