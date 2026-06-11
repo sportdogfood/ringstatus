@@ -57,14 +57,33 @@
     border-bottom:1px solid var(--border);
     padding:10px 12px;
     min-height:var(--topbar-h);
-    height:var(--topbar-h);
+    height:auto;
     display:flex;
     flex-direction:column;
     justify-content:center;
     gap:2px;
   }
 
+  .topbar-wrapper{
+    width:100%;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+
+  .title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    min-width:0;
+    width:100%;
+  }
+
   .title{
+    min-width:0;
+    flex:1 1 auto;
     font-weight:900;
     font-size:var(--fs-title);
     line-height:1.1;
@@ -136,7 +155,6 @@
   }
 
   .topbar-row{
-    position:relative;
     display:block;
     width:100%;
   }
@@ -149,14 +167,8 @@
     gap:2px;
   }
 
-  .topbar-text .title{
-    padding-right:74px;
-  }
-
   .home-pill{
-    position:absolute;
-    top:0;
-    right:0;
+    flex:0 0 auto;
     height:36px;
     padding:0 14px;
     border-radius:999px;
@@ -454,7 +466,10 @@
   }
 
   .bottom-nav .nav-btn.active{
-    border-color:#000;
+    border-color:#815374;
+    outline-color:#815374;
+    background:#815374;
+    color:#fff;
   }
 
   .group .class-list > .c:nth-child(even){
@@ -554,8 +569,11 @@
 </style>
 <header class="topbar">
   <div class="topbar-row">
-    <div class="topbar-text">
-      <div class="title" id="title">Schedule</div>
+    <div class="topbar-wrapper">
+      <div class="title-row">
+        <div class="title" id="title">Schedule</div>
+        <a class="home-pill" href="https://ringstatus.com/wec-print">Print</a>
+      </div>
       <div class="subtitle-row">
         <div class="subtitle" id="subtitle"></div>
         <button class="subtitle-edit" id="dateEditToggle" type="button">edit</button>
@@ -564,7 +582,6 @@
         <button class="date-next-btn" id="dateNextBtn" type="button"></button>
       </div>
     </div>
-    <a class="home-pill" href="https://ringstatus.com/wec-print">Print</a>
   </div>
 </header>
 

@@ -882,3 +882,27 @@
 2026-06-11T11:32:49 sync-focus-day oog page=27 offset=52 classes=2 entries=13 complete=False missing=
 2026-06-11T11:32:51 sync-focus-day oog page=28 offset=54 classes=1 entries=1 complete=True missing=0
 2026-06-11T11:32:51 sync-focus-day complete=True schedule_pages=5 classes=55 active_expected=45 active_missing=0
+2026-06-11T11:45:34 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=162 triggers=0
+2026-06-11T11:45:35 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T11:45:35 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T11:45:35 airtable-alert skipped existing type=time_trigger_failed key=time_trigger_failed|14906|2026-06-11|time_triggers
+2026-06-11T11:48:35 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=162 triggers=0
+2026-06-11T11:48:35 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T11:48:36 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T11:48:36 airtable-alert skipped existing type=time_trigger_failed key=time_trigger_failed|14906|2026-06-11|time_triggers
+2026-06-11T11:51:36 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=162 triggers=0
+2026-06-11T11:51:37 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T11:51:37 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T11:51:37 airtable-alert skipped existing type=time_trigger_failed key=time_trigger_failed|14906|2026-06-11|time_triggers
+2026-06-11T11:54:40 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=162 triggers=0
+2026-06-11T11:54:41 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T11:54:41 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T11:54:41 airtable-alert skipped existing type=time_trigger_failed key=time_trigger_failed|14906|2026-06-11|time_triggers
+2026-06-11T11:57:34 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=162 triggers=0
+2026-06-11T11:57:35 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T11:57:35 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T11:57:35 airtable-alert skipped existing type=time_trigger_failed key=time_trigger_failed|14906|2026-06-11|time_triggers
+2026-06-11T12:00:35 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=162 triggers=0
+2026-06-11T12:00:36 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T12:00:36 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T12:00:36 airtable-alert skipped existing type=time_trigger_failed key=time_trigger_failed|14906|2026-06-11|time_triggers
