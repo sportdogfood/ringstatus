@@ -133,7 +133,15 @@
     justify-content:center;
     cursor:pointer;
     z-index:20;
+    opacity:0;
+    pointer-events:none;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .ringWrap:hover .ringClose,
+  .ringWrap:focus-within .ringClose{
+    opacity:1;
+    pointer-events:auto;
   }
 
   .ring{
@@ -316,7 +324,7 @@
     </div>
     <div class="controls">
       <a class="btn" id="btnPdf" href="#" target="_blank" rel="noopener">PDF</a>
-      <a class="btn" href="https://ringstatus.com" target="_blank" rel="noopener">Home</a>
+      <button class="btn" id="btnShare" type="button">Share</button>
     </div>
   </div>
 
@@ -391,7 +399,25 @@
     return [];
   }
 
+  function fetchJsonBlocking(url) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false);
+    xhr.setRequestHeader("cache-control", "no-store");
+    xhr.send(null);
+    if (xhr.status < 200 || xhr.status >= 300) {
+      throw new Error(`Fetch failed ${xhr.status} for ${url}: ${String(xhr.responseText || "").slice(0, 200)}`);
+    }
+    try {
+      return JSON.parse(xhr.responseText || "[]");
+    } catch {
+      throw new Error(`Bad JSON in ${url}: ${String(xhr.responseText || "").slice(0, 200)}`);
+    }
+  }
+
   async function fetchJson(url) {
+    if (location.hostname === "ringstatus.com" || qs.get("pdf") === "1") {
+      return fetchJsonBlocking(url);
+    }
     const res = await fetch(url, { cache: "no-store" });
     const txt = await res.text();
     if (!res.ok) throw new Error(`Fetch failed ${res.status} for ${url}: ${txt.slice(0, 200)}`);
@@ -451,8 +477,11 @@
   }
 
   function getScheduleGroupDisplay(items) {
-    if (!TENANT_SCHED_DISPLAY_KEY) return "";
-    const values = items.map((row) => row?.[TENANT_SCHED_DISPLAY_KEY] ?? row?.sched_display ?? row?.group_display);
+    const values = items.map((row) => (
+      TENANT_SCHED_DISPLAY_KEY
+        ? row?.[TENANT_SCHED_DISPLAY_KEY] ?? row?.sched_display ?? row?.group_display
+        : row?.sched_display ?? row?.group_display
+    ));
     return normScheduleDisplayValues(values);
   }
 
@@ -589,7 +618,10 @@
   }
 
   function buildPdfLink() {
-    const pageUrl = location.href;
+    const publicPrintUrl = window.RS_WEC_PRINT_URL || "https://ringstatus.com/wec-print";
+    const pageUrl = location.protocol === "file:"
+      ? `${publicPrintUrl}${location.search || ""}`
+      : location.href;
     const filename = buildPdfFilename();
     return `${PDF_WORKER_BASE}?url=${encodeURIComponent(pageUrl)}&filename=${encodeURIComponent(filename)}`;
   }
@@ -598,6 +630,16 @@
     PDF_LINK_URL = buildPdfLink();
     const btnPdf = document.getElementById("btnPdf");
     if (btnPdf) btnPdf.href = PDF_LINK_URL;
+  }
+
+  function buildShareText() {
+    const title = (document.getElementById("title")?.textContent || "WEC Schedule").trim();
+    const subtitle = (document.getElementById("subtitle")?.textContent || "").trim();
+    return {
+      title,
+      subject: `${title}${subtitle ? " " + subtitle : ""}`,
+      body: `PDF schedule:\n${PDF_LINK_URL}`
+    };
   }
 
   function relayoutVisibleRings() {
@@ -754,6 +796,8 @@
 
       RING_WRAPS = buildRingElements(fullRows);
       relayoutVisibleRings();
+      document.documentElement.dataset.rsPdfReady = "1";
+      window.RS_PDF_READY = true;
 
       fitToOnePage();
       setTimeout(fitToOnePage, 50);
@@ -810,6 +854,28 @@
         } catch {
           window.prompt("Copy PDF link:", PDF_LINK_URL);
         }
+      });
+    }
+
+    const btnShare = document.getElementById("btnShare");
+    if (btnShare && btnShare.dataset.rsBound !== "1") {
+      btnShare.dataset.rsBound = "1";
+      btnShare.addEventListener("click", async () => {
+        syncPdfControls();
+        const share = buildShareText();
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: share.title,
+              text: share.subject,
+              url: PDF_LINK_URL
+            });
+            return;
+          } catch (err) {
+            if (err && err.name === "AbortError") return;
+          }
+        }
+        window.location.href = `mailto:?subject=${encodeURIComponent(share.subject)}&body=${encodeURIComponent(share.body)}`;
       });
     }
 

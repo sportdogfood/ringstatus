@@ -280,12 +280,84 @@ async function pushFocusShowToCatalyst(row) {
     show_end_date: row.show_end,
     focus_day: row.focus_day
   });
+  return catalystGet(params, "set-show-config");
+}
+
+async function catalystGet(params, label) {
   const response = await fetch(`${CATALYST_ENDPOINT}?${params.toString()}`, { method: "GET" });
   const text = await response.text();
   if (!response.ok) {
-    throw new Error(`Catalyst set-show-config failed: ${response.status} ${text}`);
+    throw new Error(`Catalyst ${label} failed: ${response.status} ${text}`);
   }
   return JSON.parse(text);
+}
+
+async function catalystPost(params, body, label) {
+  const response = await fetch(`${CATALYST_ENDPOINT}?${params.toString()}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`Catalyst ${label} failed: ${response.status} ${text}`);
+  }
+  return JSON.parse(text);
+}
+
+async function pushActiveTrainersToCatalyst(row, trainerRows) {
+  const activeTrainers = trainerRows
+    .filter((trainer) => trainer.show_no === row.show_no && trainer.active === "1")
+    .map((trainer) => trainer.trainer)
+    .filter(Boolean);
+  const params = new URLSearchParams({
+    action: "set-active-trainers",
+    show_no: row.show_no,
+    focus_day: row.focus_day,
+    active_trainers: activeTrainers.join("|")
+  });
+  return catalystGet(params, "set-active-trainers");
+}
+
+async function pushHideClassesToCatalyst(row, hideRows) {
+  const hideClasses = hideRows
+    .filter((hide) => hide.show_no === row.show_no && hide.active === "1")
+    .map((hide) => hide.hide_text)
+    .filter(Boolean);
+  const params = new URLSearchParams({
+    action: "set-hide-classes",
+    show_no: row.show_no,
+    focus_day: row.focus_day,
+    hide_classes: hideClasses.join("|")
+  });
+  return catalystGet(params, "set-hide-classes");
+}
+
+async function pushHorseDisplaysToCatalyst(row, horseRows) {
+  const horseDisplays = {};
+  const displayByKey = new Map();
+  for (const horse of horseRows.filter((item) => item.show_no === row.show_no)) {
+    const display = horse.barn_name || horse.horse_display || horse.horse;
+    if (!horse.horse || !display) continue;
+
+    const key = horse.horse.trim().toLowerCase();
+    const existing = displayByKey.get(key);
+    const score = (horse.barn_name ? 3 : 0) + (display && display !== horse.horse ? 2 : 0);
+    if (!existing || score >= existing.score) {
+      displayByKey.set(key, { display, score });
+    }
+  }
+  for (const horse of horseRows.filter((item) => item.show_no === row.show_no)) {
+    if (!horse.horse) continue;
+    const preferred = displayByKey.get(horse.horse.trim().toLowerCase());
+    if (preferred?.display && preferred.display !== horse.horse) horseDisplays[horse.horse] = preferred.display;
+  }
+  const params = new URLSearchParams({
+    action: "set-horse-displays",
+    show_no: row.show_no,
+    focus_day: row.focus_day
+  });
+  return catalystPost(params, { horse_displays: JSON.stringify(horseDisplays) }, "set-horse-displays");
 }
 
 async function main() {
@@ -328,6 +400,7 @@ async function main() {
     .filter((row) => row.show_no && row.hide_text);
 
   const showNos = new Set([...focusRows.map((row) => row.show_no), ...hideRows.map((row) => row.show_no)]);
+  const catalystResults = [];
   for (const showNo of showNos) {
     const showDir = path.join(helperRoot, showNo);
     const ringRows = ringRecords
@@ -409,12 +482,14 @@ async function main() {
       "tag",
       "active"
     ], trainerRows);
-  }
 
-  const catalystResults = [];
-  if (syncCatalyst) {
-    for (const row of focusRows) {
-      catalystResults.push(await pushFocusShowToCatalyst(row));
+    if (syncCatalyst) {
+      for (const row of focusRows.filter((item) => item.show_no === showNo)) {
+        catalystResults.push(await pushFocusShowToCatalyst(row));
+        catalystResults.push(await pushActiveTrainersToCatalyst(row, trainerRows));
+        catalystResults.push(await pushHideClassesToCatalyst(row, hideRows));
+        catalystResults.push(await pushHorseDisplaysToCatalyst(row, horseRows));
+      }
     }
   }
 

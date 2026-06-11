@@ -1,0 +1,146 @@
+{
+  "ok": true,
+  "complete": false,
+  "action": "sync-focus-day",
+  "focus_day_source": "request",
+  "upstream_requests": 6,
+  "focus_day": "2026-06-11",
+  "mode": "focus",
+  "ring_day_source": "skipped",
+  "selected_ring_days": 0,
+  "has_more": false,
+  "schedule_rows": 42,
+  "schedules": [],
+  "class_oog": {
+    "class_nos": [
+      "29140",
+      "29143",
+      "29050",
+      "29162",
+      "28943",
+      "29048",
+      "29049",
+      "29063",
+      "29064",
+      "33495",
+      "33496",
+      "29070",
+      "29068",
+      "29069",
+      "29304",
+      "29305",
+      "29391",
+      "29397",
+      "29076",
+      "29074",
+      "29075",
+      "29299",
+      "29300",
+      "29165",
+      "29137",
+      "29060",
+      "29152",
+      "29156",
+      "29135",
+      "29058",
+      "29059",
+      "29261",
+      "29262",
+      "29129",
+      "29329",
+      "29330",
+      "29041",
+      "29042",
+      "29051",
+      "29052",
+      "29173",
+      "29314",
+      "29315",
+      "29132",
+      "33502",
+      "33503",
+      "29126",
+      "29160",
+      "29170",
+      "29452",
+      "29167",
+      "29449",
+      "29182",
+      "29181"
+    ],
+    "selected_class_nos": [
+      "29135",
+      "29058"
+    ],
+    "classes_seen": 54,
+    "offset": 28,
+    "limit": 2,
+    "next_offset": 30,
+    "has_more": true,
+    "classes_synced": 2,
+    "parsed_rows": 49,
+    "entries": 49,
+    "failed": [],
+    "results": [
+      {
+        "class_no": "29135",
+        "upstream_status": 200,
+        "parsed_rows": 37,
+        "order_status": "Class Ordered By: Custom",
+        "counters": {
+          "shows": 1,
+          "classes": 1,
+          "class_times": 1,
+          "entries": 37
+        },
+        "samples": [
+          {
+            "class": "5614000000398493",
+            "class_time": "5614000000399492",
+            "entry": "5614000000423095"
+          },
+          {
+            "class": "5614000000398493",
+            "class_time": "5614000000399492",
+            "entry": "5614000000420222"
+          },
+          {
+            "class": "5614000000398493",
+            "class_time": "5614000000399492",
+            "entry": "5614000000417842"
+          }
+        ]
+      },
+      {
+        "class_no": "29058",
+        "upstream_status": 200,
+        "parsed_rows": 12,
+        "order_status": "NOT A POSTED ORDER",
+        "counters": {
+          "shows": 1,
+          "classes": 1,
+          "class_times": 1,
+          "entries": 12
+        },
+        "samples": [
+          {
+            "class": "5614000000400429",
+            "class_time": "5614000000405086",
+            "entry": "5614000000419531"
+          },
+          {
+            "class": "5614000000400429",
+            "class_time": "5614000000405086",
+            "entry": "5614000000416473"
+          },
+          {
+            "class": "5614000000400429",
+            "class_time": "5614000000405086",
+            "entry": "5614000000421301"
+          }
+        ]
+      }
+    ]
+  },
+  "audit": null
+}

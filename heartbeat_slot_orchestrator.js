@@ -45,7 +45,8 @@ const LOCK_PATH = process.env.ORCH_LOCK_PATH || path.join(LOG_DIR, "heartbeat-sl
 const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "30") || 30);
 const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
 const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DETAIL || "0") === "1";
-const ENABLE_WEC_HEARTBEAT = String(process.env.ORCH_WEC_ENABLED || "0") === "1";
+const ENABLE_WEC_HEARTBEAT = String(process.env.ORCH_WEC_ENABLED || "1") === "1";
+const WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES = Math.max(1, Number(process.env.ORCH_WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES || "12") || 12);
 const WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES = Math.max(1, Number(process.env.ORCH_WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES || "30") || 30);
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
@@ -74,6 +75,7 @@ const SCRIPT_LOG_FILES = {
   "live_rings_daily.js": "live-rings-daily.log",
   "live_class_detail.js": "live-class-detail.log",
   "docs/horseshowing/wec-heartbeat.js": "wec-heartbeat.log",
+  "docs/horseshowing/run-wec-catalyst-workflow.ps1": "wec-catalyst-workflow.log",
   "docs/horseshowing/sync-airtable-controls.js": "wec-airtable-controls.log",
   "publisher.js": "publisher.log",
 };
@@ -426,6 +428,61 @@ function runNodeScript(scriptName, extraEnv = {}) {
   return { ok, exitCode, durationMs };
 }
 
+function runPowerShellScript(scriptName, extraEnv = {}) {
+  const startedAt = Date.now();
+  const scriptPath = path.resolve(__dirname, scriptName);
+  const label = scriptName.replace(/\.ps1$/i, "").toUpperCase();
+  const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19);
+  appendEvent({ ok: true, event: "step_started", script: scriptName });
+
+  const result = spawnSync("powershell.exe", [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    scriptPath,
+  ], {
+    cwd: __dirname,
+    env: { ...process.env, ...extraEnv },
+    encoding: "utf8",
+    windowsHide: true,
+  });
+
+  const exitCode = Number(result.status ?? (result.error ? -1 : 0));
+  const ok = exitCode === 0;
+  const durationMs = Date.now() - startedAt;
+  const output = [
+    `[${timestamp}] ${label} RUN`,
+    result.stdout || "",
+    result.stderr || "",
+    JSON.stringify({
+      ok,
+      event: "step_completed",
+      script: scriptName,
+      exit_code: exitCode,
+      duration_ms: durationMs,
+      pipeline: "heartbeat_slot_orchestrator",
+      error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
+    }),
+    "",
+  ].join("\r\n");
+  appendScriptLog(scriptName, output);
+
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
+
+  appendEvent({
+    ok,
+    event: "step_completed",
+    script: scriptName,
+    exit_code: exitCode,
+    duration_ms: durationMs,
+    error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
+  });
+
+  return { ok, exitCode, durationMs };
+}
+
 function acquireLock() {
   fs.mkdirSync(path.dirname(LOCK_PATH), { recursive: true });
   let existingLock = null;
@@ -609,6 +666,22 @@ async function runOrchestrator() {
       return result;
     }
 
+    async function runDuePowerShell(scriptName, extraEnv = {}) {
+      const result = runPowerShellScript(scriptName, extraEnv);
+      const overrunThresholdMs = Math.min(ORCH_STEP_OVERRUN_ALERT_MS, Math.max(60000, cadenceSeconds * 1000));
+      if (result.durationMs >= overrunThresholdMs) {
+        await recordOrchestratorAlert({
+          errorType: "heartbeat_lane_step_overrun",
+          heartbeat,
+          scriptName,
+          resolved: false,
+          message: `Heartbeat lane step overran threshold. script=${scriptName} duration_ms=${result.durationMs} threshold_ms=${overrunThresholdMs} slot=${slot} mode=${mode} cadence_seconds=${cadenceSeconds}`,
+          extra: { scriptName, durationMs: result.durationMs, thresholdMs: overrunThresholdMs, slot, mode, cadenceSeconds },
+        });
+      }
+      return result;
+    }
+
     if (DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY && defaultShowDateGuard.check_show_date) {
       const showOverride = await showManualOverride(heartbeat?.fields?.app_show_id);
       if (!showOverride.is_default_show_manual_override) {
@@ -656,7 +729,8 @@ async function runOrchestrator() {
       && !DISABLE_LIVE_CLASS_DETAIL
       && slotIsDue(slot, process.env.ORCH_LIVE_CLASS_DETAIL_SLOTS, DEFAULT_LIVE_CLASS_DETAIL_SLOTS);
     const wecHeartbeatDue = ENABLE_WEC_HEARTBEAT
-      && slotIsDue(slot, process.env.ORCH_WEC_HEARTBEAT_SLOTS, DEFAULT_WEC_HEARTBEAT_SLOTS);
+      && slotIsDue(slot, process.env.ORCH_WEC_HEARTBEAT_SLOTS, DEFAULT_WEC_HEARTBEAT_SLOTS)
+      && intervalDue("wec-focus-workflow", WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES);
     const wecAirtableControlsDue = ENABLE_WEC_HEARTBEAT
       && intervalDue("wec-airtable-controls", WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES);
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
@@ -729,12 +803,15 @@ async function runOrchestrator() {
     }
 
     if (wecHeartbeatDue) {
-      const wecHeartbeatResult = await runDueScript("docs/horseshowing/wec-heartbeat.js", {
+      const wecHeartbeatResult = await runDuePowerShell("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
         WEC_SHOW_NO: process.env.WEC_SHOW_NO || "14906",
-        WEC_FOCUS_DAY: process.env.WEC_FOCUS_DAY || "2026-06-10",
         WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
       });
-      if (!wecHeartbeatResult.ok) upstreamOk = false;
+      if (wecHeartbeatResult.ok) {
+        markIntervalRun("wec-focus-workflow");
+      } else {
+        upstreamOk = false;
+      }
     }
 
     if (wecAirtableControlsDue) {

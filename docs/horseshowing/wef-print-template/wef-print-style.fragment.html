@@ -132,7 +132,15 @@
     justify-content:center;
     cursor:pointer;
     z-index:20;
+    opacity:0;
+    pointer-events:none;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .ringWrap:hover .ringClose,
+  .ringWrap:focus-within .ringClose{
+    opacity:1;
+    pointer-events:auto;
   }
 
   .ring{
