@@ -22,6 +22,7 @@ const repoRoot = path.resolve(__dirname, "..", "..");
 const helperRoot = path.join(__dirname, "helpers");
 const logRoot = path.join(__dirname, "logs");
 const summaryStatePath = path.join(logRoot, "wec-airtable-summary-state.json");
+const backfillStatePath = path.join(logRoot, "wec-airtable-helper-backfill-state.json");
 
 function requireToken() {
   if (!AIRTABLE_TOKEN) {
@@ -82,6 +83,28 @@ async function airtableCreate(tableId, fields) {
   return response.json();
 }
 
+async function airtableBatchCreate(tableId, records) {
+  requireToken();
+  const created = [];
+  for (let index = 0; index < records.length; index += 10) {
+    const batch = records.slice(index, index + 10);
+    const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${tableId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ records: batch.map((fields) => ({ fields })) })
+    });
+    if (!response.ok) {
+      throw new Error(`Airtable batch create ${tableId} failed: ${response.status} ${await response.text()}`);
+    }
+    const payload = await response.json();
+    created.push(...(payload.records || []));
+  }
+  return created;
+}
+
 function safeJson(value) {
   return JSON.stringify(value, null, 2).slice(0, 90000);
 }
@@ -138,6 +161,40 @@ function readSummaryState() {
 function writeSummaryState(state) {
   fs.mkdirSync(path.dirname(summaryStatePath), { recursive: true });
   fs.writeFileSync(summaryStatePath, `${JSON.stringify(state, null, 2)}\n`);
+}
+
+function readBackfillState() {
+  try {
+    return JSON.parse(fs.readFileSync(backfillStatePath, "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+function writeBackfillState(state) {
+  fs.mkdirSync(path.dirname(backfillStatePath), { recursive: true });
+  fs.writeFileSync(backfillStatePath, `${JSON.stringify(state, null, 2)}\n`);
+}
+
+function backfillDue(showNo, focusDay, minutes = 60) {
+  if (process.argv.includes("--force-backfill")) return true;
+  const state = readBackfillState();
+  const key = `${showNo}|${focusDay}`;
+  if (state.last_focus_key !== key) return true;
+  const last = state.last_backfill_at ? new Date(state.last_backfill_at) : null;
+  if (!last || Number.isNaN(last.getTime())) return true;
+  return Date.now() - last.getTime() >= minutes * 60 * 1000;
+}
+
+function markBackfillRun(showNo, focusDay, summary) {
+  const now = new Date().toISOString();
+  writeBackfillState({
+    last_focus_key: `${showNo}|${focusDay}`,
+    last_show_no: showNo,
+    last_focus_day: focusDay,
+    last_backfill_at: now,
+    last_summary: summary
+  });
 }
 
 function summaryDue(minutes = 30) {
@@ -305,16 +362,174 @@ async function catalystPost(params, body, label) {
   return JSON.parse(text);
 }
 
+async function catalystSnapshot(showNo, focusDay) {
+  const params = new URLSearchParams({
+    action: "focus-day-snapshot",
+    show_no: showNo,
+    focus_day: focusDay
+  });
+  return catalystGet(params, "focus-day-snapshot");
+}
+
+function keySet(records, fieldName) {
+  return new Set(records
+    .map((record) => record.fields?.[fieldName])
+    .filter((value) => value !== null && value !== undefined && value !== "")
+    .map((value) => String(value).trim().toLowerCase())
+    .filter(Boolean));
+}
+
+function addUnique(map, key, fields) {
+  const cleanKey = String(key ?? "").trim();
+  if (!cleanKey) return;
+  const normalized = cleanKey.toLowerCase();
+  if (!map.has(normalized)) map.set(normalized, fields);
+}
+
+function firstText(...values) {
+  for (const value of values) {
+    const clean = String(value ?? "").trim();
+    if (clean) return clean;
+  }
+  return "";
+}
+
+function numberOrUndefined(value) {
+  const parsed = Number.parseInt(String(value ?? "").trim(), 10);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+async function backfillAirtableHelpersFromCatalyst(row, existingRecords) {
+  if (!backfillDue(row.show_no, row.focus_day, 60)) {
+    return {
+      skipped: true,
+      reason: "not_due",
+      created: { rings: 0, horses: 0, riders: 0, trainers: 0, entries: 0 }
+    };
+  }
+
+  const snapshot = await catalystSnapshot(row.show_no, row.focus_day);
+  if (!snapshot.ok) throw new Error(`Catalyst focus-day-snapshot failed for ${row.show_no} ${row.focus_day}`);
+
+  const classOog = Array.isArray(snapshot.class_oog) ? snapshot.class_oog : [];
+  const updateSchedule = Array.isArray(snapshot.update_schedule) ? snapshot.update_schedule : [];
+  const helperHorses = Array.isArray(snapshot.helpers?.horses) ? snapshot.helpers.horses : [];
+  const helperRiders = Array.isArray(snapshot.helpers?.riders) ? snapshot.helpers.riders : [];
+  const helperTrainers = Array.isArray(snapshot.helpers?.trainers) ? snapshot.helpers.trainers : [];
+
+  const existing = {
+    rings: keySet(existingRecords.rings, "ring_no"),
+    horses: keySet(existingRecords.horses, "horse"),
+    riders: keySet(existingRecords.riders, "rider"),
+    trainers: keySet(existingRecords.trainers, "trainer"),
+    entries: keySet(existingRecords.entries, "entry_no")
+  };
+
+  const candidates = {
+    rings: new Map(),
+    horses: new Map(),
+    riders: new Map(),
+    trainers: new Map(),
+    entries: new Map()
+  };
+
+  for (const item of [...updateSchedule, ...classOog]) {
+    const ringNo = firstText(item.ring_no);
+    if (ringNo && !existing.rings.has(ringNo.toLowerCase())) {
+      addUnique(candidates.rings, ringNo, {
+        ring_no: numberOrUndefined(ringNo),
+        ring_name: firstText(item.ring_name, item.ring),
+        ring_display: firstText(item.ring_name, item.ring),
+        source: "get_ring_days.php"
+      });
+    }
+  }
+
+  for (const item of [...classOog, ...helperHorses]) {
+    const horse = firstText(item.horse);
+    if (horse && !existing.horses.has(horse.toLowerCase())) {
+      addUnique(candidates.horses, horse, {
+        horse,
+        horse_display: horse,
+        rider: firstText(item.rider),
+        trainer: firstText(item.trainer),
+        source: "class_oog.php"
+      });
+    }
+  }
+
+  for (const item of [...classOog, ...helperRiders]) {
+    const rider = firstText(item.rider);
+    if (rider && !existing.riders.has(rider.toLowerCase())) {
+      addUnique(candidates.riders, rider, {
+        rider,
+        horse: firstText(item.horse),
+        trainer: firstText(item.trainer),
+        source: "class_oog.php"
+      });
+    }
+  }
+
+  for (const item of [...classOog, ...helperTrainers]) {
+    const trainer = firstText(item.trainer);
+    if (trainer && !existing.trainers.has(trainer.toLowerCase())) {
+      addUnique(candidates.trainers, trainer, {
+        trainer,
+        trainer_display: trainer,
+        source: "class_oog.php"
+      });
+    }
+  }
+
+  for (const item of classOog) {
+    const entryNo = firstText(item.entry_no);
+    if (entryNo && !existing.entries.has(entryNo.toLowerCase())) {
+      addUnique(candidates.entries, entryNo, {
+        entry_no: numberOrUndefined(entryNo),
+        horse: firstText(item.horse),
+        rider: firstText(item.rider),
+        trainer: firstText(item.trainer),
+        source: "class_oog.php"
+      });
+    }
+  }
+
+  const created = {};
+  for (const tableName of ["rings", "horses", "riders", "trainers", "entries"]) {
+    const rows = [...candidates[tableName].values()].filter((fields) => Object.keys(fields).length);
+    created[tableName] = rows.length ? (await airtableBatchCreate(TABLES[tableName], rows)).length : 0;
+  }
+
+  const summary = {
+    show_no: row.show_no,
+    focus_day: row.focus_day,
+    source_counts: {
+      update_schedule: updateSchedule.length,
+      class_oog: classOog.length,
+      helper_horses: helperHorses.length,
+      helper_riders: helperRiders.length,
+      helper_trainers: helperTrainers.length
+    },
+    created
+  };
+  markBackfillRun(row.show_no, row.focus_day, summary);
+  return { skipped: false, ...summary };
+}
+
 async function pushActiveTrainersToCatalyst(row, trainerRows) {
-  const activeTrainers = trainerRows
-    .filter((trainer) => trainer.show_no === row.show_no && trainer.active === "1")
-    .map((trainer) => trainer.trainer)
-    .filter(Boolean);
+  const activeTrainerRows = trainerRows
+    .filter((trainer) => trainer.show_no === row.show_no && trainer.active === "1" && trainer.trainer);
+  const activeTrainers = activeTrainerRows.map((trainer) => trainer.trainer);
+  const trainerDisplays = {};
+  for (const trainer of activeTrainerRows) {
+    trainerDisplays[trainer.trainer] = trainer.trainer_display || trainer.trainer;
+  }
   const params = new URLSearchParams({
     action: "set-active-trainers",
     show_no: row.show_no,
     focus_day: row.focus_day,
-    active_trainers: activeTrainers.join("|")
+    active_trainers: activeTrainers.join("|"),
+    trainer_displays: JSON.stringify(trainerDisplays)
   });
   return catalystGet(params, "set-active-trainers");
 }
@@ -386,11 +601,11 @@ async function main() {
 
   const focusRecords = recordsByCheck.focus_show;
   const hideRecords = recordsByCheck.class_hide;
-  const ringRecords = recordsByCheck.rings;
-  const horseRecords = recordsByCheck.horses;
-  const riderRecords = recordsByCheck.riders;
-  const trainerRecords = recordsByCheck.trainers;
-  const entryRecords = recordsByCheck.entries;
+  let ringRecords = recordsByCheck.rings;
+  let horseRecords = recordsByCheck.horses;
+  let riderRecords = recordsByCheck.riders;
+  let trainerRecords = recordsByCheck.trainers;
+  let entryRecords = recordsByCheck.entries;
 
   const focusRows = focusRecords
     .map(normalizeFocusShow)
@@ -398,6 +613,40 @@ async function main() {
   const hideRows = hideRecords
     .map(normalizeClassHide)
     .filter((row) => row.show_no && row.hide_text);
+
+  const backfillResults = [];
+  for (const row of focusRows) {
+    const result = await backfillAirtableHelpersFromCatalyst(row, {
+      rings: ringRecords,
+      horses: horseRecords,
+      riders: riderRecords,
+      trainers: trainerRecords,
+      entries: entryRecords
+    });
+    backfillResults.push(result);
+    const totalCreated = Object.values(result.created || {}).reduce((sum, count) => sum + Number(count || 0), 0);
+    await writeWecLog({
+      logType: "heartbeat",
+      checkName: "airtable_helper_backfill",
+      showNo: row.show_no,
+      focusDay: row.focus_day,
+      status: result.skipped ? "skipped" : "ok",
+      recordsSeen: result.source_counts ? Object.values(result.source_counts).reduce((sum, count) => sum + Number(count || 0), 0) : 0,
+      recordsChanged: totalCreated,
+      summary: result.skipped
+        ? `helper backfill skipped: ${result.reason}`
+        : `helper backfill created rings=${result.created.rings}; horses=${result.created.horses}; riders=${result.created.riders}; trainers=${result.created.trainers}; entries=${result.created.entries}`,
+      payload: result
+    });
+  }
+
+  if (backfillResults.some((result) => Object.values(result.created || {}).some((count) => Number(count || 0) > 0))) {
+    ringRecords = await airtableGetAll(TABLES.rings);
+    horseRecords = await airtableGetAll(TABLES.horses);
+    riderRecords = await airtableGetAll(TABLES.riders);
+    trainerRecords = await airtableGetAll(TABLES.trainers);
+    entryRecords = await airtableGetAll(TABLES.entries);
+  }
 
   const showNos = new Set([...focusRows.map((row) => row.show_no), ...hideRows.map((row) => row.show_no)]);
   const catalystResults = [];
@@ -503,7 +752,8 @@ async function main() {
     trainers_rows: trainerRecords.length,
     entries_rows: entryRecords.length,
     helper_root: helperRoot,
-    catalyst_synced: catalystResults.length
+    catalyst_synced: catalystResults.length,
+    backfill: backfillResults
   };
   output.summary_written = await writeThirtyMinuteSummary({
     base_id: BASE_ID,

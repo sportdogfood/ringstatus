@@ -173,9 +173,12 @@
   }
 
   .gdisplay{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
     font-size:11px;
     font-weight:600;
-    text-align:right;
+    text-align:left;
     text-transform:uppercase;
     margin-bottom:-6px;
     margin-right:20px;
@@ -183,6 +186,33 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+  }
+
+  .gdisplay-line{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    min-width:0;
+  }
+
+  .gdisplay-badge{
+    flex:0 0 auto;
+    border:1px solid #815374;
+    border-radius:999px;
+    color:#815374;
+    background:#fff;
+    font-size:7px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:.03em;
+    padding:2px 4px 1px 4px;
+  }
+
+  .gdisplay-text{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
 
   .gname{
@@ -485,6 +515,69 @@
     return normScheduleDisplayValues(values);
   }
 
+  function trainerRollupsForItems(items) {
+    const byTrainer = new Map();
+    for (const row of items) {
+      const raw = row && row.trainer_rollups;
+      const rollups = Array.isArray(raw) ? raw : [];
+      for (const item of rollups) {
+        const trainer = String(item.trainer_display || item.trainer || "").trim();
+        const horses = Array.isArray(item.horses) ? item.horses : [];
+        if (!trainer || !horses.length) continue;
+        const bucket = byTrainer.get(trainer) || [];
+        horses.forEach((horse) => {
+          const clean = String(horse || "").trim();
+          if (clean) bucket.push(clean);
+        });
+        byTrainer.set(trainer, bucket);
+      }
+    }
+    return Array.from(byTrainer.entries()).map(([trainer, horses]) => ({
+      trainer,
+      horses: Array.from(new Set(horses))
+    })).filter((item) => item.horses.length);
+  }
+
+  function trainerRollupHtml(rollups, fallback) {
+    if (rollups && rollups.length) {
+      return rollups.map((item) => `
+        <div class="gdisplay-line">
+          <span class="gdisplay-badge">${esc(item.trainer)}</span>
+          <span class="gdisplay-text">${esc(item.horses.join(", "))}</span>
+        </div>
+      `).join("");
+    }
+    return fallback ? `<div class="gdisplay-line"><span class="gdisplay-text">${esc(fallback)}</span></div>` : "";
+  }
+
+  function classRenderKey(row) {
+    const ringNo = String(row.ring_no ?? row.ringNo ?? row.ring_number ?? row.ringNumber ?? "").trim();
+    const num = String(row.class_number ?? row.classNumber ?? "").trim();
+    const name = String(row.class_name ?? row.className ?? row.name ?? "").trim().toLowerCase();
+    if (name) return `name:${ringNo}|${name}`;
+    const classNo = String(row.class_no ?? row.classNo ?? "").trim();
+    if (classNo) return `class_no:${classNo}`;
+    return `fallback:${ringNo}|${num}|${name}`;
+  }
+
+  function mergeClassRows(items) {
+    const merged = new Map();
+    for (const row of items || []) {
+      const key = classRenderKey(row);
+      if (!merged.has(key)) {
+        merged.set(key, Object.assign({}, row));
+        continue;
+      }
+      const existing = merged.get(key);
+      for (const field of ["start_display", "startDisplay", "start_display2", "startDisplay2", "class_name", "className", "name", "class_number", "classNumber"]) {
+        if (!String(existing[field] ?? "").trim() && String(row[field] ?? "").trim()) {
+          existing[field] = row[field];
+        }
+      }
+    }
+    return Array.from(merged.values());
+  }
+
   function pxPerInch() {
     const d = document.createElement("div");
     d.style.width = "1in";
@@ -704,12 +797,13 @@
 
       const ringKey = makeRingKey(ring.ring_number, ringIdx);
 
-      const groups = Array.from(groupBy(ring.items, (r) => getGroupId(r)).entries())
+      const groups = Array.from(groupBy(ring.items, (r) => classRenderKey(r)).entries())
         .map(([gid, items]) => {
           const seq = toInt(items[0]?.class_group_sequence ?? items[0]?.classGroupSequence ?? 9999) ?? 9999;
           const gname = items[0]?.group_group_name ?? items[0]?.group_name ?? items[0]?.groupName ?? "Group";
           const gdisplay = getScheduleGroupDisplay(items);
-          return { gid, seq, gname, gdisplay, items };
+          const trainerRollups = trainerRollupsForItems(items);
+          return { gid, seq, gname, gdisplay, trainerRollups, items };
         })
         .sort((a, b) => a.seq - b.seq);
 
@@ -718,7 +812,7 @@
       sec.innerHTML = `<div class="ring-head">${esc(ringTitle)}</div>`;
 
       for (const g of groups) {
-        const classes = g.items.slice().sort((a, b) => {
+        const classes = mergeClassRows(g.items).sort((a, b) => {
           const an = toInt(a.class_number ?? a.classNumber ?? 999999) ?? 999999;
           const bn = toInt(b.class_number ?? b.classNumber ?? 999999) ?? 999999;
           return an - bn;
@@ -743,10 +837,11 @@
         }
 
         const gDiv = document.createElement("div");
-        gDiv.className = `group${g.gdisplay ? " has-team" : ""}`;
+        const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
+        gDiv.className = `group${hasTeam ? " has-team" : ""}`;
         gDiv.innerHTML = `
           <div class="group-head">
-            ${g.gdisplay ? `<div class="gdisplay">${esc(g.gdisplay)}</div>` : ``}
+            ${hasTeam ? `<div class="gdisplay">${trainerRollupHtml(g.trainerRollups, g.gdisplay)}</div>` : ``}
             <div class="gname">${esc(g.gname)}</div>
           </div>
           <div class="solid"></div>

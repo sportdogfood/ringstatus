@@ -86,13 +86,15 @@
   .subtitle-row{
     display:flex;
     align-items:center;
-    gap:8px;
+    justify-content:space-between;
+    gap:10px;
     min-width:0;
+    width:100%;
   }
 
   .subtitle-row .subtitle{
     min-width:0;
-    flex:1 1 auto;
+    flex:0 1 auto;
   }
 
   .subtitle-edit{
@@ -105,6 +107,7 @@
     font-weight:700;
     line-height:1;
     padding:0;
+    margin-left:auto;
     cursor:pointer;
   }
 
@@ -134,23 +137,27 @@
   }
 
   .topbar-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
+    position:relative;
+    display:block;
+    width:100%;
   }
 
   .topbar-text{
-    flex:1 1 auto;
     min-width:0;
-    max-width:100%;
+    width:100%;
     display:flex;
     flex-direction:column;
     gap:2px;
   }
 
+  .topbar-text .title{
+    padding-right:74px;
+  }
+
   .home-pill{
-    flex:0 0 auto;
+    position:absolute;
+    top:0;
+    right:0;
     height:36px;
     padding:0 14px;
     border-radius:999px;
@@ -298,8 +305,9 @@
 
   .gdisplay{
     display:flex;
-    align-items:center;
-    gap:7px;
+    flex-direction:column;
+    align-items:stretch;
+    gap:4px;
     font-size:var(--fs-team);
     line-height:1.2;
     font-weight:650;
@@ -313,12 +321,19 @@
     z-index:10;
   }
 
+  .gdisplay-line{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    min-width:0;
+  }
+
   .gdisplay-badge{
     flex:0 0 auto;
     border:1px solid #815374;
     border-radius:999px;
-    color:#815374;
-    background:#fff;
+    color:#fff;
+    background:#815374;
     font-size:9px;
     line-height:1;
     font-weight:800;
@@ -664,6 +679,41 @@
     return out.join(", ");
   }
 
+  function trainerRollupsForItems(items){
+    const byTrainer = new Map();
+    for(const row of items){
+      const raw = row && row.trainer_rollups;
+      const rollups = Array.isArray(raw) ? raw : [];
+      for(const item of rollups){
+        const trainer = String(item.trainer_display || item.trainer || "").trim();
+        const horses = Array.isArray(item.horses) ? item.horses : [];
+        if(!trainer || !horses.length) continue;
+        const bucket = byTrainer.get(trainer) || [];
+        for(const horse of horses){
+          const clean = String(horse || "").trim();
+          if(clean) bucket.push(clean);
+        }
+        byTrainer.set(trainer, bucket);
+      }
+    }
+    return Array.from(byTrainer.entries()).map(([trainer, horses]) => ({
+      trainer,
+      horses: Array.from(new Set(horses))
+    })).filter(item => item.horses.length);
+  }
+
+  function trainerRollupHtml(rollups, fallback){
+    if(rollups && rollups.length){
+      return rollups.map(item => `
+        <div class="gdisplay-line">
+          <span class="gdisplay-badge">${esc(item.trainer)}</span>
+          <span class="gdisplay-text">${esc(item.horses.join(", "))}</span>
+        </div>
+      `).join("");
+    }
+    return fallback ? `<div class="gdisplay-line"><span class="gdisplay-text">${esc(fallback)}</span></div>` : "";
+  }
+
   function normalizeStatusToken(s){
     const v = String(s ?? "").trim().toLowerCase();
     if(v === "upcoming") return "upcoming";
@@ -743,15 +793,7 @@
 
     document.getElementById("title").textContent = reportTitle;
 
-    const subParts = [];
-    if(displayDate) subParts.push(String(displayDate));
-
-    if(publishedAtMs){
-      subParts.push(`published: ${fmtTimeET(publishedAtMs)}`);
-      subParts.push(`next: ${fmtTimeET(publishedAtMs + PUBLISH_INTERVAL_MS)}`);
-    }
-
-    document.getElementById("subtitle").textContent = subParts.join("   •   ");
+    document.getElementById("subtitle").textContent = displayDate ? String(displayDate) : "";
     syncDateEdit(focusDay, showEndDate);
   }
 
@@ -812,6 +854,34 @@
     return String(value || "").trim().toLowerCase() === "check time";
   }
 
+  function classRenderKey(row){
+    const ringNo = String(row.ring_no ?? row.ringNo ?? row.ring_number ?? row.ringNumber ?? "").trim();
+    const num = String(row.class_number ?? row.classNumber ?? "").trim();
+    const name = String(row.class_name ?? row.className ?? row.name ?? "").trim().toLowerCase();
+    if(name) return `name:${ringNo}|${name}`;
+    const classNo = String(row.class_no ?? row.classNo ?? "").trim();
+    if(classNo) return `class_no:${classNo}`;
+    return `fallback:${ringNo}|${num}|${name}`;
+  }
+
+  function mergeClassRows(items){
+    const merged = new Map();
+    for(const row of items || []){
+      const key = classRenderKey(row);
+      if(!merged.has(key)){
+        merged.set(key, Object.assign({}, row));
+        continue;
+      }
+      const existing = merged.get(key);
+      for(const field of ["start_display", "startDisplay", "start_display2", "startDisplay2", "class_name", "className", "name", "class_number", "classNumber"]){
+        if(!String(existing[field] ?? "").trim() && String(row[field] ?? "").trim()){
+          existing[field] = row[field];
+        }
+      }
+    }
+    return Array.from(merged.values());
+  }
+
   function buildRings(rows){
     const rings = Array.from(groupBy(rows, r => String(r.ring_number ?? r.ringNumber ?? "9999")).entries())
       .map(([k, items]) => ({ ring_number: toInt(k) ?? 9999, items }))
@@ -828,15 +898,16 @@
         ? `ring-${ring.ring_number}`
         : `ring-x${i+1}`;
 
-      const groups = Array.from(groupBy(ring.items, r => String(r.class_group_id ?? r.classGroupId ?? "")).entries())
+      const groups = Array.from(groupBy(ring.items, r => classRenderKey(r)).entries())
         .map(([gid, items]) => {
           const seq = toInt(items[0]?.class_group_sequence ?? items[0]?.classGroupSequence ?? 9999) ?? 9999;
           const gname = items[0]?.group_group_name ?? items[0]?.group_name ?? items[0]?.groupName ?? "Group";
           const gdRaw = normRollup(items.map(x => x.group_display).filter(Boolean).join(", "));
           const gd = dedupeGroupDisplayByHorse(gdRaw);
+          const trainerRollups = trainerRollupsForItems(items);
           const gstatus = computeGroupStatus(items);
           const checkRank = items.every(x => isCheckDisplay(rowDisplayTime(x))) ? 1 : 0;
-          return { gid, seq, gname, gdisplay: gd, gstatus, checkRank, items };
+          return { gid, seq, gname, gdisplay: gd, trainerRollups, gstatus, checkRank, items };
         })
         .sort((a,b)=>(a.checkRank - b.checkRank) || (a.seq - b.seq));
 
@@ -848,7 +919,7 @@
       sec.innerHTML = `<div class="ring-head">${esc(ringTitle)}</div>`;
 
       for(const g of groups){
-        const classes = g.items.slice().sort((a,b)=>{
+        const classes = mergeClassRows(g.items).sort((a,b)=>{
           const ac = isCheckDisplay(rowDisplayTime(a)) ? 1 : 0;
           const bc = isCheckDisplay(rowDisplayTime(b)) ? 1 : 0;
           if(ac !== bc) return ac - bc;
@@ -895,7 +966,14 @@
         }
 
         const horses = [];
-        if(g.gdisplay){
+        if(g.trainerRollups && g.trainerRollups.length){
+          for(const rollup of g.trainerRollups){
+            for(const horse of rollup.horses || []){
+              const hn = extractHorseName(horse);
+              if(hn) horses.push(hn);
+            }
+          }
+        } else if(g.gdisplay){
           const parts = String(g.gdisplay).split(",").map(x=>x.trim()).filter(Boolean);
           for(const p of parts){
             const hn = extractHorseName(p);
@@ -905,7 +983,7 @@
 
         const horsesNorm = Array.from(new Set(horses.map(h => h.toLowerCase()))).join("|");
         const gDiv = document.createElement("div");
-        const hasTeam = !!g.gdisplay;
+        const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
 
         gDiv.className = `group${hasTeam ? " has-team" : ""}`;
         if(hasTeam){
@@ -914,7 +992,7 @@
 
         gDiv.innerHTML = `
           <div class="group-head">
-            ${g.gdisplay ? `<div class="gdisplay"><span class="gdisplay-badge">TEAM</span><span class="gdisplay-text">${esc(g.gdisplay)}</span></div>` : ``}
+            ${hasTeam ? `<div class="gdisplay">${trainerRollupHtml(g.trainerRollups, g.gdisplay)}</div>` : ``}
             <div class="gname">${esc(g.gname)}</div>
           </div>
           <div class="class-list">${cl || `<div class="muted">No classes scheduled.</div>`}</div>
