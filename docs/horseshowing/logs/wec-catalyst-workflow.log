@@ -1125,3 +1125,684 @@
 2026-06-11T13:27:57 sync-focus-day oog page=28 offset=54 classes=1 entries=1 complete=True missing=0
 2026-06-11T13:27:57 sync-focus-day complete=True schedule_pages=5 classes=55 active_expected=45 active_missing=0
 2026-06-11T13:30:21 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=207 triggers=0
+2026-06-11T13:45:38 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=212 triggers=0
+2026-06-11T13:45:39 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T13:45:39 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T13:48:35 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=212 triggers=0
+2026-06-11T13:48:36 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T13:48:36 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T13:51:21 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=215 triggers=0
+2026-06-11T13:51:35 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T13:51:42 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T13:51:55 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T13:52:03 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T13:52:05 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T13:52:08 sync-focus-day oog page=1 offset=0 classes=2 entries=32 complete=False missing=
+2026-06-11T13:52:13 sync-focus-day oog page=2 offset=2 classes=2 entries=52 complete=False missing=
+2026-06-11T13:52:18 sync-focus-day oog page=3 offset=4 classes=2 entries=53 complete=False missing=
+2026-06-11T13:52:21 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T13:52:23 sync-focus-day oog page=5 offset=8 classes=2 entries=18 complete=False missing=
+2026-06-11T13:52:26 sync-focus-day oog page=6 offset=10 classes=2 entries=32 complete=False missing=
+2026-06-11T13:52:30 sync-focus-day oog page=7 offset=12 classes=2 entries=42 complete=False missing=
+2026-06-11T13:52:33 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T13:52:36 sync-focus-day oog page=9 offset=16 classes=2 entries=26 complete=False missing=
+2026-06-11T13:52:39 sync-focus-day oog page=10 offset=18 classes=2 entries=23 complete=False missing=
+2026-06-11T13:52:42 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T13:52:46 sync-focus-day oog page=12 offset=22 classes=2 entries=38 complete=False missing=
+2026-06-11T13:52:48 sync-focus-day oog page=13 offset=24 classes=2 entries=20 complete=False missing=
+2026-06-11T13:52:53 sync-focus-day oog page=14 offset=26 classes=2 entries=85 complete=False missing=
+2026-06-11T13:52:57 sync-focus-day oog page=15 offset=28 classes=2 entries=49 complete=False missing=
+2026-06-11T13:53:00 sync-focus-day oog page=16 offset=30 classes=2 entries=28 complete=False missing=
+2026-06-11T13:53:05 sync-focus-day oog page=17 offset=32 classes=2 entries=61 complete=False missing=
+2026-06-11T13:53:08 sync-focus-day oog page=18 offset=34 classes=2 entries=34 complete=False missing=
+2026-06-11T13:53:10 sync-focus-day oog page=19 offset=36 classes=2 entries=10 complete=False missing=
+2026-06-11T13:53:14 sync-focus-day oog page=20 offset=38 classes=2 entries=49 complete=False missing=
+2026-06-11T13:53:17 sync-focus-day oog page=21 offset=40 classes=2 entries=24 complete=False missing=
+2026-06-11T13:53:19 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T13:53:22 sync-focus-day oog page=23 offset=44 classes=2 entries=25 complete=False missing=
+2026-06-11T13:53:26 sync-focus-day oog page=24 offset=46 classes=2 entries=48 complete=False missing=
+2026-06-11T13:53:31 sync-focus-day oog page=25 offset=48 classes=2 entries=45 complete=False missing=
+2026-06-11T13:53:34 sync-focus-day oog page=26 offset=50 classes=2 entries=32 complete=False missing=
+2026-06-11T13:53:36 sync-focus-day oog page=27 offset=52 classes=2 entries=5 complete=True missing=0
+2026-06-11T13:53:36 sync-focus-day complete=True schedule_pages=5 classes=54 active_expected=45 active_missing=0
+2026-06-11T13:53:52 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T14:06:21 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=213 triggers=0
+2026-06-11T14:06:35 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T14:06:42 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T14:06:56 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T14:07:03 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T14:07:06 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T14:07:08 sync-focus-day oog page=1 offset=0 classes=2 entries=32 complete=False missing=
+2026-06-11T14:07:14 sync-focus-day oog page=2 offset=2 classes=2 entries=52 complete=False missing=
+2026-06-11T14:07:19 sync-focus-day oog page=3 offset=4 classes=2 entries=53 complete=False missing=
+2026-06-11T14:07:22 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T14:07:24 sync-focus-day oog page=5 offset=8 classes=2 entries=18 complete=False missing=
+2026-06-11T14:07:28 sync-focus-day oog page=6 offset=10 classes=2 entries=32 complete=False missing=
+2026-06-11T14:07:31 sync-focus-day oog page=7 offset=12 classes=2 entries=42 complete=False missing=
+2026-06-11T14:07:34 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T14:07:37 sync-focus-day oog page=9 offset=16 classes=2 entries=26 complete=False missing=
+2026-06-11T14:07:40 sync-focus-day oog page=10 offset=18 classes=2 entries=23 complete=False missing=
+2026-06-11T14:07:43 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T14:07:47 sync-focus-day oog page=12 offset=22 classes=2 entries=38 complete=False missing=
+2026-06-11T14:07:50 sync-focus-day oog page=13 offset=24 classes=2 entries=20 complete=False missing=
+2026-06-11T14:07:55 sync-focus-day oog page=14 offset=26 classes=2 entries=85 complete=False missing=
+2026-06-11T14:07:59 sync-focus-day oog page=15 offset=28 classes=2 entries=49 complete=False missing=
+2026-06-11T14:08:02 sync-focus-day oog page=16 offset=30 classes=2 entries=28 complete=False missing=
+2026-06-11T14:08:07 sync-focus-day oog page=17 offset=32 classes=2 entries=61 complete=False missing=
+2026-06-11T14:08:10 sync-focus-day oog page=18 offset=34 classes=2 entries=34 complete=False missing=
+2026-06-11T14:09:42 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=216 triggers=0
+2026-06-11T14:09:43 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T14:09:43 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T14:12:36 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=216 triggers=0
+2026-06-11T14:12:37 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T14:12:37 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T14:15:24 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=215 triggers=0
+2026-06-11T14:15:37 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T14:15:45 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T14:15:59 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T14:16:06 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T14:16:08 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T14:16:10 sync-focus-day oog page=1 offset=0 classes=2 entries=32 complete=False missing=
+2026-06-11T14:16:16 sync-focus-day oog page=2 offset=2 classes=2 entries=52 complete=False missing=
+2026-06-11T14:16:21 sync-focus-day oog page=3 offset=4 classes=2 entries=53 complete=False missing=
+2026-06-11T14:16:24 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T14:16:26 sync-focus-day oog page=5 offset=8 classes=2 entries=18 complete=False missing=
+2026-06-11T14:16:30 sync-focus-day oog page=6 offset=10 classes=2 entries=32 complete=False missing=
+2026-06-11T14:16:33 sync-focus-day oog page=7 offset=12 classes=2 entries=42 complete=False missing=
+2026-06-11T14:16:36 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T14:16:39 sync-focus-day oog page=9 offset=16 classes=2 entries=26 complete=False missing=
+2026-06-11T14:16:42 sync-focus-day oog page=10 offset=18 classes=2 entries=23 complete=False missing=
+2026-06-11T14:16:45 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T14:16:49 sync-focus-day oog page=12 offset=22 classes=2 entries=38 complete=False missing=
+2026-06-11T14:16:51 sync-focus-day oog page=13 offset=24 classes=2 entries=20 complete=False missing=
+2026-06-11T14:16:56 sync-focus-day oog page=14 offset=26 classes=2 entries=85 complete=False missing=
+2026-06-11T14:17:01 sync-focus-day oog page=15 offset=28 classes=2 entries=49 complete=False missing=
+2026-06-11T14:17:04 sync-focus-day oog page=16 offset=30 classes=2 entries=28 complete=False missing=
+2026-06-11T14:17:09 sync-focus-day oog page=17 offset=32 classes=2 entries=61 complete=False missing=
+2026-06-11T14:17:11 sync-focus-day oog page=18 offset=34 classes=2 entries=34 complete=False missing=
+2026-06-11T14:17:13 sync-focus-day oog page=19 offset=36 classes=2 entries=10 complete=False missing=
+2026-06-11T14:17:17 sync-focus-day oog page=20 offset=38 classes=2 entries=49 complete=False missing=
+2026-06-11T14:17:20 sync-focus-day oog page=21 offset=40 classes=2 entries=24 complete=False missing=
+2026-06-11T14:17:22 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T14:17:25 sync-focus-day oog page=23 offset=44 classes=2 entries=25 complete=False missing=
+2026-06-11T14:17:31 sync-focus-day oog page=24 offset=46 classes=2 entries=48 complete=False missing=
+2026-06-11T14:17:34 sync-focus-day oog page=25 offset=48 classes=2 entries=45 complete=False missing=
+2026-06-11T14:17:38 sync-focus-day oog page=26 offset=50 classes=2 entries=32 complete=False missing=
+2026-06-11T14:17:40 sync-focus-day oog page=27 offset=52 classes=2 entries=5 complete=True missing=0
+2026-06-11T14:17:40 sync-focus-day complete=True schedule_pages=5 classes=54 active_expected=44 active_missing=0
+2026-06-11T14:30:22 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=216 triggers=0
+2026-06-11T14:30:37 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T14:30:44 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T14:30:58 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T14:31:05 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T14:31:07 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T14:31:10 sync-focus-day oog page=1 offset=0 classes=2 entries=32 complete=False missing=
+2026-06-11T14:31:16 sync-focus-day oog page=2 offset=2 classes=2 entries=52 complete=False missing=
+2026-06-11T14:31:21 sync-focus-day oog page=3 offset=4 classes=2 entries=53 complete=False missing=
+2026-06-11T14:31:24 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T14:31:27 sync-focus-day oog page=5 offset=8 classes=2 entries=18 complete=False missing=
+2026-06-11T14:31:30 sync-focus-day oog page=6 offset=10 classes=2 entries=32 complete=False missing=
+2026-06-11T14:31:34 sync-focus-day oog page=7 offset=12 classes=2 entries=42 complete=False missing=
+2026-06-11T14:31:37 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T14:31:39 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T14:31:42 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T14:31:45 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T14:31:49 sync-focus-day oog page=12 offset=22 classes=2 entries=38 complete=False missing=
+2026-06-11T14:31:51 sync-focus-day oog page=13 offset=24 classes=2 entries=20 complete=False missing=
+2026-06-11T14:31:56 sync-focus-day oog page=14 offset=26 classes=2 entries=85 complete=False missing=
+2026-06-11T14:31:58 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=219 triggers=0
+2026-06-11T14:32:00 sync-focus-day oog page=15 offset=28 classes=2 entries=49 complete=False missing=
+2026-06-11T14:32:03 sync-focus-day oog page=16 offset=30 classes=2 entries=28 complete=False missing=
+2026-06-11T14:32:08 sync-focus-day oog page=17 offset=32 classes=2 entries=61 complete=False missing=
+2026-06-11T14:32:11 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T14:32:11 sync-focus-day oog page=18 offset=34 classes=2 entries=34 complete=False missing=
+2026-06-11T14:32:13 sync-focus-day oog page=19 offset=36 classes=2 entries=10 complete=False missing=
+2026-06-11T14:32:17 sync-focus-day oog page=20 offset=38 classes=2 entries=49 complete=False missing=
+2026-06-11T14:32:18 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T14:32:20 sync-focus-day oog page=21 offset=40 classes=2 entries=24 complete=False missing=
+2026-06-11T14:32:22 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T14:32:25 sync-focus-day oog page=23 offset=44 classes=2 entries=25 complete=False missing=
+2026-06-11T14:32:30 sync-focus-day oog page=24 offset=46 classes=2 entries=48 complete=False missing=
+2026-06-11T14:32:32 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T14:32:33 sync-focus-day oog page=25 offset=48 classes=2 entries=45 complete=False missing=
+2026-06-11T14:32:37 sync-focus-day oog page=26 offset=50 classes=2 entries=32 complete=False missing=
+2026-06-11T14:32:39 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T14:32:39 sync-focus-day oog page=27 offset=52 classes=2 entries=5 complete=True missing=0
+2026-06-11T14:32:39 sync-focus-day complete=True schedule_pages=5 classes=54 active_expected=44 active_missing=0
+2026-06-11T14:32:41 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T14:32:44 sync-focus-day oog page=1 offset=0 classes=2 entries=32 complete=False missing=
+2026-06-11T14:32:49 sync-focus-day oog page=2 offset=2 classes=2 entries=52 complete=False missing=
+2026-06-11T14:32:54 sync-focus-day oog page=3 offset=4 classes=2 entries=53 complete=False missing=
+2026-06-11T14:32:55 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T14:32:57 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T14:33:00 sync-focus-day oog page=5 offset=8 classes=2 entries=18 complete=False missing=
+2026-06-11T14:33:03 sync-focus-day oog page=6 offset=10 classes=2 entries=32 complete=False missing=
+2026-06-11T14:33:06 sync-focus-day oog page=7 offset=12 classes=2 entries=42 complete=False missing=
+2026-06-11T14:33:10 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T14:33:12 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T14:33:15 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T14:33:18 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T14:33:22 sync-focus-day oog page=12 offset=22 classes=2 entries=38 complete=False missing=
+2026-06-11T14:33:24 sync-focus-day oog page=13 offset=24 classes=2 entries=20 complete=False missing=
+2026-06-11T14:33:29 sync-focus-day oog page=14 offset=26 classes=2 entries=85 complete=False missing=
+2026-06-11T14:33:33 sync-focus-day oog page=15 offset=28 classes=2 entries=49 complete=False missing=
+2026-06-11T14:33:36 sync-focus-day oog page=16 offset=30 classes=2 entries=28 complete=False missing=
+2026-06-11T14:33:41 sync-focus-day oog page=17 offset=32 classes=2 entries=61 complete=False missing=
+2026-06-11T14:33:44 sync-focus-day oog page=18 offset=34 classes=2 entries=34 complete=False missing=
+2026-06-11T14:33:46 sync-focus-day oog page=19 offset=36 classes=2 entries=10 complete=False missing=
+2026-06-11T14:33:49 sync-focus-day oog page=20 offset=38 classes=2 entries=49 complete=False missing=
+2026-06-11T14:33:52 sync-focus-day oog page=21 offset=40 classes=2 entries=24 complete=False missing=
+2026-06-11T14:33:55 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T14:33:58 sync-focus-day oog page=23 offset=44 classes=2 entries=25 complete=False missing=
+2026-06-11T14:34:02 sync-focus-day oog page=24 offset=46 classes=2 entries=48 complete=False missing=
+2026-06-11T14:34:06 sync-focus-day oog page=25 offset=48 classes=2 entries=45 complete=False missing=
+2026-06-11T14:34:09 sync-focus-day oog page=26 offset=50 classes=2 entries=32 complete=False missing=
+2026-06-11T14:34:11 sync-focus-day oog page=27 offset=52 classes=2 entries=5 complete=True missing=0
+2026-06-11T14:34:11 sync-focus-day complete=True schedule_pages=5 classes=54 active_expected=44 active_missing=0
+2026-06-11T14:34:27 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T14:37:31 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=217 triggers=0
+2026-06-11T14:37:32 airtable-log failed check=get_rings error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:37:32 airtable-log failed check=get_orders error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:37:36 airtable-log failed check=class_start_times error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:37:36 airtable-log failed check=entry_go_times error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:42:14 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=217 triggers=0
+2026-06-11T14:42:15 airtable-log failed check=get_rings error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:42:15 airtable-log failed check=get_orders error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:42:19 airtable-log failed check=class_start_times error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:42:19 airtable-log failed check=entry_go_times error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-11T14:42:28 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T14:42:35 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T14:42:49 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T14:42:56 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T14:42:58 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T14:43:04 sync-focus-day oog page=1 offset=0 classes=2 entries=67 complete=False missing=
+2026-06-11T14:43:09 sync-focus-day oog page=2 offset=2 classes=2 entries=64 complete=False missing=
+2026-06-11T14:43:11 sync-focus-day oog page=3 offset=4 classes=2 entries=10 complete=False missing=
+2026-06-11T14:43:14 sync-focus-day oog page=4 offset=6 classes=2 entries=32 complete=False missing=
+2026-06-11T14:43:17 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T14:43:21 sync-focus-day oog page=6 offset=10 classes=2 entries=31 complete=False missing=
+2026-06-11T14:43:24 sync-focus-day oog page=7 offset=12 classes=2 entries=32 complete=False missing=
+2026-06-11T14:43:26 sync-focus-day oog page=8 offset=14 classes=2 entries=9 complete=False missing=
+2026-06-11T14:43:29 sync-focus-day oog page=9 offset=16 classes=2 entries=40 complete=False missing=
+2026-06-11T14:43:32 sync-focus-day oog page=10 offset=18 classes=2 entries=26 complete=False missing=
+2026-06-11T14:43:36 sync-focus-day oog page=11 offset=20 classes=2 entries=38 complete=False missing=
+2026-06-11T14:43:38 sync-focus-day oog page=12 offset=22 classes=2 entries=20 complete=False missing=
+2026-06-11T14:43:43 sync-focus-day oog page=13 offset=24 classes=2 entries=85 complete=False missing=
+2026-06-11T14:43:47 sync-focus-day oog page=14 offset=26 classes=2 entries=49 complete=False missing=
+2026-06-11T14:43:50 sync-focus-day oog page=15 offset=28 classes=2 entries=33 complete=False missing=
+2026-06-11T14:43:55 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T14:43:58 sync-focus-day oog page=17 offset=32 classes=2 entries=22 complete=False missing=
+2026-06-11T14:44:01 sync-focus-day oog page=18 offset=34 classes=2 entries=25 complete=False missing=
+2026-06-11T14:44:05 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T14:44:07 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T14:44:10 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T14:44:12 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T14:44:16 sync-focus-day oog page=23 offset=44 classes=2 entries=72 complete=False missing=
+2026-06-11T14:44:20 sync-focus-day oog page=24 offset=46 classes=2 entries=40 complete=False missing=
+2026-06-11T14:44:22 sync-focus-day oog page=25 offset=48 classes=2 entries=13 complete=False missing=
+2026-06-11T14:44:24 sync-focus-day oog page=26 offset=50 classes=1 entries=1 complete=True missing=0
+2026-06-11T14:44:24 sync-focus-day complete=True schedule_pages=5 classes=51 active_expected=41 active_missing=0
+2026-06-11T14:45:22 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=223 triggers=0
+2026-06-11T14:45:33 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=223 triggers=0
+2026-06-11T14:47:07 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=223 triggers=0
+2026-06-11T14:47:21 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T14:47:28 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T14:47:41 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T14:47:48 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T14:47:50 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T14:47:55 sync-focus-day oog page=1 offset=0 classes=2 entries=67 complete=False missing=
+2026-06-11T14:48:01 sync-focus-day oog page=2 offset=2 classes=2 entries=64 complete=False missing=
+2026-06-11T14:48:03 sync-focus-day oog page=3 offset=4 classes=2 entries=10 complete=False missing=
+2026-06-11T14:48:06 sync-focus-day oog page=4 offset=6 classes=2 entries=32 complete=False missing=
+2026-06-11T14:48:09 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T14:48:12 sync-focus-day oog page=6 offset=10 classes=2 entries=31 complete=False missing=
+2026-06-11T14:48:15 sync-focus-day oog page=7 offset=12 classes=2 entries=32 complete=False missing=
+2026-06-11T14:48:17 sync-focus-day oog page=8 offset=14 classes=2 entries=9 complete=False missing=
+2026-06-11T14:48:21 sync-focus-day oog page=9 offset=16 classes=2 entries=40 complete=False missing=
+2026-06-11T14:48:23 sync-focus-day oog page=10 offset=18 classes=2 entries=26 complete=False missing=
+2026-06-11T14:48:27 sync-focus-day oog page=11 offset=20 classes=2 entries=38 complete=False missing=
+2026-06-11T14:48:30 sync-focus-day oog page=12 offset=22 classes=2 entries=20 complete=False missing=
+2026-06-11T14:48:34 sync-focus-day oog page=13 offset=24 classes=2 entries=85 complete=False missing=
+2026-06-11T14:48:39 sync-focus-day oog page=14 offset=26 classes=2 entries=49 complete=False missing=
+2026-06-11T14:48:42 sync-focus-day oog page=15 offset=28 classes=2 entries=33 complete=False missing=
+2026-06-11T14:48:46 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T14:48:49 sync-focus-day oog page=17 offset=32 classes=2 entries=22 complete=False missing=
+2026-06-11T14:48:52 sync-focus-day oog page=18 offset=34 classes=2 entries=25 complete=False missing=
+2026-06-11T14:48:56 sync-focus-day oog page=19 offset=36 classes=2 entries=33 complete=False missing=
+2026-06-11T14:48:58 sync-focus-day oog page=20 offset=38 classes=2 entries=10 complete=False missing=
+2026-06-11T14:49:02 sync-focus-day oog page=21 offset=40 classes=2 entries=39 complete=False missing=
+2026-06-11T14:49:04 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T14:49:09 sync-focus-day oog page=23 offset=44 classes=2 entries=72 complete=False missing=
+2026-06-11T14:49:12 sync-focus-day oog page=24 offset=46 classes=2 entries=40 complete=False missing=
+2026-06-11T14:49:15 sync-focus-day oog page=25 offset=48 classes=2 entries=13 complete=False missing=
+2026-06-11T14:49:17 sync-focus-day oog page=26 offset=50 classes=1 entries=1 complete=True missing=0
+2026-06-11T14:49:17 sync-focus-day complete=True schedule_pages=5 classes=51 active_expected=41 active_missing=0
+2026-06-11T14:49:32 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T14:59:39 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=221 triggers=0
+2026-06-11T14:59:40 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T14:59:41 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T15:00:35 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=221 triggers=0
+2026-06-11T15:00:36 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=221 triggers=0
+2026-06-11T15:00:36 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T15:00:36 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T15:00:37 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T15:00:37 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T15:00:52 airtable-alert skipped existing type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed
+2026-06-11T15:00:53 airtable-alert skipped existing type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed
+2026-06-11T15:03:39 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=221 triggers=0
+2026-06-11T15:03:40 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T15:03:41 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T15:03:57 airtable-alert skipped existing type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed
+2026-06-11T15:06:36 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=221 triggers=0
+2026-06-11T15:06:37 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T15:06:37 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T15:06:54 airtable-alert skipped existing type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed
+2026-06-11T15:09:30 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=222 triggers=0
+2026-06-11T15:09:45 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T15:09:52 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T15:10:06 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T15:10:13 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T15:10:15 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T15:10:22 sync-focus-day oog page=1 offset=0 classes=2 entries=67 complete=False missing=
+2026-06-11T15:10:27 sync-focus-day oog page=2 offset=2 classes=2 entries=64 complete=False missing=
+2026-06-11T15:10:29 sync-focus-day oog page=3 offset=4 classes=2 entries=10 complete=False missing=
+2026-06-11T15:10:32 sync-focus-day oog page=4 offset=6 classes=2 entries=32 complete=False missing=
+2026-06-11T15:10:36 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T15:10:39 sync-focus-day oog page=6 offset=10 classes=2 entries=31 complete=False missing=
+2026-06-11T15:10:42 sync-focus-day oog page=7 offset=12 classes=2 entries=32 complete=False missing=
+2026-06-11T15:10:44 sync-focus-day oog page=8 offset=14 classes=2 entries=9 complete=False missing=
+2026-06-11T15:10:47 sync-focus-day oog page=9 offset=16 classes=2 entries=40 complete=False missing=
+2026-06-11T15:10:50 sync-focus-day oog page=10 offset=18 classes=2 entries=26 complete=False missing=
+2026-06-11T15:10:54 sync-focus-day oog page=11 offset=20 classes=2 entries=38 complete=False missing=
+2026-06-11T15:10:56 sync-focus-day oog page=12 offset=22 classes=2 entries=20 complete=False missing=
+2026-06-11T15:11:01 sync-focus-day oog page=13 offset=24 classes=2 entries=85 complete=False missing=
+2026-06-11T15:11:05 sync-focus-day oog page=14 offset=26 classes=2 entries=49 complete=False missing=
+2026-06-11T15:11:08 sync-focus-day oog page=15 offset=28 classes=2 entries=33 complete=False missing=
+2026-06-11T15:11:13 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T15:11:15 sync-focus-day oog page=17 offset=32 classes=2 entries=22 complete=False missing=
+2026-06-11T15:11:19 sync-focus-day oog page=18 offset=34 classes=2 entries=25 complete=False missing=
+2026-06-11T15:11:22 sync-focus-day oog page=19 offset=36 classes=2 entries=33 complete=False missing=
+2026-06-11T15:11:24 sync-focus-day oog page=20 offset=38 classes=2 entries=10 complete=False missing=
+2026-06-11T15:11:27 sync-focus-day oog page=21 offset=40 classes=2 entries=39 complete=False missing=
+2026-06-11T15:11:29 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T15:11:34 sync-focus-day oog page=23 offset=44 classes=2 entries=72 complete=False missing=
+2026-06-11T15:11:37 sync-focus-day oog page=24 offset=46 classes=2 entries=40 complete=False missing=
+2026-06-11T15:11:39 sync-focus-day oog page=25 offset=48 classes=2 entries=13 complete=False missing=
+2026-06-11T15:11:41 sync-focus-day oog page=26 offset=50 classes=1 entries=1 complete=True missing=0
+2026-06-11T15:11:41 sync-focus-day complete=True schedule_pages=5 classes=51 active_expected=41 active_missing=0
+2026-06-11T15:24:25 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=225 triggers=0
+2026-06-11T15:24:39 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T15:24:47 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T15:25:01 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T15:25:08 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T15:25:11 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T15:25:17 sync-focus-day oog page=1 offset=0 classes=2 entries=67 complete=False missing=
+2026-06-11T15:25:22 sync-focus-day oog page=2 offset=2 classes=2 entries=64 complete=False missing=
+2026-06-11T15:25:24 sync-focus-day oog page=3 offset=4 classes=2 entries=10 complete=False missing=
+2026-06-11T15:25:28 sync-focus-day oog page=4 offset=6 classes=2 entries=32 complete=False missing=
+2026-06-11T15:25:31 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T15:25:34 sync-focus-day oog page=6 offset=10 classes=2 entries=31 complete=False missing=
+2026-06-11T15:25:37 sync-focus-day oog page=7 offset=12 classes=2 entries=32 complete=False missing=
+2026-06-11T15:25:39 sync-focus-day oog page=8 offset=14 classes=2 entries=9 complete=False missing=
+2026-06-11T15:25:42 sync-focus-day oog page=9 offset=16 classes=2 entries=40 complete=False missing=
+2026-06-11T15:25:45 sync-focus-day oog page=10 offset=18 classes=2 entries=26 complete=False missing=
+2026-06-11T15:25:49 sync-focus-day oog page=11 offset=20 classes=2 entries=38 complete=False missing=
+2026-06-11T15:25:52 sync-focus-day oog page=12 offset=22 classes=2 entries=20 complete=False missing=
+2026-06-11T15:25:56 sync-focus-day oog page=13 offset=24 classes=2 entries=85 complete=False missing=
+2026-06-11T15:26:01 sync-focus-day oog page=14 offset=26 classes=2 entries=49 complete=False missing=
+2026-06-11T15:26:04 sync-focus-day oog page=15 offset=28 classes=2 entries=33 complete=False missing=
+2026-06-11T15:26:09 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T15:26:12 sync-focus-day oog page=17 offset=32 classes=2 entries=22 complete=False missing=
+2026-06-11T15:26:15 sync-focus-day oog page=18 offset=34 classes=2 entries=25 complete=False missing=
+2026-06-11T15:26:19 sync-focus-day oog page=19 offset=36 classes=2 entries=33 complete=False missing=
+2026-06-11T15:26:21 sync-focus-day oog page=20 offset=38 classes=2 entries=10 complete=False missing=
+2026-06-11T15:26:24 sync-focus-day oog page=21 offset=40 classes=2 entries=39 complete=False missing=
+2026-06-11T15:26:26 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T15:26:31 sync-focus-day oog page=23 offset=44 classes=2 entries=72 complete=False missing=
+2026-06-11T15:26:34 sync-focus-day oog page=24 offset=46 classes=2 entries=40 complete=False missing=
+2026-06-11T15:26:37 sync-focus-day oog page=25 offset=48 classes=2 entries=13 complete=False missing=
+2026-06-11T15:26:39 sync-focus-day oog page=26 offset=50 classes=1 entries=1 complete=True missing=0
+2026-06-11T15:26:39 sync-focus-day complete=True schedule_pages=5 classes=51 active_expected=41 active_missing=0
+2026-06-11T15:26:55 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T15:39:24 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=223 triggers=0
+2026-06-11T15:39:45 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T15:39:52 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T15:40:06 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T15:40:14 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T15:40:16 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T15:40:23 sync-focus-day oog page=1 offset=0 classes=2 entries=67 complete=False missing=
+2026-06-11T15:40:28 sync-focus-day oog page=2 offset=2 classes=2 entries=64 complete=False missing=
+2026-06-11T15:40:30 sync-focus-day oog page=3 offset=4 classes=2 entries=10 complete=False missing=
+2026-06-11T15:40:33 sync-focus-day oog page=4 offset=6 classes=2 entries=32 complete=False missing=
+2026-06-11T15:40:36 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T15:40:39 sync-focus-day oog page=6 offset=10 classes=2 entries=31 complete=False missing=
+2026-06-11T15:40:43 sync-focus-day oog page=7 offset=12 classes=2 entries=32 complete=False missing=
+2026-06-11T15:40:47 sync-focus-day oog page=8 offset=14 classes=2 entries=9 complete=False missing=
+2026-06-11T15:40:50 sync-focus-day oog page=9 offset=16 classes=2 entries=40 complete=False missing=
+2026-06-11T15:40:53 sync-focus-day oog page=10 offset=18 classes=2 entries=26 complete=False missing=
+2026-06-11T15:40:57 sync-focus-day oog page=11 offset=20 classes=2 entries=38 complete=False missing=
+2026-06-11T15:41:00 sync-focus-day oog page=12 offset=22 classes=2 entries=20 complete=False missing=
+2026-06-11T15:41:05 sync-focus-day oog page=13 offset=24 classes=2 entries=85 complete=False missing=
+2026-06-11T15:41:09 sync-focus-day oog page=14 offset=26 classes=2 entries=49 complete=False missing=
+2026-06-11T15:41:12 sync-focus-day oog page=15 offset=28 classes=2 entries=33 complete=False missing=
+2026-06-11T15:41:17 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T15:41:20 sync-focus-day oog page=17 offset=32 classes=2 entries=22 complete=False missing=
+2026-06-11T15:41:23 sync-focus-day oog page=18 offset=34 classes=2 entries=25 complete=False missing=
+2026-06-11T15:41:27 sync-focus-day oog page=19 offset=36 classes=2 entries=33 complete=False missing=
+2026-06-11T15:41:29 sync-focus-day oog page=20 offset=38 classes=2 entries=10 complete=False missing=
+2026-06-11T15:41:32 sync-focus-day oog page=21 offset=40 classes=2 entries=39 complete=False missing=
+2026-06-11T15:41:34 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T15:41:39 sync-focus-day oog page=23 offset=44 classes=2 entries=72 complete=False missing=
+2026-06-11T15:41:42 sync-focus-day oog page=24 offset=46 classes=2 entries=40 complete=False missing=
+2026-06-11T15:41:44 sync-focus-day oog page=25 offset=48 classes=2 entries=13 complete=False missing=
+2026-06-11T15:41:46 sync-focus-day oog page=26 offset=50 classes=1 entries=1 complete=True missing=0
+2026-06-11T15:41:46 sync-focus-day complete=True schedule_pages=5 classes=51 active_expected=41 active_missing=0
+2026-06-11T15:54:24 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=225 triggers=0
+2026-06-11T15:54:38 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T15:54:46 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T15:55:01 sync-focus-day schedule page=3 offset=4 rows=34 source=get_ring_days.php complete=False
+2026-06-11T15:55:08 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T15:55:10 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T15:55:18 sync-focus-day oog page=1 offset=0 classes=2 entries=67 complete=False missing=
+2026-06-11T15:55:23 sync-focus-day oog page=2 offset=2 classes=2 entries=64 complete=False missing=
+2026-06-11T15:55:25 sync-focus-day oog page=3 offset=4 classes=2 entries=10 complete=False missing=
+2026-06-11T15:55:28 sync-focus-day oog page=4 offset=6 classes=2 entries=32 complete=False missing=
+2026-06-11T15:55:31 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T15:55:34 sync-focus-day oog page=6 offset=10 classes=2 entries=31 complete=False missing=
+2026-06-11T15:55:38 sync-focus-day oog page=7 offset=12 classes=2 entries=32 complete=False missing=
+2026-06-11T15:55:40 sync-focus-day oog page=8 offset=14 classes=2 entries=9 complete=False missing=
+2026-06-11T15:55:43 sync-focus-day oog page=9 offset=16 classes=2 entries=40 complete=False missing=
+2026-06-11T15:55:46 sync-focus-day oog page=10 offset=18 classes=2 entries=26 complete=False missing=
+2026-06-11T15:55:49 sync-focus-day oog page=11 offset=20 classes=2 entries=38 complete=False missing=
+2026-06-11T15:55:52 sync-focus-day oog page=12 offset=22 classes=2 entries=20 complete=False missing=
+2026-06-11T15:55:57 sync-focus-day oog page=13 offset=24 classes=2 entries=85 complete=False missing=
+2026-06-11T15:56:01 sync-focus-day oog page=14 offset=26 classes=2 entries=49 complete=False missing=
+2026-06-11T15:56:04 sync-focus-day oog page=15 offset=28 classes=2 entries=33 complete=False missing=
+2026-06-11T15:56:09 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T15:56:11 sync-focus-day oog page=17 offset=32 classes=2 entries=22 complete=False missing=
+2026-06-11T15:56:14 sync-focus-day oog page=18 offset=34 classes=2 entries=25 complete=False missing=
+2026-06-11T15:56:18 sync-focus-day oog page=19 offset=36 classes=2 entries=33 complete=False missing=
+2026-06-11T15:56:20 sync-focus-day oog page=20 offset=38 classes=2 entries=10 complete=False missing=
+2026-06-11T15:56:23 sync-focus-day oog page=21 offset=40 classes=2 entries=39 complete=False missing=
+2026-06-11T15:56:25 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T15:56:30 sync-focus-day oog page=23 offset=44 classes=2 entries=72 complete=False missing=
+2026-06-11T15:56:34 sync-focus-day oog page=24 offset=46 classes=2 entries=40 complete=False missing=
+2026-06-11T15:56:36 sync-focus-day oog page=25 offset=48 classes=2 entries=13 complete=False missing=
+2026-06-11T15:56:38 sync-focus-day oog page=26 offset=50 classes=1 entries=1 complete=True missing=0
+2026-06-11T15:56:38 sync-focus-day complete=True schedule_pages=5 classes=51 active_expected=41 active_missing=0
+2026-06-11T15:56:54 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T16:09:24 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=224 triggers=0
+2026-06-11T16:09:38 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T16:09:45 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T16:09:57 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T16:10:04 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T16:10:06 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T16:10:14 sync-focus-day oog page=1 offset=0 classes=2 entries=67 complete=False missing=
+2026-06-11T16:10:18 sync-focus-day oog page=2 offset=2 classes=2 entries=64 complete=False missing=
+2026-06-11T16:10:20 sync-focus-day oog page=3 offset=4 classes=2 entries=10 complete=False missing=
+2026-06-11T16:10:24 sync-focus-day oog page=4 offset=6 classes=2 entries=32 complete=False missing=
+2026-06-11T16:10:27 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T16:10:30 sync-focus-day oog page=6 offset=10 classes=2 entries=31 complete=False missing=
+2026-06-11T16:10:33 sync-focus-day oog page=7 offset=12 classes=2 entries=32 complete=False missing=
+2026-06-11T16:10:35 sync-focus-day oog page=8 offset=14 classes=2 entries=9 complete=False missing=
+2026-06-11T16:10:38 sync-focus-day oog page=9 offset=16 classes=2 entries=40 complete=False missing=
+2026-06-11T16:10:41 sync-focus-day oog page=10 offset=18 classes=2 entries=26 complete=False missing=
+2026-06-11T16:10:45 sync-focus-day oog page=11 offset=20 classes=2 entries=38 complete=False missing=
+2026-06-11T16:10:47 sync-focus-day oog page=12 offset=22 classes=2 entries=20 complete=False missing=
+2026-06-11T16:10:52 sync-focus-day oog page=13 offset=24 classes=2 entries=85 complete=False missing=
+2026-06-11T16:10:56 sync-focus-day oog page=14 offset=26 classes=2 entries=49 complete=False missing=
+2026-06-11T16:10:59 sync-focus-day oog page=15 offset=28 classes=2 entries=33 complete=False missing=
+2026-06-11T16:11:04 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T16:11:07 sync-focus-day oog page=17 offset=32 classes=2 entries=22 complete=False missing=
+2026-06-11T16:11:10 sync-focus-day oog page=18 offset=34 classes=2 entries=25 complete=False missing=
+2026-06-11T16:11:14 sync-focus-day oog page=19 offset=36 classes=2 entries=33 complete=False missing=
+2026-06-11T16:11:15 sync-focus-day oog page=20 offset=38 classes=2 entries=10 complete=False missing=
+2026-06-11T16:11:18 sync-focus-day oog page=21 offset=40 classes=2 entries=39 complete=False missing=
+2026-06-11T16:11:20 sync-focus-day oog page=22 offset=42 classes=2 entries=10 complete=False missing=
+2026-06-11T16:11:25 sync-focus-day oog page=23 offset=44 classes=2 entries=72 complete=False missing=
+2026-06-11T16:11:28 sync-focus-day oog page=24 offset=46 classes=2 entries=40 complete=False missing=
+2026-06-11T16:11:31 sync-focus-day oog page=25 offset=48 classes=2 entries=13 complete=False missing=
+2026-06-11T16:11:33 sync-focus-day oog page=26 offset=50 classes=1 entries=1 complete=True missing=0
+2026-06-11T16:11:33 sync-focus-day complete=True schedule_pages=5 classes=51 active_expected=41 active_missing=0
+2026-06-11T16:23:17 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=51 triggers=0
+2026-06-11T16:23:31 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T16:23:38 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T16:23:51 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T16:23:58 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T16:24:00 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T16:24:04 sync-focus-day oog page=1 offset=0 classes=2 entries=17 complete=False missing=
+2026-06-11T16:24:09 sync-focus-day oog page=2 offset=2 classes=2 entries=99 complete=False missing=
+2026-06-11T16:24:12 sync-focus-day oog page=3 offset=4 classes=2 entries=21 complete=False missing=
+2026-06-11T16:24:15 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T16:24:19 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T16:24:21 sync-focus-day oog page=6 offset=10 classes=2 entries=18 complete=False missing=
+2026-06-11T16:24:23 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=50 triggers=0
+2026-06-11T16:24:24 sync-focus-day oog page=7 offset=12 classes=2 entries=31 complete=False missing=
+2026-06-11T16:24:27 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T16:24:29 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T16:24:32 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T16:24:35 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T16:24:36 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T16:24:39 sync-focus-day oog page=12 offset=22 classes=2 entries=40 complete=False missing=
+2026-06-11T16:24:43 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T16:24:44 sync-focus-day oog page=13 offset=24 classes=2 entries=58 complete=False missing=
+2026-06-11T16:24:48 sync-focus-day oog page=14 offset=26 classes=2 entries=74 complete=False missing=
+2026-06-11T16:24:51 sync-focus-day oog page=15 offset=28 classes=2 entries=28 complete=False missing=
+2026-06-11T16:24:55 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T16:24:56 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T16:24:59 sync-focus-day oog page=17 offset=32 classes=2 entries=34 complete=False missing=
+2026-06-11T16:25:01 sync-focus-day oog page=18 offset=34 classes=2 entries=10 complete=False missing=
+2026-06-11T16:25:02 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T16:25:05 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T16:25:05 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T16:25:07 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T16:25:09 sync-focus-day oog page=1 offset=0 classes=2 entries=17 complete=False missing=
+2026-06-11T16:25:09 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T16:25:13 sync-focus-day oog page=22 offset=42 classes=2 entries=26 complete=False missing=
+2026-06-11T16:25:14 sync-focus-day oog page=2 offset=2 classes=2 entries=99 complete=False missing=
+2026-06-11T16:25:17 sync-focus-day oog page=3 offset=4 classes=2 entries=21 complete=False missing=
+2026-06-11T16:25:17 sync-focus-day oog page=23 offset=44 classes=2 entries=48 complete=False missing=
+2026-06-11T16:25:20 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T16:25:21 sync-focus-day oog page=24 offset=46 classes=2 entries=45 complete=False missing=
+2026-06-11T16:25:24 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T16:25:24 sync-focus-day oog page=25 offset=48 classes=2 entries=32 complete=False missing=
+2026-06-11T16:25:26 sync-focus-day oog page=6 offset=10 classes=2 entries=18 complete=False missing=
+2026-06-11T16:25:27 sync-focus-day oog page=26 offset=50 classes=2 entries=5 complete=True missing=0
+2026-06-11T16:25:27 sync-focus-day complete=True schedule_pages=5 classes=52 active_expected=41 active_missing=0
+2026-06-11T16:25:30 sync-focus-day oog page=7 offset=12 classes=2 entries=31 complete=False missing=
+2026-06-11T16:25:33 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T16:25:35 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T16:25:38 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T16:25:41 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T16:25:42 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T16:25:45 sync-focus-day oog page=12 offset=22 classes=2 entries=40 complete=False missing=
+2026-06-11T16:25:50 sync-focus-day oog page=13 offset=24 classes=2 entries=58 complete=False missing=
+2026-06-11T16:25:54 sync-focus-day oog page=14 offset=26 classes=2 entries=74 complete=False missing=
+2026-06-11T16:25:57 sync-focus-day oog page=15 offset=28 classes=2 entries=28 complete=False missing=
+2026-06-11T16:26:02 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T16:26:04 sync-focus-day oog page=17 offset=32 classes=2 entries=34 complete=False missing=
+2026-06-11T16:26:06 sync-focus-day oog page=18 offset=34 classes=2 entries=10 complete=False missing=
+2026-06-11T16:26:10 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T16:26:12 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T16:26:15 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T16:26:18 sync-focus-day oog page=22 offset=42 classes=2 entries=26 complete=False missing=
+2026-06-11T16:26:23 sync-focus-day oog page=23 offset=44 classes=2 entries=48 complete=False missing=
+2026-06-11T16:26:27 sync-focus-day oog page=24 offset=46 classes=2 entries=45 complete=False missing=
+2026-06-11T16:26:30 sync-focus-day oog page=25 offset=48 classes=2 entries=32 complete=False missing=
+2026-06-11T16:26:32 sync-focus-day oog page=26 offset=50 classes=2 entries=5 complete=True missing=0
+2026-06-11T16:26:32 sync-focus-day complete=True schedule_pages=5 classes=52 active_expected=41 active_missing=0
+2026-06-11T16:26:45 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=51 triggers=0
+2026-06-11T16:26:49 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T16:26:58 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T16:27:05 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T16:27:18 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T16:27:24 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T16:27:26 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T16:27:31 sync-focus-day oog page=1 offset=0 classes=2 entries=17 complete=False missing=
+2026-06-11T16:27:36 sync-focus-day oog page=2 offset=2 classes=2 entries=99 complete=False missing=
+2026-06-11T16:27:39 sync-focus-day oog page=3 offset=4 classes=2 entries=21 complete=False missing=
+2026-06-11T16:27:42 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T16:27:46 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T16:27:48 sync-focus-day oog page=6 offset=10 classes=2 entries=18 complete=False missing=
+2026-06-11T16:27:51 sync-focus-day oog page=7 offset=12 classes=2 entries=31 complete=False missing=
+2026-06-11T16:27:55 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T16:27:57 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T16:28:00 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T16:28:03 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T16:28:07 sync-focus-day oog page=12 offset=22 classes=2 entries=40 complete=False missing=
+2026-06-11T16:28:12 sync-focus-day oog page=13 offset=24 classes=2 entries=58 complete=False missing=
+2026-06-11T16:28:16 sync-focus-day oog page=14 offset=26 classes=2 entries=74 complete=False missing=
+2026-06-11T16:28:19 sync-focus-day oog page=15 offset=28 classes=2 entries=28 complete=False missing=
+2026-06-11T16:28:23 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T16:28:26 sync-focus-day oog page=17 offset=32 classes=2 entries=34 complete=False missing=
+2026-06-11T16:28:28 sync-focus-day oog page=18 offset=34 classes=2 entries=10 complete=False missing=
+2026-06-11T16:28:32 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T16:28:34 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T16:28:37 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T16:28:40 sync-focus-day oog page=22 offset=42 classes=2 entries=26 complete=False missing=
+2026-06-11T16:28:45 sync-focus-day oog page=23 offset=44 classes=2 entries=48 complete=False missing=
+2026-06-11T16:28:48 sync-focus-day oog page=24 offset=46 classes=2 entries=45 complete=False missing=
+2026-06-11T16:28:51 sync-focus-day oog page=25 offset=48 classes=2 entries=32 complete=False missing=
+2026-06-11T16:28:53 sync-focus-day oog page=26 offset=50 classes=2 entries=5 complete=True missing=0
+2026-06-11T16:28:53 sync-focus-day complete=True schedule_pages=5 classes=52 active_expected=41 active_missing=0
+2026-06-11T16:29:09 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T16:30:16 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=51 triggers=0
+2026-06-11T16:30:30 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T16:30:37 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T16:30:50 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T16:30:57 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T16:31:00 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T16:31:04 sync-focus-day oog page=1 offset=0 classes=2 entries=17 complete=False missing=
+2026-06-11T16:31:09 sync-focus-day oog page=2 offset=2 classes=2 entries=99 complete=False missing=
+2026-06-11T16:31:12 sync-focus-day oog page=3 offset=4 classes=2 entries=21 complete=False missing=
+2026-06-11T16:31:15 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T16:31:18 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T16:31:21 sync-focus-day oog page=6 offset=10 classes=2 entries=18 complete=False missing=
+2026-06-11T16:31:24 sync-focus-day oog page=7 offset=12 classes=2 entries=31 complete=False missing=
+2026-06-11T16:31:27 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T16:31:29 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T16:31:32 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T16:31:35 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T16:31:39 sync-focus-day oog page=12 offset=22 classes=2 entries=40 complete=False missing=
+2026-06-11T16:31:44 sync-focus-day oog page=13 offset=24 classes=2 entries=58 complete=False missing=
+2026-06-11T16:31:49 sync-focus-day oog page=14 offset=26 classes=2 entries=74 complete=False missing=
+2026-06-11T16:31:51 sync-focus-day oog page=15 offset=28 classes=2 entries=28 complete=False missing=
+2026-06-11T16:31:56 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T16:31:59 sync-focus-day oog page=17 offset=32 classes=2 entries=34 complete=False missing=
+2026-06-11T16:32:01 sync-focus-day oog page=18 offset=34 classes=2 entries=10 complete=False missing=
+2026-06-11T16:32:05 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T16:32:07 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T16:32:10 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T16:32:13 sync-focus-day oog page=22 offset=42 classes=2 entries=26 complete=False missing=
+2026-06-11T16:32:17 sync-focus-day oog page=23 offset=44 classes=2 entries=48 complete=False missing=
+2026-06-11T16:32:21 sync-focus-day oog page=24 offset=46 classes=2 entries=45 complete=False missing=
+2026-06-11T16:32:24 sync-focus-day oog page=25 offset=48 classes=2 entries=32 complete=False missing=
+2026-06-11T16:32:27 sync-focus-day oog page=26 offset=50 classes=2 entries=5 complete=True missing=0
+2026-06-11T16:32:27 sync-focus-day complete=True schedule_pages=5 classes=52 active_expected=41 active_missing=0
+2026-06-11T16:32:42 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T16:33:57 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=51 triggers=0
+2026-06-11T16:34:01 airtable-alert skipped existing type=class_start_30 key=class_start_30|14906|2026-06-11|class_start|29452|30
+2026-06-11T16:34:11 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T16:34:18 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T16:34:31 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T16:34:37 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T16:34:39 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T16:34:43 sync-focus-day oog page=1 offset=0 classes=2 entries=17 complete=False missing=
+2026-06-11T16:34:49 sync-focus-day oog page=2 offset=2 classes=2 entries=99 complete=False missing=
+2026-06-11T16:34:52 sync-focus-day oog page=3 offset=4 classes=2 entries=21 complete=False missing=
+2026-06-11T16:34:55 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T16:34:58 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T16:35:01 sync-focus-day oog page=6 offset=10 classes=2 entries=18 complete=False missing=
+2026-06-11T16:35:04 sync-focus-day oog page=7 offset=12 classes=2 entries=31 complete=False missing=
+2026-06-11T16:35:07 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T16:35:09 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T16:35:12 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T16:35:15 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T16:35:19 sync-focus-day oog page=12 offset=22 classes=2 entries=40 complete=False missing=
+2026-06-11T16:35:24 sync-focus-day oog page=13 offset=24 classes=2 entries=58 complete=False missing=
+2026-06-11T16:35:28 sync-focus-day oog page=14 offset=26 classes=2 entries=74 complete=False missing=
+2026-06-11T16:35:31 sync-focus-day oog page=15 offset=28 classes=2 entries=28 complete=False missing=
+2026-06-11T16:35:35 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T16:35:38 sync-focus-day oog page=17 offset=32 classes=2 entries=34 complete=False missing=
+2026-06-11T16:35:40 sync-focus-day oog page=18 offset=34 classes=2 entries=10 complete=False missing=
+2026-06-11T16:35:44 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T16:35:46 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T16:35:49 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T16:35:52 sync-focus-day oog page=22 offset=42 classes=2 entries=26 complete=False missing=
+2026-06-11T16:35:56 sync-focus-day oog page=23 offset=44 classes=2 entries=48 complete=False missing=
+2026-06-11T16:36:00 sync-focus-day oog page=24 offset=46 classes=2 entries=45 complete=False missing=
+2026-06-11T16:36:03 sync-focus-day oog page=25 offset=48 classes=2 entries=32 complete=False missing=
+2026-06-11T16:36:06 sync-focus-day oog page=26 offset=50 classes=2 entries=5 complete=True missing=0
+2026-06-11T16:36:06 sync-focus-day complete=True schedule_pages=5 classes=52 active_expected=41 active_missing=0
+2026-06-11T16:36:21 sync-ring-days rows=52 sync-counts rows=100
+2026-06-11T16:39:41 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=51 triggers=0
+2026-06-11T16:39:42 airtable-alert skipped existing type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-11|get_rings
+2026-06-11T16:39:43 airtable-alert skipped existing type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-11|get_orders
+2026-06-11T16:39:46 airtable-alert skipped existing type=class_start_30 key=class_start_30|14906|2026-06-11|class_start|29452|30
+2026-06-11T16:54:22 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=51 triggers=0
+2026-06-11T16:54:42 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T16:54:49 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T16:55:02 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T16:55:09 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T16:55:12 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T16:55:16 sync-focus-day oog page=1 offset=0 classes=2 entries=17 complete=False missing=
+2026-06-11T16:55:21 sync-focus-day oog page=2 offset=2 classes=2 entries=99 complete=False missing=
+2026-06-11T16:55:24 sync-focus-day oog page=3 offset=4 classes=2 entries=21 complete=False missing=
+2026-06-11T16:55:28 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T16:55:31 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T16:55:33 sync-focus-day oog page=6 offset=10 classes=2 entries=18 complete=False missing=
+2026-06-11T16:55:36 sync-focus-day oog page=7 offset=12 classes=2 entries=31 complete=False missing=
+2026-06-11T16:55:40 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T16:55:42 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T16:55:45 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T16:55:48 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T16:55:52 sync-focus-day oog page=12 offset=22 classes=2 entries=40 complete=False missing=
+2026-06-11T16:55:57 sync-focus-day oog page=13 offset=24 classes=2 entries=58 complete=False missing=
+2026-06-11T16:56:02 sync-focus-day oog page=14 offset=26 classes=2 entries=74 complete=False missing=
+2026-06-11T16:56:04 sync-focus-day oog page=15 offset=28 classes=2 entries=28 complete=False missing=
+2026-06-11T16:56:09 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T16:56:12 sync-focus-day oog page=17 offset=32 classes=2 entries=34 complete=False missing=
+2026-06-11T16:56:14 sync-focus-day oog page=18 offset=34 classes=2 entries=10 complete=False missing=
+2026-06-11T16:56:18 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T16:56:20 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T16:56:23 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T16:56:26 sync-focus-day oog page=22 offset=42 classes=2 entries=26 complete=False missing=
+2026-06-11T16:56:30 sync-focus-day oog page=23 offset=44 classes=2 entries=48 complete=False missing=
+2026-06-11T16:56:34 sync-focus-day oog page=24 offset=46 classes=2 entries=45 complete=False missing=
+2026-06-11T16:56:38 sync-focus-day oog page=25 offset=48 classes=2 entries=32 complete=False missing=
+2026-06-11T16:56:40 sync-focus-day oog page=26 offset=50 classes=2 entries=5 complete=True missing=0
+2026-06-11T16:56:40 sync-focus-day complete=True schedule_pages=5 classes=52 active_expected=41 active_missing=0
+2026-06-11T17:10:36 heartbeat show=14906 focus=2026-06-11 ok=True schedule_rows=50 triggers=0
+2026-06-11T17:10:55 sync-focus-day schedule page=1 offset=0 rows=21 source=get_ring_days.php complete=False
+2026-06-11T17:11:03 sync-focus-day schedule page=2 offset=2 rows=15 source=get_ring_days.php complete=False
+2026-06-11T17:11:16 sync-focus-day schedule page=3 offset=4 rows=32 source=get_ring_days.php complete=False
+2026-06-11T17:11:23 sync-focus-day schedule page=4 offset=6 rows=14 source=get_ring_days.php complete=False
+2026-06-11T17:11:25 sync-focus-day schedule page=5 offset=8 rows=1 source=get_ring_days.php complete=True
+2026-06-11T17:11:29 sync-focus-day oog page=1 offset=0 classes=2 entries=17 complete=False missing=
+2026-06-11T17:11:35 sync-focus-day oog page=2 offset=2 classes=2 entries=99 complete=False missing=
+2026-06-11T17:11:37 sync-focus-day oog page=3 offset=4 classes=2 entries=21 complete=False missing=
+2026-06-11T17:11:41 sync-focus-day oog page=4 offset=6 classes=2 entries=28 complete=False missing=
+2026-06-11T17:11:44 sync-focus-day oog page=5 offset=8 classes=2 entries=32 complete=False missing=
+2026-06-11T17:11:46 sync-focus-day oog page=6 offset=10 classes=2 entries=18 complete=False missing=
+2026-06-11T17:11:49 sync-focus-day oog page=7 offset=12 classes=2 entries=31 complete=False missing=
+2026-06-11T17:11:53 sync-focus-day oog page=8 offset=14 classes=2 entries=32 complete=False missing=
+2026-06-11T17:11:55 sync-focus-day oog page=9 offset=16 classes=2 entries=9 complete=False missing=
+2026-06-11T17:11:58 sync-focus-day oog page=10 offset=18 classes=2 entries=40 complete=False missing=
+2026-06-11T17:12:01 sync-focus-day oog page=11 offset=20 classes=2 entries=26 complete=False missing=
+2026-06-11T17:12:05 sync-focus-day oog page=12 offset=22 classes=2 entries=40 complete=False missing=
+2026-06-11T17:12:10 sync-focus-day oog page=13 offset=24 classes=2 entries=58 complete=False missing=
+2026-06-11T17:12:14 sync-focus-day oog page=14 offset=26 classes=2 entries=74 complete=False missing=
+2026-06-11T17:12:17 sync-focus-day oog page=15 offset=28 classes=2 entries=28 complete=False missing=
+2026-06-11T17:12:21 sync-focus-day oog page=16 offset=30 classes=2 entries=61 complete=False missing=
+2026-06-11T17:12:24 sync-focus-day oog page=17 offset=32 classes=2 entries=34 complete=False missing=
+2026-06-11T17:12:26 sync-focus-day oog page=18 offset=34 classes=2 entries=10 complete=False missing=
+2026-06-11T17:12:30 sync-focus-day oog page=19 offset=36 classes=2 entries=49 complete=False missing=
+2026-06-11T17:12:32 sync-focus-day oog page=20 offset=38 classes=2 entries=8 complete=False missing=
+2026-06-11T17:12:35 sync-focus-day oog page=21 offset=40 classes=2 entries=25 complete=False missing=
+2026-06-11T17:12:39 sync-focus-day oog page=22 offset=42 classes=2 entries=26 complete=False missing=
+2026-06-11T17:12:43 sync-focus-day oog page=23 offset=44 classes=2 entries=48 complete=False missing=
+2026-06-11T17:12:47 sync-focus-day oog page=24 offset=46 classes=2 entries=45 complete=False missing=
+2026-06-11T17:12:50 sync-focus-day oog page=25 offset=48 classes=2 entries=32 complete=False missing=
+2026-06-11T17:12:52 sync-focus-day oog page=26 offset=50 classes=2 entries=5 complete=True missing=0
+2026-06-11T17:12:52 sync-focus-day complete=True schedule_pages=5 classes=52 active_expected=41 active_missing=0
+2026-06-11T17:13:08 sync-ring-days rows=52 sync-counts rows=100

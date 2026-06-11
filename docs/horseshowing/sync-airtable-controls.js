@@ -67,7 +67,7 @@ async function airtableGetAll(tableId) {
   return records;
 }
 
-async function airtableCreate(tableId, fields) {
+async function airtableCreate(tableId, fields, options = {}) {
   requireToken();
   const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${tableId}`, {
     method: "POST",
@@ -75,7 +75,7 @@ async function airtableCreate(tableId, fields) {
       Authorization: `Bearer ${AIRTABLE_TOKEN}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ fields })
+    body: JSON.stringify({ fields, ...options })
   });
   if (!response.ok) {
     throw new Error(`Airtable create ${tableId} failed: ${response.status} ${await response.text()}`);
@@ -114,8 +114,15 @@ function appendLocalJsonl(fileName, payload) {
   fs.appendFileSync(path.join(logRoot, fileName), `${JSON.stringify(payload)}\n`, "utf8");
 }
 
+function resolveWorkflowLane(logType, checkName) {
+  if (logType === "airtable_check") return "Helpers";
+  if (checkName === "airtable_helpers_summary" || checkName === "airtable_helper_backfill") return "Audits";
+  return "";
+}
+
 async function writeWecLog({ logType = "airtable_check", checkName, showNo = "", focusDay = "", status = "ok", recordsSeen = 0, recordsChanged = 0, summary = "", payload = {} }) {
   const createdAt = new Date().toISOString();
+  const workflowLane = resolveWorkflowLane(logType, checkName);
   const fields = {
     log_key: `${createdAt}|${logType}|${checkName}`,
     created_at: createdAt,
@@ -129,8 +136,11 @@ async function writeWecLog({ logType = "airtable_check", checkName, showNo = "",
     summary,
     payload_json: safeJson(payload)
   };
+  if (workflowLane) {
+    fields.workflow_lanes = workflowLane;
+  }
   appendLocalJsonl("wec-logs.jsonl", fields);
-  return airtableCreate(TABLES.wecLogs, fields);
+  return airtableCreate(TABLES.wecLogs, fields, { typecast: true });
 }
 
 async function writeWecAlert({ severity = "error", alertType, showNo = "", focusDay = "", message, payload = {} }) {
@@ -247,10 +257,16 @@ function normalizeFocusShow(record) {
 
 function normalizeClassHide(record) {
   const fields = record.fields || {};
+  const showNo = fields.show_no == null ? "" : String(fields.show_no);
+  const classNo = fields.class_no == null ? "" : String(fields.class_no).replace(/\.0$/, "");
+  const hideText = fields.hide_text || "";
+  const keyRule = classNo ? `class_no:${classNo}` : `text:${hideText.trim().toLowerCase()}`;
   return {
     record_id: record.id,
-    show_no: fields.show_no == null ? "" : String(fields.show_no),
-    hide_text: fields.hide_text || "",
+    class_hide_key: fields.class_hide_key || `${showNo}|${keyRule}`,
+    show_no: showNo,
+    class_no: classNo,
+    hide_text: hideText,
     active: fields.active ? "1" : "0"
   };
 }
@@ -535,10 +551,11 @@ async function pushActiveTrainersToCatalyst(row, trainerRows) {
 }
 
 async function pushHideClassesToCatalyst(row, hideRows) {
-  const hideClasses = hideRows
-    .filter((hide) => hide.show_no === row.show_no && hide.active === "1")
-    .map((hide) => hide.hide_text)
-    .filter(Boolean);
+  const hideClasses = [];
+  for (const hide of hideRows.filter((item) => item.show_no === row.show_no && item.active === "1")) {
+    if (hide.class_no) hideClasses.push(`class_no:${hide.class_no}`);
+    if (hide.hide_text) hideClasses.push(`text:${hide.hide_text}`);
+  }
   const params = new URLSearchParams({
     action: "set-hide-classes",
     show_no: row.show_no,
@@ -680,7 +697,9 @@ async function main() {
     ], focusRows.filter((row) => row.show_no === showNo));
     writeCsv(path.join(showDir, "class_hide.csv"), [
       "record_id",
+      "class_hide_key",
       "show_no",
+      "class_no",
       "hide_text",
       "active"
     ], hideRows.filter((row) => row.show_no === showNo));
