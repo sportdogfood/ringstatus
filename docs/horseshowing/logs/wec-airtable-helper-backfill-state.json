@@ -2,23 +2,23 @@
   "last_focus_key": "14906|2026-06-11",
   "last_show_no": "14906",
   "last_focus_day": "2026-06-11",
-  "last_backfill_at": "2026-06-11T20:27:19.483Z",
+  "last_backfill_at": "2026-06-11T22:35:21.587Z",
   "last_summary": {
     "show_no": "14906",
     "focus_day": "2026-06-11",
     "source_counts": {
       "update_schedule": 54,
-      "class_oog": 955,
-      "helper_horses": 620,
-      "helper_riders": 380,
-      "helper_trainers": 190
+      "class_oog": 998,
+      "helper_horses": 632,
+      "helper_riders": 386,
+      "helper_trainers": 192
     },
     "created": {
       "rings": 0,
-      "horses": 0,
-      "riders": 0,
-      "trainers": 0,
-      "entries": 0
+      "horses": 12,
+      "riders": 4,
+      "trainers": 2,
+      "entries": 5
     }
   }
 }

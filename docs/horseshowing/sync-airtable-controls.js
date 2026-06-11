@@ -259,7 +259,7 @@ function normalizeClassHide(record) {
   const fields = record.fields || {};
   const showNo = fields.show_no == null ? "" : String(fields.show_no);
   const classNo = fields.class_no == null ? "" : String(fields.class_no).replace(/\.0$/, "");
-  const hideText = fields.hide_text || "";
+  const hideText = fields.hide_text || fields.hide_lib || fields.name || "";
   const keyRule = classNo ? `class_no:${classNo}` : `text:${hideText.trim().toLowerCase()}`;
   return {
     record_id: record.id,
@@ -629,7 +629,7 @@ async function main() {
     .filter((row) => row.show_no && row.focus_day);
   const hideRows = hideRecords
     .map(normalizeClassHide)
-    .filter((row) => row.show_no && row.hide_text);
+    .filter((row) => row.show_no && (row.class_no || row.hide_text));
 
   const backfillResults = [];
   for (const row of focusRows) {

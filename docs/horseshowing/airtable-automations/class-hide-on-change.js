@@ -20,7 +20,7 @@ function classNoValue(record) {
 }
 
 function hideTextValue(record) {
-  return clean(record.getCellValueAsString("hide_text"));
+  return clean(record.getCellValueAsString("hide_text") || record.getCellValueAsString("hide_lib"));
 }
 
 function showNoValue(record) {
@@ -48,6 +48,7 @@ if (!showNo) throw new Error("class_hide.show_no is required");
 
 const classNo = classNoValue(changedRecord);
 const hideText = hideTextValue(changedRecord);
+if (!classNo && !hideText) throw new Error("class_hide requires class_no or hide_text/hide_lib");
 const classHideKey = ruleKey(showNo, classNo, hideText);
 
 if (changedRecord.getCellValueAsString("class_hide_key") !== classHideKey) {
@@ -66,7 +67,7 @@ const focusDay = clean(focusRecord.getCellValueAsString("focus_day")).slice(0, 1
 if (!focusDay) throw new Error(`focus_show.focus_day is required for show_no ${showNo}`);
 
 const hideQuery = await classHideTable.selectRecordsAsync({
-  fields: ["show_no", "class_no", "hide_text", "active"]
+  fields: ["show_no", "class_no", "hide_text", "hide_lib", "active"]
 });
 
 const rules = [];

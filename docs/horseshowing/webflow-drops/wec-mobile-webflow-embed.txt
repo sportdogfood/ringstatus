@@ -748,6 +748,17 @@
     return "";
   }
 
+  function liveStatusText(row){
+    const gone = row.n_gone ?? row.entries_gone ?? row.nGone;
+    const toGo = row.n_to_go ?? row.entries_to_go ?? row.nToGo;
+    const hasGone = gone !== undefined && gone !== null && String(gone).trim() !== "";
+    const hasToGo = toGo !== undefined && toGo !== null && String(toGo).trim() !== "";
+    if(hasGone && hasToGo) return `${gone} gone / ${toGo} to go`;
+    if(hasGone) return `${gone} gone`;
+    if(hasToGo) return `${toGo} to go`;
+    return "";
+  }
+
   async function fetchTextMeta(url){
     const res = await fetch(url, { cache:"no-store" });
     const txt = await res.text();
@@ -948,7 +959,7 @@
             ? `${num} - ${name}`.trim()
             : String(name).trim();
 
-          const status2 = String(c.status2 ?? "").trim();
+          const status2 = String(c.status2 ?? liveStatusText(c)).trim();
           const statusHtml = status2 ? `<div class="s">${esc(status2)}</div>` : `<div></div>`;
 
           const timeHtml = showTime
