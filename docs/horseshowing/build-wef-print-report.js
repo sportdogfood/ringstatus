@@ -15,6 +15,7 @@ const shell = fs.readFileSync(path.join(templateDir, "wef-print-shell.fragment.h
 let script = fs.readFileSync(path.join(templateDir, "wef-print-script.fragment.html"), "utf8");
 
 const wecPrintOverrides = `<style>
+  :root{--ring:#815374;}
   .title{font-size:16px;}
   .subtitle{font-size:11px;}
   .ring-head{font-size:12px;padding:5px 7px;}

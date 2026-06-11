@@ -1,23 +1,27 @@
 const fs = require("fs");
 const path = require("path");
 
-const BASE_ID = process.env.WEC_AIRTABLE_BASE_ID || process.env.AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os";
+const BASE_ID = process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os";
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
 const CATALYST_ENDPOINT = process.env.HORSESHOWING_CATALYST_ENDPOINT ||
   "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
 
 const TABLES = {
-  focusShow: "tblQldkP8wwIRxd4z",
-  classHide: "tblOTmCatxsjV1f08",
-  rings: "tbl5WKTbwL6IVrjyI",
-  horses: "tblgWogH7B6Cvusvm",
-  riders: "tbl75W08G7nB4MYAl",
-  trainers: "tblB72MubQbWfEqdf",
-  entries: "tblrRnqH6utOdyhSk"
+  focusShow: "focus_show",
+  classHide: "class_hide",
+  rings: "rings",
+  horses: "horses",
+  riders: "riders",
+  trainers: "trainers",
+  entries: "entries",
+  wecLogs: "wec-logs",
+  wecAlerts: "wec-alerts"
 };
 
 const repoRoot = path.resolve(__dirname, "..", "..");
 const helperRoot = path.join(__dirname, "helpers");
+const logRoot = path.join(__dirname, "logs");
+const summaryStatePath = path.join(logRoot, "wec-airtable-summary-state.json");
 
 function requireToken() {
   if (!AIRTABLE_TOKEN) {
@@ -60,6 +64,107 @@ async function airtableGetAll(tableId) {
     offset = payload.offset || "";
   } while (offset);
   return records;
+}
+
+async function airtableCreate(tableId, fields) {
+  requireToken();
+  const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${tableId}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ fields })
+  });
+  if (!response.ok) {
+    throw new Error(`Airtable create ${tableId} failed: ${response.status} ${await response.text()}`);
+  }
+  return response.json();
+}
+
+function safeJson(value) {
+  return JSON.stringify(value, null, 2).slice(0, 90000);
+}
+
+function appendLocalJsonl(fileName, payload) {
+  fs.mkdirSync(logRoot, { recursive: true });
+  fs.appendFileSync(path.join(logRoot, fileName), `${JSON.stringify(payload)}\n`, "utf8");
+}
+
+async function writeWecLog({ logType = "airtable_check", checkName, showNo = "", focusDay = "", status = "ok", recordsSeen = 0, recordsChanged = 0, summary = "", payload = {} }) {
+  const createdAt = new Date().toISOString();
+  const fields = {
+    log_key: `${createdAt}|${logType}|${checkName}`,
+    created_at: createdAt,
+    log_type: logType,
+    check_name: checkName,
+    show_no: showNo,
+    focus_day: focusDay || undefined,
+    status,
+    records_seen: recordsSeen,
+    records_changed: recordsChanged,
+    summary,
+    payload_json: safeJson(payload)
+  };
+  appendLocalJsonl("wec-logs.jsonl", fields);
+  return airtableCreate(TABLES.wecLogs, fields);
+}
+
+async function writeWecAlert({ severity = "error", alertType, showNo = "", focusDay = "", message, payload = {} }) {
+  const createdAt = new Date().toISOString();
+  const fields = {
+    alert_key: `${createdAt}|${severity}|${alertType}`,
+    created_at: createdAt,
+    severity,
+    status: "open",
+    alert_type: alertType,
+    show_no: showNo,
+    focus_day: focusDay || undefined,
+    message,
+    payload_json: safeJson(payload)
+  };
+  appendLocalJsonl("wec-alerts.jsonl", fields);
+  return airtableCreate(TABLES.wecAlerts, fields);
+}
+
+function readSummaryState() {
+  try {
+    return JSON.parse(fs.readFileSync(summaryStatePath, "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+function writeSummaryState(state) {
+  fs.mkdirSync(path.dirname(summaryStatePath), { recursive: true });
+  fs.writeFileSync(summaryStatePath, `${JSON.stringify(state, null, 2)}\n`);
+}
+
+function summaryDue(minutes = 30) {
+  const state = readSummaryState();
+  const last = state.last_summary_at ? new Date(state.last_summary_at) : null;
+  if (!last || Number.isNaN(last.getTime())) return true;
+  return Date.now() - last.getTime() >= minutes * 60 * 1000;
+}
+
+async function writeThirtyMinuteSummary(summary) {
+  if (!summaryDue()) return false;
+  fs.mkdirSync(logRoot, { recursive: true });
+  const createdAt = new Date().toISOString();
+  const filePath = path.join(logRoot, "wec-logs-30m-summary.jsonl");
+  fs.appendFileSync(filePath, `${JSON.stringify({ created_at: createdAt, ...summary })}\n`, "utf8");
+  await writeWecLog({
+    logType: "summary_30m",
+    checkName: "airtable_helpers_summary",
+    showNo: summary.focus_show?.[0]?.show_no || "",
+    focusDay: summary.focus_show?.[0]?.focus_day || "",
+    status: "ok",
+    recordsSeen: summary.total_records_seen,
+    summary: `focus_show=${summary.counts.focus_show}; class_hide=${summary.counts.class_hide}; rings=${summary.counts.rings}; horses=${summary.counts.horses}; riders=${summary.counts.riders}; trainers=${summary.counts.trainers}; entries=${summary.counts.entries}`,
+    payload: summary
+  });
+  writeSummaryState({ last_summary_at: createdAt });
+  return true;
 }
 
 function normalizeDate(value) {
@@ -185,15 +290,35 @@ async function pushFocusShowToCatalyst(row) {
 
 async function main() {
   const syncCatalyst = !process.argv.includes("--no-catalyst");
-  const [focusRecords, hideRecords, ringRecords, horseRecords, riderRecords, trainerRecords, entryRecords] = await Promise.all([
-    airtableGetAll(TABLES.focusShow),
-    airtableGetAll(TABLES.classHide),
-    airtableGetAll(TABLES.rings),
-    airtableGetAll(TABLES.horses),
-    airtableGetAll(TABLES.riders),
-    airtableGetAll(TABLES.trainers),
-    airtableGetAll(TABLES.entries)
-  ]);
+  const checks = [
+    ["focus_show", TABLES.focusShow],
+    ["class_hide", TABLES.classHide],
+    ["rings", TABLES.rings],
+    ["horses", TABLES.horses],
+    ["riders", TABLES.riders],
+    ["trainers", TABLES.trainers],
+    ["entries", TABLES.entries]
+  ];
+  const recordsByCheck = {};
+  for (const [checkName, tableId] of checks) {
+    const records = await airtableGetAll(tableId);
+    recordsByCheck[checkName] = records;
+    await writeWecLog({
+      checkName,
+      status: "ok",
+      recordsSeen: records.length,
+      summary: `${checkName} checked`,
+      payload: { table_id: tableId, records_seen: records.length }
+    });
+  }
+
+  const focusRecords = recordsByCheck.focus_show;
+  const hideRecords = recordsByCheck.class_hide;
+  const ringRecords = recordsByCheck.rings;
+  const horseRecords = recordsByCheck.horses;
+  const riderRecords = recordsByCheck.riders;
+  const trainerRecords = recordsByCheck.trainers;
+  const entryRecords = recordsByCheck.entries;
 
   const focusRows = focusRecords
     .map(normalizeFocusShow)
@@ -293,7 +418,7 @@ async function main() {
     }
   }
 
-  console.log(JSON.stringify({
+  const output = {
     base_id: BASE_ID,
     focus_show_rows: focusRows.length,
     class_hide_rows: hideRows.length,
@@ -304,10 +429,36 @@ async function main() {
     entries_rows: entryRecords.length,
     helper_root: helperRoot,
     catalyst_synced: catalystResults.length
-  }, null, 2));
+  };
+  output.summary_written = await writeThirtyMinuteSummary({
+    base_id: BASE_ID,
+    total_records_seen: focusRecords.length + hideRecords.length + ringRecords.length + horseRecords.length + riderRecords.length + trainerRecords.length + entryRecords.length,
+    counts: {
+      focus_show: focusRows.length,
+      class_hide: hideRows.length,
+      rings: ringRecords.length,
+      horses: horseRecords.length,
+      riders: riderRecords.length,
+      trainers: trainerRecords.length,
+      entries: entryRecords.length
+    },
+    focus_show: focusRows,
+    catalyst_synced: catalystResults.length
+  });
+
+  console.log(JSON.stringify(output, null, 2));
 }
 
-main().catch((error) => {
+main().catch(async (error) => {
+  try {
+    await writeWecAlert({
+      alertType: "airtable_controls_check_failed",
+      message: error.message,
+      payload: { stack: error.stack }
+    });
+  } catch {
+    // Preserve the original failure for the runner.
+  }
   console.error(error.message);
   process.exit(1);
 });

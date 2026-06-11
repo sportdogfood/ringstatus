@@ -79,9 +79,9 @@ function displayTime(value) {
   if (!start) return "check time";
   const [hh, mm] = start.split(":");
   let hour = Number(hh);
-  const suffix = hour >= 12 ? "P" : "A";
+  const suffix = hour >= 12 ? "PM" : "AM";
   hour = hour % 12 || 12;
-  return `${hour}${mm}${suffix}`;
+  return `${hour}:${mm} ${suffix}`;
 }
 
 function timeSortValue(value) {

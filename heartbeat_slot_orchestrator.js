@@ -36,6 +36,7 @@ const DEFAULT_LIVE_GROUPS_SLOTS = "A,B,C,D";
 const DEFAULT_LIVE_RINGS_SLOTS = "A,B,C,D";
 const DEFAULT_LIVE_CLASS_DETAIL_SLOTS = "A,B,C,D";
 const DEFAULT_PUBLISHER_SLOTS = "A,B,C,D";
+const DEFAULT_WEC_HEARTBEAT_SLOTS = "A,B,C,D";
 
 const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const LOG_DIR = process.env.RUNNER_LOG_DIR || "C:\\actions-runner\\ringstatus";
@@ -44,6 +45,8 @@ const LOCK_PATH = process.env.ORCH_LOCK_PATH || path.join(LOG_DIR, "heartbeat-sl
 const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "30") || 30);
 const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
 const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DETAIL || "0") === "1";
+const ENABLE_WEC_HEARTBEAT = String(process.env.ORCH_WEC_ENABLED || "0") === "1";
+const WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES = Math.max(1, Number(process.env.ORCH_WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES || "30") || 30);
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
@@ -70,6 +73,8 @@ const SCRIPT_LOG_FILES = {
   "live_groups_daily.js": "live-groups-daily.log",
   "live_rings_daily.js": "live-rings-daily.log",
   "live_class_detail.js": "live-class-detail.log",
+  "docs/horseshowing/wec-heartbeat.js": "wec-heartbeat.log",
+  "docs/horseshowing/sync-airtable-controls.js": "wec-airtable-controls.log",
   "publisher.js": "publisher.log",
 };
 
@@ -480,6 +485,34 @@ function releaseLock() {
   fs.rmSync(LOCK_PATH, { force: true });
 }
 
+function intervalStatePath(name) {
+  return path.join(LOG_DIR, `${name}.json`);
+}
+
+function readIntervalState(name) {
+  try {
+    return JSON.parse(fs.readFileSync(intervalStatePath(name), "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+function writeIntervalState(name, state) {
+  ensureLogDir();
+  fs.writeFileSync(intervalStatePath(name), `${JSON.stringify(state, null, 2)}\n`, "utf8");
+}
+
+function intervalDue(name, minutes) {
+  const state = readIntervalState(name);
+  const lastRunAt = state.last_run_at ? new Date(state.last_run_at) : null;
+  if (!lastRunAt || Number.isNaN(lastRunAt.getTime())) return true;
+  return Date.now() - lastRunAt.getTime() >= minutes * 60 * 1000;
+}
+
+function markIntervalRun(name) {
+  writeIntervalState(name, { last_run_at: new Date().toISOString() });
+}
+
 async function runOrchestrator() {
   if (DISABLE_HEAVY) {
     appendEvent({ ok: true, event: "orchestrator_disabled" });
@@ -622,6 +655,10 @@ async function runOrchestrator() {
     const liveClassDetailDue = mode === "DAY"
       && !DISABLE_LIVE_CLASS_DETAIL
       && slotIsDue(slot, process.env.ORCH_LIVE_CLASS_DETAIL_SLOTS, DEFAULT_LIVE_CLASS_DETAIL_SLOTS);
+    const wecHeartbeatDue = ENABLE_WEC_HEARTBEAT
+      && slotIsDue(slot, process.env.ORCH_WEC_HEARTBEAT_SLOTS, DEFAULT_WEC_HEARTBEAT_SLOTS);
+    const wecAirtableControlsDue = ENABLE_WEC_HEARTBEAT
+      && intervalDue("wec-airtable-controls", WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES);
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
 
     let upstreamOk = true;
@@ -691,6 +728,26 @@ async function runOrchestrator() {
       if (!liveClassDetailResult.ok) upstreamOk = false;
     }
 
+    if (wecHeartbeatDue) {
+      const wecHeartbeatResult = await runDueScript("docs/horseshowing/wec-heartbeat.js", {
+        WEC_SHOW_NO: process.env.WEC_SHOW_NO || "14906",
+        WEC_FOCUS_DAY: process.env.WEC_FOCUS_DAY || "2026-06-10",
+        WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
+      });
+      if (!wecHeartbeatResult.ok) upstreamOk = false;
+    }
+
+    if (wecAirtableControlsDue) {
+      const wecControlsResult = await runDueScript("docs/horseshowing/sync-airtable-controls.js", {
+        WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+      });
+      if (wecControlsResult.ok) {
+        markIntervalRun("wec-airtable-controls");
+      } else {
+        upstreamOk = false;
+      }
+    }
+
     if (publisherDue && upstreamOk) {
       await runDueScript("publisher.js");
     } else if (publisherDue) {
@@ -712,6 +769,8 @@ async function runOrchestrator() {
         trips_calculator: tripsCalcDue,
         live_groups: liveGroupsDue,
         live_class_detail: liveClassDetailDue,
+        wec_heartbeat: wecHeartbeatDue,
+        wec_airtable_controls: wecAirtableControlsDue,
         publisher: publisherDue,
       },
     });

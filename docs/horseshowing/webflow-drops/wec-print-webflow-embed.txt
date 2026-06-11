@@ -1,16 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=816, initial-scale=1" />
-<title>WEC WEF Print 14906 2026-06-10</title>
+<script>window.RS_WEC_SCHEDULE_URL = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=schedule-json&show_no=14906";</script>
 <style>
   :root{
     --fg:#111;
     --muted:#666;
     --line:#111;
     --border:#d0d0d0;
-    --ring:#0b5d47;
+    --ring:#815374;
     --team-tint: rgba(204, 204, 204, 0.43);
     --scale: 1;
   }
@@ -313,8 +308,6 @@
   .c{grid-template-columns:54px 1fr;column-gap:7px;padding:3px 0;padding-right:112px;}
   .t,.n{font-size:10.5px;}
 </style>
-</head>
-<body>
 <div class="page" id="page">
   <div class="topbar">
     <div class="topbar-wrapper">
@@ -376,7 +369,7 @@
     ACTIVE_TENANT = TENANT_CONFIG[nextTenant] ? nextTenant : "9999";
     ACTIVE_TENANT_CONFIG = TENANT_CONFIG[ACTIVE_TENANT] || TENANT_CONFIG["9999"];
 
-    SCHEDULE_URL = "14906-2026-06-10-crt-mobile-data.json";
+    SCHEDULE_URL = window.RS_WEC_SCHEDULE_URL || "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=schedule-json&show_no=14906";
     TRIPS_URL = `https://ringstatus-proxy.gombcg.workers.dev/docs/${ACTIVE_TENANT}/schedules/trips.json`;
     TENANT_SCHED_DISPLAY_KEY = ACTIVE_TENANT === "9999" ? "" : `${ACTIVE_TENANT}_sched_display`;
   }
@@ -849,5 +842,3 @@
   }
 })();
 </script>
-</body>
-</html>

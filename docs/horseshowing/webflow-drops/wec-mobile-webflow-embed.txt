@@ -1,10 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-
-<title>CRT Schedule (Mobile v4)</title>
+<script>window.RS_WEC_SCHEDULE_URL = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=schedule-json&show_no=14906";</script>
 <style>
   :root{
     --fg:#111;
@@ -283,6 +277,10 @@
     padding:0 10px 6px 10px;
   }
 
+  .group.has-team .class-list{
+    padding-top:2px;
+  }
+
   .c{
     display:grid;
     grid-template-columns:70px minmax(0,1fr) auto;
@@ -439,13 +437,9 @@
       font-size:14px;
     }
 
-    .group-head{
-      padding:0 8px 0 4px;
-    }
-
     .gdisplay{
-      font-size:10px;
-      padding-right:2px;
+      font-size:11px;
+      padding:6px 12px 0 12px;
     }
 
     .class-list{
@@ -476,9 +470,6 @@
     }
   }
 </style>
-</head>
-<body>
-
 <header class="topbar">
   <div class="topbar-row">
     <div class="topbar-text">
@@ -538,7 +529,7 @@
   };
 
   function resolveDataUrl(){
-    return "14906-2026-06-10-crt-mobile-data.json";
+    return window.RS_WEC_SCHEDULE_URL || "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=schedule-json&show_no=14906";
   }
 
   function normRollup(s){
@@ -1058,5 +1049,3 @@
       `<div class="err">${esc(String(err && err.stack ? err.stack : err))}</div>`;
   });
 </script>
-</body>
-</html>

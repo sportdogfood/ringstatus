@@ -10,13 +10,14 @@
     --fg:#111;
     --muted:#666;
     --border:#d0d0d0;
-    --ring:#a6d0fc;
+    --ring:#dcb6d1;
 
     --topbar-h: 56px;
     --filterbar-h: 74px;
     --bottom-nav-h: 64px;
 
     --bg:#fff;
+    --wec-min-width:379px;
   }
 
   *{box-sizing:border-box}
@@ -37,7 +38,14 @@
     padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px));
     -webkit-text-size-adjust:100%;
     text-size-adjust:100%;
-    overflow-x:hidden;
+    overflow-x:auto;
+  }
+
+  .topbar,
+  .filterbar,
+  main,
+  .bottom-nav{
+    min-width:var(--wec-min-width);
   }
 
   .topbar{
@@ -59,6 +67,9 @@
     font-weight:900;
     font-size:16px;
     line-height:1.1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
 
   .subtitle{
@@ -78,7 +89,9 @@
   }
 
   .topbar-text{
+    flex:1 1 auto;
     min-width:0;
+    max-width:100%;
     display:flex;
     flex-direction:column;
     gap:2px;
@@ -120,6 +133,8 @@
     align-items:center;
     gap:8px;
     margin:4px 0;
+    width:100%;
+    min-width:0;
     overflow:hidden;
   }
 
@@ -127,6 +142,8 @@
 
   .filterbar .nav-scroller{
     flex:1 1 auto;
+    width:100%;
+    max-width:100%;
     min-width:0;
   }
 
@@ -200,7 +217,9 @@
   }
 
   .group.has-team{
-    background: #dadada;
+    background: #f5f5f5;
+    box-shadow: inset 0 0 0 1px #d2d2d2;
+    margin-bottom:1px;
   }
 
   .group.has-team[data-status="upcoming"]{
@@ -216,22 +235,44 @@
   }
 
   .group-head{
-    padding:0 10px 0 6px;
+    padding:0;
   }
 
   .gdisplay{
-    font-size:11px;
-    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    line-height:1.2;
+    font-weight:650;
     text-transform:uppercase;
     white-space:nowrap;
     overflow:hidden;
-    margin-bottom:-1px;
-    text-overflow:ellipsis;
-    text-align:right;
-    padding-right:4px;
-    padding-top:4px;
+    margin-bottom:0;
+    text-align:left;
+    padding:8px 12px 0 10px;
     position:relative;
     z-index:10;
+  }
+
+  .gdisplay-badge{
+    flex:0 0 auto;
+    border:1px solid #815374;
+    border-radius:999px;
+    color:#815374;
+    background:#fff;
+    font-size:9px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:.04em;
+    padding:3px 5px 2px 5px;
+  }
+
+  .gdisplay-text{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
 
   .gname{
@@ -256,9 +297,24 @@
   .c:last-child{border-bottom:none;}
 
   .t{
-    font-weight:800;
+    font-weight:600;
     font-size:13px;
     white-space:nowrap;
+  }
+
+  .check-time{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid #c9c9c9;
+    border-radius:4px;
+    color:#555;
+    background:#fff;
+    font-size:10px;
+    font-weight:700;
+    line-height:1;
+    padding:2px 4px;
+    text-transform:lowercase;
   }
 
   .n{
@@ -323,6 +379,10 @@
 
   .group .class-list > .c:nth-child(even){
     background: rgba(255,255,255,0.28);
+  }
+
+  .group .class-list > .c.check-time-row{
+    background: rgba(0,0,0,0.07);
   }
 
   .class-list .c{
@@ -425,7 +485,7 @@
       <div class="title" id="title">Schedule</div>
       <div class="subtitle" id="subtitle"></div>
     </div>
-    <a class="home-pill" href="https://ringstatus.com">Home</a>
+    <a class="home-pill" href="https://ringstatus.com/wec-print">Print</a>
   </div>
 </header>
 
@@ -611,6 +671,16 @@
     document.getElementById("subtitle").textContent = subParts.join("   •   ");
   }
 
+  function rowDisplayTime(row){
+    const sd1 = String(row.start_display ?? row.startDisplay ?? "").trim();
+    const sd2 = String(row.start_display2 ?? row.startDisplay2 ?? "").trim();
+    return sd2 && (!sd1 || sd2 !== sd1) ? sd2 : (sd1 || sd2);
+  }
+
+  function isCheckDisplay(value){
+    return String(value || "").trim().toLowerCase() === "check time";
+  }
+
   function buildRings(rows){
     const rings = Array.from(groupBy(rows, r => String(r.ring_number ?? r.ringNumber ?? "9999")).entries())
       .map(([k, items]) => ({ ring_number: toInt(k) ?? 9999, items }))
@@ -634,9 +704,10 @@
           const gdRaw = normRollup(items.map(x => x.group_display).filter(Boolean).join(", "));
           const gd = dedupeGroupDisplayByHorse(gdRaw);
           const gstatus = computeGroupStatus(items);
-          return { gid, seq, gname, gdisplay: gd, gstatus, items };
+          const checkRank = items.every(x => isCheckDisplay(rowDisplayTime(x))) ? 1 : 0;
+          return { gid, seq, gname, gdisplay: gd, gstatus, checkRank, items };
         })
-        .sort((a,b)=>a.seq - b.seq);
+        .sort((a,b)=>(a.checkRank - b.checkRank) || (a.seq - b.seq));
 
       const sec = document.createElement("section");
       sec.className = "ring";
@@ -647,6 +718,9 @@
 
       for(const g of groups){
         const classes = g.items.slice().sort((a,b)=>{
+          const ac = isCheckDisplay(rowDisplayTime(a)) ? 1 : 0;
+          const bc = isCheckDisplay(rowDisplayTime(b)) ? 1 : 0;
+          if(ac !== bc) return ac - bc;
           const an = toInt(a.class_number ?? a.classNumber ?? 999999) ?? 999999;
           const bn = toInt(b.class_number ?? b.classNumber ?? 999999) ?? 999999;
           return an - bn;
@@ -658,9 +732,9 @@
         for(const c of classes){
           const sd1 = String(c.start_display ?? c.startDisplay ?? "").trim();
           const sd2 = String(c.start_display2 ?? c.startDisplay2 ?? "").trim();
-
           const usingTime2 = !!(sd2 && (!sd1 || sd2 !== sd1));
-          const displayTime = usingTime2 ? sd2 : (sd1 || sd2);
+          const displayTime = rowDisplayTime(c);
+          const isCheckTime = isCheckDisplay(displayTime);
 
           const showTime = (displayTime && displayTime !== lastTime);
           if(showTime) lastTime = displayTime;
@@ -674,9 +748,15 @@
           const status2 = String(c.status2 ?? "").trim();
           const statusHtml = status2 ? `<div class="s">${esc(status2)}</div>` : `<div></div>`;
 
+          const timeHtml = showTime
+            ? (isCheckTime
+              ? `<span class="check-time">check</span>`
+              : esc(displayTime))
+            : "";
+
           cl += `
-            <div class="c${usingTime2 ? " time2" : ""}">
-              <div class="t">${esc(showTime ? displayTime : "")}</div>
+            <div class="c${usingTime2 ? " time2" : ""}${isCheckTime ? " check-time-row" : ""}">
+              <div class="t">${timeHtml}</div>
               <div class="n">${esc(label)}</div>
               ${statusHtml}
             </div>
@@ -703,7 +783,7 @@
 
         gDiv.innerHTML = `
           <div class="group-head">
-            ${g.gdisplay ? `<div class="gdisplay">${esc(g.gdisplay)}</div>` : ``}
+            ${g.gdisplay ? `<div class="gdisplay"><span class="gdisplay-badge">TEAM</span><span class="gdisplay-text">${esc(g.gdisplay)}</span></div>` : ``}
             <div class="gname">${esc(g.gname)}</div>
           </div>
           <div class="class-list">${cl || `<div class="muted">No classes scheduled.</div>`}</div>
