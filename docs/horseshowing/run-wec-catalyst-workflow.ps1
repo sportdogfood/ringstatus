@@ -243,6 +243,30 @@ function Int-OrZero($value) {
   try { return [int]$value } catch { return 0 }
 }
 
+function Get-ObjectMapValue($map, [string]$key) {
+  if (!$map -or !$key) { return "" }
+  if ($map -is [System.Collections.IDictionary] -and $map.Contains($key)) {
+    return [string]$map[$key]
+  }
+  $property = $map.PSObject.Properties[$key]
+  if ($property) { return [string]$property.Value }
+  return ""
+}
+
+function Get-ScheduleHorseDisplay($classRow, [string]$entryOrder) {
+  if (!$classRow -or !$entryOrder) { return "" }
+  $suffix = "($entryOrder)"
+  foreach ($trainerRollup in @($classRow.trainer_rollups)) {
+    foreach ($horse in @($trainerRollup.horses)) {
+      $text = [string]$horse
+      if ($text.EndsWith($suffix)) {
+        return $text.Substring(0, $text.Length - $suffix.Length).Trim()
+      }
+    }
+  }
+  return ""
+}
+
 function Read-State {
   if (!(Test-Path $statePath)) { return @{} }
   try {
@@ -323,6 +347,37 @@ function Invoke-CatalystQueryWithRetry($action, $params = @{}, $attempts = 3, $T
   }
 }
 
+function Invoke-HorseshowingDirectCurrent($source, $FocusDayValue) {
+  $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+  $session.UserAgent = "Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+  $base = "https://www.horseshowing.com"
+  Invoke-WebRequest -UseBasicParsing -Uri "$base/show.php?show=$ShowNo" -WebSession $session -TimeoutSec 20 | Out-Null
+  Invoke-WebRequest -UseBasicParsing -Uri "$base/schedule.php" -WebSession $session -TimeoutSec 20 | Out-Null
+  $path = if ($source -eq "orders") { "/get_orders.php" } else { "/get_rings.php" }
+  $referer = if ($source -eq "orders") { "$base/schedule.php" } else { "$base/rings.php?show=$ShowNo" }
+  $rawResponse = Invoke-WebRequest -UseBasicParsing -Uri "$base$path" `
+    -Method "POST" `
+    -WebSession $session `
+    -Headers @{
+      "accept" = "application/json, text/javascript, */*; q=0.01"
+      "origin" = $base
+      "referer" = $referer
+      "x-requested-with" = "XMLHttpRequest"
+    } `
+    -ContentType "application/x-www-form-urlencoded; charset=UTF-8" `
+    -Body "show_no=$ShowNo" `
+    -TimeoutSec 20
+  $action = if ($source -eq "orders") { "sync-orders-payload" } else { "sync-rings-payload" }
+  $payload = @{
+    upstream_status = [int]$rawResponse.StatusCode
+    raw = [string]$rawResponse.Content
+  } | ConvertTo-Json -Depth 5 -Compress
+  $payloadUri = "${BaseUrl}?action=$action&show_no=$ShowNo&focus_day=$([uri]::EscapeDataString([string]$FocusDayValue))"
+  $result = Invoke-RestMethod -Method Post -Uri $payloadUri -ContentType "application/json" -Body $payload -TimeoutSec 45
+  $result | Add-Member -NotePropertyName fallback_source -NotePropertyValue "direct_horseshowing_payload" -Force
+  return $result
+}
+
 function Invoke-CatalystArray($action, $params = @{}) {
   $uri = "${BaseUrl}?action=$action&show_no=$ShowNo"
   if ($FocusDay -and !$params.ContainsKey("focus_day")) {
@@ -392,16 +447,32 @@ function Invoke-WecHeartbeatComposite {
   $ordersError = $null
   $params = @{ focus_day = $resolvedFocusDay }
   try {
-    $live = Invoke-CatalystQueryWithRetry "sync-rings" $params 1 20
+    $live = Invoke-CatalystQueryWithRetry "sync-rings" $params 1 18
     if ($live.ok -eq $false) { $liveError = $live.error }
   } catch {
     $liveError = $_.Exception.Message
   }
+  if ($liveError) {
+    try {
+      $live = Invoke-HorseshowingDirectCurrent "rings" $resolvedFocusDay
+      if ($live.ok -ne $false) { $liveError = $null }
+    } catch {
+      $liveError = "$liveError; fallback failed: $($_.Exception.Message)"
+    }
+  }
   try {
-    $orders = Invoke-CatalystQueryWithRetry "sync-orders" $params 1 20
+    $orders = Invoke-CatalystQueryWithRetry "sync-orders" $params 1 18
     if ($orders.ok -eq $false) { $ordersError = $orders.error }
   } catch {
     $ordersError = $_.Exception.Message
+  }
+  if ($ordersError) {
+    try {
+      $orders = Invoke-HorseshowingDirectCurrent "orders" $resolvedFocusDay
+      if ($orders.ok -ne $false) { $ordersError = $null }
+    } catch {
+      $ordersError = "$ordersError; fallback failed: $($_.Exception.Message)"
+    }
   }
 
   return [pscustomobject]@{
@@ -522,6 +593,8 @@ function Write-TimeAlerts {
   $snapshot = Invoke-CatalystQuery "focus-day-snapshot" @{ focus_day = $FocusDayValue }
   $debug = Invoke-CatalystQuery "debug-show-config" @{ focus_day = $FocusDayValue }
   $activeTrainers = @($debug.focus_source.active_trainers | ForEach-Object { [string]$_ })
+  $horseDisplayMap = $debug.focus_source.horse_displays
+  $trainerDisplayMap = $debug.focus_source.trainer_displays
   $activeTrainerSet = @{}
   foreach ($trainer in $activeTrainers) {
     if ($trainer) { $activeTrainerSet[$trainer] = $true }
@@ -566,6 +639,11 @@ function Write-TimeAlerts {
     $entryOrder = Int-OrZero $entry.entry_order
     if ($entryOrder -lt 1) { continue }
     $entryRowsSeen += 1
+    $horseDisplay = Get-ObjectMapValue $horseDisplayMap ([string]$entry.horse)
+    if (!$horseDisplay) { $horseDisplay = Get-ScheduleHorseDisplay $classRow ([string]$entry.entry_order) }
+    if (!$horseDisplay) { $horseDisplay = [string]$entry.horse }
+    $trainerDisplay = Get-ObjectMapValue $trainerDisplayMap ([string]$entry.trainer)
+    if (!$trainerDisplay) { $trainerDisplay = [string]$entry.trainer }
     $paceSeconds = 120
     $nGone = Int-OrZero $classRow.n_gone
     $elapsedSeconds = Int-OrZero $classRow.elapsed_seconds
@@ -580,11 +658,13 @@ function Write-TimeAlerts {
         $entryAlertWindows += 1
         $dedupeKey = "$ShowNo|$FocusDayValue|entry_go|$($entry.class_no)|$($entry.entry_no)|$threshold"
         $activeAlertKeys["entry_go_$threshold|$dedupeKey"] = $true
-        Write-WecAirtableAlert -AlertType "entry_go_$threshold" -Severity "info" -Message "$($entry.horse) entry $($entry.entry_no) estimated go in about $threshold minutes." -DedupeKey $dedupeKey -Payload @{
+        Write-WecAirtableAlert -AlertType "entry_go_$threshold" -Severity "info" -Message "$horseDisplay entry $($entry.entry_no) estimated go in about $threshold minutes." -DedupeKey $dedupeKey -Payload @{
           focus_day = $FocusDayValue
           horse = $entry.horse
+          horse_display = $horseDisplay
           rider = $entry.rider
           trainer = $entry.trainer
+          trainer_display = $trainerDisplay
           class_no = $entry.class_no
           class_number = $classRow.class_number
           entry_no = $entry.entry_no

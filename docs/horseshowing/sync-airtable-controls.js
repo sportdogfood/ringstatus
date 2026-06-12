@@ -410,19 +410,6 @@ async function catalystGet(params, label) {
   return JSON.parse(text);
 }
 
-async function catalystPost(params, body, label) {
-  const response = await fetch(`${CATALYST_ENDPOINT}?${params.toString()}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-  const text = await response.text();
-  if (!response.ok) {
-    throw new Error(`Catalyst ${label} failed: ${response.status} ${text}`);
-  }
-  return JSON.parse(text);
-}
-
 async function catalystSnapshot(showNo, focusDay) {
   const params = new URLSearchParams({
     action: "focus-day-snapshot",
@@ -608,34 +595,6 @@ async function pushHideClassesToCatalyst(row, hideRows) {
     hide_classes: hideClasses.join("|")
   });
   return catalystGet(params, "set-hide-classes");
-}
-
-async function pushHorseDisplaysToCatalyst(row, horseRows) {
-  const horseDisplays = {};
-  const displayByKey = new Map();
-  for (const horse of horseRows.filter((item) => item.show_no === row.show_no)) {
-    const display = horse.barn_name || horse.horse_display || horse.horse;
-    if (!horse.horse || !display) continue;
-
-    const key = horse.horse.trim().toLowerCase();
-    const existing = displayByKey.get(key);
-    const score = (horse.barn_name ? 3 : 0) + (display && display !== horse.horse ? 2 : 0);
-    if (!existing || score >= existing.score) {
-      displayByKey.set(key, { display, score });
-    }
-  }
-  for (const horse of horseRows.filter((item) => item.show_no === row.show_no)) {
-    if (!horse.horse) continue;
-    const preferred = displayByKey.get(horse.horse.trim().toLowerCase());
-    if (preferred?.display && preferred.display !== horse.horse) horseDisplays[horse.horse] = preferred.display;
-  }
-  const params = new URLSearchParams({
-    action: "set-horse-displays",
-    show_no: row.show_no,
-    focus_day: row.focus_day,
-    horse_displays: JSON.stringify(horseDisplays)
-  });
-  return catalystGet(params, "set-horse-displays");
 }
 
 async function main() {

@@ -39,11 +39,14 @@ export default {
       const body = {
         url: parsed.toString(),
         gotoOptions: {
-          waitUntil: "networkidle2",
+          waitUntil: input.waitUntil || "networkidle2",
           timeout: 45000
         },
         pdfOptions: buildPdfOptions(input)
       };
+
+      const waitForSelector = input.waitForSelector || defaultWaitForSelector(parsed);
+      if (waitForSelector) body.waitForSelector = waitForSelector;
 
       const cfResp = await fetch(apiUrl, {
         method: "POST",
@@ -118,7 +121,9 @@ async function readInput(request) {
     filename: url.searchParams.get("filename") || "",
     lane: url.searchParams.get("lane") || "",
     pageSize: url.searchParams.get("pageSize") || "",
-    format: url.searchParams.get("format") || ""
+    format: url.searchParams.get("format") || "",
+    waitUntil: url.searchParams.get("waitUntil") || "",
+    waitForSelector: url.searchParams.get("waitForSelector") || ""
   };
 
   if (request.method === "GET") return fromQuery;
@@ -131,11 +136,20 @@ async function readInput(request) {
       filename: body?.filename || fromQuery.filename,
       lane: body?.lane || fromQuery.lane,
       pageSize: body?.pageSize || fromQuery.pageSize,
-      format: body?.format || fromQuery.format
+      format: body?.format || fromQuery.format,
+      waitUntil: body?.waitUntil || fromQuery.waitUntil,
+      waitForSelector: body?.waitForSelector || fromQuery.waitForSelector
     };
   }
 
   return fromQuery;
+}
+
+function defaultWaitForSelector(parsedUrl) {
+  if (parsedUrl.hostname === "ringstatus.com" || parsedUrl.hostname === "www.ringstatus.com") {
+    if (parsedUrl.pathname.replace(/\/+$/, "") === "/wec-print") return ".ring";
+  }
+  return "";
 }
 
 function safeUrl(value) {

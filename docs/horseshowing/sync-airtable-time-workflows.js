@@ -200,7 +200,20 @@ function addSeconds(date, seconds) {
   return new Date(date.getTime() + seconds * 1000);
 }
 
-function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, nowIso }) {
+function scheduleHorseDisplay(classRow, entryOrder) {
+  const order = clean(entryOrder);
+  if (!order || !Array.isArray(classRow?.trainer_rollups)) return "";
+  const suffix = `(${order})`;
+  for (const trainerRollup of classRow.trainer_rollups) {
+    for (const horse of trainerRollup.horses || []) {
+      const text = clean(horse);
+      if (text.endsWith(suffix)) return clean(text.slice(0, -suffix.length));
+    }
+  }
+  return "";
+}
+
+function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, horseDisplays, trainerDisplays, nowIso }) {
   const active = new Set(activeTrainers.map((item) => clean(item).toLowerCase()).filter(Boolean));
   const classByNo = new Map(scheduleRows.map((row) => [clean(row.class_no), row]));
   const rows = [];
@@ -223,6 +236,7 @@ function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, nowIso }
       : 120;
     const goTime = addSeconds(start, (entryOrder - 1) * paceSeconds);
     const entryNo = clean(entry.entry_no);
+    const horseDisplay = clean(horseDisplays?.[clean(entry.horse)] || scheduleHorseDisplay(classRow, entry.entry_order) || entry.horse);
     rows.push({
       entry_go_key: `${clean(classRow.show_id)}|${focusDay}|${classNo}|${entryNo}`,
       show_no: clean(classRow.show_id),
@@ -235,10 +249,10 @@ function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, nowIso }
       entry_no: entryNo,
       entry_order: clean(entry.entry_order),
       horse: clean(entry.horse),
-      horse_display: clean(entry.horse),
+      horse_display: horseDisplay,
       rider: clean(entry.rider),
       trainer,
-      trainer_display: trainer,
+      trainer_display: clean(trainerDisplays?.[trainer] || trainer),
       class_start_time: clean(classRow.class_start_time),
       display_time: clean(classRow.start_display),
       entry_go_time: goTime.toTimeString().slice(0, 8),
@@ -277,12 +291,16 @@ async function main() {
   }));
   const nowIso = new Date().toISOString();
   const activeTrainers = debug.focus_source?.active_trainers || [];
+  const horseDisplays = debug.focus_source?.horse_displays || {};
+  const trainerDisplays = debug.focus_source?.trainer_displays || {};
 
   const classStartRows = buildClassStartRows(scheduleRows, nowIso);
   const entryGoRows = buildEntryGoRows({
     scheduleRows,
     classOogRows: snapshot.class_oog || [],
     activeTrainers,
+    horseDisplays,
+    trainerDisplays,
     nowIso
   });
 
