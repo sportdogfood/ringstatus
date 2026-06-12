@@ -598,31 +598,42 @@ async function pushActiveTrainersToCatalyst(row, trainerRows) {
   return catalystGet(params, "set-active-trainers");
 }
 
-async function pushHideClassesToCatalyst(row, hideRows) {
+function activeTrainerControl(trainerRows) {
+  const activeTrainerRows = trainerRows.filter((trainer) => trainer.active === "1" && trainer.trainer);
+  const trainerDisplays = {};
+  for (const trainer of activeTrainerRows) {
+    trainerDisplays[trainer.trainer] = trainer.trainer_display || trainer.trainer;
+  }
+  return {
+    active_trainers: activeTrainerRows.map((trainer) => trainer.trainer),
+    trainer_displays: trainerDisplays
+  };
+}
+
+async function pushHideClassesToCatalyst(row, hideRows, trainerRows = []) {
   const hideClasses = [];
   for (const hide of hideRows.filter((item) => item.show_no === row.show_no && item.active === "1")) {
     if (hide.class_no) hideClasses.push(`class_no:${hide.class_no}`);
     if (hide.hide_text) hideClasses.push(`text:${hide.hide_text}`);
   }
+  const trainerControl = activeTrainerControl(trainerRows);
   const params = new URLSearchParams({
     action: "set-hide-classes",
     show_no: row.show_no,
     focus_day: row.focus_day,
-    hide_classes: hideClasses.join("|")
+    hide_classes: hideClasses.join("|"),
+    active_trainers: trainerControl.active_trainers.join("|"),
+    trainer_displays: JSON.stringify(trainerControl.trainer_displays)
   });
   return catalystGet(params, "set-hide-classes");
 }
 
 async function pushHorseDisplaysToCatalyst(row, horseRows, entryRows, trainerRows) {
   const showNo = String(row.show_no || "");
-  const activeTrainerRows = trainerRows.filter((trainer) => trainer.active === "1" && trainer.trainer);
-  const trainerDisplays = {};
-  for (const trainer of activeTrainerRows) {
-    trainerDisplays[trainer.trainer] = trainer.trainer_display || trainer.trainer;
-  }
+  const trainerControl = activeTrainerControl(trainerRows);
   const activeTrainers = new Set(
-    activeTrainerRows
-      .map((trainer) => trainer.trainer.toLowerCase())
+    trainerControl.active_trainers
+      .map((trainer) => trainer.toLowerCase())
   );
   const scopedHorseNames = new Set(
     entryRows
@@ -651,8 +662,8 @@ async function pushHorseDisplaysToCatalyst(row, horseRows, entryRows, trainerRow
     focus_day: row.focus_day,
     horse_displays: displays,
     horse_display_meta: meta,
-    active_trainers: Object.keys(trainerDisplays).join("|"),
-    trainer_displays: trainerDisplays
+    active_trainers: trainerControl.active_trainers.join("|"),
+    trainer_displays: trainerControl.trainer_displays
   }, "set-horse-displays");
 }
 
@@ -822,7 +833,7 @@ async function main() {
       for (const row of focusRows.filter((item) => item.show_no === showNo)) {
         catalystResults.push(await pushFocusShowToCatalyst(row));
         catalystResults.push(await pushActiveTrainersToCatalyst(row, trainerRows));
-        catalystResults.push(await pushHideClassesToCatalyst(row, hideRows));
+        catalystResults.push(await pushHideClassesToCatalyst(row, hideRows, trainerRows));
         catalystResults.push(await pushHorseDisplaysToCatalyst(row, horseRows, entryRows, trainerRows));
       }
     }
