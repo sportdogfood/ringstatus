@@ -360,6 +360,12 @@
     overflow:visible;
     text-overflow:clip;
   }
+  .gdisplay-text,
+  body.tight .gdisplay-text{
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+  }
   .gdisplay-line{
     display:block;
     min-width:0;
@@ -367,6 +373,9 @@
   .gdisplay-badge{
     display:inline-block;
     margin-right:4px;
+    color:#fff;
+    background:#815374;
+    border-color:#815374;
   }
   .gdisplay-text{
     display:inline;
@@ -379,8 +388,8 @@
 <div class="page" id="page">
   <div class="topbar">
     <div class="topbar-wrapper">
-      <div class="title" id="title">WEC Ocala Summer Series 1 CSI2*</div>
-      <div class="subtitle" id="subtitle">2026-06-12   •   show_id 14906   •   2026-06-12</div>
+      <div class="title" id="title">Schedule</div>
+      <div class="subtitle" id="subtitle"></div>
     </div>
     <div class="controls">
       <a class="btn" id="btnPdf" href="#" target="_blank" rel="noopener">PDF</a>
@@ -390,448 +399,11 @@
 
   <div class="wrap" id="wrap">
     <div class="cols" id="cols">
-      <div class="col" id="colL"><div class="ringWrap" data-ring-key="670"><button type="button" class="ringClose" aria-label="Hide GRAND">×</button><section class="ring"><div class="ring-head">GRAND</div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Hermes (1), Insider (2), Peri (3), Snoop (4)</span>
-        </div>
-      </div>
-            <div class="gname">$15,000 C. Jarvis Insurance Welcome Prix 1.40m II.2b</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:13 AM</div><div class="n">804 - $15,000 C. Jarvis Insurance Welcome Prix 1.40m II.2b</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Doug (1)</span>
-        </div>
-      </div>
-            <div class="gname">$1000 1.30m Jumper II.2b</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">10:45 AM</div><div class="n">644 - $1000 1.30m Jumper II.2b</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$1000 1.35m Jumper II.2b</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">2:00 PM</div><div class="n">647 - $1000 1.35m Jumper II.2b</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Bee (1)</span>
-        </div>
-      </div>
-            <div class="gname">$2000 1.30m JR/AM Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">3:45 PM</div><div class="n">775 - $2000 1.30m JR/AM Jumper II.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$2500 1.40m Jr/Am Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">5:15 PM</div><div class="n">781 - $2500 1.40m Jr/Am Jumper II.1</div></div></div>
-        </div></section></div><div class="ringWrap" data-ring-key="675"><button type="button" class="ringClose" aria-label="Hide INDR_1">×</button><section class="ring"><div class="ring-head">INDR_1</div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$10,000 USHJA UF Vet Hunter Derby 3' Open</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">9:00 AM</div><div class="n">404 - $10,000 USHJA UF Vet Hunter Derby 3' Open</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Macho (1), Hurricane (2), Elliot (3), Mark (4), Tommy (5), Pedro (6), Munster (7)</span>
-        </div>
-      </div>
-            <div class="gname">$10,000 USHJA National Hunter Derby 3' Jr/Am</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">10:45 AM</div><div class="n">405 - $10,000 USHJA National Hunter Derby 3' Jr/Am</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$10,000 Golden Ocala Hunter Derby 3'6/3'9</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">1:00 PM</div><div class="n">406 - $10,000 Golden Ocala Hunter Derby 3'6/3'9</div></div></div>
-        </div></section></div><div class="ringWrap" data-ring-key="676"><button type="button" class="ringClose" aria-label="Hide INDR_2">×</button><section class="ring"><div class="ring-head">INDR_2</div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Adult Equitation 3'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:00 AM</div><div class="n">509 - Adult Equitation 3'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">THIS Adult Medal 3'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:08 AM</div><div class="n">547 - THIS Adult Medal 3'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Adult Equitation Flat</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">9:15 AM</div><div class="n">511 - Adult Equitation Flat</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Children's Equitation 3'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">9:45 AM</div><div class="n">512 - Children's Equitation 3'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Children's Equitation Flat</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">10:45 AM</div><div class="n">514 - Children's Equitation Flat</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Equitation 12-14 Flat</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">11:00 AM</div><div class="n">505 - Equitation 12-14 Flat</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Equitation 15-17 3'3"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">11:00 AM</div><div class="n">506 - Equitation 15-17 3'3"</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Equitation 15-17 Flat</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">11:00 AM</div><div class="n">508 - Equitation 15-17 Flat</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Equitation 12-14 2'9'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">12:30 PM</div><div class="n">503 - Equitation 12-14 2'9'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Low Adult Equitation 2'6"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">1:00 PM</div><div class="n">518 - Low Adult Equitation 2'6"</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Low Adult Equitation 2'6'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">1:00 PM</div><div class="n">519 - Low Adult Equitation 2'6'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Low Adult Equitation Flat</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">1:45 PM</div><div class="n">520 - Low Adult Equitation Flat</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Low Children's Equitation 2'6"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">2:00 PM</div><div class="n">515 - Low Children's Equitation 2'6"</div></div></div>
-        </div></section></div><div class="ringWrap" data-ring-key="678"><button type="button" class="ringClose" aria-label="Hide INDR_4">×</button><section class="ring"><div class="ring-head">INDR_4</div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">USHJA Hunter 2 U/S</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">7:30 AM</div><div class="n">259 - USHJA Hunter 2 U/S</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Future Hunter 2' U/S</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">7:45 AM</div><div class="n">254 - Future Hunter 2' U/S</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">USHJA Hunter 2'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">7:52 AM</div><div class="n">257 - USHJA Hunter 2'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Future Hunter 2'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:00 AM</div><div class="n">252 - Future Hunter 2'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Children's Pony Equitation 2'/2'6"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">11:45 AM</div><div class="n">524 - Children's Pony Equitation 2'/2'6"</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Children's Pony Equitation Flat</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">12:00 PM</div><div class="n">526 - Children's Pony Equitation Flat</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Pony Equitation 2'3"/2'6"/2'9"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">12:15 PM</div><div class="n">521 - Pony Equitation 2'3"/2'6"/2'9"</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">Pony Equitation Flat</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">12:45 PM</div><div class="n">523 - Pony Equitation Flat</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">USEF Pony Medal (Open Card) 2'9"/2'6"/2'3"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">1:00 PM</div><div class="n">545 - USEF Pony Medal (Open Card) 2'9"/2'6"/2'3"</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Paisley (1), Poptart (2)</span>
-        </div>
-      </div>
-            <div class="gname">WIHS Pony Equitation (Open Card) 2'9"/2'6"/2'3"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">1:00 PM</div><div class="n">546 - WIHS Pony Equitation (Open Card) 2'9"/2'6"/2'3"</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Knox (1), Paisley (2), Poptart (4)</span>
-        </div>
-      </div>
-            <div class="gname">$2,000 USHJA Pony Hunt &amp; Go Derby 2'3"/2'6"/2'9"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">2:15 PM</div><div class="n">407 - $2,000 USHJA Pony Hunt &amp; Go Derby 2'3"/2'6"/2'9"</div></div></div>
-        </div></section></div></div>
-      <div class="col" id="colR"><div class="ringWrap" data-ring-key="683"><button type="button" class="ringClose" aria-label="Hide INDR_5">×</button><section class="ring"><div class="ring-head">INDR_5</div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$100 .65m Jumper Open IV.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">7:52 AM</div><div class="n">601 - $100 .65m Jumper Open IV.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$100 .65m Jumper Long Creek Farm Junior/Amateur IV.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:15 AM</div><div class="n">604 - $100 .65m Jumper Long Creek Farm Junior/Amateur IV.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">.75m Jumper Open IV.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">9:15 AM</div><div class="n">607 - .75m Jumper Open IV.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">.75m Jumper Junior/Amateur IV.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">9:15 AM</div><div class="n">610 - .75m Jumper Junior/Amateur IV.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">.85m Jumper Open II.2d</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">11:15 AM</div><div class="n">619 - .85m Jumper Open II.2d</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">.85m Jumper Junior/Amateur II.2d</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">11:15 AM</div><div class="n">622 - .85m Jumper Junior/Amateur II.2d</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Shrek (3)</span>
-        </div>
-      </div>
-            <div class="gname">$150 .90m Novice Junior Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">3:00 PM</div><div class="n">731 - $150 .90m Novice Junior Jumper II.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$150 .90m Novice Amateur Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">3:00 PM</div><div class="n">734 - $150 .90m Novice Amateur Jumper II.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">1.00m Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">4:45 PM</div><div class="n">629 - 1.00m Jumper II.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$100 1.0m Thoroughbred Jumper II.2b</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">4:45 PM</div><div class="n">697 - $100 1.0m Thoroughbred Jumper II.2b</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$200 1.00m Junior Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">6:15 PM</div><div class="n">737 - $200 1.00m Junior Jumper II.1</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Coffee (2)</span>
-        </div>
-      </div>
-            <div class="gname">$200 1.00m Amateur Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">6:15 PM</div><div class="n">740 - $200 1.00m Amateur Jumper II.1</div></div></div>
-        </div></section></div><div class="ringWrap" data-ring-key="684"><button type="button" class="ringClose" aria-label="Hide INDR_6">×</button><section class="ring"><div class="ring-head">INDR_6</div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Fan (2)</span>
-        </div>
-      </div>
-            <div class="gname">1.10m Jumper II.2b</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:13 AM</div><div class="n">632 - 1.10m Jumper II.2b</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Rimini (1)</span>
-        </div>
-      </div>
-            <div class="gname">$500 1.10m Junior Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">9:30 AM</div><div class="n">749 - $500 1.10m Junior Jumper II.1</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Maiki (1), Q (2)</span>
-        </div>
-      </div>
-            <div class="gname">$500 1.10m Amateur Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">9:30 AM</div><div class="n">755 - $500 1.10m Amateur Jumper II.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$600 1.15m Junior/Amateur Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">12:15 PM</div><div class="n">757 - $600 1.15m Junior/Amateur Jumper II.1</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">$500 1.20m Jumper II.2b</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">1:45 PM</div><div class="n">638 - $500 1.20m Jumper II.2b</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Dottie (2), King (3), Choco (8)</span>
-        </div>
-      </div>
-            <div class="gname">$1500 1.20m Junior/Amateur Jumper II.1</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">3:45 PM</div><div class="n">768 - $1500 1.20m Junior/Amateur Jumper II.1</div></div></div>
-        </div></section></div><div class="ringWrap" data-ring-key="737"><button type="button" class="ringClose" aria-label="Hide ANNEX">×</button><section class="ring"><div class="ring-head">ANNEX</div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">USHJA Jumping Seat Medal 3'3"</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:13 AM</div><div class="n">538 - USHJA Jumping Seat Medal 3'3"</div></div></div>
-        </div><div class="group has-team">
-          <div class="group-head">
-            <div class="gdisplay">
-        <div class="gdisplay-line">
-          <span class="gdisplay-badge">CWF</span>
-          <span class="gdisplay-text">Indy (1)</span>
-        </div>
-      </div>
-            <div class="gname">Platinum Performance USEF Talent Search 3'9'</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">8:45 AM</div><div class="n">527 - Platinum Performance USEF Talent Search 3'9'</div></div></div>
-        </div><div class="group">
-          <div class="group-head">
-            
-            <div class="gname">629b) 1.00m Jumper II.2b</div>
-          </div>
-          <div class="solid"></div>
-          <div class="class-list"><div class="c"><div class="t">10:00 AM</div><div class="n">33506 - 629b) 1.00m Jumper II.2b</div></div></div>
-        </div></section></div></div>
+      <div class="col" id="colL"></div>
+      <div class="col" id="colR"></div>
     </div>
   </div>
 </div>
-
 <script>
 (() => {
   const qs = new URLSearchParams(location.search);
@@ -895,7 +467,26 @@
     return [];
   }
 
+  function fetchJsonBlocking(url) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false);
+    xhr.setRequestHeader("Cache-Control", "no-store");
+    xhr.send(null);
+    const txt = xhr.responseText || "";
+    if (xhr.status < 200 || xhr.status >= 300) {
+      throw new Error(`Fetch failed ${xhr.status} for ${url}: ${txt.slice(0, 200)}`);
+    }
+    try {
+      return JSON.parse(txt);
+    } catch {
+      throw new Error(`Bad JSON in ${url}: ${txt.slice(0, 200)}`);
+    }
+  }
+
   async function fetchJson(url) {
+    if (location.hostname === "ringstatus.com" || qs.get("pdf") === "1") {
+      return fetchJsonBlocking(url);
+    }
     const res = await fetch(url, { cache: "no-store" });
     const txt = await res.text();
     if (!res.ok) throw new Error(`Fetch failed ${res.status} for ${url}: ${txt.slice(0, 200)}`);
