@@ -1,4 +1,4 @@
-<script>window.RS_WEC_SCHEDULE_URL = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=schedule-json&show_no=14906";</script>
+<script>window.RS_WEC_SCHEDULE_URL = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live&show_no=14906";</script>
 <style>
   :root{
     --fg:#111;
@@ -395,6 +395,10 @@
     border-bottom:1px solid #eee;
     min-width:0;
   }
+  .c.diff-time,
+  .c.diff-oog{
+    color:#815374;
+  }
 
   .c:last-child{border-bottom:none;}
 
@@ -599,7 +603,7 @@
     <div class="topbar-wrapper">
       <div class="title-row">
         <div class="title" id="title">Schedule</div>
-        <a class="home-pill" id="printPdfLink" href="https://ringstatus-pdf.gombcg.workers.dev/?url=https%3A%2F%2Fringstatus.com%2Fwec-print%3Fpdf%3D1&filename=wec-schedule.pdf&waitForSelector=.ring" target="_blank" rel="noopener">Print</a>
+        <a class="home-pill" id="printPdfLink" href="https://ringstatus-pdf.gombcg.workers.dev/?url=https%3A%2F%2Fringstatus.com%2Fwec-print%3Fpdf%3D1&filename=wec-schedule.pdf&waitForSelector=html%5Bdata-rs-pdf-ready%3D%221%22%5D" target="_blank" rel="noopener">Print</a>
       </div>
       <div class="subtitle-row">
         <div class="subtitle-edit-wrapper">
@@ -682,7 +686,7 @@
   }
 
   function resolveDataUrl(){
-    const base = window.RS_WEC_SCHEDULE_URL || "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=schedule-json&show_no=14906";
+    const base = window.RS_WEC_SCHEDULE_URL || "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live&show_no=14906";
     const focusDay = new URLSearchParams(location.search).get("focus_day");
     if(!focusDay) return base;
     const u = new URL(base, location.href);
@@ -701,7 +705,7 @@
     const params = new URLSearchParams({
       url: source.toString(),
       filename: `wec-${filenameDate}-schedule.pdf`,
-      waitForSelector: ".ring"
+      waitForSelector: "html[data-rs-pdf-ready=\"1\"]"
     });
     return `${PDF_WORKER_BASE}?${params.toString()}`;
   }
@@ -863,10 +867,68 @@
 
   function parseJsonText(txt, urlLabel){
     try{
-      return JSON.parse(txt);
+      return normalizeScheduleRows(JSON.parse(txt));
     }catch(e){
       throw new Error(`Bad JSON in ${urlLabel}: ${String(txt).slice(0,200)}`);
     }
+  }
+
+  function rollupGroupDisplay(rollups){
+    const out = [];
+    for(const rollup of rollups || []){
+      for(const horse of rollup.horses || []){
+        const token = normalizeHorseToken(horse);
+        if(token.label) out.push(token.label);
+      }
+    }
+    return Array.from(new Set(out)).join(", ");
+  }
+
+  function normalizeScheduleRows(payload){
+    if(Array.isArray(payload)) return payload;
+    if(!payload || !Array.isArray(payload.rings)) return [];
+
+    const rows = [];
+    for(const ring of payload.rings){
+      for(const c of ring.classes || []){
+        const classNumber = String(c.class_number ?? "").trim();
+        let className = String(c.class_name || c.class_label || "").trim();
+        if(classNumber && className.startsWith(`${classNumber} - `)){
+          className = className.slice(`${classNumber} - `.length).trim();
+        }
+        const rollups = Array.isArray(c.rollups) ? c.rollups : [];
+        const groupDisplay = rollupGroupDisplay(rollups);
+        rows.push({
+          show_id: payload.show_no,
+          show_days_report_title: payload.show_name,
+          show_days_display_date: payload.show_focus_date,
+          show_day_key: payload.show_focus_date,
+          ring_number: ring.ring_no,
+          ring_name: ring.ring_display,
+          class_group_id: String(c.class_no || ""),
+          class_group_sequence: c.class_start_time || c.class_time || "",
+          group_group_name: className,
+          class_no: c.class_no,
+          class_number: classNumber,
+          class_name: className,
+          start_display: c.class_time,
+          class_start_time: c.class_start_time,
+          entry_count: c.entry_count,
+          n_gone: c.n_gone,
+          n_to_go: c.n_to_go,
+          elapsed_seconds: c.elapsed_seconds,
+          current_entry_no: c.current_entry_no,
+          current_horse: c.current_horse,
+          live_source: c.live_source,
+          group_display: groupDisplay,
+          sched_display: groupDisplay,
+          "8778_sched_display": groupDisplay,
+          trainer_rollups: rollups,
+          diff_class: c.diff_class || ""
+        });
+      }
+    }
+    return rows;
   }
 
   function groupBy(arr, keyFn){
@@ -1106,6 +1168,7 @@
       let lastRingTimeBucket = null;
 
       for(const g of groups){
+        const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
         const classes = mergeClassRows(g.items).sort((a,b)=>{
           const ac = isCheckDisplay(rowDisplayTime(a)) ? 1 : 0;
           const bc = isCheckDisplay(rowDisplayTime(b)) ? 1 : 0;
@@ -1125,7 +1188,7 @@
           const displayTime = roundedTime.display;
           const isCheckTime = isCheckDisplay(displayTime);
 
-          const showTime = (displayTime && roundedTime.key !== lastRingTimeBucket);
+          const showTime = (displayTime && (hasTeam || roundedTime.key !== lastRingTimeBucket));
           if(showTime) lastRingTimeBucket = roundedTime.key;
 
           const num = c.class_number ?? c.classNumber;
@@ -1139,9 +1202,10 @@
               ? `<span class="check-time">check</span>`
               : esc(displayTime))
             : "";
+          const diffClass = String(c.diff_class ?? c.diffClass ?? "").split(/\s+/).filter(x => /^diff-[a-z0-9_-]+$/i.test(x)).join(" ");
 
           cl += `
-            <div class="c${usingTime2 ? " time2" : ""}${isCheckTime ? " check-time-row" : ""}">
+            <div class="c${usingTime2 ? " time2" : ""}${isCheckTime ? " check-time-row" : ""}${diffClass ? ` ${diffClass}` : ""}">
               <div class="t">${timeHtml}</div>
               <div class="n">${esc(label)}</div>
             </div>
@@ -1166,7 +1230,6 @@
 
         const horsesNorm = Array.from(new Set(horses.map(h => h.toLowerCase()))).join("|");
         const gDiv = document.createElement("div");
-        const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
 
         gDiv.className = `group${hasTeam ? " has-team" : ""}`;
         if(hasTeam){

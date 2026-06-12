@@ -857,7 +857,7 @@
     const params = new URLSearchParams({
       url: pageUrl,
       filename,
-      waitForSelector: ".ring"
+      waitForSelector: "html[data-rs-pdf-ready=\"1\"]"
     });
     return `${PDF_WORKER_BASE}?${params.toString()}`;
   }
@@ -879,10 +879,16 @@
   }
 
   function relayoutVisibleRings() {
+    document.documentElement.dataset.rsPdfReady = "0";
+    window.RS_PDF_READY = false;
     const visible = RING_WRAPS.filter((el) => !HIDDEN_RING_KEYS.has(String(el.dataset.ringKey || "")));
     placeRings(visible);
     fitToOnePage();
-    setTimeout(fitToOnePage, 50);
+    setTimeout(() => {
+      fitToOnePage();
+      document.documentElement.dataset.rsPdfReady = "1";
+      window.RS_PDF_READY = true;
+    }, 50);
     syncHiddenToUrl();
     syncPdfControls();
   }
@@ -957,6 +963,7 @@
       let lastRingTimeBucket = null;
 
       for (const g of groups) {
+        const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
         const classes = mergeClassRows(g.items).sort((a, b) => {
           const an = toInt(a.class_number ?? a.classNumber ?? 999999) ?? 999999;
           const bn = toInt(b.class_number ?? b.classNumber ?? 999999) ?? 999999;
@@ -967,7 +974,7 @@
         for (const c of classes) {
           const roundedTime = roundedTenMinuteTime(c.start_display ?? c.startDisplay ?? "");
           const time = roundedTime.display;
-          const showTime = (time && roundedTime.key !== lastRingTimeBucket);
+          const showTime = (time && (hasTeam || roundedTime.key !== lastRingTimeBucket));
           if (showTime) lastRingTimeBucket = roundedTime.key;
 
           const num = c.class_number ?? c.classNumber;
@@ -981,7 +988,6 @@
         }
 
         const gDiv = document.createElement("div");
-        const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
         gDiv.className = `group${hasTeam ? " has-team" : ""}`;
         gDiv.innerHTML = `
           <div class="group-head">
@@ -1035,11 +1041,6 @@
 
       RING_WRAPS = buildRingElements(fullRows);
       relayoutVisibleRings();
-      document.documentElement.dataset.rsPdfReady = "1";
-      window.RS_PDF_READY = true;
-
-      fitToOnePage();
-      setTimeout(fitToOnePage, 50);
       syncPdfControls();
     } catch (err) {
       const colL = document.getElementById("colL");

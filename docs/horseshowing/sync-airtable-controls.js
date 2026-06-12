@@ -414,7 +414,13 @@ async function catalystGet(params, label) {
 }
 
 async function catalystPost(payload, label) {
-  const response = await fetch(CATALYST_ENDPOINT, {
+  const params = new URLSearchParams();
+  for (const key of ["action", "show_no", "focus_day"]) {
+    if (payload[key] !== undefined && payload[key] !== null && payload[key] !== "") {
+      params.set(key, String(payload[key]));
+    }
+  }
+  const response = await fetch(`${CATALYST_ENDPOINT}?${params.toString()}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -832,9 +838,9 @@ async function main() {
     if (syncCatalyst) {
       for (const row of focusRows.filter((item) => item.show_no === showNo)) {
         catalystResults.push(await pushFocusShowToCatalyst(row));
-        catalystResults.push(await pushActiveTrainersToCatalyst(row, trainerRows));
         catalystResults.push(await pushHideClassesToCatalyst(row, hideRows, trainerRows));
         catalystResults.push(await pushHorseDisplaysToCatalyst(row, horseRows, entryRows, trainerRows));
+        catalystResults.push(await pushActiveTrainersToCatalyst(row, trainerRows));
       }
     }
   }

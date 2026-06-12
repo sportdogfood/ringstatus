@@ -2940,3 +2940,503 @@ Open reports:
 docs/horseshowing/reports/14906-2026-06-10-focus-schedule.html
 docs/horseshowing/reports/14906-2026-06-10-entry-schedule.html
 ```
+
+## Stage - 2026-06-12 Current Focus-Day Validation
+
+Status contract version: 2026-06-12-current-focus-validation
+
+### Situation
+
+The current show day is 2026-06-12.
+
+The current focus-day validation must use 2026-06-12.
+
+During this validation window, live feeds may legitimately be empty or low-value because the show day is ending or over:
+
+```text
+get_orders.php
+get_rings.php
+```
+
+Empty live data during this window is not a workflow failure by itself.
+
+Do not block the 2026-06-12 validation workflow because live endpoints return zero rows.
+
+### Time Box
+
+The operator will not change Airtable `focus_show.focus_day` for the next 60 minutes.
+
+During that 60-minute window, testing must use explicit request parameters or local runner parameters for:
+
+```text
+show_no = 14906
+focus_day = 2026-06-12
+```
+
+Do not require the operator to change Airtable focus_day before proving core population for 2026-06-12.
+
+### Core Endpoints Still Actionable
+
+The 2026-06-12 validation test must use the core endpoints:
+
+```text
+update_schedule.php
+counts.php
+class_oog.php
+```
+
+These are the required data sources for the 2026-06-12 focus-day validation.
+
+Known caveat:
+
+```text
+counts.php and update_schedule.php may look complete or wonky after the show day is over.
+```
+
+That caveat must not stop the workflow.
+
+### Validation Run - 2026-06-12
+
+Run target:
+
+```text
+show_no = 14906
+focus_day = 2026-06-12
+```
+
+Core command:
+
+```powershell
+node docs\horseshowing\sync-stage2-core.js 14906 2026-06-12
+```
+
+Core result:
+
+```text
+ring_days mirrored to Airtable = 8
+update_schedule rows = 67
+counts rows = 43
+class_oog rows = 996 mirrored / 997 in Catalyst snapshot
+```
+
+Time workflow command:
+
+```powershell
+node docs\horseshowing\sync-airtable-time-workflows.js --show-no 14906 --focus-day 2026-06-12
+```
+
+Time workflow result:
+
+```text
+class_start_times rows = 63
+entry_go_times rows = 41
+inactive class_start_times rows = 0
+inactive entry_go_times rows = 0
+```
+
+Catalyst render API check:
+
+```text
+focus-day-snapshot.update_schedule = 67
+focus-day-snapshot.counts = 43
+focus-day-snapshot.class_oog = 997
+wec-mobile-live.rings = 7
+wec-mobile-live.classes = 56
+wec-mobile-live.team_groups = 21
+wec-mobile-live.hidden_leaks = 0
+schedule-json.rows = 56
+schedule-json.team_rows = 21
+```
+
+Render join correction:
+
+```text
+Root cause: schedule render used a trainer-filtered hs_entries ZCQL query that returned zero rows even though the same focus-day class_oog source contained active-trainer entries.
+Correction: getEntriesForSchedule now falls back to getEntriesForClasses and filters active trainers in JavaScript when the filtered ZCQL query returns zero.
+Deploy target: horseshowing_sync
+Deploy result: success
+```
+
+Live page check:
+
+```text
+https://ringstatus.com/wec-mobile
+PASS: title rendered, 2026-06-12 rendered, CWF groups rendered, no [OBJECT OBJECT], no browser errors.
+
+https://ringstatus.com/wec-print
+FAIL: live Webflow page still uses stale print embed code that renders [OBJECT OBJECT].
+```
+
+Local print drop check:
+
+```text
+docs\horseshowing\webflow-drops\wec-print-webflow-embed-current.html
+PASS: title rendered, 2026-06-12 rendered, CWF groups rendered, no [OBJECT OBJECT], no browser errors.
+```
+
+Airtable controls/helpers check:
+
+```powershell
+node docs\horseshowing\sync-airtable-controls.js
+```
+
+Result:
+
+```text
+focus_show rows = 1
+class_hide rows = 4
+rings rows = 9
+horses rows = 1010
+riders rows = 610
+trainers rows = 235
+entries rows = 951
+catalyst_synced = 4
+helper backfill = skipped/not_due
+```
+
+Post-helper Catalyst config check:
+
+```text
+active_trainers = Alan Korotkin
+trainer_displays = Alan Korotkin -> CWF
+horse_display_count = 0
+```
+
+Remaining issue:
+
+```text
+FAIL: Catalyst focus config still does not retain the Airtable horse display map after the helper sync.
+Current mobile rollups render because the default display map still covers the visible horses, not because the Airtable horse_display map is confirmed in Catalyst.
+```
+
+### Last-Hour State - 2026-06-12 Current Focus Day
+
+Scope:
+
+```text
+show_no = 14906
+focus_day = 2026-06-12
+Do not use 2026-06-13 yet.
+```
+
+Core data status:
+
+```text
+PASS: update_schedule core data populated for 2026-06-12.
+PASS: counts core data populated for 2026-06-12.
+PASS: class_oog core data populated for 2026-06-12.
+PASS: class_start_times populated for 2026-06-12.
+PASS: entry_go_times populated for 2026-06-12.
+```
+
+Active trainer render status:
+
+```text
+PASS: active trainer source is present in Catalyst for 2026-06-12.
+active_trainers = Alan Korotkin
+trainer_displays = Alan Korotkin -> CWF
+
+PASS: Catalyst render API now returns active-trainer rollups.
+wec-mobile-live.classes = 56
+wec-mobile-live.team_groups = 21
+wec-mobile-live.hidden_leaks = 0
+```
+
+Render join fix:
+
+```text
+Problem:
+The render path queried hs_entries with trainer filtering and returned zero rows.
+
+Confirmed data:
+focus-day class_oog contained active trainer rows.
+
+Fix:
+getEntriesForSchedule now falls back to getEntriesForClasses and filters active trainers in JavaScript when the filtered ZCQL query returns zero.
+
+Deployment:
+horseshowing_sync deployed successfully.
+```
+
+Print status:
+
+```text
+PASS: local print drop renders CWF rollups without [OBJECT OBJECT].
+FAIL: live /wec-print was stale and still rendered [OBJECT OBJECT] before the operator updated the print embed.
+Needs recheck after Webflow publish.
+```
+
+Post-publish print recheck:
+
+```text
+PASS: live /wec-print renders 2026-06-12.
+PASS: live /wec-print renders CWF groups.
+PASS: live /wec-print no longer renders [OBJECT OBJECT].
+PASS: live /wec-print browser errors = 0.
+```
+
+Current print drop source:
+
+```text
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\webflow-drops\wec-print-webflow-embed-current.txt
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\webflow-drops\wec-print-webflow-embed-current.html
+```
+
+Mobile embed status:
+
+```text
+FAIL: live /wec-mobile HTML is stale versus the current local mobile drop.
+
+Evidence:
+live /wec-mobile contains schedule-json.
+live /wec-mobile does not contain wec-mobile-live.
+
+Current local mobile drop does contain:
+wec-mobile-live API source
+subtitle/edit wrapper
+horse edit action
+print proxy URL
+rounded time display
+hide repeated rounded time bucket
+check-time badge
+diff-time / diff-oog classes
+desktop font clamp
+```
+
+Post-fix mobile recheck:
+
+```text
+PASS: live /wec-mobile renders 2026-06-12.
+PASS: live /wec-mobile renders CWF groups.
+PASS: live /wec-mobile does not render [OBJECT OBJECT].
+PASS: live /wec-mobile browser errors = 0.
+
+FAIL: live /wec-mobile still does not contain wec-mobile-live.
+FAIL: live /wec-mobile still contains schedule-json.
+Conclusion: live mobile display is usable, but the Webflow mobile embed is not the current local drop and still needs replacement to carry the latest mobile logic.
+```
+
+Current mobile drop source:
+
+```text
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\webflow-drops\wec-mobile-webflow-embed-current.txt
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\webflow-drops\wec-mobile-webflow-embed-current.html
+```
+
+Answer to whether mobile needs a new embed:
+
+```text
+YES.
+Not because of the Catalyst active-trainer rollup fix.
+Yes because live /wec-mobile is stale and is not using the current local mobile drop that contains the recent UI/API/edit/time logic.
+```
+
+Horse display status:
+
+```text
+Original failure:
+Catalyst debug-show-config returned focus_source.horse_display_count = 0.
+
+Meaning:
+Airtable helper horses exist and the local control script can build a horse display payload, but Catalyst is not retaining that horse display map in the current focus config.
+
+Evidence from local helper CSVs:
+horses helper rows = 1010
+entries helper rows = 951
+active trainer scoped horse names = 35
+horse display payload count = 44
+
+Likely failing boundary:
+set-horse-displays stores the full horse_displays object inside hs_focus_show.source.
+The write returns success, but readback from debug-show-config returns zero horse displays.
+
+Impact:
+Mobile/print can still show many barn names from the hardcoded default display map.
+This is not acceptable as the final path because Airtable horses should be the source for barn_name/horse_display.
+```
+
+Troubleshooting proof:
+
+```text
+Small payload test:
+Sandenal -> Snoop persisted in hs_focus_show.source.
+
+Full payload test:
+44 horse display records / 4016 bytes wrote with HTTP 200.
+hs_focus_show.source retained only 255 characters.
+The truncated source JSON could not be parsed back into horse_displays.
+This also risked wiping active_trainers from the parsed focus source.
+```
+
+Correction:
+
+```text
+set-horse-displays no longer stores the full horse map in hs_focus_show.source.
+hs_focus_show.source now stores only small control metadata/counts.
+Full horse_displays and horse_display_meta now persist in hs_shows.raw_json.
+metaForFocusRender reads hs_shows.raw_json and merges the horse display map into the mobile/print render meta.
+debug-show-config now reports resolved.horse_display_count separately from focus_source.horse_display_count.
+```
+
+Post-fix proof:
+
+```text
+full payload count = 44
+payload bytes = 4016
+write status = 200
+hs_focus_show.source length = 180
+hs_shows.raw_json length = 3966
+focus_source_horse_display_count = 0
+resolved_horse_display_count = 51
+active_trainers = Alan Korotkin
+mobile_classes = 56
+mobile_team_groups = 21
+
+Interpretation:
+focus_source_horse_display_count staying 0 is expected after the fix.
+resolved_horse_display_count is the correct metric.
+```
+
+The workflow must continue as long as the endpoint returns parseable rows that can populate the focus-day schedule.
+
+### Required Population Path
+
+For `show_no = 14906` and `focus_day = 2026-06-12`:
+
+```text
+1. sync ring_days only as needed to resolve ring_day_no for 2026-06-12
+2. sync update_schedule.php for 2026-06-12
+3. sync counts.php and match counts.entry_count by class_no
+4. sync class_oog.php for the 2026-06-12 classes
+5. upsert Airtable helper/mirror data from those core sources
+6. build class_start_times from update_schedule + counts
+7. build entry_go_times from class_oog + class_start_times + active trainers
+8. expose wec-mobile and print using the current API path
+```
+
+### Helper Population Risk
+
+This stage must explicitly prove helper population, not only logs.
+
+Tables to verify after core sync:
+
+```text
+horses
+riders
+trainers
+entries
+rings
+classes
+```
+
+Current known risk:
+
+```text
+we have not fully proven helper table population from workflows except logs.
+```
+
+This stage is not complete until helper rows are verified in the working store and/or Airtable mirror.
+
+### Mobile/Print Requirement
+
+Within this validation stage, the system must be able to populate:
+
+```text
+wec-mobile
+wec-print
+show_focus_day = 2026-06-12
+```
+
+The API path must be used for mobile/print data.
+
+Do not depend on a stale static schedule JSON as the primary source.
+
+Static JSON may only be considered fallback.
+
+### Completion Rules
+
+PASS requires:
+
+```text
+1. core_update_schedule returns nonzero rows for 2026-06-12 or a proven endpoint-level no-data result
+2. core_counts returns parseable rows and count matching is attempted by class_no
+3. core_class_oog runs for the focus-day class set and returns entry rows or logs specific class-level no-order/no-data
+4. helpers/mirrors are verified for horses, riders, trainers, entries, rings, and classes
+5. class_start_times is populated for 2026-06-12 classes with real times
+6. entry_go_times is populated for active-trainer entries when class_oog supports them
+7. wec-mobile API returns 2026-06-12 rows
+8. wec-print can render 2026-06-12 rows from the API path
+9. wec-logs contains separate entries for core_update_schedule, core_counts, core_class_oog, class_start_times, entry_go_times, and helper verification
+```
+
+FAIL if:
+
+```text
+1. live get_orders.php or get_rings.php is empty and the workflow stops because of that
+2. focus_day must be changed in Airtable before 2026-06-12 can be tested
+3. only logs are populated and helper tables are not verified
+4. mobile or print depends on stale schedule JSON as primary source
+5. counts/update_schedule being complete or imperfect blocks continued population
+```
+
+## Render Contract Update - 2026-06-12 Late
+
+### Grouped Time Display Rule
+
+Duplicate-time suppression applies only to ordinary class rows.
+
+If a class row contains an active-trainer rollup/group, that class row must display its own rounded time even when the prior class in the same ring has the same rounded time bucket.
+
+Verified example:
+
+```text
+class 545
+ring INDR_4
+rollups null
+time displayed normally
+
+class 546
+ring INDR_4
+rollup CWF Paisley/Poptart
+time must display even though class 545 has same rounded time bucket
+```
+
+### PDF Worker Readiness Rule
+
+The PDF worker must not capture on `.ring` alone.
+
+The print page sets:
+
+```text
+html[data-rs-pdf-ready="1"]
+```
+
+only after the second `fitToOnePage()` pass.
+
+Mobile and print PDF links must use:
+
+```text
+waitForSelector=html[data-rs-pdf-ready="1"]
+```
+
+### Verification Evidence
+
+Local drop verification on 2026-06-12:
+
+```text
+mobile rings: 7
+mobile groups: 56
+mobile teamGroups: 21
+mobile objectObject: false
+class 545 rollup: none
+class 545 displayed time: 12:50 PM
+class 546 rollup: CWF
+class 546 displayed time: 12:50 PM
+
+print rings: 7
+print groups: 56
+print teamGroups: 21
+print objectObject: false
+print pdfReady: 1
+local generated PDF pages: 1
+```
