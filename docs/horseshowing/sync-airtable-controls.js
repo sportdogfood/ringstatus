@@ -582,7 +582,7 @@ async function backfillAirtableHelpersFromCatalyst(row, existingRecords) {
 
 async function pushActiveTrainersToCatalyst(row, trainerRows) {
   const activeTrainerRows = trainerRows
-    .filter((trainer) => trainer.show_no === row.show_no && trainer.active === "1" && trainer.trainer);
+    .filter((trainer) => trainer.active === "1" && trainer.trainer);
   const activeTrainers = activeTrainerRows.map((trainer) => trainer.trainer);
   const trainerDisplays = {};
   for (const trainer of activeTrainerRows) {
@@ -614,20 +614,25 @@ async function pushHideClassesToCatalyst(row, hideRows) {
 }
 
 async function pushHorseDisplaysToCatalyst(row, horseRows, entryRows, trainerRows) {
+  const showNo = String(row.show_no || "");
+  const activeTrainerRows = trainerRows.filter((trainer) => trainer.active === "1" && trainer.trainer);
+  const trainerDisplays = {};
+  for (const trainer of activeTrainerRows) {
+    trainerDisplays[trainer.trainer] = trainer.trainer_display || trainer.trainer;
+  }
   const activeTrainers = new Set(
-    trainerRows
-      .filter((trainer) => trainer.show_no === row.show_no && trainer.active === "1" && trainer.trainer)
+    activeTrainerRows
       .map((trainer) => trainer.trainer.toLowerCase())
   );
   const scopedHorseNames = new Set(
     entryRows
-      .filter((entry) => entry.show_no === row.show_no && entry.horse && activeTrainers.has(String(entry.trainer || "").toLowerCase()))
+      .filter((entry) => String(entry.show_no || "") === showNo && entry.horse && activeTrainers.has(String(entry.trainer || "").toLowerCase()))
       .map((entry) => entry.horse.toLowerCase())
   );
   const displays = {};
   const meta = {};
   for (const horse of horseRows.filter((item) => (
-    item.show_no === row.show_no &&
+    String(item.show_no || "") === showNo &&
     item.horse &&
     scopedHorseNames.has(item.horse.toLowerCase())
   ))) {
@@ -645,7 +650,9 @@ async function pushHorseDisplaysToCatalyst(row, horseRows, entryRows, trainerRow
     show_no: row.show_no,
     focus_day: row.focus_day,
     horse_displays: displays,
-    horse_display_meta: meta
+    horse_display_meta: meta,
+    active_trainers: Object.keys(trainerDisplays).join("|"),
+    trainer_displays: trainerDisplays
   }, "set-horse-displays");
 }
 
