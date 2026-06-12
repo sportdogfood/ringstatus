@@ -12,6 +12,7 @@
 
     --bg:#fff;
     --wec-min-width:379px;
+    --wec-content-width:clamp(379px, 58vw, 760px);
     --fs-title:clamp(16px, 1.9vw, 22px);
     --fs-subtitle:clamp(13px, 1.35vw, 16px);
     --fs-pill:clamp(13px, 1.2vw, 15px);
@@ -562,13 +563,43 @@
       padding:4px 8px calc(8px + env(safe-area-inset-bottom, 0px)) 8px;
     }
   }
+
+  @media (min-width: 760px){
+    :root{
+      --fs-title:22px;
+      --fs-subtitle:15px;
+      --fs-pill:15px;
+      --fs-ring:18px;
+      --fs-team:15px;
+      --fs-time:16px;
+      --fs-class:16px;
+      --fs-status:12px;
+    }
+
+    .topbar,
+    .filterbar,
+    main{
+      width:var(--wec-content-width);
+      max-width:calc(100vw - 16px);
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .bottom-nav{
+      left:50%;
+      right:auto;
+      width:var(--wec-content-width);
+      max-width:calc(100vw - 16px);
+      transform:translateX(-50%);
+    }
+  }
 </style>
 <header class="topbar">
   <div class="topbar-row">
     <div class="topbar-wrapper">
       <div class="title-row">
         <div class="title" id="title">Schedule</div>
-        <a class="home-pill" id="printPdfLink" href="https://ringstatus.com/wec-print" target="_blank" rel="noopener">Print</a>
+        <a class="home-pill" id="printPdfLink" href="https://ringstatus-pdf.gombcg.workers.dev/?url=https%3A%2F%2Fringstatus.com%2Fwec-print%3Fpdf%3D1&filename=wec-schedule.pdf&waitForSelector=.ring" target="_blank" rel="noopener">Print</a>
       </div>
       <div class="subtitle-row">
         <div class="subtitle-edit-wrapper">
@@ -661,7 +692,7 @@
 
   function buildPrintPdfUrl(){
     const source = new URL(window.RS_WEC_PRINT_URL || WEC_PRINT_URL, location.href);
-    const focusDay = new URLSearchParams(location.search).get("focus_day");
+    const focusDay = new URLSearchParams(location.search).get("focus_day") || currentFocusDay || isoDate(document.getElementById("subtitle")?.textContent);
     if(focusDay) source.searchParams.set("focus_day", focusDay);
     source.searchParams.set("pdf", "1");
     source.searchParams.set("cb", String(Date.now()));
@@ -981,6 +1012,34 @@
     return String(value || "").trim().toLowerCase() === "check time";
   }
 
+  function roundedTenMinuteTime(value){
+    const raw = String(value || "").trim();
+    if(!raw || isCheckDisplay(raw)) return { key: raw.toLowerCase(), display: raw };
+    const m = raw.match(/^(\d{1,2})(?::?(\d{2}))?\s*([ap]m?)?$/i);
+    if(!m) return { key: raw.toLowerCase(), display: raw };
+
+    let hour = Number(m[1]);
+    const minute = Number(m[2] || 0);
+    const meridiemRaw = String(m[3] || "").toUpperCase();
+    const meridiem = meridiemRaw.startsWith("P") ? "PM" : meridiemRaw.startsWith("A") ? "AM" : "";
+    if(!Number.isFinite(hour) || !Number.isFinite(minute)) return { key: raw.toLowerCase(), display: raw };
+
+    let total = hour * 60 + minute;
+    if(meridiem === "PM" && hour < 12) total += 12 * 60;
+    if(meridiem === "AM" && hour === 12) total -= 12 * 60;
+
+    total = Math.round(total / 10) * 10;
+    total = ((total % (24 * 60)) + (24 * 60)) % (24 * 60);
+
+    let outHour24 = Math.floor(total / 60);
+    const outMinute = total % 60;
+    const outMeridiem = outHour24 >= 12 ? "PM" : "AM";
+    let outHour = outHour24 % 12;
+    if(outHour === 0) outHour = 12;
+    const outDisplay = `${outHour}:${String(outMinute).padStart(2, "0")} ${outMeridiem}`;
+    return { key: `${outHour24}:${String(outMinute).padStart(2, "0")}`, display: outDisplay };
+  }
+
   function classRenderKey(row){
     const ringNo = String(row.ring_no ?? row.ringNo ?? row.ring_number ?? row.ringNumber ?? "").trim();
     const num = String(row.class_number ?? row.classNumber ?? "").trim();
@@ -1044,6 +1103,7 @@
       sec.dataset.ringTitle = String(ringTitle);
 
       sec.innerHTML = `<div class="ring-head">${esc(ringTitle)}</div>`;
+      let lastRingTimeBucket = null;
 
       for(const g of groups){
         const classes = mergeClassRows(g.items).sort((a,b)=>{
@@ -1056,17 +1116,17 @@
         });
 
         let cl = "";
-        let lastTime = null;
-
         for(const c of classes){
           const sd1 = String(c.start_display ?? c.startDisplay ?? "").trim();
           const sd2 = String(c.start_display2 ?? c.startDisplay2 ?? "").trim();
           const usingTime2 = !!(sd2 && (!sd1 || sd2 !== sd1));
-          const displayTime = rowDisplayTime(c);
+          const rawDisplayTime = rowDisplayTime(c);
+          const roundedTime = roundedTenMinuteTime(rawDisplayTime);
+          const displayTime = roundedTime.display;
           const isCheckTime = isCheckDisplay(displayTime);
 
-          const showTime = (displayTime && displayTime !== lastTime);
-          if(showTime) lastTime = displayTime;
+          const showTime = (displayTime && roundedTime.key !== lastRingTimeBucket);
+          if(showTime) lastRingTimeBucket = roundedTime.key;
 
           const num = c.class_number ?? c.classNumber;
           const name = c.class_name ?? c.className ?? c.name ?? "";

@@ -183,7 +183,7 @@
     margin-bottom:-6px;
     margin-right:0;
     margin-left:10px;
-    padding-right:112px;
+    padding-right:0;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -243,7 +243,7 @@
     column-gap:6px;
     line-height:1.05;
     padding:2px 0;
-    padding-right:100px;
+    padding-right:0;
   }
 
   .t{
@@ -337,7 +337,7 @@
       grid-template-columns:42px 1fr;
       column-gap:5px;
       padding:1px 0;
-      padding-right:80px;
+      padding-right:0;
     }
     body.tight .t{font-size:9px;}
     body.tight .n{font-size:9px;}
@@ -350,7 +350,7 @@
   .ring-head{font-size:12px;padding:5px 7px;}
   .gdisplay{font-size:12px;margin-bottom:-7px;}
   .class-list{padding:4px 7px 5px 7px;}
-  .c{grid-template-columns:54px 1fr;column-gap:7px;padding:3px 0;padding-right:112px;}
+  .c{grid-template-columns:54px 1fr;column-gap:7px;padding:3px 0;padding-right:0;}
   .t,.n{font-size:10.5px;}
   .group.has-team .group-head{padding-top:4px;padding-bottom:2px;}
   .gdisplay,
@@ -553,6 +553,36 @@
     return normScheduleDisplayValues(values);
   }
 
+  function extractHorseName(groupDisplayPart) {
+    const s = String(groupDisplayPart ?? "").trim();
+    if (!s) return "";
+    const idx = s.indexOf(" (");
+    return (idx > 0 ? s.slice(0, idx) : s).trim();
+  }
+
+  function normalizeHorseToken(horse) {
+    if (horse && typeof horse === "object") {
+      const label = String(horse.label || horse.display || horse.horse || "").trim();
+      const rawHorse = String(horse.horse || extractHorseName(label) || label).trim();
+      const display = String(horse.display || extractHorseName(label) || rawHorse).trim();
+      return {
+        label,
+        horse: rawHorse,
+        display
+      };
+    }
+    const label = String(horse || "").trim();
+    return {
+      label,
+      horse: extractHorseName(label),
+      display: extractHorseName(label) || label
+    };
+  }
+
+  function horseTokenText(horse) {
+    return normalizeHorseToken(horse).label;
+  }
+
   function trainerRollupsForItems(items) {
     const byTrainer = new Map();
     for (const row of items) {
@@ -564,7 +594,7 @@
         if (!trainer || !horses.length) continue;
         const bucket = byTrainer.get(trainer) || [];
         horses.forEach((horse) => {
-          const clean = String(horse || "").trim();
+          const clean = horseTokenText(horse);
           if (clean) bucket.push(clean);
         });
         byTrainer.set(trainer, bucket);
@@ -581,7 +611,7 @@
       .map((item) => ({
         trainer: String(item.trainer || "").trim().toLowerCase(),
         horses: (Array.isArray(item.horses) ? item.horses : [])
-          .map((horse) => String(horse || "").trim().toLowerCase())
+          .map((horse) => horseTokenText(horse).trim().toLowerCase())
           .filter(Boolean)
       }))
       .filter((item) => item.trainer && item.horses.length)
@@ -620,11 +650,39 @@
       return rollups.map((item) => `
         <div class="gdisplay-line">
           <span class="gdisplay-badge">${esc(item.trainer)}</span>
-          <span class="gdisplay-text">${esc(item.horses.join(", "))}</span>
+          <span class="gdisplay-text">${esc((item.horses || []).map(horseTokenText).filter(Boolean).join(", "))}</span>
         </div>
       `).join("");
     }
     return fallback ? `<div class="gdisplay-line"><span class="gdisplay-text">${esc(fallback)}</span></div>` : "";
+  }
+
+  function roundedTenMinuteTime(value) {
+    const raw = String(value || "").trim();
+    if (!raw || raw.toLowerCase() === "check time") return { key: raw.toLowerCase(), display: raw };
+    const m = raw.match(/^(\d{1,2})(?::?(\d{2}))?\s*([ap]m?)?$/i);
+    if (!m) return { key: raw.toLowerCase(), display: raw };
+
+    let hour = Number(m[1]);
+    const minute = Number(m[2] || 0);
+    const meridiemRaw = String(m[3] || "").toUpperCase();
+    const meridiem = meridiemRaw.startsWith("P") ? "PM" : meridiemRaw.startsWith("A") ? "AM" : "";
+    if (!Number.isFinite(hour) || !Number.isFinite(minute)) return { key: raw.toLowerCase(), display: raw };
+
+    let total = hour * 60 + minute;
+    if (meridiem === "PM" && hour < 12) total += 12 * 60;
+    if (meridiem === "AM" && hour === 12) total -= 12 * 60;
+
+    total = Math.round(total / 10) * 10;
+    total = ((total % (24 * 60)) + (24 * 60)) % (24 * 60);
+
+    const outHour24 = Math.floor(total / 60);
+    const outMinute = total % 60;
+    const outMeridiem = outHour24 >= 12 ? "PM" : "AM";
+    let outHour = outHour24 % 12;
+    if (outHour === 0) outHour = 12;
+    const outDisplay = `${outHour}:${String(outMinute).padStart(2, "0")} ${outMeridiem}`;
+    return { key: `${outHour24}:${String(outMinute).padStart(2, "0")}`, display: outDisplay };
   }
 
   function classRenderKey(row) {
@@ -896,6 +954,7 @@
       const sec = document.createElement("section");
       sec.className = "ring";
       sec.innerHTML = `<div class="ring-head">${esc(ringTitle)}</div>`;
+      let lastRingTimeBucket = null;
 
       for (const g of groups) {
         const classes = mergeClassRows(g.items).sort((a, b) => {
@@ -905,12 +964,11 @@
         });
 
         let cl = "";
-        let lastTime = null;
-
         for (const c of classes) {
-          const time = String(c.start_display ?? c.startDisplay ?? "").trim();
-          const showTime = (time && time !== lastTime);
-          if (time) lastTime = time;
+          const roundedTime = roundedTenMinuteTime(c.start_display ?? c.startDisplay ?? "");
+          const time = roundedTime.display;
+          const showTime = (time && roundedTime.key !== lastRingTimeBucket);
+          if (showTime) lastRingTimeBucket = roundedTime.key;
 
           const num = c.class_number ?? c.classNumber;
           const name = c.class_name ?? c.className ?? c.name ?? "";
