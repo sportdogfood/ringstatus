@@ -1,0 +1,17 @@
+{
+	"deployment": {
+		"name": "zoho_analytics_datastore_sync_routes_handler",
+		"stack": "node16",
+		"type": "advancedio",
+		"env_variables": {
+			"CLIENT_ID": "YOUR CLIENT_ID",
+			"CLIENT_SECRET": "YOUR CLIENT_SECRET",
+			"REFRESH_TOKEN": "YOUR REFRESH_TOKEN",
+			"AUTH_HOST" : "https://accounts.zoho.com/oauth/v2/token",
+			"CODELIB_SECRET_KEY" : "CODELIB_FAKE_KEY"
+		}
+	},
+	"execution": {
+		"main": "index.js"
+	}
+}

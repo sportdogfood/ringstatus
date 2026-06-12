@@ -959,9 +959,6 @@
             ? `${num} - ${name}`.trim()
             : String(name).trim();
 
-          const status2 = String(c.status2 ?? liveStatusText(c)).trim();
-          const statusHtml = status2 ? `<div class="s">${esc(status2)}</div>` : `<div></div>`;
-
           const timeHtml = showTime
             ? (isCheckTime
               ? `<span class="check-time">check</span>`
@@ -972,7 +969,6 @@
             <div class="c${usingTime2 ? " time2" : ""}${isCheckTime ? " check-time-row" : ""}">
               <div class="t">${timeHtml}</div>
               <div class="n">${esc(label)}</div>
-              ${statusHtml}
             </div>
           `;
         }

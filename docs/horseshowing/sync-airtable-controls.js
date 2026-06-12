@@ -160,6 +160,51 @@ async function writeWecAlert({ severity = "error", alertType, showNo = "", focus
   return airtableCreate(TABLES.wecAlerts, fields);
 }
 
+async function resolveOpenAlertsByType(alertType, message, payload = {}) {
+  requireToken();
+  const url = new URL(`https://api.airtable.com/v0/${BASE_ID}/${TABLES.wecAlerts}`);
+  url.searchParams.set("pageSize", "100");
+  url.searchParams.set("filterByFormula", `AND({status}='open', {alert_type}='${alertType}')`);
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_TOKEN}`
+    }
+  });
+  if (!response.ok) {
+    throw new Error(`Airtable resolve query ${TABLES.wecAlerts} failed: ${response.status} ${await response.text()}`);
+  }
+  const result = await response.json();
+  const records = result.records || [];
+  for (let index = 0; index < records.length; index += 10) {
+    const batch = records.slice(index, index + 10);
+    const patch = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLES.wecAlerts}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        records: batch.map((record) => ({
+          id: record.id,
+          fields: {
+            status: "resolved",
+            message,
+            payload_json: safeJson({
+              ...payload,
+              previous_alert_key: record.fields.alert_key,
+              resolved_reason: "successful_current_controls_check"
+            })
+          }
+        }))
+      })
+    });
+    if (!patch.ok) {
+      throw new Error(`Airtable resolve patch ${TABLES.wecAlerts} failed: ${patch.status} ${await patch.text()}`);
+    }
+  }
+  return records.length;
+}
+
 function readSummaryState() {
   try {
     return JSON.parse(fs.readFileSync(summaryStatePath, "utf8"));
@@ -587,9 +632,10 @@ async function pushHorseDisplaysToCatalyst(row, horseRows) {
   const params = new URLSearchParams({
     action: "set-horse-displays",
     show_no: row.show_no,
-    focus_day: row.focus_day
+    focus_day: row.focus_day,
+    horse_displays: JSON.stringify(horseDisplays)
   });
-  return catalystPost(params, { horse_displays: JSON.stringify(horseDisplays) }, "set-horse-displays");
+  return catalystGet(params, "set-horse-displays");
 }
 
 async function main() {
@@ -756,10 +802,38 @@ async function main() {
         catalystResults.push(await pushFocusShowToCatalyst(row));
         catalystResults.push(await pushActiveTrainersToCatalyst(row, trainerRows));
         catalystResults.push(await pushHideClassesToCatalyst(row, hideRows));
-        catalystResults.push(await pushHorseDisplaysToCatalyst(row, horseRows));
       }
     }
   }
+
+  const resolvedControlFailures = await resolveOpenAlertsByType(
+    "airtable_controls_check_failed",
+    "Resolved: current Airtable controls sync completed successfully.",
+    {
+      focus_show_rows: focusRows.length,
+      class_hide_rows: hideRows.length,
+      rings_rows: ringRecords.length,
+      horses_rows: horseRecords.length,
+      riders_rows: riderRecords.length,
+      trainers_rows: trainerRecords.length,
+      entries_rows: entryRecords.length,
+      catalyst_synced: catalystResults.length
+    }
+  );
+  const resolvedReliabilityWarnings = await resolveOpenAlertsByType(
+    "airtable_connection_reliability",
+    "Resolved: current Airtable controls read/write path completed successfully.",
+    {
+      focus_show_rows: focusRows.length,
+      class_hide_rows: hideRows.length,
+      rings_rows: ringRecords.length,
+      horses_rows: horseRecords.length,
+      riders_rows: riderRecords.length,
+      trainers_rows: trainerRecords.length,
+      entries_rows: entryRecords.length,
+      catalyst_synced: catalystResults.length
+    }
+  );
 
   const output = {
     base_id: BASE_ID,
@@ -772,6 +846,8 @@ async function main() {
     entries_rows: entryRecords.length,
     helper_root: helperRoot,
     catalyst_synced: catalystResults.length,
+    resolved_control_failures: resolvedControlFailures,
+    resolved_reliability_warnings: resolvedReliabilityWarnings,
     backfill: backfillResults
   };
   output.summary_written = await writeThirtyMinuteSummary({

@@ -14,6 +14,15 @@ $logPath = Join-Path $logDir "wec-catalyst-workflow.log"
 $jsonlLogPath = Join-Path $logDir "wec-logs.jsonl"
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
+$mutexName = "Global\RingStatusWecCatalystWorkflow-$ShowNo"
+$script:WecWorkflowMutex = New-Object System.Threading.Mutex($false, $mutexName)
+$script:WecWorkflowMutexAcquired = $script:WecWorkflowMutex.WaitOne(0)
+if (!$script:WecWorkflowMutexAcquired) {
+  $stamp = (Get-Date).ToString("s")
+  Add-Content -Path $logPath -Value "$stamp skipped overlapping WEC workflow show=$ShowNo"
+  exit 0
+}
+
 function Write-WorkflowLog($message) {
   $stamp = (Get-Date).ToString("s")
   $line = "$stamp $message"
@@ -47,6 +56,17 @@ function Resolve-WorkflowLane {
   if ($CheckName -in @("core_update_schedule", "core_class_oog", "core_counts")) { return "Core" }
   if ($CheckName -in @("airtable_helpers_summary", "airtable_helper_backfill", "catalyst_heartbeat", "catalyst_sync_focus_day", "catalyst_sync_ring_days_counts")) { return "Audits" }
   return ""
+}
+
+function Test-LiveAlertWindow($FocusDayValue) {
+  if (!$FocusDayValue) { return $false }
+  try {
+    $today = (Get-Date).ToString("yyyy-MM-dd")
+    $hour = (Get-Date).Hour
+    return ([string]$FocusDayValue -eq $today -and $hour -ge 6 -and $hour -lt 19)
+  } catch {
+    return $false
+  }
 }
 
 function Write-WecAirtableLog {
@@ -170,6 +190,54 @@ function Write-WecAirtableAlert {
   }
 }
 
+function Resolve-WecAirtableAlert {
+  param(
+    [string]$AlertType,
+    [string]$DedupeKey = "",
+    [string]$Message = "Resolved by current successful workflow run.",
+    $Payload = @{}
+  )
+
+  if (!$env:AIRTABLE_TOKEN) { return }
+
+  $focus = if ($FocusDay) { $FocusDay } elseif ($Payload -and $Payload.focus_day) { [string]$Payload.focus_day } else { "" }
+  $dedupe = if ($DedupeKey) { $DedupeKey } else { "$ShowNo|$focus|$AlertType" }
+  $alertKey = "$AlertType|$dedupe"
+
+  try {
+    $formula = [uri]::EscapeDataString("{alert_key}='$alertKey'")
+    $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$formula&pageSize=100"
+    $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
+      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+    } -TimeoutSec 30
+
+    $records = @($result.records)
+    if ($records.Count -eq 0) { return }
+
+    $body = @{
+      records = @($records | ForEach-Object {
+        @{
+          id = $_.id
+          fields = @{
+            status = "resolved"
+            message = $Message
+            payload_json = ConvertTo-SafeJson $Payload
+          }
+        }
+      })
+      typecast = $true
+    } | ConvertTo-Json -Depth 12
+    $patchUri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))"
+    Invoke-RestMethod -Method Patch -Uri $patchUri -Headers @{
+      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+      "Content-Type" = "application/json"
+    } -Body $body -TimeoutSec 30 | Out-Null
+    Write-WorkflowLog "airtable-alert resolved type=$AlertType key=$alertKey records=$($records.Count)"
+  } catch {
+    Write-WorkflowLog "airtable-alert resolve failed type=$AlertType key=$alertKey error=$($_.Exception.Message)"
+  }
+}
+
 function Int-OrZero($value) {
   if ($null -eq $value -or $value -eq "") { return 0 }
   try { return [int]$value } catch { return 0 }
@@ -198,7 +266,7 @@ function Invoke-CatalystAction($action) {
   if ($FocusDay) {
     $uri = "$uri&focus_day=$FocusDay"
   }
-  $response = Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec 90
+  $response = Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec 45
   return $response.Content | ConvertFrom-Json
 }
 
@@ -223,23 +291,23 @@ function Invoke-CatalystActionWithRetry($action, $attempts = 3) {
   }
 }
 
-function Invoke-CatalystQuery($action, $params = @{}) {
+function Invoke-CatalystQuery($action, $params = @{}, $TimeoutSec = 45) {
   $uri = "${BaseUrl}?action=$action&show_no=$ShowNo"
-  if ($FocusDay) {
+  if ($FocusDay -and !$params.ContainsKey("focus_day")) {
     $uri = "$uri&focus_day=$FocusDay"
   }
   foreach ($key in $params.Keys) {
     $uri = "$uri&$key=$([uri]::EscapeDataString([string]$params[$key]))"
   }
-  $response = Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec 180
+  $response = Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec $TimeoutSec
   return $response.Content | ConvertFrom-Json
 }
 
-function Invoke-CatalystQueryWithRetry($action, $params = @{}, $attempts = 3) {
+function Invoke-CatalystQueryWithRetry($action, $params = @{}, $attempts = 3, $TimeoutSec = 45) {
   $last = $null
   for ($attempt = 1; $attempt -le $attempts; $attempt++) {
     try {
-      $result = Invoke-CatalystQuery $action $params
+      $result = Invoke-CatalystQuery $action $params $TimeoutSec
       if ($result.ok -ne $false) { return $result }
       $last = $result.error
       if (!(Test-RetryableCatalystError $result.error)) { return $result }
@@ -257,13 +325,13 @@ function Invoke-CatalystQueryWithRetry($action, $params = @{}, $attempts = 3) {
 
 function Invoke-CatalystArray($action, $params = @{}) {
   $uri = "${BaseUrl}?action=$action&show_no=$ShowNo"
-  if ($FocusDay) {
+  if ($FocusDay -and !$params.ContainsKey("focus_day")) {
     $uri = "$uri&focus_day=$FocusDay"
   }
   foreach ($key in $params.Keys) {
     $uri = "$uri&$key=$([uri]::EscapeDataString([string]$params[$key]))"
   }
-  $response = Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec 180
+  $response = Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec 45
   $parsed = $response.Content | ConvertFrom-Json
   if ($parsed -is [array]) { return $parsed }
   return @($parsed)
@@ -277,6 +345,27 @@ function Invoke-TimeWorkflowTableSync($FocusDayValue) {
     throw "sync-airtable-time-workflows failed: $($output -join ' ')"
   }
   Write-WorkflowLog "sync-airtable-time-workflows $($output -join ' ')"
+}
+
+function Invoke-MockLiveCheck($FocusDayValue) {
+  if (!$FocusDayValue) { return $null }
+  $scriptPath = Join-Path $root "mock-live-enrichment-check.js"
+  $output = & node $scriptPath --show-no $ShowNo --focus-day $FocusDayValue 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw "mock-live-enrichment-check failed: $($output -join ' ')"
+  }
+  Write-WorkflowLog "mock-live-enrichment-check $($output -join ' ')"
+  return ($output -join "`n") | ConvertFrom-Json
+}
+
+function Invoke-CoreWorkflowTableSync($FocusDayValue) {
+  if (!$FocusDayValue) { return }
+  $scriptPath = Join-Path $root "sync-airtable-core-workflows.js"
+  $output = & node $scriptPath --show-no $ShowNo --focus-day $FocusDayValue 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw "sync-airtable-core-workflows failed: $($output -join ' ')"
+  }
+  Write-WorkflowLog "sync-airtable-core-workflows $($output -join ' ')"
 }
 
 function Invoke-WecHeartbeatComposite {
@@ -303,13 +392,13 @@ function Invoke-WecHeartbeatComposite {
   $ordersError = $null
   $params = @{ focus_day = $resolvedFocusDay }
   try {
-    $live = Invoke-CatalystQueryWithRetry "sync-rings" $params
+    $live = Invoke-CatalystQueryWithRetry "sync-rings" $params 1 20
     if ($live.ok -eq $false) { $liveError = $live.error }
   } catch {
     $liveError = $_.Exception.Message
   }
   try {
-    $orders = Invoke-CatalystQueryWithRetry "sync-orders" $params
+    $orders = Invoke-CatalystQueryWithRetry "sync-orders" $params 1 20
     if ($orders.ok -eq $false) { $ordersError = $orders.error }
   } catch {
     $ordersError = $_.Exception.Message
@@ -354,6 +443,60 @@ function In-AlertWindow($minutesUntil, $threshold, $windowMinutes = 12) {
   return ($minutesUntil -le $threshold -and $minutesUntil -gt ($threshold - $windowMinutes))
 }
 
+function Resolve-StaleTimeAlerts {
+  param(
+    [string]$FocusDayValue,
+    $ActiveAlertKeys = @{}
+  )
+
+  if (!$env:AIRTABLE_TOKEN -or !$FocusDayValue) { return }
+
+  try {
+    $formula = "AND({status}='open', FIND('|$ShowNo|$FocusDayValue|', {alert_key}))"
+    $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$([uri]::EscapeDataString($formula))&pageSize=100"
+    $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
+      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+    } -TimeoutSec 30
+
+    $records = @($result.records | Where-Object {
+      $type = [string]$_.fields.alert_type
+      $key = [string]$_.fields.alert_key
+      ($type.StartsWith("class_start_") -or $type.StartsWith("entry_go_")) -and !$ActiveAlertKeys.ContainsKey($key)
+    })
+    if ($records.Count -eq 0) { return }
+
+    for ($i = 0; $i -lt $records.Count; $i += 10) {
+      $batch = @($records[$i..([math]::Min($i + 9, $records.Count - 1))])
+      $body = @{
+        records = @($batch | ForEach-Object {
+          @{
+            id = $_.id
+            fields = @{
+              status = "resolved"
+              message = "Resolved: alert window is no longer active."
+              payload_json = ConvertTo-SafeJson @{
+                show_no = $ShowNo
+                focus_day = $FocusDayValue
+                resolved_reason = "stale_time_window"
+                previous_alert_key = $_.fields.alert_key
+              }
+            }
+          }
+        })
+        typecast = $true
+      } | ConvertTo-Json -Depth 12
+      $patchUri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))"
+      Invoke-RestMethod -Method Patch -Uri $patchUri -Headers @{
+        Authorization = "Bearer $env:AIRTABLE_TOKEN"
+        "Content-Type" = "application/json"
+      } -Body $body -TimeoutSec 30 | Out-Null
+    }
+    Write-WorkflowLog "airtable-alert stale-time resolved records=$($records.Count) focus=$FocusDayValue"
+  } catch {
+    Write-WorkflowLog "airtable-alert stale-time resolve failed focus=$FocusDayValue error=$($_.Exception.Message)"
+  }
+}
+
 function Write-ClassStartTimesLog {
   param(
     [string]$FocusDayValue,
@@ -387,6 +530,7 @@ function Write-TimeAlerts {
   $classByNo = @{}
   $classRowsSeen = 0
   $classAlertWindows = 0
+  $activeAlertKeys = @{}
   foreach ($row in $scheduleRows) {
     if (!$row.class_no -or !$row.class_start_time) { continue }
     $classRowsSeen += 1
@@ -395,7 +539,9 @@ function Write-TimeAlerts {
       $minutesUntil = Get-MinutesUntil $FocusDayValue $row.class_start_time
       if (In-AlertWindow $minutesUntil $threshold) {
         $classAlertWindows += 1
-        Write-WecAirtableAlert -AlertType "class_start_$threshold" -Severity "info" -Message "Class $($row.class_number) starts in about $threshold minutes at $($row.start_display)." -DedupeKey "$ShowNo|$FocusDayValue|class_start|$($row.class_no)|$threshold" -Payload @{
+        $dedupeKey = "$ShowNo|$FocusDayValue|class_start|$($row.class_no)|$threshold"
+        $activeAlertKeys["class_start_$threshold|$dedupeKey"] = $true
+        Write-WecAirtableAlert -AlertType "class_start_$threshold" -Severity "info" -Message "Class $($row.class_number) starts in about $threshold minutes at $($row.start_display)." -DedupeKey $dedupeKey -Payload @{
           focus_day = $FocusDayValue
           class_no = $row.class_no
           class_number = $row.class_number
@@ -432,7 +578,9 @@ function Write-TimeAlerts {
     foreach ($threshold in @(40, 20)) {
       if (In-AlertWindow $minutesUntil $threshold) {
         $entryAlertWindows += 1
-        Write-WecAirtableAlert -AlertType "entry_go_$threshold" -Severity "info" -Message "$($entry.horse) entry $($entry.entry_no) estimated go in about $threshold minutes." -DedupeKey "$ShowNo|$FocusDayValue|entry_go|$($entry.class_no)|$($entry.entry_no)|$threshold" -Payload @{
+        $dedupeKey = "$ShowNo|$FocusDayValue|entry_go|$($entry.class_no)|$($entry.entry_no)|$threshold"
+        $activeAlertKeys["entry_go_$threshold|$dedupeKey"] = $true
+        Write-WecAirtableAlert -AlertType "entry_go_$threshold" -Severity "info" -Message "$($entry.horse) entry $($entry.entry_no) estimated go in about $threshold minutes." -DedupeKey $dedupeKey -Payload @{
           focus_day = $FocusDayValue
           horse = $entry.horse
           rider = $entry.rider
@@ -454,6 +602,7 @@ function Write-TimeAlerts {
       }
     }
   }
+  Resolve-StaleTimeAlerts $FocusDayValue $activeAlertKeys
   Write-WecAirtableLog -LogType "alerts" -CheckName "entry_go_times" -RecordsSeen $entryRowsSeen -RecordsChanged $entryAlertWindows -Summary "entry_go_times checked=$entryRowsSeen alert_windows=$entryAlertWindows focus=$FocusDayValue" -Payload @{
     focus_day = $FocusDayValue
     entries_checked = $entryRowsSeen
@@ -576,37 +725,177 @@ if ($heartbeat.ok -eq $false) {
   throw "heartbeat failed: $($heartbeat.error)"
 }
 Write-WecAirtableLog -LogType "heartbeat" -CheckName "catalyst_heartbeat" -RecordsSeen (Int-OrZero $heartbeat.schedule_rows) -RecordsChanged (Int-OrZero $heartbeat.created_triggers) -Summary "heartbeat show=$ShowNo focus=$($heartbeat.focus_day) schedule_rows=$($heartbeat.schedule_rows) triggers=$($heartbeat.created_triggers)" -Payload $heartbeat
+Resolve-WecAirtableAlert -AlertType "catalyst_heartbeat_failed" -DedupeKey "$ShowNo||catalyst_heartbeat_failed" -Message "Resolved: Catalyst heartbeat returned schedule rows." -Payload @{
+  show_no = $ShowNo
+  focus_day = $heartbeat.focus_day
+  schedule_rows = $heartbeat.schedule_rows
+}
+$liveAlertWindow = Test-LiveAlertWindow $heartbeat.focus_day
 if ($heartbeat.live_error) {
-  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -Status "error" -Summary "get_rings failed show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.live_error)" -Payload @{
+  $liveStatus = if ($liveAlertWindow) { "error" } else { "skipped" }
+  $liveSummary = if ($liveAlertWindow) {
+    "get_rings failed show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.live_error)"
+  } else {
+    "get_rings skipped outside live alert window focus=$($heartbeat.focus_day): $($heartbeat.live_error)"
+  }
+  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -Status $liveStatus -Summary $liveSummary -Payload @{
     focus_day = $heartbeat.focus_day
     error = $heartbeat.live_error
     live = $heartbeat.live
   }
 } else {
   Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -RecordsSeen (Int-OrZero $heartbeat.live.parsed_rows) -Summary "get_rings rows=$($heartbeat.live.parsed_rows) focus=$($heartbeat.focus_day)" -Payload $heartbeat.live
+  Resolve-WecAirtableAlert -AlertType "live_get_rings_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Message "Resolved: get_rings returned without error." -Payload $heartbeat.live
 }
-if ($heartbeat.live_error) {
+if ($heartbeat.live_error -and $liveAlertWindow) {
   Write-WecAirtableAlert -AlertType "live_get_rings_failed" -Severity "warn" -Message "Live get_rings failed for show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.live_error)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Payload $heartbeat
+} elseif ($heartbeat.live_error) {
+  Resolve-WecAirtableAlert -AlertType "live_get_rings_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Message "Resolved: get_rings failure is outside the live alert window." -Payload @{
+    show_no = $ShowNo
+    focus_day = $heartbeat.focus_day
+    error = $heartbeat.live_error
+  }
 }
+$ordersAlertWindow = Test-LiveAlertWindow $heartbeat.focus_day
 if ($heartbeat.orders_error) {
-  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -Status "error" -Summary "get_orders failed show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.orders_error)" -Payload @{
+  $ordersStatus = if ($ordersAlertWindow) { "error" } else { "skipped" }
+  $ordersSummary = if ($ordersAlertWindow) {
+    "get_orders failed show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.orders_error)"
+  } else {
+    "get_orders skipped outside live alert window focus=$($heartbeat.focus_day): $($heartbeat.orders_error)"
+  }
+  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -Status $ordersStatus -Summary $ordersSummary -Payload @{
     focus_day = $heartbeat.focus_day
     error = $heartbeat.orders_error
     orders = $heartbeat.orders
   }
 } else {
   Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) focus=$($heartbeat.focus_day)" -Payload $heartbeat.orders
+  Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders returned without error." -Payload $heartbeat.orders
 }
-if ($heartbeat.orders_error) {
+if ($heartbeat.orders_error -and $ordersAlertWindow) {
   Write-WecAirtableAlert -AlertType "live_get_orders_failed" -Severity "warn" -Message "Live get_orders failed for show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.orders_error)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Payload $heartbeat
+} elseif ($heartbeat.orders_error) {
+  Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders failure is outside the live alert window." -Payload @{
+    show_no = $ShowNo
+    focus_day = $heartbeat.focus_day
+    error = $heartbeat.orders_error
+  }
 }
 if ($heartbeat.trigger_error) {
   Write-WecAirtableAlert -AlertType "time_trigger_failed" -Severity "error" -Message "Time trigger write failed for show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.trigger_error)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|time_triggers" -Payload $heartbeat
 }
 if ($heartbeat.focus_day) {
+  $localCoreFocusChanged = (!$state.ContainsKey("local_core_focus_day")) -or ([string]$state["local_core_focus_day"] -ne [string]$heartbeat.focus_day)
+  $localCoreDue = $localCoreFocusChanged -or (Due $state "local_core_workflow" 60)
+  $catalystScheduleRows = Int-OrZero $heartbeat.schedule_rows
+  try {
+    if ($localCoreDue) {
+      Invoke-CoreWorkflowTableSync $heartbeat.focus_day
+      $state["local_core_workflow"] = (Get-Date).ToString("o")
+      $state["local_core_focus_day"] = [string]$heartbeat.focus_day
+      Resolve-WecAirtableAlert -AlertType "local_core_workflow_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|local_core_workflow" -Message "Resolved: local core workflow completed." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_update_schedule_failed" -Message "Resolved: local core workflow completed update_schedule." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_update_schedule_failed" -DedupeKey "$ShowNo||core_update_schedule_failed" -Message "Resolved: local core workflow completed update_schedule." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_class_oog_failed" -Message "Resolved: local core workflow completed class_oog." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_class_oog_failed" -DedupeKey "$ShowNo||core_class_oog_failed" -Message "Resolved: local core workflow completed class_oog." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_sync_ring_days_failed" -Message "Resolved: local core workflow completed ring_days." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_sync_ring_days_failed" -DedupeKey "$ShowNo||core_sync_ring_days_failed" -Message "Resolved: local core workflow completed ring_days." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_sync_counts_failed" -Message "Resolved: local core workflow completed counts." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+      Resolve-WecAirtableAlert -AlertType "core_sync_counts_failed" -DedupeKey "$ShowNo||core_sync_counts_failed" -Message "Resolved: local core workflow completed counts." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+      }
+    } else {
+      Write-WorkflowLog "local-core skipped focus=$($heartbeat.focus_day) next_due=60m"
+    }
+  } catch {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "local_core_workflow" -Status "error" -Summary "local core workflow failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "local_core_workflow_failed" -Severity "critical" -Message "Local core workflow failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|local_core_workflow" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+  }
+  if ($localCoreFocusChanged -or $catalystScheduleRows -eq 0) {
+    try {
+      $schedule = Invoke-FocusDayScheduleSync
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -RecordsSeen (Int-OrZero $schedule.rows) -RecordsChanged (Int-OrZero $schedule.rows) -Summary "Catalyst schedule-json refreshed rows=$($schedule.rows) pages=$($schedule.pages) focus=$($schedule.focus_day)" -Payload @{
+        show_no = $ShowNo
+        focus_day = $schedule.focus_day
+        rows = $schedule.rows
+        pages = $schedule.pages
+        ring_day_source = $schedule.ring_day_source
+        complete = $schedule.complete
+      }
+      Resolve-WecAirtableAlert -AlertType "catalyst_schedule_json_empty" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|schedule-json" -Message "Resolved: Catalyst schedule-json was rebuilt for focus day." -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+        rows = $schedule.rows
+      }
+    } catch {
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -Status "error" -Summary "Catalyst schedule-json refresh failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+        error = $_.Exception.Message
+      }
+      Write-WecAirtableAlert -AlertType "catalyst_schedule_json_empty" -Severity "critical" -Message "Catalyst schedule-json refresh failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|schedule-json" -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+        error = $_.Exception.Message
+      }
+    }
+  }
   Write-TimeAlerts $heartbeat.focus_day
   try {
+    $mockLive = Invoke-MockLiveCheck $heartbeat.focus_day
+    Write-WecAirtableLog -LogType "live" -CheckName "mock_live_enrichment" -RecordsSeen (Int-OrZero $mockLive.schedule_rows) -RecordsChanged 0 -Summary "mock live enrichment pass=$($mockLive.pass) rings=$($mockLive.live_source) orders=$($mockLive.order_live_source) pace=$($mockLive.pace_seconds)" -Payload $mockLive
+  } catch {
+    Write-WecAirtableLog -LogType "live" -CheckName "mock_live_enrichment" -Status "error" -Summary "mock live enrichment failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "mock_live_enrichment_failed" -Severity "critical" -Message "Mock live enrichment failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|mock_live_enrichment" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+  }
+  try {
     Invoke-TimeWorkflowTableSync $heartbeat.focus_day
+    Resolve-WecAirtableAlert -AlertType "time_trigger_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|time_triggers" -Message "Resolved: time workflow tables updated successfully." -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+    }
   } catch {
     Write-WecAirtableLog -LogType "alerts" -CheckName "entry_go_times" -Status "error" -Summary "time workflow table sync failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
       show_no = $ShowNo
@@ -621,7 +910,7 @@ if ($heartbeat.focus_day) {
   }
 }
 
-if (Due $state "sync_focus_day" 10) {
+if ($false -and (Due $state "sync_focus_day" 10)) {
   $schedule = $null
   try {
     $schedule = Invoke-FocusDayScheduleSync
@@ -708,7 +997,7 @@ if (Due $state "sync_focus_day" 10) {
   }
 }
 
-if (Due $state "sync_ring_days" 30) {
+if ($false -and (Due $state "sync_ring_days" 30)) {
   $ringDays = $null
   try {
     $ringDays = Invoke-CatalystActionWithRetry "sync-ring-days" 1
@@ -769,3 +1058,8 @@ if (Due $state "sync_ring_days" 30) {
 
 $state["last_run"] = $now.ToString("o")
 Save-State $state
+
+if ($script:WecWorkflowMutexAcquired) {
+  $script:WecWorkflowMutex.ReleaseMutex()
+  $script:WecWorkflowMutex.Dispose()
+}

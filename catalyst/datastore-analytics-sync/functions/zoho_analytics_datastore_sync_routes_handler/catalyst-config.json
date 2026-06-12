@@ -1,0 +1,36 @@
+{
+    "deployment":  {
+                       "name":  "zoho_analytics_datastore_sync_routes_handler",
+                       "stack":  "node16",
+                       "type":  "advancedio",
+                       "env_variables":  {
+                                             "CLIENT_ID":  "1000.TL1NQMDA6IT9WXX9GSFUA3GJ2JL8RR",
+                                             "CLIENT_SECRET":  "d2572623363b0ab3352892d4adef9c5937e2504e06",
+                                             "REFRESH_TOKEN":  [
+                                                                   "$ClientId = \"1000.TL1NQMDA6IT9WXX9GSFUA3GJ2JL8RR\"",
+                                                                   "$ClientSecret = \"d2572623363b0ab3352892d4adef9c5937e2504e06\"",
+                                                                   "$RefreshToken = Get-Clipboard",
+                                                                   "",
+                                                                   "$Files = @(",
+                                                                   "  \".\\functions\\zoho_analytics_datastore_sync_routes_handler\\catalyst-config.json\",",
+                                                                   "  \".\\functions\\zoho_analytics_datastore_sync_record_handler\\catalyst-config.json\"",
+                                                                   ")",
+                                                                   "",
+                                                                   "foreach ($File in $Files) {",
+                                                                   "  $Json = Get-Content $File -Raw | ConvertFrom-Json",
+                                                                   "  $Json.deployment.env_variables.CLIENT_ID = $ClientId",
+                                                                   "  $Json.deployment.env_variables.CLIENT_SECRET = $ClientSecret",
+                                                                   "  $Json.deployment.env_variables.REFRESH_TOKEN = $RefreshToken",
+                                                                   "  $Json | ConvertTo-Json -Depth 20 | Set-Content $File",
+                                                                   "}",
+                                                                   "",
+                                                                   "Write-Host \"Refresh token saved into both Catalyst function configs.\""
+                                                               ],
+                                             "AUTH_HOST":  "https://accounts.zoho.com/oauth/v2/token",
+                                             "CODELIB_SECRET_KEY":  "CODELIB_FAKE_KEY"
+                                         }
+                   },
+    "execution":  {
+                      "main":  "index.js"
+                  }
+}
