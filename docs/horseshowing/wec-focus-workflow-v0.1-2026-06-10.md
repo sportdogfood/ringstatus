@@ -375,6 +375,8 @@ The CSVs make the workflow inspectable without clicking through every Airtable o
 
 ## Airtable Helper Sync
 
+Status contract version: 2026-06-12-stage-1
+
 Script:
 
 ```text
@@ -394,12 +396,18 @@ What it does:
 1. Reads Airtable focus_show
 2. Reads Airtable class_hide
 3. Reads Airtable rings
-4. Reads Airtable entries
-5. Reads Airtable horses
-6. Reads Airtable riders
-7. Reads Airtable trainers
-8. Writes local helper CSV mirrors
-9. Pushes focus_show into Catalyst using set-show-config
+4. Reads Airtable horses
+5. Reads Airtable riders
+6. Reads Airtable trainers
+7. Reads Airtable entries
+8. Immediately writes one wec-logs row for each helper table check
+9. Runs helper backfill from Catalyst focus-day data when due
+10. Writes airtable_helper_backfill to wec-logs
+11. Writes local helper CSV mirrors
+12. Pushes focus_show into Catalyst using set-show-config
+13. Pushes active trainers into Catalyst using set-active-trainers
+14. Pushes class_hide rules into Catalyst using set-hide-classes
+15. Writes airtable_helpers_summary to wec-logs every 30 minutes
 ```
 
 Current expected output shape:
@@ -416,7 +424,279 @@ helper_root
 catalyst_synced
 ```
 
+Stage 1 completion rules:
+
+```text
+PASS requires all helper tables to be read:
+focus_show
+class_hide
+rings
+horses
+riders
+trainers
+entries
+
+PASS requires class_hide.class_no to exist in Airtable.
+The field may be empty; an empty field means hide-by-class-no is supported by schema but not exercised by data.
+
+PASS requires wec-logs rows for every helper check:
+log_type = airtable_check
+workflow_lanes = Helpers
+check_name = focus_show | class_hide | rings | horses | riders | trainers | entries
+records_seen = Airtable row count for that table
+status = ok
+summary = "{table} checked"
+
+PASS requires helper audit rows:
+check_name = airtable_helper_backfill
+workflow_lanes = Audits
+
+PASS requires a 30-minute helper summary row:
+check_name = airtable_helpers_summary
+workflow_lanes = Audits
+summary = focus_show={n}; class_hide={n}; rings={n}; horses={n}; riders={n}; trainers={n}; entries={n}
+```
+
+Stage 1 current verified counts on 2026-06-12:
+
+```text
+focus_show = 1
+class_hide = 4
+rings = 9
+horses = 986
+riders = 590
+trainers = 230
+entries = 834
+active trainer = Alan Korotkin
+trainer_display = CWF
+active class_hide rows = Midway Drag, FEI Only, Ring Maintenance, Ticketed Schooling
+```
+
+Stage 1 log timing:
+
+```text
+Each helper table check is logged immediately after that table is read.
+airtable_helper_backfill is logged after focus_show rows are normalized and backfill is evaluated.
+airtable_helpers_summary is logged only when the 30-minute summary timer is due.
+```
+
+## Airtable Formula Key Protection
+
+Status contract version: 2026-06-12-stage-1b
+
+Purpose:
+
+```text
+Protect Airtable formula/key fields from runtime writes.
+Runtime scripts write only to explicit mirror/run key fields.
+Formula fields remain Airtable-owned.
+```
+
+Reason:
+
+```text
+Airtable formulas, links, lookups, and rollups are operator/audit structure.
+Workflow runners must not overwrite those fields.
+If a field is or will become a formula, the writable runtime value must use a separate mirror/run field.
+```
+
+Rule:
+
+```text
+Never write to formula-intended key fields.
+Never use formula-intended key fields as performUpsert merge fields.
+Use the mirror/run field for writes and upserts.
+Keep source formula fields available for Airtable-side display, validation, and audit.
+```
+
+Formula or formula-intended keys and writable mirrors:
+
+```text
+focus_show.focus_show_key
+-> focus_show.mirror_focus_show_key
+
+class_hide.class_hide_key
+-> class_hide.mirror_class_hide_key
+
+counts.class_key
+-> counts.mirror_class_key
+
+update_schedule.update_schedule_key
+-> update_schedule.mirror_update_schedule_key
+
+class_oog.class_oog_key
+-> class_oog.mirror_class_oog_key
+
+class_start_times.class_start_key
+-> class_start_times.class_start_key_mirror
+
+entry_go_times.entry_go_key
+-> entry_go_times.entry_go_key_mirror
+
+get_orders.get_orders_key
+-> get_orders.get_orders_key_mirror
+
+get_rings.get_rings_key
+-> get_rings.get_rings_key_mirror
+
+wec-alerts.alert_key
+-> wec-alerts.alert_key_run
+
+wec-logs.log_key
+-> wec-logs.log_key_run
+```
+
+Current writer contract:
+
+```text
+sync-airtable-controls.js
+-> writes mirror_focus_show_key, mirror_class_hide_key, log_key_run, alert_key_run
+
+sync-stage2-core.js
+-> writes mirror_class_key, mirror_update_schedule_key, mirror_class_oog_key, log_key_run
+
+sync-airtable-time-workflows.js
+-> writes class_start_key_mirror, entry_go_key_mirror, log_key_run
+
+sync-airtable-core-workflows.js
+-> writes log_key_run
+
+run-wec-catalyst-workflow.ps1
+-> writes log_key_run, alert_key_run
+-> queries/dedupes/clears alerts using alert_key_run
+```
+
+Current Airtable write mode:
+
+```text
+Control/helper/log/alert rows:
+append or update depending on workflow purpose.
+
+Core mirror tables:
+upsert, not destructive snapshot.
+
+Time tables:
+upsert on mirror keys.
+
+Live tables:
+mirror key fields exist; current repo code does not yet write get_orders/get_rings rows directly.
+```
+
+Current upsert keys:
+
+```text
+ring_days
+-> ring_day_no
+
+update_schedule
+-> show_no + days + class_no
+
+counts
+-> show_no + class_no
+
+class_oog
+-> class_no + entry_no
+
+class_start_times
+-> class_start_key_mirror
+
+entry_go_times
+-> entry_go_key_mirror
+```
+
+Numeric field rule:
+
+```text
+Airtable numeric ids must remain numbers when written:
+show_no
+class_no
+ring_no
+ring_day_no where schema is number
+entry_no
+entry_order
+rider_no when present
+```
+
+Known schema exception:
+
+```text
+get_rings.show_no is currently singleLineText.
+Do not change this without explicit approval.
+```
+
+Backfill verification completed on 2026-06-12:
+
+```text
+focus_show.mirror_focus_show_key
+scanned = 1
+missing = 0
+mismatch = 0
+
+counts.mirror_class_key
+scanned = 469
+missing = 0
+mismatch = 0
+
+update_schedule.mirror_update_schedule_key
+scanned = 199
+missing = 0
+mismatch = 0
+
+class_oog.mirror_class_oog_key
+scanned = 2661
+missing = 0
+mismatch = 0
+
+class_hide.mirror_class_hide_key
+scanned = 4
+missing = 0
+mismatch = 0
+
+class_start_times.class_start_key_mirror
+scanned = 127
+missing = 0
+mismatch = 0
+
+entry_go_times.entry_go_key_mirror
+scanned = 75
+missing = 0
+mismatch = 0
+
+get_orders.get_orders_key_mirror
+scanned = 1
+missing = 0
+mismatch = 0
+
+get_rings.get_rings_key_mirror
+scanned = 6
+missing = 0
+mismatch = 0
+
+wec-alerts.alert_key_run
+scanned = 116
+missing = 0
+mismatch = 0
+
+wec-logs.log_key_run
+scanned = 1919
+missing = 0
+mismatch = 0
+```
+
+Stage 1B completion rules:
+
+```text
+PASS requires every formula-intended key to have a writable mirror/run field.
+PASS requires all current writers to use mirror/run fields instead of formula-intended fields.
+PASS requires read-back verification with missing = 0 and mismatch = 0.
+PASS requires numeric ids to remain numeric where the Airtable schema is number.
+FAIL if any writer writes directly to a formula-intended key field.
+FAIL if any new formula-intended key is added without a matching mirror/run field.
+```
+
 ## Catalyst Focus Config
+
+Status contract version: 2026-06-12-stage-2
 
 Action:
 
@@ -434,6 +714,106 @@ Canonical focus storage should be:
 
 ```text
 hs_focus_show
+```
+
+Stage purpose:
+
+```text
+Move the operator-selected Airtable focus_show row into Catalyst.
+Catalyst must then resolve the current show/focus day without the browser or Webflow embed carrying focus_day manually.
+```
+
+Input owner:
+
+```text
+Airtable focus_show
+```
+
+Current Airtable fields used:
+
+```text
+show_no
+show_name
+show_start
+show_end
+focus_day
+source
+```
+
+Field mapping:
+
+```text
+focus_show.show_no
+-> set-show-config.show_no
+
+focus_show.show_name
+-> set-show-config.show_title
+
+focus_show.focus_day
+-> display subtitle
+
+focus_show.show_start
+-> set-show-config.show_start_date
+
+focus_show.show_end
+-> set-show-config.show_end_date
+
+focus_show.focus_day
+-> set-show-config.focus_day
+```
+
+Current verified Airtable focus row on 2026-06-12:
+
+```text
+record_id = recks9BYWaVwjuNw2
+focus_show_key = horseshowing|14906
+mirror_focus_show_key = horseshowing|14906
+show_no = 14906
+name = 14906|2026-06-10
+show_name = WEC Ocala Summer Series 1 CSI2*
+show_start = 2026-06-09
+show_end = 2026-06-14
+focus_day = 2026-06-12
+subtitle = 2026-06-12
+source = manual_input
+```
+
+Current verified Catalyst write on 2026-06-12:
+
+```text
+action = set-show-config
+ok = true
+show_no = 14906
+focus_day = 2026-06-12
+hs_focus_show.ROWID = 5614000000416608
+hs_focus_show.focus_show_key = 14906|2026-06-12
+hs_focus_show.show_no = 14906
+hs_focus_show.focus_day = 2026-06-12
+hs_focus_show.show_title = WEC Ocala Summer Series 1 CSI2*
+hs_focus_show.show_start = 2026-06-09
+hs_focus_show.show_end = 2026-06-14
+hs_focus_show.source = manual_input
+```
+
+Current verified Catalyst readback on 2026-06-12:
+
+```text
+action = focus-day-snapshot
+request = show_no only, no focus_day supplied
+ok = true
+show_no = 14906
+focus_day = 2026-06-12
+```
+
+Stage 2 completion rules:
+
+```text
+PASS requires Airtable focus_show to have exactly one active/current focus row for the show.
+PASS requires set-show-config to return ok = true.
+PASS requires hs_focus_show to contain show_no and focus_day from Airtable.
+PASS requires a Catalyst readback action with show_no only to resolve the same focus_day.
+FAIL if focus_day must be manually supplied by Webflow/mobile/print to render the current show.
+FAIL if Airtable focus_show is not the operator source of the current focus_day.
 ```
 
 Known correction:

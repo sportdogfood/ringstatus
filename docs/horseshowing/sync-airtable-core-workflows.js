@@ -115,7 +115,7 @@ async function writeLog({ checkName, showNo, focusDay, status = "ok", recordsSee
     method: "POST",
     body: JSON.stringify({
       fields: {
-        log_key: `${createdAt}|local_core|${checkName}`,
+        log_key_run: `${createdAt}|local_core|${checkName}`,
         created_at: createdAt,
         log_type: "heartbeat",
         workflow_lanes: "Core",

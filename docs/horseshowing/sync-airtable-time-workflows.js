@@ -10,18 +10,15 @@ const TABLES = {
 };
 
 const TEXT_FIELDS = new Set([
-  "class_start_key",
-  "entry_go_key",
+  "class_start_key_mirror",
+  "entry_go_key_mirror",
   "show_no",
   "focus_day",
-  "ring_day_no",
   "class_number",
   "class_name",
   "class_start_time",
   "display_time",
   "source",
-  "entry_no",
-  "entry_order",
   "horse",
   "horse_display",
   "rider",
@@ -33,7 +30,10 @@ const TEXT_FIELDS = new Set([
 
 const NUMBER_FIELDS = new Set([
   "ring_no",
+  "ring_day_no",
   "class_no",
+  "entry_no",
+  "entry_order",
   "entry_count",
   "n_gone",
   "n_to_go",
@@ -143,7 +143,7 @@ async function upsertRecords(tableName, keyField, rows) {
 async function writeLog({ checkName, showNo, focusDay, recordsSeen, recordsChanged, summary, payload }) {
   const createdAt = new Date().toISOString();
   const fields = {
-    log_key: `${createdAt}|alerts|${checkName}`,
+    log_key_run: `${createdAt}|alerts|${checkName}`,
     created_at: createdAt,
     log_type: "alerts",
     check_name: checkName,
@@ -170,7 +170,7 @@ function buildClassStartRows(scheduleRows, nowIso) {
       const focusDay = clean(row.show_day_key || row.show_days_display_date);
       const classStartKey = `${clean(row.show_id)}|${focusDay}|${clean(row.ring_day_no)}|${classNo}`;
       return {
-        class_start_key: classStartKey,
+        class_start_key_mirror: classStartKey,
         show_no: clean(row.show_id),
         focus_day: focusDay,
         ring_no: intOrNull(row.ring_number),
@@ -237,17 +237,18 @@ function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, horseDis
     const goTime = addSeconds(start, (entryOrder - 1) * paceSeconds);
     const entryNo = clean(entry.entry_no);
     const horseDisplay = clean(horseDisplays?.[clean(entry.horse)] || scheduleHorseDisplay(classRow, entry.entry_order) || entry.horse);
+    const entryGoKey = `${clean(classRow.show_id)}|${focusDay}|${classNo}|${entryNo}`;
     rows.push({
-      entry_go_key: `${clean(classRow.show_id)}|${focusDay}|${classNo}|${entryNo}`,
-      show_no: clean(classRow.show_id),
+      entry_go_key_mirror: entryGoKey,
+      show_no: intOrNull(classRow.show_id),
       focus_day: focusDay,
       ring_no: intOrNull(classRow.ring_number || entry.ring_no),
-      ring_day_no: clean(classRow.ring_day_no || entry.ring_day_no),
+      ring_day_no: intOrNull(classRow.ring_day_no || entry.ring_day_no),
       class_no: intOrNull(classNo),
       class_number: clean(classRow.class_number),
       class_name: clean(classRow.class_name),
-      entry_no: entryNo,
-      entry_order: clean(entry.entry_order),
+      entry_no: intOrNull(entryNo),
+      entry_order: entryOrder,
       horse: clean(entry.horse),
       horse_display: horseDisplay,
       rider: clean(entry.rider),
@@ -305,13 +306,13 @@ async function main() {
   });
 
   const classFields = Object.keys(classStartRows[0] || {
-    class_start_key: "",
+    class_start_key_mirror: "",
     show_no: "",
     focus_day: "",
     class_no: ""
   });
   const entryFields = Object.keys(entryGoRows[0] || {
-    entry_go_key: "",
+    entry_go_key_mirror: "",
     show_no: "",
     focus_day: "",
     class_no: "",
@@ -319,8 +320,8 @@ async function main() {
   });
   const classSchema = await ensureFields(TABLES.classStartTimes, classFields);
   const entrySchema = await ensureFields(TABLES.entryGoTimes, entryFields);
-  const classResult = await upsertRecords(TABLES.classStartTimes, "class_start_key", classStartRows);
-  const entryResult = await upsertRecords(TABLES.entryGoTimes, "entry_go_key", entryGoRows);
+  const classResult = await upsertRecords(TABLES.classStartTimes, "class_start_key_mirror", classStartRows);
+  const entryResult = await upsertRecords(TABLES.entryGoTimes, "entry_go_key_mirror", entryGoRows);
 
   await writeLog({
     checkName: "class_start_times",

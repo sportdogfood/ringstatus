@@ -51,9 +51,9 @@ const hideText = hideTextValue(changedRecord);
 if (!classNo && !hideText) throw new Error("class_hide requires class_no or hide_text/hide_lib");
 const classHideKey = ruleKey(showNo, classNo, hideText);
 
-if (changedRecord.getCellValueAsString("class_hide_key") !== classHideKey) {
+if (changedRecord.getCellValueAsString("mirror_class_hide_key") !== classHideKey) {
   await classHideTable.updateRecordAsync(changedRecord.id, {
-    class_hide_key: classHideKey
+    mirror_class_hide_key: classHideKey
   });
 }
 
@@ -95,6 +95,6 @@ console.log(JSON.stringify({
   ok: true,
   show_no: showNo,
   focus_day: focusDay,
-  class_hide_key: classHideKey,
+  mirror_class_hide_key: classHideKey,
   hide_rules: uniqueRules.length
 }));

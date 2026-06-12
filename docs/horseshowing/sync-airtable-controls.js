@@ -124,7 +124,7 @@ async function writeWecLog({ logType = "airtable_check", checkName, showNo = "",
   const createdAt = new Date().toISOString();
   const workflowLane = resolveWorkflowLane(logType, checkName);
   const fields = {
-    log_key: `${createdAt}|${logType}|${checkName}`,
+    log_key_run: `${createdAt}|${logType}|${checkName}`,
     created_at: createdAt,
     log_type: logType,
     check_name: checkName,
@@ -146,7 +146,7 @@ async function writeWecLog({ logType = "airtable_check", checkName, showNo = "",
 async function writeWecAlert({ severity = "error", alertType, showNo = "", focusDay = "", message, payload = {} }) {
   const createdAt = new Date().toISOString();
   const fields = {
-    alert_key: `${createdAt}|${severity}|${alertType}`,
+    alert_key_run: `${createdAt}|${severity}|${alertType}`,
     created_at: createdAt,
     severity,
     status: "open",
@@ -191,7 +191,7 @@ async function resolveOpenAlertsByType(alertType, message, payload = {}) {
             message,
             payload_json: safeJson({
               ...payload,
-              previous_alert_key: record.fields.alert_key,
+              previous_alert_key_run: record.fields.alert_key_run,
               resolved_reason: "successful_current_controls_check"
             })
           }
@@ -291,8 +291,10 @@ function normalizeFocusShow(record) {
   return {
     record_id: record.id,
     focus_show_key: fields.focus_show_key || `${showNo}|${focusDay}`,
+    mirror_focus_show_key: fields.mirror_focus_show_key || fields.focus_show_key || `${showNo}|${focusDay}`,
     show_no: showNo,
-    show_title: fields.name || fields.show_title || `Show ${showNo}`,
+    show_name: fields.show_name || fields.name || `Show ${showNo}`,
+    subtitle: focusDay,
     show_start: normalizeDate(fields.show_start),
     show_end: normalizeDate(fields.show_end),
     focus_day: focusDay,
@@ -309,6 +311,7 @@ function normalizeClassHide(record) {
   return {
     record_id: record.id,
     class_hide_key: fields.class_hide_key || `${showNo}|${keyRule}`,
+    mirror_class_hide_key: fields.mirror_class_hide_key || fields.class_hide_key || `${showNo}|${keyRule}`,
     show_no: showNo,
     class_no: classNo,
     hide_text: hideText,
@@ -393,7 +396,7 @@ async function pushFocusShowToCatalyst(row) {
   const params = new URLSearchParams({
     action: "set-show-config",
     show_no: row.show_no,
-    show_title: row.show_title,
+    show_title: row.show_name,
     show_start_date: row.show_start,
     show_end_date: row.show_end,
     focus_day: row.focus_day
@@ -693,8 +696,10 @@ async function main() {
     writeCsv(path.join(showDir, "focus_show.csv"), [
       "record_id",
       "focus_show_key",
+      "mirror_focus_show_key",
       "show_no",
-      "show_title",
+      "show_name",
+      "subtitle",
       "show_start",
       "show_end",
       "focus_day",
@@ -703,6 +708,7 @@ async function main() {
     writeCsv(path.join(showDir, "class_hide.csv"), [
       "record_id",
       "class_hide_key",
+      "mirror_class_hide_key",
       "show_no",
       "class_no",
       "hide_text",

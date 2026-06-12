@@ -83,7 +83,7 @@ function Write-WecAirtableLog {
   $createdAt = (Get-Date).ToUniversalTime().ToString("o")
   $workflowLane = Resolve-WorkflowLane -LogType $LogType -CheckName $CheckName
   $fields = @{
-    log_key = "$createdAt|$LogType|$CheckName"
+    log_key_run = "$createdAt|$LogType|$CheckName"
     created_at = $createdAt
     log_type = $LogType
     check_name = $CheckName
@@ -128,7 +128,7 @@ function Write-WecAirtableLog {
 function Test-WecAlertExists($alertKey) {
   if (!$env:AIRTABLE_TOKEN) { return $false }
   try {
-    $formula = [uri]::EscapeDataString("{alert_key}='$alertKey'")
+    $formula = [uri]::EscapeDataString("{alert_key_run}='$alertKey'")
     $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$formula&pageSize=1"
     $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
       Authorization = "Bearer $env:AIRTABLE_TOKEN"
@@ -154,7 +154,7 @@ function Write-WecAirtableAlert {
   $alertKey = "$AlertType|$dedupe"
   $createdAt = (Get-Date).ToUniversalTime().ToString("o")
   $fields = @{
-    alert_key = $alertKey
+    alert_key_run = $alertKey
     created_at = $createdAt
     severity = $Severity
     status = "open"
@@ -205,7 +205,7 @@ function Resolve-WecAirtableAlert {
   $alertKey = "$AlertType|$dedupe"
 
   try {
-    $formula = [uri]::EscapeDataString("{alert_key}='$alertKey'")
+    $formula = [uri]::EscapeDataString("{alert_key_run}='$alertKey'")
     $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$formula&pageSize=100"
     $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
       Authorization = "Bearer $env:AIRTABLE_TOKEN"
@@ -523,7 +523,7 @@ function Resolve-StaleTimeAlerts {
   if (!$env:AIRTABLE_TOKEN -or !$FocusDayValue) { return }
 
   try {
-    $formula = "AND({status}='open', FIND('|$ShowNo|$FocusDayValue|', {alert_key}))"
+    $formula = "AND({status}='open', FIND('|$ShowNo|$FocusDayValue|', {alert_key_run}))"
     $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$([uri]::EscapeDataString($formula))&pageSize=100"
     $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
       Authorization = "Bearer $env:AIRTABLE_TOKEN"
@@ -531,7 +531,7 @@ function Resolve-StaleTimeAlerts {
 
     $records = @($result.records | Where-Object {
       $type = [string]$_.fields.alert_type
-      $key = [string]$_.fields.alert_key
+      $key = [string]$_.fields.alert_key_run
       ($type.StartsWith("class_start_") -or $type.StartsWith("entry_go_")) -and !$ActiveAlertKeys.ContainsKey($key)
     })
     if ($records.Count -eq 0) { return }
@@ -549,7 +549,7 @@ function Resolve-StaleTimeAlerts {
                 show_no = $ShowNo
                 focus_day = $FocusDayValue
                 resolved_reason = "stale_time_window"
-                previous_alert_key = $_.fields.alert_key
+                previous_alert_key_run = $_.fields.alert_key_run
               }
             }
           }
