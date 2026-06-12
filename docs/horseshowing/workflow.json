@@ -72,7 +72,7 @@
       "status": "develop"
     },
     "entry_go_times": {
-      "key": "show_no|focus_day|class_no|entry_no|go_time",
+      "key": "show_no|focus_day|class_no|entry_no",
       "source": "future enrichment from status/order payloads",
       "status": "develop"
     }

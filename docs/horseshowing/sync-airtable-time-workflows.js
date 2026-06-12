@@ -11,6 +11,7 @@ const TABLES = {
 
 const TEXT_FIELDS = new Set([
   "class_start_key_mirror",
+  "entry_go_key",
   "entry_go_key_mirror",
   "show_no",
   "focus_day",
@@ -25,6 +26,9 @@ const TEXT_FIELDS = new Set([
   "trainer",
   "trainer_display",
   "entry_go_time",
+  "current_entry_no",
+  "current_horse",
+  "live_source",
   "last_synced_at"
 ]);
 
@@ -64,6 +68,29 @@ function intOrNull(value) {
 function numberOrNull(value) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
+}
+
+function classStartTimeFromText(value) {
+  const raw = clean(value).toUpperCase().replace(/\s+/g, "");
+  if (!raw || raw === "CHECKTIME") return "";
+  const match = raw.match(/^(\d{1,2})(?::?(\d{2}))?(AM|PM|A|P)?$/);
+  if (!match) return "";
+  let hour = Number(match[1]);
+  const minute = Number(match[2] || "00");
+  const suffix = match[3] || "";
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) return "";
+  if ((suffix === "PM" || suffix === "P") && hour < 12) hour += 12;
+  if ((suffix === "AM" || suffix === "A") && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`;
+}
+
+function parseClassLabel(value, fallbackClassNo = "") {
+  const label = clean(value);
+  const match = label.match(/^(\d+)\)\s*(.*)$/);
+  return {
+    class_number: match?.[1] || clean(fallbackClassNo),
+    class_name: match?.[2] ? clean(match[2]) : label
+  };
 }
 
 async function airtableFetch(url, options = {}) {
@@ -190,6 +217,44 @@ function buildClassStartRows(scheduleRows, nowIso) {
     });
 }
 
+function buildClassStartRowsFromCoreSnapshot(updateScheduleRows, countRows, nowIso) {
+  const countsByClass = new Map(
+    (countRows || [])
+      .filter((row) => clean(row.class_no))
+      .map((row) => [clean(row.class_no), intOrNull(row.entry_count)])
+  );
+  return (updateScheduleRows || [])
+    .map((row) => {
+      const classNo = intOrNull(row.class_no);
+      const focusDay = clean(row.focus_day || row.date_text || row.iso_date);
+      const classStartTime = clean(row.time) || classStartTimeFromText(row.time_text);
+      if (!classNo || !focusDay || !classStartTime) return null;
+      const classStartKey = `${clean(row.show_no)}|${focusDay}|${clean(row.ring_day_no)}|${classNo}`;
+      const classParts = parseClassLabel(row.event_name || row.class_name, classNo);
+      const countsEntryCount = countsByClass.get(String(classNo));
+      const entryCount = countsEntryCount ?? intOrNull(row.entry_count) ?? null;
+      return {
+        class_start_key: classStartKey,
+        class_start_key_mirror: classStartKey,
+        show_no: clean(row.show_no),
+        focus_day: focusDay,
+        ring_no: intOrNull(row.ring_no),
+        ring_day_no: clean(row.ring_day_no),
+        class_no: classNo,
+        class_number: clean(row.class_number || classParts.class_number),
+        class_name: clean(row.class_name || classParts.class_name),
+        class_start_time: classStartTime,
+        display_time: clean(row.time_text),
+        entry_count: entryCount,
+        source: countsEntryCount === null || countsEntryCount === undefined
+          ? clean(row.source || "update_schedule.php")
+          : "update_schedule.php|counts.php",
+        last_synced_at: nowIso
+      };
+    })
+    .filter(Boolean);
+}
+
 function parseTime(focusDay, timeText) {
   if (!focusDay || !timeText) return null;
   const date = new Date(`${focusDay}T${timeText.length === 5 ? `${timeText}:00` : timeText}-04:00`);
@@ -198,6 +263,50 @@ function parseTime(focusDay, timeText) {
 
 function addSeconds(date, seconds) {
   return new Date(date.getTime() + seconds * 1000);
+}
+
+function liveClassKey(row) {
+  return `${clean(row.show_no || row.show_id)}|${clean(row.focus_day || row.show_day_key || row.show_days_display_date)}|${clean(row.class_no)}`;
+}
+
+function paceFromLive(row) {
+  const nGone = intOrNull(row.n_gone);
+  const elapsedSeconds = intOrNull(row.elapsed_seconds);
+  return nGone && nGone > 6 && elapsedSeconds && elapsedSeconds > 0
+    ? Math.max(30, Math.round(elapsedSeconds / nGone))
+    : null;
+}
+
+function applyLiveTimingToClassRows(classRows, liveRows) {
+  const liveByClass = new Map();
+  for (const liveRow of liveRows || []) {
+    const key = liveClassKey(liveRow);
+    if (!key.endsWith("|")) liveByClass.set(key, liveRow);
+  }
+  return (classRows || []).map((row) => {
+    const live = liveByClass.get(liveClassKey(row));
+    if (!live) return row;
+    const paceSeconds = paceFromLive(live);
+    const sources = new Set(
+      clean(row.source)
+        .split("|")
+        .map((item) => clean(item))
+        .filter(Boolean)
+    );
+    if (clean(live.live_source)) sources.add(clean(live.live_source));
+    return {
+      ...row,
+      n_gone: intOrNull(live.n_gone) ?? intOrNull(row.n_gone),
+      n_to_go: intOrNull(live.n_to_go) ?? intOrNull(row.n_to_go),
+      elapsed_seconds: intOrNull(live.elapsed_seconds) ?? intOrNull(row.elapsed_seconds),
+      pace_seconds: paceSeconds ?? intOrNull(row.pace_seconds),
+      current_entry_no: clean(live.current_entry_no) || clean(row.current_entry_no),
+      current_horse: clean(live.current_horse) || clean(row.current_horse),
+      live_source: clean(live.live_source) || clean(row.live_source),
+      source: Array.from(sources).join("|") || clean(row.source),
+      last_synced_at: clean(live.last_synced_at) || clean(row.last_synced_at)
+    };
+  });
 }
 
 function scheduleHorseDisplay(classRow, entryOrder) {
@@ -213,7 +322,7 @@ function scheduleHorseDisplay(classRow, entryOrder) {
   return "";
 }
 
-function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, horseDisplays, trainerDisplays, nowIso }) {
+function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, classOogRows, activeTrainers, horseDisplays, trainerDisplays, nowIso }) {
   const active = new Set(activeTrainers.map((item) => clean(item).toLowerCase()).filter(Boolean));
   const classByNo = new Map(scheduleRows.map((row) => [clean(row.class_no), row]));
   const rows = [];
@@ -224,23 +333,23 @@ function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, horseDis
     const classNo = clean(entry.class_no);
     const classRow = classByNo.get(classNo);
     if (!classRow || !clean(classRow.class_start_time)) continue;
-    const focusDay = clean(classRow.show_day_key || classRow.show_days_display_date);
+    const focusDay = clean(classRow.show_day_key || classRow.show_days_display_date || fallbackFocusDay);
     const start = parseTime(focusDay, clean(classRow.class_start_time));
     if (!start) continue;
     const entryOrder = intOrNull(entry.entry_order);
     if (!entryOrder || entryOrder < 1) continue;
     const nGone = intOrNull(classRow.n_gone);
     const elapsedSeconds = intOrNull(classRow.elapsed_seconds);
-    const paceSeconds = nGone && nGone > 6 && elapsedSeconds && elapsedSeconds > 0
-      ? Math.max(30, Math.round(elapsedSeconds / nGone))
-      : 120;
+    const paceSeconds = paceFromLive(classRow) || 120;
     const goTime = addSeconds(start, (entryOrder - 1) * paceSeconds);
     const entryNo = clean(entry.entry_no);
     const horseDisplay = clean(horseDisplays?.[clean(entry.horse)] || scheduleHorseDisplay(classRow, entry.entry_order) || entry.horse);
-    const entryGoKey = `${clean(classRow.show_id)}|${focusDay}|${classNo}|${entryNo}`;
+    const showNoValue = clean(classRow.show_id || classRow.show_no || showNo);
+    const entryGoKey = `${showNoValue}|${focusDay}|${classNo}|${entryNo}`;
     rows.push({
+      entry_go_key: entryGoKey,
       entry_go_key_mirror: entryGoKey,
-      show_no: intOrNull(classRow.show_id),
+      show_no: intOrNull(showNoValue),
       focus_day: focusDay,
       ring_no: intOrNull(classRow.ring_number || entry.ring_no),
       ring_day_no: intOrNull(classRow.ring_day_no || entry.ring_day_no),
@@ -272,38 +381,56 @@ function buildEntryGoRows({ scheduleRows, classOogRows, activeTrainers, horseDis
 async function main() {
   const showNo = argValue("--show-no", process.env.WEC_SHOW_NO || "14906");
   const focusDay = argValue("--focus-day", process.env.WEC_FOCUS_DAY || "");
+  const stage = argValue("--stage", process.env.WEC_TIME_STAGE || "all");
   if (!showNo) throw new Error("--show-no is required");
+  if (!["all", "class-start", "entry-go"].includes(stage)) throw new Error("--stage must be all, class-start, or entry-go");
 
-  const params = new URLSearchParams({ action: "schedule-json", show_no: showNo });
-  if (focusDay) params.set("focus_day", focusDay);
-  const scheduleRows = await catalystGet(params);
-  const actualFocusDay = focusDay || clean(scheduleRows[0]?.show_day_key || scheduleRows[0]?.show_days_display_date);
-  if (!actualFocusDay) throw new Error("focus_day could not be resolved");
-
-  const snapshot = await catalystGet(new URLSearchParams({
+  const snapshotParams = new URLSearchParams({
     action: "focus-day-snapshot",
-    show_no: showNo,
-    focus_day: actualFocusDay
-  }));
-  const debug = await catalystGet(new URLSearchParams({
-    action: "debug-show-config",
-    show_no: showNo,
-    focus_day: actualFocusDay
-  }));
-  const nowIso = new Date().toISOString();
-  const activeTrainers = debug.focus_source?.active_trainers || [];
-  const horseDisplays = debug.focus_source?.horse_displays || {};
-  const trainerDisplays = debug.focus_source?.trainer_displays || {};
-
-  const classStartRows = buildClassStartRows(scheduleRows, nowIso);
-  const entryGoRows = buildEntryGoRows({
-    scheduleRows,
-    classOogRows: snapshot.class_oog || [],
-    activeTrainers,
-    horseDisplays,
-    trainerDisplays,
-    nowIso
+    show_no: showNo
   });
+  if (focusDay) snapshotParams.set("focus_day", focusDay);
+  const snapshot = await catalystGet(snapshotParams);
+  const actualFocusDay = focusDay || clean(snapshot.focus_day);
+  if (!actualFocusDay) throw new Error("focus_day could not be resolved");
+  const nowIso = new Date().toISOString();
+
+  const runClassStart = stage === "all" || stage === "class-start";
+  const runEntryGo = stage === "all" || stage === "entry-go";
+  let classStartRows = runClassStart
+    ? buildClassStartRowsFromCoreSnapshot(snapshot.update_schedule || [], snapshot.counts || [], nowIso)
+    : [];
+
+  let entryGoRows = [];
+  let activeTrainers = [];
+  let scheduleRows = [];
+  let entrySchema = { created: 0 };
+  let entryResult = { seen: 0, changed: 0 };
+  if (runEntryGo) {
+    const params = new URLSearchParams({ action: "schedule-json", show_no: showNo, focus_day: actualFocusDay });
+    scheduleRows = await catalystGet(params);
+    if (runClassStart) {
+      classStartRows = applyLiveTimingToClassRows(classStartRows, scheduleRows);
+    }
+    const debug = await catalystGet(new URLSearchParams({
+      action: "debug-show-config",
+      show_no: showNo,
+      focus_day: actualFocusDay
+    }));
+    activeTrainers = debug.focus_source?.active_trainers || [];
+    const horseDisplays = debug.focus_source?.horse_displays || {};
+    const trainerDisplays = debug.focus_source?.trainer_displays || {};
+    entryGoRows = buildEntryGoRows({
+      showNo,
+      focusDay: actualFocusDay,
+      scheduleRows,
+      classOogRows: snapshot.class_oog || [],
+      activeTrainers,
+      horseDisplays,
+      trainerDisplays,
+      nowIso
+    });
+  }
 
   const classFields = Object.keys(classStartRows[0] || {
     class_start_key_mirror: "",
@@ -318,32 +445,45 @@ async function main() {
     class_no: "",
     entry_no: ""
   });
-  const classSchema = await ensureFields(TABLES.classStartTimes, classFields);
-  const entrySchema = await ensureFields(TABLES.entryGoTimes, entryFields);
-  const classResult = await upsertRecords(TABLES.classStartTimes, "class_start_key_mirror", classStartRows);
-  const entryResult = await upsertRecords(TABLES.entryGoTimes, "entry_go_key_mirror", entryGoRows);
+  const classSchema = runClassStart ? await ensureFields(TABLES.classStartTimes, classFields) : { created: 0 };
+  if (runEntryGo) entrySchema = await ensureFields(TABLES.entryGoTimes, entryFields);
+  const classResult = runClassStart
+    ? await upsertRecords(TABLES.classStartTimes, "class_start_key_mirror", classStartRows)
+    : { seen: 0, changed: 0 };
+  if (runEntryGo) entryResult = await upsertRecords(TABLES.entryGoTimes, "entry_go_key_mirror", entryGoRows);
 
-  await writeLog({
-    checkName: "class_start_times",
-    showNo,
-    focusDay: actualFocusDay,
-    recordsSeen: classResult.seen,
-    recordsChanged: classResult.changed,
-    summary: `class_start_times upserted=${classResult.changed} focus=${actualFocusDay}`,
-    payload: { fields_created: classSchema.created, rows: classResult.seen }
-  });
-  await writeLog({
-    checkName: "entry_go_times",
-    showNo,
-    focusDay: actualFocusDay,
-    recordsSeen: entryResult.seen,
-    recordsChanged: entryResult.changed,
-    summary: `entry_go_times upserted=${entryResult.changed} active_trainers=${activeTrainers.length} focus=${actualFocusDay}`,
-    payload: { fields_created: entrySchema.created, rows: entryResult.seen, active_trainers: activeTrainers }
-  });
+  if (runClassStart) {
+    await writeLog({
+      checkName: "class_start_times",
+      showNo,
+      focusDay: actualFocusDay,
+      recordsSeen: classResult.seen,
+      recordsChanged: classResult.changed,
+      summary: `class_start_times upserted=${classResult.changed} focus=${actualFocusDay}`,
+      payload: {
+        fields_created: classSchema.created,
+        rows: classResult.seen,
+        source: "focus-day-snapshot.update_schedule+counts",
+        counts_source_rows: Number(snapshot.counts?.length || 0),
+        counts_applied: classStartRows.filter((row) => clean(row.source).includes("counts.php")).length
+      }
+    });
+  }
+  if (runEntryGo) {
+    await writeLog({
+      checkName: "entry_go_times",
+      showNo,
+      focusDay: actualFocusDay,
+      recordsSeen: entryResult.seen,
+      recordsChanged: entryResult.changed,
+      summary: `entry_go_times upserted=${entryResult.changed} active_trainers=${activeTrainers.length} focus=${actualFocusDay}`,
+      payload: { fields_created: entrySchema.created, rows: entryResult.seen, active_trainers: activeTrainers }
+    });
+  }
 
   console.log(JSON.stringify({
     ok: true,
+    stage,
     show_no: showNo,
     focus_day: actualFocusDay,
     class_start_times: classResult,
@@ -355,7 +495,16 @@ async function main() {
   }, null, 2));
 }
 
-main().catch((error) => {
-  console.error(error.stack || error.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.stack || error.message);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  applyLiveTimingToClassRows,
+  buildEntryGoRows,
+  classStartTimeFromText,
+  paceFromLive
+};

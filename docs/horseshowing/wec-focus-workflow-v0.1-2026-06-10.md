@@ -978,6 +978,226 @@ FAIL if sync-focus-day is run as a single unpaged full-day call.
 FAIL if Stage 3 depends on Webflow, print, mobile, or schedule.json to populate core data.
 ```
 
+## Class Start Times
+
+Status contract version: 2026-06-12-stage-4
+
+Stage purpose:
+
+```text
+Create one class_start_times row for each focus-day class that has a real class start time.
+This stage is fed by Core data, not Webflow, print, mobile, or schedule-json.
+```
+
+Script:
+
+```text
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\sync-airtable-time-workflows.js
+```
+
+Command:
+
+```powershell
+node "C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\sync-airtable-time-workflows.js" --stage class-start
+```
+
+Source contract:
+
+```text
+focus-day-snapshot.update_schedule
+focus-day-snapshot.counts
+```
+
+Entry count rule:
+
+```text
+counts.entry_count is authoritative when present.
+update_schedule.entry_count is fallback only.
+```
+
+Current operational Airtable upsert key:
+
+```text
+class_start_key_mirror = show_no + "|" + focus_day + "|" + ring_day_no + "|" + class_no
+```
+
+Current fields written:
+
+```text
+class_start_key
+class_start_key_mirror
+show_no
+focus_day
+ring_no
+ring_day_no
+class_no
+class_number
+class_name
+class_start_time
+display_time
+entry_count
+source
+last_synced_at
+```
+
+Current verified run on 2026-06-12:
+
+```text
+show_no = 14906
+focus_day = 2026-06-12
+source update_schedule rows = 67
+source counts rows = 43
+class_start_times rows written = 63
+counts.entry_count applied = 42
+update_schedule.entry_count fallback = 21
+missing entry_count after write = 0
+```
+
+Rows excluded from class_start_times on 2026-06-12:
+
+```text
+4 update_schedule rows had time_text = check time and no normalized time.
+They remain in update_schedule but do not become class_start_times until a real time exists.
+```
+
+Stage 4 log contract:
+
+```text
+table = wec-logs
+check_name = class_start_times
+workflow_lanes = Alerts
+status = ok
+records_seen = class_start_times rows written
+records_changed = class_start_times rows upserted
+payload_json.counts_source_rows = source counts rows
+payload_json.counts_applied = class_start rows using counts.entry_count
+```
+
+Current verified Stage 4 log on 2026-06-12:
+
+```text
+created_at = 2026-06-12T17:36:18.874Z
+check_name = class_start_times
+status = ok
+workflow_lanes = Alerts
+records_seen = 63
+records_changed = 63
+summary = class_start_times upserted=63 focus=2026-06-12
+payload_json.counts_source_rows = 43
+payload_json.counts_applied = 42
+```
+
+Stage 4 completion rules:
+
+```text
+PASS requires focus-day-snapshot to return update_schedule and counts.
+PASS requires class_start_times rows to be built from update_schedule + counts.
+PASS requires counts.entry_count to be used before update_schedule.entry_count when counts has the class_no.
+PASS requires Airtable class_start_times focus_day rows to have missing entry_count = 0.
+PASS requires a wec-logs row with check_name = class_start_times.
+
+FAIL if class_start_times is built from schedule-json.
+FAIL if entry_go_times is run as part of the class-start-only stage.
+FAIL if check-time rows are converted into class_start_times without a real class_start_time.
+```
+
+## Stage 5 - Change Watch Contract
+
+Status:
+
+```text
+Documented requirement.
+Not closed until implementation and Airtable readback pass.
+```
+
+Purpose:
+
+```text
+Keep focus-day class and entry timing current through the day.
+Detect changes that should remove or suppress previously valid schedule output and alerts.
+```
+
+Required watch inputs:
+
+```text
+update_schedule
+counts
+class_oog
+get_orders
+get_rings
+```
+
+Time change rule:
+
+```text
+If update_schedule changes a class start time, class_start_times must upsert the new class_start_time.
+entry_go_times must then recalculate entry_go_time from the current class_start_time, entry_order, n_gone, elapsed_seconds, and fallback pace.
+wec-logs must record the class_start_times and entry_go_times run.
+```
+
+WEC mobile / print display-time rule:
+
+```text
+The customer-facing WEC mobile and print API currently read schedule rows from Catalyst schedule-json.
+The class row time displayed in WEC mobile/print must use the latest class display time from the same current schedule row, not a stale static file.
+
+Primary display source:
+schedule-json row display_time / start_display / class_start_time, whichever is the current Catalyst-normalized field for that class row.
+
+Airtable mirror source:
+class_start_times.display_time and class_start_times.class_start_time must be refreshed from the same current update_schedule-derived class time.
+
+Entry source:
+entry_go_times.entry_go_time is calculated from the current class_start_time, entry_order, n_gone, elapsed_seconds, and fallback pace.
+```
+
+Important:
+
+```text
+Class start time can move during the day.
+Mobile, print, class_start_times, and entry_go_times must all converge on the same latest current time after each refresh.
+```
+
+Class cancel/drop rule:
+
+```text
+If a previously tracked focus-day class is no longer present in update_schedule for the same show_no + focus_day + class_no,
+or the class is represented only by a hidden/cancel/maintenance row,
+the class must not continue to render as an active class.
+Alerts for that class must not continue after the class is inactive.
+```
+
+Entry scratch/drop rule:
+
+```text
+If a previously tracked active-trainer entry is no longer present in class_oog for the same show_no + focus_day + class_no + entry_no,
+or class_oog indicates the entry has been removed from the order,
+entry_go_times must not continue to present that entry as active.
+Alerts for that entry must not continue after the entry is inactive.
+```
+
+Logging requirement:
+
+```text
+Every check must write wec-logs with check_name = class_start_times or entry_go_times.
+Payload must include enough counts to audit changed rows, inactive classes, and inactive entries.
+```
+
+Stage 5 completion rules:
+
+```text
+PASS requires time changes to update class_start_times and recalculate entry_go_times.
+PASS requires WEC mobile/print API display time to use the current schedule-json class time after refresh.
+PASS requires removed/cancelled classes to stop rendering and stop alerting.
+PASS requires scratched/dropped active-trainer entries to stop rendering and stop alerting.
+PASS requires Airtable readback for class_start_times, entry_go_times, and wec-logs.
+
+FAIL if a stale class remains active after update_schedule no longer supports it.
+FAIL if WEC mobile/print displays an old class time after Catalyst has a newer class time.
+FAIL if a stale active-trainer entry remains active after class_oog no longer supports it.
+FAIL if alerts are created for inactive classes or scratched/dropped entries.
+```
+
 ## Data Preparation
 
 Script:
@@ -1210,16 +1430,10 @@ go_time
 Current key:
 
 ```text
-class_no + entry_no + entry_order
+show_no + focus_day + class_no + entry_no
 ```
 
-Preferred future key:
-
-```text
-show_no + focus_day + class_no + entry_no + entry_order
-```
-
-`go_time` is intentionally left blank for formula/estimate logic.
+`entry_go_time` is calculated separately and must not be part of the uniqueness key.
 
 ## Join Rules
 
@@ -2259,6 +2473,164 @@ get_orders.php
 ```
 
 These are day-of status overlays, not primary schedule builders.
+
+Live endpoint accuracy step:
+
+```text
+Status: OPEN.
+This step remains open until live endpoint data is consumed into the same class/entry timing model and verified by Airtable readback.
+```
+
+Live input responsibilities:
+
+```text
+get_orders.php:
+- class_no where available
+- ring_no
+- ring_day_no
+- current class context
+- current entry context
+- total / entry_count context
+- n_to_go
+- n_gone
+- elapsed
+- current displayed time
+- order-of-go/current entry signal when present
+
+get_rings.php:
+- ring_no
+- ring_day_no
+- current class context
+- current entry context
+- total / entry_count context
+- n_to_go
+- n_gone
+- elapsed
+- current displayed time
+- ring-level pace signal
+```
+
+Live enrichment outputs:
+
+```text
+class_start_times:
+- update class_start_time/display_time when live/current class time is more accurate than stale core time
+- update n_gone
+- update n_to_go
+- update elapsed_seconds
+- update pace_seconds if stored at class level
+- preserve class_no + show_no + focus_day identity
+
+entry_go_times:
+- recalculate entry_go_time after class_start_time or live pace changes
+- copy n_gone
+- copy elapsed_seconds
+- copy pace_seconds
+- preserve show_no + focus_day + class_no + entry_no identity
+- do not create duplicate rows when the same entry appears in the same class
+```
+
+Future WEC mobile display scope:
+
+```text
+Status: SCOPED ONLY.
+Do not change current WEC mobile render until explicitly approved.
+
+The WEC mobile API should be allowed to expose live timing fields so future display options can show:
+- n_gone
+- n_to_go
+- elapsed_seconds
+- pace_seconds
+- current_entry_no
+- current_horse
+- live_source
+- entry_go_time
+- time_till
+
+These fields are optional display data.
+They must not change the locked class/rollup render unless a future display option is approved.
+```
+
+Order-of-go / scratch watch:
+
+```text
+class_oog remains the entry roster source.
+get_orders/get_rings can improve current position and pace.
+If class_oog no longer contains show_no + focus_day + class_no + entry_no, treat the entry as inactive/scratched for render and alert purposes.
+If get_orders/get_rings imply a class has moved forward, recalculate time_till and suppress past alerts.
+```
+
+Live completion rules:
+
+```text
+PASS requires get_orders/get_rings rows to update n_gone, n_to_go, elapsed_seconds, and pace_seconds where available.
+PASS requires class_start_times to reflect the current class time used by WEC mobile/print.
+PASS requires entry_go_times to recalculate entry_go_time from the current class_start_time and live pace inputs.
+PASS requires no duplicate entry_go_times for show_no + focus_day + class_no + entry_no.
+PASS requires wec-logs entries for get_orders, get_rings, class_start_times, and entry_go_times.
+
+FAIL if live data changes but WEC mobile/print still shows stale time.
+FAIL if n_gone/n_to_go/elapsed are available but not copied into the timing tables.
+FAIL if an inactive/scratched active-trainer entry still renders or alerts.
+```
+
+Verified live timing run:
+
+```text
+verified_at = 2026-06-12T18:12:58Z
+show_no = 14906
+focus_day = 2026-06-12
+
+Real endpoint smoke:
+schedule-json rows = 57
+schedule-json live_source counts:
+- get_orders.php = 7
+- get_rings.php = 3
+- update_schedule.php = 47
+
+sync-rings:
+parsed_rows = 6
+class_no_resolved = 6
+
+sync-orders:
+parsed_rows = 4
+class_no_resolved = 4
+
+class_start_times Airtable readback:
+rows written = 63
+sample live class 29136:
+- n_gone = 17
+- n_to_go = 0
+- elapsed_seconds = 628
+- pace_seconds = 37
+- current_entry_no = 2571
+- live_source = get_rings.php
+- source = update_schedule.php|get_rings.php
+
+sample live class 29220:
+- n_gone = 9
+- n_to_go = 3
+- elapsed_seconds = 222
+- pace_seconds = 30
+- current_entry_no = 2021
+- live_source = get_orders.php
+- source = update_schedule.php|get_orders.php
+
+entry_go_times Airtable readback:
+rows written = 40
+duplicate entry_go_key_mirror rows = 0
+sample active-trainer live class 29178:
+- entry_go_time recalculated
+- n_gone = 10
+- elapsed_seconds = 650
+- pace_seconds = 65
+
+wec-logs Airtable readback:
+get_rings latest ok log = 2026-06-12T18:00:24.190Z, records_seen = 6
+get_orders latest ok log = 2026-06-12T18:00:24.756Z, records_seen = 5
+class_start_times latest ok log = 2026-06-12T18:12:58.530Z, records_seen = 63
+entry_go_times latest ok log = 2026-06-12T18:12:58.755Z, records_seen = 40
+```
 
 ### Cron/Cadence
 
