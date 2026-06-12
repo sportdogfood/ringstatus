@@ -413,6 +413,19 @@ async function catalystGet(params, label) {
   return JSON.parse(text);
 }
 
+async function catalystPost(payload, label) {
+  const response = await fetch(CATALYST_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`Catalyst ${label} failed: ${response.status} ${text}`);
+  }
+  return JSON.parse(text);
+}
+
 async function catalystSnapshot(showNo, focusDay) {
   const params = new URLSearchParams({
     action: "focus-day-snapshot",
@@ -600,6 +613,28 @@ async function pushHideClassesToCatalyst(row, hideRows) {
   return catalystGet(params, "set-hide-classes");
 }
 
+async function pushHorseDisplaysToCatalyst(row, horseRows) {
+  const displays = {};
+  const meta = {};
+  for (const horse of horseRows.filter((item) => item.show_no === row.show_no && item.horse)) {
+    const showName = horse.horse;
+    const barnName = horse.barn_name || "";
+    const display = barnName || horse.horse_display || showName;
+    displays[showName] = display;
+    meta[showName] = {
+      barn_name: barnName,
+      barn_name_missing: !barnName
+    };
+  }
+  return catalystPost({
+    action: "set-horse-displays",
+    show_no: row.show_no,
+    focus_day: row.focus_day,
+    horse_displays: displays,
+    horse_display_meta: meta
+  }, "set-horse-displays");
+}
+
 async function main() {
   const syncCatalyst = !process.argv.includes("--no-catalyst");
   const checks = [
@@ -767,6 +802,7 @@ async function main() {
         catalystResults.push(await pushFocusShowToCatalyst(row));
         catalystResults.push(await pushActiveTrainersToCatalyst(row, trainerRows));
         catalystResults.push(await pushHideClassesToCatalyst(row, hideRows));
+        catalystResults.push(await pushHorseDisplaysToCatalyst(row, horseRows));
       }
     }
   }
