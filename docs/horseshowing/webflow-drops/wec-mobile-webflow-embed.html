@@ -355,6 +355,23 @@
     white-space:nowrap;
   }
 
+  .horse-edit{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:0;
+    background:transparent;
+    color:#815374;
+    font:inherit;
+    font-size:.78em;
+    font-weight:800;
+    line-height:1;
+    margin-left:4px;
+    padding:0;
+    text-transform:lowercase;
+    cursor:pointer;
+  }
+
   .gname{
     display:none;
   }
@@ -551,7 +568,7 @@
     <div class="topbar-wrapper">
       <div class="title-row">
         <div class="title" id="title">Schedule</div>
-        <a class="home-pill" href="https://ringstatus.com/wec-print">Print</a>
+        <a class="home-pill" id="printPdfLink" href="https://ringstatus.com/wec-print" target="_blank" rel="noopener">Print</a>
       </div>
       <div class="subtitle-row">
         <div class="subtitle-edit-wrapper">
@@ -582,6 +599,9 @@
   const POLL_MS = 6 * 60 * 1000;
   const PUBLISH_INTERVAL_MS = 8 * 60 * 1000;
   const TIMEZONE = "America/New_York";
+  const PDF_WORKER_BASE = "https://ringstatus-pdf.gombcg.workers.dev/";
+  const WEC_PRINT_URL = "https://ringstatus.com/wec-print";
+  const WEC_EDIT_URL = window.RS_WEC_EDIT_URL || "https://ringstatus.com/test/wec-schedule/edit";
 
   let activeHorse = "__all__";
   let activeStatus = "__all__";
@@ -592,6 +612,8 @@
   let currentDataUrl = null;
   let isRefreshing = false;
   let publishedAtMs = null;
+  let currentShowNo = "";
+  let currentFocusDay = "";
 
   const fmtTimeET = (ms)=>{
     return new Intl.DateTimeFormat("en-US", {
@@ -637,6 +659,27 @@
     return u.toString();
   }
 
+  function buildPrintPdfUrl(){
+    const source = new URL(window.RS_WEC_PRINT_URL || WEC_PRINT_URL, location.href);
+    const focusDay = new URLSearchParams(location.search).get("focus_day");
+    if(focusDay) source.searchParams.set("focus_day", focusDay);
+    source.searchParams.set("pdf", "1");
+    source.searchParams.set("cb", String(Date.now()));
+
+    const filenameDate = focusDay || isoDate(document.getElementById("subtitle")?.textContent) || "schedule";
+    const params = new URLSearchParams({
+      url: source.toString(),
+      filename: `wec-${filenameDate}-schedule.pdf`,
+      waitForSelector: ".ring"
+    });
+    return `${PDF_WORKER_BASE}?${params.toString()}`;
+  }
+
+  function syncPrintPdfLink(){
+    const link = document.getElementById("printPdfLink");
+    if(link) link.href = buildPrintPdfUrl();
+  }
+
   function normRollup(s){
     const raw = String(s ?? "").trim();
     if(!raw) return "";
@@ -659,6 +702,37 @@
     if(!s) return "";
     const idx = s.indexOf(" (");
     return (idx > 0 ? s.slice(0, idx) : s).trim();
+  }
+
+  function normalizeHorseToken(horse){
+    if(horse && typeof horse === "object"){
+      const label = String(horse.label || horse.display || horse.horse || "").trim();
+      const rawHorse = String(horse.horse || extractHorseName(label) || label).trim();
+      const display = String(horse.display || extractHorseName(label) || rawHorse).trim();
+      const missing = horse.barn_name_missing === true || horse.barn_name_missing === "1" || horse.barn_name_missing === "true";
+      return {
+        label,
+        horse: rawHorse,
+        display,
+        editable: !!(missing && rawHorse && display && rawHorse.toLowerCase() === display.toLowerCase())
+      };
+    }
+    const label = String(horse || "").trim();
+    return {
+      label,
+      horse: extractHorseName(label),
+      display: extractHorseName(label) || label,
+      editable: false
+    };
+  }
+
+  function horseTokenHtml(horse){
+    const token = normalizeHorseToken(horse);
+    if(!token.label) return "";
+    const edit = token.editable ? `
+      <button class="horse-edit" type="button" data-horse="${esc(token.horse)}" aria-label="Edit barn name for ${esc(token.horse)}">edit</button>
+    ` : "";
+    return `<span class="horse-token">${esc(token.label)}${edit}</span>`;
   }
 
   function dedupeGroupDisplayByHorse(s){
@@ -691,8 +765,8 @@
         if(!trainer || !horses.length) continue;
         const bucket = byTrainer.get(trainer) || [];
         for(const horse of horses){
-          const clean = String(horse || "").trim();
-          if(clean) bucket.push(clean);
+          const token = normalizeHorseToken(horse);
+          if(token.label) bucket.push(horse && typeof horse === "object" ? horse : token.label);
         }
         byTrainer.set(trainer, bucket);
       }
@@ -708,7 +782,7 @@
       return rollups.map(item => `
         <div class="gdisplay-line">
           <span class="gdisplay-badge">${esc(item.trainer)}</span>
-          <span class="gdisplay-text">${esc(item.horses.join(", "))}</span>
+          <span class="gdisplay-text">${(item.horses || []).map(horseTokenHtml).filter(Boolean).join(", ")}</span>
         </div>
       `).join("");
     }
@@ -791,6 +865,8 @@
 
     const focusDay = isoDate(first.show_day_key ?? first.showDayKey ?? displayDate);
     const showEndDate = isoDate(first.show_end_date ?? first.showEndDate);
+    currentShowNo = String(first.show_id || first.show_no || "").trim();
+    currentFocusDay = focusDay;
 
     document.getElementById("title").textContent = reportTitle;
 
@@ -818,6 +894,21 @@
     next.dataset.focusDay = nextDay;
   }
 
+  async function postWecEdit(payload){
+    const res = await fetch(WEC_EDIT_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify(payload)
+    });
+    const txt = await res.text();
+    let data = null;
+    try{ data = JSON.parse(txt); }catch{}
+    if(!res.ok || data?.ok === false){
+      throw new Error(data?.error || txt || `Edit failed ${res.status}`);
+    }
+    return data || {};
+  }
+
   function bindDateEdit(){
     const edit = document.getElementById("dateEditToggle");
     const panel = document.getElementById("dateEditPanel");
@@ -835,6 +926,14 @@
       next.addEventListener("click", async () => {
         const focusDay = next.dataset.focusDay;
         if(!focusDay) return;
+        if(currentShowNo){
+          await postWecEdit({
+            action:"set-focus-day",
+            show_no:currentShowNo,
+            focus_day:focusDay,
+            source:"wec-mobile"
+          });
+        }
         const u = new URL(location.href);
         u.searchParams.set("focus_day", focusDay);
         history.replaceState(null, "", u.toString());
@@ -843,6 +942,33 @@
         await initialLoad();
       });
     }
+  }
+
+  function bindHorseEdits(){
+    document.addEventListener("click", async (event) => {
+      const btn = event.target && event.target.closest ? event.target.closest(".horse-edit") : null;
+      if(!btn) return;
+      const horse = btn.dataset.horse || "";
+      if(!horse || !currentShowNo) return;
+      const barnName = window.prompt(`Barn name for ${horse}`, "");
+      if(!barnName || !barnName.trim()) return;
+      btn.disabled = true;
+      try{
+        await postWecEdit({
+          action:"set-barn-name",
+          show_no:currentShowNo,
+          focus_day:currentFocusDay,
+          horse,
+          barn_name:barnName.trim(),
+          source:"wec-mobile"
+        });
+        currentDataUrl = null;
+        publishedAtMs = null;
+        await initialLoad();
+      } finally {
+        btn.disabled = false;
+      }
+    }, { passive:false });
   }
 
   function rowDisplayTime(row){
@@ -966,7 +1092,7 @@
         if(g.trainerRollups && g.trainerRollups.length){
           for(const rollup of g.trainerRollups){
             for(const horse of rollup.horses || []){
-              const hn = extractHorseName(horse);
+              const hn = normalizeHorseToken(horse).display;
               if(hn) horses.push(hn);
             }
           }
@@ -1225,6 +1351,7 @@
 
     const rows = parseJsonText(txt, currentDataUrl);
     renderRows(rows);
+    syncPrintPdfLink();
   }
 
   async function pollForUpdates(){
@@ -1250,6 +1377,7 @@
 
       lastRaw = txt;
       renderRows(rows);
+      syncPrintPdfLink();
 
       window.scrollTo(0, scrollY);
     }catch(e){
@@ -1261,6 +1389,7 @@
 
   (async function main(){
     bindDateEdit();
+    bindHorseEdits();
     await initialLoad();
     setInterval(pollForUpdates, POLL_MS);
   })().catch(err=>{

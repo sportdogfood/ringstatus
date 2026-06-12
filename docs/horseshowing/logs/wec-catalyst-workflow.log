@@ -2825,3 +2825,46 @@
 2026-06-12T15:01:07 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 63,     "changed": 63   },   "entry_go_times": {     "seen": 40,     "changed": 40   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 0     },     "entry_go_times": {       "seen": 40,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
 2026-06-12T15:01:12 airtable-alert skipped existing type=entry_go_20 key=entry_go_20|14906|2026-06-12|entry_go|29130|3099|20
 2026-06-12T15:01:12 airtable-alert skipped existing type=entry_go_20 key=entry_go_20|14906|2026-06-12|entry_go|29179|2390|20
+2026-06-12T15:16:02 heartbeat show=14906 focus=2026-06-12 ok=True schedule_rows=57 triggers=0
+2026-06-12T15:16:02 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T15:16:03 airtable-alert resolved type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-12|get_rings records=1
+2026-06-12T15:16:04 airtable-alert resolved type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-12|get_orders records=1
+2026-06-12T15:16:04 local-core skipped focus=2026-06-12 next_due=60m
+2026-06-12T15:16:10 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 63,     "changed": 63   },   "entry_go_times": {     "seen": 40,     "changed": 40   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 0     },     "entry_go_times": {       "seen": 40,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T15:16:15 airtable-alert skipped existing type=entry_go_20 key=entry_go_20|14906|2026-06-12|entry_go|29130|3099|20
+2026-06-12T15:16:15 airtable-alert skipped existing type=entry_go_20 key=entry_go_20|14906|2026-06-12|entry_go|29179|2390|20
+2026-06-12T15:16:15 airtable-alert skipped existing type=entry_go_20 key=entry_go_20|14906|2026-06-12|entry_go|33465|1025|20
+2026-06-12T15:16:16 airtable-alert stale-time resolved records=1 focus=2026-06-12
+2026-06-12T15:31:04 heartbeat show=14906 focus=2026-06-12 ok=True schedule_rows=57 triggers=0
+2026-06-12T15:31:05 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T15:31:06 airtable-alert resolved type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-12|get_rings records=1
+2026-06-12T15:31:07 airtable-alert resolved type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-12|get_orders records=1
+2026-06-12T15:31:07 local-core skipped focus=2026-06-12 next_due=60m
+2026-06-12T15:31:13 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 63,     "changed": 63   },   "entry_go_times": {     "seen": 40,     "changed": 40   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 0     },     "entry_go_times": {       "seen": 40,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T15:31:19 airtable-alert skipped existing type=entry_go_20 key=entry_go_20|14906|2026-06-12|entry_go|33465|1025|20
+2026-06-12T15:31:20 airtable-alert stale-time resolved records=1 focus=2026-06-12
+2026-06-12T15:45:19 heartbeat show=14906 focus=2026-06-12 ok=True schedule_rows=57 triggers=0
+2026-06-12T15:45:20 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T15:45:20 airtable-alert resolved type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-12|get_rings records=1
+2026-06-12T15:45:21 airtable-alert resolved type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-12|get_orders records=1
+2026-06-12T15:46:42 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-12",   "ring_days": 9,   "update_schedule": 67,   "counts": 452,   "class_oog": 862,   "helpers": {     "horses": 605,     "riders": 451,     "trainers": 184   } }
+2026-06-12T15:46:42 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-12T15:46:43 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-12T15:46:43 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-12T15:46:44 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-12T15:46:50 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 63,     "changed": 63   },   "entry_go_times": {     "seen": 40,     "changed": 40   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 0     },     "entry_go_times": {       "seen": 40,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T15:46:57 airtable-alert stale-time resolved records=5 focus=2026-06-12
+2026-06-12T16:01:38 heartbeat show=14906 focus=2026-06-12 ok=True schedule_rows=57 triggers=0
+2026-06-12T16:01:40 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T16:01:41 airtable-alert resolved type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-12|get_rings records=1
+2026-06-12T16:01:44 airtable-alert resolved type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-12|get_orders records=1
+2026-06-12T16:01:44 local-core skipped focus=2026-06-12 next_due=60m
+2026-06-12T16:01:53 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 63,     "changed": 63   },   "entry_go_times": {     "seen": 40,     "changed": 40   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 0     },     "entry_go_times": {       "seen": 40,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T16:02:09 airtable-alert stale-time resolved records=6 focus=2026-06-12
+2026-06-12T16:15:22 heartbeat show=14906 focus=2026-06-12 ok=True schedule_rows=57 triggers=0
+2026-06-12T16:15:23 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T16:15:24 airtable-alert resolved type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-12|get_rings records=1
+2026-06-12T16:15:25 airtable-alert resolved type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-12|get_orders records=1
+2026-06-12T16:15:25 local-core skipped focus=2026-06-12 next_due=60m
+2026-06-12T16:15:31 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 63,     "changed": 63   },   "entry_go_times": {     "seen": 40,     "changed": 40   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 0     },     "entry_go_times": {       "seen": 40,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T16:15:37 airtable-alert stale-time resolved records=1 focus=2026-06-12
