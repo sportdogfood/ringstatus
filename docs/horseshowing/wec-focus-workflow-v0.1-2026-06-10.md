@@ -1797,6 +1797,34 @@ After changes, verify:
 12. duplicate display classes are hidden only in render
 ```
 
+## Print Rollup Contract
+
+The WEC print page must preserve the locked portrait print layout:
+
+```text
+8.5x11 portrait
+2 columns
+whole ring-group stacks only, no splitting
+ring header full width
+class line is one row and clips with ellipsis
+rollup sits above the related class row
+rollup may wrap
+rollup uses the same available class-text width
+minor padding above and below rollup
+```
+
+Active trainer rollup grouping rules:
+
+```text
+1. Use schedule-json/class_oog-derived trainer_rollups as the authority.
+2. Do not infer a horse is in another class unless the payload confirms it.
+3. Consecutive same-time class rows may be merged into one printed rollup group only when their active trainer rollup key is identical and non-empty.
+4. When merged, show the rollup once above the first related class row.
+5. When merged, include all related class rows inside the group.
+6. When merged, hide repeated time on the following class rows when the time matches the row above.
+7. Same-time classes without the same active trainer rollup stay separate.
+```
+
 ## Current Commands
 
 From main repo:

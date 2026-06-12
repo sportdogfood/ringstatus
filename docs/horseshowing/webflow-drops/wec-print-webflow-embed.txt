@@ -470,7 +470,6 @@
   function fetchJsonBlocking(url) {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
-    xhr.setRequestHeader("Cache-Control", "no-store");
     xhr.send(null);
     const txt = xhr.responseText || "";
     if (xhr.status < 200 || xhr.status >= 300) {
@@ -575,6 +574,45 @@
       trainer,
       horses: Array.from(new Set(horses))
     })).filter((item) => item.horses.length);
+  }
+
+  function trainerRollupKey(rollups) {
+    const normalized = (Array.isArray(rollups) ? rollups : [])
+      .map((item) => ({
+        trainer: String(item.trainer || "").trim().toLowerCase(),
+        horses: (Array.isArray(item.horses) ? item.horses : [])
+          .map((horse) => String(horse || "").trim().toLowerCase())
+          .filter(Boolean)
+      }))
+      .filter((item) => item.trainer && item.horses.length)
+      .sort((a, b) => a.trainer.localeCompare(b.trainer));
+    return normalized.length ? JSON.stringify(normalized) : "";
+  }
+
+  function firstGroupTime(group) {
+    const row = (group && group.items && group.items[0]) || {};
+    return String(row.start_display ?? row.startDisplay ?? "").trim();
+  }
+
+  function coalesceSameTimeRollupGroups(groups) {
+    const out = [];
+    for (const group of groups || []) {
+      const prev = out[out.length - 1];
+      const key = trainerRollupKey(group.trainerRollups);
+      if (
+        prev &&
+        key &&
+        key === trainerRollupKey(prev.trainerRollups) &&
+        firstGroupTime(group) &&
+        firstGroupTime(group) === firstGroupTime(prev)
+      ) {
+        prev.gid = `${prev.gid}|${group.gid}`;
+        prev.items = prev.items.concat(group.items);
+        continue;
+      }
+      out.push(group);
+    }
+    return out;
   }
 
   function trainerRollupHtml(rollups, fallback) {
@@ -844,7 +882,7 @@
 
       const ringKey = makeRingKey(ring.ring_number, ringIdx);
 
-      const groups = Array.from(groupBy(ring.items, (r) => classRenderKey(r)).entries())
+      let groups = Array.from(groupBy(ring.items, (r) => classRenderKey(r)).entries())
         .map(([gid, items]) => {
           const seq = toInt(items[0]?.class_group_sequence ?? items[0]?.classGroupSequence ?? 9999) ?? 9999;
           const gname = items[0]?.group_group_name ?? items[0]?.group_name ?? items[0]?.groupName ?? "Group";
@@ -853,6 +891,7 @@
           return { gid, seq, gname, gdisplay, trainerRollups, items };
         })
         .sort((a, b) => a.seq - b.seq);
+      groups = coalesceSameTimeRollupGroups(groups);
 
       const sec = document.createElement("section");
       sec.className = "ring";
