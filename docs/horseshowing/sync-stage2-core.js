@@ -242,6 +242,43 @@ async function syncCounts(showNo) {
   };
 }
 
+async function syncFocusDaySchedule(showNo, focusDay) {
+  const pages = [];
+  let offset = 0;
+  const limit = 4;
+  for (;;) {
+    const result = await catalystGet(new URLSearchParams({
+      action: "sync-focus-day",
+      show_no: showNo,
+      focus_day: focusDay,
+      schedule_only: "1",
+      days_offset: String(offset),
+      days_limit: String(limit),
+      use_stored_ring_days: "1"
+    }));
+    pages.push(result);
+    if (!result.has_more || result.next_offset === null || result.next_offset === undefined) break;
+    offset = Number(result.next_offset);
+  }
+  return {
+    pages: pages.length,
+    selected_ring_days: pages.reduce((sum, page) => sum + Number(page.selected_ring_days || 0), 0),
+    selected_ring_days_total: Math.max(...pages.map((page) => Number(page.selected_ring_days_total || 0))),
+    schedule_rows: pages.reduce((sum, page) => sum + Number(page.schedule_rows || 0), 0),
+    inserted: pages.reduce((sum, page) => sum + Number(page.inserted || 0), 0),
+    updated: pages.reduce((sum, page) => sum + Number(page.updated || 0), 0),
+    pages_payload: pages.map((page) => ({
+      offset: page.offset,
+      selected_ring_days: page.selected_ring_days,
+      schedule_rows: page.schedule_rows,
+      inserted: page.inserted,
+      updated: page.updated,
+      has_more: page.has_more,
+      next_offset: page.next_offset
+    }))
+  };
+}
+
 async function refreshFocusClassOog(showNo, focusDay, classNos) {
   const results = [];
   for (const classNo of classNos) {
@@ -283,21 +320,14 @@ async function main() {
     payload: ringDays
   });
 
-  const schedule = await catalystGet(new URLSearchParams({
-    action: "sync-focus-day",
-    show_no: showNo,
-    focus_day: focusDay,
-    schedule_only: "1",
-    days_limit: "12",
-    use_stored_ring_days: "0"
-  }));
+  const schedule = await syncFocusDaySchedule(showNo, focusDay);
   await writeLog({
     checkName: "core_update_schedule",
     showNo,
     focusDay,
     recordsSeen: Number(schedule.schedule_rows || 0),
     recordsChanged: Number(schedule.schedule_rows || 0),
-    summary: `Catalyst update_schedule rows=${schedule.schedule_rows} ring_days=${schedule.selected_ring_days}`,
+    summary: `Catalyst update_schedule rows=${schedule.schedule_rows} ring_days=${schedule.selected_ring_days} pages=${schedule.pages}`,
     payload: schedule
   });
 

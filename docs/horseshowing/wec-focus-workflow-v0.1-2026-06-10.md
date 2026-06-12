@@ -823,6 +823,161 @@ Older code references hs_shows.focus_day_date as a fallback.
 That should be cleaned up so focus_show is the canonical focus source.
 ```
 
+## Core Data Capture
+
+Status contract version: 2026-06-12-stage-3
+
+Stage purpose:
+
+```text
+Capture the focus show core schedule from Horseshowing into Catalyst first, then mirror the working rows to Airtable.
+This stage is not Webflow, print, mobile, alerts, or live render.
+```
+
+Primary runtime:
+
+```text
+Catalyst function:
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus-data\catalyst-workspaces\horseshowing\functions\horseshowing_sync\index.js
+
+Local stage runner:
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\sync-stage2-core.js
+```
+
+Core source endpoints:
+
+```text
+get_ring_days.php
+update_schedule.php
+counts.php
+class_oog.php
+```
+
+Required execution order:
+
+```text
+1. sync-ring-days
+2. sync-focus-day schedule pages from update_schedule.php
+3. sync-focus-day counts pages from counts.php
+4. sync-focus-day class_oog pages from class_oog.php
+5. focus-day-snapshot readback
+6. Airtable mirror upserts
+7. Core log records
+```
+
+Critical runtime rules:
+
+```text
+sync-ring-days must bootstrap the Horseshowing session by first visiting show.php?show={show_no}.
+sync-ring-days must not do serial per-row helper updates for existing days/rings by default.
+sync-ring-days default is refresh_existing = false.
+sync-ring-days may refresh existing support rows only when refresh_existing=1 is explicitly requested.
+
+sync-focus-day must page update_schedule work.
+sync-focus-day must use days_limit=4.
+sync-focus-day must continue using next_offset until no next_offset remains.
+sync-focus-day must use stored ring days after sync-ring-days succeeds.
+
+Do not run one unpaged full-day sync-focus-day call for Stage 3.
+Do not require Webflow, browser state, or schedule.json to populate Stage 3.
+```
+
+Current verified run on 2026-06-12:
+
+```text
+show_no = 14906
+focus_day = 2026-06-12
+catalyst_primary = true
+
+sync-ring-days:
+status = 200
+parsed_rows = 52
+duration = about 2.7s
+
+stage runner:
+ok = true
+ring_days = 52
+update_schedule = 67
+counts = 43
+class_oog = 919
+
+airtable_mirror:
+ring_days seen = 8, changed = 8
+update_schedule seen = 67, changed = 67
+counts seen = 43, changed = 43
+class_oog seen = 918, changed = 918
+```
+
+Current verified Catalyst readback on 2026-06-12:
+
+```text
+action = focus-day-snapshot
+ok = true
+show_no = 14906
+focus_day = 2026-06-12
+update_schedule = 67
+counts = 43
+class_oog = 919
+```
+
+Required Core log types:
+
+```text
+sync-ring-days
+core_update_schedule
+core_counts
+core_class_oog
+core_airtable_mirror
+```
+
+Current verified Core logs on 2026-06-12:
+
+```text
+sync-ring-days:
+summary = Catalyst get_ring_days rows=52
+records_seen = 52
+status = ok
+workflow_lanes = Core
+
+core_update_schedule:
+summary = Catalyst update_schedule rows=103 ring_days=9 pages=3
+records_seen = 103
+status = ok
+workflow_lanes = Core
+
+core_counts:
+summary = Catalyst counts rows=452 pages=5
+records_seen = 452
+status = ok
+workflow_lanes = Core
+
+core_class_oog:
+summary = Catalyst class_oog classes=67 entries=864
+records_seen = 864
+status = ok
+workflow_lanes = Core
+
+core_airtable_mirror:
+summary = Airtable mirror ring_days=8; update_schedule=67; counts=43; class_oog=918
+records_seen = 1036
+status = ok
+workflow_lanes = Core
+```
+
+Stage 3 completion rules:
+
+```text
+PASS requires live sync-ring-days to return status 200 and not 408.
+PASS requires the local stage runner to return ok = true.
+PASS requires Catalyst focus-day-snapshot to return nonzero update_schedule, counts, and class_oog for the focus_day.
+PASS requires Airtable mirror upserts for ring_days, update_schedule, counts, and class_oog.
+PASS requires Core logs for sync-ring-days, core_update_schedule, core_counts, core_class_oog, and core_airtable_mirror.
+
+FAIL if sync-ring-days returns 408.
+FAIL if sync-focus-day is run as a single unpaged full-day call.
+FAIL if Stage 3 depends on Webflow, print, mobile, or schedule.json to populate core data.
+```
+
 ## Data Preparation
 
 Script:

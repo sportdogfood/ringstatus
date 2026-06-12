@@ -2730,3 +2730,11 @@
 2026-06-12T13:01:07 airtable-alert stale-time resolved records=2 focus=2026-06-12
 2026-06-12T13:01:08 mock-live-enrichment-check {   "schedule_rows": 61,   "active_rows": 13,   "mock_target_class_no": "29455",   "live_source": "mock_get_rings.php",   "n_gone": 12,   "n_to_go": 18,   "current_entry_no": "9999",   "order_live_source": "mock_get_orders.php",   "order_n_gone": 13,   "order_current_entry_no": "8888",   "pace_seconds": 75,   "entry_10_offset_seconds": 675,   "pass": true }
 2026-06-12T13:01:15 sync-airtable-time-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 61,     "changed": 61   },   "entry_go_times": {     "seen": 28,     "changed": 28   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T13:15:19 heartbeat show=14906 focus=2026-06-12 ok=True schedule_rows=56 triggers=0
+2026-06-12T13:15:20 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T13:15:20 airtable-alert resolved type=live_get_rings_failed key=live_get_rings_failed|14906|2026-06-12|get_rings records=1
+2026-06-12T13:15:21 airtable-alert resolved type=live_get_orders_failed key=live_get_orders_failed|14906|2026-06-12|get_orders records=1
+2026-06-12T13:15:21 local-core skipped focus=2026-06-12 next_due=60m
+2026-06-12T13:15:25 airtable-alert stale-time resolved records=2 focus=2026-06-12
+2026-06-12T13:15:26 mock-live-enrichment-check {   "schedule_rows": 56,   "active_rows": 19,   "mock_target_class_no": "29455",   "live_source": "mock_get_rings.php",   "n_gone": 12,   "n_to_go": 18,   "current_entry_no": "9999",   "order_live_source": "mock_get_orders.php",   "order_n_gone": 13,   "order_current_entry_no": "8888",   "pace_seconds": 75,   "entry_10_offset_seconds": 675,   "pass": true }
+2026-06-12T13:15:32 sync-airtable-time-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-12",   "class_start_times": {     "seen": 53,     "changed": 53   },   "entry_go_times": {     "seen": 40,     "changed": 40   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
