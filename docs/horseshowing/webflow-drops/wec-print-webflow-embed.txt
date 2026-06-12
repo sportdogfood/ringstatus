@@ -3,56 +3,49 @@
   @page { size: letter; margin: 0.15in; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
   html, body { margin: 0; padding: 0; overflow: auto; }
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #172026;
-    background: #fff;
-    min-width: 8.5in;
-  }
-  .rs-wec-print-page {
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #172026; background: #fff; }
+  main {
     width: 8.2in;
-    min-height: 10.7in;
+    box-sizing: border-box;
     margin: 0;
-    padding: 0.15in;
+    padding: 0;
     background: #fff;
   }
-  .rs-wec-print-top {
+  .print-head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    margin: 0 0 10px;
-  }
-  .rs-wec-print-title {
     margin: 0;
-    font-size: 23px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 20px;
     font-weight: 700;
-    line-height: 1.08;
+    line-height: 1;
     letter-spacing: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .rs-wec-print-subtitle {
+  .show-subtitle {
     margin: 2px 0 0;
     color: #263238;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.1;
-  }
-  .rs-wec-print-date {
-    margin: 3px 0 0;
-    color: #4c5961;
     font-size: 12px;
-    line-height: 1.15;
+    font-weight: 600;
   }
-  .rs-wec-print-controls {
+  .focus-date {
+    margin: 2px 0 6px;
+    color: #4c5961;
+    font-size: 10px;
+  }
+  .print-controls {
     display: flex;
     align-items: center;
     gap: 8px;
     flex: 0 0 auto;
   }
-  .rs-wec-print-btn {
+  .print-btn {
     border: 1px solid #d0d0d0;
     background: #fff;
     padding: 3px 10px;
@@ -66,25 +59,25 @@
     align-items: center;
     justify-content: center;
   }
-  .rs-wec-print-columns {
+  .print-columns {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 10px;
+    gap: 8px;
     align-items: start;
   }
-  .rs-wec-print-column { min-width: 0; }
+  .print-column { min-width: 0; }
   .ring-group {
-    margin: 0 0 10px;
+    margin: 0 0 6px;
     break-inside: avoid;
     page-break-inside: avoid;
   }
   .ring-group h2 {
     margin: 0;
-    padding: 6px 8px;
-    font-size: 14px;
-    line-height: 1.2;
+    padding: 4px 6px;
+    font-size: 11px;
+    line-height: 1.05;
     letter-spacing: 0;
-    background: #263238;
+    background: #815374;
     color: #fff;
   }
   .schedule-table {
@@ -96,18 +89,37 @@
   }
   .schedule-table th,
   .schedule-table td {
-    padding: 5px 6px;
+    padding: 2px 4px;
     border-bottom: 1px solid #e4e8eb;
     text-align: left;
     vertical-align: top;
-    font-size: 11.5px;
-    line-height: 1.2;
+    font-size: 8.6px;
+    line-height: 1.02;
   }
   .schedule-table th {
     background: #eef2f4;
+    font-size: 7.8px;
     font-weight: 700;
   }
   .schedule-table tbody tr:nth-child(even) { background: #f8fafb; }
+  .class-line.has-rollup td {
+    background: #f8fafb;
+    border-top: 0;
+  }
+  .entry-rollup-row td {
+    background: #f8fafb;
+    border-bottom: 0;
+    padding: 2px 4px 1px;
+  }
+  .entry-rollup {
+    color: #263238;
+    font-size: 8.6px;
+    font-weight: 800;
+    line-height: 1.08;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
   .time-col-def,
   .number-col-def { width: calc(5ch + 4px); }
   .class-col-def { width: auto; }
@@ -135,58 +147,62 @@
     overflow-wrap: normal;
     word-break: normal;
   }
-  .rs-wec-print-updated {
-    margin: 10px 0 0;
-    color: #5c6870;
-    font-size: 10px;
+  .classline {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .rs-wec-print-message,
-  .rs-wec-print-error {
+  .entry-rollup span {
+    display: inline-block;
+    font-size: 6.5px;
+    line-height: 1;
+    padding: 1px 3px;
+    margin-right: 4px;
+    border-radius: 8px;
+    background: #815374;
+    color: #fff;
+    vertical-align: 1px;
+  }
+  .updated-at {
+    margin: 6px 0 0;
+    color: #5c6870;
+    font-size: 8px;
+  }
+  .print-message,
+  .print-error {
     padding: 10px;
     border: 1px solid #d9dee2;
     font-size: 12px;
     white-space: pre-wrap;
   }
-  .rs-wec-print-error { color: #b00020; }
+  .print-error { color: #b00020; }
   @media screen {
     body { background: #f6f7f8; }
-    .rs-wec-print-page {
-      width: 8.2in;
-      min-height: 10.7in;
-      margin: 0;
-      padding: 0.15in;
-      background: #fff;
-    }
+    main { width: 8.2in; min-height: 10.7in; margin: 0; padding: 0.15in; background: #fff; }
   }
   @media print {
-    body { min-width: 0; background: #fff; }
-    .rs-wec-print-page {
-      width: 8.2in;
-      min-height: 0;
-      margin: 0;
-      padding: 0;
-    }
-    .rs-wec-print-controls { display: none !important; }
+    body { background: #fff; }
+    .print-controls { display: none !important; }
     .schedule-table th { position: static; }
   }
 </style>
-<main class="rs-wec-print-page" id="rsWecPrintPage">
-  <div class="rs-wec-print-top">
+<main id="rsWecPrintPage">
+  <div class="print-head">
     <div>
-      <h1 class="rs-wec-print-title" id="rsWecPrintTitle">Schedule</h1>
-      <div class="rs-wec-print-subtitle" id="rsWecPrintSubtitle"></div>
-      <div class="rs-wec-print-date" id="rsWecPrintDate"></div>
+      <h1 id="rsWecPrintTitle">Schedule</h1>
+      <div class="show-subtitle" id="rsWecPrintSubtitle"></div>
+      <div class="focus-date" id="rsWecPrintDate"></div>
     </div>
-    <div class="rs-wec-print-controls">
-      <a class="rs-wec-print-btn" id="btnPdf" href="#" target="_blank" rel="noopener">PDF</a>
-      <button class="rs-wec-print-btn" id="btnShare" type="button">Share</button>
+    <div class="print-controls">
+      <a class="print-btn" id="btnPdf" href="#" target="_blank" rel="noopener">PDF</a>
+      <button class="print-btn" id="btnShare" type="button">Share</button>
     </div>
   </div>
-  <section class="rs-wec-print-columns" id="rsWecPrintColumns" data-target-rows="0" data-left-rows="0" data-right-rows="0">
-    <div class="rs-wec-print-column" id="rsWecPrintColL"></div>
-    <div class="rs-wec-print-column" id="rsWecPrintColR"></div>
+  <section class="print-columns" id="rsWecPrintColumns" data-target-rows="0" data-left-rows="0" data-right-rows="0">
+    <div class="print-column" id="rsWecPrintColL"></div>
+    <div class="print-column" id="rsWecPrintColR"></div>
   </section>
-  <footer class="rs-wec-print-updated" id="rsWecPrintUpdated"></footer>
+  <footer class="updated-at" id="rsWecPrintUpdated"></footer>
 </main>
 <script>
 (() => {
@@ -240,8 +256,6 @@
   }
 
   function ringSortValue(rows, index) {
-    const minSeq = Math.min(...rows.map(classSortValue).filter(Number.isFinite));
-    if (Number.isFinite(minSeq)) return minSeq;
     const ringNo = Number(rows[0]?.ring_number ?? rows[0]?.ring_no ?? rows[0]?.ringNo);
     return Number.isFinite(ringNo) ? ringNo : index + 9999;
   }
@@ -262,13 +276,24 @@
         if (!unique.has(key)) unique.set(key, item);
       }
       const classes = Array.from(unique.values()).sort((a, b) => classSortValue(a) - classSortValue(b));
-      return { ringKey, ringName, classes, rowCount: classes.length + 2, sort: ringSortValue(items, index) };
+      const rollupRows = classes.reduce((sum, item) => sum + (renderRollup(item) ? 1 : 0), 0);
+      return { ringKey, ringName, classes, rowCount: classes.length + rollupRows + 2, sort: ringSortValue(items, index) };
     }).sort((a, b) => a.sort - b.sort);
+  }
+
+  function renderRollup(row) {
+    const rollups = Array.isArray(row.trainer_rollups) ? row.trainer_rollups : [];
+    return rollups.map((item) => {
+      const trainer = String(item.trainer_display || item.trainer || "").trim();
+      const horses = Array.isArray(item.horses) ? item.horses.map((horse) => String(horse || "").trim()).filter(Boolean) : [];
+      if (!trainer || !horses.length) return "";
+      return `<span>${esc(trainer)}</span>${esc(horses.join(", "))}`;
+    }).filter(Boolean).join("");
   }
 
   function splitRingGroups(groups) {
     const total = groups.reduce((sum, group) => sum + group.rowCount, 0);
-    const target = Math.ceil(total / 2);
+    const target = Math.min(30, Math.ceil(total / 2));
     let bestIndex = groups.length;
     let bestDiff = Infinity;
     let running = 0;
@@ -298,11 +323,15 @@
       const entryCount = String(row.entry_count ?? row.entryCount ?? "").trim();
       const number = String(row.class_number ?? row.classNumber ?? "").trim();
       const className = String(row.class_name ?? row.className ?? row.name ?? "").trim();
+      const rollup = renderRollup(row);
       return `
-        <tr data-ring-day-no="${esc(ringDayNo)}" data-class-no="${esc(classNo)}" data-entry-count="${esc(entryCount)}">
+        ${rollup ? `<tr class="entry-rollup-row" data-ring-day-no="${esc(ringDayNo)}" data-class-no="${esc(classNo)}">
+          <td class="entry-rollup" colspan="3">${rollup}</td>
+        </tr>` : ""}
+        <tr class="class-line${rollup ? " has-rollup" : ""}" data-ring-day-no="${esc(ringDayNo)}" data-class-no="${esc(classNo)}" data-entry-count="${esc(entryCount)}">
           <td class="time-col">${esc(compactTime(row.start_display ?? row.startDisplay ?? row.display_time ?? row.displayTime))}</td>
           <td class="number-col">${esc(number)}</td>
-          <td class="class-col">${esc(className)}</td>
+          <td class="class-col"><div class="classline">${esc(className)}</div></td>
         </tr>`;
     }).join("");
 
@@ -378,7 +407,7 @@
       const colL = document.getElementById("rsWecPrintColL");
       const colR = document.getElementById("rsWecPrintColR");
       if (!rows.length) {
-        colL.innerHTML = `<div class="rs-wec-print-message">No schedule rows.</div>`;
+        colL.innerHTML = `<div class="print-message">No schedule rows.</div>`;
         syncPdfControls();
         markReady();
         return;
@@ -399,7 +428,7 @@
       markReady();
     } catch (err) {
       document.getElementById("rsWecPrintColL").innerHTML =
-        `<div class="rs-wec-print-error">${esc(String(err && err.stack ? err.stack : err))}</div>`;
+        `<div class="print-error">${esc(String(err && err.stack ? err.stack : err))}</div>`;
       syncPdfControls();
       markReady();
     }
