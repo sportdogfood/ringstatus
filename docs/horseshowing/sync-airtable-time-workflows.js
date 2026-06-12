@@ -29,6 +29,9 @@ const TEXT_FIELDS = new Set([
   "current_entry_no",
   "current_horse",
   "live_source",
+  "status",
+  "inactive_reason",
+  "inactive_at",
   "last_synced_at"
 ]);
 
@@ -167,6 +170,61 @@ async function upsertRecords(tableName, keyField, rows) {
   return { seen: rows.length, changed };
 }
 
+async function listRecords(tableName, formula) {
+  const records = [];
+  let offset = "";
+  do {
+    const params = new URLSearchParams({ pageSize: "100" });
+    if (formula) params.set("filterByFormula", formula);
+    if (offset) params.set("offset", offset);
+    const result = await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(tableName)}?${params.toString()}`);
+    records.push(...(result.records || []));
+    offset = result.offset || "";
+  } while (offset);
+  return records;
+}
+
+function inactiveRecordUpdates({ existingRows, keyField, activeKeys, reason, nowIso }) {
+  const updates = [];
+  for (const row of existingRows || []) {
+    const key = clean(row.fields?.[keyField]);
+    if (!key || activeKeys.has(key)) continue;
+    updates.push({
+      id: row.id,
+      fields: {
+        status: "inactive",
+        inactive_reason: reason,
+        inactive_at: nowIso
+      }
+    });
+  }
+  return updates;
+}
+
+async function patchRecords(tableName, records) {
+  let changed = 0;
+  for (let index = 0; index < records.length; index += 10) {
+    const batch = records.slice(index, index + 10);
+    await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(tableName)}`, {
+      method: "PATCH",
+      body: JSON.stringify({ records: batch, typecast: true })
+    });
+    changed += batch.length;
+  }
+  return changed;
+}
+
+async function markInactiveMissingRows({ tableName, keyField, showNo, focusDay, activeKeys, reason, nowIso }) {
+  const showValue = Number.isFinite(Number(showNo)) ? Number(showNo) : `'${String(showNo).replace(/'/g, "\\'")}'`;
+  const formula = `AND({focus_day}='${String(focusDay).replace(/'/g, "\\'")}',{show_no}=${showValue})`;
+  const existingRows = await listRecords(tableName, formula);
+  const updates = inactiveRecordUpdates({ existingRows, keyField, activeKeys, reason, nowIso });
+  return {
+    seen: existingRows.length,
+    inactive: await patchRecords(tableName, updates)
+  };
+}
+
 async function writeLog({ checkName, showNo, focusDay, recordsSeen, recordsChanged, summary, payload }) {
   const createdAt = new Date().toISOString();
   const fields = {
@@ -212,6 +270,9 @@ function buildClassStartRows(scheduleRows, nowIso) {
         n_to_go: intOrNull(row.n_to_go),
         elapsed_seconds: intOrNull(row.elapsed_seconds),
         source: clean(row.live_source || "update_schedule.php"),
+        status: "active",
+        inactive_reason: null,
+        inactive_at: null,
         last_synced_at: nowIso
       };
     });
@@ -249,6 +310,9 @@ function buildClassStartRowsFromCoreSnapshot(updateScheduleRows, countRows, nowI
         source: countsEntryCount === null || countsEntryCount === undefined
           ? clean(row.source || "update_schedule.php")
           : "update_schedule.php|counts.php",
+        status: "active",
+        inactive_reason: null,
+        inactive_at: null,
         last_synced_at: nowIso
       };
     })
@@ -372,6 +436,9 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
       pace_seconds: paceSeconds,
       time_till: Math.round(((goTime.getTime() - now.getTime()) / 60000) * 10) / 10,
       source: "class_oog.php|update_schedule.php",
+      status: "active",
+      inactive_reason: null,
+      inactive_at: null,
       last_synced_at: nowIso
     });
   }
@@ -451,6 +518,28 @@ async function main() {
     ? await upsertRecords(TABLES.classStartTimes, "class_start_key_mirror", classStartRows)
     : { seen: 0, changed: 0 };
   if (runEntryGo) entryResult = await upsertRecords(TABLES.entryGoTimes, "entry_go_key_mirror", entryGoRows);
+  const classInactive = runClassStart
+    ? await markInactiveMissingRows({
+      tableName: TABLES.classStartTimes,
+      keyField: "class_start_key_mirror",
+      showNo,
+      focusDay: actualFocusDay,
+      activeKeys: new Set(classStartRows.map((row) => clean(row.class_start_key_mirror)).filter(Boolean)),
+      reason: "missing_from_update_schedule",
+      nowIso
+    })
+    : { seen: 0, inactive: 0 };
+  const entryInactive = runEntryGo
+    ? await markInactiveMissingRows({
+      tableName: TABLES.entryGoTimes,
+      keyField: "entry_go_key_mirror",
+      showNo,
+      focusDay: actualFocusDay,
+      activeKeys: new Set(entryGoRows.map((row) => clean(row.entry_go_key_mirror)).filter(Boolean)),
+      reason: "missing_from_class_oog",
+      nowIso
+    })
+    : { seen: 0, inactive: 0 };
 
   if (runClassStart) {
     await writeLog({
@@ -458,14 +547,16 @@ async function main() {
       showNo,
       focusDay: actualFocusDay,
       recordsSeen: classResult.seen,
-      recordsChanged: classResult.changed,
+      recordsChanged: classResult.changed + classInactive.inactive,
       summary: `class_start_times upserted=${classResult.changed} focus=${actualFocusDay}`,
       payload: {
         fields_created: classSchema.created,
         rows: classResult.seen,
         source: "focus-day-snapshot.update_schedule+counts",
         counts_source_rows: Number(snapshot.counts?.length || 0),
-        counts_applied: classStartRows.filter((row) => clean(row.source).includes("counts.php")).length
+        counts_applied: classStartRows.filter((row) => clean(row.source).includes("counts.php")).length,
+        inactive_existing_seen: classInactive.seen,
+        inactive_marked: classInactive.inactive
       }
     });
   }
@@ -475,9 +566,15 @@ async function main() {
       showNo,
       focusDay: actualFocusDay,
       recordsSeen: entryResult.seen,
-      recordsChanged: entryResult.changed,
+      recordsChanged: entryResult.changed + entryInactive.inactive,
       summary: `entry_go_times upserted=${entryResult.changed} active_trainers=${activeTrainers.length} focus=${actualFocusDay}`,
-      payload: { fields_created: entrySchema.created, rows: entryResult.seen, active_trainers: activeTrainers }
+      payload: {
+        fields_created: entrySchema.created,
+        rows: entryResult.seen,
+        active_trainers: activeTrainers,
+        inactive_existing_seen: entryInactive.seen,
+        inactive_marked: entryInactive.inactive
+      }
     });
   }
 
@@ -488,6 +585,10 @@ async function main() {
     focus_day: actualFocusDay,
     class_start_times: classResult,
     entry_go_times: entryResult,
+    inactive: {
+      class_start_times: classInactive,
+      entry_go_times: entryInactive
+    },
     fields_created: {
       class_start_times: classSchema.created,
       entry_go_times: entrySchema.created
@@ -506,5 +607,6 @@ module.exports = {
   applyLiveTimingToClassRows,
   buildEntryGoRows,
   classStartTimeFromText,
+  inactiveRecordUpdates,
   paceFromLive
 };

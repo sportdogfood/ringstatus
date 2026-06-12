@@ -3,7 +3,8 @@ param(
   [string]$FocusDay = "",
   [string]$BaseUrl = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/",
   [string]$AirtableBaseId = "app6XS1RvsPNRT6os",
-  [switch]$ForceSync
+  [switch]$ForceSync,
+  [switch]$RunMockLiveCheck
 )
 
 $ErrorActionPreference = "Stop"
@@ -954,22 +955,6 @@ if ($heartbeat.focus_day) {
       }
     }
   }
-  Write-TimeAlerts $heartbeat.focus_day
-  try {
-    $mockLive = Invoke-MockLiveCheck $heartbeat.focus_day
-    Write-WecAirtableLog -LogType "live" -CheckName "mock_live_enrichment" -RecordsSeen (Int-OrZero $mockLive.schedule_rows) -RecordsChanged 0 -Summary "mock live enrichment pass=$($mockLive.pass) rings=$($mockLive.live_source) orders=$($mockLive.order_live_source) pace=$($mockLive.pace_seconds)" -Payload $mockLive
-  } catch {
-    Write-WecAirtableLog -LogType "live" -CheckName "mock_live_enrichment" -Status "error" -Summary "mock live enrichment failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
-      show_no = $ShowNo
-      focus_day = $heartbeat.focus_day
-      error = $_.Exception.Message
-    }
-    Write-WecAirtableAlert -AlertType "mock_live_enrichment_failed" -Severity "critical" -Message "Mock live enrichment failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|mock_live_enrichment" -Payload @{
-      show_no = $ShowNo
-      focus_day = $heartbeat.focus_day
-      error = $_.Exception.Message
-    }
-  }
   try {
     Invoke-TimeWorkflowTableSync $heartbeat.focus_day
     Resolve-WecAirtableAlert -AlertType "time_trigger_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|time_triggers" -Message "Resolved: time workflow tables updated successfully." -Payload @{
@@ -986,6 +971,24 @@ if ($heartbeat.focus_day) {
       show_no = $ShowNo
       focus_day = $heartbeat.focus_day
       error = $_.Exception.Message
+    }
+  }
+  Write-TimeAlerts $heartbeat.focus_day
+  if ($RunMockLiveCheck) {
+    try {
+      $mockLive = Invoke-MockLiveCheck $heartbeat.focus_day
+      Write-WecAirtableLog -LogType "live" -CheckName "mock_live_enrichment" -RecordsSeen (Int-OrZero $mockLive.schedule_rows) -RecordsChanged 0 -Summary "mock live enrichment pass=$($mockLive.pass) rings=$($mockLive.live_source) orders=$($mockLive.order_live_source) pace=$($mockLive.pace_seconds)" -Payload $mockLive
+    } catch {
+      Write-WecAirtableLog -LogType "live" -CheckName "mock_live_enrichment" -Status "error" -Summary "mock live enrichment failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+        error = $_.Exception.Message
+      }
+      Write-WecAirtableAlert -AlertType "mock_live_enrichment_failed" -Severity "critical" -Message "Mock live enrichment failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|mock_live_enrichment" -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+        error = $_.Exception.Message
+      }
     }
   }
 }

@@ -2,7 +2,8 @@ const assert = require("assert");
 
 const {
   applyLiveTimingToClassRows,
-  buildEntryGoRows
+  buildEntryGoRows,
+  inactiveRecordUpdates
 } = require("../docs/horseshowing/sync-airtable-time-workflows.js");
 
 const classRows = [
@@ -79,5 +80,27 @@ assert.strictEqual(entryRows[0].pace_seconds, 75);
 assert.strictEqual(entryRows[0].entry_go_time, "08:11:15");
 assert.strictEqual(entryRows[0].horse_display, "Barn Horse");
 assert.strictEqual(entryRows[0].trainer_display, "CWF");
+
+const inactiveUpdates = inactiveRecordUpdates({
+  existingRows: [
+    { id: "recActive", fields: { entry_go_key_mirror: "14906|2026-06-12|29455|1234" } },
+    { id: "recScratch", fields: { entry_go_key_mirror: "14906|2026-06-12|29455|9999" } }
+  ],
+  keyField: "entry_go_key_mirror",
+  activeKeys: new Set(["14906|2026-06-12|29455|1234"]),
+  reason: "missing_from_class_oog",
+  nowIso: "2026-06-12T18:30:00.000Z"
+});
+
+assert.deepStrictEqual(inactiveUpdates, [
+  {
+    id: "recScratch",
+    fields: {
+      status: "inactive",
+      inactive_reason: "missing_from_class_oog",
+      inactive_at: "2026-06-12T18:30:00.000Z"
+    }
+  }
+]);
 
 console.log("wec_live_timing_enrichment tests passed");

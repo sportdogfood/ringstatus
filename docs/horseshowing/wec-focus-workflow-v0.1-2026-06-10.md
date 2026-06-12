@@ -1198,6 +1198,120 @@ FAIL if a stale active-trainer entry remains active after class_oog no longer su
 FAIL if alerts are created for inactive classes or scratched/dropped entries.
 ```
 
+Verified stale suppression run:
+
+```text
+verified_at = 2026-06-12T18:20:52Z
+show_no = 14906
+focus_day = 2026-06-12
+
+Verification method:
+Created one temporary stale class_start_times probe and one temporary stale entry_go_times probe.
+Ran the normal sync-airtable-time-workflows.js --stage all workflow.
+Verified both probes were marked inactive by the normal suppression logic.
+Deleted both temporary probes after verification.
+
+Class probe result before cleanup:
+- status = inactive
+- inactive_reason = missing_from_update_schedule
+- inactive_at = 2026-06-12T18:20:46.461Z
+
+Entry probe result before cleanup:
+- status = inactive
+- inactive_reason = missing_from_class_oog
+- inactive_at = 2026-06-12T18:20:46.461Z
+
+wec-logs Airtable readback:
+class_start_times log = 2026-06-12T18:20:51.945Z
+- records_seen = 63
+- records_changed = 64
+- payload_json.inactive_existing_seen = 64
+- payload_json.inactive_marked = 1
+
+entry_go_times log = 2026-06-12T18:20:52.136Z
+- records_seen = 40
+- records_changed = 41
+- payload_json.inactive_existing_seen = 41
+- payload_json.inactive_marked = 1
+
+Final cleanup readback:
+- class_start_times focus_day rows = 63
+- entry_go_times focus_day rows = 40
+- class probe rows = 0
+- entry probe rows = 0
+- active class_start_times rows = 63
+- active entry_go_times rows = 40
+```
+
+Verified stale alert suppression run:
+
+```text
+verified_at = 2026-06-12T18:29:10Z
+show_no = 14906
+focus_day = 2026-06-12
+
+Workflow correction:
+run-wec-catalyst-workflow.ps1 now runs sync-airtable-time-workflows before Write-TimeAlerts.
+This keeps alert checks behind the current class_start_times and entry_go_times refresh.
+mock_live_enrichment is not part of the default heartbeat path and only runs with -RunMockLiveCheck.
+
+Verification method:
+Created one temporary open wec-alerts probe with alert_key_run:
+entry_go_20|14906|2026-06-12|entry_go|999998|999997|20
+
+Ran the normal workflow entrypoint:
+powershell -NoProfile -ExecutionPolicy Bypass -File docs\horseshowing\run-wec-catalyst-workflow.ps1 -ShowNo 14906 -FocusDay 2026-06-12 -ForceSync
+
+Airtable probe readback before cleanup:
+- status = resolved
+- message = Resolved: alert window is no longer active.
+- payload_json.resolved_reason = stale_time_window
+
+Final cleanup readback:
+- stale alert probe rows = 0
+
+Latest Airtable wec-logs readback:
+- get_rings records_seen = 3
+- get_orders records_seen = 3
+- sync-ring-days records_seen = 9
+- core_update_schedule records_seen = 67
+- core_counts records_seen = 452
+- core_class_oog records_seen = 864
+- class_start_times records_seen = 63
+- entry_go_times records_seen = 40
+```
+
+Verified default workflow run after mock gating:
+
+```text
+verified_at = 2026-06-12T18:34:14Z
+command = powershell -NoProfile -ExecutionPolicy Bypass -File docs\horseshowing\run-wec-catalyst-workflow.ps1 -ShowNo 14906 -FocusDay 2026-06-12 -ForceSync
+
+Airtable table readback:
+- class_start_times rows = 63
+- active class_start_times rows = 63
+- inactive class_start_times rows = 0
+- entry_go_times rows = 40
+- active entry_go_times rows = 40
+- inactive entry_go_times rows = 0
+
+Latest default-run wec-logs:
+- catalyst_heartbeat records_seen = 57
+- get_rings records_seen = 3
+- get_orders records_seen = 2
+- sync-ring-days records_seen = 9
+- core_update_schedule records_seen = 67
+- core_counts records_seen = 452
+- core_class_oog records_seen = 864
+- class_start_times records_seen = 63
+- entry_go_times records_seen = 40
+- entry_go_times alert check records_seen = 40
+
+Default-run confirmation:
+- mock_live_enrichment is absent from the latest default run.
+- stale-time alert resolver ran after sync-airtable-time-workflows.
+```
+
 ## Data Preparation
 
 Script:
@@ -1769,6 +1883,61 @@ hs_entry_go_times filtered by trainers.active = true
 ```
 
 This lets the full schedule show which classes matter to the team without expanding every entry.
+
+Verified live output readback:
+
+```text
+verified_at = 2026-06-12T18:40Z
+
+Catalyst schedule-json:
+- status = 200
+- rows = 57
+- focus_days = 2026-06-12
+- teamRows = 19
+- liveRows = 11
+- hiddenLeaks = 0
+
+Live WEC mobile:
+- url = https://ringstatus.com/wec-mobile
+- status = 200
+- title = WEC Ocala Summer Series 1 CSI2*
+- subtitle = 2026-06-12
+- groups = 56
+- teamGroups = 19
+- CWF badges = 19
+- rowsWithTrainerName = 0
+- hiddenLeaks = false
+- Print link = https://ringstatus.com/wec-print
+- console errors/warnings = 0
+
+Live WEC print:
+- url = https://ringstatus.com/wec-print
+- status = 200
+- title = WEC Ocala Summer Series 1 CSI2*
+- groups = 56
+- teamGroups = 19
+- CWF badges = 19
+- rowsWithTrainerName = 0
+- hiddenLeaks = false
+- pageWidth = about 816px
+- columns = 4 ring groups left, 3 ring groups right
+- PDF button href uses ringstatus-pdf.gombcg.workers.dev with waitForSelector=.ring
+- console errors/warnings = 0
+
+PDF worker:
+- status = 200
+- content-type = application/pdf
+- bytes = 89730
+- starts with %PDF- = true
+
+Embed parity:
+- wec-mobile-webflow-embed.html == wec-mobile-webflow-embed.txt
+- wec-print-webflow-embed.html == wec-print-webflow-embed.txt
+
+Default workflow:
+- mock_live_enrichment is not present in live embeds.
+- mock_live_enrichment is not present in latest default-run logs after 2026-06-12T18:32:30Z.
+```
 
 ## Render 2: Active Trainer Entry Schedule
 
