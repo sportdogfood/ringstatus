@@ -63,6 +63,10 @@ function clean(value) {
   return String(value ?? "").trim();
 }
 
+function recordFields(record) {
+  return record?.fields || {};
+}
+
 function intOrNull(value) {
   const parsed = Number.parseInt(clean(value), 10);
   return Number.isFinite(parsed) ? parsed : null;
@@ -182,6 +186,103 @@ async function listRecords(tableName, formula) {
     offset = result.offset || "";
   } while (offset);
   return records;
+}
+
+function normalizeText(value) {
+  return clean(value).toLowerCase();
+}
+
+function fieldsToCoreSnapshot({ updateRecords, countRecords, oogRecords }) {
+  const updateSchedule = updateRecords.map(recordFields).map((fields) => ({
+    show_no: fields.show_no,
+    focus_day: clean(fields.focus_day).slice(0, 10),
+    ring_no: fields.ring_no,
+    ring_day_no: fields.days || fields.ring_day_no,
+    class_no: fields.class_no,
+    event_name: fields.event_name,
+    class_name: fields.class_name,
+    class_number: fields.class_number,
+    time_text: fields.time_text || fields.display_time,
+    time: fields.time,
+    entry_count: fields.entry_count,
+    source: fields.source || "airtable.update_schedule"
+  }));
+  const counts = countRecords.map(recordFields).map((fields) => ({
+    show_no: fields.show_no,
+    class_no: fields.class_no,
+    class_number: fields.class_number,
+    class_name: fields.class_name,
+    entry_count: fields.entry_count
+  }));
+  const classNos = new Set(updateSchedule.map((row) => clean(row.class_no)).filter(Boolean));
+  const classOog = oogRecords
+    .map(recordFields)
+    .filter((fields) => classNos.has(clean(fields.class_no)))
+    .map((fields) => ({
+      class_no: fields.class_no,
+      entry_no: fields.entry_no,
+      entry_order: fields.entry_order,
+      horse: fields.horse,
+      rider: fields.rider,
+      trainer: fields.trainer,
+      ring_no: fields.ring_no,
+      ring_day_no: fields.days || fields.ring_day_no,
+      source: fields.source || "airtable.class_oog"
+    }));
+  return { update_schedule: updateSchedule, counts, class_oog: classOog };
+}
+
+async function readAirtableCoreSnapshot(showNo, focusDay) {
+  const updateRecordsAll = await listRecords("update_schedule");
+  const updateRecords = updateRecordsAll.filter((record) => {
+    const fields = recordFields(record);
+    return clean(fields.show_no) === clean(showNo)
+      && (
+        clean(fields.focus_day).slice(0, 10) === clean(focusDay)
+        || clean(fields.iso_date).slice(0, 10) === clean(focusDay)
+        || clean(fields.date_text).includes(clean(focusDay))
+      );
+  });
+  const classNos = new Set(updateRecords.map((record) => clean(record.fields?.class_no)).filter(Boolean));
+  const countRecords = (await listRecords("counts"))
+    .filter((record) => clean(record.fields?.show_no) === clean(showNo));
+  const oogRecords = await listRecords("class_oog");
+  const snapshot = fieldsToCoreSnapshot({ updateRecords, countRecords, oogRecords });
+  snapshot.counts = snapshot.counts.filter((row) => classNos.has(clean(row.class_no)));
+  return snapshot;
+}
+
+async function readAirtableHelpers() {
+  const trainerRecords = await listRecords("trainers");
+  const activeTrainers = [];
+  const trainerDisplays = {};
+  for (const record of trainerRecords) {
+    const fields = recordFields(record);
+    const trainer = clean(fields.trainer);
+    if (!trainer) continue;
+    const display = clean(fields.trainer_display || trainer);
+    trainerDisplays[trainer] = display;
+    if (fields.active === true) activeTrainers.push(trainer);
+  }
+
+  const horseRecords = await listRecords("horses");
+  const horseDisplays = {};
+  for (const record of horseRecords) {
+    const fields = recordFields(record);
+    const horse = clean(fields.horse);
+    const display = clean(fields.barn_name || fields.horse_display);
+    if (!horse || !display) continue;
+    horseDisplays[horse] = display;
+    horseDisplays[normalizeText(horse)] = display;
+    const akaRaw = clean(fields.aka);
+    if (akaRaw) {
+      for (const alias of akaRaw.split(/[,\n;|]/).map(clean).filter(Boolean)) {
+        horseDisplays[alias] = display;
+        horseDisplays[normalizeText(alias)] = display;
+      }
+    }
+  }
+  return { activeTrainers, trainerDisplays, horseDisplays };
 }
 
 function inactiveRecordUpdates({ existingRows, keyField, activeKeys, reason, nowIso }) {
@@ -396,18 +497,18 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
     if (!trainer || !active.has(trainer.toLowerCase())) continue;
     const classNo = clean(entry.class_no);
     const classRow = classByNo.get(classNo);
-    if (!classRow || !clean(classRow.class_start_time)) continue;
+    if (!classRow) continue;
     const focusDay = clean(classRow.show_day_key || classRow.show_days_display_date || fallbackFocusDay);
-    const start = parseTime(focusDay, clean(classRow.class_start_time));
-    if (!start) continue;
     const entryOrder = intOrNull(entry.entry_order);
     if (!entryOrder || entryOrder < 1) continue;
     const nGone = intOrNull(classRow.n_gone);
     const elapsedSeconds = intOrNull(classRow.elapsed_seconds);
     const paceSeconds = paceFromLive(classRow) || 120;
-    const goTime = addSeconds(start, (entryOrder - 1) * paceSeconds);
+    const start = parseTime(focusDay, clean(classRow.class_start_time));
+    const goTime = start ? addSeconds(start, (entryOrder - 1) * paceSeconds) : null;
     const entryNo = clean(entry.entry_no);
-    const horseDisplay = clean(horseDisplays?.[clean(entry.horse)] || scheduleHorseDisplay(classRow, entry.entry_order) || entry.horse);
+    const horseName = clean(entry.horse);
+    const horseDisplay = clean(horseDisplays?.[horseName] || horseDisplays?.[normalizeText(horseName)] || scheduleHorseDisplay(classRow, entry.entry_order) || entry.horse);
     const showNoValue = clean(classRow.show_id || classRow.show_no || showNo);
     const entryGoKey = `${showNoValue}|${focusDay}|${classNo}|${entryNo}`;
     rows.push({
@@ -429,12 +530,12 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
       trainer_display: clean(trainerDisplays?.[trainer] || trainer),
       class_start_time: clean(classRow.class_start_time),
       display_time: clean(classRow.start_display),
-      entry_go_time: goTime.toTimeString().slice(0, 8),
+      entry_go_time: goTime ? goTime.toTimeString().slice(0, 8) : "",
       entry_count: intOrNull(classRow.entry_count),
       n_gone: nGone,
       elapsed_seconds: elapsedSeconds,
       pace_seconds: paceSeconds,
-      time_till: Math.round(((goTime.getTime() - now.getTime()) / 60000) * 10) / 10,
+      time_till: goTime ? Math.round(((goTime.getTime() - now.getTime()) / 60000) * 10) / 10 : null,
       source: "class_oog.php|update_schedule.php",
       status: "active",
       inactive_reason: null,
@@ -443,6 +544,59 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
     });
   }
   return rows;
+}
+
+function classStartRowsToScheduleRows(classStartRows) {
+  return (classStartRows || []).map((row) => ({
+    show_id: clean(row.show_no),
+    show_no: clean(row.show_no),
+    show_day_key: clean(row.focus_day),
+    show_days_display_date: clean(row.focus_day),
+    ring_number: row.ring_no,
+    ring_day_no: row.ring_day_no,
+    class_no: row.class_no,
+    class_number: row.class_number,
+    class_name: row.class_name,
+    class_start_time: row.class_start_time,
+    start_display: row.display_time,
+    entry_count: row.entry_count,
+    n_gone: row.n_gone,
+    n_to_go: row.n_to_go,
+    elapsed_seconds: row.elapsed_seconds,
+    live_source: row.source
+  }));
+}
+
+function coreUpdateRowsToScheduleRows(updateScheduleRows, countRows) {
+  const countsByClass = new Map(
+    (countRows || [])
+      .filter((row) => clean(row.class_no))
+      .map((row) => [clean(row.class_no), intOrNull(row.entry_count)])
+  );
+  return (updateScheduleRows || [])
+    .filter((row) => clean(row.class_no))
+    .map((row) => {
+      const classParts = parseClassLabel(row.event_name || row.class_name, row.class_no);
+      const classStartTime = clean(row.time) || classStartTimeFromText(row.time_text);
+      return {
+        show_id: clean(row.show_no),
+        show_no: clean(row.show_no),
+        show_day_key: clean(row.focus_day || row.iso_date),
+        show_days_display_date: clean(row.focus_day || row.iso_date),
+        ring_number: row.ring_no,
+        ring_day_no: row.ring_day_no,
+        class_no: row.class_no,
+        class_number: clean(row.class_number || classParts.class_number),
+        class_name: clean(row.class_name || classParts.class_name),
+        class_start_time: classStartTime,
+        start_display: clean(row.time_text),
+        entry_count: countsByClass.get(clean(row.class_no)) ?? intOrNull(row.entry_count),
+        n_gone: row.n_gone,
+        n_to_go: row.n_to_go,
+        elapsed_seconds: row.elapsed_seconds,
+        live_source: row.source
+      };
+    });
 }
 
 async function main() {
@@ -461,11 +615,16 @@ async function main() {
   const actualFocusDay = focusDay || clean(snapshot.focus_day);
   if (!actualFocusDay) throw new Error("focus_day could not be resolved");
   const nowIso = new Date().toISOString();
+  const catalystHasCore = Array.isArray(snapshot.update_schedule) && snapshot.update_schedule.length > 0;
+  const airtableCoreSnapshot = await readAirtableCoreSnapshot(showNo, actualFocusDay);
+  const coreSnapshot = Array.isArray(airtableCoreSnapshot.update_schedule) && airtableCoreSnapshot.update_schedule.length > 0
+    ? airtableCoreSnapshot
+    : snapshot;
 
   const runClassStart = stage === "all" || stage === "class-start";
   const runEntryGo = stage === "all" || stage === "entry-go";
   let classStartRows = runClassStart
-    ? buildClassStartRowsFromCoreSnapshot(snapshot.update_schedule || [], snapshot.counts || [], nowIso)
+    ? buildClassStartRowsFromCoreSnapshot(coreSnapshot.update_schedule || [], coreSnapshot.counts || [], nowIso)
     : [];
 
   let entryGoRows = [];
@@ -476,6 +635,9 @@ async function main() {
   if (runEntryGo) {
     const params = new URLSearchParams({ action: "schedule-json", show_no: showNo, focus_day: actualFocusDay });
     scheduleRows = await catalystGet(params);
+    if (coreSnapshot === airtableCoreSnapshot || !catalystHasCore || !Array.isArray(scheduleRows) || scheduleRows.length === 0) {
+      scheduleRows = coreUpdateRowsToScheduleRows(coreSnapshot.update_schedule || [], coreSnapshot.counts || []);
+    }
     if (runClassStart) {
       classStartRows = applyLiveTimingToClassRows(classStartRows, scheduleRows);
     }
@@ -484,14 +646,23 @@ async function main() {
       show_no: showNo,
       focus_day: actualFocusDay
     }));
-    activeTrainers = debug.focus_source?.active_trainers || [];
-    const horseDisplays = debug.focus_source?.horse_displays || {};
-    const trainerDisplays = debug.focus_source?.trainer_displays || {};
+    const airtableHelpers = await readAirtableHelpers();
+    activeTrainers = airtableHelpers.activeTrainers.length
+      ? airtableHelpers.activeTrainers
+      : (debug.focus_source?.active_trainers || []);
+    const horseDisplays = {
+      ...(debug.focus_source?.horse_displays || {}),
+      ...airtableHelpers.horseDisplays
+    };
+    const trainerDisplays = {
+      ...(debug.focus_source?.trainer_displays || {}),
+      ...airtableHelpers.trainerDisplays
+    };
     entryGoRows = buildEntryGoRows({
       showNo,
       focusDay: actualFocusDay,
       scheduleRows,
-      classOogRows: snapshot.class_oog || [],
+      classOogRows: coreSnapshot.class_oog || [],
       activeTrainers,
       horseDisplays,
       trainerDisplays,
@@ -552,8 +723,8 @@ async function main() {
       payload: {
         fields_created: classSchema.created,
         rows: classResult.seen,
-        source: "focus-day-snapshot.update_schedule+counts",
-        counts_source_rows: Number(snapshot.counts?.length || 0),
+        source: catalystHasCore ? "focus-day-snapshot.update_schedule+counts" : "airtable.update_schedule+counts",
+        counts_source_rows: Number(coreSnapshot.counts?.length || 0),
         counts_applied: classStartRows.filter((row) => clean(row.source).includes("counts.php")).length,
         inactive_existing_seen: classInactive.seen,
         inactive_marked: classInactive.inactive

@@ -3440,3 +3440,71 @@ print objectObject: false
 print pdfReady: 1
 local generated PDF pages: 1
 ```
+## 2026-06-12 21:46 ET - Focus Day 2026-06-13 Verified Path
+
+Current source of truth for customer-facing WEC schedule render:
+
+1. Airtable `focus_show` owns `show_no`, `focus_day`, `show_name`, `show_start`, `show_end`.
+2. Core workflow writes Airtable mirrors:
+   - `update_schedule`
+   - `counts`
+   - `class_oog`
+3. `sync-airtable-time-workflows.js` builds:
+   - `class_start_times` from `update_schedule + counts`
+   - `entry_go_times` from `class_oog + class_start_times/core schedule + active trainers`
+4. Webflow Cloud API route reads Airtable directly:
+   - `https://ringstatus.com/test/wec-schedule/state?show_no=14906`
+5. Webflow pages read that state endpoint:
+   - `https://ringstatus.com/wec-mobile`
+   - `https://ringstatus.com/wec-print`
+6. Mobile print button opens the PDF worker directly against `https://ringstatus.com/wec-print?focus_day={focus_day}&pdf=1`.
+
+Helper display contract:
+
+- `trainers.active=true` selects active trainer entries.
+- `trainer_display` is the visible badge text, e.g. `CWF`.
+- `horse_display` must come from Airtable `horses.barn_name` or `horses.horse_display`.
+- Helper matching is exact show-name first, then normalized exact show-name or normalized `aka`.
+- Blank class_oog-created helper rows must not override Airtable horse helper records.
+- No fuzzy matching is allowed.
+
+Verified 2026-06-12 21:46 ET:
+
+- Full workflow command:
+  `.\docs\horseshowing\run-wec-catalyst-workflow.ps1 -ShowNo 14906 -FocusDay 2026-06-13 -ForceSync`
+- Airtable/live API audit:
+  - expected active trainer entries: 52
+  - `entry_go_times` active rows: 52
+  - live state entry keys: 52
+  - missing from `entry_go_times`: 0
+  - missing from live state: 0
+  - hidden leaks: 0
+  - schedule rows: 103
+  - team rows: 33
+- Helper display audit:
+  - active `entry_go_times` rows: 52
+  - helper mismatches: 0
+  - `Indigo Van De Muggenhoek` renders as `Indy`
+- Published browser audit:
+  - `wec-mobile`: date present, CWF present, Indy present, recovered class 28999 group present, no `[object Object]`, no "No schedule rows", no browser errors.
+  - `wec-print`: date present, CWF present, Indy present, recovered class 28999 group present, no `[object Object]`, no "No schedule rows", no browser errors.
+- PDF proxy audit:
+  - mobile print button href returns HTTP 200
+  - content-type `application/pdf`
+  - PDF header `%PDF-`
+  - page count marker: 1
+
+Known reason class `28999` was missing before this fix:
+
+- `class_oog` had active trainer entries for class `28999`.
+- `class_start_times` had no class `28999` row because `update_schedule` had no populated start time for that class.
+- The live state route previously only emitted rows from `class_start_times`, so active entries attached to no-time classes were dropped.
+- The state route now adds entry-only class rows from `entry_go_times` when a class has active trainer entries but no class_start row.
+
+Known reason `Indigo Van De Muggenhoek` rendered full show name before this fix:
+
+- Airtable `horses` had two records:
+  - class_oog-created row with `horse=Indigo Van De Muggenhoek` and no barn fields.
+  - helper row with `horse=INDIGO VAN DE MUGGENHOEK`, `barn_name=Indy`, `horse_display=Indy`.
+- The workflow used case-sensitive exact mapping and accepted fallback self-mapping from the blank helper row.
+- The workflow now ignores helper rows without `barn_name` or `horse_display`, and uses exact-or-normalized matching only.

@@ -1,0 +1,17 @@
+{
+  "cloud": {
+    "framework": "astro",
+    "entrypoint_path": "./entry.mjs",
+    "deployment_type": "ssr",
+    "skip_no_bundle": true,
+    "assets_source_skip_mount_path": true,
+    "project_id": "d7d97751-20e1-4148-a5cf-ee58671c128a"
+  },
+  "telemetry": {
+    "global": {
+      "allowTelemetry": true,
+      "lastPrompted": 1780852281417,
+      "version": "1.22.0"
+    }
+  }
+}

@@ -130,3 +130,38 @@ deploy testing
 less Webflow Designer/API drift
 fewer embed parity failures
 ```
+
+## WEC Stable Loader Install - 2026-06-12
+
+Install these one-time Webflow embeds:
+
+```text
+Mobile page: docs/horseshowing/webflow-drops/wec-mobile-stable-loader.txt
+Print page: docs/horseshowing/webflow-drops/wec-print-stable-loader.txt
+```
+
+Do not keep replacing full mobile/print embeds for routine WEC fixes.
+
+Hosted render source:
+
+```text
+https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-embed-html
+https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-embed-html
+```
+
+Catalyst asset source:
+
+```text
+ringstatus-data/catalyst-workspaces/horseshowing/functions/horseshowing_sync/webflow-embeds/wec-mobile.html
+ringstatus-data/catalyst-workspaces/horseshowing/functions/horseshowing_sync/webflow-embeds/wec-print.html
+```
+
+When WEC render code changes:
+
+```text
+Update Catalyst asset.
+Deploy horseshowing_sync.
+Verify hosted action.
+Verify local stable loader render.
+Do not touch Webflow unless the loader endpoint changes.
+```
