@@ -1130,6 +1130,23 @@
     return Array.from(merged.values());
   }
 
+  function classDisplayLabel(row){
+    const rawName = String(row.class_name ?? row.className ?? row.name ?? "").trim();
+    const leadingLabel = rawName.match(/^([A-Za-z0-9]+)\)\s*(.+)$/);
+    if(leadingLabel) return `${leadingLabel[1]} - ${leadingLabel[2]}`.trim();
+
+    const classNo = String(row.class_no ?? row.classNo ?? "").trim();
+    const classNumber = String(row.class_number ?? row.classNumber ?? "").trim();
+    const validClassNumber =
+      classNumber &&
+      classNumber !== "0" &&
+      classNumber !== classNo &&
+      classNumber.length <= 5;
+
+    if(validClassNumber && rawName) return `${classNumber} - ${rawName}`.trim();
+    return rawName;
+  }
+
   function buildRings(rows){
     const rings = Array.from(groupBy(rows, r => String(r.ring_number ?? r.ringNumber ?? "9999")).entries())
       .map(([k, items]) => ({ ring_number: toInt(k) ?? 9999, items }))
@@ -1191,11 +1208,7 @@
           const showTime = (displayTime && (hasTeam || roundedTime.key !== lastRingTimeBucket));
           if(showTime) lastRingTimeBucket = roundedTime.key;
 
-          const num = c.class_number ?? c.classNumber;
-          const name = c.class_name ?? c.className ?? c.name ?? "";
-          const label = (num !== undefined && num !== null && String(num).trim() !== "" && String(num) !== "0")
-            ? `${num} - ${name}`.trim()
-            : String(name).trim();
+          const label = classDisplayLabel(c);
 
           const timeHtml = showTime
             ? (isCheckTime
