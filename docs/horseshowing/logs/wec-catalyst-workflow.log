@@ -3054,3 +3054,11 @@
 2026-06-12T22:05:58 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
 2026-06-12T22:05:59 local-core skipped focus=2026-06-13 next_due=60m
 2026-06-12T22:06:19 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T22:20:18 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-12T22:20:30 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T22:20:30 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-12T22:20:50 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T22:35:21 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-12T22:35:22 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T22:35:23 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-12T22:35:42 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
