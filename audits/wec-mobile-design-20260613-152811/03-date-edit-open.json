@@ -1,0 +1,293 @@
+{
+  "controls": [
+    {
+      "checked": false,
+      "className": "home-pill",
+      "id": "printPdfLink",
+      "tag": "A",
+      "text": "Print",
+      "type": ""
+    },
+    {
+      "checked": false,
+      "className": "subtitle-edit is-visible",
+      "id": "dateEditToggle",
+      "tag": "BUTTON",
+      "text": "edit",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "date-next-btn",
+      "id": "dateNextBtn",
+      "tag": "BUTTON",
+      "text": "2026-06-14",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "BEE",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CALOU",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CALYPSO",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CARDOZO",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CHOCO",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "COFFEE",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CURTIS",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "DOTTIE",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "ELLIOT",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDY",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INSIDER",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "KING",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "KNOX",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "KUDOS",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MACHO",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MAIKI",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MARK",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MUNSTER",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "PAISLEY",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "PEDRO",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "PERI",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "POPTART",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "Q",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "RIMINI",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "SHREK",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "TOMMY",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn active",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "GRAND",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_1",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_2",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_4",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_5",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_6",
+      "type": "button"
+    },
+    {
+      "checked": false,
+      "className": "nav-btn",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "ANNEX",
+      "type": "button"
+    }
+  ],
+  "text": "WEC Ocala Summer Series 1 CSI2*\nPrint\n2026-06-13\nedit\nBEE\nCALOU\nCALYPSO\nCARDOZO\nCHOCO\nCOFFEE\nCURTIS\nDOTTIE\nELLIOT\nINDY\nINSIDER\nKING\nKNOX\nKUDOS\nMACHO\nMAIKI\nMARK\nMUNSTER\nPAISLEY\nPEDRO\nPERI\nPOPTART\nQ\nRIMINI\nSHREK\nTOMMY\nGRAND\nCWF\nBEE (6)\n8:00 AM\nBuckeye Nutrition Futures Prix 1.40m II.2b\nCWF\nBEE (7), DOTTIE (25)\n10:00 AM\n1.30m JR/AM Jumper II.2d\nCWF\nBEE (1), PERI (2), INSIDER (13)\n11:50 AM\n1.40m Jr/Am Jumper II.2d\n12:30 PM\n1.40m Jumper II.2d\nCWF\nCALOU (18)\n1:30 PM\n1.30m Young Jumper II.2b\n6:50 PM\nLeadline\nCWF\nCARDOZO (40)\n7:30 PM\n4CYTE Grand Prix FEI CSI2* 1.45m 220.2.1.2\nINDR_1\n8:00 AM\nAO Hunter 3'6\n8:30 AM\nAmateur Owner Hunter 3'3\n9:50 AM\nJunior Hunter 3'3\nCWF\nMACHO (1)\n10:50 AM\nJunior Hunter 3'6\nCWF\nMARK (1), MUNSTER (2)\n10:50 AM\nWIHS Equitation Hunter Phase 3'6\n11:30 AM\nChild Hunter 15-17 3'\nNo classes scheduled.\nTHIS Children's Medal 15-17 3'\nCWF\nPEDRO (2)\n12:30 PM\nChild Hunter 14/U 3'\nNo classes scheduled.\nCWF\nTOMMY (1), MUNSTER (2)\n12:30 PM\nTHIS Children's Medal 14/U 3'\n1:50 PM\nAdult Hunter 55+ 3'\nNo classes scheduled.\n2:20 PM\nAdult Hunter 55+ U/S 3'\nCWF\nCURTIS (3)\n2:50 PM\nAdult Hunter 36-54 3'\nNo classes scheduled.\n3:20 PM\nAdult Hunter 36-54 U/S 3'\nCWF\nELLIOT (1), CURTIS (10)\n3:30 PM\nAdult Hunter 18-35 3'\nNo classes scheduled.\nCWF\nELLIOT (1), CURTIS (10)\ncheck\nAdult Hunter 18-35 U/S 3'\nINDR_2\n8:00 AM\nWalk Trot Equitation Ground Rails\n8:50 AM\nWalk Trot Equitation Ground Rails Flat\n9:00 AM\nCrossrails 18\n10:20 AM\nCrossrails Flat\n10:50 AM\nShort/Long Stirrup Equitation 2'\n12:00 PM\nShort/Long Stirrup Equitation Flat\n12:20 PM\nShort/Long Stirrup Hunter 2'\nNo classes scheduled.\n2:20 PM\nShort/Long Stirrup Hunter U/S\n2:50 PM\nEquitation 11/U 2'\n3:00 PM\nEquitation 11/U Flat\n3:20 PM\nChild Pony Hunter 2'/2'6\nINDR_4\n7:30 AM\nGreen Pony Conf Hunter- Lg 2'9\nGreen Pony Hunter Lg 2'9\n8:20 AM\nPony Conf Hunter- Lg 2'9\nPony Hunter Lg 2'9\nCWF\nKNOX (1)\n9:30 AM\nGreen Pony Conf Hunter- Med/Sm 2'6\nCWF\nKNOX (1)\n9:30 AM\nGreen Pony Hunter Med/Sm 2'6\nCWF\nPAISLEY (1)\n10:50 AM\nPony Conf Hunter- M"
+}

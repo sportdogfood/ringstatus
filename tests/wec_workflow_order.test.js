@@ -18,6 +18,15 @@ assert(
 );
 
 assert(
+  !/snapshot\.class_oog/.test(script),
+  "entry alerts must read active entry_go_times, not snapshot.class_oog"
+);
+assert(
+  /Get-WecAirtableRecordsByFormula -TableName "entry_go_times"/.test(script),
+  "entry alerts must read the active entry_go_times Airtable table"
+);
+
+assert(
   /\[switch\]\$RunMockLiveCheck/.test(script),
   "mock live check must be explicitly gated"
 );

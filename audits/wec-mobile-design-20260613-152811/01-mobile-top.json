@@ -1,0 +1,264 @@
+{
+  "controls": [
+    {
+      "className": "home-pill",
+      "href": "https://ringstatus.com/wec-print?focus_day=2026-06-13",
+      "id": "printPdfLink",
+      "tag": "A",
+      "text": "Print"
+    },
+    {
+      "className": "subtitle-edit is-visible",
+      "href": "",
+      "id": "dateEditToggle",
+      "tag": "BUTTON",
+      "text": "edit"
+    },
+    {
+      "className": "date-next-btn",
+      "href": "",
+      "id": "dateNextBtn",
+      "tag": "BUTTON",
+      "text": "2026-06-14"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "BEE"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CALOU"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CALYPSO"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CARDOZO"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CHOCO"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "COFFEE"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "CURTIS"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "DOTTIE"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "ELLIOT"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDY"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INSIDER"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "KING"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "KNOX"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "KUDOS"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MACHO"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MAIKI"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MARK"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "MUNSTER"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "PAISLEY"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "PEDRO"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "PERI"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "POPTART"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "Q"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "RIMINI"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "SHREK"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "TOMMY"
+    },
+    {
+      "className": "nav-btn active",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "GRAND"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_1"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_2"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_4"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_5"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "INDR_6"
+    },
+    {
+      "className": "nav-btn",
+      "href": "",
+      "id": "",
+      "tag": "BUTTON",
+      "text": "ANNEX"
+    }
+  ],
+  "scrollHeight": 4541,
+  "text": "WEC Ocala Summer Series 1 CSI2*\nPrint\n2026-06-13\nedit\nBEE\nCALOU\nCALYPSO\nCARDOZO\nCHOCO\nCOFFEE\nCURTIS\nDOTTIE\nELLIOT\nINDY\nINSIDER\nKING\nKNOX\nKUDOS\nMACHO\nMAIKI\nMARK\nMUNSTER\nPAISLEY\nPEDRO\nPERI\nPOPTART\nQ\nRIMINI\nSHREK\nTOMMY\nGRAND\nCWF\nBEE (6)\n8:00 AM\nBuckeye Nutrition Futures Prix 1.40m II.2b\nCWF\nBEE (7), DOTTIE (25)\n10:00 AM\n1.30m JR/AM Jumper II.2d\nCWF\nBEE (1), PERI (2), INSIDER (13)\n11:50 AM\n1.40m Jr/Am Jumper II.2d\n12:30 PM\n1.40m Jumper II.2d\nCWF\nCALOU (18)\n1:30 PM\n1.30m Young Jumper II.2b\n6:50 PM\nLeadline\nCWF\nCARDOZO (40)\n7:30 PM\n4CYTE Grand Prix FEI CSI2* 1.45m 220.2.1.2\nINDR_1\n8:00 AM\nAO Hunter 3'6\n8:30 AM\nAmateur Owner Hunter 3'3\n9:50 AM\nJunior Hunter 3'3\nCWF\nMACHO (1)\n10:50 AM\nJunior Hunter 3'6\nCWF\nMARK (1), MUNSTER (2)\n10:50 AM\nWIHS Equitation Hunter Phase 3'6\n11:30 AM\nChild Hunter 15-17 3'\nNo classes scheduled.\nTHIS Children's Medal 15-17 3'\nCWF\nPEDRO (2)\n12:30 PM\nChild Hunter 14/U 3'\nNo classes scheduled.\nCWF\nTOMMY (1), MUNSTER (2)\n12:30 PM\nTHIS Children's Medal 14/U 3'\n1:50 PM\nAdult Hunter 55+ 3'\nNo classes scheduled.\n2:20 PM\nAdult Hunter 55+ U/S 3'\nCWF\nCURTIS (3)\n2:50 PM\nAdult Hunter 36-54 3'\nNo classes scheduled.\n3:20 PM\nAdult Hunter 36-54 U/S 3'\nCWF\nELLIOT (1), CURTIS (10)\n3:30 PM\nAdult Hunter 18-35 3'\nNo classes scheduled.\nCWF\nELLIOT (1), CURTIS (10)\ncheck\nAdult Hunter 18-35 U/S 3'\nINDR_2\n8:00 AM\nWalk Trot Equitation Ground Rails\n8:50 AM\nWalk Trot Equitation Ground Rails Flat\n9:00 AM\nCrossrails 18\n10:20 AM\nCrossrails Flat\n10:50 AM\nShort/Long Stirrup Equitation 2'\n12:00 PM\nShort/Long Stirrup Equitation Flat\n12:20 PM\nShort/Long Stirrup Hunter 2'\nNo classes scheduled.\n2:20 PM\nShort/Long Stirrup Hunter U/S\n2:50 PM\nEquitation 11/U 2'\n3:00 PM\nEquitation 11/U Flat\n3:20 PM\nChild Pony Hunter 2'/2'6\nINDR_4\n7:30 AM\nGreen Pony Conf Hunter- Lg 2'9\nGreen Pony Hunter Lg 2'9\n8:20 AM\nPony Conf Hunter- Lg 2'9\nPony Hunter Lg 2'9\nCWF\nKNOX (1)\n9:30 AM\nGreen Pony Conf Hunter- Med/Sm 2'6\nCWF\nKNOX (1)\n9:30 AM\nGreen Pony Hunter Med/Sm 2'6\nCWF\nPAISLEY (1)\n10:50 AM\nPony Conf Hunter- Med 2'6\nCWF\nPAISLEY (1)\n10:50 AM\nPony Hunter Med 2'6\nCWF\nKNOX (1), POPTART (4)\n11:30 AM\nPony Conf Hunter- Sm 2'3\nNo classes scheduled.\nPony Hunter Sm/Med 2'3\nCWF\nKNOX (1), POPTART (4)\n11:30 AM\nPony Hunter Sm 2'3\n12:00 PM\nLow Adult Hunter 18-35 2'6\nNo classes scheduled.\n1:20 PM\nLow Adult Hunter 18-35 U/S\n1:50 PM\nLow Adult Hunter 36-54 2'6\nNo classes scheduled.\n2:50 PM\nLow Adult Hunter 36-54 U/S\n3:00 PM\nLow Adult Hunter 55+ 2'6\nNo classes scheduled.\n3:30 PM\nLow Adult Hunter 55+ U/S\n3:50 PM\nLow Children's Hunter 2'/6'\nNo classes scheduled.\n4:20 PM\nLow Children's Hunter 14 & U 2'6'\nNo classes scheduled.\nNo classes scheduled.\nNo classes scheduled.\n5:30 PM\nWEC NonPro Hunt & Go Derby 2'6\nINDR_5\n7:30 AM\n.65m Jumper Open IV.1\n.65m Jumper Long Creek Farm Junior/Amateur IV.1\n9:20 AM\n.75m Jumper Open IV.1\n.75m Jumper Junior/Amateur IV.1\n12:00 PM\n.85m Jumper Open II.2d\n.85m Jumper Junior/Amateur II.2d\nCWF\nSHREK (18)\n3:20 PM\n.90m Novice Junior Jumper II.2d\n.90m Novice Amateur Jumper II.2d\nCWF\nRIMINI (1)\n4:50 PM\n738a - $200 1.00m Junior Jumper II.2d\nCWF\nCALYPSO (8)\n4:50 PM\n741a - $200 1.00m Amateur Jumper II.2d\n6:00 PM\n1.0m Young Jumpers II\n6:30 PM\n.90m Young Jumpers II\nINDR_6\nCWF\nRIMINI (1)\n8:00 AM\n1.10m Junior Jumper II.2d\nCWF\nMAIKI (1), Q (2), COFFEE (11), KUDOS (26), CALYPSO (29)\n8:00 AM\n1.10m Amateur Jumper II.2d\nCWF\nRIMINI (2)\n11:00 AM\n1.15m Junior/Amateur Jumper II.2d\nCWF\nDOTTIE (2), KING (3), CHOCO (25)\n12:30 PM\n1.20m Junior/Amateur Jumper II.2d\n2:00 PM\n1.20m Young Jumper II.2b\n3:30 PM\n1.10m Young Jumper II\nANNEX\nCWF\nINDY (1)\n7:30 AM\nWorld Equestrian Center Premier Cup 3'6\n8:20 AM\nASPCA Maclay 3'6\nCWF\nMARK (1), MUNSTER (2)\n9:00 AM\nWIHS Equitation Jumper Phase 3'6\n10:20 AM\n738b - $200 1.00m Junior Jumper II.2d\nCWF\nCOFFEE (4)\n10:20 AM\n741b - $200 1.00m Amateur Jumper II.2d\nGRAND\nINDR_1\nINDR_2\nINDR_4\nINDR_5\nINDR_6\nANNEX",
+  "title": "wec",
+  "url": "https://ringstatus.com/wec-mobile",
+  "viewport": {
+    "height": 844,
+    "width": 390
+  }
+}

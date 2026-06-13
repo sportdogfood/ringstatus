@@ -160,7 +160,7 @@ function Write-WecAirtableAlert {
     severity = $Severity
     status = "open"
     alert_type = $AlertType
-    show_no = $ShowNo
+    show_no = [int]$ShowNo
     message = $Message
     payload_json = ConvertTo-SafeJson $Payload
   }
@@ -187,7 +187,8 @@ function Write-WecAirtableAlert {
       "Content-Type" = "application/json"
     } -Body $body -TimeoutSec 30 | Out-Null
   } catch {
-    Write-WorkflowLog "airtable-alert failed type=$AlertType error=$($_.Exception.Message)"
+    $errorBody = if ($_.ErrorDetails -and $_.ErrorDetails.Message) { $_.ErrorDetails.Message } else { "" }
+    Write-WorkflowLog "airtable-alert failed type=$AlertType error=$($_.Exception.Message) body=$errorBody"
   }
 }
 
@@ -266,6 +267,32 @@ function Get-ScheduleHorseDisplay($classRow, [string]$entryOrder) {
     }
   }
   return ""
+}
+
+function Get-WecAirtableRecordsByFormula {
+  param(
+    [string]$TableName,
+    [string]$Formula,
+    [int]$PageSize = 100
+  )
+
+  $records = @()
+  if (!$env:AIRTABLE_TOKEN) { return $records }
+
+  $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?filterByFormula=$([uri]::EscapeDataString($Formula))&pageSize=$PageSize"
+  do {
+    $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
+      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+    } -TimeoutSec 30
+    $records += @($result.records)
+    $uri = if ($result.offset) {
+      "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?filterByFormula=$([uri]::EscapeDataString($Formula))&pageSize=$PageSize&offset=$($result.offset)"
+    } else {
+      $null
+    }
+  } while ($uri)
+
+  return $records
 }
 
 function Read-State {
@@ -805,15 +832,6 @@ function Write-TimeAlerts {
   param($FocusDayValue)
 
   $scheduleRows = @(Invoke-CatalystArray "schedule-json" @{ focus_day = $FocusDayValue })
-  $snapshot = Invoke-CatalystQuery "focus-day-snapshot" @{ focus_day = $FocusDayValue }
-  $debug = Invoke-CatalystQuery "debug-show-config" @{ focus_day = $FocusDayValue }
-  $activeTrainers = @($debug.focus_source.active_trainers | ForEach-Object { [string]$_ })
-  $horseDisplayMap = $debug.focus_source.horse_displays
-  $trainerDisplayMap = $debug.focus_source.trainer_displays
-  $activeTrainerSet = @{}
-  foreach ($trainer in $activeTrainers) {
-    if ($trainer) { $activeTrainerSet[$trainer] = $true }
-  }
 
   $classByNo = @{}
   $classRowsSeen = 0
@@ -846,26 +864,47 @@ function Write-TimeAlerts {
 
   $entryRowsSeen = 0
   $entryAlertWindows = 0
-  foreach ($entry in @($snapshot.class_oog)) {
-    $trainer = [string]$entry.trainer
-    if (!$trainer -or !$activeTrainerSet.ContainsKey($trainer)) { continue }
-    $classRow = $classByNo[[string]$entry.class_no]
-    if (!$classRow -or !$classRow.class_start_time) { continue }
-    $entryOrder = Int-OrZero $entry.entry_order
-    if ($entryOrder -lt 1) { continue }
+  $entryRows = @()
+  if ($env:AIRTABLE_TOKEN) {
+    $entryFormula = "AND({show_no}=$ShowNo, IS_SAME({focus_day}, DATETIME_PARSE('$FocusDayValue','YYYY-MM-DD'), 'day'), {status}='active')"
+    $entryRows = @(Get-WecAirtableRecordsByFormula -TableName "entry_go_times" -Formula $entryFormula)
+  } else {
+    Write-WorkflowLog "entry_go_times alert source skipped missing AIRTABLE_TOKEN focus=$FocusDayValue"
+  }
+  foreach ($record in $entryRows) {
+    $entry = $record.fields
+    if (!$entry.class_no -or !$entry.entry_no) { continue }
     $entryRowsSeen += 1
-    $horseDisplay = Get-ObjectMapValue $horseDisplayMap ([string]$entry.horse)
-    if (!$horseDisplay) { $horseDisplay = Get-ScheduleHorseDisplay $classRow ([string]$entry.entry_order) }
+    $classRow = $classByNo[[string]$entry.class_no]
+    $entryOrder = Int-OrZero $entry.entry_order
+    $horseDisplay = [string]$entry.horse_display
     if (!$horseDisplay) { $horseDisplay = [string]$entry.horse }
-    $trainerDisplay = Get-ObjectMapValue $trainerDisplayMap ([string]$entry.trainer)
+    $trainerDisplay = [string]$entry.trainer_display
     if (!$trainerDisplay) { $trainerDisplay = [string]$entry.trainer }
-    $paceSeconds = 120
-    $nGone = Int-OrZero $classRow.n_gone
-    $elapsedSeconds = Int-OrZero $classRow.elapsed_seconds
-    if ($nGone -gt 6 -and $elapsedSeconds -gt 0) {
+    $classStartTime = [string]$entry.class_start_time
+    if (!$classStartTime -and $classRow) { $classStartTime = [string]$classRow.class_start_time }
+    if (!$classStartTime) { continue }
+    $paceSeconds = Int-OrZero $entry.pace_seconds
+    if ($paceSeconds -lt 1) { $paceSeconds = 120 }
+    $nGone = Int-OrZero $entry.n_gone
+    if ($nGone -lt 1 -and $classRow) { $nGone = Int-OrZero $classRow.n_gone }
+    $elapsedSeconds = Int-OrZero $entry.elapsed_seconds
+    if ($elapsedSeconds -lt 1 -and $classRow) { $elapsedSeconds = Int-OrZero $classRow.elapsed_seconds }
+    if ($nGone -gt 6 -and $elapsedSeconds -gt 0 -and !$entry.pace_seconds) {
       $paceSeconds = [math]::Max(30, [math]::Round($elapsedSeconds / $nGone, 0))
     }
-    $estimatedGo = Add-MinutesToTime $FocusDayValue $classRow.class_start_time ((($entryOrder - 1) * $paceSeconds) / 60)
+    $estimatedGo = $null
+    if ($entry.entry_go_time) {
+      try {
+        $estimatedGo = [datetime]::ParseExact("$FocusDayValue $($entry.entry_go_time)", "yyyy-MM-dd HH:mm:ss", [Globalization.CultureInfo]::InvariantCulture)
+      } catch {
+        $estimatedGo = $null
+      }
+    }
+    if (!$estimatedGo) {
+      if ($entryOrder -lt 1) { continue }
+      $estimatedGo = Add-MinutesToTime $FocusDayValue $classStartTime ((($entryOrder - 1) * $paceSeconds) / 60)
+    }
     if (!$estimatedGo) { continue }
     $minutesUntil = ($estimatedGo - (Get-Date)).TotalMinutes
     foreach ($threshold in @(40, 20)) {
@@ -881,18 +920,19 @@ function Write-TimeAlerts {
           trainer = $entry.trainer
           trainer_display = $trainerDisplay
           class_no = $entry.class_no
-          class_number = $classRow.class_number
+          class_number = $entry.class_number
           entry_no = $entry.entry_no
           entry_order = $entry.entry_order
-          class_start_time = $classRow.class_start_time
+          class_start_time = $classStartTime
           entry_go_time = $estimatedGo.ToString("HH:mm:ss")
           time_till = [math]::Round($minutesUntil, 1)
           alert_lane = "entry_go"
           alert_type = "entry_go_$threshold"
-          estimate_note = "entry_go_time uses live elapsed_seconds/n_gone when n_gone > 6; fallback pace is 120 seconds per entry"
+          estimate_note = "entry_go_time source is active Airtable entry_go_times; fallback estimate uses elapsed_seconds/n_gone when n_gone > 6, otherwise 120 seconds per entry"
           pace_seconds = $paceSeconds
-          n_gone = $classRow.n_gone
-          elapsed_seconds = $classRow.elapsed_seconds
+          n_gone = $nGone
+          elapsed_seconds = $elapsedSeconds
+          source = "airtable.entry_go_times"
         }
       }
     }
@@ -900,10 +940,11 @@ function Write-TimeAlerts {
   Resolve-StaleTimeAlerts $FocusDayValue $activeAlertKeys
   Write-WecAirtableLog -LogType "alerts" -CheckName "entry_go_times" -RecordsSeen $entryRowsSeen -RecordsChanged $entryAlertWindows -Summary "entry_go_times checked=$entryRowsSeen alert_windows=$entryAlertWindows focus=$FocusDayValue" -Payload @{
     focus_day = $FocusDayValue
+    source = "airtable.entry_go_times active"
     entries_checked = $entryRowsSeen
     alert_windows = $entryAlertWindows
     thresholds = "40|20"
-    estimate_note = "entry_go_time uses live elapsed_seconds/n_gone when n_gone > 6; fallback pace is 120 seconds per entry"
+    estimate_note = "entry_go_time source is active Airtable entry_go_times; fallback estimate uses elapsed_seconds/n_gone when n_gone > 6, otherwise 120 seconds per entry"
   }
 }
 

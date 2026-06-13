@@ -46,7 +46,13 @@ export default {
       };
 
       const waitForSelector = input.waitForSelector || defaultWaitForSelector(parsed);
-      if (waitForSelector) body.waitForSelector = waitForSelector;
+      if (waitForSelector) body.waitForSelector = { selector: waitForSelector };
+
+      const cache = caches.default;
+      const cacheTtl = positiveInt(input.cacheTtl || input.ttl, 300);
+      const cacheKey = new Request(request.url, request);
+      const cached = await cache.match(cacheKey);
+      if (cached) return cached;
 
       const cfResp = await fetch(apiUrl, {
         method: "POST",
@@ -71,14 +77,17 @@ export default {
       }
 
       const filename = buildFilename(parsed, input.filename);
-      return new Response(cfResp.body, {
+      const response = new Response(cfResp.body, {
         status: 200,
         headers: {
           "Content-Type": "application/pdf",
           "Content-Disposition": `inline; filename="${filename}"`,
-          "Cache-Control": "no-store"
+          "Cache-Control": `public, max-age=${cacheTtl}`
         }
       });
+
+      await cache.put(cacheKey, response.clone());
+      return response;
     } catch (err) {
       return json({ ok: false, error: err && err.message ? err.message : String(err) }, 500);
     }
@@ -123,7 +132,9 @@ async function readInput(request) {
     pageSize: url.searchParams.get("pageSize") || "",
     format: url.searchParams.get("format") || "",
     waitUntil: url.searchParams.get("waitUntil") || "",
-    waitForSelector: url.searchParams.get("waitForSelector") || ""
+    waitForSelector: url.searchParams.get("waitForSelector") || "",
+    ttl: url.searchParams.get("ttl") || "",
+    cacheTtl: url.searchParams.get("cacheTtl") || ""
   };
 
   if (request.method === "GET") return fromQuery;
@@ -138,7 +149,9 @@ async function readInput(request) {
       pageSize: body?.pageSize || fromQuery.pageSize,
       format: body?.format || fromQuery.format,
       waitUntil: body?.waitUntil || fromQuery.waitUntil,
-      waitForSelector: body?.waitForSelector || fromQuery.waitForSelector
+      waitForSelector: body?.waitForSelector || fromQuery.waitForSelector,
+      ttl: body?.ttl || fromQuery.ttl,
+      cacheTtl: body?.cacheTtl || fromQuery.cacheTtl
     };
   }
 
@@ -147,9 +160,14 @@ async function readInput(request) {
 
 function defaultWaitForSelector(parsedUrl) {
   if (parsedUrl.hostname === "ringstatus.com" || parsedUrl.hostname === "www.ringstatus.com") {
-    if (parsedUrl.pathname.replace(/\/+$/, "") === "/wec-print") return ".ring";
+    if (parsedUrl.pathname.replace(/\/+$/, "") === "/wec-print") return 'html[data-rs-pdf-ready="1"]';
   }
   return "";
+}
+
+function positiveInt(value, fallback) {
+  const n = Number.parseInt(String(value || ""), 10);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
 }
 
 function safeUrl(value) {

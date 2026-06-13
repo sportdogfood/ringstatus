@@ -307,6 +307,11 @@
     background: rgba(228, 228, 228, 0.55);
   }
 
+  .group-inner{
+    display:block;
+    min-width:0;
+  }
+
   .group-head{
     padding:0;
   }
@@ -1183,6 +1188,7 @@
 
       for(const g of groups){
         const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
+        const groupDiffClasses = new Set();
         const classes = mergeClassRows(g.items).sort((a,b)=>{
           const ac = isCheckDisplay(rowDisplayTime(a)) ? 1 : 0;
           const bc = isCheckDisplay(rowDisplayTime(b)) ? 1 : 0;
@@ -1216,6 +1222,11 @@
               : esc(displayTime))
             : "";
           const diffClass = String(c.diff_class ?? c.diffClass ?? "").split(/\s+/).filter(x => /^diff-[a-z0-9_-]+$/i.test(x)).join(" ");
+          if(diffClass){
+            for(const cls of diffClass.split(/\s+/)){
+              if(cls) groupDiffClasses.add(cls);
+            }
+          }
 
           cl += `
             <div class="c${usingTime2 ? " time2" : ""}${isCheckTime ? " check-time-row" : ""}${diffClass ? ` ${diffClass}` : ""}">
@@ -1244,17 +1255,19 @@
         const horsesNorm = Array.from(new Set(horses.map(h => h.toLowerCase()))).join("|");
         const gDiv = document.createElement("div");
 
-        gDiv.className = `group${hasTeam ? " has-team" : ""}`;
+        gDiv.className = `group${hasTeam ? " has-team" : ""}${groupDiffClasses.size ? ` ${Array.from(groupDiffClasses).join(" ")}` : ""}`;
         if(hasTeam){
           if(horsesNorm) gDiv.dataset.horses = horsesNorm;
         }
 
         gDiv.innerHTML = `
-          <div class="group-head">
-            ${hasTeam ? `<div class="gdisplay">${trainerRollupHtml(g.trainerRollups, g.gdisplay)}</div>` : ``}
-            <div class="gname">${esc(g.gname)}</div>
+          <div class="group-inner">
+            <div class="group-head">
+              ${hasTeam ? `<div class="gdisplay">${trainerRollupHtml(g.trainerRollups, g.gdisplay)}</div>` : ``}
+              <div class="gname">${esc(g.gname)}</div>
+            </div>
+            <div class="class-list">${cl || `<div class="muted">No classes scheduled.</div>`}</div>
           </div>
-          <div class="class-list">${cl || `<div class="muted">No classes scheduled.</div>`}</div>
         `;
 
         sec.appendChild(gDiv);

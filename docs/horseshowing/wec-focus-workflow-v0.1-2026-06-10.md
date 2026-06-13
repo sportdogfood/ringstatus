@@ -3730,6 +3730,47 @@ Still not promoted:
 ```text
 wec_alerts and wec_mobile do not directly consume auto_ignore_candidate yet.
 They should inherit the cleaned active set from entry_go_times once their source path uses active entry_go_times rows.
+
+### 2026-06-13 - wec-alerts Entry Source Lock
+
+Entry alerts must not read `snapshot.class_oog`.
+
+`wec-alerts` entry-go alerts read the active `entry_go_times` Airtable rows for the current `show_no + focus_day`.
+
+Required source filter:
+
+```text
+entry_go_times.show_no = focus_show.show_no
+entry_go_times.focus_day = focus_show.focus_day
+entry_go_times.status = active
+```
+
+This keeps alert generation behind the cleaned `entry_go_times` workflow:
+
+```text
+update_schedule + counts
+-> class_start_times
+class_oog + class_start_times + active trainers + ignore classifier
+-> entry_go_times
+entry_go_times.status = active
+-> wec-alerts
+```
+
+Alert windows:
+
+```text
+class_start_times -> class_start_60 and class_start_30
+entry_go_times -> entry_go_40 and entry_go_20
+```
+
+Each alert writes `wec-alerts.alert_key_run` as the dedupe key. Existing open alerts outside the current window are resolved by `Resolve-StaleTimeAlerts`.
+
+Verification:
+
+```text
+tests/wec_workflow_order.test.js asserts that snapshot.class_oog is not used for entry alerts.
+2026-06-13 active entry_go_times Airtable readback = 44.
+```
 ```
 
 ## 2026-06-13 - Airtable Helper Record ID Binding Rule
