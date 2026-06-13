@@ -406,6 +406,20 @@
     color:#815374;
   }
 
+  .group.diff-time .gdisplay-text,
+  .group.diff-oog .gdisplay-text,
+  .group.diff-time .horse-edit,
+  .group.diff-oog .horse-edit{
+    color:#815374;
+  }
+
+  .group.diff-time .gdisplay-badge,
+  .group.diff-oog .gdisplay-badge{
+    border-color:#815374;
+    background:#815374;
+    color:#fff;
+  }
+
   .c:last-child{border-bottom:none;}
 
   .t{

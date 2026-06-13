@@ -2,14 +2,14 @@
   "last_focus_key": "14906|2026-06-13",
   "last_show_no": "14906",
   "last_focus_day": "2026-06-13",
-  "last_backfill_at": "2026-06-13T19:54:47.751Z",
+  "last_backfill_at": "2026-06-13T21:00:30.187Z",
   "last_summary": {
     "show_no": "14906",
     "focus_day": "2026-06-13",
     "source_counts": {
       "update_schedule": 103,
-      "class_oog": 534,
-      "helper_horses": 320,
+      "class_oog": 554,
+      "helper_horses": 336,
       "helper_riders": 177,
       "helper_trainers": 82
     },
