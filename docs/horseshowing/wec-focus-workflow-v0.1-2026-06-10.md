@@ -3508,3 +3508,155 @@ Known reason `Indigo Van De Muggenhoek` rendered full show name before this fix:
   - helper row with `horse=INDIGO VAN DE MUGGENHOEK`, `barn_name=Indy`, `horse_display=Indy`.
 - The workflow used case-sensitive exact mapping and accepted fallback self-mapping from the blank helper row.
 - The workflow now ignores helper rows without `barn_name` or `horse_display`, and uses exact-or-normalized matching only.
+
+## 2026-06-13 - Airtable Link Binding Contract
+
+Source of truth:
+
+- `class_oog` is the full entry roster source.
+- `class_start_times` is generated from `update_schedule + counts`.
+- `entry_go_times` is generated from active-trainer `class_oog` rows plus current class timing.
+- Airtable helper tables own display/link metadata: `horses`, `riders`, `trainers`, `entries`.
+
+Do not rely on manual Airtable linking:
+
+- `class_oog.class_start_times` must be linked automatically using `class_oog.class_start_times_uuid`.
+- `class_oog.entry_go_times` must be linked automatically using `show_no|focus_day|class_no|entry_no`.
+- `entry_go_times.class_start_times` must be linked automatically using `show_no|focus_day|ring_day_no|class_no`.
+- `class_oog` and `entry_go_times` helper links must be filled automatically for `entries`, `horses`, `riders`, and `trainers`.
+
+Approved helper matching:
+
+- `entries` match by `entry_no`.
+- `horses` match by exact/normalized `horse`; `horses.aka` is allowed as an exact alias list.
+- `riders` match by exact/normalized `rider`.
+- `trainers` match by exact/normalized `trainer`.
+- No fuzzy matching.
+- No fallback to guessed helper records.
+
+Operational script:
+
+```text
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\sync-airtable-time-workflows.js
+```
+
+Linking runs after `class_start_times` and `entry_go_times` upserts.
+
+Verified 2026-06-13 readback:
+
+```text
+class_oog / TODAY rows = 1198
+class_oog helper links = 1198/1198 for entries, horses, riders, trainers
+class_oog.class_start_times = 1122/1198
+class_oog.entry_go_times = 54/1198
+
+class_oog / CWF_TODAY rows = 55
+class_oog helper links = 55/55 for entries, horses, riders, trainers
+class_oog.class_start_times = 55/55
+class_oog.entry_go_times = 54/55
+
+entry_go_times / CWF_TODAY rows = 60
+entry_go_times helper links = 60/60 for entries, horses, riders, trainers
+entry_go_times.class_start_times = 60/60
+entry_go_times.class_oog = 54/60
+```
+
+Interpretation:
+
+- The six `entry_go_times` rows without `class_oog` were already `status=inactive`.
+- The one `class_oog / CWF_TODAY` row without `entry_go_times` was not an active-trainer row, so it should not generate `entry_go_times`.
+- Future stale rows are handled by the same focus-day scan used elsewhere: `IS_SAME({focus_day}, ..., 'day')` plus `show_no`.
+
+## 2026-06-13 - Class OOG Auto Ignore Classifier
+
+Purpose:
+
+```text
+Replicate the manual `class_oog.ignore` classifier without manual linking or hand-checking.
+This is first proven only against Airtable `class_oog` view `CWF_TODAY`.
+```
+
+Working example view:
+
+```text
+table = class_oog
+view = CWF_TODAY
+```
+
+Manual classifier field:
+
+```text
+ignore
+```
+
+Inspection fields:
+
+```text
+ring_no
+entry_no
+class_start_time (from class_start_times)
+class_order
+left_15
+class_no
+```
+
+Automatic rule:
+
+```text
+Group by show_no + focus_day + ring_no + entry_no + class_start_time.
+Only evaluate groups where class_start_time is present and the group has more than one row.
+Sort each group by class_order, then class_no.
+Keep the first row.
+Mark every later row in that same group as auto_ignore_candidate=true.
+```
+
+Why this works on the current active dataset:
+
+```text
+The same entry in the same ring at the same class_start_time is appearing across paired/related class rows.
+The lower class_order row is the representative row.
+Later class_order rows are duplicate/secondary rows for active entry timing and rollup purposes.
+left_15 is useful for audit visibility, but it is not strict enough to be the only key.
+```
+
+Isolated Airtable fields added:
+
+```text
+auto_ignore_candidate
+auto_ignore_reason
+auto_ignore_group_key
+auto_ignore_rank
+auto_ignore_matches_manual
+```
+
+Script:
+
+```text
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\class-oog-auto-ignore-audit.js
+```
+
+Commands:
+
+```powershell
+node docs/horseshowing/class-oog-auto-ignore-audit.js
+node docs/horseshowing/class-oog-auto-ignore-audit.js --write
+```
+
+Verified 2026-06-13 against `class_oog / CWF_TODAY`:
+
+```text
+rows = 55
+manual_ignore = 10
+auto_ignore_candidate = 10
+auto_ignore_matches_manual = 55
+mismatch = 0
+false_positive = 0
+false_negative = 0
+```
+
+Not yet global:
+
+```text
+This classifier is proven on the active example view.
+Do not apply globally to entry_go_times, wec_alerts, or wec_mobile until the same audit passes on the broader focus-day dataset or an approved class_ignore table is used for exceptions.
+```

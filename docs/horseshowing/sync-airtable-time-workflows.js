@@ -6,6 +6,11 @@ const CATALYST_ENDPOINT = process.env.HORSESHOWING_CATALYST_ENDPOINT ||
 const TABLES = {
   classStartTimes: "class_start_times",
   entryGoTimes: "entry_go_times",
+  classOog: "class_oog",
+  horses: "horses",
+  riders: "riders",
+  trainers: "trainers",
+  entries: "entries",
   wecLogs: "wec-logs"
 };
 
@@ -174,6 +179,20 @@ async function upsertRecords(tableName, keyField, rows) {
   return { seen: rows.length, changed };
 }
 
+async function updateRecords(tableName, rows) {
+  if (!rows.length) return { seen: 0, changed: 0 };
+  let changed = 0;
+  for (let index = 0; index < rows.length; index += 10) {
+    const batch = rows.slice(index, index + 10);
+    await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(tableName)}`, {
+      method: "PATCH",
+      body: JSON.stringify({ records: batch, typecast: true })
+    });
+    changed += batch.length;
+  }
+  return { seen: rows.length, changed };
+}
+
 async function listRecords(tableName, formula) {
   const records = [];
   let offset = "";
@@ -186,6 +205,11 @@ async function listRecords(tableName, formula) {
     offset = result.offset || "";
   } while (offset);
   return records;
+}
+
+function showFocusFormula(showNo, focusDay) {
+  const showValue = /^\d+$/.test(String(showNo)) ? String(showNo) : `'${String(showNo).replace(/'/g, "\\'")}'`;
+  return `AND(IS_SAME({focus_day}, '${String(focusDay).replace(/'/g, "\\'")}', 'day'), {show_no}=${showValue})`;
 }
 
 function normalizeText(value) {
@@ -316,8 +340,7 @@ async function patchRecords(tableName, records) {
 }
 
 async function markInactiveMissingRows({ tableName, keyField, showNo, focusDay, activeKeys, reason, nowIso }) {
-  const showValue = Number.isFinite(Number(showNo)) ? Number(showNo) : `'${String(showNo).replace(/'/g, "\\'")}'`;
-  const formula = `AND({focus_day}='${String(focusDay).replace(/'/g, "\\'")}',{show_no}=${showValue})`;
+  const formula = showFocusFormula(showNo, focusDay);
   const existingRows = await listRecords(tableName, formula);
   const updates = inactiveRecordUpdates({ existingRows, keyField, activeKeys, reason, nowIso });
   return {
@@ -432,6 +455,231 @@ function addSeconds(date, seconds) {
 
 function liveClassKey(row) {
   return `${clean(row.show_no || row.show_id)}|${clean(row.focus_day || row.show_day_key || row.show_days_display_date)}|${clean(row.class_no)}`;
+}
+
+async function linkEntryGoTimesToClassStartTimes(showNo, focusDay) {
+  const formula = showFocusFormula(showNo, focusDay);
+  const classRecords = await listRecords(TABLES.classStartTimes, formula);
+  const entryRecords = await listRecords(TABLES.entryGoTimes, formula);
+  const classByKey = new Map();
+
+  for (const record of classRecords) {
+    const fields = recordFields(record);
+    const key = clean(fields.class_start_key_mirror)
+      || `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.ring_day_no)}|${clean(fields.class_no)}`;
+    if (key) classByKey.set(key, record.id);
+  }
+
+  const updates = [];
+  for (const record of entryRecords) {
+    const fields = recordFields(record);
+    const key = `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.ring_day_no)}|${clean(fields.class_no)}`;
+    const classRecordId = classByKey.get(key);
+    if (!classRecordId) continue;
+    const currentLinks = Array.isArray(fields.class_start_times) ? fields.class_start_times : [];
+    if (currentLinks.length === 1 && currentLinks[0] === classRecordId) continue;
+    updates.push({
+      id: record.id,
+      fields: {
+        class_start_times: [classRecordId]
+      }
+    });
+  }
+
+  const result = await updateRecords(TABLES.entryGoTimes, updates);
+  return {
+    class_records: classRecords.length,
+    entry_records: entryRecords.length,
+    linked: result.changed
+  };
+}
+
+function arraySame(left, right) {
+  const a = Array.isArray(left) ? left : [];
+  const b = Array.isArray(right) ? right : [];
+  if (a.length !== b.length) return false;
+  return a.every((item, index) => item === b[index]);
+}
+
+function addLinkedFieldUpdate(fields, currentFields, fieldName, recordId) {
+  if (!recordId) return;
+  const next = [recordId];
+  if (arraySame(currentFields[fieldName], next)) return;
+  fields[fieldName] = next;
+}
+
+function addIndex(map, key, recordId) {
+  const normalized = normalizeText(key);
+  if (normalized && !map.has(normalized)) map.set(normalized, recordId);
+}
+
+function helperIndexes({ horseRecords, riderRecords, trainerRecords, entryRecords }) {
+  const horses = new Map();
+  for (const record of horseRecords) {
+    const fields = recordFields(record);
+    addIndex(horses, fields.horse, record.id);
+    const akaRaw = clean(fields.aka);
+    if (akaRaw) {
+      for (const alias of akaRaw.split(/[,\n;|]/).map(clean).filter(Boolean)) {
+        addIndex(horses, alias, record.id);
+      }
+    }
+  }
+
+  const riders = new Map();
+  for (const record of riderRecords) addIndex(riders, recordFields(record).rider, record.id);
+
+  const trainers = new Map();
+  for (const record of trainerRecords) addIndex(trainers, recordFields(record).trainer, record.id);
+
+  const entries = new Map();
+  for (const record of entryRecords) {
+    const fields = recordFields(record);
+    addIndex(entries, fields.entry_no, record.id);
+  }
+
+  return { horses, riders, trainers, entries };
+}
+
+function classStartKey(fields) {
+  return clean(fields.class_start_key_mirror)
+    || `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.ring_day_no)}|${clean(fields.class_no)}`;
+}
+
+function classOogClassStartKey(fields) {
+  return clean(fields.class_start_times_uuid)
+    || `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.days || fields.ring_day_no)}|${clean(fields.class_no)}`;
+}
+
+function entryGoKeyFromFields(fields) {
+  return clean(fields.entry_go_key_mirror)
+    || clean(fields.entry_go_key)
+    || `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.class_no)}|${clean(fields.entry_no)}`;
+}
+
+function classOogEntryGoKey(fields) {
+  return `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.class_no)}|${clean(fields.entry_no)}`;
+}
+
+async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
+  const formula = showFocusFormula(showNo, focusDay);
+  const [
+    classOogRecords,
+    classStartRecords,
+    entryGoRecords,
+    horseRecords,
+    riderRecords,
+    trainerRecords,
+    entryRecords
+  ] = await Promise.all([
+    listRecords(TABLES.classOog, formula),
+    listRecords(TABLES.classStartTimes, formula),
+    listRecords(TABLES.entryGoTimes, formula),
+    listRecords(TABLES.horses),
+    listRecords(TABLES.riders),
+    listRecords(TABLES.trainers),
+    listRecords(TABLES.entries)
+  ]);
+
+  const classStartByKey = new Map();
+  for (const record of classStartRecords) {
+    const key = classStartKey(recordFields(record));
+    if (key) classStartByKey.set(key, record.id);
+  }
+
+  const entryGoByKey = new Map();
+  for (const record of entryGoRecords) {
+    const key = entryGoKeyFromFields(recordFields(record));
+    if (key) entryGoByKey.set(key, record.id);
+  }
+
+  const helpers = helperIndexes({ horseRecords, riderRecords, trainerRecords, entryRecords });
+  const updates = [];
+  let classStartMatches = 0;
+  let entryGoMatches = 0;
+  let helperMatches = 0;
+
+  for (const record of classOogRecords) {
+    const current = recordFields(record);
+    const fields = {};
+
+    const classStartId = classStartByKey.get(classOogClassStartKey(current));
+    if (classStartId) classStartMatches += 1;
+    addLinkedFieldUpdate(fields, current, "class_start_times", classStartId);
+
+    const entryGoId = entryGoByKey.get(classOogEntryGoKey(current));
+    if (entryGoId) entryGoMatches += 1;
+    addLinkedFieldUpdate(fields, current, "entry_go_times", entryGoId);
+
+    const entryId = helpers.entries.get(normalizeText(current.entry_no));
+    const horseId = helpers.horses.get(normalizeText(current.horse));
+    const riderId = helpers.riders.get(normalizeText(current.rider));
+    const trainerId = helpers.trainers.get(normalizeText(current.trainer));
+    for (const id of [entryId, horseId, riderId, trainerId]) {
+      if (id) helperMatches += 1;
+    }
+    addLinkedFieldUpdate(fields, current, "entries", entryId);
+    addLinkedFieldUpdate(fields, current, "horses", horseId);
+    addLinkedFieldUpdate(fields, current, "riders", riderId);
+    addLinkedFieldUpdate(fields, current, "trainers", trainerId);
+
+    if (Object.keys(fields).length) updates.push({ id: record.id, fields });
+  }
+
+  const result = await updateRecords(TABLES.classOog, updates);
+  return {
+    class_oog_records: classOogRecords.length,
+    class_start_records: classStartRecords.length,
+    entry_go_records: entryGoRecords.length,
+    class_start_matches: classStartMatches,
+    entry_go_matches: entryGoMatches,
+    helper_matches: helperMatches,
+    linked: result.changed
+  };
+}
+
+async function linkEntryGoTimesToHelpers(showNo, focusDay) {
+  const formula = showFocusFormula(showNo, focusDay);
+  const [
+    entryGoRecords,
+    horseRecords,
+    riderRecords,
+    trainerRecords,
+    entryRecords
+  ] = await Promise.all([
+    listRecords(TABLES.entryGoTimes, formula),
+    listRecords(TABLES.horses),
+    listRecords(TABLES.riders),
+    listRecords(TABLES.trainers),
+    listRecords(TABLES.entries)
+  ]);
+  const helpers = helperIndexes({ horseRecords, riderRecords, trainerRecords, entryRecords });
+  const updates = [];
+  let helperMatches = 0;
+
+  for (const record of entryGoRecords) {
+    const current = recordFields(record);
+    const fields = {};
+    const entryId = helpers.entries.get(normalizeText(current.entry_no));
+    const horseId = helpers.horses.get(normalizeText(current.horse));
+    const riderId = helpers.riders.get(normalizeText(current.rider));
+    const trainerId = helpers.trainers.get(normalizeText(current.trainer));
+    for (const id of [entryId, horseId, riderId, trainerId]) {
+      if (id) helperMatches += 1;
+    }
+    addLinkedFieldUpdate(fields, current, "entries", entryId);
+    addLinkedFieldUpdate(fields, current, "horses", horseId);
+    addLinkedFieldUpdate(fields, current, "riders", riderId);
+    addLinkedFieldUpdate(fields, current, "trainers", trainerId);
+    if (Object.keys(fields).length) updates.push({ id: record.id, fields });
+  }
+
+  const result = await updateRecords(TABLES.entryGoTimes, updates);
+  return {
+    entry_records: entryGoRecords.length,
+    helper_matches: helperMatches,
+    linked: result.changed
+  };
 }
 
 function paceFromLive(row) {
@@ -689,6 +937,23 @@ async function main() {
     ? await upsertRecords(TABLES.classStartTimes, "class_start_key_mirror", classStartRows)
     : { seen: 0, changed: 0 };
   if (runEntryGo) entryResult = await upsertRecords(TABLES.entryGoTimes, "entry_go_key_mirror", entryGoRows);
+  const linkResult = runClassStart && runEntryGo
+    ? await linkEntryGoTimesToClassStartTimes(showNo, actualFocusDay)
+    : { class_records: 0, entry_records: 0, linked: 0 };
+  const entryHelperLinkResult = runEntryGo
+    ? await linkEntryGoTimesToHelpers(showNo, actualFocusDay)
+    : { entry_records: 0, helper_matches: 0, linked: 0 };
+  const classOogLinkResult = runEntryGo
+    ? await linkClassOogToGeneratedTablesAndHelpers(showNo, actualFocusDay)
+    : {
+      class_oog_records: 0,
+      class_start_records: 0,
+      entry_go_records: 0,
+      class_start_matches: 0,
+      entry_go_matches: 0,
+      helper_matches: 0,
+      linked: 0
+    };
   const classInactive = runClassStart
     ? await markInactiveMissingRows({
       tableName: TABLES.classStartTimes,
@@ -726,6 +991,10 @@ async function main() {
         source: catalystHasCore ? "focus-day-snapshot.update_schedule+counts" : "airtable.update_schedule+counts",
         counts_source_rows: Number(coreSnapshot.counts?.length || 0),
         counts_applied: classStartRows.filter((row) => clean(row.source).includes("counts.php")).length,
+        entry_go_links_checked: linkResult.entry_records,
+        entry_go_links_changed: linkResult.linked,
+        class_oog_class_start_matches: classOogLinkResult.class_start_matches,
+        class_oog_links_changed: classOogLinkResult.linked,
         inactive_existing_seen: classInactive.seen,
         inactive_marked: classInactive.inactive
       }
@@ -743,6 +1012,12 @@ async function main() {
         fields_created: entrySchema.created,
         rows: entryResult.seen,
         active_trainers: activeTrainers,
+        class_start_links_checked: linkResult.class_records,
+        class_start_links_changed: linkResult.linked,
+        helper_links_changed: entryHelperLinkResult.linked,
+        class_oog_entry_go_matches: classOogLinkResult.entry_go_matches,
+        class_oog_helper_matches: classOogLinkResult.helper_matches,
+        class_oog_links_changed: classOogLinkResult.linked,
         inactive_existing_seen: entryInactive.seen,
         inactive_marked: entryInactive.inactive
       }
@@ -756,6 +1031,9 @@ async function main() {
     focus_day: actualFocusDay,
     class_start_times: classResult,
     entry_go_times: entryResult,
+    linked_entry_go_times_to_class_start_times: linkResult,
+    linked_entry_go_times_to_helpers: entryHelperLinkResult,
+    linked_class_oog_to_generated_tables_and_helpers: classOogLinkResult,
     inactive: {
       class_start_times: classInactive,
       entry_go_times: entryInactive
@@ -779,5 +1057,7 @@ module.exports = {
   buildEntryGoRows,
   classStartTimeFromText,
   inactiveRecordUpdates,
+  linkClassOogToGeneratedTablesAndHelpers,
+  linkEntryGoTimesToHelpers,
   paceFromLive
 };

@@ -316,6 +316,219 @@ function Invoke-CatalystActionWithRetry($action, $attempts = 3) {
   }
 }
 
+function Get-ClassTokenFromText($ClassText) {
+  $text = [string]$ClassText
+  if ($text -match "^\s*([^)]+)\)") {
+    return $matches[1].Trim()
+  }
+  return ""
+}
+
+function Get-AirtableLiveExistingRecords {
+  param(
+    [string]$TableName,
+    [string]$KeyField,
+    [array]$Keys
+  )
+
+  $existing = @{}
+  if (!$env:AIRTABLE_TOKEN -or @($Keys).Count -eq 0) { return $existing }
+
+  $uniqueKeys = @($Keys | Where-Object { $_ } | Select-Object -Unique)
+  for ($i = 0; $i -lt $uniqueKeys.Count; $i += 40) {
+    $chunk = @($uniqueKeys[$i..([Math]::Min($i + 39, $uniqueKeys.Count - 1))])
+    $parts = @($chunk | ForEach-Object {
+      $safe = ([string]$_).Replace("'", "\\'")
+      "{$KeyField}='$safe'"
+    })
+    $formula = if ($parts.Count -eq 1) { $parts[0] } else { "OR($($parts -join ','))" }
+    $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?filterByFormula=$([uri]::EscapeDataString($formula))&pageSize=100"
+    do {
+      $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
+        Authorization = "Bearer $env:AIRTABLE_TOKEN"
+      } -TimeoutSec 30
+      foreach ($record in @($result.records)) {
+        $key = [string]$record.fields.$KeyField
+        if ($key) { $existing[$key] = $record.id }
+      }
+      $uri = if ($result.offset) {
+        "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?filterByFormula=$([uri]::EscapeDataString($formula))&pageSize=100&offset=$($result.offset)"
+      } else {
+        $null
+      }
+    } while ($uri)
+  }
+
+  return $existing
+}
+
+function Submit-AirtableLiveBatch {
+  param(
+    [string]$TableName,
+    [string]$Method,
+    [array]$Records
+  )
+
+  if (@($Records).Count -eq 0) { return }
+  $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))"
+  for ($i = 0; $i -lt $Records.Count; $i += 10) {
+    $chunk = @($Records[$i..([Math]::Min($i + 9, $Records.Count - 1))])
+    $body = @{
+      records = $chunk
+      typecast = $true
+    } | ConvertTo-Json -Depth 12
+    Invoke-RestMethod -Method $Method -Uri $uri -Headers @{
+      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+      "Content-Type" = "application/json"
+    } -Body $body -TimeoutSec 30 | Out-Null
+  }
+}
+
+function Convert-LiveRowToAirtableFields {
+  param(
+    [string]$Source,
+    $Row,
+    [string]$FocusDayValue
+  )
+
+  $classText = [string]$Row.class
+  $classToken = Get-ClassTokenFromText $classText
+  if ($Source -eq "rings") {
+    $key = "$($Row.show_no)|$($Row.ring_day_no)|$($Row.class_no)"
+    return @{
+      get_rings_key_mirror = $key
+      show_no = [string]$Row.show_no
+      class_no = Int-OrZero $Row.class_no
+      ring_day_no = Int-OrZero $Row.ring_day_no
+      day_text = [string]$Row.day
+      class_text = $classText
+      entry_text = [string]$Row.entry
+      total = Int-OrZero $Row.total
+      n_to_go = Int-OrZero $Row.n_to_go
+      n_gone = Int-OrZero $Row.n_gone
+      time_text = [string]$Row.time
+      timestamp = [string]$Row.timestamp
+      focus_day = $FocusDayValue
+      elapsed = [string]$Row.elapsed
+      type = [string]$Row.type
+    }
+  }
+
+  $key = "$($Row.show_no)|$($Row.ring_no)|$($Row.ring_day_no)|$classToken"
+  return @{
+    get_orders_key_mirror = $key
+    show_no = Int-OrZero $Row.show_no
+    ring_no = Int-OrZero $Row.ring_no
+    ring_day_no = Int-OrZero $Row.ring_day_no
+    ring_name = [string]$Row.ring
+    day_text = [string]$Row.day
+    class_text = $classText
+    entry_text = [string]$Row.entry
+    total = Int-OrZero $Row.total
+    n_to_go = Int-OrZero $Row.n_to_go
+    n_gone = Int-OrZero $Row.n_gone
+    time_text = [string]$Row.time
+    timestamp = Int-OrZero $Row.timestamp
+    elapsed = Int-OrZero $Row.elapsed
+    focus_day = $FocusDayValue
+  }
+}
+
+function Get-HorseshowingDirectLiveRows {
+  param(
+    [string]$Source
+  )
+
+  $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+  $session.UserAgent = "Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+  $base = "https://www.horseshowing.com"
+  Invoke-WebRequest -UseBasicParsing -Uri "$base/show.php?show=$ShowNo" -WebSession $session -TimeoutSec 20 | Out-Null
+  Invoke-WebRequest -UseBasicParsing -Uri "$base/schedule.php" -WebSession $session -TimeoutSec 20 | Out-Null
+  $path = if ($Source -eq "orders") { "/get_orders.php" } else { "/get_rings.php" }
+  $referer = if ($Source -eq "orders") { "$base/schedule.php" } else { "$base/rings.php?show=$ShowNo" }
+  $rawResponse = Invoke-WebRequest -UseBasicParsing -Uri "$base$path" `
+    -Method "POST" `
+    -WebSession $session `
+    -Headers @{
+      "accept" = "application/json, text/javascript, */*; q=0.01"
+      "origin" = $base
+      "referer" = $referer
+      "x-requested-with" = "XMLHttpRequest"
+    } `
+    -ContentType "application/x-www-form-urlencoded; charset=UTF-8" `
+    -Body "show_no=$ShowNo" `
+    -TimeoutSec 20
+  $parsed = ([string]$rawResponse.Content) | ConvertFrom-Json
+  foreach ($item in @($parsed)) {
+    if ($item -is [System.Array]) {
+      foreach ($inner in $item) { $inner }
+    } else {
+      $item
+    }
+  }
+}
+
+function Expand-LiveRowCollection($Value) {
+  $expanded = @()
+  foreach ($item in @($Value)) {
+    if ($item -is [System.Array]) {
+      foreach ($inner in $item) { $expanded += $inner }
+    } else {
+      $expanded += $item
+    }
+  }
+  return $expanded
+}
+
+function Write-LiveRowsToAirtable {
+  param(
+    [string]$Source,
+    $Payload,
+    [string]$FocusDayValue
+  )
+
+  $rows = @()
+  if ($Payload -and $Payload.PSObject.Properties.Name -contains "airtable_live_rows") {
+    $rows = @(Expand-LiveRowCollection $Payload.airtable_live_rows)
+  }
+  if (@($rows).Count -eq 0 -and (Int-OrZero $Payload.parsed_rows) -gt 0) {
+    $rows = @(Expand-LiveRowCollection (Get-HorseshowingDirectLiveRows -Source $Source))
+  }
+  if (!$env:AIRTABLE_TOKEN -or @($rows).Count -eq 0) {
+    return [pscustomobject]@{
+      seen = @($rows).Count
+      changed = 0
+      skipped = if (!$env:AIRTABLE_TOKEN) { "missing_airtable_token" } else { "no_live_rows" }
+    }
+  }
+
+  $tableName = if ($Source -eq "orders") { "get_orders" } else { "get_rings" }
+  $keyField = if ($Source -eq "orders") { "get_orders_key_mirror" } else { "get_rings_key_mirror" }
+  $fieldRows = @($rows | ForEach-Object { Convert-LiveRowToAirtableFields -Source $Source -Row $_ -FocusDayValue $FocusDayValue })
+  $fieldRows = @($fieldRows | Where-Object { $_.$keyField })
+  $existing = Get-AirtableLiveExistingRecords -TableName $tableName -KeyField $keyField -Keys @($fieldRows | ForEach-Object { $_.$keyField })
+  $creates = @()
+  $updates = @()
+  foreach ($fields in $fieldRows) {
+    $key = [string]$fields.$keyField
+    if ($existing.ContainsKey($key)) {
+      $updates += @{ id = $existing[$key]; fields = $fields }
+    } else {
+      $creates += @{ fields = $fields }
+    }
+  }
+  Submit-AirtableLiveBatch -TableName $tableName -Method "Patch" -Records $updates
+  Submit-AirtableLiveBatch -TableName $tableName -Method "Post" -Records $creates
+
+  return [pscustomobject]@{
+    seen = $fieldRows.Count
+    changed = $creates.Count + $updates.Count
+    created = $creates.Count
+    updated = $updates.Count
+    table = $tableName
+  }
+}
+
 function Invoke-CatalystQuery($action, $params = @{}, $TimeoutSec = 45) {
   $uri = "${BaseUrl}?action=$action&show_no=$ShowNo"
   if ($FocusDay -and !$params.ContainsKey("focus_day")) {
@@ -376,6 +589,7 @@ function Invoke-HorseshowingDirectCurrent($source, $FocusDayValue) {
   $payloadUri = "${BaseUrl}?action=$action&show_no=$ShowNo&focus_day=$([uri]::EscapeDataString([string]$FocusDayValue))"
   $result = Invoke-RestMethod -Method Post -Uri $payloadUri -ContentType "application/json" -Body $payload -TimeoutSec 45
   $result | Add-Member -NotePropertyName fallback_source -NotePropertyValue "direct_horseshowing_payload" -Force
+  $result | Add-Member -NotePropertyName airtable_live_rows -NotePropertyValue @($parsed) -Force
   return $result
 }
 
@@ -825,7 +1039,12 @@ if ($heartbeat.live_error) {
     live = $heartbeat.live
   }
 } else {
-  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -RecordsSeen (Int-OrZero $heartbeat.live.parsed_rows) -Summary "get_rings rows=$($heartbeat.live.parsed_rows) focus=$($heartbeat.focus_day)" -Payload $heartbeat.live
+  $liveMirror = Write-LiveRowsToAirtable -Source "rings" -Payload $heartbeat.live -FocusDayValue $heartbeat.focus_day
+  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -RecordsSeen (Int-OrZero $heartbeat.live.parsed_rows) -RecordsChanged (Int-OrZero $liveMirror.changed) -Summary "get_rings rows=$($heartbeat.live.parsed_rows) mirrored=$($liveMirror.changed) focus=$($heartbeat.focus_day)" -Payload @{
+    live = $heartbeat.live
+    mirror = $liveMirror
+    focus_day = $heartbeat.focus_day
+  }
   Resolve-WecAirtableAlert -AlertType "live_get_rings_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Message "Resolved: get_rings returned without error." -Payload $heartbeat.live
 }
 if ($heartbeat.live_error -and $liveAlertWindow) {
@@ -851,7 +1070,12 @@ if ($heartbeat.orders_error) {
     orders = $heartbeat.orders
   }
 } else {
-  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) focus=$($heartbeat.focus_day)" -Payload $heartbeat.orders
+  $ordersMirror = Write-LiveRowsToAirtable -Source "orders" -Payload $heartbeat.orders -FocusDayValue $heartbeat.focus_day
+  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -RecordsChanged (Int-OrZero $ordersMirror.changed) -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) mirrored=$($ordersMirror.changed) focus=$($heartbeat.focus_day)" -Payload @{
+    orders = $heartbeat.orders
+    mirror = $ordersMirror
+    focus_day = $heartbeat.focus_day
+  }
   Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders returned without error." -Payload $heartbeat.orders
 }
 if ($heartbeat.orders_error -and $ordersAlertWindow) {

@@ -520,7 +520,6 @@ async function backfillAirtableHelpersFromCatalyst(row, existingRecords) {
     if (horse && !existing.horses.has(horse.toLowerCase())) {
       addUnique(candidates.horses, horse, {
         horse,
-        horse_display: horse,
         rider: firstText(item.rider),
         trainer: firstText(item.trainer),
         source: "class_oog.php"

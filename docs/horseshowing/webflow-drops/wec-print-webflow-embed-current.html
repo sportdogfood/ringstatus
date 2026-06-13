@@ -8,6 +8,9 @@
     --ring:#815374;
     --team-tint: rgba(204, 204, 204, 0.43);
     --scale: 1;
+    --print-content-width:8in;
+    --print-col-gap:0.12in;
+    --print-col-width:calc((var(--print-content-width) - var(--print-col-gap)) / 2);
   }
 
   *{box-sizing:border-box}
@@ -354,23 +357,62 @@
     margin:12px auto !important;
     overflow:hidden !important;
   }
+  .page.rs-page{
+    width:8.5in !important;
+    min-width:8.5in !important;
+    max-width:8.5in !important;
+    height:11in !important;
+    padding:0.25in !important;
+    margin:12px auto !important;
+    overflow:hidden !important;
+    background:#fff !important;
+    break-after:page;
+    page-break-after:always;
+  }
+  .page.rs-page:last-of-type{
+    break-after:auto;
+    page-break-after:auto;
+  }
   #wrap.wrap{
     width:8in !important;
     transform:none !important;
     zoom:1 !important;
   }
+  .page .wrap{
+    width:8in !important;
+    transform:none !important;
+    zoom:1 !important;
+  }
   #cols.cols{
-    grid-template-columns:3.75in 3.75in !important;
-    column-gap:0.16in !important;
+    grid-template-columns:var(--print-col-width) var(--print-col-width) !important;
+    column-gap:var(--print-col-gap) !important;
+    justify-content:start !important;
+    align-items:start !important;
+  }
+  .page .cols{
+    display:grid !important;
+    grid-template-columns:var(--print-col-width) var(--print-col-width) !important;
+    column-gap:var(--print-col-gap) !important;
     justify-content:start !important;
     align-items:start !important;
   }
   #colL.col,
   #colR.col{
-    width:3.75in !important;
-    min-width:3.75in !important;
-    max-width:3.75in !important;
+    width:var(--print-col-width) !important;
+    min-width:var(--print-col-width) !important;
+    max-width:var(--print-col-width) !important;
     gap:2px !important;
+  }
+  .page .col{
+    display:flex !important;
+    flex-direction:column !important;
+    width:var(--print-col-width) !important;
+    min-width:var(--print-col-width) !important;
+    max-width:var(--print-col-width) !important;
+    gap:2px !important;
+  }
+  .rs-continuation .topbar{
+    display:none !important;
   }
   .topbar{padding-bottom:4px !important;}
   .title{font-size:13.5pt;line-height:1.02;}
@@ -378,8 +420,8 @@
   .ring{
     border:1px solid #000;
     background:#fff;
-    width:3.75in;
-    max-width:3.75in;
+    width:var(--print-col-width);
+    max-width:var(--print-col-width);
     break-inside:avoid;
     page-break-inside:avoid;
   }
@@ -390,6 +432,7 @@
     border-spacing:0;
   }
   .ringTable .timeCol{width:.74in;}
+  .ringTable .classCol{width:calc(var(--print-col-width) - .74in);}
   .ringTitle{
     background:var(--ring);
     color:#fff;
@@ -420,10 +463,17 @@
     padding:1px 5px 1px 0;
     font-size:7.3pt;
     line-height:1.02;
+    vertical-align:top;
+    min-width:0;
+    max-width:calc(var(--print-col-width) - .74in);
+  }
+  .classText{
+    display:block;
+    width:100%;
+    max-width:100%;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    vertical-align:top;
   }
   .teamRow{
     background:var(--team-tint);
@@ -451,7 +501,7 @@
     line-height:1.12;
   }
   .gdisplay-badge{
-    display:inline-block;
+    display:none;
     margin:0 6px 0 0;
     padding:2px 6px 1px 6px;
     border-radius:999px;
@@ -692,38 +742,49 @@
     })).filter((item) => item.horses.length);
   }
 
-  function trainerRollupKey(rollups) {
-    const normalized = (Array.isArray(rollups) ? rollups : [])
-      .map((item) => ({
-        trainer: String(item.trainer || "").trim().toLowerCase(),
-        horses: (Array.isArray(item.horses) ? item.horses : [])
-          .map((horse) => horseTokenText(horse).trim().toLowerCase())
-          .filter(Boolean)
-      }))
-      .filter((item) => item.trainer && item.horses.length)
-      .sort((a, b) => a.trainer.localeCompare(b.trainer));
-    return normalized.length ? JSON.stringify(normalized) : "";
-  }
-
   function firstGroupTime(group) {
     const row = (group && group.items && group.items[0]) || {};
-    return String(row.start_display ?? row.startDisplay ?? "").trim();
+    return roundedTenMinuteTime(row.start_display ?? row.startDisplay ?? "").key;
+  }
+
+  function normalizedDisplayClassText(row) {
+    const label = classDisplayLabel(row);
+    return String(label)
+      .replace(/^[A-Za-z0-9]+\s*-\s*/, "")
+      .replace(/\([^)]*\)/g, " ")
+      .replace(/['’]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase()
+      .slice(0, 15);
+  }
+
+  function classMergeName(row) {
+    return normalizedDisplayClassText(row);
+  }
+
+  function firstGroupClassName(group) {
+    const row = (group && group.items && group.items[0]) || {};
+    return classMergeName(row);
   }
 
   function coalesceSameTimeRollupGroups(groups) {
     const out = [];
     for (const group of groups || []) {
       const prev = out[out.length - 1];
-      const key = trainerRollupKey(group.trainerRollups);
+      const timeKey = firstGroupTime(group);
+      const classKey = firstGroupClassName(group);
       if (
         prev &&
-        key &&
-        key === trainerRollupKey(prev.trainerRollups) &&
-        firstGroupTime(group) &&
-        firstGroupTime(group) === firstGroupTime(prev)
+        timeKey &&
+        classKey &&
+        timeKey === firstGroupTime(prev) &&
+        classKey === firstGroupClassName(prev)
       ) {
         prev.gid = `${prev.gid}|${group.gid}`;
         prev.items = prev.items.concat(group.items);
+        prev.trainerRollups = trainerRollupsForItems(prev.items);
+        prev.gdisplay = getScheduleGroupDisplay(prev.items);
         continue;
       }
       out.push(group);
@@ -803,16 +864,6 @@
     const rawName = String(row.class_name ?? row.className ?? row.name ?? "").trim();
     const leadingLabel = rawName.match(/^([A-Za-z0-9]+)\)\s*(.+)$/);
     if (leadingLabel) return `${leadingLabel[1]} - ${leadingLabel[2]}`.trim();
-
-    const classNo = String(row.class_no ?? row.classNo ?? "").trim();
-    const classNumber = String(row.class_number ?? row.classNumber ?? "").trim();
-    const validClassNumber =
-      classNumber &&
-      classNumber !== "0" &&
-      classNumber !== classNo &&
-      classNumber.length <= 5;
-
-    if (validClassNumber && rawName) return `${classNumber} - ${rawName}`.trim();
     return rawName;
   }
 
@@ -1096,18 +1147,18 @@
         for (const c of classes) {
           const roundedTime = roundedTenMinuteTime(c.start_display ?? c.startDisplay ?? "");
           const time = roundedTime.display;
+          const label = classDisplayLabel(c);
+          const duplicateKey = `${roundedTime.key}|${normalizedDisplayClassText(c)}`;
+          if (duplicateKey.trim() && seenNonTeamTimeClassKeys.has(duplicateKey)) continue;
+          if (duplicateKey.trim()) seenNonTeamTimeClassKeys.add(duplicateKey);
+
           const showTime = (time && (hasTeam || roundedTime.key !== lastRingTimeBucket));
           if (showTime) lastRingTimeBucket = roundedTime.key;
-
-          const label = classDisplayLabel(c);
-          const duplicateKey = `${roundedTime.key}|${String(label).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()}`;
-          if (!hasTeam && duplicateKey.trim() && seenNonTeamTimeClassKeys.has(duplicateKey)) continue;
-          if (!hasTeam && duplicateKey.trim()) seenNonTeamTimeClassKeys.add(duplicateKey);
 
           if (tbody) {
             const classTr = document.createElement("tr");
             classTr.className = `classRow${hasTeam ? " has-team" : ""}`;
-            classTr.innerHTML = `<td class="timeCell">${esc(showTime ? time : "")}</td><td class="classCell">${esc(label)}</td>`;
+            classTr.innerHTML = `<td class="timeCell">${esc(showTime ? time : "")}</td><td class="classCell"><span class="classText">${esc(label)}</span></td>`;
             tbody.appendChild(classTr);
           }
         }

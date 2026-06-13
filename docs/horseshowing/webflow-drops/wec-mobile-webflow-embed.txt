@@ -337,6 +337,7 @@
   }
 
   .gdisplay-badge{
+    display:inline-block;
     flex:0 0 auto;
     border:1px solid #815374;
     border-radius:999px;
@@ -603,7 +604,7 @@
     <div class="topbar-wrapper">
       <div class="title-row">
         <div class="title" id="title">Schedule</div>
-        <a class="home-pill" id="printPdfLink" href="https://ringstatus-pdf.gombcg.workers.dev/?url=https%3A%2F%2Fringstatus.com%2Fwec-print%3Fpdf%3D1&filename=wec-schedule.pdf&waitForSelector=html%5Bdata-rs-pdf-ready%3D%221%22%5D" target="_blank" rel="noopener">Print</a>
+        <a class="home-pill" id="printPdfLink" href="https://ringstatus.com/wec-print" target="_blank" rel="noopener">Print</a>
       </div>
       <div class="subtitle-row">
         <div class="subtitle-edit-wrapper">
@@ -698,16 +699,7 @@
     const source = new URL(window.RS_WEC_PRINT_URL || WEC_PRINT_URL, location.href);
     const focusDay = new URLSearchParams(location.search).get("focus_day") || currentFocusDay || isoDate(document.getElementById("subtitle")?.textContent);
     if(focusDay) source.searchParams.set("focus_day", focusDay);
-    source.searchParams.set("pdf", "1");
-    source.searchParams.set("cb", String(Date.now()));
-
-    const filenameDate = focusDay || isoDate(document.getElementById("subtitle")?.textContent) || "schedule";
-    const params = new URLSearchParams({
-      url: source.toString(),
-      filename: `wec-${filenameDate}-schedule.pdf`,
-      waitForSelector: "html[data-rs-pdf-ready=\"1\"]"
-    });
-    return `${PDF_WORKER_BASE}?${params.toString()}`;
+    return source.toString();
   }
 
   function syncPrintPdfLink(){
@@ -1134,17 +1126,18 @@
     const rawName = String(row.class_name ?? row.className ?? row.name ?? "").trim();
     const leadingLabel = rawName.match(/^([A-Za-z0-9]+)\)\s*(.+)$/);
     if(leadingLabel) return `${leadingLabel[1]} - ${leadingLabel[2]}`.trim();
-
-    const classNo = String(row.class_no ?? row.classNo ?? "").trim();
-    const classNumber = String(row.class_number ?? row.classNumber ?? "").trim();
-    const validClassNumber =
-      classNumber &&
-      classNumber !== "0" &&
-      classNumber !== classNo &&
-      classNumber.length <= 5;
-
-    if(validClassNumber && rawName) return `${classNumber} - ${rawName}`.trim();
     return rawName;
+  }
+
+  function normalizedDisplayClassText(row){
+    return String(classDisplayLabel(row))
+      .replace(/^[A-Za-z0-9]+\s*-\s*/, "")
+      .replace(/\([^)]*\)/g, " ")
+      .replace(/['’]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase()
+      .slice(0, 15);
   }
 
   function buildRings(rows){
@@ -1183,6 +1176,7 @@
 
       sec.innerHTML = `<div class="ring-head">${esc(ringTitle)}</div>`;
       let lastRingTimeBucket = null;
+      const seenNonTeamTimeClassKeys = new Set();
 
       for(const g of groups){
         const hasTeam = !!g.gdisplay || (g.trainerRollups && g.trainerRollups.length);
@@ -1205,10 +1199,13 @@
           const displayTime = roundedTime.display;
           const isCheckTime = isCheckDisplay(displayTime);
 
+          const label = classDisplayLabel(c);
+          const duplicateKey = `${roundedTime.key}|${normalizedDisplayClassText(c)}`;
+          if(duplicateKey.trim() && seenNonTeamTimeClassKeys.has(duplicateKey)) continue;
+          if(duplicateKey.trim()) seenNonTeamTimeClassKeys.add(duplicateKey);
+
           const showTime = (displayTime && (hasTeam || roundedTime.key !== lastRingTimeBucket));
           if(showTime) lastRingTimeBucket = roundedTime.key;
-
-          const label = classDisplayLabel(c);
 
           const timeHtml = showTime
             ? (isCheckTime

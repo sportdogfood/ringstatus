@@ -214,6 +214,7 @@ function parseUpdateSchedule(raw, showNo, ringDay) {
       event_type: intOrNull(a["data-re_type"]),
       oc_id: intOrNull(a["data-oc_id"]),
       live_flag: intOrNull(a["data-live"]),
+      mirror_update_schedule_key: `${showNo}|${ringDay.ring_day_no}|${intOrNull(a["data-class"])}`,
       source: "update_schedule",
       class_order_local: index + 1
     });
@@ -221,7 +222,7 @@ function parseUpdateSchedule(raw, showNo, ringDay) {
   return rows.filter((row) => row.class_no);
 }
 
-function parseCounts(raw, showNo) {
+function parseCounts(raw, showNo, focusDay) {
   const rows = [];
   for (const match of raw.matchAll(/<tr[\s\S]*?<\/tr>/gi)) {
     const tr = match[0];
@@ -232,10 +233,12 @@ function parseCounts(raw, showNo) {
     const parts = classParts(`${a["data-num"] || ""}) ${a["data-name"] || ""}`);
     rows.push({
       show_no: intOrNull(showNo),
+      focus_day: focusDay,
       class_no: intOrNull(a["data-class"]),
       class_number: parts.class_number,
       class_name: clean(a["data-name"]),
-      entry_count: intOrNull(entryText)
+      entry_count: intOrNull(entryText),
+      mirror_class_key: `${showNo}|${intOrNull(a["data-class"])}`
     });
   }
   return rows.filter((row) => row.class_no);
@@ -251,8 +254,10 @@ function parseClassOog(raw, classNo, context) {
     if (cells.length < 4) continue;
     rowIndex += 1;
     rows.push({
+      show_no: intOrNull(context.show_no),
       ring: context.ring_name,
       ring_no: context.ring_no,
+      focus_day: context.focus_day,
       days: context.days,
       class_order: context.class_order_local || null,
       class_no: intOrNull(classNo),
@@ -264,6 +269,7 @@ function parseClassOog(raw, classNo, context) {
       horse: clean(cells[2]),
       rider: clean(cells[3]),
       trainer: clean(cells[4]),
+      mirror_class_oog_key: `${intOrNull(classNo)}|${intOrNull(cells[1])}`,
       source: orderStatus || "class_oog"
     });
   }
@@ -327,7 +333,7 @@ async function main() {
     payload: { ring_days: ringDays.length, rows: updateRows.length }
   });
 
-  const countsRows = parseCounts(await hsFetch("/counts.php", { showNo }), showNo);
+  const countsRows = parseCounts(await hsFetch("/counts.php", { showNo }), showNo, focusDay);
   const countsResult = await upsert("counts", ["show_no", "class_no"], countsRows);
   await writeLog({
     checkName: "core_counts",

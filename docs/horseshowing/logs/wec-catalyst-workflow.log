@@ -3082,3 +3082,188 @@
 2026-06-12T23:35:20 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
 2026-06-12T23:35:21 local-core skipped focus=2026-06-13 next_due=60m
 2026-06-12T23:35:41 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-12T23:50:27 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-12T23:50:28 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-12T23:50:29 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-12T23:50:48 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T00:17:01 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T00:17:03 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T00:19:12 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-13",   "ring_days": 9,   "update_schedule": 105,   "counts": 414,   "class_oog": 1152,   "helpers": {     "horses": 657,     "riders": 511,     "trainers": 196   } }
+2026-06-13T00:19:12 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-13T00:19:13 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-13T00:19:13 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-13T00:19:14 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-13T00:19:35 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T00:33:37 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T00:33:38 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T00:33:39 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T00:33:58 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T00:50:57 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T00:50:58 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T00:50:58 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T00:51:18 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T01:07:36 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T01:07:37 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T01:07:38 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T01:07:57 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T01:24:15 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T01:24:16 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T01:25:48 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-13",   "ring_days": 9,   "update_schedule": 105,   "counts": 414,   "class_oog": 1152,   "helpers": {     "horses": 657,     "riders": 511,     "trainers": 196   } }
+2026-06-13T01:25:49 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-13T01:25:49 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-13T01:25:50 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-13T01:25:50 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-13T01:26:07 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T07:13:21 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T07:13:22 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T07:14:54 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-13",   "ring_days": 9,   "update_schedule": 105,   "counts": 414,   "class_oog": 1152,   "helpers": {     "horses": 657,     "riders": 511,     "trainers": 196   } }
+2026-06-13T07:14:54 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-13T07:14:54 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-13T07:14:55 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-13T07:14:55 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-13T07:15:16 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T07:15:21 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:15:21 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:15:22 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:15:22 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:28 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T07:30:29 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T07:30:30 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T07:30:47 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T07:30:52 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:52 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:52 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:52 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:53 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:53 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:53 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:54 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:54 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:54 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:54 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:55 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:55 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:55 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:56 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:30:56 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:15 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T07:46:16 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T07:46:17 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T07:46:37 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T07:46:42 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:43 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:43 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:43 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:44 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:45 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:45 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:46 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T07:46:46 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:07 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T08:01:08 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:01:09 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T08:01:28 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 103,       "inactive": 0     },     "entry_go_times": {       "seen": 58,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:01:32 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:33 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:33 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:33 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:34 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:34 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:34 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:35 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:35 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:01:35 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:16:15 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=98 triggers=0
+2026-06-13T08:16:16 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:17:51 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-13",   "ring_days": 9,   "update_schedule": 105,   "counts": 414,   "class_oog": 1151,   "helpers": {     "horses": 657,     "riders": 511,     "trainers": 196   } }
+2026-06-13T08:17:51 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-13T08:17:52 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-13T08:17:52 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-13T08:17:52 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-13T08:18:10 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 103,     "changed": 103   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:18:15 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:18:15 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:18:15 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:18:16 airtable-alert failed type=entry_go_20 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:23:30 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T08:23:31 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:25:38 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-13",   "ring_days": 9,   "update_schedule": 103,   "counts": 414,   "class_oog": 1124,   "helpers": {     "horses": 649,     "riders": 506,     "trainers": 196   } }
+2026-06-13T08:25:39 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-13T08:25:39 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-13T08:25:40 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-13T08:25:40 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-13T08:25:58 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 52,     "changed": 52   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:26:02 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:26:02 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:26:03 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:26:03 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:27:15 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T08:27:16 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:28:49 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-13",   "ring_days": 9,   "update_schedule": 103,   "counts": 409,   "class_oog": 1140,   "helpers": {     "horses": 652,     "riders": 509,     "trainers": 194   } }
+2026-06-13T08:28:49 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-13T08:28:50 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-13T08:28:50 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-13T08:28:50 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-13T08:29:07 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:29:11 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:30:29 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T08:30:30 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:30:32 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T08:30:50 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:30:52 skipped overlapping WEC workflow show=14906
+2026-06-13T08:30:55 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:30:55 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:30:55 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:30:55 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:30:56 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:30:56 airtable-alert failed type=entry_go_40 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:32:11 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T08:32:12 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:33:45 sync-airtable-core-workflows {   "ok": true,   "show_no": "14906",   "focus_day": "2026-06-13",   "ring_days": 9,   "update_schedule": 103,   "counts": 409,   "class_oog": 1140,   "helpers": {     "horses": 652,     "riders": 509,     "trainers": 194   } }
+2026-06-13T08:33:46 airtable-alert resolved type=core_update_schedule_failed key=core_update_schedule_failed|14906||core_update_schedule_failed records=1
+2026-06-13T08:33:46 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14906||core_class_oog_failed records=1
+2026-06-13T08:33:46 airtable-alert resolved type=core_sync_ring_days_failed key=core_sync_ring_days_failed|14906||core_sync_ring_days_failed records=1
+2026-06-13T08:33:47 airtable-alert resolved type=core_sync_counts_failed key=core_sync_counts_failed|14906||core_sync_counts_failed records=1
+2026-06-13T08:34:03 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:34:08 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:34:08 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:34:09 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:34:09 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:34:09 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:45:35 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T08:45:36 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:45:40 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T08:45:57 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:46:01 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:48:41 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T08:48:42 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T08:48:45 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T08:49:03 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T08:49:08 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:49:09 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:49:09 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T08:49:09 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:03:27 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T09:03:28 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T09:03:31 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T09:03:49 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 105,     "entry_records": 60,     "linked": 0   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T09:03:54 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:18:28 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=99 triggers=0
+2026-06-13T09:18:29 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T09:18:33 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T09:18:55 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 105,     "entry_records": 60,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 60,     "helper_matches": 240,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 1142,     "class_start_records": 105,     "entry_go_records": 60,     "class_start_matches": 1120,     "entry_go_matches": 54,     "helper_matches": 4568,     "linked": 0   },   "inactive": {     "class_start_times": {       "seen": 0,       "inactive": 0     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T09:18:59 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:18:59 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:18:59 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:19:00 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:19:00 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:33:28 heartbeat show=14906 focus=2026-06-13 ok=True schedule_rows=100 triggers=0
+2026-06-13T09:33:29 airtable-alert resolved type=catalyst_heartbeat_failed key=catalyst_heartbeat_failed|14906||catalyst_heartbeat_failed records=1
+2026-06-13T09:33:33 local-core skipped focus=2026-06-13 next_due=60m
+2026-06-13T09:33:56 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14906",   "focus_day": "2026-06-13",   "class_start_times": {     "seen": 105,     "changed": 105   },   "entry_go_times": {     "seen": 54,     "changed": 54   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 105,     "entry_records": 60,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 60,     "helper_matches": 240,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 1142,     "class_start_records": 105,     "entry_go_records": 60,     "class_start_matches": 1120,     "entry_go_matches": 54,     "helper_matches": 4568,     "linked": 0   },   "inactive": {     "class_start_times": {       "seen": 105,       "inactive": 0     },     "entry_go_times": {       "seen": 60,       "inactive": 6     }   },   "fields_created": {     "class_start_times": 0,     "entry_go_times": 0   } }
+2026-06-13T09:34:01 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:34:01 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:34:01 airtable-alert failed type=class_start_30 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:34:01 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:34:02 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
+2026-06-13T09:34:02 airtable-alert failed type=class_start_60 error=The remote server returned an error: (422) Unprocessable Entity.
