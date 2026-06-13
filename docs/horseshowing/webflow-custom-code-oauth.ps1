@@ -83,6 +83,7 @@ if ($returnedState -ne $state) {
 }
 
 $tokenBody = @{
+  grant_type = "authorization_code"
   client_id = $clientId
   client_secret = $clientSecret
   code = $code
@@ -99,6 +100,7 @@ try {
 } catch {
   $form = "client_id=$([System.Web.HttpUtility]::UrlEncode($clientId))" +
     "&client_secret=$([System.Web.HttpUtility]::UrlEncode($clientSecret))" +
+    "&grant_type=authorization_code" +
     "&code=$([System.Web.HttpUtility]::UrlEncode($code))" +
     "&redirect_uri=$([System.Web.HttpUtility]::UrlEncode($RedirectUri))"
 
@@ -146,9 +148,16 @@ try {
 } catch {
   $status = $null
   if ($_.Exception.Response) { $status = [int]$_.Exception.Response.StatusCode }
+  $errorBody = ""
+  if ($_.ErrorDetails.Message) { $errorBody = $_.ErrorDetails.Message }
+  if ($status -eq 404 -and $errorBody -match "Custom code block not found") {
+    Write-Host "PASS: custom_code:read reached Webflow. No custom-code block exists yet."
+    Write-Host "Next: Codex can use this token file for Webflow custom-code API writes."
+    exit 0
+  }
   Write-Host "FAIL: custom_code:read failed. status=$status"
   Write-Host $_.Exception.Message
-  if ($_.ErrorDetails.Message) { Write-Host $_.ErrorDetails.Message }
+  if ($errorBody) { Write-Host $errorBody }
   Write-Host "Check that the Webflow App is a Data Client app and includes custom_code:read and custom_code:write."
   exit 1
 }

@@ -1096,12 +1096,9 @@
 
   function classRenderKey(row){
     const ringNo = String(row.ring_no ?? row.ringNo ?? row.ring_number ?? row.ringNumber ?? "").trim();
-    const num = String(row.class_number ?? row.classNumber ?? "").trim();
-    const name = String(row.class_name ?? row.className ?? row.name ?? "").trim().toLowerCase();
-    if(name) return `name:${ringNo}|${name}`;
-    const classNo = String(row.class_no ?? row.classNo ?? "").trim();
-    if(classNo) return `class_no:${classNo}`;
-    return `fallback:${ringNo}|${num}|${name}`;
+    const roundedTime = roundedTenMinuteTime(rowDisplayTime(row)).key;
+    const name15 = normalizedDisplayClassText(row);
+    return `display:${ringNo}|${roundedTime}|${name15}`;
   }
 
   function mergeClassRows(items){
