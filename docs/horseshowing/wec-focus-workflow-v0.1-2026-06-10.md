@@ -2901,6 +2901,52 @@ Active trainer rollup grouping rules:
 7. Same-time classes without the same active trainer rollup stay separate.
 ```
 
+Current WEC print implementation lock:
+
+```text
+Source of truth:
+- Do not rewrite the Webflow embed for WEC print layout changes.
+- Webflow /wec-print loads the stable custom-code loader.
+- The loader pulls the Catalyst-served print HTML:
+  ringstatus-data/catalyst-workspaces/horseshowing/functions/horseshowing_sync/webflow-embeds/wec-print.html
+
+Print structure:
+- Fixed Letter output.
+- Portrait uses exactly 2 columns.
+- Whole ring containers do not split.
+- Ring groups are placed into columns by ring-group row counts/heights.
+- Ring header spans the full ring container width.
+- Each class wrapper is one unit:
+  group_rollup
+  class row(s)
+
+Class display:
+- Do not fallback to class_no.
+- Do not display class_no when class_label/class_name already contains a class label.
+- Convert leading class label from `738b) Name` to `738b - Name`.
+- Class row is a single line and clips with ellipsis.
+- Class text owns remaining width after fixed time space.
+
+Rollup display:
+- Rollup sits above its related class row.
+- Rollup may wrap.
+- Rollup uses the same available text width as the class text.
+- Rollup gets minor top and bottom padding.
+- CWF/trainer badge is optional visual chrome only; it must not drive grouping.
+
+Grouping/de-dupe:
+- Grouping is based on ring + rounded display time + first 15 chars of normalized class display text.
+- Grouping is not based on horse, rider, trainer, class_no, or class_number.
+- Same rounded time + same normalized class prefix should collapse repeated class rows.
+- If a grouped class contains active trainer rollup entries, display the time even if the previous visible class had the same time.
+- For repeated same-time rows inside one merged group, hide the repeated time after the first row.
+
+Time display:
+- Round display times to the nearest 10 minutes for print grouping.
+- Examples: 1:28 -> 1:30, 3:21 -> 3:20, 4:59 -> 5:00.
+- `check time` remains visible as `check time`.
+```
+
 ## Current Commands
 
 From main repo:
