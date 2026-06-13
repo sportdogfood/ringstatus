@@ -3660,3 +3660,238 @@ Not yet global:
 This classifier is proven on the active example view.
 Do not apply globally to entry_go_times, wec_alerts, or wec_mobile until the same audit passes on the broader focus-day dataset or an approved class_ignore table is used for exceptions.
 ```
+
+Promotion to `entry_go_times` on 2026-06-13:
+
+```text
+The classifier now filters `entry_go_times` generation for active-trainer rows.
+It uses Airtable `ignore` / `auto_ignore_candidate` first.
+It also contains the same ring_no + entry_no + class_start_time grouping fallback, scoped only to active trainers.
+```
+
+Verified after promotion:
+
+```text
+entry_go_times / CWF_TODAY rows = 60
+entry_go_times active = 44
+entry_go_times inactive = 16
+class_oog / CWF_TODAY ignored = 10
+active entry_go_times from ignored class_oog rows = 0
+```
+
+Still not promoted:
+
+```text
+wec_alerts and wec_mobile do not directly consume auto_ignore_candidate yet.
+They should inherit the cleaned active set from entry_go_times once their source path uses active entry_go_times rows.
+```
+
+## 2026-06-13 - Airtable Helper Record ID Binding Rule
+
+Purpose:
+
+```text
+Make Airtable helper linking repeatable and visible.
+Airtable link fields require target Airtable record IDs, not just business keys.
+```
+
+Rule:
+
+```text
+Whenever a workflow sees helper/reference values like horse, rider, trainer, show, ring, ring_day, entry, or class:
+1. Resolve the helper table by its business key.
+2. Read that helper row's Airtable record ID.
+3. Write the record ID into the link field on the working table.
+```
+
+Helper business keys:
+
+```text
+shows: show_no or approved show key
+rings: ring_no
+ring_days: ring_day_no
+horses: horse, with exact/normalized aka support where approved
+riders: rider
+trainers: trainer
+entries: entry_no
+classes: class_no
+```
+
+Airtable-only support field:
+
+```text
+rec_id = RECORD_ID()
+```
+
+Confirmed `rec_id` formula fields:
+
+```text
+shows
+rings
+ring_days
+horses
+riders
+trainers
+entries
+classes
+```
+
+Script:
+
+```text
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\ensure-airtable-helper-rec-ids.js
+```
+
+Important:
+
+```text
+This is an Airtable binding convenience only.
+It is not a Catalyst table requirement and not a true-source data field.
+```
+
+## 2026-06-13 - WEC Print Planning Tables
+
+Purpose:
+
+```text
+Create Airtable-visible planning records for WEC print layout before rendering.
+This is separate from wec_mobile.
+This is not a replacement for source data.
+```
+
+Tables:
+
+```text
+ring_groups
+wec_print_meta
+```
+
+Trigger contract:
+
+```text
+Run after focus_show.focus_day changes.
+Run after core_update_schedule completes on the core cadence.
+```
+
+Reason:
+
+```text
+focus_day_change changes the target show day.
+core_update_schedule changes the class schedule spine.
+Both can change ring counts, visible class counts, rollup counts, and print column placement.
+```
+
+Source inputs:
+
+```text
+focus_show
+update_schedule
+class_hide
+class_start_times
+shows
+ring_days
+```
+
+ring_groups row key:
+
+```text
+ring_group_key = show_no + "|" + focus_day + "|" + ring_no
+```
+
+ring_groups required values:
+
+```text
+shows link
+show_no
+focus_day
+ring_days link
+ring_day_no
+ring_no
+ring_name
+source_rows
+hidden_rows
+visible_classes
+visible_rollups
+print_rows
+portrait_col
+landscape_col
+wec_print_meta link
+source
+```
+
+wec_print_meta row key:
+
+```text
+print_meta_key = show_no + "|" + focus_day
+```
+
+wec_print_meta required values:
+
+```text
+shows link
+show_no
+focus_day
+ring_day_no list
+ring_groups links
+ring_group_count
+visible_classes
+visible_rollups
+total_print_rows
+portrait_summary
+portrait_col_1
+portrait_col_2
+landscape_summary
+landscape_col_1
+landscape_col_2
+landscape_col_3
+source
+```
+
+Script:
+
+```text
+C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\sync-airtable-ring-groups.js
+```
+
+Command:
+
+```powershell
+node docs/horseshowing/sync-airtable-ring-groups.js --show-no 14906 --focus-day 2026-06-13
+```
+
+Core cadence integration:
+
+```text
+docs/horseshowing/sync-airtable-core-workflows.js
+-> core_update_schedule
+-> sync-airtable-ring-groups.js
+-> wec-logs check_name = wec_print_meta
+```
+
+Verified 2026-06-13:
+
+```text
+ring_groups rows = 7
+wec_print_meta rows = 1
+ring_groups bound to wec_print_meta = 7/7
+shows link populated = yes
+ring_days link populated = yes
+visible_classes = 106
+visible_rollups = 34
+total_print_rows = 147
+```
+
+Portrait summary:
+
+```text
+col1 rows=72: INDOOR 4(41) | INDOOR 2(19) | INDOOR 6(12)
+col2 rows=75: INDOOR 5(16) | JUMPER ANNEX(9) | INDOOR 1(37) | WEC GRAND ARENA(13)
+```
+
+Landscape summary:
+
+```text
+col1 rows=54: INDOOR 4(41) | WEC GRAND ARENA(13)
+col2 rows=47: INDOOR 5(16) | INDOOR 2(19) | INDOOR 6(12)
+col3 rows=46: JUMPER ANNEX(9) | INDOOR 1(37)
+```

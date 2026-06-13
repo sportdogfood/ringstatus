@@ -133,6 +133,27 @@ async function writeLog({ checkName, showNo, focusDay, status = "ok", recordsSee
   });
 }
 
+async function runRingGroups({ showNo, focusDay }) {
+  const { spawnSync } = require("node:child_process");
+  const result = spawnSync(process.execPath, [
+    "docs/horseshowing/sync-airtable-ring-groups.js",
+    "--show-no",
+    String(showNo),
+    "--focus-day",
+    String(focusDay),
+  ], {
+    cwd: process.cwd(),
+    env: process.env,
+    encoding: "utf8",
+  });
+
+  if (result.status !== 0) {
+    throw new Error(`sync-airtable-ring-groups failed: ${result.stderr || result.stdout}`);
+  }
+
+  return JSON.parse(result.stdout);
+}
+
 async function hsFetch(path, { showNo, method = "GET", body = "" } = {}) {
   const response = await fetch(`${HORSESHOWING_BASE}${path}`, {
     method,
@@ -331,6 +352,23 @@ async function main() {
     recordsChanged: updateResult.changed,
     summary: `local update_schedule rows=${updateRows.length} ring_days=${ringDays.length}`,
     payload: { ring_days: ringDays.length, rows: updateRows.length }
+  });
+
+  const ringGroupsResult = await runRingGroups({ showNo, focusDay });
+  await writeLog({
+    checkName: "wec_print_meta",
+    showNo,
+    focusDay,
+    recordsSeen: ringGroupsResult.ring_groups,
+    recordsChanged: ringGroupsResult.created + ringGroupsResult.updated,
+    summary: `ring_groups=${ringGroupsResult.ring_groups}; wec_print_meta=${ringGroupsResult.wec_print_meta}`,
+    payload: {
+      ring_groups: ringGroupsResult.ring_groups,
+      created: ringGroupsResult.created,
+      updated: ringGroupsResult.updated,
+      portrait_summary: ringGroupsResult.portrait_summary,
+      landscape_summary: ringGroupsResult.landscape_summary
+    }
   });
 
   const countsRows = parseCounts(await hsFetch("/counts.php", { showNo }), showNo, focusDay);

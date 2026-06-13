@@ -243,7 +243,14 @@ function fieldsToCoreSnapshot({ updateRecords, countRecords, oogRecords }) {
     .map(recordFields)
     .filter((fields) => classNos.has(clean(fields.class_no)))
     .map((fields) => ({
+      show_no: fields.show_no,
+      focus_day: clean(fields.focus_day).slice(0, 10),
       class_no: fields.class_no,
+      class_order: fields.class_order,
+      class_start_time: Array.isArray(fields["class_start_time (from class_start_times)"])
+        ? clean(fields["class_start_time (from class_start_times)"][0])
+        : clean(fields["class_start_time (from class_start_times)"]),
+      left_15: fields.left_15,
       entry_no: fields.entry_no,
       entry_order: fields.entry_order,
       horse: fields.horse,
@@ -251,6 +258,8 @@ function fieldsToCoreSnapshot({ updateRecords, countRecords, oogRecords }) {
       trainer: fields.trainer,
       ring_no: fields.ring_no,
       ring_day_no: fields.days || fields.ring_day_no,
+      ignore: fields.ignore === true,
+      auto_ignore_candidate: fields.auto_ignore_candidate === true,
       source: fields.source || "airtable.class_oog"
     }));
   return { update_schedule: updateSchedule, counts, class_oog: classOog };
@@ -735,9 +744,83 @@ function scheduleHorseDisplay(classRow, entryOrder) {
   return "";
 }
 
+function entryClassifierKey(entry, classRow, fallbackFocusDay) {
+  const focusDay = clean(
+    entry.focus_day
+    || classRow?.show_day_key
+    || classRow?.show_days_display_date
+    || fallbackFocusDay
+  ).slice(0, 10);
+  const ringNo = clean(entry.ring_no || classRow?.ring_number);
+  const entryNo = clean(entry.entry_no);
+  const classStartTime = clean(entry.class_start_time || classRow?.class_start_time);
+  if (!focusDay || !ringNo || !entryNo || !classStartTime) return "";
+  return `${focusDay}|${ringNo}|${entryNo}|${classStartTime}`;
+}
+
+function entryIdentity(entry, classRow, fallbackFocusDay, showNo) {
+  const focusDay = clean(
+    entry.focus_day
+    || classRow?.show_day_key
+    || classRow?.show_days_display_date
+    || fallbackFocusDay
+  ).slice(0, 10);
+  const showNoValue = clean(entry.show_no || classRow?.show_id || classRow?.show_no || showNo);
+  return `${showNoValue}|${focusDay}|${clean(entry.class_no)}|${clean(entry.entry_no)}`;
+}
+
+function classOogIgnoreSummary({ classOogRows, classByNo, fallbackFocusDay, showNo, activeTrainers }) {
+  const active = new Set((activeTrainers || []).map((item) => clean(item).toLowerCase()).filter(Boolean));
+  const ignored = new Set();
+  const manual = new Set();
+  const automatic = new Set();
+  const grouped = new Map();
+
+  for (const entry of classOogRows || []) {
+    const trainer = clean(entry.trainer).toLowerCase();
+    if (!trainer || !active.has(trainer)) continue;
+    const classRow = classByNo.get(clean(entry.class_no));
+    const identity = entryIdentity(entry, classRow, fallbackFocusDay, showNo);
+    if (!identity || identity.includes("||")) continue;
+    if (entry.ignore === true || entry.auto_ignore_candidate === true) {
+      ignored.add(identity);
+      manual.add(identity);
+      continue;
+    }
+    const groupKey = entryClassifierKey(entry, classRow, fallbackFocusDay);
+    if (!groupKey) continue;
+    if (!grouped.has(groupKey)) grouped.set(groupKey, []);
+    grouped.get(groupKey).push({ entry, classRow, identity });
+  }
+
+  for (const group of grouped.values()) {
+    if (group.length < 2) continue;
+    const ordered = [...group].sort((left, right) => {
+      const leftOrder = intOrNull(left.entry.class_order) ?? 0;
+      const rightOrder = intOrNull(right.entry.class_order) ?? 0;
+      if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+      return (intOrNull(left.entry.class_no) ?? 0) - (intOrNull(right.entry.class_no) ?? 0);
+    });
+    for (let index = 1; index < ordered.length; index += 1) {
+      ignored.add(ordered[index].identity);
+      automatic.add(ordered[index].identity);
+    }
+  }
+
+  return {
+    ignored,
+    manual_count: manual.size,
+    automatic_count: automatic.size,
+    ignored_count: ignored.size,
+    grouped_count: [...grouped.values()].filter((group) => group.length > 1).length
+  };
+}
+
 function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, classOogRows, activeTrainers, horseDisplays, trainerDisplays, nowIso }) {
   const active = new Set(activeTrainers.map((item) => clean(item).toLowerCase()).filter(Boolean));
   const classByNo = new Map(scheduleRows.map((row) => [clean(row.class_no), row]));
+  const ignoreSummary = classOogIgnoreSummary({ classOogRows, classByNo, fallbackFocusDay, showNo, activeTrainers });
+  buildEntryGoRows.lastIgnoreSummary = ignoreSummary;
   const rows = [];
   const now = new Date();
   for (const entry of classOogRows) {
@@ -755,6 +838,8 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
     const start = parseTime(focusDay, clean(classRow.class_start_time));
     const goTime = start ? addSeconds(start, (entryOrder - 1) * paceSeconds) : null;
     const entryNo = clean(entry.entry_no);
+    const identity = `${clean(classRow.show_id || classRow.show_no || showNo)}|${focusDay}|${classNo}|${entryNo}`;
+    if (ignoreSummary.ignored.has(identity)) continue;
     const horseName = clean(entry.horse);
     const horseDisplay = clean(horseDisplays?.[horseName] || horseDisplays?.[normalizeText(horseName)] || scheduleHorseDisplay(classRow, entry.entry_order) || entry.horse);
     const showNoValue = clean(classRow.show_id || classRow.show_no || showNo);
@@ -917,6 +1002,12 @@ async function main() {
       nowIso
     });
   }
+  const entryIgnoreSummary = buildEntryGoRows.lastIgnoreSummary || {
+    manual_count: 0,
+    automatic_count: 0,
+    ignored_count: 0,
+    grouped_count: 0
+  };
 
   const classFields = Object.keys(classStartRows[0] || {
     class_start_key_mirror: "",
@@ -1018,6 +1109,10 @@ async function main() {
         class_oog_entry_go_matches: classOogLinkResult.entry_go_matches,
         class_oog_helper_matches: classOogLinkResult.helper_matches,
         class_oog_links_changed: classOogLinkResult.linked,
+        class_oog_ignore_manual: entryIgnoreSummary.manual_count,
+        class_oog_ignore_automatic: entryIgnoreSummary.automatic_count,
+        class_oog_ignore_total: entryIgnoreSummary.ignored_count,
+        class_oog_ignore_groups: entryIgnoreSummary.grouped_count,
         inactive_existing_seen: entryInactive.seen,
         inactive_marked: entryInactive.inactive
       }
@@ -1034,6 +1129,7 @@ async function main() {
     linked_entry_go_times_to_class_start_times: linkResult,
     linked_entry_go_times_to_helpers: entryHelperLinkResult,
     linked_class_oog_to_generated_tables_and_helpers: classOogLinkResult,
+    class_oog_ignore: entryIgnoreSummary,
     inactive: {
       class_start_times: classInactive,
       entry_go_times: entryInactive
