@@ -506,8 +506,12 @@ function addSeconds(date, seconds) {
   return new Date(date.getTime() + seconds * 1000);
 }
 
-function liveClassKey(row) {
-  return `${clean(row.show_no || row.show_id)}|${clean(row.focus_day || row.show_day_key || row.show_days_display_date)}|${clean(row.class_no)}`;
+function scheduleClassKey(row, fallbackFocusDay = "", fallbackShowNo = "") {
+  const showNo = clean(row.show_no || row.show_id || fallbackShowNo);
+  const focusDay = clean(row.focus_day || row.show_day_key || row.show_days_display_date || fallbackFocusDay).slice(0, 10);
+  const ringDayNo = clean(row.ring_day_no || row.days);
+  const classNo = clean(row.class_no);
+  return `${showNo}|${focusDay}|${ringDayNo}|${classNo}`;
 }
 
 async function linkEntryGoTimesToClassStartTimes(showNo, focusDay) {
@@ -646,11 +650,11 @@ function classOogClassStartKey(fields) {
 function entryGoKeyFromFields(fields) {
   return clean(fields.entry_go_key_mirror)
     || clean(fields.entry_go_key)
-    || `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.class_no)}|${clean(fields.entry_no)}`;
+    || `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.ring_day_no || fields.days)}|${clean(fields.class_no)}|${clean(fields.entry_no)}`;
 }
 
 function classOogEntryGoKey(fields) {
-  return `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.class_no)}|${clean(fields.entry_no)}`;
+  return `${clean(fields.show_no)}|${clean(fields.focus_day).slice(0, 10)}|${clean(fields.days || fields.ring_day_no)}|${clean(fields.class_no)}|${clean(fields.entry_no)}`;
 }
 
 async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
@@ -1031,11 +1035,11 @@ function paceFromLive(row) {
 function applyLiveTimingToClassRows(classRows, liveRows) {
   const liveByClass = new Map();
   for (const liveRow of liveRows || []) {
-    const key = liveClassKey(liveRow);
-    if (!key.endsWith("|")) liveByClass.set(key, liveRow);
+    const key = scheduleClassKey(liveRow);
+    if (!key.includes("||") && !key.endsWith("|")) liveByClass.set(key, liveRow);
   }
   return (classRows || []).map((row) => {
-    const live = liveByClass.get(liveClassKey(row));
+    const live = liveByClass.get(scheduleClassKey(row));
     if (!live) return row;
     const paceSeconds = paceFromLive(live);
     const sources = new Set(
@@ -1095,10 +1099,11 @@ function entryIdentity(entry, classRow, fallbackFocusDay, showNo) {
     || fallbackFocusDay
   ).slice(0, 10);
   const showNoValue = clean(entry.show_no || classRow?.show_id || classRow?.show_no || showNo);
-  return `${showNoValue}|${focusDay}|${clean(entry.class_no)}|${clean(entry.entry_no)}`;
+  const ringDayNo = clean(entry.ring_day_no || entry.days || classRow?.ring_day_no);
+  return `${showNoValue}|${focusDay}|${ringDayNo}|${clean(entry.class_no)}|${clean(entry.entry_no)}`;
 }
 
-function classOogIgnoreSummary({ classOogRows, classByNo, fallbackFocusDay, showNo, activeTrainers }) {
+function classOogIgnoreSummary({ classOogRows, classByKey, fallbackFocusDay, showNo, activeTrainers }) {
   const active = new Set((activeTrainers || []).map((item) => clean(item).toLowerCase()).filter(Boolean));
   const ignored = new Set();
   const manual = new Set();
@@ -1108,7 +1113,7 @@ function classOogIgnoreSummary({ classOogRows, classByNo, fallbackFocusDay, show
   for (const entry of classOogRows || []) {
     const trainer = clean(entry.trainer).toLowerCase();
     if (!trainer || !active.has(trainer)) continue;
-    const classRow = classByNo.get(clean(entry.class_no));
+    const classRow = classByKey.get(scheduleClassKey(entry, fallbackFocusDay, showNo));
     const identity = entryIdentity(entry, classRow, fallbackFocusDay, showNo);
     if (!identity || identity.includes("||")) continue;
     if (entry.ignore === true || entry.auto_ignore_candidate === true) {
@@ -1147,8 +1152,8 @@ function classOogIgnoreSummary({ classOogRows, classByNo, fallbackFocusDay, show
 
 function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, classOogRows, activeTrainers, horseDisplays, trainerDisplays, nowIso }) {
   const active = new Set(activeTrainers.map((item) => clean(item).toLowerCase()).filter(Boolean));
-  const classByNo = new Map(scheduleRows.map((row) => [clean(row.class_no), row]));
-  const ignoreSummary = classOogIgnoreSummary({ classOogRows, classByNo, fallbackFocusDay, showNo, activeTrainers });
+  const classByKey = new Map(scheduleRows.map((row) => [scheduleClassKey(row, fallbackFocusDay, showNo), row]));
+  const ignoreSummary = classOogIgnoreSummary({ classOogRows, classByKey, fallbackFocusDay, showNo, activeTrainers });
   buildEntryGoRows.lastIgnoreSummary = ignoreSummary;
   const rows = [];
   const now = new Date();
@@ -1156,7 +1161,7 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
     const trainer = clean(entry.trainer);
     if (!trainer || !active.has(trainer.toLowerCase())) continue;
     const classNo = clean(entry.class_no);
-    const classRow = classByNo.get(classNo);
+    const classRow = classByKey.get(scheduleClassKey(entry, fallbackFocusDay, showNo));
     if (!classRow) continue;
     const focusDay = clean(classRow.show_day_key || classRow.show_days_display_date || fallbackFocusDay);
     const entryOrder = intOrNull(entry.entry_order);
@@ -1167,12 +1172,13 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
     const start = parseTime(focusDay, clean(classRow.class_start_time));
     const goTime = start ? addSeconds(start, (entryOrder - 1) * paceSeconds) : null;
     const entryNo = clean(entry.entry_no);
-    const identity = `${clean(classRow.show_id || classRow.show_no || showNo)}|${focusDay}|${classNo}|${entryNo}`;
-    if (ignoreSummary.ignored.has(identity)) continue;
+    const ringDayNo = clean(classRow.ring_day_no || entry.ring_day_no || entry.days);
+    const identity = `${clean(classRow.show_id || classRow.show_no || showNo)}|${focusDay}|${ringDayNo}|${classNo}|${entryNo}`;
+    if (entry.ignore === true || entry.auto_ignore_candidate === true) continue;
     const horseName = clean(entry.horse);
     const horseDisplay = clean(horseDisplays?.[horseName] || horseDisplays?.[normalizeText(horseName)] || scheduleHorseDisplay(classRow, entry.entry_order) || entry.horse);
     const showNoValue = clean(classRow.show_id || classRow.show_no || showNo);
-    const entryGoKey = `${showNoValue}|${focusDay}|${classNo}|${entryNo}`;
+    const entryGoKey = `${showNoValue}|${focusDay}|${ringDayNo}|${classNo}|${entryNo}`;
     rows.push({
       entry_go_key: entryGoKey,
       entry_go_key_mirror: entryGoKey,
@@ -1292,13 +1298,17 @@ async function main() {
   let entryGoRows = [];
   let activeTrainers = [];
   let scheduleRows = [];
+  let liveScheduleRows = [];
   let entrySchema = { created: 0 };
   let entryResult = { seen: 0, changed: 0 };
   if (runEntryGo) {
     const params = new URLSearchParams({ action: "schedule-json", show_no: showNo, focus_day: actualFocusDay });
-    scheduleRows = await catalystGet(params);
-    if (coreSnapshot === airtableCoreSnapshot || !catalystHasCore || !Array.isArray(scheduleRows) || scheduleRows.length === 0) {
-      scheduleRows = coreUpdateRowsToScheduleRows(coreSnapshot.update_schedule || [], coreSnapshot.counts || []);
+    liveScheduleRows = await catalystGet(params);
+    const coreScheduleRows = coreUpdateRowsToScheduleRows(coreSnapshot.update_schedule || [], coreSnapshot.counts || []);
+    if (Array.isArray(liveScheduleRows) && liveScheduleRows.length > 0) {
+      scheduleRows = applyLiveTimingToClassRows(coreScheduleRows, liveScheduleRows);
+    } else {
+      scheduleRows = coreScheduleRows;
     }
     if (runClassStart) {
       classStartRows = applyLiveTimingToClassRows(classStartRows, scheduleRows);

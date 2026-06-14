@@ -570,6 +570,36 @@ function Write-LiveRowsToAirtable {
   }
 }
 
+function Invoke-AirtableLiveLinkSync {
+  param(
+    [string]$Source,
+    [string]$FocusDayValue
+  )
+
+  if (!$env:AIRTABLE_TOKEN) {
+    return [pscustomobject]@{
+      source = $Source
+      changed = 0
+      skipped = "missing_airtable_token"
+    }
+  }
+
+  $scriptPath = Join-Path $root "sync-airtable-live-links.js"
+  if (!(Test-Path $scriptPath)) {
+    return [pscustomobject]@{
+      source = $Source
+      changed = 0
+      skipped = "missing_sync_script"
+    }
+  }
+
+  $output = & node $scriptPath --source $Source --show-no $ShowNo --focus-day $FocusDayValue
+  if ($LASTEXITCODE -ne 0) {
+    throw "sync-airtable-live-links failed source=$Source output=$output"
+  }
+  return ($output | Select-Object -Last 1 | ConvertFrom-Json)
+}
+
 function Invoke-CatalystQuery($action, $params = @{}, $TimeoutSec = 45) {
   $uri = "${BaseUrl}?action=$action&show_no=$ShowNo"
   if ($FocusDay -and !$params.ContainsKey("focus_day")) {
@@ -776,52 +806,8 @@ function Resolve-StaleTimeAlerts {
     $ActiveAlertKeys = @{}
   )
 
-  if (!$env:AIRTABLE_TOKEN -or !$FocusDayValue) { return }
-
-  try {
-    $formula = "AND({status}='open', FIND('|$ShowNo|$FocusDayValue|', {alert_key_run}))"
-    $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$([uri]::EscapeDataString($formula))&pageSize=100"
-    $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
-      Authorization = "Bearer $env:AIRTABLE_TOKEN"
-    } -TimeoutSec 30
-
-    $records = @($result.records | Where-Object {
-      $type = [string]$_.fields.alert_type
-      $key = [string]$_.fields.alert_key_run
-      ($type.StartsWith("class_start_") -or $type.StartsWith("entry_go_")) -and !$ActiveAlertKeys.ContainsKey($key)
-    })
-    if ($records.Count -eq 0) { return }
-
-    for ($i = 0; $i -lt $records.Count; $i += 10) {
-      $batch = @($records[$i..([math]::Min($i + 9, $records.Count - 1))])
-      $body = @{
-        records = @($batch | ForEach-Object {
-          @{
-            id = $_.id
-            fields = @{
-              status = "resolved"
-              message = "Resolved: alert window is no longer active."
-              payload_json = ConvertTo-SafeJson @{
-                show_no = $ShowNo
-                focus_day = $FocusDayValue
-                resolved_reason = "stale_time_window"
-                previous_alert_key_run = $_.fields.alert_key_run
-              }
-            }
-          }
-        })
-        typecast = $true
-      } | ConvertTo-Json -Depth 12
-      $patchUri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))"
-      Invoke-RestMethod -Method Patch -Uri $patchUri -Headers @{
-        Authorization = "Bearer $env:AIRTABLE_TOKEN"
-        "Content-Type" = "application/json"
-      } -Body $body -TimeoutSec 30 | Out-Null
-    }
-    Write-WorkflowLog "airtable-alert stale-time resolved records=$($records.Count) focus=$FocusDayValue"
-  } catch {
-    Write-WorkflowLog "airtable-alert stale-time resolve failed focus=$FocusDayValue error=$($_.Exception.Message)"
-  }
+  if (!$FocusDayValue) { return }
+  Write-WorkflowLog "airtable-alert stale-time resolve disabled focus=$FocusDayValue active_keys=$(@($ActiveAlertKeys.Keys).Count)"
 }
 
 function Write-ClassStartTimesLog {
@@ -861,7 +847,8 @@ function Write-TimeAlerts {
         $classAlertWindows += 1
         $dedupeKey = "$ShowNo|$FocusDayValue|class_start|$($row.class_no)|$threshold"
         $activeAlertKeys["class_start_$threshold|$dedupeKey"] = $true
-        Write-WecAirtableAlert -AlertType "class_start_$threshold" -Severity "info" -Message "Class $($row.class_number) starts in about $threshold minutes at $($row.start_display)." -DedupeKey $dedupeKey -Payload @{
+        $classSubject = if ($row.class_number) { "Class $($row.class_number)" } elseif ($row.class_no) { "Class $($row.class_no)" } else { "Class start alert" }
+        Write-WecAirtableAlert -AlertType "class_start_$threshold" -Severity "info" -Message "$classSubject starts in about $threshold minutes at $($row.start_display)." -DedupeKey $dedupeKey -Payload @{
           focus_day = $FocusDayValue
           class_no = $row.class_no
           class_number = $row.class_number
@@ -873,7 +860,7 @@ function Write-TimeAlerts {
           alert_type = "class_start_$threshold"
           trigger_minutes = $threshold
           target_time = $row.start_display
-          alert_subject = "Class $($row.class_number)"
+          alert_subject = $classSubject
           source_table = "class_start_times"
         }
       }
@@ -1103,9 +1090,11 @@ if ($heartbeat.live_error) {
   }
 } else {
   $liveMirror = Write-LiveRowsToAirtable -Source "rings" -Payload $heartbeat.live -FocusDayValue $heartbeat.focus_day
-  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -RecordsSeen (Int-OrZero $heartbeat.live.parsed_rows) -RecordsChanged (Int-OrZero $liveMirror.changed) -Summary "get_rings rows=$($heartbeat.live.parsed_rows) mirrored=$($liveMirror.changed) focus=$($heartbeat.focus_day)" -Payload @{
+  $liveLinks = Invoke-AirtableLiveLinkSync -Source "rings" -FocusDayValue $heartbeat.focus_day
+  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -RecordsSeen (Int-OrZero $heartbeat.live.parsed_rows) -RecordsChanged ((Int-OrZero $liveMirror.changed) + (Int-OrZero $liveLinks.changed)) -Summary "get_rings rows=$($heartbeat.live.parsed_rows) mirrored=$($liveMirror.changed) linked=$($liveLinks.changed) focus=$($heartbeat.focus_day)" -Payload @{
     live = $heartbeat.live
     mirror = $liveMirror
+    links = $liveLinks
     focus_day = $heartbeat.focus_day
   }
   Resolve-WecAirtableAlert -AlertType "live_get_rings_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Message "Resolved: get_rings returned without error." -Payload $heartbeat.live

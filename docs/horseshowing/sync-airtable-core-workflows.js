@@ -109,6 +109,124 @@ async function upsert(tableName, mergeFields, rows) {
   return { seen: rows.length, changed };
 }
 
+async function createMissing(tableName, keyField, rows) {
+  if (!rows.length) return { seen: 0, changed: 0 };
+  const existing = await recordIdMap(tableName, keyField);
+  const missing = rows.filter((row) => {
+    const key = clean(row[keyField]);
+    return key && !existing.has(key);
+  });
+  let changed = 0;
+  for (let index = 0; index < missing.length; index += 10) {
+    const batch = missing.slice(index, index + 10);
+    await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(tableName)}`, {
+      method: "POST",
+      body: JSON.stringify({
+        records: batch.map((fields) => ({ fields })),
+        typecast: true
+      })
+    });
+    changed += batch.length;
+  }
+  return { seen: rows.length, changed };
+}
+
+async function listAll(tableName, params = {}) {
+  const records = [];
+  let offset = "";
+  do {
+    const query = new URLSearchParams({ pageSize: "100", ...params });
+    if (offset) query.set("offset", offset);
+    const payload = await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(tableName)}?${query.toString()}`);
+    records.push(...(payload.records || []));
+    offset = payload.offset || "";
+  } while (offset);
+  return records;
+}
+
+async function recordIdMap(tableName, fieldName, params = {}) {
+  const records = await listAll(tableName, params);
+  const map = new Map();
+  for (const record of records) {
+    const value = clean(record.fields?.[fieldName]);
+    if (value) map.set(value, record.id);
+  }
+  return map;
+}
+
+function linkedRecord(map, value) {
+  const id = map.get(clean(value));
+  return id ? [id] : undefined;
+}
+
+function dowName(value) {
+  return clean(value).slice(0, 3).toUpperCase();
+}
+
+async function buildCoreLinkMaps(showNo, focusDay, updateRows, classOogRows = []) {
+  const classes = new Map();
+  const rings = new Map();
+  const ringNames = new Map();
+  const dows = new Map();
+  const entries = new Map();
+
+  for (const row of [...updateRows, ...classOogRows]) {
+    if (row.class_no && !classes.has(clean(row.class_no))) {
+      classes.set(clean(row.class_no), {
+        class_no: intOrNull(row.class_no),
+        class_label: clean(row.event_name || row.class_label),
+        class_name: clean(row.class_name),
+        class_payout: clean(row.class_payout),
+        source: "update_schedule"
+      });
+    }
+    if (row.ring_no && !rings.has(clean(row.ring_no))) {
+      rings.set(clean(row.ring_no), {
+        ring_no: intOrNull(row.ring_no),
+        ring_name: clean(row.ring_name || row.ring),
+        source: "update_schedule"
+      });
+    }
+    const ringName = clean(row.ring_name || row.ring);
+    if (ringName && !ringNames.has(ringName)) {
+      ringNames.set(ringName, { ring_name: ringName });
+    }
+    const dow = dowName(row.date_text);
+    if (dow && !dows.has(dow)) {
+      dows.set(dow, { Name: dow });
+    }
+    if (row.entry_no && !entries.has(clean(row.entry_no))) {
+      entries.set(clean(row.entry_no), {
+        entry_no: intOrNull(row.entry_no),
+        horse: clean(row.horse),
+        rider: clean(row.rider),
+        trainer: clean(row.trainer),
+        source: "class_oog"
+      });
+    }
+  }
+
+  await upsert("shows", ["show_no"], [{ show_no: intOrNull(showNo) }]);
+  await upsert("classes", ["class_no"], [...classes.values()].filter((row) => row.class_no));
+  await upsert("rings", ["ring_no"], [...rings.values()].filter((row) => row.ring_no));
+  await upsert("ring_names", ["ring_name"], [...ringNames.values()].filter((row) => row.ring_name));
+  await upsert("dows", ["Name"], [...dows.values()].filter((row) => row.Name));
+  await createMissing("entries", "entry_no", [...entries.values()].filter((row) => row.entry_no));
+
+  return {
+    shows: await recordIdMap("shows", "show_no"),
+    focusShow: await recordIdMap("focus_show", "show_no", {
+      filterByFormula: `AND({show_no}=${intOrNull(showNo)},IS_SAME({focus_day},'${focusDay}','day'))`
+    }),
+    classes: await recordIdMap("classes", "class_no"),
+    rings: await recordIdMap("rings", "ring_no"),
+    ringNames: await recordIdMap("ring_names", "ring_name"),
+    ringDays: await recordIdMap("ring_days", "ring_day_no"),
+    dows: await recordIdMap("dows", "Name"),
+    entries: await recordIdMap("entries", "entry_no")
+  };
+}
+
 async function writeLog({ checkName, showNo, focusDay, status = "ok", recordsSeen = 0, recordsChanged = 0, summary, payload = {} }) {
   const createdAt = new Date().toISOString();
   await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent("wec-logs")}`, {
@@ -290,7 +408,7 @@ function parseClassOog(raw, classNo, context) {
       horse: clean(cells[2]),
       rider: clean(cells[3]),
       trainer: clean(cells[4]),
-      mirror_class_oog_key: `${intOrNull(classNo)}|${intOrNull(cells[1])}`,
+      mirror_class_oog_key: `${intOrNull(context.show_no)}|${context.focus_day}|${context.days}|${intOrNull(classNo)}|${intOrNull(cells[1])}`,
       source: orderStatus || "class_oog"
     });
   }
@@ -332,17 +450,33 @@ async function main() {
   });
 
   const updateRows = [];
+  const classOogRows = [];
   for (const ringDay of ringDays) {
     const raw = await hsFetch("/update_schedule.php", {
       showNo,
       method: "POST",
       body: new URLSearchParams({ show_no: showNo, ring_day_no: ringDay.ring_day_no }).toString()
     });
-    updateRows.push(...parseUpdateSchedule(raw, showNo, ringDay));
+    const parsedUpdateRows = parseUpdateSchedule(raw, showNo, ringDay);
+    updateRows.push(...parsedUpdateRows);
+    for (const row of parsedUpdateRows) {
+      const rawOog = await hsFetch(`/class_oog.php?class_no=${encodeURIComponent(row.class_no)}`, { showNo });
+      classOogRows.push(...parseClassOog(rawOog, row.class_no, row));
+    }
   }
+  const updateLinks = await buildCoreLinkMaps(showNo, focusDay, updateRows);
   const updateResult = await upsert("update_schedule", ["show_no", "days", "class_no"], updateRows.map((row) => {
     const { class_order_local, ...fields } = row;
-    return fields;
+    return {
+      ...fields,
+      shows: linkedRecord(updateLinks.shows, row.show_no || showNo),
+      focus_show: linkedRecord(updateLinks.focusShow, row.show_no || showNo),
+      ring_days: linkedRecord(updateLinks.ringDays, row.days),
+      rings: linkedRecord(updateLinks.rings, row.ring_no),
+      ring_names: linkedRecord(updateLinks.ringNames, row.ring_name),
+      classes: linkedRecord(updateLinks.classes, row.class_no),
+      dows: linkedRecord(updateLinks.dows, dowName(row.date_text))
+    };
   }));
   await writeLog({
     checkName: "core_update_schedule",
@@ -383,12 +517,17 @@ async function main() {
     payload: { rows: countsRows.length }
   });
 
-  const classOogRows = [];
-  for (const row of updateRows) {
-    const raw = await hsFetch(`/class_oog.php?class_no=${encodeURIComponent(row.class_no)}`, { showNo });
-    classOogRows.push(...parseClassOog(raw, row.class_no, row));
-  }
-  const classOogResult = await upsert("class_oog", ["class_no", "entry_no"], classOogRows);
+  const classOogLinks = await buildCoreLinkMaps(showNo, focusDay, updateRows, classOogRows);
+  const classOogResult = await upsert("class_oog", ["mirror_class_oog_key"], classOogRows.map((row) => ({
+    ...row,
+    shows: linkedRecord(classOogLinks.shows, row.show_no || showNo),
+    focus_show: linkedRecord(classOogLinks.focusShow, row.show_no || showNo),
+    classes: linkedRecord(classOogLinks.classes, row.class_no),
+    rings: linkedRecord(classOogLinks.rings, row.ring_no),
+    ring_names: linkedRecord(classOogLinks.ringNames, row.ring),
+    ring_days: linkedRecord(classOogLinks.ringDays, row.days),
+    entries: linkedRecord(classOogLinks.entries, row.entry_no)
+  })));
   await writeLog({
     checkName: "core_class_oog",
     showNo,

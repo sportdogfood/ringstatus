@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEC Session Simple Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 24px;
+      color: #111;
+    }
+
+    button {
+      font: inherit;
+      padding: 10px 14px;
+      border: 1px solid #111;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .box {
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      max-width: 560px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .row:last-child {
+      border-bottom: 0;
+    }
+
+    .label {
+      font-weight: 700;
+    }
+
+    .inactive {
+      color: #9b1c1c;
+      font-weight: 700;
+    }
+
+    .active {
+      color: #1f6f3a;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <h1>WEC Session Simple Test</h1>
+  <button id="startBtn" type="button">Start session</button>
+  <button id="heartbeatBtn" type="button">Send heartbeat</button>
+  <button id="expireBtn" type="button">Simulate Safari closed</button>
+
+  <div class="box">
+    <div class="row">
+      <div class="label">device_id</div>
+      <div id="deviceId"></div>
+    </div>
+    <div class="row">
+      <div class="label">session_id</div>
+      <div id="sessionId">none</div>
+    </div>
+    <div class="row">
+      <div class="label">started_at</div>
+      <div id="startedAt">none</div>
+    </div>
+    <div class="row">
+      <div class="label">last_seen_at</div>
+      <div id="lastSeenAt">none</div>
+    </div>
+    <div class="row">
+      <div class="label">status</div>
+      <div id="status">not started</div>
+    </div>
+  </div>
+
+  <script>
+    const INACTIVE_AFTER_MS = 5 * 60 * 1000;
+
+    const state = {
+      deviceId: getOrCreateDeviceId(),
+      sessionId: "",
+      startedAt: "",
+      lastSeenAt: ""
+    };
+
+    document.getElementById("deviceId").textContent = state.deviceId;
+    document.getElementById("startBtn").addEventListener("click", startSession);
+    document.getElementById("heartbeatBtn").addEventListener("click", heartbeat);
+    document.getElementById("expireBtn").addEventListener("click", simulateClosed);
+
+    setInterval(render, 1000);
+    render();
+
+    function getOrCreateDeviceId() {
+      const existing = localStorage.getItem("wec_test_device_id");
+      if (existing) return existing;
+      const created = `device_${crypto.randomUUID()}`;
+      localStorage.setItem("wec_test_device_id", created);
+      return created;
+    }
+
+    function startSession() {
+      const now = new Date().toISOString();
+      state.sessionId = `session_${crypto.randomUUID()}`;
+      state.startedAt = now;
+      state.lastSeenAt = now;
+      render();
+    }
+
+    function heartbeat() {
+      if (!state.sessionId) return;
+      state.lastSeenAt = new Date().toISOString();
+      render();
+    }
+
+    function simulateClosed() {
+      if (!state.sessionId) return;
+      state.lastSeenAt = new Date(Date.now() - (INACTIVE_AFTER_MS + 1000)).toISOString();
+      render();
+    }
+
+    function render() {
+      document.getElementById("sessionId").textContent = state.sessionId || "none";
+      document.getElementById("startedAt").textContent = state.startedAt || "none";
+      document.getElementById("lastSeenAt").textContent = state.lastSeenAt || "none";
+
+      const statusEl = document.getElementById("status");
+      if (!state.sessionId) {
+        statusEl.textContent = "not started";
+        statusEl.className = "";
+        return;
+      }
+
+      const ageMs = Date.now() - Date.parse(state.lastSeenAt);
+      if (ageMs > INACTIVE_AFTER_MS) {
+        statusEl.textContent = "inactive - heartbeat stopped";
+        statusEl.className = "inactive";
+      } else {
+        statusEl.textContent = "active";
+        statusEl.className = "active";
+      }
+    }
+  </script>
+</body>
+</html>

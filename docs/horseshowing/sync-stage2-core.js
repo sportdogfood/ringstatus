@@ -105,6 +105,27 @@ async function upsertAirtableRows(table, mergeFields, rows) {
   return { seen: cleanRows.length, changed };
 }
 
+async function createMissingAirtableRows(table, keyField, rows) {
+  const existing = await recordIdMap(table, keyField);
+  const missing = rows.filter((row) => {
+    const key = clean(row[keyField]);
+    return key && !existing.has(key);
+  });
+  let changed = 0;
+  for (let index = 0; index < missing.length; index += 10) {
+    const batch = missing.slice(index, index + 10);
+    await airtableFetch(table, {
+      method: "POST",
+      body: {
+        records: batch.map((fields) => ({ fields })),
+        typecast: true
+      }
+    });
+    changed += batch.length;
+  }
+  return { seen: rows.length, changed };
+}
+
 async function listAllAirtableRecords(table, params = {}) {
   const records = [];
   let offset = "";
@@ -161,11 +182,15 @@ async function buildClassOogLinkMaps(showNo, focusDay, rows) {
     shows: [{ show_no: numberOrNull(showNo) }],
     classes: [],
     rings: [],
+    ringNames: [],
+    dows: [],
     entries: []
   };
 
   const classes = new Map();
   const rings = new Map();
+  const ringNames = new Map();
+  const dows = new Map();
   const entries = new Map();
 
   for (const row of [...rows.updateSchedule, ...rows.classOog]) {
@@ -181,9 +206,17 @@ async function buildClassOogLinkMaps(showNo, focusDay, rows) {
     if (row.ring_no && !rings.has(clean(row.ring_no))) {
       rings.set(clean(row.ring_no), {
         ring_no: numberOrNull(row.ring_no),
-        ring_name: clean(row.ring),
+        ring_name: clean(row.ring || row.ring_name),
         source: "class_oog"
       });
+    }
+    const ringName = clean(row.ring || row.ring_name);
+    if (ringName && !ringNames.has(ringName)) {
+      ringNames.set(ringName, { ring_name: ringName });
+    }
+    const dowName = clean(row.dow_name);
+    if (dowName && !dows.has(dowName)) {
+      dows.set(dowName, { Name: dowName });
     }
     if (row.entry_no && !entries.has(clean(row.entry_no))) {
       entries.set(clean(row.entry_no), {
@@ -198,12 +231,16 @@ async function buildClassOogLinkMaps(showNo, focusDay, rows) {
 
   support.classes = [...classes.values()].filter((row) => row.class_no);
   support.rings = [...rings.values()].filter((row) => row.ring_no);
+  support.ringNames = [...ringNames.values()].filter((row) => row.ring_name);
+  support.dows = [...dows.values()].filter((row) => row.Name);
   support.entries = [...entries.values()].filter((row) => row.entry_no);
 
   await upsertAirtableRows("shows", ["show_no"], support.shows);
   await upsertAirtableRows("classes", ["class_no"], support.classes);
   await upsertAirtableRows("rings", ["ring_no"], support.rings);
-  await upsertAirtableRows("entries", ["entry_no"], support.entries);
+  await upsertAirtableRows("ring_names", ["ring_name"], support.ringNames);
+  await upsertAirtableRows("dows", ["Name"], support.dows);
+  await createMissingAirtableRows("entries", "entry_no", support.entries);
 
   return {
     shows: await recordIdMap("shows", "show_no"),
@@ -212,7 +249,9 @@ async function buildClassOogLinkMaps(showNo, focusDay, rows) {
     }),
     classes: await recordIdMap("classes", "class_no"),
     rings: await recordIdMap("rings", "ring_no"),
+    ringNames: await recordIdMap("ring_names", "ring_name"),
     ringDays: await recordIdMap("ring_days", "ring_day_no"),
+    dows: await recordIdMap("dows", "Name"),
     entries: await recordIdMap("entries", "entry_no")
   };
 }
@@ -245,6 +284,7 @@ function mirrorRowsFromSnapshot(snapshot, showNo, focusDay) {
           days: daysValue,
           ring_no: numberOrNull(row.ring_no),
           ring_name: clean(row.ring_name),
+          dow_name: clean(row.dow || row.dow_name || row.date_text).slice(0, 3).toUpperCase(),
           date_text: clean(row.date_text || focusDay),
           class_no: classNoValue,
           event_name: clean(row.event_name),
@@ -271,13 +311,17 @@ function mirrorRowsFromSnapshot(snapshot, showNo, focusDay) {
     classOog: classOog
       .filter((row) => numberOrNull(row.class_no) && numberOrNull(row.entry_no))
       .map((row) => {
+        const showNoValue = numberOrNull(row.show_no) || numberOrNull(showNo);
+        const focusDayValue = clean(row.focus_day || focusDay).slice(0, 10);
+        const daysValue = numberOrNull(row.ring_day_no || row.days);
         const classNoValue = numberOrNull(row.class_no);
         const entryNoValue = numberOrNull(row.entry_no);
         return {
-          mirror_class_oog_key: [classNoValue, entryNoValue].join("|"),
+          mirror_class_oog_key: [showNoValue, focusDayValue, daysValue, classNoValue, entryNoValue].join("|"),
           ring: clean(row.ring || row.ring_name),
           ring_no: numberOrNull(row.ring_no),
-          days: numberOrNull(row.ring_day_no || row.days),
+          days: daysValue,
+          dow_name: clean(row.dow || row.dow_name || row.date_text).slice(0, 3).toUpperCase(),
           class_order: numberOrNull(row.class_order),
           class_no: classNoValue,
           class_label: clean(row.class_label),
@@ -298,20 +342,31 @@ async function mirrorSnapshotToAirtable(snapshot, showNo, focusDay) {
   const rows = mirrorRowsFromSnapshot(snapshot, showNo, focusDay);
   const ringDays = await upsertAirtableRows("ring_days", ["ring_day_no"], rows.ringDays);
   const links = await buildClassOogLinkMaps(showNo, focusDay, rows);
-  const updateSchedule = await upsertAirtableRows("update_schedule", ["show_no", "days", "class_no"], rows.updateSchedule);
+  const updateScheduleRows = rows.updateSchedule.map((row) => ({
+    ...Object.fromEntries(Object.entries(row).filter(([key]) => key !== "dow_name")),
+    shows: linkedRecord(links.shows, row.show_no || showNo),
+    focus_show: linkedRecord(links.focusShow, row.show_no || showNo),
+    ring_days: linkedRecord(links.ringDays, row.days),
+    rings: linkedRecord(links.rings, row.ring_no),
+    ring_names: linkedRecord(links.ringNames, row.ring_name),
+    classes: linkedRecord(links.classes, row.class_no),
+    dows: linkedRecord(links.dows, row.dow_name)
+  }));
+  const updateSchedule = await upsertAirtableRows("update_schedule", ["show_no", "days", "class_no"], updateScheduleRows);
   const counts = await upsertAirtableRows("counts", ["show_no", "class_no"], rows.counts);
   const classOogRows = rows.classOog.map((row) => ({
-    ...row,
+    ...Object.fromEntries(Object.entries(row).filter(([key]) => key !== "dow_name")),
     show_no: numberOrNull(showNo),
     focus_day: focusDay,
     shows: linkedRecord(links.shows, showNo),
     focus_show: linkedRecord(links.focusShow, showNo),
     classes: linkedRecord(links.classes, row.class_no),
     rings: linkedRecord(links.rings, row.ring_no),
+    ring_names: linkedRecord(links.ringNames, row.ring),
     ring_days: linkedRecord(links.ringDays, row.days),
     entries: linkedRecord(links.entries, row.entry_no)
   }));
-  const classOog = await upsertAirtableRows("class_oog", ["class_no", "entry_no"], classOogRows);
+  const classOog = await upsertAirtableRows("class_oog", ["mirror_class_oog_key"], classOogRows);
   return {
     ring_days: ringDays,
     update_schedule: updateSchedule,
