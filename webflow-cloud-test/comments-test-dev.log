@@ -1,0 +1,14 @@
+
+> webflow-cloud-test@0.0.1 dev
+> astro dev --host 127.0.0.1 --port 4358
+
+[2m18:26:07[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+[33m[1m18:26:08[22m [WARN] [vite][39m [2mDefault inspector port 9229 not available, using 9230 instead
+[22m
+Using secrets defined in .env
+[2m18:26:28[22m [34m[types][39m Generated [2m3ms[22m
+[2m18:26:28[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+[2m18:26:28[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+[42m[1m astro [22m[49m [32mv6.3.5[39m [2mready in[22m 28546 [2mms[22m
+[2m┃[22m Local    [36mhttp://127.0.0.1:4358/[39m
+[2m18:26:33[22m [32mwatching for file changes...[39m

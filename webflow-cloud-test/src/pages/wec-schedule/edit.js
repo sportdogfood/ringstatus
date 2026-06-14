@@ -9,6 +9,8 @@ const DEFAULT_FOCUS_SHOW_TABLE = "focus_show";
 const DEFAULT_HORSES_TABLE = "horses";
 const DEFAULT_CLASS_HIDE_TABLE = "class_hide";
 const DEFAULT_LOGS_TABLE = "wec-logs";
+const DEFAULT_SESSIONS_TABLE = "wec_sessions";
+const DEFAULT_COMMENTS_TABLE = "wec_comments";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -21,7 +23,7 @@ export const OPTIONS = async () => new Response(null, { status: 204, headers: co
 export const GET = async () => json({
   ok: true,
   service: "wec-schedule-edit",
-  actions: ["set-focus-day", "set-barn-name", "hide-classes"]
+  actions: ["set-focus-day", "set-barn-name", "hide-classes", "start-session", "session-heartbeat", "add-comment"]
 });
 
 export const POST = async ({ request }) => {
@@ -48,7 +50,22 @@ export const POST = async ({ request }) => {
       return json(result);
     }
 
-    return json({ ok: false, error: "unknown_action", actions: ["set-focus-day", "set-barn-name", "hide-classes"] }, 400);
+    if (action === "start-session") {
+      const result = await startSession(airtable, schema, payload);
+      return json(result);
+    }
+
+    if (action === "session-heartbeat") {
+      const result = await sessionHeartbeat(airtable, schema, payload);
+      return json(result);
+    }
+
+    if (action === "add-comment") {
+      const result = await addComment(airtable, schema, payload);
+      return json(result);
+    }
+
+    return json({ ok: false, error: "unknown_action", actions: ["set-focus-day", "set-barn-name", "hide-classes", "start-session", "session-heartbeat", "add-comment"] }, 400);
   } catch (error) {
     console.error("[wec-schedule] edit failed", error);
     return json({
@@ -58,6 +75,112 @@ export const POST = async ({ request }) => {
     }, 502);
   }
 };
+
+async function startSession(airtable, schema, payload) {
+  const sessionId = clean(payload.session_id || payload.sessionId);
+  const deviceId = clean(payload.device_id || payload.deviceId);
+  const showNo = clean(payload.show_no || payload.showNo);
+  const focusDay = isoDate(payload.focus_day || payload.focusDay);
+  const page = clean(payload.page) || "wec-mobile";
+  const source = clean(payload.source) || "wec-mobile";
+  const now = new Date().toISOString();
+
+  if (!sessionId) return jsonError("missing_session_id");
+  if (!deviceId) return jsonError("missing_device_id");
+
+  const existing = await findSessionRecord(airtable, sessionId);
+  const fields = {
+    session_id: sessionId,
+    device_id: deviceId,
+    show_no: showNo ? Number(showNo) : undefined,
+    focus_day: focusDay,
+    started_at: existing ? undefined : now,
+    last_seen_at: now,
+    status: "active",
+    page,
+    source
+  };
+
+  const record = existing
+    ? await patchAirtableRecord(airtable, schema, airtable.sessionsTable, existing.id, fields)
+    : await createAirtableRecord(airtable, schema, airtable.sessionsTable, fields);
+
+  return {
+    ok: true,
+    action: "start-session",
+    table: airtable.sessionsTable,
+    record_id: record.id,
+    session_id: sessionId,
+    status: "active"
+  };
+}
+
+async function sessionHeartbeat(airtable, schema, payload) {
+  const sessionId = clean(payload.session_id || payload.sessionId);
+  if (!sessionId) return jsonError("missing_session_id");
+
+  const existing = await findSessionRecord(airtable, sessionId);
+  if (!existing) return jsonError("session_not_found", { session_id: sessionId }, 404);
+
+  const now = new Date().toISOString();
+  const record = await patchAirtableRecord(airtable, schema, airtable.sessionsTable, existing.id, {
+    last_seen_at: now,
+    status: "active"
+  });
+
+  return {
+    ok: true,
+    action: "session-heartbeat",
+    table: airtable.sessionsTable,
+    record_id: record.id,
+    session_id: sessionId,
+    status: "active",
+    last_seen_at: now
+  };
+}
+
+async function addComment(airtable, schema, payload) {
+  const commentId = clean(payload.comment_id || payload.commentId) || `comment_${Date.now()}`;
+  const sessionId = clean(payload.session_id || payload.sessionId);
+  const deviceId = clean(payload.device_id || payload.deviceId);
+  const showNo = clean(payload.show_no || payload.showNo);
+  const focusDay = isoDate(payload.focus_day || payload.focusDay);
+  const commentScope = clean(payload.comment_scope || payload.commentScope);
+  const ringNo = clean(payload.ring_no || payload.ringNo);
+  const classNo = clean(payload.class_no || payload.classNo);
+  const entryNo = clean(payload.entry_no || payload.entryNo);
+  const commentText = clean(payload.comment_text || payload.commentText);
+  const source = clean(payload.source) || "wec-mobile";
+
+  if (!sessionId) return jsonError("missing_session_id");
+  if (!deviceId) return jsonError("missing_device_id");
+  if (!["ring", "class", "entry"].includes(commentScope)) return jsonError("invalid_comment_scope");
+  if (!commentText) return jsonError("missing_comment_text");
+
+  const record = await createAirtableRecord(airtable, schema, airtable.commentsTable, {
+    comment_id: commentId,
+    session_id: sessionId,
+    device_id: deviceId,
+    show_no: showNo ? Number(showNo) : undefined,
+    focus_day: focusDay,
+    comment_scope: commentScope,
+    ring_no: ringNo ? Number(ringNo) : undefined,
+    class_no: classNo ? Number(classNo) : undefined,
+    entry_no: entryNo ? Number(entryNo) : undefined,
+    comment_text: commentText,
+    created_at: new Date().toISOString(),
+    status: "open",
+    source
+  });
+
+  return {
+    ok: true,
+    action: "add-comment",
+    table: airtable.commentsTable,
+    record_id: record.id,
+    comment_id: commentId
+  };
+}
 
 async function setFocusDay(airtable, schema, payload) {
   const showNo = clean(payload.show_no || payload.showNo);
@@ -238,8 +361,15 @@ function getAirtableConfig() {
     focusShowTable: runtime.AIRTABLE_WEC_FOCUS_SHOW_TABLE || DEFAULT_FOCUS_SHOW_TABLE,
     horsesTable: runtime.AIRTABLE_WEC_HORSES_HELPER_TABLE || runtime.AIRTABLE_WEC_HORSES_TABLE || DEFAULT_HORSES_TABLE,
     classHideTable: runtime.AIRTABLE_WEC_CLASS_HIDE_TABLE || DEFAULT_CLASS_HIDE_TABLE,
-    logsTable: runtime.AIRTABLE_WEC_LOGS_TABLE || DEFAULT_LOGS_TABLE
+    logsTable: runtime.AIRTABLE_WEC_LOGS_TABLE || DEFAULT_LOGS_TABLE,
+    sessionsTable: runtime.AIRTABLE_WEC_SESSIONS_TABLE || DEFAULT_SESSIONS_TABLE,
+    commentsTable: runtime.AIRTABLE_WEC_COMMENTS_TABLE || DEFAULT_COMMENTS_TABLE
   };
+}
+
+async function findSessionRecord(airtable, sessionId) {
+  const records = await listAirtableRecords(airtable, airtable.sessionsTable);
+  return records.find((record) => clean(record.fields?.session_id) === sessionId) || null;
 }
 
 async function findFocusShowRecord(airtable, recordId, showNo) {

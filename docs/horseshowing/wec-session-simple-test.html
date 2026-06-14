@@ -85,6 +85,7 @@
   </div>
 
   <script>
+    const WEC_EDIT_URL = "https://ringstatus.com/test/wec-schedule/edit";
     const INACTIVE_AFTER_MS = 5 * 60 * 1000;
 
     const state = {
@@ -110,17 +111,30 @@
       return created;
     }
 
-    function startSession() {
+    async function startSession() {
       const now = new Date().toISOString();
       state.sessionId = `session_${crypto.randomUUID()}`;
       state.startedAt = now;
       state.lastSeenAt = now;
+      await postSession({
+        action: "start-session",
+        session_id: state.sessionId,
+        device_id: state.deviceId,
+        show_no: 14906,
+        focus_day: "2026-06-14",
+        page: "wec-session-simple-test",
+        source: "simple-test"
+      });
       render();
     }
 
-    function heartbeat() {
+    async function heartbeat() {
       if (!state.sessionId) return;
       state.lastSeenAt = new Date().toISOString();
+      await postSession({
+        action: "session-heartbeat",
+        session_id: state.sessionId
+      });
       render();
     }
 
@@ -150,6 +164,21 @@
         statusEl.textContent = "active";
         statusEl.className = "active";
       }
+    }
+
+    async function postSession(payload) {
+      const response = await fetch(WEC_EDIT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const text = await response.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch {}
+      if (!response.ok || data?.ok === false) {
+        throw new Error(data?.error || text || `Session write failed ${response.status}`);
+      }
+      return data;
     }
   </script>
 </body>

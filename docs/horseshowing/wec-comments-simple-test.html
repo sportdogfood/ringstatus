@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEC Comments Simple Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 18px;
+      color: #111;
+      background: #fff;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0 0 4px;
+    }
+
+    .sub {
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .bar,
+    .box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 1px solid #111;
+      border-radius: 999px;
+      background: #fff;
+      padding: 9px 13px;
+      cursor: pointer;
+    }
+
+    button.is-active {
+      background: #815374;
+      border-color: #815374;
+      color: #fff;
+    }
+
+    .targets {
+      display: grid;
+      gap: 8px;
+    }
+
+    .target {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .target.is-active {
+      outline: 2px solid #815374;
+    }
+
+    .target-title {
+      font-weight: 700;
+    }
+
+    .target-meta {
+      color: #555;
+      font-size: 13px;
+    }
+
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 76px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .muted {
+      color: #666;
+      font-size: 13px;
+    }
+
+    .comment {
+      border-top: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .comment:first-child {
+      border-top: 0;
+    }
+
+    .comment-meta {
+      color: #555;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>WEC Comments Test</h1>
+  <div class="sub">Session identifies the browser. Comment target identifies ring, class, or entry.</div>
+
+  <div class="bar">
+    <div class="row">
+      <button id="startBtn" type="button">Start session</button>
+      <span class="muted" id="sessionText">No session</span>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="targets" id="targets"></div>
+  </div>
+
+  <div class="box">
+    <div class="muted" id="selectedText">Select a ring, class, or entry.</div>
+    <p><textarea id="commentText" placeholder="Add comment..."></textarea></p>
+    <button id="saveBtn" type="button">Save comment</button>
+  </div>
+
+  <div class="box">
+    <strong>Comments</strong>
+    <div id="comments"></div>
+  </div>
+
+  <script>
+    const WEC_EDIT_URL = "http://127.0.0.1:4358/wec-schedule/edit";
+    const SHOW_NO = 14906;
+    const FOCUS_DAY = "2026-06-14";
+
+    const targets = [
+      { scope: "ring", ring_no: 665, label: "Indoor 4", meta: "ring_no 665" },
+      { scope: "class", ring_no: 665, class_no: 33518, label: "Class 33518", meta: "Indoor 4" },
+      { scope: "entry", ring_no: 665, class_no: 33518, entry_no: 3100, label: "Navigator", meta: "class 33518 / entry 3100" }
+    ];
+
+    const state = {
+      deviceId: getOrCreateDeviceId(),
+      sessionId: localStorage.getItem("wec_comment_test_session_id") || "",
+      selected: null,
+      comments: JSON.parse(localStorage.getItem("wec_comment_test_comments") || "[]")
+    };
+
+    document.getElementById("startBtn").addEventListener("click", startSession);
+    document.getElementById("saveBtn").addEventListener("click", saveComment);
+
+    render();
+
+    function getOrCreateDeviceId() {
+      const existing = localStorage.getItem("wec_comment_test_device_id");
+      if (existing) return existing;
+      const created = `device_${crypto.randomUUID()}`;
+      localStorage.setItem("wec_comment_test_device_id", created);
+      return created;
+    }
+
+    async function startSession() {
+      state.sessionId = `session_${crypto.randomUUID()}`;
+      localStorage.setItem("wec_comment_test_session_id", state.sessionId);
+      await postEdit({
+        action: "start-session",
+        session_id: state.sessionId,
+        device_id: state.deviceId,
+        show_no: SHOW_NO,
+        focus_day: FOCUS_DAY,
+        page: "wec-comments-simple-test",
+        source: "comments-test"
+      });
+      render();
+    }
+
+    async function saveComment() {
+      const text = document.getElementById("commentText").value.trim();
+      if (!state.sessionId || !state.selected || !text) return;
+
+      const comment = {
+        comment_id: `comment_${crypto.randomUUID()}`,
+        session_id: state.sessionId,
+        device_id: state.deviceId,
+        show_no: SHOW_NO,
+        focus_day: FOCUS_DAY,
+        comment_scope: state.selected.scope,
+        ring_no: state.selected.ring_no || "",
+        class_no: state.selected.class_no || "",
+        entry_no: state.selected.entry_no || "",
+        comment_text: text,
+        created_at: new Date().toISOString(),
+        status: "open",
+        source: "wec-comments-simple-test"
+      };
+
+      const result = await postEdit({
+        action: "add-comment",
+        ...comment
+      });
+
+      comment.record_id = result.record_id || "";
+      state.comments.unshift(comment);
+      localStorage.setItem("wec_comment_test_comments", JSON.stringify(state.comments));
+      document.getElementById("commentText").value = "";
+      render();
+    }
+
+    function render() {
+      document.getElementById("sessionText").textContent = state.sessionId
+        ? `${state.sessionId} / ${state.deviceId}`
+        : "No session";
+
+      document.getElementById("targets").innerHTML = targets.map((target, index) => `
+        <div class="target ${state.selected === target ? "is-active" : ""}" data-index="${index}">
+          <div>
+            <div class="target-title">${escapeHtml(target.label)}</div>
+            <div class="target-meta">${escapeHtml(target.scope)} / ${escapeHtml(target.meta)}</div>
+          </div>
+          <button class="${state.selected === target ? "is-active" : ""}" type="button">Comment</button>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".target").forEach((el) => {
+        el.addEventListener("click", () => {
+          state.selected = targets[Number(el.dataset.index)];
+          render();
+        });
+      });
+
+      document.getElementById("selectedText").textContent = state.selected
+        ? `Selected: ${state.selected.scope} / ${state.selected.label}`
+        : "Select a ring, class, or entry.";
+
+      document.getElementById("comments").innerHTML = state.comments.length
+        ? state.comments.map((comment) => `
+          <div class="comment">
+            <div class="comment-meta">
+              ${escapeHtml(comment.comment_scope)}
+              ring ${escapeHtml(comment.ring_no)}
+              class ${escapeHtml(comment.class_no)}
+              entry ${escapeHtml(comment.entry_no)}
+              / ${escapeHtml(comment.created_at)}
+            </div>
+            <div>${escapeHtml(comment.comment_text)}</div>
+          </div>
+        `).join("")
+        : `<p class="muted">No comments yet.</p>`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    async function postEdit(payload) {
+      const response = await fetch(WEC_EDIT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const text = await response.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch {}
+      if (!response.ok || data?.ok === false) {
+        throw new Error(data?.error || text || `Request failed ${response.status}`);
+      }
+      return data;
+    }
+  </script>
+</body>
+</html>
