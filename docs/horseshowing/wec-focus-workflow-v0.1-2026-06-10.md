@@ -3765,6 +3765,25 @@ entry_go_times -> entry_go_40 and entry_go_20
 
 Each alert writes `wec-alerts.alert_key_run` as the dedupe key. Existing open alerts outside the current window are resolved by `Resolve-StaleTimeAlerts`.
 
+Operator fields:
+
+```text
+status = lifecycle only
+open = the alert is currently inside an active trigger window
+resolved = a later workflow run found that the trigger window is no longer active
+
+severity = not the primary working field for WEC schedule timing
+
+alert_lane = class_start or entry_go
+trigger_minutes = threshold that created the row, such as 60, 40, 30, or 20
+time_till = minutes until target when the row was written
+target_time = readable class start or estimated go time
+alert_subject = readable class or horse subject
+source_table = class_start_times or entry_go_times
+```
+
+These fields are first-class `wec-alerts` columns so the alert table can be scanned without opening `payload_json`.
+
 Verification:
 
 ```text

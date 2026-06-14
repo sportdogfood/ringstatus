@@ -9,6 +9,7 @@ const CATALYST_ENDPOINT = process.env.HORSESHOWING_CATALYST_ENDPOINT ||
 const TABLES = {
   focusShow: "focus_show",
   classHide: "class_hide",
+  mobileMeta: "mobile_meta",
   rings: "rings",
   horses: "horses",
   riders: "riders",
@@ -272,7 +273,7 @@ async function writeThirtyMinuteSummary(summary) {
     focusDay: summary.focus_show?.[0]?.focus_day || "",
     status: "ok",
     recordsSeen: summary.total_records_seen,
-    summary: `focus_show=${summary.counts.focus_show}; class_hide=${summary.counts.class_hide}; rings=${summary.counts.rings}; horses=${summary.counts.horses}; riders=${summary.counts.riders}; trainers=${summary.counts.trainers}; entries=${summary.counts.entries}`,
+    summary: `focus_show=${summary.counts.focus_show}; class_hide=${summary.counts.class_hide}; mobile_meta=${summary.counts.mobile_meta}; rings=${summary.counts.rings}; horses=${summary.counts.horses}; riders=${summary.counts.riders}; trainers=${summary.counts.trainers}; entries=${summary.counts.entries}`,
     payload: summary
   });
   writeSummaryState({ last_summary_at: createdAt });
@@ -316,6 +317,32 @@ function normalizeClassHide(record) {
     class_no: classNo,
     hide_text: hideText,
     active: fields.active ? "1" : "0"
+  };
+}
+
+function normalizeMobileMeta(record) {
+  const fields = record.fields || {};
+  const showNo = fields.show_no == null ? "" : String(fields.show_no);
+  const focusDay = normalizeDate(fields.focus_day);
+  const key = fields.mobile_meta_key || `${showNo}|${focusDay}`;
+  return {
+    record_id: record.id,
+    mobile_meta_key: key,
+    show_no: showNo,
+    focus_day: focusDay,
+    active: fields.active ? "1" : "0",
+    theme_mode: fields.theme_mode || "bw",
+    accent_hex: fields.accent_hex || "#815374",
+    ring_header_bg: fields.ring_header_bg || "#dcb6d1",
+    team_badge_label: fields.team_badge_label || "CWF",
+    show_diff_time: fields.show_diff_time === false ? "0" : "1",
+    show_diff_oog: fields.show_diff_oog === false ? "0" : "1",
+    show_horse_edit: fields.show_horse_edit === false ? "0" : "1",
+    hide_weekday_colors: fields.hide_weekday_colors === false ? "0" : "1",
+    mobile_max_width: fields.mobile_max_width == null ? "" : String(fields.mobile_max_width),
+    print_url: fields.print_url || "https://ringstatus.com/wec-print",
+    source: fields.source || "airtable.mobile_meta",
+    updated_at: fields.updated_at || ""
   };
 }
 
@@ -406,11 +433,15 @@ async function pushFocusShowToCatalyst(row) {
 
 async function catalystGet(params, label) {
   const response = await fetch(`${CATALYST_ENDPOINT}?${params.toString()}`, { method: "GET" });
-  const text = await response.text();
+  const body = await response.text();
   if (!response.ok) {
-    throw new Error(`Catalyst ${label} failed: ${response.status} ${text}`);
+    throw new Error(`Catalyst ${label} failed: ${response.status} ${body}`);
   }
-  return JSON.parse(text);
+  const parsed = JSON.parse(body);
+  if (parsed && parsed.ok === false) {
+    throw new Error(`Catalyst ${label} failed: ${parsed.error || body}`);
+  }
+  return parsed;
 }
 
 async function catalystPost(payload, label) {
@@ -621,14 +652,11 @@ async function pushHideClassesToCatalyst(row, hideRows, trainerRows = []) {
     if (hide.class_no) hideClasses.push(`class_no:${hide.class_no}`);
     if (hide.hide_text) hideClasses.push(`text:${hide.hide_text}`);
   }
-  const trainerControl = activeTrainerControl(trainerRows);
   const params = new URLSearchParams({
     action: "set-hide-classes",
     show_no: row.show_no,
     focus_day: row.focus_day,
-    hide_classes: hideClasses.join("|"),
-    active_trainers: trainerControl.active_trainers.join("|"),
-    trainer_displays: JSON.stringify(trainerControl.trainer_displays)
+    hide_classes: hideClasses.join("|")
   });
   return catalystGet(params, "set-hide-classes");
 }
@@ -677,6 +705,7 @@ async function main() {
   const checks = [
     ["focus_show", TABLES.focusShow],
     ["class_hide", TABLES.classHide],
+    ["mobile_meta", TABLES.mobileMeta],
     ["rings", TABLES.rings],
     ["horses", TABLES.horses],
     ["riders", TABLES.riders],
@@ -698,6 +727,7 @@ async function main() {
 
   const focusRecords = recordsByCheck.focus_show;
   const hideRecords = recordsByCheck.class_hide;
+  const mobileMetaRecords = recordsByCheck.mobile_meta;
   let ringRecords = recordsByCheck.rings;
   let horseRecords = recordsByCheck.horses;
   let riderRecords = recordsByCheck.riders;
@@ -710,6 +740,9 @@ async function main() {
   const hideRows = hideRecords
     .map(normalizeClassHide)
     .filter((row) => row.show_no && (row.class_no || row.hide_text));
+  const mobileMetaRows = mobileMetaRecords
+    .map(normalizeMobileMeta)
+    .filter((row) => row.show_no && row.focus_day);
 
   const backfillResults = [];
   for (const row of focusRows) {
@@ -745,7 +778,11 @@ async function main() {
     entryRecords = await airtableGetAll(TABLES.entries);
   }
 
-  const showNos = new Set([...focusRows.map((row) => row.show_no), ...hideRows.map((row) => row.show_no)]);
+  const showNos = new Set([
+    ...focusRows.map((row) => row.show_no),
+    ...hideRows.map((row) => row.show_no),
+    ...mobileMetaRows.map((row) => row.show_no)
+  ]);
   const catalystResults = [];
   for (const showNo of showNos) {
     const showDir = path.join(helperRoot, showNo);
@@ -786,6 +823,25 @@ async function main() {
       "hide_text",
       "active"
     ], hideRows.filter((row) => row.show_no === showNo));
+    writeCsv(path.join(showDir, "mobile_meta.csv"), [
+      "record_id",
+      "mobile_meta_key",
+      "show_no",
+      "focus_day",
+      "active",
+      "theme_mode",
+      "accent_hex",
+      "ring_header_bg",
+      "team_badge_label",
+      "show_diff_time",
+      "show_diff_oog",
+      "show_horse_edit",
+      "hide_weekday_colors",
+      "mobile_max_width",
+      "print_url",
+      "source",
+      "updated_at"
+    ], mobileMetaRows.filter((row) => row.show_no === showNo));
     writeCsv(path.join(showDir, "rings.csv"), [
       "record_id",
       "show_no",
@@ -837,9 +893,9 @@ async function main() {
     if (syncCatalyst) {
       for (const row of focusRows.filter((item) => item.show_no === showNo)) {
         catalystResults.push(await pushFocusShowToCatalyst(row));
-        catalystResults.push(await pushHideClassesToCatalyst(row, hideRows, trainerRows));
         catalystResults.push(await pushHorseDisplaysToCatalyst(row, horseRows, entryRows, trainerRows));
         catalystResults.push(await pushActiveTrainersToCatalyst(row, trainerRows));
+        catalystResults.push(await pushHideClassesToCatalyst(row, hideRows, trainerRows));
       }
     }
   }
@@ -850,6 +906,7 @@ async function main() {
     {
       focus_show_rows: focusRows.length,
       class_hide_rows: hideRows.length,
+      mobile_meta_rows: mobileMetaRows.length,
       rings_rows: ringRecords.length,
       horses_rows: horseRecords.length,
       riders_rows: riderRecords.length,
@@ -864,6 +921,7 @@ async function main() {
     {
       focus_show_rows: focusRows.length,
       class_hide_rows: hideRows.length,
+      mobile_meta_rows: mobileMetaRows.length,
       rings_rows: ringRecords.length,
       horses_rows: horseRecords.length,
       riders_rows: riderRecords.length,
@@ -877,6 +935,7 @@ async function main() {
     base_id: BASE_ID,
     focus_show_rows: focusRows.length,
     class_hide_rows: hideRows.length,
+    mobile_meta_rows: mobileMetaRows.length,
     rings_rows: ringRecords.length,
     horses_rows: horseRecords.length,
     riders_rows: riderRecords.length,
@@ -890,10 +949,11 @@ async function main() {
   };
   output.summary_written = await writeThirtyMinuteSummary({
     base_id: BASE_ID,
-    total_records_seen: focusRecords.length + hideRecords.length + ringRecords.length + horseRecords.length + riderRecords.length + trainerRecords.length + entryRecords.length,
+    total_records_seen: focusRecords.length + hideRecords.length + mobileMetaRecords.length + ringRecords.length + horseRecords.length + riderRecords.length + trainerRecords.length + entryRecords.length,
     counts: {
       focus_show: focusRows.length,
       class_hide: hideRows.length,
+      mobile_meta: mobileMetaRows.length,
       rings: ringRecords.length,
       horses: horseRecords.length,
       riders: riderRecords.length,
@@ -901,6 +961,7 @@ async function main() {
       entries: entryRecords.length
     },
     focus_show: focusRows,
+    mobile_meta: mobileMetaRows,
     catalyst_synced: catalystResults.length
   });
 

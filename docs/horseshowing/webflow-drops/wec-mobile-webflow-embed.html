@@ -195,6 +195,39 @@
     transform: translateY(1px) scale(0.99);
   }
 
+  .topbar-actions{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .hide-pill{
+    border-color:#815374;
+    color:#815374;
+  }
+
+  .hide-pill.is-save{
+    display:none;
+    background:#815374;
+    color:#fff;
+    border-color:#815374;
+  }
+
+  .hide-pill.is-cancel{
+    display:none;
+  }
+
+  body.is-hide-mode .hide-pill.is-start,
+  body.is-hide-mode #printPdfLink{
+    display:none;
+  }
+
+  body.is-hide-mode .hide-pill.is-save,
+  body.is-hide-mode .hide-pill.is-cancel{
+    display:inline-flex;
+  }
+
   .filterbar{
     position:sticky;
     top:0;
@@ -432,6 +465,29 @@
     min-width:0;
   }
 
+  .hide-cell{
+    display:none;
+    justify-self:end;
+  }
+
+  .hide-check{
+    width:18px;
+    height:18px;
+    accent-color:#815374;
+  }
+
+  body.is-hide-mode .hide-cell{
+    display:block;
+  }
+
+  body.is-hide-mode .c{
+    grid-template-columns:70px minmax(0,1fr) 28px;
+  }
+
+  body.is-hide-mode .c.is-hide-selected{
+    background:rgba(129,83,116,0.12);
+  }
+
   .s{
     font-size:var(--fs-status);
     font-weight:800;
@@ -551,6 +607,10 @@
       padding:8px 0;
     }
 
+    body.is-hide-mode .c{
+      grid-template-columns:62px minmax(0,1fr) 26px;
+    }
+
     .t{
       font-size:12px;
     }
@@ -604,7 +664,12 @@
     <div class="topbar-wrapper">
       <div class="title-row">
         <div class="title" id="title">Schedule</div>
-        <a class="home-pill" id="printPdfLink" href="https://ringstatus.com/wec-print" target="_blank" rel="noopener">Print</a>
+        <div class="topbar-actions">
+          <button class="home-pill hide-pill is-start" id="hideModeBtn" type="button">Hide</button>
+          <button class="home-pill hide-pill is-save" id="hideSaveBtn" type="button">Save</button>
+          <button class="home-pill hide-pill is-cancel" id="hideCancelBtn" type="button">Cancel</button>
+          <a class="home-pill" id="printPdfLink" href="https://ringstatus.com/wec-print" target="_blank" rel="noopener">Print</a>
+        </div>
       </div>
       <div class="subtitle-row">
         <div class="subtitle-edit-wrapper">
@@ -634,6 +699,7 @@
 <script>
   const POLL_MS = 6 * 60 * 1000;
   const PUBLISH_INTERVAL_MS = 8 * 60 * 1000;
+  const EMPTY_RETRY_MS = 10 * 1000;
   const TIMEZONE = "America/New_York";
   const PDF_WORKER_BASE = "https://ringstatus-pdf.gombcg.workers.dev/";
   const WEC_PRINT_URL = "https://ringstatus.com/wec-print";
@@ -650,6 +716,9 @@
   let publishedAtMs = null;
   let currentShowNo = "";
   let currentFocusDay = "";
+  let hideMode = false;
+  let emptyRetryTimer = null;
+  const hideSelection = new Map();
 
   const fmtTimeET = (ms)=>{
     return new Intl.DateTimeFormat("en-US", {
@@ -711,6 +780,46 @@
   function syncPrintPdfLink(){
     const link = document.getElementById("printPdfLink");
     if(link) link.href = buildPrintPdfUrl();
+  }
+
+  function setHideMode(nextMode){
+    hideMode = !!nextMode;
+    if(!hideMode) hideSelection.clear();
+    document.body.classList.toggle("is-hide-mode", hideMode);
+    document.querySelectorAll(".hide-check").forEach(input => {
+      input.checked = hideSelection.has(input.dataset.classNo || "");
+      input.closest(".c")?.classList.toggle("is-hide-selected", input.checked);
+    });
+  }
+
+  function updateHideSelection(input){
+    const classNo = String(input?.dataset?.classNo || "").trim();
+    if(!classNo) return;
+    const label = String(input.dataset.classLabel || "").trim();
+    if(input.checked) hideSelection.set(classNo, { class_no: classNo, class_label: label });
+    else hideSelection.delete(classNo);
+    input.closest(".c")?.classList.toggle("is-hide-selected", input.checked);
+  }
+
+  async function saveHideSelection(){
+    if(!currentShowNo || hideSelection.size === 0) return;
+    const save = document.getElementById("hideSaveBtn");
+    if(save) save.disabled = true;
+    try{
+      await postWecEdit({
+        action:"hide-classes",
+        show_no:currentShowNo,
+        focus_day:currentFocusDay,
+        classes:Array.from(hideSelection.values()),
+        source:"wec-mobile"
+      });
+      setHideMode(false);
+      currentDataUrl = null;
+      publishedAtMs = null;
+      await initialLoad();
+    } finally {
+      if(save) save.disabled = false;
+    }
   }
 
   function normRollup(s){
@@ -972,7 +1081,7 @@
     if(!edit || !panel || !next) return;
 
     const nextDay = addDaysIso(focusDay, 1);
-    const canShow = !!(focusDay && nextDay && showEndDate && nextDay > focusDay && nextDay <= showEndDate);
+    const canShow = !!(focusDay && nextDay && nextDay > focusDay && (!showEndDate || nextDay <= showEndDate));
 
     edit.classList.toggle("is-visible", canShow);
     if(!canShow){
@@ -1060,6 +1169,35 @@
         btn.disabled = false;
       }
     }, { passive:false });
+  }
+
+  function bindHideMode(){
+    const start = document.getElementById("hideModeBtn");
+    const save = document.getElementById("hideSaveBtn");
+    const cancel = document.getElementById("hideCancelBtn");
+
+    if(start && start.dataset.rsBound !== "1"){
+      start.dataset.rsBound = "1";
+      start.addEventListener("click", () => setHideMode(true));
+    }
+
+    if(cancel && cancel.dataset.rsBound !== "1"){
+      cancel.dataset.rsBound = "1";
+      cancel.addEventListener("click", () => setHideMode(false));
+    }
+
+    if(save && save.dataset.rsBound !== "1"){
+      save.dataset.rsBound = "1";
+      save.addEventListener("click", () => saveHideSelection().catch(err => {
+        window.alert(String(err && err.message ? err.message : err));
+      }));
+    }
+
+    document.addEventListener("change", event => {
+      const input = event.target && event.target.closest ? event.target.closest(".hide-check") : null;
+      if(!input) return;
+      updateHideSelection(input);
+    });
   }
 
   function rowDisplayTime(row){
@@ -1203,6 +1341,7 @@
           const isCheckTime = isCheckDisplay(displayTime);
 
           const label = classDisplayLabel(c);
+          const classNo = String(c.class_no ?? c.classNo ?? "").trim();
           const duplicateKey = `${roundedTime.key}|${normalizedDisplayClassText(c)}`;
           if(duplicateKey.trim() && seenNonTeamTimeClassKeys.has(duplicateKey)) continue;
           if(duplicateKey.trim()) seenNonTeamTimeClassKeys.add(duplicateKey);
@@ -1218,9 +1357,10 @@
           const diffClass = String(c.diff_class ?? c.diffClass ?? "").split(/\s+/).filter(x => /^diff-[a-z0-9_-]+$/i.test(x)).join(" ");
 
           cl += `
-            <div class="c${usingTime2 ? " time2" : ""}${isCheckTime ? " check-time-row" : ""}${diffClass ? ` ${diffClass}` : ""}">
+            <div class="c${usingTime2 ? " time2" : ""}${isCheckTime ? " check-time-row" : ""}${diffClass ? ` ${diffClass}` : ""}" data-class-no="${esc(classNo)}" data-class-label="${esc(label)}">
               <div class="t">${timeHtml}</div>
               <div class="n">${esc(label)}</div>
+              <div class="hide-cell"><input class="hide-check" type="checkbox" data-class-no="${esc(classNo)}" data-class-label="${esc(label)}" aria-label="Hide class ${esc(label)}"></div>
             </div>
           `;
         }
@@ -1440,15 +1580,16 @@
 
   function renderRows(rows){
     if(!Array.isArray(rows) || rows.length === 0){
-      document.getElementById("rings").innerHTML = `<div class="muted">No schedule rows.</div>`;
-      destroyActiveRingObserver();
-      const horseFilters = document.getElementById("horseFilters");
-      const statusFilters = document.getElementById("statusFilters");
-      const ringNav = document.getElementById("ringNav");
-      if(horseFilters) horseFilters.innerHTML = "";
-      if(statusFilters) statusFilters.innerHTML = "";
-      if(ringNav) ringNav.innerHTML = "";
-      return;
+      if(!document.querySelector("section.ring")){
+        document.getElementById("rings").innerHTML = `<div class="muted">Updating schedule...</div>`;
+      }
+      scheduleEmptyRetry();
+      return false;
+    }
+
+    if(emptyRetryTimer){
+      clearTimeout(emptyRetryTimer);
+      emptyRetryTimer = null;
     }
 
     setHeader(rows);
@@ -1469,6 +1610,15 @@
     if(firstVisibleRing){
       setActiveRingButton(firstVisibleRing.id);
     }
+    return true;
+  }
+
+  function scheduleEmptyRetry(){
+    if(emptyRetryTimer) return;
+    emptyRetryTimer = setTimeout(() => {
+      emptyRetryTimer = null;
+      pollForUpdates(true);
+    }, EMPTY_RETRY_MS);
   }
 
   function updatePublishedFromHeader(lastMod){
@@ -1481,16 +1631,17 @@
     currentDataUrl = resolveDataUrl();
 
     const { txt, lastMod } = await fetchTextMeta(currentDataUrl);
-    lastRaw = txt;
-    lastLastMod = lastMod || null;
     updatePublishedFromHeader(lastMod);
 
     const rows = parseJsonText(txt, currentDataUrl);
-    renderRows(rows);
+    if(renderRows(rows)){
+      lastRaw = txt;
+      lastLastMod = lastMod || null;
+    }
     syncPrintPdfLink();
   }
 
-  async function pollForUpdates(){
+  async function pollForUpdates(force = false){
     if(isRefreshing) return;
     if(!currentDataUrl) return;
 
@@ -1501,18 +1652,19 @@
       const lmChanged = !!(lastMod && lastLastMod && lastMod !== lastLastMod);
       const bodyChanged = (lastRaw !== null && txt !== lastRaw);
 
-      if(!lmChanged && !bodyChanged){
+      if(!force && !lmChanged && !bodyChanged){
         return;
       }
 
-      lastLastMod = lastMod || lastLastMod;
-      updatePublishedFromHeader(lastMod);
-
       const rows = parseJsonText(txt, currentDataUrl);
       const scrollY = window.scrollY;
+      if(!renderRows(rows)){
+        return;
+      }
 
       lastRaw = txt;
-      renderRows(rows);
+      lastLastMod = lastMod || lastLastMod;
+      updatePublishedFromHeader(lastMod);
       syncPrintPdfLink();
 
       window.scrollTo(0, scrollY);
@@ -1526,6 +1678,7 @@
   (async function main(){
     bindDateEdit();
     bindHorseEdits();
+    bindHideMode();
     await initialLoad();
     setInterval(pollForUpdates, POLL_MS);
   })().catch(err=>{

@@ -7,6 +7,7 @@ import { env } from "cloudflare:workers";
 const DEFAULT_BASE_ID = "app6XS1RvsPNRT6os";
 const DEFAULT_FOCUS_SHOW_TABLE = "focus_show";
 const DEFAULT_HORSES_TABLE = "horses";
+const DEFAULT_CLASS_HIDE_TABLE = "class_hide";
 const DEFAULT_LOGS_TABLE = "wec-logs";
 
 const corsHeaders = {
@@ -20,7 +21,7 @@ export const OPTIONS = async () => new Response(null, { status: 204, headers: co
 export const GET = async () => json({
   ok: true,
   service: "wec-schedule-edit",
-  actions: ["set-focus-day", "set-barn-name"]
+  actions: ["set-focus-day", "set-barn-name", "hide-classes"]
 });
 
 export const POST = async ({ request }) => {
@@ -42,7 +43,12 @@ export const POST = async ({ request }) => {
       return json(result);
     }
 
-    return json({ ok: false, error: "unknown_action", actions: ["set-focus-day", "set-barn-name"] }, 400);
+    if (action === "hide-classes") {
+      const result = await hideClasses(airtable, schema, payload);
+      return json(result);
+    }
+
+    return json({ ok: false, error: "unknown_action", actions: ["set-focus-day", "set-barn-name", "hide-classes"] }, 400);
   } catch (error) {
     console.error("[wec-schedule] edit failed", error);
     return json({
@@ -146,10 +152,83 @@ async function setBarnName(airtable, schema, payload) {
   };
 }
 
+async function hideClasses(airtable, schema, payload) {
+  const showNo = clean(payload.show_no || payload.showNo);
+  const focusDay = isoDate(payload.focus_day || payload.focusDay);
+  const classRows = Array.isArray(payload.classes) ? payload.classes : [];
+  const classes = classRows
+    .map((item) => ({
+      class_no: clean(item.class_no || item.classNo).replace(/\.0$/, ""),
+      hide_text: clean(item.hide_text || item.hideText || item.class_label || item.classLabel || item.label)
+    }))
+    .filter((item, index, all) => item.class_no && all.findIndex((other) => other.class_no === item.class_no) === index);
+
+  if (!showNo) return jsonError("missing_show_no");
+  if (!classes.length) return jsonError("missing_classes");
+
+  const existingRecords = await listAirtableRecords(airtable, airtable.classHideTable);
+  let changed = 0;
+  const updated = [];
+
+  for (const item of classes) {
+    const classHideKey = `${showNo}|class_no:${item.class_no}`;
+    const existing = existingRecords.find((record) => {
+      const fields = record.fields || {};
+      return clean(fields.show_no).replace(/\.0$/, "") === showNo
+        && clean(fields.class_no).replace(/\.0$/, "") === item.class_no;
+    });
+    const fields = {
+      class_hide_key: classHideKey,
+      mirror_class_hide_key: classHideKey,
+      show_no: Number(showNo),
+      class_no: Number(item.class_no),
+      hide_text: item.hide_text,
+      active: true
+    };
+
+    if (existing) {
+      const patched = await patchAirtableRecord(airtable, schema, airtable.classHideTable, existing.id, fields);
+      changed += 1;
+      updated.push({ record_id: patched.id, class_no: item.class_no });
+      continue;
+    }
+
+    const created = await createAirtableRecord(airtable, schema, airtable.classHideTable, fields);
+    changed += 1;
+    updated.push({ record_id: created.id, class_no: item.class_no });
+  }
+
+  const logged = await createWecLog(airtable, schema, {
+    log_type: "webflow_edit",
+    check_name: "class_hide",
+    workflow_lanes: "Helpers",
+    show_no: showNo,
+    focus_day: focusDay,
+    status: "ok",
+    records_seen: classes.length,
+    records_changed: changed,
+    summary: `class_hide updated ${changed} classes for show ${showNo}`,
+    payload_json: JSON.stringify({
+      action: "hide-classes",
+      source: clean(payload.source) || "wec-mobile",
+      show_no: showNo,
+      focus_day: focusDay,
+      classes
+    }, null, 2)
+  });
+
+  return {
+    ok: true,
+    action: "hide-classes",
+    updated,
+    log: logged
+  };
+}
+
 function getAirtableConfig() {
   const runtime = { ...(globalThis.process?.env || {}), ...(import.meta.env || {}), ...(env || {}) };
-  const token = runtime.AIRTABLE_TOKEN;
-  const baseId = runtime.WEC_AIRTABLE_BASE_ID || runtime.AIRTABLE_WEC_SCHEDULES_BASE_ID || runtime.AIRTABLE_BASE_ID || runtime.AIRTABLE_BASE || DEFAULT_BASE_ID;
+  const token = runtime.AIRTABLE_WEC_TOKEN || runtime.AIRTABLE_TOKEN;
+  const baseId = runtime.AIRTABLE_WEC_BASE_ID || runtime.WEC_AIRTABLE_BASE_ID || runtime.AIRTABLE_WEC_SCHEDULES_BASE_ID || DEFAULT_BASE_ID;
   if (!token) return { ok: false, error: "missing_airtable_token" };
   if (!baseId) return { ok: false, error: "missing_airtable_base_id" };
   return {
@@ -158,6 +237,7 @@ function getAirtableConfig() {
     baseId,
     focusShowTable: runtime.AIRTABLE_WEC_FOCUS_SHOW_TABLE || DEFAULT_FOCUS_SHOW_TABLE,
     horsesTable: runtime.AIRTABLE_WEC_HORSES_HELPER_TABLE || runtime.AIRTABLE_WEC_HORSES_TABLE || DEFAULT_HORSES_TABLE,
+    classHideTable: runtime.AIRTABLE_WEC_CLASS_HIDE_TABLE || DEFAULT_CLASS_HIDE_TABLE,
     logsTable: runtime.AIRTABLE_WEC_LOGS_TABLE || DEFAULT_LOGS_TABLE
   };
 }
@@ -223,6 +303,23 @@ async function patchAirtableRecord(airtable, schema, table, recordId, fields) {
   const result = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(`patch ${table}/${recordId} ${response.status}: ${JSON.stringify(result)}`);
   return result;
+}
+
+async function createAirtableRecord(airtable, schema, table, fields) {
+  const response = await fetch(airtableUrl(airtable.baseId, table), {
+    method: "POST",
+    headers: {
+      ...airtableHeaders(airtable.token),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      records: [{ fields: filterAirtableFields(schema, table, fields) }],
+      typecast: true
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(`create ${table} ${response.status}: ${JSON.stringify(result)}`);
+  return result.records?.[0] || {};
 }
 
 async function createWecLog(airtable, schema, fields) {

@@ -45,6 +45,14 @@ function ConvertTo-SafeJson($value) {
   return $json
 }
 
+function Get-PayloadValue($Payload, [string]$Name) {
+  if ($null -eq $Payload) { return $null }
+  if ($Payload -is [hashtable] -and $Payload.ContainsKey($Name)) { return $Payload[$Name] }
+  $property = $Payload.PSObject.Properties[$Name]
+  if ($property) { return $property.Value }
+  return $null
+}
+
 function Resolve-WorkflowLane {
   param(
     [string]$LogType,
@@ -166,6 +174,12 @@ function Write-WecAirtableAlert {
   }
   if ($focus) {
     $fields.focus_day = $focus
+  }
+  foreach ($fieldName in @("alert_lane", "trigger_minutes", "time_till", "target_time", "alert_subject", "source_table")) {
+    $value = Get-PayloadValue $Payload $fieldName
+    if ($null -ne $value -and [string]$value -ne "") {
+      $fields[$fieldName] = $value
+    }
   }
 
   $fields | ConvertTo-Json -Depth 12 -Compress | Add-Content -Path (Join-Path $logDir "wec-alerts.jsonl")
@@ -857,6 +871,10 @@ function Write-TimeAlerts {
           time_till = [math]::Round($minutesUntil, 1)
           alert_lane = "class_start"
           alert_type = "class_start_$threshold"
+          trigger_minutes = $threshold
+          target_time = $row.start_display
+          alert_subject = "Class $($row.class_number)"
+          source_table = "class_start_times"
         }
       }
     }
@@ -928,6 +946,10 @@ function Write-TimeAlerts {
           time_till = [math]::Round($minutesUntil, 1)
           alert_lane = "entry_go"
           alert_type = "entry_go_$threshold"
+          trigger_minutes = $threshold
+          target_time = $estimatedGo.ToString("h:mm tt")
+          alert_subject = "$horseDisplay ($($entry.entry_no))"
+          source_table = "entry_go_times"
           estimate_note = "entry_go_time source is active Airtable entry_go_times; fallback estimate uses elapsed_seconds/n_gone when n_gone > 6, otherwise 120 seconds per entry"
           pace_seconds = $paceSeconds
           n_gone = $nGone
