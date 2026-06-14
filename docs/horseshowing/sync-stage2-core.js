@@ -105,6 +105,38 @@ async function upsertAirtableRows(table, mergeFields, rows) {
   return { seen: cleanRows.length, changed };
 }
 
+async function listAllAirtableRecords(table, params = {}) {
+  const records = [];
+  let offset = "";
+  do {
+    const payload = await airtableFetch(table, {
+      params: {
+        pageSize: "100",
+        ...params,
+        ...(offset ? { offset } : {})
+      }
+    });
+    records.push(...(payload.records || []));
+    offset = payload.offset || "";
+  } while (offset);
+  return records;
+}
+
+async function recordIdMap(table, fieldName, params = {}) {
+  const records = await listAllAirtableRecords(table, params);
+  const map = new Map();
+  for (const record of records) {
+    const value = clean(record.fields?.[fieldName]);
+    if (value) map.set(value, record.id);
+  }
+  return map;
+}
+
+function linkedRecord(map, value) {
+  const id = map.get(clean(value));
+  return id ? [id] : undefined;
+}
+
 async function catalystGet(params, timeoutMs = 120000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -122,6 +154,67 @@ async function catalystGet(params, timeoutMs = 120000) {
 function numberOrNull(value) {
   const parsed = Number.parseInt(clean(value), 10);
   return Number.isFinite(parsed) ? parsed : null;
+}
+
+async function buildClassOogLinkMaps(showNo, focusDay, rows) {
+  const support = {
+    shows: [{ show_no: numberOrNull(showNo) }],
+    classes: [],
+    rings: [],
+    entries: []
+  };
+
+  const classes = new Map();
+  const rings = new Map();
+  const entries = new Map();
+
+  for (const row of [...rows.updateSchedule, ...rows.classOog]) {
+    if (row.class_no && !classes.has(clean(row.class_no))) {
+      classes.set(clean(row.class_no), {
+        class_no: numberOrNull(row.class_no),
+        class_label: clean(row.class_label),
+        class_name: clean(row.class_name),
+        class_payout: clean(row.class_payout),
+        source: "class_oog"
+      });
+    }
+    if (row.ring_no && !rings.has(clean(row.ring_no))) {
+      rings.set(clean(row.ring_no), {
+        ring_no: numberOrNull(row.ring_no),
+        ring_name: clean(row.ring),
+        source: "class_oog"
+      });
+    }
+    if (row.entry_no && !entries.has(clean(row.entry_no))) {
+      entries.set(clean(row.entry_no), {
+        entry_no: numberOrNull(row.entry_no),
+        horse: clean(row.horse),
+        rider: clean(row.rider),
+        trainer: clean(row.trainer),
+        source: "class_oog"
+      });
+    }
+  }
+
+  support.classes = [...classes.values()].filter((row) => row.class_no);
+  support.rings = [...rings.values()].filter((row) => row.ring_no);
+  support.entries = [...entries.values()].filter((row) => row.entry_no);
+
+  await upsertAirtableRows("shows", ["show_no"], support.shows);
+  await upsertAirtableRows("classes", ["class_no"], support.classes);
+  await upsertAirtableRows("rings", ["ring_no"], support.rings);
+  await upsertAirtableRows("entries", ["entry_no"], support.entries);
+
+  return {
+    shows: await recordIdMap("shows", "show_no"),
+    focusShow: await recordIdMap("focus_show", "show_no", {
+      filterByFormula: `AND({show_no}=${numberOrNull(showNo)},IS_SAME({focus_day},'${focusDay}','day'))`
+    }),
+    classes: await recordIdMap("classes", "class_no"),
+    rings: await recordIdMap("rings", "ring_no"),
+    ringDays: await recordIdMap("ring_days", "ring_day_no"),
+    entries: await recordIdMap("entries", "entry_no")
+  };
 }
 
 function mirrorRowsFromSnapshot(snapshot, showNo, focusDay) {
@@ -204,9 +297,21 @@ function mirrorRowsFromSnapshot(snapshot, showNo, focusDay) {
 async function mirrorSnapshotToAirtable(snapshot, showNo, focusDay) {
   const rows = mirrorRowsFromSnapshot(snapshot, showNo, focusDay);
   const ringDays = await upsertAirtableRows("ring_days", ["ring_day_no"], rows.ringDays);
+  const links = await buildClassOogLinkMaps(showNo, focusDay, rows);
   const updateSchedule = await upsertAirtableRows("update_schedule", ["show_no", "days", "class_no"], rows.updateSchedule);
   const counts = await upsertAirtableRows("counts", ["show_no", "class_no"], rows.counts);
-  const classOog = await upsertAirtableRows("class_oog", ["class_no", "entry_no"], rows.classOog);
+  const classOogRows = rows.classOog.map((row) => ({
+    ...row,
+    show_no: numberOrNull(showNo),
+    focus_day: focusDay,
+    shows: linkedRecord(links.shows, showNo),
+    focus_show: linkedRecord(links.focusShow, showNo),
+    classes: linkedRecord(links.classes, row.class_no),
+    rings: linkedRecord(links.rings, row.ring_no),
+    ring_days: linkedRecord(links.ringDays, row.days),
+    entries: linkedRecord(links.entries, row.entry_no)
+  }));
+  const classOog = await upsertAirtableRows("class_oog", ["class_no", "entry_no"], classOogRows);
   return {
     ring_days: ringDays,
     update_schedule: updateSchedule,
