@@ -327,13 +327,13 @@ function renderBlock(block, tree) {
 
 function isHierarchyBlock(record, pageKey) {
   const key = clean(record.fields.block_key);
-  const allowedKeys = new Set([
-    `${pageKey}_navigation`,
-    `${pageKey}_section_1`,
-    `${pageKey}_section_2`,
-    `${pageKey}_footer`
-  ]);
-  return allowedKeys.has(key);
+  const prefixes = [pageKey, `rs_${pageKey}`];
+  return prefixes.some((prefix) => key === `${prefix}_navigation` ||
+    key === `${prefix}_section_1` ||
+    key === `${prefix}_section_2` ||
+    key === `${prefix}_intro` ||
+    key === `${prefix}_grid` ||
+    key === `${prefix}_footer`);
 }
 
 function renderNavigation(block, items, group) {

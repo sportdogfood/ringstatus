@@ -117,6 +117,18 @@ function parseClassLabel(value, fallbackClassNo = "") {
   };
 }
 
+function displayTimeFromClassStart(value) {
+  const raw = clean(value);
+  const match = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (!match) return raw || "check time";
+  let hour = Number(match[1]);
+  const minute = match[2];
+  const suffix = hour >= 12 ? "P" : "A";
+  if (hour === 0) hour = 12;
+  if (hour > 12) hour -= 12;
+  return `${hour}:${minute}${suffix}`;
+}
+
 async function airtableFetch(url, options = {}) {
   requireToken();
   const response = await fetch(url, {
@@ -137,6 +149,23 @@ async function catalystGet(params) {
   const text = await response.text();
   if (!response.ok) throw new Error(`Catalyst ${response.status}: ${text}`);
   return JSON.parse(text);
+}
+
+async function readCatalystMirrorTable(showNo, tableName) {
+  const rows = [];
+  for (let offset = 0; ; offset += 200) {
+    const params = new URLSearchParams({
+      action: "export-mirror-table",
+      show_no: showNo,
+      table: tableName,
+      limit: "200",
+      offset: String(offset)
+    });
+    const result = await catalystGet(params);
+    rows.push(...(Array.isArray(result.data) ? result.data : []));
+    if (!result.has_more) break;
+  }
+  return rows;
 }
 
 async function getBaseTables() {
@@ -538,6 +567,51 @@ function buildClassStartRowsFromCoreSnapshot(updateScheduleRows, countRows, nowI
     .filter(Boolean);
 }
 
+function buildClassStartRowsFromCatalystMirror(mirrorRows, updateScheduleRows, countRows, nowIso, focusDay) {
+  const updateByClass = new Map(
+    (updateScheduleRows || [])
+      .filter((row) => clean(row.class_no))
+      .map((row) => [clean(row.class_no), row])
+  );
+  const countsByClass = new Map(
+    (countRows || [])
+      .filter((row) => clean(row.class_no))
+      .map((row) => [clean(row.class_no), intOrNull(row.entry_count)])
+  );
+  return (mirrorRows || [])
+    .filter((row) => clean(row.focus_day).slice(0, 10) === clean(focusDay))
+    .map((row) => {
+      const classNo = intOrNull(row.class_no);
+      const classStartTime = clean(row.class_start_time);
+      if (!classNo || !classStartTime) return null;
+      const updateRow = updateByClass.get(String(classNo)) || {};
+      const classParts = parseClassLabel(clean(updateRow.event_name || updateRow.class_name || row.class_name), classNo);
+      const entryCount = countsByClass.get(String(classNo)) ?? intOrNull(row.entry_count) ?? intOrNull(updateRow.entry_count);
+      const classStartKey = clean(row.class_start_key)
+        || `${clean(row.show_no)}|${clean(row.focus_day).slice(0, 10)}|${clean(row.ring_day_no)}|${classNo}`;
+      return {
+        class_start_key: classStartKey,
+        class_start_key_mirror: classStartKey,
+        show_no: clean(row.show_no),
+        focus_day: clean(row.focus_day).slice(0, 10),
+        ring_no: intOrNull(row.ring_no),
+        ring_day_no: clean(row.ring_day_no),
+        class_no: classNo,
+        class_number: clean(updateRow.class_number || classParts.class_number),
+        class_name: clean(classParts.class_name || row.class_name),
+        class_start_time: classStartTime,
+        display_time: displayTimeFromClassStart(classStartTime),
+        entry_count: entryCount,
+        source: "catalyst.hs_class_start_times",
+        status: "active",
+        inactive_reason: null,
+        inactive_at: null,
+        last_synced_at: nowIso
+      };
+    })
+    .filter(Boolean);
+}
+
 function parseTime(focusDay, timeText) {
   if (!focusDay || !timeText) return null;
   const date = new Date(`${focusDay}T${timeText.length === 5 ? `${timeText}:00` : timeText}-04:00`);
@@ -713,7 +787,8 @@ async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
     horseRecords,
     riderRecords,
     trainerRecords,
-    entryRecords
+    entryRecords,
+    ringNameRecords
   ] = await Promise.all([
     listRecords(TABLES.classOog, formula),
     listRecords(TABLES.classStartTimes, formula),
@@ -726,7 +801,8 @@ async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
     listRecords(TABLES.horses),
     listRecords(TABLES.riders),
     listRecords(TABLES.trainers),
-    listRecords(TABLES.entries)
+    listRecords(TABLES.entries),
+    listRecords("ring_names")
   ]);
 
   const classStartByKey = new Map();
@@ -747,7 +823,8 @@ async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
     focusShow: recordIndex(focusShowRecords, "show_no"),
     classes: recordIndex(classRecords, "class_no"),
     rings: recordIndex(ringRecords, "ring_no"),
-    ringDays: recordIndex(ringDayRecords, "ring_day_no")
+    ringDays: recordIndex(ringDayRecords, "ring_day_no"),
+    ringNames: recordIndex(ringNameRecords, "ring_name")
   };
   const updates = [];
   let classStartMatches = 0;
@@ -784,7 +861,8 @@ async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
     const classId = support.classes.get(normalizeText(current.class_no));
     const ringId = support.rings.get(normalizeText(current.ring_no));
     const ringDayId = support.ringDays.get(normalizeText(current.days || current.ring_day_no));
-    for (const id of [showId, focusShowId, classId, ringId, ringDayId]) {
+    const ringNameId = support.ringNames.get(normalizeText(current.ring));
+    for (const id of [showId, focusShowId, classId, ringId, ringDayId, ringNameId]) {
       if (id) supportMatches += 1;
     }
     addLinkedFieldUpdate(fields, current, "shows", showId);
@@ -792,6 +870,7 @@ async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
     addLinkedFieldUpdate(fields, current, "classes", classId);
     addLinkedFieldUpdate(fields, current, "rings", ringId);
     addLinkedFieldUpdate(fields, current, "ring_days", ringDayId);
+    addLinkedFieldUpdate(fields, current, "ring_names", ringNameId);
 
     if (Object.keys(fields).length) updates.push({ id: record.id, fields });
   }
@@ -1362,8 +1441,17 @@ async function main() {
 
   const runClassStart = stage === "all" || stage === "class-start";
   const runEntryGo = stage === "all" || stage === "entry-go";
+  const catalystClassStartMirrorRows = runClassStart
+    ? await readCatalystMirrorTable(showNo, "class_start_times")
+    : [];
   let classStartRows = runClassStart
-    ? buildClassStartRowsFromCoreSnapshot(coreSnapshot.update_schedule || [], coreSnapshot.counts || [], nowIso)
+    ? buildClassStartRowsFromCatalystMirror(
+      catalystClassStartMirrorRows,
+      coreSnapshot.update_schedule || [],
+      coreSnapshot.counts || [],
+      nowIso,
+      actualFocusDay
+    )
     : [];
 
   let entryGoRows = [];
@@ -1536,7 +1624,8 @@ async function main() {
       payload: {
         fields_created: classSchema.created,
         rows: classResult.seen,
-        source: catalystHasCore ? "focus-day-snapshot.update_schedule+counts" : "airtable.update_schedule+counts",
+        source: "catalyst.hs_class_start_times",
+        catalyst_class_start_rows: catalystClassStartMirrorRows.filter((row) => clean(row.focus_day).slice(0, 10) === actualFocusDay).length,
         counts_source_rows: Number(coreSnapshot.counts?.length || 0),
         counts_applied: classStartRows.filter((row) => clean(row.source).includes("counts.php")).length,
         support_link_fields_created: classLinkSchema.created,

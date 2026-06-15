@@ -52,6 +52,12 @@ function text(value, limit = 90000) {
   return valueText ? valueText.slice(0, limit) : undefined;
 }
 
+function isoFromDateText(value) {
+  const parsed = new Date(clean(value));
+  if (Number.isNaN(parsed.getTime())) return undefined;
+  return `${parsed.getUTCFullYear()}-${String(parsed.getUTCMonth() + 1).padStart(2, "0")}-${String(parsed.getUTCDate()).padStart(2, "0")}`;
+}
+
 async function airtableFetch(url, options = {}) {
   requireToken();
   const response = await fetch(url, {
@@ -217,18 +223,21 @@ function countsMirrorRow(row) {
   };
 }
 
-function classOogMirrorRow(row) {
+function classOogMirrorRow(row, updateByClassNo = new Map()) {
   const key = text(row.class_oog_key);
   const keyParts = key.split("|");
   const showNo = num(row.show_no) || num(keyParts[0]);
+  const classNo = num(row.class_no);
+  const updateRow = updateByClassNo.get(String(classNo)) || {};
   return {
     mirror_class_oog_key: key,
     show_no: showNo,
-    ring: text(row.ring),
-    ring_no: num(row.ring_no),
-    days: num(row.ring_day_no),
+    focus_day: clean(updateRow.focus_day || updateRow.iso_date).slice(0, 10) || undefined,
+    ring: text(row.ring || updateRow.ring_name),
+    ring_no: num(row.ring_no) || num(updateRow.ring_no),
+    days: num(row.ring_day_no) || num(updateRow.ring_day_no),
     class_order: num(row.class_order),
-    class_no: num(row.class_no),
+    class_no: classNo,
     class_label: text(row.class_label),
     class_number: num(row.class_number),
     class_payout: text(row.class_payout),
@@ -239,6 +248,49 @@ function classOogMirrorRow(row) {
     rider: text(row.rider),
     trainer: text(row.trainer),
     source: text(row.source_endpoint)
+  };
+}
+
+function getOrdersMirrorRow(row) {
+  const showNo = num(row.show_no);
+  return {
+    get_orders_key_mirror: text(row.get_orders_key),
+    show_no: showNo,
+    ring_no: num(row.ring_no),
+    ring_day_no: num(row.ring_day_no),
+    ring_name: text(row.ring_name),
+    day_text: text(row.day_text),
+    class_no: num(row.class_no),
+    class_text: text(row.class_text),
+    entry_text: text(row.entry_text),
+    total: num(row.total),
+    n_to_go: num(row.n_to_go),
+    n_gone: num(row.n_gone),
+    time_text: text(row.time_text),
+    timestamp: text(row.timestamp_value),
+    elapsed: text(row.elapsed),
+    focus_day: isoFromDateText(row.day_text)
+  };
+}
+
+function getRingsMirrorRow(row) {
+  return {
+    get_rings_key_mirror: text(row.get_rings_key),
+    show_no: text(row.show_no),
+    ring_no: num(row.ring_no),
+    ring_day_no: num(row.ring_day_no),
+    day_text: text(row.day_text),
+    class_no: num(row.class_no),
+    class_text: text(row.class_text),
+    entry_text: text(row.entry_text),
+    total: num(row.total),
+    n_to_go: num(row.n_to_go),
+    n_gone: num(row.n_gone),
+    time_text: text(row.time_text),
+    timestamp: text(row.timestamp_value),
+    elapsed: text(row.elapsed),
+    type: text(row.status_type),
+    focus_day: isoFromDateText(row.day_text)
   };
 }
 
@@ -308,19 +360,28 @@ async function countAirtable(tableName, formula) {
 
 async function main() {
   await ensureClassTimesTable();
-  const [updateRows, classTimeRows, resultRows, countsRows, classOogRows] = await Promise.all([
+  const [updateRows, classTimeRows, resultRows, countsRows, classOogRows, getOrdersRows, getRingsRows] = await Promise.all([
     exportCatalystTable("update_schedule"),
     exportCatalystTable("class_times"),
     exportCatalystTable("result_classes"),
     exportCatalystTable("counts"),
-    exportCatalystTable("class_oog")
+    exportCatalystTable("class_oog"),
+    exportCatalystTable("get_orders"),
+    exportCatalystTable("get_rings")
   ]);
+  const updateByClassNo = new Map(
+    updateRows
+      .filter((row) => clean(row.class_no))
+      .map((row) => [clean(row.class_no), row])
+  );
   const changed = {
     update_schedule: await upsert("update_schedule", ["mirror_update_schedule_key"], updateRows.map(updateScheduleMirrorRow)),
     class_times: await upsert("class_times", ["class_time_key"], classTimeRows.map(classTimesMirrorRow)),
     result_classes: await upsert("result_classes", ["result_class_key"], resultRows.map(resultClassMirrorRow)),
     counts: await upsert("counts", ["mirror_class_key"], countsRows.map(countsMirrorRow)),
-    class_oog: await upsert("class_oog", ["mirror_class_oog_key"], classOogRows.map(classOogMirrorRow))
+    class_oog: await upsert("class_oog", ["mirror_class_oog_key"], classOogRows.map((row) => classOogMirrorRow(row, updateByClassNo))),
+    get_orders: await upsert("get_orders", ["get_orders_key_mirror"], getOrdersRows.map(getOrdersMirrorRow)),
+    get_rings: await upsert("get_rings", ["get_rings_key_mirror"], getRingsRows.map(getRingsMirrorRow))
   };
   const deleted_stale = {
     update_schedule: await deleteStale(
@@ -350,7 +411,19 @@ async function main() {
     class_oog: await deleteStale(
       "class_oog",
       "mirror_class_oog_key",
-      new Set(classOogRows.map(classOogMirrorRow).map((row) => clean(row.mirror_class_oog_key))),
+      new Set(classOogRows.map((row) => classOogMirrorRow(row, updateByClassNo)).map((row) => clean(row.mirror_class_oog_key))),
+      `{show_no}=${Number(SHOW_NO)}`
+    ),
+    get_orders: await deleteStale(
+      "get_orders",
+      "get_orders_key_mirror",
+      new Set(getOrdersRows.map(getOrdersMirrorRow).map((row) => clean(row.get_orders_key_mirror))),
+      `{show_no}=${Number(SHOW_NO)}`
+    ),
+    get_rings: await deleteStale(
+      "get_rings",
+      "get_rings_key_mirror",
+      new Set(getRingsRows.map(getRingsMirrorRow).map((row) => clean(row.get_rings_key_mirror))),
       `{show_no}=${Number(SHOW_NO)}`
     )
   };
@@ -359,14 +432,18 @@ async function main() {
     class_times: await countAirtable("class_times", `{show_no}=${Number(SHOW_NO)}`),
     result_classes: await countAirtable("result_classes", `{show_no}=${Number(SHOW_NO)}`),
     counts: await countAirtable("counts", `{show_no}=${Number(SHOW_NO)}`),
-    class_oog: await countAirtable("class_oog", `{show_no}=${Number(SHOW_NO)}`)
+    class_oog: await countAirtable("class_oog", `{show_no}=${Number(SHOW_NO)}`),
+    get_orders: await countAirtable("get_orders", `{show_no}=${Number(SHOW_NO)}`),
+    get_rings: await countAirtable("get_rings", `{show_no}=${Number(SHOW_NO)}`)
   };
   const catalystCounts = {
     update_schedule: updateRows.length,
     class_times: classTimeRows.length,
     result_classes: resultRows.length,
     counts: countsRows.length,
-    class_oog: classOogRows.length
+    class_oog: classOogRows.length,
+    get_orders: getOrdersRows.length,
+    get_rings: getRingsRows.length
   };
   const pass = Object.keys(catalystCounts).every((key) => catalystCounts[key] === airtableCounts[key]);
   console.log(JSON.stringify({ pass, show_no: SHOW_NO, catalystCounts, airtableCounts, changed, deleted_stale }, null, 2));
