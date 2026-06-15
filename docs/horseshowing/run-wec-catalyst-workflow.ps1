@@ -63,7 +63,7 @@ function Resolve-WorkflowLane {
   if ($LogType -eq "live" -or $CheckName -in @("get_rings", "get_orders")) { return "Live" }
   if ($LogType -eq "alerts" -or $CheckName -in @("class_start_times", "entry_go_times")) { return "Alerts" }
   if ($CheckName -in @("core_update_schedule", "core_class_oog", "core_counts")) { return "Core" }
-  if ($CheckName -in @("airtable_helpers_summary", "airtable_helper_backfill", "catalyst_heartbeat", "catalyst_sync_focus_day", "catalyst_sync_ring_days_counts")) { return "Audits" }
+  if ($CheckName -in @("airtable_helpers_summary", "airtable_helper_backfill", "catalyst_heartbeat", "catalyst_sync_focus_day", "catalyst_sync_ring_days_counts", "cadence_gate")) { return "Audits" }
   return ""
 }
 
@@ -307,6 +307,228 @@ function Get-WecAirtableRecordsByFormula {
   } while ($uri)
 
   return $records
+}
+
+function Get-WecAirtableRecordsByView {
+  param(
+    [string]$TableName,
+    [string]$ViewName,
+    [int]$PageSize = 100
+  )
+
+  $records = @()
+  if (!$env:AIRTABLE_TOKEN) { return $records }
+
+  $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?view=$([uri]::EscapeDataString($ViewName))&pageSize=$PageSize"
+  do {
+    $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
+      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+    } -TimeoutSec 30
+    $records += @($result.records)
+    $uri = if ($result.offset) {
+      "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?view=$([uri]::EscapeDataString($ViewName))&pageSize=$PageSize&offset=$($result.offset)"
+    } else {
+      $null
+    }
+  } while ($uri)
+
+  return $records
+}
+
+function Get-WecAirtableTableRecords {
+  param(
+    [string]$TableName,
+    [int]$PageSize = 100
+  )
+
+  $records = @()
+  if (!$env:AIRTABLE_TOKEN) { return $records }
+
+  $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?pageSize=$PageSize"
+  do {
+    $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
+      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+    } -TimeoutSec 30
+    $records += @($result.records)
+    $uri = if ($result.offset) {
+      "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?pageSize=$PageSize&offset=$($result.offset)"
+    } else {
+      $null
+    }
+  } while ($uri)
+
+  return $records
+}
+
+function Get-WecRecordField($record, [string]$Name) {
+  if (!$record -or !$record.fields) { return $null }
+  $property = $record.fields.PSObject.Properties[$Name]
+  if ($property) { return $property.Value }
+  return $null
+}
+
+function Resolve-WecCadenceMinutes {
+  param(
+    [array]$CadenceRows,
+    [string]$Mode = "day"
+  )
+
+  $preferredWorkflows = @(
+    "wec_heartbeat",
+    "wec_alerts_time_check",
+    "entry_go_times",
+    "live_get_orders",
+    "live_get_rings"
+  )
+  $row = $null
+  foreach ($workflow in $preferredWorkflows) {
+    $row = @($CadenceRows | Where-Object { [string](Get-WecRecordField $_ "workflow") -eq $workflow } | Select-Object -First 1)[0]
+    if ($row) { break }
+  }
+  if (!$row -and @($CadenceRows).Count -gt 0) {
+    $row = @($CadenceRows | Select-Object -First 1)[0]
+  }
+
+  $modeValue = ([string]$Mode).Trim().ToLowerInvariant()
+  $minutes = $null
+  if ($modeValue -eq "evening") {
+    $minutes = Get-WecRecordField $row "night_cadence_minutes"
+  }
+  if ($null -eq $minutes -or [string]$minutes -eq "") {
+    $minutes = Get-WecRecordField $row "cadence_minutes"
+  }
+  if ($null -eq $minutes -or [string]$minutes -eq "") {
+    return 12
+  }
+  return [math]::Max(1, [int]$minutes)
+}
+
+function Test-WecCadenceGate {
+  param(
+    [hashtable]$State
+  )
+
+  if ($ForceSync) {
+    Write-WorkflowLog "cadence-gate bypass force-sync"
+    return @{
+      should_run = $true
+      reason = "force_sync"
+      cadence_minutes = 0
+    }
+  }
+
+  if (!$env:AIRTABLE_TOKEN) {
+    Write-WorkflowLog "cadence-gate bypass missing AIRTABLE_TOKEN"
+    return @{
+      should_run = $true
+      reason = "missing_airtable_token"
+      cadence_minutes = 0
+    }
+  }
+
+  try {
+    $activeShows = @(Get-WecAirtableRecordsByView -TableName "shows" -ViewName "active" -PageSize 10)
+    if ($activeShows.Count -eq 0) {
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Status "skipped" -Summary "cadence stop: no active show in shows.active" -Payload @{
+        reason = "no_active_show"
+        table = "shows"
+        view = "active"
+      }
+      Write-WorkflowLog "cadence-gate stop no_active_show"
+      return @{
+        should_run = $false
+        reason = "no_active_show"
+        cadence_minutes = 0
+      }
+    }
+
+    $activeFocusShows = @(Get-WecAirtableRecordsByView -TableName "focus_show" -ViewName "active" -PageSize 10)
+    if ($activeFocusShows.Count -eq 0) {
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Status "skipped" -Summary "cadence stop: no active record in focus_show.active" -Payload @{
+        reason = "no_active_focus_show"
+        table = "focus_show"
+        view = "active"
+        active_shows = $activeShows.Count
+      }
+      Write-WorkflowLog "cadence-gate stop no_active_focus_show"
+      return @{
+        should_run = $false
+        reason = "no_active_focus_show"
+        cadence_minutes = 0
+      }
+    }
+
+    $focusRecord = @($activeFocusShows | Select-Object -First 1)[0]
+    $focusShowNo = Get-WecRecordField $focusRecord "show_no"
+    $focusDayValue = Get-WecRecordField $focusRecord "focus_day"
+    $modeValue = Get-WecRecordField $focusRecord "mode"
+    if (!$modeValue) { $modeValue = "day" }
+    if ($focusShowNo) { $script:ShowNo = [string]$focusShowNo }
+    if ($focusDayValue) { $script:FocusDay = [string]$focusDayValue }
+
+    $cadenceRows = @(Get-WecAirtableTableRecords -TableName "cadence" -PageSize 100)
+    $cadenceMinutes = Resolve-WecCadenceMinutes -CadenceRows $cadenceRows -Mode $modeValue
+    $focusKey = "$ShowNo|$FocusDay|$modeValue"
+    $lastKey = "cadence_gate_last_run"
+    $lastFocusKey = "cadence_gate_last_focus_key"
+    $isFocusChanged = (!$State.ContainsKey($lastFocusKey)) -or ([string]$State[$lastFocusKey] -ne $focusKey)
+    $isDue = $true
+    $elapsedMinutes = $null
+    if (!$isFocusChanged -and $State.ContainsKey($lastKey)) {
+      try {
+        $lastRun = [datetime]$State[$lastKey]
+        $elapsedMinutes = ((Get-Date) - $lastRun).TotalMinutes
+        $isDue = $elapsedMinutes -ge $cadenceMinutes
+      } catch {
+        $isDue = $true
+      }
+    }
+
+    if (!$isDue) {
+      $summary = "cadence skip: focus=$FocusDay mode=$modeValue cadence=$cadenceMinutes elapsed=$([math]::Round($elapsedMinutes, 2))"
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Status "skipped" -Summary $summary -Payload @{
+        reason = "not_due"
+        focus_key = $focusKey
+        mode = $modeValue
+        cadence_minutes = $cadenceMinutes
+        elapsed_minutes = $elapsedMinutes
+      }
+      Write-WorkflowLog "cadence-gate skip not_due focus=$focusKey cadence=$cadenceMinutes elapsed=$([math]::Round($elapsedMinutes, 2))"
+      return @{
+        should_run = $false
+        reason = "not_due"
+        cadence_minutes = $cadenceMinutes
+      }
+    }
+
+    $State[$lastKey] = (Get-Date).ToString("o")
+    $State[$lastFocusKey] = $focusKey
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Summary "cadence pass: focus=$FocusDay mode=$modeValue cadence=$cadenceMinutes" -Payload @{
+      reason = if ($isFocusChanged) { "focus_changed" } else { "due" }
+      focus_key = $focusKey
+      mode = $modeValue
+      cadence_minutes = $cadenceMinutes
+      active_shows = $activeShows.Count
+      active_focus_shows = $activeFocusShows.Count
+    }
+    Write-WorkflowLog "cadence-gate pass focus=$focusKey cadence=$cadenceMinutes"
+    return @{
+      should_run = $true
+      reason = if ($isFocusChanged) { "focus_changed" } else { "due" }
+      cadence_minutes = $cadenceMinutes
+    }
+  } catch {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Status "error" -Summary "cadence gate failed: $($_.Exception.Message)" -Payload @{
+      reason = "gate_error"
+      error = $_.Exception.Message
+    }
+    Write-WorkflowLog "cadence-gate error $($_.Exception.Message)"
+    return @{
+      should_run = $false
+      reason = "gate_error"
+      cadence_minutes = 0
+    }
+  }
 }
 
 function Read-State {
@@ -1114,6 +1336,18 @@ function Due($state, $key, $minutes) {
 
 $state = Read-State
 $now = Get-Date
+
+$cadenceGate = Test-WecCadenceGate -State $state
+if (!$cadenceGate.should_run) {
+  $state["cadence_gate_last_check"] = (Get-Date).ToString("o")
+  $state["cadence_gate_last_reason"] = [string]$cadenceGate.reason
+  Save-State $state
+  if ($script:WecWorkflowMutexAcquired) {
+    $script:WecWorkflowMutex.ReleaseMutex()
+    $script:WecWorkflowMutex.Dispose()
+  }
+  exit 0
+}
 
 $heartbeat = Invoke-WecHeartbeatComposite
 Write-WorkflowLog "heartbeat show=$ShowNo focus=$($heartbeat.focus_day) ok=$($heartbeat.ok) schedule_rows=$($heartbeat.schedule_rows) triggers=$($heartbeat.created_triggers)"

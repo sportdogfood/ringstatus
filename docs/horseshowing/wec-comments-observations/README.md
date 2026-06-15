@@ -1,6 +1,6 @@
 # WEC Comments and Observations Lane
 
-Version: 2026-06-14 v0.1
+Version: 2026-06-14 v0.2
 
 ## Purpose
 
@@ -150,8 +150,12 @@ Current actions:
 - `start-session`
 - `session-heartbeat`
 - `list-sessions`
+- `ring-checkin`
+- `ring-checkout`
+- `list-ring-checkins`
 - `add-comment`
 - `list-comments`
+- `add-observation`
 
 Current verified comment write:
 
@@ -160,6 +164,17 @@ Current verified comment write:
   - `rings`
   - `classes`
   - `entries`
+
+Current verified ring check-in / observation write:
+
+- `ring-checkin` writes `wec_ring_checkins`.
+- `ring-checkout` changes the check-in status to `ended`.
+- `add-comment` writes to both scoped table and master `wec_comments`.
+- Entry comments write to `wec_entry_comments`.
+- Comments made while checked in to the same ring carry `source_confidence = first_hand`.
+- `add-observation` writes `wec_observations`.
+- Observations made while checked in to the same ring carry `source_confidence = first_hand`.
+- Observation records link back to `rings`, `classes`, and `entries`.
 
 ## Current Webflow Embed
 
@@ -200,6 +215,63 @@ Current session/comment tables:
 
 - `wec_sessions`
 - `wec_comments`
+- `wec_ring_checkins`
+- `wec_observations`
+- `wec_ring_comments`
+- `wec_class_comments`
+- `wec_entry_comments`
+
+Current comments/prompt config tables:
+
+- `wec_comment_presets`
+- `wec_question_templates`
+- `waze_users`
+- `waze_session_footprints`
+
+Use-case:
+
+- `wec_comment_presets` stores prebuilt comment choices for the UI. Each row is scoped to `ring`, `class`, or `entry` and can optionally target a specific `show_no`, `focus_day`, `ring_no`, `class_no`, or `entry_no`. These rows are operator-managed options that help users tap a known comment quickly. They are not user comment logs.
+- `wec_question_templates` stores dynamic prompt templates for observation questions. Each row is scoped to `ring`, `class`, or `entry` and controls the prompt label/text, answer type, choices, sort order, and optional trigger context. Answers generated from these prompts write to `wec_observations`.
+- `wec_ring_comments`, `wec_class_comments`, `wec_entry_comments`, and `wec_comments` are output/log tables. They capture what users actually submitted.
+- `wec_observations` is the output/log table for prompt answers such as yes/no/unsure checks.
+- `waze_users` stores the latest known user identity/display-name record used by WEC Waze-style sessions. It carries current cookie state, latest visit, last known geo target fields, device/session summary fields, and user-agent/viewport context.
+- `waze_session_footprints` stores per-event session history. It is the table for tracking session starts, heartbeats, cookie checks, geo checks, ring/class/entry opens, ring check-ins, comments, and observation submissions over time.
+
+Schema/index rule:
+
+- These WEC comments/Waze tables are indexed in `table_index`: `wec_sessions`, `wec_comments`, `wec_ring_checkins`, `wec_observations`, `wec_ring_comments`, `wec_class_comments`, `wec_entry_comments`, `wec_comment_presets`, `wec_question_templates`, `waze_users`, and `waze_session_footprints`.
+- Each table has `rec_id` as a formula field using `RECORD_ID()`.
+- Each table links to `classes`, `entries`, `shows`, `focus_show`, and `rings`.
+- Each table except `waze_users` also links to `waze_users`.
+- These links exist so comment/session/observation records can be joined back to the same helper tables used by WEC mobile, WEC print, alerts, and schedule workflows.
+
+User/session tracking split:
+
+- Use `waze_users` for the current user profile/state: `cookie_success`, `cookie_date`, `cookie_expire`, `last_visit`, `geo_lat`, `geo_lng`, `geo_accuracy_m`, `geo_source`, `geo_allowed`, `device_id`, `last_session_id`, `session_count`, `timezone`, `user_agent`, and `viewport`.
+- Use `waze_session_footprints` for history. One user can have many footprint records across a day/session. This avoids overwriting the trail of what the user did while still keeping `waze_users` easy to inspect.
+- `waze_session_footprints` links to `classes`, `entries`, `shows`, `focus_show`, `rings`, `waze_users`, and `wec_sessions`.
+- The geo fields are target fields for browser geolocation or IP-derived location. Browser geolocation should be treated as user-permission based; IP geo should be treated as approximate.
+
+Seed/proof script:
+
+```text
+docs/horseshowing/seed-airtable-wec-waze-system.js
+```
+
+Use-case:
+
+- Creates or updates one linked seed record in each WEC comments/Waze table.
+- Uses one existing show/ring/class/entry/focus_show chain.
+- Proves `rec_id` resolves and links populate across `classes`, `entries`, `shows`, `focus_show`, `rings`, and `waze_users`.
+
+Current seed keys:
+
+- `session_id`: `seed_session_wec_waze_14906_20260614`
+- `checkin_id`: `seed_checkin_wec_waze_14906_20260614`
+- `comment_id`: `seed_comment_wec_waze_14906_20260614_*`
+- `observation_key`: `seed_observation_wec_waze_14906_20260614`
+- `preset_key`: `seed_preset_wec_waze_ring_14906_20260614`
+- `question_key`: `seed_question_wec_waze_entry_14906_20260614`
 
 Current data/model tables used by comments state:
 
@@ -322,6 +394,7 @@ Recommended rule:
 - Class view writes to `wec_class_comments`.
 - Entry view writes to `wec_entry_comments`.
 - Optional automation mirrors all scoped comments into `wec_comments`.
+- Current implementation writes both: one scoped row plus one master `wec_comments` row.
 
 Reason:
 
@@ -355,6 +428,13 @@ Recommended new table:
 ```text
 wec_observations
 ```
+
+Current implementation:
+
+- `wec_observations` exists.
+- The hosted widget shows a bottom sheet after selecting a ring.
+- The bottom sheet can write `yes`, `no`, `unsure`, or `dismissed`.
+- The prompt currently uses selected ring/class/entry context plus class schedule/order fallback.
 
 Recommended fields:
 
@@ -568,6 +648,39 @@ Desired behavior:
 - Session can support observations.
 - Active sessions can be shown to other users/admins.
 
+## Ring Check-In Concept
+
+Ring check-in identifies that a user is actively watching a ring.
+
+Current implementation:
+
+- A user with a session can check in to a selected ring.
+- One active ring check-in per session is supported.
+- Checking into another ring ends the prior active check-in.
+- A checked-in user is treated as `first_hand` for comments and observations in that same ring.
+- A user can leave the ring check-in.
+
+Table:
+
+```text
+wec_ring_checkins
+```
+
+Key fields:
+
+- `checkin_id`
+- `session_id`
+- `user_name`
+- `show_no`
+- `focus_day`
+- `ring_no`
+- `rings`
+- `checked_in_at`
+- `last_seen_at`
+- `status`
+- `source_confidence`
+- `source`
+
 ## Active Trainer / CWF Marker
 
 The comments entry drilldown must show all entries.
@@ -667,25 +780,38 @@ instead of pretending a single entry is certain.
 - Widget supports saving/displaying user names.
 - Widget lists active sessions.
 - Widget supports ring/class/entry comments.
+- Widget supports ring check-in.
+- Widget supports ring checkout.
+- Widget shows check-in state for the selected ring.
+- Widget shows bottom-sheet prompts.
+- Widget writes structured observations from prompt answers.
 - `add-comment` writes linked comments to Airtable.
+- `add-comment` writes to scoped comment tables and master `wec_comments`.
+- `ring-checkin` writes `wec_ring_checkins`.
+- `ring-checkout` ends active ring check-ins.
+- `add-observation` writes `wec_observations`.
+- First-hand comments and observations are tagged when session ring check-in matches the comment/observation ring.
 - Verified live `comment-state` route returned 26 classes and 444 entries.
 - Verified live mixed class rendered 24 entries with 2 CWF-marked entries.
 - Verified live comment write linked ring/class/entry records.
+- Verified live ring check-in write.
+- Verified live ring checkout.
+- Verified live scoped entry comment write.
+- Verified live observation write.
+- Verified UI ring check-in control.
+- Verified UI bottom-sheet prompt render.
+- Verified UI prompt answer writes an Airtable observation.
 - Created stable iframe embed file for Webflow.
 
 ## What Still Needs To Be Built
 
 - Replace old `wec-sessions` Webflow inline test embed with hosted iframe embed.
-- Create scoped comment tables: `wec_ring_comments`, `wec_class_comments`, `wec_entry_comments`.
-- Decide whether `wec_comments` remains master/audit or is replaced by scoped tables.
-- Create `wec_observations` table.
-- Add bottom-sheet prompt UI.
+- Decide whether `wec_comments` remains master/audit long term.
 - Add prompt helper table, likely `wec_comment_prompts` or `wec_observation_prompts`.
-- Add prompt selection logic based on current ring/class/entry timing.
+- Improve prompt selection logic using live timing confidence.
 - Add browser geolocation gate.
 - Add focus-day geo pin table or fields.
 - Add session geo fields and audit logic.
-- Add observation write endpoint/action.
 - Feed observations back into timing calculations.
 - Confirm `wec_alerts` generation and alert windows.
 - Tighten `class_start_times.current_horse`, `current_entry_no`, `n_to_go`, `n_gone`.

@@ -138,6 +138,7 @@ Install these one-time Webflow embeds:
 ```text
 Mobile page: docs/horseshowing/webflow-drops/wec-mobile-stable-loader.txt
 Print page: docs/horseshowing/webflow-drops/wec-print-stable-loader.txt
+Sessions page: docs/horseshowing/webflow-drops/wec-sessions-stable-loader.txt
 ```
 
 Do not keep replacing full mobile/print embeds for routine WEC fixes.
@@ -147,6 +148,7 @@ Hosted render source:
 ```text
 https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-embed-html
 https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-embed-html
+https://ringstatus.com/test/wec-schedule/session-widget
 ```
 
 Catalyst asset source:
