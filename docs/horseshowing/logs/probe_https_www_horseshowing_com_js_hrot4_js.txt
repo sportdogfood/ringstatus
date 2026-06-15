@@ -1,0 +1,526 @@
+var show_no = 0;
+var last_width = $(window).width();
+var size = ''; 
+var nsize = ''; 
+var hrot_search = '';
+var hrot_name = '';
+var sum_pm = 0;
+var numerical = false;
+var scroll_y = 0;
+var search_text = "";
+
+function update_title()
+{
+  $.get('show_title.php',
+    { show: show_no },
+    function(data){
+      $('#show_title').text(data);
+  }); 
+}
+
+function resetSearch()
+{
+  // clear the textbox
+//$('#txtSearch').val('');
+  // show all table rows
+  $("table").show();
+  $('table tr').show();
+  $('table thead').show();
+  // remove any no records rows
+  $('.norecords').remove();
+  $("#total_pm").hide();
+  // make sure we re-focus on the textbox for usability
+  $('#txtSearch').focus();
+}
+
+function doSearch()
+{
+  if ($('#txtSearch').val().length > 2)
+  {
+    $("table tbody").each(function(i)
+    {        
+      $(this).find('tr').each(function() {
+        $(this).hide();
+      });
+      $(this).find('tr td:containsNoCase(\'' + jQuery('#txtSearch').val() + '\')').parent().show();
+     
+      var n_tr = $(this).find('tr:visible').length;
+      if (n_tr == 0)
+      {
+        $(this).parent().find("thead").hide();
+        $(this).parent().hide();
+      }  
+      else  
+        $(this).parent().find("thead").show();
+    }).promise().done(function() {
+      var sum = 0;
+      $('tr:visible').each(function(){
+        var pm =  $(this).data("pm");
+        if (typeof pm !== 'undefined')
+          sum = sum + pm;
+      });
+      if (sum > 0)
+      {
+        sum = 'Total Prize Money: $' + numberWithCommas(sum);
+        $("#total_pm").text(sum);
+        $("#total_pm").show();
+      } 
+      else
+        $("#total_pm").hide();
+   });
+  }
+  else if ($('#txtSearch').val().length == 0)
+  {
+   // if the user removed all of the text, reset the search
+   resetSearch();
+  }
+
+  // if there were no matching rows, tell the user
+  if ($('table tr:visible').length == 1)
+  {
+   // remove the norecords row if it already exists
+   $('.norecords').remove();
+   // add the norecords row
+   $('.result').append('<tr class="norecords"><td colspan="5" class="Normal">No records were found</td></tr>');
+  }
+}
+
+$.expr[":"].containsNoCase = function(el, i, m)
+{
+  var search = m[3];
+  if (el.tagName == 'TH')
+    return true;
+  if (!search) return false;
+    return eval("/" + search + "/i").test($(el).text());
+};
+
+
+
+
+function hide_all()
+{
+  $('#hscom_logo').show();
+  $('#trainer').hide();
+  $('#results').hide();
+  $('#numerical4').hide();
+  $('#classes').hide();
+  $('#hrot_search').hide();
+  $('#total_pm').hide();
+  $('#hrot_input').val('');
+  $('#hrot_btn').prop("disabled",true);
+  $('.cd-top').hide();
+  numerical = false;
+  scroll_y = 0;
+  $('#txtSearch').val('');
+  search_text = '';
+}
+
+function display_classes(filter = '')
+{
+  $.get('srched_classes.php',
+    { filter: filter },
+    function(data)
+    { 
+      if (data == 'NO MATCH')
+        $('#no_match').html('<strong>No Match</strong>');
+      else
+      {    
+        $('#no_match').text('');
+        $('#selected_classes tbody').html(data);
+      }  
+  }); 
+}
+
+function display_numerical()
+{
+  $.get('numerical4.php',{},
+    function(data)
+    { 
+      $('#numerical4').html(data);
+      $('#numerical4').show();
+      nsize = '';
+      $('.nlg').hide();
+      $('.nmd').hide();
+      $('.nsm').hide();
+      numerical = true;
+      resize();
+      $('#txtSearch').val(search_text);
+      if (search_text != '')
+        doSearch();
+      window.scrollTo(0, scroll_y);
+      $('.cd-top').show();
+    }); 
+}
+
+function get_classes(filter = '')
+{
+  var query = "SELECT\
+    classes.number,\
+    classes.name,\
+    COUNT(eclasses.eclass_no) AS n_entries,\
+    classes.unique_no AS class_no\
+  FROM\
+    classes\
+  LEFT JOIN eclasses ON classes.show_no = eclasses.show_no AND classes.unique_no = eclasses.class_no\
+  WHERE classes.show_no = " + show_no;
+  
+  if (filter != '')
+    query += filter;
+  query += " GROUP BY classes.number, classes.name  order by lpad(number, 7, '0')";
+}
+
+$.expr[":"].containsNoCase = function(el, i, m)
+{
+  var search = m[3];
+  if (el.tagName == 'TH')
+    return true;
+  if (!search) return false;
+    return eval("/" + search + "/i").test($(el).text());
+};
+
+function numberWithCommas(x)
+{
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function resize()
+{
+  var width = $(window).width();
+  if (! numerical) 
+  {
+    if (width <= 505 && size != 'sm')
+    {
+      size = 'sm';
+      $('.lg').hide();
+      $('.md').hide();
+      $('.sm').show();
+    }  
+    else
+    {
+    	if (width > 505 && width < 700 && size != 'md')
+    	{
+  	    size = 'md';
+  	    $('.lg').hide();
+  	    $('.sm').hide();
+  	    $('.md').show();
+    	}
+    	else
+    	{
+  	    if (width > 700 && size != 'lg' )
+  	    {
+  	      size = 'lg';
+  	      $('.sm').hide();
+          $('.md').hide();
+  	      $('.lg').show();
+  	    }
+      }  
+    }
+  }
+  else
+  {
+    if (width <= 605 && nsize != 'sm')
+    {
+      nsize = 'sm';
+      $('.nlg').hide();
+      $('.nmd').hide();
+      $('.nsm').show();
+    }  
+    else
+    {
+    	if (width > 605 && width < 850 && nsize != 'md')
+    	{
+  	    nsize = 'md';
+  	    $('.nlg').hide();
+  	    $('.nsm').hide();
+  	    $('.nmd').show();
+    	}
+    	else
+    	{
+  	    if (width > 850 && nsize != 'lg' )
+  	    {
+  	      nsize = 'lg';
+  	      $('.nsm').hide();
+          $('.nmd').hide();
+  	      $('.nlg').show();
+  	    }
+      }  
+    }
+    doSearch();
+  }  
+  last_width = width;    
+}
+ 
+$(window).resize(function()
+{
+  resize();
+});
+
+function hasStoredState()
+{
+  return localStorage.getItem('pageState') !== null;
+}
+
+function saveState(numerical)
+{
+  let state = {
+    numerical: numerical, 
+    scroll_y: window.scrollY || window.pageYOffset,
+    search: $('#txtSearch').val()
+  };
+  localStorage.setItem('pageState', JSON.stringify(state));
+}    
+
+function restoreState()
+{
+  let state = JSON.parse(localStorage.getItem('pageState'));
+  if (state.numerical)
+  {
+    scroll_y = state.scroll_y;
+    search_text = state.search;
+    nsize = '';
+    display_numerical();
+  }  
+  localStorage.removeItem('pageState');
+}
+
+
+$(document).ready(function()
+{
+  hide_all();
+  $('.lg').hide();
+  $('.md').hide();
+  $('.sm').hide();
+	
+  $('#header').scrollToFixed();
+  
+  $('#home_btn').click(function() {
+    location = 'index.html';
+  }); 
+  $('#select_btn').click(function() {
+    location = 'showsel.php';
+  }); 
+  $('#show_btn').click(function() {
+    location = 'show.php?show=' + show_no;
+  }); 
+  $('#classes_btn').click(function()
+  {
+    hide_all();
+    $('#hscom_logo').hide();
+    $('#classes_search').val('');
+    display_classes();
+    $('#classes').show();
+  }); 
+  $('#horses_btn').click(function() {
+    hide_all();
+    hrot_search = 'horse';
+    $('#hrot_input').attr("placeholder", "Horse Name");
+    $('#hrot_search').show();
+  }); 
+  $('#riders_btn').click(function() {
+    hide_all();
+    hrot_search = 'rider';
+    $('#hrot_input').attr("placeholder", "Rider Name");
+    $('#hrot_search').show();
+  }); 
+  $('#owners_btn').click(function() {
+    hide_all();
+    hrot_search = 'owner';
+    $('#hrot_input').attr("placeholder", "Owner Name");
+    $('#hrot_search').show();
+  }); 
+  $('#trainers_btn').click(function() {
+    hide_all();
+    hrot_search = 'trainer';
+    $('#hrot_input').attr("placeholder", "Trainer Name");
+    $('#hrot_search').show();
+  }); 
+  $('#numerical_btn').click(function() {
+    hide_all();
+    hrot_search = '';
+    display_numerical();
+  }); 
+    
+  function do_classes_search()
+  {
+     filter_op = ' AND (';
+     if ($('#and_or_cb').prop("checked"))
+       filter_op = ' OR (';    
+     let srch = $('#classes_search').val();
+     if (srch.length >= 2)
+     {
+//     $('#class_results_btn').prop("disabled",true);
+       let tokens = srch.split(" ");
+       let filter = '(';
+       let len = tokens.length;
+       for (i = 0; i < len; i++)
+       {
+         if (tokens[i].length > 0)
+         {
+           if (filter != '(')
+             filter += filter_op;
+           tokens[i] = tokens[i].replace("'", "\\'"); // escape any single quotes 
+           filter += "cl.name like '%" + tokens[i] + "%' OR cl.number = '" + tokens[i] + "' OR ss.name = '" + tokens[i] + "')";
+         }
+       }
+       display_classes(filter);
+//     $('#class_results_btn').prop("disabled",false);
+     }
+     else
+       display_classes();
+  }
+  var timer=null;
+  document.getElementById("classes_search").onkeyup = ()=>{
+    clearInterval(timer);
+    timer = setInterval(()=>{
+              do_classes_search(); 
+              clearInterval(timer);
+            },1000);
+  };
+
+  $('#and_or_cb').change(function()
+  {
+    do_classes_search();
+  });
+
+  $('#class_results_btn').click(function()
+  {
+    $('#results').hide();
+    
+    var class_nos = [];
+    var sect_nos  = [];
+    var n_rows = $('#selected_classes tbody tr').length;
+    $('#selected_classes tbody tr').each(function()
+    {
+      var class_no = $(this).find('td:nth-child(4)').text();
+      var sect_no  = $(this).find('td:nth-child(5)').text();
+      if (sect_no == 0)
+        class_nos.push(class_no);
+      else
+        if ($.inArray(sect_no,sect_nos) == -1)
+          sect_nos.push(sect_no);
+    });
+    if (class_nos.length + sect_nos.length == 0)
+      return;
+    
+    var classes = JSON.stringify(class_nos);
+    var sections = JSON.stringify(sect_nos);
+    $("#busy").show();
+    $.post('show_results4.php', { class_nos: classes, sect_nos: sections }, function(data)
+    {
+      $('#results').html(data);  
+      $('#classes').hide();
+      $('#hscom_logo').hide();
+      $('#results').show();
+      $('.cd-top').show();
+      size = '';
+      resize();
+      $("#busy").hide();
+    });
+  }); 
+
+  $('#hrot_btn').click(function()
+  {
+    if (hrot_name != '')
+    {
+      hide_all();
+      $.post('hrot_results.php', { hrot_search: hrot_search, name: hrot_name }, function(data)
+      {
+        if (hrot_search == 'trainer')
+        {
+          $('#trainer').html('Trainer Results for ' + hrot_name);
+          $('#trainer').show();
+        }    
+        $('#results').html(data);  
+        $('#classes').hide();
+        $('#results').show();
+        $('.cd-top').show();
+
+        sum_pm = 0;
+        $(".lg table tbody").each(function()
+        {        
+          $(this).find('tr').each(function()
+          {
+            var trhtml = this.outerHTML;
+            var pm =  $(this).data("pm");
+            if (typeof pm !== 'undefined')
+              sum_pm = sum_pm + pm;
+          });
+        }).promise().done(function() {
+         if (sum_pm > 0)
+         {
+           var total_pm = 'Total Prize Money: $' + numberWithCommas(sum_pm);
+           $("#total_pm").text(total_pm);
+           $("#total_pm").show();
+         } 
+         else
+           $("#total_pm").hide();
+        }); 
+        size = '';
+        resize();
+      });
+    }
+  });
+  resize();
+  $('#content').show();
+  
+  $('#hrot_input').devbridgeAutocomplete({
+      serviceUrl: 'ec_autocom.php',
+      dataType: 'json',
+      minChars: 2,
+      //deferRequestBy: 500,
+      noCache: true,
+      params: {
+        hrot_search: function () { 
+           return hrot_search; 
+        }
+      },      
+      onSelect: function(suggestion) {
+        $('#hrot_btn').prop("disabled",false);
+        hrot_name = suggestion.value;
+      },
+      onSearchError: function (query, jqXHR, textStatus, errorThrown)
+      {
+        $('#hrot_btn').prop("disabled",true);
+      },
+      onSearchStart: function(query)
+      {
+        $('#hrot_btn').prop("disabled",true);
+      },
+      onSearchComplete:function (query, jqXHR, textStatus, errorThrown)
+      {
+      }       
+  });
+  
+  $(document).on('keyup','#txtSearch', function(){
+    doSearch();
+  });
+  
+  $(document).on('mouseover','.link', function(){
+    $(this).css('text-decoration','underline');
+  });  
+  $(document).on('mouseout','.link', function(){
+    $(this).css('text-decoration','none');
+  });  
+  $(document).on('click', '.link', function(event){
+    var t = event.target;
+    var type = t.getAttribute('data-type');      
+    var item = t.getAttribute('data-item');      
+    var veri = t.getAttribute('data-veri');      
+    var show = t.getAttribute('data-show');
+    var url = 'results_browser3.php';
+    var form = $('<form action="' + url + '" method="get">' +
+      '<input type="hidden" name="t" value="' + type + '" />' +
+      '<input type="hidden" name="i" value="' + item + '" />' +
+      '<input type="hidden" name="v" value="' + veri + '" />' +
+      '<input type="hidden" name="s" value="' + show + '" />' +
+      '</form>');
+    $('body').append(form);
+    
+    saveState(true);
+    
+    form.submit();
+  });  
+  
+  if (hasStoredState())
+    restoreState();
+});

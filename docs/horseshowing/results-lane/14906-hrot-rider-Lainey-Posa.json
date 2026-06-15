@@ -1,0 +1,121 @@
+{
+  "ok": true,
+  "show_no": "14906",
+  "hrot_search": "rider",
+  "name": "Lainey Posa",
+  "standings_rows": 1,
+  "result_classes": 4,
+  "result_rows": 4,
+  "generated_at": "2026-06-15T14:27:47.677Z",
+  "standings": [
+    {
+      "division": "Green Pony Hunter Small/Medium 2'3\"/2'6\"",
+      "standing": "Champion",
+      "points": "32.00",
+      "entry_no": "1027",
+      "horse": "Fort Knox",
+      "rider": "Lainey Posa",
+      "owner": "Jessica Heap"
+    }
+  ],
+  "classes": [
+    {
+      "class_label": "150) $250 Green Pony Conf Hunter- Med/Sm 2'6\"/2'3\"",
+      "class_number": "150",
+      "class_name": "$250 Green Pony Conf Hunter- Med/Sm 2'6\"/2'3\"",
+      "result_entry_count": 5,
+      "class_no": "33536",
+      "sect_no": "12050",
+      "has_score": false,
+      "has_prize": true,
+      "entry_count": 5
+    },
+    {
+      "class_label": "260) USHJA Hunter 2'3\"",
+      "class_number": "260",
+      "class_name": "USHJA Hunter 2'3\"",
+      "result_entry_count": 11,
+      "class_no": "29056",
+      "sect_no": "10441",
+      "has_score": false,
+      "has_prize": false,
+      "entry_count": 11
+    },
+    {
+      "class_label": "277) USHJA Hunter 3'",
+      "class_number": "277",
+      "class_name": "USHJA Hunter 3'",
+      "result_entry_count": 21,
+      "class_no": "29068",
+      "sect_no": "10531",
+      "has_score": false,
+      "has_prize": false,
+      "entry_count": 21
+    },
+    {
+      "class_label": "528) USEF Hunter Seat Medal 3'6\"",
+      "class_number": "528",
+      "class_name": "USEF Hunter Seat Medal 3'6\"",
+      "result_entry_count": 3,
+      "class_no": "29229",
+      "sect_no": "0",
+      "has_score": false,
+      "has_prize": false,
+      "entry_count": 3
+    }
+  ],
+  "results": [
+    {
+      "class_no": "33536",
+      "sect_no": "12050",
+      "class_number": "150",
+      "class_name": "$250 Green Pony Conf Hunter- Med/Sm 2'6\"/2'3\"",
+      "place": "3",
+      "entry_no": "1027",
+      "horse": "Fort Knox",
+      "rider": "Lainey Posa",
+      "owner": "Jessica Heap",
+      "score": "",
+      "prize": "$37.5"
+    },
+    {
+      "class_no": "29056",
+      "sect_no": "10441",
+      "class_number": "260",
+      "class_name": "USHJA Hunter 2'3\"",
+      "place": "8",
+      "entry_no": "1027",
+      "horse": "Fort Knox",
+      "rider": "Lainey Posa",
+      "owner": "Jessica Heap",
+      "score": "",
+      "prize": ""
+    },
+    {
+      "class_no": "29068",
+      "sect_no": "10531",
+      "class_number": "277",
+      "class_name": "USHJA Hunter 3'",
+      "place": "",
+      "entry_no": "3100",
+      "horse": "Navigator",
+      "rider": "Lainey Posa",
+      "owner": "Sandalwood Farms",
+      "score": "",
+      "prize": ""
+    },
+    {
+      "class_no": "29229",
+      "sect_no": "0",
+      "class_number": "528",
+      "class_name": "USEF Hunter Seat Medal 3'6\"",
+      "place": "1",
+      "entry_no": "2389",
+      "horse": "Fanfan Boy",
+      "rider": "Lainey Posa",
+      "owner": "Alyssa Liang",
+      "score": "",
+      "prize": ""
+    }
+  ]
+}

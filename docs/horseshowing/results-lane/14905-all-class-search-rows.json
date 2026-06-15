@@ -1,0 +1,1945 @@
+{
+  "show_no": "14905",
+  "rows": 277,
+  "classes": [
+    {
+      "class_number": "18",
+      "class_name": "$250 Green Hunter 3'3\"/3'6\"",
+      "entry_count": 3,
+      "class_no": "33433",
+      "sect_no": "11980"
+    },
+    {
+      "class_number": "19",
+      "class_name": "$250 Green Hunter 3'3\"/3'6\"",
+      "entry_count": 3,
+      "class_no": "33434",
+      "sect_no": "11980"
+    },
+    {
+      "class_number": "20",
+      "class_name": "$250 Green Hunter 3'3\"/3'6\"",
+      "entry_count": 3,
+      "class_no": "33435",
+      "sect_no": "11980"
+    },
+    {
+      "class_number": "21",
+      "class_name": "$250 Green Hunter 3'3\"/3'6\"",
+      "entry_count": 3,
+      "class_no": "33436",
+      "sect_no": "11980"
+    },
+    {
+      "class_number": "22",
+      "class_name": "Green Hunter 3'3\"/3'6\" U/S",
+      "entry_count": 3,
+      "class_no": "33437",
+      "sect_no": "11980"
+    },
+    {
+      "class_number": "33",
+      "class_name": "$250 Green Hunter 3'0\"",
+      "entry_count": 5,
+      "class_no": "28358",
+      "sect_no": "10281"
+    },
+    {
+      "class_number": "34",
+      "class_name": "$250 Green Hunter 3'0\"",
+      "entry_count": 5,
+      "class_no": "28359",
+      "sect_no": "10281"
+    },
+    {
+      "class_number": "35",
+      "class_name": "$250 Green Hunter 3'0\"",
+      "entry_count": 5,
+      "class_no": "28360",
+      "sect_no": "10281"
+    },
+    {
+      "class_number": "36",
+      "class_name": "$250 Green Hunter 3'0\"",
+      "entry_count": 5,
+      "class_no": "28361",
+      "sect_no": "10281"
+    },
+    {
+      "class_number": "37",
+      "class_name": "Green Hunter 3'0\" U/S",
+      "entry_count": 5,
+      "class_no": "28362",
+      "sect_no": "10281"
+    },
+    {
+      "class_number": "38",
+      "class_name": "$200 Performance Hunter 3'6\"/3'3\"",
+      "entry_count": 10,
+      "class_no": "33428",
+      "sect_no": "11979"
+    },
+    {
+      "class_number": "39",
+      "class_name": "$200 Performance Hunter 3'6\"/3'3\"",
+      "entry_count": 9,
+      "class_no": "33429",
+      "sect_no": "11979"
+    },
+    {
+      "class_number": "40",
+      "class_name": "$200 Performance Hunter 3'6\"/3'3\"",
+      "entry_count": 6,
+      "class_no": "33430",
+      "sect_no": "11979"
+    },
+    {
+      "class_number": "41",
+      "class_name": "$200 Performance Hunter 3'6\"/3'3\"-Handy",
+      "entry_count": 5,
+      "class_no": "33431",
+      "sect_no": "11979"
+    },
+    {
+      "class_number": "42",
+      "class_name": "Performance Hunter 3'6\"/3'3\" U/S",
+      "entry_count": 2,
+      "class_no": "33432",
+      "sect_no": "11979"
+    },
+    {
+      "class_number": "48",
+      "class_name": "Young Hunter 2'9\"/3'",
+      "entry_count": 2,
+      "class_no": "33438",
+      "sect_no": "11981"
+    },
+    {
+      "class_number": "49",
+      "class_name": "Young Hunter 2'9\"/3'",
+      "entry_count": 2,
+      "class_no": "33439",
+      "sect_no": "11981"
+    },
+    {
+      "class_number": "50",
+      "class_name": "Young Hunter 2'9\"/3'",
+      "entry_count": 2,
+      "class_no": "33440",
+      "sect_no": "11981"
+    },
+    {
+      "class_number": "51",
+      "class_name": "Young Hunter 2'9\"/3'",
+      "entry_count": 2,
+      "class_no": "33441",
+      "sect_no": "11981"
+    },
+    {
+      "class_number": "52",
+      "class_name": "Young Hunter 2'9\"/3' U/S",
+      "entry_count": 0,
+      "class_no": "33442",
+      "sect_no": "11981"
+    },
+    {
+      "class_number": "58",
+      "class_name": "Young Hunter 3'3\"",
+      "entry_count": 0,
+      "class_no": "28379",
+      "sect_no": "10303"
+    },
+    {
+      "class_number": "59",
+      "class_name": "Young Hunter 3'3\"",
+      "entry_count": 0,
+      "class_no": "28380",
+      "sect_no": "10303"
+    },
+    {
+      "class_number": "60",
+      "class_name": "Young Hunter 3'3\"",
+      "entry_count": 0,
+      "class_no": "28381",
+      "sect_no": "10303"
+    },
+    {
+      "class_number": "61",
+      "class_name": "Young Hunter 3'3\"",
+      "entry_count": 0,
+      "class_no": "28382",
+      "sect_no": "10303"
+    },
+    {
+      "class_number": "62",
+      "class_name": "Young Hunter 3'3\" U/S",
+      "entry_count": 0,
+      "class_no": "28383",
+      "sect_no": "10303"
+    },
+    {
+      "class_number": "80",
+      "class_name": "$300 AO Hunter 3'6\"/3'3\"",
+      "entry_count": 3,
+      "class_no": "33476",
+      "sect_no": "11988"
+    },
+    {
+      "class_number": "81",
+      "class_name": "$300 AO Hunter 3'6\"/3'3\" (1st rnd Classic)",
+      "entry_count": 3,
+      "class_no": "33477",
+      "sect_no": "11988"
+    },
+    {
+      "class_number": "82",
+      "class_name": "$300 AO Hunter 3'3\"/3'6\"",
+      "entry_count": 3,
+      "class_no": "33478",
+      "sect_no": "11988"
+    },
+    {
+      "class_number": "83",
+      "class_name": "$300 AO Hunter 3'3\"/3'6\" 18-35-Handy/36+-Handy",
+      "entry_count": 3,
+      "class_no": "33479",
+      "sect_no": "11988"
+    },
+    {
+      "class_number": "84",
+      "class_name": "AO Hunter 3'3\"/3'6\" U/S",
+      "entry_count": 3,
+      "class_no": "33480",
+      "sect_no": "11988"
+    },
+    {
+      "class_number": "100",
+      "class_name": "$300 Junior Hunter 3'6\"",
+      "entry_count": 3,
+      "class_no": "28760",
+      "sect_no": "10326"
+    },
+    {
+      "class_number": "101",
+      "class_name": "$300 Junior Hunter 3'6\" (1st rnd Classic)",
+      "entry_count": 3,
+      "class_no": "28761",
+      "sect_no": "10326"
+    },
+    {
+      "class_number": "102",
+      "class_name": "$300 Junior Hunter 3'6\"",
+      "entry_count": 1,
+      "class_no": "28762",
+      "sect_no": "10326"
+    },
+    {
+      "class_number": "103",
+      "class_name": "$300 Junior Hunter 3'6\"-Handy",
+      "entry_count": 1,
+      "class_no": "28763",
+      "sect_no": "10326"
+    },
+    {
+      "class_number": "104",
+      "class_name": "Junior Hunter 3'6\" U/S",
+      "entry_count": 3,
+      "class_no": "28764",
+      "sect_no": "10326"
+    },
+    {
+      "class_number": "120",
+      "class_name": "$300 Junior Hunter 3'3\"",
+      "entry_count": 6,
+      "class_no": "28820",
+      "sect_no": "10333"
+    },
+    {
+      "class_number": "121",
+      "class_name": "$300 Junior Hunter 3'3\" (1st rnd Classic)",
+      "entry_count": 6,
+      "class_no": "28821",
+      "sect_no": "10333"
+    },
+    {
+      "class_number": "122",
+      "class_name": "$300 Junior Hunter 3'3\"",
+      "entry_count": 6,
+      "class_no": "28822",
+      "sect_no": "10333"
+    },
+    {
+      "class_number": "123",
+      "class_name": "$300 Junior Hunter 3'3\" -Handy",
+      "entry_count": 6,
+      "class_no": "28823",
+      "sect_no": "10333"
+    },
+    {
+      "class_number": "124",
+      "class_name": "Junior Hunter 3'3\" U/S",
+      "entry_count": 6,
+      "class_no": "28824",
+      "sect_no": "10333"
+    },
+    {
+      "class_number": "150",
+      "class_name": "Green Pony Conf Hunter- Sm 2'3\"/Med 2'6\"/Lg 2'9\"",
+      "entry_count": 0,
+      "class_no": "28774",
+      "sect_no": "10346"
+    },
+    {
+      "class_number": "151",
+      "class_name": "Grn Pony Hunter Sm 2'3\"/Med 2'6\"/Lg 2'9\" (1st rnd Classic",
+      "entry_count": 0,
+      "class_no": "28775",
+      "sect_no": "10346"
+    },
+    {
+      "class_number": "152",
+      "class_name": "Green Pony Hunter Sm 2'3\"/Med 2'6\"/Lg 2'9\"",
+      "entry_count": 0,
+      "class_no": "28776",
+      "sect_no": "10346"
+    },
+    {
+      "class_number": "153",
+      "class_name": "Green Pony Hunter Sm 2'3\"/Med 2'6\"/Lg 2'9\"",
+      "entry_count": 0,
+      "class_no": "28778",
+      "sect_no": "10346"
+    },
+    {
+      "class_number": "154",
+      "class_name": "Green Pony Hunter Sm 2'3\"/Med 2'6\"/Lg 2'9\" U/S",
+      "entry_count": 0,
+      "class_no": "28779",
+      "sect_no": "10346"
+    },
+    {
+      "class_number": "182",
+      "class_name": "$200 Pony Conf Hunter 2'3\"/2'6\"/2'9\"",
+      "entry_count": 3,
+      "class_no": "28355",
+      "sect_no": "10338"
+    },
+    {
+      "class_number": "183",
+      "class_name": "$200 Pony Hunter 2'3\"/2'6\"/2'9\" (1st rnd Cl)",
+      "entry_count": 3,
+      "class_no": "28780",
+      "sect_no": "10338"
+    },
+    {
+      "class_number": "184",
+      "class_name": "$200 Pony Hunter Sm2'3\"/Med2'6\"/Lg2'9\"",
+      "entry_count": 3,
+      "class_no": "28781",
+      "sect_no": "10338"
+    },
+    {
+      "class_number": "185",
+      "class_name": "$200 Pony Hunter Sm2'3\"/Med2'6\"/Lg2'9\"-Handy",
+      "entry_count": 3,
+      "class_no": "28782",
+      "sect_no": "10338"
+    },
+    {
+      "class_number": "186",
+      "class_name": "Pony Hunter Sm2'3\"/Med2'6\"/Lg2'9\" U/S",
+      "entry_count": 3,
+      "class_no": "28783",
+      "sect_no": "10338"
+    },
+    {
+      "class_number": "200",
+      "class_name": "$175 Children's Hunter 3'",
+      "entry_count": 9,
+      "class_no": "28366",
+      "sect_no": "10348"
+    },
+    {
+      "class_number": "201",
+      "class_name": "$175 Children's Hunter (1st rnd Classic) 3'",
+      "entry_count": 9,
+      "class_no": "28367",
+      "sect_no": "10348"
+    },
+    {
+      "class_number": "202",
+      "class_name": "$175 Children's Hunter 3'",
+      "entry_count": 9,
+      "class_no": "28767",
+      "sect_no": "10348"
+    },
+    {
+      "class_number": "203",
+      "class_name": "$175 Children's Hunter 3'",
+      "entry_count": 8,
+      "class_no": "28768",
+      "sect_no": "10348"
+    },
+    {
+      "class_number": "204",
+      "class_name": "Children's Hunter U/S 3'",
+      "entry_count": 8,
+      "class_no": "28769",
+      "sect_no": "10348"
+    },
+    {
+      "class_number": "210",
+      "class_name": "Low Child Pony/Child Hunter Pony 2'/2'6\"",
+      "entry_count": 8,
+      "class_no": "33471",
+      "sect_no": "11987"
+    },
+    {
+      "class_number": "211",
+      "class_name": "Low Child Pony/Child Hunter Pony (1st rnd Classic)",
+      "entry_count": 8,
+      "class_no": "33472",
+      "sect_no": "11987"
+    },
+    {
+      "class_number": "212",
+      "class_name": "Low Child Pony/Child Hunter Pony 2'/2'6\"",
+      "entry_count": 8,
+      "class_no": "33473",
+      "sect_no": "11987"
+    },
+    {
+      "class_number": "213",
+      "class_name": "Low Child Pony/Child Hunter Pony 2'/2'6\"",
+      "entry_count": 8,
+      "class_no": "33474",
+      "sect_no": "11987"
+    },
+    {
+      "class_number": "214",
+      "class_name": "Low Child Pony/Child Hunter Pony 2'/2'6\" U/S",
+      "entry_count": 8,
+      "class_no": "33475",
+      "sect_no": "11987"
+    },
+    {
+      "class_number": "220",
+      "class_name": "$175 Adult Amateur Hunter 3'",
+      "entry_count": 9,
+      "class_no": "28356",
+      "sect_no": "10354"
+    },
+    {
+      "class_number": "221",
+      "class_name": "$175 Adult Amateur Hunter (1st rnd Classic) 3'",
+      "entry_count": 9,
+      "class_no": "28357",
+      "sect_no": "10354"
+    },
+    {
+      "class_number": "222",
+      "class_name": "$175 Adult Amateur Hunter 3'",
+      "entry_count": 11,
+      "class_no": "28363",
+      "sect_no": "10354"
+    },
+    {
+      "class_number": "223",
+      "class_name": "$175 Adult Amateur Hunter 3'",
+      "entry_count": 11,
+      "class_no": "28364",
+      "sect_no": "10354"
+    },
+    {
+      "class_number": "224",
+      "class_name": "Adult Amateur Hunter U/S 3'",
+      "entry_count": 10,
+      "class_no": "28365",
+      "sect_no": "10354"
+    },
+    {
+      "class_number": "235",
+      "class_name": "Thoroughbred Hunter 3'",
+      "entry_count": 0,
+      "class_no": "28510",
+      "sect_no": "10366"
+    },
+    {
+      "class_number": "236",
+      "class_name": "Thoroughbred Hunter 3'",
+      "entry_count": 0,
+      "class_no": "28511",
+      "sect_no": "10366"
+    },
+    {
+      "class_number": "237",
+      "class_name": "Thoroughbred Hunter 3'",
+      "entry_count": 0,
+      "class_no": "28512",
+      "sect_no": "10366"
+    },
+    {
+      "class_number": "238",
+      "class_name": "Thoroughbred Hunter 3'",
+      "entry_count": 0,
+      "class_no": "28513",
+      "sect_no": "10366"
+    },
+    {
+      "class_number": "239",
+      "class_name": "Thoroughbred Hunter U/S 3'",
+      "entry_count": 0,
+      "class_no": "28514",
+      "sect_no": "10366"
+    },
+    {
+      "class_number": "245",
+      "class_name": "USHJA Hunter 3'3\"",
+      "entry_count": 3,
+      "class_no": "28561",
+      "sect_no": "10258"
+    },
+    {
+      "class_number": "246",
+      "class_name": "USHJA Hunter 3'3\"",
+      "entry_count": 2,
+      "class_no": "28562",
+      "sect_no": "10258"
+    },
+    {
+      "class_number": "247",
+      "class_name": "USHJA Hunter 3'3\"",
+      "entry_count": 4,
+      "class_no": "28563",
+      "sect_no": "10258"
+    },
+    {
+      "class_number": "248",
+      "class_name": "USHJA Hunter 3'3\"",
+      "entry_count": 3,
+      "class_no": "28564",
+      "sect_no": "10258"
+    },
+    {
+      "class_number": "249",
+      "class_name": "USHJA Hunter 3'3\" U/S",
+      "entry_count": 0,
+      "class_no": "28565",
+      "sect_no": "10258"
+    },
+    {
+      "class_number": "250",
+      "class_name": "Future Hunter 2'",
+      "entry_count": 0,
+      "class_no": "28810",
+      "sect_no": "10372"
+    },
+    {
+      "class_number": "251",
+      "class_name": "Future Hunter 2'",
+      "entry_count": 0,
+      "class_no": "28811",
+      "sect_no": "10372"
+    },
+    {
+      "class_number": "252",
+      "class_name": "Future Hunter 2'",
+      "entry_count": 0,
+      "class_no": "28812",
+      "sect_no": "10372"
+    },
+    {
+      "class_number": "253",
+      "class_name": "Future Hunter 2'",
+      "entry_count": 0,
+      "class_no": "28813",
+      "sect_no": "10372"
+    },
+    {
+      "class_number": "254",
+      "class_name": "Future Hunter 2' U/S",
+      "entry_count": 0,
+      "class_no": "28814",
+      "sect_no": "10372"
+    },
+    {
+      "class_number": "255",
+      "class_name": "USHJA Hunter 2'",
+      "entry_count": 5,
+      "class_no": "28541",
+      "sect_no": "10371"
+    },
+    {
+      "class_number": "256",
+      "class_name": "USHJA Hunter 2'",
+      "entry_count": 4,
+      "class_no": "28542",
+      "sect_no": "10371"
+    },
+    {
+      "class_number": "257",
+      "class_name": "USHJA Hunter 2'",
+      "entry_count": 5,
+      "class_no": "28543",
+      "sect_no": "10371"
+    },
+    {
+      "class_number": "258",
+      "class_name": "USHJA Hunter 2'",
+      "entry_count": 5,
+      "class_no": "28544",
+      "sect_no": "10371"
+    },
+    {
+      "class_number": "259",
+      "class_name": "USHJA Hunter 2' U/S",
+      "entry_count": 5,
+      "class_no": "28545",
+      "sect_no": "10371"
+    },
+    {
+      "class_number": "260",
+      "class_name": "USHJA Hunter 2'3\"",
+      "entry_count": 4,
+      "class_no": "28546",
+      "sect_no": "10261"
+    },
+    {
+      "class_number": "261",
+      "class_name": "USHJA Hunter 2'3\"",
+      "entry_count": 4,
+      "class_no": "28547",
+      "sect_no": "10261"
+    },
+    {
+      "class_number": "262",
+      "class_name": "USHJA Hunter 2'3\"",
+      "entry_count": 6,
+      "class_no": "28548",
+      "sect_no": "10261"
+    },
+    {
+      "class_number": "263",
+      "class_name": "USHJA Hunter 2'3\"",
+      "entry_count": 5,
+      "class_no": "28549",
+      "sect_no": "10261"
+    },
+    {
+      "class_number": "264",
+      "class_name": "USHJA Hunter 2'3\" U/S",
+      "entry_count": 5,
+      "class_no": "28550",
+      "sect_no": "10261"
+    },
+    {
+      "class_number": "265",
+      "class_name": "USHJA Hunter 2'6\"",
+      "entry_count": 17,
+      "class_no": "28551",
+      "sect_no": "10370"
+    },
+    {
+      "class_number": "266",
+      "class_name": "USHJA Hunter 2'6\"",
+      "entry_count": 14,
+      "class_no": "28552",
+      "sect_no": "10370"
+    },
+    {
+      "class_number": "267",
+      "class_name": "USHJA Hunter 2'6\"",
+      "entry_count": 19,
+      "class_no": "28553",
+      "sect_no": "10370"
+    },
+    {
+      "class_number": "268",
+      "class_name": "USHJA Hunter 2'6\"",
+      "entry_count": 17,
+      "class_no": "28554",
+      "sect_no": "10370"
+    },
+    {
+      "class_number": "269",
+      "class_name": "USHJA Hunter 2'6\" U/S",
+      "entry_count": 8,
+      "class_no": "28555",
+      "sect_no": "10370"
+    },
+    {
+      "class_number": "270",
+      "class_name": "USHJA Hunter 2'9\"",
+      "entry_count": 7,
+      "class_no": "28734",
+      "sect_no": "10369"
+    },
+    {
+      "class_number": "271",
+      "class_name": "USHJA Hunter 2'9\"",
+      "entry_count": 7,
+      "class_no": "28733",
+      "sect_no": "10369"
+    },
+    {
+      "class_number": "272",
+      "class_name": "USHJA Hunter 2'9\"",
+      "entry_count": 7,
+      "class_no": "28732",
+      "sect_no": "10369"
+    },
+    {
+      "class_number": "273",
+      "class_name": "USHJA Hunter 2'9\"",
+      "entry_count": 7,
+      "class_no": "28731",
+      "sect_no": "10369"
+    },
+    {
+      "class_number": "274",
+      "class_name": "USHJA Hunter 2'9\" U/S",
+      "entry_count": 3,
+      "class_no": "28730",
+      "sect_no": "10369"
+    },
+    {
+      "class_number": "275",
+      "class_name": "USHJA Hunter 3'",
+      "entry_count": 18,
+      "class_no": "28556",
+      "sect_no": "10368"
+    },
+    {
+      "class_number": "276",
+      "class_name": "USHJA Hunter 3'",
+      "entry_count": 18,
+      "class_no": "28557",
+      "sect_no": "10368"
+    },
+    {
+      "class_number": "277",
+      "class_name": "USHJA Hunter 3'",
+      "entry_count": 15,
+      "class_no": "28558",
+      "sect_no": "10368"
+    },
+    {
+      "class_number": "278",
+      "class_name": "USHJA Hunter 3'",
+      "entry_count": 12,
+      "class_no": "28559",
+      "sect_no": "10368"
+    },
+    {
+      "class_number": "279",
+      "class_name": "USHJA Hunter 3' U/S",
+      "entry_count": 5,
+      "class_no": "28560",
+      "sect_no": "10368"
+    },
+    {
+      "class_number": "280",
+      "class_name": "Baby Green Hunter 2'6\"",
+      "entry_count": 7,
+      "class_no": "28536",
+      "sect_no": "10361"
+    },
+    {
+      "class_number": "281",
+      "class_name": "Baby Green Hunter 2'6\"",
+      "entry_count": 7,
+      "class_no": "28537",
+      "sect_no": "10361"
+    },
+    {
+      "class_number": "282",
+      "class_name": "Baby Green Hunter 2'6\"",
+      "entry_count": 7,
+      "class_no": "28538",
+      "sect_no": "10361"
+    },
+    {
+      "class_number": "283",
+      "class_name": "Baby Green Hunter 2'6\"",
+      "entry_count": 6,
+      "class_no": "28539",
+      "sect_no": "10361"
+    },
+    {
+      "class_number": "284",
+      "class_name": "Baby Green Hunter U/S 2'6\"",
+      "entry_count": 7,
+      "class_no": "28540",
+      "sect_no": "10361"
+    },
+    {
+      "class_number": "310",
+      "class_name": "Low Children's Hunter 2'6\"",
+      "entry_count": 5,
+      "class_no": "28840",
+      "sect_no": "10363"
+    },
+    {
+      "class_number": "311",
+      "class_name": "Low Children's Hunter (1st rnd Classic) 2'6\"",
+      "entry_count": 5,
+      "class_no": "28841",
+      "sect_no": "10363"
+    },
+    {
+      "class_number": "312",
+      "class_name": "Low Children's Hunter 2'6\"",
+      "entry_count": 5,
+      "class_no": "28842",
+      "sect_no": "10363"
+    },
+    {
+      "class_number": "313",
+      "class_name": "Low Children's Hunter 2'6\"",
+      "entry_count": 5,
+      "class_no": "28843",
+      "sect_no": "10363"
+    },
+    {
+      "class_number": "314",
+      "class_name": "Low Children's Hunter U/S/2'6\"",
+      "entry_count": 5,
+      "class_no": "28844",
+      "sect_no": "10363"
+    },
+    {
+      "class_number": "315",
+      "class_name": "Low Adult Hunter 2'6\"",
+      "entry_count": 22,
+      "class_no": "28332",
+      "sect_no": "10365"
+    },
+    {
+      "class_number": "316",
+      "class_name": "Low Adult Hunter (1st rnd Classic) 2'6\"",
+      "entry_count": 21,
+      "class_no": "28770",
+      "sect_no": "10365"
+    },
+    {
+      "class_number": "317",
+      "class_name": "Low Adult Hunter 2'6\"",
+      "entry_count": 18,
+      "class_no": "28771",
+      "sect_no": "10365"
+    },
+    {
+      "class_number": "318",
+      "class_name": "Low Adult Hunter 2'6\"",
+      "entry_count": 18,
+      "class_no": "28772",
+      "sect_no": "10365"
+    },
+    {
+      "class_number": "319",
+      "class_name": "Low Adult Hunter U/S 2'6\"",
+      "entry_count": 17,
+      "class_no": "28773",
+      "sect_no": "10365"
+    },
+    {
+      "class_number": "404",
+      "class_name": "$5,000 USHJA UF Vet Hunter Derby 3'",
+      "entry_count": 20,
+      "class_no": "28659",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "408",
+      "class_name": "$750 WEC 2'6\" Hunt and Go Derby",
+      "entry_count": 9,
+      "class_no": "28658",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "412",
+      "class_name": "$1500 AO/JR Hunter Classic 3'3\"/3'6\"",
+      "entry_count": 8,
+      "class_no": "33482",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "418",
+      "class_name": "$750 Pony Hunter Classic 2'3\"/2'6\"/2'9\"",
+      "entry_count": 0,
+      "class_no": "28666",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "419",
+      "class_name": "$500 Green Pony Hunter Classic 2'3\"/2'6\"/2'9\"",
+      "entry_count": 0,
+      "class_no": "28665",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "420",
+      "class_name": "$350 Children's Pony Hunter Classic 2'6\"/2'",
+      "entry_count": 6,
+      "class_no": "28667",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "421",
+      "class_name": "$1000 Children's Hunter Classic 3'",
+      "entry_count": 9,
+      "class_no": "28668",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "423",
+      "class_name": "$1000 Adult Hunter Classic 3'",
+      "entry_count": 7,
+      "class_no": "28669",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "425",
+      "class_name": "$500 Low Adult/Child Hunter Classic 2'6\"",
+      "entry_count": 21,
+      "class_no": "33483",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "500",
+      "class_name": "Equitation 11/U 2'",
+      "entry_count": 0,
+      "class_no": "28673",
+      "sect_no": "10260"
+    },
+    {
+      "class_number": "501",
+      "class_name": "Equitation 11/U 2'",
+      "entry_count": 0,
+      "class_no": "28674",
+      "sect_no": "10260"
+    },
+    {
+      "class_number": "502",
+      "class_name": "Equitation 11/U Flat",
+      "entry_count": 0,
+      "class_no": "28675",
+      "sect_no": "10260"
+    },
+    {
+      "class_number": "503",
+      "class_name": "Equitation 12-14 2'9'",
+      "entry_count": 4,
+      "class_no": "28676",
+      "sect_no": "10264"
+    },
+    {
+      "class_number": "504",
+      "class_name": "Equitation 12-14 2'9'",
+      "entry_count": 4,
+      "class_no": "28677",
+      "sect_no": "10264"
+    },
+    {
+      "class_number": "505",
+      "class_name": "Equitation 12-14 Flat",
+      "entry_count": 4,
+      "class_no": "28678",
+      "sect_no": "10264"
+    },
+    {
+      "class_number": "506",
+      "class_name": "Equitation 15-17 3'3\"",
+      "entry_count": 4,
+      "class_no": "28679",
+      "sect_no": "10267"
+    },
+    {
+      "class_number": "507",
+      "class_name": "Equitation 15-17 3'3\"",
+      "entry_count": 4,
+      "class_no": "28680",
+      "sect_no": "10267"
+    },
+    {
+      "class_number": "508",
+      "class_name": "Equitation 15-17 Flat",
+      "entry_count": 4,
+      "class_no": "28681",
+      "sect_no": "10267"
+    },
+    {
+      "class_number": "509",
+      "class_name": "Adult/Child Equitation 3'",
+      "entry_count": 6,
+      "class_no": "33462",
+      "sect_no": "11985"
+    },
+    {
+      "class_number": "510",
+      "class_name": "Adult/Child Equitation 3'",
+      "entry_count": 6,
+      "class_no": "33463",
+      "sect_no": "11985"
+    },
+    {
+      "class_number": "511",
+      "class_name": "Adult/Child Equitation Flat",
+      "entry_count": 6,
+      "class_no": "33464",
+      "sect_no": "11985"
+    },
+    {
+      "class_number": "515",
+      "class_name": "Low Children's Equitation 2'6\"",
+      "entry_count": 5,
+      "class_no": "28688",
+      "sect_no": "10282"
+    },
+    {
+      "class_number": "516",
+      "class_name": "Low Children's Equitation 2'6\"",
+      "entry_count": 5,
+      "class_no": "28689",
+      "sect_no": "10282"
+    },
+    {
+      "class_number": "517",
+      "class_name": "Low Children's Equitation Flat",
+      "entry_count": 5,
+      "class_no": "28690",
+      "sect_no": "10282"
+    },
+    {
+      "class_number": "518",
+      "class_name": "Low Adult Equitation 2'6\"",
+      "entry_count": 8,
+      "class_no": "28691",
+      "sect_no": "10284"
+    },
+    {
+      "class_number": "519",
+      "class_name": "Low Adult Equitation 2'6\"",
+      "entry_count": 7,
+      "class_no": "28692",
+      "sect_no": "10284"
+    },
+    {
+      "class_number": "520",
+      "class_name": "Low Adult Equitation Flat",
+      "entry_count": 6,
+      "class_no": "28693",
+      "sect_no": "10284"
+    },
+    {
+      "class_number": "521",
+      "class_name": "Pony Equitation 2'3\"/2'6\"/2'9\"",
+      "entry_count": 3,
+      "class_no": "28694",
+      "sect_no": "10229"
+    },
+    {
+      "class_number": "522",
+      "class_name": "Pony Equitation 2'3\"/2'6\"/2'9\"",
+      "entry_count": 3,
+      "class_no": "28695",
+      "sect_no": "10229"
+    },
+    {
+      "class_number": "523",
+      "class_name": "Pony Equitation Flat",
+      "entry_count": 2,
+      "class_no": "28696",
+      "sect_no": "10229"
+    },
+    {
+      "class_number": "524",
+      "class_name": "Children's Pony Equitation 2'/2'6\"",
+      "entry_count": 3,
+      "class_no": "28697",
+      "sect_no": "10286"
+    },
+    {
+      "class_number": "525",
+      "class_name": "Children's Pony Equitation 2'/2'6\"",
+      "entry_count": 3,
+      "class_no": "28698",
+      "sect_no": "10286"
+    },
+    {
+      "class_number": "526",
+      "class_name": "Children's Pony Equitation Flat",
+      "entry_count": 3,
+      "class_no": "28699",
+      "sect_no": "10286"
+    },
+    {
+      "class_number": "527",
+      "class_name": "Platinum Performance USEF Talent Search 3'9\"",
+      "entry_count": 1,
+      "class_no": "28702",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "528",
+      "class_name": "USEF Hunter Seat Medal 3'6\"",
+      "entry_count": 4,
+      "class_no": "28700",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "529",
+      "class_name": "WIHS Equitation Hunter Phase 3'6\"",
+      "entry_count": 1,
+      "class_no": "28710",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "530",
+      "class_name": "WIHS Equitation Jumper Phase 3'6\"",
+      "entry_count": 1,
+      "class_no": "28711",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "531",
+      "class_name": "WIHS Equitation Overall 3'6\"",
+      "entry_count": 0,
+      "class_no": "28712",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "532",
+      "class_name": "ASPCA Maclay 3'6\"",
+      "entry_count": 4,
+      "class_no": "28713",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "533",
+      "class_name": "NHS Medal 3'3\"",
+      "entry_count": 6,
+      "class_no": "28714",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "534",
+      "class_name": "Ariat Adult Medal 3'",
+      "entry_count": 1,
+      "class_no": "28703",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "535",
+      "class_name": "THIS Children's Medal 3'",
+      "entry_count": 6,
+      "class_no": "28657",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "537",
+      "class_name": "USHJA 3'3\" Jumping Seat Medal",
+      "entry_count": 0,
+      "class_no": "33481",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "539",
+      "class_name": "USHJA Hunter Seat Medal 3'3\"",
+      "entry_count": 0,
+      "class_no": "28706",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "545",
+      "class_name": "USEF Pony Medal (Open Card) 2'3\"/2'6\"/2'9\"",
+      "entry_count": 0,
+      "class_no": "28701",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "546",
+      "class_name": "WIHS Pony Equitation (Open Card) 2'3\"/2'6\"/2'9\"",
+      "entry_count": 1,
+      "class_no": "28707",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "547",
+      "class_name": "THIS Adult Medal 3'",
+      "entry_count": 0,
+      "class_no": "28715",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "548",
+      "class_name": "World Equestrian Center Premier Cup 3'6\"",
+      "entry_count": 4,
+      "class_no": "28716",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "549",
+      "class_name": "NCEA Medal 3'3\"",
+      "entry_count": 1,
+      "class_no": "28451",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "600",
+      "class_name": ".65m Jumper Open IV.1",
+      "entry_count": 10,
+      "class_no": "28631",
+      "sect_no": "10238"
+    },
+    {
+      "class_number": "601",
+      "class_name": ".65m Jumper Open IV.1",
+      "entry_count": 8,
+      "class_no": "28632",
+      "sect_no": "10238"
+    },
+    {
+      "class_number": "602",
+      "class_name": ".65m Jumper Open IV.1",
+      "entry_count": 8,
+      "class_no": "28633",
+      "sect_no": "10238"
+    },
+    {
+      "class_number": "603",
+      "class_name": ".65m Jumper Jr/Am Long Creek Farms IV.1",
+      "entry_count": 4,
+      "class_no": "28634",
+      "sect_no": "10239"
+    },
+    {
+      "class_number": "604",
+      "class_name": ".65m Jumper Jr/Am Long Creek Farms IV.1",
+      "entry_count": 6,
+      "class_no": "28635",
+      "sect_no": "10239"
+    },
+    {
+      "class_number": "605",
+      "class_name": ".65m Jumper Jr/Am Long Creek Farms IV.1",
+      "entry_count": 7,
+      "class_no": "28636",
+      "sect_no": "10239"
+    },
+    {
+      "class_number": "606",
+      "class_name": ".75m Jumper Open IV.1",
+      "entry_count": 9,
+      "class_no": "28739",
+      "sect_no": "10217"
+    },
+    {
+      "class_number": "607",
+      "class_name": ".75m Jumper Open IV.1",
+      "entry_count": 9,
+      "class_no": "28740",
+      "sect_no": "10217"
+    },
+    {
+      "class_number": "608",
+      "class_name": ".75m Jumper Open IV.1",
+      "entry_count": 9,
+      "class_no": "28741",
+      "sect_no": "10217"
+    },
+    {
+      "class_number": "609",
+      "class_name": ".75m Jumper Jr/Am IV.1",
+      "entry_count": 7,
+      "class_no": "28742",
+      "sect_no": "10218"
+    },
+    {
+      "class_number": "610",
+      "class_name": ".75m Jumper Jr/Am IV.1",
+      "entry_count": 8,
+      "class_no": "28743",
+      "sect_no": "10218"
+    },
+    {
+      "class_number": "611",
+      "class_name": ".75m Jumper Jr/Am IV.1",
+      "entry_count": 8,
+      "class_no": "28744",
+      "sect_no": "10218"
+    },
+    {
+      "class_number": "618",
+      "class_name": ".85m Jumper Open II.2d",
+      "entry_count": 9,
+      "class_no": "28643",
+      "sect_no": "10242"
+    },
+    {
+      "class_number": "619",
+      "class_name": ".85m Jumper Open II.2d",
+      "entry_count": 14,
+      "class_no": "28644",
+      "sect_no": "10242"
+    },
+    {
+      "class_number": "620",
+      "class_name": ".85m Jumper Open II.2b",
+      "entry_count": 9,
+      "class_no": "28646",
+      "sect_no": "10242"
+    },
+    {
+      "class_number": "621",
+      "class_name": ".85m Jumper Jr/Am II.2d",
+      "entry_count": 6,
+      "class_no": "28647",
+      "sect_no": "10243"
+    },
+    {
+      "class_number": "622",
+      "class_name": ".85m Jumper Jr/Am II.2d",
+      "entry_count": 9,
+      "class_no": "28648",
+      "sect_no": "10243"
+    },
+    {
+      "class_number": "623",
+      "class_name": ".85m Jumper Jr/Am II.2b",
+      "entry_count": 12,
+      "class_no": "28649",
+      "sect_no": "10243"
+    },
+    {
+      "class_number": "624",
+      "class_name": ".95m Jumper- II.1",
+      "entry_count": 4,
+      "class_no": "28745",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "625",
+      "class_name": ".95m Jumper- II.2d",
+      "entry_count": 3,
+      "class_no": "28746",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "627",
+      "class_name": "1.00m Jumper II.1",
+      "entry_count": 13,
+      "class_no": "28650",
+      "sect_no": "10234"
+    },
+    {
+      "class_number": "628",
+      "class_name": "1.00m Jumper II.2d",
+      "entry_count": 18,
+      "class_no": "28651",
+      "sect_no": "10234"
+    },
+    {
+      "class_number": "629",
+      "class_name": "1.00m Jumper II.2b",
+      "entry_count": 5,
+      "class_no": "28749",
+      "sect_no": "10234"
+    },
+    {
+      "class_number": "630",
+      "class_name": "1.10m Jumper II.1",
+      "entry_count": 15,
+      "class_no": "28652",
+      "sect_no": "10235"
+    },
+    {
+      "class_number": "631",
+      "class_name": "1.10m Jumper II.2d",
+      "entry_count": 16,
+      "class_no": "28653",
+      "sect_no": "10235"
+    },
+    {
+      "class_number": "632",
+      "class_name": "1.10m Jumper II.2b",
+      "entry_count": 7,
+      "class_no": "28654",
+      "sect_no": "10235"
+    },
+    {
+      "class_number": "633",
+      "class_name": "1.15m Jumper II.1",
+      "entry_count": 12,
+      "class_no": "28655",
+      "sect_no": "10214"
+    },
+    {
+      "class_number": "634",
+      "class_name": "1.15m Jumper II.2d",
+      "entry_count": 11,
+      "class_no": "28656",
+      "sect_no": "10214"
+    },
+    {
+      "class_number": "635",
+      "class_name": "1.15m Jumper II.2b",
+      "entry_count": 4,
+      "class_no": "28750",
+      "sect_no": "10214"
+    },
+    {
+      "class_number": "636",
+      "class_name": "1.20m Jumper II.1",
+      "entry_count": 64,
+      "class_no": "28619",
+      "sect_no": "10321"
+    },
+    {
+      "class_number": "637",
+      "class_name": "1.20m Jumper II.2d",
+      "entry_count": 24,
+      "class_no": "28620",
+      "sect_no": "10321"
+    },
+    {
+      "class_number": "638",
+      "class_name": "1.20m Jumper II.2b",
+      "entry_count": 11,
+      "class_no": "28621",
+      "sect_no": "10321"
+    },
+    {
+      "class_number": "639",
+      "class_name": "1.25m Jumper II.1",
+      "entry_count": 17,
+      "class_no": "28333",
+      "sect_no": "10312"
+    },
+    {
+      "class_number": "640",
+      "class_name": "1.25m Jumper II.2d",
+      "entry_count": 14,
+      "class_no": "28334",
+      "sect_no": "10312"
+    },
+    {
+      "class_number": "641",
+      "class_name": "1.25m Jumper II.2b",
+      "entry_count": 8,
+      "class_no": "28335",
+      "sect_no": "10312"
+    },
+    {
+      "class_number": "642",
+      "class_name": "1.30m Jumper II.1",
+      "entry_count": 33,
+      "class_no": "28622",
+      "sect_no": "10315"
+    },
+    {
+      "class_number": "643",
+      "class_name": "1.30m Jumper II.2d",
+      "entry_count": 26,
+      "class_no": "28623",
+      "sect_no": "10315"
+    },
+    {
+      "class_number": "644",
+      "class_name": "1.30m Jumper II.2b",
+      "entry_count": 17,
+      "class_no": "28624",
+      "sect_no": "10315"
+    },
+    {
+      "class_number": "645",
+      "class_name": "1.35m Jumper II.1",
+      "entry_count": 15,
+      "class_no": "28625",
+      "sect_no": "10317"
+    },
+    {
+      "class_number": "646",
+      "class_name": "1.35m Jumper II.2d",
+      "entry_count": 11,
+      "class_no": "28626",
+      "sect_no": "10317"
+    },
+    {
+      "class_number": "647",
+      "class_name": "1.35m Jumper II.2b",
+      "entry_count": 10,
+      "class_no": "28627",
+      "sect_no": "10317"
+    },
+    {
+      "class_number": "648",
+      "class_name": "1.40m Jumper II.1",
+      "entry_count": 0,
+      "class_no": "28628",
+      "sect_no": "10318"
+    },
+    {
+      "class_number": "649",
+      "class_name": "1.40m Jumper II.1",
+      "entry_count": 8,
+      "class_no": "28629",
+      "sect_no": "10318"
+    },
+    {
+      "class_number": "654",
+      "class_name": ".80m Jumper Open IV.1",
+      "entry_count": 4,
+      "class_no": "28637",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "655",
+      "class_name": ".85m Jumper Open II.1",
+      "entry_count": 5,
+      "class_no": "33427",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "680",
+      "class_name": ".90m Young Jumpers II",
+      "entry_count": 7,
+      "class_no": "28825",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "681",
+      "class_name": ".90m Young Jumpers II",
+      "entry_count": 7,
+      "class_no": "28826",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "682",
+      "class_name": ".90m Young Jumpers II",
+      "entry_count": 2,
+      "class_no": "28827",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "683",
+      "class_name": "1.0m Young Jumpers II",
+      "entry_count": 5,
+      "class_no": "28828",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "684",
+      "class_name": "1.0m Young Jumpers II",
+      "entry_count": 2,
+      "class_no": "28829",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "685",
+      "class_name": "1.0m Young Jumpers II",
+      "entry_count": 6,
+      "class_no": "28830",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "686",
+      "class_name": "1.10m Young Jumpers II",
+      "entry_count": 11,
+      "class_no": "28336",
+      "sect_no": "10302"
+    },
+    {
+      "class_number": "687",
+      "class_name": "1.10m Young Jumpers II",
+      "entry_count": 12,
+      "class_no": "28337",
+      "sect_no": "10302"
+    },
+    {
+      "class_number": "688",
+      "class_name": "1.10m YoungJumpers II",
+      "entry_count": 12,
+      "class_no": "28338",
+      "sect_no": "10302"
+    },
+    {
+      "class_number": "689",
+      "class_name": "1.20m Young Jumpers II.1",
+      "entry_count": 20,
+      "class_no": "28339",
+      "sect_no": "10304"
+    },
+    {
+      "class_number": "690",
+      "class_name": "1.20m Young Jumpers II.2d",
+      "entry_count": 24,
+      "class_no": "28340",
+      "sect_no": "10304"
+    },
+    {
+      "class_number": "691",
+      "class_name": "1.20m Young Jumpers II.2b",
+      "entry_count": 17,
+      "class_no": "28341",
+      "sect_no": "10304"
+    },
+    {
+      "class_number": "692",
+      "class_name": "1.30m Young Jumper II.1",
+      "entry_count": 5,
+      "class_no": "28342",
+      "sect_no": "10305"
+    },
+    {
+      "class_number": "693",
+      "class_name": "1.30m Young Jumper II.2d",
+      "entry_count": 6,
+      "class_no": "28343",
+      "sect_no": "10305"
+    },
+    {
+      "class_number": "694",
+      "class_name": "1.30m Young Jumper II.2b",
+      "entry_count": 6,
+      "class_no": "28344",
+      "sect_no": "10305"
+    },
+    {
+      "class_number": "695",
+      "class_name": "Thoroughbred Jumper 1.0m II.1",
+      "entry_count": 0,
+      "class_no": "28616",
+      "sect_no": "10255"
+    },
+    {
+      "class_number": "696",
+      "class_name": "Thoroughbred Jumper 1.0m II.2d",
+      "entry_count": 0,
+      "class_no": "28617",
+      "sect_no": "10255"
+    },
+    {
+      "class_number": "697",
+      "class_name": "Thoroughbred Jumper 1.0m II.2b",
+      "entry_count": 0,
+      "class_no": "28618",
+      "sect_no": "10255"
+    },
+    {
+      "class_number": "731",
+      "class_name": ".90m Novice Junior/Amateur Jumper II.1",
+      "entry_count": 16,
+      "class_no": "28798",
+      "sect_no": "10308"
+    },
+    {
+      "class_number": "732",
+      "class_name": ".90m Novice Junior/Amateur Jumper II.2d",
+      "entry_count": 11,
+      "class_no": "28799",
+      "sect_no": "10308"
+    },
+    {
+      "class_number": "737",
+      "class_name": "1.00m Junior/Amateur Jumper II.1",
+      "entry_count": 19,
+      "class_no": "28795",
+      "sect_no": "10310"
+    },
+    {
+      "class_number": "738",
+      "class_name": "1.00m Junior/Amateur Jumper II.2d",
+      "entry_count": 28,
+      "class_no": "28796",
+      "sect_no": "10310"
+    },
+    {
+      "class_number": "749",
+      "class_name": "1.10m Junior/Amateur Jumper II.1",
+      "entry_count": 21,
+      "class_no": "28784",
+      "sect_no": "10299"
+    },
+    {
+      "class_number": "750",
+      "class_name": "1.10m Junior/Amateur Jumper II.2d",
+      "entry_count": 28,
+      "class_no": "28785",
+      "sect_no": "10299"
+    },
+    {
+      "class_number": "757",
+      "class_name": "1.15m Junior/Amateur Jumper II.1",
+      "entry_count": 7,
+      "class_no": "28595",
+      "sect_no": "10256"
+    },
+    {
+      "class_number": "758",
+      "class_name": "1.15m Junior/Amateur Jumper II.2d",
+      "entry_count": 12,
+      "class_no": "28596",
+      "sect_no": "10256"
+    },
+    {
+      "class_number": "768",
+      "class_name": "1.20m Junior/Amateur Jumper II.1",
+      "entry_count": 17,
+      "class_no": "28787",
+      "sect_no": "10290"
+    },
+    {
+      "class_number": "769",
+      "class_name": "1.20m Junior/Amateur Jumper II.2d",
+      "entry_count": 15,
+      "class_no": "28788",
+      "sect_no": "10290"
+    },
+    {
+      "class_number": "775",
+      "class_name": "1.30m Junior/Amateur Jumper II.1",
+      "entry_count": 8,
+      "class_no": "28589",
+      "sect_no": "10283"
+    },
+    {
+      "class_number": "776",
+      "class_name": "1.30m Junior/Amateur Jumper II.2d",
+      "entry_count": 7,
+      "class_no": "28590",
+      "sect_no": "10283"
+    },
+    {
+      "class_number": "781",
+      "class_name": "1.40m Junior/Amateur Jumper II.1",
+      "entry_count": 3,
+      "class_no": "28586",
+      "sect_no": "10278"
+    },
+    {
+      "class_number": "782",
+      "class_name": "1.40m Junior/Amateur Jumper II.2d",
+      "entry_count": 2,
+      "class_no": "28587",
+      "sect_no": "10278"
+    },
+    {
+      "class_number": "804",
+      "class_name": "$3500 C. Jarvis Insurance Welcome Prix 1.30m II.2b",
+      "entry_count": 42,
+      "class_no": "28660",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "805",
+      "class_name": "$16,999 Golden Ocala Grand Prix 1.35/1.40m II.2a Reg Std",
+      "entry_count": 60,
+      "class_no": "28661",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "809",
+      "class_name": ".95m Novice Junior/Amateur Jumper Classic II.2b",
+      "entry_count": 12,
+      "class_no": "28800",
+      "sect_no": "10308"
+    },
+    {
+      "class_number": "811",
+      "class_name": "$500 1.05m Junior/Amateur Jumper II.2b",
+      "entry_count": 21,
+      "class_no": "28797",
+      "sect_no": "10310"
+    },
+    {
+      "class_number": "813",
+      "class_name": "$500 1.10m Jr/Am Classic II.2b",
+      "entry_count": 24,
+      "class_no": "28786",
+      "sect_no": "10299"
+    },
+    {
+      "class_number": "816",
+      "class_name": "$500 1.15m Junior/Amateur Classic II.2b",
+      "entry_count": 12,
+      "class_no": "28597",
+      "sect_no": "10256"
+    },
+    {
+      "class_number": "817",
+      "class_name": ".65m Jr/Am Long Creek Farm Jumper Classic II.2b",
+      "entry_count": 5,
+      "class_no": "28578",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "818",
+      "class_name": ".75m Jr/Am Jumper Classic II.2b",
+      "entry_count": 8,
+      "class_no": "28581",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "820",
+      "class_name": ".85m Jr/Am Jumper Classic II.2b",
+      "entry_count": 13,
+      "class_no": "28754",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "851",
+      "class_name": "$1000 FreeRide Equestrian 1.25m Jr/Am Jumper Classic II.2b",
+      "entry_count": 20,
+      "class_no": "28789",
+      "sect_no": "10290"
+    },
+    {
+      "class_number": "853",
+      "class_name": "$1000 Prestige Italia 1.35m1.45m Jr/Am Classic II.2b",
+      "entry_count": 8,
+      "class_no": "28591",
+      "sect_no": "10283"
+    },
+    {
+      "class_number": "900",
+      "class_name": "Short/Long Stirrup Hunter 2'",
+      "entry_count": 13,
+      "class_no": "28845",
+      "sect_no": "10374"
+    },
+    {
+      "class_number": "901",
+      "class_name": "Short/Long Stirrup Hunter 2' (1st rnd Classic) 2'",
+      "entry_count": 12,
+      "class_no": "28851",
+      "sect_no": "10374"
+    },
+    {
+      "class_number": "902",
+      "class_name": "Short/Long Stirrup Hunter 2'",
+      "entry_count": 14,
+      "class_no": "28852",
+      "sect_no": "10374"
+    },
+    {
+      "class_number": "903",
+      "class_name": "Short/Long Stirrup Hunter 2'",
+      "entry_count": 13,
+      "class_no": "28853",
+      "sect_no": "10374"
+    },
+    {
+      "class_number": "904",
+      "class_name": "Short/Long Stirrup Hunter 2' U/S",
+      "entry_count": 11,
+      "class_no": "28854",
+      "sect_no": "10374"
+    },
+    {
+      "class_number": "910",
+      "class_name": "Short/Long Stirrup Equitation 2'",
+      "entry_count": 11,
+      "class_no": "28575",
+      "sect_no": "10295"
+    },
+    {
+      "class_number": "911",
+      "class_name": "Short/Long Stirrup Equitation 2'",
+      "entry_count": 11,
+      "class_no": "28630",
+      "sect_no": "10295"
+    },
+    {
+      "class_number": "912",
+      "class_name": "Short/Long Stirrup Equitation Flat",
+      "entry_count": 10,
+      "class_no": "28645",
+      "sect_no": "10295"
+    },
+    {
+      "class_number": "916",
+      "class_name": "Opportunity Crossrails 18",
+      "entry_count": 0,
+      "class_no": "33415",
+      "sect_no": "11978"
+    },
+    {
+      "class_number": "917",
+      "class_name": "Opportunity Crossrails 18\"",
+      "entry_count": 0,
+      "class_no": "33416",
+      "sect_no": "11978"
+    },
+    {
+      "class_number": "918",
+      "class_name": "Opportunity Crossrails 18\"",
+      "entry_count": 0,
+      "class_no": "33417",
+      "sect_no": "11978"
+    },
+    {
+      "class_number": "919",
+      "class_name": "Opportunity Crossrails 18\"",
+      "entry_count": 0,
+      "class_no": "33418",
+      "sect_no": "11978"
+    },
+    {
+      "class_number": "920",
+      "class_name": "Opportunity Crossrails 18\" U/S",
+      "entry_count": 0,
+      "class_no": "33419",
+      "sect_no": "11978"
+    },
+    {
+      "class_number": "926",
+      "class_name": "Short Stirrup/Long Stirrup Classic 2'",
+      "entry_count": 10,
+      "class_no": "28672",
+      "sect_no": "0"
+    },
+    {
+      "class_number": "927",
+      "class_name": "Walk Trot Equitation Ground Rails",
+      "entry_count": 3,
+      "class_no": "28718",
+      "sect_no": "10291"
+    },
+    {
+      "class_number": "928",
+      "class_name": "Walk Trot Equitation Ground Rails",
+      "entry_count": 3,
+      "class_no": "28719",
+      "sect_no": "10291"
+    },
+    {
+      "class_number": "929",
+      "class_name": "Walk Trot Equitation Ground Rails",
+      "entry_count": 3,
+      "class_no": "28720",
+      "sect_no": "10291"
+    },
+    {
+      "class_number": "930",
+      "class_name": "Walk Trot Equitation Ground Rails",
+      "entry_count": 3,
+      "class_no": "28721",
+      "sect_no": "10291"
+    },
+    {
+      "class_number": "931",
+      "class_name": "Walk Trot Equitation Ground Rails Flat",
+      "entry_count": 3,
+      "class_no": "33461",
+      "sect_no": "10291"
+    },
+    {
+      "class_number": "2001",
+      "class_name": "Leadline",
+      "entry_count": 4,
+      "class_no": "28717",
+      "sect_no": "0"
+    }
+  ]
+}

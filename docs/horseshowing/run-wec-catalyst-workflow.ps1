@@ -37,6 +37,23 @@ function Write-WorkflowLog($message) {
   }
 }
 
+function Add-ContentWithRetry {
+  param(
+    [string]$Path,
+    [string]$Value
+  )
+
+  for ($i = 0; $i -lt 8; $i++) {
+    try {
+      Add-Content -Path $Path -Value $Value
+      return
+    } catch {
+      Start-Sleep -Milliseconds (250 * ($i + 1))
+    }
+  }
+  Write-WorkflowLog "local-log write failed path=$Path"
+}
+
 function ConvertTo-SafeJson($value) {
   $json = $value | ConvertTo-Json -Depth 12 -Compress
   if ($json.Length -gt 90000) {
@@ -112,7 +129,7 @@ function Write-WecAirtableLog {
     $fields.focus_day = [string]$Payload.focus_day
   }
 
-  $fields | ConvertTo-Json -Depth 12 -Compress | Add-Content -Path $jsonlLogPath
+  Add-ContentWithRetry -Path $jsonlLogPath -Value ($fields | ConvertTo-Json -Depth 12 -Compress)
 
   if (!$env:AIRTABLE_TOKEN) {
     Write-WorkflowLog "airtable-log skipped missing AIRTABLE_TOKEN check=$CheckName"
@@ -182,7 +199,7 @@ function Write-WecAirtableAlert {
     }
   }
 
-  $fields | ConvertTo-Json -Depth 12 -Compress | Add-Content -Path (Join-Path $logDir "wec-alerts.jsonl")
+  Add-ContentWithRetry -Path (Join-Path $logDir "wec-alerts.jsonl") -Value ($fields | ConvertTo-Json -Depth 12 -Compress)
 
   if (!$env:AIRTABLE_TOKEN) {
     Write-WorkflowLog "airtable-alert skipped missing AIRTABLE_TOKEN type=$AlertType"
@@ -408,15 +425,6 @@ function Test-WecCadenceGate {
     [hashtable]$State
   )
 
-  if ($ForceSync) {
-    Write-WorkflowLog "cadence-gate bypass force-sync"
-    return @{
-      should_run = $true
-      reason = "force_sync"
-      cadence_minutes = 0
-    }
-  }
-
   if (!$env:AIRTABLE_TOKEN) {
     Write-WorkflowLog "cadence-gate bypass missing AIRTABLE_TOKEN"
     return @{
@@ -441,6 +449,21 @@ function Test-WecCadenceGate {
         cadence_minutes = 0
       }
     }
+    if ($activeShows.Count -gt 1) {
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Status "error" -Summary "cadence stop: multiple active records in shows.active" -Payload @{
+        reason = "multiple_active_shows"
+        table = "shows"
+        view = "active"
+        active_shows = $activeShows.Count
+        show_nos = @($activeShows | ForEach-Object { Get-WecRecordField $_ "show_no" })
+      }
+      Write-WorkflowLog "cadence-gate stop multiple_active_shows count=$($activeShows.Count)"
+      return @{
+        should_run = $false
+        reason = "multiple_active_shows"
+        cadence_minutes = 0
+      }
+    }
 
     $activeFocusShows = @(Get-WecAirtableRecordsByView -TableName "focus_show" -ViewName "active" -PageSize 10)
     if ($activeFocusShows.Count -eq 0) {
@@ -457,8 +480,27 @@ function Test-WecCadenceGate {
         cadence_minutes = 0
       }
     }
+    $activeShowRecord = @($activeShows | Select-Object -First 1)[0]
+    $activeShowNo = [string](Get-WecRecordField $activeShowRecord "show_no")
+    $matchingFocusShows = @($activeFocusShows | Where-Object { [string](Get-WecRecordField $_ "show_no") -eq $activeShowNo })
+    if ($matchingFocusShows.Count -ne 1) {
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Status "error" -Summary "cadence stop: focus_show.active does not have exactly one record matching shows.active show_no=$activeShowNo" -Payload @{
+        reason = "active_show_focus_mismatch"
+        active_show_no = $activeShowNo
+        active_shows = $activeShows.Count
+        active_focus_shows = $activeFocusShows.Count
+        matching_focus_shows = $matchingFocusShows.Count
+        focus_show_nos = @($activeFocusShows | ForEach-Object { Get-WecRecordField $_ "show_no" })
+      }
+      Write-WorkflowLog "cadence-gate stop active_show_focus_mismatch show=$activeShowNo matching=$($matchingFocusShows.Count)"
+      return @{
+        should_run = $false
+        reason = "active_show_focus_mismatch"
+        cadence_minutes = 0
+      }
+    }
 
-    $focusRecord = @($activeFocusShows | Select-Object -First 1)[0]
+    $focusRecord = @($matchingFocusShows | Select-Object -First 1)[0]
     $focusShowNo = Get-WecRecordField $focusRecord "show_no"
     $focusDayValue = Get-WecRecordField $focusRecord "focus_day"
     $modeValue = Get-WecRecordField $focusRecord "mode"
@@ -469,6 +511,22 @@ function Test-WecCadenceGate {
     $cadenceRows = @(Get-WecAirtableTableRecords -TableName "cadence" -PageSize 100)
     $cadenceMinutes = Resolve-WecCadenceMinutes -CadenceRows $cadenceRows -Mode $modeValue
     $focusKey = "$ShowNo|$FocusDay|$modeValue"
+    if ($ForceSync) {
+      Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Summary "cadence pass: force sync focus=$FocusDay mode=$modeValue cadence=$cadenceMinutes" -Payload @{
+        reason = "force_sync"
+        focus_key = $focusKey
+        mode = $modeValue
+        cadence_minutes = $cadenceMinutes
+        active_shows = $activeShows.Count
+        active_focus_shows = $activeFocusShows.Count
+      }
+      Write-WorkflowLog "cadence-gate bypass force-sync focus=$focusKey cadence=$cadenceMinutes"
+      return @{
+        should_run = $true
+        reason = "force_sync"
+        cadence_minutes = $cadenceMinutes
+      }
+    }
     $lastKey = "cadence_gate_last_run"
     $lastFocusKey = "cadence_gate_last_focus_key"
     $isFocusChanged = (!$State.ContainsKey($lastFocusKey)) -or ([string]$State[$lastFocusKey] -ne $focusKey)
@@ -931,6 +989,16 @@ function Invoke-CoreWorkflowTableSync($FocusDayValue) {
   Write-WorkflowLog "sync-airtable-core-workflows $($output -join ' ')"
 }
 
+function Invoke-WecLaneAudit($FocusDayValue) {
+  if (!$FocusDayValue) { return }
+  $scriptPath = Join-Path $root "audit-wec-lanes.js"
+  $output = & node $scriptPath --show-no $ShowNo --focus-day $FocusDayValue 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw "audit-wec-lanes failed: $($output -join ' ')"
+  }
+  Write-WorkflowLog "audit-wec-lanes $($output -join ' ')"
+}
+
 function Invoke-WecHeartbeatComposite {
   $scheduleRows = @(Invoke-CatalystArray "schedule-json")
   $resolvedFocusDay = ""
@@ -1233,6 +1301,12 @@ function Write-TimeAlerts {
 }
 
 function Invoke-FocusDayScheduleSync {
+  $ringDays = Invoke-CatalystActionWithRetry "sync-ring-days" 2
+  if ($ringDays.ok -eq $false) {
+    throw "sync-ring-days prerequisite failed: $($ringDays.error)"
+  }
+  Write-WorkflowLog "sync-focus-day prerequisite sync-ring-days rows=$($ringDays.parsed_rows)"
+
   $offset = 0
   $limit = 1
   $pages = 0
@@ -1491,7 +1565,7 @@ if ($heartbeat.focus_day) {
       error = $_.Exception.Message
     }
   }
-  if ($localCoreFocusChanged -or $catalystScheduleRows -eq 0) {
+  if ($ForceSync -or $localCoreDue -or $localCoreFocusChanged -or $catalystScheduleRows -eq 0) {
     try {
       $schedule = Invoke-FocusDayScheduleSync
       Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -RecordsSeen (Int-OrZero $schedule.rows) -RecordsChanged (Int-OrZero $schedule.rows) -Summary "Catalyst schedule-json refreshed rows=$($schedule.rows) pages=$($schedule.pages) focus=$($schedule.focus_day)" -Payload @{
@@ -1537,8 +1611,28 @@ if ($heartbeat.focus_day) {
       focus_day = $heartbeat.focus_day
       error = $_.Exception.Message
     }
+    throw
   }
   Write-TimeAlerts $heartbeat.focus_day
+  try {
+    Invoke-WecLaneAudit $heartbeat.focus_day
+    Resolve-WecAirtableAlert -AlertType "wec_lane_audit_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|wec_lane_audit" -Message "Resolved: WEC lane audit passed." -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+    }
+  } catch {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "wec_lane_audit" -Status "error" -Summary "lane audit failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "wec_lane_audit_failed" -Severity "critical" -Message "WEC lane audit failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|wec_lane_audit" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    throw
+  }
   if ($RunMockLiveCheck) {
     try {
       $mockLive = Invoke-MockLiveCheck $heartbeat.focus_day

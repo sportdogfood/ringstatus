@@ -75,7 +75,8 @@ async function buildSiteToggle({ token, baseId, pageKey }) {
     .filter(Boolean);
 
   const uniquePageKeys = [...new Set(pageKeys)];
-  const pageRecords = uniquePageKeys
+  const requestedPageKey = uniquePageKeys.includes(pageKey) ? pageKey : uniquePageKeys[0];
+  const pageRecords = [requestedPageKey]
     .map((key) => pages.find((record) => clean(record.fields.page_key) === key))
     .filter(Boolean);
 
@@ -122,7 +123,7 @@ async function buildSiteToggle({ token, baseId, pageKey }) {
       mode: "airtable_rscom_site_toggle"
     },
     tree,
-    html: renderSiteToggle(tree, pageKey)
+    html: renderSiteToggle(tree, requestedPageKey)
   };
 }
 
@@ -233,6 +234,7 @@ function renderPage(tree) {
   const body = tree.blocks.map((block) => renderBlock(block, tree)).join("\n");
   return [
     `<main class="rs-page" data-rs-page="${escapeAttr(pageKey)}">`,
+    renderBaseStyle(),
     body,
     `</main>`
   ].join("\n");
@@ -242,7 +244,6 @@ function renderSiteToggle(tree, activePageKey) {
   const activeKey = clean(activePageKey) || clean(first(tree.pages)?.page.page_key);
   const navItems = tree.navigation
     .filter((item) => selectName(item.nav_group) === "main_nav")
-    .filter((item) => tree.pages.some((page) => clean(page.page.page_key) === clean(item.page_key)))
     .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
 
   const buttons = navItems.map((item) => {
@@ -257,9 +258,6 @@ function renderSiteToggle(tree, activePageKey) {
     const blocks = pageTree.blocks.map((block) => renderSection(block)).join("\n");
     return [
       `<section class="rs-site-toggle-panel${isActive ? " is-active" : ""}" data-rs-page-panel="${escapeAttr(itemPageKey)}"${isActive ? "" : " hidden"}>`,
-      `  <div class="rs-site-toggle-panel-head">`,
-      `    <div class="rs-site-toggle-label">${escapeHtml(pageTree.page.page_label || itemPageKey)}</div>`,
-      `  </div>`,
       blocks,
       `</section>`
     ].join("\n");
@@ -268,9 +266,15 @@ function renderSiteToggle(tree, activePageKey) {
   return [
     `<main class="rs-page rs-site-toggle" data-rs-mode="site_toggle" data-rs-page="${escapeAttr(activeKey)}">`,
     renderSiteToggleStyle(),
-    `  <nav class="rs-site-toggle-nav" aria-label="Page sections">`,
+    `  <div class="rs-site-toggle-nav-shell">`,
+    `    <div class="rs-section-container">`,
+    `      <div class="rs-site-toggle-nav-inner">`,
+    `        <nav class="rs-site-toggle-nav" aria-label="Page sections">`,
     buttons,
-    `  </nav>`,
+    `        </nav>`,
+    `      </div>`,
+    `    </div>`,
+    `  </div>`,
     `  <div class="rs-site-toggle-panels">`,
     panels,
     `  </div>`,
@@ -282,13 +286,13 @@ function renderSiteToggleStyle() {
   return [
     `<style>`,
     `.rs-site-toggle{font-family:Outfit,Arial,sans-serif;color:#17263b;}`,
-    `.rs-site-toggle-nav{display:flex;gap:10px;align-items:center;overflow-x:auto;padding:12px 0;margin:0 0 20px;border-bottom:1px solid #d8dee6;}`,
+    `.rs-site-toggle-nav-shell{border-bottom:1px solid #d8dee6;}`,
+    `.rs-site-toggle-nav-inner{padding:12px 0;}`,
+    `.rs-site-toggle-nav{display:flex;gap:10px;align-items:center;overflow-x:auto;padding:12px 0;margin:0;}`,
     `.rs-site-toggle-button{appearance:none;border:1px solid #d8dee6;background:#fff;color:#17263b;border-radius:18px;padding:10px 18px;font:600 13px/1 Outfit,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;cursor:pointer;box-shadow:0 1px 2px rgba(15,23,42,.08);transition:background .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease;}`,
     `.rs-site-toggle-button:hover{box-shadow:0 4px 12px rgba(15,23,42,.14);transform:translateY(-1px);}`,
     `.rs-site-toggle-button.is-active{background:#10243b;color:#fff;border-color:#10243b;}`,
     `.rs-site-toggle-panel{border-top:1px solid #e5e9ef;padding:18px 0;}`,
-    `.rs-site-toggle-panel-head{margin:0 0 12px;}`,
-    `.rs-site-toggle-label{font:700 12px/1.2 Outfit,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#65707d;}`,
     `.rs-section{padding:0 0 14px;}`,
     `.rs-section-padding{display:grid;gap:8px;}`,
     `.rs-content,[data-rs-role]{font:400 18px/1.35 Outfit,Arial,sans-serif;}`,
@@ -301,9 +305,16 @@ function toggleClickHandler() {
     "var root=this.closest('[data-rs-mode=\"site_toggle\"]');",
     "if(!root)return;",
     "var key=this.getAttribute('data-rs-toggle-page');",
+    "var mount=root.closest('#rs-page-root');",
+    "if(mount&&mount.__rsPageCache&&mount.__rsPageCache[key]){mount.innerHTML=mount.__rsPageCache[key];return;}",
+    "var endpoint=new URL('https://ringstatus.com/test/rs-page-render');",
+    "endpoint.searchParams.set('mode','site_toggle');",
+    "endpoint.searchParams.set('pageKey',key);",
+    "endpoint.searchParams.set('_',Date.now());",
+    "if(mount)mount.setAttribute('data-rs-status','loading');",
     "root.setAttribute('data-rs-page',key);",
     "root.querySelectorAll('[data-rs-toggle-page]').forEach(function(btn){var on=btn.getAttribute('data-rs-toggle-page')===key;btn.classList.toggle('is-active',on);btn.setAttribute('aria-expanded',on?'true':'false');});",
-    "root.querySelectorAll('[data-rs-page-panel]').forEach(function(panel){var on=panel.getAttribute('data-rs-page-panel')===key;panel.classList.toggle('is-active',on);panel.hidden=!on;});"
+    "fetch(endpoint.toString(),{cache:'no-store'}).then(function(response){return response.json();}).then(function(data){if(!data||!data.ok)throw new Error((data&&(data.detail||data.error))||'Render failed');if(mount){mount.__rsPageCache=mount.__rsPageCache||{};mount.__rsPageCache[key]=data.html||'';mount.innerHTML=data.html||'';mount.setAttribute('data-rs-status','ready');}}).catch(function(error){if(mount){mount.setAttribute('data-rs-status','failed');mount.textContent='Render failed: '+(error&&error.message?error.message:error);}});"
   ].join("");
 }
 
@@ -345,10 +356,15 @@ function renderSection(block) {
   const divHtml = block.divs.map((div) => {
     const className = clean(div.class_key) || "rs-content";
     const typeHtml = div.typography.map((typeRow) => {
-      const content = first(typeRow.content)?.content_value || "";
+      const contentRow = first(typeRow.content);
+      const content = contentRow?.content_value || "";
+      const contentType = selectName(contentRow?.content_type);
+      if (contentType === "html") {
+        return renderContent(content, contentType);
+      }
       const role = selectName(typeRow.typography_role);
       const typeClass = clean(typeRow.font_class) || `rs-type-${role || "text"}`;
-      return `<div class="${escapeAttr(typeClass)}" data-rs-role="${escapeAttr(role)}" data-rs-value="${escapeAttr(typeRow.data_rs_value || typeRow.typography_key)}">${escapeHtml(content)}</div>`;
+      return `<div class="${escapeAttr(typeClass)}" data-rs-role="${escapeAttr(role)}" data-rs-value="${escapeAttr(typeRow.data_rs_value || typeRow.typography_key)}">${renderContent(content, contentType)}</div>`;
     }).join("");
     return `<div class="${escapeAttr(className)}" data-rs-div="${escapeAttr(div.div_key)}">${typeHtml}</div>`;
   }).join("");
@@ -362,6 +378,28 @@ function renderSection(block) {
     `  </div>`,
     `</section>`
   ].join("\n");
+}
+
+function renderContent(content, contentType) {
+  if (contentType === "html") return sanitizeTrustedHtml(content);
+  return escapeHtml(content);
+}
+
+function sanitizeTrustedHtml(value) {
+  return String(value ?? "")
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/\son[a-z]+\s*=\s*(".*?"|'.*?'|[^\s>]+)/gi, "");
+}
+
+function renderBaseStyle() {
+  return [
+    `<style>`,
+    `.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}`,
+    `.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}`,
+    `.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}`,
+    `@media(max-width:700px){.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}`,
+    `</style>`
+  ].join("");
 }
 
 function groupByFirstLink(records, fieldName) {
@@ -394,6 +432,7 @@ function includes(list, value) {
 }
 
 function selectName(value) {
+  if (Array.isArray(value)) return selectName(first(value));
   if (value && typeof value === "object" && "name" in value) return clean(value.name);
   return clean(value);
 }

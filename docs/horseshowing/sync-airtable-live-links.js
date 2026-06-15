@@ -33,6 +33,13 @@ function formulaForShowFocus(showNo, focusDay) {
   return parts.length > 1 ? `AND(${parts.join(",")})` : parts[0] || "";
 }
 
+function formulaForActiveShow(showNo) {
+  const value = clean(showNo);
+  if (!value) return "{active}=1";
+  const showFormula = /^\d+$/.test(value) ? `{show_no}=${Number(value)}` : `{show_no}='${value.replace(/'/g, "\\'")}'`;
+  return `AND(${showFormula},{active}=1)`;
+}
+
 async function airtableFetch(url, options = {}) {
   if (!AIRTABLE_TOKEN) throw new Error("AIRTABLE_TOKEN is required");
   const response = await fetch(url, {
@@ -220,7 +227,7 @@ async function syncGetRings({ showNo, focusDay }) {
   ] = await Promise.all([
     listAll("get_rings", formula ? { filterByFormula: formula } : {}),
     listAll("get_ring_days"),
-    listAll("shows"),
+    listAll("shows", { filterByFormula: formulaForActiveShow(showNo) }),
     listAll("focus_show", formula ? { filterByFormula: formula } : {}),
     listAll("classes"),
     listAll("entries"),
@@ -332,7 +339,7 @@ async function syncGetOrders({ showNo, focusDay }) {
     listAll("get_orders", formula ? { filterByFormula: formula } : {}),
     listAll("update_schedule", formula ? { filterByFormula: formula } : {}),
     listAll("get_rings", formula ? { filterByFormula: formula } : {}),
-    listAll("shows"),
+    listAll("shows", { filterByFormula: formulaForActiveShow(showNo) }),
     listAll("focus_show", formula ? { filterByFormula: formula } : {}),
     listAll("classes"),
     listAll("entries"),

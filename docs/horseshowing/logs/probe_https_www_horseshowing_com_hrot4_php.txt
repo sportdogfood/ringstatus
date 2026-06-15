@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>Select Show</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0",user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" >
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.min.css" >
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css" >
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/autoc_styles.css">
+    <link rel="stylesheet" type="text/css" href="css/hscom.css">
+    <link rel="stylesheet" type="text/css" href="css/showsel.css">
+    
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
+    <script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
+    <script type="text/javascript" src="js/showsel.js"></script>
+    
+  </head>
+  <body>
+    <img class="centered img-responsive" src="images/hscom_sm.png">
+    <div id="header">
+      <div id="button_row">
+        <button type="button" id="home_btn" class="btn btn-default">Home</button>
+        <button type="button" id="ole_btn" class="btn btn-default">Enter Shows</button>
+        <button type="button" id="contact_btn" class="btn btn-default">Contact Us</button>
+      </div>
+      <div class="btn-group" role="group" id="shows_button_row">
+      </div>
+    </div> 
+    <div id="now">
+    </div>
+    <div id="search">
+      <div id="upcoming_list_wrapper">
+        <p class="instr">Type name, dates of the upcoming show:</p> 
+        <table>
+          <tr>
+            <td id="search_cell">
+              <input class="form-control show_autocomplete" type="text" name="show_input" id="show_autocomplete_upcoming" placeholder="Show Name, dates">
+            </td>
+          </tr>
+        </table>
+        <div class="showsHeader">Or select from list...</div>
+        <div id="upcoming_list_items">
+        </div>
+      </div>
+      <div id="completed_list_wrapper">
+        <p class="instr">Type show name, dates of the show:</p>
+        <div id="table">
+        <table>
+          <tr>
+            <td id="search_cell">
+              <input class="form-control show_autocomplete" type="text" name="show_input" id="show_autocomplete_completed" placeholder="Show Name, dates">
+            </td>
+          </tr>
+        </table>
+        </div>
+        <div class="showsHeader">Or select from most recent 2500...</div>
+        <div id="completed_list_items">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>  

@@ -1,0 +1,136 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>HorseShowing.com - WEC Ocala Summer Series 1 CSI2* </title>
+    <title>WEC Ocala Summer Series 1 CSI2* - June 9 - 14, 2026</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0",user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" >
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.min.css" >
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css" >
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/hscom.css">
+    <link rel="stylesheet" type="text/css" href="css/show.css">
+    
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
+    <script type="text/javascript" src="js/show.js"></script>
+    <script>
+      show_no = 14906;
+    </script>  
+  </head>
+  <body>
+    <img class="centered img-responsive" src="images/hscom_sm.png">
+    <div id="header">
+      <div id="buttons">
+        <button type="button" id="home_btn" class="btn btn-default">Home</button>
+        <button type="button" id="select_btn" class="btn btn-default">Select Show</button>
+        <button type="button" id="results_btn" class="btn btn-default">Results</button>
+                <button type="button" id="schedule_btn" class="btn btn-default">Schedule</button>
+        <button type="button" id="counts_btn" class="btn btn-default">Counts</button>
+        <button type="button" id="contact_btn" class="btn btn-default">Contact Show</button>
+      </div> 
+            <div class="show_title row">
+        <div class="col-md-6" style="display: inline-block; vertical-align: top; text-align: right; white-space: nowrap; float: none; width: inherit;">
+          WEC Ocala Summer Series 1 CSI2*        </div>
+        <div class="col-md-6" style="display: inline-block; vertical-align: top; text-align: left; float: none; width: inherit;">
+          June 9 - 14, 2026        </div>  
+      </div>
+    </div>
+    
+<div class="title">BIO SECURITY REMINDER</div>
+<div class="med_msg">All Trailers arriving between 6pm and 6am must use the Route 40 Entrance.  Any trailers attempting to use another gate will be redirected by Nighttime Security</div>
+<div class="title">SCHEDULE CHANGE:</div>
+<div class="med_msg">Children's Hunters are moving from end of the schedule in INDOOR 1 to end of the schedule in INDOOR 2.</div>
+<div class="title">Prizelist, Schedules</div>
+<div class="short_msg"></div>
+<div class="centered_list">
+  <a href="show_upload/14906/602.pdf" target="_blank">Summer Prizelist</a><br>
+  <a href="show_upload/14906/603.pdf" target="_blank">Jumper Schedule</a><br>
+  <a href="show_upload/14906/604.pdf" target="_blank">Hunter Schedule</a><br>
+  <a href="show_upload/14906/631.pdf" target="_blank">Stall Locations</a><br>
+  <a href="show_upload/14906/642.pdf" target="_blank">Feed and Bedding Order Form</a><br>
+  <a href="show_upload/14906/653.pdf" target="_blank">Daily Schedule</a><br>
+  <a href="show_upload/14906/654.pdf" target="_blank">CSI2* FEI Schedule</a><br>
+  <a href="show_upload/14906/655.pdf" target="_blank">Equitrace</a><br>
+  <a href="show_upload/14906/656.pdf" target="_blank">Grand Orders</a><br>
+  <a href="show_upload/14906/658.pdf" target="_blank">.90m Young Jumper Qualifying List</a><br>
+  <a href="show_upload/14906/659.pdf" target="_blank">1.0m Young Jumper Qualifying List</a><br>
+  <a href="show_upload/14906/660.pdf" target="_blank">1.10m Young Jumper Qualifying List</a><br>
+  <a href="show_upload/14906/661.pdf" target="_blank">1.20m Young Jumper Qualifying List</a><br>
+  <a href="show_upload/14906/662.pdf" target="_blank">1.30m Young Jumper Qualifying List</a><br>
+  <a href="show_upload/14906/666.pdf" target="_blank">Indoor 6 Orders</a><br>
+  <a href="show_upload/14906/667.pdf" target="_blank">Jumper Annex Orders</a><br>
+  <a href="show_upload/14906/668.pdf" target="_blank">Indoor 5 Orders</a><br>
+  <a href="show_upload/14906/669.pdf" target="_blank">First Round Classic Scores</a><br>
+</div>
+    <p style="text-align: center;"><a href="https://acrobat.adobe.com/us/en/acrobat/pdf-reader.html"  target="_blank"><img src="images/acrobat.gif" border=0></a></p>
+    <div class="title">Horse Show Officials</div>
+    <div class="ul_title">Competition Management</div>
+    <div class="centered_list">
+      Tom Hern<br>
+    </div>
+    <div class="ul_title">Horse Show Manager</div>
+    <div class="centered_list">
+      Jon Garner<br>
+      352-400-9773<br>
+      jon.garner@wec.net<br>
+    </div>
+    <div class="ul_title">Show Secretary</div>
+    <div class="centered_list">
+      Kelly McCabe-Cyphert<br>
+      352-414-7883<br>
+      kelly.cyphert@wec.net<br>
+    </div>
+    <div class="title">Horse Show Staff</div>
+    <div class="ul_title">Stabling Manager</div>
+    <div class="centered_list">
+      Mackenzie Weller<br>
+      352-414-7881<br>
+      ocalastalls@wec.net<br>
+    </div>
+    <div class="ul_title">Show Veterinarian</div>
+    <div class="centered_list">
+      Dr. Larry Wexler<br>
+      352-812-1411<br>
+    </div>
+    <div class="ul_title">Show Farrier</div>
+    <div class="centered_list">
+      Farriers, INC<br>
+      352-812-2812<br>
+    </div>
+<div class="title">SCHEDULE CHANGE:</div>
+<div class="long_msg">1.0m Open & 1.0m Jr/Am Jumpers will be split.  Riders may choose Section A competing in Arena 5 approx start 4:45pm & 6:15pm for Jr/Am  OR Section B in the Jumper Annex with approx start time 10am for 1.0m Open with 1.0m Jr/Am to follow. Note once you choose a section you will continue to compete in that section the remainder of the week.</div>
+    <div id="last_updated" style= "width: 300px; text-align: center; margin-top: 15px">
+      Last Updated: 2026 Jun 14 11:10am 
+    </div>
+    <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+    <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+    <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+    <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+    <BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+    <div id="eXTReMe"  style="display: none"><a href="https://extremetracking.com/open?login=horshcom">
+    <img src="https://t1.extreme-dm.com/i.gif" style="border: 0;"
+    height="38" width="41" id="EXim" alt="eXTReMe Tracker" /></a>
+    <script type="text/javascript"><!--
+    var EXlogin='horshcom' // Login
+    var EXvsrv='s10' // VServer
+    EXs=screen;EXw=EXs.width;navigator.appName!="Netscape"?
+    EXb=EXs.colorDepth:EXb=EXs.pixelDepth;
+    navigator.javaEnabled()==1?EXjv="y":EXjv="n";
+    EXd=document;EXw?"":EXw="na";EXb?"":EXb="na";
+    EXd.write("<img src=https://e1.extreme-dm.com",
+    "/"+EXvsrv+".g?login="+EXlogin+"&amp;",
+    "jv="+EXjv+"&amp;j=y&amp;srw="+EXw+"&amp;srb="+EXb+"&amp;",
+    "l="+escape(EXd.referrer)+" height=1 width=1>");//-->
+    </script><noscript><div id="neXTReMe"><img height="1" width="1" alt=""
+    src="https://e1.extreme-dm.com/s10.g?login=horshcom&amp;j=n&amp;jv=n" />
+    </div></noscript></div>
+  </body>
+</html>
+

@@ -1,2 +1,1 @@
-record_id,focus_show_key,mirror_focus_show_key,show_no,show_name,subtitle,show_start,show_end,focus_day,source
-recks9BYWaVwjuNw2,horseshowing|14906,horseshowing|14906,14906,WEC Ocala Summer Series 1 CSI2*,2026-06-14,2026-06-09,2026-06-14,2026-06-14,manual_input
+record_id,active,focus_show_key,mirror_focus_show_key,show_no,show_name,subtitle,show_start,show_end,focus_day,source

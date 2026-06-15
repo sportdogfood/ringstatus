@@ -291,6 +291,7 @@ function normalizeFocusShow(record) {
   const focusDay = normalizeDate(fields.focus_day);
   return {
     record_id: record.id,
+    active: fields.active ? "1" : "0",
     focus_show_key: fields.focus_show_key || `${showNo}|${focusDay}`,
     mirror_focus_show_key: fields.mirror_focus_show_key || fields.focus_show_key || `${showNo}|${focusDay}`,
     show_no: showNo,
@@ -736,7 +737,7 @@ async function main() {
 
   const focusRows = focusRecords
     .map(normalizeFocusShow)
-    .filter((row) => row.show_no && row.focus_day);
+    .filter((row) => row.active === "1" && row.show_no && row.focus_day);
   const hideRows = hideRecords
     .map(normalizeClassHide)
     .filter((row) => row.show_no && (row.class_no || row.hide_text));
@@ -804,6 +805,7 @@ async function main() {
 
     writeCsv(path.join(showDir, "focus_show.csv"), [
       "record_id",
+      "active",
       "focus_show_key",
       "mirror_focus_show_key",
       "show_no",

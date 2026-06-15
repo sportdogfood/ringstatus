@@ -1,0 +1,305 @@
+  	
+        <tr>
+          <td width="10%">245</td>
+          <td width="60%">USHJA Hunter 3'3"</td>
+          <td width="10%" class="ralign">13</td>
+          <td width="0" class="class_no_td">29071</td>
+          <td width="0" class="sect_no_td">10438</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">246</td>
+          <td width="60%">USHJA Hunter 3'3"</td>
+          <td width="10%" class="ralign">11</td>
+          <td width="0" class="class_no_td">29072</td>
+          <td width="0" class="sect_no_td">10438</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">247</td>
+          <td width="60%">USHJA Hunter 3'3"</td>
+          <td width="10%" class="ralign">20</td>
+          <td width="0" class="class_no_td">29074</td>
+          <td width="0" class="sect_no_td">10438</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">248</td>
+          <td width="60%">USHJA Hunter 3'3"</td>
+          <td width="10%" class="ralign">17</td>
+          <td width="0" class="class_no_td">29075</td>
+          <td width="0" class="sect_no_td">10438</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">249</td>
+          <td width="60%">USHJA Hunter 3'3" U/S</td>
+          <td width="10%" class="ralign">4</td>
+          <td width="0" class="class_no_td">29076</td>
+          <td width="0" class="sect_no_td">10438</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">255</td>
+          <td width="60%">USHJA Hunter 2'</td>
+          <td width="10%" class="ralign">16</td>
+          <td width="0" class="class_no_td">29051</td>
+          <td width="0" class="sect_no_td">10534</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">256</td>
+          <td width="60%">USHJA Hunter 2'</td>
+          <td width="10%" class="ralign">13</td>
+          <td width="0" class="class_no_td">29052</td>
+          <td width="0" class="sect_no_td">10534</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">257</td>
+          <td width="60%">USHJA Hunter 2'</td>
+          <td width="10%" class="ralign">24</td>
+          <td width="0" class="class_no_td">29053</td>
+          <td width="0" class="sect_no_td">10534</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">258</td>
+          <td width="60%">USHJA Hunter 2'</td>
+          <td width="10%" class="ralign">20</td>
+          <td width="0" class="class_no_td">29054</td>
+          <td width="0" class="sect_no_td">10534</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">259</td>
+          <td width="60%">USHJA Hunter 2 U/S</td>
+          <td width="10%" class="ralign">14</td>
+          <td width="0" class="class_no_td">29055</td>
+          <td width="0" class="sect_no_td">10534</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">260</td>
+          <td width="60%">USHJA Hunter 2'3"</td>
+          <td width="10%" class="ralign">11</td>
+          <td width="0" class="class_no_td">29056</td>
+          <td width="0" class="sect_no_td">10441</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">261</td>
+          <td width="60%">USHJA Hunter 2'3"</td>
+          <td width="10%" class="ralign">10</td>
+          <td width="0" class="class_no_td">29057</td>
+          <td width="0" class="sect_no_td">10441</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">262</td>
+          <td width="60%">USHJA Hunter 2'3"</td>
+          <td width="10%" class="ralign">10</td>
+          <td width="0" class="class_no_td">29058</td>
+          <td width="0" class="sect_no_td">10441</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">263</td>
+          <td width="60%">USHJA Hunter 2'3"</td>
+          <td width="10%" class="ralign">9</td>
+          <td width="0" class="class_no_td">29059</td>
+          <td width="0" class="sect_no_td">10441</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">264</td>
+          <td width="60%">USHJA Hunter 2'3" U/S</td>
+          <td width="10%" class="ralign">7</td>
+          <td width="0" class="class_no_td">29060</td>
+          <td width="0" class="sect_no_td">10441</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">265</td>
+          <td width="60%">USHJA Hunter 2'6"</td>
+          <td width="10%" class="ralign">20</td>
+          <td width="0" class="class_no_td">29061</td>
+          <td width="0" class="sect_no_td">10533</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">266</td>
+          <td width="60%">USHJA Hunter 2'6"</td>
+          <td width="10%" class="ralign">17</td>
+          <td width="0" class="class_no_td">29062</td>
+          <td width="0" class="sect_no_td">10533</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">267</td>
+          <td width="60%">USHJA Hunter 2'6"</td>
+          <td width="10%" class="ralign">23</td>
+          <td width="0" class="class_no_td">29063</td>
+          <td width="0" class="sect_no_td">10533</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">268</td>
+          <td width="60%">USHJA Hunter 2'6"</td>
+          <td width="10%" class="ralign">20</td>
+          <td width="0" class="class_no_td">29064</td>
+          <td width="0" class="sect_no_td">10533</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">269</td>
+          <td width="60%">USHJA Hunter 2'6" U/S</td>
+          <td width="10%" class="ralign">11</td>
+          <td width="0" class="class_no_td">29065</td>
+          <td width="0" class="sect_no_td">10533</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">270</td>
+          <td width="60%">USHJA Hunter 2'9"</td>
+          <td width="10%" class="ralign">14</td>
+          <td width="0" class="class_no_td">29264</td>
+          <td width="0" class="sect_no_td">10532</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">271</td>
+          <td width="60%">USHJA Hunter 2'9"</td>
+          <td width="10%" class="ralign">14</td>
+          <td width="0" class="class_no_td">29263</td>
+          <td width="0" class="sect_no_td">10532</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">272</td>
+          <td width="60%">USHJA Hunter 2'9"</td>
+          <td width="10%" class="ralign">10</td>
+          <td width="0" class="class_no_td">29262</td>
+          <td width="0" class="sect_no_td">10532</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">273</td>
+          <td width="60%">USHJA Hunter 2'9"</td>
+          <td width="10%" class="ralign">7</td>
+          <td width="0" class="class_no_td">29261</td>
+          <td width="0" class="sect_no_td">10532</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">274</td>
+          <td width="60%">USHJA Hunter 2'9" U/S</td>
+          <td width="10%" class="ralign">6</td>
+          <td width="0" class="class_no_td">29260</td>
+          <td width="0" class="sect_no_td">10532</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">275</td>
+          <td width="60%">USHJA Hunter 3'</td>
+          <td width="10%" class="ralign">11</td>
+          <td width="0" class="class_no_td">29066</td>
+          <td width="0" class="sect_no_td">10531</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">276</td>
+          <td width="60%">USHJA Hunter 3'</td>
+          <td width="10%" class="ralign">8</td>
+          <td width="0" class="class_no_td">29067</td>
+          <td width="0" class="sect_no_td">10531</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">277</td>
+          <td width="60%">USHJA Hunter 3'</td>
+          <td width="10%" class="ralign">21</td>
+          <td width="0" class="class_no_td">29068</td>
+          <td width="0" class="sect_no_td">10531</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">278</td>
+          <td width="60%">USHJA Hunter 3'</td>
+          <td width="10%" class="ralign">16</td>
+          <td width="0" class="class_no_td">29069</td>
+          <td width="0" class="sect_no_td">10531</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">279</td>
+          <td width="60%">USHJA Hunter 3'' U/S</td>
+          <td width="10%" class="ralign">7</td>
+          <td width="0" class="class_no_td">29070</td>
+          <td width="0" class="sect_no_td">10531</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">404</td>
+          <td width="60%">$10,000 USHJA UF Vet Hunter Derby 3' Open</td>
+          <td width="10%" class="ralign">13</td>
+          <td width="0" class="class_no_td">29176</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">405</td>
+          <td width="60%">$10,000 USHJA National Hunter Derby 3' Jr/Am</td>
+          <td width="10%" class="ralign">22</td>
+          <td width="0" class="class_no_td">29177</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">407</td>
+          <td width="60%">$2,000 USHJA Pony Hunt & Go Derby 2'3"/2'6"/2'9"</td>
+          <td width="10%" class="ralign">7</td>
+          <td width="0" class="class_no_td">29179</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">430</td>
+          <td width="60%">$1000 USHJA Green Hunter Incentive 3'</td>
+          <td width="10%" class="ralign">1</td>
+          <td width="0" class="class_no_td">29181</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">431</td>
+          <td width="60%">$1000 USHJA Green Hunter Incentive 3'3"</td>
+          <td width="10%" class="ralign">4</td>
+          <td width="0" class="class_no_td">29182</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">432</td>
+          <td width="60%">$1000 USHJA Green Hunter Incentive 3'6"/3'9"</td>
+          <td width="10%" class="ralign">0</td>
+          <td width="0" class="class_no_td">29454</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">537</td>
+          <td width="60%">USHJA Jumping Seat Medal 3'3"</td>
+          <td width="10%" class="ralign">6</td>
+          <td width="0" class="class_no_td">33505</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  	
+        <tr>
+          <td width="10%">539</td>
+          <td width="60%">USHJA Hunter Seat Medal 3'3"</td>
+          <td width="10%" class="ralign">0</td>
+          <td width="0" class="class_no_td">29235</td>
+          <td width="0" class="sect_no_td">0</td>
+        </tr> 
+  

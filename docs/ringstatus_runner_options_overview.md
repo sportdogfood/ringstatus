@@ -29,7 +29,7 @@ Do not treat all Webflow work as the same thing. A visual page edit, a static em
 | RS template/source package | A new RingStatus landing/page shell or section set is needed | `webflow/rs-template-system/master_ks/` and future `master_app/` | Source package output, not live data | Preview first; do not edit gold sources unless explicitly unlocked |
 | Schedule/source runner work | The task affects heartbeat, watch schedule, trips, scope dates, source feeds, or runner scripts | Root runner scripts, `daily_schedule_app_source/`, docs scope files | Local/runner -> Airtable and generated feeds | Confirm exact show/date/customer scope and live row counts before writes |
 | Daily schedule app UI | The task affects the future compact schedule UI only | `daily_schedule_app_ui/` | UI preview only | Run the UI tests and preserve the locked display contract |
-| Cloudflare SMS/live lookup | The task affects SMS-style `As of / Now / Next / Following` output or lookup endpoints | `lib/cloudflare/ringstatus-sms/` and `lib/cloudflare/ringstatus-proxy/` | Cloudflare Worker -> schedule/live data -> response | Use worker harness or endpoint proof and compare exact output text |
+| SMS/live lookup and routing | The task affects SMS-style `As of / Now / Next / Following` output, lookup endpoints, or ring/status routing | Airtable orchestration first; Cloudflare Worker only when proven needed for runtime/proxy/fallback | Airtable controls/routing -> optional Cloudflare/Webflow Cloud runtime -> response | Verify the live source-of-truth path, then compare exact output text |
 | Equestrian caption app | The task affects branded caption generation UI | `equestrian-caption-app/` | Local app state/search, not RingStatus runner data | Preserve the shell contract and shared row/tag primitives |
 
 ## Current Integration Model
@@ -259,15 +259,27 @@ node --test .\daily_schedule_app_ui\build_visual_identifier_preview.test.js
 node --check .\daily_schedule_app_ui\build_visual_identifier_preview.js
 ```
 
-### 7. Cloudflare SMS and Lookup Lane
+### 7. SMS And Live Lookup Lane
 
-Use this when the requested change affects SMS replies, app-native lookup response text, ring mappings, or Worker-hosted schedule/live endpoints.
+Use this when the requested change affects SMS replies, app-native lookup response text, ring mappings, live status routing, or Worker-hosted schedule/live endpoints.
 
-Source:
+Source candidates:
 
 ```text
+approved Airtable controls/routing tables
+approved Airtable-Twilio automation or connector
+Webflow Cloud/Astro API route when a server boundary is needed
 lib/cloudflare/ringstatus-sms/
 lib/cloudflare/ringstatus-proxy/
+```
+
+Contract:
+
+```text
+Airtable-centered orchestration is the default candidate for SMS/live routing.
+Cloudflare is not the default source of truth.
+Static RINGS arrays and hardcoded decideRingStrict-style mappings are brittle and must not be extended without proving they are the right lane.
+Cloudflare is justified when the workflow needs webhook ACK, proxy/cookie handling, cache, edge runtime, or emergency fallback.
 ```
 
 Expected response concept:
@@ -281,10 +293,13 @@ Following
 
 Runner checks:
 
-1. Identify the exact Worker file used by the current task.
-2. Preserve exact output formatting when the user provides sample text.
-3. Run the local harness or endpoint check available for that Worker.
-4. Compare the rendered response text, not just whether the request returns 200.
+1. Identify whether Airtable, Webflow Cloud, Cloudflare, or a local runner owns the current source-of-truth path.
+2. Confirm the exact Airtable tables/views/automations or exact Worker file before editing.
+3. Preserve exact output formatting when the user provides sample text.
+4. Run the Airtable/Webflow Cloud/Worker harness or endpoint check available for that path.
+5. Compare the rendered response text, not just whether the request returns 200.
+
+Do not propose more Worker logic until the Airtable-centered path has been evaluated against the current live connector and automation state.
 
 ### 8. Equestrian Caption App Lane
 

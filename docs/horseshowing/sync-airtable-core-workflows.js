@@ -93,14 +93,46 @@ async function airtableFetch(url, options = {}) {
 
 async function upsert(tableName, mergeFields, rows) {
   if (!rows.length) return { seen: 0, changed: 0 };
+  const keyFor = (fields) => mergeFields.map((field) => clean(fields[field])).join("|");
+  const uniqueRows = new Map();
+  for (const row of rows) {
+    const key = keyFor(row);
+    if (key.replace(/\|/g, "")) uniqueRows.set(key, row);
+  }
+
+  const existing = new Map();
+  const existingRecords = await listAll(tableName);
+  for (const record of existingRecords) {
+    const key = keyFor(record.fields || {});
+    if (key.replace(/\|/g, "") && !existing.has(key)) existing.set(key, record.id);
+  }
+
+  const updates = [];
+  const creates = [];
+  for (const [key, fields] of uniqueRows.entries()) {
+    const id = existing.get(key);
+    if (id) updates.push({ id, fields });
+    else creates.push({ fields });
+  }
+
   let changed = 0;
-  for (let index = 0; index < rows.length; index += 10) {
-    const batch = rows.slice(index, index + 10);
+  for (let index = 0; index < updates.length; index += 10) {
+    const batch = updates.slice(index, index + 10);
     await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(tableName)}`, {
       method: "PATCH",
       body: JSON.stringify({
-        performUpsert: { fieldsToMergeOn: mergeFields },
-        records: batch.map((fields) => ({ fields })),
+        records: batch,
+        typecast: true
+      })
+    });
+    changed += batch.length;
+  }
+  for (let index = 0; index < creates.length; index += 10) {
+    const batch = creates.slice(index, index + 10);
+    await airtableFetch(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(tableName)}`, {
+      method: "POST",
+      body: JSON.stringify({
+        records: batch,
         typecast: true
       })
     });
@@ -152,6 +184,11 @@ async function recordIdMap(tableName, fieldName, params = {}) {
     if (value) map.set(value, record.id);
   }
   return map;
+}
+
+function showNoFormula(showNo) {
+  const value = clean(showNo);
+  return /^\d+$/.test(value) ? `{show_no}=${Number(value)}` : `{show_no}='${value.replace(/'/g, "\\'")}'`;
 }
 
 function linkedRecord(map, value) {
@@ -206,7 +243,7 @@ async function buildCoreLinkMaps(showNo, focusDay, updateRows, classOogRows = []
     }
   }
 
-  await upsert("shows", ["show_no"], [{ show_no: intOrNull(showNo) }]);
+  await createMissing("shows", "show_no", [{ show_no: intOrNull(showNo) }]);
   await upsert("classes", ["class_no"], [...classes.values()].filter((row) => row.class_no));
   await upsert("rings", ["ring_no"], [...rings.values()].filter((row) => row.ring_no));
   await upsert("ring_names", ["ring_name"], [...ringNames.values()].filter((row) => row.ring_name));
@@ -214,7 +251,9 @@ async function buildCoreLinkMaps(showNo, focusDay, updateRows, classOogRows = []
   await createMissing("entries", "entry_no", [...entries.values()].filter((row) => row.entry_no));
 
   return {
-    shows: await recordIdMap("shows", "show_no"),
+    shows: await recordIdMap("shows", "show_no", {
+      filterByFormula: `AND(${showNoFormula(showNo)},{active}=1)`
+    }),
     focusShow: await recordIdMap("focus_show", "show_no", {
       filterByFormula: `AND({show_no}=${intOrNull(showNo)},IS_SAME({focus_day},'${focusDay}','day'))`
     }),

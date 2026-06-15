@@ -1,0 +1,237 @@
+class_label,class_number,class_name,result_entry_count,class_no,sect_no,has_score,has_prize
+"18) $250 Green Hunter 3'3""/3'6""",18,"$250 Green Hunter 3'3""/3'6""",3,33433,11980,true,true
+"19) $250 Green Hunter 3'3""/3'6""",19,"$250 Green Hunter 3'3""/3'6""",3,33434,11980,true,true
+"20) $250 Green Hunter 3'3""/3'6""",20,"$250 Green Hunter 3'3""/3'6""",3,33435,11980,true,true
+"21) $250 Green Hunter 3'3""/3'6""",21,"$250 Green Hunter 3'3""/3'6""",3,33436,11980,true,true
+"22) Green Hunter 3'3""/3'6"" U/S",22,"Green Hunter 3'3""/3'6"" U/S",3,33437,11980,true,true
+"33) $250 Green Hunter 3'0""",33,"$250 Green Hunter 3'0""",5,28358,10281,true,true
+"34) $250 Green Hunter 3'0""",34,"$250 Green Hunter 3'0""",5,28359,10281,true,true
+"35) $250 Green Hunter 3'0""",35,"$250 Green Hunter 3'0""",5,28360,10281,true,true
+"36) $250 Green Hunter 3'0""",36,"$250 Green Hunter 3'0""",5,28361,10281,true,true
+"37) Green Hunter 3'0"" U/S",37,"Green Hunter 3'0"" U/S",5,28362,10281,true,false
+"38) $200 Performance Hunter 3'6""/3'3""",38,"$200 Performance Hunter 3'6""/3'3""",10,33428,11979,true,true
+"39) $200 Performance Hunter 3'6""/3'3""",39,"$200 Performance Hunter 3'6""/3'3""",9,33429,11979,true,true
+"40) $200 Performance Hunter 3'6""/3'3""",40,"$200 Performance Hunter 3'6""/3'3""",6,33430,11979,true,true
+"41) $200 Performance Hunter 3'6""/3'3""-Handy",41,"$200 Performance Hunter 3'6""/3'3""-Handy",5,33431,11979,true,true
+"42) Performance Hunter 3'6""/3'3"" U/S",42,"Performance Hunter 3'6""/3'3"" U/S",4,33432,11979,false,false
+"48) Young Hunter 2'9""/3'",48,"Young Hunter 2'9""/3'",2,33438,11981,false,false
+"49) Young Hunter 2'9""/3'",49,"Young Hunter 2'9""/3'",2,33439,11981,false,false
+"50) Young Hunter 2'9""/3'",50,"Young Hunter 2'9""/3'",2,33440,11981,false,false
+"51) Young Hunter 2'9""/3'",51,"Young Hunter 2'9""/3'",2,33441,11981,false,false
+"80) $300 AO Hunter 3'6""/3'3""",80,"$300 AO Hunter 3'6""/3'3""",3,33476,11988,true,true
+"81) $300 AO Hunter 3'6""/3'3"" (1st rnd Classic)",81,"$300 AO Hunter 3'6""/3'3"" (1st rnd Classic)",3,33477,11988,true,true
+"82) $300 AO Hunter 3'3""/3'6""",82,"$300 AO Hunter 3'3""/3'6""",3,33478,11988,true,true
+"83) $300 AO Hunter 3'3""/3'6"" 18-35-Handy/36+-Handy",83,"$300 AO Hunter 3'3""/3'6"" 18-35-Handy/36+-Handy",3,33479,11988,true,true
+"84) AO Hunter 3'3""/3'6"" U/S",84,"AO Hunter 3'3""/3'6"" U/S",3,33480,11988,false,false
+"100) $300 Junior Hunter 3'6""",100,"$300 Junior Hunter 3'6""",3,28760,10326,true,true
+"101) $300 Junior Hunter 3'6"" (1st rnd Classic)",101,"$300 Junior Hunter 3'6"" (1st rnd Classic)",3,28761,10326,true,true
+"102) $300 Junior Hunter 3'6""",102,"$300 Junior Hunter 3'6""",1,28762,10326,true,true
+"103) $300 Junior Hunter 3'6""-Handy",103,"$300 Junior Hunter 3'6""-Handy",1,28763,10326,true,true
+"104) Junior Hunter 3'6"" U/S",104,"Junior Hunter 3'6"" U/S",3,28764,10326,false,false
+"120) $300 Junior Hunter 3'3""",120,"$300 Junior Hunter 3'3""",6,28820,10333,true,true
+"121) $300 Junior Hunter 3'3"" (1st rnd Classic)",121,"$300 Junior Hunter 3'3"" (1st rnd Classic)",6,28821,10333,true,true
+"122) $300 Junior Hunter 3'3""",122,"$300 Junior Hunter 3'3""",6,28822,10333,true,true
+"123) $300 Junior Hunter 3'3"" -Handy",123,"$300 Junior Hunter 3'3"" -Handy",6,28823,10333,true,true
+"124) Junior Hunter 3'3"" U/S",124,"Junior Hunter 3'3"" U/S",6,28824,10333,false,false
+"182) $200 Pony Conf Hunter 2'3""/2'6""/2'9""",182,"$200 Pony Conf Hunter 2'3""/2'6""/2'9""",3,28355,10338,false,true
+"183) $200 Pony Hunter 2'3""/2'6""/2'9"" (1st rnd Cl)",183,"$200 Pony Hunter 2'3""/2'6""/2'9"" (1st rnd Cl)",3,28780,10338,false,true
+"184) $200 Pony Hunter Sm2'3""/Med2'6""/Lg2'9""",184,"$200 Pony Hunter Sm2'3""/Med2'6""/Lg2'9""",3,28781,10338,true,true
+"185) $200 Pony Hunter Sm2'3""/Med2'6""/Lg2'9""-Handy",185,"$200 Pony Hunter Sm2'3""/Med2'6""/Lg2'9""-Handy",3,28782,10338,true,true
+"186) Pony Hunter Sm2'3""/Med2'6""/Lg2'9"" U/S",186,"Pony Hunter Sm2'3""/Med2'6""/Lg2'9"" U/S",3,28783,10338,false,false
+200) $175 Children's Hunter 3',200,$175 Children's Hunter 3',9,28366,10348,true,true
+201) $175 Children's Hunter (1st rnd Classic) 3',201,$175 Children's Hunter (1st rnd Classic) 3',9,28367,10348,true,true
+202) $175 Children's Hunter 3',202,$175 Children's Hunter 3',9,28767,10348,true,true
+203) $175 Children's Hunter 3',203,$175 Children's Hunter 3',8,28768,10348,true,true
+204) Children's Hunter U/S 3',204,Children's Hunter U/S 3',8,28769,10348,false,false
+"210) Low Child Pony/Child Hunter Pony 2'/2'6""",210,"Low Child Pony/Child Hunter Pony 2'/2'6""",8,33471,11987,false,false
+211) Low Child Pony/Child Hunter Pony (1st rnd Classic),211,Low Child Pony/Child Hunter Pony (1st rnd Classic),8,33472,11987,false,false
+"212) Low Child Pony/Child Hunter Pony 2'/2'6""",212,"Low Child Pony/Child Hunter Pony 2'/2'6""",8,33473,11987,true,false
+"213) Low Child Pony/Child Hunter Pony 2'/2'6""",213,"Low Child Pony/Child Hunter Pony 2'/2'6""",8,33474,11987,true,false
+"214) Low Child Pony/Child Hunter Pony 2'/2'6"" U/S",214,"Low Child Pony/Child Hunter Pony 2'/2'6"" U/S",8,33475,11987,true,false
+220) $175 Adult Amateur Hunter 3',220,$175 Adult Amateur Hunter 3',9,28356,10354,true,true
+221) $175 Adult Amateur Hunter (1st rnd Classic) 3',221,$175 Adult Amateur Hunter (1st rnd Classic) 3',9,28357,10354,true,true
+222) $175 Adult Amateur Hunter 3',222,$175 Adult Amateur Hunter 3',11,28363,10354,true,true
+223) $175 Adult Amateur Hunter 3',223,$175 Adult Amateur Hunter 3',11,28364,10354,true,true
+224) Adult Amateur Hunter U/S 3',224,Adult Amateur Hunter U/S 3',10,28365,10354,false,false
+"245) USHJA Hunter 3'3""",245,"USHJA Hunter 3'3""",3,28561,10258,true,false
+"246) USHJA Hunter 3'3""",246,"USHJA Hunter 3'3""",2,28562,10258,true,false
+"247) USHJA Hunter 3'3""",247,"USHJA Hunter 3'3""",4,28563,10258,true,false
+"248) USHJA Hunter 3'3""",248,"USHJA Hunter 3'3""",3,28564,10258,true,false
+255) USHJA Hunter 2',255,USHJA Hunter 2',5,28541,10371,false,false
+256) USHJA Hunter 2',256,USHJA Hunter 2',4,28542,10371,false,false
+257) USHJA Hunter 2',257,USHJA Hunter 2',5,28543,10371,false,false
+258) USHJA Hunter 2',258,USHJA Hunter 2',5,28544,10371,false,false
+259) USHJA Hunter 2' U/S,259,USHJA Hunter 2' U/S,5,28545,10371,false,false
+"260) USHJA Hunter 2'3""",260,"USHJA Hunter 2'3""",4,28546,10261,false,false
+"261) USHJA Hunter 2'3""",261,"USHJA Hunter 2'3""",4,28547,10261,false,false
+"262) USHJA Hunter 2'3""",262,"USHJA Hunter 2'3""",6,28548,10261,false,false
+"263) USHJA Hunter 2'3""",263,"USHJA Hunter 2'3""",5,28549,10261,false,false
+"264) USHJA Hunter 2'3"" U/S",264,"USHJA Hunter 2'3"" U/S",5,28550,10261,false,false
+"265) USHJA Hunter 2'6""",265,"USHJA Hunter 2'6""",17,28551,10370,false,false
+"266) USHJA Hunter 2'6""",266,"USHJA Hunter 2'6""",14,28552,10370,false,false
+"267) USHJA Hunter 2'6""",267,"USHJA Hunter 2'6""",19,28553,10370,false,false
+"268) USHJA Hunter 2'6""",268,"USHJA Hunter 2'6""",17,28554,10370,false,false
+"269) USHJA Hunter 2'6"" U/S",269,"USHJA Hunter 2'6"" U/S",8,28555,10370,false,false
+"270) USHJA Hunter 2'9""",270,"USHJA Hunter 2'9""",7,28734,10369,false,false
+"271) USHJA Hunter 2'9""",271,"USHJA Hunter 2'9""",7,28733,10369,false,false
+"272) USHJA Hunter 2'9""",272,"USHJA Hunter 2'9""",7,28732,10369,false,false
+"273) USHJA Hunter 2'9""",273,"USHJA Hunter 2'9""",7,28731,10369,false,false
+"274) USHJA Hunter 2'9"" U/S",274,"USHJA Hunter 2'9"" U/S",3,28730,10369,false,false
+275) USHJA Hunter 3',275,USHJA Hunter 3',18,28556,10368,true,false
+276) USHJA Hunter 3',276,USHJA Hunter 3',18,28557,10368,true,false
+277) USHJA Hunter 3',277,USHJA Hunter 3',15,28558,10368,true,false
+278) USHJA Hunter 3',278,USHJA Hunter 3',12,28559,10368,true,false
+279) USHJA Hunter 3' U/S,279,USHJA Hunter 3' U/S,5,28560,10368,true,false
+"280) Baby Green Hunter 2'6""",280,"Baby Green Hunter 2'6""",7,28536,10361,false,false
+"281) Baby Green Hunter 2'6""",281,"Baby Green Hunter 2'6""",7,28537,10361,false,false
+"282) Baby Green Hunter 2'6""",282,"Baby Green Hunter 2'6""",7,28538,10361,false,false
+"283) Baby Green Hunter 2'6""",283,"Baby Green Hunter 2'6""",6,28539,10361,false,false
+"284) Baby Green Hunter U/S 2'6""",284,"Baby Green Hunter U/S 2'6""",7,28540,10361,false,false
+"310) Low Children's Hunter 2'6""",310,"Low Children's Hunter 2'6""",5,28840,10363,false,false
+"311) Low Children's Hunter (1st rnd Classic) 2'6""",311,"Low Children's Hunter (1st rnd Classic) 2'6""",5,28841,10363,false,false
+"312) Low Children's Hunter 2'6""",312,"Low Children's Hunter 2'6""",5,28842,10363,false,false
+"313) Low Children's Hunter 2'6""",313,"Low Children's Hunter 2'6""",5,28843,10363,false,false
+"314) Low Children's Hunter U/S/2'6""",314,"Low Children's Hunter U/S/2'6""",5,28844,10363,true,false
+"315) Low Adult Hunter 2'6""",315,"Low Adult Hunter 2'6""",22,28332,10365,false,false
+"316) Low Adult Hunter (1st rnd Classic) 2'6""",316,"Low Adult Hunter (1st rnd Classic) 2'6""",21,28770,10365,false,false
+"317) Low Adult Hunter 2'6""",317,"Low Adult Hunter 2'6""",18,28771,10365,true,false
+"318) Low Adult Hunter 2'6""",318,"Low Adult Hunter 2'6""",18,28772,10365,true,false
+"319) Low Adult Hunter U/S 2'6""",319,"Low Adult Hunter U/S 2'6""",17,28773,10365,true,false
+"404) $5,000 USHJA UF Vet Hunter Derby 3'",404,"$5,000 USHJA UF Vet Hunter Derby 3'",20,28659,0,true,true
+"408) $750 WEC 2'6"" Hunt and Go Derby",408,"$750 WEC 2'6"" Hunt and Go Derby",9,28658,0,true,true
+"412) $1500 AO/JR Hunter Classic 3'3""/3'6""",412,"$1500 AO/JR Hunter Classic 3'3""/3'6""",8,33482,0,true,true
+"420) $350 Children's Pony Hunter Classic 2'6""/2'",420,"$350 Children's Pony Hunter Classic 2'6""/2'",6,28667,0,true,true
+421) $1000 Children's Hunter Classic 3',421,$1000 Children's Hunter Classic 3',9,28668,0,true,true
+423) $1000 Adult Hunter Classic 3',423,$1000 Adult Hunter Classic 3',7,28669,0,true,true
+"425) $500 Low Adult/Child Hunter Classic 2'6""",425,"$500 Low Adult/Child Hunter Classic 2'6""",21,33483,0,true,true
+503) Equitation 12-14 2'9',503,Equitation 12-14 2'9',4,28676,10264,false,false
+504) Equitation 12-14 2'9',504,Equitation 12-14 2'9',4,28677,10264,false,false
+505) Equitation 12-14 Flat,505,Equitation 12-14 Flat,4,28678,10264,false,false
+"506) Equitation 15-17 3'3""",506,"Equitation 15-17 3'3""",4,28679,10267,false,false
+"507) Equitation 15-17 3'3""",507,"Equitation 15-17 3'3""",4,28680,10267,false,false
+508) Equitation 15-17 Flat,508,Equitation 15-17 Flat,4,28681,10267,false,false
+509) Adult/Child Equitation 3',509,Adult/Child Equitation 3',6,33462,11985,true,false
+510) Adult/Child Equitation 3',510,Adult/Child Equitation 3',6,33463,11985,true,false
+511) Adult/Child Equitation Flat,511,Adult/Child Equitation Flat,6,33464,11985,true,false
+"515) Low Children's Equitation 2'6""",515,"Low Children's Equitation 2'6""",5,28688,10282,false,false
+"516) Low Children's Equitation 2'6""",516,"Low Children's Equitation 2'6""",5,28689,10282,false,false
+517) Low Children's Equitation Flat,517,Low Children's Equitation Flat,5,28690,10282,false,false
+"518) Low Adult Equitation 2'6""",518,"Low Adult Equitation 2'6""",8,28691,10284,false,false
+"519) Low Adult Equitation 2'6""",519,"Low Adult Equitation 2'6""",7,28692,10284,false,false
+520) Low Adult Equitation Flat,520,Low Adult Equitation Flat,6,28693,10284,false,false
+"521) Pony Equitation 2'3""/2'6""/2'9""",521,"Pony Equitation 2'3""/2'6""/2'9""",3,28694,10229,false,false
+"522) Pony Equitation 2'3""/2'6""/2'9""",522,"Pony Equitation 2'3""/2'6""/2'9""",3,28695,10229,false,false
+523) Pony Equitation Flat,523,Pony Equitation Flat,2,28696,10229,false,false
+"524) Children's Pony Equitation 2'/2'6""",524,"Children's Pony Equitation 2'/2'6""",3,28697,10286,false,false
+"525) Children's Pony Equitation 2'/2'6""",525,"Children's Pony Equitation 2'/2'6""",3,28698,10286,false,false
+526) Children's Pony Equitation Flat,526,Children's Pony Equitation Flat,3,28699,10286,false,false
+"527) Platinum Performance USEF Talent Search 3'9""",527,"Platinum Performance USEF Talent Search 3'9""",1,28702,0,false,false
+"528) USEF Hunter Seat Medal 3'6""",528,"USEF Hunter Seat Medal 3'6""",4,28700,0,false,false
+"529) WIHS Equitation Hunter Phase 3'6""",529,"WIHS Equitation Hunter Phase 3'6""",1,28710,0,false,false
+"530) WIHS Equitation Jumper Phase 3'6""",530,"WIHS Equitation Jumper Phase 3'6""",1,28711,0,false,false
+"532) ASPCA Maclay 3'6""",532,"ASPCA Maclay 3'6""",4,28713,0,false,false
+"533) NHS Medal 3'3""",533,"NHS Medal 3'3""",6,28714,0,true,false
+534) Ariat Adult Medal 3',534,Ariat Adult Medal 3',1,28703,0,true,false
+535) THIS Children's Medal 3',535,THIS Children's Medal 3',6,28657,0,true,false
+"546) WIHS Pony Equitation (Open Card) 2'3""/2'6""/2'9""",546,"WIHS Pony Equitation (Open Card) 2'3""/2'6""/2'9""",1,28707,0,false,false
+"548) World Equestrian Center Premier Cup 3'6""",548,"World Equestrian Center Premier Cup 3'6""",4,28716,0,false,false
+"549) NCEA Medal 3'3""",549,"NCEA Medal 3'3""",1,28451,0,false,false
+600) .65m Jumper Open IV.1,600,.65m Jumper Open IV.1,10,28631,10238,false,false
+601) .65m Jumper Open IV.1,601,.65m Jumper Open IV.1,8,28632,10238,false,false
+602) .65m Jumper Open IV.1,602,.65m Jumper Open IV.1,8,28633,10238,false,false
+603) .65m Jumper Jr/Am Long Creek Farms IV.1,603,.65m Jumper Jr/Am Long Creek Farms IV.1,4,28634,10239,false,false
+604) .65m Jumper Jr/Am Long Creek Farms IV.1,604,.65m Jumper Jr/Am Long Creek Farms IV.1,6,28635,10239,false,false
+605) .65m Jumper Jr/Am Long Creek Farms IV.1,605,.65m Jumper Jr/Am Long Creek Farms IV.1,7,28636,10239,false,false
+606) .75m Jumper Open IV.1,606,.75m Jumper Open IV.1,9,28739,10217,false,false
+607) .75m Jumper Open IV.1,607,.75m Jumper Open IV.1,9,28740,10217,false,false
+608) .75m Jumper Open IV.1,608,.75m Jumper Open IV.1,9,28741,10217,false,false
+609) .75m Jumper Jr/Am IV.1,609,.75m Jumper Jr/Am IV.1,7,28742,10218,false,false
+610) .75m Jumper Jr/Am IV.1,610,.75m Jumper Jr/Am IV.1,8,28743,10218,false,false
+611) .75m Jumper Jr/Am IV.1,611,.75m Jumper Jr/Am IV.1,8,28744,10218,false,false
+618) .85m Jumper Open II.2d,618,.85m Jumper Open II.2d,9,28643,10242,false,false
+619) .85m Jumper Open II.2d,619,.85m Jumper Open II.2d,14,28644,10242,false,false
+620) .85m Jumper Open II.2b,620,.85m Jumper Open II.2b,9,28646,10242,false,false
+621) .85m Jumper Jr/Am II.2d,621,.85m Jumper Jr/Am II.2d,6,28647,10243,false,false
+622) .85m Jumper Jr/Am II.2d,622,.85m Jumper Jr/Am II.2d,9,28648,10243,false,false
+623) .85m Jumper Jr/Am II.2b,623,.85m Jumper Jr/Am II.2b,12,28649,10243,false,false
+624) .95m Jumper- II.1,624,.95m Jumper- II.1,4,28745,0,false,false
+625) .95m Jumper- II.2d,625,.95m Jumper- II.2d,3,28746,0,false,false
+627) 1.00m Jumper II.1,627,1.00m Jumper II.1,13,28650,10234,false,false
+628) 1.00m Jumper II.2d,628,1.00m Jumper II.2d,18,28651,10234,false,false
+629) 1.00m Jumper II.2b,629,1.00m Jumper II.2b,5,28749,10234,false,false
+630) 1.10m Jumper II.1,630,1.10m Jumper II.1,15,28652,10235,false,false
+631) 1.10m Jumper II.2d,631,1.10m Jumper II.2d,16,28653,10235,false,false
+632) 1.10m Jumper II.2b,632,1.10m Jumper II.2b,7,28654,10235,false,false
+633) 1.15m Jumper II.1,633,1.15m Jumper II.1,12,28655,10214,false,false
+634) 1.15m Jumper II.2d,634,1.15m Jumper II.2d,11,28656,10214,false,false
+635) 1.15m Jumper II.2b,635,1.15m Jumper II.2b,4,28750,10214,false,false
+636) 1.20m Jumper II.1,636,1.20m Jumper II.1,64,28619,10321,false,false
+637) 1.20m Jumper II.2d,637,1.20m Jumper II.2d,24,28620,10321,false,false
+638) 1.20m Jumper II.2b,638,1.20m Jumper II.2b,11,28621,10321,false,false
+639) 1.25m Jumper II.1,639,1.25m Jumper II.1,17,28333,10312,false,false
+640) 1.25m Jumper II.2d,640,1.25m Jumper II.2d,14,28334,10312,false,false
+641) 1.25m Jumper II.2b,641,1.25m Jumper II.2b,8,28335,10312,false,false
+642) 1.30m Jumper II.1,642,1.30m Jumper II.1,33,28622,10315,false,false
+643) 1.30m Jumper II.2d,643,1.30m Jumper II.2d,26,28623,10315,false,false
+644) 1.30m Jumper II.2b,644,1.30m Jumper II.2b,17,28624,10315,false,false
+645) 1.35m Jumper II.1,645,1.35m Jumper II.1,15,28625,10317,false,false
+646) 1.35m Jumper II.2d,646,1.35m Jumper II.2d,11,28626,10317,false,false
+647) 1.35m Jumper II.2b,647,1.35m Jumper II.2b,10,28627,10317,false,false
+649) 1.40m Jumper II.1,649,1.40m Jumper II.1,8,28629,10318,false,false
+654) .80m Jumper Open IV.1,654,.80m Jumper Open IV.1,4,28637,0,false,false
+655) .85m Jumper Open II.1,655,.85m Jumper Open II.1,5,33427,0,false,false
+680) .90m Young Jumpers II,680,.90m Young Jumpers II,7,28825,0,false,false
+681) .90m Young Jumpers II,681,.90m Young Jumpers II,7,28826,0,false,false
+682) .90m Young Jumpers II,682,.90m Young Jumpers II,2,28827,0,false,false
+683) 1.0m Young Jumpers II,683,1.0m Young Jumpers II,5,28828,0,false,false
+684) 1.0m Young Jumpers II,684,1.0m Young Jumpers II,2,28829,0,false,false
+685) 1.0m Young Jumpers II,685,1.0m Young Jumpers II,6,28830,0,false,false
+686) 1.10m Young Jumpers II,686,1.10m Young Jumpers II,11,28336,10302,false,false
+687) 1.10m Young Jumpers II,687,1.10m Young Jumpers II,12,28337,10302,false,false
+688) 1.10m YoungJumpers II,688,1.10m YoungJumpers II,12,28338,10302,false,false
+689) 1.20m Young Jumpers II.1,689,1.20m Young Jumpers II.1,20,28339,10304,false,false
+690) 1.20m Young Jumpers II.2d,690,1.20m Young Jumpers II.2d,24,28340,10304,false,false
+691) 1.20m Young Jumpers II.2b,691,1.20m Young Jumpers II.2b,17,28341,10304,false,false
+692) 1.30m Young Jumper II.1,692,1.30m Young Jumper II.1,5,28342,10305,false,false
+693) 1.30m Young Jumper II.2d,693,1.30m Young Jumper II.2d,6,28343,10305,false,false
+694) 1.30m Young Jumper II.2b,694,1.30m Young Jumper II.2b,6,28344,10305,false,false
+731) .90m Novice Junior/Amateur Jumper II.1,731,.90m Novice Junior/Amateur Jumper II.1,16,28798,10308,false,false
+732) .90m Novice Junior/Amateur Jumper II.2d,732,.90m Novice Junior/Amateur Jumper II.2d,11,28799,10308,false,false
+737) 1.00m Junior/Amateur Jumper II.1,737,1.00m Junior/Amateur Jumper II.1,19,28795,10310,false,false
+738) 1.00m Junior/Amateur Jumper II.2d,738,1.00m Junior/Amateur Jumper II.2d,28,28796,10310,false,false
+749) 1.10m Junior/Amateur Jumper II.1,749,1.10m Junior/Amateur Jumper II.1,21,28784,10299,false,false
+750) 1.10m Junior/Amateur Jumper II.2d,750,1.10m Junior/Amateur Jumper II.2d,28,28785,10299,false,false
+757) 1.15m Junior/Amateur Jumper II.1,757,1.15m Junior/Amateur Jumper II.1,7,28595,10256,false,false
+758) 1.15m Junior/Amateur Jumper II.2d,758,1.15m Junior/Amateur Jumper II.2d,12,28596,10256,false,false
+768) 1.20m Junior/Amateur Jumper II.1,768,1.20m Junior/Amateur Jumper II.1,17,28787,10290,false,false
+769) 1.20m Junior/Amateur Jumper II.2d,769,1.20m Junior/Amateur Jumper II.2d,15,28788,10290,false,false
+775) 1.30m Junior/Amateur Jumper II.1,775,1.30m Junior/Amateur Jumper II.1,8,28589,10283,false,false
+776) 1.30m Junior/Amateur Jumper II.2d,776,1.30m Junior/Amateur Jumper II.2d,7,28590,10283,false,false
+781) 1.40m Junior/Amateur Jumper II.1,781,1.40m Junior/Amateur Jumper II.1,3,28586,10278,false,false
+782) 1.40m Junior/Amateur Jumper II.2d,782,1.40m Junior/Amateur Jumper II.2d,2,28587,10278,false,false
+804) $3500 C. Jarvis Insurance Welcome Prix 1.30m II.2b,804,$3500 C. Jarvis Insurance Welcome Prix 1.30m II.2b,42,28660,0,false,true
+"805) $16,999 Golden Ocala Grand Prix 1.35/1.40m II.2a Reg Std",805,"$16,999 Golden Ocala Grand Prix 1.35/1.40m II.2a Reg Std",60,28661,0,false,true
+809) .95m Novice Junior/Amateur Jumper Classic II.2b,809,.95m Novice Junior/Amateur Jumper Classic II.2b,12,28800,10308,false,false
+811) $500 1.05m Junior/Amateur Jumper II.2b,811,$500 1.05m Junior/Amateur Jumper II.2b,21,28797,10310,false,true
+813) $500 1.10m Jr/Am Classic II.2b,813,$500 1.10m Jr/Am Classic II.2b,24,28786,10299,false,true
+816) $500 1.15m Junior/Amateur Classic II.2b,816,$500 1.15m Junior/Amateur Classic II.2b,12,28597,10256,false,true
+817) .65m Jr/Am Long Creek Farm Jumper Classic II.2b,817,.65m Jr/Am Long Creek Farm Jumper Classic II.2b,5,28578,0,false,false
+818) .75m Jr/Am Jumper Classic II.2b,818,.75m Jr/Am Jumper Classic II.2b,8,28581,0,false,false
+820) .85m Jr/Am Jumper Classic II.2b,820,.85m Jr/Am Jumper Classic II.2b,13,28754,0,false,false
+851) $1000 FreeRide Equestrian 1.25m Jr/Am Jumper Classic II.2b,851,$1000 FreeRide Equestrian 1.25m Jr/Am Jumper Classic II.2b,20,28789,10290,false,true
+853) $1000 Prestige Italia 1.35m1.45m Jr/Am Classic II.2b,853,$1000 Prestige Italia 1.35m1.45m Jr/Am Classic II.2b,8,28591,10283,false,true
+900) Short/Long Stirrup Hunter 2',900,Short/Long Stirrup Hunter 2',13,28845,10374,false,false
+901) Short/Long Stirrup Hunter 2' (1st rnd Classic) 2',901,Short/Long Stirrup Hunter 2' (1st rnd Classic) 2',12,28851,10374,false,false
+902) Short/Long Stirrup Hunter 2',902,Short/Long Stirrup Hunter 2',14,28852,10374,true,false
+903) Short/Long Stirrup Hunter 2',903,Short/Long Stirrup Hunter 2',13,28853,10374,true,false
+904) Short/Long Stirrup Hunter 2' U/S,904,Short/Long Stirrup Hunter 2' U/S,11,28854,10374,false,false
+910) Short/Long Stirrup Equitation 2',910,Short/Long Stirrup Equitation 2',11,28575,10295,false,false
+911) Short/Long Stirrup Equitation 2',911,Short/Long Stirrup Equitation 2',11,28630,10295,false,false
+912) Short/Long Stirrup Equitation Flat,912,Short/Long Stirrup Equitation Flat,10,28645,10295,false,false
+926) Short Stirrup/Long Stirrup Classic 2',926,Short Stirrup/Long Stirrup Classic 2',10,28672,0,true,false
+927) Walk Trot Equitation Ground Rails,927,Walk Trot Equitation Ground Rails,3,28718,10291,false,false
+928) Walk Trot Equitation Ground Rails,928,Walk Trot Equitation Ground Rails,3,28719,10291,false,false
+929) Walk Trot Equitation Ground Rails,929,Walk Trot Equitation Ground Rails,3,28720,10291,true,false
+930) Walk Trot Equitation Ground Rails,930,Walk Trot Equitation Ground Rails,3,28721,10291,true,false
+931) Walk Trot Equitation Ground Rails Flat,931,Walk Trot Equitation Ground Rails Flat,3,33461,10291,false,false
+2001) Leadline,2001,Leadline,4,28717,0,false,false

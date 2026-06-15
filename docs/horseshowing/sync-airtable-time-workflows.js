@@ -73,6 +73,13 @@ function clean(value) {
   return String(value ?? "").trim();
 }
 
+function activeShowFormula(showNo) {
+  const value = clean(showNo);
+  if (!value) return "{active}=1";
+  const showFormula = /^\d+$/.test(value) ? `{show_no}=${Number(value)}` : `{show_no}='${value.replace(/'/g, "\\'")}'`;
+  return `AND(${showFormula},{active}=1)`;
+}
+
 function recordFields(record) {
   return record?.fields || {};
 }
@@ -711,7 +718,7 @@ async function linkClassOogToGeneratedTablesAndHelpers(showNo, focusDay) {
     listRecords(TABLES.classOog, formula),
     listRecords(TABLES.classStartTimes, formula),
     listRecords(TABLES.entryGoTimes, formula),
-    listRecords(TABLES.shows),
+    listRecords(TABLES.shows, activeShowFormula(showNo)),
     listRecords(TABLES.focusShow, formula),
     listRecords(TABLES.classes),
     listRecords(TABLES.rings),
@@ -817,7 +824,7 @@ async function linkEntryGoTimesToHelpers(showNo, focusDay) {
     entryRecords
   ] = await Promise.all([
     listRecords(TABLES.entryGoTimes, formula),
-    listRecords(TABLES.shows),
+    listRecords(TABLES.shows, activeShowFormula(showNo)),
     listRecords(TABLES.focusShow, formula),
     listRecords(TABLES.classes),
     listRecords(TABLES.rings),
@@ -890,7 +897,7 @@ async function linkClassStartTimesToSupportTables(showNo, focusDay) {
     ringDayRecords
   ] = await Promise.all([
     listRecords(TABLES.classStartTimes, formula),
-    listRecords(TABLES.shows),
+    listRecords(TABLES.shows, activeShowFormula(showNo)),
     listRecords(TABLES.focusShow, formula),
     listRecords(TABLES.classes),
     listRecords(TABLES.rings),
@@ -945,8 +952,8 @@ async function cleanupTodayTomorrowLinks() {
     trainerRecords,
     entryRecords
   ] = await Promise.all([
-    listRecords(TABLES.shows),
-    listRecords(TABLES.focusShow),
+    listRecords(TABLES.shows, "{active}=1"),
+    listRecords(TABLES.focusShow, "{active}=1"),
     listRecords(TABLES.classes),
     listRecords(TABLES.rings),
     listRecords(TABLES.ringDays),

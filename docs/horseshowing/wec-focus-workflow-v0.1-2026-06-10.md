@@ -4,7 +4,11 @@ Version: `0.1`
 
 Date: `2026-06-10`
 
-Status: working workflow specification and Codex handoff
+Status: historical workflow specification and Codex handoff
+
+Current contract: `docs/horseshowing/wec-workflow-contract-v0.2-2026-06-15.md`
+
+If this document conflicts with the current contract, the current contract wins. The current contract defines active-control rules, Catalyst/Airtable source-of-truth ownership, workflow lanes, cadence gating, audit gates, and conflict handling.
 
 Primary show in scope: `14906`
 
