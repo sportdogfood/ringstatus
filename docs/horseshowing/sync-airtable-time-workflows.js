@@ -387,6 +387,7 @@ async function readAirtableLiveRows(showNo, focusDay) {
       n_gone: fields.n_gone,
       n_to_go: fields.n_to_go,
       elapsed_seconds: fields.elapsed,
+      timestamp: fields.timestamp,
       current_entry_no: fields.entry_no || fields.entry_number,
       current_horse: currentHorseFromEntryText(fields.entry_text),
       live_source: record.id && record.fields?.get_orders_key ? "get_orders.php" : "get_rings.php",
@@ -1066,34 +1067,60 @@ function paceFromLive(row) {
     : null;
 }
 
+function liveRingKey(row) {
+  return `${clean(row.show_no || row.show_id)}|${clean(row.focus_day || row.show_day_key || row.show_days_display_date).slice(0, 10)}|${clean(row.ring_day_no || row.days)}|${clean(row.ring_no || row.ring_number)}`;
+}
+
+function livePaceByRing(liveRows) {
+  const byRing = new Map();
+  for (const liveRow of liveRows || []) {
+    const paceSeconds = paceFromLive(liveRow);
+    const key = liveRingKey(liveRow);
+    if (!paceSeconds || key.includes("||") || key.endsWith("|")) continue;
+    const timestamp = intOrNull(liveRow.timestamp) || 0;
+    const current = byRing.get(key);
+    if (!current || timestamp >= current.timestamp) {
+      byRing.set(key, {
+        pace_seconds: paceSeconds,
+        timestamp,
+        live_source: clean(liveRow.live_source)
+      });
+    }
+  }
+  return byRing;
+}
+
 function applyLiveTimingToClassRows(classRows, liveRows) {
   const liveByClass = new Map();
   for (const liveRow of liveRows || []) {
     const key = scheduleClassKey(liveRow);
     if (!key.includes("||") && !key.endsWith("|")) liveByClass.set(key, liveRow);
   }
+  const paceByRing = livePaceByRing(liveRows);
   return (classRows || []).map((row) => {
     const live = liveByClass.get(scheduleClassKey(row));
-    if (!live) return row;
-    const paceSeconds = paceFromLive(live);
+    const ringPace = paceByRing.get(liveRingKey(row));
+    if (!live && !ringPace) return row;
+    const paceSeconds = paceFromLive(live) ?? ringPace?.pace_seconds;
     const sources = new Set(
       clean(row.source)
         .split("|")
         .map((item) => clean(item))
         .filter(Boolean)
     );
-    if (clean(live.live_source)) sources.add(clean(live.live_source));
+    if (clean(live?.live_source)) sources.add(clean(live.live_source));
+    if (!paceFromLive(live) && ringPace?.live_source) sources.add(`${ringPace.live_source}:ring_pace`);
     return {
       ...row,
-      n_gone: intOrNull(live.n_gone) ?? intOrNull(row.n_gone),
-      n_to_go: intOrNull(live.n_to_go) ?? intOrNull(row.n_to_go),
-      elapsed_seconds: intOrNull(live.elapsed_seconds) ?? intOrNull(row.elapsed_seconds),
+      n_gone: intOrNull(live?.n_gone) ?? intOrNull(row.n_gone),
+      n_to_go: intOrNull(live?.n_to_go) ?? intOrNull(row.n_to_go),
+      elapsed_seconds: intOrNull(live?.elapsed_seconds) ?? intOrNull(row.elapsed_seconds),
       pace_seconds: paceSeconds ?? intOrNull(row.pace_seconds),
-      current_entry_no: clean(live.current_entry_no) || clean(row.current_entry_no),
-      current_horse: clean(live.current_horse) || clean(row.current_horse),
-      live_source: clean(live.live_source) || clean(row.live_source),
+      current_entry_no: clean(live?.current_entry_no) || clean(row.current_entry_no),
+      current_horse: clean(live?.current_horse) || clean(row.current_horse),
+      live_source: clean(live?.live_source) || clean(row.live_source),
       source: Array.from(sources).join("|") || clean(row.source),
-      last_synced_at: clean(live.last_synced_at) || clean(row.last_synced_at)
+      last_synced_at: clean(live?.last_synced_at) || clean(row.last_synced_at)
     };
   });
 }
