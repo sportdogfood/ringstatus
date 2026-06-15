@@ -1,0 +1,261 @@
+{
+  "pass": false,
+  "show_no": "14906",
+  "focus_day": "2026-06-14",
+  "generated_at": "2026-06-15T00:34:00.976Z",
+  "checks": [
+    {
+      "name": "core_update_schedule_rows",
+      "pass": true,
+      "details": {
+        "rows": 92
+      }
+    },
+    {
+      "name": "core_update_schedule_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "core_class_oog_rows",
+      "pass": true,
+      "details": {
+        "rows": 908
+      }
+    },
+    {
+      "name": "core_class_oog_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "core_class_start_times_rows",
+      "pass": true,
+      "details": {
+        "class_start_times": 92,
+        "update_schedule": 92
+      }
+    },
+    {
+      "name": "core_class_start_times_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_active_rows",
+      "pass": true,
+      "details": {
+        "active": 33,
+        "total": 73
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_required_fields",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_no_blind_fallback",
+      "pass": true,
+      "details": {
+        "bad": 0
+      }
+    },
+    {
+      "name": "live_get_orders_rows",
+      "pass": true,
+      "details": {
+        "rows": 64
+      }
+    },
+    {
+      "name": "live_get_orders_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "live_get_rings_rows",
+      "pass": true,
+      "details": {
+        "rows": 60
+      }
+    },
+    {
+      "name": "live_get_rings_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "helpers_get_ring_days_rows",
+      "pass": true,
+      "details": {
+        "rows": 9
+      }
+    },
+    {
+      "name": "helpers_get_ring_days_links",
+      "pass": false,
+      "details": {
+        "bad": 9,
+        "sample": [
+          {
+            "id": "rec17KNEPcwMgiZmI",
+            "ring_day_no": 3893,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec7SUepLZmlXsKFC",
+            "ring_day_no": 4299,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec8vozN9NClE5Owp",
+            "ring_day_no": 3911,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "recEx79NXSRycXqwQ",
+            "ring_day_no": 4186,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "recfRP3yvA8DfzEnI",
+            "ring_day_no": 3905,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "audit_logs_workflow_lanes_all",
+      "pass": true,
+      "details": {
+        "bad": 0
+      }
+    },
+    {
+      "name": "url_web_mobile",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 4935
+      }
+    },
+    {
+      "name": "url_web_print",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 4951
+      }
+    },
+    {
+      "name": "url_catalyst_mobile",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 63590
+      }
+    },
+    {
+      "name": "url_catalyst_print",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 83879
+      }
+    }
+  ],
+  "failures": [
+    {
+      "name": "helpers_get_ring_days_links",
+      "pass": false,
+      "details": {
+        "bad": 9,
+        "sample": [
+          {
+            "id": "rec17KNEPcwMgiZmI",
+            "ring_day_no": 3893,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec7SUepLZmlXsKFC",
+            "ring_day_no": 4299,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec8vozN9NClE5Owp",
+            "ring_day_no": 3911,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "recEx79NXSRycXqwQ",
+            "ring_day_no": 4186,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "recfRP3yvA8DfzEnI",
+            "ring_day_no": 3905,
+            "date_text": "Sunday, June 14, 2026",
+            "missing": [
+              "focus_show"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

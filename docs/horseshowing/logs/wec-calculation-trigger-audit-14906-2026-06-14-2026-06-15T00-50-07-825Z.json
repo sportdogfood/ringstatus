@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "show_no": "14906",
+  "focus_day": "2026-06-14",
+  "generated_at": "2026-06-15T00:50:07.824Z",
+  "counts": {
+    "update_schedule": 92,
+    "class_start_times": 92,
+    "entry_go_times": 73,
+    "active_entry_go_times": 33,
+    "wec_alerts": 166,
+    "open_time_alerts": 0,
+    "expected_open_time_alerts": 0
+  },
+  "fails": [],
+  "info": []
+}

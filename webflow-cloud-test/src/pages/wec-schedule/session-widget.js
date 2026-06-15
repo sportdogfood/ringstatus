@@ -42,6 +42,15 @@ textarea{width:100%;min-height:76px;margin-top:8px}
 .comment{border-top:1px solid #eee;padding-top:6px;font-size:13px}
 .sessions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .sessionPill{border:1px solid #d0d0d0;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;background:#fff}
+.checkinBar{border:1px solid #d7dadd;border-radius:10px;background:#fff;padding:10px 12px;margin:8px 0;display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.checkinStatus{font-size:13px;font-weight:800}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fff;border-top:2px solid #111;box-shadow:0 -10px 24px rgba(0,0,0,.18);padding:12px;transform:translateY(110%);transition:transform .18s ease}
+.sheet.open{transform:translateY(0)}
+.sheetInner{max-width:760px;margin:0 auto}
+.sheetTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.sheetTitle{font-weight:800;font-size:15px}
+.sheetSub{font-size:12px;color:#555;margin-top:3px}
+.sheetActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .hidden{display:none}
 </style>
 </head>
@@ -61,6 +70,13 @@ textarea{width:100%;min-height:76px;margin-top:8px}
     </div>
   </div>
   <div class="crumbs" id="crumbs"></div>
+  <div class="checkinBar hidden" id="checkinBar">
+    <div class="checkinStatus" id="checkinStatus"></div>
+    <div class="row">
+      <button class="primary" id="checkinBtn">Check in</button>
+      <button class="ghost" id="checkoutBtn">Leave</button>
+    </div>
+  </div>
   <div class="grid" id="list"></div>
   <div class="commentBox hidden" id="commentBox">
     <div class="muted" id="scopeLine"></div>
@@ -70,17 +86,37 @@ textarea{width:100%;min-height:76px;margin-top:8px}
     <div class="comments" id="comments"></div>
   </div>
 </div>
+<div class="sheet" id="promptSheet">
+  <div class="sheetInner">
+    <div class="sheetTop">
+      <div>
+        <div class="sheetTitle" id="promptTitle"></div>
+        <div class="sheetSub" id="promptSub"></div>
+      </div>
+      <button class="ghost" id="dismissPromptBtn">X</button>
+    </div>
+    <div class="sheetActions">
+      <button class="primary" data-answer="yes">Yes</button>
+      <button data-answer="no">No</button>
+      <button class="ghost" data-answer="unsure">Unsure</button>
+    </div>
+  </div>
+</div>
 <script>
 (function(){
   var editUrl="/test/wec-schedule/edit";
   var stateUrl="/test/wec-schedule/comment-state";
   var dayMs=86400000, ttl=180*dayMs;
-  var state=[], rings=[], selectedRing=null, selectedClass=null, selectedEntry=null, sessions=[];
+  var state=[], rings=[], selectedRing=null, selectedClass=null, selectedEntry=null, sessions=[], checkins=[], currentPrompt=null;
   var device=getDevice(), session=getSession(), comments=[];
   var el=function(id){return document.getElementById(id)};
   el("startBtn").onclick=startSession;
   el("saveNameBtn").onclick=saveName;
   el("saveCommentBtn").onclick=saveComment;
+  el("checkinBtn").onclick=checkInRing;
+  el("checkoutBtn").onclick=checkOutRing;
+  el("dismissPromptBtn").onclick=function(){submitObservation("dismissed")};
+  Array.from(document.querySelectorAll("[data-answer]")).forEach(function(btn){btn.onclick=function(){submitObservation(btn.getAttribute("data-answer"))}});
   el("nameInput").value=device.user_name||"";
   load();
 
@@ -92,6 +128,7 @@ textarea{width:100%;min-height:76px;margin-top:8px}
       el("focusLine").textContent="Focus day: "+(state.focus_day||"")+" / "+(state.class_count||0)+" classes / "+(state.entry_count||0)+" entries";
       renderSession(); render();
       listSessions();
+      listRingCheckins();
       if(session.session_id) listComments();
     }).catch(function(e){setStatus("Schedule failed to load","bad",e)});
   }
@@ -101,7 +138,7 @@ textarea{width:100%;min-height:76px;margin-top:8px}
     session={session_id:"session_"+Date.now()+"_"+Math.random().toString(16).slice(2),started_at:Date.now()};
     saveSession(session);
     post({action:"start-session",session_id:session.session_id,device_id:device.device_id,user_name:device.user_name,show_no:state.show_no||14906,focus_day:state.focus_day,page:"wec-comments",source:"wec-comments-widget"})
-      .then(function(r){setStatus("Session started","ok",r);renderSession();listSessions();listComments()}).catch(function(e){setStatus("Session failed","bad",e)});
+      .then(function(r){setStatus("Session started","ok",r);renderSession();listSessions();listRingCheckins();listComments()}).catch(function(e){setStatus("Session failed","bad",e)});
   }
 
   function saveName(){
@@ -135,6 +172,24 @@ textarea{width:100%;min-height:76px;margin-top:8px}
       .then(function(r){sessions=r.records||[];renderSessions()}).catch(function(){});
   }
 
+  function listRingCheckins(){
+    post({action:"list-ring-checkins",show_no:state.show_no||14906,focus_day:state.focus_day,session_id:session.session_id||"",active_window_minutes:180})
+      .then(function(r){checkins=r.records||[];renderCheckinBar();renderPrompt()}).catch(function(){});
+  }
+
+  function checkInRing(){
+    if(!session.session_id)return setStatus("Start session first","bad",{});
+    if(!selectedRing)return setStatus("Select a ring first","bad",{});
+    post({action:"ring-checkin",session_id:session.session_id,user_name:device.user_name,show_no:state.show_no||14906,focus_day:state.focus_day,ring_no:selectedRing.ring_no,source:"wec-comments-widget"})
+      .then(function(r){setStatus("Checked in to "+(selectedRing.ring_name||selectedRing.name),"ok",r);listRingCheckins()}).catch(function(e){setStatus("Check-in failed","bad",e)});
+  }
+
+  function checkOutRing(){
+    if(!session.session_id)return setStatus("Start session first","bad",{});
+    post({action:"ring-checkout",session_id:session.session_id,source:"wec-comments-widget"})
+      .then(function(r){setStatus("Ring check-in ended","ok",r);checkins=[];renderCheckinBar();renderPrompt()}).catch(function(e){setStatus("Check-out failed","bad",e)});
+  }
+
   function render(){
     renderCrumbs();
     var list=el("list"); list.innerHTML="";
@@ -147,6 +202,8 @@ textarea{width:100%;min-height:76px;margin-top:8px}
       if(!selectedClass.entries.length)list.appendChild(card("No entries listed","Comment on the class instead",function(){}));
     }
     renderCommentBox();
+    renderCheckinBar();
+    renderPrompt();
   }
 
   function renderCrumbs(){
@@ -162,6 +219,83 @@ textarea{width:100%;min-height:76px;margin-top:8px}
     box.classList.toggle("hidden",!scope);
     el("scopeLine").textContent=scope?("Commenting on "+scope.comment_scope+": "+scope.label):"";
     renderComments();
+  }
+
+  function renderCheckinBar(){
+    var bar=el("checkinBar");
+    if(!selectedRing){bar.classList.add("hidden");return}
+    bar.classList.remove("hidden");
+    var active=currentCheckin();
+    var selectedName=selectedRing.ring_name||selectedRing.name||("Ring "+selectedRing.ring_no);
+    if(active && String(active.ring_no).replace(/\.0$/,"")===String(selectedRing.ring_no)){
+      el("checkinStatus").textContent="Checked in · "+selectedName+" · first hand";
+      el("checkinBtn").classList.add("hidden");
+      el("checkoutBtn").classList.remove("hidden");
+    } else {
+      el("checkinStatus").textContent=active?("Checked in elsewhere · Ring "+active.ring_no):"Not checked in";
+      el("checkinBtn").textContent="Check in to "+selectedName;
+      el("checkinBtn").classList.remove("hidden");
+      el("checkoutBtn").classList.toggle("hidden",!active);
+    }
+  }
+
+  function currentCheckin(){
+    if(!session.session_id)return null;
+    return (checkins||[]).filter(function(item){return item.session_id===session.session_id})[0]||null;
+  }
+
+  function renderPrompt(){
+    currentPrompt=buildPrompt();
+    var sheet=el("promptSheet");
+    if(!currentPrompt){sheet.classList.remove("open");return}
+    el("promptTitle").textContent=currentPrompt.prompt_label;
+    el("promptSub").textContent=currentPrompt.sub_label;
+    sheet.classList.add("open");
+  }
+
+  function buildPrompt(){
+    if(!selectedRing)return null;
+    var scope=currentScope();
+    var cls=selectedClass||nearestClass(selectedRing.classes||[]);
+    var entry=selectedEntry||candidateEntry(cls);
+    if(entry){
+      return {scope:"entry",ring_no:selectedRing.ring_no,class_no:cls.class_no,entry_no:entry.entry_no,entry_order:entry.entry_order,prompt_key:"entry_in_ring",prompt_label:"Is "+(entry.horse_display||entry.horse||"this entry")+" in the ring?",sub_label:(selectedRing.ring_name||selectedRing.name)+" / "+(cls.start_display||"check time")+" / class "+cls.class_number};
+    }
+    if(cls){
+      return {scope:"class",ring_no:selectedRing.ring_no,class_no:cls.class_no,prompt_key:"class_underway",prompt_label:"Is class "+cls.class_number+" underway?",sub_label:(selectedRing.ring_name||selectedRing.name)+" / "+(cls.start_display||"check time")+" / "+cls.class_name};
+    }
+    return scope?{scope:"ring",ring_no:selectedRing.ring_no,prompt_key:"ring_active",prompt_label:"Is this ring active now?",sub_label:selectedRing.ring_name||selectedRing.name}:null;
+  }
+
+  function nearestClass(classes){
+    if(!classes||!classes.length)return null;
+    var now=new Date(), minutes=now.getHours()*60+now.getMinutes();
+    var parsed=classes.map(function(c){return {c:c,m:timeMinutes(c.class_start_time)}}).filter(function(x){return x.m>=0});
+    if(!parsed.length)return classes[0];
+    var past=parsed.filter(function(x){return x.m<=minutes}).sort(function(a,b){return b.m-a.m})[0];
+    return (past||parsed.sort(function(a,b){return a.m-b.m})[0]).c;
+  }
+
+  function candidateEntry(cls){
+    if(!cls||!cls.entries||!cls.entries.length)return null;
+    var gone=Number(cls.n_gone)||0;
+    var byOrder=cls.entries.slice().sort(function(a,b){return (Number(a.entry_order)||0)-(Number(b.entry_order)||0)});
+    return byOrder.find(function(entry){return (Number(entry.entry_order)||0)>gone}) || byOrder.find(function(entry){return entry.is_cwf}) || byOrder[0];
+  }
+
+  function timeMinutes(value){
+    var raw=String(value||"");
+    var m=raw.match(/^(\d{1,2}):(\d{2})/);
+    if(!m)return -1;
+    return Number(m[1])*60+Number(m[2]);
+  }
+
+  function submitObservation(answer){
+    if(!currentPrompt)return;
+    if(!session.session_id){setStatus("Start session first","bad",{});return}
+    post({action:"add-observation",session_id:session.session_id,user_name:device.user_name,show_no:state.show_no||14906,focus_day:state.focus_day,scope:currentPrompt.scope,ring_no:currentPrompt.ring_no,class_no:currentPrompt.class_no||"",entry_no:currentPrompt.entry_no||"",entry_order:currentPrompt.entry_order||"",prompt_key:currentPrompt.prompt_key,prompt_label:currentPrompt.prompt_label,answer:answer,source:"wec-comments-widget"})
+      .then(function(r){setStatus(answer==="dismissed"?"Prompt dismissed":"Observation saved","ok",r);el("promptSheet").classList.remove("open")})
+      .catch(function(e){setStatus("Observation failed","bad",e)});
   }
 
   function renderComments(){
@@ -192,7 +326,7 @@ textarea{width:100%;min-height:76px;margin-top:8px}
   function currentScope(){
     if(selectedEntry)return {comment_scope:"entry",label:selectedEntry.horse_display||selectedEntry.horse,ring_no:selectedRing.ring_no,class_no:selectedClass.class_no,entry_no:selectedEntry.entry_no};
     if(selectedClass)return {comment_scope:"class",label:selectedClass.class_number+" - "+selectedClass.class_name,ring_no:selectedRing.ring_no,class_no:selectedClass.class_no};
-    if(selectedRing)return {comment_scope:"ring",label:selectedRing.name,ring_no:selectedRing.ring_no};
+    if(selectedRing)return {comment_scope:"ring",label:selectedRing.ring_name||selectedRing.name,ring_no:selectedRing.ring_no};
     return null;
   }
 

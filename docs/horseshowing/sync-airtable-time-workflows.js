@@ -1060,6 +1060,7 @@ async function cleanupTodayTomorrowLinks() {
 }
 
 function paceFromLive(row) {
+  if (!row) return null;
   const nGone = intOrNull(row.n_gone);
   const elapsedSeconds = intOrNull(row.elapsed_seconds);
   return nGone && nGone > 6 && elapsedSeconds && elapsedSeconds > 0
@@ -1266,7 +1267,7 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
       elapsed_seconds: elapsedSeconds,
       pace_seconds: paceSeconds,
       time_till: goTime ? Math.round(((goTime.getTime() - now.getTime()) / 60000) * 10) / 10 : null,
-      source: "class_oog.php|update_schedule.php",
+      source: clean(`class_oog.php|${clean(classRow.live_source || classRow.source || "update_schedule.php")}`),
       status: "active",
       inactive_reason: null,
       inactive_at: null,
@@ -1293,6 +1294,7 @@ function classStartRowsToScheduleRows(classStartRows) {
     n_gone: row.n_gone,
     n_to_go: row.n_to_go,
     elapsed_seconds: row.elapsed_seconds,
+    pace_seconds: row.pace_seconds,
     live_source: row.source
   }));
 }
@@ -1395,10 +1397,11 @@ async function main() {
       ...(debug.focus_source?.trainer_displays || {}),
       ...airtableHelpers.trainerDisplays
     };
+    const entryScheduleRows = runClassStart ? classStartRowsToScheduleRows(classStartRows) : scheduleRows;
     entryGoRows = buildEntryGoRows({
       showNo,
       focusDay: actualFocusDay,
-      scheduleRows,
+      scheduleRows: entryScheduleRows,
       classOogRows: coreSnapshot.class_oog || [],
       activeTrainers,
       horseDisplays,

@@ -807,7 +807,60 @@ function Resolve-StaleTimeAlerts {
   )
 
   if (!$FocusDayValue) { return }
-  Write-WorkflowLog "airtable-alert stale-time resolve disabled focus=$FocusDayValue active_keys=$(@($ActiveAlertKeys.Keys).Count)"
+  if (!$env:AIRTABLE_TOKEN) { return }
+
+  try {
+    $formulaRaw = "AND({show_no}=$ShowNo, IS_SAME({focus_day}, DATETIME_PARSE('$FocusDayValue','YYYY-MM-DD'), 'day'), {status}='open', OR({alert_lane}='class_start',{alert_lane}='entry_go'))"
+    $formula = [uri]::EscapeDataString($formulaRaw)
+    $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$formula&pageSize=100"
+    $records = @()
+    do {
+      $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
+        Authorization = "Bearer $env:AIRTABLE_TOKEN"
+      } -TimeoutSec 30
+      $records += @($result.records)
+      if ($result.offset) {
+        $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))?filterByFormula=$formula&pageSize=100&offset=$([uri]::EscapeDataString($result.offset))"
+      } else {
+        $uri = $null
+      }
+    } while ($uri)
+
+    $updates = @()
+    foreach ($record in $records) {
+      $alertKey = [string]$record.fields.alert_key_run
+      if ($alertKey -and $ActiveAlertKeys.ContainsKey($alertKey)) { continue }
+      $updates += @{
+        id = $record.id
+        fields = @{
+          status = "resolved"
+          message = "Resolved: alert window is no longer active."
+          payload_json = ConvertTo-SafeJson @{
+            focus_day = $FocusDayValue
+            resolved_reason = "alert_window_inactive"
+            resolved_at = (Get-Date).ToUniversalTime().ToString("o")
+          }
+        }
+      }
+    }
+
+    for ($index = 0; $index -lt $updates.Count; $index += 10) {
+      $batch = @($updates[$index..([math]::Min($index + 9, $updates.Count - 1))])
+      if ($batch.Count -eq 0) { continue }
+      $body = @{
+        records = $batch
+        typecast = $true
+      } | ConvertTo-Json -Depth 12
+      $patchUri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString('wec-alerts'))"
+      Invoke-RestMethod -Method Patch -Uri $patchUri -Headers @{
+        Authorization = "Bearer $env:AIRTABLE_TOKEN"
+        "Content-Type" = "application/json"
+      } -Body $body -TimeoutSec 30 | Out-Null
+    }
+    Write-WorkflowLog "airtable-alert stale-time resolved focus=$FocusDayValue open_seen=$($records.Count) resolved=$($updates.Count) active_keys=$(@($ActiveAlertKeys.Keys).Count)"
+  } catch {
+    Write-WorkflowLog "airtable-alert stale-time resolve failed focus=$FocusDayValue error=$($_.Exception.Message)"
+  }
 }
 
 function Write-ClassStartTimesLog {

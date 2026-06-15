@@ -1,0 +1,400 @@
+{
+  "pass": false,
+  "show_no": "14906",
+  "focus_day": "2026-06-14",
+  "generated_at": "2026-06-15T00:30:50.791Z",
+  "checks": [
+    {
+      "name": "core_update_schedule_rows",
+      "pass": true,
+      "details": {
+        "rows": 92
+      }
+    },
+    {
+      "name": "core_update_schedule_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "core_class_oog_rows",
+      "pass": true,
+      "details": {
+        "rows": 908
+      }
+    },
+    {
+      "name": "core_class_oog_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "core_class_start_times_rows",
+      "pass": true,
+      "details": {
+        "class_start_times": 92,
+        "update_schedule": 92
+      }
+    },
+    {
+      "name": "core_class_start_times_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "core_class_start_times_live_enrichment",
+      "pass": false,
+      "details": {
+        "active_with_time_missing_live_pace": 1,
+        "sample": [
+          {
+            "id": "recgnf1B8FpQ1vKjV",
+            "key": "14906|2026-06-14|4299|29420",
+            "class_no": 29420,
+            "source": "update_schedule"
+          }
+        ]
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_active_rows",
+      "pass": true,
+      "details": {
+        "active": 33,
+        "total": 73
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_required_fields",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "live_get_orders_rows",
+      "pass": true,
+      "details": {
+        "rows": 64
+      }
+    },
+    {
+      "name": "live_get_orders_links",
+      "pass": false,
+      "details": {
+        "bad": 64,
+        "sample": [
+          {
+            "id": "rec1wuWJ0gK8MvVaH",
+            "key": "14906|678|3911|173",
+            "class_no": 33551,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec2ebz4JNk4Qp3WG",
+            "key": "14906|678|3911|425",
+            "class_no": 33454,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec2ra0V2FBEjyuvu",
+            "key": "14906|676|3899|907",
+            "class_no": 29472,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec3DzrQ8Fh5LKk8L",
+            "key": "14906|676|3899|903",
+            "class_no": 29473,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec3UxdrcRBMbq5z9",
+            "key": "14906|678|3911|164",
+            "class_no": 28956,
+            "missing": [
+              "focus_show"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "live_get_rings_rows",
+      "pass": true,
+      "details": {
+        "rows": 60
+      }
+    },
+    {
+      "name": "live_get_rings_links",
+      "pass": false,
+      "details": {
+        "bad": 60,
+        "sample": [
+          {
+            "id": "rec0G5soezeS0gPPL",
+            "key": "14906|3899|29473",
+            "ring_no": 676,
+            "class_no": 29473,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec2e0EF1aHavZ7Ra",
+            "key": "14906|3893|33558",
+            "ring_no": 675,
+            "class_no": 33558,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec4ERrjgXpAeQR5k",
+            "key": "14906|4181|29112",
+            "ring_no": 684,
+            "class_no": 29112,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec4OEaqd5Bf1WPP1",
+            "key": "14906|3893|28996",
+            "ring_no": 675,
+            "class_no": 28996,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec4ougCYgI1HSivG",
+            "key": "14906|3899|29250",
+            "ring_no": 676,
+            "class_no": 29250,
+            "missing": [
+              "focus_show"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "helpers_get_ring_days_rows",
+      "pass": false,
+      "details": {
+        "rows": 0
+      }
+    },
+    {
+      "name": "helpers_get_ring_days_links",
+      "pass": true,
+      "details": {
+        "bad": 0,
+        "sample": []
+      }
+    },
+    {
+      "name": "audit_logs_workflow_lanes_recent",
+      "pass": false,
+      "details": {
+        "recent": 100,
+        "bad": 7
+      }
+    },
+    {
+      "name": "url_web_mobile",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 4935
+      }
+    },
+    {
+      "name": "url_web_print",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 4951
+      }
+    },
+    {
+      "name": "url_catalyst_mobile",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 63590
+      }
+    },
+    {
+      "name": "url_catalyst_print",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 83879
+      }
+    }
+  ],
+  "failures": [
+    {
+      "name": "core_class_start_times_live_enrichment",
+      "pass": false,
+      "details": {
+        "active_with_time_missing_live_pace": 1,
+        "sample": [
+          {
+            "id": "recgnf1B8FpQ1vKjV",
+            "key": "14906|2026-06-14|4299|29420",
+            "class_no": 29420,
+            "source": "update_schedule"
+          }
+        ]
+      }
+    },
+    {
+      "name": "live_get_orders_links",
+      "pass": false,
+      "details": {
+        "bad": 64,
+        "sample": [
+          {
+            "id": "rec1wuWJ0gK8MvVaH",
+            "key": "14906|678|3911|173",
+            "class_no": 33551,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec2ebz4JNk4Qp3WG",
+            "key": "14906|678|3911|425",
+            "class_no": 33454,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec2ra0V2FBEjyuvu",
+            "key": "14906|676|3899|907",
+            "class_no": 29472,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec3DzrQ8Fh5LKk8L",
+            "key": "14906|676|3899|903",
+            "class_no": 29473,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec3UxdrcRBMbq5z9",
+            "key": "14906|678|3911|164",
+            "class_no": 28956,
+            "missing": [
+              "focus_show"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "live_get_rings_links",
+      "pass": false,
+      "details": {
+        "bad": 60,
+        "sample": [
+          {
+            "id": "rec0G5soezeS0gPPL",
+            "key": "14906|3899|29473",
+            "ring_no": 676,
+            "class_no": 29473,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec2e0EF1aHavZ7Ra",
+            "key": "14906|3893|33558",
+            "ring_no": 675,
+            "class_no": 33558,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec4ERrjgXpAeQR5k",
+            "key": "14906|4181|29112",
+            "ring_no": 684,
+            "class_no": 29112,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec4OEaqd5Bf1WPP1",
+            "key": "14906|3893|28996",
+            "ring_no": 675,
+            "class_no": 28996,
+            "missing": [
+              "focus_show"
+            ]
+          },
+          {
+            "id": "rec4ougCYgI1HSivG",
+            "key": "14906|3899|29250",
+            "ring_no": 676,
+            "class_no": 29250,
+            "missing": [
+              "focus_show"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "helpers_get_ring_days_rows",
+      "pass": false,
+      "details": {
+        "rows": 0
+      }
+    },
+    {
+      "name": "audit_logs_workflow_lanes_recent",
+      "pass": false,
+      "details": {
+        "recent": 100,
+        "bad": 7
+      }
+    }
+  ]
+}

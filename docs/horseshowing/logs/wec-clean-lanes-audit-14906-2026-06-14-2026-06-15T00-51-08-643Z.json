@@ -1,0 +1,111 @@
+{
+  "pass": true,
+  "show_no": "14906",
+  "focus_day": "2026-06-14",
+  "generated_at": "2026-06-15T00:51:08.642Z",
+  "checks": [
+    {
+      "name": "core_update_schedule_links",
+      "pass": true,
+      "details": {
+        "rows": 92,
+        "bad": 0
+      }
+    },
+    {
+      "name": "core_class_oog_links",
+      "pass": true,
+      "details": {
+        "rows": 908,
+        "bad": 0
+      }
+    },
+    {
+      "name": "core_class_start_times_links",
+      "pass": true,
+      "details": {
+        "rows": 92,
+        "bad": 0
+      }
+    },
+    {
+      "name": "alerts_entry_go_times_required",
+      "pass": true,
+      "details": {
+        "active": 33,
+        "bad": 0
+      }
+    },
+    {
+      "name": "live_get_orders_links",
+      "pass": true,
+      "details": {
+        "rows": 64,
+        "bad": 0
+      }
+    },
+    {
+      "name": "live_get_rings_links",
+      "pass": true,
+      "details": {
+        "rows": 60,
+        "bad": 0
+      }
+    },
+    {
+      "name": "helpers_get_ring_days_links",
+      "pass": true,
+      "details": {
+        "rows": 9,
+        "bad": 0
+      }
+    },
+    {
+      "name": "wec_logs_lanes",
+      "pass": true,
+      "details": {
+        "bad": 0
+      }
+    },
+    {
+      "name": "wec_alerts_no_stale_open_time_alerts",
+      "pass": true,
+      "details": {
+        "open_time_alerts": 0
+      }
+    },
+    {
+      "name": "url_web_mobile",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 4935
+      }
+    },
+    {
+      "name": "url_web_print",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 4951
+      }
+    },
+    {
+      "name": "url_catalyst_mobile",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 63590
+      }
+    },
+    {
+      "name": "url_catalyst_print",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "length": 83879
+      }
+    }
+  ],
+  "failures": []
+}

@@ -151,6 +151,12 @@ function classNameFromText(value) {
   return clean(value).replace(/^\d+[A-Za-z]?\)\s*/, "");
 }
 
+function isoFromDateText(value) {
+  const parsed = new Date(`${clean(value)} 00:00:00 GMT-0400`);
+  if (Number.isNaN(parsed.getTime())) return "";
+  return parsed.toISOString().slice(0, 10);
+}
+
 function updateScheduleKey(fields) {
   const ringNo = clean(fields.ring_no);
   const ringDayNo = clean(fields.days || fields.ring_day_no);
@@ -190,6 +196,7 @@ async function syncGetRings({ showNo, focusDay }) {
   const formula = formulaForShowFocus(showNo, focusDay);
   await ensureLinkFields("get_rings", {
     shows: "shows",
+    focus_show: "focus_show",
     classes: "classes",
     get_ring_days: "get_ring_days",
     ring_days: "ring_days",
@@ -197,11 +204,15 @@ async function syncGetRings({ showNo, focusDay }) {
     ring_names: "ring_names",
     entries: "entries"
   });
+  await ensureLinkFields("get_ring_days", {
+    focus_show: "focus_show"
+  });
 
   const [
     getRings,
     getRingDays,
     shows,
+    focusShow,
     classes,
     entries,
     rings,
@@ -210,6 +221,7 @@ async function syncGetRings({ showNo, focusDay }) {
     listAll("get_rings", formula ? { filterByFormula: formula } : {}),
     listAll("get_ring_days"),
     listAll("shows"),
+    listAll("focus_show", formula ? { filterByFormula: formula } : {}),
     listAll("classes"),
     listAll("entries"),
     listAll("rings"),
@@ -218,6 +230,7 @@ async function syncGetRings({ showNo, focusDay }) {
 
   const getRingDayByRingDayNo = mapByField(getRingDays, "ring_day_no");
   const showByShowNo = mapByField(shows, "show_no");
+  const focusShowByShowNo = mapByField(focusShow, "show_no");
   const classByClassNo = mapByField(classes, "class_no");
   const classByClassNumber = mapByField(classes, "class_number");
   const entryByEntryNo = mapByField(entries, "entry_no");
@@ -225,6 +238,7 @@ async function syncGetRings({ showNo, focusDay }) {
   const ringNameByName = mapByField(ringNames, "ring_name");
 
   const updates = [];
+  const getRingDayUpdates = [];
   const classHelpersToCreate = new Map();
   const missing = {
     get_ring_days: 0,
@@ -240,6 +254,7 @@ async function syncGetRings({ showNo, focusDay }) {
     const ringDayNo = clean(fields.ring_day_no);
     const getRingDay = getRingDayByRingDayNo.get(ringDayNo);
     const show = showByShowNo.get(clean(fields.show_no));
+    const focusShowRecord = focusShowByShowNo.get(clean(fields.show_no));
     const classRecord = classByClassNo.get(clean(fields.class_no));
     const entryRecord = entryByEntryNo.get(clean(fields.entry_number));
     const ringId = firstLinkedId(getRingDay?.fields?.rings);
@@ -248,6 +263,7 @@ async function syncGetRings({ showNo, focusDay }) {
 
     const next = {};
     if (show) setLinkedIfChanged(fields, next, "shows", linked(show.id)); else missing.shows += 1;
+    if (focusShowRecord) setLinkedIfChanged(fields, next, "focus_show", linked(focusShowRecord.id));
     if (classRecord) setLinkedIfChanged(fields, next, "classes", linked(classRecord.id)); else missing.classes += 1;
     if (entryRecord) setLinkedIfChanged(fields, next, "entries", linked(entryRecord.id)); else missing.entries += 1;
     if (getRingDay) {
@@ -267,12 +283,23 @@ async function syncGetRings({ showNo, focusDay }) {
     }
   }
 
+  const focusShowRecord = focusShowByShowNo.get(clean(showNo));
+  for (const record of getRingDays) {
+    const fields = record.fields || {};
+    if (!focusShowRecord || isoFromDateText(fields.date_text) !== clean(focusDay)) continue;
+    const next = {};
+    setLinkedIfChanged(fields, next, "focus_show", linked(focusShowRecord.id));
+    if (Object.keys(next).length) getRingDayUpdates.push({ id: record.id, fields: next });
+  }
+
+  await patchRecords("get_ring_days", getRingDayUpdates);
   await patchRecords("get_rings", updates);
 
   return {
     table: "get_rings",
     seen: getRings.length,
     changed: updates.length,
+    get_ring_days_changed: getRingDayUpdates.length,
     missing
   };
 }
@@ -282,6 +309,7 @@ async function syncGetOrders({ showNo, focusDay }) {
   await ensureNumberField("get_orders", "class_no");
   await ensureLinkFields("get_orders", {
     shows: "shows",
+    focus_show: "focus_show",
     classes: "classes",
     ring_days: "ring_days",
     rings: "rings",
@@ -294,6 +322,7 @@ async function syncGetOrders({ showNo, focusDay }) {
     updateSchedule,
     getRings,
     shows,
+    focusShow,
     classes,
     entries,
     rings,
@@ -304,6 +333,7 @@ async function syncGetOrders({ showNo, focusDay }) {
     listAll("update_schedule", formula ? { filterByFormula: formula } : {}),
     listAll("get_rings", formula ? { filterByFormula: formula } : {}),
     listAll("shows"),
+    listAll("focus_show", formula ? { filterByFormula: formula } : {}),
     listAll("classes"),
     listAll("entries"),
     listAll("rings"),
@@ -314,6 +344,7 @@ async function syncGetOrders({ showNo, focusDay }) {
   const updateByKey = mapByComposite(updateSchedule, updateScheduleKey);
   const getRingsByKey = mapByComposite(getRings, liveClassKey);
   const showByShowNo = mapByField(shows, "show_no");
+  const focusShowByShowNo = mapByField(focusShow, "show_no");
   const classByClassNo = mapByField(classes, "class_no");
   const classByClassNumber = mapByField(classes, "class_number");
   const entryByEntryNo = mapByField(entries, "entry_no");
@@ -362,6 +393,7 @@ async function syncGetOrders({ showNo, focusDay }) {
     const resolvedClassNo = clean(fields.class_no) || clean(update?.fields?.class_no) || clean(getRing?.fields?.class_no);
     const classNumber = clean(fields.class_number) || classNumberFromText(fields.class_text);
     const show = showByShowNo.get(clean(fields.show_no));
+    const focusShowRecord = focusShowByShowNo.get(clean(fields.show_no));
     const classRecord = classByClassNo.get(resolvedClassNo) || classByClassNumber.get(classNumber);
     const entryRecord = entryByEntryNo.get(clean(fields.entry_no || fields.entry_number));
     const ring = ringByRingNo.get(clean(fields.ring_no));
@@ -371,6 +403,7 @@ async function syncGetOrders({ showNo, focusDay }) {
     const next = {};
     if (resolvedClassNo) setValueIfChanged(fields, next, "class_no", intOrNull(resolvedClassNo)); else if (!classRecord) missing.update_schedule += 1;
     if (show) setLinkedIfChanged(fields, next, "shows", linked(show.id)); else missing.shows += 1;
+    if (focusShowRecord) setLinkedIfChanged(fields, next, "focus_show", linked(focusShowRecord.id));
     if (classRecord) setLinkedIfChanged(fields, next, "classes", linked(classRecord.id)); else missing.classes += 1;
     if (entryRecord) setLinkedIfChanged(fields, next, "entries", linked(entryRecord.id)); else missing.entries += 1;
     if (ring) setLinkedIfChanged(fields, next, "rings", linked(ring.id)); else missing.rings += 1;

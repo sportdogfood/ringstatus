@@ -11,11 +11,29 @@ const DEFAULT_CLASS_HIDE_TABLE = "class_hide";
 const DEFAULT_LOGS_TABLE = "wec-logs";
 const DEFAULT_SESSIONS_TABLE = "wec_sessions";
 const DEFAULT_COMMENTS_TABLE = "wec_comments";
+const DEFAULT_RING_COMMENTS_TABLE = "wec_ring_comments";
+const DEFAULT_CLASS_COMMENTS_TABLE = "wec_class_comments";
+const DEFAULT_ENTRY_COMMENTS_TABLE = "wec_entry_comments";
+const DEFAULT_RING_CHECKINS_TABLE = "wec_ring_checkins";
+const DEFAULT_OBSERVATIONS_TABLE = "wec_observations";
 const DEFAULT_RINGS_TABLE = "rings";
 const DEFAULT_CLASSES_TABLE = "classes";
 const DEFAULT_ENTRIES_TABLE = "entries";
 
-const ACTIONS = ["set-focus-day", "set-barn-name", "hide-classes", "start-session", "session-heartbeat", "list-sessions", "add-comment", "list-comments"];
+const ACTIONS = [
+  "set-focus-day",
+  "set-barn-name",
+  "hide-classes",
+  "start-session",
+  "session-heartbeat",
+  "list-sessions",
+  "ring-checkin",
+  "ring-checkout",
+  "list-ring-checkins",
+  "add-comment",
+  "list-comments",
+  "add-observation"
+];
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -70,6 +88,21 @@ export const POST = async ({ request }) => {
       return json(result);
     }
 
+    if (action === "ring-checkin") {
+      const result = await ringCheckin(airtable, schema, payload);
+      return json(result);
+    }
+
+    if (action === "ring-checkout") {
+      const result = await ringCheckout(airtable, schema, payload);
+      return json(result);
+    }
+
+    if (action === "list-ring-checkins") {
+      const result = await listRingCheckins(airtable, payload);
+      return json(result);
+    }
+
     if (action === "add-comment") {
       const result = await addComment(airtable, schema, payload);
       return json(result);
@@ -77,6 +110,11 @@ export const POST = async ({ request }) => {
 
     if (action === "list-comments") {
       const result = await listComments(airtable, payload);
+      return json(result);
+    }
+
+    if (action === "add-observation") {
+      const result = await addObservation(airtable, schema, payload);
       return json(result);
     }
 
@@ -175,8 +213,16 @@ async function addComment(airtable, schema, payload) {
   if (!["ring", "class", "entry"].includes(commentScope)) return jsonError("invalid_comment_scope");
   if (!commentText) return jsonError("missing_comment_text");
 
-  const links = await resolveCommentLinks(airtable, schema, { ringNo, classNo, entryNo });
-  const record = await createAirtableRecord(airtable, schema, airtable.commentsTable, {
+  const activeCheckin = await findActiveRingCheckin(airtable, sessionId);
+  const scopedTable = commentScope === "ring"
+    ? airtable.ringCommentsTable
+    : commentScope === "class"
+      ? airtable.classCommentsTable
+      : airtable.entryCommentsTable;
+  const sourceConfidence = activeCheckin && clean(activeCheckin.fields?.ring_no).replace(/\.0$/, "") === ringNo ? "first_hand" : "";
+  const ringCheckinId = sourceConfidence ? clean(activeCheckin.fields?.checkin_id) : "";
+  const scopedLinks = await resolveLinksForTable(airtable, schema, scopedTable, { ringNo, classNo, entryNo });
+  const commonFields = {
     comment_id: commentId,
     session_id: sessionId,
     device_id: deviceId,
@@ -187,21 +233,222 @@ async function addComment(airtable, schema, payload) {
     ring_no: ringNo ? Number(ringNo) : undefined,
     class_no: classNo ? Number(classNo) : undefined,
     entry_no: entryNo ? Number(entryNo) : undefined,
-    rings: links.rings,
-    classes: links.classes,
-    entries: links.entries,
+    rings: scopedLinks.rings,
+    classes: scopedLinks.classes,
+    entries: scopedLinks.entries,
     comment_text: commentText,
     created_at: new Date().toISOString(),
     status: "open",
-    source
+    source,
+    ring_checkin_id: ringCheckinId,
+    source_confidence: sourceConfidence
+  };
+
+  const scopedRecord = await createAirtableRecord(airtable, schema, scopedTable, commonFields);
+  const masterLinks = await resolveLinksForTable(airtable, schema, airtable.commentsTable, { ringNo, classNo, entryNo });
+  const record = await createAirtableRecord(airtable, schema, airtable.commentsTable, {
+    ...commonFields,
+    rings: masterLinks.rings,
+    classes: masterLinks.classes,
+    entries: masterLinks.entries
   });
 
   return {
     ok: true,
     action: "add-comment",
     table: airtable.commentsTable,
+    scoped_table: scopedTable,
     record_id: record.id,
+    scoped_record_id: scopedRecord.id,
     comment_id: commentId
+  };
+}
+
+async function ringCheckin(airtable, schema, payload) {
+  const checkinId = clean(payload.checkin_id || payload.checkinId) || `checkin_${Date.now()}`;
+  const sessionId = clean(payload.session_id || payload.sessionId);
+  const userName = clean(payload.user_name || payload.userName);
+  const showNo = clean(payload.show_no || payload.showNo);
+  const focusDay = isoDate(payload.focus_day || payload.focusDay);
+  const ringNo = clean(payload.ring_no || payload.ringNo);
+  const source = clean(payload.source) || "wec-comments-widget";
+  const now = new Date().toISOString();
+
+  if (!sessionId) return jsonError("missing_session_id");
+  if (!ringNo) return jsonError("missing_ring_no");
+
+  const existingActive = await findActiveRingCheckin(airtable, sessionId);
+  if (existingActive && clean(existingActive.fields?.ring_no).replace(/\.0$/, "") !== ringNo) {
+    await patchAirtableRecord(airtable, schema, airtable.ringCheckinsTable, existingActive.id, {
+      status: "ended",
+      last_seen_at: now
+    });
+  }
+
+  if (existingActive && clean(existingActive.fields?.ring_no).replace(/\.0$/, "") === ringNo) {
+    const updated = await patchAirtableRecord(airtable, schema, airtable.ringCheckinsTable, existingActive.id, {
+      user_name: userName,
+      last_seen_at: now,
+      status: "active",
+      source_confidence: "first_hand"
+    });
+    return {
+      ok: true,
+      action: "ring-checkin",
+      table: airtable.ringCheckinsTable,
+      record_id: updated.id,
+      checkin_id: clean(existingActive.fields?.checkin_id),
+      ring_no: ringNo,
+      status: "active",
+      source_confidence: "first_hand"
+    };
+  }
+
+  const links = await resolveLinksForTable(airtable, schema, airtable.ringCheckinsTable, { ringNo });
+  const record = await createAirtableRecord(airtable, schema, airtable.ringCheckinsTable, {
+    checkin_id: checkinId,
+    session_id: sessionId,
+    user_name: userName,
+    show_no: showNo ? Number(showNo) : undefined,
+    focus_day: focusDay,
+    ring_no: Number(ringNo),
+    rings: links.rings,
+    checked_in_at: now,
+    last_seen_at: now,
+    status: "active",
+    source_confidence: "first_hand",
+    source
+  });
+
+  return {
+    ok: true,
+    action: "ring-checkin",
+    table: airtable.ringCheckinsTable,
+    record_id: record.id,
+    checkin_id: checkinId,
+    ring_no: ringNo,
+    status: "active",
+    source_confidence: "first_hand"
+  };
+}
+
+async function ringCheckout(airtable, schema, payload) {
+  const sessionId = clean(payload.session_id || payload.sessionId);
+  if (!sessionId) return jsonError("missing_session_id");
+  const active = await findActiveRingCheckin(airtable, sessionId);
+  if (!active) return { ok: true, action: "ring-checkout", status: "none_active" };
+  const now = new Date().toISOString();
+  const record = await patchAirtableRecord(airtable, schema, airtable.ringCheckinsTable, active.id, {
+    status: "ended",
+    last_seen_at: now
+  });
+  return {
+    ok: true,
+    action: "ring-checkout",
+    table: airtable.ringCheckinsTable,
+    record_id: record.id,
+    checkin_id: clean(active.fields?.checkin_id),
+    status: "ended"
+  };
+}
+
+async function listRingCheckins(airtable, payload) {
+  const showNo = clean(payload.show_no || payload.showNo);
+  const focusDay = isoDate(payload.focus_day || payload.focusDay);
+  const sessionId = clean(payload.session_id || payload.sessionId);
+  const activeWindowMinutes = Math.max(1, Number(clean(payload.active_window_minutes || payload.activeWindowMinutes)) || 180);
+  const cutoff = Date.now() - activeWindowMinutes * 60 * 1000;
+  const records = await listAirtableRecords(airtable, airtable.ringCheckinsTable);
+  const checkins = records
+    .map((record) => ({ record_id: record.id, ...(record.fields || {}) }))
+    .filter((fields) => !sessionId || clean(fields.session_id) === sessionId)
+    .filter((fields) => !showNo || clean(fields.show_no).replace(/\.0$/, "") === showNo)
+    .filter((fields) => !focusDay || isoDate(fields.focus_day) === focusDay)
+    .filter((fields) => clean(fields.status).toLowerCase() === "active")
+    .filter((fields) => {
+      const seen = Date.parse(clean(fields.last_seen_at || fields.checked_in_at));
+      return Number.isFinite(seen) && seen >= cutoff;
+    })
+    .sort((a, b) => String(b.last_seen_at || b.checked_in_at).localeCompare(String(a.last_seen_at || a.checked_in_at)))
+    .slice(0, 100)
+    .map((fields) => ({
+      record_id: fields.record_id,
+      checkin_id: clean(fields.checkin_id),
+      session_id: clean(fields.session_id),
+      user_name: clean(fields.user_name) || "Guest",
+      show_no: fields.show_no,
+      focus_day: fields.focus_day,
+      ring_no: fields.ring_no,
+      checked_in_at: fields.checked_in_at,
+      last_seen_at: fields.last_seen_at,
+      status: clean(fields.status),
+      source_confidence: clean(fields.source_confidence)
+    }));
+
+  return {
+    ok: true,
+    action: "list-ring-checkins",
+    count: checkins.length,
+    active_window_minutes: activeWindowMinutes,
+    records: checkins
+  };
+}
+
+async function addObservation(airtable, schema, payload) {
+  const observationKey = clean(payload.observation_key || payload.observationKey) || `observation_${Date.now()}`;
+  const sessionId = clean(payload.session_id || payload.sessionId);
+  const userName = clean(payload.user_name || payload.userName);
+  const showNo = clean(payload.show_no || payload.showNo);
+  const focusDay = isoDate(payload.focus_day || payload.focusDay);
+  const scope = clean(payload.scope || payload.comment_scope || payload.commentScope);
+  const ringNo = clean(payload.ring_no || payload.ringNo);
+  const classNo = clean(payload.class_no || payload.classNo);
+  const entryNo = clean(payload.entry_no || payload.entryNo);
+  const entryOrder = clean(payload.entry_order || payload.entryOrder);
+  const promptKey = clean(payload.prompt_key || payload.promptKey);
+  const promptLabel = clean(payload.prompt_label || payload.promptLabel);
+  const answer = clean(payload.answer);
+  const source = clean(payload.source) || "wec-comments-widget";
+
+  if (!sessionId) return jsonError("missing_session_id");
+  if (!["ring", "class", "entry"].includes(scope)) return jsonError("invalid_observation_scope");
+  if (!["yes", "no", "unsure", "dismissed"].includes(answer)) return jsonError("invalid_observation_answer");
+  if (!ringNo) return jsonError("missing_ring_no");
+
+  const activeCheckin = await findActiveRingCheckin(airtable, sessionId);
+  const sourceConfidence = activeCheckin && clean(activeCheckin.fields?.ring_no).replace(/\.0$/, "") === ringNo ? "first_hand" : "";
+  const ringCheckinId = sourceConfidence ? clean(activeCheckin.fields?.checkin_id) : "";
+  const links = await resolveLinksForTable(airtable, schema, airtable.observationsTable, { ringNo, classNo, entryNo });
+  const record = await createAirtableRecord(airtable, schema, airtable.observationsTable, {
+    observation_key: observationKey,
+    session_id: sessionId,
+    user_name: userName,
+    show_no: showNo ? Number(showNo) : undefined,
+    focus_day: focusDay,
+    scope,
+    ring_no: Number(ringNo),
+    class_no: classNo ? Number(classNo) : undefined,
+    entry_no: entryNo ? Number(entryNo) : undefined,
+    entry_order: entryOrder ? Number(entryOrder) : undefined,
+    prompt_key: promptKey,
+    prompt_label: promptLabel,
+    answer,
+    observed_at: new Date().toISOString(),
+    source,
+    ring_checkin_id: ringCheckinId,
+    source_confidence: sourceConfidence,
+    rings: links.rings,
+    classes: links.classes,
+    entries: links.entries
+  });
+
+  return {
+    ok: true,
+    action: "add-observation",
+    table: airtable.observationsTable,
+    record_id: record.id,
+    observation_key: observationKey,
+    source_confidence: sourceConfidence || "general"
   };
 }
 
@@ -453,33 +700,47 @@ function getAirtableConfig() {
     logsTable: runtime.AIRTABLE_WEC_LOGS_TABLE || DEFAULT_LOGS_TABLE,
     sessionsTable: runtime.AIRTABLE_WEC_SESSIONS_TABLE || DEFAULT_SESSIONS_TABLE,
     commentsTable: runtime.AIRTABLE_WEC_COMMENTS_TABLE || DEFAULT_COMMENTS_TABLE,
+    ringCommentsTable: runtime.AIRTABLE_WEC_RING_COMMENTS_TABLE || DEFAULT_RING_COMMENTS_TABLE,
+    classCommentsTable: runtime.AIRTABLE_WEC_CLASS_COMMENTS_TABLE || DEFAULT_CLASS_COMMENTS_TABLE,
+    entryCommentsTable: runtime.AIRTABLE_WEC_ENTRY_COMMENTS_TABLE || DEFAULT_ENTRY_COMMENTS_TABLE,
+    ringCheckinsTable: runtime.AIRTABLE_WEC_RING_CHECKINS_TABLE || DEFAULT_RING_CHECKINS_TABLE,
+    observationsTable: runtime.AIRTABLE_WEC_OBSERVATIONS_TABLE || DEFAULT_OBSERVATIONS_TABLE,
     ringsTable: runtime.AIRTABLE_WEC_RINGS_TABLE || DEFAULT_RINGS_TABLE,
     classesTable: runtime.AIRTABLE_WEC_CLASSES_TABLE || DEFAULT_CLASSES_TABLE,
     entriesTable: runtime.AIRTABLE_WEC_ENTRIES_TABLE || DEFAULT_ENTRIES_TABLE
   };
 }
 
-async function resolveCommentLinks(airtable, schema, { ringNo, classNo, entryNo }) {
+async function resolveLinksForTable(airtable, schema, table, { ringNo, classNo, entryNo }) {
   const out = {};
-  const commentFields = schema?.tables?.[airtable.commentsTable];
-  if (!commentFields) return out;
+  const fields = schema?.tables?.[table];
+  if (!fields) return out;
 
-  if (ringNo && commentFields.has("rings")) {
+  if (ringNo && fields.has("rings")) {
     const record = await findRecordByNumberSafe(airtable, airtable.ringsTable, "ring_no", ringNo);
     if (record?.id) out.rings = [record.id];
   }
 
-  if (classNo && commentFields.has("classes")) {
+  if (classNo && fields.has("classes")) {
     const record = await findRecordByNumberSafe(airtable, airtable.classesTable, "class_no", classNo);
     if (record?.id) out.classes = [record.id];
   }
 
-  if (entryNo && commentFields.has("entries")) {
+  if (entryNo && fields.has("entries")) {
     const record = await findRecordByNumberSafe(airtable, airtable.entriesTable, "entry_no", entryNo);
     if (record?.id) out.entries = [record.id];
   }
 
   return out;
+}
+
+async function findActiveRingCheckin(airtable, sessionId) {
+  if (!sessionId) return null;
+  const records = await listAirtableRecords(airtable, airtable.ringCheckinsTable);
+  return records
+    .filter((record) => clean(record.fields?.session_id) === sessionId)
+    .filter((record) => clean(record.fields?.status).toLowerCase() === "active")
+    .sort((a, b) => String(b.fields?.last_seen_at || b.fields?.checked_in_at).localeCompare(String(a.fields?.last_seen_at || a.fields?.checked_in_at)))[0] || null;
 }
 
 async function findRecordByNumberSafe(airtable, table, field, value) {
