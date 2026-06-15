@@ -1,9 +1,10 @@
-export const config = {
+globalThis.process ??= {};
+globalThis.process.env ??= {};
+import { env } from "cloudflare:workers";
+const __vite_import_meta_env__ = { "ASSETS_PREFIX": "https://110f06dd-c1ea-4839-98af-d829cbe77941.wf-app-prod.cosmic.webflow.services/test", "BASE_URL": "/test", "DEV": false, "MODE": "production", "PROD": true, "SITE": void 0, "SSR": true };
+const config = {
   runtime: "edge"
 };
-
-import { env } from "cloudflare:workers";
-
 const DEFAULT_BASE_ID = "app6XS1RvsPNRT6os";
 const DEFAULT_FOCUS_SHOW_TABLE = "focus_show";
 const DEFAULT_HORSES_TABLE = "horses";
@@ -14,72 +15,57 @@ const DEFAULT_COMMENTS_TABLE = "wec_comments";
 const DEFAULT_RINGS_TABLE = "rings";
 const DEFAULT_CLASSES_TABLE = "classes";
 const DEFAULT_ENTRIES_TABLE = "entries";
-
 const ACTIONS = ["set-focus-day", "set-barn-name", "hide-classes", "start-session", "session-heartbeat", "list-sessions", "add-comment", "list-comments"];
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type,Authorization"
 };
-
-export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
-
-export const GET = async () => json({
+const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
+const GET = async () => json({
   ok: true,
   service: "wec-schedule-edit",
   actions: ACTIONS
 });
-
-export const POST = async ({ request }) => {
+const POST = async ({ request }) => {
   const airtable = getAirtableConfig();
   if (!airtable.ok) return json({ ok: false, error: airtable.error }, 500);
-
   try {
     const payload = await request.json().catch(() => ({}));
     const action = clean(payload.action);
     const schema = await getBaseSchema(airtable);
-
     if (action === "set-focus-day") {
       const result = await setFocusDay(airtable, schema, payload);
       return json(result);
     }
-
     if (action === "set-barn-name") {
       const result = await setBarnName(airtable, schema, payload);
       return json(result);
     }
-
     if (action === "hide-classes") {
       const result = await hideClasses(airtable, schema, payload);
       return json(result);
     }
-
     if (action === "start-session") {
       const result = await startSession(airtable, schema, payload);
       return json(result);
     }
-
     if (action === "session-heartbeat") {
       const result = await sessionHeartbeat(airtable, schema, payload);
       return json(result);
     }
-
     if (action === "list-sessions") {
       const result = await listSessions(airtable, payload);
       return json(result);
     }
-
     if (action === "add-comment") {
       const result = await addComment(airtable, schema, payload);
       return json(result);
     }
-
     if (action === "list-comments") {
       const result = await listComments(airtable, payload);
       return json(result);
     }
-
     return json({ ok: false, error: "unknown_action", actions: ACTIONS }, 400);
   } catch (error) {
     console.error("[wec-schedule] edit failed", error);
@@ -90,38 +76,31 @@ export const POST = async ({ request }) => {
     }, 502);
   }
 };
-
 async function startSession(airtable, schema, payload) {
   const sessionId = clean(payload.session_id || payload.sessionId);
   const deviceId = clean(payload.device_id || payload.deviceId);
   const showNo = clean(payload.show_no || payload.showNo);
   const focusDay = isoDate(payload.focus_day || payload.focusDay);
   const userName = clean(payload.user_name || payload.userName);
-  const page = clean(payload.page) || "wec-mobile";
+  const page2 = clean(payload.page) || "wec-mobile";
   const source = clean(payload.source) || "wec-mobile";
-  const now = new Date().toISOString();
-
+  const now = (/* @__PURE__ */ new Date()).toISOString();
   if (!sessionId) return jsonError("missing_session_id");
   if (!deviceId) return jsonError("missing_device_id");
-
   const existing = await findSessionRecord(airtable, sessionId);
   const fields = {
     session_id: sessionId,
     device_id: deviceId,
-    show_no: showNo ? Number(showNo) : undefined,
+    show_no: showNo ? Number(showNo) : void 0,
     focus_day: focusDay,
     user_name: userName,
-    started_at: existing ? undefined : now,
+    started_at: existing ? void 0 : now,
     last_seen_at: now,
     status: "active",
-    page,
+    page: page2,
     source
   };
-
-  const record = existing
-    ? await patchAirtableRecord(airtable, schema, airtable.sessionsTable, existing.id, fields)
-    : await createAirtableRecord(airtable, schema, airtable.sessionsTable, fields);
-
+  const record = existing ? await patchAirtableRecord(airtable, schema, airtable.sessionsTable, existing.id, fields) : await createAirtableRecord(airtable, schema, airtable.sessionsTable, fields);
   return {
     ok: true,
     action: "start-session",
@@ -131,20 +110,16 @@ async function startSession(airtable, schema, payload) {
     status: "active"
   };
 }
-
 async function sessionHeartbeat(airtable, schema, payload) {
   const sessionId = clean(payload.session_id || payload.sessionId);
   if (!sessionId) return jsonError("missing_session_id");
-
   const existing = await findSessionRecord(airtable, sessionId);
   if (!existing) return jsonError("session_not_found", { session_id: sessionId }, 404);
-
-  const now = new Date().toISOString();
+  const now = (/* @__PURE__ */ new Date()).toISOString();
   const record = await patchAirtableRecord(airtable, schema, airtable.sessionsTable, existing.id, {
     last_seen_at: now,
     status: "active"
   });
-
   return {
     ok: true,
     action: "session-heartbeat",
@@ -155,7 +130,6 @@ async function sessionHeartbeat(airtable, schema, payload) {
     last_seen_at: now
   };
 }
-
 async function addComment(airtable, schema, payload) {
   const commentId = clean(payload.comment_id || payload.commentId) || `comment_${Date.now()}`;
   const sessionId = clean(payload.session_id || payload.sessionId);
@@ -169,33 +143,30 @@ async function addComment(airtable, schema, payload) {
   const entryNo = clean(payload.entry_no || payload.entryNo);
   const commentText = clean(payload.comment_text || payload.commentText);
   const source = clean(payload.source) || "wec-mobile";
-
   if (!sessionId) return jsonError("missing_session_id");
   if (!deviceId) return jsonError("missing_device_id");
   if (!["ring", "class", "entry"].includes(commentScope)) return jsonError("invalid_comment_scope");
   if (!commentText) return jsonError("missing_comment_text");
-
   const links = await resolveCommentLinks(airtable, schema, { ringNo, classNo, entryNo });
   const record = await createAirtableRecord(airtable, schema, airtable.commentsTable, {
     comment_id: commentId,
     session_id: sessionId,
     device_id: deviceId,
-    show_no: showNo ? Number(showNo) : undefined,
+    show_no: showNo ? Number(showNo) : void 0,
     focus_day: focusDay,
     user_name: userName,
     comment_scope: commentScope,
-    ring_no: ringNo ? Number(ringNo) : undefined,
-    class_no: classNo ? Number(classNo) : undefined,
-    entry_no: entryNo ? Number(entryNo) : undefined,
+    ring_no: ringNo ? Number(ringNo) : void 0,
+    class_no: classNo ? Number(classNo) : void 0,
+    entry_no: entryNo ? Number(entryNo) : void 0,
     rings: links.rings,
     classes: links.classes,
     entries: links.entries,
     comment_text: commentText,
-    created_at: new Date().toISOString(),
+    created_at: (/* @__PURE__ */ new Date()).toISOString(),
     status: "open",
     source
   });
-
   return {
     ok: true,
     action: "add-comment",
@@ -204,38 +175,28 @@ async function addComment(airtable, schema, payload) {
     comment_id: commentId
   };
 }
-
 async function listSessions(airtable, payload) {
   const showNo = clean(payload.show_no || payload.showNo);
   const focusDay = isoDate(payload.focus_day || payload.focusDay);
   const activeWindowMinutes = Math.max(1, Number(clean(payload.active_window_minutes || payload.activeWindowMinutes)) || 180);
-  const cutoff = Date.now() - activeWindowMinutes * 60 * 1000;
+  const cutoff = Date.now() - activeWindowMinutes * 60 * 1e3;
   const records = await listAirtableRecords(airtable, airtable.sessionsTable);
-  const sessions = records
-    .map((record) => ({ record_id: record.id, ...(record.fields || {}) }))
-    .filter((fields) => !showNo || clean(fields.show_no).replace(/\.0$/, "") === showNo)
-    .filter((fields) => !focusDay || isoDate(fields.focus_day) === focusDay)
-    .filter((fields) => clean(fields.status).toLowerCase() !== "ended")
-    .filter((fields) => {
-      const seen = Date.parse(clean(fields.last_seen_at || fields.started_at));
-      return Number.isFinite(seen) && seen >= cutoff;
-    })
-    .sort((a, b) => String(b.last_seen_at || b.started_at).localeCompare(String(a.last_seen_at || a.started_at)))
-    .slice(0, 50)
-    .map((fields) => ({
-      record_id: fields.record_id,
-      session_id: clean(fields.session_id),
-      device_id: clean(fields.device_id),
-      user_name: clean(fields.user_name) || "Guest",
-      show_no: fields.show_no,
-      focus_day: fields.focus_day,
-      started_at: fields.started_at,
-      last_seen_at: fields.last_seen_at,
-      status: clean(fields.status) || "active",
-      page: clean(fields.page),
-      source: clean(fields.source)
-    }));
-
+  const sessions = records.map((record) => ({ record_id: record.id, ...record.fields || {} })).filter((fields) => !showNo || clean(fields.show_no).replace(/\.0$/, "") === showNo).filter((fields) => !focusDay || isoDate(fields.focus_day) === focusDay).filter((fields) => clean(fields.status).toLowerCase() !== "ended").filter((fields) => {
+    const seen = Date.parse(clean(fields.last_seen_at || fields.started_at));
+    return Number.isFinite(seen) && seen >= cutoff;
+  }).sort((a, b) => String(b.last_seen_at || b.started_at).localeCompare(String(a.last_seen_at || a.started_at))).slice(0, 50).map((fields) => ({
+    record_id: fields.record_id,
+    session_id: clean(fields.session_id),
+    device_id: clean(fields.device_id),
+    user_name: clean(fields.user_name) || "Guest",
+    show_no: fields.show_no,
+    focus_day: fields.focus_day,
+    started_at: fields.started_at,
+    last_seen_at: fields.last_seen_at,
+    status: clean(fields.status) || "active",
+    page: clean(fields.page),
+    source: clean(fields.source)
+  }));
   return {
     ok: true,
     action: "list-sessions",
@@ -244,25 +205,19 @@ async function listSessions(airtable, payload) {
     records: sessions
   };
 }
-
 async function listComments(airtable, payload) {
   const sessionId = clean(payload.session_id || payload.sessionId);
   const showNo = clean(payload.show_no || payload.showNo);
   const records = await listAirtableRecords(airtable, airtable.commentsTable);
-  const filtered = records
-    .filter((record) => {
-      const fields = record.fields || {};
-      if (sessionId && clean(fields.session_id) !== sessionId) return false;
-      if (showNo && clean(fields.show_no).replace(/\.0$/, "") !== showNo) return false;
-      return true;
-    })
-    .sort((a, b) => String(b.fields?.created_at || b.createdTime).localeCompare(String(a.fields?.created_at || a.createdTime)))
-    .slice(0, 20)
-    .map((record) => ({
-      record_id: record.id,
-      ...record.fields
-    }));
-
+  const filtered = records.filter((record) => {
+    const fields = record.fields || {};
+    if (sessionId && clean(fields.session_id) !== sessionId) return false;
+    if (showNo && clean(fields.show_no).replace(/\.0$/, "") !== showNo) return false;
+    return true;
+  }).sort((a, b) => String(b.fields?.created_at || b.createdTime).localeCompare(String(a.fields?.created_at || a.createdTime))).slice(0, 20).map((record) => ({
+    record_id: record.id,
+    ...record.fields
+  }));
   return {
     ok: true,
     action: "list-comments",
@@ -270,21 +225,17 @@ async function listComments(airtable, payload) {
     records: filtered
   };
 }
-
 async function setFocusDay(airtable, schema, payload) {
   const showNo = clean(payload.show_no || payload.showNo);
   const focusDay = isoDate(payload.focus_day || payload.focusDay);
   if (!showNo) return jsonError("missing_show_no");
   if (!focusDay) return jsonError("invalid_focus_day");
-
   const record = await findFocusShowRecord(airtable, payload.record_id || payload.recordId, showNo);
   if (!record) return jsonError("focus_show_not_found", { show_no: showNo }, 404);
-
   const showStart = isoDate(record.fields?.show_start);
   const showEnd = isoDate(record.fields?.show_end);
   if (showStart && focusDay < showStart) return jsonError("focus_day_before_show_start", { focus_day: focusDay, show_start: showStart });
   if (showEnd && focusDay > showEnd) return jsonError("focus_day_after_show_end", { focus_day: focusDay, show_end: showEnd });
-
   const updated = await patchAirtableRecord(airtable, schema, airtable.focusShowTable, record.id, { focus_day: focusDay });
   const logged = await createWecLog(airtable, schema, {
     log_type: "webflow_edit",
@@ -304,7 +255,6 @@ async function setFocusDay(airtable, schema, payload) {
       focus_day: focusDay
     }, null, 2)
   });
-
   return {
     ok: true,
     action: "set-focus-day",
@@ -317,7 +267,6 @@ async function setFocusDay(airtable, schema, payload) {
     log: logged
   };
 }
-
 async function setBarnName(airtable, schema, payload) {
   const showNo = clean(payload.show_no || payload.showNo);
   const horseRecordId = clean(payload.horse_record_id || payload.horseRecordId || payload.record_id || payload.recordId);
@@ -325,10 +274,8 @@ async function setBarnName(airtable, schema, payload) {
   const barnName = clean(payload.barn_name || payload.barnName);
   if (!horseRecordId && !horseName) return jsonError("missing_horse_identifier");
   if (!barnName) return jsonError("missing_barn_name");
-
   const record = await findHorseRecord(airtable, horseRecordId, horseName, showNo);
   if (!record) return jsonError("horse_not_found", { horse: horseName, show_no: showNo }, 404);
-
   const updated = await patchAirtableRecord(airtable, schema, airtable.horsesTable, record.id, { barn_name: barnName });
   const currentHorse = clean(record.fields?.horse);
   const logged = await createWecLog(airtable, schema, {
@@ -350,7 +297,6 @@ async function setBarnName(airtable, schema, payload) {
       barn_name: barnName
     }, null, 2)
   });
-
   return {
     ok: true,
     action: "set-barn-name",
@@ -363,31 +309,24 @@ async function setBarnName(airtable, schema, payload) {
     log: logged
   };
 }
-
 async function hideClasses(airtable, schema, payload) {
   const showNo = clean(payload.show_no || payload.showNo);
   const focusDay = isoDate(payload.focus_day || payload.focusDay);
   const classRows = Array.isArray(payload.classes) ? payload.classes : [];
-  const classes = classRows
-    .map((item) => ({
-      class_no: clean(item.class_no || item.classNo).replace(/\.0$/, ""),
-      hide_text: clean(item.hide_text || item.hideText || item.class_label || item.classLabel || item.label)
-    }))
-    .filter((item, index, all) => item.class_no && all.findIndex((other) => other.class_no === item.class_no) === index);
-
+  const classes = classRows.map((item) => ({
+    class_no: clean(item.class_no || item.classNo).replace(/\.0$/, ""),
+    hide_text: clean(item.hide_text || item.hideText || item.class_label || item.classLabel || item.label)
+  })).filter((item, index, all) => item.class_no && all.findIndex((other) => other.class_no === item.class_no) === index);
   if (!showNo) return jsonError("missing_show_no");
   if (!classes.length) return jsonError("missing_classes");
-
   const existingRecords = await listAirtableRecords(airtable, airtable.classHideTable);
   let changed = 0;
   const updated = [];
-
   for (const item of classes) {
     const classHideKey = `${showNo}|class_no:${item.class_no}`;
     const existing = existingRecords.find((record) => {
-      const fields = record.fields || {};
-      return clean(fields.show_no).replace(/\.0$/, "") === showNo
-        && clean(fields.class_no).replace(/\.0$/, "") === item.class_no;
+      const fields2 = record.fields || {};
+      return clean(fields2.show_no).replace(/\.0$/, "") === showNo && clean(fields2.class_no).replace(/\.0$/, "") === item.class_no;
     });
     const fields = {
       class_hide_key: classHideKey,
@@ -397,19 +336,16 @@ async function hideClasses(airtable, schema, payload) {
       hide_text: item.hide_text,
       active: true
     };
-
     if (existing) {
       const patched = await patchAirtableRecord(airtable, schema, airtable.classHideTable, existing.id, fields);
       changed += 1;
       updated.push({ record_id: patched.id, class_no: item.class_no });
       continue;
     }
-
     const created = await createAirtableRecord(airtable, schema, airtable.classHideTable, fields);
     changed += 1;
     updated.push({ record_id: created.id, class_no: item.class_no });
   }
-
   const logged = await createWecLog(airtable, schema, {
     log_type: "webflow_edit",
     check_name: "class_hide",
@@ -428,7 +364,6 @@ async function hideClasses(airtable, schema, payload) {
       classes
     }, null, 2)
   });
-
   return {
     ok: true,
     action: "hide-classes",
@@ -436,13 +371,11 @@ async function hideClasses(airtable, schema, payload) {
     log: logged
   };
 }
-
 function getAirtableConfig() {
-  const runtime = { ...(globalThis.process?.env || {}), ...(import.meta.env || {}), ...(env || {}) };
+  const runtime = { ...globalThis.process?.env || {}, ...Object.assign(__vite_import_meta_env__, { AIRTABLE_TOKEN: "patDeqY9NAQsuYx6q.7fd75026f0820373f62a72ca063f99b2203b9d873cb77aa3962637ab7bb0ec37", AIRTABLE_BASE_ID: "apptdhhNzduxm5gjn", OS: "Windows_NT" }) || {}, ...env || {} };
   const token = runtime.AIRTABLE_WEC_TOKEN || runtime.AIRTABLE_TOKEN;
   const baseId = runtime.AIRTABLE_WEC_BASE_ID || runtime.WEC_AIRTABLE_BASE_ID || runtime.AIRTABLE_WEC_SCHEDULES_BASE_ID || DEFAULT_BASE_ID;
   if (!token) return { ok: false, error: "missing_airtable_token" };
-  if (!baseId) return { ok: false, error: "missing_airtable_base_id" };
   return {
     ok: true,
     token,
@@ -458,30 +391,24 @@ function getAirtableConfig() {
     entriesTable: runtime.AIRTABLE_WEC_ENTRIES_TABLE || DEFAULT_ENTRIES_TABLE
   };
 }
-
 async function resolveCommentLinks(airtable, schema, { ringNo, classNo, entryNo }) {
   const out = {};
   const commentFields = schema?.tables?.[airtable.commentsTable];
   if (!commentFields) return out;
-
   if (ringNo && commentFields.has("rings")) {
     const record = await findRecordByNumberSafe(airtable, airtable.ringsTable, "ring_no", ringNo);
     if (record?.id) out.rings = [record.id];
   }
-
   if (classNo && commentFields.has("classes")) {
     const record = await findRecordByNumberSafe(airtable, airtable.classesTable, "class_no", classNo);
     if (record?.id) out.classes = [record.id];
   }
-
   if (entryNo && commentFields.has("entries")) {
     const record = await findRecordByNumberSafe(airtable, airtable.entriesTable, "entry_no", entryNo);
     if (record?.id) out.entries = [record.id];
   }
-
   return out;
 }
-
 async function findRecordByNumberSafe(airtable, table, field, value) {
   try {
     return await findRecordByNumber(airtable, table, field, value);
@@ -490,25 +417,21 @@ async function findRecordByNumberSafe(airtable, table, field, value) {
     return null;
   }
 }
-
 async function findRecordByNumber(airtable, table, field, value) {
   const target = clean(value).replace(/\.0$/, "");
   if (!target) return null;
   const records = await listAirtableRecords(airtable, table);
   return records.find((record) => clean(record.fields?.[field]).replace(/\.0$/, "") === target) || null;
 }
-
 async function findSessionRecord(airtable, sessionId) {
   const records = await listAirtableRecords(airtable, airtable.sessionsTable);
   return records.find((record) => clean(record.fields?.session_id) === sessionId) || null;
 }
-
 async function findFocusShowRecord(airtable, recordId, showNo) {
   if (recordId) return getAirtableRecord(airtable, airtable.focusShowTable, recordId);
   const records = await listAirtableRecords(airtable, airtable.focusShowTable);
   return records.find((record) => clean(record.fields?.show_no) === showNo) || null;
 }
-
 async function findHorseRecord(airtable, recordId, horseName, showNo) {
   if (recordId) return getAirtableRecord(airtable, airtable.horsesTable, recordId);
   const records = await listAirtableRecords(airtable, airtable.horsesTable);
@@ -522,7 +445,6 @@ async function findHorseRecord(airtable, recordId, horseName, showNo) {
   }
   return matches[0] || null;
 }
-
 async function listAirtableRecords(airtable, table) {
   const records = [];
   let offset = "";
@@ -533,12 +455,11 @@ async function listAirtableRecords(airtable, table) {
     const response = await fetch(url, { headers: airtableHeaders(airtable.token) });
     const result = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(`list ${table} ${response.status}: ${JSON.stringify(result)}`);
-    records.push(...(result.records || []));
+    records.push(...result.records || []);
     offset = result.offset || "";
   } while (offset);
   return records;
 }
-
 async function getAirtableRecord(airtable, table, recordId) {
   const response = await fetch(`${airtableUrl(airtable.baseId, table)}/${encodeURIComponent(recordId)}`, {
     headers: airtableHeaders(airtable.token)
@@ -548,7 +469,6 @@ async function getAirtableRecord(airtable, table, recordId) {
   if (!response.ok) throw new Error(`get ${table}/${recordId} ${response.status}: ${JSON.stringify(result)}`);
   return result;
 }
-
 async function patchAirtableRecord(airtable, schema, table, recordId, fields) {
   const response = await fetch(`${airtableUrl(airtable.baseId, table)}/${encodeURIComponent(recordId)}`, {
     method: "PATCH",
@@ -565,7 +485,6 @@ async function patchAirtableRecord(airtable, schema, table, recordId, fields) {
   if (!response.ok) throw new Error(`patch ${table}/${recordId} ${response.status}: ${JSON.stringify(result)}`);
   return result;
 }
-
 async function createAirtableRecord(airtable, schema, table, fields) {
   const response = await fetch(airtableUrl(airtable.baseId, table), {
     method: "POST",
@@ -582,9 +501,8 @@ async function createAirtableRecord(airtable, schema, table, fields) {
   if (!response.ok) throw new Error(`create ${table} ${response.status}: ${JSON.stringify(result)}`);
   return result.records?.[0] || {};
 }
-
 async function createWecLog(airtable, schema, fields) {
-  const createdAt = new Date().toISOString();
+  const createdAt = (/* @__PURE__ */ new Date()).toISOString();
   const logFields = filterAirtableFields(schema, airtable.logsTable, {
     log_key_run: `${createdAt}|${fields.log_type}|${fields.check_name}`,
     created_at: createdAt,
@@ -606,7 +524,6 @@ async function createWecLog(airtable, schema, fields) {
     log_key_run: logFields.log_key_run
   };
 }
-
 async function getBaseSchema(airtable) {
   try {
     const response = await fetch(`https://api.airtable.com/v0/meta/bases/${encodeURIComponent(airtable.baseId)}/tables`, {
@@ -625,7 +542,6 @@ async function getBaseSchema(airtable) {
     return null;
   }
 }
-
 function filterAirtableFields(schema, table, fields) {
   const allowed = schema?.tables?.[table];
   if (!allowed) return compactFields(fields);
@@ -636,15 +552,12 @@ function filterAirtableFields(schema, table, fields) {
   if (!Object.keys(out).length) throw new Error(`no_matching_fields_in_${table}`);
   return out;
 }
-
 function airtableUrl(baseId, table) {
   return `https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(table)}`;
 }
-
 function airtableHeaders(token) {
   return { Authorization: `Bearer ${token}` };
 }
-
 function json(data, status = 200) {
   return new Response(JSON.stringify(data, null, 2) + "\n", {
     status,
@@ -655,25 +568,32 @@ function json(data, status = 200) {
     }
   });
 }
-
 function jsonError(error, detail = {}, status = 400) {
   return { ok: false, error, ...detail, status };
 }
-
 function clean(value) {
   if (value == null) return "";
   if (Array.isArray(value)) return clean(value[0]);
   if (typeof value === "object" && value.name) return clean(value.name);
   return String(value).trim();
 }
-
 function isoDate(value) {
   const raw = clean(value);
   if (!raw) return "";
   const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
   return match ? `${match[1]}-${match[2]}-${match[3]}` : "";
 }
-
 function compactFields(fields) {
-  return Object.fromEntries(Object.entries(fields).filter(([, value]) => value !== undefined && value !== null && value !== ""));
+  return Object.fromEntries(Object.entries(fields).filter(([, value]) => value !== void 0 && value !== null && value !== ""));
 }
+const _page = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  GET,
+  OPTIONS,
+  POST,
+  config
+}, Symbol.toStringTag, { value: "Module" }));
+const page = () => _page;
+export {
+  page
+};

@@ -1123,9 +1123,11 @@ if ($heartbeat.orders_error) {
   }
 } else {
   $ordersMirror = Write-LiveRowsToAirtable -Source "orders" -Payload $heartbeat.orders -FocusDayValue $heartbeat.focus_day
-  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -RecordsChanged (Int-OrZero $ordersMirror.changed) -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) mirrored=$($ordersMirror.changed) focus=$($heartbeat.focus_day)" -Payload @{
+  $ordersLinks = Invoke-AirtableLiveLinkSync -Source "orders" -FocusDayValue $heartbeat.focus_day
+  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -RecordsChanged ((Int-OrZero $ordersMirror.changed) + (Int-OrZero $ordersLinks.changed)) -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) mirrored=$($ordersMirror.changed) linked=$($ordersLinks.changed) focus=$($heartbeat.focus_day)" -Payload @{
     orders = $heartbeat.orders
     mirror = $ordersMirror
+    links = $ordersLinks
     focus_day = $heartbeat.focus_day
   }
   Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders returned without error." -Payload $heartbeat.orders

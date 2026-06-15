@@ -11,3 +11,7 @@ Using secrets defined in .env
 [2m┃[22m Local    [36mhttp://127.0.0.1:4357/[39m
 [2m18:06:06[22m [32mwatching for file changes...[39m
 [2m18:24:13[22m [34m[vite][39m [vite] program reload
+[2m19:18:08[22m Configuration file updated. Restarting...
+[2m19:18:08[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+Using secrets defined in .env
+[33m[1m19:18:16[22m [WARN] [vite][39m Failed to resolve dependency: [36m@astrojs/cloudflare/image-service-workerd[39m, present in ssr 'optimizeDeps.include'

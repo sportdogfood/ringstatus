@@ -1,0 +1,128 @@
+{
+  "audited_at": "2026-06-14T23:14:37.237Z",
+  "show_no": "14906",
+  "focus_day": "2026-06-14",
+  "checks": {
+    "wec-mobile-live": {
+      "pass": true,
+      "status": 200,
+      "target_row": {
+        "shape": "mobile",
+        "ring": "INDR_6",
+        "class_no": "29479",
+        "time": "1:45 PM",
+        "class_start_time": "13:45:00",
+        "class_name": "$5000 NAL 1.25m Junior Classic II.2b",
+        "rollups": "Choco (2), King (15), Dottie (20)"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live&show_no=14906&focus_day=2026-06-14&_audit=1781478877237"
+    },
+    "wec-print-live": {
+      "pass": true,
+      "status": 200,
+      "target_row": {
+        "shape": "print-array",
+        "ring": "INDR_6",
+        "class_no": "29479",
+        "time": "1:45 PM",
+        "class_start_time": "13:45:00",
+        "class_name": "$5000 NAL 1.25m Junior Classic II.2b",
+        "rollups": "Choco (2), King (15), Dottie (20)"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-live&show_no=14906&focus_day=2026-06-14&_audit=1781478883850"
+    },
+    "wec-mobile": {
+      "pass": true,
+      "url": "https://ringstatus.com/wec-mobile?focus_day=2026-06-14&_audit=1781478890498",
+      "has_choco_2": true,
+      "has_king_15": true,
+      "has_dottie_20": true,
+      "has_145_pm": true,
+      "has_150_pm": false
+    },
+    "wec-print": {
+      "pass": true,
+      "url": "https://ringstatus.com/wec-print?focus_day=2026-06-14&_audit=1781478890498",
+      "has_choco_2": true,
+      "has_king_15": true,
+      "has_dottie_20": true,
+      "has_145_pm": true,
+      "has_150_pm": false
+    },
+    "workflow": {
+      "pass": true,
+      "update_schedule_rows": 92,
+      "class_start_times": {
+        "rows": 92,
+        "live_scoped_missing_live_fields": 0,
+        "link_missing": {
+          "shows": 0,
+          "focus_show": 0,
+          "classes": 0,
+          "rings": 0,
+          "ring_days": 0
+        }
+      },
+      "entry_go_times": {
+        "rows": 73,
+        "active": 41,
+        "inactive": 32,
+        "live_scoped_active_missing_live_fields": 0,
+        "active_link_missing": {
+          "shows": 0,
+          "focus_show": 0,
+          "classes": 0,
+          "rings": 0,
+          "ring_days": 0,
+          "entries": 0,
+          "horses": 0,
+          "riders": 0,
+          "trainers": 0,
+          "class_start_times": 0,
+          "class_oog": 0
+        }
+      },
+      "class_oog": {
+        "rows": 908,
+        "link_missing": {
+          "shows": 0,
+          "focus_show": 0,
+          "classes": 0,
+          "rings": 0,
+          "ring_days": 0,
+          "ring_names": 0,
+          "entries": 0,
+          "horses": 0,
+          "riders": 0,
+          "trainers": 0
+        }
+      },
+      "get_rings": {
+        "rows": 60,
+        "missing_class_no": 0,
+        "link_missing": {
+          "shows": 0,
+          "classes": 0,
+          "ring_days": 0,
+          "rings": 0,
+          "ring_names": 0,
+          "entries": 0
+        }
+      },
+      "get_orders": {
+        "rows": 64,
+        "missing_class_no": 3,
+        "link_missing": {
+          "shows": 0,
+          "classes": 0,
+          "ring_days": 0,
+          "rings": 0,
+          "ring_names": 0,
+          "entries": 0
+        }
+      }
+    }
+  },
+  "pass": true,
+  "failures": []
+}

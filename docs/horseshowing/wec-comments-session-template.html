@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEC Comments Session Test</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:20px;color:#111}
+    h1{font-size:22px;margin:0 0 12px}
+    .box{border:1px solid #ccc;border-radius:8px;padding:12px;margin:0 0 12px;max-width:640px}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    button{font:inherit;border:1px solid #111;border-radius:999px;background:#fff;padding:9px 14px;cursor:pointer}
+    button.active{background:#815374;color:#fff;border-color:#815374}
+    textarea,input,select{font:inherit;width:100%;box-sizing:border-box;border:1px solid #bbb;border-radius:6px;padding:8px}
+    textarea{min-height:82px}
+    label{display:block;font-weight:700;margin:10px 0 4px}
+    .muted{color:#666;font-size:13px}
+    .ok{color:#146c2e;font-weight:700}
+    .bad{color:#9b1c1c;font-weight:700}
+    pre{white-space:pre-wrap;background:#f5f5f5;border:1px solid #ddd;border-radius:6px;padding:8px;max-width:640px}
+  </style>
+</head>
+<body>
+  <h1>WEC Comments Session Test</h1>
+
+  <div class="box">
+    <div class="row">
+      <button id="startBtn" type="button">Start session</button>
+      <button id="heartbeatBtn" type="button">Heartbeat</button>
+    </div>
+    <p class="muted" id="sessionLine">No session.</p>
+  </div>
+
+  <div class="box">
+    <label for="scope">Comment scope</label>
+    <select id="scope">
+      <option value="ring">ring</option>
+      <option value="class">class</option>
+      <option value="entry">entry</option>
+    </select>
+
+    <label for="ringNo">ring_no</label>
+    <input id="ringNo" value="665">
+
+    <label for="classNo">class_no</label>
+    <input id="classNo" value="33518">
+
+    <label for="entryNo">entry_no</label>
+    <input id="entryNo" value="3100">
+
+    <label for="commentText">comment</label>
+    <textarea id="commentText">Test comment</textarea>
+
+    <p><button id="saveBtn" type="button">Save comment</button></p>
+  </div>
+
+  <div class="box">
+    <div id="status" class="muted">Ready.</div>
+  </div>
+
+  <pre id="out"></pre>
+
+  <script>
+    const ENDPOINT = "http://127.0.0.1:4358/wec-schedule/edit";
+    const SHOW_NO = 14906;
+    const FOCUS_DAY = "2026-06-14";
+
+    let sessionId = localStorage.getItem("wec_session_id") || "";
+    let deviceId = localStorage.getItem("wec_device_id") || "";
+    if(!deviceId){
+      deviceId = "device_" + crypto.randomUUID();
+      localStorage.setItem("wec_device_id", deviceId);
+    }
+
+    document.getElementById("startBtn").onclick = startSession;
+    document.getElementById("heartbeatBtn").onclick = heartbeat;
+    document.getElementById("saveBtn").onclick = saveComment;
+    renderSession();
+
+    async function startSession(){
+      sessionId = "session_" + crypto.randomUUID();
+      localStorage.setItem("wec_session_id", sessionId);
+      const data = await post({
+        action:"start-session",
+        session_id:sessionId,
+        device_id:deviceId,
+        show_no:SHOW_NO,
+        focus_day:FOCUS_DAY,
+        page:"wec-comments-session-template",
+        source:"local-template"
+      });
+      renderSession();
+      show("Session created.", data, true);
+    }
+
+    async function heartbeat(){
+      requireSession();
+      const data = await post({
+        action:"session-heartbeat",
+        session_id:sessionId
+      });
+      show("Heartbeat updated.", data, true);
+    }
+
+    async function saveComment(){
+      requireSession();
+      const scope = val("scope");
+      const payload = {
+        action:"add-comment",
+        comment_id:"comment_" + crypto.randomUUID(),
+        session_id:sessionId,
+        device_id:deviceId,
+        show_no:SHOW_NO,
+        focus_day:FOCUS_DAY,
+        comment_scope:scope,
+        ring_no:val("ringNo"),
+        class_no:scope === "ring" ? "" : val("classNo"),
+        entry_no:scope === "entry" ? val("entryNo") : "",
+        comment_text:val("commentText"),
+        source:"local-template"
+      };
+      const data = await post(payload);
+      show("Comment saved.", data, true);
+    }
+
+    async function post(payload){
+      show("Sending...", payload, true);
+      const res = await fetch(ENDPOINT,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(payload)
+      });
+      const text = await res.text();
+      let data;
+      try{data = JSON.parse(text)}catch{data = {raw:text}}
+      if(!res.ok || data.ok === false){
+        show("Failed.", data, false);
+        throw new Error(data.error || text || "request failed");
+      }
+      return data;
+    }
+
+    function requireSession(){
+      if(!sessionId) throw new Error("Start session first.");
+    }
+
+    function val(id){
+      return document.getElementById(id).value.trim();
+    }
+
+    function renderSession(){
+      document.getElementById("sessionLine").textContent = sessionId
+        ? "session_id: " + sessionId + " / device_id: " + deviceId
+        : "No session. device_id: " + deviceId;
+    }
+
+    function show(message, data, ok){
+      const status = document.getElementById("status");
+      status.className = ok ? "ok" : "bad";
+      status.textContent = message;
+      document.getElementById("out").textContent = JSON.stringify(data,null,2);
+    }
+  </script>
+</body>
+</html>

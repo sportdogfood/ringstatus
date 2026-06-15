@@ -362,6 +362,40 @@ async function readAirtableHelpers() {
   return { activeTrainers, trainerDisplays, horseDisplays };
 }
 
+function currentHorseFromEntryText(value) {
+  const raw = clean(value).replace(/<br\s*\/?>/gi, " ");
+  const match = raw.match(/^#\d+\s*,\s*(.*?)\s+In ring at/i);
+  return match ? clean(match[1]) : "";
+}
+
+async function readAirtableLiveRows(showNo, focusDay) {
+  const formula = showFocusFormula(showNo, focusDay);
+  const [orders, rings] = await Promise.all([
+    listRecords("get_orders", formula),
+    listRecords("get_rings", formula)
+  ]);
+  const rows = [];
+  for (const record of [...orders, ...rings]) {
+    const fields = recordFields(record);
+    if (!clean(fields.class_no)) continue;
+    rows.push({
+      show_no: fields.show_no,
+      focus_day: clean(fields.focus_day).slice(0, 10),
+      ring_no: fields.ring_no,
+      ring_day_no: fields.ring_day_no,
+      class_no: fields.class_no,
+      n_gone: fields.n_gone,
+      n_to_go: fields.n_to_go,
+      elapsed_seconds: fields.elapsed,
+      current_entry_no: fields.entry_no || fields.entry_number,
+      current_horse: currentHorseFromEntryText(fields.entry_text),
+      live_source: record.id && record.fields?.get_orders_key ? "get_orders.php" : "get_rings.php",
+      last_synced_at: new Date().toISOString()
+    });
+  }
+  return rows;
+}
+
 function inactiveRecordUpdates({ existingRows, keyField, activeKeys, reason, nowIso }) {
   const updates = [];
   for (const row of existingRows || []) {
@@ -1170,7 +1204,8 @@ function buildEntryGoRows({ showNo, focusDay: fallbackFocusDay, scheduleRows, cl
     const elapsedSeconds = intOrNull(classRow.elapsed_seconds);
     const paceSeconds = paceFromLive(classRow) || 120;
     const start = parseTime(focusDay, clean(classRow.class_start_time));
-    const goTime = start ? addSeconds(start, (entryOrder - 1) * paceSeconds) : null;
+    if (!start) continue;
+    const goTime = addSeconds(start, (entryOrder - 1) * paceSeconds);
     const entryNo = clean(entry.entry_no);
     const ringDayNo = clean(classRow.ring_day_no || entry.ring_day_no || entry.days);
     const identity = `${clean(classRow.show_id || classRow.show_no || showNo)}|${focusDay}|${ringDayNo}|${classNo}|${entryNo}`;
@@ -1304,14 +1339,17 @@ async function main() {
   if (runEntryGo) {
     const params = new URLSearchParams({ action: "schedule-json", show_no: showNo, focus_day: actualFocusDay });
     liveScheduleRows = await catalystGet(params);
+    const airtableLiveRows = await readAirtableLiveRows(showNo, actualFocusDay);
     const coreScheduleRows = coreUpdateRowsToScheduleRows(coreSnapshot.update_schedule || [], coreSnapshot.counts || []);
     if (Array.isArray(liveScheduleRows) && liveScheduleRows.length > 0) {
       scheduleRows = applyLiveTimingToClassRows(coreScheduleRows, liveScheduleRows);
     } else {
       scheduleRows = coreScheduleRows;
     }
+    scheduleRows = applyLiveTimingToClassRows(scheduleRows, airtableLiveRows);
     if (runClassStart) {
       classStartRows = applyLiveTimingToClassRows(classStartRows, scheduleRows);
+      classStartRows = applyLiveTimingToClassRows(classStartRows, airtableLiveRows);
     }
     const debug = await catalystGet(new URLSearchParams({
       action: "debug-show-config",

@@ -1,0 +1,120 @@
+{
+  "audited_at": "2026-06-14T22:51:20.662Z",
+  "target": {
+    "show_no": "14906",
+    "focus_day": "2026-06-14",
+    "class_no": "29479",
+    "expected": {
+      "rollups": [
+        "CHOCO (2)",
+        "KING (15)",
+        "DOTTIE (20)"
+      ],
+      "time": "1:45 PM",
+      "class_text": "$5000 NAL 1.25m Junior Classic II.2b"
+    }
+  },
+  "catalyst_api": {
+    "wec-mobile-live": {
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live&show_no=14906&focus_day=2026-06-14&_audit=1781477480662",
+      "status": 200,
+      "ok": true,
+      "target_row": {
+        "shape": "mobile",
+        "ring": "INDR_6",
+        "class_no": "29479",
+        "time": "1:45 PM",
+        "class_start_time": "13:45:00",
+        "class_name": "$5000 NAL 1.25m Junior Classic II.2b",
+        "rollups": "Choco (2), King (15), Dottie (20)"
+      },
+      "pass": true
+    },
+    "wec-print-live": {
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-live&show_no=14906&focus_day=2026-06-14&_audit=1781477487393",
+      "status": 200,
+      "ok": true,
+      "target_row": {
+        "shape": "print-array",
+        "ring": "INDR_6",
+        "class_no": "29479",
+        "time": "1:45 PM",
+        "class_start_time": "13:45:00",
+        "class_name": "$5000 NAL 1.25m Junior Classic II.2b",
+        "rollups": "Choco (2), King (15), Dottie (20)"
+      },
+      "pass": true
+    }
+  },
+  "live_pages": {
+    "wec-mobile": {
+      "url": "https://ringstatus.com/wec-mobile?focus_day=2026-06-14&_audit=1781477494164",
+      "source_url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live",
+      "pass": true,
+      "has_choco_2": true,
+      "has_king_15": true,
+      "has_dottie_20": true,
+      "has_145_pm": true,
+      "has_150_pm": false,
+      "has_target_class_text": true,
+      "context": "II.2b CWF CALYPSO (5) 2:45 PM $750 1.05m Amateur Classic II.2b 3:30 PM $750 1.05m Junior Classic II.2b INDR_6 CWF RIMINI (8), COFFEE (12) 8:00 AM $2500 1.10m NAL/WIHS Junior Classic II.2b CWF Q (8), KUDOS (23), MAIKI (33) 9:30 AM $2500 1.10m NAL/WIHS Amateur Classic II.2b 11:45 AM $3000 1.15m Junior/Amateur Classic II.2b CWF CHOCO (2), KING (15), DOTTIE (20) 1:45 PM $5000 NAL 1.25m Junior Classic II.2b ANNEX CWF MUNSTER (1) 7:30 AM NHS Medal 3'3\" 8:15 AM NCEA Medal 3'3\" CWF FAN (3) 9:00 AM USEF Hunter Seat Medal 3'6\" 10:15 AM $750 1.05m Junior Classic II.2b 11:15 AM $750 1.05m Amateur Classic II.2b GRAND INDR_1 INDR_2 INDR_4 INDR_5 INDR_6 ANNEX",
+      "responses": [
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-embed-html&_=TS"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-embed-html&focus_day=2026-06-14&_=TS"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live&focus_day=2026-06-14"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live"
+        }
+      ]
+    },
+    "wec-print": {
+      "url": "https://ringstatus.com/wec-print?focus_day=2026-06-14&_audit=1781477494164",
+      "source_url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-live",
+      "pass": true,
+      "has_choco_2": true,
+      "has_king_15": true,
+      "has_dottie_20": true,
+      "has_145_pm": true,
+      "has_150_pm": false,
+      "has_target_class_text": true,
+      "context": "Junior Classic II.2b CALYPSO (5) 2:45 PM $750 1.05m Amateur Classic II.2b 3:30 PM $750 1.05m Junior Classic II.2b × INDR_6 RIMINI (8), COFFEE (12) 8:00 AM $2500 1.10m NAL/WIHS Junior Classic II.2b Q (8), KUDOS (23), MAIKI (33) 9:30 AM $2500 1.10m NAL/WIHS Amateur Classic II.2b 11:45 AM $3000 1.15m Junior/Amateur Classic II.2b CHOCO (2), KING (15), DOTTIE (20) 1:45 PM $5000 NAL 1.25m Junior Classic II.2b × ANNEX MUNSTER (1) 7:30 AM NHS Medal 3'3\" 8:15 AM NCEA Medal 3'3\" FAN (3) 9:00 AM USEF Hunter Seat Medal 3'6\" 10:15 AM $750 1.05m Junior Classic II.2b 11:15 AM $750 1.05m Amateur Classic II.2b",
+      "responses": [
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-embed-html&_=TS"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-live&focus_day=2026-06-14"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-layout&focus_day=2026-06-14"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-embed-html&focus_day=2026-06-14&_=TS"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-live&focus_day=2026-06-14"
+        },
+        {
+          "status": 200,
+          "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-layout&focus_day=2026-06-14"
+        }
+      ]
+    }
+  },
+  "pass": true
+}

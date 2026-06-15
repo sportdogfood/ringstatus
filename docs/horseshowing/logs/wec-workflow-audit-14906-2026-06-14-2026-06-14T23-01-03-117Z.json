@@ -1,0 +1,121 @@
+{
+  "audited_at": "2026-06-14T23:01:05.056Z",
+  "show_no": "14906",
+  "focus_day": "2026-06-14",
+  "update_schedule": {
+    "rows": 92
+  },
+  "class_start_times": {
+    "rows": 92,
+    "significance": "one row per update_schedule class for focus_day",
+    "link_missing": {
+      "shows": 0,
+      "focus_show": 0,
+      "classes": 0,
+      "rings": 0,
+      "ring_days": 0
+    },
+    "live_scoped_rows": 64,
+    "live_scoped_missing_live_fields": 20,
+    "all_rows_without_live_fields": 41
+  },
+  "entry_go_times": {
+    "rows": 73,
+    "active": 41,
+    "inactive": 32,
+    "inactive_missing_from_class_oog": 32,
+    "significance": "active rows are active-trainer class_oog entries; inactive rows are stale generated rows not present in current class_oog identity set",
+    "active_link_missing": {
+      "shows": 0,
+      "focus_show": 0,
+      "classes": 0,
+      "rings": 0,
+      "ring_days": 0,
+      "entries": 0,
+      "horses": 0,
+      "riders": 0,
+      "trainers": 0,
+      "class_start_times": 0,
+      "class_oog": 0
+    },
+    "live_scoped_active_rows": 34,
+    "live_scoped_active_missing_live_fields": 4,
+    "active_rows_without_live_fields": 9
+  },
+  "class_oog": {
+    "rows": 908,
+    "source_counts": {
+      "class_oog": 276,
+      "NOT A POSTED ORDER": 632
+    },
+    "link_missing": {
+      "shows": 0,
+      "focus_show": 0,
+      "classes": 0,
+      "rings": 0,
+      "ring_days": 0,
+      "ring_names": 0,
+      "entries": 0,
+      "horses": 0,
+      "riders": 0,
+      "trainers": 0
+    },
+    "pedro_active_rows": 4
+  },
+  "get_rings": {
+    "rows": 60,
+    "link_missing": {
+      "shows": 0,
+      "classes": 0,
+      "ring_days": 0,
+      "rings": 0,
+      "ring_names": 0,
+      "entries": 0
+    },
+    "missing_class_no": 0,
+    "live_fields_rows": 60
+  },
+  "get_orders": {
+    "rows": 64,
+    "link_missing": {
+      "shows": 0,
+      "classes": 0,
+      "ring_days": 0,
+      "rings": 0,
+      "ring_names": 0,
+      "entries": 0
+    },
+    "missing_class_no": 3,
+    "missing_class_no_rows": [
+      {
+        "key": "14906|684|4181|852",
+        "class_text": "852) $5000 NAL 1.25m Amateur Classic II.2b",
+        "day_text": "Sunday, June 14, 2026",
+        "ring_name": "INDOOR 6 - Brandon",
+        "time_text": "3:20pm",
+        "entry_no": 2291,
+        "classes_linked": 1
+      },
+      {
+        "key": "14906|675|3893|417",
+        "class_text": "417) $3500 Amateur Owner Hunter Classic 3'6\"",
+        "day_text": "Sunday, June 14, 2026",
+        "ring_name": "INDOOR 1 - Sarah",
+        "time_text": "8:21am",
+        "entry_no": 2701,
+        "classes_linked": 1
+      },
+      {
+        "key": "14906|670|3863|2204",
+        "class_text": "2204) $85,000 4CYTE Grand Prix FEI CSI2* 1.45m 220.2.1.2",
+        "day_text": "Saturday, June 13, 2026",
+        "ring_name": "WEC GRAND ARENA - Nate",
+        "time_text": "9:13pm",
+        "entry_no": 130,
+        "classes_linked": 1
+      }
+    ],
+    "live_fields_rows": 64
+  },
+  "pass": false
+}

@@ -1,1 +1,0 @@
-This folder contains the built output assets for the worker "cosmic-builder-dry-run" generated at 2026-06-12T20:02:18.291Z.

@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEC Comments Full Test</title>
+  <style>
+    :root{
+      --ink:#111;
+      --muted:#5d6268;
+      --line:#d7dadd;
+      --soft:#f5f5f5;
+      --accent:#815374;
+      --accent-soft:#dcb6d1;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      color:var(--ink);
+      background:#fff;
+    }
+    .page{
+      max-width:760px;
+      margin:0 auto;
+      padding:18px;
+    }
+    .topbar{
+      border-bottom:1px solid var(--line);
+      padding-bottom:12px;
+      margin-bottom:14px;
+    }
+    .title{
+      font-size:28px;
+      font-weight:800;
+      line-height:1.05;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin-top:4px;
+      font-size:15px;
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius:8px;
+      margin-bottom:12px;
+      overflow:hidden;
+      background:#fff;
+    }
+    .panel-head{
+      background:var(--accent-soft);
+      border-bottom:1px solid var(--line);
+      padding:10px 12px;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+    .panel-body{
+      padding:12px;
+    }
+    .row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      font:inherit;
+      font-weight:700;
+      border:1px solid #111;
+      border-radius:999px;
+      background:#fff;
+      color:#111;
+      padding:9px 14px;
+      cursor:pointer;
+    }
+    .btn.primary{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#fff;
+    }
+    .btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+    .session{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+      word-break:break-word;
+    }
+    .targets{
+      display:grid;
+      gap:8px;
+    }
+    .target{
+      width:100%;
+      text-align:left;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:#fff;
+      padding:10px;
+      cursor:pointer;
+    }
+    .target.is-selected{
+      border-color:#111;
+      box-shadow:inset 0 0 0 2px var(--accent);
+      background:#faf7f9;
+    }
+    .target-scope{
+      display:inline-block;
+      min-width:44px;
+      border:1px solid var(--accent);
+      border-radius:999px;
+      color:var(--accent);
+      font-weight:800;
+      font-size:12px;
+      text-align:center;
+      padding:2px 7px;
+      margin-right:8px;
+      text-transform:uppercase;
+    }
+    .target-title{
+      font-size:18px;
+      font-weight:800;
+    }
+    .target-meta{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    label{
+      display:block;
+      font-weight:800;
+      margin:10px 0 5px;
+    }
+    textarea{
+      width:100%;
+      min-height:96px;
+      resize:vertical;
+      border:1px solid #b9bdc2;
+      border-radius:8px;
+      padding:10px;
+      font:inherit;
+    }
+    .selected-line{
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:8px;
+    }
+    .status{
+      padding:10px 12px;
+      border-radius:8px;
+      background:var(--soft);
+      color:var(--muted);
+      font-weight:700;
+    }
+    .status.ok{
+      background:#edf7ef;
+      color:#17612f;
+    }
+    .status.bad{
+      background:#fff0f0;
+      color:#9b1c1c;
+    }
+    .comments{
+      display:grid;
+      gap:8px;
+    }
+    .comment{
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:10px;
+      background:#fff;
+    }
+    .comment-meta{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:5px;
+    }
+    pre{
+      white-space:pre-wrap;
+      margin:0;
+      background:#f7f7f7;
+      border-top:1px solid var(--line);
+      padding:10px 12px;
+      font-size:12px;
+      color:#333;
+      max-height:220px;
+      overflow:auto;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="title">WEC Comments Test</div>
+      <div class="subtitle">Start a session, select a target, save a comment to Airtable.</div>
+    </header>
+
+    <section class="panel">
+      <div class="panel-head">SESSION</div>
+      <div class="panel-body">
+        <div class="row">
+          <button class="btn primary" id="startSession" type="button">Start session</button>
+          <button class="btn" id="heartbeat" type="button">Heartbeat</button>
+          <button class="btn" id="refreshComments" type="button">Refresh Airtable</button>
+        </div>
+        <div class="session" id="sessionReadout">No session.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">COMMENT TARGET</div>
+      <div class="panel-body">
+        <div class="targets" id="targets"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">COMMENT</div>
+      <div class="panel-body">
+        <div class="selected-line" id="selectedReadout">No target selected.</div>
+        <label for="commentText">Comment text</label>
+        <textarea id="commentText" placeholder="Type comment here..."></textarea>
+        <p><button class="btn primary" id="saveComment" type="button">Save comment</button></p>
+        <div class="status" id="status">Ready.</div>
+      </div>
+      <pre id="debugOut"></pre>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">SAVED THIS BROWSER</div>
+      <div class="panel-body">
+        <div class="comments" id="comments"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ENDPOINT = "http://127.0.0.1:4358/wec-schedule/edit";
+    const SHOW_NO = 14906;
+    const FOCUS_DAY = "2026-06-14";
+
+    const targets = [
+      {
+        scope:"ring",
+        label:"Indoor 4",
+        ring_no:665,
+        meta:"ring_no 665"
+      },
+      {
+        scope:"class",
+        label:"Class 33518",
+        ring_no:665,
+        class_no:33518,
+        meta:"ring_no 665 / class_no 33518"
+      },
+      {
+        scope:"entry",
+        label:"Navigator",
+        ring_no:665,
+        class_no:33518,
+        entry_no:3100,
+        meta:"ring_no 665 / class_no 33518 / entry_no 3100"
+      }
+    ];
+
+    const state = {
+      deviceId: localStorage.getItem("wec_comments_device_id") || "",
+      sessionId: localStorage.getItem("wec_comments_session_id") || "",
+      selectedIndex: Number(localStorage.getItem("wec_comments_selected_index") || "-1"),
+      comments: JSON.parse(localStorage.getItem("wec_comments_saved") || "[]")
+    };
+
+    if(!state.deviceId){
+      state.deviceId = "device_" + crypto.randomUUID();
+      localStorage.setItem("wec_comments_device_id", state.deviceId);
+    }
+
+    document.getElementById("startSession").addEventListener("click", startSession);
+    document.getElementById("heartbeat").addEventListener("click", sendHeartbeat);
+    document.getElementById("saveComment").addEventListener("click", saveComment);
+    document.getElementById("refreshComments").addEventListener("click", refreshComments);
+
+    render();
+    checkEndpoint();
+
+    async function startSession(){
+      try{
+      state.sessionId = "session_" + crypto.randomUUID();
+      localStorage.setItem("wec_comments_session_id", state.sessionId);
+
+      const result = await postEdit({
+        action:"start-session",
+        session_id:state.sessionId,
+        device_id:state.deviceId,
+        show_no:SHOW_NO,
+        focus_day:FOCUS_DAY,
+        page:"wec-comments-full-test",
+        source:"local-full-test"
+      });
+
+      setStatus("Session created in Airtable.", "ok", result);
+      render();
+      await refreshComments();
+      }catch(error){
+        setStatus(error.message || "Session failed.", "bad", { error:String(error) });
+      }
+    }
+
+    async function sendHeartbeat(){
+      try{
+      if(!state.sessionId){
+        setStatus("Start session first.", "bad", {});
+        return;
+      }
+
+      const result = await postEdit({
+        action:"session-heartbeat",
+        session_id:state.sessionId
+      });
+
+      setStatus("Heartbeat updated in Airtable.", "ok", result);
+      }catch(error){
+        setStatus(error.message || "Heartbeat failed.", "bad", { error:String(error) });
+      }
+    }
+
+    async function saveComment(){
+      try{
+      if(!state.sessionId){
+        setStatus("Start session first.", "bad", {});
+        return;
+      }
+      if(state.selectedIndex < 0){
+        setStatus("Select a target first.", "bad", {});
+        return;
+      }
+
+      const target = targets[state.selectedIndex];
+      const text = document.getElementById("commentText").value.trim();
+      if(!text){
+        setStatus("Type a comment first.", "bad", {});
+        return;
+      }
+
+      const comment = {
+        comment_id:"comment_" + crypto.randomUUID(),
+        session_id:state.sessionId,
+        device_id:state.deviceId,
+        show_no:SHOW_NO,
+        focus_day:FOCUS_DAY,
+        comment_scope:target.scope,
+        ring_no:target.ring_no || "",
+        class_no:target.class_no || "",
+        entry_no:target.entry_no || "",
+        comment_text:text,
+        source:"local-full-test"
+      };
+
+      const result = await postEdit({
+        action:"add-comment",
+        ...comment
+      });
+
+      state.comments.unshift({
+        ...comment,
+        airtable_record_id:result.record_id || "",
+        created_at:new Date().toISOString()
+      });
+      localStorage.setItem("wec_comments_saved", JSON.stringify(state.comments.slice(0,20)));
+      document.getElementById("commentText").value = "";
+
+      setStatus("Comment saved in Airtable.", "ok", result);
+      await refreshComments();
+      render();
+      }catch(error){
+        setStatus(error.message || "Comment failed.", "bad", { error:String(error) });
+      }
+    }
+
+    async function refreshComments(){
+      try{
+        const result = await postEdit({
+          action:"list-comments",
+          show_no:SHOW_NO,
+          session_id:state.sessionId || ""
+        });
+        state.comments = (result.records || []).map((record) => ({
+          comment_id:record.comment_id || "",
+          session_id:record.session_id || "",
+          device_id:record.device_id || "",
+          show_no:record.show_no || "",
+          focus_day:record.focus_day || "",
+          comment_scope:record.comment_scope || "",
+          ring_no:record.ring_no || "",
+          class_no:record.class_no || "",
+          entry_no:record.entry_no || "",
+          comment_text:record.comment_text || "",
+          airtable_record_id:record.record_id || "",
+          created_at:record.created_at || ""
+        }));
+        localStorage.setItem("wec_comments_saved", JSON.stringify(state.comments.slice(0,20)));
+        setStatus(`Loaded ${state.comments.length} Airtable comments.`, "ok", result);
+        render();
+      }catch(error){
+        setStatus(error.message || "Refresh failed.", "bad", { error:String(error) });
+      }
+    }
+
+    async function checkEndpoint(){
+      try{
+        const response = await fetch(ENDPOINT, { method:"GET" });
+        const data = await response.json();
+        setStatus("Endpoint connected.", data.ok ? "ok" : "bad", data);
+      }catch(error){
+        setStatus("Endpoint not reachable.", "bad", {
+          endpoint:ENDPOINT,
+          error:String(error)
+        });
+      }
+    }
+
+    async function postEdit(payload){
+      setStatus("Sending...", "", payload);
+      const response = await fetch(ENDPOINT, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify(payload)
+      });
+      const text = await response.text();
+      let data = null;
+      try{ data = JSON.parse(text); }catch{ data = { raw:text }; }
+      if(!response.ok || data.ok === false){
+        setStatus("Airtable write failed.", "bad", data);
+        throw new Error(data.error || text || "Request failed");
+      }
+      return data;
+    }
+
+    function render(){
+      document.getElementById("sessionReadout").textContent = state.sessionId
+        ? "session_id: " + state.sessionId + " / device_id: " + state.deviceId
+        : "No session. device_id: " + state.deviceId;
+
+      document.getElementById("targets").innerHTML = targets.map((target, index) => {
+        const selected = index === state.selectedIndex;
+        return `
+          <button class="target ${selected ? "is-selected" : ""}" type="button" data-index="${index}">
+            <div>
+              <span class="target-scope">${escapeHtml(target.scope)}</span>
+              <span class="target-title">${escapeHtml(target.label)}</span>
+            </div>
+            <div class="target-meta">${escapeHtml(target.meta)}</div>
+          </button>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".target").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.selectedIndex = Number(button.dataset.index);
+          localStorage.setItem("wec_comments_selected_index", String(state.selectedIndex));
+          render();
+        });
+      });
+
+      const selected = targets[state.selectedIndex];
+      document.getElementById("selectedReadout").textContent = selected
+        ? "Selected: " + selected.scope + " / " + selected.label
+        : "No target selected.";
+
+      document.getElementById("comments").innerHTML = state.comments.length
+        ? state.comments.map((comment) => `
+          <div class="comment">
+            <div class="comment-meta">
+              ${escapeHtml(comment.comment_scope)}
+              ring ${escapeHtml(comment.ring_no)}
+              class ${escapeHtml(comment.class_no)}
+              entry ${escapeHtml(comment.entry_no)}
+              / ${escapeHtml(comment.airtable_record_id)}
+            </div>
+            <div>${escapeHtml(comment.comment_text)}</div>
+          </div>
+        `).join("")
+        : `<div class="muted">No saved comments from this browser.</div>`;
+    }
+
+    function setStatus(message, kind, payload){
+      const status = document.getElementById("status");
+      status.className = "status" + (kind ? " " + kind : "");
+      status.textContent = message;
+      document.getElementById("debugOut").textContent = JSON.stringify(payload || {}, null, 2);
+    }
+
+    function escapeHtml(value){
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        "\"":"&quot;",
+        "'":"&#039;"
+      })[char]);
+    }
+  </script>
+</body>
+</html>

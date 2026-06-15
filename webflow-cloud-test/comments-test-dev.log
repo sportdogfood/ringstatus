@@ -12,3 +12,33 @@ Using secrets defined in .env
 [42m[1m astro [22m[49m [32mv6.3.5[39m [2mready in[22m 28546 [2mms[22m
 [2m┃[22m Local    [36mhttp://127.0.0.1:4358/[39m
 [2m18:26:33[22m [32mwatching for file changes...[39m
+[33m[1m18:54:23[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:54:43[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:54:48[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:54:56[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:54:57[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:54:58[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:55:06[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:55:11[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:55:18[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:55:20[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m18:55:25[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[2m18:56:51[22m [34m[vite][39m [vite] program reload
+[33m[1m19:04:25[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:27[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:27[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:28[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:32[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:34[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:36[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:36[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:36[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:37[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:37[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:44[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:45[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[33m[1m19:04:46[22m [WARN] [router][39m Blocked cross-origin request to /wec-schedule/edit (Sec-Fetch-Site: cross-site, Sec-Fetch-Mode: cors). Cross-origin subresource requests are not allowed on the dev server for security reasons.
+[2m19:18:08[22m Configuration file updated. Restarting...
+[2m19:18:08[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+Using secrets defined in .env
+[33m[1m19:18:16[22m [WARN] [vite][39m Failed to resolve dependency: [36m@astrojs/cloudflare/image-service-workerd[39m, present in ssr 'optimizeDeps.include'
