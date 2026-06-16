@@ -1,0 +1,69 @@
+{
+  "total_ring_days": 52,
+  "done": [
+    "3890",
+    "4183",
+    "3907",
+    "3893",
+    "4178",
+    "4180",
+    "4175",
+    "4299",
+    "3910",
+    "3892"
+  ],
+  "remaining": 42,
+  "batch_results": [
+    {
+      "ring_day_no": 3890,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 4183,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 3907,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 3893,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 4178,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 4180,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 4175,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 4299,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 3910,
+      "inserted": 0,
+      "updated": 0
+    },
+    {
+      "ring_day_no": 3892,
+      "inserted": 0,
+      "updated": 0
+    }
+  ],
+  "total_parsed": null
+}
