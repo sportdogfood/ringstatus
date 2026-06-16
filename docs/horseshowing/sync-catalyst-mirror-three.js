@@ -141,7 +141,7 @@ function updateScheduleMirrorRow(row) {
   return {
     mirror_update_schedule_key: [showNo, days, classNo].join("|"),
     show_no: showNo,
-    focus_day: clean(row.focus_day).slice(0, 10) || undefined,
+    focus_day: clean(row.focus_day || row.iso_date).slice(0, 10) || undefined,
     days,
     ring_no: num(row.ring_no),
     ring_name: text(row.ring_name),

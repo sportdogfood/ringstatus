@@ -20,6 +20,12 @@ const TABLES = {
   globals: "rs_global_params"
 };
 
+const PAGE_CACHE_TTL_MS = 5 * 60 * 1000;
+const DATASET_CACHE_TTL_MS = 30 * 1000;
+const pageCache = new Map();
+let datasetCache = null;
+let datasetInflight = null;
+
 export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
 
 export const GET = async ({ url }) => {
@@ -30,13 +36,14 @@ export const GET = async ({ url }) => {
 
   const pageKey = clean(url.searchParams.get("pageKey") || "rs_home");
   const mode = clean(url.searchParams.get("mode"));
+  const refresh = clean(url.searchParams.get("refresh")) === "1";
 
   try {
     if (mode === "site_toggle") {
       const result = await buildSiteToggle({ token, baseId, pageKey });
       return renderJson(result);
     }
-    const result = await buildPage({ token, baseId, pageKey });
+    const result = await getCachedPage({ token, baseId, pageKey, refresh });
     return renderJson(result);
   } catch (error) {
     console.error("[rs-page-render] failed", error);
@@ -138,7 +145,61 @@ function renderJson(data, status = 200) {
   });
 }
 
-async function buildPage({ token, baseId, pageKey }) {
+async function getCachedPage({ token, baseId, pageKey, refresh = false }) {
+  const cacheKey = `${baseId}:${pageKey}`;
+  const cached = pageCache.get(cacheKey);
+  if (!refresh && cached && cached.expiresAt > Date.now()) {
+    return {
+      ...cached.payload,
+      cache: {
+        status: "hit",
+        cachedAt: cached.cachedAt,
+        expiresAt: cached.expiresAt
+      }
+    };
+  }
+
+  const dataset = await getDataset({ token, baseId, refresh });
+  const payload = buildPageFromDataset({ baseId, pageKey, dataset });
+  const now = Date.now();
+  pageCache.set(cacheKey, {
+    payload,
+    cachedAt: new Date(now).toISOString(),
+    expiresAt: now + PAGE_CACHE_TTL_MS
+  });
+  return {
+    ...payload,
+    cache: {
+      status: "miss",
+      cachedAt: new Date(now).toISOString(),
+      expiresAt: now + PAGE_CACHE_TTL_MS
+    }
+  };
+}
+
+async function getDataset({ token, baseId, refresh = false }) {
+  const now = Date.now();
+  if (!refresh && datasetCache && datasetCache.baseId === baseId && datasetCache.expiresAt > now) {
+    return datasetCache.payload;
+  }
+  if (!refresh && datasetInflight) return datasetInflight;
+
+  datasetInflight = fetchDataset({ token, baseId })
+    .then((payload) => {
+      datasetCache = {
+        baseId,
+        payload,
+        expiresAt: Date.now() + DATASET_CACHE_TTL_MS
+      };
+      return payload;
+    })
+    .finally(() => {
+      datasetInflight = null;
+    });
+  return datasetInflight;
+}
+
+async function fetchDataset({ token, baseId }) {
   const [
     pages,
     blocks,
@@ -156,6 +217,16 @@ async function buildPage({ token, baseId, pageKey }) {
     listRecords({ token, baseId, tableName: TABLES.navigation }),
     listRecords({ token, baseId, tableName: TABLES.globals })
   ]);
+  return { pages, blocks, divs, typography, content, navigation, globals };
+}
+
+async function buildPage({ token, baseId, pageKey }) {
+  const dataset = await fetchDataset({ token, baseId });
+  return buildPageFromDataset({ baseId, pageKey, dataset });
+}
+
+function buildPageFromDataset({ baseId, pageKey, dataset }) {
+  const { pages, blocks, divs, typography, content, navigation, globals } = dataset;
 
   const page = pages.find((record) => clean(record.fields.page_key) === pageKey);
   if (!page) throw new Error(`page_not_found:${pageKey}`);
@@ -245,13 +316,11 @@ async function listRecords({ token, baseId, tableName }) {
 function renderPage(tree, prefetchPageKeys = []) {
   const pageKey = clean(tree.page.page_key);
   const body = tree.blocks.map((block) => renderBlock(block, tree)).join("\n");
-  const navPageKeys = [pageKey, ...prefetchPageKeys].filter(Boolean);
   return [
-    `<main class="rs-page" data-rs-page="${escapeAttr(pageKey)}">`,
+    `<main class="rs-page" data-rs-page="${escapeAttr(pageKey)}" data-rs-endpoint="/test/rs-page-render" data-rs-prefetch="${escapeAttr(prefetchPageKeys.join(","))}">`,
     renderBaseStyle(),
     renderPrefetchLinks(prefetchPageKeys),
     body,
-    renderNavRuntime(pageKey, navPageKeys),
     `</main>`
   ].join("\n");
 }
@@ -261,35 +330,6 @@ function renderPrefetchLinks(pageKeys) {
     .filter(Boolean)
     .map((key) => `<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=${escapeAttr(encodeURIComponent(key))}" crossorigin="anonymous">`)
     .join("\n");
-}
-
-function renderNavRuntime(pageKey, pageKeys) {
-  const safePageKey = JSON.stringify(pageKey);
-  const safePageKeys = JSON.stringify([...new Set(pageKeys)]);
-  return [
-    `<script>`,
-    `(function(){`,
-    `var currentKey=${safePageKey};`,
-    `var pageKeys=${safePageKeys};`,
-    `var script=document.currentScript;`,
-    `var main=script&&script.closest('main.rs-page');`,
-    `var mount=main&&main.closest('#rs-page-root');`,
-    `if(!mount||mount.__rsNavRuntimeReady)return;`,
-    `mount.__rsNavRuntimeReady=true;`,
-    `function cacheKey(key){return 'rs_page_html:'+key;}`,
-    `function endpointFor(key){var endpoint=new URL('https://ringstatus.com/test/rs-page-render');endpoint.searchParams.set('pageKey',key);return endpoint.toString();}`,
-    `function writeCache(key,html){try{sessionStorage.setItem(cacheKey(key),html||'');}catch(error){}}`,
-    `function readCache(key){try{return sessionStorage.getItem(cacheKey(key));}catch(error){return null;}}`,
-    `function fetchPage(key){return fetch(endpointFor(key)).then(function(response){return response.json();}).then(function(data){if(!data||!data.ok)throw new Error((data&&(data.detail||data.error))||'Render failed');writeCache(key,data.html||'');return data.html||'';});}`,
-    `function preloadRest(activeKey){pageKeys.forEach(function(key){if(!key||key===activeKey||readCache(key))return;fetchPage(key).catch(function(){});});}`,
-    `function applyPage(key,html,href){mount.innerHTML=html||'';if(href&&history&&history.pushState)history.pushState({rsPageKey:key},'',href);preloadRest(key);}`,
-    `writeCache(currentKey,mount.innerHTML);`,
-    `preloadRest(currentKey);`,
-    `document.addEventListener('click',function(event){var link=event.target&&event.target.closest?event.target.closest('.rs-main .rs-nav-link[data-rs-page-key]'):null;if(!link||!mount.contains(link))return;if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button)return;var key=link.getAttribute('data-rs-page-key');var href=link.getAttribute('href');if(!key)return;event.preventDefault();var cached=readCache(key);if(cached){applyPage(key,cached,href);return;}fetchPage(key).then(function(html){applyPage(key,html,href);}).catch(function(){if(href)location.href=href;});});`,
-    `window.addEventListener('popstate',function(){var path=location.pathname;var map={'/rs/home':'rs_home','/rs/about-me':'rs_about_me','/rs/company':'rs_about_company','/rs/apps':'rs_apps','/rs/contact':'rs_contact','/rs/members':'rs_members'};var key=map[path];var cached=key&&readCache(key);if(key&&cached){mount.innerHTML=cached;preloadRest(key);}});`,
-    `})();`,
-    `</script>`
-  ].join("");
 }
 
 function getMainNavPageKeys(items) {
