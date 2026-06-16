@@ -55,6 +55,10 @@ export const GET = async ({ url }) => {
   }
 };
 
+export async function renderRsPagePayload({ token, baseId, pageKey, refresh = false }) {
+  return getCachedPage({ token, baseId, pageKey, refresh });
+}
+
 async function buildSiteToggle({ token, baseId, pageKey }) {
   const [
     pages,
