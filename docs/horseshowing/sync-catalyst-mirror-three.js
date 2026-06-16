@@ -146,6 +146,7 @@ function updateScheduleMirrorRow(row) {
     ring_no: num(row.ring_no),
     ring_name: text(row.ring_name),
     date_text: text(row.date_text),
+    iso_date: clean(row.iso_date || row.focus_day).slice(0, 10) || undefined,
     class_no: classNo,
     event_id: num(row.event_id),
     class_payout: text(row.class_payout),

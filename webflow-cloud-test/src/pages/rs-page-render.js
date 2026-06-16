@@ -34,10 +34,10 @@ export const GET = async ({ url }) => {
   try {
     if (mode === "site_toggle") {
       const result = await buildSiteToggle({ token, baseId, pageKey });
-      return json(result);
+      return renderJson(result);
     }
     const result = await buildPage({ token, baseId, pageKey });
-    return json(result);
+    return renderJson(result);
   } catch (error) {
     console.error("[rs-page-render] failed", error);
     return json({
@@ -127,6 +127,17 @@ async function buildSiteToggle({ token, baseId, pageKey }) {
   };
 }
 
+function renderJson(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "public, max-age=300, stale-while-revalidate=3600"
+    }
+  });
+}
+
 async function buildPage({ token, baseId, pageKey }) {
   const [
     pages,
@@ -175,6 +186,7 @@ async function buildPage({ token, baseId, pageKey }) {
       .map((record) => pick(record, ["nav_item_key", "nav_group", "label", "page_key", "href", "sort_order"])),
     blocks: treeBlocks
   };
+  const prefetchPageKeys = getMainNavPageKeys(tree.navigation).filter((key) => key !== pageKey);
 
   return {
     ok: true,
@@ -183,8 +195,9 @@ async function buildPage({ token, baseId, pageKey }) {
       pageKey,
       mode: "airtable_rscom_page_hierarchy"
     },
+    prefetch: prefetchPageKeys.map((key) => `/test/rs-page-render?pageKey=${encodeURIComponent(key)}`),
     tree,
-    html: renderPage(tree)
+    html: renderPage(tree, prefetchPageKeys)
   };
 }
 
@@ -229,15 +242,62 @@ async function listRecords({ token, baseId, tableName }) {
   return records;
 }
 
-function renderPage(tree) {
+function renderPage(tree, prefetchPageKeys = []) {
   const pageKey = clean(tree.page.page_key);
   const body = tree.blocks.map((block) => renderBlock(block, tree)).join("\n");
+  const navPageKeys = [pageKey, ...prefetchPageKeys].filter(Boolean);
   return [
     `<main class="rs-page" data-rs-page="${escapeAttr(pageKey)}">`,
     renderBaseStyle(),
+    renderPrefetchLinks(prefetchPageKeys),
     body,
+    renderNavRuntime(pageKey, navPageKeys),
     `</main>`
   ].join("\n");
+}
+
+function renderPrefetchLinks(pageKeys) {
+  return pageKeys
+    .filter(Boolean)
+    .map((key) => `<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=${escapeAttr(encodeURIComponent(key))}" crossorigin="anonymous">`)
+    .join("\n");
+}
+
+function renderNavRuntime(pageKey, pageKeys) {
+  const safePageKey = JSON.stringify(pageKey);
+  const safePageKeys = JSON.stringify([...new Set(pageKeys)]);
+  return [
+    `<script>`,
+    `(function(){`,
+    `var currentKey=${safePageKey};`,
+    `var pageKeys=${safePageKeys};`,
+    `var script=document.currentScript;`,
+    `var main=script&&script.closest('main.rs-page');`,
+    `var mount=main&&main.closest('#rs-page-root');`,
+    `if(!mount||mount.__rsNavRuntimeReady)return;`,
+    `mount.__rsNavRuntimeReady=true;`,
+    `function cacheKey(key){return 'rs_page_html:'+key;}`,
+    `function endpointFor(key){var endpoint=new URL('https://ringstatus.com/test/rs-page-render');endpoint.searchParams.set('pageKey',key);return endpoint.toString();}`,
+    `function writeCache(key,html){try{sessionStorage.setItem(cacheKey(key),html||'');}catch(error){}}`,
+    `function readCache(key){try{return sessionStorage.getItem(cacheKey(key));}catch(error){return null;}}`,
+    `function fetchPage(key){return fetch(endpointFor(key)).then(function(response){return response.json();}).then(function(data){if(!data||!data.ok)throw new Error((data&&(data.detail||data.error))||'Render failed');writeCache(key,data.html||'');return data.html||'';});}`,
+    `function preloadRest(activeKey){pageKeys.forEach(function(key){if(!key||key===activeKey||readCache(key))return;fetchPage(key).catch(function(){});});}`,
+    `function applyPage(key,html,href){mount.innerHTML=html||'';if(href&&history&&history.pushState)history.pushState({rsPageKey:key},'',href);preloadRest(key);}`,
+    `writeCache(currentKey,mount.innerHTML);`,
+    `preloadRest(currentKey);`,
+    `document.addEventListener('click',function(event){var link=event.target&&event.target.closest?event.target.closest('.rs-main .rs-nav-link[data-rs-page-key]'):null;if(!link||!mount.contains(link))return;if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button)return;var key=link.getAttribute('data-rs-page-key');var href=link.getAttribute('href');if(!key)return;event.preventDefault();var cached=readCache(key);if(cached){applyPage(key,cached,href);return;}fetchPage(key).then(function(html){applyPage(key,html,href);}).catch(function(){if(href)location.href=href;});});`,
+    `window.addEventListener('popstate',function(){var path=location.pathname;var map={'/rs/home':'rs_home','/rs/about-me':'rs_about_me','/rs/company':'rs_about_company','/rs/apps':'rs_apps','/rs/contact':'rs_contact','/rs/members':'rs_members'};var key=map[path];var cached=key&&readCache(key);if(key&&cached){mount.innerHTML=cached;preloadRest(key);}});`,
+    `})();`,
+    `</script>`
+  ].join("");
+}
+
+function getMainNavPageKeys(items) {
+  return [...new Set(items
+    .filter((item) => selectName(item.nav_group) === "main_nav")
+    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
+    .map((item) => clean(item.page_key))
+    .filter(Boolean))];
 }
 
 function renderSiteToggle(tree, activePageKey) {
@@ -343,10 +403,16 @@ function renderNavigation(block, items, group) {
     .map((item) => `<a class="rs-nav-link" href="${escapeAttr(item.href || "#")}" data-rs-page-key="${escapeAttr(item.page_key)}">${escapeHtml(item.label)}</a>`)
     .join("");
   const tag = group === "footer_nav" ? "footer" : "nav";
+  const logo = group === "main_nav"
+    ? `<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>`
+    : "";
   return [
     `<${tag} class="rs-${group.replace("_nav", "")}" data-rs-block="${escapeAttr(block.block_key)}">`,
     `  <div class="rs-nav-inner">`,
+    logo,
+    `    <div class="rs-nav-links">`,
     links,
+    `    </div>`,
     `  </div>`,
     `</${tag}>`
   ].join("\n");
@@ -394,10 +460,17 @@ function sanitizeTrustedHtml(value) {
 function renderBaseStyle() {
   return [
     `<style>`,
+    `.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}`,
+    `.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}`,
+    `.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}`,
+    `.rs-nav-logo span{color:#56372d;}`,
+    `.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}`,
+    `.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}`,
+    `.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}`,
     `.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}`,
     `.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}`,
     `.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}`,
-    `@media(max-width:700px){.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}`,
+    `@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}`,
     `</style>`
   ].join("");
 }
