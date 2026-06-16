@@ -5048,3 +5048,4 @@
 2026-06-15T23:41:19 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-16|wec_lane_audit records=1
 2026-06-15T23:55:31 cadence-gate pass focus=14907|2026-06-16|day cadence=12
 2026-06-15T23:56:15 heartbeat show=14907 focus=2026-06-16 ok=True schedule_rows=1 triggers=0
+2026-06-15T23:56:28 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-16|local_core_workflow
