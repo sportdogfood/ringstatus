@@ -6,6 +6,7 @@ const LOADER_JS = String.raw`(function () {
   "use strict";
 
   var DEFAULT_ENDPOINT = "https://ringstatus.com/test/rs-page-render";
+  var DEFAULT_PAYLOAD_ENDPOINT = "https://ringstatus.com/test/rs-page-payload";
   var ROOT_SELECTOR = "#rs-page-root,[data-rs-page-root]";
   var memoryCache = Object.create(null);
   var inflight = Object.create(null);
@@ -27,6 +28,7 @@ const LOADER_JS = String.raw`(function () {
 
     var config = window.RS_PAGE_RENDER_CONFIG || {};
     var endpoint = config.endpointUrl || root.getAttribute("data-rs-endpoint") || DEFAULT_ENDPOINT;
+    var payloadEndpoint = config.payloadUrl || root.getAttribute("data-rs-payload-url") || DEFAULT_PAYLOAD_ENDPOINT;
     var initialKey = config.pageKey || root.getAttribute("data-rs-page-key") || pagePathMap[window.location.pathname] || "rs_home";
 
     root.setAttribute("data-rs-status", "loading");
@@ -37,9 +39,9 @@ const LOADER_JS = String.raw`(function () {
       root.setAttribute("data-rs-status", "ready");
       root.setAttribute("data-rs-page-key", renderedKey);
       writeCache(renderedKey, root.innerHTML);
-      preloadFromRendered(root, renderedKey, endpoint);
+      preloadFromRendered(root, renderedKey, endpoint, payloadEndpoint);
     } else {
-      loadPage(root, initialKey, endpoint, null, true);
+      loadPage(root, initialKey, endpoint, payloadEndpoint, null, true);
     }
 
     document.addEventListener("click", function (event) {
@@ -52,17 +54,17 @@ const LOADER_JS = String.raw`(function () {
       if (!pageKey) return;
 
       event.preventDefault();
-      loadPage(root, pageKey, endpoint, href, false);
+      loadPage(root, pageKey, endpoint, payloadEndpoint, href, false);
     });
 
     window.addEventListener("popstate", function () {
       var key = pagePathMap[window.location.pathname];
       if (!key) return;
-      loadPage(root, key, endpoint, null, false);
+      loadPage(root, key, endpoint, payloadEndpoint, null, false);
     });
   }
 
-  function loadPage(root, pageKey, endpoint, href, replaceOnly) {
+  function loadPage(root, pageKey, endpoint, payloadEndpoint, href, replaceOnly) {
     var cached = readCache(pageKey);
     if (cached) {
       applyPage(root, pageKey, cached, href, replaceOnly);
@@ -70,7 +72,7 @@ const LOADER_JS = String.raw`(function () {
     }
 
     root.setAttribute("data-rs-status", "loading");
-    return fetchPage(pageKey, endpoint)
+    return fetchPage(pageKey, endpoint, payloadEndpoint)
       .then(function (html) {
         applyPage(root, pageKey, html, href, replaceOnly);
         return html;
@@ -82,21 +84,24 @@ const LOADER_JS = String.raw`(function () {
       });
   }
 
-  function fetchPage(pageKey, endpoint) {
+  function fetchPage(pageKey, endpoint, payloadEndpoint) {
     if (inflight[pageKey]) return inflight[pageKey];
 
-    var url = new URL(endpoint, window.location.origin);
+    var url = new URL(payloadEndpoint || DEFAULT_PAYLOAD_ENDPOINT, window.location.origin);
     url.searchParams.set("pageKey", pageKey);
 
-    inflight[pageKey] = fetch(url.toString(), { cache: "no-store" })
+    inflight[pageKey] = fetch(url.toString(), { cache: "force-cache" })
       .then(function (response) {
         return response.json();
       })
+      .catch(function () {
+        return fetchRenderPage(pageKey, endpoint);
+      })
       .then(function (data) {
         if (!data || !data.ok) {
-          throw new Error((data && (data.detail || data.error)) || "Render failed");
+          return fetchRenderPage(pageKey, endpoint).then(htmlFromPayload);
         }
-        var html = data.html || "";
+        var html = htmlFromPayload(data);
         writeCache(pageKey, html);
         return html;
       })
@@ -107,6 +112,19 @@ const LOADER_JS = String.raw`(function () {
     return inflight[pageKey];
   }
 
+  function fetchRenderPage(pageKey, endpoint) {
+    var url = new URL(endpoint, window.location.origin);
+    url.searchParams.set("pageKey", pageKey);
+    return fetch(url.toString(), { cache: "no-store" }).then(function (response) {
+      return response.json();
+    });
+  }
+
+  function htmlFromPayload(data) {
+    if (!data || !data.ok) throw new Error((data && (data.detail || data.error)) || "Render failed");
+    return data.html || "";
+  }
+
   function applyPage(root, pageKey, html, href, replaceOnly) {
     root.innerHTML = html || "";
     root.setAttribute("data-rs-status", "ready");
@@ -115,14 +133,14 @@ const LOADER_JS = String.raw`(function () {
     if (href && !replaceOnly && window.history && window.history.pushState) {
       window.history.pushState({ rsPageKey: pageKey }, "", href);
     }
-    preloadFromRendered(root, pageKey, findEndpoint(root));
+    preloadFromRendered(root, pageKey, findEndpoint(root), findPayloadEndpoint(root));
   }
 
-  function preloadFromRendered(root, activeKey, endpoint) {
+  function preloadFromRendered(root, activeKey, endpoint, payloadEndpoint) {
     var keys = collectNavKeys(root);
     keys.forEach(function (key) {
       if (!key || key === activeKey || readCache(key) || inflight[key]) return;
-      fetchPage(key, endpoint).catch(function () {});
+      fetchPage(key, endpoint, payloadEndpoint).catch(function () {});
     });
   }
 
@@ -143,6 +161,11 @@ const LOADER_JS = String.raw`(function () {
     var config = window.RS_PAGE_RENDER_CONFIG || {};
     var rendered = findRenderedPage(root);
     return config.endpointUrl || root.getAttribute("data-rs-endpoint") || (rendered && rendered.getAttribute("data-rs-endpoint")) || DEFAULT_ENDPOINT;
+  }
+
+  function findPayloadEndpoint(root) {
+    var config = window.RS_PAGE_RENDER_CONFIG || {};
+    return config.payloadUrl || root.getAttribute("data-rs-payload-url") || DEFAULT_PAYLOAD_ENDPOINT;
   }
 
   function cacheKey(pageKey) {
@@ -172,7 +195,7 @@ const LOADER_JS = String.raw`(function () {
     loadPage: function (pageKey) {
       var root = document.querySelector(ROOT_SELECTOR);
       if (!root) return Promise.reject(new Error("missing_root"));
-      return loadPage(root, pageKey, findEndpoint(root), null, false);
+      return loadPage(root, pageKey, findEndpoint(root), findPayloadEndpoint(root), null, false);
     },
     cacheKeys: function () {
       return Object.keys(memoryCache);
@@ -190,6 +213,6 @@ export const GET = async () => new Response(LOADER_JS, {
   status: 200,
   headers: {
     "Content-Type": "application/javascript; charset=utf-8",
-    "Cache-Control": "public, max-age=300, stale-while-revalidate=3600"
+    "Cache-Control": "no-cache"
   }
 });

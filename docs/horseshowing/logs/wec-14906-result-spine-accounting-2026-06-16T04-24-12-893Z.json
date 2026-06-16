@@ -1,0 +1,742 @@
+{
+  "show_no": "14906",
+  "result_spine_classes": 386,
+  "live_oog_rows_on_result_classes": 4260,
+  "catalyst_oog_rows_on_result_classes": 4498,
+  "counts_entry_sum_on_result_classes": 4082,
+  "result_entry_count_sum": 4090,
+  "live_minus_counts": 178,
+  "catalyst_minus_live_on_result_classes": 238,
+  "result_missing_update": 33,
+  "result_missing_class_times": 44,
+  "order_status_row_totals": {
+    "Class Ordered By: Custom": 821,
+    "NOT A POSTED ORDER": 3349,
+    "(empty)": 0,
+    "Class Ordered By: Random Spaced": 20,
+    "Class Ordered By: Random": 70
+  },
+  "mismatch_count": 102,
+  "mismatch_top_80": [
+    {
+      "class_no": "29115",
+      "live_oog_rows": 27,
+      "counts_entry_count": 10,
+      "result_entry_count": 10,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "33466",
+      "live_oog_rows": 32,
+      "counts_entry_count": 21,
+      "result_entry_count": 21,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "28941",
+      "live_oog_rows": 31,
+      "counts_entry_count": 23,
+      "result_entry_count": 23,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29133",
+      "live_oog_rows": 45,
+      "counts_entry_count": 37,
+      "result_entry_count": 37,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29118",
+      "live_oog_rows": 15,
+      "counts_entry_count": 8,
+      "result_entry_count": 8,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29106",
+      "live_oog_rows": 32,
+      "counts_entry_count": 26,
+      "result_entry_count": 26,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29180",
+      "live_oog_rows": 29,
+      "counts_entry_count": 23,
+      "result_entry_count": 23,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29237",
+      "live_oog_rows": 32,
+      "counts_entry_count": 26,
+      "result_entry_count": 26,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29135",
+      "live_oog_rows": 37,
+      "counts_entry_count": 32,
+      "result_entry_count": 32,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29174",
+      "live_oog_rows": 29,
+      "counts_entry_count": 24,
+      "result_entry_count": 24,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "28943",
+      "live_oog_rows": 48,
+      "counts_entry_count": 44,
+      "result_entry_count": 44,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29100",
+      "live_oog_rows": 30,
+      "counts_entry_count": 26,
+      "result_entry_count": 26,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29136",
+      "live_oog_rows": 22,
+      "counts_entry_count": 18,
+      "result_entry_count": 18,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29173",
+      "live_oog_rows": 29,
+      "counts_entry_count": 25,
+      "result_entry_count": 25,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29139",
+      "live_oog_rows": 16,
+      "counts_entry_count": 13,
+      "result_entry_count": 13,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29260",
+      "live_oog_rows": 9,
+      "counts_entry_count": 6,
+      "result_entry_count": 6,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29263",
+      "live_oog_rows": 17,
+      "counts_entry_count": 14,
+      "result_entry_count": 14,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29412",
+      "live_oog_rows": 30,
+      "counts_entry_count": 27,
+      "result_entry_count": 27,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29473",
+      "live_oog_rows": 18,
+      "counts_entry_count": 15,
+      "result_entry_count": 15,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33465",
+      "live_oog_rows": 31,
+      "counts_entry_count": 28,
+      "result_entry_count": 28,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "33497",
+      "live_oog_rows": 7,
+      "counts_entry_count": 4,
+      "result_entry_count": 4,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33551",
+      "live_oog_rows": 6,
+      "counts_entry_count": 3,
+      "result_entry_count": 3,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "28940",
+      "live_oog_rows": 42,
+      "counts_entry_count": 40,
+      "result_entry_count": 40,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "28999",
+      "live_oog_rows": 14,
+      "counts_entry_count": 12,
+      "result_entry_count": 12,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29121",
+      "live_oog_rows": 26,
+      "counts_entry_count": 24,
+      "result_entry_count": 24,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29124",
+      "live_oog_rows": 13,
+      "counts_entry_count": 11,
+      "result_entry_count": 11,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29134",
+      "live_oog_rows": 70,
+      "counts_entry_count": 68,
+      "result_entry_count": 68,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29232",
+      "live_oog_rows": 7,
+      "counts_entry_count": 5,
+      "result_entry_count": 5,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29410",
+      "live_oog_rows": 26,
+      "counts_entry_count": 24,
+      "result_entry_count": 24,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29455",
+      "live_oog_rows": 35,
+      "counts_entry_count": 33,
+      "result_entry_count": 33,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29472",
+      "live_oog_rows": 18,
+      "counts_entry_count": 16,
+      "result_entry_count": 16,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29479",
+      "live_oog_rows": 36,
+      "counts_entry_count": 34,
+      "result_entry_count": 34,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "33510",
+      "live_oog_rows": 24,
+      "counts_entry_count": 22,
+      "result_entry_count": 22,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33513",
+      "live_oog_rows": 22,
+      "counts_entry_count": 20,
+      "result_entry_count": 20,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Random"
+    },
+    {
+      "class_no": "28987",
+      "live_oog_rows": 9,
+      "counts_entry_count": 8,
+      "result_entry_count": 8,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29002",
+      "live_oog_rows": 4,
+      "counts_entry_count": 3,
+      "result_entry_count": 3,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29003",
+      "live_oog_rows": 4,
+      "counts_entry_count": 3,
+      "result_entry_count": 3,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29020",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 1,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29021",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 1,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29022",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 1,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29023",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 1,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29024",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 1,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29028",
+      "live_oog_rows": 9,
+      "counts_entry_count": 8,
+      "result_entry_count": 8,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29032",
+      "live_oog_rows": 9,
+      "counts_entry_count": 8,
+      "result_entry_count": 8,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29034",
+      "live_oog_rows": 9,
+      "counts_entry_count": 8,
+      "result_entry_count": 8,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29109",
+      "live_oog_rows": 19,
+      "counts_entry_count": 18,
+      "result_entry_count": 18,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29112",
+      "live_oog_rows": 35,
+      "counts_entry_count": 34,
+      "result_entry_count": 34,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29172",
+      "live_oog_rows": 27,
+      "counts_entry_count": 28,
+      "result_entry_count": 28,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29176",
+      "live_oog_rows": 14,
+      "counts_entry_count": 13,
+      "result_entry_count": 13,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29177",
+      "live_oog_rows": 23,
+      "counts_entry_count": 22,
+      "result_entry_count": 22,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29213",
+      "live_oog_rows": 6,
+      "counts_entry_count": 5,
+      "result_entry_count": 5,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29235",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29252",
+      "live_oog_rows": 9,
+      "counts_entry_count": 8,
+      "result_entry_count": 8,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29292",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29293",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29294",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29295",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29296",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29394",
+      "live_oog_rows": 22,
+      "counts_entry_count": 23,
+      "result_entry_count": 23,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29397",
+      "live_oog_rows": 23,
+      "counts_entry_count": 22,
+      "result_entry_count": 22,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29409",
+      "live_oog_rows": 16,
+      "counts_entry_count": 15,
+      "result_entry_count": 15,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29413",
+      "live_oog_rows": 24,
+      "counts_entry_count": 23,
+      "result_entry_count": 23,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Custom"
+    },
+    {
+      "class_no": "29450",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29454",
+      "live_oog_rows": 1,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29463",
+      "live_oog_rows": 8,
+      "counts_entry_count": 7,
+      "result_entry_count": 7,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29474",
+      "live_oog_rows": 17,
+      "counts_entry_count": 16,
+      "result_entry_count": 16,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29498",
+      "live_oog_rows": 10,
+      "counts_entry_count": 9,
+      "result_entry_count": 9,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33459",
+      "live_oog_rows": 15,
+      "counts_entry_count": 14,
+      "result_entry_count": 14,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33512",
+      "live_oog_rows": 10,
+      "counts_entry_count": 9,
+      "result_entry_count": 9,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Random"
+    },
+    {
+      "class_no": "33528",
+      "live_oog_rows": 7,
+      "counts_entry_count": 6,
+      "result_entry_count": 6,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33529",
+      "live_oog_rows": 7,
+      "counts_entry_count": 6,
+      "result_entry_count": 6,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33545",
+      "live_oog_rows": 12,
+      "counts_entry_count": 11,
+      "result_entry_count": 11,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "33550",
+      "live_oog_rows": 6,
+      "counts_entry_count": 5,
+      "result_entry_count": 5,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "28950",
+      "live_oog_rows": 4,
+      "counts_entry_count": 4,
+      "result_entry_count": 4,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "28974",
+      "live_oog_rows": 5,
+      "counts_entry_count": 5,
+      "result_entry_count": 6,
+      "in_update": true,
+      "in_class_times": true,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "28979",
+      "live_oog_rows": 0,
+      "counts_entry_count": 0,
+      "result_entry_count": 0,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": ""
+    },
+    {
+      "class_no": "29097",
+      "live_oog_rows": 8,
+      "counts_entry_count": 8,
+      "result_entry_count": 8,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "Class Ordered By: Random"
+    },
+    {
+      "class_no": "29105",
+      "live_oog_rows": 25,
+      "counts_entry_count": 25,
+      "result_entry_count": 25,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29108",
+      "live_oog_rows": 19,
+      "counts_entry_count": 19,
+      "result_entry_count": 19,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    },
+    {
+      "class_no": "29111",
+      "live_oog_rows": 33,
+      "counts_entry_count": 33,
+      "result_entry_count": 33,
+      "in_update": false,
+      "in_class_times": false,
+      "order_status": "NOT A POSTED ORDER"
+    }
+  ]
+}

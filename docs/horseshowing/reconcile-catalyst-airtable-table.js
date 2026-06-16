@@ -97,7 +97,7 @@ const TABLES = {
     key: "class_time_key",
     catalystKey: "class_time_key",
     fields: (row) => ({
-      class_time_key: text(row.class_time_key),
+      class_time_key: classTimeKey(row),
       show_no: num(row.show_no),
       ring_day_no: num(row.ring_day_no),
       class_no: num(row.class_no),
@@ -106,6 +106,7 @@ const TABLES = {
       class_order: num(row.class_order),
       entry_count: num(row.entry_count),
       source_endpoint: text(row.source_endpoint),
+      raw_json: text(row.raw_json),
       catalyst_row_id: text(row.ROWID)
     })
   }
@@ -132,6 +133,27 @@ function bool(value) {
 function dateText(value) {
   const valueText = clean(value).slice(0, 10);
   return valueText || undefined;
+}
+
+function eventIdFromRaw(row) {
+  const raw = clean(row.raw_json);
+  if (!raw) return "";
+  try {
+    const parsed = JSON.parse(raw);
+    return clean(parsed.event_id || parsed.id);
+  } catch {
+    return "";
+  }
+}
+
+function classTimeKey(row) {
+  return text(row.class_time_key) ||
+    [
+      clean(row.show_no),
+      clean(row.ring_day_no),
+      clean(row.class_no),
+      eventIdFromRaw(row) || clean(row.ROWID)
+    ].join("|");
 }
 
 function compact(fields) {
@@ -232,10 +254,12 @@ async function reconcileOnce() {
     .filter((row) => clean(row[config.key]));
   const sourceKeys = new Set(sourceRows.map((row) => clean(row[config.key])));
   const airtable = await airtableRecords(config.airtable, config.key);
+  const airtableKeys = new Set(airtable.map((record) => clean(record.fields?.[config.key])).filter(Boolean));
+  const missingRows = sourceRows.filter((row) => !airtableKeys.has(clean(row[config.key])));
   const staleIds = airtable
     .filter((record) => !sourceKeys.has(clean(record.fields?.[config.key])))
     .map((record) => record.id);
-  const upserted = await upsertRows(config.airtable, config.key, sourceRows);
+  const upserted = await upsertRows(config.airtable, config.key, missingRows);
   const deleted = await deleteRows(config.airtable, staleIds);
   const after = await airtableRecords(config.airtable, config.key);
   const afterKeys = new Set(after.map((record) => clean(record.fields?.[config.key])).filter(Boolean));
