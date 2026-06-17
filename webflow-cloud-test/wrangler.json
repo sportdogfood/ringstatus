@@ -2,7 +2,9 @@
   "name": "cosmic-builder-dry-run",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2025-03-03",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "assets": {
     "directory": "./dist/client"
   }

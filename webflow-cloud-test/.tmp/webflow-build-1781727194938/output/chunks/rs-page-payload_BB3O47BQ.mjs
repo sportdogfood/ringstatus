@@ -1,0 +1,184 @@
+globalThis.process ??= {};
+globalThis.process.env ??= {};
+import { r as runtimeEnv } from "./wec-plan-modules_BsQGnEh2.mjs";
+const RS_PAGE_STATIC_PAYLOAD = {
+  "generatedAt": "2026-06-16T03:58:40.4243668Z",
+  "pages": {
+    "rs_home": {
+      "html": '<main class="rs-page" data-rs-page="rs_home" data-rs-endpoint="/test/rs-page-render" data-rs-prefetch="rs_about_me,rs_about_company,rs_apps,rs_contact,rs_members">\n<style>.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}.rs-nav-logo span{color:#56372d;}.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}</style>\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_me" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_company" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_apps" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_contact" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_members" crossorigin="anonymous">\n<nav class="rs-main" data-rs-block="rs_home_navigation">\n  <div class="rs-nav-inner">\n<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/rs/home" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/rs/about-me" data-rs-page-key="rs_about_me">About Me</a><a class="rs-nav-link" href="/rs/company" data-rs-page-key="rs_about_company">Company</a><a class="rs-nav-link" href="/rs/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/rs/contact" data-rs-page-key="rs_contact">Contact</a><a class="rs-nav-link" href="/rs/members" data-rs-page-key="rs_members">Members</a>\n    </div>\n  </div>\n</nav>\n<section class="rs-section" data-rs-block="rs_home_section_1">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content-flex" data-rs-div="rs_home_section_1_content"><div><h5>Hero Section</h5><h1>Built to Scale Cleanly</h1><p>Full-width section skeleton using Webflow base typography defaults. Text elements have no font classes.</p></div><div class="rs-visual">visual / media area</div></div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_home_section_2">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_home_section_2_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_home_section_2.headline">Home section two placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<footer class="rs-footer" data-rs-block="rs_home_footer">\n  <div class="rs-nav-inner">\n\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/contact" data-rs-page-key="rs_contact">Contact</a>\n    </div>\n  </div>\n</footer>\n</main>',
+      "source": {
+        "baseId": "appDN3R51ZPmwgMib",
+        "pageKey": "rs_home",
+        "mode": "airtable_rscom_page_hierarchy"
+      }
+    },
+    "rs_about_me": {
+      "html": '<main class="rs-page" data-rs-page="rs_about_me" data-rs-endpoint="/test/rs-page-render" data-rs-prefetch="rs_home,rs_about_company,rs_apps,rs_contact,rs_members">\n<style>.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}.rs-nav-logo span{color:#56372d;}.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}</style>\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_home" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_company" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_apps" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_contact" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_members" crossorigin="anonymous">\n<nav class="rs-main" data-rs-block="rs_about_me_navigation">\n  <div class="rs-nav-inner">\n<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/rs/home" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/rs/about-me" data-rs-page-key="rs_about_me">About Me</a><a class="rs-nav-link" href="/rs/company" data-rs-page-key="rs_about_company">Company</a><a class="rs-nav-link" href="/rs/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/rs/contact" data-rs-page-key="rs_contact">Contact</a><a class="rs-nav-link" href="/rs/members" data-rs-page-key="rs_members">Members</a>\n    </div>\n  </div>\n</nav>\n<section class="rs-section" data-rs-block="rs_about_me_section_1">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_about_me_section_1_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_about_me_section_1.headline">About Me section one placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_about_me_section_2">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_about_me_section_2_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_about_me_section_2.headline">About Me section two placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<footer class="rs-footer" data-rs-block="rs_about_me_footer">\n  <div class="rs-nav-inner">\n\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/contact" data-rs-page-key="rs_contact">Contact</a>\n    </div>\n  </div>\n</footer>\n</main>',
+      "source": {
+        "baseId": "appDN3R51ZPmwgMib",
+        "pageKey": "rs_about_me",
+        "mode": "airtable_rscom_page_hierarchy"
+      }
+    },
+    "rs_about_company": {
+      "html": '<main class="rs-page" data-rs-page="rs_about_company" data-rs-endpoint="/test/rs-page-render" data-rs-prefetch="rs_home,rs_about_me,rs_apps,rs_contact,rs_members">\n<style>.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}.rs-nav-logo span{color:#56372d;}.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}</style>\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_home" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_me" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_apps" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_contact" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_members" crossorigin="anonymous">\n<nav class="rs-main" data-rs-block="rs_about_company_navigation">\n  <div class="rs-nav-inner">\n<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/rs/home" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/rs/about-me" data-rs-page-key="rs_about_me">About Me</a><a class="rs-nav-link" href="/rs/company" data-rs-page-key="rs_about_company">Company</a><a class="rs-nav-link" href="/rs/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/rs/contact" data-rs-page-key="rs_contact">Contact</a><a class="rs-nav-link" href="/rs/members" data-rs-page-key="rs_members">Members</a>\n    </div>\n  </div>\n</nav>\n<section class="rs-section" data-rs-block="rs_about_company_section_1">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_about_company_section_1_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_about_company_section_1.headline">About Company section one placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_about_company_section_2">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_about_company_section_2_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_about_company_section_2.headline">About Company section two placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<footer class="rs-footer" data-rs-block="rs_about_company_footer">\n  <div class="rs-nav-inner">\n\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/contact" data-rs-page-key="rs_contact">Contact</a>\n    </div>\n  </div>\n</footer>\n</main>',
+      "source": {
+        "baseId": "appDN3R51ZPmwgMib",
+        "pageKey": "rs_about_company",
+        "mode": "airtable_rscom_page_hierarchy"
+      }
+    },
+    "rs_apps": {
+      "html": '<main class="rs-page" data-rs-page="rs_apps" data-rs-endpoint="/test/rs-page-render" data-rs-prefetch="rs_home,rs_about_me,rs_about_company,rs_contact,rs_members">\n<style>.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}.rs-nav-logo span{color:#56372d;}.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}</style>\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_home" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_me" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_company" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_contact" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_members" crossorigin="anonymous">\n<nav class="rs-main" data-rs-block="rs_rs_apps_navigation">\n  <div class="rs-nav-inner">\n<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/rs/home" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/rs/about-me" data-rs-page-key="rs_about_me">About Me</a><a class="rs-nav-link" href="/rs/company" data-rs-page-key="rs_about_company">Company</a><a class="rs-nav-link" href="/rs/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/rs/contact" data-rs-page-key="rs_contact">Contact</a><a class="rs-nav-link" href="/rs/members" data-rs-page-key="rs_members">Members</a>\n    </div>\n  </div>\n</nav>\n<section class="rs-section" data-rs-block="rs_rs_apps_intro">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_rs_apps_intro_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_rs_apps_intro_content.primary">Seed content for rs_rs_apps_intro_content_primary</div><div class="rs-type-secondary" data-rs-role="secondary" data-rs-value="rs_rs_apps_intro_content.secondary">Seed content for rs_rs_apps_intro_content_secondary</div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_rs_apps_section_1">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_rs_apps_section_1_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_rs_apps_section_1.headline">Apps section one placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_rs_apps_grid">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-stack-head" data-rs-div="rs_rs_apps_grid_stack_head"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_rs_apps_grid_stack_head.primary">Seed content for rs_rs_apps_grid_stack_head_primary</div><div class="rs-type-secondary" data-rs-role="secondary" data-rs-value="rs_rs_apps_grid_stack_head.secondary">Seed content for rs_rs_apps_grid_stack_head_secondary</div></div><div class="rs-card-grid" data-rs-div="rs_rs_apps_grid_card_grid"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_rs_apps_grid_card_grid.primary">Seed content for rs_rs_apps_grid_card_grid_primary</div><div class="rs-type-secondary" data-rs-role="secondary" data-rs-value="rs_rs_apps_grid_card_grid.secondary">Seed content for rs_rs_apps_grid_card_grid_secondary</div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_rs_apps_section_2">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_rs_apps_section_2_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_rs_apps_section_2.headline">Apps section two placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<footer class="rs-footer" data-rs-block="rs_rs_apps_footer">\n  <div class="rs-nav-inner">\n\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/contact" data-rs-page-key="rs_contact">Contact</a>\n    </div>\n  </div>\n</footer>\n</main>',
+      "source": {
+        "baseId": "appDN3R51ZPmwgMib",
+        "pageKey": "rs_apps",
+        "mode": "airtable_rscom_page_hierarchy"
+      }
+    },
+    "rs_contact": {
+      "html": '<main class="rs-page" data-rs-page="rs_contact" data-rs-endpoint="/test/rs-page-render" data-rs-prefetch="rs_home,rs_about_me,rs_about_company,rs_apps,rs_members">\n<style>.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}.rs-nav-logo span{color:#56372d;}.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}</style>\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_home" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_me" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_company" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_apps" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_members" crossorigin="anonymous">\n<nav class="rs-main" data-rs-block="rs_contact_navigation">\n  <div class="rs-nav-inner">\n<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/rs/home" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/rs/about-me" data-rs-page-key="rs_about_me">About Me</a><a class="rs-nav-link" href="/rs/company" data-rs-page-key="rs_about_company">Company</a><a class="rs-nav-link" href="/rs/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/rs/contact" data-rs-page-key="rs_contact">Contact</a><a class="rs-nav-link" href="/rs/members" data-rs-page-key="rs_members">Members</a>\n    </div>\n  </div>\n</nav>\n<section class="rs-section" data-rs-block="rs_contact_section_1">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_contact_section_1_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_contact_section_1.headline">Contact section one placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_contact_section_2">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_contact_section_2_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_contact_section_2.headline">Contact section two placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<footer class="rs-footer" data-rs-block="rs_contact_footer">\n  <div class="rs-nav-inner">\n\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/contact" data-rs-page-key="rs_contact">Contact</a>\n    </div>\n  </div>\n</footer>\n</main>',
+      "source": {
+        "baseId": "appDN3R51ZPmwgMib",
+        "pageKey": "rs_contact",
+        "mode": "airtable_rscom_page_hierarchy"
+      }
+    },
+    "rs_members": {
+      "html": '<main class="rs-page" data-rs-page="rs_members" data-rs-endpoint="/test/rs-page-render" data-rs-prefetch="rs_home,rs_about_me,rs_about_company,rs_apps,rs_contact">\n<style>.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}.rs-nav-logo span{color:#56372d;}.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}</style>\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_home" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_me" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_about_company" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_apps" crossorigin="anonymous">\n<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=rs_contact" crossorigin="anonymous">\n<nav class="rs-main" data-rs-block="rs_members_navigation">\n  <div class="rs-nav-inner">\n<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/rs/home" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/rs/about-me" data-rs-page-key="rs_about_me">About Me</a><a class="rs-nav-link" href="/rs/company" data-rs-page-key="rs_about_company">Company</a><a class="rs-nav-link" href="/rs/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/rs/contact" data-rs-page-key="rs_contact">Contact</a><a class="rs-nav-link" href="/rs/members" data-rs-page-key="rs_members">Members</a>\n    </div>\n  </div>\n</nav>\n<section class="rs-section" data-rs-block="rs_members_section_1">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_members_section_1_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_members_section_1.headline">Members section one placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<section class="rs-section" data-rs-block="rs_members_section_2">\n  <div class="rs-section-container">\n    <div class="rs-section-padding">\n<div class="rs-content" data-rs-div="rs_members_section_2_content"><div class="rs-type-primary" data-rs-role="primary" data-rs-value="rs_members_section_2.headline">Members section two placeholder content.</div></div>\n    </div>\n  </div>\n</section>\n<footer class="rs-footer" data-rs-block="rs_members_footer">\n  <div class="rs-nav-inner">\n\n    <div class="rs-nav-links">\n<a class="rs-nav-link" href="/" data-rs-page-key="rs_home">Home</a><a class="rs-nav-link" href="/apps" data-rs-page-key="rs_apps">Apps</a><a class="rs-nav-link" href="/contact" data-rs-page-key="rs_contact">Contact</a>\n    </div>\n  </div>\n</footer>\n</main>',
+      "source": {
+        "baseId": "appDN3R51ZPmwgMib",
+        "pageKey": "rs_members",
+        "mode": "airtable_rscom_page_hierarchy"
+      }
+    }
+  }
+};
+const config = {
+  runtime: "edge"
+};
+const RSCOM_BASE_ID = "appDN3R51ZPmwgMib";
+const COMPILED_TABLE = "rs_page_compiled_payloads";
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET,OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type,Authorization"
+};
+const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
+const GET = async ({ request }) => {
+  const url = new URL(request.url);
+  const pageKey = clean(url.searchParams.get("pageKey"));
+  const all = clean(url.searchParams.get("all")) === "1";
+  const runtime = runtimeEnv();
+  const token = runtime.AIRTABLE_TOKEN;
+  const baseId = runtime.AIRTABLE_RSCOM_BASE_ID || runtime.RSCOM_AIRTABLE_BASE_ID || RSCOM_BASE_ID;
+  if (all) {
+    const compiledPages = token ? await readCompiledPages({ token, baseId }).catch(() => ({})) : {};
+    return renderJson({
+      ok: true,
+      generatedAt: (/* @__PURE__ */ new Date()).toISOString(),
+      pages: {
+        ...RS_PAGE_STATIC_PAYLOAD.pages || {},
+        ...compiledPages
+      }
+    });
+  }
+  if (token && pageKey) {
+    const compiled = await readCompiledPage({ token, baseId, pageKey }).catch(() => null);
+    if (compiled?.html) {
+      return renderJson({
+        ok: true,
+        pageKey,
+        generatedAt: compiled.compiledAt || (/* @__PURE__ */ new Date()).toISOString(),
+        html: compiled.html,
+        source: {
+          mode: "airtable_compiled_payload",
+          baseId,
+          table: COMPILED_TABLE,
+          recordId: compiled.recordId,
+          sourceHash: compiled.sourceHash || ""
+        }
+      });
+    }
+  }
+  const page2 = pageKey ? RS_PAGE_STATIC_PAYLOAD.pages?.[pageKey] : null;
+  if (!page2) {
+    return renderJson({ ok: false, error: "unknown_page", pageKey }, 404);
+  }
+  return renderJson({
+    ok: true,
+    pageKey,
+    generatedAt: RS_PAGE_STATIC_PAYLOAD.generatedAt,
+    html: page2.html || "",
+    source: page2.source || null
+  });
+};
+function renderJson(payload, status = 200) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "public, max-age=300, stale-while-revalidate=3600"
+    }
+  });
+}
+function clean(value) {
+  return String(value || "").trim();
+}
+async function readCompiledPages({ token, baseId }) {
+  const records = await listCompiledRecords({ token, baseId });
+  return Object.fromEntries(records.filter((record) => clean(record.fields.status) === "active").filter((record) => clean(record.fields.page_key) && clean(record.fields.html)).map((record) => [clean(record.fields.page_key), {
+    html: String(record.fields.html || ""),
+    source: {
+      mode: "airtable_compiled_payload",
+      baseId,
+      table: COMPILED_TABLE,
+      recordId: record.id,
+      sourceHash: clean(record.fields.source_hash)
+    }
+  }]));
+}
+async function readCompiledPage({ token, baseId, pageKey }) {
+  const formula = `AND({page_key}='${escapeFormulaString(pageKey)}',{status}='active')`;
+  const records = await listCompiledRecords({ token, baseId, formula, maxRecords: 1 });
+  const record = records[0];
+  if (!record) return null;
+  return {
+    recordId: record.id,
+    html: String(record.fields.html || ""),
+    compiledAt: clean(record.fields.compiled_at),
+    sourceHash: clean(record.fields.source_hash)
+  };
+}
+async function listCompiledRecords({ token, baseId, formula = "", maxRecords = 100 } = {}) {
+  const records = [];
+  let offset = "";
+  do {
+    const airtableUrl = new URL(`https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(COMPILED_TABLE)}`);
+    airtableUrl.searchParams.set("pageSize", String(Math.min(maxRecords, 100)));
+    if (formula) airtableUrl.searchParams.set("filterByFormula", formula);
+    if (offset) airtableUrl.searchParams.set("offset", offset);
+    const response = await fetch(airtableUrl, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error(`airtable_compiled_payload_failed:${response.status}:${await response.text()}`);
+    const payload = await response.json();
+    records.push(...payload.records || []);
+    offset = payload.offset || "";
+  } while (offset && records.length < maxRecords);
+  return records.slice(0, maxRecords);
+}
+function escapeFormulaString(value) {
+  return String(value || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+const _page = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  GET,
+  OPTIONS,
+  config
+}, Symbol.toStringTag, { value: "Module" }));
+const page = () => _page;
+export {
+  page
+};

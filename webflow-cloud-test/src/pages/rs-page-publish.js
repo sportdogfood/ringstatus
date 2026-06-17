@@ -94,6 +94,8 @@ async function findCompiledRecord({ token, baseId, pageKey }) {
   const airtableUrl = new URL(`https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(COMPILED_TABLE)}`);
   airtableUrl.searchParams.set("pageSize", "1");
   airtableUrl.searchParams.set("filterByFormula", `{page_key}='${escapeFormulaString(pageKey)}'`);
+  airtableUrl.searchParams.set("sort[0][field]", "compiled_at");
+  airtableUrl.searchParams.set("sort[0][direction]", "desc");
   const response = await fetch(airtableUrl, {
     headers: { Authorization: `Bearer ${token}` }
   });

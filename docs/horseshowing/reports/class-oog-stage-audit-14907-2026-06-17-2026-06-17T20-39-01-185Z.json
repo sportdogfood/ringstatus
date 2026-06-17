@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "show_no": 14907,
+    "focus_day": "2026-06-17",
+    "update_schedule_staging_lock_schedule_rows": 36,
+    "class_start_times_rows": 36,
+    "class_start_times_missing_from_locked": [],
+    "class_start_times_extra_vs_locked": [],
+    "class_oog_rows": 13,
+    "class_oog_unique_classes": [
+      29748,
+      29754,
+      29776,
+      29784,
+      29855,
+      30012,
+      33348
+    ],
+    "class_oog_rows_missing_update_schedule_staging_link": 0,
+    "class_oog_rows_missing_class_start_times_link": 0,
+    "class_oog_rows_missing_lock_lookup": 0
+  },
+  "files": {
+    "classStartCsv": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\reports\\class-start-times-live-14907-2026-06-17-2026-06-17T20-39-01-185Z.csv",
+    "oogCsv": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\reports\\class-oog-live-14907-2026-06-17-2026-06-17T20-39-01-185Z.csv",
+    "lockedCsv": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\reports\\update-schedule-staging-lock-schedule-live-14907-2026-06-17-2026-06-17T20-39-01-185Z.csv"
+  }
+}

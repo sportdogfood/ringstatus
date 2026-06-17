@@ -172,6 +172,17 @@ function classNameFromText(value) {
   return clean(value).replace(/^\d+[A-Za-z]?\)\s*/, "");
 }
 
+function entryNoFromText(value) {
+  const match = clean(value).match(/#\s*(\d+)/);
+  return match ? clean(match[1]) : "";
+}
+
+function horseFromEntryText(value) {
+  return clean(value)
+    .replace(/<br>[\s\S]*$/i, "")
+    .replace(/^#\s*\d+\s*,?\s*/, "");
+}
+
 function isoFromDateText(value) {
   const parsed = new Date(`${clean(value)} 00:00:00 GMT-0400`);
   if (Number.isNaN(parsed.getTime())) return "";
@@ -260,7 +271,7 @@ async function syncGetRings({ showNo, focusDay }) {
 
   const updates = [];
   const getRingDayUpdates = [];
-  const classHelpersToCreate = new Map();
+  const entryHelpersToCreate = new Map();
   const missing = {
     get_ring_days: 0,
     shows: 0,
@@ -272,12 +283,31 @@ async function syncGetRings({ showNo, focusDay }) {
 
   for (const record of getRings) {
     const fields = record.fields || {};
+    const entryNo = clean(fields.entry_number) || clean(fields.entry_no) || entryNoFromText(fields.entry_text || fields.entry);
+    if (entryNo && !entryByEntryNo.has(entryNo) && !entryHelpersToCreate.has(entryNo)) {
+      entryHelpersToCreate.set(entryNo, {
+        entry_no: intOrNull(entryNo),
+        horse: horseFromEntryText(fields.entry_text || fields.entry),
+        source: "get_rings.php"
+      });
+    }
+  }
+
+  const createdEntryHelpers = await createRecords("entries", [...entryHelpersToCreate.values()]);
+  for (const record of createdEntryHelpers) {
+    const entryNo = clean(record.fields?.entry_no);
+    if (entryNo) entryByEntryNo.set(entryNo, record);
+  }
+
+  for (const record of getRings) {
+    const fields = record.fields || {};
     const ringDayNo = clean(fields.ring_day_no);
     const getRingDay = getRingDayByRingDayNo.get(ringDayNo);
     const show = showByShowNo.get(clean(fields.show_no));
     const focusShowRecord = focusShowByShowNo.get(clean(fields.show_no));
     const classRecord = classByClassNo.get(clean(fields.class_no));
-    const entryRecord = entryByEntryNo.get(clean(fields.entry_number));
+    const entryNo = clean(fields.entry_number) || clean(fields.entry_no) || entryNoFromText(fields.entry_text || fields.entry);
+    const entryRecord = entryByEntryNo.get(entryNo);
     const ringId = firstLinkedId(getRingDay?.fields?.rings);
     const ring = ringId ? ringById.get(ringId) : null;
     const ringName = ringNameByName.get(clean(ring?.fields?.ring_name || fields.ring_name));
@@ -321,6 +351,7 @@ async function syncGetRings({ showNo, focusDay }) {
     seen: getRings.length,
     changed: updates.length,
     get_ring_days_changed: getRingDayUpdates.length,
+    entries_created: createdEntryHelpers.length,
     missing
   };
 }

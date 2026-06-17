@@ -17,6 +17,14 @@ const LOADER_JS = String.raw`(function () {
     "/rs/about-me": "rs_about_me",
     "/rs/company": "rs_about_company",
     "/rs/apps": "rs_apps",
+    "/rs/schedules": "rs_schedules",
+    "/rs/waze": "rs_waze",
+    "/rs/onsite": "rs_onsite",
+    "/rs/twoway": "rs_twoway",
+    "/rs/pak": "rs-pak",
+    "/rs/reminders": "rs-reminders",
+    "/rs/boards": "rs-boards",
+    "/rs/alerts": "rs-alerts",
     "/rs/contact": "rs_contact",
     "/rs/members": "rs_members"
   };
@@ -45,7 +53,22 @@ const LOADER_JS = String.raw`(function () {
     }
 
     document.addEventListener("click", function (event) {
-      var link = event.target && event.target.closest ? event.target.closest(".rs-main .rs-nav-link[data-rs-page-key]") : null;
+      var trigger = event.target && event.target.closest ? event.target.closest(".rs-main [data-rs-menu-trigger]") : null;
+      if (trigger && root.contains(trigger)) {
+        event.preventDefault();
+        var menu = trigger.closest("[data-rs-nav-menu]");
+        var isOpen = !!(menu && menu.classList.contains("is-open"));
+        closeMenus(root);
+        if (menu && !isOpen) {
+          menu.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+        } else {
+          trigger.setAttribute("aria-expanded", "false");
+        }
+        return;
+      }
+
+      var link = event.target && event.target.closest ? event.target.closest(".rs-main .rs-nav-link[data-rs-page-key],.rs-main .rs-nav-menu-link[data-rs-page-key]") : null;
       if (!link || !root.contains(link)) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button) return;
 
@@ -54,7 +77,12 @@ const LOADER_JS = String.raw`(function () {
       if (!pageKey) return;
 
       event.preventDefault();
+      closeMenus(root);
       loadPage(root, pageKey, endpoint, payloadEndpoint, href, false);
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!root.contains(event.target)) closeMenus(root);
     });
 
     window.addEventListener("popstate", function () {
@@ -146,11 +174,19 @@ const LOADER_JS = String.raw`(function () {
 
   function collectNavKeys(root) {
     var keys = [];
-    root.querySelectorAll(".rs-main .rs-nav-link[data-rs-page-key]").forEach(function (link) {
+    root.querySelectorAll(".rs-main .rs-nav-link[data-rs-page-key],.rs-main .rs-nav-menu-link[data-rs-page-key]").forEach(function (link) {
       var key = link.getAttribute("data-rs-page-key");
       if (key && keys.indexOf(key) === -1) keys.push(key);
     });
     return keys;
+  }
+
+  function closeMenus(root) {
+    root.querySelectorAll("[data-rs-nav-menu].is-open").forEach(function (menu) {
+      menu.classList.remove("is-open");
+      var trigger = menu.querySelector("[data-rs-menu-trigger]");
+      if (trigger) trigger.setAttribute("aria-expanded", "false");
+    });
   }
 
   function findRenderedPage(root) {

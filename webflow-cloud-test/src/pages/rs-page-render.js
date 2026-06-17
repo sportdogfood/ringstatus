@@ -16,6 +16,7 @@ const TABLES = {
   divs: "rs_page_divs",
   typography: "rs_typography",
   content: "rs_content",
+  repeatableItemTypes: "rs_repeatable_item_types",
   navigation: "rs_navigation_items",
   globals: "rs_global_params"
 };
@@ -210,6 +211,7 @@ async function fetchDataset({ token, baseId }) {
     divs,
     typography,
     content,
+    repeatableItemTypes,
     navigation,
     globals
   ] = await Promise.all([
@@ -218,10 +220,11 @@ async function fetchDataset({ token, baseId }) {
     listRecords({ token, baseId, tableName: TABLES.divs }),
     listRecords({ token, baseId, tableName: TABLES.typography }),
     listRecords({ token, baseId, tableName: TABLES.content }),
+    listRecords({ token, baseId, tableName: TABLES.repeatableItemTypes }),
     listRecords({ token, baseId, tableName: TABLES.navigation }),
     listRecords({ token, baseId, tableName: TABLES.globals })
   ]);
-  return { pages, blocks, divs, typography, content, navigation, globals };
+  return { pages, blocks, divs, typography, content, repeatableItemTypes, navigation, globals };
 }
 
 async function buildPage({ token, baseId, pageKey }) {
@@ -230,7 +233,7 @@ async function buildPage({ token, baseId, pageKey }) {
 }
 
 function buildPageFromDataset({ baseId, pageKey, dataset }) {
-  const { pages, blocks, divs, typography, content, navigation, globals } = dataset;
+  const { pages, blocks, divs, typography, content, repeatableItemTypes = [], navigation, globals } = dataset;
 
   const page = pages.find((record) => clean(record.fields.page_key) === pageKey);
   if (!page) throw new Error(`page_not_found:${pageKey}`);
@@ -259,6 +262,10 @@ function buildPageFromDataset({ baseId, pageKey, dataset }) {
       .filter((record) => selectName(record.fields.active) === "active")
       .sort(sortByOrder)
       .map((record) => pick(record, ["nav_item_key", "nav_group", "label", "page_key", "href", "sort_order"])),
+    repeatableItemTypes: repeatableItemTypes
+      .filter((record) => selectName(record.fields.active) === "active")
+      .sort(sortByOrder)
+      .map((record) => pick(record, ["item_type_key", "item_type_label", "parent_slot_role", "default_class"])),
     blocks: treeBlocks
   };
   const prefetchPageKeys = getMainNavPageKeys(tree.navigation).filter((key) => key !== pageKey);
@@ -338,7 +345,7 @@ function renderPrefetchLinks(pageKeys) {
 
 function getMainNavPageKeys(items) {
   return [...new Set(items
-    .filter((item) => selectName(item.nav_group) === "main_nav")
+    .filter((item) => selectName(item.nav_group) === "main_nav" || selectName(item.nav_group) === "app_nav")
     .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
     .map((item) => clean(item.page_key))
     .filter(Boolean))];
@@ -426,7 +433,15 @@ function renderBlock(block, tree) {
   const type = selectName(block.block_type);
   if (type === "navigation") return renderNavigation(block, tree.navigation, "main_nav", clean(tree.page.page_key));
   if (type === "footer") return renderNavigation(block, tree.navigation, "footer_nav", clean(tree.page.page_key));
+  if (isRepeatableBlock(block, tree.repeatableItemTypes)) return renderRepeatableSection(block);
   return renderSection(block);
+}
+
+function isRepeatableBlock(block, repeatableItemTypes = []) {
+  const htmlKey = clean(block.html_key);
+  const componentKey = clean(block.component_key);
+  return htmlKey === "sticky_scroll_cards" ||
+    repeatableItemTypes.some((item) => clean(item.item_type_key) === componentKey);
 }
 
 function isHierarchyBlock(record, pageKey) {
@@ -441,12 +456,30 @@ function isHierarchyBlock(record, pageKey) {
 }
 
 function renderNavigation(block, items, group, activePageKey = "") {
+  const appItems = items
+    .filter((item) => selectName(item.nav_group) === "app_nav")
+    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
   const links = items
     .filter((item) => selectName(item.nav_group) === group)
     .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
     .map((item) => {
       const itemPageKey = clean(item.page_key);
       const active = itemPageKey && itemPageKey === activePageKey;
+      if (group === "main_nav" && itemPageKey === "rs_apps" && appItems.length) {
+        const appLinks = appItems.map((appItem) => {
+          const appPageKey = clean(appItem.page_key);
+          const appActive = appPageKey && appPageKey === activePageKey;
+          return `<a class="rs-nav-menu-link${appActive ? " is-active" : ""}" href="${escapeAttr(appItem.href || "#")}" data-rs-page-key="${escapeAttr(appPageKey)}"${appActive ? ` aria-current="page"` : ""}>${escapeHtml(appItem.label)}</a>`;
+        }).join("");
+        return [
+          `<div class="rs-nav-menu" data-rs-nav-menu="apps">`,
+          `  <button class="rs-nav-link rs-nav-menu-trigger${active ? " is-active" : ""}" type="button" data-rs-menu-trigger="apps" aria-expanded="false">${escapeHtml(item.label)}</button>`,
+          `  <div class="rs-nav-menu-panel" data-rs-menu-panel="apps">`,
+          appLinks,
+          `  </div>`,
+          `</div>`
+        ].join("");
+      }
       return `<a class="rs-nav-link${active ? " is-active" : ""}" href="${escapeAttr(item.href || "#")}" data-rs-page-key="${escapeAttr(itemPageKey)}"${active ? ` aria-current="page"` : ""}>${escapeHtml(item.label)}</a>`;
     })
     .join("");
@@ -492,6 +525,50 @@ function renderSection(block) {
     `  </div>`,
     `</section>`
   ].join("\n");
+}
+
+function renderRepeatableSection(block) {
+  const cards = block.divs
+    .flatMap((div) => div.typography)
+    .flatMap((typeRow) => typeRow.content)
+    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
+    .filter((contentRow) => selectName(contentRow.active) !== "inactive");
+
+  const [featured, ...scrollCards] = cards;
+  if (!featured) return renderSection(block);
+
+  return [
+    `<section class="rs-section rs-sticky-cards-section" data-rs-block="${escapeAttr(block.block_key)}" data-rs-repeatable="${escapeAttr(block.component_key)}">`,
+    `  <div class="rs-section-container">`,
+    `    <div class="rs-section-padding">`,
+    `      <div class="rs-sticky-cards">`,
+    `        <article class="rs-sticky-card is-featured">${renderCardContent(featured)}</article>`,
+    `        <div class="rs-scroll-cards">`,
+    scrollCards.map((contentRow) => `          <article class="rs-scroll-card">${renderCardContent(contentRow)}</article>`).join("\n"),
+    `        </div>`,
+    `      </div>`,
+    `    </div>`,
+    `  </div>`,
+    `</section>`
+  ].join("\n");
+}
+
+function renderCardContent(contentRow) {
+  const eyebrow = clean(contentRow?.eyebrow);
+  const headline = clean(contentRow?.headline);
+  const body = clean(contentRow?.body);
+  const visualLabel = clean(contentRow?.visual_label);
+  const visualSrc = clean(contentRow?.visual_src);
+  const visualAlt = clean(contentRow?.visual_alt) || visualLabel || headline;
+  const visualType = selectName(contentRow?.visual_type);
+  return [
+    `<div class="rs-card-copy">`,
+    eyebrow ? `<h5>${escapeHtml(eyebrow)}</h5>` : "",
+    headline ? `<h2>${escapeHtml(headline)}</h2>` : "",
+    body ? `<p>${escapeHtml(body)}</p>` : "",
+    `</div>`,
+    renderVisual({ visualSrc, visualAlt, visualLabel, visualType })
+  ].join("");
 }
 
 function renderContent(content, contentType) {
@@ -544,15 +621,31 @@ function renderBaseStyle() {
     `.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}`,
     `.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}`,
     `.rs-nav-logo span{color:#56372d;}`,
-    `.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}`,
+    `.rs-main .rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;scrollbar-width:none;}`,
+    `.rs-main .rs-nav-links::-webkit-scrollbar{display:none;}`,
     `.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}`,
+    `.rs-nav-menu{position:relative;display:inline-flex;}`,
+    `.rs-nav-menu-trigger{cursor:pointer;}`,
+    `.rs-nav-menu-panel{position:absolute;top:calc(100% + 12px);right:0;z-index:20;display:none;min-width:280px;grid-template-columns:1fr;gap:8px;padding:10px;border:1px solid #d8dee6;border-radius:22px;background:rgba(255,255,255,.96);box-shadow:0 18px 50px rgba(15,23,42,.18);backdrop-filter:blur(14px);}`,
+    `.rs-nav-menu:hover .rs-nav-menu-panel,.rs-nav-menu:focus-within .rs-nav-menu-panel,.rs-nav-menu.is-open .rs-nav-menu-panel{display:grid;}`,
+    `.rs-nav-menu-link{display:flex;align-items:center;justify-content:space-between;border:1px solid transparent;border-radius:16px;padding:12px 14px;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}`,
+    `.rs-nav-menu-link:hover,.rs-nav-menu-link.is-active{background:#10243b;color:#fff;border-color:#10243b;}`,
     `.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}`,
     `.rs-main .rs-nav-link.is-active{background:#10243b;color:#fff;border-color:#10243b;}`,
     `.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}`,
     `.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}`,
-    `.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}`,
-    `.rs-visual img,.rs-visual iframe{display:block;width:100%;height:100%;min-height:220px;border:0;object-fit:cover;}`,
-    `@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:flex-start}.rs-nav-logo{font-size:24px}.rs-content-flex{display:grid;gap:20px}.rs-visual{flex:auto;min-height:180px}}`,
+    `.rs-visual{display:flex;align-items:center;justify-content:center;flex:0 0 min(38%,460px);width:min(100%,460px);aspect-ratio:4/5;overflow:hidden;border:1px solid #d8dee6;border-radius:22px;background:#f6f8fa;color:#65707d;}`,
+    `.rs-visual img,.rs-visual iframe{display:block;width:100%;height:100%;min-height:0;border:0;object-fit:cover;}`,
+    `.rs-sticky-cards{width:100%;display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);gap:32px;align-items:start;}`,
+    `.rs-sticky-card,.rs-scroll-card{border:1px solid #d8dee6;border-radius:22px;background:#fff;padding:24px;box-shadow:0 14px 38px rgba(15,23,42,.08);}`,
+    `.rs-sticky-card{position:sticky;top:104px;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;}`,
+    `.rs-scroll-cards{display:grid;gap:24px;}`,
+    `.rs-scroll-card{min-height:260px;display:flex;flex-direction:column;justify-content:space-between;}`,
+    `.rs-card-copy h5{margin:0 0 14px;color:#65707d;font:700 13px/1 Outfit,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}`,
+    `.rs-card-copy h2{margin:0;color:#050505;font:700 clamp(30px,4vw,58px)/.94 Outfit,Arial,sans-serif;letter-spacing:-.04em;}`,
+    `.rs-card-copy p{margin:18px 0 0;color:#2b2b2b;font:400 clamp(17px,1.35vw,22px)/1.24 Outfit,Arial,sans-serif;}`,
+    `@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:center}.rs-nav-logo{font-size:24px}.rs-main .rs-nav-links{justify-content:flex-start}.rs-main .rs-nav-link{flex:0 0 auto}.rs-nav-menu{position:static}.rs-nav-menu-panel{left:16px;right:16px;top:72px;min-width:0}.rs-content-flex{display:flex;flex-direction:column;align-items:stretch;gap:20px}.rs-visual{width:100%;flex:auto;aspect-ratio:16/10;min-height:0}}`,
+    `@media(max-width:700px){.rs-sticky-cards{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory}.rs-sticky-card,.rs-scroll-card{position:relative;top:auto;flex:0 0 82%;min-height:360px;scroll-snap-align:start}.rs-card-copy h2{font-size:36px}}`,
     `</style>`
   ].join("");
 }

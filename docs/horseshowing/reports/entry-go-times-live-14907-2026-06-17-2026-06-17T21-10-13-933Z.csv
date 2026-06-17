@@ -1,0 +1,66 @@
+status,entry_go_time,class_no,entry_order,entry_no,horse_display,rider,trainer_display,ring_no,ring_day_no,pace_seconds,n_gone,elapsed_seconds,source,class_oog,class_start_times,record_id
+inactive,,29579,1,1027,Knox,Jessica Heap,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recv0Ebx9EJVFJXRh
+inactive,,29580,1,1027,Knox,Jessica Heap,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec6K0ey2RyhtOxJp
+inactive,,29585,1,1029,Paisley,Kate Marisch,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,reclL9g4PVou1UrsC
+inactive,,29586,1,1029,Paisley,Kate Marisch,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recdEAN218MTn2d6n
+inactive,,29719,1,1038,Bee,Carsyn Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recePtzbkc6vjso72
+inactive,,29736,9,2389,Fan,Sydney Matalon,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recZqG43sm2Y1fsE9
+inactive,,29742,4,2667,Calypso,Josephine Demmo,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recUTN5Tvxk3PwVHJ
+inactive,,29768,6,1297,La La Land,Grace Lyons,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recRogpEV72nMEIhx
+inactive,,29768,17,2460,Shrek,Grace Lyons,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recBZUBVZC4eMbtVF
+inactive,,29768,19,2667,Calypso,Grace Lyons,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recWcIrc5rA6m8eXw
+inactive,,29769,5,1297,La La Land,Grace Lyons,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,reckJ9RfuvEzl4Z3w
+inactive,,29769,12,2460,Shrek,Grace Lyons,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recD2tgBO6SBfGrA1
+inactive,,29771,5,1297,La La Land,Christina Faninger,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec4rmKmsTf5Ciu8J
+inactive,,29771,18,2460,Shrek,Lola Applebaum,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recE23KTYfpDxiAEf
+inactive,,29771,19,2667,Calypso,Josephine Demmo,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recAH3XnIwA1kSOjd
+inactive,,29772,7,1297,La La Land,Christina Faninger,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec1vs1ExeO6tAggp
+inactive,,29772,13,2460,Shrek,Lola Applebaum,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,reci3zDBr4sW8YnDG
+inactive,11:47:00,29776,17,2667,Calypso,Tanner Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recX82a00RtnFELGk
+active,12:17:00,29776,17,2667,Calypso,Tanner Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,recUJToqu5syQHz9C,recRm1SaC7U7Odgby,reckm6CELsNKGkrAG
+inactive,,29859,1,1031,Hurricane,Carsyn Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recQadgbQ94dFFySn
+inactive,,29864,1,1031,Hurricane,Carsyn Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec3Xq7kJ6f96jZhO
+inactive,08:26:00,30012,14,2389,Fan,Sydney Matalon,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recbr0WcHaMQPG7UM
+active,08:26:00,30012,14,2389,Fan,Sydney Matalon,CWF,685,4224,120,,,update_schedule_staging+class_oog,recthPDkm7vCweHfr,recaXuJFnFKt71J60,receoqg6XhmJvkm4P
+active,08:32:00,30012,17,2667,Calypso,Josephine Demmo,CWF,685,4224,120,,,update_schedule_staging+class_oog,recBg36rmtDaZbYNp,recaXuJFnFKt71J60,recfLovy0Apcy91bt
+inactive,08:32:00,30012,17,2667,Calypso,Josephine Demmo,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recokeIqQPtB6yetG
+inactive,,30019,1,1591,Coffee,Iliana Palumbo,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recOhKkW7dvgvlifE
+inactive,,30031,1,1032,Ib Mercedes,Tanner Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recWJ1xO37BevyOuR
+inactive,,30050,1,1027,Knox,Jessica Heap,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec9hxiWNUIOe5vqi
+inactive,,30050,2,1029,Paisley,Kate Marisch,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recvoDQFFMOTqa47N
+inactive,07:30:00,33347,1,1041,Elliot,Tanner Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,reciq5mWZoSjhrmlv
+inactive,07:30:00,33347,1,1041,Elliot,Tanner Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,reco989mdHCyvkCqD
+inactive,07:32:00,33347,2,1048,Tommy,Kate Marisch,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec5TJRRogWrZpi8a
+inactive,07:32:00,33347,2,1048,Tommy,Kate Marisch,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rectrNXfMhrwCBP9U
+inactive,07:34:00,33347,3,1049,Pedro,Aria Waxman,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec4XMcilU43IGSdc
+inactive,07:34:00,33347,3,1049,Pedro,Aria Waxman,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recTl9QIcWFp21OdP
+inactive,08:40:00,33347,36,2668,Curtis,Josephine Demmo,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,rec1o8JJtHM9pRo6V
+inactive,08:40:00,33347,36,2668,Curtis,Josephine Demmo,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recA22d1VOTv8kxuR
+inactive,07:30:00,33348,1,1041,Elliot,Tanner Korotkin,CWF,685,4224,120,,,class_oog.php|catalyst.hs_class_start_times,,,recDF993l7MGNdVFs
+inactive,07:30:00,33348,1,1041,Elliot,Tanner Korotkin,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recKp27NRQXPCic0C
+inactive,07:32:00,33348,2,1048,Tommy,Kate Marisch,CWF,685,4224,120,,,class_oog.php|catalyst.hs_class_start_times,,,recQPxPcFwQ9b6rEc
+inactive,07:32:00,33348,2,1048,Tommy,Kate Marisch,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recUkyhFAKDf37nb4
+inactive,07:34:00,33348,3,1049,Pedro,Aria Waxman,CWF,685,4224,120,,,class_oog.php|catalyst.hs_class_start_times,,,recEjFF1znOlQHFc0
+inactive,07:34:00,33348,3,1049,Pedro,Aria Waxman,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,reci5bRLl4tUeXc2d
+inactive,08:24:00,33348,28,2668,Curtis,Josephine Demmo,CWF,685,4224,120,,,class_oog.php|catalyst.hs_class_start_times,,,recwvZK3DsTachmKc
+inactive,08:34:00,33348,33,2668,Curtis,Josephine Demmo,CWF,685,4224,120,,,update_schedule_staging+class_oog,,,recWiHQICuUVO0TXE
+inactive,13:18:00,29754,10,1038,Bee,Carsyn Korotkin,CWF,686,3936,120,,,update_schedule_staging+class_oog,,,recPcAmdwKAgNoyAF
+active,13:06:30,29754,14,1038,Bee,Carsyn Korotkin,CWF,686,3936,30,60,418,update_schedule_staging+class_oog+get_orders,recYhTwmPBVJxyTXy,recYGZDPGF4a1q3pB,recha1Rj31Xz3hUtv
+inactive,08:00:00,29855,1,227,Snoop,Tanner Korotkin,CWF,686,3936,120,,,update_schedule_staging+class_oog,,,recP1YsxMt4h209h2
+active,08:00:00,29855,1,227,Snoop,Tanner Korotkin,CWF,686,3936,120,,,update_schedule_staging+class_oog,recPvSWAMjSIFUJp6,recxwDZHxSZXCEiQO,recpWRvazbMYrfrjJ
+inactive,08:24:00,29855,13,226,Kinmar,Tanner Korotkin,CWF,686,3936,120,,,update_schedule_staging+class_oog,,,recSOGwBEpuj2o0pw
+active,08:26:00,29855,14,226,Kinmar,Tanner Korotkin,CWF,686,3936,120,,,update_schedule_staging+class_oog,recNu0WzuLJ0Iq6FQ,recxwDZHxSZXCEiQO,recSakjrh6xMgiCji
+inactive,09:45:00,29748,1,1042,Maiki,Tanner Korotkin,CWF,687,4219,120,,,update_schedule_staging+class_oog,,,rec6algYPcvbVoTCt
+active,09:45:00,29748,1,1042,Maiki,Tanner Korotkin,CWF,687,4219,120,,,update_schedule_staging+class_oog,rec4w9Z7qnRKWAlnz,recv5tM8WRsJXD1XE,recqtrd4aPklR14AR
+active,09:47:00,29748,2,1045,Q,Tanner Korotkin,CWF,687,4219,120,,,update_schedule_staging+class_oog,recf6VLGX7W5V6Z3X,recv5tM8WRsJXD1XE,recJPpEUR3sIngjar
+inactive,09:47:00,29748,2,1045,Q,Tanner Korotkin,CWF,687,4219,120,,,update_schedule_staging+class_oog,,,recyXDYn6UCG8Geeo
+inactive,13:38:00,29784,5,1296,Calou,Tanner Korotkin,CWF,687,4219,120,,,update_schedule_staging+class_oog,,,rec6tw3t8zUxitqqv
+active,13:53:00,29784,5,1296,Calou,Tanner Korotkin,CWF,687,4219,120,,,update_schedule_staging+class_oog,rec1xWZ7ox81vAZL6,reclW8bG9Gz0PIkst,recd7wbUyDHn5bZOA
+inactive,07:30:00,33347,1,1041,Elliot,Tanner Korotkin,CWF,742,4232,120,,,update_schedule_staging+class_oog,,,recGKGx9Sxck5sY7R
+inactive,07:32:00,33347,2,1048,Tommy,Kate Marisch,CWF,742,4232,120,,,update_schedule_staging+class_oog,,,recdBvDYEokiXLnAF
+inactive,07:34:00,33347,3,1049,Pedro,Aria Waxman,CWF,742,4232,120,,,update_schedule_staging+class_oog,,,recpdjzif3Xi1Gx3E
+inactive,08:40:00,33347,36,2668,Curtis,Josephine Demmo,CWF,742,4232,120,,,update_schedule_staging+class_oog,,,recJ5vrFjqcHKwjn2
+active,07:30:00,33348,1,1041,Elliot,Tanner Korotkin,CWF,742,4232,120,,,update_schedule_staging+class_oog,recIMRgrABNRlSpY8,rec1QO83OvghMchxN,recbCs8yEIZbDsPbl
+active,07:32:00,33348,2,1048,Tommy,Kate Marisch,CWF,742,4232,120,,,update_schedule_staging+class_oog,recFtq0YR5RqxuhTT,rec1QO83OvghMchxN,recmw4fOpC8sBooZf
+active,07:34:00,33348,3,1049,Pedro,Aria Waxman,CWF,742,4232,120,,,update_schedule_staging+class_oog,recRKkdzg8HuuYPln,rec1QO83OvghMchxN,rec1cHqbrQtqMaDnp
+active,08:34:00,33348,33,2668,Curtis,Josephine Demmo,CWF,742,4232,120,,,update_schedule_staging+class_oog,reckfPFMP2GLv639f,rec1QO83OvghMchxN,recRYaod06ECGVqYP

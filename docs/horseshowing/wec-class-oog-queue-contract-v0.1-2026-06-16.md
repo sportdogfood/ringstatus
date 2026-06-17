@@ -14,6 +14,12 @@ Classes are selected from Airtable `update_schedule_staging`, scoped to:
 - optional `ring_no`
 - optional explicit `class_nos`
 
+The approved class list is the same Airtable `update_schedule_staging` view used by `class_start_times`:
+
+`lock_schedule`
+
+No separate `full_lock`, planner-derived, raw schedule, or stale `class_oog` list is approved for the default class_oog probe/write lane.
+
 ## Destinations
 
 - Catalyst: `hs_class_oog`
@@ -41,20 +47,46 @@ The `update_schedule_staging` link is matched by the confirmed key:
 
 This allows `class_oog.lock (from update_schedule_staging)` to display from the linked staging record.
 
+## Active-Trainer Local HTML Probe
+
+Runner:
+
+`docs/horseshowing/run-wec-catalyst-workflow.ps1`
+
+Focused execution:
+
+`-RunClassOogLocalProbeOnly`
+
+The cadence runner reads all current `update_schedule_staging.lock_schedule` classes for the focus day, fetches each `class_oog.php?class_no={class_no}` page locally, scans the HTML order table for rows where `trainer` matches Airtable `trainers.active = checked`, then posts only the matching rows to Catalyst with:
+
+`source=local_html_probe`
+
+Catalyst remains the write/mirror endpoint for `hs_class_oog` and Airtable `class_oog`; the local runner is the approved repeatable fetch/probe path for this stage because Catalyst upstream HTML fetches timed out.
+
+Default heartbeat behavior:
+
+- probe every locked focus-day class in `lock_schedule`
+- write only active-trainer `class_oog` rows
+- clear stale `class_oog` mirror rows for each selected class context through the Catalyst writer
+
+This removes the stale dependency where active-trainer class selection came from existing Airtable `class_oog` mirror rows.
+
 ## Queue Planner
 
 Endpoint:
 
 `horseshowing_class_oog_runner?plan=1&show_no={show_no}&focus_day={focus_day}&max_entries=50`
 
-The planner returns chunks instead of running the fetch.
+The planner returns chunks instead of running the fetch. It is retained for diagnostics and explicitly approved backfill planning.
 
-Chunk lanes:
+Chunk lanes returned by the planner:
 
 - `active_trainers`
 - `full`
 
-The `active_trainers` lane is first priority. It is built from Airtable `trainers.active = checked` and current `class_oog` rows for the same `show_no` and `focus_day`.
+The `active_trainers` lane is built from Airtable `trainers.active = checked` and current `class_oog` rows for the same `show_no` and `focus_day`, so it can be stale if class_oog has not already been probed/refreshed.
+
+Default heartbeat execution must use `probe=active-trainers`, not planner-derived active chunks. It must not run the `full` lane unless the user explicitly approves a separate backfill/sweep.
 
 Chunk sizing uses the larger of:
 
@@ -73,7 +105,7 @@ Endpoint:
 
 This runs only the listed classes.
 
-This is the preferred execution path for heartbeat/cron because it avoids long ring-wide runs and keeps active-trainer classes refreshed first.
+This remains the write path for heartbeat/cron after the probe returns matched class numbers.
 
 ## Verified Test
 
@@ -103,4 +135,4 @@ Verified state:
 
 Do not run full class_oog focus-day enrichment as one large job.
 
-Use the planner, run `active_trainers` chunks first, then continue through `full` chunks over time.
+Use `probe=active-trainers`, run full `class_oog` only for probe-positive classes, and keep the `full` lane out of the customer-facing class workflow unless explicitly approved.

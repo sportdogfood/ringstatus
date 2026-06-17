@@ -86,10 +86,14 @@ function clean(value) {
 
 async function readCompiledPages({ token, baseId }) {
   const records = await listCompiledRecords({ token, baseId });
-  return Object.fromEntries(records
+  const pages = {};
+  records
     .filter((record) => clean(record.fields.status) === "active")
     .filter((record) => clean(record.fields.page_key) && clean(record.fields.html))
-    .map((record) => [clean(record.fields.page_key), {
+    .forEach((record) => {
+      const key = clean(record.fields.page_key);
+      if (pages[key]) return;
+      pages[key] = {
       html: String(record.fields.html || ""),
       source: {
         mode: "airtable_compiled_payload",
@@ -98,7 +102,9 @@ async function readCompiledPages({ token, baseId }) {
         recordId: record.id,
         sourceHash: clean(record.fields.source_hash)
       }
-    }]));
+      };
+    });
+  return pages;
 }
 
 async function readCompiledPage({ token, baseId, pageKey }) {
@@ -121,6 +127,8 @@ async function listCompiledRecords({ token, baseId, formula = "", maxRecords = 1
     const airtableUrl = new URL(`https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(COMPILED_TABLE)}`);
     airtableUrl.searchParams.set("pageSize", String(Math.min(maxRecords, 100)));
     if (formula) airtableUrl.searchParams.set("filterByFormula", formula);
+    airtableUrl.searchParams.set("sort[0][field]", "compiled_at");
+    airtableUrl.searchParams.set("sort[0][direction]", "desc");
     if (offset) airtableUrl.searchParams.set("offset", offset);
     const response = await fetch(airtableUrl, {
       headers: { Authorization: `Bearer ${token}` }

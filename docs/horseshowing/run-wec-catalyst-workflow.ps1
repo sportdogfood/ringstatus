@@ -8,8 +8,10 @@ param(
   [string]$EntryGoTimesRunnerUrl = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_entry_go_times_runner/",
   [string]$ClassLaneRunnerUrl = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_lane_runner/",
   [string]$AirtableBaseId = "app6XS1RvsPNRT6os",
+  [int]$ClassOogChunksPerRun = 1,
   [switch]$ForceSync,
-  [switch]$RunMockLiveCheck
+  [switch]$RunMockLiveCheck,
+  [switch]$RunClassOogLocalProbeOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -313,12 +315,12 @@ function Get-WecAirtableRecordsByFormula {
   )
 
   $records = @()
-  if (!$env:AIRTABLE_TOKEN) { return $records }
+  $token = Get-WecAirtableToken
 
   $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?filterByFormula=$([uri]::EscapeDataString($Formula))&pageSize=$PageSize"
   do {
     $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
-      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+      Authorization = "Bearer $token"
     } -TimeoutSec 30
     $records += @($result.records)
     $uri = if ($result.offset) {
@@ -339,12 +341,12 @@ function Get-WecAirtableRecordsByView {
   )
 
   $records = @()
-  if (!$env:AIRTABLE_TOKEN) { return $records }
+  $token = Get-WecAirtableToken
 
   $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?view=$([uri]::EscapeDataString($ViewName))&pageSize=$PageSize"
   do {
     $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
-      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+      Authorization = "Bearer $token"
     } -TimeoutSec 30
     $records += @($result.records)
     $uri = if ($result.offset) {
@@ -364,12 +366,12 @@ function Get-WecAirtableTableRecords {
   )
 
   $records = @()
-  if (!$env:AIRTABLE_TOKEN) { return $records }
+  $token = Get-WecAirtableToken
 
   $uri = "https://api.airtable.com/v0/$AirtableBaseId/$([uri]::EscapeDataString($TableName))?pageSize=$PageSize"
   do {
     $result = Invoke-RestMethod -Method Get -Uri $uri -Headers @{
-      Authorization = "Bearer $env:AIRTABLE_TOKEN"
+      Authorization = "Bearer $token"
     } -TimeoutSec 30
     $records += @($result.records)
     $uri = if ($result.offset) {
@@ -387,6 +389,99 @@ function Get-WecRecordField($record, [string]$Name) {
   $property = $record.fields.PSObject.Properties[$Name]
   if ($property) { return $property.Value }
   return $null
+}
+
+function Convert-HtmlCellText([string]$Html) {
+  $withoutTags = [regex]::Replace($Html, "(?is)<[^>]+>", " ")
+  $decoded = [System.Net.WebUtility]::HtmlDecode($withoutTags)
+  return ([regex]::Replace($decoded, "\s+", " ")).Trim()
+}
+
+function Get-WecActiveTrainerSet {
+  $set = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+  $records = Get-WecAirtableRecordsByFormula -TableName "trainers" -Formula "{active}=1"
+  foreach ($record in @($records)) {
+    $trainer = [string](Get-WecRecordField $record "trainer")
+    if ($trainer.Trim()) { [void]$set.Add($trainer.Trim()) }
+  }
+  return $set
+}
+
+function Get-WecLockedScheduleRows($FocusDayValue) {
+  $records = Get-WecAirtableRecordsByView -TableName "update_schedule_staging" -ViewName "lock_schedule"
+  $rows = @()
+  foreach ($record in @($records)) {
+    $showValue = [string](Get-WecRecordField $record "show_no")
+    $isoDate = [string](Get-WecRecordField $record "iso_date")
+    $classNo = Int-OrZero (Get-WecRecordField $record "class_no")
+    if ($showValue -ne [string]$ShowNo) { continue }
+    if ($isoDate -ne [string]$FocusDayValue) { continue }
+    if ($classNo -le 0) { continue }
+    $rows += [pscustomobject]@{
+      record_id = $record.id
+      show_no = [int]$ShowNo
+      class_no = $classNo
+      ring_day_no = Int-OrZero (Get-WecRecordField $record "ring_day_no")
+      ring_no = Int-OrZero (Get-WecRecordField $record "ring_no")
+      ring_name = [string](Get-WecRecordField $record "ring_name")
+      event_name = [string](Get-WecRecordField $record "event_name")
+      class_name = [string](Get-WecRecordField $record "class_name")
+      time_text = [string](Get-WecRecordField $record "time_text")
+      entry_count = Int-OrZero (Get-WecRecordField $record "entry_count")
+    }
+  }
+  return @($rows | Sort-Object ring_no, time_text, class_no)
+}
+
+function Get-LocalClassOogActiveRows {
+  param(
+    [object]$ClassRow,
+    [System.Collections.Generic.HashSet[string]]$ActiveTrainers,
+    [Microsoft.PowerShell.Commands.WebRequestSession]$Session
+  )
+
+  $base = "https://www.horseshowing.com"
+  $response = Invoke-WebRequest -UseBasicParsing -Uri "$base/class_oog.php?class_no=$($ClassRow.class_no)" `
+    -WebSession $Session `
+    -Headers @{
+      "accept" = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      "accept-encoding" = "identity"
+      "referer" = "$base/schedule.php"
+    } `
+    -TimeoutSec 30
+
+  if ([string]$response.Content -match "<title>Select Show</title>") {
+    throw "class_oog.php returned Select Show page; session bootstrap failed class_no=$($ClassRow.class_no)"
+  }
+
+  $rows = @()
+  foreach ($tr in [regex]::Matches([string]$response.Content, "(?is)<tr\b[^>]*>(.*?)</tr>")) {
+    $cells = @()
+    foreach ($td in [regex]::Matches($tr.Groups[1].Value, "(?is)<td\b[^>]*>(.*?)</td>")) {
+      $cells += Convert-HtmlCellText $td.Groups[1].Value
+    }
+    if ($cells.Count -lt 5) { continue }
+    $trainer = [string]$cells[4]
+    if (!$ActiveTrainers.Contains($trainer)) { continue }
+    $entryNo = Int-OrZero $cells[1]
+    if ($entryNo -le 0) { continue }
+    $rows += [pscustomobject]@{
+      class_oog_key = "$ShowNo|$($ClassRow.ring_day_no)|$($ClassRow.ring_no)|$($ClassRow.class_no)|$entryNo"
+      show_no = [int]$ShowNo
+      ring_day_no = $ClassRow.ring_day_no
+      ring_no = $ClassRow.ring_no
+      ring = $ClassRow.ring_name
+      class_no = $ClassRow.class_no
+      class_label = if ($ClassRow.event_name) { $ClassRow.event_name } else { $ClassRow.class_name }
+      entry_order = Int-OrZero $cells[0]
+      entry_no = $entryNo
+      horse = [string]$cells[2]
+      rider = [string]$cells[3]
+      trainer = $trainer
+      staging_record_id = $ClassRow.record_id
+    }
+  }
+  return @($rows)
 }
 
 function Resolve-WecCadenceMinutes {
@@ -430,11 +525,13 @@ function Test-WecCadenceGate {
     [hashtable]$State
   )
 
-  if (!$env:AIRTABLE_TOKEN) {
-    Write-WorkflowLog "cadence-gate bypass missing AIRTABLE_TOKEN"
+  try {
+    $null = Get-WecAirtableToken
+  } catch {
+    Write-WorkflowLog "cadence-gate bypass missing AIRTABLE_TOKEN fallback"
     return @{
       should_run = $true
-      reason = "missing_airtable_token"
+      reason = "missing_airtable_token_fallback"
       cadence_minutes = 0
     }
   }
@@ -973,6 +1070,20 @@ function Get-WecAirtableToken {
   throw "AIRTABLE_TOKEN fallback is required for Catalyst WEC runners"
 }
 
+function Resolve-WecFocusDayValue {
+  if ($FocusDay) { return [string]$FocusDay }
+  $focusRows = @(Get-WecAirtableRecordsByView -TableName "focus_show" -ViewName "active" -PageSize 10)
+  $matching = @($focusRows | Where-Object { [string](Get-WecRecordField $_ "show_no") -eq [string]$ShowNo })
+  if ($matching.Count -ne 1) {
+    throw "focus_show.active must have exactly one record for show=$ShowNo; found $($matching.Count)"
+  }
+  $value = [string](Get-WecRecordField $matching[0] "focus_day")
+  if (!$value) {
+    throw "focus_show.active record for show=$ShowNo has blank focus_day"
+  }
+  return $value
+}
+
 function Invoke-WecRunnerPost {
   param(
     [string]$Url,
@@ -988,51 +1099,84 @@ function Invoke-ClassOogQueueSync($FocusDayValue) {
   if (!$FocusDayValue) { return }
 
   $token = Get-WecAirtableToken
-  $plan = Invoke-WecRunnerPost -Url $ClassOogRunnerUrl -TimeoutSec 120 -Payload @{
-    show_no = $ShowNo
-    focus_day = $FocusDayValue
-    plan = "1"
-    max_entries = "50"
-    airtable_token = $token
-  }
-  if (!$plan.ok) {
-    throw "class_oog plan failed phase=$($plan.phase) error=$($plan.error)"
+  $lockedClasses = @(Get-WecLockedScheduleRows $FocusDayValue)
+  $activeTrainers = Get-WecActiveTrainerSet
+  if ($activeTrainers.Count -lt 1) {
+    throw "class_oog local probe stopped: no active trainers"
   }
 
-  $chunks = @($plan.queue)
+  $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+  $session.UserAgent = "Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+  $session.Cookies.Add((New-Object System.Net.Cookie("HscomShowNo", "$ShowNo", "/", "www.horseshowing.com")))
+  $base = "https://www.horseshowing.com"
+  Invoke-WebRequest -UseBasicParsing -Uri "$base/show.php?show=$ShowNo" -WebSession $session -Headers @{ "accept-encoding" = "identity" } -TimeoutSec 30 | Out-Null
+  Invoke-WebRequest -UseBasicParsing -Uri "$base/schedule.php" -WebSession $session -Headers @{ "accept-encoding" = "identity" } -TimeoutSec 30 | Out-Null
+
+  $localRows = @()
+  $probeErrors = @()
+  foreach ($classRow in $lockedClasses) {
+    try {
+      $localRows += @(Get-LocalClassOogActiveRows -ClassRow $classRow -ActiveTrainers $activeTrainers -Session $session)
+    } catch {
+      $probeErrors += [pscustomobject]@{
+        class_no = $classRow.class_no
+        ring_day_no = $classRow.ring_day_no
+        ring_no = $classRow.ring_no
+        error = $_.Exception.Message
+      }
+    }
+  }
+  if (@($probeErrors).Count -gt 0) {
+    $sample = @($probeErrors | Select-Object -First 3) | ConvertTo-Json -Depth 5 -Compress
+    throw "class_oog local probe failed for $(@($probeErrors).Count) of $($lockedClasses.Count) locked classes: $sample"
+  }
+  $matchedClassNos = @($localRows | ForEach-Object { [int]$_.class_no } | Sort-Object -Unique)
+  $selectedClassNos = @($lockedClasses | ForEach-Object { [int]$_.class_no } | Sort-Object -Unique)
   $rowsWritten = 0
   $airtableRecords = 0
   $classResults = 0
-  for ($i = 0; $i -lt $chunks.Count; $i++) {
-    $chunk = $chunks[$i]
-    $classNos = @($chunk.class_nos) -join ","
-    if (!$classNos) { continue }
+  if ($selectedClassNos.Count -gt 0) {
+    $classNos = $selectedClassNos -join ","
     $result = Invoke-WecRunnerPost -Url $ClassOogRunnerUrl -TimeoutSec 240 -Payload @{
       show_no = $ShowNo
       focus_day = $FocusDayValue
       class_nos = $classNos
+      source = "local_html_probe"
+      local_rows = @($localRows)
       airtable_token = $token
     }
     if (!$result.ok) {
-      throw "class_oog chunk failed index=$($i + 1) class_nos=$classNos phase=$($result.phase) error=$($result.error)"
+      throw "class_oog local-html write failed class_nos=$classNos phase=$($result.phase) error=$($result.error)"
     }
     $rowsWritten += Int-OrZero $result.rows_written
     $airtableRecords += Int-OrZero $result.airtable_records
     $classResults += @($result.class_results).Count
   }
+  $nextOffset = 0
+  $state["class_oog_queue_last_focus"] = $FocusDayValue
+  $state["class_oog_queue_last_target_classes"] = $lockedClasses.Count
+  Save-State $state
 
   $summary = @{
     ok = $true
     show_no = $ShowNo
     focus_day = $FocusDayValue
-    chunks = $chunks.Count
-    target_classes_total = Int-OrZero $plan.target_classes_total
-    active_trainer_classes = Int-OrZero $plan.active_trainer_classes
+    chunks = if ($matchedClassNos.Count -gt 0) { 1 } else { 0 }
+    total_chunks = $null
+    chunk_offset = 0
+    next_offset = $nextOffset
+    target_classes_total = $lockedClasses.Count
+    probed_classes = $lockedClasses.Count
+    matched_classes = $matchedClassNos.Count
+    matched_class_nos = $matchedClassNos
+    active_trainer_rows = $localRows.Count
+    probe_errors = $probeErrors
     class_results = $classResults
     rows_written = $rowsWritten
     airtable_records = $airtableRecords
+    source = "local_html_probe"
   }
-  Write-WorkflowLog "class_oog_queue chunks=$($summary.chunks) classes=$($summary.target_classes_total) rows=$rowsWritten airtable=$airtableRecords focus=$FocusDayValue"
+  Write-WorkflowLog "class_oog_local_probe probed=$($summary.probed_classes) matched=$($summary.matched_classes) active_rows=$($summary.active_trainer_rows) errors=$(@($probeErrors).Count) rows=$rowsWritten airtable=$airtableRecords focus=$FocusDayValue"
   return $summary
 }
 
@@ -1065,21 +1209,45 @@ function Invoke-TimeWorkflowTableSync($FocusDayValue) {
   }
 }
 
-function Invoke-ClassLaneGetOrdersSync($FocusDayValue) {
+function Invoke-EntryGoTimesSync($FocusDayValue) {
+  if (!$FocusDayValue) { return }
+  $token = Get-WecAirtableToken
+  $entryGo = Invoke-WecRunnerPost -Url $EntryGoTimesRunnerUrl -TimeoutSec 180 -Payload @{
+    show_no = $ShowNo
+    focus_day = $FocusDayValue
+    airtable_token = $token
+  }
+  if (!$entryGo.ok) {
+    throw "entry_go_times runner failed phase=$($entryGo.phase) error=$($entryGo.error) skipped=$($entryGo.skipped | ConvertTo-Json -Depth 6 -Compress) verify_airtable=$($entryGo.verify_airtable | ConvertTo-Json -Depth 6 -Compress)"
+  }
+  Write-WorkflowLog "entry-go-times source=$($entryGo.source_rows) active=$($entryGo.verify_airtable.active_rows) focus=$FocusDayValue"
+  return $entryGo
+}
+
+function Invoke-ClassLaneAction {
+  param(
+    [string]$Action,
+    [string]$FocusDayValue,
+    [int]$TimeoutSec = 120
+  )
   if (!$FocusDayValue) { return $null }
   $token = Get-WecAirtableToken
-  $result = Invoke-WecRunnerPost -Url $ClassLaneRunnerUrl -TimeoutSec 90 -Payload @{
-    action = "sync-get-orders"
+  $result = Invoke-WecRunnerPost -Url $ClassLaneRunnerUrl -TimeoutSec $TimeoutSec -Payload @{
+    action = $Action
     show_no = $ShowNo
     focus_day = $FocusDayValue
     airtable_token = $token
     base_id = $AirtableBaseId
   }
   if (!$result.ok) {
-    throw "class_lane sync-get-orders failed: $($result.error)"
+    throw "class_lane $Action failed: $($result.error)"
   }
-  Write-WorkflowLog "class-lane get_orders orders=$($result.result.orders) matches=$($result.result.matches) airtable_updated=$($result.result.airtable_updated) catalyst_updated=$($result.result.catalyst_updated) focus=$FocusDayValue"
+  Write-WorkflowLog "class-lane $Action focus=$FocusDayValue result=$($result.result | ConvertTo-Json -Depth 6 -Compress)"
   return $result.result
+}
+
+function Invoke-ClassLaneGetOrdersSync($FocusDayValue) {
+  return Invoke-ClassLaneAction -Action "sync-get-orders" -FocusDayValue $FocusDayValue -TimeoutSec 120
 }
 
 function Invoke-MockLiveCheck($FocusDayValue) {
@@ -1667,6 +1835,20 @@ function Due($state, $key, $minutes) {
 $state = Read-State
 $now = Get-Date
 
+if ($RunClassOogLocalProbeOnly) {
+  $focusDayValue = Resolve-WecFocusDayValue
+  $result = Invoke-ClassOogQueueSync $focusDayValue
+  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_oog" -RecordsSeen (Int-OrZero $result.rows_written) -RecordsChanged (Int-OrZero $result.airtable_records) -Summary "class_oog local probe only probed=$($result.probed_classes) matched=$($result.matched_classes) rows=$($result.rows_written) focus=$focusDayValue" -Payload $result
+  $state["class_oog_local_probe_last_run"] = (Get-Date).ToString("o")
+  Save-State $state
+  if ($script:WecWorkflowMutexAcquired) {
+    $script:WecWorkflowMutex.ReleaseMutex()
+    $script:WecWorkflowMutex.Dispose()
+  }
+  $result | ConvertTo-Json -Depth 8
+  exit 0
+}
+
 $cadenceGate = Test-WecCadenceGate -State $state
 if (!$cadenceGate.should_run) {
   $state["cadence_gate_last_check"] = (Get-Date).ToString("o")
@@ -1741,13 +1923,11 @@ if ($heartbeat.orders_error) {
 } else {
   $ordersMirror = Write-LiveRowsToAirtable -Source "orders" -Payload $heartbeat.orders -FocusDayValue $heartbeat.focus_day
   $ordersLinks = Invoke-AirtableLiveLinkSync -Source "orders" -FocusDayValue $heartbeat.focus_day
-  $ordersClassStart = Invoke-ClassLaneGetOrdersSync $heartbeat.focus_day
-  $ordersRecordsChanged = (Int-OrZero $ordersMirror.changed) + (Int-OrZero $ordersLinks.changed) + (Int-OrZero $ordersClassStart.airtable_updated) + (Int-OrZero $ordersClassStart.catalyst_updated)
-  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -RecordsChanged $ordersRecordsChanged -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) mirrored=$($ordersMirror.changed) linked=$($ordersLinks.changed) class_start_matches=$($ordersClassStart.matches) focus=$($heartbeat.focus_day)" -Payload @{
+  $ordersRecordsChanged = (Int-OrZero $ordersMirror.changed) + (Int-OrZero $ordersLinks.changed)
+  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -RecordsChanged $ordersRecordsChanged -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) mirrored=$($ordersMirror.changed) linked=$($ordersLinks.changed) focus=$($heartbeat.focus_day)" -Payload @{
     orders = $heartbeat.orders
     mirror = $ordersMirror
     links = $ordersLinks
-    class_start_enrichment = $ordersClassStart
     focus_day = $heartbeat.focus_day
   }
   Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders returned without error." -Payload $heartbeat.orders
@@ -1830,9 +2010,27 @@ if ($heartbeat.focus_day) {
     }
   }
   try {
+    $classStartLane = Invoke-ClassLaneAction -Action "sync-class-start-times" -FocusDayValue $heartbeat.focus_day -TimeoutSec 180
+    $classStartChanged = (Int-OrZero $classStartLane.class_start_times_airtable_upserted) + (Int-OrZero $classStartLane.class_start_times_airtable_deleted) + (Int-OrZero $classStartLane.class_start_times_catalyst.inserted) + (Int-OrZero $classStartLane.class_start_times_catalyst.updated) + (Int-OrZero $classStartLane.class_start_times_catalyst.deleted)
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times" -RecordsSeen (Int-OrZero $classStartLane.source_locked_staging) -RecordsChanged $classStartChanged -Summary "class_start_times source=$($classStartLane.source_locked_staging) focus=$($heartbeat.focus_day)" -Payload $classStartLane
+    Resolve-WecAirtableAlert -AlertType "core_class_start_times_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_start_times" -Message "Resolved: class_start_times completed." -Payload $classStartLane
+  } catch {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times" -Status "error" -Summary "class_start_times failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "core_class_start_times_failed" -Severity "critical" -Message "class_start_times failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_start_times" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    throw
+  }
+  try {
     $classOogQueue = Invoke-ClassOogQueueSync $heartbeat.focus_day
-    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_oog" -RecordsSeen (Int-OrZero $classOogQueue.rows_written) -RecordsChanged (Int-OrZero $classOogQueue.airtable_records) -Summary "class_oog queue chunks=$($classOogQueue.chunks) classes=$($classOogQueue.target_classes_total) rows=$($classOogQueue.rows_written) focus=$($heartbeat.focus_day)" -Payload $classOogQueue
-    Resolve-WecAirtableAlert -AlertType "core_class_oog_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_oog_queue" -Message "Resolved: class_oog queue completed." -Payload $classOogQueue
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_oog" -RecordsSeen (Int-OrZero $classOogQueue.rows_written) -RecordsChanged (Int-OrZero $classOogQueue.airtable_records) -Summary "class_oog queue chunk=$($classOogQueue.chunks)/$($classOogQueue.total_chunks) offset=$($classOogQueue.chunk_offset) next=$($classOogQueue.next_offset) rows=$($classOogQueue.rows_written) focus=$($heartbeat.focus_day)" -Payload $classOogQueue
+    Resolve-WecAirtableAlert -AlertType "core_class_oog_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_oog_queue" -Message "Resolved: class_oog queue chunk completed." -Payload $classOogQueue
   } catch {
     Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_oog" -Status "error" -Summary "class_oog queue failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
       show_no = $ShowNo
@@ -1847,25 +2045,76 @@ if ($heartbeat.focus_day) {
     throw
   }
   try {
-    Invoke-TimeWorkflowTableSync $heartbeat.focus_day
-    Resolve-WecAirtableAlert -AlertType "time_trigger_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|time_triggers" -Message "Resolved: time workflow tables updated successfully." -Payload @{
-      show_no = $ShowNo
-      focus_day = $heartbeat.focus_day
-    }
+    $classOogRollups = Invoke-ClassLaneAction -Action "sync-class-oog-rollups" -FocusDayValue $heartbeat.focus_day -TimeoutSec 180
+    $classOogRollupChanged = (Int-OrZero $classOogRollups.airtable_updated) + (Int-OrZero $classOogRollups.catalyst_updated)
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_oog_rollups" -RecordsSeen (Int-OrZero $classOogRollups.class_start_times) -RecordsChanged $classOogRollupChanged -Summary "class_oog rollups class_start_times=$($classOogRollups.class_start_times) groups=$($classOogRollups.class_oog_groups) focus=$($heartbeat.focus_day)" -Payload $classOogRollups
+    Resolve-WecAirtableAlert -AlertType "core_class_oog_rollups_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_oog_rollups" -Message "Resolved: class_oog rollups completed." -Payload $classOogRollups
   } catch {
-    Write-WecAirtableLog -LogType "alerts" -CheckName "entry_go_times" -Status "error" -Summary "time workflow table sync failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_oog_rollups" -Status "error" -Summary "class_oog rollups failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
       show_no = $ShowNo
       focus_day = $heartbeat.focus_day
       error = $_.Exception.Message
     }
-    Write-WecAirtableAlert -AlertType "time_workflow_table_sync_failed" -Severity "critical" -Message "Time workflow table sync failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|time_workflow_table_sync" -Payload @{
+    Write-WecAirtableAlert -AlertType "core_class_oog_rollups_failed" -Severity "critical" -Message "class_oog rollups failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_oog_rollups" -Payload @{
       show_no = $ShowNo
       focus_day = $heartbeat.focus_day
       error = $_.Exception.Message
     }
     throw
   }
-  Write-TimeAlerts $heartbeat.focus_day
+  try {
+    $ordersClassStart = Invoke-ClassLaneGetOrdersSync $heartbeat.focus_day
+    $ordersClassStartChanged = (Int-OrZero $ordersClassStart.airtable_updated) + (Int-OrZero $ordersClassStart.catalyst_updated)
+    Write-WecAirtableLog -LogType "live" -CheckName "get_orders_class_start" -RecordsSeen (Int-OrZero $ordersClassStart.orders) -RecordsChanged $ordersClassStartChanged -Summary "get_orders class_start_matches=$($ordersClassStart.matches) focus=$($heartbeat.focus_day)" -Payload $ordersClassStart
+    Resolve-WecAirtableAlert -AlertType "get_orders_class_start_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders_class_start" -Message "Resolved: get_orders class_start enrichment completed." -Payload $ordersClassStart
+  } catch {
+    Write-WecAirtableLog -LogType "live" -CheckName "get_orders_class_start" -Status "error" -Summary "get_orders class_start enrichment failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "get_orders_class_start_failed" -Severity "critical" -Message "get_orders class_start enrichment failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders_class_start" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    throw
+  }
+  try {
+    $entryGoTimes = Invoke-EntryGoTimesSync $heartbeat.focus_day
+    $entryGoChanged = (Int-OrZero $entryGoTimes.airtable.upserted) + (Int-OrZero $entryGoTimes.airtable.inactivated) + (Int-OrZero $entryGoTimes.catalyst.inserted) + (Int-OrZero $entryGoTimes.catalyst.updated) + (Int-OrZero $entryGoTimes.catalyst.deleted)
+    Write-WecAirtableLog -LogType "alerts" -CheckName "entry_go_times" -RecordsSeen (Int-OrZero $entryGoTimes.source_rows) -RecordsChanged $entryGoChanged -Summary "entry_go_times active=$($entryGoTimes.verify_airtable.active_rows) source=$($entryGoTimes.source_rows) focus=$($heartbeat.focus_day)" -Payload $entryGoTimes
+    Resolve-WecAirtableAlert -AlertType "entry_go_times_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|entry_go_times" -Message "Resolved: entry_go_times completed." -Payload $entryGoTimes
+  } catch {
+    Write-WecAirtableLog -LogType "alerts" -CheckName "entry_go_times" -Status "error" -Summary "entry_go_times failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "entry_go_times_failed" -Severity "critical" -Message "entry_go_times failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|entry_go_times" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    throw
+  }
+  try {
+    $classAlerts = Invoke-ClassLaneAction -Action "sync-class-alerts" -FocusDayValue $heartbeat.focus_day -TimeoutSec 120
+    Write-WecAirtableLog -LogType "alerts" -CheckName "class_alerts" -RecordsSeen ((Int-OrZero $classAlerts.class_start_times) + (Int-OrZero $classAlerts.entry_go_times)) -RecordsChanged ((Int-OrZero $classAlerts.alerts_upserted) + (Int-OrZero $classAlerts.alerts_resolved)) -Summary "class_alerts class_start_times=$($classAlerts.class_start_times) entry_go_times=$($classAlerts.entry_go_times) class_alerts=$($classAlerts.class_alerts) entry_alerts=$($classAlerts.entry_alerts) alerts=$($classAlerts.alerts_upserted) resolved=$($classAlerts.alerts_resolved) focus=$($heartbeat.focus_day)" -Payload $classAlerts
+    Resolve-WecAirtableAlert -AlertType "class_alerts_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_alerts" -Message "Resolved: class_alerts completed." -Payload $classAlerts
+  } catch {
+    Write-WecAirtableLog -LogType "alerts" -CheckName "class_alerts" -Status "error" -Summary "class_alerts failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    Write-WecAirtableAlert -AlertType "class_alerts_failed" -Severity "critical" -Message "class_alerts failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_alerts" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      error = $_.Exception.Message
+    }
+    throw
+  }
   try {
     Invoke-WecLaneAudit $heartbeat.focus_day
     Resolve-WecAirtableAlert -AlertType "wec_lane_audit_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|wec_lane_audit" -Message "Resolved: WEC lane audit passed." -Payload @{
