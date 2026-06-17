@@ -1203,7 +1203,9 @@
           const isCheckTime = isCheckDisplay(displayTime);
 
           const label = classDisplayLabel(c);
-          const duplicateKey = `${roundedTime.key}|${normalizedDisplayClassText(c)}`;
+          const classNo = String(c.class_no ?? c.classNo ?? "").trim();
+          const classNumber = String(c.class_number ?? c.classNumber ?? "").trim();
+          const duplicateKey = `${roundedTime.key}|${classNo || classNumber || normalizedDisplayClassText(c)}`;
           if(duplicateKey.trim() && seenNonTeamTimeClassKeys.has(duplicateKey)) continue;
           if(duplicateKey.trim()) seenNonTeamTimeClassKeys.add(duplicateKey);
 

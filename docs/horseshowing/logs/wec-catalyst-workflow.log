@@ -6909,3 +6909,715 @@
 2026-06-16T20:15:27 cadence-gate pass focus=14907|2026-06-17|day cadence=12
 2026-06-16T20:15:32 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
 2026-06-16T20:15:57 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-16T20:17:21 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:17:41 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 54,     "support_matches": 270,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 54,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 54,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 133,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 54,       "inactive": 3     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:17:44 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:17:45 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:20:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:20:29 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:21:10 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-16T20:21:11 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:21:18 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:21:36 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 54,     "support_matches": 270,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 54,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 54,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 133,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 54,       "inactive": 3     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:21:38 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:21:40 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:25:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:25:29 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:25:38 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-16T20:26:57 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:27:15 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 54,     "support_matches": 270,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 54,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 54,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 133,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 54,       "inactive": 3     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:27:17 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:27:18 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:30:26 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:30:31 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:30:48 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-16T20:30:48 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:30:55 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:31:14 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 54,     "support_matches": 270,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 54,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 54,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 133,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 54,       "inactive": 3     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:31:16 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:31:18 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:35:25 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:35:30 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:36:08 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-16T20:36:09 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:36:16 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:36:35 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 54,     "support_matches": 270,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 54,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 54,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 133,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 54,       "inactive": 3     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:36:37 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:36:38 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:37:14 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:37:17 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:37:28 update-schedule-staging selected=1 staging_rows=5 update_rows=5 class_start_rows=5 focus=2026-06-17
+2026-06-16T20:37:28 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T20:37:29 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:37:36 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:37:54 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 59,     "support_matches": 293,     "linked": 5   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 59,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 59,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 141,       "changed": 3     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 59,       "inactive": 8     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:37:56 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:37:58 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:40:14 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:40:17 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:40:28 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:40:29 update-schedule-staging selected=1 staging_rows=4 update_rows=4 class_start_rows=4 focus=2026-06-17
+2026-06-16T20:40:30 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T20:40:31 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:40:32 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:40:38 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:40:45 update-schedule-staging selected=1 staging_rows=4 update_rows=4 class_start_rows=4 focus=2026-06-17
+2026-06-16T20:40:45 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T20:40:46 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:40:53 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:40:58 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 63,     "support_matches": 313,     "linked": 4   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 63,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 63,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 145,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 12     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:41:01 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:41:02 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:41:14 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 63,     "support_matches": 313,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 63,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 63,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 145,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 63,       "inactive": 12     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:41:16 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:41:18 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:45:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:45:27 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:45:41 update-schedule-staging selected=1 staging_rows=15 update_rows=15 class_start_rows=15 focus=2026-06-17
+2026-06-16T20:45:42 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T20:45:43 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:45:50 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:46:09 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 15   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:46:12 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:46:15 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T20:49:55 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:49:59 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:50:11 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-16T20:50:12 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T20:50:13 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:50:20 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:50:27 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:50:30 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:50:41 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:50:44 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:50:46 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-16T20:50:46 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T00-50-46-747Z.json" }
+2026-06-16T20:50:46 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T20:50:47 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T20:50:47 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:50:54 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:51:12 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:51:15 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:51:17 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T00-51-17-344Z.json" }
+2026-06-16T20:51:17 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T20:52:25 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T20:52:28 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T20:52:45 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-16T20:52:45 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T20:52:46 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T20:52:53 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T20:53:11 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T20:53:13 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T20:53:16 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T00-53-16-211Z.json" }
+2026-06-16T20:53:16 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T21:05:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:05:29 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T21:05:36 update-schedule-staging skipped focus=2026-06-17 next_due=60m
+2026-06-16T21:05:56 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T21:05:58 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:06:01 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T01-06-01-188Z.json" }
+2026-06-16T21:06:01 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T21:10:17 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:10:21 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T21:10:42 update-schedule-staging selected=1 staging_rows=10 update_rows=10 class_start_rows=0 focus=2026-06-17
+2026-06-16T21:10:42 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T21:12:02 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T21:12:20 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T21:12:22 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:12:25 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T21:13:42 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:13:46 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T21:14:08 update-schedule-staging selected=1 staging_rows=13 update_rows=13 class_start_rows=0 focus=2026-06-17
+2026-06-16T21:14:08 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T21:15:25 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T21:15:44 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T21:15:46 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:15:48 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T01-15-48-370Z.json" }
+2026-06-16T21:15:48 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T21:17:11 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:17:14 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T21:17:40 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-16T21:17:41 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T21:19:01 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T21:19:21 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T21:19:23 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:19:25 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T21:20:47 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:20:50 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T21:21:19 update-schedule-staging selected=1 staging_rows=12 update_rows=12 class_start_rows=0 focus=2026-06-17
+2026-06-16T21:21:19 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T21:22:42 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T21:23:00 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T21:23:02 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:23:05 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T01-23-05-246Z.json" }
+2026-06-16T21:23:05 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T21:25:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:25:29 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=41 triggers=0
+2026-06-16T21:25:35 update-schedule-staging skipped focus=2026-06-17 next_due=60m
+2026-06-16T21:25:54 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 51,     "changed": 51   },   "entry_go_times": {     "seen": 0,     "changed": 0   },   "linked_class_start_times_to_support_tables": {     "class_records": 78,     "support_matches": 390,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 78,     "entry_records": 0,     "linked": 0   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 0,     "class_oog_records": 0,     "matches": 0,     "linked": 0   },   "linked_entry_go_times_to_helpers": {     "entry_records": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 0,     "class_start_records": 78,     "entry_go_records": 0,     "class_start_matches": 0,     "entry_go_matches": 0,     "helper_matches": 0,     "support_matches": 0,     "linked": 0   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY"     ],     "class_start_times": {       "seen": 160,       "changed": 0     },     "entry_go_times": {       "seen": 0,       "changed": 0     },     "class_oog": {       "seen": 33,       "changed": 0     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 0,     "ignored_count": 0,     "grouped_count": 0   },   "inactive": {     "class_start_times": {       "seen": 78,       "inactive": 27     },     "entry_go_times": {       "seen": 0,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T21:25:56 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:25:58 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T01-25-58-814Z.json" }
+2026-06-16T21:25:59 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T21:40:22 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:40:28 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=105 triggers=0
+2026-06-16T21:40:34 update-schedule-staging skipped focus=2026-06-17 next_due=60m
+2026-06-16T21:41:00 sync-airtable-time-workflows {   "ok": true,   "stage": "all",   "show_no": "14907",   "focus_day": "2026-06-17",   "class_start_times": {     "seen": 63,     "changed": 63   },   "entry_go_times": {     "seen": 17,     "changed": 17   },   "linked_class_start_times_to_support_tables": {     "class_records": 141,     "support_matches": 705,     "linked": 0   },   "linked_entry_go_times_to_class_start_times": {     "class_records": 141,     "entry_records": 17,     "linked": 17   },   "linked_entry_go_times_to_class_oog": {     "entry_records": 17,     "class_oog_records": 40,     "matches": 17,     "linked": 17   },   "linked_entry_go_times_to_helpers": {     "entry_records": 17,     "helper_matches": 68,     "support_matches": 85,     "linked": 17   },   "linked_class_oog_to_generated_tables_and_helpers": {     "class_oog_records": 40,     "class_start_records": 141,     "entry_go_records": 17,     "class_start_matches": 40,     "entry_go_matches": 17,     "helper_matches": 160,     "support_matches": 240,     "linked": 40   },   "scoped_today_tomorrow_cleanup": {     "views_used": [       "class_oog/TODAY",       "class_start_times/TODAY",       "entry_go_times/TODAY"     ],     "class_start_times": {       "seen": 141,       "changed": 0     },     "entry_go_times": {       "seen": 17,       "changed": 0     },     "class_oog": {       "seen": 40,       "changed": 1     }   },   "class_oog_ignore": {     "ignored": {},     "manual_count": 0,     "automatic_count": 4,     "ignored_count": 4,     "grouped_count": 4   },   "inactive": {     "class_start_times": {       "seen": 141,       "inactive": 78     },     "entry_go_times": {       "seen": 17,       "inactive": 0     }   },   "fields_created": {     "class_start_times": 0,     "class_start_time_links": 0,     "entry_go_times": 0,     "entry_go_time_links": 0,     "class_oog_links": 0   } }
+2026-06-16T21:41:04 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:41:08 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T01-41-08-167Z.json" }
+2026-06-16T21:41:08 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T21:48:11 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:48:21 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=105 triggers=0
+2026-06-16T21:48:49 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=14 focus=2026-06-17
+2026-06-16T21:48:49 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T21:50:07 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T21:55:20 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T21:55:28 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=105 triggers=0
+2026-06-16T21:55:33 update-schedule-staging skipped focus=2026-06-17 next_due=60m
+2026-06-16T21:59:11 class_oog_queue chunks=45 classes=128 rows=80 airtable=80 focus=2026-06-17
+2026-06-16T21:59:12 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-16T21:59:26 time-workflow class_start_active=141 entry_go_active=40 focus=2026-06-17
+2026-06-16T21:59:32 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T21:59:39 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T01-59-39-512Z.json" }
+2026-06-16T21:59:39 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-16T22:15:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:15:33 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=105 triggers=0
+2026-06-16T22:15:39 update-schedule-staging skipped focus=2026-06-17 next_due=60m
+2026-06-16T22:16:10 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T22:20:26 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:20:34 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=105 triggers=0
+2026-06-16T22:20:41 update-schedule-staging skipped focus=2026-06-17 next_due=60m
+2026-06-16T22:24:22 class_oog_queue chunks=45 classes=128 rows=80 airtable=80 focus=2026-06-17
+2026-06-16T22:24:23 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-16T22:24:34 time-workflow class_start_active=0 entry_go_active=0 focus=2026-06-17
+2026-06-16T22:24:37 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T22:24:39 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T22:25:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:25:27 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=0 triggers=0
+2026-06-16T22:25:53 update-schedule-staging selected=1 staging_rows=2 update_rows=2 class_start_rows=0 focus=2026-06-17
+2026-06-16T22:25:53 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T22:25:54 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T22:26:01 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T22:26:02 class_oog_queue chunks=0 classes=0 rows=0 airtable=0 focus=2026-06-17
+2026-06-16T22:26:03 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-16T22:26:07 time-workflow class_start_active=0 entry_go_active=0 focus=2026-06-17
+2026-06-16T22:26:08 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T22:26:10 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T22:30:34 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:30:36 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=0 triggers=0
+2026-06-16T22:31:05 update-schedule-staging selected=1 staging_rows=12 update_rows=12 class_start_rows=0 focus=2026-06-17
+2026-06-16T22:31:06 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T22:31:07 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T22:31:14 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T22:31:43 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T22:35:25 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:35:27 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=0 triggers=0
+2026-06-16T22:35:54 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-16T22:35:54 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T22:35:55 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T22:36:02 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T22:36:31 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T22:40:20 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:40:22 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=0 triggers=0
+2026-06-16T22:40:49 update-schedule-staging selected=1 staging_rows=4 update_rows=4 class_start_rows=0 focus=2026-06-17
+2026-06-16T22:40:50 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T22:40:51 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T22:40:58 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T22:41:27 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T22:45:26 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:45:28 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=0 triggers=0
+2026-06-16T22:45:57 update-schedule-staging selected=1 staging_rows=15 update_rows=15 class_start_rows=0 focus=2026-06-17
+2026-06-16T22:45:57 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T22:45:58 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T22:46:05 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T22:46:34 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T22:50:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:50:26 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=0 triggers=0
+2026-06-16T22:50:54 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-16T22:50:54 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T22:50:55 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T22:51:02 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T22:51:31 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T22:55:26 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T22:55:28 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=0 triggers=0
+2026-06-16T22:55:56 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-16T22:55:56 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T22:55:57 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T22:56:04 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T22:56:33 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:00:26 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:00:34 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:01:04 update-schedule-staging selected=1 staging_rows=8 update_rows=8 class_start_rows=5 focus=2026-06-17
+2026-06-16T23:01:05 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:01:06 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T23:01:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:01:44 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:05:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:05:30 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:05:57 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:05:58 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:07:23 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:07:53 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:10:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:10:30 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:11:02 update-schedule-staging selected=1 staging_rows=10 update_rows=10 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:11:02 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:12:18 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:13:52 class_oog_queue chunks=28 classes=52 rows=34 airtable=34 focus=2026-06-17
+2026-06-16T23:13:53 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-16T23:14:02 time-workflow class_start_active=63 entry_go_active=17 focus=2026-06-17
+2026-06-16T23:14:08 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T23:14:13 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T23:15:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:15:30 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:15:58 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:15:58 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:15:59 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T23:16:06 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:16:37 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:20:25 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:20:30 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:20:58 update-schedule-staging selected=1 staging_rows=12 update_rows=12 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:20:59 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:22:15 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:23:50 class_oog_queue chunks=28 classes=52 rows=34 airtable=34 focus=2026-06-17
+2026-06-16T23:23:50 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-16T23:23:59 time-workflow class_start_active=63 entry_go_active=17 focus=2026-06-17
+2026-06-16T23:24:03 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T23:24:08 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T23:25:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:25:29 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:25:56 update-schedule-staging selected=1 staging_rows=2 update_rows=2 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:25:56 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:27:12 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:27:42 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:30:28 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:30:35 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:31:05 update-schedule-staging selected=1 staging_rows=12 update_rows=12 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:31:05 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:31:06 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T23:31:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:31:43 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:35:25 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:35:30 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=45 triggers=0
+2026-06-16T23:35:57 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:35:58 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:37:15 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:38:48 class_oog_queue chunks=28 classes=49 rows=34 airtable=34 focus=2026-06-17
+2026-06-16T23:38:49 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-16T23:38:57 time-workflow class_start_active=60 entry_go_active=17 focus=2026-06-17
+2026-06-16T23:39:02 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T23:39:07 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T23:40:20 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:40:26 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=60 triggers=0
+2026-06-16T23:40:54 update-schedule-staging selected=1 staging_rows=4 update_rows=4 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:40:54 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:40:55 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T23:41:02 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:42:34 class_oog_queue chunks=28 classes=49 rows=34 airtable=34 focus=2026-06-17
+2026-06-16T23:42:35 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-16T23:42:43 time-workflow class_start_active=60 entry_go_active=17 focus=2026-06-17
+2026-06-16T23:42:48 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-16T23:42:53 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-16T23:45:28 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:45:35 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=60 triggers=0
+2026-06-16T23:46:04 update-schedule-staging selected=1 staging_rows=15 update_rows=15 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:46:04 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:46:05 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T23:46:12 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:46:43 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:50:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:50:29 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=60 triggers=0
+2026-06-16T23:50:58 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:50:58 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:50:59 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T23:51:06 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:51:37 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-16T23:55:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-16T23:55:31 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=60 triggers=0
+2026-06-16T23:55:58 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-16T23:55:59 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-16T23:55:59 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-16T23:56:09 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-16T23:56:39 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T00:00:26 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T00:00:33 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T00:01:03 update-schedule-staging selected=1 staging_rows=8 update_rows=8 class_start_rows=5 focus=2026-06-17
+2026-06-17T00:01:04 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T00:02:24 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T00:02:54 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T00:16:55 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T00:17:01 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T00:17:29 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-17T00:17:29 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T00:18:48 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T00:20:14 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T00:20:15 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T00:20:23 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T00:20:27 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T00:20:32 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T00:33:34 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T00:33:40 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T00:34:20 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T00:35:39 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T00:36:10 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T00:50:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T00:50:28 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T00:51:01 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-17T00:51:01 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T00:52:19 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T00:54:14 class_oog_queue chunks=29 classes=58 rows=50 airtable=50 focus=2026-06-17
+2026-06-17T00:54:15 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T00:54:23 time-workflow class_start_active=58 entry_go_active=17 focus=2026-06-17
+2026-06-17T00:54:27 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T00:54:32 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T01:07:00 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T01:07:06 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T01:07:36 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-17T01:07:37 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T01:07:38 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T01:07:45 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T01:08:10 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T01:23:33 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T01:23:38 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T01:24:08 update-schedule-staging selected=1 staging_rows=1 update_rows=1 class_start_rows=0 focus=2026-06-17
+2026-06-17T01:24:09 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T01:24:10 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T01:24:17 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T01:25:44 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T01:25:45 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T01:25:53 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T01:25:56 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T01:26:00 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T01:40:12 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T01:40:17 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T01:40:47 update-schedule-staging selected=1 staging_rows=4 update_rows=4 class_start_rows=0 focus=2026-06-17
+2026-06-17T01:40:48 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T01:40:49 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T01:40:56 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T01:42:20 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T01:42:21 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T01:42:29 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T01:42:33 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T01:42:36 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T01:56:50 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T01:56:56 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T01:57:26 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-17T01:57:27 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T01:57:28 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T01:57:35 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T01:59:01 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T01:59:01 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T01:59:09 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T01:59:13 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T01:59:16 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T02:13:30 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T02:13:34 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T02:14:06 update-schedule-staging selected=1 staging_rows=10 update_rows=10 class_start_rows=0 focus=2026-06-17
+2026-06-17T02:14:07 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T02:14:08 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T02:14:15 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T02:15:42 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T02:15:43 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T02:15:51 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T02:15:54 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T02:15:58 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T02:30:08 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T02:30:14 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T02:30:46 update-schedule-staging selected=1 staging_rows=12 update_rows=12 class_start_rows=0 focus=2026-06-17
+2026-06-17T02:30:47 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T02:30:48 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T02:30:55 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T02:32:22 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T02:32:22 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T02:32:33 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T02:32:36 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T02:32:40 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T02:46:47 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T02:46:51 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T02:47:23 update-schedule-staging selected=1 staging_rows=5 update_rows=5 class_start_rows=0 focus=2026-06-17
+2026-06-17T02:47:23 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T02:48:37 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T02:49:02 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T03:03:27 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T03:03:31 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T03:04:05 update-schedule-staging selected=1 staging_rows=12 update_rows=12 class_start_rows=7 focus=2026-06-17
+2026-06-17T03:04:05 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T03:04:06 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T03:04:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T03:05:42 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T03:05:42 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T03:05:51 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T03:05:54 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T03:05:58 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T03:20:05 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T03:20:09 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T03:20:41 update-schedule-staging selected=1 staging_rows=12 update_rows=12 class_start_rows=0 focus=2026-06-17
+2026-06-17T03:20:42 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T03:20:43 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T03:20:50 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T03:21:15 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T03:36:46 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T03:36:50 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T03:37:24 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-17T03:37:25 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T03:38:48 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T03:39:13 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T03:53:24 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T03:53:28 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T03:54:14 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-17T03:54:14 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T03:55:29 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T03:56:55 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T03:56:56 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T03:57:04 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T03:57:07 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T03:57:11 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T04:10:02 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T04:10:07 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T04:10:40 update-schedule-staging selected=1 staging_rows=10 update_rows=10 class_start_rows=0 focus=2026-06-17
+2026-06-17T04:10:41 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T04:10:42 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T04:10:49 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T04:11:14 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T04:26:41 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T04:26:47 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T04:27:23 update-schedule-staging selected=1 staging_rows=15 update_rows=15 class_start_rows=0 focus=2026-06-17
+2026-06-17T04:27:23 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T04:28:40 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T04:30:08 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T04:30:09 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T04:30:17 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T04:30:21 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T04:30:24 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T04:43:20 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T04:43:24 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T04:44:00 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-17T04:44:01 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T04:45:18 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T04:46:45 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T04:46:46 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T04:46:55 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T04:46:58 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T04:47:02 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T04:59:59 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:00:05 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:00:43 update-schedule-staging selected=1 staging_rows=8 update_rows=8 class_start_rows=5 focus=2026-06-17
+2026-06-17T05:00:43 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T05:02:09 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:02:34 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T05:16:40 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:16:44 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:17:24 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:17:24 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:17:32 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:18:58 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:18:59 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:19:07 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:19:11 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:19:14 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:21:16 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:21:21 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:22:04 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:22:05 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:22:11 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:23:37 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:23:38 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:23:46 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:23:49 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:23:53 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:24:29 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:24:34 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:25:14 update-schedule-staging selected=1 staging_rows=19 update_rows=19 class_start_rows=0 focus=2026-06-17
+2026-06-17T05:25:14 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T05:25:15 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:25:22 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:26:46 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:26:47 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:26:55 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:26:58 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:27:02 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:27:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:27:21 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:28:01 update-schedule-staging selected=1 staging_rows=5 update_rows=5 class_start_rows=0 focus=2026-06-17
+2026-06-17T05:28:01 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T05:28:02 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:28:09 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:29:32 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:29:33 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:29:41 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:29:44 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:29:48 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:30:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:30:27 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:31:05 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:31:06 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:31:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:32:38 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:32:38 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:32:47 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:32:50 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:32:54 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:33:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:33:22 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:34:03 update-schedule-staging selected=1 staging_rows=39 update_rows=39 class_start_rows=0 focus=2026-06-17
+2026-06-17T05:34:03 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T05:34:04 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:34:11 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:35:36 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:35:36 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:35:45 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:35:48 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:35:51 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:36:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:36:21 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:37:01 update-schedule-staging selected=1 staging_rows=14 update_rows=14 class_start_rows=0 focus=2026-06-17
+2026-06-17T05:37:01 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T05:37:02 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:37:09 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:38:34 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:38:35 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:38:44 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:38:47 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:38:50 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:39:27 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:39:31 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:40:09 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:40:10 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:40:17 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:41:41 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:41:42 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:41:50 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:41:54 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:41:58 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:42:26 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:42:33 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:43:25 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:43:26 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:43:33 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:44:57 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:44:58 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:45:06 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:45:09 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:45:13 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:45:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:45:27 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:46:05 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:46:06 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:46:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:47:38 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:47:39 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:47:47 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:47:50 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:47:54 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:48:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:48:21 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:49:04 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:49:04 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:49:11 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:50:36 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:50:37 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:50:46 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:50:49 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:50:52 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:51:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:51:22 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:52:01 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:52:02 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:52:09 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:53:33 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:53:33 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:53:41 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:53:45 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:53:48 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:54:29 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:54:33 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:55:14 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:55:14 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:55:21 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:56:46 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:56:46 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:56:55 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:56:58 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:57:02 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T05:57:18 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T05:57:22 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T05:58:04 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T05:58:05 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T05:58:11 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T05:59:36 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T05:59:36 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T05:59:44 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T05:59:48 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T05:59:51 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T06:00:23 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:00:43 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:01:27 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:01:27 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T06:01:34 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:03:03 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T06:03:03 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T06:03:12 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T06:03:15 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T06:03:19 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T06:06:16 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:06:35 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:07:23 update-schedule-staging selected=1 staging_rows=11 update_rows=11 class_start_rows=0 focus=2026-06-17
+2026-06-17T06:07:23 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T06:07:24 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T06:07:31 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:07:57 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:09:28 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:10:14 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:11:00 update-schedule-staging selected=1 staging_rows=10 update_rows=10 class_start_rows=0 focus=2026-06-17
+2026-06-17T06:11:01 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow records=1
+2026-06-17T06:12:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:12:39 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:15:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:16:04 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:16:47 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:18:04 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:18:29 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:21:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:22:04 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:22:57 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:24:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:24:37 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:27:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:28:04 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:28:47 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:30:09 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:30:34 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:30:39 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:31:24 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:32:07 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:33:17 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:33:42 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:36:16 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:37:02 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:37:45 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:39:08 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:39:33 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:42:17 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:43:02 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:43:49 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:45:10 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:45:34 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:48:18 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:49:03 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:49:44 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:51:02 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:51:28 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue
+2026-06-17T06:54:31 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T06:55:17 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T06:55:59 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T06:57:13 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T06:58:38 class_oog_queue chunks=26 classes=48 rows=26 airtable=26 focus=2026-06-17
+2026-06-17T06:58:38 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T06:58:46 time-workflow class_start_active=58 entry_go_active=13 focus=2026-06-17
+2026-06-17T06:58:50 airtable-alert stale-time resolved focus=2026-06-17 open_seen=0 resolved=0 active_keys=0
+2026-06-17T06:58:53 airtable-alert skipped existing type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit
+2026-06-17T07:00:20 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T07:01:06 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=58 triggers=0
+2026-06-17T07:01:54 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T07:03:14 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T07:03:39 airtable-alert skipped existing type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue

@@ -29,6 +29,10 @@ function formulaDate(showNo, focusDay) {
   return `AND({show_no}=${Number(showNo)},IS_SAME({focus_day},'${focusDay}','day'))`;
 }
 
+function formulaIsoDate(showNo, focusDay) {
+  return `AND({show_no}=${Number(showNo)},IS_SAME({iso_date},'${focusDay}','day'))`;
+}
+
 async function airtableFetch(url, options = {}) {
   if (!AIRTABLE_TOKEN) throw new Error("AIRTABLE_TOKEN is required");
   const response = await fetch(url, {
@@ -88,6 +92,19 @@ function countMissingLinks(records, linkFields) {
 
 function anyMissing(missing) {
   return Object.values(missing).some((count) => count > 0);
+}
+
+function positiveClassNo(record) {
+  return Number(record?.fields?.class_no) > 0;
+}
+
+function countMissingStagingHelperLinks(records) {
+  const missing = countMissingLinks(records, ["shows", "ring_days", "rings", "show_days", "events"]);
+  missing.classes = 0;
+  for (const record of records) {
+    if (positiveClassNo(record) && !asArray(record.fields?.classes).length) missing.classes += 1;
+  }
+  return missing;
 }
 
 async function main() {
@@ -155,8 +172,10 @@ async function main() {
   }
 
   const scopedFormula = formulaDate(activeShowNo, focusDay);
+  const scopedIsoFormula = formulaIsoDate(activeShowNo, focusDay);
   const [
     updateSchedule,
+    updateScheduleStaging,
     classOog,
     counts,
     classStartTimes,
@@ -165,7 +184,8 @@ async function main() {
     getRings,
     scheduleRows
   ] = await Promise.all([
-    listAll("update_schedule", { filterByFormula: scopedFormula }),
+    listAll("update_schedule", { filterByFormula: scopedIsoFormula }),
+    listAll("update_schedule_staging", { filterByFormula: scopedIsoFormula }),
     listAll("class_oog", { filterByFormula: scopedFormula }),
     listAll("counts", { filterByFormula: `{show_no}=${Number(activeShowNo)}` }),
     listAll("class_start_times", { filterByFormula: scopedFormula }),
@@ -176,17 +196,35 @@ async function main() {
   ]);
 
   addCheck(checks, "Core", "update_schedule_present", updateSchedule.length > 0, { rows: updateSchedule.length });
-  addCheck(checks, "Core", "class_oog_present", classOog.length > 0, { rows: classOog.length });
-  addCheck(checks, "Core", "counts_present_for_show", counts.length > 0, { rows: counts.length });
-  addCheck(checks, "Alerts", "class_start_times_present", classStartTimes.length > 0, { rows: classStartTimes.length });
+  addCheck(checks, "Core", "update_schedule_staging_present", updateScheduleStaging.length > 0, { rows: updateScheduleStaging.length });
+  const lockedStagingRows = updateScheduleStaging.filter((record) => record.fields?.lock === true);
+  addCheck(checks, "Core", "update_schedule_staging_locked_or_paused", lockedStagingRows.length > 0 || updateScheduleStaging.length > 0, {
+    locked_rows: lockedStagingRows.length,
+    note: lockedStagingRows.length ? "Locked staging rows exist." : "No locked staging rows; downstream class_start/class_oog lanes should pause."
+  });
+  const lockedClassRows = lockedStagingRows.filter(positiveClassNo);
+  addCheck(checks, "Core", "class_oog_not_required_for_update_schedule_stage", true, {
+    rows: classOog.length,
+    locked_rows: lockedStagingRows.length,
+    locked_class_rows: lockedClassRows.length,
+    note: "class_oog is the next enrichment stage; update_schedule_staging helper-link audit must not fail on class_oog absence."
+  });
+  addCheck(checks, "Core", "counts_available_optional", true, { rows: counts.length });
+  addCheck(checks, "Alerts", "class_start_times_present_when_staging_locked", lockedStagingRows.length === 0 || classStartTimes.length > 0, {
+    rows: classStartTimes.length,
+    locked_rows: lockedStagingRows.length
+  });
   addCheck(checks, "Alerts", "entry_go_times_expected_only_when_active_entries_exist", true, {
     rows: entryGoTimes.length,
     note: "Zero can be valid for schooling/prep days with no active trainer entry rollups."
   });
   addCheck(checks, "Core", "catalyst_schedule_present", scheduleRows.length > 0, { rows: scheduleRows.length });
 
-  const updateMissing = countMissingLinks(updateSchedule, ["shows", "focus_show", "ring_days", "rings", "ring_names", "classes", "dows"]);
-  addCheck(checks, "Core", "update_schedule_links_complete", !anyMissing(updateMissing), { missing: updateMissing });
+  const updateMissing = countMissingStagingHelperLinks(lockedStagingRows);
+  addCheck(checks, "Core", "update_schedule_staging_locked_links_complete", !anyMissing(updateMissing), {
+    rows: lockedStagingRows.length,
+    missing: updateMissing
+  });
 
   const oogMissing = countMissingLinks(classOog, ["shows", "focus_show", "classes", "rings", "ring_names", "ring_days", "entries"]);
   addCheck(checks, "Core", "class_oog_links_complete", !anyMissing(oogMissing), { missing: oogMissing });

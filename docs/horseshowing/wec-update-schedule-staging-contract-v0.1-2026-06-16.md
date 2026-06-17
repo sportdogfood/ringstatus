@@ -403,18 +403,17 @@ do not link events by primary text/name
 Current link gating:
 
 ```text
-Only link helper fields where update_schedule_staging.lock is checked.
-Unlocked rows must not carry those helper links.
+Populate staging links before reading update_schedule_staging.lock.
+Lock gates downstream class_start_times creation only.
 ```
 
-Current verified after lock gating:
+Current verified after link population:
 
 ```text
 rows = 109
 locked = 78
 unlocked = 31
-locked missing shows/classes/ring_days/rings/show_days/events = 0
-unlocked rows with any of those links = 0
+missing shows/classes/ring_days/rings/show_days/events = 0
 ```
 
 After `is_target` / `not_target` formulas were added, downstream consumers should use:
@@ -450,8 +449,8 @@ Focus-day change behavior:
 4. Upsert new focus_day rows into update_schedule_staging.
 5. Mark staging rows with iso_date != focus_day as inactive.
 6. Mark staging rows with iso_date = focus_day as active/inactive false.
-7. Populate helper links only where lock is checked and row is target.
-8. Build class_start_times from positive class_no target rows.
+7. Populate staging helper links for the full focus_day staging set.
+8. Re-read staging and build class_start_times from locked positive class_no rows.
 9. Log the block fetch and row counts in wec-logs.
 ```
 
@@ -557,8 +556,8 @@ PASS requires:
 5. wec-logs row is created per block
 6. staging rows touched by block link to that wec-log
 7. inactive state matches current focus_day
-8. helper links are populated only for locked/target staging rows
-9. unlocked/non-target rows do not carry helper links
+8. helper links are populated for the full focus_day staging set before lock is read
+9. class_start_times rows are created only from locked target rows
 10. counts match the verified block totals
 ```
 

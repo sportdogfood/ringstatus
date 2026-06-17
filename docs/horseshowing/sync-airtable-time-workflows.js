@@ -967,7 +967,7 @@ async function linkEntryGoTimesToHelpers(showNo, focusDay) {
 
 async function linkClassStartTimesToSupportTables(showNo, focusDay) {
   const formula = showFocusFormula(showNo, focusDay);
-  const [
+  let [
     classStartRecords,
     showRecords,
     focusShowRecords,
@@ -982,6 +982,28 @@ async function linkClassStartTimesToSupportTables(showNo, focusDay) {
     listRecords(TABLES.rings),
     listRecords(TABLES.ringDays)
   ]);
+  const existingClasses = recordIndex(classRecords, "class_no");
+  const missingClassRows = [];
+  const missingClassNos = new Set();
+  for (const record of classStartRecords) {
+    const current = recordFields(record);
+    const classNo = normalizeText(current.class_no);
+    if (!classNo || existingClasses.has(classNo) || missingClassNos.has(classNo)) continue;
+    missingClassNos.add(classNo);
+    missingClassRows.push({
+      class_no: intOrNull(current.class_no),
+      class_number: intOrNull(current.class_number),
+      class_name: clean(current.class_name),
+      class_label: clean(current.class_number)
+        ? `${clean(current.class_number)}) ${clean(current.class_name)}`.trim()
+        : clean(current.class_name),
+      source: "update_schedule.php"
+    });
+  }
+  if (missingClassRows.length) {
+    await upsertRecords(TABLES.classes, "class_no", missingClassRows);
+    classRecords = await listRecords(TABLES.classes);
+  }
   const support = {
     shows: recordIndex(showRecords, "show_no"),
     focusShow: recordIndex(focusShowRecords, "show_no"),
