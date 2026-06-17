@@ -288,7 +288,7 @@ function buildTreeBlocks({ pageBlocks, divsByBlock, typographyByDiv, contentByTy
         ...pick(typeRow, ["typography_key", "typography_role", "sort_order", "font_class", "data_rs_value"]),
         content: (contentByTypography.get(typeRow.id) || []).map((contentRow) => ({
           id: contentRow.id,
-          ...pick(contentRow, ["content_key", "content_type", "content_value", "data_rs_value", "sort_order"])
+          ...pick(contentRow, ["content_key", "content_type", "content_value", "data_rs_value", "sort_order", "eyebrow", "headline", "body", "visual_label"])
         }))
       }))
     }))
@@ -424,8 +424,8 @@ function toggleClickHandler() {
 
 function renderBlock(block, tree) {
   const type = selectName(block.block_type);
-  if (type === "navigation") return renderNavigation(block, tree.navigation, "main_nav");
-  if (type === "footer") return renderNavigation(block, tree.navigation, "footer_nav");
+  if (type === "navigation") return renderNavigation(block, tree.navigation, "main_nav", clean(tree.page.page_key));
+  if (type === "footer") return renderNavigation(block, tree.navigation, "footer_nav", clean(tree.page.page_key));
   return renderSection(block);
 }
 
@@ -440,11 +440,15 @@ function isHierarchyBlock(record, pageKey) {
     key === `${prefix}_footer`);
 }
 
-function renderNavigation(block, items, group) {
+function renderNavigation(block, items, group, activePageKey = "") {
   const links = items
     .filter((item) => selectName(item.nav_group) === group)
     .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
-    .map((item) => `<a class="rs-nav-link" href="${escapeAttr(item.href || "#")}" data-rs-page-key="${escapeAttr(item.page_key)}">${escapeHtml(item.label)}</a>`)
+    .map((item) => {
+      const itemPageKey = clean(item.page_key);
+      const active = itemPageKey && itemPageKey === activePageKey;
+      return `<a class="rs-nav-link${active ? " is-active" : ""}" href="${escapeAttr(item.href || "#")}" data-rs-page-key="${escapeAttr(itemPageKey)}"${active ? ` aria-current="page"` : ""}>${escapeHtml(item.label)}</a>`;
+    })
     .join("");
   const tag = group === "footer_nav" ? "footer" : "nav";
   const logo = group === "main_nav"
@@ -467,13 +471,13 @@ function renderSection(block) {
     const className = clean(div.class_key) || "rs-content";
     const typeHtml = div.typography.map((typeRow) => {
       const contentRow = first(typeRow.content);
-      const content = contentRow?.content_value || "";
       const contentType = selectName(contentRow?.content_type);
       if (contentType === "html") {
-        return renderContent(content, contentType);
+        return renderStructuredContent(contentRow);
       }
       const role = selectName(typeRow.typography_role);
       const typeClass = clean(typeRow.font_class) || `rs-type-${role || "text"}`;
+      const content = contentRow?.content_value || "";
       return `<div class="${escapeAttr(typeClass)}" data-rs-role="${escapeAttr(role)}" data-rs-value="${escapeAttr(typeRow.data_rs_value || typeRow.typography_key)}">${renderContent(content, contentType)}</div>`;
     }).join("");
     return `<div class="${escapeAttr(className)}" data-rs-div="${escapeAttr(div.div_key)}">${typeHtml}</div>`;
@@ -495,6 +499,24 @@ function renderContent(content, contentType) {
   return escapeHtml(content);
 }
 
+function renderStructuredContent(contentRow) {
+  const eyebrow = clean(contentRow?.eyebrow);
+  const headline = clean(contentRow?.headline);
+  const body = clean(contentRow?.body);
+  const visualLabel = clean(contentRow?.visual_label);
+  if (eyebrow || headline || body || visualLabel) {
+    return [
+      `<div>`,
+      eyebrow ? `<h5>${escapeHtml(eyebrow)}</h5>` : "",
+      headline ? `<h1>${escapeHtml(headline)}</h1>` : "",
+      body ? `<p>${escapeHtml(body)}</p>` : "",
+      `</div>`,
+      visualLabel ? `<div class="rs-visual">${escapeHtml(visualLabel)}</div>` : ""
+    ].join("");
+  }
+  return renderContent(contentRow?.content_value || "", selectName(contentRow?.content_type));
+}
+
 function sanitizeTrustedHtml(value) {
   return String(value ?? "")
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
@@ -511,6 +533,7 @@ function renderBaseStyle() {
     `.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;}`,
     `.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}`,
     `.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}`,
+    `.rs-main .rs-nav-link.is-active{background:#10243b;color:#fff;border-color:#10243b;}`,
     `.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}`,
     `.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}`,
     `.rs-visual{display:flex;align-items:center;justify-content:center;min-height:220px;flex:0 0 min(38%,420px);border:1px solid #d8dee6;background:#f6f8fa;color:#65707d;}`,

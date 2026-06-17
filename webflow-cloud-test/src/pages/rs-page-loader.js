@@ -90,7 +90,7 @@ const LOADER_JS = String.raw`(function () {
     var url = new URL(payloadEndpoint || DEFAULT_PAYLOAD_ENDPOINT, window.location.origin);
     url.searchParams.set("pageKey", pageKey);
 
-    inflight[pageKey] = fetch(url.toString(), { cache: "force-cache" })
+    inflight[pageKey] = fetch(url.toString(), { cache: "no-store" })
       .then(function (response) {
         return response.json();
       })
@@ -175,19 +175,12 @@ const LOADER_JS = String.raw`(function () {
   function writeCache(pageKey, html) {
     if (!pageKey) return;
     memoryCache[pageKey] = html || "";
-    try {
-      window.sessionStorage.setItem(cacheKey(pageKey), html || "");
-    } catch (error) {}
   }
 
   function readCache(pageKey) {
     if (!pageKey) return null;
     if (Object.prototype.hasOwnProperty.call(memoryCache, pageKey)) return memoryCache[pageKey];
-    try {
-      return window.sessionStorage.getItem(cacheKey(pageKey));
-    } catch (error) {
-      return null;
-    }
+    return null;
   }
 
   window.RSPageLoader = {

@@ -413,6 +413,9 @@ set mode day/evening when cadence differs
 Workflow action:
 
 ```text
+focus_show Airtable automation runs docs/horseshowing/airtable-automations/focus-show-on-change.js
+automation calls set-show-config
+automation calls sync-ring-days with refresh_existing=1
 sync controls/helpers
 run cadence gate
 sync ring days and core update_schedule/counts/class_oog
@@ -423,6 +426,16 @@ create/resolve alerts
 refresh render payloads
 run lane audit
 write PASS artifact before declaring completion
+```
+
+Cadence execution:
+
+```text
+run docs/horseshowing/run-wec-catalyst-workflow.ps1 on the existing RingStatus heartbeat or Windows scheduled task
+the runner reads Airtable shows.active and focus_show.active
+the runner executes immediately when the active show_no|focus_day|mode changes
+otherwise the runner follows Airtable cadence rows
+sync-ring-days must be called through Catalyst action sync-ring-days, not by direct local payload scraping
 ```
 
 ## Conflict Rules
