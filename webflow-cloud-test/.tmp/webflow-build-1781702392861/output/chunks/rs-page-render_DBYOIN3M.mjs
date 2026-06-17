@@ -1,15 +1,10 @@
-export const config = {
+globalThis.process ??= {};
+globalThis.process.env ??= {};
+import { r as runtimeEnv, j as json, c as corsHeaders } from "./wec-plan-modules_BsQGnEh2.mjs";
+const config = {
   runtime: "edge"
 };
-
-import {
-  corsHeaders,
-  json,
-  runtimeEnv
-} from "../lib/wec-plan-modules.js";
-
 const RSCOM_BASE_ID = "appDN3R51ZPmwgMib";
-
 const TABLES = {
   pages: "rs_pages_index",
   blocks: "rs_page_blocks",
@@ -19,29 +14,24 @@ const TABLES = {
   navigation: "rs_navigation_items",
   globals: "rs_global_params"
 };
-
-const PAGE_CACHE_TTL_MS = 5 * 60 * 1000;
-const DATASET_CACHE_TTL_MS = 30 * 1000;
-const pageCache = new Map();
+const PAGE_CACHE_TTL_MS = 5 * 60 * 1e3;
+const DATASET_CACHE_TTL_MS = 30 * 1e3;
+const pageCache = /* @__PURE__ */ new Map();
 let datasetCache = null;
 let datasetInflight = null;
-
-export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
-
-export const GET = async ({ url }) => {
+const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
+const GET = async ({ url }) => {
   const runtime = runtimeEnv();
   const token = runtime.AIRTABLE_TOKEN;
   const baseId = runtime.AIRTABLE_RSCOM_BASE_ID || runtime.RSCOM_AIRTABLE_BASE_ID || RSCOM_BASE_ID;
   if (!token) return json({ ok: false, error: "missing_airtable_token" }, 500);
-
   const pageKey = clean(url.searchParams.get("pageKey") || "rs_home");
   const mode = clean(url.searchParams.get("mode"));
   const refresh = clean(url.searchParams.get("refresh")) === "1";
-
   try {
     if (mode === "site_toggle") {
-      const result = await buildSiteToggle({ token, baseId, pageKey });
-      return renderJson(result);
+      const result2 = await buildSiteToggle({ token, baseId, pageKey });
+      return renderJson(result2);
     }
     const result = await getCachedPage({ token, baseId, pageKey, refresh });
     return renderJson(result);
@@ -54,11 +44,9 @@ export const GET = async ({ url }) => {
     }, 502);
   }
 };
-
-export async function renderRsPagePayload({ token, baseId, pageKey, refresh = false }) {
+async function renderRsPagePayload({ token, baseId, pageKey, refresh = false }) {
   return getCachedPage({ token, baseId, pageKey, refresh });
 }
-
 async function buildSiteToggle({ token, baseId, pageKey }) {
   const [
     pages,
@@ -77,55 +65,28 @@ async function buildSiteToggle({ token, baseId, pageKey }) {
     listRecords({ token, baseId, tableName: TABLES.navigation }),
     listRecords({ token, baseId, tableName: TABLES.globals })
   ]);
-
-  const pageKeys = navigation
-    .filter((record) => selectName(record.fields.active) === "active")
-    .filter((record) => selectName(record.fields.nav_group) === "main_nav")
-    .sort(sortByOrder)
-    .map((record) => clean(record.fields.page_key))
-    .filter(Boolean);
-
+  const pageKeys = navigation.filter((record) => selectName(record.fields.active) === "active").filter((record) => selectName(record.fields.nav_group) === "main_nav").sort(sortByOrder).map((record) => clean(record.fields.page_key)).filter(Boolean);
   const uniquePageKeys = [...new Set(pageKeys)];
   const requestedPageKey = uniquePageKeys.includes(pageKey) ? pageKey : uniquePageKeys[0];
-  const pageRecords = [requestedPageKey]
-    .map((key) => pages.find((record) => clean(record.fields.page_key) === key))
-    .filter(Boolean);
-
+  const pageRecords = [requestedPageKey].map((key) => pages.find((record) => clean(record.fields.page_key) === key)).filter(Boolean);
   if (!pageRecords.length) throw new Error("site_pages_not_found");
-
   const typographyByDiv = groupByFirstLink(typography.sort(sortByOrder), "div");
   const contentByTypography = groupByFirstLink(content.sort(sortByOrder), "typography");
   const divsByBlock = groupByFirstLink(divs.sort(sortByOrder), "block");
-
   const pageTrees = pageRecords.map((page) => {
     const key = clean(page.fields.page_key);
-    const pageBlocks = blocks
-      .filter((record) => includes(record.fields.page, page.id))
-      .filter((record) => isHierarchyBlock(record, key))
-      .filter((record) => selectName(record.fields.active) === "active")
-      .filter((record) => selectName(record.fields.block_type) !== "navigation")
-      .filter((record) => selectName(record.fields.block_type) !== "footer")
-      .sort(sortByOrder);
-
+    const pageBlocks = blocks.filter((record) => includes(record.fields.page, page.id)).filter((record) => isHierarchyBlock(record, key)).filter((record) => selectName(record.fields.active) === "active").filter((record) => selectName(record.fields.block_type) !== "navigation").filter((record) => selectName(record.fields.block_type) !== "footer").sort(sortByOrder);
     return {
       page: pick(page, ["page_key", "page_label", "webflow_slug"]),
       blocks: buildTreeBlocks({ pageBlocks, divsByBlock, typographyByDiv, contentByTypography })
     };
   });
-
   const tree = {
     page: { page_key: pageKey, page_label: "Site Toggle", webflow_slug: "" },
-    globals: globals
-      .filter((record) => selectName(record.fields.active) === "active")
-      .sort(sortByOrder)
-      .map((record) => pick(record, ["param_key", "param_type", "param_value", "sort_order"])),
-    navigation: navigation
-      .filter((record) => selectName(record.fields.active) === "active")
-      .sort(sortByOrder)
-      .map((record) => pick(record, ["nav_item_key", "nav_group", "label", "page_key", "href", "sort_order"])),
+    globals: globals.filter((record) => selectName(record.fields.active) === "active").sort(sortByOrder).map((record) => pick(record, ["param_key", "param_type", "param_value", "sort_order"])),
+    navigation: navigation.filter((record) => selectName(record.fields.active) === "active").sort(sortByOrder).map((record) => pick(record, ["nav_item_key", "nav_group", "label", "page_key", "href", "sort_order"])),
     pages: pageTrees
   };
-
   return {
     ok: true,
     source: {
@@ -137,7 +98,6 @@ async function buildSiteToggle({ token, baseId, pageKey }) {
     html: renderSiteToggle(tree, requestedPageKey)
   };
 }
-
 function renderJson(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -148,7 +108,6 @@ function renderJson(data, status = 200) {
     }
   });
 }
-
 async function getCachedPage({ token, baseId, pageKey, refresh = false }) {
   const cacheKey = `${baseId}:${pageKey}`;
   const cached = pageCache.get(cacheKey);
@@ -162,7 +121,6 @@ async function getCachedPage({ token, baseId, pageKey, refresh = false }) {
       }
     };
   }
-
   const dataset = await getDataset({ token, baseId, refresh });
   const payload = buildPageFromDataset({ baseId, pageKey, dataset });
   const now = Date.now();
@@ -180,29 +138,24 @@ async function getCachedPage({ token, baseId, pageKey, refresh = false }) {
     }
   };
 }
-
 async function getDataset({ token, baseId, refresh = false }) {
   const now = Date.now();
   if (!refresh && datasetCache && datasetCache.baseId === baseId && datasetCache.expiresAt > now) {
     return datasetCache.payload;
   }
   if (!refresh && datasetInflight) return datasetInflight;
-
-  datasetInflight = fetchDataset({ token, baseId })
-    .then((payload) => {
-      datasetCache = {
-        baseId,
-        payload,
-        expiresAt: Date.now() + DATASET_CACHE_TTL_MS
-      };
-      return payload;
-    })
-    .finally(() => {
-      datasetInflight = null;
-    });
+  datasetInflight = fetchDataset({ token, baseId }).then((payload) => {
+    datasetCache = {
+      baseId,
+      payload,
+      expiresAt: Date.now() + DATASET_CACHE_TTL_MS
+    };
+    return payload;
+  }).finally(() => {
+    datasetInflight = null;
+  });
   return datasetInflight;
 }
-
 async function fetchDataset({ token, baseId }) {
   const [
     pages,
@@ -223,46 +176,23 @@ async function fetchDataset({ token, baseId }) {
   ]);
   return { pages, blocks, divs, typography, content, navigation, globals };
 }
-
-async function buildPage({ token, baseId, pageKey }) {
-  const dataset = await fetchDataset({ token, baseId });
-  return buildPageFromDataset({ baseId, pageKey, dataset });
-}
-
 function buildPageFromDataset({ baseId, pageKey, dataset }) {
   const { pages, blocks, divs, typography, content, navigation, globals } = dataset;
-
   const page = pages.find((record) => clean(record.fields.page_key) === pageKey);
   if (!page) throw new Error(`page_not_found:${pageKey}`);
-
-  const activeGlobals = globals
-    .filter((record) => selectName(record.fields.active) === "active")
-    .sort(sortByOrder)
-    .map((record) => pick(record, ["param_key", "param_type", "param_value", "sort_order"]));
-
-  const pageBlocks = blocks
-    .filter((record) => includes(record.fields.page, page.id))
-    .filter((record) => isHierarchyBlock(record, pageKey))
-    .filter((record) => selectName(record.fields.active) === "active")
-    .sort(sortByOrder);
-
+  const activeGlobals = globals.filter((record) => selectName(record.fields.active) === "active").sort(sortByOrder).map((record) => pick(record, ["param_key", "param_type", "param_value", "sort_order"]));
+  const pageBlocks = blocks.filter((record) => includes(record.fields.page, page.id)).filter((record) => isHierarchyBlock(record, pageKey)).filter((record) => selectName(record.fields.active) === "active").sort(sortByOrder);
   const typographyByDiv = groupByFirstLink(typography.sort(sortByOrder), "div");
   const contentByTypography = groupByFirstLink(content.sort(sortByOrder), "typography");
   const divsByBlock = groupByFirstLink(divs.sort(sortByOrder), "block");
-
   const treeBlocks = buildTreeBlocks({ pageBlocks, divsByBlock, typographyByDiv, contentByTypography });
-
   const tree = {
     page: pick(page, ["page_key", "page_label", "webflow_slug"]),
     globals: activeGlobals,
-    navigation: navigation
-      .filter((record) => selectName(record.fields.active) === "active")
-      .sort(sortByOrder)
-      .map((record) => pick(record, ["nav_item_key", "nav_group", "label", "page_key", "href", "sort_order"])),
+    navigation: navigation.filter((record) => selectName(record.fields.active) === "active").sort(sortByOrder).map((record) => pick(record, ["nav_item_key", "nav_group", "label", "page_key", "href", "sort_order"])),
     blocks: treeBlocks
   };
   const prefetchPageKeys = getMainNavPageKeys(tree.navigation).filter((key) => key !== pageKey);
-
   return {
     ok: true,
     source: {
@@ -275,7 +205,6 @@ function buildPageFromDataset({ baseId, pageKey, dataset }) {
     html: renderPage(tree, prefetchPageKeys)
   };
 }
-
 function buildTreeBlocks({ pageBlocks, divsByBlock, typographyByDiv, contentByTypography }) {
   return pageBlocks.map((block) => ({
     id: block.id,
@@ -294,7 +223,6 @@ function buildTreeBlocks({ pageBlocks, divsByBlock, typographyByDiv, contentByTy
     }))
   }));
 }
-
 async function listRecords({ token, baseId, tableName }) {
   const records = [];
   let offset = "";
@@ -316,7 +244,6 @@ async function listRecords({ token, baseId, tableName }) {
   } while (offset);
   return records;
 }
-
 function renderPage(tree, prefetchPageKeys = []) {
   const pageKey = clean(tree.page.page_key);
   const body = tree.blocks.map((block) => renderBlock(block, tree)).join("\n");
@@ -328,34 +255,20 @@ function renderPage(tree, prefetchPageKeys = []) {
     `</main>`
   ].join("\n");
 }
-
 function renderPrefetchLinks(pageKeys) {
-  return pageKeys
-    .filter(Boolean)
-    .map((key) => `<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=${escapeAttr(encodeURIComponent(key))}" crossorigin="anonymous">`)
-    .join("\n");
+  return pageKeys.filter(Boolean).map((key) => `<link rel="prefetch" as="fetch" href="/test/rs-page-render?pageKey=${escapeAttr(encodeURIComponent(key))}" crossorigin="anonymous">`).join("\n");
 }
-
 function getMainNavPageKeys(items) {
-  return [...new Set(items
-    .filter((item) => selectName(item.nav_group) === "main_nav")
-    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
-    .map((item) => clean(item.page_key))
-    .filter(Boolean))];
+  return [...new Set(items.filter((item) => selectName(item.nav_group) === "main_nav").sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0)).map((item) => clean(item.page_key)).filter(Boolean))];
 }
-
 function renderSiteToggle(tree, activePageKey) {
   const activeKey = clean(activePageKey) || clean(first(tree.pages)?.page.page_key);
-  const navItems = tree.navigation
-    .filter((item) => selectName(item.nav_group) === "main_nav")
-    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
-
+  const navItems = tree.navigation.filter((item) => selectName(item.nav_group) === "main_nav").sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
   const buttons = navItems.map((item) => {
     const itemPageKey = clean(item.page_key);
     const isActive = itemPageKey === activeKey;
     return `<button class="rs-site-toggle-button${isActive ? " is-active" : ""}" type="button" data-rs-toggle-page="${escapeAttr(itemPageKey)}" aria-expanded="${isActive ? "true" : "false"}" onclick="${escapeAttr(toggleClickHandler())}">${escapeHtml(item.label)}</button>`;
   }).join("");
-
   const panels = tree.pages.map((pageTree) => {
     const itemPageKey = clean(pageTree.page.page_key);
     const isActive = itemPageKey === activeKey;
@@ -366,7 +279,6 @@ function renderSiteToggle(tree, activePageKey) {
       `</section>`
     ].join("\n");
   }).join("\n");
-
   return [
     `<main class="rs-page rs-site-toggle" data-rs-mode="site_toggle" data-rs-page="${escapeAttr(activeKey)}">`,
     renderSiteToggleStyle(),
@@ -385,7 +297,6 @@ function renderSiteToggle(tree, activePageKey) {
     `</main>`
   ].join("\n");
 }
-
 function renderSiteToggleStyle() {
   return [
     `<style>`,
@@ -403,10 +314,9 @@ function renderSiteToggleStyle() {
     `</style>`
   ].join("");
 }
-
 function toggleClickHandler() {
   return [
-    "var root=this.closest('[data-rs-mode=\"site_toggle\"]');",
+    `var root=this.closest('[data-rs-mode="site_toggle"]');`,
     "if(!root)return;",
     "var key=this.getAttribute('data-rs-toggle-page');",
     "var mount=root.closest('#rs-page-root');",
@@ -421,39 +331,25 @@ function toggleClickHandler() {
     "fetch(endpoint.toString(),{cache:'no-store'}).then(function(response){return response.json();}).then(function(data){if(!data||!data.ok)throw new Error((data&&(data.detail||data.error))||'Render failed');if(mount){mount.__rsPageCache=mount.__rsPageCache||{};mount.__rsPageCache[key]=data.html||'';mount.innerHTML=data.html||'';mount.setAttribute('data-rs-status','ready');}}).catch(function(error){if(mount){mount.setAttribute('data-rs-status','failed');mount.textContent='Render failed: '+(error&&error.message?error.message:error);}});"
   ].join("");
 }
-
 function renderBlock(block, tree) {
   const type = selectName(block.block_type);
   if (type === "navigation") return renderNavigation(block, tree.navigation, "main_nav", clean(tree.page.page_key));
   if (type === "footer") return renderNavigation(block, tree.navigation, "footer_nav", clean(tree.page.page_key));
   return renderSection(block);
 }
-
 function isHierarchyBlock(record, pageKey) {
   const key = clean(record.fields.block_key);
   const prefixes = [pageKey, `rs_${pageKey}`];
-  return prefixes.some((prefix) => key === `${prefix}_navigation` ||
-    key === `${prefix}_section_1` ||
-    key === `${prefix}_section_2` ||
-    key === `${prefix}_intro` ||
-    key === `${prefix}_grid` ||
-    key === `${prefix}_footer`);
+  return prefixes.some((prefix) => key === `${prefix}_navigation` || key === `${prefix}_section_1` || key === `${prefix}_section_2` || key === `${prefix}_intro` || key === `${prefix}_grid` || key === `${prefix}_footer`);
 }
-
 function renderNavigation(block, items, group, activePageKey = "") {
-  const links = items
-    .filter((item) => selectName(item.nav_group) === group)
-    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
-    .map((item) => {
-      const itemPageKey = clean(item.page_key);
-      const active = itemPageKey && itemPageKey === activePageKey;
-      return `<a class="rs-nav-link${active ? " is-active" : ""}" href="${escapeAttr(item.href || "#")}" data-rs-page-key="${escapeAttr(itemPageKey)}"${active ? ` aria-current="page"` : ""}>${escapeHtml(item.label)}</a>`;
-    })
-    .join("");
+  const links = items.filter((item) => selectName(item.nav_group) === group).sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0)).map((item) => {
+    const itemPageKey = clean(item.page_key);
+    const active = itemPageKey && itemPageKey === activePageKey;
+    return `<a class="rs-nav-link${active ? " is-active" : ""}" href="${escapeAttr(item.href || "#")}" data-rs-page-key="${escapeAttr(itemPageKey)}"${active ? ` aria-current="page"` : ""}>${escapeHtml(item.label)}</a>`;
+  }).join("");
   const tag = group === "footer_nav" ? "footer" : "nav";
-  const logo = group === "main_nav"
-    ? `<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>`
-    : "";
+  const logo = group === "main_nav" ? `<a class="rs-nav-logo" href="/rs/home" aria-label="RingStatus home">RING<span>STATUS</span></a>` : "";
   return [
     `<${tag} class="rs-${group.replace("_nav", "")}" data-rs-block="${escapeAttr(block.block_key)}">`,
     `  <div class="rs-nav-inner">`,
@@ -465,7 +361,6 @@ function renderNavigation(block, items, group, activePageKey = "") {
     `</${tag}>`
   ].join("\n");
 }
-
 function renderSection(block) {
   const divHtml = block.divs.map((div) => {
     const className = clean(div.class_key) || "rs-content";
@@ -482,7 +377,6 @@ function renderSection(block) {
     }).join("");
     return `<div class="${escapeAttr(className)}" data-rs-div="${escapeAttr(div.div_key)}">${typeHtml}</div>`;
   }).join("");
-
   return [
     `<section class="rs-section" data-rs-block="${escapeAttr(block.block_key)}">`,
     `  <div class="rs-section-container">`,
@@ -493,12 +387,10 @@ function renderSection(block) {
     `</section>`
   ].join("\n");
 }
-
 function renderContent(content, contentType) {
   if (contentType === "html") return sanitizeTrustedHtml(content);
   return escapeHtml(content);
 }
-
 function renderStructuredContent(contentRow) {
   const eyebrow = clean(contentRow?.eyebrow);
   const headline = clean(contentRow?.headline);
@@ -520,7 +412,6 @@ function renderStructuredContent(contentRow) {
   }
   return renderContent(contentRow?.content_value || "", selectName(contentRow?.content_type));
 }
-
 function renderVisual({ visualSrc, visualAlt, visualLabel, visualType }) {
   if (visualSrc) {
     if (visualType === "video") {
@@ -530,13 +421,9 @@ function renderVisual({ visualSrc, visualAlt, visualLabel, visualType }) {
   }
   return visualLabel ? `<div class="rs-visual">${escapeHtml(visualLabel)}</div>` : "";
 }
-
 function sanitizeTrustedHtml(value) {
-  return String(value ?? "")
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-    .replace(/\son[a-z]+\s*=\s*(".*?"|'.*?'|[^\s>]+)/gi, "");
+  return String(value ?? "").replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "").replace(/\son[a-z]+\s*=\s*(".*?"|'.*?'|[^\s>]+)/gi, "");
 }
-
 function renderBaseStyle() {
   return [
     `<style>`,
@@ -556,9 +443,8 @@ function renderBaseStyle() {
     `</style>`
   ].join("");
 }
-
 function groupByFirstLink(records, fieldName) {
-  const map = new Map();
+  const map = /* @__PURE__ */ new Map();
   for (const record of records) {
     const id = first(record.fields[fieldName]);
     if (!id) continue;
@@ -567,36 +453,27 @@ function groupByFirstLink(records, fieldName) {
   }
   return map;
 }
-
 function pick(record, names) {
   return Object.fromEntries(names.map((name) => [name, record.fields?.[name] ?? ""]));
 }
-
 function sortByOrder(a, b) {
-  return Number(a.fields?.sort_order || 0) - Number(b.fields?.sort_order || 0) ||
-    clean(a.fields?.block_key || a.fields?.div_key || a.fields?.typography_key || a.fields?.content_key || a.fields?.nav_item_key || a.fields?.param_key)
-      .localeCompare(clean(b.fields?.block_key || b.fields?.div_key || b.fields?.typography_key || b.fields?.content_key || b.fields?.nav_item_key || b.fields?.param_key));
+  return Number(a.fields?.sort_order || 0) - Number(b.fields?.sort_order || 0) || clean(a.fields?.block_key || a.fields?.div_key || a.fields?.typography_key || a.fields?.content_key || a.fields?.nav_item_key || a.fields?.param_key).localeCompare(clean(b.fields?.block_key || b.fields?.div_key || b.fields?.typography_key || b.fields?.content_key || b.fields?.nav_item_key || b.fields?.param_key));
 }
-
 function first(value) {
   return Array.isArray(value) ? value[0] : value;
 }
-
 function includes(list, value) {
   return Array.isArray(list) && list.includes(value);
 }
-
 function selectName(value) {
   if (Array.isArray(value)) return selectName(first(value));
   if (value && typeof value === "object" && "name" in value) return clean(value.name);
   return clean(value);
 }
-
 function clean(value) {
   if (Array.isArray(value)) return value.map(clean).filter(Boolean).join(", ");
   return String(value ?? "").trim();
 }
-
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
@@ -606,7 +483,17 @@ function escapeHtml(value) {
     "'": "&#39;"
   })[char]);
 }
-
 function escapeAttr(value) {
   return escapeHtml(value).replace(/`/g, "&#96;");
 }
+const _page = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  GET,
+  OPTIONS,
+  config,
+  renderRsPagePayload
+}, Symbol.toStringTag, { value: "Module" }));
+export {
+  _page as _,
+  renderRsPagePayload as r
+};

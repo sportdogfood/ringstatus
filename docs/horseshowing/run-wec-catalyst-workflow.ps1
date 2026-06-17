@@ -6,6 +6,7 @@ param(
   [string]$ClassOogRunnerUrl = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_oog_runner/",
   [string]$ClassStartTimesRunnerUrl = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_start_times_runner/",
   [string]$EntryGoTimesRunnerUrl = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_entry_go_times_runner/",
+  [string]$ClassLaneRunnerUrl = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_lane_runner/",
   [string]$AirtableBaseId = "app6XS1RvsPNRT6os",
   [switch]$ForceSync,
   [switch]$RunMockLiveCheck
@@ -796,8 +797,11 @@ function Get-HorseshowingDirectLiveRows {
 function Expand-LiveRowCollection($Value) {
   $expanded = @()
   foreach ($item in @($Value)) {
+    if ($null -eq $item) { continue }
     if ($item -is [System.Array]) {
-      foreach ($inner in $item) { $expanded += $inner }
+      foreach ($inner in $item) {
+        if ($null -ne $inner) { $expanded += $inner }
+      }
     } else {
       $expanded += $item
     }
@@ -936,6 +940,7 @@ function Invoke-HorseshowingDirectCurrent($source, $FocusDayValue) {
     -ContentType "application/x-www-form-urlencoded; charset=UTF-8" `
     -Body "show_no=$ShowNo" `
     -TimeoutSec 20
+  $parsed = ([string]$rawResponse.Content) | ConvertFrom-Json
   $action = if ($source -eq "orders") { "sync-orders-payload" } else { "sync-rings-payload" }
   $payload = @{
     upstream_status = [int]$rawResponse.StatusCode
@@ -1060,6 +1065,23 @@ function Invoke-TimeWorkflowTableSync($FocusDayValue) {
   }
 }
 
+function Invoke-ClassLaneGetOrdersSync($FocusDayValue) {
+  if (!$FocusDayValue) { return $null }
+  $token = Get-WecAirtableToken
+  $result = Invoke-WecRunnerPost -Url $ClassLaneRunnerUrl -TimeoutSec 90 -Payload @{
+    action = "sync-get-orders"
+    show_no = $ShowNo
+    focus_day = $FocusDayValue
+    airtable_token = $token
+    base_id = $AirtableBaseId
+  }
+  if (!$result.ok) {
+    throw "class_lane sync-get-orders failed: $($result.error)"
+  }
+  Write-WorkflowLog "class-lane get_orders orders=$($result.result.orders) matches=$($result.result.matches) airtable_updated=$($result.result.airtable_updated) catalyst_updated=$($result.result.catalyst_updated) focus=$FocusDayValue"
+  return $result.result
+}
+
 function Invoke-MockLiveCheck($FocusDayValue) {
   if (!$FocusDayValue) { return $null }
   $scriptPath = Join-Path $root "mock-live-enrichment-check.js"
@@ -1151,13 +1173,32 @@ function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue, [bool]$ResetFocus 
   if (!$ringDayNo) {
     throw "horseshowing_update_schedule_runner selected no ring_day_no"
   }
-  $raw = Invoke-HorseshowingUpdateScheduleRaw -RingDayNo $ringDayNo
   $body = $baseBody.Clone()
+  $body.ring_day_no = $ringDayNo
   $body.slot_index = [string]$probe.slot_index
-  $body.raw_payload = $raw
-  $body.raw_status = "200"
-  $body.raw_content_type = "text/html; charset=utf-8"
-  $response = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $body -TimeoutSec 120
+  $body.probe = "update-write"
+  $response = $null
+  $usedSourceFallback = $false
+  try {
+    $response = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $body -TimeoutSec 120
+  } catch {
+    $usedSourceFallback = $true
+  }
+  if ($response -and $response.ok -eq $false) {
+    $usedSourceFallback = $true
+  }
+  if ($usedSourceFallback) {
+    $raw = Invoke-HorseshowingUpdateScheduleRaw -RingDayNo $ringDayNo
+    $fallbackBody = $baseBody.Clone()
+    $fallbackBody.ring_day_no = $ringDayNo
+    $fallbackBody.slot_index = [string]$probe.slot_index
+    $fallbackBody.probe = "update-write"
+    $fallbackBody.raw_payload = $raw
+    $fallbackBody.raw_status = "200"
+    $fallbackBody.raw_content_type = "text/html; charset=utf-8"
+    $response = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $fallbackBody -TimeoutSec 120
+    Write-WorkflowLog "update-schedule-source-fallback ring_day_no=$ringDayNo focus=$FocusDayValue"
+  }
   if ($response.ok -eq $false) {
     throw "horseshowing_update_schedule_runner failed: $($response.error)"
   }
@@ -1700,10 +1741,13 @@ if ($heartbeat.orders_error) {
 } else {
   $ordersMirror = Write-LiveRowsToAirtable -Source "orders" -Payload $heartbeat.orders -FocusDayValue $heartbeat.focus_day
   $ordersLinks = Invoke-AirtableLiveLinkSync -Source "orders" -FocusDayValue $heartbeat.focus_day
-  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -RecordsChanged ((Int-OrZero $ordersMirror.changed) + (Int-OrZero $ordersLinks.changed)) -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) mirrored=$($ordersMirror.changed) linked=$($ordersLinks.changed) focus=$($heartbeat.focus_day)" -Payload @{
+  $ordersClassStart = Invoke-ClassLaneGetOrdersSync $heartbeat.focus_day
+  $ordersRecordsChanged = (Int-OrZero $ordersMirror.changed) + (Int-OrZero $ordersLinks.changed) + (Int-OrZero $ordersClassStart.airtable_updated) + (Int-OrZero $ordersClassStart.catalyst_updated)
+  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -RecordsSeen (Int-OrZero $heartbeat.orders.parsed_rows) -RecordsChanged $ordersRecordsChanged -Summary "get_orders rows=$($heartbeat.orders.parsed_rows) mirrored=$($ordersMirror.changed) linked=$($ordersLinks.changed) class_start_matches=$($ordersClassStart.matches) focus=$($heartbeat.focus_day)" -Payload @{
     orders = $heartbeat.orders
     mirror = $ordersMirror
     links = $ordersLinks
+    class_start_enrichment = $ordersClassStart
     focus_day = $heartbeat.focus_day
   }
   Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders returned without error." -Payload $heartbeat.orders
