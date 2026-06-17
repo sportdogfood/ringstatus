@@ -7701,3 +7701,4 @@
 2026-06-17T08:30:07 cadence-gate bypass force-sync focus=14907|2026-06-17|day cadence=12
 2026-06-17T08:30:53 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=56 triggers=0
 2026-06-17T08:31:36 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T08:32:14 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
