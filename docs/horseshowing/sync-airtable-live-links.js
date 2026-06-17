@@ -33,6 +33,20 @@ function formulaForShowFocus(showNo, focusDay) {
   return parts.length > 1 ? `AND(${parts.join(",")})` : parts[0] || "";
 }
 
+function formulaForShow(showNo) {
+  const value = clean(showNo);
+  if (!value) return "";
+  return /^\d+$/.test(value) ? `{show_no}=${Number(value)}` : `{show_no}='${value.replace(/'/g, "\\'")}'`;
+}
+
+function formulaForShowIso(showNo, isoDate) {
+  const parts = [];
+  const showFormula = formulaForShow(showNo);
+  if (showFormula) parts.push(showFormula);
+  if (isoDate) parts.push(`{iso_date}='${String(isoDate).replace(/'/g, "\\'")}'`);
+  return parts.length > 1 ? `AND(${parts.join(",")})` : parts[0] || "";
+}
+
 function formulaForActiveShow(showNo) {
   const value = clean(showNo);
   if (!value) return "{active}=1";
@@ -200,7 +214,7 @@ async function createRecords(tableName, rows) {
 }
 
 async function syncGetRings({ showNo, focusDay }) {
-  const formula = formulaForShowFocus(showNo, focusDay);
+  const focusFormula = formulaForShowFocus(showNo, focusDay);
   await ensureLinkFields("get_rings", {
     shows: "shows",
     focus_show: "focus_show",
@@ -225,10 +239,10 @@ async function syncGetRings({ showNo, focusDay }) {
     rings,
     ringNames
   ] = await Promise.all([
-    listAll("get_rings", formula ? { filterByFormula: formula } : {}),
+    listAll("get_rings", focusFormula ? { filterByFormula: focusFormula } : {}),
     listAll("get_ring_days"),
     listAll("shows", { filterByFormula: formulaForActiveShow(showNo) }),
-    listAll("focus_show", formula ? { filterByFormula: formula } : {}),
+    listAll("focus_show", focusFormula ? { filterByFormula: focusFormula } : {}),
     listAll("classes"),
     listAll("entries"),
     listAll("rings"),
@@ -312,7 +326,8 @@ async function syncGetRings({ showNo, focusDay }) {
 }
 
 async function syncGetOrders({ showNo, focusDay }) {
-  const formula = formulaForShowFocus(showNo, focusDay);
+  const focusFormula = formulaForShowFocus(showNo, focusDay);
+  const updateScheduleFormula = formulaForShowIso(showNo, focusDay);
   await ensureNumberField("get_orders", "class_no");
   await ensureLinkFields("get_orders", {
     shows: "shows",
@@ -336,11 +351,11 @@ async function syncGetOrders({ showNo, focusDay }) {
     ringDays,
     ringNames
   ] = await Promise.all([
-    listAll("get_orders", formula ? { filterByFormula: formula } : {}),
-    listAll("update_schedule", formula ? { filterByFormula: formula } : {}),
-    listAll("get_rings", formula ? { filterByFormula: formula } : {}),
+    listAll("get_orders", focusFormula ? { filterByFormula: focusFormula } : {}),
+    listAll("update_schedule", updateScheduleFormula ? { filterByFormula: updateScheduleFormula } : {}),
+    listAll("get_rings", focusFormula ? { filterByFormula: focusFormula } : {}),
     listAll("shows", { filterByFormula: formulaForActiveShow(showNo) }),
-    listAll("focus_show", formula ? { filterByFormula: formula } : {}),
+    listAll("focus_show", focusFormula ? { filterByFormula: focusFormula } : {}),
     listAll("classes"),
     listAll("entries"),
     listAll("rings"),

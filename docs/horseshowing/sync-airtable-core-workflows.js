@@ -230,7 +230,7 @@ async function buildCoreLinkMaps(showNo, focusDay, updateRows, classOogRows = []
     }
     const dow = dowName(row.date_text);
     if (dow && !dows.has(dow)) {
-      dows.set(dow, { Name: dow });
+      dows.set(dow, { dow_name: dow });
     }
     if (row.entry_no && !entries.has(clean(row.entry_no))) {
       entries.set(clean(row.entry_no), {
@@ -247,7 +247,7 @@ async function buildCoreLinkMaps(showNo, focusDay, updateRows, classOogRows = []
   await upsert("classes", ["class_no"], [...classes.values()].filter((row) => row.class_no));
   await upsert("rings", ["ring_no"], [...rings.values()].filter((row) => row.ring_no));
   await upsert("ring_names", ["ring_name"], [...ringNames.values()].filter((row) => row.ring_name));
-  await upsert("dows", ["Name"], [...dows.values()].filter((row) => row.Name));
+  await upsert("dows", ["dow_name"], [...dows.values()].filter((row) => row.dow_name));
   await createMissing("entries", "entry_no", [...entries.values()].filter((row) => row.entry_no));
 
   return {
@@ -261,7 +261,7 @@ async function buildCoreLinkMaps(showNo, focusDay, updateRows, classOogRows = []
     rings: await recordIdMap("rings", "ring_no"),
     ringNames: await recordIdMap("ring_names", "ring_name"),
     ringDays: await recordIdMap("ring_days", "ring_day_no"),
-    dows: await recordIdMap("dows", "Name"),
+    dows: await recordIdMap("dows", "dow_name"),
     entries: await recordIdMap("entries", "entry_no")
   };
 }
@@ -504,10 +504,11 @@ async function main() {
     }
   }
   const updateLinks = await buildCoreLinkMaps(showNo, focusDay, updateRows);
-  const updateResult = await upsert("update_schedule", ["show_no", "days", "class_no"], updateRows.map((row) => {
-    const { class_order_local, ...fields } = row;
+  const updateResult = await upsert("update_schedule", ["show_no", "ring_day_no", "class_no"], updateRows.map((row) => {
+    const { class_order_local, focus_day, days, ...fields } = row;
     return {
       ...fields,
+      ring_day_no: intOrNull(row.days),
       shows: linkedRecord(updateLinks.shows, row.show_no || showNo),
       focus_show: linkedRecord(updateLinks.focusShow, row.show_no || showNo),
       ring_days: linkedRecord(updateLinks.ringDays, row.days),
