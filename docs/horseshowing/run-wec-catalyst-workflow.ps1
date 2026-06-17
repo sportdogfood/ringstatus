@@ -1112,7 +1112,7 @@ function Invoke-HorseshowingUpdateScheduleRaw {
   return $raw
 }
 
-function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue) {
+function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue, [bool]$ResetFocus = $false) {
   if (!$FocusDayValue) { return $null }
   $token = Get-WecAirtableToken
   $baseBody = @{
@@ -1123,6 +1123,16 @@ function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue) {
     mark_focus_state = "1"
     base_id = $AirtableBaseId
     airtable_token = $token
+  }
+  $resetResult = $null
+  if ($ResetFocus) {
+    $resetBody = $baseBody.Clone()
+    $resetBody.action = "reset-focus-update-schedule"
+    $resetResult = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $resetBody -TimeoutSec 120
+    if ($resetResult.ok -eq $false) {
+      throw "horseshowing_update_schedule_runner reset failed: $($resetResult.error)"
+    }
+    Write-WorkflowLog "update-schedule-reset update_deleted=$($resetResult.update_schedule_deleted) staging_deleted=$($resetResult.update_schedule_staging_deleted) focus=$($resetResult.focus_day)"
   }
   $probeBody = $baseBody.Clone()
   $probeBody.probe = "batch"
@@ -1154,12 +1164,22 @@ function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue) {
   $stagingRows = 0
   $updateRows = 0
   $classStartRows = 0
+  $staleStagingRows = 0
+  $staleStagingInactivated = 0
+  $staleUpdateRows = 0
+  $staleUpdateDeleted = 0
   foreach ($row in @($response.log_results)) {
     $stagingRows += Int-OrZero $row.staging_rows
     $updateRows += Int-OrZero $row.update_schedule_records
     $classStartRows += Int-OrZero $row.class_start_records
+    if ($row.reconcile) {
+      $staleStagingRows += Int-OrZero $row.reconcile.stale_staging_rows
+      $staleStagingInactivated += Int-OrZero $row.reconcile.stale_staging_inactivated
+      $staleUpdateRows += Int-OrZero $row.reconcile.stale_update_schedule_rows
+      $staleUpdateDeleted += Int-OrZero $row.reconcile.stale_update_schedule_deleted
+    }
   }
-  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -RecordsSeen $stagingRows -RecordsChanged $updateRows -Summary "update_schedule staging runner selected=$($response.selected_count) staging_rows=$stagingRows update_rows=$updateRows class_start_rows=$classStartRows focus=$($response.focus_day)" -Payload @{
+  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -RecordsSeen $stagingRows -RecordsChanged $updateRows -Summary "update_schedule staging runner selected=$($response.selected_count) staging_rows=$stagingRows update_rows=$updateRows class_start_rows=$classStartRows stale_update_deleted=$staleUpdateDeleted stale_staging_inactivated=$staleStagingInactivated focus=$($response.focus_day)" -Payload @{
     show_no = $ShowNo
     focus_day = $response.focus_day
     selected_count = $response.selected_count
@@ -1172,9 +1192,15 @@ function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue) {
     staging_rows = $stagingRows
     update_schedule_records = $updateRows
     class_start_records = $classStartRows
+    stale_staging_rows = $staleStagingRows
+    stale_staging_inactivated = $staleStagingInactivated
+    stale_update_schedule_rows = $staleUpdateRows
+    stale_update_schedule_deleted = $staleUpdateDeleted
+    reset = $resetResult
     focus_state = $response.focus_state
+    log_results = $response.log_results
   }
-  Write-WorkflowLog "update-schedule-staging selected=$($response.selected_count) staging_rows=$stagingRows update_rows=$updateRows class_start_rows=$classStartRows focus=$($response.focus_day)"
+  Write-WorkflowLog "update-schedule-staging selected=$($response.selected_count) staging_rows=$stagingRows update_rows=$updateRows class_start_rows=$classStartRows stale_update_deleted=$staleUpdateDeleted stale_staging_inactivated=$staleStagingInactivated focus=$($response.focus_day)"
   return $response
 }
 
@@ -1700,7 +1726,7 @@ if ($heartbeat.focus_day) {
   $catalystScheduleRows = Int-OrZero $heartbeat.schedule_rows
   try {
     if ($updateScheduleDue) {
-      $updateScheduleResult = Invoke-UpdateScheduleStagingWorkflow $heartbeat.focus_day
+      $updateScheduleResult = Invoke-UpdateScheduleStagingWorkflow $heartbeat.focus_day -ResetFocus:$updateScheduleFocusChanged
       $state["update_schedule_staging_workflow"] = (Get-Date).ToString("o")
       $state["update_schedule_staging_focus_day"] = [string]$heartbeat.focus_day
       Resolve-WecAirtableAlert -AlertType "local_core_workflow_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|local_core_workflow" -Message "Resolved: update_schedule staging workflow completed." -Payload @{

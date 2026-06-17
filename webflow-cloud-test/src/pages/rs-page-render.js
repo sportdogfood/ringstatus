@@ -288,7 +288,7 @@ function buildTreeBlocks({ pageBlocks, divsByBlock, typographyByDiv, contentByTy
         ...pick(typeRow, ["typography_key", "typography_role", "sort_order", "font_class", "data_rs_value"]),
         content: (contentByTypography.get(typeRow.id) || []).map((contentRow) => ({
           id: contentRow.id,
-          ...pick(contentRow, ["content_key", "content_type", "content_value", "data_rs_value", "sort_order", "eyebrow", "headline", "body", "visual_label"])
+          ...pick(contentRow, ["content_key", "content_type", "content_value", "data_rs_value", "sort_order", "eyebrow", "headline", "body", "visual_label", "visual_src", "visual_alt", "visual_type"])
         }))
       }))
     }))
@@ -504,17 +504,31 @@ function renderStructuredContent(contentRow) {
   const headline = clean(contentRow?.headline);
   const body = clean(contentRow?.body);
   const visualLabel = clean(contentRow?.visual_label);
-  if (eyebrow || headline || body || visualLabel) {
+  const visualSrc = clean(contentRow?.visual_src);
+  const visualAlt = clean(contentRow?.visual_alt) || visualLabel || headline;
+  const visualType = selectName(contentRow?.visual_type);
+  const visualHtml = renderVisual({ visualSrc, visualAlt, visualLabel, visualType });
+  if (eyebrow || headline || body || visualLabel || visualSrc) {
     return [
       `<div>`,
       eyebrow ? `<h5>${escapeHtml(eyebrow)}</h5>` : "",
       headline ? `<h1>${escapeHtml(headline)}</h1>` : "",
       body ? `<p>${escapeHtml(body)}</p>` : "",
       `</div>`,
-      visualLabel ? `<div class="rs-visual">${escapeHtml(visualLabel)}</div>` : ""
+      visualHtml
     ].join("");
   }
   return renderContent(contentRow?.content_value || "", selectName(contentRow?.content_type));
+}
+
+function renderVisual({ visualSrc, visualAlt, visualLabel, visualType }) {
+  if (visualSrc) {
+    if (visualType === "video") {
+      return `<div class="rs-visual"><iframe src="${escapeAttr(visualSrc)}" title="${escapeAttr(visualAlt || "Embedded video")}" loading="lazy" allowfullscreen></iframe></div>`;
+    }
+    return `<div class="rs-visual"><img src="${escapeAttr(visualSrc)}" alt="${escapeAttr(visualAlt)}" loading="lazy"></div>`;
+  }
+  return visualLabel ? `<div class="rs-visual">${escapeHtml(visualLabel)}</div>` : "";
 }
 
 function sanitizeTrustedHtml(value) {

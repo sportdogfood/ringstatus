@@ -7702,3 +7702,40 @@
 2026-06-17T08:30:53 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=56 triggers=0
 2026-06-17T08:31:36 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
 2026-06-17T08:32:14 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T08:34:42 class_oog_queue chunks=29 classes=58 rows=50 airtable=50 focus=2026-06-17
+2026-06-17T08:34:43 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T08:34:51 time-workflow class_start_active=58 entry_go_active=12 focus=2026-06-17
+2026-06-17T08:34:57 airtable-alert skipped existing type=class_start_30 key=class_start_30|14907|2026-06-17|class_start|29909|30
+2026-06-17T08:34:57 airtable-alert skipped existing type=class_start_30 key=class_start_30|14907|2026-06-17|class_start|29910|30
+2026-06-17T08:34:57 airtable-alert skipped existing type=class_start_60 key=class_start_60|14907|2026-06-17|class_start|29913|60
+2026-06-17T08:34:58 airtable-alert stale-time resolved focus=2026-06-17 open_seen=4 resolved=0 active_keys=4
+2026-06-17T08:35:02 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T12-35-02-086Z.json" }
+2026-06-17T08:35:02 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-17T08:39:31 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T08:39:54 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=56 triggers=0
+2026-06-17T08:40:39 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T08:40:40 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T08:40:47 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T08:43:12 class_oog_queue chunks=29 classes=58 rows=50 airtable=50 focus=2026-06-17
+2026-06-17T08:43:13 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T08:43:21 time-workflow class_start_active=58 entry_go_active=12 focus=2026-06-17
+2026-06-17T08:43:26 airtable-alert stale-time resolved focus=2026-06-17 open_seen=4 resolved=4 active_keys=0
+2026-06-17T08:43:30 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T12-43-30-304Z.json" }
+2026-06-17T08:43:30 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-17T08:57:20 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T08:57:42 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=56 triggers=0
+2026-06-17T08:58:25 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T08:58:27 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T08:58:34 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
+2026-06-17T09:00:57 class_oog_queue chunks=29 classes=58 rows=50 airtable=50 focus=2026-06-17
+2026-06-17T09:00:57 airtable-alert resolved type=core_class_oog_failed key=core_class_oog_failed|14907|2026-06-17|class_oog_queue records=1
+2026-06-17T09:01:07 time-workflow class_start_active=58 entry_go_active=12 focus=2026-06-17
+2026-06-17T09:01:13 airtable-alert skipped existing type=class_start_30 key=class_start_30|14907|2026-06-17|class_start|29913|30
+2026-06-17T09:01:14 airtable-alert stale-time resolved focus=2026-06-17 open_seen=2 resolved=0 active_keys=2
+2026-06-17T09:01:20 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-17",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-17-PASS-2026-06-17T13-01-19-785Z.json" }
+2026-06-17T09:01:20 airtable-alert resolved type=wec_lane_audit_failed key=wec_lane_audit_failed|14907|2026-06-17|wec_lane_audit records=1
+2026-06-17T09:15:30 cadence-gate pass focus=14907|2026-06-17|day cadence=12
+2026-06-17T09:15:54 heartbeat show=14907 focus=2026-06-17 ok=True schedule_rows=56 triggers=0
+2026-06-17T09:16:40 airtable-alert skipped existing type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-17|local_core_workflow
+2026-06-17T09:16:40 sync-focus-day prerequisite sync-ring-days rows=56
+2026-06-17T09:16:48 airtable-alert skipped existing type=catalyst_schedule_json_empty key=catalyst_schedule_json_empty|14907|2026-06-17|schedule-json
