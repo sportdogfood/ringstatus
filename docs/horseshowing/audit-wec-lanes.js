@@ -98,6 +98,23 @@ function positiveClassNo(record) {
   return Number(record?.fields?.class_no) > 0;
 }
 
+function contextKey(record) {
+  const fields = record?.fields || record || {};
+  const ringDayNo = Number(fields.ring_day_no || fields.days);
+  const classNo = Number(fields.class_no);
+  return Number.isFinite(ringDayNo) && ringDayNo > 0 && Number.isFinite(classNo) && classNo > 0
+    ? `${ringDayNo}|${classNo}`
+    : "";
+}
+
+function isInactive(record) {
+  return clean(record?.fields?.status).toLowerCase() === "inactive";
+}
+
+function manualInstruction(record) {
+  return clean(record?.fields?.["manual-instructions"]).toLowerCase();
+}
+
 function countMissingStagingHelperLinks(records) {
   const missing = countMissingLinks(records, ["shows", "ring_days", "rings", "show_days", "events"]);
   missing.classes = 0;
@@ -203,6 +220,7 @@ async function main() {
     note: lockedStagingRows.length ? "Locked staging rows exist." : "No locked staging rows; downstream class_start/class_oog lanes should pause."
   });
   const lockedClassRows = lockedStagingRows.filter(positiveClassNo);
+  const renderableLockedRows = lockedClassRows.filter((record) => manualInstruction(record) !== "remove");
   addCheck(checks, "Core", "class_oog_not_required_for_update_schedule_stage", true, {
     rows: classOog.length,
     locked_rows: lockedStagingRows.length,
@@ -219,6 +237,11 @@ async function main() {
     note: "Zero can be valid for schooling/prep days with no active trainer entry rollups."
   });
   addCheck(checks, "Core", "catalyst_schedule_present", scheduleRows.length > 0, { rows: scheduleRows.length });
+  addCheck(checks, "Core", "catalyst_schedule_matches_renderable_locked_staging", scheduleRows.length === renderableLockedRows.length, {
+    schedule_rows: scheduleRows.length,
+    renderable_locked_rows: renderableLockedRows.length,
+    locked_class_rows: lockedClassRows.length
+  });
 
   const updateMissing = countMissingStagingHelperLinks(lockedStagingRows);
   addCheck(checks, "Core", "update_schedule_staging_locked_links_complete", !anyMissing(updateMissing), {
@@ -228,12 +251,25 @@ async function main() {
 
   const oogMissing = countMissingLinks(classOog, ["shows", "focus_show", "classes", "rings", "ring_names", "ring_days", "entries"]);
   addCheck(checks, "Core", "class_oog_links_complete", !anyMissing(oogMissing), { missing: oogMissing });
+  const lockedContexts = new Set(lockedClassRows.map(contextKey).filter(Boolean));
+  const classOogOutsideLocked = classOog.filter((record) => !lockedContexts.has(contextKey(record)));
+  addCheck(checks, "Core", "class_oog_scoped_to_locked_staging", classOogOutsideLocked.length === 0, {
+    rows: classOog.length,
+    outside_locked_staging: classOogOutsideLocked.length,
+    examples: classOogOutsideLocked.slice(0, 10).map((record) => ({
+      id: record.id,
+      key: getField(record, "mirror_class_oog_key"),
+      days: getField(record, "days"),
+      class_no: getField(record, "class_no")
+    }))
+  });
 
   const classStartMissing = countMissingLinks(classStartTimes, ["shows", "focus_show", "classes", "rings", "ring_days"]);
   addCheck(checks, "Alerts", "class_start_times_links_complete", !anyMissing(classStartMissing), { missing: classStartMissing });
 
-  if (entryGoTimes.length) {
-    const entryMissing = countMissingLinks(entryGoTimes, ["shows", "focus_show", "classes", "rings", "ring_days", "entries", "class_start_times", "class_oog"]);
+  const activeEntryGoTimes = entryGoTimes.filter((record) => !isInactive(record));
+  if (activeEntryGoTimes.length) {
+    const entryMissing = countMissingLinks(activeEntryGoTimes, ["shows", "focus_show", "classes", "rings", "ring_days", "entries", "class_start_times", "class_oog"]);
     addCheck(checks, "Alerts", "entry_go_times_links_complete", !anyMissing(entryMissing), { missing: entryMissing });
   }
 

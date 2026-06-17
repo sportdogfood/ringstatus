@@ -102,7 +102,7 @@ async function buildSiteToggle({ token, baseId, pageKey }) {
     const pageBlocks = blocks
       .filter((record) => includes(record.fields.page, page.id))
       .filter((record) => isHierarchyBlock(record, key))
-      .filter((record) => selectName(record.fields.active) !== "inactive")
+      .filter((record) => selectName(record.fields.active) === "active")
       .filter((record) => selectName(record.fields.block_type) !== "navigation")
       .filter((record) => selectName(record.fields.block_type) !== "footer")
       .sort(sortByOrder);
@@ -243,7 +243,7 @@ function buildPageFromDataset({ baseId, pageKey, dataset }) {
   const pageBlocks = blocks
     .filter((record) => includes(record.fields.page, page.id))
     .filter((record) => isHierarchyBlock(record, pageKey))
-    .filter((record) => selectName(record.fields.active) !== "inactive")
+    .filter((record) => selectName(record.fields.active) === "active")
     .sort(sortByOrder);
 
   const typographyByDiv = groupByFirstLink(typography.sort(sortByOrder), "div");
