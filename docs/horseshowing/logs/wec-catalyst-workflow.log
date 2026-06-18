@@ -9258,3 +9258,171 @@
 2026-06-18T15:49:19 entry-go-times source=18 active=18 focus=2026-06-18
 2026-06-18T15:49:21 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":0,"alerts_upserted":0,"alerts_resolved":1}
 2026-06-18T15:49:26 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T19-49-26-049Z.json" }
+2026-06-18T16:03:19 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T16:04:07 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T16:04:16 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T16:04:20 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T16:04:27 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T16:04:30 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T16:04:33 class-lane sync-get-orders focus=2026-06-18 result={"orders":49,"matches":31,"airtable_updated":31,"catalyst_updated":31}
+2026-06-18T16:04:37 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T16:04:39 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":0,"alerts_upserted":0,"alerts_resolved":0}
+2026-06-18T16:04:43 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T20-04-43-535Z.json" }
+2026-06-18T16:18:19 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T16:19:09 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T16:19:20 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T16:19:24 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T16:19:33 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T16:19:36 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T16:19:39 class-lane sync-get-orders focus=2026-06-18 result={"orders":50,"matches":32,"airtable_updated":32,"catalyst_updated":32}
+2026-06-18T16:19:43 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T16:19:45 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":0,"alerts_upserted":0,"alerts_resolved":0}
+2026-06-18T16:19:50 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T20-19-50-069Z.json" }
+2026-06-18T16:33:17 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T16:34:06 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T16:34:14 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T16:34:19 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T16:34:24 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T16:34:27 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T16:34:30 class-lane sync-get-orders focus=2026-06-18 result={"orders":51,"matches":32,"airtable_updated":32,"catalyst_updated":32}
+2026-06-18T16:34:34 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T16:34:35 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":0,"alerts_upserted":0,"alerts_resolved":0}
+2026-06-18T16:34:40 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T20-34-40-376Z.json" }
+2026-06-18T16:48:21 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T16:49:09 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T16:49:18 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T16:49:22 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T16:49:29 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T16:49:32 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T16:49:35 class-lane sync-get-orders focus=2026-06-18 result={"orders":52,"matches":33,"airtable_updated":33,"catalyst_updated":33}
+2026-06-18T16:49:38 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T16:49:40 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":0,"alerts_upserted":0,"alerts_resolved":0}
+2026-06-18T16:49:44 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T20-49-44-942Z.json" }
+2026-06-18T17:05:18 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T17:06:07 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T17:06:16 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T17:06:21 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T17:06:27 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T17:06:30 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T17:06:33 class-lane sync-get-orders focus=2026-06-18 result={"orders":52,"matches":33,"airtable_updated":33,"catalyst_updated":33}
+2026-06-18T17:06:37 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T17:06:39 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":0,"alerts_upserted":0,"alerts_resolved":0}
+2026-06-18T17:06:44 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T21-06-43-971Z.json" }
+2026-06-18T17:20:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:20:22 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:20:30 update-schedule-reset update_deleted=0 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:23:15 update-schedule-staging selected=10 staging_rows=73 update_rows=73 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-18T17:25:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:25:24 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:25:34 update-schedule-reset update_deleted=73 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:26:14 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T17:26:51 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T17:27:29 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T17:28:08 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T17:30:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:30:23 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:30:32 update-schedule-reset update_deleted=25 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:31:11 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T17:31:50 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T17:32:29 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T17:33:07 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T17:35:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:35:22 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:35:29 update-schedule-reset update_deleted=30 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:36:11 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T17:36:52 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T17:37:32 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T17:38:12 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T17:40:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:40:21 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:40:29 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:41:10 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T17:41:50 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T17:42:30 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T17:43:09 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T17:45:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:45:24 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:45:32 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:46:13 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T17:46:54 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T17:47:34 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T17:48:14 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T17:50:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:50:23 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:50:32 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:51:14 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T17:51:58 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T17:52:38 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T17:55:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T17:55:23 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T17:55:32 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T17:56:13 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T17:56:54 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T17:57:33 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T17:58:13 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:00:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:00:24 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:00:34 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:01:16 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:01:58 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:02:39 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:05:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:05:23 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:05:32 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:06:15 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:06:56 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:07:36 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:08:02 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:10:21 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:10:25 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:10:34 update-schedule-reset update_deleted=0 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:11:03 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:11:36 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:12:15 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:12:53 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:15:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:15:20 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:15:31 update-schedule-reset update_deleted=102 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:16:09 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:16:46 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:17:22 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:17:58 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:20:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:20:23 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:20:33 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:21:18 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:21:55 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:22:30 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:23:06 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:25:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:25:23 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:25:32 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:26:09 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:26:45 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:27:21 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:27:56 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:30:34 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:30:38 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:30:48 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:31:25 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:32:01 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:32:37 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:33:13 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:35:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:35:24 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:35:32 update-schedule-reset update_deleted=43 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:36:08 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:36:45 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:37:21 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:37:56 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T18:40:31 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:40:41 update-schedule-reset update_deleted=61 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:43:11 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=2 focus=2026-06-19
+2026-06-18T18:43:11 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=1
+2026-06-18T18:45:21 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T18:45:26 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=0 triggers=0
+2026-06-18T18:45:40 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-18T18:46:18 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T18:46:55 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T18:47:32 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T18:48:08 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
