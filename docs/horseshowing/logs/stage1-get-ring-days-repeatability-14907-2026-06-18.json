@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "created_at": "2026-06-18T11:36:49.154Z",
+  "stage": "get_ring_days",
+  "repeatable_function": "horseshowing_sync?action=sync-ring-days",
+  "show_no": 14907,
+  "focus_day": "2026-06-18",
+  "runs": [
+    {
+      "run": 1,
+      "http_status": 200,
+      "ok": true,
+      "upstream_status": 200,
+      "parsed_rows": 56,
+      "counters": {
+        "shows": 1,
+        "days": 6,
+        "rings": 56
+      },
+      "error": ""
+    },
+    {
+      "run": 2,
+      "http_status": 200,
+      "ok": true,
+      "upstream_status": 200,
+      "parsed_rows": 56,
+      "counters": {
+        "shows": 1,
+        "days": 6,
+        "rings": 56
+      },
+      "error": ""
+    },
+    {
+      "run": 3,
+      "http_status": 200,
+      "ok": true,
+      "upstream_status": 200,
+      "parsed_rows": 56,
+      "counters": {
+        "shows": 1,
+        "days": 6,
+        "rings": 56
+      },
+      "error": ""
+    },
+    {
+      "run": 4,
+      "http_status": 200,
+      "ok": true,
+      "upstream_status": 200,
+      "parsed_rows": 56,
+      "counters": {
+        "shows": 1,
+        "days": 6,
+        "rings": 56
+      },
+      "error": ""
+    },
+    {
+      "run": 5,
+      "http_status": 200,
+      "ok": true,
+      "upstream_status": 200,
+      "parsed_rows": 56,
+      "counters": {
+        "shows": 1,
+        "days": 6,
+        "rings": 56
+      },
+      "error": ""
+    }
+  ],
+  "source_evidence": {
+    "function_file": "C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus-data/catalyst-workspaces/horseshowing/functions/horseshowing_sync/index.js",
+    "bootstrap_cookie_lines": "361: async function bootstrapCookie(req, showNo, context) {\n362:   if (!showNo) return \"\";\n363:   if (context?.cookie && /PHPSESSID=/i.test(context.cookie)) return context.cookie;\n364:   let cookie = `HscomShowNo=${showNo}`;\n365:   const showUrl = `${BASE_URL}/show.php?show=${encodeURIComponent(showNo)}`;\n366:   try {\n367:     const response = await requestText(showUrl, {\n368:       method: \"GET\",\n369:       headers: {\n370:         \"accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\",\n371:         \"accept-language\": \"en-US,en;q=0.9\",\n372:         \"referer\": `${BASE_URL}/showsel.php`,\n373:         \"sec-fetch-dest\": \"document\",\n374:         \"sec-fetch-mode\": \"navigate\",\n375:         \"sec-fetch-site\": \"same-origin\",\n376:         \"upgrade-insecure-requests\": \"1\",\n377:         \"user-agent\": getHeader(req, \"user-agent\") || DEFAULT_USER_AGENT,\n378:         cookie\n379:       }\n380:     });\n381:     if (response.ok) {\n382:       cookie = mergeCookies(cookie, getSetCookies(response.headers));\n383:     }\n384:     const scheduleResponse = await requestText(`${BASE_URL}/schedule.php`, {\n385:       method: \"GET\",\n386:       headers: {\n387:         \"accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\",\n388:         \"accept-language\": \"en-US,en;q=0.9\",\n389:         \"referer\": showUrl,\n390:         \"sec-fetch-dest\": \"document\",\n391:         \"sec-fetch-mode\": \"navigate\",\n392:         \"sec-fetch-site\": \"same-origin\",\n393:         \"upgrade-insecure-requests\": \"1\",\n394:         \"user-agent\": getHeader(req, \"user-agent\") || DEFAULT_USER_AGENT,\n395:         cookie\n396:       }\n397:     });\n398:     if (scheduleResponse.ok) {\n399:       cookie = mergeCookies(cookie, getSetCookies(scheduleResponse.headers));\n400:     }\n401:   } catch (error) {\n402:     // Fall back to HscomShowNo; upstream will report the real failure if a session is required.\n403:   }\n404:   if (context) context.cookie = cookie;\n405:   return cookie;",
+    "sync_ring_days_lines": "4447: async function fetchAndSyncRingDays(req, app, showNo, context, { refreshExisting = false } = {}) {\n4448:   const upstreamResponse = await upstream(req, \"/get_ring_days.php\", { method: \"GET\", showNo, context });\n4449:   const rows = parseRingDayRows(upstreamResponse.raw, showNo);\n4450:   return {\n4451:     upstream_status: upstreamResponse.status,\n4452:     parsed_rows: rows.length,\n4453:     refresh_existing: refreshExisting,\n4454:     ...(await syncRingDayRows(app, showNo, rows, { refreshExisting }))\n4455:   };\n5730:     if (action === \"sync-ring-days\") {\n5731:       const context = createWorkflowContext();\n5732:       const result = await fetchAndSyncRingDays(req, app, showNo, context, {\n5733:         refreshExisting: query.get(\"refresh_existing\") === \"1\" || body.refresh_existing === \"1\"\n5734:       });\n5735:       return json(res, 200, { ok: true, action, upstream_requests: context.upstreamRequests, ...result });"
+  },
+  "rule": "Stable only means the deployed Catalyst action passes repeatedly without manual session/header/body injection."
+}

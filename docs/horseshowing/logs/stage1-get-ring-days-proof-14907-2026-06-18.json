@@ -1,0 +1,176 @@
+{
+  "status": "PASS",
+  "created_at": "2026-06-18T11:35:39.986Z",
+  "show_no": 14907,
+  "focus_day": "2026-06-18",
+  "source_endpoint": {
+    "endpoint": "https://www.horseshowing.com/get_ring_days.php",
+    "required_cookie": "PHPSESSID + HscomShowNo",
+    "direct_status": 200,
+    "top_level_rings": 10,
+    "flat_ring_day_rows": 56,
+    "focus_day_rows": 10,
+    "focus_day_ring_day_no": [
+      3937,
+      3943,
+      3949,
+      3955,
+      3961,
+      4220,
+      4225,
+      4233,
+      4301,
+      4306
+    ]
+  },
+  "catalyst_sync_ring_days": {
+    "first_pass": {
+      "ok": true,
+      "action": "sync-ring-days",
+      "upstream_requests": 1,
+      "upstream_status": 200,
+      "parsed_rows": 56,
+      "refresh_existing": true,
+      "counters": {
+        "shows": 1,
+        "days": 6,
+        "rings": 56
+      },
+      "samples": [
+        {
+          "show": "5614000000463002",
+          "day": "5614000000461006",
+          "ring": "5614000000462003"
+        },
+        {
+          "show": "5614000000463002",
+          "day": "5614000000461007",
+          "ring": "5614000000462004"
+        },
+        {
+          "show": "5614000000463002",
+          "day": "5614000000461008",
+          "ring": "5614000000462005"
+        }
+      ]
+    },
+    "repeat_pass": {
+      "ok": true,
+      "action": "sync-ring-days",
+      "upstream_requests": 1,
+      "upstream_status": 200,
+      "parsed_rows": 56,
+      "refresh_existing": true,
+      "counters": {
+        "shows": 1,
+        "days": 6,
+        "rings": 56
+      },
+      "samples": [
+        {
+          "show": "5614000000463002",
+          "day": "5614000000461006",
+          "ring": "5614000000462003"
+        },
+        {
+          "show": "5614000000463002",
+          "day": "5614000000461007",
+          "ring": "5614000000462004"
+        },
+        {
+          "show": "5614000000463002",
+          "day": "5614000000461008",
+          "ring": "5614000000462005"
+        }
+      ]
+    }
+  },
+  "airtable_staging_selection": {
+    "total_get_ring_days": 56,
+    "eligible_focus_day_rows": 10,
+    "selected_count": 10,
+    "selected": [
+      {
+        "ring_day_no": 4225,
+        "ring_no": 685,
+        "ring_name": "INDOOR 5",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 3937,
+        "ring_no": 686,
+        "ring_name": "WEC GRAND ARENA",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 4220,
+        "ring_no": 687,
+        "ring_name": "INDOOR 6",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 3943,
+        "ring_no": 688,
+        "ring_name": "INDOOR 1",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 3949,
+        "ring_no": 689,
+        "ring_name": "INDOOR 2",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 3955,
+        "ring_no": 690,
+        "ring_name": "INDOOR 3",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 3961,
+        "ring_no": 691,
+        "ring_name": "INDOOR 4",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 4306,
+        "ring_no": 741,
+        "ring_name": "ANNEX RING",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 4233,
+        "ring_no": 742,
+        "ring_name": "STADIUM",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      },
+      {
+        "ring_day_no": 4301,
+        "ring_no": 751,
+        "ring_name": "HUNTER 2",
+        "ISO": "2026-06-18",
+        "YYYYMMDD": "20260618"
+      }
+    ]
+  },
+  "cleaned_errors": [
+    {
+      "error": "direct get_ring_days Invalid parameter",
+      "resolution": "request requires browser session PHPSESSID from show.php plus HscomShowNo"
+    },
+    {
+      "error": "Catalyst sync-ring-days EXECUTION_TIME_EXCEEDED",
+      "resolution": "rerun of deployed repeatable sync-ring-days now passes twice with upstream_status=200 and parsed_rows=56"
+    }
+  ],
+  "remaining_blockers": []
+}

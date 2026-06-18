@@ -1,0 +1,706 @@
+{
+  "started_at": "2026-06-18T09:11:35.230Z",
+  "show_no": 14907,
+  "focus_day": "2026-06-18",
+  "status": "FAIL",
+  "stages": [
+    {
+      "name": "stage1_focus_show_debug",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "debug-show-config",
+        "show_no": 14907
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=debug-show-config&show_no=14907",
+      "started_at": "2026-06-18T09:11:49.098Z",
+      "ended_at": "2026-06-18T09:11:51.895Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "debug-show-config",
+        "show_no": "14907",
+        "focus_day": "2026-06-18"
+      }
+    },
+    {
+      "name": "stage2_sync_ring_days",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "sync-ring-days",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=sync-ring-days&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:11:51.897Z",
+      "ended_at": "2026-06-18T09:12:23.954Z",
+      "http_status": 408,
+      "ok": false,
+      "summary": {
+        "http_status": 408
+      },
+      "error": "{\"status\":\"failure\",\"data\":{\"message\":\"applogic Execution Time Exceeded\",\"error_code\":\"EXECUTION_TIME_EXCEEDED\"}}"
+    },
+    {
+      "name": "stage3_update_schedule_probe_batch",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "probe": "batch",
+        "batch_size": 20,
+        "window_minutes": 60
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_update_schedule_runner/?show_no=14907&focus_day=2026-06-18&probe=batch&batch_size=20&window_minutes=60",
+      "started_at": "2026-06-18T09:12:23.955Z",
+      "ended_at": "2026-06-18T09:12:25.058Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "selected_count": 10,
+        "eligible_not_past_focus_day": 10,
+        "total_get_ring_days": 56
+      }
+    },
+    {
+      "name": "stage3_update_schedule_4225",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "ring_day_no": 4225,
+        "batch_size": 1,
+        "window_minutes": 60
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_update_schedule_runner/?show_no=14907&focus_day=2026-06-18&ring_day_no=4225&batch_size=1&window_minutes=60",
+      "started_at": "2026-06-18T09:12:38.662Z",
+      "ended_at": "2026-06-18T09:12:59.367Z",
+      "http_status": 200,
+      "ok": false,
+      "summary": {
+        "http_status": 200,
+        "ok": false,
+        "error": "https timeout POST /update_schedule.php"
+      },
+      "error": "https timeout POST /update_schedule.php"
+    },
+    {
+      "name": "stage3_update_schedule_3937",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "ring_day_no": 3937,
+        "batch_size": 1,
+        "window_minutes": 60
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_update_schedule_runner/?show_no=14907&focus_day=2026-06-18&ring_day_no=3937&batch_size=1&window_minutes=60",
+      "started_at": "2026-06-18T09:12:59.371Z",
+      "ended_at": "2026-06-18T09:13:19.923Z",
+      "http_status": 200,
+      "ok": false,
+      "summary": {
+        "http_status": 200,
+        "ok": false,
+        "error": "https timeout POST /update_schedule.php"
+      },
+      "error": "https timeout POST /update_schedule.php"
+    },
+    {
+      "name": "stage3_update_schedule_4220",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "ring_day_no": 4220,
+        "batch_size": 1,
+        "window_minutes": 60
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_update_schedule_runner/?show_no=14907&focus_day=2026-06-18&ring_day_no=4220&batch_size=1&window_minutes=60",
+      "started_at": "2026-06-18T09:13:19.927Z",
+      "ended_at": "2026-06-18T09:13:40.468Z",
+      "http_status": 200,
+      "ok": false,
+      "summary": {
+        "http_status": 200,
+        "ok": false,
+        "error": "https timeout POST /update_schedule.php"
+      },
+      "error": "https timeout POST /update_schedule.php"
+    },
+    {
+      "name": "stage3_link_update_schedule_staging_misses",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "action": "link-update-schedule-staging-misses",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_update_schedule_runner/?action=link-update-schedule-staging-misses&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:16:27.240Z",
+      "ended_at": "2026-06-18T09:16:32.407Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "link-update-schedule-staging-misses",
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "full_lock": {
+          "rows": 98,
+          "full_lock_count": 39,
+          "pause_downstream": false
+        },
+        "focus_show_full_lock_count": {
+          "updated": 1,
+          "focus_show_record_id": "recLh1GS3VPfTe1z2"
+        }
+      }
+    },
+    {
+      "name": "stage6_class_start_times",
+      "functionName": "horseshowing_class_start_times_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_start_times_runner/?show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:16:32.408Z",
+      "ended_at": "2026-06-18T09:16:36.483Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "source": "update_schedule_staging.lock_schedule",
+        "target_catalyst": "hs_class_start_times",
+        "target_airtable": "class_start_times",
+        "source_rows": 39,
+        "source_keys": 39,
+        "verify_catalyst": {
+          "total_rows": 39,
+          "active_rows": 39,
+          "inactive_rows": 0,
+          "missing_keys": 0,
+          "extra_active_keys": 0
+        },
+        "verify_airtable": {
+          "total_rows": 39,
+          "active_rows": 39,
+          "inactive_rows": 0,
+          "missing_keys": 0,
+          "extra_active_keys": 0,
+          "missing_required_links": 0
+        }
+      }
+    },
+    {
+      "name": "stage7_class_oog_plan",
+      "functionName": "horseshowing_class_oog_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "plan": 1,
+        "limit": 50
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_oog_runner/?show_no=14907&focus_day=2026-06-18&plan=1&limit=50",
+      "started_at": "2026-06-18T09:17:00.007Z",
+      "ended_at": "2026-06-18T09:17:02.698Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "class-oog-plan",
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "target_classes_total": 39
+      }
+    },
+    {
+      "name": "stage7_class_oog_probe_active_trainers",
+      "functionName": "horseshowing_class_oog_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "probe": "active-trainers",
+        "limit": 10,
+        "offset": 0
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_oog_runner/?show_no=14907&focus_day=2026-06-18&probe=active-trainers&limit=10&offset=0",
+      "started_at": "2026-06-18T09:17:02.699Z",
+      "ended_at": "2026-06-18T09:17:08.320Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "class-oog-probe-active-trainers",
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "source_endpoint": "class_oog.php",
+        "target_classes_total": 39,
+        "selected_classes": 10,
+        "active_trainers": 1,
+        "matched_classes": 4,
+        "upstream_rows_total": 293
+      }
+    },
+    {
+      "name": "stage7_class_oog_active_trainer_write",
+      "functionName": "horseshowing_class_oog_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "class_nos": "29775,29768,29757,29752,29561,29785,29749,29792,29793,29791",
+        "limit": 20
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_oog_runner/?show_no=14907&focus_day=2026-06-18&class_nos=29775%2C29768%2C29757%2C29752%2C29561%2C29785%2C29749%2C29792%2C29793%2C29791&limit=20",
+      "started_at": "2026-06-18T09:17:21.127Z",
+      "ended_at": "2026-06-18T09:17:46.096Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "source_endpoint": "class_oog.php",
+        "target_catalyst": "hs_class_oog",
+        "target_airtable": "class_oog",
+        "rows_written": 18,
+        "target_classes_total": 10,
+        "selected_classes": 10,
+        "active_trainers": 1,
+        "catalyst_inserted": 0,
+        "catalyst_updated": 0,
+        "catalyst_deleted": 0,
+        "airtable_records": 18,
+        "airtable_deleted": 0
+      }
+    },
+    {
+      "name": "stage8_entry_go_times",
+      "functionName": "horseshowing_entry_go_times_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_entry_go_times_runner/?show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:17:54.679Z",
+      "ended_at": "2026-06-18T09:17:57.529Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "source": "update_schedule_staging.locked+class_oog.active",
+        "target_catalyst": "hs_entry_go_times",
+        "target_airtable": "entry_go_times",
+        "source_rows": 18,
+        "staging_classes": 39,
+        "class_oog_rows": 18,
+        "skipped": {
+          "missing_staging": 0,
+          "missing_class_start_times": 0,
+          "missing_class_start_time": 0,
+          "missing_entry_order": 0
+        },
+        "verify_catalyst": {
+          "total_rows": 18,
+          "active_rows": 18,
+          "missing_keys": 0,
+          "extra_keys": 0
+        },
+        "verify_airtable": {
+          "total_rows": 18,
+          "active_rows": 18,
+          "inactive_rows": 0,
+          "missing_keys": 0,
+          "extra_active_keys": 0,
+          "missing_required_links": 0
+        }
+      }
+    },
+    {
+      "name": "stage9_sync_orders_mirror",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "sync-orders",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=sync-orders&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:18:13.972Z",
+      "ended_at": "2026-06-18T09:18:15.003Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "sync-orders",
+        "skipped": true
+      }
+    },
+    {
+      "name": "stage10_sync_rings_mirror",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "sync-rings",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=sync-rings&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:18:15.004Z",
+      "ended_at": "2026-06-18T09:18:15.532Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "sync-rings",
+        "skipped": true
+      }
+    },
+    {
+      "name": "stage9_class_lane_sync_get_orders",
+      "functionName": "horseshowing_class_lane_runner",
+      "params": {
+        "action": "sync-get-orders",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_lane_runner/?action=sync-get-orders&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:18:15.533Z",
+      "ended_at": "2026-06-18T09:18:16.571Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "sync-get-orders",
+        "show_no": "14907",
+        "focus_day": "2026-06-18"
+      }
+    },
+    {
+      "name": "stage9_10_live_window_gate",
+      "ok": true,
+      "status": "OPEN_GATED",
+      "evidence": {
+        "orders": {
+          "allowed": false,
+          "reason": "outside_live_window",
+          "source": "orders",
+          "show_no": "14907",
+          "focus_day": "2026-06-18",
+          "show_start_time": "6:00:00",
+          "show_end_time": "19:00:00",
+          "start_minutes": 360,
+          "end_minutes": 1140,
+          "now": {
+            "iso_date": "2026-06-18",
+            "minutes": 318
+          }
+        },
+        "rings": {
+          "allowed": false,
+          "reason": "outside_live_window",
+          "source": "rings",
+          "show_no": "14907",
+          "focus_day": "2026-06-18",
+          "show_start_time": "6:00:00",
+          "show_end_time": "19:00:00",
+          "start_minutes": 360,
+          "end_minutes": 1140,
+          "now": {
+            "iso_date": "2026-06-18",
+            "minutes": 318
+          }
+        }
+      },
+      "note": "get_orders/get_rings skipped until focus_show.show_start_time"
+    },
+    {
+      "name": "stage11_class_alerts",
+      "functionName": "horseshowing_class_lane_runner",
+      "params": {
+        "action": "sync-class-alerts",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_lane_runner/?action=sync-class-alerts&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:18:41.766Z",
+      "ended_at": "2026-06-18T09:18:43.365Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "sync-class-alerts",
+        "show_no": "14907",
+        "focus_day": "2026-06-18"
+      }
+    },
+    {
+      "name": "stage12_results_probe",
+      "functionName": "horseshowing_results_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "limit": 25
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_results_runner/?show_no=14907&focus_day=2026-06-18&limit=25",
+      "started_at": "2026-06-18T09:18:43.366Z",
+      "ended_at": "2026-06-18T09:18:48.523Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "probe-results",
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "source": "class_oog.active_locked",
+        "target_catalyst": [
+          "hs_result_queue",
+          "hs_result_classes",
+          "hs_class_results"
+        ],
+        "target_airtable": [
+          "result_queue",
+          "result_classes",
+          "class_results"
+        ],
+        "source_rows": 18,
+        "phase": "verify_results",
+        "target_classes_total": 10
+      }
+    },
+    {
+      "name": "stage12_results_probe_offset_5",
+      "functionName": "horseshowing_results_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "offset": 5,
+        "limit": 5
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_results_runner/?show_no=14907&focus_day=2026-06-18&offset=5&limit=5",
+      "started_at": "2026-06-18T09:18:57.687Z",
+      "ended_at": "2026-06-18T09:18:58.823Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "probe-results",
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "source_rows": 18,
+        "phase": "check_existing_result_classes",
+        "target_classes_total": 5
+      }
+    },
+    {
+      "name": "stage13_wec_mobile_live_api",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "wec-mobile-live",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:19:21.643Z",
+      "ended_at": "2026-06-18T09:19:24.529Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "wec-mobile-live",
+        "show_no": "14907"
+      }
+    },
+    {
+      "name": "stage17_wec_rich_live_api",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "wec-rich-live",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-rich-live&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:19:24.530Z",
+      "ended_at": "2026-06-18T09:19:27.314Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "wec-rich-live",
+        "show_no": "14907"
+      }
+    },
+    {
+      "name": "stage15_wec_print_live_api",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "wec-print-live",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-live&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:19:27.316Z",
+      "ended_at": "2026-06-18T09:19:30.134Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200
+      }
+    },
+    {
+      "name": "stage15_wec_print_layout_api",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "wec-print-layout",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "url": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-print-layout&show_no=14907&focus_day=2026-06-18",
+      "started_at": "2026-06-18T09:19:30.135Z",
+      "ended_at": "2026-06-18T09:19:32.841Z",
+      "http_status": 200,
+      "ok": true,
+      "summary": {
+        "http_status": 200,
+        "ok": true,
+        "action": "wec-print-layout",
+        "show_no": "14907",
+        "focus_day": "2026-06-18",
+        "source": "catalyst.wec-print-live"
+      }
+    },
+    {
+      "name": "stage13_live_page_wec_mobile_http_only",
+      "ok": true,
+      "evidence": {
+        "url": "https://ringstatus.com/wec-mobile",
+        "status": 200,
+        "ok": true,
+        "contentType": "text/html; charset=utf-8",
+        "length": 5134,
+        "hasShowNoRequired": false,
+        "hasCatalyst": true,
+        "snippet": "<!DOCTYPE html><!-- Last Published: Tue Jun 16 2026 03:10:36 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"ringstatus.com\" data-wf-page=\"6a29e359e0a61d8a176ac756\" data-wf-site=\"6982268b7543ac3c80151266\" lang=\"en\"><head><meta charset=\"utf-8\"/><link href=\"https://cdn.prod.website-files.com\" rel=\"preconnect\" crossorigin=\"anonymous\"/><title>wec</title><meta content=\"wec\" property=\"og:title\"/><meta content=\"wec\" name=\"twitter:title\"/><meta content=\"width=device-width, initial-scale=1"
+      },
+      "note": "HTTP only; browser render blocked by missing Playwright browser binary"
+    },
+    {
+      "name": "stage15_live_page_wec_print_http_only",
+      "ok": true,
+      "evidence": {
+        "url": "https://ringstatus.com/wec-print",
+        "status": 200,
+        "ok": true,
+        "contentType": "text/html; charset=utf-8",
+        "length": 5150,
+        "hasShowNoRequired": false,
+        "hasCatalyst": true,
+        "snippet": "<!DOCTYPE html><!-- Last Published: Tue Jun 16 2026 03:10:36 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"ringstatus.com\" data-wf-page=\"6a29e614de1d64c04138d323\" data-wf-site=\"6982268b7543ac3c80151266\" lang=\"en\"><head><meta charset=\"utf-8\"/><link href=\"https://cdn.prod.website-files.com\" rel=\"preconnect\" crossorigin=\"anonymous\"/><title>wec-print</title><meta content=\"wec-print\" property=\"og:title\"/><meta content=\"wec-print\" name=\"twitter:title\"/><meta content=\"width=device-widt"
+      },
+      "note": "HTTP only; browser render blocked by missing Playwright browser binary"
+    }
+  ],
+  "blockers": [
+    {
+      "stage": "stage2_sync_ring_days",
+      "functionName": "horseshowing_sync",
+      "params": {
+        "action": "sync-ring-days",
+        "show_no": 14907,
+        "focus_day": "2026-06-18"
+      },
+      "error": "{\"status\":\"failure\",\"data\":{\"message\":\"applogic Execution Time Exceeded\",\"error_code\":\"EXECUTION_TIME_EXCEEDED\"}}",
+      "http_status": 408
+    },
+    {
+      "stage": "stage3_update_schedule_4225",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "ring_day_no": 4225,
+        "batch_size": 1,
+        "window_minutes": 60
+      },
+      "error": "https timeout POST /update_schedule.php",
+      "http_status": 200
+    },
+    {
+      "stage": "stage3_update_schedule_3937",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "ring_day_no": 3937,
+        "batch_size": 1,
+        "window_minutes": 60
+      },
+      "error": "https timeout POST /update_schedule.php",
+      "http_status": 200
+    },
+    {
+      "stage": "stage3_update_schedule_4220",
+      "functionName": "horseshowing_update_schedule_runner",
+      "params": {
+        "show_no": 14907,
+        "focus_day": "2026-06-18",
+        "ring_day_no": 4220,
+        "batch_size": 1,
+        "window_minutes": 60
+      },
+      "error": "https timeout POST /update_schedule.php",
+      "http_status": 200
+    },
+    {
+      "stage": "browser_render_verification",
+      "error": "Playwright package is present but Chromium executable is not installed; no exposed in-app browser MCP was available this turn",
+      "evidence": "browserType.launch: Executable does not exist at C:/Users/gombc/AppData/Local/ms-playwright/chromium_headless_shell-1200/..."
+    }
+  ],
+  "completed_at": "2026-06-18T09:20:43.739Z",
+  "diagnostics": [
+    {
+      "name": "direct_upstream_update_schedule_probe",
+      "show_no": 14907,
+      "ring_day_no": 4225,
+      "result": {
+        "ok": true,
+        "status": 200,
+        "contentType": "text/html; charset=utf-8",
+        "length": 8089,
+        "preview": "<div id=\"accordion\">\n<h3 id=\"61009\" \n    data-show=\"14907\"\n    data-class=\"29760\" \n    data-time=\"7:30 am\"\n    data-n_entries=\"11\"\n    data-name=\"600) $100 .65m Jumper Open IV.1\"\n    data-re_type=\"1\"\n"
+      },
+      "conclusion": "Horseshowing upstream responds from this environment; deployed runner timeout is not proven as upstream outage."
+    },
+    {
+      "name": "catalyst_mcp_list_functions",
+      "result": {
+        "ok": false,
+        "error": "Catalyst MCP List_All_Functions returned INTERNAL_SERVER_ERROR for project 5614000000393031"
+      },
+      "conclusion": "MCP function metadata listing is unavailable; direct deployed URLs were used for execution evidence."
+    }
+  ]
+}

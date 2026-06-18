@@ -42,7 +42,8 @@ const HTTP_TIMEOUT_MS = Number(process.env.HTTP_TIMEOUT_MS || "20000");
 const LOG_DIR = process.env.RUNNER_LOG_DIR || "C:\\actions-runner\\ringstatus";
 const LOG_PATH = process.env.ORCH_LOG_PATH || path.join(LOG_DIR, "heartbeat-slot-orchestrator.log");
 const LOCK_PATH = process.env.ORCH_LOCK_PATH || path.join(LOG_DIR, "heartbeat-slot-orchestrator.lock");
-const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "30") || 30);
+const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "8") || 8);
+const POWERSHELL_STEP_TIMEOUT_MS = Math.max(60000, Number(process.env.ORCH_POWERSHELL_STEP_TIMEOUT_MS || "180000") || 180000);
 const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
 const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DETAIL || "0") === "1";
 const ENABLE_WEC_HEARTBEAT = String(process.env.ORCH_WEC_ENABLED || "1") === "1";
@@ -446,6 +447,7 @@ function runPowerShellScript(scriptName, extraEnv = {}) {
     env: { ...process.env, ...extraEnv },
     encoding: "utf8",
     windowsHide: true,
+    timeout: POWERSHELL_STEP_TIMEOUT_MS,
   });
 
   const exitCode = Number(result.status ?? (result.error ? -1 : 0));
@@ -630,7 +632,7 @@ async function runOrchestrator() {
         && intervalDue("wec-focus-workflow", WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES)
       ) {
         const result = runPowerShellScript("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
-          WEC_SHOW_NO: process.env.WEC_SHOW_NO || "14906",
+          WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
           WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
         });
         if (result.ok) markIntervalRun("wec-focus-workflow");
@@ -824,7 +826,7 @@ async function runOrchestrator() {
 
     if (wecHeartbeatDue) {
       const wecHeartbeatResult = await runDuePowerShell("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
-        WEC_SHOW_NO: process.env.WEC_SHOW_NO || "14906",
+        WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
         WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
       });
       if (wecHeartbeatResult.ok) {

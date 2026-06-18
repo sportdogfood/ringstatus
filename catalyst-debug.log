@@ -1,0 +1,36 @@
+[debug] [2026-06-18T03:21:19.335Z] : 
+[debug] [2026-06-18T03:21:19.338Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T03:21:19.338Z] : Command:      C:\Program Files\nodejs\node.exe C:\Users\gombc\AppData\Roaming\npm\node_modules\zcatalyst-cli\lib\bin\catalyst.js --version
+[debug] [2026-06-18T03:21:19.338Z] : CLI Version:  1.26.1
+[debug] [2026-06-18T03:21:19.338Z] : Platform:     win32
+[debug] [2026-06-18T03:21:19.339Z] : Node Version: v22.22.2
+[debug] [2026-06-18T03:21:19.339Z] : Time:         Wed Jun 17 2026 23:21:19 GMT-0400 (Eastern Daylight Time)
+[debug] [2026-06-18T03:21:19.339Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T03:21:19.339Z] : 
+[debug] [2026-06-18T08:54:28.944Z] : 
+[debug] [2026-06-18T08:54:28.945Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T08:54:28.945Z] : Command:      C:\Program Files\nodejs\node.exe C:\Users\gombc\AppData\Roaming\npm\node_modules\zcatalyst-cli\lib\bin\catalyst.js --version
+[debug] [2026-06-18T08:54:28.946Z] : CLI Version:  1.26.1
+[debug] [2026-06-18T08:54:28.946Z] : Platform:     win32
+[debug] [2026-06-18T08:54:28.946Z] : Node Version: v22.22.2
+[debug] [2026-06-18T08:54:28.946Z] : Time:         Thu Jun 18 2026 04:54:28 GMT-0400 (Eastern Daylight Time)
+[debug] [2026-06-18T08:54:28.946Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T08:54:28.946Z] : 
+[debug] [2026-06-18T08:55:07.517Z] : 
+[debug] [2026-06-18T08:55:07.519Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T08:55:07.520Z] : Command:      C:\Program Files\nodejs\node.exe C:\Users\gombc\AppData\Roaming\npm\node_modules\zcatalyst-cli\lib\bin\catalyst.js -v
+[debug] [2026-06-18T08:55:07.520Z] : CLI Version:  1.26.1
+[debug] [2026-06-18T08:55:07.520Z] : Platform:     win32
+[debug] [2026-06-18T08:55:07.520Z] : Node Version: v22.22.2
+[debug] [2026-06-18T08:55:07.520Z] : Time:         Thu Jun 18 2026 04:55:07 GMT-0400 (Eastern Daylight Time)
+[debug] [2026-06-18T08:55:07.520Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T08:55:07.520Z] : 
+[debug] [2026-06-18T08:55:28.603Z] : 
+[debug] [2026-06-18T08:55:28.605Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T08:55:28.605Z] : Command:      C:\Program Files\nodejs\node.exe C:\Users\gombc\AppData\Roaming\npm\node_modules\zcatalyst-cli\lib\bin\catalyst.js --version
+[debug] [2026-06-18T08:55:28.606Z] : CLI Version:  1.26.1
+[debug] [2026-06-18T08:55:28.606Z] : Platform:     win32
+[debug] [2026-06-18T08:55:28.606Z] : Node Version: v22.22.2
+[debug] [2026-06-18T08:55:28.606Z] : Time:         Thu Jun 18 2026 04:55:28 GMT-0400 (Eastern Daylight Time)
+[debug] [2026-06-18T08:55:28.606Z] : ----------------------------------------------------------------------
+[debug] [2026-06-18T08:55:28.606Z] : 
