@@ -1,0 +1,175 @@
+{
+  "ok": true,
+  "show_no": "14907",
+  "focus_day": "2026-06-18",
+  "checked_at": "2026-06-18T12:32:09.028Z",
+  "warnings": [],
+  "failures": [],
+  "checks": [
+    {
+      "lane": "Helpers",
+      "name": "exactly_one_active_show",
+      "status": "PASS",
+      "count": 1,
+      "show_nos": [
+        14907
+      ]
+    },
+    {
+      "lane": "Helpers",
+      "name": "exactly_one_active_focus_show",
+      "status": "PASS",
+      "count": 1,
+      "show_nos": [
+        14907
+      ]
+    },
+    {
+      "lane": "Helpers",
+      "name": "active_show_matches_focus_show",
+      "status": "PASS",
+      "active_show_no": "14907",
+      "focus_show_no": "14907",
+      "focus_day": "2026-06-18"
+    },
+    {
+      "lane": "Helpers",
+      "name": "no_duplicate_active_show_keys",
+      "status": "PASS",
+      "duplicates": []
+    },
+    {
+      "lane": "Core",
+      "name": "update_schedule_present",
+      "status": "PASS",
+      "rows": 98
+    },
+    {
+      "lane": "Core",
+      "name": "update_schedule_staging_present",
+      "status": "PASS",
+      "rows": 98
+    },
+    {
+      "lane": "Core",
+      "name": "update_schedule_staging_locked_or_paused",
+      "status": "PASS",
+      "locked_rows": 39,
+      "note": "Locked staging rows exist."
+    },
+    {
+      "lane": "Core",
+      "name": "class_oog_not_required_for_update_schedule_stage",
+      "status": "PASS",
+      "rows": 18,
+      "locked_rows": 39,
+      "locked_class_rows": 39,
+      "note": "class_oog is the next enrichment stage; update_schedule_staging helper-link audit must not fail on class_oog absence."
+    },
+    {
+      "lane": "Core",
+      "name": "counts_available_optional",
+      "status": "PASS",
+      "rows": 0
+    },
+    {
+      "lane": "Alerts",
+      "name": "class_start_times_present_when_staging_locked",
+      "status": "PASS",
+      "rows": 39,
+      "locked_rows": 39
+    },
+    {
+      "lane": "Alerts",
+      "name": "entry_go_times_expected_only_when_active_entries_exist",
+      "status": "PASS",
+      "rows": 18,
+      "note": "Zero can be valid for schooling/prep days with no active trainer entry rollups."
+    },
+    {
+      "lane": "Core",
+      "name": "catalyst_schedule_present",
+      "status": "PASS",
+      "rows": 39
+    },
+    {
+      "lane": "Core",
+      "name": "catalyst_schedule_matches_renderable_locked_staging",
+      "status": "PASS",
+      "schedule_rows": 39,
+      "renderable_locked_rows": 39,
+      "locked_class_rows": 39
+    },
+    {
+      "lane": "Core",
+      "name": "update_schedule_staging_locked_links_complete",
+      "status": "PASS",
+      "rows": 39,
+      "missing": {
+        "shows": 0,
+        "ring_days": 0,
+        "rings": 0,
+        "show_days": 0,
+        "events": 0,
+        "classes": 0
+      }
+    },
+    {
+      "lane": "Core",
+      "name": "class_oog_links_complete",
+      "status": "PASS",
+      "missing": {
+        "shows": 0,
+        "focus_show": 0,
+        "classes": 0,
+        "rings": 0,
+        "ring_names": 0,
+        "ring_days": 0,
+        "entries": 0
+      }
+    },
+    {
+      "lane": "Core",
+      "name": "class_oog_scoped_to_locked_staging",
+      "status": "PASS",
+      "rows": 18,
+      "outside_locked_staging": 0,
+      "examples": []
+    },
+    {
+      "lane": "Alerts",
+      "name": "class_start_times_links_complete",
+      "status": "PASS",
+      "missing": {
+        "shows": 0,
+        "focus_show": 0,
+        "classes": 0,
+        "rings": 0,
+        "ring_days": 0
+      }
+    },
+    {
+      "lane": "Alerts",
+      "name": "entry_go_times_links_complete",
+      "status": "PASS",
+      "missing": {
+        "shows": 0,
+        "focus_show": 0,
+        "classes": 0,
+        "rings": 0,
+        "ring_days": 0,
+        "entries": 0,
+        "class_start_times": 0,
+        "class_oog": 0
+      }
+    },
+    {
+      "lane": "Live",
+      "name": "live_tables_scoped_or_not_started",
+      "status": "PASS",
+      "get_orders_rows": 10,
+      "get_rings_rows": 10,
+      "note": "Live scoped rows exist."
+    }
+  ]
+}
