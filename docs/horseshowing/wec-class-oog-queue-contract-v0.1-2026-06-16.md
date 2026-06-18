@@ -71,6 +71,37 @@ Default heartbeat behavior:
 
 This removes the stale dependency where active-trainer class selection came from existing Airtable `class_oog` mirror rows.
 
+## Unlocked-Class Safety Audit
+
+Before removing `focus_show.is_pause`, run:
+
+`docs/horseshowing/run-wec-catalyst-workflow.ps1 -RunClassOogUnlockedSafetyOnly`
+
+This probes every current focus-day `update_schedule_staging` row that is:
+
+- `class_no > 0`
+- not present in `lock_schedule`
+
+It uses the same local `class_oog.php` parser and the same `trainers.active = checked` match.
+
+It does not write customer-facing `class_oog` rows.
+
+If `update_schedule_staging.2nd_trip` is checked, the class is treated as an approved omission:
+
+- it stays out of `lock_schedule`
+- it stays out of `class_start_times`, mobile, and print
+- active-trainer entries found there are logged as approved `2nd_trip`, not as blockers
+
+It writes:
+
+- `wec-logs.check_name = core_class_oog_safety`
+- `wec-alerts.alert_type = class_oog_unlocked_active_entries` when active-trainer entries are found in omitted classes without `2nd_trip`
+- `wec-alerts.alert_type = timed_unlocked_schedule_classes` when unlocked classes now have a populated `time_text` and are not marked `2nd_trip`
+
+The pause should not be removed if this audit finds active-trainer entries in unlocked classes unless the operator explicitly accepts the omission by checking `2nd_trip`.
+
+The same safety audit also runs in the normal cadence before `class_start_times`, `class_oog`, `entry_go_times`, live enrichment, alerts, and results. If active-trainer entries are found in unlocked classes, downstream class/entry stages are blocked for that run.
+
 ## Queue Planner
 
 Endpoint:

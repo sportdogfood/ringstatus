@@ -667,14 +667,6 @@ async function runOrchestrator() {
         cadence_seconds: cadenceSeconds,
         wec_ran: wecRan,
       });
-      if (ORCH_ALERT_NO_ACTIVE_FEEDS) {
-        await recordOrchestratorAlert({
-          errorType: "heartbeat_no_active_feeds",
-          heartbeat,
-          resolved: false,
-          message: `Heartbeat has no active show scope; downstream lanes skipped. heartbeat_id=${heartbeat?.id || ""} mode=${mode} cadence_seconds=${cadenceSeconds}`,
-        });
-      }
       return;
     }
 

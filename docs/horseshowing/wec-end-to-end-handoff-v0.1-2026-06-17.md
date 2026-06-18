@@ -182,6 +182,7 @@ show_end
 show_start_time
 show_end_time
 active
+is_pause
 full_lock_count
 ```
 
@@ -201,9 +202,30 @@ system_day never overrides focus_day.
 Pause condition:
 
 ```text
+focus_show.is_pause = checked
 no active focus_show
 multiple active focus_show records
 focus_show.active does not match shows.active
+```
+
+Manual pause gate:
+
+```text
+focus_show.is_pause is the operator pause while focus_day and update_schedule_staging.lock are being adjusted.
+When checked, downstream class/entry/live/result writes must no-op and log status=skipped.
+Allowed while checked: get_ring_days, update_schedule, update_schedule_staging population/linking.
+Blocked while checked: class_start_times, class_oog, entry_go_times, get_orders/get_rings enrichment, alerts, results.
+Front-facing pages should continue to use the last clean published payload until the pause is cleared and the gate passes.
+```
+
+Deployed pause-aware functions:
+
+```text
+horseshowing_class_start_times_runner
+horseshowing_class_oog_runner
+horseshowing_entry_go_times_runner
+horseshowing_class_lane_runner
+horseshowing_results_runner
 ```
 
 ## Stage 2: get_ring_days
@@ -1295,4 +1317,3 @@ Current next-stage priorities:
 10. Verify rich endpoint.
 11. Verify wec-mobile, wec-mobile-pro, wec-print, and SMS index consumers.
 ```
-
