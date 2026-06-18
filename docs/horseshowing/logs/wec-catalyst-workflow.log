@@ -9048,3 +9048,123 @@
 2026-06-18T10:32:06 entry-go-times source=18 active=18 focus=2026-06-18
 2026-06-18T10:32:09 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":3,"entry_alerts":0,"alerts_upserted":3,"alerts_resolved":2}
 2026-06-18T10:32:16 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T14-32-16-629Z.json" }
+2026-06-18T10:46:19 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T10:46:29 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T10:46:48 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T10:46:53 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T10:47:06 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T10:47:10 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T10:47:12 class-lane sync-get-orders focus=2026-06-18 result={"orders":20,"matches":12,"airtable_updated":12,"catalyst_updated":12}
+2026-06-18T10:47:16 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T10:47:19 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":3,"entry_alerts":0,"alerts_upserted":3,"alerts_resolved":3}
+2026-06-18T10:47:27 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T14-47-27-764Z.json" }
+2026-06-18T11:01:30 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T11:02:55 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T11:03:11 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T11:03:16 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T11:03:32 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T11:03:35 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T11:03:37 class-lane sync-get-orders focus=2026-06-18 result={"orders":21,"matches":12,"airtable_updated":12,"catalyst_updated":12}
+2026-06-18T11:03:42 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T11:03:44 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":4,"entry_alerts":2,"alerts_upserted":6,"alerts_resolved":3}
+2026-06-18T11:03:55 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T15-03-55-682Z.json" }
+2026-06-18T11:18:41 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T11:18:51 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T11:19:01 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T11:19:06 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T11:19:12 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T11:19:15 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T11:19:17 class-lane sync-get-orders focus=2026-06-18 result={"orders":22,"matches":13,"airtable_updated":13,"catalyst_updated":13}
+2026-06-18T11:19:22 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T11:19:24 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":1,"entry_alerts":3,"alerts_upserted":4,"alerts_resolved":6}
+2026-06-18T11:19:28 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T15-19-28-765Z.json" }
+2026-06-18T11:33:22 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T11:33:31 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T11:33:44 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T11:33:49 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T11:33:56 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T11:33:59 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T11:34:01 class-lane sync-get-orders focus=2026-06-18 result={"orders":24,"matches":13,"airtable_updated":13,"catalyst_updated":13}
+2026-06-18T11:34:05 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T11:34:08 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":2,"entry_alerts":1,"alerts_upserted":3,"alerts_resolved":4}
+2026-06-18T11:34:12 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T15-34-12-156Z.json" }
+2026-06-18T11:48:18 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T11:48:28 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T11:48:38 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T11:48:42 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T11:48:48 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T11:48:51 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T11:48:53 class-lane sync-get-orders focus=2026-06-18 result={"orders":26,"matches":15,"airtable_updated":15,"catalyst_updated":15}
+2026-06-18T11:48:58 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T11:49:00 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":5,"alerts_upserted":5,"alerts_resolved":3}
+2026-06-18T11:49:04 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T15-49-04-780Z.json" }
+2026-06-18T12:03:20 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T12:04:09 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T12:04:18 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T12:04:22 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T12:04:29 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T12:04:32 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T12:04:35 class-lane sync-get-orders focus=2026-06-18 result={"orders":30,"matches":19,"airtable_updated":19,"catalyst_updated":19}
+2026-06-18T12:04:40 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T12:04:43 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":1,"entry_alerts":2,"alerts_upserted":3,"alerts_resolved":5}
+2026-06-18T12:04:47 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T16-04-47-429Z.json" }
+2026-06-18T12:18:23 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T12:19:11 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T12:19:22 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T12:19:29 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T12:19:49 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T12:19:53 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T12:19:55 class-lane sync-get-orders focus=2026-06-18 result={"orders":32,"matches":19,"airtable_updated":19,"catalyst_updated":19}
+2026-06-18T12:19:59 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T12:20:01 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":2,"entry_alerts":0,"alerts_upserted":2,"alerts_resolved":3}
+2026-06-18T12:20:06 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T16-20-06-828Z.json" }
+2026-06-18T12:33:32 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T12:33:42 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T12:33:52 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T12:33:56 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T12:34:04 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T12:34:07 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T12:34:09 class-lane sync-get-orders focus=2026-06-18 result={"orders":32,"matches":19,"airtable_updated":19,"catalyst_updated":19}
+2026-06-18T12:34:13 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T12:34:16 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":1,"entry_alerts":0,"alerts_upserted":1,"alerts_resolved":2}
+2026-06-18T12:34:20 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T16-34-20-563Z.json" }
+2026-06-18T12:48:20 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T12:48:30 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T12:48:40 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T12:48:45 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T12:48:55 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T12:48:58 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T12:49:00 class-lane sync-get-orders focus=2026-06-18 result={"orders":32,"matches":19,"airtable_updated":19,"catalyst_updated":19}
+2026-06-18T12:49:04 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T12:49:07 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":5,"entry_alerts":0,"alerts_upserted":5,"alerts_resolved":1}
+2026-06-18T12:49:11 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T16-49-11-582Z.json" }
+2026-06-18T13:03:18 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T13:03:31 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T13:03:42 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T13:03:46 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T13:03:57 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T13:04:00 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T13:04:02 class-lane sync-get-orders focus=2026-06-18 result={"orders":33,"matches":20,"airtable_updated":20,"catalyst_updated":20}
+2026-06-18T13:04:06 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T13:04:08 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":1,"entry_alerts":0,"alerts_upserted":1,"alerts_resolved":5}
+2026-06-18T13:04:13 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T17-04-12-989Z.json" }
+2026-06-18T13:18:23 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T13:18:38 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T13:18:50 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T13:18:55 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T13:19:10 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T13:19:13 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T13:19:16 class-lane sync-get-orders focus=2026-06-18 result={"orders":34,"matches":21,"airtable_updated":21,"catalyst_updated":21}
+2026-06-18T13:19:20 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T13:19:22 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":3,"entry_alerts":1,"alerts_upserted":4,"alerts_resolved":1}
+2026-06-18T13:19:28 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T17-19-27-951Z.json" }
+2026-06-18T13:33:19 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T13:34:11 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T13:34:20 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T13:34:25 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T13:34:36 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T13:34:38 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T13:34:41 class-lane sync-get-orders focus=2026-06-18 result={"orders":36,"matches":23,"airtable_updated":23,"catalyst_updated":23}
+2026-06-18T13:34:45 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T13:34:48 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":2,"entry_alerts":1,"alerts_upserted":3,"alerts_resolved":4}
+2026-06-18T13:34:52 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T17-34-52-355Z.json" }

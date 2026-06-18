@@ -1,0 +1,981 @@
+<body>
+  <nav class="rs-nav" id="data-nav-root" aria-label="Main navigation">
+    <div class="rs-nav-inner">
+      <a class="rs-logo" href="#" aria-label="RingStatus home">RS</a>
+
+      <div class="rs-nav-links">
+        <button class="rs-nav-button" id="data-mega-toggle" type="button" aria-expanded="false" aria-controls="data-mega-menu">Apps</button>
+        <button class="rs-nav-button" id="data-drawer-toggle" type="button" aria-expanded="false" aria-controls="data-drawer-menu">Tools</button>
+        <a class="rs-nav-link" href="#">Pricing</a>
+        <a class="rs-nav-link" href="#">Contact</a>
+      </div>
+    </div>
+
+    <div class="rs-mega" id="data-mega-menu" aria-hidden="true">
+      <div class="rs-mega-inner">
+        <div class="rs-mega-intro">
+          <p class="rs-content-kicker">Mega Dropdown</p>
+          <h2 class="rs-mega-title">Full Width Apps Menu</h2>
+          <p class="rs-mega-text">This dropdown fills the full viewport width while the inner content stays capped to the same page container.</p>
+        </div>
+
+        <div class="rs-mega-col">
+          <p class="rs-content-kicker">Core</p>
+          <a href="#">Show Schedule App</a>
+          <a href="#">SMS Alerts</a>
+          <a href="#">Two-Way Realtime</a>
+        </div>
+
+        <div class="rs-mega-col">
+          <p class="rs-content-kicker">Boards</p>
+          <a href="#">Feed Board</a>
+          <a href="#">Show Board</a>
+          <a href="#">Turnout Board</a>
+        </div>
+
+        <div class="rs-mega-col">
+          <p class="rs-content-kicker">Support</p>
+          <a href="#">Tack App</a>
+          <a href="#">Reminders App</a>
+          <a href="#">Shipping App</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="rs-nav-scrim" id="data-nav-scrim" aria-hidden="true"></div>
+
+  <aside class="rs-drawer" id="data-drawer-menu" aria-hidden="true" aria-label="Tools drawer">
+    <div class="rs-drawer-inner">
+      <div class="rs-drawer-head">
+        <div>
+          <p class="rs-content-kicker">Right Drawer</p>
+          <h2 class="rs-drawer-title">Tools Menu</h2>
+          <p class="rs-drawer-text">This opens from the right and locks the viewport. There is no separate mobile version.</p>
+        </div>
+        <button class="rs-drawer-close" id="data-drawer-close" type="button" aria-label="Close tools drawer">×</button>
+      </div>
+
+      <div class="rs-drawer-list">
+        <a href="#">RingWaze</a>
+        <a href="#">BarnTools</a>
+        <a href="#">Packing Lists</a>
+        <a href="#">Reminders</a>
+        <a href="#">Account Dashboard</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="rs-main">
+    <div class="rs-group-label">Group 1 · Split sections</div>
+    <section class="rs-section is-hero">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Hero Section</p>
+                <h1>Built to Scale Cleanly</h1>
+                <p>A full-width section with one smart padding layer, a centered max-width container, and content that stops stretching before it becomes unreadable.</p>
+              </div>
+
+              <div class="rs-visual">visual / media area</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-first">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">First Section</p>
+                <h2>Padding Has One Owner</h2>
+                <p>The responsive horizontal spacing lives on rs-section-padding. The other wrappers create structure, alignment, and max-width control without adding extra side spacing.</p>
+              </div>
+
+              <div class="rs-visual">visual / media area</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-last">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Last Section</p>
+                <h2>Same Shell Every Time</h2>
+                <p>The section can change content, layout direction, or media, but the underlying wrapper pattern stays consistent.</p>
+                <p class="rs-small">This keeps Webflow sections easier to reason about: section for full width, container for max width, padding for spacing, flex for layout, content for readable text.</p>
+              </div>
+
+              <div class="rs-visual">visual / media area</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rs-group-label">Group 2 · No-split sections</div>
+
+    <section class="rs-section is-nosplit">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">No Split Section</p>
+                <h2>Single Content Block</h2>
+                <p>This section uses the same wrapper skeleton, but there is no second visual column. The flex wrapper still exists, but it only needs to place one content block.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <div class="rs-group-label">Group 6 · Wild-card blog pages</div>
+
+    <section class="rs-section is-wildcard is-blog-index">
+      <div class="rs-wildcard-sticky">
+        <div class="rs-section-container">
+          <div class="rs-section-padding">
+            <div class="rs-content-container">
+              <div class="rs-content-flex">
+                <div class="rs-content">
+                  <p class="rs-content-kicker">Blogs Page</p>
+                  <h2>Field Notes From The Show</h2>
+                  <p>A blog listing page can use the sticky area for the archive headline, filters, and editorial positioning while the post cards scroll on the left.</p>
+                  <p class="rs-small">This keeps the page feeling like a content hub instead of a basic list of posts.</p>
+
+                  <div class="rs-blog-tag-row">
+                    <span class="rs-blog-tag">show prep</span>
+                    <span class="rs-blog-tag">ring timing</span>
+                    <span class="rs-blog-tag">barn tools</span>
+                    <span class="rs-blog-tag">mobile workflow</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-wildcard-scroll-layer" aria-label="Scrolling blog cards">
+        <article class="rs-wildcard-card">
+          <div>
+            <div class="rs-blog-card-meta"><span>Guide</span><span>6 min read</span></div>
+            <h3>When Ring Time Starts To Drift</h3>
+            <p>How a simple live-status layer can reduce barn confusion when the posted schedule no longer matches the day.</p>
+          </div>
+          <div class="rs-blog-card-link">Read note</div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <div class="rs-blog-card-meta"><span>Workflow</span><span>4 min read</span></div>
+            <h3>Why Barn Boards Need To Move</h3>
+            <p>Feed, turnout, packing, schooling, and ring updates all change once the show day starts moving.</p>
+          </div>
+          <div class="rs-blog-card-link">Read note</div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <div class="rs-blog-card-meta"><span>Product</span><span>5 min read</span></div>
+            <h3>Building For The Rail</h3>
+            <p>The best mobile screens answer the immediate question before asking the user to think through a database.</p>
+          </div>
+          <div class="rs-blog-card-link">Read note</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="rs-section is-wildcard is-blog-post">
+      <div class="rs-wildcard-sticky">
+        <div class="rs-section-container">
+          <div class="rs-section-padding">
+            <div class="rs-content-container">
+              <div class="rs-content-flex">
+                <div class="rs-content">
+                  <p class="rs-content-kicker">Blog Content Page</p>
+                  <h2>What Riders Actually Need From A Show App</h2>
+                  <p>A content page can keep the article title, summary, and reading context pinned while article sections scroll beside it.</p>
+                  <p class="rs-small">This style works well for long-form pages where the headline should stay present while the reader moves through supporting sections.</p>
+
+                  <div class="rs-blog-post-meta">
+                    <span>Field Note</span>
+                    <span>Updated May 2026</span>
+                    <span>7 min read</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-wildcard-scroll-layer" aria-label="Scrolling blog content blocks">
+        <article class="rs-wildcard-card rs-blog-article-block">
+          <div>
+            <p class="rs-content-kicker">Section 01</p>
+            <h3>The Day Changes</h3>
+            <p>Show schedules are useful until they are not. Once the ring starts running ahead, behind, or sideways, riders need a cleaner answer than a static class list.</p>
+          </div>
+        </article>
+
+        <article class="rs-wildcard-card rs-blog-article-block">
+          <div>
+            <p class="rs-content-kicker">Pull Quote</p>
+            <div class="rs-blog-quote">The job is not to show every detail. The job is to show the next useful one.</div>
+          </div>
+        </article>
+
+        <article class="rs-wildcard-card rs-blog-article-block">
+          <div>
+            <p class="rs-content-kicker">Section 02</p>
+            <h3>The Screen Has To Be Fast</h3>
+            <p>At the ring, users are not browsing. They are checking, moving, texting, grooming, warming up, or trying not to miss a trip.</p>
+          </div>
+        </article>
+
+        <article class="rs-wildcard-card rs-blog-article-block">
+          <div>
+            <p class="rs-content-kicker">Section 03</p>
+            <h3>Context Beats Clutter</h3>
+            <p>The same data can serve riders, barns, grooms, and parents differently. The page structure should leave room for that context.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="rs-section is-nosplit is-centered">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Centered No Split</p>
+                <h2>Same Structure, Different Alignment</h2>
+                <p>The content can center without changing the section shell. Only the modifier class changes the content alignment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-nosplit is-wide">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Wide No Split</p>
+                <h2>Full Interior Content Area</h2>
+                <p>This version allows the content block to use the full available interior width while the paragraph still keeps a readable line length.</p>
+                <p class="rs-small">Useful for section intros, page summaries, stats rows, FAQ blocks, cards, or content that does not need an image/media split.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rs-group-label">Group 3 · Full-screen image overlay sections</div>
+
+    <section class="rs-section is-overlay is-overlay-center">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Overlay Center</p>
+                <h2>Centered Over Image</h2>
+                <p>The full-screen image fills the section. The content remains inside the same skeleton and centers over the media.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-overlay is-overlay-left">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Overlay Left</p>
+                <h2>Left Over Image</h2>
+                <p>The content aligns left while the image still covers the full screen. This works well for hero-style landing sections.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-overlay is-overlay-bottom-left">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Overlay Bottom Left</p>
+                <h2>Bottom Left Over Image</h2>
+                <p>The content anchors to the bottom-left of the image while preserving the same container, padding, and content rules.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="rs-group-label">Group 4 · Stacked content sections</div>
+
+    <section class="rs-section is-stack is-form-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Stacked Form Section</p>
+                <h2>Header Above Form</h2>
+                <p>This uses the no-split pattern: a header block first, then a full-width content container below it.</p>
+              </div>
+
+              <div class="rs-stack-panel">
+                <div class="rs-form-grid">
+                  <div class="rs-field">Name field</div>
+                  <div class="rs-field">Email field</div>
+                  <div class="rs-field is-wide">Message field</div>
+                  <div class="rs-button">Submit button</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-card-grid-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Stacked Grid Section</p>
+                <h2>Header Above Card Grid</h2>
+                <p>The section keeps one smart padding layer while the interior panel controls the card grid.</p>
+              </div>
+
+              <div class="rs-stack-panel">
+                <div class="rs-card-grid">
+                  <article class="rs-card">
+                    <div>
+                      <h3 class="rs-card-title">Card One</h3>
+                      <p class="rs-card-text">Grid item content.</p>
+                    </div>
+                  </article>
+                  <article class="rs-card">
+                    <div>
+                      <h3 class="rs-card-title">Card Two</h3>
+                      <p class="rs-card-text">Grid item content.</p>
+                    </div>
+                  </article>
+                  <article class="rs-card">
+                    <div>
+                      <h3 class="rs-card-title">Card Three</h3>
+                      <p class="rs-card-text">Grid item content.</p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-carousel-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Stacked Carousel Section</p>
+                <h2>Header Above Carousel</h2>
+                <p>The carousel sits below the header and scrolls horizontally without changing the outer section skeleton.</p>
+              </div>
+
+              <div class="rs-stack-panel">
+                <div class="rs-carousel" aria-label="Card carousel">
+                  <article class="rs-card">
+                    <div>
+                      <h3 class="rs-card-title">Slide One</h3>
+                      <p class="rs-card-text">Carousel card content.</p>
+                    </div>
+                  </article>
+                  <article class="rs-card">
+                    <div>
+                      <h3 class="rs-card-title">Slide Two</h3>
+                      <p class="rs-card-text">Carousel card content.</p>
+                    </div>
+                  </article>
+                  <article class="rs-card">
+                    <div>
+                      <h3 class="rs-card-title">Slide Three</h3>
+                      <p class="rs-card-text">Carousel card content.</p>
+                    </div>
+                  </article>
+                  <article class="rs-card">
+                    <div>
+                      <h3 class="rs-card-title">Slide Four</h3>
+                      <p class="rs-card-text">Carousel card content.</p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rs-group-label">Group 5 · Wild-card sticky section</div>
+
+    <section class="rs-section is-wildcard is-about">
+      <div class="rs-wildcard-sticky">
+        <div class="rs-section-container">
+          <div class="rs-section-padding">
+            <div class="rs-content-container">
+              <div class="rs-content-flex">
+                <div class="rs-content">
+                  <p class="rs-content-kicker">About Us</p>
+                  <h2>Built From The Rail, Not The Boardroom</h2>
+                  <p>RingStatus is shaped around the real show-day problem: people need to know what is happening now, what is next, and when they need to move.</p>
+                  <p class="rs-small">This sticky About section keeps the company story anchored while the left cards reveal the proof points one at a time.</p>
+
+                  <div class="rs-about-meta">
+                    <span class="rs-about-pill">show-day tools</span>
+                    <span class="rs-about-pill">mobile-first</span>
+                    <span class="rs-about-pill">barn-aware</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-wildcard-scroll-layer" aria-label="Scrolling wildcard cards">
+        <article class="rs-wildcard-card">
+          <div>
+            <p class="rs-content-kicker">Why It Exists</p>
+            <h3>Shows Move Fast</h3>
+            <p>Classes shift, rings drag, orders change, and riders still need a simple answer: where should I be right now?</p>
+          </div>
+          <div class="rs-wildcard-number">01 / 04</div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <p class="rs-content-kicker">What We Build</p>
+            <h3>Thin, Useful Tools</h3>
+            <p>The goal is not another heavy platform. It is a fast layer for schedules, alerts, ring status, barn boards, and show-day decisions.</p>
+          </div>
+          <div class="rs-wildcard-number">02 / 04</div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <p class="rs-content-kicker">Who It Serves</p>
+            <h3>Riders, Barns, Grooms</h3>
+            <p>Built for the people carrying tack, finding horses, managing warmups, and trying to keep the day moving.</p>
+          </div>
+          <div class="rs-wildcard-number">03 / 04</div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <p class="rs-content-kicker">How It Feels</p>
+            <h3>Less Noise. More Now.</h3>
+            <p>Every screen should answer something practical without burying the user in data they do not need at that moment.</p>
+          </div>
+          <div class="rs-wildcard-number">04 / 04</div>
+        </article>
+      </div>
+    </section>
+
+
+    <div class="rs-group-label">Group 7 · Wild-card product pages</div>
+
+    <section class="rs-section is-wildcard is-products-index">
+      <div class="rs-wildcard-sticky">
+        <div class="rs-section-container">
+          <div class="rs-section-padding">
+            <div class="rs-content-container">
+              <div class="rs-content-flex">
+                <div class="rs-content">
+                  <p class="rs-content-kicker">Products Page</p>
+                  <h2>Tools For The Show Day</h2>
+                  <p>A products listing page can keep the category story, filters, and value proposition pinned while product cards scroll beside it.</p>
+                  <p class="rs-small">This works well when the products are related, but each one needs its own short pitch.</p>
+
+                  <div class="rs-product-filter-row">
+                    <span class="rs-product-pill">schedule</span>
+                    <span class="rs-product-pill">sms</span>
+                    <span class="rs-product-pill">barn boards</span>
+                    <span class="rs-product-pill">packing</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-wildcard-scroll-layer" aria-label="Scrolling product cards">
+        <article class="rs-wildcard-card">
+          <div>
+            <div class="rs-product-card-media">product visual</div>
+            <div class="rs-product-card-meta"><span>Core</span><span>Schedule</span></div>
+            <h3>Show Schedule App</h3>
+            <p>A cleaner mobile layer for riders, barns, and teams who need the day in front of them.</p>
+            <div class="rs-product-price">GO / PRO</div>
+          </div>
+          <div class="rs-product-action">View product</div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <div class="rs-product-card-media">product visual</div>
+            <div class="rs-product-card-meta"><span>Add-on</span><span>Alerts</span></div>
+            <h3>SMS Alerts</h3>
+            <p>Simple text updates for ring status, class movement, timing, and show-day reminders.</p>
+            <div class="rs-product-price">Add-on</div>
+          </div>
+          <div class="rs-product-action">View product</div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <div class="rs-product-card-media">product visual</div>
+            <div class="rs-product-card-meta"><span>Support</span><span>Barn</span></div>
+            <h3>Tack App</h3>
+            <p>Packing and prep lists by horse, rider, show, and role so nothing gets rebuilt from scratch.</p>
+            <div class="rs-product-price">Support</div>
+          </div>
+          <div class="rs-product-action">View product</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="rs-section is-wildcard is-product-detail">
+      <div class="rs-wildcard-sticky">
+        <div class="rs-section-container">
+          <div class="rs-section-padding">
+            <div class="rs-content-container">
+              <div class="rs-content-flex">
+                <div class="rs-content">
+                  <p class="rs-content-kicker">Product Page</p>
+                  <h2>Show Schedule App</h2>
+                  <p>A rider-first schedule view that keeps the important details close: rings, classes, timing, and what needs attention next.</p>
+                  <p class="rs-small">The sticky product panel can hold the product title, summary, plan level, and primary action while product details scroll beside it.</p>
+
+                  <div class="rs-product-feature-row">
+                    <span class="rs-product-pill">mobile-first</span>
+                    <span class="rs-product-pill">ring-aware</span>
+                    <span class="rs-product-pill">sms-ready</span>
+                  </div>
+
+                  <div class="rs-product-price">GO + PRO</div>
+                  <div class="rs-product-action">Start with schedule</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-wildcard-scroll-layer" aria-label="Scrolling product details">
+        <article class="rs-wildcard-card">
+          <div>
+            <div class="rs-product-card-media">product screenshot</div>
+            <p class="rs-content-kicker">Overview</p>
+            <h3>See The Day Fast</h3>
+            <p>Use the product detail scroll to explain the screen, the user problem, and why the product exists.</p>
+          </div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <p class="rs-content-kicker">Features</p>
+            <h3>What It Includes</h3>
+            <div class="rs-product-spec-list">
+              <div class="rs-product-spec"><span>Schedule view</span><strong>Included</strong></div>
+              <div class="rs-product-spec"><span>Ring status</span><strong>Included</strong></div>
+              <div class="rs-product-spec"><span>SMS alerts</span><strong>Add-on</strong></div>
+              <div class="rs-product-spec"><span>Two-way SMS</span><strong>PRO</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <p class="rs-content-kicker">Use Case</p>
+            <h3>Built For Moving Parts</h3>
+            <p>Use cards for riders, trainers, grooms, parents, and barn staff. Each card can explain one practical product scenario.</p>
+          </div>
+        </article>
+
+        <article class="rs-wildcard-card">
+          <div>
+            <p class="rs-content-kicker">CTA</p>
+            <h3>Choose A Level</h3>
+            <p>The final scroll card can hold plan logic, add-ons, or a comparison between GO, PRO, SMS, and Waze.</p>
+            <div class="rs-product-action">Compare levels</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="rs-section is-nosplit is-centered">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Next Normal Section</p>
+                <h2>This Pushes The Sticky Section Out</h2>
+                <p>As this new section enters the viewport, the wildcard section is no longer pinned.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rs-group-label">Group 8 · Basic layout sections</div>
+
+    <section class="rs-section is-basic is-two-col-text">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Two Column Text</p>
+                <h2>Simple Intro Layout</h2>
+                <p>Use this when there is no image, card grid, or special interaction.</p>
+              </div>
+
+              <div class="rs-text-body">
+                <p>This is the basic editorial section: headline on one side, body copy on the other. It works for mission, overview, page intros, SEO copy, and plain explanations.</p>
+                <p>The same page shell still controls width and padding. Only the interior content arrangement changes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-basic is-cta-band">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-cta-band">
+                <div class="rs-cta-copy">
+                  <p class="rs-content-kicker">CTA Band</p>
+                  <h2>Ready When The Ring Starts Moving</h2>
+                  <p>A short conversion band for page breaks, product pages, blog endings, or above the footer.</p>
+                </div>
+                <div class="rs-cta-button">Start Now</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-basic is-stats-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Stats Row</p>
+                <h2>Proof In A Fast Scan</h2>
+                <p>Use for metrics, benefits, platform numbers, or quick value statements.</p>
+              </div>
+
+              <div class="rs-stats-grid">
+                <div class="rs-stat"><div class="rs-stat-value">24</div><div class="rs-stat-label">Rings monitored</div></div>
+                <div class="rs-stat"><div class="rs-stat-value">4</div><div class="rs-stat-label">Core app lanes</div></div>
+                <div class="rs-stat"><div class="rs-stat-value">2</div><div class="rs-stat-label">Membership levels</div></div>
+                <div class="rs-stat"><div class="rs-stat-value">1</div><div class="rs-stat-label">Show-day view</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-basic is-faq-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">FAQ Section</p>
+                <h2>Questions Below A Header</h2>
+                <p>A simple stacked FAQ pattern. This can become an accordion later if needed.</p>
+              </div>
+
+              <div class="rs-faq-list">
+                <div class="rs-faq-item">
+                  <h3 class="rs-faq-question">Does this need JavaScript?</h3>
+                  <p class="rs-faq-answer">Not for the static layout. JavaScript would only be needed to collapse and expand answers.</p>
+                </div>
+                <div class="rs-faq-item">
+                  <h3 class="rs-faq-question">Does it keep the same section shell?</h3>
+                  <p class="rs-faq-answer">Yes. The shell remains consistent. The FAQ list is only the interior content pattern.</p>
+                </div>
+                <div class="rs-faq-item">
+                  <h3 class="rs-faq-question">Where does spacing live?</h3>
+                  <p class="rs-faq-answer">The section padding layer still owns the outside spacing. The FAQ items own their internal padding.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-basic is-list-viewport-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Viewport List Section</p>
+                <h2>Header Above Scroll List</h2>
+                <p>The list container has its own viewport height. If there are more rows than fit, only the list area scrolls vertically.</p>
+              </div>
+
+              <div class="rs-list-viewport-panel">
+                <div class="rs-list-viewport-head">
+                  <h3 class="rs-list-viewport-title">Scrollable Item List</h3>
+                  <span class="rs-list-row-status">12 items</span>
+                </div>
+
+                <div class="rs-list-scroll" aria-label="Scrollable item list">
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item One</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Active</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Two</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Next</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Three</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Four</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Five</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Six</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Seven</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Eight</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Nine</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Ten</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Eleven</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Item Twelve</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-basic is-full-list-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Full Page List Section</p>
+                <h2>Header Above Expanding List</h2>
+                <p>The list fills the available page width and grows vertically. It starts with 10 rows visible, then reveals 10 more at a time.</p>
+              </div>
+
+              <div class="rs-full-list-panel" data-list-limit="10">
+                <div class="rs-full-list-head">
+                  <h3 class="rs-full-list-title">Full Width Item List</h3>
+                  <span class="rs-list-row-status">24 items</span>
+                </div>
+
+                <div class="rs-full-list" aria-label="Expandable full page item list">
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 01</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Active</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 02</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Next</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 03</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 04</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 05</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 06</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 07</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 08</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 09</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 10</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 11</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 12</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 13</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 14</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 15</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 16</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 17</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 18</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 19</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 20</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 21</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 22</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 23</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                  <div class="rs-full-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Full List Item 24</h4><p class="rs-list-row-meta">Row detail, timing, status, or supporting note.</p></div><span class="rs-list-row-status">Queued</span></div>
+                </div>
+
+                <div class="rs-full-list-actions">
+                  <button class="rs-list-toggle-button" type="button" data-list-toggle>See 10 more</button>
+                  <button class="rs-list-toggle-button" type="button" data-list-less>See less</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-basic is-pricing-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Pricing Cards</p>
+                <h2>Plan Layout</h2>
+                <p>Use for GO, PRO, and add-on comparisons.</p>
+              </div>
+
+              <div class="rs-pricing-grid">
+                <article class="rs-price-card">
+                  <div>
+                    <p class="rs-content-kicker">Level 1</p>
+                    <h3>GO</h3>
+                    <p>Simple schedule access and show-day essentials.</p>
+                  </div>
+                  <div class="rs-price-line">Base</div>
+                </article>
+                <article class="rs-price-card">
+                  <div>
+                    <p class="rs-content-kicker">Level 2</p>
+                    <h3>PRO</h3>
+                    <p>Deeper schedule tools, realtime features, and team workflows.</p>
+                  </div>
+                  <div class="rs-price-line">Upgrade</div>
+                </article>
+                <article class="rs-price-card">
+                  <div>
+                    <p class="rs-content-kicker">Add-ons</p>
+                    <h3>SMS</h3>
+                    <p>Alerts, reminders, and two-way realtime communication.</p>
+                  </div>
+                  <div class="rs-price-line">Add-on</div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-basic is-logo-strip-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Logo Strip</p>
+                <h2>Small Trust Row</h2>
+                <p>Use for shows, barns, partners, sponsors, integrations, or platforms.</p>
+              </div>
+
+              <div class="rs-logo-strip">
+                <div class="rs-logo-item">Logo 01</div>
+                <div class="rs-logo-item">Logo 02</div>
+                <div class="rs-logo-item">Logo 03</div>
+                <div class="rs-logo-item">Logo 04</div>
+                <div class="rs-logo-item">Logo 05</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="rs-group-label">Competition Group · Nav / Hero / Live Preview List / Footer</div>
+
+    <section class="rs-section is-overlay is-overlay-left">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-content">
+                <p class="rs-content-kicker">Competition</p>
+                <h1>Equestrian Sport Productions, LLC. Spring 2</h1>
+                <p>4/8/2026 – 4/12/2026 · FL · Zone 4</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rs-section is-stack is-basic is-list-viewport-section">
+      <div class="rs-section-container">
+        <div class="rs-section-padding">
+          <div class="rs-content-container">
+            <div class="rs-content-flex">
+              <div class="rs-stack-head">
+                <p class="rs-content-kicker">Live Preview List Section</p>
+                <h2>Competition records</h2>
+                <p>Classes, horses, and videos related to this competition. Rows stay tight, clean, and clickable.</p>
+              </div>
+
+              <div class="rs-list-viewport-panel">
+                <div class="rs-list-viewport-head">
+                  <h3 class="rs-list-viewport-title">Classes</h3>
+                  <span class="rs-list-row-status">7 rows</span>
+                </div>
+
+                <div class="rs-list-scroll" aria-label="Competition class list">
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">401 – Schooling Pony</h4><p class="rs-list-row-meta">Fort Knox · 4/8/2026 – 4/12/2026</p></div><span class="rs-list-row-status">3rd</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">402 – Schooling Pony</h4><p class="rs-list-row-meta">Fort Knox · 4/8/2026 – 4/12/2026</p></div><span class="rs-list-row-status">1st</span></div>
+                  <div class="rs-list-row"><div class="rs-list-row-main"><h4 class="rs-list-row-title">Junior Hunter Classic</h4><p class="rs-list-row-meta">Capital Challenge · video and result attached</p></div><span class="rs-list-row-status">Result</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rs-footer is-mock-full">
+    <div class="rs-footer-inner">
+      <div class="rs-footer-content">
+        <p class="rs-content-kicker">Mock Footer</p>
+        <h2>Full Viewport Footer</h2>
+        <p>This footer fills the full viewport height and width when it scrolls into view after the wildcard sticky section.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>

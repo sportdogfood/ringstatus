@@ -332,8 +332,18 @@ function renderPage(tree, prefetchPageKeys = []) {
     renderBaseStyle(),
     renderPrefetchLinks(prefetchPageKeys),
     body,
+    renderRuntimeOverrideStyle(),
     `</main>`
   ].join("\n");
+}
+
+function renderRuntimeOverrideStyle() {
+  return [
+    `<style>`,
+    `.rs-page #data-drawer-menu.rs-drawer.is-open{transform:translateX(0);}`,
+    `.rs-page #data-nav-scrim.rs-nav-scrim.is-open{display:block;}`,
+    `</style>`
+  ].join("");
 }
 
 function renderPrefetchLinks(pageKeys) {
@@ -459,6 +469,8 @@ function renderNavigation(block, items, group, activePageKey = "") {
   const appItems = items
     .filter((item) => selectName(item.nav_group) === "app_nav")
     .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));
+  if (group === "main_nav") return renderMainNavigation(block, appItems, activePageKey);
+
   const links = items
     .filter((item) => selectName(item.nav_group) === group)
     .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
@@ -496,6 +508,91 @@ function renderNavigation(block, items, group, activePageKey = "") {
     `    </div>`,
     `  </div>`,
     `</${tag}>`
+  ].join("\n");
+}
+
+function renderMainNavigation(block, appItems, activePageKey = "") {
+  const columns = [
+    {
+      kicker: "Core",
+      items: appItems.filter((item) => ["rs_schedules", "rs_waze", "rs_alerts", "rs-alerts", "rs_twoway"].includes(clean(item.page_key)))
+    },
+    {
+      kicker: "Boards",
+      items: appItems.filter((item) => ["rs_onsite", "rs_boards", "rs-boards"].includes(clean(item.page_key)))
+    },
+    {
+      kicker: "Support",
+      items: appItems.filter((item) => ["rs-pak", "rs_pak", "rs-reminders", "rs_reminders"].includes(clean(item.page_key)))
+    }
+  ].map((column) => ({
+    ...column,
+    items: column.items.length ? column.items : []
+  }));
+
+  const usedKeys = new Set(columns.flatMap((column) => column.items.map((item) => clean(item.page_key))));
+  const uncategorized = appItems.filter((item) => !usedKeys.has(clean(item.page_key)));
+  if (uncategorized.length) {
+    columns.push({ kicker: "More", items: uncategorized });
+  }
+
+  const appActive = appItems.some((item) => clean(item.page_key) === activePageKey);
+  const appColumns = columns
+    .filter((column) => column.items.length)
+    .map((column) => [
+      `<div class="rs-mega-col">`,
+      `  <p class="rs-content-kicker">${escapeHtml(column.kicker)}</p>`,
+      column.items.map((item) => {
+        const itemPageKey = clean(item.page_key);
+        const active = itemPageKey && itemPageKey === activePageKey;
+        return `  <a class="rs-mega-link${active ? " is-active" : ""}" href="${escapeAttr(item.href || "#")}" data-rs-page-key="${escapeAttr(itemPageKey)}"${active ? ` aria-current="page"` : ""}>${escapeHtml(item.label)}</a>`;
+      }).join("\n"),
+      `</div>`
+    ].join("\n"))
+    .join("\n");
+
+  return [
+    `<nav class="rs-nav" id="data-nav-root" data-rs-block="${escapeAttr(block.block_key)}" aria-label="Main navigation">`,
+    `  <div class="rs-nav-inner">`,
+    `    <a class="rs-logo" href="/rs/home" data-rs-page-key="rs_home" aria-label="RingStatus home">RS</a>`,
+    `    <div class="rs-nav-links">`,
+    `      <button class="rs-nav-button${appActive ? " is-active" : ""}" id="data-mega-toggle" type="button" data-rs-mega-trigger aria-expanded="false" aria-controls="data-mega-menu">Apps</button>`,
+    `      <button class="rs-nav-button" id="data-drawer-toggle" type="button" data-rs-drawer-trigger aria-expanded="false" aria-controls="data-drawer-menu">Tools</button>`,
+    `      <a class="rs-nav-link" href="#">Pricing</a>`,
+    `      <a class="rs-nav-link${activePageKey === "rs_contact" ? " is-active" : ""}" href="/rs/contact" data-rs-page-key="rs_contact"${activePageKey === "rs_contact" ? ` aria-current="page"` : ""}>Contact</a>`,
+    `    </div>`,
+    `  </div>`,
+    `  <div class="rs-mega" id="data-mega-menu" aria-hidden="true">`,
+    `    <div class="rs-mega-inner">`,
+    `      <div class="rs-mega-intro">`,
+    `        <p class="rs-content-kicker">Mega Dropdown</p>`,
+    `        <h2 class="rs-mega-title">Full Width Apps Menu</h2>`,
+    `        <p class="rs-mega-text">This dropdown fills the full viewport width while the inner content stays capped to the same page container.</p>`,
+    `      </div>`,
+    appColumns,
+    `    </div>`,
+    `  </div>`,
+    `</nav>`,
+    `<div class="rs-nav-scrim" id="data-nav-scrim" aria-hidden="true"></div>`,
+    `<aside class="rs-drawer" id="data-drawer-menu" aria-hidden="true" aria-label="Tools drawer">`,
+    `  <div class="rs-drawer-inner">`,
+    `    <div class="rs-drawer-head">`,
+    `      <div>`,
+    `        <p class="rs-content-kicker">Right Drawer</p>`,
+    `        <h2 class="rs-drawer-title">Tools Menu</h2>`,
+    `        <p class="rs-drawer-text">This opens from the right and locks the viewport. There is no separate mobile version.</p>`,
+    `      </div>`,
+    `      <button class="rs-drawer-close" id="data-drawer-close" type="button" data-rs-drawer-close aria-label="Close tools drawer">×</button>`,
+    `    </div>`,
+    `    <div class="rs-drawer-list">`,
+    `      <a href="/rs/waze" data-rs-page-key="rs_waze">RingWaze</a>`,
+    `      <a href="/rs/boards" data-rs-page-key="rs-boards">BarnTools</a>`,
+    `      <a href="/rs/pak" data-rs-page-key="rs-pak">Packing Lists</a>`,
+    `      <a href="/rs/reminders" data-rs-page-key="rs-reminders">Reminders</a>`,
+    `      <a href="/rs/home" data-rs-page-key="rs_home">Account Dashboard</a>`,
+    `    </div>`,
+    `  </div>`,
+    `</aside>`
   ].join("\n");
 }
 
@@ -617,21 +714,34 @@ function sanitizeTrustedHtml(value) {
 function renderBaseStyle() {
   return [
     `<style>`,
-    `.rs-main{background:#050505;padding:18px 40px;border-bottom:1px solid #d8dee6;}`,
-    `.rs-main .rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;}`,
-    `.rs-nav-logo{color:#fff;text-decoration:none;font:800 28px/1 Outfit,Arial,sans-serif;letter-spacing:-.02em;white-space:nowrap;}`,
-    `.rs-nav-logo span{color:#56372d;}`,
-    `.rs-main .rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;scrollbar-width:none;}`,
-    `.rs-main .rs-nav-links::-webkit-scrollbar{display:none;}`,
-    `.rs-main .rs-nav-link{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d8dee6;border-radius:18px;padding:10px 18px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.16);}`,
-    `.rs-nav-menu{position:relative;display:inline-flex;}`,
-    `.rs-nav-menu-trigger{cursor:pointer;}`,
-    `.rs-nav-menu-panel{position:absolute;top:calc(100% + 12px);right:0;z-index:20;display:none;min-width:280px;grid-template-columns:1fr;gap:8px;padding:10px;border:1px solid #d8dee6;border-radius:22px;background:rgba(255,255,255,.96);box-shadow:0 18px 50px rgba(15,23,42,.18);backdrop-filter:blur(14px);}`,
-    `.rs-nav-menu:hover .rs-nav-menu-panel,.rs-nav-menu:focus-within .rs-nav-menu-panel,.rs-nav-menu.is-open .rs-nav-menu-panel{display:grid;}`,
-    `.rs-nav-menu-link{display:flex;align-items:center;justify-content:space-between;border:1px solid transparent;border-radius:16px;padding:12px 14px;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}`,
-    `.rs-nav-menu-link:hover,.rs-nav-menu-link.is-active{background:#10243b;color:#fff;border-color:#10243b;}`,
-    `.rs-main .rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;}`,
-    `.rs-main .rs-nav-link.is-active{background:#10243b;color:#fff;border-color:#10243b;}`,
+    `.rs-main{position:relative;z-index:10;background:#050505;padding:0;border-bottom:1px solid #d8dee6;}`,
+    `.rs-nav{position:relative;z-index:30;background:#050505;color:#fff;}`,
+    `.rs-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(100%,1520px);margin:0 auto;padding:22px 40px;}`,
+    `.rs-logo{display:inline-flex;align-items:center;justify-content:center;min-width:54px;color:#fff;text-decoration:none;font:800 32px/1 Outfit,Arial,sans-serif;letter-spacing:-.04em;white-space:nowrap;}`,
+    `.rs-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:14px;min-width:0;overflow-x:auto;scrollbar-width:none;}`,
+    `.rs-nav-links::-webkit-scrollbar{display:none;}`,
+    `.rs-nav-button,.rs-nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #d8dee6;border-radius:999px;padding:0 22px;background:#fff;color:#10243b;text-decoration:none;font:600 13px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;box-shadow:0 2px 10px rgba(15,23,42,.18);cursor:pointer;}`,
+    `.rs-nav-button:hover,.rs-nav-link:hover{background:#f6f8fb;border-color:#c7d0db;transform:translateY(-1px);}`,
+    `.rs-nav-button.is-active,.rs-nav-link.is-active{background:#10243b;color:#fff;border-color:#10243b;}`,
+    `.rs-mega{position:absolute;left:0;right:0;top:100%;z-index:35;display:none;background:#fff;color:#10243b;border-top:1px solid #d8dee6;border-bottom:1px solid #d8dee6;box-shadow:0 24px 60px rgba(15,23,42,.18);}`,
+    `.rs-nav.is-mega-open .rs-mega{display:block;}`,
+    `.rs-mega-inner{display:grid;grid-template-columns:minmax(240px,1.1fr) repeat(3,minmax(160px,.8fr));gap:28px;width:min(100%,1520px);margin:0 auto;padding:32px 40px;}`,
+    `.rs-content-kicker{margin:0 0 10px;color:#65707d;font:700 12px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.1em;}`,
+    `.rs-mega-title,.rs-drawer-title{margin:0;color:#050505;font:700 34px/.94 Outfit,Arial,sans-serif;letter-spacing:-.03em;}`,
+    `.rs-mega-text,.rs-drawer-text{margin:12px 0 0;color:#46515f;font:400 15px/1.35 Outfit,Arial,sans-serif;}`,
+    `.rs-mega-col{display:grid;align-content:start;gap:8px;}`,
+    `.rs-mega-link{display:flex;align-items:center;min-height:42px;border-radius:14px;padding:0 12px;color:#10243b;text-decoration:none;font:600 14px/1 Outfit,Arial,sans-serif;}`,
+    `.rs-mega-link:hover,.rs-mega-link.is-active{background:#10243b;color:#fff;}`,
+    `.rs-nav-scrim{position:fixed;inset:0;z-index:25;display:none;background:rgba(15,23,42,.32);}`,
+    `.rs-nav-scrim.is-open{display:block;}`,
+    `.rs-drawer{position:fixed;inset:0 0 0 auto;z-index:40;width:min(440px,100vw);background:#fff;color:#10243b;box-shadow:-24px 0 60px rgba(15,23,42,.25);transform:translateX(105%);transition:transform .22s ease;}`,
+    `.rs-drawer.is-open{transform:translateX(0);}`,
+    `.rs-drawer-inner{display:flex;flex-direction:column;gap:26px;height:100%;padding:28px;overflow:auto;}`,
+    `.rs-drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}`,
+    `.rs-drawer-close{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid #d8dee6;border-radius:50%;background:#f6f8fb;color:#050505;font:700 32px/1 Outfit,Arial,sans-serif;cursor:pointer;}`,
+    `.rs-drawer-list{display:grid;gap:10px;}`,
+    `.rs-drawer-list a{display:flex;align-items:center;min-height:48px;border:1px solid #d8dee6;border-radius:16px;padding:0 14px;color:#10243b;text-decoration:none;font:600 14px/1 Outfit,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;}`,
+    `.rs-drawer-list a:hover{background:#10243b;color:#fff;border-color:#10243b;}`,
     `.rs-content-flex{display:flex;align-items:center;justify-content:space-between;gap:32px;width:100%;}`,
     `.rs-content-flex>div:first-child{min-width:0;flex:1 1 auto;}`,
     `.rs-visual{display:flex;align-items:center;justify-content:center;flex:0 0 min(38%,460px);width:min(100%,460px);aspect-ratio:4/5;overflow:hidden;border:1px solid #d8dee6;border-radius:22px;background:#f6f8fa;color:#65707d;}`,
@@ -644,7 +754,7 @@ function renderBaseStyle() {
     `.rs-card-copy h5{margin:0 0 14px;color:#65707d;font:700 13px/1 Outfit,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;}`,
     `.rs-card-copy h2{margin:0;color:#050505;font:700 clamp(30px,4vw,58px)/.94 Outfit,Arial,sans-serif;letter-spacing:-.04em;}`,
     `.rs-card-copy p{margin:18px 0 0;color:#2b2b2b;font:400 clamp(17px,1.35vw,22px)/1.24 Outfit,Arial,sans-serif;}`,
-    `@media(max-width:700px){.rs-main{padding:14px 16px}.rs-main .rs-nav-inner{align-items:center}.rs-nav-logo{font-size:24px}.rs-main .rs-nav-links{justify-content:flex-start}.rs-main .rs-nav-link{flex:0 0 auto}.rs-nav-menu{position:static}.rs-nav-menu-panel{left:16px;right:16px;top:72px;min-width:0}.rs-content-flex{display:flex;flex-direction:column;align-items:stretch;gap:20px}.rs-visual{width:100%;flex:auto;aspect-ratio:16/10;min-height:0}}`,
+    `@media(max-width:700px){.rs-nav-inner{display:grid;grid-template-columns:auto minmax(0,1fr);padding:18px 16px}.rs-logo{justify-content:flex-start;font-size:28px}.rs-nav-links{justify-content:flex-start}.rs-nav-button,.rs-nav-link{flex:0 0 auto;min-height:42px;padding:0 18px}.rs-mega-inner{display:grid;grid-template-columns:1fr;gap:20px;padding:24px 16px}.rs-drawer{width:100vw}.rs-content-flex{display:flex;flex-direction:column;align-items:stretch;gap:20px}.rs-visual{width:100%;flex:auto;aspect-ratio:16/10;min-height:0}}`,
     `@media(max-width:700px){.rs-sticky-cards{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory}.rs-sticky-card,.rs-scroll-card{position:relative;top:auto;flex:0 0 82%;min-height:360px;scroll-snap-align:start}.rs-card-copy h2{font-size:36px}}`,
     `</style>`
   ].join("");

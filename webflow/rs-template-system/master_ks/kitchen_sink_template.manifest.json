@@ -1,0 +1,52 @@
+{
+  "template_id": "kitchen_sink_template",
+  "status": "approved",
+  "source_file": "kitchen_sink_template.html",
+  "lane": "master_ks",
+  "split_policy": "Keep the full approved template intact. Split only by stable semantic component boundaries and pull by template_id.",
+  "component_templates": [
+    {
+      "template_id": "rs_nav_main",
+      "selector": "#data-nav-root",
+      "component": "navigation",
+      "status": "candidate_from_approved_source"
+    },
+    {
+      "template_id": "rs_nav_mega",
+      "selector": "#data-mega-menu",
+      "component": "mega_navigation",
+      "status": "candidate_from_approved_source"
+    },
+    {
+      "template_id": "rs_tools_drawer",
+      "selector": "#data-drawer-menu",
+      "component": "drawer_navigation",
+      "status": "candidate_from_approved_source"
+    },
+    {
+      "template_id": "rs_page_main",
+      "selector": ".rs-main",
+      "component": "main_page_stack",
+      "status": "candidate_from_approved_source"
+    },
+    {
+      "template_id": "rs_section",
+      "selector": ".rs-section",
+      "component": "section",
+      "status": "candidate_from_approved_source"
+    },
+    {
+      "template_id": "rs_footer",
+      "selector": "footer.rs-footer",
+      "component": "footer",
+      "status": "candidate_from_approved_source"
+    }
+  ],
+  "rules": [
+    "Do not overwrite this approved source for experiments.",
+    "Do not reconstruct this template from memory.",
+    "Do not split by arbitrary div depth.",
+    "Airtable or renderer references should use template_id.",
+    "Component snippets must be copied from this source and verified against this manifest."
+  ]
+}
