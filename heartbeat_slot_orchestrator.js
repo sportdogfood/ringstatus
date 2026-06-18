@@ -673,6 +673,18 @@ async function runOrchestrator() {
       return;
     }
 
+    function runWecStage2UpdateScheduleWrapper(reason) {
+      appendEvent({
+        ok: true,
+        event: "wec_stage2_attempt",
+        reason,
+        script: WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER,
+      });
+      return runNodeScriptAbsolute(WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER, {
+        WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+      });
+    }
+
     async function runWecWithoutShowScopeIfDue() {
       let ran = false;
       if (
@@ -685,12 +697,8 @@ async function runOrchestrator() {
           WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
           WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
         });
-        if (result.ok) {
-          const stage2Result = runNodeScriptAbsolute(WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER, {
-            WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
-          });
-          if (stage2Result.ok) markIntervalRun("wec-focus-workflow");
-        }
+        const stage2Result = runWecStage2UpdateScheduleWrapper(result.ok ? "after_stage1_pass" : "after_stage1_fail");
+        if (stage2Result.ok) markIntervalRun("wec-focus-workflow");
         ran = true;
       }
 
@@ -884,15 +892,9 @@ async function runOrchestrator() {
         WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
         WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
       });
-      if (wecHeartbeatResult.ok) {
-        const wecStage2Result = runNodeScriptAbsolute(WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER, {
-          WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
-        });
-        if (wecStage2Result.ok) {
-          markIntervalRun("wec-focus-workflow");
-        } else {
-          upstreamOk = false;
-        }
+      const wecStage2Result = runWecStage2UpdateScheduleWrapper(wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail");
+      if (wecStage2Result.ok) {
+        markIntervalRun("wec-focus-workflow");
       } else {
         upstreamOk = false;
       }
