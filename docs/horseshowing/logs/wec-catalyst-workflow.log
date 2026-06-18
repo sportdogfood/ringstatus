@@ -9238,3 +9238,13 @@
 2026-06-18T15:18:58 entry-go-times source=18 active=18 focus=2026-06-18
 2026-06-18T15:19:00 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":0,"entry_alerts":0,"alerts_upserted":0,"alerts_resolved":3}
 2026-06-18T15:19:04 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T19-19-04-880Z.json" }
+2026-06-18T15:32:09 cadence-gate pass focus=14907|2026-06-18|day cadence=12
+2026-06-18T15:32:19 heartbeat show=14907 focus=2026-06-18 ok=True schedule_rows=39 triggers=0
+2026-06-18T15:32:29 update-schedule-staging skipped focus=2026-06-18 working_rows=39
+2026-06-18T15:32:34 class-lane sync-class-start-times focus=2026-06-18 result={"source_locked_staging":39,"class_start_times_airtable_upserted":39,"class_start_times_airtable_deleted":0,"class_start_times_catalyst":{"inserted":0,"updated":39,"deleted":0}}
+2026-06-18T15:32:41 class_oog_local_probe probed=39 matched=10 active_rows=18 errors=0 rows=18 airtable=18 focus=2026-06-18
+2026-06-18T15:32:44 class-lane sync-class-oog-rollups focus=2026-06-18 result={"class_start_times":39,"class_oog_groups":10,"airtable_updated":39,"catalyst_updated":39}
+2026-06-18T15:32:46 class-lane sync-get-orders focus=2026-06-18 result={"orders":48,"matches":30,"airtable_updated":30,"catalyst_updated":30}
+2026-06-18T15:32:50 entry-go-times source=18 active=18 focus=2026-06-18
+2026-06-18T15:32:52 class-lane sync-class-alerts focus=2026-06-18 result={"class_start_times":39,"entry_go_times":18,"class_alerts":1,"entry_alerts":0,"alerts_upserted":1,"alerts_resolved":0}
+2026-06-18T15:32:56 audit-wec-lanes {   "ok": true,   "show_no": "14907",   "focus_day": "2026-06-18",   "failures": 0,   "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\horseshowing\\logs\\wec-lane-audit-14907-2026-06-18-PASS-2026-06-18T19-32-56-413Z.json" }
