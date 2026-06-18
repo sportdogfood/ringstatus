@@ -49,6 +49,7 @@ const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DET
 const ENABLE_WEC_HEARTBEAT = String(process.env.ORCH_WEC_ENABLED || "1") === "1";
 const WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES = Math.max(1, Number(process.env.ORCH_WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES || "12") || 12);
 const WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES = Math.max(1, Number(process.env.ORCH_WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES || "30") || 30);
+const WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER = process.env.WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\sync_focus_update_schedule_to_staging.js";
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
@@ -77,6 +78,7 @@ const SCRIPT_LOG_FILES = {
   "live_class_detail.js": "live-class-detail.log",
   "docs/horseshowing/wec-heartbeat.js": "wec-heartbeat.log",
   "docs/horseshowing/run-wec-catalyst-workflow.ps1": "wec-catalyst-workflow.log",
+  [WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER]: "sync_focus_update_schedule_to_staging.log",
   "docs/horseshowing/sync-airtable-controls.js": "wec-airtable-controls.log",
   "publisher.js": "publisher.log",
 };
@@ -429,6 +431,54 @@ function runNodeScript(scriptName, extraEnv = {}) {
   return { ok, exitCode, durationMs };
 }
 
+function runNodeScriptAbsolute(scriptPath, extraEnv = {}) {
+  const startedAt = Date.now();
+  const label = path.basename(scriptPath).replace(/\.js$/i, "").toUpperCase();
+  const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19);
+  appendEvent({ ok: true, event: "step_started", script: scriptPath });
+
+  const result = spawnSync(process.execPath, [scriptPath], {
+    cwd: path.dirname(scriptPath),
+    env: { ...process.env, ...extraEnv },
+    encoding: "utf8",
+    windowsHide: true,
+  });
+
+  const exitCode = Number(result.status ?? (result.error ? -1 : 0));
+  const ok = exitCode === 0;
+  const durationMs = Date.now() - startedAt;
+  const output = [
+    `[${timestamp}] ${label} RUN`,
+    result.stdout || "",
+    result.stderr || "",
+    JSON.stringify({
+      ok,
+      event: "step_completed",
+      script: scriptPath,
+      exit_code: exitCode,
+      duration_ms: durationMs,
+      pipeline: "heartbeat_slot_orchestrator",
+      error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
+    }),
+    "",
+  ].join("\r\n");
+  appendScriptLog(scriptPath, output);
+
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
+
+  appendEvent({
+    ok,
+    event: "step_completed",
+    script: scriptPath,
+    exit_code: exitCode,
+    duration_ms: durationMs,
+    error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
+  });
+
+  return { ok, exitCode, durationMs };
+}
+
 function runPowerShellScript(scriptName, extraEnv = {}) {
   const startedAt = Date.now();
   const scriptPath = path.resolve(__dirname, scriptName);
@@ -635,7 +685,12 @@ async function runOrchestrator() {
           WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
           WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
         });
-        if (result.ok) markIntervalRun("wec-focus-workflow");
+        if (result.ok) {
+          const stage2Result = runNodeScriptAbsolute(WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER, {
+            WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+          });
+          if (stage2Result.ok) markIntervalRun("wec-focus-workflow");
+        }
         ran = true;
       }
 
@@ -830,7 +885,14 @@ async function runOrchestrator() {
         WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
       });
       if (wecHeartbeatResult.ok) {
-        markIntervalRun("wec-focus-workflow");
+        const wecStage2Result = runNodeScriptAbsolute(WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER, {
+          WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+        });
+        if (wecStage2Result.ok) {
+          markIntervalRun("wec-focus-workflow");
+        } else {
+          upstreamOk = false;
+        }
       } else {
         upstreamOk = false;
       }
