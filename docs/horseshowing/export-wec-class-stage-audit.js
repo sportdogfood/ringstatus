@@ -11,8 +11,8 @@ function argValue(name, fallback = "") {
 }
 
 function requiredToken() {
-  const token = process.env.AIRTABLE_TOKEN || process.env.AIRTABLE_WEC_TOKEN;
-  if (!token) throw new Error("AIRTABLE_TOKEN or AIRTABLE_WEC_TOKEN is required");
+  const token = process.env.AIRTABLE_TOKEN;
+  if (!token) throw new Error("AIRTABLE_TOKEN is required");
   return token;
 }
 

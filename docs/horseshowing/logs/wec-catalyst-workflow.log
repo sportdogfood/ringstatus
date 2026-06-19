@@ -9499,3 +9499,194 @@
 2026-06-18T22:22:22 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
 2026-06-18T22:22:58 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
 2026-06-18T22:23:33 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T22:40:22 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T22:40:25 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-18T22:40:36 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-18T22:41:15 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T22:41:51 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T22:42:28 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T22:43:04 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T23:00:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T23:00:24 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-18T23:00:36 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-18T23:20:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T23:20:25 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-18T23:20:36 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-18T23:21:14 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T23:21:51 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T23:22:28 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T23:23:04 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-18T23:40:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-18T23:40:23 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-18T23:40:34 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-18T23:41:13 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-18T23:41:49 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-18T23:42:25 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-18T23:43:01 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T00:00:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T00:00:25 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T00:00:36 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T00:16:58 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T00:17:05 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T00:17:16 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T00:19:54 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T00:19:55 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T00:33:36 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T00:33:42 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T00:33:52 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T00:34:31 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T00:35:08 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T00:35:44 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T00:36:19 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T00:50:16 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T00:50:22 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T00:50:33 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T00:51:11 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T00:51:47 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T00:52:23 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T00:52:59 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T01:06:55 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T01:07:00 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T01:07:12 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T01:07:50 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T01:08:27 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T01:09:03 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T01:09:39 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T01:23:34 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T01:23:40 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T01:23:50 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T01:26:30 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T01:26:30 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T01:40:12 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T01:40:19 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T01:40:29 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T01:41:07 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T01:41:44 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T01:42:20 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T01:42:55 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T01:56:50 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T01:56:56 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T01:57:07 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T01:59:40 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T01:59:41 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T02:13:30 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T02:13:34 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T02:13:44 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T02:14:23 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T02:15:00 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T02:15:36 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T02:16:13 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T02:30:09 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T02:30:14 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T02:30:24 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T02:31:03 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T02:31:40 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T02:32:17 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T02:32:53 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T02:46:47 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T02:46:54 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T02:47:04 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T02:49:39 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T02:49:39 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T03:03:28 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T03:03:35 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T03:03:45 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T03:20:05 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T03:20:11 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T03:20:22 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T03:36:47 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T03:36:52 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T03:37:02 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T03:39:37 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T03:39:37 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T03:53:23 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T03:53:30 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T03:53:40 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T04:10:03 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T04:10:09 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T04:10:21 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T04:11:01 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T04:11:37 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T04:12:15 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T04:12:51 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T04:26:44 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T04:26:50 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T04:27:00 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T04:27:39 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T04:28:15 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T04:28:52 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T04:29:28 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T04:43:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T04:43:25 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T04:43:35 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T04:46:12 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T04:46:12 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T05:00:01 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T05:00:06 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T05:00:16 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T05:00:55 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T05:01:33 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T05:02:11 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T05:02:48 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T05:16:42 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T05:16:48 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T05:16:58 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T05:17:38 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T05:18:15 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T05:18:52 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T05:19:28 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T05:33:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T05:33:24 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T05:33:35 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T05:34:14 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T05:34:50 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T05:35:27 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T05:36:03 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T05:51:21 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T05:51:25 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T05:51:36 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T05:54:13 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T05:54:14 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T06:09:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T06:09:25 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T06:09:36 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T06:12:12 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T06:12:13 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T06:27:25 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T06:27:34 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T06:27:44 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T06:30:23 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T06:30:24 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T06:45:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T06:45:26 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T06:45:36 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T06:46:15 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T06:46:53 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T06:47:29 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T06:48:05 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T07:03:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T07:04:08 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T07:04:18 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T07:21:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T07:22:08 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T07:22:18 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T07:39:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T07:39:28 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T07:39:41 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T07:40:19 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T07:40:57 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T07:41:34 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T07:42:10 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T07:57:25 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T07:58:13 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T07:58:25 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T08:15:17 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T08:15:27 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T08:15:41 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T08:33:23 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T08:33:32 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T08:33:46 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T08:34:24 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T08:35:01 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T08:35:38 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T08:36:15 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
