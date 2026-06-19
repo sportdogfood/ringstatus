@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 
 const BASE_ID = process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os";
-const AIRTABLE_TOKEN = process.env.AIRTABLE_WEC_TOKEN || process.env.AIRTABLE_TOKEN;
+const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
 const CATALYST_ENDPOINT = process.env.HORSESHOWING_CATALYST_ENDPOINT ||
   "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
 
@@ -49,7 +49,7 @@ async function postJson(url, body) {
 }
 
 async function airtableFetch(table, options = {}) {
-  if (!AIRTABLE_TOKEN) throw new Error("AIRTABLE_TOKEN or AIRTABLE_WEC_TOKEN is required");
+  if (!AIRTABLE_TOKEN) throw new Error("AIRTABLE_TOKEN is required");
   const url = new URL(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(table)}`);
   const response = await fetch(url, {
     method: options.method || "GET",

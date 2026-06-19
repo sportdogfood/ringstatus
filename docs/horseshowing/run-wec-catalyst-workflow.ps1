@@ -1325,7 +1325,6 @@ function Invoke-CatalystArray($action, $params = @{}) {
 
 function Get-WecAirtableToken {
   if ($env:AIRTABLE_TOKEN) { return $env:AIRTABLE_TOKEN }
-  if ($env:AIRTABLE_WEC_TOKEN) { return $env:AIRTABLE_WEC_TOKEN }
   throw "AIRTABLE_TOKEN fallback is required for Catalyst WEC runners"
 }
 
