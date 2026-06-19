@@ -47,9 +47,11 @@ const POWERSHELL_STEP_TIMEOUT_MS = Math.max(60000, Number(process.env.ORCH_POWER
 const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
 const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DETAIL || "0") === "1";
 const ENABLE_WEC_HEARTBEAT = String(process.env.ORCH_WEC_ENABLED || "1") === "1";
+const WEC_HELPER_ONLY_CADENCE = String(process.env.ORCH_WEC_HELPER_ONLY || "0") === "1";
 const WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES = Math.max(1, Number(process.env.ORCH_WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES || "12") || 12);
 const WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES = Math.max(1, Number(process.env.ORCH_WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES || "30") || 30);
 const WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER = process.env.WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\sync_focus_update_schedule_to_staging.js";
+const WEC_HELPER_REPAIR_WRAPPER = process.env.WEC_HELPER_REPAIR_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\repair_update_schedule_staging_links.js";
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
@@ -79,6 +81,7 @@ const SCRIPT_LOG_FILES = {
   "docs/horseshowing/wec-heartbeat.js": "wec-heartbeat.log",
   "docs/horseshowing/run-wec-catalyst-workflow.ps1": "wec-catalyst-workflow.log",
   [WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER]: "sync_focus_update_schedule_to_staging.log",
+  [WEC_HELPER_REPAIR_WRAPPER]: "repair_update_schedule_staging_links.log",
   "docs/horseshowing/sync-airtable-controls.js": "wec-airtable-controls.log",
   "publisher.js": "publisher.log",
 };
@@ -623,6 +626,32 @@ function markIntervalRun(name) {
 }
 
 async function runOrchestrator() {
+  if (WEC_HELPER_ONLY_CADENCE) {
+    const lockResult = acquireLock();
+    if (!lockResult.acquired) return;
+    try {
+      appendEvent({
+        ok: true,
+        event: "wec_helper_only_cadence_started",
+        script: WEC_HELPER_REPAIR_WRAPPER,
+      });
+      const helperResult = runNodeScriptAbsolute(WEC_HELPER_REPAIR_WRAPPER, {
+        WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+      });
+      appendEvent({
+        ok: helperResult.ok,
+        event: "wec_helper_only_cadence_completed",
+        script: WEC_HELPER_REPAIR_WRAPPER,
+        exit_code: helperResult.exitCode,
+        duration_ms: helperResult.durationMs,
+      });
+      if (!helperResult.ok) process.exitCode = 1;
+      return;
+    } finally {
+      releaseLock();
+    }
+  }
+
   if (DISABLE_HEAVY) {
     appendEvent({ ok: true, event: "orchestrator_disabled" });
     return;
@@ -685,6 +714,42 @@ async function runOrchestrator() {
       });
     }
 
+    function runWecHelperRepairWrapper(reason) {
+      appendEvent({
+        ok: true,
+        event: "wec_helper_repair_attempt",
+        reason,
+        script: WEC_HELPER_REPAIR_WRAPPER,
+      });
+      return runNodeScriptAbsolute(WEC_HELPER_REPAIR_WRAPPER, {
+        WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+      });
+    }
+
+    function runWecHelperRepairAfterStage2(stage2Result, reason) {
+      if (!stage2Result?.ok) {
+        appendEvent({
+          ok: false,
+          event: "wec_helper_repair_skipped",
+          reason: "stage2_wrapper_failed",
+          stage2_reason: reason,
+        });
+        return null;
+      }
+      const helperResult = runWecHelperRepairWrapper(`after_stage2c_${reason}`);
+      if (!helperResult.ok) {
+        appendEvent({
+          ok: false,
+          event: "wec_helper_repair_nonblocking_fail",
+          reason,
+          script: WEC_HELPER_REPAIR_WRAPPER,
+          exit_code: helperResult.exitCode,
+          duration_ms: helperResult.durationMs,
+        });
+      }
+      return helperResult;
+    }
+
     async function runWecWithoutShowScopeIfDue() {
       let ran = false;
       if (
@@ -698,6 +763,7 @@ async function runOrchestrator() {
           WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
         });
         const stage2Result = runWecStage2UpdateScheduleWrapper(result.ok ? "after_stage1_pass" : "after_stage1_fail");
+        runWecHelperRepairAfterStage2(stage2Result, result.ok ? "after_stage1_pass" : "after_stage1_fail");
         if (stage2Result.ok) markIntervalRun("wec-focus-workflow");
         ran = true;
       }
@@ -893,6 +959,7 @@ async function runOrchestrator() {
         WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
       });
       const wecStage2Result = runWecStage2UpdateScheduleWrapper(wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail");
+      runWecHelperRepairAfterStage2(wecStage2Result, wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail");
       if (wecStage2Result.ok) {
         markIntervalRun("wec-focus-workflow");
       } else {

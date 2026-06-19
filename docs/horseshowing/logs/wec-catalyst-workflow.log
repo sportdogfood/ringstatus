@@ -9702,3 +9702,70 @@
 2026-06-19T09:45:17 cadence-gate pass focus=14907|2026-06-19|day cadence=12
 2026-06-19T09:45:27 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
 2026-06-19T09:45:41 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T10:03:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T10:04:07 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T10:04:20 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T10:05:00 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T10:05:37 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T10:06:14 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T10:21:18 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T10:22:07 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T10:22:20 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T10:22:59 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T10:23:36 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T10:24:12 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T10:39:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T10:39:30 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T10:39:43 update-schedule-reset update_deleted=100 staging_deleted=0 focus=2026-06-19
+2026-06-19T10:40:22 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T10:40:58 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T10:41:33 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T10:42:07 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T10:57:28 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T10:58:14 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T10:58:26 update-schedule-reset update_deleted=100 staging_deleted=0 focus=2026-06-19
+2026-06-19T10:59:04 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T10:59:40 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T11:00:15 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T11:15:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T11:15:27 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T11:15:40 update-schedule-reset update_deleted=100 staging_deleted=0 focus=2026-06-19
+2026-06-19T11:33:30 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T11:33:38 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T11:33:51 update-schedule-reset update_deleted=100 staging_deleted=0 focus=2026-06-19
+2026-06-19T11:36:23 update-schedule-staging selected=10 staging_rows=100 update_rows=100 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T11:36:24 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T11:51:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T11:52:06 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T11:52:18 update-schedule-reset update_deleted=100 staging_deleted=0 focus=2026-06-19
+2026-06-19T11:52:55 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T11:53:31 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T11:54:06 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T12:09:33 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T12:09:41 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T12:09:56 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T12:27:31 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T12:27:39 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T12:27:53 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T12:28:33 update-schedule-source-fallback ring_day_no=4226 focus=2026-06-19
+2026-06-19T12:29:10 update-schedule-source-fallback ring_day_no=3938 focus=2026-06-19
+2026-06-19T12:29:46 update-schedule-source-fallback ring_day_no=4221 focus=2026-06-19
+2026-06-19T12:30:23 update-schedule-source-fallback ring_day_no=3944 focus=2026-06-19
+2026-06-19T12:45:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T13:00:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T13:15:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T13:30:36 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T13:45:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T14:00:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T14:15:54 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T14:30:29 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T14:45:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T15:00:25 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T15:15:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T15:30:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T15:45:27 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T16:00:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T16:15:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T16:30:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T16:45:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T17:00:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
