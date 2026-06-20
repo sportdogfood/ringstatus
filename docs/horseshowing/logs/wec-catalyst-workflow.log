@@ -10018,3 +10018,7 @@
 2026-06-20T16:36:33 update-schedule-reset update_deleted=80 staging_deleted=0 focus=2026-06-21
 2026-06-20T16:52:10 cadence-gate pass focus=14907|2026-06-21|day cadence=12
 2026-06-20T16:52:16 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=34 triggers=0
+2026-06-20T16:52:26 update-schedule-reset update_deleted=78 staging_deleted=0 focus=2026-06-21
+2026-06-20T16:53:05 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-20T16:53:43 update-schedule-source-fallback ring_day_no=3940 focus=2026-06-21
+2026-06-20T16:54:21 update-schedule-source-fallback ring_day_no=4223 focus=2026-06-21
