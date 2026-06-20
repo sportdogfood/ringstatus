@@ -12,7 +12,8 @@ param(
   [switch]$ForceSync,
   [switch]$RunMockLiveCheck,
   [switch]$RunClassOogLocalProbeOnly,
-  [switch]$RunClassOogUnlockedSafetyOnly
+  [switch]$RunClassOogUnlockedSafetyOnly,
+  [switch]$RunClassStartTimesOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -26,6 +27,12 @@ $script:FocusPaused = $false
 
 if (!$ShowNo -and $env:WEC_SHOW_NO) {
   $ShowNo = [string]$env:WEC_SHOW_NO
+}
+if (!$ForceSync -and $env:WEC_FORCE_SYNC -eq "1") {
+  $ForceSync = $true
+}
+if (!$RunClassStartTimesOnly -and $env:WEC_CLASS_START_TIMES_ONLY -eq "1") {
+  $RunClassStartTimesOnly = $true
 }
 
 $mutexName = "Global\RingStatusWecCatalystWorkflow"
@@ -954,7 +961,7 @@ function Invoke-CatalystAction($action) {
 }
 
 function Test-RetryableCatalystError($message) {
-  return [string]$message -match "fetch failed|EXECUTION_TIME_EXCEEDED|Execution Time Exceeded|timed out|timeout"
+  return [string]$message -match "fetch failed|EXECUTION_TIME_EXCEEDED|Execution Time Exceeded|timed out|timeout|Internal Server Error|\(500\)|remote server returned an error:\s*\(500\)"
 }
 
 function Invoke-CatalystActionWithRetry($action, $attempts = 3) {
@@ -2193,6 +2200,88 @@ function Invoke-CountsSync {
   }
 }
 
+function Get-WecClassOogRowsForFocus($FocusDayValue) {
+  $safeFocusDay = ([string]$FocusDayValue).Replace("'", "\'")
+  $formula = "AND({show_no}=$ShowNo,IS_SAME({focus_day},DATETIME_PARSE('$safeFocusDay'),'day'))"
+  return @(Get-WecAirtableRecordsByFormula -TableName "class_oog" -Formula $formula -PageSize 100)
+}
+
+function Invoke-ClassStartTimesRetryStage($FocusDayValue) {
+  if (!$FocusDayValue) {
+    throw "class_start_times hard gate failed: active focus_day missing"
+  }
+  if ($script:FocusPaused) {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times_gate" -Status "skipped" -Summary "class_start_times skipped: focus_show.is_pause" -Payload @{
+      show_no = $ShowNo
+      focus_day = $FocusDayValue
+      gate = "focus_show.is_pause"
+    }
+    throw "class_start_times hard gate failed: focus_show.is_pause"
+  }
+
+  $lockedRows = @(Get-WecLockedScheduleRows $FocusDayValue)
+  if ($lockedRows.Count -le 0) {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times_gate" -Status "skipped" -RecordsSeen 0 -Summary "class_start_times skipped: no locked update_schedule_staging rows" -Payload @{
+      show_no = $ShowNo
+      focus_day = $FocusDayValue
+      gate = "locked_update_schedule_staging"
+    }
+    throw "class_start_times hard gate failed: no locked update_schedule_staging rows"
+  }
+
+  $classOogRows = @(Get-WecClassOogRowsForFocus $FocusDayValue)
+  if ($classOogRows.Count -le 0) {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times_gate" -Status "skipped" -RecordsSeen $lockedRows.Count -Summary "class_start_times skipped: no class_oog rows" -Payload @{
+      show_no = $ShowNo
+      focus_day = $FocusDayValue
+      gate = "class_oog"
+      locked_staging_rows = $lockedRows.Count
+    }
+    throw "class_start_times hard gate failed: no class_oog rows"
+  }
+
+  try {
+    $classStartLane = Invoke-ClassLaneAction -Action "sync-class-start-times" -FocusDayValue $FocusDayValue -TimeoutSec 180
+    $classStartChanged = (Int-OrZero $classStartLane.class_start_times_airtable_upserted) + (Int-OrZero $classStartLane.class_start_times_airtable_deleted) + (Int-OrZero $classStartLane.class_start_times_catalyst.inserted) + (Int-OrZero $classStartLane.class_start_times_catalyst.updated) + (Int-OrZero $classStartLane.class_start_times_catalyst.deleted)
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times" -RecordsSeen (Int-OrZero $classStartLane.source_locked_staging) -RecordsChanged $classStartChanged -Summary "class_start_times source=$($classStartLane.source_locked_staging) focus=$FocusDayValue" -Payload $classStartLane
+    Resolve-WecAirtableAlert -AlertType "core_class_start_times_failed" -DedupeKey "$ShowNo|$FocusDayValue|class_start_times" -Message "Resolved: class_start_times completed." -Payload $classStartLane
+    $classStartLinkRepair = Repair-ClassStartTimesStagingLinks $FocusDayValue
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times_links" -RecordsSeen (Int-OrZero $classStartLinkRepair.class_start_times_seen) -RecordsChanged (Int-OrZero $classStartLinkRepair.links_repaired) -Summary "class_start_times staging links repaired=$($classStartLinkRepair.links_repaired) focus=$FocusDayValue" -Payload $classStartLinkRepair
+    if (@($classStartLinkRepair.missing_staging_keys).Count -gt 0) {
+      throw "class_start_times staging link repair missing $(@($classStartLinkRepair.missing_staging_keys).Count) staging keys"
+    }
+    return [pscustomobject]@{
+      ok = $true
+      focus_day = $FocusDayValue
+      focus_show_is_pause = $false
+      locked_staging_rows = $lockedRows.Count
+      class_oog_rows = $classOogRows.Count
+      result = $classStartLane
+      link_repair = $classStartLinkRepair
+    }
+  } catch {
+    $retryable = Test-RetryableCatalystError $_.Exception.Message
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times" -Status "error" -Summary "class_start_times failed show=$ShowNo focus=${FocusDayValue}: $($_.Exception.Message)" -Payload @{
+      show_no = $ShowNo
+      focus_day = $FocusDayValue
+      error = $_.Exception.Message
+      retryable = $retryable
+      locked_staging_rows = $lockedRows.Count
+      class_oog_rows = $classOogRows.Count
+    }
+    Write-WecAirtableAlert -AlertType "core_class_start_times_failed" -Severity "critical" -Message "class_start_times failed for show=$ShowNo focus=${FocusDayValue}: $($_.Exception.Message)" -DedupeKey "$ShowNo|$FocusDayValue|class_start_times" -Payload @{
+      show_no = $ShowNo
+      focus_day = $FocusDayValue
+      error = $_.Exception.Message
+      retryable = $retryable
+    }
+    if ($retryable) {
+      Write-WorkflowLog "class_start_times retryable failure show=$ShowNo focus=$FocusDayValue error=$($_.Exception.Message)"
+    }
+    throw
+  }
+}
+
 function Due($state, $key, $minutes) {
   if ($ForceSync) { return $true }
   if (!$state.ContainsKey($key)) { return $true }
@@ -2240,6 +2329,32 @@ if (!$cadenceGate.should_run) {
     $script:WecWorkflowMutex.Dispose()
   }
   exit 0
+}
+
+if ($RunClassStartTimesOnly) {
+  $focusDayValue = if ($FocusDay) { $FocusDay } else { $script:FocusDay }
+  try {
+    $result = Invoke-ClassStartTimesRetryStage $focusDayValue
+    $state["class_start_times_retry_last_run"] = (Get-Date).ToString("o")
+    $state["class_start_times_retry_last_result"] = "ok"
+    Save-State $state
+    if ($script:WecWorkflowMutexAcquired) {
+      $script:WecWorkflowMutex.ReleaseMutex()
+      $script:WecWorkflowMutex.Dispose()
+    }
+    $result | ConvertTo-Json -Depth 10
+    exit 0
+  } catch {
+    $state["class_start_times_retry_last_run"] = (Get-Date).ToString("o")
+    $state["class_start_times_retry_last_result"] = "error"
+    $state["class_start_times_retry_last_error"] = [string]$_.Exception.Message
+    Save-State $state
+    if ($script:WecWorkflowMutexAcquired) {
+      $script:WecWorkflowMutex.ReleaseMutex()
+      $script:WecWorkflowMutex.Dispose()
+    }
+    throw
+  }
 }
 
 $heartbeat = Invoke-WecHeartbeatComposite
@@ -2422,29 +2537,7 @@ if ($heartbeat.focus_day) {
     }
     Write-WorkflowLog "cadence-pause downstream skipped focus=$($heartbeat.focus_day)"
   } else {
-  try {
-    $classStartLane = Invoke-ClassLaneAction -Action "sync-class-start-times" -FocusDayValue $heartbeat.focus_day -TimeoutSec 180
-    $classStartChanged = (Int-OrZero $classStartLane.class_start_times_airtable_upserted) + (Int-OrZero $classStartLane.class_start_times_airtable_deleted) + (Int-OrZero $classStartLane.class_start_times_catalyst.inserted) + (Int-OrZero $classStartLane.class_start_times_catalyst.updated) + (Int-OrZero $classStartLane.class_start_times_catalyst.deleted)
-    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times" -RecordsSeen (Int-OrZero $classStartLane.source_locked_staging) -RecordsChanged $classStartChanged -Summary "class_start_times source=$($classStartLane.source_locked_staging) focus=$($heartbeat.focus_day)" -Payload $classStartLane
-    Resolve-WecAirtableAlert -AlertType "core_class_start_times_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_start_times" -Message "Resolved: class_start_times completed." -Payload $classStartLane
-    $classStartLinkRepair = Repair-ClassStartTimesStagingLinks $heartbeat.focus_day
-    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times_links" -RecordsSeen (Int-OrZero $classStartLinkRepair.class_start_times_seen) -RecordsChanged (Int-OrZero $classStartLinkRepair.links_repaired) -Summary "class_start_times staging links repaired=$($classStartLinkRepair.links_repaired) focus=$($heartbeat.focus_day)" -Payload $classStartLinkRepair
-    if (@($classStartLinkRepair.missing_staging_keys).Count -gt 0) {
-      throw "class_start_times staging link repair missing $(@($classStartLinkRepair.missing_staging_keys).Count) staging keys"
-    }
-  } catch {
-    Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_start_times" -Status "error" -Summary "class_start_times failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
-      show_no = $ShowNo
-      focus_day = $heartbeat.focus_day
-      error = $_.Exception.Message
-    }
-    Write-WecAirtableAlert -AlertType "core_class_start_times_failed" -Severity "critical" -Message "class_start_times failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|class_start_times" -Payload @{
-      show_no = $ShowNo
-      focus_day = $heartbeat.focus_day
-      error = $_.Exception.Message
-    }
-    throw
-  }
+  Invoke-ClassStartTimesRetryStage $heartbeat.focus_day | Out-Null
   try {
     $classOogQueue = Invoke-ClassOogQueueSync $heartbeat.focus_day
     Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_class_oog" -RecordsSeen (Int-OrZero $classOogQueue.rows_written) -RecordsChanged (Int-OrZero $classOogQueue.airtable_records) -Summary "class_oog local probe classes=$($classOogQueue.probed_classes) matched=$($classOogQueue.matched_classes) rows=$($classOogQueue.rows_written) focus=$($heartbeat.focus_day)" -Payload $classOogQueue

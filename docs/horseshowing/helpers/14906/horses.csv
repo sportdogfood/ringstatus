@@ -2,7 +2,6 @@ record_id,show_no,horse,horse_display,barn_name,tag,active
 rec00Fj6xlDAaiNAv,14906,Luke Skywalker,Luke Skywalker,,,1
 rec011rtgc0xUyXAW,14906,Ira De Span,Ira De Span,,,1
 rec0409bsqwqOEXaa,14906,Coby Z,Coby Z,,,1
-rec052H732WaitG1a,14906,IB MERCEDES,Ben,Ben,,1
 rec05nOvYeZKRmjJD,14906,Lugano,Lugano,,,1
 rec0AjlSw7pupQDJX,14906,Benjamin,Benjamin,,,1
 rec0C9LNIc1wwIMtL,14906,Cento Forever,Cento Forever,,,1
@@ -26,7 +25,6 @@ rec0vbmbIKozfec9I,14906,Talk About Me,Talk About Me,,,1
 rec0wH9QT0spAYWK9,14906,Katja,Katja,,,1
 rec1EOByWSknpJYZS,14906,Mtm Drop The Mic,Mtm Drop The Mic,,,1
 rec1JTZesicDxGF08,14906,Hurricane,Hurricane,Hurricane,,1
-rec1K5Td6S3yixkno,14906,FORTE,Macho,Macho,,1
 rec1L7nHKepoFIwZq,14906,Eliott Dz,Eliott Dz,,,1
 rec1LOPTSEvOn9Czl,14906,Spot On,Spot On,,,1
 rec1SE5SwPnnar75T,14906,Indigo,Indigo,,,1
@@ -63,7 +61,6 @@ rec2x3QeQSxKezjPQ,14906,Delando De St Leger,Delando De St Leger,,,1
 rec302NoK3OfRFOSR,14906,Royce Van Den Henxbroek,Royce Van Den Henxbroek,,,1
 rec32RCk5pszC9arn,14906,Cole Younger,Cole Younger,,,1
 rec33uWBGSFqTtTPp,14906,Bp Exchange,Bp Exchange,,,1
-rec36fnCoJGCHEJNd,14906,CHOCO DU REVERDY,Choco,Choco,,1
 rec3IpfVmw7aDlk3r,14906,Accelerator,Accelerator,,,1
 rec3JKGcTNmBm8f3y,14906,Brin D'or De Haute Melen Z,Brin D'or De Haute Melen Z,,,1
 rec3MWCiCIZo2sLcW,14906,Sandenal,Snoop,Snoop,,1
@@ -162,9 +159,9 @@ rec8Vvmrl3eS033yb,14906,Ilusionist II,Ilusionist II,,,1
 rec8WP23Cu2mqFUBh,14906,Norelien,Norelien,,,1
 rec8WmfMN2mlzEC3P,14906,Kilenka Gl,Kilenka Gl,,,1
 rec8YINI8jJV8z09Q,14906,Maminka,Maminka,,,1
+rec8a5Nw2ZxphnrpG,14906,Jason,Jason,,,1
 rec8d4baTtu7H8kBN,14906,Quido,Quido,,,1
 rec8gyq6rP2NUKN64,14906,Kashmir,Kashmir,,,1
-rec8mqMezByvEOtKc,14906,ETONEMOI DEL CABALERO,Toni,Toni,,1
 rec8q7MNwQWvp6Ojs,14906,Diamant,Diamant,,,1
 rec8tPpuefo69dXlO,14906,Dominic Toretto,Dominic Toretto,,,1
 rec8wn8t29fBjKEVL,14906,United's Choice,United's Choice,,,1
@@ -212,7 +209,6 @@ recBbNqLfR6bedO4Y,14906,Conthinder,Conthinder,,,1
 recBeIt2QJKxKBR0i,14906,Coffee,Coffee,,,1
 recBezwCTbGePCZMo,14906,Garrincha Van De Kalevallei,Garrincha Van De Kalevallei,,,1
 recBjz5bfMTj6Kszj,14906,The Flying Dutchman,The Flying Dutchman,,,1
-recBmucJMwyYrJR8x,14906,HERMES D'ARMANVILLE,Hermes,Hermes,,1
 recBmww7UNikgcKTQ,14906,Naton Wi Ro Z,Naton Wi Ro Z,,,1
 recBpibv9YAh7V1Z2,14906,Facundo De La Nutria,Facundo De La Nutria,,,1
 recBpwtdQHxh4VA9A,14906,Hopeful Z,Hopeful Z,,,1
@@ -349,6 +345,7 @@ recJBmmeVg06cGO87,14906,Halo,Paisley,Paisley,,1
 recJDA8C1LeKb7kWF,14906,Baral Quester,Baral Quester,,,1
 recJHkuPSZoICp8ZB,14906,Mestizo Ls,Mestizo Ls,,,1
 recJLYsUEr1clTzLC,14906,Bull Run's Luminous,Bull Run's Luminous,,,1
+recJQdFdRukp72ULK,14906,Dorian,Dorian,,,1
 recJRQhx8aHH6mW4q,14906,Caans Navy Blues,Caans Navy Blues,,,1
 recJTZoUeteSbNHJv,14906,Getthe Muny Bernie,Getthe Muny Bernie,,,1
 recJVg3nk3gtSYaoh,14906,Kennedy,Kennedy,,,1
@@ -403,7 +400,6 @@ recLwMDICqwy0PnEc,14906,Cassaderra Na,Cassaderra Na,,,1
 recLy0joj26tclrr2,14906,Ledoux,Ledoux,,,1
 recM5N0CztIrnQiSg,14906,Salt Spring,Salt Spring,,,1
 recMAuWjmb6Ae7iB7,14906,Karma,Karma,,,1
-recMBJpS89PotblOn,14906,TENOR VAN'T KLAVERTJE VIER,Shrek,Shrek,,1
 recMCnJ5J4qhgZ3iq,14906,Colmans Blue,Colmans Blue,,,1
 recMEa7UtJl2MPmiG,14906,Kereen Cobra,Kereen Cobra,,,1
 recMIFmIw1cNfOL2T,14906,Avalanche,Avalanche,,,1
@@ -526,13 +522,11 @@ recTLjdvOgxqoPF2Z,14906,Ravina 22,Ravina 22,,,1
 recTTobw5FlvTgQhj,14906,Locinthe Vdl,Locinthe Vdl,,,1
 recTTq34WC55wI9mR,14906,Ezarka De Belheme,Ezarka De Belheme,,,1
 recTZCcQOTJ1RasLn,14906,Volodia D'argouges,Volodia D'argouges,,,1
-recTbBCaogXeUIIOL,14906,SPECIALIST,Tommy,Tommy,,1
 recTfQComcsRMvBYN,14906,Glenara Chacco Dp,Glenara Chacco Dp,,,1
 recTiq35XKEnjYr4F,14906,Glamour Des Forets,Glamour Des Forets,,,1
 recTjtkkEhwGZiUt8,14906,Roc N' Rose,Roc N' Rose,,,1
 recTl6xiHXjgT0YY4,14906,Santino,Santino,,,1
 recTnId0UeHKnUWU7,14906,Conlando 55,Conlando 55,,,1
-recTnsf9M9LfV0lA2,14906,RIMINI DU PRINTEMPS,Rimini,Rimini,,1
 recTsQMsS5DlKluGd,14906,Bellissima Dh Z,Bellissima Dh Z,,,1
 recU6yQCMREs5VEOC,14906,The Golden Road,The Golden Road,,,1
 recUK5VTFNxAlUG81,14906,London Star,London Star,,,1
@@ -730,7 +724,6 @@ recej7833yHmLYG1d,14906,Kandoo Pj,Kandoo Pj,,,1
 receljDYMCfnrvT9S,14906,Nayla Balou,Nayla Balou,,,1
 recenYAJ2LG7KglKz,14906,Mick Jagger,Mick Jagger,,,1
 receqd5Cup8r42Zwg,14906,Madhappy,Madhappy,,,1
-recetM5UhrlKgj3QV,14906,INDIGO VAN DE MUGGENHOEK,Indy,Indy,,1
 recetc9kQtuflj67j,14906,Limerick,Limerick,,,1
 recezQK0HYupTVbac,14906,Mtm Apple,Mtm Apple,,,1
 recf0spNEdr6FSGha,14906,Light Blue Mystic Rose,Light Blue Mystic Rose,,,1
@@ -845,7 +838,6 @@ reckANjuzr2lIgoX7,14906,Chaning Tatum,Chaning Tatum,,,1
 reckSqNZefX2hmsOE,14906,Norton Vdl,Norton Vdl,,,1
 reckTUVVY8E0JiyBv,14906,Constantin De Hus,Constantin De Hus,,,1
 reckUXRnpkkQZOFiB,14906,Cismet 4,Cismet 4,,,1
-reckWGGEV4nSEm25W,14906,NAVIGATOR,Navy,Navy,,1
 reckbVyJBhGk7mx4E,14906,Ralvero Vdl,Ralvero Vdl,,,1
 reckf5vereqxMaJMI,14906,Newcomer Z,Newcomer Z,,,1
 reckjQTTuinVgI02H,14906,Diatoon Blue Ps,Diatoon Blue Ps,,,1
@@ -1090,7 +1082,6 @@ recy69guaLLe1O9mL,14906,Pi-Air,Pi-Air,,,1
 recy8VGxB6nnff0YY,14906,Rondalla Ls,Rondalla Ls,,,1
 recyASRhw8q4tEAtw,14906,Comeback Queen,Comeback Queen,,,1
 recyC7ydh4ywKEoD5,14906,Keira Usa,Keira Usa,,,1
-recyFq3H9xvKYOEmr,14906,FAN FAN BOY,Fan,Fan,,1
 recyU1972ri6tQv5D,14906,Sunset's Pirouette,Sunset's Pirouette,,,1
 recybeuQqxLpdwgyc,14906,Ballyheerin Belle Jorado,Ballyheerin Belle Jorado,,,1
 recydrjm8EMegldSp,14906,Mary J,Mary J,,,1

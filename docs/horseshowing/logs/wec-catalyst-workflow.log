@@ -9769,3 +9769,95 @@
 2026-06-19T16:30:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
 2026-06-19T16:45:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
 2026-06-19T17:00:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T17:15:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T17:30:21 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T17:45:43 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T18:00:36 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T18:15:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T18:30:55 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T18:36:05 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T18:36:07 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T18:45:23 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T18:46:14 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T18:46:17 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T19:00:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:01:09 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:01:12 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T19:15:24 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:16:14 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:30:20 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:31:06 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:31:08 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T19:45:23 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:46:11 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T19:46:14 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T20:00:21 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:00:39 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:00:41 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T20:05:23 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:06:11 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:06:14 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T20:20:38 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:21:35 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:21:38 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T20:35:22 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:36:09 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:36:12 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T20:50:24 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:51:14 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T20:51:17 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T21:05:22 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T21:05:27 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=56 triggers=0
+2026-06-19T21:05:45 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T21:08:17 update-schedule-staging selected=10 staging_rows=101 update_rows=101 class_start_rows=0 stale_update_deleted=0 stale_staging_inactivated=0 focus=2026-06-19
+2026-06-19T21:08:18 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-19|local_core_workflow records=2
+2026-06-19T21:09:29 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T21:09:31 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T21:25:19 cadence-gate pass focus=14907|2026-06-19|day cadence=12
+2026-06-19T21:25:26 heartbeat show=14907 focus=2026-06-19 ok=True schedule_rows=57 triggers=0
+2026-06-19T21:25:39 update-schedule-reset update_deleted=101 staging_deleted=0 focus=2026-06-19
+2026-06-19T21:29:14 cadence-gate bypass force-sync focus=14907|2026-06-19|day cadence=12
+2026-06-19T21:29:17 class_start_times retryable failure show=14907 focus=2026-06-19 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-19T21:45:34 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-19T21:45:35 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=0 triggers=0
+2026-06-19T21:45:38 update-schedule-reset update_deleted=0 staging_deleted=0 focus=2026-06-20
+2026-06-19T21:46:12 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-19T21:46:46 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-19T21:47:21 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
+2026-06-19T21:47:58 update-schedule-source-fallback ring_day_no=3945 focus=2026-06-20
+2026-06-19T21:49:23 cadence-gate bypass force-sync focus=14907|2026-06-20|day cadence=12
+2026-06-19T22:05:21 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-19T22:05:26 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=54 triggers=0
+2026-06-19T22:05:38 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-19T22:09:23 cadence-gate bypass force-sync focus=14907|2026-06-20|day cadence=12
+2026-06-19T22:25:22 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-19T22:25:28 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=84 triggers=0
+2026-06-19T22:25:39 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-19T22:26:21 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-19T22:27:01 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-19T22:27:41 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
+2026-06-19T22:29:20 cadence-gate bypass force-sync focus=14907|2026-06-20|day cadence=12
+2026-06-19T22:45:21 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-19T22:45:26 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=84 triggers=0
+2026-06-19T22:45:37 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-19T22:49:22 cadence-gate bypass force-sync focus=14907|2026-06-20|day cadence=12
+2026-06-19T23:05:21 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-19T23:05:26 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=84 triggers=0
+2026-06-19T23:05:37 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-19T23:06:22 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-19T23:07:01 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-19T23:07:41 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
+2026-06-19T23:22:52 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-19T23:22:58 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=84 triggers=0
+2026-06-19T23:23:10 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-19T23:39:41 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-19T23:39:47 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=53 triggers=0
+2026-06-19T23:39:58 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-19T23:40:41 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-19T23:41:21 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-19T23:42:01 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
+2026-06-20T00:00:44 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T00:00:57 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=84 triggers=0
+2026-06-20T00:01:27 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T00:02:11 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T00:02:51 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
