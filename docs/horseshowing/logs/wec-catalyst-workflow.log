@@ -9983,3 +9983,23 @@
 2026-06-20T14:30:20 cadence-gate pass focus=14907|2026-06-20|day cadence=12
 2026-06-20T14:30:28 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=105 triggers=0
 2026-06-20T14:30:42 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T14:48:19 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T14:48:29 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=105 triggers=0
+2026-06-20T14:48:43 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T15:06:22 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T15:07:11 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=105 triggers=0
+2026-06-20T15:07:23 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T15:08:05 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T15:08:44 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T15:24:20 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T15:25:08 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=105 triggers=0
+2026-06-20T15:25:20 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T15:25:59 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T15:26:38 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T15:27:17 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
+2026-06-20T15:42:21 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T15:42:31 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=105 triggers=0
+2026-06-20T15:42:45 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T15:43:24 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T15:44:02 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T15:44:40 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
