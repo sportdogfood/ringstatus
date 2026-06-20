@@ -55,7 +55,9 @@ const WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER = process.env.WEC_STAGE2_UPDATE_SCHEDUL
 const WEC_HELPER_REPAIR_WRAPPER = process.env.WEC_HELPER_REPAIR_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\repair_update_schedule_staging_links.js";
 const WEC_ACTIVE_ENTRIES_WRAPPER = process.env.WEC_ACTIVE_ENTRIES_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\process_active_entries.js";
 const WEC_STACKED_WORKFLOW_WRAPPER = process.env.WEC_STACKED_WORKFLOW_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\run_wec_stacked_workflow.js";
+const WEC_CLASS_OOG_ONLY_WRAPPER = process.env.WEC_CLASS_OOG_ONLY_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\sync_class_oog_and_class_start_times.js";
 const WEC_AIRTABLE_BASE_ID = process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os";
+const WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS = Math.max(1, Number(process.env.WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS || "250") || 250);
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
@@ -88,6 +90,7 @@ const SCRIPT_LOG_FILES = {
   [WEC_HELPER_REPAIR_WRAPPER]: "repair_update_schedule_staging_links.log",
   [WEC_ACTIVE_ENTRIES_WRAPPER]: "process_active_entries.log",
   [WEC_STACKED_WORKFLOW_WRAPPER]: "run_wec_stacked_workflow.log",
+  [WEC_CLASS_OOG_ONLY_WRAPPER]: "sync_class_oog_and_class_start_times.log",
   "docs/horseshowing/sync-airtable-controls.js": "wec-airtable-controls.log",
   "publisher.js": "publisher.log",
 };
@@ -305,6 +308,21 @@ async function tableFieldMapForBase(baseId, tableName) {
   const table = (json.tables || []).find((item) => item.name === tableName);
   if (!table) throw new Error(`Airtable table not found: ${tableName}`);
   return new Map((table.fields || []).map((field) => [field.name, field]));
+}
+
+async function tableMetaForBase(baseId, tableName) {
+  const url = new URL(`https://api.airtable.com/v0/meta/bases/${baseId}/tables`);
+  const response = await fetchWithTimeout(url, {
+    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
+  });
+  const body = await response.text();
+  if (!response.ok) {
+    throw new Error(`Airtable meta failed (${response.status}) ${tableName}: ${body.slice(0, 500)}`);
+  }
+  const json = body ? JSON.parse(body) : {};
+  const table = (json.tables || []).find((item) => item.name === tableName);
+  if (!table) throw new Error(`Airtable table not found: ${tableName}`);
+  return table;
 }
 
 async function tableFieldMap(tableName) {
@@ -761,6 +779,144 @@ async function runOrchestrator() {
       }, args);
     }
 
+    function runWecStage2StagingWrapperWithRun(reason, runMeta) {
+      const args = [];
+      if (runMeta?.run_id) args.push(`--run-id=${runMeta.run_id}`);
+      if (runMeta?.run_time) args.push(`--run-time=${runMeta.run_time}`);
+      appendEvent({
+        ok: true,
+        event: "wec_stage2_staging_attempt",
+        reason,
+        script: WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER,
+        mode: "staging",
+        run_id: runMeta?.run_id || null,
+        run_time: runMeta?.run_time || null,
+      });
+      return runNodeScriptAbsolute(WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER, {
+        WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+        WEC_RUN_ID: runMeta?.run_id || "",
+        WEC_RUN_TIME: runMeta?.run_time || "",
+      }, args);
+    }
+
+    async function verifyWecApprovedStagingViews() {
+      const requiredViews = [
+        "class_oog",
+        "class_start_times",
+        "classes_mobile",
+        "wec-classes_print",
+        "wec-classes_mobile_pro",
+        "actives",
+      ];
+      const table = await tableMetaForBase(WEC_AIRTABLE_BASE_ID, "update_schedule_staging");
+      const viewNames = new Set((table.views || []).map((view) => view.name));
+      const missingViews = requiredViews.filter((viewName) => !viewNames.has(viewName));
+      appendEvent({
+        ok: missingViews.length === 0,
+        event: "wec_workflowv4_staging_views_checked",
+        required_views: requiredViews,
+        missing_views: missingViews,
+      });
+      return {
+        ok: missingViews.length === 0,
+        required_views: requiredViews,
+        missing_views: missingViews,
+      };
+    }
+
+    function parseJsonFromStepOutput(result) {
+      const text = String(result?.stdout || "").trim();
+      if (!text) return null;
+      const start = text.indexOf("{");
+      const end = text.lastIndexOf("}");
+      if (start < 0 || end < start) return null;
+      try {
+        return JSON.parse(text.slice(start, end + 1));
+      } catch {
+        return null;
+      }
+    }
+
+    function runWecClassOogOnlyUntilComplete(reason) {
+      let lastPayload = null;
+      for (let unit = 1; unit <= WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS; unit += 1) {
+        appendEvent({
+          ok: true,
+          event: "wec_class_oog_only_attempt",
+          reason,
+          script: WEC_CLASS_OOG_ONLY_WRAPPER,
+          unit,
+        });
+        const result = runNodeScriptAbsolute(WEC_CLASS_OOG_ONLY_WRAPPER, {
+          WEC_AIRTABLE_BASE_ID: WEC_AIRTABLE_BASE_ID,
+        }, ["--class-oog-only"]);
+        lastPayload = parseJsonFromStepOutput(result);
+        appendEvent({
+          ok: result.ok,
+          event: result.ok ? "wec_class_oog_only_unit_exit" : "wec_class_oog_only_unit_fail",
+          reason,
+          unit,
+          exit_code: result.exitCode,
+          bounded_unit: lastPayload?.bounded_unit || null,
+          show_no: lastPayload?.show_no || null,
+          focus_day: lastPayload?.focus_day || null,
+        });
+        if (!result.ok) return { ok: false, result, payload: lastPayload };
+        if (lastPayload?.bounded_unit === "complete") {
+          appendEvent({
+            ok: true,
+            event: "wec_workflowv4_class_oog_complete",
+            reason,
+            units: unit,
+            show_no: lastPayload.show_no || null,
+            focus_day: lastPayload.focus_day || null,
+            source_count: lastPayload.source_count ?? null,
+            class_oog_count: lastPayload.class_oog_count ?? null,
+          });
+          return { ok: true, result, payload: lastPayload };
+        }
+      }
+      appendEvent({
+        ok: false,
+        event: "wec_class_oog_only_unit_limit",
+        reason,
+        max_units: WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS,
+      });
+      return { ok: false, result: null, payload: lastPayload, blocker: "class_oog bounded unit limit reached" };
+    }
+
+    async function runWecWorkflowV4CoreAfterStage1(reason, runMeta) {
+      const stage2Result = runWecStage2StagingWrapperWithRun(reason, runMeta);
+      appendEvent({
+        ok: stage2Result.ok,
+        event: "wec_workflowv4_stage2_staging_exit",
+        reason,
+        run_id: runMeta?.run_id || null,
+        run_time: runMeta?.run_time || null,
+      });
+      if (!stage2Result.ok) return { ok: false, stage2Result };
+
+      const views = await verifyWecApprovedStagingViews();
+      if (!views.ok) return { ok: false, views };
+
+      const gate = await readWecDownstreamReleaseGate();
+      appendEvent({
+        ok: gate.open,
+        event: gate.open ? "wec_workflowv4_class_oog_gate_open" : "wec_workflowv4_class_oog_gate_closed",
+        reason: gate.reason,
+        show_no: gate.show_no || null,
+        focus_day: gate.focus_day || null,
+        pause_control: "focus_show.is_pause",
+        focus_show_is_pause: gate.focus_show_is_pause ?? null,
+        focus_day_is_lock: gate.focus_day_is_lock ?? null,
+        locked_staging_rows: gate.locked_staging_rows ?? null,
+      });
+      if (!gate.open) return { ok: false, gate };
+
+      const classOog = runWecClassOogOnlyUntilComplete(`workflowv4_${reason}`);
+      return { ok: classOog.ok, stage2Result, views, gate, classOog };
+    }
+
     async function startWecStage1Stage2RunMetadata(reason) {
       const runTime = new Date().toISOString();
       const runId = `wec-stage1-stage2-${runTime.replace(/[^0-9A-Za-z]/g, "")}-${crypto.randomBytes(4).toString("hex")}`;
@@ -1034,18 +1190,20 @@ async function runOrchestrator() {
           WEC_RUN_TIME: runMeta.run_time,
         });
         const stageReason = result.ok ? "after_stage1_pass" : "after_stage1_fail";
-        const stage2Result = runWecStage2UpdateScheduleWrapperWithRun(stageReason, runMeta);
+        const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(stageReason, runMeta);
         appendEvent({
-          ok: stage2Result.ok,
-          event: "wec_stage2_mirror_stop",
+          ok: workflowV4Result.ok,
+          event: "wec_workflowv4_core_stop_after_class_oog",
           reason: stageReason,
           run_id: runMeta.run_id,
           run_time: runMeta.run_time,
           helper_repair_run: false,
+          class_start_times_run: false,
+          entry_go_times_run: false,
           downstream_run: false,
           active_entries_run: false,
         });
-        if (stage2Result.ok) markIntervalRun("wec-focus-workflow");
+        if (workflowV4Result.ok) markIntervalRun("wec-focus-workflow");
         ran = true;
       }
 
@@ -1243,18 +1401,20 @@ async function runOrchestrator() {
         WEC_RUN_TIME: wecRunMeta.run_time,
       });
       const wecStageReason = wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail";
-      const wecStage2Result = runWecStage2UpdateScheduleWrapperWithRun(wecStageReason, wecRunMeta);
+      const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(wecStageReason, wecRunMeta);
       appendEvent({
-        ok: wecStage2Result.ok,
-        event: "wec_stage2_mirror_stop",
+        ok: workflowV4Result.ok,
+        event: "wec_workflowv4_core_stop_after_class_oog",
         reason: wecStageReason,
         run_id: wecRunMeta.run_id,
         run_time: wecRunMeta.run_time,
         helper_repair_run: false,
+        class_start_times_run: false,
+        entry_go_times_run: false,
         downstream_run: false,
         active_entries_run: false,
       });
-      if (wecStage2Result.ok) {
+      if (workflowV4Result.ok) {
         markIntervalRun("wec-focus-workflow");
       } else {
         upstreamOk = false;

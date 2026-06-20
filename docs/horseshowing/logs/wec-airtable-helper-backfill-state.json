@@ -1,13 +1,13 @@
 {
-  "last_focus_key": "14907|2026-06-20",
+  "last_focus_key": "14907|2026-06-21",
   "last_show_no": "14907",
-  "last_focus_day": "2026-06-20",
-  "last_backfill_at": "2026-06-20T19:09:54.440Z",
+  "last_focus_day": "2026-06-21",
+  "last_backfill_at": "2026-06-20T20:21:58.067Z",
   "last_summary": {
     "show_no": "14907",
-    "focus_day": "2026-06-20",
+    "focus_day": "2026-06-21",
     "source_counts": {
-      "update_schedule": 84,
+      "update_schedule": 0,
       "class_oog": 0,
       "helper_horses": 0,
       "helper_riders": 0,
