@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { spawn, spawnSync } = require("child_process");
 const {
   normalizeHeartbeatMode,
@@ -274,8 +275,25 @@ async function airtableCreate(tableName, records) {
   return body ? JSON.parse(body).records || [] : [];
 }
 
-async function tableFieldMap(tableName) {
-  const url = new URL(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE_ID}/tables`);
+async function airtableUpdateForBase(baseId, tableName, records) {
+  if (!records.length) return [];
+  const response = await fetchWithTimeout(airtableUrlForBase(baseId, tableName), {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${AIRTABLE_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ records }),
+  });
+  const body = await response.text();
+  if (!response.ok) {
+    throw new Error(`Airtable update failed (${response.status}) ${tableName}: ${body.slice(0, 500)}`);
+  }
+  return body ? JSON.parse(body).records || [] : [];
+}
+
+async function tableFieldMapForBase(baseId, tableName) {
+  const url = new URL(`https://api.airtable.com/v0/meta/bases/${baseId}/tables`);
   const response = await fetchWithTimeout(url, {
     headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
   });
@@ -287,6 +305,10 @@ async function tableFieldMap(tableName) {
   const table = (json.tables || []).find((item) => item.name === tableName);
   if (!table) throw new Error(`Airtable table not found: ${tableName}`);
   return new Map((table.fields || []).map((field) => [field.name, field]));
+}
+
+async function tableFieldMap(tableName) {
+  return tableFieldMapForBase(AIRTABLE_BASE_ID, tableName);
 }
 
 async function automationErrWritableFields() {
@@ -447,13 +469,13 @@ function runNodeScript(scriptName, extraEnv = {}) {
   return { ok, exitCode, durationMs };
 }
 
-function runNodeScriptAbsolute(scriptPath, extraEnv = {}) {
+function runNodeScriptAbsolute(scriptPath, extraEnv = {}, args = []) {
   const startedAt = Date.now();
   const label = path.basename(scriptPath).replace(/\.js$/i, "").toUpperCase();
   const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19);
-  appendEvent({ ok: true, event: "step_started", script: scriptPath });
+  appendEvent({ ok: true, event: "step_started", script: scriptPath, args });
 
-  const result = spawnSync(process.execPath, [scriptPath], {
+  const result = spawnSync(process.execPath, [scriptPath, ...args], {
     cwd: path.dirname(scriptPath),
     env: { ...process.env, ...extraEnv },
     encoding: "utf8",
@@ -716,15 +738,70 @@ async function runOrchestrator() {
     }
 
     function runWecStage2UpdateScheduleWrapper(reason) {
+      return runWecStage2UpdateScheduleWrapperWithRun(reason, null);
+    }
+
+    function runWecStage2UpdateScheduleWrapperWithRun(reason, runMeta) {
+      const args = ["--mirror-only"];
+      if (runMeta?.run_id) args.push(`--run-id=${runMeta.run_id}`);
+      if (runMeta?.run_time) args.push(`--run-time=${runMeta.run_time}`);
       appendEvent({
         ok: true,
-        event: "wec_stage2_attempt",
+        event: "wec_stage2_mirror_attempt",
         reason,
         script: WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER,
+        mode: "mirror-only",
+        run_id: runMeta?.run_id || null,
+        run_time: runMeta?.run_time || null,
       });
       return runNodeScriptAbsolute(WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER, {
         WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
+        WEC_RUN_ID: runMeta?.run_id || "",
+        WEC_RUN_TIME: runMeta?.run_time || "",
+      }, args);
+    }
+
+    async function startWecStage1Stage2RunMetadata(reason) {
+      const runTime = new Date().toISOString();
+      const runId = `wec-stage1-stage2-${runTime.replace(/[^0-9A-Za-z]/g, "")}-${crypto.randomBytes(4).toString("hex")}`;
+      const fieldMap = await tableFieldMapForBase(WEC_AIRTABLE_BASE_ID, "focus_show");
+      const missingFields = ["run_id", "run_time"].filter((fieldName) => !fieldMap.has(fieldName));
+      if (missingFields.length) {
+        throw new Error(`focus_show missing run metadata fields: ${missingFields.join(", ")}`);
+      }
+      const focusRows = await airtableListForBase(WEC_AIRTABLE_BASE_ID, "focus_show", {
+        maxRecords: 10,
+        filterByFormula: "{active}=1",
+        "fields[]": ["show_no", "focus_day", "run_id", "run_time", "is_lock", "is_pause", "active"],
       });
+      if (focusRows.length !== 1) {
+        throw new Error(`active focus_show not unique for run metadata: ${focusRows.length}`);
+      }
+      const focus = focusRows[0];
+      const updated = await airtableUpdateForBase(WEC_AIRTABLE_BASE_ID, "focus_show", [{
+        id: focus.id,
+        fields: {
+          run_id: runId,
+          run_time: runTime,
+        },
+      }]);
+      appendEvent({
+        ok: true,
+        event: "wec_stage1_stage2_run_metadata_written",
+        reason,
+        focus_show_id: focus.id,
+        run_id: runId,
+        run_time: runTime,
+      });
+      return {
+        run_id: runId,
+        run_time: runTime,
+        focus_show_id: focus.id,
+        show_no: String(focus.fields?.show_no ?? ""),
+        focus_day: focus.fields?.focus_day || null,
+        focus_show_run_id_updated: updated[0]?.fields?.run_id === runId,
+        focus_show_run_time_updated: Boolean(updated[0]?.fields?.run_time),
+      };
     }
 
     function runWecHelperRepairWrapper(reason) {
@@ -949,15 +1026,25 @@ async function runOrchestrator() {
         && slotIsDue(slot, process.env.ORCH_WEC_HEARTBEAT_SLOTS, DEFAULT_WEC_HEARTBEAT_SLOTS)
         && intervalDue("wec-focus-workflow", WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES)
       ) {
+        const runMeta = await startWecStage1Stage2RunMetadata("wec-focus-workflow");
         const result = runPowerShellScript("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
           WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
           WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
+          WEC_RUN_ID: runMeta.run_id,
+          WEC_RUN_TIME: runMeta.run_time,
         });
         const stageReason = result.ok ? "after_stage1_pass" : "after_stage1_fail";
-        const stage2Result = runWecStage2UpdateScheduleWrapper(stageReason);
-        runWecHelperRepairAfterStage2(stage2Result, stageReason);
-        await runWecStackedWorkflowIfReleased(stage2Result, stageReason);
-        if (stage2Result.ok) runWecActiveEntriesWrapper(stageReason);
+        const stage2Result = runWecStage2UpdateScheduleWrapperWithRun(stageReason, runMeta);
+        appendEvent({
+          ok: stage2Result.ok,
+          event: "wec_stage2_mirror_stop",
+          reason: stageReason,
+          run_id: runMeta.run_id,
+          run_time: runMeta.run_time,
+          helper_repair_run: false,
+          downstream_run: false,
+          active_entries_run: false,
+        });
         if (stage2Result.ok) markIntervalRun("wec-focus-workflow");
         ran = true;
       }
@@ -1148,21 +1235,30 @@ async function runOrchestrator() {
     }
 
     if (wecHeartbeatDue) {
+      const wecRunMeta = await startWecStage1Stage2RunMetadata("wec-focus-workflow");
       const wecHeartbeatResult = await runDuePowerShell("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
         WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
         WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
+        WEC_RUN_ID: wecRunMeta.run_id,
+        WEC_RUN_TIME: wecRunMeta.run_time,
       });
       const wecStageReason = wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail";
-      const wecStage2Result = runWecStage2UpdateScheduleWrapper(wecStageReason);
-      runWecHelperRepairAfterStage2(wecStage2Result, wecStageReason);
-      const wecStackedResult = await runWecStackedWorkflowIfReleased(wecStage2Result, wecStageReason);
-      if (wecStage2Result.ok) runWecActiveEntriesWrapper(wecStageReason);
+      const wecStage2Result = runWecStage2UpdateScheduleWrapperWithRun(wecStageReason, wecRunMeta);
+      appendEvent({
+        ok: wecStage2Result.ok,
+        event: "wec_stage2_mirror_stop",
+        reason: wecStageReason,
+        run_id: wecRunMeta.run_id,
+        run_time: wecRunMeta.run_time,
+        helper_repair_run: false,
+        downstream_run: false,
+        active_entries_run: false,
+      });
       if (wecStage2Result.ok) {
         markIntervalRun("wec-focus-workflow");
       } else {
         upstreamOk = false;
       }
-      if (wecStackedResult && wecStackedResult.ok === false) upstreamOk = false;
     }
 
     if (wecAirtableControlsDue) {
