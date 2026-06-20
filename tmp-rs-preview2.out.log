@@ -1,0 +1,11 @@
+
+> webflow-cloud-test@0.0.1 preview
+> astro preview --host 127.0.0.1 --port 4338
+
+Using secrets defined in dist\server\.dev.vars
+[2m19:35:48[22m [34m[@astrojs/cloudflare][39m 
+[42m[1m astro [22m[49m [32mv13.5.2[39m [2mready in[22m 127 [2mms[22m
+
+[2m┃[22m Local    [36mhttp://127.0.0.1:4338/[39m
+
+GET /rs-dom-painter-content 200 OK (375ms)

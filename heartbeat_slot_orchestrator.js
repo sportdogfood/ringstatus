@@ -690,6 +690,14 @@ function markIntervalRun(name) {
   writeIntervalState(name, { last_run_at: new Date().toISOString() });
 }
 
+function readWecWorkflowV4FocusState() {
+  return readIntervalState("wec-workflowv4-focus-day");
+}
+
+function writeWecWorkflowV4FocusState(state) {
+  writeIntervalState("wec-workflowv4-focus-day", state);
+}
+
 async function runOrchestrator() {
   if (WEC_HELPER_ONLY_CADENCE) {
     const lockResult = acquireLock();
@@ -911,6 +919,44 @@ async function runOrchestrator() {
       const views = await verifyWecApprovedStagingViews();
       if (!views.ok) return { ok: false, views };
 
+      const currentFocusDay = strOrNull(runMeta?.focus_day)?.slice(0, 10) || null;
+      const previousFocusState = readWecWorkflowV4FocusState();
+      const previousFocusDay = strOrNull(previousFocusState.focus_day)?.slice(0, 10) || null;
+      const focusDayChanged = Boolean(currentFocusDay && previousFocusDay !== currentFocusDay);
+      appendEvent({
+        ok: true,
+        event: "wec_workflowv4_focus_day_change_checked",
+        reason,
+        show_no: runMeta?.show_no || null,
+        focus_day: currentFocusDay,
+        previous_focus_day: previousFocusDay,
+        focus_day_changed: focusDayChanged,
+        pause_control: "focus_show.is_pause",
+        focus_show_is_pause: runMeta?.focus_show_is_pause ?? null,
+      });
+      if (runMeta?.focus_show_is_pause === true) {
+        writeWecWorkflowV4FocusState({
+          show_no: runMeta?.show_no || null,
+          focus_day: currentFocusDay,
+          focus_show_is_pause: true,
+          last_staging_prepared_at: new Date().toISOString(),
+          class_oog_allowed: false,
+        });
+        appendEvent({
+          ok: true,
+          event: "wec_workflowv4_focus_day_changed_paused_stop_after_staging",
+          reason,
+          show_no: runMeta?.show_no || null,
+          focus_day: currentFocusDay,
+          focus_day_changed: focusDayChanged,
+          pause_control: "focus_show.is_pause",
+          focus_show_is_pause: true,
+          class_oog_run: false,
+          downstream_run: false,
+        });
+        return { ok: true, stage2Result, views, focusDayChanged, stopped_after_staging: true };
+      }
+
       const gate = await readWecDownstreamReleaseGate();
       appendEvent({
         ok: gate.open,
@@ -926,6 +972,15 @@ async function runOrchestrator() {
       if (!gate.open) return { ok: false, gate };
 
       const classOog = runWecClassOogOnlyUntilComplete(`workflowv4_${reason}`);
+      if (classOog.ok) {
+        writeWecWorkflowV4FocusState({
+          show_no: gate.show_no || runMeta?.show_no || null,
+          focus_day: gate.focus_day || currentFocusDay,
+          focus_show_is_pause: gate.focus_show_is_pause ?? null,
+          last_class_oog_completed_at: new Date().toISOString(),
+          class_oog_allowed: true,
+        });
+      }
       return { ok: classOog.ok, stage2Result, views, gate, classOog };
     }
 
@@ -967,6 +1022,7 @@ async function runOrchestrator() {
         focus_show_id: focus.id,
         show_no: String(focus.fields?.show_no ?? ""),
         focus_day: focus.fields?.focus_day || null,
+        focus_show_is_pause: boolValue(focus.fields?.is_pause),
         focus_show_run_id_updated: updated[0]?.fields?.run_id === runId,
         focus_show_run_time_updated: Boolean(updated[0]?.fields?.run_time),
       };
