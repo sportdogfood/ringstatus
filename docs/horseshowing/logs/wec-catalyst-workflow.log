@@ -9861,3 +9861,52 @@
 2026-06-20T00:01:27 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
 2026-06-20T00:02:11 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
 2026-06-20T00:02:51 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T00:33:39 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T00:33:46 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=84 triggers=0
+2026-06-20T00:33:58 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T00:34:39 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T00:35:19 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T00:35:58 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
+2026-06-20T00:50:15 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T00:50:23 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=177 triggers=0
+2026-06-20T00:50:53 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T00:51:47 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T00:52:08 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T00:52:12 class_start_times retryable failure show=14907 focus=2026-06-20 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-20T06:56:53 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T06:57:04 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=261 triggers=0
+2026-06-20T06:57:15 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T06:57:18 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T06:57:22 class_start_times retryable failure show=14907 focus=2026-06-20 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-20T07:12:20 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T07:13:09 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=261 triggers=0
+2026-06-20T07:13:19 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T07:13:22 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T07:13:32 local-log write failed path=C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\logs\wec-logs.jsonl
+2026-06-20T07:13:35 class_start_times retryable failure show=14907 focus=2026-06-20 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-20T07:27:19 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T07:27:27 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=93 triggers=0
+2026-06-20T07:27:40 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T07:28:02 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T07:28:05 class_start_times retryable failure show=14907 focus=2026-06-20 error=The remote server returned an error: (500) Internal Server Error.
+2026-06-20T07:42:20 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T07:42:30 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=93 triggers=0
+2026-06-20T07:42:43 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T07:43:20 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T07:43:57 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T07:44:34 update-schedule-source-fallback ring_day_no=4222 focus=2026-06-20
+2026-06-20T07:45:13 update-schedule-source-fallback ring_day_no=3945 focus=2026-06-20
+2026-06-20T08:00:20 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T08:01:09 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=93 triggers=0
+2026-06-20T08:01:21 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T08:18:26 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T08:18:36 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=100 triggers=0
+2026-06-20T08:18:49 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T08:36:18 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T08:37:06 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=100 triggers=0
+2026-06-20T08:37:19 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20
+2026-06-20T08:37:57 update-schedule-source-fallback ring_day_no=4227 focus=2026-06-20
+2026-06-20T08:38:44 update-schedule-source-fallback ring_day_no=3939 focus=2026-06-20
+2026-06-20T08:54:24 cadence-gate pass focus=14907|2026-06-20|day cadence=12
+2026-06-20T08:54:35 heartbeat show=14907 focus=2026-06-20 ok=True schedule_rows=100 triggers=0
+2026-06-20T08:54:48 update-schedule-reset update_deleted=115 staging_deleted=0 focus=2026-06-20

@@ -24,6 +24,7 @@ const ACTIONS = [
   "set-focus-day",
   "set-barn-name",
   "hide-classes",
+  "log-hide-classes",
   "start-session",
   "session-heartbeat",
   "list-sessions",
@@ -70,6 +71,11 @@ export const POST = async ({ request }) => {
 
     if (action === "hide-classes") {
       const result = await hideClasses(airtable, schema, payload);
+      return json(result);
+    }
+
+    if (action === "log-hide-classes") {
+      const result = await logHideClasses(airtable, schema, payload);
       return json(result);
     }
 
@@ -680,6 +686,47 @@ async function hideClasses(airtable, schema, payload) {
     ok: true,
     action: "hide-classes",
     updated,
+    log: logged
+  };
+}
+
+async function logHideClasses(airtable, schema, payload) {
+  const showNo = clean(payload.show_no || payload.showNo);
+  const focusDay = isoDate(payload.focus_day || payload.focusDay);
+  const classes = Array.isArray(payload.classes)
+    ? payload.classes.map((item) => ({
+      hide_key: clean(item.hide_key || item.hideKey),
+      class_no: clean(item.class_no || item.classNo).replace(/\.0$/, ""),
+      class_label: clean(item.class_label || item.classLabel || item.label)
+    })).filter((item) => item.hide_key || item.class_no || item.class_label)
+    : [];
+
+  if (!showNo) return jsonError("missing_show_no");
+  if (!focusDay) return jsonError("missing_focus_day");
+  if (!classes.length) return jsonError("missing_classes");
+
+  const logged = await createWecLog(airtable, schema, {
+    log_type: "webflow_edit",
+    check_name: "wec_mobile_hide_local",
+    workflow_lanes: "Mobile",
+    show_no: showNo,
+    focus_day: focusDay,
+    status: "ok",
+    records_seen: classes.length,
+    records_changed: 0,
+    summary: `wec-mobile local hide saved ${classes.length} classes for show ${showNo}`,
+    payload_json: JSON.stringify({
+      action: "log-hide-classes",
+      source: clean(payload.source) || "wec-mobile",
+      show_no: showNo,
+      focus_day: focusDay,
+      classes
+    }, null, 2)
+  });
+
+  return {
+    ok: true,
+    action: "log-hide-classes",
     log: logged
   };
 }
