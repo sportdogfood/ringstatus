@@ -484,7 +484,13 @@ function runNodeScript(scriptName, extraEnv = {}) {
     error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
   });
 
-  return { ok, exitCode, durationMs };
+  return {
+    ok,
+    exitCode,
+    durationMs,
+    stdout: result.stdout || "",
+    stderr: result.stderr || "",
+  };
 }
 
 function runNodeScriptAbsolute(scriptPath, extraEnv = {}, args = []) {
@@ -532,7 +538,13 @@ function runNodeScriptAbsolute(scriptPath, extraEnv = {}, args = []) {
     error: result.error ? String(result.error.message || result.error).slice(0, 500) : undefined,
   });
 
-  return { ok, exitCode, durationMs };
+  return {
+    ok,
+    exitCode,
+    durationMs,
+    stdout: result.stdout || "",
+    stderr: result.stderr || "",
+  };
 }
 
 function runPowerShellScript(scriptName, extraEnv = {}) {
@@ -1188,6 +1200,7 @@ async function runOrchestrator() {
           WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
           WEC_RUN_ID: runMeta.run_id,
           WEC_RUN_TIME: runMeta.run_time,
+          WEC_WORKFLOWV4_STAGE1_ONLY: "1",
         });
         const stageReason = result.ok ? "after_stage1_pass" : "after_stage1_fail";
         const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(stageReason, runMeta);
@@ -1399,6 +1412,7 @@ async function runOrchestrator() {
         WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
         WEC_RUN_ID: wecRunMeta.run_id,
         WEC_RUN_TIME: wecRunMeta.run_time,
+        WEC_WORKFLOWV4_STAGE1_ONLY: "1",
       });
       const wecStageReason = wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail";
       const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(wecStageReason, wecRunMeta);

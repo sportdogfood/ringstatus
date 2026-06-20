@@ -13,7 +13,8 @@ param(
   [switch]$RunMockLiveCheck,
   [switch]$RunClassOogLocalProbeOnly,
   [switch]$RunClassOogUnlockedSafetyOnly,
-  [switch]$RunClassStartTimesOnly
+  [switch]$RunClassStartTimesOnly,
+  [switch]$WorkflowV4Stage1Only
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,6 +34,9 @@ if (!$ForceSync -and $env:WEC_FORCE_SYNC -eq "1") {
 }
 if (!$RunClassStartTimesOnly -and $env:WEC_CLASS_START_TIMES_ONLY -eq "1") {
   $RunClassStartTimesOnly = $true
+}
+if (!$WorkflowV4Stage1Only -and $env:WEC_WORKFLOWV4_STAGE1_ONLY -eq "1") {
+  $WorkflowV4Stage1Only = $true
 }
 
 $mutexName = "Global\RingStatusWecCatalystWorkflow"
@@ -2526,6 +2530,36 @@ if ($heartbeat.focus_day) {
       focus_changed = $updateScheduleFocusChanged
       catalyst_schedule_rows = $catalystScheduleRows
     }
+  }
+  if ($WorkflowV4Stage1Only) {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "workflowv4_legacy_stage1_stop" -Status "ok" -Summary "WorkflowV4 cadence stopped legacy runner before downstream" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      skipped_stages = @("class_start_times", "entry_go_times", "mobile", "print", "alerts", "results")
+    }
+    Write-WorkflowLog "workflowv4-stage1-only stop focus=$($heartbeat.focus_day)"
+    $state["workflowv4_stage1_only_last_run"] = (Get-Date).ToString("o")
+    Save-State $state
+    if ($script:WecWorkflowMutexAcquired) {
+      $script:WecWorkflowMutex.ReleaseMutex()
+      $script:WecWorkflowMutex.Dispose()
+    }
+    [pscustomobject]@{
+      ok = $true
+      action = "workflowv4-stage1-only"
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      get_ring_days_ran = $true
+      update_schedule_ran = $true
+      update_schedule_staging_ran = $true
+      class_start_times_run = $false
+      entry_go_times_run = $false
+      mobile_run = $false
+      print_run = $false
+      alerts_run = $false
+      results_run = $false
+    } | ConvertTo-Json -Depth 8
+    exit 0
   }
   if ($script:FocusPaused) {
     Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_pause" -Status "skipped" -Summary "downstream stages paused by focus_show.is_pause" -Payload @{
