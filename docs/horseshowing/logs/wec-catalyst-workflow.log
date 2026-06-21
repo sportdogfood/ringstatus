@@ -10108,3 +10108,15 @@
 2026-06-20T19:35:38 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
 2026-06-20T19:35:39 workflowv4-stage1-only stop focus=2026-06-21
 2026-06-20T19:37:32 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=2.1
+2026-06-20T19:50:22 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-20T19:50:27 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-20T19:50:38 update-schedule-reset update_deleted=91 staging_deleted=0 focus=2026-06-21
+2026-06-20T19:50:41 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-20T19:50:42 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-20T20:00:22 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10
+2026-06-20T20:05:23 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-20T20:05:27 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-20T20:05:38 update-schedule-reset update_deleted=91 staging_deleted=0 focus=2026-06-21
+2026-06-20T20:05:40 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-20T20:05:41 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-20T20:06:29 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=1.11
