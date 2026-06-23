@@ -823,7 +823,7 @@ async function runOrchestrator() {
       const requiredViews = [
         "class_oog",
         "class_start_times",
-        "classes_mobile",
+        "wec-classes_mobile",
         "wec-classes_print",
         "wec-classes_mobile_pro",
         "actives",
