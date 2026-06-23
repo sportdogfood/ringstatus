@@ -11364,3 +11364,53 @@
 2026-06-23T16:15:47 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
 2026-06-23T16:15:50 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
 2026-06-23T16:15:52 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T16:30:25 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T16:30:33 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T16:30:49 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T16:30:53 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T16:30:56 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T16:45:33 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T16:45:41 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T16:46:02 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T16:46:07 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T16:46:16 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T17:00:41 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T17:00:50 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T17:01:04 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T17:01:08 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T17:01:09 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T17:15:24 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T17:15:31 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T17:15:46 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T17:15:49 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T17:15:50 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T17:30:27 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T17:30:35 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T17:30:48 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T17:30:51 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T17:30:53 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T17:45:27 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T17:45:34 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T17:45:46 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T17:45:50 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T17:45:51 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T18:00:29 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T18:00:38 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T18:00:52 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T18:00:55 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T18:00:57 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T18:15:23 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T18:15:30 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T18:15:42 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T18:15:45 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T18:15:46 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T18:30:24 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T18:30:32 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T18:30:45 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T18:30:48 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T18:30:49 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T18:45:23 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T18:45:30 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T18:45:42 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T18:45:45 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T18:45:46 workflowv4-stage1-only stop focus=2026-06-21

@@ -34,3 +34,41 @@
 [debug] [2026-06-18T08:55:28.606Z] : Time:         Thu Jun 18 2026 04:55:28 GMT-0400 (Eastern Daylight Time)
 [debug] [2026-06-18T08:55:28.606Z] : ----------------------------------------------------------------------
 [debug] [2026-06-18T08:55:28.606Z] : 
+[debug] [2026-06-23T20:54:52.292Z] : > authorizing via signed-in user option
+[debug] [2026-06-23T20:54:52.294Z] : > command requires scopes: ["ZohoCatalyst.projects.ALL","ZohoCatalyst.zcql.CREATE"]
+[debug] [2026-06-23T20:54:52.311Z] : >>>> HTTP REQUEST : POST https://api.catalyst.zoho.com/baas/v1/project/5614000000393031/query 
+Request Body: {"query":"SELECT * FROM hs_update_schedule LIMIT 100 OFFSET 0"}
+
+[debug] [2026-06-23T20:54:52.673Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Tue, 23 Jun 2026 20:54:53 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-06-23T20:54:53.015Z] : >>>> HTTP REQUEST : POST https://api.catalyst.zoho.com/baas/v1/project/5614000000393031/query 
+Request Body: {"query":"SELECT * FROM hs_update_schedule LIMIT 100 OFFSET 100"}
+
+[debug] [2026-06-23T20:54:53.152Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Tue, 23 Jun 2026 20:54:53 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-06-23T20:54:53.327Z] : >>>> HTTP REQUEST : POST https://api.catalyst.zoho.com/baas/v1/project/5614000000393031/query 
+Request Body: {"query":"SELECT * FROM hs_update_schedule LIMIT 100 OFFSET 200"}
+
+[debug] [2026-06-23T20:54:53.444Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Tue, 23 Jun 2026 20:54:53 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-06-23T20:54:53.619Z] : >>>> HTTP REQUEST : POST https://api.catalyst.zoho.com/baas/v1/project/5614000000393031/query 
+Request Body: {"query":"SELECT * FROM hs_update_schedule LIMIT 100 OFFSET 300"}
+
+[debug] [2026-06-23T20:54:53.736Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Tue, 23 Jun 2026 20:54:54 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-06-23T20:54:53.825Z] : >>>> HTTP REQUEST : POST https://api.catalyst.zoho.com/baas/v1/project/5614000000393031/query 
+Request Body: {"query":"SELECT * FROM hs_update_schedule LIMIT 100 OFFSET 400"}
+
+[debug] [2026-06-23T20:54:53.948Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Tue, 23 Jun 2026 20:54:54 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-06-23T20:54:54.037Z] : >>>> HTTP REQUEST : POST https://api.catalyst.zoho.com/baas/v1/project/5614000000393031/query 
+Request Body: {"query":"SELECT * FROM hs_update_schedule LIMIT 100 OFFSET 500"}
+
+[debug] [2026-06-23T20:54:54.149Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Tue, 23 Jun 2026 20:54:54 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
