@@ -11844,3 +11844,25 @@
 2026-06-24T16:51:48 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
 2026-06-24T16:51:51 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
 2026-06-24T16:51:52 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T18:10:49 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T18:10:56 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T18:11:08 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-24T18:11:09 update-schedule-staging reset skipped; mirror-based Stage2C preserves staging records focus=2026-06-21
+2026-06-24T18:11:21 update-schedule-staging source=airtable.update_schedule staging_rows=90 update_rows=92 source_links=81 missing_source_links=0 out_of_focus_marked_inactive=0 stale_deleted=0 focus=2026-06-21
+2026-06-24T18:11:21 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14907|2026-06-21|local_core_workflow records=1
+2026-06-24T18:11:22 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T18:25:24 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T18:25:32 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T18:25:44 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-24T18:25:44 update-schedule-staging skipped focus=2026-06-21 working_rows=72
+2026-06-24T18:25:44 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T18:40:24 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T18:40:31 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T18:40:42 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-24T18:40:42 update-schedule-staging skipped focus=2026-06-21 working_rows=72
+2026-06-24T18:40:43 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T18:55:28 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T18:55:35 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T18:55:48 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-24T18:55:48 update-schedule-staging skipped focus=2026-06-21 working_rows=72
+2026-06-24T18:55:48 workflowv4-stage1-only stop focus=2026-06-21

@@ -1679,136 +1679,38 @@ function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue, [bool]$ResetFocus 
     }
     $baseBody.trigger_reason = $TriggerReason
   }
-  $resetResult = $null
   if ($ResetFocus) {
-    $resetBody = $baseBody.Clone()
-    $resetBody.action = "reset-focus-update-schedule"
-    $resetResult = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $resetBody -TimeoutSec 120
-    if ($resetResult.ok -eq $false) {
-      throw "horseshowing_update_schedule_runner reset failed: $($resetResult.error)"
-    }
-    Write-WorkflowLog "update-schedule-reset update_deleted=$($resetResult.update_schedule_deleted) staging_deleted=$($resetResult.update_schedule_staging_deleted) focus=$($resetResult.focus_day)"
+    Write-WorkflowLog "update-schedule-staging reset skipped; mirror-based Stage2C preserves staging records focus=$FocusDayValue"
   }
-  $probeBody = $baseBody.Clone()
-  $probeBody.batch_size = "50"
-  $probeBody.probe = "batch"
-  $probe = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $probeBody -TimeoutSec 120
-  if ($probe.ok -eq $false) {
-    throw "horseshowing_update_schedule_runner batch probe failed: $($probe.error)"
+  $body = $baseBody.Clone()
+  $body.action = "sync-update-schedule-staging-from-mirror"
+  $response = Invoke-RestMethod -Method Post -Uri $BaseUrl -ContentType "application/x-www-form-urlencoded" -Body $body -TimeoutSec 120
+  if ($response.ok -eq $false) {
+    throw "horseshowing_sync sync-update-schedule-staging-from-mirror failed: $($response.error)"
   }
-  if ((Int-OrZero $probe.selected_count) -lt 1) {
-    Write-WorkflowLog "update-schedule-staging no selected ring_day focus=$FocusDayValue"
-    return $probe
-  }
-  $selectedRingDayNos = @()
-  foreach ($selected in @($probe.selected)) {
-    $ringDayNo = [string]$selected.ring_day_no
-    if ($ringDayNo) { $selectedRingDayNos += $ringDayNo }
-  }
-  if ($selectedRingDayNos.Count -eq 0) {
-    foreach ($selected in @($probe.selected_ring_day_no)) {
-      $ringDayNo = [string]$selected
-      if ($ringDayNo) { $selectedRingDayNos += $ringDayNo }
-    }
-  }
-  $selectedRingDayNos = @($selectedRingDayNos | Select-Object -Unique)
-  if ($selectedRingDayNos.Count -eq 0) {
-    throw "horseshowing_update_schedule_runner selected no ring_day_no"
-  }
-
-  $responses = @()
-  foreach ($ringDayNo in $selectedRingDayNos) {
-    $body = $baseBody.Clone()
-    $body.ring_day_no = $ringDayNo
-    $body.probe = "update-write"
-    $ringResponse = $null
-    $usedSourceFallback = $false
-    try {
-      $ringResponse = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $body -TimeoutSec 120
-    } catch {
-      $usedSourceFallback = $true
-    }
-    if ($ringResponse -and $ringResponse.ok -eq $false) {
-      $usedSourceFallback = $true
-    }
-    if ($usedSourceFallback) {
-      $raw = Invoke-HorseshowingUpdateScheduleRaw -RingDayNo $ringDayNo
-      $fallbackBody = $baseBody.Clone()
-      $fallbackBody.ring_day_no = $ringDayNo
-      $fallbackBody.probe = "update-write"
-      $fallbackBody.raw_payload = $raw
-      $fallbackBody.raw_status = "200"
-      $fallbackBody.raw_content_type = "text/html; charset=utf-8"
-      $ringResponse = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $fallbackBody -TimeoutSec 120
-      Write-WorkflowLog "update-schedule-source-fallback ring_day_no=$ringDayNo focus=$FocusDayValue"
-    }
-    if ($ringResponse.ok -eq $false) {
-      throw "horseshowing_update_schedule_runner failed ring_day_no=${ringDayNo}: $($ringResponse.error)"
-    }
-    $responses += $ringResponse
-  }
-  $lastResponse = @($responses | Select-Object -Last 1)[0]
-  $response = [pscustomobject]@{
-    ok = $true
-    source = "airtable.get_ring_days"
-    target = "horseshowing_sync.fetch-update-schedule-raw"
-    show_no = [int]$ShowNo
-    focus_day = $FocusDayValue
-    selection_source = "focus_day"
-    total_get_ring_days = $probe.total_get_ring_days
-    eligible_not_past_focus_day = $probe.eligible_not_past_focus_day
-    batch_size = $probe.batch_size
-    window_minutes = $probe.window_minutes
-    total_slots = $probe.total_slots
-    slot_minutes = $probe.slot_minutes
-    slot_index = $probe.slot_index
-    selected_count = $selectedRingDayNos.Count
-    selected_ring_day_no = $selectedRingDayNos
-    focus_state = $lastResponse.focus_state
-    full_lock = $lastResponse.full_lock
-    focus_show_full_lock_count = $lastResponse.focus_show_full_lock_count
-    log_results = @($responses | ForEach-Object { $_.log_results } | ForEach-Object { $_ })
-  }
-  $stagingRows = 0
-  $updateRows = 0
-  $classStartRows = 0
-  $staleStagingRows = 0
-  $staleStagingInactivated = 0
-  $staleUpdateRows = 0
-  $staleUpdateDeleted = 0
-  foreach ($row in @($response.log_results)) {
-    $stagingRows += Int-OrZero $row.staging_rows
-    $updateRows += Int-OrZero $row.update_schedule_records
-    $classStartRows += Int-OrZero $row.class_start_records
-    if ($row.reconcile) {
-      $staleStagingRows += Int-OrZero $row.reconcile.stale_staging_rows
-      $staleStagingInactivated += Int-OrZero $row.reconcile.stale_staging_inactivated
-      $staleUpdateRows += Int-OrZero $row.reconcile.stale_update_schedule_rows
-      $staleUpdateDeleted += Int-OrZero $row.reconcile.stale_update_schedule_deleted
-    }
-  }
-  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -RecordsSeen $stagingRows -RecordsChanged $updateRows -Summary "update_schedule staging runner selected=$($response.selected_count) staging_rows=$stagingRows update_rows=$updateRows class_start_rows=$classStartRows stale_update_deleted=$staleUpdateDeleted stale_staging_inactivated=$staleStagingInactivated focus=$($response.focus_day)" -Payload @{
+  $stagingRows = Int-OrZero $response.update_schedule_staging_rows
+  $updateRows = Int-OrZero $response.update_schedule_rows
+  $stagingUpserts = Int-OrZero $response.update_schedule_staging_upserts
+  $staleStagingDeleted = Int-OrZero $response.update_schedule_staging_stale_deleted
+  $sourceLinkRows = Int-OrZero $response.update_schedule_staging_source_link_rows
+  $sourceLinkMissing = Int-OrZero $response.update_schedule_staging_source_link_missing
+  $outOfFocusMarkedInactive = Int-OrZero $response.update_schedule_staging_out_of_focus_marked_inactive
+  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -RecordsSeen $stagingRows -RecordsChanged $stagingUpserts -Summary "update_schedule_staging refreshed from Airtable update_schedule staging_rows=$stagingRows update_rows=$updateRows source_links=$sourceLinkRows missing_source_links=$sourceLinkMissing out_of_focus_marked_inactive=$outOfFocusMarkedInactive stale_deleted=$staleStagingDeleted focus=$($response.focus_day)" -Payload @{
     show_no = $ShowNo
     focus_day = $response.focus_day
-    selected_count = $response.selected_count
-    selected_ring_day_no = $response.selected_ring_day_no
-    total_get_ring_days = $response.total_get_ring_days
-    eligible_not_past_focus_day = $response.eligible_not_past_focus_day
-    batch_size = $response.batch_size
-    total_slots = $response.total_slots
-    slot_index = $response.slot_index
-    staging_rows = $stagingRows
-    update_schedule_records = $updateRows
-    class_start_records = $classStartRows
-    stale_staging_rows = $staleStagingRows
-    stale_staging_inactivated = $staleStagingInactivated
-    stale_update_schedule_rows = $staleUpdateRows
-    stale_update_schedule_deleted = $staleUpdateDeleted
-    reset = $resetResult
-    focus_state = $response.focus_state
-    log_results = $response.log_results
+    source = "airtable.update_schedule"
+    update_schedule_rows = $updateRows
+    update_schedule_staging_rows = $stagingRows
+    update_schedule_staging_upserts = $stagingUpserts
+    update_schedule_staging_stale_deleted = $staleStagingDeleted
+    update_schedule_staging_source_link_rows = $sourceLinkRows
+    update_schedule_staging_source_link_missing = $sourceLinkMissing
+    update_schedule_staging_out_of_focus_marked_inactive = $outOfFocusMarkedInactive
+    focus_show_control = $response.focus_show_control
+    raw_payload_used = $false
+    legacy_update_schedule_runner_used = $false
   }
-  Write-WorkflowLog "update-schedule-staging selected=$($response.selected_count) staging_rows=$stagingRows update_rows=$updateRows class_start_rows=$classStartRows stale_update_deleted=$staleUpdateDeleted stale_staging_inactivated=$staleStagingInactivated focus=$($response.focus_day)"
+  Write-WorkflowLog "update-schedule-staging source=airtable.update_schedule staging_rows=$stagingRows update_rows=$updateRows source_links=$sourceLinkRows missing_source_links=$sourceLinkMissing out_of_focus_marked_inactive=$outOfFocusMarkedInactive stale_deleted=$staleStagingDeleted focus=$($response.focus_day)"
   return $response
 }
 

@@ -269,6 +269,94 @@ Blocked class state:
 
 Important:
 
-- No Airtable `rs_section_inventory` row was created for `rs_overlay_center_v1`.
+- Airtable `rs_section_inventory` draft row: `recN3c5QuO0wl2dox`.
 - Do not mark this section complete until the missing overlay combo classes are added in Webflow and the section is finished and snapshotted.
 - After the user adds the missing classes, continue the existing section instead of creating a duplicate.
+
+## Open Build Note: `rs_overlay_bottom_left_v1`
+
+Date: 2026-06-24
+
+Target:
+
+- Webflow site: `6982268b7543ac3c80151266`
+- Webflow page: `kitchen-sink`
+- Webflow page ID: `6a3c0f785a7ed7e425d31d51`
+- Source template: `webflow/rs-template-system/master_ks/00_APPROVED_BASE_DO_NOT_REBUILD.html`
+- Section key: `rs_overlay_bottom_left_v1`
+
+Verified current Designer state:
+
+- A partial native section exists on `kitchen-sink`.
+- Section element ID: `e0e3d872-9be9-7b87-5cfd-3ee84caac1f2`
+- The section has `data-rs-section-key="rs_overlay_bottom_left_v1"`.
+- The section currently has the first wrapper structure:
+  - `section`
+  - `rs-section-container`
+  - `rs-section-padding`
+
+Blocked class state:
+
+- `rs-section` applied successfully to the section.
+- `is-overlay` applied successfully to the section.
+- `rs-section-container` applied successfully to the first child div.
+- `rs-section-padding` applied successfully to the second child div.
+- Webflow rejected the required section combo class:
+  - `is-overlay-bottom-left`
+
+Important:
+
+- Airtable `rs_section_inventory` draft row: `recPWB1VrnDwAuL8u`.
+- Do not mark this section complete until `is-overlay-bottom-left` is added in Webflow and the section is finished and snapshotted.
+- After the missing class is added, continue the existing section instead of creating a duplicate.
+
+## Open Build Note: `rs_form_stack_v1`
+
+Date: 2026-06-24
+
+Target:
+
+- Webflow site: `6982268b7543ac3c80151266`
+- Webflow page: `kitchen-sink`
+- Webflow page ID: `6a3c0f785a7ed7e425d31d51`
+- Source template: `webflow/rs-template-system/master_ks/00_APPROVED_BASE_DO_NOT_REBUILD.html`
+- Section key: `rs_form_stack_v1`
+
+Verified current Designer state:
+
+- A partial native section exists on `kitchen-sink`.
+- Section element ID: `b5265ee2-ffee-b892-7976-9a29928fa832`
+- The section has `data-rs-section-key="rs_form_stack_v1"`.
+- The section currently has the first wrapper structure:
+  - `section`
+  - `rs-section-container`
+  - `rs-section-padding`
+
+Blocked class state:
+
+- `rs-section` applied successfully to the section.
+- `rs-section-container` applied successfully to the first child div.
+- `rs-section-padding` applied successfully to the second child div.
+- Webflow rejected the required section combo class:
+  - `is-stack`
+
+Important:
+
+- Airtable `rs_section_inventory` draft row: `rec4myKQ6w68QPBaG`.
+- Do not mark this section complete until `is-stack` is added in Webflow and the section is finished and snapshotted.
+- After the missing class is added, continue the existing section instead of creating a duplicate.
+
+## Deferred Build Notes: Stack Sections
+
+Date: 2026-06-24
+
+These sections were not built because the approved source template requires `is-stack`, and `rs_form_stack_v1` proved Webflow currently rejects that combo class:
+
+- `rs_card_grid_stack_v1`
+  - Airtable `rs_section_inventory` draft row: `recwSTQK7kdokOjob`
+  - Required modifier class: `is-stack`
+- `rs_carousel_stack_v1`
+  - Airtable `rs_section_inventory` draft row: `recMkIOLwObTL5fHR`
+  - Required modifier class: `is-stack`
+
+Do not create partial native sections for these until the missing `is-stack` combo class is available in Webflow.
