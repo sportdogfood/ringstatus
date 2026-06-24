@@ -1638,7 +1638,30 @@ function Invoke-HorseshowingUpdateScheduleRaw {
   return $raw
 }
 
-function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue, [bool]$ResetFocus = $false) {
+function Invoke-UpdateScheduleMirrorWorkflow($FocusDayValue, [string]$TriggerReason) {
+  if (!$FocusDayValue) { return $null }
+  if ($TriggerReason -notin @("focus_day_change", "cadence")) {
+    throw "unsupported update_schedule mirror trigger_reason=$TriggerReason"
+  }
+  $token = Get-WecAirtableToken
+  $body = @{
+    action = "sync-update-schedule-mirror"
+    show_no = $ShowNo
+    focus_day = $FocusDayValue
+    trigger_reason = $TriggerReason
+    base_id = $AirtableBaseId
+    airtable_token = $token
+  }
+  $result = Invoke-RestMethod -Method Post -Uri $UpdateScheduleRunnerUrl -ContentType "application/x-www-form-urlencoded" -Body $body -TimeoutSec 120
+  if ($result.ok -eq $false) {
+    $mirrorError = if ($result.blocker) { $result.blocker } else { $result.error }
+    throw "horseshowing_update_schedule_runner mirror failed: $mirrorError"
+  }
+  Write-WorkflowLog "update-schedule-mirror trigger=$TriggerReason catalyst=$($result.catalyst_count) airtable=$($result.airtable_count) confirm_delete_after=$($result.confirm_delete_rows_after) stale_deleted=$($result.stale_update_schedule_deleted) focus=$FocusDayValue"
+  return $result
+}
+
+function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue, [bool]$ResetFocus = $false, [string]$TriggerReason = "") {
   if (!$FocusDayValue) { return $null }
   $token = Get-WecAirtableToken
   $baseBody = @{
@@ -1649,6 +1672,12 @@ function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue, [bool]$ResetFocus 
     mark_focus_state = "1"
     base_id = $AirtableBaseId
     airtable_token = $token
+  }
+  if ($TriggerReason) {
+    if ($TriggerReason -notin @("focus_day_change", "cadence")) {
+      throw "unsupported update_schedule trigger_reason=$TriggerReason"
+    }
+    $baseBody.trigger_reason = $TriggerReason
   }
   $resetResult = $null
   if ($ResetFocus) {
@@ -2468,13 +2497,16 @@ if ($heartbeat.trigger_error) {
 }
 if ($heartbeat.focus_day) {
   $updateScheduleFocusChanged = (!$state.ContainsKey("update_schedule_staging_focus_day")) -or ([string]$state["update_schedule_staging_focus_day"] -ne [string]$heartbeat.focus_day)
+  $updateScheduleTriggerReason = if ($cadenceGate.reason -eq "focus_changed") { "focus_day_change" } else { "cadence" }
+  $updateScheduleMirrorResult = Invoke-UpdateScheduleMirrorWorkflow $heartbeat.focus_day -TriggerReason $updateScheduleTriggerReason
+  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule_mirror" -Status "ok" -RecordsSeen (Int-OrZero $updateScheduleMirrorResult.catalyst_count) -RecordsChanged ((Int-OrZero $updateScheduleMirrorResult.update_schedule_upserts) + (Int-OrZero $updateScheduleMirrorResult.stale_update_schedule_deleted)) -Summary "update_schedule mirror trigger=$updateScheduleTriggerReason catalyst=$($updateScheduleMirrorResult.catalyst_count) airtable=$($updateScheduleMirrorResult.airtable_count) confirm_delete_after=$($updateScheduleMirrorResult.confirm_delete_rows_after)" -Payload $updateScheduleMirrorResult
   $catalystScheduleRows = Int-OrZero $heartbeat.schedule_rows
   $updateScheduleMissingWorkingRows = ($catalystScheduleRows -eq 0)
   $updateScheduleRefreshDue = (Due $state "update_schedule_staging_workflow" 60)
   $updateScheduleDue = $ForceSync -or $updateScheduleFocusChanged -or $updateScheduleMissingWorkingRows
   try {
     if ($updateScheduleDue) {
-      $updateScheduleResult = Invoke-UpdateScheduleStagingWorkflow $heartbeat.focus_day -ResetFocus:$updateScheduleFocusChanged
+      $updateScheduleResult = Invoke-UpdateScheduleStagingWorkflow $heartbeat.focus_day -ResetFocus:$updateScheduleFocusChanged -TriggerReason $updateScheduleTriggerReason
       $state["update_schedule_staging_workflow"] = (Get-Date).ToString("o")
       $state["update_schedule_staging_focus_day"] = [string]$heartbeat.focus_day
       Resolve-WecAirtableAlert -AlertType "local_core_workflow_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|local_core_workflow" -Message "Resolved: update_schedule staging workflow completed." -Payload @{
