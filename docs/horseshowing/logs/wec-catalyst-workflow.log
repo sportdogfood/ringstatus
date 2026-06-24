@@ -11644,3 +11644,24 @@
 2026-06-24T06:45:42 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
 2026-06-24T06:45:46 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
 2026-06-24T06:45:47 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T07:00:33 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T07:00:52 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T07:01:09 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-24T07:01:13 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-24T07:01:14 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T07:15:41 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T07:15:49 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T07:16:05 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-24T07:16:14 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-24T07:16:16 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T07:30:25 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T07:30:33 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T07:30:46 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-24T07:30:50 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-24T07:30:51 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-24T07:33:24 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=2.98
+2026-06-24T07:48:25 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-24T07:48:32 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-24T07:48:43 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-24T07:48:46 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-24T07:48:47 workflowv4-stage1-only stop focus=2026-06-21
