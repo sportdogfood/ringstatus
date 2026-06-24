@@ -11431,3 +11431,26 @@
 2026-06-23T19:30:50 workflowv4-stage1-only stop focus=2026-06-21
 2026-06-23T19:45:24 cadence-gate pass focus=14907|2026-06-21|day cadence=12
 2026-06-23T19:45:31 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T19:45:43 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T19:45:46 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T19:45:47 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T20:00:31 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T20:00:39 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T20:00:54 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T20:00:58 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T20:01:00 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T20:15:24 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T20:15:31 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T20:15:43 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T20:15:46 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T20:15:48 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T20:30:43 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T20:30:51 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T20:31:03 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T20:31:07 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T20:31:08 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-23T20:45:23 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-23T20:45:31 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=72 triggers=0
+2026-06-23T20:45:42 update-schedule-reset update_deleted=92 staging_deleted=0 focus=2026-06-21
+2026-06-23T20:45:46 update-schedule-source-fallback ring_day_no=4228 focus=2026-06-21
+2026-06-23T20:45:47 workflowv4-stage1-only stop focus=2026-06-21
