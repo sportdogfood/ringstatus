@@ -235,3 +235,40 @@ The expected workflow is:
 ### Known Caveat
 
 When using `whtml_builder`, Webflow may normalize certain tags into native Webflow element types. Verification must check final Designer IDs, attributes, classes, and rendered behavior instead of assuming raw HTML tag types survived exactly.
+
+## Open Build Note: `rs_overlay_center_v1`
+
+Date: 2026-06-24
+
+Target:
+
+- Webflow site: `6982268b7543ac3c80151266`
+- Webflow page: `kitchen-sink`
+- Webflow page ID: `6a3c0f785a7ed7e425d31d51`
+- Source template: `webflow/rs-template-system/master_ks/00_APPROVED_BASE_DO_NOT_REBUILD.html`
+- Section key: `rs_overlay_center_v1`
+
+Verified current Designer state:
+
+- A partial native section exists on `kitchen-sink`.
+- Section element ID: `9e46e813-71fc-0425-a266-a618e5990487`
+- The section has `data-rs-section-key="rs_overlay_center_v1"`.
+- The section currently has only the first wrapper structure:
+  - `section`
+  - `rs-section-container`
+  - `rs-section-padding`
+
+Blocked class state:
+
+- `rs-section` applied successfully to the section.
+- `rs-section-container` applied successfully to the first child div.
+- `rs-section-padding` applied successfully to the second child div.
+- Webflow rejected the section combo classes:
+  - `is-overlay`
+  - `is-overlay-center`
+
+Important:
+
+- No Airtable `rs_section_inventory` row was created for `rs_overlay_center_v1`.
+- Do not mark this section complete until the missing overlay combo classes are added in Webflow and the section is finished and snapshotted.
+- After the user adds the missing classes, continue the existing section instead of creating a duplicate.
