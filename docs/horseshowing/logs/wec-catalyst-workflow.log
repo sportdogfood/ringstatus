@@ -12463,3 +12463,4 @@
 2026-06-25T17:00:53 update-schedule-staging skipped focus=2026-06-21 working_rows=72
 2026-06-25T17:00:54 workflowv4-stage1-only stop focus=2026-06-21
 2026-06-25T17:05:26 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=4.94
+2026-06-25T17:10:37 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10.12
