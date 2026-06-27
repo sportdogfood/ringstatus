@@ -13321,3 +13321,4 @@
 2026-06-26T21:55:33 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
 2026-06-26T21:55:34 update-schedule-staging skipped focus=2026-06-21 working_rows=80
 2026-06-26T21:55:34 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-26T22:00:15 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5.07
