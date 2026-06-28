@@ -9,18 +9,18 @@
       color-scheme: light;
       --bg: #f4f6f7;
       --panel: #fff;
-      --ink: #1f2933;
-      --muted: #667085;
-      --line: #d8dee6;
+      --ink: #18251f;
+      --muted: #647067;
+      --line: #d8dfdb;
       --accent: #245e52;
-      --accent-2: #b4512a;
+      --accent-strong: #17433a;
       --accent-soft: #e4f0ed;
-      --bad: #a52828;
-      --bad-soft: #ffe5e5;
-      --hot: #8a4b00;
-      --hot-soft: #fff3d6;
-      --ok: #186a3b;
-      --ok-soft: #e1f3e8;
+      --warn: #835600;
+      --warn-soft: #fff4cf;
+      --bad: #9b2424;
+      --bad-soft: #ffe7e7;
+      --ok: #17623b;
+      --ok-soft: #e2f2e8;
     }
 
     * { box-sizing: border-box; }
@@ -33,859 +33,943 @@
     }
 
     header {
-      background: #16231f;
+      background: #14231e;
       color: #fff;
-      padding: 18px 14px;
+      padding: 16px 14px;
     }
 
     header h1 {
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       letter-spacing: 0;
     }
 
     header p {
-      margin: 6px 0 0;
-      color: #dce6e2;
-      font-size: .95rem;
+      margin: 5px 0 0;
+      color: #dbe6e1;
+      font-size: .92rem;
     }
 
     main {
-      width: min(100%, 860px);
+      width: min(100%, 840px);
       margin: 0 auto;
       padding: 12px;
     }
 
-    .note,
+    .notice,
     .panel,
-    .current-line {
+    .line-summary {
+      background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--panel);
       padding: 12px;
       margin-bottom: 12px;
     }
 
-    .note {
-      border-color: #e0c36b;
-      background: #fff7da;
-      color: #553d00;
-      font-size: .94rem;
+    .notice {
+      background: var(--warn-soft);
+      border-color: #e4c566;
+      color: #533900;
+      font-size: .93rem;
     }
 
-    .current-line {
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      border-color: #b8cfc8;
-      background: #f7fbfa;
-      box-shadow: 0 1px 2px rgba(16, 24, 40, .08);
+    .error {
+      display: none;
+      background: var(--bad-soft);
+      border-color: #efb2b2;
+      color: var(--bad);
     }
 
-    .current-line strong,
-    .panel-title {
-      display: block;
-      margin-bottom: 6px;
-      font-size: .95rem;
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .92rem;
     }
 
     .tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 12px;
     }
 
-    button,
-    .tab-button {
+    .tab-button,
+    button {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 650;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .tab-button.active,
+    .primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .ghost {
+      background: #fff;
+      color: var(--accent-strong);
+      border-color: #b8cbc5;
+    }
+
+    .tab-panel[hidden] { display: none; }
+
+    .form-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: .88rem;
+      font-weight: 700;
+      color: #34443d;
+    }
+
+    .combo {
+      position: relative;
+    }
+
+    .input-row {
+      position: relative;
+    }
+
+    input,
+    textarea {
+      width: 100%;
       min-height: 46px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
       color: var(--ink);
+      font: inherit;
       padding: 10px 12px;
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
     }
 
-    button:disabled {
-      cursor: not-allowed;
-      opacity: .55;
-    }
-
-    .tab-button.active,
-    .primary {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .secondary {
-      border-color: var(--accent-2);
-      color: var(--accent-2);
-    }
-
-    .field {
-      position: relative;
-      display: grid;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    label {
-      color: #344054;
-      font-size: .88rem;
-      font-weight: 750;
-    }
-
-    input[type="text"],
-    textarea,
-    input[type="file"] {
-      width: 100%;
-      min-height: 48px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--ink);
-      padding: 11px 12px;
-      font: inherit;
+    .input-row input {
+      padding-right: 46px;
     }
 
     textarea {
-      min-height: 142px;
+      min-height: 132px;
       resize: vertical;
-      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-      font-size: .94rem;
     }
 
-    .options {
+    .clear-button {
       position: absolute;
+      top: 1px;
+      right: 1px;
+      width: 44px;
+      min-height: 44px;
+      border-color: transparent;
+      background: transparent;
+      padding: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .menu {
+      position: absolute;
+      z-index: 20;
       left: 0;
-      right: 0;
-      top: calc(100% + 2px);
-      z-index: 10;
+      right: 50px;
       max-height: 240px;
-      overflow-y: auto;
+      overflow: auto;
+      margin-top: 4px;
+      padding: 4px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
-      box-shadow: 0 8px 22px rgba(16, 24, 40, .14);
+      box-shadow: 0 12px 28px rgba(20, 35, 30, .14);
     }
 
+    .menu[hidden] { display: none; }
+
     .option {
-      display: block;
       width: 100%;
-      min-height: 44px;
+      display: block;
+      min-height: 42px;
+      padding: 9px 10px;
       border: 0;
-      border-radius: 0;
-      border-bottom: 1px solid #eef1f4;
+      border-radius: 6px;
       background: #fff;
       text-align: left;
       font-weight: 600;
     }
 
-    .option:last-child { border-bottom: 0; }
-
-    .option-empty {
-      padding: 12px;
+    .option small {
+      display: block;
       color: var(--muted);
-      font-size: .92rem;
+      font-weight: 500;
+    }
+
+    .option:hover,
+    .option:focus {
+      background: var(--accent-soft);
+      outline: none;
+    }
+
+    .line-summary {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-color: #bfd2cc;
+      box-shadow: 0 6px 18px rgba(20, 35, 30, .08);
+    }
+
+    .pipe {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3px;
+      font-weight: 700;
+    }
+
+    .pipe span {
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .actions {
       display: grid;
       grid-template-columns: 1fr;
       gap: 8px;
-      margin-top: 8px;
     }
 
-    .hint {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: .88rem;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      min-height: 28px;
-      margin-top: 8px;
-    }
-
-    .chip {
-      display: inline-flex;
-      border-radius: 999px;
-      padding: 5px 9px;
-      background: var(--accent-soft);
-      color: #173f37;
-      font-size: .88rem;
-      font-weight: 700;
-    }
-
-    .counts {
+    .parsed-list,
+    .output-list {
       display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 8px;
-      margin-top: 10px;
     }
 
-    .count {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 10px;
-      background: #fbfcfd;
-    }
-
-    .count strong {
-      display: block;
-      font-size: 1.2rem;
-    }
-
-    .count span,
-    .small {
-      color: var(--muted);
-      font-size: .82rem;
-    }
-
-    .tab-panel[hidden],
-    .options[hidden] { display: none; }
-
-    .cards {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .card {
+    .parsed-card,
+    .output-row {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
-      padding: 11px;
+      padding: 10px;
     }
 
-    .card-grid {
-      display: grid;
-      gap: 4px;
-      margin: 8px 0;
+    .parsed-card .raw {
+      color: var(--muted);
+      font-size: .86rem;
+      overflow-wrap: anywhere;
+      margin-bottom: 6px;
     }
 
-    .card-grid div {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      border-bottom: 1px solid #eef1f4;
-      padding: 4px 0;
+    .card-action {
+      margin-top: 8px;
+      width: 100%;
     }
 
-    .card-grid div:last-child { border-bottom: 0; }
-
-    .status {
+    .badge {
       display: inline-flex;
+      align-items: center;
+      min-height: 24px;
       border-radius: 999px;
-      padding: 4px 8px;
-      font-size: .8rem;
+      padding: 2px 8px;
+      font-size: .76rem;
       font-weight: 800;
-      white-space: nowrap;
+      letter-spacing: .02em;
     }
 
-    .status.success { background: var(--ok-soft); color: var(--ok); }
-    .status.hot_tag { background: var(--hot-soft); color: var(--hot); }
-    .status.missing,
-    .status.mismatched,
-    .status.ambiguous { background: var(--bad-soft); color: var(--bad); }
+    .badge.SUCCESS { background: var(--ok-soft); color: var(--ok); }
+    .badge.HOT_TAG { background: var(--warn-soft); color: var(--warn); }
+    .badge.MISSING,
+    .badge.MISMATCHED,
+    .badge.AMBIGUOUS { background: var(--bad-soft); color: var(--bad); }
 
     .empty {
-      margin: 10px 0 0;
       color: var(--muted);
       font-size: .92rem;
     }
 
-    @media (min-width: 760px) {
+    .file-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    @media (min-width: 720px) {
       main { padding: 18px; }
-      header {
-        padding-left: calc((100% - 860px) / 2 + 18px);
-        padding-right: calc((100% - 860px) / 2 + 18px);
-      }
       .actions,
-      .counts { grid-template-columns: repeat(2, 1fr); }
-      .counts { grid-template-columns: repeat(4, 1fr); }
-      .cards { grid-template-columns: 1fr 1fr; }
+      .file-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .pipe {
+        grid-template-columns: 1fr 1fr 1.5fr 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Barn White-Board Audit Prototype</h1>
-    <p id="snapshotTitle">Loading static snapshot...</p>
+    <p>Read-only Development endpoint test surface.</p>
   </header>
 
   <main>
-    <p class="note">This prototype uses a static exported snapshot for show_no=14907 and focus_day=2026-06-21. It does not read live Airtable or Catalyst.</p>
+    <div class="notice">
+      This prototype reads a Development-only read endpoint for show_no=14907 using the active Airtable focus_show. It does not read static snapshots, write Airtable or Catalyst state, run workflows, deploy, or publish.
+    </div>
+
+    <div class="notice error" id="errorBox"></div>
 
     <section class="panel">
-      <strong class="panel-title">Snapshot Counts</strong>
-      <p class="hint" id="snapshotStatus">Loading barn-white-board-audit-snapshot-14907-2026-06-21.json</p>
-      <div class="counts">
-        <div class="count"><strong id="scheduleCount">0</strong><span>schedule rows</span></div>
-        <div class="count"><strong id="classOogCount">0</strong><span>eligible class rows</span></div>
-        <div class="count"><strong id="entryCount">0</strong><span>eligible entry rows</span></div>
-        <div class="count"><strong id="hotPatchCount">0</strong><span>hot patch rows</span></div>
+      <div class="status-row">
+        <strong id="loadStatus">Loading form options...</strong>
+        <span id="countsText"></span>
       </div>
-      <p class="hint" id="filterSummary"></p>
-      <p class="hint" id="missingFields"></p>
+      <div class="meta" id="focusText"></div>
     </section>
 
-    <section class="current-line" aria-live="polite">
-      <strong>Current Board Line</strong>
-      <div id="currentLineText">Select ring, time, class, and horse.</div>
-      <div class="chips" id="selectedHorses"></div>
-    </section>
+    <div class="tabs" role="tablist" aria-label="Barn board prototype tabs">
+      <button class="tab-button active" id="smartTab" type="button" role="tab" aria-selected="true">Smart Form</button>
+      <button class="tab-button" id="boardTab" type="button" role="tab" aria-selected="false">Barn Board</button>
+    </div>
 
-    <section class="panel">
-      <div class="tabs" role="tablist" aria-label="Barn white-board input mode">
-        <button class="tab-button active" id="smartTab" type="button" role="tab" aria-selected="true" aria-controls="smartPanel">Smart Form</button>
-        <button class="tab-button" id="boardTab" type="button" role="tab" aria-selected="false" aria-controls="boardPanel">Barn Board</button>
+    <section class="tab-panel" id="smartPanel" role="tabpanel">
+      <div class="line-summary" aria-live="polite">
+        <div class="pipe" id="currentLine"></div>
       </div>
 
-      <div class="tab-panel" id="smartPanel" role="tabpanel" aria-labelledby="smartTab">
-        <div class="field" data-combo="ring">
+      <div class="panel form-stack">
+        <div class="combo" data-field="ring">
           <label for="ringInput">Ring</label>
-          <input id="ringInput" type="text" autocomplete="off" placeholder="Select or type ring">
-          <div class="options" id="ringOptions" hidden></div>
+          <div class="input-row">
+            <input id="ringInput" autocomplete="off" placeholder="Select ring" disabled>
+            <button class="clear-button" type="button" data-clear="ring" aria-label="Clear ring">x</button>
+          </div>
+          <div class="menu" id="ringMenu" hidden></div>
         </div>
-        <div class="field" data-combo="time">
-          <label for="timeInput">Time</label>
-          <input id="timeInput" type="text" autocomplete="off" placeholder="Select ring first" disabled>
-          <div class="options" id="timeOptions" hidden></div>
-        </div>
-        <div class="field" data-combo="className">
-          <label for="classInput">Class</label>
-          <input id="classInput" type="text" autocomplete="off" placeholder="Select time first" disabled>
-          <div class="options" id="classOptions" hidden></div>
-        </div>
-        <div class="field" data-combo="horse">
-          <label for="horseInput">Horse</label>
-          <input id="horseInput" type="text" autocomplete="off" placeholder="Select class first" disabled>
-          <div class="options" id="horseOptions" hidden></div>
-        </div>
-        <p class="hint" id="smartHint"></p>
-        <div class="actions">
-          <button class="secondary" id="addHorseButton" type="button">Add Horse</button>
-          <button class="primary" id="addLineButton" type="button">Add Line</button>
-        </div>
-      </div>
 
-      <div class="tab-panel" id="boardPanel" role="tabpanel" aria-labelledby="boardTab" hidden>
-        <div class="field">
-          <label for="importText">Paste Import</label>
-          <textarea id="importText" spellcheck="false" placeholder="ring | time | class | horse"></textarea>
+        <div class="combo" data-field="time">
+          <label for="timeInput">Time</label>
+          <div class="input-row">
+            <input id="timeInput" autocomplete="off" placeholder="Select time" disabled>
+            <button class="clear-button" type="button" data-clear="time" aria-label="Clear time">x</button>
+          </div>
+          <div class="menu" id="timeMenu" hidden></div>
         </div>
-        <div class="field">
-          <label for="importFile">File Import</label>
-          <input id="importFile" type="file" accept=".csv,.txt">
-          <p class="hint">CSV or TXT is processed locally in this browser only.</p>
+
+        <div class="combo" data-field="class">
+          <label for="classInput">Class</label>
+          <div class="input-row">
+            <input id="classInput" autocomplete="off" placeholder="Select class" disabled>
+            <button class="clear-button" type="button" data-clear="class" aria-label="Clear class">x</button>
+          </div>
+          <div class="menu" id="classMenu" hidden></div>
         </div>
-        <button class="primary" id="parseButton" type="button">Parse Lines</button>
-        <div class="cards" id="parsedCards"></div>
+
+        <div class="combo" data-field="horse">
+          <label for="horseInput">Horse</label>
+          <div class="input-row">
+            <input id="horseInput" autocomplete="off" placeholder="Select horse" disabled>
+            <button class="clear-button" type="button" data-clear="horse" aria-label="Clear horse">x</button>
+          </div>
+          <div class="menu" id="horseMenu" hidden></div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" type="button" id="addHorseButton" disabled>Add Horse</button>
+          <button class="primary" type="button" id="addLineButton" disabled>Add Line</button>
+          <button class="ghost" type="button" id="clearFormButton">Clear Form</button>
+        </div>
       </div>
     </section>
 
+    <section class="tab-panel" id="boardPanel" role="tabpanel" hidden>
+      <div class="panel form-stack">
+        <div>
+          <label for="importText">Paste Import</label>
+          <textarea id="importText" placeholder="ring | time | class | horse&#10;ring,time,class,horse"></textarea>
+        </div>
+        <div class="file-row">
+          <button class="primary" type="button" id="submitImportButton" disabled>Submit</button>
+          <input id="importFile" type="file" accept=".csv,.txt,text/csv,text/plain">
+        </div>
+      </div>
+      <section class="panel">
+        <strong>Parsed Lines</strong>
+        <div class="parsed-list" id="parsedList">
+          <div class="empty">No imported lines yet.</div>
+        </div>
+      </section>
+    </section>
+
     <section class="panel">
-      <strong class="panel-title">Normalized Board Lines</strong>
-      <p class="empty" id="outputEmpty">No board lines added yet.</p>
-      <div class="cards" id="outputCards"></div>
+      <strong>Normalized Output</strong>
+      <div class="output-list" id="outputList">
+        <div class="empty">No board lines added yet.</div>
+      </div>
     </section>
   </main>
 
   <script>
-    const SNAPSHOT_URL = "barn-white-board-audit-snapshot-14907-2026-06-21.json";
+    const ENDPOINT_URL = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=barn-board-form-options&show_no=14907";
     const state = {
-      snapshot: null,
-      scheduleRows: [],
-      eligibleClassRows: [],
-      eligibleEntryRows: [],
-      hotPatchRows: [],
-      selected: { ring: "", time: "", className: "", horse: "" },
-      typed: { ring: "", time: "", className: "", horse: "" },
+      ready: false,
+      rows: [],
+      horses: [],
+      hotPatches: [],
+      output: [],
+      parsed: [],
       selectedHorses: [],
-      parsedRows: [],
-      normalizedLines: [],
-      missingFields: []
+      selections: { ring: "", time: "", className: "", horse: "" },
+      inputs: { ring: "", time: "", className: "", horse: "" }
     };
 
-    const inputs = {
-      ring: document.getElementById("ringInput"),
-      time: document.getElementById("timeInput"),
-      className: document.getElementById("classInput"),
-      horse: document.getElementById("horseInput")
-    };
-    const optionEls = {
-      ring: document.getElementById("ringOptions"),
-      time: document.getElementById("timeOptions"),
-      className: document.getElementById("classOptions"),
-      horse: document.getElementById("horseOptions")
+    const $ = (id) => document.getElementById(id);
+    const els = {
+      errorBox: $("errorBox"),
+      loadStatus: $("loadStatus"),
+      countsText: $("countsText"),
+      focusText: $("focusText"),
+      smartTab: $("smartTab"),
+      boardTab: $("boardTab"),
+      smartPanel: $("smartPanel"),
+      boardPanel: $("boardPanel"),
+      currentLine: $("currentLine"),
+      ringInput: $("ringInput"),
+      timeInput: $("timeInput"),
+      classInput: $("classInput"),
+      horseInput: $("horseInput"),
+      ringMenu: $("ringMenu"),
+      timeMenu: $("timeMenu"),
+      classMenu: $("classMenu"),
+      horseMenu: $("horseMenu"),
+      addHorseButton: $("addHorseButton"),
+      addLineButton: $("addLineButton"),
+      clearFormButton: $("clearFormButton"),
+      importText: $("importText"),
+      importFile: $("importFile"),
+      submitImportButton: $("submitImportButton"),
+      parsedList: $("parsedList"),
+      outputList: $("outputList")
     };
 
-    function text(value) {
-      return String(value ?? "").trim();
+    function clean(value) {
+      return String(value ?? "").replace(/\s+/g, " ").trim();
     }
 
     function key(value) {
-      return text(value).toLowerCase().replace(/\s+/g, " ");
+      return clean(value).toLowerCase();
     }
 
-    function exact(a, b) {
-      return key(a) === key(b);
+    function list(value) {
+      if (Array.isArray(value)) return value.map(clean).filter(Boolean);
+      return clean(value).split(/[,\n|]/).map(clean).filter(Boolean);
     }
 
-    function truthy(value) {
-      return value === true || ["true", "1", "yes", "checked"].includes(key(value));
+    function uniqueBy(items, selector) {
+      const seen = new Set();
+      const out = [];
+      for (const item of items) {
+        const value = clean(selector(item));
+        const id = key(value);
+        if (!id || seen.has(id)) continue;
+        seen.add(id);
+        out.push(item);
+      }
+      return out;
+    }
+
+    function containsSearch(text, search) {
+      const needle = key(search);
+      if (!needle) return true;
+      return key(text).includes(needle);
+    }
+
+    function selectedRows(level = "horse") {
+      return state.rows.filter((row) => {
+        if (state.selections.ring && key(row.ring_name_normalized) !== key(state.selections.ring)) return false;
+        if ((level === "class" || level === "horse") && state.selections.time && key(row.time_text) !== key(state.selections.time)) return false;
+        if (level === "horse" && state.selections.className && key(row.class_name) !== key(state.selections.className)) return false;
+        return true;
+      });
+    }
+
+    function ringOptions(search = "") {
+      return uniqueBy(state.rows, (row) => row.ring_name_normalized)
+        .map((row) => ({ label: row.ring_name_normalized, value: row.ring_name_normalized }))
+        .filter((option) => containsSearch(option.label, search));
+    }
+
+    function timeOptions(search = "") {
+      return uniqueBy(selectedRows("time"), (row) => row.time_text)
+        .map((row) => ({ label: row.time_text, value: row.time_text }))
+        .filter((option) => containsSearch(option.label, search));
+    }
+
+    function classOptions(search = "") {
+      return uniqueBy(selectedRows("class"), (row) => row.class_name)
+        .map((row) => ({
+          label: row.class_name,
+          value: row.class_name,
+          search: [row.class_name, ...(row.class_name_tokens || [])].join(" ")
+        }))
+        .filter((option) => containsSearch(option.search, search));
+    }
+
+    function horseOptions(search = "") {
+      const options = [];
+      for (const row of selectedRows("horse")) {
+        const barns = list(row.barn_from_entry_go_times);
+        const horses = list(row.horse_from_entry_go_times);
+        const length = Math.max(barns.length, horses.length);
+        for (let index = 0; index < length; index += 1) {
+          const barn = barns[index] || "";
+          const horse = horses[index] || barns[index] || "";
+          const display = barn || horse;
+          if (!display) continue;
+          options.push({
+            label: display,
+            value: display,
+            horse,
+            barn_name: barn,
+            source: "schedule",
+            search: [display, barn, horse].join(" ")
+          });
+        }
+      }
+      for (const horse of state.horses) {
+        const display = clean(horse.barn_name || horse.horse_display || horse.display || horse.horse);
+        if (!display) continue;
+        options.push({
+          label: display,
+          value: display,
+          horse: clean(horse.horse),
+          barn_name: clean(horse.barn_name),
+          source: "horses",
+          search: [display, horse.barn_name, horse.horse_display, horse.display, horse.horse].join(" ")
+        });
+      }
+      return uniqueBy(options, (option) => `${option.label}|${option.horse}`)
+        .filter((option) => containsSearch(option.search, search));
+    }
+
+    function getOptions(field) {
+      if (field === "ring") return ringOptions(state.inputs.ring);
+      if (field === "time") return timeOptions(state.inputs.time);
+      if (field === "class") return classOptions(state.inputs.className);
+      return horseOptions(state.inputs.horse);
+    }
+
+    function fieldInput(field) {
+      return field === "class" ? els.classInput : els[`${field}Input`];
+    }
+
+    function fieldMenu(field) {
+      return field === "class" ? els.classMenu : els[`${field}Menu`];
+    }
+
+    function renderMenu(field) {
+      const menu = fieldMenu(field);
+      const options = getOptions(field).slice(0, 80);
+      menu.innerHTML = "";
+      if (!options.length) {
+        const empty = document.createElement("div");
+        empty.className = "option";
+        empty.textContent = "No matches";
+        menu.appendChild(empty);
+        return;
+      }
+      for (const option of options) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option";
+        button.innerHTML = option.source === "schedule"
+          ? `${escapeHtml(option.label)}<small>In this class${option.horse && key(option.horse) !== key(option.label) ? ` - ${escapeHtml(option.horse)}` : ""}</small>`
+          : option.source === "horses"
+            ? `${escapeHtml(option.label)}<small>${escapeHtml(option.horse || "active horse")}</small>`
+            : escapeHtml(option.label);
+        button.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+          chooseOption(field, option);
+        });
+        menu.appendChild(button);
+      }
+    }
+
+    function showMenu(field) {
+      if (!state.ready) return;
+      renderMenu(field);
+      fieldMenu(field).hidden = false;
+    }
+
+    function hideMenus() {
+      for (const menu of [els.ringMenu, els.timeMenu, els.classMenu, els.horseMenu]) menu.hidden = true;
+    }
+
+    function setInputValue(field, value) {
+      if (field === "class") {
+        state.inputs.className = value;
+        els.classInput.value = value;
+      } else {
+        state.inputs[field] = value;
+        fieldInput(field).value = value;
+      }
+    }
+
+    function chooseOption(field, option) {
+      if (field === "ring") {
+        state.selections.ring = option.value;
+        setInputValue("ring", option.value);
+        clearField("time", false);
+      } else if (field === "time") {
+        state.selections.time = option.value;
+        setInputValue("time", option.value);
+        clearField("class", false);
+      } else if (field === "class") {
+        state.selections.className = option.value;
+        setInputValue("class", option.value);
+        clearField("horse", false);
+      } else {
+        state.selections.horse = option.value;
+        setInputValue("horse", option.value);
+      }
+      hideMenus();
+      renderAll();
+    }
+
+    function clearField(field, rerender = true) {
+      if (field === "ring") {
+        state.selections.ring = "";
+        setInputValue("ring", "");
+        clearField("time", false);
+      } else if (field === "time") {
+        state.selections.time = "";
+        setInputValue("time", "");
+        clearField("class", false);
+      } else if (field === "class") {
+        state.selections.className = "";
+        setInputValue("class", "");
+        clearField("horse", false);
+      } else if (field === "horse") {
+        state.selections.horse = "";
+        setInputValue("horse", "");
+      }
+      if (rerender) renderAll();
+    }
+
+    function clearForm() {
+      clearField("ring", false);
+      state.selectedHorses = [];
+      renderAll();
+    }
+
+    function currentLine() {
+      return {
+        ring: state.selections.ring,
+        time: state.selections.time,
+        className: state.selections.className,
+        horse: state.selectedHorses.join(", ") || state.selections.horse
+      };
+    }
+
+    function renderCurrentLine() {
+      const line = currentLine();
+      els.currentLine.innerHTML = `
+        <span>${escapeHtml(line.ring || "Ring")}</span>
+        <span>${escapeHtml(line.time || "Time")}</span>
+        <span>${escapeHtml(line.className || "Class")}</span>
+        <span>${escapeHtml(line.horse || "Horse")}</span>
+      `;
+    }
+
+    function renderControls() {
+      const ready = state.ready;
+      els.ringInput.disabled = !ready;
+      els.timeInput.disabled = !ready || !state.selections.ring;
+      els.classInput.disabled = !ready || !state.selections.ring || !state.selections.time;
+      els.horseInput.disabled = !ready || !state.selections.ring || !state.selections.time || !state.selections.className;
+      els.addHorseButton.disabled = !ready || !state.selections.horse;
+      els.addLineButton.disabled = !ready || !state.selections.ring || !state.selections.time || !state.selections.className || !(state.selections.horse || state.selectedHorses.length);
+      els.submitImportButton.disabled = !ready;
+    }
+
+    function addHorse() {
+      const horse = clean(state.selections.horse);
+      if (!horse) return;
+      if (!state.selectedHorses.some((item) => key(item) === key(horse))) state.selectedHorses.push(horse);
+      clearField("horse", false);
+      renderAll();
+    }
+
+    function addLine(line = null) {
+      const base = line || currentLine();
+      const horses = list(base.horse);
+      for (const horse of horses.length ? horses : [""]) {
+        const resolved = resolveLine({ ...base, horse });
+        if (resolved.status === "SUCCESS" || resolved.status === "HOT_TAG") {
+          state.output.push(resolved);
+        }
+      }
+      if (!line) {
+        state.selectedHorses = [];
+        clearField("horse", false);
+      }
+      renderAll();
+    }
+
+    function parseImportText(raw) {
+      return raw.split(/\r?\n/)
+        .map((line) => clean(line))
+        .filter(Boolean)
+        .map((line) => {
+          const parts = line.includes("|") ? line.split("|") : line.split(",");
+          const [ring = "", time = "", className = "", horse = ""] = parts.map(clean);
+          return { original: line, ring, time, className, horse, ...resolveLine({ ring, time, className, horse }) };
+        });
+    }
+
+    function optionMatch(value, options, searchSelector = (option) => option.label) {
+      const input = key(value);
+      if (!input) return { status: "MISSING", matches: [] };
+      const exact = options.filter((option) => key(option.label) === input || key(option.value) === input);
+      if (exact.length === 1) return { status: "SUCCESS", matches: exact };
+      if (exact.length > 1) return { status: "AMBIGUOUS", matches: exact };
+      const partial = options.filter((option) => key(searchSelector(option)).includes(input));
+      if (partial.length === 1) return { status: "SUCCESS", matches: partial };
+      if (partial.length > 1) return { status: "AMBIGUOUS", matches: partial };
+      return { status: "MISSING", matches: [] };
+    }
+
+    function withTempSelections(temp, callback) {
+      const previous = JSON.parse(JSON.stringify(state.selections));
+      state.selections.ring = temp.ring || "";
+      state.selections.time = temp.time || "";
+      state.selections.className = temp.className || "";
+      try {
+        return callback();
+      } finally {
+        state.selections = previous;
+      }
+    }
+
+    function hotPatchMatches(line) {
+      const ring = key(line.ring);
+      const time = key(line.time);
+      const className = key(line.className);
+      const horse = key(line.horse);
+      return state.hotPatches.some((patch) => {
+        const active = patch.hot_patch_active === true || key(patch.match_status) === "hot_patch";
+        if (!active) return false;
+        const patchText = [patch.board_line, patch.ring_hint, patch.time_hint, patch.class_name_hint].map(key).join(" ");
+        return (!ring || patchText.includes(ring))
+          && (!time || patchText.includes(time))
+          && (!className || patchText.includes(className))
+          && (!horse || patchText.includes(horse));
+      });
+    }
+
+    function resolveLine(input) {
+      const ringMatch = optionMatch(input.ring, ringOptions(""));
+      if (ringMatch.status !== "SUCCESS") return simpleResolved(input, ringMatch.status);
+      const ring = ringMatch.matches[0].value;
+      const timeMatch = withTempSelections({ ring }, () => optionMatch(input.time, timeOptions("")));
+      if (timeMatch.status !== "SUCCESS") return simpleResolved({ ...input, ring }, timeMatch.status);
+      const time = timeMatch.matches[0].value;
+      const classMatch = withTempSelections({ ring, time }, () => optionMatch(input.className, classOptions(""), (option) => option.search));
+      if (classMatch.status !== "SUCCESS") return simpleResolved({ ...input, ring, time }, classMatch.status);
+      const className = classMatch.matches[0].value;
+      const horseMatch = withTempSelections({ ring, time, className }, () => optionMatch(input.horse, horseOptions(""), (option) => option.search));
+      if (horseMatch.status === "SUCCESS") {
+        const horse = horseMatch.matches[0].label;
+        const status = hotPatchMatches({ ring, time, className, horse }) ? "HOT_TAG" : "SUCCESS";
+        return { ring, time, className, horse, status };
+      }
+      const globalHorse = optionMatch(input.horse, state.horses.map((horse) => ({
+        label: clean(horse.barn_name || horse.horse_display || horse.display || horse.horse),
+        value: clean(horse.barn_name || horse.horse_display || horse.display || horse.horse),
+        search: [horse.barn_name, horse.horse_display, horse.display, horse.horse].join(" ")
+      })), (option) => option.search);
+      return simpleResolved({ ...input, ring, time, className }, globalHorse.status === "SUCCESS" ? "MISMATCHED" : horseMatch.status);
+    }
+
+    function simpleResolved(input, status) {
+      return {
+        ring: clean(input.ring),
+        time: clean(input.time),
+        className: clean(input.className),
+        horse: clean(input.horse),
+        status
+      };
+    }
+
+    function renderParsed() {
+      if (!state.parsed.length) {
+        els.parsedList.innerHTML = '<div class="empty">No imported lines yet.</div>';
+        return;
+      }
+      els.parsedList.innerHTML = "";
+      for (const item of state.parsed) {
+        const card = document.createElement("div");
+        card.className = "parsed-card";
+        card.innerHTML = `
+          <div class="raw">${escapeHtml(item.original)}</div>
+          ${lineHtml(item)}
+          <span class="badge ${item.status}">${item.status}</span>
+        `;
+        const add = document.createElement("button");
+        add.type = "button";
+        add.className = "card-action primary";
+        add.textContent = "Add";
+        add.disabled = !(item.status === "SUCCESS" || item.status === "HOT_TAG");
+        add.addEventListener("click", () => addLine(item));
+        card.appendChild(add);
+        els.parsedList.appendChild(card);
+      }
+    }
+
+    function renderOutput() {
+      if (!state.output.length) {
+        els.outputList.innerHTML = '<div class="empty">No board lines added yet.</div>';
+        return;
+      }
+      els.outputList.innerHTML = "";
+      for (const item of state.output) {
+        const row = document.createElement("div");
+        row.className = "output-row";
+        row.innerHTML = `${lineHtml(item)}<span class="badge ${item.status}">${item.status}</span>`;
+        els.outputList.appendChild(row);
+      }
+    }
+
+    function lineHtml(item) {
+      return `
+        <div class="pipe">
+          <span>${escapeHtml(item.ring || "")}</span>
+          <span>${escapeHtml(item.time || "")}</span>
+          <span>${escapeHtml(item.className || item.class_name || "")}</span>
+          <span>${escapeHtml(item.horse || "")}</span>
+        </div>
+      `;
+    }
+
+    function renderAll() {
+      renderCurrentLine();
+      renderControls();
+      renderParsed();
+      renderOutput();
     }
 
     function escapeHtml(value) {
-      return text(value).replace(/[&<>"']/g, (char) => ({
+      return clean(value).replace(/[&<>"']/g, (char) => ({
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
         '"': "&quot;",
-        "'": "&#039;"
-      })[char]);
+        "'": "&#39;"
+      }[char]));
     }
 
-    function uniqueSorted(rows, getter) {
-      return [...new Set(rows.map(getter).filter(Boolean))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    function setTab(tab) {
+      const smart = tab === "smart";
+      els.smartPanel.hidden = !smart;
+      els.boardPanel.hidden = smart;
+      els.smartTab.classList.toggle("active", smart);
+      els.boardTab.classList.toggle("active", !smart);
+      els.smartTab.setAttribute("aria-selected", String(smart));
+      els.boardTab.setAttribute("aria-selected", String(!smart));
+      hideMenus();
     }
 
-    function optionFilter(options, typed) {
-      const q = key(typed);
-      if (!q) return options;
-      return options.filter((option) => key(option).includes(q));
-    }
-
-    function hasField(rows, field) {
-      return rows.some((row) => Object.prototype.hasOwnProperty.call(row, field));
-    }
-
-    function classDisplay(row) {
-      return text(row.class_name) || text(row.class_label) || text(row.class_no);
-    }
-
-    function classDataName(row) {
-      return text(row.class_name);
-    }
-
-    function ringDisplay(row) {
-      return text(row.ring || row.ring_name_normalized || row.ring_name || row.ring_no);
-    }
-
-    function timeDisplay(row) {
-      return text(row.resolved_time || row.display_time || row.time_text || row.time_format || row.class_time || row.entry_go_time);
-    }
-
-    function scheduleForClass(row) {
-      return state.scheduleRows.find((schedule) => text(schedule.class_visual_key) && text(schedule.class_visual_key) === text(row.class_visual_key))
-        || state.scheduleRows.find((schedule) => text(schedule.class_no) && text(schedule.class_no) === text(row.class_no) && text(schedule.ring_no) === text(row.ring_no))
-        || {};
-    }
-
-    function classForEntry(row) {
-      return state.eligibleClassRows.find((classRow) => text(classRow.entry_visual_key) && text(classRow.entry_visual_key) === text(row.entry_visual_key))
-        || state.eligibleClassRows.find((classRow) => text(classRow.class_visual_key) && text(classRow.class_visual_key) === text(row.class_visual_key))
-        || state.eligibleClassRows.find((classRow) => text(classRow.class_no) === text(row.class_no) && text(classRow.ring_no) === text(row.ring_no))
-        || {};
-    }
-
-    function isPreflight(row) {
-      if (hasField([row], "is_preflight")) return truthy(row.is_preflight);
-      if (hasField([row], "preflight")) return truthy(row.preflight);
-      return false;
-    }
-
-    function buildEligibleRows(data) {
-      const rawSchedule = data.update_schedule_staging || [];
-      const rawClass = data.class_oog_staging || [];
-      const rawEntries = data.entry_go_times || [];
-      state.missingFields = [];
-
-      [
-        ["update_schedule_staging", rawSchedule],
-        ["class_oog_staging", rawClass],
-        ["entry_go_times", rawEntries]
-      ].forEach(([name, rows]) => {
-        if (!hasField(rows, "is_preflight") && !hasField(rows, "preflight")) {
-          state.missingFields.push(`${name}.is_preflight/preflight`);
+    async function loadEndpointData() {
+      try {
+        const response = await fetch(ENDPOINT_URL, { cache: "no-store" });
+        const payload = await response.json();
+        if (!response.ok || payload.ok !== true) throw new Error(payload.error || `Endpoint failed ${response.status}`);
+        state.rows = (payload.rows || []).map((row) => ({
+          ...row,
+          class_name_tokens: list(row.class_name_tokens),
+          barn_from_entry_go_times: list(row.barn_from_entry_go_times),
+          horse_from_entry_go_times: list(row.horse_from_entry_go_times)
+        }));
+        state.horses = payload.horses || [];
+        state.hotPatches = payload.hot_patches || [];
+        state.ready = true;
+        els.loadStatus.textContent = "Loaded Development endpoint data";
+        els.countsText.textContent = `${payload.counts?.eligible_update_schedule_staging_rows || state.rows.length} rows`;
+        els.focusText.textContent = `show_no=${payload.show_no} focus_day=${payload.focus_day} focus_show=${payload.focus_show_record_id}`;
+        if (payload.warnings?.length) {
+          els.focusText.textContent += ` warnings=${payload.warnings.length}`;
         }
-      });
-
-      state.scheduleRows = rawSchedule.filter((row) => {
-        if (isPreflight(row)) return false;
-        if (!text(row.ring_no)) return false;
-        if (!timeDisplay(row)) return false;
-        if (!text(row.class_no)) return false;
-        return true;
-      });
-
-      state.eligibleClassRows = rawClass.map((row) => {
-        const schedule = scheduleForClass(row);
-        return {
-          ...row,
-          resolved_ring: ringDisplay(row) || ringDisplay(schedule),
-          resolved_time: timeDisplay(schedule),
-          class_display: classDisplay(row),
-          class_data_name: classDataName(row)
-        };
-      }).filter((row) => {
-        if (isPreflight(row)) return false;
-        if (!text(row.ring_no)) return false;
-        if (!text(row.resolved_time)) return false;
-        if (!text(row.class_no)) return false;
-        if (!text(row.class_display)) return false;
-        return true;
-      });
-
-      state.eligibleEntryRows = rawEntries.map((row) => {
-        const classRow = classForEntry(row);
-        return {
-          ...row,
-          resolved_ring: ringDisplay(classRow) || text(row.ring_no),
-          resolved_time: timeDisplay(row) || text(classRow.resolved_time),
-          class_display: text(classRow.class_display) || text(row.class_no),
-          class_data_name: text(classRow.class_data_name),
-          horse: text(row.horse || row.horse_display)
-        };
-      }).filter((row) => {
-        if (!text(row.ring_no)) return false;
-        if (!text(row.resolved_time)) return false;
-        if (!text(row.class_no)) return false;
-        if (!text(row.horse)) return false;
-        return true;
-      });
-    }
-
-    async function loadSnapshot() {
-      const response = await fetch(SNAPSHOT_URL, { cache: "no-store" });
-      if (!response.ok) throw new Error(`Snapshot load failed: ${response.status}`);
-      const data = await response.json();
-      state.snapshot = data;
-      state.hotPatchRows = data.barn_board_hot_patches || [];
-      buildEligibleRows(data);
-      renderSnapshotMeta();
-      renderCombos();
-      renderCurrentLine();
-      renderOutput();
-    }
-
-    function classOptionsForSelection() {
-      return state.eligibleClassRows.filter((row) => {
-        if (state.selected.ring && !exact(row.resolved_ring, state.selected.ring)) return false;
-        if (state.selected.time && !exact(row.resolved_time, state.selected.time)) return false;
-        return true;
-      });
-    }
-
-    function entryOptionsForSelection() {
-      return state.eligibleEntryRows.filter((row) => {
-        if (state.selected.ring && !exact(row.resolved_ring, state.selected.ring)) return false;
-        if (state.selected.time && !exact(row.resolved_time, state.selected.time)) return false;
-        if (state.selected.className && !exact(row.class_display, state.selected.className)) return false;
-        return true;
-      });
-    }
-
-    function getOptions(field) {
-      if (field === "ring") return uniqueSorted(state.eligibleClassRows, (row) => row.resolved_ring);
-      if (field === "time") return state.selected.ring ? uniqueSorted(classOptionsForSelection(), (row) => row.resolved_time) : [];
-      if (field === "className") return state.selected.ring && state.selected.time ? uniqueSorted(classOptionsForSelection(), (row) => row.class_display) : [];
-      if (field === "horse") return state.selected.ring && state.selected.time && state.selected.className ? uniqueSorted(entryOptionsForSelection(), (row) => row.horse) : [];
-      return [];
-    }
-
-    function renderOptions(field) {
-      const options = optionFilter(getOptions(field), state.typed[field]);
-      const el = optionEls[field];
-      el.innerHTML = "";
-      if (!options.length) {
-        const empty = document.createElement("div");
-        empty.className = "option-empty";
-        empty.textContent = "No matching options";
-        el.appendChild(empty);
-        return;
+      } catch (error) {
+        state.ready = false;
+        els.loadStatus.textContent = "Endpoint load failed";
+        els.errorBox.style.display = "block";
+        els.errorBox.textContent = `Could not load barn-board-form-options endpoint: ${error.message}`;
       }
-      options.forEach((option) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "option";
-        button.textContent = option;
-        button.addEventListener("click", () => selectOption(field, option));
-        el.appendChild(button);
+      renderAll();
+    }
+
+    for (const field of ["ring", "time", "class", "horse"]) {
+      const input = fieldInput(field);
+      input.addEventListener("focus", () => showMenu(field));
+      input.addEventListener("input", () => {
+        const value = input.value;
+        if (field === "class") {
+          state.inputs.className = value;
+          state.selections.className = "";
+          clearField("horse", false);
+        } else {
+          state.inputs[field] = value;
+          state.selections[field] = "";
+          if (field === "ring") clearField("time", false);
+          if (field === "time") clearField("class", false);
+          if (field === "horse") state.selections.horse = "";
+        }
+        showMenu(field);
+        renderControls();
       });
     }
 
-    function showOptions(field) {
-      renderOptions(field);
-      optionEls[field].hidden = false;
-    }
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".combo")) hideMenus();
+    });
 
-    function hideOptionsSoon(field) {
-      setTimeout(() => { optionEls[field].hidden = true; }, 120);
-    }
+    document.querySelectorAll("[data-clear]").forEach((button) => {
+      button.addEventListener("click", () => clearField(button.dataset.clear));
+    });
 
-    function clearDownstream(field) {
-      const order = ["ring", "time", "className", "horse"];
-      const start = order.indexOf(field) + 1;
-      order.slice(start).forEach((name) => {
-        state.selected[name] = "";
-        state.typed[name] = "";
-        inputs[name].value = "";
-      });
-      state.selectedHorses = [];
-    }
-
-    function selectOption(field, value) {
-      state.selected[field] = value;
-      state.typed[field] = value;
-      inputs[field].value = value;
-      clearDownstream(field);
-      optionEls[field].hidden = true;
-      renderCombos();
-      renderCurrentLine();
-    }
-
-    function handleInput(field) {
-      state.typed[field] = inputs[field].value;
-      if (!exact(state.selected[field], inputs[field].value)) {
-        state.selected[field] = "";
-        clearDownstream(field);
-      }
-      renderCombos();
-      showOptions(field);
-      renderCurrentLine();
-    }
-
-    function renderCombos() {
-      inputs.time.disabled = !state.selected.ring;
-      inputs.className.disabled = !state.selected.ring || !state.selected.time;
-      inputs.horse.disabled = !state.selected.ring || !state.selected.time || !state.selected.className;
-      inputs.time.placeholder = state.selected.ring ? "Select or type time" : "Select ring first";
-      inputs.className.placeholder = state.selected.time ? "Select or type class" : "Select time first";
-      inputs.horse.placeholder = state.selected.className ? "Select or type horse" : "Select class first";
-      Object.keys(inputs).forEach(renderOptions);
-      const entries = entryOptionsForSelection();
-      document.getElementById("smartHint").textContent = `${entries.length} eligible entry row${entries.length === 1 ? "" : "s"} match the current selections.`;
-    }
-
-    function renderCurrentLine() {
-      const parts = [
-        state.selected.ring || "Ring",
-        state.selected.time || "Time",
-        state.selected.className || "Class",
-        state.selected.horse || "Horse"
-      ];
-      document.getElementById("currentLineText").textContent = parts.join(" | ");
-      const chips = document.getElementById("selectedHorses");
-      chips.innerHTML = "";
-      if (!state.selectedHorses.length) {
-        const empty = document.createElement("span");
-        empty.className = "small";
-        empty.textContent = "No horses added yet.";
-        chips.appendChild(empty);
-        return;
-      }
-      state.selectedHorses.forEach((horse) => {
-        const chip = document.createElement("span");
-        chip.className = "chip";
-        chip.textContent = horse;
-        chips.appendChild(chip);
-      });
-    }
-
-    function renderSnapshotMeta() {
-      const counts = state.snapshot.meta?.counts || {};
-      document.getElementById("snapshotTitle").textContent = `show_no=${state.snapshot.meta?.show_no || ""} focus_day=${state.snapshot.meta?.focus_day || ""}`;
-      document.getElementById("snapshotStatus").textContent = `Loaded ${SNAPSHOT_URL}`;
-      document.getElementById("scheduleCount").textContent = counts.schedule_rows ?? state.scheduleRows.length;
-      document.getElementById("classOogCount").textContent = state.eligibleClassRows.length;
-      document.getElementById("entryCount").textContent = state.eligibleEntryRows.length;
-      document.getElementById("hotPatchCount").textContent = counts.hot_patch_rows ?? state.hotPatchRows.length;
-      document.getElementById("filterSummary").textContent = `Eligible filter excludes preflight when present, requires ring_no, time, class_no, and a displayable class label/name.`;
-      document.getElementById("missingFields").textContent = state.missingFields.length ? `Missing snapshot fields: ${state.missingFields.join(", ")}` : "Missing snapshot fields: none";
-    }
-
-    function boardLine(input) {
-      return [input.ring, input.time, input.className, input.horse].map(text).join(" | ");
-    }
-
-    function findHotPatch(input) {
-      return state.hotPatchRows.find((patch) => {
-        const active = ["1", "true", "yes"].includes(key(patch.hot_patch_active));
-        if (!active) return false;
-        const horses = key(patch.horses || "");
-        const horseMatch = horses && horses.includes(key(input.horse));
-        const boardMatch = key(patch.board_line || "").includes(key(input.horse));
-        const ringMatch = !patch.ring_hint || exact(patch.ring_hint, input.ring);
-        const timeMatch = !patch.time_hint || exact(patch.time_hint, input.time);
-        const classMatch = !patch.class_name_hint || exact(patch.class_name_hint, input.className);
-        return (horseMatch || boardMatch) && ringMatch && timeMatch && classMatch;
-      });
-    }
-
-    function resolveBoardLine(input) {
-      const hotPatch = findHotPatch(input);
-      const classMatches = state.eligibleClassRows.filter((row) => exact(row.resolved_ring, input.ring) && exact(row.resolved_time, input.time) && exact(row.class_display, input.className));
-      const entryMatches = state.eligibleEntryRows.filter((row) => exact(row.resolved_ring, input.ring) && exact(row.resolved_time, input.time) && exact(row.class_display, input.className) && exact(row.horse, input.horse));
-      const horseOtherClass = state.eligibleEntryRows.filter((row) => exact(row.horse, input.horse) && (!exact(row.class_display, input.className) || !exact(row.resolved_ring, input.ring) || !exact(row.resolved_time, input.time)));
-      let matchStatus = "MISSING";
-      if (hotPatch) matchStatus = "HOT_TAG";
-      else if (entryMatches.length === 1) matchStatus = "SUCCESS";
-      else if (entryMatches.length > 1 || classMatches.length > 1) matchStatus = "AMBIGUOUS";
-      else if (!entryMatches.length && horseOtherClass.length) matchStatus = "MISMATCHED";
-      const entry = entryMatches[0] || {};
-      const classRow = classMatches[0] || classForEntry(entry);
-      return {
-        board_line: boardLine(input),
-        focus_day: state.snapshot?.meta?.focus_day || "2026-06-21",
-        ring_hint: input.ring,
-        time_hint: input.time,
-        class_hint: input.className,
-        horse_hint: input.horse,
-        resolved_ring: entry.resolved_ring || classRow.resolved_ring || "",
-        resolved_class_oog: classRow.record_id || "",
-        resolved_entry_go_times: entry.record_id || "",
-        resolved_horse: entry.horse || "",
-        class_name: classRow.class_data_name || "",
-        class_display: classRow.class_display || input.className,
-        match_status: matchStatus,
-        needs_review: matchStatus !== "SUCCESS",
-        release_status: "draft"
-      };
-    }
-
-    function addHorse() {
-      const horse = state.selected.horse;
-      if (!horse || state.selectedHorses.includes(horse)) return;
-      state.selectedHorses.push(horse);
-      renderCurrentLine();
-    }
-
-    function addLine() {
-      const horses = state.selectedHorses.length ? state.selectedHorses : state.selected.horse ? [state.selected.horse] : [];
-      if (!state.selected.ring || !state.selected.time || !state.selected.className || !horses.length) return;
-      horses.forEach((horse) => state.normalizedLines.push(resolveBoardLine({
-        ring: state.selected.ring,
-        time: state.selected.time,
-        className: state.selected.className,
-        horse
-      })));
-      state.selectedHorses = [];
-      renderCurrentLine();
-      renderOutput();
-    }
-
-    function splitImportLine(line) {
-      const delimiter = line.includes("|") ? "|" : ",";
-      const parts = line.split(delimiter).map((part) => part.trim());
-      return { original: line, ring: parts[0] || "", time: parts[1] || "", className: parts[2] || "", horse: parts[3] || "" };
-    }
-
-    function parseImportText(value) {
-      state.parsedRows = value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).map((line) => {
-        const input = splitImportLine(line);
-        return { ...input, resolved: resolveBoardLine(input) };
-      });
+    els.smartTab.addEventListener("click", () => setTab("smart"));
+    els.boardTab.addEventListener("click", () => setTab("board"));
+    els.addHorseButton.addEventListener("click", addHorse);
+    els.addLineButton.addEventListener("click", () => addLine());
+    els.clearFormButton.addEventListener("click", clearForm);
+    els.submitImportButton.addEventListener("click", () => {
+      state.parsed = parseImportText(els.importText.value);
       renderParsed();
-    }
-
-    function renderParsed() {
-      const wrap = document.getElementById("parsedCards");
-      wrap.innerHTML = "";
-      state.parsedRows.forEach((row, index) => {
-        const canAdd = row.resolved.match_status === "SUCCESS" || row.resolved.match_status === "HOT_TAG";
-        const card = document.createElement("article");
-        card.className = "card";
-        card.innerHTML = `
-          <strong>${escapeHtml(row.original)}</strong>
-          <div class="card-grid">
-            <div><span>Ring</span><b>${escapeHtml(row.ring)}</b></div>
-            <div><span>Time</span><b>${escapeHtml(row.time)}</b></div>
-            <div><span>Class</span><b>${escapeHtml(row.className)}</b></div>
-            <div><span>Horse</span><b>${escapeHtml(row.horse)}</b></div>
-          </div>
-          <p><span class="status ${row.resolved.match_status.toLowerCase()}">${row.resolved.match_status}</span></p>
-          <button type="button" data-add-import="${index}" ${canAdd ? "" : "disabled"}>Add</button>
-        `;
-        wrap.appendChild(card);
-      });
-    }
-
-    function renderOutput() {
-      const wrap = document.getElementById("outputCards");
-      const empty = document.getElementById("outputEmpty");
-      empty.hidden = state.normalizedLines.length > 0;
-      wrap.innerHTML = "";
-      state.normalizedLines.forEach((line) => {
-        const card = document.createElement("article");
-        card.className = "card";
-        card.innerHTML = `
-          <strong>${escapeHtml(line.board_line)}</strong>
-          <div class="card-grid">
-            <div><span>Ring</span><b>${escapeHtml(line.resolved_ring || line.ring_hint)}</b></div>
-            <div><span>Time</span><b>${escapeHtml(line.time_hint)}</b></div>
-            <div><span>Class display</span><b>${escapeHtml(line.class_display || line.class_hint)}</b></div>
-            <div><span>Class name</span><b>${escapeHtml(line.class_name)}</b></div>
-            <div><span>Horse</span><b>${escapeHtml(line.resolved_horse || line.horse_hint)}</b></div>
-            <div><span>Status</span><b><span class="status ${line.match_status.toLowerCase()}">${line.match_status}</span></b></div>
-          </div>
-        `;
-        wrap.appendChild(card);
-      });
-    }
-
-    function showTab(tabName) {
-      const smartActive = tabName === "smart";
-      document.getElementById("smartTab").classList.toggle("active", smartActive);
-      document.getElementById("boardTab").classList.toggle("active", !smartActive);
-      document.getElementById("smartTab").setAttribute("aria-selected", String(smartActive));
-      document.getElementById("boardTab").setAttribute("aria-selected", String(!smartActive));
-      document.getElementById("smartPanel").hidden = !smartActive;
-      document.getElementById("boardPanel").hidden = smartActive;
-    }
-
-    Object.entries(inputs).forEach(([field, input]) => {
-      input.addEventListener("focus", () => showOptions(field));
-      input.addEventListener("input", () => handleInput(field));
-      input.addEventListener("blur", () => hideOptionsSoon(field));
     });
-
-    document.getElementById("smartTab").addEventListener("click", () => showTab("smart"));
-    document.getElementById("boardTab").addEventListener("click", () => showTab("board"));
-    document.getElementById("addHorseButton").addEventListener("click", addHorse);
-    document.getElementById("addLineButton").addEventListener("click", addLine);
-    document.getElementById("parseButton").addEventListener("click", () => parseImportText(document.getElementById("importText").value));
-    document.getElementById("importFile").addEventListener("change", (event) => {
-      const file = event.target.files && event.target.files[0];
+    els.importFile.addEventListener("change", async () => {
+      const file = els.importFile.files?.[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        document.getElementById("importText").value = String(reader.result || "");
-        parseImportText(String(reader.result || ""));
-      };
-      reader.readAsText(file);
-    });
-    document.getElementById("parsedCards").addEventListener("click", (event) => {
-      const button = event.target.closest("[data-add-import]");
-      if (!button) return;
-      const row = state.parsedRows[Number(button.dataset.addImport)];
-      if (!row) return;
-      state.normalizedLines.push(row.resolved);
-      renderOutput();
+      els.importText.value = await file.text();
+      state.parsed = parseImportText(els.importText.value);
+      renderParsed();
     });
 
-    loadSnapshot().catch((error) => {
-      document.getElementById("snapshotStatus").textContent = error.message;
-      document.getElementById("smartHint").textContent = "Snapshot could not be loaded. Open this file from a local static server if the browser blocks adjacent JSON reads from file://.";
-    });
+    loadEndpointData();
   </script>
 </body>
 </html>
