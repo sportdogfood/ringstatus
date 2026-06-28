@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barn White-Board Simple Mock</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f4f6f5;
+      color: #1f2933;
+      font: 15px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header {
+      background: #1f302b;
+      color: #fff;
+      padding: 18px;
+    }
+    header h1 {
+      margin: 0 0 4px;
+      font-size: 22px;
+    }
+    header p {
+      margin: 0;
+      color: #cfdbd7;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 14px;
+      display: grid;
+      gap: 14px;
+    }
+    section {
+      background: #fff;
+      border: 1px solid #d8dde4;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-items: end;
+    }
+    label {
+      display: grid;
+      gap: 4px;
+      font-weight: 700;
+      color: #344054;
+    }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #c7ced8;
+      border-radius: 6px;
+      padding: 8px 9px;
+      font: inherit;
+      background: #fff;
+    }
+    textarea {
+      min-height: 96px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+    }
+    button {
+      border: 1px solid #245e52;
+      border-radius: 6px;
+      background: #245e52;
+      color: #fff;
+      padding: 8px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #fff;
+      color: #245e52;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .count {
+      display: inline-block;
+      border: 1px solid #d8dde4;
+      border-radius: 999px;
+      background: #f9fafb;
+      padding: 5px 9px;
+      color: #475467;
+      font-size: 13px;
+    }
+    .hint {
+      margin: 8px 0 0;
+      color: #667085;
+      font-size: 13px;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #d8dde4;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+    th, td {
+      border-bottom: 1px solid #d8dde4;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 13px;
+    }
+    th {
+      background: #f2f4f7;
+      color: #344054;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .ok { color: #186a3b; font-weight: 800; }
+    .bad { color: #a52828; font-weight: 800; }
+    @media (min-width: 760px) {
+      .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Barn White-Board Resolver</h1>
+    <p>One simple cascading filter path. Mock data only. No backend.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Dynamic Form</h2>
+      <div class="grid">
+        <label>
+          Ring
+          <select id="ringSelect">
+            <option value="">Any ring</option>
+          </select>
+        </label>
+        <label>
+          Time
+          <select id="timeSelect">
+            <option value="">Select ring first</option>
+          </select>
+        </label>
+        <label>
+          Class
+          <select id="classSelect">
+            <option value="">Select time first</option>
+          </select>
+        </label>
+        <label>
+          Horse
+          <select id="horseSelect">
+            <option value="">Select class first</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <button id="addLineBtn">Add Line</button>
+        <button class="secondary" id="resetBtn">Reset</button>
+        <span class="count" id="rowCount">0 rows</span>
+      </div>
+      <p class="hint" id="currentHint"></p>
+    </section>
+
+    <section>
+      <h2>Paste Import</h2>
+      <textarea id="importText">Indoor 2 | 10:30 | Low Adult Jumper | Blue Moon
+Indoor 2 | 10:30 | Low Adult Jumper | Charlie
+Grand | 13:15 | 1.10m Classic | River
+Hunter 1 | 09:00 | Green Hunter | Willow
+Annex | 14:20 | Mystery Class | Unknown Horse</textarea>
+      <div class="row">
+        <button id="parseBtn">Parse</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Original</th>
+              <th>Resolved line</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="importBody">
+            <tr><td colspan="3">No import parsed yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Normalized Board Lines</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Ring</th>
+              <th>Time</th>
+              <th>Class</th>
+              <th>Horse</th>
+              <th>Board line</th>
+            </tr>
+          </thead>
+          <tbody id="linesBody">
+            <tr><td colspan="5">No board lines yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const rings = ["Grand", "Indoor 1", "Indoor 2", "Hunter 1", "Hunter 2", "Annex", "Derby", "Jumper 1", "Jumper 2", "Equitation"];
+    const classes = ["Low Adult Jumper", "1.10m Classic", "Green Hunter", "Junior Hunter", "Adult Amateur Hunter", "Low Child Jumper", "Pony Hunter", "Open Hunter", "Modified Jumper", "Equitation Flat"];
+    const horses = ["Blue Moon", "Charlie", "River", "Willow", "Calou", "Stella", "Atlas", "North Star", "Bristol", "Copper", "Maple", "Sterling", "Clover", "Hampton", "Indigo", "Luna", "Maverick", "Orion", "Piper", "Quest"];
+    const mockRows = [];
+    const boardLines = [];
+    let filteredRows = [];
+
+    function pad(value) {
+      return String(value).padStart(2, "0");
+    }
+
+    function norm(value) {
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function timeFor(index) {
+      const hour = 8 + Math.floor(index / 7);
+      const minute = (index % 6) * 10;
+      return `${pad(hour)}:${pad(minute)}`;
+    }
+
+    function makeMockRows() {
+      for (let i = 0; i < 100; i++) {
+        mockRows.push({
+          ring: rings[i % rings.length],
+          time: timeFor(i),
+          className: classes[i % classes.length],
+          horse: horses[i % horses.length]
+        });
+      }
+      mockRows.push(
+        { ring: "Indoor 2", time: "10:30", className: "Low Adult Jumper", horse: "Blue Moon" },
+        { ring: "Indoor 2", time: "10:30", className: "Low Adult Jumper", horse: "Charlie" },
+        { ring: "Grand", time: "13:15", className: "1.10m Classic", horse: "River" },
+        { ring: "Hunter 1", time: "09:00", className: "Green Hunter", horse: "Willow" }
+      );
+    }
+
+    function values(rows, key) {
+      return [...new Set(rows.map((row) => row[key]).filter(Boolean))].sort();
+    }
+
+    function getFilters() {
+      return {
+        ring: document.getElementById("ringSelect").value,
+        time: document.getElementById("timeSelect").value,
+        className: document.getElementById("classSelect").value,
+        horse: document.getElementById("horseSelect").value
+      };
+    }
+
+    function applyCascadingFilters(filters) {
+      let filteredRows = [...mockRows];
+      if (filters.ring) filteredRows = filteredRows.filter((row) => row.ring === filters.ring);
+      if (filters.time) filteredRows = filteredRows.filter((row) => row.time.includes(filters.time));
+      if (filters.className) filteredRows = filteredRows.filter((row) => norm(row.className).includes(norm(filters.className)));
+      if (filters.horse) filteredRows = filteredRows.filter((row) => norm(row.horse).includes(norm(filters.horse)));
+      return filteredRows;
+    }
+
+    function setSelectOptions(id, placeholder, items, selectedValue) {
+      const select = document.getElementById(id);
+      const options = [`<option value="">${placeholder}</option>`].concat(
+        items.map((item) => `<option value="${item}">${item}</option>`)
+      );
+      select.innerHTML = options.join("");
+      if (selectedValue && items.includes(selectedValue)) select.value = selectedValue;
+    }
+
+    function renderChoices() {
+      const filters = getFilters();
+      const ringRows = applyCascadingFilters({ ring: filters.ring });
+      const timeRows = applyCascadingFilters({ ring: filters.ring, time: filters.time });
+      const classRows = applyCascadingFilters({ ring: filters.ring, time: filters.time, className: filters.className });
+      filteredRows = applyCascadingFilters(filters);
+
+      setSelectOptions("timeSelect", filters.ring ? "Any time" : "Select ring first", filters.ring ? values(ringRows, "time") : [], filters.time);
+      setSelectOptions("classSelect", filters.time ? "Any class" : "Select time first", filters.time ? values(timeRows, "className") : [], filters.className);
+      setSelectOptions("horseSelect", filters.className ? "Any horse" : "Select class first", filters.className ? values(classRows, "horse") : [], filters.horse);
+
+      document.getElementById("rowCount").textContent = `${filteredRows.length} rows`;
+      document.getElementById("currentHint").textContent = filteredRows[0]
+        ? `Current first match: ${formatLine(filteredRows[0])}`
+        : "No rows match the current filters.";
+    }
+
+    function formatLine(row) {
+      return `${row.ring} | ${row.time} | ${row.className} | ${row.horse}`;
+    }
+
+    function addBoardLine(row) {
+      boardLines.push({
+        ring: row.ring,
+        time: row.time,
+        className: row.className,
+        horse: row.horse,
+        board_line: formatLine(row)
+      });
+      renderBoardLines();
+    }
+
+    function renderBoardLines() {
+      const body = document.getElementById("linesBody");
+      if (!boardLines.length) {
+        body.innerHTML = `<tr><td colspan="5">No board lines yet.</td></tr>`;
+        return;
+      }
+      body.innerHTML = boardLines.map((line) => `
+        <tr>
+          <td>${line.ring}</td>
+          <td>${line.time}</td>
+          <td>${line.className}</td>
+          <td>${line.horse}</td>
+          <td>${line.board_line}</td>
+        </tr>
+      `).join("");
+    }
+
+    function parseImportLine(line) {
+      const parts = line.split("|").map((part) => part.trim());
+      const filters = {
+        ring: parts[0] || "",
+        time: parts[1] || "",
+        className: parts[2] || "",
+        horse: parts[3] || ""
+      };
+      const matches = applyCascadingFilters(filters);
+      return { original: line, resolved: matches[0] || null };
+    }
+
+    function parseImport() {
+      const rows = document.getElementById("importText").value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map(parseImportLine);
+      const body = document.getElementById("importBody");
+      body.innerHTML = rows.map((row, index) => `
+        <tr>
+          <td>${row.original}</td>
+          <td>${row.resolved ? formatLine(row.resolved) : "Unresolved"}</td>
+          <td>
+            ${row.resolved ? `<span class="ok">Resolved</span> <button class="secondary" data-index="${index}">Add</button>` : `<span class="bad">Unresolved</span>`}
+          </td>
+        </tr>
+      `).join("");
+      body.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => addBoardLine(rows[Number(button.dataset.index)].resolved));
+      });
+    }
+
+    function init() {
+      makeMockRows();
+      document.getElementById("ringSelect").insertAdjacentHTML("beforeend", rings.map((ring) => `<option value="${ring}">${ring}</option>`).join(""));
+      document.getElementById("ringSelect").addEventListener("change", () => {
+        document.getElementById("timeSelect").value = "";
+        document.getElementById("classSelect").value = "";
+        document.getElementById("horseSelect").value = "";
+        renderChoices();
+      });
+      document.getElementById("timeSelect").addEventListener("change", () => {
+        document.getElementById("classSelect").value = "";
+        document.getElementById("horseSelect").value = "";
+        renderChoices();
+      });
+      document.getElementById("classSelect").addEventListener("change", () => {
+        document.getElementById("horseSelect").value = "";
+        renderChoices();
+      });
+      document.getElementById("horseSelect").addEventListener("change", renderChoices);
+      document.getElementById("addLineBtn").addEventListener("click", () => {
+        const match = filteredRows[0];
+        if (match) addBoardLine(match);
+      });
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        document.getElementById("ringSelect").value = "";
+        document.getElementById("timeSelect").value = "";
+        document.getElementById("classSelect").value = "";
+        document.getElementById("horseSelect").value = "";
+        renderChoices();
+      });
+      document.getElementById("parseBtn").addEventListener("click", parseImport);
+      renderChoices();
+    }
+
+    init();
+  </script>
+</body>
+</html>

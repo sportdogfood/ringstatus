@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barn White-Board Audit Prototype</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f7;
+      --panel: #fff;
+      --ink: #1f2933;
+      --muted: #667085;
+      --line: #d8dee6;
+      --accent: #245e52;
+      --accent-2: #b4512a;
+      --accent-soft: #e4f0ed;
+      --bad: #a52828;
+      --bad-soft: #ffe5e5;
+      --hot: #8a4b00;
+      --hot-soft: #fff3d6;
+      --ok: #186a3b;
+      --ok-soft: #e1f3e8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      background: #16231f;
+      color: #fff;
+      padding: 18px 14px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.3rem;
+      letter-spacing: 0;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      color: #dce6e2;
+      font-size: .95rem;
+    }
+
+    main {
+      width: min(100%, 860px);
+      margin: 0 auto;
+      padding: 12px;
+    }
+
+    .note,
+    .panel,
+    .current-line {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .note {
+      border-color: #e0c36b;
+      background: #fff7da;
+      color: #553d00;
+      font-size: .94rem;
+    }
+
+    .current-line {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-color: #b8cfc8;
+      background: #f7fbfa;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .08);
+    }
+
+    .current-line strong,
+    .panel-title {
+      display: block;
+      margin-bottom: 6px;
+      font-size: .95rem;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    button,
+    .tab-button {
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 10px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+    }
+
+    .tab-button.active,
+    .primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+    }
+
+    .field {
+      position: relative;
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      color: #344054;
+      font-size: .88rem;
+      font-weight: 750;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 11px 12px;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 142px;
+      resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: .94rem;
+    }
+
+    .options {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 2px);
+      z-index: 10;
+      max-height: 240px;
+      overflow-y: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(16, 24, 40, .14);
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      min-height: 44px;
+      border: 0;
+      border-radius: 0;
+      border-bottom: 1px solid #eef1f4;
+      background: #fff;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .option:last-child { border-bottom: 0; }
+
+    .option-empty {
+      padding: 12px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .hint {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 28px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: var(--accent-soft);
+      color: #173f37;
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .counts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .count {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fbfcfd;
+    }
+
+    .count strong {
+      display: block;
+      font-size: 1.2rem;
+    }
+
+    .count span,
+    .small {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .tab-panel[hidden],
+    .options[hidden] { display: none; }
+
+    .cards {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 11px;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 4px;
+      margin: 8px 0;
+    }
+
+    .card-grid div {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #eef1f4;
+      padding: 4px 0;
+    }
+
+    .card-grid div:last-child { border-bottom: 0; }
+
+    .status {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: .8rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status.success { background: var(--ok-soft); color: var(--ok); }
+    .status.hot_tag { background: var(--hot-soft); color: var(--hot); }
+    .status.missing,
+    .status.mismatched,
+    .status.ambiguous { background: var(--bad-soft); color: var(--bad); }
+
+    .empty {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    @media (min-width: 760px) {
+      main { padding: 18px; }
+      header {
+        padding-left: calc((100% - 860px) / 2 + 18px);
+        padding-right: calc((100% - 860px) / 2 + 18px);
+      }
+      .actions,
+      .counts { grid-template-columns: repeat(2, 1fr); }
+      .counts { grid-template-columns: repeat(4, 1fr); }
+      .cards { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Barn White-Board Audit Prototype</h1>
+    <p id="snapshotTitle">Loading static snapshot...</p>
+  </header>
+
+  <main>
+    <p class="note">This prototype uses a static exported snapshot for show_no=14907 and focus_day=2026-06-21. It does not read live Airtable or Catalyst.</p>
+
+    <section class="panel">
+      <strong class="panel-title">Snapshot Counts</strong>
+      <p class="hint" id="snapshotStatus">Loading barn-white-board-audit-snapshot-14907-2026-06-21.json</p>
+      <div class="counts">
+        <div class="count"><strong id="scheduleCount">0</strong><span>schedule rows</span></div>
+        <div class="count"><strong id="classOogCount">0</strong><span>eligible class rows</span></div>
+        <div class="count"><strong id="entryCount">0</strong><span>eligible entry rows</span></div>
+        <div class="count"><strong id="hotPatchCount">0</strong><span>hot patch rows</span></div>
+      </div>
+      <p class="hint" id="filterSummary"></p>
+      <p class="hint" id="missingFields"></p>
+    </section>
+
+    <section class="current-line" aria-live="polite">
+      <strong>Current Board Line</strong>
+      <div id="currentLineText">Select ring, time, class, and horse.</div>
+      <div class="chips" id="selectedHorses"></div>
+    </section>
+
+    <section class="panel">
+      <div class="tabs" role="tablist" aria-label="Barn white-board input mode">
+        <button class="tab-button active" id="smartTab" type="button" role="tab" aria-selected="true" aria-controls="smartPanel">Smart Form</button>
+        <button class="tab-button" id="boardTab" type="button" role="tab" aria-selected="false" aria-controls="boardPanel">Barn Board</button>
+      </div>
+
+      <div class="tab-panel" id="smartPanel" role="tabpanel" aria-labelledby="smartTab">
+        <div class="field" data-combo="ring">
+          <label for="ringInput">Ring</label>
+          <input id="ringInput" type="text" autocomplete="off" placeholder="Select or type ring">
+          <div class="options" id="ringOptions" hidden></div>
+        </div>
+        <div class="field" data-combo="time">
+          <label for="timeInput">Time</label>
+          <input id="timeInput" type="text" autocomplete="off" placeholder="Select ring first" disabled>
+          <div class="options" id="timeOptions" hidden></div>
+        </div>
+        <div class="field" data-combo="className">
+          <label for="classInput">Class</label>
+          <input id="classInput" type="text" autocomplete="off" placeholder="Select time first" disabled>
+          <div class="options" id="classOptions" hidden></div>
+        </div>
+        <div class="field" data-combo="horse">
+          <label for="horseInput">Horse</label>
+          <input id="horseInput" type="text" autocomplete="off" placeholder="Select class first" disabled>
+          <div class="options" id="horseOptions" hidden></div>
+        </div>
+        <p class="hint" id="smartHint"></p>
+        <div class="actions">
+          <button class="secondary" id="addHorseButton" type="button">Add Horse</button>
+          <button class="primary" id="addLineButton" type="button">Add Line</button>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="boardPanel" role="tabpanel" aria-labelledby="boardTab" hidden>
+        <div class="field">
+          <label for="importText">Paste Import</label>
+          <textarea id="importText" spellcheck="false" placeholder="ring | time | class | horse"></textarea>
+        </div>
+        <div class="field">
+          <label for="importFile">File Import</label>
+          <input id="importFile" type="file" accept=".csv,.txt">
+          <p class="hint">CSV or TXT is processed locally in this browser only.</p>
+        </div>
+        <button class="primary" id="parseButton" type="button">Parse Lines</button>
+        <div class="cards" id="parsedCards"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <strong class="panel-title">Normalized Board Lines</strong>
+      <p class="empty" id="outputEmpty">No board lines added yet.</p>
+      <div class="cards" id="outputCards"></div>
+    </section>
+  </main>
+
+  <script>
+    const SNAPSHOT_URL = "barn-white-board-audit-snapshot-14907-2026-06-21.json";
+    const state = {
+      snapshot: null,
+      scheduleRows: [],
+      eligibleClassRows: [],
+      eligibleEntryRows: [],
+      hotPatchRows: [],
+      selected: { ring: "", time: "", className: "", horse: "" },
+      typed: { ring: "", time: "", className: "", horse: "" },
+      selectedHorses: [],
+      parsedRows: [],
+      normalizedLines: [],
+      missingFields: []
+    };
+
+    const inputs = {
+      ring: document.getElementById("ringInput"),
+      time: document.getElementById("timeInput"),
+      className: document.getElementById("classInput"),
+      horse: document.getElementById("horseInput")
+    };
+    const optionEls = {
+      ring: document.getElementById("ringOptions"),
+      time: document.getElementById("timeOptions"),
+      className: document.getElementById("classOptions"),
+      horse: document.getElementById("horseOptions")
+    };
+
+    function text(value) {
+      return String(value ?? "").trim();
+    }
+
+    function key(value) {
+      return text(value).toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function exact(a, b) {
+      return key(a) === key(b);
+    }
+
+    function truthy(value) {
+      return value === true || ["true", "1", "yes", "checked"].includes(key(value));
+    }
+
+    function escapeHtml(value) {
+      return text(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    function uniqueSorted(rows, getter) {
+      return [...new Set(rows.map(getter).filter(Boolean))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    }
+
+    function optionFilter(options, typed) {
+      const q = key(typed);
+      if (!q) return options;
+      return options.filter((option) => key(option).includes(q));
+    }
+
+    function hasField(rows, field) {
+      return rows.some((row) => Object.prototype.hasOwnProperty.call(row, field));
+    }
+
+    function classDisplay(row) {
+      return text(row.class_name) || text(row.class_label) || text(row.class_no);
+    }
+
+    function classDataName(row) {
+      return text(row.class_name);
+    }
+
+    function ringDisplay(row) {
+      return text(row.ring || row.ring_name_normalized || row.ring_name || row.ring_no);
+    }
+
+    function timeDisplay(row) {
+      return text(row.resolved_time || row.display_time || row.time_text || row.time_format || row.class_time || row.entry_go_time);
+    }
+
+    function scheduleForClass(row) {
+      return state.scheduleRows.find((schedule) => text(schedule.class_visual_key) && text(schedule.class_visual_key) === text(row.class_visual_key))
+        || state.scheduleRows.find((schedule) => text(schedule.class_no) && text(schedule.class_no) === text(row.class_no) && text(schedule.ring_no) === text(row.ring_no))
+        || {};
+    }
+
+    function classForEntry(row) {
+      return state.eligibleClassRows.find((classRow) => text(classRow.entry_visual_key) && text(classRow.entry_visual_key) === text(row.entry_visual_key))
+        || state.eligibleClassRows.find((classRow) => text(classRow.class_visual_key) && text(classRow.class_visual_key) === text(row.class_visual_key))
+        || state.eligibleClassRows.find((classRow) => text(classRow.class_no) === text(row.class_no) && text(classRow.ring_no) === text(row.ring_no))
+        || {};
+    }
+
+    function isPreflight(row) {
+      if (hasField([row], "is_preflight")) return truthy(row.is_preflight);
+      if (hasField([row], "preflight")) return truthy(row.preflight);
+      return false;
+    }
+
+    function buildEligibleRows(data) {
+      const rawSchedule = data.update_schedule_staging || [];
+      const rawClass = data.class_oog_staging || [];
+      const rawEntries = data.entry_go_times || [];
+      state.missingFields = [];
+
+      [
+        ["update_schedule_staging", rawSchedule],
+        ["class_oog_staging", rawClass],
+        ["entry_go_times", rawEntries]
+      ].forEach(([name, rows]) => {
+        if (!hasField(rows, "is_preflight") && !hasField(rows, "preflight")) {
+          state.missingFields.push(`${name}.is_preflight/preflight`);
+        }
+      });
+
+      state.scheduleRows = rawSchedule.filter((row) => {
+        if (isPreflight(row)) return false;
+        if (!text(row.ring_no)) return false;
+        if (!timeDisplay(row)) return false;
+        if (!text(row.class_no)) return false;
+        return true;
+      });
+
+      state.eligibleClassRows = rawClass.map((row) => {
+        const schedule = scheduleForClass(row);
+        return {
+          ...row,
+          resolved_ring: ringDisplay(row) || ringDisplay(schedule),
+          resolved_time: timeDisplay(schedule),
+          class_display: classDisplay(row),
+          class_data_name: classDataName(row)
+        };
+      }).filter((row) => {
+        if (isPreflight(row)) return false;
+        if (!text(row.ring_no)) return false;
+        if (!text(row.resolved_time)) return false;
+        if (!text(row.class_no)) return false;
+        if (!text(row.class_display)) return false;
+        return true;
+      });
+
+      state.eligibleEntryRows = rawEntries.map((row) => {
+        const classRow = classForEntry(row);
+        return {
+          ...row,
+          resolved_ring: ringDisplay(classRow) || text(row.ring_no),
+          resolved_time: timeDisplay(row) || text(classRow.resolved_time),
+          class_display: text(classRow.class_display) || text(row.class_no),
+          class_data_name: text(classRow.class_data_name),
+          horse: text(row.horse || row.horse_display)
+        };
+      }).filter((row) => {
+        if (!text(row.ring_no)) return false;
+        if (!text(row.resolved_time)) return false;
+        if (!text(row.class_no)) return false;
+        if (!text(row.horse)) return false;
+        return true;
+      });
+    }
+
+    async function loadSnapshot() {
+      const response = await fetch(SNAPSHOT_URL, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Snapshot load failed: ${response.status}`);
+      const data = await response.json();
+      state.snapshot = data;
+      state.hotPatchRows = data.barn_board_hot_patches || [];
+      buildEligibleRows(data);
+      renderSnapshotMeta();
+      renderCombos();
+      renderCurrentLine();
+      renderOutput();
+    }
+
+    function classOptionsForSelection() {
+      return state.eligibleClassRows.filter((row) => {
+        if (state.selected.ring && !exact(row.resolved_ring, state.selected.ring)) return false;
+        if (state.selected.time && !exact(row.resolved_time, state.selected.time)) return false;
+        return true;
+      });
+    }
+
+    function entryOptionsForSelection() {
+      return state.eligibleEntryRows.filter((row) => {
+        if (state.selected.ring && !exact(row.resolved_ring, state.selected.ring)) return false;
+        if (state.selected.time && !exact(row.resolved_time, state.selected.time)) return false;
+        if (state.selected.className && !exact(row.class_display, state.selected.className)) return false;
+        return true;
+      });
+    }
+
+    function getOptions(field) {
+      if (field === "ring") return uniqueSorted(state.eligibleClassRows, (row) => row.resolved_ring);
+      if (field === "time") return state.selected.ring ? uniqueSorted(classOptionsForSelection(), (row) => row.resolved_time) : [];
+      if (field === "className") return state.selected.ring && state.selected.time ? uniqueSorted(classOptionsForSelection(), (row) => row.class_display) : [];
+      if (field === "horse") return state.selected.ring && state.selected.time && state.selected.className ? uniqueSorted(entryOptionsForSelection(), (row) => row.horse) : [];
+      return [];
+    }
+
+    function renderOptions(field) {
+      const options = optionFilter(getOptions(field), state.typed[field]);
+      const el = optionEls[field];
+      el.innerHTML = "";
+      if (!options.length) {
+        const empty = document.createElement("div");
+        empty.className = "option-empty";
+        empty.textContent = "No matching options";
+        el.appendChild(empty);
+        return;
+      }
+      options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option";
+        button.textContent = option;
+        button.addEventListener("click", () => selectOption(field, option));
+        el.appendChild(button);
+      });
+    }
+
+    function showOptions(field) {
+      renderOptions(field);
+      optionEls[field].hidden = false;
+    }
+
+    function hideOptionsSoon(field) {
+      setTimeout(() => { optionEls[field].hidden = true; }, 120);
+    }
+
+    function clearDownstream(field) {
+      const order = ["ring", "time", "className", "horse"];
+      const start = order.indexOf(field) + 1;
+      order.slice(start).forEach((name) => {
+        state.selected[name] = "";
+        state.typed[name] = "";
+        inputs[name].value = "";
+      });
+      state.selectedHorses = [];
+    }
+
+    function selectOption(field, value) {
+      state.selected[field] = value;
+      state.typed[field] = value;
+      inputs[field].value = value;
+      clearDownstream(field);
+      optionEls[field].hidden = true;
+      renderCombos();
+      renderCurrentLine();
+    }
+
+    function handleInput(field) {
+      state.typed[field] = inputs[field].value;
+      if (!exact(state.selected[field], inputs[field].value)) {
+        state.selected[field] = "";
+        clearDownstream(field);
+      }
+      renderCombos();
+      showOptions(field);
+      renderCurrentLine();
+    }
+
+    function renderCombos() {
+      inputs.time.disabled = !state.selected.ring;
+      inputs.className.disabled = !state.selected.ring || !state.selected.time;
+      inputs.horse.disabled = !state.selected.ring || !state.selected.time || !state.selected.className;
+      inputs.time.placeholder = state.selected.ring ? "Select or type time" : "Select ring first";
+      inputs.className.placeholder = state.selected.time ? "Select or type class" : "Select time first";
+      inputs.horse.placeholder = state.selected.className ? "Select or type horse" : "Select class first";
+      Object.keys(inputs).forEach(renderOptions);
+      const entries = entryOptionsForSelection();
+      document.getElementById("smartHint").textContent = `${entries.length} eligible entry row${entries.length === 1 ? "" : "s"} match the current selections.`;
+    }
+
+    function renderCurrentLine() {
+      const parts = [
+        state.selected.ring || "Ring",
+        state.selected.time || "Time",
+        state.selected.className || "Class",
+        state.selected.horse || "Horse"
+      ];
+      document.getElementById("currentLineText").textContent = parts.join(" | ");
+      const chips = document.getElementById("selectedHorses");
+      chips.innerHTML = "";
+      if (!state.selectedHorses.length) {
+        const empty = document.createElement("span");
+        empty.className = "small";
+        empty.textContent = "No horses added yet.";
+        chips.appendChild(empty);
+        return;
+      }
+      state.selectedHorses.forEach((horse) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = horse;
+        chips.appendChild(chip);
+      });
+    }
+
+    function renderSnapshotMeta() {
+      const counts = state.snapshot.meta?.counts || {};
+      document.getElementById("snapshotTitle").textContent = `show_no=${state.snapshot.meta?.show_no || ""} focus_day=${state.snapshot.meta?.focus_day || ""}`;
+      document.getElementById("snapshotStatus").textContent = `Loaded ${SNAPSHOT_URL}`;
+      document.getElementById("scheduleCount").textContent = counts.schedule_rows ?? state.scheduleRows.length;
+      document.getElementById("classOogCount").textContent = state.eligibleClassRows.length;
+      document.getElementById("entryCount").textContent = state.eligibleEntryRows.length;
+      document.getElementById("hotPatchCount").textContent = counts.hot_patch_rows ?? state.hotPatchRows.length;
+      document.getElementById("filterSummary").textContent = `Eligible filter excludes preflight when present, requires ring_no, time, class_no, and a displayable class label/name.`;
+      document.getElementById("missingFields").textContent = state.missingFields.length ? `Missing snapshot fields: ${state.missingFields.join(", ")}` : "Missing snapshot fields: none";
+    }
+
+    function boardLine(input) {
+      return [input.ring, input.time, input.className, input.horse].map(text).join(" | ");
+    }
+
+    function findHotPatch(input) {
+      return state.hotPatchRows.find((patch) => {
+        const active = ["1", "true", "yes"].includes(key(patch.hot_patch_active));
+        if (!active) return false;
+        const horses = key(patch.horses || "");
+        const horseMatch = horses && horses.includes(key(input.horse));
+        const boardMatch = key(patch.board_line || "").includes(key(input.horse));
+        const ringMatch = !patch.ring_hint || exact(patch.ring_hint, input.ring);
+        const timeMatch = !patch.time_hint || exact(patch.time_hint, input.time);
+        const classMatch = !patch.class_name_hint || exact(patch.class_name_hint, input.className);
+        return (horseMatch || boardMatch) && ringMatch && timeMatch && classMatch;
+      });
+    }
+
+    function resolveBoardLine(input) {
+      const hotPatch = findHotPatch(input);
+      const classMatches = state.eligibleClassRows.filter((row) => exact(row.resolved_ring, input.ring) && exact(row.resolved_time, input.time) && exact(row.class_display, input.className));
+      const entryMatches = state.eligibleEntryRows.filter((row) => exact(row.resolved_ring, input.ring) && exact(row.resolved_time, input.time) && exact(row.class_display, input.className) && exact(row.horse, input.horse));
+      const horseOtherClass = state.eligibleEntryRows.filter((row) => exact(row.horse, input.horse) && (!exact(row.class_display, input.className) || !exact(row.resolved_ring, input.ring) || !exact(row.resolved_time, input.time)));
+      let matchStatus = "MISSING";
+      if (hotPatch) matchStatus = "HOT_TAG";
+      else if (entryMatches.length === 1) matchStatus = "SUCCESS";
+      else if (entryMatches.length > 1 || classMatches.length > 1) matchStatus = "AMBIGUOUS";
+      else if (!entryMatches.length && horseOtherClass.length) matchStatus = "MISMATCHED";
+      const entry = entryMatches[0] || {};
+      const classRow = classMatches[0] || classForEntry(entry);
+      return {
+        board_line: boardLine(input),
+        focus_day: state.snapshot?.meta?.focus_day || "2026-06-21",
+        ring_hint: input.ring,
+        time_hint: input.time,
+        class_hint: input.className,
+        horse_hint: input.horse,
+        resolved_ring: entry.resolved_ring || classRow.resolved_ring || "",
+        resolved_class_oog: classRow.record_id || "",
+        resolved_entry_go_times: entry.record_id || "",
+        resolved_horse: entry.horse || "",
+        class_name: classRow.class_data_name || "",
+        class_display: classRow.class_display || input.className,
+        match_status: matchStatus,
+        needs_review: matchStatus !== "SUCCESS",
+        release_status: "draft"
+      };
+    }
+
+    function addHorse() {
+      const horse = state.selected.horse;
+      if (!horse || state.selectedHorses.includes(horse)) return;
+      state.selectedHorses.push(horse);
+      renderCurrentLine();
+    }
+
+    function addLine() {
+      const horses = state.selectedHorses.length ? state.selectedHorses : state.selected.horse ? [state.selected.horse] : [];
+      if (!state.selected.ring || !state.selected.time || !state.selected.className || !horses.length) return;
+      horses.forEach((horse) => state.normalizedLines.push(resolveBoardLine({
+        ring: state.selected.ring,
+        time: state.selected.time,
+        className: state.selected.className,
+        horse
+      })));
+      state.selectedHorses = [];
+      renderCurrentLine();
+      renderOutput();
+    }
+
+    function splitImportLine(line) {
+      const delimiter = line.includes("|") ? "|" : ",";
+      const parts = line.split(delimiter).map((part) => part.trim());
+      return { original: line, ring: parts[0] || "", time: parts[1] || "", className: parts[2] || "", horse: parts[3] || "" };
+    }
+
+    function parseImportText(value) {
+      state.parsedRows = value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).map((line) => {
+        const input = splitImportLine(line);
+        return { ...input, resolved: resolveBoardLine(input) };
+      });
+      renderParsed();
+    }
+
+    function renderParsed() {
+      const wrap = document.getElementById("parsedCards");
+      wrap.innerHTML = "";
+      state.parsedRows.forEach((row, index) => {
+        const canAdd = row.resolved.match_status === "SUCCESS" || row.resolved.match_status === "HOT_TAG";
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <strong>${escapeHtml(row.original)}</strong>
+          <div class="card-grid">
+            <div><span>Ring</span><b>${escapeHtml(row.ring)}</b></div>
+            <div><span>Time</span><b>${escapeHtml(row.time)}</b></div>
+            <div><span>Class</span><b>${escapeHtml(row.className)}</b></div>
+            <div><span>Horse</span><b>${escapeHtml(row.horse)}</b></div>
+          </div>
+          <p><span class="status ${row.resolved.match_status.toLowerCase()}">${row.resolved.match_status}</span></p>
+          <button type="button" data-add-import="${index}" ${canAdd ? "" : "disabled"}>Add</button>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    function renderOutput() {
+      const wrap = document.getElementById("outputCards");
+      const empty = document.getElementById("outputEmpty");
+      empty.hidden = state.normalizedLines.length > 0;
+      wrap.innerHTML = "";
+      state.normalizedLines.forEach((line) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <strong>${escapeHtml(line.board_line)}</strong>
+          <div class="card-grid">
+            <div><span>Ring</span><b>${escapeHtml(line.resolved_ring || line.ring_hint)}</b></div>
+            <div><span>Time</span><b>${escapeHtml(line.time_hint)}</b></div>
+            <div><span>Class display</span><b>${escapeHtml(line.class_display || line.class_hint)}</b></div>
+            <div><span>Class name</span><b>${escapeHtml(line.class_name)}</b></div>
+            <div><span>Horse</span><b>${escapeHtml(line.resolved_horse || line.horse_hint)}</b></div>
+            <div><span>Status</span><b><span class="status ${line.match_status.toLowerCase()}">${line.match_status}</span></b></div>
+          </div>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    function showTab(tabName) {
+      const smartActive = tabName === "smart";
+      document.getElementById("smartTab").classList.toggle("active", smartActive);
+      document.getElementById("boardTab").classList.toggle("active", !smartActive);
+      document.getElementById("smartTab").setAttribute("aria-selected", String(smartActive));
+      document.getElementById("boardTab").setAttribute("aria-selected", String(!smartActive));
+      document.getElementById("smartPanel").hidden = !smartActive;
+      document.getElementById("boardPanel").hidden = smartActive;
+    }
+
+    Object.entries(inputs).forEach(([field, input]) => {
+      input.addEventListener("focus", () => showOptions(field));
+      input.addEventListener("input", () => handleInput(field));
+      input.addEventListener("blur", () => hideOptionsSoon(field));
+    });
+
+    document.getElementById("smartTab").addEventListener("click", () => showTab("smart"));
+    document.getElementById("boardTab").addEventListener("click", () => showTab("board"));
+    document.getElementById("addHorseButton").addEventListener("click", addHorse);
+    document.getElementById("addLineButton").addEventListener("click", addLine);
+    document.getElementById("parseButton").addEventListener("click", () => parseImportText(document.getElementById("importText").value));
+    document.getElementById("importFile").addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        document.getElementById("importText").value = String(reader.result || "");
+        parseImportText(String(reader.result || ""));
+      };
+      reader.readAsText(file);
+    });
+    document.getElementById("parsedCards").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-add-import]");
+      if (!button) return;
+      const row = state.parsedRows[Number(button.dataset.addImport)];
+      if (!row) return;
+      state.normalizedLines.push(row.resolved);
+      renderOutput();
+    });
+
+    loadSnapshot().catch((error) => {
+      document.getElementById("snapshotStatus").textContent = error.message;
+      document.getElementById("smartHint").textContent = "Snapshot could not be loaded. Open this file from a local static server if the browser blocks adjacent JSON reads from file://.";
+    });
+  </script>
+</body>
+</html>

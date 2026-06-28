@@ -13820,3 +13820,73 @@
 2026-06-27T19:35:30 workflowv4-stage1-only stop focus=2026-06-21
 2026-06-27T19:40:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5.02
 2026-06-27T19:45:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10.01
+2026-06-27T19:50:11 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T19:50:19 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T19:50:30 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T19:50:31 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T19:50:32 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T19:55:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5
+2026-06-27T20:00:12 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10.01
+2026-06-27T20:05:12 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T20:05:19 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T20:05:33 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T20:05:34 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T20:05:35 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T20:10:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=4.99
+2026-06-27T20:15:12 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10
+2026-06-27T20:20:11 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T20:20:18 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T20:20:31 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T20:20:32 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T20:20:32 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T20:25:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5
+2026-06-27T20:30:12 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10.02
+2026-06-27T20:35:11 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T20:35:18 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T20:35:30 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T20:35:31 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T20:35:31 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T20:40:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5
+2026-06-27T20:45:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10.01
+2026-06-27T20:50:12 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T20:50:19 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T20:50:31 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T20:50:31 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T20:50:32 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T20:55:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=4.98
+2026-06-27T21:00:12 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=9.99
+2026-06-27T21:05:11 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T21:05:18 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T21:05:31 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T21:05:32 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T21:05:32 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T21:10:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5
+2026-06-27T21:15:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10
+2026-06-27T21:20:11 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T21:20:19 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T21:20:32 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T21:20:33 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T21:20:33 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T21:25:11 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5
+2026-06-27T21:30:12 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10
+2026-06-27T21:35:11 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T21:35:20 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T21:35:33 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T21:35:33 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T21:35:34 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T21:40:21 local-log write failed path=C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\logs\wec-logs.jsonl
+2026-06-27T21:40:21 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5.01
+2026-06-27T21:45:31 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10.32
+2026-06-27T21:50:11 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T21:50:19 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T21:50:31 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T21:50:31 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T21:50:32 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T21:55:12 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=5.02
+2026-06-27T22:00:12 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=10
+2026-06-27T22:05:12 cadence-gate pass focus=14907|2026-06-21|day cadence=12
+2026-06-27T22:05:19 heartbeat show=14907 focus=2026-06-21 ok=True schedule_rows=80 triggers=0
+2026-06-27T22:05:32 update-schedule-mirror trigger=cadence catalyst=92 airtable=92 confirm_delete_after=0 stale_deleted=0 focus=2026-06-21
+2026-06-27T22:05:33 update-schedule-staging skipped focus=2026-06-21 working_rows=80
+2026-06-27T22:05:33 workflowv4-stage1-only stop focus=2026-06-21
+2026-06-27T22:10:10 cadence-gate skip not_due focus=14907|2026-06-21|day cadence=12 elapsed=4.98
