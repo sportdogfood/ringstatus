@@ -56,11 +56,14 @@ const WEC_HELPER_REPAIR_WRAPPER = process.env.WEC_HELPER_REPAIR_WRAPPER || "C:\\
 const WEC_ACTIVE_ENTRIES_WRAPPER = process.env.WEC_ACTIVE_ENTRIES_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\process_active_entries.js";
 const WEC_STACKED_WORKFLOW_WRAPPER = process.env.WEC_STACKED_WORKFLOW_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\run_wec_stacked_workflow.js";
 const WEC_CLASS_OOG_ONLY_WRAPPER = process.env.WEC_CLASS_OOG_ONLY_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\sync_class_oog_and_class_start_times.js";
+const WEC_CLASS_LANE_RUNNER_URL = process.env.WEC_CLASS_LANE_RUNNER_URL || "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_lane_runner/";
 const WEC_AIRTABLE_BASE_ID = process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os";
 const WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS = Math.max(1, Number(process.env.WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS || "250") || 250);
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
 const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
+const WEC_ALERTS_VERIFY_ONLY = String(process.env.WEC_ALERTS_VERIFY_ONLY || "0") === "1"
+  || process.argv.includes("--wec-alerts-verify");
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 const ORCH_ALERT_NO_ACTIVE_FEEDS = String(process.env.ORCH_ALERT_NO_ACTIVE_FEEDS || "1") === "1";
 const ORCH_STEP_OVERRUN_ALERT_MS = Math.max(60000, Number(process.env.ORCH_STEP_OVERRUN_ALERT_MS || "240000") || 240000);
@@ -819,27 +822,26 @@ async function runOrchestrator() {
       }, args);
     }
 
-    async function verifyWecApprovedStagingViews() {
+    async function verifyWecApprovedStagingViews({ eventName = "wec_workflowv4_staging_views_checked" } = {}) {
       const requiredViews = [
-        "class_oog",
-        "class_start_times",
-        "wec-classes_mobile",
-        "wec-classes_print",
-        "wec-classes_mobile_pro",
-        "actives",
+        { table: "class_start_times", view: "active_entries" },
+        { table: "entry_go_times", view: "active_entries" },
       ];
-      const table = await tableMetaForBase(WEC_AIRTABLE_BASE_ID, "update_schedule_staging");
-      const viewNames = new Set((table.views || []).map((view) => view.name));
-      const missingViews = requiredViews.filter((viewName) => !viewNames.has(viewName));
+      const missingViews = [];
+      for (const requirement of requiredViews) {
+        const table = await tableMetaForBase(WEC_AIRTABLE_BASE_ID, requirement.table);
+        const viewNames = new Set((table.views || []).map((view) => view.name));
+        if (!viewNames.has(requirement.view)) missingViews.push(`${requirement.table}.${requirement.view}`);
+      }
       appendEvent({
         ok: missingViews.length === 0,
-        event: "wec_workflowv4_staging_views_checked",
-        required_views: requiredViews,
+        event: eventName,
+        required_views: requiredViews.map((requirement) => `${requirement.table}.${requirement.view}`),
         missing_views: missingViews,
       });
       return {
         ok: missingViews.length === 0,
-        required_views: requiredViews,
+        required_views: requiredViews.map((requirement) => `${requirement.table}.${requirement.view}`),
         missing_views: missingViews,
       };
     }
@@ -903,6 +905,130 @@ async function runOrchestrator() {
         max_units: WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS,
       });
       return { ok: false, result: null, payload: lastPayload, blocker: "class_oog bounded unit limit reached" };
+    }
+
+    async function runWecAlertsAfterClassOog(reason, focus, options = {}) {
+      const url = new URL(WEC_CLASS_LANE_RUNNER_URL);
+      url.searchParams.set("action", "sync-class-alerts");
+      if (focus?.show_no) url.searchParams.set("show_no", focus.show_no);
+      if (options.dryRun) url.searchParams.set("dry_run", "1");
+      if (options.noSend) url.searchParams.set("no_send", "1");
+      if (options.candidateOnly) url.searchParams.set("candidate_only", "1");
+      appendEvent({
+        ok: true,
+        event: "wec_alerts_attempt",
+        reason,
+        url: `${url.origin}${url.pathname}?${url.searchParams.toString()}`,
+        show_no: focus?.show_no || null,
+        focus_day: focus?.focus_day || null,
+        dry_run: Boolean(options.dryRun),
+        no_send: Boolean(options.noSend),
+        candidate_only: Boolean(options.candidateOnly),
+      });
+      const response = await fetchWithTimeout(url, { method: "GET" });
+      const body = await response.text();
+      let payload = null;
+      try {
+        payload = body ? JSON.parse(body) : null;
+      } catch {
+        payload = { raw: body.slice(0, 1000) };
+      }
+      const alertResult = payload?.result || payload || {};
+      appendEvent({
+        ok: response.ok && payload?.ok === true,
+        event: "wec_alerts_completed",
+        reason,
+        status: response.status,
+        show_no: payload?.show_no || focus?.show_no || null,
+        focus_day: payload?.focus_day || focus?.focus_day || null,
+        class_start_times: alertResult.class_start_times ?? null,
+        entry_go_times: alertResult.entry_go_times ?? null,
+        class_alerts: alertResult.class_alerts ?? null,
+        entry_alerts: alertResult.entry_alerts ?? null,
+        total_candidates: alertResult.total_candidates ?? (Array.isArray(alertResult.candidates) ? alertResult.candidates.length : null),
+        notifications_sent: alertResult.notifications_sent ?? null,
+        records_changed: alertResult.records_changed ?? null,
+        airtable_upsert_skipped: alertResult.airtable_upsert_skipped ?? null,
+        stale_resolution_skipped: alertResult.stale_resolution_skipped ?? null,
+        alerts_upserted: alertResult.alerts_upserted ?? null,
+        alerts_resolved: alertResult.alerts_resolved ?? null,
+      });
+      return { ok: response.ok && payload?.ok === true, status: response.status, payload };
+    }
+
+    async function readActiveWecFocusForAlertsVerify() {
+      const focusRows = await airtableListForBase(WEC_AIRTABLE_BASE_ID, "focus_show", {
+        maxRecords: 10,
+        filterByFormula: "{active}=1",
+        "fields[]": ["show_no", "focus_day", "active"],
+      });
+      if (focusRows.length !== 1) {
+        throw new Error(`active focus_show not unique for alerts verification: ${focusRows.length}`);
+      }
+      const fields = focusRows[0].fields || {};
+      return {
+        focus_show_id: focusRows[0].id,
+        show_no: strOrNull(fields.show_no),
+        focus_day: strOrNull(fields.focus_day)?.slice(0, 10) || null,
+      };
+    }
+
+    async function runWecAlertsVerifyOnly() {
+      appendEvent({
+        ok: true,
+        event: "wec_alerts_verify_start",
+        mode: "alerts-only",
+        trigger: process.argv.includes("--wec-alerts-verify") ? "--wec-alerts-verify" : "WEC_ALERTS_VERIFY_ONLY",
+      });
+      appendEvent({
+        ok: true,
+        event: "wec_branch_entered",
+        reason: "wec_alerts_verify_only",
+        upstream_stage1_run: false,
+        upstream_stage2_run: false,
+        class_oog_run: false,
+        focus_show_metadata_write: false,
+      });
+      const views = await verifyWecApprovedStagingViews({ eventName: "active_entries_views_checked" });
+      if (!views.ok) {
+        appendEvent({
+          ok: false,
+          event: "wec_alerts_verify_completed",
+          reason: "active_entries_views_missing",
+          missing_views: views.missing_views,
+        });
+        return { ok: false, views };
+      }
+      const focus = await readActiveWecFocusForAlertsVerify();
+      const alerts = await runWecAlertsAfterClassOog("wec_alerts_verify_only", focus, {
+        dryRun: true,
+        noSend: true,
+        candidateOnly: true,
+      });
+      const alertResult = alerts.payload?.result || alerts.payload || {};
+      appendEvent({
+        ok: alerts.ok,
+        event: "wec_alerts_verify_completed",
+        show_no: alerts.payload?.show_no || focus.show_no || null,
+        focus_day: alerts.payload?.focus_day || focus.focus_day || null,
+        status: alerts.status,
+        class_start_times: alertResult.class_start_times ?? null,
+        entry_go_times: alertResult.entry_go_times ?? null,
+        class_alerts: alertResult.class_alerts ?? null,
+        entry_alerts: alertResult.entry_alerts ?? null,
+        total_candidates: alertResult.total_candidates ?? (Array.isArray(alertResult.candidates) ? alertResult.candidates.length : null),
+        notifications_sent: alertResult.notifications_sent ?? null,
+        records_changed: alertResult.records_changed ?? null,
+        airtable_upsert_skipped: alertResult.airtable_upsert_skipped ?? null,
+        stale_resolution_skipped: alertResult.stale_resolution_skipped ?? null,
+      });
+      return { ok: alerts.ok, views, alerts };
+    }
+
+    if (WEC_ALERTS_VERIFY_ONLY) {
+      const verifyResult = await runWecAlertsVerifyOnly();
+      if (!verifyResult.ok) process.exitCode = 1;
+      return;
     }
 
     async function runWecWorkflowV4CoreAfterStage1(reason, runMeta) {
@@ -981,7 +1107,13 @@ async function runOrchestrator() {
           class_oog_allowed: true,
         });
       }
-      return { ok: classOog.ok, stage2Result, views, gate, classOog };
+      const alerts = classOog.ok
+        ? await runWecAlertsAfterClassOog(`workflowv4_${reason}`, {
+          show_no: gate.show_no || runMeta?.show_no || null,
+          focus_day: gate.focus_day || currentFocusDay,
+        })
+        : null;
+      return { ok: classOog.ok && (!alerts || alerts.ok), stage2Result, views, gate, classOog, alerts };
     }
 
     async function startWecStage1Stage2RunMetadata(reason) {
