@@ -277,6 +277,12 @@
       width: 100%;
     }
 
+    .save-state {
+      color: #187447;
+      font-size: .82rem;
+      margin-top: 6px;
+    }
+
     .badge {
       display: inline-flex;
       align-items: center;
@@ -391,7 +397,7 @@
 
         <div class="actions">
           <button class="primary" type="button" id="addHorseButton" disabled>Add Horse</button>
-          <button class="primary" type="button" id="addLineButton" disabled>Add Line</button>
+          <button class="primary" type="button" id="addLineButton" disabled>Submit</button>
           <button class="ghost" type="button" id="clearFormButton">Clear Form</button>
         </div>
       </div>
@@ -425,7 +431,9 @@
   </main>
 
   <script>
-    const ENDPOINT_URL = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=barn-board-form-options&show_no=14907";
+    const FORM_OPTIONS_ENDPOINT = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=barn-board-form-options&show_no=14907";
+    const AUDIT_ENDPOINT = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=barn-board-audit-lines";
+    const SAVE_ENDPOINT = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=barn-board-save-hot-patch";
     const state = {
       ready: false,
       rows: [],
@@ -433,6 +441,7 @@
       hotPatches: [],
       output: [],
       parsed: [],
+      savedRows: {},
       selectedHorses: [],
       selections: { ring: "", time: "", className: "", horse: "" },
       inputs: { ring: "", time: "", className: "", horse: "" }
@@ -715,15 +724,45 @@
       renderAll();
     }
 
-    function addLine(line = null) {
+    async function auditLines(lines) {
+      const response = await fetch(AUDIT_ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ show_no: "14907", lines })
+      });
+      const payload = await response.json();
+      if (!response.ok || payload.ok !== true) throw new Error(payload.error || `Audit failed ${response.status}`);
+      state.output = payload.results || [];
+      state.savedRows = {};
+      els.countsText.textContent = `${payload.counts?.lines_received || 0} audited`;
+      renderOutput();
+      return payload;
+    }
+
+    async function saveHotPatch(index) {
+      const line = state.output[index];
+      if (!line) return;
+      const response = await fetch(SAVE_ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ show_no: "14907", line })
+      });
+      const payload = await response.json();
+      if (!response.ok || payload.ok !== true) throw new Error(payload.error || `Save failed ${response.status}`);
+      state.savedRows[index] = true;
+      renderOutput();
+    }
+
+    async function addLine(line = null) {
       const base = line || currentLine();
       const horses = list(base.horse);
-      for (const horse of horses.length ? horses : [""]) {
-        const resolved = resolveLine({ ...base, horse });
-        if (resolved.status === "SUCCESS" || resolved.status === "HOT_TAG") {
-          state.output.push(resolved);
-        }
-      }
+      const lines = (horses.length ? horses : [""]).map((horse) => ({
+        ring: base.ring,
+        time: base.time,
+        class: base.className,
+        horse
+      }));
+      await auditLines(lines);
       if (!line) {
         state.selectedHorses = [];
         clearField("horse", false);
@@ -847,12 +886,34 @@
         return;
       }
       els.outputList.innerHTML = "";
-      for (const item of state.output) {
+      state.output.forEach((item, index) => {
         const row = document.createElement("div");
         row.className = "output-row";
-        row.innerHTML = `${lineHtml(item)}<span class="badge ${item.status}">${item.status}</span>`;
+        row.innerHTML = `${lineHtml(item)}<span class="badge ${item.status}">${item.status}</span><div class="meta">${escapeHtml(item.reason || "")}</div>`;
+        const save = document.createElement("button");
+        save.type = "button";
+        save.className = "card-action primary";
+        save.textContent = state.savedRows[index] ? "Saved" : "Save/Apply";
+        save.disabled = state.savedRows[index] || item.status === "AMBIGUOUS";
+        save.addEventListener("click", () => {
+          save.disabled = true;
+          save.textContent = "Saving...";
+          saveHotPatch(index).catch((error) => {
+            save.disabled = false;
+            save.textContent = "Save/Apply";
+            els.errorBox.style.display = "block";
+            els.errorBox.textContent = `Save/Apply failed: ${error.message}`;
+          });
+        });
+        row.appendChild(save);
+        if (state.savedRows[index]) {
+          const saved = document.createElement("div");
+          saved.className = "save-state";
+          saved.textContent = "Saved to barn board hot patches.";
+          row.appendChild(saved);
+        }
         els.outputList.appendChild(row);
-      }
+      });
     }
 
     function lineHtml(item) {
@@ -860,7 +921,7 @@
         <div class="pipe">
           <span>${escapeHtml(item.ring || "")}</span>
           <span>${escapeHtml(item.time || "")}</span>
-          <span>${escapeHtml(item.className || item.class_name || "")}</span>
+          <span>${escapeHtml(item.className || item.class_name || item.class || "")}</span>
           <span>${escapeHtml(item.horse || "")}</span>
         </div>
       `;
@@ -896,7 +957,7 @@
 
     async function loadEndpointData() {
       try {
-        const response = await fetch(ENDPOINT_URL, { cache: "no-store" });
+        const response = await fetch(FORM_OPTIONS_ENDPOINT, { cache: "no-store" });
         const payload = await response.json();
         if (!response.ok || payload.ok !== true) throw new Error(payload.error || `Endpoint failed ${response.status}`);
         state.rows = (payload.rows || []).map((row) => ({
@@ -955,11 +1016,21 @@
     els.smartTab.addEventListener("click", () => setTab("smart"));
     els.boardTab.addEventListener("click", () => setTab("board"));
     els.addHorseButton.addEventListener("click", addHorse);
-    els.addLineButton.addEventListener("click", () => addLine());
+    els.addLineButton.addEventListener("click", () => {
+      addLine().catch((error) => {
+        els.errorBox.style.display = "block";
+        els.errorBox.textContent = `Audit submit failed: ${error.message}`;
+      });
+    });
     els.clearFormButton.addEventListener("click", clearForm);
     els.submitImportButton.addEventListener("click", () => {
+      const lines = els.importText.value.split(/\r?\n/).map((line) => clean(line)).filter(Boolean);
       state.parsed = parseImportText(els.importText.value);
       renderParsed();
+      auditLines(lines).catch((error) => {
+        els.errorBox.style.display = "block";
+        els.errorBox.textContent = `Audit submit failed: ${error.message}`;
+      });
     });
     els.importFile.addEventListener("change", async () => {
       const file = els.importFile.files?.[0];
