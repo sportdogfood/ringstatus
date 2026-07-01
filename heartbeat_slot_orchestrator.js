@@ -1390,6 +1390,21 @@ async function runOrchestrator() {
           WEC_RUN_TIME: runMeta.run_time,
           WEC_WORKFLOWV4_STAGE1_ONLY: "1",
         });
+        if (!result.ok) {
+          appendEvent({
+            ok: false,
+            event: "wec_workflowv4_stage2_staging_skipped",
+            reason: "stage1_failed",
+            run_id: runMeta.run_id,
+            run_time: runMeta.run_time,
+            helper_repair_run: false,
+            class_start_times_run: false,
+            entry_go_times_run: false,
+            downstream_run: false,
+            active_entries_run: false,
+          });
+          ran = true;
+        } else {
         const stageReason = result.ok ? "after_stage1_pass" : "after_stage1_fail";
         const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(stageReason, runMeta);
         appendEvent({
@@ -1406,6 +1421,7 @@ async function runOrchestrator() {
         });
         if (workflowV4Result.ok) markIntervalRun("wec-focus-workflow");
         ran = true;
+        }
       }
 
       if (ENABLE_WEC_HEARTBEAT && intervalDue("wec-airtable-controls", WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES)) {
@@ -1602,6 +1618,21 @@ async function runOrchestrator() {
         WEC_RUN_TIME: wecRunMeta.run_time,
         WEC_WORKFLOWV4_STAGE1_ONLY: "1",
       });
+      if (!wecHeartbeatResult.ok) {
+        appendEvent({
+          ok: false,
+          event: "wec_workflowv4_stage2_staging_skipped",
+          reason: "stage1_failed",
+          run_id: wecRunMeta.run_id,
+          run_time: wecRunMeta.run_time,
+          helper_repair_run: false,
+          class_start_times_run: false,
+          entry_go_times_run: false,
+          downstream_run: false,
+          active_entries_run: false,
+        });
+        upstreamOk = false;
+      } else {
       const wecStageReason = wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail";
       const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(wecStageReason, wecRunMeta);
       appendEvent({
@@ -1620,6 +1651,7 @@ async function runOrchestrator() {
         markIntervalRun("wec-focus-workflow");
       } else {
         upstreamOk = false;
+      }
       }
     }
 

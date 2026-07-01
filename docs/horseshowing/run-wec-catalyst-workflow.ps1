@@ -1744,15 +1744,25 @@ function Invoke-WecHeartbeatComposite {
 
   $live = $null
   $orders = $null
+  $ringDays = $null
   $liveError = $null
   $ordersError = $null
+  $ringDaysError = $null
   $liveSkipped = $false
   $ordersSkipped = $false
+  $ringDaysSkipped = $false
   $params = @{ focus_day = $resolvedFocusDay }
   if ($script:FocusPaused) {
     $liveSkipped = $true
     $ordersSkipped = $true
+    $ringDaysSkipped = $true
   } else {
+    try {
+      $ringDays = Invoke-CatalystActionWithRetry "sync-ring-days" 2
+      if ($ringDays.ok -eq $false) { $ringDaysError = $ringDays.error }
+    } catch {
+      $ringDaysError = $_.Exception.Message
+    }
     try {
       $live = Invoke-CatalystQueryWithRetry "sync-rings" $params 1 18
       if ($live.ok -eq $false) { $liveError = $live.error }
@@ -1791,6 +1801,12 @@ function Invoke-WecHeartbeatComposite {
     live = $live
     live_error = $liveError
     live_skipped = $liveSkipped
+    ring_days = $ringDays
+    ring_days_error = $ringDaysError
+    ring_days_skipped = $ringDaysSkipped
+    hs_ring_days_count = Int-OrZero $ringDays.materialized_ring_day_rows
+    get_ring_days_source_count = Int-OrZero $ringDays.parsed_rows
+    get_ring_days_source_sequence = $ringDays.source_request_sequence
     orders = $orders
     orders_error = $ordersError
     orders_skipped = $ordersSkipped
@@ -1798,6 +1814,28 @@ function Invoke-WecHeartbeatComposite {
     created_triggers = 0
     trigger_error = $null
   }
+}
+
+function Get-Stage1ProofCounts($Heartbeat, $UpdateScheduleMirrorResult, $UpdateScheduleResult) {
+  return [pscustomobject]@{
+    get_ring_days_source_count = Int-OrZero $Heartbeat.get_ring_days_source_count
+    hs_ring_days_count = Int-OrZero $Heartbeat.hs_ring_days_count
+    get_ring_days_error = [string]$Heartbeat.ring_days_error
+    get_ring_days_source_sequence = $Heartbeat.get_ring_days_source_sequence
+    update_schedule_count = Int-OrZero $UpdateScheduleResult.update_schedule_rows
+    update_schedule_staging_count = Int-OrZero $UpdateScheduleResult.update_schedule_staging_rows
+  }
+}
+
+function Get-Stage1CountGateBlocker($Counts) {
+  if ((Int-OrZero $Counts.hs_ring_days_count) -eq 0) {
+    if ($Counts.get_ring_days_error) { return "get_ring_days_failed: $($Counts.get_ring_days_error)" }
+    if ((Int-OrZero $Counts.get_ring_days_source_count) -eq 0) { return "source_empty: get_ring_days returned 0 rows" }
+    return "source_nonempty_write_failed: get_ring_days returned rows but hs_ring_days count is 0"
+  }
+  if ((Int-OrZero $Counts.update_schedule_count) -eq 0) { return "source_empty: update_schedule count is 0" }
+  if ((Int-OrZero $Counts.update_schedule_staging_count) -eq 0) { return "write_or_parse_failed: update_schedule_staging count is 0" }
+  return $null
 }
 
 function Get-MinutesUntil($focusDay, $timeText) {
@@ -2465,14 +2503,57 @@ if ($heartbeat.focus_day) {
       catalyst_schedule_rows = $catalystScheduleRows
     }
   }
+  $stage1ProofCounts = Get-Stage1ProofCounts $heartbeat $updateScheduleMirrorResult $updateScheduleResult
+  $stage1CountBlocker = Get-Stage1CountGateBlocker $stage1ProofCounts
+  Write-WorkflowLog "workflowv4-stage1-count-gate focus=$($heartbeat.focus_day) hs_ring_days=$($stage1ProofCounts.hs_ring_days_count) update_schedule=$($stage1ProofCounts.update_schedule_count) update_schedule_staging=$($stage1ProofCounts.update_schedule_staging_count) blocker=$stage1CountBlocker"
+  if ($stage1CountBlocker) {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "workflowv4_stage1_count_gate" -Status "error" -RecordsSeen (Int-OrZero $stage1ProofCounts.get_ring_days_source_count) -RecordsChanged 0 -Summary "WorkflowV4 Stage 1 count gate failed show=$ShowNo focus=$($heartbeat.focus_day): $stage1CountBlocker" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      blocker = $stage1CountBlocker
+      counts = $stage1ProofCounts
+    }
+    Write-WorkflowLog "workflowv4-stage1-count-gate fail focus=$($heartbeat.focus_day) blocker=$stage1CountBlocker"
+    $state["workflowv4_stage1_only_last_run"] = (Get-Date).ToString("o")
+    $state["workflowv4_stage1_only_last_result"] = "error"
+    $state["workflowv4_stage1_only_last_blocker"] = $stage1CountBlocker
+    Save-State $state
+    if ($script:WecWorkflowMutexAcquired) {
+      $script:WecWorkflowMutex.ReleaseMutex()
+      $script:WecWorkflowMutex.Dispose()
+    }
+    [pscustomobject]@{
+      ok = $false
+      action = "workflowv4-stage1-only"
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      blocker = $stage1CountBlocker
+      get_ring_days_ran = (-not [bool]$heartbeat.ring_days_skipped)
+      update_schedule_ran = $null -ne $updateScheduleMirrorResult
+      update_schedule_staging_ran = $null -ne $updateScheduleResult
+      get_ring_days_source_count = $stage1ProofCounts.get_ring_days_source_count
+      hs_ring_days_count = $stage1ProofCounts.hs_ring_days_count
+      update_schedule_count = $stage1ProofCounts.update_schedule_count
+      update_schedule_staging_count = $stage1ProofCounts.update_schedule_staging_count
+      class_start_times_run = $false
+      entry_go_times_run = $false
+      mobile_run = $false
+      print_run = $false
+      alerts_run = $false
+      results_run = $false
+    } | ConvertTo-Json -Depth 8
+    exit 1
+  }
   if ($WorkflowV4Stage1Only) {
     Write-WecAirtableLog -LogType "heartbeat" -CheckName "workflowv4_legacy_stage1_stop" -Status "ok" -Summary "WorkflowV4 cadence stopped legacy runner before downstream" -Payload @{
       show_no = $ShowNo
       focus_day = $heartbeat.focus_day
+      counts = $stage1ProofCounts
       skipped_stages = @("class_start_times", "entry_go_times", "mobile", "print", "alerts", "results")
     }
-    Write-WorkflowLog "workflowv4-stage1-only stop focus=$($heartbeat.focus_day)"
+    Write-WorkflowLog "workflowv4-stage1-only stop focus=$($heartbeat.focus_day) hs_ring_days=$($stage1ProofCounts.hs_ring_days_count) update_schedule=$($stage1ProofCounts.update_schedule_count) update_schedule_staging=$($stage1ProofCounts.update_schedule_staging_count)"
     $state["workflowv4_stage1_only_last_run"] = (Get-Date).ToString("o")
+    $state["workflowv4_stage1_only_last_result"] = "ok"
     Save-State $state
     if ($script:WecWorkflowMutexAcquired) {
       $script:WecWorkflowMutex.ReleaseMutex()
@@ -2486,6 +2567,10 @@ if ($heartbeat.focus_day) {
       get_ring_days_ran = $true
       update_schedule_ran = $true
       update_schedule_staging_ran = $true
+      get_ring_days_source_count = $stage1ProofCounts.get_ring_days_source_count
+      hs_ring_days_count = $stage1ProofCounts.hs_ring_days_count
+      update_schedule_count = $stage1ProofCounts.update_schedule_count
+      update_schedule_staging_count = $stage1ProofCounts.update_schedule_staging_count
       class_start_times_run = $false
       entry_go_times_run = $false
       mobile_run = $false
