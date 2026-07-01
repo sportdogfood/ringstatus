@@ -3,7 +3,7 @@
     "update_schedule_staging_focus_day":  "2026-07-01",
     "sync_focus_day":  "2026-06-11T18:20:12.725394-04:00",
     "class_oog_queue_last_plan_chunks":  10,
-    "workflowv4_stage1_only_last_run":  "2026-06-30T20:22:54.7350128-04:00",
+    "workflowv4_stage1_only_last_run":  "2026-06-30T20:35:33.9836811-04:00",
     "class_oog_probe_offset|14907|2026-06-17":  5,
     "class_start_times_retry_last_error":  "class_start_times hard gate failed: no class_oog rows",
     "cadence_gate_last_reason":  "not_due",
@@ -13,7 +13,7 @@
     "last_run":  "2026-06-18T17:05:17.9367960-04:00",
     "workflowv4_stage1_only_last_blocker":  "source_empty: get_ring_days returned 0 rows",
     "class_oog_queue_last_focus":  "2026-06-18",
-    "update_schedule_staging_workflow":  "2026-06-30T20:22:53.6456030-04:00",
+    "update_schedule_staging_workflow":  "2026-06-30T20:35:32.9947404-04:00",
     "class_start_times_retry_last_result":  "error",
     "class_oog_local_probe_last_run":  "2026-06-17T16:33:31.2516403-04:00",
     "cadence_gate_last_focus_key":  "14909|2026-07-01|day",
@@ -23,7 +23,7 @@
     "local_core_focus_day":  "2026-06-16",
     "class_oog_queue_last_chunks_run":  10,
     "class_oog_queue_last_target_classes":  39,
-    "cadence_gate_last_run":  "2026-06-30T20:20:22.2329008-04:00",
-    "cadence_gate_last_check":  "2026-06-30T20:25:23.5277019-04:00",
+    "cadence_gate_last_run":  "2026-06-30T20:35:14.1121351-04:00",
+    "cadence_gate_last_check":  "2026-06-30T20:30:14.3754407-04:00",
     "local_core_workflow":  "2026-06-15T16:58:12.9199267-04:00"
 }
