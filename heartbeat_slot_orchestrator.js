@@ -57,6 +57,7 @@ const WEC_ACTIVE_ENTRIES_WRAPPER = process.env.WEC_ACTIVE_ENTRIES_WRAPPER || "C:
 const WEC_STACKED_WORKFLOW_WRAPPER = process.env.WEC_STACKED_WORKFLOW_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\run_wec_stacked_workflow.js";
 const WEC_CLASS_OOG_ONLY_WRAPPER = process.env.WEC_CLASS_OOG_ONLY_WRAPPER || "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus-data\\catalyst-workspaces\\horseshowing\\runners\\sync_class_oog_and_class_start_times.js";
 const WEC_CLASS_LANE_RUNNER_URL = process.env.WEC_CLASS_LANE_RUNNER_URL || "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_class_lane_runner/";
+const WEC_ENTRY_GO_TIMES_RUNNER_URL = process.env.WEC_ENTRY_GO_TIMES_RUNNER_URL || "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_entry_go_times_runner/";
 const WEC_AIRTABLE_BASE_ID = process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os";
 const WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS = Math.max(1, Number(process.env.WEC_WORKFLOWV4_CLASS_OOG_MAX_UNITS || "250") || 250);
 const DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY = String(process.env.DEFAULT_SHOW_DATE_GUARD_BLOCK_HEAVY || "1") === "1";
@@ -907,6 +908,71 @@ async function runOrchestrator() {
       return { ok: false, result: null, payload: lastPayload, blocker: "class_oog bounded unit limit reached" };
     }
 
+    async function runWecFunctionGet(reason, baseUrl, params, attemptEvent, completedEvent, resultMapper = (result) => result) {
+      const url = new URL(baseUrl);
+      for (const [key, value] of Object.entries(params || {})) {
+        if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
+      }
+      appendEvent({
+        ok: true,
+        event: attemptEvent,
+        reason,
+        url: `${url.origin}${url.pathname}?${url.searchParams.toString()}`,
+        action: params?.action || null,
+        show_no: params?.show_no || null,
+      });
+      const response = await fetchWithTimeout(url, { method: "GET" });
+      const body = await response.text();
+      let payload = null;
+      try {
+        payload = body ? JSON.parse(body) : null;
+      } catch {
+        payload = { raw: body.slice(0, 1000) };
+      }
+      const result = payload?.result || payload || {};
+      appendEvent({
+        ok: response.ok && payload?.ok === true,
+        event: completedEvent,
+        reason,
+        status: response.status,
+        action: payload?.action || params?.action || null,
+        show_no: payload?.show_no || params?.show_no || null,
+        focus_day: payload?.focus_day || null,
+        ...resultMapper(result, payload),
+      });
+      return { ok: response.ok && payload?.ok === true, status: response.status, payload, result };
+    }
+
+    async function runWecClassLaneAction(reason, focus, action, completedEvent) {
+      return runWecFunctionGet(reason, WEC_CLASS_LANE_RUNNER_URL, {
+        action,
+        show_no: focus?.show_no || null,
+      }, `wec_${action.replace(/-/g, "_")}_attempt`, completedEvent, (result) => ({
+        source_rows: result.source_locked_staging ?? result.orders ?? result.rings ?? null,
+        target_class_start_times: result.airtable_class_start_times ?? result.target_class_start_times ?? null,
+        matches: result.matches ?? null,
+        airtable_updated: result.airtable_updated ?? result.airtable_upserted ?? null,
+        catalyst_updated: result.catalyst_updated ?? result.catalyst_upserted ?? null,
+        missing: Array.isArray(result.missing) ? result.missing.length : result.missing ?? null,
+        extras: Array.isArray(result.extras) ? result.extras.length : result.extras ?? null,
+      }));
+    }
+
+    async function runWecEntryGoTimesAfterClassOog(reason, focus) {
+      return runWecFunctionGet(reason, WEC_ENTRY_GO_TIMES_RUNNER_URL, {
+        show_no: focus?.show_no || null,
+      }, "wec_entry_go_times_attempt", "wec_entry_go_times_completed", (result) => ({
+        source: result.source || null,
+        source_rows: result.source_rows ?? null,
+        class_oog_staging_rows: result.class_oog_staging_rows ?? null,
+        rows_written: result.airtable?.upserted ?? result.rows_written ?? null,
+        active_rows: result.verify_airtable?.active_rows ?? null,
+        blank_entry_go_time_insufficient_pace: result.verify_airtable?.blank_entry_go_time_insufficient_pace ?? null,
+        fallback_entry_go_times: result.verify_airtable?.fallback_entry_go_times ?? null,
+        missing_timing_fields: result.verify_airtable?.missing_timing_fields ?? null,
+      }));
+    }
+
     async function runWecAlertsAfterClassOog(reason, focus, options = {}) {
       const url = new URL(WEC_CLASS_LANE_RUNNER_URL);
       url.searchParams.set("action", "sync-class-alerts");
@@ -1097,23 +1163,66 @@ async function runOrchestrator() {
       });
       if (!gate.open) return { ok: false, gate };
 
+      const focus = {
+        show_no: gate.show_no || runMeta?.show_no || null,
+        focus_day: gate.focus_day || currentFocusDay,
+      };
+      const classStartTimes = await runWecClassLaneAction(
+        `workflowv4_${reason}`,
+        focus,
+        "sync-class-start-times",
+        "wec_class_start_times_completed"
+      );
+      if (!classStartTimes.ok) return { ok: false, stage2Result, views, gate, classStartTimes };
+
+      const getOrders = await runWecClassLaneAction(
+        `workflowv4_${reason}`,
+        focus,
+        "sync-get-orders",
+        "wec_get_orders_class_start_completed"
+      );
+      if (!getOrders.ok) return { ok: false, stage2Result, views, gate, classStartTimes, getOrders };
+
+      const getRings = await runWecClassLaneAction(
+        `workflowv4_${reason}`,
+        focus,
+        "sync-get-rings",
+        "wec_get_rings_class_start_completed"
+      );
+      if (!getRings.ok) return { ok: false, stage2Result, views, gate, classStartTimes, getOrders, getRings };
+
       const classOog = runWecClassOogOnlyUntilComplete(`workflowv4_${reason}`);
       if (classOog.ok) {
         writeWecWorkflowV4FocusState({
-          show_no: gate.show_no || runMeta?.show_no || null,
-          focus_day: gate.focus_day || currentFocusDay,
+          show_no: focus.show_no,
+          focus_day: focus.focus_day,
           focus_show_is_pause: gate.focus_show_is_pause ?? null,
           last_class_oog_completed_at: new Date().toISOString(),
           class_oog_allowed: true,
         });
       }
-      const alerts = classOog.ok
-        ? await runWecAlertsAfterClassOog(`workflowv4_${reason}`, {
-          show_no: gate.show_no || runMeta?.show_no || null,
-          focus_day: gate.focus_day || currentFocusDay,
-        })
-        : null;
-      return { ok: classOog.ok && (!alerts || alerts.ok), stage2Result, views, gate, classOog, alerts };
+      if (!classOog.ok) {
+        return { ok: false, stage2Result, views, gate, classStartTimes, getOrders, getRings, classOog };
+      }
+
+      const entryGoTimes = await runWecEntryGoTimesAfterClassOog(`workflowv4_${reason}`, focus);
+      if (!entryGoTimes.ok) {
+        return { ok: false, stage2Result, views, gate, classStartTimes, getOrders, getRings, classOog, entryGoTimes };
+      }
+
+      const alerts = await runWecAlertsAfterClassOog(`workflowv4_${reason}`, focus, { noSend: true });
+      return {
+        ok: alerts.ok,
+        stage2Result,
+        views,
+        gate,
+        classStartTimes,
+        getOrders,
+        getRings,
+        classOog,
+        entryGoTimes,
+        alerts,
+      };
     }
 
     async function startWecStage1Stage2RunMetadata(reason) {
@@ -1410,14 +1519,18 @@ async function runOrchestrator() {
         const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(stageReason, runMeta);
         appendEvent({
           ok: workflowV4Result.ok,
-          event: "wec_workflowv4_core_stop_after_class_oog",
+          event: "wec_workflowv4_core_downstream_exit",
           reason: stageReason,
           run_id: runMeta.run_id,
           run_time: runMeta.run_time,
           helper_repair_run: false,
-          class_start_times_run: false,
-          entry_go_times_run: false,
-          downstream_run: false,
+          class_start_times_run: Boolean(workflowV4Result.classStartTimes),
+          get_orders_run: Boolean(workflowV4Result.getOrders),
+          get_rings_run: Boolean(workflowV4Result.getRings),
+          class_oog_run: Boolean(workflowV4Result.classOog),
+          entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
+          alerts_run: Boolean(workflowV4Result.alerts),
+          downstream_run: Boolean(workflowV4Result.classStartTimes || workflowV4Result.classOog || workflowV4Result.entryGoTimes || workflowV4Result.alerts),
           active_entries_run: false,
         });
         if (workflowV4Result.ok) markIntervalRun("wec-focus-workflow");
@@ -1639,14 +1752,18 @@ async function runOrchestrator() {
       const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(wecStageReason, wecRunMeta);
       appendEvent({
         ok: workflowV4Result.ok,
-        event: "wec_workflowv4_core_stop_after_class_oog",
+        event: "wec_workflowv4_core_downstream_exit",
         reason: wecStageReason,
         run_id: wecRunMeta.run_id,
         run_time: wecRunMeta.run_time,
         helper_repair_run: false,
-        class_start_times_run: false,
-        entry_go_times_run: false,
-        downstream_run: false,
+        class_start_times_run: Boolean(workflowV4Result.classStartTimes),
+        get_orders_run: Boolean(workflowV4Result.getOrders),
+        get_rings_run: Boolean(workflowV4Result.getRings),
+        class_oog_run: Boolean(workflowV4Result.classOog),
+        entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
+        alerts_run: Boolean(workflowV4Result.alerts),
+        downstream_run: Boolean(workflowV4Result.classStartTimes || workflowV4Result.classOog || workflowV4Result.entryGoTimes || workflowV4Result.alerts),
         active_entries_run: false,
       });
       if (workflowV4Result.ok) {
