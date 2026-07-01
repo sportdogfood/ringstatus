@@ -1661,6 +1661,84 @@ function Invoke-UpdateScheduleMirrorWorkflow($FocusDayValue, [string]$TriggerRea
   return $result
 }
 
+function Invoke-UpdateScheduleCatalystMaterialization($FocusDayValue) {
+  if (!$FocusDayValue) { return $null }
+  $safeFocusDay = ([string]$FocusDayValue).Replace("'", "\'")
+  $formula = "AND({show_no}=$ShowNo,IS_SAME({ISO},DATETIME_PARSE('$safeFocusDay'),'day'))"
+  $ringDayRows = @(Get-WecAirtableRecordsByFormula -TableName "get_ring_days" -Formula $formula -PageSize 100)
+  if ($ringDayRows.Count -le 0) {
+    throw "update_schedule materialization failed: no get_ring_days rows for show=$ShowNo focus=$FocusDayValue"
+  }
+
+  $results = @()
+  $totalParsed = 0
+  $totalMaterialized = 0
+  $sortedRows = @($ringDayRows | Sort-Object {
+    Int-OrZero (Get-WecRecordField $_ "ring_day_no")
+  })
+
+  foreach ($record in $sortedRows) {
+    $ringDayNo = [string](Get-WecRecordField $record "ring_day_no")
+    $ringNo = [string](Get-WecRecordField $record "ring_no")
+    $ringName = [string](Get-WecRecordField $record "ring_name")
+    if (!$ringName) { $ringName = [string](Get-WecRecordField $record "ring_name_normalized") }
+    $dayLabel = [string](Get-WecRecordField $record "ISO")
+    if (!$dayLabel) { $dayLabel = [string]$FocusDayValue }
+
+    if (!$ringDayNo -or !$ringNo) {
+      throw "update_schedule materialization failed: get_ring_days row missing ring_day_no or ring_no record=$($record.id)"
+    }
+
+    $body = @{
+      action = "sync-update-schedule-only"
+      show_no = $ShowNo
+      ring_day_no = $ringDayNo
+      ring_no = $ringNo
+      ring_name = $ringName
+      day_label = $dayLabel
+    }
+    $response = Invoke-RestMethod -Method Post -Uri $BaseUrl -ContentType "application/x-www-form-urlencoded" -Body $body -TimeoutSec 120
+    if ($response.ok -eq $false) {
+      $materializeError = if ($response.error) { $response.error } else { $response.blocker }
+      throw "horseshowing_sync sync-update-schedule-only failed ring_day_no=${ringDayNo}: $materializeError"
+    }
+
+    $parsedRows = Int-OrZero $response.parsed_rows
+    $materializedRows = Int-OrZero $response.counters.rows
+    $totalParsed += $parsedRows
+    $totalMaterialized += $materializedRows
+    $results += [pscustomobject]@{
+      ring_day_no = $ringDayNo
+      ring_no = $ringNo
+      ring_name = $ringName
+      upstream_status = $response.upstream_status
+      parsed_rows = $parsedRows
+      materialized_rows = $materializedRows
+      inserted = Int-OrZero $response.counters.inserted
+      updated = Int-OrZero $response.counters.updated
+      skipped = Int-OrZero $response.counters.skipped
+    }
+    Write-WorkflowLog "update-schedule-materialize ring_day_no=$ringDayNo ring_no=$ringNo upstream_status=$($response.upstream_status) parsed=$parsedRows materialized=$materializedRows inserted=$($response.counters.inserted) updated=$($response.counters.updated) skipped=$($response.counters.skipped)"
+  }
+
+  if ($totalParsed -le 0) {
+    throw "source_empty_for_all_ring_days: update_schedule.php parsed 0 rows for show=$ShowNo focus=$FocusDayValue"
+  }
+  if ($totalMaterialized -le 0) {
+    throw "source_nonempty_write_failed: update_schedule.php parsed $totalParsed rows but hs_update_schedule materialized 0 rows"
+  }
+
+  return [pscustomobject]@{
+    ok = $true
+    show_no = $ShowNo
+    focus_day = $FocusDayValue
+    eligible_ring_days = $ringDayRows.Count
+    parsed_rows = $totalParsed
+    materialized_rows = $totalMaterialized
+    results = $results
+  }
+}
+
 function Invoke-UpdateScheduleStagingWorkflow($FocusDayValue, [bool]$ResetFocus = $false, [string]$TriggerReason = "") {
   if (!$FocusDayValue) { return $null }
   $token = Get-WecAirtableToken
@@ -2438,6 +2516,8 @@ if ($heartbeat.trigger_error) {
 if ($heartbeat.focus_day) {
   $updateScheduleFocusChanged = (!$state.ContainsKey("update_schedule_staging_focus_day")) -or ([string]$state["update_schedule_staging_focus_day"] -ne [string]$heartbeat.focus_day)
   $updateScheduleTriggerReason = if ($cadenceGate.reason -eq "focus_changed") { "focus_day_change" } else { "cadence" }
+  $updateScheduleMaterializationResult = Invoke-UpdateScheduleCatalystMaterialization $heartbeat.focus_day
+  Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule_materialization" -Status "ok" -RecordsSeen (Int-OrZero $updateScheduleMaterializationResult.parsed_rows) -RecordsChanged (Int-OrZero $updateScheduleMaterializationResult.materialized_rows) -Summary "update_schedule materialized from get_ring_days parsed=$($updateScheduleMaterializationResult.parsed_rows) hs_update_schedule=$($updateScheduleMaterializationResult.materialized_rows) focus=$($heartbeat.focus_day)" -Payload $updateScheduleMaterializationResult
   $updateScheduleMirrorResult = Invoke-UpdateScheduleMirrorWorkflow $heartbeat.focus_day -TriggerReason $updateScheduleTriggerReason
   Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule_mirror" -Status "ok" -RecordsSeen (Int-OrZero $updateScheduleMirrorResult.catalyst_count) -RecordsChanged ((Int-OrZero $updateScheduleMirrorResult.update_schedule_upserts) + (Int-OrZero $updateScheduleMirrorResult.stale_update_schedule_deleted)) -Summary "update_schedule mirror trigger=$updateScheduleTriggerReason catalyst=$($updateScheduleMirrorResult.catalyst_count) airtable=$($updateScheduleMirrorResult.airtable_count) confirm_delete_after=$($updateScheduleMirrorResult.confirm_delete_rows_after)" -Payload $updateScheduleMirrorResult
   $catalystScheduleRows = Int-OrZero $heartbeat.schedule_rows
