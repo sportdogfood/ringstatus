@@ -1389,6 +1389,7 @@ async function runOrchestrator() {
           WEC_RUN_ID: runMeta.run_id,
           WEC_RUN_TIME: runMeta.run_time,
           WEC_WORKFLOWV4_STAGE1_ONLY: "1",
+          WEC_FORCE_SYNC: process.env.WEC_FORCE_SYNC || "",
         });
         if (!result.ok) {
           appendEvent({
@@ -1617,6 +1618,7 @@ async function runOrchestrator() {
         WEC_RUN_ID: wecRunMeta.run_id,
         WEC_RUN_TIME: wecRunMeta.run_time,
         WEC_WORKFLOWV4_STAGE1_ONLY: "1",
+        WEC_FORCE_SYNC: process.env.WEC_FORCE_SYNC || "",
       });
       if (!wecHeartbeatResult.ok) {
         appendEvent({
