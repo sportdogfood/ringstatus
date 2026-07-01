@@ -15498,3 +15498,592 @@
 2026-07-01T01:40:50 update-schedule-staging skipped focus=2026-07-01 working_rows=39
 2026-07-01T01:40:50 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
 2026-07-01T01:40:50 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T01:56:47 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T01:56:56 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T01:57:06 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:07 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:09 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:10 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:11 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:12 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:14 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:15 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:16 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T01:57:24 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T01:57:25 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T01:57:25 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T01:57:25 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T02:13:26 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T02:13:34 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T02:13:43 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:44 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:45 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:46 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:48 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:49 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:50 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:52 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T02:13:53 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:14:01 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T02:14:02 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T02:14:02 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T02:14:02 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T02:30:06 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T02:30:17 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T02:30:27 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:28 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:30 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:31 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:32 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:34 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:35 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:37 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:38 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:30:47 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T02:30:47 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T02:30:48 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T02:30:48 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T02:46:44 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T02:46:54 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T02:47:03 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:04 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:05 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:07 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:08 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:09 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:10 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:12 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:13 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T02:47:21 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T02:47:22 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T02:47:22 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T02:47:22 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:03:23 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T03:03:33 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T03:03:42 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:43 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:45 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:46 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:47 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:49 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:50 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:51 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T03:03:52 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:04:01 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T03:04:01 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T03:04:02 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:04:02 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:20:03 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T03:20:12 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T03:20:21 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:23 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:24 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:25 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:27 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:28 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:29 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:30 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:32 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:20:40 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T03:20:41 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T03:20:41 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:20:41 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:36:41 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T03:36:51 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T03:37:00 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:01 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:03 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:04 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:05 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:07 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:08 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:09 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:11 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:37:19 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T03:37:19 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T03:37:20 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:37:20 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:53:20 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T03:53:29 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T03:53:37 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:39 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:40 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:41 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:43 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:44 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:45 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:46 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:48 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T03:53:56 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T03:53:56 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T03:53:57 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T03:53:57 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T04:09:59 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T04:10:09 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T04:10:18 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:20 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:21 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:22 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:23 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:25 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:26 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:27 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:28 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:10:37 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T04:10:37 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T04:10:38 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T04:10:38 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T04:26:38 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T04:26:46 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T04:26:55 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:26:56 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:26:57 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T04:26:59 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:27:00 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:27:01 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T04:27:02 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:27:04 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T04:27:05 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:27:13 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T04:27:13 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T04:27:14 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T04:27:14 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T04:43:17 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T04:43:27 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T04:43:36 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:38 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:39 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:40 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:41 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:43 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:44 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:45 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:46 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T04:43:54 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T04:43:55 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T04:43:55 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T04:43:55 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T04:59:55 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T05:00:06 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T05:00:16 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:17 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:18 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:19 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:21 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:22 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:23 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:24 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:26 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:00:35 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T05:00:35 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T05:00:36 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:00:36 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:16:36 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T05:16:46 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T05:16:54 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:16:55 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:16:57 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T05:16:58 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:16:59 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:17:01 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T05:17:02 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:17:03 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T05:17:05 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:17:13 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T05:17:14 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T05:17:14 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:17:14 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:18:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=1.64
+2026-07-01T05:24:24 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=7.81
+2026-07-01T05:27:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=10.63
+2026-07-01T05:30:15 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T05:30:26 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T05:30:34 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:36 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:37 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:38 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:40 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:41 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:42 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:43 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:45 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:30:53 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T05:30:54 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T05:30:54 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:30:55 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:33:20 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.09
+2026-07-01T05:36:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.97
+2026-07-01T05:39:24 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9.14
+2026-07-01T05:42:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.97
+2026-07-01T05:45:15 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T05:45:24 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T05:45:33 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:34 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:35 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:37 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:38 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:39 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:41 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:42 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:43 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T05:45:52 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T05:45:52 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T05:45:52 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:45:53 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T05:48:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.97
+2026-07-01T05:51:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.98
+2026-07-01T05:54:24 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9.15
+2026-07-01T05:57:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.98
+2026-07-01T06:00:15 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T06:00:28 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T06:00:38 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:39 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:40 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:42 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:43 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:44 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:45 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:47 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:48 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:00:57 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T06:00:58 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T06:00:58 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:00:59 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:03:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3
+2026-07-01T06:06:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.99
+2026-07-01T06:09:25 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9.17
+2026-07-01T06:12:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.98
+2026-07-01T06:15:20 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T06:15:31 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T06:15:40 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:41 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:42 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:44 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:45 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:46 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:47 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:49 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:50 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:15:58 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T06:15:58 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T06:15:59 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:15:59 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:18:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.89
+2026-07-01T06:21:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.9
+2026-07-01T06:24:25 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9.09
+2026-07-01T06:27:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.89
+2026-07-01T06:33:18 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T06:33:29 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T06:33:38 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:40 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:41 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:42 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:44 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:45 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:46 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:48 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:49 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:33:57 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T06:33:58 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T06:33:58 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:33:59 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:36:35 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.29
+2026-07-01T06:39:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.95
+2026-07-01T06:42:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.93
+2026-07-01T06:45:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.95
+2026-07-01T06:48:13 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T06:48:26 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T06:48:35 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:36 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:37 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=4 skipped=0
+2026-07-01T06:48:39 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:40 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:41 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:43 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:44 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:46 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T06:48:54 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T06:48:55 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T06:48:55 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:48:55 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T06:51:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.01
+2026-07-01T06:54:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.01
+2026-07-01T06:57:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.99
+2026-07-01T07:00:14 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T07:00:27 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T07:00:36 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:37 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:39 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:40 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=5 skipped=0
+2026-07-01T07:00:41 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:43 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:44 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:45 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:46 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:00:56 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T07:00:56 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T07:00:56 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:00:57 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:03:16 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.03
+2026-07-01T07:06:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.99
+2026-07-01T07:09:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9
+2026-07-01T07:12:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.98
+2026-07-01T07:15:14 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T07:15:26 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T07:15:35 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:36 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:37 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:39 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:40 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:41 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:43 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:44 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:45 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:15:54 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T07:15:55 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T07:15:55 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:15:55 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:18:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.99
+2026-07-01T07:21:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.99
+2026-07-01T07:24:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.98
+2026-07-01T07:27:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.99
+2026-07-01T07:30:13 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T07:30:26 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=39 triggers=0
+2026-07-01T07:30:35 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=1 skipped=0
+2026-07-01T07:30:36 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:30:37 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T07:30:39 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:30:40 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:30:41 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=11 skipped=0
+2026-07-01T07:30:43 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:30:44 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T07:30:45 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:30:54 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T07:30:55 update-schedule-staging skipped focus=2026-07-01 working_rows=39
+2026-07-01T07:30:55 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:30:55 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:33:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.01
+2026-07-01T07:36:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.01
+2026-07-01T07:39:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9
+2026-07-01T07:42:19 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T07:42:32 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T07:42:42 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:42:44 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:42:45 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=1 skipped=0
+2026-07-01T07:42:47 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:42:48 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:42:49 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T07:42:51 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:42:52 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T07:42:53 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:43:03 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T07:43:03 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T07:43:04 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:43:04 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:45:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.93
+2026-07-01T07:48:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.9
+2026-07-01T07:51:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.91
+2026-07-01T07:54:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.92
+2026-07-01T07:57:19 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T07:57:30 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T07:57:41 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=2 skipped=0
+2026-07-01T07:57:43 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:57:44 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=1 skipped=0
+2026-07-01T07:57:45 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:57:46 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T07:57:48 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T07:57:49 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:57:50 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T07:57:51 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T07:58:00 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T07:58:00 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T07:58:00 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T07:58:01 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:00:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.93
+2026-07-01T08:03:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.93
+2026-07-01T08:06:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.92
+2026-07-01T08:09:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.91
+2026-07-01T08:12:14 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T08:12:27 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T08:12:38 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T08:12:40 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:12:41 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=2 skipped=0
+2026-07-01T08:12:42 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T08:12:43 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=5 skipped=0
+2026-07-01T08:12:45 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=2 skipped=0
+2026-07-01T08:12:46 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:12:47 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=1 skipped=0
+2026-07-01T08:12:49 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:12:58 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T08:12:58 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T08:12:59 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:12:59 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:15:16 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.04
+2026-07-01T08:18:30 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.27
+2026-07-01T08:21:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9.03
+2026-07-01T08:24:14 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T08:24:28 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T08:24:39 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T08:24:40 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:24:42 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T08:24:43 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=1 skipped=0
+2026-07-01T08:24:44 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=2 skipped=0
+2026-07-01T08:24:45 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T08:24:47 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:24:48 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=2 skipped=0
+2026-07-01T08:24:49 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=1 skipped=0
+2026-07-01T08:25:08 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T08:25:08 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T08:25:08 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:25:09 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:27:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.99
+2026-07-01T08:30:16 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.03
+2026-07-01T08:33:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.99
+2026-07-01T08:36:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.99
+2026-07-01T08:39:15 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T08:39:28 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T08:39:41 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=2 skipped=0
+2026-07-01T08:39:43 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:39:44 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T08:39:45 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T08:39:46 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=2 skipped=0
+2026-07-01T08:39:48 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T08:39:49 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:39:50 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=2 skipped=0
+2026-07-01T08:39:52 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:40:00 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T08:40:01 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T08:40:01 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:40:01 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:42:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.97
+2026-07-01T08:45:16 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.01
+2026-07-01T08:48:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.98
+2026-07-01T08:51:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.97
+2026-07-01T08:54:14 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T08:54:28 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T08:54:39 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=1 skipped=0
+2026-07-01T08:54:40 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:54:41 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T08:54:42 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T08:54:44 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T08:54:45 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T08:54:46 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:54:48 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=2 skipped=0
+2026-07-01T08:54:49 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T08:54:57 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T08:54:58 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T08:54:58 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:54:58 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T08:57:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.99
+2026-07-01T09:00:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.02
+2026-07-01T09:03:23 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9.15
+2026-07-01T09:06:36 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T09:06:49 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T09:07:01 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=1 skipped=0
+2026-07-01T09:07:02 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:07:03 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T09:07:04 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T09:07:06 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=1 skipped=0
+2026-07-01T09:07:07 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=2 skipped=0
+2026-07-01T09:07:08 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:07:10 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=2 skipped=0
+2026-07-01T09:07:11 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:07:20 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T09:07:20 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T09:07:21 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:07:21 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:09:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.63
+2026-07-01T09:12:19 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=5.73
+2026-07-01T09:15:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.64
+2026-07-01T09:18:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.64
+2026-07-01T09:21:13 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T09:21:27 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T09:21:39 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=1 skipped=0
+2026-07-01T09:21:40 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:21:41 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=3 skipped=0
+2026-07-01T09:21:42 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T09:21:44 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=5 skipped=0
+2026-07-01T09:21:45 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T09:21:46 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:21:48 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=2 skipped=0
+2026-07-01T09:21:49 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=1 skipped=0
+2026-07-01T09:21:58 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T09:21:59 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T09:21:59 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:21:59 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:24:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.02
+2026-07-01T09:27:19 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.09
+2026-07-01T09:30:16 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=9.04
+2026-07-01T09:33:14 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T09:33:29 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T09:33:45 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T09:33:46 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:33:48 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T09:33:49 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=4 skipped=0
+2026-07-01T09:33:51 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=1 skipped=0
+2026-07-01T09:33:52 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-01T09:33:54 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:33:55 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=1 skipped=0
+2026-07-01T09:33:56 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=1 skipped=0
+2026-07-01T09:34:05 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T09:34:05 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T09:34:05 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:34:06 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:36:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.99
+2026-07-01T09:39:30 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.25
+2026-07-01T09:42:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.98
+2026-07-01T09:45:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.99
+2026-07-01T09:48:14 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T09:48:27 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T09:48:39 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T09:48:40 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:48:41 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T09:48:43 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=2 skipped=0
+2026-07-01T09:48:44 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=2 skipped=0
+2026-07-01T09:48:45 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=1 skipped=0
+2026-07-01T09:48:46 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T09:48:48 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=0 skipped=0
+2026-07-01T09:48:49 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=1 skipped=0
+2026-07-01T09:48:57 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T09:48:58 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T09:48:58 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:48:59 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T09:51:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3
+2026-07-01T09:54:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6
+2026-07-01T09:57:13 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.99
+2026-07-01T10:00:15 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T10:00:31 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T10:00:44 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=2 skipped=0
+2026-07-01T10:00:46 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T10:00:47 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=1 skipped=0
+2026-07-01T10:00:48 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T10:00:49 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T10:00:51 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=1 skipped=0
+2026-07-01T10:00:52 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T10:00:53 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=1 skipped=0
+2026-07-01T10:00:55 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T10:01:05 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T10:01:05 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T10:01:06 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T10:01:06 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T10:03:17 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=3.02
+2026-07-01T10:06:15 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6
+2026-07-01T10:09:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=8.98
+2026-07-01T10:12:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=11.98
+2026-07-01T10:15:15 cadence-gate pass focus=14909|2026-07-01|day cadence=12
+2026-07-01T10:15:30 heartbeat show=14909 focus=2026-07-01 ok=True schedule_rows=40 triggers=0
+2026-07-01T10:15:42 update-schedule-materialize ring_day_no=3578 ring_no=640 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T10:15:43 update-schedule-materialize ring_day_no=3584 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T10:15:44 update-schedule-materialize ring_day_no=3590 ring_no=642 upstream_status=200 parsed=10 materialized=10 inserted=0 updated=0 skipped=0
+2026-07-01T10:15:46 update-schedule-materialize ring_day_no=3596 ring_no=643 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=0 skipped=0
+2026-07-01T10:15:47 update-schedule-materialize ring_day_no=3602 ring_no=644 upstream_status=200 parsed=8 materialized=8 inserted=0 updated=3 skipped=0
+2026-07-01T10:15:48 update-schedule-materialize ring_day_no=3608 ring_no=645 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=2 skipped=0
+2026-07-01T10:15:49 update-schedule-materialize ring_day_no=3614 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-01T10:15:51 update-schedule-materialize ring_day_no=4318 ring_no=747 upstream_status=200 parsed=9 materialized=9 inserted=0 updated=2 skipped=0
+2026-07-01T10:15:52 update-schedule-materialize ring_day_no=4322 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=1 skipped=0
+2026-07-01T10:16:01 update-schedule-mirror trigger=cadence catalyst=152 airtable=152 confirm_delete_after=0 stale_deleted=0 focus=2026-07-01
+2026-07-01T10:16:02 update-schedule-staging skipped focus=2026-07-01 working_rows=40
+2026-07-01T10:16:02 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-01T10:16:02 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-01T10:18:14 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=2.97
+2026-07-01T10:21:19 cadence-gate skip not_due focus=14909|2026-07-01|day cadence=12 elapsed=6.05
