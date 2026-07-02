@@ -164,6 +164,10 @@ function boolValue(value) {
   return false;
 }
 
+function focusShowLiveEnrichmentEnabled(fields = {}) {
+  return boolValue(fields["live-enrichment"]) || boolValue(fields.live_enrichment);
+}
+
 function firstValue(value) {
   if (Array.isArray(value)) return value.length ? firstValue(value[0]) : undefined;
   if (value && typeof value === "object" && "name" in value) return value.name;
@@ -1295,7 +1299,7 @@ async function runOrchestrator() {
         focus_day: focusDay,
         focus_show_is_pause: boolValue(fields.is_pause),
         focus_day_is_lock: boolValue(fields.is_lock),
-        live_enrichment_enabled: boolValue(fields.live_enrichment),
+        live_enrichment_enabled: focusShowLiveEnrichmentEnabled(fields),
       };
     }
 
@@ -1412,7 +1416,7 @@ async function runOrchestrator() {
       const focusDay = strOrNull(focusFields.focus_day)?.slice(0, 10) || null;
       const isPause = boolValue(focusFields.is_pause);
       const focusDayIsLock = boolValue(focusFields.is_lock);
-      const liveEnrichmentEnabled = boolValue(focusFields.live_enrichment);
+      const liveEnrichmentEnabled = focusShowLiveEnrichmentEnabled(focusFields);
       if (!showNo || !focusDay) {
         return {
           open: false,
