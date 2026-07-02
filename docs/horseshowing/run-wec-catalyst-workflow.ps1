@@ -2469,9 +2469,10 @@ Resolve-WecAirtableAlert -AlertType "catalyst_heartbeat_failed" -DedupeKey "$Sho
 }
 $liveAlertWindow = Test-LiveAlertWindow $heartbeat.focus_day
 if ($heartbeat.live_skipped) {
-  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -Status "skipped" -Summary "get_rings paused by focus_show.is_pause" -Payload @{
+  $skipReason = if ($heartbeat.live_skip_reason) { [string]$heartbeat.live_skip_reason } else { "skipped" }
+  Write-WecAirtableLog -LogType "live" -CheckName "get_rings" -Status "skipped" -Summary "get_rings skipped: $skipReason" -Payload @{
     focus_day = $heartbeat.focus_day
-    reason = "focus_show.is_pause"
+    reason = $skipReason
   }
 } elseif ($heartbeat.live_error) {
   $liveStatus = if ($liveAlertWindow) { "error" } else { "skipped" }
@@ -2497,10 +2498,11 @@ if ($heartbeat.live_skipped) {
   Resolve-WecAirtableAlert -AlertType "live_get_rings_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Message "Resolved: get_rings returned without error." -Payload $heartbeat.live
 }
 if ($heartbeat.live_skipped) {
-  Resolve-WecAirtableAlert -AlertType "live_get_rings_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Message "Resolved: get_rings is paused by focus_show.is_pause." -Payload @{
+  $skipReason = if ($heartbeat.live_skip_reason) { [string]$heartbeat.live_skip_reason } else { "skipped" }
+  Resolve-WecAirtableAlert -AlertType "live_get_rings_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Message "Resolved: get_rings skipped: $skipReason." -Payload @{
     show_no = $ShowNo
     focus_day = $heartbeat.focus_day
-    reason = "focus_show.is_pause"
+    reason = $skipReason
   }
 } elseif ($heartbeat.live_error -and $liveAlertWindow) {
   Write-WecAirtableAlert -AlertType "live_get_rings_failed" -Severity "warn" -Message "Live get_rings failed for show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.live_error)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_rings" -Payload $heartbeat
@@ -2513,9 +2515,10 @@ if ($heartbeat.live_skipped) {
 }
 $ordersAlertWindow = Test-LiveAlertWindow $heartbeat.focus_day
 if ($heartbeat.orders_skipped) {
-  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -Status "skipped" -Summary "get_orders paused by focus_show.is_pause" -Payload @{
+  $skipReason = if ($heartbeat.orders_skip_reason) { [string]$heartbeat.orders_skip_reason } else { "skipped" }
+  Write-WecAirtableLog -LogType "live" -CheckName "get_orders" -Status "skipped" -Summary "get_orders skipped: $skipReason" -Payload @{
     focus_day = $heartbeat.focus_day
-    reason = "focus_show.is_pause"
+    reason = $skipReason
   }
 } elseif ($heartbeat.orders_error) {
   $ordersStatus = if ($ordersAlertWindow) { "error" } else { "skipped" }
@@ -2542,10 +2545,11 @@ if ($heartbeat.orders_skipped) {
   Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders returned without error." -Payload $heartbeat.orders
 }
 if ($heartbeat.orders_skipped) {
-  Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders is paused by focus_show.is_pause." -Payload @{
+  $skipReason = if ($heartbeat.orders_skip_reason) { [string]$heartbeat.orders_skip_reason } else { "skipped" }
+  Resolve-WecAirtableAlert -AlertType "live_get_orders_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Message "Resolved: get_orders skipped: $skipReason." -Payload @{
     show_no = $ShowNo
     focus_day = $heartbeat.focus_day
-    reason = "focus_show.is_pause"
+    reason = $skipReason
   }
 } elseif ($heartbeat.orders_error -and $ordersAlertWindow) {
   Write-WecAirtableAlert -AlertType "live_get_orders_failed" -Severity "warn" -Message "Live get_orders failed for show=$ShowNo focus=$($heartbeat.focus_day): $($heartbeat.orders_error)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders" -Payload $heartbeat
@@ -2708,6 +2712,45 @@ if ($heartbeat.focus_day) {
     } | ConvertTo-Json -Depth 8
     exit 0
   }
+  if (!$script:FocusLocked) {
+    Write-WecAirtableLog -LogType "heartbeat" -CheckName "workflowv4_bootstrap_stop" -Status "ok" -Summary "WorkflowV4 cadence stopped after bootstrap because focus_show.is_lock is false" -Payload @{
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      counts = $stage1ProofCounts
+      focus_day_is_lock = $false
+      skipped_stages = @("class_start_times", "class_oog", "entry_go_times", "get_orders", "get_rings", "mobile", "print", "alerts", "results")
+    }
+    Write-WorkflowLog "workflowv4-bootstrap stop focus=$($heartbeat.focus_day) hs_ring_days=$($stage1ProofCounts.hs_ring_days_count) update_schedule=$($stage1ProofCounts.update_schedule_count) update_schedule_staging=$($stage1ProofCounts.update_schedule_staging_count)"
+    Save-State $state
+    if ($script:WecWorkflowMutexAcquired) {
+      $script:WecWorkflowMutex.ReleaseMutex()
+      $script:WecWorkflowMutex.Dispose()
+    }
+    [pscustomobject]@{
+      ok = $true
+      action = "workflowv4-bootstrap"
+      show_no = $ShowNo
+      focus_day = $heartbeat.focus_day
+      focus_day_is_lock = $false
+      get_ring_days_ran = $true
+      update_schedule_ran = $true
+      update_schedule_staging_ran = $true
+      get_ring_days_source_count = $stage1ProofCounts.get_ring_days_source_count
+      hs_ring_days_count = $stage1ProofCounts.hs_ring_days_count
+      update_schedule_count = $stage1ProofCounts.update_schedule_count
+      update_schedule_staging_count = $stage1ProofCounts.update_schedule_staging_count
+      get_orders_run = $false
+      get_rings_run = $false
+      class_start_times_run = $false
+      class_oog_run = $false
+      entry_go_times_run = $false
+      mobile_run = $false
+      print_run = $false
+      alerts_run = $false
+      results_run = $false
+    } | ConvertTo-Json -Depth 8
+    exit 0
+  }
   if ($script:FocusPaused) {
     Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_pause" -Status "skipped" -Summary "downstream stages paused by focus_show.is_pause" -Payload @{
       show_no = $ShowNo
@@ -2754,23 +2797,31 @@ if ($heartbeat.focus_day) {
     }
     throw
   }
-  try {
-    $ordersClassStart = Invoke-ClassLaneGetOrdersSync $heartbeat.focus_day
-    $ordersClassStartChanged = (Int-OrZero $ordersClassStart.airtable_updated) + (Int-OrZero $ordersClassStart.catalyst_updated)
-    Write-WecAirtableLog -LogType "live" -CheckName "get_orders_class_start" -RecordsSeen (Int-OrZero $ordersClassStart.orders) -RecordsChanged $ordersClassStartChanged -Summary "get_orders class_start_matches=$($ordersClassStart.matches) focus=$($heartbeat.focus_day)" -Payload $ordersClassStart
-    Resolve-WecAirtableAlert -AlertType "get_orders_class_start_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders_class_start" -Message "Resolved: get_orders class_start enrichment completed." -Payload $ordersClassStart
-  } catch {
-    Write-WecAirtableLog -LogType "live" -CheckName "get_orders_class_start" -Status "error" -Summary "get_orders class_start enrichment failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+  if ($RunLiveEnrichment) {
+    try {
+      $ordersClassStart = Invoke-ClassLaneGetOrdersSync $heartbeat.focus_day
+      $ordersClassStartChanged = (Int-OrZero $ordersClassStart.airtable_updated) + (Int-OrZero $ordersClassStart.catalyst_updated)
+      Write-WecAirtableLog -LogType "live" -CheckName "get_orders_class_start" -RecordsSeen (Int-OrZero $ordersClassStart.orders) -RecordsChanged $ordersClassStartChanged -Summary "get_orders class_start_matches=$($ordersClassStart.matches) focus=$($heartbeat.focus_day)" -Payload $ordersClassStart
+      Resolve-WecAirtableAlert -AlertType "get_orders_class_start_failed" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders_class_start" -Message "Resolved: get_orders class_start enrichment completed." -Payload $ordersClassStart
+    } catch {
+      Write-WecAirtableLog -LogType "live" -CheckName "get_orders_class_start" -Status "error" -Summary "get_orders class_start enrichment failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+        error = $_.Exception.Message
+      }
+      Write-WecAirtableAlert -AlertType "get_orders_class_start_failed" -Severity "critical" -Message "get_orders class_start enrichment failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders_class_start" -Payload @{
+        show_no = $ShowNo
+        focus_day = $heartbeat.focus_day
+        error = $_.Exception.Message
+      }
+      throw
+    }
+  } else {
+    Write-WecAirtableLog -LogType "live" -CheckName "get_orders_class_start" -Status "skipped" -Summary "get_orders class_start enrichment skipped: live_enrichment_disabled" -Payload @{
       show_no = $ShowNo
       focus_day = $heartbeat.focus_day
-      error = $_.Exception.Message
+      reason = "live_enrichment_disabled"
     }
-    Write-WecAirtableAlert -AlertType "get_orders_class_start_failed" -Severity "critical" -Message "get_orders class_start enrichment failed for show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -DedupeKey "$ShowNo|$($heartbeat.focus_day)|get_orders_class_start" -Payload @{
-      show_no = $ShowNo
-      focus_day = $heartbeat.focus_day
-      error = $_.Exception.Message
-    }
-    throw
   }
   try {
     $entryGoTimes = Invoke-EntryGoTimesSync $heartbeat.focus_day

@@ -67,6 +67,8 @@ const WEC_ALERTS_VERIFY_ONLY = String(process.env.WEC_ALERTS_VERIFY_ONLY || "0")
   || process.argv.includes("--wec-alerts-verify");
 const WEC_LIFECYCLE_VERIFY_ONLY = String(process.env.WEC_LIFECYCLE_VERIFY_ONLY || "0") === "1"
   || process.argv.includes("--wec-lifecycle-verify");
+const WEC_ENABLE_LIVE_ENRICHMENT = String(process.env.WEC_ENABLE_LIVE_ENRICHMENT || "0") === "1"
+  || process.argv.includes("--wec-live-enrichment");
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 const ORCH_ALERT_NO_ACTIVE_FEEDS = String(process.env.ORCH_ALERT_NO_ACTIVE_FEEDS || "1") === "1";
 const ORCH_STEP_OVERRUN_ALERT_MS = Math.max(60000, Number(process.env.ORCH_STEP_OVERRUN_ALERT_MS || "240000") || 240000);
@@ -1177,21 +1179,35 @@ async function runOrchestrator() {
       );
       if (!classStartTimes.ok) return { ok: false, stage2Result, views, gate, classStartTimes };
 
-      const getOrders = await runWecClassLaneAction(
-        `workflowv4_${reason}`,
-        focus,
-        "sync-get-orders",
-        "wec_get_orders_class_start_completed"
-      );
-      if (!getOrders.ok) return { ok: false, stage2Result, views, gate, classStartTimes, getOrders };
+      let getOrders = null;
+      let getRings = null;
+      if (WEC_ENABLE_LIVE_ENRICHMENT) {
+        getOrders = await runWecClassLaneAction(
+          `workflowv4_${reason}`,
+          focus,
+          "sync-get-orders",
+          "wec_get_orders_class_start_completed"
+        );
+        if (!getOrders.ok) return { ok: false, stage2Result, views, gate, classStartTimes, getOrders };
 
-      const getRings = await runWecClassLaneAction(
-        `workflowv4_${reason}`,
-        focus,
-        "sync-get-rings",
-        "wec_get_rings_class_start_completed"
-      );
-      if (!getRings.ok) return { ok: false, stage2Result, views, gate, classStartTimes, getOrders, getRings };
+        getRings = await runWecClassLaneAction(
+          `workflowv4_${reason}`,
+          focus,
+          "sync-get-rings",
+          "wec_get_rings_class_start_completed"
+        );
+        if (!getRings.ok) return { ok: false, stage2Result, views, gate, classStartTimes, getOrders, getRings };
+      } else {
+        appendEvent({
+          ok: true,
+          event: "wec_live_enrichment_skipped",
+          reason: "live_enrichment_disabled",
+          show_no: focus.show_no || null,
+          focus_day: focus.focus_day || null,
+          get_orders_run: false,
+          get_rings_run: false,
+        });
+      }
 
       const classOog = runWecClassOogOnlyUntilComplete(`workflowv4_${reason}`);
       if (classOog.ok) {
@@ -1574,6 +1590,7 @@ async function runOrchestrator() {
             WEC_RUN_TIME: runMeta.run_time,
             WEC_WORKFLOWV4_STAGE1_ONLY: "1",
             WEC_FORCE_SYNC: process.env.WEC_FORCE_SYNC || "",
+            WEC_ENABLE_LIVE_ENRICHMENT: process.env.WEC_ENABLE_LIVE_ENRICHMENT || "",
           });
           appendEvent({
             ok: result.ok,
@@ -1824,6 +1841,7 @@ async function runOrchestrator() {
         WEC_RUN_TIME: wecRunMeta.run_time,
         WEC_WORKFLOWV4_STAGE1_ONLY: "1",
         WEC_FORCE_SYNC: process.env.WEC_FORCE_SYNC || "",
+        WEC_ENABLE_LIVE_ENRICHMENT: process.env.WEC_ENABLE_LIVE_ENRICHMENT || "",
       });
       if (!wecHeartbeatResult.ok) {
         appendEvent({
@@ -1840,29 +1858,71 @@ async function runOrchestrator() {
         });
         upstreamOk = false;
       } else {
-      const wecStageReason = wecHeartbeatResult.ok ? "after_stage1_pass" : "after_stage1_fail";
-      const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(wecStageReason, wecRunMeta);
-      appendEvent({
-        ok: workflowV4Result.ok,
-        event: "wec_workflowv4_core_downstream_exit",
-        reason: wecStageReason,
-        run_id: wecRunMeta.run_id,
-        run_time: wecRunMeta.run_time,
-        helper_repair_run: false,
-        class_start_times_run: Boolean(workflowV4Result.classStartTimes),
-        get_orders_run: Boolean(workflowV4Result.getOrders),
-        get_rings_run: Boolean(workflowV4Result.getRings),
-        class_oog_run: Boolean(workflowV4Result.classOog),
-        entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
-        alerts_run: Boolean(workflowV4Result.alerts),
-        downstream_run: Boolean(workflowV4Result.classStartTimes || workflowV4Result.classOog || workflowV4Result.entryGoTimes || workflowV4Result.alerts),
-        active_entries_run: false,
-      });
-      if (workflowV4Result.ok) {
-        markIntervalRun("wec-focus-workflow");
-      } else {
-        upstreamOk = false;
-      }
+        const activeFocusAfterStage1 = await readWecActiveFocusShowState();
+        if (!activeFocusAfterStage1.ok) {
+          appendEvent({
+            ok: false,
+            event: "wec_workflowv4_core_downstream_skipped",
+            reason: activeFocusAfterStage1.blocker || "active_focus_show_unavailable",
+            run_id: wecRunMeta.run_id,
+            run_time: wecRunMeta.run_time,
+          });
+          upstreamOk = false;
+        } else if (activeFocusAfterStage1.focus_show_is_pause) {
+          appendEvent({
+            ok: true,
+            event: "wec_workflowv4_core_downstream_skipped",
+            reason: "focus_show_paused",
+            branch: "paused",
+            run_id: wecRunMeta.run_id,
+            run_time: wecRunMeta.run_time,
+            downstream_run: false,
+          });
+          markIntervalRun("wec-focus-workflow");
+        } else if (!activeFocusAfterStage1.focus_day_is_lock) {
+          appendEvent({
+            ok: true,
+            event: "wec_focus_lifecycle_bootstrap_exit",
+            reason: "bootstrap_completed",
+            branch: "bootstrap",
+            run_id: wecRunMeta.run_id,
+            run_time: wecRunMeta.run_time,
+            helper_repair_run: false,
+            class_start_times_run: false,
+            get_orders_run: false,
+            get_rings_run: false,
+            class_oog_run: false,
+            entry_go_times_run: false,
+            alerts_run: false,
+            downstream_run: false,
+            active_entries_run: false,
+          });
+          markIntervalRun("wec-focus-workflow");
+        } else {
+          const wecStageReason = "after_stage1_pass";
+          const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(wecStageReason, wecRunMeta);
+          appendEvent({
+            ok: workflowV4Result.ok,
+            event: "wec_workflowv4_core_downstream_exit",
+            reason: wecStageReason,
+            run_id: wecRunMeta.run_id,
+            run_time: wecRunMeta.run_time,
+            helper_repair_run: false,
+            class_start_times_run: Boolean(workflowV4Result.classStartTimes),
+            get_orders_run: Boolean(workflowV4Result.getOrders),
+            get_rings_run: Boolean(workflowV4Result.getRings),
+            class_oog_run: Boolean(workflowV4Result.classOog),
+            entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
+            alerts_run: Boolean(workflowV4Result.alerts),
+            downstream_run: Boolean(workflowV4Result.classStartTimes || workflowV4Result.classOog || workflowV4Result.entryGoTimes || workflowV4Result.alerts),
+            active_entries_run: false,
+          });
+          if (workflowV4Result.ok) {
+            markIntervalRun("wec-focus-workflow");
+          } else {
+            upstreamOk = false;
+          }
+        }
       }
     }
 

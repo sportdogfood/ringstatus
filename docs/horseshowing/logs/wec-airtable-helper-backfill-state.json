@@ -2,12 +2,12 @@
   "last_focus_key": "14909|2026-07-02",
   "last_show_no": "14909",
   "last_focus_day": "2026-07-02",
-  "last_backfill_at": "2026-07-02T04:51:12.824Z",
+  "last_backfill_at": "2026-07-02T05:56:56.528Z",
   "last_summary": {
     "show_no": "14909",
     "focus_day": "2026-07-02",
     "source_counts": {
-      "update_schedule": 0,
+      "update_schedule": 50,
       "class_oog": 0,
       "helper_horses": 0,
       "helper_riders": 0,

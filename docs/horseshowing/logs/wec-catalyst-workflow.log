@@ -17082,3 +17082,20 @@
 2026-07-02T01:15:46 workflowv4-stage1-count-gate fail focus=2026-07-02 blocker=source_empty: update_schedule count is 0
 2026-07-02T01:23:31 cadence-gate skip not_due focus=14909|2026-07-02|day cadence=12 elapsed=9.06
 2026-07-02T01:24:49 cadence-gate skip not_due focus=14909|2026-07-02|day cadence=12 elapsed=10.37
+2026-07-02T01:46:59 cadence-gate bypass force-sync focus=14909|2026-07-02|day cadence=12
+2026-07-02T01:47:04 heartbeat show=14909 focus=2026-07-02 ok=True schedule_rows=0 triggers=0
+2026-07-02T01:47:07 update-schedule-materialize ring_day_no=3579 ring_no=640 upstream_status=200 parsed=7 materialized=7 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:09 update-schedule-materialize ring_day_no=3585 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:10 update-schedule-materialize ring_day_no=3591 ring_no=642 upstream_status=200 parsed=11 materialized=11 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:12 update-schedule-materialize ring_day_no=3597 ring_no=643 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:13 update-schedule-materialize ring_day_no=3603 ring_no=644 upstream_status=200 parsed=11 materialized=11 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:15 update-schedule-materialize ring_day_no=3609 ring_no=645 upstream_status=200 parsed=15 materialized=15 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:16 update-schedule-materialize ring_day_no=3615 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:18 update-schedule-materialize ring_day_no=4319 ring_no=747 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:19 update-schedule-materialize ring_day_no=4323 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-02T01:47:30 update-schedule-mirror trigger=cadence catalyst=230 airtable=229 confirm_delete_after=0 stale_deleted=0 focus=2026-07-02
+2026-07-02T01:47:30 update-schedule-staging reset skipped; mirror-based Stage2C preserves staging records focus=2026-07-02
+2026-07-02T01:47:43 update-schedule-staging source=airtable.update_schedule staging_rows=62 update_rows=75 source_links=62 missing_source_links=0 out_of_focus_marked_inactive=0 stale_deleted=0 focus=2026-07-02
+2026-07-02T01:47:44 airtable-alert resolved type=local_core_workflow_failed key=local_core_workflow_failed|14909|2026-07-02|local_core_workflow records=1
+2026-07-02T01:47:44 workflowv4-stage1-count-gate focus=2026-07-02 hs_ring_days=9 update_schedule=75 update_schedule_staging=62 blocker=
+2026-07-02T01:47:45 workflowv4-stage1-only stop focus=2026-07-02 hs_ring_days=9 update_schedule=75 update_schedule_staging=62
