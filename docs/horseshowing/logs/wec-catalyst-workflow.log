@@ -17032,3 +17032,29 @@
 2026-07-02T00:34:19 update-schedule-staging skipped focus=2026-07-01 working_rows=40
 2026-07-02T00:34:19 workflowv4-stage1-count-gate focus=2026-07-01 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
 2026-07-02T00:34:20 workflowv4-stage1-count-gate fail focus=2026-07-01 blocker=source_empty: update_schedule count is 0
+2026-07-02T00:50:19 cadence-gate pass focus=14909|2026-07-02|day cadence=12
+2026-07-02T00:50:27 heartbeat show=14909 focus=2026-07-02 ok=True schedule_rows=0 triggers=0
+2026-07-02T00:50:38 update-schedule-materialize ring_day_no=3579 ring_no=640 upstream_status=200 parsed=7 materialized=7 inserted=7 updated=0 skipped=0
+2026-07-02T00:50:39 update-schedule-materialize ring_day_no=3585 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=1 updated=0 skipped=0
+2026-07-02T00:50:41 update-schedule-materialize ring_day_no=3591 ring_no=642 upstream_status=200 parsed=11 materialized=11 inserted=11 updated=0 skipped=0
+2026-07-02T00:50:43 update-schedule-materialize ring_day_no=3597 ring_no=643 upstream_status=200 parsed=14 materialized=14 inserted=14 updated=0 skipped=0
+2026-07-02T00:50:44 update-schedule-materialize ring_day_no=3603 ring_no=644 upstream_status=200 parsed=11 materialized=11 inserted=11 updated=0 skipped=0
+2026-07-02T00:50:46 update-schedule-materialize ring_day_no=3609 ring_no=645 upstream_status=200 parsed=15 materialized=15 inserted=15 updated=0 skipped=0
+2026-07-02T00:50:47 update-schedule-materialize ring_day_no=3615 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=1 updated=0 skipped=0
+2026-07-02T00:50:49 update-schedule-materialize ring_day_no=4319 ring_no=747 upstream_status=200 parsed=14 materialized=14 inserted=14 updated=0 skipped=0
+2026-07-02T00:50:51 update-schedule-materialize ring_day_no=4323 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=1 updated=0 skipped=0
+2026-07-02T00:54:17 cadence-gate pass focus=14909|2026-07-02|day cadence=12
+2026-07-02T00:54:25 heartbeat show=14909 focus=2026-07-02 ok=True schedule_rows=0 triggers=0
+2026-07-02T00:54:34 update-schedule-materialize ring_day_no=3579 ring_no=640 upstream_status=200 parsed=7 materialized=7 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:35 update-schedule-materialize ring_day_no=3585 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:37 update-schedule-materialize ring_day_no=3591 ring_no=642 upstream_status=200 parsed=11 materialized=11 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:38 update-schedule-materialize ring_day_no=3597 ring_no=643 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:39 update-schedule-materialize ring_day_no=3603 ring_no=644 upstream_status=200 parsed=11 materialized=11 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:41 update-schedule-materialize ring_day_no=3609 ring_no=645 upstream_status=200 parsed=15 materialized=15 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:42 update-schedule-materialize ring_day_no=3615 ring_no=646 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:43 update-schedule-materialize ring_day_no=4319 ring_no=747 upstream_status=200 parsed=14 materialized=14 inserted=0 updated=0 skipped=0
+2026-07-02T00:54:45 update-schedule-materialize ring_day_no=4323 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
+2026-07-02T01:06:59 cadence-gate pass focus=14909|2026-07-02|day cadence=12
+2026-07-02T01:07:06 heartbeat show=14909 focus=2026-07-02 ok=True schedule_rows=0 triggers=0
+2026-07-02T01:07:17 update-schedule-materialize ring_day_no=3579 ring_no=640 upstream_status=200 parsed=7 materialized=7 inserted=0 updated=0 skipped=0
+2026-07-02T01:07:18 update-schedule-materialize ring_day_no=3585 ring_no=641 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
