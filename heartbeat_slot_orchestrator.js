@@ -65,6 +65,8 @@ const RUN_INLINE = String(process.env.ORCH_RUN_INLINE || "0") === "1";
 const DETACHED_CHILD = String(process.env.ORCH_DETACHED_CHILD || "0") === "1";
 const WEC_ALERTS_VERIFY_ONLY = String(process.env.WEC_ALERTS_VERIFY_ONLY || "0") === "1"
   || process.argv.includes("--wec-alerts-verify");
+const WEC_LIFECYCLE_VERIFY_ONLY = String(process.env.WEC_LIFECYCLE_VERIFY_ONLY || "0") === "1"
+  || process.argv.includes("--wec-lifecycle-verify");
 const TABLE_AUTOMATION_ERRS = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
 const ORCH_ALERT_NO_ACTIVE_FEEDS = String(process.env.ORCH_ALERT_NO_ACTIVE_FEEDS || "1") === "1";
 const ORCH_STEP_OVERRUN_ALERT_MS = Math.max(60000, Number(process.env.ORCH_STEP_OVERRUN_ALERT_MS || "240000") || 240000);
@@ -1616,7 +1618,7 @@ async function runOrchestrator() {
         }
       }
 
-      if (ENABLE_WEC_HEARTBEAT && intervalDue("wec-airtable-controls", WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES)) {
+      if (ENABLE_WEC_HEARTBEAT && !WEC_LIFECYCLE_VERIFY_ONLY && intervalDue("wec-airtable-controls", WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES)) {
         const result = runNodeScript("docs/horseshowing/sync-airtable-controls.js", {
           WEC_AIRTABLE_BASE_ID: process.env.WEC_AIRTABLE_BASE_ID || "app6XS1RvsPNRT6os",
         });
@@ -1624,6 +1626,18 @@ async function runOrchestrator() {
         ran = true;
       }
       return ran;
+    }
+
+    if (WEC_LIFECYCLE_VERIFY_ONLY) {
+      const ranWecLifecycle = await runWecWithoutShowScopeIfDue();
+      appendEvent({
+        ok: ranWecLifecycle,
+        event: "wec_lifecycle_verify_completed",
+        reason: ranWecLifecycle ? "wec_lifecycle_ran" : "wec_lifecycle_not_due",
+        unrelated_lanes_run: false,
+      });
+      if (!ranWecLifecycle) process.exitCode = 1;
+      return;
     }
 
     const defaultShowDateGuard = computeDefaultShowDateGuard({
