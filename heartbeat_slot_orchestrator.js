@@ -1163,6 +1163,8 @@ async function runOrchestrator() {
         pause_control: "focus_show.is_pause",
         focus_show_is_pause: gate.focus_show_is_pause ?? null,
         focus_day_is_lock: gate.focus_day_is_lock ?? null,
+        live_enrichment_enabled: gate.live_enrichment_enabled ?? null,
+        live_enrichment_source: gate.live_enrichment_enabled ? "focus_show.live_enrichment" : "disabled",
         locked_staging_rows: gate.locked_staging_rows ?? null,
       });
       if (!gate.open) return { ok: false, gate };
@@ -1181,7 +1183,22 @@ async function runOrchestrator() {
 
       let getOrders = null;
       let getRings = null;
-      if (WEC_ENABLE_LIVE_ENRICHMENT) {
+      const liveEnrichmentEnabled = WEC_ENABLE_LIVE_ENRICHMENT || gate.live_enrichment_enabled === true;
+      const liveEnrichmentSource = WEC_ENABLE_LIVE_ENRICHMENT
+        ? "env_or_cli"
+        : gate.live_enrichment_enabled === true
+          ? "focus_show.live_enrichment"
+          : "disabled";
+      if (liveEnrichmentEnabled) {
+        appendEvent({
+          ok: true,
+          event: "wec_live_enrichment_enabled",
+          reason: liveEnrichmentSource,
+          show_no: focus.show_no || null,
+          focus_day: focus.focus_day || null,
+          live_enrichment_enabled: true,
+          live_enrichment_source: liveEnrichmentSource,
+        });
         getOrders = await runWecClassLaneAction(
           `workflowv4_${reason}`,
           focus,
@@ -1204,6 +1221,9 @@ async function runOrchestrator() {
           reason: "live_enrichment_disabled",
           show_no: focus.show_no || null,
           focus_day: focus.focus_day || null,
+          live_enrichment_enabled: false,
+          live_enrichment_source: liveEnrichmentSource,
+          focus_show_live_enrichment: gate.live_enrichment_enabled ?? null,
           get_orders_run: false,
           get_rings_run: false,
         });
@@ -1247,7 +1267,6 @@ async function runOrchestrator() {
       const focusRows = await airtableListForBase(WEC_AIRTABLE_BASE_ID, "focus_show", {
         maxRecords: 10,
         filterByFormula: "{active}=1",
-        "fields[]": ["show_no", "focus_day", "is_lock", "is_pause", "active"],
       });
       if (focusRows.length !== 1) {
         return {
@@ -1276,6 +1295,7 @@ async function runOrchestrator() {
         focus_day: focusDay,
         focus_show_is_pause: boolValue(fields.is_pause),
         focus_day_is_lock: boolValue(fields.is_lock),
+        live_enrichment_enabled: boolValue(fields.live_enrichment),
       };
     }
 
@@ -1377,7 +1397,6 @@ async function runOrchestrator() {
       const focusRows = await airtableListForBase(WEC_AIRTABLE_BASE_ID, "focus_show", {
         maxRecords: 10,
         filterByFormula: "{active}=1",
-        "fields[]": ["show_no", "focus_day", "is_lock", "is_pause", "active"],
       });
       if (focusRows.length !== 1) {
         return {
@@ -1393,12 +1412,14 @@ async function runOrchestrator() {
       const focusDay = strOrNull(focusFields.focus_day)?.slice(0, 10) || null;
       const isPause = boolValue(focusFields.is_pause);
       const focusDayIsLock = boolValue(focusFields.is_lock);
+      const liveEnrichmentEnabled = boolValue(focusFields.live_enrichment);
       if (!showNo || !focusDay) {
         return {
           open: false,
           reason: "active_focus_show_missing_show_no_or_focus_day",
           focus_show_id: focus.id,
           focus_show_is_pause: isPause,
+          live_enrichment_enabled: liveEnrichmentEnabled,
         };
       }
 
@@ -1427,6 +1448,7 @@ async function runOrchestrator() {
         day_lock_source: "focus_show.is_lock",
         focus_show_is_pause: isPause,
         focus_day_is_lock: focusDayIsLock,
+        live_enrichment_enabled: liveEnrichmentEnabled,
         locked_staging_rows: lockedStagingRows,
       };
     }
@@ -1561,6 +1583,7 @@ async function runOrchestrator() {
           focus_day: activeFocus.focus_day || null,
           focus_show_is_pause: activeFocus.focus_show_is_pause ?? null,
           focus_day_is_lock: activeFocus.focus_day_is_lock ?? null,
+          live_enrichment_enabled: activeFocus.live_enrichment_enabled ?? null,
         });
         if (!activeFocus.ok) {
           ran = true;
@@ -1624,6 +1647,7 @@ async function runOrchestrator() {
             class_start_times_run: Boolean(workflowV4Result.classStartTimes),
             get_orders_run: Boolean(workflowV4Result.getOrders),
             get_rings_run: Boolean(workflowV4Result.getRings),
+            live_enrichment_enabled: workflowV4Result.gate?.live_enrichment_enabled ?? null,
             class_oog_run: Boolean(workflowV4Result.classOog),
             entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
             alerts_run: Boolean(workflowV4Result.alerts),
@@ -1911,6 +1935,7 @@ async function runOrchestrator() {
             class_start_times_run: Boolean(workflowV4Result.classStartTimes),
             get_orders_run: Boolean(workflowV4Result.getOrders),
             get_rings_run: Boolean(workflowV4Result.getRings),
+            live_enrichment_enabled: workflowV4Result.gate?.live_enrichment_enabled ?? null,
             class_oog_run: Boolean(workflowV4Result.classOog),
             entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
             alerts_run: Boolean(workflowV4Result.alerts),
