@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RingStatus AG Grid Prototype</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@34.1.0/styles/ag-grid.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@34.1.0/styles/ag-theme-quartz.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #071a2f;
+      --muted: #65758b;
+      --line: #d9e2ec;
+      --panel: #f6f8fb;
+      --accent: #0f766e;
+      --changed: #fff3c4;
+      --changed-border: #eab308;
+      --danger: #be123c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: #eef2f6;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .button {
+      border: 1px solid #b7c3d0;
+      background: #fff;
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 8px 10px;
+      min-height: 36px;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .button.danger {
+      border-color: #fecdd3;
+      color: var(--danger);
+    }
+
+    .button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .endpoint-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .endpoint-panel label {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .endpoint-panel input[type="url"] {
+      width: 100%;
+      border: 1px solid #b7c3d0;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #fff;
+      color: var(--ink);
+      min-height: 36px;
+    }
+
+    .toggle {
+      display: inline-flex;
+      align-items: end;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      padding-bottom: 8px;
+      white-space: nowrap;
+    }
+
+    .status-line {
+      grid-column: 1 / -1;
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status-line.error {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .grid-wrap {
+      min-height: 0;
+      padding: 12px 16px 16px;
+    }
+
+    #rsGrid {
+      height: calc(100vh - 154px);
+      min-height: 420px;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .ag-theme-quartz {
+      --ag-font-family: Arial, Helvetica, sans-serif;
+      --ag-font-size: 13px;
+      --ag-header-background-color: #eaf0f6;
+      --ag-header-foreground-color: #10243d;
+      --ag-row-hover-color: #edf7f5;
+      --ag-selected-row-background-color: #dff3ef;
+    }
+
+    .rs-cell-changed {
+      background: var(--changed) !important;
+      box-shadow: inset 0 -2px 0 var(--changed-border);
+      font-weight: 700;
+    }
+
+    .rs-row-changed .ag-cell:first-child {
+      border-left: 4px solid var(--changed-border);
+    }
+
+    .rs-row-hidden-local {
+      opacity: .45;
+      text-decoration: line-through;
+    }
+
+    .rs-ring-group-row .ag-cell {
+      background: #10243d !important;
+      color: #fff;
+      font-weight: 700;
+      border-top: 1px solid #10243d;
+      border-bottom: 1px solid #10243d;
+    }
+
+    .rs-ring-group-cell {
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .drawer {
+      position: fixed;
+      inset: 0 0 0 auto;
+      width: min(440px, 92vw);
+      transform: translateX(105%);
+      transition: transform .18s ease;
+      background: #fff;
+      box-shadow: -16px 0 30px rgba(15, 23, 42, .2);
+      z-index: 10;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      border-left: 1px solid var(--line);
+    }
+
+    .drawer.is-open {
+      transform: translateX(0);
+    }
+
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 10px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .drawer-head h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .drawer-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    .drawer-actions {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .drawer pre {
+      margin: 0;
+      padding: 16px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.45;
+      background: #0b1220;
+      color: #dbeafe;
+    }
+
+    .print-sheet {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      .endpoint-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .toggle {
+        align-items: center;
+        padding-bottom: 0;
+      }
+
+      #rsGrid {
+        height: calc(100vh - 224px);
+      }
+    }
+
+    @media print {
+      @page {
+        size: landscape;
+        margin: .35in;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .app-shell,
+      .drawer {
+        display: none !important;
+      }
+
+      .print-sheet {
+        display: block;
+        color: #000;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .print-title {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 18px;
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #000;
+      }
+
+      .print-title h1 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .print-title p {
+        margin: 0;
+        font-size: 10px;
+      }
+
+      .print-columns {
+        column-count: 3;
+        column-gap: 14px;
+      }
+
+      .print-row {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        display: grid;
+        grid-template-columns: 1.6fr 46px 42px .9fr 34px;
+        gap: 4px;
+        padding: 3px 0;
+        border-bottom: 1px solid #bbb;
+        font-size: 9px;
+        line-height: 1.25;
+      }
+
+      .print-row strong {
+        font-size: 9px;
+      }
+
+      .print-ring {
+        margin-top: 8px;
+        padding: 4px 0 3px;
+        border-bottom: 1px solid #000;
+        font-size: 11px;
+        font-weight: 700;
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="title">
+        <h1>RingStatus AG Grid Prototype</h1>
+        <p>Read-only Catalyst payload. Ring-grouped rows, local change markers, browser-only soft hide.</p>
+      </div>
+      <div class="actions">
+        <button class="button primary" id="refreshBtn" type="button">Refresh Rows</button>
+        <button class="button" id="printBtn" type="button">Print 3 Columns</button>
+        <button class="button danger" id="clearStateBtn" type="button">Clear Browser State</button>
+      </div>
+    </header>
+
+    <section class="endpoint-panel" aria-label="Data source">
+      <label>
+        Catalyst API endpoint
+        <input id="endpointInput" type="url" spellcheck="false">
+      </label>
+      <label class="toggle">
+        <input id="showHiddenInput" type="checkbox">
+        Show soft-hidden
+      </label>
+      <div class="status-line" id="statusLine">Loading...</div>
+    </section>
+
+    <main class="grid-wrap">
+      <div id="rsGrid" class="ag-theme-quartz"></div>
+    </main>
+  </div>
+
+  <aside class="drawer" id="rowDrawer" aria-label="Row JSON drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <h2>Underlying Row JSON</h2>
+        <p id="drawerKey">No row selected</p>
+      </div>
+      <button class="button" id="closeDrawerBtn" type="button">Close</button>
+    </div>
+    <div class="drawer-actions">
+      <button class="button danger" id="hideRowBtn" type="button">Soft-hide row</button>
+    </div>
+    <pre id="drawerJson">{}</pre>
+  </aside>
+
+  <section class="print-sheet" id="printSheet" aria-hidden="true"></section>
+
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@34.1.0/dist/ag-grid-community.min.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      const DEFAULT_ENDPOINT = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=wec-mobile-live";
+      const SNAPSHOT_KEY = "ringstatus-ag-grid.previousSnapshot.v1";
+      const HIDDEN_KEY = "ringstatus-ag-grid.hiddenRows.v1";
+      const ENDPOINT_KEY = "ringstatus-ag-grid.endpoint.v1";
+
+      const endpointInput = document.getElementById("endpointInput");
+      const showHiddenInput = document.getElementById("showHiddenInput");
+      const statusLine = document.getElementById("statusLine");
+      const drawer = document.getElementById("rowDrawer");
+      const drawerKey = document.getElementById("drawerKey");
+      const drawerJson = document.getElementById("drawerJson");
+      const hideRowBtn = document.getElementById("hideRowBtn");
+      const printSheet = document.getElementById("printSheet");
+
+      let gridApi = null;
+      let allRows = [];
+      let visibleRows = [];
+      let selectedRow = null;
+      let previousSnapshot = loadObject(SNAPSHOT_KEY, {});
+      let hiddenRows = new Set(loadArray(HIDDEN_KEY));
+
+      endpointInput.value = normalizeStoredEndpoint(localStorage.getItem(ENDPOINT_KEY)) || DEFAULT_ENDPOINT;
+
+      const changedCellRule = (field) => ({
+        "rs-cell-changed": (params) => Boolean(params.data && params.data.__changedFields && params.data.__changedFields[field])
+      });
+
+      const columnDefs = [
+        {
+          headerName: "Horses",
+          field: "horses",
+          minWidth: 108,
+          flex: 1.15,
+          colSpan: (params) => params.data && params.data.__group ? 5 : 1,
+          cellClassRules: {
+            ...changedCellRule("order_of_go"),
+            "rs-ring-group-cell": (params) => Boolean(params.data && params.data.__group)
+          }
+        },
+        { headerName: "Time", field: "time", width: 58, cellClassRules: changedCellRule("time") },
+        { headerName: "No", field: "class_number", width: 52 },
+        { headerName: "Class", field: "class_name", minWidth: 120, flex: 1.7 },
+        { headerName: "Total", field: "entry_count", width: 54 }
+      ];
+
+      const gridOptions = {
+        columnDefs,
+        rowData: [],
+        getRowId: (params) => String(params.data.row_key),
+        animateRows: false,
+        suppressCellFocus: false,
+        defaultColDef: {
+          sortable: false,
+          resizable: true,
+          filter: false
+        },
+        rowClassRules: {
+          "rs-row-changed": (params) => Boolean(params.data && params.data.__row_changed),
+          "rs-row-hidden-local": (params) => Boolean(params.data && params.data.__hidden),
+          "rs-ring-group-row": (params) => Boolean(params.data && params.data.__group)
+        },
+        onRowClicked: (event) => {
+          if (!event.data || event.data.__group) return;
+          openDrawer(event.data);
+        }
+      };
+
+      function text(value) {
+        if (value === null || value === undefined) return "";
+        if (Array.isArray(value)) return value.map(text).filter(Boolean).join(", ");
+        if (typeof value === "object") return text(value.name || value.label || value.value || value.display || "");
+        return String(value).trim();
+      }
+
+      function loadObject(key, fallback) {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(key) || "");
+          return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : fallback;
+        } catch (_error) {
+          return fallback;
+        }
+      }
+
+      function loadArray(key) {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+          return Array.isArray(parsed) ? parsed.map(String) : [];
+        } catch (_error) {
+          return [];
+        }
+      }
+
+      function setStatus(message, isError) {
+        statusLine.textContent = message;
+        statusLine.classList.toggle("error", Boolean(isError));
+      }
+
+      function normalizeStoredEndpoint(endpoint) {
+        if (!endpoint) return "";
+        const fallback = activeFocusFallbackEndpoint(endpoint);
+        if (fallback && endpoint.includes("show_no=14907")) return fallback;
+        return endpoint;
+      }
+
+      function activeFocusFallbackEndpoint(endpoint) {
+        try {
+          const url = new URL(endpoint);
+          if (url.searchParams.get("action") !== "wec-mobile-live") return "";
+          if (!url.searchParams.has("show_no")) return "";
+          url.searchParams.delete("show_no");
+          return url.toString();
+        } catch (_error) {
+          return "";
+        }
+      }
+
+      async function fetchPayload(endpoint) {
+        const response = await fetch(endpoint, { method: "GET", cache: "no-store" });
+        const contentType = response.headers.get("content-type") || "";
+        const payload = contentType.includes("application/json") ? await response.json() : await response.text();
+        if (!response.ok) {
+          const error = new Error("HTTP " + response.status + ": " + (typeof payload === "string" ? payload.slice(0, 220) : JSON.stringify(payload)));
+          error.payload = payload;
+          throw error;
+        }
+        if (payload && payload.ok === false) {
+          const error = new Error(payload.error || "Catalyst endpoint returned ok=false");
+          error.payload = payload;
+          throw error;
+        }
+        return payload;
+      }
+
+      function sourceRowsFromPayload(payload) {
+        if (Array.isArray(payload)) return payload.map((row) => ({ row, ring: null }));
+        if (Array.isArray(payload.rows)) return payload.rows.map((row) => ({ row, ring: null }));
+        if (payload.data && Array.isArray(payload.data.rows)) return payload.data.rows.map((row) => ({ row, ring: null }));
+        if (Array.isArray(payload.rings)) {
+          const flattened = [];
+          payload.rings.forEach((ring) => {
+            (Array.isArray(ring.classes) ? ring.classes : []).forEach((row) => flattened.push({ row, ring }));
+          });
+          return flattened;
+        }
+        if (payload.wec_mobile_pro && Array.isArray(payload.wec_mobile_pro.rings)) {
+          const flattened = [];
+          payload.wec_mobile_pro.rings.forEach((ring) => {
+            (Array.isArray(ring.classes) ? ring.classes : []).forEach((row) => flattened.push({ row, ring }));
+          });
+          return flattened;
+        }
+        return [];
+      }
+
+      function firstText() {
+        for (let i = 0; i < arguments.length; i += 1) {
+          const value = text(arguments[i]);
+          if (value) return value;
+        }
+        return "";
+      }
+
+      function rowKey(row, ring, index) {
+        return firstText(
+          row.row_key,
+          row.class_key,
+          row.schedule_key,
+          row.update_schedule_staging_key,
+          [row.ring_day_no, row.ring_no, row.class_no, row.time_sort || row.class_priority_sort].map(text).filter(Boolean).join("|"),
+          [ring && (ring.ring_no || ring.ring_display), row.class_no, index].map(text).filter(Boolean).join("|")
+        ) || "row-" + index;
+      }
+
+      function sortPriority(value) {
+        const raw = text(value);
+        if (!raw) return 999999;
+        const numeric = Number(raw);
+        return Number.isFinite(numeric) ? numeric : raw;
+      }
+
+      function ringSortValue(row, ring) {
+        return sortPriority(firstText(row.ring_name_prioritized, ring.ring_name_prioritized, ring.ring_priority, row.ring_no, ring.ring_no));
+      }
+
+      function horseRollup(row) {
+        const source = Array.isArray(row.rollups) ? row.rollups : [];
+        const horses = [];
+        source.forEach((rollup) => {
+          const rollupHorses = Array.isArray(rollup && rollup.horses) ? rollup.horses : [];
+          rollupHorses.forEach((horse) => {
+            const name = firstText(horse && horse.barn_name, horse && horse.display, horse && horse.horse, horse && horse.label);
+            if (!name) return;
+            const order = firstText(horse && horse.entry_order, horse && horse.order_of_go, horse && horse.order, horse && horse.entry_no);
+            horses.push(order ? name + " (" + order + ")" : name);
+          });
+        });
+        return horses.join(" | ");
+      }
+
+      function minimalRow(item, index) {
+        const row = item.row || {};
+        const ring = item.ring || {};
+        const key = rowKey(row, ring, index);
+        const current = {
+          ring: firstText(row.ring_name_normalized, row.ring_name, row.ring_display, ring.ring_name_normalized, ring.ring_display, ring.ring_name, row.ring_no, ring.ring_no),
+          ring_sort: ringSortValue(row, ring),
+          horses: horseRollup(row),
+          time: firstText(row.display_time, row.time_text, row.class_time, row.class_time_text, row.start_display, row.class_start_time, row.time),
+          order_of_go: firstText(row.order_of_go, row.entry_order, row.order, row.draw, row.class_priority_sort),
+          class_number: firstText(row.class_number, row.class_no),
+          class_name: firstText(row.class_name),
+          entry_count: firstText(row.entry_count),
+          status: firstText(row.status, row.class_status, row.live_flag, row.ring_status),
+          row_key: key
+        };
+        const previous = previousSnapshot[key] || {};
+        const changedFields = {
+          time: Boolean(previous.time !== undefined && previous.time !== current.time),
+          order_of_go: Boolean(previous.order_of_go !== undefined && previous.order_of_go !== current.order_of_go),
+          status: Boolean(previous.status !== undefined && previous.status !== current.status)
+        };
+        return {
+          ...current,
+          __raw: row,
+          __ring: ring,
+          __changedFields: changedFields,
+          __row_changed: changedFields.time || changedFields.order_of_go || changedFields.status,
+          __hidden: hiddenRows.has(key)
+        };
+      }
+
+      function compareRingGroups(a, b) {
+        const av = a.sort;
+        const bv = b.sort;
+        if (typeof av === "number" && typeof bv === "number" && av !== bv) return av - bv;
+        return String(av).localeCompare(String(bv), undefined, { numeric: true, sensitivity: "base" })
+          || a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: "base" });
+      }
+
+      function buildGroupedRows(rows) {
+        const groups = new Map();
+        rows.forEach((row) => {
+          const name = row.ring || "Unassigned";
+          if (!groups.has(name)) groups.set(name, { name, sort: row.ring_sort, rows: [] });
+          groups.get(name).rows.push(row);
+        });
+        return Array.from(groups.values()).sort(compareRingGroups).flatMap((group) => [
+          {
+            __group: true,
+            row_key: "ring|" + group.name,
+            horses: group.name,
+            time: "",
+            class_number: "",
+            class_name: "",
+            entry_count: "",
+            ring: group.name
+          },
+          ...group.rows
+        ]);
+      }
+
+      function saveSnapshot(rows) {
+        const snapshot = {};
+        rows.forEach((row) => {
+          snapshot[row.row_key] = {
+            time: row.time,
+            order_of_go: row.order_of_go,
+            status: row.status
+          };
+        });
+        previousSnapshot = snapshot;
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot));
+      }
+
+      function applyHiddenFilter() {
+        const showHidden = showHiddenInput.checked;
+        visibleRows = allRows.filter((row) => showHidden || !hiddenRows.has(row.row_key)).map((row) => ({
+          ...row,
+          __hidden: hiddenRows.has(row.row_key)
+        }));
+        gridApi.setGridOption("rowData", buildGroupedRows(visibleRows));
+        updateHiddenButton();
+      }
+
+      async function refreshRows() {
+        let endpoint = endpointInput.value.trim();
+        localStorage.setItem(ENDPOINT_KEY, endpoint);
+        setStatus("Fetching Catalyst rows...", false);
+        let fallbackNote = "";
+        try {
+          let payload;
+          try {
+            payload = await fetchPayload(endpoint);
+          } catch (error) {
+            const fallback = /requires active focus_show/i.test(error.message || "") ? activeFocusFallbackEndpoint(endpoint) : "";
+            if (!fallback) throw error;
+            payload = await fetchPayload(fallback);
+            endpoint = fallback;
+            endpointInput.value = fallback;
+            localStorage.setItem(ENDPOINT_KEY, fallback);
+            fallbackNote = " Used active-focus endpoint after the requested show_no was no longer active.";
+          }
+          const rawRows = sourceRowsFromPayload(payload);
+          allRows = rawRows.map(minimalRow);
+          applyHiddenFilter();
+          const changedCount = allRows.filter((row) => row.__row_changed).length;
+          saveSnapshot(allRows);
+          setStatus("Loaded " + allRows.length + " rows. Visible " + visibleRows.length + ". Changed rows " + changedCount + ". Hidden locally " + hiddenRows.size + "." + fallbackNote, false);
+        } catch (error) {
+          allRows = [];
+          visibleRows = [];
+          gridApi.setGridOption("rowData", []);
+          setStatus("Fetch failed: " + (error && error.message ? error.message : String(error)), true);
+        }
+      }
+
+      function openDrawer(row) {
+        selectedRow = row;
+        drawerKey.textContent = row ? row.row_key : "No row selected";
+        drawerJson.textContent = JSON.stringify(row ? row.__raw : {}, null, 2);
+        drawer.classList.add("is-open");
+        drawer.setAttribute("aria-hidden", "false");
+        updateHiddenButton();
+      }
+
+      function closeDrawer() {
+        drawer.classList.remove("is-open");
+        drawer.setAttribute("aria-hidden", "true");
+      }
+
+      function updateHiddenButton() {
+        if (!selectedRow) {
+          hideRowBtn.disabled = true;
+          hideRowBtn.textContent = "Soft-hide row";
+          return;
+        }
+        hideRowBtn.disabled = false;
+        hideRowBtn.textContent = hiddenRows.has(selectedRow.row_key) ? "Unhide row" : "Soft-hide row";
+      }
+
+      function toggleSelectedHidden() {
+        if (!selectedRow) return;
+        if (hiddenRows.has(selectedRow.row_key)) hiddenRows.delete(selectedRow.row_key);
+        else hiddenRows.add(selectedRow.row_key);
+        localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(hiddenRows)));
+        applyHiddenFilter();
+        updateHiddenButton();
+      }
+
+      function clearBrowserState() {
+        localStorage.removeItem(SNAPSHOT_KEY);
+        localStorage.removeItem(HIDDEN_KEY);
+        previousSnapshot = {};
+        hiddenRows = new Set();
+        allRows = allRows.map((row) => ({
+          ...row,
+          __changedFields: { time: false, order_of_go: false, status: false },
+          __row_changed: false,
+          __hidden: false
+        }));
+        applyHiddenFilter();
+        setStatus("Cleared browser-only snapshot and soft-hide state. Refresh to establish a new comparison baseline.", false);
+      }
+
+      function groupedVisibleRows() {
+        const groups = new Map();
+        visibleRows.forEach((row) => {
+          const ring = row.ring || "Unassigned";
+          if (!groups.has(ring)) groups.set(ring, []);
+          groups.get(ring).push(row);
+        });
+        return Array.from(groups.entries());
+      }
+
+      function escapeHtml(value) {
+        return text(value).replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[char]));
+      }
+
+      function buildPrintSheet() {
+        const rows = groupedVisibleRows();
+        const endpoint = endpointInput.value.trim();
+        const generatedAt = new Date().toISOString();
+        const body = rows.map(([ring, ringRows]) => {
+          const lineRows = ringRows.map((row) => (
+            '<div class="print-row">' +
+              '<strong>' + escapeHtml(row.horses || "") + '</strong>' +
+              '<span>' + escapeHtml(row.time || "--") + '</span>' +
+              '<span>' + escapeHtml(row.class_number || "") + '</span>' +
+              '<span>' + escapeHtml(row.class_name || "") + '</span>' +
+              '<span>' + escapeHtml(row.entry_count || "") + '</span>' +
+            '</div>'
+          )).join("");
+          return '<div class="print-ring">' + escapeHtml(ring) + '</div>' + lineRows;
+        }).join("");
+        printSheet.innerHTML =
+          '<div class="print-title">' +
+            '<h1>RingStatus AG Grid Prototype</h1>' +
+            '<p>' + escapeHtml(generatedAt) + '<br>' + escapeHtml(endpoint) + '</p>' +
+          '</div>' +
+          '<div class="print-columns">' + body + '</div>';
+      }
+
+      function printThreeColumn() {
+        buildPrintSheet();
+        window.print();
+      }
+
+      function initGrid() {
+        const gridDiv = document.getElementById("rsGrid");
+        if (!window.agGrid || typeof window.agGrid.createGrid !== "function") {
+          setStatus("AG Grid Community failed to load from CDN.", true);
+          return;
+        }
+        gridApi = window.agGrid.createGrid(gridDiv, gridOptions);
+        refreshRows();
+      }
+
+      document.getElementById("refreshBtn").addEventListener("click", refreshRows);
+      document.getElementById("printBtn").addEventListener("click", printThreeColumn);
+      document.getElementById("clearStateBtn").addEventListener("click", clearBrowserState);
+      document.getElementById("closeDrawerBtn").addEventListener("click", closeDrawer);
+      hideRowBtn.addEventListener("click", toggleSelectedHidden);
+      showHiddenInput.addEventListener("change", applyHiddenFilter);
+      endpointInput.addEventListener("change", refreshRows);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeDrawer();
+      });
+
+      initGrid();
+    }());
+  </script>
+</body>
+</html>
