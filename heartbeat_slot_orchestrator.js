@@ -1225,6 +1225,42 @@ async function runOrchestrator() {
       };
     }
 
+    async function readWecActiveFocusShowState() {
+      const focusRows = await airtableListForBase(WEC_AIRTABLE_BASE_ID, "focus_show", {
+        maxRecords: 10,
+        filterByFormula: "{active}=1",
+        "fields[]": ["show_no", "focus_day", "is_lock", "is_pause", "active"],
+      });
+      if (focusRows.length !== 1) {
+        return {
+          ok: false,
+          blocker: "active_focus_show_not_unique",
+          active_focus_show_count: focusRows.length,
+        };
+      }
+      const focus = focusRows[0];
+      const fields = focus.fields || {};
+      const showNo = strOrNull(fields.show_no);
+      const focusDay = strOrNull(fields.focus_day)?.slice(0, 10) || null;
+      if (!showNo || !focusDay) {
+        return {
+          ok: false,
+          blocker: "active_focus_show_missing_show_no_or_focus_day",
+          focus_show_id: focus.id,
+          show_no: showNo,
+          focus_day: focusDay,
+        };
+      }
+      return {
+        ok: true,
+        focus_show_id: focus.id,
+        show_no: showNo,
+        focus_day: focusDay,
+        focus_show_is_pause: boolValue(fields.is_pause),
+        focus_day_is_lock: boolValue(fields.is_lock),
+      };
+    }
+
     async function startWecStage1Stage2RunMetadata(reason) {
       const runTime = new Date().toISOString();
       const runId = `wec-stage1-stage2-${runTime.replace(/[^0-9A-Za-z]/g, "")}-${crypto.randomBytes(4).toString("hex")}`;
@@ -1491,50 +1527,92 @@ async function runOrchestrator() {
         && slotIsDue(slot, process.env.ORCH_WEC_HEARTBEAT_SLOTS, DEFAULT_WEC_HEARTBEAT_SLOTS)
         && intervalDue("wec-focus-workflow", WEC_FOCUS_WORKFLOW_INTERVAL_MINUTES)
       ) {
-        const runMeta = await startWecStage1Stage2RunMetadata("wec-focus-workflow");
-        const result = runPowerShellScript("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
-          WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
-          WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
-          WEC_RUN_ID: runMeta.run_id,
-          WEC_RUN_TIME: runMeta.run_time,
-          WEC_WORKFLOWV4_STAGE1_ONLY: "1",
-          WEC_FORCE_SYNC: process.env.WEC_FORCE_SYNC || "",
+        const activeFocus = await readWecActiveFocusShowState();
+        appendEvent({
+          ok: activeFocus.ok,
+          event: "wec_focus_lifecycle_branch_checked",
+          reason: activeFocus.blocker || (
+            activeFocus.focus_show_is_pause
+              ? "focus_show_paused"
+              : activeFocus.focus_day_is_lock
+                ? "downstream"
+                : "bootstrap"
+          ),
+          focus_show_id: activeFocus.focus_show_id || null,
+          show_no: activeFocus.show_no || null,
+          focus_day: activeFocus.focus_day || null,
+          focus_show_is_pause: activeFocus.focus_show_is_pause ?? null,
+          focus_day_is_lock: activeFocus.focus_day_is_lock ?? null,
         });
-        if (!result.ok) {
+        if (!activeFocus.ok) {
+          ran = true;
+          return ran;
+        }
+        if (activeFocus.focus_show_is_pause) {
           appendEvent({
-            ok: false,
-            event: "wec_workflowv4_stage2_staging_skipped",
-            reason: "stage1_failed",
+            ok: true,
+            event: "wec_focus_lifecycle_paused",
+            reason: "focus_show_paused",
+            focus_show_id: activeFocus.focus_show_id,
+            show_no: activeFocus.show_no,
+            focus_day: activeFocus.focus_day,
+            sync_run: false,
+            writes_run: false,
+          });
+          markIntervalRun("wec-focus-workflow");
+          ran = true;
+          return ran;
+        }
+        const runMeta = await startWecStage1Stage2RunMetadata("wec-focus-workflow");
+        if (!activeFocus.focus_day_is_lock) {
+          const result = runPowerShellScript("docs/horseshowing/run-wec-catalyst-workflow.ps1", {
+            WEC_SHOW_NO: process.env.WEC_SHOW_NO || "",
+            WEC_SHOW_TITLE: process.env.WEC_SHOW_TITLE || "WEC Ocala Summer Series 1 CSI2*",
+            WEC_RUN_ID: runMeta.run_id,
+            WEC_RUN_TIME: runMeta.run_time,
+            WEC_WORKFLOWV4_STAGE1_ONLY: "1",
+            WEC_FORCE_SYNC: process.env.WEC_FORCE_SYNC || "",
+          });
+          appendEvent({
+            ok: result.ok,
+            event: "wec_focus_lifecycle_bootstrap_exit",
+            reason: result.ok ? "bootstrap_completed" : "bootstrap_failed",
+            branch: "bootstrap",
             run_id: runMeta.run_id,
             run_time: runMeta.run_time,
             helper_repair_run: false,
             class_start_times_run: false,
+            get_orders_run: false,
+            get_rings_run: false,
+            class_oog_run: false,
             entry_go_times_run: false,
+            alerts_run: false,
             downstream_run: false,
             active_entries_run: false,
           });
+          if (result.ok) markIntervalRun("wec-focus-workflow");
           ran = true;
         } else {
-        const stageReason = result.ok ? "after_stage1_pass" : "after_stage1_fail";
-        const workflowV4Result = await runWecWorkflowV4CoreAfterStage1(stageReason, runMeta);
-        appendEvent({
-          ok: workflowV4Result.ok,
-          event: "wec_workflowv4_core_downstream_exit",
-          reason: stageReason,
-          run_id: runMeta.run_id,
-          run_time: runMeta.run_time,
-          helper_repair_run: false,
-          class_start_times_run: Boolean(workflowV4Result.classStartTimes),
-          get_orders_run: Boolean(workflowV4Result.getOrders),
-          get_rings_run: Boolean(workflowV4Result.getRings),
-          class_oog_run: Boolean(workflowV4Result.classOog),
-          entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
-          alerts_run: Boolean(workflowV4Result.alerts),
-          downstream_run: Boolean(workflowV4Result.classStartTimes || workflowV4Result.classOog || workflowV4Result.entryGoTimes || workflowV4Result.alerts),
-          active_entries_run: false,
-        });
-        if (workflowV4Result.ok) markIntervalRun("wec-focus-workflow");
-        ran = true;
+          const workflowV4Result = await runWecWorkflowV4CoreAfterStage1("downstream_locked_focus", runMeta);
+          appendEvent({
+            ok: workflowV4Result.ok,
+            event: "wec_workflowv4_core_downstream_exit",
+            reason: "downstream_locked_focus",
+            branch: "downstream",
+            run_id: runMeta.run_id,
+            run_time: runMeta.run_time,
+            helper_repair_run: false,
+            class_start_times_run: Boolean(workflowV4Result.classStartTimes),
+            get_orders_run: Boolean(workflowV4Result.getOrders),
+            get_rings_run: Boolean(workflowV4Result.getRings),
+            class_oog_run: Boolean(workflowV4Result.classOog),
+            entry_go_times_run: Boolean(workflowV4Result.entryGoTimes),
+            alerts_run: Boolean(workflowV4Result.alerts),
+            downstream_run: Boolean(workflowV4Result.classStartTimes || workflowV4Result.classOog || workflowV4Result.entryGoTimes || workflowV4Result.alerts),
+            active_entries_run: false,
+          });
+          if (workflowV4Result.ok) markIntervalRun("wec-focus-workflow");
+          ran = true;
         }
       }
 

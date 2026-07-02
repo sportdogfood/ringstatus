@@ -2523,7 +2523,7 @@ if ($heartbeat.focus_day) {
   $catalystScheduleRows = Int-OrZero $heartbeat.schedule_rows
   $updateScheduleMissingWorkingRows = ($catalystScheduleRows -eq 0)
   $updateScheduleRefreshDue = (Due $state "update_schedule_staging_workflow" 60)
-  $updateScheduleDue = $ForceSync -or $updateScheduleFocusChanged -or $updateScheduleMissingWorkingRows
+  $updateScheduleDue = $WorkflowV4Stage1Only -or $ForceSync -or $updateScheduleFocusChanged -or $updateScheduleMissingWorkingRows
   try {
     if ($updateScheduleDue) {
       $updateScheduleResult = Invoke-UpdateScheduleStagingWorkflow $heartbeat.focus_day -ResetFocus:$updateScheduleFocusChanged -TriggerReason $updateScheduleTriggerReason
