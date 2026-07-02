@@ -11,6 +11,7 @@ param(
   [int]$ClassOogChunksPerRun = 2,
   [switch]$ForceSync,
   [switch]$RunMockLiveCheck,
+  [switch]$RunLiveEnrichment,
   [switch]$RunClassOogLocalProbeOnly,
   [switch]$RunClassOogUnlockedSafetyOnly,
   [switch]$RunClassStartTimesOnly,
@@ -25,12 +26,16 @@ $logPath = Join-Path $logDir "wec-catalyst-workflow.log"
 $jsonlLogPath = Join-Path $logDir "wec-logs.jsonl"
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 $script:FocusPaused = $false
+$script:FocusLocked = $false
 
 if (!$ShowNo -and $env:WEC_SHOW_NO) {
   $ShowNo = [string]$env:WEC_SHOW_NO
 }
 if (!$ForceSync -and $env:WEC_FORCE_SYNC -eq "1") {
   $ForceSync = $true
+}
+if (!$RunLiveEnrichment -and $env:WEC_ENABLE_LIVE_ENRICHMENT -eq "1") {
+  $RunLiveEnrichment = $true
 }
 if (!$RunClassStartTimesOnly -and $env:WEC_CLASS_START_TIMES_ONLY -eq "1") {
   $RunClassStartTimesOnly = $true
@@ -848,7 +853,9 @@ function Test-WecCadenceGate {
     $modeValue = Get-WecRecordField $focusRecord "mode"
     if (!$modeValue) { $modeValue = "day" }
     $isPause = Test-WecTruthy (Get-WecRecordField $focusRecord "is_pause")
+    $isLock = Test-WecTruthy (Get-WecRecordField $focusRecord "is_lock")
     $script:FocusPaused = $isPause
+    $script:FocusLocked = $isLock
     if ($focusShowNo) { $script:ShowNo = [string]$focusShowNo }
     if ($focusDayValue) { $script:FocusDay = [string]$focusDayValue }
 
@@ -864,6 +871,7 @@ function Test-WecCadenceGate {
         active_shows = $activeShows.Count
         active_focus_shows = $activeFocusShows.Count
         is_pause = $isPause
+        is_lock = $isLock
       }
       Write-WorkflowLog "cadence-gate bypass force-sync focus=$focusKey cadence=$cadenceMinutes"
       return @{
@@ -896,6 +904,7 @@ function Test-WecCadenceGate {
         cadence_minutes = $cadenceMinutes
         elapsed_minutes = $elapsedMinutes
         is_pause = $isPause
+        is_lock = $isLock
       }
       Write-WorkflowLog "cadence-gate skip not_due focus=$focusKey cadence=$cadenceMinutes elapsed=$([math]::Round($elapsedMinutes, 2))"
       return @{
@@ -915,6 +924,7 @@ function Test-WecCadenceGate {
       active_shows = $activeShows.Count
       active_focus_shows = $activeFocusShows.Count
       is_pause = $isPause
+      is_lock = $isLock
     }
     Write-WorkflowLog "cadence-gate pass focus=$focusKey cadence=$cadenceMinutes"
     return @{
@@ -922,6 +932,7 @@ function Test-WecCadenceGate {
       reason = if ($isFocusChanged) { "focus_changed" } else { "due" }
       cadence_minutes = $cadenceMinutes
       is_pause = $isPause
+      is_lock = $isLock
     }
   } catch {
     Write-WecAirtableLog -LogType "heartbeat" -CheckName "cadence_gate" -Status "error" -Summary "cadence gate failed: $($_.Exception.Message)" -Payload @{
@@ -1803,7 +1814,10 @@ function Invoke-WecLaneAudit($FocusDayValue) {
 }
 
 function Invoke-WecHeartbeatComposite {
-  $scheduleRows = @(Invoke-CatalystArray "schedule-json")
+  $scheduleRows = @()
+  if (!$WorkflowV4Stage1Only) {
+    $scheduleRows = @(Invoke-CatalystArray "schedule-json")
+  }
   $resolvedFocusDay = ""
   if ($FocusDay) {
     $resolvedFocusDay = $FocusDay
@@ -1829,11 +1843,28 @@ function Invoke-WecHeartbeatComposite {
   $liveSkipped = $false
   $ordersSkipped = $false
   $ringDaysSkipped = $false
+  $liveSkipReason = ""
+  $ordersSkipReason = ""
+  $ringDaysSkipReason = ""
   $params = @{ focus_day = $resolvedFocusDay }
   if ($script:FocusPaused) {
     $liveSkipped = $true
     $ordersSkipped = $true
     $ringDaysSkipped = $true
+    $liveSkipReason = "focus_show.is_pause"
+    $ordersSkipReason = "focus_show.is_pause"
+    $ringDaysSkipReason = "focus_show.is_pause"
+  } elseif (!$RunLiveEnrichment) {
+    try {
+      $ringDays = Invoke-CatalystActionWithRetry "sync-ring-days" 2
+      if ($ringDays.ok -eq $false) { $ringDaysError = $ringDays.error }
+    } catch {
+      $ringDaysError = $_.Exception.Message
+    }
+    $liveSkipped = $true
+    $ordersSkipped = $true
+    $liveSkipReason = "live_enrichment_disabled"
+    $ordersSkipReason = "live_enrichment_disabled"
   } else {
     try {
       $ringDays = Invoke-CatalystActionWithRetry "sync-ring-days" 2
@@ -1879,29 +1910,38 @@ function Invoke-WecHeartbeatComposite {
     live = $live
     live_error = $liveError
     live_skipped = $liveSkipped
+    live_skip_reason = $liveSkipReason
+    live_enrichment_enabled = [bool]$RunLiveEnrichment
     ring_days = $ringDays
     ring_days_error = $ringDaysError
     ring_days_skipped = $ringDaysSkipped
+    ring_days_skip_reason = $ringDaysSkipReason
     hs_ring_days_count = Int-OrZero $ringDays.materialized_ring_day_rows
     get_ring_days_source_count = Int-OrZero $ringDays.parsed_rows
     get_ring_days_source_sequence = $ringDays.source_request_sequence
     orders = $orders
     orders_error = $ordersError
     orders_skipped = $ordersSkipped
+    orders_skip_reason = $ordersSkipReason
     schedule_rows = $scheduleRows.Count
     created_triggers = 0
     trigger_error = $null
   }
 }
 
-function Get-Stage1ProofCounts($Heartbeat, $UpdateScheduleMirrorResult, $UpdateScheduleResult) {
+function Get-Stage1ProofCounts($Heartbeat, $UpdateScheduleMirrorResult, $UpdateScheduleResult, $UpdateScheduleMaterializationResult, $UpdateScheduleError) {
+  $updateScheduleRows = Int-OrZero $UpdateScheduleResult.update_schedule_rows
+  if ($updateScheduleRows -eq 0) {
+    $updateScheduleRows = Int-OrZero $UpdateScheduleMaterializationResult.materialized_rows
+  }
   return [pscustomobject]@{
     get_ring_days_source_count = Int-OrZero $Heartbeat.get_ring_days_source_count
     hs_ring_days_count = Int-OrZero $Heartbeat.hs_ring_days_count
     get_ring_days_error = [string]$Heartbeat.ring_days_error
     get_ring_days_source_sequence = $Heartbeat.get_ring_days_source_sequence
-    update_schedule_count = Int-OrZero $UpdateScheduleResult.update_schedule_rows
+    update_schedule_count = $updateScheduleRows
     update_schedule_staging_count = Int-OrZero $UpdateScheduleResult.update_schedule_staging_rows
+    update_schedule_staging_error = [string]$UpdateScheduleError
   }
 }
 
@@ -1912,6 +1952,12 @@ function Get-Stage1CountGateBlocker($Counts) {
     return "source_nonempty_write_failed: get_ring_days returned rows but hs_ring_days count is 0"
   }
   if ((Int-OrZero $Counts.update_schedule_count) -eq 0) { return "source_empty: update_schedule count is 0" }
+  if ($Counts.update_schedule_staging_error) {
+    if ([string]$Counts.update_schedule_staging_error -match "408|timeout|timed out") {
+      return "staging_timeout: $($Counts.update_schedule_staging_error)"
+    }
+    return "staging_failed: $($Counts.update_schedule_staging_error)"
+  }
   if ((Int-OrZero $Counts.update_schedule_staging_count) -eq 0) { return "write_or_parse_failed: update_schedule_staging count is 0" }
   return $null
 }
@@ -2524,6 +2570,7 @@ if ($heartbeat.focus_day) {
   $updateScheduleMissingWorkingRows = ($catalystScheduleRows -eq 0)
   $updateScheduleRefreshDue = (Due $state "update_schedule_staging_workflow" 60)
   $updateScheduleDue = $WorkflowV4Stage1Only -or $ForceSync -or $updateScheduleFocusChanged -or $updateScheduleMissingWorkingRows
+  $updateScheduleError = ""
   try {
     if ($updateScheduleDue) {
       $updateScheduleResult = Invoke-UpdateScheduleStagingWorkflow $heartbeat.focus_day -ResetFocus:$updateScheduleFocusChanged -TriggerReason $updateScheduleTriggerReason
@@ -2555,6 +2602,7 @@ if ($heartbeat.focus_day) {
       Write-WorkflowLog "update-schedule-staging skipped focus=$($heartbeat.focus_day) working_rows=$catalystScheduleRows"
     }
   } catch {
+    $updateScheduleError = $_.Exception.Message
     Write-WecAirtableLog -LogType "heartbeat" -CheckName "core_update_schedule" -Status "error" -Summary "update_schedule staging workflow failed show=$ShowNo focus=$($heartbeat.focus_day): $($_.Exception.Message)" -Payload @{
       show_no = $ShowNo
       focus_day = $heartbeat.focus_day
@@ -2583,7 +2631,7 @@ if ($heartbeat.focus_day) {
       catalyst_schedule_rows = $catalystScheduleRows
     }
   }
-  $stage1ProofCounts = Get-Stage1ProofCounts $heartbeat $updateScheduleMirrorResult $updateScheduleResult
+  $stage1ProofCounts = Get-Stage1ProofCounts $heartbeat $updateScheduleMirrorResult $updateScheduleResult $updateScheduleMaterializationResult $updateScheduleError
   $stage1CountBlocker = Get-Stage1CountGateBlocker $stage1ProofCounts
   Write-WorkflowLog "workflowv4-stage1-count-gate focus=$($heartbeat.focus_day) hs_ring_days=$($stage1ProofCounts.hs_ring_days_count) update_schedule=$($stage1ProofCounts.update_schedule_count) update_schedule_staging=$($stage1ProofCounts.update_schedule_staging_count) blocker=$stage1CountBlocker"
   if ($stage1CountBlocker) {

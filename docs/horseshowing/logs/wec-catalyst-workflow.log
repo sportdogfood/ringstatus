@@ -17078,3 +17078,7 @@
 2026-07-02T01:14:55 update-schedule-materialize ring_day_no=4323 ring_no=648 upstream_status=200 parsed=1 materialized=1 inserted=0 updated=0 skipped=0
 2026-07-02T01:15:06 update-schedule-mirror trigger=focus_day_change catalyst=230 airtable=229 confirm_delete_after=0 stale_deleted=0 focus=2026-07-02
 2026-07-02T01:15:06 update-schedule-staging reset skipped; mirror-based Stage2C preserves staging records focus=2026-07-02
+2026-07-02T01:15:45 workflowv4-stage1-count-gate focus=2026-07-02 hs_ring_days=9 update_schedule=0 update_schedule_staging=0 blocker=source_empty: update_schedule count is 0
+2026-07-02T01:15:46 workflowv4-stage1-count-gate fail focus=2026-07-02 blocker=source_empty: update_schedule count is 0
+2026-07-02T01:23:31 cadence-gate skip not_due focus=14909|2026-07-02|day cadence=12 elapsed=9.06
+2026-07-02T01:24:49 cadence-gate skip not_due focus=14909|2026-07-02|day cadence=12 elapsed=10.37
