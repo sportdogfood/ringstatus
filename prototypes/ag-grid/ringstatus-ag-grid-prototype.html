@@ -16,6 +16,19 @@
       --panel: #252f3e;
       --surface: #1f2836;
       --chrome: #2f3845;
+      --time-col-width: 74px;
+      --total-col-width: 58px;
+      --rollup-slot-height: 16px;
+      --row-height-compact: 38px;
+      --row-height-rollup: 54px;
+      --row-height-group: 34px;
+      --row-main-height: 28px;
+      --cell-font-size: 11px;
+      --cell-line-height: 1.15;
+      --cell-font-weight: 600;
+      --grid-readable-width: 620px;
+      --content-width: clamp(393px, 92vw, 1180px);
+      --schedule-width: min(100%, var(--grid-readable-width));
       --accent: #0f766e;
       --changed: #6b4f13;
       --changed-border: #eab308;
@@ -50,6 +63,9 @@
       gap: 10px 14px;
       align-items: center;
       justify-content: space-between;
+      width: var(--content-width);
+      max-width: 100%;
+      justify-self: center;
       padding: 14px 16px;
       background: #fff;
       background: var(--surface);
@@ -105,6 +121,9 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto auto;
       gap: 8px;
+      width: var(--content-width);
+      max-width: 100%;
+      justify-self: center;
       padding: 10px 16px;
       background: var(--panel);
       border-bottom: 1px solid var(--line);
@@ -157,6 +176,38 @@
       overflow-x: auto;
     }
 
+    .mode-bar {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .mode-button {
+      appearance: none;
+      border: 1px solid var(--ag-border-color, var(--line));
+      border-radius: 999px;
+      min-height: 28px;
+      padding: 5px 10px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mode-button.is-active {
+      background: color-mix(in srgb, #3ea1ff 22%, var(--surface));
+      border-color: #3ea1ff;
+      color: #fff;
+    }
+
+    .mode-button[disabled] {
+      cursor: not-allowed;
+      opacity: .5;
+    }
+
     .visual-filter button {
       appearance: none;
       border: 0;
@@ -176,6 +227,28 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
     }
 
+    .filter-scope {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .filter-scope button {
+      border: 1px solid var(--ag-border-color, var(--line));
+      border-radius: 999px;
+      min-height: 24px;
+      padding: 3px 8px;
+      background: #111827;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
     .status-line.error {
       color: var(--danger);
       font-weight: 600;
@@ -183,13 +256,16 @@
 
     .grid-wrap {
       min-height: 0;
+      width: var(--content-width);
+      max-width: 100%;
+      justify-self: center;
       padding: 8px;
     }
 
     #rsGrid {
       height: calc(100vh - 154px);
       min-height: 420px;
-      width: 100%;
+      width: var(--schedule-width);
       border-radius: 8px;
       overflow: hidden;
     }
@@ -214,6 +290,15 @@
       --ag-input-border-color: #4b5565;
       --ag-chrome-background-color: #2f3845;
       --ag-row-border-width: 0px;
+      --ag-range-selection-border-color: transparent;
+    }
+
+    #rsGrid .ag-row-even:not(.ag-full-width-row) {
+      background: #1f2836;
+    }
+
+    #rsGrid .ag-row-odd:not(.ag-full-width-row) {
+      background: #253246;
     }
 
     #rsGrid .ag-cell,
@@ -230,6 +315,20 @@
     #rsGrid .ag-cell {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    #rsGrid .ag-cell-focus,
+    #rsGrid .ag-cell:focus,
+    #rsGrid .ag-cell:focus-within {
+      border-color: transparent !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    #rsGrid .rs-class-cell {
+      overflow: visible;
     }
 
     .rs-cell-changed {
@@ -263,34 +362,50 @@
     }
 
     .schedule-cell {
+      position: relative;
       display: grid;
-      grid-template-rows: 14px 1fr;
+      grid-template-rows: var(--rollup-slot-height) 1fr;
       align-content: center;
       gap: 4px;
       min-height: 100%;
       padding: 5px 0;
       color: var(--ag-foreground-color);
-      font-size: 11px;
-      line-height: 1.15;
+      font-size: var(--cell-font-size);
+      line-height: var(--cell-line-height);
     }
 
     .schedule-cell.is-compact {
       grid-template-rows: 1fr;
       gap: 0;
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     .schedule-cell.is-center {
       justify-items: center;
       text-align: center;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: var(--cell-font-size);
+      font-weight: var(--cell-font-weight);
     }
 
     .cell-rollup-slot {
       min-width: 0;
-      min-height: 14px;
+      min-height: var(--rollup-slot-height);
       display: flex;
       align-items: center;
+    }
+
+    .cell-rollup-slot.is-row-overlay {
+      position: absolute;
+      z-index: 2;
+      top: 5px;
+      left: calc(-1 * var(--time-col-width));
+      right: calc(-1 * var(--total-col-width));
+      height: var(--rollup-slot-height);
+      min-height: var(--rollup-slot-height);
+      padding: 0 10px;
+      pointer-events: none;
+      overflow: hidden;
     }
 
     .cell-main-line {
@@ -298,23 +413,30 @@
       display: flex;
       align-items: center;
       color: var(--ag-foreground-color);
-      font-size: 11px;
-      line-height: 1.15;
+      font-size: var(--cell-font-size);
+      line-height: var(--cell-line-height);
     }
 
     .cell-main-line.is-center {
       justify-content: center;
       text-align: center;
-      font-weight: 600;
+      font-weight: var(--cell-font-weight);
+    }
+
+    .schedule-cell.is-compact .cell-main-line,
+    .schedule-cell.is-compact .class-title-line {
+      height: var(--row-main-height);
+      min-height: var(--row-main-height);
     }
 
     .rollup-summary {
       display: flex;
       align-items: center;
       gap: 5px;
+      width: 100%;
       min-width: 0;
       color: var(--ag-foreground-color);
-      font-size: 11px;
+      font-size: var(--cell-font-size);
       font-weight: 650;
       text-transform: uppercase;
     }
@@ -324,6 +446,7 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      min-width: 42px;
       max-width: 56px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -347,6 +470,7 @@
     }
 
     .rollup-names {
+      flex: 1 1 auto;
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -355,14 +479,28 @@
 
     .class-title-line {
       min-width: 0;
+      min-height: 18px;
       display: flex;
       align-items: center;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: var(--ag-foreground-color);
-      font-size: 11px;
-      font-weight: 500;
+      font-size: var(--cell-font-size);
+      font-weight: var(--cell-font-weight);
+      line-height: var(--cell-line-height);
+    }
+
+    .schedule-cell:not(.is-compact) .class-title-line {
+      grid-row: 2;
+      height: var(--row-main-height);
+      min-height: var(--row-main-height);
+    }
+
+    .schedule-cell:not(.is-compact) .cell-main-line {
+      grid-row: 2;
+      height: var(--row-main-height);
+      min-height: var(--row-main-height);
     }
 
     .total-pill {
@@ -379,7 +517,7 @@
     .drawer {
       position: fixed;
       inset: 0 0 0 auto;
-      width: min(440px, 92vw);
+      width: min(520px, 94vw);
       transform: translateX(105%);
       transition: transform .18s ease;
       background: var(--surface);
@@ -388,6 +526,18 @@
       display: grid;
       grid-template-rows: auto auto 1fr;
       border-left: 1px solid var(--line);
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9;
+      display: none;
+      background: rgba(5, 9, 15, .18);
+    }
+
+    .drawer-backdrop.is-open {
+      display: block;
     }
 
     .drawer.is-open {
@@ -422,14 +572,127 @@
       border-bottom: 1px solid var(--line);
     }
 
-    .drawer pre {
-      margin: 0;
-      padding: 16px;
+    .drawer-detail {
       overflow: auto;
+      background: #f8fafc;
+      color: #071a2f;
+    }
+
+    .detail-title {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid #d7dde5;
+      background: #fff;
+    }
+
+    .detail-title h3 {
+      margin: 0;
+      color: #061b33;
+      font-size: 17px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .detail-pill-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px 16px 6px;
+      background: #fff;
+    }
+
+    .detail-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: #071a2f;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .detail-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid #111827;
+      border-bottom: 1px solid #111827;
+      background: #d8dadd;
+      text-align: center;
+    }
+
+    .detail-metric {
+      padding: 7px 4px 8px;
+      border-right: 1px solid #c0c5cc;
+    }
+
+    .detail-metric:last-child {
+      border-right: 0;
+    }
+
+    .detail-metric label {
+      display: block;
+      color: #5f6875;
+      font-size: 11px;
+      line-height: 1.1;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .detail-metric strong {
+      display: block;
+      margin-top: 7px;
+      color: #68717d;
       font-size: 12px;
-      line-height: 1.45;
-      background: #0b1220;
-      color: #dbeafe;
+      font-weight: 800;
+    }
+
+    .detail-entry-list {
+      background: #fff;
+    }
+
+    .detail-entry {
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr) 42px minmax(118px, auto);
+      gap: 7px;
+      align-items: center;
+      padding: 9px 8px;
+      border-bottom: 1px solid #dbe1e8;
+      color: #061b33;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .detail-entry:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .detail-time,
+    .detail-order,
+    .detail-eta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      border-radius: 5px;
+      background: #e5e7eb;
+      color: #061b33;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .detail-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .detail-empty {
+      padding: 18px 16px;
+      color: #64748b;
+      font-size: 13px;
     }
 
     .print-sheet {
@@ -522,16 +785,70 @@
         break-inside: avoid;
         page-break-inside: avoid;
         display: grid;
-        grid-template-columns: 54px minmax(0, 1fr) 28px;
-        gap: 4px;
-        padding: 3px 0;
+        grid-template-columns: 50px minmax(0, 1fr);
+        gap: 0;
+        position: relative;
+        min-height: 28px;
+        padding: 2px 0;
         border-bottom: 1px solid #bbb;
-        font-size: 9px;
-        line-height: 1.25;
+        font-size: 8.5px;
+        line-height: 1.18;
       }
 
-      .print-row strong {
+      .print-row.has-rollup {
+        background: #eef2f7;
+        min-height: 38px;
+        padding-top: 13px;
+      }
+
+      .print-row.is-zebra:not(.has-rollup) {
+        background: #f8fafc;
+      }
+
+      .print-cell {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        padding: 0 2px;
+        font-size: 8.5px;
+      }
+
+      .print-cell.time,
+      .print-cell.total {
+        justify-content: center;
+        font-weight: 700;
+      }
+
+      .print-cell.class {
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .print-rollup {
+        position: absolute;
+        top: 2px;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        min-width: 0;
+        padding: 0 6px;
         font-size: 9px;
+        font-weight: 700;
+        line-height: 1.1;
+        text-transform: uppercase;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .print-rollup-names {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .print-ring {
@@ -569,11 +886,25 @@
         <input id="showHiddenInput" type="checkbox">
         Show soft-hidden
       </label>
+      <div class="mode-bar" aria-label="Prototype modes">
+        <button class="mode-button" id="hideModeBtn" type="button">Hides</button>
+        <button class="mode-button is-active" type="button" aria-pressed="true">Filters</button>
+        <button class="mode-button" id="focusModeBtn" type="button">Focus</button>
+        <button class="mode-button" id="modePrintBtn" type="button">Print</button>
+        <button class="mode-button" type="button" disabled title="Horse mode is still to discuss">Horses</button>
+        <button class="mode-button" type="button" disabled title="Ring mode is still to discuss">Rings</button>
+      </div>
       <div class="visual-filter" id="visualFilter" aria-label="Browser-only row filter">
         <button class="is-active" type="button" data-filter="all">All</button>
         <button type="button" data-filter="rollups">With Rollups</button>
         <button type="button" data-filter="empty">No Rollup</button>
         <button type="button" data-filter="changed">Changed</button>
+      </div>
+      <div class="filter-scope" aria-label="Filter scopes to wire">
+        <span>Tiny filters:</span>
+        <button type="button" disabled title="Rider source/semantics to discuss">Riders</button>
+        <button type="button" disabled title="Status source/semantics to discuss">Status</button>
+        <button type="button" disabled title="Class tag source/semantics to discuss">Class Tags</button>
       </div>
       <div class="status-line" id="statusLine">Loading...</div>
     </section>
@@ -583,10 +914,12 @@
     </main>
   </div>
 
-  <aside class="drawer" id="rowDrawer" aria-label="Row JSON drawer" aria-hidden="true">
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+  <aside class="drawer" id="rowDrawer" aria-label="Class detail drawer" aria-hidden="true">
     <div class="drawer-head">
       <div>
-        <h2>Underlying Row JSON</h2>
+        <h2>Class Detail</h2>
         <p id="drawerKey">No row selected</p>
       </div>
       <button class="button" id="closeDrawerBtn" type="button">Close</button>
@@ -594,7 +927,7 @@
     <div class="drawer-actions">
       <button class="button danger" id="hideRowBtn" type="button">Soft-hide row</button>
     </div>
-    <pre id="drawerJson">{}</pre>
+    <div class="drawer-detail" id="drawerDetail"></div>
   </aside>
 
   <section class="print-sheet" id="printSheet" aria-hidden="true"></section>
@@ -608,14 +941,21 @@
       const SNAPSHOT_KEY = "ringstatus-ag-grid.previousSnapshot.v1";
       const HIDDEN_KEY = "ringstatus-ag-grid.hiddenRows.v1";
       const ENDPOINT_KEY = "ringstatus-ag-grid.endpoint.v1";
+      const ROW_HEIGHT_GROUP = 34;
+      const ROW_HEIGHT_ROLLUP = 54;
+      const ROW_HEIGHT_COMPACT = 38;
 
       const endpointInput = document.getElementById("endpointInput");
       const showHiddenInput = document.getElementById("showHiddenInput");
+      const hideModeBtn = document.getElementById("hideModeBtn");
+      const focusModeBtn = document.getElementById("focusModeBtn");
+      const modePrintBtn = document.getElementById("modePrintBtn");
       const visualFilter = document.getElementById("visualFilter");
       const statusLine = document.getElementById("statusLine");
+      const drawerBackdrop = document.getElementById("drawerBackdrop");
       const drawer = document.getElementById("rowDrawer");
       const drawerKey = document.getElementById("drawerKey");
-      const drawerJson = document.getElementById("drawerJson");
+      const drawerDetail = document.getElementById("drawerDetail");
       const hideRowBtn = document.getElementById("hideRowBtn");
       const printSheet = document.getElementById("printSheet");
 
@@ -624,6 +964,8 @@
       let visibleRows = [];
       let selectedRow = null;
       let rowFilter = "all";
+      let hideMode = false;
+      let focusMode = false;
       let previousSnapshot = loadObject(SNAPSHOT_KEY, {});
       let hiddenRows = new Set(loadArray(HIDDEN_KEY));
 
@@ -662,7 +1004,7 @@
         const classTitle = [row.class_number, row.class_name].map(text).filter(Boolean).join(" - ");
         const hasRollup = Boolean(rollup);
         return '<div class="schedule-cell' + (hasRollup ? '' : ' is-compact') + '">' +
-          (hasRollup ? '<div class="cell-rollup-slot">' + rollup + '</div>' : '') +
+          (hasRollup ? '<div class="cell-rollup-slot is-row-overlay">' + rollup + '</div>' : '') +
           '<div class="class-title-line">' + escapeHtml(classTitle || row.row_key || "") + '</div>' +
         '</div>';
       }
@@ -682,9 +1024,9 @@
       }
 
       const columnDefs = [
-        { headerName: "Time", field: "time", width: 74, cellRenderer: compactCellRenderer("time"), cellClassRules: changedCellRule("time") },
-        { headerName: "Class", field: "class_display", minWidth: 190, flex: 1, cellRenderer: classCellRenderer },
-        { headerName: "Total", field: "entry_count", width: 58, cellRenderer: compactCellRenderer("entry_count", { pill: true }) }
+        { headerName: "Time", field: "time", width: 74, resizable: false, cellRenderer: compactCellRenderer("time"), cellClassRules: changedCellRule("time") },
+        { headerName: "Class", field: "class_display", minWidth: 190, flex: 1, cellClass: "rs-class-cell", cellRenderer: classCellRenderer },
+        { headerName: "Total", field: "entry_count", width: 58, resizable: false, cellRenderer: compactCellRenderer("entry_count", { pill: true }) }
       ];
 
       const gridOptions = {
@@ -699,17 +1041,23 @@
           filter: false
         },
         getRowHeight: (params) => {
-          if (params.data && params.data.__group) return 34;
-          return params.data && params.data.horse_items && params.data.horse_items.length ? 54 : 38;
+          if (params.data && params.data.__group) return ROW_HEIGHT_GROUP;
+          return params.data && params.data.horse_items && params.data.horse_items.length ? ROW_HEIGHT_ROLLUP : ROW_HEIGHT_COMPACT;
         },
         isFullWidthRow: (params) => Boolean(params.rowNode && params.rowNode.data && params.rowNode.data.__group),
         fullWidthCellRenderer: ringFullWidthRenderer,
         rowClassRules: {
           "rs-row-changed": (params) => Boolean(params.data && params.data.__row_changed),
-          "rs-row-hidden-local": (params) => Boolean(params.data && params.data.__hidden)
+          "rs-row-hidden-local": (params) => Boolean(params.data && params.data.__hidden),
+          "rs-row-rollup": (params) => Boolean(params.data && params.data.horse_items && params.data.horse_items.length),
+          "rs-row-compact": (params) => Boolean(params.data && !params.data.__group && (!params.data.horse_items || !params.data.horse_items.length))
         },
         onRowClicked: (event) => {
           if (!event.data || event.data.__group) return;
+          if (hideMode) {
+            toggleRowHidden(event.data);
+            return;
+          }
           openDrawer(event.data);
         }
       };
@@ -809,6 +1157,12 @@
         return "";
       }
 
+      function truthy(value) {
+        if (value === true) return true;
+        const normalized = text(value).toLowerCase();
+        return normalized === "true" || normalized === "1" || normalized === "yes" || normalized === "checked";
+      }
+
       function rowKey(row, ring, index) {
         return firstText(
           row.row_key,
@@ -897,6 +1251,7 @@
           class_display: [classNumber, className].filter(Boolean).join(" - "),
           entry_count: firstText(row.entry_count),
           status: firstText(row.status, row.class_status, row.live_flag, row.ring_status),
+          is_focus: truthy(row.is_focus),
           row_key: key
         };
         const previous = previousSnapshot[key] || {};
@@ -961,13 +1316,17 @@
       function applyHiddenFilter() {
         const showHidden = showHiddenInput.checked;
         visibleRows = allRows.filter((row) => (
-          (showHidden || !hiddenRows.has(row.row_key)) && rowMatchesVisualFilter(row)
+          (showHidden || !hiddenRows.has(row.row_key)) && rowMatchesVisualFilter(row) && rowMatchesFocusMode(row)
         )).map((row) => ({
           ...row,
           __hidden: hiddenRows.has(row.row_key)
         }));
         gridApi.setGridOption("rowData", buildGroupedRows(visibleRows));
         updateHiddenButton();
+      }
+
+      function rowMatchesFocusMode(row) {
+        return !focusMode || !row.is_focus;
       }
 
       function rowMatchesVisualFilter(row) {
@@ -1028,13 +1387,70 @@
       function openDrawer(row) {
         selectedRow = row;
         drawerKey.textContent = row ? row.row_key : "No row selected";
-        drawerJson.textContent = JSON.stringify(row ? row.__raw : {}, null, 2);
+        drawerDetail.innerHTML = renderDrawerDetail(row);
+        drawerBackdrop.classList.add("is-open");
         drawer.classList.add("is-open");
         drawer.setAttribute("aria-hidden", "false");
         updateHiddenButton();
       }
 
+      function renderDrawerDetail(row) {
+        if (!row) return '<div class="detail-empty">No row selected.</div>';
+        const raw = row.__raw || {};
+        const classTitle = [row.class_number, row.class_name].map(text).filter(Boolean).join(" - ") || row.row_key;
+        const entries = firstText(row.entry_count, raw.entry_count, raw.total);
+        const gone = firstText(raw.n_gone, raw.gone, raw.entries_gone);
+        const toGo = firstText(raw.n_to_go, raw.to_go, raw.entries_to_go) || calculateToGo(entries, gone);
+        const ends = firstText(raw.ends_in, raw.ends_in_text, raw.starts_in, raw.starts_in_text, raw.time_delta_text);
+        const pills = [
+          row.ring,
+          row.time,
+          row.class_number,
+          entries ? entries + " entries" : ""
+        ].filter(Boolean);
+        return '<div class="detail-title">' +
+            '<h3>' + escapeHtml(classTitle) + '</h3>' +
+          '</div>' +
+          '<div class="detail-pill-row">' +
+            pills.slice(0, 4).map((pill) => '<span class="detail-pill">' + escapeHtml(pill) + '</span>').join("") +
+          '</div>' +
+          '<div class="detail-metrics">' +
+            detailMetric("Entries", entries || "--") +
+            detailMetric("Gone", gone || "--") +
+            detailMetric("To Go", toGo || "--") +
+            detailMetric("Ends", ends || "--") +
+          '</div>' +
+          '<div class="detail-entry-list">' + drawerEntryRows(row, gone, ends) + '</div>';
+      }
+
+      function detailMetric(label, value) {
+        return '<div class="detail-metric"><label>' + escapeHtml(label) + '</label><strong>' + escapeHtml(value) + '</strong></div>';
+      }
+
+      function calculateToGo(entries, gone) {
+        const total = Number(entries);
+        const completed = Number(gone);
+        if (!Number.isFinite(total) || !Number.isFinite(completed)) return "";
+        return String(Math.max(0, total - completed));
+      }
+
+      function drawerEntryRows(row, gone, ends) {
+        const items = Array.isArray(row.horse_items) ? row.horse_items : [];
+        if (!items.length) {
+          return '<div class="detail-empty">No rollup horses available for this class row.</div>';
+        }
+        return items.map((item) => (
+          '<div class="detail-entry">' +
+            '<span class="detail-time">' + escapeHtml(row.time || "--") + '</span>' +
+            '<span class="detail-name">' + escapeHtml(item.name || "Horse") + '</span>' +
+            '<span class="detail-order">' + escapeHtml(item.order || gone || "--") + '</span>' +
+            '<span class="detail-eta">' + escapeHtml(ends || "timing unavailable") + '</span>' +
+          '</div>'
+        )).join("");
+      }
+
       function closeDrawer() {
+        drawerBackdrop.classList.remove("is-open");
         drawer.classList.remove("is-open");
         drawer.setAttribute("aria-hidden", "true");
       }
@@ -1051,11 +1467,17 @@
 
       function toggleSelectedHidden() {
         if (!selectedRow) return;
-        if (hiddenRows.has(selectedRow.row_key)) hiddenRows.delete(selectedRow.row_key);
-        else hiddenRows.add(selectedRow.row_key);
+        toggleRowHidden(selectedRow);
+        updateHiddenButton();
+      }
+
+      function toggleRowHidden(row) {
+        if (!row) return;
+        if (hiddenRows.has(row.row_key)) hiddenRows.delete(row.row_key);
+        else hiddenRows.add(row.row_key);
         localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(hiddenRows)));
         applyHiddenFilter();
-        updateHiddenButton();
+        setStatus("Hide mode " + (hideMode ? "on" : "off") + ". Visible " + visibleRows.length + ". Hidden locally " + hiddenRows.size + ".", false);
       }
 
       function clearBrowserState() {
@@ -1075,7 +1497,7 @@
 
       function groupedVisibleRows() {
         const groups = new Map();
-        visibleRows.forEach((row) => {
+        visibleRows.filter((row) => !hiddenRows.has(row.row_key)).forEach((row) => {
           const ring = row.ring || "Unassigned";
           if (!groups.has(ring)) groups.set(ring, []);
           groups.get(ring).push(row);
@@ -1098,11 +1520,14 @@
         const endpoint = endpointInput.value.trim();
         const generatedAt = new Date().toISOString();
         const body = rows.map(([ring, ringRows]) => {
-          const lineRows = ringRows.map((row) => (
-            '<div class="print-row">' +
-              '<strong>' + escapeHtml(row.time || "--") + '</strong>' +
-              '<span>' + printClassCell(row) + '</span>' +
-              '<span>' + escapeHtml(row.entry_count || "") + '</span>' +
+          const lineRows = ringRows.map((row, rowIndex) => (
+            '<div class="print-row' +
+              (rowIndex % 2 ? ' is-zebra' : '') +
+              (row.horse_items && row.horse_items.length ? ' has-rollup' : '') +
+            '">' +
+              printRollup(row) +
+              '<span class="print-cell time">' + escapeHtml(row.time || "--") + '</span>' +
+              '<span class="print-cell class">' + escapeHtml([row.class_number, row.class_name].map(text).filter(Boolean).join(" - ")) + '</span>' +
             '</div>'
           )).join("");
           return '<section class="print-ring-group">' +
@@ -1118,15 +1543,35 @@
           '<div class="print-columns">' + body + '</div>';
       }
 
-      function printClassCell(row) {
-        const rollup = rollupSummaryHtml(row).replace(/class="[^"]*"/g, "");
-        const classTitle = [row.class_number, row.class_name].map(text).filter(Boolean).join(" - ");
-        return rollup + '<span style="display:block">' + escapeHtml(classTitle) + '</span>';
+      function printRollup(row) {
+        const items = Array.isArray(row.horse_items) ? row.horse_items : [];
+        if (!items.length) return "";
+        const names = items.map((item) => (
+          item.order ? item.name + " (" + item.order + ")" : item.name
+        )).join(", ");
+        return '<div class="print-rollup">' +
+          '<span class="print-rollup-names">' + escapeHtml(names) + '</span>' +
+        '</div>';
       }
 
       function printThreeColumn() {
         buildPrintSheet();
         window.print();
+      }
+
+      function toggleHideMode() {
+        hideMode = !hideMode;
+        hideModeBtn.classList.toggle("is-active", hideMode);
+        hideModeBtn.setAttribute("aria-pressed", String(hideMode));
+        setStatus("Hide mode " + (hideMode ? "on. Tap a row to hide/unhide it." : "off.") + " Visible " + visibleRows.length + ". Hidden locally " + hiddenRows.size + ".", false);
+      }
+
+      function toggleFocusMode() {
+        focusMode = !focusMode;
+        focusModeBtn.classList.toggle("is-active", focusMode);
+        focusModeBtn.setAttribute("aria-pressed", String(focusMode));
+        applyHiddenFilter();
+        setStatus("Focus filter " + (focusMode ? "on. Rows marked is_focus are removed." : "off.") + " Visible " + visibleRows.length + ". Hidden locally " + hiddenRows.size + ".", false);
       }
 
       function initGrid() {
@@ -1142,9 +1587,13 @@
 
       document.getElementById("refreshBtn").addEventListener("click", refreshRows);
       document.getElementById("printBtn").addEventListener("click", printThreeColumn);
+      modePrintBtn.addEventListener("click", printThreeColumn);
       document.getElementById("clearStateBtn").addEventListener("click", clearBrowserState);
       document.getElementById("closeDrawerBtn").addEventListener("click", closeDrawer);
+      drawerBackdrop.addEventListener("click", closeDrawer);
       hideRowBtn.addEventListener("click", toggleSelectedHidden);
+      hideModeBtn.addEventListener("click", toggleHideMode);
+      focusModeBtn.addEventListener("click", toggleFocusMode);
       showHiddenInput.addEventListener("change", applyHiddenFilter);
       visualFilter.addEventListener("click", (event) => {
         const button = event.target.closest("button[data-filter]");
