@@ -17,12 +17,14 @@
       --surface: #1f2836;
       --chrome: #2f3845;
       --time-col-width: 74px;
-      --total-col-width: 58px;
+      --total-col-width: 64px;
       --rollup-slot-height: 16px;
       --row-height-compact: 38px;
       --row-height-rollup: 54px;
       --row-height-group: 34px;
       --row-main-height: 28px;
+      --rollup-top: 6px;
+      --rollup-main-top: 23px;
       --cell-font-size: 11px;
       --cell-line-height: 1.15;
       --cell-font-weight: 600;
@@ -112,6 +114,16 @@
       color: var(--danger);
     }
 
+    .icon-button {
+      width: 34px;
+      min-height: 34px;
+      padding: 0;
+      border-radius: 999px;
+      font-size: 17px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
     .button:disabled {
       opacity: .55;
       cursor: not-allowed;
@@ -134,6 +146,10 @@
       gap: 4px;
       color: var(--muted);
       font-size: 12px;
+    }
+
+    .endpoint-field {
+      display: none;
     }
 
     .endpoint-panel input[type="url"] {
@@ -306,6 +322,49 @@
       color: #fff;
     }
 
+    #rsGrid .ag-header-cell {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      min-height: 38px !important;
+    }
+
+    #rsGrid .ag-header,
+    #rsGrid .ag-header-viewport,
+    #rsGrid .ag-header-container,
+    #rsGrid .ag-header-row {
+      min-height: 38px !important;
+      height: 38px !important;
+    }
+
+    #rsGrid .ag-header-cell-resize,
+    #rsGrid .ag-header-cell-resize::after {
+      display: none !important;
+      width: 0 !important;
+      opacity: 0 !important;
+    }
+
+    #rsGrid .ag-header-cell-label {
+      padding: 0 6px;
+      min-width: 0;
+      height: 38px;
+      align-items: center;
+    }
+
+    #rsGrid .rs-header-fixed .ag-header-cell-label {
+      justify-content: center;
+      text-align: center;
+      padding: 0 2px;
+    }
+
+    #rsGrid .ag-header-cell-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
     #rsGrid .ag-row,
     #rsGrid .ag-cell {
       border-top-width: 0 !important;
@@ -363,22 +422,17 @@
 
     .schedule-cell {
       position: relative;
-      display: grid;
-      grid-template-rows: var(--rollup-slot-height) 1fr;
-      align-content: center;
-      gap: 4px;
+      display: flex;
+      align-items: center;
       min-height: 100%;
-      padding: 5px 0;
+      padding: 0;
       color: var(--ag-foreground-color);
       font-size: var(--cell-font-size);
       line-height: var(--cell-line-height);
     }
 
     .schedule-cell.is-compact {
-      grid-template-rows: 1fr;
-      gap: 0;
-      padding-top: 0;
-      padding-bottom: 0;
+      align-items: center;
     }
 
     .schedule-cell.is-center {
@@ -398,7 +452,7 @@
     .cell-rollup-slot.is-row-overlay {
       position: absolute;
       z-index: 2;
-      top: 5px;
+      top: var(--rollup-top);
       left: calc(-1 * var(--time-col-width));
       right: calc(-1 * var(--total-col-width));
       height: var(--rollup-slot-height);
@@ -414,7 +468,7 @@
       align-items: center;
       color: var(--ag-foreground-color);
       font-size: var(--cell-font-size);
-      line-height: var(--cell-line-height);
+      line-height: 1;
     }
 
     .cell-main-line.is-center {
@@ -488,17 +542,23 @@
       color: var(--ag-foreground-color);
       font-size: var(--cell-font-size);
       font-weight: var(--cell-font-weight);
-      line-height: var(--cell-line-height);
+      line-height: 1;
     }
 
     .schedule-cell:not(.is-compact) .class-title-line {
-      grid-row: 2;
+      position: absolute;
+      top: var(--rollup-main-top);
+      left: 0;
+      right: 0;
       height: var(--row-main-height);
       min-height: var(--row-main-height);
     }
 
     .schedule-cell:not(.is-compact) .cell-main-line {
-      grid-row: 2;
+      position: absolute;
+      top: var(--rollup-main-top);
+      left: 0;
+      right: 0;
       height: var(--row-main-height);
       min-height: var(--row-main-height);
     }
@@ -871,20 +931,20 @@
         <p>Read-only Catalyst payload. Ring-grouped rows, local change markers, browser-only soft hide.</p>
       </div>
       <div class="actions">
-        <button class="button primary" id="refreshBtn" type="button">Refresh Rows</button>
-        <button class="button" id="printBtn" type="button">Print 3 Columns</button>
-        <button class="button danger" id="clearStateBtn" type="button">Clear Browser State</button>
+        <button class="button primary" id="refreshBtn" type="button" title="Refresh rows">Refresh</button>
+        <button class="button" id="printBtn" type="button" title="Print current visible rows">Print</button>
+        <button class="button danger" id="clearStateBtn" type="button" title="Clear browser-only state">Reset</button>
       </div>
     </header>
 
     <section class="endpoint-panel" aria-label="Data source">
-      <label>
+      <label class="endpoint-field" aria-hidden="true">
         Catalyst API endpoint
         <input id="endpointInput" type="url" spellcheck="false">
       </label>
       <label class="toggle">
         <input id="showHiddenInput" type="checkbox">
-        Show soft-hidden
+        Hidden
       </label>
       <div class="mode-bar" aria-label="Prototype modes">
         <button class="mode-button" id="hideModeBtn" type="button">Hides</button>
@@ -922,10 +982,10 @@
         <h2>Class Detail</h2>
         <p id="drawerKey">No row selected</p>
       </div>
-      <button class="button" id="closeDrawerBtn" type="button">Close</button>
+      <button class="button icon-button" id="closeDrawerBtn" type="button" title="Close drawer" aria-label="Close drawer">x</button>
     </div>
     <div class="drawer-actions">
-      <button class="button danger" id="hideRowBtn" type="button">Soft-hide row</button>
+      <button class="button danger" id="hideRowBtn" type="button" title="Hide this row locally">Hide</button>
     </div>
     <div class="drawer-detail" id="drawerDetail"></div>
   </aside>
@@ -1024,14 +1084,15 @@
       }
 
       const columnDefs = [
-        { headerName: "Time", field: "time", width: 74, resizable: false, cellRenderer: compactCellRenderer("time"), cellClassRules: changedCellRule("time") },
+        { headerName: "Time", field: "time", width: 74, headerClass: "rs-header-fixed", resizable: false, cellRenderer: compactCellRenderer("time"), cellClassRules: changedCellRule("time") },
         { headerName: "Class", field: "class_display", minWidth: 190, flex: 1, cellClass: "rs-class-cell", cellRenderer: classCellRenderer },
-        { headerName: "Total", field: "entry_count", width: 58, resizable: false, cellRenderer: compactCellRenderer("entry_count", { pill: true }) }
+        { headerName: "Total", field: "entry_count", width: 64, headerClass: "rs-header-fixed", resizable: false, cellRenderer: compactCellRenderer("entry_count", { pill: true }) }
       ];
 
       const gridOptions = {
         columnDefs,
         rowData: [],
+        headerHeight: 38,
         getRowId: (params) => String(params.data.row_key),
         animateRows: false,
         suppressCellFocus: false,
@@ -1458,11 +1519,12 @@
       function updateHiddenButton() {
         if (!selectedRow) {
           hideRowBtn.disabled = true;
-          hideRowBtn.textContent = "Soft-hide row";
+          hideRowBtn.textContent = "Hide";
           return;
         }
         hideRowBtn.disabled = false;
-        hideRowBtn.textContent = hiddenRows.has(selectedRow.row_key) ? "Unhide row" : "Soft-hide row";
+        hideRowBtn.textContent = hiddenRows.has(selectedRow.row_key) ? "Show" : "Hide";
+        hideRowBtn.title = hiddenRows.has(selectedRow.row_key) ? "Show this row locally" : "Hide this row locally";
       }
 
       function toggleSelectedHidden() {
