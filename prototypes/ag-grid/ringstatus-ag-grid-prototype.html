@@ -4,19 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RingStatus AG Grid Prototype</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@34.1.0/styles/ag-grid.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@34.1.0/styles/ag-theme-quartz.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light;
-      --ink: #071a2f;
-      --muted: #65758b;
-      --line: #d9e2ec;
-      --panel: #f6f8fb;
+      color-scheme: dark;
+      --ink: #fff;
+      --muted: #b8c2cf;
+      --line: #3b4656;
+      --panel: #252f3e;
+      --surface: #1f2836;
+      --chrome: #2f3845;
       --accent: #0f766e;
-      --changed: #fff3c4;
+      --changed: #6b4f13;
       --changed-border: #eab308;
-      --danger: #be123c;
+      --danger: #fb7185;
     }
 
     * {
@@ -25,9 +28,9 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Inter, Arial, Helvetica, sans-serif;
       color: var(--ink);
-      background: #eef2f6;
+      background: #151c27;
     }
 
     button,
@@ -49,6 +52,7 @@
       justify-content: space-between;
       padding: 14px 16px;
       background: #fff;
+      background: var(--surface);
       border-bottom: 1px solid var(--line);
     }
 
@@ -73,7 +77,7 @@
 
     .button {
       border: 1px solid #b7c3d0;
-      background: #fff;
+      background: var(--chrome);
       color: var(--ink);
       border-radius: 6px;
       padding: 8px 10px;
@@ -118,7 +122,7 @@
       border: 1px solid #b7c3d0;
       border-radius: 6px;
       padding: 8px 10px;
-      background: #fff;
+      background: var(--surface);
       color: var(--ink);
       min-height: 36px;
     }
@@ -140,6 +144,38 @@
       font-size: 12px;
     }
 
+    .visual-filter {
+      grid-column: 1 / -1;
+      display: inline-flex;
+      width: fit-content;
+      max-width: 100%;
+      gap: 2px;
+      padding: 4px;
+      border: 1px solid var(--ag-border-color, var(--line));
+      border-radius: 8px;
+      background: #111827;
+      overflow-x: auto;
+    }
+
+    .visual-filter button {
+      appearance: none;
+      border: 0;
+      border-radius: 6px;
+      padding: 7px 12px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .visual-filter button.is-active {
+      background: #fff;
+      color: #05070b;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
+    }
+
     .status-line.error {
       color: var(--danger);
       font-weight: 600;
@@ -147,7 +183,7 @@
 
     .grid-wrap {
       min-height: 0;
-      padding: 12px 16px 16px;
+      padding: 8px;
     }
 
     #rsGrid {
@@ -158,13 +194,42 @@
       overflow: hidden;
     }
 
-    .ag-theme-quartz {
-      --ag-font-family: Arial, Helvetica, sans-serif;
+    #rsGrid.ag-theme-quartz,
+    #rsGrid .ag-root-wrapper,
+    #rsGrid .ag-root {
+      color-scheme: dark;
+      --ag-font-family: Inter, Arial, Helvetica, sans-serif;
       --ag-font-size: 13px;
-      --ag-header-background-color: #eaf0f6;
-      --ag-header-foreground-color: #10243d;
-      --ag-row-hover-color: #edf7f5;
-      --ag-selected-row-background-color: #dff3ef;
+      --ag-foreground-color: #fff;
+      --ag-background-color: #1f2836;
+      --ag-header-background-color: #2f3845;
+      --ag-header-foreground-color: #fff;
+      --ag-odd-row-background-color: #242f3f;
+      --ag-row-hover-color: #334155;
+      --ag-selected-row-background-color: #23423f;
+      --ag-border-color: #3b4656;
+      --ag-secondary-border-color: #3b4656;
+      --ag-header-column-resize-handle-color: #7f8b9c;
+      --ag-input-background-color: #151c27;
+      --ag-input-border-color: #4b5565;
+      --ag-chrome-background-color: #2f3845;
+      --ag-row-border-width: 0px;
+    }
+
+    #rsGrid .ag-cell,
+    #rsGrid .ag-header-cell-text {
+      color: #fff;
+    }
+
+    #rsGrid .ag-row,
+    #rsGrid .ag-cell {
+      border-top-width: 0 !important;
+      border-bottom-width: 0 !important;
+    }
+
+    #rsGrid .ag-cell {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
     }
 
     .rs-cell-changed {
@@ -182,17 +247,133 @@
       text-decoration: line-through;
     }
 
-    .rs-ring-group-row .ag-cell {
-      background: #10243d !important;
-      color: #fff;
+    .ring-section-header {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 12px;
+      background: var(--ag-header-background-color);
+      color: var(--ag-header-foreground-color);
+      font-size: 14px;
       font-weight: 700;
-      border-top: 1px solid #10243d;
-      border-bottom: 1px solid #10243d;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      border-top: 1px solid var(--ag-border-color);
+      border-bottom: 1px solid var(--ag-border-color);
     }
 
-    .rs-ring-group-cell {
-      letter-spacing: .02em;
+    .schedule-cell {
+      display: grid;
+      grid-template-rows: 14px 1fr;
+      align-content: center;
+      gap: 4px;
+      min-height: 100%;
+      padding: 5px 0;
+      color: var(--ag-foreground-color);
+      font-size: 11px;
+      line-height: 1.15;
+    }
+
+    .schedule-cell.is-compact {
+      grid-template-rows: 1fr;
+      gap: 0;
+    }
+
+    .schedule-cell.is-center {
+      justify-items: center;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .cell-rollup-slot {
+      min-width: 0;
+      min-height: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .cell-main-line {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      color: var(--ag-foreground-color);
+      font-size: 11px;
+      line-height: 1.15;
+    }
+
+    .cell-main-line.is-center {
+      justify-content: center;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .rollup-summary {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      color: var(--ag-foreground-color);
+      font-size: 11px;
+      font-weight: 650;
       text-transform: uppercase;
+    }
+
+    .rollup-badge {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      max-width: 56px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: color-mix(in srgb, #3ea1ff 10%, transparent);
+      color: var(--ag-foreground-color);
+      font-size: 9px;
+      line-height: 1;
+      border: 1px solid color-mix(in srgb, #3ea1ff 58%, var(--ag-border-color));
+      white-space: nowrap;
+    }
+
+    .rollup-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: #3ea1ff;
+    }
+
+    .rollup-names {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .class-title-line {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--ag-foreground-color);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .total-pill {
+      min-width: 26px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: color-mix(in srgb, #6d9b7e 72%, transparent);
+      color: #fff;
+      line-height: 1.25;
+      font-size: 11px;
+      font-weight: 700;
     }
 
     .drawer {
@@ -201,7 +382,7 @@
       width: min(440px, 92vw);
       transform: translateX(105%);
       transition: transform .18s ease;
-      background: #fff;
+      background: var(--surface);
       box-shadow: -16px 0 30px rgba(15, 23, 42, .2);
       z-index: 10;
       display: grid;
@@ -255,9 +436,24 @@
       display: none;
     }
 
+    @media (min-width: 721px) {
+      .grid-wrap {
+        padding: 12px 16px 16px;
+      }
+
+      .ring-section-header {
+        padding: 0 14px;
+        font-size: 15px;
+      }
+    }
+
     @media (max-width: 720px) {
       .endpoint-panel {
         grid-template-columns: 1fr;
+      }
+
+      .visual-filter {
+        width: 100%;
       }
 
       .toggle {
@@ -316,11 +512,17 @@
         column-gap: 14px;
       }
 
+      .print-ring-group {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        display: block;
+      }
+
       .print-row {
         break-inside: avoid;
         page-break-inside: avoid;
         display: grid;
-        grid-template-columns: 1.6fr 46px 42px .9fr 34px;
+        grid-template-columns: 54px minmax(0, 1fr) 28px;
         gap: 4px;
         padding: 3px 0;
         border-bottom: 1px solid #bbb;
@@ -367,6 +569,12 @@
         <input id="showHiddenInput" type="checkbox">
         Show soft-hidden
       </label>
+      <div class="visual-filter" id="visualFilter" aria-label="Browser-only row filter">
+        <button class="is-active" type="button" data-filter="all">All</button>
+        <button type="button" data-filter="rollups">With Rollups</button>
+        <button type="button" data-filter="empty">No Rollup</button>
+        <button type="button" data-filter="changed">Changed</button>
+      </div>
       <div class="status-line" id="statusLine">Loading...</div>
     </section>
 
@@ -403,6 +611,7 @@
 
       const endpointInput = document.getElementById("endpointInput");
       const showHiddenInput = document.getElementById("showHiddenInput");
+      const visualFilter = document.getElementById("visualFilter");
       const statusLine = document.getElementById("statusLine");
       const drawer = document.getElementById("rowDrawer");
       const drawerKey = document.getElementById("drawerKey");
@@ -414,6 +623,7 @@
       let allRows = [];
       let visibleRows = [];
       let selectedRow = null;
+      let rowFilter = "all";
       let previousSnapshot = loadObject(SNAPSHOT_KEY, {});
       let hiddenRows = new Set(loadArray(HIDDEN_KEY));
 
@@ -423,22 +633,58 @@
         "rs-cell-changed": (params) => Boolean(params.data && params.data.__changedFields && params.data.__changedFields[field])
       });
 
+      function buildQuartzDarkTheme() {
+        if (!window.agGrid || !window.agGrid.themeQuartz || typeof window.agGrid.themeQuartz.withParams !== "function") {
+          return "legacy";
+        }
+        return window.agGrid.themeQuartz.withParams({
+          backgroundColor: "#1f2836",
+          browserColorScheme: "dark",
+          chromeBackgroundColor: {
+            ref: "foregroundColor",
+            mix: 0.07,
+            onto: "backgroundColor"
+          },
+          fontFamily: {
+            googleFont: "Inter"
+          },
+          foregroundColor: "#FFF"
+        });
+      }
+
+      function ringFullWidthRenderer(params) {
+        return '<div class="ring-section-header">' + escapeHtml(params.data && params.data.ring ? params.data.ring : "") + '</div>';
+      }
+
+      function classCellRenderer(params) {
+        const row = params.data || {};
+        const rollup = rollupSummaryHtml(row);
+        const classTitle = [row.class_number, row.class_name].map(text).filter(Boolean).join(" - ");
+        const hasRollup = Boolean(rollup);
+        return '<div class="schedule-cell' + (hasRollup ? '' : ' is-compact') + '">' +
+          (hasRollup ? '<div class="cell-rollup-slot">' + rollup + '</div>' : '') +
+          '<div class="class-title-line">' + escapeHtml(classTitle || row.row_key || "") + '</div>' +
+        '</div>';
+      }
+
+      function compactCellRenderer(field, options) {
+        return (params) => {
+          const hasRollup = Boolean(params.data && params.data.horse_items && params.data.horse_items.length);
+          const value = params.data && params.data[field] ? params.data[field] : "";
+          const valueHtml = options && options.pill && value
+            ? '<span class="total-pill">' + escapeHtml(value) + '</span>'
+            : escapeHtml(value);
+          return '<div class="schedule-cell is-center' + (hasRollup ? '' : ' is-compact') + '">' +
+          (hasRollup ? '<div class="cell-rollup-slot"></div>' : '') +
+          '<div class="cell-main-line is-center">' + valueHtml + '</div>' +
+        '</div>';
+        };
+      }
+
       const columnDefs = [
-        {
-          headerName: "Horses",
-          field: "horses",
-          minWidth: 108,
-          flex: 1.15,
-          colSpan: (params) => params.data && params.data.__group ? 5 : 1,
-          cellClassRules: {
-            ...changedCellRule("order_of_go"),
-            "rs-ring-group-cell": (params) => Boolean(params.data && params.data.__group)
-          }
-        },
-        { headerName: "Time", field: "time", width: 58, cellClassRules: changedCellRule("time") },
-        { headerName: "No", field: "class_number", width: 52 },
-        { headerName: "Class", field: "class_name", minWidth: 120, flex: 1.7 },
-        { headerName: "Total", field: "entry_count", width: 54 }
+        { headerName: "Time", field: "time", width: 74, cellRenderer: compactCellRenderer("time"), cellClassRules: changedCellRule("time") },
+        { headerName: "Class", field: "class_display", minWidth: 190, flex: 1, cellRenderer: classCellRenderer },
+        { headerName: "Total", field: "entry_count", width: 58, cellRenderer: compactCellRenderer("entry_count", { pill: true }) }
       ];
 
       const gridOptions = {
@@ -452,10 +698,15 @@
           resizable: true,
           filter: false
         },
+        getRowHeight: (params) => {
+          if (params.data && params.data.__group) return 34;
+          return params.data && params.data.horse_items && params.data.horse_items.length ? 54 : 38;
+        },
+        isFullWidthRow: (params) => Boolean(params.rowNode && params.rowNode.data && params.rowNode.data.__group),
+        fullWidthCellRenderer: ringFullWidthRenderer,
         rowClassRules: {
           "rs-row-changed": (params) => Boolean(params.data && params.data.__row_changed),
-          "rs-row-hidden-local": (params) => Boolean(params.data && params.data.__hidden),
-          "rs-ring-group-row": (params) => Boolean(params.data && params.data.__group)
+          "rs-row-hidden-local": (params) => Boolean(params.data && params.data.__hidden)
         },
         onRowClicked: (event) => {
           if (!event.data || event.data.__group) return;
@@ -580,7 +831,7 @@
         return sortPriority(firstText(row.ring_name_prioritized, ring.ring_name_prioritized, ring.ring_priority, row.ring_no, ring.ring_no));
       }
 
-      function horseRollup(row) {
+      function horseRollupItems(row) {
         const source = Array.isArray(row.rollups) ? row.rollups : [];
         const horses = [];
         source.forEach((rollup) => {
@@ -589,24 +840,61 @@
             const name = firstText(horse && horse.barn_name, horse && horse.display, horse && horse.horse, horse && horse.label);
             if (!name) return;
             const order = firstText(horse && horse.entry_order, horse && horse.order_of_go, horse && horse.order, horse && horse.entry_no);
-            horses.push(order ? name + " (" + order + ")" : name);
+            horses.push({ name, order });
           });
         });
-        return horses.join(" | ");
+        return horses;
+      }
+
+      function horseRollupText(items) {
+        return (items || []).map((item) => item.order ? item.name + " (" + item.order + ")" : item.name).join("; ");
+      }
+
+      function trainerBadges(row) {
+        const seen = new Set();
+        const badges = [];
+        const source = Array.isArray(row.rollups) ? row.rollups : [];
+        source.forEach((rollup) => {
+          const label = firstText(rollup && rollup.trainer_display, rollup && rollup.trainer);
+          const key = label.toLowerCase();
+          if (!key || seen.has(key)) return;
+          seen.add(key);
+          badges.push(label);
+        });
+        return badges;
+      }
+
+      function rollupSummaryHtml(row) {
+        const items = Array.isArray(row.horse_items) ? row.horse_items : [];
+        if (!items.length) return "";
+        const names = items.map((item) => (
+          item.order ? item.name + " (" + item.order + ")" : item.name
+        )).join(", ");
+        const badges = Array.isArray(row.trainer_badges) ? row.trainer_badges : [];
+        return '<div class="rollup-summary">' +
+          badges.slice(0, 2).map((badge) => '<span class="rollup-badge">' + escapeHtml(badge) + '</span>').join("") +
+          '<span class="rollup-names">' + escapeHtml(names) + '</span>' +
+        '</div>';
       }
 
       function minimalRow(item, index) {
         const row = item.row || {};
         const ring = item.ring || {};
         const key = rowKey(row, ring, index);
+        const horseItems = horseRollupItems(row);
+        const classNumber = firstText(row.class_number, row.class_no);
+        const className = firstText(row.class_name);
         const current = {
           ring: firstText(row.ring_name_normalized, row.ring_name, row.ring_display, ring.ring_name_normalized, ring.ring_display, ring.ring_name, row.ring_no, ring.ring_no),
           ring_sort: ringSortValue(row, ring),
-          horses: horseRollup(row),
+          horses: horseRollupText(horseItems),
+          horse_items: horseItems,
+          trainer_badges: trainerBadges(row),
           time: firstText(row.display_time, row.time_text, row.class_time, row.class_time_text, row.start_display, row.class_start_time, row.time),
           order_of_go: firstText(row.order_of_go, row.entry_order, row.order, row.draw, row.class_priority_sort),
-          class_number: firstText(row.class_number, row.class_no),
-          class_name: firstText(row.class_name),
+          class_number: classNumber,
+          class_name: className,
+          class_display: [classNumber, className].filter(Boolean).join(" - "),
           entry_count: firstText(row.entry_count),
           status: firstText(row.status, row.class_status, row.live_flag, row.ring_status),
           row_key: key
@@ -672,12 +960,37 @@
 
       function applyHiddenFilter() {
         const showHidden = showHiddenInput.checked;
-        visibleRows = allRows.filter((row) => showHidden || !hiddenRows.has(row.row_key)).map((row) => ({
+        visibleRows = allRows.filter((row) => (
+          (showHidden || !hiddenRows.has(row.row_key)) && rowMatchesVisualFilter(row)
+        )).map((row) => ({
           ...row,
           __hidden: hiddenRows.has(row.row_key)
         }));
         gridApi.setGridOption("rowData", buildGroupedRows(visibleRows));
         updateHiddenButton();
+      }
+
+      function rowMatchesVisualFilter(row) {
+        if (rowFilter === "rollups") return Boolean(row.horse_items && row.horse_items.length);
+        if (rowFilter === "empty") return !row.horse_items || !row.horse_items.length;
+        if (rowFilter === "changed") return Boolean(row.__row_changed);
+        return true;
+      }
+
+      function setVisualFilter(nextFilter) {
+        rowFilter = nextFilter || "all";
+        visualFilter.querySelectorAll("button[data-filter]").forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.filter === rowFilter);
+        });
+        applyHiddenFilter();
+        setStatus("Loaded " + allRows.length + " rows. Visible " + visibleRows.length + ". Filter " + filterLabel(rowFilter) + ". Hidden locally " + hiddenRows.size + ".", false);
+      }
+
+      function filterLabel(filter) {
+        if (filter === "rollups") return "With Rollups";
+        if (filter === "empty") return "No Rollup";
+        if (filter === "changed") return "Changed";
+        return "All";
       }
 
       async function refreshRows() {
@@ -787,14 +1100,15 @@
         const body = rows.map(([ring, ringRows]) => {
           const lineRows = ringRows.map((row) => (
             '<div class="print-row">' +
-              '<strong>' + escapeHtml(row.horses || "") + '</strong>' +
-              '<span>' + escapeHtml(row.time || "--") + '</span>' +
-              '<span>' + escapeHtml(row.class_number || "") + '</span>' +
-              '<span>' + escapeHtml(row.class_name || "") + '</span>' +
+              '<strong>' + escapeHtml(row.time || "--") + '</strong>' +
+              '<span>' + printClassCell(row) + '</span>' +
               '<span>' + escapeHtml(row.entry_count || "") + '</span>' +
             '</div>'
           )).join("");
-          return '<div class="print-ring">' + escapeHtml(ring) + '</div>' + lineRows;
+          return '<section class="print-ring-group">' +
+            '<div class="print-ring">' + escapeHtml(ring) + '</div>' +
+            lineRows +
+          '</section>';
         }).join("");
         printSheet.innerHTML =
           '<div class="print-title">' +
@@ -802,6 +1116,12 @@
             '<p>' + escapeHtml(generatedAt) + '<br>' + escapeHtml(endpoint) + '</p>' +
           '</div>' +
           '<div class="print-columns">' + body + '</div>';
+      }
+
+      function printClassCell(row) {
+        const rollup = rollupSummaryHtml(row).replace(/class="[^"]*"/g, "");
+        const classTitle = [row.class_number, row.class_name].map(text).filter(Boolean).join(" - ");
+        return rollup + '<span style="display:block">' + escapeHtml(classTitle) + '</span>';
       }
 
       function printThreeColumn() {
@@ -815,6 +1135,7 @@
           setStatus("AG Grid Community failed to load from CDN.", true);
           return;
         }
+        gridOptions.theme = buildQuartzDarkTheme();
         gridApi = window.agGrid.createGrid(gridDiv, gridOptions);
         refreshRows();
       }
@@ -825,6 +1146,11 @@
       document.getElementById("closeDrawerBtn").addEventListener("click", closeDrawer);
       hideRowBtn.addEventListener("click", toggleSelectedHidden);
       showHiddenInput.addEventListener("change", applyHiddenFilter);
+      visualFilter.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-filter]");
+        if (!button) return;
+        setVisualFilter(button.dataset.filter);
+      });
       endpointInput.addEventListener("change", refreshRows);
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") closeDrawer();
