@@ -2,9 +2,16 @@
   "functions": {
     "targets": [
       "zoho_analytics_datastore_sync_routes_handler",
-      "zoho_analytics_datastore_sync_record_handler"
+      "zoho_analytics_datastore_sync_record_handler",
+      "wec_live_grid"
     ],
     "ignore": [],
     "source": "functions"
-  }
+  },
+  "slate": [
+    {
+      "name": "wec-ag-live",
+      "source": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\catalyst\\datastore-analytics-sync\\wec-ag-live"
+    }
+  ]
 }

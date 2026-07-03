@@ -1,0 +1,13 @@
+{
+  "deployment": {
+    "name": "wec_live_grid",
+    "type": "advancedio",
+    "stack": "node20",
+    "env_variables": {
+      "WEC_GRID_SOURCE_URL": "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/"
+    }
+  },
+  "execution": {
+    "main": "index.js"
+  }
+}

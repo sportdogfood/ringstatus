@@ -1,0 +1,10 @@
+record_id,status,focus_day,ring_visual_key,ring_name_normalized,ring_name,last_synced_at,ring_status_key,source,ring_no,ring_day_no,show_no
+recPZQkyA03sxVNLF,active,2026-07-03,642|indoor_6,indoor 6,Indoor 6 - Brandon Serpico,2026-07-03 20:06:20,642|indoor_6,hs_get_ring_days.step4_runtime_prep,642,3592,14909
+recRQKtGZSbfjPdFN,active,2026-07-03,646|indoor_3,indoor 3,Indoor 3,2026-07-03 20:06:20,646|indoor_3,hs_get_ring_days.step4_runtime_prep,646,3616,14909
+recVMxY0RghCBfP9G,active,2026-07-03,640|grand,grand,WEC Grand Arena - Nate Poliquin,2026-07-03 20:06:20,640|grand,hs_get_ring_days.step4_runtime_prep,640,3580,14909
+recdQoMBFsBMzqMo5,active,2026-07-03,645|indoor_2,indoor 2,Indoor 2 - Jo Walker,2026-07-03 20:06:20,645|indoor_2,hs_get_ring_days.step4_runtime_prep,645,3610,14909
+recdiFKqBggDLtP4n,active,2026-07-03,644|indoor_1,indoor 1,Indoor 1- Sarah Haas,2026-07-03 20:06:20,644|indoor_1,hs_get_ring_days.step4_runtime_prep,644,3604,14909
+recu0zdXJHFdz1MSq,active,2026-07-03,648|annex,annex,Jumper Annex - Gary Gregory,2026-07-03 20:06:20,648|annex,hs_get_ring_days.step4_runtime_prep,648,4202,14909
+recuu92CL6CX8WrQU,active,2026-07-03,747|indoor_4,indoor 4,Indoor 4 - Lucy Bolton,2026-07-03 20:06:20,747|indoor_4,hs_get_ring_days.step4_runtime_prep,747,4320,14909
+recxTsloCvBVCWzRo,active,2026-07-03,641|hunter_2,hunter 2,Hunter 2- Robbie Cyphert,2026-07-03 20:06:20,641|hunter_2,hs_get_ring_days.step4_runtime_prep,641,3586,14909
+recyvYT9sPW2rZ74T,active,2026-07-03,643|indoor_5,indoor 5,Indoor 5 - Cassie Goebel,2026-07-03 20:06:20,643|indoor_5,hs_get_ring_days.step4_runtime_prep,643,3598,14909
