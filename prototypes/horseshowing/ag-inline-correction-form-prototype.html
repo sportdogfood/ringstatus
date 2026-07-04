@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AG Inline Mapping Correction Prototype</title>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f7;
+      --panel: #fff;
+      --ink: #18251f;
+      --muted: #647067;
+      --line: #d8dfdb;
+      --accent: #245e52;
+      --accent-soft: #e4f0ed;
+      --warn: #835600;
+      --warn-soft: #fff4cf;
+      --bad: #9b2424;
+      --bad-soft: #ffe7e7;
+      --ok: #17623b;
+      --ok-soft: #e2f2e8;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.4 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .app-shell {
+      height: 100vh;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .bar,
+    .notice,
+    .grid-frame,
+    .status-line {
+      width: 100%;
+      max-width: 980px;
+      justify-self: center;
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .title { min-width: 0; }
+    .title h1 { margin: 0; font-size: 18px; font-weight: 650; letter-spacing: 0; }
+    .title p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+
+    .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+    button {
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      color: var(--ink);
+      min-height: 30px;
+      padding: 0 10px;
+      font: inherit;
+      cursor: pointer;
+    }
+    button:hover { background: var(--accent-soft); border-color: var(--accent); }
+
+    .notice {
+      background: var(--warn-soft);
+      border: 1px solid #e4c566;
+      border-radius: 8px;
+      color: #533900;
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+
+    .grid-frame {
+      min-height: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    #mappingGrid { width: 100%; height: 100%; min-height: 360px; }
+    .status-line { min-height: 18px; color: var(--muted); font-size: 12px; }
+
+    .decision {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      padding: 2px 8px;
+      line-height: 1.2;
+      white-space: nowrap;
+      text-transform: capitalize;
+    }
+    .decision.pending { color: var(--warn); background: var(--warn-soft); }
+    .decision.draft,
+    .decision.edited { color: #245e52; background: var(--accent-soft); }
+    .decision.approved { color: var(--ok); background: var(--ok-soft); }
+    .decision.declined { color: var(--bad); background: var(--bad-soft); }
+
+    .row-actions { display: inline-flex; gap: 4px; align-items: center; }
+    .row-actions button {
+      min-height: 24px;
+      padding: 0 7px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    .locked-cell { color: var(--muted); }
+    .draft-row { background: #fbf8ed !important; }
+    .declined-row { opacity: .62; }
+
+    @media print {
+      body { overflow: visible; background: #fff; }
+      .app-shell { height: auto; padding: 0; display: block; }
+      .bar, .notice, .status-line { display: none !important; }
+      .grid-frame { max-width: none; border: 0; border-radius: 0; }
+      #mappingGrid { height: auto; min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="bar">
+      <div class="title">
+        <h1>Mapping Correction Form</h1>
+        <p>Mapped entries are prefilled. User can change horse, approve, decline, or add a filtered manual row.</p>
+      </div>
+      <div class="actions">
+        <button id="addRowBtn" type="button">Add Row</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <button id="printBtn" type="button">Print</button>
+      </div>
+    </header>
+
+    <div class="notice">
+      Add Row test: pick Time first. Ring options then narrow to rings at that time. Class options then narrow to that time + ring. Horse always comes from the helper roster.
+    </div>
+
+    <main class="grid-frame">
+      <div id="mappingGrid"></div>
+    </main>
+
+    <div id="statusLine" class="status-line">Loading prototype...</div>
+  </div>
+
+  <script>
+    (function () {
+      const schedule = [
+        { time_label: "7:30 am", time_sort: 450, ring_key: "640|grand", ring_display: "Grand", class_no: "26670", class_label: "632 - 1.10m Jumper II.2b" },
+        { time_label: "8:00 am", time_sort: 480, ring_key: "640|grand", ring_display: "Grand", class_no: "26676", class_label: "804 - C.Jarvis Insurance Welcome Prix 1.40m II.2b" },
+        { time_label: "8:00 am", time_sort: 480, ring_key: "644|indoor_6", ring_display: "Indoor 6", class_no: "26701", class_label: "749 - 1.10m Junior Jumper II.1" },
+        { time_label: "9:15 am", time_sort: 555, ring_key: "644|indoor_6", ring_display: "Indoor 6", class_no: "26702", class_label: "755 - 1.10m Amateur Jumper II.1" },
+        { time_label: "10:00 am", time_sort: 600, ring_key: "640|grand", ring_display: "Grand", class_no: "26677", class_label: "647 - 1.35m Jumper II.2b" },
+        { time_label: "10:30 am", time_sort: 630, ring_key: "644|indoor_6", ring_display: "Indoor 6", class_no: "26703", class_label: "757 - 1.15m Junior/Amateur Jumper II.1" },
+        { time_label: "11:45 am", time_sort: 705, ring_key: "644|indoor_6", ring_display: "Indoor 6", class_no: "26704", class_label: "768 - 1.20m Amateur/Junior Jumper II.1" },
+        { time_label: "1:15 pm", time_sort: 795, ring_key: "640|grand", ring_display: "Grand", class_no: "26688", class_label: "781 - 1.40m Junior/Amateur Jumper II.1" },
+        { time_label: "2:15 pm", time_sort: 855, ring_key: "644|indoor_6", ring_display: "Indoor 6", class_no: "26705", class_label: "638 - 1.20m Jumper II.2b" },
+        { time_label: "3:30 pm", time_sort: 930, ring_key: "644|indoor_6", ring_display: "Indoor 6", class_no: "26706", class_label: "644 - 1.30m Jumper II.2b" }
+      ];
+
+      const horseRoster = [
+        "Bee", "Insider", "Peri", "Dottie", "Doug", "Maiki", "Calypso", "Rimini", "Kudos", "King", "Q", "Choco", "Macho", "Mark", "Indy"
+      ];
+
+      const initialRows = [
+        mapped("map-001", "8:00 am", "640|grand", "26676", "Bee"),
+        mapped("map-002", "8:00 am", "640|grand", "26676", "Insider"),
+        mapped("map-003", "9:15 am", "644|indoor_6", "26701", "Rimini"),
+        mapped("map-004", "9:15 am", "644|indoor_6", "26702", "Kudos"),
+        mapped("map-005", "10:30 am", "644|indoor_6", "26703", "Dottie"),
+        mapped("map-006", "11:45 am", "644|indoor_6", "26704", "King"),
+        mapped("map-007", "11:45 am", "644|indoor_6", "26704", "Maiki"),
+        mapped("map-008", "1:15 pm", "640|grand", "26688", "Peri"),
+        mapped("map-009", "2:15 pm", "644|indoor_6", "26705", "Doug"),
+        mapped("map-010", "3:30 pm", "644|indoor_6", "26706", "Doug")
+      ];
+
+      let rows = initialRows.map(row => ({ ...row }));
+      let gridApi = null;
+      let newRowIndex = 0;
+      const statusLine = document.getElementById("statusLine");
+
+      function mapped(rowKey, timeLabel, ringKey, classNo, horse) {
+        const match = schedule.find(item => item.time_label === timeLabel && item.ring_key === ringKey && item.class_no === classNo) || {};
+        return {
+          row_key: rowKey,
+          source: "mapped",
+          time_label: timeLabel,
+          time_sort: match.time_sort ?? 99999,
+          ring_key: ringKey,
+          ring_display: match.ring_display || "",
+          class_no: classNo,
+          class_label: match.class_label || "",
+          horse,
+          decision: "pending"
+        };
+      }
+
+      function unique(values) {
+        return Array.from(new Set(values.filter(Boolean)));
+      }
+
+      function timeOptions() {
+        return unique(schedule.sort((a, b) => a.time_sort - b.time_sort).map(item => item.time_label));
+      }
+
+      function ringOptionsFor(row) {
+        if (!row.time_label) return unique(schedule.map(item => item.ring_display));
+        return unique(schedule.filter(item => item.time_label === row.time_label).map(item => item.ring_display));
+      }
+
+      function classOptionsFor(row) {
+        if (!row.time_label || !row.ring_display) return [];
+        return schedule
+          .filter(item => item.time_label === row.time_label && item.ring_display === row.ring_display)
+          .map(item => item.class_label);
+      }
+
+      function scheduleFor(row) {
+        return schedule.find(item =>
+          item.time_label === row.time_label &&
+          item.ring_display === row.ring_display &&
+          item.class_label === row.class_label
+        );
+      }
+
+      function compareRows(a, b) {
+        const time = (a.time_sort ?? 99999) - (b.time_sort ?? 99999);
+        if (time) return time;
+        const ring = String(a.ring_display || "").localeCompare(String(b.ring_display || ""));
+        if (ring) return ring;
+        return String(a.class_label || "").localeCompare(String(b.class_label || ""));
+      }
+
+      function setStatus(message) {
+        statusLine.textContent = message;
+      }
+
+      function refresh(message) {
+        rows = rows.slice().sort(compareRows);
+        if (gridApi) gridApi.setGridOption("rowData", rows.map(row => ({ ...row })));
+        if (message) setStatus(message);
+      }
+
+      function updateRow(rowKey, patch, message) {
+        let next = null;
+        rows = rows.map(row => {
+          if (row.row_key !== rowKey) return row;
+          next = { ...row, ...patch, updated_at: new Date().toLocaleTimeString() };
+          return next;
+        });
+        if (gridApi && next) gridApi.applyTransaction({ update: [next] });
+        if (message) setStatus(message);
+      }
+
+      function addRow() {
+        newRowIndex += 1;
+        const row = {
+          row_key: "manual-" + Date.now() + "-" + newRowIndex,
+          source: "manual",
+          time_label: "",
+          time_sort: 99999,
+          ring_key: "",
+          ring_display: "",
+          class_no: "",
+          class_label: "",
+          horse: "",
+          decision: "draft"
+        };
+        rows.push(row);
+        if (gridApi) {
+          gridApi.applyTransaction({ add: [row] });
+          setTimeout(() => {
+            const node = gridApi.getRowNode(row.row_key);
+            if (node) gridApi.startEditingCell({ rowIndex: node.rowIndex, colKey: "time_label" });
+          }, 0);
+        }
+        setStatus("Added a manual row. Pick time, then ring, then class, then horse.");
+      }
+
+      function approve(rowKey) {
+        updateRow(rowKey, { decision: "approved" }, "Approved " + rowKey + ".");
+      }
+
+      function decline(rowKey) {
+        updateRow(rowKey, { decision: "declined" }, "Declined " + rowKey + ".");
+      }
+
+      function decisionRenderer(params) {
+        const value = params.value || "pending";
+        return '<span class="decision ' + escapeHtml(value) + '">' + escapeHtml(value) + "</span>";
+      }
+
+      function actionRenderer(params) {
+        const key = params.data.row_key;
+        return '<span class="row-actions">' +
+          '<button type="button" data-action="approve" data-key="' + escapeHtml(key) + '">Approve</button>' +
+          '<button type="button" data-action="decline" data-key="' + escapeHtml(key) + '">Decline</button>' +
+          '<button type="button" data-action="horse" data-key="' + escapeHtml(key) + '">Horse</button>' +
+        "</span>";
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+        }[char]));
+      }
+
+      function editable(params) {
+        if (!params.data) return false;
+        if (params.colDef.field === "horse") return params.data.decision !== "approved" && params.data.decision !== "declined";
+        return params.data.source === "manual" && params.data.decision !== "approved" && params.data.decision !== "declined";
+      }
+
+      const columnDefs = [
+        {
+          field: "time_label",
+          headerName: "Time",
+          editable,
+          width: 120,
+          minWidth: 104,
+          cellEditor: "agSelectCellEditor",
+          cellEditorParams: () => ({ values: timeOptions() }),
+          valueSetter: params => {
+            if (params.oldValue === params.newValue) return false;
+            params.data.time_label = params.newValue;
+            const match = schedule.find(item => item.time_label === params.newValue);
+            params.data.time_sort = match ? match.time_sort : 99999;
+            params.data.ring_key = "";
+            params.data.ring_display = "";
+            params.data.class_no = "";
+            params.data.class_label = "";
+            params.data.decision = "draft";
+            return true;
+          },
+          cellClass: params => params.data && params.data.source === "mapped" ? "locked-cell" : ""
+        },
+        {
+          field: "ring_display",
+          headerName: "Ring",
+          editable,
+          width: 130,
+          minWidth: 110,
+          cellEditor: "agSelectCellEditor",
+          cellEditorParams: params => ({ values: ringOptionsFor(params.data || {}) }),
+          valueSetter: params => {
+            if (params.oldValue === params.newValue) return false;
+            const match = schedule.find(item => item.time_label === params.data.time_label && item.ring_display === params.newValue);
+            params.data.ring_display = params.newValue;
+            params.data.ring_key = match ? match.ring_key : "";
+            params.data.class_no = "";
+            params.data.class_label = "";
+            params.data.decision = "draft";
+            return true;
+          },
+          cellClass: params => params.data && params.data.source === "mapped" ? "locked-cell" : ""
+        },
+        {
+          field: "class_label",
+          headerName: "Class",
+          editable,
+          width: 360,
+          minWidth: 220,
+          tooltipField: "class_label",
+          cellEditor: "agSelectCellEditor",
+          cellEditorParams: params => ({ values: classOptionsFor(params.data || {}) }),
+          valueSetter: params => {
+            if (params.oldValue === params.newValue) return false;
+            params.data.class_label = params.newValue;
+            const match = scheduleFor(params.data);
+            params.data.class_no = match ? match.class_no : "";
+            params.data.time_sort = match ? match.time_sort : params.data.time_sort;
+            params.data.decision = "draft";
+            return true;
+          },
+          cellClass: params => params.data && params.data.source === "mapped" ? "locked-cell" : ""
+        },
+        {
+          field: "horse",
+          headerName: "Horse",
+          editable,
+          width: 190,
+          minWidth: 150,
+          cellEditor: "agSelectCellEditor",
+          cellEditorParams: () => ({ values: horseRoster.slice() }),
+          valueSetter: params => {
+            if (params.oldValue === params.newValue) return false;
+            params.data.horse = params.newValue;
+            if (params.data.decision === "pending") params.data.decision = "edited";
+            return true;
+          }
+        },
+        {
+          field: "decision",
+          headerName: "Decision",
+          width: 128,
+          minWidth: 112,
+          editable: false,
+          cellRenderer: decisionRenderer
+        },
+        {
+          field: "actions",
+          headerName: "Actions",
+          width: 220,
+          minWidth: 210,
+          sortable: false,
+          filter: false,
+          editable: false,
+          cellRenderer: actionRenderer
+        }
+      ];
+
+      const gridOptions = {
+        theme: window.agGrid && window.agGrid.themeQuartz ? window.agGrid.themeQuartz : undefined,
+        columnDefs,
+        rowData: rows.slice().sort(compareRows),
+        getRowId: params => params.data.row_key,
+        defaultColDef: {
+          sortable: true,
+          filter: true,
+          resizable: true,
+          suppressSizeToFit: true
+        },
+        rowSelection: { mode: "singleRow", checkboxes: false, enableClickSelection: true },
+        animateRows: true,
+        stopEditingWhenCellsLoseFocus: true,
+        getRowClass: params => {
+          if (!params.data) return "";
+          if (params.data.decision === "declined") return "declined-row";
+          if (params.data.source === "manual") return "draft-row";
+          return "";
+        },
+        onCellValueChanged: params => {
+          if (!params.data || params.oldValue === params.newValue) return;
+          rows = rows.map(row => row.row_key === params.data.row_key ? { ...params.data } : row);
+          refresh("Updated " + params.colDef.headerName + " for " + params.data.row_key + ".");
+        },
+        onGridReady: params => {
+          gridApi = params.api;
+          refresh("Showing " + rows.length + " mapped entries. Horse can be corrected inline; manual rows use dependent dropdowns.");
+        }
+      };
+
+      function handleActionClick(event) {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+        const rowKey = button.getAttribute("data-key");
+        const action = button.getAttribute("data-action");
+        event.stopPropagation();
+        if (action === "approve") approve(rowKey);
+        if (action === "decline") decline(rowKey);
+        if (action === "horse" && gridApi) {
+          const node = gridApi.getRowNode(rowKey);
+          if (node) gridApi.startEditingCell({ rowIndex: node.rowIndex, colKey: "horse" });
+          setStatus("Editing horse dropdown for " + rowKey + ".");
+        }
+      }
+
+      function renderFallback() {
+        document.getElementById("mappingGrid").innerHTML = "<p style='padding:12px'>AG Grid failed to load.</p>";
+        setStatus("AG Grid failed to load.");
+      }
+
+      function init() {
+        const gridDiv = document.getElementById("mappingGrid");
+        if (!window.agGrid || typeof window.agGrid.createGrid !== "function") {
+          renderFallback();
+          return;
+        }
+        gridApi = window.agGrid.createGrid(gridDiv, gridOptions);
+        gridDiv.addEventListener("click", handleActionClick);
+      }
+
+      document.getElementById("addRowBtn").addEventListener("click", addRow);
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        rows = initialRows.map(row => ({ ...row }));
+        refresh("Reset to mapped entries.");
+      });
+      document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+      init();
+    }());
+  </script>
+</body>
+</html>
