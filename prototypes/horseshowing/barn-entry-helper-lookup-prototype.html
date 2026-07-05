@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barn Entry Lookup</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f7;
+      --panel: #fff;
+      --ink: #17221e;
+      --muted: #65736d;
+      --line: #d7dfdb;
+      --accent: #235f54;
+      --accent-dark: #17443b;
+      --accent-soft: #e7f1ee;
+      --warn: #8a5b00;
+      --warn-soft: #fff4cf;
+      --bad: #9a2424;
+      --bad-soft: #ffe8e8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .shell {
+      width: min(100%, 520px);
+      margin: 0 auto;
+      padding: 8px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .lookup {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-items: end;
+    }
+
+    label {
+      display: block;
+      margin: 0 0 4px;
+      color: #34443d;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    select,
+    input {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 10px;
+      font: inherit;
+      outline: none;
+    }
+
+    select:focus,
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(35, 95, 84, .14);
+    }
+
+    button {
+      appearance: none;
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 10px;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      text-align: center;
+    }
+
+    .primary:hover {
+      background: var(--accent-dark);
+      border-color: var(--accent-dark);
+    }
+
+    .status {
+      min-height: 22px;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 4px 0 0;
+    }
+
+    .status.bad { color: var(--bad); }
+    .status.warn { color: var(--warn); }
+
+    .results {
+      display: grid;
+      gap: 8px;
+    }
+
+    .result-card {
+      display: grid;
+      gap: 8px;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .result-card:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .horse-card-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    .horse-cell {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.25;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      border: 1px solid currentColor;
+      white-space: nowrap;
+      color: var(--warn);
+      background: var(--warn-soft);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .barn-list {
+      display: grid;
+      gap: 8px;
+      min-height: 52px;
+    }
+
+    .table-frame {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .entry-table {
+      width: 100%;
+      min-width: 560px;
+      border-collapse: collapse;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .entry-table th,
+    .entry-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .entry-table th {
+      background: #f7faf8;
+      color: #34443d;
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .entry-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .entry-table .time-col,
+    .entry-table .ring-col,
+    .entry-table .class-no-col,
+    .entry-table .barn-col {
+      white-space: nowrap;
+    }
+
+    .entry-table .class-col {
+      width: auto;
+      min-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .entry-table tr[data-action="add"] {
+      cursor: pointer;
+    }
+
+    .entry-table tr[data-action="add"]:hover td {
+      background: var(--accent-soft);
+    }
+
+    .entry-table .remove-col {
+      width: 44px;
+      text-align: center;
+    }
+
+    .remove-row {
+      width: 30px;
+      min-height: 30px;
+      border-radius: 6px;
+      padding: 0;
+      text-align: center;
+      line-height: 1;
+      color: var(--bad);
+      font-size: 18px;
+      font-weight: 850;
+    }
+
+    .add-row {
+      width: 30px;
+      min-height: 30px;
+      border-radius: 6px;
+      padding: 0;
+      text-align: center;
+      line-height: 1;
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 850;
+    }
+
+    .barn-empty {
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .no-more {
+      border-style: solid;
+      background: #f7faf8;
+      color: #34443d;
+    }
+
+    .no-more strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .inline-link {
+      appearance: none;
+      width: auto;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--accent);
+      padding: 0;
+      font: inherit;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .inline-link:hover {
+      background: transparent;
+      color: var(--accent-dark);
+    }
+
+    .manual-form {
+      display: grid;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f7faf8;
+      padding: 10px;
+    }
+
+    .manual-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .manual-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .print-copy {
+      display: grid;
+      gap: 8px;
+    }
+
+    .print-copy h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .print-actions {
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .secondary {
+      text-align: center;
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (min-width: 680px) {
+      .shell {
+        width: min(100%, 760px);
+        padding: 10px;
+      }
+
+      .footer {
+        grid-template-columns: minmax(0, 1fr) 160px;
+      }
+
+      .manual-grid {
+        grid-template-columns: 1fr 1fr auto;
+        align-items: end;
+      }
+
+      .print-actions {
+        grid-template-columns: minmax(0, 1fr) 160px;
+        align-items: center;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .shell > section:not(#printPanel) {
+        display: none !important;
+      }
+
+      .shell {
+        width: 100%;
+        padding: 0;
+      }
+
+      .panel,
+      .table-frame {
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+      }
+
+      .print-actions button,
+      .print-actions .status {
+        display: none !important;
+      }
+
+      .entry-table {
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell stack">
+    <section class="panel">
+      <div class="lookup">
+        <div>
+          <label for="queryInput">Search</label>
+          <input id="queryInput" type="search" autocomplete="off" placeholder="Barn name">
+        </div>
+      </div>
+      <div id="status" class="status">Ready</div>
+    </section>
+
+    <section id="resultsPanel" class="panel" hidden>
+      <div id="results" class="results"></div>
+      <button id="addBtn" class="primary" type="button" disabled hidden>Add</button>
+    </section>
+
+    <section class="panel">
+      <div id="barnList" class="barn-list">
+        <div class="barn-empty">No rows</div>
+      </div>
+      <div class="footer">
+        <button id="newAddBtn" class="secondary" type="button">Add</button>
+        <button id="saveBtn" class="primary" type="button">Save</button>
+      </div>
+      <div id="saveStatus" class="status"></div>
+    </section>
+
+    <section id="printPanel" class="panel" hidden>
+      <div id="printCopy" class="print-copy"></div>
+    </section>
+  </div>
+
+  <script>
+    const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
+    const AIRTABLE_WEBHOOK_URL = "https://hooks.airtable.com/workflows/v1/genericWebhook/app6XS1RvsPNRT6os/wflcCeL2hMlBHwIV3/wtrFr5HD4HlwLCT9J";
+    const state = {
+      abort: null,
+      hydrateAbort: null,
+      matches: [],
+      selectedMatch: null,
+      selectedHydration: null,
+      rows: [],
+      cache: new Map()
+    };
+
+    const els = {
+      queryInput: document.getElementById("queryInput"),
+      status: document.getElementById("status"),
+      resultsPanel: document.getElementById("resultsPanel"),
+      results: document.getElementById("results"),
+      addBtn: document.getElementById("addBtn"),
+      barnList: document.getElementById("barnList"),
+      newAddBtn: document.getElementById("newAddBtn"),
+      saveBtn: document.getElementById("saveBtn"),
+      saveStatus: document.getElementById("saveStatus"),
+      printPanel: document.getElementById("printPanel"),
+      printCopy: document.getElementById("printCopy")
+    };
+
+    function debounce(fn, wait = 180) {
+      let timer = null;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), wait);
+      };
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function status(message, kind = "") {
+      els.status.textContent = message || "";
+      els.status.className = `status ${kind}`.trim();
+    }
+
+    function saveStatus(message, kind = "") {
+      els.saveStatus.textContent = message || "";
+      els.saveStatus.className = `status ${kind}`.trim();
+    }
+
+    function hideResults() {
+      els.resultsPanel.hidden = true;
+      els.results.innerHTML = "";
+      els.addBtn.hidden = true;
+      els.addBtn.disabled = true;
+    }
+
+    function rowKey(row) {
+      return [row.show_no, row.focus_show_record_id, row.class_no || row.class_number, row.entry_no, row.barn_name].join("|");
+    }
+
+    function appearanceKey(match, hydration, appearance) {
+      return rowKey(buildRow(match, hydration, appearance));
+    }
+
+    function isAlreadyAdded(match, hydration, appearance) {
+      const key = appearanceKey(match, hydration, appearance);
+      return state.rows.some((row) => rowKey(row) === key);
+    }
+
+    function displayTime(row) {
+      return row.display_time || row.class_start_time || "";
+    }
+
+    function barnNameFor(match) {
+      return match?.fields?.barn_name || match?.display_name || match?.matched_value || match?.helper_key || "";
+    }
+
+    function horseNameFor(match, appearance) {
+      return appearance?.horse || match?.fields?.horse_name || match?.fields?.horse || match?.helper_key || "";
+    }
+
+    function selectedBarnName(match, hydration) {
+      return hydration?.display_name || hydration?.entity_name || match?.display_name || match?.matched_value || match?.helper_key || "this horse";
+    }
+
+    function normalizeKey(value) {
+      return String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function manualMatchFromValues(barnName, horseName = "") {
+      const barn = String(barnName || "").trim();
+      const horse = String(horseName || barn).trim();
+      return {
+        entity_type: "horse",
+        helper_key: normalizeKey(horse || barn),
+        display_name: barn || horse,
+        matched_value: barn || horse,
+        matched_field: "manual",
+        source_table: "manual_input",
+        fields: {
+          barn_name: barn || horse,
+          horse_name: horse || barn
+        }
+      };
+    }
+
+    function manualHydrationFor(match) {
+      return {
+        show_no: "",
+        focus_day: "",
+        focus_show_record_id: "",
+        entity_type: "horse",
+        entity_key: match.helper_key,
+        entity_name: match.fields?.horse_name || match.display_name,
+        display_name: match.fields?.barn_name || match.display_name,
+        current_mapping_status: "manual_input",
+        current_day_appearance_count: 0,
+        appearances: []
+      };
+    }
+
+    function buildRow(match, hydration, appearance) {
+      return {
+        show_no: appearance.show_no || hydration.show_no || "",
+        focus_show: hydration.focus_show_record_id || "",
+        focus_show_record_id: hydration.focus_show_record_id || "",
+        ring_no: appearance.ring_no || "",
+        class_no: appearance.class_no || "",
+        entry_no: appearance.entry_no || "",
+        ring_name_normalized: appearance.ring_name_normalized || "",
+        class_start_time: appearance.class_start_time || appearance.display_time || "",
+        display_time: appearance.display_time || "",
+        class_name: appearance.class_name || "",
+        barn_name: barnNameFor(match),
+        horse_name: horseNameFor(match, appearance),
+        entity_type: match.entity_type,
+        entity_key: match.helper_key,
+        entry_visual_key: appearance.entry_visual_key || "",
+        class_visual_key: appearance.class_visual_key || "",
+        ring_visual_key: appearance.ring_visual_key || "",
+        class_number: appearance.class_number || "",
+        match_status: appearance.match_status || "matched"
+      };
+    }
+
+    function buildManualClassRow(match, hydration, classValue) {
+      const value = String(classValue || "").trim();
+      return {
+        show_no: hydration?.show_no || "",
+        focus_show: hydration?.focus_show_record_id || "",
+        focus_show_record_id: hydration?.focus_show_record_id || "",
+        ring_no: "",
+        class_no: /^\d+$/.test(value) ? value : "",
+        class_number: value,
+        entry_no: "",
+        ring_name_normalized: "",
+        class_start_time: "",
+        display_time: "",
+        class_name: value ? `Class ${value}` : "",
+        barn_name: barnNameFor(match),
+        horse_name: horseNameFor(match, {}),
+        entity_type: "horse",
+        entity_key: match?.helper_key || "",
+        entry_visual_key: "",
+        class_visual_key: "",
+        ring_visual_key: "",
+        match_status: "manual_class"
+      };
+    }
+
+    function renderBarnList() {
+      if (!state.rows.length) {
+        els.barnList.innerHTML = `<div class="barn-empty">No rows</div>`;
+        return;
+      }
+      els.barnList.innerHTML = renderRowTable(state.rows, { action: "remove" });
+      els.barnList.querySelectorAll(".remove-row").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.rows.splice(Number(button.dataset.index), 1);
+          renderBarnList();
+          if (state.selectedMatch) {
+            const hydration = state.cache.get(`horses|${state.selectedMatch.helper_key}`);
+            if (hydration) renderAppearances(state.selectedMatch, hydration);
+          }
+        });
+      });
+    }
+
+    function renderRowTable(rows, { action = "" } = {}) {
+      return `
+        <div class="table-frame">
+          <table class="entry-table">
+            <thead>
+              <tr>
+                <th>Ring</th>
+                <th>Time</th>
+                <th>No</th>
+                <th>Class</th>
+                <th>Barn</th>
+                ${action ? "<th></th>" : ""}
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map((row, index) => `
+                <tr
+                  ${action === "add" ? 'data-action="add"' : ""}
+                  data-show-id="${escapeHtml(row.show_no)}"
+                  data-focus-show="${escapeHtml(row.focus_show)}"
+                  data-ring-no="${escapeHtml(row.ring_no)}"
+                  data-class-no="${escapeHtml(row.class_no)}"
+                  data-entry-no="${escapeHtml(row.entry_no)}"
+                  data-horse-name="${escapeHtml(row.horse_name)}">
+                  <td class="ring-col">${escapeHtml(row.ring_name_normalized)}</td>
+                  <td class="time-col">${escapeHtml(displayTime(row))}</td>
+                  <td class="class-no-col">${escapeHtml(row.class_no || row.class_number || "")}</td>
+                  <td class="class-col">${escapeHtml(row.class_name)}</td>
+                  <td class="barn-col">${escapeHtml(row.barn_name)}</td>
+                  ${action ? `<td class="remove-col"><button class="${action === "add" ? "add-row" : "remove-row"}" type="button" data-index="${index}" aria-label="${action === "add" ? "Add row" : "Remove row"}">${action === "add" ? "+" : "&times;"}</button></td>` : ""}
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function addBarnRow(match, hydration, appearance) {
+      const row = buildRow(match, hydration, appearance);
+      if (!state.rows.some((existing) => rowKey(existing) === rowKey(row))) state.rows.push(row);
+      renderBarnList();
+      renderAppearances(match, hydration);
+      status("Added");
+    }
+
+    function addManualClassRow(match, hydration, classValue) {
+      const row = buildManualClassRow(match, hydration, classValue);
+      if (!row.class_number) {
+        status("Enter class_no or class number", "bad");
+        return;
+      }
+      if (!state.rows.some((existing) => rowKey(existing) === rowKey(row))) state.rows.push(row);
+      renderBarnList();
+      renderAppearances(match, hydration);
+      status("Added manual class");
+    }
+
+    function manualClassForm(match, hydration) {
+      const barn = selectedBarnName(match, hydration);
+      return `
+        <div class="manual-form">
+          <p class="manual-title">Add class for ${escapeHtml(barn)}</p>
+          <div class="manual-grid">
+            <div>
+              <label for="manualClassInput">Class No / Class Number</label>
+              <input id="manualClassInput" type="text" inputmode="numeric" autocomplete="off" placeholder="26964 or 2204">
+            </div>
+            <div></div>
+            <button id="manualClassAddBtn" class="primary" type="button">Add</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function bindManualClassForm(match, hydration) {
+      const input = document.getElementById("manualClassInput");
+      const button = document.getElementById("manualClassAddBtn");
+      if (!input || !button) return;
+      const submit = () => addManualClassRow(match, hydration, input.value);
+      button.addEventListener("click", submit);
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submit();
+      });
+    }
+
+    function renderAppearances(match, hydration) {
+      const appearances = (hydration?.appearances || [])
+        .filter((appearance) => !isAlreadyAdded(match, hydration, appearance));
+      const selectedHorse = selectedBarnName(match, hydration);
+      if (!appearances.length) {
+        els.results.innerHTML = `
+          ${renderSelectedHorseResult(match)}
+          <div class="barn-empty no-more">
+            <strong>No More Classes for ${escapeHtml(selectedHorse)}</strong>
+            <span>Only classes already added were found.</span>
+            <span>To add a class that is not listed <button id="showManualClassBtn" class="inline-link" type="button">click here</button>.</span>
+          </div>
+          <div id="manualClassWrap" hidden>${manualClassForm(match, hydration)}</div>
+        `;
+        els.resultsPanel.hidden = false;
+        status("No More Classes", "warn");
+        document.getElementById("showManualClassBtn")?.addEventListener("click", () => {
+          document.getElementById("manualClassWrap").hidden = false;
+          bindManualClassForm(match, hydration);
+          requestAnimationFrame(() => document.getElementById("manualClassInput")?.focus());
+        }, { once: true });
+        return;
+      }
+      const rows = appearances.map((appearance) => buildRow(match, hydration, appearance));
+      els.results.innerHTML = `${renderSelectedHorseResult(match)}${renderRowTable(rows, { action: "add" })}`;
+      els.resultsPanel.hidden = false;
+      els.addBtn.hidden = true;
+      status(`${appearances.length} class row(s)`);
+      els.results.querySelectorAll(".add-row").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const appearance = appearances[Number(button.dataset.index)];
+          addBarnRow(match, hydration, appearance);
+        });
+      });
+      els.results.querySelectorAll('tr[data-action="add"]').forEach((row) => {
+        row.addEventListener("click", () => {
+          const button = row.querySelector(".add-row");
+          const appearance = appearances[Number(button.dataset.index)];
+          addBarnRow(match, hydration, appearance);
+        });
+      });
+    }
+
+    function renderSelectedHorseResult(match) {
+      return `
+        <div class="result-card">
+          <span class="horse-card-grid">
+            <span class="horse-cell">${escapeHtml(match.fields?.barn_name || match.display_name || match.matched_value || "")}</span>
+            <span class="horse-cell">${escapeHtml(match.fields?.horse_name || match.fields?.horse || match.helper_key || "")}</span>
+          </span>
+        </div>
+      `;
+    }
+
+    async function hydrateMatch(match) {
+      const type = "horses";
+      const cacheKey = `${type}|${match.helper_key}`;
+      if (state.cache.has(cacheKey)) {
+        renderAppearances(match, state.cache.get(cacheKey));
+        return;
+      }
+      if (state.hydrateAbort) state.hydrateAbort.abort();
+      state.hydrateAbort = new AbortController();
+      status("Loading classes...");
+      const url = new URL(API_BASE);
+      url.searchParams.set("action", "wec-helper-search");
+      url.searchParams.set("type", type);
+      url.searchParams.set("q", match.helper_key || match.matched_value || match.display_name);
+      url.searchParams.set("limit", "8");
+      url.searchParams.set("hydrate", "1");
+      url.searchParams.set("hydrate_scope", "barn_entry");
+      url.searchParams.set("search_mode", "catalyst");
+      const response = await fetch(url, { signal: state.hydrateAbort.signal });
+      const data = await response.json();
+      if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || `HTTP ${response.status}`);
+      const hydration = (data.hydration?.results || []).find((item) => item.entity_key === match.helper_key)
+        || (data.hydration?.results || [])[0]
+        || null;
+      state.cache.set(cacheKey, hydration);
+      state.selectedHydration = hydration;
+      renderAppearances(match, hydration);
+    }
+
+    function renderManualHorseForm(queryValue) {
+      const value = String(queryValue || "").trim();
+      els.results.innerHTML = `
+        <div class="barn-empty no-more">
+          <strong>We could not find matches for ${escapeHtml(value)}</strong>
+          <span>Clear your search and try another.</span>
+          <span>To add a Horse that is not listed <button id="showManualHorseBtn" class="inline-link" type="button">click here</button>.</span>
+        </div>
+        <div id="manualHorseWrap" hidden>
+        <div class="manual-form">
+          <p class="manual-title">Add horse</p>
+          <div class="manual-grid">
+            <div>
+              <label for="manualBarnInput">Barn Name</label>
+              <input id="manualBarnInput" type="text" autocomplete="off" value="${escapeHtml(value)}">
+            </div>
+            <div>
+              <label for="manualHorseInput">Horse Name</label>
+              <input id="manualHorseInput" type="text" autocomplete="off" value="${escapeHtml(value)}">
+            </div>
+            <button id="manualHorseAddBtn" class="primary" type="button">Add</button>
+          </div>
+        </div>
+        </div>
+      `;
+      els.resultsPanel.hidden = false;
+      const bindManualHorse = () => {
+        const add = () => {
+        const match = manualMatchFromValues(
+          document.getElementById("manualBarnInput")?.value,
+          document.getElementById("manualHorseInput")?.value
+        );
+        const hydration = manualHydrationFor(match);
+        state.selectedMatch = match;
+        state.selectedHydration = hydration;
+        state.cache.set(`horses|${match.helper_key}`, hydration);
+        renderAppearances(match, hydration);
+        requestAnimationFrame(() => document.getElementById("manualClassInput")?.focus());
+      };
+        document.getElementById("manualHorseAddBtn")?.addEventListener("click", add);
+      };
+      document.getElementById("showManualHorseBtn")?.addEventListener("click", () => {
+        document.getElementById("manualHorseWrap").hidden = false;
+        bindManualHorse();
+        requestAnimationFrame(() => document.getElementById("manualBarnInput")?.focus());
+      }, { once: true });
+    }
+
+    function renderMatches() {
+      if (!state.matches.length) {
+        renderManualHorseForm(els.queryInput.value);
+        return;
+      }
+      els.results.innerHTML = state.matches.map((match, index) => `
+        <button class="result-card" type="button" data-index="${index}">
+          <span class="horse-card-grid">
+            <span class="horse-cell">${escapeHtml(match.fields?.barn_name || match.display_name || match.matched_value || "")}</span>
+            <span class="horse-cell">${escapeHtml(match.fields?.horse_name || match.fields?.horse || match.helper_key || "")}</span>
+          </span>
+        </button>
+      `).join("");
+      els.resultsPanel.hidden = false;
+      els.results.querySelectorAll("button[data-index]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          try {
+            const match = state.matches[Number(button.dataset.index)];
+            state.selectedMatch = match;
+            state.selectedHydration = null;
+            await hydrateMatch(match);
+          } catch (error) {
+            if (error.name === "AbortError") return;
+            status(error.message || String(error), "bad");
+          }
+        });
+      });
+    }
+
+    async function search() {
+      const q = els.queryInput.value.trim();
+      if (state.abort) state.abort.abort();
+      state.matches = [];
+      state.selectedMatch = null;
+      state.selectedHydration = null;
+      saveStatus("");
+      if (q.length < 2) {
+        hideResults();
+        status("Ready");
+        return;
+      }
+      state.abort = new AbortController();
+      status("Searching...");
+      const url = new URL(API_BASE);
+      url.searchParams.set("action", "wec-helper-search");
+      url.searchParams.set("type", "horses");
+      url.searchParams.set("q", q);
+      url.searchParams.set("limit", "8");
+      url.searchParams.set("hydrate", "0");
+      url.searchParams.set("search_mode", "catalyst");
+      try {
+        const response = await fetch(url, { signal: state.abort.signal });
+        const data = await response.json();
+        if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || `HTTP ${response.status}`);
+        state.matches = data.top_matches || [];
+        status(`${state.matches.length} match(es)`);
+        renderMatches();
+        if (state.matches.length === 1) {
+          state.selectedMatch = state.matches[0];
+          await hydrateMatch(state.matches[0]);
+        }
+      } catch (error) {
+        if (error.name === "AbortError") return;
+        status(error.message || String(error), "bad");
+      }
+    }
+
+    function resetForNextInput(message = "Ready") {
+      if (state.abort) state.abort.abort();
+      if (state.hydrateAbort) state.hydrateAbort.abort();
+      els.queryInput.value = "";
+      state.matches = [];
+      state.selectedMatch = null;
+      state.selectedHydration = null;
+      hideResults();
+      status(message);
+      saveStatus("");
+      requestAnimationFrame(() => els.queryInput.focus());
+    }
+
+    function clearAll() {
+      state.rows = [];
+      renderBarnList();
+      resetForNextInput("Ready");
+    }
+
+    els.queryInput.addEventListener("input", debounce(search));
+    els.newAddBtn.addEventListener("click", () => resetForNextInput("Ready"));
+
+    function renderPrintCopy() {
+      if (!state.rows.length) {
+        saveStatus("No rows to save", "bad");
+        return;
+      }
+      document.querySelectorAll(".shell > section:not(#printPanel)").forEach((section) => {
+        section.hidden = true;
+      });
+      els.printCopy.innerHTML = `
+        <div class="print-actions">
+          <div>
+            <h2>Barn Entry Review</h2>
+            <div class="status">${state.rows.length} row(s)</div>
+          </div>
+          <button id="printBtn" class="primary" type="button">Print</button>
+        </div>
+        ${renderRowTable(state.rows)}
+      `;
+      els.printPanel.hidden = false;
+      document.getElementById("printBtn")?.addEventListener("click", () => window.print());
+      saveStatus("Printable copy ready");
+      els.printPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function saveToAirtableWebhook() {
+      if (!state.rows.length) {
+        saveStatus("No rows to save", "bad");
+        return;
+      }
+      els.saveBtn.disabled = true;
+      saveStatus("Saving...");
+      const payload = {
+        source: "barn_entry_helper",
+        submitted_at: new Date().toISOString(),
+        row_count: state.rows.length,
+        rows: state.rows
+      };
+      const form = new URLSearchParams();
+      form.set("source", payload.source);
+      form.set("submitted_at", payload.submitted_at);
+      form.set("row_count", String(payload.row_count));
+      form.set("rows_json", JSON.stringify(payload.rows));
+      payload.rows.forEach((row, index) => {
+        for (const [key, value] of Object.entries(row)) {
+          form.set(`row_${index}_${key}`, String(value ?? ""));
+        }
+      });
+      console.log("barn_list_payload", payload);
+      fetch(AIRTABLE_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: form
+      }).catch((error) => {
+        els.saveBtn.disabled = false;
+        saveStatus(error.message || String(error), "bad");
+      });
+      renderPrintCopy();
+    }
+
+    els.saveBtn.addEventListener("click", () => {
+      saveToAirtableWebhook();
+    });
+
+    renderBarnList();
+  </script>
+</body>
+</html>
