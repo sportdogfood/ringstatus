@@ -12,6 +12,10 @@
     {
       "name": "wec-ag-live",
       "source": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\catalyst\\datastore-analytics-sync\\wec-ag-live"
+    },
+    {
+      "name": "wec-ag-flat",
+      "source": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\catalyst\\datastore-analytics-sync\\wec-ag-flat"
     }
   ]
 }
