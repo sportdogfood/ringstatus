@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEC Print Review</title>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #f4f6f7;
+      --panel: #ffffff;
+      --line: #d8dfdb;
+      --text: #18251f;
+      --muted: #647067;
+      --accent: #245e52;
+      --accent-soft: #e4f0ed;
+      --warn: #835600;
+      --warn-soft: #fff4cf;
+      --ok: #17623b;
+      --ok-soft: #e2f2e8;
+      --bad: #9b2424;
+      --bad-soft: #ffe7e7;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: var(--page); color: var(--text); font-family: Inter, Arial, Helvetica, sans-serif; }
+    body { overflow: hidden; }
+    .shell { height: 100vh; display: grid; grid-template-rows: auto auto 1fr auto auto; justify-items: center; min-height: 0; gap: 8px; padding: 12px; }
+    .shell.is-hide-mode { background: #fff4cf; }
+    .bar { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; background: transparent; }
+    .title { min-width: 0; display: grid; gap: 2px; }
+    .title h1 { margin: 0; font-size: 18px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .title p { margin: 2px 0 0; color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .actions { display: flex; align-items: center; flex-wrap: nowrap; justify-content: flex-end; gap: 6px; overflow-x: auto; overflow-y: hidden; min-width: 0; padding: 2px; scrollbar-width: thin; }
+    button, label, .rail-button { min-height: 30px; border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; background: var(--panel); color: var(--text); appearance: none; font: inherit; font-size: 12px; font-weight: 600; line-height: 1.15; cursor: pointer; white-space: nowrap; transition: background-color .14s ease, border-color .14s ease, color .14s ease, box-shadow .14s ease; }
+    button:hover, label:hover, .rail-button:hover { background: var(--accent-soft); border-color: var(--accent); box-shadow: inset 0 0 0 1px rgba(36, 94, 82, .12), 0 1px 3px rgba(24, 37, 31, .08); }
+    button:active, label:active, .rail-button:active { box-shadow: inset 0 0 0 1px rgba(36, 94, 82, .22); }
+    button:disabled, .rail-button:disabled { transform: none; box-shadow: none; }
+    button[aria-pressed="true"], .rail-button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 1px rgba(36, 94, 82, .18); }
+    button, .rail-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .button-icon.ag-icon { width: 14px; height: 14px; line-height: 1; color: currentColor; flex: 0 0 auto; }
+    .class-token.is-status .button-icon.ag-icon-loading { animation: icon-spin 1s linear infinite; }
+    @keyframes icon-spin { to { transform: rotate(360deg); } }
+    label { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+    .grid-frame { position: relative; width: 100%; max-width: 960px; min-width: 0; min-height: 0; display: grid; grid-template-rows: 1fr auto; padding: 0; gap: 8px; margin: 0 auto; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+    .shell.is-hide-mode .grid-frame { border-color: var(--warn); box-shadow: 0 0 0 3px rgba(131, 86, 0, .22); }
+    #scheduleGrid { width: 100%; height: 100%; min-height: 320px; min-width: 0; overflow: hidden; display: block; padding: 0; background: #fff; font-size: 13px; scrollbar-width: thin; }
+    #scheduleGrid .ag-root-wrapper { border: 0; border-radius: 0; }
+    #scheduleGrid .ag-header { border-bottom-color: #d1d5db; }
+    #scheduleGrid .ag-header-cell-text { font-weight: 600; }
+    #scheduleGrid .ag-row { transition: background-color .14s ease, box-shadow .14s ease; }
+    #scheduleGrid .ag-row-hover:not(.row-ring-group) .ag-cell { background: rgba(148, 163, 184, .13); }
+    #scheduleGrid .ag-cell { display: flex; align-items: center; border-bottom-color: #e5e7eb; line-height: 1.2; }
+    #scheduleGrid .ag-cell-value { width: 100%; min-width: 0; }
+    #scheduleGrid .ag-row.row-zebra .ag-cell { background: #fafafa; }
+    #scheduleGrid .ag-row.row-has-rollup { display: flex; flex-direction: column; align-items: stretch; background: #f3f4f6; }
+    #scheduleGrid .ag-row.row-has-rollup > .ag-grid-scrolling-cells { flex: 0 0 auto; width: 100%; height: 37px; min-height: 0; }
+    #scheduleGrid .ag-row.row-has-rollup > .ag-grid-scrolling-cells .ag-cell { height: 37px; }
+    #scheduleGrid .ag-row.row-has-rollup .ag-cell { align-items: center; padding-top: 6px; padding-bottom: 6px; background: #f3f4f6; border-bottom-color: #d1d5db; }
+    #scheduleGrid .ag-row.row-has-rollup .ag-cell-wrapper,
+    #scheduleGrid .ag-row.row-has-rollup .ag-cell-value { display: flex; align-items: flex-end; }
+    #scheduleGrid .ag-row.row-underway .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--accent); }
+    #scheduleGrid .ag-row.row-pending-hidden .ag-cell,
+    #scheduleGrid .ag-row.row-saved-hidden .ag-cell { background: var(--bad-soft); }
+    #scheduleGrid .ag-row.row-pending-hidden .ag-cell:first-child,
+    #scheduleGrid .ag-row.row-saved-hidden .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--bad); }
+    .ag-ring-group { height: 100%; display: flex; align-items: center; padding: 0 14px; background: #111; color: #fff; font-size: 12px; font-weight: 750; letter-spacing: 0; text-transform: uppercase; border-bottom: 1px solid #111; }
+    .ag-row-rollup-band { position: relative; z-index: 2; flex: 0 0 auto; width: 100%; min-width: 0; display: block; padding: 5px 14px 2px; overflow: hidden; background: #f3f4f6; border-bottom: 1px solid rgba(17, 24, 39, .06); pointer-events: auto; }
+    .top-anchors, .bottom-controls { width: 100%; max-width: 960px; min-width: 0; display: grid; gap: 6px; }
+    .control-rail { min-width: 0; display: flex; align-items: center; gap: 6px; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 4px; scrollbar-width: thin; }
+    .rail-button { flex: 0 0 auto; }
+    .rail-button.rail-clear { position: sticky; left: 0; z-index: 2; border-color: var(--accent); background: var(--panel); }
+    .rail-button.is-empty { opacity: .5; cursor: default; }
+    .bottom-controls[hidden] { display: none; }
+    .status-line { width: 100%; max-width: 960px; min-height: 18px; color: var(--muted); font-size: 11px; padding: 0 12px 10px; }
+    .schedule-table { min-width: 0; overflow: hidden; border: 1px solid #d1d5db; border-radius: 10px; background: #fff; color: #111827; }
+    .schedule-table-head,
+    .schedule-filter-row,
+    .class-line { min-width: 800px; display: grid; grid-template-columns: 108px 86px minmax(260px,1fr) 88px 88px; gap: 10px; align-items: center; }
+    .shell.is-hide-mode .schedule-table-head,
+    .shell.is-hide-mode .schedule-filter-row,
+    .shell.is-hide-mode .class-line { grid-template-columns: 24px 108px 86px minmax(260px,1fr) 88px 88px; }
+    .schedule-table-head { min-height: 58px; padding: 0 24px; border-bottom: 1px solid #d1d5db; background: #fff; font-size: 16px; font-weight: 600; }
+    .schedule-filter-row { min-height: 38px; padding: 0 24px; border-bottom: 1px solid #d1d5db; background: #fff; }
+    .schedule-table-head .hide-column-head,
+    .schedule-filter-row .hide-column-filter { display: none; }
+    .shell.is-hide-mode .schedule-table-head .hide-column-head,
+    .shell.is-hide-mode .schedule-filter-row .hide-column-filter { display: block; }
+    .column-head { min-width: 0; display: inline-flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; }
+    .head-separator { margin-left: auto; width: 2px; height: 22px; background: #d1d5db; }
+    .head-filter-icon { position: relative; width: 18px; height: 18px; flex: 0 0 auto; color: #111827; opacity: .9; }
+    .head-filter-icon::before { content: ""; position: absolute; left: 2px; top: 4px; width: 14px; height: 10px; background: linear-gradient(currentColor,currentColor) 0 0 / 14px 2px no-repeat, linear-gradient(currentColor,currentColor) 3px 4px / 9px 2px no-repeat, linear-gradient(currentColor,currentColor) 6px 8px / 5px 2px no-repeat; }
+    .column-filter { width: 100%; min-width: 0; height: 24px; border: 1px solid #d1d5db; border-radius: 4px; padding: 0 6px; background: #fff; color: #111827; font: inherit; font-size: 12px; font-weight: 400; }
+    .column-filter::placeholder { color: #6b7280; }
+    .column-filter:focus { outline: none; border-color: #9fc8f1; box-shadow: 0 0 0 2px rgba(80, 155, 230, .14); }
+    .ring-container { min-width: 0; overflow: visible; background: #fff; }
+    .ring-container + .ring-container { margin-top: 0; }
+    .ring-container-header { min-height: 32px; display: flex; align-items: center; padding: 0 24px; background: #f3f4f6; color: #111827; border-bottom: 1px solid #d1d5db; font-size: 13px; font-weight: 700; letter-spacing: 0; }
+    .ring-rows { display: grid; min-width: 0; }
+    .class-related-data { width: 100%; min-width: 0; display: grid; align-content: center; gap: 2px; padding: 0; border-bottom: 0; background: transparent; color: #111827; font-size: 13px; transition: background-color .14s ease, box-shadow .14s ease; }
+    .class-related-data.is-row-level { align-content: start; }
+    .class-related-data.is-zebra { background: #fafafa; }
+    .class-related-data.has-rollup { background: #f3f4f6; border-bottom-color: #d1d5db; padding-bottom: 2px; }
+    .schedule-row-shell:hover .class-related-data:not(.is-pending-hidden):not(.is-saved-hidden) { background: rgba(148, 163, 184, .16); box-shadow: none; }
+    .schedule-row-shell:hover .class-related-data.has-rollup:not(.is-pending-hidden):not(.is-saved-hidden) { background: #eef0f3; }
+    .class-related-data.is-pending-hidden,
+    .class-related-data.is-saved-hidden { background: var(--bad-soft); box-shadow: inset 4px 0 0 var(--bad); }
+    .hide-check { display: inline-flex; align-items: center; justify-content: center; }
+    .hide-row-checkbox { width: 16px; height: 16px; margin: 0; accent-color: var(--bad); }
+    .schedule-row-shell.is-underway { box-shadow: inset 4px 0 0 var(--accent); }
+    .class-related-rollup { min-width: 0; max-width: 100%; display: flex; align-items: center; flex-wrap: nowrap; gap: 3px 6px; margin-bottom: 3px; color: #374151; font-size: 12px; font-weight: 700; line-height: 1.15; text-transform: uppercase; overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; }
+    .class-related-rollup.is-empty { display: none; }
+    .class-related-rollup.is-relocated-source { display: none; }
+    .rollup-item { min-width: max-content; max-width: none; flex: 0 0 auto; display: inline-flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 5px; padding: 2px 8px; background: #fff; color: #1f2937; box-shadow: 0 1px 1px rgba(15, 23, 42, .04); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ag-row-rollup-band .rollup-item { pointer-events: auto; cursor: default; user-select: text; }
+    .rollup-item:not(:last-child)::after { content: none; }
+    .rollup-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+    .time-cell { width: 100%; min-width: 0; display: inline-flex; align-items: center; gap: 8px; }
+    .class-time { display: inline-flex; align-items: center; justify-content: flex-start; width: fit-content; min-width: 66px; border: 1px solid #d6d6d6; border-radius: 5px; padding: 2px 8px; background: #fff; color: #18251f; font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .class-ring { color: #506158; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .class-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    .class-token { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-width: 0; border: 1px solid #d6d6d6; border-radius: 999px; padding: 2px 8px; color: #555; background: #fff; font-size: 13px; line-height: 1.2; white-space: nowrap; }
+    .class-token.is-status { min-width: 56px; width: auto; height: 22px; padding: 2px 8px; gap: 0; justify-self: center; align-self: center; text-transform: uppercase; font-size: 10px; font-weight: 700; }
+    .status-icon { position: relative; width: 12px; height: 12px; display: inline-block; color: currentColor; }
+    .status-icon::before,
+    .status-icon::after { content: ""; position: absolute; display: block; }
+    .status-icon.is-done::before { left: 2px; top: 1px; width: 6px; height: 9px; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+    .status-icon.is-now::before { inset: 1px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 999px; animation: icon-spin 1s linear infinite; }
+    .status-icon.is-soon::before { left: 5px; top: 1px; width: 2px; height: 10px; background: currentColor; }
+    .status-icon.is-soon::after { left: 1px; top: 5px; width: 10px; height: 2px; background: currentColor; }
+    .status-icon.is-today::before { left: 1px; right: 1px; top: 5px; height: 2px; background: currentColor; }
+    .status-today { background: #fff; color: var(--muted); border-color: #d6d6d6; }
+    .status-soon { background: #eef2f1; color: var(--muted); border-color: #d6d6d6; }
+    .status-now { background: var(--accent-soft); color: var(--accent); border-color: rgba(36, 94, 82, .35); }
+    .status-done { background: var(--ok-soft); color: var(--ok); border-color: rgba(23, 98, 59, .28); }
+    .status-pill, .count-pill { display: inline-flex; align-items: center; justify-content: center; min-height: 20px; min-width: 54px; padding: 0 8px; border-radius: 999px; font-size: 10px; font-weight: 750; text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+    .status-underway { background: var(--accent-soft); color: var(--accent); }
+    .status-completed { background: var(--ok-soft); color: var(--ok); }
+    .status-upcoming { background: #eef2f1; color: var(--muted); }
+    .flyout-backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .15s ease; }
+    .flyout-backdrop.is-open { opacity: 1; pointer-events: auto; }
+    .flyout { position: fixed; z-index: 90; inset: 0 0 0 auto; width: min(460px, 92vw); transform: translateX(102%); transition: transform .18s ease; background: var(--panel); border-left: 1px solid var(--line); display: grid; grid-template-rows: auto 1fr auto; box-shadow: -18px 0 48px rgba(0,0,0,.22); }
+    .flyout.is-open { transform: translateX(0); }
+    .flyout-header, .flyout-footer { padding: 12px; border-bottom: 1px solid var(--line); }
+    .flyout-footer { border-bottom: 0; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 8px; }
+    .flyout-title { margin: 0; font-size: 15px; font-weight: 800; }
+    .flyout-meta { margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .flyout-body { min-height: 0; overflow: auto; padding: 12px; display: grid; align-content: start; gap: 12px; }
+    .flyout-section { display: grid; gap: 6px; }
+    .flyout-section-title { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: 10px; font-weight: 800; }
+    .detail-grid { display: grid; grid-template-columns: 104px minmax(0,1fr); gap: 6px 10px; font-size: 12px; }
+    .detail-grid strong { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .05em; }
+    .rollup-detail { display: grid; grid-template-columns: 52px minmax(0,1fr) 42px 104px; gap: 8px; align-items: center; min-height: 28px; border-bottom: 1px solid rgba(148,163,184,.09); font-size: 12px; }
+    .rollup-detail.is-selected { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+    .rollup-detail:last-child { border-bottom: 0; }
+    .print-sheet { display: none; }
+    @media print {
+      @page { size: landscape; margin: 0.28in; }
+      body { overflow: visible; background: #fff; color: #111; }
+      .shell, .flyout, .flyout-backdrop { display: none !important; }
+      .print-sheet { display: block; font-family: Arial, Helvetica, sans-serif; color: #111; }
+      .print-title { display: flex; justify-content: space-between; align-items: end; border-bottom: 1px solid #222; margin-bottom: 5px; padding-bottom: 4px; }
+      .print-title h1 { margin: 0; font-size: 14px; }
+      .print-title p { margin: 0; font-size: 8px; text-align: right; line-height: 1.05; }
+      .print-columns { columns: 3 250px; column-gap: 12px; }
+      .print-ring-group { break-inside: avoid; margin-bottom: 6px; padding: 1px 2px 2px; }
+      .print-ring-group:nth-child(even) { background: #f4f4f4; }
+      .print-ring { font-size: 11px; font-weight: 800; border-bottom: 1px solid #333; margin-bottom: 2px; padding-bottom: 1px; line-height: 1.05; }
+      .print-row { display: grid; grid-template-columns: 46px minmax(0,1fr); gap: 5px; font-size: 8px; min-height: 14px; align-items: center; padding: 1px 2px; line-height: 1.08; break-inside: avoid; border-bottom: 1px solid #e7e7e7; }
+      .print-row.is-zebra { background: #f8f8f8; }
+      .print-row.has-rollup { grid-template-rows: auto auto; background: #e8e8e8; padding-bottom: 2px; border-bottom-color: #d2d2d2; }
+      .print-rollup { grid-column: 1 / -1; color: #333; font-size: 8px; font-weight: 700; line-height: 1; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 1px; }
+    }
+    @media (max-width: 720px) {
+      .shell { padding: 8px; }
+      .bar { display: grid; align-items: start; }
+      .actions { justify-content: flex-start; }
+      .top-anchors, .bottom-controls { gap: 4px; }
+      #scheduleGrid { padding: 0; }
+      .ring-container-header { padding: 0 10px; }
+      .schedule-table-head,
+      .schedule-filter-row,
+      .class-line { min-width: 0; grid-template-columns: 88px minmax(0,1fr); gap: 8px; padding-left: 12px; padding-right: 12px; }
+      .shell.is-hide-mode .schedule-table-head,
+      .shell.is-hide-mode .schedule-filter-row,
+      .shell.is-hide-mode .class-line { grid-template-columns: 24px 88px minmax(0,1fr); }
+      .schedule-table-head .class-ring-head,
+      .schedule-table-head .class-token-head,
+      .schedule-filter-row .class-ring-filter,
+      .schedule-filter-row .class-token-filter { display: none; }
+      .class-related-rollup { gap: 6px; margin-bottom: 5px; }
+      .class-related-data { padding-left: 12px; padding-right: 12px; }
+      .class-ring, .class-token { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      button, label, .rail-button, .class-related-data { transition: none; }
+      button:hover, label:hover, .rail-button:hover,
+      button:active, label:active, .rail-button:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="bar">
+      <div class="title">
+        <h1>WEC Print Review</h1>
+        <p>Live schedule preview with class rollups, drawer detail, hide, and print.</p>
+      </div>
+      <div class="actions" aria-label="Grid actions">
+        <button id="refreshBtn" type="button">Refresh</button>
+        <button id="printBtn" type="button">Print</button>
+        <button id="focusModeBtn" type="button" aria-pressed="false">Focus</button>
+        <button id="filterBtn" type="button" aria-pressed="false"><span>Filter...</span></button>
+        <button id="hideModeBtn" type="button" aria-pressed="false">Hide</button>
+        <button id="showHiddenBtn" type="button" aria-pressed="false">Show hidden</button>
+      </div>
+    </header>
+    <section class="top-anchors" aria-label="Schedule ring anchors">
+      <div id="ringAnchorRail" class="control-rail" aria-label="Ring anchors"></div>
+    </section>
+    <main class="grid-frame">
+      <div id="scheduleGrid"></div>
+    </main>
+    <section id="filterPanel" class="bottom-controls" aria-label="Schedule horse filters" hidden>
+      <div id="horseFilterRail" class="control-rail" aria-label="Horse filters"></div>
+    </section>
+    <section id="hidePanel" class="bottom-controls" aria-label="Hide mode actions" hidden>
+      <div id="hideActionRail" class="control-rail" aria-label="Hide actions">
+        <button id="hideClearAllBtn" class="rail-button" type="button">Clear all</button>
+        <button id="hideSaveBtn" class="rail-button" type="button">Save</button>
+      </div>
+    </section>
+    <div id="statusLine" class="status-line">Loading WEC live grid...</div>
+  </div>
+
+  <div id="flyoutBackdrop" class="flyout-backdrop" aria-hidden="true"></div>
+  <aside id="flyout" class="flyout" aria-hidden="true" aria-label="Selected row detail">
+    <div class="flyout-header">
+      <h2 id="flyoutTitle" class="flyout-title">Row detail</h2>
+      <div id="flyoutMeta" class="flyout-meta"></div>
+    </div>
+    <div id="flyoutBody" class="flyout-body"></div>
+    <div class="flyout-footer">
+      <button id="hideRowBtn" type="button">Hide</button>
+      <button id="closeFlyoutBtn" type="button">Close</button>
+    </div>
+  </aside>
+  <div id="printSheet" class="print-sheet"></div>
+
+  <script>
+    (function () {
+      const DEFAULT_SHOW_NO = "14909";
+      const FUNCTION_ORIGIN = "https://horseshowing-700800454.development.catalystserverless.com";
+      const PRIMARY_API = window.RS_WEC_GRID_API || FUNCTION_ORIGIN + "/server/wec_live_grid/execute";
+      const LEGACY_FALLBACK_API = FUNCTION_ORIGIN + "/server/horseshowing_sync/";
+      const HIDDEN_KEY = "rs-wec-ag-live-hidden";
+      const SAMPLE_ROWS = [
+        { row_key:"sample|grand|804", ring:"Grand", ring_name_prioritized:"Grand", ring_no:640, ring_visual_key:"640|grand", ring_raw_name:"WEC Grand Arena - sample", class_no:26676, class_number:"804", class_name:"C.Jarvis Insurance Welcome Prix 1.40m II.2b", time:"8:00 am", class_start_time:"08:00:00", entry_count:25, n_gone:0, n_to_go:25, current_horse:"", status:"upcoming", horse_items:[], entries:[] },
+        { row_key:"sample|indoor_1|781", ring:"Indoor 1", ring_name_prioritized:"Indoor 1", ring_no:644, ring_visual_key:"644|indoor_1", ring_raw_name:"Indoor 1- sample", class_no:26788, class_number:"781", class_name:"1.40m Junior/Amateur Jumper II.1", time:"1:15 pm", class_start_time:"13:15:00", entry_count:11, n_gone:0, n_to_go:11, current_horse:"", status:"upcoming", horse_items:[{ name:"Bee", label:"Bee (3)", order:"3", trainer:"CWF" }, { name:"Insider", label:"Insider (6)", order:"6", trainer:"CWF" }], entries:[] }
+      ];
+
+      let hideMode = false;
+      let focusMode = false;
+      let filterPanelOpen = false;
+      let activeHorseFilters = new Set();
+      let columnFilters = { time: "", ring: "", classText: "", entries: "", status: "" };
+      let pendingHiddenRows = new Set();
+      let showHiddenMode = false;
+      let selectedRow = null;
+      let hiddenRows = readHiddenRows();
+      let focusHiddenRows = new Set();
+      let allRings = rowsToRings(SAMPLE_ROWS);
+      let allRows = flattenRingRows(allRings);
+      let visibleRings = [];
+      let visibleRows = [];
+      let gridApi = null;
+      let rollupRelocationFrame = 0;
+      let rowHeightByKey = new Map();
+      let currentMeta = { source: "sample", show_no: "", focus_date: "", last_updated: "" };
+
+      const statusLine = document.getElementById("statusLine");
+      const flyout = document.getElementById("flyout");
+      const flyoutBackdrop = document.getElementById("flyoutBackdrop");
+      const flyoutTitle = document.getElementById("flyoutTitle");
+      const flyoutMeta = document.getElementById("flyoutMeta");
+      const flyoutBody = document.getElementById("flyoutBody");
+      const hideRowBtn = document.getElementById("hideRowBtn");
+      const showHiddenBtn = document.getElementById("showHiddenBtn");
+      const printSheet = document.getElementById("printSheet");
+      const ringAnchorRail = document.getElementById("ringAnchorRail");
+      const horseFilterRail = document.getElementById("horseFilterRail");
+      const filterPanel = document.getElementById("filterPanel");
+      const filterBtn = document.getElementById("filterBtn");
+      const scheduleGrid = document.getElementById("scheduleGrid");
+      const shell = document.querySelector(".shell");
+      const hidePanel = document.getElementById("hidePanel");
+      const hideClearAllBtn = document.getElementById("hideClearAllBtn");
+      const hideSaveBtn = document.getElementById("hideSaveBtn");
+
+      function text(value) { return String(value ?? ""); }
+      function escapeHtml(value) { return text(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;" }[char])); }
+      function iconHtml(name) { return '<span class="button-icon ag-icon ag-icon-' + name + '" aria-hidden="true"></span>'; }
+      function numberOrNull(value) { const n = Number(value); return Number.isFinite(n) ? n : null; }
+      function readHiddenRows() { try { return new Set(JSON.parse(localStorage.getItem(HIDDEN_KEY) || "[]")); } catch (_) { return new Set(); } }
+      function setStatus(message, isError) { statusLine.textContent = message; statusLine.style.color = isError ? "#fecdd3" : ""; }
+      function classLabel(row) { return [row.class_number, row.class_name].filter(Boolean).join(" - "); }
+      function hiddenUnion(...sets) {
+        const out = new Set();
+        sets.forEach(set => set && set.forEach(value => out.add(value)));
+        return out;
+      }
+
+      function dataUrl(baseUrl) {
+        const url = new URL(baseUrl);
+        const params = new URLSearchParams(location.search);
+        url.searchParams.set("action", "wec-mobile-live");
+        url.searchParams.set("show_no", params.get("show_no") || DEFAULT_SHOW_NO);
+        if (params.get("focus_day")) url.searchParams.set("focus_day", params.get("focus_day"));
+        return url.toString();
+      }
+
+      async function fetchJson(url) {
+        const res = await fetch(url, { cache: "no-store" });
+        const txt = await res.text();
+        if (!res.ok) throw new Error("Fetch failed " + res.status + ": " + txt.slice(0, 160));
+        return JSON.parse(txt);
+      }
+
+      async function refreshRows() {
+        setStatus("Loading Catalyst live grid...", false);
+        try {
+          allRings = normalizePayload(await fetchJson(dataUrl(PRIMARY_API)), "function");
+          allRows = flattenRingRows(allRings);
+        } catch (primaryError) {
+          try {
+            allRings = normalizePayload(await fetchJson(dataUrl(LEGACY_FALLBACK_API)), "legacy-fallback");
+            allRows = flattenRingRows(allRings);
+          } catch (fallbackError) {
+            currentMeta = { source: "sample", show_no: "", focus_date: "", last_updated: "" };
+            allRings = rowsToRings(SAMPLE_ROWS);
+            allRows = flattenRingRows(allRings);
+            applyFilters();
+            setStatus("Live sources failed; showing sample fallback. " + primaryError.message, true);
+            return;
+          }
+        }
+        applyFilters();
+      }
+
+      function normalizePayload(payload, source) {
+        const payloadRings = Array.isArray(payload) ? payload : payload && payload.rings;
+        if (!payload || payload.ok === false || !Array.isArray(payloadRings)) throw new Error(payload && payload.error ? payload.error : "Unexpected WEC payload shape");
+        const normalizedRings = [];
+        for (const ring of payloadRings) {
+          const ringDisplay = text(ring.ring_display || ring.ring_name_normalized || ring.ring_name || "Ring").trim();
+          const ringVisualKey = text(ring.ring_visual_key || [ring.ring_no, ring.ring_name_normalized].filter(Boolean).join("|") || ringDisplay).trim();
+          const normalizedRing = {
+            key: ringVisualKey,
+            title: ringDisplay,
+            sort: numberOrNull(ring.ring_no) ?? 999999,
+            name: text(ring.ring_name_prioritized || ring.ring_name_normalized || ringDisplay).trim(),
+            ring_key: text(ring.ring_key).trim(),
+            ring_no: ring.ring_no,
+            ring_name: text(ring.ring_name).trim(),
+            ring_name_normalized: text(ring.ring_name_normalized).trim(),
+            ring_visual_key: ringVisualKey,
+            ring_display: ringDisplay,
+            classes: []
+          };
+          for (const c of Array.isArray(ring.classes) ? ring.classes : []) {
+            const classNumber = text(c.class_number).trim();
+            let className = text(c.class_name || c.class_label).trim();
+            if (classNumber && className.startsWith(classNumber + " - ")) className = className.slice((classNumber + " - ").length).trim();
+            const classRingVisualKey = text(c.ring_visual_key || ringVisualKey).trim();
+            const row = {
+              row_key: classRingVisualKey + "|" + text(c.class_no || classNumber || normalizedRing.classes.length),
+              ring_visual_key: classRingVisualKey,
+              ring_name_normalized: text(c.ring_name_normalized || ring.ring_name_normalized).trim(),
+              ring_name_prioritized: text(c.ring_name_prioritized || ring.ring_name_prioritized || ring.ring_name_normalized || ringDisplay).trim(),
+              ring_raw_name: text(ring.ring_name || c.ring_name_prioritized).trim(),
+              ring: ringDisplay,
+              ring_no: ring.ring_no,
+              ring_sort: numberOrNull(ring.ring_no) ?? 999999,
+              show_no: text(c.show_no).trim(),
+              focus_day: text(c.focus_day).trim(),
+              show_day: text(c.show_day).trim(),
+              class_no: c.class_no,
+              class_number: classNumber,
+              class_name: className,
+              class_start_time: text(c.class_start_time).trim(),
+              time: text(c.display_time || c.time_text || c.class_time).trim(),
+              sort_time: numberOrNull(c.time_sort) ?? 999999999,
+              entry_count: numberOrNull(c.entry_count),
+              n_gone: numberOrNull(c.n_gone),
+              n_to_go: numberOrNull(c.n_to_go),
+              elapsed_seconds: numberOrNull(c.elapsed_seconds),
+              current_entry_no: text(c.current_entry_no).trim(),
+              current_horse: text(c.current_horse).trim(),
+              rollup_label: text(c.rollup_label).trim(),
+              horse_items: flattenRollups(c.rollups, c.rollup_label),
+              entries: Array.isArray(c.entries) ? c.entries : [],
+              is_focus: !!(c.is_focus || c.current_horse || (Array.isArray(c.rollups) && c.rollups.length))
+            };
+            row.status = computeStatus(row);
+            normalizedRing.classes.push(row);
+          }
+          normalizedRings.push(normalizedRing);
+        }
+        const firstClass = normalizedRings.flatMap(ring => ring.classes).find(Boolean) || {};
+        currentMeta = {
+          source,
+          show_no: text(payload.show_no || firstClass.show_no).trim(),
+          focus_date: text(payload.show_focus_date || payload.focus_day || firstClass.focus_day || firstClass.show_day).trim(),
+          last_updated: text(payload.last_updated).trim()
+        };
+        return normalizedRings;
+      }
+
+      function rowsToRings(rows) {
+        const rings = [];
+        const byKey = new Map();
+        for (const row of rows) {
+          const key = row.ring_visual_key || row.ring || "Unassigned";
+          if (!byKey.has(key)) {
+            const ring = {
+              key,
+              title: row.ring || "Unassigned",
+              sort: row.ring_sort,
+              name: row.ring_name_prioritized || row.ring || "",
+              ring_no: row.ring_no,
+              ring_name: row.ring_raw_name || "",
+              ring_name_normalized: row.ring_name_normalized || "",
+              ring_visual_key: key,
+              ring_display: row.ring || "Unassigned",
+              classes: []
+            };
+            byKey.set(key, ring);
+            rings.push(ring);
+          }
+          byKey.get(key).classes.push(row);
+        }
+        return rings;
+      }
+
+      function flattenRingRows(rings) {
+        return rings.flatMap(ring => Array.isArray(ring.classes) ? ring.classes : []);
+      }
+
+      function flattenRollups(rollups, fallbackLabel) {
+        const items = [];
+        for (const rollup of Array.isArray(rollups) ? rollups : []) {
+          const trainer = text(rollup.trainer_display || rollup.trainer).trim();
+          for (const horse of Array.isArray(rollup.horses) ? rollup.horses : []) {
+            const label = text(horse.label || horse.display || horse.horse).trim();
+            const name = text(horse.display || horse.barn_name || horse.horse || label).trim();
+            const order = text(horse.entry_order || horse.order).trim();
+            if (label || name) items.push({ label: label || name, name: name || label, order, trainer });
+          }
+        }
+        if (!items.length && fallbackLabel) {
+          for (const part of text(fallbackLabel).split(",").map(x => x.trim()).filter(Boolean)) items.push({ label: part, name: part, order: "", trainer: "" });
+        }
+        return items;
+      }
+
+      function computeStatus(row) {
+        if (row.current_horse || (Number(row.n_gone || 0) > 0 && Number(row.n_to_go || 0) > 0)) return "underway";
+        if (Number(row.entry_count || 0) > 0 && Number(row.n_to_go) === 0) return "completed";
+        return "upcoming";
+      }
+
+      function compareRows(a, b) {
+        const ringName = text(a.ring_name_prioritized || a.ring || "").localeCompare(text(b.ring_name_prioritized || b.ring || ""), undefined, { numeric: true });
+        if (ringName) return ringName;
+        const ring = (numberOrNull(a.ring_sort) ?? 999999) - (numberOrNull(b.ring_sort) ?? 999999);
+        if (ring) return ring;
+        const time = (numberOrNull(a.sort_time) ?? 999999999) - (numberOrNull(b.sort_time) ?? 999999999);
+        if (time) return time;
+        return text(a.class_number).localeCompare(text(b.class_number), undefined, { numeric: true });
+      }
+
+      function rollupText(row) {
+        return (Array.isArray(row.horse_items) ? row.horse_items : []).map(item => item.order ? text(item.name || item.label) + " (" + item.order + ")" : text(item.name || item.label)).filter(Boolean).join("   ");
+      }
+
+      function rollupItemsHtml(row) {
+        return (Array.isArray(row.horse_items) ? row.horse_items : []).map(item => {
+          const label = item.order ? text(item.name || item.label) + " (" + item.order + ")" : text(item.name || item.label);
+          if (!label) return "";
+          return '<span class="rollup-item" data-entry-order="' + escapeHtml(item.order || "") + '" data-trainer="' + escapeHtml(item.trainer || "") + '"><span class="rollup-label">' + escapeHtml(label) + '</span></span>';
+        }).filter(Boolean).join("");
+      }
+
+      function statusReference(row) {
+        if (row.status === "completed") return { label: "done", icon: "tick" };
+        if (row.status === "underway") return { label: "now", icon: "loading" };
+        if (row.status === "upcoming") return { label: "soon", icon: "plus" };
+        return { label: "today", icon: "minus" };
+      }
+
+      function statusTokenHtml(row) {
+        const status = statusReference(row);
+        return '<span class="class-token is-status status-' + status.label + '" title="' + escapeHtml(status.label) + '" aria-label="' + escapeHtml(status.label) + '">' + escapeHtml(status.label) + '</span>';
+      }
+
+      function horseKey(value) { return text(value).trim().toLowerCase(); }
+
+      function rowHorseKeys(row) {
+        return new Set((Array.isArray(row.horse_items) ? row.horse_items : []).map(item => horseKey(item.name || item.label)).filter(Boolean));
+      }
+
+      function rowMatchesHorseFilters(row) {
+        if (!activeHorseFilters.size) return true;
+        const keys = rowHorseKeys(row);
+        for (const selected of activeHorseFilters) if (keys.has(selected)) return true;
+        return false;
+      }
+
+      function rowMatchesColumnFilters(row) {
+        const checks = [
+          [columnFilters.time, row.time || ""],
+          [columnFilters.ring, row.ring || ""],
+          [columnFilters.classText, classLabel(row)],
+          [columnFilters.entries, row.entry_count ?? ""],
+          [columnFilters.status, statusReference(row).label]
+        ];
+        return checks.every(([needle, value]) => !needle || text(value).toLowerCase().includes(text(needle).toLowerCase()));
+      }
+
+      function horseFilterOptions() {
+        const options = new Map();
+        const hiddenSet = effectiveHiddenRows();
+        allRows.forEach(row => {
+          if (hiddenSet.has(row.row_key) && !shouldIncludeHiddenRows()) return;
+          (Array.isArray(row.horse_items) ? row.horse_items : []).forEach(item => {
+            const label = text(item.name || item.label).trim();
+            const key = horseKey(label);
+            if (key && !options.has(key)) options.set(key, label);
+          });
+        });
+        return Array.from(options, ([key, label]) => ({ key, label })).sort((a, b) => a.label.localeCompare(b.label, undefined, { numeric: true }));
+      }
+
+      function currentHiddenSet() {
+        return hideMode ? pendingHiddenRows : hiddenRows;
+      }
+
+      function effectiveHiddenRows() {
+        return focusMode ? hiddenUnion(currentHiddenSet(), focusHiddenRows) : currentHiddenSet();
+      }
+
+      function shouldIncludeHiddenRows() {
+        return hideMode ? true : showHiddenMode;
+      }
+
+      function focusGroupKey(row) {
+        const timeKey = text(row.time || row.class_start_time).trim().toLowerCase() || text(row.sort_time).trim();
+        return [
+          row.ring_visual_key || row.ring_name_prioritized || row.ring || "",
+          timeKey,
+          text(row.class_name).trim().toLowerCase()
+        ].join("|");
+      }
+
+      function focusKeepValue(row) {
+        return numberOrNull(row.class_number) ?? numberOrNull(row.class_no) ?? 999999999;
+      }
+
+      function recomputeFocusHiddenRows() {
+        const next = new Set();
+        if (!focusMode) {
+          focusHiddenRows = next;
+          return;
+        }
+        const groups = new Map();
+        allRows.forEach(row => {
+          const key = focusGroupKey(row);
+          if (!text(row.class_name).trim() || !text(row.time || row.class_start_time).trim()) return;
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(row);
+        });
+        groups.forEach(rows => {
+          if (rows.length < 2) return;
+          const sorted = rows.slice().sort((a, b) => {
+            const keep = focusKeepValue(a) - focusKeepValue(b);
+            if (keep) return keep;
+            return compareRows(a, b);
+          });
+          sorted.slice(1).forEach(row => next.add(row.row_key));
+        });
+        focusHiddenRows = next;
+      }
+
+      function metadataStatusPrefix() {
+        const sourceLabel = currentMeta.source === "function" ? "Catalyst function" : currentMeta.source === "legacy-fallback" ? "Legacy fallback" : "Sample fallback";
+        return [sourceLabel, currentMeta.show_no ? "show " + currentMeta.show_no : "", currentMeta.focus_date || "", currentMeta.last_updated ? "updated " + currentMeta.last_updated : ""].filter(Boolean).join(" · ");
+      }
+
+      function renderSchedule() {
+        if (!gridApi) return;
+        rowHeightByKey = new Map();
+        gridApi.setGridOption("rowData", buildGridRows());
+        scheduleRollupRelocation();
+      }
+
+      function buildGridRows() {
+        const out = [];
+        visibleRings.forEach(ring => {
+          out.push({ row_type: "ring", row_key: "ring|" + ring.key, ring_key: ring.key, ring_title: ring.title, ring });
+          ring.classes.forEach((row, index) => out.push({ ...row, row_type: "class", ring_key: ring.key, __zebra: index % 2 === 1 }));
+        });
+        return out;
+      }
+
+      function ringFullWidthRenderer(params) {
+        const row = params.data || {};
+        return '<div class="ag-ring-group" data-ring-key="' + escapeHtml(row.ring_key || "") + '">' + escapeHtml(row.ring_title || "Ring") + '</div>';
+      }
+
+      function timeCellRenderer(params) {
+        const row = params.data || {};
+        if (row.row_type !== "class") return "";
+        const hiddenSet = effectiveHiddenRows();
+        const isPendingHidden = hideMode && hiddenSet.has(row.row_key);
+        const hideCheck = hideMode ? '<span class="hide-check"><input class="hide-row-checkbox" type="checkbox" data-row-key="' + escapeHtml(row.row_key) + '"' + (isPendingHidden ? " checked" : "") + ' aria-label="Hide ' + escapeHtml(classLabel(row)) + '"></span>' : "";
+        return '<span class="time-cell">' + hideCheck + '<span class="class-time">' + escapeHtml(row.time || "--") + '</span></span>';
+      }
+
+      function classCellRenderer(params) {
+        const row = params.data || {};
+        if (row.row_type !== "class") return "";
+        const rollup = rollupText(row);
+        const rollupHtml = '<div class="class-related-rollup' + (rollup ? "" : " is-empty") + '">' + (rollup ? rollupItemsHtml(row) : '<span class="rollup-item">is_empty</span>') + '</div>';
+        return '<div class="class-related-data' + (rollup ? " has-rollup" : "") + '">' + rollupHtml + '<span class="class-name">' + escapeHtml(classLabel(row)) + '</span></div>';
+      }
+
+      function scheduleRollupRelocation() {
+        if (rollupRelocationFrame) cancelAnimationFrame(rollupRelocationFrame);
+        rollupRelocationFrame = requestAnimationFrame(() => {
+          relocateRollups();
+        });
+      }
+
+      function relocateRollups() {
+        rollupRelocationFrame = 0;
+        let heightChanged = false;
+        document.querySelectorAll("#scheduleGrid .ag-row-rollup-band").forEach(band => {
+          const row = band.closest(".ag-row");
+          if (!row || !row.querySelector(".class-related-rollup:not(.is-empty)")) band.remove();
+        });
+        document.querySelectorAll("#scheduleGrid .ag-row.row-has-rollup").forEach(rowEl => {
+          const source = rowEl.querySelector(".class-related-rollup:not(.is-empty)");
+          if (!source) return;
+          let band = rowEl.querySelector(".ag-row-rollup-band");
+          if (!band) {
+            band = document.createElement("div");
+            band.className = "ag-row-rollup-band";
+          }
+          const classLine = rowEl.querySelector(".ag-grid-scrolling-cells");
+          if (classLine && band.nextElementSibling !== classLine) rowEl.insertBefore(band, classLine);
+          const nextHtml = '<div class="class-related-data is-row-level"><div class="class-related-rollup" data-rollups>' + Array.from(source.querySelectorAll(".rollup-item")).map((item, index) => {
+            const clone = item.cloneNode(true);
+            clone.setAttribute("data-row-key", rowEl.getAttribute("row-id") || "");
+            clone.setAttribute("data-rollup-index", String(index + 1));
+            return clone.outerHTML;
+          }).join("") + "</div></div>";
+          if (band.innerHTML !== nextHtml) band.innerHTML = nextHtml;
+          source.classList.add("is-relocated-source");
+          const rowKey = rowEl.getAttribute("row-id") || "";
+          const rowNode = rowKey && gridApi && gridApi.getRowNode ? gridApi.getRowNode(rowKey) : null;
+          const rollupRail = band.querySelector(".class-related-rollup");
+          const measured = rollupRail ? Math.ceil(rollupRail.getBoundingClientRect().height) : 0;
+          const nextHeight = Math.max(40, measured + 47);
+          const previousHeight = rowHeightByKey.get(rowKey);
+          if (rowNode && (!previousHeight || Math.abs(previousHeight - nextHeight) > 2)) {
+            rowHeightByKey.set(rowKey, nextHeight);
+            rowNode.setRowHeight(nextHeight);
+            heightChanged = true;
+          }
+        });
+        if (heightChanged && gridApi && gridApi.onRowHeightChanged) {
+          gridApi.onRowHeightChanged();
+        }
+      }
+
+      function entriesCellRenderer(params) {
+        const row = params.data || {};
+        return row.row_type === "class" ? '<span class="class-token">' + escapeHtml(row.entry_count ?? "") + '</span>' : "";
+      }
+
+      function statusCellRenderer(params) {
+        const row = params.data || {};
+        return row.row_type === "class" ? statusTokenHtml(row) : "";
+      }
+
+      function gridRowClass(params) {
+        const row = params.data || {};
+        if (row.row_type === "ring") return "row-ring-group";
+        const hiddenSet = effectiveHiddenRows();
+        return [
+          row.__zebra ? "row-zebra" : "",
+          rollupText(row) ? "row-has-rollup" : "",
+          row.status === "underway" ? "row-underway" : "",
+          hideMode && hiddenSet.has(row.row_key) ? "row-pending-hidden" : "",
+          !hideMode && showHiddenMode && hiddenSet.has(row.row_key) ? "row-saved-hidden" : ""
+        ].filter(Boolean).join(" ");
+      }
+
+      function applyFilters() {
+        recomputeFocusHiddenRows();
+        const showHidden = shouldIncludeHiddenRows();
+        const hiddenSet = effectiveHiddenRows();
+        visibleRings = allRings.map(ring => ({
+          ...ring,
+          classes: ring.classes.filter(row =>
+            (showHidden || !hiddenSet.has(row.row_key)) &&
+            rowMatchesHorseFilters(row)
+          )
+        })).filter(ring => ring.classes.length);
+        visibleRows = flattenRingRows(visibleRings);
+        renderSchedule();
+        renderBottomControls();
+        updateHiddenButton();
+        const horseText = activeHorseFilters.size ? " · horses " + activeHorseFilters.size : "";
+        const pendingText = hideMode ? " · pending hidden " + pendingHiddenRows.size : "";
+        const focusText = focusMode ? " · focus hidden " + focusHiddenRows.size : "";
+        setStatus(metadataStatusPrefix() + " · rows " + visibleRows.length + " · hidden " + hiddenRows.size + focusText + horseText + pendingText, false);
+      }
+
+      function renderBottomControls() {
+        ringAnchorRail.innerHTML = visibleRings.length
+          ? visibleRings.map(ring => '<button class="rail-button" type="button" data-ring-key="' + escapeHtml(ring.key) + '">' + escapeHtml(ring.title) + '</button>').join("")
+          : '<button class="rail-button is-empty" type="button" disabled>No rings</button>';
+        const horses = horseFilterOptions();
+        horseFilterRail.innerHTML = '<button class="rail-button rail-clear" type="button" data-horse-clear>Clear</button>' + (horses.length
+          ? horses.map(horse => '<button class="rail-button" type="button" aria-pressed="' + String(activeHorseFilters.has(horse.key)) + '" data-horse-key="' + escapeHtml(horse.key) + '">' + escapeHtml(horse.label) + '</button>').join("")
+          : '<button class="rail-button is-empty" type="button" disabled>No horses</button>');
+      }
+
+      function scrollToRing(ringKey) {
+        if (!ringKey) return;
+        if (!gridApi) return;
+        const node = gridApi.getRowNode("ring|" + ringKey);
+        if (node) gridApi.ensureNodeVisible(node, "top");
+      }
+
+      function toggleHorseFilter(key) {
+        if (!key) return;
+        if (activeHorseFilters.has(key)) activeHorseFilters.delete(key);
+        else activeHorseFilters.add(key);
+        applyFilters();
+      }
+
+      function updateColumnFilter(key, value) {
+        if (!(key in columnFilters)) return;
+        columnFilters = { ...columnFilters, [key]: text(value).trim() };
+        applyFilters();
+      }
+
+      function setFilterPanel(open) {
+        filterPanelOpen = open;
+        filterPanel.hidden = !open;
+        filterBtn.setAttribute("aria-pressed", String(open));
+      }
+
+      function setHideMode(open) {
+        hideMode = open;
+        document.getElementById("hideModeBtn").setAttribute("aria-pressed", String(open));
+        shell.classList.toggle("is-hide-mode", open);
+        hidePanel.hidden = !open;
+        if (open) {
+          setFilterPanel(false);
+          recomputeFocusHiddenRows();
+          pendingHiddenRows = focusMode ? hiddenUnion(hiddenRows, focusHiddenRows) : new Set(hiddenRows);
+        }
+        applyFilters();
+      }
+
+      function togglePendingHidden(rowKey, checked) {
+        if (!rowKey) return;
+        if (checked) pendingHiddenRows.add(rowKey);
+        else pendingHiddenRows.delete(rowKey);
+        applyFilters();
+      }
+
+      function saveHideMode() {
+        hiddenRows = new Set(pendingHiddenRows);
+        localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(hiddenRows)));
+        setHideMode(false);
+      }
+
+      function openFlyout(row, rollupIndex) {
+        selectedRow = row;
+        flyoutTitle.textContent = classLabel(row) || "Class detail";
+        flyoutMeta.textContent = [row.ring, row.time, row.status, row.current_horse].filter(Boolean).join(" · ");
+        flyoutBody.innerHTML = buildFlyoutBody(row, rollupIndex);
+        updateHiddenButton();
+        flyoutBackdrop.classList.add("is-open");
+        flyout.classList.add("is-open");
+        flyout.setAttribute("aria-hidden", "false");
+      }
+
+      function buildFlyoutBody(row, rollupIndex) {
+        const rollup = row.horse_items && row.horse_items.length
+          ? row.horse_items.map((item, index) => '<div class="rollup-detail' + (Number(rollupIndex) === index + 1 ? " is-selected" : "") + '"><span>' + escapeHtml(row.time || "--") + "</span><span>" + escapeHtml(item.name || item.label || "Horse") + "</span><span>" + escapeHtml(item.order || "--") + "</span><span>" + escapeHtml(item.trainer || "") + "</span></div>").join("")
+          : "<div>No rollup horses available for this class row.</div>";
+        const entries = row.entries && row.entries.length
+          ? row.entries.map(entry => '<div class="rollup-detail"><span>' + escapeHtml(entry.entry_go_time_label || entry.go_time || "--") + "</span><span>" + escapeHtml(entry.entry_rollup || "Entry") + "</span><span>" + escapeHtml(entry.trainer_display || "") + "</span><span>" + escapeHtml(entry.rider_display || "") + "</span></div>").join("")
+          : "<div>No raw entries in payload for this class.</div>";
+        return '<section class="flyout-section"><div class="flyout-section-title">Class detail</div><div class="detail-grid">' +
+          "<strong>Ring</strong><span>" + escapeHtml(row.ring || "") + "</span>" +
+          "<strong>Raw ring</strong><span>" + escapeHtml(row.ring_raw_name || "") + "</span>" +
+          "<strong>Class</strong><span>" + escapeHtml(classLabel(row)) + "</span>" +
+          "<strong>Status</strong><span>" + escapeHtml(row.status || "") + "</span>" +
+          "<strong>Live</strong><span>" + escapeHtml([row.current_horse, row.n_gone !== null ? row.n_gone + " gone" : "", row.n_to_go !== null ? row.n_to_go + " to go" : "", row.entry_count !== null ? row.entry_count + " entries" : ""].filter(Boolean).join(" · ")) + "</span>" +
+          "<strong>Class no</strong><span>" + escapeHtml(row.class_no || "") + "</span>" +
+          '</div></section><section class="flyout-section"><div class="flyout-section-title">Rollup horses</div>' + rollup + '</section><section class="flyout-section"><div class="flyout-section-title">Raw entries</div>' + entries + "</section>";
+      }
+
+      function closeFlyout() { flyoutBackdrop.classList.remove("is-open"); flyout.classList.remove("is-open"); flyout.setAttribute("aria-hidden", "true"); }
+      function updateHiddenButton() {
+        const isHidden = selectedRow && hiddenRows.has(selectedRow.row_key);
+        hideRowBtn.disabled = !selectedRow;
+        hideRowBtn.textContent = isHidden ? "Show" : "Hide";
+      }
+      function toggleRowHidden(row) { if (!row) return; if (hiddenRows.has(row.row_key)) hiddenRows.delete(row.row_key); else hiddenRows.add(row.row_key); localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(hiddenRows))); applyFilters(); }
+      function setShowHiddenMode(show) {
+        showHiddenMode = show;
+        showHiddenBtn.setAttribute("aria-pressed", String(show));
+        applyFilters();
+      }
+
+      function rowByKey(rowKey) {
+        return allRows.find(row => row.row_key === rowKey) || null;
+      }
+
+      function cssEscape(value) {
+        if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(value);
+        return text(value).replace(/["\\]/g, "\\$&");
+      }
+
+      function buildPrintSheet() {
+        const generatedAt = new Date().toISOString();
+        const body = visibleRings.map(ring => '<section class="print-ring-group"><div class="print-ring">' + escapeHtml(ring.title) + "</div>" + ring.classes.map((row, index) => '<div class="print-row' + (index % 2 ? " is-zebra" : "") + (row.horse_items && row.horse_items.length ? " has-rollup" : "") + '">' + printRollup(row) + '<span class="print-cell time">' + escapeHtml(row.time || "--") + '</span><span class="print-cell class">' + escapeHtml(classLabel(row)) + "</span></div>").join("") + "</section>").join("");
+        printSheet.innerHTML = '<div class="print-title"><h1>WEC Print Review</h1><p>' + escapeHtml(metadataStatusPrefix()) + "<br>" + escapeHtml(generatedAt) + '</p></div><div class="print-columns">' + body + "</div>";
+      }
+
+      function printRollup(row) { const value = rollupText(row); return value ? '<div class="print-rollup">' + escapeHtml(value) + "</div>" : ""; }
+      function printGrid() { buildPrintSheet(); setTimeout(() => window.print(), 50); }
+
+      function makeTheme() {
+        if (!window.agGrid || !window.agGrid.themeQuartz) return undefined;
+        return window.agGrid.themeQuartz.withParams({
+          accentColor: "#245e52",
+          backgroundColor: "#ffffff",
+          borderColor: "#d1d5db",
+          browserColorScheme: "light",
+          cellHorizontalPadding: 14,
+          chromeBackgroundColor: "#ffffff",
+          foregroundColor: "#18251f",
+          headerBackgroundColor: "#ffffff",
+          headerFontWeight: 650,
+          oddRowBackgroundColor: "#ffffff",
+          rowBorder: true,
+          rowHoverColor: "rgba(148, 163, 184, .13)",
+          wrapperBorder: false,
+          wrapperBorderRadius: 0
+        });
+      }
+
+      const columnDefs = [
+        {
+          field: "time",
+          headerName: "Time",
+          width: 112,
+          minWidth: 96,
+          maxWidth: 132,
+          filter: "agTextColumnFilter",
+          cellRenderer: timeCellRenderer,
+          valueGetter: params => params.data && params.data.row_type === "class" ? params.data.time || "" : ""
+        },
+        {
+          field: "ring",
+          headerName: "Ring",
+          width: 112,
+          minWidth: 92,
+          maxWidth: 132,
+          filter: "agTextColumnFilter",
+          valueGetter: params => params.data && params.data.row_type === "class" ? params.data.ring || "" : ""
+        },
+        {
+          field: "class_label",
+          headerName: "Class",
+          flex: 1,
+          minWidth: 280,
+          autoHeight: true,
+          filter: "agTextColumnFilter",
+          cellRenderer: classCellRenderer,
+          valueGetter: params => params.data && params.data.row_type === "class" ? classLabel(params.data) + " " + rollupText(params.data) : ""
+        },
+        {
+          field: "entry_count",
+          headerName: "Entries",
+          width: 104,
+          minWidth: 90,
+          maxWidth: 118,
+          filter: "agNumberColumnFilter",
+          cellRenderer: entriesCellRenderer,
+          valueGetter: params => params.data && params.data.row_type === "class" ? params.data.entry_count : null
+        },
+        {
+          field: "status",
+          headerName: "Status",
+          width: 104,
+          minWidth: 90,
+          maxWidth: 118,
+          filter: "agTextColumnFilter",
+          cellRenderer: statusCellRenderer,
+          valueGetter: params => params.data && params.data.row_type === "class" ? statusReference(params.data).label : ""
+        }
+      ];
+
+      const gridOptions = {
+        theme: makeTheme(),
+        columnDefs,
+        rowData: [],
+        defaultColDef: {
+          sortable: true,
+          filter: true,
+          resizable: true,
+          suppressHeaderMenuButton: false,
+          suppressHeaderFilterButton: false
+        },
+        animateRows: true,
+        enableCellTextSelection: true,
+        getRowId: params => params.data.row_key,
+        isFullWidthRow: params => params.rowNode && params.rowNode.data && params.rowNode.data.row_type === "ring",
+        fullWidthCellRenderer: ringFullWidthRenderer,
+        getRowClass: gridRowClass,
+        getRowHeight: params => {
+          const row = params.data || {};
+          if (row.row_type === "ring") return 34;
+          if (!rollupText(row)) return 40;
+          return rowHeightByKey.get(row.row_key) || 40;
+        },
+        onRowClicked: event => {
+          const row = event.data || {};
+          if (row.row_type !== "class") return;
+          if (event.event && event.event.target && event.event.target.closest(".hide-row-checkbox")) return;
+          if (hideMode) togglePendingHidden(row.row_key, !pendingHiddenRows.has(row.row_key));
+        },
+        onFirstDataRendered: scheduleRollupRelocation,
+        onModelUpdated: scheduleRollupRelocation,
+        onBodyScroll: scheduleRollupRelocation,
+        onDisplayedColumnsChanged: scheduleRollupRelocation,
+        onGridSizeChanged: scheduleRollupRelocation
+      };
+
+      function initGrid() {
+        if (!window.agGrid || typeof window.agGrid.createGrid !== "function") {
+          setStatus("AG Grid failed to load.", true);
+          return;
+        }
+        gridApi = window.agGrid.createGrid(scheduleGrid, gridOptions);
+        refreshRows();
+      }
+
+      document.getElementById("refreshBtn").addEventListener("click", refreshRows);
+      document.getElementById("printBtn").addEventListener("click", printGrid);
+      filterBtn.addEventListener("click", () => setFilterPanel(!filterPanelOpen));
+      document.getElementById("hideModeBtn").addEventListener("click", () => setHideMode(!hideMode));
+      document.getElementById("focusModeBtn").addEventListener("click", () => { focusMode = !focusMode; document.getElementById("focusModeBtn").setAttribute("aria-pressed", String(focusMode)); applyFilters(); });
+      showHiddenBtn.addEventListener("click", () => setShowHiddenMode(!showHiddenMode));
+      document.getElementById("closeFlyoutBtn").addEventListener("click", closeFlyout);
+      hideRowBtn.addEventListener("click", () => toggleRowHidden(selectedRow));
+      flyoutBackdrop.addEventListener("click", closeFlyout);
+      ringAnchorRail.addEventListener("click", event => {
+        const button = event.target.closest("button[data-ring-key]");
+        if (button) scrollToRing(button.getAttribute("data-ring-key"));
+      });
+      horseFilterRail.addEventListener("click", event => {
+        if (event.target.closest("button[data-horse-clear]")) {
+          activeHorseFilters = new Set();
+          applyFilters();
+          return;
+        }
+        const button = event.target.closest("button[data-horse-key]");
+        if (button) toggleHorseFilter(button.getAttribute("data-horse-key"));
+      });
+      scheduleGrid.addEventListener("change", event => {
+        const checkbox = event.target.closest(".hide-row-checkbox");
+        if (checkbox) togglePendingHidden(checkbox.getAttribute("data-row-key"), checkbox.checked);
+      });
+      scheduleGrid.addEventListener("click", event => {
+        if (hideMode || event.target.closest(".hide-row-checkbox")) return;
+        const classLine = event.target.closest(".ag-row[row-id] > .ag-grid-scrolling-cells");
+        if (!classLine) return;
+        const rowEl = classLine.closest(".ag-row[row-id]");
+        const row = rowByKey(rowEl ? rowEl.getAttribute("row-id") : "");
+        if (!row) return;
+        event.preventDefault();
+        event.stopPropagation();
+        openFlyout(row);
+      }, true);
+      scheduleGrid.addEventListener("click", event => {
+        const item = event.target.closest(".ag-row-rollup-band .rollup-item[data-row-key]");
+        if (!item) return;
+        event.stopPropagation();
+      }, true);
+      scheduleGrid.addEventListener("dblclick", event => {
+        const item = event.target.closest(".ag-row-rollup-band .rollup-item[data-row-key]");
+        if (!item) return;
+        event.stopPropagation();
+      }, true);
+      hideClearAllBtn.addEventListener("click", () => { pendingHiddenRows = new Set(); applyFilters(); });
+      hideSaveBtn.addEventListener("click", saveHideMode);
+      document.addEventListener("keydown", event => { if (event.key === "Escape") closeFlyout(); });
+      initGrid();
+    }());
+  </script>
+</body>
+</html>
