@@ -3,3 +3,14 @@ assets/index-OkW5qM0M.css
 index.html
 sgl_fetch_session*.json
 sgl_session*.json
+
+# Next.js generated output
+dev/ringstatus-app/.next/
+
+# Node / app generated files
+node_modules/
+dev/ringstatus-app/node_modules/
+dev/ringstatus-app/.next/
+.next/
+tmp/
+webflow-cloud-test/.tmp/
