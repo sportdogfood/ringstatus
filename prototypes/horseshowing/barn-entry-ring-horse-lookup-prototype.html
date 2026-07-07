@@ -1,0 +1,1449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barn Entry Ring Horse Lookup</title>
+  <style>
+    :root {
+      --bg: #000;
+      --panel: #fff;
+      --ink: #001225;
+      --muted: #5f6d7d;
+      --line: #d8dee7;
+      --accent: #005ca8;
+      --accent-soft: #eef5fb;
+      --bad: #9a2424;
+      --warn: #8a5b00;
+      --warn-soft: #fff4cf;
+      --section: #ececec;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: max(800px, 100vh);
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.25 Arial, Helvetica, sans-serif;
+    }
+
+    .shell {
+      width: min(100%, 650px);
+      min-height: max(800px, 100vh);
+      margin: 0 auto;
+      padding: 6px;
+    }
+
+    .shell.review-mode {
+      background: var(--panel);
+    }
+
+    .stack {
+      display: grid;
+      gap: 8px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 2px solid #000;
+      border-radius: 0;
+      padding: 0;
+      min-width: 0;
+    }
+
+    .shell.review-mode #printPanel {
+      min-height: calc(max(800px, 100vh) - 12px);
+    }
+
+    h1, h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      padding: 12px 10px 4px;
+    }
+
+    h2 {
+      background: var(--section);
+      color: #005ca8;
+      font-size: 15px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 6px 10px;
+    }
+
+    label {
+      display: block;
+      margin: 0 0 4px;
+      color: #34443d;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    input,
+    button {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 10px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 92, 168, .14);
+    }
+
+    .cell-input {
+      width: 100%;
+      min-height: 28px;
+      border: 1px solid #cfd7e2;
+      border-radius: 0;
+      padding: 3px 5px;
+      font-size: 13px;
+    }
+
+    button {
+      font-weight: 750;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    button:hover {
+      border-color: #000;
+      background: #f5f8fb;
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+
+    .primary {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+      text-align: center;
+    }
+
+    .status {
+      min-height: 18px;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 3px 10px 8px;
+    }
+
+    .status.bad { color: var(--bad); }
+    .status.warn { color: var(--warn); }
+
+    .lookup-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .section-title {
+      background: var(--section);
+      color: #005ca8;
+      font-size: 15px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 6px 10px;
+    }
+
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ring-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 16px 6px 4px;
+    }
+
+    .ring-pill,
+    .horse-pill {
+      width: auto;
+      min-width: max-content;
+      min-height: 30px;
+      border: 1.5px solid #000;
+      border-radius: 999px;
+      padding: 3px 12px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .ring-pill.active {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+
+    .ring-pill {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .horse-pill.active {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+
+    .horse-pill.ours {
+      background: #eaf4ff;
+      border-color: #005ca8;
+      color: #003a66;
+    }
+
+    .horse-pill.ours.active {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+
+    .ring-pill:disabled {
+      background: #edf0ef;
+      border-color: #dfe5e2;
+      color: #9aa39f;
+      opacity: 1;
+    }
+
+    .horse-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 6px 10px 4px;
+    }
+
+    .selected {
+      display: grid;
+      gap: 4px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #f9fbfa;
+    }
+
+    .selected strong {
+      font-size: 14px;
+    }
+
+    .selected span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .results {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .results:empty {
+      display: none;
+    }
+
+    .result-card {
+      display: block;
+      width: 100%;
+      min-height: 38px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      background: #fff;
+      padding: 8px 10px;
+    }
+
+    .result-card:last-child {
+      border-bottom: 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .cell {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .empty {
+      display: grid;
+      gap: 4px;
+      padding: 9px 10px;
+      border: 0;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .empty.warn {
+      border-color: #e0be69;
+      background: var(--warn-soft);
+      color: #4e3700;
+    }
+
+    .inline-link {
+      display: inline;
+      width: auto;
+      min-height: 0;
+      border: 0;
+      padding: 0 8px 0 0;
+      color: #005ca8;
+      background: transparent;
+      text-decoration: underline;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    .search-row[hidden] {
+      display: none;
+    }
+
+    .search-row {
+      padding: 0 10px 10px;
+    }
+
+    .table-frame {
+      width: 100%;
+      overflow-x: auto;
+      border: 0;
+      border-radius: 0;
+      background: #fff;
+    }
+
+    .barn-entry-table {
+      width: 100%;
+      min-width: 390px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .barn-entry-table tr {
+      height: 44px;
+    }
+
+    .barn-entry-table th,
+    .barn-entry-table td {
+      border-bottom: 1px solid var(--line);
+      height: 44px;
+      padding: 0 8px;
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .barn-entry-table th {
+      background: #e7e7e7;
+      color: var(--ink);
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .barn-entry-table tr:last-child td { border-bottom: 0; }
+
+    .empty-table-pad {
+      height: 44px;
+      border-bottom: 0;
+      padding: 0;
+    }
+
+    .class-col {
+      width: auto;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ring-col {
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    .time-col { width: 88px; }
+    .ring-col { width: 88px; }
+    .number-col { width: 88px; }
+    .action-col { width: 46px; }
+
+    .icon-button {
+      width: 34px;
+      min-height: 34px;
+      padding: 0;
+      text-align: center;
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      padding: 12px 10px;
+      background: #f9fbfd;
+    }
+
+    .action-left {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .action-pill {
+      width: auto;
+      min-width: max-content;
+      min-height: 30px;
+      border: 1.5px solid #000;
+      border-radius: 999px;
+      padding: 3px 12px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .shell { width: 100%; padding: 0; }
+      .panel { border: 0; padding: 0; }
+      .no-print { display: none !important; }
+      .barn-entry-table { min-width: 0; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell stack">
+    <section class="panel no-print" id="formPanel">
+      <h1>Entry Input</h1>
+      <div id="focusDateText" class="status"></div>
+      <div class="lookup-grid">
+        <div class="section-title">Rings</div>
+        <div id="ringResults" class="ring-pills"></div>
+        <div id="ringStatus" class="status">Loading rings...</div>
+        <div class="section-title section-title-row">
+          <span>Horses</span>
+          <button id="toggleHorseSearch" class="inline-link" type="button">Search</button>
+        </div>
+        <div id="horseSearchRow" class="search-row" hidden>
+          <input id="horseInput" type="search" autocomplete="off" placeholder="Barn name" disabled>
+        </div>
+        <div id="horsePills" class="horse-pills"></div>
+        <div id="horseStatus" class="status">Select a ring first</div>
+      </div>
+    </section>
+
+    <section class="panel no-print" id="suggestedPanel">
+      <h2>Suggested</h2>
+      <div id="horseResults" class="results"></div>
+    </section>
+
+    <section class="panel no-print" id="listPanel">
+      <h2>My List</h2>
+      <div id="barnList"></div>
+      <div class="actions" style="margin-top:10px">
+        <div class="action-left">
+          <button id="addBtn" class="action-pill" type="button">Add More</button>
+          <button id="clearBtn" class="action-pill" type="button">Clear List</button>
+          <button id="printListBtn" class="action-pill" type="button">Print</button>
+        </div>
+        <button id="saveBtn" class="primary action-pill" type="button">Submit</button>
+      </div>
+      <div id="saveStatus" class="status"></div>
+    </section>
+
+    <section class="panel" id="printPanel" hidden>
+      <div id="printCopy"></div>
+    </section>
+  </main>
+
+  <script>
+    const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
+    const AIRTABLE_WEBHOOK_URL = "https://hooks.airtable.com/workflows/v1/genericWebhook/app6XS1RvsPNRT6os/wflcCeL2hMlBHwIV3/wtrFr5HD4HlwLCT9J";
+    const params = new URLSearchParams(location.search);
+    const DEFAULT_SHOW_NO = params.get("show_no") || "14909";
+    const DEFAULT_FOCUS_DAY = params.get("focus_day") || "2026-07-05";
+
+    const state = {
+      schedule: null,
+      rings: [
+        { ring_name_normalized: "grand", ring_display: "grand", classes_pending: true },
+        { ring_name_normalized: "hunter 2", ring_display: "hunter 2", classes_pending: true },
+        { ring_name_normalized: "indoor 6", ring_display: "indoor 6", classes_pending: true },
+        { ring_name_normalized: "indoor 5", ring_display: "indoor 5", classes_pending: true },
+        { ring_name_normalized: "indoor 1", ring_display: "indoor 1", classes_pending: true },
+        { ring_name_normalized: "indoor 2", ring_display: "indoor 2", classes_pending: true },
+        { ring_name_normalized: "stadium", ring_display: "stadium", classes_pending: true },
+        { ring_name_normalized: "annex", ring_display: "annex", classes_pending: true },
+        { ring_name_normalized: "indoor 4", ring_display: "indoor 4", classes_pending: true },
+        { ring_name_normalized: "indoor 3", ring_display: "indoor 3", classes_pending: true }
+      ],
+      selectedRing: null,
+      allClassOogRows: null,
+      horseSuggestionsLoaded: false,
+      ringHorseRows: [],
+      currentHorseGroups: [],
+      selectedHorseDisplay: "",
+      currentClassContext: null,
+      horseAbort: null,
+      selectedHorse: null,
+      rows: []
+    };
+
+    const els = {
+      ringStatus: document.getElementById("ringStatus"),
+      focusDateText: document.getElementById("focusDateText"),
+      ringResults: document.getElementById("ringResults"),
+      horseInput: document.getElementById("horseInput"),
+      horseSearchRow: document.getElementById("horseSearchRow"),
+      toggleHorseSearch: document.getElementById("toggleHorseSearch"),
+      horseStatus: document.getElementById("horseStatus"),
+      horsePills: document.getElementById("horsePills"),
+      horseResults: document.getElementById("horseResults"),
+      barnList: document.getElementById("barnList"),
+      suggestedPanel: document.getElementById("suggestedPanel"),
+      listPanel: document.getElementById("listPanel"),
+      addBtn: document.getElementById("addBtn"),
+      saveBtn: document.getElementById("saveBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      printListBtn: document.getElementById("printListBtn"),
+      saveStatus: document.getElementById("saveStatus"),
+      shell: document.querySelector(".shell"),
+      formPanel: document.getElementById("formPanel"),
+      printPanel: document.getElementById("printPanel"),
+      printCopy: document.getElementById("printCopy")
+    };
+
+    function debounce(fn, wait = 160) {
+      let timer = null;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), wait);
+      };
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function normalize(value) {
+      return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    }
+
+    function fuzzyScore(query, values) {
+      const q = normalize(query);
+      if (!q) return 1;
+      let best = 0;
+      for (const value of values) {
+        const v = normalize(value);
+        if (!v) continue;
+        if (v === q) best = Math.max(best, 100);
+        else if (v.startsWith(q)) best = Math.max(best, 80);
+        else if (v.includes(q)) best = Math.max(best, 60);
+        else {
+          let qi = 0;
+          for (const ch of v) if (ch === q[qi]) qi += 1;
+          if (qi === q.length) best = Math.max(best, 35);
+        }
+      }
+      return best;
+    }
+
+    function status(el, message, kind = "") {
+      el.textContent = message || "";
+      el.className = `status ${kind}`.trim();
+    }
+
+    function dateText(value) {
+      const [year, month, day] = String(value || "").split("-").map(Number);
+      if (!year || !month || !day) return "";
+      return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function rowKey(row) {
+      return [
+        row.show_no,
+        row.focus_day,
+        row.ring_day_no,
+        row.ring_no,
+        row.class_no,
+        row.entry_no || row.horse_name || row.barn_name
+      ].join("|");
+    }
+
+    function isAlreadyAdded(row) {
+      const key = rowKey(row);
+      return state.rows.some((existing) => rowKey(existing) === key);
+    }
+
+    function ringLabel(ring) {
+      return ring.ring_display || ring.ring_name_normalized || ring.ring_name || ring.ring_key || "";
+    }
+
+    async function loadRings() {
+      const url = new URL(API_BASE);
+      url.searchParams.set("action", "wec-mobile-live");
+      url.searchParams.set("show_no", DEFAULT_SHOW_NO);
+      url.searchParams.set("focus_day", DEFAULT_FOCUS_DAY);
+      const response = await fetch(url);
+      const data = await response.json();
+      if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || `HTTP ${response.status}`);
+      state.schedule = data;
+      status(els.focusDateText, data.show_focus_date || data.focus_day || DEFAULT_FOCUS_DAY);
+      state.rings = (data.rings || []).map((ring) => ({
+        ...ring,
+        focus_day: data.show_focus_date || data.focus_day || "",
+        show_no: data.show_no || "",
+        focus_show_record_id: data.focus_show_record_id || ""
+      }));
+      status(els.ringStatus, `${state.rings.length} ring(s) loaded`);
+      renderRingPills();
+      preloadHorseSuggestions();
+    }
+
+    function renderRingPills() {
+      els.ringResults.innerHTML = state.rings.map((ring, index) => `
+        <button class="ring-pill ${state.selectedRing === ring ? "active" : ""}" type="button" data-ring-index="${index}" ${ringDisabled(ring) ? "disabled" : ""}>
+          ${escapeHtml(ring.ring_name_normalized || ringLabel(ring))}
+        </button>
+      `).join("");
+
+      els.ringResults.querySelectorAll("[data-ring-index]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const picked = state.rings[Number(button.dataset.ringIndex)];
+          selectRing(picked);
+        });
+      });
+    }
+
+    function ringDisabled(ring) {
+      if (Array.isArray(ring.classes) && !ring.classes.length) return true;
+      if (!state.horseSuggestionsLoaded) return false;
+      return horseGroupsFromRows((state.allClassOogRows || []).filter((row) => rowMatchesRing(row, ring))).length === 0;
+    }
+
+    function selectRing(ring) {
+      state.selectedRing = ring;
+      renderRingPills();
+      els.horseInput.disabled = false;
+      els.horseInput.value = "";
+      state.ringHorseRows = [];
+      state.currentHorseGroups = [];
+      state.selectedHorseDisplay = "";
+      state.currentClassContext = null;
+      els.horsePills.innerHTML = "";
+      els.horseResults.innerHTML = renderRowTable([], "add");
+      if (Array.isArray(ring.classes) && !ring.classes.length) {
+        els.horseInput.disabled = true;
+        status(els.horseStatus, `No classes for ${ring.ring_name_normalized || ringLabel(ring)} today`, "warn");
+        return;
+      }
+      status(els.horseStatus, "Tap horse or open search");
+      loadHorsePillsForRing();
+    }
+
+    function barnNameFor(match) {
+      return match?.fields?.barn_name || match?.display_name || match?.matched_value || match?.helper_key || "";
+    }
+
+    function horseNameFor(match) {
+      return match?.fields?.horse_name || match?.fields?.horse || match?.helper_key || "";
+    }
+
+    function horseDisplayName(match) {
+      return match?.fields?.barn_name
+        || match?.fields?.show_name
+        || match?.fields?.horse_display
+        || match?.fields?.horse_name
+        || match?.fields?.horse
+        || match?.display_name
+        || match?.matched_value
+        || match?.helper_key
+        || "";
+    }
+
+    function horseDisplayNameFromRow(row) {
+      return row?.barn_name
+        || row?.show_name
+        || row?.horse_display
+        || row?.horse_name
+        || row?.horse
+        || "";
+    }
+
+    function activeFocusDay() {
+      return state.schedule?.show_focus_date || state.schedule?.focus_day || "";
+    }
+
+    function classForEntryRow(row) {
+      const ring = state.selectedRing || {};
+      return (ring.classes || []).find((klass) => String(klass.class_no || "") === String(row.class_no || "")) || {};
+    }
+
+    function buildRowFromEntryRow(row) {
+      const klass = classForEntryRow(row);
+      const ring = state.selectedRing || {};
+      const horse = horseDisplayNameFromRow(row);
+      return {
+        show_no: row.show_no || ring.show_no || state.schedule?.show_no || "",
+        focus_day: row.focus_day || ring.focus_day || activeFocusDay(),
+        focus_show: state.schedule?.focus_show_record_id || "",
+        focus_show_record_id: state.schedule?.focus_show_record_id || "",
+        ring_day_no: row.ring_day_no || klass.ring_day_no || "",
+        ring_no: row.ring_no || ring.ring_no || "",
+        ring_name_normalized: row.ring_name_normalized || ring.ring_name_normalized || "",
+        ring_name_prioritized: row.ring_name_prioritized || ring.ring_name || "",
+        class_no: row.class_no || klass.class_no || "",
+        class_number: row.class_number || klass.class_number || "",
+        class_name: row.class_name || klass.class_name || "",
+        class_start_time: row.class_start_time || klass.class_start_time || "",
+        display_time: row.display_time || klass.display_time || klass.time_text || "",
+        entry_no: row.entry_no || "",
+        barn_name: horse,
+        horse_name: row.horse_name || row.horse || horse,
+        entity_type: "horse",
+        entity_key: row.horse_key || row.entry_const_key || row.entry_go_key || "",
+        match_status: row.match_status || "matched"
+      };
+    }
+
+    function horseGroupsFromRows(rows, query = "") {
+      const groups = new Map();
+      for (const row of rows || []) {
+        const display = horseDisplayNameFromRow(row);
+        if (!display) continue;
+        if (query && fuzzyScore(query, [display, row.horse, row.horse_name, row.horse_display, row.barn_name]) <= 0) continue;
+        const key = normalize(display);
+        if (!groups.has(key)) groups.set(key, { display, rows: [], ours: false });
+        const group = groups.get(key);
+        group.rows.push(row);
+        if (rowIsOurs(row)) group.ours = true;
+      }
+      return [...groups.values()].sort((a, b) => a.display.localeCompare(b.display));
+    }
+
+    function rowIsOurs(row) {
+      const fields = [
+        row.follow,
+        row.horse_follow,
+        row.rider_follow,
+        row.trainer_allowed,
+        row.active,
+        row.allowed,
+        row.is_follow,
+        row.is_allowed
+      ];
+      if (fields.some((value) => value === true || String(value).toLowerCase() === "true" || String(value) === "1")) return true;
+      const text = normalize([
+        row.match_reason,
+        row.match_reasons,
+        row.match_status,
+        row.source,
+        row.helpers_related
+      ].join(" "));
+      return /\b(follow|followed|allowed|helper|trainer|horse|rider)\b/.test(text);
+    }
+
+    async function searchHorses() {
+      const q = els.horseInput.value.trim();
+      els.horseResults.innerHTML = renderRowTable([], "add");
+      if (state.horseAbort) state.horseAbort.abort();
+      if (!state.selectedRing) {
+        status(els.horseStatus, "Select a ring first", "warn");
+        return;
+      }
+      if (q.length < 1) {
+        status(els.horseStatus, "Type horse barn name");
+        renderHorsePillsFromGroups(horseGroupsFromRows(state.ringHorseRows));
+        return;
+      }
+      const groups = horseGroupsFromRows(state.ringHorseRows, q);
+      renderHorsePillsFromGroups(groups);
+      if (!groups.length) {
+        status(els.horseStatus, "");
+        renderSuggestedMessage(`No suggestions for <strong>${escapeHtml(q)}</strong> in <strong>${escapeHtml(ringLabel(state.selectedRing))}</strong>.`, "Search all horses", "searchAllHorsesLink");
+        document.getElementById("searchAllHorsesLink")?.addEventListener("click", () => searchAllHorses(q));
+        return;
+      }
+      status(els.horseStatus, `${groups.length} horse match(es)`);
+    }
+
+    async function searchAllHorses(query) {
+      const q = String(query || "").trim();
+      if (!q) return;
+      status(els.horseStatus, "Searching all horses...");
+      try {
+        const rows = state.allClassOogRows || await fetchCurrentClassOogRows();
+        state.allClassOogRows = rows;
+        const rowGroups = horseGroupsFromRows(rows, q);
+        const helperGroups = await fetchHorseHelperGroups(q);
+        const groups = mergeHorseGroups(rowGroups, helperGroups);
+        if (!groups.length) {
+          status(els.horseStatus, "");
+          renderSuggestedMessage(`We could not find matches for <strong>${escapeHtml(q)}</strong>.`, "Add horse not listed", "addHorseNotListedLink");
+          document.getElementById("addHorseNotListedLink")?.addEventListener("click", () => addManualHorseFromSearch(q));
+          return;
+        }
+        renderHorsePillsFromGroups(groups);
+        els.horseResults.innerHTML = renderRowTable([], "add");
+        status(els.horseStatus, `${groups.length} horse match(es)`);
+      } catch (error) {
+        status(els.horseStatus, error.message || "Could not search all horses", "bad");
+      }
+    }
+
+    async function fetchHorseHelperGroups(query) {
+      try {
+        const url = new URL(API_BASE);
+        url.searchParams.set("action", "wec-helper-search");
+        url.searchParams.set("type", "horses");
+        url.searchParams.set("q", query);
+        url.searchParams.set("limit", "20");
+        url.searchParams.set("search_mode", "catalyst");
+        url.searchParams.set("fallback_scan", "1");
+        const response = await fetch(url);
+        const data = await response.json();
+        if (!response.ok || data.ok !== true) return [];
+        return (data.results || data.matches || []).map(helperToHorseGroup).filter(Boolean);
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function helperToHorseGroup(match) {
+      const fields = match.fields || {};
+      const display = fields.barn_name
+        || fields.show_name
+        || fields.horse_display
+        || fields.horse_name
+        || fields.horse
+        || match.display_name
+        || match.matched_value
+        || match.helper_key
+        || "";
+      if (!display) return null;
+      const row = {
+        show_no: DEFAULT_SHOW_NO,
+        focus_day: activeFocusDay() || DEFAULT_FOCUS_DAY,
+        barn_name: display,
+        horse_name: fields.horse_name || fields.horse || display,
+        follow: fields.follow,
+        horse_follow: fields.horse_follow,
+        active: fields.active,
+        match_status: "helper_search",
+        manual_only: true
+      };
+      return { display, rows: [row], ours: rowIsOurs(row), manualOnly: true };
+    }
+
+    function mergeHorseGroups(primary, extra) {
+      const map = new Map();
+      for (const group of [...primary, ...extra]) {
+        const key = normalize(group.display);
+        if (!key) continue;
+        if (!map.has(key)) {
+          map.set(key, { ...group, rows: [...(group.rows || [])] });
+          continue;
+        }
+        const existing = map.get(key);
+        existing.rows.push(...(group.rows || []));
+        existing.ours = existing.ours || group.ours;
+        existing.manualOnly = existing.manualOnly && group.manualOnly;
+      }
+      return [...map.values()].sort((a, b) => a.display.localeCompare(b.display));
+    }
+
+    async function loadHorsePillsForRing() {
+      if (!state.selectedRing) return;
+      status(els.horseStatus, "Loading horse suggestions...");
+
+      try {
+        const rows = state.allClassOogRows || await fetchCurrentClassOogRows();
+        state.allClassOogRows = rows;
+        state.horseSuggestionsLoaded = true;
+        renderRingPills();
+        state.ringHorseRows = rows.filter((row) => sameRing(row));
+        const groups = horseGroupsFromRows(state.ringHorseRows);
+        renderHorsePillsFromGroups(groups);
+        status(els.horseStatus, groups.length ? "Tap horse or type barn name" : "No suggestions for this ring today", groups.length ? "" : "warn");
+      } catch (error) {
+        status(els.horseStatus, error.message || "Could not load horse suggestions", "bad");
+      }
+    }
+
+    async function preloadHorseSuggestions() {
+      try {
+        state.allClassOogRows = await fetchCurrentClassOogRows();
+        state.horseSuggestionsLoaded = true;
+        renderRingPills();
+      } catch (_) {
+        state.horseSuggestionsLoaded = false;
+      }
+    }
+
+    async function fetchCurrentClassOogRows() {
+      const rows = [];
+      for (let offset = 0; offset < 1000; offset += 200) {
+        const url = new URL(API_BASE);
+        url.searchParams.set("action", "export-mirror-table");
+        url.searchParams.set("show_no", DEFAULT_SHOW_NO);
+        url.searchParams.set("table", "class_oog");
+        url.searchParams.set("limit", "200");
+        url.searchParams.set("offset", String(offset));
+        const response = await fetch(url);
+        const data = await response.json();
+        if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || `HTTP ${response.status}`);
+        rows.push(...(data.data || []).filter((row) => String(row.focus_day || "") === activeFocusDay()));
+        if (!data.has_more) break;
+      }
+      return rows;
+    }
+
+    function renderHorsePillsFromGroups(groups) {
+      state.currentHorseGroups = groups;
+      els.horsePills.innerHTML = groups.map((group, index) => `
+        <button class="horse-pill ${group.ours ? "ours" : ""} ${state.selectedHorseDisplay === group.display ? "active" : ""}" type="button" data-horse-pill="${index}">
+          ${escapeHtml(group.display)}
+        </button>
+      `).join("");
+      els.horsePills.querySelectorAll("[data-horse-pill]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const group = groups[Number(button.dataset.horsePill)];
+          selectHorseGroup(group, groups);
+        });
+      });
+    }
+
+    function selectHorseGroup(group, groups) {
+      state.selectedHorseDisplay = group.display;
+      els.horseInput.value = group.display;
+      renderHorsePillsFromGroups(groups);
+      const ringRows = group.manualOnly ? [] : (group.rows || []).filter((row) => sameRing(row));
+      if (ringRows.length) {
+        renderClassChoicesFromRows(group.display, ringRows);
+        return;
+      }
+      renderAddAnyway(group);
+    }
+
+    function renderSuggestedMessage(messageHtml, linkText, linkId) {
+      els.horseResults.innerHTML = `
+        ${renderMessageTable(`
+          ${messageHtml}
+          ${linkText ? `<button id="${linkId}" class="inline-link" type="button">${escapeHtml(linkText)}</button>` : ""}
+        `)}
+      `;
+    }
+
+    function renderAddAnyway(group) {
+      state.currentClassContext = null;
+      renderSuggestedMessage(`No classes found for <strong>${escapeHtml(activeFocusDay() || DEFAULT_FOCUS_DAY)}</strong>.`, "Add to your list anyway?", "addAnywayLink");
+      status(els.horseStatus, "");
+      document.getElementById("addAnywayLink")?.addEventListener("click", () => addManualHorseGroup(group));
+    }
+
+    function addManualHorseFromSearch(query) {
+      addManualHorseGroup({
+        display: query,
+        rows: [{
+          barn_name: query,
+          horse_name: query,
+          match_status: "manual_not_listed",
+          manual_only: true
+        }],
+        manualOnly: true,
+        ours: false
+      });
+    }
+
+    function addManualHorseGroup(group) {
+      const sourceRow = group.rows?.[0] || {};
+      const ring = state.selectedRing || {};
+      const klass = ring.classes?.[0] || {};
+      const row = {
+        show_no: DEFAULT_SHOW_NO,
+        focus_day: activeFocusDay() || DEFAULT_FOCUS_DAY,
+        focus_show: state.schedule?.focus_show_record_id || "",
+        focus_show_record_id: state.schedule?.focus_show_record_id || "",
+        ring_day_no: klass.ring_day_no || "",
+        ring_no: ring.ring_no || "",
+        ring_name_normalized: ring.ring_name_normalized || ringLabel(ring) || "",
+        ring_name_prioritized: ring.ring_name || ring.ring_name_normalized || "",
+        class_no: "",
+        class_number: "",
+        class_name: "",
+        class_start_time: "",
+        display_time: "",
+        entry_no: "",
+        barn_name: group.display || sourceRow.barn_name || "",
+        horse_name: sourceRow.horse_name || sourceRow.horse || group.display || "",
+        entity_type: "horse",
+        entity_key: sourceRow.horse_key || sourceRow.entity_key || "",
+        match_status: sourceRow.match_status || "manual_unmapped",
+        needs_review: true,
+        source: "barn_entry_manual"
+      };
+      addRow(row);
+      renderSuggestedMessage(`Added <strong>${escapeHtml(row.barn_name)}</strong> to My List for review.`, "", "");
+    }
+
+    function renderClassChoicesFromRows(displayName, rows) {
+      state.currentClassContext = { displayName, rows };
+      const choices = (rows || [])
+        .map(buildRowFromEntryRow)
+        .filter((row) => !isAlreadyAdded(row));
+      if (!choices.length) {
+        els.horseResults.innerHTML = `
+          ${renderMessageTable(`
+            No More Classes for <strong>${escapeHtml(displayName)}</strong> in <strong>${escapeHtml(ringLabel(state.selectedRing))}</strong>.
+            <button id="newSearchLink" class="inline-link" type="button">New search</button>
+          `)}
+      `;
+        status(els.horseStatus, "");
+        document.getElementById("newSearchLink")?.addEventListener("click", newSearch);
+        return;
+      }
+      els.horseResults.innerHTML = renderRowTable(choices, "add");
+      status(els.horseStatus, `${choices.length} class row(s)`);
+      els.horseResults.querySelectorAll(".add-row").forEach((button) => {
+        button.addEventListener("click", () => addRow(choices[Number(button.dataset.index)]));
+      });
+      els.horseResults.querySelectorAll("tr[data-add-row]").forEach((tr) => {
+        tr.addEventListener("click", () => addRow(choices[Number(tr.dataset.addRow)]));
+      });
+    }
+
+    function renderHorseMatches(matches) {
+      if (!matches.length) {
+        const q = els.horseInput.value.trim();
+        els.horseResults.innerHTML = `
+          <div class="empty warn">
+            <span>We could not find matches for ${escapeHtml(q)}.</span>
+            <span>Clear your search and try another.</span>
+          </div>
+        `;
+        return;
+      }
+
+      els.horseResults.innerHTML = matches.map((match, index) => `
+        <button class="result-card" type="button" data-horse-index="${index}">
+          <span class="cell">${escapeHtml(horseDisplayName(match))}</span>
+        </button>
+      `).join("");
+
+      els.horseResults.querySelectorAll("[data-horse-index]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const match = matches[Number(button.dataset.horseIndex)];
+          await loadHorseClasses(match);
+        });
+      });
+    }
+
+    async function loadHorseClasses(match) {
+      status(els.horseStatus, "Loading classes...");
+      const url = new URL(API_BASE);
+      url.searchParams.set("action", "wec-helper-search");
+      url.searchParams.set("type", "horses");
+      url.searchParams.set("q", match.helper_key || match.matched_value || match.display_name);
+      url.searchParams.set("limit", "8");
+      url.searchParams.set("hydrate", "1");
+      url.searchParams.set("hydrate_scope", "barn_entry");
+      url.searchParams.set("search_mode", "catalyst");
+      url.searchParams.set("fallback_scan", "1");
+
+      const response = await fetch(url);
+      const data = await response.json();
+      if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || `HTTP ${response.status}`);
+      const hydration = (data.hydration?.results || []).find((item) => item.entity_key === match.helper_key)
+        || (data.hydration?.results || [])[0]
+        || null;
+      renderClassChoices(match, hydration);
+    }
+
+    function rowMatchesRing(appearance, ring) {
+      if (!ring) return false;
+      const ringNoMatch = String(appearance.ring_no || "") === String(ring.ring_no || "");
+      const ringDayMatch = !appearance.ring_day_no || !ring.classes?.length
+        || ring.classes.some((klass) => String(klass.ring_day_no || "") === String(appearance.ring_day_no || ""));
+      const nameMatch = normalize(appearance.ring_name_normalized) === normalize(ring.ring_name_normalized);
+      return (ringNoMatch && ringDayMatch) || nameMatch;
+    }
+
+    function sameRing(appearance) {
+      return rowMatchesRing(appearance, state.selectedRing);
+    }
+
+    function buildRow(match, appearance) {
+      const ring = state.selectedRing || {};
+      return {
+        show_no: appearance.show_no || ring.show_no || state.schedule?.show_no || "",
+        focus_day: appearance.focus_day || ring.focus_day || state.schedule?.show_focus_date || "",
+        focus_show: state.schedule?.focus_show_record_id || "",
+        focus_show_record_id: state.schedule?.focus_show_record_id || "",
+        ring_day_no: appearance.ring_day_no || ring.classes?.[0]?.ring_day_no || "",
+        ring_no: appearance.ring_no || ring.ring_no || "",
+        ring_name_normalized: appearance.ring_name_normalized || ring.ring_name_normalized || "",
+        ring_name_prioritized: appearance.ring_name_prioritized || ring.ring_name || "",
+        class_no: appearance.class_no || "",
+        class_number: appearance.class_number || "",
+        class_name: appearance.class_name || "",
+        class_start_time: appearance.class_start_time || appearance.display_time || "",
+        display_time: appearance.display_time || appearance.class_start_time || "",
+        entry_no: appearance.entry_no || "",
+        barn_name: barnNameFor(match),
+        horse_name: appearance.horse || horseNameFor(match),
+        entity_type: "horse",
+        entity_key: match.helper_key || "",
+        match_status: appearance.match_status || "matched"
+      };
+    }
+
+    function renderClassChoices(match, hydration) {
+      const appearances = (hydration?.appearances || [])
+        .filter(sameRing)
+        .map((appearance) => buildRow(match, appearance))
+        .filter((row) => !isAlreadyAdded(row));
+
+      if (!appearances.length) {
+        els.horseResults.innerHTML = `
+          <div class="result-card">
+            <span class="two-col">
+              <span class="cell">${escapeHtml(barnNameFor(match))}</span>
+              <span class="cell muted">${escapeHtml(horseNameFor(match))}</span>
+            </span>
+          </div>
+          <div class="empty warn">
+            <span>No More Classes for ${escapeHtml(barnNameFor(match))} in ${escapeHtml(ringLabel(state.selectedRing))}.</span>
+            <span>Only classes already added or outside this ring were found.</span>
+          </div>
+        `;
+        status(els.horseStatus, "");
+        return;
+      }
+
+      els.horseResults.innerHTML = `
+        <div class="result-card">
+          <span class="two-col">
+            <span class="cell">${escapeHtml(barnNameFor(match))}</span>
+            <span class="cell muted">${escapeHtml(horseNameFor(match))}</span>
+          </span>
+        </div>
+        ${renderRowTable(appearances, "add")}
+      `;
+      status(els.horseStatus, `${appearances.length} class row(s)`);
+      els.horseResults.querySelectorAll(".add-row").forEach((button) => {
+        button.addEventListener("click", () => {
+          const row = appearances[Number(button.dataset.index)];
+          addRow(row);
+        });
+      });
+      els.horseResults.querySelectorAll("tr[data-add-row]").forEach((tr) => {
+        tr.addEventListener("click", () => {
+          const row = appearances[Number(tr.dataset.addRow)];
+          addRow(row);
+        });
+      });
+    }
+
+    function displayTime(row) {
+      return row.display_time || row.class_start_time || "";
+    }
+
+    function renderRowTable(rows, action = "") {
+      return `
+        <div class="table-frame">
+          <table class="barn-entry-table">
+            <thead>
+              <tr>
+                <th class="time-col">Time</th>
+                <th class="ring-col">Ring</th>
+                <th class="class-col">Class</th>
+                <th class="number-col"># No</th>
+                ${action ? "<th class=\"action-col\"></th>" : ""}
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.length ? "" : `<tr><td class="empty-table-pad" colspan="${action ? 5 : 4}"></td></tr>`}
+              ${rows.map((row, index) => `
+                <tr ${action === "add" ? `data-add-row="${index}"` : ""}>
+                  <td class="time-col">${editableCell(row, index, "display_time", displayTime(row), "time", action)}</td>
+                  <td class="ring-col">${escapeHtml(row.ring_name_normalized)}</td>
+                  <td class="class-col">${editableCell(row, index, "class_name", row.class_name, "class", action)}</td>
+                  <td class="number-col">${editableCell(row, index, "class_no", row.class_no || row.class_number, "# no", action)}</td>
+                  ${action ? `<td class="action-col"><button class="${action === "add" ? "add-row" : "remove-row"} icon-button" type="button" data-index="${index}" aria-label="${action}">${action === "add" ? "+" : "&times;"}</button></td>` : ""}
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderMessageTable(messageHtml) {
+      return `
+        <div class="table-frame">
+          <table class="barn-entry-table">
+            <thead>
+              <tr>
+                <th class="time-col">Time</th>
+                <th class="ring-col">Ring</th>
+                <th class="class-col">Class</th>
+                <th class="number-col"># No</th>
+                <th class="action-col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="5">${messageHtml}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function editableCell(row, index, field, value, placeholder, action) {
+      if (action !== "remove" || !row.needs_review) return escapeHtml(value);
+      return `<input class="cell-input" data-edit-index="${index}" data-edit-field="${field}" value="${escapeHtml(value)}" placeholder="${escapeHtml(placeholder)}">`;
+    }
+
+    function renderBarnList() {
+      if (!state.rows.length) {
+        els.barnList.innerHTML = renderRowTable([], "remove");
+        return;
+      }
+      els.barnList.innerHTML = renderRowTable(state.rows, "remove");
+      els.barnList.querySelectorAll(".remove-row").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.rows.splice(Number(button.dataset.index), 1);
+          renderBarnList();
+          if (state.currentClassContext) {
+            renderClassChoicesFromRows(state.currentClassContext.displayName, state.currentClassContext.rows);
+          }
+        });
+      });
+      els.barnList.querySelectorAll("[data-edit-index]").forEach((input) => {
+        input.addEventListener("input", () => {
+          const row = state.rows[Number(input.dataset.editIndex)];
+          const field = input.dataset.editField;
+          if (!row || !field) return;
+          row[field] = input.value;
+          if (field === "display_time") row.class_start_time = input.value;
+          if (field === "class_no") row.class_number = input.value;
+        });
+      });
+    }
+
+    function addRow(row) {
+      if (!isAlreadyAdded(row)) state.rows.push(row);
+      renderBarnList();
+      if (state.currentClassContext) {
+        renderClassChoicesFromRows(state.currentClassContext.displayName, state.currentClassContext.rows);
+      }
+      status(els.horseStatus, "Added");
+    }
+
+    function clearAll() {
+      state.rows = [];
+      renderBarnList();
+      els.shell.classList.remove("review-mode");
+      clearFormSelection();
+      status(els.saveStatus, "");
+    }
+
+    function newSearch() {
+      state.selectedRing = null;
+      state.ringHorseRows = [];
+      state.currentHorseGroups = [];
+      state.selectedHorseDisplay = "";
+      state.currentClassContext = null;
+      els.horseInput.value = "";
+      els.horseInput.disabled = true;
+      els.horsePills.innerHTML = "";
+        els.horseResults.innerHTML = renderRowTable([], "add");
+      status(els.horseStatus, "Select a ring first");
+      renderRingPills();
+      els.formPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => els.ringResults.querySelector(".ring-pill:not(:disabled)")?.focus());
+    }
+
+    function clearFormSelection() {
+      state.selectedRing = null;
+      state.ringHorseRows = [];
+      state.currentHorseGroups = [];
+      state.selectedHorseDisplay = "";
+      state.currentClassContext = null;
+      state.selectedHorse = null;
+      els.horseInput.value = "";
+      els.horseInput.disabled = true;
+      els.horsePills.innerHTML = "";
+      els.horseResults.innerHTML = renderRowTable([], "add");
+      els.horseSearchRow.hidden = true;
+      els.toggleHorseSearch.textContent = "Search";
+      status(els.horseStatus, "Select a ring first");
+      renderRingPills();
+      requestAnimationFrame(() => els.ringResults.querySelector(".ring-pill:not(:disabled)")?.focus());
+    }
+
+    function renderPrintCopy() {
+      if (!state.rows.length) {
+        status(els.saveStatus, "No rows to save", "bad");
+        return;
+      }
+      els.formPanel.hidden = true;
+      els.suggestedPanel.hidden = true;
+      els.listPanel.hidden = true;
+      els.shell.classList.add("review-mode");
+      els.printCopy.innerHTML = `
+        <div class="actions no-print" style="margin-bottom:10px">
+          <div class="action-left">
+            <button id="reviewPrintBtn" class="primary action-pill" type="button">Print</button>
+            <button id="shareBtn" class="action-pill" type="button">Share</button>
+          </div>
+        </div>
+        <h2>Barn Entry Review</h2>
+        <div class="status">${state.rows.length} row(s)</div>
+        ${renderRowTable(state.rows)}
+      `;
+      els.printPanel.hidden = false;
+      document.getElementById("reviewPrintBtn")?.addEventListener("click", () => window.print());
+      document.getElementById("shareBtn")?.addEventListener("click", shareReview);
+      els.printPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function reviewText() {
+      const lines = [
+        `Barn Entry Review`,
+        `Show ${DEFAULT_SHOW_NO}`,
+        activeFocusDay() ? `Date ${activeFocusDay()}` : "",
+        ""
+      ].filter(Boolean);
+      for (const row of state.rows) {
+        lines.push([
+          displayTime(row),
+          row.ring_name_normalized,
+          row.class_no || row.class_number,
+          row.barn_name
+        ].filter(Boolean).join(" | "));
+      }
+      return lines.join("\n");
+    }
+
+    async function shareReview() {
+      const text = reviewText();
+      if (navigator.share) {
+        await navigator.share({ title: "Barn Entry Review", text });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      status(els.saveStatus, "Review copied");
+    }
+
+    function saveRows() {
+      if (!state.rows.length) {
+        status(els.saveStatus, "No rows to save", "bad");
+        return;
+      }
+      els.saveBtn.disabled = true;
+      status(els.saveStatus, "Saving...");
+      const payload = {
+        source: "barn_entry_ring_horse_lookup",
+        submitted_at: new Date().toISOString(),
+        row_count: state.rows.length,
+        rows: state.rows
+      };
+      const form = new URLSearchParams();
+      form.set("source", payload.source);
+      form.set("submitted_at", payload.submitted_at);
+      form.set("row_count", String(payload.row_count));
+      form.set("rows_json", JSON.stringify(payload.rows));
+      payload.rows.forEach((row, index) => {
+        for (const [key, value] of Object.entries(row)) {
+          form.set(`row_${index}_${key}`, String(value ?? ""));
+        }
+      });
+      fetch(AIRTABLE_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: form
+      }).catch((error) => {
+        els.saveBtn.disabled = false;
+        status(els.saveStatus, error.message || String(error), "bad");
+      });
+      status(els.saveStatus, "Submitted to Airtable");
+      renderPrintCopy();
+    }
+
+    function printRows() {
+      if (!state.rows.length) {
+        status(els.saveStatus, "No rows to print", "bad");
+        return;
+      }
+      renderPrintCopy();
+      setTimeout(() => window.print(), 100);
+    }
+
+    els.horseInput.addEventListener("input", debounce(searchHorses));
+    els.addBtn.addEventListener("click", clearFormSelection);
+    els.toggleHorseSearch.addEventListener("click", () => {
+      const nextHidden = !els.horseSearchRow.hidden;
+      els.horseSearchRow.hidden = nextHidden;
+      els.toggleHorseSearch.textContent = nextHidden ? "Search" : "Hide search";
+      if (!nextHidden) requestAnimationFrame(() => els.horseInput.focus());
+    });
+    els.saveBtn.addEventListener("click", saveRows);
+    els.clearBtn.addEventListener("click", clearAll);
+    els.printListBtn.addEventListener("click", printRows);
+
+    renderBarnList();
+    els.horseResults.innerHTML = renderRowTable([], "add");
+    renderRingPills();
+    loadRings().catch((error) => status(els.ringStatus, error.message || String(error), "bad"));
+  </script>
+</body>
+</html>
+
