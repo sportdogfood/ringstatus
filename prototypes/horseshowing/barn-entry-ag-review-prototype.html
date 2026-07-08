@@ -922,6 +922,25 @@
         ];
       }
 
+      function ensureAgGridLoaded() {
+        if (window.agGrid?.createGrid) return Promise.resolve();
+        return new Promise((resolve, reject) => {
+          const existing = document.querySelector('script[data-rs-ag-grid="1"]');
+          if (existing) {
+            existing.addEventListener("load", resolve, { once: true });
+            existing.addEventListener("error", reject, { once: true });
+            return;
+          }
+          const script = document.createElement("script");
+          script.src = "https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js";
+          script.async = true;
+          script.dataset.rsAgGrid = "1";
+          script.onload = resolve;
+          script.onerror = () => reject(new Error("AG Grid failed to load."));
+          document.head.appendChild(script);
+        });
+      }
+
       function initGrid() {
         if (!window.agGrid || typeof window.agGrid.createGrid !== "function") {
           els.entryGrid.innerHTML = "AG Grid failed to load.";
@@ -1017,7 +1036,7 @@
       function findHorseByName(value) {
         const target = normalize(value);
         if (!target) return null;
-        return dedupeHorseCandidates([...state.scopedRows, ...state.sourceRows, ...state.helperHorseRows])
+        return dedupeHorseCandidates(state.helperHorseRows)
           .find((row) => normalize(horseName(row)) === target) || null;
       }
 
@@ -1101,14 +1120,9 @@
           els.horseSuggestions.innerHTML = "";
           return;
         }
-        const scoped = dedupeHorseCandidates(state.scopedRows)
+        const matches = dedupeHorseCandidates(state.helperHorseRows)
           .filter((row) => horseSearchText(row).includes(normalize(q)))
           .slice(0, 12);
-        const full = dedupeHorseCandidates([...state.sourceRows, ...state.helperHorseRows])
-          .filter((row) => horseSearchText(row).includes(normalize(q)))
-          .filter((row) => !scoped.some((item) => normalize(horseName(item)) === normalize(horseName(row))))
-          .slice(0, Math.max(0, 12 - scoped.length));
-        const matches = [...scoped, ...full];
         els.horseSuggestions.innerHTML = matches.map((row, index) => `
           <button class="suggestion" type="button" data-horse-index="${index}">
             <strong>${escapeHtml(horseName(row))}</strong>
@@ -1329,6 +1343,7 @@
       }
 
       async function load() {
+        await ensureAgGridLoaded();
         initGrid();
         state.gridApi?.showLoadingOverlay?.();
         status("Loading schedule...");
