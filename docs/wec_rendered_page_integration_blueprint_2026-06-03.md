@@ -4,6 +4,12 @@ Status: current working blueprint for Horse Kits and the next stacked WEC pages.
 
 This document exists to prevent drift. The page renderer should paint Airtable-driven blocks from `pak_groups`; it should not invent new layout, typography, table structure, or labels when Airtable already defines the stack.
 
+Locked `rs-schedules` input/output method:
+
+- `docs/horseshowing/rs-schedules-webflow-input-output-method-contract.md`
+- Use the Packing-style Webflow root/config + pinned CDN CSS/JS + Webflow Cloud API route method for both input and published render.
+- `webflow/packing-worksheet/styles.css` is the shared stylesheet surface. Class cleanup/renaming is allowed when approved, but this remains the locked styling method for this family.
+
 ## Current Surface
 
 Local preview:

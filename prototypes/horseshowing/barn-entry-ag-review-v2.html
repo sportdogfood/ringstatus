@@ -1,0 +1,1107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barn Entry Review v2</title>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
+  <style>
+    :root {
+      --rs-bg: #0b0f14;
+      --rs-surface: #ffffff;
+      --rs-muted-surface: #ededed;
+      --rs-border: #ededed;
+      --rs-text: #071426;
+      --rs-muted: #64748b;
+      --rs-ok: #0f7a3c;
+      --rs-shell-max: 800px;
+      --rs-row-height: 42px;
+      --rs-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      overflow: hidden;
+      background: var(--rs-bg);
+      color: var(--rs-text);
+      font-family: var(--rs-font);
+    }
+
+    .app-shell {
+      height: 100vh;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto auto;
+      gap: 0;
+      box-sizing: border-box;
+    }
+
+    .app-head,
+    .action-bar,
+    .action-anchors,
+    .grid-frame,
+    .action-bar-bottom,
+    .status-line {
+      width: 100%;
+      max-width: var(--rs-shell-max);
+      justify-self: center;
+      box-sizing: border-box;
+    }
+
+    .app-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      background: var(--rs-surface);
+      padding: 14px 16px 12px;
+    }
+
+    .header-left,
+    .header-right {
+      min-width: 0;
+    }
+
+    .header-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .app-meta {
+      margin-top: 6px;
+      color: var(--rs-muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .action-bar-mini,
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .action-bar-mini {
+      justify-content: flex-end;
+    }
+
+    .action-bar,
+    .action-bar-bottom {
+      min-height: var(--rs-row-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 12px;
+      background: var(--rs-muted-surface);
+    }
+
+    .action-anchors {
+      min-height: var(--rs-row-height);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 12px;
+      background: var(--rs-surface);
+      border-top: 1px solid var(--rs-border);
+      border-bottom: 1px solid var(--rs-border);
+    }
+
+    .action-group.secondary {
+      justify-content: flex-end;
+    }
+
+    .rs-button {
+      appearance: none;
+      border: 1.5px solid #000;
+      border-radius: 999px;
+      background: var(--rs-surface);
+      color: var(--rs-text);
+      min-height: 30px;
+      padding: 3px 12px;
+      font-family: var(--rs-font);
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(7, 20, 38, .14);
+      transition: background-color .14s ease, color .14s ease, box-shadow .14s ease, transform .14s ease;
+    }
+
+    .rs-button:hover {
+      box-shadow: 0 2px 5px rgba(7, 20, 38, .18);
+      transform: translateY(-1px);
+    }
+
+    .tap-active {
+      background: #000;
+      color: #fff;
+    }
+
+    .tap-active-2 {
+      background: var(--rs-ok);
+      border-color: var(--rs-ok);
+      color: #fff;
+    }
+
+    .grid-frame {
+      min-height: 0;
+      overflow: hidden;
+      background: var(--rs-surface);
+    }
+
+    #agBaseGrid {
+      height: 100%;
+      min-height: 320px;
+      width: 100%;
+    }
+
+    .status-line {
+      min-height: var(--rs-row-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 16px;
+      color: #cbd5e1;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .ag-theme-quartz {
+      --ag-font-family: var(--rs-font);
+      --ag-font-size: 13px;
+      --ag-header-font-size: 13px;
+      --ag-header-background-color: var(--rs-border);
+      --ag-header-foreground-color: var(--rs-text);
+      --ag-foreground-color: var(--rs-text);
+      --ag-background-color: var(--rs-surface);
+      --ag-row-border-color: var(--rs-border);
+      --ag-border-color: var(--rs-border);
+      --ag-row-height: var(--rs-row-height);
+      --ag-header-height: var(--rs-row-height);
+      --ag-cell-horizontal-padding: 12px;
+    }
+
+    .ag-theme-quartz .ag-root-wrapper {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .ag-theme-quartz .ag-header-cell-menu-button,
+    .ag-theme-quartz .ag-header-cell-filter-button,
+    .ag-theme-quartz .ag-sort-indicator-container,
+    .ag-theme-quartz .ag-header-icon {
+      display: none;
+    }
+
+    .ag-theme-quartz .ag-row-hover {
+      background-color: #f7f8fa;
+    }
+
+    @media (max-width: 479px) {
+      .app-head,
+      .action-bar,
+      .action-anchors,
+      .grid-frame,
+      .action-bar-bottom,
+      .status-line {
+        max-width: none;
+      }
+
+      .app-head {
+        grid-template-columns: 1fr;
+      }
+
+      .header-right {
+        grid-row: 1;
+        justify-content: flex-end;
+      }
+
+      .header-left {
+        grid-row: 2;
+      }
+
+      .status-line {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 6px 16px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: letter portrait;
+        margin: .25in;
+      }
+
+      body {
+        overflow: visible;
+        background: #fff;
+      }
+
+      .app-shell {
+        min-height: 10.5in;
+        height: auto;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .action-bar,
+      .action-anchors,
+      .action-bar-bottom,
+      .header-right {
+        display: none;
+      }
+
+      .app-head,
+      .grid-frame,
+      .status-line {
+        max-width: none;
+      }
+
+      .app-head {
+        padding: 0 0 6px;
+        border-bottom: 1px solid #000;
+      }
+
+      .app-title {
+        font-size: 14px;
+      }
+
+      .app-meta,
+      .status-line {
+        font-size: 9px;
+      }
+
+      #agBaseGrid {
+        height: auto;
+        min-height: 0;
+      }
+
+      .ag-theme-quartz {
+        --ag-font-size: 8px;
+        --ag-header-font-size: 8px;
+        --ag-row-height: 18px;
+        --ag-header-height: 18px;
+        --ag-cell-horizontal-padding: 4px;
+      }
+    }
+  </style>
+  <style>
+    .class-related-data {
+      min-height: var(--rs-row-height);
+      box-sizing: border-box;
+      padding: 4px 12px;
+      border-bottom: 1px solid var(--rs-border);
+      background: var(--rs-surface);
+      color: var(--rs-text);
+      line-height: 1.15;
+    }
+
+    .rollup-line {
+      min-height: 14px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .class-related-rollup {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .rollup-item {
+      appearance: none;
+      border: 1.5px solid #000;
+      border-radius: 999px;
+      background: var(--rs-surface);
+      color: var(--rs-text);
+      min-height: 24px;
+      padding: 2px 10px;
+      font-family: var(--rs-font);
+      font-size: 11px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(7, 20, 38, .14);
+    }
+
+    .rollup-item[disabled] {
+      color: var(--rs-muted);
+      border-color: #000;
+      background: var(--rs-surface);
+      cursor: default;
+    }
+
+    .class-line {
+      display: grid;
+      grid-template-columns: 72px 90px minmax(0, 1fr) 44px 64px;
+      gap: 8px;
+      align-items: center;
+      min-height: 22px;
+      overflow: hidden;
+      font-size: 12px;
+    }
+
+    .class-ring,
+    .class-name,
+    .class-token {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .print-sheet {
+      display: none;
+    }
+
+    @media print {
+      @page {
+        size: letter landscape;
+        margin: .28in;
+      }
+
+      .app-shell,
+      dialog {
+        display: none;
+      }
+
+      .print-sheet {
+        display: block;
+        color: #111;
+        background: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .print-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        border-bottom: 1px solid #111;
+        margin-bottom: 5px;
+        padding-bottom: 4px;
+      }
+
+      .print-title h1 {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .print-title p {
+        margin: 0;
+        font-size: 8px;
+        line-height: 1.05;
+        text-align: right;
+      }
+
+      .print-columns {
+        columns: 3 250px;
+        column-gap: 12px;
+      }
+
+      .print-row {
+        display: grid;
+        grid-template-columns: 44px 58px 28px minmax(0, 1fr) 70px;
+        gap: 4px;
+        align-items: center;
+        min-height: 14px;
+        padding: 1px 2px;
+        border-bottom: 1px solid #ddd;
+        break-inside: avoid;
+        font-size: 8px;
+        line-height: 1.08;
+      }
+
+      .print-row:nth-child(even) {
+        background: #f6f6f6;
+      }
+
+      .print-row span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell" data-ag-system="barn-entries" data-ag-output="barn-entries">
+    <header class="app-head">
+      <div class="header-left">
+        <h1 class="app-title">Entry Review</h1>
+        <div class="app-meta" id="focusText">Loading focus day...</div>
+      </div>
+      <div class="header-right">
+        <div class="action-bar-mini" aria-label="Header actions">
+          <button class="rs-button tap" type="button" id="editBtn">Edit</button>
+          <button class="rs-button tap" type="button" id="printBtn">Print</button>
+          <button class="rs-button tap tap-active-2" type="button" id="submitBtn" hidden>Submit</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="action-bar" aria-label="Entry review actions" id="entryActionBar">
+      <div class="action-group">
+        <button class="rs-button tap" type="button" id="focusBtn">Focus</button>
+        <button class="rs-button tap" type="button" id="barnFilterBtn">Horse</button>
+        <button class="rs-button tap" type="button" id="addBtn" hidden>Add</button>
+      </div>
+      <div class="action-group secondary">
+        <button class="rs-button tap tap-active" type="button" id="printModeBtn">3 Col</button>
+      </div>
+    </section>
+
+    <nav class="action-anchors" aria-label="Ring anchors" id="ringAnchors">
+      <button class="rs-button tap tap-active" type="button" data-ring="">All</button>
+    </nav>
+
+    <section class="grid-frame">
+      <div id="agBaseGrid" class="ag-theme-quartz"></div>
+    </section>
+
+    <footer class="status-line">
+      <span><span id="rowCount">0</span> row(s) loaded</span>
+      <span id="statusText">loading</span>
+    </footer>
+  </main>
+
+  <section class="print-sheet" id="ringClassesPrintSheet" data-ag-output="ring-classes" aria-label="Ring classes print sheet"></section>
+
+  <dialog id="addEntryDialog" aria-label="Add entry">
+    <form method="dialog">
+      <p>Add Entry</p>
+      <label>
+        Horse
+        <input id="addHorseInput" list="addHorseOptions" autocomplete="off">
+      </label>
+      <datalist id="addHorseOptions"></datalist>
+      <label>
+        Class
+        <input id="addClassInput" list="addClassOptions" autocomplete="off">
+      </label>
+      <datalist id="addClassOptions"></datalist>
+      <menu>
+        <button class="rs-button tap" type="button" id="addCloseBtn">Close</button>
+        <button class="rs-button tap tap-active-2" type="button" id="addSaveBtn">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog id="barnFilterDialog" aria-label="Filter by horse">
+    <form method="dialog">
+      <p>Filter By Horse</p>
+      <label>
+        Horse
+        <input id="barnFilterInput" autocomplete="off">
+      </label>
+      <menu>
+        <button class="rs-button tap" type="button" id="barnFilterClearBtn">Clear</button>
+        <button class="rs-button tap" type="button" id="barnFilterCloseBtn">Close</button>
+        <button class="rs-button tap tap-active-2" type="button" id="barnFilterApplyBtn">Apply</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script>
+    const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
+    const SUBMIT_URL = "https://ringstatus.com/test/barn-entry";
+    const params = new URLSearchParams(location.search);
+    const DEFAULT_SHOW_NO = params.get("show_no") || "14909";
+    const DEFAULT_FOCUS_DAY = params.get("focus_day") || "2026-07-05";
+    const TRAINER_FILTER = params.get("trainer") || "";
+    const OUTPUT_BARN_ENTRIES = "barn-entries";
+    const OUTPUT_RING_CLASSES = "ring-classes";
+
+    const state = {
+      schedulePayload: null,
+      classRows: [],
+      rows: [],
+      gridApi: null,
+      editMode: false,
+      focusMode: false,
+      barnNameFilter: "",
+      ringAnchor: ""
+    };
+
+    const els = {
+      focusText: document.getElementById("focusText"),
+      rowCount: document.getElementById("rowCount"),
+      statusText: document.getElementById("statusText"),
+      entryActionBar: document.getElementById("entryActionBar"),
+      ringAnchors: document.getElementById("ringAnchors"),
+      editBtn: document.getElementById("editBtn"),
+      focusBtn: document.getElementById("focusBtn"),
+      barnFilterBtn: document.getElementById("barnFilterBtn"),
+      printModeBtn: document.getElementById("printModeBtn"),
+      addBtn: document.getElementById("addBtn"),
+      printBtn: document.getElementById("printBtn"),
+      submitBtn: document.getElementById("submitBtn"),
+      ringClassesPrintSheet: document.getElementById("ringClassesPrintSheet"),
+      addEntryDialog: document.getElementById("addEntryDialog"),
+      addHorseInput: document.getElementById("addHorseInput"),
+      addHorseOptions: document.getElementById("addHorseOptions"),
+      addClassInput: document.getElementById("addClassInput"),
+      addClassOptions: document.getElementById("addClassOptions"),
+      addCloseBtn: document.getElementById("addCloseBtn"),
+      addSaveBtn: document.getElementById("addSaveBtn"),
+      barnFilterDialog: document.getElementById("barnFilterDialog"),
+      barnFilterInput: document.getElementById("barnFilterInput"),
+      barnFilterClearBtn: document.getElementById("barnFilterClearBtn"),
+      barnFilterCloseBtn: document.getElementById("barnFilterCloseBtn"),
+      barnFilterApplyBtn: document.getElementById("barnFilterApplyBtn")
+    };
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+      }[char]));
+    }
+
+    function normalize(value) {
+      return String(value || "").toLowerCase().replace(/[^a-z0-9']+/g, " ").trim();
+    }
+
+    function compactTime(value) {
+      return normalize(value).replace(/\b(am|pm)\b/g, "").replace(/\s+/g, "");
+    }
+
+    function setStatus(message) {
+      els.statusText.textContent = message || "";
+    }
+
+    function focusDay() {
+      return state.schedulePayload?.show_focus_date || state.schedulePayload?.focus_day || DEFAULT_FOCUS_DAY;
+    }
+
+    function displayTime(row) {
+      return row.display_time || row.class_start_time || row.time_text || "";
+    }
+
+    function ringName(row) {
+      return row.ring_name_normalized || row.ring_display || row.ring_name || "";
+    }
+
+    function className(row) {
+      return row.class_name || row.class_label || "";
+    }
+
+    function horseName(row) {
+      return row.barn_name || row.show_name || row.horse_display || row.horse_name || row.horse || "";
+    }
+
+    function trainerText(row) {
+      return normalize([row.trainer, row.trainer_name, row.coach_name, row.tenant_name].join(" "));
+    }
+
+    function rowMatchesTrainer(row) {
+      if (!TRAINER_FILTER) return true;
+      const source = trainerText(row);
+      const target = normalize(TRAINER_FILTER);
+      return source.includes(target) || target.includes(source);
+    }
+
+    function classSearchText(row) {
+      return normalize([compactTime(displayTime(row)), displayTime(row), ringName(row), row.class_no, row.class_number, className(row)].join(" "));
+    }
+
+    function rowKey(row) {
+      return row.review_key || row.entry_const_key || row.entry_go_key || [
+        row.show_no || DEFAULT_SHOW_NO,
+        row.focus_day || focusDay(),
+        row.class_no || row.class_number || "",
+        row.entry_no || "",
+        horseName(row)
+      ].join("|");
+    }
+
+    function toMinutes(value) {
+      const text = String(value || "").trim();
+      const match = text.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+      if (!match) return 99999;
+      let hour = Number(match[1]);
+      const minute = Number(match[2]);
+      const meridiem = (match[3] || "").toUpperCase();
+      if (meridiem === "PM" && hour !== 12) hour += 12;
+      if (meridiem === "AM" && hour === 12) hour = 0;
+      return hour * 60 + minute;
+    }
+
+    function sortRows(rows) {
+      return rows.slice().sort((a, b) => {
+        const timeDiff = toMinutes(displayTime(a)) - toMinutes(displayTime(b));
+        if (timeDiff) return timeDiff;
+        const ringDiff = String(ringName(a)).localeCompare(String(ringName(b)));
+        if (ringDiff) return ringDiff;
+        const classDiff = String(a.class_number || a.class_no || "").localeCompare(String(b.class_number || b.class_no || ""));
+        if (classDiff) return classDiff;
+        return String(horseName(a)).localeCompare(String(horseName(b)));
+      });
+    }
+
+    async function fetchJson(url) {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || "HTTP " + response.status);
+      return data;
+    }
+
+    async function loadSchedule() {
+      const url = new URL(API_BASE);
+      url.searchParams.set("action", "wec-mobile-live");
+      url.searchParams.set("show_no", DEFAULT_SHOW_NO);
+      url.searchParams.set("focus_day", DEFAULT_FOCUS_DAY);
+      const data = await fetchJson(url);
+      state.schedulePayload = data;
+      state.classRows = [];
+      for (const ring of data.rings || []) {
+        for (const klass of ring.classes || []) {
+          state.classRows.push({
+            ...klass,
+            show_no: data.show_no || DEFAULT_SHOW_NO,
+            focus_day: data.show_focus_date || data.focus_day || DEFAULT_FOCUS_DAY,
+            focus_show_record_id: data.focus_show_record_id || "",
+            ring_no: ring.ring_no || klass.ring_no || "",
+            ring_day_no: klass.ring_day_no || "",
+            ring_name_normalized: ring.ring_name_normalized || klass.ring_name_normalized || "",
+            ring_display: ring.ring_display || ring.ring_name_normalized || ""
+          });
+        }
+      }
+    }
+
+    async function fetchClassOogRows() {
+      const rows = [];
+      for (let offset = 0; offset < 1000; offset += 200) {
+        const url = new URL(API_BASE);
+        url.searchParams.set("action", "export-mirror-table");
+        url.searchParams.set("show_no", DEFAULT_SHOW_NO);
+        url.searchParams.set("table", "class_oog");
+        url.searchParams.set("limit", "200");
+        url.searchParams.set("offset", String(offset));
+        const data = await fetchJson(url);
+        rows.push(...(data.data || []).filter(row => String(row.focus_day || "") === focusDay()));
+        if (!data.has_more) break;
+      }
+      return rows;
+    }
+
+    function classForEntry(row) {
+      return state.classRows.find(klass => String(klass.class_no || "") === String(row.class_no || "")) || {};
+    }
+
+    function reviewRowFromEntry(row) {
+      const klass = classForEntry(row);
+      return {
+        id: rowKey(row),
+        review_key: rowKey(row),
+        source: "mapped",
+        status: "pending",
+        show_no: row.show_no || DEFAULT_SHOW_NO,
+        focus_day: row.focus_day || focusDay(),
+        ring_name_normalized: row.ring_name_normalized || klass.ring_name_normalized || "",
+        class_no: row.class_no || klass.class_no || "",
+        no: row.class_number || klass.class_number || row.class_no || klass.class_no || "",
+        class_number: row.class_number || klass.class_number || "",
+        class_name: row.class_name || klass.class_name || "",
+        display_time: row.display_time || klass.display_time || klass.time_text || "",
+        time: row.display_time || klass.display_time || klass.time_text || "",
+        entry_no: row.entry_no || "",
+        barn_name: horseName(row),
+        horse_name: row.horse_name || row.horse || horseName(row),
+        starts_in: "",
+        matched_source_row: row.ROWID || row.rec_id || ""
+      };
+    }
+
+    function dedupeRows(rows) {
+      const map = new Map();
+      for (const row of rows) {
+        if (!row.review_key || map.has(row.review_key)) continue;
+        map.set(row.review_key, row);
+      }
+      return sortRows([...map.values()]);
+    }
+
+    function statusLabel(value) {
+      if (value === "confirmed") return "ok";
+      if (value === "declined") return "no";
+      return "tap";
+    }
+
+    function statusRenderer(params) {
+      const value = params.data?.status || "pending";
+      const variant = value === "confirmed" ? "tap-active-2" : value === "declined" ? "tap-active" : "";
+      return `<button class="rs-button tap ${variant}" type="button" data-status-key="${escapeHtml(params.data.review_key)}">${escapeHtml(statusLabel(value))}</button>`;
+    }
+
+    function classReviewRenderer(params) {
+      const row = params.data || {};
+      const top = [displayTime(row), ringName(row).toUpperCase(), row.no || row.class_number || row.class_no || ""].filter(Boolean).join(" | ");
+      const bottom = className(row);
+      return escapeHtml(top + (bottom ? " | " + bottom : ""));
+    }
+
+    function specialRowRenderer(params) {
+      const row = params.node?.data || params.rowNode?.data || {};
+      const label = [displayTime(row), ringName(row).toUpperCase(), row.no || row.class_number || row.class_no || "", className(row)].filter(Boolean).join(" | ");
+      return `
+        <div class="ag-full-width-anchor" role="presentation">
+          <div class="class-related-data has-rollup">
+            <div class="rollup-line">
+              <div class="class-related-rollup" data-rollups="">
+                <button type="button" class="rollup-item" disabled><span class="rollup-label">No Detail</span></button>
+              </div>
+            </div>
+            <div class="class-line">
+              <span class="time-cell"><span class="class-time">${escapeHtml(displayTime(row))}</span></span>
+              <span class="class-ring">${escapeHtml(ringName(row).toUpperCase())}</span>
+              <span class="class-name">${escapeHtml(row.no || row.class_number || row.class_no || "")} - ${escapeHtml(className(row))}</span>
+              <span class="class-entry"><span class="class-token">${escapeHtml(row.entry_count || 0)}</span></span>
+              <span class="class-status"><span class="class-token is-status status-soon" title="no detail" aria-label="no detail">no detail</span></span>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function classGroupKey(row) {
+      return [normalize(ringName(row)), normalize(displayTime(row)), row.no || row.class_number || row.class_no || "", normalize(className(row))].join("|");
+    }
+
+    function focusKeepValue(row) {
+      const value = Number(row.class_number || row.class_no);
+      return Number.isFinite(value) ? value : 999999999;
+    }
+
+    function focusRows(rows) {
+      if (!state.focusMode) return rows;
+      const groups = new Map();
+      rows.forEach(row => {
+        const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(row);
+      });
+      return rows.filter(row => {
+        const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
+        const group = groups.get(key) || [];
+        if (group.length < 2) return true;
+        const keep = group.slice().sort((a, b) => {
+          const valueDiff = focusKeepValue(a) - focusKeepValue(b);
+          if (valueDiff) return valueDiff;
+          return sortRows([a, b])[0] === a ? -1 : 1;
+        })[0];
+        return row.review_key === keep.review_key;
+      });
+    }
+
+    function rowsWithSpecialSummaries(rows) {
+      const output = [];
+      const seen = new Set();
+      rows.forEach(row => {
+        const key = classGroupKey(row);
+        if (!seen.has(key)) {
+          seen.add(key);
+          const groupRows = rows.filter(candidate => classGroupKey(candidate) === key);
+          output.push({
+            id: "special|" + key,
+            review_key: "special|" + key,
+            __special: true,
+            display_time: displayTime(row),
+            ring_name_normalized: ringName(row),
+            class_no: row.class_no || "",
+            class_number: row.class_number || "",
+            no: row.no || row.class_number || row.class_no || "",
+            class_name: className(row),
+            entry_count: groupRows.length,
+            detail_state: "no_underlying_data"
+          });
+        }
+        output.push(row);
+      });
+      return output;
+    }
+
+    function visibleRows() {
+      const filtered = state.rows.filter(row => {
+        if (state.ringAnchor && normalize(ringName(row)) !== state.ringAnchor) return false;
+        if (state.barnNameFilter && !normalize(horseName(row)).includes(state.barnNameFilter)) return false;
+        return true;
+      });
+      return rowsWithSpecialSummaries(focusRows(filtered));
+    }
+
+    function updateRows(message) {
+      const rows = visibleRows();
+      if (state.gridApi) state.gridApi.setGridOption("rowData", rows);
+      const normalCount = rows.filter(row => !row.__special).length;
+      const specialCount = rows.length - normalCount;
+      els.rowCount.textContent = String(normalCount);
+      renderRingAnchors();
+      if (message) setStatus(`${message} | special ${specialCount} | focus ${state.focusMode ? "on" : "off"} | horse ${state.barnNameFilter ? "filtered" : "all"}`);
+    }
+
+    function toggleStatus(key) {
+      state.rows = state.rows.map(row => {
+        if (row.__special) return row;
+        if (row.review_key !== key) return row;
+        const current = row.status || "pending";
+        const next = current === "pending" ? "confirmed" : current === "confirmed" ? "declined" : "pending";
+        return { ...row, status: next };
+      });
+      updateRows("status updated");
+    }
+
+    function renderRingAnchors() {
+      const rings = [...new Map(state.rows.map(row => [normalize(ringName(row)), ringName(row).toUpperCase()]).filter(([key]) => key)).entries()]
+        .sort((a, b) => a[1].localeCompare(b[1], undefined, { numeric: true }));
+      els.ringAnchors.innerHTML = `<button class="rs-button tap ${state.ringAnchor ? "" : "tap-active"}" type="button" data-ring="">All</button>` +
+        rings.map(([key, label]) => `<button class="rs-button tap ${state.ringAnchor === key ? "tap-active" : ""}" type="button" data-ring="${escapeHtml(key)}">${escapeHtml(label)}</button>`).join("");
+    }
+
+    function classOptionValue(row) {
+      return [displayTime(row), ringName(row).toUpperCase(), row.class_number || row.class_no || "", className(row)].filter(Boolean).join(" | ");
+    }
+
+    function renderAddOptions() {
+      const horses = [...new Set(state.rows.map(row => horseName(row)).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      els.addHorseOptions.innerHTML = horses.map(horse => `<option value="${escapeHtml(horse)}"></option>`).join("");
+      els.addClassOptions.innerHTML = state.classRows
+        .slice()
+        .sort((a, b) => classOptionValue(a).localeCompare(classOptionValue(b)))
+        .map(row => `<option value="${escapeHtml(classOptionValue(row))}"></option>`)
+        .join("");
+    }
+
+    function openAddEntry() {
+      renderAddOptions();
+      els.addHorseInput.value = "";
+      els.addClassInput.value = "";
+      if (typeof els.addEntryDialog.showModal === "function") {
+        els.addEntryDialog.showModal();
+      } else {
+        setStatus("add entry dialog unavailable");
+      }
+    }
+
+    function saveAddedEntry() {
+      const horse = els.addHorseInput.value.trim();
+      const classSearch = normalize(els.addClassInput.value);
+      if (!horse || !classSearch) {
+        setStatus("select horse and class");
+        return;
+      }
+      const klass = state.classRows.find(row => normalize(classOptionValue(row)).includes(classSearch) || classSearchText(row).includes(classSearch));
+      if (!klass) {
+        setStatus("class not found");
+        return;
+      }
+      const id = ["user", Date.now(), klass.class_no || klass.class_number || "", normalize(horse)].join("|");
+      state.rows = dedupeRows([...state.rows, {
+        id,
+        review_key: id,
+        source: "user_added",
+        status: "pending",
+        show_no: klass.show_no || DEFAULT_SHOW_NO,
+        focus_day: klass.focus_day || focusDay(),
+        ring_name_normalized: ringName(klass),
+        class_no: klass.class_no || "",
+        class_number: klass.class_number || "",
+        no: klass.class_number || klass.class_no || "",
+        class_name: className(klass),
+        display_time: displayTime(klass),
+        time: displayTime(klass),
+        entry_no: "",
+        barn_name: horse,
+        horse_name: horse,
+        starts_in: "",
+        pencil_in: true
+      }]);
+      els.addEntryDialog.close();
+      updateRows("added entry");
+    }
+
+    async function submitRows() {
+      const payload = {
+        source: OUTPUT_BARN_ENTRIES,
+        submitted_at: new Date().toISOString(),
+        row_count: state.rows.length,
+        rows: state.rows
+      };
+      els.submitBtn.disabled = true;
+      setStatus("submitting");
+      try {
+        const response = await fetch(SUBMIT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || result.ok !== true) throw new Error(result.error || "submit failed");
+        setStatus("submitted " + state.rows.length + " row(s)");
+      } catch (error) {
+        setStatus("submit failed: " + (error.message || error));
+      } finally {
+        els.submitBtn.disabled = false;
+      }
+    }
+
+    function buildRingClassesPrintSheet() {
+      const rows = visibleRows().filter(row => !row.__special);
+      const generatedAt = new Date().toISOString();
+      els.ringClassesPrintSheet.innerHTML =
+        `<div class="print-title">
+          <h1>Barn Entry Review</h1>
+          <p>${escapeHtml(OUTPUT_RING_CLASSES)}<br>${escapeHtml(DEFAULT_SHOW_NO)}<br>${escapeHtml(focusDay())}<br>${escapeHtml(generatedAt)}</p>
+        </div>
+        <div class="print-columns">
+          ${rows.map(row => `
+            <div class="print-row">
+              <span>${escapeHtml(displayTime(row))}</span>
+              <span>${escapeHtml(ringName(row).toUpperCase())}</span>
+              <span>${escapeHtml(row.no || row.class_number || row.class_no || "")}</span>
+              <span>${escapeHtml(className(row))}</span>
+              <span>${escapeHtml(horseName(row))}</span>
+            </div>
+          `).join("")}
+        </div>`;
+    }
+
+    function printRingClasses() {
+      buildRingClassesPrintSheet();
+      setStatus("printing " + OUTPUT_RING_CLASSES);
+      setTimeout(() => window.print(), 50);
+    }
+
+    const columnDefs = [
+      { headerName: "TAP", field: "status", minWidth: 78, width: 78, hide: true, cellRenderer: statusRenderer },
+      { headerName: "CLASS", field: "class_form_description", minWidth: 220, flex: 1, valueGetter: params => [displayTime(params.data), ringName(params.data).toUpperCase(), params.data.no || params.data.class_number || params.data.class_no || "", className(params.data)].filter(Boolean).join(" | "), cellRenderer: classReviewRenderer },
+      { headerName: "HORSE", field: "barn_name", minWidth: 120, width: 160 }
+    ];
+
+    const gridOptions = {
+      rowData: [],
+      columnDefs,
+      defaultColDef: {
+        sortable: false,
+        filter: false,
+        resizable: false,
+        suppressHeaderMenuButton: true
+      },
+      getRowId: params => params.data.id || params.data.review_key,
+      rowSelection: { mode: "singleRow", checkboxes: false, enableClickSelection: true },
+      animateRows: false,
+      ensureDomOrder: true,
+      suppressMovableColumns: true,
+      suppressCellFocus: true,
+      suppressHeaderFocus: true,
+      isFullWidthRow: params => !!params.rowNode.data?.__special,
+      fullWidthCellRenderer: specialRowRenderer,
+      onGridReady: event => {
+        state.gridApi = event.api;
+        updateRows();
+      },
+      onCellClicked: params => {
+        if (params.data?.__special) {
+          setStatus("special row has no underlying detail data");
+          return;
+        }
+        const button = params.event?.target?.closest("[data-status-key]");
+        if (button) toggleStatus(button.getAttribute("data-status-key"));
+      }
+    };
+
+    function renderFallback() {
+      const gridDiv = document.getElementById("agBaseGrid");
+      gridDiv.innerHTML = "<table><tr><th>TAP</th><th>CLASS</th><th>HORSE</th></tr></table>";
+    }
+
+    async function init() {
+      const gridDiv = document.getElementById("agBaseGrid");
+      if (window.agGrid && typeof window.agGrid.createGrid === "function") {
+        window.agGrid.createGrid(gridDiv, gridOptions);
+      } else {
+        renderFallback();
+      }
+      try {
+        setStatus("loading schedule");
+        await loadSchedule();
+        els.focusText.textContent = [focusDay(), TRAINER_FILTER].filter(Boolean).join(" | ");
+        setStatus("loading mapped entries");
+        const sourceRows = await fetchClassOogRows();
+        state.rows = dedupeRows(sourceRows.filter(rowMatchesTrainer).map(reviewRowFromEntry));
+        updateRows("mapped rows loaded");
+      } catch (error) {
+        setStatus("load failed: " + (error.message || error));
+      }
+    }
+
+    els.editBtn.addEventListener("click", () => {
+      state.editMode = !state.editMode;
+      els.editBtn.classList.toggle("tap-active", state.editMode);
+      columnDefs[0].hide = !state.editMode;
+      if (state.gridApi) state.gridApi.setGridOption("columnDefs", columnDefs);
+      els.addBtn.hidden = !state.editMode;
+      els.submitBtn.hidden = !state.editMode;
+      updateRows(state.editMode ? "edit mode" : "review mode");
+    });
+    els.focusBtn.addEventListener("click", () => {
+      state.focusMode = !state.focusMode;
+      els.focusBtn.classList.toggle("tap-active", state.focusMode);
+      updateRows(state.focusMode ? "focus on" : "focus off");
+    });
+    els.ringAnchors.addEventListener("click", event => {
+      const button = event.target.closest("[data-ring]");
+      if (!button) return;
+      state.ringAnchor = button.getAttribute("data-ring") || "";
+      updateRows(state.ringAnchor ? "anchor " + button.textContent : "all rings");
+    });
+    els.barnFilterBtn.addEventListener("click", () => {
+      els.barnFilterInput.value = state.barnNameFilter;
+      if (typeof els.barnFilterDialog.showModal === "function") els.barnFilterDialog.showModal();
+    });
+    els.barnFilterApplyBtn.addEventListener("click", () => {
+      state.barnNameFilter = normalize(els.barnFilterInput.value);
+      els.barnFilterBtn.classList.toggle("tap-active", !!state.barnNameFilter);
+      els.barnFilterDialog.close();
+      updateRows(state.barnNameFilter ? "horse filter" : "horse filter cleared");
+    });
+    els.barnFilterClearBtn.addEventListener("click", () => {
+      state.barnNameFilter = "";
+      els.barnFilterInput.value = "";
+      els.barnFilterBtn.classList.remove("tap-active");
+      els.barnFilterDialog.close();
+      updateRows("horse filter cleared");
+    });
+    els.barnFilterCloseBtn.addEventListener("click", () => els.barnFilterDialog.close());
+    els.addBtn.addEventListener("click", openAddEntry);
+    els.addCloseBtn.addEventListener("click", () => els.addEntryDialog.close());
+    els.addSaveBtn.addEventListener("click", saveAddedEntry);
+    els.printBtn.addEventListener("click", printRingClasses);
+    els.submitBtn.addEventListener("click", submitRows);
+
+    init();
+  </script>
+</body>
+</html>

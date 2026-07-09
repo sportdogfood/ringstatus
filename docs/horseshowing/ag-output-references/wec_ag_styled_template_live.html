@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WEC Mobile V2</title>
+  <title>WEC Print Review</title>
   <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
   <style>
     :root {
@@ -203,8 +203,8 @@
   <div class="shell">
     <header class="bar">
       <div class="title">
-        <h1>WEC Mobile V2</h1>
-        <p>Live schedule with class rollups, drawer detail, hide, and print.</p>
+        <h1>WEC Print Review</h1>
+        <p>Live schedule preview with class rollups, drawer detail, hide, and print.</p>
       </div>
       <div class="actions" aria-label="Grid actions">
         <button id="refreshBtn" type="button">Refresh</button>
@@ -249,9 +249,9 @@
 
   <script>
     (function () {
-      const DEFAULT_SHOW_NO = "14910";
+      const DEFAULT_SHOW_NO = "14909";
       const FUNCTION_ORIGIN = "https://horseshowing-700800454.development.catalystserverless.com";
-      const PRIMARY_API = window.RS_WEC_GRID_API || FUNCTION_ORIGIN + "/server/wec_stage1_3_clean_proof/";
+      const PRIMARY_API = window.RS_WEC_GRID_API || FUNCTION_ORIGIN + "/server/wec_live_grid/execute";
       const LEGACY_FALLBACK_API = FUNCTION_ORIGIN + "/server/horseshowing_sync/";
       const HIDDEN_KEY = "rs-wec-ag-live-hidden";
       const SAMPLE_ROWS = [
@@ -313,7 +313,7 @@
       function dataUrl(baseUrl) {
         const url = new URL(baseUrl);
         const params = new URLSearchParams(location.search);
-        url.searchParams.set("action", baseUrl === PRIMARY_API ? "wec-mobile-pro-live" : "wec-mobile-live");
+        url.searchParams.set("action", "wec-mobile-live");
         url.searchParams.set("show_no", params.get("show_no") || DEFAULT_SHOW_NO);
         if (params.get("focus_day")) url.searchParams.set("focus_day", params.get("focus_day"));
         return url.toString();
@@ -842,11 +842,11 @@
       function buildPrintSheet() {
         const generatedAt = new Date().toISOString();
         const body = visibleRings.map(ring => '<section class="print-ring-group"><div class="print-ring">' + escapeHtml(ring.title) + "</div>" + ring.classes.map((row, index) => '<div class="print-row' + (index % 2 ? " is-zebra" : "") + (row.horse_items && row.horse_items.length ? " has-rollup" : "") + '">' + printRollup(row) + '<span class="print-cell time">' + escapeHtml(row.time || "--") + '</span><span class="print-cell class">' + escapeHtml(classLabel(row)) + "</span></div>").join("") + "</section>").join("");
-        printSheet.innerHTML = '<div class="print-title"><h1>WEC Mobile V2</h1><p>' + escapeHtml(metadataStatusPrefix()) + "<br>" + escapeHtml(generatedAt) + '</p></div><div class="print-columns">' + body + "</div>";
+        printSheet.innerHTML = '<div class="print-title"><h1>WEC Print Review</h1><p>' + escapeHtml(metadataStatusPrefix()) + "<br>" + escapeHtml(generatedAt) + '</p></div><div class="print-columns">' + body + "</div>";
       }
 
       function printRollup(row) { const value = rollupText(row); return value ? '<div class="print-rollup">' + escapeHtml(value) + "</div>" : ""; }
-      function printGrid() { buildPrintSheet(); window.print(); }
+      function printGrid() { buildPrintSheet(); setTimeout(() => window.print(), 50); }
 
       function makeTheme() {
         if (!window.agGrid || !window.agGrid.themeQuartz) return undefined;
@@ -957,31 +957,7 @@
         onGridSizeChanged: scheduleRollupRelocation
       };
 
-      function ensureAgGridLoaded() {
-        if (window.agGrid && typeof window.agGrid.createGrid === "function") return Promise.resolve();
-        return new Promise((resolve, reject) => {
-          const existing = document.querySelector('script[data-rs-ag-grid-loader="true"]');
-          if (existing) {
-            existing.addEventListener("load", resolve, { once: true });
-            existing.addEventListener("error", reject, { once: true });
-            return;
-          }
-          const script = document.createElement("script");
-          script.dataset.rsAgGridLoader = "true";
-          script.src = "https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js";
-          script.onload = resolve;
-          script.onerror = () => reject(new Error("AG Grid failed to load."));
-          document.head.appendChild(script);
-        });
-      }
-
-      async function initGrid() {
-        try {
-          await ensureAgGridLoaded();
-        } catch (error) {
-          setStatus(error.message || String(error), true);
-          return;
-        }
+      function initGrid() {
         if (!window.agGrid || typeof window.agGrid.createGrid !== "function") {
           setStatus("AG Grid failed to load.", true);
           return;

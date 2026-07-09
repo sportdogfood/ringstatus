@@ -1,69 +1,131 @@
-# WEC Catalyst Step 6 Results Contract
+# WEC Results Lane Contract
+
+Version: 2026-07-08 v2
 
 ## Purpose
 
-Step 6 is the WEC results lane. It checks HorseShowing results for current active-focus classes that are relevant to our rider scope, writes only real source results, and mirrors those rows for Airtable visibility.
+The Results lane owns result ingestion only.
 
-Step 6 is separate from the Step 1-5 stack. It does not rebuild baseline schedule/runtime data and it does not run alerts or output lanes.
+It wakes on its own scheduler, checks the active focus show, probes HorseShowing results only for tracked classes, writes result rows, and stops.
 
-## Action
+## Owner
 
-`wec-step6-results`
+`results owner + upstream observer`
+
+Meaning:
+
+- Results owns `horseshowing_results_runner`.
+- Results owns `wec-step6-results`.
+- Results owns `hs_result_queue`, `hs_result_classes`, and `hs_class_results`.
+- Results may observe `focus_show`, `hs_update_schedule`, `hs_class_start_times`, `hs_entry_go_times`, and `time_engine`.
+- Results must not mutate core schedule/runtime identity.
+- Results must not run or patch `core 1-4`, `live-enrich`, `time-engine`, `alerts`, or `publish`.
+
+## Scheduler
+
+Cron:
+
+- `wec_results_6_min`
+
+Target:
+
+```text
+horseshowing_results_runner/?action=wec-step6-results&limit=3
+```
+
+Rules:
+
+- The cron must stay enabled during active result windows.
+- The cron target must not hardcode old `show_no` or `focus_day`.
+- The runner resolves active `focus_show`.
+- Scheduler-owned proof must come from Catalyst JobScheduling, not a manual endpoint call.
 
 ## Gate
 
-Step 6 runs only when:
+Results runs only when active `focus_show` has:
 
-`focus_show.results_enabled = true`
+- `active = true`
+- `results_enabled = true`
+- valid `show_no`
+- valid `focus_day`
 
-If the gate is false or blank, Step 6 must skip with no source fetch and no writes.
+All Catalyst reads must filter by exact active:
 
-## Sources
+```text
+show_no + focus_day
+```
 
-Catalyst runtime source tables:
+No back-date fallback is allowed.
 
-- `hs_class_start_times`
-- `hs_entry_go_times`
+## Candidate Scope
 
-Step 6 must not read legacy Airtable `class_oog_staging.active_entries`.
+Results candidates are allowed only from classes present in:
 
-## Result Endpoint
+```text
+hs_entry_go_times
+```
 
-HorseShowing endpoint:
+`hs_update_schedule` is reference data only.
 
-- `show_results4.php`
+It may provide:
 
-## Source Request Rule
+- `live_flag`
+- `class_start_time`
+- `entry_count`
+- native `class_no`
+- class/ring metadata
 
-Step 6 sends HorseShowing-native values upstream:
+It must not broaden the candidate list.
 
-- `class_no`
+Candidate rule:
 
-Step 6 must not send these internal keys upstream:
+```text
+class exists in hs_entry_go_times for active show_no + focus_day
+AND class exists in hs_class_start_times
+AND result eligibility is true
+AND class is not already completed/exhausted
+```
 
-- `ring_visual_key`
-- `class_visual_key`
-- `entry_visual_key`
+## Result Eligibility
 
-Visual keys are internal runtime/result identity keys only.
+Results accepts either readiness source:
 
-## Our-Rider Scope
+1. `time_engine` result readiness:
 
-Step 6 scopes classes through current active-focus runtime entries in `hs_entry_go_times`.
+```text
+time_engine.level = class
+time_engine.trigger_ready = true
+tags/status/payload indicate result/check_results readiness
+```
 
-A class is in our-rider scope when current active-focus `hs_entry_go_times` contains a matching `class_visual_key` and entry identity.
+2. Narrow watched fallback:
 
-## Check Results Rule
+```text
+class is present in hs_entry_go_times
+AND now >= class_start_time + (entry_count * 3.3 minutes)
+```
 
-Step 6 computes:
+If any current-day `hs_update_schedule.live_flag = 1` rows exist, watched fallback is limited to those live-flag rows.
 
-`check_results = true`
+If no live-flag rows exist, watched fallback is limited to tracked `hs_entry_go_times` classes only.
 
-when:
+`result_ready` means "probe results now." It does not mean results exist and does not mark a class Done.
 
-`now >= class_start_time + (entry_count * 3.3 minutes)`
+## Source Request
 
-This is only a probe-readiness rule. It does not mean the class is Done.
+HorseShowing source:
+
+```text
+show_results4.php
+```
+
+Request uses native:
+
+```text
+class_no
+```
+
+Internal keys must not be sent upstream.
 
 ## Retry Contract
 
@@ -71,10 +133,11 @@ This is only a probe-readiness rule. It does not mean the class is Done.
 
 Fields:
 
-- `attempts`
 - `status`
+- `attempts`
 - `last_checked_at`
 - `next_check_at`
+- `result_rows`
 
 Statuses:
 
@@ -84,80 +147,110 @@ Statuses:
 
 Rules:
 
-- Probe a class at most 5 times.
-- Retry only every 6 minutes.
-- If no results and `attempts < 5`, set `status=pending` and `next_check_at = now + 6 minutes`.
-- If no results and `attempts >= 5`, set `status=exhausted`.
-- If results are found, set `status=completed`.
+- Completed classes are skipped.
+- Exhausted classes are skipped.
+- Classes with attempts >= 5 are skipped.
+- Pending classes retry only when `next_check_at` is due.
+- No fake result rows.
 
 ## Completion Rule
 
-Step 6 marks:
+When real results are returned:
 
-`hs_class_start_times.class_status = Done`
+- write `hs_result_queue`
+- write `hs_result_classes`
+- write `hs_class_results`
+- mirror to Airtable `hs_*` result tables
+- update related `hs_class_start_times` status to `Done`
 
-only when real results are found from `show_results4.php`.
-
-Step 6 must not mark Done from the time estimate alone.
-
-Step 6 must not create fake result rows.
-
-## Outputs
-
-Catalyst outputs:
-
-- `hs_result_queue`
-- `hs_result_classes`
-- `hs_class_results`
-
-Airtable mirrors:
-
-- `hs_result_queue`
-- `hs_result_classes`
-- `hs_class_results`
-
-## Latest PASS Evidence
-
-Verified current active focus:
-
-- `show_no = 14909`
-- `focus_day = 2026-07-03`
-
-Step 6 proof:
-
-- `results_enabled = true`
-- our-rider scoped class count: `14`
-- completed result classes: `13`
-- Catalyst `hs_result_queue = 13`
-- Catalyst `hs_result_classes = 13`
-- Catalyst `hs_class_results = 174`
-- Airtable `hs_result_queue = 13`
-- Airtable `hs_result_classes = 13`
-- Airtable `hs_class_results = 174`
-- Airtable mirror counts match Catalyst counts.
-
-Bounded proof:
-
-- Step 6 ran in bounded `limit=3` passes.
-- Final pass returned `probed_classes = 0`.
-- No pending classes needed `next_check_at` because every probed class returned real results.
-- Exhausted classes: `0`
-- Fake results created: `0`
+Do not mark `Done` from time estimate alone.
 
 ## Explicit Exclusions
 
-Step 6 must not run or touch:
+Results must not run:
 
-- Step 1-5
+- core 1-4
+- live-enrich
+- time-engine
 - alerts
+- publish
 - mobile
 - print
-- PDF
-- UI
-- fake result rows
 - Webflow publish
 - Production deploy
 
-## Next Gate
+Results must not read:
 
-Decide whether Step 6 gets its own Catalyst scheduler/job.
+```text
+class_oog_staging.active_entries
+```
+
+## Required Response Evidence
+
+Each `wec-step6-results` response should expose:
+
+- active `show_no`
+- active `focus_day`
+- `results_enabled`
+- source tables
+- `hs_entry_go_times` tracked class count
+- `time_engine_result_ready`
+- watched-result-ready count
+- guard: `only_hs_entry_go_times_classes = true`
+- guard: `outside_tracked_class_keys = 0`
+- probed class numbers
+- completed classes
+- result row counts
+- `step_1_5_run = false`
+- `result_alerts_run = false`
+
+## Current Proof
+
+Date: 2026-07-08
+
+Active focus:
+
+- `show_no = 14910`
+- `focus_day = 2026-07-08`
+- `results_enabled = true`
+
+Scheduler:
+
+- `wec_results_6_min`
+- scheduler-owned submit succeeded
+- HTTP `200`
+
+Current Catalyst result state after scheduler-owned runs:
+
+- `hs_result_queue`: 7 completed tracked classes
+- completed class numbers:
+  - `33331`
+  - `33327`
+  - `31361`
+  - `33332`
+  - `31381`
+  - `31488`
+  - `31386`
+
+Known Airtable mirror proof:
+
+- class `33332`
+- `hs_result_queue`: 1
+- `hs_result_classes`: 1
+- `hs_class_results`: 20
+- includes `Sandenal` / `Tanner Korotkin`
+
+## Current Guardrail
+
+The lane must stay narrow:
+
+```text
+Results candidate = active-focus class present in hs_entry_go_times
+```
+
+The full `hs_update_schedule` day list is not a candidate list.
+
+## Known Caution
+
+Do not use `no_write=1` as a proof path for Step 6 until it is explicitly fixed and verified.
+

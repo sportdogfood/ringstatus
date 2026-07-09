@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cache-control" content="no-store">
+    <title>RSWP Local Render Template</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./rsa-stylesheets.locked.css">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main id="packing-app" class="rsa-dashboard">
+      Loading WEC packing...
+    </main>
+
+    <script>
+      window.WEC_PACKING_CONFIG = {
+        mode: "edit",
+        apiUrl: "https://ringstatus.com/test/wec-packing",
+        stateUrl: "https://ringstatus.com/test/wec-packing/state",
+        actionUrl: "https://ringstatus.com/test/wec-packing/action",
+        healthUrl: "https://ringstatus.com/test/wec-packing/health",
+        printUrl: "https://ringstatus.com/test/wec-packing/print",
+        printPageUrl: "https://ringstatus.com/rswp-print",
+        pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/",
+        showId: "",
+        packWaveId: "",
+        packWaveKey: "wave_one",
+        enableHorseNotNeeded: false
+      };
+    </script>
+    <script src="./wec-packing.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Show List Static Template</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@df8d9d4eb0652f76c952ed718b36e774100148f4/webflow/packing-worksheet/styles.css">
+  </head>
+  <body>
+    <main id="packing-app" class="rsa-dashboard"></main>
+
+    <script>
+      (() => {
+        const root = document.getElementById("packing-app");
+        const state = {
+          activeList: "show_legs",
+          search: "",
+          editField: "",
+          detailId: "",
+          lists: [
+            {
+              id: "blankets",
+              label: "BLANKETS",
+              rows: [
+                { id: "cooler", name: "COOLER", needed: 8, packed: 0 },
+                { id: "scrim_sheet", name: "SCRIM SHEET", needed: 8, packed: 4 }
+              ]
+            },
+            {
+              id: "show_legs",
+              label: "SHOW LEGS",
+              rows: [
+                { id: "everyday_bell_boots", name: "EVERYDAY BELL BOOTS", needed: 6, packed: 0 },
+                { id: "front_jump_boots", name: "FRONT JUMP BOOTS (1PCS)", needed: 38, packed: 0 },
+                { id: "hind_jump_boots", name: "HIND JUMP BOOTS (1PCS)", needed: 38, packed: 1 }
+              ]
+            }
+          ]
+        };
+
+        function escapeHtml(value) {
+          return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function escapeAttr(value) {
+          return escapeHtml(value);
+        }
+
+        function activeList() {
+          return state.lists.find((list) => list.id === state.activeList) || state.lists[0];
+        }
+
+        function allRows() {
+          return state.lists.flatMap((list) => list.rows.map((row) => ({ id: row.id, row, list })));
+        }
+
+        function activeRows() {
+          const query = state.search.trim().toLowerCase();
+          const rows = activeList().rows;
+          if (!query) return rows;
+          return rows.filter((row) => row.name.toLowerCase().includes(query));
+        }
+
+        function rowLeft(row) {
+          return Math.max(0, Number(row.needed || 0) - Number(row.packed || 0));
+        }
+
+        function tokenHtml(row) {
+          const left = rowLeft(row);
+          if (Number(row.needed) > 0 && left === 0) return `<span class="lp-achievement packing-token is-packed">PACKED</span>`;
+          if (Number(row.packed) > 0) return `<span class="lp-achievement packing-token is-open">LEFT: ${escapeHtml(left)}</span>`;
+          return `<span class="lp-achievement packing-token is-need">NEED: ${escapeHtml(row.needed)}</span>`;
+        }
+
+        function sectionTitleHtml() {
+          return `
+            <div class="lp-section-title packing-section-title">
+              <h3>Show</h3>
+              <span class="lp-section-actions packing-section-title-actions">
+                <button class="lp-filter-toggle packing-print-button" type="button" data-action="print">PRINT LIST</button>
+              </span>
+            </div>
+          `;
+        }
+
+        function listSwitcherHtml() {
+          return `
+            <div class="packing-list-switcher" aria-label="Packing lists">
+              ${state.lists.map((list) => `
+                <button class="lp-filter-toggle packing-list-switch ${list.id === state.activeList ? "is-active" : ""}" type="button" data-list-switch="${escapeAttr(list.id)}">
+                  ${escapeHtml(list.label)}
+                </button>
+              `).join("")}
+            </div>
+          `;
+        }
+
+        function listLabelRowHtml(list) {
+          return `
+            <div class="lp-row is-static packing-list-action-row">
+              <span class="lp-row-title">${escapeHtml(list.label)}</span>
+              <span class="packing-list-action-hottext" aria-label="Inline edit fields">
+                <span class="packing-hottext-prefix">EDIT:</span>
+                ${hottextHtml("title", "TITLE")}
+                ${hottextHtml("packed", "PACKED")}
+                ${hottextHtml("needed", "NEEDED")}
+              </span>
+            </div>
+          `;
+        }
+
+        function hottextHtml(field, label) {
+          return `<span class="packing-hottext ${state.editField === field ? "is-active" : ""}" role="button" tabindex="0" data-edit-field="${escapeAttr(field)}">${escapeHtml(label)}</span>`;
+        }
+
+        function searchHtml() {
+          return `
+            <div class="packing-section-search">
+              <input class="lp-edit-input packing-section-search-input" type="search" placeholder="Search this section" value="${escapeAttr(state.search)}" data-search>
+            </div>
+          `;
+        }
+
+        function itemRowHtml(row) {
+          const editing = !!state.editField;
+          const tag = editing ? "div" : "button";
+          const attrs = editing ? "" : `type="button" data-row-detail="${escapeAttr(row.id)}"`;
+          return `
+            <${tag} class="lp-row packing-row ${editing ? "is-inline-editing" : ""}" ${attrs}>
+              <span class="packing-inline-main">
+                ${itemTitleHtml(row)}
+                ${inlineEditControlsHtml(row)}
+              </span>
+              <span class="packing-state-stack">
+                ${tokenHtml(row)}
+                <span class="packing-token-meta">Need: ${escapeHtml(row.needed)}</span>
+              </span>
+            </${tag}>
+          `;
+        }
+
+        function itemTitleHtml(row) {
+          if (state.editField === "title") {
+            return `<input class="lp-edit-input packing-inline-title-input" type="text" value="${escapeAttr(row.name)}" data-inline-input="${escapeAttr(row.id)}" data-inline-field="name">`;
+          }
+          return `<span class="lp-row-title">${escapeHtml(row.name)}</span>`;
+        }
+
+        function inlineEditControlsHtml(row) {
+          if (!state.editField) return "";
+          const fields = [];
+          if (state.editField === "packed") fields.push(inlineQuantityInputHtml(row, "packed", "PACKED"));
+          if (state.editField === "needed") fields.push(inlineQuantityInputHtml(row, "needed", "NEEDED"));
+          return `
+            <span class="packing-inline-edit-fields">
+              ${fields.join("")}
+              <button class="packing-hottext packing-inline-save" type="button" data-save-row="${escapeAttr(row.id)}">SAVE</button>
+            </span>
+          `;
+        }
+
+        function inlineQuantityInputHtml(row, field, label) {
+          return `
+            <span class="packing-inline-edit-box">
+              <input class="lp-edit-input packing-inline-quantity-input" type="number" min="0" step="1" inputmode="numeric" value="${escapeAttr(row[field])}" data-inline-input="${escapeAttr(row.id)}" data-inline-field="${escapeAttr(field)}">
+              <span class="packing-inline-edit-label">${escapeHtml(label)}</span>
+            </span>
+          `;
+        }
+
+        function detailHtml(rowWithList) {
+          const row = rowWithList?.row;
+          const list = rowWithList?.list;
+          if (!row) return "";
+          return `
+            <div class="lp-modal" id="packingDetail" aria-hidden="false">
+              <div class="lp-modal-backdrop" data-close-detail></div>
+              <section class="lp-modal-card" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
+                <button class="lp-modal-close" type="button" data-close-detail aria-label="Close detail">x</button>
+                <div id="packingDetailContent" data-modal-content>
+                  <div class="lp-profile-shell packing-detail-shell packing-theme-classes">
+                    <div class="lp-profile-head wec-profile-top">
+                      <h2 class="lp-profile-title rsa-H1" id="drawerTitle">${escapeHtml(row.name)}</h2>
+                      <p class="lp-profile-subtitle rsa-p">${escapeHtml(list.label)}</p>
+                    </div>
+
+                    <section class="lp-profile-panel packing-detail wec-detail-section">
+                      <div data-wec-record="${escapeAttr(row.id)}" data-wec-name="${escapeAttr(row.name)}">
+                        <div class="lp-field-grid lp-profile-tab-panel is-active">
+                          <div class="lp-detail-list packing-detail-totals">
+                            ${detailRowHtml("Needed", row.needed)}
+                            ${detailRowHtml("Packed", row.packed)}
+                            ${detailRowHtml("Left", rowLeft(row))}
+                          </div>
+                          <div class="lp-edit-panel">
+                            <div class="lp-edit-head"><span>Actions</span></div>
+                            <div class="packing-control-list">
+                              <div class="lp-row is-detail packing-control-row">
+                                <span class="lp-row-title">State</span>
+                                <span class="lp-row-meta">${rowLeft(row) ? "Needs packing" : "Packed"}</span>
+                              </div>
+                              <div class="lp-row is-detail packing-control-row">
+                                <span class="lp-row-title">Update</span>
+                                <span class="lp-row-meta">
+                                  <button class="lp-edit-button" type="button" data-mark-packed="${escapeAttr(row.id)}">MARK PACKED</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <div class="lp-profile-modal-footer wec-profile-footer">
+                      <div class="lp-profile-footer packing-save-meta rsa-p">
+                        <span>Static template. Changes update seeded local data only.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          `;
+        }
+
+        function detailRowHtml(label, value) {
+          return `
+            <div class="lp-detail-row">
+              <div class="lp-detail-label">${escapeHtml(label)}</div>
+              <div class="lp-detail-value">${escapeHtml(value)}</div>
+            </div>
+          `;
+        }
+
+        function render() {
+          const list = activeList();
+          const rows = activeRows();
+          const detailRow = state.detailId
+            ? allRows().find((entry) => entry.id === state.detailId)
+            : null;
+          root.innerHTML = `
+            <section class="lp-section-block packing-theme-show">
+              ${sectionTitleHtml()}
+              ${listSwitcherHtml()}
+              <div class="lp-list">
+                ${listLabelRowHtml(list)}
+                ${searchHtml()}
+                ${rows.length ? rows.map(itemRowHtml).join("") : emptyRowHtml("No rows")}
+              </div>
+            </section>
+            ${detailHtml(detailRow)}
+          `;
+        }
+
+        function emptyRowHtml(label) {
+          return `
+            <div class="lp-row is-static">
+              <span class="lp-row-title">${escapeHtml(label)}</span>
+            </div>
+          `;
+        }
+
+        function findRow(rowId) {
+          return allRows().find((entry) => entry.id === rowId);
+        }
+
+        function saveRow(rowId) {
+          const entry = findRow(rowId);
+          if (!entry) return;
+          root.querySelectorAll(`[data-inline-input="${CSS.escape(rowId)}"]`).forEach((input) => {
+            const field = input.dataset.inlineField;
+            if (field === "name") entry.row.name = input.value.toUpperCase();
+            if (field === "packed" || field === "needed") entry.row[field] = Math.max(0, Number(input.value || 0));
+          });
+          state.editField = "";
+          render();
+        }
+
+        root.addEventListener("click", (event) => {
+          const listSwitch = event.target.closest("[data-list-switch]");
+          if (listSwitch) {
+            state.activeList = listSwitch.dataset.listSwitch;
+            state.search = "";
+            state.editField = "";
+            state.detailId = "";
+            render();
+            return;
+          }
+
+          if (event.target.closest("[data-action='print']")) {
+            window.print();
+            return;
+          }
+
+          const editField = event.target.closest("[data-edit-field]");
+          if (editField) {
+            state.editField = state.editField === editField.dataset.editField ? "" : editField.dataset.editField;
+            render();
+            return;
+          }
+
+          const save = event.target.closest("[data-save-row]");
+          if (save) {
+            saveRow(save.dataset.saveRow);
+            return;
+          }
+
+          const detail = event.target.closest("[data-row-detail]");
+          if (detail) {
+            state.detailId = detail.dataset.rowDetail;
+            render();
+            return;
+          }
+
+          if (event.target.closest("[data-close-detail]")) {
+            state.detailId = "";
+            render();
+            return;
+          }
+
+          const markPacked = event.target.closest("[data-mark-packed]");
+          if (markPacked) {
+            const entry = findRow(markPacked.dataset.markPacked);
+            if (entry) entry.row.packed = entry.row.needed;
+            render();
+          }
+        });
+
+        root.addEventListener("input", (event) => {
+          if (event.target.matches("[data-search]")) {
+            state.search = event.target.value;
+            render();
+            const input = root.querySelector("[data-search]");
+            if (input) {
+              input.focus({ preventScroll: true });
+              input.setSelectionRange(input.value.length, input.value.length);
+            }
+          }
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && state.detailId) {
+            state.detailId = "";
+            render();
+          }
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

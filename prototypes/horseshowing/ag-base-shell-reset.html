@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AG Base Shell Reset</title>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
+  <style>
+    :root {
+      --rs-bg: #0b0f14;
+      --rs-surface: #ffffff;
+      --rs-muted-surface: #ededed;
+      --rs-border: #ededed;
+      --rs-text: #071426;
+      --rs-muted: #64748b;
+      --rs-ok: #0f7a3c;
+      --rs-shell-max: 800px;
+      --rs-row-height: 42px;
+      --rs-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      overflow: hidden;
+      background: var(--rs-bg);
+      color: var(--rs-text);
+      font-family: var(--rs-font);
+    }
+
+    .app-shell {
+      height: 100vh;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto auto;
+      gap: 0;
+      box-sizing: border-box;
+    }
+
+    .app-head,
+    .action-bar,
+    .action-anchors,
+    .grid-frame,
+    .action-bar-bottom,
+    .status-line {
+      width: 100%;
+      max-width: var(--rs-shell-max);
+      justify-self: center;
+      box-sizing: border-box;
+    }
+
+    .app-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      background: var(--rs-surface);
+      padding: 14px 16px 12px;
+    }
+
+    .header-left,
+    .header-right {
+      min-width: 0;
+    }
+
+    .header-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .app-meta {
+      margin-top: 6px;
+      color: var(--rs-muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .action-bar-mini,
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .action-bar-mini {
+      justify-content: flex-end;
+    }
+
+    .action-bar,
+    .action-bar-bottom {
+      min-height: var(--rs-row-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 12px;
+      background: var(--rs-muted-surface);
+    }
+
+    .action-anchors {
+      min-height: var(--rs-row-height);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 12px;
+      background: var(--rs-surface);
+      border-top: 1px solid var(--rs-border);
+      border-bottom: 1px solid var(--rs-border);
+    }
+
+    .action-group.secondary {
+      justify-content: flex-end;
+    }
+
+    .rs-button {
+      appearance: none;
+      border: 1.5px solid #000;
+      border-radius: 999px;
+      background: var(--rs-surface);
+      color: var(--rs-text);
+      min-height: 30px;
+      padding: 3px 12px;
+      font-family: var(--rs-font);
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(7, 20, 38, .14);
+      transition: background-color .14s ease, color .14s ease, box-shadow .14s ease, transform .14s ease;
+    }
+
+    .rs-button:hover {
+      box-shadow: 0 2px 5px rgba(7, 20, 38, .18);
+      transform: translateY(-1px);
+    }
+
+    .tap-active {
+      background: #000;
+      color: #fff;
+    }
+
+    .tap-active-2 {
+      background: var(--rs-ok);
+      border-color: var(--rs-ok);
+      color: #fff;
+    }
+
+    .grid-frame {
+      min-height: 0;
+      overflow: hidden;
+      background: var(--rs-surface);
+    }
+
+    #agBaseGrid {
+      height: 100%;
+      min-height: 320px;
+      width: 100%;
+    }
+
+    .status-line {
+      min-height: var(--rs-row-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 16px;
+      color: #cbd5e1;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .ag-theme-quartz {
+      --ag-font-family: var(--rs-font);
+      --ag-font-size: 13px;
+      --ag-header-font-size: 13px;
+      --ag-header-background-color: var(--rs-border);
+      --ag-header-foreground-color: var(--rs-text);
+      --ag-foreground-color: var(--rs-text);
+      --ag-background-color: var(--rs-surface);
+      --ag-row-border-color: var(--rs-border);
+      --ag-border-color: var(--rs-border);
+      --ag-row-height: var(--rs-row-height);
+      --ag-header-height: var(--rs-row-height);
+      --ag-cell-horizontal-padding: 12px;
+    }
+
+    .ag-theme-quartz .ag-root-wrapper {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .ag-theme-quartz .ag-header-cell-menu-button,
+    .ag-theme-quartz .ag-header-cell-filter-button,
+    .ag-theme-quartz .ag-sort-indicator-container,
+    .ag-theme-quartz .ag-header-icon {
+      display: none;
+    }
+
+    .ag-theme-quartz .ag-row-hover {
+      background-color: #f7f8fa;
+    }
+
+    @media (max-width: 479px) {
+      .app-head,
+      .action-bar,
+      .action-anchors,
+      .grid-frame,
+      .action-bar-bottom,
+      .status-line {
+        max-width: none;
+      }
+
+      .app-head {
+        grid-template-columns: 1fr;
+      }
+
+      .header-right {
+        grid-row: 1;
+        justify-content: flex-end;
+      }
+
+      .header-left {
+        grid-row: 2;
+      }
+
+      .status-line {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 6px 16px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: letter portrait;
+        margin: .25in;
+      }
+
+      body {
+        overflow: visible;
+        background: #fff;
+      }
+
+      .app-shell {
+        min-height: 10.5in;
+        height: auto;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .action-bar,
+      .action-anchors,
+      .action-bar-bottom,
+      .header-right {
+        display: none;
+      }
+
+      .app-head,
+      .grid-frame,
+      .status-line {
+        max-width: none;
+      }
+
+      .app-head {
+        padding: 0 0 6px;
+        border-bottom: 1px solid #000;
+      }
+
+      .app-title {
+        font-size: 14px;
+      }
+
+      .app-meta,
+      .status-line {
+        font-size: 9px;
+      }
+
+      #agBaseGrid {
+        height: auto;
+        min-height: 0;
+      }
+
+      .ag-theme-quartz {
+        --ag-font-size: 8px;
+        --ag-header-font-size: 8px;
+        --ag-row-height: 18px;
+        --ag-header-height: 18px;
+        --ag-cell-horizontal-padding: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell" data-ag-system="ag_base_shell_reset">
+    <header class="app-head">
+      <div class="header-left">
+        <h1 class="app-title">AG Base Shell</h1>
+        <div class="app-meta">Simple starter for mobile, mobile-pro, print, lists, and forms</div>
+      </div>
+      <div class="header-right">
+        <div class="action-bar-mini" aria-label="Header actions">
+          <button class="rs-button tap" type="button">One</button>
+          <button class="rs-button tap" type="button">Two</button>
+          <button class="rs-button tap" type="button">Three</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="action-bar" aria-label="Grid actions">
+      <div class="action-group">
+        <button class="rs-button tap tap-active" type="button" id="printBtn">Print</button>
+        <button class="rs-button tap" type="button" id="hideBtn">Hide</button>
+        <button class="rs-button tap tap-active" type="button" id="diffBtn">Diff</button>
+      </div>
+      <div class="action-group secondary">
+        <button class="rs-button tap" type="button" id="inputBtn">Input</button>
+        <button class="rs-button tap tap-active-2" type="button" id="submitBtn">Submit</button>
+      </div>
+    </section>
+
+    <nav class="action-anchors" aria-label="Anchors">
+      <button class="rs-button tap" type="button">Ring</button>
+      <button class="rs-button tap" type="button">Class</button>
+      <button class="rs-button tap" type="button">Entry</button>
+      <button class="rs-button tap" type="button">Results</button>
+    </nav>
+
+    <section class="grid-frame">
+      <div id="agBaseGrid" class="ag-theme-quartz"></div>
+    </section>
+
+    <section class="action-bar-bottom" aria-label="Bottom actions">
+      <div class="action-group">
+        <button class="rs-button tap" type="button">Back</button>
+        <button class="rs-button tap" type="button">Clear</button>
+      </div>
+      <div class="action-group secondary">
+        <button class="rs-button tap tap-active-2" type="button">Save</button>
+      </div>
+    </section>
+
+    <footer class="status-line">
+      <span><span id="rowCount">0</span> row(s) loaded</span>
+      <span id="statusText">base shell reset</span>
+    </footer>
+  </main>
+
+  <script>
+    const sampleRows = [
+      { id: "row-1", time: "8:30 AM", ring: "INDOOR 1", no: 173, class_name: "1.05m Junior Classic II.2b", starts_in: 42, status: "soon" },
+      { id: "row-2", time: "10:00 AM", ring: "INDOOR 5", no: 201, class_name: "Junior Hunter 3'6", starts_in: 88, status: "now" },
+      { id: "row-3", time: "11:15 AM", ring: "GRAND", no: 220, class_name: "Yeti Grand Prix 1.45m II.2a American Std", starts_in: 136, status: "soon" },
+      { id: "row-4", time: "12:45 PM", ring: "ANNEX", no: 314, class_name: "NAL/WIHS Adult Jumper Classic", starts_in: 228, status: "done" }
+    ];
+
+    let gridApi = null;
+    let hideDone = false;
+
+    function statusRenderer(params) {
+      const value = String(params.value || "soon").toLowerCase();
+      const variant = value === "done" ? "tap-active-2" : value === "now" ? "tap-active" : "";
+      return `<button class="rs-button tap ${variant}" type="button">${value}</button>`;
+    }
+
+    function visibleRows() {
+      return hideDone ? sampleRows.filter((row) => row.status !== "done") : sampleRows;
+    }
+
+    function updateRows() {
+      if (!gridApi) return;
+      gridApi.setGridOption("rowData", visibleRows());
+      document.getElementById("rowCount").textContent = String(visibleRows().length);
+    }
+
+    const columnDefs = [
+      { headerName: "TIME", field: "time", minWidth: 78, width: 88 },
+      { headerName: "RING", field: "ring", minWidth: 78, width: 88 },
+      { headerName: "NO", field: "no", minWidth: 56, width: 60 },
+      { headerName: "CLASS", field: "class_name", minWidth: 170, flex: 1 },
+      { headerName: "IN", field: "starts_in", minWidth: 56, width: 60, valueFormatter: (params) => `${params.value}m` },
+      { headerName: "STATUS", field: "status", minWidth: 88, width: 88, cellRenderer: statusRenderer }
+    ];
+
+    const gridOptions = {
+      rowData: sampleRows,
+      columnDefs,
+      defaultColDef: {
+        sortable: false,
+        filter: false,
+        resizable: false,
+        suppressHeaderMenuButton: true
+      },
+      getRowId: (params) => params.data.id,
+      rowSelection: { mode: "singleRow", checkboxes: false, enableClickSelection: true },
+      animateRows: false,
+      ensureDomOrder: true,
+      suppressMovableColumns: true,
+      suppressCellFocus: true,
+      suppressHeaderFocus: true,
+      onGridReady: (event) => {
+        gridApi = event.api;
+        updateRows();
+      }
+    };
+
+    const gridDiv = document.getElementById("agBaseGrid");
+    if (window.agGrid && typeof window.agGrid.createGrid === "function") {
+      window.agGrid.createGrid(gridDiv, gridOptions);
+    } else {
+      gridDiv.innerHTML = "<table><tr><th>TIME</th><th>RING</th><th>NO</th><th>CLASS</th><th>IN</th><th>STATUS</th></tr></table>";
+    }
+
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("hideBtn").addEventListener("click", (event) => {
+      hideDone = !hideDone;
+      event.currentTarget.textContent = hideDone ? "Show" : "Hide";
+      event.currentTarget.classList.toggle("tap-active", hideDone);
+      updateRows();
+    });
+    document.getElementById("inputBtn").addEventListener("click", () => {
+      document.getElementById("statusText").textContent = "input hook";
+    });
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      document.getElementById("statusText").textContent = "submit hook";
+    });
+  </script>
+</body>
+</html>

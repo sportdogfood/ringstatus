@@ -25,6 +25,7 @@ This document is the broad orientation layer. More specific contracts still own 
 |---|---|
 | `wec-clean-key-date-contract.md` | key/date/control rules |
 | `wec-clean-stage1-4-workflow-contract.md` | clean Stage 1-4 handoff rules |
+| `ringstatus-data/catalyst-workspaces/horseshowing/docs/core_1_4_next_day_preflight_contract.md` | Core next-day outside-lane preflight and blocker classification |
 | `wec-catalyst-step6-results-contract.md` | Step 6 results lane |
 | `wec-time-engine-contract.md` | time engine design |
 | `wec-alert-message-contract-draft.md` | message/alert draft |
@@ -46,6 +47,8 @@ show control
 
 The source system may change. The cadence does not.
 
+Core 1-4 now also owns proactive next-day readiness testing outside the working lane. Before a focus-day change, Core must run actual next-day source acquisition in a no-write lab lane, classify the first blocker, and turn repeatable blockers into durable code or policy fixes. Date-key rewrites are only portability checks; they are not next-day readiness proof.
+
 ## Operating Principle
 
 The workflow is a stacked system, not a single endpoint.
@@ -56,6 +59,7 @@ The workflow is a stacked system, not a single endpoint.
 | Probe | inspect source documents quickly and mark progress/certainty |
 | Process | parse stored source documents locally |
 | Runtime prep | build stable ring/class/entry runtime rows |
+| Next-day preflight | test tomorrow's source acquisition/probe/parse/runtime projection outside the working lane |
 | Live enrichment | update runtime rows from live source signals |
 | Time engine | calculate reusable time fields and trigger readiness |
 | Trigger/message | create durable message/event rows |
@@ -131,8 +135,11 @@ Required ring naming context:
 | Normalize / Tag | Normalize source names, dates, preflight, ring/class/entry identity | ring/class/entry key fields, `is_preflight` | Active / still tightening |
 | Prepare / Create | Build source foundation | ring days and update schedule | Active |
 | Probe | Quickly inspect class entry documents for relevant evidence | clean 3A class_oog probe | Active / evolving |
+| Probe 3A2 | Retry checked/no-match classes up to cap as second-pass refinement | non-blocking retry lane | Active / does not block initial runtime |
 | Process | Parse stored relevant source documents locally | clean 3B class_oog process | Active / evolving |
+| Process 3B2 | Parse new raw docs found by 3A2 | non-blocking refinement parse | Active / does not block initial runtime |
 | Runtime Prep | Build runtime schedule tables | ring status, class start times, entry go times | Active |
+| Next-Day Preflight | Proactively test next focus-day source acquisition and Core 1-4 projection in an outside lane | `core_1_4_lab.js` no-write live-source run | Active / Core responsibility |
 | Listen | Pull live source state when enabled | get rings/orders/results as separate lanes | Active / gated |
 | Time Engine | Calculate timing variables and trigger-ready rows | `time_engine`, `time_engine_logs` | Prototype / needs live wiring |
 | Trigger | Create durable message/event rows | future message queue / transitional alerts | WIP |
@@ -148,8 +155,11 @@ Required ring naming context:
 | Ring days | active focus | `hs_get_ring_days` | current focus-day ring rows exist and carry canonical date/key fields |
 | Update schedule | `hs_get_ring_days` | `hs_update_schedule` | non-preflight class rows have native `class_no`; preflight stays visible but not downstream eligible |
 | Probe 3A | eligible `hs_update_schedule` rows | `hs_class_oog_raw`, probe progress fields | one native class request at a time; full raw doc stored only when evidence exists |
+| Probe 3A2 | checked/no-match `hs_update_schedule` rows below retry cap | probe retry progress; possible new `hs_class_oog_raw` | non-blocking second pass; must not hold initial production runtime |
 | Process 3B | `hs_class_oog_raw` | `hs_class_oog` | parse stored docs locally; no source request; materialize parsed rows |
+| Process 3B2 | raw docs discovered by 3A2 | `hs_class_oog` refinements | non-blocking second-pass parse; downstream refresh only |
 | Runtime prep 4 | `hs_get_ring_days`, `hs_update_schedule`, `hs_class_oog` | `hs_ring_status`, `hs_class_start_times`, `hs_entry_go_times` | ringwise/classwise/entrywise runtime rows written with canonical keys |
+| Next-day preflight | live HorseShowing source + helper mirrors | no production writes; in-memory/lab report only | PASS/FAIL blocker classification before focus-day change |
 | Live 5 | runtime tables plus live source endpoints | `hs_get_rings`, `hs_get_orders`, runtime live fields | gated; enrich only; does not rebuild baseline |
 | Results 6 | runtime class/entry rows | `hs_result_queue`, `hs_result_classes`, `hs_class_results` | gated; native `class_no` source requests only |
 | Time engine | runtime rows plus live/results fields | `time_engine`, `time_engine_logs` | timing fields and trigger readiness calculated |

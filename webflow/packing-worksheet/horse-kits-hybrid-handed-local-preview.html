@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Horse Kits Hybrid Handed Local Preview</title>
+    <style>
+      .rs-stack-section.is-summary-aggs,
+      .rs-stack-section.is-count-aggs,
+      .rs-stack-section.is-search {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      id="packing-app"
+      class="rsa-dashboard"
+      data-api-url="https://ringstatus.local/fixture/horse-kits"
+      data-home-url="https://ringstatus.local/fixture/home"
+      data-quantity-url="https://ringstatus.local/fixture/quantity"
+      data-per-horse-url="https://ringstatus.local/fixture/per-horse"
+      data-per-groom-url="https://ringstatus.local/fixture/per-groom"
+      data-horses-url="https://ringstatus.local/fixture/horses"
+      data-session-enabled="false"
+      data-print-url="https://ringstatus.local/fixture/print"
+      data-pack-wave-key="wave_one"
+    >
+      Loading WEC packing...
+    </main>
+
+    <script>
+      (function () {
+        var horses = [
+          { id: "horse-valentine", name: "Valentine", barnName: "Valentine", showName: "Valentine", groom: "Mara", waveState: "wave_one", waveOne: true, pakKitItemIds: ["item-bell-boots", "item-front-jump", "item-hind-jump"] },
+          { id: "horse-pacific", name: "Pacific Star", barnName: "Pacific", showName: "Pacific Star", groom: "Mara", waveState: "wave_one", waveOne: true, pakKitItemIds: ["item-bell-boots", "item-front-jump", "item-hind-jump"] },
+          { id: "horse-caspari", name: "Caspari 12", barnName: "Caspari", showName: "Caspari 12", groom: "Luis", waveState: "wave_one", waveOne: true, pakKitItemIds: ["item-standing-wraps"] },
+          { id: "horse-olive", name: "Olive Branch", barnName: "Olive", showName: "Olive Branch", groom: "Luis", waveState: "wave_two", waveOne: false, waveTwo: true, pakKitItemIds: ["item-bell-boots", "item-hind-jump"] }
+        ];
+
+        var kitItems = [
+          { id: "item-bell-boots", name: "Everyday Bell Boots", label: "Everyday Bell Boots", displayLabel: "Everyday Bell Boots", sortOrder: 10, active: true, status: "active", kitIds: ["kit-show-legs"] },
+          { id: "item-front-jump", name: "Front Jump Boots (1pcs)", label: "Front Jump Boots (1pcs)", displayLabel: "Front Jump Boots (1pcs)", sortOrder: 20, active: true, status: "active", kitIds: ["kit-show-legs"] },
+          { id: "item-hind-jump", name: "Hind Jump Boots (1pcs)", label: "Hind Jump Boots (1pcs)", displayLabel: "Hind Jump Boots (1pcs)", sortOrder: 30, active: true, status: "active", kitIds: ["kit-show-legs"] },
+          { id: "item-standing-wraps", name: "Standing Wraps", label: "Standing Wraps", displayLabel: "Standing Wraps", sortOrder: 40, active: true, status: "active", kitIds: ["kit-blankets"] }
+        ];
+
+        var kits = [
+          { id: "kit-show-legs", name: "Show Legs", label: "Show Legs", displayLabel: "Show Legs", sortOrder: 10, active: true, status: "active", kitItemIds: ["item-bell-boots", "item-front-jump", "item-hind-jump"] },
+          { id: "kit-blankets", name: "Blankets", label: "Blankets", displayLabel: "Blankets", sortOrder: 20, active: true, status: "active", kitItemIds: ["item-standing-wraps"] }
+        ];
+
+        var packingRows = [
+          { id: "pack-1", horseIds: ["horse-valentine"], kitIds: ["kit-show-legs"], kitItemIds: ["item-bell-boots"], packState: "packed", neededState: "needed" },
+          { id: "pack-2", horseIds: ["horse-valentine"], kitIds: ["kit-show-legs"], kitItemIds: ["item-front-jump"], packState: "not_packed", neededState: "needed" },
+          { id: "pack-3", horseIds: ["horse-pacific"], kitIds: ["kit-show-legs"], kitItemIds: ["item-hind-jump"], packState: "not_packed", neededState: "needed" },
+          { id: "pack-4", horseIds: ["horse-caspari"], kitIds: ["kit-blankets"], kitItemIds: ["item-standing-wraps"], packState: "not_needed", neededState: "not_needed" }
+        ];
+
+        var horseKitReport = {
+          ok: true,
+          source: { packWaveId: "fixture-wave-one", packWaveKey: "wave_one", fixture: true },
+          wave: {
+            id: "fixture-wave-one",
+            key: "wave_one",
+            wave: "wave_one",
+            waveType: "wave_one",
+            wecReportTitle: "Horse Kits",
+            wecReportSubtitle: "Local placeholder fixture",
+            reportSubtitle: "2026-07-08",
+            effectiveHorseCount: horses.length,
+            effectiveGroomCountFinal: 2
+          },
+          availableWaves: [
+            { key: "wave_one", label: "Wave One", active: true },
+            { key: "wave_two", label: "Wave Two", active: true }
+          ],
+          horses: horses,
+          allHorses: horses,
+          kits: kits,
+          kitItems: kitItems,
+          packingRows: packingRows,
+          comments: [
+            { id: "comment-1", horseIds: ["horse-valentine"], text: "Placeholder note for local preview.", createdAt: "2026-07-09T00:00:00Z" }
+          ],
+          commentShorts: [
+            { id: "short-check", label: "Check before loading", active: true },
+            { id: "short-missing", label: "Needs review", active: true }
+          ],
+          counts: {
+            horses: horses.length,
+            kits: kits.length,
+            kitItems: kitItems.length,
+            packingRows: packingRows.length
+          }
+        };
+
+        var quantityReport = {
+          ok: true,
+          module: "quantity",
+          items: kitItems.map(function (item) {
+            return { id: item.id, label: item.displayLabel, need: horses.length, packed: 1, left: Math.max(horses.length - 1, 0) };
+          }),
+          comments: []
+        };
+
+        var perHorseReport = {
+          ok: true,
+          module: "per_horse",
+          items: horses.map(function (horse) {
+            return { id: horse.id, label: horse.showName || horse.name, need: 3, packed: horse.id === "horse-valentine" ? 1 : 0, left: horse.id === "horse-valentine" ? 2 : 3 };
+          }),
+          comments: []
+        };
+
+        var perGroomReport = {
+          ok: true,
+          module: "per_groom",
+          items: [
+            { id: "groom-mara", label: "Mara", need: 6, packed: 1, left: 5 },
+            { id: "groom-luis", label: "Luis", need: 6, packed: 0, left: 6 }
+          ],
+          comments: []
+        };
+
+        var horseEntityState = {
+          ok: true,
+          horses: horses,
+          comments: horseKitReport.comments,
+          commentShorts: horseKitReport.commentShorts,
+          allowedFields: {
+            create: ["name", "barnName", "showName", "groom"],
+            write: ["name", "barnName", "showName", "groom"]
+          }
+        };
+
+        var homeState = {
+          ok: true,
+          reports: {
+            horse_kits: horseKitReport,
+            quantity: quantityReport,
+            per_horse: perHorseReport,
+            per_groom: perGroomReport
+          }
+        };
+
+        var fixtures = {
+          "/fixture/home": homeState,
+          "/fixture/horse-kits": horseKitReport,
+          "/fixture/quantity": quantityReport,
+          "/fixture/per-horse": perHorseReport,
+          "/fixture/per-groom": perGroomReport,
+          "/fixture/horses": horseEntityState
+        };
+
+        function jsonResponse(payload) {
+          return Promise.resolve(new Response(JSON.stringify(payload), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          }));
+        }
+
+        var realFetch = window.fetch.bind(window);
+        window.fetch = function (input, options) {
+          var url = new URL(typeof input === "string" ? input : input.url, window.location.href);
+          if (url.hostname === "ringstatus.local" && url.pathname.indexOf("/fixture/") === 0) {
+            if (options && options.method && options.method.toUpperCase() !== "GET") {
+              return jsonResponse({ ok: true, state: horseKitReport, result: { fixture: true } });
+            }
+            return jsonResponse(fixtures[url.pathname] || { ok: true, fixture: true });
+          }
+          return realFetch(input, options);
+        };
+      })();
+    </script>
+
+    <script>
+      (function () {
+        var assetVersion = "2cedcbdc91ebde88c2e94497773b4bbfd172c9f7";
+        var cacheKey = "wec-hybrid-20260604-" + assetVersion;
+        var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
+
+        function addStyle(href) {
+          var link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = href;
+          document.head.appendChild(link);
+        }
+
+        function addScript(src) {
+          var script = document.createElement("script");
+          script.src = src;
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+
+        addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+        addStyle(assetBase + "/rsa-stylesheets.locked.css?v=" + cacheKey);
+        addStyle(assetBase + "/styles.css?v=" + cacheKey);
+        addStyle(assetBase + "/horse-kits-static-proof.css?v=" + cacheKey);
+        addScript(assetBase + "/wec-packing-hybrid.js?v=" + cacheKey);
+      })();
+    </script>
+  </body>
+</html>

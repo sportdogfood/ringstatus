@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WEC Tabulator — Right Drawer Detail</title>
+<link href="https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator.min.css" rel="stylesheet">
+<script src="https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #111;
+  }
+  .top {
+    padding: 12px 14px;
+    background: #111;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .top b { font-size: 16px; }
+  button {
+    border: 1px solid #111;
+    background: #fff;
+    color: #111;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .note {
+    padding: 8px 14px;
+    background: #fff3cd;
+    border-bottom: 1px solid #e0c56a;
+    font-size: 14px;
+  }
+  .stats {
+    padding: 8px 14px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+  }
+  #table {
+    margin: 10px;
+    border: 1px solid #bbb;
+    background: #fff;
+    height: calc(100vh - 126px);
+  }
+  .tabulator { font-size: 14px; }
+  .tabulator-row.has-oog { background: #e8f7ed; }
+  .tabulator-row.hidden-row { background: #fee2e2 !important; color: #777; text-decoration: line-through; }
+  .tabulator-row.selected-detail { outline: 3px solid #2563eb; outline-offset: -3px; background: #dbeafe !important; }
+  .row-btn {
+    padding: 3px 7px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: #fff;
+  }
+  .view-btn { border-color: #1d4ed8; color: #1d4ed8; }
+  .hide-btn { border-color: #991b1b; color: #991b1b; }
+  .unhide-btn { border-color: #166534; color: #166534; }
+
+  .drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+    z-index: 20;
+  }
+  .drawer-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(560px, 92vw);
+    background: #fff;
+    box-shadow: -10px 0 28px rgba(0,0,0,.22);
+    transform: translateX(105%);
+    transition: transform .22s ease;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+  }
+  .drawer.open {
+    transform: translateX(0);
+  }
+  .drawer-head {
+    background: #111;
+    color: #fff;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .drawer-head b {
+    font-size: 15px;
+  }
+  .drawer-head button {
+    border-color: #fff;
+  }
+  .drawer-summary {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    line-height: 1.45;
+    background: #f8fafc;
+  }
+  .drawer-summary .big {
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .drawer-json-title {
+    padding: 9px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border-bottom: 1px solid #ddd;
+    color: #444;
+  }
+  pre {
+    margin: 0;
+    padding: 12px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 12px;
+    line-height: 1.35;
+    flex: 1;
+  }
+  @media print {
+    .top, .note, .stats, .drawer, .drawer-backdrop { display: none !important; }
+    #table { margin: 0; border: 0; height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <b>WEC Tabulator — Right Drawer Detail</b>
+  <span>show_no 14909</span>
+  <span>focus_day 2026-07-02</span>
+  <button id="toggle-hidden">Show Hidden Rows</button>
+  <button id="clear-hidden">Unhide All</button>
+  <button id="print-full">Print Full Page</button>
+</div>
+
+<div class="note">
+  Click a row or View. The full underlying row data slides out from the right. Soft-hide only; no writes.
+</div>
+
+<div class="stats" id="stats"></div>
+<div id="table"></div>
+
+<div class="drawer-backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <b>Underlying Data</b>
+    <button id="close-drawer">Close</button>
+  </div>
+  <div class="drawer-summary" id="drawer-summary">Click a row.</div>
+  <div class="drawer-json-title">Full row object</div>
+  <pre id="drawer-json">{}</pre>
+</aside>
+
+<script>
+const rows = [{"row_id": 1, "ring": "WEC Grand Arena - Nate Poliquin", "time": "", "class_number": "", "class_name": "Ring Maintenance", "oog_staging": 0, "ring_no": 640, "ring_day_no": 3579, "class_no": "", "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "WEC Grand Arena - Nate Poliquin", "time": "", "class_number": null, "class_name": "Ring Maintenance", "ring_no": 640, "ring_day_no": 3579, "class_no": 0, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 2, "ring": "WEC Grand Arena - Nate Poliquin", "time": "8:00 am", "class_number": 2203, "class_name": "FEI Budweiser 1.45m CSI2*GPQ 220.2.1.2", "oog_staging": 2, "ring_no": 640, "ring_day_no": 3579, "class_no": 26730, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 480, "underlying_data": {"ring": "WEC Grand Arena - Nate Poliquin", "time": "8:00 am", "class_number": 2203, "class_name": "FEI Budweiser 1.45m CSI2*GPQ 220.2.1.2", "ring_no": 640, "ring_day_no": 3579, "class_no": 26730, "oog_staging": 2, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 480}}, {"row_id": 3, "ring": "WEC Grand Arena - Nate Poliquin", "time": "10:30 am", "class_number": 648, "class_name": "1.40m Jumper II.1", "oog_staging": 0, "ring_no": 640, "ring_day_no": 3579, "class_no": 26830, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 630, "underlying_data": {"ring": "WEC Grand Arena - Nate Poliquin", "time": "10:30 am", "class_number": 648, "class_name": "1.40m Jumper II.1", "ring_no": 640, "ring_day_no": 3579, "class_no": 26830, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 630}}, {"row_id": 4, "ring": "WEC Grand Arena - Nate Poliquin", "time": "11:30 am", "class_number": 646, "class_name": "1.35m Jumper II.2d", "oog_staging": 0, "ring_no": 640, "ring_day_no": 3579, "class_no": 26828, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 690, "underlying_data": {"ring": "WEC Grand Arena - Nate Poliquin", "time": "11:30 am", "class_number": 646, "class_name": "1.35m Jumper II.2d", "ring_no": 640, "ring_day_no": 3579, "class_no": 26828, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 690}}, {"row_id": 5, "ring": "WEC Grand Arena - Nate Poliquin", "time": "2:00 pm", "class_number": 693, "class_name": "1.30m Young Jumper II.2d", "oog_staging": 0, "ring_no": 640, "ring_day_no": 3579, "class_no": 26865, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 840, "underlying_data": {"ring": "WEC Grand Arena - Nate Poliquin", "time": "2:00 pm", "class_number": 693, "class_name": "1.30m Young Jumper II.2d", "ring_no": 640, "ring_day_no": 3579, "class_no": 26865, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 840}}, {"row_id": 6, "ring": "Hunter 2- Robbie Cyphert", "time": "", "class_number": 9008, "class_name": "Ticket School Thurs Hunter 2 8am-3pm", "oog_staging": 0, "ring_no": 641, "ring_day_no": 3585, "class_no": 26957, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Hunter 2- Robbie Cyphert", "time": "", "class_number": 9008, "class_name": "Ticket School Thurs Hunter 2 8am-3pm", "ring_no": 641, "ring_day_no": 3585, "class_no": 26957, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 7, "ring": "Indoor 6 - Brandon Serpico", "time": "", "class_number": "", "class_name": "Ring Maintenance", "oog_staging": 0, "ring_no": 642, "ring_day_no": 3591, "class_no": "", "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 6 - Brandon Serpico", "time": "", "class_number": null, "class_name": "Ring Maintenance", "ring_no": 642, "ring_day_no": 3591, "class_no": 0, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 8, "ring": "Indoor 6 - Brandon Serpico", "time": "7:30 am", "class_number": 631, "class_name": "1.10m Jumper II.2d", "oog_staging": 2, "ring_no": 642, "ring_day_no": 3591, "class_no": 26854, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 450, "underlying_data": {"ring": "Indoor 6 - Brandon Serpico", "time": "7:30 am", "class_number": 631, "class_name": "1.10m Jumper II.2d", "ring_no": 642, "ring_day_no": 3591, "class_no": 26854, "oog_staging": 2, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 450}}, {"row_id": 9, "ring": "Indoor 6 - Brandon Serpico", "time": "9:45 am", "class_number": 634, "class_name": "1.15m Jumper II.2d", "oog_staging": 2, "ring_no": 642, "ring_day_no": 3591, "class_no": 26857, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 585, "underlying_data": {"ring": "Indoor 6 - Brandon Serpico", "time": "9:45 am", "class_number": 634, "class_name": "1.15m Jumper II.2d", "ring_no": 642, "ring_day_no": 3591, "class_no": 26857, "oog_staging": 2, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 585}}, {"row_id": 10, "ring": "Indoor 6 - Brandon Serpico", "time": "11:15 am", "class_number": 637, "class_name": "1.20m Jumper II.2d", "oog_staging": 1, "ring_no": 642, "ring_day_no": 3591, "class_no": 26822, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 675, "underlying_data": {"ring": "Indoor 6 - Brandon Serpico", "time": "11:15 am", "class_number": 637, "class_name": "1.20m Jumper II.2d", "ring_no": 642, "ring_day_no": 3591, "class_no": 26822, "oog_staging": 1, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 675}}, {"row_id": 11, "ring": "Indoor 6 - Brandon Serpico", "time": "1:30 pm", "class_number": 643, "class_name": "1.30m Jumper II.2d", "oog_staging": 0, "ring_no": 642, "ring_day_no": 3591, "class_no": 26825, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 810, "underlying_data": {"ring": "Indoor 6 - Brandon Serpico", "time": "1:30 pm", "class_number": 643, "class_name": "1.30m Jumper II.2d", "ring_no": 642, "ring_day_no": 3591, "class_no": 26825, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 810}}, {"row_id": 12, "ring": "Indoor 6 - Brandon Serpico", "time": "3:00 pm", "class_number": 690, "class_name": "1.20m Young Jumper II.2d", "oog_staging": 0, "ring_no": 642, "ring_day_no": 3591, "class_no": 26862, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 900, "underlying_data": {"ring": "Indoor 6 - Brandon Serpico", "time": "3:00 pm", "class_number": 690, "class_name": "1.20m Young Jumper II.2d", "ring_no": 642, "ring_day_no": 3591, "class_no": 26862, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 900}}, {"row_id": 13, "ring": "Indoor 6 - Brandon Serpico", "time": "4:45 pm", "class_number": 687, "class_name": "1.10 Young Jumper II", "oog_staging": 0, "ring_no": 642, "ring_day_no": 3591, "class_no": 26859, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 1005, "underlying_data": {"ring": "Indoor 6 - Brandon Serpico", "time": "4:45 pm", "class_number": 687, "class_name": "1.10 Young Jumper II", "ring_no": 642, "ring_day_no": 3591, "class_no": 26859, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 1005}}, {"row_id": 14, "ring": "Indoor 5 - Cassie Goebel", "time": "", "class_number": "", "class_name": "Ring Maintenance", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": "", "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "", "class_number": null, "class_name": "Ring Maintenance", "ring_no": 643, "ring_day_no": 3597, "class_no": 0, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 15, "ring": "Indoor 5 - Cassie Goebel", "time": "8:00 am", "class_number": 600, "class_name": ".65m Jumper Open IV.1", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": 26833, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 480, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "8:00 am", "class_number": 600, "class_name": ".65m Jumper Open IV.1", "ring_no": 643, "ring_day_no": 3597, "class_no": 26833, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 480}}, {"row_id": 16, "ring": "Indoor 5 - Cassie Goebel", "time": "8:00 am", "class_number": 603, "class_name": ".65m Long Creek Farms Jr/Am IV.1", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": 26836, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 480, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "8:00 am", "class_number": 603, "class_name": ".65m Long Creek Farms Jr/Am IV.1", "ring_no": 643, "ring_day_no": 3597, "class_no": 26836, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 480}}, {"row_id": 17, "ring": "Indoor 5 - Cassie Goebel", "time": "10:00 am", "class_number": 609, "class_name": ".75m Jumper Junior/Amateur IV.1", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": 27088, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 600, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "10:00 am", "class_number": 609, "class_name": ".75m Jumper Junior/Amateur IV.1", "ring_no": 643, "ring_day_no": 3597, "class_no": 27088, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 600}}, {"row_id": 18, "ring": "Indoor 5 - Cassie Goebel", "time": "10:00 am", "class_number": 606, "class_name": ".75m Jumper Open IV.1", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": 27082, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 600, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "10:00 am", "class_number": 606, "class_name": ".75m Jumper Open IV.1", "ring_no": 643, "ring_day_no": 3597, "class_no": 27082, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 600}}, {"row_id": 19, "ring": "Indoor 5 - Cassie Goebel", "time": "11:30 am", "class_number": 618, "class_name": ".85m Jumper Open II.2d", "oog_staging": 2, "ring_no": 643, "ring_day_no": 3597, "class_no": 26845, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 690, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "11:30 am", "class_number": 618, "class_name": ".85m Jumper Open II.2d", "ring_no": 643, "ring_day_no": 3597, "class_no": 26845, "oog_staging": 2, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 690}}, {"row_id": 20, "ring": "Indoor 5 - Cassie Goebel", "time": "11:30 am", "class_number": 621, "class_name": ".85m Jumper Junior/Amateur II.2d", "oog_staging": 2, "ring_no": 643, "ring_day_no": 3597, "class_no": 26848, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 690, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "11:30 am", "class_number": 621, "class_name": ".85m Jumper Junior/Amateur II.2d", "ring_no": 643, "ring_day_no": 3597, "class_no": 26848, "oog_staging": 2, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 690}}, {"row_id": 21, "ring": "Indoor 5 - Cassie Goebel", "time": "2:00 pm", "class_number": 628, "class_name": "1.00m Jumper II.2d", "oog_staging": 1, "ring_no": 643, "ring_day_no": 3597, "class_no": 26852, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 840, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "2:00 pm", "class_number": 628, "class_name": "1.00m Jumper II.2d", "ring_no": 643, "ring_day_no": 3597, "class_no": 26852, "oog_staging": 1, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 840}}, {"row_id": 22, "ring": "Indoor 5 - Cassie Goebel", "time": "2:00 pm", "class_number": 696, "class_name": "Thoroughbred Jumper 1.0m II.2d", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": 26819, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 840, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "2:00 pm", "class_number": 696, "class_name": "Thoroughbred Jumper 1.0m II.2d", "ring_no": 643, "ring_day_no": 3597, "class_no": 26819, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 840}}, {"row_id": 23, "ring": "Indoor 5 - Cassie Goebel", "time": "4:00 pm", "class_number": 684, "class_name": "1.0m Young Jumpers II", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": 30642, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 960, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "4:00 pm", "class_number": 684, "class_name": "1.0m Young Jumpers II", "ring_no": 643, "ring_day_no": 3597, "class_no": 30642, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 960}}, {"row_id": 24, "ring": "Indoor 5 - Cassie Goebel", "time": "4:45 pm", "class_number": 681, "class_name": ".90m Young Jumpers II", "oog_staging": 0, "ring_no": 643, "ring_day_no": 3597, "class_no": 30639, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 1005, "underlying_data": {"ring": "Indoor 5 - Cassie Goebel", "time": "4:45 pm", "class_number": 681, "class_name": ".90m Young Jumpers II", "ring_no": 643, "ring_day_no": 3597, "class_no": 30639, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 1005}}, {"row_id": 25, "ring": "Indoor 1- Sarah Haas", "time": "", "class_number": "", "class_name": "Midway Drag", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": "", "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "", "class_number": null, "class_name": "Midway Drag", "ring_no": 644, "ring_day_no": 3603, "class_no": 0, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 26, "ring": "Indoor 1- Sarah Haas", "time": "", "class_number": 9019, "class_name": "Ticketed Schooling -Thursday Indoor 1 until 2pm", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 35253, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "", "class_number": 9019, "class_name": "Ticketed Schooling -Thursday Indoor 1 until 2pm", "ring_no": 644, "ring_day_no": 3603, "class_no": 35253, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 27, "ring": "Indoor 1- Sarah Haas", "time": "9:00 am", "class_number": 25, "class_name": "Grn Hunter 3'6", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 33717, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 540, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "9:00 am", "class_number": 25, "class_name": "Grn Hunter 3'6", "ring_no": 644, "ring_day_no": 3603, "class_no": 33717, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 540}}, {"row_id": 28, "ring": "Indoor 1- Sarah Haas", "time": "9:00 am", "class_number": 26, "class_name": "Green Hunter 3'6", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 33718, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 540, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "9:00 am", "class_number": 26, "class_name": "Green Hunter 3'6", "ring_no": 644, "ring_day_no": 3603, "class_no": 33718, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 540}}, {"row_id": 29, "ring": "Indoor 1- Sarah Haas", "time": "9:00 am", "class_number": 432, "class_name": "USHJA Grn Hunter Incentive 3'6", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 33670, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 540, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "9:00 am", "class_number": 432, "class_name": "USHJA Grn Hunter Incentive 3'6", "ring_no": 644, "ring_day_no": 3603, "class_no": 33670, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 540}}, {"row_id": 30, "ring": "Indoor 1- Sarah Haas", "time": "9:30 am", "class_number": 42, "class_name": "Performance Hunter 3'3", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 33724, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 570, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "9:30 am", "class_number": 42, "class_name": "Performance Hunter 3'3", "ring_no": 644, "ring_day_no": 3603, "class_no": 33724, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 570}}, {"row_id": 31, "ring": "Indoor 1- Sarah Haas", "time": "9:45 am", "class_number": 41, "class_name": "Perf Hunter 3'3", "oog_staging": 4, "ring_no": 644, "ring_day_no": 3603, "class_no": 33723, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 585, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "9:45 am", "class_number": 41, "class_name": "Perf Hunter 3'3", "ring_no": 644, "ring_day_no": 3603, "class_no": 33723, "oog_staging": 4, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 585}}, {"row_id": 32, "ring": "Indoor 1- Sarah Haas", "time": "9:45 am", "class_number": 40, "class_name": "Performance Hunter 3'3", "oog_staging": 6, "ring_no": 644, "ring_day_no": 3603, "class_no": 33722, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 585, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "9:45 am", "class_number": 40, "class_name": "Performance Hunter 3'3", "ring_no": 644, "ring_day_no": 3603, "class_no": 33722, "oog_staging": 6, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 585}}, {"row_id": 33, "ring": "Indoor 1- Sarah Haas", "time": "11:15 am", "class_number": 249, "class_name": "USHJA Hunter 3'3", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 26770, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 675, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "11:15 am", "class_number": 249, "class_name": "USHJA Hunter 3'3", "ring_no": 644, "ring_day_no": 3603, "class_no": 26770, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 675}}, {"row_id": 34, "ring": "Indoor 1- Sarah Haas", "time": "11:30 am", "class_number": 247, "class_name": "USHJA Hunter 3'3", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 26768, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 690, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "11:30 am", "class_number": 247, "class_name": "USHJA Hunter 3'3", "ring_no": 644, "ring_day_no": 3603, "class_no": 26768, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 690}}, {"row_id": 35, "ring": "Indoor 1- Sarah Haas", "time": "11:30 am", "class_number": 248, "class_name": "USHJA Hunter 3'3", "oog_staging": 0, "ring_no": 644, "ring_day_no": 3603, "class_no": 26769, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 690, "underlying_data": {"ring": "Indoor 1- Sarah Haas", "time": "11:30 am", "class_number": 248, "class_name": "USHJA Hunter 3'3", "ring_no": 644, "ring_day_no": 3603, "class_no": 26769, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 690}}, {"row_id": 36, "ring": "Indoor 2 - Jo Walker", "time": "", "class_number": "", "class_name": "Midway Drag", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": "", "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "", "class_number": null, "class_name": "Midway Drag", "ring_no": 645, "ring_day_no": 3609, "class_no": 0, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 37, "ring": "Indoor 2 - Jo Walker", "time": "", "class_number": 430, "class_name": "USHJA Grn Hunter Incentive 3'", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 26874, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "", "class_number": 430, "class_name": "USHJA Grn Hunter Incentive 3'", "ring_no": 645, "ring_day_no": 3609, "class_no": 26874, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 38, "ring": "Indoor 2 - Jo Walker", "time": "", "class_number": 9020, "class_name": "Ticketed Schooling-Thursday Indoor 2 until 3pm", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 35254, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "", "class_number": 9020, "class_name": "Ticketed Schooling-Thursday Indoor 2 until 3pm", "ring_no": 645, "ring_day_no": 3609, "class_no": 35254, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 39, "ring": "Indoor 2 - Jo Walker", "time": "8:30 am", "class_number": 279, "class_name": "USHJA Hunter 3'' U/S", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 26765, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 510, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "8:30 am", "class_number": 279, "class_name": "USHJA Hunter 3'' U/S", "ring_no": 645, "ring_day_no": 3609, "class_no": 26765, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 510}}, {"row_id": 40, "ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 36, "class_name": "Green Hunter 3'0", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 26998, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 525, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 36, "class_name": "Green Hunter 3'0", "ring_no": 645, "ring_day_no": 3609, "class_no": 26998, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 525}}, {"row_id": 41, "ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 35, "class_name": "Grn Hunter 3'0", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 26997, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 525, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 35, "class_name": "Grn Hunter 3'0", "ring_no": 645, "ring_day_no": 3609, "class_no": 26997, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 525}}, {"row_id": 42, "ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 277, "class_name": "USHJA Hunter 3'", "oog_staging": 2, "ring_no": 645, "ring_day_no": 3609, "class_no": 26763, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 525, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 277, "class_name": "USHJA Hunter 3'", "ring_no": 645, "ring_day_no": 3609, "class_no": 26763, "oog_staging": 2, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 525}}, {"row_id": 43, "ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 278, "class_name": "USHJA Hunter 3'", "oog_staging": 2, "ring_no": 645, "ring_day_no": 3609, "class_no": 26764, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 525, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "8:45 am", "class_number": 278, "class_name": "USHJA Hunter 3'", "ring_no": 645, "ring_day_no": 3609, "class_no": 26764, "oog_staging": 2, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 525}}, {"row_id": 44, "ring": "Indoor 2 - Jo Walker", "time": "11:15 am", "class_number": 273, "class_name": "USHJA Hunter 2'9", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 26952, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 675, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "11:15 am", "class_number": 273, "class_name": "USHJA Hunter 2'9", "ring_no": 645, "ring_day_no": 3609, "class_no": 26952, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 675}}, {"row_id": 45, "ring": "Indoor 2 - Jo Walker", "time": "11:15 am", "class_number": 272, "class_name": "USHJA Hunter 2'9", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 26953, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 675, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "11:15 am", "class_number": 272, "class_name": "USHJA Hunter 2'9", "ring_no": 645, "ring_day_no": 3609, "class_no": 26953, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 675}}, {"row_id": 46, "ring": "Indoor 2 - Jo Walker", "time": "12:45 pm", "class_number": 50, "class_name": "Young Hunter 2'9", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 33727, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 765, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "12:45 pm", "class_number": 50, "class_name": "Young Hunter 2'9", "ring_no": 645, "ring_day_no": 3609, "class_no": 33727, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 765}}, {"row_id": 47, "ring": "Indoor 2 - Jo Walker", "time": "12:45 pm", "class_number": 51, "class_name": "Young Hunter 2'9", "oog_staging": 0, "ring_no": 645, "ring_day_no": 3609, "class_no": 33728, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 765, "underlying_data": {"ring": "Indoor 2 - Jo Walker", "time": "12:45 pm", "class_number": 51, "class_name": "Young Hunter 2'9", "ring_no": 645, "ring_day_no": 3609, "class_no": 33728, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 765}}, {"row_id": 48, "ring": "Indoor 3", "time": "", "class_number": "", "class_name": "FEI Horses Only", "oog_staging": 0, "ring_no": 646, "ring_day_no": 3615, "class_no": "", "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 3", "time": "", "class_number": null, "class_name": "FEI Horses Only", "ring_no": 646, "ring_day_no": 3615, "class_no": 0, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 49, "ring": "Jumper Annex - Gary Gregory", "time": "", "class_number": 9013, "class_name": "Ticket School Thurs Annex 8am- 3pm", "oog_staging": 0, "ring_no": 648, "ring_day_no": 4323, "class_no": 27144, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Jumper Annex - Gary Gregory", "time": "", "class_number": 9013, "class_name": "Ticket School Thurs Annex 8am- 3pm", "ring_no": 648, "ring_day_no": 4323, "class_no": 27144, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 50, "ring": "Indoor 4 - Lucy Bolton", "time": "", "class_number": "", "class_name": "Ring Maintenance", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": "", "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 999999, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "", "class_number": null, "class_name": "Ring Maintenance", "ring_no": 747, "ring_day_no": 4319, "class_no": 0, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 999999}}, {"row_id": 51, "ring": "Indoor 4 - Lucy Bolton", "time": "8:00 am", "class_number": 284, "class_name": "Baby Green Hunter U/S", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26745, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 480, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "8:00 am", "class_number": 284, "class_name": "Baby Green Hunter U/S", "ring_no": 747, "ring_day_no": 4319, "class_no": 26745, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 480}}, {"row_id": 52, "ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 268, "class_name": "USHJA Hunter 2'6", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26759, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 495, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 268, "class_name": "USHJA Hunter 2'6", "ring_no": 747, "ring_day_no": 4319, "class_no": 26759, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 495}}, {"row_id": 53, "ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 282, "class_name": "Baby Green Hunter 2'6", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26743, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 495, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 282, "class_name": "Baby Green Hunter 2'6", "ring_no": 747, "ring_day_no": 4319, "class_no": 26743, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 495}}, {"row_id": 54, "ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 283, "class_name": "Baby Green Hunter 2'6", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26744, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 495, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 283, "class_name": "Baby Green Hunter 2'6", "ring_no": 747, "ring_day_no": 4319, "class_no": 26744, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 495}}, {"row_id": 55, "ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 267, "class_name": "USHJA Hunter 2'6", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26758, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 495, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "8:15 am", "class_number": 267, "class_name": "USHJA Hunter 2'6", "ring_no": 747, "ring_day_no": 4319, "class_no": 26758, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 495}}, {"row_id": 56, "ring": "Indoor 4 - Lucy Bolton", "time": "12:00 pm", "class_number": 264, "class_name": "USHJA Hunter 2'3", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26755, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 720, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "12:00 pm", "class_number": 264, "class_name": "USHJA Hunter 2'3", "ring_no": 747, "ring_day_no": 4319, "class_no": 26755, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 720}}, {"row_id": 57, "ring": "Indoor 4 - Lucy Bolton", "time": "12:30 pm", "class_number": 263, "class_name": "USHJA Hunter 2'3", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26754, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 750, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "12:30 pm", "class_number": 263, "class_name": "USHJA Hunter 2'3", "ring_no": 747, "ring_day_no": 4319, "class_no": 26754, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 750}}, {"row_id": 58, "ring": "Indoor 4 - Lucy Bolton", "time": "12:30 pm", "class_number": 262, "class_name": "USHJA Hunter 2'3", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26753, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 750, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "12:30 pm", "class_number": 262, "class_name": "USHJA Hunter 2'3", "ring_no": 747, "ring_day_no": 4319, "class_no": 26753, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 750}}, {"row_id": 59, "ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 255, "class_name": "USHJA Hunter 2'", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26746, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 810, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 255, "class_name": "USHJA Hunter 2'", "ring_no": 747, "ring_day_no": 4319, "class_no": 26746, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 810}}, {"row_id": 60, "ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 251, "class_name": "Future Hunter 2'", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26737, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 810, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 251, "class_name": "Future Hunter 2'", "ring_no": 747, "ring_day_no": 4319, "class_no": 26737, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 810}}, {"row_id": 61, "ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 256, "class_name": "USHJA Hunter 2'", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26747, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 810, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 256, "class_name": "USHJA Hunter 2'", "ring_no": 747, "ring_day_no": 4319, "class_no": 26747, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 810}}, {"row_id": 62, "ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 250, "class_name": "Future Hunter 2'", "oog_staging": 0, "ring_no": 747, "ring_day_no": 4319, "class_no": 26736, "iso_date": "2026-07-02", "focus_show": "recsfIXwb6GCUCEzG", "show_no": 14909, "time_sort": 810, "underlying_data": {"ring": "Indoor 4 - Lucy Bolton", "time": "1:30 pm", "class_number": 250, "class_name": "Future Hunter 2'", "ring_no": 747, "ring_day_no": 4319, "class_no": 26736, "oog_staging": 0, "focus_show": "recsfIXwb6GCUCEzG", "iso_date": "2026-07-02", "time_sort": 810}}];
+const hiddenRows = new Set();
+let showHidden = false;
+
+function keyFor(data) {
+  return data.staging_key || data.row_id || `${data.ring_day_no}|${data.class_no}|${data.class_name}`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function updateStats() {
+  const hidden = hiddenRows.size;
+  const total = rows.length;
+  const visible = showHidden ? total : total - hidden;
+  document.getElementById("stats").textContent =
+    `Visible rows: ${visible} | Hidden rows: ${hidden} | Total rows still in memory: ${total}`;
+  document.getElementById("toggle-hidden").textContent = showHidden ? "Hide Hidden Rows Again" : "Show Hidden Rows";
+}
+
+function openDrawer(data) {
+  const hidden = hiddenRows.has(keyFor(data));
+
+  document.getElementById("drawer-summary").innerHTML = `
+    <div class="big">${escapeHtml(data.time || "No time")} &nbsp; ${escapeHtml(data.class_number || "")}</div>
+    <div>${escapeHtml(data.class_name || "")}</div>
+    <br>
+    <b>Ring:</b> ${escapeHtml(data.ring)}<br>
+    <b>class_no:</b> ${escapeHtml(data.class_no)}
+    &nbsp; <b>ring_no:</b> ${escapeHtml(data.ring_no)}
+    &nbsp; <b>ring_day_no:</b> ${escapeHtml(data.ring_day_no)}<br>
+    <b>OOG staging:</b> ${escapeHtml(data.oog_staging)}
+    &nbsp; <b>Hidden:</b> ${hidden ? "YES" : "NO"}
+  `;
+
+  document.getElementById("drawer-json").textContent = JSON.stringify(data, null, 2);
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("backdrop").classList.add("open");
+}
+
+function closeDrawer() {
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("backdrop").classList.remove("open");
+}
+
+const table = new Tabulator("#table", {
+  data: rows,
+  height: "100%",
+  layout: "fitColumns",
+  groupBy: "ring",
+  printAsHtml: true,
+  printStyled: true,
+  printRowRange: "all",
+  printHeader: "<h1>WEC Schedule — 14909 / 2026-07-02</h1>",
+  initialSort: [
+    {column:"ring_no", dir:"asc"},
+    {column:"time_sort", dir:"asc"},
+    {column:"class_number", dir:"asc"}
+  ],
+  rowFormatter: function(row) {
+    const data = row.getData();
+    const el = row.getElement();
+    el.classList.toggle("has-oog", (data.oog_staging || 0) > 0);
+    el.classList.toggle("hidden-row", hiddenRows.has(keyFor(data)));
+  },
+  columns: [
+    {
+      title: "View",
+      field: "row_id",
+      width: 70,
+      hozAlign: "center",
+      print: false,
+      formatter: () => "<button class='row-btn view-btn'>View</button>",
+      cellClick: function(e, cell) {
+        e.stopPropagation();
+        selectAndOpen(cell.getRow());
+      }
+    },
+    {
+      title: "Hide",
+      field: "row_id",
+      width: 78,
+      hozAlign: "center",
+      print: false,
+      formatter: function(cell) {
+        const data = cell.getRow().getData();
+        return hiddenRows.has(keyFor(data))
+          ? "<button class='row-btn unhide-btn'>Unhide</button>"
+          : "<button class='row-btn hide-btn'>Hide</button>";
+      },
+      cellClick: function(e, cell) {
+        e.stopPropagation();
+        const row = cell.getRow();
+        const data = row.getData();
+        const key = keyFor(data);
+
+        if (hiddenRows.has(key)) hiddenRows.delete(key);
+        else hiddenRows.add(key);
+
+        updateStats();
+        table.refreshFilter();
+        table.redraw(true);
+        openDrawer(data);
+      }
+    },
+    {title:"Time", field:"time", width:95, headerFilter:"input"},
+    {title:"#", field:"class_number", width:70, headerFilter:"input"},
+    {title:"Class", field:"class_name", headerFilter:"input", minWidth:280},
+    {title:"OOG", field:"oog_staging", width:70, hozAlign:"center", sorter:"number"},
+    {title:"Ring No", field:"ring_no", width:85, hozAlign:"center"},
+    {title:"Ring Day", field:"ring_day_no", width:100, hozAlign:"center"},
+    {title:"Class No", field:"class_no", width:100, hozAlign:"center"},
+  ],
+});
+
+function applyHideFilter() {
+  table.setFilter(function(data) {
+    return showHidden || !hiddenRows.has(keyFor(data));
+  });
+}
+
+function selectAndOpen(row) {
+  document.querySelectorAll(".tabulator-row.selected-detail").forEach(el => el.classList.remove("selected-detail"));
+  row.getElement().classList.add("selected-detail");
+  openDrawer(row.getData());
+}
+
+table.on("rowClick", function(e, row) {
+  selectAndOpen(row);
+});
+
+table.on("rowTap", function(e, row) {
+  selectAndOpen(row);
+});
+
+document.getElementById("toggle-hidden").addEventListener("click", function() {
+  showHidden = !showHidden;
+  updateStats();
+  applyHideFilter();
+  table.redraw(true);
+});
+
+document.getElementById("clear-hidden").addEventListener("click", function() {
+  hiddenRows.clear();
+  showHidden = false;
+  updateStats();
+  applyHideFilter();
+  table.redraw(true);
+});
+
+document.getElementById("print-full").addEventListener("click", function() {
+  table.print("all", true, {columnGroups:false});
+});
+
+document.getElementById("close-drawer").addEventListener("click", closeDrawer);
+document.getElementById("backdrop").addEventListener("click", closeDrawer);
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeDrawer();
+});
+
+table.on("tableBuilt", function() {
+  updateStats();
+  applyHideFilter();
+});
+</script>
+</body>
+</html>

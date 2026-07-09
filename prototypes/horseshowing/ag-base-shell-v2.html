@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RingStatus AG Base Shell v2</title>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { overflow: hidden; }
+    .app-shell {
+      height: 100vh;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto auto;
+      gap: 0;
+      padding: 8px;
+      box-sizing: border-box;
+      background: #0b0f14;
+      color: #e5e7eb;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .control-bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      width: 100%;
+      max-width: 800px;
+      justify-self: center;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .control-title { min-width: 0; }
+    .control-title h1 { margin: 0; font-size: 16px; line-height: 1.2; }
+    .control-title p { margin: 3px 0 0; color: #9ca3af; font-size: 12px; }
+    .header-left { min-width: 0; }
+    .header-right { min-width: 0; }
+    .toolbar,
+    .action-anchors,
+    .action-bar-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      box-sizing: border-box;
+    }
+    .toolbar { justify-content: flex-end; }
+    .action-anchors,
+    .action-bar-bottom {
+      width: 100%;
+      max-width: 800px;
+      justify-self: center;
+      padding: 8px 0;
+    }
+    .action-anchors {
+      justify-content: flex-start;
+    }
+    .action-bar-bottom {
+      justify-content: space-between;
+      border-top: 1px solid #374151;
+    }
+    .action-bar-mini { max-width: 100%; }
+    .tap {
+      appearance: none;
+      border: 1px solid #374151;
+      border-radius: 999px;
+      background: #111827;
+      color: #e5e7eb;
+      min-height: 32px;
+      padding: 0 10px;
+      font-family: inherit;
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .22);
+      transition: background-color .14s ease, color .14s ease, border-color .14s ease, box-shadow .14s ease, transform .14s ease;
+    }
+    .tap:hover { background: #1f2937; box-shadow: 0 2px 5px rgba(0, 0, 0, .28); transform: translateY(-1px); }
+    .tap:disabled { opacity: .55; cursor: not-allowed; }
+    .tap-active { border-color: #000; background: #000; color: #fff; }
+    .tap-active-2 { border-color: #15803d; background: #15803d; color: #fff; }
+    .grid-frame {
+      min-height: 0;
+      width: 100%;
+      max-width: 800px;
+      justify-self: center;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    #entryGrid { height: 100%; width: 100%; min-height: 320px; }
+    .status-line {
+      max-width: 800px;
+      width: 100%;
+      justify-self: center;
+      color: #9ca3af;
+      font-size: 12px;
+      min-height: 16px;
+    }
+    .action-row { display: inline-flex; gap: 4px; align-items: center; }
+    #entryGrid .ag-header-cell-menu-button,
+    #entryGrid .ag-header-cell-filter-button,
+    #entryGrid .ag-sort-indicator-container,
+    #entryGrid .ag-header-icon { display: none; }
+    .fallback-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      color: #111827;
+      font-family: system-ui, sans-serif;
+    }
+    .fallback-table th,
+    .fallback-table td { border: 1px solid #d1d5db; padding: 6px; text-align: left; }
+    @media print {
+      body { overflow: visible; }
+      .control-bar, .action-anchors, .action-bar-bottom, .status-line { display: none; }
+      .app-shell { height: auto; background: #fff; color: #000; padding: 0; }
+      .grid-frame { max-width: none; overflow: visible; border-radius: 0; }
+      #entryGrid { height: auto; min-height: 0; }
+    }
+    @media (max-width: 479px) {
+      .control-bar { grid-template-columns: 1fr; }
+      .header-right { grid-row: 1; }
+      .header-left { grid-row: 2; }
+      .toolbar { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="control-bar">
+      <div class="control-title header-left">
+        <h1>AG Base Shell v2</h1>
+        <p>Base AG shell for RingStatus outputs.</p>
+      </div>
+      <div class="toolbar action-bar-mini header-right">
+        <button class="tap" id="addRowBtn" type="button">Add</button>
+        <button class="tap" id="printBtn" type="button">Print</button>
+        <button class="tap" id="resetBtn" type="button">Reset</button>
+      </div>
+    </header>
+
+    <nav class="action-anchors" aria-label="Base anchors">
+      <button class="tap" type="button">Ring</button>
+      <button class="tap" type="button">Class</button>
+      <button class="tap" type="button">Entry</button>
+      <button class="tap" type="button">Results</button>
+    </nav>
+
+    <main class="grid-frame">
+      <div id="entryGrid"></div>
+    </main>
+
+    <section class="action-bar-bottom" aria-label="Bottom actions">
+      <div class="toolbar">
+        <button class="tap tap-toggle" id="hideToggleBtn" type="button" data-toggle-label-on="Show" data-toggle-label-off="Hide">Hide</button>
+        <button class="tap tap-toggle" id="diffToggleBtn" type="button">Diff</button>
+      </div>
+      <div class="toolbar">
+        <button class="tap" type="button">Input</button>
+        <button class="tap tap-active-2" type="button">Submit</button>
+      </div>
+    </section>
+
+    <div class="status-line" id="statusLine">Ready.</div>
+  </div>
+
+  <script>
+    (function () {
+      const horseOptions = [
+        'First Light', 'Junebug', 'Blue Harbor', 'North Star', 'Copperfield',
+        'Dover Lane', 'Tempo', 'Valentino', 'Lighthouse', 'Morning Call',
+        'New Horse', 'Test Horse'
+      ];
+
+      const initialRows = [
+        { row_key: 'entry-001', time: '7:30 AM', ring: 'R7', class_number: '101', class_name: '.65m Junior/Amateur Classic II.2b', horse: 'First Light', in: '12', status: 'Pending' },
+        { row_key: 'entry-002', time: '7:38 AM', ring: 'R7', class_number: '101', class_name: '.65m Junior/Amateur Classic II.2b', horse: 'Junebug', in: '18', status: 'Pending' },
+        { row_key: 'entry-003', time: '7:45 AM', ring: 'R8', class_number: '202', class_name: 'Green Hunter 3\'0', horse: 'Blue Harbor', in: '24', status: 'Pending' },
+        { row_key: 'entry-004', time: '7:52 AM', ring: 'R8', class_number: '202', class_name: 'Green Hunter 3\'0', horse: 'North Star', in: '30', status: 'Pending' },
+        { row_key: 'entry-005', time: '8:00 AM', ring: 'R9', class_number: '303', class_name: 'Adult Amateur Hunter 2\'9', horse: 'Copperfield', in: '36', status: 'Pending' },
+        { row_key: 'entry-006', time: '8:08 AM', ring: 'R9', class_number: '303', class_name: 'Adult Amateur Hunter 2\'9', horse: 'Dover Lane', in: '42', status: 'Pending' },
+        { row_key: 'entry-007', time: '8:15 AM', ring: 'R7', class_number: '404', class_name: '1.10m Young Jumper II', horse: 'Tempo', in: '48', status: 'Pending' },
+        { row_key: 'entry-008', time: '8:23 AM', ring: 'R7', class_number: '404', class_name: '1.10m Young Jumper II', horse: 'Valentino', in: '54', status: 'Pending' },
+        { row_key: 'entry-009', time: '8:30 AM', ring: 'R8', class_number: '505', class_name: 'Equitation 15-17', horse: 'Lighthouse', in: '60', status: 'Pending' },
+        { row_key: 'entry-010', time: '8:38 AM', ring: 'R8', class_number: '505', class_name: 'Equitation 15-17', horse: 'Morning Call', in: '66', status: 'Pending' }
+      ];
+
+      let rowStore = initialRows.map(row => ({ ...row }));
+      let gridApi = null;
+      let draftCount = 0;
+      const statusLine = document.getElementById('statusLine');
+
+      function toMinutes(value) {
+        const match = String(value || '').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+        if (!match) return 99999;
+        let hour = Number(match[1]);
+        const minute = Number(match[2]);
+        const meridiem = match[3].toUpperCase();
+        if (meridiem === 'PM' && hour !== 12) hour += 12;
+        if (meridiem === 'AM' && hour === 12) hour = 0;
+        return hour * 60 + minute;
+      }
+
+      function sortRows(rows) {
+        return rows.slice().sort((a, b) => {
+          const timeDiff = toMinutes(a.time) - toMinutes(b.time);
+          if (timeDiff) return timeDiff;
+          const ringDiff = String(a.ring || '').localeCompare(String(b.ring || ''));
+          if (ringDiff) return ringDiff;
+          return String(a.class_name || '').localeCompare(String(b.class_name || ''));
+        });
+      }
+
+      function setStatus(message) {
+        statusLine.textContent = message;
+      }
+
+      function syncAllRows(message) {
+        rowStore = sortRows(rowStore);
+        if (gridApi) gridApi.setGridOption('rowData', rowStore.map(row => ({ ...row })));
+        if (message) setStatus(message);
+      }
+
+      function updateRow(rowKey, patch) {
+        let updatedRow = null;
+        rowStore = rowStore.map(row => {
+          if (row.row_key !== rowKey) return row;
+          updatedRow = { ...row, ...patch, updated_at: new Date().toLocaleTimeString() };
+          return updatedRow;
+        });
+        if (gridApi && updatedRow) gridApi.applyTransaction({ update: [updatedRow] });
+        setStatus('Updated ' + rowKey + '.');
+      }
+
+      function addRow() {
+        draftCount += 1;
+        const row = {
+          row_key: 'entry-new-' + Date.now(),
+          time: '9:00 AM',
+          ring: 'R7',
+          class_name: 'New Class',
+          horse: 'New Horse',
+          class_number: '000',
+          in: '',
+          status: 'Draft',
+          is_new: true,
+          updated_at: new Date().toLocaleTimeString()
+        };
+        if (!horseOptions.includes(row.horse)) horseOptions.push(row.horse);
+        rowStore = [...rowStore, row];
+        if (gridApi) {
+          gridApi.applyTransaction({ add: [row] });
+          gridApi.ensureNodeVisible(row, 'middle');
+          setTimeout(() => {
+            const node = gridApi.getRowNode(row.row_key);
+            if (node) gridApi.startEditingCell({ rowIndex: node.rowIndex, colKey: 'time' });
+          }, 0);
+        }
+        setStatus('Added draft row inside the grid. Edit cells inline, then use Ok or No.');
+      }
+
+      function statusRenderer(params) {
+        const value = params.value || 'Pending';
+        const cls = String(value).toLowerCase();
+        const state = cls === 'approved' ? ' tap-active-2' : cls === 'declined' ? ' tap-active' : '';
+        return '<button class="rs-button tap' + state + '" type="button" tabindex="-1">' + escapeHtml(value) + '</button>';
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[char]));
+      }
+
+      const columnDefs = [
+        { field: 'time', headerName: 'Time', editable: true, width: 96, minWidth: 88, maxWidth: 116, suppressSizeToFit: true },
+        { field: 'ring', headerName: 'Ring', editable: true, width: 96, minWidth: 88, maxWidth: 128, suppressSizeToFit: true },
+        { field: 'class_number', headerName: 'No', editable: true, width: 88, minWidth: 88, maxWidth: 104, suppressSizeToFit: true },
+        { field: 'class_name', headerName: 'Class', editable: true, width: 280, minWidth: 220, maxWidth: 420, suppressSizeToFit: true, tooltipField: 'class_name' },
+        {
+          field: 'horse',
+          headerName: 'Horse',
+          editable: true,
+          width: 220,
+          minWidth: 160,
+          maxWidth: 340,
+          suppressSizeToFit: true,
+          tooltipField: 'horse',
+          cellEditor: 'agSelectCellEditor',
+          cellEditorParams: () => ({ values: horseOptions.slice() })
+        },
+        { field: 'in', headerName: 'In', editable: true, width: 72, minWidth: 72, maxWidth: 88, suppressSizeToFit: true },
+        { field: 'status', headerName: 'Status', width: 116, minWidth: 104, maxWidth: 136, suppressSizeToFit: true, editable: false, cellRenderer: statusRenderer }
+      ];
+
+      const gridOptions = {
+        theme: window.agGrid && window.agGrid.themeQuartz ? window.agGrid.themeQuartz : undefined,
+        columnDefs,
+        rowData: sortRows(rowStore),
+        getRowId: params => params.data.row_key,
+        defaultColDef: {
+          sortable: false,
+          filter: false,
+          resizable: true,
+          suppressSizeToFit: true
+        },
+        rowSelection: { mode: 'singleRow', checkboxes: false, enableClickSelection: true },
+        suppressAutoSize: true,
+        suppressColumnMoveAnimation: true,
+        animateRows: true,
+        enableCellChangeFlash: true,
+        singleClickEdit: false,
+        stopEditingWhenCellsLoseFocus: true,
+        onGridReady: params => {
+          gridApi = params.api;
+          syncAllRows('Showing 10 entries by time, ring, class, and horse. Edit inline or add a row inside the grid.');
+        },
+        onGridSizeChanged: () => {
+          // Intentional: keep column widths usable and allow horizontal scroll instead of squeezing columns.
+        },
+        onCellValueChanged: params => {
+          if (!params.data || params.oldValue === params.newValue || !params.colDef.field) return;
+          const patch = { [params.colDef.field]: params.newValue };
+          if (params.colDef.field === 'horse' && params.newValue && !horseOptions.includes(params.newValue)) horseOptions.push(params.newValue);
+          if (params.data.status !== 'Draft') patch.status = 'Edited';
+          updateRow(params.data.row_key, patch);
+        }
+      };
+
+      function handleTapToggle(event) {
+        const button = event.target.closest('.tap-toggle');
+        if (!button) return;
+        button.classList.toggle('tap-active');
+        const onLabel = button.getAttribute('data-toggle-label-on');
+        const offLabel = button.getAttribute('data-toggle-label-off');
+        if (onLabel && offLabel) button.textContent = button.classList.contains('tap-active') ? onLabel : offLabel;
+      }
+
+      function renderFallback() {
+        const gridDiv = document.getElementById('entryGrid');
+        gridDiv.innerHTML = '<table class="fallback-table"><thead><tr><th>Time</th><th>Ring</th><th>No</th><th>Class</th><th>Horse</th><th>In</th><th>Status</th></tr></thead><tbody>' +
+          sortRows(rowStore).map(row => '<tr><td>' + escapeHtml(row.time) + '</td><td>' + escapeHtml(row.ring) + '</td><td>' + escapeHtml(row.class_number) + '</td><td>' + escapeHtml(row.class_name) + '</td><td>' + escapeHtml(row.horse) + '</td><td>' + escapeHtml(row.in) + '</td><td>' + escapeHtml(row.status) + '</td></tr>').join('') +
+          '</tbody></table>';
+        setStatus('AG Grid failed to load; showing fallback table.');
+      }
+
+      function init() {
+        const gridDiv = document.getElementById('entryGrid');
+        if (!window.agGrid || typeof window.agGrid.createGrid !== 'function') {
+          renderFallback();
+          return;
+        }
+        gridApi = window.agGrid.createGrid(gridDiv, gridOptions);
+      }
+
+      document.getElementById('addRowBtn').addEventListener('click', addRow);
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        rowStore = initialRows.map(row => ({ ...row }));
+        syncAllRows('Reset to original 10 entries.');
+      });
+      document.getElementById('printBtn').addEventListener('click', () => window.print());
+      document.addEventListener('click', handleTapToggle);
+
+      init();
+    }());
+  </script>
+</body>
+</html>
