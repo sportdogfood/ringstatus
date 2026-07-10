@@ -4,849 +4,134 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ring Classes</title>
+  <link rel="stylesheet" href="ag-report-shared.css">
   <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
-  <style>
-    :root {
-      --rs-bg: #0b0f14;
-      --rs-surface: #ffffff;
-      --rs-muted-surface: #ededed;
-      --rs-border: #ededed;
-      --rs-text: #071426;
-      --rs-muted: #64748b;
-      --rs-ok: #0f7a3c;
-      --rs-shell-max: 800px;
-      --rs-row-height: 42px;
-      --rs-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    }
-
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
-
-    body {
-      overflow: hidden;
-      background: var(--rs-bg);
-      color: var(--rs-text);
-      font-family: var(--rs-font);
-    }
-
-    .app-shell {
-      height: 100vh;
-      min-height: 0;
-      display: grid;
-      grid-template-rows: auto auto auto 1fr auto auto;
-      gap: 0;
-      box-sizing: border-box;
-    }
-
-    .app-head,
-    .action-bar,
-    .action-anchors,
-    .grid-frame,
-    .action-bar-bottom,
-    .status-line {
-      width: 100%;
-      max-width: var(--rs-shell-max);
-      justify-self: center;
-      box-sizing: border-box;
-    }
-
-    .app-head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
-      background: var(--rs-surface);
-      padding: 14px 16px 12px;
-    }
-
-    .header-left,
-    .header-right {
-      min-width: 0;
-    }
-
-    .header-right {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .app-title {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.05;
-      letter-spacing: 0;
-    }
-
-    .app-meta {
-      margin-top: 6px;
-      color: var(--rs-muted);
-      font-size: 12px;
-      line-height: 1.3;
-    }
-
-    .action-bar-mini,
-    .action-group {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-      min-width: 0;
-    }
-
-    .action-bar-mini {
-      justify-content: flex-end;
-    }
-
-    .action-bar,
-    .action-bar-bottom {
-      min-height: var(--rs-row-height);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 0 12px;
-      background: var(--rs-muted-surface);
-    }
-
-    .action-anchors {
-      min-height: var(--rs-row-height);
-      display: flex;
-      align-items: center;
-      flex-wrap: nowrap;
-      gap: 6px;
-      padding: 0 12px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      background: var(--rs-surface);
-      border-top: 1px solid var(--rs-border);
-      border-bottom: 1px solid var(--rs-border);
-    }
-
-    .action-group.secondary {
-      justify-content: flex-end;
-    }
-
-    .rs-button {
-      appearance: none;
-      border: 1.5px solid #000;
-      border-radius: 999px;
-      background: var(--rs-surface);
-      color: var(--rs-text);
-      min-height: 30px;
-      padding: 3px 12px;
-      font-family: var(--rs-font);
-      font-size: 12px;
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: 0;
-      cursor: pointer;
-      white-space: nowrap;
-      box-shadow: 0 1px 2px rgba(7, 20, 38, .14);
-      transition: background-color .14s ease, color .14s ease, box-shadow .14s ease, transform .14s ease;
-    }
-
-    .rs-button:hover {
-      box-shadow: 0 2px 5px rgba(7, 20, 38, .18);
-      transform: translateY(-1px);
-    }
-
-    .tap-active {
-      background: #000;
-      color: #fff;
-    }
-
-    .tap-active-2 {
-      background: var(--rs-ok);
-      border-color: var(--rs-ok);
-      color: #fff;
-    }
-
-    .grid-frame {
-      min-height: 0;
-      overflow: hidden;
-      background: var(--rs-surface);
-    }
-
-    #agBaseGrid {
-      height: 100%;
-      min-height: 320px;
-      width: 100%;
-    }
-
-    .status-line {
-      min-height: var(--rs-row-height);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 0 16px;
-      color: #cbd5e1;
-      font-size: 12px;
-      line-height: 1.2;
-    }
-
-    .ag-theme-quartz {
-      --ag-font-family: var(--rs-font);
-      --ag-font-size: 13px;
-      --ag-header-font-size: 13px;
-      --ag-header-background-color: var(--rs-border);
-      --ag-header-foreground-color: var(--rs-text);
-      --ag-foreground-color: var(--rs-text);
-      --ag-background-color: var(--rs-surface);
-      --ag-row-border-color: var(--rs-border);
-      --ag-border-color: var(--rs-border);
-      --ag-row-height: var(--rs-row-height);
-      --ag-header-height: var(--rs-row-height);
-      --ag-cell-horizontal-padding: 12px;
-    }
-
-    .ag-theme-quartz .ag-root-wrapper {
-      border: 0;
-      border-radius: 0;
-    }
-
-    .ag-theme-quartz .ag-header-cell-menu-button,
-    .ag-theme-quartz .ag-header-cell-filter-button,
-    .ag-theme-quartz .ag-sort-indicator-container,
-    .ag-theme-quartz .ag-header-icon {
-      display: none;
-    }
-
-    .ag-theme-quartz .ag-row-hover {
-      background-color: #f7f8fa;
-    }
-
-    @media (max-width: 479px) {
-      .app-head,
-      .action-bar,
-      .action-anchors,
-      .grid-frame,
-      .action-bar-bottom,
-      .status-line {
-        max-width: none;
-      }
-
-      .app-head {
-        grid-template-columns: 1fr;
-      }
-
-      .header-right {
-        grid-row: 1;
-        justify-content: flex-end;
-      }
-
-      .header-left {
-        grid-row: 2;
-      }
-
-      .status-line {
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        padding: 6px 16px;
-      }
-    }
-
-    @media print {
-      @page {
-        size: letter portrait;
-        margin: .25in;
-      }
-
-      body {
-        overflow: visible;
-        background: #fff;
-      }
-
-      .app-shell {
-        min-height: 10.5in;
-        height: auto;
-        grid-template-rows: auto 1fr auto;
-      }
-
-      .action-bar,
-      .action-anchors,
-      .action-bar-bottom,
-      .header-right {
-        display: none;
-      }
-
-      .app-head,
-      .grid-frame,
-      .status-line {
-        max-width: none;
-      }
-
-      .app-head {
-        padding: 0 0 6px;
-        border-bottom: 1px solid #000;
-      }
-
-      .app-title {
-        font-size: 14px;
-      }
-
-      .app-meta,
-      .status-line {
-        font-size: 9px;
-      }
-
-      #agBaseGrid {
-        height: auto;
-        min-height: 0;
-      }
-
-      .ag-theme-quartz {
-        --ag-font-size: 8px;
-        --ag-header-font-size: 8px;
-        --ag-row-height: 18px;
-        --ag-header-height: 18px;
-        --ag-cell-horizontal-padding: 4px;
-      }
-    }
-  </style>
-  <style>
-    .class-related-data {
-      min-height: var(--rs-row-height);
-      box-sizing: border-box;
-      padding: 4px 12px;
-      border-bottom: 1px solid var(--rs-border);
-      background: var(--rs-surface);
-      color: var(--rs-text);
-      line-height: 1.15;
-    }
-
-    .rollup-line {
-      min-height: 24px;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .class-related-rollup {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      min-width: 0;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .rollup-item {
-      appearance: none;
-      border: 1.5px solid #000;
-      border-radius: 999px;
-      background: var(--rs-surface);
-      color: var(--rs-muted);
-      min-height: 24px;
-      padding: 2px 10px;
-      font-family: var(--rs-font);
-      font-size: 11px;
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: 0;
-      white-space: nowrap;
-    }
-
-    .class-line {
-      display: grid;
-      grid-template-columns: 72px 90px minmax(0, 1fr) 44px 64px;
-      gap: 8px;
-      align-items: center;
-      min-height: calc(var(--rs-row-height) - 8px);
-      overflow: hidden;
-      font-size: 12px;
-    }
-
-    .class-line span {
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .class-token {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 24px;
-      min-width: 24px;
-      border: 1.5px solid #000;
-      border-radius: 999px;
-      padding: 1px 8px;
-      text-transform: uppercase;
-      font-size: 11px;
-      line-height: 1;
-    }
-
-    .print-sheet {
-      display: none;
-    }
-
-    @media print {
-      @page {
-        size: letter landscape;
-        margin: .28in;
-      }
-
-      .app-shell {
-        display: none;
-      }
-
-      .print-sheet {
-        display: block;
-        color: #111;
-        background: #fff;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-
-      .print-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-        border-bottom: 1px solid #111;
-        margin-bottom: 5px;
-        padding-bottom: 4px;
-      }
-
-      .print-title h1 {
-        margin: 0;
-        font-size: 14px;
-      }
-
-      .print-title p {
-        margin: 0;
-        font-size: 8px;
-        line-height: 1.05;
-        text-align: right;
-      }
-
-      .print-columns {
-        columns: 3 250px;
-        column-gap: 12px;
-      }
-
-      .print-row {
-        display: grid;
-        grid-template-columns: 44px 58px 30px minmax(0, 1fr);
-        gap: 4px;
-        align-items: center;
-        min-height: 14px;
-        padding: 1px 2px;
-        border-bottom: 1px solid #ddd;
-        break-inside: avoid;
-        font-size: 8px;
-        line-height: 1.08;
-      }
-
-      .print-row:nth-child(even) {
-        background: #f6f6f6;
-      }
-
-      .print-row span {
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-  </style>
 </head>
 <body>
-  <main class="app-shell" data-ag-system="ring-classes" data-ag-output="ring-classes">
-    <header class="app-head">
-      <div class="header-left">
-        <h1 class="app-title">Ring Classes</h1>
-        <div class="app-meta" id="metaText">Loading focus day...</div>
-      </div>
-      <div class="header-right">
-        <div class="action-bar-mini" aria-label="Header actions">
-          <button class="rs-button tap tap-active" type="button" id="printBtn">Print</button>
-          <button class="rs-button tap" type="button" id="focusBtn">Focus</button>
-          <button class="rs-button tap" type="button" id="filterBtn">Horse</button>
-        </div>
-      </div>
-    </header>
-
-    <nav class="action-anchors" aria-label="Ring anchors" id="ringAnchors">
-    </nav>
-
-    <section class="grid-frame">
-      <div id="agBaseGrid" class="ag-theme-quartz"></div>
-    </section>
-
-    <section class="action-bar-bottom" aria-label="Horse filters" id="horseFilterBar" hidden>
-      <div class="action-group" id="horseFilterOptions"></div>
-      <div class="action-group secondary">
-        <button class="rs-button tap" type="button" id="horseFilterClearBtn">Clear</button>
-      </div>
-    </section>
-
-    <footer class="status-line">
-      <span><span id="rowCount">0</span> row(s) loaded</span>
-      <span id="statusText">loading</span>
-    </footer>
-  </main>
-
-  <section class="print-sheet" id="ringClassesPrintSheet" data-ag-output="ring-classes" aria-label="Ring classes print sheet"></section>
-
+  <div id="agReportRoot"></div>
   <script>
-    const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
-    const params = new URLSearchParams(location.search);
-    const DEFAULT_SHOW_NO = params.get("show_no") || "14910";
-    const DEFAULT_FOCUS_DAY = params.get("focus_day") || "2026-07-08";
+    (() => {
+      const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
+      const params = new URLSearchParams(location.search);
+      const showNo = params.get("show_no") || "14910";
+      const focusDay = params.get("focus_day") || "2026-07-08";
 
-    const state = {
-      gridApi: null,
-      rows: [],
-      focusMode: false,
-      ringAnchor: "",
-      filterPanelOpen: false,
-      activeHorseFilters: new Set()
-    };
+      const text = value => String(value ?? "");
+      const normalize = value => text(value).toLowerCase().replace(/[^a-z0-9']+/g, " ").trim();
+      const displayTime = row => row.display_time || row.time_text || row.time || "";
+      const ringName = row => row.ring_name_normalized || row.ring_display || row.ring_name || row.ring || "";
+      const className = row => row.class_name || row.class_description || "";
 
-    const els = {
-      metaText: document.getElementById("metaText"),
-      rowCount: document.getElementById("rowCount"),
-      statusText: document.getElementById("statusText"),
-      ringAnchors: document.getElementById("ringAnchors"),
-      printSheet: document.getElementById("ringClassesPrintSheet"),
-      printBtn: document.getElementById("printBtn"),
-      focusBtn: document.getElementById("focusBtn"),
-      filterBtn: document.getElementById("filterBtn"),
-      horseFilterBar: document.getElementById("horseFilterBar"),
-      horseFilterOptions: document.getElementById("horseFilterOptions"),
-      horseFilterClearBtn: document.getElementById("horseFilterClearBtn")
-    };
-
-    function escapeHtml(value) {
-      return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
-      }[char]));
-    }
-
-    function normalize(value) {
-      return String(value || "").toLowerCase().replace(/[^a-z0-9']+/g, " ").trim();
-    }
-
-    function displayTime(row) {
-      return row.display_time || row.class_start_time || row.time_text || row.time || "";
-    }
-
-    function ringName(row) {
-      return row.ring_name_normalized || row.ring_display || row.ring_name || row.ring || "";
-    }
-
-    function className(row) {
-      return row.class_name || row.class_label || "";
-    }
-
-    function horseKey(value) {
-      return normalize(value);
-    }
-
-    function rowHorseItems(row) {
-      const items = Array.isArray(row.horse_items) ? row.horse_items : [];
-      const labels = items.map(item => item.name || item.label).filter(Boolean);
-      [row.barn_name, row.horse_name, row.horse_display, row.horse].filter(Boolean).forEach(label => labels.push(label));
-      return labels;
-    }
-
-    function rowHorseKeys(row) {
-      return new Set(rowHorseItems(row).map(horseKey).filter(Boolean));
-    }
-
-    function rowMatchesHorseFilters(row) {
-      if (!state.activeHorseFilters.size) return true;
-      const keys = rowHorseKeys(row);
-      for (const selected of state.activeHorseFilters) {
-        if (keys.has(selected)) return true;
+      async function fetchJson(url) {
+        const response = await fetch(url);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || "HTTP " + response.status);
+        return data;
       }
-      return false;
-    }
 
-    function horseFilterOptions() {
-      const options = new Map();
-      state.rows.forEach(row => {
-        rowHorseItems(row).forEach(label => {
-          const key = horseKey(label);
-          if (key && !options.has(key)) options.set(key, label);
+      function rowHorses(row) {
+        return [
+          row.current_horse,
+          ...(row.horse_items || []).map(item => item.name || item.label),
+          ...(row.entries || []).map(entry => entry.barn_name || entry.horse_name || entry.horse)
+        ].filter(Boolean);
+      }
+
+      function classGroupKey(row) {
+        return [normalize(ringName(row)), normalize(displayTime(row)), row.class_number || row.class_no || "", normalize(className(row))].join("|");
+      }
+
+      function focusRows(rows) {
+        const groups = new Map();
+        rows.forEach(row => {
+          const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(row);
         });
-      });
-      return Array.from(options, ([key, label]) => ({ key, label }))
-        .sort((a, b) => a.label.localeCompare(b.label, undefined, { numeric: true }));
-    }
+        return rows.filter(row => {
+          const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
+          const group = groups.get(key) || [];
+          if (group.length < 2) return true;
+          const keep = group.slice().sort((a, b) => Number(a.class_number || a.class_no || 999999999) - Number(b.class_number || b.class_no || 999999999))[0];
+          return row.id === keep.id;
+        });
+      }
 
-    function rowKey(row) {
-      return row.row_key || row.class_key || [row.show_no || DEFAULT_SHOW_NO, row.focus_day || DEFAULT_FOCUS_DAY, ringName(row), row.class_no || row.class_number || className(row)].join("|");
-    }
+      function rowsWithSpecialSummaries(rows) {
+        const output = [];
+        const seen = new Set();
+        rows.forEach(row => {
+          const key = classGroupKey(row);
+          if (!seen.has(key)) {
+            seen.add(key);
+            output.push({ ...row, id: "special|" + key, __special: true, entry_count: rows.filter(candidate => classGroupKey(candidate) === key).length });
+          }
+          output.push(row);
+        });
+        return output;
+      }
 
-    function toMinutes(value) {
-      const text = String(value || "").trim();
-      const match = text.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
-      if (!match) return 99999;
-      let hour = Number(match[1]);
-      const minute = Number(match[2]);
-      const meridiem = (match[3] || "").toUpperCase();
-      if (meridiem === "PM" && hour !== 12) hour += 12;
-      if (meridiem === "AM" && hour === 12) hour = 0;
-      return hour * 60 + minute;
-    }
-
-    function compareRows(a, b) {
-      const timeDiff = toMinutes(displayTime(a)) - toMinutes(displayTime(b));
-      if (timeDiff) return timeDiff;
-      const ringDiff = String(ringName(a)).localeCompare(String(ringName(b)), undefined, { numeric: true });
-      if (ringDiff) return ringDiff;
-      return String(a.class_number || a.class_no || "").localeCompare(String(b.class_number || b.class_no || ""), undefined, { numeric: true });
-    }
-
-    async function fetchJson(url) {
-      const response = await fetch(url);
-      const data = await response.json();
-      if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || "HTTP " + response.status);
-      return data;
-    }
-
-    async function loadRows() {
-      const url = new URL(API_BASE);
-      url.searchParams.set("action", "wec-mobile-live");
-      url.searchParams.set("show_no", DEFAULT_SHOW_NO);
-      url.searchParams.set("focus_day", DEFAULT_FOCUS_DAY);
-      const data = await fetchJson(url);
-      els.metaText.textContent = [data.show_no || DEFAULT_SHOW_NO, data.show_focus_date || data.focus_day || DEFAULT_FOCUS_DAY].join(" | ");
-      const rows = [];
-      for (const ring of data.rings || []) {
-        for (const klass of ring.classes || []) {
-          rows.push({
-            ...klass,
-            id: rowKey({ ...klass, ring_name_normalized: ring.ring_name_normalized }),
-            row_key: rowKey({ ...klass, ring_name_normalized: ring.ring_name_normalized }),
-            ring_name_normalized: ring.ring_name_normalized || klass.ring_name_normalized || "",
-            ring_display: ring.ring_display || ring.ring_name_normalized || "",
-            show_no: data.show_no || DEFAULT_SHOW_NO,
-            focus_day: data.show_focus_date || data.focus_day || DEFAULT_FOCUS_DAY
-          });
+      window.RS_AG_REPORT_CONFIG = {
+        id: "ring-classes",
+        output: "ring-classes",
+        title: "Ring Classes",
+        data: {
+          async load() {
+            const url = new URL(API_BASE);
+            url.searchParams.set("action", "wec-mobile-live");
+            url.searchParams.set("show_no", showNo);
+            url.searchParams.set("focus_day", focusDay);
+            const data = await fetchJson(url);
+            const rows = (data.rings || []).flatMap(ring => (ring.classes || []).map((klass, index) => ({
+              ...klass,
+              id: klass.row_key || [data.show_no || showNo, data.show_focus_date || data.focus_day || focusDay, klass.ring_day_no || ring.ring_no || "", klass.class_no || klass.class_number || index].join("|"),
+              show_no: data.show_no || showNo,
+              focus_day: data.show_focus_date || data.focus_day || focusDay,
+              ring_name_normalized: ring.ring_name_normalized || klass.ring_name_normalized || ring.ring_display || ""
+            })));
+            const currentDay = data.show_focus_date || data.focus_day || focusDay;
+            return { rows, context: { focusDay: currentDay }, meta: [data.show_no || showNo, currentDay].join(" | "), message: "loaded ring classes" };
+          }
+        },
+        columns: [
+          { headerName: "TIME", field: "display_time", minWidth: 78, width: 88, valueGetter: params => displayTime(params.data) },
+          { headerName: "RING", field: "ring_name_normalized", minWidth: 78, width: 88, valueGetter: params => ringName(params.data).toUpperCase() },
+          { headerName: "NO", field: "class_number", minWidth: 56, width: 60, valueGetter: params => params.data.class_number || params.data.class_no || "" },
+          { headerName: "CLASS", field: "class_name", minWidth: 170, flex: 1 },
+          { headerName: "IN", field: "starts_in_mins", minWidth: 56, width: 60, hide: true, valueFormatter: params => params.value == null || params.value === "" ? "" : `${params.value}m` },
+          { headerName: "STATUS", field: "class_status", minWidth: 88, width: 88, hide: true }
+        ],
+        actions: [
+          { id: "print", label: "Print", zone: "header", type: "print" },
+          { id: "focus", label: "Focus", zone: "header", type: "focus", active: report => report.state.focusMode },
+          { id: "horse", label: "Horse", zone: "header", type: "filter", active: report => report.state.filterPanelOpen || !!report.state.activeHorseFilters.size },
+          { id: "clear", label: "Clear", zone: "primary", type: "clear" }
+        ],
+        filters: {
+          ring: row => ringName(row),
+          horse: { mode: "options", values: row => rowHorses(row) },
+          focus: rows => focusRows(rows)
+        },
+        row: {
+          getId: row => row.id,
+          isSpecial: row => !!row?.__special,
+          decorate: rows => rowsWithSpecialSummaries(rows),
+          specialSummary: row => ({ time: displayTime(row), ring: ringName(row).toUpperCase(), number: row.class_number || row.class_no || "", name: className(row), count: row.entry_count || 0 }),
+          onCellClicked(params, report) { if (params.data?.__special) report.setStatus("special row has no underlying detail data"); }
+        },
+        print: {
+          title: "Ring Classes",
+          meta: report => [showNo, report.state.context.focusDay || focusDay].join(" | "),
+          columns: [
+            { width: "44px", value: row => displayTime(row) },
+            { width: "58px", value: row => ringName(row).toUpperCase() },
+            { width: "28px", value: row => row.class_number || row.class_no || "" },
+            { width: "minmax(0,1fr)", value: row => className(row) }
+          ]
         }
-      }
-      state.rows = rows.sort(compareRows);
-    }
-
-    function focusGroupKey(row) {
-      return [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
-    }
-
-    function focusKeepValue(row) {
-      const value = Number(row.class_number || row.class_no);
-      return Number.isFinite(value) ? value : 999999999;
-    }
-
-    function focusedRows(rows) {
-      if (!state.focusMode) return rows;
-      const groups = new Map();
-      rows.forEach(row => {
-        const key = focusGroupKey(row);
-        if (!groups.has(key)) groups.set(key, []);
-        groups.get(key).push(row);
-      });
-      return rows.filter(row => {
-        const group = groups.get(focusGroupKey(row)) || [];
-        if (group.length < 2) return true;
-        const keep = group.slice().sort((a, b) => focusKeepValue(a) - focusKeepValue(b) || compareRows(a, b))[0];
-        return row.row_key === keep.row_key;
-      });
-    }
-
-    function normalVisibleRows() {
-      return focusedRows(state.rows.filter(row => {
-        if (state.ringAnchor && normalize(ringName(row)) !== state.ringAnchor) return false;
-        if (!rowMatchesHorseFilters(row)) return false;
-        return true;
-      }));
-    }
-
-    function classGroupKey(row) {
-      return [normalize(ringName(row)), normalize(displayTime(row)), row.class_number || row.class_no || "", normalize(className(row))].join("|");
-    }
-
-    function visibleRows() {
-      const rows = normalVisibleRows();
-      const output = [];
-      const seen = new Set();
-      rows.forEach(row => {
-        const key = classGroupKey(row);
-        if (!seen.has(key)) {
-          seen.add(key);
-          output.push({
-            id: "special|" + key,
-            row_key: "special|" + key,
-            __special: true,
-            ring_name_normalized: ringName(row),
-            display_time: displayTime(row),
-            class_number: row.class_number || row.class_no || "",
-            class_no: row.class_no || "",
-            class_name: className(row),
-            entry_count: rows.filter(candidate => classGroupKey(candidate) === key).length
-          });
-        }
-        output.push(row);
-      });
-      return output;
-    }
-
-    function specialRowRenderer(params) {
-      const row = params.node?.data || params.rowNode?.data || {};
-      return `
-        <div class="ag-full-width-anchor" role="presentation">
-          <div class="class-related-data has-rollup">
-            <div class="rollup-line">
-              <div class="class-related-rollup" data-rollups="">
-                <button type="button" class="rollup-item" data-row-key="${escapeHtml(row.row_key)}" data-rollup-index="0" disabled><span class="rollup-label">No Rollups</span></button>
-              </div>
-            </div>
-            <div class="class-line">
-              <span class="time-cell"><span class="class-time">${escapeHtml(displayTime(row))}</span></span>
-              <span class="class-ring">${escapeHtml(ringName(row).toUpperCase())}</span>
-              <span class="class-name">${escapeHtml(row.class_number || row.class_no || "")} - ${escapeHtml(className(row))}</span>
-              <span class="class-entry"><span class="class-token">${escapeHtml(row.entry_count || 0)}</span></span>
-              <span class="class-status"><span class="class-token is-status status-soon" title="no detail" aria-label="no detail">no detail</span></span>
-            </div>
-          </div>
-        </div>`;
-    }
-
-    function renderRingAnchors() {
-      const rings = [...new Map(state.rows.map(row => [normalize(ringName(row)), ringName(row).toUpperCase()]).filter(([key]) => key)).entries()]
-        .sort((a, b) => a[1].localeCompare(b[1], undefined, { numeric: true }));
-      els.ringAnchors.innerHTML = rings
-        .map(([key, label]) => `<button class="rs-button tap ${state.ringAnchor === key ? "tap-active" : ""}" type="button" data-ring="${escapeHtml(key)}">${escapeHtml(label)}</button>`)
-        .join("");
-    }
-
-    function renderHorseFilters() {
-      const options = horseFilterOptions();
-      els.horseFilterOptions.innerHTML = options.length
-        ? options.map(({ key, label }) => `<button class="rs-button tap ${state.activeHorseFilters.has(key) ? "tap-active" : ""}" type="button" data-horse-key="${escapeHtml(key)}">${escapeHtml(label)}</button>`).join("")
-        : '<button class="rs-button tap" type="button" disabled>No Horses</button>';
-      els.filterBtn.classList.toggle("tap-active", state.filterPanelOpen || !!state.activeHorseFilters.size);
-      els.horseFilterBar.hidden = !state.filterPanelOpen;
-    }
-
-    function updateRows(message) {
-      const rows = visibleRows();
-      if (state.gridApi) state.gridApi.setGridOption("rowData", rows);
-      els.rowCount.textContent = String(rows.filter(row => !row.__special).length);
-      renderRingAnchors();
-      renderHorseFilters();
-      if (message) els.statusText.textContent = message;
-    }
-
-    function buildPrintSheet() {
-      const rows = normalVisibleRows();
-      els.printSheet.innerHTML =
-        `<div class="print-title">
-          <h1>Ring Classes</h1>
-          <p>ring-classes<br>${escapeHtml(DEFAULT_SHOW_NO)}<br>${escapeHtml(DEFAULT_FOCUS_DAY)}</p>
-        </div>
-        <div class="print-columns">
-          ${rows.map(row => `
-            <div class="print-row">
-              <span>${escapeHtml(displayTime(row))}</span>
-              <span>${escapeHtml(ringName(row).toUpperCase())}</span>
-              <span>${escapeHtml(row.class_number || row.class_no || "")}</span>
-              <span>${escapeHtml(className(row))}</span>
-            </div>
-          `).join("")}
-        </div>`;
-    }
-
-    const columnDefs = [
-      { headerName: "TIME", field: "display_time", minWidth: 78, width: 88, valueGetter: params => displayTime(params.data) },
-      { headerName: "RING", field: "ring_name_normalized", minWidth: 78, width: 88, valueGetter: params => ringName(params.data).toUpperCase() },
-      { headerName: "NO", field: "class_number", minWidth: 56, width: 60, valueGetter: params => params.data.class_number || params.data.class_no || "" },
-      { headerName: "CLASS", field: "class_name", minWidth: 170, flex: 1 },
-      { headerName: "IN", field: "starts_in_mins", minWidth: 56, width: 60, hide: true, valueFormatter: params => params.value == null || params.value === "" ? "" : `${params.value}m` },
-      { headerName: "STATUS", field: "class_status", minWidth: 88, width: 88, hide: true }
-    ];
-
-    const gridOptions = {
-      rowData: [],
-      columnDefs,
-      defaultColDef: {
-        sortable: false,
-        filter: false,
-        resizable: false,
-        suppressHeaderMenuButton: true
-      },
-      getRowId: (params) => params.data.id,
-      rowSelection: { mode: "singleRow", checkboxes: false, enableClickSelection: true },
-      animateRows: false,
-      ensureDomOrder: true,
-      suppressMovableColumns: true,
-      suppressCellFocus: true,
-      suppressHeaderFocus: true,
-      isFullWidthRow: params => !!params.rowNode.data?.__special,
-      fullWidthCellRenderer: specialRowRenderer,
-      onGridReady: (event) => {
-        state.gridApi = event.api;
-        updateRows("ready");
-      },
-      onCellClicked: params => {
-        if (params.data?.__special) els.statusText.textContent = "special row has no underlying detail data";
-      }
-    };
-
-    async function init() {
-      const gridDiv = document.getElementById("agBaseGrid");
-      if (window.agGrid && typeof window.agGrid.createGrid === "function") {
-        window.agGrid.createGrid(gridDiv, gridOptions);
-      } else {
-        gridDiv.innerHTML = "<table><tr><th>TIME</th><th>RING</th><th>NO</th><th>CLASS</th><th>IN</th><th>STATUS</th></tr></table>";
-      }
-      try {
-        els.statusText.textContent = "loading";
-        await loadRows();
-        updateRows("loaded ring classes");
-      } catch (error) {
-        els.statusText.textContent = "load failed: " + (error.message || error);
-      }
-    }
-
-    els.printBtn.addEventListener("click", () => {
-      buildPrintSheet();
-      setTimeout(() => window.print(), 50);
-    });
-    els.focusBtn.addEventListener("click", () => {
-      state.focusMode = !state.focusMode;
-      els.focusBtn.classList.toggle("tap-active", state.focusMode);
-      updateRows(state.focusMode ? "focus on" : "focus off");
-    });
-    els.ringAnchors.addEventListener("click", event => {
-      const button = event.target.closest("[data-ring]");
-      if (!button) return;
-      state.ringAnchor = button.getAttribute("data-ring") || "";
-      updateRows(state.ringAnchor ? "anchored " + button.textContent : "all rings");
-    });
-    els.filterBtn.addEventListener("click", () => {
-      state.filterPanelOpen = !state.filterPanelOpen;
-      updateRows(state.filterPanelOpen ? "horse filters open" : "horse filters closed");
-    });
-    els.horseFilterOptions.addEventListener("click", event => {
-      const button = event.target.closest("[data-horse-key]");
-      if (!button) return;
-      const key = button.getAttribute("data-horse-key");
-      if (state.activeHorseFilters.has(key)) state.activeHorseFilters.delete(key);
-      else state.activeHorseFilters.add(key);
-      updateRows(state.activeHorseFilters.size ? "horse filter " + state.activeHorseFilters.size : "horse filter cleared");
-    });
-    els.horseFilterClearBtn.addEventListener("click", () => {
-      state.activeHorseFilters.clear();
-      updateRows("horse filter cleared");
-    });
-    init();
+      };
+    })();
   </script>
+  <script src="ag-report-runtime.js"></script>
 </body>
 </html>
