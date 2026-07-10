@@ -11,6 +11,7 @@ const reports = [
 ];
 const sharedCss = "ag-report-shared.css";
 const sharedRuntime = "ag-report-runtime.js";
+const approvedCss = "../../webflow/packing-worksheet/styles.css";
 
 function read(file) {
   return fs.readFileSync(path.join(prototypeDir, file), "utf8");
@@ -22,10 +23,13 @@ test("both reports reference one pinned AG Grid and one shared implementation", 
     assert.match(html, /ag-grid-community@36\.0\.0/);
     assert.match(html, new RegExp(`href=["']${sharedCss}["']`));
     assert.match(html, new RegExp(`src=["']${sharedRuntime}["']`));
+    assert.match(html, new RegExp(`href=["']${approvedCss.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`));
+    assert.match(html, /family=Outfit/);
     assert.doesNotMatch(html, /<style\b/i);
     assert.doesNotMatch(html, /function\s+(?:init|updateRows|buildPrintSheet|renderRingAnchors)\s*\(/);
     assert.match(html, /window\.RS_AG_REPORT_CONFIG\s*=/);
-    assert.match(html, /<div id="agReportRoot"><\/div>/);
+    assert.match(html, /<main id="packing-app" class="rsa-dashboard"><\/main>/);
+    assert.match(html, /location\.protocol\s*===\s*["']file:["']/);
   }
 });
 
@@ -33,8 +37,8 @@ test("shared CSS and runtime own the required lifecycle and states", () => {
   const css = read(sharedCss);
   const runtime = read(sharedRuntime);
 
-  assert.match(css, /\.app-shell/);
-  assert.match(css, /\.rs-button/);
+  assert.match(css, /\.ag-report-shell/);
+  assert.match(runtime, /lp-filter-toggle/);
   assert.match(css, /@media print/);
   assert.match(css, /@media \(max-width:/);
 
@@ -42,6 +46,13 @@ test("shared CSS and runtime own the required lifecycle and states", () => {
   assert.match(runtime, /function applyFilters/);
   assert.match(runtime, /function updateRows/);
   assert.match(runtime, /function buildPrintSheet/);
+  assert.match(runtime, /function openDrawer/);
+  assert.match(runtime, /function closeDrawer/);
+  assert.match(runtime, /function ringFullWidthRenderer/);
+  assert.match(runtime, /function rollupFullWidthRenderer/);
+  assert.match(runtime, /class="lp-modal"/);
+  assert.match(runtime, /class="lp-modal-card"/);
+  assert.match(runtime, /class="lp-profile-shell/);
   assert.match(runtime, /agGrid\.createGrid/);
   assert.match(runtime, /setGridOption\("rowData"/);
   assert.match(runtime, /data-state="loading"/);
@@ -71,10 +82,14 @@ test("Barn Entry and Ring Classes retain their required report-specific behavior
   assert.match(barn, /id:\s*"focus"/);
   assert.match(barn, /id:\s*"horse"/);
   assert.match(barn, /id:\s*"print"/);
+  assert.match(barn, /horse_items|rollup_items/);
 
   assert.match(ring, /id:\s*"focus"/);
   assert.match(ring, /id:\s*"horse"/);
   assert.match(ring, /id:\s*"clear"/);
   assert.match(ring, /id:\s*"print"/);
+  assert.match(ring, /flattenRollups/);
+  assert.match(ring, /row_type:\s*"ring"/);
+  assert.match(ring, /row_type:\s*"rollup"/);
   assert.doesNotMatch(ring, /SUBMIT_URL|title:\s*"Add Entry"/);
 });

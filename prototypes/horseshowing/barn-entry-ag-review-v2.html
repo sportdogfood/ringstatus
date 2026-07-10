@@ -4,278 +4,80 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Barn Entry Review v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../webflow/packing-worksheet/styles.css">
   <link rel="stylesheet" href="ag-report-shared.css">
   <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
 </head>
 <body>
-  <div id="agReportRoot"></div>
+  <main id="packing-app" class="rsa-dashboard"></main>
   <script>
     (() => {
-      const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
-      const SUBMIT_URL = "https://ringstatus.com/test/barn-entry";
-      const params = new URLSearchParams(location.search);
-      const showNo = params.get("show_no") || "14909";
-      const focusDayParam = params.get("focus_day") || "2026-07-05";
-      const trainerFilter = params.get("trainer") || "";
+      const API_BASE="https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
+      const SUBMIT_URL="https://ringstatus.com/test/barn-entry";
+      const params=new URLSearchParams(location.search); const showNo=params.get("show_no")||"14910"; const focusDayParam=params.get("focus_day")||"2026-07-08"; const trainerFilter=params.get("trainer")||"";
+      const text=value=>String(value??""); const normalize=value=>text(value).toLowerCase().replace(/[^a-z0-9']+/g," ").trim();
+      const displayTime=row=>row.display_time||row.time_text||row.time||""; const ringName=row=>row.ring_name_normalized||row.ring_display||row.ring_name||row.ring||""; const className=row=>row.class_name||row.class_description||""; const horseName=row=>row.barn_name||row.horse_name||row.horse||""; const classLabel=row=>[row.class_number||row.class_no,className(row)].filter(Boolean).join(" - ");
+      async function fetchJson(url,options){const response=await fetch(url,options);const data=await response.json().catch(()=>({}));if(!response.ok||data.ok!==true)throw new Error(data.error||data.blocker||"HTTP "+response.status);return data;}
+      function rowKey(row){return row.review_key||row.id||[row.show_no||showNo,row.focus_day||focusDayParam,row.ring_day_no||"",row.class_no||row.class_number||"",row.entry_no||"",normalize(horseName(row))].join("|");}
+      function classKey(row){return [normalize(ringName(row)),displayTime(row),row.class_no||row.class_number||""].join("|");}
+      function sortRows(rows){return rows.slice().sort((a,b)=>displayTime(a).localeCompare(displayTime(b))||ringName(a).localeCompare(ringName(b),undefined,{numeric:true})||text(a.class_number||a.class_no).localeCompare(text(b.class_number||b.class_no),undefined,{numeric:true})||horseName(a).localeCompare(horseName(b)));}
+      function dedupeRows(rows){const map=new Map();rows.forEach(row=>{const key=rowKey(row);if(key&&!map.has(key))map.set(key,{...row,id:key,review_key:key});});return sortRows([...map.values()]);}
+      function flattenRollups(rollups,fallbackLabel){const items=[];for(const rollup of Array.isArray(rollups)?rollups:[]){const trainer=text(rollup.trainer_display||rollup.trainer).trim();for(const horse of Array.isArray(rollup.horses)?rollup.horses:[]){const name=text(horse.horse_name||horse.name||horse.label).trim();if(name)items.push({name,trainer,order:horse.order||horse.entry_order||""});}}if(!items.length&&fallbackLabel)text(fallbackLabel).split(/[|,]/).map(v=>v.trim()).filter(Boolean).forEach(name=>items.push({name}));return items;}
 
-      const text = value => String(value ?? "");
-      const normalize = value => text(value).toLowerCase().replace(/[^a-z0-9']+/g, " ").trim();
-      const displayTime = row => row.display_time || row.time_text || row.time || "";
-      const ringName = row => row.ring_name_normalized || row.ring_display || row.ring_name || row.ring || "";
-      const className = row => row.class_name || row.class_description || "";
-      const horseName = row => row.barn_name || row.horse_name || row.horse || "";
-      const focusDay = context => context?.focusDay || focusDayParam;
-
-      function toMinutes(value) {
-        const match = text(value).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
-        if (!match) return 99999;
-        let hour = Number(match[1]);
-        const minute = Number(match[2]);
-        const meridiem = (match[3] || "").toUpperCase();
-        if (meridiem === "PM" && hour !== 12) hour += 12;
-        if (meridiem === "AM" && hour === 12) hour = 0;
-        return hour * 60 + minute;
+      function localBundle(){
+        const classRows=[
+          {show_no:showNo,focus_day:focusDayParam,ring_name_normalized:"Indoor 1",display_time:"8:30 AM",class_number:"404",class_no:"31361",class_name:"$10,000 USHJA UF Vet Derby 3' Open",horse_items:[{name:"Chiloe LS"},{name:"Carapaccio"}]},
+          {show_no:showNo,focus_day:focusDayParam,ring_name_normalized:"Indoor 6",display_time:"7:30 AM",class_number:"638",class_no:"31357",class_name:"$500 1.20m Jumper II.2b",horse_items:[{name:"Calypso"},{name:"Dodicci"},{name:"Ideal"}]},
+          {show_no:showNo,focus_day:focusDayParam,ring_name_normalized:"Grand",display_time:"10:00 AM",class_number:"4404",class_no:"33332",class_name:"FEI $63,000 MARS Equestrian 1.45m CSI4*",horse_items:[{name:"Markanto A"},{name:"Cervin"}]}
+        ];
+        const rows=classRows.flatMap((klass,classIndex)=>klass.horse_items.map((item,index)=>({id:`local|${classIndex}|${index}`,review_key:`local|${classIndex}|${index}`,source:"local_reference",status:"pending",...klass,entry_no:String(1000+classIndex*10+index),barn_name:item.name,class_horse_items:klass.horse_items})));
+        return {rows,classRows};
       }
 
-      function sortRows(rows) {
-        return rows.slice().sort((a, b) =>
-          toMinutes(displayTime(a)) - toMinutes(displayTime(b)) ||
-          ringName(a).localeCompare(ringName(b), undefined, { numeric: true }) ||
-          text(a.class_number || a.class_no).localeCompare(text(b.class_number || b.class_no), undefined, { numeric: true }) ||
-          horseName(a).localeCompare(horseName(b))
-        );
+      function prepareRows(rows){
+        const rings=new Map(); rows.forEach(row=>{const key=normalize(ringName(row))||"unassigned";if(!rings.has(key))rings.set(key,{title:ringName(row)||"Unassigned",rows:[]});rings.get(key).rows.push(row);});
+        const output=[]; [...rings.entries()].sort((a,b)=>a[1].title.localeCompare(b[1].title,undefined,{numeric:true})).forEach(([ringKey,ring])=>{
+          output.push({id:"ring|"+ringKey,row_type: "ring",ring_title:ring.title});
+          const classes=new Map(); ring.rows.forEach(row=>{const key=classKey(row);if(!classes.has(key))classes.set(key,[]);classes.get(key).push(row);});
+          [...classes.entries()].forEach(([key,entries])=>{const first=entries[0];const horse_items=(first.class_horse_items||entries.map(row=>({name:horseName(row),order:row.entry_no}))).filter(item=>item.name);output.push({...first,id:"rollup|"+key,row_type: "rollup",drawer_source:{...first,entries,horse_items},horse_items,entry_count:entries.length,rollup_title:[displayTime(first),classLabel(first)].join(" | ")});entries.forEach(row=>output.push({...row,row_type:"data"}));});
+        }); return output;
       }
+      function focusRows(rows){const seen=new Set();return rows.filter(row=>{const key=classKey(row);if(seen.has(key))return false;seen.add(key);return true;});}
+      function statusRenderer(params){const row=params.data||{};const value=row.status||"pending";const label=value==="confirmed"?"ok":value==="declined"?"no":"tap";return `<button class="lp-filter-toggle ag-status-button ${value==="confirmed"?"is-active":""}" type="button" data-status-key="${params.context.helpers.escapeHtml(row.review_key)}">${label}</button>`;}
+      function toggleStatus(key,report){report.state.rows=report.state.rows.map(row=>row.review_key!==key?row:{...row,status:row.status==="pending"?"confirmed":row.status==="confirmed"?"declined":"pending"});report.updateRows("status updated");}
+      function drawerDetail(row){const source=row.drawer_source||row;const entries=(source.entries||[source]).map(entry=>({time:displayTime(entry),name:horseName(entry),meta:entry.entry_no||entry.status||""}));return {title:classLabel(source),subtitle:[ringName(source),displayTime(source)].join(" | "),details:[{label:"Ring",value:ringName(source)},{label:"Class",value:classLabel(source)},{label:"Horse",value:horseName(source)||entries.map(item=>item.name).join(", ")},{label:"Status",value:source.status||"pending"}],entries};}
+      function classOptionValue(row){return [displayTime(row),ringName(row).toUpperCase(),row.class_number||row.class_no,className(row)].filter(Boolean).join(" | ");}
+      function openAddDialog(report){const horses=[...new Set(report.state.rows.map(horseName).filter(Boolean))].sort();const classes=(report.state.context.classRows||[]).slice().sort((a,b)=>classOptionValue(a).localeCompare(classOptionValue(b)));report.openDialog({title:"Add Entry",saveLabel:"Save",body:`<label>Horse<input id="addHorseInput" list="addHorseOptions"></label><datalist id="addHorseOptions">${horses.map(value=>`<option value="${report.helpers.escapeHtml(value)}"></option>`).join("")}</datalist><label>Class<input id="addClassInput" list="addClassOptions"></label><datalist id="addClassOptions">${classes.map(row=>`<option value="${report.helpers.escapeHtml(classOptionValue(row))}"></option>`).join("")}</datalist>`,onSave:async(api,form)=>{const horse=form.querySelector("#addHorseInput").value.trim();const search=normalize(form.querySelector("#addClassInput").value);const klass=(api.state.context.classRows||[]).find(row=>normalize(classOptionValue(row)).includes(search));if(!horse||!klass)return api.setStatus("select horse and class","error");const id=["user",Date.now(),klass.class_no||klass.class_number,normalize(horse)].join("|");api.state.rows=dedupeRows([...api.state.rows,{...klass,id,review_key:id,source:"user_added",status:"pending",entry_no:"",barn_name:horse,class_horse_items:[{name:horse}],pencil_in:true}]);api.closeDialog();api.updateRows("added entry");}});}
+      async function submitRows(report){const payload={source:"barn-entries",submitted_at:new Date().toISOString(),row_count:report.state.rows.length,rows:report.state.rows};report.state.report.submitting=true;report.renderActions();report.setStatus("submitting","loading");try{await fetchJson(SUBMIT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});report.setStatus("submitted "+report.state.rows.length+" row(s)");}catch(error){report.setStatus("submit failed: "+(error.message||error),"error");}finally{report.state.report.submitting=false;report.renderActions();}}
 
-      async function fetchJson(url, options) {
-        const response = await fetch(url, options);
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok || data.ok !== true) throw new Error(data.error || data.blocker || "HTTP " + response.status);
-        return data;
-      }
-
-      function rowKey(row) {
-        return row.review_key || row.id || [row.show_no || showNo, row.focus_day || focusDayParam, row.ring_day_no || "", row.class_no || row.class_number || "", row.entry_no || "", normalize(horseName(row))].join("|");
-      }
-
-      function classOptionValue(row) {
-        return [displayTime(row), ringName(row).toUpperCase(), row.class_number || row.class_no || "", className(row)].filter(Boolean).join(" | ");
-      }
-
-      function dedupeRows(rows) {
-        const mapped = new Map();
-        for (const row of rows) {
-          const key = rowKey(row);
-          if (!key || mapped.has(key)) continue;
-          mapped.set(key, { ...row, id: key, review_key: key });
-        }
-        return sortRows([...mapped.values()]);
-      }
-
-      function classGroupKey(row) {
-        return [normalize(ringName(row)), normalize(displayTime(row)), row.class_number || row.class_no || "", normalize(className(row))].join("|");
-      }
-
-      function focusRows(rows) {
-        const groups = new Map();
-        rows.forEach(row => {
-          const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
-          if (!groups.has(key)) groups.set(key, []);
-          groups.get(key).push(row);
-        });
-        return rows.filter(row => {
-          const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
-          const group = groups.get(key) || [];
-          if (group.length < 2) return true;
-          const keep = group.slice().sort((a, b) => Number(a.class_number || a.class_no || 999999999) - Number(b.class_number || b.class_no || 999999999))[0];
-          return rowKey(row) === rowKey(keep);
-        });
-      }
-
-      function rowsWithSpecialSummaries(rows) {
-        const output = [];
-        const seen = new Set();
-        rows.forEach(row => {
-          const key = classGroupKey(row);
-          if (!seen.has(key)) {
-            seen.add(key);
-            const groupRows = rows.filter(candidate => classGroupKey(candidate) === key);
-            output.push({
-              id: "special|" + key,
-              review_key: "special|" + key,
-              __special: true,
-              display_time: displayTime(row),
-              ring_name_normalized: ringName(row),
-              class_no: row.class_no || "",
-              class_number: row.class_number || "",
-              class_name: className(row),
-              entry_count: groupRows.length,
-              detail_state: "no_underlying_data"
-            });
-          }
-          output.push(row);
-        });
-        return output;
-      }
-
-      function statusRenderer(params) {
-        const row = params.data || {};
-        const value = row.status || "pending";
-        const label = value === "confirmed" ? "ok" : value === "declined" ? "no" : "tap";
-        const variant = value === "confirmed" ? "tap-active-2" : value === "declined" ? "tap-active" : "";
-        return `<button class="rs-button tap ${variant}" type="button" data-status-key="${params.context.helpers.escapeHtml(row.review_key)}">${label}</button>`;
-      }
-
-      function toggleStatus(key, report) {
-        report.state.rows = report.state.rows.map(row => {
-          if (row.__special || row.review_key !== key) return row;
-          const current = row.status || "pending";
-          return { ...row, status: current === "pending" ? "confirmed" : current === "confirmed" ? "declined" : "pending" };
-        });
-        report.updateRows("status updated");
-      }
-
-      function openAddDialog(report) {
-        const horses = [...new Set(report.state.rows.map(horseName).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-        const classes = (report.state.context.classRows || []).slice().sort((a, b) => classOptionValue(a).localeCompare(classOptionValue(b)));
-        report.openDialog({
-          title: "Add Entry",
-          saveLabel: "Save",
-          body: `<label>Horse<input id="addHorseInput" list="addHorseOptions" autocomplete="off"></label><datalist id="addHorseOptions">${horses.map(horse => `<option value="${report.helpers.escapeHtml(horse)}"></option>`).join("")}</datalist><label>Class<input id="addClassInput" list="addClassOptions" autocomplete="off"></label><datalist id="addClassOptions">${classes.map(row => `<option value="${report.helpers.escapeHtml(classOptionValue(row))}"></option>`).join("")}</datalist>`,
-          onSave: async (api, form) => {
-            const horse = form.querySelector("#addHorseInput").value.trim();
-            const classSearch = normalize(form.querySelector("#addClassInput").value);
-            const klass = (api.state.context.classRows || []).find(row => normalize(classOptionValue(row)).includes(classSearch));
-            if (!horse || !klass) return api.setStatus("select horse and class", "error");
-            const id = ["user", Date.now(), klass.class_no || klass.class_number || "", normalize(horse)].join("|");
-            api.state.rows = dedupeRows([...api.state.rows, {
-              id,
-              review_key: id,
-              source: "user_added",
-              status: "pending",
-              show_no: klass.show_no || showNo,
-              focus_day: klass.focus_day || focusDay(api.state.context),
-              ring_name_normalized: ringName(klass),
-              class_no: klass.class_no || "",
-              class_number: klass.class_number || "",
-              class_name: className(klass),
-              display_time: displayTime(klass),
-              barn_name: horse,
-              horse_name: horse,
-              pencil_in: true
-            }]);
-            api.closeDialog();
-            api.updateRows("added entry");
-          }
-        });
-      }
-
-      async function submitRows(report) {
-        const payload = { source: "barn-entries", submitted_at: new Date().toISOString(), row_count: report.state.rows.length, rows: report.state.rows };
-        report.state.report.submitting = true;
-        report.renderActions();
-        report.setStatus("submitting", "loading");
-        try {
-          await fetchJson(SUBMIT_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-          report.setStatus("submitted " + report.state.rows.length + " row(s)");
-        } catch (error) {
-          report.setStatus("submit failed: " + (error.message || error), "error");
-        } finally {
-          report.state.report.submitting = false;
-          report.renderActions();
-        }
-      }
-
-      window.RS_AG_REPORT_CONFIG = {
-        id: "barn-entries",
-        output: "barn-entries",
-        title: "Entry Review",
-        data: {
-          async load(report) {
-            const scheduleUrl = new URL(API_BASE);
-            scheduleUrl.searchParams.set("action", "wec-mobile-live");
-            scheduleUrl.searchParams.set("show_no", showNo);
-            scheduleUrl.searchParams.set("focus_day", focusDayParam);
-            const schedule = await fetchJson(scheduleUrl);
-            const classRows = (schedule.rings || []).flatMap(ring => (ring.classes || []).map(klass => ({
-              ...klass,
-              show_no: schedule.show_no || showNo,
-              focus_day: schedule.show_focus_date || schedule.focus_day || focusDayParam,
-              ring_name_normalized: ring.ring_name_normalized || klass.ring_name_normalized || ring.ring_display || ""
-            })));
-            const sourceRows = [];
-            for (let offset = 0; offset < 1000; offset += 200) {
-              const url = new URL(API_BASE);
-              url.searchParams.set("action", "export-mirror-table");
-              url.searchParams.set("show_no", showNo);
-              url.searchParams.set("table", "class_oog");
-              url.searchParams.set("limit", "200");
-              url.searchParams.set("offset", String(offset));
-              const result = await fetchJson(url);
-              sourceRows.push(...(result.data || []).filter(row => text(row.focus_day) === text(schedule.show_focus_date || schedule.focus_day || focusDayParam)));
-              if (!result.has_more) break;
-            }
-            const rows = sourceRows.filter(row => !trainerFilter || normalize(row.trainer_name || row.trainer || row.barn_name).includes(normalize(trainerFilter))).map(row => {
-              const klass = classRows.find(item => text(item.class_no) === text(row.class_no)) || {};
-              return {
-                ...row,
-                id: rowKey(row),
-                review_key: rowKey(row),
-                source: "mapped",
-                status: row.status || "pending",
-                show_no: row.show_no || showNo,
-                focus_day: row.focus_day || schedule.show_focus_date || focusDayParam,
-                ring_name_normalized: ringName(row) || ringName(klass),
-                class_no: row.class_no || klass.class_no || "",
-                class_number: row.class_number || klass.class_number || "",
-                class_name: className(row) || className(klass),
-                display_time: displayTime(row) || displayTime(klass),
-                barn_name: horseName(row)
-              };
-            });
-            const currentFocusDay = schedule.show_focus_date || schedule.focus_day || focusDayParam;
-            return { rows: dedupeRows(rows), context: { classRows, focusDay: currentFocusDay }, meta: [currentFocusDay, trainerFilter].filter(Boolean).join(" | "), message: "mapped rows loaded" };
-          }
-        },
-        columns: report => [
-          { headerName: "TAP", field: "status", minWidth: 78, width: 78, hide: !report.state.report.editMode, cellRenderer: statusRenderer, context: report },
-          { headerName: "CLASS", minWidth: 220, flex: 1, valueGetter: params => [displayTime(params.data), ringName(params.data).toUpperCase(), params.data.class_number || params.data.class_no || "", className(params.data)].filter(Boolean).join(" | ") },
-          { headerName: "HORSE", field: "barn_name", minWidth: 120, width: 160 }
+      window.RS_AG_REPORT_CONFIG={
+        id:"barn-entries",output:"barn-entries",title:"Barn Entry Review",
+        data:{async load(){
+          if(location.protocol === "file:"){const local=localBundle();return {rows:local.rows,context:{classRows:local.classRows,focusDay:focusDayParam},meta:[showNo,focusDayParam,"local reference"].join(" | "),message:"local reference rows loaded"};}
+          const scheduleUrl=new URL(API_BASE);scheduleUrl.searchParams.set("action","wec-mobile-live");scheduleUrl.searchParams.set("show_no",showNo);scheduleUrl.searchParams.set("focus_day",focusDayParam);const schedule=await fetchJson(scheduleUrl);
+          const classRows=(schedule.rings||[]).flatMap(ring=>(ring.classes||[]).map(klass=>({...klass,show_no:schedule.show_no||showNo,focus_day:schedule.show_focus_date||schedule.focus_day||focusDayParam,ring_name_normalized:ring.ring_name_normalized||klass.ring_name_normalized||ring.ring_display||"",horse_items:Array.isArray(klass.horse_items)?klass.horse_items:flattenRollups(klass.rollups,klass.rollup_label)})));
+          const sourceRows=[];for(let offset=0;offset<1000;offset+=200){const url=new URL(API_BASE);url.searchParams.set("action","export-mirror-table");url.searchParams.set("show_no",showNo);url.searchParams.set("table","class_oog");url.searchParams.set("limit","200");url.searchParams.set("offset",String(offset));const result=await fetchJson(url);sourceRows.push(...(result.data||[]).filter(row=>text(row.focus_day)===text(schedule.show_focus_date||schedule.focus_day||focusDayParam)));if(!result.has_more)break;}
+          const rows=sourceRows.filter(row=>!trainerFilter||normalize(row.trainer_name||row.trainer||row.barn_name).includes(normalize(trainerFilter))).map(row=>{const klass=classRows.find(item=>text(item.class_no)===text(row.class_no))||{};const mapped={...row,source:"mapped",status:row.status||"pending",show_no:row.show_no||showNo,focus_day:row.focus_day||schedule.show_focus_date||focusDayParam,ring_name_normalized:ringName(row)||ringName(klass),class_no:row.class_no||klass.class_no||"",class_number:row.class_number||klass.class_number||"",class_name:className(row)||className(klass),display_time:displayTime(row)||displayTime(klass),barn_name:horseName(row),class_horse_items:klass.horse_items||[]};mapped.id=rowKey(mapped);mapped.review_key=mapped.id;return mapped;});const day=schedule.show_focus_date||schedule.focus_day||focusDayParam;return {rows:dedupeRows(rows),context:{classRows,focusDay:day},meta:[day,trainerFilter].filter(Boolean).join(" | "),message:"mapped entries loaded"};
+        }},
+        columns:report=>[
+          {headerName:"TAP",field:"status",minWidth:72,width:72,hide:!report.state.report.editMode,cellRenderer:statusRenderer},
+          {headerName:"CLASS",minWidth:220,flex:1,valueGetter:p=>[displayTime(p.data),ringName(p.data).toUpperCase(),p.data.class_number||p.data.class_no,className(p.data)].filter(Boolean).join(" | ")},
+          {headerName:"HORSE",field:"barn_name",minWidth:120,width:160}
         ],
-        actions: [
-          { id: "edit", label: "Edit", zone: "header", active: report => !!report.state.report.editMode, run(report) { report.state.report.editMode = !report.state.report.editMode; const columns = report.config.columns(report); report.state.gridApi.setGridOption("columnDefs", columns); report.updateRows(report.state.report.editMode ? "edit mode" : "review mode"); } },
-          { id: "print", label: "Print", zone: "header", type: "print" },
-          { id: "submit", label: "Submit", zone: "header", emphasis: true, visible: report => !!report.state.report.editMode, disabled: report => !!report.state.report.submitting, run: submitRows },
-          { id: "focus", label: "Focus", zone: "primary", type: "focus", active: report => report.state.focusMode },
-          { id: "horse", label: "Horse", zone: "primary", type: "filter", active: report => report.state.filterPanelOpen || !!report.state.horseText },
-          { id: "add", label: "Add", zone: "primary", visible: report => !!report.state.report.editMode, run: openAddDialog }
+        actions:[
+          {id:"edit",label:"Edit",zone:"header",active:r=>!!r.state.report.editMode,run(report){report.state.report.editMode=!report.state.report.editMode;report.state.gridApi.setGridOption("columnDefs",report.config.columns(report));report.updateRows(report.state.report.editMode?"edit mode":"review mode");}},
+          {id:"print",label:"Print",zone:"header",type:"print"},
+          {id:"submit",label:"Submit",zone:"header",visible:r=>!!r.state.report.editMode,disabled:r=>!!r.state.report.submitting,run:submitRows},
+          {id:"focus",label:"Focus",zone:"primary",type:"focus",active:r=>r.state.focusMode},
+          {id:"horse",label:"Horse",zone:"primary",type:"filter",active:r=>r.state.filterPanelOpen||!!r.state.horseText},
+          {id:"add",label:"Add",zone:"primary",visible:r=>!!r.state.report.editMode,run:openAddDialog}
         ],
-        filters: {
-          ring: row => ringName(row),
-          horse: { mode: "text", placeholder: "Horse", values: row => horseName(row) },
-          focus: rows => focusRows(rows)
-        },
-        row: {
-          getId: row => row.id || row.review_key,
-          isSpecial: row => !!row?.__special,
-          decorate: rows => rowsWithSpecialSummaries(rows),
-          specialSummary: row => ({ time: displayTime(row), ring: ringName(row).toUpperCase(), number: row.class_number || row.class_no || "", name: className(row), count: row.entry_count || 0 }),
-          onCellClicked(params, report) {
-            if (params.data?.__special) return report.setStatus("special row has no underlying detail data");
-            const button = params.event?.target?.closest("[data-status-key]");
-            if (button) toggleStatus(button.dataset.statusKey, report);
-          }
-        },
-        print: {
-          title: "Barn Entry Review",
-          meta: report => [showNo, focusDay(report.state.context)].join(" | "),
-          columns: [
-            { width: "44px", value: row => displayTime(row) },
-            { width: "58px", value: row => ringName(row).toUpperCase() },
-            { width: "28px", value: row => row.class_number || row.class_no || "" },
-            { width: "minmax(0,1fr)", value: row => className(row) },
-            { width: "70px", value: row => horseName(row) }
-          ]
-        }
+        filters:{ring:ringName,horse:{mode:"text",placeholder:"Horse",values:row=>horseName(row)},focus:focusRows},
+        row:{getId:row=>row.id||row.review_key,prepare:prepareRows,drawer:drawerDetail,onCellClicked(params,report){const button=params.event?.target?.closest("[data-status-key]");if(button){toggleStatus(button.dataset.statusKey,report);return true;}return false;}},
+        print:{title:"Barn Entry Review",meta:r=>[showNo,r.state.context.focusDay||focusDayParam].join(" | "),rollup:row=>horseName(row),columns:[{width:"44px",value:displayTime},{width:"58px",value:row=>ringName(row).toUpperCase()},{width:"28px",value:row=>row.class_number||row.class_no||""},{width:"minmax(0,1fr)",value:className},{width:"70px",value:horseName}]}
       };
     })();
   </script>

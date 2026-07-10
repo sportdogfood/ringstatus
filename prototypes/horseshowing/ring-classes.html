@@ -4,23 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ring Classes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../webflow/packing-worksheet/styles.css">
   <link rel="stylesheet" href="ag-report-shared.css">
   <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
 </head>
 <body>
-  <div id="agReportRoot"></div>
+  <main id="packing-app" class="rsa-dashboard"></main>
   <script>
     (() => {
       const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
       const params = new URLSearchParams(location.search);
       const showNo = params.get("show_no") || "14910";
       const focusDay = params.get("focus_day") || "2026-07-08";
-
       const text = value => String(value ?? "");
       const normalize = value => text(value).toLowerCase().replace(/[^a-z0-9']+/g, " ").trim();
       const displayTime = row => row.display_time || row.time_text || row.time || "";
       const ringName = row => row.ring_name_normalized || row.ring_display || row.ring_name || row.ring || "";
       const className = row => row.class_name || row.class_description || "";
+      const classLabel = row => [row.class_number || row.class_no, className(row)].filter(Boolean).join(" - ");
 
       async function fetchJson(url) {
         const response = await fetch(url);
@@ -29,106 +33,71 @@
         return data;
       }
 
-      function rowHorses(row) {
-        return [
-          row.current_horse,
-          ...(row.horse_items || []).map(item => item.name || item.label),
-          ...(row.entries || []).map(entry => entry.barn_name || entry.horse_name || entry.horse)
-        ].filter(Boolean);
-      }
-
-      function classGroupKey(row) {
-        return [normalize(ringName(row)), normalize(displayTime(row)), row.class_number || row.class_no || "", normalize(className(row))].join("|");
-      }
-
-      function focusRows(rows) {
-        const groups = new Map();
-        rows.forEach(row => {
-          const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
-          if (!groups.has(key)) groups.set(key, []);
-          groups.get(key).push(row);
-        });
-        return rows.filter(row => {
-          const key = [normalize(ringName(row)), normalize(displayTime(row)), normalize(className(row))].join("|");
-          const group = groups.get(key) || [];
-          if (group.length < 2) return true;
-          const keep = group.slice().sort((a, b) => Number(a.class_number || a.class_no || 999999999) - Number(b.class_number || b.class_no || 999999999))[0];
-          return row.id === keep.id;
-        });
-      }
-
-      function rowsWithSpecialSummaries(rows) {
-        const output = [];
-        const seen = new Set();
-        rows.forEach(row => {
-          const key = classGroupKey(row);
-          if (!seen.has(key)) {
-            seen.add(key);
-            output.push({ ...row, id: "special|" + key, __special: true, entry_count: rows.filter(candidate => classGroupKey(candidate) === key).length });
+      function flattenRollups(rollups, fallbackLabel) {
+        const items = [];
+        for (const rollup of Array.isArray(rollups) ? rollups : []) {
+          const trainer = text(rollup.trainer_display || rollup.trainer).trim();
+          for (const horse of Array.isArray(rollup.horses) ? rollup.horses : []) {
+            const name = text(horse.horse_name || horse.name || horse.label).trim();
+            if (name) items.push({ name, trainer, order: horse.order || horse.entry_order || "" });
           }
-          output.push(row);
+        }
+        if (!items.length && fallbackLabel) text(fallbackLabel).split(/[|,]/).map(value => value.trim()).filter(Boolean).forEach(name => items.push({ name }));
+        return items;
+      }
+
+      function localRows() {
+        return [
+          { id:"local|indoor1|404", ring_name_normalized:"Indoor 1", display_time:"8:30 AM", class_number:"404", class_no:"31361", class_name:"$10,000 USHJA UF Vet Derby 3' Open", entry_count:3, status:"soon", horse_items:[{name:"Chiloe LS",trainer:"AG Equestrian"},{name:"Carapaccio",trainer:"AG Equestrian"}], entries:[] },
+          { id:"local|indoor1|406", ring_name_normalized:"Indoor 1", display_time:"1:00 PM", class_number:"406", class_no:"31363", class_name:"Golden Ocala Hunter Derby 3'6/3'9", entry_count:2, status:"soon", horse_items:[{name:"Hermes",trainer:"Sample Barn"},{name:"Kindly",trainer:"Sample Barn"}], entries:[] },
+          { id:"local|indoor6|638", ring_name_normalized:"Indoor 6", display_time:"7:30 AM", class_number:"638", class_no:"31357", class_name:"$500 1.20m Jumper II.2b", entry_count:3, status:"now", current_horse:"Calypso", horse_items:[{name:"Calypso",order:"1"},{name:"Dodicci",order:"2"},{name:"Ideal",order:"3"}], entries:[] },
+          { id:"local|grand|4404", ring_name_normalized:"Grand", display_time:"10:00 AM", class_number:"4404", class_no:"33332", class_name:"FEI $63,000 MARS Equestrian 1.45m CSI4*", entry_count:2, status:"soon", horse_items:[{name:"Markanto A"},{name:"Cervin"}], entries:[] }
+        ];
+      }
+
+      function prepareRows(rows) {
+        const groups = new Map();
+        rows.forEach(row => { const key = normalize(ringName(row)) || "unassigned"; if (!groups.has(key)) groups.set(key,{title:ringName(row)||"Unassigned",rows:[]}); groups.get(key).rows.push(row); });
+        const output = [];
+        [...groups.entries()].sort((a,b)=>a[1].title.localeCompare(b[1].title,undefined,{numeric:true})).forEach(([key,group]) => {
+          output.push({ id:"ring|"+key, row_type: "ring", ring_title:group.title });
+          group.rows.sort((a,b)=>displayTime(a).localeCompare(displayTime(b)) || text(a.class_number).localeCompare(text(b.class_number),undefined,{numeric:true})).forEach(row => {
+            if ((row.horse_items || []).length) output.push({ ...row, id:"rollup|"+row.id, row_type: "rollup", drawer_source:row, rollup_title:[displayTime(row),classLabel(row)].filter(Boolean).join(" | ") });
+            output.push({ ...row, row_type:"data" });
+          });
         });
         return output;
       }
 
+      function drawerDetail(row) {
+        const source = row.drawer_source || row;
+        const entries = (source.horse_items || []).map(item => ({ time:displayTime(source), name:item.name || item.label, meta:item.order || item.trainer || "" }));
+        return { title:classLabel(source), subtitle:[ringName(source),displayTime(source),source.status].filter(Boolean).join(" | "), details:[{label:"Ring",value:ringName(source)},{label:"Class",value:classLabel(source)},{label:"Status",value:source.status || "scheduled"},{label:"Entries",value:source.entry_count ?? entries.length}], entries };
+      }
+
       window.RS_AG_REPORT_CONFIG = {
-        id: "ring-classes",
-        output: "ring-classes",
-        title: "Ring Classes",
-        data: {
-          async load() {
-            const url = new URL(API_BASE);
-            url.searchParams.set("action", "wec-mobile-live");
-            url.searchParams.set("show_no", showNo);
-            url.searchParams.set("focus_day", focusDay);
-            const data = await fetchJson(url);
-            const rows = (data.rings || []).flatMap(ring => (ring.classes || []).map((klass, index) => ({
-              ...klass,
-              id: klass.row_key || [data.show_no || showNo, data.show_focus_date || data.focus_day || focusDay, klass.ring_day_no || ring.ring_no || "", klass.class_no || klass.class_number || index].join("|"),
-              show_no: data.show_no || showNo,
-              focus_day: data.show_focus_date || data.focus_day || focusDay,
-              ring_name_normalized: ring.ring_name_normalized || klass.ring_name_normalized || ring.ring_display || ""
-            })));
-            const currentDay = data.show_focus_date || data.focus_day || focusDay;
-            return { rows, context: { focusDay: currentDay }, meta: [data.show_no || showNo, currentDay].join(" | "), message: "loaded ring classes" };
-          }
-        },
-        columns: [
-          { headerName: "TIME", field: "display_time", minWidth: 78, width: 88, valueGetter: params => displayTime(params.data) },
-          { headerName: "RING", field: "ring_name_normalized", minWidth: 78, width: 88, valueGetter: params => ringName(params.data).toUpperCase() },
-          { headerName: "NO", field: "class_number", minWidth: 56, width: 60, valueGetter: params => params.data.class_number || params.data.class_no || "" },
-          { headerName: "CLASS", field: "class_name", minWidth: 170, flex: 1 },
-          { headerName: "IN", field: "starts_in_mins", minWidth: 56, width: 60, hide: true, valueFormatter: params => params.value == null || params.value === "" ? "" : `${params.value}m` },
-          { headerName: "STATUS", field: "class_status", minWidth: 88, width: 88, hide: true }
+        id:"ring-classes", output:"ring-classes", title:"Ring Classes",
+        data:{ async load(){
+          if (location.protocol === "file:") return { rows:localRows(), context:{focusDay}, meta:[showNo,focusDay,"local reference"].join(" | "), message:"local reference rows loaded" };
+          const url=new URL(API_BASE); url.searchParams.set("action","wec-mobile-live"); url.searchParams.set("show_no",showNo); url.searchParams.set("focus_day",focusDay); const data=await fetchJson(url);
+          const rows=(data.rings||[]).flatMap(ring=>(ring.classes||[]).map((klass,index)=>({ ...klass, id:klass.row_key||[data.show_no||showNo,klass.ring_day_no||ring.ring_no||"",klass.class_no||klass.class_number||index].join("|"), ring_name_normalized:ring.ring_name_normalized||klass.ring_name_normalized||ring.ring_display||"", horse_items:Array.isArray(klass.horse_items)?klass.horse_items:flattenRollups(klass.rollups,klass.rollup_label) })));
+          const day=data.show_focus_date||data.focus_day||focusDay; return {rows,context:{focusDay:day},meta:[data.show_no||showNo,day].join(" | "),message:"live ring classes loaded"};
+        }},
+        columns:[
+          {headerName:"TIME",field:"display_time",minWidth:78,width:88,valueGetter:p=>displayTime(p.data)},
+          {headerName:"RING",field:"ring_name_normalized",minWidth:78,width:88,valueGetter:p=>ringName(p.data).toUpperCase()},
+          {headerName:"NO",field:"class_number",minWidth:56,width:60,valueGetter:p=>p.data.class_number||p.data.class_no||""},
+          {headerName:"CLASS",field:"class_name",minWidth:170,flex:1}
         ],
-        actions: [
-          { id: "print", label: "Print", zone: "header", type: "print" },
-          { id: "focus", label: "Focus", zone: "header", type: "focus", active: report => report.state.focusMode },
-          { id: "horse", label: "Horse", zone: "header", type: "filter", active: report => report.state.filterPanelOpen || !!report.state.activeHorseFilters.size },
-          { id: "clear", label: "Clear", zone: "primary", type: "clear" }
+        actions:[
+          {id:"print",label:"Print",zone:"header",type:"print"},
+          {id:"focus",label:"Focus",zone:"header",type:"focus",active:r=>r.state.focusMode},
+          {id:"horse",label:"Horse",zone:"header",type:"filter",active:r=>r.state.filterPanelOpen||!!r.state.activeHorseFilters.size},
+          {id:"clear",label:"Clear",zone:"primary",type:"clear"}
         ],
-        filters: {
-          ring: row => ringName(row),
-          horse: { mode: "options", values: row => rowHorses(row) },
-          focus: rows => focusRows(rows)
-        },
-        row: {
-          getId: row => row.id,
-          isSpecial: row => !!row?.__special,
-          decorate: rows => rowsWithSpecialSummaries(rows),
-          specialSummary: row => ({ time: displayTime(row), ring: ringName(row).toUpperCase(), number: row.class_number || row.class_no || "", name: className(row), count: row.entry_count || 0 }),
-          onCellClicked(params, report) { if (params.data?.__special) report.setStatus("special row has no underlying detail data"); }
-        },
-        print: {
-          title: "Ring Classes",
-          meta: report => [showNo, report.state.context.focusDay || focusDay].join(" | "),
-          columns: [
-            { width: "44px", value: row => displayTime(row) },
-            { width: "58px", value: row => ringName(row).toUpperCase() },
-            { width: "28px", value: row => row.class_number || row.class_no || "" },
-            { width: "minmax(0,1fr)", value: row => className(row) }
-          ]
-        }
+        filters:{ ring:ringName, horse:{mode:"options",values:row=>(row.horse_items||[]).map(item=>item.name||item.label)}, focus:rows=>rows.filter(row=>row.is_focus||row.current_horse||(row.horse_items||[]).length) },
+        row:{ getId:row=>row.id, prepare:prepareRows, drawer:drawerDetail, onCellClicked(){return false;} },
+        print:{ title:"Ring Classes", meta:r=>[showNo,r.state.context.focusDay||focusDay].join(" | "), rollup:row=>(row.horse_items||[]).map(item=>item.name||item.label).join(" | "), columns:[{width:"44px",value:displayTime},{width:"58px",value:row=>ringName(row).toUpperCase()},{width:"28px",value:row=>row.class_number||row.class_no||""},{width:"minmax(0,1fr)",value:className}] }
       };
     })();
   </script>
