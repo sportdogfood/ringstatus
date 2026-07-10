@@ -16,10 +16,10 @@ Airtable AG reference rows
   -> document ring-classes intent, allowed fields, and allowed endpoints
 
 Git source
-  -> executable source for the AG output
+  -> executable CSS and JS assets for the AG output
 
 Webflow Cloud
-  -> serves the current AG source through a stable route
+  -> serves a stable loader through a stable route
 
 Webflow embed
   -> loads the Webflow Cloud route into the Webflow page
@@ -39,11 +39,25 @@ Locked local source:
 prototypes/horseshowing/ring-classes-ring-name-group-LOCKED-2026-07-08.html
 ```
 
-Webflow Cloud served source:
+Executable CSS asset:
+
+```text
+webflow/ring-classes/ring-classes.css
+```
+
+Executable JS asset:
+
+```text
+webflow/ring-classes/ring-classes.js
+```
+
+Webflow Cloud loader source:
 
 ```text
 webflow-cloud-test/src/assets/ring-classes/source.html
 ```
+
+The loader source must stay small. It mounts the approved shell and loads CDN CSS/JS assets. Do not put the full editable template back into this file.
 
 Webflow Cloud route:
 
@@ -56,6 +70,20 @@ Expected deployed route:
 ```text
 https://ringstatus.com/test/ring-classes
 ```
+
+CDN asset base:
+
+```text
+https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@{assetVersion}/webflow/ring-classes
+```
+
+Current loader default:
+
+```text
+assetVersion = window.RS_RING_CLASSES_ASSET_VERSION || "main"
+```
+
+When a commit is approved/pushed, pin `RS_RING_CLASSES_ASSET_VERSION` or the loader default to the approved commit SHA.
 
 ## Endpoint Contract
 
@@ -191,7 +219,9 @@ Before this is treated as valid:
 
 | Gate | Required Proof |
 |---|---|
-| Source | `webflow-cloud-test/src/assets/ring-classes/source.html` matches locked source. |
+| Loader source | `webflow-cloud-test/src/assets/ring-classes/source.html` stays a small shell/CDN loader. |
+| CSS asset | `webflow/ring-classes/ring-classes.css` contains the approved locked styling. |
+| JS asset | `webflow/ring-classes/ring-classes.js` contains the approved behavior/data wiring. |
 | Route | `/test/ring-classes` returns HTML with `cache-control: no-store`. |
 | Endpoint | Loaded page consumes current WEC endpoint payload. |
 | Metadata | Title/subtitle map from payload metadata. |

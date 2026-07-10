@@ -104,6 +104,7 @@ Required behavior:
 
 - Use current active focus day only.
 - Write class schedule rows.
+- Preserve HorseShowing `data-name` unchanged as `class_name`; Stage 2 must not parse or require `class_number`.
 - Keep preflight rows visible.
 - Mark preflight rows with `is_preflight` / `preflight_reason` where fields exist.
 - Valid downstream rows must have real `class_no`.

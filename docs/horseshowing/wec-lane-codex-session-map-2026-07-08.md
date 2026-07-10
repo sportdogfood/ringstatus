@@ -7,10 +7,10 @@ This document records the Codex session ownership map for the current WEC lane s
 The lane split is:
 
 ```text
-core 1-4
+core build
 time-engine + trigger
-live + enrich
-results
+live
+rider-results
 publish
 ```
 
@@ -27,10 +27,10 @@ Routing and prompt ownership are defined in:
 
 | Lane | Codex session ID | Notes |
 |---|---|---|
-| `core 1-4` | `019f4240-49ce-78e3-b89a-13d3a19cb02b` | This chat. Current core/downstream coordination thread. |
-| `live-enrich` | `019f3f43-7819-7dd0-bcf6-a4b143c43bd2` | Live source enrichment lane. |
+| `core-build` | `019f4240-49ce-78e3-b89a-13d3a19cb02b` | This chat. Current core/downstream coordination thread. |
+| `live` | `019f3f43-7819-7dd0-bcf6-a4b143c43bd2` | `get_rings` current-state updater lane. |
 | `time-engine + trigger` | `019f4321-ba83-7760-959e-298b47af1970` | Time-engine and trigger-readiness lane. |
-| `results` | `019f4315-5aab-72b3-8ba5-5aa96c9770cf` | Results lane. |
+| `rider-results` | `019f4315-5aab-72b3-8ba5-5aa96c9770cf` | Watched rider business result lane. |
 | `alerts` | Not established | Alert eligibility, queue/send state, and delivery logging lane. |
 | `publish` | `019f4319-9b1e-7190-ba93-be475cdea80c` | Publish/output lane. |
 | `endpoints` | `019f4433-1405-7cb0-b289-581b2203bafe` | Endpoint contracts, aliases, payload shapes, and Webflow/Catalyst route drift. |
@@ -40,7 +40,7 @@ Routing and prompt ownership are defined in:
 
 | Lane | Owner | Purpose | Current state |
 |---|---|---|---|
-| `core-next-day-preflight` | Core 1-4 | Real next-day source acquisition, bounded probe/parse, and Step 4 projection without production writes. | Contracted in `ringstatus-data/catalyst-workspaces/horseshowing/docs/core_1_4_next_day_preflight_contract.md`; lab script exists as `core_1_4_lab.js`. |
+| `core-next-day-preflight` | Core Build | Real next-day source acquisition, bounded probe/parse, and runtime projection without production writes. | Contracted in `ringstatus-data/catalyst-workspaces/horseshowing/docs/core_1_4_next_day_preflight_contract.md`; lab script exists as `core_1_4_lab.js`. |
 | `stage-4S-sync` | Core visibility sync | Mirror Catalyst Step 4 runtime rows to Airtable for staging review. | Code lane deployed; manual catch-up completed; temporary Codex monitor `wec-stage-4s-mirror-sync-monitor` active every 30 minutes; Catalyst scheduler still missing. |
 | `step-3-mirror-sync` | Core visibility sync | Mirror Step 2/3 source and parse rows to Airtable for review. | Existing action `wec-step3-airtable-mirror`; scheduler missing or not confirmed. |
 
@@ -60,11 +60,42 @@ Routing and prompt ownership are defined in:
 
 ## Lane Boundaries
 
-### `core 1-4`
+## Cleaner Target Workflow
+
+The cleaner target workflow is:
+
+```text
+Core Build
+  update_schedule -> show_no, focus_day, iso_date, ring_day_no, ring_no, class_no, entry_no where available
+  update_schedule -> class_start_times
+  update_schedule -> ring_status
+  update_schedule -> class_oog_raw probe queue
+  class_oog_raw -> class_oog
+  class_oog -> entry_go_times
+  entry_go_times -> watched rider_results lane
+
+Live
+  get_rings -> time_engine current state
+
+Time Engine
+  updates ring_status, class_start_times, entry_go_times, rider_results eligibility
+
+Alerts
+  sources: ring_status, class_start_times, entry_go_times, rider_results
+
+Logs
+  append-only: ring_change_logs, class_change_logs, entry_change_logs, result_change_logs, alert_change_logs
+
+Publish
+  endpoints read prepared/current tables plus logs
+```
+
+This removes `get_ring_days` as a required hot Core input, removes hot `get_orders`, and defers broad class-results machinery unless a later business requirement proves it is needed.
+
+### `core-build`
 
 Writes:
 
-- `hs_get_ring_days`
 - `hs_update_schedule`
 - `hs_class_oog_raw`
 - `hs_class_oog`
@@ -75,17 +106,18 @@ Writes:
 Defers:
 
 - Stage 4S Airtable mirror sync/backlog for Core runtime tables
+- `get_ring_days` compatibility/fallback unless proven still required
 
 Wakes:
 
-- `live-enrich` when `focus_show.live_enrichment=true`
-- `time-engine + trigger` with `wake_reason=core_runtime_ready` after Step 4 runtime prep passes
+- `live` when `focus_show.live_enrichment=true`
+- `time-engine + trigger` with `wake_reason=core_runtime_ready` after runtime prep passes
 
 Does not wake directly:
 
 - `publish`
 
-### `live-enrich`
+### `live`
 
 Gate:
 
@@ -94,7 +126,10 @@ Gate:
 Calls:
 
 - `get_rings.php`
-- `get_orders.php`
+
+Does not call in the hot path:
+
+- `get_orders.php`, unless a later live-detail lane proves it is required
 
 Writes:
 
@@ -121,26 +156,30 @@ Writes:
 
 Wakes:
 
-- `results`
+- `rider-results`
 - `alerts`
 - `publish`
 
-### `results`
+### `rider-results`
 
 Gate:
 
 - `focus_show.results_enabled=true`
-- time-engine result-ready row exists
+- time-engine rider-result-ready row exists
+- watched rider/class/entry eligibility exists
 
 Calls:
 
-- `show_results4.php`
+- approved rider_results source call
 
 Writes:
 
-- `hs_result_queue`
-- `hs_result_classes`
-- `hs_class_results`
+- rider_results queue/state rows
+- `result_change_logs`
+
+Defers:
+
+- broad class-results machinery until needed later
 
 Wakes:
 
@@ -156,7 +195,7 @@ Owner:
 Trigger:
 
 - new timer/result alert-ready rows
-- new result rows
+- new rider_results rows
 
 Writes:
 
@@ -173,14 +212,15 @@ Trigger:
 
 - live changed
 - time-engine changed
-- results changed
+- rider_results changed
 - alerts changed
 
 Reads:
 
 - runtime tables
 - `time_engine`
-- results
+- rider_results
+- append-only logs
 - alerts log
 
 Writes:
@@ -200,16 +240,16 @@ Each cron should only ask whether its lane has eligible work. If yes, it runs th
 The intended shape is not:
 
 ```text
-core cron -> live -> time-engine -> results -> alerts -> publish
+core cron -> live -> time-engine -> rider-results -> alerts -> publish
 ```
 
 The intended shape is:
 
 ```text
-core cron wakes -> core runs or sleeps -> writes state -> stops
-live cron wakes -> checks gate/state -> runs or sleeps -> writes state -> stops
+core cron wakes -> core-build runs or sleeps -> writes state -> stops
+live cron wakes -> checks gate/state and get_rings need -> runs or sleeps -> writes state -> stops
 time-engine wakes -> checks changed inputs -> runs or sleeps -> writes state -> stops
-results cron wakes -> checks result gate/readiness -> runs or sleeps -> writes state -> stops
+rider-results cron wakes -> checks watched rider result gate/readiness -> runs or sleeps -> writes state -> stops
 alerts automation wakes -> checks alert-ready rows -> acts or sleeps -> writes state -> stops
 publish wakes -> checks prepared-data versions -> rebuilds or sleeps -> writes state -> stops
 ```

@@ -32,16 +32,78 @@ The Routing Agent must not:
 
 | Lane | Agent | Current session ID | Primary job |
 |---|---|---|---|
-| `core-1-4` | Core Agent | `019f4240-49ce-78e3-b89a-13d3a19cb02b` | Build canonical Catalyst scheduling/runtime data through Step 4. |
+| `core-build` | Core Agent | `019f4240-49ce-78e3-b89a-13d3a19cb02b` | Build canonical Catalyst scheduling/runtime data from `update_schedule` through runtime rows. |
 | `core-next-day-preflight` | Next-Day Preflight Agent | Core-owned outside lane | Test the next focus day in an outside lane without production writes. |
 | `stage-4S-sync` | Stage 4S Sync Agent | Core-owned outside lane | Mirror Catalyst Step 4 runtime rows to Airtable for staging/operator visibility. |
-| `live-enrich` | Live Agent | `019f3f43-7819-7dd0-bcf6-a4b143c43bd2` | Enrich runtime rows with live rings/orders source data. |
-| `time-engine + trigger` | Time Engine Agent | `019f4321-ba83-7760-959e-298b47af1970` | Compute time state and trigger/result eligibility. |
-| `results` | Results Agent | `019f4315-5aab-72b3-8ba5-5aa96c9770cf` | Ingest HorseShowing class results when eligible. |
+| `live` | Live Agent | `019f3f43-7819-7dd0-bcf6-a4b143c43bd2` | Use `get_rings` to update current live state and wake Time Engine. |
+| `time-engine + trigger` | Time Engine Agent | `019f4321-ba83-7760-959e-298b47af1970` | Compute time state, alerts eligibility, and `rider_results` eligibility. |
+| `rider-results` | Rider Results Agent | `019f4315-5aab-72b3-8ba5-5aa96c9770cf` | Ingest watched rider result records when eligible. |
 | `alerts` | Alerts Agent | Not established | Queue/send alert work from eligible trigger/result rows. |
 | `publish` | Publish Agent | `019f4319-9b1e-7190-ba93-be475cdea80c` | Build output payloads, caches, and endpoints from prepared upstream data. |
 | `endpoints` | Endpoints Agent | `019f4433-1405-7cb0-b289-581b2203bafe` | Own endpoint contracts, request/response surfaces, and endpoint drift. |
 | `hot-patch-manual-correction` | Hot Patch Agent | Not established | Capture operator corrections, protect them from overwrite, and document durable fixes. |
+
+## Cleaner Target Workflow
+
+This is the target lane contract for the scheduling project. It supersedes the older assumption that `get_ring_days` is required as a hot Core prerequisite, that `get_orders` belongs in the hot live path, or that broad class-results machinery is required before the business result lane is needed.
+
+```text
+Core Build
+  update_schedule
+    -> yields show_no, focus_day, iso_date, ring_day_no, ring_no, class_no, entry_no where available
+
+  From update_schedule:
+    seed class_start_times
+    derive/seed ring_status
+    seed class_oog_raw probe queue
+
+  From class_oog_raw:
+    parse to class_oog
+
+  From class_oog:
+    seed entry_go_times
+
+  From entry_go_times:
+    seed watched rider_results lane
+
+Live
+  get_rings
+    -> updates time_engine
+
+  time_engine
+    -> updates:
+       ring_status
+       class_start_times
+       entry_go_times
+       rider_results eligibility
+
+Alerts
+  Alert sources:
+    ring_status
+    class_start_times
+    entry_go_times
+    rider_results
+
+Logs
+  Append-only:
+    ring_change_logs
+    class_change_logs
+    entry_change_logs
+    result_change_logs
+    alert_change_logs
+
+Publish
+  Endpoints read prepared/current tables plus logs.
+```
+
+Contract changes:
+
+- `update_schedule` is the Stage 1 source of truth for day/ring/class structure.
+- `get_rings` is the Live current-state updater.
+- `rider_results` replaces broad results as the business result lane.
+- `get_ring_days` is not required in the hot Core Build contract unless a compatibility shim or fallback proves it is still needed.
+- `get_orders` is not part of the hot Live contract unless a later lane explicitly needs order-detail enrichment.
+- Broad class-results machinery is deferred unless later business requirements prove it is needed.
 
 ## Headwinds
 
@@ -111,14 +173,14 @@ The Routing Agent should route by observed state, not by hope or stale memory.
 | Observed state | Route |
 |---|---|
 | Active `focus_show` changed or date-change event is approaching | `core-next-day-preflight` |
-| `hs_get_ring_days`, `hs_update_schedule`, `hs_class_oog_raw`, `hs_class_oog`, or Step 4 runtime rows are missing in Catalyst | `core-1-4` |
+| `hs_update_schedule`, `hs_class_oog_raw`, `hs_class_oog`, or runtime rows are missing in Catalyst | `core-build` |
 | Catalyst Step 4 runtime exists but Airtable runtime mirror is missing/stale | `stage-4S-sync` |
-| Core Step 4 passes but Time Engine has no `core_runtime_ready` seed result | `core-1-4` for handoff failure, then `time-engine + trigger` for lane diagnosis |
+| Core runtime prep passes but Time Engine has no `core_runtime_ready` seed result | `core-build` for handoff failure, then `time-engine + trigger` for lane diagnosis |
 | Time Engine source rows exist and clock/state wake is eligible | `time-engine + trigger` |
-| Time Engine result-ready rows exist and `focus_show.results_enabled=true` | `results` |
-| Timer/result alert-ready rows exist or new result rows need alert handling | `alerts` |
-| Live fields, time-engine rows, results, or alerts changed and output payload/cache is stale | `publish` |
-| Live enrichment enabled but current time is outside show/live window | `live-enrich` returns WAITING/SKIPPED, no repair |
+| Time Engine rider-result-ready rows exist and `focus_show.results_enabled=true` | `rider-results` |
+| Timer/rider-result alert-ready rows exist or new rider_results rows need alert handling | `alerts` |
+| Live fields, time-engine rows, rider_results, or alerts changed and output payload/cache is stale | `publish` |
+| Live enrichment enabled but current time is outside show/live window | `live` returns WAITING/SKIPPED, no repair |
 | Endpoint contract, payload shape, or Webflow/Catalyst route behavior drifts | `endpoints` |
 | Operator manually corrected Airtable and workflow may overwrite it | `hot-patch-manual-correction`, then route durable bug to owning lane |
 
@@ -128,11 +190,11 @@ Specialist lanes may make another lane eligible, but they do not own that downst
 
 | Lane | May wake |
 |---|---|
-| `core-1-4` | `live-enrich` if enabled; `time-engine + trigger` with `wake_reason=core_runtime_ready` after Step 4 |
+| `core-build` | `live` if enabled; `time-engine + trigger` with `wake_reason=core_runtime_ready` after runtime prep |
 | `stage-4S-sync` | none as workflow proof; may mark mirror drift resolved |
-| `live-enrich` | `time-engine + trigger`; `publish` |
-| `time-engine + trigger` | `results`; `alerts`; `publish` |
-| `results` | `alerts`; `publish` |
+| `live` | `time-engine + trigger`; `publish` |
+| `time-engine + trigger` | `rider-results`; `alerts`; `publish` |
+| `rider-results` | `alerts`; `publish` |
 | `alerts` | `publish` |
 | `publish` | none |
 | `endpoints` | none directly; reports contract drift to owner lane |
@@ -144,9 +206,12 @@ The Routing Agent must prevent these drift patterns:
 
 - Core starts doing Airtable mirror work inside the hot lane.
 - Stage 4S is treated as Core proof.
+- Core requires `get_ring_days` after `update_schedule` can prove the day/ring/class structure directly.
 - Live Agent repairs missing Core runtime rows.
+- Live Agent keeps `get_orders` in the hot path without a proven current-state need.
 - Time Engine runs result ingestion directly.
-- Results Agent probes schedule or repairs runtime identity.
+- Rider Results Agent expands back to broad class-results machinery before watched `rider_results` proves it is needed.
+- Rider Results Agent probes schedule or repairs runtime identity.
 - Alerts Agent mutates source/runtime identity.
 - Publish Agent mutates source/runtime identity.
 - Endpoints Agent changes business logic while fixing route shape.
@@ -190,12 +255,12 @@ As of the 2026-07-09 handoff:
 
 | Lane | State |
 |---|---|
-| `core-1-4` | Catalyst runtime rows present for active focus day. |
+| `core-build` | Catalyst runtime rows present for active focus day under the prior Core 1-4 implementation; cleaner `update_schedule`-first contract is now the target. |
 | `stage-4S-sync` | Deployed and working through temporary Codex monitor; real Catalyst cron still missing. |
 | `time-engine + trigger` | `core_runtime_ready` seed wake passed and wrote rows. |
-| `live-enrich` | Expected to wait/skip outside live window. |
-| `results` | Depends on Time Engine result-ready eligibility. |
-| `alerts` | Depends on timer/result alert-ready rows and new result rows. |
+| `live` | Expected to wait/skip outside live window. |
+| `rider-results` | Depends on Time Engine rider-result-ready eligibility. |
+| `alerts` | Depends on timer/rider-result alert-ready rows and new rider_results rows. |
 | `publish` | Depends on upstream prepared-data changes. |
 
 ## Required Router Output
@@ -208,11 +273,11 @@ focus_show:
   focus_day:
 
 lane_status:
-  core-1-4:
+  core-build:
   stage-4S-sync:
-  live-enrich:
+  live:
   time-engine + trigger:
-  results:
+  rider-results:
   alerts:
   publish:
   endpoints:

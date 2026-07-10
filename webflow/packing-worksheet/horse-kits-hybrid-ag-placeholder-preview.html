@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Horse Kits Hybrid AG Placeholder Preview</title>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
+    <style>
+      :root {
+        --rs-border: #ededed;
+        --rs-text: #071426;
+        --rs-muted: #64748b;
+        --rs-ok: #0f7a3c;
+        --rs-row-height: 42px;
+        --rs-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        overflow: hidden;
+        background: #0b0f14;
+        color: var(--rs-text);
+        font-family: var(--rs-font);
+      }
+
+      #packing-app {
+        min-height: 100vh;
+      }
+
+      #packing-app .rs-shell {
+        height: 100vh;
+        min-height: 0;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        overflow: hidden;
+      }
+
+      #packing-app .rs-airtable-shell,
+      #packing-app .rs-page-stack,
+      #packing-app .rs-stack-section.is-main-table,
+      #packing-app .rs-airtable-scroll,
+      #packing-app .packing-ag-frame {
+        min-height: 0;
+      }
+
+      #packing-app .rs-airtable-shell {
+        overflow: hidden;
+      }
+
+      #packing-app .rs-page-stack {
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto auto auto 1fr auto;
+      }
+
+      #packing-app .rs-stack-section.is-main-table {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        overflow: hidden;
+      }
+
+      #packing-app .packing-ag-frame {
+        height: 100%;
+        background: #fff;
+      }
+
+      #packingAgGrid {
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+      }
+
+      #packing-app .rs-stack-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      #packing-app .rs-button,
+      #packing-app .rs-stack-pill,
+      #packing-app .rs-item-filter,
+      #packing-app .rs-state-button {
+        appearance: none;
+        border: 1.5px solid #000;
+        border-radius: 999px;
+        background: #fff;
+        color: var(--rs-text);
+        min-height: 30px;
+        padding: 3px 12px;
+        font-family: var(--rs-font);
+        font-size: 12px;
+        line-height: 1;
+        text-transform: uppercase;
+        letter-spacing: 0;
+        cursor: pointer;
+        white-space: nowrap;
+        box-shadow: 0 1px 2px rgba(7, 20, 38, .14);
+      }
+
+      #packing-app .tap-active,
+      #packing-app .rs-stack-pill.is-active,
+      #packing-app .rs-item-filter.is-active,
+      #packing-app .rs-state-button.is-active {
+        background: #000;
+        color: #fff;
+      }
+
+      #packing-app .tap-active-2,
+      #packing-app .rs-state-button.is-confirmed {
+        background: var(--rs-ok);
+        border-color: var(--rs-ok);
+        color: #fff;
+      }
+
+      #packing-app .packing-ag-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      #packing-app .packing-ag-toolbar .rs-search {
+        min-width: 180px;
+      }
+
+      #packing-app .ag-theme-quartz {
+        --ag-font-family: var(--rs-font);
+        --ag-font-size: 13px;
+        --ag-header-font-size: 13px;
+        --ag-header-background-color: var(--rs-border);
+        --ag-header-foreground-color: var(--rs-text);
+        --ag-foreground-color: var(--rs-text);
+        --ag-background-color: #fff;
+        --ag-row-border-color: var(--rs-border);
+        --ag-border-color: var(--rs-border);
+        --ag-row-height: var(--rs-row-height);
+        --ag-header-height: var(--rs-row-height);
+        --ag-cell-horizontal-padding: 12px;
+      }
+
+      #packing-app .ag-theme-quartz .ag-root-wrapper {
+        border: 0;
+        border-radius: 0;
+      }
+
+      #packing-app .ag-theme-quartz .ag-row-hover {
+        background-color: #f7f8fa;
+      }
+
+      #packing-app .ag-theme-quartz .ag-row-selected {
+        background-color: #eef6ff;
+      }
+
+      #packing-app .rs-record-drawer {
+        z-index: 50;
+      }
+
+      @media (max-width: 640px) {
+        #packing-app .packing-ag-toolbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        #packing-app .packing-ag-toolbar .rs-search {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      id="packing-app"
+      class="rsa-dashboard"
+      data-api-url="https://ringstatus.local/fixture/horse-kits"
+      data-home-url="https://ringstatus.local/fixture/home"
+      data-quantity-url="https://ringstatus.local/fixture/quantity"
+      data-per-horse-url="https://ringstatus.local/fixture/per-horse"
+      data-per-groom-url="https://ringstatus.local/fixture/per-groom"
+      data-horses-url="https://ringstatus.local/fixture/horses"
+      data-session-enabled="false"
+      data-print-url="https://ringstatus.local/fixture/print"
+      data-pack-wave-key="wave_one"
+    >
+      Loading WEC packing AG preview...
+    </main>
+
+    <script>
+      (function () {
+        var horses = [
+          { id: "horse-valentine", name: "Valentine", barnName: "Valentine", showName: "Valentine", groom: "Mara", waveState: "wave_one", waveOne: true, pakKitItemIds: ["item-bell-boots", "item-front-jump", "item-hind-jump"] },
+          { id: "horse-pacific", name: "Pacific Star", barnName: "Pacific", showName: "Pacific Star", groom: "Mara", waveState: "wave_one", waveOne: true, pakKitItemIds: ["item-bell-boots", "item-front-jump", "item-hind-jump"] },
+          { id: "horse-caspari", name: "Caspari 12", barnName: "Caspari", showName: "Caspari 12", groom: "Luis", waveState: "wave_one", waveOne: true, pakKitItemIds: ["item-standing-wraps"] },
+          { id: "horse-olive", name: "Olive Branch", barnName: "Olive", showName: "Olive Branch", groom: "Luis", waveState: "wave_two", waveOne: false, waveTwo: true, pakKitItemIds: ["item-bell-boots", "item-hind-jump"] }
+        ];
+
+        var kitItems = [
+          { id: "item-bell-boots", name: "Everyday Bell Boots", label: "Everyday Bell Boots", displayLabel: "Everyday Bell Boots", sortOrder: 10, active: true, status: "active", kitIds: ["kit-show-legs"] },
+          { id: "item-front-jump", name: "Front Jump Boots (1pcs)", label: "Front Jump Boots (1pcs)", displayLabel: "Front Jump Boots (1pcs)", sortOrder: 20, active: true, status: "active", kitIds: ["kit-show-legs"] },
+          { id: "item-hind-jump", name: "Hind Jump Boots (1pcs)", label: "Hind Jump Boots (1pcs)", displayLabel: "Hind Jump Boots (1pcs)", sortOrder: 30, active: true, status: "active", kitIds: ["kit-show-legs"] },
+          { id: "item-standing-wraps", name: "Standing Wraps", label: "Standing Wraps", displayLabel: "Standing Wraps", sortOrder: 40, active: true, status: "active", kitIds: ["kit-blankets"] }
+        ];
+
+        var kits = [
+          { id: "kit-show-legs", name: "Show Legs", label: "Show Legs", displayLabel: "Show Legs", sortOrder: 10, active: true, status: "active", kitItemIds: ["item-bell-boots", "item-front-jump", "item-hind-jump"] },
+          { id: "kit-blankets", name: "Blankets", label: "Blankets", displayLabel: "Blankets", sortOrder: 20, active: true, status: "active", kitItemIds: ["item-standing-wraps"] }
+        ];
+
+        var packingRows = [
+          { id: "pack-1", horseIds: ["horse-valentine"], kitIds: ["kit-show-legs"], kitItemIds: ["item-bell-boots"], packState: "packed", neededState: "needed" },
+          { id: "pack-2", horseIds: ["horse-valentine"], kitIds: ["kit-show-legs"], kitItemIds: ["item-front-jump"], packState: "not_packed", neededState: "needed" },
+          { id: "pack-3", horseIds: ["horse-pacific"], kitIds: ["kit-show-legs"], kitItemIds: ["item-hind-jump"], packState: "not_packed", neededState: "needed" },
+          { id: "pack-4", horseIds: ["horse-caspari"], kitIds: ["kit-blankets"], kitItemIds: ["item-standing-wraps"], packState: "not_needed", neededState: "not_needed" }
+        ];
+
+        var horseKitReport = {
+          ok: true,
+          source: { packWaveId: "fixture-wave-one", packWaveKey: "wave_one", fixture: true },
+          wave: {
+            id: "fixture-wave-one",
+            key: "wave_one",
+            wave: "wave_one",
+            waveType: "wave_one",
+            wecReportTitle: "Horse Kits",
+            wecReportSubtitle: "AG placeholder preview",
+            reportSubtitle: "2026-07-08",
+            effectiveHorseCount: horses.length,
+            effectiveGroomCountFinal: 2
+          },
+          availableWaves: [
+            { key: "wave_one", label: "Wave One", active: true },
+            { key: "wave_two", label: "Wave Two", active: true }
+          ],
+          horses: horses,
+          allHorses: horses,
+          kits: kits,
+          kitItems: kitItems,
+          packingRows: packingRows,
+          comments: [
+            { id: "comment-1", horseIds: ["horse-valentine"], comment: "Placeholder note for local AG preview.", createdAt: "2026-07-09T00:00:00Z", scopeLabel: "Valentine" }
+          ],
+          counts: {
+            horses: horses.length,
+            kits: kits.length,
+            kitItems: kitItems.length,
+            packingRows: packingRows.length
+          }
+        };
+
+        var quantityReport = {
+          ok: true,
+          module: "quantity",
+          plan: { label: "QUANTITY COUNTS" },
+          counts: { need: 16, packed: 4, left: 12 },
+          items: kitItems.map(function (item) {
+            return { id: item.id, label: item.displayLabel, need: horses.length, packed: 1, left: Math.max(horses.length - 1, 0), status: "open" };
+          })
+        };
+
+        var perHorseReport = {
+          ok: true,
+          module: "per_horse",
+          plan: { label: "PER-HORSE ITEMS" },
+          counts: { need: 12, packed: 1, left: 11 },
+          items: horses.map(function (horse) {
+            return { id: horse.id, label: horse.showName || horse.name, groom: horse.groom, need: 3, packed: horse.id === "horse-valentine" ? 1 : 0, left: horse.id === "horse-valentine" ? 2 : 3, status: horse.waveOne ? "wave one" : "wave two" };
+          })
+        };
+
+        var perGroomReport = {
+          ok: true,
+          module: "per_groom",
+          plan: { label: "GROOM SUPPLIES" },
+          counts: { need: 12, packed: 1, left: 11 },
+          items: [
+            { id: "groom-mara", label: "Mara", need: 6, packed: 1, left: 5, status: "open" },
+            { id: "groom-luis", label: "Luis", need: 6, packed: 0, left: 6, status: "open" }
+          ]
+        };
+
+        var fixtures = {
+          "/fixture/home": { ok: true, reports: { horse_kits: horseKitReport, quantity: quantityReport, per_horse: perHorseReport, per_groom: perGroomReport } },
+          "/fixture/horse-kits": horseKitReport,
+          "/fixture/quantity": quantityReport,
+          "/fixture/per-horse": perHorseReport,
+          "/fixture/per-groom": perGroomReport
+        };
+
+        function jsonResponse(payload) {
+          return Promise.resolve(new Response(JSON.stringify(payload), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          }));
+        }
+
+        var realFetch = window.fetch.bind(window);
+        window.fetch = function (input, options) {
+          var url = new URL(typeof input === "string" ? input : input.url, window.location.href);
+          if (url.hostname === "ringstatus.local" && url.pathname.indexOf("/fixture/") === 0) {
+            if (options && options.method && options.method.toUpperCase() !== "GET") {
+              return jsonResponse({ ok: true, state: horseKitReport, result: { fixture: true } });
+            }
+            return jsonResponse(fixtures[url.pathname] || { ok: true, fixture: true });
+          }
+          return realFetch(input, options);
+        };
+      })();
+    </script>
+
+    <script>
+      (function () {
+        var assetVersion = "2cedcbdc91ebde88c2e94497773b4bbfd172c9f7";
+        var cacheKey = "wec-hybrid-ag-20260709-" + assetVersion;
+        var assetBase = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@" + assetVersion + "/webflow/packing-worksheet";
+
+        function addStyle(href) {
+          var link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = href;
+          document.head.appendChild(link);
+        }
+
+        addStyle("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap");
+        addStyle(assetBase + "/rsa-stylesheets.locked.css?v=" + cacheKey);
+        addStyle(assetBase + "/styles.css?v=" + cacheKey);
+        addStyle(assetBase + "/horse-kits-static-proof.css?v=" + cacheKey);
+      })();
+    </script>
+
+    <script>
+      (function () {
+        var root = document.getElementById("packing-app");
+        var state = {
+          activePrimaryTab: "counts",
+          module: "horse_kits",
+          laneKey: "open",
+          gridApi: null,
+          reports: {},
+          selectedRow: null,
+          drawerOpen: false,
+          quickFilter: "",
+          floatingFilters: true
+        };
+
+        var moduleUrls = {
+          horse_kits: root.dataset.apiUrl,
+          quantity: root.dataset.quantityUrl,
+          per_horse: root.dataset.perHorseUrl,
+          per_groom: root.dataset.perGroomUrl
+        };
+
+        function escapeHtml(value) {
+          return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function fetchJson(url) {
+          return fetch(url, { cache: "no-store" }).then(function (response) {
+            if (!response.ok) throw new Error("Request failed " + response.status);
+            return response.json();
+          });
+        }
+
+        function horseNameById(id) {
+          var report = state.reports.horse_kits || {};
+          var horse = (report.horses || []).find(function (item) { return item.id === id; });
+          return horse ? horse.showName || horse.barnName || horse.name : id;
+        }
+
+        function groomByHorseId(id) {
+          var report = state.reports.horse_kits || {};
+          var horse = (report.horses || []).find(function (item) { return item.id === id; });
+          return horse ? horse.groom || "" : "";
+        }
+
+        function itemNameById(id) {
+          var report = state.reports.horse_kits || {};
+          var item = (report.kitItems || []).find(function (entry) { return entry.id === id; });
+          return item ? item.displayLabel || item.label || item.name : id;
+        }
+
+        function statusRenderer(params) {
+          var value = String(params.value || "open").toLowerCase();
+          var confirmed = value === "packed" || value === "done" || value === "closed";
+          var active = value === "needed" || value === "open" || value === "wave one";
+          var cls = confirmed ? "tap-active-2 is-confirmed" : active ? "tap-active is-active" : "";
+          return '<button class="rs-button tap rs-state-button ' + cls + '" type="button">' + escapeHtml(value) + "</button>";
+        }
+
+        function rowsForModule() {
+          var report = state.reports[state.module] || {};
+          if (state.module === "horse_kits") {
+            return (report.packingRows || []).map(function (row) {
+              var horseId = (row.horseIds || [])[0];
+              return {
+                id: row.id,
+                horse: horseNameById(horseId),
+                groom: groomByHorseId(horseId),
+                item: itemNameById((row.kitItemIds || [])[0]),
+                needed: row.neededState || "",
+                packed: row.packState || "",
+                left: row.packState === "packed" || row.neededState === "not_needed" ? 0 : 1,
+                status: row.packState === "packed" ? "packed" : row.neededState || "needed"
+              };
+            }).filter(function (row) {
+              if (state.laneKey === "all" || state.laneKey === "open") return true;
+              if (state.laneKey === "packed") return row.status === "packed";
+              if (state.laneKey === "left" || state.laneKey === "need") return row.left > 0;
+              return true;
+            });
+          }
+          return (report.items || []).filter(function (row) {
+            if (state.laneKey === "all" || state.laneKey === "open") return true;
+            if (state.laneKey === "packed") return Number(row.packed || 0) > 0;
+            if (state.laneKey === "left" || state.laneKey === "need") return Number(row.left || 0) > 0;
+            return true;
+          });
+        }
+
+        function columnDefsForModule() {
+          if (state.module === "horse_kits") {
+            return [
+              { headerName: "HORSE", field: "horse", minWidth: 140, flex: 1, filter: "agTextColumnFilter" },
+              { headerName: "GROOM", field: "groom", minWidth: 100, width: 120, filter: "agTextColumnFilter" },
+              { headerName: "ITEM", field: "item", minWidth: 180, flex: 1, filter: "agTextColumnFilter" },
+              { headerName: "NEEDED", field: "needed", minWidth: 96, width: 110, filter: "agTextColumnFilter" },
+              { headerName: "PACKED", field: "packed", minWidth: 96, width: 110, filter: "agTextColumnFilter" },
+              { headerName: "LEFT", field: "left", minWidth: 70, width: 78, filter: "agNumberColumnFilter" },
+              { headerName: "STATUS", field: "status", minWidth: 100, width: 112, filter: "agTextColumnFilter", cellRenderer: statusRenderer }
+            ];
+          }
+          if (state.module === "per_horse") {
+            return [
+              { headerName: "HORSE", field: "label", minWidth: 160, flex: 1, filter: "agTextColumnFilter" },
+              { headerName: "GROOM", field: "groom", minWidth: 100, width: 120, filter: "agTextColumnFilter" },
+              { headerName: "NEED", field: "need", minWidth: 76, width: 84, filter: "agNumberColumnFilter" },
+              { headerName: "PACKED", field: "packed", minWidth: 84, width: 94, filter: "agNumberColumnFilter" },
+              { headerName: "LEFT", field: "left", minWidth: 76, width: 84, filter: "agNumberColumnFilter" },
+              { headerName: "STATUS", field: "status", minWidth: 100, width: 112, filter: "agTextColumnFilter", cellRenderer: statusRenderer }
+            ];
+          }
+          return [
+            { headerName: "ITEM", field: "label", minWidth: 180, flex: 1, filter: "agTextColumnFilter" },
+            { headerName: "NEED", field: "need", minWidth: 76, width: 84, filter: "agNumberColumnFilter" },
+            { headerName: "PACKED", field: "packed", minWidth: 84, width: 94, filter: "agNumberColumnFilter" },
+            { headerName: "LEFT", field: "left", minWidth: 76, width: 84, filter: "agNumberColumnFilter" },
+            { headerName: "STATUS", field: "status", minWidth: 100, width: 112, filter: "agTextColumnFilter", cellRenderer: statusRenderer }
+          ];
+        }
+
+        function currentReportLabel() {
+          if (state.module === "horse_kits") return "HORSE KITS";
+          var report = state.reports[state.module] || {};
+          return (report.plan && report.plan.label) || state.module.replace(/_/g, " ").toUpperCase();
+        }
+
+        function render() {
+          var title = "Horse Kits";
+          var subtitle = "Handed packing shell | AG Grid placeholder data";
+          root.className = "rsa-dashboard";
+          root.innerHTML = [
+            '<div class="rs-shell">',
+            '<header class="rs-app-header"><div class="rs-header-copy"><h1>' + escapeHtml(title) + '</h1><p>' + escapeHtml(subtitle) + '</p></div></header>',
+            navHtml(),
+            '<div class="rs-airtable-shell"><div class="rs-page-stack">',
+            agOptionsHtml(),
+            laneTabsHtml(),
+            '<section class="rs-stack-section is-main-table">',
+            '<div class="rs-table-stack-head"><div class="rs-stack-label">' + escapeHtml(currentReportLabel()) + '</div><button class="rs-stack-pill" type="button" data-action="print">PRINT</button></div>',
+            '<div class="packing-ag-frame"><div id="packingAgGrid" class="ag-theme-quartz"></div></div>',
+            '<div class="rs-status"><span data-row-count>0</span> row(s) | click a row to open drawer | AG sort/filter/resize enabled</div>',
+            '</section>',
+            commentsHtml(),
+            '</div></div>',
+            '</div>',
+            drawerHtml()
+          ].join("");
+          bindActions();
+          mountGrid();
+        }
+
+        function navHtml() {
+          var topTabs = [
+            { key: "home", label: "HOME" },
+            { key: "horses", label: "HORSES" },
+            { key: "counts", label: "COUNTS" },
+            { key: "comments", label: "COMMENTS" }
+          ];
+          var modules = [
+            { key: "horse_kits", label: "HORSE KITS" },
+            { key: "quantity", label: "QUANTITY COUNTS" },
+            { key: "per_horse", label: "PER-HORSE ITEMS" },
+            { key: "per_groom", label: "GROOM SUPPLIES" }
+          ];
+          return '<section class="rs-stack-section is-primary-tabs"><nav class="rs-stack-tabs is-nav-top">' +
+            topTabs.map(function (tab) {
+              return '<button class="rs-button tap rs-stack-pill ' + (state.activePrimaryTab === tab.key ? "tap-active is-active" : "") + '" type="button" data-primary-tab="' + tab.key + '">' + tab.label + '</button>';
+            }).join("") +
+            '</nav><nav class="rs-stack-tabs is-compact is-nav-tray">' +
+            modules.map(function (module) {
+              return '<button class="rs-button tap rs-stack-pill ' + (state.module === module.key ? "tap-active is-active" : "") + '" type="button" data-module="' + module.key + '">' + module.label + '</button>';
+            }).join("") +
+            '</nav></section>';
+        }
+
+        function agOptionsHtml() {
+          return '<section class="rs-stack-section is-search"><div class="rs-airtable-toolbar packing-ag-toolbar">' +
+            '<div class="rs-search-wrap"><input class="rs-search" type="search" data-quick-filter autocomplete="off" placeholder="Search AG grid" value="' + escapeHtml(state.quickFilter) + '"></div>' +
+            '<div class="rs-stack-tabs is-compact">' +
+            '<button class="rs-button tap rs-stack-pill tap-active is-active" type="button" data-action="size-columns">SIZE</button>' +
+            '<button class="rs-button tap rs-stack-pill ' + (state.floatingFilters ? "tap-active is-active" : "") + '" type="button" data-action="toggle-filters">FILTERS</button>' +
+            '<button class="rs-button tap rs-stack-pill" type="button" data-action="clear-filters">CLEAR FILTERS</button>' +
+            '</div></div></section>';
+        }
+
+        function laneTabsHtml() {
+          var lanes = [
+            { key: "open", label: "OPEN" },
+            { key: "need", label: "NEED" },
+            { key: "packed", label: "PACKED" },
+            { key: "left", label: "LEFT" },
+            { key: "all", label: "ALL" }
+          ];
+          return '<section class="rs-stack-section is-lane-controls"><div class="rs-stack-tabs is-compact">' +
+            lanes.map(function (lane) {
+              return '<button class="rs-button tap rs-stack-pill ' + (state.laneKey === lane.key ? "tap-active is-active" : "") + '" type="button" data-lane="' + lane.key + '">' + lane.label + '</button>';
+            }).join("") +
+            '</div></section>';
+        }
+
+        function commentsHtml() {
+          var comments = (state.reports.horse_kits && state.reports.horse_kits.comments) || [];
+          return '<section class="rs-stack-section is-comments"><div class="rs-stack-label">COMMENTS</div>' +
+            (comments.map(function (comment) {
+              return '<div class="rs-comment-row"><div class="rs-comment-body">' + escapeHtml(comment.comment || comment.text || "") + '</div><div class="rs-comment-meta">' + escapeHtml(comment.scopeLabel || "") + '</div></div>';
+            }).join("") || '<div class="rs-airtable-empty">No comments.</div>') +
+            '</section>';
+        }
+
+        function drawerHtml() {
+          if (!state.drawerOpen || !state.selectedRow) return "";
+          var row = state.selectedRow;
+          var title = row.horse || row.label || row.item || "Selected row";
+          return [
+            '<div class="rs-drawer-overlay is-open" data-action="close-drawer" aria-hidden="true"></div>',
+            '<aside class="rs-record-drawer is-open" aria-hidden="false">',
+            '<div class="rs-drawer-head"><div class="rs-drawer-title-group"><div class="rs-drawer-title">' + escapeHtml(title) + '</div><div class="rs-drawer-profile-link">AG row detail</div></div><button class="rs-drawer-close" type="button" data-action="close-drawer" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>',
+            '<div class="rs-drawer-body">',
+            detailRow("Module", currentReportLabel()),
+            detailRow("Item", row.item || row.label || ""),
+            detailRow("Groom", row.groom || ""),
+            detailRow("Needed", row.needed || row.need || ""),
+            detailRow("Packed", row.packed || ""),
+            detailRow("Left", row.left || ""),
+            '<div class="rs-kit-item-row"><div class="rs-kit-item-main"><div class="rs-stack-label">AG OPTIONS</div><div class="rs-kit-item-meta">Sort, column filters, floating filters, resize, and row selection are active in this prototype.</div></div></div>',
+            '<div class="rs-kit-item-row"><div class="rs-kit-item-main"><div class="rs-stack-label">WRITEBACK PLACEHOLDER</div><div class="rs-kit-item-meta">Future save path stays browser -> Webflow Cloud -> Airtable.</div></div><div class="rs-kit-actions rs-item-filter-actions"><button class="rs-button tap rs-item-filter tap-active is-active" type="button">SAVE</button></div></div>',
+            '</div></aside>'
+          ].join("");
+        }
+
+        function detailRow(label, value) {
+          return '<div class="rs-kit-item-row"><div class="rs-kit-item-main"><div class="rs-stack-label">' + escapeHtml(label) + '</div><div class="rs-kit-item-meta">' + escapeHtml(value) + '</div></div></div>';
+        }
+
+        function mountGrid() {
+          var gridDiv = document.getElementById("packingAgGrid");
+          var gridOptions = {
+            rowData: rowsForModule(),
+            columnDefs: columnDefsForModule(),
+            defaultColDef: {
+              sortable: true,
+              filter: true,
+              floatingFilter: state.floatingFilters,
+              resizable: true,
+              suppressHeaderMenuButton: false
+            },
+            getRowId: function (params) { return params.data.id; },
+            rowSelection: { mode: "singleRow", checkboxes: false, enableClickSelection: true },
+            animateRows: false,
+            ensureDomOrder: true,
+            suppressMovableColumns: false,
+            onRowClicked: function (event) {
+              state.selectedRow = event.data;
+              state.drawerOpen = true;
+              render();
+            },
+            onGridReady: function (event) {
+              state.gridApi = event.api;
+              if (state.quickFilter) event.api.setGridOption("quickFilterText", state.quickFilter);
+              updateRowCount();
+            },
+            onFilterChanged: updateRowCount,
+            onSortChanged: updateRowCount
+          };
+          if (window.agGrid && typeof window.agGrid.createGrid === "function") {
+            window.agGrid.createGrid(gridDiv, gridOptions);
+          } else {
+            gridDiv.innerHTML = '<div class="rs-airtable-empty">AG Grid failed to load.</div>';
+          }
+        }
+
+        function updateGridRows() {
+          if (!state.gridApi) return;
+          state.gridApi.setGridOption("rowData", rowsForModule());
+          updateRowCount();
+        }
+
+        function updateRowCount() {
+          var countNode = root.querySelector("[data-row-count]");
+          if (!countNode) return;
+          var count = 0;
+          if (state.gridApi) {
+            state.gridApi.forEachNodeAfterFilterAndSort(function () { count += 1; });
+          } else {
+            count = rowsForModule().length;
+          }
+          countNode.textContent = String(count);
+        }
+
+        function bindActions() {
+          root.addEventListener("click", function (event) {
+            var moduleButton = event.target.closest("[data-module]");
+            var laneButton = event.target.closest("[data-lane]");
+            var actionButton = event.target.closest("[data-action]");
+            if (moduleButton) {
+              state.module = moduleButton.dataset.module;
+              state.drawerOpen = false;
+              state.selectedRow = null;
+              render();
+              return;
+            }
+            if (laneButton) {
+              state.laneKey = laneButton.dataset.lane;
+              render();
+              return;
+            }
+            if (!actionButton) return;
+            var action = actionButton.dataset.action;
+            if (action === "print") window.print();
+            if (action === "close-drawer") {
+              state.drawerOpen = false;
+              state.selectedRow = null;
+              render();
+            }
+            if (action === "size-columns" && state.gridApi) {
+              state.gridApi.sizeColumnsToFit();
+            }
+            if (action === "toggle-filters") {
+              state.floatingFilters = !state.floatingFilters;
+              render();
+            }
+            if (action === "clear-filters" && state.gridApi) {
+              state.gridApi.setFilterModel(null);
+              state.gridApi.setGridOption("quickFilterText", "");
+              state.quickFilter = "";
+              var input = root.querySelector("[data-quick-filter]");
+              if (input) input.value = "";
+              updateGridRows();
+            }
+          });
+
+          var quickFilter = root.querySelector("[data-quick-filter]");
+          if (quickFilter) {
+            quickFilter.addEventListener("input", function (event) {
+              state.quickFilter = event.target.value || "";
+              if (state.gridApi) {
+                state.gridApi.setGridOption("quickFilterText", state.quickFilter);
+                updateRowCount();
+              }
+            });
+          }
+        }
+
+        Promise.all([
+          fetchJson(moduleUrls.horse_kits),
+          fetchJson(moduleUrls.quantity),
+          fetchJson(moduleUrls.per_horse),
+          fetchJson(moduleUrls.per_groom)
+        ]).then(function (responses) {
+          state.reports.horse_kits = responses[0];
+          state.reports.quantity = responses[1];
+          state.reports.per_horse = responses[2];
+          state.reports.per_groom = responses[3];
+          render();
+        }).catch(function (error) {
+          root.innerHTML = '<div style="padding:12px;background:#fff;color:#111;font:14px Arial,sans-serif;">Horse Kits AG preview failed: ' + escapeHtml(error.message || error) + "</div>";
+        });
+      })();
+    </script>
+  </body>
+</html>
