@@ -1,4 +1,7 @@
+import { env } from "cloudflare:workers";
 import html from "../assets/barn-entry/source.html?raw";
+
+const DEFAULT_BASE_ID = "app6XS1RvsPNRT6os";
 
 export const GET = async () => new Response(html, {
   headers: {
@@ -7,8 +10,19 @@ export const GET = async () => new Response(html, {
   }
 });
 
-export const POST = async ({ request, locals }) => {
-  const env = locals?.runtime?.env || {};
+export const POST = async ({ request }) => {
+  try {
+    return await submit(request);
+  } catch (error) {
+    return json({
+      ok: false,
+      error: "barn_entry_submit_failed",
+      detail: error instanceof Error ? error.message : String(error)
+    }, 500);
+  }
+};
+
+async function submit(request) {
   const airtable = airtableConfig(env);
   if (!airtable.ok) return json({ ok: false, error: airtable.error }, 500);
 
@@ -48,11 +62,11 @@ export const POST = async ({ request, locals }) => {
   } catch (error) {
     return json({ ok: false, error: error.message || String(error) }, 500);
   }
-};
+}
 
 function airtableConfig(env) {
   const token = env.AIRTABLE_TOKEN;
-  const baseId = env.WEC_AIRTABLE_BASE_ID || env.AIRTABLE_WEC_SCHEDULES_BASE_ID || env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE;
+  const baseId = env.AIRTABLE_WEC_BASE_ID || env.WEC_AIRTABLE_BASE_ID || env.AIRTABLE_WEC_SCHEDULES_BASE_ID || env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE || DEFAULT_BASE_ID;
   const table = env.AIRTABLE_BARN_ENTRY_REVIEW_TABLE || env.AIRTABLE_BARN_ENTRY_TABLE || "barn_entry_review";
   if (!token) return { ok: false, error: "missing_airtable_token" };
   if (!baseId) return { ok: false, error: "missing_airtable_base_id" };

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../webflow/packing-worksheet/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@df8d9d4eb0652f76c952ed718b36e774100148f4/webflow/packing-worksheet/styles.css">
   <link rel="stylesheet" href="ag-report-shared.css">
   <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
 </head>
@@ -56,23 +56,20 @@
       }
 
       function prepareRows(rows) {
-        const groups = new Map();
-        rows.forEach(row => { const key = normalize(ringName(row)) || "unassigned"; if (!groups.has(key)) groups.set(key,{title:ringName(row)||"Unassigned",rows:[]}); groups.get(key).rows.push(row); });
-        const output = [];
-        [...groups.entries()].sort((a,b)=>a[1].title.localeCompare(b[1].title,undefined,{numeric:true})).forEach(([key,group]) => {
-          output.push({ id:"ring|"+key, row_type: "ring", ring_title:group.title });
-          group.rows.sort((a,b)=>displayTime(a).localeCompare(displayTime(b)) || text(a.class_number).localeCompare(text(b.class_number),undefined,{numeric:true})).forEach(row => {
-            if ((row.horse_items || []).length) output.push({ ...row, id:"rollup|"+row.id, row_type: "rollup", drawer_source:row, rollup_title:[displayTime(row),classLabel(row)].filter(Boolean).join(" | ") });
-            output.push({ ...row, row_type:"data" });
-          });
+        return rows.slice().sort((a,b)=>ringName(a).localeCompare(ringName(b),undefined,{numeric:true})||displayTime(a).localeCompare(displayTime(b))||text(a.class_number||a.class_no).localeCompare(text(b.class_number||b.class_no),undefined,{numeric:true})).map(row=>{
+          const entries=(row.horse_items||[]).map((item,index)=>({entryKey:[row.id,"entry",item.order||index+1,normalize(item.name||item.label)].join("|"),name:item.name||item.label||"",order:item.order||index+1,trainer:item.trainer||"",source:item}));
+          return {rowKey:"rss|"+row.id,classKey:row.id,entryState:entries.length?"rss-is-hydrated":"rss-is-empty",time:displayTime(row)||"--",ring:ringName(row),className:classLabel(row),entryCount:row.entry_count??entries.length,status:row.status||"scheduled",entries,drawer_source:row};
         });
-        return output;
       }
 
       function drawerDetail(row) {
         const source = row.drawer_source || row;
-        const entries = (source.horse_items || []).map(item => ({ time:displayTime(source), name:item.name || item.label, meta:item.order || item.trainer || "" }));
-        return { title:classLabel(source), subtitle:[ringName(source),displayTime(source),source.status].filter(Boolean).join(" | "), details:[{label:"Ring",value:ringName(source)},{label:"Class",value:classLabel(source)},{label:"Status",value:source.status || "scheduled"},{label:"Entries",value:source.entry_count ?? entries.length}], entries };
+        const entries = (row.entries || []).map(item => ({ time:row.time, name:item.name, meta:item.order || item.trainer || "" }));
+        return { title:row.className||classLabel(source), subtitle:[row.ring||ringName(source),row.time||displayTime(source),row.status||source.status].filter(Boolean).join(" | "), details:[{label:"Ring",value:row.ring||ringName(source)},{label:"Class",value:row.className||classLabel(source)},{label:"Status",value:row.status||source.status||"scheduled"},{label:"Entries",value:row.entryCount??entries.length}], entries };
+      }
+
+      function entryDrawerDetail(row,entry) {
+        return {title:entry.name||"Entry",subtitle:[row.className,row.ring,row.time].filter(Boolean).join(" | "),entriesTitle:"Class entries",details:[{label:"Horse",value:entry.name||""},{label:"Entry order",value:entry.order||"--"},{label:"Trainer",value:entry.trainer||""},{label:"Class",value:row.className||""},{label:"Ring",value:row.ring||""},{label:"Time",value:row.time||""}],entries:(row.entries||[]).map(item=>({time:row.time,name:item.name,meta:item.order||item.trainer||"",selected:item.entryKey===entry.entryKey}))};
       }
 
       window.RS_AG_REPORT_CONFIG = {
@@ -83,12 +80,7 @@
           const rows=(data.rings||[]).flatMap(ring=>(ring.classes||[]).map((klass,index)=>({ ...klass, id:klass.row_key||[data.show_no||showNo,klass.ring_day_no||ring.ring_no||"",klass.class_no||klass.class_number||index].join("|"), ring_name_normalized:ring.ring_name_normalized||klass.ring_name_normalized||ring.ring_display||"", horse_items:Array.isArray(klass.horse_items)?klass.horse_items:flattenRollups(klass.rollups,klass.rollup_label) })));
           const day=data.show_focus_date||data.focus_day||focusDay; return {rows,context:{focusDay:day},meta:[data.show_no||showNo,day].join(" | "),message:"live ring classes loaded"};
         }},
-        columns:[
-          {headerName:"TIME",field:"display_time",minWidth:78,width:88,valueGetter:p=>displayTime(p.data)},
-          {headerName:"RING",field:"ring_name_normalized",minWidth:78,width:88,valueGetter:p=>ringName(p.data).toUpperCase()},
-          {headerName:"NO",field:"class_number",minWidth:56,width:60,valueGetter:p=>p.data.class_number||p.data.class_no||""},
-          {headerName:"CLASS",field:"class_name",minWidth:170,flex:1}
-        ],
+        columns:report=>[{headerName:"Classes",flex:1,autoHeight:true,sortable:false,resizable:false,cellClass:"rss-shape-cell",cellRenderer:report.renderers.rssRowShapeRenderer}],
         actions:[
           {id:"print",label:"Print",zone:"header",type:"print"},
           {id:"focus",label:"Focus",zone:"header",type:"focus",active:r=>r.state.focusMode},
@@ -96,7 +88,7 @@
           {id:"clear",label:"Clear",zone:"primary",type:"clear"}
         ],
         filters:{ ring:ringName, horse:{mode:"options",values:row=>(row.horse_items||[]).map(item=>item.name||item.label)}, focus:rows=>rows.filter(row=>row.is_focus||row.current_horse||(row.horse_items||[]).length) },
-        row:{ getId:row=>row.id, prepare:prepareRows, drawer:drawerDetail, onCellClicked(){return false;} },
+        row:{ shape:"rss", getId:row=>row.rowKey, prepare:prepareRows, drawer:drawerDetail, entryDrawer:entryDrawerDetail },
         print:{ title:"Ring Classes", meta:r=>[showNo,r.state.context.focusDay||focusDay].join(" | "), rollup:row=>(row.horse_items||[]).map(item=>item.name||item.label).join(" | "), columns:[{width:"44px",value:displayTime},{width:"58px",value:row=>ringName(row).toUpperCase()},{width:"28px",value:row=>row.class_number||row.class_no||""},{width:"minmax(0,1fr)",value:className}] }
       };
     })();

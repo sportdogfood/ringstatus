@@ -24,8 +24,8 @@
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; background: var(--page); color: var(--text); font-family: Inter, Arial, Helvetica, sans-serif; }
-    body { overflow: hidden; }
-    .shell { height: 100vh; display: grid; grid-template-rows: auto auto 1fr auto auto; justify-items: center; min-height: 0; gap: 8px; padding: 12px; }
+    body { overflow: auto; }
+    .shell { min-height: 100vh; display: grid; grid-template-rows: auto auto auto auto auto auto; justify-items: center; align-content: start; gap: 8px; padding: 12px; }
     .shell.is-hide-mode { background: #fff4cf; }
     .bar { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; background: transparent; }
     .title { min-width: 0; display: grid; gap: 2px; }
@@ -39,33 +39,28 @@
     button[aria-pressed="true"], .rail-button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 1px rgba(36, 94, 82, .18); }
     button, .rail-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
     .button-icon.ag-icon { width: 14px; height: 14px; line-height: 1; color: currentColor; flex: 0 0 auto; }
-    .class-token.is-status .button-icon.ag-icon-loading { animation: icon-spin 1s linear infinite; }
+    .rss-class-token.is-status .button-icon.ag-icon-loading { animation: icon-spin 1s linear infinite; }
     @keyframes icon-spin { to { transform: rotate(360deg); } }
     label { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
-    .grid-frame { position: relative; width: 100%; max-width: 960px; min-width: 0; min-height: 0; display: grid; grid-template-rows: 1fr auto; padding: 0; gap: 8px; margin: 0 auto; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+    .grid-frame { position: relative; width: 100%; max-width: 960px; min-width: 0; min-height: 0; display: block; padding: 0; margin: 0 auto; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
     .shell.is-hide-mode .grid-frame { border-color: var(--warn); box-shadow: 0 0 0 3px rgba(131, 86, 0, .22); }
-    #scheduleGrid { width: 100%; height: 100%; min-height: 320px; min-width: 0; overflow: hidden; display: block; padding: 0; background: #fff; font-size: 13px; scrollbar-width: thin; }
+    #scheduleGrid { width: 100%; height: auto; min-width: 0; overflow: visible; display: block; padding: 0; background: #fff; font-size: 13px; scrollbar-width: thin; }
     #scheduleGrid .ag-root-wrapper { border: 0; border-radius: 0; }
     #scheduleGrid .ag-header { border-bottom-color: #d1d5db; }
     #scheduleGrid .ag-header-cell-text { font-weight: 600; }
     #scheduleGrid .ag-row { transition: background-color .14s ease, box-shadow .14s ease; }
-    #scheduleGrid .ag-row-hover:not(.row-ring-group) .ag-cell { background: rgba(148, 163, 184, .13); }
+    #scheduleGrid .ag-row-hover .ag-cell { background: rgba(148, 163, 184, .13); }
     #scheduleGrid .ag-cell { display: flex; align-items: center; border-bottom-color: #e5e7eb; line-height: 1.2; }
     #scheduleGrid .ag-cell-value { width: 100%; min-width: 0; }
-    #scheduleGrid .ag-row.row-zebra .ag-cell { background: #fafafa; }
-    #scheduleGrid .ag-row.row-has-rollup { display: flex; flex-direction: column; align-items: stretch; background: #f3f4f6; }
-    #scheduleGrid .ag-row.row-has-rollup > .ag-grid-scrolling-cells { flex: 0 0 auto; width: 100%; height: 37px; min-height: 0; }
-    #scheduleGrid .ag-row.row-has-rollup > .ag-grid-scrolling-cells .ag-cell { height: 37px; }
-    #scheduleGrid .ag-row.row-has-rollup .ag-cell { align-items: center; padding-top: 6px; padding-bottom: 6px; background: #f3f4f6; border-bottom-color: #d1d5db; }
-    #scheduleGrid .ag-row.row-has-rollup .ag-cell-wrapper,
-    #scheduleGrid .ag-row.row-has-rollup .ag-cell-value { display: flex; align-items: flex-end; }
-    #scheduleGrid .ag-row.row-underway .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--accent); }
-    #scheduleGrid .ag-row.row-pending-hidden .ag-cell,
-    #scheduleGrid .ag-row.row-saved-hidden .ag-cell { background: var(--bad-soft); }
-    #scheduleGrid .ag-row.row-pending-hidden .ag-cell:first-child,
-    #scheduleGrid .ag-row.row-saved-hidden .ag-cell:first-child { box-shadow: inset 4px 0 0 var(--bad); }
-    .ag-ring-group { height: 100%; display: flex; align-items: center; padding: 0 14px; background: #111; color: #fff; font-size: 12px; font-weight: 750; letter-spacing: 0; text-transform: uppercase; border-bottom: 1px solid #111; }
-    .ag-row-rollup-band { position: relative; z-index: 2; flex: 0 0 auto; width: 100%; min-width: 0; display: block; padding: 5px 14px 2px; overflow: hidden; background: #f3f4f6; border-bottom: 1px solid rgba(17, 24, 39, .06); pointer-events: auto; }
+    #scheduleGrid .ag-row.rss-row-is-hydrated { background: #f3f4f6; }
+    #scheduleGrid .ag-row.rss-row-is-hydrated.ag-row-hover,
+    #scheduleGrid .ag-row.rss-row-is-hydrated.ag-row-selected { background: rgba(148, 163, 184, .13); }
+    #scheduleGrid .ag-row.row-zebra:not(.rss-row-is-hydrated) { background: #fafafa; }
+    #scheduleGrid .ag-row.row-underway { box-shadow: inset 4px 0 0 var(--accent); }
+    #scheduleGrid .ag-row.row-pending-hidden,
+    #scheduleGrid .ag-row.row-saved-hidden { background: var(--bad-soft); box-shadow: inset 4px 0 0 var(--bad); }
+    #scheduleGrid .ag-full-width-row .rss-entry-line.rss-is-hydrated { width: 100%; min-width: 0; min-height: 30px; display: flex; align-items: center; border-bottom: 1px solid rgba(17, 24, 39, .06); }
+    #scheduleGrid .ag-full-width-row .rss-entry-rollups { width: 100%; }
     .top-anchors, .bottom-controls { width: 100%; max-width: 960px; min-width: 0; display: grid; gap: 6px; }
     .control-rail { min-width: 0; display: flex; align-items: center; gap: 6px; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 4px; scrollbar-width: thin; }
     .rail-button { flex: 0 0 auto; }
@@ -73,54 +68,24 @@
     .rail-button.is-empty { opacity: .5; cursor: default; }
     .bottom-controls[hidden] { display: none; }
     .status-line { width: 100%; max-width: 960px; min-height: 18px; color: var(--muted); font-size: 11px; padding: 0 12px 10px; }
-    .schedule-table { min-width: 0; overflow: hidden; border: 1px solid #d1d5db; border-radius: 10px; background: #fff; color: #111827; }
-    .schedule-table-head,
-    .schedule-filter-row,
-    .class-line { min-width: 800px; display: grid; grid-template-columns: 108px 86px minmax(260px,1fr) 88px 88px; gap: 10px; align-items: center; }
-    .shell.is-hide-mode .schedule-table-head,
-    .shell.is-hide-mode .schedule-filter-row,
-    .shell.is-hide-mode .class-line { grid-template-columns: 24px 108px 86px minmax(260px,1fr) 88px 88px; }
-    .schedule-table-head { min-height: 58px; padding: 0 24px; border-bottom: 1px solid #d1d5db; background: #fff; font-size: 16px; font-weight: 600; }
-    .schedule-filter-row { min-height: 38px; padding: 0 24px; border-bottom: 1px solid #d1d5db; background: #fff; }
-    .schedule-table-head .hide-column-head,
-    .schedule-filter-row .hide-column-filter { display: none; }
-    .shell.is-hide-mode .schedule-table-head .hide-column-head,
-    .shell.is-hide-mode .schedule-filter-row .hide-column-filter { display: block; }
-    .column-head { min-width: 0; display: inline-flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; }
-    .head-separator { margin-left: auto; width: 2px; height: 22px; background: #d1d5db; }
-    .head-filter-icon { position: relative; width: 18px; height: 18px; flex: 0 0 auto; color: #111827; opacity: .9; }
-    .head-filter-icon::before { content: ""; position: absolute; left: 2px; top: 4px; width: 14px; height: 10px; background: linear-gradient(currentColor,currentColor) 0 0 / 14px 2px no-repeat, linear-gradient(currentColor,currentColor) 3px 4px / 9px 2px no-repeat, linear-gradient(currentColor,currentColor) 6px 8px / 5px 2px no-repeat; }
-    .column-filter { width: 100%; min-width: 0; height: 24px; border: 1px solid #d1d5db; border-radius: 4px; padding: 0 6px; background: #fff; color: #111827; font: inherit; font-size: 12px; font-weight: 400; }
-    .column-filter::placeholder { color: #6b7280; }
-    .column-filter:focus { outline: none; border-color: #9fc8f1; box-shadow: 0 0 0 2px rgba(80, 155, 230, .14); }
-    .ring-container { min-width: 0; overflow: visible; background: #fff; }
-    .ring-container + .ring-container { margin-top: 0; }
-    .ring-container-header { min-height: 32px; display: flex; align-items: center; padding: 0 24px; background: #f3f4f6; color: #111827; border-bottom: 1px solid #d1d5db; font-size: 13px; font-weight: 700; letter-spacing: 0; }
-    .ring-rows { display: grid; min-width: 0; }
-    .class-related-data { width: 100%; min-width: 0; display: grid; align-content: center; gap: 2px; padding: 0; border-bottom: 0; background: transparent; color: #111827; font-size: 13px; transition: background-color .14s ease, box-shadow .14s ease; }
-    .class-related-data.is-row-level { align-content: start; }
-    .class-related-data.is-zebra { background: #fafafa; }
-    .class-related-data.has-rollup { background: #f3f4f6; border-bottom-color: #d1d5db; padding-bottom: 2px; }
-    .schedule-row-shell:hover .class-related-data:not(.is-pending-hidden):not(.is-saved-hidden) { background: rgba(148, 163, 184, .16); box-shadow: none; }
-    .schedule-row-shell:hover .class-related-data.has-rollup:not(.is-pending-hidden):not(.is-saved-hidden) { background: #eef0f3; }
-    .class-related-data.is-pending-hidden,
-    .class-related-data.is-saved-hidden { background: var(--bad-soft); box-shadow: inset 4px 0 0 var(--bad); }
+    #scheduleGrid .rss-shape-cell { padding: 0; line-height: normal; }
+    .rss-class-related-data { width: 100%; min-width: 0; box-sizing: border-box; background: transparent; color: #111827; font-size: 13px; }
+    .rss-entry-line.rss-is-empty { display: none; }
+    .rss-entry-line.rss-is-hydrated { padding: 4px 12px; }
+    .rss-entry-rollups { min-width: 0; display: flex; align-items: center; gap: 8px; overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; }
+    .rss-entry-rollup { min-width: max-content; max-width: none; min-height: 20px; flex: 0 0 auto; display: inline-flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 5px; padding: 2px 8px; background: #fff; color: #1f2937; box-shadow: 0 1px 1px rgba(15, 23, 42, .04); font-size: 12px; font-weight: 600; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+    .rss-class-line { display: grid; grid-template-columns: 88px 88px minmax(0, 1fr) 88px 88px; align-items: center; gap: 0; min-height: 41px; padding: 0; box-sizing: border-box; cursor: pointer; }
+    .rss-class-line > div { min-width: 0; }
     .hide-check { display: inline-flex; align-items: center; justify-content: center; }
     .hide-row-checkbox { width: 16px; height: 16px; margin: 0; accent-color: var(--bad); }
-    .schedule-row-shell.is-underway { box-shadow: inset 4px 0 0 var(--accent); }
-    .class-related-rollup { min-width: 0; max-width: 100%; display: flex; align-items: center; flex-wrap: nowrap; gap: 3px 6px; margin-bottom: 3px; color: #374151; font-size: 12px; font-weight: 700; line-height: 1.15; text-transform: uppercase; overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; }
-    .class-related-rollup.is-empty { display: none; }
-    .class-related-rollup.is-relocated-source { display: none; }
-    .rollup-item { min-width: max-content; max-width: none; flex: 0 0 auto; display: inline-flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 5px; padding: 2px 8px; background: #fff; color: #1f2937; box-shadow: 0 1px 1px rgba(15, 23, 42, .04); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ag-row-rollup-band .rollup-item { pointer-events: auto; cursor: default; user-select: text; }
-    .rollup-item:not(:last-child)::after { content: none; }
-    .rollup-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-    .time-cell { width: 100%; min-width: 0; display: inline-flex; align-items: center; gap: 8px; }
-    .class-time { display: inline-flex; align-items: center; justify-content: flex-start; width: fit-content; min-width: 66px; border: 1px solid #d6d6d6; border-radius: 5px; padding: 2px 8px; background: #fff; color: #18251f; font-size: 13px; font-weight: 600; white-space: nowrap; }
-    .class-ring { color: #506158; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .class-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
-    .class-token { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-width: 0; border: 1px solid #d6d6d6; border-radius: 999px; padding: 2px 8px; color: #555; background: #fff; font-size: 13px; line-height: 1.2; white-space: nowrap; }
-    .class-token.is-status { min-width: 56px; width: auto; height: 22px; padding: 2px 8px; gap: 0; justify-self: center; align-self: center; text-transform: uppercase; font-size: 10px; font-weight: 700; }
+    .rss-time-cell { width: 100%; min-width: 0; display: inline-flex; align-items: center; gap: 8px; }
+    .rss-class-time { display: inline-flex; align-items: center; justify-content: flex-start; width: fit-content; min-width: 66px; border: 1px solid #d6d6d6; border-radius: 5px; padding: 2px 8px; background: #fff; color: #18251f; font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .rss-class-ring { color: #506158; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rss-class-name { min-width: 0; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    .rss-class-entry { text-align: center; }
+    .rss-class-status { display: flex; justify-content: center; }
+    .rss-class-token { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-width: 0; border: 1px solid #d6d6d6; border-radius: 999px; padding: 2px 8px; color: #555; background: #fff; font-size: 13px; line-height: 1.2; white-space: nowrap; }
+    .rss-class-token.is-status { min-width: 56px; width: auto; height: 22px; padding: 2px 8px; gap: 0; justify-self: center; align-self: center; text-transform: uppercase; font-size: 10px; font-weight: 700; }
     .status-icon { position: relative; width: 12px; height: 12px; display: inline-block; color: currentColor; }
     .status-icon::before,
     .status-icon::after { content: ""; position: absolute; display: block; }
@@ -177,23 +142,9 @@
       .actions { justify-content: flex-start; }
       .top-anchors, .bottom-controls { gap: 4px; }
       #scheduleGrid { padding: 0; }
-      .ring-container-header { padding: 0 10px; }
-      .schedule-table-head,
-      .schedule-filter-row,
-      .class-line { min-width: 0; grid-template-columns: 88px minmax(0,1fr); gap: 8px; padding-left: 12px; padding-right: 12px; }
-      .shell.is-hide-mode .schedule-table-head,
-      .shell.is-hide-mode .schedule-filter-row,
-      .shell.is-hide-mode .class-line { grid-template-columns: 24px 88px minmax(0,1fr); }
-      .schedule-table-head .class-ring-head,
-      .schedule-table-head .class-token-head,
-      .schedule-filter-row .class-ring-filter,
-      .schedule-filter-row .class-token-filter { display: none; }
-      .class-related-rollup { gap: 6px; margin-bottom: 5px; }
-      .class-related-data { padding-left: 12px; padding-right: 12px; }
-      .class-ring, .class-token { display: none; }
     }
     @media (prefers-reduced-motion: reduce) {
-      button, label, .rail-button, .class-related-data { transition: none; }
+      button, label, .rail-button, .rss-class-related-data { transition: none; }
       button:hover, label:hover, .rail-button:hover,
       button:active, label:active, .rail-button:active { transform: none; }
     }
@@ -255,8 +206,8 @@
       const LEGACY_FALLBACK_API = FUNCTION_ORIGIN + "/server/horseshowing_sync/";
       const HIDDEN_KEY = "rs-wec-ag-live-hidden";
       const SAMPLE_ROWS = [
-        { row_key:"sample|grand|804", ring:"Grand", ring_name_prioritized:"Grand", ring_no:640, ring_visual_key:"640|grand", ring_raw_name:"WEC Grand Arena - sample", class_no:26676, class_number:"804", class_name:"C.Jarvis Insurance Welcome Prix 1.40m II.2b", time:"8:00 am", class_start_time:"08:00:00", entry_count:25, n_gone:0, n_to_go:25, current_horse:"", status:"upcoming", horse_items:[], entries:[] },
-        { row_key:"sample|indoor_1|781", ring:"Indoor 1", ring_name_prioritized:"Indoor 1", ring_no:644, ring_visual_key:"644|indoor_1", ring_raw_name:"Indoor 1- sample", class_no:26788, class_number:"781", class_name:"1.40m Junior/Amateur Jumper II.1", time:"1:15 pm", class_start_time:"13:15:00", entry_count:11, n_gone:0, n_to_go:11, current_horse:"", status:"upcoming", horse_items:[{ name:"Bee", label:"Bee (3)", order:"3", trainer:"CWF" }, { name:"Insider", label:"Insider (6)", order:"6", trainer:"CWF" }], entries:[] }
+        { row_key:"sample|grand|804", ring:"Grand", ring_name_prioritized:"Grand", ring_no:640, ring_visual_key:"640|grand", ring_raw_name:"WEC Grand Arena - sample", class_no:26676, class_number:"804", class_name:"C.Jarvis Insurance Welcome Prix 1.40m II.2b", time:"8:00 am", class_start_time:"08:00:00", starts_in:42, entry_count:25, n_gone:0, n_to_go:25, current_horse:"", status:"upcoming", horse_items:[], entries:[] },
+        { row_key:"sample|indoor_1|781", ring:"Indoor 1", ring_name_prioritized:"Indoor 1", ring_no:644, ring_visual_key:"644|indoor_1", ring_raw_name:"Indoor 1- sample", class_no:26788, class_number:"781", class_name:"1.40m Junior/Amateur Jumper II.1", time:"1:15 pm", class_start_time:"13:15:00", starts_in:88, entry_count:11, n_gone:0, n_to_go:11, current_horse:"", status:"upcoming", horse_items:[{ name:"Bee", label:"Bee (3)", order:"3", trainer:"CWF" }, { name:"Insider", label:"Insider (6)", order:"6", trainer:"CWF" }], entries:[] }
       ];
 
       let hideMode = false;
@@ -274,8 +225,6 @@
       let visibleRings = [];
       let visibleRows = [];
       let gridApi = null;
-      let rollupRelocationFrame = 0;
-      let rowHeightByKey = new Map();
       let currentMeta = { source: "sample", show_no: "", focus_date: "", last_updated: "" };
 
       const statusLine = document.getElementById("statusLine");
@@ -304,6 +253,11 @@
       function readHiddenRows() { try { return new Set(JSON.parse(localStorage.getItem(HIDDEN_KEY) || "[]")); } catch (_) { return new Set(); } }
       function setStatus(message, isError) { statusLine.textContent = message; statusLine.style.color = isError ? "#fecdd3" : ""; }
       function classLabel(row) { return [row.class_number, row.class_name].filter(Boolean).join(" - "); }
+      function startsInLabel(row) {
+        const label = text(row && row.starts_in).trim();
+        if (!label) return "--";
+        return /m$/i.test(label) ? label : label + "m";
+      }
       function hiddenUnion(...sets) {
         const out = new Set();
         sets.forEach(set => set && set.forEach(value => out.add(value)));
@@ -390,6 +344,7 @@
               class_start_time: text(c.class_start_time).trim(),
               time: text(c.display_time || c.time_text || c.class_time).trim(),
               sort_time: numberOrNull(c.time_sort) ?? 999999999,
+              starts_in: c.starts_in ?? c.starts_in_mins ?? "",
               entry_count: numberOrNull(c.entry_count),
               n_gone: numberOrNull(c.n_gone),
               n_to_go: numberOrNull(c.n_to_go),
@@ -483,12 +438,8 @@
         return (Array.isArray(row.horse_items) ? row.horse_items : []).map(item => item.order ? text(item.name || item.label) + " (" + item.order + ")" : text(item.name || item.label)).filter(Boolean).join("   ");
       }
 
-      function rollupItemsHtml(row) {
-        return (Array.isArray(row.horse_items) ? row.horse_items : []).map(item => {
-          const label = item.order ? text(item.name || item.label) + " (" + item.order + ")" : text(item.name || item.label);
-          if (!label) return "";
-          return '<span class="rollup-item" data-entry-order="' + escapeHtml(item.order || "") + '" data-trainer="' + escapeHtml(item.trainer || "") + '"><span class="rollup-label">' + escapeHtml(label) + '</span></span>';
-        }).filter(Boolean).join("");
+      function rssEntryKey(row, item, index) {
+        return [row.row_key, "entry", item.order || index + 1, horseKey(item.name || item.label)].join("|");
       }
 
       function statusReference(row) {
@@ -500,7 +451,7 @@
 
       function statusTokenHtml(row) {
         const status = statusReference(row);
-        return '<span class="class-token is-status status-' + status.label + '" title="' + escapeHtml(status.label) + '" aria-label="' + escapeHtml(status.label) + '">' + escapeHtml(status.label) + '</span>';
+        return '<span class="rss-class-token is-status status-' + status.label + '" title="' + escapeHtml(status.label) + '" aria-label="' + escapeHtml(status.label) + '">' + escapeHtml(status.label) + '</span>';
       }
 
       function horseKey(value) { return text(value).trim().toLowerCase(); }
@@ -598,108 +549,74 @@
 
       function renderSchedule() {
         if (!gridApi) return;
-        rowHeightByKey = new Map();
         gridApi.setGridOption("rowData", buildGridRows());
-        scheduleRollupRelocation();
       }
 
       function buildGridRows() {
-        const out = [];
-        visibleRings.forEach(ring => {
-          out.push({ row_type: "ring", row_key: "ring|" + ring.key, ring_key: ring.key, ring_title: ring.title, ring });
-          ring.classes.forEach((row, index) => out.push({ ...row, row_type: "class", ring_key: ring.key, __zebra: index % 2 === 1 }));
-        });
-        return out;
+        return visibleRings.flatMap(ring => ring.classes.map((row, index) => ({
+          ...row,
+          row_type: "class",
+          ring_key: ring.key,
+          __zebra: index % 2 === 1,
+          entryState: Array.isArray(row.horse_items) && row.horse_items.length ? "rss-is-hydrated" : "rss-is-empty"
+        })));
       }
 
-      function ringFullWidthRenderer(params) {
+      function rssRowShapeRenderer(params) {
         const row = params.data || {};
-        return '<div class="ag-ring-group" data-ring-key="' + escapeHtml(row.ring_key || "") + '">' + escapeHtml(row.ring_title || "Ring") + '</div>';
-      }
-
-      function timeCellRenderer(params) {
-        const row = params.data || {};
-        if (row.row_type !== "class") return "";
+        const entries = Array.isArray(row.horse_items) ? row.horse_items : [];
+        const entryState = entries.length ? "rss-is-hydrated" : "rss-is-empty";
         const hiddenSet = effectiveHiddenRows();
         const isPendingHidden = hideMode && hiddenSet.has(row.row_key);
+        const root = document.createElement("div");
+        root.className = "rss-class-related-data " + entryState;
+        const entryButtons = entries.map((entry, index) => {
+          const label = entry.order ? text(entry.name || entry.label) + " (" + entry.order + ")" : text(entry.name || entry.label);
+          return '<button type="button" class="rss-entry-rollup" data-row-key="' + escapeHtml(row.row_key) + '" data-entry-key="' + escapeHtml(rssEntryKey(row, entry, index)) + '" data-entry-name="' + escapeHtml(entry.name || entry.label || "") + '" data-entry-order="' + escapeHtml(entry.order || "") + '" data-trainer="' + escapeHtml(entry.trainer || "") + '" data-rollup-index="' + (index + 1) + '">' + escapeHtml(label) + '</button>';
+        }).join("");
         const hideCheck = hideMode ? '<span class="hide-check"><input class="hide-row-checkbox" type="checkbox" data-row-key="' + escapeHtml(row.row_key) + '"' + (isPendingHidden ? " checked" : "") + ' aria-label="Hide ' + escapeHtml(classLabel(row)) + '"></span>' : "";
-        return '<span class="time-cell">' + hideCheck + '<span class="class-time">' + escapeHtml(row.time || "--") + '</span></span>';
-      }
-
-      function classCellRenderer(params) {
-        const row = params.data || {};
-        if (row.row_type !== "class") return "";
-        const rollup = rollupText(row);
-        const rollupHtml = '<div class="class-related-rollup' + (rollup ? "" : " is-empty") + '">' + (rollup ? rollupItemsHtml(row) : '<span class="rollup-item">is_empty</span>') + '</div>';
-        return '<div class="class-related-data' + (rollup ? " has-rollup" : "") + '">' + rollupHtml + '<span class="class-name">' + escapeHtml(classLabel(row)) + '</span></div>';
-      }
-
-      function scheduleRollupRelocation() {
-        if (rollupRelocationFrame) cancelAnimationFrame(rollupRelocationFrame);
-        rollupRelocationFrame = requestAnimationFrame(() => {
-          relocateRollups();
+        root.innerHTML = '<div class="rss-entry-line ' + entryState + '"><div class="rss-entry-rollups">' + entryButtons + '</div></div>' +
+          '<div class="rss-class-line" role="button" tabindex="0" data-row-key="' + escapeHtml(row.row_key) + '" data-class-key="' + escapeHtml(row.row_key) + '">' +
+            '<div class="rss-time-cell">' + hideCheck + '<span class="rss-class-time">' + escapeHtml(row.time || "--") + '</span></div>' +
+            '<div class="rss-class-ring">' + escapeHtml(row.ring || "") + '</div>' +
+            '<div class="rss-class-name" title="' + escapeHtml(classLabel(row)) + '">' + escapeHtml(classLabel(row)) + '</div>' +
+            '<div class="rss-class-entry">' + escapeHtml(startsInLabel(row)) + '</div>' +
+            '<div class="rss-class-status">' + statusTokenHtml(row) + '</div>' +
+          '</div>';
+        root.querySelectorAll(".rss-entry-rollup").forEach((button, index) => {
+          button.addEventListener("click", event => {
+            event.stopPropagation();
+            if (!hideMode) openFlyout(row, index + 1);
+          });
         });
-      }
-
-      function relocateRollups() {
-        rollupRelocationFrame = 0;
-        let heightChanged = false;
-        document.querySelectorAll("#scheduleGrid .ag-row-rollup-band").forEach(band => {
-          const row = band.closest(".ag-row");
-          if (!row || !row.querySelector(".class-related-rollup:not(.is-empty)")) band.remove();
-        });
-        document.querySelectorAll("#scheduleGrid .ag-row.row-has-rollup").forEach(rowEl => {
-          const source = rowEl.querySelector(".class-related-rollup:not(.is-empty)");
-          if (!source) return;
-          let band = rowEl.querySelector(".ag-row-rollup-band");
-          if (!band) {
-            band = document.createElement("div");
-            band.className = "ag-row-rollup-band";
-          }
-          const classLine = rowEl.querySelector(".ag-grid-scrolling-cells");
-          if (classLine && band.nextElementSibling !== classLine) rowEl.insertBefore(band, classLine);
-          const nextHtml = '<div class="class-related-data is-row-level"><div class="class-related-rollup" data-rollups>' + Array.from(source.querySelectorAll(".rollup-item")).map((item, index) => {
-            const clone = item.cloneNode(true);
-            clone.setAttribute("data-row-key", rowEl.getAttribute("row-id") || "");
-            clone.setAttribute("data-rollup-index", String(index + 1));
-            return clone.outerHTML;
-          }).join("") + "</div></div>";
-          if (band.innerHTML !== nextHtml) band.innerHTML = nextHtml;
-          source.classList.add("is-relocated-source");
-          const rowKey = rowEl.getAttribute("row-id") || "";
-          const rowNode = rowKey && gridApi && gridApi.getRowNode ? gridApi.getRowNode(rowKey) : null;
-          const rollupRail = band.querySelector(".class-related-rollup");
-          const measured = rollupRail ? Math.ceil(rollupRail.getBoundingClientRect().height) : 0;
-          const nextHeight = Math.max(40, measured + 47);
-          const previousHeight = rowHeightByKey.get(rowKey);
-          if (rowNode && (!previousHeight || Math.abs(previousHeight - nextHeight) > 2)) {
-            rowHeightByKey.set(rowKey, nextHeight);
-            rowNode.setRowHeight(nextHeight);
-            heightChanged = true;
-          }
-        });
-        if (heightChanged && gridApi && gridApi.onRowHeightChanged) {
-          gridApi.onRowHeightChanged();
+        const checkbox = root.querySelector(".hide-row-checkbox");
+        if (checkbox) {
+          checkbox.addEventListener("click", event => event.stopPropagation());
+          checkbox.addEventListener("change", event => {
+            event.stopPropagation();
+            togglePendingHidden(row.row_key, checkbox.checked);
+          });
         }
-      }
-
-      function entriesCellRenderer(params) {
-        const row = params.data || {};
-        return row.row_type === "class" ? '<span class="class-token">' + escapeHtml(row.entry_count ?? "") + '</span>' : "";
-      }
-
-      function statusCellRenderer(params) {
-        const row = params.data || {};
-        return row.row_type === "class" ? statusTokenHtml(row) : "";
+        const classLine = root.querySelector(".rss-class-line");
+        function runClassInstruction(event) {
+          event.stopPropagation();
+          if (hideMode) togglePendingHidden(row.row_key, !pendingHiddenRows.has(row.row_key));
+          else openFlyout(row);
+        }
+        classLine.addEventListener("click", runClassInstruction);
+        classLine.addEventListener("keydown", event => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          runClassInstruction(event);
+        });
+        return root;
       }
 
       function gridRowClass(params) {
         const row = params.data || {};
-        if (row.row_type === "ring") return "row-ring-group";
         const hiddenSet = effectiveHiddenRows();
         return [
           row.__zebra ? "row-zebra" : "",
-          rollupText(row) ? "row-has-rollup" : "",
           row.status === "underway" ? "row-underway" : "",
           hideMode && hiddenSet.has(row.row_key) ? "row-pending-hidden" : "",
           !hideMode && showHiddenMode && hiddenSet.has(row.row_key) ? "row-saved-hidden" : ""
@@ -714,7 +631,8 @@
           ...ring,
           classes: ring.classes.filter(row =>
             (showHidden || !hiddenSet.has(row.row_key)) &&
-            rowMatchesHorseFilters(row)
+            rowMatchesHorseFilters(row) &&
+            rowMatchesColumnFilters(row)
           )
         })).filter(ring => ring.classes.length);
         visibleRows = flattenRingRows(visibleRings);
@@ -740,7 +658,8 @@
       function scrollToRing(ringKey) {
         if (!ringKey) return;
         if (!gridApi) return;
-        const node = gridApi.getRowNode("ring|" + ringKey);
+        const firstRow = visibleRows.find(row => row.ring_visual_key === ringKey || row.ring_key === ringKey);
+        const node = firstRow ? gridApi.getRowNode(firstRow.row_key) : null;
         if (node) gridApi.ensureNodeVisible(node, "top");
       }
 
@@ -870,91 +789,80 @@
 
       const columnDefs = [
         {
+          headerName: "TIME",
           field: "time",
-          headerName: "Time",
-          width: 112,
-          minWidth: 96,
-          maxWidth: 132,
-          filter: "agTextColumnFilter",
-          cellRenderer: timeCellRenderer,
-          valueGetter: params => params.data && params.data.row_type === "class" ? params.data.time || "" : ""
+          width: 88,
+          minWidth: 88,
+          maxWidth: 88,
+          sortable: false,
+          filter: false
         },
         {
+          headerName: "RING",
           field: "ring",
-          headerName: "Ring",
-          width: 112,
-          minWidth: 92,
-          maxWidth: 132,
-          filter: "agTextColumnFilter",
-          valueGetter: params => params.data && params.data.row_type === "class" ? params.data.ring || "" : ""
+          width: 88,
+          minWidth: 88,
+          maxWidth: 88,
+          sortable: false,
+          filter: false
         },
         {
-          field: "class_label",
-          headerName: "Class",
+          headerName: "CLASS",
+          colId: "class_label",
           flex: 1,
-          minWidth: 280,
-          autoHeight: true,
+          sortable: true,
           filter: "agTextColumnFilter",
-          cellRenderer: classCellRenderer,
-          valueGetter: params => params.data && params.data.row_type === "class" ? classLabel(params.data) + " " + rollupText(params.data) : ""
+          resizable: true,
+          suppressHeaderMenuButton: false,
+          suppressHeaderFilterButton: false,
+          valueGetter: params => classLabel(params.data || {})
         },
         {
-          field: "entry_count",
-          headerName: "Entries",
-          width: 104,
-          minWidth: 90,
-          maxWidth: 118,
-          filter: "agNumberColumnFilter",
-          cellRenderer: entriesCellRenderer,
-          valueGetter: params => params.data && params.data.row_type === "class" ? params.data.entry_count : null
+          headerName: "IN",
+          field: "starts_in",
+          width: 88,
+          minWidth: 88,
+          maxWidth: 88,
+          sortable: false,
+          filter: false,
+          valueFormatter: params => startsInLabel(params.data || {})
         },
         {
+          headerName: "STATUS",
           field: "status",
-          headerName: "Status",
-          width: 104,
-          minWidth: 90,
-          maxWidth: 118,
-          filter: "agTextColumnFilter",
-          cellRenderer: statusCellRenderer,
-          valueGetter: params => params.data && params.data.row_type === "class" ? statusReference(params.data).label : ""
+          width: 88,
+          minWidth: 88,
+          maxWidth: 88,
+          sortable: false,
+          filter: false
         }
       ];
 
       const gridOptions = {
         theme: makeTheme(),
+        domLayout: "autoHeight",
         columnDefs,
         rowData: [],
         defaultColDef: {
-          sortable: true,
-          filter: true,
-          resizable: true,
-          suppressSizeToFit: true,
-          suppressHeaderMenuButton: false,
-          suppressHeaderFilterButton: false
+          sortable: false,
+          filter: false,
+          resizable: false,
+          suppressHeaderMenuButton: true,
+          suppressHeaderFilterButton: true
         },
-        animateRows: true,
+        animateRows: false,
         enableCellTextSelection: true,
         getRowId: params => params.data.row_key,
-        isFullWidthRow: params => params.rowNode && params.rowNode.data && params.rowNode.data.row_type === "ring",
-        fullWidthCellRenderer: ringFullWidthRenderer,
+        isFullWidthRow: params => params.rowNode && params.rowNode.data && params.rowNode.data.row_type === "class",
+        fullWidthCellRenderer: rssRowShapeRenderer,
+        getRowHeight: params => params.data && params.data.entryState === "rss-is-hydrated" ? 71 : 41,
+        rowClassRules: {
+          "rss-row-is-hydrated": params => params.data.row_type === "class" && params.data.entryState === "rss-is-hydrated"
+        },
         getRowClass: gridRowClass,
-        getRowHeight: params => {
-          const row = params.data || {};
-          if (row.row_type === "ring") return 34;
-          if (!rollupText(row)) return 40;
-          return rowHeightByKey.get(row.row_key) || 40;
-        },
-        onRowClicked: event => {
-          const row = event.data || {};
-          if (row.row_type !== "class") return;
-          if (event.event && event.event.target && event.event.target.closest(".hide-row-checkbox")) return;
-          if (hideMode) togglePendingHidden(row.row_key, !pendingHiddenRows.has(row.row_key));
-        },
-        onFirstDataRendered: scheduleRollupRelocation,
-        onModelUpdated: scheduleRollupRelocation,
-        onBodyScroll: scheduleRollupRelocation,
-        onDisplayedColumnsChanged: scheduleRollupRelocation,
-        onGridSizeChanged: scheduleRollupRelocation
+        suppressMovableColumns: true,
+        suppressCellFocus: true,
+        suppressHeaderFocus: false
       };
 
       function initGrid() {
@@ -988,31 +896,6 @@
         const button = event.target.closest("button[data-horse-key]");
         if (button) toggleHorseFilter(button.getAttribute("data-horse-key"));
       });
-      scheduleGrid.addEventListener("change", event => {
-        const checkbox = event.target.closest(".hide-row-checkbox");
-        if (checkbox) togglePendingHidden(checkbox.getAttribute("data-row-key"), checkbox.checked);
-      });
-      scheduleGrid.addEventListener("click", event => {
-        if (hideMode || event.target.closest(".hide-row-checkbox")) return;
-        const classLine = event.target.closest(".ag-row[row-id] > .ag-grid-scrolling-cells");
-        if (!classLine) return;
-        const rowEl = classLine.closest(".ag-row[row-id]");
-        const row = rowByKey(rowEl ? rowEl.getAttribute("row-id") : "");
-        if (!row) return;
-        event.preventDefault();
-        event.stopPropagation();
-        openFlyout(row);
-      }, true);
-      scheduleGrid.addEventListener("click", event => {
-        const item = event.target.closest(".ag-row-rollup-band .rollup-item[data-row-key]");
-        if (!item) return;
-        event.stopPropagation();
-      }, true);
-      scheduleGrid.addEventListener("dblclick", event => {
-        const item = event.target.closest(".ag-row-rollup-band .rollup-item[data-row-key]");
-        if (!item) return;
-        event.stopPropagation();
-      }, true);
       hideClearAllBtn.addEventListener("click", () => { pendingHiddenRows = new Set(); applyFilters(); });
       hideSaveBtn.addEventListener("click", saveHideMode);
       document.addEventListener("keydown", event => { if (event.key === "Escape") closeFlyout(); });

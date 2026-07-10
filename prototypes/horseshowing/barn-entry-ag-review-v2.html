@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../webflow/packing-worksheet/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@df8d9d4eb0652f76c952ed718b36e774100148f4/webflow/packing-worksheet/styles.css">
   <link rel="stylesheet" href="ag-report-shared.css">
   <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
 </head>
@@ -37,18 +37,22 @@
         return {rows,classRows};
       }
 
-      function prepareRows(rows){
-        const rings=new Map(); rows.forEach(row=>{const key=normalize(ringName(row))||"unassigned";if(!rings.has(key))rings.set(key,{title:ringName(row)||"Unassigned",rows:[]});rings.get(key).rows.push(row);});
-        const output=[]; [...rings.entries()].sort((a,b)=>a[1].title.localeCompare(b[1].title,undefined,{numeric:true})).forEach(([ringKey,ring])=>{
-          output.push({id:"ring|"+ringKey,row_type: "ring",ring_title:ring.title});
-          const classes=new Map(); ring.rows.forEach(row=>{const key=classKey(row);if(!classes.has(key))classes.set(key,[]);classes.get(key).push(row);});
-          [...classes.entries()].forEach(([key,entries])=>{const first=entries[0];const horse_items=(first.class_horse_items||entries.map(row=>({name:horseName(row),order:row.entry_no}))).filter(item=>item.name);output.push({...first,id:"rollup|"+key,row_type: "rollup",drawer_source:{...first,entries,horse_items},horse_items,entry_count:entries.length,rollup_title:[displayTime(first),classLabel(first)].join(" | ")});entries.forEach(row=>output.push({...row,row_type:"data"}));});
-        }); return output;
+      function prepareRows(rows,report){
+        const groupedEntries=new Map();rows.forEach(row=>{const key=classKey(row);if(!groupedEntries.has(key))groupedEntries.set(key,[]);groupedEntries.get(key).push(row);});
+        const filteringEntries=!!(report.state.horseText||report.state.activeHorseFilters.size||report.state.focusMode);
+        const allClasses=report.state.context.classRows||rows;const classSource=filteringEntries?rows:allClasses.filter(row=>!report.state.ringAnchor||normalize(ringName(row))===report.state.ringAnchor);
+        const classes=new Map();classSource.forEach(row=>{const key=classKey(row);if(!classes.has(key))classes.set(key,row);});
+        return sortRows([...classes.values()]).map(klass=>{
+          const key=classKey(klass);const entries=sortRows(groupedEntries.get(key)||[]);const first=entries[0]||klass;
+          const mappedEntries=entries.map((entry,index)=>({entryKey:rowKey(entry),name:horseName(entry),order:entry.entry_no||index+1,trainer:entry.trainer_name||entry.trainer||entry.barn_name||"",status:entry.status||"pending",source:entry}));
+          const statuses=new Set(entries.map(entry=>entry.status||"pending"));const status=!entries.length?(klass.status||"scheduled"):statuses.size===1?[...statuses][0]:"mixed";
+          return {rowKey:"rss|"+key,classKey:key,entryState:mappedEntries.length?"rss-is-hydrated":"rss-is-empty",time:displayTime(first)||"--",ring:ringName(first),className:classLabel(first),entryCount:mappedEntries.length,status,entries:mappedEntries,drawer_source:{...first,entries,horse_items:mappedEntries}};
+        });
       }
       function focusRows(rows){const seen=new Set();return rows.filter(row=>{const key=classKey(row);if(seen.has(key))return false;seen.add(key);return true;});}
-      function statusRenderer(params){const row=params.data||{};const value=row.status||"pending";const label=value==="confirmed"?"ok":value==="declined"?"no":"tap";return `<button class="lp-filter-toggle ag-status-button ${value==="confirmed"?"is-active":""}" type="button" data-status-key="${params.context.helpers.escapeHtml(row.review_key)}">${label}</button>`;}
       function toggleStatus(key,report){report.state.rows=report.state.rows.map(row=>row.review_key!==key?row:{...row,status:row.status==="pending"?"confirmed":row.status==="confirmed"?"declined":"pending"});report.updateRows("status updated");}
-      function drawerDetail(row){const source=row.drawer_source||row;const entries=(source.entries||[source]).map(entry=>({time:displayTime(entry),name:horseName(entry),meta:entry.entry_no||entry.status||""}));return {title:classLabel(source),subtitle:[ringName(source),displayTime(source)].join(" | "),details:[{label:"Ring",value:ringName(source)},{label:"Class",value:classLabel(source)},{label:"Horse",value:horseName(source)||entries.map(item=>item.name).join(", ")},{label:"Status",value:source.status||"pending"}],entries};}
+      function drawerDetail(row){const source=row.drawer_source||row;return {title:row.className||classLabel(source),subtitle:[row.ring||ringName(source),row.time||displayTime(source)].join(" | "),details:[{label:"Ring",value:row.ring||ringName(source)},{label:"Class",value:row.className||classLabel(source)},{label:"Entries",value:row.entryCount??row.entries?.length??0},{label:"Status",value:row.status||source.status||"scheduled"}],entries:(row.entries||[]).map(entry=>({time:row.time,name:entry.name,meta:[entry.order,entry.status].filter(Boolean).join(" | ")}))};}
+      function entryDrawerDetail(row,entry,report){return {title:entry.name||"Entry",subtitle:[row.className,row.ring,row.time].filter(Boolean).join(" | "),entriesTitle:"Entry review",details:[{label:"Horse",value:entry.name||""},{label:"Entry order",value:entry.order||"--"},{label:"Trainer",value:entry.trainer||""},{label:"Status",value:entry.status||"pending"},{label:"Class",value:row.className||""},{label:"Ring",value:row.ring||""},{label:"Time",value:row.time||""}],entries:(row.entries||[]).map(item=>({time:row.time,name:item.name,meta:[item.order,item.status].filter(Boolean).join(" | "),selected:item.entryKey===entry.entryKey})),actions:report.state.report.editMode?[{id:"toggle-status",label:"Status",buttonLabel:entry.status==="pending"?"Confirm":entry.status==="confirmed"?"Decline":"Reset",entryKey:entry.entryKey}]:[]};}
       function classOptionValue(row){return [displayTime(row),ringName(row).toUpperCase(),row.class_number||row.class_no,className(row)].filter(Boolean).join(" | ");}
       function openAddDialog(report){const horses=[...new Set(report.state.rows.map(horseName).filter(Boolean))].sort();const classes=(report.state.context.classRows||[]).slice().sort((a,b)=>classOptionValue(a).localeCompare(classOptionValue(b)));report.openDialog({title:"Add Entry",saveLabel:"Save",body:`<label>Horse<input id="addHorseInput" list="addHorseOptions"></label><datalist id="addHorseOptions">${horses.map(value=>`<option value="${report.helpers.escapeHtml(value)}"></option>`).join("")}</datalist><label>Class<input id="addClassInput" list="addClassOptions"></label><datalist id="addClassOptions">${classes.map(row=>`<option value="${report.helpers.escapeHtml(classOptionValue(row))}"></option>`).join("")}</datalist>`,onSave:async(api,form)=>{const horse=form.querySelector("#addHorseInput").value.trim();const search=normalize(form.querySelector("#addClassInput").value);const klass=(api.state.context.classRows||[]).find(row=>normalize(classOptionValue(row)).includes(search));if(!horse||!klass)return api.setStatus("select horse and class","error");const id=["user",Date.now(),klass.class_no||klass.class_number,normalize(horse)].join("|");api.state.rows=dedupeRows([...api.state.rows,{...klass,id,review_key:id,source:"user_added",status:"pending",entry_no:"",barn_name:horse,class_horse_items:[{name:horse}],pencil_in:true}]);api.closeDialog();api.updateRows("added entry");}});}
       async function submitRows(report){const payload={source:"barn-entries",submitted_at:new Date().toISOString(),row_count:report.state.rows.length,rows:report.state.rows};report.state.report.submitting=true;report.renderActions();report.setStatus("submitting","loading");try{await fetchJson(SUBMIT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});report.setStatus("submitted "+report.state.rows.length+" row(s)");}catch(error){report.setStatus("submit failed: "+(error.message||error),"error");}finally{report.state.report.submitting=false;report.renderActions();}}
@@ -62,13 +66,9 @@
           const sourceRows=[];for(let offset=0;offset<1000;offset+=200){const url=new URL(API_BASE);url.searchParams.set("action","export-mirror-table");url.searchParams.set("show_no",showNo);url.searchParams.set("table","class_oog");url.searchParams.set("limit","200");url.searchParams.set("offset",String(offset));const result=await fetchJson(url);sourceRows.push(...(result.data||[]).filter(row=>text(row.focus_day)===text(schedule.show_focus_date||schedule.focus_day||focusDayParam)));if(!result.has_more)break;}
           const rows=sourceRows.filter(row=>!trainerFilter||normalize(row.trainer_name||row.trainer||row.barn_name).includes(normalize(trainerFilter))).map(row=>{const klass=classRows.find(item=>text(item.class_no)===text(row.class_no))||{};const mapped={...row,source:"mapped",status:row.status||"pending",show_no:row.show_no||showNo,focus_day:row.focus_day||schedule.show_focus_date||focusDayParam,ring_name_normalized:ringName(row)||ringName(klass),class_no:row.class_no||klass.class_no||"",class_number:row.class_number||klass.class_number||"",class_name:className(row)||className(klass),display_time:displayTime(row)||displayTime(klass),barn_name:horseName(row),class_horse_items:klass.horse_items||[]};mapped.id=rowKey(mapped);mapped.review_key=mapped.id;return mapped;});const day=schedule.show_focus_date||schedule.focus_day||focusDayParam;return {rows:dedupeRows(rows),context:{classRows,focusDay:day},meta:[day,trainerFilter].filter(Boolean).join(" | "),message:"mapped entries loaded"};
         }},
-        columns:report=>[
-          {headerName:"TAP",field:"status",minWidth:72,width:72,hide:!report.state.report.editMode,cellRenderer:statusRenderer},
-          {headerName:"CLASS",minWidth:220,flex:1,valueGetter:p=>[displayTime(p.data),ringName(p.data).toUpperCase(),p.data.class_number||p.data.class_no,className(p.data)].filter(Boolean).join(" | ")},
-          {headerName:"HORSE",field:"barn_name",minWidth:120,width:160}
-        ],
+        columns:report=>[{headerName:"Classes",flex:1,autoHeight:true,sortable:false,resizable:false,cellClass:"rss-shape-cell",cellRenderer:report.renderers.rssRowShapeRenderer}],
         actions:[
-          {id:"edit",label:"Edit",zone:"header",active:r=>!!r.state.report.editMode,run(report){report.state.report.editMode=!report.state.report.editMode;report.state.gridApi.setGridOption("columnDefs",report.config.columns(report));report.updateRows(report.state.report.editMode?"edit mode":"review mode");}},
+          {id:"edit",label:"Edit",zone:"header",active:r=>!!r.state.report.editMode,run(report){report.state.report.editMode=!report.state.report.editMode;report.elements.root.classList.toggle("is-edit-mode",report.state.report.editMode);report.updateRows(report.state.report.editMode?"edit mode":"review mode");}},
           {id:"print",label:"Print",zone:"header",type:"print"},
           {id:"submit",label:"Submit",zone:"header",visible:r=>!!r.state.report.editMode,disabled:r=>!!r.state.report.submitting,run:submitRows},
           {id:"focus",label:"Focus",zone:"primary",type:"focus",active:r=>r.state.focusMode},
@@ -76,7 +76,7 @@
           {id:"add",label:"Add",zone:"primary",visible:r=>!!r.state.report.editMode,run:openAddDialog}
         ],
         filters:{ring:ringName,horse:{mode:"text",placeholder:"Horse",values:row=>horseName(row)},focus:focusRows},
-        row:{getId:row=>row.id||row.review_key,prepare:prepareRows,drawer:drawerDetail,onCellClicked(params,report){const button=params.event?.target?.closest("[data-status-key]");if(button){toggleStatus(button.dataset.statusKey,report);return true;}return false;}},
+        row:{shape:"rss",getId:row=>row.rowKey,prepare:prepareRows,drawer:drawerDetail,entryDrawer:entryDrawerDetail,onDrawerAction(actionId,entryKey,report){if(actionId!=="toggle-status")return;toggleStatus(entryKey,report);report.closeDrawer();}},
         print:{title:"Barn Entry Review",meta:r=>[showNo,r.state.context.focusDay||focusDayParam].join(" | "),rollup:row=>horseName(row),columns:[{width:"44px",value:displayTime},{width:"58px",value:row=>ringName(row).toUpperCase()},{width:"28px",value:row=>row.class_number||row.class_no||""},{width:"minmax(0,1fr)",value:className},{width:"70px",value:horseName}]}
       };
     })();
