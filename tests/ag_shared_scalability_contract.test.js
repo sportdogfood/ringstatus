@@ -60,3 +60,21 @@ test("report configuration stays inside the permitted differences", () => {
     assert.match(html, /print:/);
   }
 });
+
+test("Barn Entry and Ring Classes retain their required report-specific behavior", () => {
+  const barn = read("barn-entry-ag-review-v2.html");
+  const ring = read("ring-classes.html");
+
+  assert.match(barn, /SUBMIT_URL/);
+  assert.match(barn, /title:\s*"Add Entry"/);
+  assert.match(barn, /data-status-key/);
+  assert.match(barn, /id:\s*"focus"/);
+  assert.match(barn, /id:\s*"horse"/);
+  assert.match(barn, /id:\s*"print"/);
+
+  assert.match(ring, /id:\s*"focus"/);
+  assert.match(ring, /id:\s*"horse"/);
+  assert.match(ring, /id:\s*"clear"/);
+  assert.match(ring, /id:\s*"print"/);
+  assert.doesNotMatch(ring, /SUBMIT_URL|title:\s*"Add Entry"/);
+});

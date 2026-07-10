@@ -155,8 +155,10 @@ body {
 .ag-theme-quartz .ag-header-icon { display: none; }
 .ag-theme-quartz .ag-row-hover { background-color: #f7f8fa; }
 
-.ag-full-width-anchor { width: 100%; height: 100%; }
+.ag-full-width-anchor { width: 100%; max-width: 100%; height: 100%; overflow: hidden; }
 .class-related-data {
+  width: 100%;
+  max-width: 100%;
   min-height: var(--rs-row-height);
   padding: 4px 12px;
   border-bottom: 1px solid var(--rs-border);
@@ -179,7 +181,7 @@ body {
 }
 .class-line {
   display: grid;
-  grid-template-columns: 72px 90px minmax(0, 1fr) 44px 64px;
+  grid-template-columns: 72px 90px minmax(0, 1fr) 44px 76px;
   gap: 8px;
   align-items: center;
   min-height: 22px;
