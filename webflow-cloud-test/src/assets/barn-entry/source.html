@@ -3,578 +3,471 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Barn Entry Review AG Prototype</title>
+  <title>Barn Entry Review</title>
   <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@36.0.0/dist/ag-grid-community.min.js"></script>
-  <style>
+<style>
     :root {
-      --bg: #000;
-      --panel: #fff;
-      --ink: #001225;
-      --muted: #5f6d7d;
-      --line: #d8dee7;
-      --section: #ececec;
-      --accent: #005ca8;
-      --warn: #8a5b00;
-      --warn-soft: #fff4cf;
-      --ok: #17623b;
-      --ok-soft: #e2f2e8;
-      --bad: #9b2424;
-      --bad-soft: #ffe7e7;
+      --rs-bg: #0b0f14;
+      --rs-surface: #ffffff;
+      --rs-muted-surface: #ededed;
+      --rs-text: #071426;
+      --rs-muted: #64748b;
+      --rs-border: var(--rs-muted-surface);
+      --rs-accent: #005eb8;
+      --rs-ok: #0f7a3c;
+      --rs-danger: #111827;
+      --rs-radius: 10px;
+      --rs-gap: 0;
+      --rs-shell-max: 800px;
+      --rs-row-height: 42px;
+      --rs-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     }
 
-    * { box-sizing: border-box; }
-    html, body { min-height: 100%; margin: 0; }
+    html,
     body {
-      min-height: max(800px, 100vh);
-      background: var(--bg);
-      color: var(--ink);
-      font: 14px/1.25 Arial, Helvetica, sans-serif;
-    }
-
-    .shell {
-      width: min(100%, 720px);
-      height: max(800px, 100vh);
-      margin: 0 auto;
-      padding: 6px;
-      display: grid;
-      grid-template-rows: auto auto minmax(0, 1fr);
-      gap: 8px;
-      background: #000;
-      overflow: hidden;
-    }
-
-    .shell.mode-edit {
-      background: var(--warn-soft);
-    }
-
-    .shell.mode-print {
-      background: var(--ok-soft);
-    }
-
-    .panel {
-      min-width: 0;
-      background: var(--panel);
-      border: 2px solid #000;
-    }
-
-    .head {
-      padding: 12px 10px 8px;
-    }
-
-    h1 {
+      height: 100%;
       margin: 0;
-      font-size: 28px;
-      line-height: 1.1;
     }
 
-    .date-text,
-    .status {
-      color: var(--muted);
-      font-size: 12px;
+    body {
+      overflow: hidden;
+      background: var(--rs-bg);
+      font-family: var(--rs-font);
+      color: var(--rs-text);
     }
 
-    .date-text { margin-top: 8px; }
-    .status { min-height: 18px; padding: 4px 10px 8px; }
-    .status.bad { color: var(--bad); }
-    .status.warn { color: var(--warn); }
+    .app-shell {
+      height: 100vh;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto auto;
+      gap: 0;
+      padding: var(--rs-gap);
+      box-sizing: border-box;
+    }
 
-    .tools,
-    .review-actions {
+    .app-head,
+    .action-bar,
+    .action-anchors,
+    .action-bar-bottom,
+    .grid-frame,
+    .status-line {
+      width: 100%;
+      max-width: var(--rs-shell-max);
+      justify-self: center;
+      box-sizing: border-box;
+    }
+
+    .app-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      column-gap: 12px;
+      background: var(--rs-surface);
+      /* border-radius: var(--rs-radius) var(--rs-radius) 0 0; */
+      padding: 14px 16px 12px;
+    }
+
+    .header-left {
+      min-width: 0;
+    }
+
+    .header-right {
       display: flex;
+      justify-content: flex-end;
+      min-width: 0;
+    }
+
+    .action-bar-mini {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      max-width: 100%;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .app-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      margin-top: 6px;
+      color: var(--rs-muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .action-bar {
+      display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 10px;
-      background: #f9fbfd;
+      min-height: var(--rs-row-height);
+      padding: 0 12px;
+      background: var(--rs-muted-surface);
     }
 
-    .tool-left,
-    .tool-right {
+    .action-bar-bottom {
       display: flex;
-      gap: 6px;
       align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: var(--rs-row-height);
+      padding: 0 12px;
+      background: var(--rs-muted-surface);
+    }
+
+    .action-anchors {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: var(--rs-row-height);
+      padding: 0 12px;
+      background: var(--rs-surface);
+      border-top: 1px solid var(--rs-border);
+      border-bottom: 1px solid var(--rs-border);
+    }
+
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
       min-width: 0;
     }
 
-    button {
+    .rs-button {
       appearance: none;
-      width: auto;
-      min-width: max-content;
-      min-height: 30px;
       border: 1.5px solid #000;
       border-radius: 999px;
-      background: #fff;
-      color: var(--ink);
+      background: var(--rs-surface);
+      color: var(--rs-text);
+      min-height: 30px;
       padding: 3px 12px;
-      font: inherit;
+      font-family: var(--rs-font);
       font-size: 12px;
-      font-weight: 700;
-      text-align: center;
+      line-height: 1;
       text-transform: uppercase;
+      letter-spacing: 0;
       cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(7, 20, 38, .14);
+      transition: background-color .14s ease, color .14s ease, box-shadow .14s ease, transform .14s ease;
     }
 
-    button.primary {
+    .rs-button:hover {
+      box-shadow: 0 2px 5px rgba(7, 20, 38, .18);
+      transform: translateY(-1px);
+    }
+
+    .tap-active {
       background: #000;
-      border-color: #000;
       color: #fff;
     }
 
-    button:disabled {
-      opacity: .45;
-      cursor: default;
+    .tap-active-2 {
+      background: var(--rs-ok);
+      color: #fff;
+      border-color: var(--rs-ok);
     }
 
-    .grid-panel {
-      display: grid;
+    .rs-button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .grid-frame {
       min-height: 0;
       overflow: hidden;
+      background: var(--rs-surface);
     }
 
-    #entryGrid {
-      width: 100%;
+    #agBaseGrid {
       height: 100%;
-      min-height: 0;
+      min-height: 320px;
+      width: 100%;
+    }
+
+    .status-line {
+      min-height: var(--rs-row-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 16px 2px;
+      color: #cbd5e1;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .status-line strong {
+      color: #fff;
     }
 
     .ag-theme-quartz {
-      --ag-font-family: Arial, Helvetica, sans-serif;
+      --ag-font-family: var(--rs-font);
       --ag-font-size: 13px;
-      --ag-row-height: 58px;
-      --ag-header-height: 44px;
+      --ag-header-font-size: 13px;
+      --ag-header-background-color: var(--rs-border);
+      --ag-header-foreground-color: #071426;
+      --ag-foreground-color: #071426;
       --ag-background-color: #fff;
-      --ag-header-background-color: #e7e7e7;
-      --ag-foreground-color: var(--ink);
-      --ag-border-color: var(--line);
-      --ag-wrapper-border-radius: 0;
-      --ag-selected-row-background-color: #f2f6fb;
+      --ag-row-border-color: var(--rs-border);
+      --ag-border-color: var(--rs-border);
+      --ag-row-height: var(--rs-row-height);
+      --ag-header-height: var(--rs-row-height);
+      --ag-cell-horizontal-padding: 12px;
     }
 
-    .ag-header-cell-label {
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .ring-cell {
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .entry-cell {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .status-toggle {
-      width: 100%;
-      min-height: 28px;
-      border-width: 1px;
-      padding: 2px 8px;
-      font-size: 11px;
-    }
-
-    .status-toggle.pending { color: var(--warn); background: var(--warn-soft); }
-    .status-toggle.confirmed { color: var(--ok); background: var(--ok-soft); }
-    .status-toggle.declined { color: var(--bad); background: var(--bad-soft); }
-
-    .grid-pill {
-      width: auto;
-      min-width: 0;
-      min-height: 28px;
-      height: 28px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 12px;
-      font-size: 12px;
-      line-height: 1;
-    }
-
-    .grid-pill.confirmed {
-      background: var(--ok);
-      border-color: var(--ok);
-      color: #fff;
-    }
-
-    .grid-pill.declined {
-      background: #000;
-      border-color: #000;
-      color: #fff;
-    }
-
-    .grid-pill.pending {
-      background: #fff;
-      border-color: #000;
-      color: var(--ink);
-    }
-
-    .action-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      background: #f9fbfd;
-      border: 2px solid #000;
-    }
-
-    .action-container[hidden] {
-      display: none;
-    }
-
-    .grid-input {
-      width: 100%;
-      min-height: 30px;
-      border: 1px solid var(--line);
-      padding: 4px 6px;
-      font-size: 13px;
-    }
-
-    .flyup[hidden],
-    .review-panel[hidden] {
-      display: none;
-    }
-
-    .flyup {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      background: rgba(0, 0, 0, .46);
-      padding: 8px;
-    }
-
-    .flyup-card {
-      width: min(100%, 720px);
-      height: 75vh;
-      max-height: 75vh;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      background: #fff;
-      border: 2px solid #000;
-      overflow: hidden;
-    }
-
-    .flyup-head,
-    .flyup-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 10px;
-    }
-
-    .flyup-actions {
-      position: sticky;
-      bottom: 0;
-      z-index: 2;
-      justify-content: flex-end;
-      border-top: 1px solid var(--line);
-      background: #fff;
-      min-height: 54px;
-    }
-
-    .flyup-head strong {
-      font-size: 16px;
-      text-transform: uppercase;
-    }
-
-    .add-body {
-      display: grid;
-      align-content: start;
-      gap: 8px;
-      padding: 10px;
-      overflow: auto;
-    }
-
-    .field {
-      display: grid;
-      gap: 4px;
-    }
-
-    .label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    input {
-      width: 100%;
-      min-height: 38px;
-      border: 1px solid var(--line);
-      border-radius: 0;
-      padding: 8px 10px;
-      font: inherit;
-      font-size: 16px;
-      color: var(--ink);
-    }
-
-    input:focus {
-      outline: 2px solid rgba(0, 92, 168, .18);
-      border-color: var(--accent);
-    }
-
-    .locked {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-      border: 1px solid var(--line);
-      overflow-x: auto;
-      background: #fff;
-    }
-
-    .locked span {
-      min-height: 36px;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .locked .ring { font-weight: 700; text-transform: uppercase; }
-
-    .selected-chip {
-      min-height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      border: 1px solid var(--line);
-      padding: 6px 8px;
-      background: #fff;
-      font-weight: 700;
-    }
-
-    .selected-chip[hidden] { display: none; }
-
-    .selected-chip button {
-      min-width: 30px;
-      min-height: 28px;
-      padding: 0 8px;
-    }
-
-    .suggestions {
-      display: grid;
-      border: 1px solid var(--line);
-      background: #fff;
-      max-height: 210px;
-      overflow: auto;
-    }
-
-    .suggestions:empty { display: none; }
-
-    .suggestion {
-      width: 100%;
-      min-height: 44px;
+    .ag-theme-quartz .ag-root-wrapper {
       border: 0;
-      border-bottom: 1px solid var(--line);
       border-radius: 0;
-      display: grid;
-      gap: 2px;
-      padding: 6px 10px;
-      text-align: left;
-      text-transform: none;
-      font-size: 13px;
-      font-weight: 400;
     }
 
-    .suggestion:last-child { border-bottom: 0; }
-    .suggestion strong { font-size: 13px; }
-    .suggestion span { color: var(--muted); font-size: 11px; }
-
-    .loading-copy {
-      display: inline-block;
-      padding: 10px;
-      color: var(--muted);
-      font-size: 13px;
+    .ag-theme-quartz .ag-header {
+      border-top: 1px solid var(--rs-border);
+      border-bottom: 1px solid var(--rs-border);
+      background: var(--rs-border);
     }
 
-    .review-panel {
-      min-height: max(800px, 100vh);
-      background: #fff;
-    }
-
-    .print-sheet {
+    .ag-theme-quartz .ag-header-cell-menu-button,
+    .ag-theme-quartz .ag-header-cell-filter-button,
+    .ag-theme-quartz .ag-sort-indicator-container,
+    .ag-theme-quartz .ag-header-icon {
       display: none;
     }
 
-    .review-copy {
-      padding-bottom: 20px;
+    .ag-theme-quartz .ag-row-hover {
+      background-color: #f7f8fa;
     }
 
-    .review-table {
-      width: 100%;
-      min-width: 390px;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
+    @media (max-width: 479px) {
+      .app-shell {
+        padding: 0;
+        gap: 0;
+      }
 
-    .review-table th,
-    .review-table td {
-      height: 44px;
-      border-bottom: 1px solid var(--line);
-      padding: 0 8px;
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 13px;
-    }
+      .app-head,
+      .action-bar,
+      .action-anchors,
+      .action-bar-bottom,
+      .grid-frame,
+      .status-line {
+        max-width: none;
+        border-radius: 0;
+      }
 
-    .review-table th {
-      background: #e7e7e7;
-      text-transform: uppercase;
-    }
+      .app-title {
+        font-size: 20px;
+      }
 
-    .review-table .status-col { width: 78px; }
-    .review-table .time { width: 86px; }
-    .review-table .ring { width: 104px; font-weight: 700; text-transform: uppercase; }
-    .review-table .no { width: 64px; }
-    .review-table .horse { width: 138px; }
+      .app-head {
+        grid-template-columns: 1fr;
+      }
 
-    @media (max-width: 478px) {
-      .review-table .status-col { width: 78px; }
-      .review-table .entry-compact { padding-top: 5px; padding-bottom: 5px; line-height: 1.45; }
-    }
+      .header-right {
+        grid-row: 1;
+        justify-content: flex-end;
+        padding-bottom: 0;
+      }
 
-    @page {
-      size: letter portrait;
-      margin: .35in;
+      .header-left {
+        grid-row: 2;
+      }
+
+      .action-bar,
+      .action-bar-bottom {
+        align-items: center;
+      }
+
+      .action-group.secondary {
+        justify-content: flex-end;
+      }
+
+      .status-line {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
     }
 
     @media print {
-      body { background: #fff; }
-      .shell { width: 100%; padding: 0; display: block; }
-      .panel,
-      .flyup,
-      .review-panel,
-      .no-print { display: none !important; }
-      .print-sheet {
-        display: block;
-        width: 100%;
+      @page {
+        size: letter portrait;
+        margin: .25in;
+      }
+
+      body {
+        overflow: visible;
+        background: #fff;
+      }
+
+      .app-shell {
+        min-height: 10.5in;
+        height: auto;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        padding: 0;
+        background: #fff;
+      }
+
+      .action-bar,
+      .action-bar-bottom,
+      .action-anchors,
+      .header-right {
+        display: none;
+      }
+
+      .app-head {
         max-width: none;
-        color: #111;
-        font-family: Arial, Helvetica, sans-serif;
+        border-radius: 0;
+        padding: 0 0 6px;
+        border-bottom: 1px solid #000;
       }
-      .print-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-        border-bottom: 1px solid #222;
-        margin-bottom: 8px;
-        padding-bottom: 5px;
+
+      .app-title {
+        font-size: 14px;
+        line-height: 1.1;
       }
-      .print-title h1 { margin: 0; font-size: 16px; }
-      .print-title p { margin: 0; font-size: 9px; text-align: right; line-height: 1.1; }
-      .print-table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-      }
-      .print-table th,
-      .print-table td {
-        border-bottom: 1px solid #ddd;
-        padding: 3px 5px;
-        text-align: left;
+
+      .app-meta {
+        margin-top: 2px;
         font-size: 9px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: 1.1;
       }
-      .print-table th {
-        background: #eee;
-        text-transform: uppercase;
+
+      .grid-frame {
+        max-width: none;
+        border: 0;
+        overflow: visible;
       }
-      .print-table .time { width: .75in; }
-      .print-table .ring { width: .95in; font-weight: 700; text-transform: uppercase; }
-      .print-table .no { width: .42in; }
-      .print-table .horse { width: 1.05in; }
-      .print-table .status-col { width: .72in; }
+
+      #agBaseGrid {
+        height: auto;
+        min-height: 0;
+      }
+
+      .ag-theme-quartz {
+        --ag-font-size: 8px;
+        --ag-header-font-size: 8px;
+        --ag-row-height: 18px;
+        --ag-header-height: 18px;
+        --ag-cell-horizontal-padding: 4px;
+      }
+
+      .status-line {
+        display: flex;
+        min-height: 18px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 4px 0 0;
+        color: #000;
+        font-size: 8px;
+        line-height: 1.1;
+        border-top: 1px solid #000;
+      }
+    }
+  </style>
+  <style data-barn-entry-options>
+    .is-hidden { display: none !important; }
+    .app-shell.is-edit-mode { background: var(--rs-muted-surface); }
+    .ag-theme-quartz .ag-row.row-pending,
+    .ag-theme-quartz .ag-row.row-tap3 { outline: 0; }
+    .ag-theme-quartz .ag-row.row-confirmed { outline: 2px solid var(--rs-ok); outline-offset: -2px; }
+    .ag-theme-quartz .ag-row.row-declined { outline: 2px solid #000; outline-offset: -2px; }
+    .flyup[hidden], .review-panel[hidden], .selected-chip[hidden] { display: none; }
+    .flyup { position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-end; justify-content: center; background: rgba(0,0,0,.46); padding: 8px; box-sizing: border-box; }
+    .flyup-card { width: min(100%, var(--rs-shell-max)); height: 75vh; display: grid; grid-template-rows: auto 1fr auto; background: var(--rs-surface); border: 2px solid #000; overflow: hidden; }
+    .flyup-head, .flyup-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px; }
+    .flyup-actions { border-top: 1px solid var(--rs-border); }
+    .add-body { display: grid; align-content: start; gap: 12px; padding: 10px; overflow: auto; }
+    .field { display: grid; gap: 4px; }
+    .field-label { color: var(--rs-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .field input { min-height: 38px; border: 1px solid var(--rs-border); padding: 8px 10px; font: inherit; font-size: 16px; }
+    .selected-chip { min-height: 38px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--rs-border); padding: 6px 8px; font-weight: 700; }
+    .suggestions { display: grid; max-height: 210px; overflow: auto; border: 1px solid var(--rs-border); }
+    .suggestions:empty { display: none; }
+    .suggestion { width: 100%; min-height: 42px; border: 0; border-bottom: 1px solid var(--rs-border); border-radius: 0; background: #fff; padding: 6px 10px; text-align: left; }
+    .review-panel { position: fixed; inset: 0; z-index: 40; overflow: auto; background: #fff; padding: 16px; }
+    .review-actions { display: flex; gap: 6px; justify-content: flex-end; }
+    .review-table { width: 100%; border-collapse: collapse; }
+    .review-table th, .review-table td { border-bottom: 1px solid var(--rs-border); padding: 8px; text-align: left; }
+    .print-sheet { display: none; }
+    @media print {
+      .app-shell, .flyup, .review-panel { display: none !important; }
+      .print-sheet { display: block; font-family: Arial, Helvetica, sans-serif; color: #111; }
+      .print-title { display: flex; justify-content: space-between; align-items: end; border-bottom: 1px solid #222; margin-bottom: 5px; padding-bottom: 4px; }
+      .print-title h1 { margin: 0; font-size: 14px; }
+      .print-title p { margin: 0; font-size: 8px; text-align: right; }
+      .print-columns { columns: 3 250px; column-gap: 12px; }
+      .print-ring-group { break-inside: avoid; margin-bottom: 6px; }
+      .print-ring { border-bottom: 1px solid #333; font-size: 11px; font-weight: 800; }
+      .print-row { display: grid; grid-template-columns: 46px minmax(0,1fr); gap: 5px; min-height: 14px; border-bottom: 1px solid #e7e7e7; padding: 1px 2px; font-size: 8px; break-inside: avoid; }
+      .print-horse { grid-column: 1 / -1; font-weight: 700; text-transform: uppercase; }
     }
   </style>
 </head>
 <body>
-  <main class="shell mode-default" id="appShell">
-    <section class="panel no-print" id="formPanel">
-      <div class="head">
-        <h1>Entry Review</h1>
-        <div id="focusDateText" class="date-text">Loading focus day...</div>
+  <main class="app-shell" id="appShell" data-ag-system="ag_base_shell" data-contract="docs/horseshowing/ag-output-system-contract.md">
+    <header class="app-head" id="formPanel">
+      <div class="header-left">
+        <h1 class="app-title">Barn Entry Review</h1>
+        <div class="app-meta"><span id="focusDateText">Loading focus day...</span></div>
       </div>
-      <div id="mainStatus" class="status">Loading mapped entries...</div>
-    </section>
-
-    <div id="bottomSubmit" class="action-container no-print">
-      <div class="tool-left">
-        <button id="editBtn" type="button">Edit</button>
-        <button id="openAddBtn" type="button" hidden>Add</button>
-      </div>
-      <div class="tool-right">
-        <button id="printBtn" type="button">Print</button>
-        <button id="submitBtn" class="primary" type="button" hidden>Submit</button>
-      </div>
-    </div>
-
-    <section class="flyup add-panel no-print" id="addPanel" hidden>
-      <div class="flyup-card">
-        <div class="flyup-head">
-          <strong>Add Entry</strong>
-          <button id="cancelAddBtn" type="button">Close</button>
-        </div>
-        <div class="add-body">
-          <div class="field">
-            <div class="label">Horse</div>
-            <div id="selectedHorseChip" class="selected-chip" hidden>
-              <span id="selectedHorseText"></span>
-              <button id="clearHorseBtn" type="button">x</button>
-            </div>
-            <input id="horseInput" type="search" autocomplete="off" placeholder="Search horse">
-            <div id="horseSuggestions" class="suggestions"></div>
-          </div>
-          <div class="field">
-            <div class="label">Class</div>
-            <div id="selectedClassChip" class="selected-chip" hidden>
-              <span id="selectedClassText"></span>
-              <button id="clearClassBtn" type="button">x</button>
-            </div>
-            <input id="classInput" type="search" autocomplete="off" placeholder="Search class">
-            <div id="classSuggestions" class="suggestions"></div>
-          </div>
-        </div>
-        <div class="flyup-actions">
-          <span></span>
-          <button id="confirmAddBtn" class="primary" type="button">Save</button>
+      <div class="header-right">
+        <div class="action-bar-mini" aria-label="Header actions">
+          <button class="rs-button tap" type="button" id="miniEditBtn">EDIT</button>
+          <button class="rs-button tap" type="button" id="miniPrintBtn">PRINT</button>
+          <button class="rs-button tap is-hidden" type="button" id="miniUnusedBtn">UNUSED</button>
         </div>
       </div>
-    </section>
-
-    <section class="panel grid-panel no-print" id="gridPanel">
-      <div id="entryGrid" class="ag-theme-quartz"></div>
-    </section>
-    <datalist id="classOptions"></datalist>
-    <datalist id="horseOptions"></datalist>
-
-    <section class="panel review-panel" id="reviewPanel" hidden>
-      <div class="head">
-        <h1>Entry Review</h1>
-        <div class="date-text">Submitted</div>
+    </header>
+    <section class="action-bar is-hidden" aria-label="Grid actions"></section>
+    <nav class="action-anchors is-hidden" aria-label="Anchors"></nav>
+    <section class="grid-frame" id="gridPanel"><div id="agBaseGrid" class="ag-theme-quartz"></div></section>
+    <section class="action-bar-bottom" id="bottomSubmit" aria-label="Bottom actions">
+      <div class="action-group">
+        <button class="rs-button tap" type="button" id="bottomEditBtn">EDIT</button>
+        <button class="rs-button tap is-hidden" type="button" id="bottomAddBtn">ADD</button>
       </div>
-      <div class="tools no-print">
-        <div class="tool-left">
-          <button id="reviewPrintBtn" type="button">Print</button>
-          <button id="shareBtn" type="button">Share</button>
-        </div>
+      <div class="action-group secondary">
+        <button class="rs-button tap tap-active-2 is-hidden" type="button" id="bottomSendBtn">SEND</button>
       </div>
-      <div id="reviewCopy" class="review-copy"></div>
     </section>
+    <footer class="status-line">
+      <span><strong id="rowCount">0</strong> row(s) loaded</span>
+      <span id="statusText">Loading mapped entries...</span>
+    </footer>
   </main>
+
+  <section class="flyup" id="addPanel" hidden>
+    <div class="flyup-card">
+      <div class="flyup-head"><strong>Add Entry</strong><button class="rs-button tap" id="cancelAddBtn" type="button">CLOSE</button></div>
+      <div class="add-body">
+        <label class="field"><span class="field-label">Horse</span><span id="selectedHorseChip" class="selected-chip" hidden><span id="selectedHorseText"></span><button class="rs-button tap" id="clearHorseBtn" type="button">X</button></span><input id="horseInput" type="search" autocomplete="off" placeholder="Search horse"><span id="horseSuggestions" class="suggestions"></span></label>
+        <label class="field"><span class="field-label">Class</span><span id="selectedClassChip" class="selected-chip" hidden><span id="selectedClassText"></span><button class="rs-button tap" id="clearClassBtn" type="button">X</button></span><input id="classInput" type="search" autocomplete="off" placeholder="Search class"><span id="classSuggestions" class="suggestions"></span></label>
+      </div>
+      <div class="flyup-actions"><button class="rs-button tap tap-active-2" id="confirmAddBtn" type="button">SAVE</button></div>
+    </div>
+  </section>
+  <datalist id="classOptions"></datalist><datalist id="horseOptions"></datalist>
+  <section class="review-panel" id="reviewPanel" hidden>
+    <div class="review-actions"><button class="rs-button tap" id="reviewPrintBtn" type="button">PRINT</button><button class="rs-button tap tap-active-2" id="shareBtn" type="button">SHARE</button></div>
+    <div id="reviewCopy"></div>
+  </section>
   <div id="printSheet" class="print-sheet"></div>
 
-  <script>
+<script>
     (() => {
       const API_BASE = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/";
       const SUBMIT_URL = "https://ringstatus.com/test/barn-entry";
@@ -603,17 +496,19 @@
       const els = {
         appShell: document.getElementById("appShell"),
         focusDateText: document.getElementById("focusDateText"),
-        mainStatus: document.getElementById("mainStatus"),
+        mainStatus: document.getElementById("statusText"),
+        rowCount: document.getElementById("rowCount"),
         formPanel: document.getElementById("formPanel"),
         addPanel: document.getElementById("addPanel"),
         gridPanel: document.getElementById("gridPanel"),
         reviewPanel: document.getElementById("reviewPanel"),
         reviewCopy: document.getElementById("reviewCopy"),
-        entryGrid: document.getElementById("entryGrid"),
-        editBtn: document.getElementById("editBtn"),
-        openAddBtn: document.getElementById("openAddBtn"),
-        printBtn: document.getElementById("printBtn"),
-        submitBtn: document.getElementById("submitBtn"),
+        entryGrid: document.getElementById("agBaseGrid"),
+        miniEditBtn: document.getElementById("miniEditBtn"),
+        editBtn: document.getElementById("bottomEditBtn"),
+        openAddBtn: document.getElementById("bottomAddBtn"),
+        printBtn: document.getElementById("miniPrintBtn"),
+        submitBtn: document.getElementById("bottomSendBtn"),
         bottomSubmit: document.getElementById("bottomSubmit"),
         classOptions: document.getElementById("classOptions"),
         horseOptions: document.getElementById("horseOptions"),
@@ -652,7 +547,7 @@
       }
 
       function status(message, cls = "") {
-        els.mainStatus.className = `status ${cls}`.trim();
+        els.mainStatus.dataset.state = cls;
         els.mainStatus.textContent = message || "";
       }
 
@@ -680,8 +575,15 @@
         return row.ring_name_normalized || row.ring_display || row.ring_name || "";
       }
 
+      function sourceHorseName(row) {
+        const parts = String(row.source_payload || "").split("|").map((part) => part.trim());
+        const candidate = row.barn_name || parts[2] || row.horse_name || row.horse || "";
+        if (normalize(candidate) === normalize(row.rider)) return "";
+        return candidate;
+      }
+
       function horseName(row) {
-        return row.barn_name || row.show_name || row.horse_display || row.horse_name || row.horse || "";
+        return row.barn_name || sourceHorseName(row) || "UNRESOLVED HORSE";
       }
 
       function classSearchText(row) {
@@ -797,10 +699,10 @@
         url.searchParams.set("search_mode", "catalyst");
         url.searchParams.set("fallback_scan", "1");
         const data = await fetchJson(url);
-        return (data.results || data.matches || []).map((match) => {
+        return (data.top_matches || data.results || data.matches || []).map((match) => {
           const fields = match.fields || {};
           return {
-            barn_name: fields.barn_name || fields.show_name || fields.horse_display || fields.horse_name || fields.horse || match.display_name || match.matched_value || match.helper_key || "",
+            barn_name: fields.barn_name || match.barn_name || match.display_name || match.matched_value || "",
             show_name: fields.show_name || fields.horse_display || fields.horse_name || fields.horse || "",
             horse_name: fields.horse_name || fields.horse || "",
             horse_aka: fields.horse_aka || fields.aka || "",
@@ -809,7 +711,17 @@
             active: fields.active,
             source: "helper_roster"
           };
-        }).filter((row) => horseName(row));
+        }).filter((row) => row.barn_name);
+      }
+
+      function canonicalHorseForEntry(row) {
+        const aliases = [sourceHorseName(row), row.barn_name, row.horse_name, row.horse, row.horse_display, row.show_name]
+          .map(normalize)
+          .filter(Boolean);
+        return state.helperHorseRows.find((candidate) => {
+          const search = horseSearchText(candidate);
+          return aliases.some((alias) => search.includes(alias) || alias.includes(normalize(candidate.barn_name)));
+        }) || null;
       }
 
       function classForEntry(row) {
@@ -818,6 +730,7 @@
 
       function reviewRowFromEntry(row) {
         const klass = classForEntry(row);
+        const canonicalHorse = canonicalHorseForEntry(row);
         return {
           review_key: rowKey(row),
           source: "mapped",
@@ -834,9 +747,9 @@
           class_start_time: row.class_start_time || klass.class_start_time || "",
           display_time: row.display_time || klass.display_time || klass.time_text || "",
           entry_no: row.entry_no || "",
-          barn_name: horseName(row),
-          horse_name: row.horse_name || row.horse || horseName(row),
-          horse_key: row.horse_key || "",
+          barn_name: canonicalHorse?.barn_name || sourceHorseName(row) || "UNRESOLVED HORSE",
+          horse_name: row.horse_name || row.horse || canonicalHorse?.horse_name || "",
+          horse_key: row.horse_key || canonicalHorse?.horse_key || "",
           matched_source_row: row.ROWID || row.rec_id || ""
         };
       }
@@ -873,17 +786,6 @@
         ].filter(Boolean).join(" | ");
       }
 
-      function isCompactLayout() {
-        return window.matchMedia("(max-width: 478px)").matches;
-      }
-
-      function actionRenderer(params) {
-        if (!state.editMode) return "";
-        const value = params.data?.status || "pending";
-        const label = statusLabel(value, "short");
-        return `<button class="grid-pill ${escapeHtml(value)}" type="button" data-status-key="${escapeHtml(params.data.review_key)}">${escapeHtml(label)}</button>`;
-      }
-
       function statusLabel(value, mode = "long") {
         if (value === "confirmed") return mode === "short" ? "ok" : "confirmed";
         if (value === "declined") return mode === "short" ? "no" : "declined";
@@ -894,31 +796,12 @@
         return escapeHtml(value ?? "");
       }
 
-      function compactEntryRenderer(params) {
-        const row = params.data || {};
-        return `
-          <div class="entry-cell">
-            ${escapeHtml(entryTopLine(row))}${row.entry_no ? ` | ${escapeHtml(row.entry_no)}` : ""}
-            <br>
-            ${escapeHtml(className(row))}${row.barn_name ? ` | ${escapeHtml(row.barn_name)}` : ""}
-          </div>
-        `;
-      }
-
       function gridColumnDefs() {
-        if (isCompactLayout()) {
-          return [
-            { headerName: "Tap", field: "status", width: 78, minWidth: 74, maxWidth: 84, hide: !state.editMode, sortable: false, resizable: false, cellStyle: { display: "flex", alignItems: "center", justifyContent: "center", padding: "0 6px" }, cellRenderer: actionRenderer },
-            { headerName: "Time | Ring | No | Class | Horse", valueGetter: (params) => `${classFormDescription(params.data || {})} ${params.data?.entry_no || ""} ${params.data?.barn_name || ""}`, flex: 1, minWidth: 260, tooltipValueGetter: (params) => `${classFormDescription(params.data || {})} | ${params.data?.entry_no || ""} | ${params.data?.barn_name || ""}`, cellClass: "entry-cell", cellRenderer: compactEntryRenderer }
-          ];
-        }
         return [
-          { headerName: "Tap", field: "status", width: 78, minWidth: 74, maxWidth: 84, hide: !state.editMode, sortable: false, resizable: false, cellStyle: { display: "flex", alignItems: "center", justifyContent: "center", padding: "0 6px" }, cellRenderer: actionRenderer },
-          { headerName: "Time", valueGetter: (params) => displayTime(params.data || {}), width: 86, minWidth: 78, maxWidth: 96, cellClass: "entry-cell", cellRenderer: (params) => textRenderer(params.value) },
-          { headerName: "Ring", valueGetter: (params) => ringName(params.data || {}).toUpperCase(), width: 104, minWidth: 92, maxWidth: 118, cellClass: "entry-cell ring-cell", cellRenderer: (params) => textRenderer(params.value) },
-          { headerName: "No", valueGetter: (params) => params.data?.class_number || params.data?.class_no || "", width: 64, minWidth: 58, maxWidth: 72, cellClass: "entry-cell", cellRenderer: (params) => textRenderer(params.value) },
-          { headerName: "Class", valueGetter: (params) => className(params.data || {}), flex: 1, minWidth: 170, tooltipValueGetter: (params) => className(params.data || {}), cellClass: "entry-cell", cellRenderer: (params) => textRenderer(params.value) },
-          { headerName: "Horse", field: "barn_name", width: 138, minWidth: 120, maxWidth: 180, tooltipField: "barn_name", cellClass: "entry-cell", cellRenderer: (params) => textRenderer(params.value) }
+          { headerName: "TIME", valueGetter: (params) => displayTime(params.data || {}), width: 88, minWidth: 78 },
+          { headerName: "RING", valueGetter: (params) => ringName(params.data || {}).toUpperCase(), width: 88, minWidth: 78 },
+          { headerName: "CLASS", valueGetter: (params) => [params.data?.class_number || params.data?.class_no, className(params.data || {})].filter(Boolean).join(" - "), flex: 1, minWidth: 170 },
+          { headerName: "HORSE", field: "barn_name", width: 140, minWidth: 120 }
         ];
       }
 
@@ -954,7 +837,7 @@
           overlayLoadingTemplate: `<span class="loading-copy">Loading entries...</span>`,
           overlayNoRowsTemplate: `<span class="loading-copy">No rows</span>`,
           defaultColDef: {
-            sortable: false,
+            sortable: true,
             filter: false,
             resizable: true,
             editable: false,
@@ -964,41 +847,56 @@
           rowSelection: { mode: "singleRow", checkboxes: false, enableClickSelection: true },
           animateRows: false,
           suppressCellFocus: true,
-          getRowClass: (params) => params.data?.status ? `row-${params.data.status}` : ""
+          rowClassRules: {
+            "row-pending": (params) => (params.data?.status || "pending") === "pending",
+            "row-confirmed": (params) => params.data?.status === "confirmed",
+            "row-declined": (params) => params.data?.status === "declined"
+          }
         });
         els.entryGrid.addEventListener("click", (event) => {
-          const button = event.target.closest("[data-status-key]");
-          if (button) {
-            toggleStatus(button.dataset.statusKey);
-            return;
-          }
+          const row = event.target.closest(".ag-row[row-id]");
+          if (row) toggleStatus(row.getAttribute("row-id"));
+        });
+        els.entryGrid.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          const row = event.target.closest(".ag-row[row-id]");
+          if (row) toggleStatus(row.getAttribute("row-id"));
         });
       }
 
       function setGridRows() {
         if (!state.gridApi) return;
-        state.gridApi.setGridOption("columnDefs", gridColumnDefs());
         const rows = state.rows.map((row) => ({ ...row }));
         state.gridApi.setGridOption("rowData", rows);
+        els.rowCount.textContent = String(rows.length);
       }
 
       function toggleStatus(key) {
+        if (!state.editMode) return;
         if (key === "__add__") return;
         const order = ["pending", "confirmed", "declined"];
-        state.rows = state.rows.map((row) => {
-          if (row.review_key !== key) return row;
-          const next = order[(order.indexOf(row.status || "pending") + 1) % order.length];
-          return { ...row, status: next };
-        });
-        setGridRows();
+        const index = state.rows.findIndex((row) => row.review_key === key);
+        if (index < 0) return;
+        const current = state.rows[index];
+        const next = order[(order.indexOf(current.status || "pending") + 1) % order.length];
+        const updated = { ...current, status: next };
+        state.rows[index] = updated;
+        const rowNode = state.gridApi?.getRowNode(key);
+        if (rowNode) {
+          rowNode.setData(updated);
+          state.gridApi.redrawRows({ rowNodes: [rowNode] });
+        }
       }
 
       function toggleEditMode() {
         state.editMode = !state.editMode;
-        els.editBtn.classList.toggle("primary", state.editMode);
-        els.editBtn.textContent = state.editMode ? "Done" : "Edit";
-        els.openAddBtn.hidden = !state.editMode;
-        els.submitBtn.hidden = !state.editMode;
+        for (const button of [els.editBtn, els.miniEditBtn]) {
+          button.classList.toggle("tap-active", state.editMode);
+          button.textContent = state.editMode ? "DONE" : "EDIT";
+        }
+        els.openAddBtn.classList.toggle("is-hidden", !state.editMode);
+        els.submitBtn.classList.toggle("is-hidden", !state.editMode);
+        els.appShell.classList.toggle("is-edit-mode", state.editMode);
         setShellMode(state.editMode ? "edit" : "default");
         if (!state.editMode) resetDraft();
         setGridRows();
@@ -1085,7 +983,7 @@
 
       function searchClasses() {
         const q = normalize(els.classInput.value);
-        if (!q) {
+        if (q.length < 2) {
           els.classSuggestions.innerHTML = "";
           return;
         }
@@ -1113,15 +1011,15 @@
       }
 
       async function searchHorses() {
-        const q = els.horseInput.value.trim();
+        const q = normalize(els.horseInput.value);
         state.selectedHorse = null;
         renderPickerState();
-        if (!q) {
+        if (q.length < 2) {
           els.horseSuggestions.innerHTML = "";
           return;
         }
-        const matches = dedupeHorseCandidates(state.helperHorseRows)
-          .filter((row) => horseSearchText(row).includes(normalize(q)))
+        const matches = dedupeHorseCandidates([...state.rows, ...state.helperHorseRows])
+          .filter((row) => horseSearchText(row).includes(q))
           .slice(0, 12);
         els.horseSuggestions.innerHTML = matches.map((row, index) => `
           <button class="suggestion" type="button" data-horse-index="${index}">
@@ -1192,37 +1090,37 @@
 
       function buildPrintSheet() {
         const generatedAt = new Date().toLocaleString();
-        const rows = state.rows;
+        const groupedByRing = groupRowsByRing(state.rows);
         els.printSheet.innerHTML = `
           <div class="print-title">
             <h1>Barn Entry Review</h1>
             <p>Show ${escapeHtml(DEFAULT_SHOW_NO)}<br>${escapeHtml(focusDay())}<br>${escapeHtml(generatedAt)}</p>
           </div>
-          <table class="print-table">
-            <thead>
-              <tr>
-                <th class="time">Time</th>
-                <th class="ring">Ring</th>
-                <th class="no">No</th>
-                <th>Class</th>
-                <th class="horse">Horse</th>
-                <th class="status-col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows.map((row) => `
-                <tr>
-                  <td class="time">${escapeHtml(displayTime(row))}</td>
-                  <td class="ring">${escapeHtml(ringName(row))}</td>
-                  <td class="no">${escapeHtml(row.class_number || row.class_no || "")}</td>
-                  <td>${escapeHtml(className(row))}</td>
-                  <td class="horse">${escapeHtml(row.barn_name || "")}</td>
-                  <td class="status-col">${escapeHtml(row.status || "pending")}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
+          <div class="print-columns">
+            ${[...groupedByRing.entries()].map(([ring, rows]) => `
+              <section class="print-ring-group">
+                <div class="print-ring">${escapeHtml(ring)}</div>
+                ${rows.map((row) => `
+                  <div class="print-row">
+                    <span>${escapeHtml(displayTime(row))}</span>
+                    <span>${escapeHtml([row.class_number || row.class_no, className(row)].filter(Boolean).join(" - "))}</span>
+                    <span class="print-horse">${escapeHtml(row.barn_name)} | ${escapeHtml(row.status || "pending")}</span>
+                  </div>
+                `).join("")}
+              </section>
+            `).join("")}
+          </div>
         `;
+      }
+
+      function groupRowsByRing(rows) {
+        const groups = new Map();
+        for (const row of rows) {
+          const ring = ringName(row) || "UNASSIGNED RING";
+          if (!groups.has(ring)) groups.set(ring, []);
+          groups.get(ring).push(row);
+        }
+        return groups;
       }
 
       function printReview() {
@@ -1232,46 +1130,21 @@
 
       function renderReview() {
         const rows = state.rows;
-        const compact = isCompactLayout();
         const table = `
           <table class="review-table">
             <thead>
-              ${compact ? `
-                <tr>
-                  <th class="status-col">Status</th>
-                  <th>Time | Ring | No | Class | Horse</th>
-                </tr>
-              ` : `
-                <tr>
-                  <th class="status-col">Status</th>
-                  <th class="time">Time</th>
-                  <th class="ring">Ring</th>
-                  <th class="no">No</th>
-                  <th>Class</th>
-                  <th class="horse">Horse</th>
-                </tr>
-              `}
+              <tr><th>Status</th><th>Time</th><th>Ring</th><th>Class</th><th>Horse</th></tr>
             </thead>
             <tbody>
-              ${rows.map((row) => compact ? `
-                  <tr class="review-${escapeHtml(row.status || "pending")}">
-                    <td class="status-col">${escapeHtml(statusLabel(row.status || "pending"))}</td>
-                    <td class="entry-compact">
-                      ${escapeHtml(entryTopLine(row))}${row.entry_no ? ` | ${escapeHtml(row.entry_no)}` : ""}
-                      <br>
-                      ${escapeHtml(className(row))}${row.barn_name ? ` | ${escapeHtml(row.barn_name)}` : ""}
-                    </td>
-                  </tr>
-                ` : `
-                  <tr class="review-${escapeHtml(row.status || "pending")}">
-                    <td class="status-col">${escapeHtml(statusLabel(row.status || "pending"))}</td>
-                    <td class="time">${escapeHtml(displayTime(row))}</td>
-                    <td class="ring">${escapeHtml(ringName(row))}</td>
-                    <td class="no">${escapeHtml(row.class_number || row.class_no || "")}</td>
-                    <td>${escapeHtml(className(row))}</td>
-                    <td class="horse">${escapeHtml(row.barn_name || "")}</td>
-                  </tr>
-                `).join("")}
+              ${rows.map((row) => `
+                <tr class="review-${escapeHtml(row.status || "pending")}">
+                  <td>${escapeHtml(statusLabel(row.status || "pending"))}</td>
+                  <td>${escapeHtml(displayTime(row))}</td>
+                  <td>${escapeHtml(ringName(row))}</td>
+                  <td>${escapeHtml([row.class_number || row.class_no, className(row)].filter(Boolean).join(" - "))}</td>
+                  <td>${escapeHtml(row.barn_name)}</td>
+                </tr>
+              `).join("")}
             </tbody>
           </table>
         `;
@@ -1327,7 +1200,7 @@
         els.addPanel.hidden = true;
         els.gridPanel.hidden = true;
         els.bottomSubmit.hidden = true;
-        els.submitBtn.hidden = true;
+        els.submitBtn.classList.add("is-hidden");
         els.reviewPanel.hidden = false;
         setShellMode("print");
         els.reviewPanel.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1360,7 +1233,10 @@
         fetchHorseHelpers(TRAINER_FILTER || "")
           .then((rows) => {
             state.helperHorseRows = rows;
+            state.rows = dedupeRows(state.scopedRows.map(reviewRowFromEntry));
             renderOptionLists();
+            setGridRows();
+            status(`${state.rows.length} mapped row(s).`);
           })
           .catch(() => {
             state.helperHorseRows = [];
@@ -1375,15 +1251,11 @@
       els.horseInput.addEventListener("input", debounce(searchHorses));
       els.confirmAddBtn.addEventListener("click", addSelectedRow);
       els.editBtn.addEventListener("click", toggleEditMode);
+      els.miniEditBtn.addEventListener("click", toggleEditMode);
       els.printBtn.addEventListener("click", printReview);
       els.submitBtn.addEventListener("click", submitRows);
       els.reviewPrintBtn.addEventListener("click", printReview);
       els.shareBtn.addEventListener("click", shareReview);
-      window.addEventListener("resize", debounce(() => {
-        setGridRows();
-        if (!els.reviewPanel.hidden) renderReview();
-      }, 120));
-
       load().catch((error) => status(error.message || String(error), "bad"));
     })();
   </script>
