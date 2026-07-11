@@ -2,6 +2,12 @@
 
 This index lists the current WEC workflow contract documents and what each one owns.
 
+## Current Concept Reference
+
+| Document | Purpose | Status | When To Use |
+|---|---|---|---|
+| `docs/horseshowing/wec-lanewise-workflow-concept-2026-07-10.md` | Canonical record of the ringwise, classwise, entrywise, riderwise, Live, Time Engine, alerts, helpers, and output concept discussed on July 10. | Current concept; not an implementation contract | Read first for target-workflow discussion. Do not infer implementation approval from it. |
+
 ## Current Contracts
 
 | Document | Purpose | Status | When To Use | Active / WIP |
@@ -36,4 +42,6 @@ The current target workflow treats `update_schedule` as the Stage 1 source of tr
 
 ## Use Rule
 
-Start with the master workflow lock. If a row points to a dedicated contract, use the dedicated contract for implementation detail.
+For target-workflow concept discussion, start with `wec-lanewise-workflow-concept-2026-07-10.md`.
+
+For current production implementation, start with the master workflow lock. If a row points to a dedicated contract, use the dedicated contract for implementation detail. A concept document does not authorize production changes.
