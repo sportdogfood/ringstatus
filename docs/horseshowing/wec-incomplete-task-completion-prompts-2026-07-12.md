@@ -9,11 +9,14 @@ Do not place Tasks 05, 06, and 07 in one implementation task.
 ```text
 RINGSTATUS BOUNDED COMPLETION TASK
 
-Before using tools, read these files completely:
+Apply the Global Runner / Codex Instructions supplied directly in the task.
+There is no repository-root `AGENTS.md`; do not require one.
 
-1. C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\AGENTS.md
-2. C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\chatgpt-codex-operating-package-2026-07-12.md
-3. C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\wec-stack-and-preflight-handoff-2026-07-12.md
+Before using other tools, read these files completely:
+
+1. C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\chatgpt-codex-operating-package-2026-07-12.md
+2. C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\wec-stack-and-preflight-handoff-2026-07-12.md
+3. C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\docs\horseshowing\wec-rider-timing-alert-policy.md
 
 The handoff proves the July 12 Core preflight reached runtime_ready with:
 

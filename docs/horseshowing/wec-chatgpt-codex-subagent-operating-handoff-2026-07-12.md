@@ -42,6 +42,7 @@ References:
 | `wec-current-future-stack-function-inventory-2026-07-12.md` | Current functions mapped to future Stack 5-7 work |
 | `wec-current-legacy-workflow-function-inventory-2026-07-12.md` | Complete current legacy function inventory |
 | `wec-incomplete-task-completion-prompts-2026-07-12.md` | Bounded Task 05, 06, and 07 prompts |
+| `wec-rider-timing-alert-policy.md` | Canonical timing, trigger, Statewise, and rider-result business rules |
 | Airtable `hs_endpoints/work_stage` | Human workflow control surface |
 | Checked-in code and schema | Implementation evidence |
 | Scheduled execution and resulting rows | Operational proof |
@@ -81,12 +82,12 @@ Core is outside Tasks 05-07.
 | Stack | Current status | Evidence boundary | Next gate |
 |---|---|---|---|
 | Stack 5 Live | `PASS` | Two consecutive scheduler-owned cycles returned HTTP 200; runtime keys remained stable, required live projections populated, duplicate history checks returned zero, and other lanes were not invoked | KEEP; no further Task 05 edits |
-| Stack 6 Time Engine and Statewise | `READY FOR READBACK` | Existing Time Engine and trigger producer; `statewise_now` table/endpoint exist; statewise producer absent | Contract readback, then bounded current-versus-target inspection |
-| Stack 7 Rider Results | `DISCUSSED` | Legacy Results exists; `hs_rider_results` table/endpoint exist; rider-result producer absent | Begin only after Stack 6 acceptance |
-| Global workflow | `OPEN` | Core preflight proof plus incomplete Stacks 5-7 | Scheduled global review after all three stack gates |
+| Stack 6 Time Engine and Statewise | `PASS` | Two consecutive scheduler-owned cycles returned HTTP 200; 9/85/37 projections remained intact, Statewise completion receipts were written, and changed Catalyst/Airtable Statewise rows were created | KEEP; no further Task 06 edits |
+| Stack 7 Rider Results | `PASS` | Two post-fix scheduler-owned cycles returned HTTP 200; hash stability reached finality, terminal rider results and rider-facing events were created, and duplicate checks returned zero | KEEP; no further Task 07 edits |
+| Global workflow | `READY FOR SCHEDULED REVIEW` | Core preflight and Stacks 5-7 have individual PASS evidence | Verify the combined active workflow without edits or manual substitutes |
 | Cleanup | `BLOCKED BY ORDER` | Behavior must first be operationally proven | Begin only after global scheduled PASS |
 
-Task 05 established `SCHEDULED_PASS` on two consecutive scheduler-owned cycles.
+Tasks 05, 06, and 07 established `SCHEDULED_PASS` on scheduler-owned cycles.
 
 ## Recommended Operating Structure
 
@@ -471,11 +472,11 @@ You own packet validation, stack assignment, checkpoint identity, contract
 hashes, and lifecycle status. You do not edit business code, deploy, run
 workflows, or reinterpret business policy.
 
+Apply the Global Runner / Codex Instructions supplied directly in the task.
 Read:
-1. AGENTS.md
-2. workflow-manifest.json
-3. the selected stack checkpoint
-4. the approved change packet
+1. workflow-manifest.json
+2. the selected stack checkpoint
+3. the approved change packet
 
 Return:
 CONTROL_READY or CONTEXT_FAIL
@@ -495,8 +496,9 @@ prohibited_changes
 ```text
 You are the durable Main Agent for one RingStatus stack.
 
-Read the approved packet, workflow manifest, checkpoint, applicable AGENTS.md,
-and only the named ownership files.
+Apply the Global Runner / Codex Instructions supplied directly in the task.
+Read the approved packet, workflow manifest, checkpoint, and only the named
+ownership files.
 
 Start with CONTRACT_READ. If it matches and no conflict exists, continue in the
 same response with bounded read-only inspection. Do not wait for readback
@@ -649,61 +651,40 @@ next_required_control_action:
 
 ## Immediate Handoff
 
-Completed owner: `Task 05 Main Agent`
+Completed owner: `Task 07 Main Agent`
 
 Completed condition: `PASS`
 
 Scheduled acceptance evidence:
 
 ```text
-cycle_1_run_id       wec-step5-20260712T171839729Z
+cycle_1_run_id       wec-step6-results-20260712T221145413Z
 cycle_1_http         200
-cycle_2_run_id       wec-step5-20260712T172439917Z
+cycle_1_result       first post-fix result_block_hash observations
+cycle_1_skip         malformed completed queue rows skipped
+cycle_2_run_id       wec-step6-results-20260712T221745306Z
 cycle_2_http         200
-get_rings            PASS
-runtime_enrichment   PASS
-workflow             PASS
-blocker              none
+cycle_2_result       stable_count 2, operational finality satisfied
+rider_results        8 rows, 0 duplicate rider_result_key
+result_available     8 rows, 0 duplicate trigger_key
+manual_execution     none
 ```
 
-Runtime and history proof:
-
-```text
-runtime_rows         9 ring, 85 class, 37 entry
-runtime_inserts      0
-live_classes         4
-accepted_paces       160, 177, 274 seconds
-enriched_entries     6
-changed_signatures   5
-unchanged_signatures 4
-duplicate_keys       0
-duplicate_unchanged  0
-```
-
-Isolation proof:
-
-```text
-Core Steps 1-4       not invoked
-Time Engine          not invoked
-Results              not invoked
-Alerts               not invoked
-Outputs              not invoked
-get_orders            not invoked
-manual execution     none
-editing/deployment   none during Cycle 2 verification
-```
+Only `horseshowing_results_runner` was deployed. No manual endpoint, record
+repair, schema change, schedule change, or cross-lane implementation occurred.
 
 Next exact action:
 
 ```text
-Task 06 Main Agent reads back the approved Time Engine and Statewise contract.
-It separates verified current behavior from target behavior and inspects only
-the owned Stack 6 implementation, schemas, scheduler evidence, and tests.
-No edit, deployment, schedule change, manual repair, or workflow execution is
-authorized by this handoff.
+Task 08 Acceptance performs a read-only global scheduled review of the active
+Core, Live, Time Engine/Statewise, Results/Rider Results, and current output
+lanes. It verifies scheduler-owned HTTP results, current table state, duplicate
+counts, and cross-lane isolation. It does not execute manual endpoints, edit,
+deploy, change schedules, repair records, or begin cleanup.
 ```
 
-Task 05 is closed as PASS. Task 06 may now begin at readback and inspection.
+Tasks 05, 06, and 07 are closed as PASS. The global workflow is ready for
+scheduled acceptance review.
 
 ## Final Operating Rule
 
