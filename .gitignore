@@ -14,3 +14,4 @@ dev/ringstatus-app/.next/
 .next/
 tmp/
 webflow-cloud-test/.tmp/
+.worktrees/
