@@ -80,13 +80,13 @@ Core is outside Tasks 05-07.
 
 | Stack | Current status | Evidence boundary | Next gate |
 |---|---|---|---|
-| Stack 5 Live | `OPEN` | One post-fix scheduler-owned cycle passed at 13:18 ET; the required second cycle and complete field/deduplication checks have not been reported | Second scheduled cycle and full Task 05 acceptance |
-| Stack 6 Time Engine and Statewise | `DISCUSSED` | Existing Time Engine and trigger producer; `statewise_now` table/endpoint exist; statewise producer absent | Begin only after Stack 5 acceptance |
+| Stack 5 Live | `PASS` | Two consecutive scheduler-owned cycles returned HTTP 200; runtime keys remained stable, required live projections populated, duplicate history checks returned zero, and other lanes were not invoked | KEEP; no further Task 05 edits |
+| Stack 6 Time Engine and Statewise | `READY FOR READBACK` | Existing Time Engine and trigger producer; `statewise_now` table/endpoint exist; statewise producer absent | Contract readback, then bounded current-versus-target inspection |
 | Stack 7 Rider Results | `DISCUSSED` | Legacy Results exists; `hs_rider_results` table/endpoint exist; rider-result producer absent | Begin only after Stack 6 acceptance |
 | Global workflow | `OPEN` | Core preflight proof plus incomplete Stacks 5-7 | Scheduled global review after all three stack gates |
 | Cleanup | `BLOCKED BY ORDER` | Behavior must first be operationally proven | Begin only after global scheduled PASS |
 
-The latest Task 05 cycle does not establish `SCHEDULED_PASS` by itself.
+Task 05 established `SCHEDULED_PASS` on two consecutive scheduler-owned cycles.
 
 ## Recommended Operating Structure
 
@@ -649,44 +649,61 @@ next_required_control_action:
 
 ## Immediate Handoff
 
-Current owner: `Task 05 Main Agent`
+Completed owner: `Task 05 Main Agent`
 
-Current condition: `OPEN`
+Completed condition: `PASS`
 
-Last reported scheduled evidence:
+Scheduled acceptance evidence:
 
 ```text
-run_id      wec-step5-20260712T171839729Z
-completed   2026-07-12 13:18:47 ET
-HTTP        200
-get_rings   PASS
-enrichment  PASS
-workflow    PASS
-blocker     none
+cycle_1_run_id       wec-step5-20260712T171839729Z
+cycle_1_http         200
+cycle_2_run_id       wec-step5-20260712T172439917Z
+cycle_2_http         200
+get_rings            PASS
+runtime_enrichment   PASS
+workflow             PASS
+blocker              none
 ```
 
-This is Cycle 1 only.
+Runtime and history proof:
+
+```text
+runtime_rows         9 ring, 85 class, 37 entry
+runtime_inserts      0
+live_classes         4
+accepted_paces       160, 177, 274 seconds
+enriched_entries     6
+changed_signatures   5
+unchanged_signatures 4
+duplicate_keys       0
+duplicate_unchanged  0
+```
+
+Isolation proof:
+
+```text
+Core Steps 1-4       not invoked
+Time Engine          not invoked
+Results              not invoked
+Alerts               not invoked
+Outputs              not invoked
+get_orders            not invoked
+manual execution     none
+editing/deployment   none during Cycle 2 verification
+```
 
 Next exact action:
 
 ```text
-Task 08 Acceptance waits for the next scheduler-owned Live cycle.
-No code edit, deployment, or manual endpoint call.
-
-Verify:
-- HTTP 200;
-- get_rings PASS;
-- runtime_enrichment PASS;
-- required runtime fields populated;
-- unchanged state creates zero duplicate ring_change_logs;
-- runtime key sets remain unchanged;
-- Core, Time Engine, Results, and outputs are not invoked.
-
-Then report Stack 5 PASS or the earliest exact failure.
+Task 06 Main Agent reads back the approved Time Engine and Statewise contract.
+It separates verified current behavior from target behavior and inspects only
+the owned Stack 6 implementation, schemas, scheduler evidence, and tests.
+No edit, deployment, schedule change, manual repair, or workflow execution is
+authorized by this handoff.
 ```
 
-Do not begin Stack 6 until Stack 5 reaches its approved scheduled acceptance
-gate.
+Task 05 is closed as PASS. Task 06 may now begin at readback and inspection.
 
 ## Final Operating Rule
 
@@ -699,4 +716,3 @@ A separate verifier audits the diff.
 A separate Acceptance task observes the scheduler.
 Only scheduled evidence completes the stack.
 ```
-
