@@ -3,7 +3,8 @@ import test from "node:test";
 
 import {
   buildPersonalizedSection,
-  normalizeContext
+  normalizeContext,
+  resolveDatasetUrl
 } from "../src/lib/personalized-content.js";
 
 test("filters personalized activities by season and user tags", () => {
@@ -50,4 +51,16 @@ test("normalizes comma-delimited context and returns fallback for no matches", (
   assert.deepEqual(context.tags, ["running", "hiking"]);
   assert.equal(section.activities.length, 0);
   assert.equal(section.fallback, "No activities matched this profile yet.");
+});
+
+test("resolves dataset URL to fallback when endpoint receives relative browser defaults", () => {
+  const fallback = "https://cdn.example.com/personalized-section-content.json";
+
+  assert.equal(resolveDatasetUrl("", fallback), fallback);
+  assert.equal(resolveDatasetUrl("./personalized-section-content.json", fallback), fallback);
+  assert.equal(resolveDatasetUrl("file:///tmp/personalized-section-content.json", fallback), fallback);
+  assert.equal(
+    resolveDatasetUrl("https://cdn.example.com/custom.json", fallback),
+    "https://cdn.example.com/custom.json"
+  );
 });

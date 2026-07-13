@@ -24,13 +24,17 @@
   }
 
   async function loadFromEndpoint(currentState) {
+    const body = {
+      context: currentState.context
+    };
+    if (isHttpUrl(currentState.datasetUrl)) {
+      body.datasetUrl = currentState.datasetUrl;
+    }
+
     const response = await fetch(currentState.endpointUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        datasetUrl: currentState.datasetUrl,
-        context: currentState.context
-      })
+      body: JSON.stringify(body)
     });
     const result = await response.json();
     if (!response.ok || !result.ok) {
@@ -141,6 +145,15 @@
 
   function firstKey(value) {
     return Object.keys(value || {})[0] || "";
+  }
+
+  function isHttpUrl(value) {
+    try {
+      const url = new URL(String(value || ""));
+      return url.protocol === "http:" || url.protocol === "https:";
+    } catch {
+      return false;
+    }
   }
 
   function slug(value) {

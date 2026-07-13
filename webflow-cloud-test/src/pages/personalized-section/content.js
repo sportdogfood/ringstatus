@@ -2,7 +2,7 @@ export const config = {
   runtime: "edge"
 };
 
-import { buildPersonalizedSection, normalizeContext } from "../../lib/personalized-content.js";
+import { buildPersonalizedSection, normalizeContext, resolveDatasetUrl } from "../../lib/personalized-content.js";
 
 const defaultDatasetUrl = "https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@main/webflow/personalized-section/personalized-section-content.json";
 
@@ -15,7 +15,7 @@ const corsHeaders = {
 export const OPTIONS = async () => new Response(null, { status: 204, headers: corsHeaders });
 
 export const GET = async ({ url }) => {
-  const datasetUrl = new URL(url.searchParams.get("datasetUrl") || defaultDatasetUrl);
+  const datasetUrl = new URL(resolveDatasetUrl(url.searchParams.get("datasetUrl"), defaultDatasetUrl));
   const dataset = await fetchDataset(datasetUrl);
   const context = normalizeContext({
     season: url.searchParams.get("season") || "",
@@ -26,7 +26,7 @@ export const GET = async ({ url }) => {
 
 export const POST = async ({ request, url }) => {
   const payload = await readJson(request);
-  const datasetUrl = new URL(payload.datasetUrl || defaultDatasetUrl);
+  const datasetUrl = new URL(resolveDatasetUrl(payload.datasetUrl, defaultDatasetUrl));
   const dataset = await fetchDataset(datasetUrl);
   return json(buildPersonalizedSection(dataset, payload.context || payload));
 };

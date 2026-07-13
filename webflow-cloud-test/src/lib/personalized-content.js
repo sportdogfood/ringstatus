@@ -45,6 +45,17 @@ export function buildPersonalizedSection(dataset = {}, inputContext = {}) {
   };
 }
 
+export function resolveDatasetUrl(value, fallbackUrl) {
+  const candidate = String(value || "").trim();
+  if (!candidate) return fallbackUrl;
+  try {
+    const url = new URL(candidate);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : fallbackUrl;
+  } catch {
+    return fallbackUrl;
+  }
+}
+
 function normalizeTags(value) {
   if (Array.isArray(value)) return value.map((item) => String(item).trim()).filter(Boolean);
   if (!value) return [];
