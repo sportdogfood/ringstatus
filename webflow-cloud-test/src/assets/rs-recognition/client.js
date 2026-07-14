@@ -21,6 +21,8 @@
 
       #rs-recognition-test * { box-sizing: border-box; }
 
+      body.rs-members-gated > :not(#rs-recognition-test) { visibility: hidden !important; }
+
       #rs-access-ringstatus,
       #rs-login-ringstatus,
       #rs-request-demo { display: none !important; }
@@ -211,6 +213,7 @@
             <button type="button" class="rs-text-link" id="rs-not-you">Not you?</button>
             <button type="button" class="rs-text-link" id="rs-update-details">Update my details</button>
           </div>
+          <p class="rs-status" id="rs-recognized-status" aria-live="polite"></p>
         </section>
 
         <form id="rs-profile-form" hidden>
@@ -264,6 +267,8 @@
   const path = window.location.pathname.replace(/\/+$/, "") || "/";
   const homePath = path === "/" || path === "/ks2";
   const memberPath = path === "/members";
+  const requestedUser = new URLSearchParams(window.location.search).get("user") || "";
+  if (memberPath) document.body.classList.add("rs-members-gated");
   const title = document.getElementById("rs-card-title");
   const eyebrow = document.getElementById("rs-card-eyebrow");
   const recognized = document.getElementById("rs-recognized-view");
@@ -438,6 +443,8 @@
     if (error.code === "phone_already_registered") return "That SMS number already belongs to a profile. Use Members login.";
     if (error.code === "invalid_email") return "Enter a valid email address.";
     if (error.code === "invalid_pin") return "Enter a 4-digit PIN.";
+    if (error.code === "ambiguous_pin") return "That PIN matches more than one member. Use your SMS number.";
+    if (error.code === "unauthorized_device" || error.code === "unauthorized_person") return "Please log in again before changing member details.";
     if (error.code === "missing_recovery_identity") return "Enter your full name or email.";
     return "We could not complete that request. Please try again.";
   }
@@ -457,10 +464,6 @@
   }
 
   async function recognize() {
-    if (memberPath && new URLSearchParams(window.location.search).get("user")) {
-      setEntryButtons("recognized");
-      return;
-    }
     if (preview) {
       if (previewView === "login") showLogin();
       else if (previewView === "recovery") showRecovery();
@@ -486,7 +489,10 @@
       }
       await recordSession({ event_type: "recognition", event_result: "matched", matched_by: result.matched_by, recognition_status: result.recognition_status, person_record_id: result.person_record_id, device_record_id: result.device_record_id });
       setEntryButtons("recognized");
-      if (memberPath) redirectToMembers(result.person_uid);
+      if (memberPath && requestedUser === result.person_uid) {
+        document.body.classList.remove("rs-members-gated");
+        root.classList.remove("is-open");
+      } else if (memberPath) redirectToMembers(result.person_uid);
       else showRecognized(result);
     } catch (error) {
       setEntryButtons("unrecognized");
@@ -495,14 +501,26 @@
   }
 
   document.getElementById("rs-update-details").addEventListener("click", showProfile);
-  document.getElementById("rs-not-you").addEventListener("click", function () {
-    callAction({ action: "retire_device", data: {} }).catch(function () {});
-    clearDeviceToken();
-    showRecovery();
+  document.getElementById("rs-not-you").addEventListener("click", async function () {
+    status("rs-recognized-status", "Clearing this device…", false);
+    try {
+      await callAction({ action: "retire_device", data: {} });
+      clearDeviceToken();
+      showRecovery();
+    } catch (error) {
+      status("rs-recognized-status", errorText(error), true);
+    }
   });
-  document.getElementById("rs-recognition-close").addEventListener("click", function () {
+  document.getElementById("rs-recognition-close").addEventListener("click", async function () {
     if ((activeView === "recognized" || activeView === "profile") && currentPerson) {
-      callAction({ action: "confirm_device", data: { person_record_id: currentPerson.person_record_id, person_uid: currentPerson.person_uid } }).catch(function () {});
+      const statusId = activeView === "profile" ? "rs-profile-status" : "rs-recognized-status";
+      status(statusId, "Confirming this device…", false);
+      try {
+        await callAction({ action: "confirm_device", data: { person_record_id: currentPerson.person_record_id, person_uid: currentPerson.person_uid } });
+      } catch (error) {
+        status(statusId, errorText(error), true);
+        return;
+      }
     }
     root.classList.remove("is-open");
   });

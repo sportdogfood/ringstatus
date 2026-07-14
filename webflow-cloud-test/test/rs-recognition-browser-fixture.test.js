@@ -44,11 +44,11 @@ test("card keeps Profile and reuses one member lookup instead of New Profile", (
   assert.doesNotMatch(source, /id="rs-new-profile-form"|showNewProfile/);
 });
 
-test("Not you opens the shared lookup and recovery confirms with thanks", () => {
+test("Not you waits for device retirement before opening recovery", () => {
   const source = readFileSync(fixturePath, "utf8");
 
-  assert.match(source, /rs-not-you"\)\.addEventListener\("click", function/);
-  assert.match(source, /rs-not-you[\s\S]*?retire_device[\s\S]*?clearDeviceToken\(\)[\s\S]*?showRecovery\(\)/);
+  assert.match(source, /rs-not-you"\)\.addEventListener\("click", async function/);
+  assert.match(source, /rs-not-you[\s\S]*?await callAction\(\{ action: "retire_device"[\s\S]*?clearDeviceToken\(\)[\s\S]*?showRecovery\(\)/);
   assert.match(source, /Schedule a demo/);
   assert.match(source, />Contact Me</);
   assert.match(source, /type="submit">Save</);
@@ -84,6 +84,23 @@ test("members gate redirects known phones and moves unknown phones to lookup", (
   assert.match(source, /action:\s*"phone_login"/);
   assert.match(source, /if \(!result\.recognized\)[\s\S]*?showRecovery\(\)/);
   assert.match(source, /redirectToMembers\(result\.person_uid/);
+});
+
+test("members gate validates the device even when a user query is present", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.doesNotMatch(source, /if \(memberPath && new URLSearchParams\(window\.location\.search\)\.get\("user"\)\)/);
+  assert.match(source, /const requestedUser = new URLSearchParams\(window\.location\.search\)\.get\("user"\) \|\| ""/);
+  assert.match(source, /requestedUser === result\.person_uid/);
+  assert.match(source, /document\.body\.classList\.remove\("rs-members-gated"\)/);
+  assert.match(source, /body\.rs-members-gated > :not\(#rs-recognition-test\)/);
+});
+
+test("recognized close waits for device confirmation", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /rs-recognition-close"\)\.addEventListener\("click", async function/);
+  assert.match(source, /await callAction\(\{ action: "confirm_device"[\s\S]*?root\.classList\.remove\("is-open"\)/);
 });
 
 test("ks2 uses the homepage recognition flow", () => {

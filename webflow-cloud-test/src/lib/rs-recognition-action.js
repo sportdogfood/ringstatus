@@ -56,6 +56,7 @@ async function updateProfile(config, input, fetchImpl) {
   const profile = profileInput(input);
   const personId = recordId(input.person_record_id, "missing_person_record_id");
   const personUid = required(input.person_uid, "missing_person_uid");
+  await authorizeOwnedPerson(config, input.device_token, personId, personUid, fetchImpl);
   const owner = await findPersonByPhone(config, profile.sms, fetchImpl);
   if (owner && owner.id !== personId) throw new RecognitionActionError("phone_already_registered", 409);
   const person = await updateRecord(config, config.people, personId, {
@@ -80,7 +81,7 @@ async function phoneLogin(config, input, fetchImpl) {
   const digits = identifier.replace(/\D/g, "");
   const matchedBy = digits.length === 4 ? "pin" : "phone";
   const person = matchedBy === "pin"
-    ? await findPersonByPin(config, digits, fetchImpl)
+    ? await findUniquePersonByPin(config, digits, fetchImpl)
     : await findPersonByPhone(config, phoneNumber(identifier), fetchImpl);
   if (!person || !isActive(person.fields?.status) || !isMemberAccess(person.fields?.access_level)) {
     return actionResult({ event_type: "login", event_result: "not_matched", matched_by: matchedBy, recognition_status: "rejected", detail: { source: "members_gate" }, response: { ok: true, recognized: false } });
@@ -92,8 +93,10 @@ async function phoneLogin(config, input, fetchImpl) {
   });
 }
 
-function findPersonByPin(config, pin, fetchImpl) {
-  return listFirst(config, config.people, `OR({member_pin} = '${escapeFormula(pin)}',RIGHT({primary_phone_e164},4) = '${escapeFormula(pin)}')`, fetchImpl);
+async function findUniquePersonByPin(config, pin, fetchImpl) {
+  const matches = await listRecords(config, config.people, `OR({member_pin} = '${escapeFormula(pin)}',RIGHT({primary_phone_e164},4) = '${escapeFormula(pin)}')`, 2, fetchImpl);
+  if (matches.length > 1) throw new RecognitionActionError("ambiguous_pin", 409);
+  return matches[0] || null;
 }
 
 async function recovery(config, input, fetchImpl) {
@@ -116,6 +119,7 @@ async function recovery(config, input, fetchImpl) {
 async function confirmDevice(config, input, fetchImpl) {
   const personId = recordId(input.person_record_id, "missing_person_record_id");
   const personUid = required(input.person_uid, "missing_person_uid");
+  await authorizeOwnedPerson(config, input.device_token, personId, personUid, fetchImpl);
   const device = await upsertDevice(config, input.device_token, personId, fetchImpl);
   return actionResult({ person: { id: personId }, device, event_type: "visit", event_result: "success", matched_by: "device_token", recognition_status: "confirmed", detail: { source: "card_close" }, response: { ok: true, confirmed: true, person_uid: personUid, device_record_id: device.id } });
 }
@@ -183,15 +187,33 @@ function findDevice(config, token, fetchImpl) {
 }
 
 async function listFirst(config, table, formula, fetchImpl) {
+  const records = await listRecords(config, table, formula, 1, fetchImpl);
+  return records[0] || null;
+}
+
+async function listRecords(config, table, formula, maxRecords, fetchImpl) {
   const url = tableUrl(config.baseId, table);
-  url.searchParams.set("maxRecords", "1");
+  url.searchParams.set("maxRecords", String(maxRecords));
   url.searchParams.set("filterByFormula", formula);
   const result = await airtableFetch(url, { headers: headers(config.token) }, fetchImpl);
-  return result.records?.[0] || null;
+  return Array.isArray(result.records) ? result.records : [];
 }
 
 function getRecord(config, table, id, fetchImpl) {
   return airtableFetch(`${tableUrl(config.baseId, table)}/${encodeURIComponent(id)}`, { headers: headers(config.token) }, fetchImpl);
+}
+
+async function authorizeOwnedPerson(config, tokenValue, personId, personUid, fetchImpl) {
+  const token = required(tokenValue, "missing_device_token");
+  const device = await findDevice(config, token, fetchImpl);
+  if (!device || !isActive(device.fields?.status) || firstLink(device.fields?.person) !== personId) {
+    throw new RecognitionActionError("unauthorized_device", 403);
+  }
+  const person = await getRecord(config, config.people, personId, fetchImpl);
+  if (clean(person.fields?.person_uid) !== personUid || !isActive(person.fields?.status) || !isMemberAccess(person.fields?.access_level)) {
+    throw new RecognitionActionError("unauthorized_person", 403);
+  }
+  return { device, person };
 }
 
 async function createRecord(config, table, fields, fetchImpl) {

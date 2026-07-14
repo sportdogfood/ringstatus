@@ -85,12 +85,14 @@ test("update_profile updates the person and attaches the current device", async 
   const calls = [];
   const events = [];
   const fetchImpl = sequencedFetch([
+    { body: { records: [{ id: "recDeviceUpdate01", fields: { person: ["recPersonExisting"], status: "Active" } }] } },
+    { body: { id: "recPersonExisting", fields: { person_uid: "63187", status: "Active", access_level: "member" } } },
     { body: { records: [] } },
     { body: { records: [] } },
     { body: { records: [{ id: "recPersonExisting" }] } },
     { body: { records: [] } },
     { body: { records: [{ id: "recAliasUpdate001" }] } },
-    { body: { records: [] } },
+    { body: { records: [{ id: "recDeviceUpdate01", fields: { person: ["recPersonExisting"], status: "Active" } }] } },
     { body: { records: [{ id: "recDeviceUpdate01" }] } }
   ], calls);
 
@@ -116,6 +118,55 @@ test("update_profile updates the person and attaches the current device", async 
   assert.equal(personUpdate.body.records[0].fields.member_pin, "4826");
   assert.equal(events[0].event_type, "save");
   assert.ok(events[0].detail.changed_fields.includes("member_pin"));
+});
+
+test("update_profile rejects a device linked to another person before writing", async () => {
+  const calls = [];
+  const fetchImpl = sequencedFetch([
+    { body: { records: [{ id: "recOtherDevice001", fields: { person: ["recOtherPerson001"], status: "Active" } }] } }
+  ], calls);
+
+  await assert.rejects(
+    runRecognitionAction({
+      env,
+      fetchImpl,
+      request: new Request("https://ringstatus.webflow.io/test/rs-recognition/action"),
+      recordSession: async () => { throw new Error("session must not be written"); },
+      payload: payload("update_profile", {
+        person_record_id: "recPersonExisting",
+        person_uid: "63187",
+        user: "Lainey",
+        sms: "6318752160"
+      })
+    }),
+    (error) => error instanceof RecognitionActionError && error.code === "unauthorized_device" && error.status === 403
+  );
+
+  assert.equal(calls.length, 1);
+});
+
+test("confirm_device rejects a person UID that does not match Airtable", async () => {
+  const calls = [];
+  const fetchImpl = sequencedFetch([
+    { body: { records: [{ id: "recDeviceUpdate01", fields: { person: ["recPersonExisting"], status: "Active" } }] } },
+    { body: { id: "recPersonExisting", fields: { person_uid: "different_uid", status: "Active", access_level: "member" } } }
+  ], calls);
+
+  await assert.rejects(
+    runRecognitionAction({
+      env,
+      fetchImpl,
+      request: new Request("https://ringstatus.webflow.io/test/rs-recognition/action"),
+      recordSession: async () => { throw new Error("session must not be written"); },
+      payload: payload("confirm_device", {
+        person_record_id: "recPersonExisting",
+        person_uid: "63187"
+      })
+    }),
+    (error) => error instanceof RecognitionActionError && error.code === "unauthorized_person" && error.status === 403
+  );
+
+  assert.equal(calls.length, 2);
 });
 
 test("phone_login normalizes a formatted phone and persists another device", async () => {
@@ -161,6 +212,29 @@ test("phone_login accepts a four digit member PIN", async () => {
   assert.equal(result.person_uid, "63187");
   assert.match(calls[0].url, /member_pin/);
   assert.equal(events[0].matched_by, "pin");
+});
+
+test("phone_login rejects an ambiguous four digit PIN", async () => {
+  const calls = [];
+  const fetchImpl = sequencedFetch([
+    { body: { records: [
+      { id: "recPinPerson0001", fields: { person_uid: "63187", status: "Active", access_level: "member" } },
+      { id: "recPinPerson0002", fields: { person_uid: "78214", status: "Active", access_level: "member" } }
+    ] } }
+  ], calls);
+
+  await assert.rejects(
+    runRecognitionAction({
+      env,
+      fetchImpl,
+      request: new Request("https://ringstatus.webflow.io/test/rs-recognition/action"),
+      recordSession: async () => { throw new Error("session must not be written"); },
+      payload: payload("phone_login", { sms: "4826" })
+    }),
+    (error) => error instanceof RecognitionActionError && error.code === "ambiguous_pin" && error.status === 409
+  );
+
+  assert.equal(calls.length, 1);
 });
 
 test("phone_login refuses Guest access without creating a device", async () => {
