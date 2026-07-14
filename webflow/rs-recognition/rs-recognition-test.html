@@ -196,7 +196,7 @@
     <header class="rs-card-head">
       <div>
         <p class="rs-eyebrow" id="rs-card-eyebrow">Welcome back</p>
-        <h2 id="rs-card-title">Hi Lainey</h2>
+        <h2 id="rs-card-title"></h2>
       </div>
       <button id="rs-recognition-close" type="button" aria-label="Close">×</button>
     </header>
@@ -211,11 +211,11 @@
 
       <form id="rs-profile-form" hidden>
         <div class="rs-form-grid">
-          <div class="rs-wide"><label for="rs-profile-user">User <span class="rs-required">*</span></label><input id="rs-profile-user" name="user" required value="Lainey"></div>
-          <div><label for="rs-profile-first">First</label><input id="rs-profile-first" name="first" value="Lainey"></div>
-          <div><label for="rs-profile-last">Last</label><input id="rs-profile-last" name="last" value="Posa"></div>
-          <div class="rs-wide"><label for="rs-profile-sms">SMS <span class="rs-required">*</span></label><input id="rs-profile-sms" name="sms" required value="16318752160"></div>
-          <div class="rs-wide"><label for="rs-profile-pin">PIN</label><input id="rs-profile-pin" name="pin" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" autocomplete="off" value="2160"></div>
+          <div class="rs-wide"><label for="rs-profile-user">User <span class="rs-required">*</span></label><input id="rs-profile-user" name="user" required></div>
+          <div><label for="rs-profile-first">First</label><input id="rs-profile-first" name="first"></div>
+          <div><label for="rs-profile-last">Last</label><input id="rs-profile-last" name="last"></div>
+          <div class="rs-wide"><label for="rs-profile-sms">SMS <span class="rs-required">*</span></label><input id="rs-profile-sms" name="sms" required></div>
+          <div class="rs-wide"><label for="rs-profile-pin">PIN</label><input id="rs-profile-pin" name="pin" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" autocomplete="off"></div>
           <div class="rs-wide"><label for="rs-profile-email">Email</label><input id="rs-profile-email" name="email" type="email"></div>
         </div>
         <button class="rs-save" type="submit">Save</button>
@@ -275,20 +275,6 @@
       ];
       let activeView = "quiet";
       let currentPerson = null;
-
-      const previewPerson = {
-        person_record_id: "recxMolAW8UhI3Hph",
-        person_uid: "63187",
-        person_name: "Lainey",
-        first_name: "Lainey",
-        last_name: "Posa",
-        primary_phone_e164: "16318752160",
-        member_pin: "2160",
-        email: "",
-        device_record_id: "rec0OtWNkYWs7iGgk",
-        matched_by: "device_token",
-        recognition_status: "known_device"
-      };
 
       function uid(prefix) {
         const random = window.crypto && typeof window.crypto.randomUUID === "function"
@@ -475,7 +461,7 @@
         if (preview) {
           if (previewView === "login") showLogin();
           else if (previewView === "recovery") showRecovery();
-          else showRecognized(previewPerson);
+          else showRecognized({});
           return;
         }
         if (!homePath && !memberPath) return;

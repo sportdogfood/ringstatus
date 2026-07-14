@@ -13,11 +13,19 @@ test("fixture is only the self-contained recognition card", () => {
   assert.match(source, /id="rs-recognition-test"/);
   assert.match(source, /id="rs-recognition-card"/);
   assert.match(source, /id="rs-recognition-close"/);
-  assert.match(source, /Hi Lainey/);
+  assert.match(source, /id="rs-card-title"><\/h2>/);
   assert.match(source, /id="rs-not-you"/);
   assert.match(source, /id="rs-update-details"/);
   assert.doesNotMatch(source, /We recognized this device\./);
   assert.doesNotMatch(source, /rs-preview-controls|rs-test-controls|rs-demo-nav/);
+});
+
+test("production card contains no hardcoded member fixture", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.doesNotMatch(source, /Lainey|Posa|16318752160|recxMolAW8UhI3Hph|rec0OtWNkYWs7iGgk/);
+  assert.doesNotMatch(source, /const previewPerson\s*=/);
+  assert.match(source, /else showRecognized\(\{\}\)/);
 });
 
 test("card keeps Profile and reuses one member lookup instead of New Profile", () => {
