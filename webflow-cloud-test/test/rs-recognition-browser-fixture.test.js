@@ -5,12 +5,12 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const fixturePath = resolve(__dirname, "../../webflow/rs-recognition/rs-recognition-test.html");
+const fixturePath = resolve(__dirname, "../src/assets/rs-recognition/client.js");
 
-test("fixture is only the self-contained recognition card", () => {
+test("hosted client owns the self-contained recognition card", () => {
   const source = readFileSync(fixturePath, "utf8");
 
-  assert.match(source, /id="rs-recognition-test"/);
+  assert.match(source, /root\.id = "rs-recognition-test"/);
   assert.match(source, /id="rs-recognition-card"/);
   assert.match(source, /id="rs-recognition-close"/);
   assert.match(source, /id="rs-card-title"><\/h2>/);
