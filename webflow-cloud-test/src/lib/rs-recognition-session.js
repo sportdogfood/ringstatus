@@ -1,4 +1,5 @@
 const DEFAULT_SESSIONS_TABLE = "rs_recognition_sessions_test";
+const DEFAULT_RECOGNITION_BASE_ID = "apptdhhNzduxm5gjn";
 const SIGNAL_VERSION = 1;
 const EVENT_TYPE_CHOICES = new Map([
   ["start", "start"], ["success", "success"], ["failure", "failure"], ["update", "update"], ["other", "other"],
@@ -87,7 +88,7 @@ export async function recordRecognitionSession({
 
 function airtableConfig(env) {
   const token = clean(env?.AIRTABLE_TOKEN);
-  const baseId = clean(env?.AIRTABLE_BASE_ID || env?.AIRTABLE_BASE);
+  const baseId = clean(env?.AIRTABLE_RS_RECOGNITION_BASE_ID) || DEFAULT_RECOGNITION_BASE_ID;
   const sessionsTable = clean(env?.AIRTABLE_RS_RECOGNITION_SESSIONS_TEST_TABLE) || DEFAULT_SESSIONS_TABLE;
   const signalSecret = clean(env?.RS_RECOGNITION_SIGNAL_SECRET);
 

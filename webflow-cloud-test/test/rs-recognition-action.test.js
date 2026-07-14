@@ -8,7 +8,8 @@ import {
 
 const env = {
   AIRTABLE_TOKEN: "pat_test",
-  AIRTABLE_BASE_ID: "app_test",
+  AIRTABLE_BASE_ID: "app_wrong_barn_entry",
+  AIRTABLE_RS_RECOGNITION_BASE_ID: "app_test",
   AIRTABLE_RS_PEOPLE_TEST_TABLE: "rs_people_test",
   AIRTABLE_RS_DEVICES_TEST_TABLE: "rs_devices_test",
   AIRTABLE_RS_PHONE_ALIASES_TEST_TABLE: "rs_phone_aliases_test"
@@ -68,6 +69,8 @@ test("create_profile creates one person, phone alias, device, and session event"
   assert.equal(result.person_record_id, "recPersonCreate01");
   assert.equal(result.device_record_id, "recDeviceCreate01");
   const personCreate = calls.find((call) => call.method === "POST" && call.url.includes("rs_people_test"));
+  assert.match(personCreate.url, /app_test/);
+  assert.doesNotMatch(personCreate.url, /app_wrong_barn_entry/);
   assert.equal("typecast" in personCreate.body, false);
   assert.equal(personCreate.body.records[0].fields.person_name, "Lainey");
   assert.equal(personCreate.body.records[0].fields.primary_phone_e164, "+16318752160");

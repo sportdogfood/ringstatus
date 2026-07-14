@@ -6,7 +6,8 @@ import { GET } from "../src/pages/rs-recognition/device.js";
 
 Object.assign(env, {
   AIRTABLE_TOKEN: "pat_test",
-  AIRTABLE_BASE_ID: "app_test",
+  AIRTABLE_BASE_ID: "app_wrong_barn_entry",
+  AIRTABLE_RS_RECOGNITION_BASE_ID: "app_test",
   AIRTABLE_RS_DEVICES_TEST_TABLE: "rs_devices_test",
   AIRTABLE_RS_PEOPLE_TEST_TABLE: "rs_people_test"
 });
@@ -63,6 +64,8 @@ test("recognizes the live Active device choice and returns its record ID", async
   assert.equal(body.member_pin, "4826");
   assert.equal(body.email, "test@example.com");
   assert.equal(calls.length, 2);
+  assert.match(calls[0], /app_test/);
+  assert.doesNotMatch(calls[0], /app_wrong_barn_entry/);
 });
 
 test("does not recognize an active device linked to an inactive person", async () => {

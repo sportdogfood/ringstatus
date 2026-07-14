@@ -1,6 +1,7 @@
 import { recordRecognitionSession } from "./rs-recognition-session.js";
 
 const ACTIONS = new Set(["create_profile", "update_profile", "phone_login", "recovery", "confirm_device", "retire_device"]);
+const DEFAULT_RECOGNITION_BASE_ID = "apptdhhNzduxm5gjn";
 
 export class RecognitionActionError extends Error {
   constructor(code, status, detail = "") {
@@ -241,7 +242,7 @@ function publicPerson(person) {
 
 function getConfig(env) {
   const token = clean(env?.AIRTABLE_TOKEN);
-  const baseId = clean(env?.AIRTABLE_BASE_ID || env?.AIRTABLE_BASE);
+  const baseId = clean(env?.AIRTABLE_RS_RECOGNITION_BASE_ID) || DEFAULT_RECOGNITION_BASE_ID;
   if (!token) throw new RecognitionActionError("missing_airtable_token", 500);
   if (!baseId) throw new RecognitionActionError("missing_airtable_base_id", 500);
   return { token, baseId, people: clean(env?.AIRTABLE_RS_PEOPLE_TEST_TABLE) || "rs_people_test", devices: clean(env?.AIRTABLE_RS_DEVICES_TEST_TABLE) || "rs_devices_test", aliases: clean(env?.AIRTABLE_RS_PHONE_ALIASES_TEST_TABLE) || "rs_phone_aliases_test" };

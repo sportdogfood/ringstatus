@@ -6,6 +6,7 @@ import { env } from "cloudflare:workers";
 
 const DEFAULT_DEVICES_TABLE = "rs_devices_test";
 const DEFAULT_PEOPLE_TABLE = "rs_people_test";
+const DEFAULT_RECOGNITION_BASE_ID = "apptdhhNzduxm5gjn";
 const ALLOWED_DEVICE_STATUSES = new Set(["active", "test"]);
 const ALLOWED_PERSON_STATUSES = new Set(["active", "test"]);
 const ALLOWED_ACCESS_LEVELS = new Set(["admin", "user", "member"]);
@@ -133,7 +134,7 @@ export const GET = async ({ request }) => {
 
 function getAirtableConfig() {
   const token = env.AIRTABLE_TOKEN;
-  const baseId = env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE;
+  const baseId = env.AIRTABLE_RS_RECOGNITION_BASE_ID || DEFAULT_RECOGNITION_BASE_ID;
   const devicesTable = env.AIRTABLE_RS_DEVICES_TEST_TABLE || DEFAULT_DEVICES_TABLE;
   const peopleTable = env.AIRTABLE_RS_PEOPLE_TEST_TABLE || DEFAULT_PEOPLE_TABLE;
 
