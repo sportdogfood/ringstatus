@@ -81,10 +81,6 @@ export const GET = async ({ request }) => {
       person_record_id: person.id,
       person_name: person.fields?.person_name || "",
       person_uid: person.fields?.person_uid || "",
-      first_name: person.fields?.first_name || "",
-      last_name: person.fields?.last_name || "",
-      primary_phone_e164: person.fields?.primary_phone_e164 || "",
-      email: person.fields?.email || "",
       person_status: personStatus || "",
       access_level: accessLevel || ""
     });

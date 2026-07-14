@@ -1,43 +1,265 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RingStatus Recognition Product Test</title>
+<div id="rs-recognition-test">
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; color: #142236; background: #f4f1eb; font-family: Inter, Arial, sans-serif; }
-    nav { height: 72px; padding: 0 clamp(20px,5vw,72px); display: flex; align-items: center; justify-content: space-between; color: #fff; background: #10243c; }
-    nav a { color: inherit; text-decoration: none; }
-    .brand { font: 24px Georgia,serif; }
-    .rsn-nav-button.is-members.w-button { padding: 10px 18px; border: 1px solid #ffffff66; border-radius: 999px; }
-    main { padding: clamp(52px,10vw,120px) clamp(20px,7vw,100px); }
-    h1 { max-width: 760px; margin: 0; font: 400 clamp(44px,7vw,88px)/.98 Georgia,serif; letter-spacing: -.04em; }
-    main p { max-width: 590px; color: #667080; font-size: 17px; line-height: 1.65; }
-    #rs-preview-controls { position: fixed; left: 16px; bottom: 16px; z-index: 100; padding: 10px; border: 1px solid #dfe3e8; border-radius: 12px; background: #fff; box-shadow: 0 10px 30px #1422361a; }
-    #rs-preview-controls p { margin: 0 0 8px; color: #667080; font-size: 11px; }
-    #rs-preview-controls button { padding: 7px 9px; border: 1px solid #dfe3e8; border-radius: 7px; background: #fff; cursor: pointer; }
+    #rs-recognition-test {
+      --rs-ink: #142236;
+      --rs-muted: #667080;
+      --rs-line: #dfe3e8;
+      --rs-accent: #98492b;
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 9999;
+      width: min(390px, calc(100vw - 44px));
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      pointer-events: none;
+    }
+
+    #rs-recognition-test * { box-sizing: border-box; }
+
+    #rs-recognition-card {
+      overflow: hidden;
+      border: 1px solid rgba(20, 34, 54, 0.12);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(20, 34, 54, 0.20), 0 4px 16px rgba(20, 34, 54, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(26px) scale(0.985);
+      transition: opacity 180ms ease, transform 220ms cubic-bezier(.2,.75,.25,1);
+    }
+
+    #rs-recognition-test.is-open #rs-recognition-card {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    #rs-recognition-test .rs-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px 22px 8px;
+    }
+
+    #rs-recognition-test .rs-eyebrow {
+      margin: 0 0 7px;
+      color: var(--rs-accent);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    #rs-recognition-test h2 {
+      margin: 0;
+      color: var(--rs-ink);
+      font: 400 29px/1.08 Georgia, "Times New Roman", serif;
+      letter-spacing: -0.025em;
+    }
+
+    #rs-recognition-close {
+      width: 38px;
+      height: 38px;
+      margin: -8px -8px 0 0;
+      border: 0;
+      border-radius: 50%;
+      color: var(--rs-muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    #rs-recognition-close:hover,
+    #rs-recognition-close:focus-visible { color: var(--rs-ink); background: #f3f4f5; }
+
+    #rs-recognition-test .rs-card-body { padding: 10px 22px 22px; }
+
+    #rs-recognition-test .rs-copy {
+      margin: 0 0 17px;
+      color: var(--rs-muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    #rs-recognition-test .rs-link-row { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+
+    #rs-recognition-test .rs-text-link {
+      padding: 0;
+      border: 0;
+      color: var(--rs-accent);
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    #rs-recognition-test .rs-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    #rs-recognition-test .rs-wide { grid-column: 1 / -1; }
+
+    #rs-recognition-test label {
+      display: block;
+      margin: 0 0 6px;
+      color: var(--rs-ink);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    #rs-recognition-test .rs-required { color: var(--rs-accent); }
+
+    #rs-recognition-test input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #cfd5dc;
+      border-radius: 10px;
+      color: var(--rs-ink);
+      background: #fff;
+      outline: none;
+      font: inherit;
+    }
+
+    #rs-recognition-test input:focus {
+      border-color: #b85f38;
+      box-shadow: 0 0 0 3px rgba(184, 95, 56, 0.13);
+    }
+
+    #rs-recognition-test .rs-save {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 16px;
+      border: 0;
+      border-radius: 11px;
+      color: #fff;
+      background: #10243c;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    #rs-recognition-test .rs-status {
+      min-height: 18px;
+      margin: 9px 0 0;
+      color: #276748;
+      font-size: 12px;
+    }
+
+    #rs-recognition-test [hidden] { display: none !important; }
+
+    @media (max-width: 620px) {
+      #rs-recognition-test { right: 12px; bottom: 12px; width: calc(100vw - 24px); }
+      #rs-recognition-test .rs-form-grid { grid-template-columns: 1fr; }
+      #rs-recognition-test .rs-wide { grid-column: auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #rs-recognition-card { transition: none; }
+    }
   </style>
-</head>
-<body>
-  <nav>
-    <a class="brand" href="/">RingStatus</a>
-    <a class="rsn-nav-button is-members w-button" id="rs-members-button" href="/members">Members</a>
-  </nav>
-  <main>
-    <h1>Know what’s happening at the ring.</h1>
-    <p>The production recognition widget is loaded below. Its UI states use the real widget; form actions call the test identity API.</p>
-  </main>
-  <aside id="rs-preview-controls">
-    <p>Product states</p>
-    <button type="button" data-rs-preview-state="recognized">Recognized</button>
-    <button type="button" data-rs-preview-state="quiet">Quiet</button>
-    <button type="button" data-rs-preview-state="members">Members gate</button>
-  </aside>
-  <script
-    src="../../webflow-cloud-test/public/rs-recognition.js"
-    data-rs-api-base="https://ringstatus.webflow.io/test/rs-recognition"
-    data-rs-preview="true"
-  ></script>
-</body>
-</html>
+
+  <section id="rs-recognition-card" role="dialog" aria-modal="false" aria-labelledby="rs-card-title">
+    <header class="rs-card-head">
+      <div>
+        <p class="rs-eyebrow" id="rs-card-eyebrow">Welcome back</p>
+        <h2 id="rs-card-title">Hi Lainey</h2>
+      </div>
+      <button id="rs-recognition-close" type="button" aria-label="Close">×</button>
+    </header>
+
+    <div class="rs-card-body">
+      <section id="rs-recognized-view">
+        <p class="rs-copy">We recognized this device.</p>
+        <div class="rs-link-row">
+          <button type="button" class="rs-text-link" id="rs-not-you">Not you?</button>
+          <button type="button" class="rs-text-link" id="rs-update-details">Update my details</button>
+        </div>
+      </section>
+
+      <form id="rs-profile-form" hidden>
+        <div class="rs-form-grid">
+          <div class="rs-wide"><label for="rs-profile-user">User <span class="rs-required">*</span></label><input id="rs-profile-user" name="user" required value="Lainey"></div>
+          <div><label for="rs-profile-first">First</label><input id="rs-profile-first" name="first" value="Lainey"></div>
+          <div><label for="rs-profile-last">Last</label><input id="rs-profile-last" name="last" value="Posa"></div>
+          <div class="rs-wide"><label for="rs-profile-sms">SMS <span class="rs-required">*</span></label><input id="rs-profile-sms" name="sms" required value="16318752160"></div>
+          <div class="rs-wide"><label for="rs-profile-email">Email</label><input id="rs-profile-email" name="email" type="email"></div>
+        </div>
+        <button class="rs-save" type="submit">Save</button>
+        <p class="rs-status" id="rs-profile-status" aria-live="polite"></p>
+      </form>
+
+      <form id="rs-new-profile-form" hidden>
+        <div class="rs-form-grid">
+          <div class="rs-wide"><label for="rs-new-user">User <span class="rs-required">*</span></label><input id="rs-new-user" name="user" required placeholder="User"></div>
+          <div><label for="rs-new-first">First</label><input id="rs-new-first" name="first" placeholder="First"></div>
+          <div><label for="rs-new-last">Last</label><input id="rs-new-last" name="last" placeholder="Last"></div>
+          <div class="rs-wide"><label for="rs-new-sms">SMS <span class="rs-required">*</span></label><input id="rs-new-sms" name="sms" required placeholder="+1 phone"></div>
+          <div class="rs-wide"><label for="rs-new-email">Email</label><input id="rs-new-email" name="email" type="email" placeholder="name@example.com"></div>
+        </div>
+        <button class="rs-save" type="submit">Save</button>
+        <p class="rs-status" id="rs-new-profile-status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const root = document.getElementById("rs-recognition-test");
+      const title = document.getElementById("rs-card-title");
+      const eyebrow = document.getElementById("rs-card-eyebrow");
+      const recognized = document.getElementById("rs-recognized-view");
+      const profile = document.getElementById("rs-profile-form");
+      const newProfile = document.getElementById("rs-new-profile-form");
+
+      function showOnly(view) {
+        [recognized, profile, newProfile].forEach(function (item) {
+          item.hidden = item !== view;
+        });
+      }
+
+      function showProfile() {
+        eyebrow.textContent = "Member details";
+        title.textContent = "Profile";
+        showOnly(profile);
+      }
+
+      function showNewProfile() {
+        eyebrow.textContent = "Start fresh";
+        title.textContent = "New Profile";
+        showOnly(newProfile);
+      }
+
+      function showRecognized(name) {
+        eyebrow.textContent = "Welcome back";
+        title.textContent = "Hi " + (name || "Lainey");
+        showOnly(recognized);
+      }
+
+      document.getElementById("rs-update-details").addEventListener("click", showProfile);
+      document.getElementById("rs-not-you").addEventListener("click", showNewProfile);
+      document.getElementById("rs-recognition-close").addEventListener("click", function () {
+        root.classList.remove("is-open");
+      });
+
+      profile.addEventListener("submit", function (event) {
+        event.preventDefault();
+        if (!profile.reportValidity()) return;
+        document.getElementById("rs-profile-status").textContent = "Saved";
+        showRecognized(profile.elements.user.value.trim());
+      });
+
+      newProfile.addEventListener("submit", function (event) {
+        event.preventDefault();
+        if (!newProfile.reportValidity()) return;
+        document.getElementById("rs-new-profile-status").textContent = "Saved";
+        showRecognized(newProfile.elements.user.value.trim());
+      });
+
+      requestAnimationFrame(function () {
+        root.classList.add("is-open");
+      });
+    })();
+  </script>
+</div>
