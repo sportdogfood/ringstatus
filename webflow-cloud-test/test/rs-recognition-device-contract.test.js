@@ -36,6 +36,7 @@ test("recognizes the live Active device choice and returns its record ID", async
         first_name: "Test",
         last_name: "Member",
         primary_phone_e164: "+16318752160",
+        member_pin: "4826",
         email: "test@example.com",
         status: { name: "test" },
         access_level: { name: "member" }
@@ -59,6 +60,7 @@ test("recognizes the live Active device choice and returns its record ID", async
   assert.equal(body.first_name, "Test");
   assert.equal(body.last_name, "Member");
   assert.equal(body.primary_phone_e164, "+16318752160");
+  assert.equal(body.member_pin, "4826");
   assert.equal(body.email, "test@example.com");
   assert.equal(calls.length, 2);
 });

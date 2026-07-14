@@ -195,7 +195,6 @@
 
     <div class="rs-card-body">
       <section id="rs-recognized-view">
-        <p class="rs-copy">We recognized this device.</p>
         <div class="rs-link-row">
           <button type="button" class="rs-text-link" id="rs-not-you">Not you?</button>
           <button type="button" class="rs-text-link" id="rs-update-details">Update my details</button>
@@ -208,6 +207,7 @@
           <div><label for="rs-profile-first">First</label><input id="rs-profile-first" name="first" value="Lainey"></div>
           <div><label for="rs-profile-last">Last</label><input id="rs-profile-last" name="last" value="Posa"></div>
           <div class="rs-wide"><label for="rs-profile-sms">SMS <span class="rs-required">*</span></label><input id="rs-profile-sms" name="sms" required value="16318752160"></div>
+          <div class="rs-wide"><label for="rs-profile-pin">PIN</label><input id="rs-profile-pin" name="pin" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" autocomplete="off" value="2160"></div>
           <div class="rs-wide"><label for="rs-profile-email">Email</label><input id="rs-profile-email" name="email" type="email"></div>
         </div>
         <button class="rs-save" type="submit">Save</button>
@@ -215,8 +215,8 @@
       </form>
 
       <form id="rs-members-login-form" hidden>
-        <p class="rs-copy">Use the SMS number on your member profile.</p>
-        <div class="rs-single-field"><label for="rs-login-sms">SMS number <span class="rs-required">*</span></label><input id="rs-login-sms" name="sms" inputmode="tel" autocomplete="tel" required placeholder="+1 phone"></div>
+        <p class="rs-copy">Add your SMS number or PIN.</p>
+        <div class="rs-single-field"><label for="rs-login-sms">SMS number or PIN <span class="rs-required">*</span></label><input id="rs-login-sms" name="sms" inputmode="tel" autocomplete="tel" required placeholder="Phone number or 4-digit PIN"></div>
         <button class="rs-save" type="submit">Continue</button>
         <p class="rs-status" id="rs-login-status" aria-live="polite"></p>
       </form>
@@ -268,7 +268,8 @@
         person_name: "Lainey",
         first_name: "Lainey",
         last_name: "Posa",
-        primary_phone_e164: "+16318752160",
+        primary_phone_e164: "16318752160",
+        member_pin: "2160",
         email: "",
         device_record_id: "rec0OtWNkYWs7iGgk",
         matched_by: "device_token",
@@ -332,7 +333,8 @@
         profile.elements.user.value = currentPerson.person_name || "";
         profile.elements.first.value = currentPerson.first_name || "";
         profile.elements.last.value = currentPerson.last_name || "";
-        profile.elements.sms.value = currentPerson.primary_phone_e164 || "";
+        profile.elements.sms.value = phoneForDisplay(currentPerson.primary_phone_e164);
+        profile.elements.pin.value = currentPerson.member_pin || phoneForDisplay(currentPerson.primary_phone_e164).slice(-4);
         profile.elements.email.value = currentPerson.email || "";
         showOnly(profile);
         root.classList.add("is-open");
@@ -422,8 +424,14 @@
       function errorText(error) {
         if (error.code === "phone_already_registered") return "That SMS number already belongs to a profile. Use Members login.";
         if (error.code === "invalid_email") return "Enter a valid email address.";
+        if (error.code === "invalid_pin") return "Enter a 4-digit PIN.";
         if (error.code === "missing_recovery_identity") return "Enter your full name or email.";
         return "We could not complete that request. Please try again.";
+      }
+
+      function phoneForDisplay(value) {
+        const digits = String(value || "").replace(/\D/g, "");
+        return digits.length === 11 && digits.charAt(0) === "1" ? digits.slice(1) : digits;
       }
 
       function redirectToMembers(personUid, statusId) {

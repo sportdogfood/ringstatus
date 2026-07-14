@@ -16,6 +16,7 @@ test("fixture is only the self-contained recognition card", () => {
   assert.match(source, /Hi Lainey/);
   assert.match(source, /id="rs-not-you"/);
   assert.match(source, /id="rs-update-details"/);
+  assert.doesNotMatch(source, /We recognized this device\./);
   assert.doesNotMatch(source, /rs-preview-controls|rs-test-controls|rs-demo-nav/);
 });
 
@@ -25,6 +26,7 @@ test("card keeps Profile and reuses one member lookup instead of New Profile", (
   assert.match(source, /id="rs-profile-form"/);
   assert.match(source, /name="user"[^>]*required/);
   assert.match(source, /name="sms"[^>]*required/);
+  assert.match(source, /name="pin"[^>]*maxlength="4"/);
   assert.match(source, /name="email"/);
   assert.match(source, /showProfile/);
   assert.match(source, /id="rs-recovery-form"/);
@@ -46,12 +48,14 @@ test("Not you opens the shared lookup and recovery confirms with thanks", () => 
   assert.match(source, /missing_recovery_identity[\s\S]*?Enter your full name or email\./);
 });
 
-test("Login presents one clear SMS action", () => {
+test("Login presents one phone or PIN action without country-prefix instructions", () => {
   const source = readFileSync(fixturePath, "utf8");
 
-  assert.match(source, /Use the SMS number on your member profile\./);
-  assert.match(source, /for="rs-login-sms">SMS number/);
+  assert.match(source, /Add your SMS number or PIN\./);
+  assert.match(source, /for="rs-login-sms">SMS number or PIN/);
   assert.match(source, /id="rs-login-sms"[^>]*inputmode="tel"[^>]*autocomplete="tel"/);
+  assert.match(source, /placeholder="Phone number or 4-digit PIN"/);
+  assert.doesNotMatch(source, /\+1/);
   assert.match(source, /type="submit">Continue</);
 });
 

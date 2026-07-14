@@ -37,6 +37,7 @@ async function createProfile(config, input, fetchImpl) {
     first_name: profile.first,
     last_name: profile.last,
     primary_phone_e164: profile.sms,
+    member_pin: profile.pin,
     email: profile.email,
     status: "Active",
     access_level: "member"
@@ -45,8 +46,8 @@ async function createProfile(config, input, fetchImpl) {
   const device = await upsertDevice(config, input.device_token, person.id, fetchImpl);
   return actionResult({
     person, alias, device, event_type: "new", event_result: "success", matched_by: "manual", recognition_status: "confirmed",
-    detail: { changed_fields: ["person_name", "first_name", "last_name", "primary_phone_e164", "email"] },
-    response: { ok: true, recognized: true, person_record_id: person.id, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, email: profile.email, device_record_id: device.id }
+    detail: { changed_fields: ["person_name", "first_name", "last_name", "primary_phone_e164", "member_pin", "email"] },
+    response: { ok: true, recognized: true, person_record_id: person.id, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, member_pin: profile.pin, email: profile.email, device_record_id: device.id }
   });
 }
 
@@ -61,28 +62,37 @@ async function updateProfile(config, input, fetchImpl) {
     first_name: profile.first,
     last_name: profile.last,
     primary_phone_e164: profile.sms,
+    member_pin: profile.pin,
     email: profile.email
   }, fetchImpl);
   const alias = await upsertAlias(config, profile.sms, personId, fetchImpl);
   const device = await upsertDevice(config, input.device_token, personId, fetchImpl);
   return actionResult({
     person, alias, device, event_type: "save", event_result: "success", matched_by: "manual", recognition_status: "confirmed",
-    detail: { changed_fields: ["person_name", "first_name", "last_name", "primary_phone_e164", "email"] },
-    response: { ok: true, recognized: true, person_record_id: personId, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, email: profile.email, device_record_id: device.id }
+    detail: { changed_fields: ["person_name", "first_name", "last_name", "primary_phone_e164", "member_pin", "email"] },
+    response: { ok: true, recognized: true, person_record_id: personId, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, member_pin: profile.pin, email: profile.email, device_record_id: device.id }
   });
 }
 
 async function phoneLogin(config, input, fetchImpl) {
-  const phone = phoneNumber(required(input.sms, "missing_sms"));
-  const person = await findPersonByPhone(config, phone, fetchImpl);
+  const identifier = required(input.sms, "missing_sms");
+  const digits = identifier.replace(/\D/g, "");
+  const matchedBy = digits.length === 4 ? "pin" : "phone";
+  const person = matchedBy === "pin"
+    ? await findPersonByPin(config, digits, fetchImpl)
+    : await findPersonByPhone(config, phoneNumber(identifier), fetchImpl);
   if (!person || !isActive(person.fields?.status)) {
-    return actionResult({ event_type: "login", event_result: "not_matched", matched_by: "phone", recognition_status: "rejected", detail: { source: "members_gate" }, response: { ok: true, recognized: false } });
+    return actionResult({ event_type: "login", event_result: "not_matched", matched_by: matchedBy, recognition_status: "rejected", detail: { source: "members_gate" }, response: { ok: true, recognized: false } });
   }
   const device = await upsertDevice(config, input.device_token, person.id, fetchImpl);
   return actionResult({
-    person, device, event_type: "login", event_result: "matched", matched_by: "phone", recognition_status: "confirmed", detail: { source: "members_gate" },
+    person, device, event_type: "login", event_result: "matched", matched_by: matchedBy, recognition_status: "confirmed", detail: { source: "members_gate" },
     response: { ok: true, recognized: true, ...publicPerson(person), device_record_id: device.id }
   });
+}
+
+function findPersonByPin(config, pin, fetchImpl) {
+  return listFirst(config, config.people, `OR({member_pin} = '${escapeFormula(pin)}',RIGHT({primary_phone_e164},4) = '${escapeFormula(pin)}')`, fetchImpl);
 }
 
 async function recovery(config, input, fetchImpl) {
@@ -211,18 +221,21 @@ function normalizeInput(value) {
 }
 
 function profileInput(input) {
+  const user = required(input.user, "missing_user");
+  const sms = phoneNumber(required(input.sms, "missing_sms"));
   return {
-    user: required(input.user, "missing_user"),
+    user,
     first: clean(input.first),
     last: clean(input.last),
-    sms: phoneNumber(required(input.sms, "missing_sms")),
+    sms,
+    pin: memberPin(input.pin, sms),
     email: emailAddress(input.email)
   };
 }
 
 function publicPerson(person) {
   const f = person.fields || {};
-  return { person_record_id: person.id, person_uid: clean(f.person_uid), person_name: clean(f.person_name), first_name: clean(f.first_name), last_name: clean(f.last_name), primary_phone_e164: clean(f.primary_phone_e164), email: clean(f.email), access_level: selectName(f.access_level) };
+  return { person_record_id: person.id, person_uid: clean(f.person_uid), person_name: clean(f.person_name), first_name: clean(f.first_name), last_name: clean(f.last_name), primary_phone_e164: clean(f.primary_phone_e164), member_pin: clean(f.member_pin) || clean(f.primary_phone_e164).slice(-4), email: clean(f.email), access_level: selectName(f.access_level) };
 }
 
 function getConfig(env) {
@@ -244,6 +257,13 @@ function phoneNumber(value) {
   const normalized = digits.length === 10 ? `1${digits}` : digits;
   if (!/^1\d{10}$/.test(normalized)) throw new RecognitionActionError("invalid_sms", 400);
   return `+${normalized}`;
+}
+function memberPin(value, phone) {
+  const raw = clean(value);
+  if (!raw) return phone.slice(-4);
+  const digits = raw.replace(/\D/g, "");
+  if (!/^\d{4}$/.test(digits)) throw new RecognitionActionError("invalid_pin", 400);
+  return digits;
 }
 function recordId(value, code) {
   const id = required(value, code);

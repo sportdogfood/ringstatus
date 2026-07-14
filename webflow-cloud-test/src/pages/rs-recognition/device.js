@@ -84,6 +84,7 @@ export const GET = async ({ request }) => {
       first_name: person.fields?.first_name || "",
       last_name: person.fields?.last_name || "",
       primary_phone_e164: person.fields?.primary_phone_e164 || "",
+      member_pin: person.fields?.member_pin || String(person.fields?.primary_phone_e164 || "").slice(-4),
       email: person.fields?.email || "",
       person_status: personStatus || "",
       access_level: accessLevel || ""

@@ -70,7 +70,10 @@ test("create_profile creates one person, phone alias, device, and session event"
   const personCreate = calls.find((call) => call.method === "POST" && call.url.includes("rs_people_test"));
   assert.equal(personCreate.body.records[0].fields.person_name, "Lainey");
   assert.equal(personCreate.body.records[0].fields.primary_phone_e164, "+16318752160");
+  assert.equal(personCreate.body.records[0].fields.member_pin, "2160");
+  assert.equal(result.member_pin, "2160");
   assert.equal(events[0].event_type, "new");
+  assert.ok(events[0].detail.changed_fields.includes("member_pin"));
   assert.equal(events[0].person_record_id, "recPersonCreate01");
 });
 
@@ -99,16 +102,19 @@ test("update_profile updates the person and attaches the current device", async 
       first: "Lainey",
       last: "Posa",
       sms: "+16318752160",
+      pin: "4826",
       email: "lainey@example.com"
     })
   });
 
   assert.equal(result.person_uid, "63187");
-  assert.ok(calls.some((call) => call.method === "PATCH" && call.url.includes("rs_people_test")));
+  const personUpdate = calls.find((call) => call.method === "PATCH" && call.url.includes("rs_people_test"));
+  assert.equal(personUpdate.body.records[0].fields.member_pin, "4826");
   assert.equal(events[0].event_type, "save");
+  assert.ok(events[0].detail.changed_fields.includes("member_pin"));
 });
 
-test("phone_login matches a person and persists another device", async () => {
+test("phone_login normalizes a formatted phone and persists another device", async () => {
   const events = [];
   const fetchImpl = sequencedFetch([
     { body: { records: [{ id: "recPhonePerson001", fields: { person_uid: "63187", person_name: "Lainey", primary_phone_e164: "+16318752160", status: "Active", access_level: "member" } }] } },
@@ -121,13 +127,36 @@ test("phone_login matches a person and persists another device", async () => {
     fetchImpl,
     request: new Request("https://ringstatus.webflow.io/test/rs-recognition/action"),
     recordSession: async (input) => events.push(input.payload),
-    payload: payload("phone_login", { sms: "6318752160" })
+    payload: payload("phone_login", { sms: "(631) 875-2160" })
   });
 
   assert.equal(result.recognized, true);
   assert.equal(result.person_uid, "63187");
   assert.equal(events[0].event_type, "login");
   assert.equal(events[0].event_result, "matched");
+});
+
+test("phone_login accepts a four digit member PIN", async () => {
+  const calls = [];
+  const events = [];
+  const fetchImpl = sequencedFetch([
+    { body: { records: [{ id: "recPinPerson0001", fields: { person_uid: "63187", person_name: "Lainey", primary_phone_e164: "+16318752160", member_pin: "4826", status: "Active", access_level: "member" } }] } },
+    { body: { records: [] } },
+    { body: { records: [{ id: "recPinDevice0001" }] } }
+  ], calls);
+
+  const result = await runRecognitionAction({
+    env,
+    fetchImpl,
+    request: new Request("https://ringstatus.webflow.io/test/rs-recognition/action"),
+    recordSession: async (input) => events.push(input.payload),
+    payload: payload("phone_login", { sms: "4826" })
+  });
+
+  assert.equal(result.recognized, true);
+  assert.equal(result.person_uid, "63187");
+  assert.match(calls[0].url, /member_pin/);
+  assert.equal(events[0].matched_by, "pin");
 });
 
 test("recovery always returns the same response and links a match only in the session event", async () => {
