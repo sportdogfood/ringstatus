@@ -58,7 +58,8 @@ test("Login presents one clear SMS action", () => {
 test("local preview can deliberately open Login or member lookup", () => {
   const source = readFileSync(fixturePath, "utf8");
 
-  assert.match(source, /const previewView = new URLSearchParams\(window\.location\.search\)\.get\("view"\)/);
+  assert.match(source, /window\.location\.search\.includes\("view=login"\)/);
+  assert.match(source, /window\.location\.search\.includes\("view=recovery"\)/);
   assert.match(source, /previewView === "login"[\s\S]*?showLogin\(\)/);
   assert.match(source, /previewView === "recovery"[\s\S]*?showRecovery\(\)/);
   assert.doesNotMatch(source, /rs-preview-controls|rs-test-controls|rs-demo-nav/);

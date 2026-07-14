@@ -246,7 +246,9 @@
       const sessionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/session";
       const actionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/action";
       const preview = window.location.protocol === "file:";
-      const previewView = new URLSearchParams(window.location.search).get("view");
+      const previewView = window.location.search.includes("view=login")
+        ? "login"
+        : window.location.search.includes("view=recovery") ? "recovery" : "recognized";
       const path = window.location.pathname.replace(/\/+$/, "") || "/";
       const memberPath = path === "/members";
       const root = document.getElementById("rs-recognition-test");
