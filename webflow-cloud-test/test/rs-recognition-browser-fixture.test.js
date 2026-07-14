@@ -19,18 +19,40 @@ test("fixture is only the self-contained recognition card", () => {
   assert.doesNotMatch(source, /rs-preview-controls|rs-test-controls|rs-demo-nav/);
 });
 
-test("card expands inline to Profile and New Profile with the approved fields", () => {
+test("card keeps Profile and reuses one member lookup instead of New Profile", () => {
   const source = readFileSync(fixturePath, "utf8");
 
   assert.match(source, /id="rs-profile-form"/);
-  assert.match(source, /id="rs-new-profile-form"/);
   assert.match(source, /name="user"[^>]*required/);
-  assert.match(source, /name="first"/);
-  assert.match(source, /name="last"/);
   assert.match(source, /name="sms"[^>]*required/);
   assert.match(source, /name="email"/);
   assert.match(source, /showProfile/);
-  assert.match(source, /showNewProfile/);
+  assert.match(source, /id="rs-recovery-form"/);
+  assert.match(source, /id="rs-recovery-first"/);
+  assert.match(source, /id="rs-recovery-last"/);
+  assert.match(source, /id="rs-recovery-email"/);
+  assert.doesNotMatch(source, /id="rs-new-profile-form"|showNewProfile/);
+});
+
+test("Not you opens the shared lookup and recovery confirms with thanks", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /rs-not-you"\)\.addEventListener\("click", function/);
+  assert.match(source, /rs-not-you[\s\S]*?retire_device[\s\S]*?clearDeviceToken\(\)[\s\S]*?showRecovery\(\)/);
+  assert.match(source, /Schedule a demo/);
+  assert.match(source, />Contact Me</);
+  assert.match(source, /type="submit">Save</);
+  assert.match(source, /Thank you\./);
+  assert.match(source, /missing_recovery_identity[\s\S]*?Enter your full name or email\./);
+});
+
+test("Login presents one clear SMS action", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /Use the SMS number on your member profile\./);
+  assert.match(source, /for="rs-login-sms">SMS number/);
+  assert.match(source, /id="rs-login-sms"[^>]*inputmode="tel"[^>]*autocomplete="tel"/);
+  assert.match(source, /type="submit">Continue</);
 });
 
 test("card uses the existing recognition/session routes and one action route", () => {
@@ -39,7 +61,6 @@ test("card uses the existing recognition/session routes and one action route", (
   assert.match(source, /rs-recognition\/device/);
   assert.match(source, /rs-recognition\/session/);
   assert.match(source, /rs-recognition\/action/);
-  assert.match(source, /action:\s*"create_profile"/);
   assert.match(source, /action:\s*"update_profile"/);
   assert.match(source, /action:\s*"phone_login"/);
   assert.match(source, /action:\s*"recovery"/);

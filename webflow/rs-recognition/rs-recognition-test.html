@@ -100,6 +100,13 @@
     #rs-recognition-test .rs-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
     #rs-recognition-test .rs-wide { grid-column: 1 / -1; }
 
+    #rs-recognition-test .rs-single-field {
+      padding: 14px;
+      border: 1px solid var(--rs-line);
+      border-radius: 12px;
+      background: #f7f8fa;
+    }
+
     #rs-recognition-test label {
       display: block;
       margin: 0 0 6px;
@@ -140,12 +147,29 @@
       font-weight: 750;
     }
 
+    #rs-recognition-test .rs-save:disabled { cursor: wait; opacity: 0.65; }
+
     #rs-recognition-test .rs-status {
       min-height: 18px;
       margin: 9px 0 0;
       color: #276748;
       font-size: 12px;
     }
+
+    #rs-recognition-test .rs-demo-callout {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--rs-line);
+    }
+
+    #rs-recognition-test .rs-demo-title {
+      margin: 0 0 5px;
+      color: var(--rs-ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    #rs-recognition-test .rs-demo-callout .rs-copy { margin-bottom: 0; }
 
     #rs-recognition-test [hidden] { display: none !important; }
 
@@ -190,35 +214,26 @@
         <p class="rs-status" id="rs-profile-status" aria-live="polite"></p>
       </form>
 
-      <form id="rs-new-profile-form" hidden>
-        <div class="rs-form-grid">
-          <div class="rs-wide"><label for="rs-new-user">User <span class="rs-required">*</span></label><input id="rs-new-user" name="user" required placeholder="User"></div>
-          <div><label for="rs-new-first">First</label><input id="rs-new-first" name="first" placeholder="First"></div>
-          <div><label for="rs-new-last">Last</label><input id="rs-new-last" name="last" placeholder="Last"></div>
-          <div class="rs-wide"><label for="rs-new-sms">SMS <span class="rs-required">*</span></label><input id="rs-new-sms" name="sms" required placeholder="+1 phone"></div>
-          <div class="rs-wide"><label for="rs-new-email">Email</label><input id="rs-new-email" name="email" type="email" placeholder="name@example.com"></div>
-        </div>
-        <button class="rs-save" type="submit">Save</button>
-        <p class="rs-status" id="rs-new-profile-status" aria-live="polite"></p>
-      </form>
-
       <form id="rs-members-login-form" hidden>
-        <p class="rs-copy">Enter the SMS number on your member profile.</p>
-        <div><label for="rs-login-sms">SMS <span class="rs-required">*</span></label><input id="rs-login-sms" name="sms" required placeholder="+1 phone"></div>
-        <button class="rs-save" type="submit">Submit</button>
+        <p class="rs-copy">Use the SMS number on your member profile.</p>
+        <div class="rs-single-field"><label for="rs-login-sms">SMS number <span class="rs-required">*</span></label><input id="rs-login-sms" name="sms" inputmode="tel" autocomplete="tel" required placeholder="+1 phone"></div>
+        <button class="rs-save" type="submit">Continue</button>
         <p class="rs-status" id="rs-login-status" aria-live="polite"></p>
       </form>
 
       <form id="rs-recovery-form" hidden>
-        <p class="rs-copy">We did not recognize your phone. Try your full name or email. If we find it, we will send your member link to the email we have on file.</p>
+        <p class="rs-copy">We did not recognize this device. Search by your full name or email. If we find you, we will send your member link to the email on file.</p>
         <div class="rs-form-grid">
-          <div><label for="rs-recovery-first">First</label><input id="rs-recovery-first" name="first"></div>
-          <div><label for="rs-recovery-last">Last</label><input id="rs-recovery-last" name="last"></div>
-          <div class="rs-wide"><label for="rs-recovery-email">Email</label><input id="rs-recovery-email" name="email" type="email"></div>
+          <div><label for="rs-recovery-first">First name</label><input id="rs-recovery-first" name="first" autocomplete="given-name"></div>
+          <div><label for="rs-recovery-last">Last name</label><input id="rs-recovery-last" name="last" autocomplete="family-name"></div>
+          <div class="rs-wide"><label for="rs-recovery-email">Email</label><input id="rs-recovery-email" name="email" type="email" autocomplete="email"></div>
         </div>
-        <button class="rs-save" type="submit">Send</button>
+        <button class="rs-save" type="submit">Save</button>
         <p class="rs-status" id="rs-recovery-status" aria-live="polite"></p>
-        <p class="rs-copy">If your barn or trainer is not already a member, ask them to <a href="/contact">contact me</a> and we can create a demo account for your full barn.</p>
+        <aside class="rs-demo-callout" aria-label="Schedule a demo">
+          <p class="rs-demo-title">Schedule a demo</p>
+          <p class="rs-copy">If your barn or trainer is not already a member, ask them to <a class="rs-text-link" href="/contact">Contact Me</a> and we can create a demo account for your full barn.</p>
+        </aside>
       </form>
     </div>
   </section>
@@ -238,10 +253,9 @@
       const eyebrow = document.getElementById("rs-card-eyebrow");
       const recognized = document.getElementById("rs-recognized-view");
       const profile = document.getElementById("rs-profile-form");
-      const newProfile = document.getElementById("rs-new-profile-form");
       const login = document.getElementById("rs-members-login-form");
       const recovery = document.getElementById("rs-recovery-form");
-      const views = [recognized, profile, newProfile, login, recovery];
+      const views = [recognized, profile, login, recovery];
       let activeView = "quiet";
       let currentPerson = null;
 
@@ -318,16 +332,6 @@
         profile.elements.sms.value = currentPerson.primary_phone_e164 || "";
         profile.elements.email.value = currentPerson.email || "";
         showOnly(profile);
-        root.classList.add("is-open");
-      }
-
-      function showNewProfile() {
-        activeView = "new";
-        currentPerson = null;
-        eyebrow.textContent = "Start fresh";
-        title.textContent = "New Profile";
-        newProfile.reset();
-        showOnly(newProfile);
         root.classList.add("is-open");
       }
 
@@ -415,6 +419,7 @@
       function errorText(error) {
         if (error.code === "phone_already_registered") return "That SMS number already belongs to a profile. Use Members login.";
         if (error.code === "invalid_email") return "Enter a valid email address.";
+        if (error.code === "missing_recovery_identity") return "Enter your full name or email.";
         return "We could not complete that request. Please try again.";
       }
 
@@ -457,10 +462,10 @@
       }
 
       document.getElementById("rs-update-details").addEventListener("click", showProfile);
-      document.getElementById("rs-not-you").addEventListener("click", async function () {
-        try { await callAction({ action: "retire_device", data: {} }); } catch (error) { /* local token must still be cleared */ }
+      document.getElementById("rs-not-you").addEventListener("click", function () {
+        callAction({ action: "retire_device", data: {} }).catch(function () { /* local token must still be cleared */ });
         clearDeviceToken();
-        showNewProfile();
+        showRecovery();
       });
       document.getElementById("rs-recognition-close").addEventListener("click", function () {
         if ((activeView === "recognized" || activeView === "profile") && currentPerson) {
@@ -483,22 +488,6 @@
         } catch (error) {
           status("rs-profile-status", errorText(error), true);
           setBusy(profile, false);
-        }
-      });
-
-      newProfile.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        if (!newProfile.reportValidity()) return;
-        setBusy(newProfile, true);
-        status("rs-new-profile-status", "Saving…", false);
-        try {
-          const result = await callAction({ action: "create_profile", data: Object.fromEntries(new FormData(newProfile)) });
-          currentPerson = result;
-          setDeviceToken(getDeviceToken(true));
-          redirectToMembers(result.person_uid, "rs-new-profile-status");
-        } catch (error) {
-          status("rs-new-profile-status", errorText(error), true);
-          setBusy(newProfile, false);
         }
       });
 
@@ -529,8 +518,8 @@
         status("rs-recovery-status", "Sending…", false);
         try {
           await callAction({ action: "recovery", data: Object.fromEntries(new FormData(recovery)) });
-          status("rs-recovery-status", "If we found your profile, we sent your member link to the email on file.", false);
-          if (!preview) window.setTimeout(function () { window.location.assign("/"); }, 1200);
+          status("rs-recovery-status", "Thank you. If we found your profile, we sent your member link to the email on file.", false);
+          if (!preview) window.setTimeout(function () { window.location.assign("/"); }, 2500);
         } catch (error) {
           status("rs-recovery-status", errorText(error), true);
           setBusy(recovery, false);
