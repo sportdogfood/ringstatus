@@ -7,6 +7,8 @@ import { env } from "cloudflare:workers";
 const DEFAULT_DEVICES_TABLE = "rs_devices_test";
 const DEFAULT_PEOPLE_TABLE = "rs_people_test";
 const ALLOWED_DEVICE_STATUSES = new Set(["active", "test"]);
+const ALLOWED_PERSON_STATUSES = new Set(["active", "test"]);
+const ALLOWED_ACCESS_LEVELS = new Set(["admin", "user", "member"]);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -69,6 +71,35 @@ export const GET = async ({ request }) => {
     const person = await getAirtableRecord(airtable, airtable.peopleTable, personRecordId);
     const personStatus = selectName(person.fields?.status);
     const accessLevel = selectName(person.fields?.access_level);
+
+    if (!ALLOWED_PERSON_STATUSES.has(personStatus.toLowerCase())) {
+      return json({
+        ok: true,
+        recognized: false,
+        recognition_status: "person_not_active",
+        matched_by: "device_token",
+        device_record_id: device.id,
+        device_uid: device.fields?.device_uid || "",
+        device_status: deviceStatus || "",
+        person_record_id: person.id,
+        person_status: personStatus || ""
+      });
+    }
+
+    if (!ALLOWED_ACCESS_LEVELS.has(accessLevel.toLowerCase())) {
+      return json({
+        ok: true,
+        recognized: false,
+        recognition_status: "access_not_allowed",
+        matched_by: "device_token",
+        device_record_id: device.id,
+        device_uid: device.fields?.device_uid || "",
+        device_status: deviceStatus || "",
+        person_record_id: person.id,
+        person_status: personStatus || "",
+        access_level: accessLevel || ""
+      });
+    }
 
     return json({
       ok: true,

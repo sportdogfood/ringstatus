@@ -81,7 +81,7 @@ async function phoneLogin(config, input, fetchImpl) {
   const person = matchedBy === "pin"
     ? await findPersonByPin(config, digits, fetchImpl)
     : await findPersonByPhone(config, phoneNumber(identifier), fetchImpl);
-  if (!person || !isActive(person.fields?.status)) {
+  if (!person || !isActive(person.fields?.status) || !isMemberAccess(person.fields?.access_level)) {
     return actionResult({ event_type: "login", event_result: "not_matched", matched_by: matchedBy, recognition_status: "rejected", detail: { source: "members_gate" }, response: { ok: true, recognized: false } });
   }
   const device = await upsertDevice(config, input.device_token, person.id, fetchImpl);
@@ -103,7 +103,8 @@ async function recovery(config, input, fetchImpl) {
   const clauses = [];
   if (email) clauses.push(`LOWER({email}) = '${escapeFormula(email)}'`);
   if (first && last) clauses.push(`AND(LOWER({first_name}) = '${escapeFormula(first.toLowerCase())}',LOWER({last_name}) = '${escapeFormula(last.toLowerCase())}')`);
-  const person = await listFirst(config, config.people, clauses.length === 1 ? clauses[0] : `OR(${clauses.join(",")})`, fetchImpl);
+  const match = await listFirst(config, config.people, clauses.length === 1 ? clauses[0] : `OR(${clauses.join(",")})`, fetchImpl);
+  const person = match && isActive(match.fields?.status) && isMemberAccess(match.fields?.access_level) ? match : null;
   return actionResult({
     person, event_type: "recovery", event_result: person ? "matched" : "not_matched", matched_by: "manual", recognition_status: "pending",
     detail: person ? { automation_action: "send_member_link", return_to: "/" } : { automation_action: "none", return_to: "/" },
@@ -193,13 +194,13 @@ function getRecord(config, table, id, fetchImpl) {
 }
 
 async function createRecord(config, table, fields, fetchImpl) {
-  const result = await airtableFetch(tableUrl(config.baseId, table), { method: "POST", headers: headers(config.token), body: JSON.stringify({ records: [{ fields }], typecast: true }) }, fetchImpl);
+  const result = await airtableFetch(tableUrl(config.baseId, table), { method: "POST", headers: headers(config.token), body: JSON.stringify({ records: [{ fields }] }) }, fetchImpl);
   if (!result.records?.[0]?.id) throw new RecognitionActionError("airtable_create_failed", 502);
   return result.records[0];
 }
 
 async function updateRecord(config, table, id, fields, fetchImpl) {
-  const result = await airtableFetch(tableUrl(config.baseId, table), { method: "PATCH", headers: headers(config.token), body: JSON.stringify({ records: [{ id, fields }], typecast: true }) }, fetchImpl);
+  const result = await airtableFetch(tableUrl(config.baseId, table), { method: "PATCH", headers: headers(config.token), body: JSON.stringify({ records: [{ id, fields }] }) }, fetchImpl);
   if (!result.records?.[0]?.id) throw new RecognitionActionError("airtable_update_failed", 502);
   return result.records[0];
 }
@@ -274,6 +275,7 @@ function required(value, code) { const text = clean(value); if (!text) throw new
 function clean(value) { return value === undefined || value === null ? "" : String(value).trim(); }
 function selectName(value) { return typeof value === "string" ? value : clean(value?.name); }
 function isActive(value) { return ["active", "test"].includes(selectName(value).toLowerCase()); }
+function isMemberAccess(value) { return ["admin", "user", "member"].includes(selectName(value).toLowerCase()); }
 function firstLink(value) { if (!Array.isArray(value) || !value.length) return ""; return typeof value[0] === "string" ? value[0] : clean(value[0]?.id); }
 function tableUrl(baseId, table) { return new URL(`https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(table)}`); }
 function headers(token) { return { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }; }

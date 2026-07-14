@@ -64,3 +64,33 @@ test("recognizes the live Active device choice and returns its record ID", async
   assert.equal(body.email, "test@example.com");
   assert.equal(calls.length, 2);
 });
+
+test("does not recognize an active device linked to an inactive person", async () => {
+  let call = 0;
+  globalThis.fetch = async () => {
+    call += 1;
+    if (call === 1) return Response.json({ records: [{ id: "rec0OtWNkYWs7iGgk", fields: { device_uid: "device_test_001", person: ["recxMolAW8UhI3Hph"], status: "Active" } }] });
+    return Response.json({ id: "recxMolAW8UhI3Hph", fields: { person_uid: "person_test_001", status: "Inactive", access_level: "member" } });
+  };
+
+  const response = await GET({ request: new Request("https://ringstatus.webflow.io/test/rs-recognition/device?device_token=token_test_browser") });
+  const body = await response.json();
+
+  assert.equal(body.recognized, false);
+  assert.equal(body.recognition_status, "person_not_active");
+});
+
+test("does not recognize a member gate device linked to Guest access", async () => {
+  let call = 0;
+  globalThis.fetch = async () => {
+    call += 1;
+    if (call === 1) return Response.json({ records: [{ id: "rec0OtWNkYWs7iGgk", fields: { device_uid: "device_test_001", person: ["recxMolAW8UhI3Hph"], status: "Active" } }] });
+    return Response.json({ id: "recxMolAW8UhI3Hph", fields: { person_uid: "person_test_001", status: "Active", access_level: "Guest" } });
+  };
+
+  const response = await GET({ request: new Request("https://ringstatus.webflow.io/test/rs-recognition/device?device_token=token_test_browser") });
+  const body = await response.json();
+
+  assert.equal(body.recognized, false);
+  assert.equal(body.recognition_status, "access_not_allowed");
+});

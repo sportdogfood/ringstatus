@@ -1,5 +1,23 @@
 const DEFAULT_SESSIONS_TABLE = "rs_recognition_sessions_test";
 const SIGNAL_VERSION = 1;
+const EVENT_TYPE_CHOICES = new Map([
+  ["start", "start"], ["success", "success"], ["failure", "failure"], ["update", "update"], ["other", "other"],
+  ["recognition", "start"], ["new", "success"], ["save", "update"], ["login", "start"],
+  ["recovery", "other"], ["visit", "success"], ["device_retired", "update"]
+]);
+const EVENT_RESULT_CHOICES = new Map([
+  ["matched", "matched"], ["not_matched", "not_matched"], ["pending", "pending"], ["error", "error"], ["unknown", "unknown"],
+  ["success", "matched"], ["failure", "error"], ["rejected", "not_matched"]
+]);
+const MATCHED_BY_CHOICES = new Map([
+  ["ai", "ai"], ["manual", "manual"], ["external", "external"], ["unknown", "unknown"],
+  ["device_token", "external"], ["phone", "manual"], ["pin", "manual"], ["none", "unknown"]
+]);
+const RECOGNITION_STATUS_CHOICES = new Map([
+  ["pending", "pending"], ["confirmed", "confirmed"], ["rejected", "rejected"], ["flagged", "flagged"],
+  ["known_device", "confirmed"], ["unknown_device", "rejected"], ["device_not_active", "rejected"],
+  ["device_found_no_person", "rejected"], ["person_not_active", "rejected"], ["access_not_allowed", "rejected"]
+]);
 
 export class RecognitionSessionError extends Error {
   constructor(code, status, detail = "") {
@@ -45,8 +63,7 @@ export async function recordRecognitionSession({
     method: "POST",
     headers: airtableHeaders(config.token),
     body: JSON.stringify({
-      records: [{ fields }],
-      typecast: true
+      records: [{ fields }]
     })
   });
   const result = await response.json().catch(() => ({}));
@@ -82,23 +99,29 @@ function airtableConfig(env) {
 
 function normalizeEvent(payload) {
   const input = payload && typeof payload === "object" ? payload : {};
+  const raw = {
+    event_type: required(input.event_type, "missing_event_type"),
+    event_result: required(input.event_result, "missing_event_result"),
+    matched_by: clean(input.matched_by),
+    recognition_status: clean(input.recognition_status)
+  };
   const event = {
     session_event_uid: required(input.session_event_uid, "missing_session_event_uid"),
     session_uid: required(input.session_uid, "missing_session_uid"),
-    event_type: required(input.event_type, "missing_event_type"),
-    event_result: required(input.event_result, "missing_event_result"),
+    event_type: choice(EVENT_TYPE_CHOICES, raw.event_type, "other"),
+    event_result: choice(EVENT_RESULT_CHOICES, raw.event_result, "unknown"),
     idempotency_key: required(input.idempotency_key, "missing_idempotency_key"),
     event_at: validDate(input.event_at) || new Date().toISOString(),
     person_record_id: recordId(input.person_record_id),
     device_record_id: recordId(input.device_record_id),
     phone_alias_record_id: recordId(input.phone_alias_record_id),
-    matched_by: clean(input.matched_by),
-    recognition_status: clean(input.recognition_status),
+    matched_by: choice(MATCHED_BY_CHOICES, raw.matched_by, "unknown"),
+    recognition_status: choice(RECOGNITION_STATUS_CHOICES, raw.recognition_status, "pending"),
     client_timezone: clean(input.client_timezone),
     viewport_width: finiteNumber(input.viewport_width),
     page_path: clean(input.page_path),
     referrer: clean(input.referrer),
-    detail: input.detail
+    detail: enrichedDetail(input.detail, raw)
   };
 
   return event;
@@ -141,7 +164,7 @@ async function buildAirtableFields({ event, request, signalSecret }) {
     event_result: event.event_result,
     event_at: event.event_at,
     idempotency_key: event.idempotency_key,
-    automation_status: "Pending",
+    automation_status: "queued",
     automation_attempt_count: 0,
     signal_version: SIGNAL_VERSION
   };
@@ -245,19 +268,37 @@ function classifyUserAgent(userAgent) {
             ? "Linux"
             : "Unknown";
   const device = /iPad|Tablet/.test(ua)
-    ? "Tablet"
+    ? "tablet"
     : /Mobile|iPhone|iPod|Android/.test(ua)
-      ? "Mobile"
-      : "Desktop";
+      ? "mobile"
+      : "desktop";
 
   return { browser, os, device };
 }
 
 function viewportBucket(width, fallback) {
-  if (width === null) return fallback || "Desktop";
-  if (width <= 480) return "Mobile";
-  if (width <= 1024) return "Tablet";
-  return "Desktop";
+  if (width === null) return fallback === "mobile" ? "small" : fallback === "tablet" ? "medium" : "large";
+  if (width <= 480) return "small";
+  if (width <= 1024) return "medium";
+  if (width <= 1440) return "large";
+  return "extra_large";
+}
+
+function choice(choices, value, fallback) {
+  return choices.get(clean(value).toLowerCase()) || fallback;
+}
+
+function enrichedDetail(value, raw) {
+  const detail = value && typeof value === "object" && !Array.isArray(value)
+    ? { ...value }
+    : value === undefined || value === null || value === "" ? {} : { detail: value };
+  return {
+    ...detail,
+    event_type_raw: raw.event_type,
+    event_result_raw: raw.event_result,
+    matched_by_raw: raw.matched_by,
+    recognition_status_raw: raw.recognition_status
+  };
 }
 
 function primaryLanguage(value) {

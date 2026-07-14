@@ -68,6 +68,7 @@ test("create_profile creates one person, phone alias, device, and session event"
   assert.equal(result.person_record_id, "recPersonCreate01");
   assert.equal(result.device_record_id, "recDeviceCreate01");
   const personCreate = calls.find((call) => call.method === "POST" && call.url.includes("rs_people_test"));
+  assert.equal("typecast" in personCreate.body, false);
   assert.equal(personCreate.body.records[0].fields.person_name, "Lainey");
   assert.equal(personCreate.body.records[0].fields.primary_phone_e164, "+16318752160");
   assert.equal(personCreate.body.records[0].fields.member_pin, "2160");
@@ -159,10 +160,30 @@ test("phone_login accepts a four digit member PIN", async () => {
   assert.equal(events[0].matched_by, "pin");
 });
 
+test("phone_login refuses Guest access without creating a device", async () => {
+  const calls = [];
+  const events = [];
+  const fetchImpl = sequencedFetch([
+    { body: { records: [{ id: "recGuestPerson01", fields: { person_uid: "guest_001", status: "Active", access_level: "Guest" } }] } }
+  ], calls);
+
+  const result = await runRecognitionAction({
+    env,
+    fetchImpl,
+    request: new Request("https://ringstatus.webflow.io/test/rs-recognition/action"),
+    recordSession: async (input) => events.push(input.payload),
+    payload: payload("phone_login", { sms: "(631) 875-2160" })
+  });
+
+  assert.equal(result.recognized, false);
+  assert.equal(calls.length, 1);
+  assert.equal(events[0].recognition_status, "rejected");
+});
+
 test("recovery always returns the same response and links a match only in the session event", async () => {
   const events = [];
   const fetchImpl = sequencedFetch([
-    { body: { records: [{ id: "recRecoveryMatch1", fields: { person_uid: "63187" } }] } }
+    { body: { records: [{ id: "recRecoveryMatch1", fields: { person_uid: "63187", status: "Active", access_level: "member" } }] } }
   ], []);
 
   const result = await runRecognitionAction({
