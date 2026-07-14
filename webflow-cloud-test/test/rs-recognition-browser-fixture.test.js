@@ -78,9 +78,18 @@ test("members gate redirects known phones and moves unknown phones to lookup", (
   assert.match(source, /redirectToMembers\(result\.person_uid/);
 });
 
+test("ks2 uses the homepage recognition flow", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /const homePath = path === "\/" \|\| path === "\/ks2"/);
+  assert.match(source, /if \(!homePath && !memberPath\) return/);
+});
+
 test("homepage entry buttons stay hidden until recognition resolves", () => {
   const source = readFileSync(fixturePath, "utf8");
 
+  assert.match(source, /#rs-access-ringstatus,[\s\S]*?#rs-request-demo\s*\{\s*display:\s*none !important/);
+  assert.match(source, /#rs-access-ringstatus\.is-active,[\s\S]*?#rs-request-demo\.is-active\s*\{\s*display:\s*flex !important/);
   assert.match(source, /getElementById\("rs-access-ringstatus"\)/);
   assert.match(source, /getElementById\("rs-login-ringstatus"\)/);
   assert.match(source, /getElementById\("rs-request-demo"\)/);

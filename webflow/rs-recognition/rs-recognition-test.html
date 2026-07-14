@@ -16,6 +16,14 @@
 
     #rs-recognition-test * { box-sizing: border-box; }
 
+    #rs-access-ringstatus,
+    #rs-login-ringstatus,
+    #rs-request-demo { display: none !important; }
+
+    #rs-access-ringstatus.is-active,
+    #rs-login-ringstatus.is-active,
+    #rs-request-demo.is-active { display: flex !important; }
+
     #rs-recognition-card {
       overflow: hidden;
       border: 1px solid rgba(20, 34, 54, 0.12);
@@ -250,6 +258,7 @@
         ? "login"
         : window.location.search.includes("view=recovery") ? "recovery" : "recognized";
       const path = window.location.pathname.replace(/\/+$/, "") || "/";
+      const homePath = path === "/" || path === "/ks2";
       const memberPath = path === "/members";
       const root = document.getElementById("rs-recognition-test");
       const title = document.getElementById("rs-card-title");
@@ -469,7 +478,7 @@
           else showRecognized(previewPerson);
           return;
         }
-        if (path !== "/" && !memberPath) return;
+        if (!homePath && !memberPath) return;
         const token = getDeviceToken(false);
         if (!token) {
           setEntryButtons("unrecognized");
