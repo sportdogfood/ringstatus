@@ -1,0 +1,209 @@
+<div id="rs-recognition-test">
+  <style>
+    #rs-recognition-test {
+      max-width: 520px;
+      padding: 18px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-family: inherit;
+    }
+
+    #rs-recognition-output {
+      padding: 12px;
+      background: #f6f6f6;
+      border-radius: 10px;
+      white-space: pre-line;
+    }
+
+    #rs-recognition-session-status {
+      min-height: 1.4em;
+      margin-top: 8px;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .rs-recognition-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .rs-recognition-btn:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+  </style>
+
+  <div id="rs-recognition-output" aria-live="polite">Checking recognition...</div>
+  <div id="rs-recognition-session-status" aria-live="polite"></div>
+
+  <button type="button" class="rs-recognition-btn" id="rs-recheck-recognition">
+    Recheck Recognition
+  </button>
+
+  <button type="button" class="rs-recognition-btn" id="rs-clear-token">
+    Clear Device Token
+  </button>
+
+  <script>
+    (function () {
+      const tokenKey = "rs_device_token";
+      const sessionKey = "rs_recognition_session_uid";
+      const recognitionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/device";
+      const sessionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/session";
+
+      const output = document.getElementById("rs-recognition-output");
+      const sessionStatus = document.getElementById("rs-recognition-session-status");
+      const recheck = document.getElementById("rs-recheck-recognition");
+      const clear = document.getElementById("rs-clear-token");
+      let lastRecognition = null;
+
+      function uid(prefix) {
+        const random = window.crypto && typeof window.crypto.randomUUID === "function"
+          ? window.crypto.randomUUID()
+          : Date.now().toString(36) + Math.random().toString(36).slice(2);
+        return prefix + "_" + random.replace(/-/g, "");
+      }
+
+      function getSessionUid() {
+        let value = sessionStorage.getItem(sessionKey);
+        if (!value) {
+          value = uid("session");
+          sessionStorage.setItem(sessionKey, value);
+        }
+        return value;
+      }
+
+      function viewportBucket() {
+        if (window.innerWidth <= 480) return "Mobile";
+        if (window.innerWidth <= 1024) return "Tablet";
+        return "Desktop";
+      }
+
+      async function recordSessionEvent(event) {
+        const sessionEventUid = uid("session_event");
+        const payload = {
+          session_event_uid: sessionEventUid,
+          session_uid: getSessionUid(),
+          event_type: event.event_type,
+          event_result: event.event_result,
+          matched_by: event.matched_by || "none",
+          recognition_status: event.recognition_status || "",
+          person_record_id: event.person_record_id || "",
+          device_record_id: event.device_record_id || "",
+          idempotency_key: event.event_type + ":" + sessionEventUid,
+          client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+          viewport_width: window.innerWidth,
+          viewport_bucket: viewportBucket(),
+          page_path: window.location.pathname,
+          referrer: document.referrer,
+          detail: {
+            source: "rs-recognition-test",
+            device_uid: event.device_uid || ""
+          }
+        };
+
+        sessionStatus.textContent = "Recording session event...";
+
+        try {
+          const response = await fetch(sessionEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json().catch(function () { return {}; });
+          if (!response.ok || !result.ok) throw new Error(result.error || "session_event_failed");
+          sessionStatus.textContent = result.duplicate
+            ? "Session event already recorded."
+            : "Session event recorded.";
+        } catch (error) {
+          sessionStatus.textContent = "Session event was not recorded.";
+        }
+      }
+
+      async function checkRecognition() {
+        const token = localStorage.getItem(tokenKey);
+        recheck.disabled = true;
+
+        if (!token) {
+          lastRecognition = null;
+          output.textContent = "No device token found.\nVisitor is not recognized.";
+          await recordSessionEvent({
+            event_type: "recognition",
+            event_result: "unknown",
+            matched_by: "none",
+            recognition_status: "missing_device_token"
+          });
+          recheck.disabled = false;
+          return;
+        }
+
+        output.textContent = "Checking recognition...";
+
+        try {
+          const response = await fetch(recognitionEndpoint + "?device_token=" + encodeURIComponent(token));
+          const data = await response.json();
+          lastRecognition = data;
+
+          if (data.recognized) {
+            output.textContent =
+              "Hi " + data.person_name + "\n" +
+              "Person UID: " + data.person_uid + "\n" +
+              "Access: " + data.access_level;
+          } else {
+            output.textContent = "Unknown visitor.\nStatus: " + (data.recognition_status || data.error || "unknown");
+          }
+
+          await recordSessionEvent({
+            event_type: "recognition",
+            event_result: data.recognized ? "success" : "unknown",
+            matched_by: data.matched_by,
+            recognition_status: data.recognition_status,
+            person_record_id: data.person_record_id,
+            device_record_id: data.device_record_id,
+            device_uid: data.device_uid
+          });
+        } catch (error) {
+          lastRecognition = null;
+          output.textContent = "Lookup failed.";
+          await recordSessionEvent({
+            event_type: "recognition",
+            event_result: "failed",
+            matched_by: "none",
+            recognition_status: "lookup_failed"
+          });
+        } finally {
+          recheck.disabled = false;
+        }
+      }
+
+      recheck.addEventListener("click", checkRecognition);
+
+      clear.addEventListener("click", async function () {
+        clear.disabled = true;
+        localStorage.removeItem(tokenKey);
+        document.cookie = tokenKey + "=; Max-Age=0; Path=/; SameSite=Lax";
+        output.textContent = "Device token cleared.\nVisitor is not recognized.";
+
+        await recordSessionEvent({
+          event_type: "device_retired",
+          event_result: "success",
+          matched_by: lastRecognition && lastRecognition.matched_by,
+          recognition_status: "device_token_cleared",
+          person_record_id: lastRecognition && lastRecognition.person_record_id,
+          device_record_id: lastRecognition && lastRecognition.device_record_id,
+          device_uid: lastRecognition && lastRecognition.device_uid
+        });
+
+        lastRecognition = null;
+        clear.disabled = false;
+      });
+
+      checkRecognition();
+    })();
+  </script>
+</div>

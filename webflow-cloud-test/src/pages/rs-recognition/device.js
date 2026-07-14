@@ -40,12 +40,14 @@ export const GET = async ({ request }) => {
     }
 
     const deviceStatus = selectName(device.fields?.status);
-    if (!ALLOWED_DEVICE_STATUSES.has(deviceStatus)) {
+    const normalizedDeviceStatus = deviceStatus.toLowerCase();
+    if (!ALLOWED_DEVICE_STATUSES.has(normalizedDeviceStatus)) {
       return json({
         ok: true,
         recognized: false,
         recognition_status: "device_not_active",
         matched_by: "device_token",
+        device_record_id: device.id,
         device_uid: device.fields?.device_uid || "",
         device_status: deviceStatus || ""
       });
@@ -58,6 +60,7 @@ export const GET = async ({ request }) => {
         recognized: false,
         recognition_status: "device_found_no_person",
         matched_by: "device_token",
+        device_record_id: device.id,
         device_uid: device.fields?.device_uid || "",
         device_status: deviceStatus || ""
       });
@@ -72,6 +75,7 @@ export const GET = async ({ request }) => {
       recognized: true,
       recognition_status: "known_device",
       matched_by: "device_token",
+      device_record_id: device.id,
       device_uid: device.fields?.device_uid || "",
       device_status: deviceStatus || "",
       person_record_id: person.id,
