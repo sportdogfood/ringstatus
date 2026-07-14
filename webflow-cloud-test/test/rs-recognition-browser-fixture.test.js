@@ -103,11 +103,20 @@ test("recognized close waits for device confirmation", () => {
   assert.match(source, /await callAction\(\{ action: "confirm_device"[\s\S]*?root\.classList\.remove\("is-open"\)/);
 });
 
-test("ks2 uses the homepage recognition flow", () => {
+test("recognition is route-ready for every requested product page", () => {
   const source = readFileSync(fixturePath, "utf8");
 
-  assert.match(source, /const homePath = path === "\/" \|\| path === "\/ks2"/);
-  assert.match(source, /if \(!homePath && !memberPath\) return/);
+  for (const path of [
+    "/", "/ks2", "/tack", "/pack", "/ship", "/horse", "/prep", "/care", "/feed",
+    "/show", "/ring", "/ride", "/results", "/pro", "/members"
+  ]) {
+    assert.match(source, new RegExp(`"${path === "/" ? "\\/" : path.replace("/", "\\/")}"`));
+  }
+
+  const routeGuard = source.indexOf("if (!preview && !recognitionPaths.has(path)) return;");
+  const cardCreation = source.indexOf('const root = document.createElement("div");');
+  assert.ok(routeGuard >= 0, "client must guard routes before doing any page work");
+  assert.ok(routeGuard < cardCreation, "unlisted pages must not receive card markup or button CSS");
 });
 
 test("homepage entry buttons stay hidden until recognition resolves", () => {
@@ -123,6 +132,15 @@ test("homepage entry buttons stay hidden until recognition resolves", () => {
   assert.match(source, /activeWhen:\s*"unrecognized"[\s\S]*?activeWhen:\s*"unrecognized"/);
   assert.match(source, /classList\.toggle\("is-active", item\.activeWhen === state\)/);
   assert.match(source, /setEntryButtons\("pending"\)/);
+});
+
+test("entry button destinations are owned by the recognition client", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /getElementById\("rs-access-ringstatus"\)[\s\S]*?href:\s*"\/members"/);
+  assert.match(source, /getElementById\("rs-login-ringstatus"\)[\s\S]*?href:\s*"\/members"/);
+  assert.match(source, /getElementById\("rs-request-demo"\)[\s\S]*?href:\s*"\/contact"/);
+  assert.match(source, /item\.element\.setAttribute\("href", item\.href\)/);
 });
 
 test("card uses the existing recognition/session routes and one action route", () => {

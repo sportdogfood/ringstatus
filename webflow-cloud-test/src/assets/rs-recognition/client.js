@@ -1,4 +1,11 @@
 (function () {
+  const preview = window.location.protocol === "file:";
+  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  const recognitionPaths = new Set([
+    "/", "/ks2", "/tack", "/pack", "/ship", "/horse", "/prep", "/care", "/feed",
+    "/show", "/ring", "/ride", "/results", "/pro", "/members"
+  ]);
+  if (!preview && !recognitionPaths.has(path)) return;
   if (document.getElementById("rs-recognition-test")) return;
 
   const root = document.createElement("div");
@@ -260,12 +267,9 @@
   const recognitionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/device";
   const sessionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/session";
   const actionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/action";
-  const preview = window.location.protocol === "file:";
   const previewView = window.location.search.includes("view=login")
     ? "login"
     : window.location.search.includes("view=recovery") ? "recovery" : "recognized";
-  const path = window.location.pathname.replace(/\/+$/, "") || "/";
-  const homePath = path === "/" || path === "/ks2";
   const memberPath = path === "/members";
   const requestedUser = new URLSearchParams(window.location.search).get("user") || "";
   if (memberPath) document.body.classList.add("rs-members-gated");
@@ -277,9 +281,9 @@
   const recovery = document.getElementById("rs-recovery-form");
   const views = [recognized, profile, login, recovery];
   const entryButtons = [
-    { element: document.getElementById("rs-access-ringstatus"), activeWhen: "recognized" },
-    { element: document.getElementById("rs-login-ringstatus"), activeWhen: "unrecognized" },
-    { element: document.getElementById("rs-request-demo"), activeWhen: "unrecognized" }
+    { element: document.getElementById("rs-access-ringstatus"), activeWhen: "recognized", href: "/members" },
+    { element: document.getElementById("rs-login-ringstatus"), activeWhen: "unrecognized", href: "/members" },
+    { element: document.getElementById("rs-request-demo"), activeWhen: "unrecognized", href: "/contact" }
   ];
   let activeView = "quiet";
   let currentPerson = null;
@@ -336,7 +340,9 @@
 
   function setEntryButtons(state) {
     entryButtons.forEach(function (item) {
-      if (item.element) item.element.classList.toggle("is-active", item.activeWhen === state);
+      if (!item.element) return;
+      item.element.setAttribute("href", item.href);
+      item.element.classList.toggle("is-active", item.activeWhen === state);
     });
   }
 
@@ -470,7 +476,6 @@
       else showRecognized({});
       return;
     }
-    if (!homePath && !memberPath) return;
     const token = getDeviceToken(false);
     if (!token) {
       setEntryButtons("unrecognized");
