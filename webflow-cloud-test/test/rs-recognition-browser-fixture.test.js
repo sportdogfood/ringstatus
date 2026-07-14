@@ -6,11 +6,16 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixturePath = resolve(__dirname, "../../webflow/rs-recognition/rs-recognition-test.html");
+const widgetPath = resolve(__dirname, "../public/rs-recognition.js");
+
+function productSource() {
+  return `${readFileSync(fixturePath, "utf8")}\n${readFileSync(widgetPath, "utf8")}`;
+}
 
 test("browser fixture contains the complete recognition product states", () => {
-  const source = readFileSync(fixturePath, "utf8");
+  const source = productSource();
 
-  assert.match(source, /id="rs-recognition-test"/);
+  assert.match(source, /root\.id = "rs-recognition-test"/);
   assert.match(source, /id="rs-recognition-card"/);
   assert.match(source, /id="rs-recognition-close"/);
   assert.match(source, /id="rs-not-you"/);
@@ -23,7 +28,7 @@ test("browser fixture contains the complete recognition product states", () => {
 });
 
 test("profile and new-profile forms preserve the approved fields and requirements", () => {
-  const source = readFileSync(fixturePath, "utf8");
+  const source = productSource();
 
   assert.match(source, /name="user"[^>]*required/);
   assert.match(source, /name="first"/);
@@ -35,9 +40,9 @@ test("profile and new-profile forms preserve the approved fields and requirement
 });
 
 test("members gate includes immediate phone login and fallback recovery", () => {
-  const source = readFileSync(fixturePath, "utf8");
+  const source = productSource();
 
-  assert.match(source, /We didn.t recognize that phone number/);
+  assert.match(source, /We didn.t recognize (?:that phone number|your phone)/);
   assert.match(source, /full name or email/i);
   assert.match(source, /email we have on file/i);
   assert.match(source, /full barn/i);
@@ -47,23 +52,33 @@ test("members gate includes immediate phone login and fallback recovery", () => 
 });
 
 test("browser fixture uses the wired recognition and session routes", () => {
-  const source = readFileSync(fixturePath, "utf8");
+  const source = productSource();
 
   assert.match(source, /rs_device_token/);
-  assert.match(source, /https:\/\/ringstatus\.webflow\.io\/test\/rs-recognition\/device/);
-  assert.match(source, /https:\/\/ringstatus\.webflow\.io\/test\/rs-recognition\/session/);
+  assert.match(source, /https:\/\/ringstatus\.webflow\.io\/test\/rs-recognition/);
+  assert.match(source, /\$\{apiBase\}\/device/);
+  assert.match(source, /\$\{apiBase\}\/session/);
+  assert.match(source, /\$\{apiBase\}\/identity/);
   assert.match(source, /recordSessionEvent/);
   assert.match(source, /session_event_uid/);
   assert.match(source, /idempotency_key/);
   assert.match(source, /device_record_id/);
   assert.match(source, /person_record_id/);
-  assert.match(source, /event_type:\s*"visit"/);
-  assert.match(source, /event_type:\s*"save"/);
-  assert.match(source, /event_type:\s*"new"/);
+  assert.match(source, /action:\s*"create_profile"/);
+  assert.match(source, /action:\s*"update_profile"/);
+  assert.match(source, /action:\s*"phone_login"/);
+  assert.match(source, /action:\s*"recovery"/);
+  assert.match(source, /action:\s*"confirm_device"/);
+  assert.match(source, /action:\s*"retire_device"/);
+  assert.doesNotMatch(source, /isLocalTest/);
+  assert.doesNotMatch(source, /mockPerson/);
+  assert.match(source, /public\/rs-recognition\.js|rs-recognition\.js/);
+  assert.match(source, /window\.location\.pathname/);
+  assert.match(source, /new URLSearchParams\(window\.location\.search\)/);
 });
 
 test("browser fixture never contains Airtable credentials or direct Airtable calls", () => {
-  const source = readFileSync(fixturePath, "utf8");
+  const source = productSource();
 
   assert.doesNotMatch(source, /api\.airtable\.com/);
   assert.doesNotMatch(source, /AIRTABLE_TOKEN/);
