@@ -55,6 +55,24 @@ test("Login presents one clear SMS action", () => {
   assert.match(source, /type="submit">Continue</);
 });
 
+test("local preview can deliberately open Login or member lookup", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /const previewView = new URLSearchParams\(window\.location\.search\)\.get\("view"\)/);
+  assert.match(source, /previewView === "login"[\s\S]*?showLogin\(\)/);
+  assert.match(source, /previewView === "recovery"[\s\S]*?showRecovery\(\)/);
+  assert.doesNotMatch(source, /rs-preview-controls|rs-test-controls|rs-demo-nav/);
+});
+
+test("members gate redirects known phones and moves unknown phones to lookup", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /const memberPath = path === "\/members"/);
+  assert.match(source, /action:\s*"phone_login"/);
+  assert.match(source, /if \(!result\.recognized\)[\s\S]*?showRecovery\(\)/);
+  assert.match(source, /redirectToMembers\(result\.person_uid/);
+});
+
 test("card uses the existing recognition/session routes and one action route", () => {
   const source = readFileSync(fixturePath, "utf8");
 
