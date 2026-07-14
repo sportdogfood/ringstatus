@@ -78,6 +78,19 @@ test("members gate redirects known phones and moves unknown phones to lookup", (
   assert.match(source, /redirectToMembers\(result\.person_uid/);
 });
 
+test("homepage entry buttons stay hidden until recognition resolves", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /getElementById\("rs-access-ringstatus"\)/);
+  assert.match(source, /getElementById\("rs-login-ringstatus"\)/);
+  assert.match(source, /getElementById\("rs-request-demo"\)/);
+  assert.match(source, /function setEntryButtons\(state\)/);
+  assert.match(source, /activeWhen:\s*"recognized"/);
+  assert.match(source, /activeWhen:\s*"unrecognized"[\s\S]*?activeWhen:\s*"unrecognized"/);
+  assert.match(source, /classList\.toggle\("is-active", item\.activeWhen === state\)/);
+  assert.match(source, /setEntryButtons\("pending"\)/);
+});
+
 test("card uses the existing recognition/session routes and one action route", () => {
   const source = readFileSync(fixturePath, "utf8");
 

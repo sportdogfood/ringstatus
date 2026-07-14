@@ -259,6 +259,11 @@
       const login = document.getElementById("rs-members-login-form");
       const recovery = document.getElementById("rs-recovery-form");
       const views = [recognized, profile, login, recovery];
+      const entryButtons = [
+        { element: document.getElementById("rs-access-ringstatus"), activeWhen: "recognized" },
+        { element: document.getElementById("rs-login-ringstatus"), activeWhen: "unrecognized" },
+        { element: document.getElementById("rs-request-demo"), activeWhen: "unrecognized" }
+      ];
       let activeView = "quiet";
       let currentPerson = null;
 
@@ -326,8 +331,15 @@
         });
       }
 
+      function setEntryButtons(state) {
+        entryButtons.forEach(function (item) {
+          if (item.element) item.element.classList.toggle("is-active", item.activeWhen === state);
+        });
+      }
+
       function showProfile() {
         activeView = "profile";
+        setEntryButtons("recognized");
         eyebrow.textContent = "Member details";
         title.textContent = "Profile";
         profile.elements.user.value = currentPerson.person_name || "";
@@ -343,6 +355,7 @@
       function showRecognized(person) {
         activeView = "recognized";
         currentPerson = person;
+        setEntryButtons("recognized");
         eyebrow.textContent = "Welcome back";
         title.textContent = "Hi " + (person.person_name || person.first_name || "there");
         showOnly(recognized);
@@ -352,6 +365,7 @@
       function showLogin() {
         activeView = "login";
         currentPerson = null;
+        setEntryButtons("unrecognized");
         eyebrow.textContent = "Members";
         title.textContent = "Login";
         login.reset();
@@ -361,6 +375,7 @@
 
       function showRecovery() {
         activeView = "recovery";
+        setEntryButtons("unrecognized");
         eyebrow.textContent = "Member lookup";
         title.textContent = "Let’s find you";
         recovery.reset();
@@ -444,7 +459,10 @@
       }
 
       async function recognize() {
-        if (memberPath && new URLSearchParams(window.location.search).get("user")) return;
+        if (memberPath && new URLSearchParams(window.location.search).get("user")) {
+          setEntryButtons("recognized");
+          return;
+        }
         if (preview) {
           if (previewView === "login") showLogin();
           else if (previewView === "recovery") showRecovery();
@@ -454,6 +472,7 @@
         if (path !== "/" && !memberPath) return;
         const token = getDeviceToken(false);
         if (!token) {
+          setEntryButtons("unrecognized");
           recordSession({ event_type: "recognition", event_result: "not_matched", detail: { reason: "missing_device_token" } }).catch(function () {});
           if (memberPath) showLogin();
           return;
@@ -462,14 +481,17 @@
           const response = await fetch(recognitionEndpoint + "?device_token=" + encodeURIComponent(token));
           const result = await response.json().catch(function () { return {}; });
           if (!response.ok || !result.recognized) {
+            setEntryButtons("unrecognized");
             await recordSession({ event_type: "recognition", event_result: "not_matched", matched_by: result.matched_by, recognition_status: result.recognition_status, device_record_id: result.device_record_id });
             if (memberPath) showLogin();
             return;
           }
           await recordSession({ event_type: "recognition", event_result: "matched", matched_by: result.matched_by, recognition_status: result.recognition_status, person_record_id: result.person_record_id, device_record_id: result.device_record_id });
+          setEntryButtons("recognized");
           if (memberPath) redirectToMembers(result.person_uid);
           else showRecognized(result);
         } catch (error) {
+          setEntryButtons("unrecognized");
           if (memberPath) showLogin();
         }
       }
@@ -543,6 +565,7 @@
         if (event.key === "Escape" && root.classList.contains("is-open")) document.getElementById("rs-recognition-close").click();
       });
 
+      setEntryButtons("pending");
       recognize();
     })();
   </script>
