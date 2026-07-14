@@ -201,65 +201,347 @@
         <button class="rs-save" type="submit">Save</button>
         <p class="rs-status" id="rs-new-profile-status" aria-live="polite"></p>
       </form>
+
+      <form id="rs-members-login-form" hidden>
+        <p class="rs-copy">Enter the SMS number on your member profile.</p>
+        <div><label for="rs-login-sms">SMS <span class="rs-required">*</span></label><input id="rs-login-sms" name="sms" required placeholder="+1 phone"></div>
+        <button class="rs-save" type="submit">Submit</button>
+        <p class="rs-status" id="rs-login-status" aria-live="polite"></p>
+      </form>
+
+      <form id="rs-recovery-form" hidden>
+        <p class="rs-copy">We did not recognize your phone. Try your full name or email. If we find it, we will send your member link to the email we have on file.</p>
+        <div class="rs-form-grid">
+          <div><label for="rs-recovery-first">First</label><input id="rs-recovery-first" name="first"></div>
+          <div><label for="rs-recovery-last">Last</label><input id="rs-recovery-last" name="last"></div>
+          <div class="rs-wide"><label for="rs-recovery-email">Email</label><input id="rs-recovery-email" name="email" type="email"></div>
+        </div>
+        <button class="rs-save" type="submit">Send</button>
+        <p class="rs-status" id="rs-recovery-status" aria-live="polite"></p>
+        <p class="rs-copy">If your barn or trainer is not already a member, ask them to <a href="/contact">contact me</a> and we can create a demo account for your full barn.</p>
+      </form>
     </div>
   </section>
 
   <script>
     (function () {
+      const tokenKey = "rs_device_token";
+      const sessionKey = "rs_recognition_session_uid";
+      const recognitionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/device";
+      const sessionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/session";
+      const actionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/action";
+      const preview = window.location.protocol === "file:";
+      const path = window.location.pathname.replace(/\/+$/, "") || "/";
+      const memberPath = path === "/members";
       const root = document.getElementById("rs-recognition-test");
       const title = document.getElementById("rs-card-title");
       const eyebrow = document.getElementById("rs-card-eyebrow");
       const recognized = document.getElementById("rs-recognized-view");
       const profile = document.getElementById("rs-profile-form");
       const newProfile = document.getElementById("rs-new-profile-form");
+      const login = document.getElementById("rs-members-login-form");
+      const recovery = document.getElementById("rs-recovery-form");
+      const views = [recognized, profile, newProfile, login, recovery];
+      let activeView = "quiet";
+      let currentPerson = null;
+
+      const previewPerson = {
+        person_record_id: "recxMolAW8UhI3Hph",
+        person_uid: "63187",
+        person_name: "Lainey",
+        first_name: "Lainey",
+        last_name: "Posa",
+        primary_phone_e164: "+16318752160",
+        email: "",
+        device_record_id: "rec0OtWNkYWs7iGgk",
+        matched_by: "device_token",
+        recognition_status: "known_device"
+      };
+
+      function uid(prefix) {
+        const random = window.crypto && typeof window.crypto.randomUUID === "function"
+          ? window.crypto.randomUUID().replace(/-/g, "")
+          : Date.now().toString(36) + Math.random().toString(36).slice(2);
+        return prefix + "_" + random;
+      }
+
+      function getSessionUid() {
+        let value = sessionStorage.getItem(sessionKey);
+        if (!value) {
+          value = uid("session");
+          sessionStorage.setItem(sessionKey, value);
+        }
+        return value;
+      }
+
+      function getDeviceToken(create) {
+        let value = localStorage.getItem(tokenKey);
+        if (!value && create) {
+          value = uid("device_token");
+          setDeviceToken(value);
+        }
+        return value || "";
+      }
+
+      function setDeviceToken(value) {
+        localStorage.setItem(tokenKey, value);
+        document.cookie = tokenKey + "=" + encodeURIComponent(value) + "; Max-Age=31536000; Path=/; SameSite=Lax; Secure";
+      }
+
+      function clearDeviceToken() {
+        localStorage.removeItem(tokenKey);
+        document.cookie = tokenKey + "=; Max-Age=0; Path=/; SameSite=Lax; Secure";
+      }
+
+      function requestContext() {
+        return {
+          client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+          viewport_width: window.innerWidth,
+          page_path: window.location.pathname,
+          referrer: document.referrer
+        };
+      }
 
       function showOnly(view) {
-        [recognized, profile, newProfile].forEach(function (item) {
+        views.forEach(function (item) {
           item.hidden = item !== view;
         });
       }
 
       function showProfile() {
+        activeView = "profile";
         eyebrow.textContent = "Member details";
         title.textContent = "Profile";
+        profile.elements.user.value = currentPerson.person_name || "";
+        profile.elements.first.value = currentPerson.first_name || "";
+        profile.elements.last.value = currentPerson.last_name || "";
+        profile.elements.sms.value = currentPerson.primary_phone_e164 || "";
+        profile.elements.email.value = currentPerson.email || "";
         showOnly(profile);
+        root.classList.add("is-open");
       }
 
       function showNewProfile() {
+        activeView = "new";
+        currentPerson = null;
         eyebrow.textContent = "Start fresh";
         title.textContent = "New Profile";
+        newProfile.reset();
         showOnly(newProfile);
+        root.classList.add("is-open");
       }
 
-      function showRecognized(name) {
+      function showRecognized(person) {
+        activeView = "recognized";
+        currentPerson = person;
         eyebrow.textContent = "Welcome back";
-        title.textContent = "Hi " + (name || "Lainey");
+        title.textContent = "Hi " + (person.person_name || person.first_name || "there");
         showOnly(recognized);
+        root.classList.add("is-open");
+      }
+
+      function showLogin() {
+        activeView = "login";
+        currentPerson = null;
+        eyebrow.textContent = "Members";
+        title.textContent = "Login";
+        login.reset();
+        showOnly(login);
+        root.classList.add("is-open");
+      }
+
+      function showRecovery() {
+        activeView = "recovery";
+        eyebrow.textContent = "Member lookup";
+        title.textContent = "Let’s find you";
+        recovery.reset();
+        showOnly(recovery);
+        root.classList.add("is-open");
+      }
+
+      function status(formId, message, error) {
+        const element = document.getElementById(formId);
+        element.textContent = message || "";
+        element.style.color = error ? "#a63838" : "#276748";
+      }
+
+      function setBusy(form, busy) {
+        form.querySelector('[type="submit"]').disabled = busy;
+      }
+
+      async function recordSession(event) {
+        const eventUid = uid("session_event");
+        const payload = Object.assign({
+          session_event_uid: eventUid,
+          session_uid: getSessionUid(),
+          event_type: event.event_type,
+          event_result: event.event_result,
+          idempotency_key: event.event_type + ":" + eventUid,
+          person_record_id: event.person_record_id || "",
+          device_record_id: event.device_record_id || "",
+          matched_by: event.matched_by || "unknown",
+          recognition_status: event.recognition_status || "pending",
+          detail: event.detail || { source: "recognition_card" }
+        }, requestContext());
+        const response = await fetch(sessionEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error("session_event_failed");
+      }
+
+      async function callAction(specification) {
+        const payload = Object.assign({
+          action: specification.action,
+          session_uid: getSessionUid(),
+          session_event_uid: uid("session_event"),
+          device_token: getDeviceToken(specification.action !== "retire_device")
+        }, requestContext(), specification.data || {});
+        const response = await fetch(actionEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(function () { return {}; });
+        if (!response.ok || !result.ok) {
+          const error = new Error(result.error || "action_failed");
+          error.code = result.error || "action_failed";
+          throw error;
+        }
+        return result;
+      }
+
+      function errorText(error) {
+        if (error.code === "phone_already_registered") return "That SMS number already belongs to a profile. Use Members login.";
+        if (error.code === "invalid_email") return "Enter a valid email address.";
+        return "We could not complete that request. Please try again.";
+      }
+
+      function redirectToMembers(personUid, statusId) {
+        const target = "/members?user=" + encodeURIComponent(personUid);
+        if (preview) {
+          if (statusId) status(statusId, "Ready: " + target, false);
+          return;
+        }
+        window.location.assign(target);
+      }
+
+      async function recognize() {
+        if (memberPath && new URLSearchParams(window.location.search).get("user")) return;
+        if (preview) {
+          showRecognized(previewPerson);
+          return;
+        }
+        if (path !== "/" && !memberPath) return;
+        const token = getDeviceToken(false);
+        if (!token) {
+          recordSession({ event_type: "recognition", event_result: "not_matched", detail: { reason: "missing_device_token" } }).catch(function () {});
+          if (memberPath) showLogin();
+          return;
+        }
+        try {
+          const response = await fetch(recognitionEndpoint + "?device_token=" + encodeURIComponent(token));
+          const result = await response.json().catch(function () { return {}; });
+          if (!response.ok || !result.recognized) {
+            await recordSession({ event_type: "recognition", event_result: "not_matched", matched_by: result.matched_by, recognition_status: result.recognition_status, device_record_id: result.device_record_id });
+            if (memberPath) showLogin();
+            return;
+          }
+          await recordSession({ event_type: "recognition", event_result: "matched", matched_by: result.matched_by, recognition_status: result.recognition_status, person_record_id: result.person_record_id, device_record_id: result.device_record_id });
+          if (memberPath) redirectToMembers(result.person_uid);
+          else showRecognized(result);
+        } catch (error) {
+          if (memberPath) showLogin();
+        }
       }
 
       document.getElementById("rs-update-details").addEventListener("click", showProfile);
-      document.getElementById("rs-not-you").addEventListener("click", showNewProfile);
+      document.getElementById("rs-not-you").addEventListener("click", async function () {
+        try { await callAction({ action: "retire_device", data: {} }); } catch (error) { /* local token must still be cleared */ }
+        clearDeviceToken();
+        showNewProfile();
+      });
       document.getElementById("rs-recognition-close").addEventListener("click", function () {
+        if ((activeView === "recognized" || activeView === "profile") && currentPerson) {
+          callAction({ action: "confirm_device", data: { person_record_id: currentPerson.person_record_id, person_uid: currentPerson.person_uid } }).catch(function () {});
+        }
         root.classList.remove("is-open");
       });
 
-      profile.addEventListener("submit", function (event) {
+      profile.addEventListener("submit", async function (event) {
         event.preventDefault();
         if (!profile.reportValidity()) return;
-        document.getElementById("rs-profile-status").textContent = "Saved";
-        showRecognized(profile.elements.user.value.trim());
+        setBusy(profile, true);
+        status("rs-profile-status", "Saving…", false);
+        try {
+          const data = Object.fromEntries(new FormData(profile));
+          const result = await callAction({ action: "update_profile", data: Object.assign(data, { person_record_id: currentPerson.person_record_id, person_uid: currentPerson.person_uid }) });
+          currentPerson = result;
+          setDeviceToken(getDeviceToken(true));
+          redirectToMembers(result.person_uid, "rs-profile-status");
+        } catch (error) {
+          status("rs-profile-status", errorText(error), true);
+          setBusy(profile, false);
+        }
       });
 
-      newProfile.addEventListener("submit", function (event) {
+      newProfile.addEventListener("submit", async function (event) {
         event.preventDefault();
         if (!newProfile.reportValidity()) return;
-        document.getElementById("rs-new-profile-status").textContent = "Saved";
-        showRecognized(newProfile.elements.user.value.trim());
+        setBusy(newProfile, true);
+        status("rs-new-profile-status", "Saving…", false);
+        try {
+          const result = await callAction({ action: "create_profile", data: Object.fromEntries(new FormData(newProfile)) });
+          currentPerson = result;
+          setDeviceToken(getDeviceToken(true));
+          redirectToMembers(result.person_uid, "rs-new-profile-status");
+        } catch (error) {
+          status("rs-new-profile-status", errorText(error), true);
+          setBusy(newProfile, false);
+        }
       });
 
-      requestAnimationFrame(function () {
-        root.classList.add("is-open");
+      login.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        if (!login.reportValidity()) return;
+        setBusy(login, true);
+        status("rs-login-status", "Checking…", false);
+        try {
+          const result = await callAction({ action: "phone_login", data: Object.fromEntries(new FormData(login)) });
+          if (!result.recognized) {
+            setBusy(login, false);
+            showRecovery();
+            return;
+          }
+          currentPerson = result;
+          setDeviceToken(getDeviceToken(true));
+          redirectToMembers(result.person_uid, "rs-login-status");
+        } catch (error) {
+          status("rs-login-status", errorText(error), true);
+          setBusy(login, false);
+        }
       });
+
+      recovery.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        setBusy(recovery, true);
+        status("rs-recovery-status", "Sending…", false);
+        try {
+          await callAction({ action: "recovery", data: Object.fromEntries(new FormData(recovery)) });
+          status("rs-recovery-status", "If we found your profile, we sent your member link to the email on file.", false);
+          if (!preview) window.setTimeout(function () { window.location.assign("/"); }, 1200);
+        } catch (error) {
+          status("rs-recovery-status", errorText(error), true);
+          setBusy(recovery, false);
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && root.classList.contains("is-open")) document.getElementById("rs-recognition-close").click();
+      });
+
+      recognize();
     })();
   </script>
 </div>

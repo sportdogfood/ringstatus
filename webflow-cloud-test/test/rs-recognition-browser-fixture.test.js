@@ -17,7 +17,6 @@ test("fixture is only the self-contained recognition card", () => {
   assert.match(source, /id="rs-not-you"/);
   assert.match(source, /id="rs-update-details"/);
   assert.doesNotMatch(source, /rs-preview-controls|rs-test-controls|rs-demo-nav/);
-  assert.doesNotMatch(source, /rs-members-login-form|rs-recovery-form/);
 });
 
 test("card expands inline to Profile and New Profile with the approved fields", () => {
@@ -34,10 +33,19 @@ test("card expands inline to Profile and New Profile with the approved fields", 
   assert.match(source, /showNewProfile/);
 });
 
-test("card contains no backend, Airtable, session, or recognition wiring", () => {
+test("card uses the existing recognition/session routes and one action route", () => {
   const source = readFileSync(fixturePath, "utf8");
 
-  assert.doesNotMatch(source, /ringstatus\.webflow\.io|api\.airtable\.com/);
-  assert.doesNotMatch(source, /rs-recognition\/(?:device|session|identity)/);
-  assert.doesNotMatch(source, /AIRTABLE_TOKEN|recordSessionEvent|session_event_uid|idempotency_key/);
+  assert.match(source, /rs-recognition\/device/);
+  assert.match(source, /rs-recognition\/session/);
+  assert.match(source, /rs-recognition\/action/);
+  assert.match(source, /action:\s*"create_profile"/);
+  assert.match(source, /action:\s*"update_profile"/);
+  assert.match(source, /action:\s*"phone_login"/);
+  assert.match(source, /action:\s*"recovery"/);
+  assert.match(source, /action:\s*"confirm_device"/);
+  assert.match(source, /action:\s*"retire_device"/);
+  assert.match(source, /id="rs-members-login-form"/);
+  assert.match(source, /id="rs-recovery-form"/);
+  assert.doesNotMatch(source, /api\.airtable\.com|AIRTABLE_TOKEN|Bearer\s+/);
 });
