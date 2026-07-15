@@ -30,7 +30,7 @@ test("Webflow pages use one short versioned loader", () => {
   assert.equal(existsSync(loaderPath), true, "page loader must exist");
   const loader = readFileSync(loaderPath, "utf8").trim();
 
-  assert.equal(loader, '<script src="https://ringstatus.webflow.io/test/rs-recognition/client.js?v=2" defer></script>');
+  assert.equal(loader, '<script src="https://ringstatus.webflow.io/test/rs-recognition/client.js?v=3" defer></script>');
   assert.ok(Buffer.byteLength(loader) < 200);
 });
 

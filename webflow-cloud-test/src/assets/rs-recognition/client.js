@@ -264,6 +264,10 @@
 
   const tokenKey = "rs_device_token";
   const sessionKey = "rs_recognition_session_uid";
+  const recognitionResultKey = "rs_recognition_result";
+  const welcomeShownKey = "rs_recognition_welcome_shown";
+  const buttonStateKey = "rs_recognition_button_state";
+  const buttonStateTtlMs = 15 * 60 * 1000;
   const recognitionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/device";
   const sessionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/session";
   const actionEndpoint = "https://ringstatus.webflow.io/test/rs-recognition/action";
@@ -305,7 +309,8 @@
   }
 
   function getDeviceToken(create) {
-    let value = localStorage.getItem(tokenKey);
+    let value = localStorage.getItem(tokenKey) || readCookie(tokenKey);
+    if (value && !localStorage.getItem(tokenKey)) localStorage.setItem(tokenKey, value);
     if (!value && create) {
       value = uid("device_token");
       setDeviceToken(value);
@@ -314,6 +319,7 @@
   }
 
   function setDeviceToken(value) {
+    clearRecognitionState();
     localStorage.setItem(tokenKey, value);
     document.cookie = tokenKey + "=" + encodeURIComponent(value) + "; Max-Age=31536000; Path=/; SameSite=Lax; Secure";
   }
@@ -321,6 +327,55 @@
   function clearDeviceToken() {
     localStorage.removeItem(tokenKey);
     document.cookie = tokenKey + "=; Max-Age=0; Path=/; SameSite=Lax; Secure";
+    clearRecognitionState();
+  }
+
+  function readCookie(name) {
+    const prefix = encodeURIComponent(name) + "=";
+    const item = document.cookie.split("; ").find(function (part) { return part.startsWith(prefix); });
+    if (!item) return "";
+    try { return decodeURIComponent(item.slice(prefix.length)); } catch (error) { return ""; }
+  }
+
+  function clearRecognitionState() {
+    sessionStorage.removeItem(recognitionResultKey);
+    sessionStorage.removeItem(welcomeShownKey);
+    localStorage.removeItem(buttonStateKey);
+  }
+
+  function readCachedButtonState(deviceToken) {
+    if (!deviceToken) return "";
+    try {
+      const cached = JSON.parse(localStorage.getItem(buttonStateKey) || "null");
+      if (!cached || cached.device_token !== deviceToken || cached.expires_at <= Date.now()) return "";
+      return cached.state === "recognized" || cached.state === "unrecognized" ? cached.state : "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function cacheButtonState(state, deviceToken) {
+    if (!deviceToken || (state !== "recognized" && state !== "unrecognized")) return;
+    localStorage.setItem(buttonStateKey, JSON.stringify({
+      state: state,
+      device_token: deviceToken,
+      expires_at: Date.now() + buttonStateTtlMs
+    }));
+  }
+
+  function readSessionRecognition(deviceToken) {
+    if (!deviceToken) return null;
+    try {
+      const cached = JSON.parse(sessionStorage.getItem(recognitionResultKey) || "null");
+      return cached && cached.device_token === deviceToken ? cached.result : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function cacheSessionRecognition(deviceToken, result) {
+    if (!deviceToken || !result) return;
+    sessionStorage.setItem(recognitionResultKey, JSON.stringify({ device_token: deviceToken, result: result }));
   }
 
   function requestContext() {
@@ -346,6 +401,11 @@
     });
   }
 
+  function setResolvedButtons(state, deviceToken) {
+    setEntryButtons(state);
+    cacheButtonState(state, deviceToken);
+  }
+
   function showProfile() {
     activeView = "profile";
     setEntryButtons("recognized");
@@ -364,17 +424,28 @@
   function showRecognized(person) {
     activeView = "recognized";
     currentPerson = person;
-    setEntryButtons("recognized");
+    setResolvedButtons("recognized", getDeviceToken(false));
     eyebrow.textContent = "Welcome back";
     title.textContent = "Hi " + (person.person_name || person.first_name || "there");
     showOnly(recognized);
     root.classList.add("is-open");
   }
 
+  function showRecognizedOnce(person, deviceToken) {
+    setResolvedButtons("recognized", deviceToken);
+    currentPerson = person;
+    if (sessionStorage.getItem(welcomeShownKey) === deviceToken) {
+      root.classList.remove("is-open");
+      return;
+    }
+    sessionStorage.setItem(welcomeShownKey, deviceToken);
+    showRecognized(person);
+  }
+
   function showLogin() {
     activeView = "login";
     currentPerson = null;
-    setEntryButtons("unrecognized");
+    setResolvedButtons("unrecognized", getDeviceToken(false));
     eyebrow.textContent = "Members";
     title.textContent = "Login";
     login.reset();
@@ -384,7 +455,7 @@
 
   function showRecovery() {
     activeView = "recovery";
-    setEntryButtons("unrecognized");
+    setResolvedButtons("unrecognized", getDeviceToken(false));
     eyebrow.textContent = "Member lookup";
     title.textContent = "Let’s find you";
     recovery.reset();
@@ -478,27 +549,57 @@
     }
     const token = getDeviceToken(false);
     if (!token) {
+      clearRecognitionState();
       setEntryButtons("unrecognized");
       recordSession({ event_type: "recognition", event_result: "not_matched", detail: { reason: "missing_device_token" } }).catch(function () {});
       if (memberPath) showLogin();
       return;
     }
+    if (!memberPath) {
+      const cachedResult = readSessionRecognition(token);
+      if (cachedResult) {
+        const cachedState = cachedResult.recognized ? "recognized" : "unrecognized";
+        setResolvedButtons(cachedState, token);
+        if (cachedResult.recognized) {
+          recordSession({
+            event_type: "visit",
+            event_result: "success",
+            matched_by: cachedResult.matched_by,
+            recognition_status: cachedResult.recognition_status,
+            person_record_id: cachedResult.person_record_id,
+            device_record_id: cachedResult.device_record_id,
+            detail: { source: "session_cache" }
+          }).catch(function () {});
+          showRecognizedOnce(cachedResult, token);
+        } else {
+          recordSession({ event_type: "recognition", event_result: "not_matched", matched_by: cachedResult.matched_by, recognition_status: cachedResult.recognition_status, device_record_id: cachedResult.device_record_id, detail: { source: "session_cache" } }).catch(function () {});
+        }
+        return;
+      }
+    }
     try {
       const response = await fetch(recognitionEndpoint + "?device_token=" + encodeURIComponent(token));
       const result = await response.json().catch(function () { return {}; });
       if (!response.ok || !result.recognized) {
-        setEntryButtons("unrecognized");
-        await recordSession({ event_type: "recognition", event_result: "not_matched", matched_by: result.matched_by, recognition_status: result.recognition_status, device_record_id: result.device_record_id });
+        const unresolved = Object.assign({}, result, { recognized: false });
+        cacheSessionRecognition(token, unresolved);
+        setResolvedButtons("unrecognized", token);
+        const sessionWrite = recordSession({ event_type: "recognition", event_result: "not_matched", matched_by: result.matched_by, recognition_status: result.recognition_status, device_record_id: result.device_record_id });
+        if (memberPath) await sessionWrite;
+        else sessionWrite.catch(function () {});
         if (memberPath) showLogin();
         return;
       }
-      await recordSession({ event_type: "recognition", event_result: "matched", matched_by: result.matched_by, recognition_status: result.recognition_status, person_record_id: result.person_record_id, device_record_id: result.device_record_id });
-      setEntryButtons("recognized");
+      cacheSessionRecognition(token, result);
+      setResolvedButtons("recognized", token);
+      const sessionWrite = recordSession({ event_type: "recognition", event_result: "matched", matched_by: result.matched_by, recognition_status: result.recognition_status, person_record_id: result.person_record_id, device_record_id: result.device_record_id });
+      if (memberPath) await sessionWrite;
+      else sessionWrite.catch(function () {});
       if (memberPath && requestedUser === result.person_uid) {
         document.body.classList.remove("rs-members-gated");
         root.classList.remove("is-open");
       } else if (memberPath) redirectToMembers(result.person_uid);
-      else showRecognized(result);
+      else showRecognizedOnce(result, token);
     } catch (error) {
       setEntryButtons("unrecognized");
       if (memberPath) showLogin();
@@ -586,6 +687,9 @@
     if (event.key === "Escape" && root.classList.contains("is-open")) document.getElementById("rs-recognition-close").click();
   });
 
-  setEntryButtons("pending");
+  const initialToken = getDeviceToken(false);
+  const initialButtonState = readCachedButtonState(initialToken);
+  if (initialButtonState) setEntryButtons(initialButtonState);
+  else setEntryButtons("pending");
   recognize();
 })();

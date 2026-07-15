@@ -143,6 +143,57 @@ test("entry button destinations are owned by the recognition client", () => {
   assert.match(source, /item\.element\.setAttribute\("href", item\.href\)/);
 });
 
+test("non-members reuse one live result per browser session and welcome once", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /const recognitionResultKey = "rs_recognition_result"/);
+  assert.match(source, /const welcomeShownKey = "rs_recognition_welcome_shown"/);
+  assert.match(source, /function readSessionRecognition\(deviceToken\)/);
+  assert.match(source, /function cacheSessionRecognition\(deviceToken, result\)/);
+  assert.match(source, /function showRecognizedOnce\(person, deviceToken\)/);
+  assert.match(source, /if \(!memberPath\)[\s\S]*?readSessionRecognition\(token\)[\s\S]*?return/);
+  assert.match(source, /event_type:\s*"visit"[\s\S]*?source:\s*"session_cache"/);
+  assert.match(source, /sessionStorage\.setItem\(welcomeShownKey, deviceToken\)/);
+});
+
+test("button cache is a short-lived display hint while members remain live-gated", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /const buttonStateKey = "rs_recognition_button_state"/);
+  assert.match(source, /const buttonStateTtlMs = 15 \* 60 \* 1000/);
+  assert.match(source, /function readCachedButtonState\(deviceToken\)/);
+  assert.match(source, /function cacheButtonState\(state, deviceToken\)/);
+  assert.match(source, /expires_at:\s*Date\.now\(\) \+ buttonStateTtlMs/);
+  assert.match(source, /if \(memberPath\) document\.body\.classList\.add\("rs-members-gated"\)/);
+  assert.match(source, /if \(!memberPath\)[\s\S]*?readSessionRecognition\(token\)/);
+});
+
+test("ordinary pages render before the audit write while members wait for it", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /cacheSessionRecognition\(token, result\)[\s\S]*?setResolvedButtons\("recognized", token\)[\s\S]*?const sessionWrite = recordSession/);
+  assert.match(source, /if \(memberPath\) await sessionWrite;\s*else sessionWrite\.catch/);
+});
+
+test("device token falls back to the existing cookie and clears all recognition caches", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.match(source, /function readCookie\(name\)/);
+  assert.match(source, /localStorage\.getItem\(tokenKey\) \|\| readCookie\(tokenKey\)/);
+  assert.match(source, /function clearRecognitionState\(\)/);
+  assert.match(source, /sessionStorage\.removeItem\(recognitionResultKey\)/);
+  assert.match(source, /sessionStorage\.removeItem\(welcomeShownKey\)/);
+  assert.match(source, /localStorage\.removeItem\(buttonStateKey\)/);
+  assert.match(source, /function clearDeviceToken\(\)[\s\S]*?clearRecognitionState\(\)/);
+});
+
+test("geo and IP remain server signals and are not copied into browser storage", () => {
+  const source = readFileSync(fixturePath, "utf8");
+
+  assert.doesNotMatch(source, /localStorage\.setItem\([^\n]*(geo|country|region|city|ip)/i);
+  assert.doesNotMatch(source, /sessionStorage\.setItem\([^\n]*(geo|country|region|city|ip)/i);
+});
+
 test("card uses the existing recognition/session routes and one action route", () => {
   const source = readFileSync(fixturePath, "utf8");
 
