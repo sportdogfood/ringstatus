@@ -173,7 +173,15 @@ Typical RingStatus uses:
 - inspect and manage variables
 - inspect and manage components, props, slots, and variants
 
-Designer API actions require Designer context. Through MCP, this means the Webflow MCP Bridge App must be open and connected in Webflow Designer.
+Under Webflow MCP 2.0, most Designer-data operations do not require an open Designer session. Element-tree, component, style, variable, and page-building operations run directly through MCP.
+
+The MCP Bridge App is required only for:
+
+- element snapshots
+- selection and canvas navigation
+- reading the current page, mode, branch, or breakpoints
+- creating page folders
+- uploading an image directly from a public URL
 
 Official docs:
 
@@ -204,7 +212,7 @@ Docs-only MCP endpoint:
 https://developers.webflow.com/api/fern-docs/mcp
 ```
 
-The production MCP server exposes Data API and Designer API style tools. Data actions can run through the MCP server alone. Designer/canvas actions require the MCP Bridge App.
+The production MCP server exposes Data API and Designer-data tools. Under MCP 2.0, elements, components, styles, variables, and page-building actions run without the MCP Bridge App.
 
 Official docs:
 
@@ -213,23 +221,25 @@ Official docs:
 
 ### MCP Bridge App
 
-Use the MCP Bridge App when making Webflow Designer changes from Codex.
+Use the MCP Bridge App only for the MCP 2.0 capabilities that still depend on a live Designer session.
 
 Required for:
 
-- switching or reading the active Designer page
-- creating sections, divs, headings, embeds, buttons, and other elements
-- applying styles/classes to elements
-- reading or modifying Designer variables
-- working with Designer components
+- element snapshots
+- selecting or reading the selected element
+- canvas navigation between pages and component views
+- reading the current page, mode, branch, or breakpoints
+- creating page folders
+- uploading an image from a public URL
 
 Not required for:
 
-- listing sites
-- reading page metadata through the Data API
-- CMS API reads/writes
-- script registration through the Data API
-- asset API operations
+- listing sites or reading page metadata
+- reading or editing page element trees
+- creating native elements
+- creating or managing components and instances
+- creating or managing styles and variables
+- CMS, scripts, assets, forms, Analyze, or sitemap operations
 
 Connection pattern:
 
@@ -419,8 +429,11 @@ Prefer these safer single-target operations:
 Need CMS, scripts, assets, webhooks, page metadata:
   Use Data API via MCP.
 
-Need sections, styles, variables, components, page canvas:
-  Use Designer API via MCP Bridge App.
+Need sections, styles, variables, components, or page-tree changes:
+  Use Webflow MCP 2.0 directly.
+
+Need snapshots, selection, current canvas state, breakpoints, or page folders:
+  Use Webflow MCP 2.0 with the Bridge App.
 
 Need AI-assisted Webflow actions from Codex:
   Use Webflow MCP.
