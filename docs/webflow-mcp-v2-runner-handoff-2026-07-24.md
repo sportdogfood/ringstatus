@@ -114,10 +114,49 @@ One OAuth authorization grants access to one Webflow workspace. If the expected 
 
 If initialization reports an invalid or expired OAuth grant, return `FAIL`. Do not claim the MCP is operational based only on its local registration.
 
+## Current six-page normalization contract
+
+LPX is the canonical page stack. The runner must resolve and read back all six exact page IDs before proposing any mutation.
+
+| Area | Status | Current condition | Required work |
+|---|---|---|---|
+| Canonical page stack | **OPEN** | Pages do not share one identical structural stack | Define LPX as the canonical stack and normalize all six pages to it |
+| `lpt-shell` | **OPEN** | Shell contents and nesting are inconsistent between pages | Make the shell hierarchy identical across all pages |
+| Horses nesting | **OPEN** | Contact and Social are grouped inside an extra wrapper/div | Remove the inconsistent wrapper and place both sections at the canonical stack level |
+| Contact default state | **OPEN / FAIL** | Contact appears visible | Ensure `lpt-contact-panel-native` is applied and natively hidden by default |
+| Contact toggle | **OPEN / FAIL** | Contact JavaScript was removed during the slider-only correction | Implement the approved Contact behavior without contaminating slider-only JavaScript |
+| Contact classes | **KNOWN** | Base: `lpt-contact-panel-native`; open state: `lpt-contact-panel-open` | Verify both classes exist and are applied consistently on every page |
+| `lpt-social` | **OPEN / FAIL** | Social structure is not identical across pages | Normalize identical native structure and Instagram/YouTube links across every page |
+| Filters using `lpt-pill` | **UNKNOWN / OPEN** | The correction run was stopped without a final readback; one style call may have completed | Read back first, then ensure zero `lpt-pill` descendants inside `lpt-filters` |
+| `lpt-pill-grid` desktop | **OPEN** | The 4x1 correction was interrupted before verified completion | Set native grid to four equal columns x one row |
+| `lpt-pill-grid` small screens | **OPEN** | Previous 2x2 state was verified before later interrupted work | Re-read and verify two columns x two rows |
+| Card lanes | **PASS** | Native 3-up desktop, 2-up tablet slider, 1-up mobile slider | No change |
+| Card slider JavaScript | **PASS** | Slider-only previous/next scrolling | No change |
+| Slider controls styling | **OPEN** | Controls lack an approved, verified native visual treatment | Style controls natively |
+| Slider control visibility | **OPEN** | End-state hiding was not completed | Hide group when no overflow; hide Previous at start and Next at end |
+| `lpt-nav` | **PASS** | Native sticky desktop and fixed-bottom mobile | No change |
+| `lpt-hero-title` | **PASS** | Native small-mobile reduction | No change |
+| Publishing | **PASS** | Nothing published | Keep unpublished |
+
+### Required execution order
+
+1. Read back all six page trees, relevant styles, custom code, links, and responsive grid state.
+2. Preserve every **PASS** lane exactly; do not rewrite card lanes, slider-only JavaScript, `lpt-nav`, or `lpt-hero-title`.
+3. Resolve the **UNKNOWN / OPEN** filter state from live readback before including it in a write proposal.
+4. Compare each page with LPX and produce a page-by-page structural delta.
+5. Produce the pre-write report required by this handoff and obtain explicit approval.
+6. Normalize the canonical stack and `lpt-shell`, including removal of the extra Horses wrapper.
+7. Normalize Contact structure, native default-hidden state, class application, and approved toggle behavior while keeping Contact logic separate from slider-only JavaScript.
+8. Normalize `lpt-social`, including identical native Instagram and YouTube link structure.
+9. Correct and verify `lpt-pill-grid` at desktop and small-screen breakpoints.
+10. Apply the approved native slider-control treatment and end-state visibility behavior.
+11. Read back every changed page and return this same matrix with each item marked **PASS** or **FAIL** and concrete MCP evidence.
+12. Keep every page unpublished.
+
 ## Exact next-run prompt
 
 ```text
-READ-ONLY VERIFY ONLY. Use the installed Webflow MCP v2.0 server. Load and follow the current Webflow MCP tool schemas; do not rely on legacy action names. Call the Webflow guidance tool first if required, then request approval for the read-only list-sites action. Do not create, update, move, delete, upload, or publish anything. Return PASS only with the exact MCP tools called and the live workspace/site count, names, and IDs. Otherwise return FAIL with the exact tool and error.
+Use the installed Webflow MCP v2.0 server and the current six-page normalization contract in docs/webflow-mcp-v2-runner-handoff-2026-07-24.md. Start READ-ONLY: load the current MCP schemas, call Webflow guidance first if required, list sites, resolve the six exact pages, and read back their element trees, styles, custom code, links, and responsive states. Treat LPX as the canonical stack. Preserve every PASS lane and keep all pages unpublished. Return the page-by-page delta and a precise pre-write report, then stop for explicit approval before making any mutation.
 ```
 
 ## Installation record
