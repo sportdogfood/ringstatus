@@ -6,7 +6,8 @@
   },
   "dependencies": {
     "astro": "^5.0.0",
-    "cheerio": "^1.2.0"
+    "cheerio": "^1.2.0",
+    "playwright": "^1.62.1"
   },
   "devDependencies": {
     "@airtable/mcp-cli": "^0.2.5"
