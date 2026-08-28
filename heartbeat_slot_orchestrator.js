@@ -94,6 +94,7 @@ const SCRIPT_LOG_FILES = {
   "live_groups_daily.js": "live-groups-daily.log",
   "live_rings_daily.js": "live-rings-daily.log",
   "live_class_detail.js": "live-class-detail.log",
+  "sgl_browser_enrichment.js": "sgl-browser-enrichment.log",
   "docs/horseshowing/wec-heartbeat.js": "wec-heartbeat.log",
   "docs/horseshowing/run-wec-catalyst-workflow.ps1": "wec-catalyst-workflow.log",
   [WEC_STAGE2_UPDATE_SCHEDULE_WRAPPER]: "sync_focus_update_schedule_to_staging.log",
@@ -440,6 +441,32 @@ async function showManualOverride(appShowId) {
     matched_count: rows.length,
     is_default_show_manual_override: boolValue(row?.fields?.is_default_show_manual_override),
   };
+}
+
+async function scheduleScrapeRequest(appShowId) {
+  const showId = numOrNull(appShowId);
+  if (showId === null) return { found: false, requested: false };
+  const rows = await airtableList(TABLE_SHOWS, {
+    maxRecords: 10,
+    filterByFormula: `OR({show_id}=${showId},{app_show_id}=${showId})`,
+    "fields[]": ["show_id", "app_show_id", "schedule_scrape_now"],
+  });
+  const row = rows[0] || null;
+  return {
+    found: !!row,
+    record_id: row?.id || null,
+    matched_count: rows.length,
+    requested: boolValue(row?.fields?.schedule_scrape_now),
+  };
+}
+
+async function clearScheduleScrapeRequest(request) {
+  if (!request?.record_id) return false;
+  await airtableUpdateForBase(AIRTABLE_BASE_ID, TABLE_SHOWS, [{
+    id: request.record_id,
+    fields: { schedule_scrape_now: false },
+  }]);
+  return true;
 }
 
 function slotFromFields(fields = {}) {
@@ -1752,6 +1779,48 @@ async function runOrchestrator() {
     }
 
     const shiftedToNextDay = boolValue(heartbeat?.fields?.[HEARTBEAT_SHIFTED_NEXT_DAY_FIELD]);
+    let upstreamOk = true;
+    let scheduleDueFailed = false;
+
+    const scheduleScrape = await scheduleScrapeRequest(heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id);
+    if (scheduleScrape.requested) {
+      const scheduleScrapeResult = await runDueScript("sgl_browser_enrichment.js", {
+        SGL_SCHEDULE_BASE_ID: AIRTABLE_BASE_ID,
+        SGL_SHOW_ID: String(heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id ?? ""),
+        SGL_FOCUS_DAY: String(heartbeat?.fields?.app_sql_date ?? heartbeat?.fields?.sql_date ?? ""),
+        SGL_SCHEDULE_ONLY: "1",
+      });
+      if (scheduleScrapeResult.ok) {
+        try {
+          await clearScheduleScrapeRequest(scheduleScrape);
+          appendEvent({
+            ok: true,
+            event: "schedule_scrape_request_completed",
+            show_id: heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id ?? null,
+            focus_day: heartbeat?.fields?.app_sql_date ?? heartbeat?.fields?.sql_date ?? null,
+            request_record_id: scheduleScrape.record_id,
+          });
+        } catch (error) {
+          upstreamOk = false;
+          await recordOrchestratorAlert({
+            errorType: "schedule_scrape_request_clear_failed",
+            heartbeat,
+            scriptName: "sgl_browser_enrichment.js",
+            message: `Schedule scrape completed but schedule_scrape_now could not be cleared: ${error.message}`,
+            extra: { requestRecordId: scheduleScrape.record_id },
+          });
+        }
+      } else {
+        upstreamOk = false;
+        await recordOrchestratorAlert({
+          errorType: "schedule_scrape_failed",
+          heartbeat,
+          scriptName: "sgl_browser_enrichment.js",
+          message: `On-demand schedule scrape failed; schedule_scrape_now remains checked. ${String(scheduleScrapeResult.stderr || "").slice(0, 1000)}`,
+          extra: { requestRecordId: scheduleScrape.record_id },
+        });
+      }
+    }
 
     const schedulesDailyDefaultSlots = mode === "NIGHT"
       ? DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS
@@ -1780,9 +1849,6 @@ async function runOrchestrator() {
     const wecAirtableControlsDue = ENABLE_WEC_HEARTBEAT
       && intervalDue("wec-airtable-controls", WEC_AIRTABLE_CONTROLS_INTERVAL_MINUTES);
     const publisherDue = slotIsDue(slot, process.env.ORCH_PUBLISHER_SLOTS, DEFAULT_PUBLISHER_SLOTS);
-
-    let upstreamOk = true;
-    let scheduleDueFailed = false;
 
     if (schedulesDailyDue) {
       const schedulesDailyResult = await runDueScript("schedules_dailyv2.js");
