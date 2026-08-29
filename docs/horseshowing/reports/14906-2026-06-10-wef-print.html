@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=816, initial-scale=1" />
-<title>WEC WEF Print 14906 2026-06-10</title>
+<title>WEF Print 14906 2026-06-10</title>
 <style>
   :root{
     --fg:#111;
@@ -311,16 +311,7 @@
     body.tight .n{font-size:9px;}
   }
 </style>
-<style>
-  :root{--ring:#815374;}
-  .title{font-size:16px;}
-  .subtitle{font-size:11px;}
-  .ring-head{font-size:12px;padding:5px 7px;}
-  .gdisplay{font-size:12px;margin-bottom:-7px;}
-  .class-list{padding:4px 7px 5px 7px;}
-  .c{grid-template-columns:54px 1fr;column-gap:7px;padding:3px 0;padding-right:112px;}
-  .t,.n{font-size:10.5px;}
-</style>
+
 </head>
 <body>
 <div class="page" id="page">
@@ -384,7 +375,7 @@
     ACTIVE_TENANT = TENANT_CONFIG[nextTenant] ? nextTenant : "9999";
     ACTIVE_TENANT_CONFIG = TENANT_CONFIG[ACTIVE_TENANT] || TENANT_CONFIG["9999"];
 
-    SCHEDULE_URL = "https://horseshowing-700800454.development.catalystserverless.com/server/horseshowing_sync/?action=schedule-json&show_no=14906";
+    SCHEDULE_URL = "https://ringstatus-proxy.gombcg.workers.dev/docs/9999/schedules/schedule.json";
     TRIPS_URL = `https://ringstatus-proxy.gombcg.workers.dev/docs/${ACTIVE_TENANT}/schedules/trips.json`;
     TENANT_SCHED_DISPLAY_KEY = ACTIVE_TENANT === "9999" ? "" : `${ACTIVE_TENANT}_sched_display`;
   }
@@ -402,11 +393,41 @@
 
   function extractRows(payload) {
     if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.rows)) return payload.rows;
+    if (payload && Array.isArray(payload.schedule)) return payload.schedule;
+    if (payload && Array.isArray(payload.trips)) return payload.trips;
     if (payload && Array.isArray(payload.records)) return payload.records;
     return [];
   }
 
+  function fetchJsonBlocking(url) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false);
+    xhr.setRequestHeader("cache-control", "no-store");
+    xhr.send(null);
+    if (xhr.status < 200 || xhr.status >= 300) {
+      throw new Error(`Fetch failed ${xhr.status} for ${url}: ${String(xhr.responseText || "").slice(0, 200)}`);
+    }
+    try {
+      return JSON.parse(xhr.responseText || "[]");
+    } catch {
+      throw new Error(`Bad JSON in ${url}: ${String(xhr.responseText || "").slice(0, 200)}`);
+    }
+  }
+
   async function fetchJson(url) {
+    const embedded = document.getElementById("wef-schedule-data");
+    if (embedded) {
+      try {
+        return JSON.parse(embedded.textContent || "[]");
+      } catch {
+        throw new Error("Bad embedded WEF schedule JSON");
+      }
+    }
+
+    if (location.hostname === "ringstatus.com" || qs.get("pdf") === "1") {
+      return fetchJsonBlocking(url);
+    }
     const res = await fetch(url, { cache: "no-store" });
     const txt = await res.text();
     if (!res.ok) throw new Error(`Fetch failed ${res.status} for ${url}: ${txt.slice(0, 200)}`);
@@ -607,7 +628,7 @@
   }
 
   function buildPdfLink() {
-    const publicPrintUrl = window.RS_WEC_PRINT_URL || "https://ringstatus.com/wec-print";
+    const publicPrintUrl = window.RS_WEF_PRINT_URL || "https://ringstatus.com/wef-print";
     const pageUrl = location.protocol === "file:"
       ? `${publicPrintUrl}${location.search || ""}`
       : location.href;
@@ -622,7 +643,7 @@
   }
 
   function buildShareText() {
-    const title = (document.getElementById("title")?.textContent || "WEC Schedule").trim();
+    const title = (document.getElementById("title")?.textContent || "WEF Schedule").trim();
     const subtitle = (document.getElementById("subtitle")?.textContent || "").trim();
     return {
       title,
@@ -785,6 +806,8 @@
 
       RING_WRAPS = buildRingElements(fullRows);
       relayoutVisibleRings();
+      document.documentElement.dataset.rsPdfReady = "1";
+      window.RS_PDF_READY = true;
 
       fitToOnePage();
       setTimeout(fitToOnePage, 50);
@@ -895,5 +918,6 @@
   }
 })();
 </script>
+
 </body>
 </html>

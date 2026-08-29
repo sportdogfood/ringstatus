@@ -449,14 +449,16 @@ async function scheduleScrapeRequest(appShowId) {
   const rows = await airtableList(TABLE_SHOWS, {
     maxRecords: 10,
     filterByFormula: `OR({show_id}=${showId},{app_show_id}=${showId})`,
-    "fields[]": ["show_id", "app_show_id", "schedule_scrape_now"],
   });
   const row = rows[0] || null;
+  const fields = row?.fields || {};
+  const schemaPresent = Object.prototype.hasOwnProperty.call(fields, "schedule_scrape_now");
   return {
     found: !!row,
     record_id: row?.id || null,
     matched_count: rows.length,
-    requested: boolValue(row?.fields?.schedule_scrape_now),
+    schema_present: schemaPresent,
+    requested: schemaPresent && boolValue(fields.schedule_scrape_now),
   };
 }
 

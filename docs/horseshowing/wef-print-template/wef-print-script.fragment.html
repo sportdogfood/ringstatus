@@ -57,6 +57,9 @@
 
   function extractRows(payload) {
     if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.rows)) return payload.rows;
+    if (payload && Array.isArray(payload.schedule)) return payload.schedule;
+    if (payload && Array.isArray(payload.trips)) return payload.trips;
     if (payload && Array.isArray(payload.records)) return payload.records;
     return [];
   }
@@ -77,6 +80,15 @@
   }
 
   async function fetchJson(url) {
+    const embedded = document.getElementById("wef-schedule-data");
+    if (embedded) {
+      try {
+        return JSON.parse(embedded.textContent || "[]");
+      } catch {
+        throw new Error("Bad embedded WEF schedule JSON");
+      }
+    }
+
     if (location.hostname === "ringstatus.com" || qs.get("pdf") === "1") {
       return fetchJsonBlocking(url);
     }
@@ -280,7 +292,7 @@
   }
 
   function buildPdfLink() {
-    const publicPrintUrl = window.RS_WEC_PRINT_URL || "https://ringstatus.com/wec-print";
+    const publicPrintUrl = window.RS_WEF_PRINT_URL || "https://ringstatus.com/wef-print";
     const pageUrl = location.protocol === "file:"
       ? `${publicPrintUrl}${location.search || ""}`
       : location.href;
@@ -295,7 +307,7 @@
   }
 
   function buildShareText() {
-    const title = (document.getElementById("title")?.textContent || "WEC Schedule").trim();
+    const title = (document.getElementById("title")?.textContent || "WEF Schedule").trim();
     const subtitle = (document.getElementById("subtitle")?.textContent || "").trim();
     return {
       title,
