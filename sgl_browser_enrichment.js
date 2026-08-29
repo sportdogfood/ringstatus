@@ -16,6 +16,11 @@ const DRY_RUN = process.env.DRY_RUN === "1";
 const MAX_RECORDS = Number(process.env.SGL_MAX_RECORDS || "0");
 const CHROME_PATH = process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const TIME_RE = /\b(?:0?[1-9]|1[0-2])(?::[0-5]\d)?\s*(?:AM|PM)\b/i;
+const FETCH_TIMEOUT_MS = Number(process.env.SGL_FETCH_TIMEOUT_MS || "30000");
+const ENRICHMENT_LOG = process.env.SGL_ENRICHMENT_LOG || "C:\\actions-runner\\ringstatus\\sgl-browser-enrichment.log";
+function progress(event, details = {}) { const line = JSON.stringify({ ts: new Date().toISOString(), event, ...details }); try { fs.appendFileSync(ENRICHMENT_LOG, `${line}\n`); } catch {} console.log(line); }
+async function fetchWithTimeout(url, options = {}, timeoutMs = FETCH_TIMEOUT_MS) { const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), timeoutMs); try { return await fetch(url, { ...options, signal: controller.signal }); } catch (error) { throw new Error(`${error.name === "AbortError" ? `request_timeout_${timeoutMs}ms` : error.message}: ${url}`); } finally { clearTimeout(timer); } }
+
 
 function text(value) { return String(value ?? "").replace(/\s+/g, " ").trim(); }
 function number(value) { const n = Number(String(value ?? "").replace(/[^0-9.-]/g, "")); return Number.isFinite(n) ? n : null; }
