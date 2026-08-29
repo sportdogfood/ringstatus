@@ -400,21 +400,6 @@
     return [];
   }
 
-  function fetchJsonBlocking(url) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, false);
-    xhr.setRequestHeader("cache-control", "no-store");
-    xhr.send(null);
-    if (xhr.status < 200 || xhr.status >= 300) {
-      throw new Error(`Fetch failed ${xhr.status} for ${url}: ${String(xhr.responseText || "").slice(0, 200)}`);
-    }
-    try {
-      return JSON.parse(xhr.responseText || "[]");
-    } catch {
-      throw new Error(`Bad JSON in ${url}: ${String(xhr.responseText || "").slice(0, 200)}`);
-    }
-  }
-
   async function fetchJson(url) {
     const embedded = document.getElementById("wef-schedule-data");
     if (embedded) {
@@ -425,9 +410,6 @@
       }
     }
 
-    if (location.hostname === "ringstatus.com" || qs.get("pdf") === "1") {
-      return fetchJsonBlocking(url);
-    }
     const res = await fetch(url, { cache: "no-store" });
     const txt = await res.text();
     if (!res.ok) throw new Error(`Fetch failed ${res.status} for ${url}: ${txt.slice(0, 200)}`);
