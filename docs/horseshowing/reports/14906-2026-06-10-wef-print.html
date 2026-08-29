@@ -610,8 +610,9 @@
   }
 
   function buildPdfLink() {
-    const publicPrintUrl = window.RS_WEF_PRINT_URL || "https://ringstatus.com/wef-print";
-    const pageUrl = location.protocol === "file:"
+    const publicPrintUrl = window.RS_WEF_PRINT_URL || "https://ringstatus.com/print";
+    const isLocalPreview = location.protocol === "file:" || location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    const pageUrl = isLocalPreview
       ? `${publicPrintUrl}${location.search || ""}`
       : location.href;
     const filename = buildPdfFilename();
