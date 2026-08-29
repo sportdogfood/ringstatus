@@ -46,6 +46,7 @@ const LOG_PATH = process.env.ORCH_LOG_PATH || path.join(LOG_DIR, "heartbeat-slot
 const LOCK_PATH = process.env.ORCH_LOCK_PATH || path.join(LOG_DIR, "heartbeat-slot-orchestrator.lock");
 const LOCK_STALE_MINUTES = Math.max(1, Number(process.env.ORCH_LOCK_STALE_MINUTES || "8") || 8);
 const POWERSHELL_STEP_TIMEOUT_MS = Math.max(60000, Number(process.env.ORCH_POWERSHELL_STEP_TIMEOUT_MS || "180000") || 180000);
+const NODE_STEP_TIMEOUT_MS = Math.max(60000, Number(process.env.ORCH_NODE_STEP_TIMEOUT_MS || "180000") || 180000);
 const DISABLE_HEAVY = String(process.env.ORCH_DISABLE_HEAVY || "0") === "1";
 const DISABLE_LIVE_CLASS_DETAIL = String(process.env.ORCH_DISABLE_LIVE_CLASS_DETAIL || "0") === "1";
 // WEC cadence is owned by Catalyst Job Scheduling; Windows may opt in only for explicit verification.
@@ -493,6 +494,7 @@ function runNodeScript(scriptName, extraEnv = {}) {
     env: { ...process.env, ...extraEnv },
     encoding: "utf8",
     windowsHide: true,
+    timeout: NODE_STEP_TIMEOUT_MS,
   });
 
   const exitCode = Number(result.status ?? (result.error ? -1 : 0));
