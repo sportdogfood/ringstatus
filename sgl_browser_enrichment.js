@@ -61,7 +61,7 @@ async function loadRenderedPage(browser, url) {
   const root = page.locator("#sgl-root"); const rendered = text(await (await root.count() ? root : page.locator("body")).innerText());
   if (!rendered) throw new Error("rendered page was empty");
   const rows = (await page.locator("#sgl-root tr, #sgl-root li").allInnerTexts().catch(() => [])).map(text).filter(Boolean);
-  const oogRows = await page.locator("#sgl-root tr").evaluateAll(elements => { const rows = elements.map(row => Array.from(row.querySelectorAll("th,td")).map(cell => cell.innerText.trim()).filter(Boolean)).filter(row => row.length); const header = rows.find(row => row.some(cell => /^order$/i.test(cell))); const orderIndex = header ? header.findIndex(cell => /^order$/i.test(cell)) : 0; return rows.filter(row => row !== header).map(row => orderIndex > 0 && row.length > orderIndex ? [row[orderIndex], ...row.slice(0, orderIndex), ...row.slice(orderIndex + 1)] : row); }).catch(() => []);
+  const oogRows = await page.locator("#sgl-root tr").evaluateAll(elements => { const rows = elements.map(row => Array.from(row.querySelectorAll("th,td")).map(cell => cell.innerText.trim())).filter(row => row.length); const header = rows.find(row => row.some(cell => /^order$/i.test(cell))); const orderIndex = header ? header.findIndex(cell => /^order$/i.test(cell)) : 0; return rows.filter(row => row !== header).map(row => orderIndex > 0 && row.length > orderIndex ? [row[orderIndex], ...row.slice(0, orderIndex), ...row.slice(orderIndex + 1)] : row); }).catch(() => []);
   return { page, rendered, rows, oogRows };
 }
 function scheduleMatch(record, rows, rendered) {
