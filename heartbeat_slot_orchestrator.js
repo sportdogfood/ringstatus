@@ -427,10 +427,9 @@ async function showManualOverride(appShowId) {
   if (showId === null) return { found: false, is_default_show_manual_override: false };
   const rows = await airtableList(TABLE_SHOWS, {
     maxRecords: 10,
-    filterByFormula: `OR({show_id}=${showId},{app_show_id}=${showId})`,
+    filterByFormula: `{show_id}=${showId}`,
     "fields[]": [
       "show_id",
-      "app_show_id",
       "is_default_show_manual_override",
       "check_show_date (from heartbeat)",
     ],
