@@ -498,6 +498,17 @@
   }
 
   function bindStaticControls() {
+    const btnPdf = document.getElementById("btnPdf");
+    const isLocalPreview = location.protocol === "file:" || location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    if (btnPdf && isLocalPreview && btnPdf.dataset.rsLocalPrintBound !== "1") {
+      btnPdf.dataset.rsLocalPrintBound = "1";
+      btnPdf.addEventListener("click", (event) => {
+        event.preventDefault();
+        fitToOnePage();
+        window.print();
+      });
+    }
+
     const btnLink = document.getElementById("btnLink");
     if (btnLink && btnLink.dataset.rsBound !== "1") {
       btnLink.dataset.rsBound = "1";
