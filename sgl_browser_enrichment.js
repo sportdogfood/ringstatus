@@ -77,7 +77,8 @@ function oogMatch(record, rows, structuredRows = []) {
   const exactClassRows = cls ? candidates.filter(row => new RegExp(`\\b${String(cls).replace(/\\D/g, "")}\\b`).test(row.text)) : [];
   const identityRows = candidates.filter(row => (rider && contains(row.text, rider)) || (horse && contains(row.text, horse)));
   const matches = exactClassRows.length ? exactClassRows : identityRows;
-  if (matches.length !== 1 || !Number.isFinite(matches[0].order)) return matches.length ? { ambiguous: matches.slice(0, 3) } : null;
+  if (matches.length !== 1) return matches.length ? { ambiguous: matches.slice(0, 3) } : null;
+  if (!Number.isFinite(matches[0].order)) return { order: null, evidence: matches[0].text };
   return { order: matches[0].order, evidence: matches[0].text };
 }
 async function runSchedule(browser) {
@@ -131,7 +132,7 @@ async function runOog(browser) {
   const records = await airtableList(OOG_BASE, OOG_TABLE, { view: OOG_VIEW });
   progress("oog_list_completed", { records: records.length }); const scopedRecords = MAX_RECORDS > 0 ? records.slice(0, MAX_RECORDS) : records; const updates = [], unmatched = [];
   for (const record of scopedRecords) { const f = record.fields || {}, url = field(f, "classsignup_url_viewsetorder_scrape"); if (!url) { unmatched.push({ id: record.id, reason: "missing_url" }); continue; }
-    try { const loaded = await loadRenderedPage(browser, url); const match = oogMatch(record, loaded.rows, loaded.oogRows); const entry = number(field(f, "entry_number", "entry_no")); if (match?.order !== undefined && match.order !== entry) updates.push({ id: record.id, fields: { order_of_go: match.order } }); else unmatched.push({ id: record.id, reason: match?.order === entry ? "order_equals_entry_rejected" : (match?.ambiguous ? "ambiguous_match" : "order_not_found"), url }); await loaded.page.close(); }
+    try { const loaded = await loadRenderedPage(browser, url); const match = oogMatch(record, loaded.rows, loaded.oogRows); const entry = number(field(f, "entry_number", "entry_no")); if (match?.order === null) updates.push({ id: record.id, fields: { order_of_go: null } }); else if (match?.order !== undefined && match.order !== entry) updates.push({ id: record.id, fields: { order_of_go: match.order } }); else unmatched.push({ id: record.id, reason: match?.order === entry ? "order_equals_entry_rejected" : (match?.ambiguous ? "ambiguous_match" : "order_not_found"), url }); await loaded.page.close(); }
     catch (error) { unmatched.push({ id: record.id, reason: error.message, url }); await logError(`${url}: ${error.message}`, "oog_scrape", field(f, "sid", "show_id")); }
   }
   return { lane: "oog", records: scopedRecords.length, matched: updates.length, written: DRY_RUN ? 0 : await airtableWrite(OOG_BASE, OOG_TABLE, updates), unmatched: unmatched.length, unmatched_samples: unmatched.slice(0, 5) };
