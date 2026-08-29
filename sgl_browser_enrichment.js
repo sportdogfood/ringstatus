@@ -75,14 +75,41 @@ function oogMatch(record, rows) {
 }
 async function runSchedule(browser) {
   if (!SCHEDULE_BASE) throw new Error("SGL_SCHEDULE_BASE_ID or AIRTABLE_BASE_ID is required");
-  const records = await airtableList(SCHEDULE_BASE, SCHEDULE_TABLE, { view: SCHEDULE_VIEW }); const scopedRecords = MAX_RECORDS > 0 ? records.slice(0, MAX_RECORDS) : records; const updates = [], unmatched = [];
-  for (const record of scopedRecords) { const f = record.fields || {}, sid = field(f, "sid", "show_id", "app_show_id"), date = field(f, "dt", "date", "schedule_date", "show_date", "schedule_show_datev2", "app_sql_date", "app_sql_datev2") || FOCUS_DAY; if (SHOW_ID && String(sid) !== String(SHOW_ID) || FOCUS_DAY && String(date) !== String(FOCUS_DAY)) continue;
-    const url = `https://www.wellingtoninternational.com/showgrounds/show-schedule/?date=${encodeURIComponent(date)}&sid=${encodeURIComponent(sid)}`;
-    if (f.manual_time_override === true || f.manual_time_overide === true) continue;
-    try { const loaded = await loadRenderedPage(browser, url); const match = scheduleMatch(record, loaded.rows, loaded.rendered); if (match) updates.push({ id: record.id, fields: { estimated_start_time: match.estimated } }); else unmatched.push({ id: record.id, reason: "schedule_time_not_found", url }); await loaded.page.close(); }
-    catch (error) { unmatched.push({ id: record.id, reason: error.message, url }); await logError(`${url}: ${error.message}`, "schedule_scrape", sid); }
+  const records = await airtableList(SCHEDULE_BASE, SCHEDULE_TABLE, { view: SCHEDULE_VIEW });
+  const scopedRecords = records.filter(record => {
+    const f = record.fields || {};
+    const sid = field(f, "sid", "show_id", "app_show_id");
+    const date = field(f, "dt", "date", "schedule_date", "show_date", "schedule_show_datev2", "app_sql_date", "app_sql_datev2") || FOCUS_DAY;
+    return (!SHOW_ID || String(sid) === String(SHOW_ID)) && (!FOCUS_DAY || String(date) === String(FOCUS_DAY));
+  }).slice(0, MAX_RECORDS > 0 ? MAX_RECORDS : undefined);
+  const updates = [], unmatched = [];
+  const groups = new Map();
+  for (const record of scopedRecords) {
+    const f = record.fields || {};
+    const sid = field(f, "sid", "show_id", "app_show_id");
+    const date = field(f, "dt", "date", "schedule_date", "show_date", "schedule_show_datev2", "app_sql_date", "app_sql_datev2") || FOCUS_DAY;
+    const key = `${sid}|${date}`;
+    if (!groups.has(key)) groups.set(key, { sid, date, records: [] });
+    groups.get(key).records.push(record);
   }
-  return { lane: "schedule", records: scopedRecords.length, matched: updates.length, written: DRY_RUN ? 0 : await airtableWrite(SCHEDULE_BASE, SCHEDULE_TABLE, updates), unmatched: unmatched.length, unmatched_samples: unmatched.slice(0, 5) };
+  for (const group of groups.values()) {
+    const url = `https://www.wellingtoninternational.com/showgrounds/show-schedule/?date=${encodeURIComponent(group.date)}&sid=${encodeURIComponent(group.sid)}`;
+    try {
+      const loaded = await loadRenderedPage(browser, url);
+      for (const record of group.records) {
+        const f = record.fields || {};
+        if (f.manual_time_override === true || f.manual_time_overide === true) continue;
+        const match = scheduleMatch(record, loaded.rows, loaded.rendered);
+        if (match) updates.push({ id: record.id, fields: { estimated_start_time: match.estimated } });
+        else unmatched.push({ id: record.id, reason: "schedule_time_not_found", url });
+      }
+      await loaded.page.close();
+    } catch (error) {
+      for (const record of group.records) unmatched.push({ id: record.id, reason: error.message, url });
+      await logError(`${url}: ${error.message}`, "schedule_scrape", group.sid);
+    }
+  }
+  return { lane: "schedule", records: scopedRecords.length, show_date_groups: groups.size, matched: updates.length, written: DRY_RUN ? 0 : await airtableWrite(SCHEDULE_BASE, SCHEDULE_TABLE, updates), unmatched: unmatched.length, unmatched_samples: unmatched.slice(0, 5) };
 }
 async function runOog(browser) {
   const records = await airtableList(OOG_BASE, OOG_TABLE, { view: OOG_VIEW }); const scopedRecords = MAX_RECORDS > 0 ? records.slice(0, MAX_RECORDS) : records; const updates = [], unmatched = [];
