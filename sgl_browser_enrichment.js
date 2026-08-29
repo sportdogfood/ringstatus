@@ -61,7 +61,89 @@ async function loadRenderedPage(browser, url) {
   const root = page.locator("#sgl-root"); const rendered = text(await (await root.count() ? root : page.locator("body")).innerText());
   if (!rendered) throw new Error("rendered page was empty");
   const rows = (await page.locator("#sgl-root tr, #sgl-root li").allInnerTexts().catch(() => [])).map(text).filter(Boolean);
-  return { page, rendered, rows };
+  const oogRows = await page.locator("#sgl-root tr").evaluateAll(elements => elements.map(row => Array.from(row.querySelectorAll("th,td")).map(cell => cell.innerText.trim()).filter(Boolean)).filter(row => row.length)).catch(() => []);
+  return { page, rendered, rows, oogRows };
+}
+function scheduleMatch(record, rows, rendered) {
+  const f = record.fields || {}; const cls = field(f, "class_number", "class_no"); const name = field(f, "class_name", "class_label", "group_name");
+  const candidates = rows.filter(row => (cls && contains(row, cls)) || (name && contains(row, name)));
+  for (const row of candidates) { const estimated = normalizeTime(row); if (estimated) return { estimated, evidence: row }; }
+  const broad = cls && rendered.match(new RegExp(`.{0,180}${String(cls).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.{0,180}`, "i"));
+  return broad && normalizeTime(broad[0]) ? { estimated: normalizeTime(broad[0]), evidence: broad[0] } : null;
+}
+function oogMatch(record, rows, structuredRows = []) {
+  const f = record.fields || {}; const entry = text(field(f, "entry_number", "entry_no")); const cls = field(f, "class_number", "class_no"); const rider = field(f, "rider_name", "rider"); const horse = field(f, "horse", "horse_name");
+  const candidates = (structuredRows.length ? structuredRows.map(cells => ({ text: cells.join(" "), order: number(cells[0]) })) : []).filter(row => entry && new RegExp(`\\b${entry.replace(/\\D/g, "")}\\b`).test(row.text));
+  const exactClassRows = cls ? candidates.filter(row => new RegExp(`\\b${String(cls).replace(/\\D/g, "")}\\b`).test(row.text)) : [];
+  const identityRows = candidates.filter(row => (rider && contains(row.text, rider)) || (horse && contains(row.text, horse)));
+  const matches = exactClassRows.length ? exactClassRows : identityRows;
+  if (matches.length !== 1 || !Number.isFinite(matches[0].order)) return matches.length ? { ambiguous: matches.slice(0, 3) } : null;
+  return { order: matches[0].order, evidence: matches[0].text };
+}onst { chromium } = require("playwright");
+const fs = require("fs");
+
+const AIRTABLE_API = "https://api.airtable.com/v0";
+const TOKEN = process.env.AIRTABLE_TOKEN;
+const SCHEDULE_BASE = process.env.SGL_SCHEDULE_BASE_ID || process.env.AIRTABLE_BASE_ID;
+const OOG_BASE = process.env.SGL_OOG_BASE_ID || "apptdhhNzduxm5gjn";
+const SCHEDULE_TABLE = process.env.SGL_SCHEDULE_TABLE || "watch_schedule";
+const SCHEDULE_VIEW = process.env.SGL_SCHEDULE_VIEW || "heartbeat";
+const OOG_TABLE = process.env.SGL_OOG_TABLE || "watch_trips";
+const OOG_VIEW = process.env.SGL_OOG_VIEW || "scrape-oog";
+const ERR_TABLE = process.env.TABLE_AUTOMATION_ERRS || "automation_errs";
+const SHOW_ID = process.env.SGL_SHOW_ID || "";
+const FOCUS_DAY = process.env.SGL_FOCUS_DAY || "";
+const DRY_RUN = process.env.DRY_RUN === "1";
+const MAX_RECORDS = Number(process.env.SGL_MAX_RECORDS || "0");
+const CHROME_PATH = process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+const TIME_RE = /\b(?:0?[1-9]|1[0-2])(?::[0-5]\d)?\s*(?:AM|PM)\b/i;
+const FETCH_TIMEOUT_MS = Number(process.env.SGL_FETCH_TIMEOUT_MS || "30000");
+const ENRICHMENT_LOG = process.env.SGL_ENRICHMENT_LOG || "C:\\actions-runner\\ringstatus\\sgl-browser-enrichment.log";
+function progress(event, details = {}) { const line = JSON.stringify({ ts: new Date().toISOString(), event, ...details }); try { fs.appendFileSync(ENRICHMENT_LOG, `${line}\n`); } catch {} console.log(line); }
+async function fetchWithTimeout(url, options = {}, timeoutMs = FETCH_TIMEOUT_MS) { const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), timeoutMs); try { return await fetch(url, { ...options, signal: controller.signal }); } catch (error) { throw new Error(`${error.name === "AbortError" ? `request_timeout_${timeoutMs}ms` : error.message}: ${url}`); } finally { clearTimeout(timer); } }
+
+
+function text(value) { return String(value ?? "").replace(/\s+/g, " ").trim(); }
+function number(value) { const n = Number(String(value ?? "").replace(/[^0-9.-]/g, "")); return Number.isFinite(n) ? n : null; }
+function field(fields, ...names) { for (const name of names) if (fields[name] != null && text(fields[name]) !== "") return fields[name]; return null; }
+function normalizeTime(value) {
+  const match = text(value).match(TIME_RE); if (!match) return null;
+  const parts = match[0].replace(/\s+/g, " ").toUpperCase().split(/[: ]/);
+  let hour = Number(parts[0]); const minute = /^\d+$/.test(parts[1] || "") ? Number(parts[1]) : 0;
+  if (parts.at(-1) === "PM" && hour !== 12) hour += 12; if (parts.at(-1) === "AM" && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`;
+}
+function contains(value, needle) { return needle && text(value).toLowerCase().includes(text(needle).toLowerCase()); }
+
+async function airtableList(base, table, params = {}) {
+  const records = []; let offset = "";
+  do {
+    const query = new URLSearchParams({ pageSize: "100", ...params }); if (offset) query.set("offset", offset);
+    const response = await fetchWithTimeout(`${AIRTABLE_API}/${base}/${encodeURIComponent(table)}?${query}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const body = await response.text(); if (!response.ok) throw new Error(`Airtable ${response.status}: ${body.slice(0, 500)}`);
+    const payload = body ? JSON.parse(body) : {}; records.push(...(payload.records || [])); offset = payload.offset || "";
+  } while (offset); return records;
+}
+async function airtableWrite(base, table, records) {
+  for (let i = 0; i < records.length; i += 10) {
+    const response = await fetchWithTimeout(`${AIRTABLE_API}/${base}/${encodeURIComponent(table)}`, { method: "PATCH", headers: { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" }, body: JSON.stringify({ records: records.slice(i, i + 10), typecast: true }) });
+    const body = await response.text(); if (!response.ok) throw new Error(`Airtable PATCH ${response.status}: ${body.slice(0, 500)}`);
+  }
+  return records.length;
+}
+async function logError(message, errorType, showId) {
+  if (DRY_RUN) return;
+  try { await airtableWrite(OOG_BASE, ERR_TABLE, [{ fields: { automation_name: "sgl_browser_enrichment", error_type: errorType, message: text(message).slice(0, 1000), app_show_id: number(showId), last_run: new Date().toISOString(), resolved: false } }]); } catch (error) { console.error(`automation_errs write failed: ${error.message}`); }
+}
+async function loadRenderedPage(browser, url) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
+  page.setDefaultTimeout(Number(process.env.SGL_PAGE_TIMEOUT_MS || "15000"));
+  await page.goto(url, { waitUntil: "domcontentloaded", timeout: Number(process.env.SGL_NAVIGATION_TIMEOUT_MS || "45000") }); await page.waitForTimeout(Number(process.env.SGL_BROWSER_WAIT_MS || 5000));
+  const root = page.locator("#sgl-root"); const rendered = text(await (await root.count() ? root : page.locator("body")).innerText());
+  if (!rendered) throw new Error("rendered page was empty");
+  const rows = (await page.locator("#sgl-root tr, #sgl-root li").allInnerTexts().catch(() => [])).map(text).filter(Boolean);
+  const oogRows = await page.locator("#sgl-root tr").evaluateAll(elements => elements.map(row => Array.from(row.querySelectorAll("th,td")).map(cell => cell.innerText.trim()).filter(Boolean)).filter(row => row.length)).catch(() => []);
+  return { page, rendered, rows, oogRows };
 }
 function scheduleMatch(record, rows, rendered) {
   const f = record.fields || {}; const cls = field(f, "class_number", "class_no"); const name = field(f, "class_name", "class_label", "group_name");
@@ -131,7 +213,7 @@ async function runOog(browser) {
   const records = await airtableList(OOG_BASE, OOG_TABLE, { view: OOG_VIEW });
   progress("oog_list_completed", { records: records.length }); const scopedRecords = MAX_RECORDS > 0 ? records.slice(0, MAX_RECORDS) : records; const updates = [], unmatched = [];
   for (const record of scopedRecords) { const f = record.fields || {}, url = field(f, "classsignup_url_viewsetorder_scrape"); if (!url) { unmatched.push({ id: record.id, reason: "missing_url" }); continue; }
-    try { const loaded = await loadRenderedPage(browser, url); const match = oogMatch(record, loaded.rows); if (match?.order !== undefined) updates.push({ id: record.id, fields: { order_of_go: match.order } }); else unmatched.push({ id: record.id, reason: match?.ambiguous ? "ambiguous_match" : "order_not_found", url }); await loaded.page.close(); }
+    try { const loaded = await loadRenderedPage(browser, url); const match = oogMatch(record, loaded.rows, loaded.oogRows); if (match?.order !== undefined) updates.push({ id: record.id, fields: { order_of_go: match.order } }); else unmatched.push({ id: record.id, reason: match?.ambiguous ? "ambiguous_match" : "order_not_found", url }); await loaded.page.close(); }
     catch (error) { unmatched.push({ id: record.id, reason: error.message, url }); await logError(`${url}: ${error.message}`, "oog_scrape", field(f, "sid", "show_id")); }
   }
   return { lane: "oog", records: scopedRecords.length, matched: updates.length, written: DRY_RUN ? 0 : await airtableWrite(OOG_BASE, OOG_TABLE, updates), unmatched: unmatched.length, unmatched_samples: unmatched.slice(0, 5) };
