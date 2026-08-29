@@ -448,7 +448,7 @@ async function scheduleScrapeRequest(appShowId) {
   if (showId === null) return { found: false, requested: false };
   const rows = await airtableList(TABLE_SHOWS, {
     maxRecords: 10,
-    filterByFormula: `OR({show_id}=${showId},{app_show_id}=${showId})`,
+    filterByFormula: `{show_id}=${showId}`,
   });
   const row = rows[0] || null;
   const fields = row?.fields || {};
