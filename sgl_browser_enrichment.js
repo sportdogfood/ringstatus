@@ -78,6 +78,7 @@ async function runSchedule(browser) {
   const records = await airtableList(SCHEDULE_BASE, SCHEDULE_TABLE, { view: SCHEDULE_VIEW }); const scopedRecords = MAX_RECORDS > 0 ? records.slice(0, MAX_RECORDS) : records; const updates = [], unmatched = [];
   for (const record of scopedRecords) { const f = record.fields || {}, sid = field(f, "sid", "show_id", "app_show_id"), date = field(f, "dt", "date", "schedule_date", "show_date", "schedule_show_datev2", "app_sql_date", "app_sql_datev2") || FOCUS_DAY; if (SHOW_ID && String(sid) !== String(SHOW_ID) || FOCUS_DAY && String(date) !== String(FOCUS_DAY)) continue;
     const url = `https://www.wellingtoninternational.com/showgrounds/show-schedule/?date=${encodeURIComponent(date)}&sid=${encodeURIComponent(sid)}`;
+    if (f.manual_time_override === true || f.manual_time_overide === true) continue;
     try { const loaded = await loadRenderedPage(browser, url); const match = scheduleMatch(record, loaded.rows, loaded.rendered); if (match) updates.push({ id: record.id, fields: { estimated_start_time: match.estimated } }); else unmatched.push({ id: record.id, reason: "schedule_time_not_found", url }); await loaded.page.close(); }
     catch (error) { unmatched.push({ id: record.id, reason: error.message, url }); await logError(`${url}: ${error.message}`, "schedule_scrape", sid); }
   }
