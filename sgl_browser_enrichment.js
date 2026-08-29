@@ -75,7 +75,11 @@ function oogMatch(record, rows) {
 }
 async function runSchedule(browser) {
   if (!SCHEDULE_BASE) throw new Error("SGL_SCHEDULE_BASE_ID or AIRTABLE_BASE_ID is required");
-  const records = await airtableList(SCHEDULE_BASE, SCHEDULE_TABLE, { view: SCHEDULE_VIEW });
+  const scheduleParams = { view: SCHEDULE_VIEW };
+  if (SHOW_ID && FOCUS_DAY) {
+    scheduleParams.filterByFormula = `AND({app_show_idv2}=${Number(SHOW_ID)}, {app_sql_datev2}="${FOCUS_DAY}")`;
+  }
+  const records = await airtableList(SCHEDULE_BASE, SCHEDULE_TABLE, scheduleParams);
   const scopedRecords = records.filter(record => {
     const f = record.fields || {};
     const sid = field(f, "sid", "show_id", "app_show_id");
