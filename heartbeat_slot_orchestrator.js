@@ -29,6 +29,7 @@ const HEARTBEAT_SHIFTED_NEXT_DAY_FIELD = process.env.HEARTBEAT_SHIFTED_NEXT_DAY_
 
 const DEFAULT_TRIPS_DAILY_SLOTS = "A,B,C,D";
 const DEFAULT_TRIPS_TAGGER_SLOTS = "A,C";
+const DEFAULT_SGL_OOG_SLOTS = "A,C";
 const DEFAULT_TRIPS_CALCULATOR_SLOTS = "A,C";
 const DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D";
 const DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS = "A,C";
@@ -1837,6 +1838,8 @@ async function runOrchestrator() {
     const tripsDailySlots = process.env.ORCH_TRIPS_DAILY_SLOTS;
     const tripsDailyDue = slotIsDue(slot, tripsDailySlots, tripsDailyDefaultSlots);
     const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
+    const sglOogDue = mode === "DAY"
+      && slotIsDue(slot, process.env.ORCH_SGL_OOG_SLOTS, DEFAULT_SGL_OOG_SLOTS);
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
     const liveGroupsDue = mode === "DAY"
       && slotIsDue(slot, process.env.ORCH_LIVE_GROUPS_SLOTS, DEFAULT_LIVE_GROUPS_SLOTS);
@@ -1898,6 +1901,19 @@ async function runOrchestrator() {
       if (!tripsCalcResult.ok) upstreamOk = false;
     }
 
+    if (tripsOk && sglOogDue) {
+      const sglOogResult = await runDueScript("sgl_browser_enrichment.js", {
+        SGL_OOG_BASE_ID: process.env.SGL_OOG_BASE_ID || AIRTABLE_BASE_ID,
+        SGL_OOG_ONLY: "1",
+      });
+      if (!sglOogResult.ok) {
+        upstreamOk = false;
+        appendEvent({ ok: false, event: "sgl_oog_enrichment_failed", script: "sgl_browser_enrichment.js", stderr: String(sglOogResult.stderr || "").slice(0, 1000) });
+      } else {
+        appendEvent({ ok: true, event: "sgl_oog_enrichment_completed", script: "sgl_browser_enrichment.js" });
+      }
+    }
+
     if (liveGroupsDue) {
       const liveGroupsResult = await runDueScript("live_groups_daily.js");
       if (!liveGroupsResult.ok) upstreamOk = false;
@@ -1955,6 +1971,7 @@ async function runOrchestrator() {
         trips_daily: tripsDailyDue,
         trips_tagger: tripsTaggerDue,
         trips_calculator: tripsCalcDue,
+        sgl_oog: sglOogDue,
         live_groups: liveGroupsDue,
         live_class_detail: liveClassDetailDue,
         wec_heartbeat: wecHeartbeatDue,
