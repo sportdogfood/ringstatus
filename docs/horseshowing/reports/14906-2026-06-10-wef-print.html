@@ -96,6 +96,7 @@
   }
 
   .wrap{
+    display:block;
     transform:scale(var(--scale));
     transform-origin:top left;
     width:calc(100% / var(--scale));
@@ -316,6 +317,38 @@
     }
     body.tight .t{font-size:9px;}
     body.tight .n{font-size:9px;}
+  }
+</style>
+<style>
+  @media print {
+    html,
+    body {
+      width: 8in !important;
+      height: 10.5in !important;
+      min-height: 0 !important;
+      max-height: 10.5in !important;
+      overflow: hidden !important;
+    }
+
+    #page.page {
+      box-sizing: border-box !important;
+      width: 8in !important;
+      height: 10.5in !important;
+      min-height: 0 !important;
+      max-height: 10.5in !important;
+      overflow: hidden !important;
+    }
+
+    #wrap.wrap,
+    #wrap.wrap.use-zoom {
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+      transform: none !important;
+    }
   }
 </style>
 
