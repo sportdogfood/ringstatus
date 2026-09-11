@@ -26,6 +26,13 @@ assert.ok(
 );
 
 assert.ok(
+  orchestrator.includes('DEFAULT_SGL_OOG_SLOTS = "A,C"') &&
+    orchestrator.includes("const sglOogDue = slotIsDue(") &&
+    !orchestrator.includes('const sglOogDue = mode === "DAY"'),
+  "browser OOG fallback must remain eligible in every active mode, including NIGHT"
+);
+
+assert.ok(
   orchestrator.includes('DEFAULT_SCHEDULES_DAILY_SLOTS = "B,D"'),
   "schedules_dailyv2 must default to slots B/D in non-NIGHT modes"
 );

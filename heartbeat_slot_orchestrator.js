@@ -1839,8 +1839,7 @@ async function runOrchestrator() {
     const tripsDailySlots = process.env.ORCH_TRIPS_DAILY_SLOTS;
     const tripsDailyDue = slotIsDue(slot, tripsDailySlots, tripsDailyDefaultSlots);
     const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
-    const sglOogDue = mode === "DAY"
-      && slotIsDue(slot, process.env.ORCH_SGL_OOG_SLOTS, DEFAULT_SGL_OOG_SLOTS);
+    const sglOogDue = slotIsDue(slot, process.env.ORCH_SGL_OOG_SLOTS, DEFAULT_SGL_OOG_SLOTS);
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
     const liveGroupsDue = mode === "DAY"
       && slotIsDue(slot, process.env.ORCH_LIVE_GROUPS_SLOTS, DEFAULT_LIVE_GROUPS_SLOTS);

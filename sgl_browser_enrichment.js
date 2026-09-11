@@ -50,9 +50,16 @@ async function airtableWrite(base, table, records) {
   }
   return records.length;
 }
+async function airtableCreate(base, table, records) {
+  for (let i = 0; i < records.length; i += 10) {
+    const response = await fetchWithTimeout(`${AIRTABLE_API}/${base}/${encodeURIComponent(table)}`, { method: "POST", headers: { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" }, body: JSON.stringify({ records: records.slice(i, i + 10), typecast: true }) });
+    const body = await response.text(); if (!response.ok) throw new Error(`Airtable POST ${response.status}: ${body.slice(0, 500)}`);
+  }
+  return records.length;
+}
 async function logError(message, errorType, showId) {
   if (DRY_RUN) return;
-  try { await airtableWrite(OOG_BASE, ERR_TABLE, [{ fields: { automation_name: "sgl_browser_enrichment", error_type: errorType, message: text(message).slice(0, 1000), app_show_id: number(showId), last_run: new Date().toISOString(), resolved: false } }]); } catch (error) { console.error(`automation_errs write failed: ${error.message}`); }
+  try { await airtableCreate(OOG_BASE, ERR_TABLE, [{ fields: { automation_name: "sgl_browser_enrichment", error_type: errorType, message: text(message).slice(0, 1000), app_show_id: number(showId), last_run: new Date().toISOString(), resolved: false } }]); } catch (error) { console.error(`automation_errs write failed: ${error.message}`); }
 }
 async function loadRenderedPage(browser, url) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } });
