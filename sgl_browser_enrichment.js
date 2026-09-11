@@ -1,5 +1,6 @@
 const { chromium } = require("playwright");
 const fs = require("fs");
+const { groupRecordsByUrl } = require("./lib/sgl_browser_enrichment");
 
 const AIRTABLE_API = "https://api.airtable.com/v0";
 const TOKEN = process.env.AIRTABLE_TOKEN;
@@ -137,12 +138,32 @@ async function runSchedule(browser) {
 async function runOog(browser) {
   progress("oog_list_started", { table: OOG_TABLE, view: OOG_VIEW });
   const records = await airtableList(OOG_BASE, OOG_TABLE, { view: OOG_VIEW });
-  progress("oog_list_completed", { records: records.length }); const scopedRecords = MAX_RECORDS > 0 ? records.slice(0, MAX_RECORDS) : records; const updates = [], unmatched = [];
-  for (const record of scopedRecords) { const f = record.fields || {}, url = field(f, "classsignup_url_viewsetorder_scrape"); if (!url) { unmatched.push({ id: record.id, reason: "missing_url" }); continue; }
-    try { const loaded = await loadRenderedPage(browser, url); const match = oogMatch(record, loaded.rows, loaded.oogRows); const entry = number(field(f, "entry_number", "entry_no")); if (match?.order === null) updates.push({ id: record.id, fields: { order_of_go: null } }); else if (match?.order !== undefined && match.order !== entry) updates.push({ id: record.id, fields: { order_of_go: match.order } }); else unmatched.push({ id: record.id, reason: match?.order === entry ? "order_equals_entry_rejected" : (match?.ambiguous ? "ambiguous_match" : "order_not_found"), url }); await loaded.page.close(); }
-    catch (error) { unmatched.push({ id: record.id, reason: error.message, url }); await logError(`${url}: ${error.message}`, "oog_scrape", field(f, "sid", "show_id")); }
+  const scopedRecords = MAX_RECORDS > 0 ? records.slice(0, MAX_RECORDS) : records;
+  const { groups, missing } = groupRecordsByUrl(scopedRecords, (record) => field(record.fields || {}, "classsignup_url_viewsetorder_scrape"));
+  progress("oog_list_completed", { records: records.length, scoped_records: scopedRecords.length, unique_pages: groups.size, missing_url: missing.length });
+  const updates = [], unmatched = missing.map((record) => ({ id: record.id, reason: "missing_url" }));
+  for (const [url, groupRecords] of groups) {
+    let loaded = null;
+    progress("oog_page_started", { url, records: groupRecords.length });
+    try {
+      loaded = await loadRenderedPage(browser, url);
+      progress("oog_page_loaded", { url, records: groupRecords.length, rows: loaded.oogRows.length });
+      for (const record of groupRecords) {
+        const f = record.fields || {};
+        const match = oogMatch(record, loaded.rows, loaded.oogRows);
+        const entry = number(field(f, "entry_number", "entry_no"));
+        if (match?.order === null) updates.push({ id: record.id, fields: { order_of_go: null } });
+        else if (match?.order !== undefined && match.order !== entry) updates.push({ id: record.id, fields: { order_of_go: match.order } });
+        else unmatched.push({ id: record.id, reason: match?.order === entry ? "order_equals_entry_rejected" : (match?.ambiguous ? "ambiguous_match" : "order_not_found"), url });
+      }
+    } catch (error) {
+      for (const record of groupRecords) unmatched.push({ id: record.id, reason: error.message, url });
+      await logError(`${url}: ${error.message}`, "oog_scrape", field(groupRecords[0]?.fields || {}, "sid", "show_id"));
+    } finally {
+      if (loaded?.page) await loaded.page.close().catch(() => {});
+    }
   }
-  return { lane: "oog", records: scopedRecords.length, matched: updates.length, written: DRY_RUN ? 0 : await airtableWrite(OOG_BASE, OOG_TABLE, updates), unmatched: unmatched.length, unmatched_samples: unmatched.slice(0, 5) };
+  return { lane: "oog", records: scopedRecords.length, unique_pages: groups.size, matched: updates.length, written: DRY_RUN ? 0 : await airtableWrite(OOG_BASE, OOG_TABLE, updates), unmatched: unmatched.length, unmatched_samples: unmatched.slice(0, 10) };
 }
 (async () => { if (!TOKEN) throw new Error("AIRTABLE_TOKEN is required"); const args = new Set(process.argv.slice(2)); const scheduleOnly = args.has("--schedule-only") || process.env.SGL_SCHEDULE_ONLY === "1"; const oogOnly = args.has("--oog-only") || process.env.SGL_OOG_ONLY === "1"; progress("enrichment_started", { schedule_only: scheduleOnly, oog_only: oogOnly }); const browser = await chromium.launch({ headless: true, executablePath: CHROME_PATH, timeout: Number(process.env.SGL_BROWSER_LAUNCH_TIMEOUT_MS || "30000") }); try { const results = []; if (!oogOnly) results.push(await runSchedule(browser)); if (!scheduleOnly) results.push(await runOog(browser)); console.log(JSON.stringify({ ok: true, dry_run: DRY_RUN, results, observed_at: new Date().toISOString() }, null, 2)); } finally { await browser.close(); progress("enrichment_finished"); } })().catch(error => { progress("enrichment_failed", { error: error.message }); console.error(JSON.stringify({ ok: false, error: error.message, observed_at: new Date().toISOString() }, null, 2)); process.exitCode = 1; });
 module.exports = { normalizeTime, oogMatch };

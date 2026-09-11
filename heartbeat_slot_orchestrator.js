@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { selectScheduleScrapeRequest } = require("./lib/sgl_browser_enrichment");
 const crypto = require("crypto");
 const { spawn, spawnSync } = require("child_process");
 const {
@@ -444,22 +445,23 @@ async function showManualOverride(appShowId) {
   };
 }
 
-async function scheduleScrapeRequest(appShowId) {
+async function scheduleScrapeRequest(appShowId, focusDay) {
   const showId = numOrNull(appShowId);
   if (showId === null) return { found: false, requested: false };
   const rows = await airtableList(TABLE_SHOWS, {
     maxRecords: 10,
     filterByFormula: `{show_id}=${showId}`,
   });
-  const row = rows[0] || null;
+  const row = selectScheduleScrapeRequest(rows, focusDay);
   const fields = row?.fields || {};
   const schemaPresent = Object.prototype.hasOwnProperty.call(fields, "schedule_scrape_now");
   return {
-    found: !!row,
+    found: rows.length > 0,
     record_id: row?.id || null,
     matched_count: rows.length,
     schema_present: schemaPresent,
-    requested: schemaPresent && boolValue(fields.schedule_scrape_now),
+    requested_count: rows.filter((candidate) => boolValue(candidate?.fields?.schedule_scrape_now)).length,
+    requested: !!row && schemaPresent && boolValue(fields.schedule_scrape_now),
   };
 }
 
@@ -1786,7 +1788,20 @@ async function runOrchestrator() {
     let upstreamOk = true;
     let scheduleDueFailed = false;
 
-    const scheduleScrape = await scheduleScrapeRequest(heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id);
+    const scheduleScrape = await scheduleScrapeRequest(
+      heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id,
+      heartbeat?.fields?.app_sql_date ?? heartbeat?.fields?.sql_date
+    );
+    appendEvent({
+      ok: true,
+      event: "schedule_scrape_request_checked",
+      show_id: heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id ?? null,
+      focus_day: heartbeat?.fields?.app_sql_date ?? heartbeat?.fields?.sql_date ?? null,
+      matched_count: scheduleScrape.matched_count ?? 0,
+      requested_count: scheduleScrape.requested_count ?? 0,
+      selected_record_id: scheduleScrape.record_id ?? null,
+      requested: scheduleScrape.requested === true,
+    });
     if (scheduleScrape.requested) {
       const scheduleScrapeResult = await runDueScript("sgl_browser_enrichment.js", {
         SGL_SCHEDULE_BASE_ID: AIRTABLE_BASE_ID,
@@ -1901,13 +1916,12 @@ async function runOrchestrator() {
       if (!tripsCalcResult.ok) upstreamOk = false;
     }
 
-    if (tripsOk && sglOogDue) {
+    if (sglOogDue) {
       const sglOogResult = await runDueScript("sgl_browser_enrichment.js", {
         SGL_OOG_BASE_ID: process.env.SGL_OOG_BASE_ID || AIRTABLE_BASE_ID,
         SGL_OOG_ONLY: "1",
       });
       if (!sglOogResult.ok) {
-        upstreamOk = false;
         appendEvent({ ok: false, event: "sgl_oog_enrichment_failed", script: "sgl_browser_enrichment.js", stderr: String(sglOogResult.stderr || "").slice(0, 1000) });
       } else {
         appendEvent({ ok: true, event: "sgl_oog_enrichment_completed", script: "sgl_browser_enrichment.js" });
