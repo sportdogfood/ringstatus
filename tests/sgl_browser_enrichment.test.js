@@ -16,4 +16,9 @@ assert.ok(
   "watch table enrichment must continue updating existing Airtable records with PATCH"
 );
 
+assert.ok(
+  script.includes("if (!normalized) return null") && script.includes("matches[0].order <= 0"),
+  "blank or non-positive OOG values must remain blank rather than becoming zero"
+);
+
 console.log("sgl_browser_enrichment tests passed");

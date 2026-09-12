@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { selectScheduleScrapeRequest } = require("./lib/sgl_browser_enrichment");
+const { selectScheduleScrapeRequest, selectTripsScrapeRequest } = require("./lib/sgl_browser_enrichment");
 const crypto = require("crypto");
 const { spawn, spawnSync } = require("child_process");
 const {
@@ -470,6 +470,35 @@ async function clearScheduleScrapeRequest(request) {
   await airtableUpdateForBase(AIRTABLE_BASE_ID, TABLE_SHOWS, [{
     id: request.record_id,
     fields: { schedule_scrape_now: false },
+  }]);
+  return true;
+}
+
+async function tripsScrapeRequest(appShowId, focusDay) {
+  const showId = numOrNull(appShowId);
+  if (showId === null) return { found: false, requested: false };
+  const rows = await airtableList(TABLE_SHOWS, {
+    maxRecords: 10,
+    filterByFormula: `{show_id}=${showId}`,
+  });
+  const row = selectTripsScrapeRequest(rows, focusDay);
+  const fields = row?.fields || {};
+  const schemaPresent = Object.prototype.hasOwnProperty.call(fields, "trips_scrape_oog_now");
+  return {
+    found: rows.length > 0,
+    record_id: row?.id || null,
+    matched_count: rows.length,
+    schema_present: schemaPresent,
+    requested_count: rows.filter((candidate) => boolValue(candidate?.fields?.trips_scrape_oog_now)).length,
+    requested: !!row && schemaPresent && boolValue(fields.trips_scrape_oog_now),
+  };
+}
+
+async function clearTripsScrapeRequest(request) {
+  if (!request?.record_id) return false;
+  await airtableUpdateForBase(AIRTABLE_BASE_ID, TABLE_SHOWS, [{
+    id: request.record_id,
+    fields: { trips_scrape_oog_now: false },
   }]);
   return true;
 }
@@ -1841,6 +1870,21 @@ async function runOrchestrator() {
       }
     }
 
+    const tripsScrape = await tripsScrapeRequest(
+      heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id,
+      heartbeat?.fields?.app_sql_date ?? heartbeat?.fields?.sql_date
+    );
+    appendEvent({
+      ok: true,
+      event: "trips_scrape_request_checked",
+      show_id: heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id ?? null,
+      focus_day: heartbeat?.fields?.app_sql_date ?? heartbeat?.fields?.sql_date ?? null,
+      matched_count: tripsScrape.matched_count ?? 0,
+      requested_count: tripsScrape.requested_count ?? 0,
+      selected_record_id: tripsScrape.record_id ?? null,
+      requested: tripsScrape.requested === true,
+    });
+
     const schedulesDailyDefaultSlots = mode === "NIGHT"
       ? DEFAULT_SCHEDULES_DAILY_NIGHT_SLOTS
       : DEFAULT_SCHEDULES_DAILY_SLOTS;
@@ -1854,7 +1898,8 @@ async function runOrchestrator() {
     const tripsDailySlots = process.env.ORCH_TRIPS_DAILY_SLOTS;
     const tripsDailyDue = slotIsDue(slot, tripsDailySlots, tripsDailyDefaultSlots);
     const tripsTaggerDue = slotIsDue(slot, process.env.ORCH_TRIPS_TAGGER_SLOTS, DEFAULT_TRIPS_TAGGER_SLOTS);
-    const sglOogDue = slotIsDue(slot, process.env.ORCH_SGL_OOG_SLOTS, DEFAULT_SGL_OOG_SLOTS);
+    const sglOogDue = tripsScrape.requested
+      || slotIsDue(slot, process.env.ORCH_SGL_OOG_SLOTS, DEFAULT_SGL_OOG_SLOTS);
     const tripsCalcDue = slotIsDue(slot, process.env.ORCH_TRIPS_CALCULATOR_SLOTS, DEFAULT_TRIPS_CALCULATOR_SLOTS);
     const liveGroupsDue = mode === "DAY"
       && slotIsDue(slot, process.env.ORCH_LIVE_GROUPS_SLOTS, DEFAULT_LIVE_GROUPS_SLOTS);
@@ -1925,6 +1970,26 @@ async function runOrchestrator() {
         appendEvent({ ok: false, event: "sgl_oog_enrichment_failed", script: "sgl_browser_enrichment.js", stderr: String(sglOogResult.stderr || "").slice(0, 1000) });
       } else {
         appendEvent({ ok: true, event: "sgl_oog_enrichment_completed", script: "sgl_browser_enrichment.js" });
+        if (tripsScrape.requested) {
+          try {
+            await clearTripsScrapeRequest(tripsScrape);
+            appendEvent({
+              ok: true,
+              event: "trips_scrape_request_completed",
+              show_id: heartbeat?.fields?.app_show_id ?? heartbeat?.fields?.show_id ?? null,
+              focus_day: heartbeat?.fields?.app_sql_date ?? heartbeat?.fields?.sql_date ?? null,
+              request_record_id: tripsScrape.record_id,
+            });
+          } catch (error) {
+            await recordOrchestratorAlert({
+              errorType: "trips_scrape_request_clear_failed",
+              heartbeat,
+              scriptName: "sgl_browser_enrichment.js",
+              message: `OOG scrape completed but trips_scrape_oog_now could not be cleared: ${error.message}`,
+              extra: { requestRecordId: tripsScrape.record_id },
+            });
+          }
+        }
       }
     }
 
