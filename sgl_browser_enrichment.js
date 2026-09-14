@@ -143,7 +143,11 @@ async function runOog(browser) {
   const scopedRecords = limitedRecords.filter((record) => !isUnderSaddleRecord(record));
   const { groups, missing } = groupRecordsByUrl(scopedRecords, (record) => field(record.fields || {}, "classsignup_url_viewsetorder_scrape"));
   progress("oog_list_completed", { records: records.length, scoped_records: scopedRecords.length, under_saddle_excluded: underSaddleRecords.length, order_set: countOrderSetStatuses(limitedRecords), unique_pages: groups.size, missing_url: missing.length });
-  const updates = [], unmatched = missing.map((record) => ({ id: record.id, reason: "missing_url" }));
+  const updates = [
+    ...underSaddleRecords.map((record) => ({ id: record.id, fields: { order_of_go: null, order_set: "Class is Under Saddle" } })),
+    ...missing.map((record) => ({ id: record.id, fields: { order_of_go: null, order_set: "Err" } })),
+  ];
+  const unmatched = missing.map((record) => ({ id: record.id, reason: "missing_url" }));
   for (const [url, groupRecords] of groups) {
     let loaded = null;
     progress("oog_page_started", { url, records: groupRecords.length });
@@ -154,12 +158,19 @@ async function runOog(browser) {
         const f = record.fields || {};
         const match = oogMatch(record, loaded.rows, loaded.oogRows);
         const entry = number(field(f, "entry_number", "entry_no"));
-        if (match?.order === null) updates.push({ id: record.id, fields: { order_of_go: null } });
-        else if (match?.order !== undefined && match.order !== entry) updates.push({ id: record.id, fields: { order_of_go: match.order } });
-        else unmatched.push({ id: record.id, reason: match?.order === entry ? "order_equals_entry_rejected" : (match?.ambiguous ? "ambiguous_match" : "order_not_found"), url });
+        if (match?.order === null) updates.push({ id: record.id, fields: { order_of_go: null, order_set: "Order Not Yet Set" } });
+        else if (match?.order !== undefined && match.order !== entry) updates.push({ id: record.id, fields: { order_of_go: match.order, order_set: "Order is Set" } });
+        else {
+          const reason = match?.order === entry ? "order_equals_entry_rejected" : (match?.ambiguous ? "ambiguous_match" : "order_not_found");
+          updates.push({ id: record.id, fields: { order_of_go: null, order_set: match?.ambiguous || match?.order === entry ? "Err" : "Order Not Yet Set" } });
+          unmatched.push({ id: record.id, reason, url });
+        }
       }
     } catch (error) {
-      for (const record of groupRecords) unmatched.push({ id: record.id, reason: error.message, url });
+      for (const record of groupRecords) {
+        updates.push({ id: record.id, fields: { order_of_go: null, order_set: "Err" } });
+        unmatched.push({ id: record.id, reason: error.message, url });
+      }
       await logError(`${url}: ${error.message}`, "oog_scrape", field(groupRecords[0]?.fields || {}, "sid", "show_id"));
     } finally {
       if (loaded?.page) await loaded.page.close().catch(() => {});
