@@ -1,0 +1,328 @@
+{
+    "state": {
+        "portfolio": {
+            "email": "",
+            "location": "",
+            "name": "",
+            "phone": "",
+            "sections": [
+                {
+                    "content": {
+                        "backgroundImage": "https://intheirons.com/images/quevedo-da821f92a63e.jpg",
+                        "ctaTarget": "results",
+                        "ctaText": "View My Results",
+                        "headline": "Your Name",
+                        "overlayOpacity": 55,
+                        "tagline": "Hunter • Jumper • Class of 2027"
+                    },
+                    "id": "hero",
+                    "type": "hero",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "stats": [
+                            {
+                                "id": "stat-1",
+                                "label": "Competition Wins",
+                                "value": "24"
+                            },
+                            {
+                                "id": "stat-2",
+                                "label": "Top 3 Finishes",
+                                "value": "67"
+                            },
+                            {
+                                "id": "stat-3",
+                                "label": "Years Competing",
+                                "value": "8"
+                            },
+                            {
+                                "id": "stat-4",
+                                "label": "Divisions",
+                                "value": "Hunter • Jumper"
+                            }
+                        ]
+                    },
+                    "id": "stats",
+                    "type": "stats",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "academicInfo": {
+                            "custom": [],
+                            "gpa": "",
+                            "graduationYear": "",
+                            "intendedMajor": "",
+                            "satScore": "",
+                            "school": ""
+                        },
+                        "image": "https://intheirons.com/images/pitkanen-41b87decd6fb.jpg",
+                        "imageMobilePosition": "above",
+                        "imagePosition": "right",
+                        "paragraphs": [
+                            "I have been riding since I was seven years old and competing in hunters and jumpers for the past eight years. My passion for the sport drives me to train daily and push my limits at every competition.",
+                            "I am looking to continue my riding career at the collegiate level while pursuing a degree in Business. I am a dedicated student-athlete who balances academics and athletics with discipline and determination."
+                        ],
+                        "title": "About Me"
+                    },
+                    "id": "about",
+                    "type": "about",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "cards": [
+                            {
+                                "id": "ac-1",
+                                "label": "School",
+                                "value": "Your School Name"
+                            },
+                            {
+                                "id": "ac-2",
+                                "label": "GPA",
+                                "value": "3.8"
+                            },
+                            {
+                                "id": "ac-3",
+                                "label": "Graduation Year",
+                                "value": "2027"
+                            },
+                            {
+                                "id": "ac-4",
+                                "label": "Intended Major",
+                                "value": "Business Administration"
+                            }
+                        ],
+                        "columns": 2,
+                        "layout": "grid",
+                        "title": "Academic Info"
+                    },
+                    "id": "academic",
+                    "type": "info-cards",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "items": [
+                            {
+                                "competition": "WEF 12",
+                                "date": "2026",
+                                "horse": "Bellarabi",
+                                "id": "r1",
+                                "money": "630",
+                                "placing": "1st",
+                                "points": "10",
+                                "title": "Performance Hunter 3'3\"",
+                                "type": "Hunter"
+                            },
+                            {
+                                "competition": "ESP Spring 3",
+                                "date": "2026",
+                                "horse": "Bellarabi",
+                                "id": "r2",
+                                "money": "2500",
+                                "placing": "2nd",
+                                "points": "15",
+                                "title": "$10,000 USHJA National Hunter Derby",
+                                "type": "Derby"
+                            },
+                            {
+                                "competition": "ESP Spring 2",
+                                "date": "2026",
+                                "horse": "Marlon Brando",
+                                "id": "r3",
+                                "money": "520",
+                                "placing": "3rd",
+                                "points": "8",
+                                "title": "1.20m Junior/Amateur Jumper",
+                                "type": "Jumper"
+                            },
+                            {
+                                "competition": "WEF 11",
+                                "date": "2025",
+                                "horse": "Bellarabi",
+                                "id": "r4",
+                                "money": "630",
+                                "placing": "1st",
+                                "points": "12",
+                                "title": "Amateur Owner Hunter 3'3\"",
+                                "type": "Hunter"
+                            },
+                            {
+                                "competition": "WEF 9",
+                                "date": "2025",
+                                "horse": "Marlon Brando",
+                                "id": "r5",
+                                "money": "520",
+                                "placing": "6th",
+                                "points": "4",
+                                "title": "1.20m Amateur Jumper Classic",
+                                "type": "Jumper"
+                            }
+                        ],
+                        "title": "Competition Results"
+                    },
+                    "id": "results",
+                    "type": "results",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "title": "Videos",
+                        "videos": [
+                            {
+                                "description": "Performance Hunter 3'3\" at Winter Equestrian Festival",
+                                "id": "v1",
+                                "title": "Hunter Round - WEF 2026",
+                                "url": ""
+                            },
+                            {
+                                "description": "1.20m Amateur Jumper Classic round",
+                                "id": "v2",
+                                "title": "Jumper Classic",
+                                "url": ""
+                            }
+                        ]
+                    },
+                    "id": "videos",
+                    "type": "videos",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "images": [
+                            {
+                                "caption": "",
+                                "id": "g1",
+                                "url": "https://intheirons.com/images/semenova-2f7e8c4973e5.jpg"
+                            },
+                            {
+                                "caption": "",
+                                "id": "g2",
+                                "url": "https://intheirons.com/images/schuh2-5ed3d72755bb.jpg"
+                            },
+                            {
+                                "caption": "",
+                                "id": "g3",
+                                "url": "https://intheirons.com/images/hodge-5b4534459133.jpg"
+                            },
+                            {
+                                "caption": "",
+                                "id": "g4",
+                                "url": "https://intheirons.com/images/pilgaard-d930f4e45b3e.jpg"
+                            },
+                            {
+                                "caption": "",
+                                "id": "g5",
+                                "url": "https://intheirons.com/images/quevedo-da821f92a63e.jpg"
+                            },
+                            {
+                                "caption": "",
+                                "id": "g6",
+                                "url": "https://intheirons.com/images/thiergart-068704d39771.jpg"
+                            }
+                        ],
+                        "layout": "grid",
+                        "title": "Gallery"
+                    },
+                    "id": "gallery",
+                    "type": "gallery",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "horses": [
+                            {
+                                "description": "My primary hunter mount. We have been a partnership since 2023.",
+                                "id": "h1",
+                                "image": "https://intheirons.com/images/semenova-2f7e8c4973e5.jpg",
+                                "name": "Bellarabi",
+                                "stats": "24 wins • Top 3: 67%"
+                            },
+                            {
+                                "description": "My jumper partner for the 1.20m divisions.",
+                                "id": "h2",
+                                "image": "https://intheirons.com/images/schuh2-5ed3d72755bb.jpg",
+                                "name": "Marlon Brando",
+                                "stats": "12 wins • Top 3: 45%"
+                            }
+                        ],
+                        "title": "My Horses"
+                    },
+                    "id": "horses",
+                    "type": "horses",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "layout": "stack",
+                        "testimonials": [
+                            {
+                                "content": "Add a testimonial from your trainer or coach here. They can speak to your dedication, growth, and achievements as a rider.",
+                                "id": "t1",
+                                "name": "Trainer Name",
+                                "photo": "",
+                                "role": "Head Trainer, Barn Name"
+                            }
+                        ],
+                        "title": "Testimonials"
+                    },
+                    "id": "testimonials",
+                    "type": "testimonials",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "email": "your.email@example.com",
+                        "location": "Wellington, FL",
+                        "phone": "(555) 123-4567",
+                        "title": "Get In Touch"
+                    },
+                    "id": "contact",
+                    "type": "contact",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "title": "Trainer Contact",
+                        "trainerEmail": "trainer@example.com",
+                        "trainerName": "Trainer Name",
+                        "trainerPhone": "(555) 987-6543"
+                    },
+                    "id": "trainer-info",
+                    "type": "trainer-info",
+                    "visible": true
+                },
+                {
+                    "content": {
+                        "submitButtonText": "Send Message",
+                        "title": "Send a Message"
+                    },
+                    "id": "contact-form",
+                    "type": "contact-form",
+                    "visible": false
+                }
+            ],
+            "templateType": "spa",
+            "theme": {
+                "accentColor": "#2e6049",
+                "animationLevel": "subtle",
+                "backgroundColor": "#FAF8F5",
+                "backgroundOverlay": 0,
+                "backgroundType": "solid",
+                "borderRadius": "medium",
+                "cardColor": "#FFFFFF",
+                "cardStyle": "solid",
+                "fontPairing": "raleway-crimson",
+                "headingSize": "medium",
+                "preset": "classic",
+                "textColor": "#1a1a1a"
+            }
+        },
+        "activeSection": null,
+        "scrollToSectionId": null
+    },
+    "version": 1
+}
