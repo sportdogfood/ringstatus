@@ -97,6 +97,8 @@
 
   .wrap{
     display:block;
+    height:auto !important;
+    min-height:0 !important;
     transform:scale(var(--scale));
     transform-origin:top left;
     width:calc(100% / var(--scale));
@@ -188,12 +190,13 @@
     font-weight:600;
     text-align:right;
     text-transform:uppercase;
-    margin-bottom:-6px;
+    margin-bottom:1px;
     margin-right:20px;
     margin-left:10px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    white-space:normal;
+    overflow:visible;
+    overflow-wrap:anywhere;
+    text-overflow:clip;
   }
 
   .gname{
@@ -272,7 +275,7 @@
 		.gdisplay{
   line-height:1.25;
 	margin-top:4px;
-  	margin-bottom:-1px;
+	margin-bottom:1px;
 		}
 
 
@@ -307,7 +310,7 @@
     }
 
     body.tight .ring-head{padding:3px 5px; font-size:9px;}
-    body.tight .gdisplay{font-size:9px; margin-bottom:-8px;}
+    body.tight .gdisplay{font-size:9px; line-height:1.1; margin-bottom:1px;}
     body.tight .class-list{padding:1px 5px 2px 5px;}
     body.tight .c{
       grid-template-columns:42px 1fr;
