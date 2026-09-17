@@ -1,0 +1,2800 @@
+{
+    "state": {
+        "portfolio": {
+            "bioElements": [
+                {
+                    "id": "default-bio-education",
+                    "items": [
+                        "Your School Name",
+                        "Class of ____",
+                        "GPA: ____"
+                    ],
+                    "title": "Education",
+                    "type": "bioSection"
+                },
+                {
+                    "id": "default-bio-achievements",
+                    "items": [
+                        "Honor Roll / High Honors",
+                        "Advanced or Honors classes taken",
+                        "Academic recognitions"
+                    ],
+                    "title": "High School Achievements",
+                    "type": "bioSection"
+                },
+                {
+                    "id": "default-bio-leadership",
+                    "items": [
+                        "Club or organization - Role - Years",
+                        "Student government positions",
+                        "Team captain or leadership roles"
+                    ],
+                    "title": "Leadership Involvement",
+                    "type": "bioSection"
+                },
+                {
+                    "id": "default-bio-awards",
+                    "items": [
+                        "Scholar Athlete",
+                        "Competition awards",
+                        "Academic awards"
+                    ],
+                    "title": "Awards",
+                    "type": "bioSection"
+                },
+                {
+                    "id": "default-bio-volunteer",
+                    "items": [
+                        "Organization Name: Description of your involvement and impact",
+                        "Community service hours or ongoing commitments",
+                        "Special projects or initiatives"
+                    ],
+                    "title": "Volunteer Work and Community Service",
+                    "type": "bioSection"
+                },
+                {
+                    "alignment": "center",
+                    "id": "default-bio-button",
+                    "route": "resume",
+                    "size": "medium",
+                    "style": "primary",
+                    "text": "View My Resume",
+                    "type": "button"
+                }
+            ],
+            "bioMainSlideshow": {
+                "autoPlay": true,
+                "height": "medium",
+                "id": "default-bio-main-slideshow",
+                "images": [
+                    {
+                        "caption": "",
+                        "url": "https://intheirons.com/images/couple-rides-horseback-on-a-sunset-beach-5fc2d0695921.jpg"
+                    },
+                    {
+                        "caption": "",
+                        "url": "https://intheirons.com/images/sunlight-over-grazing-horses-a360631312c8.jpg"
+                    },
+                    {
+                        "caption": "",
+                        "url": "https://intheirons.com/images/a-white-horse-in-a-field-walled-off-from-a-beach-71d90ac336a3.jpg"
+                    }
+                ],
+                "showArrows": true,
+                "showCaptions": false,
+                "showDots": true,
+                "speed": 4,
+                "type": "slideshow"
+            },
+            "carouselSettings": {
+                "autoPlay": true,
+                "loop": true,
+                "speed": 3
+            },
+            "contactForm": {
+                "imagePosition": "side",
+                "slideshow": {
+                    "autoPlay": true,
+                    "height": "medium",
+                    "id": "default-contact-slideshow",
+                    "images": [
+                        {
+                            "caption": "",
+                            "url": "https://intheirons.com/images/couple-rides-horseback-on-a-sunset-beach-5fc2d0695921.jpg"
+                        },
+                        {
+                            "caption": "",
+                            "url": "https://intheirons.com/images/sunlight-over-grazing-horses-a360631312c8.jpg"
+                        },
+                        {
+                            "caption": "",
+                            "url": "https://intheirons.com/images/a-white-horse-in-a-field-walled-off-from-a-beach-71d90ac336a3.jpg"
+                        }
+                    ],
+                    "showArrows": true,
+                    "showCaptions": false,
+                    "showDots": true,
+                    "speed": 4,
+                    "type": "slideshow"
+                },
+                "submitButtonText": "Send Message"
+            },
+            "email": "",
+            "font": "Inter",
+            "homeElements": [
+                {
+                    "alignment": "center",
+                    "content": "Your Name",
+                    "fontSize": "3xl",
+                    "id": "default-name-header",
+                    "linkedField": "name",
+                    "style": "heading",
+                    "type": "text"
+                },
+                {
+                    "alignment": "center",
+                    "content": "Class of ____",
+                    "fontSize": "xl",
+                    "id": "default-subtitle",
+                    "linkedField": "title",
+                    "style": "subheading",
+                    "type": "text"
+                },
+                {
+                    "id": "default-divider-1",
+                    "style": "gradient",
+                    "thickness": "thin",
+                    "type": "divider"
+                },
+                {
+                    "content": "Please tell us your first story",
+                    "id": "default-story-1",
+                    "image": "https://intheirons.com/images/49-3eeb3438e3e8.jpg",
+                    "imageLayout": "split-left",
+                    "isFloating": false,
+                    "title": "My way into Equestrian",
+                    "type": "story"
+                },
+                {
+                    "id": "default-divider-2",
+                    "style": "dots",
+                    "thickness": "medium",
+                    "type": "divider"
+                },
+                {
+                    "content": "Share your training journey and future aspirations",
+                    "id": "default-story-2",
+                    "image": "https://intheirons.com/images/white-horse-with-a-blue-bridle-9719c9137ed8.jpg",
+                    "imageLayout": "split-right",
+                    "isFloating": false,
+                    "title": "Training & Goals",
+                    "type": "story"
+                },
+                {
+                    "id": "default-divider-3",
+                    "style": "gradient",
+                    "thickness": "thin",
+                    "type": "divider"
+                },
+                {
+                    "alignment": "center",
+                    "id": "default-home-button",
+                    "route": "bio",
+                    "size": "large",
+                    "style": "primary",
+                    "text": "Learn More About Me",
+                    "type": "button"
+                },
+                {
+                    "autoPlay": true,
+                    "height": "medium",
+                    "id": "default-slideshow-1",
+                    "images": [
+                        {
+                            "caption": "Competition highlights",
+                            "url": "https://intheirons.com/images/couple-rides-horseback-on-a-sunset-beach-5fc2d0695921.jpg"
+                        },
+                        {
+                            "caption": "Training moments",
+                            "url": "https://intheirons.com/images/sunlight-over-grazing-horses-a360631312c8.jpg"
+                        },
+                        {
+                            "caption": "Memorable experiences",
+                            "url": "https://intheirons.com/images/a-white-horse-in-a-field-walled-off-from-a-beach-71d90ac336a3.jpg"
+                        }
+                    ],
+                    "showArrows": true,
+                    "showCaptions": true,
+                    "showDots": true,
+                    "speed": 4,
+                    "type": "slideshow"
+                }
+            ],
+            "importedBasketIds": [
+                "basket-7129-misc.-hunter-(no-points-earned)-656-471",
+                "basket-6489-ushja-hunter-182-475",
+                "basket-6489-misc.-hunter-(no-points-earned)-656-475",
+                "basket-2807-misc-equitation-570-133",
+                "basket-6371-misc-equitation-525-133",
+                "basket-6371-misc-equitation-570-133",
+                "basket-6371-misc.-hunter-(no-points-earned)-658-1061",
+                "basket-6371-combined-hunter-equitation---17/u-512-739",
+                "basket-6371-usef/ncea-junior-hunter-seat-medal-585-739",
+                "basket-307815-pony-hunter-415-852",
+                "basket-307815-misc-equitation-530-133",
+                "basket-307815-ushja-3'3\"-hunter-seat-medal-535-133",
+                "basket-307815-ushja-hunter-222-694",
+                "basket-340305-junior-hunter-100-5748",
+                "basket-340305-misc.-hunter-(no-points-earned)-247-5748",
+                "basket-340305-misc-equitation-548-5748",
+                "basket-340305-combined-hunter-equitation---17/u-505-2956",
+                "basket-5029-misc-equitation-530-133",
+                "basket-5029-dover-saddlery/usef-hunter-seat-medal-550-133",
+                "basket-340245-misc-equitation-530-133",
+                "basket-340245-dover-saddlery/usef-hunter-seat-medal-550-133",
+                "basket-340245-ushja-3'3-jumping-seat-medal-545-133",
+                "basket-327488-dover-saddlery/usef-hunter-seat-medal-550-1356",
+                "basket-327488-pony-hunter-412-1172",
+                "basket-327488-pony-hunter-413-1172",
+                "basket-327488-pony-hunter-414-1172",
+                "basket-327488-pony-hunter-1172-believe-in-blue-phsmc---pony-hunter---small/medium---championship",
+                "basket-327488-childrens-hunter-pony-405-1171",
+                "basket-327488-childrens-hunter-pony-406-1171",
+                "basket-327488-childrens-hunter-pony-409-1171",
+                "basket-327488-childrens-hunter-pony-960-1171",
+                "basket-327488-childrens-hunter-pony-1171-justamere's-la-di-da-cphc---children's-pony-hunter---championship",
+                "basket-327488-misc.-hunter-(no-points-earned)-654-1171",
+                "basket-327488-hunter-equitation-12-14-514-1219",
+                "basket-330610-ushja-3'3\"-junior-jumping-seat-medal-545-1356",
+                "basket-4397-misc-equitation-570-3076",
+                "basket-4397-dover-saddlery/usef-hunter-seat-medal-550-3076",
+                "basket-5028-misc-equitation-525-3076",
+                "basket-316542-hunter-equitation-12-14-512-2420",
+                "basket-230675-misc.-hunter-(no-points-earned)-651-739",
+                "basket-230675-children/adult-amateur-hunter-285-739",
+                "basket-322723-childrens-hunter-pony-409-2859",
+                "basket-319687-misc.-hunter-(no-points-earned)-557-679",
+                "basket-6845-green-pony-hunter-124-812",
+                "basket-6845-ushja-hunter-2'0\"-604-1041",
+                "basket-748-green-pony-hunter-16-128",
+                "basket-748-green-pony-hunter-18-128",
+                "basket-748-green-pony-hunter-19-128",
+                "basket-748-green-pony-hunter-20-128",
+                "basket-748-green-pony-hunter-128-summerwood's-blue-steel-gphch---green-pony-hunters-championship",
+                "basket-748-pony-hunter-small-24-217",
+                "basket-1762-misc.-hunter-(no-points-earned)-658-968",
+                "basket-247834-childrens-hunter-pony-406-2275",
+                "basket-247834-childrens-hunter-pony-408-2275",
+                "basket-965-childrens-hunter-pony-401-160",
+                "basket-965-childrens-hunter-pony-95-160",
+                "basket-965-childrens-hunter-pony-97-160",
+                "basket-965-childrens-hunter-pony-98-160",
+                "basket-965-childrens-hunter-pony-99-160",
+                "basket-965-childrens-hunter-pony-160-summerwood's-blue-steel-chpch---children's-hunter-pony---combined-championship",
+                "basket-965-childrens-hunter-pony-95-106",
+                "basket-965-childrens-hunter-pony-98-106",
+                "basket-965-childrens-hunter-pony-99-106",
+                "basket-965-childrens-hunter-pony-106-q-2-chcp---children's-hunter-pony-championship",
+                "basket-6674-childrens-hunter-pony-95-160",
+                "basket-464-childrens-hunter-pony-161-432",
+                "basket-1918-childrens-hunter-pony-2886-5854",
+                "basket-6675-childrens-hunter-pony-97-106",
+                "basket-340539-pony-hunter-small-204-2062",
+                "basket-3589-misc.-hunter-(no-points-earned)-11-1014",
+                "basket-3589-misc.-hunter-(no-points-earned)-1014-good-golly-miss-holly-ch1---short-stirrup-championship",
+                "basket-3589-walk/trot-classes-(exempt-non-member-fee)-10-1014",
+                "basket-3-misc.-hunter-(no-points-earned)-13-747"
+            ],
+            "location": "",
+            "name": "LAINEY POSA",
+            "phone": "",
+            "photos": [],
+            "resumeElements": [
+                {
+                    "alignment": "center",
+                    "content": "LAINEY POSA",
+                    "fontSize": "xl",
+                    "id": "auto-sync-resume-name",
+                    "style": "subheading",
+                    "type": "text"
+                },
+                {
+                    "alignment": "center",
+                    "content": "Class of 2026",
+                    "fontSize": "base",
+                    "id": "auto-sync-resume-class",
+                    "style": "caption",
+                    "type": "text"
+                },
+                {
+                    "alignment": "center",
+                    "content": "Jumping Seat Candidate",
+                    "fontSize": "base",
+                    "id": "auto-sync-resume-subtitle",
+                    "style": "caption",
+                    "type": "text"
+                },
+                {
+                    "alignment": "center",
+                    "content": "San Jose, CA",
+                    "fontSize": "base",
+                    "id": "auto-sync-resume-location",
+                    "style": "caption",
+                    "type": "text"
+                },
+                {
+                    "alignment": "center",
+                    "content": "email@gmail.com",
+                    "fontSize": "base",
+                    "id": "auto-sync-resume-email",
+                    "style": "caption",
+                    "type": "text"
+                },
+                {
+                    "alignment": "center",
+                    "content": "Phone",
+                    "fontSize": "base",
+                    "id": "auto-sync-resume-phone",
+                    "style": "caption",
+                    "type": "text"
+                },
+                {
+                    "alignment": "center",
+                    "content": "USEF: ___",
+                    "fontSize": "base",
+                    "id": "auto-sync-resume-usef",
+                    "style": "caption",
+                    "type": "text"
+                },
+                {
+                    "id": "reset-year-2019",
+                    "name": "2019",
+                    "type": "group-header"
+                },
+                {
+                    "id": "reset-comp-2019-old-salem-farm-december",
+                    "name": "OLD SALEM FARM DECEMBER",
+                    "type": "subgroup-header"
+                },
+                {
+                    "id": "basket-7129-misc.-hunter-(no-points-earned)-656-471",
+                    "type": "achievement",
+                    "title": "656 - Warm Up Hunter",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. NOVEMBER I",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good20.00 • Horse: NAVIGATOR",
+                    "isFromBasket": true,
+                    "basketId": "basket-7129-misc.-hunter-(no-points-earned)-656-471",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "656 - Warm Up Hunter",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. NOVEMBER I",
+                        "horse": "NAVIGATOR",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "20.00",
+                        "date": "11/7/2025",
+                        "year": "2025",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "471"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. NOVEMBER I",
+                        "horse": "NAVIGATOR"
+                    }
+                },
+                {
+                    "id": "basket-6489-ushja-hunter-182-475",
+                    "type": "achievement",
+                    "title": "182 - USHJA Hunter 2'/2'3 - FP",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FALL \"A\" CIRCUIT II",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-6489-ushja-hunter-182-475",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "182 - USHJA Hunter 2'/2'3 - FP",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FALL \"A\" CIRCUIT II",
+                        "horse": "TROUBLESHOOT",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "10/16/2025",
+                        "year": "2025",
+                        "section": "USHJA HUNTER",
+                        "back_number": "475"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FALL \"A\" CIRCUIT II",
+                        "horse": "TROUBLESHOOT"
+                    }
+                },
+                {
+                    "id": "basket-6489-misc.-hunter-(no-points-earned)-656-475",
+                    "type": "achievement",
+                    "title": "656 - Warm Up Hunter",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FALL \"A\" CIRCUIT II",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-6489-misc.-hunter-(no-points-earned)-656-475",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "656 - Warm Up Hunter",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FALL \"A\" CIRCUIT II",
+                        "horse": "TROUBLESHOOT",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "10/16/2025",
+                        "year": "2025",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "475"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FALL \"A\" CIRCUIT II",
+                        "horse": "TROUBLESHOOT"
+                    }
+                },
+                {
+                    "id": "basket-2807-misc-equitation-570-133",
+                    "type": "achievement",
+                    "title": "570 - ASPCA Maclay",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FLORIDA STATE FALL",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-2807-misc-equitation-570-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "570 - ASPCA Maclay",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FLORIDA STATE FALL",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "9/18/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. FLORIDA STATE FALL",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-6371-misc-equitation-525-133",
+                    "type": "achievement",
+                    "title": "525 - SFHJA Junior Medal (Flat Phase)",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-6371-misc-equitation-525-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "525 - SFHJA Junior Medal (Flat Phase)",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/28/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-6371-misc-equitation-570-133",
+                    "type": "achievement",
+                    "title": "570 - ASPCA Maclay",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-6371-misc-equitation-570-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "570 - ASPCA Maclay",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/28/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-6371-misc.-hunter-(no-points-earned)-658-1061",
+                    "type": "achievement",
+                    "title": "658 - Warm Up Hunter 3'",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-6371-misc.-hunter-(no-points-earned)-658-1061",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "658 - Warm Up Hunter 3'",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "KOBERLIN FH",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/28/2025",
+                        "year": "2025",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "1061"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "KOBERLIN FH"
+                    }
+                },
+                {
+                    "id": "basket-6371-combined-hunter-equitation---17/u-512-739",
+                    "type": "achievement",
+                    "title": "512 - 12-17 Equitation Flat",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good20.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-6371-combined-hunter-equitation---17/u-512-739",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "512 - 12-17 Equitation Flat",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "SIR SANTINO",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "20.00",
+                        "money": "",
+                        "date": "8/28/2025",
+                        "year": "2025",
+                        "section": "COMBINED HUNTER EQUITATION - 17/U",
+                        "back_number": "739"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "SIR SANTINO"
+                    }
+                },
+                {
+                    "id": "basket-6371-usef/ncea-junior-hunter-seat-medal-585-739",
+                    "type": "achievement",
+                    "title": "585 - USEF/NCEA Junior Hunter Seat Medal",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad",
+                    "isFromBasket": true,
+                    "basketId": "basket-6371-usef/ncea-junior-hunter-seat-medal-585-739",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "585 - USEF/NCEA Junior Hunter Seat Medal",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "SIR SANTINO",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/28/2025",
+                        "year": "2025",
+                        "section": "USEF/NCEA Junior Hunter Seat Medal",
+                        "back_number": "739"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. LABOR DAY A",
+                        "horse": "SIR SANTINO"
+                    }
+                },
+                {
+                    "id": "basket-307815-pony-hunter-415-852",
+                    "type": "achievement",
+                    "title": "415 - Pony Hunter Handy",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-307815-pony-hunter-415-852",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "415 - Pony Hunter Handy",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "BRIGHTON",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "8/14/2025",
+                        "year": "2025",
+                        "section": "PONY HUNTER",
+                        "back_number": "852"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "BRIGHTON"
+                    }
+                },
+                {
+                    "id": "basket-307815-misc-equitation-530-133",
+                    "type": "achievement",
+                    "title": "530 - Hamel Foundation/NHS 3'3 Medal",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-307815-misc-equitation-530-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "530 - Hamel Foundation/NHS 3'3  Medal",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/14/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-307815-ushja-3'3\"-hunter-seat-medal-535-133",
+                    "type": "achievement",
+                    "title": "535 - USHJA 3'3 Hunter Seat Medal",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 5.00 National Points",
+                    "isFromBasket": true,
+                    "basketId": "basket-307815-ushja-3'3\"-hunter-seat-medal-535-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "535 - USHJA 3'3  Hunter Seat Medal",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "5.00",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/14/2025",
+                        "year": "2025",
+                        "section": "USHJA 3'3\" HUNTER SEAT MEDAL",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-307815-ushja-hunter-222-694",
+                    "type": "achievement",
+                    "title": "222 - USHJA Hunter 2'9 & 3'",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $30.00 • Horse: CENTO FOREVER",
+                    "isFromBasket": true,
+                    "basketId": "basket-307815-ushja-hunter-222-694",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "222 - USHJA Hunter 2'9  & 3'",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "CENTO FOREVER",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "30.00",
+                        "date": "8/14/2025",
+                        "year": "2025",
+                        "section": "USHJA HUNTER",
+                        "back_number": "694"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER II",
+                        "horse": "CENTO FOREVER"
+                    }
+                },
+                {
+                    "id": "basket-340305-junior-hunter-100-5748",
+                    "type": "achievement",
+                    "title": "100 - $400 Junior Hunter 3'6 FP",
+                    "organization": "WEC OCALA SUMMER #4",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-340305-junior-hunter-100-5748",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "100 - $400 Junior Hunter 3'6 FP",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "7/1/2025",
+                        "year": "2025",
+                        "section": "JUNIOR HUNTER",
+                        "back_number": "5748"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-340305-misc.-hunter-(no-points-earned)-247-5748",
+                    "type": "achievement",
+                    "title": "247 - USHJA Hunter 3'3",
+                    "organization": "WEC OCALA SUMMER #4",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-340305-misc.-hunter-(no-points-earned)-247-5748",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "247 - USHJA Hunter 3'3",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "7/1/2025",
+                        "year": "2025",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "5748"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-340305-misc-equitation-548-5748",
+                    "type": "achievement",
+                    "title": "548 - World Equestrian Center Premier Cup 3'6",
+                    "organization": "WEC OCALA SUMMER #4",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-340305-misc-equitation-548-5748",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "548 - World Equestrian Center Premier Cup 3'6",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "7/1/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "5748"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-340305-combined-hunter-equitation---17/u-505-2956",
+                    "type": "achievement",
+                    "title": "505 - Equitation 12-14 2'9'/15-17 3'3 Flat",
+                    "organization": "WEC OCALA SUMMER #4",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good20.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-340305-combined-hunter-equitation---17/u-505-2956",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "505 - Equitation 12-14 2'9'/15-17 3'3 Flat",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "MAHALO",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "20.00",
+                        "money": "",
+                        "date": "7/1/2025",
+                        "year": "2025",
+                        "section": "COMBINED HUNTER EQUITATION - 17/U",
+                        "back_number": "2956"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "WEC OCALA SUMMER #4",
+                        "horse": "MAHALO"
+                    }
+                },
+                {
+                    "id": "basket-5029-misc-equitation-530-133",
+                    "type": "achievement",
+                    "title": "530 - Hamel Foundation/NHS 3'3 Medal",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. JUNE I",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-5029-misc-equitation-530-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "530 - Hamel Foundation/NHS 3'3  Medal",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. JUNE I",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/30/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. JUNE I",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-5029-dover-saddlery/usef-hunter-seat-medal-550-133",
+                    "type": "achievement",
+                    "title": "550 - Dover Saddlery/USEF Hunter Seat Medal",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. JUNE I",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 5.00 National Points",
+                    "isFromBasket": true,
+                    "basketId": "basket-5029-dover-saddlery/usef-hunter-seat-medal-550-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "550 - Dover Saddlery/USEF Hunter Seat Medal",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. JUNE I",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "5.00",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/30/2025",
+                        "year": "2025",
+                        "section": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. JUNE I",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-340245-misc-equitation-530-133",
+                    "type": "achievement",
+                    "title": "530 - Hamel Foundation NHS 3'3' Medal",
+                    "organization": "ESP JUNE EQUITATION DAY #1",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-340245-misc-equitation-530-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "530 - Hamel Foundation NHS 3'3' Medal",
+                        "competition": "ESP JUNE EQUITATION DAY #1",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/29/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "ESP JUNE EQUITATION DAY #1",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-340245-dover-saddlery/usef-hunter-seat-medal-550-133",
+                    "type": "achievement",
+                    "title": "550 - Dover Saddlery USEF Hunter Seat Medal",
+                    "organization": "ESP JUNE EQUITATION DAY #1",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 5.00 National Points",
+                    "isFromBasket": true,
+                    "basketId": "basket-340245-dover-saddlery/usef-hunter-seat-medal-550-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "550 - Dover Saddlery USEF Hunter Seat Medal",
+                        "competition": "ESP JUNE EQUITATION DAY #1",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "5.00",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/29/2025",
+                        "year": "2025",
+                        "section": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "ESP JUNE EQUITATION DAY #1",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-340245-ushja-3'3-jumping-seat-medal-545-133",
+                    "type": "achievement",
+                    "title": "545 - USHJA Jumping Seat Medal 3'3",
+                    "organization": "ESP JUNE EQUITATION DAY #1",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 6.00 National Points",
+                    "isFromBasket": true,
+                    "basketId": "basket-340245-ushja-3'3-jumping-seat-medal-545-133",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "545 - USHJA Jumping Seat Medal 3'3",
+                        "competition": "ESP JUNE EQUITATION DAY #1",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "6.00",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/29/2025",
+                        "year": "2025",
+                        "section": "USHJA 3'3 JUMPING SEAT MEDAL",
+                        "back_number": "133"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "ESP JUNE EQUITATION DAY #1",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-327488-dover-saddlery/usef-hunter-seat-medal-550-1356",
+                    "type": "achievement",
+                    "title": "550 - Dover/USEF Hunter Seat Medal",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 5.00 National Points",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-dover-saddlery/usef-hunter-seat-medal-550-1356",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "550 - Dover/USEF Hunter Seat Medal",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "5.00",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                        "back_number": "1356"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-327488-pony-hunter-412-1172",
+                    "type": "achievement",
+                    "title": "412 - Small/Medium Pony Hunter - FP",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $28.00 • Horse: BELIEVE IN BLUE",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-pony-hunter-412-1172",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "412 - Small/Medium Pony Hunter - FP",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "28.00",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "PONY HUNTER",
+                        "back_number": "1172"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE"
+                    }
+                },
+                {
+                    "id": "basket-327488-pony-hunter-413-1172",
+                    "type": "achievement",
+                    "title": "413 - Small/Medium Pony Hunter",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $24.00 • Horse: BELIEVE IN BLUE",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-pony-hunter-413-1172",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "413 - Small/Medium Pony Hunter",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "24.00",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "PONY HUNTER",
+                        "back_number": "1172"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE"
+                    }
+                },
+                {
+                    "id": "basket-327488-pony-hunter-414-1172",
+                    "type": "achievement",
+                    "title": "414 - Small/Medium Pony Hunter",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $20.00 • Horse: BELIEVE IN BLUE",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-pony-hunter-414-1172",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "414 - Small/Medium Pony Hunter",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "20.00",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "PONY HUNTER",
+                        "back_number": "1172"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE"
+                    }
+                },
+                {
+                    "id": "basket-327488-pony-hunter-1172-believe-in-blue-phsmc---pony-hunter---small/medium---championship",
+                    "type": "achievement",
+                    "title": "PHSMC - Pony Hunter - Small/Medium - CHAMPIONSHIP",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 30.00 National Points • 30.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-pony-hunter-1172-believe-in-blue-phsmc---pony-hunter---small/medium---championship",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "PHSMC - Pony Hunter - Small/Medium - CHAMPIONSHIP",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "30.00",
+                        "zone_points": "30.00",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "PONY HUNTER",
+                        "back_number": "1172"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BELIEVE IN BLUE"
+                    }
+                },
+                {
+                    "id": "basket-327488-childrens-hunter-pony-405-1171",
+                    "type": "achievement",
+                    "title": "405 - Children's Pony Hunter U/S",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-childrens-hunter-pony-405-1171",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "405 - Children's Pony Hunter U/S",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "1171"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA"
+                    }
+                },
+                {
+                    "id": "basket-327488-childrens-hunter-pony-406-1171",
+                    "type": "achievement",
+                    "title": "406 - Children's Pony Hunter",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-childrens-hunter-pony-406-1171",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "406 - Children's Pony Hunter",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "1171"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA"
+                    }
+                },
+                {
+                    "id": "basket-327488-childrens-hunter-pony-409-1171",
+                    "type": "achievement",
+                    "title": "409 - Children's Pony Hunter",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-childrens-hunter-pony-409-1171",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "409 - Children's Pony Hunter",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "1171"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA"
+                    }
+                },
+                {
+                    "id": "basket-327488-childrens-hunter-pony-960-1171",
+                    "type": "achievement",
+                    "title": "960 - $500 USHJA Zone 4 Children's Pony Handy Hunter Challenge",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-childrens-hunter-pony-960-1171",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "960 - $500 USHJA Zone 4 Children's Pony Handy Hunter Challenge",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "1171"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA"
+                    }
+                },
+                {
+                    "id": "basket-327488-childrens-hunter-pony-1171-justamere's-la-di-da-cphc---children's-pony-hunter---championship",
+                    "type": "achievement",
+                    "title": "CPHC - Children's Pony Hunter - CHAMPIONSHIP",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Bad30.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-childrens-hunter-pony-1171-justamere's-la-di-da-cphc---children's-pony-hunter---championship",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "CPHC - Children's Pony Hunter - CHAMPIONSHIP",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "30.00",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "1171"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA"
+                    }
+                },
+                {
+                    "id": "basket-327488-misc.-hunter-(no-points-earned)-654-1171",
+                    "type": "achievement",
+                    "title": "654 - Warm Up",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good16.00 • Horse: JUSTAMERE'S LA-DI-DA",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-misc.-hunter-(no-points-earned)-654-1171",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "654 - Warm Up",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "16.00",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "1171"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "JUSTAMERE'S LA-DI-DA"
+                    }
+                },
+                {
+                    "id": "basket-327488-hunter-equitation-12-14-514-1219",
+                    "type": "achievement",
+                    "title": "514 - 12-14 Equitation (2'9 )",
+                    "organization": "SFHJA MAY II SHOW",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 20.00 National Points • 20.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-327488-hunter-equitation-12-14-514-1219",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "514 - 12-14 Equitation (2'9 )",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BON BROWN",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "20.00",
+                        "zone_points": "20.00",
+                        "money": "",
+                        "date": "5/17/2025",
+                        "year": "2025",
+                        "section": "HUNTER EQUITATION 12-14",
+                        "back_number": "1219"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY II SHOW",
+                        "horse": "BON BROWN"
+                    }
+                },
+                {
+                    "id": "basket-330610-ushja-3'3\"-junior-jumping-seat-medal-545-1356",
+                    "type": "achievement",
+                    "title": "545 - USHJA 3'3 Junior Jumping Seat Medal",
+                    "organization": "SFHJA MAY I",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 3.00 National Points",
+                    "isFromBasket": true,
+                    "basketId": "basket-330610-ushja-3'3\"-junior-jumping-seat-medal-545-1356",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "545 - USHJA 3'3 Junior Jumping Seat Medal",
+                        "competition": "SFHJA MAY I",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "3.00",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/16/2025",
+                        "year": "2025",
+                        "section": "USHJA 3'3\" JUNIOR JUMPING SEAT MEDAL",
+                        "back_number": "1356"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "SFHJA MAY I",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-4397-misc-equitation-570-3076",
+                    "type": "achievement",
+                    "title": "570 - ASPCA Maclay",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 5",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-4397-misc-equitation-570-3076",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "570 - ASPCA Maclay",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 5",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/8/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "3076"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 5",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-4397-dover-saddlery/usef-hunter-seat-medal-550-3076",
+                    "type": "achievement",
+                    "title": "550 - Dover Saddlery/USEF Hunter Seat Medal",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 5",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good • 10.00 National Points",
+                    "isFromBasket": true,
+                    "basketId": "basket-4397-dover-saddlery/usef-hunter-seat-medal-550-3076",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "550 - Dover Saddlery/USEF Hunter Seat Medal",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 5",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "10.00",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "5/8/2025",
+                        "year": "2025",
+                        "section": "DOVER SADDLERY/USEF HUNTER SEAT MEDAL",
+                        "back_number": "3076"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 5",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-5028-misc-equitation-525-3076",
+                    "type": "achievement",
+                    "title": "525 - SFHJA Junior/Adult Amateur Medal (Flat Phase)",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 3",
+                    "date": "2025",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-5028-misc-equitation-525-3076",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "525 - SFHJA Junior/Adult Amateur Medal (Flat Phase)",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 3",
+                        "horse": "ODDUR VAN BEAUGAARDE",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "4/15/2025",
+                        "year": "2025",
+                        "section": "Misc Equitation",
+                        "back_number": "3076"
+                    },
+                    "metadata": {
+                        "year": "2025",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 3",
+                        "horse": "ODDUR VAN BEAUGAARDE"
+                    }
+                },
+                {
+                    "id": "basket-316542-hunter-equitation-12-14-512-2420",
+                    "type": "achievement",
+                    "title": "512 - 12-14 Equitation Flat",
+                    "organization": "HOLIDAY FESTIVAL II",
+                    "date": "2024",
+                    "description": "Placed 1, Natl Points Good • 20.00 National Points • 20.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-316542-hunter-equitation-12-14-512-2420",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "512 - 12-14 Equitation Flat",
+                        "competition": "HOLIDAY FESTIVAL II",
+                        "horse": "BALOUNA",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "20.00",
+                        "zone_points": "20.00",
+                        "money": "",
+                        "date": "12/12/2024",
+                        "year": "2024",
+                        "section": "HUNTER EQUITATION 12-14",
+                        "back_number": "2420"
+                    },
+                    "metadata": {
+                        "year": "2024",
+                        "competition": "HOLIDAY FESTIVAL II",
+                        "horse": "BALOUNA"
+                    }
+                },
+                {
+                    "id": "basket-230675-misc.-hunter-(no-points-earned)-651-739",
+                    "type": "achievement",
+                    "title": "651 - Warm Up Hunter (Coded)",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER III",
+                    "date": "2024",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-230675-misc.-hunter-(no-points-earned)-651-739",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "651 - Warm Up Hunter (Coded)",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER III",
+                        "horse": "SIR SANTINO",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/22/2024",
+                        "year": "2024",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "739"
+                    },
+                    "metadata": {
+                        "year": "2024",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER III",
+                        "horse": "SIR SANTINO"
+                    }
+                },
+                {
+                    "id": "basket-230675-children/adult-amateur-hunter-285-739",
+                    "type": "achievement",
+                    "title": "285 - Child/Adult Amateur Hunter",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER III",
+                    "date": "2024",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-230675-children/adult-amateur-hunter-285-739",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "285 - Child/Adult Amateur Hunter",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER III",
+                        "horse": "SIR SANTINO",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "8/22/2024",
+                        "year": "2024",
+                        "section": "CHILDREN/ADULT AMATEUR HUNTER",
+                        "back_number": "739"
+                    },
+                    "metadata": {
+                        "year": "2024",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SUMMER III",
+                        "horse": "SIR SANTINO"
+                    }
+                },
+                {
+                    "id": "basket-322723-childrens-hunter-pony-409-2859",
+                    "type": "achievement",
+                    "title": "409 - Small/Medium Children's Pony Hunter",
+                    "organization": "HOLIDAY FESTIVAL III",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $12.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-322723-childrens-hunter-pony-409-2859",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "409 - Small/Medium Children's Pony Hunter",
+                        "competition": "HOLIDAY FESTIVAL III",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "12.00",
+                        "date": "12/20/2023",
+                        "year": "2023",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "2859"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "HOLIDAY FESTIVAL III",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-319687-misc.-hunter-(no-points-earned)-557-679",
+                    "type": "achievement",
+                    "title": "557 - SAUGERTIES CHILD HUNTER O/F",
+                    "organization": "HITS ON THE HUDSON IV",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-319687-misc.-hunter-(no-points-earned)-557-679",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "557 - SAUGERTIES CHILD HUNTER O/F",
+                        "competition": "HITS ON THE HUDSON IV",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "7/19/2023",
+                        "year": "2023",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "679"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "HITS ON THE HUDSON IV",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-6845-green-pony-hunter-124-812",
+                    "type": "achievement",
+                    "title": "124 - $100 GREEN PONY HUNTER",
+                    "organization": "SARATOGA CLASSIC I",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $40.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-6845-green-pony-hunter-124-812",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "124 - $100 GREEN PONY HUNTER",
+                        "competition": "SARATOGA CLASSIC I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "40.00",
+                        "date": "6/14/2023",
+                        "year": "2023",
+                        "section": "GREEN PONY HUNTER",
+                        "back_number": "812"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "SARATOGA CLASSIC I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-6845-ushja-hunter-2'0\"-604-1041",
+                    "type": "achievement",
+                    "title": "604 - USHJA HUNTER 2' O/F",
+                    "organization": "SARATOGA CLASSIC I",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good22.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-6845-ushja-hunter-2'0\"-604-1041",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "604 - USHJA HUNTER 2' O/F",
+                        "competition": "SARATOGA CLASSIC I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "22.00",
+                        "money": "",
+                        "date": "6/14/2023",
+                        "year": "2023",
+                        "section": "USHJA HUNTER 2'0\"",
+                        "back_number": "1041"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "SARATOGA CLASSIC I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-748-green-pony-hunter-16-128",
+                    "type": "achievement",
+                    "title": "16 - GREEN PONY HUNTER - MODEL",
+                    "organization": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 7.50 National Points • 7.50 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-748-green-pony-hunter-16-128",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "16 - GREEN PONY HUNTER - MODEL",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "7.50",
+                        "zone_points": "7.50",
+                        "money": "",
+                        "date": "5/13/2023",
+                        "year": "2023",
+                        "section": "GREEN PONY HUNTER",
+                        "back_number": "128"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-748-green-pony-hunter-18-128",
+                    "type": "achievement",
+                    "title": "18 - GREEN PONY HUNTER FP",
+                    "organization": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $120.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-748-green-pony-hunter-18-128",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "18 - GREEN PONY HUNTER FP",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "120.00",
+                        "date": "5/13/2023",
+                        "year": "2023",
+                        "section": "GREEN PONY HUNTER",
+                        "back_number": "128"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-748-green-pony-hunter-19-128",
+                    "type": "achievement",
+                    "title": "19 - GREEN PONY HUNTER",
+                    "organization": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $120.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-748-green-pony-hunter-19-128",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "19 - GREEN PONY HUNTER",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "120.00",
+                        "date": "5/13/2023",
+                        "year": "2023",
+                        "section": "GREEN PONY HUNTER",
+                        "back_number": "128"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-748-green-pony-hunter-20-128",
+                    "type": "achievement",
+                    "title": "20 - GREEN PONY HUNTER - CONFORMATION",
+                    "organization": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 15.00 National Points • 15.00 Zone Points • $120.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-748-green-pony-hunter-20-128",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "20 - GREEN PONY HUNTER - CONFORMATION",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "15.00",
+                        "zone_points": "15.00",
+                        "money": "120.00",
+                        "date": "5/13/2023",
+                        "year": "2023",
+                        "section": "GREEN PONY HUNTER",
+                        "back_number": "128"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-748-green-pony-hunter-128-summerwood's-blue-steel-gphch---green-pony-hunters-championship",
+                    "type": "achievement",
+                    "title": "GPHCH - GREEN PONY HUNTERS CHAMPIONSHIP",
+                    "organization": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 30.00 National Points • 30.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-748-green-pony-hunter-128-summerwood's-blue-steel-gphch---green-pony-hunters-championship",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "GPHCH - GREEN PONY HUNTERS CHAMPIONSHIP",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "30.00",
+                        "zone_points": "30.00",
+                        "money": "",
+                        "date": "5/13/2023",
+                        "year": "2023",
+                        "section": "GREEN PONY HUNTER",
+                        "back_number": "128"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-748-pony-hunter-small-24-217",
+                    "type": "achievement",
+                    "title": "24 - Small Pony Handy Hunter O/F",
+                    "organization": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good • 23.00 National Points • 18.00 Zone Points • $75.00 • Horse: Q-2",
+                    "isFromBasket": true,
+                    "basketId": "basket-748-pony-hunter-small-24-217",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "24 - Small Pony Handy Hunter O/F",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "Q-2",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "23.00",
+                        "zone_points": "18.00",
+                        "money": "75.00",
+                        "date": "5/13/2023",
+                        "year": "2023",
+                        "section": "PONY HUNTER-SMALL",
+                        "back_number": "217"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "LONG ISLAND PROFESSIONAL HORSEMEN'S ASSOCIATION HORSE SHOW",
+                        "horse": "Q-2"
+                    }
+                },
+                {
+                    "id": "basket-1762-misc.-hunter-(no-points-earned)-658-968",
+                    "type": "achievement",
+                    "title": "658 - Warm Up Hunter",
+                    "organization": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 1",
+                    "date": "2023",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-1762-misc.-hunter-(no-points-earned)-658-968",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "658 - Warm Up Hunter",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 1",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "4/4/2023",
+                        "year": "2023",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "968"
+                    },
+                    "metadata": {
+                        "year": "2023",
+                        "competition": "EQUESTRIAN SPORT PRODUCTIONS, LLC. SPRING 1",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-247834-childrens-hunter-pony-406-2275",
+                    "type": "achievement",
+                    "title": "406 - Children's Hunter Pony",
+                    "organization": "HOLIDAY FESTIVAL I",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-247834-childrens-hunter-pony-406-2275",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "406 - Children's Hunter Pony",
+                        "competition": "HOLIDAY FESTIVAL I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "12/12/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "2275"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "HOLIDAY FESTIVAL I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-247834-childrens-hunter-pony-408-2275",
+                    "type": "achievement",
+                    "title": "408 - Children's Hunter Pony",
+                    "organization": "HOLIDAY FESTIVAL I",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Bad15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-247834-childrens-hunter-pony-408-2275",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "408 - Children's Hunter Pony",
+                        "competition": "HOLIDAY FESTIVAL I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Bad",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "12/12/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "2275"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "HOLIDAY FESTIVAL I",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-401-160",
+                    "type": "achievement",
+                    "title": "401 - $500 M&S Childrens Pony Hunter Classic 2'/2'6",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good21.25 Zone Points • $150.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-401-160",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "401 - $500 M&S Childrens Pony Hunter Classic 2'/2'6",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "21.25",
+                        "money": "150.00",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "160"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-95-160",
+                    "type": "achievement",
+                    "title": "95 - Childrens Hunter Pony - Combined U/S",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good17.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-95-160",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "95 - Childrens Hunter Pony - Combined  U/S",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "17.00",
+                        "money": "",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "160"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-97-160",
+                    "type": "achievement",
+                    "title": "97 - Childrens Hunter Pony - Combined O/F",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good17.00 Zone Points • $35.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-97-160",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "97 - Childrens Hunter Pony - Combined O/F",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "17.00",
+                        "money": "35.00",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "160"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-98-160",
+                    "type": "achievement",
+                    "title": "98 - Childrens Hunter Pony - Combined O/F",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good17.00 Zone Points • $35.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-98-160",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "98 - Childrens Hunter Pony - Combined O/F",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "17.00",
+                        "money": "35.00",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "160"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-99-160",
+                    "type": "achievement",
+                    "title": "99 - Childrens Hunter Pony - Combined O/F",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good17.00 Zone Points • $35.00 • Horse: SUMMERWOOD'S BLUE STEEL",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-99-160",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "99 - Childrens Hunter Pony - Combined O/F",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "17.00",
+                        "money": "35.00",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "160"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-160-summerwood's-blue-steel-chpch---children's-hunter-pony---combined-championship",
+                    "type": "achievement",
+                    "title": "CHPCH - Children's Hunter Pony - Combined Championship",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good34.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-160-summerwood's-blue-steel-chpch---children's-hunter-pony---combined-championship",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "CHPCH - Children's Hunter Pony - Combined Championship",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "34.00",
+                        "money": "",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "160"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-95-106",
+                    "type": "achievement",
+                    "title": "95 - Children's Hunter Pony U/S",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good16.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-95-106",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "95 - Children's Hunter Pony U/S",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "16.00",
+                        "money": "",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "106"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-98-106",
+                    "type": "achievement",
+                    "title": "98 - Children's Hunter Pony",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good16.00 Zone Points • $35.00 • Horse: Q-2",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-98-106",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "98 - Children's Hunter Pony",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "16.00",
+                        "money": "35.00",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "106"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-99-106",
+                    "type": "achievement",
+                    "title": "99 - Children's Hunter Pony",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good16.00 Zone Points • $35.00 • Horse: Q-2",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-99-106",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "99 - Children's Hunter Pony",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "16.00",
+                        "money": "35.00",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "106"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2"
+                    }
+                },
+                {
+                    "id": "basket-965-childrens-hunter-pony-106-q-2-chcp---children's-hunter-pony-championship",
+                    "type": "achievement",
+                    "title": "CHCP - Children's Hunter Pony Championship",
+                    "organization": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good32.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-965-childrens-hunter-pony-106-q-2-chcp---children's-hunter-pony-championship",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "CHCP - Children's Hunter Pony Championship",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "32.00",
+                        "money": "",
+                        "date": "7/21/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "106"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "CHEMUNG COUNTY CLASSIC HORSE SHOW",
+                        "horse": "Q-2"
+                    }
+                },
+                {
+                    "id": "basket-6674-childrens-hunter-pony-95-160",
+                    "type": "achievement",
+                    "title": "95 - Children's Hunter Pony U/S",
+                    "organization": "HUCK FINN CLASSIC",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good13.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-6674-childrens-hunter-pony-95-160",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "95 - Children's Hunter Pony U/S",
+                        "competition": "HUCK FINN CLASSIC",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "13.00",
+                        "money": "",
+                        "date": "7/16/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "160"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "HUCK FINN CLASSIC",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-464-childrens-hunter-pony-161-432",
+                    "type": "achievement",
+                    "title": "161 - Childrens Hunter Pony (Sm/Med) U/S",
+                    "organization": "SMITHTOWN HUNT",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good15.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-464-childrens-hunter-pony-161-432",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "161 - Childrens Hunter Pony (Sm/Med) U/S",
+                        "competition": "SMITHTOWN HUNT",
+                        "horse": "SUMMERWOOD'S BLUE STEEL",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "",
+                        "date": "6/11/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "432"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "SMITHTOWN HUNT",
+                        "horse": "SUMMERWOOD'S BLUE STEEL"
+                    }
+                },
+                {
+                    "id": "basket-1918-childrens-hunter-pony-2886-5854",
+                    "type": "achievement",
+                    "title": "2886 - Small/Medium Children's Hunter Pony (Sec. B)",
+                    "organization": "WEF 7",
+                    "date": "2022",
+                    "description": "Placed 1, Natl Points Good25.00 Zone Points • $",
+                    "isFromBasket": true,
+                    "basketId": "basket-1918-childrens-hunter-pony-2886-5854",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "2886 - Small/Medium Children's Hunter Pony (Sec. B)",
+                        "competition": "WEF 7",
+                        "horse": "FARNLEY CORTLAND",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "25.00",
+                        "money": "",
+                        "date": "2/22/2022",
+                        "year": "2022",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "5854"
+                    },
+                    "metadata": {
+                        "year": "2022",
+                        "competition": "WEF 7",
+                        "horse": "FARNLEY CORTLAND"
+                    }
+                },
+                {
+                    "id": "basket-6675-childrens-hunter-pony-97-106",
+                    "type": "achievement",
+                    "title": "97 - Children's Hunter Pony",
+                    "organization": "MARK TWAIN FESTIVAL",
+                    "date": "2021",
+                    "description": "Placed 1, Natl Points Good15.00 Zone Points • $35.00 • Horse: Q-2",
+                    "isFromBasket": true,
+                    "basketId": "basket-6675-childrens-hunter-pony-97-106",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "97 - Children's Hunter Pony",
+                        "competition": "MARK TWAIN FESTIVAL",
+                        "horse": "Q-2",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "15.00",
+                        "money": "35.00",
+                        "date": "7/20/2021",
+                        "year": "2021",
+                        "section": "CHILDRENS HUNTER-PONY",
+                        "back_number": "106"
+                    },
+                    "metadata": {
+                        "year": "2021",
+                        "competition": "MARK TWAIN FESTIVAL",
+                        "horse": "Q-2"
+                    }
+                },
+                {
+                    "id": "basket-340539-pony-hunter-small-204-2062",
+                    "type": "achievement",
+                    "title": "204 - Small Pony Handy Hunter 2'3",
+                    "organization": "PRINCETON SHOW JUMPING MAY III",
+                    "date": "2021",
+                    "description": "Placed 1, Natl Points Good • 28.00 National Points • 18.00 Zone Points • $70.50 • Horse: Q-2",
+                    "isFromBasket": true,
+                    "basketId": "basket-340539-pony-hunter-small-204-2062",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "204 - Small Pony Handy Hunter 2'3",
+                        "competition": "PRINCETON SHOW JUMPING MAY III",
+                        "horse": "Q-2",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "28.00",
+                        "zone_points": "18.00",
+                        "money": "70.50",
+                        "date": "5/19/2021",
+                        "year": "2021",
+                        "section": "PONY HUNTER-SMALL",
+                        "back_number": "2062"
+                    },
+                    "metadata": {
+                        "year": "2021",
+                        "competition": "PRINCETON SHOW JUMPING MAY III",
+                        "horse": "Q-2"
+                    }
+                },
+                {
+                    "id": "basket-3589-misc.-hunter-(no-points-earned)-11-1014",
+                    "type": "achievement",
+                    "title": "11 - SHORT STIRRUP WALK TROT CANTER",
+                    "organization": "OLD SALEM FARM SEPTEMBER",
+                    "date": "2020",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-3589-misc.-hunter-(no-points-earned)-11-1014",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "11 - SHORT STIRRUP WALK TROT CANTER",
+                        "competition": "OLD SALEM FARM SEPTEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/29/2020",
+                        "year": "2020",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "1014"
+                    },
+                    "metadata": {
+                        "year": "2020",
+                        "competition": "OLD SALEM FARM SEPTEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY"
+                    }
+                },
+                {
+                    "id": "basket-3589-misc.-hunter-(no-points-earned)-1014-good-golly-miss-holly-ch1---short-stirrup-championship",
+                    "type": "achievement",
+                    "title": "CH1 - SHORT STIRRUP CHAMPIONSHIP",
+                    "organization": "OLD SALEM FARM SEPTEMBER",
+                    "date": "2020",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-3589-misc.-hunter-(no-points-earned)-1014-good-golly-miss-holly-ch1---short-stirrup-championship",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "CH1 - SHORT STIRRUP CHAMPIONSHIP",
+                        "competition": "OLD SALEM FARM SEPTEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/29/2020",
+                        "year": "2020",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "1014"
+                    },
+                    "metadata": {
+                        "year": "2020",
+                        "competition": "OLD SALEM FARM SEPTEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY"
+                    }
+                },
+                {
+                    "id": "basket-3589-walk/trot-classes-(exempt-non-member-fee)-10-1014",
+                    "type": "achievement",
+                    "title": "10 - SHORT STIRRUP WALK TROT",
+                    "organization": "OLD SALEM FARM SEPTEMBER",
+                    "date": "2020",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-3589-walk/trot-classes-(exempt-non-member-fee)-10-1014",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "10 - SHORT STIRRUP WALK TROT",
+                        "competition": "OLD SALEM FARM SEPTEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "8/29/2020",
+                        "year": "2020",
+                        "section": "Walk/Trot classes (exempt non-member fee)",
+                        "back_number": "1014"
+                    },
+                    "metadata": {
+                        "year": "2020",
+                        "competition": "OLD SALEM FARM SEPTEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY"
+                    }
+                },
+                {
+                    "id": "basket-3-misc.-hunter-(no-points-earned)-13-747",
+                    "type": "achievement",
+                    "title": "13 - SHORT STIRRUP CROSS RAILS",
+                    "organization": "OLD SALEM FARM DECEMBER",
+                    "date": "2019",
+                    "description": "Placed 1, Natl Points Good",
+                    "isFromBasket": true,
+                    "basketId": "basket-3-misc.-hunter-(no-points-earned)-13-747",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "13 - SHORT STIRRUP CROSS RAILS",
+                        "competition": "OLD SALEM FARM DECEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY",
+                        "placing": "1, Natl Points Good",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "12/24/2019",
+                        "year": "2019",
+                        "section": "MISC. HUNTER (No points earned)",
+                        "back_number": "747"
+                    },
+                    "metadata": {
+                        "year": "2019",
+                        "competition": "OLD SALEM FARM DECEMBER",
+                        "horse": "GOOD GOLLY MISS HOLLY"
+                    }
+                },
+                {
+                    "id": "basket-c73774-hunter-248-3522",
+                    "type": "achievement",
+                    "title": "248 - USHJA Hunter 3'3\"",
+                    "organization": "WEC Ocala Summer Series 5 CSI4* CSI2* CSIU25",
+                    "date": "2026",
+                    "description": "Placed",
+                    "isFromBasket": true,
+                    "basketId": "basket-c73774-hunter-248-3522",
+                    "titleTemplate": "{class}",
+                    "organizationTemplate": "{competition}",
+                    "dateTemplate": "{year}",
+                    "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                    "templateVariables": {
+                        "class": "248 - USHJA Hunter 3'3\"",
+                        "competition": "WEC Ocala Summer Series 5 CSI4* CSI2* CSIU25",
+                        "horse": "DANY VILLERS",
+                        "placing": "",
+                        "natl_points": "",
+                        "zone_points": "",
+                        "money": "",
+                        "date": "7/7/2026",
+                        "year": "2026",
+                        "section": "Hunter",
+                        "back_number": "3522"
+                    },
+                    "metadata": {
+                        "year": "2026",
+                        "competition": "WEC Ocala Summer Series 5 CSI4* CSI2* CSIU25",
+                        "horse": "DANY VILLERS"
+                    }
+                }
+            ],
+            "resumeSettings": {
+                "autoSyncBasket": true,
+                "dateTemplate": "{year}",
+                "descriptionTemplate": "Placed {placing} • {natl_points} National Points • {zone_points} Zone Points • ${money} • Horse: {horse}",
+                "groupBy": "year",
+                "organizationTemplate": "{competition}",
+                "showEmptyFields": false,
+                "titleTemplate": "{class}"
+            },
+            "subtitle": "",
+            "testimonials": [
+                {
+                    "content": "Add a testimonial from your trainer, coach, or mentor here. They can speak to your dedication, growth, and achievements as a rider.",
+                    "id": "default-testimonial-1",
+                    "name": "Trainer Name",
+                    "photo": "https://intheirons.com/images/49-3eeb3438e3e8.jpg",
+                    "photoSettings": {
+                        "borderRadius": "medium",
+                        "customHeight": 340,
+                        "customWidth": 430,
+                        "objectFit": "cover",
+                        "opacity": 95,
+                        "position": "bottom",
+                        "size": "custom"
+                    },
+                    "title": "Head Trainer, Barn Name"
+                }
+            ],
+            "theme": {
+                "accentColor": "#f59e0b",
+                "backgroundColor": "#ffffff",
+                "backgroundStyle": "subtle-pattern",
+                "bodySize": "medium",
+                "borderRadius": "medium",
+                "buttonStyle": "rounded",
+                "cardShadow": "small",
+                "contentSpacing": "normal",
+                "gradientDirection": "to-br",
+                "headingSize": "large",
+                "lineHeight": "normal",
+                "pageWidth": "standard",
+                "primaryColor": "#0ea5e9",
+                "textColor": "#1f2937"
+            },
+            "title": "",
+            "trainers": [],
+            "videos": [
+                {
+                    "description": "Add your competition video here",
+                    "id": "default-video-1",
+                    "title": "Competition Highlight",
+                    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                },
+                {
+                    "description": "Share your training progress",
+                    "id": "default-video-2",
+                    "title": "Training Session",
+                    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                },
+                {
+                    "description": "Showcase your best rides",
+                    "id": "default-video-3",
+                    "title": "Best Moments",
+                    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                }
+            ]
+        },
+        "currentPage": "videos",
+        "scrollToElementId": null,
+        "editorScrollRatio": 0
+    },
+    "version": 1
+}
