@@ -49,7 +49,7 @@ test("client attempts exactly one POST per document execution and uses no persis
   await new Promise((resolve) => setTimeout(resolve, 0));
 
   assert.equal(calls.length, 1);
-  assert.equal(calls[0][0], "https://ringstatus.com/test/rs-visitor/event");
+  assert.equal(calls[0][0], "https://ringstatus.webflow.io/test/rs-visitor/event");
   assert.equal(calls[0][1].method, "POST");
   assert.equal(calls[0][1].keepalive, true);
   const body = JSON.parse(calls[0][1].body);

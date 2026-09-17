@@ -20,7 +20,7 @@
       utm_campaign: query.get("utm_campaign") || ""
     };
 
-    fetch("https://ringstatus.com/test/rs-visitor/event", {
+    fetch("https://ringstatus.webflow.io/test/rs-visitor/event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
