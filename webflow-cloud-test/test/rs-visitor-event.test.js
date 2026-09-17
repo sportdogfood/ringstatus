@@ -145,6 +145,32 @@ test("anonymous SHA-256 hashes are deterministic without a secret", async () => 
   assert.match(first, /^[a-f0-9]{64}$/);
 });
 
+test("uses the first valid forwarded address when CF-Connecting-IP is unavailable", async () => {
+  const request = new Request("https://ringstatus.com/test/rs-visitor/event", {
+    method: "POST",
+    headers: {
+      "X-Forwarded-For": "203.0.113.42, 198.51.100.10",
+      "User-Agent": "Mozilla/5.0",
+      "Accept-Language": "en-US"
+    }
+  });
+  let fields;
+
+  await recordVisitorEvent({
+    env,
+    request,
+    payload: payload("/lc"),
+    fetchImpl: async (_url, options) => {
+      fields = JSON.parse(options.body).records[0].fields;
+      return Response.json({ records: [{ id: "recVisitorEvent" }] });
+    }
+  });
+
+  assert.equal(fields.ip_hash, await sha256Hex("ip:203.0.113.42"));
+  assert.equal(fields.network_hash, await sha256Hex("network:203.0.113.0/24"));
+  assert.doesNotMatch(JSON.stringify(fields), /203\.0\.113\.42|198\.51\.100\.10/);
+});
+
 test("reports Airtable failures without exposing upstream details or secrets", async () => {
   await assert.rejects(
     recordVisitorEvent({

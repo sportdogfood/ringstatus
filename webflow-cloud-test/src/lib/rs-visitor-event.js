@@ -85,7 +85,7 @@ function normalizeEvent(payload) {
 
 async function buildAirtableFields({ event, request }) {
   const cf = request?.cf || {};
-  const ip = clean(request?.headers?.get("CF-Connecting-IP"));
+  const ip = clientIp(request);
   const userAgent = clean(request?.headers?.get("User-Agent"));
   const network = networkPrefix(ip);
   const agent = classifyUserAgent(userAgent);
@@ -137,6 +137,14 @@ async function buildAirtableFields({ event, request }) {
     if (fields[key] === undefined) delete fields[key];
   }
   return fields;
+}
+
+function clientIp(request) {
+  const candidates = [
+    clean(request?.headers?.get("CF-Connecting-IP")),
+    ...clean(request?.headers?.get("X-Forwarded-For")).split(",").map((value) => value.trim())
+  ];
+  return candidates.find((value) => value && networkPrefix(value)) || "";
 }
 
 function airtableUrl(baseId, table) {
