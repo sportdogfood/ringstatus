@@ -160,6 +160,7 @@ test("uses the first valid forwarded address when CF-Connecting-IP is unavailabl
     env,
     request,
     payload: payload("/lc"),
+    geoFetchImpl: async () => Response.json({}),
     fetchImpl: async (_url, options) => {
       fields = JSON.parse(options.body).records[0].fields;
       return Response.json({ records: [{ id: "recVisitorEvent" }] });
@@ -169,6 +170,48 @@ test("uses the first valid forwarded address when CF-Connecting-IP is unavailabl
   assert.equal(fields.ip_hash, await sha256Hex("ip:203.0.113.42"));
   assert.equal(fields.network_hash, await sha256Hex("network:203.0.113.0/24"));
   assert.doesNotMatch(JSON.stringify(fields), /203\.0\.113\.42|198\.51\.100\.10/);
+});
+
+test("fills state and city from GeoJS without writing its returned IP", async () => {
+  const request = new Request("https://ringstatus.com/test/rs-visitor/event", {
+    method: "POST",
+    headers: {
+      "X-Forwarded-For": "203.0.113.42",
+      "User-Agent": "Mozilla/5.0",
+      "Accept-Language": "en-US"
+    }
+  });
+  let fields;
+  let geoUrl;
+
+  await recordVisitorEvent({
+    env,
+    request,
+    payload: payload("/lainey"),
+    geoFetchImpl: async (url) => {
+      geoUrl = String(url);
+      return Response.json({
+        ip: "203.0.113.42",
+        country_code: "US",
+        region: "Florida",
+        city: "Ocala",
+        timezone: "America/New_York",
+        asn: 64500
+      });
+    },
+    fetchImpl: async (_url, options) => {
+      fields = JSON.parse(options.body).records[0].fields;
+      return Response.json({ records: [{ id: "recVisitorEvent" }] });
+    }
+  });
+
+  assert.equal(geoUrl, "https://get.geojs.io/v1/ip/geo/203.0.113.42.json");
+  assert.equal(fields.country_code, "US");
+  assert.equal(fields.region, "Florida");
+  assert.equal(fields.city, "Ocala");
+  assert.equal(fields.timezone, "America/New_York");
+  assert.equal(fields.asn, "64500");
+  assert.doesNotMatch(JSON.stringify(fields), /203\.0\.113\.42/);
 });
 
 test("reports Airtable failures without exposing upstream details or secrets", async () => {

@@ -23,12 +23,13 @@ export class VisitorEventError extends Error {
   }
 }
 
-export async function recordVisitorEvent({ env, fetchImpl = fetch, request, payload }) {
+export async function recordVisitorEvent({ env, fetchImpl = fetch, geoFetchImpl = fetch, request, payload }) {
   const config = airtableConfig(env);
   const event = normalizeEvent(payload);
   const fields = await buildAirtableFields({
     event,
-    request
+    request,
+    geoFetchImpl
   });
   const response = await fetchImpl(airtableUrl(config.baseId, config.table), {
     method: "POST",
@@ -83,9 +84,10 @@ function normalizeEvent(payload) {
   };
 }
 
-async function buildAirtableFields({ event, request }) {
+async function buildAirtableFields({ event, request, geoFetchImpl }) {
   const cf = request?.cf || {};
   const ip = clientIp(request);
+  const geo = await geoSignals({ cf, ip, geoFetchImpl });
   const userAgent = clean(request?.headers?.get("User-Agent"));
   const network = networkPrefix(ip);
   const agent = classifyUserAgent(userAgent);
@@ -93,11 +95,11 @@ async function buildAirtableFields({ event, request }) {
   const viewport = viewportBucket(event.viewport_width, agent.device);
   const groupingSignals = [
     network,
-    clean(cf.country).toUpperCase(),
-    clean(cf.region).toLowerCase(),
-    clean(cf.city).toLowerCase(),
-    clean(cf.timezone),
-    clean(cf.asn),
+    clean(geo.country).toUpperCase(),
+    clean(geo.region).toLowerCase(),
+    clean(geo.city).toLowerCase(),
+    clean(geo.timezone),
+    clean(geo.asn),
     agent.browser,
     agent.os,
     agent.device,
@@ -117,11 +119,11 @@ async function buildAirtableFields({ event, request }) {
   };
 
   add(fields, "referrer_host", referrerHost(event.referrer));
-  add(fields, "country_code", clean(cf.country).toUpperCase());
-  add(fields, "region", clean(cf.region));
-  add(fields, "city", clean(cf.city));
-  add(fields, "timezone", clean(cf.timezone));
-  add(fields, "asn", clean(cf.asn));
+  add(fields, "country_code", clean(geo.country).toUpperCase());
+  add(fields, "region", clean(geo.region));
+  add(fields, "city", clean(geo.city));
+  add(fields, "timezone", clean(geo.timezone));
+  add(fields, "asn", clean(geo.asn));
   add(fields, "edge_colo", clean(cf.colo));
   add(fields, "browser_family", agent.browser);
   add(fields, "os_family", agent.os);
@@ -137,6 +139,35 @@ async function buildAirtableFields({ event, request }) {
     if (fields[key] === undefined) delete fields[key];
   }
   return fields;
+}
+
+async function geoSignals({ cf, ip, geoFetchImpl }) {
+  const cloudflare = {
+    country: clean(cf.country),
+    region: clean(cf.region),
+    city: clean(cf.city),
+    timezone: clean(cf.timezone),
+    asn: clean(cf.asn)
+  };
+  if (!ip || (cloudflare.country && cloudflare.region && cloudflare.city)) return cloudflare;
+
+  try {
+    const response = await geoFetchImpl(
+      `https://get.geojs.io/v1/ip/geo/${encodeURIComponent(ip)}.json`,
+      { signal: AbortSignal.timeout(1500) }
+    );
+    if (!response.ok) return cloudflare;
+    const result = await response.json();
+    return {
+      country: cloudflare.country || clean(result.country_code),
+      region: cloudflare.region || clean(result.region),
+      city: cloudflare.city || clean(result.city),
+      timezone: cloudflare.timezone || clean(result.timezone),
+      asn: cloudflare.asn || clean(result.asn)
+    };
+  } catch {
+    return cloudflare;
+  }
 }
 
 function clientIp(request) {
