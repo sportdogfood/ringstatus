@@ -10,8 +10,7 @@ import { POST } from "../src/pages/rs-visitor/event.js";
 Object.assign(env, {
   AIRTABLE_TOKEN: "pat_test",
   AIRTABLE_RS_RECOGNITION_BASE_ID: "apptdhhNzduxm5gjn",
-  AIRTABLE_RS_VISITOR_EVENTS_TABLE: "tbldR3ymyJxYRHtdD",
-  RS_RECOGNITION_SIGNAL_SECRET: "visitor-test-secret"
+  AIRTABLE_RS_VISITOR_EVENTS_TABLE: "tbldR3ymyJxYRHtdD"
 });
 
 test("hosted client route serves JavaScript", async () => {
@@ -75,7 +74,7 @@ test("POST returns a controlled error when Airtable rejects the event", async ()
     const body = await response.json();
     assert.equal(response.status, 502);
     assert.deepEqual(body, { ok: false, error: "visitor_event_create_failed" });
-    assert.doesNotMatch(JSON.stringify(body), /private upstream failure|pat_test|visitor-test-secret/);
+    assert.doesNotMatch(JSON.stringify(body), /private upstream failure|pat_test/);
   } finally {
     globalThis.fetch = originalFetch;
     console.error = originalConsoleError;

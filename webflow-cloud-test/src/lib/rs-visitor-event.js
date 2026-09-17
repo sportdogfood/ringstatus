@@ -28,8 +28,7 @@ export async function recordVisitorEvent({ env, fetchImpl = fetch, request, payl
   const event = normalizeEvent(payload);
   const fields = await buildAirtableFields({
     event,
-    request,
-    signalSecret: config.signalSecret
+    request
   });
   const response = await fetchImpl(airtableUrl(config.baseId, config.table), {
     method: "POST",
@@ -56,11 +55,9 @@ function airtableConfig(env) {
   const token = clean(env?.AIRTABLE_TOKEN);
   const baseId = clean(env?.AIRTABLE_RS_RECOGNITION_BASE_ID) || DEFAULT_RECOGNITION_BASE_ID;
   const table = clean(env?.AIRTABLE_RS_VISITOR_EVENTS_TABLE) || DEFAULT_VISITOR_EVENTS_TABLE;
-  const signalSecret = clean(env?.RS_RECOGNITION_SIGNAL_SECRET);
 
   if (!token) throw new VisitorEventError("missing_airtable_token", 500);
-  if (!signalSecret) throw new VisitorEventError("missing_signal_secret", 500);
-  return { token, baseId, table, signalSecret };
+  return { token, baseId, table };
 }
 
 function normalizeEvent(payload) {
@@ -86,7 +83,7 @@ function normalizeEvent(payload) {
   };
 }
 
-async function buildAirtableFields({ event, request, signalSecret }) {
+async function buildAirtableFields({ event, request }) {
   const cf = request?.cf || {};
   const ip = clean(request?.headers?.get("CF-Connecting-IP"));
   const userAgent = clean(request?.headers?.get("User-Agent"));
@@ -113,10 +110,10 @@ async function buildAirtableFields({ event, request, signalSecret }) {
     event_at: new Date().toISOString(),
     page_path: event.page_path,
     signal_version: SIGNAL_VERSION,
-    ip_hash: ip ? await hmacHex(signalSecret, `ip:${ip}`) : undefined,
-    network_hash: network ? await hmacHex(signalSecret, `network:${network}`) : undefined,
-    user_agent_hash: userAgent ? await hmacHex(signalSecret, `ua:${userAgent}`) : undefined,
-    environment_hash: await hmacHex(signalSecret, `environment:${groupingSignals}`)
+    ip_hash: ip ? await sha256Hex(`ip:${ip}`) : undefined,
+    network_hash: network ? await sha256Hex(`network:${network}`) : undefined,
+    user_agent_hash: userAgent ? await sha256Hex(`ua:${userAgent}`) : undefined,
+    environment_hash: await sha256Hex(`environment:${groupingSignals}`)
   };
 
   add(fields, "referrer_host", referrerHost(event.referrer));
@@ -146,17 +143,10 @@ function airtableUrl(baseId, table) {
   return `https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(table)}`;
 }
 
-export async function hmacHex(secret, value) {
+export async function sha256Hex(value) {
   const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(value));
-  return [...new Uint8Array(signature)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  const digest = await crypto.subtle.digest("SHA-256", encoder.encode(value));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 function networkPrefix(ip) {

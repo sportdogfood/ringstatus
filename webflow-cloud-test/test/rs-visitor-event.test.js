@@ -4,7 +4,7 @@ import test from "node:test";
 import {
   ALLOWED_VISITOR_PATHS,
   VisitorEventError,
-  hmacHex,
+  sha256Hex,
   recordVisitorEvent
 } from "../src/lib/rs-visitor-event.js";
 
@@ -12,8 +12,7 @@ const env = {
   AIRTABLE_TOKEN: "pat_test",
   AIRTABLE_BASE_ID: "app_wrong_base",
   AIRTABLE_RS_RECOGNITION_BASE_ID: "apptdhhNzduxm5gjn",
-  AIRTABLE_RS_VISITOR_EVENTS_TABLE: "tbldR3ymyJxYRHtdD",
-  RS_RECOGNITION_SIGNAL_SECRET: "visitor-test-secret"
+  AIRTABLE_RS_VISITOR_EVENTS_TABLE: "tbldR3ymyJxYRHtdD"
 };
 
 function requestWithSignals() {
@@ -137,12 +136,12 @@ test("writes privacy-safe server-derived signals to the configured visitor table
   }
 });
 
-test("HMAC hashes are deterministic and keyed", async () => {
-  const first = await hmacHex("secret-a", "ip:203.0.113.42");
-  const second = await hmacHex("secret-a", "ip:203.0.113.42");
-  const otherKey = await hmacHex("secret-b", "ip:203.0.113.42");
+test("anonymous SHA-256 hashes are deterministic without a secret", async () => {
+  const first = await sha256Hex("ip:203.0.113.42");
+  const second = await sha256Hex("ip:203.0.113.42");
+  const otherValue = await sha256Hex("ip:203.0.113.43");
   assert.equal(first, second);
-  assert.notEqual(first, otherKey);
+  assert.notEqual(first, otherValue);
   assert.match(first, /^[a-f0-9]{64}$/);
 });
 
@@ -158,7 +157,7 @@ test("reports Airtable failures without exposing upstream details or secrets", a
       assert.ok(error instanceof VisitorEventError);
       assert.equal(error.code, "visitor_event_create_failed");
       assert.equal(error.status, 502);
-      assert.doesNotMatch(error.message, /secret upstream detail|pat_test|visitor-test-secret/);
+      assert.doesNotMatch(error.message, /secret upstream detail|pat_test/);
       return true;
     }
   );
