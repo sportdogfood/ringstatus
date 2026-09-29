@@ -103,6 +103,7 @@ The exact statements are preserved verbatim in the source file. They are retaine
 | E09 | New branch controls could remain isolated from RingStatus main | **SOLUTION FOUND** as a Git promotion/merge mechanism; not yet merged |
 | E10 | Original entries not preserved and individually classified | **SOLUTION FOUND** by verbatim source preservation + this sidecar; completeness must be verified against available source records |
 | E11 | Agent continues explaining failure instead of delivering repair | **NO PUBLISHED MECHANICAL SOLUTION FOUND** |
+| E12 | Codex substituted production cadence/Git hooks for the established project-local `.codex/hooks.json` task | **PARTIAL SOLUTION** |
 
 ## Classification rule
 
