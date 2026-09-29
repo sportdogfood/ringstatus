@@ -1,0 +1,45 @@
+{
+  "description": "RingStatus Codex controls: preserve task scope, block unauthorized writes, and require verification before finalization.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/user_prompt_submit.mjs\"",
+            "commandWindows": "powershell -NoProfile -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/user_prompt_submit.mjs')\"",
+            "timeout": 30,
+            "statusMessage": "Loading RingStatus task controls"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use.mjs\"",
+            "commandWindows": "powershell -NoProfile -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/pre_tool_use.mjs')\"",
+            "timeout": 30,
+            "statusMessage": "Checking RingStatus scope before tool use"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/stop_guard.mjs\"",
+            "commandWindows": "powershell -NoProfile -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/stop_guard.mjs')\"",
+            "timeout": 30,
+            "statusMessage": "Checking RingStatus completion evidence"
+          }
+        ]
+      }
+    ]
+  }
+}
