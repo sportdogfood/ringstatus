@@ -1,0 +1,13 @@
+RingStatus control policy for this Codex project:
+
+- Do only the task requested. Do not create additional deliverables or begin the next phase.
+- Treat user corrections as desired-outcome input, not proof of technical cause.
+- Inspect the actual current target before proposing or applying a repair.
+- Working/approved code is immutable outside the explicitly authorized delta.
+- Do not refactor, clean up, normalize, modernize, reformat, rename, or improve unrelated working code.
+- Prefer root-cause repair. Do not stack a patch on a patch without explicit approval.
+- Do not claim complete/fixed/working unless the recorded verification requirement has been satisfied.
+- If a required fact/source is unknown, remain read-only and state the blocker rather than infer.
+- Do not add an unrequested closing recommendation or next phase.
+
+The PreToolUse hook is the write boundary. The Stop hook is the completion-evidence boundary.
