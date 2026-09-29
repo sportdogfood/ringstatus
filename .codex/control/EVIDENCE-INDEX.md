@@ -4,30 +4,26 @@ Status: preservation index. This file does not replace or condense the source re
 
 The control work must preserve both solved and unsolved failure evidence. A missing published mechanism is recorded as **NO PUBLISHED SOLUTION FOUND** or **PARTIAL SOLUTION**; the requirement is not deleted.
 
-## Current evidence
+## Canonical preserved evidence
 
-- `.codex/control/USER-FAILURE-RECORD.md` — current user failure statements and explicit requirements.
-- `.codex/control/FAILURE-SOLUTION-MAP.md` — current mapping of failures to published procedures/mechanisms, including partial and unsolved items.
-- `.codex/control/history/AGENT-HIERARCHY-REVIEW-2026-09-29.txt` — preserved review of the hierarchy discussion and failure pattern.
-- `docs/AGENT_GROUND_RULES_README.md` — existing RingStatus operating rules.
+- `.codex/control/USER-FAILURE-RECORD.md` — preserved user failure statements and explicit requirements.
+- `.codex/control/history/AGENT-HIERARCHY-REVIEW-2026-09-29.txt` — preserved hierarchy-review evidence.
+- `.codex/control/history/CURRENT-SESSION-EVIDENCE-2026-09-29.md` — preserved current-session evidence.
 - `docs/horseshowing/chatgpt-codex-operating-package-2026-07-12.md` — historical same-thread failure record and earlier control design. Status remains REVIEW REQUIRED; it is evidence, not automatically active policy.
+- `docs/AGENT_GROUND_RULES_README.md` — existing RingStatus operating rules.
 
-## Historical failure classes that must remain represented
+## Classification sidecars
 
-The July 12 operating package records these distinct failure classes:
+- `.codex/control/FAILURE-SOLUTION-MAP.md` — published-procedure/mechanism classification for the initial failure set.
+- `.codex/control/ENTRY-STATUS-SIDECAR.md` — per-entry/per-class status for the preserved hierarchy review, July failure classes, and current-session evidence.
 
-1. Target substitution.
-2. Mode drift.
-3. Ontology invention.
-4. Current/target collapse.
-5. Artifact/status collapse.
-6. Authority skipping.
-7. Correction cascade.
-8. Scope expansion.
-9. Unsupported authority.
-10. Cause misdiagnosis.
+These sidecars may classify evidence as:
+- **SOLUTION FOUND**
+- **PARTIAL SOLUTION**
+- **NO PUBLISHED MECHANICAL SOLUTION FOUND**
+- evidence-only when a statement is a consequence/reaction rather than a distinct control requirement.
 
-These are additive to the September failure record; they are not replaced by it.
+They do not replace the source evidence.
 
 ## Preservation rule
 
@@ -38,4 +34,4 @@ Do not remove a requirement because:
 - a newer assistant interpretation seems simpler;
 - a behavior cannot be fully mechanically enforced.
 
-Preserve the requirement and mark the implementation status accurately.
+Preserve the source record and change only its sidecar status when later evidence justifies that change.
