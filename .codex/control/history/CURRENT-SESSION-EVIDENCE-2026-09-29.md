@@ -53,3 +53,35 @@ These entries are preserved as additional evidence. They do not replace the earl
 Each item above remains in the evidence set even when no published mechanism has been found, only a partial control exists, a control is procedural rather than mechanical, or the control has not yet passed a live Codex test.
 
 The status map is a sidecar. It must never replace or shorten this evidence.
+
+
+## Failure 24 — Codex substituted a new meaning for the established hooks task
+
+Codex reply preserved verbatim:
+
+> `/hooks` came through here as plain text. I do not have a Codex slash-command executor exposed in this task, so I can’t open or manage the Codex hooks UI from inside the agent.
+>
+> What I verified:
+>
+> - I did not run the RingStatus workflow.
+> - I did not change files.
+> - I attempted read-only local inspection, but the shell is currently blocked with `CreateProcessAsUserW failed: 5 (Access is denied.)`.
+>
+> If you mean production cadence: do not use Codex hooks as the RingStatus heartbeat. Hooks/thread automations are Codex-side task automation, not the reliable runner for `schedules_dailyv2.js` or `trips_dailyv2.js`.
+>
+> If you mean repo Git hooks, they would usually be under:
+> ```
+> C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\.git\hooks
+> ```
+>
+> The RingStatus production heartbeat should remain tied to the approved runner path, not Codex hooks.
+
+Established task object: RingStatus project-local Codex lifecycle hooks in `.codex/hooks.json`.
+
+Failure classes:
+- target substitution;
+- context/authority skipping;
+- scope expansion;
+- unsolicited advice;
+- failure to preserve the established meaning of “hooks” across turns;
+- shifting clarification burden back to the user.
