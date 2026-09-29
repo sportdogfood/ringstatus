@@ -5,11 +5,16 @@ description: Enforce RingStatus task scope, baseline fidelity, evidence-first di
 
 # RingStatus Control
 
-Use the existing repository rules as the baseline:
+Use the existing repository rules and preserved evidence as the baseline:
 - `AGENTS.md`
 - `docs/AGENT_GROUND_RULES_README.md`
+- `.codex/control/EVIDENCE-INDEX.md`
 - `.codex/control/USER-FAILURE-RECORD.md`
 - `.codex/control/FAILURE-SOLUTION-MAP.md`
+- `.codex/control/history/AGENT-HIERARCHY-REVIEW-2026-09-29.txt`
+- `docs/horseshowing/chatgpt-codex-operating-package-2026-07-12.md`
+
+Do not discard or condense an unresolved requirement because no published solution exists. Preserve it and mark the status accurately.
 
 For every task:
 
