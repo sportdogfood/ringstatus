@@ -9,6 +9,8 @@ The control work must preserve both solved and unsolved failure evidence. A miss
 - `.codex/control/USER-FAILURE-RECORD.md` — preserved user failure statements and explicit requirements.
 - `.codex/control/history/AGENT-HIERARCHY-REVIEW-2026-09-29.txt` — preserved hierarchy-review evidence.
 - `.codex/control/history/CURRENT-SESSION-EVIDENCE-2026-09-29.md` — preserved current-session evidence.
+- `.codex/control/history/FULL-SESSION-REVIEW-2026-09-29.txt` — complete preserved session review supplied for this control effort.
+- `.codex/control/history/FAILURE-24-2026-09-29.txt` — preserved additional failure entry.
 - `docs/horseshowing/chatgpt-codex-operating-package-2026-07-12.md` — historical same-thread failure record and earlier control design. Status remains REVIEW REQUIRED; it is evidence, not automatically active policy.
 - `docs/AGENT_GROUND_RULES_README.md` — existing RingStatus operating rules.
 
