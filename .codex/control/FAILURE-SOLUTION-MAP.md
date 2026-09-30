@@ -16,6 +16,7 @@
 | P10 | User becomes QA/debugger and must repeatedly detect regressions. | **SOLUTION FOUND — PUBLISHED TESTING/VALIDATION PROCEDURE** | OPENAI_CODEX, OPENAI_TESTING |
 | P11 | Guardrails themselves are invented reactively from examples without researching established methods. | **SOLUTION FOUND — GOVERNANCE PROCEDURE DERIVED FROM PUBLISHED SCOPE DISCIPLINE + EXPLICIT USER POLICY** | OPENAI_SCOPE, OPENAI_GUIDE, ANTHROPIC_AGENTS |
 | P12 | Responses bury the user in explanations, failure analysis, and additional suggestions. | **NO PUBLISHED MECHANICAL SOLUTION FOUND — REQUIREMENT PRESERVED** | None located |
+| P13 | Assistant fails to route a cross-system/local-UI task to the appropriate capable workflow early, leaving the user to perform repeated manual setup and troubleshooting. | **UNRESOLVED — ROUTING/CAPABILITY PATH MUST BE VERIFIED BEFORE CLAIMING SOLVED** | No verified implementation recorded yet |
 
 ## Source key
 
