@@ -3,7 +3,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$PayloadCommit = "26a8c4f95ab49950a7b6fa5d09cc9a1f44c4730d"
+$PayloadCommit = "8c3665c62eb028f411397b9b018cc70ad4fd10a4"
 $ApiRoot = "https://api.github.com/repos/sportdogfood/ringstatus/contents"
 
 $PayloadPaths = @(
