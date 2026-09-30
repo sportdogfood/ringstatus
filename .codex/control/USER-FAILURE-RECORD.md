@@ -75,3 +75,17 @@ This created exactly the burden the control effort was intended to remove: the u
 
 **Status:** PRESERVED FAILURE. The correct routing/automation mechanism still requires live verification before it can be considered solved.
 
+## Incorrect escalation to Work mode without verifying machine access
+
+> "**BLOCKED: local Windows target is inaccessible from this session.**
+> This session runs in a Linux cloud workspace. The requested `C:\rs-proof` folder is not mounted here (`/mnt/c/rs-proof` is missing), and this environment has no `codex`, `pwsh`, or `powershell` command. No local Codex app control is available in the tools I can access.
+> I could not register the project, activate or verify its hooks, inspect branch `control/live-agent-proof-v1`, or run its proof tests. I made no changes. The technical blocker is access to the Windows machine and its `C:\rs-proof` checkout; continuing here would require a different execution path with access to that machine."
+
+Failure preserved:
+
+The assistant routed the task to Work mode as though it could finish the local Codex/Windows steps, without first verifying that Work had access to the user's Windows machine, local `C:\rs-proof` checkout, or Codex desktop app.
+
+This repeated the same core pattern: recommending an execution path before verifying that the required capability actually existed.
+
+**Status:** PRESERVED FAILURE — **NO VERIFIED EXECUTION PATH FOUND YET**.
+
