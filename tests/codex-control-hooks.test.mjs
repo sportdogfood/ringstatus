@@ -91,7 +91,19 @@ try {
   });
   assert.match(out.hookSpecificOutput.additionalContext, /Do only the task requested/);
 
-  console.log("PASS 9");
+  out = run("pre_tool_use.mjs", {
+    cwd: repo, hook_event_name:"PreToolUse", tool_name:"shell_command",
+    tool_input:{command:"echo test > HOOK-BLOCK-TEST.txt"}
+  });
+  assert.equal(denied(out), true, "shell_command mutation must block in read-only mode");
+
+  out = run("pre_tool_use.mjs", {
+    cwd: repo, hook_event_name:"PreToolUse", tool_name:"create_file",
+    tool_input:{path:"HOOK-BLOCK-TEST.txt", content:"test"}
+  });
+  assert.equal(denied(out), true, "unclassified local create_file must block in read-only mode");
+
+  console.log("PASS 11");
 } finally {
   fs.writeFileSync(contractPath, original);
 }
