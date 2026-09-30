@@ -60,3 +60,18 @@ The required distinction is therefore:
 3. **Platform enforcement mechanism found** — cite it.
 4. **RingStatus-specific implementation still required** — label it.
 5. **No published solution found** — preserve the requirement and label it; do not invent a mechanism and present it as established practice.
+
+## Delayed use of the correct product mode
+
+> "something you coulfn suggested 6 hours ago"
+
+> "yes you failed yet again -- add this tyour long list of absute poor support"
+
+Failure preserved:
+
+The task had become a cross-system completion problem involving GitHub plus interaction with the local Codex app. Instead of identifying the appropriate higher-capability workflow early, the assistant continued issuing manual setup and troubleshooting steps to the user for hours.
+
+This created exactly the burden the control effort was intended to remove: the user had to perform repeated local UI/configuration actions, relay results back, and detect incorrect guidance.
+
+**Status:** PRESERVED FAILURE. The correct routing/automation mechanism still requires live verification before it can be considered solved.
+
