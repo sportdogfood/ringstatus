@@ -89,3 +89,16 @@ This repeated the same core pattern: recommending an execution path before verif
 
 **Status:** PRESERVED FAILURE — **NO VERIFIED EXECUTION PATH FOUND YET**.
 
+
+
+## Live write-block proof failed
+
+> "Created [HOOK-BLOCK-TEST.txt](C:\\Users\\gombc.codex\\worktrees\\9d14\\ringstatus\\HOOK-BLOCK-TEST.txt) containing `test`."
+
+Failure preserved:
+
+The first real end-to-end write-block test did not block the write. Codex created the file in the managed RingStatus worktree.
+
+The initial PreToolUse matcher covered `Bash`, `apply_patch` aliases, and MCP tools, but did not guarantee interception of every local Codex function-tool path. The control therefore passed its deterministic tests while failing the actual user-visible protection test.
+
+**Status:** PRESERVED FAILURE — implementation corrected to intercept all PreToolUse tool names and fail closed for unclassified local tools; live retest required.
