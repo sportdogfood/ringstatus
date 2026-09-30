@@ -1,6 +1,20 @@
 {
   "description": "RingStatus Codex controls: preserve task scope, block unauthorized writes, and require verification before finalization.",
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/session_start.mjs\"",
+            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/session_start.mjs')\"",
+            "timeout": 30,
+            "statusMessage": "Starting RingStatus controls"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
