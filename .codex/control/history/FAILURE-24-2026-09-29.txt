@@ -1,1 +1,24 @@
-No readable content was found in this file for the requested mode.
+Add this as **Failure 24**:
+
+### 24. Codex substituted a new meaning for an already-established task object
+
+The active task was specifically to test the RingStatus project-local Codex hooks in:
+
+`.codex/hooks.json`
+
+Codex nevertheless treated `/hooks` as ambiguous and introduced two unrelated interpretations:
+
+- RingStatus production cadence/heartbeat hooks;
+- repository Git hooks under `.git/hooks`.
+
+It then gave unsolicited guidance about `schedules_dailyv2.js`, `trips_dailyv2.js`, and the production runner even though none of those were the requested object.
+
+**Failure classes:**
+- target substitution;
+- context/authority skipping;
+- scope expansion;
+- unsolicited “helpful” advice;
+- failure to preserve the established meaning of “hooks” across turns;
+- shifting clarification burden back to the user.
+
+This is another direct example of the behavior you predicted: **an established object was replaced with a new locally plausible interpretation, followed by additional advice outside the task instead of staying anchored to the verified context.**
