@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "task_id": "UNSET",
+  "status": "read_only",
+  "objective": "No write-capable work is authorized until this contract is explicitly set for the current task.",
+  "allowed_write_paths": [],
+  "allowed_shell_write_patterns": [],
+  "allowed_mcp_write_tools": [],
+  "verification_required": true,
+  "verification_receipt": null,
+  "notes": [
+    "Default is fail-closed for repository writes.",
+    "This file is the mechanical write boundary; AGENTS.md remains behavioral guidance.",
+    "Do not broaden this contract from frustration or a correction; verify the actual target first."
+  ]
+}
