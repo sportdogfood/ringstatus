@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const repo = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contractPath = path.join(repo, ".codex/control/task-contract.json");
 const original = fs.readFileSync(contractPath, "utf8");
 
