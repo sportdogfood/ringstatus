@@ -8,7 +8,7 @@
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/session_start.mjs\"",
-            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/session_start.mjs')\"",
+            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel).Trim(); node (Join-Path -Path $root -ChildPath '.codex/hooks/session_start.mjs')\"",
             "timeout": 30,
             "statusMessage": "Starting RingStatus controls"
           }
@@ -21,7 +21,7 @@
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/user_prompt_submit.mjs\"",
-            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/user_prompt_submit.mjs')\"",
+            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel).Trim(); node (Join-Path -Path $root -ChildPath '.codex/hooks/user_prompt_submit.mjs')\"",
             "timeout": 30,
             "statusMessage": "Loading RingStatus task controls"
           }
@@ -35,7 +35,7 @@
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use.mjs\"",
-            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/pre_tool_use.mjs')\"",
+            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel).Trim(); node (Join-Path -Path $root -ChildPath '.codex/hooks/pre_tool_use.mjs')\"",
             "timeout": 30,
             "statusMessage": "Checking RingStatus scope before tool use"
           }
@@ -48,7 +48,7 @@
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/stop_guard.mjs\"",
-            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel); node (Join-Path $root '.codex/hooks/stop_guard.mjs')\"",
+            "commandWindows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$root=(git rev-parse --show-toplevel).Trim(); node (Join-Path -Path $root -ChildPath '.codex/hooks/stop_guard.mjs')\"",
             "timeout": 30,
             "statusMessage": "Checking RingStatus completion evidence"
           }
