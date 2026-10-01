@@ -1,0 +1,6 @@
+interface:
+  display_name: "RingStatus Workflow"
+  short_description: "Choose advice, planning, or a verified build"
+  default_prompt: "Use $ringstatus-workflow mode 1 for factual advice on this task."
+policy:
+  allow_implicit_invocation: false

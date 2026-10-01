@@ -1,0 +1,15 @@
+# Mode 3 build cadence
+
+Keep the original prototype's five responsibility lanes and mandatory checkpoints; use native assignments, not a custom runtime. Sequence dependent phases. Additional threads must be useful and available; record identities and reused roles. The independent reviewer must not be the implementation author. Do not assume interrupting an agent releases capacity or stops descendants.
+
+1. Establish goal, repository/root, instructions, Git baseline, authorized files, and acceptance criteria. Plan before code using native planning when available, otherwise a scoped project plan. Record evidence paths, lane choices, dependencies, and deployment authorization separately.
+2. Planning: inspect task and sources; use one bounded read-only inspector when useful. Hand the plan to the lead, who alone maintains it afterward. Mode 3 authorizes the requested implementation, not unrelated work or external deployment.
+3. Implementation: assign one implementer approved files/criteria. Preserve unrelated code/tests. Reproduce defects before fixes, make the smallest supported change, and test affected behavior. Ground before testing handoff.
+4. Testing: verify behavior on its actual target; use an independent bounded executor when available. Isolate fixtures and record side effects. Preserve tests/add meaningful coverage. Separate local checks from deployed, scheduled, and client checks; missing access is BLOCKED.
+5. Review: independently inspect the exact diff and added files against the plan. Prefer native review when available; otherwise use a bounded read-only reviewer. Address supported in-scope defects and rerun affected checks. Stop the same repair path after two failed fixes. Disclose unavailable independent review; never label it complete.
+6. Evidence: reconcile criteria, checkpoints, assignments, actual outputs, review findings, and unresolved items. Wait for workers and inspect evidence rather than accepting success statements. Return defects to implementation within the same scope.
+7. Handoff: record approved version, run instructions, required environment, observed checks, review outcome, blockers, and next operation owner. Never claim recurring execution, integrations, or disconnected Stop based on local checks. End with concise criterion status.
+
+Disable optional product lanes only if irrelevant and recorded before implementation. Required testing/review of code changes remain. Advice/plan tasks do not traverse code lanes. Long phases use bounded milestones with mandatory checkpoints between loops.
+
+Pass each worker applicable project instructions, task, current plan, exact assignment, and write limits. Read-only workers must not edit code/instructions/plan; authorized test fixtures and uniquely assigned evidence logs need explicit ownership. Reuse idle roles only with a fresh assignment and reread of files. On cancellation stop new assignments, enumerate and interrupt agents/command sessions individually using supported tools, verify status, and report CANCELLED or UNKNOWN. This requires an active lead and is not a disconnected kill switch.
