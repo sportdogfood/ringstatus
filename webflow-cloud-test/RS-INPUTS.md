@@ -1,5 +1,35 @@
 # RingStatus Recognize and User Inputs implementation
 
+## Current checkpoint — October 6, 2026: existing Barn input to CRM
+
+This section supersedes historical statements below about deferred CRM, an incorrect CRM organization, and missing deployment approval. The owner authorized the bounded CRM input test and `/test` configuration/deployment; account/runtime access remains separate from that authorization. Existing onboarding UI and invited/approved access are retained. Catalyst and SMS remain deferred.
+
+Implemented in the existing Astro route:
+
+- Default `RS_INPUTS_BARN_STORAGE=airtable` preserves existing behavior. Explicit `zoho-crm` selects Ringstatus Accounts for barns only; recognition, users/riders/horses/locations and audit remain in the owned Airtable base. This trial does not migrate data or select a production canonical owner.
+- Server-side OAuth refresh uses `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`; tokens are cached until shortly before expiry and never accepted from the browser. The adapter verifies Ringstatus organization `941333935` and actual field metadata before accessing records.
+- Five custom fields created and read back in Ringstatus Accounts: unique `RS_Entity_UID`, `RS_Owner_UID`, `RS_Revision`, `RS_Request_UID`, `RS_Request_Hash`. Barn name uses existing `Account_Name`. No new CRM module or schema for other entities.
+- Trial IDs use `rs_inputs_trial_barn_`; unrelated Accounts cannot be edited by this adapter. Server permissions, immutable owner, revision conflicts, failed-save recovery and audit are retained. Provider-specific request IDs prevent Airtable/CRM barn collisions when switching the explicit trial configuration.
+- CRM writes use conditional-update headers, disable workflows/cadences as supported, bound requests to 15 seconds, and do not automatically replay writes with unknown outcomes. CRM and Airtable audit are not one transaction; this remains an isolated trial.
+
+**Verified:** 182 local automated tests passed across the application test directory. The existing Cloudflare build passed using the documented scratch debugger configuration. Independent review reproduced and closed a cross-provider barn-ID collision; the regression verifies that a CRM barn cannot inherit an old Airtable barn's roster. Local signed-session tests cover Barn save/edit/reload, retries, stale revisions, different owners, read-only access, session revocation, and lost CRM responses after create/update commit.
+
+**Live CRM evidence:** actual local adapter create → fresh read → duplicate-ID rejection passed via the authorized Ringstatus MCP connection. Retained Account `7636938000000720001`, name `TEST RingStatus CRM Input`, revision 1, canonical UID `rs_inputs_trial_barn_rs_3e76ea43d1c04900b54e70b286594c29`. Parent independently reread the Account and matched the saved fields. Evidence: `test-support/rs-crm-adapter-live-evidence.json` and `test-support/rs-crm-accounts-metadata.json`. This is not deployed/browser/native OAuth proof. The connector cannot forward `If-Unmodified-Since`; live conditional updates were not attempted through a weaker transport.
+
+**Remaining access gate:** Webflow Cloud environment `110f06dd-c1ea-4839-98af-d829cbe77941`, app `d7d97751-20e1-4148-a5cf-ee58671c128a`, `/test`, still lacks Inputs and CRM runtime settings. Existing `AIRTABLE_TOKEN` secret metadata is present; its access to the owned base remains unverified. This workspace has no authenticated Webflow CLI/workspace token or Zoho application OAuth credentials. Connector credentials cannot be extracted or substituted for application credentials. No configuration or deployment has been performed by this checkpoint.
+
+`scripts/configure-inputs-runtime.mjs` prepares only the approved target. It defaults to an offline dry run; apply verifies app/site/environment, accepts credentials through environment/stdin, preserves existing secrets, generates a 32-byte hex session key only if absent, and checks metadata readback. It does not log values, initiate login, or deploy. Its 12 tests pass; live CLI execution remains unverified and fails closed if the CLI metadata shape differs. Once authorized runtime credentials are available, the intended configuration command from `webflow-cloud-test` is:
+
+```sh
+RS_INPUTS_BARN_STORAGE=zoho-crm node scripts/configure-inputs-runtime.mjs --apply
+```
+
+After configuration: deploy the reviewed source to the approved `/test` target; issue a private synthetic invitation; exercise the unchanged Barn editor create → reload → edit → reload; confirm one CRM Account plus associated audit and denied/stale/lost-response cases; revoke the synthetic identity. No renewed deployment approval is required.
+
+References: [Zoho OAuth refresh](https://www.zoho.com/crm/developer/docs/api/v8/refresh.html), [conditional CRM updates](https://www.zoho.com/crm/developer/docs/api/v8/update-records.html), [Webflow CLI commands](https://developers.webflow.com/cli/command-reference), [Webflow CLI authentication](https://developers.webflow.com/cli/authentication).
+
+## Earlier implementation evidence
+
 This is an **isolated implementation and storage trial**, not a deployed production system. It implements the accepted barn onboarding model in the existing Astro application. WEF is the first context; no entity identifier or input rule is tied to WEF/WEC. The infrastructure inventory base remains read-only except the explicitly authorized ownership/complaint records.
 
 **Current direction (owner instruction, October 5):** the owner supplied `app9kOZdIaGyKk5uG` (`recognize`) as the owned target. Build only the fields and tables required by the existing Recognize and accepted input flow. The earlier interim test used `apptdhhNzduxm5gjn`; it remains historical evidence, not the new target. Zoho remains deferred. No runtime binding has been switched yet.

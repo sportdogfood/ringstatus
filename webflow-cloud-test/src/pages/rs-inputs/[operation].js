@@ -1,7 +1,7 @@
 import { env } from 'cloudflare:workers';
 import { handleAccessRoute } from '../../lib/rs-inputs-access.js';
 import { handleInputRequest } from '../../lib/rs-inputs.js';
-import { createAirtableInputStore } from '../../lib/rs-inputs-airtable.js';
+import { createInputStore } from '../../lib/rs-inputs-store.js';
 import { createInputRecognition } from '../../lib/rs-inputs-recognition.js';
 
 // Internal domain dispatch. The public ALL entry point derives its actor from a verified cookie.
@@ -13,7 +13,7 @@ export async function handleInputRoute({ request, locals }, bindings = env, fetc
       if (operation === 'recognition') {
         recognition = createInputRecognition({ env: bindings, fetchImpl, principalPersonUid: locals.rsInputActor.profile?.personUid, verifiedInputAccess: locals.rsInputAccessVerified === true });
       } else if (['state', 'record', 'profile-link'].includes(operation)) {
-        store = createAirtableInputStore({ env: bindings, fetchImpl });
+        store = createInputStore({ env: bindings, fetchImpl });
       }
     }
   } catch (error) {

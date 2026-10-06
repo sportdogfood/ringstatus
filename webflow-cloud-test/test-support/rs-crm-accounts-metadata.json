@@ -1,0 +1,89 @@
+{
+  "verifiedAt": "2026-10-06",
+  "organization": {
+    "zgid": "941333935",
+    "id": "7636938000000020005",
+    "company_name": "Ringstatus"
+  },
+  "module": {
+    "api_name": "Accounts",
+    "api_supported": true,
+    "creatable": true,
+    "editable": true
+  },
+  "fields": [
+    {
+      "api_name": "Account_Name",
+      "type": "text",
+      "system_mandatory": true
+    },
+    {
+      "api_name": "RS_Owner_UID",
+      "type": "text",
+      "id": "7636938000000718001",
+      "unique": {},
+      "length": 120,
+      "operations": {
+        "web_update": true,
+        "api_create": true,
+        "web_create": true,
+        "api_update": true
+      }
+    },
+    {
+      "api_name": "RS_Revision",
+      "type": "integer",
+      "id": "7636938000000718009",
+      "unique": {},
+      "length": 9,
+      "operations": {
+        "web_update": true,
+        "api_create": true,
+        "web_create": true,
+        "api_update": true
+      }
+    },
+    {
+      "api_name": "RS_Request_UID",
+      "type": "text",
+      "id": "7636938000000718017",
+      "unique": {},
+      "length": 120,
+      "operations": {
+        "web_update": true,
+        "api_create": true,
+        "web_create": true,
+        "api_update": true
+      }
+    },
+    {
+      "api_name": "RS_Request_Hash",
+      "type": "text",
+      "id": "7636938000000718025",
+      "unique": {},
+      "length": 64,
+      "operations": {
+        "web_update": true,
+        "api_create": true,
+        "web_create": true,
+        "api_update": true
+      }
+    },
+    {
+      "api_name": "RS_Entity_UID",
+      "type": "text",
+      "id": "7636938000000719002",
+      "unique": {
+        "case_sensitive": false
+      },
+      "length": 120,
+      "operations": {
+        "web_update": true,
+        "api_create": true,
+        "web_create": true,
+        "api_update": true
+      }
+    }
+  ],
+  "transportLimit": "ZohoCRM_updateRecord connector schema has no request headers; If-Unmodified-Since cannot be forwarded by authorized MCP relay."
+}

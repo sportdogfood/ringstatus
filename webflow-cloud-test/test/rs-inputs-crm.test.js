@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createCrmInputStore } from "../src/lib/rs-inputs-crm.js";
+import { createCrmInputStore, ACCOUNTS_TRIAL_MAPPING, ACCOUNTS_TRIAL_PREFIX } from "../src/lib/rs-inputs-crm.js";
 import { loadSchema, main, provision } from "../scripts/rs-inputs-storage.mjs";
 import { runRecognitionAction } from "../src/lib/rs-recognition-action.js";
 
@@ -30,11 +30,87 @@ test("CRM wrong org stops before metadata and writes", async () => {
   assert.equal(f.calls[0].method, "GET");
 });
 
-test("CRM refuses commerce modules, unsupported types, and missing mappings", async () => {
+test("CRM refuses unscoped Accounts, unsupported types, and missing mappings", async () => {
   assert.throws(() => createCrmInputStore({ token: "fake", mappings: { barns: { ...mappings.barns, module: "Accounts" } } }), { code: "invalid_crm_mapping" });
   assert.throws(() => createCrmInputStore({ token: "fake", mappings: { horses: mappings.barns } }), { code: "invalid_crm_mapping" });
   const store = createCrmInputStore({ token: "fake", mappings, fetchImpl: () => assert.fail("no request expected") });
   await assert.rejects(store.create("locations", { entity_uid: "x", name: "x" }), { code: "unconfigured_crm_entity" });
+});
+
+const accountMappings = { barns: ACCOUNTS_TRIAL_MAPPING };
+const accountEntity = { entity_uid: `${ACCOUNTS_TRIAL_PREFIX}rs_test`, name: "TEST barn", owner_uid: "person_test", revision: 1, request_uid: "request_test", request_hash: "a".repeat(64) };
+function accountMetadata({ unique = { case_sensitive: false } } = {}) {
+  return [org, { modules: [{ api_name: "Accounts", api_supported: true }] }, { fields: Object.entries(ACCOUNTS_TRIAL_MAPPING.fields).map(([key, api_name]) => ({ api_name, data_type: key === "revision" ? "integer" : "text", operation_type: { api_create: true, api_update: true }, ...(key === "entity_uid" ? { unique } : {}) })) }];
+}
+function accountRow(entity = accountEntity) {
+  return { id: "901", Modified_Time: "2026-10-06T11:00:00-04:00", ...Object.fromEntries(Object.entries(entity).map(([key, value]) => [ACCOUNTS_TRIAL_MAPPING.fields[key], value])) };
+}
+
+test("Accounts writes the verified canonical/owner/retry fields together", async () => {
+  const f = fixture([...accountMetadata(), success]);
+  const record = await createCrmInputStore({ token: "fake", mappings: accountMappings, ...f }).create("barns", accountEntity);
+  assert.equal(record.entity_uid, accountEntity.entity_uid);
+  const { id, Modified_Time, ...fields } = accountRow();
+  assert.deepEqual(f.calls.at(-1).body.data, [fields]);
+  assert.match(f.calls.at(-1).url, /\/Accounts$/);
+});
+
+test("Accounts refuses nonunique IDs, incompatible field metadata and wrong mapped fields before writes", async () => {
+  const nonunique = fixture(accountMetadata({ unique: {} }));
+  await assert.rejects(createCrmInputStore({ token: "fake", mappings: accountMappings, ...nonunique }).create("barns", accountEntity), { code: "crm_identity_not_unique" });
+  const meta = accountMetadata();
+  meta[2].fields.find(f => f.api_name === "RS_Revision").data_type = "text";
+  const incompatible = fixture(meta);
+  await assert.rejects(createCrmInputStore({ token: "fake", mappings: accountMappings, ...incompatible }).preflight(), { code: "crm_field_incompatible" });
+  assert.throws(() => createCrmInputStore({ token: "fake", mappings: { barns: { ...ACCOUNTS_TRIAL_MAPPING, fields: { ...ACCOUNTS_TRIAL_MAPPING.fields, owner_uid: "Description" } } } }), { code: "invalid_crm_mapping" });
+});
+
+test("Accounts keeps unrelated records outside read/update scope", async () => {
+  const unrelated = { id: "902", Account_Name: "Existing real barn" };
+  const f = fixture([...accountMetadata(), { data: [unrelated, accountRow()], info: { more_records: false } }]);
+  const rows = await createCrmInputStore({ token: "fake", mappings: accountMappings, ...f }).list("barns");
+  assert.deepEqual(rows.map(row => row.entity_uid), [accountEntity.entity_uid]);
+  for (const method of ["get", "update"]) {
+    const blocked = fixture([...accountMetadata(), { data: [unrelated] }]);
+    const store = createCrmInputStore({ token: "fake", mappings: accountMappings, ...blocked });
+    await assert.rejects(method === "get" ? store.get("barns", "902") : store.update("barns", "902", { name: "Do not change" }, { modifiedTime: accountRow().Modified_Time }), { code: "crm_record_outside_trial" });
+    assert.ok(blocked.calls.every(call => call.method === "GET"));
+  }
+});
+
+test("Accounts reload returns identity, ownership, revision, retry data and provider timestamp", async () => {
+  const f = fixture([...accountMetadata(), { data: [accountRow()] }]);
+  const row = await createCrmInputStore({ token: "fake", mappings: accountMappings, ...f }).get("barns", "901");
+  assert.deepEqual(row, { ...accountEntity, record_id: "901", modified_time: accountRow().Modified_Time });
+  assert.match(f.calls.at(-1).url, /Modified_Time/);
+});
+
+test("Accounts edits retain canonical ID/owner and send conflict timestamp", async () => {
+  const f = fixture([...accountMetadata(), { data: [accountRow()] }, success]);
+  const store = createCrmInputStore({ token: "fake", mappings: accountMappings, ...f });
+  const patch = { name: "TEST edited barn", revision: 2, request_uid: "edit_test", request_hash: "b".repeat(64) };
+  await store.update("barns", "901", patch, { modifiedTime: accountRow().Modified_Time });
+  assert.equal(f.calls.at(-1).headers["If-Unmodified-Since"], accountRow().Modified_Time);
+  assert.deepEqual(f.calls.at(-1).body.data, [{ Account_Name: patch.name, RS_Revision: 2, RS_Request_UID: patch.request_uid, RS_Request_Hash: patch.request_hash }]);
+  await assert.rejects(store.update("barns", "901", { owner_uid: "another_person" }), { code: "immutable_entity_owner" });
+});
+
+test("Accounts rejects unscoped IDs and invalid identity data without network", async () => {
+  const store = createCrmInputStore({ token: "fake", mappings: accountMappings, fetchImpl: () => assert.fail("no request expected") });
+  for (const uid of ["real_barn", `${ACCOUNTS_TRIAL_PREFIX}UPPERCASE`, ACCOUNTS_TRIAL_PREFIX]) await assert.rejects(store.create("barns", { ...accountEntity, entity_uid: uid }), { code: "crm_record_outside_trial" });
+  await assert.rejects(store.create("barns", { ...accountEntity, owner_uid: "" }), { code: "missing_entity_owner" });
+  await assert.rejects(store.create("barns", { ...accountEntity, request_hash: "not-a-hash" }), { code: "invalid_field_value" });
+});
+
+test("CRM token provider refreshes per request and never retries an unknown write", async () => {
+  const f = fixture([...accountMetadata(), new Error("timeout")]);
+  let tokens = 0;
+  const store = createCrmInputStore({ getToken: async () => `fake-${++tokens}`, mappings: accountMappings, ...f });
+  await assert.rejects(store.create("barns", accountEntity), { code: "crm_write_outcome_unknown" });
+  assert.equal(tokens, 4);
+  assert.deepEqual(f.calls.map(call => call.headers.Authorization), ["Zoho-oauthtoken fake-1", "Zoho-oauthtoken fake-2", "Zoho-oauthtoken fake-3", "Zoho-oauthtoken fake-4"]);
+  assert.equal(f.calls.filter(call => call.method === "POST").length, 1);
+  await assert.rejects(createCrmInputStore({ getToken: async () => "", mappings: accountMappings, fetchImpl: () => assert.fail("no request expected") }).preflight(), { code: "missing_crm_token" });
 });
 
 test("CRM rejects nonexistent mapped fields and nonunique canonical ID before writes", async () => {
@@ -51,7 +127,7 @@ test("CRM create uses exact supplied mapping and disables trigger workflows", as
   assert.equal(result.record_id, "901");
   assert.deepEqual(f.calls.at(-1).body.data, [{ Entity_UID: "barn_1", Name: "Test barn", Revision: 1 }]);
   assert.deepEqual(f.calls.at(-1).body.trigger, []);
-  assert.deepEqual(f.calls.at(-1).body.skip_feature_execution, [{ name: "cadences" }]);
+  assert.deepEqual(f.calls.at(-1).body.skip_feature_execution, [{ name: "cadences" }, { name: "connected_workflows" }]);
 });
 
 test("CRM stale update supplies If-Unmodified-Since and reports conflict", async () => {
@@ -73,6 +149,16 @@ test("CRM write timeout remains unknown and is never retried", async () => {
   const f = fixture([...metadata(), new Error("timeout")]);
   await assert.rejects(createCrmInputStore({ token: "fake", mappings, ...f }).create("barns", { entity_uid: "b", name: "Test" }), { code: "crm_write_outcome_unknown" });
   assert.equal(f.calls.filter(c => c.method === "POST").length, 1);
+});
+
+test("CRM possible committed write with 5xx or malformed response remains unknown without retry", async () => {
+  for (const last of [{ status: 500, body: { code: "INTERNAL_ERROR" } }, { status: 503, body: {} }, { status: 200, body: "not an object" }, { status: 200, body: {} }, { status: 200, body: { data: [{ status: "success", details: {} }] } }]) {
+    const f = fixture([...metadata(), last]);
+    await assert.rejects(createCrmInputStore({ token: "fake", mappings, ...f }).create("barns", { entity_uid: "b", name: "Test" }), { code: "crm_write_outcome_unknown" });
+    assert.equal(f.calls.filter(c => c.method === "POST").length, 1);
+  }
+  const definite = fixture([...metadata(), { status: 403, body: { code: "NO_PERMISSION" } }]);
+  await assert.rejects(createCrmInputStore({ token: "fake", mappings, ...definite }).create("barns", { entity_uid: "b", name: "Test" }), { code: "crm_request_failed", status: 403 });
 });
 
 test("CRM HTTP 207 record error cannot be mistaken for saved", async () => {

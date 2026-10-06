@@ -67,7 +67,8 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
   if (kind !== 'barn' || input.id) await authorizedBarn(store, actor, barnId);
   // Replay identity excludes server-derived profile changes and revision on profile-link.
   const fingerprint = await digest(JSON.stringify(profileLink ? { action: 'profile-link', barnId, personUid: actor.profile.personUid } : { kind, barnId, input, expectedRevision }));
-  const eventId = await digest(`${actor.id}|${payload.requestId}`);
+  // A storage trial must not reuse a different provider's entity IDs on retry.
+  const eventId = await digest(`${store.requestNamespace ? `${store.requestNamespace}|` : ''}${actor.id}|${payload.requestId}`);
   const replay = await store.event(eventId);
   if (replay) {
     if (replay.inputHash !== fingerprint) fail('request_id_reused', 409);

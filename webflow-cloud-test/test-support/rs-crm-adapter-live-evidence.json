@@ -1,0 +1,28 @@
+{
+  "scope": "Actual local CRM adapter via authorized Ringstatus MCP; no deployed/browser or conditional-update proof",
+  "checks": [
+    "adapter-create-PASS",
+    "adapter-read-persistence-PASS",
+    "provider-unique-id-duplicate-rejection-PASS"
+  ],
+  "entity": {
+    "entity_uid": "rs_inputs_trial_barn_rs_3e76ea43d1c04900b54e70b286594c29",
+    "name": "TEST RingStatus CRM Input",
+    "owner_uid": "rs_auth_20261006_crm01_person",
+    "revision": 1,
+    "request_uid": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "request_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "recordId": "7636938000000720001",
+  "read": {
+    "record_id": "7636938000000720001",
+    "modified_time": "2026-10-06T11:35:36-04:00",
+    "entity_uid": "rs_inputs_trial_barn_rs_3e76ea43d1c04900b54e70b286594c29",
+    "name": "TEST RingStatus CRM Input",
+    "owner_uid": "rs_auth_20261006_crm01_person",
+    "revision": 1,
+    "request_uid": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "request_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "status": "PASS"
+}

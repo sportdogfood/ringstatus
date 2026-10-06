@@ -2,7 +2,13 @@
 const EXPECTED_ORG = "941333935";
 const API = "https://www.zohoapis.com/crm/v8";
 const KINDS = new Set(["barns", "locations"]);
-const FIELDS = new Set(["entity_uid", "barn_uid", "name", "address", "location_uid", "revision", "request_uid"]);
+const FIELDS = new Set(["entity_uid", "barn_uid", "name", "address", "location_uid", "revision", "request_uid", "owner_uid", "request_hash"]);
+export const ACCOUNTS_TRIAL_PREFIX = "rs_inputs_trial_barn_";
+export const ACCOUNTS_TRIAL_MAPPING = Object.freeze({
+  module: "Accounts",
+  fields: Object.freeze({ entity_uid: "RS_Entity_UID", name: "Account_Name", owner_uid: "RS_Owner_UID", revision: "RS_Revision", request_uid: "RS_Request_UID", request_hash: "RS_Request_Hash" })
+});
+const inAccountsTrial = uid => typeof uid === "string" && /^rs_inputs_trial_barn_[a-z0-9_-]+$/.test(uid) && uid.length <= 120;
 
 export class CrmInputError extends Error {
   constructor(code, status = 502, details = {}) {
@@ -14,11 +20,12 @@ export class CrmInputError extends Error {
   }
 }
 
-export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {}) {
-  if (typeof token !== "string" || !token.trim()) throw new CrmInputError("missing_crm_token", 503);
+export function createCrmInputStore({ token, getToken, mappings, fetchImpl = fetch } = {}) {
+  if (typeof getToken !== "function" && (typeof token !== "string" || !token.trim())) throw new CrmInputError("missing_crm_token", 503);
   const config = structuredClone(mappings || {});
   for (const [kind, mapping] of Object.entries(config)) {
-    if (!KINDS.has(kind) || !/^RS_Trial_[A-Za-z0-9_]+$/.test(mapping?.module || "")) throw new CrmInputError("invalid_crm_mapping", 503);
+    if (!KINDS.has(kind) || !(kind === "barns" && mapping?.module === "Accounts") && !/^RS_Trial_[A-Za-z0-9_]+$/.test(mapping?.module || "")) throw new CrmInputError("invalid_crm_mapping", 503);
+    if (mapping.module === "Accounts" && (Object.keys(mapping.fields || {}).length !== Object.keys(ACCOUNTS_TRIAL_MAPPING.fields).length || Object.entries(ACCOUNTS_TRIAL_MAPPING.fields).some(([key, value]) => mapping.fields?.[key] !== value))) throw new CrmInputError("invalid_crm_mapping", 503);
     if (!mapping.fields?.entity_uid || !mapping.fields?.name) throw new CrmInputError("missing_identity_mapping", 503);
     const used = new Set();
     for (const [key, apiName] of Object.entries(mapping.fields)) {
@@ -28,11 +35,13 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
   }
 
   async function request(path, { method = "GET", body, headers = {} } = {}) {
+    const accessToken = typeof getToken === "function" ? await getToken() : token;
+    if (typeof accessToken !== "string" || !accessToken.trim()) throw new CrmInputError("missing_crm_token", 503);
     let response;
     try {
       response = await fetchImpl(`${API}${path}`, {
-        method, redirect: "error",
-        headers: { Authorization: `Zoho-oauthtoken ${token}`, "Content-Type": "application/json", ...headers },
+        method, redirect: "error", signal: AbortSignal.timeout(15000),
+        headers: { Authorization: `Zoho-oauthtoken ${accessToken}`, "Content-Type": "application/json", ...headers },
         ...(body ? { body: JSON.stringify(body) } : {})
       });
     } catch {
@@ -42,8 +51,9 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
     if (response.status === 204) return { data: [], info: { more_records: false } };
     const data = await response.json().catch(() => null);
     if (response.status === 412) throw new CrmInputError("stale_revision", 409);
+    if (method !== "GET" && response.status >= 500) throw new CrmInputError("crm_write_outcome_unknown", 502);
     if (!response.ok) throw new CrmInputError("crm_request_failed", response.status, { provider_code: data?.code || "unknown" });
-    if (!data || typeof data !== "object") throw new CrmInputError("invalid_crm_response");
+    if (!data || typeof data !== "object" || Array.isArray(data)) throw new CrmInputError(method === "GET" ? "invalid_crm_response" : "crm_write_outcome_unknown");
     return data;
   }
 
@@ -68,6 +78,12 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
       for (const apiName of Object.values(mapping.fields)) {
         if (!byName.has(apiName)) throw new CrmInputError("crm_field_unavailable", 503, { field: apiName });
       }
+      if (mapping.module === "Accounts") {
+        for (const [key, apiName] of Object.entries(mapping.fields)) {
+          const field = byName.get(apiName);
+          if (field.data_type !== (key === "revision" ? "integer" : "text") || field.operation_type?.api_create !== true || field.operation_type?.api_update !== true) throw new CrmInputError("crm_field_incompatible", 503, { field: apiName });
+        }
+      }
       // Names are mutable. Duplicate prevention requires the mapped canonical ID.
       const identity = byName.get(mapping.fields.entity_uid);
       if (!identity.unique || typeof identity.unique === "object" && !Object.keys(identity.unique).length) throw new CrmInputError("crm_identity_not_unique", 503);
@@ -79,6 +95,15 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
     if (!entity || typeof entity !== "object" || Array.isArray(entity)) throw new CrmInputError("invalid_entity", 400);
     if (creating && (typeof entity.entity_uid !== "string" || !entity.entity_uid.trim() || typeof entity.name !== "string" || !entity.name.trim())) throw new CrmInputError("missing_entity_identity", 400);
     if (!creating && "entity_uid" in entity) throw new CrmInputError("immutable_entity_identity", 400);
+    if (mapping.module === "Accounts") {
+      if (creating && !inAccountsTrial(entity.entity_uid)) throw new CrmInputError("crm_record_outside_trial", 403);
+      if (!creating && "owner_uid" in entity) throw new CrmInputError("immutable_entity_owner", 400);
+      if ("name" in entity && (typeof entity.name !== "string" || !entity.name.trim() || entity.name.length > 200)) throw new CrmInputError("invalid_field_value", 400);
+      if (creating && (typeof entity.owner_uid !== "string" || !entity.owner_uid.trim())) throw new CrmInputError("missing_entity_owner", 400);
+      for (const key of ["owner_uid", "request_uid"]) if (key in entity && (typeof entity[key] !== "string" || !entity[key].trim() || entity[key].length > 120)) throw new CrmInputError("invalid_field_value", 400);
+      if ("request_hash" in entity && (typeof entity.request_hash !== "string" || !/^[a-f0-9]{64}$/.test(entity.request_hash))) throw new CrmInputError("invalid_field_value", 400);
+      if ("revision" in entity && entity.revision > 999999999) throw new CrmInputError("invalid_revision", 400);
+    }
     const result = {};
     for (const [key, value] of Object.entries(entity)) {
       const field = mapping.fields[key];
@@ -100,13 +125,15 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
 
   async function verifyRecordScope(mapping, recordId) {
     if (!/^\d+$/.test(String(recordId))) throw new CrmInputError("invalid_crm_record_id", 400);
-    const result = await request(`/${encodeURIComponent(mapping.module)}/${encodeURIComponent(recordId)}?fields=${encodeURIComponent(Object.values(mapping.fields).join(","))}`);
+    const result = await request(`/${encodeURIComponent(mapping.module)}/${encodeURIComponent(recordId)}?fields=${encodeURIComponent([...Object.values(mapping.fields), "Modified_Time"].join(","))}`);
     if (result.data?.length !== 1 || String(result.data[0].id) !== String(recordId)) throw new CrmInputError("crm_record_unavailable", 404);
+    if (mapping.module === "Accounts" && !inAccountsTrial(result.data[0][mapping.fields.entity_uid])) throw new CrmInputError("crm_record_outside_trial", 403);
     return result.data[0];
   }
 
   function committed(result) {
     const item = result.data?.[0];
+    if (result.data?.length !== 1 || !["success", "error"].includes(item?.status) || item?.status === "success" && !item.details?.id) throw new CrmInputError("crm_write_outcome_unknown", 502);
     if (result.data?.length !== 1 || item?.status !== "success" || !item.details?.id) {
       throw new CrmInputError(item?.code === "DUPLICATE_DATA" ? "duplicate_entity" : "crm_write_failed", item?.code === "DUPLICATE_DATA" ? 409 : 502, { provider_code: item?.code || "unknown" });
     }
@@ -115,6 +142,11 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
 
   return {
     preflight,
+    async get(kind, recordId) {
+      const mapping = mappingFor(kind);
+      await preflight(kind);
+      return decode(mapping, await verifyRecordScope(mapping, recordId));
+    },
     async list(kind) {
       const mapping = mappingFor(kind);
       await preflight(kind);
@@ -122,8 +154,9 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
       // Bounded trial intentionally refuses silent truncation or unbounded scans.
       for (let page = 1; page <= 10; page++) {
         const result = await request(`/${encodeURIComponent(mapping.module)}?fields=${encodeURIComponent([...Object.values(mapping.fields), "Modified_Time"].join(","))}&per_page=200&page=${page}`);
-        if (!Array.isArray(result.data) || result.data.some(row => !row?.id || !row[mapping.fields.entity_uid])) throw new CrmInputError("invalid_crm_response");
-        rows.push(...result.data.map(row => decode(mapping, row)));
+        if (!Array.isArray(result.data) || result.data.some(row => !row?.id || mapping.module !== "Accounts" && !row[mapping.fields.entity_uid])) throw new CrmInputError("invalid_crm_response");
+        const scoped = mapping.module === "Accounts" ? result.data.filter(row => inAccountsTrial(row[mapping.fields.entity_uid])) : result.data;
+        rows.push(...scoped.map(row => decode(mapping, row)));
         if (!result.info?.more_records) return rows;
       }
       throw new CrmInputError("crm_trial_record_limit", 409);
@@ -132,7 +165,7 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
       const mapping = mappingFor(kind);
       const fields = encode(mapping, entity, true);
       await preflight(kind);
-      const result = await request(`/${encodeURIComponent(mapping.module)}`, { method: "POST", body: { data: [fields], trigger: [], skip_feature_execution: [{ name: "cadences" }] } });
+      const result = await request(`/${encodeURIComponent(mapping.module)}`, { method: "POST", body: { data: [fields], trigger: [], skip_feature_execution: [{ name: "cadences" }, { name: "connected_workflows" }] } });
       return { ...entity, ...committed(result) };
     },
     async update(kind, recordId, patch, { modifiedTime } = {}) {
@@ -141,7 +174,7 @@ export function createCrmInputStore({ token, mappings, fetchImpl = fetch } = {})
       if (typeof modifiedTime !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(modifiedTime) || !Number.isFinite(Date.parse(modifiedTime))) throw new CrmInputError("missing_modified_time", 400);
       await preflight(kind);
       await verifyRecordScope(mapping, recordId);
-      const result = await request(`/${encodeURIComponent(mapping.module)}/${encodeURIComponent(recordId)}`, { method: "PUT", headers: { "If-Unmodified-Since": modifiedTime }, body: { data: [fields], trigger: [], skip_feature_execution: [{ name: "cadences" }] } });
+      const result = await request(`/${encodeURIComponent(mapping.module)}/${encodeURIComponent(recordId)}`, { method: "PUT", headers: { "If-Unmodified-Since": modifiedTime }, body: { data: [fields], trigger: [], skip_feature_execution: [{ name: "cadences" }, { name: "connected_workflows" }] } });
       return { ...patch, ...committed(result) };
     }
   };
