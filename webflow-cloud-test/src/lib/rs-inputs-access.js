@@ -9,6 +9,13 @@ const unb64 = value => Uint8Array.from(atob(value.replace(/-/g, '+').replace(/_/
 export const randomAccessToken = () => b64(crypto.getRandomValues(new Uint8Array(32)));
 export const accessHash = async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', encoder.encode(value)))].map(b => b.toString(16).padStart(2, '0')).join('');
 const fail = (code, status = 401) => { throw new InputError(code, status); };
+// Never retain provider messages, request URLs, tokens, hashes or record bodies.
+const providerCodes = new Set(['AUTHENTICATION_REQUIRED', 'UNAUTHORIZED', 'INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND', 'NOT_FOUND', 'INVALID_FILTER_BY_FORMULA', 'UNKNOWN_FIELD_NAME', 'INVALID_REQUEST_UNKNOWN', 'INVALID_REQUEST_BODY', 'INVALID_VALUE_FOR_COLUMN', 'INVALID_MULTIPLE_CHOICE_OPTIONS', 'TOO_MANY_REQUESTS', 'PUBLIC_API_BILLING_LIMIT_EXCEEDED', 'SERVER_ERROR', 'SERVICE_UNAVAILABLE']);
+function storageFailure(method, diagnostic) {
+  const error = new InputError(method === 'GET' ? 'storage_unavailable' : 'write_outcome_unknown', 503);
+  error.storageDiagnostic = { provider: 'airtable', method, ...diagnostic };
+  throw error;
+}
 const permitted = row => ['invited', 'approved'].includes(row?.fields?.input_access) && ['active', 'test'].includes(String(row?.fields?.status).toLowerCase());
 const validUid = value => typeof value === 'string' && /^[A-Za-z0-9_-]{1,128}$/.test(value);
 function actorOf(row) {
@@ -24,9 +31,12 @@ export function createAccessStore({ env, fetchImpl = fetch }) {
     if (formula) { url.searchParams.set('filterByFormula', formula); url.searchParams.set('maxRecords', '2'); }
     let response;
     try { response = await fetchImpl(url, { method, redirect: 'error', headers: { Authorization: `Bearer ${env.AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(15000), ...(fields ? { body: JSON.stringify({ records: [{ ...(id ? { id } : {}), fields }] }) } : {}) }); }
-    catch { fail(method === 'GET' ? 'storage_unavailable' : 'write_outcome_unknown', 503); }
+    catch (error) { storageFailure(method, { outcome: 'transport_error', reason: ['TimeoutError', 'AbortError', 'TypeError'].includes(error?.name) ? error.name : 'fetch_failed' }); }
     const body = await response.json().catch(() => null);
-    if (!response.ok || !Array.isArray(body?.records)) fail(method === 'GET' ? 'storage_unavailable' : 'write_outcome_unknown', 503);
+    if (!response.ok || !Array.isArray(body?.records)) {
+      const providerCode = typeof body?.error === 'string' ? body.error : body?.error?.type;
+      storageFailure(method, { outcome: response.ok ? 'invalid_response' : 'http_error', providerStatus: response.status, providerCode: providerCodes.has(providerCode) ? providerCode : 'unrecognized' });
+    }
     if (body.offset || body.records.length > 1) fail('ambiguous_access_identity', 409);
     return body.records[0] || null;
   }
@@ -95,7 +105,10 @@ async function jsonBody(request) {
   const bytes = new Uint8Array(size); let offset = 0; for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
   try { return JSON.parse(new TextDecoder().decode(bytes)); } catch { fail('invalid_request', 400); }
 }
-export async function handleAccessRoute(request, env, fetchImpl, inputHandler, log = event => console.info(JSON.stringify(event))) {
+export async function handleAccessRoute(request, env, fetchImpl, inputHandler, log = event => {
+  if (event.status >= 500) console.error(JSON.stringify(event));
+  else console.info(JSON.stringify(event));
+}) {
   const traceId = crypto.randomUUID();
   const operation = new URL(request.url).pathname.split('/').at(-1);
   const respond = (body, status = 200, extra = {}) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store', 'X-Request-Id': traceId, ...extra } });
@@ -119,7 +132,7 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
     return await inputHandler(actor);
   } catch (error) {
     const status = error.status || 503, code = error.code || 'access_unavailable';
-    log({ event: 'rs_input_access', traceId, operation, status, code });
+    log({ event: 'rs_input_access', traceId, operation, status, code, ...(error.storageDiagnostic ? { storage: error.storageDiagnostic } : {}) });
     return respond({ ok: false, error: code }, status);
   }
 }
