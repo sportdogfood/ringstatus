@@ -12,9 +12,12 @@ export class RecognitionActionError extends Error {
   }
 }
 
-export async function runRecognitionAction({ env, fetchImpl = fetch, payload, request, recordSession = recordRecognitionSession }) {
+export async function runRecognitionAction({ env, fetchImpl = fetch, payload, request, recordSession = recordRecognitionSession, verifiedInputPersonUid }) {
   const config = getConfig(env);
   const input = normalizeInput(payload);
+  // Server-only argument; never taken from payload or public environment.
+  config.verifiedInputPersonUid = verifiedInputPersonUid;
+  config.allowNewInputDevice = input.action === "confirm_device";
   let result;
 
   if (input.action === "create_profile") result = await createProfile(config, input, fetchImpl);
@@ -83,7 +86,8 @@ async function phoneLogin(config, input, fetchImpl) {
   const person = matchedBy === "pin"
     ? await findUniquePersonByPin(config, digits, fetchImpl)
     : await findPersonByPhone(config, phoneNumber(identifier), fetchImpl);
-  if (!person || !isActive(person.fields?.status) || !isMemberAccess(person.fields?.access_level)) {
+  const invitedAccess = config.verifiedInputPersonUid === clean(person?.fields?.person_uid) && ["invited", "approved"].includes(person?.fields?.input_access);
+  if (!person || !isActive(person.fields?.status) || !(invitedAccess || isMemberAccess(person.fields?.access_level))) {
     return actionResult({ event_type: "login", event_result: "not_matched", matched_by: matchedBy, recognition_status: "rejected", detail: { source: "members_gate" }, response: { ok: true, recognized: false } });
   }
   const device = await upsertDevice(config, input.device_token, person.id, fetchImpl);
@@ -206,11 +210,12 @@ function getRecord(config, table, id, fetchImpl) {
 async function authorizeOwnedPerson(config, tokenValue, personId, personUid, fetchImpl) {
   const token = required(tokenValue, "missing_device_token");
   const device = await findDevice(config, token, fetchImpl);
-  if (!device || !isActive(device.fields?.status) || firstLink(device.fields?.person) !== personId) {
+  if ((!device && !(config.allowNewInputDevice && config.verifiedInputPersonUid === personUid)) || (device && (!isActive(device.fields?.status) || firstLink(device.fields?.person) !== personId))) {
     throw new RecognitionActionError("unauthorized_device", 403);
   }
   const person = await getRecord(config, config.people, personId, fetchImpl);
-  if (clean(person.fields?.person_uid) !== personUid || !isActive(person.fields?.status) || !isMemberAccess(person.fields?.access_level)) {
+  const invitedAccess = config.verifiedInputPersonUid === personUid && ["invited", "approved"].includes(person.fields?.input_access);
+  if (clean(person.fields?.person_uid) !== personUid || !isActive(person.fields?.status) || !(invitedAccess || isMemberAccess(person.fields?.access_level))) {
     throw new RecognitionActionError("unauthorized_person", 403);
   }
   return { device, person };

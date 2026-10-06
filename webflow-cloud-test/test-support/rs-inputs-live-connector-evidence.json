@@ -1,0 +1,202 @@
+{
+  "status": "PASS",
+  "scope": "LOCAL_HANDLER_LIVE_AIRTABLE_VIA_MCP",
+  "phases": [
+    {
+      "phase": "session-required",
+      "status": "PASS",
+      "requestId": "748f983ba8b982a4e38efcd97bfea22cc42cd006bc6a47f24b794b470da55082",
+      "httpStatus": 401
+    },
+    {
+      "phase": "session-read-required",
+      "status": "PASS",
+      "httpStatus": 401
+    },
+    {
+      "phase": "same-origin-required",
+      "status": "PASS",
+      "requestId": "748f983ba8b982a4e38efcd97bfea22cc42cd006bc6a47f24b794b470da55082",
+      "httpStatus": 403
+    },
+    {
+      "phase": "state-before",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "phase": "known-recognition",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "phase": "recognition-does-not-create-roster",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "phase": "unknown-recognition",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "phase": "retired-recognition",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "phase": "create-barn",
+      "status": "PASS",
+      "requestId": "dec67248beda34774db97bfa18e7df046c7c8c536895e484335ea44b9c46c7b5",
+      "httpStatus": 200
+    },
+    {
+      "phase": "link-profile",
+      "status": "PASS",
+      "requestId": "4d52c6ae96eb27a6ae2cc4c8188bfd31e28f0c1ad8d3b48d1a09014841c7d95d",
+      "httpStatus": 200
+    },
+    {
+      "phase": "link-profile-again",
+      "status": "PASS",
+      "requestId": "28bce17528accf76494bef18506d59e39b7c680d529eab5bc3ac5a8ba8953756",
+      "httpStatus": 200
+    },
+    {
+      "phase": "create-user",
+      "status": "PASS",
+      "requestId": "f57545efe696c046dbfacca00f2e3574568b16436b3b17fb81762f7d6687fd17",
+      "httpStatus": 200
+    },
+    {
+      "phase": "create-rider",
+      "status": "PASS",
+      "requestId": "842c92147cd92e0701a44a53696a28ce3cf13af2f31ed92436052eae11a4bb19",
+      "httpStatus": 200
+    },
+    {
+      "phase": "create-location",
+      "status": "PASS",
+      "requestId": "ad4e596366911fa3bc0927f592597973ada64e76197eceeddf2d52c0a6b77bc1",
+      "httpStatus": 200
+    },
+    {
+      "phase": "create-horse",
+      "status": "PASS",
+      "requestId": "aaf5489ad213c554cc81ca99e8d90a0e7ed879261f896af2af8ba3a2d97eccc0",
+      "httpStatus": 200
+    },
+    {
+      "phase": "save-edit",
+      "status": "PASS",
+      "requestId": "b0903e3845483353cd9f1b79308449221b2036f9a2170d1d808c227202c297ad",
+      "httpStatus": 200
+    },
+    {
+      "phase": "stale-edit-rejected",
+      "status": "PASS",
+      "requestId": "bfb60275714b2375f7c3aee504b80579920c4a36085a79393e7b5556b81edf34",
+      "httpStatus": 409
+    },
+    {
+      "phase": "identical-retry",
+      "status": "PASS",
+      "requestId": "b0903e3845483353cd9f1b79308449221b2036f9a2170d1d808c227202c297ad",
+      "httpStatus": 200
+    },
+    {
+      "phase": "reload",
+      "status": "PASS",
+      "httpStatus": 200
+    }
+  ],
+  "ids": {
+    "create-barn": "rs_6fa761ee0377559b44b8d373251d45af",
+    "link-profile": "rs_4e3d44eeea4f0b96f8f30d13b6c93331",
+    "link-profile-again": "rs_4e3d44eeea4f0b96f8f30d13b6c93331",
+    "create-user": "rs_3b117fe180d63f2f3321836d62735cd3",
+    "create-rider": "rs_b30b73a6be67861a11a4704fbda380d8",
+    "create-location": "rs_89edc8117804d92ee77f777ff9a5ca65",
+    "create-horse": "rs_cf72d8de1ab33922a507fc2eb1327acf",
+    "save-edit": "rs_cf72d8de1ab33922a507fc2eb1327acf",
+    "identical-retry": "rs_cf72d8de1ab33922a507fc2eb1327acf"
+  },
+  "prerequisites": [
+    "Explicit fixture actor, not a real authenticated session",
+    "Authorized Airtable MCP connection to the owned isolated base"
+  ],
+  "recordsRetained": true,
+  "limitations": [
+    "Missing-actor checks exercise the handler guard only, not session issuance.",
+    "Airtable operations use MCP translation; native HTTP credential and transport behavior remain unverified.",
+    "Provider concurrency and atomicity are not established.",
+    "Actual application registration and identity/membership integration remain incomplete."
+  ],
+  "authenticatedSessionVerified": false,
+  "browserVerified": false,
+  "deployedHttpVerified": false,
+  "nativeRestCredentialVerified": false,
+  "extraChecks": [
+    {
+      "phase": "ambiguous-device-rejected",
+      "status": "PASS"
+    },
+    {
+      "phase": "wrong-principal-rejected",
+      "status": "PASS"
+    },
+    {
+      "phase": "read-only-actor-write-rejected",
+      "status": "PASS"
+    },
+    {
+      "phase": "empty-name-rejected",
+      "status": "PASS"
+    },
+    {
+      "phase": "other-owner-barn-rejected",
+      "status": "PASS"
+    },
+    {
+      "phase": "confirm-device-and-log",
+      "status": "PASS"
+    },
+    {
+      "phase": "recognition-audit-links-and-path",
+      "status": "PASS"
+    }
+  ],
+  "fixtures": {
+    "person": "recEGNuukItQCY87S",
+    "alias": "recJPnWIuJK6HGse3",
+    "devices": [
+      "rec5Fn78sV1q8UZGv",
+      "recylY0vS3V4KvOVP",
+      "receUvaqUcjfUcbBv",
+      "recrlXX2ylJ02rppd"
+    ]
+  },
+  "recognitionAuditId": "recM9oPYGzRto2Nwk",
+  "fixtureRetirementWritesAcknowledged": true,
+  "unknownFixtureCreation": false,
+  "freshReadback": {
+    "allEightWritesHaveOneAudit": true,
+    "horseRevisionTwo": true,
+    "personInactiveGuest": true,
+    "aliasInactive": true,
+    "allFourDevicesRetired": true,
+    "recognitionEventProcessed": true
+  },
+  "auditRecordIds": [
+    "recUymJgVNsCjEq6H",
+    "reclWTF8bqCng9GL5",
+    "reclegdZif4DJ89Mp",
+    "reclkDzbFMF9TThZo",
+    "recmpCcnpUaPT6tms",
+    "recpyR5MAIJEiRlfZ",
+    "recyXQfD7QuvMlmlR",
+    "reczaTlbym9GuzbXO"
+  ],
+  "connectorCalls": 151,
+  "runId": "rs_live_20261005_2215"
+}

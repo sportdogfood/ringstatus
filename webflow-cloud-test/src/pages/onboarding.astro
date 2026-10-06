@@ -1,0 +1,13 @@
+---
+import App from '../components/rs-onboarding/App';
+import '@fontsource/roboto/latin-500.css';
+import '../components/rs-onboarding/styles.css';
+import '../components/rs-onboarding/prototype.css';
+// Webflow Cloud supplies Astro's base at build time; manual fetches need it.
+const apiBase = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/rs-inputs`;
+---
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="robots" content="noindex" /><title>RingStatus Barn Onboarding</title></head>
+  <body><div id="root"><App client:only="react" apiBase={apiBase} /></div></body>
+</html>

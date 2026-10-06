@@ -1,0 +1,121 @@
+{
+  "runId": "rs_auth_20261006_a02",
+  "status": "PASS",
+  "scope": "LOCAL_SIGNED_SESSION_HANDLER_LIVE_AIRTABLE_VIA_MCP",
+  "phases": [
+    {
+      "phase": "no-session-denied",
+      "status": "PASS"
+    },
+    {
+      "phase": "invite-redeemed-cookie-issued",
+      "status": "PASS"
+    },
+    {
+      "phase": "same-invitation-replay-rejected",
+      "status": "PASS"
+    },
+    {
+      "phase": "signed-session-verified",
+      "status": "PASS"
+    },
+    {
+      "phase": "invited-profile-before-device",
+      "status": "PASS"
+    },
+    {
+      "phase": "explicit-new-device-association",
+      "status": "PASS"
+    },
+    {
+      "phase": "recognized-after-confirm",
+      "status": "PASS"
+    },
+    {
+      "phase": "cookie-authorized-barn-create",
+      "status": "PASS"
+    },
+    {
+      "phase": "explicit-person-roster-link",
+      "status": "PASS"
+    },
+    {
+      "phase": "horse-create",
+      "status": "PASS"
+    },
+    {
+      "phase": "inline-edit-save",
+      "status": "PASS"
+    },
+    {
+      "phase": "inline-edit-retry-same-record",
+      "status": "PASS"
+    },
+    {
+      "phase": "stale-edit-rejected",
+      "status": "PASS"
+    },
+    {
+      "phase": "fresh-reload",
+      "status": "PASS"
+    },
+    {
+      "phase": "revoked-session-denied",
+      "status": "PASS"
+    },
+    {
+      "phase": "logout-cookie-cleared",
+      "status": "PASS"
+    }
+  ],
+  "fixtures": {
+    "person": {
+      "id": "recznOJ6f3ODj4EvX",
+      "createdTime": "2026-10-06T02:42:28.000Z",
+      "fields": {
+        "person_uid": "rs_auth_20261006_a02_person",
+        "person_name": "QA rs_auth_20261006_a02 Invited",
+        "status": "Active",
+        "access_level": "Guest"
+      }
+    },
+    "barnId": "rs_6fedf585768362cfaa820a282eb7045e",
+    "horseId": "rs_8afc0eb2496b934cf593f5cdb04d0cd3",
+    "devices": [
+      "recf8Ik5lGlCmFCpE"
+    ],
+    "recognitionAudits": [
+      "recog1AR4y1OvXgXe"
+    ]
+  },
+  "signedCookieHandlerVerified": true,
+  "browserVerified": false,
+  "deployedHttpVerified": false,
+  "nativeRestCredentialVerified": false,
+  "atomicityVerified": false,
+  "cleanup": "Fresh independent reads verified person Inactive/Guest with access revoked and invitation cleared; device Retired; recognition event manually processed (no automation execution claimed).",
+  "finalReadback": {
+    "personId": "recznOJ6f3ODj4EvX",
+    "personStatus": "Inactive",
+    "inputAccess": "revoked",
+    "legacyAccess": "Guest",
+    "invitationCleared": true,
+    "deviceId": "recf8Ik5lGlCmFCpE",
+    "deviceStatus": "Retired",
+    "horseRecordId": "recbd2v0h95urxnQS",
+    "horseRevision": 2,
+    "auditIds": [
+      "recIEqmbi2sF6oqoT",
+      "recQIEHbCWnlPxtCO",
+      "recbVNBZh2cmU7LqT",
+      "recueVHRCCcg1P8vY"
+    ],
+    "connectorCalls": 100
+  },
+  "bootstrapFailure": {
+    "runId": "rs_auth_20261006_a01",
+    "cause": "Initial local driver lacked an open stdin; one synthetic person was created before transport failed.",
+    "fixtureId": "recsaMyRThcKNZj02",
+    "finalStatus": "Inactive / revoked, freshly verified"
+  }
+}

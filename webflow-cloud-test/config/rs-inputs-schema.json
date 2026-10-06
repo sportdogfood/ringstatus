@@ -1,0 +1,804 @@
+{
+  "version": 3,
+  "purpose": "Isolated RingStatus user-input trial; no show-engine data or live automations.",
+  "tables": [
+    {
+      "name": "rs_input_barns",
+      "fields": [
+        {
+          "name": "entity_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "owner_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "revision",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "request_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "request_hash",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "rs_input_users",
+      "fields": [
+        {
+          "name": "entity_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "email",
+          "type": "singleLineText"
+        },
+        {
+          "name": "recognition_person_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "owner_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "revision",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "request_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "request_hash",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "rs_input_riders",
+      "fields": [
+        {
+          "name": "entity_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "user_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "owner_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "revision",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "request_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "request_hash",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "rs_input_horses",
+      "fields": [
+        {
+          "name": "entity_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rider_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "location_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "owner_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "revision",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "request_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "request_hash",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "rs_input_locations",
+      "fields": [
+        {
+          "name": "entity_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "address",
+          "type": "singleLineText"
+        },
+        {
+          "name": "owner_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "revision",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "request_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "request_hash",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "rs_input_events",
+      "fields": [
+        {
+          "name": "event_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "actor_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "entity_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "action",
+          "type": "singleLineText"
+        },
+        {
+          "name": "request_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "occurred_at",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "input_hash",
+          "type": "singleLineText"
+        },
+        {
+          "name": "result_json",
+          "type": "multilineText"
+        },
+        {
+          "name": "kind",
+          "type": "singleLineText"
+        },
+        {
+          "name": "outcome",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "rs_people_test",
+      "fields": [
+        {
+          "name": "person_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "person_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "first_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "primary_phone_e164",
+          "type": "singleLineText"
+        },
+        {
+          "name": "member_pin",
+          "type": "singleLineText"
+        },
+        {
+          "name": "email",
+          "type": "email"
+        },
+        {
+          "name": "status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Active"
+              },
+              {
+                "name": "Inactive"
+              },
+              {
+                "name": "Pending"
+              },
+              {
+                "name": "Suspended"
+              },
+              {
+                "name": "test"
+              }
+            ]
+          }
+        },
+        {
+          "name": "access_level",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Admin"
+              },
+              {
+                "name": "User"
+              },
+              {
+                "name": "Viewer"
+              },
+              {
+                "name": "Guest"
+              },
+              {
+                "name": "member"
+              }
+            ]
+          }
+        },
+        {
+          "name": "input_access",
+          "type": "singleLineText"
+        },
+        {
+          "name": "input_invite_hash",
+          "type": "singleLineText"
+        },
+        {
+          "name": "input_session_version",
+          "type": "singleLineText"
+        },
+        {
+          "name": "input_invite_expires_at",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        }
+      ]
+    },
+    {
+      "name": "rs_devices_test",
+      "fields": [
+        {
+          "name": "device_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "device_token",
+          "type": "singleLineText"
+        },
+        {
+          "name": "status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Active"
+              },
+              {
+                "name": "Retired"
+              },
+              {
+                "name": "Inactive"
+              }
+            ]
+          }
+        },
+        {
+          "name": "last_seen_at",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "recognition_source",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Web"
+              }
+            ]
+          }
+        },
+        {
+          "name": "first_seen_at",
+          "type": "createdTime"
+        }
+      ]
+    },
+    {
+      "name": "rs_phone_aliases_test",
+      "fields": [
+        {
+          "name": "alias_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "alias_phone_e164",
+          "type": "singleLineText"
+        },
+        {
+          "name": "alias_type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Mobile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Active"
+              },
+              {
+                "name": "Inactive"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "rs_recognition_sessions_test",
+      "fields": [
+        {
+          "name": "session_event_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "session_uid",
+          "type": "singleLineText"
+        },
+        {
+          "name": "idempotency_key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "event_at",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "event_type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "start"
+              },
+              {
+                "name": "success"
+              },
+              {
+                "name": "failure"
+              },
+              {
+                "name": "update"
+              },
+              {
+                "name": "other"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event_result",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "matched"
+              },
+              {
+                "name": "not_matched"
+              },
+              {
+                "name": "pending"
+              },
+              {
+                "name": "error"
+              },
+              {
+                "name": "unknown"
+              }
+            ]
+          }
+        },
+        {
+          "name": "matched_by",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "ai"
+              },
+              {
+                "name": "manual"
+              },
+              {
+                "name": "external"
+              },
+              {
+                "name": "unknown"
+              }
+            ]
+          }
+        },
+        {
+          "name": "recognition_status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "pending"
+              },
+              {
+                "name": "confirmed"
+              },
+              {
+                "name": "rejected"
+              },
+              {
+                "name": "flagged"
+              }
+            ]
+          }
+        },
+        {
+          "name": "automation_status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "queued"
+              },
+              {
+                "name": "processed"
+              },
+              {
+                "name": "error"
+              }
+            ]
+          }
+        },
+        {
+          "name": "automation_attempt_count",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "automation_processed_at",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "automation_error",
+          "type": "multilineText"
+        },
+        {
+          "name": "signal_version",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "ip_hash",
+          "type": "singleLineText"
+        },
+        {
+          "name": "network_hash",
+          "type": "singleLineText"
+        },
+        {
+          "name": "country_code",
+          "type": "singleLineText"
+        },
+        {
+          "name": "region",
+          "type": "singleLineText"
+        },
+        {
+          "name": "city",
+          "type": "singleLineText"
+        },
+        {
+          "name": "timezone",
+          "type": "singleLineText"
+        },
+        {
+          "name": "asn",
+          "type": "singleLineText"
+        },
+        {
+          "name": "edge_colo",
+          "type": "singleLineText"
+        },
+        {
+          "name": "user_agent_hash",
+          "type": "singleLineText"
+        },
+        {
+          "name": "browser_family",
+          "type": "singleLineText"
+        },
+        {
+          "name": "os_family",
+          "type": "singleLineText"
+        },
+        {
+          "name": "device_class",
+          "type": "singleLineText"
+        },
+        {
+          "name": "language",
+          "type": "singleLineText"
+        },
+        {
+          "name": "client_timezone",
+          "type": "singleLineText"
+        },
+        {
+          "name": "viewport_bucket",
+          "type": "singleLineText"
+        },
+        {
+          "name": "page_path",
+          "type": "singleLineText"
+        },
+        {
+          "name": "referrer_host",
+          "type": "singleLineText"
+        },
+        {
+          "name": "event_detail",
+          "type": "multilineText"
+        }
+      ]
+    }
+  ],
+  "linkFields": [
+    {
+      "table": "rs_devices_test",
+      "name": "person",
+      "target": "rs_people_test",
+      "single": true
+    },
+    {
+      "table": "rs_phone_aliases_test",
+      "name": "person",
+      "target": "rs_people_test",
+      "single": true
+    },
+    {
+      "table": "rs_recognition_sessions_test",
+      "name": "person",
+      "target": "rs_people_test",
+      "single": true
+    },
+    {
+      "table": "rs_recognition_sessions_test",
+      "name": "device",
+      "target": "rs_devices_test",
+      "single": true
+    },
+    {
+      "table": "rs_recognition_sessions_test",
+      "name": "phone_alias",
+      "target": "rs_phone_aliases_test",
+      "single": true
+    }
+  ],
+  "relationships": [
+    {
+      "from": "rs_input_users.barn_uid",
+      "to": "rs_input_barns.entity_uid",
+      "storage": "canonical_text_reference"
+    },
+    {
+      "from": "rs_input_riders.barn_uid",
+      "to": "rs_input_barns.entity_uid",
+      "storage": "canonical_text_reference"
+    },
+    {
+      "from": "rs_input_horses.barn_uid",
+      "to": "rs_input_barns.entity_uid",
+      "storage": "canonical_text_reference"
+    },
+    {
+      "from": "rs_input_locations.barn_uid",
+      "to": "rs_input_barns.entity_uid",
+      "storage": "canonical_text_reference"
+    },
+    {
+      "from": "rs_input_riders.user_uid",
+      "to": "rs_input_users.entity_uid",
+      "storage": "canonical_text_reference"
+    },
+    {
+      "from": "rs_input_horses.rider_uid",
+      "to": "rs_input_riders.entity_uid",
+      "storage": "canonical_text_reference"
+    },
+    {
+      "from": "rs_input_horses.location_uid",
+      "to": "rs_input_locations.entity_uid",
+      "storage": "canonical_text_reference"
+    },
+    {
+      "from": "rs_input_users.recognition_person_uid",
+      "to": "rs_people_test.person_uid",
+      "storage": "canonical_text_reference"
+    }
+  ],
+  "audit": {
+    "event_uid": "SHA-256 of actor_uid + | + request_uid",
+    "enforcement": "Application contract; text fields do not enforce uniqueness or atomic compare-and-update."
+  },
+  "limitations": [
+    "Recognition schema supports existing action/device/session routes only; legacy ww_profiles/active_iams links are not cloned.",
+    "Recovery events are recorded but no email or SMS automation is provisioned.",
+    "No existing personal data, credentials, devices, or sessions are copied.",
+    "Operational relationships are explicit text references validated by the application, not Airtable foreign keys."
+  ],
+  "ownedTarget": {
+    "baseId": "app9kOZdIaGyKk5uG",
+    "ownership": "Owner-supplied Recognize base for recognition and operational inputs. Six input tables provisioned; sixteen incompatible recognition fields replaced and verified, with originals retained under legacy_ names. Runtime integration remains outstanding. Do not create another base.",
+    "runtimeBound": false
+  },
+  "interimRecognitionSource": {
+    "baseId": "apptdhhNzduxm5gjn",
+    "tables": [
+      "rs_people_test",
+      "rs_devices_test",
+      "rs_phone_aliases_test",
+      "rs_recognition_sessions_test"
+    ],
+    "binding": "RS_INPUTS_RECOGNITION_BASE_ID",
+    "ownership": "Historical interim fixture source only. Owned target is app9kOZdIaGyKk5uG. Existing production bindings have not been changed; schema presence does not enable a second writer."
+  }
+}

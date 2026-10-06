@@ -1,0 +1,123 @@
+.rings-screen{font-family:'Outfit',sans-serif;color:#111;background:#fff}.rings-main{padding:76px 16px calc(var(--mobile-safe-area-height, 34px) + 28px);font-size:16px;line-height:1.35}.rings-wordmark{font-size:24px;line-height:1;font-weight:700;letter-spacing:-1.35px;margin-bottom:24px}.rings-wordmark span{color:#a65337}.rings-main h1{font-size:32px;line-height:1.12;letter-spacing:-1.05px;font-weight:700;margin:0 0 20px}.rings-context-label{display:block;margin:0 0 6px;font-weight:500;font-size:16px}.rings-barn-control{display:flex;border:1px solid #b8bbc0;border-radius:8px;min-height:44px}.rings-barn-name{flex:1;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;background:none;border:0;min-width:0;overflow-wrap:anywhere}.rings-icon{min-width:44px;flex-shrink:0}.rings-icon svg{width:20px;height:20px}.rings-barn-name svg{width:18px;height:18px;flex-shrink:0}.rings-barn-menu{padding:6px 0;border-bottom:1px solid #dedfe3}.rings-barn-menu button{background:none;border:0;display:flex;align-items:center;gap:10px;justify-content:space-between;min-height:44px;width:100%;text-align:left;padding:8px 12px}.rings-tabs{display:flex;margin:16px -16px 0;border-bottom:1px solid #e1e1e4}.rings-section{padding-top:20px}.rings-section h2{margin:0 0 8px}.rings-row{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;border-bottom:1px solid #e5e5e8;padding:10px 38px 10px 0;min-height:64px}.rings-row-name{border:0;background:none;padding:4px 0;text-align:left;min-height:44px;max-width:100%;overflow-wrap:anywhere}.rings-row-meta{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;color:#646873;max-width:100%;overflow-wrap:anywhere}.rings-row-meta>span{padding:3px 0}.rings-row-edit{position:absolute;right:-7px;top:10px}.rings-row-edit svg{width:16px;height:16px}.rings-inline-form{display:grid;gap:22px;padding-top:18px}.rings-field{display:grid;gap:6px;min-width:0}.rings-field input,.rings-field select{width:100%;box-sizing:border-box}.rings-select{position:relative}.rings-select select{appearance:none;padding-right:32px}.rings-select svg{position:absolute;width:20px;height:20px;right:12px;top:12px;pointer-events:none;color:#555b65}.rings-field input:focus,.rings-field select:focus{outline:2px solid #a6533728;outline-offset:1px}.rings-link{max-width:100%;cursor:pointer}.rings-link svg{width:20px;height:20px}.rings-add-linked{justify-self:start;margin-top:-3px}.rings-save-actions{display:flex;gap:12px;margin-top:-4px}.rings-primary,.rings-secondary{cursor:pointer}.rings-primary{flex:1}.rings-secondary{min-width:110px}.rings-save-actions .rings-secondary{min-width:104px}.rings-primary:active{background:#86422c}.rings-secondary:active{background:#f4f1ef}.rings-primary svg,.rings-secondary svg{width:20px;height:20px}.rings-add-record{width:100%;margin-top:22px}.rings-error{margin:0;color:#9d2e21;font-size:14px;font-weight:400;line-height:1.4}.rings-success{display:flex;gap:6px;align-items:flex-start;margin:16px 0 0;color:#4e5d44;font-size:14px}.rings-success svg{flex-shrink:0;margin-top:2px}.rings-empty{font-size:15px;color:#686b75;padding:8px 0 16px;border-bottom:1px solid #e5e5e8;margin:0}.rings-edit-context{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;color:#686b75;margin-top:-8px}.rings-prototype-note{font-size:11px;color:#7c8087;margin:24px 0 0}.rings-sheet-form{display:grid;gap:22px}.rings-sheet-close{position:absolute;right:9px;top:22px}.rings-sheet-close svg{width:24px;height:24px}.rings-sheet-save{width:100%;margin-top:-8px;min-height:44px}.rings-back{font-size:14px;margin-top:-10px}.rings-main button:focus-visible,.rings-sheet-form button:focus-visible{outline:2px solid #a65337;outline-offset:3px}.rings-main button{cursor:pointer}@media(prefers-reduced-motion:reduce){.rings-main *{scroll-behavior:auto!important}}
+img.rings-wordmark{display:block;width:134px;height:auto;margin-bottom:24px}
+/* Compact linked-record sheets while keeping 44px interactive targets. */
+
+
+
+.rings-sheet-form{gap:16px}
+.rings-sheet-form .rings-field{gap:6px}
+img.rings-wordmark{width:116px}
+.rings-main h1{margin-bottom:16px}
+.rings-main{padding-top:64px}
+img.rings-wordmark{margin-bottom:20px}
+.rings-tabs{margin-top:12px}
+.rings-section{padding-top:16px}
+.rings-help{margin-bottom:12px}
+.rings-row{min-height:56px;padding-top:6px;padding-bottom:6px}
+.rings-row-edit{top:6px}
+.rings-inline-form{gap:16px}
+/* One onboarding destination; two presentation modes share content. */
+[data-app-theme],.rings-combined{--rings-bg:#fff;--rings-panel:#fff;--rings-text:#111;--rings-muted:#646873;--rings-border:#dfe1e5;--rings-green:#187140;--rings-blue:#315e9e;--rings-teal:#147568;--rings-radius:8px}
+.rings-combined{position:absolute;inset:0;background:var(--rings-bg);color:var(--rings-text);font-family:Outfit,sans-serif}
+[data-app-theme=dark]{--rings-bg:#090b11;--rings-panel:#10141f;--rings-text:#e8ecf5;--rings-muted:#9aa3b4;--rings-border:#ffffff24;--rings-green:#49d17d;--rings-blue:#8fb8ff;--rings-teal:#58dac7;--rings-radius:8px}
+.rings-combined[data-theme=dark]{--rings-bg:#090b11;--rings-panel:#10141f;--rings-text:#e8ecf5;--rings-muted:#9aa3b4;--rings-border:#ffffff24;--rings-green:#49d17d;--rings-blue:#8fb8ff;--rings-teal:#58dac7;color-scheme:dark}
+.rings-combined *{box-sizing:border-box}.rings-combined button{font:inherit;cursor:pointer}.rings-app-header{position:absolute;inset:60px 0 auto;padding:8px 16px 0;background:var(--rings-bg);z-index:10}.rings-app-brand{display:flex;align-items:center;justify-content:space-between;gap:12px}.rings-app-brand img{width:116px;height:auto}.rings-modes{display:flex;border:1px solid var(--rings-border);border-radius:8px;padding:2px;gap:2px}.rings-modes button{min-height:36px;padding:6px 10px;background:none;border:0;color:var(--rings-muted);font-size:13px;border-radius:5px}.rings-modes button[aria-pressed=true]{background:var(--rings-panel);color:var(--rings-text);box-shadow:0 0 0 1px var(--rings-border)}.rings-app-nav{display:flex;border-bottom:1px solid var(--rings-border);margin-top:8px}.rings-page{position:absolute;inset:166px 0 0}.rings-page[hidden]{display:none}.rings-page .rings-main{padding-top:16px}.rings-page .rings-screen{background:var(--rings-bg);color:var(--rings-text)}.rings-combined .rings-row,.rings-combined .rings-tabs,.rings-combined .rings-barn-control,.rings-combined .rings-barn-menu{border-color:var(--rings-border)}.rings-combined .rings-row-name,.rings-combined .rings-barn-name,.rings-combined .rings-barn-menu button{color:var(--rings-text)}.rings-combined[data-theme=dark] .rings-error{color:#ffb3a2}.rings-combined[data-theme=dark] .rings-success{color:var(--rings-green)}.rings-combined[data-theme=dark] .rings-app-brand img{filter:brightness(0) invert(1)}
+.rings-inline-context{position:relative;margin:16px 0;padding:16px 0;border-top:1px solid var(--rings-border);border-bottom:1px solid var(--rings-border)}.rings-inline-context h3{margin:0 0 6px;font-size:22px}.rings-inline-context .rings-sheet-close{top:0;right:0}.rings-inline-context .rings-sheet-form{position:relative;padding-top:8px}.rings-inline-context .rings-sheet-close{top:-68px}.rings-recognition-card{border:1px solid var(--rings-border);background:var(--rings-panel);border-radius:8px;padding:16px}.rings-recognition-card h2{margin:0 0 12px}.rings-recognition-content{display:grid;gap:12px}.rings-person{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}.rings-action-links{display:flex;justify-content:space-between;gap:12px}.rings-test-controls{margin-top:24px;border-top:1px solid var(--rings-border);padding-top:16px;color:var(--rings-muted);font-size:13px}.rings-test-controls summary{min-height:44px;cursor:pointer}.rings-test-controls .rings-field{margin:8px 0}.rings-test-controls p{line-height:1.5}.rings-test-controls .rings-secondary{width:100%}
+[data-app-theme] .bottom-sheet{background:var(--rings-bg);color:var(--rings-text);font-family:Outfit,sans-serif}[data-app-theme=dark] .bottom-sheet .sheet-description{color:var(--rings-muted)}[data-app-theme=dark] .bottom-sheet .rings-error{color:#ffb3a2}
+
+.rings-context-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px}.rings-context-heading h2{margin:0}.rings-context-content{color:var(--rings-text)}
+
+/* Record anatomy imported from the Pro shared inventory. */.rings-schedule-ui .rings-scope{display:flex;gap:7px;margin-bottom:21px}.rings-schedule{display:flex;flex-direction:column;gap:18px}.rings-panel{background:var(--rings-panel);border:1px solid var(--rings-border);border-radius:var(--rings-radius);overflow:hidden;container:rings-record/inline-size}.rings-ring-head{padding:10px 12px;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--rings-border)}.rings-ring-head h3{font-size:15px;font-weight:500;letter-spacing:-.25px;margin:0}.rings-class-related-data{position:relative;border-bottom:1px solid var(--rings-border)}.rings-class-related-data:last-child{border-bottom:0}.rings-class-related-data[data-has-rollups=true]{background:none}.rings-class-line{width:100%;display:grid;grid-template-columns:52px minmax(0,1fr) 32px max-content;align-items:center;gap:4px;min-height:49px;padding:8px 6px;background:none;text-align:left;position:relative}.rings-class-line:before{content:none}.rings-class-line:hover{background:none}.rings-time-cell{white-space:nowrap;font-variant-numeric:tabular-nums}.rings-schedule-ui .rings-ring-cell{text-align:center}.rings-class-cell{display:flex;gap:4px;min-width:0;align-items:center}.rings-schedule-ui .rings-class-id{font-variant-numeric:tabular-nums}.rings-class-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;min-width:0}.rings-schedule-ui .rings-till-cell{display:flex;flex-wrap:nowrap;justify-content:flex-end;align-items:center;gap:4px;white-space:nowrap;font-size:12px;line-height:1.15;font-variant-numeric:tabular-nums}.rings-entry-line{padding:7px 12px 0}.rings-entry-rollups{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.rings-schedule-ui .rings-entry-rollup{max-width:100%}.rings-schedule-ui .rings-order{color:var(--rings-muted);font-variant-numeric:tabular-nums}.rings-schedule-ui .rings-entry-arrow{color:var(--rings-muted);margin-left:2px}
+
+
+.rings-schedule-ui .rings-schedule-tabs{display:flex}.rings-schedule-tabs button{display:flex;gap:6px;align-items:center}.rings-schedule-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px}.rings-rollups-toggle{display:flex;align-items:center;gap:6px;font-size:12px;min-height:44px;white-space:nowrap}.rings-schedule-ui .rings-entry-rollup svg{width:12px;height:12px}.rings-class-line{color:var(--rings-text)}.rings-schedule-ui .rings-scope{flex-wrap:wrap;margin-bottom:16px}.rings-schedule-ui .rings-context-heading .rings-icon{min-width:44px}.rings-class-line[aria-current=true]{background:none}.rings-combined button:focus-visible{outline:2px solid var(--rings-blue);outline-offset:2px}
+/* Preserve the Pro row's hairline treatment and native chrome contrast. */
+.rings-schedule-ui button{border:0;font-family:inherit;cursor:pointer}.rings-class-line{color:var(--rings-text)}
+[data-app-theme=dark] .status-time{color:#fff}[data-app-theme=dark] .status-indicator-svg,[data-app-theme=dark] .home-indicator-svg{filter:invert(1)}
+/* Desktop presentation of the same mounted app and shared record renderers. */
+.rings-view-controls{display:flex;align-items:center;gap:10px}.rings-view-switch{border:0;background:none;color:var(--rings-muted);font-size:12px!important;min-height:44px;padding:4px 0}.rings-app-brand{gap:8px}.rings-app-brand img{width:108px}
+body:has([data-app-view=desktop]){background:#fff}
+body:has([data-app-view=desktop]) .phone-stage{display:block;padding:0;min-height:100dvh}
+body:has([data-app-view=desktop]) .phone-scale-box,body:has([data-app-view=desktop]) .phone-device{width:100%!important;height:100dvh!important;position:fixed;inset:0;transform:none!important}
+[data-app-view=desktop].device-screen{position:absolute;inset:0!important;width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none;cursor:auto!important;user-select:auto}
+.device-screen[data-app-view=desktop][data-phone-screen],.device-screen[data-app-view=desktop][data-phone-screen] *{cursor:default!important}
+.device-screen[data-app-view=desktop][data-phone-screen] :is(button,a,summary,select,[role=button],input[type=checkbox]),.device-screen[data-app-view=desktop][data-phone-screen] :is(button,a,summary,[role=button]) *{cursor:pointer!important}
+.device-screen[data-app-view=desktop][data-phone-screen] :is(input:not([type=checkbox]),textarea){cursor:text!important}
+body:has([data-app-view=desktop]) .phone-bezel,body:has([data-app-view=desktop]) .device-picker,body:has([data-app-view=desktop]) .device-menu-bar,[data-app-view=desktop] .status-bar,[data-app-view=desktop] .home-indicator-svg,[data-app-view=desktop] .device-camera,[data-app-view=desktop] .keyboard-dock,[data-app-view=desktop] .mobile-cursor{display:none!important}
+[data-app-view=desktop] .mobile-app-viewport{bottom:0!important}
+[data-app-view=desktop] .rings-app-header{inset:0 0 auto;padding:20px var(--rings-gutter) 0;max-width:calc(var(--rings-page-width) + 2 * var(--rings-gutter));margin:0 auto}
+[data-app-view=desktop] .rings-app-brand img{width:134px}
+[data-app-view=desktop] .rings-app-nav{margin-top:12px}
+[data-app-view=desktop] .rings-page{top:125px}
+[data-app-view=desktop] .rings-main{width:100%;max-width:calc(var(--rings-page-width) + 2 * var(--rings-gutter));margin:0 auto;padding:28px var(--rings-gutter) 64px}
+
+
+
+[data-app-view=desktop] .rings-row{min-height:64px}
+[data-app-view=desktop] .mobile-scroll{bottom:0!important;scrollbar-width:thin;touch-action:pan-y;user-select:auto}
+[data-app-view=desktop] .mobile-scrollbar{display:none}
+
+[data-app-view=desktop] 
+
+[data-app-view=desktop] .rings-modes button{min-width:65px}
+@media(max-width:899px){[data-app-view=desktop] .rings-app-header{padding-left:16px;padding-right:16px}[data-app-view=desktop] .rings-main{padding-left:16px;padding-right:16px}}
+
+/* Shared layout and surface contract: content changes, shell does not. */
+[data-app-theme],.rings-combined{--rings-page-width:640px;--rings-surface-width:560px;--rings-gutter:16px;--rings-control-height:44px;--rings-surface-radius:12px}
+.rings-page .rings-main{box-sizing:border-box;width:100%;max-width:calc(var(--rings-page-width) + 2 * var(--rings-gutter));margin:0 auto;padding-left:var(--rings-gutter);padding-right:var(--rings-gutter)}
+.rings-recognition-card,.rings-test-controls,.rings-inline-form,.rings-roster,.rings-inline-context{width:100%;max-width:none;box-sizing:border-box}
+.bottom-sheet:has(.rings-surface){font-family:Outfit,sans-serif;box-sizing:border-box;border:1px solid var(--rings-border,#dfe1e5);border-bottom:0;border-radius:var(--rings-surface-radius) var(--rings-surface-radius) 0 0;box-shadow:none}
+.bottom-sheet:has(.rings-surface) *{box-sizing:border-box}
+.bottom-sheet:has(.rings-surface) .sheet-handle-zone{height:18px;flex-shrink:0}
+.bottom-sheet:has(.rings-surface) .sheet-header{padding:0 60px 12px var(--rings-gutter);gap:6px;flex-shrink:0}
+.bottom-sheet:has(.rings-surface) .sheet-description{color:var(--rings-muted,#646873)}
+.bottom-sheet:has(.rings-surface) .sheet-content{padding:0 var(--rings-gutter) calc(var(--mobile-safe-area-height,34px) + 16px);touch-action:pan-y;min-height:0}
+.rings-surface-close{position:absolute;right:8px;top:16px;width:44px;height:44px;z-index:1;background:transparent}
+.rings-surface-close svg{width:24px;height:24px}
+.rings-surface .rings-sheet-form{gap:16px}
+.rings-surface button,.rings-surface input,.rings-surface select{font-family:inherit}
+.rings-surface .rings-sheet-save{margin-top:0}
+.bottom-sheet:has(.rings-surface[data-variant=drawer]){top:64px;left:28px;max-height:none!important;border-radius:var(--rings-surface-radius) 0 0 var(--rings-surface-radius)}
+.bottom-sheet:has(.rings-surface[data-variant=drawer]) .sheet-handle-zone{display:none}
+.bottom-sheet:has(.rings-surface[data-variant=drawer]) .sheet-header{padding-top:18px}
+
+[data-app-view=desktop] .bottom-sheet:has(.rings-surface){width:min(var(--rings-surface-width),calc(100% - 32px));left:50%;right:auto;margin-left:calc(min(var(--rings-surface-width),calc(100% - 32px)) / -2)}
+[data-app-view=desktop] .bottom-sheet:has(.rings-surface[data-variant=drawer]){top:0;left:auto;right:0;margin-left:0;bottom:0;border-radius:0;border-top:0}
+[data-app-view=desktop] .bottom-sheet:has(.rings-surface) .sheet-content{padding-bottom:24px}
+.rings-surface button:focus-visible{outline:2px solid var(--rings-blue,#315e9e);outline-offset:2px}
+
+@media(max-width:480px){[data-app-view=desktop] .rings-app-brand img{width:108px}[data-app-view=desktop] .rings-modes button{min-width:0}.rings-view-controls{gap:8px}}
+/* SMS opt-ins use the shared page, fields, pills and action styling. */
+.rings-alerts-main{padding-bottom:180px!important}.rings-alert-settings{display:grid;gap:16px;padding:16px;border:1px solid var(--rings-border);border-radius:var(--rings-radius);background:var(--rings-panel)}.rings-alert-settings .rings-prototype-note{margin:0}.rings-alert-group{margin-top:28px}.rings-alert-group h2{margin:0 0 8px}.rings-alert-row{border-bottom:1px solid var(--rings-border);padding:12px 0}.rings-alert-choice{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;cursor:pointer}.rings-alert-choice>span{min-width:0}.rings-alert-choice strong{display:block}.rings-alert-description{display:block;color:var(--rings-muted);margin-top:4px}.rings-alert-choice input{flex-shrink:0;width:24px;height:24px;margin:10px;accent-color:#a65337}.rings-alert-value{display:grid;gap:10px;margin-top:12px}.rings-alert-presets{display:flex;gap:8px;flex-wrap:wrap}.rings-alert-row[data-invalid]{border-left:3px solid #a65337;padding-left:12px}.rings-alerts-footer{position:absolute;left:0;right:0;max-width:calc(var(--rings-page-width) + 2 * var(--rings-gutter));margin:0 auto;padding:12px var(--rings-gutter) calc(var(--mobile-safe-area-height,34px) + 12px);background:var(--rings-bg);border-top:1px solid var(--rings-border);z-index:9}.rings-alerts-footer>.rings-primary{width:100%}.rings-alert-feedback p{font-size:14px;margin:0 0 8px}.rings-alerts-footer .rings-success{margin-top:0}[data-app-view=desktop] .rings-alerts-footer{padding-bottom:16px}.rings-app-nav button{white-space:nowrap}
+.rings-alerts-footer{padding-bottom:12px}.rings-alerts-footer::after{content:'';position:absolute;top:100%;left:0;right:0;height:var(--mobile-safe-area-height,34px);background:var(--rings-bg)}[data-app-view=desktop] .rings-alerts-footer{bottom:0!important}[data-app-view=desktop] .rings-alerts-footer::after{display:none}
+.rings-link:disabled{opacity:.5;cursor:default}
+
+/* Schedule tokens share the crisp outlined Recognized badge treatment. */
+.rings-schedule-ui .rings-record-token{box-sizing:border-box}
+.rings-time-cell.rings-record-token{text-transform:uppercase}
+
+.rings-schedule-ui .rings-class-id{display:inline-flex;align-items:center;gap:3px;flex-shrink:0}
+.rings-schedule-ui .rings-context-heading.rings-ring-head{margin:0 0 12px}
+.rings-ring-head h3,.rings-schedule-ui .rings-context-heading h2{margin:0}
+
+/* Full-strength outlines carry meaning without filling the record row. */
+
+/* The supported mobile viewport starts at 375 CSS pixels. */
+body:has(.rings-combined){min-width:375px}
+.device-screen[data-app-view=desktop]{min-width:375px}
+
+.rings-detail-name{margin:0;min-width:0;white-space:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:thin}.rings-context-heading>div{min-width:0;flex:1}
+.rings-context-heading.rings-ring-head h2{white-space:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:thin}
+
+/* Shared flyup sizing is a real height, rather than a ceiling that collapses. */
+.bottom-sheet:has(.rings-surface[data-variant=flyup]){min-height:0}
+.bottom-sheet:has(.rings-surface[data-variant=flyup] .rings-primary){min-height:clamp(320px,50%,440px)}
+.bottom-sheet:has(.rings-surface) .sheet-content{display:flex;flex-direction:column;flex:1}
+.rings-surface{display:flex;flex-direction:column;flex:1;min-height:0}
+.rings-recognition-content{display:flex;flex-direction:column;flex:1}
+.rings-recognition-content>.rings-primary{flex:none;margin-top:auto}
+
+.bottom-sheet:has(.rings-surface) .sheet-header{min-height:52px;align-content:center}
+
+/* The screen clips layers; only the content viewport may scroll on focus. */
+.device-screen[data-app-theme]{overflow:clip}

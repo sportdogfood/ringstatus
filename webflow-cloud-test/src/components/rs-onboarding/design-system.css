@@ -1,0 +1,134 @@
+/* RingStatus brand contract. Feature styles own arrangement, never control skins. */
+[data-app-theme], .rings-combined {
+  --rs-font: Outfit, sans-serif;
+  --rs-text-page: 32px;
+  --rs-text-section: 25px;
+  --rs-text-context: 15px;
+  --rs-text-body: 16px;
+  --rs-text-help: 14px;
+  --rs-text-control: 13px;
+  --rs-text-badge: 10px;
+  --rs-space-xs: 4px;
+  --rs-space-sm: 8px;
+  --rs-space-md: 12px;
+  --rs-space-lg: 16px;
+  --rs-space-xl: 24px;
+  --rs-control-radius: 8px;
+  --rs-token-radius: 5px;
+  --rs-action-height: 44px;
+  --rs-pill-height: 32px;
+  --rs-accent: #a65337;
+}
+[data-app-theme=dark], .rings-combined[data-theme=dark] { --rs-accent: #e9a08a; }
+.rings-combined, .rings-surface { font-family: var(--rs-font); font-size: var(--rs-text-body); line-height: 1.35; }
+.rings-combined button, .rings-surface button, .rings-combined input, .rings-surface input,
+.rings-combined select, .rings-surface select { font-family: var(--rs-font); }
+.rings-main h1 { font-size: var(--rs-text-page); font-weight: 700; line-height: 1.12; letter-spacing: -1.05px; margin: 0 0 var(--rs-space-lg); }
+.rings-section h2, .rings-alert-group h2, .rings-feed-empty h2,
+.rings-recognition-card h2, .rings-inline-context > h3,
+.rings-context-heading h2, .bottom-sheet:has(.rings-surface) .sheet-title {
+  font-size: var(--rs-text-section); font-weight: 700; line-height: 1.2; letter-spacing: -.5px; margin: 0;
+}
+.rings-section h2, .rings-alert-group h2 { margin-bottom: var(--rs-space-sm); }
+/* Nested record headers are a single compact semantic role in every presentation. */
+.rings-ring-head h3, .rings-context-heading.rings-ring-head h2 {
+  font-size: var(--rs-text-context); font-weight: 500; line-height: 1.35; letter-spacing: -.25px; margin: 0;
+}
+.rings-combined .rings-help, .rings-surface .rings-help,
+.rings-alert-description, .rings-feed-tags, .rings-row-meta {
+  color: var(--rings-muted); font-size: var(--rs-text-help); font-weight: 400; line-height: 1.4;
+}
+.rings-combined .rings-help, .rings-surface .rings-help { margin: 0 0 var(--rs-space-md); }
+.rings-context-heading.rings-ring-head .rings-help { font-size: var(--rs-text-badge); margin-bottom: 2px; }
+.rings-combined .rings-row-name, .rings-combined .rings-barn-name,
+:is(.rings-combined, .rings-surface) .rings-person strong, 
+.rings-class-name, .rings-surface .rings-class-name, .rings-detail-name {
+  font-size: var(--rs-text-body); font-weight: 600; line-height: 1.35;
+}
+
+.rings-alert-choice strong { font-size: var(--rs-text-body); font-weight: 600; }
+.rings-prototype-note, .rings-ring-summary { font-size: var(--rs-text-badge); line-height: 1.4; color: var(--rings-muted); }
+/* One badge skin includes identifier tokens and status labels. */
+.rings-badge {
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+  font-family: var(--rs-font); font-size: var(--rs-text-badge); font-weight: 500; line-height: 1.2;
+  padding: var(--rs-space-xs) 7px; border: 1px solid currentColor; border-radius: var(--rs-token-radius);
+  color: var(--rings-muted); background: transparent; white-space: nowrap; box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+}
+.rings-badge[data-tone=green] { color: var(--rings-green); }
+.rings-badge[data-tone=blue] { color: var(--rings-blue); }
+.rings-status-badge, .rings-time-cell { text-transform: uppercase; }
+.rings-token-label { font: inherit; color: inherit; }
+/* One interactive pill skin: linked records, scope filters and alert choices. */
+.rings-combined .rings-pill, .rings-surface .rings-pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--rs-space-xs);
+  min-height: var(--rs-pill-height); padding: 2px 10px; border: 1px solid currentColor;
+  border-radius: var(--rs-token-radius); background: transparent; color: var(--rings-muted);
+  font-size: var(--rs-text-control); font-weight: 500; line-height: 1.35;
+  white-space: nowrap; text-align: center; cursor: pointer;
+}
+.rings-pill[aria-pressed=true], .rings-pill[aria-current=true] { color: var(--rings-blue); }
+.rings-combined .rings-pill[aria-pressed=true], .rings-combined .rings-pill[aria-current=true],
+.rings-surface .rings-pill[aria-pressed=true], .rings-surface .rings-pill[aria-current=true] { color: var(--rings-blue); }
+.rings-pill svg { width: 12px; height: 12px; }
+/* Actions, links and fields are identical in pages and portalled record surfaces. */
+.rings-combined .rings-primary, .rings-combined .rings-secondary,
+.rings-surface .rings-primary, .rings-surface .rings-secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--rs-space-sm);
+  min-height: var(--rs-action-height); padding: 10px var(--rs-space-md); border: 1px solid currentColor;
+  border-radius: var(--rs-control-radius); font-size: var(--rs-text-context); font-weight: 600;
+  line-height: 1.25; text-align: center; cursor: pointer;
+}
+.rings-combined .rings-primary, .rings-surface .rings-primary { background: #a65337; color: #fff; border-color: #a65337; }
+.rings-combined .rings-secondary, .rings-surface .rings-secondary { color: var(--rings-text); background: transparent; }
+.rings-combined .rings-link, .rings-surface .rings-link {
+  display: inline-flex; align-items: center; gap: var(--rs-space-sm); min-height: var(--rs-action-height);
+  padding: 0; border: 0; background: transparent; color: var(--rs-accent);
+  font-size: var(--rs-text-help); font-weight: 500; line-height: 1.35; text-align: left;
+}
+.rings-icon, .rings-surface-close { display: inline-flex; align-items: center; justify-content: center; min-width: var(--rs-action-height); min-height: var(--rs-action-height); padding: 0; border: 0; background: transparent; color: var(--rings-muted); }
+.rings-field, .rings-sheet-form { font-size: var(--rs-text-body); color: var(--rings-text); }
+.rings-field { font-weight: 500; }
+.rings-field input, .rings-field select {
+  width: 100%; min-height: var(--rs-action-height); padding: 10px var(--rs-space-md);
+  border: 1px solid var(--rings-muted); border-radius: var(--rs-control-radius);
+  font-size: var(--rs-text-body); font-weight: 400; line-height: 1.35;
+  background: var(--rings-panel); color: var(--rings-text); box-sizing: border-box;
+}
+.rings-select select { padding-right: 32px; }
+.rings-field input:focus, .rings-field select:focus { border-color: var(--rings-blue); outline: 2px solid var(--rings-blue); outline-offset: 2px; }
+.rings-combined button:focus-visible, .rings-surface button:focus-visible { outline: 2px solid var(--rings-blue); outline-offset: 2px; }
+.rings-inline-form, .rings-sheet-form { gap: var(--rs-space-lg); }
+.rings-recognition-content { gap: var(--rs-space-xl); }
+.rings-recognition-card, .rings-alert-settings { padding: var(--rs-space-lg); border-radius: var(--rs-control-radius); }
+.rings-context-heading { gap: var(--rs-space-sm); margin-bottom: var(--rs-space-md); }
+.rings-ring-head { padding: 10px var(--rs-space-md); gap: var(--rs-space-md); }
+.rings-save-actions, .rings-action-links { gap: var(--rs-space-md); }
+/* All tab rows use the same type, targets and selected treatment. */
+.rings-app-nav, .rings-tabs, .rings-schedule-tabs { display: flex; justify-content: flex-start; gap: var(--rs-space-lg); }
+.rings-combined .rings-tabs { margin-left: 0; margin-right: 0; padding: 0; }
+.rings-app-nav button, .rings-tabs button, .rings-schedule-tabs button {
+  min-height: var(--rs-action-height); padding: 8px 0; font-size: var(--rs-text-help); font-weight: 500;
+  line-height: 1.35; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--rings-muted);
+}
+.rings-app-nav button[aria-current], .rings-tabs button[aria-current], .rings-schedule-tabs button[aria-pressed=true] {
+  color: var(--rings-text); border-bottom-color: var(--rs-accent); font-weight: 500;
+}
+
+/* Record surfaces use the same compact heading role as Ring headers. */
+.bottom-sheet:has(.rings-surface[data-title-role=record]) .sheet-title{font-size:var(--rs-text-context);font-weight:500;line-height:1.35;letter-spacing:-.25px}
+
+/* Shared record composition used by Schedule and notification history. */
+.rings-class-line[data-layout=summary] { grid-template-columns:52px minmax(0,1fr) max-content; }
+.rings-record-content { display:grid; gap:var(--rs-space-md); padding:var(--rs-space-md); }
+.rings-record-content p { margin:0; }
+.rings-message-body { font-size:var(--rs-text-body); line-height:1.4; white-space:pre-wrap; overflow-wrap:anywhere; }
+
+.rings-class-line { border:0; font-family:var(--rs-font); cursor:pointer; }
+.rings-scope { display:flex; flex-wrap:wrap; gap:var(--rs-space-sm); margin-bottom:var(--rs-space-lg); }
+.rings-control-stack { display:grid; gap:var(--rs-space-lg); margin-bottom:var(--rs-space-lg); }
+.rings-filter-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--rs-space-md); }
+
+.rings-panel > .rings-entry-line, .rings-class-related-data > .rings-entry-line:last-child { padding-bottom:var(--rs-space-sm); }
+.rings-pill:disabled { cursor:default; }
