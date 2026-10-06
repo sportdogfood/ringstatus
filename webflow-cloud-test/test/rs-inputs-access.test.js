@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createInputAccess, accessHash, randomAccessToken } from '../src/lib/rs-inputs-access.js';
+import { createInputAccess, createAccessStore, handleAccessRoute, accessHash, randomAccessToken } from '../src/lib/rs-inputs-access.js';
 import { issueAccess } from '../scripts/rs-inputs-access.mjs';
 import { handleAuthenticatedInputRoute } from '../src/pages/rs-inputs/[operation].js';
 const env = { RS_INPUTS_BASE_ID: 'app9kOZdIaGyKk5uG', RS_INPUTS_RECOGNITION_BASE_ID: 'app9kOZdIaGyKk5uG', RS_INPUTS_WRITE_MODE: 'isolated-trial', AIRTABLE_TOKEN: 'fixture', RS_INPUTS_SESSION_SECRET: 'ab'.repeat(32) };
@@ -93,4 +93,31 @@ test('invited Guest phone lookup uses verified principal without granting legacy
 test('invited bootstrap cannot take over a foreign or retired device',async()=>{
  for(const retired of [true,false]){const f=provider(),cookie=await login(f);f.rows('rs_devices_test').push({id:'recDevice00000001',fields:{device_token:'occupied',status:retired?'Retired':'Active',person:['recForeign0000001']}});f.rows('rs_people_test').push({id:'recForeign0000001',fields:{person_uid:'foreign_person',person_name:'Other',status:'Active',input_access:'approved'}});
  await json(await f.route(request('recognition',{action:'confirm_device',device_token:'occupied',values:{},requestId:'foreign_device_001'},cookie)),403);assert.equal(f.rows('rs_devices_test')[0].fields.person[0],'recForeign0000001');}
+});
+
+
+test('provider failures log only bounded diagnostics correlated with the unchanged public error', async () => {
+ const token = randomAccessToken();
+ const cases = [
+  [async () => Response.json({error:{type:'INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND',message:'private-provider-message'}},{status:403}), {outcome:'http_error',providerStatus:403,providerCode:'INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND'}],
+  [async () => Response.json({error:{type:'private-provider-message'}},{status:401}), {outcome:'http_error',providerStatus:401,providerCode:'unrecognized'}],
+  [async () => new Response('private-provider-message',{status:502}), {outcome:'http_error',providerStatus:502,providerCode:'unrecognized'}],
+  [async () => Response.json({private:'private-provider-message'}), {outcome:'invalid_response',providerStatus:200,providerCode:'unrecognized'}],
+  [async () => {throw new DOMException('private-provider-message','TimeoutError');}, {outcome:'transport_error',reason:'TimeoutError'}]
+ ];
+ for (const [fetchImpl, expected] of cases) {
+  const logs=[]; let calls=0;
+  const response=await handleAccessRoute(request('access',{token}), env, async (...args)=>{calls++;return fetchImpl(...args);}, ()=>assert.fail('must not enter authenticated handler'), event=>logs.push(event));
+  assert.deepEqual(await json(response,503),{ok:false,error:'storage_unavailable'});
+  assert.equal(calls,1); assert.equal(response.headers.get('Set-Cookie'),null);
+  assert.equal(logs.length,1); assert.equal(logs[0].traceId,response.headers.get('X-Request-Id'));
+  assert.deepEqual(logs[0].storage,{provider:'airtable',method:'GET',...expected});
+  for(const secret of [token,await accessHash(token),'private-provider-message',env.RS_INPUTS_SESSION_SECRET,'Bearer fixture']) assert.ok(!JSON.stringify(logs).includes(secret));
+ }
+});
+test('failed Airtable patch retains unknown outcome and is never retried',async()=>{
+ let calls=0;
+ const store=createAccessStore({env,fetchImpl:async()=>{calls++;return Response.json({error:{type:'INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND'}},{status:403});}});
+ await assert.rejects(store.update('recPerson00000001',{input_invite_hash:''}),error=>error.code==='write_outcome_unknown' && error.storageDiagnostic.providerStatus===403);
+ assert.equal(calls,1);
 });
