@@ -1,17 +1,21 @@
 import assert from "node:assert/strict";
+import os from "node:os";
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const source = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const repo = fs.mkdtempSync(path.join(os.tmpdir(), "rs-hook-regression-"));
+spawnSync("git", ["init", "--quiet", repo]);
+fs.cpSync(path.join(source, ".codex"), path.join(repo, ".codex"), { recursive: true });
 const contractPath = path.join(repo, ".codex/control/task-contract.json");
 const original = fs.readFileSync(contractPath, "utf8");
 
 function run(script, payload) {
   const p = spawnSync(process.execPath, [path.join(repo, ".codex/hooks", script)], {
     cwd: repo,
-    input: JSON.stringify(payload),
+    input: JSON.stringify({session_id:"legacy-regression", ...payload}),
     encoding: "utf8"
   });
   assert.equal(p.status, 0, p.stderr);
@@ -84,7 +88,7 @@ try {
   out = run("stop_guard.mjs", {
     cwd: repo, hook_event_name:"Stop", stop_hook_active:false, last_assistant_message:"done"
   });
-  assert.equal(out.decision, undefined, "verified write task may stop");
+  assert.equal(out.decision, "block", "legacy truthy receipt cannot certify a task");
 
   out = run("user_prompt_submit.mjs", {
     cwd: repo, hook_event_name:"UserPromptSubmit", prompt:"fix this"
@@ -93,5 +97,5 @@ try {
 
   console.log("PASS 9");
 } finally {
-  fs.writeFileSync(contractPath, original);
+  fs.rmSync(repo, {recursive:true, force:true});
 }

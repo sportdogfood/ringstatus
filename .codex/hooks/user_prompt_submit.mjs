@@ -1,17 +1,13 @@
-import { readStdin, repoRoot, loadJson, loadText, output } from "./common.mjs";
-
-const input = await readStdin();
-const root = repoRoot(input.cwd);
-const contract = loadJson(root, ".codex/control/task-contract.json");
-const policy = loadText(root, ".codex/control/policy.txt");
-
-output({
-  hookSpecificOutput: {
-    hookEventName: "UserPromptSubmit",
-    additionalContext:
-      policy +
-      "\nCurrent mechanical task contract:\n" +
-      JSON.stringify(contract, null, 2) +
-      "\nIf the current user request changes the task, do not infer a broader contract. Stay read-only until the contract is explicitly updated."
-  }
-});
+import { readStdin, repoRoot, loadJson, loadText, output } from './common.mjs';
+import { observe, context } from './reliability.mjs';
+try {
+  const input = await readStdin();
+  const root = repoRoot(input.cwd);
+  observe(root, input);
+  const policy = loadText(root, '.codex/control/policy.txt');
+  const contract = loadJson(root, '.codex/control/task-contract.json');
+  output({ hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext:
+    context(root, input) + '\n' + policy + '\nExisting write contract (separate from evidence checks):\n' + JSON.stringify(contract) } });
+} catch (error) {
+  output({ decision: 'block', reason: `RingStatus instruction control unavailable: ${error.message}. Restore the control files before dependent work.` });
+}
