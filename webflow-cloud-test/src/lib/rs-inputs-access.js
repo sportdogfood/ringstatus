@@ -16,6 +16,22 @@ function storageFailure(method, diagnostic) {
   error.storageDiagnostic = { provider: 'airtable', method, ...diagnostic };
   throw error;
 }
+function diagnosticHeaders(request, env, error) {
+  // Explicit, isolated-trial diagnostics only; never expose provider messages or data.
+  if (env.RS_INPUTS_WRITE_MODE !== 'isolated-trial' || env.RS_INPUTS_BASE_ID !== BASE ||
+      request.method !== 'POST' || new URL(request.url).pathname !== '/test/rs-inputs/access' ||
+      request.headers.get('X-RS-Diagnostic') !== 'storage') return {};
+  const value = error.storageDiagnostic;
+  if (value?.provider !== 'airtable' || value.method !== 'GET') return {};
+  if (value.outcome === 'transport_error') {
+    const reason = ['TimeoutError', 'AbortError', 'TypeError'].includes(value.reason) ? value.reason : 'fetch_failed';
+    return { 'X-RS-Storage-Diagnostic': `transport_error;reason=${reason}` };
+  }
+  if (!['http_error', 'invalid_response'].includes(value.outcome)) return {};
+  const status = Number.isInteger(value.providerStatus) && value.providerStatus >= 100 && value.providerStatus <= 599 ? value.providerStatus : 0;
+  const code = providerCodes.has(value.providerCode) ? value.providerCode : 'unrecognized';
+  return { 'X-RS-Storage-Diagnostic': `${value.outcome};status=${status};code=${code}` };
+}
 const permitted = row => ['invited', 'approved'].includes(row?.fields?.input_access) && ['active', 'test'].includes(String(row?.fields?.status).toLowerCase());
 const validUid = value => typeof value === 'string' && /^[A-Za-z0-9_-]{1,128}$/.test(value);
 function actorOf(row) {
@@ -133,6 +149,6 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
   } catch (error) {
     const status = error.status || 503, code = error.code || 'access_unavailable';
     log({ event: 'rs_input_access', traceId, operation, status, code, ...(error.storageDiagnostic ? { storage: error.storageDiagnostic } : {}) });
-    return respond({ ok: false, error: code }, status);
+    return respond({ ok: false, error: code }, status, diagnosticHeaders(request, env, error));
   }
 }

@@ -121,3 +121,24 @@ test('failed Airtable patch retains unknown outcome and is never retried',async(
  await assert.rejects(store.update('recPerson00000001',{input_invite_hash:''}),error=>error.code==='write_outcome_unknown' && error.storageDiagnostic.providerStatus===403);
  assert.equal(calls,1);
 });
+
+test('explicit test access diagnostics return only bounded provider metadata without granting access', async () => {
+ const token = randomAccessToken();
+ for (const [fetchImpl, expected] of [
+  [async () => Response.json({error:{type:'INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND',message:'private-provider-message'}},{status:403}), 'http_error;status=403;code=INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND'],
+  [async () => Response.json({error:{type:'private-provider-message'}},{status:401}), 'http_error;status=401;code=unrecognized'],
+  [async () => new Response('private-provider-message'), 'invalid_response;status=200;code=unrecognized'],
+  [async () => {throw new DOMException('private-provider-message','TimeoutError');}, 'transport_error;reason=TimeoutError']
+ ]) {
+  for (const diagnostic of [false, true]) {
+   let calls=0;
+   const response=await handleAccessRoute(request('access',{token},undefined,{headers:diagnostic?{'X-RS-Diagnostic':'storage'}:{}}),env,async(...args)=>{calls++;return fetchImpl(...args);},()=>assert.fail('must not authorize'),()=>{});
+   assert.deepEqual(await json(response,503),{ok:false,error:'storage_unavailable'});
+   assert.equal(response.headers.get('X-RS-Storage-Diagnostic'),diagnostic?expected:null);
+   assert.equal(response.headers.get('Set-Cookie'),null);assert.equal(calls,1);
+   for(const secret of [token,await accessHash(token),'private-provider-message',env.RS_INPUTS_SESSION_SECRET,'Bearer fixture']) assert.ok(!JSON.stringify([...response.headers]).includes(secret));
+  }
+ }
+ const denied=await handleAccessRoute(request('access',{token},undefined,{headers:{Origin:'https://other.test','X-RS-Diagnostic':'storage'}}),env,()=>assert.fail('must not read'),()=>assert.fail('must not authorize'),()=>{});
+ await json(denied,403);assert.equal(denied.headers.get('X-RS-Storage-Diagnostic'),null);
+});
