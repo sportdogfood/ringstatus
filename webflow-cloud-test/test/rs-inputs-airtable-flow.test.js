@@ -46,7 +46,7 @@ function fakeAirtable({ pageSize = 1 } = {}) {
     assert.ok(rows.has(table), `Unexpected table ${table}`);
     assert.equal(init.headers.Authorization, 'Bearer fixture-token');
     assert.equal(init.headers['Content-Type'], 'application/json');
-    assert.equal(init.redirect, 'error');
+    assert.equal(init.redirect, 'manual');
     assert.ok(init.signal instanceof AbortSignal);
     assert.ok(['GET', 'PATCH'].includes(init.method));
     const body = init.body ? JSON.parse(init.body) : null;

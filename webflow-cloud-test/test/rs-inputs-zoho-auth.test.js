@@ -11,7 +11,7 @@ test('OAuth refresh keeps secrets out of URLs, caches, coalesces and refreshes b
   let now = 0, calls = 0;
   const getToken = createZohoTokenProvider({ env, now: () => now, fetchImpl: async (url, options) => {
     calls++; assert.equal(url, 'https://accounts.zoho.com/oauth/v2/token');
-    assert.equal(options.redirect, 'error'); assert.equal(options.method, 'POST');
+    assert.equal(options.redirect, 'manual'); assert.equal(options.method, 'POST');
     assert.equal(new URLSearchParams(options.body).get('refresh_token'), env.ZOHO_REFRESH_TOKEN);
     return Response.json({ ...success, access_token: `fixture-${calls}` });
   } });

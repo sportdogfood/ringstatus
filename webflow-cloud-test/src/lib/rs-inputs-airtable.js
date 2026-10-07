@@ -20,7 +20,7 @@ export function createAirtableInputStore({ env, fetchImpl = fetch, minimumInterv
       if (pause) await new Promise(resolve => setTimeout(resolve, pause));
       lastRequestAt = Date.now();
       let response;
-      try { response = await fetchImpl(url, { method, redirect: 'error', headers: { Authorization: `Bearer ${env.AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' }, ...(body ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(15000) }); }
+      try { response = await fetchImpl(url, { method, redirect: 'manual', headers: { Authorization: `Bearer ${env.AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' }, ...(body ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(15000) }); }
       catch { throw new InputError(method === 'GET' ? 'storage_unavailable' : 'write_outcome_unknown', 503); }
       if (!response.ok) throw new InputError(method === 'GET' ? 'storage_unavailable' : 'write_outcome_unknown', 503);
       let result;

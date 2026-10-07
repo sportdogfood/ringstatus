@@ -40,7 +40,7 @@ export function createCrmInputStore({ token, getToken, mappings, fetchImpl = fet
     let response;
     try {
       response = await fetchImpl(`${API}${path}`, {
-        method, redirect: "error", signal: AbortSignal.timeout(15000),
+        method, redirect: "manual", signal: AbortSignal.timeout(15000),
         headers: { Authorization: `Zoho-oauthtoken ${accessToken}`, "Content-Type": "application/json", ...headers },
         ...(body ? { body: JSON.stringify(body) } : {})
       });
@@ -52,7 +52,7 @@ export function createCrmInputStore({ token, getToken, mappings, fetchImpl = fet
     const data = await response.json().catch(() => null);
     if (response.status === 412) throw new CrmInputError("stale_revision", 409);
     if (method !== "GET" && response.status >= 500) throw new CrmInputError("crm_write_outcome_unknown", 502);
-    if (!response.ok) throw new CrmInputError("crm_request_failed", response.status, { provider_code: data?.code || "unknown" });
+    if (!response.ok) throw new CrmInputError("crm_request_failed", response.status >= 300 && response.status < 400 ? 502 : response.status, { provider_code: data?.code || "unknown" });
     if (!data || typeof data !== "object" || Array.isArray(data)) throw new CrmInputError(method === "GET" ? "invalid_crm_response" : "crm_write_outcome_unknown");
     return data;
   }

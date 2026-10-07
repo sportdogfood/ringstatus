@@ -46,7 +46,7 @@ export function createAccessStore({ env, fetchImpl = fetch }) {
     const url = new URL(endpoint);
     if (formula) { url.searchParams.set('filterByFormula', formula); url.searchParams.set('maxRecords', '2'); }
     let response;
-    try { response = await fetchImpl(url, { method, redirect: 'error', headers: { Authorization: `Bearer ${env.AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(15000), ...(fields ? { body: JSON.stringify({ records: [{ ...(id ? { id } : {}), fields }] }) } : {}) }); }
+    try { response = await fetchImpl(url, { method, redirect: 'manual', headers: { Authorization: `Bearer ${env.AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(15000), ...(fields ? { body: JSON.stringify({ records: [{ ...(id ? { id } : {}), fields }] }) } : {}) }); }
     catch (error) { storageFailure(method, { outcome: 'transport_error', reason: ['TimeoutError', 'AbortError', 'TypeError'].includes(error?.name) ? error.name : 'fetch_failed' }); }
     const body = await response.json().catch(() => null);
     if (!response.ok || !Array.isArray(body?.records)) {

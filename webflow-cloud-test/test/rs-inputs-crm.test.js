@@ -236,3 +236,14 @@ test("recognition create action + session event fits scaffold fields and link ty
   assert.equal(result.ok, true);
   assert.deepEqual(writes.map(w => w.table), ["rs_people_test", "rs_phone_aliases_test", "rs_devices_test", "rs_recognition_sessions_test"]);
 });
+
+test('CRM rejects provider redirects as upstream failures without following them', async () => {
+  let calls = 0;
+  const store = createCrmInputStore({ token: 'fixture', mappings, fetchImpl: async (url, options) => {
+    calls++;
+    assert.equal(options.redirect, 'manual');
+    return new Response('', { status: 302, headers: { Location: 'https://redirect.invalid/' } });
+  } });
+  await assert.rejects(store.list('barns'), { code: 'crm_request_failed', status: 502 });
+  assert.equal(calls, 1);
+});

@@ -16,7 +16,7 @@ export function createZohoTokenProvider({ env, fetchImpl = fetch, now = Date.now
         let response;
         try {
           response = await fetchImpl('https://accounts.zoho.com/oauth/v2/token', {
-            method: 'POST', redirect: 'error', signal: AbortSignal.timeout(15000),
+            method: 'POST', redirect: 'manual', signal: AbortSignal.timeout(15000),
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({ grant_type: 'refresh_token', client_id: env.ZOHO_CLIENT_ID,
               client_secret: env.ZOHO_CLIENT_SECRET, refresh_token: env.ZOHO_REFRESH_TOKEN }).toString()
