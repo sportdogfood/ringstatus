@@ -9,7 +9,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:recognize": "node --experimental-loader ./test-support/cloudflare-workers-loader.mjs --test test/rs-inputs*.test.js test/rs-recognition*.test.js",
+    "test:runtime": "node --test test-runtime/*.test.mjs",
+    "test:recognize:live": "node scripts/rs-recognize-live.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.5.2",
@@ -25,5 +28,9 @@
     "motion": "12.42.2",
     "react": "19.2.7",
     "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "esbuild": "0.27.7",
+    "miniflare": "4.20260603.0"
   }
 }

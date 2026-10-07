@@ -1,0 +1,33 @@
+name: Recognize deployed API acceptance
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: recognize-dedicated-live-fixture
+  cancel-in-progress: false
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ringstatus-recognize-test
+    defaults:
+      run:
+        working-directory: webflow-cloud-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run against the deployed isolated test environment
+        env:
+          RS_CI_TARGET: https://ringstatus.webflow.io/test
+          RS_CI_PERSON_UID: ${{ vars.RS_CI_PERSON_UID }}
+          RS_CI_AIRTABLE_TOKEN: ${{ secrets.RS_CI_AIRTABLE_TOKEN }}
+        run: node scripts/rs-recognize-live.mjs --run > recognize-live-report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: recognize-live-report
+          path: webflow-cloud-test/recognize-live-report.json
+          retention-days: 14
