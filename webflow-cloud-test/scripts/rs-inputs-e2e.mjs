@@ -78,7 +78,8 @@ export async function run({ baseUrl, expectedOrigin, environment, cookie, device
     await phase('recognition-does-not-create-roster', async () => { const r = await request('/state'); requireCheck(stateShape(r.state) && rosterSnapshot(r.state) === rosterSnapshot(before), 'recognition_changed_roster'); });
     await phase('unknown-recognition', async () => {
       const r = await request(`/recognition?device_token=${encodeURIComponent(`device_token_${randomUUID().replaceAll('-', '')}`)}`);
-      requireCheck(r.recognized === false && r.profile === null && r.device === 'unknown', 'unknown_device_mismatch');
+      // A verified input session supplies its invited principal before device confirmation.
+      requireCheck(r.recognized === false && r.profile?.person_uid === expectedPersonId && r.device === 'unknown', 'unknown_device_mismatch');
     });
     if (retiredDeviceToken) await phase('retired-recognition', async () => { const r = await request(`/recognition?device_token=${encodeURIComponent(retiredDeviceToken)}`); requireCheck(r.recognized === false && r.profile === null && r.device === 'retired', 'retired_device_mismatch'); });
     else report.phases.find(item => item.phase === 'retired-recognition').status = 'SKIPPED_NO_FIXTURE';

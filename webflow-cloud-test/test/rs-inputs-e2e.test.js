@@ -18,7 +18,7 @@ function fixture() {
   };
   const profile = { person_uid: PERSON, person_name: 'Private Fixture Name', first_name: 'Private', last_name: 'Fixture', sms: '2025550123', pin: '0123', email: 'private@example.test' };
   const actor = { id: 'fixture-actor', permissions: ['inputs:read', 'inputs:write', 'barns:create'], barnIds: [], profile: { personUid: PERSON, name: profile.person_name, email: profile.email } };
-  const recognition = { async lookup(token) { return token === TOKEN ? { ok: true, recognized: true, profile: { ...profile }, device: 'active' } : { ok: true, recognized: false, profile: null, device: token === RETIRED ? 'retired' : 'unknown' }; }, async action() { throw new Error('Existing identity must never be mutated by this runner'); } };
+  const recognition = { async lookup(token) { return token === TOKEN ? { ok: true, recognized: true, profile: { ...profile }, device: 'active' } : { ok: true, recognized: false, profile: token === RETIRED ? null : { ...profile }, device: token === RETIRED ? 'retired' : 'unknown' }; }, async action() { throw new Error('Existing identity must never be mutated by this runner'); } };
   async function fetchImpl(url, init) {
     assert.equal(new URL(url).origin, config.expectedOrigin); assert.ok(new URL(url).pathname.startsWith('/test/rs-inputs/')); assert.equal(init.redirect, 'error');
     calls.push({ url, init });
@@ -60,6 +60,31 @@ test('wrong known identity fails before writes and does not reveal returned pers
   const f = fixture(); const result = await run({ ...config, expectedPersonId: 'wrong-person', fetchImpl: f.fetchImpl });
   assert.equal(result.status, 'FAIL'); assert.equal(result.failedPhase, 'known-recognition'); assert.equal(result.errorCode, 'known_person_mismatch');
   assert.equal(f.rows.barn.length, 0); assert.equal(result.phases.find(row => row.phase === 'create-barn').status, 'NOT_RUN');
+});
+
+test('unknown device requires the authenticated principal and remains unrecognized before any writes', async () => {
+  for (const invalid of [
+    { profile: { person_uid: 'another_private_person' } },
+    { profile: null },
+    { recognized: true },
+    { device: 'active' }
+  ]) {
+    const f = fixture();
+    const fetchImpl = (url, init) => {
+      const parsed = new URL(url);
+      if (parsed.pathname.endsWith('/recognition') && ![TOKEN, RETIRED].includes(parsed.searchParams.get('device_token'))) {
+        return Response.json({ ok: true, recognized: false, device: 'unknown', profile: { person_uid: PERSON }, ...invalid });
+      }
+      return f.fetchImpl(url, init);
+    };
+    const result = await run({ ...config, fetchImpl });
+    assert.equal(result.status, 'FAIL');
+    assert.equal(result.failedPhase, 'unknown-recognition');
+    assert.equal(result.errorCode, 'unknown_device_mismatch');
+    assert.equal(result.phases.find(row => row.phase === 'create-barn').status, 'NOT_RUN');
+    assert.ok(Object.values(f.rows).every(rows => rows.length === 0));
+    assert.equal(JSON.stringify(result).includes('another_private_person'), false);
+  }
 });
 
 test('failure stops immediately and retains IDs without upstream details or automatic retry', async () => {
