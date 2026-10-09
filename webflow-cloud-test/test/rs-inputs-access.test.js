@@ -144,4 +144,35 @@ test('explicit test access diagnostics return only bounded provider metadata wit
  await json(denied,403);assert.equal(denied.headers.get('X-RS-Storage-Diagnostic'),null);
 });
 
+test('remembered approved browser loads and edits its own Barn Inputs without another invitation', async () => {
+ const f=provider(); await invited(f,'approved');
+ const token='81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+ f.rows('rs_devices_test').push({id:'recDevice00000001',fields:{device_token:token,status:'Active',person:[f.person.id]}});
+ const cookie=`__Host-rs_recognition_device=${token}`;
+ assert.equal((await json(await f.route(request('access',undefined,cookie)),200)).actor.id,f.person.fields.person_uid);
+ const saved=await json(await f.route(request('record',{kind:'barn',draft:{name:'Remembered browser barn'},requestId:'remembered_barn_001'},cookie)),200);
+ const state=await json(await f.route(request('state',undefined,cookie)),200);
+ assert.equal(state.state.barns[0].id,saved.record.id);
+ assert.equal(f.rows('rs_input_barns')[0].fields.owner_uid,f.person.fields.person_uid);
+ // Recognition-only profile mutations still require their original signed session.
+ await json(await f.route(request('recognition',undefined,cookie)),401);
+ const logout=await f.route(request('logout',{},cookie)); await json(logout,200);
+ assert.match(logout.headers.get('Set-Cookie'),/__Host-rs_recognition_device=; Path=\/; Max-Age=0/);
+});
+
+test('remembered Barn access rejects revoked, retired, ambiguous, untrusted and unknown devices', async () => {
+ for(const condition of ['revoked','retired','duplicate','unknown','client-cookie','body-only','cross-origin']) {
+  const f=provider(); await invited(f,'approved');
+  const token='81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+  const device={id:'recDevice00000001',fields:{device_token:token,status:condition==='retired'?'Retired':'Active',person:[f.person.id]}};
+  if(condition!=='unknown')f.rows('rs_devices_test').push(device);
+  if(condition==='revoked')f.person.fields.input_access='revoked';
+  if(condition==='duplicate')f.rows('rs_devices_test').push(structuredClone(device));
+  const cookie=condition==='body-only'?undefined:`${condition==='client-cookie'?'rs_device_token':'__Host-rs_recognition_device'}=${token}`;
+  const body={kind:'barn',draft:{name:'Must not save'},requestId:'blocked_barn_001',device_token:token};
+  await json(await f.route(request('record',body,cookie,condition==='cross-origin'?{headers:{Origin:'https://other.test'}}:{})),condition==='duplicate'?409:condition==='cross-origin'?403:401);
+  assert.equal(f.rows('rs_input_barns').length,0);
+ }
+});
+
 installControlDatabase(env);

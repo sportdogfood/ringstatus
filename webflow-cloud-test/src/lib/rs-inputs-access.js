@@ -1,6 +1,7 @@
 // Invitation access for the owned isolated trial. Recognition is not authentication.
 import { InputError } from './rs-inputs.js';
 import { claimOnce, requireClaimDatabase } from './rs-recognition-claims.js';
+import { createInputRecognition } from './rs-inputs-recognition.js';
 const BASE = 'app9kOZdIaGyKk5uG';
 const COOKIE = '__Secure-rs_input_access';
 const TTL = 8 * 60 * 60;
@@ -139,7 +140,9 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
     const access = createInputAccess({ env, fetchImpl });
     if (operation === 'logout') {
       if (request.method !== 'POST') fail('method_not_allowed', 405);
-      return respond({ ok: true }, 200, { 'Set-Cookie': access.logout(request) });
+      const response = respond({ ok: true }, 200, { 'Set-Cookie': access.logout(request) });
+      response.headers.append('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
+      return response;
     }
     if (operation === 'access' && request.method === 'POST') {
       const body = await jsonBody(request);
@@ -148,7 +151,20 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
       log({ event: 'rs_input_access', traceId, operation: 'redeem', actorId: result.actor.id, status: 200 });
       return respond({ ok: true, actor: result.actor }, 200, { 'Set-Cookie': result.cookie });
     }
-    const actor = await access.session(request);
+    let actor;
+    try { actor = await access.session(request); }
+    catch (error) {
+      // Barn Inputs uses the remembered browser, plus the person's existing
+      // Inputs permission. Never accept a phone, body token or client actor ID.
+      if (error.code !== 'authentication_required' || !['access', 'state', 'record', 'profile-link'].includes(operation)) throw error;
+      const devices = (request.headers.get('Cookie') || '').split(';').map(value => value.trim()).filter(value => value.startsWith('__Host-rs_recognition_device='));
+      if (devices.length !== 1) throw error;
+      const token = devices[0].slice('__Host-rs_recognition_device='.length);
+      if (!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(token)) throw error;
+      const found = await createInputRecognition({ env, fetchImpl, verifiedInputAccess: true }).recognizeDevice(token);
+      if (!found.recognized) throw error;
+      actor = actorOf(await createAccessStore({ env, fetchImpl }).byUid(found.profile.person_uid));
+    }
     if (operation === 'access') return respond({ ok: true, actor });
     return await inputHandler(actor);
   } catch (error) {
