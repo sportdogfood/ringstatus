@@ -1,5 +1,9 @@
 # Recognize wiring — execution record
 
+## Latest owner disposition — revisions234–235
+
+Owner reports corrected recovery worked with remaining corrections and accepts it for now; stop further testing/edits and token-heavy investigation. Full acceptance remains open. Revision233 actual native request rec6QnYwPYqkIdKzu /42efce01-0c8c-4abe-b94d-6e6d55bb4668 produced successful automation run wfxixUUD309imS0Df and linked requested/attempt_started/unknown footprints; no provider delivery reference was returned. Owner confirmation is separate evidence from automation success. Current remaining gates and model-research notes are recorded in docs/coordination/recognize-failures-model-effort-review-20261008.md, section Current disposition — revisions233–235. No new test, message, deployment or application correction is authorized by this documentation update.
+
 Owner requested moving to a dedicated task-agent on 8 October 2026, source chat `01a11632-62fd-73b1-997e-8be4119185de`. Implement the saved Recognize plan within the scope below. Owner publishes Webflow; Astro deployment remains a separate approval. No completion is claimed by dispatch.
 
 ## Assignment
@@ -197,3 +201,17 @@ Recognize page6ac459b135ad0c4c3b253d97 remains a draft. Tested adapter enabled i
 Next: owner publishes these two named pages to ringstatus.webflow.io. Then coordinator verifies actual native UI -> Astro -> designated Recognize data/logs -> one authorized recovery SMS -> link redemption -> returning-session recognition. Existing required profile/device/access/retry gates remain; no local test or deployment is full-system PASS. Opt-ins grant/native mount remains separate unfinished work. No worker restarted or deadline extended.
 
 Evidence/rollback: .git/ringstatus-control/recognize-native-wiring/revision219-release.json, revision219-native-readback.json, revision219-interaction-backup.json, revision219-automation-readback.json; exact source manifest .git/ringstatus-control/parallel-ui/release-r219.json. Rollback native wiring by disabling adapter and restoring backed-up eight triggers/root destination; preserve data.
+
+## Revisions224–226 — actual published recovery and SMS receipt
+
+Revision232 correction authorization: owner APPROVED TO EDIT the invitation handoff after reporting that the SMS landed on the frozen/nonmobile Astro prototype. Scope: rs-recognition-sms.js generates the native /rs-recognize destination on the existing configured site origin; native-client.js removes the invitation fragment before requests, calls the existing same-origin Inputs access endpoint once, then displays native recognition. Existing Continue still explicitly confirms the browser. No Webflow styles/markup, auth implementation, tables, credentials, environment settings or other application routes are changed. Old links remain unchanged; no automatic resend is authorized by this edit.
+
+Mapped complaints: recCYMCEcyO6c48UO and reckAbo65bjkXBDnr require native destination and actual handoff evidence, not receipt alone; recRW0nqJFLyQ04mt requires distinguishing adapter doubles/local runtime from live native proof. New tests failed before correction: wrong /test/onboarding destination and absent native invitation handling. After correction:19 targeted tests,206 combined regression tests,17 local runtime tests and Astro build pass. Evidence revision232-red.txt, revision232-green.txt, revision232-regression.txt, revision232-runtime.txt, revision232-build.txt in .git/ringstatus-control/recognize-native-wiring. Commit5684b4178 changes two source files and two directly related test files. Deployment and actual native phone recovery remain separate gates; no full-system completion claim. Rollback is a scoped revert of this commit, retaining prior data and all unrelated source.
+
+Owner selected /rs-recognize; /recognize is the original proof of concept and is excluded. Page ID stays 6ac459b135ad0c4c3b253d97; now published and titled RS Recognize. Native loader and enabled/ownership attributes observed in published DOM. Open recognition displays invitation-required login, and recovery form opens.
+
+Owner authorized the existing test person only if its phone exactly matches the supplied test recipient. Guard passed for recV9CvYGaTGz7Wzr / this_sms_test. Minimum approved name RingStatus Test and status Test added; existing operator issueAccess CLI issued invited access. This was test preparation, not SMS proof.
+
+Exactly one native recovery form submission created request recFX8jF4F79g24KD, UID2056c39d-3dca-4ff5-b3eb-20875af16374. Actual automation run wfxnZuv0gQRMggOLb completed successfully 2026-10-09T02:52:37Z. Requested/attempt_started/unknown footprints persisted and linked to the request. Owner confirms SMS received and link opened successfully. Airtable readback confirms invitation hash and expiry cleared. Provider SID is unavailable through native action; unknown provider status remains honest and was not repaired into delivered.
+
+Awaiting same-phone/browser native recognition and Continue-to-Barn check, followed by device/session readback and remaining retained acceptance. Phone browser is not connected to this desktop tool; private SMS link was not requested or read. No duplicate SMS, direct send, or alternate endpoint substitutes. Actual evidence: .git/ringstatus-control/recognize-native-wiring/revision226-live-recovery-proof.json and revision225-request-received.jpg. Full task remains open.
