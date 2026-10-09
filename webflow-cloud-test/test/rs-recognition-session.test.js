@@ -246,3 +246,43 @@ test("reports Airtable creation failures as upstream errors", async () => {
 });
 
 installControlDatabase(env);
+
+test('existing geo fallback fills footprint from forwarded IP without storing raw address', async () => {
+  let written, geoCalls = 0;
+  const request = new Request('https://example.invalid/test/rs-inputs/native-recognition', {
+    headers: { 'X-Forwarded-For': '203.0.113.42, 10.0.0.1', 'User-Agent': 'Fixture' }
+  });
+  await recordRecognitionSession({ env, request, payload: payload({page_path:'/rs-recognize'}),
+    geoFetchImpl: async (url, options) => {
+      geoCalls++;
+      assert.equal(String(url), 'https://get.geojs.io/v1/ip/geo/203.0.113.42.json');
+      assert.ok(options.signal);
+      return Response.json({country_code:'US',region:'Florida',city:'Ocala',timezone:'America/New_York',asn:64500,ip:'203.0.113.42'});
+    },
+    fetchImpl: async (_url, options = {}) => {
+      if (options.method !== 'POST') return Response.json({records:[]});
+      written = JSON.parse(options.body).records[0].fields;
+      return Response.json({records:[{id:'recSyntheticGeo01'}]});
+    }
+  });
+  assert.equal(geoCalls, 1);
+  assert.equal(written.country_code, 'US'); assert.equal(written.city, 'Ocala');
+  assert.equal(written.region, 'Florida'); assert.equal(written.page_path, '/rs-recognize');
+  assert.match(written.ip_hash, /^[a-f0-9]{64}$/);
+  assert.doesNotMatch(JSON.stringify(written), /203\.0\.113\.42/);
+});
+
+test('geo provider timeout does not prevent session logging', async () => {
+  let written;
+  await recordRecognitionSession({ env,
+    request: new Request('https://example.invalid/', {headers:{'X-Forwarded-For':'203.0.113.42'}}),
+    payload: payload(), geoFetchImpl: async () => {throw new DOMException('timed out','TimeoutError');},
+    fetchImpl: async (_url, options = {}) => {
+      if (options.method !== 'POST') return Response.json({records:[]});
+      written = JSON.parse(options.body).records[0].fields;
+      return Response.json({records:[{id:'recSyntheticGeo02'}]});
+    }
+  });
+  assert.equal(written.event_result, 'matched'); assert.equal(written.city, undefined);
+  assert.match(written.ip_hash, /^[a-f0-9]{64}$/);
+});

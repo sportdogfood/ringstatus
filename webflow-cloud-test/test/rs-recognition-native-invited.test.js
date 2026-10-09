@@ -64,7 +64,7 @@ test('silent recognition uses a known active device without Inputs login and rec
   const f = await fixture();
   const deviceToken = '81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
   f.rows('rs_devices_test').push({ id: 'recDevice00000001', fields: { device_token: deviceToken, status: 'Active', person: [f.person.id] } });
-  const payload = { device_token: deviceToken, session_uid: 'silent-session-001', person_record_id: 'recSpoofed0000001' };
+  const payload = { device_token: deviceToken, session_uid: 'silent-session-001', person_record_id: 'recSpoofed0000001', page_path: '/rs-recognize?private=excluded' };
   const call = () => handleNativeRecognition(f.request('recognize', payload, {}, false), env, f.fetchImpl);
   const response = await call();
   assert.equal(response.status, 200);
@@ -78,6 +78,7 @@ test('silent recognition uses a known active device without Inputs login and rec
   assert.equal((await call()).status, 200);
   assert.equal(f.rows('rs_recognition_sessions_test').length, 1);
   assert.deepEqual(f.rows('rs_recognition_sessions_test')[0].fields.person, [f.person.id]);
+  assert.equal(f.rows('rs_recognition_sessions_test')[0].fields.page_path, '/rs-recognize');
   assert.equal((await handleNativeRecognition(f.request('action', action('update_profile'), {}, false), env, f.fetchImpl)).status, 401);
 });
 

@@ -50,7 +50,9 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
         session_uid: payload.session_uid, session_event_uid: eventUid,
         idempotency_key: `native_silent:${eventUid}`, event_type: 'recognition',
         event_result: 'matched', recognition_status: 'confirmed', matched_by: 'device_token',
-        person_record_id: found.personRecordId, device_record_id: found.deviceRecordId, detail: { source: 'native_silent_recognition' }
+        person_record_id: found.personRecordId, device_record_id: found.deviceRecordId,
+        page_path: typeof payload.page_path === 'string' && payload.page_path.startsWith('/') ? payload.page_path.split(/[?#]/)[0].slice(0, 1024) : undefined,
+        detail: { source: 'native_silent_recognition' }
       } });
       response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
       return response;

@@ -34,12 +34,13 @@ export class RecognitionSessionError extends Error {
 export async function recordRecognitionSession({
   env,
   fetchImpl = fetch,
+  geoFetchImpl = fetch,
   request,
   payload
 }) {
   const config = airtableConfig(env);
   const event = normalizeEvent(payload);
-  const fields = await buildAirtableFields({ event, request, signalSecret: config.signalSecret });
+  const fields = await buildAirtableFields({ event, request, signalSecret: config.signalSecret, geoFetchImpl });
   const tableUrl = airtableUrl(config.baseId, config.sessionsTable);
   const claim = await claimOnce(env, 'recognition-event', [config.baseId, event.idempotency_key]);
   if (claim.result) return { ...claim.result, duplicate: true };
@@ -145,9 +146,10 @@ async function findByIdempotencyKey({ config, event, fetchImpl, tableUrl }) {
   return result.records?.[0] || null;
 }
 
-async function buildAirtableFields({ event, request, signalSecret }) {
+async function buildAirtableFields({ event, request, signalSecret, geoFetchImpl }) {
   const cf = request?.cf || {};
-  const ip = clean(request?.headers?.get("CF-Connecting-IP"));
+  const ip = clientIp(request);
+  const geo = await geoSignals({ cf, ip, geoFetchImpl });
   const userAgent = clean(request?.headers?.get("User-Agent"));
   const network = networkPrefix(ip);
   const agent = classifyUserAgent(userAgent);
@@ -168,11 +170,11 @@ async function buildAirtableFields({ event, request, signalSecret }) {
   add(fields, "phone_alias", linkValue(event.phone_alias_record_id));
   add(fields, "matched_by", event.matched_by);
   add(fields, "recognition_status", event.recognition_status);
-  add(fields, "country_code", clean(cf.country));
-  add(fields, "region", clean(cf.region));
-  add(fields, "city", clean(cf.city));
-  add(fields, "timezone", clean(cf.timezone));
-  add(fields, "asn", clean(cf.asn));
+  add(fields, "country_code", clean(geo.country));
+  add(fields, "region", clean(geo.region));
+  add(fields, "city", clean(geo.city));
+  add(fields, "timezone", clean(geo.timezone));
+  add(fields, "asn", clean(geo.asn));
   add(fields, "edge_colo", clean(cf.colo));
   add(fields, "browser_family", agent.browser);
   add(fields, "os_family", agent.os);
@@ -351,4 +353,42 @@ function add(target, field, value) {
 
 function escapeAirtableString(value) {
   return String(value).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+// Reused unchanged from rs-visitor-event.js; approximate footprint signals only.
+async function geoSignals({ cf, ip, geoFetchImpl }) {
+  const cloudflare = {
+    country: clean(cf.country),
+    region: clean(cf.region),
+    city: clean(cf.city),
+    timezone: clean(cf.timezone),
+    asn: clean(cf.asn)
+  };
+  if (!ip || (cloudflare.country && cloudflare.region && cloudflare.city)) return cloudflare;
+
+  try {
+    const response = await geoFetchImpl(
+      `https://get.geojs.io/v1/ip/geo/${encodeURIComponent(ip)}.json`,
+      { signal: AbortSignal.timeout(1500) }
+    );
+    if (!response.ok) return cloudflare;
+    const result = await response.json();
+    return {
+      country: cloudflare.country || clean(result.country_code),
+      region: cloudflare.region || clean(result.region),
+      city: cloudflare.city || clean(result.city),
+      timezone: cloudflare.timezone || clean(result.timezone),
+      asn: cloudflare.asn || clean(result.asn)
+    };
+  } catch {
+    return cloudflare;
+  }
+}
+
+function clientIp(request) {
+  const candidates = [
+    clean(request?.headers?.get("CF-Connecting-IP")),
+    ...clean(request?.headers?.get("X-Forwarded-For")).split(",").map((value) => value.trim())
+  ];
+  return candidates.find((value) => value && networkPrefix(value)) || "";
 }

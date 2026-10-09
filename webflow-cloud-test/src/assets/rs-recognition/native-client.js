@@ -4,7 +4,7 @@
 export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
   persistentStorage = localStorage, sessionStorageImpl = sessionStorage,
   navigate = path => location.assign(path), launcherPath = '/', now = () => Date.now(),
-  uuid = () => crypto.randomUUID(), timeoutMs = 12000 }) {
+  uuid = () => crypto.randomUUID(), timeoutMs = 12000, pagePath = globalThis.location?.pathname || '/' }) {
   const tokenKey = 'rs_recognition_device_token_v1', expiryKey = 'rs_recognition_device_expires_v1';
   const sessionKey = 'rs_native_recognition_session_v1';
   const abort = new AbortController(), timer = setTimeout(() => abort.abort(), timeoutMs);
@@ -22,7 +22,7 @@ export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
     if (!session) { session = uuid(); sessionStorageImpl.setItem(sessionKey, session); }
     target.searchParams.set('operation', 'recognize');
     const response = await fetchImpl(target, { method: 'POST', credentials: 'same-origin', signal: abort.signal,
-      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_token: token, session_uid: session }) });
+      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_token: token, session_uid: session, page_path: pagePath.split(/[?#]/)[0] }) });
     const data = await response.json();
     if (!response.ok || data.ok !== true || data.recognized !== true) return false;
     persistentStorage.setItem(expiryKey, String(now() + 365 * 86400000));

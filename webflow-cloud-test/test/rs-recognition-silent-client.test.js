@@ -7,11 +7,12 @@ test('silent visit sends a remembered device, refreshes expiry and redirects hom
   const storage = { getItem: k => values.get(k), setItem: (k,v) => values.set(k,v), removeItem: k => values.delete(k) };
   const navigations = [];
   const result = await client.runSilentRecognition({ endpoint: 'https://example.invalid/test/rs-inputs/native-recognition',
-    persistentStorage: storage, sessionStorageImpl: storage, now: () => 1000, uuid: () => 'session-001',
+    persistentStorage: storage, sessionStorageImpl: storage, now: () => 1000, uuid: () => 'session-001', pagePath: '/rs-recognize?private=excluded',
     navigate: path => navigations.push(path), fetchImpl: async (url, options) => {
       assert.equal(new URL(url).searchParams.get('operation'), 'recognize');
       assert.equal(options.credentials, 'same-origin');
       assert.equal(JSON.parse(options.body).device_token, values.get('rs_recognition_device_token_v1'));
+      assert.equal(JSON.parse(options.body).page_path, '/rs-recognize');
       return Response.json({ ok: true, recognized: true });
     } });
   assert.equal(result, true); assert.deepEqual(navigations, ['/']);
