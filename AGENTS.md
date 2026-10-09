@@ -1,5 +1,14 @@
 # RingStatus Codex Instructions
 
+## Preserve proven implementations — owner rule, 9 October 2026
+
+- Never reinvent, replace or build a parallel solution where the owner supplies a working implementation or documented proof of concept, unless the owner explicitly requests that replacement. A request to connect, migrate, style, repair or finish is not replacement authorization.
+- Before planning code or dispatching a coding agent, inspect the supplied implementation and relevant existing repository history. Identify its exact path/commit, observed working behavior, dependencies, current target and the smallest authorized delta. Preserve this baseline in the task record and handoff; do not require the owner to rediscover it.
+- Changed base IDs, schemas, credentials, hosting or presentation call for identifying the compatibility gap and adapting only the authorized boundary, not recreating the established logic. Historical proof does not establish current live operation, but missing fresh proof is not permission to rebuild.
+- Never patch over a failed patch. On failure, compare the failing path with the proven baseline, establish the root cause and account for prior edits before proposing the next correction. Do not keep modifying a guessed replacement to make it work. Preserve user changes; any rollback or source correction requires applicable authorization. A failed approved runner workflow still stops under the runner rules.
+- An owner reminder that working code already exists immediately requires rebalance to that source before further dependent edits. If the source cannot be accessed or cannot meet a stated requirement, report the exact gap; do not invent an alternative. Explicit owner authorization is required for replacement.
+- Completion evidence must show the requested delta works and the baseline behavior remains intact. More passing local tests, a new design or a rewritten implementation does not substitute for the original end-to-end acceptance.
+
 ## Webflow MCP
 
 The production Webflow MCP connection is already installed and authorized.

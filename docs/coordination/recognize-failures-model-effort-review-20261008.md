@@ -16,6 +16,11 @@ Revision232 deployed commit5684b4178b662289a4342146143cb055f0fc591c routes recov
 4. Qualify retained failure/retry gates in the deployed system: expired/reused/revoked invitation, ambiguous or unauthorized access, duplicate/retried requests, restart persistence and failed-log recovery. Local passing tests are evidence of local behavior, not these operational outcomes.
 5. Record final protected-page regression and reconcile the full acceptance matrix before closure. No unrelated Barn/Feed/Schedule project completion is required to close Recognize, apart from its designated Barn handoff.
 
+### Additional open work — revision236
+
+- CSS audit: retain the cross-draft consistency audit, especially Feed, SMS Alerts and Barn setup v24; include Recognize and Schedule. Check buttons, typography, token colors/shades, spacing, padding, margins and responsive behavior across the required viewports/themes. Remains open; no audit or styling changes started by this entry.
+- Schedule: retain the unfinished Schedule UI, Astro data-only mapping and end-to-end verification as a separate open task. Webflow owns presentation. Current implementation status must be read from its saved checkpoint before resuming; no completion is inferred here.
+
 ### Model research notes for the next bounded task
 
 Use the previously researched official sources below as dated references; no new benchmark or research spend was launched for revision235. Provisional starting choice: Sol Medium for scoped implementation, Low for routine read-only checks, Astra High only for a specifically bounded difficult review. Compare the same small representative task with identical source, permissions, tools and acceptance. Record actual model/effort, tokens or credits where exposed, elapsed time, correction cycles, tool waiting/failures and independent acceptance results; set the same fixed time/correction cap before either run. Choose the lowest-cost setting that satisfies the same acceptance, not the largest test count. Do not attribute all account usage to this task or describe 'outsmarting itself' as an established cause. No model setting changed here.

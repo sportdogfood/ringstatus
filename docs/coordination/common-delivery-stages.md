@@ -4,6 +4,11 @@ Saved 8 October 2026 at the owner's request. Reusable procedure for Recognize, b
 
 ## Stages and exit evidence
 
+### Before entering any stage: preserve existing proof
+Owner rule, revision242: use the existing working implementation or documented proof of concept; never reinvent or replace it unless the owner explicitly requests replacement. Inspect and record its path/commit, demonstrated behavior, dependencies, compatibility gaps and smallest authorized delta in the existing task record before planning or dispatch. Enter at the first genuinely missing stage; do not recreate completed stages. A changed Airtable base, schema, host or native Webflow presentation does not authorize recreating the underlying logic. Rebalance immediately when the owner points back to working code. Never patch over a failed patch; inspect the divergence and root cause before any separately authorized correction, preserving runner stop rules. Verify the requested change and preserved baseline behavior against the actual authorized target.
+
+Known references, inspected in revisions240–241 (historical source, not fresh live proof): WEC Packing backend/routes and frontend at `647ea24f8`; its comprehensive overview first appears at `84a06827f`, not the earlier snapshot. Recognize member/device/session flow is preserved at `f012c3077` under `webflow-cloud-test/src/{assets,lib,pages}/rs-recognition*` and `webflow/rs-recognition`. Its July recovery code queues `send_member_link`; the external delivery automation and current SMS-only policy require their own verified mapping. Preserve these references without restoring old base access or old login policy.
+
 | Stage | Work | Required exit evidence |
 |---|---|---|
 | 1. Fix the prototype reference | Finish the requested prototype decisions and identify the exact saved version, accessible source, assets, visible states, themes and responsive behavior. | Named source version and agreed visual/behavior inventory; unresolved decisions listed. Public deployment is not assumed to equal the latest saved version. |

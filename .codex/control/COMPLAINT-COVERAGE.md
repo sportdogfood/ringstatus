@@ -13,6 +13,9 @@ Reviewed all 82 records returned from [rs-agents-complaints-lib](https://airtabl
 
 ## Remaining limits
 
+### Revision242: reuse proven code; never patch over a failed patch
+The owner explicitly prohibits reinventing/replacing existing working implementations or documented proofs unless replacement is explicitly requested. Applied to project AGENTS.md, local planning/coding-instructions/handoff skills, the handoff task record and common delivery stages on 9 October 2026. Before dependent edits/dispatch: record the exact baseline, demonstrated behavior, current compatibility gaps and authorized delta. On an owner correction or failed guessed repair, rebalance to that source; preserve user edits and runner stop rules. Acceptance: a subsequent authorized assignment must demonstrate reuse, only the approved delta, and preserved behavior end to end. C004 and the existing Recognize baseline/coordinator complaints remain open; installed instructions and readback are not proof of future behavioral compliance. This adds no hook or automatic enforcement.
+
 The agent still prepares the contract and observations. These controls cannot establish that its interpretation or evidence is truthful, detect all unlabeled premature endings, enforce concise writing, create browser access, or guarantee repeated end-to-end delivery. The PreToolUse prototype is disabled and unqualified. No business workflow or production task was run. Live repeated behavior remains unproven.
 
 Current implementation: [RELIABILITY-CONTROLS.md](RELIABILITY-CONTROLS.md).
