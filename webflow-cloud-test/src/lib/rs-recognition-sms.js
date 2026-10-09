@@ -1,6 +1,7 @@
 import { recognitionConfig } from './rs-recognition-config.js';
 import { createAccessStore, randomAccessToken, accessHash } from './rs-inputs-access.js';
 import { claimOnce, completeClaim, requireClaimDatabase } from './rs-recognition-claims.js';
+import { createOtpStore } from './rs-recognition-otp-store.js';
 
 export const SMS_TABLES = Object.freeze({ requests: 'tblxC4SYtzYhJNcJS', events: 'tblF1Hdqi3yoKTZPV' });
 const runtimes = new WeakMap();
@@ -93,6 +94,11 @@ export function createRecoverySms({ env, fetchImpl = fetch, now = () => Date.now
       if (!claim.won) fail('sms_attempt_already_started');
       await call(SMS_TABLES.requests, 'PATCH', { status: 'processing' }, row.id);
       await event(row, 'attempt_started');
+      if (/^otp_[a-f0-9-]{36}$/i.test(row.fields.request_uid)) {
+        const code = await createOtpStore(env, now).prepare(row.fields.request_uid, to);
+        return { ok: true, request_record_id: row.id, request_id: row.fields.request_uid, to,
+          body: `Your RingStatus code is ${code}. Enter it in the browser requesting recognition. Expires in 10 minutes. Do not share this code.` };
+      }
       // Reuse existing invitation primitives, retain the current access decision.
       // No operator CLI is imported or exposed as a public grant endpoint.
       const store = createAccessStore({ env: bindings, fetchImpl });

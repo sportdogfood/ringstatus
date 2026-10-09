@@ -210,6 +210,44 @@ test('authorized native entry reuses real scoped cookie and rejects expired acce
 
 installControlDatabase(env, smsEnv);
 
+test('random OTP uses existing automation preparation, binds this browser and rejects wrong/replayed codes', async () => {
+  const f = await fixture();
+  const call = payload => handleNativeRecognition(f.request('action', payload, {}, false), smsEnv, f.fetchImpl);
+  const started = await (await call({ action: 'otp_start', sms: '2025550199' })).json();
+  assert.equal(started.otp_required, true); assert.match(started.otp_request_id, /^otp_/);
+  assert.equal(f.rows('rs_sms_requests').length, 1); assert.equal(f.rows('rs_devices_test').length, 0);
+  const invitationBefore = f.person.fields.input_invite_hash;
+  const prepared = await createRecoverySms({ env: smsEnv, fetchImpl: f.fetchImpl }).prepare(f.rows('rs_sms_requests')[0].id);
+  const code = prepared.body.match(/code is (\d{6})/)[1];
+  assert.equal(prepared.to, '+12025550199'); assert.equal(f.person.fields.input_invite_hash, invitationBefore);
+  const attempt = { action: 'otp_check', sms: '2025550199', otp_request_id: started.otp_request_id };
+  const wrong = code === '000000' ? '000001' : '000000';
+  assert.equal((await (await call({ ...attempt, code: wrong })).json()).verified, false);
+  assert.equal(f.rows('rs_devices_test').length, 0);
+  const approved = await call({ ...attempt, code, device_token: 'attacker-selected' });
+  const data = await approved.json();
+  assert.equal(data.verified, true); assert.match(data.device_token, /^[a-f0-9-]{36}$/);
+  assert.match(approved.headers.get('Set-Cookie'), /__Host-rs_recognition_device=.*HttpOnly; Secure/);
+  assert.doesNotMatch(approved.headers.get('Set-Cookie'), /rs_input_access/);
+  assert.deepEqual(f.rows('rs_devices_test')[0].fields.person, [f.person.id]);
+  const revisit = await handleNativeRecognition(f.request('recognize', { session_uid: 'otp-revisit', page_path: '/rs-recognize' }, { Cookie: approved.headers.get('Set-Cookie').split(';')[0] }, false), smsEnv, f.fetchImpl);
+  assert.equal((await revisit.json()).recognized, true);
+  assert.equal((await (await call({ ...attempt, code })).json()).expired, true);
+  assert.equal(f.rows('rs_devices_test').length, 1);
+  for (const table of ['rs_recognition_sessions_test', 'rs_sms_requests', 'rs_sms_events']) assert.equal(JSON.stringify(f.rows(table)).includes('code is ' + code), false);
+});
+
+test('OTP denies missing secret, other recipients, revoked people and cross-origin requests', async () => {
+  const f = await fixture();
+  const payload = { action: 'otp_start', sms: '2025550199' };
+  assert.equal((await handleNativeRecognition(f.request('action', payload, {}, false), { ...smsEnv, RS_INPUTS_SESSION_SECRET: '' }, f.fetchImpl)).status, 503);
+  assert.equal((await handleNativeRecognition(f.request('action', { ...payload, sms: '2025550100' }, {}, false), smsEnv, f.fetchImpl)).status, 403);
+  assert.equal((await handleNativeRecognition(f.request('action', payload, { Origin: 'https://other.invalid' }, false), smsEnv, f.fetchImpl)).status, 403);
+  f.person.fields.input_access = 'revoked';
+  assert.equal((await (await handleNativeRecognition(f.request('action', payload, {}, false), smsEnv, f.fetchImpl)).json()).otp_required, true);
+  assert.equal(f.rows('rs_sms_requests').length, 0); assert.equal(f.rows('rs_devices_test').length, 0);
+});
+
 test('independent recovery callers create one queue row and prepare only one SMS', async () => {
   const f = await fixture();
   const make = () => createRecoverySms({ env: smsEnv, fetchImpl: (...args) => f.fetchImpl(...args) });

@@ -48,6 +48,28 @@ const settle = () => new Promise(resolve => setImmediate(resolve));
 const args = f => ({ root: f.root, baseUrl: "https://example.invalid/test/rs-recognition/", present: () => {}, silentRecognition: false,
   persistentStorage: f.storage, sessionStorageImpl: f.storage, uuid: f.uuid, navigate: () => {} });
 
+test('SMS code is submitted in the original browser and only approved binding redirects', async () => {
+  const f = fixture(), actions = [], paths = [];
+  const token = '81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+  const api = mountNativeRecognition({ ...args(f), navigate: p => paths.push(p), fetchImpl: async (url, options = {}) => {
+    if (url.searchParams.get('operation') === 'device') return Response.json({ ok: false, error: 'authentication_required' }, { status: 401 });
+    if (url.searchParams.get('operation') === 'recognize') return Response.json({ ok: true, recognized: true });
+    const payload = JSON.parse(options.body); actions.push(payload);
+    if (payload.action === 'otp_start') return Response.json({ ok: true, otp_required: true });
+    return Response.json(payload.code === '123456' ? { ok: true, verified: true, device_token: token } : { ok: true, verified: false });
+  } });
+  await settle();
+  const input = f.nodes.find(n => n.kind === 'input' && n.state === 'login');
+  input.value = '2025550199'; await f.click('phone-login');
+  assert.equal(input.value, ''); assert.deepEqual(paths, []);
+  input.value = '000000'; await f.click('phone-login'); assert.deepEqual(paths, []);
+  input.value = '123456'; await f.click('phone-login');
+  assert.deepEqual(actions.map(a => a.action), ['otp_start', 'otp_check', 'otp_check']);
+  assert.ok(actions.every(a => a.sms === '2025550199'));
+  assert.equal(f.storage.getItem('rs_recognition_device_token_v1'), token);
+  assert.deepEqual(paths, ['/']); api.destroy();
+});
+
 test('default native mount silently recognizes and redirects home without opening a dialog', async () => {
   const f = fixture(), paths = [], views = [], operations = [];
   const api = mountNativeRecognition({ ...args(f), silentRecognition: true, navigate: p => paths.push(p), present: v => views.push(v),
@@ -57,19 +79,20 @@ test('default native mount silently recognizes and redirects home without openin
   assert.equal(views.some(v => v.open), false); api.destroy();
 });
 
-test('unknown silent visitor opens phone login and accepted SMS fallback does not claim recognition', async () => {
+test('unknown silent visitor stays in the requesting browser to enter its SMS code', async () => {
   const f = fixture(), views = [], paths = [];
   const api = mountNativeRecognition({ ...args(f), silentRecognition: true, present: v => views.push(v), navigate:p=>paths.push(p),
     fetchImpl: async url => {
       const operation = url.searchParams.get('operation');
       if (operation === 'recognize') return Response.json({ok:true,recognized:false});
       if (operation === 'device') return Response.json({ok:false,error:'authentication_required'},{status:401});
-      return Response.json({ok:true,accepted:true});
+      return Response.json({ok:true,accepted:true,otp_required:true});
     } });
   await settle(); await settle();
   assert.equal(views.at(-1).state, 'login'); assert.equal(views.at(-1).open,true);
   await f.click('phone-login');
-  assert.equal(views.at(-1).state,'received'); assert.deepEqual(paths,[]); api.destroy();
+  assert.equal(views.at(-1).state,'login'); assert.deepEqual(paths,[]);
+  assert.match(f.nodes.find(n=>n.kind==='feedback' && n.state==='login').textContent,/enter its SMS code in this browser/); api.destroy();
 });
 
 test('SMS invitation is removed from the URL, accepted once through existing access, then opens native recognition', async () => {
@@ -222,17 +245,16 @@ test("missing native presenter and insecure origin fail before any data request"
   assert.throws(() => mountNativeRecognition({ ...args(f), baseUrl: "http://example.invalid/" }), /invalid_recognition_origin/);
 });
 
-test("unmatched login retains the request ID while its audit is pending", async () => {
+test("uncertain OTP send is not automatically repeated by the retry control", async () => {
   const f = fixture(), requests = [];
-  let pending = true;
-  mountNativeRecognition({ ...args(f), fetchImpl: async (url, options) => {
+  const api = mountNativeRecognition({ ...args(f), fetchImpl: async (url, options) => {
     if (url.searchParams.get("operation") === "action") {
       requests.push(JSON.parse(options.body));
-      return Response.json({ ok: true, recognized: false, audit_status: pending ? "pending" : "recorded" });
+      throw new Error('synthetic lost response');
     }
     return Response.json({ ok: true, recognized: false });
   } });
   await settle(); await settle();
-  await f.click("phone-login"); pending = false; await f.click("retry");
-  assert.equal(requests.length, 2); assert.deepEqual(requests[0], requests[1]);
+  await f.click("phone-login"); await f.click("retry");
+  assert.equal(requests.length, 1); assert.equal(requests[0].action, 'otp_start'); api.destroy();
 });

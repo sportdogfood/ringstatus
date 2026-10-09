@@ -147,6 +147,11 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     return { response: retired ? result(null, "retired") : result(profileOf(person), "active"), person, existingDevice: true, deviceRecordId: device.id };
   }
   return {
+    // Server-only lookup for managed phone verification; never return it publicly.
+    async verificationCandidate(value) {
+      const person = await phoneCandidate(value);
+      return person && eligible(person) ? { personUid: person.fields.person_uid, phone: normalizedPhone(value) } : null;
+    },
     // Recognition context for the public launcher, never an Inputs actor or grant.
     async recognizeDevice(deviceToken) {
       const resolved = await resolve(deviceToken);

@@ -92,6 +92,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   let sessionUid = sessionStorageImpl.getItem(sessionKey);
   if (!sessionUid) { sessionUid = uuid(); sessionStorageImpl.setItem(sessionKey, sessionUid); }
   let person = null, deviceConfirmed = false, busy = false, pending = null, state = "unavailable", opened = false, returnFocus = null;
+  let otpPhone = null, otpRequestId = null;
   const controller = new AbortController();
   function feedback(message) {
     const target = get(`[data-rs-native-state="${state}"] [data-rs-native-feedback]`) || get('[data-rs-native-feedback]');
@@ -175,6 +176,43 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     pending = { body, continuation };
     await executePending();
   }
+  function otpInput(checking) {
+    const input = get('[data-rs-native-state="login"] [name="identifier"]');
+    input.value = checking ? '' : otpPhone || '';
+    input.setAttribute?.('aria-label', checking ? 'SMS verification code' : 'Phone number');
+    input.setAttribute?.('placeholder', checking ? 'Enter SMS code' : 'Phone number');
+    input.setAttribute?.('autocomplete', checking ? 'one-time-code' : 'tel');
+    input.setAttribute?.('inputmode', checking ? 'numeric' : 'tel');
+    const button = get('[data-rs-native-action="phone-login"]');
+    if (button) button.textContent = checking ? 'Verify code' : 'Send SMS code';
+  }
+  async function verifyPhone() {
+    if (busy || pending) return;
+    const value = values('login').identifier || '';
+    const checking = otpPhone !== null;
+    if (checking && !/^\d{4,10}$/.test(value)) { show('login', 'Enter the code from your SMS here.'); return; }
+    busy = true; show('login', checking ? 'Checking code…' : 'Requesting SMS code…');
+    try {
+      const data = await json('action', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(checking ? { action: 'otp_check', sms: otpPhone, code: value, otp_request_id: otpRequestId } : { action: 'otp_start', sms: value }) });
+      if (!checking) {
+        if (data.otp_required !== true) throw new Error('otp_send_unconfirmed');
+        otpPhone = value; otpRequestId = data.otp_request_id; otpInput(true);
+        show('login', 'If this phone is registered, enter its SMS code in this browser.');
+      } else if (data.verified === true && /^[a-f0-9-]{36}$/i.test(data.device_token || '')) {
+        deviceToken = data.device_token; persistentStorage.setItem(tokenKey, deviceToken);
+        persistentStorage.setItem('rs_recognition_device_expires_v1', String(Date.now() + 365 * 86400000));
+        otpInput(false); otpPhone = null;
+        const matched = await runSilentRecognition({ endpoint, fetchImpl, persistentStorage, sessionStorageImpl, navigate, launcherPath, uuid, timeoutMs });
+        if (!matched) show('unavailable', 'The code was verified, but recognition could not finish. Try again.');
+      } else if (data.expired) {
+        otpInput(false); otpPhone = null; show('login', 'The code expired or was already used. Request a new SMS code.');
+      } else { otpInput(true); show('login', 'That code was not accepted. Check your SMS and try again.'); }
+    } catch (error) {
+      otpInput(false); otpPhone = null;
+      show('login', error.message === 'otp_rate_limited' ? 'Too many attempts. Wait before requesting another code.' : 'Verification could not finish. Request a new SMS code.');
+    } finally { busy = false; present({ state, open: opened, busy }); }
+  }
   async function executePending() {
     if (!pending) return;
     busy = true; feedback("Saving…"); present({ state, open: opened, busy });
@@ -221,13 +259,13 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     const command = target.getAttribute('data-rs-native-action');
     if (command === "open") { returnFocus = target; opened = true; show(state); await lookup(); }
     else if (command === "profile") { opened = true; show(deviceConfirmed ? "profile" : "recognized"); }
-    else if (command === "login" || command === "recovery") show(command);
-    else if (command === "cancel") show(person ? "recognized" : "login");
+    else if (command === "login" || command === "recovery") { otpInput(false); otpPhone = null; show(command); }
+    else if (command === "cancel") { otpInput(false); otpPhone = null; show(person ? "recognized" : "login"); }
     else if (command === "save") {
       if (!person || !deviceConfirmed) { show(person ? "recognized" : "login", "Use your invitation and confirm this browser before editing."); return; }
       const v = values("profile");
       await action(person ? "update_profile" : "create_profile", { user: v.person_name, first: v.first_name, last: v.last_name, sms: v.sms, pin: v.pin, email: v.email, ...owned() });
-    } else if (command === "phone-login") await action("phone_login", { sms: values("login").identifier });
+    } else if (command === "phone-login") await verifyPhone();
     else if (command === "recover") await action("recovery", values("recovery"), "received");
     else if (command === "retire") await action("retire_device", {}, "recovery");
     else if (command === "continue") { if (person) await action("confirm_device", owned(), "navigate"); }

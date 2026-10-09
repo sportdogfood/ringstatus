@@ -4,6 +4,7 @@ import { handleAccessRoute, createAccessStore, accessHash } from './rs-inputs-ac
 import { createInputRecognition } from './rs-inputs-recognition.js';
 import { recordRecognitionSession } from './rs-recognition-session.js';
 import { createRecoverySms, requireSmsAutomation } from './rs-recognition-sms.js';
+import { handleRecognitionOtp } from './rs-recognition-otp.js';
 
 const respond = (body, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const safePerson = p => p ? Object.fromEntries([
@@ -28,6 +29,12 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
     target.search = '';
     const payload = operation === 'device' ? null : await request.json().catch(() => null);
     if (operation !== 'device' && (!payload || Array.isArray(payload))) return respond({ ok: false, error: 'invalid_request' }, 400);
+    if (operation === 'action' && ['otp_start', 'otp_check'].includes(payload.action)) {
+      const result = await handleRecognitionOtp({ request, env: bindings, payload, fetchImpl });
+      const response = respond(result);
+      if (result.verified === true) response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${result.device_token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
+      return response;
+    }
     if (operation === 'recognize') {
       if (request.headers.get('Origin') !== incoming.origin) return respond({ ok: false, error: 'origin_denied' }, 403);
       const cookies = (request.headers.get('Cookie') || '').split(';').map(v => v.trim()).filter(v => v.startsWith('__Host-rs_recognition_device='));
