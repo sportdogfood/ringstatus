@@ -60,6 +60,55 @@ const action = (name, extra = {}) => ({ action: name, device_token: 'synthetic-d
 const smsEnv = { ...env, RS_RECOGNITION_SMS_QUEUE_MODE: 'ready-gated', RS_RECOGNITION_SMS_RECORD_MODE: 'test', RS_RECOGNITION_SMS_TEST_RECIPIENT: '+12025550199', RS_INPUTS_ONBOARDING_URL: origin + '/test/onboarding', RS_RECOGNITION_AUTOMATION_SECRET: 'fixture-automation-secret-32-characters' };
 const recovery = { ...action('recovery'), session_event_uid: 'synthetic-recovery-request-0001', first: 'Synthetic', last: 'Fixture', to_e164: '+12025550000', person_uid: 'spoofed' };
 
+test('silent recognition uses a known active device without Inputs login and records one canonical visit', async () => {
+  const f = await fixture();
+  const deviceToken = '81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+  f.rows('rs_devices_test').push({ id: 'recDevice00000001', fields: { device_token: deviceToken, status: 'Active', person: [f.person.id] } });
+  const payload = { device_token: deviceToken, session_uid: 'silent-session-001', person_record_id: 'recSpoofed0000001' };
+  const call = () => handleNativeRecognition(f.request('recognize', payload, {}, false), env, f.fetchImpl);
+  const response = await call();
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.recognized, true);
+  assert.equal(body.first_name, 'Synthetic');
+  assert.equal('primary_phone_e164' in body, false);
+  assert.equal('email' in body, false);
+  assert.match(response.headers.get('Set-Cookie'), /Max-Age=31536000; HttpOnly; Secure; SameSite=Lax/);
+  assert.doesNotMatch(response.headers.get('Set-Cookie'), /rs_input_access/);
+  assert.equal((await call()).status, 200);
+  assert.equal(f.rows('rs_recognition_sessions_test').length, 1);
+  assert.deepEqual(f.rows('rs_recognition_sessions_test')[0].fields.person, [f.person.id]);
+  assert.equal((await handleNativeRecognition(f.request('action', action('update_profile'), {}, false), env, f.fetchImpl)).status, 401);
+});
+
+test('silent recognition rejects ambiguous, retired and revoked devices and cross-origin requests', async () => {
+  const f = await fixture();
+  const token = '81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+  const device = { id: 'recDevice00000001', fields: { device_token: token, status: 'Retired', person: [f.person.id] } };
+  f.rows('rs_devices_test').push(device);
+  const payload = { device_token: token, session_uid: 'silent-denied-001' };
+  const call = () => handleNativeRecognition(f.request('recognize', payload, {}, false), env, f.fetchImpl);
+  assert.equal((await (await call()).json()).recognized, false);
+  device.fields.status = 'Active'; f.person.fields.input_access = 'revoked';
+  assert.equal((await (await call()).json()).recognized, false);
+  f.person.fields.input_access = 'invited';
+  f.rows('rs_devices_test').push(structuredClone(device));
+  assert.equal((await call()).status, 409);
+  assert.equal((await handleNativeRecognition(f.request('recognize', payload, { Origin: 'https://other.invalid' }, false), env, f.fetchImpl)).status, 403);
+});
+
+test('phone fallback without an Inputs session reuses SMS recovery and never grants access', async () => {
+  const f = await fixture();
+  for (const sms of ['2025550199', '12025550199']) {
+    const response = await handleNativeRecognition(f.request('action', { ...action('phone_login'), session_event_uid: 'phone-recovery-same-001', sms }, {}, false), smsEnv, f.fetchImpl);
+    assert.equal(response.status, 200); assert.equal((await response.json()).accepted, true);
+    assert.equal(response.headers.get('Set-Cookie'), null);
+  }
+  assert.equal(f.rows('rs_sms_requests').length, 1);
+  assert.deepEqual(f.rows('rs_sms_requests')[0].fields.person_uid, [f.person.id]);
+  assert.equal(f.rows('rs_devices_test').length, 0);
+});
+
 test('lost-session recovery queues only canonical invited person, reuses request identity and stores no private message', async () => {
   const f = await fixture();
   const request = () => f.request('action', recovery, {}, false);

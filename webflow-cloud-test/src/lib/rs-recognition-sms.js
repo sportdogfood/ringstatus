@@ -47,6 +47,12 @@ export function createRecoverySms({ env, fetchImpl = fetch, now = () => Date.now
     enabled(); mode();
     const uid = clean(payload.session_event_uid); if (!/^[A-Za-z0-9_-]{16,128}$/.test(uid)) fail('invalid_recovery_request', 400);
     const clauses = [];
+    if (clean(payload.sms)) {
+      const digits = clean(payload.sms).replace(/\D/g, '');
+      const normalized = digits.length === 10 ? `1${digits}` : digits;
+      if (!/^1\d{10}$/.test(normalized)) fail('invalid_sms', 400);
+      clauses.push(`OR({primary_phone_e164} = '+${normalized}',{primary_phone_e164} = '${normalized}')`);
+    }
     if (clean(payload.email)) clauses.push(`LOWER({email}) = '${escape(clean(payload.email).toLowerCase())}'`);
     if (clean(payload.first) && clean(payload.last)) clauses.push(`AND(LOWER({first_name}) = '${escape(clean(payload.first).toLowerCase())}',LOWER({last_name}) = '${escape(clean(payload.last).toLowerCase())}')`);
     if (!clauses.length) fail('missing_recovery_identity', 400);

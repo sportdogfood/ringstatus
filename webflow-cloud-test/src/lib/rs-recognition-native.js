@@ -1,6 +1,6 @@
 import { recognitionConfig } from './rs-recognition-config.js';
 import { handleAuthenticatedInputRoute } from '../pages/rs-inputs/[operation].js';
-import { handleAccessRoute, createAccessStore } from './rs-inputs-access.js';
+import { handleAccessRoute, createAccessStore, accessHash } from './rs-inputs-access.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
 import { recordRecognitionSession } from './rs-recognition-session.js';
 import { createRecoverySms, requireSmsAutomation } from './rs-recognition-sms.js';
@@ -21,13 +21,40 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
     const incoming = new URL(request.url);
     if (!/\/rs-inputs\/native-recognition$/.test(incoming.pathname)) return respond({ ok: false, error: 'native_cookie_scope_required' }, 400);
     const operation = incoming.searchParams.get('operation');
-    if (!['device', 'action', 'session', 'sms_prepare', 'sms_outcome'].includes(operation)) return respond({ ok: false, error: 'unsupported_operation' }, 400);
+    if (!['recognize', 'device', 'action', 'session', 'sms_prepare', 'sms_outcome'].includes(operation)) return respond({ ok: false, error: 'unsupported_operation' }, 400);
     if (request.method !== (operation === 'device' ? 'GET' : 'POST')) return respond({ ok: false, error: 'method_not_allowed' }, 405);
     const target = new URL(request.url);
     target.pathname = incoming.pathname.replace(/native-recognition$/, operation === 'session' ? 'session' : 'recognition');
     target.search = '';
     const payload = operation === 'device' ? null : await request.json().catch(() => null);
     if (operation !== 'device' && (!payload || Array.isArray(payload))) return respond({ ok: false, error: 'invalid_request' }, 400);
+    if (operation === 'recognize') {
+      if (request.headers.get('Origin') !== incoming.origin) return respond({ ok: false, error: 'origin_denied' }, 403);
+      const cookies = (request.headers.get('Cookie') || '').split(';').map(v => v.trim()).filter(v => v.startsWith('__Host-rs_recognition_device='));
+      if (cookies.length > 1) return respond({ ok: false, error: 'invalid_device_token' }, 400);
+      const token = cookies.length ? cookies[0].slice('__Host-rs_recognition_device='.length) : payload.device_token;
+      // Do not revive the historical timestamp/Math.random token fallback.
+      if (typeof token !== 'string' || !/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(token)) return respond({ ok: true, recognized: false });
+      if (typeof payload.session_uid !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(payload.session_uid)) return respond({ ok: false, error: 'invalid_session_uid' }, 400);
+      const recognition = createInputRecognition({ env: bindings, fetchImpl, verifiedInputAccess: true });
+      const found = await recognition.recognizeDevice(token);
+      const response = respond({ ok: true, recognized: found.recognized, ...(found.recognized ? { first_name: found.profile.first_name, person_name: found.profile.person_name } : {}) });
+      if (!found.recognized) {
+        response.headers.set('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
+        return response;
+      }
+      // Reuse the existing canonical session/Geo-IP logger. This is recognition,
+      // not permission to edit profiles or access protected Inputs routes.
+      const eventUid = await accessHash(`${payload.session_uid}:${token}`);
+      await recordRecognitionSession({ env: bindings, fetchImpl, request, payload: {
+        session_uid: payload.session_uid, session_event_uid: eventUid,
+        idempotency_key: `native_silent:${eventUid}`, event_type: 'recognition',
+        event_result: 'matched', recognition_status: 'confirmed', matched_by: 'device_token',
+        person_record_id: found.personRecordId, device_record_id: found.deviceRecordId, detail: { source: 'native_silent_recognition' }
+      } });
+      response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
+      return response;
+    }
     if (operation === 'sms_prepare' || operation === 'sms_outcome') {
       requireSmsAutomation(request, env);
       const sms = createRecoverySms({ env: bindings, fetchImpl });
@@ -65,6 +92,11 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
     const forwarded = new Request(target, { method: request.method, headers: request.headers,
       ...(operation === 'action' ? { body: JSON.stringify({ action: payload.action, requestId: payload.session_event_uid, device_token: deviceToken, values }) } : {}) });
     const response = await handleAuthenticatedInputRoute({ request: forwarded }, bindings, fetchImpl);
+    if (response.status === 401 && operation === 'action' && payload.action === 'phone_login') {
+      if (request.headers.get('Origin') !== incoming.origin) return respond({ ok: false, error: 'origin_denied' }, 403);
+      // Reuse the existing SMS queue; a typed number is not an access credential.
+      return respond(await createRecoverySms({ env: bindings, fetchImpl }).request({ session_event_uid: payload.session_event_uid, sms: payload.sms }));
+    }
     const data = await response.json();
     if (!response.ok || !data.ok) return respond({ ok: false, error: data.error || 'recognition_unavailable' }, response.status);
     return respond({ ok: true, recognized: data.recognized === true, invited_profile: !!data.profile,

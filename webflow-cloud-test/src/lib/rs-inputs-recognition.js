@@ -144,9 +144,14 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     if (person.id !== personId || !person.fields) fail("invalid_recognition_response", 502);
     if (!eligible(person)) return { response: result(), person: null, existingDevice: true };
     if (!clean(person.fields.person_uid)) fail("invalid_recognition_response", 502);
-    return { response: retired ? result(null, "retired") : result(profileOf(person), "active"), person, existingDevice: true };
+    return { response: retired ? result(null, "retired") : result(profileOf(person), "active"), person, existingDevice: true, deviceRecordId: device.id };
   }
   return {
+    // Recognition context for the public launcher, never an Inputs actor or grant.
+    async recognizeDevice(deviceToken) {
+      const resolved = await resolve(deviceToken);
+      return { ...resolved.response, personRecordId: resolved.person?.id || '', deviceRecordId: resolved.deviceRecordId || '' };
+    },
     async lookup(deviceToken) {
       if (deviceToken != null && deviceToken !== "" && !principal) fail("verified_profile_required", 503);
       const resolved = await resolve(deviceToken);

@@ -45,8 +45,32 @@ function fixture() {
     input: (name, value) => { nodes.find(n => n.kind === "input" && n.state === "profile" && n.name === name).value = value; } };
 }
 const settle = () => new Promise(resolve => setImmediate(resolve));
-const args = f => ({ root: f.root, baseUrl: "https://example.invalid/test/rs-recognition/", present: () => {},
+const args = f => ({ root: f.root, baseUrl: "https://example.invalid/test/rs-recognition/", present: () => {}, silentRecognition: false,
   persistentStorage: f.storage, sessionStorageImpl: f.storage, uuid: f.uuid, navigate: () => {} });
+
+test('default native mount silently recognizes and redirects home without opening a dialog', async () => {
+  const f = fixture(), paths = [], views = [], operations = [];
+  const api = mountNativeRecognition({ ...args(f), silentRecognition: true, navigate: p => paths.push(p), present: v => views.push(v),
+    fetchImpl: async url => { operations.push(url.searchParams.get('operation')); return Response.json({ ok: true, recognized: true }); } });
+  await settle(); await settle();
+  assert.deepEqual(operations, ['recognize']); assert.deepEqual(paths, ['/']);
+  assert.equal(views.some(v => v.open), false); api.destroy();
+});
+
+test('unknown silent visitor opens phone login and accepted SMS fallback does not claim recognition', async () => {
+  const f = fixture(), views = [], paths = [];
+  const api = mountNativeRecognition({ ...args(f), silentRecognition: true, present: v => views.push(v), navigate:p=>paths.push(p),
+    fetchImpl: async url => {
+      const operation = url.searchParams.get('operation');
+      if (operation === 'recognize') return Response.json({ok:true,recognized:false});
+      if (operation === 'device') return Response.json({ok:false,error:'authentication_required'},{status:401});
+      return Response.json({ok:true,accepted:true});
+    } });
+  await settle(); await settle();
+  assert.equal(views.at(-1).state, 'login'); assert.equal(views.at(-1).open,true);
+  await f.click('phone-login');
+  assert.equal(views.at(-1).state,'received'); assert.deepEqual(paths,[]); api.destroy();
+});
 
 test('SMS invitation is removed from the URL, accepted once through existing access, then opens native recognition', async () => {
   const f = fixture(), requests = [], views = [], navigation = [];

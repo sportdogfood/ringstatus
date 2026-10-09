@@ -1,5 +1,38 @@
 // Native Recognize behavior only. The page owns markup, classes and presentation.
 // Nothing mounts until the page supplies its verified native state presenter.
+// Standalone so the same silent entry can later be called from a global footer.
+export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
+  persistentStorage = localStorage, sessionStorageImpl = sessionStorage,
+  navigate = path => location.assign(path), launcherPath = '/', now = () => Date.now(),
+  uuid = () => crypto.randomUUID(), timeoutMs = 12000 }) {
+  const tokenKey = 'rs_recognition_device_token_v1', expiryKey = 'rs_recognition_device_expires_v1';
+  const sessionKey = 'rs_native_recognition_session_v1';
+  const abort = new AbortController(), timer = setTimeout(() => abort.abort(), timeoutMs);
+  try {
+    const target = new URL(endpoint);
+    if (globalThis.location?.origin && target.origin !== globalThis.location.origin) return false;
+    if (!launcherPath.startsWith('/') || launcherPath.startsWith('//')) return false;
+    const expiry = persistentStorage.getItem(expiryKey);
+    if (expiry && (!Number.isFinite(Number(expiry)) || Number(expiry) <= now())) {
+      persistentStorage.removeItem(tokenKey); persistentStorage.removeItem(expiryKey);
+    }
+    let token = persistentStorage.getItem(tokenKey);
+    if (!token) { token = uuid(); persistentStorage.setItem(tokenKey, token); }
+    let session = sessionStorageImpl.getItem(sessionKey);
+    if (!session) { session = uuid(); sessionStorageImpl.setItem(sessionKey, session); }
+    target.searchParams.set('operation', 'recognize');
+    const response = await fetchImpl(target, { method: 'POST', credentials: 'same-origin', signal: abort.signal,
+      headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_token: token, session_uid: session }) });
+    const data = await response.json();
+    if (!response.ok || data.ok !== true || data.recognized !== true) return false;
+    persistentStorage.setItem(expiryKey, String(now() + 365 * 86400000));
+    // A global footer must not cause a redirect loop on the launcher itself.
+    if (globalThis.location?.pathname !== launcherPath) navigate(launcherPath);
+    return true;
+  } catch { return false; }
+  finally { clearTimeout(timer); }
+}
+
 export function createNativeRecognitionPresenter({ root, ix3 }) {
   if (!root || typeof ix3?.emit !== "function") throw new Error("native_ix3_required");
   const states = ["recognized", "profile", "login", "recovery", "received", "unavailable"];
@@ -30,7 +63,8 @@ export function createNativeRecognitionPresenter({ root, ix3 }) {
 export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fetch,
   persistentStorage = localStorage, sessionStorageImpl = sessionStorage,
   locationImpl = globalThis.location, historyImpl = globalThis.history,
-  navigate = url => location.assign(url), uuid = () => crypto.randomUUID(), timeoutMs = 12000 }) {
+  navigate = url => location.assign(url), uuid = () => crypto.randomUUID(), timeoutMs = 12000,
+  silentRecognition = true, launcherPath = '/' }) {
   if (!root || typeof present !== "function") throw new Error("native_presenter_required");
   if (root.__rsNativeRecognition) return root.__rsNativeRecognition;
   const endpoint = new URL(baseUrl);
@@ -61,7 +95,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   const controller = new AbortController();
   function feedback(message) {
     const target = get(`[data-rs-native-state="${state}"] [data-rs-native-feedback]`) || get('[data-rs-native-feedback]');
-    target.textContent = message || ({ recognized: deviceConfirmed ? "This browser recognizes your profile." : "Confirm this browser with Continue before editing.", login: "Open your invitation link to sign in.", received: "SMS recovery has not been confirmed." }[state] || "");
+    target.textContent = message || ({ recognized: deviceConfirmed ? "This browser recognizes your profile." : "Confirm this browser with Continue before editing.", login: "Enter your phone number to sign in.", received: "SMS recovery has not been confirmed." }[state] || "");
   }
   function show(next, message = "") {
     const changed = state !== next;
@@ -129,7 +163,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
         person_record_id: person?.person_record_id || "", device_record_id: data.device_record_id || "" };
       try { await json("session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(event) }); }
       catch { feedback("Recognition checked. The visit log could not be recorded."); }
-    } catch (error) { bindPerson(null); show(error.message === 'authentication_required' ? 'login' : 'unavailable', error.message === 'authentication_required' ? 'Open your invitation link to sign in.' : 'Recognition could not be checked. Try again.'); }
+    } catch (error) { bindPerson(null); show(error.message === 'authentication_required' ? 'login' : 'unavailable', error.message === 'authentication_required' ? 'Enter your phone number to sign in.' : 'Recognition could not be checked. Try again.'); }
     finally { busy = false; present({ state, open: opened, busy }); }
   }
   async function action(name, data = {}, continuation = "recognized") {
@@ -153,6 +187,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       } else if (data.recognized === true) bindPerson(data);
       else if (pending.body.action === "phone_login") {
         bindPerson(null);
+        if (data.accepted === true) { pending = null; show("received", "If your phone is registered, check your SMS. Otherwise request an invitation, contact support, or try again."); return; }
         if (data.audit_status === "pending") show("login", "No matching active profile was found. The action log is pending; retry the same request.");
         else { pending = null; show("login", "No matching active profile was found."); }
         return;
@@ -164,7 +199,12 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       }
       pending = null;
       if (next === "navigate") {
-        opened = false; show("recognized"); navigate(root.getAttribute("data-rs-setup-path"));
+        opened = false; show("recognized");
+        if (silentRecognition) {
+          const matched = await runSilentRecognition({ endpoint, fetchImpl, persistentStorage, sessionStorageImpl, navigate, launcherPath, uuid, timeoutMs });
+          if (!matched) { opened = true; show('unavailable', 'Your browser was confirmed, but recognition could not finish. Try again.'); }
+        }
+        else navigate(root.getAttribute("data-rs-setup-path"));
       } else if (next === "closed") { opened = false; show("recognized"); returnFocus?.focus(); }
       else show(next, next === "received" ? "Request received. If your account is eligible, check for an SMS. Delivery is not confirmed." : "");
     } catch (error) {
@@ -194,7 +234,10 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     else if (command === "close") {
       if (person && deviceConfirmed) await action("confirm_device", owned(), "closed");
       else { opened = false; show(state); returnFocus?.focus(); }
-    } else if (command === "retry") { if (pending) await executePending(); else await lookup(); }
+    } else if (command === "retry") {
+      if (pending) await executePending();
+      else if (!silentRecognition || !await runSilentRecognition({ endpoint, fetchImpl, persistentStorage, sessionStorageImpl, navigate, launcherPath, uuid, timeoutMs })) await lookup();
+    }
   }
   root.addEventListener("click", click, { signal: controller.signal });
   root.addEventListener("keydown", event => {
@@ -215,6 +258,13 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   root.__rsNativeRecognition = api;
   bindPerson(null); show("unavailable");
   if (invitation !== null) void acceptInvitation();
-  else void lookup();
+  else if (silentRecognition) {
+    busy = true;
+    void runSilentRecognition({ endpoint, fetchImpl, persistentStorage, sessionStorageImpl, navigate, launcherPath, uuid, timeoutMs }).then(async matched => {
+      deviceToken = persistentStorage.getItem(tokenKey) || deviceToken;
+      busy = false;
+      if (!matched) { opened = true; await lookup(); }
+    });
+  } else void lookup();
   return api;
 }
