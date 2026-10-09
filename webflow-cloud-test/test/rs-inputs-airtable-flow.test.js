@@ -1,3 +1,4 @@
+import { withInputLifecycle } from '../test-support/rs-inputs-lifecycle-schema.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -6,8 +7,8 @@ import { handleInputRequest, digest } from '../src/lib/rs-inputs.js';
 
 // Contract integration only: the provider below is an in-memory REST double.
 // It does not establish Airtable atomicity, deployed access controls or live writes.
-const schema = JSON.parse(await readFile(new URL('../config/rs-inputs-schema.json', import.meta.url), 'utf8'));
-const baseId = 'appIsolatedFlowFixture';
+const schema = withInputLifecycle(JSON.parse(await readFile(new URL('../config/rs-inputs-schema.json', import.meta.url), 'utf8')));
+const baseId = 'app9kOZdIaGyKk5uG';
 const origin = 'https://ringstatus.test';
 const actor = { id: 'flow-actor', permissions: ['inputs:read', 'inputs:write', 'barns:create'], barnIds: [] };
 
@@ -28,6 +29,8 @@ function fakeAirtable({ pageSize = 1 } = {}) {
         if (field.options?.precision === 0) assert.ok(Number.isInteger(value), `${name} must be integer`);
       } else if (['singleLineText', 'multilineText', 'email'].includes(field.type)) {
         assert.equal(typeof value, 'string', `${name} must be text`);
+      } else if (field.type === 'singleSelect') {
+        assert.ok(field.options.choices.some(choice => choice.name === value), `Invalid choice for ${name}`);
       } else if (field.type === 'dateTime') {
         assert.equal(typeof value, 'string');
         assert.ok(Number.isFinite(Date.parse(value)), `${name} must contain an ISO timestamp`);

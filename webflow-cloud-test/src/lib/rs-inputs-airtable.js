@@ -1,12 +1,12 @@
 import { InputError } from './rs-inputs.js';
 
-const protectedBases = new Set(['appZahVgD156cMAe3', 'apptdhhNzduxm5gjn']);
+const INPUT_BASE = 'app9kOZdIaGyKk5uG';
 const tables = { barn: 'rs_input_barns', users: 'rs_input_users', riders: 'rs_input_riders', horses: 'rs_input_horses', locations: 'rs_input_locations' };
 const fields = { id: 'entity_uid', barnId: 'barn_uid', name: 'name', email: 'email', userId: 'user_uid', riderId: 'rider_uid', locationId: 'location_uid', address: 'address', recognitionPersonId: 'recognition_person_uid', revision: 'revision', ownerUid: 'owner_uid', requestUid: 'request_uid', requestHash: 'request_hash' };
 const escape = value => String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 export function createAirtableInputStore({ env, fetchImpl = fetch, minimumIntervalMs = 225 }) {
   const base = env.RS_INPUTS_BASE_ID;
-  if (!/^app\w+$/.test(base || '') || protectedBases.has(base)) throw new InputError('clean_input_base_required', 503);
+  if (base !== INPUT_BASE) throw new InputError('clean_input_base_required', 503);
   if (!env.AIRTABLE_TOKEN) throw new InputError('storage_credentials_missing', 503);
   let lastRequestAt = 0;
   async function call(table, { method = 'GET', body, formula } = {}) {
@@ -53,6 +53,10 @@ export function createAirtableInputStore({ env, fetchImpl = fetch, minimumInterv
       if (current && current.fields.revision !== expectedRevision) throw new InputError('record_changed', 409);
       if (!current && expectedRevision !== undefined) throw new InputError('record_changed', 409);
       const mapped = Object.fromEntries(Object.entries(fields).filter(([key]) => record[key] !== undefined).map(([key, field]) => [field, record[key]]));
+      // This writer is qualified only for isolated-trial. Classify new records
+      // using existing schema choices; never infer or overwrite legacy lifecycle.
+      // Lifecycle does not grant access or consent, and is not caller-controlled.
+      if (!current) Object.assign(mapped, { status: 'Active', record_mode: 'Test' });
       // Upsert stabilizes retries; this read + write is NOT an atomic conditional update.
       await call(tables[kind], { method: 'PATCH', body: { performUpsert: { fieldsToMergeOn: ['entity_uid'] }, records: [{ fields: mapped }] } });
     },
@@ -65,7 +69,11 @@ export function createAirtableInputStore({ env, fetchImpl = fetch, minimumInterv
     },
     async appendEvent(event) {
       writable();
-      await call('rs_input_events', { method: 'PATCH', body: { performUpsert: { fieldsToMergeOn: ['event_uid'] }, records: [{ fields: { event_uid: event.eventId, actor_uid: event.actorId, entity_uid: event.record.id, barn_uid: event.barnId, action: event.action, kind: event.kind, request_uid: event.requestId, input_hash: event.inputHash, result_json: JSON.stringify(event.record), occurred_at: event.occurredAt, outcome: 'committed' } }] } });
+      const existing = await call('rs_input_events', { formula: `{event_uid} = '${escape(event.eventId)}'` });
+      if (existing.length > 1) throw new InputError('ambiguous_audit_event', 409);
+      // Preserve existing audit classification, including unclassified legacy
+      // rows. This preflight does not provide cross-instance atomicity.
+      await call('rs_input_events', { method: 'PATCH', body: { performUpsert: { fieldsToMergeOn: ['event_uid'] }, records: [{ fields: { event_uid: event.eventId, actor_uid: event.actorId, entity_uid: event.record.id, barn_uid: event.barnId, action: event.action, kind: event.kind, request_uid: event.requestId, input_hash: event.inputHash, result_json: JSON.stringify(event.record), occurred_at: event.occurredAt, outcome: 'committed', ...(!existing.length ? { record_mode: 'Test' } : {}) } }] } });
     }
   };
 }

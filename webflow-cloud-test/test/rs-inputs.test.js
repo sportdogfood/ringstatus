@@ -109,13 +109,13 @@ test('request boundary rejects spoofed actors, cross-origin writes and malformed
 });
 test('Airtable adapter never targets infrastructure/legacy bases and refuses unqualified writes', async () => {
   for (const base of ['', 'appZahVgD156cMAe3', 'apptdhhNzduxm5gjn']) assert.throws(() => createAirtableInputStore({ env: { RS_INPUTS_BASE_ID: base, AIRTABLE_TOKEN: 'fixture' } }), { code: 'clean_input_base_required' });
-  const store = createAirtableInputStore({ env: { RS_INPUTS_BASE_ID: 'appIsolatedFixture', AIRTABLE_TOKEN: 'fixture' }, fetchImpl: async () => { throw new Error('must not call'); } });
+  const store = createAirtableInputStore({ env: { RS_INPUTS_BASE_ID: 'app9kOZdIaGyKk5uG', AIRTABLE_TOKEN: 'fixture' }, fetchImpl: async () => { throw new Error('must not call'); } });
   await assert.rejects(store.put('users', {}), { code: 'storage_concurrency_not_qualified' });
   assert.equal(store.capabilities.atomicCompareAndSwap, false);
 });
 test('Airtable pagination and stale-write preflight use canonical IDs', async () => {
   const calls = [];
-  const store = createAirtableInputStore({ env: { RS_INPUTS_BASE_ID: 'appIsolatedFixture', AIRTABLE_TOKEN: 'fixture', RS_INPUTS_WRITE_MODE: 'isolated-trial' }, fetchImpl: async (url, init) => {
+  const store = createAirtableInputStore({ env: { RS_INPUTS_BASE_ID: 'app9kOZdIaGyKk5uG', AIRTABLE_TOKEN: 'fixture', RS_INPUTS_WRITE_MODE: 'isolated-trial' }, fetchImpl: async (url, init) => {
     calls.push({ url: String(url), ...init });
     if (new URL(url).searchParams.has('filterByFormula')) return Response.json({ records: [{ id: 'recInternal', fields: { entity_uid: 'canonical-a', revision: 3 } }] });
     const next = new URL(url).searchParams.has('offset');

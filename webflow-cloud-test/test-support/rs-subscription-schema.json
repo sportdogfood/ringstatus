@@ -1,0 +1,325 @@
+[
+  {
+    "id": "tblRvTwo3HYPUkZou",
+    "name": "rs_input_barns",
+    "description": "Owned Recognize/User Inputs isolated trial. Canonical identifiers and revision/audit contract from RingStatus config/rs-inputs-schema.json; no messaging or publishing automation.",
+    "primaryFieldId": "fldFq7yx3UqmERrAf",
+    "fields": [
+      {
+        "id": "fldFq7yx3UqmERrAf",
+        "name": "entity_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldBIb2cX352DJTLW",
+        "name": "barn_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldIv8UTVXdubSIzt",
+        "name": "name",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldx6Xf25N4SGaLGJ",
+        "name": "owner_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldj14nQLksTl8TEU",
+        "name": "revision",
+        "type": "number"
+      },
+      {
+        "id": "fldSJRf6AFaVyc9ED",
+        "name": "request_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldVQ6O20p06XTOoB",
+        "name": "request_hash",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldavF7l1ZvM1jXdj",
+        "name": "status",
+        "type": "singleSelect",
+        "description": "Lifecycle state. Required for new entity records; blank legacy rows are unclassified. Does not grant access or establish consent."
+      },
+      {
+        "id": "fldXA1sTbmeZhX8Ht",
+        "name": "record_mode",
+        "type": "singleSelect",
+        "description": "Required for new records. Test records must never be used for live alerts. Blank existing values mean unclassified, not Live."
+      }
+    ]
+  },
+  {
+    "id": "tblYgoeLEey05xgw9",
+    "name": "rs_input_users",
+    "description": "Owned Recognize/User Inputs isolated trial. Canonical identifiers and revision/audit contract from RingStatus config/rs-inputs-schema.json; no messaging or publishing automation.",
+    "primaryFieldId": "fldQRWsgjBfBPsORD",
+    "fields": [
+      {
+        "id": "fldQRWsgjBfBPsORD",
+        "name": "entity_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldVik8bHNEcrXoPf",
+        "name": "barn_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld4a6FJB1AfYW8ME",
+        "name": "name",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldzgIaYK1pGtmlMl",
+        "name": "email",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldZVmYrBzSYKCmLW",
+        "name": "recognition_person_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "flds1qqdEtvwgTwMG",
+        "name": "owner_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld1uAcF0o2u2l3VW",
+        "name": "revision",
+        "type": "number"
+      },
+      {
+        "id": "fld9zInGNHTWz0CWX",
+        "name": "request_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldbWkuNmiTcT5gEh",
+        "name": "request_hash",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld35PjRdZ7VL5rQa",
+        "name": "status",
+        "type": "singleSelect",
+        "description": "Lifecycle state. Required for new entity records; blank legacy rows are unclassified. Does not grant access or establish consent."
+      },
+      {
+        "id": "fldP5nru2ijZdPvW0",
+        "name": "record_mode",
+        "type": "singleSelect",
+        "description": "Required for new records. Test records must never be used for live alerts. Blank existing values mean unclassified, not Live."
+      },
+      {
+        "id": "fldDBuahTjvcXAQPg",
+        "name": "phone_e164",
+        "type": "singleLineText",
+        "description": "Optional contact phone; required only for phone-dependent features. Consent is stored separately."
+      },
+      {
+        "id": "fld4uMeuIT2PWf1na",
+        "name": "aliases",
+        "type": "multilineText",
+        "description": "Optional alternate person names, one per line. Never sufficient for automatic identity merging."
+      }
+    ]
+  },
+  {
+    "id": "tblwts3huk3w1ACjh",
+    "name": "rs_input_events",
+    "description": "Owned Recognize/User Inputs isolated trial. Canonical identifiers and revision/audit contract from RingStatus config/rs-inputs-schema.json; no messaging or publishing automation.",
+    "primaryFieldId": "fldBISqDaHZ99Mp9U",
+    "fields": [
+      {
+        "id": "fldBISqDaHZ99Mp9U",
+        "name": "event_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldfzDVcoqDbR6nLw",
+        "name": "actor_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldmGYOsagT2JEcTx",
+        "name": "entity_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldv6xlnxUOifPWst",
+        "name": "barn_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldRZ58nEzDcjzIAb",
+        "name": "action",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldzFcA5qFxhMojqE",
+        "name": "request_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldcRrymVwBNOwcaf",
+        "name": "occurred_at",
+        "type": "dateTime"
+      },
+      {
+        "id": "flduv5TecHHJalNbk",
+        "name": "input_hash",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldXN2a9S9gchv1ME",
+        "name": "result_json",
+        "type": "multilineText"
+      },
+      {
+        "id": "fldGyqJ79DluKm1gs",
+        "name": "kind",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldaVBqUEwOyRYoTf",
+        "name": "outcome",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldsyk0KU7kPiKYdR",
+        "name": "record_mode",
+        "type": "singleSelect",
+        "description": "Required for new records. Test records must never be used for live alerts. Blank existing values mean unclassified, not Live."
+      }
+    ]
+  },
+  {
+    "id": "tblbpALv7flu3NNEE",
+    "name": "rs_input_subscriptions",
+    "description": "User alert selections and consent state. No sending or automatic CRM synchronization is configured. Unknown consent never becomes Granted by migration. Minimum required: entity_uid, barn_uid, user_uid, engine_scope, target_type, target_uid, alert_types, status, consent_state, record_mode. User edits also retain owner/revision/request provenance where applicable. Field descriptions identify conditional requirements. UID relationships are application references, not Airtable-enforced foreign keys.",
+    "primaryFieldId": "fld6xoLLZ4t2RaYlz",
+    "fields": [
+      {
+        "id": "fld6xoLLZ4t2RaYlz",
+        "name": "entity_uid",
+        "type": "singleLineText",
+        "description": "Required. Stable application UUID; preserve across CRM and Airtable. Do not use display names as identity."
+      },
+      {
+        "id": "fldQKdCPF9JgAxOBu",
+        "name": "barn_uid",
+        "type": "singleLineText",
+        "description": "Required. Barn scope for this subscription."
+      },
+      {
+        "id": "fldwa42pzMLIejZhB",
+        "name": "user_uid",
+        "type": "singleLineText",
+        "description": "Required. Recipient person from rs_input_users.entity_uid."
+      },
+      {
+        "id": "fldF9Yt5L5YxZ4tjk",
+        "name": "engine_scope",
+        "type": "singleSelect",
+        "description": "Required. One engine per subscription; engine rules stay separate."
+      },
+      {
+        "id": "fld2HKffikJM6Judj",
+        "name": "target_type",
+        "type": "singleSelect",
+        "description": "Required. Defines which entity target_uid refers to."
+      },
+      {
+        "id": "fldaUltjawJWN8JWF",
+        "name": "target_uid",
+        "type": "singleLineText",
+        "description": "Required. Stable UID of the followed entity."
+      },
+      {
+        "id": "fldnwUO3nU4UeDDBJ",
+        "name": "alert_types",
+        "type": "multilineText",
+        "description": "Required before activation. Existing approved alert identifiers, one per line; no new trigger logic is defined here."
+      },
+      {
+        "id": "fldTENoxbNRYin91s",
+        "name": "phone_e164",
+        "type": "singleLineText",
+        "description": "Required for active SMS. Normalized destination phone; never inferred from a name or phone suffix."
+      },
+      {
+        "id": "fldDKoD1Cpt5lWLef",
+        "name": "status",
+        "type": "singleSelect",
+        "description": "Required. Active additionally requires valid phone, Granted consent and source/time evidence; table storage alone does not enforce sending rules."
+      },
+      {
+        "id": "fldBGC8SxPXpxcSPr",
+        "name": "consent_state",
+        "type": "singleSelect",
+        "description": "Required. Record an actual user decision. Legacy active flags do not establish consent."
+      },
+      {
+        "id": "fldXeI7dittrA88v6",
+        "name": "consent_at",
+        "type": "dateTime",
+        "description": "Required when Granted or Revoked. Actual decision timestamp; do not fabricate migration timestamps."
+      },
+      {
+        "id": "fldjFpvY46GDNrn2i",
+        "name": "consent_source",
+        "type": "singleLineText",
+        "description": "Required when Granted or Revoked. Form/event/source proving the decision."
+      },
+      {
+        "id": "fld9tBgd2htNEQ0yW",
+        "name": "notice_version",
+        "type": "singleLineText",
+        "description": "Required when the collection flow uses versioned notice text; preserve captured version."
+      },
+      {
+        "id": "fldtdZRidyvAJlmjN",
+        "name": "revoked_at",
+        "type": "dateTime",
+        "description": "Required after opt-out. Retain withdrawal; do not overwrite with stale CRM/mirror data."
+      },
+      {
+        "id": "fldeUAAtXpc1WQusS",
+        "name": "owner_uid",
+        "type": "singleLineText",
+        "description": "Required on user-owned records. Existing application owner UID; not the Zoho staff Owner ID."
+      },
+      {
+        "id": "fldpM9ooDfJDdU1pe",
+        "name": "revision",
+        "type": "number",
+        "description": "Required on user changes. Positive revision; used for optimistic concurrency."
+      },
+      {
+        "id": "fldKHquzBBGMytTCm",
+        "name": "request_uid",
+        "type": "singleLineText",
+        "description": "Required on user changes. Stable request ID for retry/idempotency."
+      },
+      {
+        "id": "fldRyK6K3oSzBuzOM",
+        "name": "request_hash",
+        "type": "singleLineText",
+        "description": "Required on user changes. Hash of the request body; do not store credentials."
+      },
+      {
+        "id": "fldUhZFHZ09qJivaG",
+        "name": "record_mode",
+        "type": "singleSelect",
+        "description": "Required for new records. Test records must never be used for live alerts. Blank existing values mean unclassified, not Live."
+      }
+    ]
+  }
+]
