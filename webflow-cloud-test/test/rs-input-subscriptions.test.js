@@ -11,6 +11,7 @@ const module = await import('../src/lib/rs-input-subscriptions.js').catch(()=>nu
 const storeModule = await import('../src/lib/rs-input-subscription-store.js').catch(()=>null);
 const BASE='app9kOZdIaGyKk5uG', SUB='tblbpALv7flu3NNEE', EVENTS='tblwts3huk3w1ACjh';
 const schema=JSON.parse(readFileSync(new URL('../test-support/rs-subscription-schema.json',import.meta.url)));
+schema.find(t=>t.id===SUB).fields.push({id:'fldXUxFnjBwpUpBYA',name:'preferences_json',type:'multilineText'});
 const {subscriptionAlertDefinitions:defs}=await import('../src/lib/rs-input-subscription-alerts.js');
 const env={RS_INPUTS_BASE_ID:BASE,RS_INPUTS_RECOGNITION_BASE_ID:BASE,RS_INPUTS_WRITE_MODE:'isolated-trial',AIRTABLE_TOKEN:'synthetic',RS_INPUTS_SESSION_SECRET:'ab'.repeat(32)};
 const origin='https://synthetic.invalid';
@@ -26,6 +27,7 @@ function fixture(){
   const table=decodeURIComponent(parts[2]),method=init.method||'GET';calls.push({table,method});
   assert.ok(tables[table],table);let rows=tables[table];
   if(method==='GET'){
+   if(parts[3])return Response.json(rows.find(r=>r.id===parts[3])||{error:'NOT_FOUND'});
    const formula=url.searchParams.get('filterByFormula');
    if(formula){const terms=[...formula.matchAll(/\{([^}]+)\}\s*=\s*'([^']*)'/g)];assert.ok(terms.length,formula);rows=rows.filter(r=>terms.every(([,key,value])=>r.fields[key]===value));}
    const snapshot=structuredClone(rows);if(table===EVENTS&&auditReadDelay)await new Promise(resolve=>setTimeout(resolve,auditReadDelay));
@@ -39,7 +41,7 @@ function fixture(){
   let row=rows.find(r=>keys.every(k=>r.fields[k]===fields[k]));if(!row){row={id:'recNew'+(++seq),fields:{}};rows.push(row);}
   Object.assign(row.fields,fields);
   // Airtable omits empty fields from records returned by its API.
-  for(const key of Object.keys(row.fields))if(row.fields[key]==='')delete row.fields[key];
+  for(const key of Object.keys(row.fields))if(row.fields[key]===''||row.fields[key]===null||row.fields[key]===undefined)delete row.fields[key];
   if(loseSub && table===SUB){loseSub=false;throw Error('synthetic lost response');}
   if(badResponse)return Response.json({records:[]});
   return Response.json({records:[structuredClone(row)]});
@@ -54,7 +56,62 @@ function fixture(){
 }
 const req=(cookie,body,barn='barn_1',extra={})=>new Request(origin+'/test/rs-inputs/subscriptions?barn_id='+barn,{method:body?'POST':'GET',headers:{...(cookie?{Cookie:cookie}:{}),...(body?{Origin:origin,'Content-Type':'application/json'}:{}),...extra},...(body?{body:JSON.stringify(body)}:{})});
 const revoke={action:'revoke',barnId:'barn_1',subscriptionId:'sub_1',expectedRevision:1,requestId:'revoke_request_001'};
+const preferences=()=>({version:1,enabled:true,phone:'2025550148',timeZone:'America/New_York',variables:Object.fromEntries(defs.map(d=>[d.key,{enabled:!!d.input,value:d.input==='time'?'10:15':d.presets?String(d.presets[0]):''}]))});
 async function result(response,status){const b=await response.json();assert.equal(response.status,status,JSON.stringify(b));return b;}
+
+test('person preferences retain every timing, reload, update and opt out without inventing barn or engine',async()=>{
+ const f=fixture(),cookie=await f.cookie(),handler=f.build();
+ f.tables.rs_input_barns=[];f.tables.rs_input_users=[];
+ const body={action:'preferences',requestId:'preferences_save_001',preferences:preferences()};
+ const saved=await result(await handler(req(cookie,body)),200);
+ assert.equal(saved.preferences.phone,'+12025550148');
+ assert.deepEqual(saved.preferences.variables,body.preferences.variables);
+ const record=f.tables[SUB].find(r=>r.fields.preferences_json).fields;
+ assert.equal(record.target_type,'Person');assert.equal(record.target_uid,'person_1');
+ assert.equal(record.barn_uid,undefined);assert.equal(record.engine_scope,undefined);
+ assert.equal(record.status,'Draft');assert.equal(record.consent_state,'Granted');
+ const read=()=>new Request(origin+'/test/rs-inputs/subscriptions?view=preferences',{headers:{Cookie:cookie}});
+ assert.deepEqual((await result(await handler(read()),200)).preferences,saved.preferences);
+ assert.equal((await result(await handler(req(cookie,body)),200)).revision,1);
+ const off={...body,requestId:'preferences_off_001',expectedRevision:1,preferences:{...saved.preferences,enabled:false}};
+ assert.equal((await result(await handler(req(cookie,off)),200)).preferences.enabled,false);
+ assert.deepEqual((await result(await handler(read()),200)).preferences.variables,body.preferences.variables);
+ await result(await handler(req(cookie,{...off,requestId:'preferences_stale_001'})),409);
+ assert.equal(f.tables[EVENTS].length,2);
+ const again=await result(await handler(req(cookie,{...body,requestId:'preferences_again_001',expectedRevision:2})),200);
+ assert.equal(again.preferences.enabled,true);assert.equal(again.revision,3);
+ assert.equal(f.tables[SUB].find(r=>r.fields.preferences_json).fields.revoked_at,undefined);
+});
+
+test('preference save reconciles a lost storage reply once without duplicate record or audit',async()=>{
+ const f=fixture(),cookie=await f.cookie(),handler=f.build();
+ const body={action:'preferences',requestId:'preferences_lost_001',preferences:preferences()};
+ f.lose();await result(await handler(req(cookie,body)),503);
+ const saved=await result(await handler(req(cookie,body)),200);
+ assert.equal(saved.revision,1);assert.equal(f.tables[SUB].filter(r=>r.fields.preferences_json).length,1);assert.equal(f.tables[EVENTS].length,1);
+ await result(await handler(req(cookie,{...body,preferences:{...body.preferences,enabled:false}})),409);
+});
+
+test('recognized browser reads preferences through the same existing cookie and rejects impersonation',async()=>{
+ const f=fixture(),handler=f.build(),token='81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+ f.tables.rs_people_test[0].id='recPerson00000001';
+ f.tables.rs_devices_test=[{id:'recDevice00000001',fields:{device_token:token,status:'Active',person:['recPerson00000001']}}];
+ const cookie='__Host-rs_recognition_device='+token;
+ const read=new Request(origin+'/test/rs-inputs/subscriptions?view=preferences',{headers:{Cookie:cookie}});
+ assert.equal((await result(await handler(read),200)).preferences,null);
+ await result(await handler(req(cookie,{action:'preferences',requestId:'preferences_actor_001',ownerUid:'other',preferences:preferences()})),400);
+ f.tables.rs_people_test[0].fields.input_access='revoked';
+ await result(await handler(new Request(read)),401);
+ assert.equal(f.calls.filter(c=>c.method==='PATCH').length,0);
+});
+
+test('preferences reject unknown or invalid parameters before storage and preserve explicit off',async()=>{
+ const f=fixture(),cookie=await f.cookie(),handler=f.build();
+ for(const change of [p=>p.variables.class_starts_in1.value='9999',p=>p.variables.groom_tasks_at1.value='25:15',p=>p.timeZone='not-a-zone',p=>p.variables.injected={enabled:true,value:''}]){
+  const p=preferences();change(p);await result(await handler(req(cookie,{action:'preferences',requestId:'invalid_preference_001',preferences:p})),400);
+ }
+ assert.equal(f.calls.filter(c=>c.method==='PATCH').length,0);
+});
 
 test('all eight parameterized native alerts fail before any persistence',async()=>{
  const f=fixture(),cookie=await f.cookie(),handler=f.build();

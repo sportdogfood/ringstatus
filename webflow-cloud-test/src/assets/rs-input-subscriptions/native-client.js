@@ -1,0 +1,82 @@
+(() => {
+ const root=document.getElementById('rs-component-drafts');
+ const main=document.getElementById('rs-draft-alerts');
+ const form=root?.querySelector('[data-rs-form="alerts"]');
+ if(document.documentElement.getAttribute('data-wf-page')!=='6ac459b4506821bd349ed047'||!root||!main||!form||form.dataset.rsNativeBound==='true')return;
+ form.dataset.rsNativeBound='true';
+ const definitions=[{"key":"class_start_late","group":"Classes","label":"Class delayed","description":"When a class is expected to start later than scheduled."},{"key":"class_start_early","group":"Classes","label":"Class moved earlier","description":"When a class is expected to start earlier than scheduled."},{"key":"class_starts_in1","group":"Classes","label":"Class reminder 1","description":"A reminder before the expected class start.","input":"minutes","presets":[30,45,60,75,90]},{"key":"class_starts_in2","group":"Classes","label":"Class reminder 2","description":"A second reminder before the expected class start.","input":"minutes","presets":[15,30,45,60]},{"key":"class_started","group":"Classes","label":"Class started","description":"When the class begins."},{"key":"class_underway","group":"Classes","label":"Class in progress","description":"An update when the class is underway."},{"key":"class_completed","group":"Classes","label":"Class finished","description":"When the class is complete."},{"key":"trip_starts_in1","group":"Rider trips","label":"Ride reminder 1","description":"A reminder before the expected start of a rider’s trip.","input":"minutes","presets":[30,45,60,75,90]},{"key":"trip_starts_in2","group":"Rider trips","label":"Ride reminder 2","description":"A second reminder before the expected start of a rider’s trip.","input":"minutes","presets":[15,30,45,60]},{"key":"rider_oog","group":"Rider trips","label":"Rider order","description":"An update about the rider’s order of go."},{"key":"rider_oog10","group":"Rider trips","label":"Rides to go","description":"Tell me when this many entries remain before my rider’s turn.","input":"entries","presets":[7,10,15],"defaultValue":"10"},{"key":"rider_started","group":"Rider trips","label":"Rider started","description":"When the rider begins their trip."},{"key":"rider_first_score","group":"Rider trips","label":"First score","description":"When the rider’s first score is reported."},{"key":"rider_first_time","group":"Rider trips","label":"First time","description":"When the rider’s first time is reported."},{"key":"rider_results","group":"Rider trips","label":"Rider results","description":"When results for the rider become available."},{"key":"groom_tasks_at1","group":"Groom tasks","label":"Task reminder 1","description":"A groom task reminder at your chosen time.","input":"time"},{"key":"groom_tasks_at2","group":"Groom tasks","label":"Task reminder 2","description":"A second groom task reminder at your chosen time.","input":"time"},{"key":"groom_tasks_at3","group":"Groom tasks","label":"Task reminder 3","description":"A third groom task reminder at your chosen time.","input":"time"}];
+ const endpoint=new URL('subscriptions',import.meta.url);
+ let revision=0,loaded=false,busy=false,pending=null;
+ const lock=on=>{busy=on;form.querySelectorAll('input,button,select').forEach(node=>node.disabled=on);};
+ const errors={authentication_required:'Open Recognize in this browser, then reload this page.',record_changed:'Preferences changed in another window. Reload to view the latest saved choices.',write_outcome_unknown:'Save could not be confirmed. Retry the same save to check it.',subscription_request_in_progress:'A save is already in progress. Wait, then try again.'};
+ async function request(body){
+  const url=new URL(endpoint);if(!body)url.searchParams.set('view','preferences');
+  const response=await fetch(url,{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(30000),...(body?{headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
+  const result=await response.json();if(!response.ok||result?.ok!==true)throw Error(errors[result?.error]||'Preferences could not be saved or loaded. Your choices are kept here.');return result;
+ }
+ const seed=()=>({version:1,enabled:false,phone:'',timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone,variables:Object.fromEntries(definitions.map(a=>[a.key,{enabled:false,value:a.defaultValue||''}]))});
+ let data=seed(),error='',notice='',invalid='',mobile=new URLSearchParams(window.location.search).get('view')!=='desktop';
+ const phone=root.querySelector('[data-rs-field="phone"]'),sms=root.querySelector('[data-rs-sms]'),errorNode=root.querySelector('[data-rs-error]'),statusNode=root.querySelector('[data-rs-status]'),count=root.querySelector('[data-rs-alert-count]'),hint=root.querySelector('[data-rs-phone-hint]');
+ phone.type='tel';phone.placeholder='+1 202 555 0148';phone.setAttribute('aria-label','Mobile number');phone.maxLength=180;phone.autocomplete='off';
+ const narrow=window.matchMedia('(max-width:480px)');
+ const show=(node,on,display='')=>{if(node){node.hidden=!on;node.style.display=on?display:'none';}};
+ function presentation(){
+  const dark=root.dataset.theme==='dark';root.dataset.view=mobile?'mobile':'desktop';
+  [root,...root.querySelectorAll('[class*="rs-alert-v24-"]')].forEach(node=>{node.classList.toggle('rs-alert-v24-dark',dark);node.classList.toggle('rs-alert-v24-mobile',mobile);node.classList.toggle('rs-alert-v24-narrow',narrow.matches);});
+  root.querySelectorAll('[data-rs-action="theme"]').forEach(button=>{const active=button.dataset.value===root.dataset.theme;button.setAttribute('aria-pressed',String(active));button.classList.toggle('rs-alert-v24-selected',active);});
+  const view=root.querySelector('[data-rs-action="alert-view"]');if(view)view.textContent=mobile?'Desktop view':'Mobile view';
+ }
+ function update(){
+  sms.checked=data.enabled;if(phone.value!==data.phone)phone.value=data.phone;
+  for(const a of definitions){const pref=data.variables[a.key];const check=root.querySelector('[data-rs-alert="'+a.key+'"]');check.checked=pref.enabled;
+   const row=check.closest('.rs-alert-v24-alert-row');row?.classList.toggle('rs-alert-v24-row-invalid',invalid===a.key);
+   show(root.querySelector('[data-rs-alert-panel="'+a.key+'"]'),pref.enabled,'grid');
+   const time=root.querySelector('[data-rs-alert-time="'+a.key+'"]');if(time&&time.value!==pref.value)time.value=pref.value;
+   const prior=root.querySelector('[data-rs-prior-value="'+a.key+'"]');if(prior){const unavailable=!!pref.value&&!a.presets.map(String).includes(pref.value);prior.textContent=unavailable?'Previous value: '+pref.value+' '+(a.input==='entries'?'rides':'min')+'. Choose one of the available '+(a.input==='entries'?'counts':'times')+'.':'';show(prior,unavailable,'block');}
+  }
+  root.querySelectorAll('[data-rs-action="alert-value"]').forEach(button=>{const active=data.variables[button.dataset.key].value===button.dataset.value;button.setAttribute('aria-pressed',String(active));button.classList.toggle('rs-alert-v24-selected',active);});
+  root.querySelector('[data-rs-time-zone]').textContent='Times use the saved local time zone ('+data.timeZone+').';
+  const selected=definitions.filter(a=>data.variables[a.key].enabled).length;
+  count.textContent=selected+' of '+definitions.length+' alerts selected'+(data.enabled?'':' · SMS off');
+  errorNode.textContent=error;statusNode.textContent=notice;
+  show(errorNode,!!error,'block');show(statusNode,!error&&!!notice,'block');show(count,!error&&!notice,'block');show(hint,invalid==='phone','block');
+  presentation();
+ }
+ function changed(){error='';notice='';invalid='';update();}
+ async function save(){
+  if(busy||!loaded)return;
+  error='';notice='';invalid='';
+  const selected=definitions.filter(a=>data.variables[a.key].enabled).length;
+  if(data.enabled){
+   const digits=data.phone.replace(/\D/g,'');
+   if(!/^\+?[0-9 ()-]{7,24}$/.test(data.phone.trim())||digits.length<7||digits.length>15){error='Enter a mobile number with country code.';invalid='phone';update();return;}
+   if(!selected){error='Choose at least one alert, or turn SMS alerts off.';update();return;}
+   for(const a of definitions){const pref=data.variables[a.key];if(!pref.enabled||!a.input)continue;
+    if(a.presets&&!a.presets.map(String).includes(pref.value)){error=a.input==='entries'?a.label+': choose 7, 10 or 15 rides.':a.label+': choose a minute pill before start.';invalid=a.key;update();return;}
+    if(a.input==='minutes'&&(!/^\d+$/.test(pref.value)||Number(pref.value)<1||Number(pref.value)>1440)){error=a.label+': enter 1–1440 minutes.';invalid=a.key;update();return;}
+    if(a.input==='time'&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(pref.value)){error=a.label+': choose a time.';invalid=a.key;update();return;}
+   }
+  }
+  const fingerprint=JSON.stringify(data);
+  if(!pending||pending.fingerprint!==fingerprint)pending={fingerprint,body:{action:'preferences',requestId:crypto.randomUUID(),expectedRevision:revision,preferences:JSON.parse(fingerprint)}};
+  lock(true);notice='Saving preferences…';update();
+  try{const saved=await request(pending.body);data=saved.preferences;revision=saved.revision;pending=null;notice=data.enabled?'SMS opt-in preferences saved to your profile.':'SMS alerts are off. Preferences saved to your profile.';}
+  catch(e){error=e.name==='TimeoutError'?'Save could not be confirmed. Retry the same save to check it.':e.message;}
+  finally{lock(false);update();}
+ }
+ root.addEventListener('click',event=>{const button=event.target.closest('[data-rs-action]');if(!button||!root.contains(button))return;event.preventDefault();const action=button.dataset.rsAction;if(action==='theme')root.dataset.theme=button.dataset.value;if(action==='alert-view')mobile=!mobile;if(action==='alert-value'){if(busy||!loaded)return;data.variables[button.dataset.key].value=button.dataset.value;changed();return;}presentation();});
+ root.addEventListener('change',event=>{const e=event.target;if(e===sms){data.enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert')){data.variables[e.dataset.rsAlert].enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
+ root.addEventListener('input',event=>{const e=event.target;if(e===phone){data.phone=e.value;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
+ root.addEventListener('submit',event=>{if(event.target!==form)return;event.preventDefault();event.stopImmediatePropagation();save();},true);
+ root.querySelectorAll('[data-rs-action]').forEach(button=>{if(button.tagName==='A'){button.setAttribute('role','button');button.setAttribute('tabindex','0');button.addEventListener('keydown',event=>{if(event.key===' '||event.key==='Enter'){event.preventDefault();button.click();}});}});
+ narrow.addEventListener('change',presentation);update();
+ async function initialize(){
+  lock(true);notice='Loading saved preferences…';update();
+  const prototypeNote=[...root.querySelectorAll('p')].find(node=>node.textContent.includes('Prototype preferences only.'));
+  if(prototypeNote)prototypeNote.textContent='Preferences are saved to your RingStatus profile. Alert delivery is not active.';
+  try{const saved=await request();if(saved.preferences)data=saved.preferences;revision=saved.revision;loaded=true;notice='';}
+  catch(e){error=e.message;notice='';}
+  finally{lock(false);form.querySelectorAll('[type="submit"]').forEach(node=>node.disabled=!loaded);update();}
+ }
+ initialize();
+})();

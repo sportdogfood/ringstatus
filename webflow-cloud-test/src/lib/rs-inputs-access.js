@@ -156,7 +156,7 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
     catch (error) {
       // Barn Inputs uses the remembered browser, plus the person's existing
       // Inputs permission. Never accept a phone, body token or client actor ID.
-      if (error.code !== 'authentication_required' || !['access', 'state', 'record', 'profile-link'].includes(operation)) throw error;
+      if (error.code !== 'authentication_required' || !['access', 'state', 'record', 'profile-link', 'subscriptions'].includes(operation)) throw error;
       const devices = (request.headers.get('Cookie') || '').split(';').map(value => value.trim()).filter(value => value.startsWith('__Host-rs_recognition_device='));
       if (devices.length !== 1) throw error;
       const token = devices[0].slice('__Host-rs_recognition_device='.length);

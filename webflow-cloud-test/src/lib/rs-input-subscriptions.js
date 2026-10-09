@@ -3,6 +3,7 @@ import { createAirtableInputStore } from './rs-inputs-airtable.js';
 import { handleAccessRoute } from './rs-inputs-access.js';
 import { createSubscriptionStore, BASE_ID } from './rs-input-subscription-store.js';
 import { withSubscriptionReservation } from './rs-input-subscription-control.js';
+import { personalPreferences } from './rs-input-preferences.js';
 const fail=(code,status=400)=>{throw new InputError(code,status)};
 const uid=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(v);
 const publicRecord=({owner_uid,request_uid,request_hash,...record})=>record;
@@ -26,6 +27,7 @@ export function createSubscriptionHandler({env,fetchImpl=fetch,definitions=[],ap
    if(!actor?.profile?.personUid||actor.id!==actor.profile.personUid||!actor.permissions?.includes('inputs:read'))fail('permission_denied',403);
    const identities=createAirtableInputStore({env,fetchImpl,minimumIntervalMs});
    const store=createSubscriptionStore({env,fetchImpl,minimumIntervalMs});
+   if(request.method==='GET'&&new URL(request.url).searchParams.get('view')==='preferences')return respond(await personalPreferences({request,actor,store,env,definitions,clock}));
    const resolve=async barnId=>{
     if(!uid(barnId))fail('barn_required');
     const barn=(await identities.list('barn')).find(b=>b.id===barnId&&b.barnId===barnId&&(b.ownerUid===actor.id||actor.barnIds?.includes(b.id)));
@@ -47,6 +49,7 @@ export function createSubscriptionHandler({env,fetchImpl=fetch,definitions=[],ap
    if(request.headers.get('Origin')!==new URL(request.url).origin)fail('origin_denied',403);
    if(!actor.permissions.includes('inputs:write'))fail('permission_denied',403);
    const payload=await bodyOf(request);
+   if(payload.action==='preferences')return respond(await personalPreferences({request,payload,actor,store,env,definitions,clock}));
    const allowed={revoke:['action','barnId','subscriptionId','expectedRevision','requestId'],update:['action','barnId','subscriptionId','expectedRevision','requestId','alertKeys','alertTypes'],grant:['action','barnId','subscriptionId','expectedRevision','requestId','engineScope','phone','alertKeys']};
    if(typeof payload.action!=='string'||!Object.hasOwn(allowed,payload.action)||Object.keys(payload).some(k=>!allowed[payload.action].includes(k)))fail('invalid_payload');
    if(!/^[\w-]{8,128}$/.test(payload.requestId||''))fail('invalid_request_id');
