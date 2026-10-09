@@ -1,5 +1,7 @@
 # Ring Waze Concept
 
+Existing implementation: [Sessions, scoped comments, ring check-ins and observations — system register](../../docs/horseshowing/wec-comments-observations/EXISTING-SYSTEM-REGISTER.md). This records the WEC dataset implementation, June test evidence and remaining gaps so those paths are not treated as unbuilt concepts.
+
 ## Purpose
 
 Develop a show-day decision layer that helps teams understand who needs to move, where they need to go, and when.

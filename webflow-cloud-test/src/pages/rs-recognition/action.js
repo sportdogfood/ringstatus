@@ -17,10 +17,10 @@ export const POST = async ({ request }) => {
     return json(await runRecognitionAction({ env, request, payload }));
   } catch (error) {
     if (error instanceof RecognitionActionError) {
-      if (error.status >= 500) console.error("[rs-recognition] action failed", error);
+      if (error.status >= 500) console.error("[rs-recognition] action failed", error.code);
       return json({ ok: false, error: error.code }, error.status);
     }
-    console.error("[rs-recognition] unexpected action failure", error);
+    console.error("[rs-recognition] unexpected action failure");
     return json({ ok: false, error: "action_failed" }, 502);
   }
 };

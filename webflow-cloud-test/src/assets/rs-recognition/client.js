@@ -415,7 +415,7 @@
     profile.elements.first.value = currentPerson.first_name || "";
     profile.elements.last.value = currentPerson.last_name || "";
     profile.elements.sms.value = phoneForDisplay(currentPerson.primary_phone_e164);
-    profile.elements.pin.value = currentPerson.member_pin || phoneForDisplay(currentPerson.primary_phone_e164).slice(-4);
+    profile.elements.pin.value = "";
     profile.elements.email.value = currentPerson.email || "";
     showOnly(profile);
     root.classList.add("is-open");

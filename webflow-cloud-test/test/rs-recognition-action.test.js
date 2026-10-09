@@ -9,7 +9,7 @@ import {
 const env = {
   AIRTABLE_TOKEN: "pat_test",
   AIRTABLE_BASE_ID: "app_wrong_barn_entry",
-  AIRTABLE_RS_RECOGNITION_BASE_ID: "app_test",
+  AIRTABLE_RS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG",
   AIRTABLE_RS_PEOPLE_TEST_TABLE: "rs_people_test",
   AIRTABLE_RS_DEVICES_TEST_TABLE: "rs_devices_test",
   AIRTABLE_RS_PHONE_ALIASES_TEST_TABLE: "rs_phone_aliases_test"
@@ -68,14 +68,14 @@ test("create_profile creates one person, phone alias, device, and session event"
   assert.equal(result.ok, true);
   assert.equal(result.person_record_id, "recPersonCreate01");
   assert.equal(result.device_record_id, "recDeviceCreate01");
-  const personCreate = calls.find((call) => call.method === "POST" && call.url.includes("rs_people_test"));
-  assert.match(personCreate.url, /app_test/);
+  const personCreate = calls.find((call) => call.method === "POST" && call.url.includes("tbly1PM5iFYqVzKSm"));
+  assert.match(personCreate.url, /app9kOZdIaGyKk5uG/);
   assert.doesNotMatch(personCreate.url, /app_wrong_barn_entry/);
   assert.equal("typecast" in personCreate.body, false);
   assert.equal(personCreate.body.records[0].fields.person_name, "Lainey");
   assert.equal(personCreate.body.records[0].fields.primary_phone_e164, "+16318752160");
   assert.equal(personCreate.body.records[0].fields.member_pin, "2160");
-  assert.equal(result.member_pin, "2160");
+  assert.equal("member_pin" in result, false);
   assert.equal(events[0].event_type, "new");
   assert.ok(events[0].detail.changed_fields.includes("member_pin"));
   assert.equal(events[0].person_record_id, "recPersonCreate01");
@@ -114,7 +114,7 @@ test("update_profile updates the person and attaches the current device", async 
   });
 
   assert.equal(result.person_uid, "63187");
-  const personUpdate = calls.find((call) => call.method === "PATCH" && call.url.includes("rs_people_test"));
+  const personUpdate = calls.find((call) => call.method === "PATCH" && call.url.includes("tbly1PM5iFYqVzKSm"));
   assert.equal(personUpdate.body.records[0].fields.member_pin, "4826");
   assert.equal(events[0].event_type, "save");
   assert.ok(events[0].detail.changed_fields.includes("member_pin"));
@@ -173,6 +173,7 @@ test("phone_login normalizes a formatted phone and persists another device", asy
   const events = [];
   const fetchImpl = sequencedFetch([
     { body: { records: [{ id: "recPhonePerson001", fields: { person_uid: "63187", person_name: "Lainey", primary_phone_e164: "+16318752160", status: "Active", access_level: "member" } }] } },
+    { body: { records: [] } },
     { body: { records: [] } },
     { body: { records: [{ id: "recPhoneDevice001" }] } }
   ], []);
@@ -241,7 +242,8 @@ test("phone_login refuses Guest access without creating a device", async () => {
   const calls = [];
   const events = [];
   const fetchImpl = sequencedFetch([
-    { body: { records: [{ id: "recGuestPerson01", fields: { person_uid: "guest_001", status: "Active", access_level: "Guest" } }] } }
+    { body: { records: [{ id: "recGuestPerson01", fields: { person_uid: "guest_001", status: "Active", access_level: "Guest" } }] } },
+    { body: { records: [] } }
   ], calls);
 
   const result = await runRecognitionAction({
@@ -253,7 +255,7 @@ test("phone_login refuses Guest access without creating a device", async () => {
   });
 
   assert.equal(result.recognized, false);
-  assert.equal(calls.length, 1);
+  assert.equal(calls.length, 2);
   assert.equal(events[0].recognition_status, "rejected");
 });
 
@@ -271,7 +273,7 @@ test("recovery always returns the same response and links a match only in the se
     payload: payload("recovery", { first: "Lainey", last: "Posa", email: "submitted@example.com" })
   });
 
-  assert.deepEqual(result, { ok: true, accepted: true, return_to: "/" });
+  assert.deepEqual(result, { ok: true, accepted: true, return_to: "/", audit_status: "recorded", request_id: "event_recovery_001" });
   assert.equal(events[0].person_record_id, "recRecoveryMatch1");
   assert.deepEqual(events[0].detail, { automation_action: "send_member_link", return_to: "/" });
   assert.doesNotMatch(JSON.stringify(events[0]), /submitted@example\.com/);

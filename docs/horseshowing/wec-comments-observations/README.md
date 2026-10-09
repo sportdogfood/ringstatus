@@ -2,6 +2,8 @@
 
 Version: 2026-06-14 v0.2
 
+Existing-work reference: [System register — implemented paths, historical tests and remaining gaps](EXISTING-SYSTEM-REGISTER.md) (reviewed 7 October 2026). WEC is the dataset used by this implementation. The historical verification statements below are not a fresh live certification.
+
 ## Purpose
 
 This is a separate lane from the locked WEC mobile/print schedule outputs. It uses schedule data as an input, but it should be developed, tested, and released independently.

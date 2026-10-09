@@ -15,6 +15,8 @@ function fixture(label) {
   fs.mkdirSync(root, { recursive: true });
   execFileSync('git', ['init', '--quiet', root]);
   fs.cpSync(path.join(source, '.codex'), path.join(root, '.codex'), { recursive: true });
+  // The active workspace contract belongs to a real runner, not this fixture.
+  save(path.join(root, '.codex/control/task-contract.json'), { task_id: 'UNSET', status: 'read_only' });
   return root;
 }
 function hook(root, script, input) {
@@ -27,6 +29,51 @@ function hook(root, script, input) {
 function cli(root, ...args) {
   return spawnSync(process.execPath, [path.join(root, '.codex/hooks/task-control.mjs'), ...args], { cwd: root, encoding: 'utf8' });
 }
+test('active write contracts only gate explicit completion in their own chat', async t => {
+  const root = fixture('active-write-contract');
+  const file = path.join(root, '.codex/control/task-contract.json');
+  const active = { task_id: 'runner-task', status: 'write_approved', verification_required: true, owner_session_id: 'runner' };
+  save(file, active);
+  const stop = (session, message) => hook(root, 'stop_guard.mjs', { session_id: session, last_assistant_message: message });
+  for (const session of ['runner', 'other-chat']) {
+    await t.test(`ordinary replies pass in ${session} without verifying completion`, () => {
+      for (const message of ['Yes.', 'Here is the requested research.', 'The new agent received the handoff.']) {
+        assert.deepEqual(stop(session, message), {});
+        const last = read(paths(root, session).state).events.at(-1);
+        assert.equal(last.verified, false);
+        assert.equal(last.disposition, null);
+      }
+    });
+  }
+  await t.test('unbound unrelated chat does not inherit runner verification', () => {
+    assert.deepEqual(stop('other-chat', 'Result: PASS'), {});
+    assert.equal(read(paths(root, 'other-chat').state).events.at(-1).verified, false);
+  });
+  await t.test('owner explicit completion still requires session evidence', () => {
+    const out = stop('runner', 'Result: PASS');
+    assert.equal(out.decision, 'block');
+    assert.match(out.reason, /No session-bound task contract/);
+  });
+  await t.test('bound unrelated chat still checks its own evidence', () => {
+    const session = 'bound-other-chat';
+    const contractFile = path.join(root, 'bound-contract.json');
+    save(contractFile, { version: 2, task_id: 'own-task', session_id: session,
+      objective: 'Verify own work', target: 'fixture', source_request: 'Verify this fixture',
+      requirements: [{ id: 'own-work', text: 'Own evidence exists', proof_level: 'local' }] });
+    assert.equal(cli(root, 'bind', session, contractFile).status, 0);
+    assert.equal(stop(session, 'Result: PASS').decision, 'block');
+    assert.deepEqual(stop(session, 'Yes.'), {});
+  });
+  await t.test('legacy ownerless write contract still gates explicit completion', () => {
+    const { owner_session_id, ...legacy } = active;
+    save(file, legacy);
+    assert.deepEqual(stop('legacy-chat', 'Yes.'), {});
+    const out = stop('legacy-chat', 'Result: PASS');
+    assert.equal(out.decision, 'block');
+    assert.match(out.reason, /No session-bound task contract/);
+  });
+});
+
 for (let round = 1; round <= 3; round++) {
   test(`independent lifecycle ${round}`, async t => {
     const root = fixture(`round-${round}`);
@@ -52,8 +99,25 @@ for (let round = 1; round <= 3; round++) {
       assert.equal(read(path.join(root, '.codex/control/task-contract.json')).task_id, 'UNSET');
     });
     await t.test('missing receipt blocks completion', () => assert.equal(stop().decision, 'block'));
+    await t.test('retained task does not force status onto ordinary replies', () => {
+      for (const message of ['Yes, that is our rule.', 'The new agent received the handoff.', 'Here is the requested research.']) {
+        assert.deepEqual(stop({ last_assistant_message: message }), {});
+        const last = read(p.state).events.at(-1);
+        assert.equal(last.verified, false);
+        assert.equal(last.disposition, null);
+      }
+      assert.deepEqual(read(p.contract), contract);
+      assert.equal(stop().decision, 'block');
+    });
+    await t.test('new prompts scope completion labels without dropping retained work', () => {
+      const out = prompt().hookSpecificOutput.additionalContext;
+      assert.match(out, /Ordinary answers.*do not require a Result label/);
+      assert.match(out, /Only an explicit completion report for the retained task/);
+      assert.doesNotMatch(out, /a successful final answer starts/);
+      assert.deepEqual(read(p.contract), contract);
+    });
     await t.test('scope cannot be amended without a newer instruction', () => {
-      save(contractFile, { ...contract, source_prompt_revision: read(p.state).prompt_revision, change_reason: 'Unsupported same-turn change' });
+      save(contractFile, { ...contract, source_prompt_revision: read(p.state).bound_prompt_revision, change_reason: 'Unsupported same-turn change' });
       assert.equal(cli(root, 'amend', session, contractFile).status, 1);
       assert.deepEqual(read(p.contract), contract);
     });
@@ -91,6 +155,8 @@ for (let round = 1; round <= 3; round++) {
     });
     await t.test('new user correction invalidates earlier sign-off', () => {
       prompt(); assert.equal(stop().decision, 'block'); assert.deepEqual(read(p.contract), contract);
+      assert.deepEqual(stop({ last_assistant_message: 'The reference is saved version 24.' }), {});
+      assert.equal(read(p.state).events.at(-1).verified, false);
     });
     await t.test('updated current receipt may pass', () => { save(p.receipt, receipt()); assert.deepEqual(stop(), {}); });
     await t.test('changed evidence invalidates sign-off', () => {
@@ -117,6 +183,8 @@ for (let round = 1; round <= 3; round++) {
     });
     await t.test('corrupt receipt yields an explicit control error', () => {
       fs.writeFileSync(p.receipt, 'invalid json'); const out = stop(); assert.equal(out.continue, false); assert.match(out.systemMessage, /NOT VERIFIED/);
+      assert.deepEqual(stop({ last_assistant_message: 'Yes, this is a custom project rule.' }), {});
+      assert.equal(fs.readFileSync(p.receipt, 'utf8'), 'invalid json');
     });
     await t.test('amend requires a new instruction and preserves original', () => {
       fs.rmSync(p.receipt); const amended = { ...contract, source_prompt_revision: read(p.state).prompt_revision, change_reason: 'New user instruction adds a documented condition' };

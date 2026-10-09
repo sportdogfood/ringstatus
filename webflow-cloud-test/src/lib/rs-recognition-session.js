@@ -1,5 +1,6 @@
-const DEFAULT_SESSIONS_TABLE = "rs_recognition_sessions_test";
-const DEFAULT_RECOGNITION_BASE_ID = "apptdhhNzduxm5gjn";
+import { recognitionConfig } from "./rs-recognition-config.js";
+
+
 const SIGNAL_VERSION = 1;
 const EVENT_TYPE_CHOICES = new Map([
   ["start", "start"], ["success", "success"], ["failure", "failure"], ["update", "update"], ["other", "other"],
@@ -87,15 +88,8 @@ export async function recordRecognitionSession({
 }
 
 function airtableConfig(env) {
-  const token = clean(env?.AIRTABLE_TOKEN);
-  const baseId = clean(env?.AIRTABLE_RS_RECOGNITION_BASE_ID) || DEFAULT_RECOGNITION_BASE_ID;
-  const sessionsTable = clean(env?.AIRTABLE_RS_RECOGNITION_SESSIONS_TEST_TABLE) || DEFAULT_SESSIONS_TABLE;
-  const signalSecret = clean(env?.RS_RECOGNITION_SIGNAL_SECRET);
-
-  if (!token) throw new RecognitionSessionError("missing_airtable_token", 500);
-  if (!baseId) throw new RecognitionSessionError("missing_airtable_base_id", 500);
-
-  return { token, baseId, sessionsTable, signalSecret };
+  const config = recognitionConfig(env, RecognitionSessionError);
+  return { ...config, sessionsTable: config.sessions, signalSecret: clean(env?.RS_RECOGNITION_SIGNAL_SECRET) };
 }
 
 function normalizeEvent(payload) {
@@ -291,8 +285,8 @@ function choice(choices, value, fallback) {
 
 function enrichedDetail(value, raw) {
   const detail = value && typeof value === "object" && !Array.isArray(value)
-    ? { ...value }
-    : value === undefined || value === null || value === "" ? {} : { detail: value };
+    ? Object.fromEntries(Object.entries(value).filter(([key]) => ["changed_fields", "source", "automation_action", "return_to", "error_code", "correlation_id"].includes(key)).map(([key, item]) => [key, key === "changed_fields" ? (Array.isArray(item) ? item.filter(x => ["person_name", "first_name", "last_name", "primary_phone_e164", "member_pin", "email"].includes(x)) : []) : clean(item).slice(0, 255)]))
+    : {};
   return {
     ...detail,
     event_type_raw: raw.event_type,

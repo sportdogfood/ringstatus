@@ -10,4 +10,5 @@ RingStatus control policy for this Codex project:
 - If a required fact/source is unknown, remain read-only and state the blocker rather than infer.
 - Do not add an unrequested closing recommendation or next phase.
 
-The PreToolUse hook is the write boundary. The Stop hook is the completion-evidence boundary.
+The PreToolUse prototype is currently disabled; it is not an active write boundary. The existing Stop hook checks explicit completion records, not semantic correctness or every tool action.
+For implementation task records, map applicable complaints from .codex/control/COMPLAINT-COVERAGE.md to acceptance before work. Use typed proof requirements for visual, interaction, runtime, cadence and handoff claims. Record pending work and specific blockers when continuation_guard is enabled. These records do not authorize actions or prove reliable behavior.

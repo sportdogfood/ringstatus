@@ -6,7 +6,8 @@ import { OPTIONS, POST } from "../src/pages/rs-recognition/action.js";
 
 Object.assign(env, {
   AIRTABLE_TOKEN: "pat_test",
-  AIRTABLE_BASE_ID: "app_test"
+  AIRTABLE_BASE_ID: "app_wrong_barn_entry",
+  AIRTABLE_RS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG"
 });
 
 test("action route supports browser preflight", async () => {

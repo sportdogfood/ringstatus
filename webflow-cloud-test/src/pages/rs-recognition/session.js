@@ -30,14 +30,14 @@ export const POST = async ({ request }) => {
     return json(result, result.duplicate ? 200 : 201);
   } catch (error) {
     if (error instanceof RecognitionSessionError) {
-      if (error.status >= 500) console.error("[rs-recognition] session event failed", error);
+      if (error.status >= 500) console.error("[rs-recognition] session event failed", error.code);
       return json({
         ok: false,
         error: error.code
       }, error.status);
     }
 
-    console.error("[rs-recognition] unexpected session event failure", error);
+    console.error("[rs-recognition] unexpected session event failure");
     return json({
       ok: false,
       error: "session_event_failed"

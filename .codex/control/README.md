@@ -2,7 +2,11 @@
 
 This branch-only harness uses Codex's documented project-local hooks.
 
-## What is mechanically enforced
+## Current activation and limits — verified October 7, 2026
+
+The PreToolUse prototype is **disabled** in this client's hook configuration. Its shell/MCP classification is heuristic and has unqualified paths. None of the write-blocking claims below are active protection. Startup, prompt and Stop hooks are enabled. See RELIABILITY-CONTROLS.md and COMPLAINT-COVERAGE.md for the current, limited record-validation checks.
+
+## Original prototype intentions (not active guarantees)
 
 - Default repository writes are blocked.
 - `apply_patch` is blocked unless the task contract is `write_approved` and every target path is allowed.

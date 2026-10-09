@@ -2,6 +2,8 @@
 
 **Nothing from the prior problem record is deleted.**
 
+**October 7 correction:** The historical "SOLUTION FOUND" labels below mean a published method was located, not that RingStatus behavior was corrected or enforcement is active. The current review of all 82 Airtable complaint records is in COMPLAINT-COVERAGE.md. No complaint is marked resolved by that review or its local record-validation tests.
+
 | ID | Failure | Status | Published basis |
 |---|---|---|---|
 | P01 | Agent performs work beyond the requested task/project scope. | **SOLUTION FOUND — PUBLISHED PROCEDURE + PLATFORM ENFORCEMENT** | OPENAI_SCOPE, OPENAI_CODEX, OPENAI_GUARDRAILS |
