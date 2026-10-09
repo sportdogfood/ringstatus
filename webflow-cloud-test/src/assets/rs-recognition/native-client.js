@@ -29,6 +29,7 @@ export function createNativeRecognitionPresenter({ root, ix3 }) {
 
 export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fetch,
   persistentStorage = localStorage, sessionStorageImpl = sessionStorage,
+  locationImpl = globalThis.location, historyImpl = globalThis.history,
   navigate = url => location.assign(url), uuid = () => crypto.randomUUID(), timeoutMs = 12000 }) {
   if (!root || typeof present !== "function") throw new Error("native_presenter_required");
   if (root.__rsNativeRecognition) return root.__rsNativeRecognition;
@@ -43,6 +44,13 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     if (!get(`[data-rs-native-state="${state}"]`)) throw new Error("native_state_missing:" + state);
   }
   if (!get('[data-rs-native-feedback]')) throw new Error("native_feedback_missing");
+  const fragment = new URLSearchParams(locationImpl?.hash?.slice(1) || '');
+  let invitation = null;
+  if (fragment.has('invite')) {
+    const tokens = fragment.getAll('invite');
+    historyImpl.replaceState(historyImpl.state, '', locationImpl.pathname + locationImpl.search);
+    invitation = tokens.length === 1 && /^[A-Za-z0-9_-]{43}$/.test(tokens[0]) ? tokens[0] : '';
+  }
   const tokenKey = "rs_recognition_device_token_v1";
   const sessionKey = "rs_native_recognition_session_v1";
   let deviceToken = persistentStorage.getItem(tokenKey);
@@ -80,14 +88,32 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     const timer = setTimeout(() => abort.abort(), timeoutMs);
     try {
       const operationUrl = new URL(path, 'https://native.invalid/');
-      const target = new URL(endpoint);
-      target.search = operationUrl.search;
-      target.searchParams.set('operation', operationUrl.pathname.slice(1));
+      const target = path === 'accept_invitation' ? new URL('access', endpoint) : new URL(endpoint);
+      if (path !== 'accept_invitation') {
+        target.search = operationUrl.search;
+        target.searchParams.set('operation', operationUrl.pathname.slice(1));
+      }
       const response = await fetchImpl(target, { ...options, credentials: 'same-origin', signal: abort.signal });
       const data = await response.json();
       if (!response.ok || data.ok !== true) throw new Error(data.error || "recognition_unavailable");
       return data;
     } finally { clearTimeout(timer); }
+  }
+  async function acceptInvitation() {
+    opened = true;
+    if (!invitation) { show('login', 'This invitation is invalid. Request a new recovery SMS.'); return; }
+    busy = true; show('login', 'Accepting your invitation…');
+    const token = invitation;
+    invitation = null;
+    try {
+      await json('accept_invitation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) });
+    } catch {
+      show('login', 'Invitation acceptance could not be confirmed. Open recognition to check access, or request a new recovery SMS.');
+      busy = false; present({ state, open: opened, busy });
+      return;
+    }
+    busy = false;
+    await lookup();
   }
   async function lookup() {
     if (busy || pending) return;
@@ -188,6 +214,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   const api = { lookup, destroy() { controller.abort(); delete root.__rsNativeRecognition; } };
   root.__rsNativeRecognition = api;
   bindPerson(null); show("unavailable");
-  void lookup();
+  if (invitation !== null) void acceptInvitation();
+  else void lookup();
   return api;
 }

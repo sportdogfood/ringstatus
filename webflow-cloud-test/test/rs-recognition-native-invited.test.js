@@ -89,6 +89,7 @@ test('private automation preparation uses existing invitation primitives and log
   assert.equal((await outcome.json()).delivered, false); assert.equal(row.fields.status, 'submitted');
   assert.equal((await handleNativeRecognition(post('sms_outcome', { request_record_id: row.id, outcome: 'delivered', provider_message_sid: sid }), smsEnv, f.fetchImpl)).status, 400);
   const link = new URL(handoff.body.slice(handoff.body.indexOf('https://')));
+  assert.equal(link.pathname, '/rs-recognize', 'SMS must land on the native Webflow page, not the Astro prototype');
   const token = new URLSearchParams(link.hash.slice(1)).get('invite');
   const access = createInputAccess({ env: smsEnv, fetchImpl: f.fetchImpl });
   const restored = await access.redeem(new Request(origin + '/test/rs-inputs/access'), token);

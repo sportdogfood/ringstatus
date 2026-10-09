@@ -48,6 +48,55 @@ const settle = () => new Promise(resolve => setImmediate(resolve));
 const args = f => ({ root: f.root, baseUrl: "https://example.invalid/test/rs-recognition/", present: () => {},
   persistentStorage: f.storage, sessionStorageImpl: f.storage, uuid: f.uuid, navigate: () => {} });
 
+test('SMS invitation is removed from the URL, accepted once through existing access, then opens native recognition', async () => {
+  const f = fixture(), requests = [], views = [], navigation = [];
+  const token = 'a'.repeat(43);
+  const locationImpl = { hash: '#invite=' + token, pathname: '/rs-recognize', search: '?view=mobile' };
+  const historyImpl = { state: null, replaceState(_state, _title, url) { locationImpl.hash = ''; assert.equal(url, '/rs-recognize?view=mobile'); } };
+  const options = { ...args(f), locationImpl, historyImpl, present: v => views.push(v), navigate: url => navigation.push(url), fetchImpl: async (url, options = {}) => {
+    assert.equal(locationImpl.hash, '', 'remove private fragment before any request');
+    requests.push({ url: new URL(url), options });
+    if (new URL(url).pathname.endsWith('/access')) {
+      assert.equal(options.method, 'POST'); assert.equal(options.credentials, 'same-origin');
+      assert.deepEqual(JSON.parse(options.body), { token });
+      return Response.json({ ok: true, actor: { id: 'synthetic-person' } });
+    }
+    if (url.searchParams.get('operation') === 'session') return Response.json({ ok: true });
+    if (url.searchParams.get('operation') === 'action') return Response.json({ ok: true, recognized: true, audit_status: 'recorded' });
+    return Response.json({ ok: true, recognized: false, invited_profile: true, requires_device_confirmation: true, person_uid: 'synthetic-person' });
+  } };
+  const api = mountNativeRecognition(options); mountNativeRecognition(options);
+  await settle(); await settle();
+  assert.equal(requests[0].url.pathname, '/test/rs-inputs/access');
+  assert.equal(requests.filter(r => r.url.pathname.endsWith('/access')).length, 1);
+  assert.equal(views.at(-1).state, 'recognized'); assert.equal(views.at(-1).open, true);
+  assert.equal(navigation.length, 0, 'device confirmation still requires Continue');
+  await f.click('continue'); assert.deepEqual(navigation, ['/rs-barn-onboarding-setup']);
+  api.destroy();
+});
+
+test('malformed and duplicate invitation fragments never reach the access API', async () => {
+  for (const hash of ['#invite=bad', '#invite=' + 'a'.repeat(43) + '&invite=' + 'b'.repeat(43)]) {
+    const f = fixture(), views = []; let calls = 0, cleaned = false;
+    const api = mountNativeRecognition({ ...args(f), locationImpl: { hash, pathname: '/rs-recognize', search: '' },
+      historyImpl: { replaceState() { cleaned = true; } }, present: v => views.push(v), fetchImpl: async () => { calls++; return Response.json({ ok: true }); } });
+    await settle(); assert.equal(cleaned, true); assert.equal(calls, 0); assert.equal(views.at(-1).state, 'login');
+    api.destroy();
+  }
+});
+
+test('failed invitation acceptance remains visible and is never automatically replayed', async () => {
+  const f = fixture(), views = []; let accepts = 0;
+  const api = mountNativeRecognition({ ...args(f), locationImpl: { hash: '#invite=' + 'a'.repeat(43), pathname: '/rs-recognize', search: '' },
+    historyImpl: { replaceState() {} }, present: v => views.push(v), fetchImpl: async url => {
+      if (new URL(url).pathname.endsWith('/access')) { accepts++; return Response.json({ ok: false, error: 'invalid_invitation' }, { status: 401 }); }
+      return Response.json({ ok: false, error: 'authentication_required' }, { status: 401 });
+    } });
+  await settle(); await settle();
+  assert.equal(accepts, 1); assert.equal(views.at(-1).state, 'login'); assert.equal(views.at(-1).open, true);
+  await f.click('retry'); assert.equal(accepts, 1); api.destroy();
+});
+
 test("distinct lookup observations in one session retain distinct audit identities", async () => {
   const f = fixture(), events = [];
   let recognized = false;

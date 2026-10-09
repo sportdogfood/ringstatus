@@ -81,6 +81,8 @@ export function createRecoverySms({ env, fetchImpl = fetch, now = () => Date.now
       if (!Array.isArray(lookup) || lookup.length !== 1 || lookup[0] !== to) fail('sms_phone_lookup_mismatch');
       const target = new URL(env.RS_INPUTS_ONBOARDING_URL || 'https://invalid.invalid');
       if (target.protocol !== 'https:' || target.username || target.password || target.search || target.hash || !target.pathname.endsWith('/onboarding')) fail('sms_onboarding_url_required', 503);
+      // Retain the configured site origin; recovery belongs to its native page.
+      target.pathname = '/rs-recognize';
       const claim = await claimOnce(env, 'sms-prepare', [config.baseId, row.id]);
       if (!claim.won) fail('sms_attempt_already_started');
       await call(SMS_TABLES.requests, 'PATCH', { status: 'processing' }, row.id);
