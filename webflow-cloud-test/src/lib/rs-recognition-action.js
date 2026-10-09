@@ -1,7 +1,18 @@
+import { recognitionConfig } from "./rs-recognition-config.js";
 import { recordRecognitionSession } from "./rs-recognition-session.js";
+import { requireClaimDatabase } from './rs-recognition-claims.js';
 
 const ACTIONS = new Set(["create_profile", "update_profile", "phone_login", "recovery", "confirm_device", "retire_device"]);
-const DEFAULT_RECOGNITION_BASE_ID = "apptdhhNzduxm5gjn";
+
+// This bounded ledger prevents repeat mutations while an entry is retained in one runtime.
+// It is NOT durable coordination across Cloudflare isolates; release requires
+// separate cross-instance replay/concurrency proof, retained in the task record.
+const runtimes = new WeakMap();
+function runtimeFor(fetchImpl) {
+  if (!runtimes.has(fetchImpl)) runtimes.set(fetchImpl, { tail: Promise.resolve(), outcomes: new Map() });
+  return runtimes.get(fetchImpl);
+}
+
 
 export class RecognitionActionError extends Error {
   constructor(code, status, detail = "") {
@@ -12,12 +23,70 @@ export class RecognitionActionError extends Error {
   }
 }
 
-export async function runRecognitionAction({ env, fetchImpl = fetch, payload, request, recordSession = recordRecognitionSession, verifiedInputPersonUid }) {
+export async function runRecognitionAction({ env, fetchImpl = fetch, payload, request, recordSession = recordRecognitionSession, verifiedInputPersonUid, reportPendingAudit = false }) {
   const config = getConfig(env);
   const input = normalizeInput(payload);
-  // Server-only argument; never taken from payload or public environment.
-  config.verifiedInputPersonUid = verifiedInputPersonUid;
+  // Preserve the deployed authenticated-input caller's server-only contract.
+  // Public request payloads and environment values never supply this principal.
+  config.verifiedInputPersonUid = clean(verifiedInputPersonUid);
   config.allowNewInputDevice = input.action === "confirm_device";
+  required(input.device_token, "missing_device_token");
+  if (recordSession === recordRecognitionSession) requireClaimDatabase(env);
+  const runtime = runtimeFor(fetchImpl);
+  const key = `${config.baseId}:${config.verifiedInputPersonUid}:${input.session_uid}:${input.session_event_uid}`;
+  const fingerprint = await inputFingerprint(input);
+  const previous = runtime.tail;
+  let release;
+  runtime.tail = new Promise(resolve => { release = resolve; });
+  await previous;
+  try {
+    const old = runtime.outcomes.get(key);
+    if (old) {
+      if (old.fingerprint !== fingerprint) throw new RecognitionActionError("request_id_conflict", 409);
+      if (old.uncertain) throw new RecognitionActionError("action_outcome_unknown", 409);
+      if (old.result.response.recognized || old.result.response.confirmed) {
+        await authorizeOwnedPerson(config, input.device_token,
+          old.result.response.person_record_id || input.person_record_id,
+          old.result.response.person_uid || input.person_uid, fetchImpl);
+      }
+      return await finishAudit(old);
+    }
+    if (runtime.outcomes.size >= 256) {
+      const completed = [...runtime.outcomes].find(([, value]) => value.logged);
+      if (completed) runtime.outcomes.delete(completed[0]);
+      else throw new RecognitionActionError("action_capacity_reached", 503);
+    }
+    // Retain an uncertain marker before entering any potentially mutating path.
+    const outcome = { fingerprint, uncertain: true, mutationStarted: false };
+    config.markMutationStarted = () => { outcome.mutationStarted = true; };
+    runtime.outcomes.set(key, outcome);
+    try {
+      outcome.result = await performAction();
+      outcome.uncertain = false;
+    } catch (error) {
+      // Release proven zero-write failures; retain every possibly partial mutation.
+      if (!outcome.mutationStarted) runtime.outcomes.delete(key);
+      throw error;
+    }
+    return await finishAudit(outcome);
+  } finally { release(); }
+
+  async function finishAudit(outcome) {
+    if (!outcome.logged) {
+      try {
+        await recordSession({ env, fetchImpl, request, payload: sessionPayload(input, outcome.result) });
+        outcome.logged = true;
+      } catch (error) {
+        // Preserve deployed callers' audit-error contract. The native adapter
+        // explicitly opts into a truthful pending outcome through its route.
+        if (!reportPendingAudit) throw error;
+        return { ...outcome.result.response, audit_status: "pending", request_id: input.session_event_uid };
+      }
+    }
+    return { ...outcome.result.response, audit_status: "recorded", request_id: input.session_event_uid };
+  }
+
+  async function performAction() {
   let result;
 
   if (input.action === "create_profile") result = await createProfile(config, input, fetchImpl);
@@ -27,8 +96,14 @@ export async function runRecognitionAction({ env, fetchImpl = fetch, payload, re
   else if (input.action === "confirm_device") result = await confirmDevice(config, input, fetchImpl);
   else result = await retireDevice(config, input, fetchImpl);
 
-  await recordSession({ env, fetchImpl, request, payload: sessionPayload(input, result) });
-  return result.response;
+  return result;
+  }
+}
+
+async function inputFingerprint(input) {
+  const canonical = JSON.stringify(Object.fromEntries(Object.keys(input).sort().map(key => [key, input[key]])));
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
+  return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
 async function createProfile(config, input, fetchImpl) {
@@ -51,7 +126,7 @@ async function createProfile(config, input, fetchImpl) {
   return actionResult({
     person, alias, device, event_type: "new", event_result: "success", matched_by: "manual", recognition_status: "confirmed",
     detail: { changed_fields: ["person_name", "first_name", "last_name", "primary_phone_e164", "member_pin", "email"] },
-    response: { ok: true, recognized: true, person_record_id: person.id, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, member_pin: profile.pin, email: profile.email, device_record_id: device.id }
+    response: { ok: true, recognized: true, person_record_id: person.id, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, email: profile.email, device_record_id: device.id }
   });
 }
 
@@ -67,7 +142,7 @@ async function updateProfile(config, input, fetchImpl) {
     first_name: profile.first,
     last_name: profile.last,
     primary_phone_e164: profile.sms,
-    member_pin: profile.pin,
+    ...(clean(input.pin) ? { member_pin: profile.pin } : {}),
     email: profile.email
   }, fetchImpl);
   const alias = await upsertAlias(config, profile.sms, personId, fetchImpl);
@@ -75,7 +150,7 @@ async function updateProfile(config, input, fetchImpl) {
   return actionResult({
     person, alias, device, event_type: "save", event_result: "success", matched_by: "manual", recognition_status: "confirmed",
     detail: { changed_fields: ["person_name", "first_name", "last_name", "primary_phone_e164", "member_pin", "email"] },
-    response: { ok: true, recognized: true, person_record_id: personId, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, member_pin: profile.pin, email: profile.email, device_record_id: device.id }
+    response: { ok: true, recognized: true, person_record_id: personId, person_uid: personUid, person_name: profile.user, first_name: profile.first, last_name: profile.last, primary_phone_e164: profile.sms, email: profile.email, device_record_id: device.id }
   });
 }
 
@@ -131,7 +206,10 @@ async function confirmDevice(config, input, fetchImpl) {
 async function retireDevice(config, input, fetchImpl) {
   const token = required(input.device_token, "missing_device_token");
   const device = await findDevice(config, token, fetchImpl);
-  const updated = device ? await updateRecord(config, config.devices, device.id, { status: "Retired", last_seen_at: new Date().toISOString() }, fetchImpl) : null;
+  // Retired is persisted business state, not an in-memory replay marker. A cold
+  // retry after audit failure must not repeat this device mutation.
+  const updated = !device ? null : selectName(device.fields?.status).toLowerCase() === 'retired' ? device :
+    await updateRecord(config, config.devices, device.id, { status: "Retired", last_seen_at: new Date().toISOString() }, fetchImpl);
   return actionResult({ device: updated, event_type: "device_retired", event_result: "success", matched_by: "device_token", recognition_status: "rejected", detail: { source: "not_you" }, response: { ok: true, retired: true, device_record_id: device?.id || "" } });
 }
 
@@ -160,16 +238,24 @@ function sessionPayload(input, result) {
 async function findPersonByPhone(config, phone, fetchImpl) {
   const digits = phone.replace(/^\+/, "");
   const match = `OR({primary_phone_e164} = '${escapeFormula(phone)}',{primary_phone_e164} = '${escapeFormula(digits)}')`;
-  const direct = await listFirst(config, config.people, match, fetchImpl);
-  if (direct) return direct;
-  const alias = await listFirst(config, config.aliases, `OR({alias_phone_e164} = '${escapeFormula(phone)}',{alias_phone_e164} = '${escapeFormula(digits)}')`, fetchImpl);
+  const matches = await listRecords(config, config.people, match, 2, fetchImpl);
+  if (matches.length > 1) throw new RecognitionActionError("ambiguous_phone", 409);
+  const direct = matches[0];
+  const aliases = await listRecords(config, config.aliases, `OR({alias_phone_e164} = '${escapeFormula(phone)}',{alias_phone_e164} = '${escapeFormula(digits)}')`, 2, fetchImpl);
+  if (aliases.length > 1) throw new RecognitionActionError("ambiguous_phone", 409);
+  const alias = aliases[0];
   const personId = firstLink(alias?.fields?.person);
+  if (direct && personId && direct.id !== personId) throw new RecognitionActionError("ambiguous_phone", 409);
+  if (direct) return direct;
+  if (alias && !isActive(alias.fields?.status)) return null;
   return personId ? getRecord(config, config.people, personId, fetchImpl) : null;
 }
 
 async function upsertAlias(config, phone, personId, fetchImpl) {
   const digits = phone.replace(/^\+/, "");
-  const existing = await listFirst(config, config.aliases, `OR({alias_phone_e164} = '${escapeFormula(phone)}',{alias_phone_e164} = '${escapeFormula(digits)}')`, fetchImpl);
+  const matches = await listRecords(config, config.aliases, `OR({alias_phone_e164} = '${escapeFormula(phone)}',{alias_phone_e164} = '${escapeFormula(digits)}')`, 2, fetchImpl);
+  if (matches.length > 1) throw new RecognitionActionError("ambiguous_phone", 409);
+  const existing = matches[0];
   const fields = { alias_phone_e164: phone, person: [personId], alias_type: "Mobile", status: "Active" };
   if (existing) {
     const owner = firstLink(existing.fields?.person);
@@ -186,8 +272,10 @@ async function upsertDevice(config, tokenValue, personId, fetchImpl) {
   return existing ? updateRecord(config, config.devices, existing.id, fields, fetchImpl) : createRecord(config, config.devices, fields, fetchImpl);
 }
 
-function findDevice(config, token, fetchImpl) {
-  return listFirst(config, config.devices, `{device_token} = '${escapeFormula(token)}'`, fetchImpl);
+async function findDevice(config, token, fetchImpl) {
+  const records = await listRecords(config, config.devices, `{device_token} = '${escapeFormula(token)}'`, 2, fetchImpl);
+  if (records.length > 1) throw new RecognitionActionError("ambiguous_device", 409);
+  return records[0] || null;
 }
 
 async function listFirst(config, table, formula, fetchImpl) {
@@ -222,12 +310,14 @@ async function authorizeOwnedPerson(config, tokenValue, personId, personUid, fet
 }
 
 async function createRecord(config, table, fields, fetchImpl) {
+  config.markMutationStarted?.();
   const result = await airtableFetch(tableUrl(config.baseId, table), { method: "POST", headers: headers(config.token), body: JSON.stringify({ records: [{ fields }] }) }, fetchImpl);
   if (!result.records?.[0]?.id) throw new RecognitionActionError("airtable_create_failed", 502);
   return result.records[0];
 }
 
 async function updateRecord(config, table, id, fields, fetchImpl) {
+  config.markMutationStarted?.();
   const result = await airtableFetch(tableUrl(config.baseId, table), { method: "PATCH", headers: headers(config.token), body: JSON.stringify({ records: [{ id, fields }] }) }, fetchImpl);
   if (!result.records?.[0]?.id) throw new RecognitionActionError("airtable_update_failed", 502);
   return result.records[0];
@@ -264,16 +354,10 @@ function profileInput(input) {
 
 function publicPerson(person) {
   const f = person.fields || {};
-  return { person_record_id: person.id, person_uid: clean(f.person_uid), person_name: clean(f.person_name), first_name: clean(f.first_name), last_name: clean(f.last_name), primary_phone_e164: clean(f.primary_phone_e164), member_pin: clean(f.member_pin) || clean(f.primary_phone_e164).slice(-4), email: clean(f.email), access_level: selectName(f.access_level) };
+  return { person_record_id: person.id, person_uid: clean(f.person_uid), person_name: clean(f.person_name), first_name: clean(f.first_name), last_name: clean(f.last_name), primary_phone_e164: clean(f.primary_phone_e164), email: clean(f.email), access_level: selectName(f.access_level) };
 }
 
-function getConfig(env) {
-  const token = clean(env?.AIRTABLE_TOKEN);
-  const baseId = clean(env?.AIRTABLE_RS_RECOGNITION_BASE_ID) || DEFAULT_RECOGNITION_BASE_ID;
-  if (!token) throw new RecognitionActionError("missing_airtable_token", 500);
-  if (!baseId) throw new RecognitionActionError("missing_airtable_base_id", 500);
-  return { token, baseId, people: clean(env?.AIRTABLE_RS_PEOPLE_TEST_TABLE) || "rs_people_test", devices: clean(env?.AIRTABLE_RS_DEVICES_TEST_TABLE) || "rs_devices_test", aliases: clean(env?.AIRTABLE_RS_PHONE_ALIASES_TEST_TABLE) || "rs_phone_aliases_test" };
-}
+function getConfig(env) { return recognitionConfig(env, RecognitionActionError); }
 
 function emailAddress(value) {
   const email = clean(value).toLowerCase();

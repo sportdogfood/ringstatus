@@ -1,14 +1,15 @@
+import { controlDatabase } from '../test-support/recognize-control-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runRecognitionLive, TARGET, BASE } from '../scripts/rs-recognize-live.mjs';
 import { handleAuthenticatedInputRoute } from '../src/pages/rs-inputs/[operation].js';
 const env={RS_CI_TARGET:TARGET,RS_CI_PERSON_UID:'rs_ci_recognize_fixture',RS_CI_AIRTABLE_TOKEN:'private-test-pat'};
 function fixture({loseConfirmation=false,failRetirement=false,lateConfirmation=false,grantFailure=false,name='QA CI Recognize automation'}={}){
- const bindings={RS_INPUTS_BASE_ID:BASE,RS_INPUTS_RECOGNITION_BASE_ID:BASE,RS_INPUTS_WRITE_MODE:'isolated-trial',AIRTABLE_TOKEN:env.RS_CI_AIRTABLE_TOKEN,RS_INPUTS_SESSION_SECRET:'ab'.repeat(32)};
+ const bindings={RS_RECOGNITION_CONTROL_DB:controlDatabase(),RS_INPUTS_BASE_ID:BASE,RS_INPUTS_RECOGNITION_BASE_ID:BASE,RS_INPUTS_WRITE_MODE:'isolated-trial',AIRTABLE_TOKEN:env.RS_CI_AIRTABLE_TOKEN,RS_INPUTS_SESSION_SECRET:'ab'.repeat(32)};
  let n=0,lateCommit;const tables=new Map(),calls=[];const rows=t=>{if(!tables.has(t))tables.set(t,[]);return tables.get(t);};
  const person={id:'recPerson00000001',fields:{person_uid:env.RS_CI_PERSON_UID,person_name:name,status:'Active',input_access:'revoked',access_level:'Guest'}};rows('rs_people_test').push(person);
  async function provider(input,init={}){
-  const url=new URL(input);assert.equal(url.origin,'https://api.airtable.com');const [,base,table,id]=url.pathname.split('/').filter(Boolean);assert.equal(base,BASE);calls.push({table,method:init.method||'GET'});
+  const url=new URL(input);assert.equal(url.origin,'https://api.airtable.com');const [,base,rawTable,id]=url.pathname.split('/').filter(Boolean);const table=({tbly1PM5iFYqVzKSm:"rs_people_test",tblfkRSJAEMzuzApR:"rs_devices_test",tblgDWKi0Bb6OcoqS:"rs_phone_aliases_test",tblWjbASVMIjFLyW8:"rs_recognition_sessions_test"})[rawTable]||rawTable;assert.equal(base,BASE);calls.push({table,method:init.method||'GET'});
   if(!init.method||init.method==='GET'){
    if(id)return Response.json(rows(table).find(r=>r.id===id)||{},{status:rows(table).some(r=>r.id===id)?200:404});
    const formula=url.searchParams.get('filterByFormula');let found=rows(table);

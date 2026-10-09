@@ -1,3 +1,4 @@
+import { installControlDatabase } from '../test-support/recognize-control-db.mjs';
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -6,7 +7,8 @@ import { OPTIONS, POST } from "../src/pages/rs-recognition/session.js";
 
 Object.assign(env, {
   AIRTABLE_TOKEN: "pat_test",
-  AIRTABLE_BASE_ID: "app_test",
+  AIRTABLE_BASE_ID: "app_wrong_barn_entry",
+  AIRTABLE_RS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG",
   AIRTABLE_RS_RECOGNITION_SESSIONS_TEST_TABLE: "rs_recognition_sessions_test",
   RS_RECOGNITION_SIGNAL_SECRET: "recognition-test-secret"
 });
@@ -113,3 +115,5 @@ test("POST returns 502 when Airtable rejects the event", async () => {
     console.error = originalConsoleError;
   }
 });
+
+installControlDatabase(env);

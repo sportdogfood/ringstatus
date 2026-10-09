@@ -55,6 +55,7 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     aliases: "rs_phone_aliases_test", sessions: "rs_recognition_sessions_test"
   };
   const actionEnv = {
+    RS_RECOGNITION_CONTROL_DB: env.RS_RECOGNITION_CONTROL_DB,
     AIRTABLE_TOKEN: token,
     AIRTABLE_RS_RECOGNITION_BASE_ID: baseId,
     AIRTABLE_RS_PEOPLE_TEST_TABLE: tables.people,

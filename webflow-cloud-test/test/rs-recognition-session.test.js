@@ -1,3 +1,4 @@
+import { installControlDatabase } from '../test-support/recognize-control-db.mjs';
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -9,7 +10,7 @@ import {
 const env = {
   AIRTABLE_TOKEN: "pat_test",
   AIRTABLE_BASE_ID: "app_wrong_barn_entry",
-  AIRTABLE_RS_RECOGNITION_BASE_ID: "app_test",
+  AIRTABLE_RS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG",
   AIRTABLE_RS_RECOGNITION_SESSIONS_TEST_TABLE: "rs_recognition_sessions_test",
   RS_RECOGNITION_SIGNAL_SECRET: "recognition-test-secret"
 };
@@ -82,8 +83,8 @@ test("creates one queued session event without storing raw IP or user agent", as
     session_uid: "session_test_001"
   });
   assert.equal(calls.length, 2);
-  assert.match(calls[0].url, /rs_recognition_sessions_test/);
-  assert.match(calls[0].url, /app_test/);
+  assert.match(calls[0].url, /tblWjbASVMIjFLyW8/);
+  assert.match(calls[0].url, /app9kOZdIaGyKk5uG/);
   assert.doesNotMatch(calls[0].url, /app_wrong_barn_entry/);
   assert.match(calls[0].url, /filterByFormula=/);
   assert.equal(calls[1].options.method, "POST");
@@ -243,3 +244,5 @@ test("reports Airtable creation failures as upstream errors", async () => {
     }
   );
 });
+
+installControlDatabase(env);

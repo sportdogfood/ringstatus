@@ -5,6 +5,13 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "d1_databases": [
+    {
+      "binding": "RS_RECOGNITION_CONTROL_DB",
+      "database_name": "recognize-control",
+      "migrations_dir": "./migrations/recognize-control"
+    }
+  ],
   "assets": {
     "directory": "./dist/client"
   }

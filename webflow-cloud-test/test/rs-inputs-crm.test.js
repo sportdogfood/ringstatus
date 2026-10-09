@@ -1,3 +1,4 @@
+import { controlDatabase } from '../test-support/recognize-control-db.mjs';
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createCrmInputStore, ACCOUNTS_TRIAL_MAPPING, ACCOUNTS_TRIAL_PREFIX } from "../src/lib/rs-inputs-crm.js";
@@ -224,7 +225,8 @@ test("recognition create action + session event fits scaffold fields and link ty
   const writes = [];
   const fetchImpl = async (value, options = {}) => {
     const url = new URL(value);
-    const table = decodeURIComponent(url.pathname.split("/")[3]);
+    const rawTable = decodeURIComponent(url.pathname.split("/")[3]);
+    const table = ({tbly1PM5iFYqVzKSm:"rs_people_test",tblfkRSJAEMzuzApR:"rs_devices_test",tblgDWKi0Bb6OcoqS:"rs_phone_aliases_test",tblWjbASVMIjFLyW8:"rs_recognition_sessions_test"})[rawTable] || rawTable;
     assert.ok(fields.has(table), `Unknown table ${table}`);
     if (!options.method || options.method === "GET") return Response.json({ records: [] });
     const body = JSON.parse(options.body);
@@ -232,7 +234,7 @@ test("recognition create action + session event fits scaffold fields and link ty
     writes.push({ table, body });
     return Response.json({ records: body.records.map(row => ({ id: `rec${String(++sequence).padStart(14, "0")}`, ...row })) });
   };
-  const result = await runRecognitionAction({ env: { AIRTABLE_TOKEN: "fake", AIRTABLE_RS_RECOGNITION_BASE_ID: "appFreshTrial" }, fetchImpl, payload: { action: "create_profile", session_uid: "session_trial", session_event_uid: "event_trial", device_token: "device_trial", first: "Trial", last: "Person", user: "Trial Person", sms: "2025550123", pin: "0123", email: "trial@example.test" }, request: new Request("https://example.test/recognize") });
+  const result = await runRecognitionAction({ env: { RS_RECOGNITION_CONTROL_DB: controlDatabase(), AIRTABLE_TOKEN: "fake", AIRTABLE_RS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG" }, fetchImpl, payload: { action: "create_profile", session_uid: "session_trial", session_event_uid: "event_trial", device_token: "device_trial", first: "Trial", last: "Person", user: "Trial Person", sms: "2025550123", pin: "0123", email: "trial@example.test" }, request: new Request("https://example.test/recognize") });
   assert.equal(result.ok, true);
   assert.deepEqual(writes.map(w => w.table), ["rs_people_test", "rs_phone_aliases_test", "rs_devices_test", "rs_recognition_sessions_test"]);
 });

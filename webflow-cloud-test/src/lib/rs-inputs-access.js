@@ -1,5 +1,6 @@
 // Invitation access for the owned isolated trial. Recognition is not authentication.
 import { InputError } from './rs-inputs.js';
+import { claimOnce, requireClaimDatabase } from './rs-recognition-claims.js';
 const BASE = 'app9kOZdIaGyKk5uG';
 const COOKIE = '__Secure-rs_input_access';
 const TTL = 8 * 60 * 60;
@@ -94,6 +95,7 @@ export function createInputAccess({ env, fetchImpl = fetch, now = () => Date.now
   }
   async function redeem(request, token) {
     if (typeof token !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(token)) fail('invalid_invitation');
+    requireClaimDatabase(env);
     const key = await signingKey(env); // Validate configuration before consuming a link.
     const { audience, path } = scope(request);
     const row = await store.byHash(await accessHash(token));
@@ -104,8 +106,11 @@ export function createInputAccess({ env, fetchImpl = fetch, now = () => Date.now
     const time = Math.floor(now() / 1000);
     const payload = b64(encoder.encode(JSON.stringify({ sub: actor.id, version: unique.fields.input_session_version, aud: audience, iat: time, exp: time + TTL })));
     const signature = b64(new Uint8Array(await crypto.subtle.sign('HMAC', key, encoder.encode(payload))));
-    // Sequential isolated-trial consumption only. Airtable cannot enforce atomic CAS.
-    // Lost response consumes the link without delivering a session: operator reissues.
+    // A durable unique claim permits exactly one caller to issue this invitation's
+    // cookie, including after restart. Never release a claim after an uncertain
+    // external write; SMS recovery issues a new token if a response is lost.
+    const claim = await claimOnce(env, 'invitation', [BASE, row.id, unique.fields.input_invite_hash, unique.fields.input_session_version]);
+    if (!claim.won) fail('invalid_invitation');
     const saved = await store.update(row.id, { input_invite_hash: '', input_invite_expires_at: null });
     if (!saved || saved.id !== row.id || saved.fields.input_invite_hash || saved.fields.input_session_version !== unique.fields.input_session_version || !permitted(saved)) fail('write_outcome_unknown', 503);
     return { actor, cookie: cookie(`${payload}.${signature}`, path) };

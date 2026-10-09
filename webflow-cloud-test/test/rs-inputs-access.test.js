@@ -1,3 +1,4 @@
+import { installControlDatabase } from '../test-support/recognize-control-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createInputAccess, createAccessStore, handleAccessRoute, accessHash, randomAccessToken } from '../src/lib/rs-inputs-access.js';
@@ -12,7 +13,7 @@ function provider() {
   const person = { id: 'recPerson00000001', fields: { person_uid: 'person_invited', person_name: 'Invited Person', status: 'Active', access_level: 'Guest' } };
   rows('rs_people_test').push(person);
   async function fetchImpl(input, init={}) {
-    const url=new URL(input), [, base, table, id]=url.pathname.split('/').filter(Boolean).map(decodeURIComponent); assert.equal(base, env.RS_INPUTS_BASE_ID);
+    const url=new URL(input), [, base, rawTable, id]=url.pathname.split('/').filter(Boolean).map(decodeURIComponent); const table = ({tbly1PM5iFYqVzKSm:"rs_people_test",tblfkRSJAEMzuzApR:"rs_devices_test",tblgDWKi0Bb6OcoqS:"rs_phone_aliases_test",tblWjbASVMIjFLyW8:"rs_recognition_sessions_test"})[rawTable] || rawTable; assert.equal(base, env.RS_INPUTS_BASE_ID);
     calls.push({table,method:init.method||'GET'});
     if (!init.method || init.method==='GET') {
       if(id) return Response.json(rows(table).find(r=>r.id===id)||{}, {status:rows(table).some(r=>r.id===id)?200:404});
@@ -142,3 +143,5 @@ test('explicit test access diagnostics return only bounded provider metadata wit
  const denied=await handleAccessRoute(request('access',{token},undefined,{headers:{Origin:'https://other.test','X-RS-Diagnostic':'storage'}}),env,()=>assert.fail('must not read'),()=>assert.fail('must not authorize'),()=>{});
  await json(denied,403);assert.equal(denied.headers.get('X-RS-Storage-Diagnostic'),null);
 });
+
+installControlDatabase(env);

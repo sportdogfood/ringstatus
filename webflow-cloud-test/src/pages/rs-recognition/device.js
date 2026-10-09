@@ -1,12 +1,10 @@
+import { recognitionConfig } from "../../lib/rs-recognition-config.js";
 export const config = {
   runtime: "edge"
 };
 
 import { env } from "cloudflare:workers";
 
-const DEFAULT_DEVICES_TABLE = "rs_devices_test";
-const DEFAULT_PEOPLE_TABLE = "rs_people_test";
-const DEFAULT_RECOGNITION_BASE_ID = "apptdhhNzduxm5gjn";
 const ALLOWED_DEVICE_STATUSES = new Set(["active", "test"]);
 const ALLOWED_PERSON_STATUSES = new Set(["active", "test"]);
 const ALLOWED_ACCESS_LEVELS = new Set(["admin", "user", "member"]);
@@ -82,7 +80,6 @@ export const GET = async ({ request }) => {
         device_record_id: device.id,
         device_uid: device.fields?.device_uid || "",
         device_status: deviceStatus || "",
-        person_record_id: person.id,
         person_status: personStatus || ""
       });
     }
@@ -96,7 +93,6 @@ export const GET = async ({ request }) => {
         device_record_id: device.id,
         device_uid: device.fields?.device_uid || "",
         device_status: deviceStatus || "",
-        person_record_id: person.id,
         person_status: personStatus || "",
         access_level: accessLevel || ""
       });
@@ -116,13 +112,12 @@ export const GET = async ({ request }) => {
       first_name: person.fields?.first_name || "",
       last_name: person.fields?.last_name || "",
       primary_phone_e164: person.fields?.primary_phone_e164 || "",
-      member_pin: person.fields?.member_pin || String(person.fields?.primary_phone_e164 || "").slice(-4),
       email: person.fields?.email || "",
       person_status: personStatus || "",
       access_level: accessLevel || ""
     });
   } catch (error) {
-    console.error("[rs-recognition] device lookup failed", error);
+    console.error("[rs-recognition] device lookup failed");
     return json({
       ok: false,
       recognized: false,
@@ -133,27 +128,14 @@ export const GET = async ({ request }) => {
 };
 
 function getAirtableConfig() {
-  const token = env.AIRTABLE_TOKEN;
-  const baseId = env.AIRTABLE_RS_RECOGNITION_BASE_ID || DEFAULT_RECOGNITION_BASE_ID;
-  const devicesTable = env.AIRTABLE_RS_DEVICES_TEST_TABLE || DEFAULT_DEVICES_TABLE;
-  const peopleTable = env.AIRTABLE_RS_PEOPLE_TEST_TABLE || DEFAULT_PEOPLE_TABLE;
-
-  if (!token) return { ok: false, error: "missing_airtable_token" };
-  if (!baseId) return { ok: false, error: "missing_airtable_base_id" };
-
-  return {
-    ok: true,
-    token,
-    baseId,
-    devicesTable,
-    peopleTable
-  };
+  try { const c = recognitionConfig(env); return { ...c, ok: true, devicesTable: c.devices, peopleTable: c.people }; }
+  catch (error) { return { ok: false, error: error.message }; }
 }
 
 async function findDeviceByToken(airtable, deviceToken) {
   const formula = `{device_token} = '${escapeAirtableString(deviceToken)}'`;
   const url = airtableUrl(airtable.baseId, airtable.devicesTable);
-  url.searchParams.set("maxRecords", "1");
+  url.searchParams.set("maxRecords", "2");
   url.searchParams.set("filterByFormula", formula);
 
   const response = await fetch(url, { headers: airtableHeaders(airtable.token) });
@@ -163,6 +145,7 @@ async function findDeviceByToken(airtable, deviceToken) {
     throw new Error(`device list ${response.status}: ${JSON.stringify(result)}`);
   }
 
+  if (result.records?.length > 1) throw new Error("ambiguous_device");
   return result.records?.[0] || null;
 }
 

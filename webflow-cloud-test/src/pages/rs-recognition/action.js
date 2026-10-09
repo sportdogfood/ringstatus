@@ -6,7 +6,7 @@ import { RecognitionActionError, runRecognitionAction } from "../../lib/rs-recog
 const cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type,Authorization"
+  "Access-Control-Allow-Headers": "Content-Type,Authorization,X-RS-Audit-Outcome"
 };
 
 export const OPTIONS = async () => new Response(null, { status: 204, headers: cors });
@@ -14,13 +14,14 @@ export const OPTIONS = async () => new Response(null, { status: 204, headers: co
 export const POST = async ({ request }) => {
   try {
     const payload = await request.json().catch(() => ({}));
-    return json(await runRecognitionAction({ env, request, payload }));
+    return json(await runRecognitionAction({ env, request, payload,
+      reportPendingAudit: request.headers.get("X-RS-Audit-Outcome") === "report" }));
   } catch (error) {
     if (error instanceof RecognitionActionError) {
-      if (error.status >= 500) console.error("[rs-recognition] action failed", error);
+      if (error.status >= 500) console.error("[rs-recognition] action failed", error.code);
       return json({ ok: false, error: error.code }, error.status);
     }
-    console.error("[rs-recognition] unexpected action failure", error);
+    console.error("[rs-recognition] unexpected action failure");
     return json({ ok: false, error: "action_failed" }, 502);
   }
 };

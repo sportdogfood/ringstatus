@@ -1,5 +1,7 @@
-const DEFAULT_SESSIONS_TABLE = "rs_recognition_sessions_test";
-const DEFAULT_RECOGNITION_BASE_ID = "apptdhhNzduxm5gjn";
+import { recognitionConfig } from "./rs-recognition-config.js";
+import { claimOnce, completeClaim } from './rs-recognition-claims.js';
+
+
 const SIGNAL_VERSION = 1;
 const EVENT_TYPE_CHOICES = new Map([
   ["start", "start"], ["success", "success"], ["failure", "failure"], ["update", "update"], ["other", "other"],
@@ -37,7 +39,10 @@ export async function recordRecognitionSession({
 }) {
   const config = airtableConfig(env);
   const event = normalizeEvent(payload);
+  const fields = await buildAirtableFields({ event, request, signalSecret: config.signalSecret });
   const tableUrl = airtableUrl(config.baseId, config.sessionsTable);
+  const claim = await claimOnce(env, 'recognition-event', [config.baseId, event.idempotency_key]);
+  if (claim.result) return { ...claim.result, duplicate: true };
   const existing = await findByIdempotencyKey({
     config,
     event,
@@ -46,56 +51,44 @@ export async function recordRecognitionSession({
   });
 
   if (existing) {
-    return {
+    return completeClaim(env, claim, {
       ok: true,
       duplicate: true,
       record_id: existing.id,
       session_event_uid: existing.fields?.session_event_uid || event.session_event_uid,
       session_uid: existing.fields?.session_uid || event.session_uid
-    };
+    });
   }
-
-  const fields = await buildAirtableFields({
-    event,
-    request,
-    signalSecret: config.signalSecret
-  });
-  const response = await fetchImpl(tableUrl, {
+  if (!claim.won) throw new RecognitionSessionError('session_event_write_uncertain', 503);
+  let response;
+  try { response = await fetchImpl(tableUrl, {
     method: "POST",
     headers: airtableHeaders(config.token),
     body: JSON.stringify({
       records: [{ fields }]
     })
-  });
+  }); } catch { throw new RecognitionSessionError('session_event_write_uncertain', 503); }
   const result = await response.json().catch(() => ({}));
 
   if (!response.ok || !result.records?.[0]?.id) {
     throw new RecognitionSessionError(
       "session_event_create_failed",
-      502,
-      `Airtable create ${response.status}: ${JSON.stringify(result)}`
+      502
     );
   }
 
-  return {
+  return completeClaim(env, claim, {
     ok: true,
     duplicate: false,
     record_id: result.records[0].id,
     session_event_uid: event.session_event_uid,
     session_uid: event.session_uid
-  };
+  });
 }
 
 function airtableConfig(env) {
-  const token = clean(env?.AIRTABLE_TOKEN);
-  const baseId = clean(env?.AIRTABLE_RS_RECOGNITION_BASE_ID) || DEFAULT_RECOGNITION_BASE_ID;
-  const sessionsTable = clean(env?.AIRTABLE_RS_RECOGNITION_SESSIONS_TEST_TABLE) || DEFAULT_SESSIONS_TABLE;
-  const signalSecret = clean(env?.RS_RECOGNITION_SIGNAL_SECRET);
-
-  if (!token) throw new RecognitionSessionError("missing_airtable_token", 500);
-  if (!baseId) throw new RecognitionSessionError("missing_airtable_base_id", 500);
-
-  return { token, baseId, sessionsTable, signalSecret };
+  const config = recognitionConfig(env, RecognitionSessionError);
+  return { ...config, sessionsTable: config.sessions, signalSecret: clean(env?.RS_RECOGNITION_SIGNAL_SECRET) };
 }
 
 function normalizeEvent(payload) {
@@ -291,8 +284,8 @@ function choice(choices, value, fallback) {
 
 function enrichedDetail(value, raw) {
   const detail = value && typeof value === "object" && !Array.isArray(value)
-    ? { ...value }
-    : value === undefined || value === null || value === "" ? {} : { detail: value };
+    ? Object.fromEntries(Object.entries(value).filter(([key]) => ["changed_fields", "source", "automation_action", "return_to", "error_code", "correlation_id"].includes(key)).map(([key, item]) => [key, key === "changed_fields" ? (Array.isArray(item) ? item.filter(x => ["person_name", "first_name", "last_name", "primary_phone_e164", "member_pin", "email"].includes(x)) : []) : clean(item).slice(0, 255)]))
+    : {};
   return {
     ...detail,
     event_type_raw: raw.event_type,

@@ -1,3 +1,4 @@
+import { controlDatabase } from '../test-support/recognize-control-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { handleAuthenticatedInputRoute, handleInputRoute } from '../src/pages/rs-inputs/[operation].js';
@@ -9,7 +10,7 @@ const bindings = { RS_INPUTS_BASE_ID: 'app9kOZdIaGyKk5uG', RS_INPUTS_RECOGNITION
   RS_INPUTS_SESSION_SECRET: 'ab'.repeat(32), ZOHO_CLIENT_ID: 'fixture', ZOHO_CLIENT_SECRET: 'fixture', ZOHO_REFRESH_TOKEN: 'fixture' };
 const origin = 'https://crm-flow.test';
 function fixture() {
-  const env = { ...bindings }, tables = new Map(), calls = [], crm = [], audits = [];
+  const env = { ...bindings, RS_RECOGNITION_CONTROL_DB: controlDatabase() }, tables = new Map(), calls = [], crm = [], audits = [];
   let n = 0, tick = 0, failAudit = false, loseCrmResponse = false, cookie;
   const rows = table => { if (!tables.has(table)) tables.set(table, []); return tables.get(table); };
   const person = { id: 'recPerson00000001', fields: { person_uid: 'rs_auth_crm_test_person', person_name: 'TEST Person', status: 'Active', access_level: 'Guest' } };

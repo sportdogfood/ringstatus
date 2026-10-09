@@ -1,8 +1,9 @@
+import { installControlDatabase } from '../test-support/recognize-control-db.mjs';
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createInputRecognition } from "../src/lib/rs-inputs-recognition.js";
 
-const env = { RS_INPUTS_BASE_ID: "app" + "1".repeat(14), AIRTABLE_TOKEN: "test-only-token", RS_INPUTS_WRITE_MODE: "isolated-trial" };
+const env = { RS_INPUTS_BASE_ID: "app9kOZdIaGyKk5uG", AIRTABLE_TOKEN: "test-only-token", RS_INPUTS_WRITE_MODE: "isolated-trial" };
 const person = { id: "rec" + "p".repeat(14), fields: { person_uid: "person_alex", person_name: "Alex Morgan", first_name: "Alex", last_name: "Morgan", primary_phone_e164: "+12025550148", member_pin: "0148", email: "alex@example.com", status: "Active", access_level: "member" } };
 const device = { id: "rec" + "d".repeat(14), fields: { device_token: "device_one", status: "Active", person: [person.id] } };
 const alias = { id: "rec" + "a".repeat(14), fields: { person: [person.id] } };
@@ -87,7 +88,7 @@ test("confirm reuses existing action and audit with server-hydrated ownership", 
   assert.equal(answer.profile.person_uid, "person_alex");
   const patch = f.calls.find((call) => call.method === "PATCH");
   assert.deepEqual(patch.body.records[0].fields.person, [person.id]);
-  const audit = f.calls.find((call) => call.method === "POST" && call.url.endsWith("rs_recognition_sessions_test"));
+  const audit = f.calls.find((call) => call.method === "POST" && call.url.endsWith("tblWjbASVMIjFLyW8"));
   assert.equal(audit.body.records[0].fields.idempotency_key, "confirm_device:inputs_request_123");
   assert.deepEqual(audit.body.records[0].fields.person, [person.id]);
   f.done();
@@ -95,16 +96,16 @@ test("confirm reuses existing action and audit with server-hydrated ownership", 
 
 test("update maps frontend profile fields through existing normalization and audit", async () => {
   const updated = { ...person, fields: { ...person.fields, person_name: "Alex New", first_name: "Alexandra", last_name: "New", member_pin: "4826", email: "new@example.com" } };
-  const f = fixture([list(device), person, list(person), list(alias), list(device), person, list(person), list(updated), list(alias), list(alias), list(device), list(device), list(), list({ id: "recSession00000001" }), list(device), updated]);
+  const f = fixture([list(device), person, list(person), list(alias), list(device), person, list(person), list(alias), list(updated), list(alias), list(alias), list(device), list(device), list(), list({ id: "recSession00000001" }), list(device), updated]);
   const answer = await f.api.action(payload("update_profile", { person_name: "Alex New", first_name: "Alexandra", last_name: "New", sms: "202-555-0148", pin: "4826", email: "NEW@EXAMPLE.COM", person_uid: "forged" }), request);
   assert.equal(answer.profile.pin, "4826");
-  const patch = f.calls.find((call) => call.method === "PATCH" && call.url.endsWith("rs_people_test"));
+  const patch = f.calls.find((call) => call.method === "PATCH" && call.url.endsWith("tbly1PM5iFYqVzKSm"));
   assert.deepEqual(patch.body.records[0], { id: person.id, fields: { person_name: "Alex New", first_name: "Alexandra", last_name: "New", primary_phone_e164: "+12025550148", member_pin: "4826", email: "new@example.com" } });
   f.done();
 });
 
 test("phone_login maps identifier and returns the confirmed server profile", async () => {
-  const f = fixture([list(), list(person), list(), list(person), list(), list(device), list(), list({ id: "recSession00000001" }), list(device), person]);
+  const f = fixture([list(), list(person), list(), list(person), list(), list(), list(device), list(), list({ id: "recSession00000001" }), list(device), person]);
   assert.equal((await f.api.action(payload("phone_login", { identifier: "202-555-0148" }), request)).recognized, true);
   assert.match(new URL(f.calls[1].url).searchParams.get("filterByFormula"), /\+12025550148/);
   f.done();
@@ -221,15 +222,15 @@ test("same-owner retirement retry repairs the audit after the device write commi
   const retired = { ...device, fields: { ...device.fields, status: "Retired" } };
   const f = fixture([
     list(device), person, list(device), list(retired), list(), Response.json({}, { status: 502 }),
-    list(retired), person, list(retired), list(retired), list(), list({ id: "recSession00000001" })
+    list(retired), person, list({ id: "recSession00000001" })
   ]);
   await assert.rejects(f.api.action(payload("retire_device"), request), errorCode("session_event_create_failed", 502));
   assert.deepEqual(await f.api.action(payload("retire_device"), request), { ok: true, recognized: false, profile: null, device: "retired" });
   const deviceWrites = f.calls.filter((call) => call.method === "PATCH");
-  assert.equal(deviceWrites.length, 2);
+  assert.equal(deviceWrites.length, 1);
   assert.ok(deviceWrites.every((call) => call.body.records[0].id === device.id && call.body.records[0].fields.status === "Retired"));
   const auditWrites = f.calls.filter((call) => call.method === "POST");
-  assert.equal(auditWrites.length, 2);
+  assert.equal(auditWrites.length, 1);
   assert.ok(auditWrites.every((call) => call.body.records[0].fields.idempotency_key === "retire_device:inputs_request_123"));
   f.done();
 });
@@ -245,7 +246,7 @@ test("retired-device retry still rejects a different trusted principal", async (
 test("explicit existing recognition binding permits read-only lookup before input base setup", async () => {
   const f = fixture([list(device), person], {
     RS_INPUTS_BASE_ID: "",
-    RS_INPUTS_RECOGNITION_BASE_ID: "apptdhhNzduxm5gjn"
+    RS_INPUTS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG"
   });
   assert.equal((await f.api.lookup("device_one")).profile.person_uid, person.fields.person_uid);
   assert.ok(f.calls.every((call) => call.method === "GET"));
@@ -254,20 +255,21 @@ test("explicit existing recognition binding permits read-only lookup before inpu
 
 test("split recognition binding routes reused action and audit only to selected recognition base", async () => {
   const f = fixture([list(device), person, list(device), person, list(device), list(device), list(), list({ id: "recSession00000001" }), list(device), person], {
-    RS_INPUTS_RECOGNITION_BASE_ID: "apptdhhNzduxm5gjn",
+    RS_INPUTS_BASE_ID: "app" + "1".repeat(14),
+    RS_INPUTS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG",
     AIRTABLE_RS_RECOGNITION_BASE_ID: "appZahVgD156cMAe3",
     AIRTABLE_RS_DEVICES_TEST_TABLE: "wrong_devices",
     AIRTABLE_RS_PEOPLE_TEST_TABLE: "wrong_people",
     AIRTABLE_RS_RECOGNITION_SESSIONS_TEST_TABLE: "wrong_sessions"
   });
   assert.equal((await f.api.action(payload("confirm_device"), request)).recognized, true);
-  assert.ok(f.calls.every((call) => !call.url.includes("wrong_") && !call.url.includes(env.RS_INPUTS_BASE_ID) && !call.url.includes("appZahVgD156cMAe3")));
-  assert.equal(f.calls.find((call) => call.method === "POST").url.split("/").at(-1), "rs_recognition_sessions_test");
+  assert.ok(f.calls.every((call) => !call.url.includes("wrong_") && !call.url.includes("app" + "1".repeat(14)) && !call.url.includes("appZahVgD156cMAe3")));
+  assert.equal(f.calls.find((call) => call.method === "POST").url.split("/").at(-1), "tblWjbASVMIjFLyW8");
   f.done();
 });
 
 test("explicit existing recognition binding preserves principal and trial-write guards", async () => {
-  const settings = { RS_INPUTS_RECOGNITION_BASE_ID: "apptdhhNzduxm5gjn" };
+  const settings = { RS_INPUTS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG" };
   const untrusted = fixture([], settings, "");
   await assert.rejects(untrusted.api.lookup("device_one"), errorCode("verified_profile_required", 503));
   const writesDisabled = fixture([], { ...settings, RS_INPUTS_WRITE_MODE: "" });
@@ -278,3 +280,5 @@ test("explicit existing recognition binding preserves principal and trial-write 
   writesDisabled.done();
   ambiguous.done();
 });
+
+installControlDatabase(env);

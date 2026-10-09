@@ -1,3 +1,4 @@
+import { installControlDatabase } from '../test-support/recognize-control-db.mjs';
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -7,7 +8,7 @@ import { GET } from "../src/pages/rs-recognition/device.js";
 Object.assign(env, {
   AIRTABLE_TOKEN: "pat_test",
   AIRTABLE_BASE_ID: "app_wrong_barn_entry",
-  AIRTABLE_RS_RECOGNITION_BASE_ID: "app_test",
+  AIRTABLE_RS_RECOGNITION_BASE_ID: "app9kOZdIaGyKk5uG",
   AIRTABLE_RS_DEVICES_TEST_TABLE: "rs_devices_test",
   AIRTABLE_RS_PEOPLE_TEST_TABLE: "rs_people_test"
 });
@@ -61,10 +62,10 @@ test("recognizes the live Active device choice and returns its record ID", async
   assert.equal(body.first_name, "Test");
   assert.equal(body.last_name, "Member");
   assert.equal(body.primary_phone_e164, "+16318752160");
-  assert.equal(body.member_pin, "4826");
+  assert.equal("member_pin" in body, false);
   assert.equal(body.email, "test@example.com");
   assert.equal(calls.length, 2);
-  assert.match(calls[0], /app_test/);
+  assert.match(calls[0], /app9kOZdIaGyKk5uG/);
   assert.doesNotMatch(calls[0], /app_wrong_barn_entry/);
 });
 
@@ -97,3 +98,5 @@ test("does not recognize a member gate device linked to Guest access", async () 
   assert.equal(body.recognized, false);
   assert.equal(body.recognition_status, "access_not_allowed");
 });
+
+installControlDatabase(env);
