@@ -52,7 +52,7 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
   // Deliberately do not inherit the old recognition base or table overrides.
   const tables = {
     people: "rs_people_test", devices: "rs_devices_test",
-    aliases: "rs_phone_aliases_test", sessions: "rs_recognition_sessions_test"
+    aliases: baseId === "app9kOZdIaGyKk5uG" ? "tblgDWKi0Bb6OcoqS" : "rs_phone_aliases_test", sessions: "rs_recognition_sessions_test"
   };
   const actionEnv = {
     RS_RECOGNITION_CONTROL_DB: env.RS_RECOGNITION_CONTROL_DB,
