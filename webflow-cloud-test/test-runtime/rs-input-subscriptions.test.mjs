@@ -34,8 +34,8 @@ const revoke={action:'revoke',barnId:'barn_1',subscriptionId:'sub_1',expectedRev
 async function fixture(options={}){
  const persist=await mkdtemp(join(tmpdir(),'subscription-runtime-'));
  const tables={rs_people_test:[{id:'recPerson',fields:{person_uid:'person_1',person_name:'Synthetic',status:'Active',input_access:'approved',input_session_version:'cd'.repeat(16),input_invite_hash:hash,input_invite_expires_at:new Date(Date.now()+3600000).toISOString()}}],
- rs_input_barns:[{id:'recBarn',fields:{entity_uid:'barn_1',barn_uid:'barn_1',name:'Synthetic barn',owner_uid:'person_1',revision:1}}],
- rs_input_users:[{id:'recUser',fields:{entity_uid:'user_1',barn_uid:'barn_1',name:'Synthetic user',owner_uid:'person_1',recognition_person_uid:'person_1',revision:1}}],
+ tblRvTwo3HYPUkZou:[{id:'recBarn',fields:{entity_uid:'barn_1',barn_uid:'barn_1',name:'Synthetic barn',owner_uid:'person_1',revision:1}}],
+ tblYgoeLEey05xgw9:[{id:'recUser',fields:{entity_uid:'user_1',barn_uid:'barn_1',name:'Synthetic user',owner_uid:'person_1',recognition_person_uid:'person_1',revision:1}}],
  [SUB]:[{id:'recSub',fields:{entity_uid:'sub_1',barn_uid:'barn_1',user_uid:'user_1',engine_scope:'WEC',target_type:'Barn',target_uid:'barn_1',alert_types:'existing_started\nexisting_completed',phone_e164:'+12025550148',status:'Draft',consent_state:'Granted',consent_at:'2026-10-08T00:00:00.000Z',consent_source:'synthetic-grant',notice_version:'synthetic-v1',owner_uid:'person_1',revision:1,request_uid:'seed',request_hash:'a'.repeat(64),record_mode:'Test'}}],[AUDIT]:[]};
  let mutations=0,audits=0,loseResponse=!!options.loseResponse,failAudit=!!options.failAudit,seq=0;
  const provider=async request=>{

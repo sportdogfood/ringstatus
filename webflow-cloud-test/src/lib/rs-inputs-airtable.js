@@ -1,7 +1,7 @@
 import { InputError } from './rs-inputs.js';
 
 const INPUT_BASE = 'app9kOZdIaGyKk5uG';
-const tables = { barn: 'rs_input_barns', users: 'rs_input_users', riders: 'rs_input_riders', horses: 'rs_input_horses', locations: 'rs_input_locations' };
+const tables = { barn: 'tblRvTwo3HYPUkZou', users: 'tblYgoeLEey05xgw9', riders: 'tblnd2ToLs7dTzLAM', horses: 'tblpyyaOMgjLzLvkP', locations: 'tblEuwOr1rUKnj1j3' };
 const fields = { id: 'entity_uid', barnId: 'barn_uid', name: 'name', email: 'email', userId: 'user_uid', riderId: 'rider_uid', locationId: 'location_uid', address: 'address', recognitionPersonId: 'recognition_person_uid', revision: 'revision', ownerUid: 'owner_uid', requestUid: 'request_uid', requestHash: 'request_hash' };
 const escape = value => String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 export function createAirtableInputStore({ env, fetchImpl = fetch, minimumIntervalMs = 225 }) {
@@ -61,7 +61,7 @@ export function createAirtableInputStore({ env, fetchImpl = fetch, minimumInterv
       await call(tables[kind], { method: 'PATCH', body: { performUpsert: { fieldsToMergeOn: ['entity_uid'] }, records: [{ fields: mapped }] } });
     },
     async event(eventId) {
-      const rows = await call('rs_input_events', { formula: `{event_uid} = '${escape(eventId)}'` });
+      const rows = await call('tblwts3huk3w1ACjh', { formula: `{event_uid} = '${escape(eventId)}'` });
       if (rows.length > 1) throw new InputError('ambiguous_audit_event', 409);
       if (!rows[0]) return null;
       try { return { inputHash: rows[0].fields.input_hash, record: JSON.parse(rows[0].fields.result_json) }; }
@@ -69,11 +69,11 @@ export function createAirtableInputStore({ env, fetchImpl = fetch, minimumInterv
     },
     async appendEvent(event) {
       writable();
-      const existing = await call('rs_input_events', { formula: `{event_uid} = '${escape(event.eventId)}'` });
+      const existing = await call('tblwts3huk3w1ACjh', { formula: `{event_uid} = '${escape(event.eventId)}'` });
       if (existing.length > 1) throw new InputError('ambiguous_audit_event', 409);
       // Preserve existing audit classification, including unclassified legacy
       // rows. This preflight does not provide cross-instance atomicity.
-      await call('rs_input_events', { method: 'PATCH', body: { performUpsert: { fieldsToMergeOn: ['event_uid'] }, records: [{ fields: { event_uid: event.eventId, actor_uid: event.actorId, entity_uid: event.record.id, barn_uid: event.barnId, action: event.action, kind: event.kind, request_uid: event.requestId, input_hash: event.inputHash, result_json: JSON.stringify(event.record), occurred_at: event.occurredAt, outcome: 'committed', ...(!existing.length ? { record_mode: 'Test' } : {}) } }] } });
+      await call('tblwts3huk3w1ACjh', { method: 'PATCH', body: { performUpsert: { fieldsToMergeOn: ['event_uid'] }, records: [{ fields: { event_uid: event.eventId, actor_uid: event.actorId, entity_uid: event.record.id, barn_uid: event.barnId, action: event.action, kind: event.kind, request_uid: event.requestId, input_hash: event.inputHash, result_json: JSON.stringify(event.record), occurred_at: event.occurredAt, outcome: 'committed', ...(!existing.length ? { record_mode: 'Test' } : {}) } }] } });
     }
   };
 }

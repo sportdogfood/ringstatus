@@ -78,7 +78,7 @@ test('cookie-backed invitation -> new device -> profile edit -> barn save/reload
  assert.equal(f.rows('rs_devices_test').length,1);assert.equal(f.person.fields.access_level,'Guest');
  await json(await post('recognition',{action:'update_profile',device_token:device,values:{person_name:'Invited Complete',first_name:'Invited',last_name:'Complete',sms:'2025550188',pin:'0188',email:'invite@example.test'},requestId:'invite_profile_001'}),200);
  assert.equal(f.person.fields.person_name,'Invited Complete');assert.equal(f.rows('rs_people_test').length,1);
- const saved=await json(await post('record',{kind:'barn',draft:{name:'Invitation Trial Barn'},requestId:'invite_barn_001'}),200);assert.equal(f.rows('rs_input_barns')[0].fields.owner_uid,'person_invited');
+ const saved=await json(await post('record',{kind:'barn',draft:{name:'Invitation Trial Barn'},requestId:'invite_barn_001'}),200);assert.equal(f.rows('tblRvTwo3HYPUkZou')[0].fields.owner_uid,'person_invited');
  const state=await json(await get('state'),200);assert.equal(state.state.barns[0].id,saved.record.id);assert.equal(state.state.users.length,0);
  const linked=await json(await post('profile-link',{barnId:saved.record.id,requestId:'invite_link_001'}),200);assert.equal(linked.record.recognitionPersonId,'person_invited');
  const logout=await f.route(request('logout',{},cookie));await json(logout,200);assert.match(logout.headers.get('Set-Cookie'),/Max-Age=0/);await json(await f.route(request('state')),401);
@@ -153,7 +153,7 @@ test('remembered approved browser loads and edits its own Barn Inputs without an
  const saved=await json(await f.route(request('record',{kind:'barn',draft:{name:'Remembered browser barn'},requestId:'remembered_barn_001'},cookie)),200);
  const state=await json(await f.route(request('state',undefined,cookie)),200);
  assert.equal(state.state.barns[0].id,saved.record.id);
- assert.equal(f.rows('rs_input_barns')[0].fields.owner_uid,f.person.fields.person_uid);
+ assert.equal(f.rows('tblRvTwo3HYPUkZou')[0].fields.owner_uid,f.person.fields.person_uid);
  // Recognition-only profile mutations still require their original signed session.
  await json(await f.route(request('recognition',undefined,cookie)),401);
  const logout=await f.route(request('logout',{},cookie)); await json(logout,200);
@@ -171,7 +171,7 @@ test('remembered Barn access rejects revoked, retired, ambiguous, untrusted and 
   const cookie=condition==='body-only'?undefined:`${condition==='client-cookie'?'rs_device_token':'__Host-rs_recognition_device'}=${token}`;
   const body={kind:'barn',draft:{name:'Must not save'},requestId:'blocked_barn_001',device_token:token};
   await json(await f.route(request('record',body,cookie,condition==='cross-origin'?{headers:{Origin:'https://other.test'}}:{})),condition==='duplicate'?409:condition==='cross-origin'?403:401);
-  assert.equal(f.rows('rs_input_barns').length,0);
+  assert.equal(f.rows('tblRvTwo3HYPUkZou').length,0);
  }
 });
 

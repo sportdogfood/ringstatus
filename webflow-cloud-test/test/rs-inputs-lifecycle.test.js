@@ -12,7 +12,7 @@ function fixture(){
     const url=new URL(value);assert.equal(url.origin,'https://api.airtable.com');
     assert.equal(url.pathname.split('/')[2],env.RS_INPUTS_BASE_ID);
     const table=decodeURIComponent(url.pathname.split('/')[3]);
-    assert.ok(['rs_input_barns','rs_input_users','rs_input_riders','rs_input_horses','rs_input_locations','rs_input_events'].includes(table));
+    assert.ok(['tblRvTwo3HYPUkZou','tblYgoeLEey05xgw9','tblnd2ToLs7dTzLAM','tblpyyaOMgjLzLvkP','tblEuwOr1rUKnj1j3','tblwts3huk3w1ACjh'].includes(table));
     const body=init.body?JSON.parse(init.body):null;calls.push({table,method:init.method,body});
     if(init.method==='GET'){
       const match=/^\{(entity_uid|event_uid)\} = '([^']+)'$/.exec(url.searchParams.get('filterByFormula')||'');
@@ -30,7 +30,7 @@ const record={id:'entity-synthetic',barnId:'barn-synthetic',name:'Synthetic',own
 const event={eventId:'event-synthetic',actorId:'person-synthetic',kind:'horses',barnId:record.barnId,requestId:'request-synthetic',inputHash:'hash-synthetic',record,occurredAt:'2026-10-09T01:00:00.000Z',action:'create'};
 
 test('new isolated-trial entities receive Active/Test without accepting caller lifecycle values',async()=>{
-  for(const [kind,table] of [['barn','rs_input_barns'],['users','rs_input_users'],['riders','rs_input_riders'],['horses','rs_input_horses'],['locations','rs_input_locations']]){
+  for(const [kind,table] of [['barn','tblRvTwo3HYPUkZou'],['users','tblYgoeLEey05xgw9'],['riders','tblnd2ToLs7dTzLAM'],['horses','tblpyyaOMgjLzLvkP'],['locations','tblEuwOr1rUKnj1j3']]){
     const f=fixture();await f.store.put(kind,{...record,status:'Archived',record_mode:'Live'});
     assert.equal(f.rows(table)[0].fields.status,'Active');
     assert.equal(f.rows(table)[0].fields.record_mode,'Test');
@@ -38,24 +38,24 @@ test('new isolated-trial entities receive Active/Test without accepting caller l
 });
 test('editing existing entity preserves explicit or blank legacy lifecycle',async()=>{
   for(const lifecycle of [{status:'Inactive',record_mode:'Live'},{status:'Archived',record_mode:'Test'},{}]){
-    const f=fixture();f.rows('rs_input_horses').push({id:'recExisting',fields:{entity_uid:record.id,revision:1,...lifecycle}});
+    const f=fixture();f.rows('tblpyyaOMgjLzLvkP').push({id:'recExisting',fields:{entity_uid:record.id,revision:1,...lifecycle}});
     await f.store.put('horses',{...record,name:'Edited',revision:2},{expectedRevision:1});
-    const saved=f.rows('rs_input_horses')[0].fields;
+    const saved=f.rows('tblpyyaOMgjLzLvkP')[0].fields;
     assert.equal(saved.status,lifecycle.status);assert.equal(saved.record_mode,lifecycle.record_mode);
     const sent=f.calls.find(c=>c.method==='PATCH').body.records[0].fields;
     assert.equal(Object.hasOwn(sent,'status'),false);assert.equal(Object.hasOwn(sent,'record_mode'),false);
   }
 });
 test('new audit is Test; replay preserves existing or blank legacy classification',async()=>{
-  const f=fixture();await f.store.appendEvent(event);assert.equal(f.rows('rs_input_events')[0].fields.record_mode,'Test');
+  const f=fixture();await f.store.appendEvent(event);assert.equal(f.rows('tblwts3huk3w1ACjh')[0].fields.record_mode,'Test');
   for(const mode of ['Live',undefined]){
-    const g=fixture();g.rows('rs_input_events').push({id:'recLegacy',fields:{event_uid:event.eventId,...(mode?{record_mode:mode}:{})}});
-    await g.store.appendEvent(event);assert.equal(g.rows('rs_input_events')[0].fields.record_mode,mode);
+    const g=fixture();g.rows('tblwts3huk3w1ACjh').push({id:'recLegacy',fields:{event_uid:event.eventId,...(mode?{record_mode:mode}:{})}});
+    await g.store.appendEvent(event);assert.equal(g.rows('tblwts3huk3w1ACjh')[0].fields.record_mode,mode);
     assert.equal(Object.hasOwn(g.calls.find(c=>c.method==='PATCH').body.records[0].fields,'record_mode'),false);
   }
 });
 test('ambiguous existing audit cannot be silently upserted',async()=>{
-  const f=fixture();f.rows('rs_input_events').push({id:'recOne',fields:{event_uid:event.eventId}},{id:'recTwo',fields:{event_uid:event.eventId}});
+  const f=fixture();f.rows('tblwts3huk3w1ACjh').push({id:'recOne',fields:{event_uid:event.eventId}},{id:'recTwo',fields:{event_uid:event.eventId}});
   await assert.rejects(f.store.appendEvent(event),{code:'ambiguous_audit_event'});
   assert.equal(f.calls.some(c=>c.method==='PATCH'),false);
 });

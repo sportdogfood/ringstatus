@@ -53,13 +53,13 @@ function fixture() {
       }
       return Response.json({ records: structuredClone(found) });
     }
-    if (table === 'rs_input_events' && failAudit) { failAudit = false; throw new Error('simulated uncertain audit'); }
+    if (table === 'tblwts3huk3w1ACjh' && failAudit) { failAudit = false; throw new Error('simulated uncertain audit'); }
     const body = JSON.parse(init.body), out = [];
     for (const entry of body.records) {
       let row = entry.id ? rows(table).find(row => row.id === entry.id) : body.performUpsert ? rows(table).find(row => body.performUpsert.fieldsToMergeOn.every(key => row.fields[key] === entry.fields[key])) : null;
       if (!row) { row = { id: `rec${String(++n).padStart(14, '0')}`, fields: {} }; rows(table).push(row); }
       Object.assign(row.fields, entry.fields); out.push(structuredClone(row));
-      if (table === 'rs_input_events') audits.push(structuredClone(row));
+      if (table === 'tblwts3huk3w1ACjh') audits.push(structuredClone(row));
     }
     return Response.json({ records: out });
   }
@@ -85,7 +85,7 @@ test('signed-in existing Barn API saves, edits and reloads one CRM Account; rost
   const barnId = saved.record.id, providerId = f.crm[0].id;
   assert.equal(f.crm[0].RS_Entity_UID, CRM_BARN_PREFIX + barnId);
   assert.equal(f.crm[0].RS_Owner_UID, f.person.fields.person_uid);
-  assert.equal(f.rows('rs_input_barns').length, 0);
+  assert.equal(f.rows('tblRvTwo3HYPUkZou').length, 0);
   await body(await f.route('record', create)); assert.equal(f.crm.length, 1);
   const edit = { kind: 'barn', barnId, draft: { id: barnId, name: 'TEST RingStatus CRM Input saved' }, expectedRevision: 1, requestId: 'crm_barn_edit_01' };
   await body(await f.route('record', edit)); await body(await f.route('record', edit));
@@ -94,9 +94,9 @@ test('signed-in existing Barn API saves, edits and reloads one CRM Account; rost
   assert.equal(state.barns.length, 1); assert.equal(state.barns[0].name, edit.draft.name);
   assert.equal(state.barns[0].revision, 2); assert.equal(f.crm[0].id, providerId); assert.equal(f.crm.length, 1);
   await body(await f.route('record', { kind: 'horses', barnId, draft: { name: 'TEST Horse' }, requestId: 'crm_horse_create_01' }));
-  assert.equal(f.rows('rs_input_horses')[0].fields.barn_uid, barnId);
-  assert.equal(f.rows('rs_input_events').length, 3);
-  assert.ok(f.rows('rs_input_events').every(row => row.fields.event_uid.startsWith('crm-barns:')));
+  assert.equal(f.rows('tblpyyaOMgjLzLvkP')[0].fields.barn_uid, barnId);
+  assert.equal(f.rows('tblwts3huk3w1ACjh').length, 3);
+  assert.ok(f.rows('tblwts3huk3w1ACjh').every(row => row.fields.event_uid.startsWith('crm-barns:')));
   await issueAccess({ env: f.env, personUid: f.person.fields.person_uid, decision: 'revoked', fetchImpl: f.fetchImpl });
   await body(await f.route('state'), 401);
 });
@@ -105,7 +105,7 @@ test('a failed audit after committed CRM creation recovers without a second Acco
   const payload = { kind: 'barn', draft: { name: 'TEST Recovery Barn' }, requestId: 'crm_uncertain_01' };
   assert.equal((await body(await f.route('record', payload), 503)).error, 'write_outcome_unknown');
   assert.equal(f.crm.length, 1);
-  await body(await f.route('record', payload)); assert.equal(f.crm.length, 1); assert.equal(f.rows('rs_input_events').length, 1);
+  await body(await f.route('record', payload)); assert.equal(f.crm.length, 1); assert.equal(f.rows('tblwts3huk3w1ACjh').length, 1);
 });
 test('a lost CRM response after commit retries the same create or edit without applying twice', async () => {
   const f = fixture(); await f.login(); f.loseNextCrmResponse();
@@ -148,5 +148,5 @@ test('switching trial storage cannot reuse an Airtable barn ID or attach its ros
   const fresh = await body(await f.route('record', { ...payload, draft: { name: 'Separate CRM barn' } }));
   assert.notEqual(fresh.record.id, old.record.id);
   assert.equal(fresh.state.horses.length, 0);
-  assert.equal(f.rows('rs_input_horses').length, 1);
+  assert.equal(f.rows('tblpyyaOMgjLzLvkP').length, 1);
 });

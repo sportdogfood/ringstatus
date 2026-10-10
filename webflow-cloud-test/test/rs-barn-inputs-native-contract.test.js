@@ -9,6 +9,8 @@ import { handleInputRequest, digest } from '../src/lib/rs-inputs.js';
 // Contract integration only: the provider below is an in-memory REST double.
 // It does not establish Airtable atomicity, deployed access controls or live writes.
 const schema = withInputLifecycle(JSON.parse(await readFile(new URL('../config/rs-inputs-schema.json', import.meta.url), 'utf8')));
+const fixtureTableIds = { rs_input_barns: 'tblRvTwo3HYPUkZou', rs_input_users: 'tblYgoeLEey05xgw9', rs_input_riders: 'tblnd2ToLs7dTzLAM', rs_input_horses: 'tblpyyaOMgjLzLvkP', rs_input_locations: 'tblEuwOr1rUKnj1j3', rs_input_events: 'tblwts3huk3w1ACjh' };
+for (const table of schema.tables) table.name = fixtureTableIds[table.name] || table.name;
 const baseId = 'app9kOZdIaGyKk5uG';
 const origin = 'https://ringstatus.test';
 const actor = { id: 'flow-actor', permissions: ['inputs:read', 'inputs:write', 'barns:create'], barnIds: [], profile: {personUid:'flow-actor',name:'Synthetic Person',email:'synthetic@example.test'} };
@@ -72,7 +74,7 @@ function fakeAirtable({ pageSize = 1 } = {}) {
       const page = structuredClone(matching.slice(offset, offset + pageSize));
       return Response.json({ records: page, ...(offset + pageSize < matching.length ? { offset: String(offset + pageSize) } : {}) });
     }
-    const key = table === 'rs_input_events' ? 'event_uid' : 'entity_uid';
+    const key = table === 'tblwts3huk3w1ACjh' ? 'event_uid' : 'entity_uid';
     assert.deepEqual(body.performUpsert, { fieldsToMergeOn: [key] });
     assert.equal(body.records.length, 1);
     const results = [];
@@ -191,25 +193,25 @@ test('existing client → authenticated route → Inputs tables/audit → fresh 
   assert.equal(state.horses[0].name,'Edited Horse');assert.equal(state.horses[0].revision,2);
   assert.equal(state.horses[0].riderId,rider.id);assert.equal(state.horses[0].locationId,place.id);
   assert.equal(state.users[0].email,actor.profile.email);
-  assert.equal(f.provider.rows.get('rs_input_events').length,6);
-  assert.equal(f.provider.rows.get('rs_input_events').at(-1).fields.outcome,'committed');
-  assert.ok(f.provider.calls.every(c=>new URL(c.url).pathname.startsWith(`/v0/${baseId}/rs_input_`)));
+  assert.equal(f.provider.rows.get('tblwts3huk3w1ACjh').length,6);
+  assert.equal(f.provider.rows.get('tblwts3huk3w1ACjh').at(-1).fields.outcome,'committed');
+  assert.ok(f.provider.calls.every(c=>Object.values(fixtureTableIds).some(id=>new URL(c.url).pathname === `/v0/${baseId}/${id}`)));
   assert.equal('ownerUid' in state.barns[0],false);assert.equal('requestHash' in state.horses[0],false);
-  for(const table of ['rs_input_barns','rs_input_users','rs_input_riders','rs_input_horses','rs_input_locations']) for(const row of f.provider.rows.get(table)){assert.equal(row.fields.status,'Active');assert.equal(row.fields.record_mode,'Test');}
-  assert.ok(f.provider.rows.get('rs_input_events').every(row=>row.fields.record_mode==='Test'));
+  for(const table of ['tblRvTwo3HYPUkZou','tblYgoeLEey05xgw9','tblnd2ToLs7dTzLAM','tblpyyaOMgjLzLvkP','tblEuwOr1rUKnj1j3']) for(const row of f.provider.rows.get(table)){assert.equal(row.fields.status,'Active');assert.equal(row.fields.record_mode,'Test');}
+  assert.ok(f.provider.rows.get('tblwts3huk3w1ACjh').every(row=>row.fields.record_mode==='Test'));
   assert.deepEqual(f.provider.schemaFailures,[]);
 });
 
 test('unknown save outcome keeps same request ID and retry does not repeat committed entity',async()=>{
   const f=await journey();const barn=(await f.api.record('barn',inputDraft('Retry Barn'),'')).record;
   const draft=inputDraft('Retry Horse');
-  f.provider.faults.push({table:'rs_input_events',method:'PATCH',when:'before'});
+  f.provider.faults.push({table:'tblwts3huk3w1ACjh',method:'PATCH',when:'before'});
   await assert.rejects(f.api.record('horses',draft,barn.id),assertCode('write_outcome_unknown'));
   const first=f.requests.at(-1).body;
   const result=await f.api.record('horses',draft,barn.id);
   assert.equal(f.requests.at(-1).body.requestId,first.requestId);
-  assert.equal(result.record.revision,1);assert.equal(patches(f.provider,'rs_input_horses').length,1);
-  assert.equal(f.provider.rows.get('rs_input_events').length,2);
+  assert.equal(result.record.revision,1);assert.equal(patches(f.provider,'tblpyyaOMgjLzLvkP').length,1);
+  assert.equal(f.provider.rows.get('tblwts3huk3w1ACjh').length,2);
 });
 
 test('client transport failure and malformed committed response retain retry identity',async()=>{
@@ -220,7 +222,7 @@ test('client transport failure and malformed committed response retain retry ide
   assert.equal(f.requests.at(-1).body.requestId,requestId);
   const result=await f.api.record('barn',draft,'');
   assert.equal(f.requests.at(-1).body.requestId,requestId);assert.equal(result.record.revision,1);
-  assert.equal(patches(f.provider,'rs_input_barns').length,1);
+  assert.equal(patches(f.provider,'tblRvTwo3HYPUkZou').length,1);
 });
 
 test('stale revision, invalid relationship and duplicate name leave records unchanged',async()=>{
@@ -231,7 +233,7 @@ test('stale revision, invalid relationship and duplicate name leave records unch
   await assert.rejects(f.api.record('horses',inputDraft('Current'),barn.id),assertCode('duplicate_name'));
   await assert.rejects(f.api.record('horses',inputDraft('Bad Link',{riderId:'foreign'}),barn.id),assertCode('invalid_relationship'));
   const state=await f.api.state(barn.id);assert.equal(state.horses.length,1);assert.equal(state.horses[0].name,'Current');
-  assert.equal(f.provider.rows.get('rs_input_events').length,3);
+  assert.equal(f.provider.rows.get('tblwts3huk3w1ACjh').length,3);
 });
 
 test('revoked identity and missing cookie cannot read or mutate Input tables',async()=>{

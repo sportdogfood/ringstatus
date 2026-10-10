@@ -8,6 +8,8 @@ import { handleInputRequest, digest } from '../src/lib/rs-inputs.js';
 // Contract integration only: the provider below is an in-memory REST double.
 // It does not establish Airtable atomicity, deployed access controls or live writes.
 const schema = withInputLifecycle(JSON.parse(await readFile(new URL('../config/rs-inputs-schema.json', import.meta.url), 'utf8')));
+const fixtureTableIds = { rs_input_barns: 'tblRvTwo3HYPUkZou', rs_input_users: 'tblYgoeLEey05xgw9', rs_input_riders: 'tblnd2ToLs7dTzLAM', rs_input_horses: 'tblpyyaOMgjLzLvkP', rs_input_locations: 'tblEuwOr1rUKnj1j3', rs_input_events: 'tblwts3huk3w1ACjh' };
+for (const table of schema.tables) table.name = fixtureTableIds[table.name] || table.name;
 const baseId = 'app9kOZdIaGyKk5uG';
 const origin = 'https://ringstatus.test';
 const actor = { id: 'flow-actor', permissions: ['inputs:read', 'inputs:write', 'barns:create'], barnIds: [] };
@@ -71,7 +73,7 @@ function fakeAirtable({ pageSize = 1 } = {}) {
       const page = structuredClone(matching.slice(offset, offset + pageSize));
       return Response.json({ records: page, ...(offset + pageSize < matching.length ? { offset: String(offset + pageSize) } : {}) });
     }
-    const key = table === 'rs_input_events' ? 'event_uid' : 'entity_uid';
+    const key = table === 'tblwts3huk3w1ACjh' ? 'event_uid' : 'entity_uid';
     assert.deepEqual(body.performUpsert, { fieldsToMergeOn: [key] });
     assert.equal(body.records.length, 1);
     const results = [];
@@ -134,10 +136,10 @@ test('HTTP → actual Airtable adapter → schema-aware REST: complete onboardin
   assert.equal(changed.revision, 2);
   const replayed = await saved(provider, edit);
   assert.deepEqual(replayed, changed);
-  assert.equal(patches(provider, 'rs_input_horses').length, 2, 'Replay must not write the entity again');
-  const auditRows = provider.rows.get('rs_input_events');
+  assert.equal(patches(provider, 'tblpyyaOMgjLzLvkP').length, 2, 'Replay must not write the entity again');
+  const auditRows = provider.rows.get('tblwts3huk3w1ACjh');
   assert.equal(auditRows.length, 6);
-  assert.equal(patches(provider, 'rs_input_events').length, 6);
+  assert.equal(patches(provider, 'tblwts3huk3w1ACjh').length, 6);
   const editEventId = await digest(`${actor.id}|${edit.requestId}`);
   const editAudit = auditRows.find(row => row.fields.event_uid === editEventId).fields;
   assert.equal(editAudit.actor_uid, actor.id);
@@ -160,7 +162,7 @@ test('HTTP → actual Airtable adapter → schema-aware REST: complete onboardin
   assert.equal('ownerUid' in state.barns[0], false);
   assert.equal('requestHash' in state.horses[0], false);
   assert.ok(provider.calls.some(call => new URL(call.url).searchParams.has('offset')));
-  const storedHorse = provider.rows.get('rs_input_horses')[0];
+  const storedHorse = provider.rows.get('tblpyyaOMgjLzLvkP')[0];
   assert.equal(storedHorse.fields.entity_uid, horse.id);
   assert.notEqual(storedHorse.id, horse.id, 'Canonical identity must not become Airtable record identity');
   assert.equal(storedHorse.fields.rider_uid, rider.id);
@@ -176,16 +178,16 @@ test('actual adapter preserves relationship boundaries and refuses stale edits a
   const forbidden = await post(provider, draft('horses', 'Invalid Association', first.id, { riderId: otherRider.id }));
   assert.equal(forbidden.status, 400);
   assert.equal(forbidden.error, 'invalid_relationship');
-  assert.equal(provider.rows.get('rs_input_horses').length, 0);
+  assert.equal(provider.rows.get('tblpyyaOMgjLzLvkP').length, 0);
   const horse = await saved(provider, draft('horses', 'Original', first.id));
   await saved(provider, { ...draft('horses', 'Updated', first.id, { id: horse.id }), expectedRevision: 1 });
   const stale = await post(provider, { ...draft('horses', 'Stale', first.id, { id: horse.id }), expectedRevision: 1 });
   assert.equal(stale.status, 409);
   assert.equal(stale.error, 'record_changed');
-  assert.equal(provider.rows.get('rs_input_horses')[0].fields.name, 'Updated');
+  assert.equal(provider.rows.get('tblpyyaOMgjLzLvkP')[0].fields.name, 'Updated');
   const denied = await post(provider, draft('users', 'Unauthorized', first.id), { ...actor, id: 'other-actor' });
   assert.equal(denied.status, 404);
-  assert.equal(provider.rows.get('rs_input_users').length, 0);
+  assert.equal(provider.rows.get('tblYgoeLEey05xgw9').length, 0);
   assert.deepEqual(provider.schemaFailures, []);
 });
 
@@ -193,19 +195,19 @@ test('committed entity plus failed audit repairs on identical retry through a fr
   const provider = fakeAirtable();
   const barn = await saved(provider, draft('barn', 'Audit Failure Barn'));
   const input = draft('locations', 'Paddock', barn.id, { address: 'Trial address' });
-  provider.faults.push({ table: 'rs_input_events', method: 'PATCH', when: 'before' });
+  provider.faults.push({ table: 'tblwts3huk3w1ACjh', method: 'PATCH', when: 'before' });
   const failed = await post(provider, input);
   assert.equal(failed.status, 503);
   assert.equal(failed.error, 'write_outcome_unknown');
-  assert.equal(provider.rows.get('rs_input_locations').length, 1);
-  assert.equal(provider.rows.get('rs_input_events').length, 1, 'Only barn audit should exist');
-  const committed = structuredClone(provider.rows.get('rs_input_locations')[0]);
+  assert.equal(provider.rows.get('tblEuwOr1rUKnj1j3').length, 1);
+  assert.equal(provider.rows.get('tblwts3huk3w1ACjh').length, 1, 'Only barn audit should exist');
+  const committed = structuredClone(provider.rows.get('tblEuwOr1rUKnj1j3')[0]);
   const retry = await saved(provider, input);
   assert.equal(retry.id, committed.fields.entity_uid);
   assert.equal(retry.revision, 1);
-  assert.deepEqual(provider.rows.get('rs_input_locations')[0], committed);
-  assert.equal(patches(provider, 'rs_input_locations').length, 1, 'Recovery must not reapply the entity write');
-  assert.equal(provider.rows.get('rs_input_events').length, 2);
+  assert.deepEqual(provider.rows.get('tblEuwOr1rUKnj1j3')[0], committed);
+  assert.equal(patches(provider, 'tblEuwOr1rUKnj1j3').length, 1, 'Recovery must not reapply the entity write');
+  assert.equal(provider.rows.get('tblwts3huk3w1ACjh').length, 2);
   assert.deepEqual(provider.schemaFailures, []);
 });
 
@@ -213,20 +215,20 @@ test('PATCH timeout after commit returns unknown outcome; fresh retry repairs au
   const provider = fakeAirtable();
   const barn = await saved(provider, draft('barn', 'Timeout Barn'));
   const input = draft('horses', 'Timeout Horse', barn.id);
-  provider.faults.push({ table: 'rs_input_horses', method: 'PATCH', when: 'after-commit' });
+  provider.faults.push({ table: 'tblpyyaOMgjLzLvkP', method: 'PATCH', when: 'after-commit' });
   const first = await post(provider, input);
   assert.equal(first.status, 503);
   assert.equal(first.error, 'write_outcome_unknown');
-  assert.equal(provider.rows.get('rs_input_horses').length, 1);
-  assert.equal(provider.rows.get('rs_input_events').length, 1);
+  assert.equal(provider.rows.get('tblpyyaOMgjLzLvkP').length, 1);
+  assert.equal(provider.rows.get('tblwts3huk3w1ACjh').length, 1);
   const retry = await saved(provider, input);
   assert.equal(retry.revision, 1);
-  assert.equal(provider.rows.get('rs_input_horses').length, 1);
-  assert.equal(patches(provider, 'rs_input_horses').length, 1);
-  assert.equal(provider.rows.get('rs_input_events').length, 2);
+  assert.equal(provider.rows.get('tblpyyaOMgjLzLvkP').length, 1);
+  assert.equal(patches(provider, 'tblpyyaOMgjLzLvkP').length, 1);
+  assert.equal(provider.rows.get('tblwts3huk3w1ACjh').length, 2);
   const reused = await post(provider, { ...input, draft: { name: 'Different Payload' } });
   assert.equal(reused.status, 409);
   assert.equal(reused.error, 'request_id_reused');
-  assert.equal(provider.rows.get('rs_input_horses')[0].fields.name, 'Timeout Horse');
+  assert.equal(provider.rows.get('tblpyyaOMgjLzLvkP')[0].fields.name, 'Timeout Horse');
   assert.deepEqual(provider.schemaFailures, []);
 });

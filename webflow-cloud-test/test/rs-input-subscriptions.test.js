@@ -18,8 +18,8 @@ const origin='https://synthetic.invalid';
 function fixture(){
  const db=subscriptionControlDatabase();testDatabases.push(db);const bindings={...env,RS_RECOGNITION_CONTROL_DB:db};
  const tables={rs_people_test:[{id:'recPerson',fields:{person_uid:'person_1',person_name:'Synthetic',input_access:'approved',status:'test',input_session_version:'cd'.repeat(16)}}],
- rs_input_barns:[{id:'recBarn',fields:{entity_uid:'barn_1',barn_uid:'barn_1',name:'Synthetic barn',owner_uid:'person_1',revision:1}}],
- rs_input_users:[{id:'recUser',fields:{entity_uid:'user_1',barn_uid:'barn_1',name:'Synthetic user',owner_uid:'person_1',recognition_person_uid:'person_1',revision:1}}],
+ tblRvTwo3HYPUkZou:[{id:'recBarn',fields:{entity_uid:'barn_1',barn_uid:'barn_1',name:'Synthetic barn',owner_uid:'person_1',revision:1}}],
+ tblYgoeLEey05xgw9:[{id:'recUser',fields:{entity_uid:'user_1',barn_uid:'barn_1',name:'Synthetic user',owner_uid:'person_1',recognition_person_uid:'person_1',revision:1}}],
  [SUB]:[{id:'recSub',fields:{entity_uid:'sub_1',barn_uid:'barn_1',user_uid:'user_1',engine_scope:'WEC',target_type:'Barn',target_uid:'barn_1',alert_types:'approved_started',phone_e164:'+12025550148',status:'Draft',consent_state:'Granted',consent_at:'2026-10-08T00:00:00.000Z',consent_source:'synthetic-grant',notice_version:'synthetic-v1',owner_uid:'person_1',revision:1,request_uid:'seed',request_hash:'a'.repeat(64),record_mode:'Test'}}],[EVENTS]:[]};
  const calls=[];let loseSub=false,failAudit=false,badResponse=false,auditReadDelay=0;let seq=0;
  const fetchImpl=async(input,init={})=>{
@@ -61,7 +61,7 @@ async function result(response,status){const b=await response.json();assert.equa
 
 test('person preferences retain every timing, reload, update and opt out without inventing barn or engine',async()=>{
  const f=fixture(),cookie=await f.cookie(),handler=f.build();
- f.tables.rs_input_barns=[];f.tables.rs_input_users=[];
+ f.tables.tblRvTwo3HYPUkZou=[];f.tables.tblYgoeLEey05xgw9=[];
  const body={action:'preferences',requestId:'preferences_save_001',preferences:preferences()};
  const saved=await result(await handler(req(cookie,body)),200);
  assert.equal(saved.preferences.phone,'+12025550148');
@@ -182,9 +182,9 @@ test('missing, recognized-only, cross-origin and revoked access never writes',as
 });
 test('foreign barn/user ambiguity and forged body identity fail closed',async()=>{
  const f=fixture(),cookie=await f.cookie(),handler=f.build();await result(await handler(req(cookie,{...revoke,userId:'forged'})),400);
- f.tables.rs_input_users.push({id:'recDup',fields:{...f.tables.rs_input_users[0].fields,entity_uid:'dup'}});
- await result(await handler(req(cookie,revoke)),409);f.tables.rs_input_users.pop();
- f.tables.rs_input_barns[0].fields.owner_uid='foreign';await result(await handler(req(cookie,revoke)),404);
+ f.tables.tblYgoeLEey05xgw9.push({id:'recDup',fields:{...f.tables.tblYgoeLEey05xgw9[0].fields,entity_uid:'dup'}});
+ await result(await handler(req(cookie,revoke)),409);f.tables.tblYgoeLEey05xgw9.pop();
+ f.tables.tblRvTwo3HYPUkZou[0].fields.owner_uid='foreign';await result(await handler(req(cookie,revoke)),404);
  assert.equal(f.calls.filter(c=>c.method!=='GET').length,0);
 });
 test('missing control database prevents all mutations',async()=>{
@@ -245,8 +245,8 @@ test('oversized input and malformed provider responses cannot produce success',a
 test('one actor reusing a request across two barns cannot race the shared audit key',async()=>{
  const f=fixture(),cookie=await f.cookie(),handler=f.build();
  f.delayAuditReads(100);
- f.tables.rs_input_barns.push({id:'recBarn2',fields:{...f.tables.rs_input_barns[0].fields,entity_uid:'barn_2',barn_uid:'barn_2'}});
- f.tables.rs_input_users.push({id:'recUser2',fields:{...f.tables.rs_input_users[0].fields,entity_uid:'user_2',barn_uid:'barn_2'}});
+ f.tables.tblRvTwo3HYPUkZou.push({id:'recBarn2',fields:{...f.tables.tblRvTwo3HYPUkZou[0].fields,entity_uid:'barn_2',barn_uid:'barn_2'}});
+ f.tables.tblYgoeLEey05xgw9.push({id:'recUser2',fields:{...f.tables.tblYgoeLEey05xgw9[0].fields,entity_uid:'user_2',barn_uid:'barn_2'}});
  f.tables[SUB].push({id:'recSub2',fields:{...f.tables[SUB][0].fields,entity_uid:'sub_2',barn_uid:'barn_2',user_uid:'user_2',target_uid:'barn_2'}});
  const responses=await Promise.all([handler(req(cookie,revoke)),handler(req(cookie,{...revoke,barnId:'barn_2',subscriptionId:'sub_2'}))]);
  assert.deepEqual(responses.map(r=>r.status).sort(),[200,409]);
