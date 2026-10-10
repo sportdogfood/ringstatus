@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-09",
+  "sourceBaseId": "app9kOZdIaGyKk5uG",
+  "destinationBaseId": "app7BXcw801n19QKF",
+  "state": "source-tables-prepared-not-cut-over",
+  "recordsCopied": 45,
+  "verifiedTables": [
+    {
+      "table": "rs_input_barns",
+      "sourceTableId": "tblRvTwo3HYPUkZou",
+      "destinationTableId": "tblNiTqrwR5Pc1czs",
+      "records": 4,
+      "exactFieldReadback": true,
+      "fieldMap": {
+        "fldFq7yx3UqmERrAf": "fldTjcomH03dBH7ZV",
+        "fldBIb2cX352DJTLW": "flddbHvcAw3WMpvJu",
+        "fldIv8UTVXdubSIzt": "fldgJsFX1seW4rpSC",
+        "fldx6Xf25N4SGaLGJ": "fld29M0dgvUaURzsV",
+        "fldj14nQLksTl8TEU": "fldSpzpDUJy6xE7Iu",
+        "fldSJRf6AFaVyc9ED": "fldhbsPHasRrpuIkb",
+        "fldVQ6O20p06XTOoB": "fldHh70ekGUjgzQR9",
+        "fldavF7l1ZvM1jXdj": "fldnd1YM5VH3OTeRM",
+        "fldXA1sTbmeZhX8Ht": "fldpJhdRqWdyoZ4sV"
+      }
+    },
+    {
+      "table": "rs_input_users",
+      "sourceTableId": "tblYgoeLEey05xgw9",
+      "destinationTableId": "tblyTBgrgdhT3Tcg7",
+      "records": 6,
+      "exactFieldReadback": true,
+      "fieldMap": {
+        "fldQRWsgjBfBPsORD": "fldAjH79oj8iEjjR2",
+        "fldVik8bHNEcrXoPf": "fldpJ3Ux1hIKBhDow",
+        "fld4a6FJB1AfYW8ME": "fldtu2ML1VODWsmSM",
+        "fldzgIaYK1pGtmlMl": "fldKYi1RH9EZFxHjx",
+        "fldZVmYrBzSYKCmLW": "fld05BBGATah021FA",
+        "flds1qqdEtvwgTwMG": "fldoyF786AWGgARs3",
+        "fld1uAcF0o2u2l3VW": "fldI9J0E32x7gZu29",
+        "fld9zInGNHTWz0CWX": "fld8KLofbXXSFSEsX",
+        "fldbWkuNmiTcT5gEh": "flda9xGTd4lcgBYyA",
+        "fld35PjRdZ7VL5rQa": "fldXr6HtuQOPyymxR",
+        "fldP5nru2ijZdPvW0": "fldlN43CNRV42QKuj",
+        "fldDBuahTjvcXAQPg": "fldznhiJMa1DoVHm6",
+        "fld4uMeuIT2PWf1na": "fldxmguvpHPrhy4Pl"
+      }
+    },
+    {
+      "table": "rs_input_locations",
+      "sourceTableId": "tblEuwOr1rUKnj1j3",
+      "destinationTableId": "tblVvj8LGidoV45yF",
+      "records": 3,
+      "exactFieldReadback": true,
+      "fieldMap": {
+        "fldCZzdAbZMUpQOAg": "fldmlx1QDdqXa643E",
+        "fldHBNOogMVKtaWRB": "fldEvzWyxu2xl0cMT",
+        "fldlacp7p60ti14IQ": "fldFuPVDW9SkKgKdw",
+        "fldQNiVdWtXttkrLa": "fldN3j3X9ctCzRBTZ",
+        "fld22stgKmUklOxQQ": "fldcQUDG2FTFtaCS1",
+        "fld7KvJPMe0HAW731": "fldAjxFPuAW8CHlZ9",
+        "fldGV7ydhsdhjd2bF": "fldcnfovDkSSfR4cK",
+        "fldECYhxqZLRAMbLx": "fldUwIZwuSQToaewz",
+        "fld5ZNxLcvMR06JvV": "fldnEEYASca6IwCsA",
+        "fld5OptbKmWn4CRaT": "fldBptK9aCEgeTQDZ"
+      }
+    },
+    {
+      "table": "rs_source_ids",
+      "sourceTableId": "tbl0oVtuFNRy7zWsX",
+      "destinationTableId": "tblRswgKjA9dt3PED",
+      "records": 0,
+      "exactFieldReadback": true,
+      "fieldMap": {
+        "fldlYtplunLXkcCWU": "fldG92rtLja7jj2lT",
+        "fldgbUhbpeSbuHGV0": "fld9XE1pzpknYZo1W",
+        "fldWZqfhMsAuMrjJz": "fldB7tAR2FklNHa8N",
+        "fld0ZFm1jHZSDJOUP": "fldQPssUFIK9Tb9zr",
+        "fld2swD2JIWTH52tT": "fld5UG3fFZHKHTcFL",
+        "fldOZqGVVtfuwmHP6": "fldx2fBX5fEyS5wuR",
+        "fldHmn4i5EKkuWeuK": "fldbqTC7hbsy4NYPY",
+        "fldyUFtzp0OX5Pzld": "fldp738XZI1ePImUw"
+      }
+    },
+    {
+      "table": "rs_input_events",
+      "sourceTableId": "tblwts3huk3w1ACjh",
+      "destinationTableId": "tbluecPFIorOytASP",
+      "records": 31,
+      "exactFieldReadback": true,
+      "fieldMap": {
+        "fldBISqDaHZ99Mp9U": "fld1blyGwR6on6234",
+        "fldfzDVcoqDbR6nLw": "fldqD2KxaVxT2Dv1Z",
+        "fldmGYOsagT2JEcTx": "fldXvnkSuuvHwwMq9",
+        "fldv6xlnxUOifPWst": "fldxAnQL4bsb7bHaK",
+        "fldRZ58nEzDcjzIAb": "fldQ6d0ues16a4je2",
+        "fldzFcA5qFxhMojqE": "fldh2Su02vEcZYUMK",
+        "fldcRrymVwBNOwcaf": "fld1fRTD7e6WwRZlv",
+        "flduv5TecHHJalNbk": "fld3cMQujTqxtEosu",
+        "fldXN2a9S9gchv1ME": "fldg1dT63fCCzjCry",
+        "fldGyqJ79DluKm1gs": "fldMXqpjlnrzj8AAt",
+        "fldaVBqUEwOyRYoTf": "fldLdi7ESK7MXnwQD",
+        "fldsyk0KU7kPiKYdR": "fld6yMUccYwVMnltb"
+      }
+    },
+    {
+      "table": "rs_input_subscriptions",
+      "sourceTableId": "tblbpALv7flu3NNEE",
+      "destinationTableId": "tblCX61u6pjSLrP5S",
+      "records": 1,
+      "exactFieldReadback": true,
+      "fieldMap": {
+        "fld6xoLLZ4t2RaYlz": "fldctfF9xSV2eA1Ka",
+        "fldQKdCPF9JgAxOBu": "fldd17W6rSqvatl1s",
+        "fldwa42pzMLIejZhB": "fldSn89EbY7el5smb",
+        "fldF9Yt5L5YxZ4tjk": "fld86VSiXkFct0TR0",
+        "fld2HKffikJM6Judj": "fldIed4dqqACkWh3a",
+        "fldaUltjawJWN8JWF": "fldMAlV5QY8KSjgz9",
+        "fldnwUO3nU4UeDDBJ": "fldc3Yk6crZM5NfNy",
+        "fldTENoxbNRYin91s": "fld1Yt2APgvT39nsI",
+        "fldDKoD1Cpt5lWLef": "fldRu44EIT87EpCxO",
+        "fldBGC8SxPXpxcSPr": "fldBX5pMx4y0WCcYA",
+        "fldXeI7dittrA88v6": "fldlMLgzuFRBQLrvD",
+        "fldjFpvY46GDNrn2i": "fldYEHNEc2LkOr2ki",
+        "fld9tBgd2htNEQ0yW": "fldflkB5U586NPcqq",
+        "fldtdZRidyvAJlmjN": "fldG5Rw9HKvJUzCx8",
+        "fldeUAAtXpc1WQusS": "fld3EWCrEr0Mz3rBE",
+        "fldpM9ooDfJDdU1pe": "fldbIyZhgTI21BJMq",
+        "fldKHquzBBGMytTCm": "fldOuxgRP5tPhFaj4",
+        "fldRyK6K3oSzBuzOM": "fldhpUmJW3oxE5Gkv",
+        "fldUhZFHZ09qJivaG": "fldnOjSnFzu8bL7z2",
+        "fldXUxFnjBwpUpBYA": "fldDxqMx5Kd7SCZ3Q"
+      }
+    }
+  ],
+  "sourceRecordsDeleted": false,
+  "applicationChanged": false,
+  "sharedViewsConfigured": false
+}

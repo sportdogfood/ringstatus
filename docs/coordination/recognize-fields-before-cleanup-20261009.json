@@ -1,0 +1,2219 @@
+{
+  "baseId": "app9kOZdIaGyKk5uG",
+  "capturedAt": "2026-10-09T18:28:35.251Z",
+  "tables": [
+    {
+      "id": "tblfkRSJAEMzuzApR",
+      "name": "rs_devices_test",
+      "primaryFieldId": "fld5qeaKk6fBDeXv7",
+      "fields": [
+        {
+          "id": "fld5qeaKk6fBDeXv7",
+          "name": "device_uid",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldFex9SZRpNpwIHs",
+          "name": "device_token",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldFYHsLRFvKq5rt6",
+          "name": "legacy_person",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fld3PtO070ICFu3v3",
+          "name": "status",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldcoYSWOxSvmZ6TE",
+          "name": "first_seen_at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fld8XaPwj1GE1C9oc",
+          "name": "last_seen_at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fld4Xx0vi6EZyrBsa",
+          "name": "recognition_source",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld03EwkzUwkjehYq",
+          "name": "rs_recognition_sessions_test",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldGUsdYIFs2uWK8I",
+          "name": "person",
+          "type": "multipleRecordLinks",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_person field. Matches the existing application schema."
+        },
+        {
+          "id": "fldz5vqGqDU7Tdi9J",
+          "name": "rs_recognition_sessions_test 2",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblWjbASVMIjFLyW8",
+      "name": "rs_recognition_sessions_test",
+      "primaryFieldId": "fldj2bLzcWe6Tf5ko",
+      "fields": [
+        {
+          "id": "fldj2bLzcWe6Tf5ko",
+          "name": "session_event_uid",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldEcZajbcjqBL8V8",
+          "name": "session_uid",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldiSz2Vqg4Jsbw2R",
+          "name": "legacy_event_type",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fld8OaNoaFGN8B6b9",
+          "name": "legacy_event_result",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldmxoXACD4EJiWNP",
+          "name": "event_at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldqdrwjIgY7gnEnr",
+          "name": "legacy_person",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fld2xS3lA1iwRf2Pr",
+          "name": "legacy_device",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldh7Idwrj09NMsWD",
+          "name": "legacy_phone_alias",
+          "type": "multilineText",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fld0LvwNfS2enfuGC",
+          "name": "legacy_matched_by",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "flddnBfmxdK8zhuof",
+          "name": "recognition_status",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fldk8ogfNDaAatnHR",
+          "name": "idempotency_key",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldvPgGAEQcTOBWqS",
+          "name": "legacy_automation_status",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldGH6XZmbYjXrs4e",
+          "name": "automation_attempt_count",
+          "type": "number"
+        },
+        {
+          "id": "fldnTKxdGyqTzgNxn",
+          "name": "automation_processed_at",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldgPwfrwWYIOrRTx",
+          "name": "automation_error",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldfoaiWx0sUNazG5",
+          "name": "ip_hash",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldqdRIbmd4WSf7UH",
+          "name": "network_hash",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldhM1vZngoAmrVe6",
+          "name": "country_code",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld5OswMgMBAORkcT",
+          "name": "region",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldPP9zYkXFyRChhE",
+          "name": "city",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldGxGBAMMHZOtAbD",
+          "name": "timezone",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldm2uODrFri7Wcat",
+          "name": "asn",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldlWmjcV4HH8cIRE",
+          "name": "edge_colo",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldJmVUVbK8iHk5m1",
+          "name": "user_agent_hash",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldLsdmDeuJfhPlbI",
+          "name": "legacy_browser_family",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fld32VXREEaEqSSqj",
+          "name": "legacy_os_family",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldjDqvEJf07HHhvm",
+          "name": "legacy_device_class",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldJ40vPzKFY3urQW",
+          "name": "language",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldmecauFZmTwCunb",
+          "name": "legacy_client_timezone",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldCFYLERwncewTbQ",
+          "name": "legacy_viewport_bucket",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldDzuKREEfEcQqYG",
+          "name": "legacy_page_path",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldSUiBuYG6rlKeQ2",
+          "name": "legacy_referrer_host",
+          "type": "singleSelect",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldpu0hqcLtLcM0JM",
+          "name": "signal_version",
+          "type": "number"
+        },
+        {
+          "id": "fld4zv11WwPIZi3y8",
+          "name": "event_detail",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld7ODOyR9zZ2T07N",
+          "name": "person",
+          "type": "multipleRecordLinks",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_person field. Matches the existing application schema."
+        },
+        {
+          "id": "fldkQpeskRv5TCLiz",
+          "name": "device",
+          "type": "multipleRecordLinks",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_device field. Matches the existing application schema."
+        },
+        {
+          "id": "fldREn1ZQQ3Qknfg9",
+          "name": "phone_alias",
+          "type": "multipleRecordLinks",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_phone_alias field. Matches the existing application schema."
+        },
+        {
+          "id": "fldHb2ZhF7V5KOONI",
+          "name": "event_type",
+          "type": "singleSelect",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_event_type field. Matches the existing application schema."
+        },
+        {
+          "id": "fldIUnzBLdPlpK3Vg",
+          "name": "event_result",
+          "type": "singleSelect",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_event_result field. Matches the existing application schema."
+        },
+        {
+          "id": "fld162tqrwkaFzcM6",
+          "name": "matched_by",
+          "type": "singleSelect",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_matched_by field. Matches the existing application schema."
+        },
+        {
+          "id": "fldHjTlXpUJFz6kcN",
+          "name": "automation_status",
+          "type": "singleSelect",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_automation_status field. Matches the existing application schema."
+        },
+        {
+          "id": "fldCSH7dKtZqNt8ae",
+          "name": "browser_family",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_browser_family field. Matches the existing application schema."
+        },
+        {
+          "id": "fldTKW3MlypfYN8Kb",
+          "name": "os_family",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_os_family field. Matches the existing application schema."
+        },
+        {
+          "id": "flddRUzjU2tLna1uX",
+          "name": "device_class",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_device_class field. Matches the existing application schema."
+        },
+        {
+          "id": "fldurWKehVP3JRgzj",
+          "name": "client_timezone",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_client_timezone field. Matches the existing application schema."
+        },
+        {
+          "id": "fldcKfCgp0CnJNbcY",
+          "name": "viewport_bucket",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_viewport_bucket field. Matches the existing application schema."
+        },
+        {
+          "id": "flddPljTOCtHGaOaq",
+          "name": "page_path",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_page_path field. Matches the existing application schema."
+        },
+        {
+          "id": "fldqss05gFFeaMlb8",
+          "name": "referrer_host",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_referrer_host field. Matches the existing application schema."
+        }
+      ]
+    },
+    {
+      "id": "tbly1PM5iFYqVzKSm",
+      "name": "rs_people_test",
+      "primaryFieldId": "fldDoGdGnbowgTYL9",
+      "fields": [
+        {
+          "id": "fldDoGdGnbowgTYL9",
+          "name": "person_uid",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldg1ADzOyL9rnPa3",
+          "name": "person_name",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld8O6WDODS1oxWd4",
+          "name": "legacy_primary_phone_e164",
+          "type": "number",
+          "description": "Retained imported field; superseded by the correctly typed field with the original name. Empty at replacement on 2026-10-05; unused by current Recognize code."
+        },
+        {
+          "id": "fldooa5uhCCCjaXUj",
+          "name": "Phone",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldVUWbBdphw1iBjW",
+          "name": "status",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldaSRNiTxO1AayAv",
+          "name": "access_level",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld5ZWj94cOthMdzj",
+          "name": "rs_phone_aliases_test",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldTECDQ2uwkkJPWI",
+          "name": "rs_devices_test",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldGfb9OBoh1xUN7X",
+          "name": "rs_recognition_sessions_test",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldN49cusB6l3mnvW",
+          "name": "profile_name (from ww_profiles)",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld9Ea1lkKGrgWVca",
+          "name": "first_name",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld6HLOo0Xx8Ztg8Y",
+          "name": "last_name",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldKFLvI3Htgb7sDx",
+          "name": "email",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldvGu8VTdXheMP4f",
+          "name": "member_pin",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldMieCYCDW59s8KD",
+          "name": "ww_profiles",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldxbxHxA86VExqw6",
+          "name": "sms (from ww_profiles)",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldHep8DVOYr1nXCf",
+          "name": "active_iams",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldRe4aOw0TRGF1PM",
+          "name": "ww_iams (from ww_profiles)",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld4wzKCiRmjWH2Vt",
+          "name": "profile_rid (from ww_profiles)",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldPGT9t8kdlNaXXu",
+          "name": "rs_phone_aliases_tes",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fld7AgPPM7RwZC7JH",
+          "name": "primary_phone_e164",
+          "type": "singleLineText",
+          "description": "Recognize runtime field; replaces the incompatible imported legacy_primary_phone_e164 field. Matches the existing application schema."
+        },
+        {
+          "id": "fldec8XscAVD5TDMc",
+          "name": "rs_devices_test 2",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldrTN37vW4W11NDm",
+          "name": "rs_recognition_sessions_test 2",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldOQqVnTJVitnRb4",
+          "name": "input_access",
+          "type": "singleLineText",
+          "description": "Operator-approved input access: invited, approved, or revoked. Blank denies access. Separate from recognition/membership."
+        },
+        {
+          "id": "fldsysJel4UnjuacT",
+          "name": "input_invite_hash",
+          "type": "singleLineText",
+          "description": "SHA-256 of a random invitation token. Never store the raw link or token. Cleared on sequential trial redemption."
+        },
+        {
+          "id": "fldGqomZ9KpIjwnIx",
+          "name": "input_invite_expires_at",
+          "type": "dateTime",
+          "description": "Invitation expiry in UTC; operator reissue replaces expiry and rotates session version."
+        },
+        {
+          "id": "fldE57fezfk8W4Ku1",
+          "name": "input_session_version",
+          "type": "singleLineText",
+          "description": "Random generation ID binding signed sessions. Rotate on reissue/revocation. Not a credential by itself."
+        },
+        {
+          "id": "fld1IBUis44Mf2fRv",
+          "name": "rs_sms_requests",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldld19QotrsOvAv3",
+          "name": "active_iams 2",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblgDWKi0Bb6OcoqS",
+      "name": "rs_phone_aliases_test",
+      "description": "Phone aliases used by existing Recognize matching and profile updates. Each alias belongs to one person in this base. No messaging automation.",
+      "primaryFieldId": "flde2GFyD7u62yxNq",
+      "fields": [
+        {
+          "id": "flde2GFyD7u62yxNq",
+          "name": "alias_uid",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldL2cHQJj2MeNhyK",
+          "name": "alias_phone_e164",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEKavrx9PQx0VVC",
+          "name": "person",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldFtLjM6npmnwSFm",
+          "name": "alias_type",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fld6qazutKlEF1LeH",
+          "name": "status",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fld5202Pob2aNDoPT",
+          "name": "rs_recognition_sessions_test",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "flduISSCBkHWFo0Np",
+          "name": "rs_people_test",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblxC4SYtzYhJNcJS",
+      "name": "rs_sms_requests",
+      "description": "Recognize-only invitation/recovery SMS queue. One request per request_uid. Prepared schema only: no sender, automation or unique/atomic send enforcement is activated by this table. Existing session footprints remain in rs_recognition_sessions_test.",
+      "primaryFieldId": "fldjsbOys7bh7I8m8",
+      "fields": [
+        {
+          "id": "fldjsbOys7bh7I8m8",
+          "name": "request_uid",
+          "type": "singleLineText",
+          "description": "Stable application request ID, reused for retries. Airtable does not enforce uniqueness."
+        },
+        {
+          "id": "fldyD5EDDo4iBvZuQ",
+          "name": "person_uid",
+          "type": "multipleRecordLinks",
+          "description": "Existing rs_people_test.person_uid; recipient identity must be verified by the application."
+        },
+        {
+          "id": "fld5u5Z5XnC92hW1m",
+          "name": "primary_phone_e164 (from person_uid)",
+          "type": "multipleLookupValues"
+        },
+        {
+          "id": "fldJKQ2l3zASEvbt4",
+          "name": "source_event_uid",
+          "type": "singleLineText",
+          "description": "Originating rs_recognition_sessions_test.session_event_uid."
+        },
+        {
+          "id": "fldvv4iFdneSZyS8C",
+          "name": "to_e164",
+          "type": "singleLineText",
+          "description": "Verified SMS destination in E.164 format."
+        },
+        {
+          "id": "fldlVDGtvzUJLXBXV",
+          "name": "template_key",
+          "type": "singleSelect",
+          "description": "Approved message purpose. No raw invitation token, PIN or recovery URL is stored here; assemble sensitive content only in the authorized sending path."
+        },
+        {
+          "id": "fld34LOgNBXWdn1FU",
+          "name": "status",
+          "type": "singleSelect",
+          "description": "Only ready is eligible for the future automation. Blank/draft never sends. submitted is provider acceptance, not delivery; unknown requires reconciliation before retry."
+        },
+        {
+          "id": "fldTvTnkceX5lJGTk",
+          "name": "record_mode",
+          "type": "singleSelect",
+          "description": "Required by the sending path. Test sends require the separately authorized test recipient; blank must not send."
+        },
+        {
+          "id": "fldMArazypZarvsGV",
+          "name": "requested_at",
+          "type": "dateTime",
+          "description": "Actual request timestamp set by the producing application in UTC."
+        },
+        {
+          "id": "fldwrsdXxywUh283e",
+          "name": "expires_at",
+          "type": "dateTime",
+          "description": "Do not process after expiry. Must be validated in the sending path."
+        },
+        {
+          "id": "fldTQBPpVtD7GDLIa",
+          "name": "provider_message_sid",
+          "type": "singleLineText",
+          "description": "Actual Twilio Message SID after accepted submission; never fabricate."
+        },
+        {
+          "id": "fldTfPzIZpBuf1NWI",
+          "name": "error_code",
+          "type": "singleLineText",
+          "description": "Last provider or application error code; no credentials or message body."
+        },
+        {
+          "id": "fldbK56RGHwfP7ntk",
+          "name": "rs_sms_events",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblF1Hdqi3yoKTZPV",
+      "name": "rs_sms_events",
+      "description": "SMS footprint/history for rs_sms_requests only. Intended append-only: each actual attempt or observed provider status adds an event. No raw phone, message body, PIN, invitation URL or token. This schema does not install a logger or callbacks; existing user/session footprints remain separate.",
+      "primaryFieldId": "fldWH6JbyPoFSvOql",
+      "fields": [
+        {
+          "id": "fldWH6JbyPoFSvOql",
+          "name": "event_uid",
+          "type": "singleLineText",
+          "description": "Stable ID for an observed event; deduplicate repeat callbacks in the writer."
+        },
+        {
+          "id": "fldEYOpI5XHJtQO0V",
+          "name": "request",
+          "type": "multipleRecordLinks",
+          "description": "The one SMS request this event belongs to."
+        },
+        {
+          "id": "fldgL34bu8D5T8zB4",
+          "name": "occurred_at",
+          "type": "dateTime",
+          "description": "Actual UTC event time."
+        },
+        {
+          "id": "fldIyYcSpa7o6DsTL",
+          "name": "event_type",
+          "type": "singleSelect",
+          "description": "Only observed events. submitted/sent do not prove recipient delivery."
+        },
+        {
+          "id": "fldrcaIqcuDT9zsDU",
+          "name": "provider_message_sid",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldyLfDiMY5CXqpYG",
+          "name": "source",
+          "type": "singleLineText",
+          "description": "Evidence origin, e.g. application, automation, or verified provider callback."
+        },
+        {
+          "id": "fldWZohpPSWwyWEle",
+          "name": "error_code",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldxrmZxGacqxScQY",
+          "name": "detail",
+          "type": "multilineText",
+          "description": "Brief redacted outcome/evidence reference. Never include message bodies, credentials, invitation URLs or raw tokens."
+        }
+      ]
+    },
+    {
+      "id": "tbl5Kng9jk0lhE2f9",
+      "name": "active_iams",
+      "description": "Slim IAM register based on legacy apptdhhNzduxm5gjn/active_iams; owner request October 9 2026. One row per existing Recognize person; phone is looked up. Prepared schema only: recognition runtime still uses people/devices/sessions and does not maintain this table. No automation/access change. Legacy records not migrated.",
+      "primaryFieldId": "fld1Zfz7JGd03GTWl",
+      "fields": [
+        {
+          "id": "fld1Zfz7JGd03GTWl",
+          "name": "iam_id",
+          "type": "singleLineText",
+          "description": "Stable identity key: use linked rs_people_test.person_uid, not a new person identity."
+        },
+        {
+          "id": "fldBIfpxkHKbNHrAm",
+          "name": "person",
+          "type": "multipleRecordLinks",
+          "description": "Link exactly one existing Recognize person. Current connector does not enforce single-link cardinality."
+        },
+        {
+          "id": "fldldMVunGxRQ7774",
+          "name": "active",
+          "type": "checkbox",
+          "description": "Register flag only. Does not grant/revoke runtime access. Initially unchecked."
+        },
+        {
+          "id": "fldYtsngN51KhBnYE",
+          "name": "ips_related",
+          "type": "multilineText",
+          "description": "Observed associated IP/network references only. Not identity proof or a login credential. No writer connected."
+        },
+        {
+          "id": "fldpd3WcyOOMFWWTT",
+          "name": "last_visited",
+          "type": "dateTime",
+          "description": "Actual last recognized visit in UTC. No runtime writer connected; do not substitute modification time."
+        },
+        {
+          "id": "fldtkdoK6DM59zUjx",
+          "name": "phone",
+          "type": "multipleLookupValues",
+          "description": "Current primary_phone_e164 from the linked Recognize person. No separate phone copy or consent inference."
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "tables": [
+      {
+        "tableId": "tblfkRSJAEMzuzApR",
+        "fields": [
+          {
+            "id": "fld5qeaKk6fBDeXv7",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldFex9SZRpNpwIHs",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldFYHsLRFvKq5rt6",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selvRlENNzukYb4z7",
+                  "name": "person_test_001",
+                  "color": "blueLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld3PtO070ICFu3v3",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldcoYSWOxSvmZ6TE",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "us",
+                "format": "M/D/YYYY"
+              },
+              "timeFormat": {
+                "name": "12hour",
+                "format": "h:mma"
+              },
+              "timeZone": "client"
+            }
+          },
+          {
+            "id": "fld8XaPwj1GE1C9oc",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "client"
+            }
+          },
+          {
+            "id": "fld4Xx0vi6EZyrBsa",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld03EwkzUwkjehYq",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldGUsdYIFs2uWK8I",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tbly1PM5iFYqVzKSm",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldec8XscAVD5TDMc"
+            }
+          },
+          {
+            "id": "fldz5vqGqDU7Tdi9J",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblWjbASVMIjFLyW8",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldkQpeskRv5TCLiz"
+            }
+          }
+        ]
+      },
+      {
+        "tableId": "tblWjbASVMIjFLyW8",
+        "fields": [
+          {
+            "id": "fldj2bLzcWe6Tf5ko",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldEcZajbcjqBL8V8",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldiSz2Vqg4Jsbw2R",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selgVkCTYKpPde9Ff",
+                  "name": "update",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "sel3ZuqOHAzERBKMT",
+                  "name": "start",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "sel6Z3kEr0mzEgcYq",
+                  "name": "other",
+                  "color": "tealLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld8OaNoaFGN8B6b9",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selRXnBXVpK7tGj7q",
+                  "name": "error",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selkugvQYA8V7i8xz",
+                  "name": "matched",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selQT29O4DHbbor4X",
+                  "name": "not_matched",
+                  "color": "tealLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldmxoXACD4EJiWNP",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "client"
+            }
+          },
+          {
+            "id": "fldqdrwjIgY7gnEnr",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "sel96vkhzpdfwk43J",
+                  "name": "",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selomPG0D67bB7H6I",
+                  "name": "person_test_001",
+                  "color": "cyanLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld2xS3lA1iwRf2Pr",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selZ63L5fuBwLMleb",
+                  "name": "",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selrp3i3uVYADBNKl",
+                  "name": "device_test_001",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selzrQ1feikEgr44K",
+                  "name": "device_3ed24a5f86eb4ecc80f3949d543094df",
+                  "color": "tealLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldh7Idwrj09NMsWD",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld0LvwNfS2enfuGC",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selScdzu1rLIV7cBs",
+                  "name": "unknown",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selEAeZKCAXmdT1rY",
+                  "name": "external",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selvYu7333TAF1URE",
+                  "name": "manual",
+                  "color": "tealLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "flddnBfmxdK8zhuof",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selBSab07v2ZyeQAT",
+                  "name": "flagged",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selONswtSH5FEc9cF",
+                  "name": "confirmed",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selB6MQXk0hlzpXcI",
+                  "name": "rejected",
+                  "color": "tealLight2"
+                },
+                {
+                  "id": "selhNfRtVn98Xps7k",
+                  "name": "pending",
+                  "color": "greenLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldk8ogfNDaAatnHR",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldvPgGAEQcTOBWqS",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selVhtBdRCgkE5Rq2",
+                  "name": "completed",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selxMXrmG2S9pG55k",
+                  "name": "queued",
+                  "color": "cyanLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldGH6XZmbYjXrs4e",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fldnTKxdGyqTzgNxn",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldgPwfrwWYIOrRTx",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldfoaiWx0sUNazG5",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldqdRIbmd4WSf7UH",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldhM1vZngoAmrVe6",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld5OswMgMBAORkcT",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldPP9zYkXFyRChhE",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldGxGBAMMHZOtAbD",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldm2uODrFri7Wcat",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldlWmjcV4HH8cIRE",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldJmVUVbK8iHk5m1",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldLsdmDeuJfhPlbI",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "seldUew9UYI4QiYnk",
+                  "name": "",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selypsd98soNJgtFf",
+                  "name": "Edge",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selg2IUvT2U7FEP3P",
+                  "name": "Chrome",
+                  "color": "tealLight2"
+                },
+                {
+                  "id": "selP2Vxkpak59d3rL",
+                  "name": "Unknown",
+                  "color": "greenLight2"
+                },
+                {
+                  "id": "selLBEUmtRvp6fhyC",
+                  "name": "Safari",
+                  "color": "yellowLight2"
+                },
+                {
+                  "id": "selA0tDKFTPwGLrVR",
+                  "name": "Firefox",
+                  "color": "orangeLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld32VXREEaEqSSqj",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selTKIGjbVM6cIz8H",
+                  "name": "",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "sel6T9sz8ESIpeDUS",
+                  "name": "Windows",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selbdH6jKhq7jObdD",
+                  "name": "Linux",
+                  "color": "tealLight2"
+                },
+                {
+                  "id": "selttulORZRsFEa8J",
+                  "name": "Unknown",
+                  "color": "greenLight2"
+                },
+                {
+                  "id": "selBfNWCY3KKd4tVT",
+                  "name": "macOS",
+                  "color": "yellowLight2"
+                },
+                {
+                  "id": "selgbirInWJBatYa3",
+                  "name": "iOS",
+                  "color": "orangeLight2"
+                },
+                {
+                  "id": "selIu3DI2c3m6qvf9",
+                  "name": "Android",
+                  "color": "redLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldjDqvEJf07HHhvm",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selJdPEQUqiTtVKCE",
+                  "name": "bot",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selzPT5u4korA2v8y",
+                  "name": "desktop",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "sel3ZVlM5vMFIk1GJ",
+                  "name": "mobile",
+                  "color": "tealLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldJ40vPzKFY3urQW",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldmecauFZmTwCunb",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selEDqun8TYsr947G",
+                  "name": "",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selmAG3bNsFxXdJku",
+                  "name": "America/New_York",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selp5y5X0z1mDu2jp",
+                  "name": "UTC",
+                  "color": "tealLight2"
+                },
+                {
+                  "id": "selfHEUntfU45yVes",
+                  "name": "America/Los_Angeles",
+                  "color": "greenLight2"
+                },
+                {
+                  "id": "sel13c2Q4pagSAVXw",
+                  "name": "Pacific/Auckland",
+                  "color": "yellowLight2"
+                },
+                {
+                  "id": "selfuDQ9tIQWgaaGy",
+                  "name": "Europe/Brussels",
+                  "color": "orangeLight2"
+                },
+                {
+                  "id": "sel5yvrEfqO2ycDJy",
+                  "name": "Europe/London",
+                  "color": "redLight2"
+                },
+                {
+                  "id": "selwZ8nrAQ9fmWtWN",
+                  "name": "Atlantic/Reykjavik",
+                  "color": "pinkLight2"
+                },
+                {
+                  "id": "selXtXliXLWoSPhWm",
+                  "name": "America/Denver",
+                  "color": "purpleLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldCFYLERwncewTbQ",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selJnSZBkuuMcYSlG",
+                  "name": "extra_large",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selOv5srTMb8hhyJY",
+                  "name": "large",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selFz8vzLJydj2zjN",
+                  "name": "small",
+                  "color": "tealLight2"
+                },
+                {
+                  "id": "selwQd36Wh3LfgVGG",
+                  "name": "medium",
+                  "color": "greenLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldDzuKREEfEcQqYG",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selMz8KaFdv6bTVnJ",
+                  "name": "",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selSYoSt58mqw2hcM",
+                  "name": "/ks2",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "sel2GMeNuyGn8QXxp",
+                  "name": "/members",
+                  "color": "tealLight2"
+                },
+                {
+                  "id": "selXcdq0HZajxfRKN",
+                  "name": "/",
+                  "color": "greenLight2"
+                },
+                {
+                  "id": "selltdUbudU5YTvGp",
+                  "name": "/show",
+                  "color": "yellowLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldSUiBuYG6rlKeQ2",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selgEaVRxVpNHz4X1",
+                  "name": "",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selsCUHzRKe1yV52h",
+                  "name": "ringstatus.com",
+                  "color": "cyanLight2"
+                },
+                {
+                  "id": "selSSGNfqDMFfAOBu",
+                  "name": "home.mywebsearch.com",
+                  "color": "tealLight2"
+                },
+                {
+                  "id": "selt9oCtalEwNHaKp",
+                  "name": "ringstatus.design.webflow.com",
+                  "color": "greenLight2"
+                },
+                {
+                  "id": "selUQP009TsYlZTou",
+                  "name": "www.google.com",
+                  "color": "yellowLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldpu0hqcLtLcM0JM",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fld4zv11WwPIZi3y8",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld7ODOyR9zZ2T07N",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tbly1PM5iFYqVzKSm",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldrTN37vW4W11NDm"
+            }
+          },
+          {
+            "id": "fldkQpeskRv5TCLiz",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblfkRSJAEMzuzApR",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldz5vqGqDU7Tdi9J"
+            }
+          },
+          {
+            "id": "fldREn1ZQQ3Qknfg9",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblgDWKi0Bb6OcoqS",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fld5202Pob2aNDoPT"
+            }
+          },
+          {
+            "id": "fldHb2ZhF7V5KOONI",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selOjPNp8Htm50925",
+                  "name": "start",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selQBykytspEz2RlY",
+                  "name": "success",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel1iwleIo9IQqndm",
+                  "name": "failure",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selTsWJXD8RfGjPMh",
+                  "name": "update",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selAGtaBzggFPlAZD",
+                  "name": "other",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldIUnzBLdPlpK3Vg",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selFi2LBBxGLmTgcs",
+                  "name": "matched",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selJTSE8LKoffdIAW",
+                  "name": "not_matched",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selpNlt8ZDD8SGwXR",
+                  "name": "pending",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "seltbdeSEGtID7dUQ",
+                  "name": "error",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel04ErhbQjmFKLK7",
+                  "name": "unknown",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld162tqrwkaFzcM6",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selfiEtqHqeTdOb45",
+                  "name": "ai",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selqXbMZ8mNSm1JNP",
+                  "name": "manual",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel2utv1LGTHBB5BF",
+                  "name": "external",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selQvLAoWmrDP1pPf",
+                  "name": "unknown",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldHjTlXpUJFz6kcN",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selhnah96MEJBi42X",
+                  "name": "queued",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "seliWGGdcbHO085QQ",
+                  "name": "processed",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel3J1AdnPnP6FjVI",
+                  "name": "error",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldCSH7dKtZqNt8ae",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldTKW3MlypfYN8Kb",
+            "type": "singleLineText"
+          },
+          {
+            "id": "flddRUzjU2tLna1uX",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldurWKehVP3JRgzj",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldcKfCgp0CnJNbcY",
+            "type": "singleLineText"
+          },
+          {
+            "id": "flddPljTOCtHGaOaq",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldqss05gFFeaMlb8",
+            "type": "singleLineText"
+          }
+        ]
+      },
+      {
+        "tableId": "tbly1PM5iFYqVzKSm",
+        "fields": [
+          {
+            "id": "fldDoGdGnbowgTYL9",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldg1ADzOyL9rnPa3",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld8O6WDODS1oxWd4",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fldooa5uhCCCjaXUj",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldVUWbBdphw1iBjW",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldaSRNiTxO1AayAv",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld5ZWj94cOthMdzj",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblgDWKi0Bb6OcoqS",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "flduISSCBkHWFo0Np"
+            }
+          },
+          {
+            "id": "fldTECDQ2uwkkJPWI",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldGfb9OBoh1xUN7X",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldN49cusB6l3mnvW",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld9Ea1lkKGrgWVca",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld6HLOo0Xx8Ztg8Y",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldKFLvI3Htgb7sDx",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldvGu8VTdXheMP4f",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldMieCYCDW59s8KD",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldxbxHxA86VExqw6",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldHep8DVOYr1nXCf",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldRe4aOw0TRGF1PM",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld4wzKCiRmjWH2Vt",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldPGT9t8kdlNaXXu",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblgDWKi0Bb6OcoqS",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldEKavrx9PQx0VVC"
+            }
+          },
+          {
+            "id": "fld7AgPPM7RwZC7JH",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldec8XscAVD5TDMc",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblfkRSJAEMzuzApR",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldGUsdYIFs2uWK8I"
+            }
+          },
+          {
+            "id": "fldrTN37vW4W11NDm",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblWjbASVMIjFLyW8",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fld7ODOyR9zZ2T07N"
+            }
+          },
+          {
+            "id": "fldOQqVnTJVitnRb4",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldsysJel4UnjuacT",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldGqomZ9KpIjwnIx",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "id": "fldE57fezfk8W4Ku1",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fld1IBUis44Mf2fRv",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblxC4SYtzYhJNcJS",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldyD5EDDo4iBvZuQ"
+            }
+          },
+          {
+            "id": "fldld19QotrsOvAv3",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tbl5Kng9jk0lhE2f9",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldBIfpxkHKbNHrAm"
+            }
+          }
+        ]
+      },
+      {
+        "tableId": "tblgDWKi0Bb6OcoqS",
+        "fields": [
+          {
+            "id": "flde2GFyD7u62yxNq",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldL2cHQJj2MeNhyK",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldEKavrx9PQx0VVC",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tbly1PM5iFYqVzKSm",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldPGT9t8kdlNaXXu"
+            }
+          },
+          {
+            "id": "fldFtLjM6npmnwSFm",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "sel0yxO8TxyYlgUea",
+                  "name": "Mobile",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld6qazutKlEF1LeH",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "sel4uMVqGka7boQ0Z",
+                  "name": "Active",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel3JJy0gPfZG4WPO",
+                  "name": "Inactive",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld5202Pob2aNDoPT",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblWjbASVMIjFLyW8",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldREn1ZQQ3Qknfg9"
+            }
+          },
+          {
+            "id": "flduISSCBkHWFo0Np",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tbly1PM5iFYqVzKSm",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fld5ZWj94cOthMdzj"
+            }
+          }
+        ]
+      },
+      {
+        "tableId": "tblxC4SYtzYhJNcJS",
+        "fields": [
+          {
+            "id": "fldjsbOys7bh7I8m8",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldyD5EDDo4iBvZuQ",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tbly1PM5iFYqVzKSm",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fld1IBUis44Mf2fRv"
+            }
+          },
+          {
+            "id": "fld5u5Z5XnC92hW1m",
+            "type": "multipleLookupValues",
+            "config": {
+              "isValid": true,
+              "recordLinkFieldId": "fldyD5EDDo4iBvZuQ",
+              "fieldIdInLinkedTable": "fld7AgPPM7RwZC7JH",
+              "result": {
+                "type": "singleLineText"
+              }
+            }
+          },
+          {
+            "id": "fldJKQ2l3zASEvbt4",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldvv4iFdneSZyS8C",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldlVDGtvzUJLXBXV",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selXuHrL1whzTKC9w",
+                  "name": "recognize_invitation",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selE9TRXk136uA4fR",
+                  "name": "recognize_recovery",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld34LOgNBXWdn1FU",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selKbSY2kFZpEcTWC",
+                  "name": "draft",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selvqXKuZ69KjPQRk",
+                  "name": "ready",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel31JhC4QR7jn6c8",
+                  "name": "processing",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selp3XuIWSTSKR3bu",
+                  "name": "submitted",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selCiKWiZGgGSnXel",
+                  "name": "delivered",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selOA82Tpktse8mCL",
+                  "name": "failed",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selwEdf7GQmydeX2D",
+                  "name": "unknown",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selobfFiHzrhWJaUr",
+                  "name": "cancelled",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldTvTnkceX5lJGTk",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selxVvKuaZF0AiMgT",
+                  "name": "test",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selMgcNdTwSGrO2Y7",
+                  "name": "live",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldMArazypZarvsGV",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "id": "fldwrsdXxywUh283e",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "id": "fldTQBPpVtD7GDLIa",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldTfPzIZpBuf1NWI",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldbK56RGHwfP7ntk",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblF1Hdqi3yoKTZPV",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldEYOpI5XHJtQO0V"
+            }
+          }
+        ]
+      },
+      {
+        "tableId": "tblF1Hdqi3yoKTZPV",
+        "fields": [
+          {
+            "id": "fldWH6JbyPoFSvOql",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldEYOpI5XHJtQO0V",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tblxC4SYtzYhJNcJS",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldbK56RGHwfP7ntk"
+            }
+          },
+          {
+            "id": "fldgL34bu8D5T8zB4",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "id": "fldIyYcSpa7o6DsTL",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selV4kfuhO6Iyl8bl",
+                  "name": "requested",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selCjuHC9NMjESurm",
+                  "name": "attempt_started",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel4H3Obw0keThYlK",
+                  "name": "submitted",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel3LsdsxdEL4eQHG",
+                  "name": "sent",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selc2i5Xux7tmjnzt",
+                  "name": "delivered",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "sel4FNnMNmRTNkWPZ",
+                  "name": "failed",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selX5Qb5Ypdvai0cm",
+                  "name": "undelivered",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selpjUa9ZkrnOlUew",
+                  "name": "unknown",
+                  "color": "grayLight2"
+                },
+                {
+                  "id": "selsLROuJAYE6ORg8",
+                  "name": "cancelled",
+                  "color": "grayLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldrcaIqcuDT9zsDU",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldyLfDiMY5CXqpYG",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldWZohpPSWwyWEle",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldxrmZxGacqxScQY",
+            "type": "multilineText"
+          }
+        ]
+      },
+      {
+        "tableId": "tbl5Kng9jk0lhE2f9",
+        "fields": [
+          {
+            "id": "fld1Zfz7JGd03GTWl",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldBIfpxkHKbNHrAm",
+            "type": "multipleRecordLinks",
+            "config": {
+              "linkedTableId": "tbly1PM5iFYqVzKSm",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldld19QotrsOvAv3"
+            }
+          },
+          {
+            "id": "fldldMVunGxRQ7774",
+            "type": "checkbox",
+            "config": {
+              "icon": "check",
+              "color": "greenBright"
+            }
+          },
+          {
+            "id": "fldYtsngN51KhBnYE",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldpd3WcyOOMFWWTT",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "id": "fldtkdoK6DM59zUjx",
+            "type": "multipleLookupValues",
+            "config": {
+              "isValid": true,
+              "recordLinkFieldId": "fldBIfpxkHKbNHrAm",
+              "fieldIdInLinkedTable": "fld7AgPPM7RwZC7JH",
+              "result": {
+                "type": "singleLineText"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "candidates": {
+    "rs_devices_test": [
+      "legacy_person",
+      "rs_recognition_sessions_test"
+    ],
+    "rs_recognition_sessions_test": [
+      "legacy_event_type",
+      "legacy_event_result",
+      "legacy_person",
+      "legacy_device",
+      "legacy_phone_alias",
+      "legacy_matched_by",
+      "legacy_automation_status",
+      "legacy_browser_family",
+      "legacy_os_family",
+      "legacy_device_class",
+      "legacy_client_timezone",
+      "legacy_viewport_bucket",
+      "legacy_page_path",
+      "legacy_referrer_host"
+    ],
+    "rs_people_test": [
+      "legacy_primary_phone_e164",
+      "Phone",
+      "rs_devices_test",
+      "rs_recognition_sessions_test",
+      "profile_name (from ww_profiles)",
+      "ww_profiles",
+      "sms (from ww_profiles)",
+      "active_iams",
+      "ww_iams (from ww_profiles)",
+      "profile_rid (from ww_profiles)",
+      "rs_phone_aliases_test"
+    ],
+    "rs_phone_aliases_test": [
+      "rs_people_test"
+    ],
+    "rs_sms_requests": [
+      "source_event_uid",
+      "to_e164",
+      "template_key",
+      "expires_at"
+    ],
+    "rs_sms_events": [
+      "detail"
+    ]
+  },
+  "population": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "table": "rs_devices_test",
+        "rows": 11,
+        "total": 11,
+        "counts": {
+          "legacy_person": 0,
+          "rs_recognition_sessions_test": 0
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "table": "rs_recognition_sessions_test",
+        "rows": 52,
+        "total": 52,
+        "counts": {
+          "legacy_event_type": 0,
+          "legacy_event_result": 0,
+          "legacy_person": 0,
+          "legacy_device": 0,
+          "legacy_phone_alias": 0,
+          "legacy_matched_by": 0,
+          "legacy_automation_status": 0,
+          "legacy_browser_family": 0,
+          "legacy_os_family": 0,
+          "legacy_device_class": 0,
+          "legacy_client_timezone": 0,
+          "legacy_viewport_bucket": 0,
+          "legacy_page_path": 0,
+          "legacy_referrer_host": 0
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "table": "rs_people_test",
+        "rows": 8,
+        "total": 8,
+        "counts": {
+          "legacy_primary_phone_e164": 0,
+          "Phone": 0,
+          "rs_phone_aliases_test": 0,
+          "rs_devices_test": 0,
+          "rs_recognition_sessions_test": 0,
+          "profile_name (from ww_profiles)": 0,
+          "ww_profiles": 0,
+          "sms (from ww_profiles)": 0,
+          "active_iams": 0,
+          "ww_iams (from ww_profiles)": 0,
+          "profile_rid (from ww_profiles)": 0
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "table": "rs_phone_aliases_test",
+        "rows": 1,
+        "total": 1,
+        "counts": {
+          "rs_people_test": 0
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "table": "rs_sms_requests",
+        "rows": 9,
+        "total": 9,
+        "counts": {
+          "source_event_uid": 0,
+          "to_e164": 0,
+          "template_key": 0,
+          "expires_at": 0
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "table": "rs_sms_events",
+        "rows": 24,
+        "total": 24,
+        "counts": {
+          "detail": 0
+        }
+      }
+    }
+  ],
+  "note": "Pre-deletion metadata. Candidate fields were empty at prior complete population read. Product trash is preferred recovery to retain original field IDs; recreating fields changes IDs."
+}

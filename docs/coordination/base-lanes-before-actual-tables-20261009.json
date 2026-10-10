@@ -1,0 +1,956 @@
+{
+  "bases": {
+    "records": [
+      {
+        "id": "recCD4n7064UAEnRf",
+        "createdTime": "2026-10-09T21:33:12.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/apprSZEfQsjUPrPNk",
+          "fld5Pspa3MLylRM8k": "horses",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "apprSZEfQsjUPrPNk",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "rec5qRYBH64sbyr4l",
+              "name": "Shared horses"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/apprSZEfQsjUPrPNk"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recwSSygX62woL9Iq",
+              "name": "horses"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recDr4denE13kmFe3",
+        "createdTime": "2026-10-09T21:01:49.000Z",
+        "cellValuesByFieldId": {
+          "fld5Pspa3MLylRM8k": "ringwaze",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "soon",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recQEkNzTObK9kIGp",
+              "name": "Comments"
+            },
+            {
+              "id": "recs32Hooq76MGNVk",
+              "name": "Observations / check-ins"
+            },
+            {
+              "id": "recyRTES9qeB19kDc",
+              "name": "Location layer"
+            },
+            {
+              "id": "rec25cTMUR45otmKd",
+              "name": "Ring maps"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": ""
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recDHmFHbf6td1axp",
+              "name": "ringwaze"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recE6mDEqgtMfzJIh",
+        "createdTime": "2026-10-09T21:01:49.000Z",
+        "cellValuesByFieldId": {
+          "fld5Pspa3MLylRM8k": "packing",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "soon",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recZ5Qp8y5bG0Jv3w",
+              "name": "Full packing"
+            },
+            {
+              "id": "recOuiWZyavl3Kmou",
+              "name": "Tack packing"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": ""
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recHj6cxBNTiFEiTk",
+              "name": "packing"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recKorkRvKnp65gMP",
+        "createdTime": "2026-10-09T21:01:49.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/appnOAk2pW8JawiuP",
+          "fld5Pspa3MLylRM8k": "engine",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "appnOAk2pW8JawiuP",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recamBRZalQ53Zd8C",
+              "name": "Shows / weeks"
+            },
+            {
+              "id": "recodwvyF1oI9dyU0",
+              "name": "Groups / classes / entries"
+            },
+            {
+              "id": "rec6F803f207FVMAm",
+              "name": "Live data / trips"
+            },
+            {
+              "id": "recfxC5Mh7eKpEo98",
+              "name": "Class / go times"
+            },
+            {
+              "id": "recy2GmsTkxXZBffn",
+              "name": "Next day"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/appnOAk2pW8JawiuP"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recv0LwtZ3WLXKN9i",
+              "name": "engine"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recRHumBtFpJvHWQh",
+        "createdTime": "2026-10-09T22:03:15.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/",
+          "fld5Pspa3MLylRM8k": "rings",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recUEjhJ0gqv4u4uy",
+              "name": "Ring engine"
+            },
+            {
+              "id": "rec25cTMUR45otmKd",
+              "name": "Ring maps"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/"
+          }
+        }
+      },
+      {
+        "id": "recRxx8Ns0h4kBmj8",
+        "createdTime": "2026-10-09T21:13:41.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/appdHvjeVVL82Nf5U",
+          "fld5Pspa3MLylRM8k": "rsco",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "appdHvjeVVL82Nf5U",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recGzg4nSgR1izS6m",
+              "name": "Company / static content"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/appdHvjeVVL82Nf5U"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recsQ5CsBBR38WWdB",
+              "name": "rsco"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recc04e4cPGXJOTRo",
+        "createdTime": "2026-10-09T21:01:49.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/apphwDLkVCp8ut2Hd",
+          "fld5Pspa3MLylRM8k": "messages",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "apphwDLkVCp8ut2Hd",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recYzShI5mMbbP8ra",
+              "name": "Alerts / SMS engine"
+            },
+            {
+              "id": "recZQmAIIvIb5o3SG",
+              "name": "Responses"
+            },
+            {
+              "id": "recmVOYjL5HJoNLMu",
+              "name": "Notifications feed"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/apphwDLkVCp8ut2Hd"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recnNTdyAcMAbWU4F",
+              "name": "messages"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recdFmA1orrrV9r4F",
+        "createdTime": "2026-10-09T21:01:49.000Z",
+        "cellValuesByFieldId": {
+          "fld5Pspa3MLylRM8k": "results",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "soon",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recI7JnDF61nVVWsN",
+              "name": "Results engine"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": ""
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recB52r84X0puErx6",
+              "name": "results"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rechkJ5kYO0AKVVBX",
+        "createdTime": "2026-10-09T21:01:49.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/appara5767XpIaJIf/",
+          "fld5Pspa3MLylRM8k": "publish",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "appara5767XpIaJIf/",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recFUP1SBz9aISkeI",
+              "name": "Schedule endpoints"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/appara5767XpIaJIf/"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recmjScmqrxpGjj22",
+              "name": "publish"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recjp6lvMoHaT4loq",
+        "createdTime": "2026-10-09T21:01:49.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/app7BXcw801n19QKF",
+          "fld5Pspa3MLylRM8k": "entities",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "app7BXcw801n19QKF",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "reccgm4r3pZO463oX",
+              "name": "Tenants"
+            },
+            {
+              "id": "recd7YOz1ny0O2kDs",
+              "name": "Users"
+            },
+            {
+              "id": "rec9OJ9AxAVyWaUzM",
+              "name": "Locations"
+            },
+            {
+              "id": "recd81AiWShgyRMfM",
+              "name": "Onboarding / profile inputs"
+            },
+            {
+              "id": "recXK2QSM5YW0uGWU",
+              "name": "Opt-ins"
+            },
+            {
+              "id": "recpflDxPx2IKoVe4",
+              "name": "Following / favorites"
+            },
+            {
+              "id": "rec3FAbXguLulwi9y",
+              "name": "Red-line reports"
+            },
+            {
+              "id": "recdydn1A6ITaJ49m",
+              "name": "Audit submissions"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/app7BXcw801n19QKF"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recKbnPzzB7HhrZ4B",
+              "name": "entities"
+            }
+          ]
+        }
+      },
+      {
+        "id": "reclQVTzebvQiVW6z",
+        "createdTime": "2026-10-08T00:59:46.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/appZahVgD156cMAe3",
+          "fld5Pspa3MLylRM8k": "agents",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "appZahVgD156cMAe3",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "rechf5kPpU7Q08m58",
+              "name": "Projects / bases"
+            },
+            {
+              "id": "recSPvzeHV8Onn0m8",
+              "name": "Skills / connectors"
+            },
+            {
+              "id": "recDfsdfHEbULxzuO",
+              "name": "Tasks / coordination"
+            },
+            {
+              "id": "rec8H8DsQdXVwlsKK",
+              "name": "Failures / lessons"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/appZahVgD156cMAe3"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recprK4GNmRz2qg7V",
+              "name": "agents"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recsqi59j9rA6uCjf",
+        "createdTime": "2026-10-09T21:41:00.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/appfabN9KQwDHSqbG",
+          "fld5Pspa3MLylRM8k": "riders",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "appfabN9KQwDHSqbG",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "rectujKjyo0JgIvtT",
+              "name": "Shared riders"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/appfabN9KQwDHSqbG"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recS1Nc6dD9Re5kez",
+              "name": "riders"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recwIc7Er8vb4SRlR",
+        "createdTime": "2026-10-08T00:52:55.000Z",
+        "cellValuesByFieldId": {
+          "fld0iZylhFrGwzOOl": "https://airtable.com/app9kOZdIaGyKk5uG",
+          "fld5Pspa3MLylRM8k": "recognize",
+          "fldDidgxTWp0mVzNI": "https://airtable.com/",
+          "fldUqAg485WX5RFvn": "app9kOZdIaGyKk5uG",
+          "fldW8IbhnYVCV3a1p": [
+            {
+              "id": "recaxIVLIshP6cKps",
+              "name": "IAM"
+            },
+            {
+              "id": "recfk5hyebRc3AjqN",
+              "name": "Sessions"
+            },
+            {
+              "id": "rec9nRZrJ8vQzSUVE",
+              "name": "Footprints"
+            },
+            {
+              "id": "recmOVbL2bwYQCbxJ",
+              "name": "Recognize"
+            }
+          ],
+          "fldXfOEzkRDeM4Fqh": {
+            "label": "Button",
+            "url": "https://airtable.com/app9kOZdIaGyKk5uG"
+          },
+          "flde55CgZyKg3gD6r": [
+            {
+              "id": "recF6q28rCnFAgbWz",
+              "name": "recognize"
+            }
+          ]
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 13
+    }
+  },
+  "lanes": {
+    "records": [
+      {
+        "id": "rec25cTMUR45otmKd",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Geographic reference for rings, barns, gates, parking, coordinates and distances.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recDr4denE13kmFe3",
+              "name": "ringwaze"
+            },
+            {
+              "id": "recRHumBtFpJvHWQh",
+              "name": "rings"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Ring maps"
+        }
+      },
+      {
+        "id": "rec3FAbXguLulwi9y",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Barn-input forms for missing horses or riders; admin resolves missing records or aliases.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Red-line reports"
+        }
+      },
+      {
+        "id": "rec5qRYBH64sbyr4l",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Reusable horse identity records for tenants, WEF/WEC, packing and tack. Weekly/daily participation belongs to show data.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recCD4n7064UAEnRf",
+              "name": "horses"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Shared horses"
+        }
+      },
+      {
+        "id": "rec6BZb8UZeRaRtar",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Show-specific operational ring records; geographic reference remains separate.",
+          "fldc7IaJddkGxWNa8": "Rings"
+        }
+      },
+      {
+        "id": "rec6F803f207FVMAm",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Current show feeds, trips and state consumed by downstream engines.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recKorkRvKnp65gMP",
+              "name": "engine"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Live data / trips"
+        }
+      },
+      {
+        "id": "rec8H8DsQdXVwlsKK",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Evidence-backed complaints, corrections and verification of resolutions.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "reclQVTzebvQiVW6z",
+              "name": "agents"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Failures / lessons"
+        }
+      },
+      {
+        "id": "rec9OJ9AxAVyWaUzM",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Entities base: tenant-associated locations and profile inputs, currently rs_input_locations in Recognize. Geographic maps and live movement remain in the RingWaze lanes. Relocation pending.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Locations"
+        }
+      },
+      {
+        "id": "rec9nRZrJ8vQzSUVE",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Recognition/session events only, currently rs_recognition_sessions_test. Profile edit history belongs with Entities; SMS request history is recognition-only here.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recwIc7Er8vb4SRlR",
+              "name": "recognize"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Footprints"
+        }
+      },
+      {
+        "id": "recDfsdfHEbULxzuO",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Scoped work, ownership, current status and next action.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "reclQVTzebvQiVW6z",
+              "name": "agents"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Tasks / coordination"
+        }
+      },
+      {
+        "id": "recFUP1SBz9aISkeI",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Serve prepared and live schedule output to designated displays; Webflow owns presentation and Astro maps data/actions.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "rechkJ5kYO0AKVVBX",
+              "name": "publish"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Schedule endpoints"
+        }
+      },
+      {
+        "id": "recGzg4nSgR1izS6m",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Company content and static CMS staging.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recRxx8Ns0h4kBmj8",
+              "name": "rsco"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Company / static content"
+        }
+      },
+      {
+        "id": "recI7JnDF61nVVWsN",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Monitor live data, ring output and alert triggers to produce results when required.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recdFmA1orrrV9r4F",
+              "name": "results"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Results engine"
+        }
+      },
+      {
+        "id": "recOuiWZyavl3Kmou",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Existing smaller tack-packing concept and implementation.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recE6mDEqgtMfzJIh",
+              "name": "packing"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Tack packing"
+        }
+      },
+      {
+        "id": "recQEkNzTObK9kIGp",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Master and ring/class/entry-scoped commenting, using the documented WEC-backed concept.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recDr4denE13kmFe3",
+              "name": "ringwaze"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Comments"
+        }
+      },
+      {
+        "id": "recSPvzeHV8Onn0m8",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Reusable instructions, connection references and specific connector resources.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "reclQVTzebvQiVW6z",
+              "name": "agents"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Skills / connectors"
+        }
+      },
+      {
+        "id": "recUEjhJ0gqv4u4uy",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Read live data and produce ring-related output.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recRHumBtFpJvHWQh",
+              "name": "rings"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Ring engine"
+        }
+      },
+      {
+        "id": "recXK2QSM5YW0uGWU",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Entities owns SMS opt-ins, preferences, timing and consent. rs_input_subscriptions created in Entities as tblCX61u6pjSLrP5S; 1 source record copied and exact fields read back. Runtime still uses Recognize's original subscription table until the existing Astro base/table routing is updated and tested. Recognize may display a shared subset; API writes must address the Entities source directly. Messages remains responsible for delivery.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Opt-ins"
+        }
+      },
+      {
+        "id": "recYzShI5mMbbP8ra",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Use live data, ring output and recipient opt-ins to prepare and deliver alerts.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recc04e4cPGXJOTRo",
+              "name": "messages"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Alerts / SMS engine"
+        }
+      },
+      {
+        "id": "recZ5Qp8y5bG0Jv3w",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Existing WEC Packing / RSWP concept and implementation.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recE6mDEqgtMfzJIh",
+              "name": "packing"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Full packing"
+        }
+      },
+      {
+        "id": "recZQmAIIvIb5o3SG",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Record SMS responses and related message activity.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recc04e4cPGXJOTRo",
+              "name": "messages"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Responses"
+        }
+      },
+      {
+        "id": "recamBRZalQ53Zd8C",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Show-week context; the detailed engine discussed is WEF-specific.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recKorkRvKnp65gMP",
+              "name": "engine"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Shows / weeks"
+        }
+      },
+      {
+        "id": "recaxIVLIshP6cKps",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Slim recognition identity only: stable person identity, recognition phone/device associations and recognition state. Existing rs_people_test combines identity and profile fields; retain the necessary identity portion here and allocate full user profiles to Entities. active_iams exists but its schema says no runtime writer is connected.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recwIc7Er8vb4SRlR",
+              "name": "recognize"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "IAM"
+        }
+      },
+      {
+        "id": "reccgm4r3pZO463oX",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Entities base: barns, membership, roles and assignments. Existing source table in Recognize is rs_input_barns; relocation has not occurred. Membership remains valid independently of show-week/day participation.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Tenants"
+        }
+      },
+      {
+        "id": "recd7YOz1ny0O2kDs",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Entities base: full people, trainer, staff and groom profiles. Source includes rs_input_users and profile fields currently mixed into rs_people_test. Preserve the existing recognition_person_uid/person_uid relationship; do not create a second identity. Staff may also be riders; grooms see only assignments. Relocation pending.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Users"
+        }
+      },
+      {
+        "id": "recd81AiWShgyRMfM",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Entities source tables prepared 2026-10-09: rs_input_barns (4), rs_input_users (6), rs_input_locations (3), rs_source_ids (0), rs_input_events (31), rs_input_subscriptions (1). All 45 copied records verified field-by-field. Stable application IDs preserved. Runtime still uses original Recognize tables; cutover/sharing remain pending. Astro must write to Entities source tables; Airtable API cannot write through synced destinations. Evidence: docs/coordination/entities-source-preparation-20261009.md and .json.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Onboarding / profile inputs"
+        }
+      },
+      {
+        "id": "recdydn1A6ITaJ49m",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Barn-input batch lists comparing expected horses and classes against the displayed daily schedule.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Audit submissions"
+        }
+      },
+      {
+        "id": "recfk5hyebRc3AjqN",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Create and record recognized-user sessions.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recwIc7Er8vb4SRlR",
+              "name": "recognize"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Sessions"
+        }
+      },
+      {
+        "id": "recfxC5Mh7eKpEo98",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Read live data to produce class timing and go-time output.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recKorkRvKnp65gMP",
+              "name": "engine"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Class / go times"
+        }
+      },
+      {
+        "id": "rechf5kPpU7Q08m58",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Project inventory, base identities and functional-lane allocation.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "reclQVTzebvQiVW6z",
+              "name": "agents"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Projects / bases"
+        }
+      },
+      {
+        "id": "recmOVbL2bwYQCbxJ",
+        "createdTime": "2026-10-09T22:01:44.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Existing base app9kOZdIaGyKk5uG. Recognition only: silent device/cookie recognition, phone/code verification, recognition identities, sessions and recognition footprints. No tenant membership, full profiles, onboarding, horse/rider master data or notification preferences. Recognition-specific SMS requests/events support sign-in; general alerts belong to Messages. Current physical base still contains profile/input tables; this lane defines the intended split, not a completed migration.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recwIc7Er8vb4SRlR",
+              "name": "recognize"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Recognize"
+        }
+      },
+      {
+        "id": "recmVOYjL5HJoNLMu",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "User-facing notification history; feed here means notifications-feed.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recc04e4cPGXJOTRo",
+              "name": "messages"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Notifications feed"
+        }
+      },
+      {
+        "id": "recodwvyF1oI9dyU0",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Prepare static show data; current live data takes precedence.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recKorkRvKnp65gMP",
+              "name": "engine"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Groups / classes / entries"
+        }
+      },
+      {
+        "id": "recpflDxPx2IKoVe4",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Tenant trainer follows, horse/rider exclusions, personal favorites and association history for suggested matches. Shared horse and rider identities remain in their own bases.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recjp6lvMoHaT4loq",
+              "name": "entities"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Following / favorites"
+        }
+      },
+      {
+        "id": "recs32Hooq76MGNVk",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Structured observations, first-hand context and ring check-ins; reuse documented concepts.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recDr4denE13kmFe3",
+              "name": "ringwaze"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Observations / check-ins"
+        }
+      },
+      {
+        "id": "rectujKjyo0JgIvtT",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Reusable rider identity records and rider inputs. Tenant membership is separate from weekly/daily participation.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recsqi59j9rA6uCjf",
+              "name": "riders"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Shared riders"
+        }
+      },
+      {
+        "id": "recy2GmsTkxXZBffn",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Prepare tomorrow's show data.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recKorkRvKnp65gMP",
+              "name": "engine"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Next day"
+        }
+      },
+      {
+        "id": "recyRTES9qeB19kDc",
+        "createdTime": "2026-10-09T22:01:11.000Z",
+        "cellValuesByFieldId": {
+          "fldPlfL0CLd8Rvi4X": "Where horses and people are and where they are going; movement, ETAs and responsibility changes.",
+          "fldYesEnweHi4Inc8": [
+            {
+              "id": "recDr4denE13kmFe3",
+              "name": "ringwaze"
+            }
+          ],
+          "fldc7IaJddkGxWNa8": "Location layer"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 37
+    }
+  }
+}

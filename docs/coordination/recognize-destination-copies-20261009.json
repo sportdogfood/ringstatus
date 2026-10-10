@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-09",
+  "state": "destination-copies-prepared-not-activated",
+  "sourceBaseId": "app9kOZdIaGyKk5uG",
+  "sourceUntouched": true,
+  "runtimeUntouched": true,
+  "automationsUntouched": true,
+  "recordsCopied": 41,
+  "tables": [
+    {
+      "table": "rs_input_riders",
+      "sourceTableId": "tblnd2ToLs7dTzLAM",
+      "destinationBaseId": "app7BXcw801n19QKF",
+      "destinationTableId": "tblOSFSJOAvDzI6wT",
+      "records": 4,
+      "exactMappedFieldReadback": true,
+      "errors": []
+    },
+    {
+      "table": "rs_input_horses",
+      "sourceTableId": "tblpyyaOMgjLzLvkP",
+      "destinationBaseId": "app7BXcw801n19QKF",
+      "destinationTableId": "tbld6HQpYGoko0KKE",
+      "records": 4,
+      "exactMappedFieldReadback": true,
+      "errors": []
+    },
+    {
+      "table": "rs_sms_requests",
+      "sourceTableId": "tblxC4SYtzYhJNcJS",
+      "destinationBaseId": "apphwDLkVCp8ut2Hd",
+      "destinationTableId": "tblQWqhaSVXdDxQF0",
+      "records": 9,
+      "exactMappedFieldReadback": true,
+      "errors": []
+    },
+    {
+      "table": "rs_sms_events",
+      "sourceTableId": "tblF1Hdqi3yoKTZPV",
+      "destinationBaseId": "apphwDLkVCp8ut2Hd",
+      "destinationTableId": "tblr7sWHgoYDgj7uV",
+      "records": 24,
+      "exactMappedFieldReadback": true,
+      "errors": []
+    }
+  ],
+  "adaptations": [
+    "SMS person_uid is the existing stable Recognize person UID stored as text across bases; no duplicate People table.",
+    "primary_phone_e164 is the source lookup value copied as a snapshot, not a live lookup.",
+    "SMS event/request links remapped to new destination record IDs; request/event application UIDs preserved."
+  ],
+  "priorPreparation": "docs/coordination/entities-source-preparation-20261009.json",
+  "excluded": "No metadata/example tables copied. Membership/assignment exclusions retained. No deletions, routing changes, SMS sends or automation activation."
+}

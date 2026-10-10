@@ -1,0 +1,233 @@
+{
+  "records": [
+    {
+      "id": "recAKQzEgTL2oIEsr",
+      "createdTime": "2026-10-09T19:48:11.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "sms-engine",
+        "fldx8GVkEphJjS47l": "CANDIDATE BASE — listed for owner review, 2026-10-09. Alerts, outbound messaging, delivery state, responses and notifications-feed. Authoritative personal identity and opt-in/consent remain in their owning shared-data store. messages is an existing empty shell per owner; decide whether to reuse/rename that shell or retain another destination. No separate base ID assigned, base created, automation activated or message sent."
+      }
+    },
+    {
+      "id": "recD4BYtzeZwDtMzC",
+      "createdTime": "2026-10-08T16:51:41.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "rscom",
+        "fldFoJmfj9OjPQyfh": true,
+        "fldNb5FI8ucziUiUB": "appDN3R51ZPmwgMib",
+        "fldVTn9CBCVWlq9nX": true,
+        "fldx8GVkEphJjS47l": "EXISTING BASE / OWNER-DESCRIBED ROLE — 2026-10-09. rscom: Airtable staging, CMS and company/static data, as stated in the owner's input/output outline. Registered ID appDN3R51ZPmwgMib retained. Detailed schema/runtime not reviewed here. rsco is a separately registered base; no equivalence or merge is assumed. Keep both visible pending owner allocation/merge/remove decisions."
+      }
+    },
+    {
+      "id": "recG1ziWkPtH6f2Zd",
+      "createdTime": "2026-10-08T01:49:13.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "tackapp",
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recHj6cxBNTiFEiTk",
+            "name": "ringstatus-projects-packing"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "EXISTING BUILT CONCEPT; SEPARATE BASE ID NOT REGISTERED — corrected 2026-10-08. Owner confirms tackapp is an already built working concept, not a new idea. Packing & Logistics project correlation retained. Related implementation evidence located in RingStatus: docs/8778_tack_horses_change_log_handoff.md and webflow/8778-tack-horses/ (horse display/edit flow, Webflow Cloud/Airtable connector and audit logging). The exact tackapp name-to-artifact mapping was not established by the repository exact-name search; these related files are not claimed to be the complete tackapp. Review/reuse its existing overview, code and data before designing a separate base. Blank base_id describes destination-registration status only, not project maturity. No live runtime retest, rebuild or migration performed."
+      }
+    },
+    {
+      "id": "recTyZOMcbxbeVOaJ",
+      "createdTime": "2026-10-07T23:07:08.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "WEC",
+        "fldFoJmfj9OjPQyfh": true,
+        "fldNb5FI8ucziUiUB": "app6XS1RvsPNRT6os",
+        "fldVTn9CBCVWlq9nX": true,
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recBBTuaabvWVkMOj",
+            "name": "ringstatus-projects-ringstatus"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "LOCKED ROLE — 2026-10-08. Existing WEC source/dataset and operational base. Keep WEC engine records separate from WEF and shared user metadata in Recognize. The eleven existing Waze session/comment/check-in/observation/configuration/user/footprint tables remain here until a separately scoped migration to the planned waze base. No migration or runtime change performed. Zoho CRM deferral does not defer or disable existing Zoho Catalyst hosting."
+      }
+    },
+    {
+      "id": "recUvmrZ2AJVTyf1c",
+      "createdTime": "2026-10-08T01:51:11.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "ring-maps",
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recDHmFHbf6td1axp",
+            "name": "ringstatus-projects-ringwaze"
+          },
+          {
+            "id": "recoWW970Bi5rQ23J",
+            "name": "ringstatus-projects-locations"
+          },
+          {
+            "id": "recqCPedtIt9VPb5r",
+            "name": "ringstatus-projects-rings"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "PROJECT BOUNDARY — owner clarification, 2026-10-08. WEF Maps / ring-maps: where places are. Owns the geographic master reference for rings, barns, gates, parking, coordinates and distances; ChatGPT Maps is the named display tool. Supplies reference locations that Location Layer can consume for horse/person movement and ETA context. Providing data does not transfer ownership of the WEF Maps project to Location Layer. Straight-line distances are not routed travel distances. Original CSV/XLSX contents and overlap remain subject to the owner's source-file review.\n\nSHARED EXISTING FOUNDATION; SEPARATE RING-MAPS BASE ID NOT REGISTERED — corrected 2026-10-08. Venue/ring maps overlap Locations and RingWaze. Existing ring context, ring check-in/out, scoped ring/class/entry comments and observations were built under Waze/commenting using the WEC dataset. Reuse docs/horseshowing/wec-comments-observations/EXISTING-SYSTEM-REGISTER.md and concepts/ringwaze-concept/README.md. Those paths do not themselves certify map accuracy, routing or ETA. This entry represents a candidate storage destination supporting the overlapping projects, not a claim that all work remains unbuilt. Preserve existing Recognize ring/location references and WEC implementation. Final table allocation must avoid duplicate shared systems; no new base or migration performed.\n\nWEF MAPS — RING-MAPS PROJECT; CHATGPT MAPS DISPLAY — owner-supplied project specification, 2026-10-08. This specification belongs specifically to ring-maps. ChatGPT Maps is the named tool for displaying the stored geographic locations. Reusable WEF/Wellington geographic reference covering rings, barns/stabling, gates, parking/trailers, homes, roads and related facilities. Declared sources: WEF-Master-Locations.csv (preferred structured reference/analysis) and WEF-Master-Locations.xlsx (editable master); keep versions synchronized. Expected schema: location_id | type | name | latitude | longitude | latitude_dms | longitude_dms | notes. Preserve stable location_id values and supplied coordinates; avoid duplicate IDs/locations. Decimal coordinates are preferred for calculations; retain DMS and verify conversions. Project source files override names, conversational memory and guessed positions. Mapping uses stored coordinates and names; estimated/unknown positions must remain explicit. Straight-line distance is distinct from routed walking/driving/golf-cart/horse travel; routes and travel times require separate evidence. Keep this WEF Maps specification scoped to ring-maps. Earlier cross-project Waze/commenting references remain separate context; no assignment of this specification to the Locations project, shared identity mapping or migration is implied. Source document lists an initial dataset and intended ChatGPT Maps usage, but the CSV/XLSX were not supplied or found by filename in ringstatus or ringstatus-data during this review. Dataset contents, coordinate accuracy, maps and routing have not been independently verified. Do not recreate or invent coordinates. Source: C:/Users/gombc/.codex/attachments/0f16da27-9c8e-45e1-8da1-38a7464721c7/Pasted text.txt."
+      }
+    },
+    {
+      "id": "recVGk89fgy1Ehahx",
+      "createdTime": "2026-10-09T19:48:11.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "profiles",
+        "fldx8GVkEphJjS47l": "CANDIDATE BASE — listed for owner review, 2026-10-09. Intended shared entities and inputs: barns/tenants, people/users, trainers, riders, horses, staff/grooms, roles, memberships, assignments, stable location references, follows/favorites, onboarding and authoritative opt-ins. Red-line and audit-lane submissions belong to the barn-inputs discussion; final table placement remains to decide. Existing profile/input data currently remains in Recognize. No separate base ID verified, new base created or migration performed. Merge/remove decisions remain open. Reference: docs/coordination/barn-show-inputs-reference-20261009.md and temporary-completion-sequence-20261009.md."
+      }
+    },
+    {
+      "id": "recVXEFmQ2PtZK12N",
+      "createdTime": "2026-10-09T19:48:11.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "wef-engine",
+        "fldx8GVkEphJjS47l": "CANDIDATE BASE — listed for owner review, 2026-10-09. WEF-specific weekly/daily show participants, groups, classes, entries, rings, trips, live data, timing, results and states; engine outputs support schedules through endpoints. Shared horses/riders should be referenced, not recreated as competing profile masters. Existing WEF/legacy data remains in ringstatus until separately scoped migration. rswef is another name previously discussed for WEF staging; keep both names visible until owner decides whether to merge/rename. No separate base ID verified or base created."
+      }
+    },
+    {
+      "id": "recYyJvrb1ypIFrnS",
+      "createdTime": "2026-10-08T01:49:03.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "wec-pak",
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recHj6cxBNTiFEiTk",
+            "name": "ringstatus-projects-packing"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "EXISTING BUILT SYSTEM; SEPARATE BASE ID NOT REGISTERED — corrected 2026-10-08. Owner confirms working wec-pak concept. RingStatus docs/wec_packing_comprehensive_overview_2026-06-06.md documents an Airtable-first modular packing system with frontend, Webflow Cloud/Astro routes, source/blueprint tables, horse kits, plan modules and print. docs/horseshowing/wec-systems-scope-contract-v0.1-2026-06-15.md explicitly identifies wec-pak. Implementation includes webflow/packing-worksheet/ and webflow-cloud-test/src/lib/wec-packing.js. Existing Packing & Logistics project link retained. Missing separate base ID does not mean unbuilt application or absent source data. Preserve/reuse the existing schema and code; future consolidation must account for existing pak_* and shared source tables. Historical documentation is not a fresh live certification. No rebuild/migration performed."
+      }
+    },
+    {
+      "id": "recZ0Jt3vwZSPDMmL",
+      "createdTime": "2026-10-08T16:37:52.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "rsco",
+        "fldFoJmfj9OjPQyfh": true,
+        "fldNb5FI8ucziUiUB": "appdHvjeVVL82Nf5U",
+        "fldVTn9CBCVWlq9nX": true,
+        "fldx8GVkEphJjS47l": "EXISTING REGISTERED BASE — 2026-10-09. ID appdHvjeVVL82Nf5U. Purpose remains unspecified in the current discussion. Preserve separately from rscom; similar names do not establish the same role. Retained for owner allocation/merge/remove review. No schema or runtime change."
+      }
+    },
+    {
+      "id": "recbGnS1tMxzgKYNY",
+      "createdTime": "2026-10-07T22:56:48.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "ringstatus",
+        "fldFoJmfj9OjPQyfh": true,
+        "fldNb5FI8ucziUiUB": "apptdhhNzduxm5gjn",
+        "fldVTn9CBCVWlq9nX": true,
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recBBTuaabvWVkMOj",
+            "name": "ringstatus-projects-ringstatus"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "LOCKED ROLE — 2026-10-08. Existing RingStatus legacy and operational base, including WEF-related and shared records; not exclusively WEF. Preserve existing engine/source and legacy data here until an explicit migration is scoped. New shared user entity/onboarding/consent records belong in Recognize. This registry lock does not relocate WEF runtime storage, merge WEF with WEC, or certify the 271-table legacy schema as the future minimum."
+      }
+    },
+    {
+      "id": "rechzcmuMqDW8k3hT",
+      "createdTime": "2026-10-09T19:48:11.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "rswef",
+        "fldx8GVkEphJjS47l": "PREVIOUSLY DISCUSSED NAME — listed for owner review, 2026-10-09. Airtable staging from show-engine-wef. Potential overlap/alias with wef-engine, retained as its own registry row so both names are visible before merge/remove decisions. This is not a recommendation for two physical WEF bases. No separate base ID verified or base created."
+      }
+    },
+    {
+      "id": "reclQVTzebvQiVW6z",
+      "createdTime": "2026-10-08T00:59:46.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "agents",
+        "fldFoJmfj9OjPQyfh": true,
+        "fldNb5FI8ucziUiUB": "appZahVgD156cMAe3",
+        "fldVTn9CBCVWlq9nX": true,
+        "fldx8GVkEphJjS47l": "LOCKED ROLE — 2026-10-08. Existing base. Agent operations, instructions, project/base registries and decision evidence, including rs-bases and the rs-user-data schema inventory. Business entity records and user submissions belong in Recognize; engine and message activity stay in their owning bases. Shared support across the project register; no artificial single-project ownership."
+      }
+    },
+    {
+      "id": "recrDjBLQ7DivaXml",
+      "createdTime": "2026-10-08T01:43:22.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "locations",
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recDHmFHbf6td1axp",
+            "name": "ringstatus-projects-ringwaze"
+          },
+          {
+            "id": "recoWW970Bi5rQ23J",
+            "name": "ringstatus-projects-locations"
+          },
+          {
+            "id": "recqCPedtIt9VPb5r",
+            "name": "ringstatus-projects-rings"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "PROJECT BOUNDARY — owner clarification, 2026-10-08. Location Layer: where horses and people are, and where they are going. Uses time-stamped location/check-in and movement context to support ETAs and responsibility changes. Consumes the WEF Maps / ring-maps geographic reference rather than owning a second master place database. This is the agreed project role, not proof that tracking, ETA or responsibility-change functions are implemented. The existing concept README supports movement, check-ins and ETAs; the owner adds the explicit master-reference and responsibility boundary. Original CSV/XLSX contents and overlap remain subject to the owner's source-file review.\n\nSHARED EXISTING FOUNDATION; SEPARATE LOCATIONS BASE NOT BUILT — corrected 2026-10-08. Locations, rings/maps and Waze overlap; do not treat them as isolated greenfield projects. Reuse the existing WEC-backed Waze/commenting session, check-in, observation and user/device/geo schemas listed in the waze registry row. Historical tests cover specified paths; full live location tracking/ETA is not established by their existence. Sources: docs/horseshowing/wec-comments-observations/EXISTING-SYSTEM-REGISTER.md and concepts/location-layer-concept/README.md. Existing rs_input_locations in Recognize remains intact for onboarding/stable references. Project alignment is locked broadly; physical table ownership between candidate locations, ring-maps and waze bases must follow shared-implementation review. No duplicate tables, identity merge or migration performed."
+      }
+    },
+    {
+      "id": "recucDmSxadilV1xa",
+      "createdTime": "2026-10-08T01:43:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "waze",
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recDHmFHbf6td1axp",
+            "name": "ringstatus-projects-ringwaze"
+          },
+          {
+            "id": "recoWW970Bi5rQ23J",
+            "name": "ringstatus-projects-locations"
+          },
+          {
+            "id": "recqCPedtIt9VPb5r",
+            "name": "ringstatus-projects-rings"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "EXISTING CROSS-PROJECT IMPLEMENTATION; SEPARATE WAZE BASE NOT BUILT — corrected 2026-10-08. Waze/commenting, Locations and Venue & Ring Maps substantially overlap. Shared implemented foundations currently reside in WEC app6XS1RvsPNRT6os: wec_sessions; wec_ring_checkins; wec_comments; wec_ring_comments; wec_class_comments; wec_entry_comments; wec_observations; wec_comment_presets; wec_question_templates; waze_users; waze_session_footprints. Includes session paths, ring check-ins, scoped/master comments, structured observations and configuration/schema work. Historical June tests cover specified paths, not every table/runtime capability. Footprints have schema evidence but no runtime writer established in the prior register; ongoing geo/user-state updates and broader location/ETA behavior must not be assumed proven. Reuse source: docs/horseshowing/wec-comments-observations/EXISTING-SYSTEM-REGISTER.md, lane README.md, and webflow-cloud-test/src/pages/wec-schedule/{edit,session-widget,comment-state}.js. These are shared system capabilities using WEC as a dataset, not WEC engine calculations. Project links are many-to-many. Do not create three duplicate session/comment/location systems or migrate existing tables merely to match base names; final table allocation follows the existing implementation review. Recognize identity equivalence remains a mapping task, not an assumed merge.\n\nREPOSITORY REFERENCE INDEX — expanded 2026-10-08. Central index: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/docs/horseshowing/wec-comments-observations/EXISTING-SYSTEM-REGISTER.md, section 'Repository reference index — 8 October 2026'. Covers all 20 matching repository documents from this search, including two byte-identical duplicate pairs, plus schema/test artifacts and renderer/template integration leads. Product sources: concepts/ringwaze-concept/README.md, ringwaze-overview.md and examples.md. Separate patent working package: ringwaze-patent-readme.md, invention-boundary.md, patentability-assessment.md, prior-art-matrix.md, specification-support-checklist.md. Related concepts: location-layer-concept/README.md and publishing-api-concept/README.md. Historical references include June 1 platform skeleton and diary copy, both June 4 infrastructure copies, June 15 WEC scope contract, July 20 content-actions procedure and Webflow runner handoff, and October 7 user-data schema review. Existing implementation and historical tests remain distinct from product/patent plans and current live verification. WEF Maps with ChatGPT Maps remains specifically ring-maps; it is not reassigned by this index. Search covers current searchable checkout, not remote history or ignored files. No application code or live business workflow was changed."
+      }
+    },
+    {
+      "id": "recwIc7Er8vb4SRlR",
+      "createdTime": "2026-10-08T00:52:55.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "recognize",
+        "fldFoJmfj9OjPQyfh": true,
+        "fldNb5FI8ucziUiUB": "app9kOZdIaGyKk5uG",
+        "fldVTn9CBCVWlq9nX": true,
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recBBTuaabvWVkMOj",
+            "name": "ringstatus-projects-ringstatus"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "CURRENT STORE / INTENDED SPLIT — 2026-10-09. Existing base app9kOZdIaGyKk5uG currently stores recognition plus shared profile/input/opt-in data. Intended Recognize responsibility is IAMs, devices, sessions and access to authoritative profile opt-ins; profiles is now separately listed for review. Current storage is retained until a deliberate migration is verified. The earlier broad Recognize ownership description is historical, not the final target allocation. Airtable remains primary; Zoho CRM is deferred at least until 2027-04-08, with no automatic restart. This row does not claim production completion. No physical base split, new schema, migration or runtime change performed. References: docs/coordination/temporary-completion-sequence-20261009.md and barn-show-inputs-reference-20261009.md."
+      }
+    },
+    {
+      "id": "recxFzGlOR4P2K4Mj",
+      "createdTime": "2026-10-08T01:43:02.000Z",
+      "cellValuesByFieldId": {
+        "fld5Pspa3MLylRM8k": "messages",
+        "fldFoJmfj9OjPQyfh": true,
+        "fldNb5FI8ucziUiUB": "apphwDLkVCp8ut2Hd",
+        "flde55CgZyKg3gD6r": [
+          {
+            "id": "recBBTuaabvWVkMOj",
+            "name": "ringstatus-projects-ringstatus"
+          }
+        ],
+        "fldx8GVkEphJjS47l": "EXISTING EMPTY SHELL — owner clarification, 2026-10-09. Base apphwDLkVCp8ut2Hd exists but is not a completed SMS system. Intended use was messaging processing/delivery and notifications-feed; sms-engine is now listed separately as a candidate role/name. Keep both visible for owner merge/reuse/rename/remove review. Prior schema review found Table 1 and connections; no current production message workflow is certified by this registry. Personal opt-ins/consent are separate from delivery. Base ID and existing connection registration retained. No base/table deletion, migration, activation or sending performed."
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 16
+  }
+}
