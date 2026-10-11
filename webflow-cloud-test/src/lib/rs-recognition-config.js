@@ -17,7 +17,7 @@ export function recognitionConfig(env, ErrorType = Error) {
   if (baseId !== RECOGNIZE_BASE_ID) fail("recognition_base_mismatch");
   const token = String(env?.AIRTABLE_TOKEN || "").trim();
   if (!token) fail("missing_airtable_token");
-  const config = { token, baseId };
+  const config = { token, baseId, summaryTable: "tblBgvP7pYSv8o20j" };
   for (const [key, variable, name] of [
     ["people", "AIRTABLE_RS_PEOPLE_TEST_TABLE", "rs_people_test"],
     ["devices", "AIRTABLE_RS_DEVICES_TEST_TABLE", "rs_devices_test"],

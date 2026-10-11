@@ -1,14 +1,26 @@
 // Native Recognize behavior only. The page owns markup, classes and presentation.
 // Nothing mounts until the page supplies its verified native state presenter.
 // Standalone so the same silent entry can later be called from a global footer.
+const confirmationKey = 'rs_native_recognition_confirmation_v1';
+const confirmationGenerations = new WeakMap();
+function clearConfirmation(storage) {
+  const generation = (confirmationGenerations.get(storage) || 0) + 1;
+  confirmationGenerations.set(storage, generation);
+  storage.removeItem(confirmationKey);
+  return generation;
+}
+
 export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
   persistentStorage = localStorage, sessionStorageImpl = sessionStorage,
-  navigate = path => location.assign(path), launcherPath = '/', now = () => Date.now(),
+  navigate = path => location.assign(path), launcherPath = '/', redirectOnRecognized = true, now = () => Date.now(),
   uuid = () => crypto.randomUUID(), timeoutMs = 12000, pagePath = globalThis.location?.pathname || '/' }) {
   const tokenKey = 'rs_recognition_device_token_v1', expiryKey = 'rs_recognition_device_expires_v1';
   const sessionKey = 'rs_native_recognition_session_v1';
   const abort = new AbortController(), timer = setTimeout(() => abort.abort(), timeoutMs);
+  let generation;
   try {
+    // Display context only: every visit still waits for server revalidation.
+    generation = clearConfirmation(sessionStorageImpl);
     const target = new URL(endpoint);
     if (globalThis.location?.origin && target.origin !== globalThis.location.origin) return false;
     if (!launcherPath.startsWith('/') || launcherPath.startsWith('//')) return false;
@@ -24,12 +36,24 @@ export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
     const response = await fetchImpl(target, { method: 'POST', credentials: 'same-origin', signal: abort.signal,
       headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_token: token, session_uid: session, page_path: pagePath.split(/[?#]/)[0] }) });
     const data = await response.json();
+    // A newer check or account-switch action supersedes an older response.
+    if (confirmationGenerations.get(sessionStorageImpl) !== generation) return false;
+    if (['session_identity_conflict', 'session_closed'].includes(data.error)) {
+      // A later normal visit uses a fresh tab UID; never reopen/rebind this row.
+      sessionStorageImpl.setItem(sessionKey, uuid());
+    }
     if (!response.ok || data.ok !== true || data.recognized !== true) return false;
     persistentStorage.setItem(expiryKey, String(now() + 365 * 86400000));
+    sessionStorageImpl.setItem(confirmationKey, JSON.stringify({ session_uid: session, confirmed: true, confirmed_at: now() }));
     // A global footer must not cause a redirect loop on the launcher itself.
-    if (globalThis.location?.pathname !== launcherPath) navigate(launcherPath);
+    if (redirectOnRecognized && globalThis.location?.pathname !== launcherPath) navigate(launcherPath);
     return true;
-  } catch { return false; }
+  } catch {
+    if (confirmationGenerations.get(sessionStorageImpl) === generation) {
+      try { clearConfirmation(sessionStorageImpl); } catch { /* Storage can be unavailable. */ }
+    }
+    return false;
+  }
   finally { clearTimeout(timer); }
 }
 
@@ -91,6 +115,10 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   if (!deviceToken) { deviceToken = uuid(); persistentStorage.setItem(tokenKey, deviceToken); }
   let sessionUid = sessionStorageImpl.getItem(sessionKey);
   if (!sessionUid) { sessionUid = uuid(); sessionStorageImpl.setItem(sessionKey, sessionUid); }
+  function currentSessionUid() {
+    sessionUid = sessionStorageImpl.getItem(sessionKey) || sessionUid;
+    return sessionUid;
+  }
   let person = null, deviceConfirmed = false, busy = false, pending = null, state = "unavailable", opened = false, returnFocus = null;
   let otpPhone = null, otpRequestId = null;
   const controller = new AbortController();
@@ -105,6 +133,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     if (opened && changed) get(`[data-rs-native-state="${state}"] input, [data-rs-native-state="${state}"] [data-rs-native-action]`)?.focus();
   }
   function bindPerson(value) {
+    if (!value?.recognized) clearConfirmation(sessionStorageImpl);
     person = value?.recognized || value?.invited_profile ? value : null;
     deviceConfirmed = value?.recognized === true && !value?.requires_device_confirmation;
     for (const field of ["person_name", "first_name", "last_name", "primary_phone_e164", "email"]) {
@@ -131,8 +160,10 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       const response = await fetchImpl(target, { ...options, credentials: 'same-origin', signal: abort.signal });
       const data = await response.json();
       if (!response.ok || data.ok !== true) throw new Error(data.error || "recognition_unavailable");
+      if (data.recognized === false) clearConfirmation(sessionStorageImpl);
       return data;
-    } finally { clearTimeout(timer); }
+    } catch (error) { clearConfirmation(sessionStorageImpl); throw error; }
+    finally { clearTimeout(timer); }
   }
   async function acceptInvitation() {
     opened = true;
@@ -158,7 +189,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       bindPerson(data); pending = null;
       show(person ? "recognized" : "login");
       const eventUid = uuid();
-      const event = { device_token: deviceToken, session_uid: sessionUid, session_event_uid: eventUid, event_type: "recognition",
+      const event = { device_token: deviceToken, session_uid: currentSessionUid(), session_event_uid: eventUid, event_type: "recognition",
         event_result: person ? "matched" : "not_matched", idempotency_key: "recognition:" + eventUid,
         recognition_status: data.recognition_status, matched_by: data.matched_by,
         person_record_id: person?.person_record_id || "", device_record_id: data.device_record_id || "" };
@@ -170,8 +201,9 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   async function action(name, data = {}, continuation = "recognized") {
     if (busy) return;
     if (pending) { feedback("Confirm the pending request with Try again before starting another action."); return; }
+    if (name === 'retire_device' || name === 'phone_login') clearConfirmation(sessionStorageImpl);
     busy = true;
-    const body = { action: name, device_token: deviceToken, session_uid: sessionUid,
+    const body = { action: name, device_token: deviceToken, session_uid: currentSessionUid(),
       session_event_uid: uuid(), ...data };
     pending = { body, continuation };
     await executePending();
@@ -188,6 +220,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   }
   async function verifyPhone() {
     if (busy || pending) return;
+    clearConfirmation(sessionStorageImpl);
     const value = values('login').identifier || '';
     const checking = otpPhone !== null;
     if (checking && !/^\d{4,10}$/.test(value)) { show('login', 'Enter the code from your SMS here.'); return; }
@@ -259,7 +292,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     const command = target.getAttribute('data-rs-native-action');
     if (command === "open") { returnFocus = target; opened = true; show(state); await lookup(); }
     else if (command === "profile") { opened = true; show(deviceConfirmed ? "profile" : "recognized"); }
-    else if (command === "login" || command === "recovery") { otpInput(false); otpPhone = null; show(command); }
+    else if (command === "login" || command === "recovery") { clearConfirmation(sessionStorageImpl); bindPerson(null); otpInput(false); otpPhone = null; show(command); }
     else if (command === "cancel") { otpInput(false); otpPhone = null; show(person ? "recognized" : "login"); }
     else if (command === "save") {
       if (!person || !deviceConfirmed) { show(person ? "recognized" : "login", "Use your invitation and confirm this browser before editing."); return; }

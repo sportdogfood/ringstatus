@@ -38,7 +38,7 @@ function fixture() {
       options.signal.addEventListener("abort", () => listeners.set(type, listeners.get(type).filter(fn => fn !== callback)));
     } };
   async function fire(target) { for (const fn of listeners.get("click") || []) await fn({ target, preventDefault() {} }); }
-  const storage = { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) };
+  const storage = { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
   let uid = 0;
   return { root, nodes, listeners, storage, uuid: () => "synthetic-" + (++uid),
     click: name => fire(nodes.find(n => n.kind === "action" && n.name === name)),
@@ -47,6 +47,48 @@ function fixture() {
 const settle = () => new Promise(resolve => setImmediate(resolve));
 const args = f => ({ root: f.root, baseUrl: "https://example.invalid/test/rs-recognition/", present: () => {}, silentRecognition: false,
   persistentStorage: f.storage, sessionStorageImpl: f.storage, uuid: f.uuid, navigate: () => {} });
+
+for (const command of ['login', 'recovery', 'retire', 'phone-login']) {
+  test(`${command} start clears previous server-confirmed browser context`, async () => {
+    const f = fixture();
+    const key = 'rs_native_recognition_confirmation_v1';
+    const api = mountNativeRecognition({ ...args(f), fetchImpl: async (url) => {
+      if (url.searchParams.get('operation') === 'device') return Response.json({ ok: true, recognized: true });
+      if (url.searchParams.get('operation') === 'session') return Response.json({ ok: true });
+      assert.equal(f.storage.getItem(key), undefined, 'clear before sending retirement/account switch');
+      return Response.json({ ok: true, recognized: false, retired: command === 'retire', otp_required: command === 'phone-login' });
+    } });
+    await settle(); await settle();
+    f.storage.setItem(key, JSON.stringify({ session_uid: 'old-session', confirmed: true, confirmed_at: 1 }));
+    await f.click(command);
+    assert.equal(f.storage.getItem(key), undefined);
+    api.destroy();
+  });
+}
+
+test('mounted lookup and actions use the rotated tab UID after silent session conflict', async () => {
+  const f = fixture(), events = [], actions = [];
+  let checks = 0;
+  const api = mountNativeRecognition({ ...args(f), silentRecognition: true, fetchImpl: async (url, options = {}) => {
+    const operation = url.searchParams.get('operation');
+    if (operation === 'recognize') {
+      checks++;
+      return checks === 1 ? Response.json({ ok: false, error: 'session_identity_conflict' }, { status: 409 }) : Response.json({ ok: true, recognized: true });
+    }
+    if (operation === 'device') return Response.json({ ok: true, recognized: true });
+    const payload = JSON.parse(options.body);
+    if (operation === 'session') events.push(payload);
+    else actions.push(payload);
+    return Response.json({ ok: true, recognized: true });
+  } });
+  await settle(); await settle();
+  const rotated = f.storage.getItem('rs_native_recognition_session_v1');
+  assert.equal(rotated, 'synthetic-3');
+  assert.equal(events.length, 1); assert.equal(events[0].session_uid, rotated);
+  await f.click('continue');
+  assert.equal(actions.length, 1); assert.equal(actions[0].session_uid, rotated);
+  api.destroy();
+});
 
 test('SMS code is submitted in the original browser and only approved binding redirects', async () => {
   const f = fixture(), actions = [], paths = [];

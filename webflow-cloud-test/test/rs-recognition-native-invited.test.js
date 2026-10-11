@@ -12,7 +12,7 @@ const env = { AIRTABLE_TOKEN: 'fixture', RS_INPUTS_BASE_ID: 'app9kOZdIaGyKk5uG',
 async function fixture({ expired = false } = {}) {
   let nextId = 2;
   const tables = new Map(), calls = [];
-  const names = { tbly1PM5iFYqVzKSm: 'rs_people_test', tblfkRSJAEMzuzApR: 'rs_devices_test', tblgDWKi0Bb6OcoqS: 'rs_phone_aliases_test', tblWjbASVMIjFLyW8: 'rs_recognition_sessions_test', tblxC4SYtzYhJNcJS: 'rs_sms_requests', tblF1Hdqi3yoKTZPV: 'rs_sms_events' };
+  const names = { tbly1PM5iFYqVzKSm: 'rs_people_test', tblfkRSJAEMzuzApR: 'rs_devices_test', tblgDWKi0Bb6OcoqS: 'rs_phone_aliases_test', tblWjbASVMIjFLyW8: 'rs_recognition_sessions_test', tblBgvP7pYSv8o20j: 'sessions_summary', tblxC4SYtzYhJNcJS: 'rs_sms_requests', tblF1Hdqi3yoKTZPV: 'rs_sms_events' };
   const rows = table => { if (!tables.has(table)) tables.set(table, []); return tables.get(table); };
   const token = randomAccessToken();
   const person = { id: 'recSynthetic00001', fields: { person_uid: 'synthetic-invited', person_name: 'Synthetic', first_name: 'Synthetic', last_name: 'Fixture', primary_phone_e164: '+12025550199', member_pin: '0199', status: 'Active', access_level: 'Guest', input_access: 'invited', input_invite_hash: await accessHash(token), input_invite_expires_at: new Date(Date.now() + 3600000).toISOString(), input_session_version: 'a'.repeat(32) } };
@@ -71,15 +71,41 @@ test('silent recognition uses a known active device without Inputs login and rec
   const body = await response.json();
   assert.equal(body.recognized, true);
   assert.equal(body.first_name, 'Synthetic');
+  assert.equal(body.session.session_uid, payload.session_uid);
+  assert.equal(body.session.person_record_id, f.person.id);
+  assert.equal(body.session.device_record_id, 'recDevice00000001');
+  assert.equal(body.session.status, 'active');
   assert.equal('primary_phone_e164' in body, false);
   assert.equal('email' in body, false);
   assert.match(response.headers.get('Set-Cookie'), /Max-Age=31536000; HttpOnly; Secure; SameSite=Lax/);
   assert.doesNotMatch(response.headers.get('Set-Cookie'), /rs_input_access/);
   assert.equal((await call()).status, 200);
+  assert.equal(f.rows('sessions_summary').length, 1);
+  assert.equal(f.rows('sessions_summary')[0].fields.started_at, body.session.started_at);
   assert.equal(f.rows('rs_recognition_sessions_test').length, 1);
   assert.deepEqual(f.rows('rs_recognition_sessions_test')[0].fields.person, [f.person.id]);
   assert.equal(f.rows('rs_recognition_sessions_test')[0].fields.page_path, '/rs-recognize');
   assert.equal((await handleNativeRecognition(f.request('action', action('update_profile'), {}, false), env, f.fetchImpl)).status, 401);
+});
+
+test('native cookie ownership closes a retired summary and denies an account switch without rebinding', async () => {
+  const f = await fixture();
+  const token = '81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+  const otherToken = '81a81b40-f954-4ad5-8911-8fc3bf91c4a2';
+  const device = { id: 'recDevice00000001', fields: { device_token: token, status: 'Active', person: [f.person.id] } };
+  f.rows('rs_devices_test').push(device);
+  f.rows('rs_devices_test').push({ id: 'recDevice00000002', fields: { device_token: otherToken, status: 'Active', person: [f.person.id] } });
+  const payload = { device_token: token, session_uid: 'lifecycle-session' };
+  assert.equal((await handleNativeRecognition(f.request('recognize', payload, {}, false), env, f.fetchImpl)).status, 200);
+  const switched = await handleNativeRecognition(f.request('recognize', { ...payload, device_token: otherToken }, {}, false), env, f.fetchImpl);
+  assert.equal(switched.status, 409); assert.equal((await switched.json()).error, 'session_identity_conflict');
+  assert.deepEqual(f.rows('sessions_summary')[0].fields.device, [device.id]);
+  device.fields.status = 'Retired';
+  const denied = await handleNativeRecognition(f.request('recognize', { ...payload, device_token: otherToken }, { Cookie: '__Host-rs_recognition_device=' + token }, false), env, f.fetchImpl);
+  assert.equal((await denied.json()).recognized, false);
+  assert.match(denied.headers.get('Set-Cookie'), /Max-Age=0/);
+  assert.equal(f.rows('sessions_summary')[0].fields.status, 'revoked');
+  assert.equal(f.rows('rs_recognition_sessions_test').length, 1);
 });
 
 test('silent recognition rejects ambiguous, retired and revoked devices and cross-origin requests', async () => {

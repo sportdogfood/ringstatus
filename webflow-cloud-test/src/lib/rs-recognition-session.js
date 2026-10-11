@@ -1,5 +1,5 @@
 import { recognitionConfig } from "./rs-recognition-config.js";
-import { claimOnce, completeClaim } from './rs-recognition-claims.js';
+import { claimOnce, completeClaim, requireClaimDatabase } from './rs-recognition-claims.js';
 
 
 const SIGNAL_VERSION = 1;
@@ -29,6 +29,129 @@ export class RecognitionSessionError extends Error {
     this.code = code;
     this.status = status;
   }
+}
+
+// Separate mutable summary namespace; immutable Footprints claims below stay
+// unchanged. A claimed uncertain write is reconciled by reading, never replayed.
+export async function recordRecognitionSummary({ env, fetchImpl = fetch, sessionUid,
+  tokenFingerprint, personRecordId = '', deviceRecordId = '', recognized = false,
+  retired = false, now = () => Date.now() }) {
+  if (typeof sessionUid !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(sessionUid)) throw new RecognitionSessionError('invalid_session_uid', 400);
+  if (!/^[a-f0-9]{64}$/.test(tokenFingerprint || '')) throw new RecognitionSessionError('invalid_session_binding', 400);
+  if (recognized && (!recordId(personRecordId) || !recordId(deviceRecordId))) throw new RecognitionSessionError('invalid_session_binding', 503);
+  const config = recognitionConfig(env, RecognitionSessionError);
+  const db = requireClaimDatabase(env);
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(['recognition-summary', [config.baseId, sessionUid]])));
+  const key = [...new Uint8Array(bytes)].map(b => b.toString(16).padStart(2, '0')).join('');
+  const tableUrl = airtableUrl(config.baseId, config.summaryTable);
+  const fail = code => { throw new RecognitionSessionError(code, 503); };
+  const conflict = code => { throw new RecognitionSessionError(code, 409); };
+  async function readSummary() {
+    const url = new URL(tableUrl);
+    url.searchParams.set('maxRecords', '2');
+    url.searchParams.set('filterByFormula', `{session_uid} = '${escapeAirtableString(sessionUid)}'`);
+    const response = await fetchImpl(url, { headers: airtableHeaders(config.token) });
+    const body = await response.json().catch(() => null);
+    if (!response.ok || !Array.isArray(body?.records)) fail('session_summary_lookup_failed');
+    if (body.records.length > 1 || body.offset) conflict('session_summary_ambiguous');
+    return body.records[0] || null;
+  }
+  function matches(record, fields) {
+    return record && ['session_uid', 'started_at', 'last_activity_at', 'status'].every(k => record.fields?.[k] === fields[k]) &&
+      JSON.stringify(record.fields?.person || []) === JSON.stringify(fields.person || []) &&
+      JSON.stringify(record.fields?.device || []) === JSON.stringify(fields.device || []);
+  }
+  function sessionOf(fields) {
+    return { session_uid: sessionUid, person_record_id: fields.person[0], device_record_id: fields.device[0],
+      started_at: fields.started_at, last_activity_at: fields.last_activity_at, status: fields.status };
+  }
+  async function finish(expected, result) {
+    const updated = await db.prepare("UPDATE recognize_claims SET state = 'complete', result_json = ? WHERE claim_key = ? AND state = 'claimed' AND result_json = ?")
+      .bind(JSON.stringify(result), key, JSON.stringify(expected)).run();
+    if (updated.meta.changes !== 1) fail('session_summary_busy');
+    return result;
+  }
+  let row = await db.prepare('SELECT state, result_json FROM recognize_claims WHERE claim_key = ?').bind(key).first();
+  let context = row?.result_json ? JSON.parse(row.result_json) : null;
+  if (context && context.token_fingerprint !== tokenFingerprint) conflict('session_identity_conflict');
+  if (context && recognized && (context.fields.person[0] !== personRecordId || context.fields.device[0] !== deviceRecordId)) conflict('session_identity_conflict');
+  if (row?.state === 'claimed') {
+    if (!context?.pending) fail('session_summary_write_uncertain');
+    const existing = await readSummary();
+    if (!matches(existing, context.fields)) fail('session_summary_write_uncertain');
+    context = await finish(context, { ...context, pending: false, record_id: existing.id });
+    // Reconciliation confirms only the previous outcome. A denial must still
+    // close a previously active summary, never return it as active permission.
+    if (recognized && context.fields.status !== 'active') conflict('session_closed');
+    if (recognized || context.fields.status !== 'active') return sessionOf(context.fields);
+    row = { state: 'complete', result_json: JSON.stringify(context) };
+  }
+  if (!row && !recognized) return null;
+  if (context && context.fields.status !== 'active') {
+    if (!recognized) return sessionOf(context.fields);
+    conflict('session_closed');
+  }
+  let won;
+  if (!row) {
+    const inserted = await db.prepare("INSERT INTO recognize_claims (claim_key, state) VALUES (?, 'claimed') ON CONFLICT(claim_key) DO NOTHING").bind(key).run();
+    won = inserted.meta.changes === 1;
+  } else {
+    const updated = await db.prepare("UPDATE recognize_claims SET state = 'claimed' WHERE claim_key = ? AND state = 'complete' AND result_json = ?").bind(key, row.result_json).run();
+    won = updated.meta.changes === 1;
+  }
+  if (!won) fail('session_summary_busy');
+  let existing;
+  try {
+    existing = await readSummary();
+  } catch (error) {
+    // No provider write has started. Release only the claim just acquired;
+    // uncertain POST/PATCH claims retain their pending reconciliation context.
+    if (context) await finish(context, context);
+    else {
+      const released = await db.prepare("DELETE FROM recognize_claims WHERE claim_key = ? AND state = 'claimed' AND result_json IS NULL")
+        .bind(key).run();
+      if (released.meta.changes !== 1) fail('session_summary_busy');
+    }
+    throw error;
+  }
+  if (existing) {
+    if (!context) conflict('session_identity_conflict');
+    const expectedPerson = context?.fields.person[0] || personRecordId;
+    const expectedDevice = context?.fields.device[0] || deviceRecordId;
+    if (existing.fields?.session_uid !== sessionUid || JSON.stringify(existing.fields?.person || []) !== JSON.stringify([expectedPerson]) ||
+        JSON.stringify(existing.fields?.device || []) !== JSON.stringify([expectedDevice]) || (context && existing.id !== context.record_id)) {
+      // Known validation failure before any external write can release ownership.
+      if (context) await finish(context, context);
+      conflict('session_identity_conflict');
+    }
+    if (existing.fields.started_at !== context.fields.started_at || !validDate(existing.fields.last_activity_at)) {
+      await finish(context, context);
+      fail('session_summary_invalid');
+    }
+    if (existing.fields.status !== 'active') {
+      if (context) await finish(context, { ...context, fields: existing.fields });
+      conflict('session_closed');
+    }
+  } else if (context) fail('session_summary_write_uncertain');
+  const priorTime = Math.max(Date.parse(existing?.fields?.last_activity_at || '') || 0, Date.parse(context?.fields.last_activity_at || '') || 0);
+  const timestamp = new Date(Math.max(Number(now()), priorTime + 1)).toISOString();
+  const fields = { session_uid: sessionUid, person: [context?.fields.person[0] || personRecordId],
+    device: [context?.fields.device[0] || deviceRecordId], started_at: existing?.fields.started_at || timestamp,
+    last_activity_at: timestamp, status: recognized ? 'active' : retired ? 'revoked' : 'ended' };
+  if (!validDate(fields.started_at)) fail('session_summary_invalid');
+  const pending = { token_fingerprint: tokenFingerprint, record_id: existing?.id || null, fields, pending: true };
+  const prepared = await db.prepare("UPDATE recognize_claims SET result_json = ? WHERE claim_key = ? AND state = 'claimed' AND result_json IS ?")
+    .bind(JSON.stringify(pending), key, context ? JSON.stringify(context) : null).run();
+  if (prepared.meta.changes !== 1) fail('session_summary_busy');
+  let response;
+  try {
+    response = await fetchImpl(tableUrl, { method: existing ? 'PATCH' : 'POST', headers: airtableHeaders(config.token),
+      body: JSON.stringify({ records: [{ ...(existing ? { id: existing.id } : {}), fields }] }) });
+  } catch { fail('session_summary_write_uncertain'); }
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || !body.records?.[0]?.id) fail('session_summary_write_uncertain');
+  await finish(pending, { ...pending, record_id: body.records[0].id, pending: false });
+  return sessionOf(fields);
 }
 
 export async function recordRecognitionSession({

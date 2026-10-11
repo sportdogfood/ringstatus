@@ -2,7 +2,7 @@ import { recognitionConfig } from './rs-recognition-config.js';
 import { handleAuthenticatedInputRoute } from '../pages/rs-inputs/[operation].js';
 import { handleAccessRoute, createAccessStore, accessHash } from './rs-inputs-access.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
-import { recordRecognitionSession } from './rs-recognition-session.js';
+import { recordRecognitionSession, recordRecognitionSummary } from './rs-recognition-session.js';
 import { createRecoverySms, requireSmsAutomation } from './rs-recognition-sms.js';
 import { handleRecognitionOtp } from './rs-recognition-otp.js';
 
@@ -45,7 +45,17 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
       if (typeof payload.session_uid !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(payload.session_uid)) return respond({ ok: false, error: 'invalid_session_uid' }, 400);
       const recognition = createInputRecognition({ env: bindings, fetchImpl, verifiedInputAccess: true });
       const found = await recognition.recognizeDevice(token);
-      const response = respond({ ok: true, recognized: found.recognized, ...(found.recognized ? { first_name: found.profile.first_name, person_name: found.profile.person_name } : {}) });
+      let session;
+      try {
+        session = await recordRecognitionSummary({ env: bindings, fetchImpl, sessionUid: payload.session_uid,
+          tokenFingerprint: await accessHash(token), recognized: found.recognized, retired: found.device === 'retired',
+          personRecordId: found.personRecordId, deviceRecordId: found.deviceRecordId });
+      } catch (error) {
+        const response = respond({ ok: false, recognized: false, error: error.code || 'session_summary_unavailable' }, error.status || 503);
+        if (!found.recognized) response.headers.set('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
+        return response;
+      }
+      const response = respond({ ok: true, recognized: found.recognized, ...(found.recognized ? { first_name: found.profile.first_name, person_name: found.profile.person_name, session } : {}) });
       if (!found.recognized) {
         response.headers.set('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
         return response;
