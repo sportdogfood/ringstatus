@@ -3,6 +3,7 @@ import { installControlDatabase } from '../test-support/recognize-control-db.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
 import { createAirtableInputStore } from '../src/lib/rs-inputs-airtable.js';
 import { handleInputRequest, digest } from '../src/lib/rs-inputs.js';
 
@@ -127,11 +128,11 @@ const patches = (provider, table) => provider.calls.filter(call => call.table ==
 
 
 import vm from 'node:vm';
-import { stripTypeScriptTypes } from 'node:module';
+import { build } from 'esbuild';
 import { createInputAccess } from '../src/lib/rs-inputs-access.js';
 import { handleAuthenticatedInputRoute } from '../src/pages/rs-inputs/[operation].js';
 
-const apiSource = stripTypeScriptTypes(await readFile(new URL('../src/components/rs-onboarding/api.ts', import.meta.url), 'utf8'), {mode:'transform'}).replace(/^export /gm, '');
+const apiSource = (await build({entryPoints:[fileURLToPath(new URL('../src/components/rs-onboarding/api.ts',import.meta.url))],bundle:true,write:false,format:'iife',globalName:'InputApi'})).outputFiles[0].text;
 const env = { RS_INPUTS_BASE_ID: baseId, RS_INPUTS_RECOGNITION_BASE_ID: baseId, RS_INPUTS_BARN_STORAGE:'airtable', RS_INPUTS_WRITE_MODE:'isolated-trial', AIRTABLE_TOKEN:'fixture-token', RS_INPUTS_SESSION_SECRET:'a'.repeat(64) };
 installControlDatabase(env);
 
@@ -147,7 +148,7 @@ async function journey() {
     const url = new URL(value);
     assert.equal(url.origin, 'https://api.airtable.com');
     assert.equal(url.pathname.split('/')[2], baseId);
-    if(url.pathname.endsWith('/rs_people_test')) {
+    if(url.pathname.endsWith('/tbly1PM5iFYqVzKSm')) {
       accessCalls.push({url:String(url),method:init.method});
       assert.equal(init.method,'GET','Normal input actions cannot mutate access/recognition');
       return Response.json({records:[structuredClone(person)]});
@@ -170,7 +171,7 @@ async function journey() {
   };
   function newClient() {
     const context = vm.createContext({fetch:browserFetch,crypto,URLSearchParams});
-    vm.runInContext(apiSource+'\nglobalThis.api = createInputsApi("/test/rs-inputs");',context);
+    vm.runInContext(apiSource+'\nglobalThis.api = InputApi.createInputsApi("/test/rs-inputs");',context);
     return context.api;
   }
   return {provider,person,requests,accessCalls,newClient,api:newClient(),providerFetch,

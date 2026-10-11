@@ -1,3 +1,4 @@
+import { createPersistence } from '../../assets/rs-inputs/persistence.js';
 export type Kind = 'barn' | 'users' | 'riders' | 'horses' | 'locations';
 export type Item = { id: string; barnId: string; name: string; email?: string; userId?: string; riderId?: string; locationId?: string; address?: string; recognitionPersonId?: string; revision?: number };
 export type Store = { version: 1; barns: Item[]; users: Item[]; riders: Item[]; horses: Item[]; locations: Item[]; selectedBarn: string };
@@ -11,6 +12,9 @@ export const emptyProfile = (): Profile => ({ person_uid: '', person_name: '', f
 
 const errorMessages: Record<string, string> = {
   authentication_required: 'Your access could not be verified. No changes were saved.',
+  tenant_save_pending: 'Your save is queued. Your entry is kept; use Save again to check the same request.',
+  tenant_save_needs_review: 'This save needs review. Your entry is kept; it has not been reported as saved.',
+  save_barn_first: 'Save the barn first, then save its riders.',
   record_changed: 'This record has changed. Your entry is kept here. Loading the latest saved record will replace this unsaved entry; nothing is saved automatically.',
   duplicate_name: 'That name already exists in this barn. Open the existing record to edit it.',
   permission_denied: 'You do not have permission to make this change.',
@@ -70,13 +74,16 @@ function validRecognition(value: unknown): value is RecognitionResult {
     (!result.recognized || (result.device === 'active' && !!result.profile?.person_uid));
 }
 
-export function createInputsApi(apiBase: string) {
+export function createInputsApi(apiBase: string, options: { durableBarn?: boolean; storage?: {read: Function; mutate: Function} } = {}) {
   const base = apiBase.replace(/\/$/, '');
   const requests = new Map<string, { fingerprint: string; id: string }>();
+  let verifiedActor: AccessActor | null = null;
+  const persistence=(kind: string)=>createPersistence({scope:{actorId:verifiedActor!.id,resource:`native-${kind}`,tenantId:'editor'},...(options.storage?{storage:options.storage}:{})});
   async function request(path: string, body?: Record<string, unknown>) {
     const response = await fetch(`${base}${path}`, {
       method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
-      ...(body ? { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {})
+      headers: { ...(body ? {'Content-Type':'application/json'} : {}), ...(options.durableBarn ? {'X-RS-Tenants':'barn-rider-v1', ...(verifiedActor ? {'X-RS-Actor':verifiedActor.id} : {})} : {}) },
+      ...(body ? {body:JSON.stringify(body)} : {})
     }).catch(() => { throw new Error('Could not connect. Your entry is still here; try again.'); });
     const result = await response.json().catch(() => null);
     if (!response.ok || result?.ok !== true) throw new InputApiError(typeof result?.error === 'string' ? result.error : 'request_failed');
@@ -89,10 +96,28 @@ export function createInputsApi(apiBase: string) {
       pending = { fingerprint, id: crypto.randomUUID() };
       requests.set(path, pending);
     }
-    const result = await request(path, { ...body, requestId: pending.id });
-    if (!validate(result)) throw new Error('The server response could not be verified. Your entry is still here.');
-    requests.delete(path);
-    return result;
+    let device: any=null, operation: any=null;
+    if(options.durableBarn&&path==='/record'&&['barn','riders'].includes(String(body.kind))){
+      if(!verifiedActor)throw new InputApiError('authentication_required');
+      device=persistence(String(body.kind));
+      const saved=await device.load();
+      if(saved.pending){
+        const {requestId,...previous}=saved.pending.body;
+        if(JSON.stringify(previous)!==JSON.stringify(body))throw new Error('An earlier save is still unresolved. Check that save before submitting a different entry.');
+        pending.id=requestId;operation=saved.pending;
+      }else{await device.edit(body);operation=await device.prepare({...body,requestId:pending.id});}
+    }
+    try{
+      if(device){const current=accessActor(await request('/access'));if(current.id!==verifiedActor!.id)throw new InputApiError('authentication_required');}
+      let result: any;
+      for(let attempt=0;;attempt++){
+        try{result=await request(path,{...body,requestId:pending.id});break;}
+        catch(error){if(!(error instanceof InputApiError)||error.code!=='tenant_save_pending'||attempt>=12)throw error;await new Promise(resolve=>setTimeout(resolve,2000));}
+      }
+      if (!validate(result)) throw new Error('The server response could not be verified. Your entry is still here.');
+      if(device)await device.confirm(operation,result.record,result.record.revision);
+      requests.delete(path);return result;
+    }catch(error){if(device)await device.fail(operation,error instanceof Error?error.message:'save_unconfirmed');throw error;}
   }
   const recordResponse = (result: any) => typeof result?.record?.id === 'string' && validStore(result.state);
   function accessActor(result: any): AccessActor {
@@ -105,7 +130,8 @@ export function createInputsApi(apiBase: string) {
     return actor;
   }
   return {
-    async access(): Promise<AccessActor> { return accessActor(await request('/access')); },
+    async access(): Promise<AccessActor> { const current=accessActor(await request('/access'));if(verifiedActor&&current.id!==verifiedActor.id)throw new InputApiError('authentication_required');verifiedActor=current;return current; },
+    async pendingDraft(kind: string){if(!options.durableBarn||!verifiedActor)return null;return (await persistence(kind).load()).pending?.body||null;},
     async acceptInvitation(token: string): Promise<AccessActor> {
       if (!/^[A-Za-z0-9_-]{43}$/.test(token)) throw new InputApiError('invalid_invitation');
       clearDeviceToken();

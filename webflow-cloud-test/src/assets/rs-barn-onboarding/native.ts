@@ -6,7 +6,7 @@ export function prepareBarnOnboarding(document: Document, moduleUrl: string) {
   const url = new URL(moduleUrl);
   if (url.origin !== document.location.origin || !url.pathname.endsWith('/rs-inputs/native-barn.js')) throw new Error('native_api_origin_mismatch');
   const base = url.pathname.slice(0, -'/native-barn.js'.length);
-  return prepareNativeBarn({ document, api: createInputsApi(base) });
+  return prepareNativeBarn({ document, api: createInputsApi(base,{durableBarn:true}) });
 }
 
 function start() {

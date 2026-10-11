@@ -53,11 +53,12 @@ function validate(kind, draft, state) {
 // The native view implements these callbacks against the verified Webflow tree.
 // state: populate actual records/options; feedback: display designated error/success;
 // busy: inhibit navigation/edit during pending calls; editor: select native edit/add/tab state.
-export function bindMainForms({ document, api, view }) {
+export function bindMainForms({ document, api, view, navigate = path => document.location.assign(path) }) {
   const targets = inspectMainForms(document);
   if (mounted.has(targets.root)) return mounted.get(targets.root);
   for (const method of ['state', 'feedback', 'busy', 'editor']) if (typeof view?.[method] !== 'function') throw new Error(`native_view_contract_missing:${method}`);
   let state = null, actor = null, pending = false, disposed = false;
+  const pendingBarn = {};
   const editing = Object.fromEntries(Object.keys(FORMS).map(kind => [kind, null]));
   const remove = [];
   const feedback = (kind, type, value) => view.feedback({ kind, type, value });
@@ -76,13 +77,31 @@ export function bindMainForms({ document, api, view }) {
   }
   async function initialize() {
     return run('barn', async () => {
-      actor = await api.access(); // Same verified cookie contract as existing onboarding.
-      const next = await api.state();
+      try {
+        actor = await api.access(); // Same verified cookie contract as existing onboarding.
+      } catch (error) {
+        // Only an absent/expired identity enters Recognize. Storage failures stay
+        // on this page, and failed saves never discard an existing draft.
+        if (error.code !== 'authentication_required') throw error;
+        if (!disposed) navigate('/rs-recognize');
+        return false;
+      }
+      let next,loadError;
+      try{next=await api.state();}catch(error){loadError=error;}
       if (disposed) return false;
-      apply(next);
-      const barn = next.barns.find(r => r.id === next.selectedBarn);
+      if(next)apply(next);
+      const barn = next?.barns.find(r => r.id === next.selectedBarn);
       editing.barn = barn || null;
       fillDraft(targets.forms.barn.fields, barn);
+      for (const kind of ['barn','riders']) {
+        const saved=await api.pendingDraft?.(kind);
+        const draft=saved?.draft;
+        if(draft){
+          pendingBarn[kind]=saved.barnId;
+          if(next&&saved.barnId&&next.selectedBarn!==saved.barnId){const restored=await api.state(saved.barnId);apply(restored);}
+editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','A previous save is unconfirmed. Your entry is restored; use Save to check it.');}
+      }
+      if(loadError)throw loadError;
       return true;
     });
   }
@@ -121,7 +140,8 @@ export function bindMainForms({ document, api, view }) {
       if (!FORMS[kind] || !state) throw new Error('records_not_ready');
       const draft = readDraft(targets.forms[kind].fields, editing[kind]);
       validate(kind, draft, state);
-      const result = await api.record(kind, draft, state.selectedBarn);
+      const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
+      delete pendingBarn[kind];
       if (disposed) return false;
       apply(result.state);
       editing[kind] = kind === 'barn' ? result.record : null;
@@ -161,7 +181,8 @@ export function bindMainForms({ document, api, view }) {
     return run(kind, async () => {
       if (!state || !FORMS[kind]) throw new Error('records_not_ready');
       validate(kind, draft, state);
-      const result = await api.record(kind, draft, state.selectedBarn);
+      const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
+      delete pendingBarn[kind];
       if (disposed) return false;
       apply(result.state);
       if (kind === 'barn') {
