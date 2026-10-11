@@ -13,7 +13,7 @@ function provider() {
   const person = { id: 'recPerson00000001', fields: { person_uid: 'person_invited', person_name: 'Invited Person', status: 'Active', access_level: 'Guest' } };
   rows('rs_people_test').push(person);
   async function fetchImpl(input, init={}) {
-    const url=new URL(input), [, base, rawTable, id]=url.pathname.split('/').filter(Boolean).map(decodeURIComponent); const table = ({tbly1PM5iFYqVzKSm:"rs_people_test",tblfkRSJAEMzuzApR:"rs_devices_test",tblgDWKi0Bb6OcoqS:"rs_phone_aliases_test",tblWjbASVMIjFLyW8:"rs_recognition_sessions_test"})[rawTable] || rawTable; assert.equal(base, env.RS_INPUTS_BASE_ID);
+    const url=new URL(input), [, base, rawTable, id]=url.pathname.split('/').filter(Boolean).map(decodeURIComponent); const table = ({tbly1PM5iFYqVzKSm:"rs_people_test",tblfkRSJAEMzuzApR:"rs_devices_test",tblgDWKi0Bb6OcoqS:"rs_phone_aliases_test",tblWjbASVMIjFLyW8:"rs_recognition_sessions_test"})[rawTable] || rawTable; assert.equal(base, env.RS_INPUTS_BASE_ID); assert.notEqual(rawTable, "rs_people_test"); assert.notEqual(rawTable, "rs_devices_test");
     calls.push({table,method:init.method||'GET'});
     if (!init.method || init.method==='GET') {
       if(id) return Response.json(rows(table).find(r=>r.id===id)||{}, {status:rows(table).some(r=>r.id===id)?200:404});

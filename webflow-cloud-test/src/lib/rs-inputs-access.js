@@ -43,7 +43,7 @@ function actorOf(row) {
 export function createAccessStore({ env, fetchImpl = fetch }) {
   if (env.RS_INPUTS_BASE_ID !== BASE || (env.RS_INPUTS_RECOGNITION_BASE_ID && env.RS_INPUTS_RECOGNITION_BASE_ID !== BASE) || env.RS_INPUTS_WRITE_MODE !== 'isolated-trial') fail('access_trial_configuration_required', 503);
   if (!env.AIRTABLE_TOKEN) fail('storage_credentials_missing', 503);
-  const endpoint = `https://api.airtable.com/v0/${BASE}/rs_people_test`;
+  const endpoint = `https://api.airtable.com/v0/${BASE}/tbly1PM5iFYqVzKSm`;
   async function call(method, { formula, fields, id } = {}) {
     const url = new URL(endpoint);
     if (formula) { url.searchParams.set('filterByFormula', formula); url.searchParams.set('maxRecords', '2'); }

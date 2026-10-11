@@ -44,7 +44,8 @@ test("passive lookup is read-only and ignores old base/table overrides", async (
   assert.deepEqual(await f.api.lookup("device_one"), { ok: true, recognized: true, device: "active", profile: { person_uid: "person_alex", person_name: "Alex Morgan", first_name: "Alex", last_name: "Morgan", sms: "+12025550148", pin: "0148", email: "alex@example.com" } });
   assert.ok(f.calls.every((call) => call.method === "GET"));
   assert.equal(new URL(f.calls[0].url).searchParams.get("maxRecords"), "2");
-  assert.ok(f.calls[1].url.includes("rs_people_test"));
+  assert.equal(new URL(f.calls[0].url).pathname, "/v0/app9kOZdIaGyKk5uG/tblfkRSJAEMzuzApR");
+  assert.equal(new URL(f.calls[1].url).pathname, "/v0/app9kOZdIaGyKk5uG/tbly1PM5iFYqVzKSm/" + person.id);
   f.done();
 });
 
@@ -282,3 +283,11 @@ test("explicit existing recognition binding preserves principal and trial-write 
 });
 
 installControlDatabase(env);
+
+test("other explicitly selected bases preserve their original table addresses", async () => {
+  const f = fixture([list(device), person], { RS_INPUTS_RECOGNITION_BASE_ID: "apptdhhNzduxm5gjn" });
+  assert.equal((await f.api.lookup("device_one")).recognized, true);
+  assert.equal(new URL(f.calls[0].url).pathname, "/v0/apptdhhNzduxm5gjn/rs_devices_test");
+  assert.equal(new URL(f.calls[1].url).pathname, "/v0/apptdhhNzduxm5gjn/rs_people_test/" + person.id);
+  f.done();
+});
