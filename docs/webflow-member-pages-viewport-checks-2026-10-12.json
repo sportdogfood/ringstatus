@@ -1,0 +1,800 @@
+{
+  "samples": {
+    "member": [
+      {
+        "bp": "Mobile: 479px and down",
+        "client": 329,
+        "fontSizes": [
+          "14px",
+          "14px",
+          "14px",
+          "14px",
+          "14px"
+        ],
+        "heights": [
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984
+        ],
+        "scroll": 329,
+        "viewport": 393,
+        "width": 328.9459533691406
+      },
+      {
+        "bp": "Mobile (L): 767px and down",
+        "client": 581,
+        "fontSizes": [
+          "14px",
+          "14px",
+          "14px",
+          "14px",
+          "14px"
+        ],
+        "heights": [
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984
+        ],
+        "scroll": 581,
+        "viewport": 667,
+        "width": 580.8085327148438
+      },
+      {
+        "bp": "Tablet: 991px and down",
+        "client": 672,
+        "fontSizes": [
+          "14px",
+          "14px",
+          "14px",
+          "14px",
+          "14px"
+        ],
+        "heights": [
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984,
+          43.998348236083984
+        ],
+        "scroll": 672,
+        "viewport": 820,
+        "width": 671.9992065429688
+      },
+      {
+        "bp": "1280px and up",
+        "client": 672,
+        "fontSizes": [
+          "15.3589px",
+          "15.3589px",
+          "15.3589px",
+          "15.3589px",
+          "15.3589px"
+        ],
+        "heights": [
+          44.18460464477539,
+          44.18460464477539,
+          44.18460464477539,
+          44.18460464477539,
+          44.18460464477539
+        ],
+        "scroll": 672,
+        "viewport": 1280,
+        "width": 671.9992065429688
+      },
+      {
+        "bp": "1440px and up",
+        "client": 672,
+        "fontSizes": [
+          "17.2821px",
+          "17.2821px",
+          "17.2821px",
+          "17.2821px",
+          "17.2821px"
+        ],
+        "heights": [
+          46.49559020996094,
+          46.49559020996094,
+          46.49559020996094,
+          46.49559020996094,
+          46.49559020996094
+        ],
+        "scroll": 672,
+        "viewport": 1440,
+        "width": 671.9992065429688
+      },
+      {
+        "bp": "1920px and up",
+        "client": 672,
+        "fontSizes": [
+          "18px",
+          "18px",
+          "18px",
+          "18px",
+          "18px"
+        ],
+        "heights": [
+          47.35099792480469,
+          47.35099792480469,
+          47.35099792480469,
+          47.35099792480469,
+          47.35099792480469
+        ],
+        "scroll": 672,
+        "viewport": 1920,
+        "width": 671.9992065429688
+      },
+      {
+        "bp": "Desktop: Base breakpoint",
+        "client": 672,
+        "fontSizes": [
+          "15.3483px",
+          "15.3483px",
+          "15.3483px",
+          "15.3483px",
+          "15.3483px"
+        ],
+        "heights": [
+          44.17770767211914,
+          44.17770767211914,
+          44.17770767211914,
+          44.17770767211914,
+          44.17770767211914
+        ],
+        "scroll": 672,
+        "viewport": 1279,
+        "width": 671.9992065429688
+      }
+    ],
+    "recognize": [
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 328.9459533691406,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 393,
+            "width": 393
+          },
+          {
+            "scroll": 393,
+            "width": 393
+          }
+        ],
+        "viewport": 393
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 603.1181640625,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 667,
+            "width": 667
+          },
+          {
+            "scroll": 667,
+            "width": 667
+          }
+        ],
+        "viewport": 667
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 607.2158203125,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 820,
+            "width": 820
+          },
+          {
+            "scroll": 820,
+            "width": 820
+          }
+        ],
+        "viewport": 820
+      },
+      {
+        "controlFonts": [
+          "15.3589px"
+        ],
+        "fieldMin": 588.8107299804688,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1280,
+            "width": 1280
+          },
+          {
+            "scroll": 1280,
+            "width": 1280
+          }
+        ],
+        "viewport": 1280
+      },
+      {
+        "controlFonts": [
+          "17.2821px"
+        ],
+        "fieldMin": 582.3952026367188,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1440,
+            "width": 1440
+          },
+          {
+            "scroll": 1440,
+            "width": 1440
+          }
+        ],
+        "viewport": 1440
+      },
+      {
+        "controlFonts": [
+          "18px"
+        ],
+        "fieldMin": 576.0072021484375,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1920,
+            "width": 1920
+          },
+          {
+            "scroll": 1920,
+            "width": 1920
+          }
+        ],
+        "viewport": 1920
+      },
+      {
+        "controlFonts": [
+          "15.3483px"
+        ],
+        "fieldMin": 588.83837890625,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1279,
+            "width": 1279
+          },
+          {
+            "scroll": 1279,
+            "width": 1279
+          }
+        ],
+        "viewport": 1279
+      }
+    ],
+    "barn": [
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 328.9459533691406,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 393,
+            "width": 393
+          },
+          {
+            "scroll": 393,
+            "width": 393
+          }
+        ],
+        "viewport": 393
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 580.8085327148438,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 667,
+            "width": 667
+          },
+          {
+            "scroll": 667,
+            "width": 667
+          }
+        ],
+        "viewport": 667
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 607.2158203125,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 820,
+            "width": 820
+          },
+          {
+            "scroll": 820,
+            "width": 820
+          }
+        ],
+        "viewport": 820
+      },
+      {
+        "controlFonts": [
+          "15.3589px"
+        ],
+        "fieldMin": 588.8107299804688,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1280,
+            "width": 1280
+          },
+          {
+            "scroll": 1280,
+            "width": 1280
+          }
+        ],
+        "viewport": 1280
+      },
+      {
+        "controlFonts": [
+          "17.2821px"
+        ],
+        "fieldMin": 582.3952026367188,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1440,
+            "width": 1440
+          },
+          {
+            "scroll": 1440,
+            "width": 1440
+          }
+        ],
+        "viewport": 1440
+      },
+      {
+        "controlFonts": [
+          "18px"
+        ],
+        "fieldMin": 576.0072021484375,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1920,
+            "width": 1920
+          },
+          {
+            "scroll": 1920,
+            "width": 1920
+          }
+        ],
+        "viewport": 1920
+      },
+      {
+        "controlFonts": [
+          "15.3483px"
+        ],
+        "fieldMin": 588.83837890625,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1279,
+            "width": 1279
+          },
+          {
+            "scroll": 1279,
+            "width": 1279
+          }
+        ],
+        "viewport": 1279
+      }
+    ],
+    "sms": [
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 328.9459533691406,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 393,
+            "width": 393
+          }
+        ],
+        "viewport": 393
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 580.8085327148438,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 667,
+            "width": 667
+          }
+        ],
+        "viewport": 667
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 639.2177734375,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 820,
+            "width": 820
+          }
+        ],
+        "viewport": 820
+      },
+      {
+        "controlFonts": [
+          "15.3589px"
+        ],
+        "fieldMin": 620.8126831054688,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1280,
+            "width": 1280
+          }
+        ],
+        "viewport": 1280
+      },
+      {
+        "controlFonts": [
+          "17.2821px"
+        ],
+        "fieldMin": 614.3971557617188,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1440,
+            "width": 1440
+          }
+        ],
+        "viewport": 1440
+      },
+      {
+        "controlFonts": [
+          "18px"
+        ],
+        "fieldMin": 608.0091552734375,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1920,
+            "width": 1920
+          }
+        ],
+        "viewport": 1920
+      },
+      {
+        "controlFonts": [
+          "15.3483px"
+        ],
+        "fieldMin": 620.8402709960938,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1279,
+            "width": 1279
+          }
+        ],
+        "viewport": 1279
+      }
+    ],
+    "feed": [
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 328.9459533691406,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 393,
+            "width": 393
+          }
+        ],
+        "viewport": 393
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 580.8085327148438,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 667,
+            "width": 667
+          }
+        ],
+        "viewport": 667
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": 720.3367309570312,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 820,
+            "width": 820
+          }
+        ],
+        "viewport": 820
+      },
+      {
+        "controlFonts": [
+          "15.3589px"
+        ],
+        "fieldMin": 1068.8121337890625,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1280,
+            "width": 1280
+          }
+        ],
+        "viewport": 1280
+      },
+      {
+        "controlFonts": [
+          "17.2821px"
+        ],
+        "fieldMin": 1062.3966064453125,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1440,
+            "width": 1440
+          }
+        ],
+        "viewport": 1440
+      },
+      {
+        "controlFonts": [
+          "18px"
+        ],
+        "fieldMin": 1056.0086669921875,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1920,
+            "width": 1920
+          }
+        ],
+        "viewport": 1920
+      },
+      {
+        "controlFonts": [
+          "15.3483px"
+        ],
+        "fieldMin": 1068.8397216796875,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1279,
+            "width": 1279
+          }
+        ],
+        "viewport": 1279
+      }
+    ],
+    "schedule": [
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": null,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 393,
+            "width": 393
+          }
+        ],
+        "viewport": 393
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": null,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 667,
+            "width": 667
+          }
+        ],
+        "viewport": 667
+      },
+      {
+        "controlFonts": [
+          "14px"
+        ],
+        "fieldMin": null,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 820,
+            "width": 820
+          }
+        ],
+        "viewport": 820
+      },
+      {
+        "controlFonts": [
+          "15.3589px"
+        ],
+        "fieldMin": null,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1280,
+            "width": 1280
+          }
+        ],
+        "viewport": 1280
+      },
+      {
+        "controlFonts": [
+          "17.2821px"
+        ],
+        "fieldMin": null,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1440,
+            "width": 1440
+          }
+        ],
+        "viewport": 1440
+      },
+      {
+        "controlFonts": [
+          "18px"
+        ],
+        "fieldMin": null,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1920,
+            "width": 1920
+          }
+        ],
+        "viewport": 1920
+      },
+      {
+        "controlFonts": [
+          "15.3483px"
+        ],
+        "fieldMin": null,
+        "maxWeight": 600,
+        "roots": [
+          {
+            "scroll": 1279,
+            "width": 1279
+          }
+        ],
+        "viewport": 1279
+      }
+    ]
+  },
+  "boundaries": {
+    "schedule": [
+      {
+        "scroll": 320,
+        "viewport": 320,
+        "width": 320
+      },
+      {
+        "scroll": 320,
+        "viewport": 320,
+        "width": 320
+      },
+      {
+        "scroll": 480,
+        "viewport": 480,
+        "width": 480
+      },
+      {
+        "scroll": 767,
+        "viewport": 767,
+        "width": 767
+      },
+      {
+        "scroll": 768,
+        "viewport": 768,
+        "width": 768
+      },
+      {
+        "scroll": 768,
+        "viewport": 768,
+        "width": 768
+      },
+      {
+        "scroll": 992,
+        "viewport": 992,
+        "width": 992
+      }
+    ],
+    "feed": [
+      {
+        "target": 320,
+        "scroll": 320,
+        "viewport": 320,
+        "width": 320,
+        "pass": true
+      },
+      {
+        "target": 479,
+        "scroll": 479,
+        "viewport": 479,
+        "width": 479,
+        "pass": true
+      },
+      {
+        "target": 480,
+        "scroll": 480,
+        "viewport": 480,
+        "width": 480,
+        "pass": true
+      },
+      {
+        "target": 767,
+        "scroll": 767,
+        "viewport": 767,
+        "width": 767,
+        "pass": true
+      },
+      {
+        "target": 768,
+        "scroll": 768,
+        "viewport": 768,
+        "width": 768,
+        "pass": true
+      },
+      {
+        "target": 991,
+        "scroll": 991,
+        "viewport": 991,
+        "width": 991,
+        "pass": true
+      },
+      {
+        "target": 992,
+        "scroll": 992,
+        "viewport": 992,
+        "width": 992,
+        "pass": true
+      }
+    ]
+  },
+  "note": "Earlier Schedule boundary samples lacked target synchronization and must not establish boundary acceptance. Feed boundary results include explicit target checks."
+}

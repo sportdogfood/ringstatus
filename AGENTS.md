@@ -35,3 +35,7 @@ Required operating procedure:
 10. Never publish unless the user explicitly requests publishing.
 
 Connection success is proven by a successful Webflow tool call. Configuration inspection, OAuth screens, and repeated health checks are not substitutes for the requested task.
+
+## Context and usage checkpoints
+
+During active work, check elapsed time, context usage and verified progress at task boundaries and the first tool boundary after 30 minutes; follow `docs/coordination/context-check-procedure.md` and its local measurement helper. Prepare a compact handoff when context/rework overhead is excessive. Do not create hooks, background monitors, new chats or change models merely to perform this check. This instruction adds no business-workflow gate and does not make pending work complete.

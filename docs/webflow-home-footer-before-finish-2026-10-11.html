@@ -1,0 +1,142 @@
+<script type="module" data-rs-public-recognition-loader="v1">
+  if (['/', '/ring-status', '/about-ringstatus'].includes(location.pathname)) {
+    try {
+      const { runSilentRecognition } = await import('/test/rs-recognition/native-client.js');
+      await runSilentRecognition({
+        endpoint: new URL('/test/rs-inputs/native-recognition', location.origin),
+        redirectOnRecognized: false,
+      });
+    } catch {}
+  }
+</script>
+<script>
+(function () {
+  'use strict';
+
+  if (window.__RS_PAGE_RUNTIME_V1__) return;
+  window.__RS_PAGE_RUNTIME_V1__ = true;
+
+  var CONTENT_ENDPOINT = '/test/rs-dynamic-section/content';
+
+  function setBlockEnabled(block, enabled) {
+    block.hidden = !enabled;
+    block.setAttribute('aria-hidden', enabled ? 'false' : 'true');
+
+    if (enabled) {
+      block.removeAttribute('inert');
+    } else {
+      block.setAttribute('inert', '');
+    }
+  }
+
+  function slotMap(block) {
+    var map = Object.create(null);
+
+    Array.prototype.forEach.call(block.querySelectorAll('[data-rs-value]'), function (slot) {
+      var key = String(slot.getAttribute('data-rs-value') || '').trim();
+      if (!key) return;
+      if (!map[key]) map[key] = [];
+      map[key].push(slot);
+    });
+
+    return map;
+  }
+
+  function applyPayload(block, payload) {
+    if (!payload || payload.ok !== true || !payload.tree) {
+      throw new Error((payload && (payload.error || payload.detail)) || 'dynamic_content_invalid');
+    }
+
+    var slots = slotMap(block);
+    var updated = 0;
+
+    (payload.tree.divs || []).forEach(function (div) {
+      (div.typography || []).forEach(function (typeRow) {
+        var contentRow = (typeRow.content || [])[0];
+        if (!contentRow) return;
+
+        var key = String(typeRow.data_rs_value || contentRow.data_rs_value || '').trim();
+        var targets = slots[key] || [];
+        if (!key || !targets.length) return;
+
+        targets.forEach(function (target) {
+          target.textContent = String(contentRow.content_value == null ? '' : contentRow.content_value);
+          updated += 1;
+        });
+      });
+    });
+
+    return updated;
+  }
+
+  function loadDynamicBlock(pageKey, block) {
+    var blockKey = String(block.getAttribute('data-rs-block') || '').trim();
+    if (!blockKey) return Promise.resolve();
+
+    var url = new URL(CONTENT_ENDPOINT, window.location.origin);
+    url.searchParams.set('pageKey', pageKey);
+    url.searchParams.set('blockKey', blockKey);
+    url.searchParams.set('_', Date.now());
+
+    block.setAttribute('data-rs-content-status', 'loading');
+
+    return fetch(url.toString(), {
+      cache: 'no-store',
+      headers: { Accept: 'application/json' }
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error('dynamic_content_http_' + response.status);
+        return response.json();
+      })
+      .then(function (payload) {
+        var updated = applyPayload(block, payload);
+        block.setAttribute('data-rs-content-status', 'ready');
+        block.setAttribute('data-rs-content-updated', String(updated));
+        block.dispatchEvent(new CustomEvent('rs:dynamic-content-ready', {
+          bubbles: true,
+          detail: { pageKey: pageKey, blockKey: blockKey, updated: updated }
+        }));
+      })
+      .catch(function (error) {
+        block.setAttribute('data-rs-content-status', 'failed');
+        console.error('[rs-page-runtime]', pageKey + '/' + blockKey, error);
+      });
+  }
+
+  function start() {
+    var page = document.querySelector('[data-rs-page]');
+    if (!page) return;
+
+    var pageKey = String(page.getAttribute('data-rs-page') || '').trim();
+    if (!pageKey) return;
+
+    var dynamicLoads = [];
+
+    Array.prototype.forEach.call(page.querySelectorAll('[data-rs-block]'), function (block) {
+      var enabled = block.getAttribute('data-rs-enabled') !== 'false';
+      var delivery = block.getAttribute('data-rs-delivery') || 'static_seed';
+
+      setBlockEnabled(block, enabled);
+
+      if (enabled && delivery === 'dynamic_runtime') {
+        dynamicLoads.push(loadDynamicBlock(pageKey, block));
+      }
+    });
+
+    Promise.all(dynamicLoads).then(function () {
+      page.setAttribute('data-rs-runtime-status', 'ready');
+      page.dispatchEvent(new CustomEvent('rs:page-runtime-ready', {
+        bubbles: true,
+        detail: { pageKey: pageKey, dynamicBlocks: dynamicLoads.length }
+      }));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
+})();
+</script>
+<script src="https://ringstatus.com/test/rs-visitor/client.js?v=1" defer></script>

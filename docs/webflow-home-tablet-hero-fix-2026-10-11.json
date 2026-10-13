@@ -1,0 +1,125 @@
+[
+  {
+    "breakpoint": "Tablet: 991px and down",
+    "rows": [
+      {
+        "cls": "rs-h1-xl-text-1-2",
+        "direction": "column",
+        "height": "206.609px",
+        "line": "14px",
+        "size": "14px",
+        "text": "Built for the day",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs10-h1-xl is-white",
+        "direction": "row",
+        "height": "103.304px",
+        "line": "103.303px",
+        "size": "114.781px",
+        "text": "Built for",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs10-h1-xl is-white-2",
+        "direction": "row",
+        "height": "103.304px",
+        "line": "103.303px",
+        "size": "114.781px",
+        "text": "the day",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs10-h1-xl is-rust",
+        "direction": "row",
+        "height": "103.304px",
+        "line": "103.303px",
+        "size": "114.781px",
+        "text": "you get.",
+        "width": "733.126px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Mobile (L): 767px and down",
+    "rows": [
+      {
+        "cls": "rs-h1-xl-text-1-2",
+        "direction": "column",
+        "height": "198.151px",
+        "line": "14px",
+        "size": "14px",
+        "text": "Built for the day",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs10-h1-xl is-white",
+        "direction": "row",
+        "height": "114.073px",
+        "line": "114.076px",
+        "size": "126.751px",
+        "text": "Built for",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs10-h1-xl is-white-2",
+        "direction": "row",
+        "height": "114.073px",
+        "line": "114.076px",
+        "size": "126.751px",
+        "text": "the day",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs10-h1-xl is-rust",
+        "direction": "row",
+        "height": "114.073px",
+        "line": "114.076px",
+        "size": "126.751px",
+        "text": "you get.",
+        "width": "592.812px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Mobile: 479px and down",
+    "rows": [
+      {
+        "cls": "rs-h1-xl-text-1-2",
+        "direction": "column",
+        "height": "184.065px",
+        "line": "14px",
+        "size": "14px",
+        "text": "Built for the day",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs10-h1-xl is-white",
+        "direction": "row",
+        "height": "92.0323px",
+        "line": "92.0391px",
+        "size": "108.281px",
+        "text": "Built for",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs10-h1-xl is-white-2",
+        "direction": "row",
+        "height": "92.0323px",
+        "line": "92.0391px",
+        "size": "108.281px",
+        "text": "the day",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs10-h1-xl is-rust",
+        "direction": "row",
+        "height": "92.0323px",
+        "line": "92.0391px",
+        "size": "108.281px",
+        "text": "you get.",
+        "width": "360.941px"
+      }
+    ]
+  }
+]

@@ -1,0 +1,331 @@
+[
+  {
+    "breakpoint": "1920px and up",
+    "rows": [
+      {
+        "left": 160.04415893554688,
+        "max": "1600px",
+        "padding": "64px 65px",
+        "right": 1760.0374450683594,
+        "width": "1599.99px"
+      },
+      {
+        "left": 160.04415893554688,
+        "max": "1600px",
+        "padding": "64px 65px",
+        "right": 1760.0374450683594,
+        "width": "1599.99px"
+      },
+      {
+        "left": 160.04415893554688,
+        "max": "1600px",
+        "padding": "64px 65px",
+        "right": 1760.0374450683594,
+        "width": "1599.99px"
+      },
+      {
+        "left": 160.04415893554688,
+        "max": "1600px",
+        "padding": "64px 65px",
+        "right": 1760.0374450683594,
+        "width": "1599.99px"
+      },
+      {
+        "left": 160.04415893554688,
+        "max": "1600px",
+        "padding": "64px 65px",
+        "right": 1760.0374450683594,
+        "width": "1599.99px"
+      },
+      {
+        "left": 160.04415893554688,
+        "max": "1600px",
+        "padding": "64px 65px",
+        "right": 1760.0374450683594,
+        "width": "1599.99px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "1440px and up",
+    "rows": [
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "width": "1440.18px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "width": "1440.18px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "width": "1440.18px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "width": "1440.18px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "width": "1440.18px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "width": "1440.18px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "1280px and up",
+    "rows": [
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "55.5585px 56.5447px",
+        "right": 1388.962646484375,
+        "width": "1388.96px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "55.5585px 56.5447px",
+        "right": 1388.962646484375,
+        "width": "1388.96px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "55.5585px 56.5447px",
+        "right": 1388.962646484375,
+        "width": "1388.96px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "55.5585px 56.5447px",
+        "right": 1388.962646484375,
+        "width": "1388.96px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "55.5585px 56.5447px",
+        "right": 1388.962646484375,
+        "width": "1388.96px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "55.5585px 56.5447px",
+        "right": 1388.962646484375,
+        "width": "1388.96px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Desktop: Base breakpoint",
+    "rows": [
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "width": "1279.03px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "width": "1279.03px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "width": "1279.03px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "width": "1279.03px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "width": "1279.03px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "width": "1279.03px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Tablet: 991px and down",
+    "rows": [
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "width": "819.868px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "width": "819.868px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "width": "819.868px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "width": "819.868px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "width": "819.868px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "width": "819.868px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Mobile (L): 767px and down",
+    "rows": [
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 27.158px",
+        "right": 667.1082153320312,
+        "width": "667.108px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 27.158px",
+        "right": 667.1082153320312,
+        "width": "667.108px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 27.158px",
+        "right": 667.1082153320312,
+        "width": "667.108px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 27.158px",
+        "right": 667.1082153320312,
+        "width": "667.108px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 27.158px",
+        "right": 667.1082153320312,
+        "width": "667.108px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 27.158px",
+        "right": 667.1082153320312,
+        "width": "667.108px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Mobile: 479px and down",
+    "rows": [
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 16px",
+        "right": 392.9360046386719,
+        "width": "392.936px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 16px",
+        "right": 392.9360046386719,
+        "width": "392.936px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 16px",
+        "right": 392.9360046386719,
+        "width": "392.936px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 16px",
+        "right": 392.9360046386719,
+        "width": "392.936px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 16px",
+        "right": 392.9360046386719,
+        "width": "392.936px"
+      },
+      {
+        "left": 0,
+        "max": "1600px",
+        "padding": "32px 16px",
+        "right": 392.9360046386719,
+        "width": "392.936px"
+      }
+    ]
+  }
+]

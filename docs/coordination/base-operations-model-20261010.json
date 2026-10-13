@@ -1,0 +1,508 @@
+{
+  "version": 1,
+  "baseId": "app9kOZdIaGyKk5uG",
+  "tables": [
+    {
+      "name": "system",
+      "description": "Base operating context and scope. Connections and skills reference approved central definitions; never store credentials here. Related tables identifies governed business tables by name, ID and URL.",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Updated date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Purpose/scope",
+          "type": "multilineText"
+        },
+        {
+          "name": "Message",
+          "type": "multilineText"
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Draft"
+              },
+              {
+                "name": "Active"
+              },
+              {
+                "name": "Retired"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Owner",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Connections",
+          "type": "multilineText"
+        },
+        {
+          "name": "Skills",
+          "type": "multilineText"
+        },
+        {
+          "name": "References",
+          "type": "multilineText"
+        },
+        {
+          "name": "Related tables",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "tasks",
+      "description": "Scoped work, ownership, acceptance criteria and evidence. Done requires evidence against the stated acceptance criteria.",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Created date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Scope",
+          "type": "multilineText"
+        },
+        {
+          "name": "Message",
+          "type": "multilineText"
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Planned"
+              },
+              {
+                "name": "In progress"
+              },
+              {
+                "name": "Blocked"
+              },
+              {
+                "name": "Ready for review"
+              },
+              {
+                "name": "Done"
+              },
+              {
+                "name": "Cancelled"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Acceptance criteria",
+          "type": "multilineText"
+        },
+        {
+          "name": "Next action",
+          "type": "multilineText"
+        },
+        {
+          "name": "Evidence",
+          "type": "multilineText"
+        },
+        {
+          "name": "Due date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        }
+      ]
+    },
+    {
+      "name": "agents",
+      "description": "Agent assignments and thread references for this base. Status is recorded evidence, not automatic supervision.",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Purpose/scope",
+          "type": "multilineText"
+        },
+        {
+          "name": "Message",
+          "type": "multilineText"
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Available"
+              },
+              {
+                "name": "Working"
+              },
+              {
+                "name": "Blocked"
+              },
+              {
+                "name": "Stopped"
+              },
+              {
+                "name": "Complete"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Thread link",
+          "type": "url"
+        },
+        {
+          "name": "Last activity date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        }
+      ]
+    },
+    {
+      "name": "fails",
+      "description": "Evidence-backed failures, causes, corrections and verified resolution. Proposed corrections are not verified resolutions.",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Reported date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Message",
+          "type": "multilineText"
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Open"
+              },
+              {
+                "name": "Investigating"
+              },
+              {
+                "name": "Correction ready"
+              },
+              {
+                "name": "Verified resolved"
+              },
+              {
+                "name": "Closed without resolution"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Evidence",
+          "type": "multilineText"
+        },
+        {
+          "name": "Cause",
+          "type": "multilineText"
+        },
+        {
+          "name": "Correction",
+          "type": "multilineText"
+        },
+        {
+          "name": "Verified date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        }
+      ]
+    },
+    {
+      "name": "activity",
+      "description": "One record per agent session: changes, evidence, unresolved items and exact next step. Preserve prior session notes.",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Scope",
+          "type": "multilineText"
+        },
+        {
+          "name": "Message",
+          "type": "multilineText"
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "In progress"
+              },
+              {
+                "name": "Checkpoint"
+              },
+              {
+                "name": "Blocked"
+              },
+              {
+                "name": "Complete"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Evidence",
+          "type": "multilineText"
+        },
+        {
+          "name": "Next step",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "development",
+      "description": "Development proposals and working references. Reuse existing proven implementations; retain scope, related task and test evidence.",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Updated date",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso"
+            },
+            "timeFormat": {
+              "name": "24hour"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "name": "Purpose/scope",
+          "type": "multilineText"
+        },
+        {
+          "name": "Message",
+          "type": "multilineText"
+        },
+        {
+          "name": "Status",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "name": "Proposed"
+              },
+              {
+                "name": "Approved"
+              },
+              {
+                "name": "In progress"
+              },
+              {
+                "name": "Testing"
+              },
+              {
+                "name": "Complete"
+              },
+              {
+                "name": "Deferred"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Existing working reference",
+          "type": "multilineText"
+        },
+        {
+          "name": "Proposed change",
+          "type": "multilineText"
+        },
+        {
+          "name": "Test evidence",
+          "type": "multilineText"
+        }
+      ]
+    }
+  ],
+  "links": [
+    [
+      "tasks",
+      "System",
+      "system"
+    ],
+    [
+      "agents",
+      "System",
+      "system"
+    ],
+    [
+      "fails",
+      "System",
+      "system"
+    ],
+    [
+      "activity",
+      "System",
+      "system"
+    ],
+    [
+      "development",
+      "System",
+      "system"
+    ],
+    [
+      "tasks",
+      "Assigned agent",
+      "agents"
+    ],
+    [
+      "fails",
+      "Task",
+      "tasks"
+    ],
+    [
+      "fails",
+      "Agent",
+      "agents"
+    ],
+    [
+      "activity",
+      "Task",
+      "tasks"
+    ],
+    [
+      "activity",
+      "Agent",
+      "agents"
+    ],
+    [
+      "development",
+      "Related task",
+      "tasks"
+    ]
+  ],
+  "rules": [
+    "Use same six table names in each base.",
+    "Link each task, agent, failure, activity and development record to its System.",
+    "Reference central connections and skill definitions; never copy credentials.",
+    "Related tables lists governed business table names, IDs and URLs.",
+    "One activity record per agent session with evidence, unresolved items and next step.",
+    "Optional dates remain blank until known; do not invent historical evidence."
+  ],
+  "verifiedTableIds": [
+    {
+      "name": "system",
+      "id": "tblTlw48kcRoEX6yf"
+    },
+    {
+      "name": "tasks",
+      "id": "tbltfO97Vy1StVVkO"
+    },
+    {
+      "name": "agents",
+      "id": "tblX6ybGUSvGeOQra"
+    },
+    {
+      "name": "fails",
+      "id": "tbl9QUQPwFBFuKU4D"
+    },
+    {
+      "name": "activity",
+      "id": "tblMYsOaJyiHq7qhw"
+    },
+    {
+      "name": "development",
+      "id": "tblTNh8qOz5CBi1k5"
+    }
+  ]
+}

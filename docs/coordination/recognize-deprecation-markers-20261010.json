@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-10",
+  "baseId": "app9kOZdIaGyKk5uG",
+  "results": [
+    {
+      "id": "tblRvTwo3HYPUkZou",
+      "oldName": "rs_input_barns",
+      "name": "rs_input_barns",
+      "renamed": false,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tblYgoeLEey05xgw9",
+      "oldName": "rs_input_users",
+      "name": "rs_input_users",
+      "renamed": false,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tblnd2ToLs7dTzLAM",
+      "oldName": "rs_input_riders",
+      "name": "rs_input_riders",
+      "renamed": false,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tblpyyaOMgjLzLvkP",
+      "oldName": "rs_input_horses",
+      "name": "rs_input_horses",
+      "renamed": false,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tblEuwOr1rUKnj1j3",
+      "oldName": "rs_input_locations",
+      "name": "rs_input_locations",
+      "renamed": false,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tbl0cNCmNwSwsCUF6",
+      "oldName": "rs_input_memberships",
+      "name": "___rs_input_memberships",
+      "renamed": true,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tbluBFpQQMKDdVvEP",
+      "oldName": "rs_input_assignments",
+      "name": "___rs_input_assignments",
+      "renamed": true,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tbl0oVtuFNRy7zWsX",
+      "oldName": "rs_source_ids",
+      "name": "___rs_source_ids",
+      "renamed": true,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tblwts3huk3w1ACjh",
+      "oldName": "rs_input_events",
+      "name": "rs_input_events",
+      "renamed": false,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tblbpALv7flu3NNEE",
+      "oldName": "rs_input_subscriptions",
+      "name": "___rs_input_subscriptions",
+      "renamed": true,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tblF1Hdqi3yoKTZPV",
+      "oldName": "rs_sms_events",
+      "name": "___rs_sms_events",
+      "renamed": true,
+      "ok": true,
+      "verified": true
+    },
+    {
+      "id": "tbl5Kng9jk0lhE2f9",
+      "oldName": "active_iams",
+      "name": "___active_iams",
+      "renamed": true,
+      "ok": true,
+      "verified": true
+    }
+  ],
+  "reasonForDeferredNames": "Saved deployed-source rs-inputs-airtable.js addresses six tables directly by name. No application edit or deployment authorized/performed in this table-labeling task.",
+  "scope": "Names/descriptions only. No records removed or runtime verification performed."
+}

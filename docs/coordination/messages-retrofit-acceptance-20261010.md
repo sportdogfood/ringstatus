@@ -1,0 +1,21 @@
+# Messages retrofit acceptance — 10 October 2026
+
+Assignment: existing Messages base retrofit and connection/code reference map. Code remains reference-only; engine isolation explicitly deferred. This closeout supersedes earlier wording that made future recipient/reply/support decisions blockers. No owner answer is required to close the scoped retrofit.
+
+| Deliverable | Evidence and result |
+| --- | --- |
+| 1. Existing inventory and dependencies | PASS: original requests tblQWqhaSVXdDxQF0 and events tblr7sWHgoYDgj7uV read; nine requests/24 events retained as historical prepared copies. No Messages automations listed. Central base/lanes/connectors/skill references and existing source/history reviewed. Current two-way writer is original-base automation wfleDEPvPZQjrHJ8E to twoway_logs, not these prepared copies. |
+| 2. Operating structure | PASS: exact system, tasks, agents, fails, activity, development, workflow, changes and messages-index exist. Guide fields and linked relationships read back, including Assigned tasks reverse. No separate connections/skills subsystem. No invented fails to fill the table. |
+| 3. Usable Start here | PASS: stable system record recjGDLwQ5U0VliiE contains ownership, overview, Needs work runtime health, completed retrofit, current/historical/unverified connections, workflow, all remaining tasks/development and next optional connection follow-up. Exact documents and code locations referenced. Future policy recommendations live in deferred development. |
+| 4. Physical index and central registry | PASS: 11 physical tables equal 11 indexed stable IDs; names/purposes/categories/status/direct links present. Agents Messages base row recc04e4cPGXJOTRo has 11 current table-backed lanes plus one preserved duplicate legacy reference. Resume here opens the maintained system checkpoint. Existing project association retained; activity linked to Messages. |
+| 5. Connection map and remaining plan | PASS: source inventory, recipient contract and this closeout provide current Worker/proxy/original logging/runner/consumer map, known limits and later implementation order. Twilio Console remains unverified, explicitly retained as follow-up rather than a retrofit failure. |
+
+Start here: https://airtable.com/apphwDLkVCp8ut2Hd/tblycxFymN5gaPKlT/recjGDLwQ5U0VliiE
+
+Current connections: ringstatus-sms active version d18b0954-59bf-4ab5-a595-fd1861120cb0 corresponds to worker-err.js; deterministic lookup returns TwiML and attempts logging to original two-way automation. ringstatus-proxy reads original watch_trips tblCtNpzJtrI19VKq/view viwpJEf8bGL31ge90 in apptdhhNzduxm5gjn; SGL_API service broad-tooth-b8ed production. Natural Windows heartbeat repeats PT3M; inspected logs show no_active_show_scope, not active show/message processing. Native personal preferences still write Recognize subscriptions; Tenants owns eventual membership/assignment/favorite/consent/individual option consumption. All 18 copied option values/links match JSON; revoked/Test remains. OTP stays separate.
+
+Future recommendations, not implemented: preserve existing writer until Tenants verifies cutover; use permitted Tenants scope and saved consent, avoid duplicate notices for overlapping roles; clarify ambiguous sender instead of guessing; retain existing deterministic lookup/support destination while support ownership stays unassigned. Keep engine separation deferred. No technical policy answers required now.
+
+Remaining optional connection task recnPiu0W8nJu6gX7: when available, read existing Twilio Messaging configuration and record nonsecret routing/callback/opt-out evidence. No browser retry loop or request for secrets. Runtime implementation, eligibility, suppression, reply/support changes, cutover and separation remain deferred; this document authorizes none of them.
+
+Evidence documents: messages-source-inventory-20261010.md; messages-recipient-contract-20261010.md; messages-retrofit-checkpoint-20261010.md (earlier dependency language superseded by this closeout). Repository reference a5235466eed1b094a26db14ab34b514726abf91d; existing shared deployed consumer baseline 18e6e993aeaff6fd53168dac4d6f1b7b46baf195. Both finite read-only workers complete. No code/runtime/business-data repair, SMS, automation activation, deployment or publication occurred.

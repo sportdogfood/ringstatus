@@ -1,0 +1,4377 @@
+[
+  {
+    "breakpoint": "Desktop: Base breakpoint",
+    "rows": [
+      {
+        "cls": "member-link is-hero w-button",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 1263.6866760253906,
+        "size": "15.3483px",
+        "text": "Members",
+        "width": "284.651px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 955.3601684570312,
+        "size": "15.3483px",
+        "text": "home",
+        "width": "101.393px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 1079.8841705322266,
+        "size": "15.3483px",
+        "text": "Tools",
+        "width": "107.402px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 1206.9674835205078,
+        "size": "15.3483px",
+        "text": "about",
+        "width": "109.961px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "474.807px",
+        "line": "14px",
+        "pad": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "Built for the dayyou get.I’m Lainey",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "664.859px",
+        "line": "14px",
+        "pad": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "Start with a planKnow what needs to",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "kicker2 is-dark",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 582.0433578491211,
+        "size": "15.3483px",
+        "text": "Start with a plan",
+        "width": "517.191px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "173.951px",
+        "line": "86.974px",
+        "pad": "0px",
+        "right": 1214.1764755249023,
+        "size": "102.322px",
+        "text": "Know what needs to happen.",
+        "width": "1149.32px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 337.1620101928711,
+        "size": "15.3483px",
+        "text": "PACK",
+        "width": "272.31px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 223.240909576416,
+        "size": "15.3483px",
+        "text": "PACK",
+        "width": "44.4674px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 223.240909576416,
+        "size": "15.3483px",
+        "text": "PACK",
+        "width": "44.4674px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 613.2519836425781,
+        "size": "15.3483px",
+        "text": "prep",
+        "width": "270.095px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 499.32398986816406,
+        "size": "15.3483px",
+        "text": "prep",
+        "width": "42.2461px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 499.32398986816406,
+        "size": "15.3483px",
+        "text": "prep",
+        "width": "42.2461px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 898.5652160644531,
+        "size": "15.3483px",
+        "text": "show",
+        "width": "279.318px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 784.6441192626953,
+        "size": "15.3483px",
+        "text": "show",
+        "width": "51.4763px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 784.6441192626953,
+        "size": "15.3483px",
+        "text": "show",
+        "width": "51.4763px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 1214.1764221191406,
+        "size": "15.3483px",
+        "text": "connect",
+        "width": "309.616px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 1100.2553100585938,
+        "size": "15.3483px",
+        "text": "connect",
+        "width": "81.7743px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 1100.2553100585938,
+        "size": "15.3483px",
+        "text": "connect",
+        "width": "81.7743px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "689.708px",
+        "line": "14px",
+        "pad": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "Moving targetsWhen the day changes,",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 582.0433578491211,
+        "size": "15.3483px",
+        "text": "Moving targets",
+        "width": "517.191px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "173.951px",
+        "line": "86.974px",
+        "pad": "0px",
+        "right": 1214.1764755249023,
+        "size": "102.322px",
+        "text": "When the day changes, our plan need",
+        "width": "1149.32px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 337.1620101928711,
+        "size": "15.3483px",
+        "text": "PACK",
+        "width": "272.31px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 223.240909576416,
+        "size": "15.3483px",
+        "text": "PACK",
+        "width": "44.4674px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 223.240909576416,
+        "size": "15.3483px",
+        "text": "PACK",
+        "width": "44.4674px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 613.2519836425781,
+        "size": "15.3483px",
+        "text": "prep",
+        "width": "270.095px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 499.32398986816406,
+        "size": "15.3483px",
+        "text": "prep",
+        "width": "42.2461px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 499.32398986816406,
+        "size": "15.3483px",
+        "text": "prep",
+        "width": "42.2461px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 898.5652160644531,
+        "size": "15.3483px",
+        "text": "show",
+        "width": "279.318px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 784.6441192626953,
+        "size": "15.3483px",
+        "text": "show",
+        "width": "51.4763px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 784.6441192626953,
+        "size": "15.3483px",
+        "text": "show",
+        "width": "51.4763px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 1214.1764221191406,
+        "size": "15.3483px",
+        "text": "connect",
+        "width": "309.616px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 1100.2553100585938,
+        "size": "15.3483px",
+        "text": "connect",
+        "width": "81.7743px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 1100.2553100585938,
+        "size": "15.3483px",
+        "text": "connect",
+        "width": "81.7743px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "532.726px",
+        "line": "14px",
+        "pad": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "Keep everyone in the loop.Now the t",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 582.0433578491211,
+        "size": "15.3483px",
+        "text": "Keep everyone in the loop.",
+        "width": "517.191px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "173.951px",
+        "line": "86.974px",
+        "pad": "0px 204.645px 0px 0px",
+        "right": 1214.1764755249023,
+        "size": "102.322px",
+        "text": "Now the team needs to know.",
+        "width": "1149.32px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "36.8377px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 890.4664306640625,
+        "size": "15.3483px",
+        "text": "I’m really proud of the two-way SMS",
+        "width": "800.731px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "514.307px",
+        "line": "14px",
+        "pad": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "I’m using it, tooI see what works. ",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 582.0433578491211,
+        "size": "15.3483px",
+        "text": "I’m using it, too",
+        "width": "517.191px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "173.951px",
+        "line": "86.974px",
+        "pad": "0px 204.645px 0px 0px",
+        "right": 1214.1764755249023,
+        "size": "102.322px",
+        "text": "I see what works. And what doesn’t.",
+        "width": "1149.32px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 995.3712158203124,
+        "size": "15.3483px",
+        "text": "My dad calls it ‘eating my own dog ",
+        "width": "503.366px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "539.156px",
+        "line": "14px",
+        "pad": "51.1612px 52.0693px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "Back to it.It’s no secret—show days",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 582.0433578491211,
+        "size": "15.3483px",
+        "text": "Back to it.",
+        "width": "517.191px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "173.951px",
+        "line": "86.974px",
+        "pad": "0px 204.645px 0px 0px",
+        "right": 1214.1764755249023,
+        "size": "102.322px",
+        "text": "It’s no secret—show days are long.",
+        "width": "1149.32px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 517.8394470214844,
+        "size": "15.3483px",
+        "text": "My horse and I both ride better whe",
+        "width": "428.104px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.484px",
+        "line": "14px",
+        "pad": "58px 52.0693px 0px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "HeadingYour horses, right beside th",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.484px",
+        "line": "14px",
+        "pad": "58px 52.0693px 0px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "Ring 6Ring 6 - as of 10:33AFirst: L",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 1181.6916198730469,
+        "size": "15.3483px",
+        "text": "Ring 6",
+        "width": "347.475px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "165.77px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 1035.2649841308594,
+        "size": "15.3483px",
+        "text": "Ring 6 - as of 10:33AFirst: Low Chi",
+        "width": "378.739px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.484px",
+        "line": "14px",
+        "pad": "58px 52.0693px 0px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "Ring 7HeadingJust ask.In a text.I t",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4189px",
+        "line": "18.418px",
+        "pad": "0px",
+        "right": 624.5033569335938,
+        "size": "15.3483px",
+        "text": "Ring 7",
+        "width": "318.681px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.484px",
+        "line": "14px",
+        "pad": "58px 52.0693px 0px",
+        "right": 1279.02880859375,
+        "size": "14px",
+        "text": "HeadingReminders you can forward.Yo",
+        "width": "1279.03px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 365.5974426269531,
+        "size": "15.3483px",
+        "text": "home",
+        "width": "101.393px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 480.9947967529297,
+        "size": "15.3483px",
+        "text": "Tools",
+        "width": "107.402px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 598.9514923095703,
+        "size": "15.3483px",
+        "text": "about",
+        "width": "109.961px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 718.9707946777344,
+        "size": "15.3483px",
+        "text": "lainey",
+        "width": "112.024px"
+      },
+      {
+        "cls": "nav-drop-link w-button",
+        "height": "43.9983px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 858.1954345703125,
+        "size": "15.3483px",
+        "text": "contact",
+        "width": "131.229px"
+      },
+      {
+        "cls": "member-link is-footer w-button",
+        "height": "44.1777px",
+        "line": "18.418px",
+        "pad": "12px 25.5806px",
+        "right": 999.482681274414,
+        "size": "15.3483px",
+        "text": "Members",
+        "width": "133.292px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 652.0419921875,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 915.080078125,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Tablet: 991px and down",
+    "rows": [
+      {
+        "cls": "member-link is-hero w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 805.8706665039062,
+        "size": "14px",
+        "text": "Members",
+        "width": "285.996px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 492.10130310058594,
+        "size": "14px",
+        "text": "home",
+        "width": "78.6079px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 628.131965637207,
+        "size": "14px",
+        "text": "Tools",
+        "width": "84.0853px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 766.4942855834961,
+        "size": "14px",
+        "text": "about",
+        "width": "86.4238px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "566.956px",
+        "line": "14px",
+        "pad": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "Built for the dayyou get.I’m Lainey",
+        "width": "819.868px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "569.26px",
+        "line": "14px",
+        "pad": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "Start with a planKnow what needs to",
+        "width": "819.868px"
+      },
+      {
+        "cls": "kicker2 is-dark",
+        "height": "42.5497px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 373.27540588378906,
+        "size": "14px",
+        "text": "Start with a plan",
+        "width": "329.905px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "111.493px",
+        "line": "55.751px",
+        "pad": "0px",
+        "right": 776.4970550537109,
+        "size": "65.5894px",
+        "text": "Know what needs to happen.",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 212.55520629882812,
+        "size": "14px",
+        "text": "PACK",
+        "width": "169.185px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 148.247802734375,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 148.247802734375,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 385.7133331298828,
+        "size": "14px",
+        "text": "prep",
+        "width": "167.163px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 321.39903259277344,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 321.39903259277344,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 567.2875823974609,
+        "size": "14px",
+        "text": "show",
+        "width": "175.579px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 502.9732894897461,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 502.9732894897461,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 776.4970397949219,
+        "size": "14px",
+        "text": "connect",
+        "width": "203.215px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 712.1827163696289,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 712.1827163696289,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "595.406px",
+        "line": "14px",
+        "pad": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "Moving targetsWhen the day changes,",
+        "width": "819.868px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 373.27540588378906,
+        "size": "14px",
+        "text": "Moving targets",
+        "width": "329.905px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "111.493px",
+        "line": "55.751px",
+        "pad": "0px",
+        "right": 776.4970550537109,
+        "size": "65.5894px",
+        "text": "When the day changes, our plan need",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 212.55520629882812,
+        "size": "14px",
+        "text": "PACK",
+        "width": "169.185px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 148.247802734375,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 148.247802734375,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 385.7133331298828,
+        "size": "14px",
+        "text": "prep",
+        "width": "167.163px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 321.39903259277344,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 321.39903259277344,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 567.2875823974609,
+        "size": "14px",
+        "text": "show",
+        "width": "175.579px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 502.9732894897461,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 502.9732894897461,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 776.4970397949219,
+        "size": "14px",
+        "text": "connect",
+        "width": "203.215px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 712.1827163696289,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 712.1827163696289,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "454.484px",
+        "line": "14px",
+        "pad": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "Keep everyone in the loop.Now the t",
+        "width": "819.868px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 373.27540588378906,
+        "size": "14px",
+        "text": "Keep everyone in the loop.",
+        "width": "329.905px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "111.493px",
+        "line": "55.751px",
+        "pad": "0px 131.179px 0px 0px",
+        "right": 776.4970550537109,
+        "size": "65.5894px",
+        "text": "Now the team needs to know.",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "33.5817px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 619.6468734741211,
+        "size": "14px",
+        "text": "I’m really proud of the two-way SMS",
+        "width": "551.393px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "437.693px",
+        "line": "14px",
+        "pad": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "I’m using it, tooI see what works. ",
+        "width": "819.868px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 373.27540588378906,
+        "size": "14px",
+        "text": "I’m using it, too",
+        "width": "329.905px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "111.493px",
+        "line": "55.751px",
+        "pad": "0px 131.179px 0px 0px",
+        "right": 776.4970550537109,
+        "size": "65.5894px",
+        "text": "I see what works. And what doesn’t.",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 665.321533203125,
+        "size": "14px",
+        "text": "My dad calls it ‘eating my own dog ",
+        "width": "465.101px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "437.693px",
+        "line": "14px",
+        "pad": "32.7947px 33.3768px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "Back to it.It’s no secret—show days",
+        "width": "819.868px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 373.27540588378906,
+        "size": "14px",
+        "text": "Back to it.",
+        "width": "329.905px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "111.493px",
+        "line": "55.751px",
+        "pad": "0px 131.179px 0px 0px",
+        "right": 776.4970550537109,
+        "size": "65.5894px",
+        "text": "It’s no secret—show days are long.",
+        "width": "733.126px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 464.3419418334961,
+        "size": "14px",
+        "text": "My horse and I both ride better whe",
+        "width": "396.089px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "582.036px",
+        "line": "14px",
+        "pad": "58px 33.3768px 0px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "HeadingYour horses, right beside th",
+        "width": "819.868px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "614.245px",
+        "line": "14px",
+        "pad": "58px 33.3768px 0px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "Ring 6Ring 6 - as of 10:33AFirst: L",
+        "width": "819.868px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 744.5019836425781,
+        "size": "14px",
+        "text": "Ring 6",
+        "width": "236.569px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "151.118px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 679.8358764648438,
+        "size": "14px",
+        "text": "Ring 6 - as of 10:33AFirst: Low Chi",
+        "width": "256.567px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "601.311px",
+        "line": "14px",
+        "pad": "58px 33.3768px 0px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "Ring 7HeadingJust ask.In a text.I t",
+        "width": "819.868px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 398.5996398925781,
+        "size": "14px",
+        "text": "Ring 7",
+        "width": "203.773px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "474.745px",
+        "line": "14px",
+        "pad": "58px 33.3768px 0px",
+        "right": 819.8676147460938,
+        "size": "14px",
+        "text": "HeadingReminders you can forward.Yo",
+        "width": "819.868px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 185.99614715576172,
+        "size": "14px",
+        "text": "home",
+        "width": "78.6079px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 278.0767288208008,
+        "size": "14px",
+        "text": "Tools",
+        "width": "84.0853px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 372.4959030151367,
+        "size": "14px",
+        "text": "about",
+        "width": "86.4238px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 468.79833984375,
+        "size": "14px",
+        "text": "lainey",
+        "width": "88.3071px"
+      },
+      {
+        "cls": "nav-drop-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 582.6159439086914,
+        "size": "14px",
+        "text": "contact",
+        "width": "105.822px"
+      },
+      {
+        "cls": "member-link is-footer w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16.3974px",
+        "right": 698.4755172729492,
+        "size": "14px",
+        "text": "Members",
+        "width": "107.864px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 430.2359619140625,
+        "size": "17px",
+        "text": "",
+        "width": "231.871px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 672.0957946777344,
+        "size": "17px",
+        "text": "",
+        "width": "231.864px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Mobile (L): 767px and down",
+    "rows": [
+      {
+        "cls": "member-link is-hero w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 653.1112365722656,
+        "size": "14px",
+        "text": "Members",
+        "width": "285.996px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 344.77789306640625,
+        "size": "14px",
+        "text": "home",
+        "width": "77.8215px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 481.20174407958984,
+        "size": "14px",
+        "text": "Tools",
+        "width": "83.2988px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 619.9573059082031,
+        "size": "14px",
+        "text": "about",
+        "width": "85.6374px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "577.104px",
+        "line": "14px",
+        "pad": "32px 27.158px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "Built for the dayyou get.I’m Lainey",
+        "width": "667.108px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "550.573px",
+        "line": "14px",
+        "pad": "32px 27.158px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "Start with a planKnow what needs to",
+        "width": "667.108px"
+      },
+      {
+        "cls": "kicker2 is-dark",
+        "height": "42.5497px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 481.7536201477051,
+        "size": "14px",
+        "text": "Start with a plan",
+        "width": "444.605px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "91.7908px",
+        "line": "45.9px",
+        "pad": "0px",
+        "right": 629.9600715637207,
+        "size": "54px",
+        "text": "Know what needs to happen.",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 171.2541542053223,
+        "size": "14px",
+        "text": "PACK",
+        "width": "134.106px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 124.48262786865234,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 124.48262786865234,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 309.33363342285156,
+        "size": "14px",
+        "text": "prep",
+        "width": "132.085px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 262.5621032714844,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 262.5621032714844,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 455.8292388916016,
+        "size": "14px",
+        "text": "show",
+        "width": "140.501px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 409.05770111083984,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 409.05770111083984,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 629.9600524902344,
+        "size": "14px",
+        "text": "connect",
+        "width": "168.136px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 583.1885147094727,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 583.1885147094727,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "576.718px",
+        "line": "14px",
+        "pad": "32px 27.158px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "Moving targetsWhen the day changes,",
+        "width": "667.108px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 481.7536201477051,
+        "size": "14px",
+        "text": "Moving targets",
+        "width": "444.605px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "91.7908px",
+        "line": "45.9px",
+        "pad": "0px",
+        "right": 629.9600715637207,
+        "size": "54px",
+        "text": "When the day changes, our plan need",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 171.2541542053223,
+        "size": "14px",
+        "text": "PACK",
+        "width": "134.106px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 124.48262786865234,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 124.48262786865234,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 309.33363342285156,
+        "size": "14px",
+        "text": "prep",
+        "width": "132.085px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 262.5621032714844,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 262.5621032714844,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 455.8292388916016,
+        "size": "14px",
+        "text": "show",
+        "width": "140.501px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 409.05770111083984,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 409.05770111083984,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 629.9600524902344,
+        "size": "14px",
+        "text": "connect",
+        "width": "168.136px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 583.1885147094727,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 583.1885147094727,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "433.989px",
+        "line": "14px",
+        "pad": "32px 27.158px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "Keep everyone in the loop.Now the t",
+        "width": "667.108px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 481.7536201477051,
+        "size": "14px",
+        "text": "Keep everyone in the loop.",
+        "width": "444.605px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "91.7908px",
+        "line": "45.9px",
+        "pad": "0px 108px 0px 0px",
+        "right": 629.9600715637207,
+        "size": "54px",
+        "text": "Now the team needs to know.",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "50.3725px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 498.36510848999023,
+        "size": "14px",
+        "text": "I’m really proud of the two-way SMS",
+        "width": "436.334px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "417.198px",
+        "line": "14px",
+        "pad": "32px 27.158px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "I’m using it, tooI see what works. ",
+        "width": "667.108px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 481.7536201477051,
+        "size": "14px",
+        "text": "I’m using it, too",
+        "width": "444.605px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "91.7908px",
+        "line": "45.9px",
+        "pad": "0px 108px 0px 0px",
+        "right": 629.9600715637207,
+        "size": "54px",
+        "text": "I see what works. And what doesn’t.",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "33.5817px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 605.0773162841797,
+        "size": "14px",
+        "text": "My dad calls it ‘eating my own dog ",
+        "width": "436.334px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "400.407px",
+        "line": "14px",
+        "pad": "32px 27.158px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "Back to it.It’s no secret—show days",
+        "width": "667.108px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 481.7536201477051,
+        "size": "14px",
+        "text": "Back to it.",
+        "width": "444.605px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "91.7908px",
+        "line": "45.9px",
+        "pad": "0px 108px 0px 0px",
+        "right": 629.9600715637207,
+        "size": "54px",
+        "text": "It’s no secret—show days are long.",
+        "width": "592.812px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 458.1195335388184,
+        "size": "14px",
+        "text": "My horse and I both ride better whe",
+        "width": "396.089px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "877.642px",
+        "line": "14px",
+        "pad": "58px 27.158px 0px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "HeadingYour horses, right beside th",
+        "width": "667.108px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "1089.05px",
+        "line": "14px",
+        "pad": "58px 27.158px 0px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "Ring 6Ring 6 - as of 10:33AFirst: L",
+        "width": "667.108px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 611.9619750976562,
+        "size": "14px",
+        "text": "Ring 6",
+        "width": "428.104px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "151.118px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 505.24977111816406,
+        "size": "14px",
+        "text": "Ring 6 - as of 10:33AFirst: Low Chi",
+        "width": "448.103px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "939.094px",
+        "line": "14px",
+        "pad": "58px 27.158px 0px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "Ring 7HeadingJust ask.In a text.I t",
+        "width": "667.108px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 611.9619750976562,
+        "size": "14px",
+        "text": "Ring 7",
+        "width": "395.309px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "820.951px",
+        "line": "14px",
+        "pad": "58px 27.158px 0px",
+        "right": 667.1082153320312,
+        "size": "14px",
+        "text": "HeadingReminders you can forward.Yo",
+        "width": "667.108px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 120.97130966186523,
+        "size": "14px",
+        "text": "home",
+        "width": "77.8215px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 239.6454391479492,
+        "size": "14px",
+        "text": "Tools",
+        "width": "83.2988px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 360.65814208984375,
+        "size": "14px",
+        "text": "about",
+        "width": "85.6374px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 483.5472259521485,
+        "size": "14px",
+        "text": "lainey",
+        "width": "87.5207px"
+      },
+      {
+        "cls": "nav-drop-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 623.958366394043,
+        "size": "14px",
+        "text": "contact",
+        "width": "105.036px"
+      },
+      {
+        "cls": "member-link is-footer w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 150.22765731811523,
+        "size": "14px",
+        "text": "Members",
+        "width": "107.078px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 278.856258392334,
+        "size": "17px",
+        "text": "",
+        "width": "236.707px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 525.5588073730469,
+        "size": "17px",
+        "text": "",
+        "width": "236.707px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "Mobile: 479px and down",
+    "rows": [
+      {
+        "cls": "member-link is-hero w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 378.9390640258789,
+        "size": "14px",
+        "text": "Members",
+        "width": "294.702px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 250.4001312255859,
+        "size": "14px",
+        "text": "home",
+        "width": "77.8215px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 343.6948471069336,
+        "size": "14px",
+        "text": "Tools",
+        "width": "83.2988px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 439.328125,
+        "size": "14px",
+        "text": "about",
+        "width": "85.6374px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "666.342px",
+        "line": "14px",
+        "pad": "32px 16px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "Built for the dayyou get.I’m Lainey",
+        "width": "392.936px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "755.988px",
+        "line": "14px",
+        "pad": "32px 16px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "Start with a planKnow what needs to",
+        "width": "392.936px"
+      },
+      {
+        "cls": "kicker2 is-dark",
+        "height": "42.5497px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 358.8852434158325,
+        "size": "14px",
+        "text": "Start with a plan",
+        "width": "342.888px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "137.686px",
+        "line": "45.9px",
+        "pad": "0px",
+        "right": 376.93849658966064,
+        "size": "54px",
+        "text": "Know what needs to happen.",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 115.99062824249268,
+        "size": "14px",
+        "text": "PACK",
+        "width": "99.9931px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 86.27898025512695,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 86.27898025512695,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 221.9784927368164,
+        "size": "14px",
+        "text": "prep",
+        "width": "99.9931px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 191.25277709960935,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 191.25277709960935,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 327.9663619995117,
+        "size": "14px",
+        "text": "show",
+        "width": "99.9931px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 301.4487075805664,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 301.4487075805664,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 442.3151550292969,
+        "size": "14px",
+        "text": "connect",
+        "width": "108.354px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 425.4346389770508,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 425.4346389770508,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "852.725px",
+        "line": "14px",
+        "pad": "32px 16px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "Moving targetsWhen the day changes,",
+        "width": "392.936px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 358.8852434158325,
+        "size": "14px",
+        "text": "Moving targets",
+        "width": "342.888px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "183.582px",
+        "line": "45.9px",
+        "pad": "0px",
+        "right": 376.93849658966064,
+        "size": "54px",
+        "text": "When the day changes, our plan need",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 115.99062824249268,
+        "size": "14px",
+        "text": "PACK",
+        "width": "99.9931px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 86.27898025512695,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 86.27898025512695,
+        "size": "14px",
+        "text": "PACK",
+        "width": "40.5698px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 221.9784927368164,
+        "size": "14px",
+        "text": "prep",
+        "width": "99.9931px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 191.25277709960935,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 191.25277709960935,
+        "size": "14px",
+        "text": "prep",
+        "width": "38.5417px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 327.9663619995117,
+        "size": "14px",
+        "text": "show",
+        "width": "99.9931px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 301.4487075805664,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 301.4487075805664,
+        "size": "14px",
+        "text": "show",
+        "width": "46.9578px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 442.3151550292969,
+        "size": "14px",
+        "text": "connect",
+        "width": "108.354px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 425.4346389770508,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 425.4346389770508,
+        "size": "14px",
+        "text": "connect",
+        "width": "74.593px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "594.06px",
+        "line": "14px",
+        "pad": "32px 16px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "Keep everyone in the loop.Now the t",
+        "width": "392.936px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 358.8852434158325,
+        "size": "14px",
+        "text": "Keep everyone in the loop.",
+        "width": "342.888px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "137.686px",
+        "line": "45.9px",
+        "pad": "0px 108px 0px 0px",
+        "right": 376.93849658966064,
+        "size": "54px",
+        "text": "Now the team needs to know.",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "67.1634px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 330.00830078125,
+        "size": "14px",
+        "text": "I’m really proud of the two-way SMS",
+        "width": "285.134px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "606.374px",
+        "line": "14px",
+        "pad": "32px 16px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "I’m using it, tooI see what works. ",
+        "width": "392.936px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 358.8852434158325,
+        "size": "14px",
+        "text": "I’m using it, too",
+        "width": "342.888px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "183.582px",
+        "line": "45.9px",
+        "pad": "0px 108px 0px 0px",
+        "right": 376.93849658966064,
+        "size": "54px",
+        "text": "I see what works. And what doesn’t.",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "33.5817px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 358.0574188232422,
+        "size": "14px",
+        "text": "My dad calls it ‘eating my own dog ",
+        "width": "248.213px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "606.374px",
+        "line": "14px",
+        "pad": "32px 16px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "Back to it.It’s no secret—show days",
+        "width": "392.936px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 358.8852434158325,
+        "size": "14px",
+        "text": "Back to it.",
+        "width": "342.888px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "183.582px",
+        "line": "45.9px",
+        "pad": "0px 108px 0px 0px",
+        "right": 376.93849658966064,
+        "size": "54px",
+        "text": "It’s no secret—show days are long.",
+        "width": "360.941px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "33.5817px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 330.00830078125,
+        "size": "14px",
+        "text": "My horse and I both ride better whe",
+        "width": "285.134px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "903.511px",
+        "line": "14px",
+        "pad": "28px 16px 0px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "HeadingYour horses, right beside th",
+        "width": "392.936px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "1055.29px",
+        "line": "14px",
+        "pad": "28px 16px 0px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "Ring 6Ring 6 - as of 10:33AFirst: L",
+        "width": "392.936px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 348.94456481933594,
+        "size": "14px",
+        "text": "Ring 6",
+        "width": "239.983px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "151.118px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 305.62917709350586,
+        "size": "14px",
+        "text": "Ring 6 - as of 10:33AFirst: Low Chi",
+        "width": "261.638px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "878.07px",
+        "line": "14px",
+        "pad": "28px 16px 0px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "Ring 7HeadingJust ask.In a text.I t",
+        "width": "392.936px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "16.7908px",
+        "line": "16.8px",
+        "pad": "0px",
+        "right": 348.94456481933594,
+        "size": "14px",
+        "text": "Ring 7",
+        "width": "239.983px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "846.82px",
+        "line": "14px",
+        "pad": "28px 16px 0px",
+        "right": 392.9360046386719,
+        "size": "14px",
+        "text": "HeadingReminders you can forward.Yo",
+        "width": "392.936px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 95.15728950500488,
+        "size": "14px",
+        "text": "home",
+        "width": "77.8215px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 186.45145416259768,
+        "size": "14px",
+        "text": "Tools",
+        "width": "83.2988px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 280.0841827392578,
+        "size": "14px",
+        "text": "about",
+        "width": "85.6374px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 375.60020446777344,
+        "size": "14px",
+        "text": "lainey",
+        "width": "87.5207px"
+      },
+      {
+        "cls": "nav-drop-link w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 184.45089721679688,
+        "size": "14px",
+        "text": "contact",
+        "width": "105.036px"
+      },
+      {
+        "cls": "member-link is-footer w-button",
+        "height": "43.9983px",
+        "line": "16.8px",
+        "pad": "12px 16px",
+        "right": 299.52403259277344,
+        "size": "14px",
+        "text": "Members",
+        "width": "107.078px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "22.8571px",
+        "pad": "5px 12px 5px 15px",
+        "right": 346.4611282348633,
+        "size": "16px",
+        "text": "",
+        "width": "299.993px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "22.8571px",
+        "pad": "5px 12px 5px 15px",
+        "right": 346.4611282348633,
+        "size": "16px",
+        "text": "",
+        "width": "299.993px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "1280px and up",
+    "rows": [
+      {
+        "cls": "member-link is-hero w-button",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 1264.5558776855469,
+        "size": "15.3589px",
+        "text": "Members",
+        "width": "284.637px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 956.2569732666016,
+        "size": "15.3589px",
+        "text": "home",
+        "width": "101.449px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 1080.7533798217771,
+        "size": "15.3589px",
+        "text": "Tools",
+        "width": "107.464px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 1207.8091049194336,
+        "size": "15.3589px",
+        "text": "about",
+        "width": "110.023px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "474.938px",
+        "line": "14px",
+        "pad": "51.1965px 52.1052px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "Built for the dayyou get.I’m Lainey",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "665.121px",
+        "line": "14px",
+        "pad": "51.1965px 52.1052px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "Start with a planKnow what needs to",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "kicker2 is-dark",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 582.4503479003906,
+        "size": "15.3589px",
+        "text": "Start with a plan",
+        "width": "517.55px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "174.062px",
+        "line": "87.034px",
+        "pad": "0px",
+        "right": 1215.0111389160156,
+        "size": "102.393px",
+        "text": "Know what needs to happen.",
+        "width": "1150.11px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 337.4034423828125,
+        "size": "15.3589px",
+        "text": "PACK",
+        "width": "272.503px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 223.3995780944824,
+        "size": "15.3589px",
+        "text": "PACK",
+        "width": "44.495px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 223.3995780944824,
+        "size": "15.3589px",
+        "text": "PACK",
+        "width": "44.495px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 613.6796875,
+        "size": "15.3589px",
+        "text": "prep",
+        "width": "270.281px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 499.6689033508301,
+        "size": "15.3589px",
+        "text": "prep",
+        "width": "42.2668px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 499.6689033508301,
+        "size": "15.3589px",
+        "text": "prep",
+        "width": "42.2668px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 899.1860656738281,
+        "size": "15.3589px",
+        "text": "show",
+        "width": "279.512px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 785.1822128295898,
+        "size": "15.3589px",
+        "text": "show",
+        "width": "51.5039px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 785.1822128295898,
+        "size": "15.3589px",
+        "text": "show",
+        "width": "51.5039px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 1215.0111083984375,
+        "size": "15.3589px",
+        "text": "connect",
+        "width": "309.83px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 1101.000373840332,
+        "size": "15.3589px",
+        "text": "connect",
+        "width": "81.8157px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 1101.000373840332,
+        "size": "15.3589px",
+        "text": "connect",
+        "width": "81.8157px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "689.977px",
+        "line": "14px",
+        "pad": "51.1965px 52.1052px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "Moving targetsWhen the day changes,",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 582.4503479003906,
+        "size": "15.3589px",
+        "text": "Moving targets",
+        "width": "517.55px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "174.062px",
+        "line": "87.034px",
+        "pad": "0px",
+        "right": 1215.0111389160156,
+        "size": "102.393px",
+        "text": "When the day changes, our plan need",
+        "width": "1150.11px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 337.4034423828125,
+        "size": "15.3589px",
+        "text": "PACK",
+        "width": "272.503px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 223.3995780944824,
+        "size": "15.3589px",
+        "text": "PACK",
+        "width": "44.495px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 223.3995780944824,
+        "size": "15.3589px",
+        "text": "PACK",
+        "width": "44.495px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 613.6796875,
+        "size": "15.3589px",
+        "text": "prep",
+        "width": "270.281px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 499.6689033508301,
+        "size": "15.3589px",
+        "text": "prep",
+        "width": "42.2668px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 499.6689033508301,
+        "size": "15.3589px",
+        "text": "prep",
+        "width": "42.2668px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 899.1860656738281,
+        "size": "15.3589px",
+        "text": "show",
+        "width": "279.512px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 785.1822128295898,
+        "size": "15.3589px",
+        "text": "show",
+        "width": "51.5039px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 785.1822128295898,
+        "size": "15.3589px",
+        "text": "show",
+        "width": "51.5039px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 1215.0111083984375,
+        "size": "15.3589px",
+        "text": "connect",
+        "width": "309.83px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 1101.000373840332,
+        "size": "15.3589px",
+        "text": "connect",
+        "width": "81.8157px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 1101.000373840332,
+        "size": "15.3589px",
+        "text": "connect",
+        "width": "81.8157px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "532.94px",
+        "line": "14px",
+        "pad": "51.1965px 52.1052px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "Keep everyone in the loop.Now the t",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 582.4503479003906,
+        "size": "15.3589px",
+        "text": "Keep everyone in the loop.",
+        "width": "517.55px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "174.062px",
+        "line": "87.034px",
+        "pad": "0px 204.786px 0px 0px",
+        "right": 1215.0111389160156,
+        "size": "102.393px",
+        "text": "Now the team needs to know.",
+        "width": "1150.11px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "36.8515px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 891.0941848754883,
+        "size": "15.3589px",
+        "text": "I’m really proud of the two-way SMS",
+        "width": "801.311px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "514.514px",
+        "line": "14px",
+        "pad": "51.1965px 52.1052px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "I’m using it, tooI see what works. ",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 582.4503479003906,
+        "size": "15.3589px",
+        "text": "I’m using it, too",
+        "width": "517.55px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "174.062px",
+        "line": "87.034px",
+        "pad": "0px 204.786px 0px 0px",
+        "right": 1215.0111389160156,
+        "size": "102.393px",
+        "text": "I see what works. And what doesn’t.",
+        "width": "1150.11px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 995.9851684570312,
+        "size": "15.3589px",
+        "text": "My dad calls it ‘eating my own dog ",
+        "width": "503.663px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "539.37px",
+        "line": "14px",
+        "pad": "51.1965px 52.1052px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "Back to it.It’s no secret—show days",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 582.4503479003906,
+        "size": "15.3589px",
+        "text": "Back to it.",
+        "width": "517.55px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "174.062px",
+        "line": "87.034px",
+        "pad": "0px 204.786px 0px 0px",
+        "right": 1215.0111389160156,
+        "size": "102.393px",
+        "text": "It’s no secret—show days are long.",
+        "width": "1150.11px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 518.1429824829102,
+        "size": "15.3589px",
+        "text": "My horse and I both ride better whe",
+        "width": "428.36px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.932px",
+        "line": "14px",
+        "pad": "58px 52.1052px 0px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "HeadingYour horses, right beside th",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.932px",
+        "line": "14px",
+        "pad": "58px 52.1052px 0px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "Ring 6Ring 6 - as of 10:33AFirst: L",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 1182.5055847167969,
+        "size": "15.3589px",
+        "text": "Ring 6",
+        "width": "347.758px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "165.832px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 1035.982391357422,
+        "size": "15.3589px",
+        "text": "Ring 6 - as of 10:33AFirst: Low Chi",
+        "width": "379.029px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.932px",
+        "line": "14px",
+        "pad": "58px 52.1052px 0px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "Ring 7HeadingJust ask.In a text.I t",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "18.4258px",
+        "line": "18.4307px",
+        "pad": "0px",
+        "right": 624.9586486816406,
+        "size": "15.3589px",
+        "text": "Ring 7",
+        "width": "318.957px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "704.932px",
+        "line": "14px",
+        "pad": "58px 52.1052px 0px",
+        "right": 1279.911865234375,
+        "size": "14px",
+        "text": "HeadingReminders you can forward.Yo",
+        "width": "1279.91px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 365.89405822753906,
+        "size": "15.3589px",
+        "text": "home",
+        "width": "101.449px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 481.3535079956054,
+        "size": "15.3589px",
+        "text": "Tools",
+        "width": "107.464px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 599.3722763061523,
+        "size": "15.3589px",
+        "text": "about",
+        "width": "110.023px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 719.4537200927734,
+        "size": "15.3589px",
+        "text": "lainey",
+        "width": "112.086px"
+      },
+      {
+        "cls": "nav-drop-link w-button",
+        "height": "43.9983px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 858.7473297119141,
+        "size": "15.3589px",
+        "text": "contact",
+        "width": "131.298px"
+      },
+      {
+        "cls": "member-link is-footer w-button",
+        "height": "44.1846px",
+        "line": "18.4307px",
+        "pad": "12px 25.5982px",
+        "right": 1000.1104583740234,
+        "size": "15.3589px",
+        "text": "Members",
+        "width": "133.368px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 652.4627990722656,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 915.5009155273438,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "1440px and up",
+    "rows": [
+      {
+        "cls": "member-link is-hero w-button",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1424.179229736328,
+        "size": "16px",
+        "text": "Members",
+        "width": "304.001px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1061.520523071289,
+        "size": "16px",
+        "text": "home",
+        "width": "109.961px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1210.2097930908203,
+        "size": "16px",
+        "text": "Tools",
+        "width": "116.225px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1361.5549697875977,
+        "size": "16px",
+        "text": "about",
+        "width": "118.888px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "502.518px",
+        "line": "14.4018px",
+        "pad": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "Built for the dayyou get.I’m Lainey",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "694.06px",
+        "line": "14.4018px",
+        "pad": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "Start with a planKnow what needs to",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "kicker2 is-dark",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 655.3808670043945,
+        "size": "16px",
+        "text": "Start with a plan",
+        "width": "582.361px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "195.847px",
+        "line": "97.932px",
+        "pad": "0px",
+        "right": 1367.156623840332,
+        "size": "115.214px",
+        "text": "Know what needs to happen.",
+        "width": "1294.14px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 381.0913772583008,
+        "size": "16px",
+        "text": "PACK",
+        "width": "308.071px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 250.2276725769043,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 250.2276725769043,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 692.8394470214844,
+        "size": "16px",
+        "text": "prep",
+        "width": "305.753px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 561.975772857666,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 561.975772857666,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1014.210906982422,
+        "size": "16px",
+        "text": "show",
+        "width": "315.377px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 883.347225189209,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 883.347225189209,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1367.1565856933594,
+        "size": "16px",
+        "text": "connect",
+        "width": "346.951px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1236.2929153442385,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1236.2929153442385,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "748.269px",
+        "line": "14.4018px",
+        "pad": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "Moving targetsWhen the day changes,",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 655.3808670043945,
+        "size": "16px",
+        "text": "Moving targets",
+        "width": "582.361px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "195.847px",
+        "line": "97.932px",
+        "pad": "0px",
+        "right": 1367.156623840332,
+        "size": "115.214px",
+        "text": "When the day changes, our plan need",
+        "width": "1294.14px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 381.0913772583008,
+        "size": "16px",
+        "text": "PACK",
+        "width": "308.071px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 250.2276725769043,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 250.2276725769043,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 692.8394470214844,
+        "size": "16px",
+        "text": "prep",
+        "width": "305.753px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 561.975772857666,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 561.975772857666,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1014.210906982422,
+        "size": "16px",
+        "text": "show",
+        "width": "315.377px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 883.347225189209,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 883.347225189209,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1367.1565856933594,
+        "size": "16px",
+        "text": "connect",
+        "width": "346.951px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1236.2929153442385,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1236.2929153442385,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "574.338px",
+        "line": "14.4018px",
+        "pad": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "Keep everyone in the loop.Now the t",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 655.3808670043945,
+        "size": "16px",
+        "text": "Keep everyone in the loop.",
+        "width": "582.361px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "195.847px",
+        "line": "97.932px",
+        "pad": "0px 230.428px 0px 0px",
+        "right": 1367.156623840332,
+        "size": "115.214px",
+        "text": "Now the team needs to know.",
+        "width": "1294.14px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "38.383px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1005.7947845458984,
+        "size": "16px",
+        "text": "I’m really proud of the two-way SMS",
+        "width": "907.892px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "557.719px",
+        "line": "14.4018px",
+        "pad": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "I’m using it, tooI see what works. ",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 655.3808670043945,
+        "size": "16px",
+        "text": "I’m using it, too",
+        "width": "582.361px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "195.847px",
+        "line": "97.932px",
+        "pad": "0px 230.428px 0px 0px",
+        "right": 1367.156623840332,
+        "size": "115.214px",
+        "text": "I see what works. And what doesn’t.",
+        "width": "1294.14px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1082.2779541015625,
+        "size": "16px",
+        "text": "My dad calls it ‘eating my own dog ",
+        "width": "531.422px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "584.823px",
+        "line": "14.4018px",
+        "pad": "57.6071px 58.6296px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "Back to it.It’s no secret—show days",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 655.3808670043945,
+        "size": "16px",
+        "text": "Back to it.",
+        "width": "582.361px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "195.847px",
+        "line": "97.932px",
+        "pad": "0px 230.428px 0px 0px",
+        "right": 1367.156623840332,
+        "size": "115.214px",
+        "text": "It’s no secret—show days are long.",
+        "width": "1294.14px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 550.4691314697266,
+        "size": "16px",
+        "text": "My horse and I both ride better whe",
+        "width": "452.566px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "705.057px",
+        "line": "14.4018px",
+        "pad": "58px 58.6296px 0px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "HeadingYour horses, right beside th",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "705.057px",
+        "line": "14.4018px",
+        "pad": "58px 58.6296px 0px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "Ring 6Ring 6 - as of 10:33AFirst: L",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1302.9733581542969,
+        "size": "16px",
+        "text": "Ring 6",
+        "width": "398.572px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "172.724px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1138.1002502441406,
+        "size": "16px",
+        "text": "Ring 6 - as of 10:33AFirst: Low Chi",
+        "width": "431.257px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "705.057px",
+        "line": "14.4018px",
+        "pad": "58px 58.6296px 0px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "Ring 7HeadingJust ask.In a text.I t",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 735.3270263671875,
+        "size": "16px",
+        "text": "Ring 7",
+        "width": "369.778px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "705.057px",
+        "line": "14.4018px",
+        "pad": "58px 58.6296px 0px",
+        "right": 1440.1767578125,
+        "size": "14.4018px",
+        "text": "HeadingReminders you can forward.Yo",
+        "width": "1440.18px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 426.9040069580078,
+        "size": "16px",
+        "text": "home",
+        "width": "109.961px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 551.1244964599609,
+        "size": "16px",
+        "text": "Tools",
+        "width": "116.225px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 678.0077896118164,
+        "size": "16px",
+        "text": "about",
+        "width": "118.888px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 807.0434112548828,
+        "size": "16px",
+        "text": "lainey",
+        "width": "121.04px"
+      },
+      {
+        "cls": "nav-drop-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 956.0983123779296,
+        "size": "16px",
+        "text": "contact",
+        "width": "141.06px"
+      },
+      {
+        "cls": "member-link is-footer w-button",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 28.8035px",
+        "right": 1107.2296752929688,
+        "size": "16px",
+        "text": "Members",
+        "width": "143.136px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 731.2776489257812,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 994.3157348632812,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      }
+    ]
+  },
+  {
+    "breakpoint": "1920px and up",
+    "rows": [
+      {
+        "cls": "member-link is-hero w-button",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1904.0909118652344,
+        "size": "16px",
+        "text": "Members",
+        "width": "343.998px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1381.401840209961,
+        "size": "16px",
+        "text": "home",
+        "width": "116.349px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1526.897201538086,
+        "size": "16px",
+        "text": "Tools",
+        "width": "122.613px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1675.0484085083008,
+        "size": "16px",
+        "text": "about",
+        "width": "125.276px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "559.375px",
+        "line": "18px",
+        "pad": "64px 65px",
+        "right": 1920.0885009765625,
+        "size": "18px",
+        "text": "Built for the dayyou get.I’m Lainey",
+        "width": "1920.09px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "663.376px",
+        "line": "18px",
+        "pad": "64px 65px",
+        "right": 1920.0885009765625,
+        "size": "18px",
+        "text": "Start with a planKnow what needs to",
+        "width": "1920.09px"
+      },
+      {
+        "cls": "kicker2 is-dark",
+        "height": "46.0817px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 596.5577087402344,
+        "size": "16px",
+        "text": "Start with a plan",
+        "width": "512.362px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "98.5927px",
+        "line": "98.6px",
+        "pad": "0px",
+        "right": 1835.8927917480469,
+        "size": "116px",
+        "text": "Know what needs to happen.",
+        "width": "1751.7px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 506.6570434570313,
+        "size": "16px",
+        "text": "PACK",
+        "width": "422.461px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 318.5982475280762,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 318.5982475280762,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 932.7953186035156,
+        "size": "16px",
+        "text": "prep",
+        "width": "420.144px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 744.736515045166,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 744.736515045166,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1368.5569763183594,
+        "size": "16px",
+        "text": "show",
+        "width": "429.767px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1180.4982261657717,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1180.4982261657717,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1835.8928527832031,
+        "size": "16px",
+        "text": "connect",
+        "width": "461.341px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1647.8340530395508,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1647.8340530395508,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "794.633px",
+        "line": "18px",
+        "pad": "64px 65px",
+        "right": 1920.0885009765625,
+        "size": "18px",
+        "text": "Moving targetsWhen the day changes,",
+        "width": "1920.09px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 596.5577087402344,
+        "size": "16px",
+        "text": "Moving targets",
+        "width": "512.362px"
+      },
+      {
+        "cls": "l5-heading-white",
+        "height": "197.185px",
+        "line": "98.6px",
+        "pad": "0px",
+        "right": 1835.8927917480469,
+        "size": "116px",
+        "text": "When the day changes, our plan need",
+        "width": "1751.7px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link w--current",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 506.6570434570313,
+        "size": "16px",
+        "text": "PACK",
+        "width": "422.461px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 318.5982475280762,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 318.5982475280762,
+        "size": "16px",
+        "text": "PACK",
+        "width": "46.3507px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 932.7953186035156,
+        "size": "16px",
+        "text": "prep",
+        "width": "420.144px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 744.736515045166,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 744.736515045166,
+        "size": "16px",
+        "text": "prep",
+        "width": "44.0328px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1368.5569763183594,
+        "size": "16px",
+        "text": "show",
+        "width": "429.767px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1180.4982261657717,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1180.4982261657717,
+        "size": "16px",
+        "text": "show",
+        "width": "53.6562px"
+      },
+      {
+        "cls": "rs6-tab-link w-inline-block w-tab-link",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1835.8928527832031,
+        "size": "16px",
+        "text": "connect",
+        "width": "461.341px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1647.8340530395508,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "rs10-tab-label",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1647.8340530395508,
+        "size": "16px",
+        "text": "connect",
+        "width": "85.2304px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "502.477px",
+        "line": "18px",
+        "pad": "64px 65px",
+        "right": 1920.0885009765625,
+        "size": "18px",
+        "text": "Keep everyone in the loop.Now the t",
+        "width": "1920.09px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 596.5577087402344,
+        "size": "16px",
+        "text": "Keep everyone in the loop.",
+        "width": "512.362px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "98.5927px",
+        "line": "98.6px",
+        "pad": "0px 232px 0px 0px",
+        "right": 1835.8927917480469,
+        "size": "116px",
+        "text": "Now the team needs to know.",
+        "width": "1751.7px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1320.640266418457,
+        "size": "16px",
+        "text": "I’m really proud of the two-way SMS",
+        "width": "1211.56px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "601.069px",
+        "line": "18px",
+        "pad": "64px 65px",
+        "right": 1920.0885009765625,
+        "size": "18px",
+        "text": "I’m using it, tooI see what works. ",
+        "width": "1920.09px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 596.5577087402344,
+        "size": "16px",
+        "text": "I’m using it, too",
+        "width": "512.362px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "197.185px",
+        "line": "98.6px",
+        "pad": "0px 232px 0px 0px",
+        "right": 1835.8927917480469,
+        "size": "116px",
+        "text": "I see what works. And what doesn’t.",
+        "width": "1751.7px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1253.60107421875,
+        "size": "16px",
+        "text": "My dad calls it ‘eating my own dog ",
+        "width": "531.422px"
+      },
+      {
+        "cls": "fsl-method",
+        "height": "601.069px",
+        "line": "18px",
+        "pad": "64px 65px",
+        "right": 1920.0885009765625,
+        "size": "18px",
+        "text": "Back to it.It’s no secret—show days",
+        "width": "1920.09px"
+      },
+      {
+        "cls": "kicker2",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 596.5577087402344,
+        "size": "16px",
+        "text": "Back to it.",
+        "width": "512.362px"
+      },
+      {
+        "cls": "l5-heading-dark",
+        "height": "197.185px",
+        "line": "98.6px",
+        "pad": "0px 232px 0px 0px",
+        "right": 1835.8927917480469,
+        "size": "116px",
+        "text": "It’s no secret—show days are long.",
+        "width": "1751.7px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 561.6446304321289,
+        "size": "16px",
+        "text": "My horse and I both ride better whe",
+        "width": "452.566px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "773.793px",
+        "line": "18px",
+        "pad": "58px 65px 0px",
+        "right": 1760.0374450683594,
+        "size": "18px",
+        "text": "HeadingYour horses, right beside th",
+        "width": "1599.99px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "773.793px",
+        "line": "18px",
+        "pad": "58px 65px 0px",
+        "right": 1760.0374450683594,
+        "size": "18px",
+        "text": "Ring 6Ring 6 - as of 10:33AFirst: L",
+        "width": "1599.99px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1609.0992126464844,
+        "size": "16px",
+        "text": "Ring 6",
+        "width": "447.068px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "172.724px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 1426.7109375,
+        "size": "16px",
+        "text": "Ring 6 - as of 10:33AFirst: Low Chi",
+        "width": "481.098px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "773.793px",
+        "line": "18px",
+        "pad": "58px 65px 0px",
+        "right": 1760.0374450683594,
+        "size": "18px",
+        "text": "Ring 7HeadingJust ask.In a text.I t",
+        "width": "1599.99px"
+      },
+      {
+        "cls": "rs-shared-control-text",
+        "height": "19.1915px",
+        "line": "19.2px",
+        "pad": "0px",
+        "right": 976.4625854492188,
+        "size": "16px",
+        "text": "Ring 7",
+        "width": "418.274px"
+      },
+      {
+        "cls": "fsl-method no-margin is-split",
+        "height": "773.793px",
+        "line": "18px",
+        "pad": "58px 65px 0px",
+        "right": 1760.0374450683594,
+        "size": "18px",
+        "text": "HeadingReminders you can forward.Yo",
+        "width": "1599.99px"
+      },
+      {
+        "cls": "rs-page-link w-button w--current",
+        "height": "43.9983px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 654.0839691162109,
+        "size": "16px",
+        "text": "home",
+        "width": "116.349px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 784.6923675537109,
+        "size": "16px",
+        "text": "Tools",
+        "width": "122.613px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 917.9636306762696,
+        "size": "16px",
+        "text": "about",
+        "width": "125.276px"
+      },
+      {
+        "cls": "rs-page-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1053.3872528076172,
+        "size": "16px",
+        "text": "lainey",
+        "width": "127.428px"
+      },
+      {
+        "cls": "nav-drop-link w-button",
+        "height": "44.0673px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1208.8301544189453,
+        "size": "16px",
+        "text": "contact",
+        "width": "147.448px"
+      },
+      {
+        "cls": "member-link is-footer w-button",
+        "height": "44.9503px",
+        "line": "19.2px",
+        "pad": "12px 32px",
+        "right": 1366.3494567871094,
+        "size": "16px",
+        "text": "Members",
+        "width": "149.524px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 971.2335205078124,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      },
+      {
+        "cls": "input-16 w-input",
+        "height": "43.9983px",
+        "line": "24.2857px",
+        "pad": "8px 12px 8px 15px",
+        "right": 1234.2716064453125,
+        "size": "17px",
+        "text": "",
+        "width": "253.042px"
+      }
+    ]
+  }
+]

@@ -25,7 +25,7 @@ For every task:
 5. Do not refactor, clean up, normalize, rename, reformat, modernize, or otherwise improve unrelated work.
 6. Do not stack a patch on a patch. If the first repair fails, return to the authoritative baseline, identify the failed assumption, and re-evaluate before another mutation.
 7. Do not claim fixed, complete, working, deployed, or verified without actual evidence.
-8. If the required source or fact is unavailable, stop at the blocker rather than infer.
+8. If a required source or fact is unavailable, stop only the dependent action rather than infer; continue independent authorized work.
 9. Do not add an unrequested final recommendation, next phase, or additional deliverable.
 
-The project hooks are the mechanical write/completion boundary. This skill supplies the reasoning procedure that cannot be fully encoded mechanically.
+Follow the current owner instructions and AGENTS.md for write and completion boundaries. The owner-disabled project hooks are not active enforcement and must not be enabled by this skill. Reading this guidance does not install controls or prove compliance; verify the requested outcome against actual evidence.

@@ -1,0 +1,17 @@
+# Recognize, Tenants and Messages supervision
+
+Owner expanded coordination to all three specialists. Read `C:/Users/gombc/.codex/skills/rs-coordinator/SKILL.md` for assignment, review, capability and handoff routing. Messages chat is `01a12690-e713-7fa1-8787-87b45eceb1a3`, base `apphwDLkVCp8ut2Hd`, tasks `tblJHNdbsKGp53ZJr`. All references below to two specialist chats/queues now include Messages as the third. Preserve its currently reference-only/preparation scope until actual implementation authorization is recorded.
+
+Owner requested both skills, scheduled usage/progress checks and discovery of new tasks on October 10, 2026. This explicitly authorizes the app heartbeat below; it does not enable repository hooks or business runners.
+
+Skills: `C:/Users/gombc/.codex/skills/recognize/SKILL.md` and `C:/Users/gombc/.codex/skills/tenants/SKILL.md`. These load stable workflow and source guidance; current authorization, state and health remain in each live checkpoint. Other domain work must not load them merely because it shares the repository.
+
+One existing combined heartbeat is repurposed to check the two specialist chats every five minutes. Original coordinator owns it. Use one compact cursor snapshot each; never message a running worker. Every fifteen minutes check account usage once and inspect the two task queues for changed/new owner-authorized assignments. Read only changed task/checkpoint evidence. Store cursors, last queue/usage check, per-checkpoint continuation flags and alerts in `.git/ringstatus-control/specialist-skill-supervision.json`.
+
+Continue an idle, unfinished, executable assignment only if its existing authorization and deadline remain valid, once per distinct checkpoint and at most twice per assignment. A new task can be dispatched only if explicitly assigned to that specialist, sufficiently concrete and owner-authorized, with a recorded budget. Development proposals and task discovery are not implementation authority. No inferred releases, SMS, grants, new workers, code fixes after failed verification or expired-budget restarts. Preserve each stricter limit. At its deadline send at most one save-and-stop if still running; do not extend automatically. Keep checking for newly authorized assignments even when existing work is blocked, without repeatedly waking the blocked worker.
+
+Workers run the existing `docs/coordination/context-check-procedure.md` helper at task boundaries and first tool boundary after 30 active minutes. Use only their own rollout/state. Report unavailable telemetry honestly; account usage is not per-agent tokens. Preserve existing 100k-input/10-percentage-point/30-minute-no-progress review triggers. These prompt a compact handoff/rebalance, not automatic cancellation.
+
+The heartbeat alerts once per account window at 20% remaining and urgently at 10%; rearm on verified reset, use existing usage-alert-state.json for deduplication, and do not apply resets or change models. Prior standalone usage alert remains paused to avoid duplicate checks. Quiet on unchanged/nonactionable state; notify actual progress, exact owner action, failure, limit or completion. Scheduled checks are best-effort, not continuous enforcement or guaranteed background task execution.
+
+Keep assignment completion distinct from product acceptance; retain remaining product tasks. Update existing registry records on meaningful changes, not on every poll. Skill adoption is evidenced by worker read/acknowledgment; behavior improvement and end-to-end completion require actual results.

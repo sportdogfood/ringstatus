@@ -1,0 +1,11 @@
+<script type="module" data-rs-public-recognition-loader="v1">
+  if (['/', '/ring-status', '/about-ringstatus'].includes(location.pathname)) {
+    try {
+      const { runSilentRecognition } = await import('/test/rs-recognition/native-client.js');
+      await runSilentRecognition({
+        endpoint: new URL('/test/rs-inputs/native-recognition', location.origin),
+        redirectOnRecognized: false,
+      });
+    } catch {}
+  }
+</script>

@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-10",
+  "baseId": "app9kOZdIaGyKk5uG",
+  "renames": [
+    {
+      "id": "tbly1PM5iFYqVzKSm",
+      "previousName": "rs_people_test",
+      "name": "People"
+    },
+    {
+      "id": "tblfkRSJAEMzuzApR",
+      "previousName": "rs_devices_test",
+      "name": "Recognition devices"
+    },
+    {
+      "id": "tblWjbASVMIjFLyW8",
+      "previousName": "rs_recognition_sessions_test",
+      "name": "Footprints"
+    },
+    {
+      "id": "tblxC4SYtzYhJNcJS",
+      "previousName": "rs_sms_requests",
+      "name": "SMS verification requests"
+    }
+  ],
+  "created": {
+    "id": "tblBgvP7pYSv8o20j",
+    "name": "Sessions",
+    "description": "One row per session: person, device, start, last activity and lifecycle. Newly prepared table; no runtime writer connected by this schema change. Footprints retains existing event history.",
+    "primaryFieldId": "fldJCPF4SxfOHFeuC",
+    "fields": [
+      {
+        "id": "fldJCPF4SxfOHFeuC",
+        "name": "session_uid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldjDuOs1k6u2AHRx",
+        "name": "person",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fld6XTRXYDhFqzD1w",
+        "name": "device",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldHECUwzCoe7iDK7",
+        "name": "started_at",
+        "type": "dateTime"
+      },
+      {
+        "id": "fldijTRs29GiurnPi",
+        "name": "last_activity_at",
+        "type": "dateTime"
+      },
+      {
+        "id": "fldl1GZKDCXRejdvF",
+        "name": "status",
+        "type": "singleSelect"
+      }
+    ]
+  },
+  "verified": [
+    {
+      "id": "tblfkRSJAEMzuzApR",
+      "name": "Recognition devices"
+    },
+    {
+      "id": "tblWjbASVMIjFLyW8",
+      "name": "Footprints"
+    },
+    {
+      "id": "tbly1PM5iFYqVzKSm",
+      "name": "People"
+    },
+    {
+      "id": "tblxC4SYtzYhJNcJS",
+      "name": "SMS verification requests"
+    },
+    {
+      "id": "tblBgvP7pYSv8o20j",
+      "name": "Sessions"
+    }
+  ],
+  "dependencyCheck": "Current local recognitionConfig resolves People, devices and footprints by fixed table IDs. Existing legacy environment names remain accepted. Inspected existing SMS automation draft/deployed configuration; request binding uses table ID, no renamed table name references found.",
+  "scope": "Schema organization only. Existing records/fields and supporting tables retained. Sessions is empty and requires runtime wiring. No new OTP/invitation implementation, no live workflow test, no activation/deployment."
+}
