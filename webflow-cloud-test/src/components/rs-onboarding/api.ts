@@ -80,9 +80,11 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
   let verifiedActor: AccessActor | null = null;
   const persistence=(kind: string)=>createPersistence({scope:{actorId:verifiedActor!.id,resource:`native-${kind}`,tenantId:'editor'},...(options.storage?{storage:options.storage}:{})});
   async function request(path: string, body?: Record<string, unknown>) {
+    // Direct Barn/Rider saves await verified data, matching the WEC/HPS action contract.
+    const directBarnSave = options.durableBarn && path === '/record' && ['barn','riders'].includes(String(body?.kind));
     const response = await fetch(`${base}${path}`, {
       method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
-      ...(typeof AbortSignal!=='undefined'?{signal:AbortSignal.timeout(15000)}:{}),
+      ...(!directBarnSave && typeof AbortSignal!=='undefined'?{signal:AbortSignal.timeout(15000)}:{}),
       headers: { ...(body ? {'Content-Type':'application/json'} : {}), ...(options.durableBarn ? {'X-RS-Tenants':'barn-rider-v1', ...(verifiedActor ? {'X-RS-Actor':verifiedActor.id} : {})} : {}) },
       ...(body ? {body:JSON.stringify(body)} : {})
     }).catch(() => { throw new Error('Could not connect. Your entry is still here; try again.'); });

@@ -185,11 +185,12 @@ function createInputsApi(apiBase, options = {}) {
   let verifiedActor = null;
   const persistence = (kind) => createPersistence({ scope: { actorId: verifiedActor.id, resource: `native-${kind}`, tenantId: "editor" }, ...options.storage ? { storage: options.storage } : {} });
   async function request(path, body) {
+    const directBarnSave = options.durableBarn && path === "/record" && ["barn", "riders"].includes(String(body?.kind));
     const response = await fetch(`${base}${path}`, {
       method: body ? "POST" : "GET",
       credentials: "same-origin",
       cache: "no-store",
-      ...typeof AbortSignal !== "undefined" ? { signal: AbortSignal.timeout(15e3) } : {},
+      ...!directBarnSave && typeof AbortSignal !== "undefined" ? { signal: AbortSignal.timeout(15e3) } : {},
       headers: { ...body ? { "Content-Type": "application/json" } : {}, ...options.durableBarn ? { "X-RS-Tenants": "barn-rider-v1", ...verifiedActor ? { "X-RS-Actor": verifiedActor.id } : {} } : {} },
       ...body ? { body: JSON.stringify(body) } : {}
     }).catch(() => {
