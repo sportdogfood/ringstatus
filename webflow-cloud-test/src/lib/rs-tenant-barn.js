@@ -69,9 +69,10 @@ export function createTenantBarnStore({legacy,call,actor}){
  }
  const api={
   ...legacy,profileFields:true,one,mapping,allowed,manages,access,snapshot,
-  async list(kind){
+  async list(kind,barnId=''){
    if(!selected.includes(kind)){const rows=await legacy.list(kind),visible=[];for(const r of rows){const bm=await mapping('barn',r.barnId);if(bm?await manages(bm.fields.external_id):r.ownerUid===actor.id)visible.push(r);}return visible;}
-   const original=await legacy.list(kind),maps=await call(TABLE.sources,{formula:`AND({source_system} = '${SOURCE}', {source_entity_type} = '${kind}')`});
+   const inScope=r=>kind!=='users'||!barnId||r.barnId===barnId;
+   const original=(await legacy.list(kind)).filter(inScope),maps=(await call(TABLE.sources,{formula:`AND({source_system} = '${SOURCE}', {source_entity_type} = '${kind}')`})).filter(m=>kind!=='users'||!barnId||m.fields.source_scope===barnId);
    const byId=new Map(original.map(r=>[r.id,r]));const seen=new Set();
    for(const map of maps){const id=map.fields.entity_uid;if(seen.has(id))fail('ambiguous_tenant_mapping');seen.add(id);
     const barnMap=kind==='barn'?map:await mapping('barn',map.fields.source_scope);
@@ -87,7 +88,7 @@ export function createTenantBarnStore({legacy,call,actor}){
    if(kind==='users'){
     // Prepopulated canonical People do not need a prior form-save event to appear.
     const barns=await call(TABLE.sources,{formula:`AND({source_system} = '${SOURCE}', {source_entity_type} = 'barn')`});
-    for(const bm of barns){const granted=await access(bm.fields.external_id);if(!granted)continue;
+    for(const bm of barns){if(barnId&&bm.fields.entity_uid!==barnId)continue;const granted=await access(bm.fields.external_id);if(!granted)continue;
      const memberships=(await call(TABLE.memberships)).filter(m=>m.fields.Tenant?.length===1&&m.fields.Tenant[0]===bm.fields.external_id&&m.fields.Person?.length===1);
      for(const m of memberships){if(memberships.filter(other=>other.fields.Person[0]===m.fields.Person[0]).length!==1)fail('ambiguous_tenant_membership');
       if(!granted.manage&&(m.fields.Person[0]!==granted.person.id||m.fields.Status!=='Enabled'))continue;
@@ -108,9 +109,9 @@ export function createTenantBarnStore({legacy,call,actor}){
 export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=createTenantRest(env,fetchImpl),clock=()=>new Date().toISOString(),includeState=true}){
  const baseStore=createTenantBarnStore({legacy,call,actor});
  let profileTarget=null,activeOperation=null;
- const store={...baseStore,async list(kind){
-  const rows=await baseStore.list(kind);
-  if(kind!=='users'||!profileTarget||await baseStore.mapping('users',profileTarget.record.id))return rows;
+ const store={...baseStore,async list(kind,barnId=''){
+  const rows=await baseStore.list(kind,barnId);
+  if(kind!=='users'||!profileTarget||barnId&&profileTarget.record.barnId!==barnId||await baseStore.mapping('users',profileTarget.record.id))return rows;
   return [...rows.filter(r=>r.id!==profileTarget.record.id&&!(r.barnId===profileTarget.record.barnId&&r.recognitionPersonId===actor.id)),profileTarget.record];
  }};
  async function prepareProfileLink(barnId){
@@ -121,7 +122,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
   if(!person||!person.fields.entity_uid||!['Active','Test'].includes(person.fields.status))fail('tenant_membership_required',403);
   const maps=(await call(TABLE.sources,{formula:`AND({source_system} = '${SOURCE}', {source_entity_type} = 'users')`})).filter(m=>m.fields.external_id===person.id&&m.fields.source_scope===barnId);
   if(maps.length>1)fail('ambiguous_profile_link');
-  const rows=await baseStore.list('users');
+  const rows=await baseStore.list('users',barnId);
   const matches=rows.filter(r=>r.barnId===barnId&&r.recognitionPersonId===actor.id);
   if(matches.length>1)fail('ambiguous_profile_link');
   const existing=maps.length?await baseStore.snapshot('users',maps[0]):matches[0];
@@ -218,7 +219,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
   const r=e.record,kind=e.entityKind;
   const map=await store.mapping(kind,r.id),canonical=kind==='users'&&!map?await store.one(TABLE.people,'entity_uid',r.id):null;if((map?.fields.external_id||e.profilePersonId||canonical?.id||'')!==e.targetId)fail('mapping_changed');
   if(e.profilePersonId){const person=await store.one(TABLE.people,'recognition_person_uid',actor.id);if(person?.id!==e.profilePersonId||r.recognitionPersonId!==actor.id)fail('profile_identity_changed',403);}
-  const now=(await store.list(kind)).find(x=>x.id===r.id)||null;if(!same(now,e.previous))fail('record_changed');
+  const now=(await store.list(kind,r.barnId)).find(x=>x.id===r.id)||null;if(!same(now,e.previous))fail('record_changed');
   let tenantId=kind==='barn'?e.targetId:(await store.mapping('barn',r.barnId))?.fields.external_id;
   if(kind!=='barn'&&!tenantId)fail('save_barn_first');
   const access=tenantId?await store.access(tenantId):null;
@@ -350,8 +351,8 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
    }
    let record,event,previous;
    const staging={...store,requestNamespace:'tenants-barn-v1',
-    async list(kind){const rows=await store.list(kind);return record&&kind===payload.kind?[...rows.filter(r=>r.id!==record.id),record]:rows;},
-    async put(kind,value){previous=(await store.list(kind)).find(r=>r.id===value.id)||null;record=value;},
+    async list(kind,barnId=''){const rows=await store.list(kind,barnId);return record&&kind===payload.kind?[...rows.filter(r=>r.id!==record.id),record]:rows;},
+    async put(kind,value){previous=(await store.list(kind,value.barnId)).find(r=>r.id===value.id)||null;record=value;},
     async appendEvent(value){event=value;}
    };
    await saveInputRecord({store:staging,actor,payload,profileLink,includeState:false});if(!record||!event)fail('tenant_confirmation_missing');
@@ -359,7 +360,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
    // First-copy is restricted to a previously owned isolated-trial record or
    // an explicit create through this authenticated editor; never match by name.
    if(previous&&previous.ownerUid!==actor.id&&!(payload.kind==='users'&&previous.recognitionPersonId===actor.id)&&!await store.manages((await store.mapping('barn',record.barnId))?.fields.external_id))fail('permission_denied',403);
-   const linkedUser=record.userId?(await store.list('users')).find(r=>r.id===record.userId&&r.barnId===record.barnId):null;
+   const linkedUser=record.userId?(await store.list('users',record.barnId)).find(r=>r.id===record.userId&&r.barnId===record.barnId):null;
    const e={linkedUser,profilePersonId:profileLink?profileTarget.personId:null,version:1,kind:'barn-rider',entityKind:payload.kind,actor,payload,record,previous,event:{...event,record},targetId,acceptedAt:clock()};
    await currentActor(e);
    const operationKey=await digest(JSON.stringify(['tenant-barn-direct-operation',eventId]));
@@ -390,7 +391,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
    const submissionClaim=await claimOnce(env,'tenant-barn-submission',rowId);if(!submissionClaim.won)fail('tenant_save_needs_review');
    try{
    await currentActor(e);
-   const current=(await store.list(e.entityKind)).find(r=>r.id===e.record.id)||null;
+   const current=(await store.list(e.entityKind,e.record.barnId)).find(r=>r.id===e.record.id)||null;
    if(!same(current,e.previous))fail('record_changed');
    if(e.entityKind==='riders'){const barns=await store.list('barn');if(!barns.some(r=>r.id===e.record.barnId&&r.ownerUid===e.actor.id))fail('permission_denied',403);}
    const claim=await claimOnce(env,'tenant-barn-entity-revision',`${e.entityKind}|${e.record.id}|${e.previous?.revision||0}`);

@@ -23,7 +23,7 @@ export async function readInputState(store, actor, selectedBarn = '') {
   const barns = (await store.list('barn')).filter(barn => owns(actor, barn));
   const ids = new Set(barns.map(barn => barn.id));
   const state = { version: 1, barns: barns.map(publicRecord), selectedBarn: ids.has(selectedBarn) ? selectedBarn : barns[0]?.id || '' };
-  for (const kind of INPUT_KINDS.slice(1)) state[kind] = (await store.list(kind)).filter(record => ids.has(record.barnId)).map(publicRecord);
+  for (const kind of INPUT_KINDS.slice(1)) state[kind] = (await store.list(kind, kind === 'users' ? state.selectedBarn : '')).filter(record => ids.has(record.barnId)).map(publicRecord);
   return state;
 }
 function normalizeDraft(draft) {
@@ -56,7 +56,7 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
     const profile = actor.profile;
     if (!profile?.personUid || !profile.name) fail('verified_profile_required', 403);
     await authorizedBarn(store, actor, barnId);
-    const matches = (await store.list('users')).filter(item => item.barnId === barnId && item.recognitionPersonId === profile.personUid);
+    const matches = (await store.list('users', barnId)).filter(item => item.barnId === barnId && item.recognitionPersonId === profile.personUid);
     if (matches.length > 1) fail('ambiguous_profile_link', 409);
     const existing = matches[0];
     draft = { id: existing?.id, name: profile.name, email: profile.email || '' };
@@ -77,7 +77,7 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
     await authorizedBarn(store, actor, replay.record.barnId);
     return { ok: true, record: replay.record, ...(includeState ? {state: await readInputState(store, actor, replay.record.barnId)} : {}) };
   }
-  const records = await store.list(kind);
+  const records = await store.list(kind, barnId);
   const id = input.id || `rs_${(await digest(`${eventId}|${kind}`)).slice(0, 32)}`;
   if (kind === 'barn') barnId = id;
   const current = records.find(record => record.id === id);
@@ -103,7 +103,7 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
   const relationships = kind === 'riders' ? [['userId', 'users']] : kind === 'horses' ? [['riderId', 'riders'], ['locationId', 'locations']] : [];
   for (const [field, relatedKind] of relationships) {
     record[field] = input[field];
-    if (record[field] && !(await store.list(relatedKind)).some(other => other.id === record[field] && other.barnId === barnId)) fail('invalid_relationship');
+    if (record[field] && !(await store.list(relatedKind, barnId)).some(other => other.id === record[field] && other.barnId === barnId)) fail('invalid_relationship');
   }
   // The provider must qualify its own concurrency guarantees. Airtable is trial-only.
   await store.put(kind, record, { expectedRevision: current?.revision });
