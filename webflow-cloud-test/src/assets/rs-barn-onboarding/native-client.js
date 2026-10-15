@@ -229,7 +229,7 @@ function createInputsApi(apiBase, options = {}) {
     return merged;
   }
   async function request(path, body) {
-    const directBarnSave = options.durableBarn && path === "/record" && ["barn", "riders"].includes(String(body?.kind));
+    const directBarnSave = options.durableBarn && path === "/record" && ["barn", "riders", "users"].includes(String(body?.kind));
     const response = await fetch(`${base}${path}`, {
       method: body ? "POST" : "GET",
       credentials: "same-origin",
@@ -253,7 +253,7 @@ function createInputsApi(apiBase, options = {}) {
       requests.set(requestKey, pending);
     }
     let device = null, operation = null;
-    if (options.durableBarn && path === "/record" && ["barn", "riders"].includes(String(body.kind))) {
+    if (options.durableBarn && path === "/record" && ["barn", "riders", "users"].includes(String(body.kind))) {
       if (!verifiedActor) throw new InputApiError("authentication_required");
       device = persistence(String(body.kind));
       operation = await device.prepareIndependent({ ...body, requestId: pending.id });
@@ -274,7 +274,7 @@ function createInputsApi(apiBase, options = {}) {
           await new Promise((resolve) => setTimeout(resolve, 2e3));
         }
       }
-      if (options.durableBarn && confirmedState && !result.state && path === "/record" && ["barn", "riders"].includes(String(body.kind)) && typeof result.record?.id === "string" && typeof result.record?.name === "string" && typeof result.record?.barnId === "string" && Number.isSafeInteger(result.record?.revision)) result.state = mergeSavedState(confirmedState, body.kind, result.record);
+      if (options.durableBarn && confirmedState && !result.state && path === "/record" && ["barn", "riders", "users"].includes(String(body.kind)) && typeof result.record?.id === "string" && typeof result.record?.name === "string" && typeof result.record?.barnId === "string" && Number.isSafeInteger(result.record?.revision)) result.state = mergeSavedState(confirmedState, body.kind, result.record);
       if (!validate2(result)) throw new Error("The server response could not be verified. Your entry is still here.");
       if (device) await device.confirm(operation, result.record, result.record.revision);
       if (options.durableBarn && verifiedActor && validStore(result.state)) {
@@ -496,15 +496,11 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       const barn = state?.barns.find((r) => r.id === state.selectedBarn);
       editing.barn = barn || null;
       fillDraft(targets.forms.barn.fields, barn);
-      for (const kind of ["barn", "riders"]) {
+      for (const kind of ["barn", "riders", "users"]) {
         const saved = await api.pendingDraft?.(kind);
         const draft = saved?.draft;
-        if (draft) {
+        if (draft && saved.barnId === state?.selectedBarn) {
           pendingBarn[kind] = saved.barnId;
-          if (next && saved.barnId && next.selectedBarn !== saved.barnId) {
-            const restored = await api.state(saved.barnId);
-            apply(restored);
-          }
           showPending(kind, draft, saved.barnId);
           editing[kind] = draft.id ? draft : null;
           fillDraft(targets.forms[kind].fields, draft);

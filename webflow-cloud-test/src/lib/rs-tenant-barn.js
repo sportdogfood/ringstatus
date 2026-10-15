@@ -5,12 +5,12 @@ import { claimOnce, completeClaim, requireClaimDatabase } from './rs-recognition
 import { createAccessStore } from './rs-inputs-access.js';
 
 export const BASE='app7BXcw801n19QKF';
-export const TABLE={barn:'tbled1saw01Thffs1',riders:'tbllUlTlcEMgZiW3h',sources:'tblRswgKjA9dt3PED',events:'tbluecPFIorOytASP',submissions:'tblldMTDEC697hPwE',people:'tblyTBgrgdhT3Tcg7',memberships:'tblFf4aWQYA2RRsWo',roles:'tblRqRbjmqmNfJtIP',roster:'tblwcczj8lFhVcbyt'};
+export const TABLE={barn:'tbled1saw01Thffs1',riders:'tbllUlTlcEMgZiW3h',users:'tblyTBgrgdhT3Tcg7',sources:'tblRswgKjA9dt3PED',events:'tbluecPFIorOytASP',submissions:'tblldMTDEC697hPwE',people:'tblyTBgrgdhT3Tcg7',memberships:'tblFf4aWQYA2RRsWo',roles:'tblRqRbjmqmNfJtIP',roster:'tblwcczj8lFhVcbyt'};
 export const SOURCE='rs-inputs-native';
 const fail=(code,status=409)=>{throw new InputError(code,status)};
 const quote=v=>String(v).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-const selected=['barn','riders'];
+const selected=['barn','riders','users'];
 const DIRECT_FIELDS={ [TABLE.barn]:['tenant_official_name'],[TABLE.riders]:['name','people'],[TABLE.people]:['entity_uid','recognition_person_uid','name','email','status','record_mode'],[TABLE.memberships]:['Name','Person','Tenant','Roles','Status'],[TABLE.roster]:['Name','Tenant','Rider','Status'],[TABLE.sources]:['mapping_uid','entity_type','entity_uid','source_system','source_entity_type','source_scope','external_id','record_mode'],[TABLE.events]:['event_uid','actor_uid','entity_uid','barn_uid','action','kind','outcome','request_uid','input_hash','result_json','occurred_at','record_mode'] };
 
 export function createTenantRest(env,fetchImpl=fetch){
@@ -56,7 +56,7 @@ export function createTenantBarnStore({legacy,call,actor}){
   if(!latest||!Number.isSafeInteger(latest.data.revision)||latest.data.revision<1||!latest.data.ownerUid)fail('tenant_confirmation_missing');
   const target=await call(TABLE[kind],{id:m.external_id});
   const name=target.fields[kind==='barn'?'tenant_official_name':'name'];if(typeof name!=='string'||!name.trim())fail('invalid_tenant_record');
-  return {...latest.data,name,requestUid:latest.row.fields.event_uid,requestHash:latest.row.fields.input_hash};
+  return {...latest.data,name,...(kind==='users'?{email:target.fields.email||''}:{}),requestUid:latest.row.fields.event_uid,requestHash:latest.row.fields.input_hash};
  }
  const api={
   ...legacy,one,mapping,allowed,snapshot,
@@ -69,6 +69,7 @@ export function createTenantBarnStore({legacy,call,actor}){
     // A mapped record never falls back to legacy ownership after disable/revocation.
     byId.delete(id);if(!barnMap||!await allowed(barnMap.fields.external_id))continue;
     if(kind==='riders'){const roster=await call(TABLE.roster);if(!roster.some(r=>r.fields.Status==='Enabled'&&r.fields.Tenant?.length===1&&r.fields.Tenant[0]===barnMap.fields.external_id&&r.fields.Rider?.length===1&&r.fields.Rider[0]===map.fields.external_id&&!r.fields.Horse?.length))continue;}
+    if(kind==='users'){const memberships=await call(TABLE.memberships);if(!memberships.some(r=>r.fields.Status==='Enabled'&&r.fields.Tenant?.length===1&&r.fields.Tenant[0]===barnMap.fields.external_id&&r.fields.Person?.length===1&&r.fields.Person[0]===map.fields.external_id))continue;}
     byId.set(id,await snapshot(kind,map));
    }return [...byId.values()];
   },
@@ -103,22 +104,22 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
  }
  const equalField=(actual,expected)=>same(actual??(Array.isArray(expected)?[]:expected===''?'':null),expected??null);
  const publicRecord=({ownerUid,requestUid,requestHash,...value})=>value;
- async function directResult(record,{verifyCurrent=false}={}){
+ async function directResult(record,{verifyCurrent=false,kind=record.id===record.barnId?'barn':'riders'}={}){
   const barn=await store.mapping('barn',record.barnId);
   if(!barn||!await store.allowed(barn.fields.external_id))fail('permission_denied',403);
   if(!includeState){
-   const kind=record.id===record.barnId?'barn':'riders';
    const map=await store.mapping(kind,record.id);if(!map)fail('tenant_confirmation_missing');
    const latest=await store.snapshot(kind,map);
    if(kind==='riders'){
     const roster=await call(TABLE.roster);
     if(!roster.some(r=>r.fields.Status==='Enabled'&&r.fields.Tenant?.length===1&&r.fields.Tenant[0]===barn.fields.external_id&&r.fields.Rider?.length===1&&r.fields.Rider[0]===map.fields.external_id&&!r.fields.Horse?.length))fail('tenant_confirmation_missing');
    }
+   if(kind==='users'){const memberships=await call(TABLE.memberships);if(!memberships.some(m=>m.fields.Status==='Enabled'&&m.fields.Person?.length===1&&m.fields.Person[0]===map.fields.external_id&&m.fields.Tenant?.length===1&&m.fields.Tenant[0]===barn.fields.external_id))fail('tenant_confirmation_missing');}
    if(verifyCurrent&&!same(publicRecord(latest),publicRecord(record)))fail('tenant_confirmation_missing');
    return {ok:true,record:publicRecord(latest)};
   }
   const state=await readInputState(store,actor,record.barnId);
-  if(verifyCurrent){const rows=record.id===record.barnId?state.barns:state.riders;if(!rows.some(r=>same(r,publicRecord(record))))fail('tenant_confirmation_missing');}
+  if(verifyCurrent){const rows=kind==='barn'?state.barns:state[kind];if(!rows.some(r=>same(r,publicRecord(record))))fail('tenant_confirmation_missing');}
   return {ok:true,record:publicRecord(record),state};
  }
  async function write(table,fields,id){
@@ -144,14 +145,17 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
   const map=await store.mapping(kind,r.id);if((map?.fields.external_id||'')!==e.targetId)fail('mapping_changed');
   const now=(await store.list(kind)).find(x=>x.id===r.id)||null;if(!same(now,e.previous))fail('record_changed');
   let tenantId=kind==='barn'?e.targetId:(await store.mapping('barn',r.barnId))?.fields.external_id;
-  if(kind==='riders'&&!tenantId)fail('save_barn_first');
+  if(kind!=='barn'&&!tenantId)fail('save_barn_first');
   if(tenantId)await member(tenantId,false);
   const nameField=kind==='barn'?'tenant_official_name':'name';
   if(e.targetId){const old=await call(TABLE[kind],{id:e.targetId});if(old.fields[nameField]!==e.previous?.name)fail('record_changed');}
   else if((await call(TABLE[kind])).some(x=>[r.name,e.previous?.name].filter(Boolean).some(n=>String(x.fields[nameField]||'').trim().toLowerCase()===n.trim().toLowerCase())))fail('existing_record_mapping_required');
   let roster=null;
   if(kind==='riders'&&e.targetId){const rows=(await call(TABLE.roster)).filter(x=>x.fields.Tenant?.includes(tenantId)&&x.fields.Rider?.includes(e.targetId));if(rows.length!==1)fail('roster_not_enabled');roster=rows[0];if(roster.fields.Status!=='Enabled'||roster.fields.Horse?.length||roster.fields.Tenant.length!==1||roster.fields.Rider.length!==1)fail('roster_not_enabled');}
+  let userMembership=null;
+  if(kind==='users'&&e.targetId){const rows=(await call(TABLE.memberships)).filter(x=>x.fields.Tenant?.includes(tenantId)&&x.fields.Person?.includes(e.targetId));if(rows.length!==1||rows[0].fields.Status!=='Enabled'||rows[0].fields.Tenant.length!==1||rows[0].fields.Person.length!==1)fail('tenant_membership_required',403);userMembership=rows[0];}
   const fields={[nameField]:r.name};
+  if(kind==='users'){fields.email=r.email||'';if(!e.targetId)Object.assign(fields,{entity_uid:r.id,status:'Active',record_mode:'Test'});}
   if(kind==='riders'){
    fields.people=[];
    if(r.userId){const rows=(await call(TABLE.people)).filter(x=>x.fields.entity_uid===r.userId||(e.linkedUser?.recognitionPersonId&&x.fields.recognition_person_uid===e.linkedUser.recognitionPersonId));if(rows.length!==1)fail('person_mapping_required');fields.people=[rows[0].id];}
@@ -161,22 +165,23 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
    await store.one(TABLE.people,'recognition_person_uid',actor.id);
   }
   await currentActor(e);
-  return {map,tenantId,roster,fields};
+  return {map,tenantId,roster,userMembership,fields};
  }
  async function applyDirect(e){
   // Recheck race-sensitive permissions, mapping and target after reservation.
-  const {map,roster,fields,tenantId:existingTenant}=await preflightDirect(e);
+  const {map,roster,userMembership,fields,tenantId:existingTenant}=await preflightDirect(e);
   const r=e.record,kind=e.entityKind;let tenantId=existingTenant;
   const target=await write(TABLE[kind],fields,e.targetId||undefined);
   if(kind==='barn')tenantId=target.id;
   await member(tenantId,kind==='barn'&&!e.targetId);
   if(kind==='riders'&&!roster)await write(TABLE.roster,{Name:r.name,Tenant:[tenantId],Rider:[target.id],Status:'Enabled'});
-  if(!map)await write(TABLE.sources,{mapping_uid:`${SOURCE}|${kind}|${r.id}`,entity_type:kind==='barn'?'Barn':'Rider',entity_uid:r.id,source_system:SOURCE,source_entity_type:kind,source_scope:r.barnId,external_id:target.id,record_mode:'Test'});
+  if(kind==='users'&&!userMembership)await write(TABLE.memberships,{Name:r.name,Person:[target.id],Tenant:[tenantId],Status:'Enabled'});
+  if(!map)await write(TABLE.sources,{mapping_uid:`${SOURCE}|${kind}|${r.id}`,entity_type:kind==='barn'?'Barn':kind==='users'?'Person':'Rider',entity_uid:r.id,source_system:SOURCE,source_entity_type:kind,source_scope:r.barnId,external_id:target.id,record_mode:'Test'});
   await write(TABLE.events,{event_uid:e.event.eventId,actor_uid:actor.id,entity_uid:r.id,barn_uid:r.barnId,action:e.event.action,kind,outcome:'committed',request_uid:e.payload.requestId,input_hash:e.event.inputHash,result_json:JSON.stringify(r),occurred_at:e.acceptedAt,record_mode:'Test'});
   // Verify the same target again after related records/audit, never a cached value.
   const verified=await call(TABLE[kind],{id:target.id,fresh:true});for(const [k,v]of Object.entries(fields))if(!equalField(verified.fields[k],v))fail('target_readback_mismatch');
   await currentActor(e);
-  return directResult(r,{verifyCurrent:true});
+  return directResult(r,{verifyCurrent:true,kind});
  }
  return {store,
   async intake(payload){
@@ -215,7 +220,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
     if(existingOperation.state!=='complete')fail('write_outcome_unknown',503);
     let saved;try{saved=JSON.parse(existingOperation.result_json)}catch{fail('recognition_claim_unavailable',503)}
     if(saved.actorId!==actor.id||saved.inputHash!==event.inputHash)fail('request_id_reused');
-    return directResult(saved.record);
+    return directResult(saved.record,{kind:payload.kind});
    }
    // Validation failures with no effects must not consume an operation/revision.
    await preflightDirect(e);
@@ -223,7 +228,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
    if(!operation.won){
     if(!operation.result)fail('write_outcome_unknown',503);
     if(operation.result.actorId!==actor.id||operation.result.inputHash!==event.inputHash)fail('request_id_reused');
-    return directResult(operation.result.record);
+    return directResult(operation.result.record,{kind:payload.kind});
    }
    const revision=await claimOnce(env,'tenant-barn-entity-revision',`${payload.kind}|${record.id}|${previous?.revision||0}`);
    if(!revision.won)fail('record_changed');

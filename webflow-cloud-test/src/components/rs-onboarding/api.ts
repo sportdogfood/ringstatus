@@ -90,7 +90,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
   }
   async function request(path: string, body?: Record<string, unknown>) {
     // Direct Barn/Rider saves await verified data, matching the WEC/HPS action contract.
-    const directBarnSave = options.durableBarn && path === '/record' && ['barn','riders'].includes(String(body?.kind));
+    const directBarnSave = options.durableBarn && path === '/record' && ['barn','riders','users'].includes(String(body?.kind));
     const response = await fetch(`${base}${path}`, {
       method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
       ...(!directBarnSave && typeof AbortSignal!=='undefined'?{signal:AbortSignal.timeout(15000)}:{}),
@@ -110,7 +110,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       requests.set(requestKey, pending);
     }
     let device: any=null, operation: any=null;
-    if(options.durableBarn&&path==='/record'&&['barn','riders'].includes(String(body.kind))){
+    if(options.durableBarn&&path==='/record'&&['barn','riders','users'].includes(String(body.kind))){
       if(!verifiedActor)throw new InputApiError('authentication_required');
       device=persistence(String(body.kind));
       operation=await device.prepareIndependent({...body,requestId:pending.id});
@@ -123,7 +123,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
         try{result=await request(path,{...body,requestId:pending.id});break;}
         catch(error){if(!(error instanceof InputApiError)||error.code!=='tenant_save_pending'||attempt>=12)throw error;await new Promise(resolve=>setTimeout(resolve,2000));}
       }
-      if(options.durableBarn&&confirmedState&&!result.state&&path==='/record'&&['barn','riders'].includes(String(body.kind))&&typeof result.record?.id==='string'&&typeof result.record?.name==='string'&&typeof result.record?.barnId==='string'&&Number.isSafeInteger(result.record?.revision))result.state=mergeSavedState(confirmedState,body.kind as Kind,result.record);
+      if(options.durableBarn&&confirmedState&&!result.state&&path==='/record'&&['barn','riders','users'].includes(String(body.kind))&&typeof result.record?.id==='string'&&typeof result.record?.name==='string'&&typeof result.record?.barnId==='string'&&Number.isSafeInteger(result.record?.revision))result.state=mergeSavedState(confirmedState,body.kind as Kind,result.record);
       if (!validate(result)) throw new Error('The server response could not be verified. Your entry is still here.');
       if(device)await device.confirm(operation,result.record,result.record.revision);
       if(options.durableBarn&&verifiedActor&&validStore(result.state)){result.state=mergeSavedState(result.state,(path==='/profile-link'?'users':body.kind) as Kind,result.record);await persistence('state').refresh(result.state,0).catch(()=>{});}

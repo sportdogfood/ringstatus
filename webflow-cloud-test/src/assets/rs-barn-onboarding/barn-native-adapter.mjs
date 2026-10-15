@@ -120,12 +120,12 @@ export function bindMainForms({ document, api, view, navigate = path => document
       const barn = state?.barns.find(r => r.id === state.selectedBarn);
       editing.barn = barn || null;
       fillDraft(targets.forms.barn.fields, barn);
-      for (const kind of ['barn','riders']) {
+      for (const kind of ['barn','riders','users']) {
         const saved=await api.pendingDraft?.(kind);
         const draft=saved?.draft;
-        if(draft){
+        // Retain another Barn's pending work without changing the recognized selection.
+        if(draft && saved.barnId===state?.selectedBarn){
           pendingBarn[kind]=saved.barnId;
-          if(next&&saved.barnId&&next.selectedBarn!==saved.barnId){const restored=await api.state(saved.barnId);apply(restored);}
 showPending(kind,draft,saved.barnId);
 editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','retry');}
       }

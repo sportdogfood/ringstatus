@@ -154,3 +154,29 @@ test('WEC-style record response verifies Rider target and roster without loading
   assert.equal(f.data[TABLE.events].length,2);
  }finally{f.db.close()}
 });
+
+test('assigned Barn creates two Users in Tenants people, edits one, reloads and preserves membership roles',async()=>{
+ const f=fixture();try{
+ await f.bridge().intake(payload());
+ const bridge=()=>createTenantBarnBridge({env:f.env,legacy:f.legacy,actor,call:f.call,fetchImpl:f.fetchImpl,includeState:false});
+ const p=n=>({kind:'users',draft:{name:`TEST User ${n}`,email:''},barnId:barn.id,requestId:`two-users-${n}`});
+ const a=await bridge().intake(p(1)),b=await bridge().intake(p(2));
+ assert.equal(a.record.revision,1);assert.equal(b.record.revision,1);assert.equal(a.state,undefined);
+ const people=f.data[TABLE.people].filter(r=>r.fields.entity_uid===a.record.id||r.fields.entity_uid===b.record.id);assert.equal(people.length,2);
+ for(const person of people){const membership=f.data[TABLE.memberships].find(m=>m.fields.Person[0]===person.id);assert.deepEqual(membership.fields.Tenant,[f.data[TABLE.barn][0].id]);assert.equal(membership.fields.Status,'Enabled');assert.equal(membership.fields.Roles,undefined);assert.equal(person.fields.recognition_person_uid,undefined);}
+ const edited=await bridge().intake({kind:'users',draft:{id:a.record.id,name:'TEST User 1 edited',email:'one@example.invalid'},barnId:barn.id,expectedRevision:1,requestId:'two-users-edit'});assert.equal(edited.record.revision,2);
+ const rows=await bridge().store.list('users');assert.equal(rows.length,2);assert.equal(rows.find(r=>r.id===a.record.id).name,'TEST User 1 edited');assert.equal(rows.find(r=>r.id===a.record.id).email,'one@example.invalid');assert.equal(rows.find(r=>r.id===b.record.id).name,'TEST User 2');assert.equal(f.data[TABLE.submissions].length,0);
+ const person=people.find(r=>r.fields.entity_uid===a.record.id),membership=f.data[TABLE.memberships].find(m=>m.fields.Person[0]===person.id);membership.fields.Status='Disabled';assert.equal((await bridge().store.list('users')).some(r=>r.id===a.record.id),false);
+ await assert.rejects(bridge().intake({kind:'users',draft:{id:a.record.id,name:'Forbidden'},barnId:barn.id,expectedRevision:2,requestId:'disabled-user-edit'}));
+ }finally{f.db.close()}
+});
+
+test('restoring pending work from another Barn never changes assigned Barn or opens that editor',async()=>{
+ const node=()=>({tagName:'BUTTON',value:'',addEventListener(){},removeEventListener(){}}),forms={};
+ for(const spec of Object.values(FORMS)){const elements=Object.fromEntries(Object.values(spec.fields).map(s=>[s,node()]));elements['.rs-barn-v24-primary']=node();elements['.rs-barn-v24-secondary']=node();forms[spec.form]={...node(),querySelectorAll:s=>elements[s]?[elements[s]]:[]};}
+ const root={querySelectorAll:s=>forms[s]?[forms[s]]:[]},document={documentElement:{getAttribute:()=>PAGE_ID},querySelectorAll:s=>s===ROOT?[root]:[]};
+ const state={version:1,barns:[barn,{...barn,id:'other',barnId:'other'}],users:[],riders:[],horses:[],locations:[],selectedBarn:barn.id};
+ const calls=[],views=[],editors=[],pending={kind:'riders',barnId:'other',draft:{name:'Preserved old Rider'},requestId:'old-kept'};
+ const app=bindMainForms({document,view:{state:s=>views.push(structuredClone(s)),feedback(){},busy(){},editor:e=>editors.push(e)},api:{async access(){return actor},async state(id){calls.push(id);return structuredClone(state)},async pendingDraft(kind){return kind==='riders'?structuredClone(pending):null}}});
+ assert.equal(await app.initialize(),true);assert.deepEqual(calls,[undefined]);assert.ok(views.every(s=>s.selectedBarn===barn.id));assert.equal(editors.length,0);assert.equal(pending.requestId,'old-kept');
+});
