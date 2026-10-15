@@ -1,4 +1,5 @@
 import { runRecognitionAction } from "./rs-recognition-action.js";
+import {createTenantRecognitionPolicy} from './rs-tenant-recognition-policy.js';
 
 const INFRASTRUCTURE_BASE = "appZahVgD156cMAe3";
 const EXISTING_RECOGNITION_BASE = "apptdhhNzduxm5gjn";
@@ -81,15 +82,16 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     if (body.records.length > 1 || body.offset) fail(ambiguityCode, 409);
     return body.records[0] || null;
   }
-  const eligible = person => active(person.fields?.status) && (verifiedInputAccess ? ["invited", "approved"].includes(person.fields?.input_access) : ["admin", "user", "member"].includes(choice(person.fields?.access_level)));
+  const tenantEligibility=baseId==='app9kOZdIaGyKk5uG'?createTenantRecognitionPolicy({env,fetchImpl}):null;
+  const eligible = async person => active(person.fields?.status) && (verifiedInputAccess ? ["invited", "approved"].includes(person.fields?.input_access) : ["admin", "user", "member"].includes(choice(person.fields?.access_level))) && (!tenantEligibility||(await tenantEligibility(person)).allowed);
   async function invitedPerson() {
     const person = await unique(tables.people, `{person_uid} = '${formulaValue(principal)}'`, "ambiguous_person");
-    assertPrincipal(person);
+    await assertPrincipal(person);
     return person;
   }
-  function assertPrincipal(person) {
+  async function assertPrincipal(person) {
     if (!person || clean(person.fields?.person_uid) !== principal) fail("verified_profile_required", 403);
-    if (!eligible(person)) fail("unauthorized_person", 403);
+    if (!await eligible(person)) fail("unauthorized_person", 403);
   }
   function normalizedPhone(value) {
     const digits = bounded(value, "missing_sms").replace(/\D/g, "");
@@ -119,7 +121,7 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     const identifier = bounded(value, "missing_sms");
     const digits = identifier.replace(/\D/g, "");
     return digits.length === 4
-      ? unique(tables.people, `OR({member_pin} = '${formulaValue(digits)}',RIGHT({primary_phone_e164},4) = '${formulaValue(digits)}')`, "ambiguous_pin")
+      ? unique(tables.people, `{member_pin} = '${formulaValue(digits)}'`, "ambiguous_pin")
       : phoneCandidate(identifier);
   }
   async function resolve(deviceToken, { includeRetiredOwner = false } = {}) {
@@ -142,7 +144,7 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     if (!/^rec[A-Za-z0-9]{14}$/.test(personId)) fail("invalid_recognition_response", 502);
     const person = await read(`${tableUrl(tables.people)}/${personId}`);
     if (person.id !== personId || !person.fields) fail("invalid_recognition_response", 502);
-    if (!eligible(person)) return { response: result(), person: null, existingDevice: true };
+    if (!await eligible(person)) return { response: result(), person: null, existingDevice: true };
     if (!clean(person.fields.person_uid)) fail("invalid_recognition_response", 502);
     return { response: retired ? result(null, "retired") : result(profileOf(person), "active"), person, existingDevice: true, deviceRecordId: device.id };
   }
@@ -150,14 +152,16 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     // Server-only lookup for managed phone verification; never return it publicly.
     async verificationCandidate(value) {
       const person = await phoneCandidate(value);
-      return person && eligible(person) ? { personUid: person.fields.person_uid, phone: normalizedPhone(value) } : null;
+      const tenant=person&&tenantEligibility?await tenantEligibility(person):null;
+      return person && await eligible(person) && (!tenant||tenant.phone===normalizedPhone(value)) ? { personUid: person.fields.person_uid, phone: normalizedPhone(value) } : null;
     },
     // Owner-selected lightweight recognition: explicit stored PIN only. Never
     // treat the last four phone digits, Geo-IP, or a first match as a secret.
     async credentialCandidate({ phone, pin, deviceToken }) {
       if (phone) {
         const person = await phoneCandidate(phone);
-        if (!person || !eligible(person) || (pin && clean(person.fields.member_pin) !== pin)) return null;
+        if (!person || !await eligible(person) || (pin && clean(person.fields.member_pin) !== pin)) return null;
+        if(tenantEligibility&&(await tenantEligibility(person)).phone!==normalizedPhone(phone))return null;
         return { personUid: person.fields.person_uid };
       }
       if (!/^\d{4}$/.test(pin || '')) fail('invalid_pin');
@@ -166,7 +170,7 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
         if (current.person && clean(current.person.fields.member_pin) === pin) return { personUid: current.person.fields.person_uid };
       }
       const person = await unique(tables.people, `{member_pin} = '${pin}'`, 'ambiguous_pin');
-      return person && eligible(person) ? { personUid: person.fields.person_uid } : null;
+      return person && await eligible(person) ? { personUid: person.fields.person_uid } : null;
     },
     // Recognition context for the public launcher, never an Inputs actor or grant.
     async recognizeDevice(deviceToken) {
@@ -180,7 +184,7 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
     async lookup(deviceToken) {
       if (deviceToken != null && deviceToken !== "" && !principal) fail("verified_profile_required", 503);
       const resolved = await resolve(deviceToken);
-      if (resolved.person) assertPrincipal(resolved.person);
+      if (resolved.person) await assertPrincipal(resolved.person);
       if (verifiedInputAccess && !resolved.existingDevice && !resolved.person) return { ok: true, recognized: false, device: "unknown", profile: profileOf(await invitedPerson()) };
       return resolved.response;
     },
@@ -203,15 +207,15 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
       if (verifiedInputAccess && action === "confirm_device" && !current.existingDevice && !current.person) current.person = await invitedPerson();
       if (["update_profile", "confirm_device", "retire_device"].includes(action)) {
         if (!current.person) fail("unauthorized_device", 403);
-        assertPrincipal(current.person);
+        await assertPrincipal(current.person);
       }
       if (action === "phone_login") {
         // A recognized device belonging to someone else cannot be rebound.
         if (current.existingDevice && !current.person) fail("unauthorized_device", 403);
-        if (current.person) assertPrincipal(current.person);
+        if (current.person) await assertPrincipal(current.person);
         const candidate = await loginCandidate(values.identifier ?? values.login ?? values.sms);
         if (!candidate) return result();
-        assertPrincipal(candidate);
+        await assertPrincipal(candidate);
       }
       if (action === "update_profile") {
         const owner = await phoneCandidate(values.sms);

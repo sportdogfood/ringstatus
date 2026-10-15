@@ -1,7 +1,5 @@
 export const config = { runtime: "edge" };
 
-import { env } from "cloudflare:workers";
-import { RecognitionActionError, runRecognitionAction } from "../../lib/rs-recognition-action.js";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -11,20 +9,10 @@ const cors = {
 
 export const OPTIONS = async () => new Response(null, { status: 204, headers: cors });
 
-export const POST = async ({ request }) => {
-  try {
-    const payload = await request.json().catch(() => ({}));
-    return json(await runRecognitionAction({ env, request, payload,
-      reportPendingAudit: request.headers.get("X-RS-Audit-Outcome") === "report" }));
-  } catch (error) {
-    if (error instanceof RecognitionActionError) {
-      if (error.status >= 500) console.error("[rs-recognition] action failed", error.code);
-      return json({ ok: false, error: error.code }, error.status);
-    }
-    console.error("[rs-recognition] unexpected action failure");
-    return json({ ok: false, error: "action_failed" }, 502);
-  }
-};
+// The current native and API-agent interfaces use the shared Inputs credential
+// controller. The historical public mutation route must not bypass that policy.
+// Internal authenticated adapters still import the existing action implementation.
+export const POST = async () => json({ ok: false, error: 'use_recognition_entry' }, 410);
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json; charset=utf-8" } });

@@ -173,7 +173,7 @@ async function phoneLogin(config, input, fetchImpl) {
 }
 
 async function findUniquePersonByPin(config, pin, fetchImpl) {
-  const matches = await listRecords(config, config.people, `OR({member_pin} = '${escapeFormula(pin)}',RIGHT({primary_phone_e164},4) = '${escapeFormula(pin)}')`, 2, fetchImpl);
+  const matches = await listRecords(config, config.people, `{member_pin} = '${escapeFormula(pin)}'`, 2, fetchImpl);
   if (matches.length > 1) throw new RecognitionActionError("ambiguous_pin", 409);
   return matches[0] || null;
 }
@@ -326,7 +326,7 @@ async function updateRecord(config, table, id, fields, fetchImpl) {
 async function airtableFetch(url, options, fetchImpl) {
   const response = await fetchImpl(url, options);
   const result = await response.json().catch(() => ({}));
-  if (!response.ok) throw new RecognitionActionError("airtable_request_failed", 502, JSON.stringify(result));
+  if (!response.ok) {const error=new RecognitionActionError("airtable_request_failed",502);error.noWrite=response.status>=400&&response.status<500&&response.status!==408;throw error;}
   return result;
 }
 
@@ -358,6 +358,45 @@ function publicPerson(person) {
 }
 
 function getConfig(env) { return recognitionConfig(env, RecognitionActionError); }
+
+// Server-only Tenants adapter: caller must first verify the target's membership.
+// Reuse credential lookup/writes without rebinding the manager's device/session.
+export async function prepareManagedCredentials({env,fetchImpl=fetch,personUid,name,email='',sms,pin=''}) {
+  const config=getConfig(env);
+  if(!/^[A-Za-z0-9_-]{1,128}$/.test(personUid||''))throw new RecognitionActionError('invalid_person_uid',400);
+  if(pin&&!/^\d{4}$/.test(pin))throw new RecognitionActionError('invalid_pin',400);
+  const rows=await listRecords(config,config.people,`{person_uid} = '${escapeFormula(personUid)}'`,2,fetchImpl);
+  if(rows.length>1)throw new RecognitionActionError('ambiguous_person',409);
+  const existing=rows[0];
+  if(existing&&(!isActive(existing.fields.status)||!['approved','invited'].includes(existing.fields.input_access)))throw new RecognitionActionError('unauthorized_person',403);
+  const phone=phoneNumber(sms||existing?.fields.primary_phone_e164);
+  const owner=await findPersonByPhone(config,phone,fetchImpl);
+  if(owner&&owner.id!==existing?.id)throw new RecognitionActionError('phone_already_registered',409);
+  // Check direct phone and alias independently, including legacy ten-digit phones.
+  const digits=phone.slice(1);
+  const direct=await listRecords(config,config.people,`OR({primary_phone_e164} = '${phone}',{primary_phone_e164} = '${digits}',{primary_phone_e164} = '${digits.slice(1)}')`,2,fetchImpl);
+  if(direct.some(row=>row.id!==existing?.id))throw new RecognitionActionError('phone_already_registered',409);
+  const aliases=await listRecords(config,config.aliases,`OR({alias_phone_e164} = '${phone}',{alias_phone_e164} = '${digits}',{alias_phone_e164} = '${digits.slice(1)}')`,2,fetchImpl);
+  if(aliases.some(row=>firstLink(row.fields.person)!==existing?.id))throw new RecognitionActionError('phone_already_registered',409);
+  const fields={person_name:required(name,'missing_user'),email:emailAddress(email),primary_phone_e164:phone,...(pin?{member_pin:pin}:{})};
+  return {phone,personUid,async apply(operation){
+    const mutatePerson=()=>existing?updateRecord(config,config.people,existing.id,fields,fetchImpl):createRecord(config,config.people,{...fields,person_uid:personUid,status:'Active',access_level:'member',input_access:'approved',input_session_version:crypto.randomUUID().replaceAll('-','')},fetchImpl);
+    const person=operation?await operation.step('recognition-person',async()=>{
+      const rows=await listRecords(config,config.people,`{person_uid} = '${escapeFormula(personUid)}'`,2,fetchImpl);
+      if(rows.length>1)throw new RecognitionActionError('ambiguous_person',409);
+      return rows[0]&&Object.entries(fields).every(([k,v])=>(rows[0].fields[k]||'')===v)?rows[0]:null;
+    },mutatePerson):await mutatePerson();
+    if(operation)await operation.step('recognition-alias',async()=>{
+      const rows=await listRecords(config,config.aliases,`{alias_phone_e164} = '${escapeFormula(phone)}'`,2,fetchImpl);
+      if(rows.length>1)throw new RecognitionActionError('ambiguous_phone',409);
+      return rows[0]&&firstLink(rows[0].fields.person)===person.id&&isActive(rows[0].fields.status)?rows[0]:null;
+    },()=>upsertAlias(config,phone,person.id,fetchImpl));
+    else await upsertAlias(config,phone,person.id,fetchImpl);
+    const saved=await getRecord(config,config.people,person.id,fetchImpl);
+    if(saved.fields.person_uid!==personUid||Object.entries(fields).some(([k,v])=>(saved.fields[k]||'')!==v))throw new RecognitionActionError('credential_readback_failed',503);
+    return personUid;
+  }};
+}
 
 function emailAddress(value) {
   const email = clean(value).toLowerCase();

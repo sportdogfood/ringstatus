@@ -2,6 +2,7 @@
 import { InputError } from './rs-inputs.js';
 import { claimOnce, requireClaimDatabase } from './rs-recognition-claims.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
+import {createTenantRecognitionPolicy} from './rs-tenant-recognition-policy.js';
 const BASE = 'app9kOZdIaGyKk5uG';
 const COOKIE = '__Secure-rs_input_access';
 const TTL = 8 * 60 * 60;
@@ -38,7 +39,7 @@ const permitted = row => ['invited', 'approved'].includes(row?.fields?.input_acc
 const validUid = value => typeof value === 'string' && /^[A-Za-z0-9_-]{1,128}$/.test(value);
 function actorOf(row) {
   if (!permitted(row) || !validUid(row.fields.person_uid)) fail('authentication_required');
-  return { id: row.fields.person_uid, barnIds: [], permissions: ['inputs:read', 'inputs:write', 'barns:create'], profile: { personUid: row.fields.person_uid, name: row.fields.person_name || '', email: row.fields.email || '' } };
+  return { id: row.fields.person_uid, barnIds: [], permissions: ['inputs:read', 'inputs:write'], profile: { personUid: row.fields.person_uid, name: row.fields.person_name || '', email: row.fields.email || '' } };
 }
 export function createAccessStore({ env, fetchImpl = fetch }) {
   if (env.RS_INPUTS_BASE_ID !== BASE || (env.RS_INPUTS_RECOGNITION_BASE_ID && env.RS_INPUTS_RECOGNITION_BASE_ID !== BASE) || env.RS_INPUTS_WRITE_MODE !== 'isolated-trial') fail('access_trial_configuration_required', 503);
@@ -77,6 +78,7 @@ async function signingKey(env) {
 }
 const cookie = (value, path, age = TTL) => `${COOKIE}=${value}; Path=${path}; Max-Age=${age}; HttpOnly; Secure; SameSite=Strict`;
 export function createInputAccess({ env, fetchImpl = fetch, now = () => Date.now(), store = createAccessStore({ env, fetchImpl }) }) {
+  const tenantEligibility=createTenantRecognitionPolicy({env,fetchImpl});
   async function session(request) {
     const entries = (request.headers.get('Cookie') || '').split(';').map(s => s.trim()).filter(s => s.startsWith(`${COOKIE}=`));
     if (entries.length !== 1) fail('authentication_required');
@@ -92,6 +94,7 @@ export function createInputAccess({ env, fetchImpl = fetch, now = () => Date.now
     if (!claims || !validUid(claims.sub) || !/^[a-f0-9]{32}$/.test(claims.version) || claims.aud !== scope(request).audience || !Number.isInteger(claims.exp) || !Number.isInteger(claims.iat) || claims.iat > time || claims.exp <= time || claims.exp - claims.iat !== TTL) fail('authentication_required');
     const row = await store.byUid(claims.sub);
     if (!row || row.fields.input_session_version !== claims.version) fail('authentication_required');
+    if (!(await tenantEligibility(row)).allowed) fail('authentication_required');
     return actorOf(row);
   }
   async function redeem(request, token) {
@@ -104,6 +107,8 @@ export function createInputAccess({ env, fetchImpl = fetch, now = () => Date.now
     if (!row || !permitted(row) || !Number.isFinite(Date.parse(row.fields.input_invite_expires_at)) || Date.parse(row.fields.input_invite_expires_at) <= now() || !/^[a-f0-9]{32}$/.test(row.fields.input_session_version || '')) fail('invalid_invitation');
     const unique = await store.byUid(row.fields.person_uid);
     if (!unique || unique.id !== row.id || unique.fields.input_invite_hash !== row.fields.input_invite_hash || unique.fields.input_session_version !== row.fields.input_session_version || !permitted(unique)) fail('invalid_invitation');
+    const tenant=await tenantEligibility(unique);
+    if(!tenant.allowed||!tenant.owner)fail('invalid_invitation');
     const actor = actorOf(unique);
     const time = Math.floor(now() / 1000);
     const payload = b64(encoder.encode(JSON.stringify({ sub: actor.id, version: unique.fields.input_session_version, aud: audience, iat: time, exp: time + TTL })));
@@ -157,7 +162,7 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
     catch (error) {
       // Barn Inputs uses the remembered browser, plus the person's existing
       // Inputs permission. Never accept a phone, body token or client actor ID.
-      if (error.code !== 'authentication_required' || !['access', 'state', 'record', 'profile-link', 'subscriptions'].includes(operation)) throw error;
+      if (error.code !== 'authentication_required' || !['access', 'state', 'record', 'profile-link', 'subscriptions','user-optins'].includes(operation)) throw error;
       const devices = (request.headers.get('Cookie') || '').split(';').map(value => value.trim()).filter(value => value.startsWith('__Host-rs_recognition_device='));
       if (devices.length !== 1) throw error;
       const token = devices[0].slice('__Host-rs_recognition_device='.length);

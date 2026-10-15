@@ -5,6 +5,7 @@ import { createSubscriptionStore, BASE_ID } from './rs-input-subscription-store.
 import { withSubscriptionReservation } from './rs-input-subscription-control.js';
 import {createTenantSubmissionBridge} from './rs-tenant-submissions.js';
 import {createTenantSubmissionStore} from './rs-tenant-submission-store.js';
+import {personalPreferences} from './rs-input-preferences.js';
 const fail=(code,status=400)=>{throw new InputError(code,status)};
 const uid=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(v);
 const publicRecord=({owner_uid,request_uid,request_hash,...record})=>record;
@@ -27,8 +28,9 @@ export function createSubscriptionHandler({env,fetchImpl=fetch,definitions=[],ap
    if(env.RS_INPUTS_TENANTS_BASE_ID && env.RS_INPUTS_TENANTS_BASE_ID!==BASE_ID)fail('subscription_destination_required',503);
    if(!actor?.profile?.personUid||actor.id!==actor.profile.personUid||!actor.permissions?.includes('inputs:read'))fail('permission_denied',403);
    const url=new URL(request.url);
-   // Reuse the prepared Tenants automation bridge. Personal preferences never
-   // fall through to the old direct writer, even when configuration is missing.
+   // Existing staged records keep their processor. New personal preferences use
+   // the existing direct writer and its shared actor reservation, without seeds
+   // or implied consent. A direct receipt keeps subsequent edits on that path.
    if((request.method==='GET'&&['preferences','submission'].includes(url.searchParams.get('view')))||request.method==='POST'){
     let payload;
     if(request.method==='POST'){
@@ -37,7 +39,25 @@ export function createSubscriptionHandler({env,fetchImpl=fetch,definitions=[],ap
     }
     if(!payload||payload.action==='preferences'){
      const tenantEnv={...env,RS_INPUTS_TENANT_SUBMISSIONS_MODE:env.RS_INPUTS_TENANT_SUBMISSIONS_MODE??env.RS_INPUTS_WRITE_MODE};
-     const bridge=createTenantSubmissionBridge({env:tenantEnv,definitions,clock,store:createTenantSubmissionStore({env:tenantEnv,fetchImpl,minimumIntervalMs})});
+     const tenantStore=createTenantSubmissionStore({env:tenantEnv,fetchImpl,minimumIntervalMs});
+     if(url.searchParams.get('view')!=='submission'){
+      const entity='rs_'+(await digest('sms-preferences|'+actor.id)).slice(0,32),target=await tenantStore.target(entity);
+      const receipt=target?await tenantStore.event(target.fields.request_uid):null;
+      let prior;try{prior=JSON.parse(receipt?.fields.result_json||'null');}catch{}
+      // An applied direct write can lack its audit after a failed response.
+      // Its existing reservation and absence of a staged submission retain the
+      // original writer, whose same-request retry repairs that audit.
+      let directRecovery=false;
+      if(target&&!receipt){
+       const reserved=await env.RS_RECOGNITION_CONTROL_DB?.prepare('SELECT request_uid, request_hash, state FROM subscription_write_reservations WHERE actor_uid=?').bind(actor.id).first();
+       directRecovery=reserved?.state==='uncertain'&&reserved.request_uid===target.fields.request_uid&&reserved.request_hash===target.fields.request_hash&&!await tenantStore.submission(reserved.request_uid);
+      }
+      if(!target||prior?.preferences&&!prior.actorId||directRecovery){
+       const store=createSubscriptionStore({env,fetchImpl,minimumIntervalMs});
+       return respond(await personalPreferences({request,payload,actor,store,env,definitions,clock}));
+      }
+     }
+     const bridge=createTenantSubmissionBridge({env:tenantEnv,definitions,clock,store:tenantStore});
      const result=payload?await bridge.intake({actor,payload}):url.searchParams.get('view')==='submission'?await bridge.status({actor,requestId:url.searchParams.get('request_id')}):await bridge.read({actor});
      return respond(result,result.state==='Pending'?202:200);
     }

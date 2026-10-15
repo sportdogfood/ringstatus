@@ -16,12 +16,28 @@ function one(root, selector) {
   if (nodes.length !== 1) throw new Error(`native_target_mismatch:${selector}`);
   return nodes[0];
 }
+// Extend the existing native field template; keep its classes and save controls.
+export function addProfileFields(form,fields,kind){
+ if(!['barn','users'].includes(kind))return fields;
+ const definitions=kind==='barn'?[['logo','Barn logo URL','url']]:[['displayName','Display name','text'],['sms','SMS number','tel'],['pin','PIN (leave blank to keep)','password'],['profileImg','Profile image URL','url'],['roles','Roles','select'],['membershipStatus','User access','select'],['tags','Tags (comma-separated)','text']];
+ const template=fields.name.closest('.rs-barn-v24-field');if(!template)return fields;
+ for(const [key,label,type]of definitions){
+  let node=form.querySelector('[data-rs-profile-field="'+key+'"]');
+  if(!node){const wrapper=template.cloneNode(true);wrapper.removeAttribute('id');const old=wrapper.querySelector('input');const id=(form.id||kind+'-sheet')+'-'+key;
+   node=type==='select'?form.ownerDocument.createElement('select'):old.cloneNode(true);node.className=old.className;node.id=id;node.name=key;node.removeAttribute('required');node.removeAttribute('value');node.removeAttribute('data-name');node.value='';node.dataset.rsProfileField=key;
+   if(type==='select'){node.multiple=key==='roles';if(key==='membershipStatus')for(const [value,text]of [['Enabled','Active'],['Disabled','Inactive']]){const option=form.ownerDocument.createElement('option');option.value=value;option.textContent=text;node.appendChild(option);}}else {node.type=type;node.placeholder=label;node.maxLength=key==='pin'?4:2048;}
+   if(key==='pin')node.autocomplete='new-password';
+   old.replaceWith(node);const caption=wrapper.querySelector('label')||wrapper.querySelector('div');if(caption)caption.textContent=label;if(caption?.tagName==='LABEL')caption.htmlFor=id;if(wrapper.tagName==='LABEL')wrapper.htmlFor=id;template.parentNode.insertBefore(wrapper,form.querySelector('.rs-barn-v24-error')||template.nextSibling);
+  }fields[key]=node;
+ }return fields;
+}
 export function inspectMainForms(document) {
   if (document.documentElement.getAttribute('data-wf-page') !== PAGE_ID) throw new Error('native_page_mismatch');
   const root = one(document, ROOT);
   const forms = Object.fromEntries(Object.entries(FORMS).map(([kind, spec]) => {
     const form = one(root, spec.form);
     const fields = Object.fromEntries(Object.entries(spec.fields).map(([field, selector]) => [field, one(form, selector)]));
+    addProfileFields(form,fields,kind);
     const primary = one(form, '.rs-barn-v24-primary');
     const secondary = kind === 'barn' ? null : one(form, '.rs-barn-v24-secondary');
     return [kind, { form, fields, primary, secondary }];
@@ -30,7 +46,7 @@ export function inspectMainForms(document) {
 }
 export function readDraft(fields, editing) {
   const draft = blank();
-  for (const [key, node] of Object.entries(fields)) draft[key] = node.value.trim();
+  for (const [key, node] of Object.entries(fields)) draft[key] = node.multiple?[...node.selectedOptions].map(o=>o.value).sort().join(','):node.value.trim();
   if (editing) {
     if (!editing.id || !Number.isInteger(editing.revision)) throw new Error('record_revision_missing');
     draft.id = editing.id;
@@ -39,7 +55,7 @@ export function readDraft(fields, editing) {
   return draft;
 }
 export function fillDraft(fields, record = {}) {
-  for (const [key, node] of Object.entries(fields)) node.value = typeof record[key] === 'string' ? record[key] : '';
+  for (const [key, node] of Object.entries(fields)){const value=key==='pin'?'':typeof record[key]==='string'?record[key]:key==='membershipStatus'?'Enabled':'';if(node.multiple){for(const o of node.options)o.selected=value.split(',').includes(o.value);}else node.value=value;}
 }
 function validate(kind, draft, state) {
   if (!draft.name) throw new Error('name_required');
@@ -197,7 +213,8 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
       const result = await api.profileLink(state.selectedBarn);
       if (disposed) return false;
       applySaved(result.state, 'users', result.record);
-      feedback('users', 'success', `${result.record.name} linked to this barn.`);
+      editing.users=result.record;fillDraft(targets.forms.users.fields,result.record);view.editor({kind:'users',record:result.record,open:true});
+      feedback('users', 'success', 'Your profile is ready to edit.');
       return true;
     });
   }
@@ -205,7 +222,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
     delete pendingBarn[kind];
     editing[kind] = null;
-    fillDraft(targets.forms[kind].fields);
+    fillDraft(targets.forms[kind].fields,kind==='users'?{roles:state.roleOptions?.find(r=>r.name==='user')?.id||''}:{});
     api.resetDraftRequest(kind);
     view.editor({ kind, record: null, open: true });
     return true;

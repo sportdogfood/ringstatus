@@ -13,21 +13,21 @@ export async function handleInputRoute({ request, locals }, bindings = env, fetc
       const operation = new URL(request.url).pathname.split('/').filter(Boolean).at(-1);
       if (operation === 'recognition') {
         recognition = createInputRecognition({ env: bindings, fetchImpl, principalPersonUid: locals.rsInputActor.profile?.personUid, verifiedInputAccess: locals.rsInputAccessVerified === true });
-      } else if (['state', 'record', 'profile-link'].includes(operation)) {
+      } else if (['state', 'record', 'profile-link','user-optins'].includes(operation)) {
         store = createInputStore({ env: bindings, fetchImpl });
         const tenantNative=request.headers.get('X-RS-Tenants')==='barn-rider-v1';
         if(tenantNative&&request.headers.get('X-RS-Actor')!==locals.rsInputActor.id)return Response.json({ok:false,error:'authentication_required'},{status:401,headers:{'Cache-Control':'no-store'}});
         if(tenantNative){
         const bridge=createTenantBarnBridge({env:bindings,legacy:store,actor:locals.rsInputActor,fetchImpl,includeState:request.headers.get('X-RS-Response')!=='record'});
-        // Preserve the existing recognized-profile linking endpoint; this release
-        // changes only explicit User form saves, not identity linking.
-        const previousStore=store;
-        store=operation==='profile-link'?{...bridge.store,list:kind=>kind==='users'?previousStore.list(kind):bridge.store.list(kind),put:(...args)=>previousStore.put(...args)}:bridge.store;
-        if(operation==='record'&&request.method==='POST'){
+        store=bridge.store;
+        if(request.method==='GET'&&operation==='state')return Response.json({ok:true,state:await bridge.state(new URL(request.url).searchParams.get('barn_id')||'')},{headers:{'Cache-Control':'no-store'}});
+        if(request.method==='GET'&&operation==='user-optins'){const q=new URL(request.url).searchParams;return Response.json(await bridge.optins({barnId:q.get('barn_id'),userId:q.get('user_id')}),{headers:{'Cache-Control':'no-store'}});}
+        if(['record','profile-link'].includes(operation)&&request.method==='POST'){
           if(request.headers.get('Origin')!==new URL(request.url).origin) return Response.json({ok:false,error:'origin_denied'},{status:403});
           const raw=await request.clone().text();
           if(raw.length>16384)return Response.json({ok:false,error:'request_too_large'},{status:413});
           let payload;try{payload=JSON.parse(raw)}catch{return Response.json({ok:false,error:'invalid_json'},{status:400})}
+          if(operation==='profile-link')return Response.json(await bridge.intake(payload,{profileLink:true}),{headers:{'Cache-Control':'no-store'}});
           if(['barn','riders','users'].includes(payload?.kind))return Response.json(await bridge.intake(payload),{headers:{'Cache-Control':'no-store'}});
         }
         }

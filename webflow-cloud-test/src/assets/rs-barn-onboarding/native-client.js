@@ -229,7 +229,7 @@ function createInputsApi(apiBase, options = {}) {
     return merged;
   }
   async function request(path, body) {
-    const directBarnSave = options.durableBarn && path === "/record" && ["barn", "riders", "users"].includes(String(body?.kind));
+    const directBarnSave = options.durableBarn && (path === "/profile-link" || path === "/record" && ["barn", "riders", "users"].includes(String(body?.kind)));
     const response = await fetch(`${base}${path}`, {
       method: body ? "POST" : "GET",
       credentials: "same-origin",
@@ -274,7 +274,7 @@ function createInputsApi(apiBase, options = {}) {
           await new Promise((resolve) => setTimeout(resolve, 2e3));
         }
       }
-      if (options.durableBarn && confirmedState && !result.state && path === "/record" && ["barn", "riders", "users"].includes(String(body.kind)) && typeof result.record?.id === "string" && typeof result.record?.name === "string" && typeof result.record?.barnId === "string" && Number.isSafeInteger(result.record?.revision)) result.state = mergeSavedState(confirmedState, body.kind, result.record);
+      if (options.durableBarn && confirmedState && !result.state && (path === "/profile-link" || path === "/record" && ["barn", "riders", "users"].includes(String(body.kind))) && typeof result.record?.id === "string" && typeof result.record?.name === "string" && typeof result.record?.barnId === "string" && Number.isSafeInteger(result.record?.revision)) result.state = mergeSavedState(confirmedState, path === "/profile-link" ? "users" : body.kind, result.record);
       if (!validate2(result)) throw new Error("The server response could not be verified. Your entry is still here.");
       if (device) await device.confirm(operation, result.record, result.record.revision);
       if (options.durableBarn && verifiedActor && validStore(result.state)) {
@@ -303,6 +303,9 @@ function createInputsApi(apiBase, options = {}) {
       if (verifiedActor && current.id !== verifiedActor.id) throw new InputApiError("authentication_required");
       verifiedActor = current;
       return current;
+    },
+    async userOptins(barnId, userId) {
+      return request("/user-optins?barn_id=" + encodeURIComponent(barnId) + "&user_id=" + encodeURIComponent(userId));
     },
     async cachedState() {
       if (!options.durableBarn || !verifiedActor) return null;
@@ -342,6 +345,14 @@ function createInputsApi(apiBase, options = {}) {
       return result.state;
     },
     async record(kind, draft, barnId) {
+      if (options.durableBarn && verifiedActor && ["barn", "riders", "users"].includes(kind)) {
+        const retained = (await persistence(kind).load()).pending?.body;
+        if (retained?.barnId === barnId && retained.kind === kind && retained.draft) {
+          const prior = retained.draft, current = draft;
+          const compatible = [.../* @__PURE__ */ new Set([...Object.keys(prior), ...Object.keys(current)])].every((key) => key === "pin" && current[key] === "" || (prior[key] ?? "") === (current[key] ?? ""));
+          if (compatible) draft = retained.draft;
+        }
+      }
       return mutation("/record", { kind, draft, barnId, ...draft.id && draft.revision !== void 0 ? { expectedRevision: draft.revision } : {} }, recordResponse);
     },
     async profileLink(barnId) {
@@ -379,12 +390,59 @@ function one(root, selector) {
   if (nodes.length !== 1) throw new Error(`native_target_mismatch:${selector}`);
   return nodes[0];
 }
+function addProfileFields(form, fields, kind) {
+  if (!["barn", "users"].includes(kind)) return fields;
+  const definitions = kind === "barn" ? [["logo", "Barn logo URL", "url"]] : [["displayName", "Display name", "text"], ["sms", "SMS number", "tel"], ["pin", "PIN (leave blank to keep)", "password"], ["profileImg", "Profile image URL", "url"], ["roles", "Roles", "select"], ["membershipStatus", "User access", "select"], ["tags", "Tags (comma-separated)", "text"]];
+  const template = fields.name.closest(".rs-barn-v24-field");
+  if (!template) return fields;
+  for (const [key, label, type] of definitions) {
+    let node = form.querySelector('[data-rs-profile-field="' + key + '"]');
+    if (!node) {
+      const wrapper = template.cloneNode(true);
+      wrapper.removeAttribute("id");
+      const old = wrapper.querySelector("input");
+      const id = (form.id || kind + "-sheet") + "-" + key;
+      node = type === "select" ? form.ownerDocument.createElement("select") : old.cloneNode(true);
+      node.className = old.className;
+      node.id = id;
+      node.name = key;
+      node.removeAttribute("required");
+      node.removeAttribute("value");
+      node.removeAttribute("data-name");
+      node.value = "";
+      node.dataset.rsProfileField = key;
+      if (type === "select") {
+        node.multiple = key === "roles";
+        if (key === "membershipStatus") for (const [value, text] of [["Enabled", "Active"], ["Disabled", "Inactive"]]) {
+          const option = form.ownerDocument.createElement("option");
+          option.value = value;
+          option.textContent = text;
+          node.appendChild(option);
+        }
+      } else {
+        node.type = type;
+        node.placeholder = label;
+        node.maxLength = key === "pin" ? 4 : 2048;
+      }
+      if (key === "pin") node.autocomplete = "new-password";
+      old.replaceWith(node);
+      const caption = wrapper.querySelector("label") || wrapper.querySelector("div");
+      if (caption) caption.textContent = label;
+      if (caption?.tagName === "LABEL") caption.htmlFor = id;
+      if (wrapper.tagName === "LABEL") wrapper.htmlFor = id;
+      template.parentNode.insertBefore(wrapper, form.querySelector(".rs-barn-v24-error") || template.nextSibling);
+    }
+    fields[key] = node;
+  }
+  return fields;
+}
 function inspectMainForms(document2) {
   if (document2.documentElement.getAttribute("data-wf-page") !== PAGE_ID) throw new Error("native_page_mismatch");
   const root = one(document2, ROOT);
   const forms = Object.fromEntries(Object.entries(FORMS).map(([kind, spec]) => {
     const form = one(root, spec.form);
     const fields = Object.fromEntries(Object.entries(spec.fields).map(([field, selector]) => [field, one(form, selector)]));
+    addProfileFields(form, fields, kind);
     const primary = one(form, ".rs-barn-v24-primary");
     const secondary = kind === "barn" ? null : one(form, ".rs-barn-v24-secondary");
     return [kind, { form, fields, primary, secondary }];
@@ -393,7 +451,7 @@ function inspectMainForms(document2) {
 }
 function readDraft(fields, editing) {
   const draft = blank();
-  for (const [key, node] of Object.entries(fields)) draft[key] = node.value.trim();
+  for (const [key, node] of Object.entries(fields)) draft[key] = node.multiple ? [...node.selectedOptions].map((o) => o.value).sort().join(",") : node.value.trim();
   if (editing) {
     if (!editing.id || !Number.isInteger(editing.revision)) throw new Error("record_revision_missing");
     draft.id = editing.id;
@@ -402,7 +460,12 @@ function readDraft(fields, editing) {
   return draft;
 }
 function fillDraft(fields, record = {}) {
-  for (const [key, node] of Object.entries(fields)) node.value = typeof record[key] === "string" ? record[key] : "";
+  for (const [key, node] of Object.entries(fields)) {
+    const value = key === "pin" ? "" : typeof record[key] === "string" ? record[key] : key === "membershipStatus" ? "Enabled" : "";
+    if (node.multiple) {
+      for (const o of node.options) o.selected = value.split(",").includes(o.value);
+    } else node.value = value;
+  }
 }
 function validate(kind, draft, state) {
   if (!draft.name) throw new Error("name_required");
@@ -580,7 +643,10 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       const result = await api.profileLink(state.selectedBarn);
       if (disposed) return false;
       applySaved(result.state, "users", result.record);
-      feedback("users", "success", `${result.record.name} linked to this barn.`);
+      editing.users = result.record;
+      fillDraft(targets.forms.users.fields, result.record);
+      view.editor({ kind: "users", record: result.record, open: true });
+      feedback("users", "success", "Your profile is ready to edit.");
       return true;
     });
   }
@@ -588,7 +654,7 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
     delete pendingBarn[kind];
     editing[kind] = null;
-    fillDraft(targets.forms[kind].fields);
+    fillDraft(targets.forms[kind].fields, kind === "users" ? { roles: state.roleOptions?.find((r) => r.name === "user")?.id || "" } : {});
     api.resetDraftRequest(kind);
     view.editor({ kind, record: null, open: true });
     return true;
@@ -677,8 +743,8 @@ var one2 = (root, selector) => {
   return nodes[0];
 };
 var errors = {
-  retry: "Retry \u2014 your entry is kept.",
-  tenant_save_pending: "Retry \u2014 your entry is kept.",
+  retry: "Retry  -  your entry is kept.",
+  tenant_save_pending: "Retry  -  your entry is kept.",
   name_required: "Enter a name.",
   barn_required: "Add a barn first.",
   invalid_email: "Enter a valid email address or leave it blank.",
@@ -719,6 +785,12 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   }));
   const profile = one2(panes.users, ":scope > .rs-barn-v24-link");
   const barnName = one2(root, ".rs-barn-v24-barn-name");
+  const barnLogo = document2.createElement("img");
+  barnLogo.alt = "Barn logo";
+  barnLogo.width = 48;
+  barnLogo.height = 48;
+  barnLogo.hidden = true;
+  barnName.before(barnLogo);
   const chooseControl = one2(root, '[aria-label="Choose barn"]');
   const editBarn = one2(root, '[aria-label="Edit barn"]');
   const chooserSheet = one2(root, "#rs-barn-v24-chooser");
@@ -745,6 +817,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       originalDescription: one2(element, ".rs-barn-v24-sheet-description").textContent
     }];
   }));
+  for (const [kind, sheet] of Object.entries(sheets)) addProfileFields(sheet.form, sheet.fields, kind);
   const optionTemplate = one2(sheets.riders.element, 'option[value=""]').cloneNode(true);
   const originalOptions = new Map([...Object.values(forms).flatMap((f) => Object.values(f.fields)), sheets.riders.fields.userId].filter((n) => n.tagName === "SELECT").map((n) => [n, [...n.childNodes].map((c) => c.cloneNode(true))]));
   const originalButtonLabels = new Map(Object.values(forms).flatMap((f) => [f.primary, f.secondary]).filter(Boolean).map((n) => [n, n.textContent]));
@@ -805,7 +878,23 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
     const rows = rowsFor(state, kind).map((record) => {
       const row = cleanClone(slot.template);
       row.dataset.rsRecordId = record.id;
-      one2(row, ".rs-barn-v24-row-name").textContent = record.name;
+      one2(row, ".rs-barn-v24-row-name").textContent = record.displayName || record.name;
+      if (kind === "users") {
+        if (record.profileImg?.startsWith("https://")) {
+          const img = document2.createElement("img");
+          img.src = record.profileImg;
+          img.alt = "";
+          img.width = 40;
+          img.height = 40;
+          row.prepend(img);
+        }
+        const button = document2.createElement("button");
+        button.type = "button";
+        button.className = "rs-barn-v24-link";
+        button.textContent = "Opt-ins";
+        button.dataset.rsOptins = record.id;
+        row.append(button);
+      }
       row.setAttribute("data-rs-pending", String(record.pending === true));
       one2(row, ".rs-barn-v24-edit-button").setAttribute("aria-label", `Edit ${record.name}`);
       for (const action of row.querySelectorAll("a")) {
@@ -866,7 +955,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       closeSheets();
       if (frames.length) return;
     }
-    fillDraft(sheets[kind].fields);
+    fillDraft(sheets[kind].fields, kind === "users" ? { roles: controller.getState().roleOptions?.find((role) => role.name === "user")?.id || "" } : {});
     frames.push({ kind, field, ownerKind, opener });
     const back = sheets.users.element.querySelector(".rs-barn-v24-back");
     if (kind === "users") show(back, nested);
@@ -894,8 +983,26 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   }
   const view = {
     state(state, actor) {
+      const logo = state.barns.find((b) => b.id === state.selectedBarn)?.logo;
+      barnLogo.hidden = !logo;
+      if (logo) barnLogo.src = logo;
       barnName.textContent = state.barns.find((b) => b.id === state.selectedBarn)?.name || "Choose barn";
-      profile.textContent = `Use my recognized profile${actor?.profile?.name ? " \xB7 " + actor.profile.name : ""}`;
+      profile.textContent = "Edit my profile";
+      for (const select of [forms.users.fields.roles, sheets.users.fields.roles]) {
+        const selected = new Set([...select.selectedOptions].map((option) => option.value));
+        select.replaceChildren(...(state.roleOptions || []).map((role) => {
+          const option = document2.createElement("option");
+          option.value = role.id;
+          option.textContent = role.name;
+          option.selected = selected.has(role.id);
+          return option;
+        }));
+        select.disabled = state.canManage === false;
+      }
+      for (const select of [forms.users.fields.membershipStatus, sheets.users.fields.membershipStatus]) select.disabled = state.canManage === false;
+      show(editBarn, state.canManage !== false);
+      show(chooseControl, state.canManage !== false);
+      for (const kind of kinds) if (state.canManage === false) show(controls[kind].add, false);
       for (const kind of kinds) {
         show(controls[kind].empty, rowsFor(state, kind).length === 0);
         controls[kind].note.textContent = "Connected records";
@@ -949,7 +1056,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       if (reveal) selectTab(kind);
       show(forms[kind].form, open);
       show(controls[kind].edit, open && !!record);
-      show(controls[kind].add, !open);
+      show(controls[kind].add, !open && controller.getState()?.canManage !== false);
       clearFeedback(kind);
       const title = controls[kind].edit.firstElementChild;
       if (title && record) title.textContent = `Editing ${record.name}`;
@@ -984,6 +1091,52 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       listen(templates[kind].parent, "keydown", activateRow);
     }
   }
+  const optinsPanel = document2.createElement("section");
+  optinsPanel.className = "rs-barn-v24-note";
+  optinsPanel.hidden = true;
+  optinsPanel.dataset.rsOptinsPanel = "";
+  panes.users.append(optinsPanel);
+  listen(templates.users.parent, "click", async (event) => {
+    const button = event.target.closest("[data-rs-optins]");
+    if (!button) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    optinsPanel.hidden = false;
+    optinsPanel.textContent = "Loading opt-ins...";
+    try {
+      const result2 = await api.userOptins(controller.getState().selectedBarn, button.dataset.rsOptins);
+      optinsPanel.replaceChildren();
+      const title = document2.createElement("h3");
+      title.textContent = result2.name + "  -  Opt-ins";
+      optinsPanel.append(title);
+      if (!result2.subscriptions.length) {
+        const empty = document2.createElement("p");
+        empty.textContent = "No opt-ins saved for this user.";
+        optinsPanel.append(empty);
+      }
+      for (const record of result2.subscriptions) {
+        const line = document2.createElement("p");
+        line.textContent = [record.consentState, record.status, record.phone].filter(Boolean).join("  -  ");
+        optinsPanel.append(line);
+        if (record.preferences) {
+          for (const [key, value] of Object.entries(record.preferences.variables || {})) {
+            const option = document2.createElement("p");
+            option.textContent = key + ": " + (value.enabled ? "On" : "Off") + (value.value ? "  -  " + value.value : "");
+            optinsPanel.append(option);
+          }
+        }
+      }
+      if (result2.manageUrl) {
+        const link = document2.createElement("a");
+        link.href = result2.manageUrl;
+        link.textContent = "Edit my opt-ins";
+        link.className = "rs-barn-v24-link";
+        optinsPanel.append(link);
+      }
+    } catch {
+      optinsPanel.textContent = "Opt-ins could not load. Try again.";
+    }
+  });
   click(profile, () => controller.profileLink());
   click(editBarn, () => {
     const state = controller.getState();

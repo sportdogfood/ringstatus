@@ -1,8 +1,8 @@
 import { createPersistence } from '../../assets/rs-inputs/persistence.js';
 export type Kind = 'barn' | 'users' | 'riders' | 'horses' | 'locations';
-export type Item = { id: string; barnId: string; name: string; email?: string; userId?: string; riderId?: string; locationId?: string; address?: string; recognitionPersonId?: string; revision?: number };
-export type Store = { version: 1; barns: Item[]; users: Item[]; riders: Item[]; horses: Item[]; locations: Item[]; selectedBarn: string };
-export type Draft = { id?: string; name: string; email: string; userId: string; riderId: string; locationId: string; address: string; revision?: number };
+export type Item = { id: string; barnId: string; name: string; email?: string; displayName?: string; sms?: string; profileImg?: string; roles?: string; tags?: string; membershipStatus?: string; logo?: string; userId?: string; riderId?: string; locationId?: string; address?: string; recognitionPersonId?: string; revision?: number };
+export type Store = { version: 1; barns: Item[]; users: Item[]; riders: Item[]; horses: Item[]; locations: Item[]; selectedBarn: string; canManage?: boolean; roleOptions?: {id:string;name:string}[] };
+export type Draft = { id?: string; displayName?: string; sms?: string; pin?: string; profileImg?: string; roles?: string; tags?: string; membershipStatus?: string; logo?: string; name: string; email: string; userId: string; riderId: string; locationId: string; address: string; revision?: number };
 export type Profile = { person_uid: string; person_name: string; first_name: string; last_name: string; sms: string; pin: string; email: string };
 export type RecognitionResult = { ok: true; recognized: boolean; profile: Profile | null; device: 'active' | 'unknown' | 'retired' };
 export type RecognitionAction = 'update_profile' | 'confirm_device' | 'retire_device' | 'phone_login' | 'recovery';
@@ -90,7 +90,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
   }
   async function request(path: string, body?: Record<string, unknown>) {
     // Direct Barn/Rider saves await verified data, matching the WEC/HPS action contract.
-    const directBarnSave = options.durableBarn && path === '/record' && ['barn','riders','users'].includes(String(body?.kind));
+    const directBarnSave = options.durableBarn && (path === '/profile-link' || (path === '/record' && ['barn','riders','users'].includes(String(body?.kind))));
     const response = await fetch(`${base}${path}`, {
       method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
       ...(!directBarnSave && typeof AbortSignal!=='undefined'?{signal:AbortSignal.timeout(15000)}:{}),
@@ -123,7 +123,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
         try{result=await request(path,{...body,requestId:pending.id});break;}
         catch(error){if(!(error instanceof InputApiError)||error.code!=='tenant_save_pending'||attempt>=12)throw error;await new Promise(resolve=>setTimeout(resolve,2000));}
       }
-      if(options.durableBarn&&confirmedState&&!result.state&&path==='/record'&&['barn','riders','users'].includes(String(body.kind))&&typeof result.record?.id==='string'&&typeof result.record?.name==='string'&&typeof result.record?.barnId==='string'&&Number.isSafeInteger(result.record?.revision))result.state=mergeSavedState(confirmedState,body.kind as Kind,result.record);
+      if(options.durableBarn&&confirmedState&&!result.state&&(path==='/profile-link'||(path==='/record'&&['barn','riders','users'].includes(String(body.kind))))&&typeof result.record?.id==='string'&&typeof result.record?.name==='string'&&typeof result.record?.barnId==='string'&&Number.isSafeInteger(result.record?.revision))result.state=mergeSavedState(confirmedState,(path==='/profile-link'?'users':body.kind) as Kind,result.record);
       if (!validate(result)) throw new Error('The server response could not be verified. Your entry is still here.');
       if(device)await device.confirm(operation,result.record,result.record.revision);
       if(options.durableBarn&&verifiedActor&&validStore(result.state)){result.state=mergeSavedState(result.state,(path==='/profile-link'?'users':body.kind) as Kind,result.record);await persistence('state').refresh(result.state,0).catch(()=>{});}
@@ -142,6 +142,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
   }
   return {
     async access(): Promise<AccessActor> { const current=accessActor(await request('/access'));if(verifiedActor&&current.id!==verifiedActor.id)throw new InputApiError('authentication_required');verifiedActor=current;return current; },
+    async userOptins(barnId:string,userId:string){return request('/user-optins?barn_id='+encodeURIComponent(barnId)+'&user_id='+encodeURIComponent(userId));},
     async cachedState(){if(!options.durableBarn||!verifiedActor)return null;try{const saved=(await persistence('state').load()).confirmed?.data;return validStore(saved)?saved:null;}catch{return null;}},
     async pendingDraft(kind: string){if(!options.durableBarn||!verifiedActor)return null;return (await persistence(kind).load()).pending?.body||null;},
     async acceptInvitation(token: string): Promise<AccessActor> {
@@ -160,6 +161,17 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       return result.state;
     },
     async record(kind: Kind, draft: Draft, barnId: string): Promise<{ record: Item; state: Store }> {
+      // Reopened forms add optional controls, and intentionally never refill PIN.
+      // An unchanged Retry must send the original retained payload and identity.
+      if(options.durableBarn&&verifiedActor&&['barn','riders','users'].includes(kind)){
+        const retained=(await persistence(kind).load()).pending?.body;
+        if(retained?.barnId===barnId&&retained.kind===kind&&retained.draft){
+          const prior=retained.draft as Record<string,unknown>,current=draft as unknown as Record<string,unknown>;
+          const compatible=[...new Set([...Object.keys(prior),...Object.keys(current)])].every(key=>
+            key==='pin'&&current[key]==='' || (prior[key]??'')===(current[key]??''));
+          if(compatible)draft=retained.draft;
+        }
+      }
       return mutation('/record', { kind, draft, barnId, ...(draft.id && draft.revision !== undefined ? { expectedRevision: draft.revision } : {}) }, recordResponse);
     },
     async profileLink(barnId: string): Promise<{ record: Item; state: Store }> {

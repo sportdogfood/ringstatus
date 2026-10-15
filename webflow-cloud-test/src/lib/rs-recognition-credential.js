@@ -18,7 +18,10 @@ export async function handleRecognitionCredential({request,env,payload,fetchImpl
   const identity=await accessHash(JSON.stringify([kind,normalized,associatedPhone]));
   const claim=await claimOnce(env,'recognition-credential',[request_id,identity]);
   if(!claim.won) {
-    if(claim.result)return claim.result;
+    if(claim.result){
+      if(claim.result.verified&&!((await createInputRecognition({env,fetchImpl,verifiedInputAccess:true}).recognizeDevice(claim.result.device_token)).recognized))return {ok:true,verified:false,reason:'not_matched'};
+      return claim.result;
+    }
     fail('credential_outcome_unknown',409);
   }
   const db=requireClaimDatabase(env);

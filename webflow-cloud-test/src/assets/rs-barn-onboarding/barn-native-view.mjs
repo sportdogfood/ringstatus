@@ -1,4 +1,4 @@
-import { bindMainForms, inspectMainForms, FORMS, readDraft, fillDraft } from './barn-native-adapter.mjs';
+import { bindMainForms, addProfileFields, inspectMainForms, FORMS, readDraft, fillDraft } from './barn-native-adapter.mjs';
 
 const kinds = ['barn','users','riders','horses','locations'];
 const mountedViews = new WeakMap();
@@ -8,7 +8,7 @@ const one = (root, selector) => {
   return nodes[0];
 };
 const errors = {
-  retry:'Retry — your entry is kept.', tenant_save_pending:'Retry — your entry is kept.', name_required:'Enter a name.', barn_required:'Add a barn first.', invalid_email:'Enter a valid email address or leave it blank.',
+  retry:'Retry  -  your entry is kept.', tenant_save_pending:'Retry  -  your entry is kept.', name_required:'Enter a name.', barn_required:'Add a barn first.', invalid_email:'Enter a valid email address or leave it blank.',
   invalid_relationship:'Choose a linked record in this barn.', authentication_required:'Your access could not be verified. No changes were saved.',
   record_changed:'This record has changed. Your entry is kept here. Reopen the record to load its latest saved values.',
   write_outcome_unknown:'The save could not be confirmed. Your entry is still here; retry the same save to check its result.',
@@ -40,6 +40,7 @@ export function prepareNativeBarn({document, api, chooser}) {
   }));
   const profile=one(panes.users,':scope > .rs-barn-v24-link');
   const barnName=one(root,'.rs-barn-v24-barn-name');
+  const barnLogo=document.createElement('img');barnLogo.alt='Barn logo';barnLogo.width=48;barnLogo.height=48;barnLogo.hidden=true;barnName.before(barnLogo);
   const chooseControl=one(root,'[aria-label="Choose barn"]');
   const editBarn=one(root,'[aria-label="Edit barn"]');
   const chooserSheet=one(root,'#rs-barn-v24-chooser');
@@ -58,6 +59,7 @@ export function prepareNativeBarn({document, api, chooser}) {
       save:one(element,'.rs-barn-v24-primary'),close:one(element,'.rs-barn-v24-sheet-close'),description:one(element,'.rs-barn-v24-sheet-description'),
       originalSaveLabel:one(element,'.rs-barn-v24-primary').textContent,originalDescription:one(element,'.rs-barn-v24-sheet-description').textContent}];
   }));
+  for(const [kind,sheet]of Object.entries(sheets))addProfileFields(sheet.form,sheet.fields,kind);
   const optionTemplate=one(sheets.riders.element,'option[value=""]').cloneNode(true);
   const originalOptions = new Map([...Object.values(forms).flatMap(f=>Object.values(f.fields)),sheets.riders.fields.userId].filter(n=>n.tagName==='SELECT').map(n=>[n,[...n.childNodes].map(c=>c.cloneNode(true))]));
   const originalButtonLabels=new Map(Object.values(forms).flatMap(f=>[f.primary,f.secondary]).filter(Boolean).map(n=>[n,n.textContent]));
@@ -79,7 +81,8 @@ export function prepareNativeBarn({document, api, chooser}) {
   function renderRows(state,kind){
     const slot=templates[kind];const rows=rowsFor(state,kind).map(record=>{
       const row=cleanClone(slot.template);row.dataset.rsRecordId=record.id;
-      one(row,'.rs-barn-v24-row-name').textContent=record.name;
+      one(row,'.rs-barn-v24-row-name').textContent=record.displayName||record.name;
+      if(kind==='users'){if(record.profileImg?.startsWith('https://')){const img=document.createElement('img');img.src=record.profileImg;img.alt='';img.width=40;img.height=40;row.prepend(img);}const button=document.createElement('button');button.type='button';button.className='rs-barn-v24-link';button.textContent='Opt-ins';button.dataset.rsOptins=record.id;row.append(button);}
       row.setAttribute('data-rs-pending',String(record.pending===true));
       one(row,'.rs-barn-v24-edit-button').setAttribute('aria-label',`Edit ${record.name}`);
       for(const action of row.querySelectorAll('a')){action.setAttribute('role','button');action.setAttribute('tabindex','0');}
@@ -107,7 +110,7 @@ export function prepareNativeBarn({document, api, chooser}) {
   function openSheet(kind,{field,ownerKind,opener,nested=false}={}){
     if(busy||controller.isBusy(kind)||!controller.getState())return;
     if(!nested){closeSheets();if(frames.length)return;}
-    fillDraft(sheets[kind].fields);
+    fillDraft(sheets[kind].fields,kind==='users'?{roles:controller.getState().roleOptions?.find(role=>role.name==='user')?.id||''}:{});
     frames.push({kind,field,ownerKind,opener});
     const back=sheets.users.element.querySelector('.rs-barn-v24-back');if(kind==='users')show(back,nested);
     showSheet(frames.at(-1));
@@ -122,8 +125,17 @@ export function prepareNativeBarn({document, api, chooser}) {
   }
   const view={
     state(state,actor){
+      const logo=state.barns.find(b=>b.id===state.selectedBarn)?.logo;barnLogo.hidden=!logo;if(logo)barnLogo.src=logo;
       barnName.textContent=state.barns.find(b=>b.id===state.selectedBarn)?.name||'Choose barn';
-      profile.textContent=`Use my recognized profile${actor?.profile?.name?' · '+actor.profile.name:''}`;
+      profile.textContent='Edit my profile';
+      for(const select of [forms.users.fields.roles,sheets.users.fields.roles]){
+        const selected=new Set([...select.selectedOptions].map(option=>option.value));
+        select.replaceChildren(...(state.roleOptions||[]).map(role=>{const option=document.createElement('option');option.value=role.id;option.textContent=role.name;option.selected=selected.has(role.id);return option;}));
+        select.disabled=state.canManage===false;
+      }
+      for(const select of [forms.users.fields.membershipStatus,sheets.users.fields.membershipStatus])select.disabled=state.canManage===false;
+      show(editBarn,state.canManage!==false);show(chooseControl,state.canManage!==false);
+      for(const kind of kinds)if(state.canManage===false)show(controls[kind].add,false);
       for(const kind of kinds){show(controls[kind].empty,rowsFor(state,kind).length===0);controls[kind].note.textContent='Connected records';if(kind!=='barn')renderRows(state,kind);}
       renderOptions(forms.riders.fields.userId,rowsFor(state,'users'));renderOptions(sheets.riders.fields.userId,rowsFor(state,'users'));
       renderOptions(forms.horses.fields.riderId,rowsFor(state,'riders'));renderOptions(forms.horses.fields.locationId,rowsFor(state,'locations'));
@@ -139,7 +151,7 @@ export function prepareNativeBarn({document, api, chooser}) {
       clearFeedback(kind);const target=controls[kind][type];target.textContent=type==='error'?describeError(value):value;target.setAttribute('role',type==='error'?'alert':'status');show(target,true);
     },
     busy(value,{kind,saving=false}={}){if(saving){if(value)savingKinds.add(kind);else savingKinds.delete(kind);}else busy=value;root.setAttribute('aria-busy',String(busy||savingKinds.size>0));root.inert=busy;for(const [key,form] of Object.entries(forms))form.form.inert=busy||savingKinds.has(key);for(const [key,sheet] of Object.entries(sheets))sheet.form.inert=busy||savingKinds.has(key);if(!busy&&pendingFocus){pendingFocus.focus();pendingFocus=null;}},
-    editor({kind,record,open,reveal=true}){if(reveal)selectTab(kind);show(forms[kind].form,open);show(controls[kind].edit,open&&!!record);show(controls[kind].add,!open);clearFeedback(kind);
+    editor({kind,record,open,reveal=true}){if(reveal)selectTab(kind);show(forms[kind].form,open);show(controls[kind].edit,open&&!!record);show(controls[kind].add,!open&&controller.getState()?.canManage!==false);clearFeedback(kind);
       const title=controls[kind].edit.firstElementChild;if(title&&record)title.textContent=`Editing ${record.name}`;if(open&&reveal){if(busy)pendingFocus=forms[kind].fields.name;else forms[kind].fields.name.focus();}}
   };
   controller=bindMainForms({document,api,view});
@@ -156,6 +168,15 @@ export function prepareNativeBarn({document, api, chooser}) {
       void controller.beginEdit(action.dataset.rsRelatedKind||kind,action.dataset.rsRelatedId||row.dataset.rsRecordId);
     };listen(templates[kind].parent,'click',activateRow);listen(templates[kind].parent,'keydown',activateRow);}
   }
+  const optinsPanel=document.createElement('section');optinsPanel.className='rs-barn-v24-note';optinsPanel.hidden=true;optinsPanel.dataset.rsOptinsPanel='';panes.users.append(optinsPanel);
+  listen(templates.users.parent,'click',async event=>{const button=event.target.closest('[data-rs-optins]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();
+   optinsPanel.hidden=false;optinsPanel.textContent='Loading opt-ins...';
+   try{const result=await api.userOptins(controller.getState().selectedBarn,button.dataset.rsOptins);optinsPanel.replaceChildren();const title=document.createElement('h3');title.textContent=result.name+'  -  Opt-ins';optinsPanel.append(title);
+    if(!result.subscriptions.length){const empty=document.createElement('p');empty.textContent='No opt-ins saved for this user.';optinsPanel.append(empty);}
+    for(const record of result.subscriptions){const line=document.createElement('p');line.textContent=[record.consentState,record.status,record.phone].filter(Boolean).join('  -  ');optinsPanel.append(line);if(record.preferences){for(const [key,value]of Object.entries(record.preferences.variables||{})){const option=document.createElement('p');option.textContent=key+': '+(value.enabled?'On':'Off')+(value.value?'  -  '+value.value:'');optinsPanel.append(option);}}}
+    if(result.manageUrl){const link=document.createElement('a');link.href=result.manageUrl;link.textContent='Edit my opt-ins';link.className='rs-barn-v24-link';optinsPanel.append(link);}
+   }catch{optinsPanel.textContent='Opt-ins could not load. Try again.';}
+  });
   click(profile,()=>controller.profileLink());click(editBarn,()=>{const state=controller.getState();if(state?.selectedBarn)return controller.beginEdit('barn',state.selectedBarn);});
   for(const [field,ownerKind,kind]of [['userId','riders','users'],['riderId','horses','riders'],['locationId','horses','locations']]){
     click(one(forms[ownerKind].fields[field].parentElement,'button.rs-barn-v24-link[popovertarget]'),node=>openSheet(kind,{field,ownerKind,opener:node}));

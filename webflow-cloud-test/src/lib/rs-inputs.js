@@ -1,3 +1,4 @@
+import {profileFields} from './rs-tenant-profile-fields.js';
 // Shared input rules. Authentication is supplied by the server, never by a device token.
 export const INPUT_KINDS = ['barn', 'users', 'riders', 'horses', 'locations'];
 export const collection = kind => kind === 'barn' ? 'barns' : kind;
@@ -12,7 +13,7 @@ export async function digest(value) {
 const text = value => typeof value === 'string' ? value.trim() : '';
 const can = (actor, permission) => actor.permissions?.includes(permission);
 const owns = (actor, barn) => barn && (barn.ownerUid === actor.id || actor.barnIds?.includes(barn.id));
-const publicRecord = ({ ownerUid, requestUid, requestHash, ...record }) => record;
+const publicRecord = ({ ownerUid, requestUid, requestHash, pin, ...record }) => record;
 export function requireActor(actor) {
   if (!actor || typeof actor.id !== 'string' || !actor.id.trim()) fail('authentication_required', 401);
 }
@@ -34,7 +35,7 @@ function normalizeDraft(draft) {
   }
   if (!out.name) fail('name_required');
   if (out.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(out.email)) fail('invalid_email');
-  return out;
+  return {...out,...profileFields(draft)};
 }
 async function authorizedBarn(store, actor, id) {
   const barn = (await store.list('barn')).find(item => item.id === id);
@@ -61,6 +62,7 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
     draft = { id: existing?.id, name: profile.name, email: profile.email || '' };
     expectedRevision = existing?.revision;
   }
+  if(!store.profileFields&&['displayName','sms','pin','profileImg','roles','tags','membershipStatus','logo'].some(k=>Object.hasOwn(draft||{},k)))fail('profile_fields_require_tenants',400);
   const input = normalizeDraft(draft);
   if (kind === 'barn' && !input.id && !can(actor, 'barns:create')) fail('permission_denied', 403);
   if (kind === 'barn' && input.id) barnId = input.id;
@@ -92,8 +94,11 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
   const record = { id, barnId, name: input.name, revision: (current?.revision || 0) + 1, ownerUid: current?.ownerUid || actor.id, requestUid: eventId, requestHash: fingerprint };
   if (kind === 'users') {
     record.email = input.email;
+    for(const field of ['displayName','sms','profileImg','roles','tags','membershipStatus'])if(Object.hasOwn(input,field)||Object.hasOwn(current||{},field))record[field]=input[field]??current[field];
+    if(input.pin)record.pin=input.pin;
     record.recognitionPersonId = profileLink ? actor.profile.personUid : current?.recognitionPersonId || '';
   }
+  if(kind==='barn'&&(Object.hasOwn(input,'logo')||Object.hasOwn(current||{},'logo')))record.logo=input.logo??current.logo;
   if (kind === 'locations') record.address = input.address;
   const relationships = kind === 'riders' ? [['userId', 'users']] : kind === 'horses' ? [['riderId', 'riders'], ['locationId', 'locations']] : [];
   for (const [field, relatedKind] of relationships) {
