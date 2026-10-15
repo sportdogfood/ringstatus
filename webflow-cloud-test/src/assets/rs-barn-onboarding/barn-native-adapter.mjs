@@ -141,6 +141,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
       if (disposed) return false;
       apply(next);
       for (const kind of Object.keys(FORMS)) {
+        delete pendingBarn[kind];
         const record = kind === 'barn' ? next.barns.find(r => r.id === next.selectedBarn) : null;
         editing[kind] = record || null;
         fillDraft(targets.forms[kind].fields, record || {});
@@ -163,6 +164,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
       if (!record || !Number.isInteger(record.revision)) throw new Error('record_not_found');
       if (disposed) return false;
       apply(next);
+      delete pendingBarn[kind];
       editing[kind] = record;
       fillDraft(targets.forms[kind].fields, record);
       api.resetDraftRequest(kind);
@@ -201,6 +203,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
   }
   function add(kind) {
     if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
+    delete pendingBarn[kind];
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
     api.resetDraftRequest(kind);
@@ -209,6 +212,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
   }
   function cancel(kind) {
     if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
+    delete pendingBarn[kind];
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
     api.resetDraftRequest(kind);

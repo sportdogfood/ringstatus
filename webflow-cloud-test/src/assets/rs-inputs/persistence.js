@@ -34,27 +34,49 @@ export function createPersistence({scope,storage=indexedDBStorage(),now=()=>Date
  const serial=fn=>{const next=chain.then(fn);chain=next.catch(()=>{});return next};
  const read=async()=>copy(await storage.read(key)||empty());
  const change=fn=>serial(()=>storage.mutate(key,current=>{const state=copy(current||empty());const result=fn(state);return {state,result:copy(result===undefined?state:result)}}));
- const matches=(state,op)=>state.pending?.body.requestId===op?.requestId&&state.pending?.generation===op?.generation;
+ const operations=state=>[state.pending,...(state.retainedPending||[])].filter(Boolean);
+ const matching=(state,op)=>operations(state).find(item=>item.body.requestId===op?.requestId&&item.generation===op?.generation);
+ const matches=(state,op)=>!!matching(state,op);
+ const fingerprint=value=>Array.isArray(value)?`[${value.map(fingerprint).join(',')}]`:value&&typeof value==='object'?`{${Object.keys(value).filter(k=>k!=='requestId').sort().map(k=>JSON.stringify(k)+':'+fingerprint(value[k])).join(',')}}`:JSON.stringify(value);
+ const target=body=>JSON.stringify([body.kind,body.barnId,body.draft?.id||String(body.draft?.name||'').trim().toLowerCase()]);
+ function removeOperation(state,op){
+  if(state.pending?.requestId===op.requestId)state.pending=null;
+  state.retainedPending=(state.retainedPending||[]).filter(item=>item.requestId!==op.requestId);
+  if(!state.pending)state.pending=state.retainedPending.shift()||null;
+ }
+
  return {
   load:()=>serial(read),
-  edit:data=>change(state=>{state.generation++;state.draft=copy(data);state.dirty=true;}),
+  edit:data=>change(state=>{state.generation++;state.draft=copy(data);state.dirty=true;delete state.restoredPendingId;}),
   refresh:(data,revision)=>change(state=>{state.confirmed={data:copy(data),revision,updatedAt:now()};if(!state.dirty&&!state.pending)state.draft=copy(data);}),
   prepare:body=>change(state=>{
    if(state.pending){if(JSON.stringify(state.pending.body)!==JSON.stringify(body))throw Error('pending_operation_unresolved');return state.pending;}
    if(!body?.requestId)throw Error('request_id_required');
    state.pending={body:copy(body),requestId:body.requestId,generation:state.generation,attempts:0,error:null};return state.pending;
   }),
+  // WEC failedActions: keep independent failed records, match retries by payload,
+  // and remove only the operation whose server result was confirmed.
+  prepareIndependent:body=>change(state=>{
+   if(!body?.requestId)throw Error('request_id_required');
+   const all=operations(state),same=all.find(item=>fingerprint(item.body)===fingerprint(body));
+   if(same)return same;
+   if(all.some(item=>target(item.body)===target(body)))throw Error('pending_record_unresolved');
+   state.generation++;state.draft=copy(body);state.dirty=true;delete state.restoredPendingId;
+   const op={body:copy(body),requestId:body.requestId,generation:state.generation,attempts:0,error:null};
+   if(state.pending)(state.retainedPending ||= []).push(op);else state.pending=op;
+   return op;
+  }),
   confirm:(op,data,revision)=>change(state=>{
    if(!matches(state,op))return false;
-   state.confirmed={data:copy(data),revision,updatedAt:now()};state.pending=null;
-   if(state.generation===op.generation){state.draft=copy(data);state.dirty=false;}return true;
+   state.confirmed={data:copy(data),revision,updatedAt:now()};removeOperation(state,op);
+   if(state.generation===op.generation||state.restoredPendingId===op.requestId){state.draft=copy(state.pending?.body||data);state.dirty=!!state.pending;if(state.pending)state.restoredPendingId=state.pending.requestId;else delete state.restoredPendingId;}return true;
   }),
-  fail:(op,error)=>change(state=>{if(matches(state,op)){state.pending.attempts++;state.pending.error=error;} }),
+  fail:(op,error)=>change(state=>{const item=matching(state,op);if(item){item.attempts++;item.error=error;} }),
   // Only a proven pre-admission revision rejection may be replaced. Keep the
   // user's draft; unknown outcomes and admitted work retain their exact request.
   rejectRevision:op=>change(state=>{
-   if(!matches(state,op)||state.pending.error!=='intake_record_changed')return false;
-   state.pending=null;return true;
+   const item=matching(state,op);if(!item||item.error!=='intake_record_changed')return false;
+   removeOperation(state,op);return true;
   })
  };
 }

@@ -113,12 +113,8 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
     if(options.durableBarn&&path==='/record'&&['barn','riders'].includes(String(body.kind))){
       if(!verifiedActor)throw new InputApiError('authentication_required');
       device=persistence(String(body.kind));
-      const saved=await device.load();
-      if(saved.pending){
-        const {requestId,...previous}=saved.pending.body;
-        if(JSON.stringify(previous)!==JSON.stringify(body))throw new Error('An earlier save is still unresolved. Check that save before submitting a different entry.');
-        pending.id=requestId;operation=saved.pending;
-      }else{await device.edit(body);operation=await device.prepare({...body,requestId:pending.id});}
+      operation=await device.prepareIndependent({...body,requestId:pending.id});
+      pending.id=operation.requestId;
     }
     try{
       if(device){const current=accessActor(await request('/access'));if(current.id!==verifiedActor!.id)throw new InputApiError('authentication_required');}
