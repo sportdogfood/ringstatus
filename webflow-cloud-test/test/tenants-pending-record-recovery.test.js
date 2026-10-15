@@ -32,8 +32,22 @@ test('independent queue keeps failures, isolates same record and removes only co
  const b=await p.prepareIndependent({kind:'riders',barnId:'b',draft:{id:'b',name:'B'},requestId:'2'});
  await p.fail(a,'lost response');await p.fail(b,'offline');
  const retry=await p.prepareIndependent({requestId:'ignored',draft:{name:'B',id:'b'},barnId:'b',kind:'riders'});assert.equal(retry.requestId,'2');
- await assert.rejects(p.prepareIndependent({kind:'riders',barnId:'b',draft:{id:'a',name:'Changed A'},requestId:'3'}),/pending_record_unresolved/);
+ const later=await p.prepareIndependent({kind:'riders',barnId:'b',draft:{id:'a',name:'Changed A'},requestId:'3'});
+ assert.equal(later.requestId,'3');
  await p.confirm(b,{id:'b',name:'B'},1);assert.equal((await p.load()).pending.requestId,'1');assert.equal((await p.load()).pending.error,'lost response');
  const other=createPersistence({scope:{...scope,actorId:'other'},storage});assert.equal((await other.load()).pending,null);
- const p2=createPersistence({scope,storage});assert.equal((await p2.load()).pending.requestId,'1');await p2.edit({name:'Later unsent edit'});await p2.confirm(a,{id:'a',name:'A'},1);assert.equal((await p2.load()).dirty,true);assert.equal((await p2.load()).draft.name,'Later unsent edit');
+ const p2=createPersistence({scope,storage});assert.equal((await p2.load()).pending.requestId,'1');await p2.edit({name:'Later unsent edit'});await p2.confirm(a,{id:'a',name:'A'},1);assert.equal((await p2.load()).dirty,true);assert.equal((await p2.load()).draft.name,'Later unsent edit');assert.equal((await p2.load()).pending.body.expectedRevision,1);
+});
+
+test('new empty profile controls preserve a legacy User retry; blank PIN preserves retained secret only for unchanged retry',async()=>{
+ const original=globalThis.fetch;
+ try{for(const pin of [undefined,'1234']){
+  const storage=memory(),p=createPersistence({scope:{actorId:'test',resource:'native-users',tenantId:'editor'},storage});
+  const body={kind:'users',barnId:'barn',draft:{...draft('Existing User'),id:'user',revision:1,...(pin?{pin}:{})},expectedRevision:1,requestId:'retained-request'};
+  const operation=await p.prepareIndependent(body);await p.fail(operation,'offline');let posted;
+  globalThis.fetch=async(url,init)=>url.endsWith('/access')?Response.json({ok:true,actor:{id:'test',profile:{personUid:'test',name:'Test',email:''}}}):((posted=JSON.parse(init.body)),Response.json({ok:true,record:{id:'user',barnId:'barn',name:'Existing User',revision:2},state:{version:1,barns:[],users:[],riders:[],horses:[],locations:[],selectedBarn:'barn'}}));
+  const api=createInputsApi('/api',{durableBarn:true,storage});await api.access();
+  await api.record('users',{...body.draft,displayName:'',sms:'',pin:'',profileImg:'',roles:'',tags:''},'barn');
+  assert.deepEqual(posted,body);assert.equal((await p.load()).pending,null);
+ }}finally{globalThis.fetch=original}
 });

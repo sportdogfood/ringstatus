@@ -3,8 +3,8 @@ import { handleAuthenticatedInputRoute } from '../pages/rs-inputs/[operation].js
 import { handleAccessRoute, createAccessStore, createInputAccess, accessHash } from './rs-inputs-access.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
 import { recordRecognitionSession, recordRecognitionSummary } from './rs-recognition-session.js';
-import { createRecoverySms, requireSmsAutomation } from './rs-recognition-sms.js';
-import { handleRecognitionOtp } from './rs-recognition-otp.js';
+
+
 import { handleRecognitionCredential } from './rs-recognition-credential.js';
 
 const respond = (body, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
@@ -23,13 +23,14 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
     const incoming = new URL(request.url);
     if (!/\/rs-inputs\/native-recognition$/.test(incoming.pathname)) return respond({ ok: false, error: 'native_cookie_scope_required' }, 400);
     const operation = incoming.searchParams.get('operation');
-    if (!['recognize', 'device', 'action', 'session', 'sms_prepare', 'sms_outcome'].includes(operation)) return respond({ ok: false, error: 'unsupported_operation' }, 400);
+    if (!['recognize', 'device', 'action', 'session'].includes(operation)) return respond({ ok: false, error: 'unsupported_operation' }, 400);
     if (request.method !== (operation === 'device' ? 'GET' : 'POST')) return respond({ ok: false, error: 'method_not_allowed' }, 405);
     const target = new URL(request.url);
     target.pathname = incoming.pathname.replace(/native-recognition$/, operation === 'session' ? 'session' : 'recognition');
     target.search = '';
     const payload = operation === 'device' ? null : await request.json().catch(() => null);
     if (operation !== 'device' && (!payload || Array.isArray(payload))) return respond({ ok: false, error: 'invalid_request' }, 400);
+    if(['sms_prepare','sms_outcome'].includes(operation)||(operation==='action'&&['otp_start','otp_check','recovery','phone_login','update_profile','create_profile'].includes(payload.action)))return respond({ok:false,error:'unsupported_operation'},400);
     if(operation==='action'&&payload.action==='credential') {
       const result=await handleRecognitionCredential({request,env:bindings,payload,fetchImpl});
       const response=respond(result);
@@ -52,15 +53,6 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
         response.headers.append('Set-Cookie',createInputAccess({env:bindings,fetchImpl}).logout(request));
         return response;
       }
-    }
-    if (operation === 'action' && ['otp_start', 'otp_check'].includes(payload.action)) {
-      const result = await handleRecognitionOtp({ request, env: bindings, payload, fetchImpl });
-      const response = respond(result);
-      if (result.verified === true) {
-        response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${result.device_token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
-        response.headers.append('Set-Cookie',createInputAccess({env:bindings,fetchImpl}).logout(request));
-      }
-      return response;
     }
     if (operation === 'recognize') {
       if (request.headers.get('Origin') !== incoming.origin) return respond({ ok: false, error: 'origin_denied' }, 403);
@@ -101,15 +93,6 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
       response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
       return response;
     }
-    if (operation === 'sms_prepare' || operation === 'sms_outcome') {
-      requireSmsAutomation(request, env);
-      const sms = createRecoverySms({ env: bindings, fetchImpl });
-      return respond(operation === 'sms_prepare' ? await sms.prepare(payload.request_record_id) : await sms.outcome(payload));
-    }
-    if (operation === 'action' && payload.action === 'recovery') {
-      if (request.headers.get('Origin') !== incoming.origin) return respond({ ok: false, error: 'origin_denied' }, 403);
-      return respond(await createRecoverySms({ env: bindings, fetchImpl }).request(payload));
-    }
     const deviceToken = operation === 'device' ? incoming.searchParams.get('device_token') : payload.device_token;
     if (typeof deviceToken !== 'string' || !deviceToken || deviceToken.length > 255) return respond({ ok: false, error: 'invalid_device_token' }, 400);
     if (operation === 'device') target.searchParams.set('device_token', deviceToken);
@@ -138,11 +121,6 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
     const forwarded = new Request(target, { method: request.method, headers: request.headers,
       ...(operation === 'action' ? { body: JSON.stringify({ action: payload.action, requestId: payload.session_event_uid, device_token: deviceToken, values }) } : {}) });
     const response = await handleAuthenticatedInputRoute({ request: forwarded }, bindings, fetchImpl);
-    if (response.status === 401 && operation === 'action' && payload.action === 'phone_login') {
-      if (request.headers.get('Origin') !== incoming.origin) return respond({ ok: false, error: 'origin_denied' }, 403);
-      // Reuse the existing SMS queue; a typed number is not an access credential.
-      return respond(await createRecoverySms({ env: bindings, fetchImpl }).request({ session_event_uid: payload.session_event_uid, sms: payload.sms }));
-    }
     const data = await response.json();
     if (!response.ok || !data.ok) return respond({ ok: false, error: data.error || 'recognition_unavailable' }, response.status);
     return respond({ ok: true, recognized: data.recognized === true, invited_profile: !!data.profile,

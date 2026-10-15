@@ -60,18 +60,23 @@ export function createPersistence({scope,storage=indexedDBStorage(),now=()=>Date
    if(!body?.requestId)throw Error('request_id_required');
    const all=operations(state),same=all.find(item=>fingerprint(item.body)===fingerprint(body));
    if(same)return same;
-   if(all.some(item=>target(item.body)===target(body)))throw Error('pending_record_unresolved');
-   state.generation++;state.draft=copy(body);state.dirty=true;delete state.restoredPendingId;
+   if(!body.preferences){state.generation++;state.draft=copy(body);}state.dirty=true;delete state.restoredPendingId;
    const op={body:copy(body),requestId:body.requestId,generation:state.generation,attempts:0,error:null};
    if(state.pending)(state.retainedPending ||= []).push(op);else state.pending=op;
    return op;
   }),
   confirm:(op,data,revision)=>change(state=>{
    if(!matches(state,op))return false;
+   // Only unsent successors may inherit the confirmed revision. Submitted
+   // operations retain their exact payload and request identity for retries.
+   for(const next of operations(state))if(next.generation>op.generation&&!next.submitted&&(target(next.body)===target(op.body)||next.body.draft?.id===`pending-${op.body.kind}-${op.requestId}`)){
+    if(next.body.draft){next.body.draft.id=data.id;next.body.draft.revision=revision;}next.body.expectedRevision=revision;
+   }
    state.confirmed={data:copy(data),revision,updatedAt:now()};removeOperation(state,op);
-   if(state.generation===op.generation||state.restoredPendingId===op.requestId){state.draft=copy(state.pending?.body||data);state.dirty=!!state.pending;if(state.pending)state.restoredPendingId=state.pending.requestId;else delete state.restoredPendingId;}return true;
+   if(state.generation===op.generation||state.restoredPendingId===op.requestId){state.draft=copy(state.pending?.body.preferences||state.pending?.body||data);state.dirty=!!state.pending;if(state.pending)state.restoredPendingId=state.pending.requestId;else delete state.restoredPendingId;}return true;
   }),
   fail:(op,error,details)=>change(state=>{const item=matching(state,op);if(item){item.attempts++;item.error=error;if(details)item.errorDetails=details;else delete item.errorDetails;} }),
+  submitted:op=>change(state=>{const item=matching(state,op);if(!item)throw Error('pending_operation_missing');item.submitted=true;return item;}),
   // Only a proven pre-admission revision rejection may be replaced. Keep the
   // user's draft; unknown outcomes and admitted work retain their exact request.
   rejectRevision:op=>change(state=>{

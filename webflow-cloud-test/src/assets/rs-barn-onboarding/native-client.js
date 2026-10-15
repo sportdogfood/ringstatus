@@ -107,9 +107,10 @@ function createPersistence({ scope, storage = indexedDBStorage(), now = () => Da
       if (!body?.requestId) throw Error("request_id_required");
       const all = operations(state), same = all.find((item) => fingerprint(item.body) === fingerprint(body));
       if (same) return same;
-      if (all.some((item) => target(item.body) === target(body))) throw Error("pending_record_unresolved");
-      state.generation++;
-      state.draft = copy(body);
+      if (!body.preferences) {
+        state.generation++;
+        state.draft = copy(body);
+      }
       state.dirty = true;
       delete state.restoredPendingId;
       const op = { body: copy(body), requestId: body.requestId, generation: state.generation, attempts: 0, error: null };
@@ -119,10 +120,17 @@ function createPersistence({ scope, storage = indexedDBStorage(), now = () => Da
     }),
     confirm: (op, data, revision) => change((state) => {
       if (!matches(state, op)) return false;
+      for (const next of operations(state)) if (next.generation > op.generation && !next.submitted && (target(next.body) === target(op.body) || next.body.draft?.id === `pending-${op.body.kind}-${op.requestId}`)) {
+        if (next.body.draft) {
+          next.body.draft.id = data.id;
+          next.body.draft.revision = revision;
+        }
+        next.body.expectedRevision = revision;
+      }
       state.confirmed = { data: copy(data), revision, updatedAt: now() };
       removeOperation(state, op);
       if (state.generation === op.generation || state.restoredPendingId === op.requestId) {
-        state.draft = copy(state.pending?.body || data);
+        state.draft = copy(state.pending?.body.preferences || state.pending?.body || data);
         state.dirty = !!state.pending;
         if (state.pending) state.restoredPendingId = state.pending.requestId;
         else delete state.restoredPendingId;
@@ -137,6 +145,12 @@ function createPersistence({ scope, storage = indexedDBStorage(), now = () => Da
         if (details) item.errorDetails = details;
         else delete item.errorDetails;
       }
+    }),
+    submitted: (op) => change((state) => {
+      const item = matching(state, op);
+      if (!item) throw Error("pending_operation_missing");
+      item.submitted = true;
+      return item;
     }),
     // Only a proven pre-admission revision rejection may be replaced. Keep the
     // user's draft; unknown outcomes and admitted work retain their exact request.
@@ -222,6 +236,8 @@ function createInputsApi(apiBase, options = {}) {
   const requests = /* @__PURE__ */ new Map();
   let verifiedActor = null;
   let confirmedState = null;
+  const saveChains = /* @__PURE__ */ new Map();
+  const operationResults = /* @__PURE__ */ new Map();
   const persistence = (kind) => createPersistence({ scope: { actorId: verifiedActor.id, resource: `native-${kind}`, tenantId: "editor" }, ...options.storage ? { storage: options.storage } : {} });
   function mergeSavedState(next, kind, record) {
     if (!confirmedState) {
@@ -232,7 +248,7 @@ function createInputsApi(apiBase, options = {}) {
     const index = merged[key].findIndex((row) => row.id === record.id);
     if (index < 0) merged[key].push(record);
     else if ((record.revision || 0) >= (merged[key][index].revision || 0)) merged[key][index] = record;
-    if (kind === "barn") merged.selectedBarn = record.id;
+    if (kind === "barn" && !merged.selectedBarn) merged.selectedBarn = record.id;
     confirmedState = merged;
     return merged;
   }
@@ -252,7 +268,55 @@ function createInputsApi(apiBase, options = {}) {
     if (!response.ok || result?.ok !== true) throw new InputApiError(typeof result?.error === "string" ? result.error : `save_${response.status}`, response.status, response.headers.get("X-Request-Id") || void 0, response.headers.get("Content-Type") || void 0);
     return result;
   }
-  async function mutation(path, body, validate2) {
+  async function mutation(path, body, validate2, prepared) {
+    if (options.durableBarn && path === "/record" && ["barn", "riders", "users"].includes(String(body.kind))) {
+      if (!verifiedActor) throw new InputApiError("authentication_required");
+      const kind = String(body.kind), device = persistence(kind);
+      const wanted = await device.prepareIndependent({ ...body, requestId: crypto.randomUUID() });
+      prepared?.(wanted);
+      const queued = await device.load(), all = [queued.pending, ...queued.retainedPending || []].filter(Boolean);
+      const target = (op) => `${op.body.barnId}:${op.body.draft.id || op.body.draft.name.trim().toLowerCase()}`;
+      const parent = all.find((op) => wanted.body.draft.id === `pending-${kind}-${op.requestId}`);
+      const chainKey = kind + ":" + target(parent || wanted);
+      const dependencies = new Set(all.filter((op) => op.generation <= wanted.generation && (target(op) === target(wanted) || target(op) === target(parent || wanted))).map((op) => op.requestId));
+      const previous = saveChains.get(chainKey) || Promise.resolve();
+      const work = previous.catch(() => {
+      }).then(async () => {
+        if (operationResults.has(wanted.requestId)) return operationResults.get(wanted.requestId);
+        for (; ; ) {
+          const saved = await device.load(), entry = [saved.pending, ...saved.retainedPending || []].filter(Boolean).find((op) => dependencies.has(op.requestId));
+          if (!entry) throw new Error("pending_operation_missing");
+          const current = accessActor(await request("/access"));
+          if (current.id !== verifiedActor.id) throw new InputApiError("authentication_required");
+          const operation = await device.submitted(entry);
+          try {
+            let result;
+            for (let attempt = 0; ; attempt++) try {
+              result = await request("/record", operation.body);
+              break;
+            } catch (error) {
+              if (!(error instanceof InputApiError) || error.code !== "tenant_save_pending" || attempt >= 12) throw error;
+              await new Promise((resolve) => setTimeout(resolve, 2e3));
+            }
+            if (!result.state && confirmedState && result.record) result.state = mergeSavedState(confirmedState, kind, result.record);
+            if (!validate2(result)) throw new Error("The server response could not be verified.");
+            const cleaned = await device.confirm(operation, result.record, result.record.revision).catch(() => false);
+            result.state = mergeSavedState(result.state, kind, result.record);
+            await persistence("state").refresh(result.state, 0).catch(() => {
+            });
+            operationResults.set(operation.requestId, result);
+            if (operation.requestId === wanted.requestId) return result;
+            if (!cleaned) throw new Error("device_storage_unavailable");
+          } catch (error) {
+            await device.fail(operation, error instanceof InputApiError ? error.code : "save_unconfirmed", error instanceof InputApiError ? { status: error.status, requestId: error.requestId, contentType: error.contentType } : void 0).catch(() => {
+            });
+            throw error;
+          }
+        }
+      });
+      saveChains.set(chainKey, work);
+      return work;
+    }
     const requestKey = path === "/record" ? `${path}:${String(body.kind)}` : path;
     const fingerprint = JSON.stringify(body);
     let pending = requests.get(requestKey);
@@ -260,18 +324,7 @@ function createInputsApi(apiBase, options = {}) {
       pending = { fingerprint, id: crypto.randomUUID() };
       requests.set(requestKey, pending);
     }
-    let device = null, operation = null;
-    if (options.durableBarn && path === "/record" && ["barn", "riders", "users"].includes(String(body.kind))) {
-      if (!verifiedActor) throw new InputApiError("authentication_required");
-      device = persistence(String(body.kind));
-      operation = await device.prepareIndependent({ ...body, requestId: pending.id });
-      pending.id = operation.requestId;
-    }
     try {
-      if (device) {
-        const current = accessActor(await request("/access"));
-        if (current.id !== verifiedActor.id) throw new InputApiError("authentication_required");
-      }
       let result;
       for (let attempt = 0; ; attempt++) {
         try {
@@ -284,8 +337,7 @@ function createInputsApi(apiBase, options = {}) {
       }
       if (options.durableBarn && confirmedState && !result.state && (path === "/profile-link" || path === "/record" && ["barn", "riders", "users"].includes(String(body.kind))) && typeof result.record?.id === "string" && typeof result.record?.name === "string" && typeof result.record?.barnId === "string" && Number.isSafeInteger(result.record?.revision)) result.state = mergeSavedState(confirmedState, path === "/profile-link" ? "users" : body.kind, result.record);
       if (!validate2(result)) throw new Error("The server response could not be verified. Your entry is still here.");
-      if (device) await device.confirm(operation, result.record, result.record.revision).catch(() => {
-      });
+      prepared?.({ body, requestId: pending.id });
       if (options.durableBarn && verifiedActor && validStore(result.state)) {
         result.state = mergeSavedState(result.state, path === "/profile-link" ? "users" : body.kind, result.record);
         await persistence("state").refresh(result.state, 0).catch(() => {
@@ -294,8 +346,6 @@ function createInputsApi(apiBase, options = {}) {
       requests.delete(requestKey);
       return result;
     } catch (error) {
-      if (device) await device.fail(operation, error instanceof InputApiError ? error.code : error instanceof Error ? error.message : "save_unconfirmed", error instanceof InputApiError ? { status: error.status, requestId: error.requestId, contentType: error.contentType } : void 0).catch(() => {
-      });
       throw error;
     }
   }
@@ -326,9 +376,15 @@ function createInputsApi(apiBase, options = {}) {
         return null;
       }
     },
-    async pendingDraft(kind) {
+    async pendingDraft(kind, id) {
       if (!options.durableBarn || !verifiedActor) return null;
-      return (await persistence(kind).load()).pending?.body || null;
+      const saved = await persistence(kind).load(), all = [saved.pending, ...saved.retainedPending || []].filter(Boolean);
+      return all.filter((op) => !id || op.body.draft.id === id || `pending-${kind}-${op.requestId}` === id).at(-1)?.body || null;
+    },
+    async pendingDrafts(kind) {
+      if (!options.durableBarn || !verifiedActor) return [];
+      const saved = await persistence(kind).load();
+      return [saved.pending, ...saved.retainedPending || []].filter(Boolean).map((op) => op.body);
     },
     async acceptInvitation(token) {
       if (!/^[A-Za-z0-9_-]{43}$/.test(token)) throw new InputApiError("invalid_invitation");
@@ -354,7 +410,11 @@ function createInputsApi(apiBase, options = {}) {
       });
       return result.state;
     },
-    async record(kind, draft, barnId) {
+    async record(kind, draft, barnId, prepared) {
+      if (draft.id?.startsWith(`pending-${kind}-`)) {
+        const confirmed = operationResults.get(draft.id.slice(`pending-${kind}-`.length));
+        if (confirmed) draft = { ...draft, id: confirmed.record.id, revision: confirmed.record.revision };
+      }
       if (options.durableBarn && verifiedActor && ["barn", "riders", "users"].includes(kind)) {
         const retained = (await persistence(kind).load()).pending?.body;
         if (retained?.barnId === barnId && retained.kind === kind && retained.draft) {
@@ -363,7 +423,7 @@ function createInputsApi(apiBase, options = {}) {
           if (compatible) draft = retained.draft;
         }
       }
-      return mutation("/record", { kind, draft, barnId, ...draft.id && draft.revision !== void 0 ? { expectedRevision: draft.revision } : {} }, recordResponse);
+      return mutation("/record", { kind, draft, barnId, ...draft.id && draft.revision !== void 0 ? { expectedRevision: draft.revision } : {} }, recordResponse, prepared);
     },
     async profileLink(barnId) {
       return mutation("/profile-link", { barnId }, recordResponse);
@@ -490,15 +550,17 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
   const targets = inspectMainForms(document2);
   if (mounted.has(targets.root)) return mounted.get(targets.root);
   for (const method of ["state", "feedback", "busy", "editor"]) if (typeof view?.[method] !== "function") throw new Error(`native_view_contract_missing:${method}`);
-  let state = null, actor = null, pending = false, disposed = false;
+  let state = null, actor = null, pending = false, disposed = false, accessInvalid = false;
   const pendingKinds = /* @__PURE__ */ new Set();
   const staleKinds = /* @__PURE__ */ new Set();
   const pendingBarn = {};
   const optimistic = /* @__PURE__ */ new Map();
+  const confirmedIds = /* @__PURE__ */ new Map();
   function display() {
     if (!state || disposed) return;
     const visible = structuredClone(state);
-    for (const [kind, entry] of optimistic) {
+    for (const { kind, entry: local } of optimistic.values()) {
+      const entry = { ...local, id: confirmedIds.get(local.id) || local.id };
       const key = kind === "barn" ? "barns" : kind;
       const rows = visible[key], index = rows.findIndex((row) => row.id === entry.id);
       if (index < 0) rows.push(entry);
@@ -506,21 +568,34 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     }
     view.state(visible, actor);
   }
-  function showPending(kind, draft, barnId) {
-    optimistic.set(kind, { ...draft, id: draft.id || `pending-${kind}`, barnId: kind === "barn" ? draft.id || "" : barnId, pending: true });
+  function showPending(kind, draft, barnId, requestId = "restored") {
+    const id = draft.id || `pending-${kind}-${requestId}`;
+    const key = kind + ":" + id;
+    const entry = { ...draft, id, revision: draft.revision ?? 0, barnId: kind === "barn" ? draft.id || "" : barnId, pending: true };
+    optimistic.set(key, { kind, entry });
     display();
+    return { key, entry };
   }
   const editing = Object.fromEntries(Object.keys(FORMS).map((kind) => [kind, null]));
   const remove = [];
   const feedback = (kind, type, value) => view.feedback({ kind, type, value });
   async function run(kind, operation, saving = false) {
-    if (pending || pendingKinds.has(kind) || disposed) return false;
+    if (pending || disposed || accessInvalid) return false;
     if (saving) pendingKinds.add(kind);
     else pending = true;
     view.busy(true, { kind, saving });
     try {
       return await operation();
     } catch (error) {
+      if (error.code === "authentication_required") {
+        accessInvalid = true;
+        optimistic.clear();
+        if (state) apply({ ...state, barns: [], users: [], riders: [], horses: [], locations: [], selectedBarn: "", canManage: false });
+        for (const kind2 of Object.keys(FORMS)) {
+          fillDraft(targets.forms[kind2].fields);
+          view.editor({ kind: kind2, open: false, reveal: false });
+        }
+      }
       if (error.code === "record_changed") staleKinds.add(kind);
       if (!disposed) feedback(kind, "error", error.code || error.message);
       return false;
@@ -536,6 +611,7 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     display();
   }
   function applySaved(next, kind, record) {
+    if (accessInvalid) return;
     if (!state) {
       apply(next);
       return;
@@ -544,16 +620,16 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     const index = merged[key].findIndex((row) => row.id === record.id);
     if (index < 0) merged[key].push(record);
     else if ((record.revision || 0) >= (merged[key][index].revision || 0)) merged[key][index] = record;
-    if (kind === "barn") merged.selectedBarn = record.id;
+    if (kind === "barn" && !merged.selectedBarn) merged.selectedBarn = record.id;
     apply(merged);
   }
   async function initialize() {
-    return run("barn", async () => {
+    const initialized = await run("barn", async () => {
       try {
         actor = await api.access();
       } catch (error) {
         if (error.code !== "authentication_required") throw error;
-        if (!disposed) navigate("/rs-recognize");
+        if (!disposed) navigate("/rs-recognize?return_to=%2Frs-barn-onboarding-setup-v24");
         return false;
       }
       const cached = await api.cachedState?.();
@@ -570,11 +646,13 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       editing.barn = barn || null;
       fillDraft(targets.forms.barn.fields, barn);
       for (const kind of ["barn", "riders", "users"]) {
+        const drafts = await api.pendingDrafts?.(kind) || [];
+        for (const saved2 of drafts) showPending(kind, saved2.draft, saved2.barnId, saved2.requestId);
         const saved = await api.pendingDraft?.(kind);
         const draft = saved?.draft;
         if (draft && saved.barnId === state?.selectedBarn) {
           pendingBarn[kind] = saved.barnId;
-          showPending(kind, draft, saved.barnId);
+          showPending(kind, draft, saved.barnId, saved.requestId);
           editing[kind] = draft.id ? draft : null;
           fillDraft(targets.forms[kind].fields, draft);
           view.editor({ kind, record: editing[kind], open: true });
@@ -584,9 +662,10 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       if (loadError) throw loadError;
       return true;
     });
+    if (initialized && new URLSearchParams(document2.location?.search || "").get("profile") === "me") await profileLink();
+    return initialized;
   }
   async function selectBarn(id) {
-    if (pendingKinds.size) return false;
     return run("barn", async () => {
       if (!state?.barns.some((r) => r.id === id)) throw new Error("barn_not_found");
       const next = await api.state(id);
@@ -605,10 +684,10 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
   async function beginEdit(kind, id) {
     return run(kind, async () => {
       if (!FORMS[kind] || !state) throw new Error("records_not_ready");
-      const restored = await api.pendingDraft?.(kind);
-      if (restored?.draft && (restored.draft.id === id || id === `pending-${kind}`)) {
+      const restored = await api.pendingDraft?.(kind, id);
+      if (restored?.draft && (restored.draft.id === id || id === `pending-${kind}-${restored.requestId}`)) {
         pendingBarn[kind] = restored.barnId;
-        editing[kind] = restored.draft.id ? restored.draft : null;
+        editing[kind] = { ...restored.draft, id, revision: restored.draft.revision ?? 0 };
         fillDraft(targets.forms[kind].fields, restored.draft);
         view.editor({ kind, record: editing[kind], open: true });
         feedback(kind, "error", "retry");
@@ -616,7 +695,8 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       }
       const next = staleKinds.has(kind) ? await api.state(state.selectedBarn) : state;
       staleKinds.delete(kind);
-      const record = list(next, kind).find((r) => r.id === id);
+      const local = [...optimistic.values()].find((v) => v.kind === kind && (v.entry.id === id || confirmedIds.get(v.entry.id) === id))?.entry;
+      const record = local ? { ...local, id } : list(next, kind).find((r) => r.id === id);
       if (!record || !Number.isInteger(record.revision)) throw new Error("record_not_found");
       if (disposed) return false;
       apply(next);
@@ -632,18 +712,26 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     return run(kind, async () => {
       if (!FORMS[kind] || !state) throw new Error("records_not_ready");
       const draft = readDraft(targets.forms[kind].fields, editing[kind]);
+      const editAtSave = editing[kind];
+      const barnId = pendingBarn[kind] ?? state.selectedBarn;
       validate(kind, draft, state);
-      showPending(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
-      feedback(kind, "success", "Saving");
-      const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
-      delete pendingBarn[kind];
-      optimistic.delete(kind);
-      if (disposed) return false;
+      let shown;
+      const result = await api.record(kind, draft, barnId, (operation) => {
+        if (accessInvalid) return;
+        shown = showPending(kind, operation.body.draft, barnId, operation.requestId);
+        delete pendingBarn[kind];
+        if (editing[kind] === editAtSave && JSON.stringify(readDraft(targets.forms[kind].fields, editing[kind])) === JSON.stringify(draft)) {
+          editing[kind] = kind === "barn" ? draft : null;
+          fillDraft(targets.forms[kind].fields, kind === "barn" ? draft : {});
+          view.editor({ kind, open: another, record: null, reveal: false });
+        }
+        feedback(kind, "success", "Saving");
+      });
+      if (shown && optimistic.get(shown.key)?.entry === shown.entry) optimistic.delete(shown.key);
+      if (shown) confirmedIds.set(shown.entry.id, result.record.id);
+      if (disposed || accessInvalid) return false;
       applySaved(result.state, kind, result.record);
-      editing[kind] = kind === "barn" ? result.record : null;
-      fillDraft(targets.forms[kind].fields, kind === "barn" ? result.record : kind === "horses" ? { locationId: draft.locationId } : {});
-      view.editor({ kind: kind === "barn" ? "users" : kind, open: kind === "barn" || another, record: null, reveal: false });
-      feedback(kind, "success", "Saved");
+      feedback(kind, "success", [...optimistic.values()].some((v) => v.kind === kind) ? "Saving" : "Saved");
       return true;
     }, true);
   }
@@ -667,7 +755,7 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     });
   }
   function add(kind) {
-    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
+    if (pending || disposed || accessInvalid || !state || !FORMS[kind]) return false;
     delete pendingBarn[kind];
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields, kind === "users" ? { roles: state.roleOptions?.find((r) => r.name === "user")?.id || "" } : {});
@@ -676,7 +764,7 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     return true;
   }
   function cancel(kind) {
-    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
+    if (pending || disposed || accessInvalid || !state || !FORMS[kind]) return false;
     delete pendingBarn[kind];
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
@@ -684,22 +772,24 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     view.editor({ kind, record: null, open: false });
     return true;
   }
-  async function saveLinked(kind, draft) {
+  async function saveLinked(kind, draft, prepared) {
     return run(kind, async () => {
       if (!state || !FORMS[kind]) throw new Error("records_not_ready");
       validate(kind, draft, state);
-      showPending(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
-      feedback(kind, "success", "Saving");
-      const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
-      delete pendingBarn[kind];
-      optimistic.delete(kind);
-      if (disposed) return false;
+      const barnId = pendingBarn[kind] ?? state.selectedBarn;
+      let shown;
+      const result = await api.record(kind, draft, barnId, (operation) => {
+        if (accessInvalid) return;
+        shown = showPending(kind, operation.body.draft, barnId, operation.requestId);
+        delete pendingBarn[kind];
+        feedback(kind, "success", "Saving");
+        prepared?.();
+      });
+      if (shown && optimistic.get(shown.key)?.entry === shown.entry) optimistic.delete(shown.key);
+      if (shown) confirmedIds.set(shown.entry.id, result.record.id);
+      if (disposed || accessInvalid) return false;
       applySaved(result.state, kind, result.record);
-      if (kind === "barn") {
-        editing.barn = result.record;
-        fillDraft(targets.forms.barn.fields, result.record);
-      }
-      feedback(kind, "success", "Saved");
+      feedback(kind, "success", [...optimistic.values()].some((v) => v.kind === kind) ? "Saving" : "Saved");
       return result;
     }, true);
   }
@@ -739,7 +829,7 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     cancel,
     saveLinked,
     getState: () => state,
-    isBusy: (kind) => pending || (kind ? pendingKinds.has(kind) : pendingKinds.size > 0),
+    isBusy: () => pending,
     dispose() {
       disposed = true;
       remove.forEach((fn) => fn());
@@ -982,20 +1072,18 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
     if (!frame || frame.kind !== kind || busy || controller.isBusy(kind)) return;
     const sheet = sheets[kind];
     const draft = readDraft(sheet.fields);
-    const result2 = await controller.saveLinked(kind, draft);
+    const parent = frames.at(-2);
+    const result2 = await controller.saveLinked(kind, draft, () => {
+      if (frames.at(-1) === frame && JSON.stringify(readDraft(sheet.fields)) === JSON.stringify(draft)) {
+        frames.pop();
+        if (sheet.element.matches(":popover-open")) sheet.element.hidePopover();
+        if (frames.length) showSheet(frames.at(-1));
+        else restoreFocus(frame.opener);
+      }
+    });
     if (!result2 || disposed) return;
-    frames.pop();
-    if (sheet.element.matches(":popover-open")) sheet.element.hidePopover();
-    if (frames.length) {
-      const previous = frames.at(-1);
-      if (frame.field) sheets[previous.kind].fields[frame.field].value = result2.record.id;
-      showSheet(previous);
-      restoreFocus(frame.opener);
-    } else {
-      if (frame.field && frame.ownerKind) forms[frame.ownerKind].fields[frame.field].value = result2.record.id;
-      if (kind === "barn") selectTab("users");
-      restoreFocus(frame.opener);
-    }
+    if (frame.field && parent && frames.includes(parent) && !sheets[parent.kind].fields[frame.field].value) sheets[parent.kind].fields[frame.field].value = result2.record.id;
+    else if (frame.field && frame.ownerKind && !forms[frame.ownerKind].fields[frame.field].value) forms[frame.ownerKind].fields[frame.field].value = result2.record.id;
   }
   const view = {
     state(state, actor) {
@@ -1061,8 +1149,8 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       } else busy = value;
       root.setAttribute("aria-busy", String(busy || savingKinds.size > 0));
       root.inert = busy;
-      for (const [key, form] of Object.entries(forms)) form.form.inert = busy || savingKinds.has(key);
-      for (const [key, sheet] of Object.entries(sheets)) sheet.form.inert = busy || savingKinds.has(key);
+      for (const [key, form] of Object.entries(forms)) form.form.inert = busy;
+      for (const [key, sheet] of Object.entries(sheets)) sheet.form.inert = busy;
       if (!busy && pendingFocus) {
         pendingFocus.focus();
         pendingFocus = null;

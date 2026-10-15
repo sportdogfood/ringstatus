@@ -18,7 +18,7 @@ import {runSilentRecognition} from '../rs-recognition/native-client.js';
   if(actorId&&result.actor.id!==actorId){stopped=true;loaded=false;data=seed();throw Error('Account changed. Reload to load this account’s preferences.');}
   return result.actor.id;
  }
- const lock=on=>{busy=on;form.querySelectorAll('input,button,select').forEach(node=>node.disabled=on||!loaded||stopped);};
+ const lock=on=>{busy=on;form.querySelectorAll('input,button,select').forEach(node=>node.disabled=!loaded||stopped);};
  const errors={account_changed:'Account changed. Reload to load this account’s preferences.',authentication_required:'Recognition is required to load your preferences.',record_changed:'Preferences changed in another window. Reload to view the latest saved choices.',write_outcome_unknown:'Save could not be confirmed. Retry the same save to check it.',subscription_request_in_progress:'A save is already in progress. Wait, then try again.'};
  async function request(body,requestId){
   const url=new URL(endpoint);if(!body){url.searchParams.set('view',requestId?'submission':'preferences');if(requestId)url.searchParams.set('request_id',requestId);}
@@ -56,7 +56,7 @@ import {runSilentRecognition} from '../rs-recognition/native-client.js';
  }
  function changed(){if(!loaded||stopped||!persistence)return;error='';notice='Pending — use Save to confirm these choices.';invalid='';const draft=JSON.parse(JSON.stringify(data));draftWrites=draftWrites.then(()=>persistence.edit(draft)).catch(()=>{error='Device storage failed. Keep this page open; these choices cannot be safely queued.';update();throw Error('device_storage_failed');});draftWrites.catch(()=>{});update();}
  async function save(){
-  if(busy||!loaded)return;
+  if(!loaded||stopped)return;
   error='';notice='';invalid='';
   const selected=definitions.filter(a=>data.variables[a.key].enabled).length;
   if(data.enabled){
@@ -69,7 +69,12 @@ import {runSilentRecognition} from '../rs-recognition/native-client.js';
     if(a.input==='time'&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(pref.value)){error=a.label+': choose a time.';invalid=a.key;update();return;}
    }
   }
-  await transmit(true);
+  const snapshot=JSON.parse(JSON.stringify(data));
+  try{
+   await draftWrites;
+   await persistence.prepareIndependent({action:'preferences',requestId:crypto.randomUUID(),expectedRevision:revision,preferences:snapshot});
+   notice='Saving preferences…';error='';update();void transmit(true);
+  }catch(e){error=e.message;update();}
  }
  async function transmit(explicit=false){
   if(busy||!loaded||stopped)return;
@@ -87,10 +92,11 @@ import {runSilentRecognition} from '../rs-recognition/native-client.js';
    if(!operation){
     if(!explicit){notice=state.dirty?'Pending - use Save to confirm these choices.':'';return;}
     // Explicit Save alone authorizes a new consent-bearing request.
-    operation=await persistence.prepare({action:'preferences',requestId:crypto.randomUUID(),expectedRevision:revision,preferences:JSON.parse(JSON.stringify(data))});
+    operation=await persistence.prepareIndependent({action:'preferences',requestId:crypto.randomUUID(),expectedRevision:revision,preferences:JSON.parse(JSON.stringify(data))});
    }
    if(!explicit&&['record_changed','intake_record_changed'].includes(operation.error)){error=errors.record_changed;notice='';return;}
    pending=operation;
+   operation=await persistence.submitted(operation);
    polling=awaitingRequestId===operation.body.requestId;
    let saved=polling?await request(null,operation.body.requestId):await request(operation.body);
    if(saved.state==='Pending'){awaitingRequestId=operation.body.requestId;
@@ -103,6 +109,7 @@ import {runSilentRecognition} from '../rs-recognition/native-client.js';
    awaitingRequestId=null;
    const current=await persistence.load();data=current.draft;revision=saved.revision;pending=current.pending;
    notice=current.dirty?'Pending — newer choices still need Save.':'Saved';
+   if(current.pending){clearTimeout(retryTimer);retryTimer=setTimeout(()=>transmit(),0);notice='Saving preferences…';}
   }catch(e){
    if(operation)await persistence.fail(operation,!polling&&e.code==='record_changed'?'intake_record_changed':e.code||e.name).catch(()=>{});
    error=e.name==='TimeoutError'?'Save could not be confirmed. Retry the same save to check it.':e.message;
@@ -113,7 +120,7 @@ import {runSilentRecognition} from '../rs-recognition/native-client.js';
   }finally{lock(false);form.querySelectorAll('[type="submit"]').forEach(node=>node.disabled=!loaded);update();}
 
  }
- root.addEventListener('click',event=>{const button=event.target.closest('[data-rs-action]');if(!button||!root.contains(button))return;event.preventDefault();const action=button.dataset.rsAction;if(action==='theme')root.dataset.theme=button.dataset.value;if(action==='alert-view')mobile=!mobile;if(action==='alert-value'){if(busy||!loaded||stopped)return;data.variables[button.dataset.key].value=button.dataset.value;changed();return;}presentation();});
+ root.addEventListener('click',event=>{const button=event.target.closest('[data-rs-action]');if(!button||!root.contains(button))return;event.preventDefault();const action=button.dataset.rsAction;if(action==='theme')root.dataset.theme=button.dataset.value;if(action==='alert-view')mobile=!mobile;if(action==='alert-value'){if(!loaded||stopped)return;data.variables[button.dataset.key].value=button.dataset.value;changed();return;}presentation();});
  root.addEventListener('change',event=>{if(!loaded||stopped||!persistence)return;const e=event.target;if(e===sms){data.enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert')){data.variables[e.dataset.rsAlert].enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
  root.addEventListener('input',event=>{if(!loaded||stopped||!persistence)return;const e=event.target;if(e===phone){data.phone=e.value;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
  root.addEventListener('submit',event=>{if(event.target!==form)return;event.preventDefault();event.stopImmediatePropagation();save();},true);

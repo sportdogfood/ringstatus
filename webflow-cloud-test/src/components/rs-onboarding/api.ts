@@ -79,13 +79,15 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
   const requests = new Map<string, { fingerprint: string; id: string }>();
   let verifiedActor: AccessActor | null = null;
   let confirmedState: Store | null = null;
+  const saveChains=new Map<string,Promise<any>>();
+  const operationResults=new Map<string,any>();
   const persistence=(kind: string)=>createPersistence({scope:{actorId:verifiedActor!.id,resource:`native-${kind}`,tenantId:'editor'},...(options.storage?{storage:options.storage}:{})});
   function mergeSavedState(next: Store, kind: Kind, record: Item): Store {
     if(!confirmedState){confirmedState=next;return next;}
     const merged=structuredClone(confirmedState),key=kind==='barn'?'barns':kind;
     const index=merged[key].findIndex(row=>row.id===record.id);
     if(index<0)merged[key].push(record);else if((record.revision||0)>=(merged[key][index].revision||0))merged[key][index]=record;
-    if(kind==='barn')merged.selectedBarn=record.id;
+    if(kind==='barn'&&!merged.selectedBarn)merged.selectedBarn=record.id;
     confirmedState=merged;return merged;
   }
   async function request(path: string, body?: Record<string, unknown>) {
@@ -101,7 +103,41 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
     if (!response.ok || result?.ok !== true) throw new InputApiError(typeof result?.error === 'string' ? result.error : `save_${response.status}`, response.status, response.headers.get('X-Request-Id') || undefined, response.headers.get('Content-Type') || undefined);
     return result;
   }
-  async function mutation(path: string, body: Record<string, unknown>, validate: (result: any) => boolean) {
+  async function mutation(path: string, body: Record<string, unknown>, validate: (result: any) => boolean, prepared?: (operation:any)=>void) {
+    if(options.durableBarn&&path==='/record'&&['barn','riders','users'].includes(String(body.kind))){
+      if(!verifiedActor)throw new InputApiError('authentication_required');
+      const kind=String(body.kind),device=persistence(kind);
+      const wanted=await device.prepareIndependent({...body,requestId:crypto.randomUUID()});
+      prepared?.(wanted);
+      const queued=await device.load(),all=[queued.pending,...(queued.retainedPending||[])].filter(Boolean);
+      const target=(op:any)=>`${op.body.barnId}:${op.body.draft.id||op.body.draft.name.trim().toLowerCase()}`;
+      const parent=all.find((op:any)=>wanted.body.draft.id===`pending-${kind}-${op.requestId}`);
+      const chainKey=kind+':'+target(parent||wanted);
+      const dependencies=new Set(all.filter((op:any)=>op.generation<=wanted.generation&&(target(op)===target(wanted)||target(op)===target(parent||wanted))).map((op:any)=>op.requestId));
+      const previous=saveChains.get(chainKey)||Promise.resolve();
+      const work=previous.catch(()=>{}).then(async()=>{
+        if(operationResults.has(wanted.requestId))return operationResults.get(wanted.requestId);
+        for(;;){
+          const saved=await device.load(),entry=[saved.pending,...(saved.retainedPending||[])].filter(Boolean).find((op:any)=>dependencies.has(op.requestId));
+          if(!entry)throw new Error('pending_operation_missing');
+          const current=accessActor(await request('/access'));if(current.id!==verifiedActor!.id)throw new InputApiError('authentication_required');
+          const operation=await device.submitted(entry);
+          try{
+            let result:any;
+            for(let attempt=0;;attempt++)try{result=await request('/record',operation.body);break;}catch(error){if(!(error instanceof InputApiError)||error.code!=='tenant_save_pending'||attempt>=12)throw error;await new Promise(resolve=>setTimeout(resolve,2000));}
+            if(!result.state&&confirmedState&&result.record)result.state=mergeSavedState(confirmedState,kind as Kind,result.record);
+            if(!validate(result))throw new Error('The server response could not be verified.');
+            const cleaned=await device.confirm(operation,result.record,result.record.revision).catch(()=>false);
+            result.state=mergeSavedState(result.state,kind as Kind,result.record);
+            await persistence('state').refresh(result.state,0).catch(()=>{});
+            operationResults.set(operation.requestId,result);
+            if(operation.requestId===wanted.requestId)return result;
+            if(!cleaned)throw new Error('device_storage_unavailable');
+          }catch(error){await device.fail(operation,error instanceof InputApiError?error.code:'save_unconfirmed',error instanceof InputApiError?{status:error.status,requestId:error.requestId,contentType:error.contentType}:undefined).catch(()=>{});throw error;}
+        }
+      });
+      saveChains.set(chainKey,work);return work;
+    }
     const requestKey=path==='/record'?`${path}:${String(body.kind)}`:path;
     const fingerprint = JSON.stringify(body);
     let pending = requests.get(requestKey);
@@ -109,15 +145,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       pending = { fingerprint, id: crypto.randomUUID() };
       requests.set(requestKey, pending);
     }
-    let device: any=null, operation: any=null;
-    if(options.durableBarn&&path==='/record'&&['barn','riders','users'].includes(String(body.kind))){
-      if(!verifiedActor)throw new InputApiError('authentication_required');
-      device=persistence(String(body.kind));
-      operation=await device.prepareIndependent({...body,requestId:pending.id});
-      pending.id=operation.requestId;
-    }
     try{
-      if(device){const current=accessActor(await request('/access'));if(current.id!==verifiedActor!.id)throw new InputApiError('authentication_required');}
       let result: any;
       for(let attempt=0;;attempt++){
         try{result=await request(path,{...body,requestId:pending.id});break;}
@@ -125,12 +153,13 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       }
       if(options.durableBarn&&confirmedState&&!result.state&&(path==='/profile-link'||(path==='/record'&&['barn','riders','users'].includes(String(body.kind))))&&typeof result.record?.id==='string'&&typeof result.record?.name==='string'&&typeof result.record?.barnId==='string'&&Number.isSafeInteger(result.record?.revision))result.state=mergeSavedState(confirmedState,(path==='/profile-link'?'users':body.kind) as Kind,result.record);
       if (!validate(result)) throw new Error('The server response could not be verified. Your entry is still here.');
+      prepared?.({body,requestId:pending.id});
       // WEC: confirmed returned data determines Saved. Device cleanup is separate;
       // if unavailable, retain the same operation for later safe reconciliation.
-      if(device)await device.confirm(operation,result.record,result.record.revision).catch(()=>{});
+
       if(options.durableBarn&&verifiedActor&&validStore(result.state)){result.state=mergeSavedState(result.state,(path==='/profile-link'?'users':body.kind) as Kind,result.record);await persistence('state').refresh(result.state,0).catch(()=>{});}
       requests.delete(requestKey);return result;
-    }catch(error){if(device)await device.fail(operation,error instanceof InputApiError?error.code:error instanceof Error?error.message:'save_unconfirmed',error instanceof InputApiError?{status:error.status,requestId:error.requestId,contentType:error.contentType}:undefined).catch(()=>{});throw error;}
+    }catch(error){throw error;}
   }
   const recordResponse = (result: any) => typeof result?.record?.id === 'string' && validStore(result.state);
   function accessActor(result: any): AccessActor {
@@ -146,7 +175,8 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
     async access(): Promise<AccessActor> { const current=accessActor(await request('/access'));if(verifiedActor&&current.id!==verifiedActor.id)throw new InputApiError('authentication_required');verifiedActor=current;return current; },
     async userOptins(barnId:string,userId:string){return request('/user-optins?barn_id='+encodeURIComponent(barnId)+'&user_id='+encodeURIComponent(userId));},
     async cachedState(){if(!options.durableBarn||!verifiedActor)return null;try{const saved=(await persistence('state').load()).confirmed?.data;return validStore(saved)?saved:null;}catch{return null;}},
-    async pendingDraft(kind: string){if(!options.durableBarn||!verifiedActor)return null;return (await persistence(kind).load()).pending?.body||null;},
+    async pendingDraft(kind: string,id?:string){if(!options.durableBarn||!verifiedActor)return null;const saved=await persistence(kind).load(),all=[saved.pending,...(saved.retainedPending||[])].filter(Boolean);return all.filter((op:any)=>!id||op.body.draft.id===id||`pending-${kind}-${op.requestId}`===id).at(-1)?.body||null;},
+    async pendingDrafts(kind:string){if(!options.durableBarn||!verifiedActor)return [];const saved=await persistence(kind).load();return [saved.pending,...(saved.retainedPending||[])].filter(Boolean).map((op:any)=>op.body);},
     async acceptInvitation(token: string): Promise<AccessActor> {
       if (!/^[A-Za-z0-9_-]{43}$/.test(token)) throw new InputApiError('invalid_invitation');
       clearDeviceToken();
@@ -162,7 +192,11 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       if(options.durableBarn&&verifiedActor)await persistence('state').refresh(result.state,0).catch(()=>{});
       return result.state;
     },
-    async record(kind: Kind, draft: Draft, barnId: string): Promise<{ record: Item; state: Store }> {
+    async record(kind: Kind, draft: Draft, barnId: string, prepared?: (operation:any)=>void): Promise<{ record: Item; state: Store }> {
+      if(draft.id?.startsWith(`pending-${kind}-`)){
+        const confirmed=operationResults.get(draft.id.slice(`pending-${kind}-`.length));
+        if(confirmed)draft={...draft,id:confirmed.record.id,revision:confirmed.record.revision};
+      }
       // Reopened forms add optional controls, and intentionally never refill PIN.
       // An unchanged Retry must send the original retained payload and identity.
       if(options.durableBarn&&verifiedActor&&['barn','riders','users'].includes(kind)){
@@ -174,7 +208,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
           if(compatible)draft=retained.draft;
         }
       }
-      return mutation('/record', { kind, draft, barnId, ...(draft.id && draft.revision !== undefined ? { expectedRevision: draft.revision } : {}) }, recordResponse);
+      return mutation('/record', { kind, draft, barnId, ...(draft.id && draft.revision !== undefined ? { expectedRevision: draft.revision } : {}) }, recordResponse, prepared);
     },
     async profileLink(barnId: string): Promise<{ record: Item; state: Store }> {
       return mutation('/profile-link', { barnId }, recordResponse);

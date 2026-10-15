@@ -73,34 +73,40 @@ export function bindMainForms({ document, api, view, navigate = path => document
   const targets = inspectMainForms(document);
   if (mounted.has(targets.root)) return mounted.get(targets.root);
   for (const method of ['state', 'feedback', 'busy', 'editor']) if (typeof view?.[method] !== 'function') throw new Error(`native_view_contract_missing:${method}`);
-  let state = null, actor = null, pending = false, disposed = false;
+  let state = null, actor = null, pending = false, disposed = false, accessInvalid=false;
   const pendingKinds = new Set();
   const staleKinds = new Set();
   const pendingBarn = {};
   const optimistic = new Map();
+  const confirmedIds=new Map();
   function display() {
     if (!state || disposed) return;
     const visible = structuredClone(state);
-    for (const [kind, entry] of optimistic) {
+    for (const {kind,entry:local} of optimistic.values()) {
+      const entry={...local,id:confirmedIds.get(local.id)||local.id};
       const key=kind==='barn'?'barns':kind;
       const rows=visible[key],index=rows.findIndex(row=>row.id===entry.id);
       if(index<0)rows.push(entry);else rows[index]=entry;
     }
     view.state(visible, actor);
   }
-  function showPending(kind,draft,barnId) {
-    optimistic.set(kind,{...draft,id:draft.id||`pending-${kind}`,barnId:kind==='barn'?(draft.id||''):barnId,pending:true});
+  function showPending(kind,draft,barnId,requestId='restored') {
+    const id=draft.id||`pending-${kind}-${requestId}`;
+    const key=kind+':'+id;
+    const entry={...draft,id,revision:draft.revision??0,barnId:kind==='barn'?(draft.id||''):barnId,pending:true};
+    optimistic.set(key,{kind,entry});
     display();
+    return {key,entry};
   }
   const editing = Object.fromEntries(Object.keys(FORMS).map(kind => [kind, null]));
   const remove = [];
   const feedback = (kind, type, value) => view.feedback({ kind, type, value });
   async function run(kind, operation, saving = false) {
-    if (pending || pendingKinds.has(kind) || disposed) return false;
+    if (pending || disposed || accessInvalid) return false;
     if(saving)pendingKinds.add(kind);else pending = true;
     view.busy(true, {kind, saving});
     try { return await operation(); }
-    catch (error) { if(error.code==='record_changed')staleKinds.add(kind);if (!disposed) feedback(kind, 'error', error.code || error.message); return false; }
+    catch (error) { if(error.code==='authentication_required'){accessInvalid=true;optimistic.clear();if(state)apply({...state,barns:[],users:[],riders:[],horses:[],locations:[],selectedBarn:'',canManage:false});for(const kind of Object.keys(FORMS)){fillDraft(targets.forms[kind].fields);view.editor({kind,open:false,reveal:false});}}if(error.code==='record_changed')staleKinds.add(kind);if (!disposed) feedback(kind, 'error', error.code || error.message); return false; }
     finally { if(saving)pendingKinds.delete(kind);else pending = false; if (!disposed) view.busy(false, {kind, saving}); }
   }
   function apply(next) {
@@ -109,23 +115,24 @@ export function bindMainForms({ document, api, view, navigate = path => document
     display();
   }
   function applySaved(next, kind, record) {
+    if(accessInvalid)return;
     // WEC/HPS: merge the confirmed record, not an unrelated response snapshot.
     if(!state){apply(next);return;}
     const merged=structuredClone(state),key=kind==='barn'?'barns':kind;
     const index=merged[key].findIndex(row=>row.id===record.id);
     if(index<0)merged[key].push(record);else if((record.revision||0)>=(merged[key][index].revision||0))merged[key][index]=record;
-    if(kind==='barn')merged.selectedBarn=record.id;
+    if(kind==='barn'&&!merged.selectedBarn)merged.selectedBarn=record.id;
     apply(merged);
   }
   async function initialize() {
-    return run('barn', async () => {
+    const initialized=await run('barn', async () => {
       try {
         actor = await api.access(); // Same verified cookie contract as existing onboarding.
       } catch (error) {
         // Only an absent/expired identity enters Recognize. Storage failures stay
         // on this page, and failed saves never discard an existing draft.
         if (error.code !== 'authentication_required') throw error;
-        if (!disposed) navigate('/rs-recognize');
+        if (!disposed) navigate('/rs-recognize?return_to=%2Frs-barn-onboarding-setup-v24');
         return false;
       }
       const cached=await api.cachedState?.();if(cached)apply(cached);
@@ -137,20 +144,23 @@ export function bindMainForms({ document, api, view, navigate = path => document
       editing.barn = barn || null;
       fillDraft(targets.forms.barn.fields, barn);
       for (const kind of ['barn','riders','users']) {
+        const drafts=await api.pendingDrafts?.(kind)||[];
+        for(const saved of drafts)showPending(kind,saved.draft,saved.barnId,saved.requestId);
         const saved=await api.pendingDraft?.(kind);
         const draft=saved?.draft;
         // Retain another Barn's pending work without changing the recognized selection.
         if(draft && saved.barnId===state?.selectedBarn){
           pendingBarn[kind]=saved.barnId;
-showPending(kind,draft,saved.barnId);
+showPending(kind,draft,saved.barnId,saved.requestId);
 editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','retry');}
       }
       if(loadError)throw loadError;
       return true;
     });
+    if(initialized&&new URLSearchParams(document.location?.search||'').get('profile')==='me')await profileLink();
+    return initialized;
   }
   async function selectBarn(id) {
-    if(pendingKinds.size)return false;
     return run('barn', async () => {
       if (!state?.barns.some(r => r.id === id)) throw new Error('barn_not_found');
       const next = await api.state(id);
@@ -169,14 +179,15 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
   async function beginEdit(kind, id) {
     return run(kind, async () => {
       if (!FORMS[kind] || !state) throw new Error('records_not_ready');
-      const restored=await api.pendingDraft?.(kind);
-      if(restored?.draft && (restored.draft.id===id || id===`pending-${kind}`)){
-        pendingBarn[kind]=restored.barnId;editing[kind]=restored.draft.id?restored.draft:null;
+      const restored=await api.pendingDraft?.(kind,id);
+      if(restored?.draft && (restored.draft.id===id || id===`pending-${kind}-${restored.requestId}`)){
+        pendingBarn[kind]=restored.barnId;editing[kind]={...restored.draft,id,revision:restored.draft.revision??0};
         fillDraft(targets.forms[kind].fields,restored.draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','retry');return true;
       }
       const next = staleKinds.has(kind) ? await api.state(state.selectedBarn) : state;
       staleKinds.delete(kind);
-      const record = list(next, kind).find(r => r.id === id);
+      const local=[...optimistic.values()].find(v=>v.kind===kind&&(v.entry.id===id||confirmedIds.get(v.entry.id)===id))?.entry;
+      const record = local?{...local,id}:list(next, kind).find(r => r.id === id);
       if (!record || !Number.isInteger(record.revision)) throw new Error('record_not_found');
       if (disposed) return false;
       apply(next);
@@ -192,18 +203,26 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     return run(kind, async () => {
       if (!FORMS[kind] || !state) throw new Error('records_not_ready');
       const draft = readDraft(targets.forms[kind].fields, editing[kind]);
+      const editAtSave=editing[kind];
+      const barnId=pendingBarn[kind] ?? state.selectedBarn;
       validate(kind, draft, state);
-      showPending(kind,draft,pendingBarn[kind] ?? state.selectedBarn);
-      feedback(kind,'success','Saving');
-      const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
-      delete pendingBarn[kind];
-      optimistic.delete(kind);
-      if (disposed) return false;
+      let shown;
+      const result = await api.record(kind, draft, barnId,operation=>{
+        if(accessInvalid)return;
+        shown=showPending(kind,operation.body.draft,barnId,operation.requestId);
+        delete pendingBarn[kind];
+        if(editing[kind]===editAtSave&&JSON.stringify(readDraft(targets.forms[kind].fields,editing[kind]))===JSON.stringify(draft)){
+          editing[kind]=kind==='barn'?draft:null;
+          fillDraft(targets.forms[kind].fields,kind==='barn'?draft:{});
+          view.editor({kind,open:another,record:null,reveal:false});
+        }
+        feedback(kind,'success','Saving');
+      });
+      if(shown&&optimistic.get(shown.key)?.entry===shown.entry)optimistic.delete(shown.key);
+      if(shown)confirmedIds.set(shown.entry.id,result.record.id);
+      if (disposed||accessInvalid) return false;
       applySaved(result.state, kind, result.record);
-      editing[kind] = kind === 'barn' ? result.record : null;
-      fillDraft(targets.forms[kind].fields, kind === 'barn' ? result.record : kind === 'horses' ? { locationId: draft.locationId } : {});
-      view.editor({ kind: kind === 'barn' ? 'users' : kind, open: kind === 'barn' || another, record: null, reveal: false });
-      feedback(kind, 'success', 'Saved');
+      feedback(kind, 'success', [...optimistic.values()].some(v=>v.kind===kind)?'Saving':'Saved');
       return true;
     }, true);
   }
@@ -222,7 +241,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     });
   }
   function add(kind) {
-    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
+    if (pending || disposed || accessInvalid || !state || !FORMS[kind]) return false;
     delete pendingBarn[kind];
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields,kind==='users'?{roles:state.roleOptions?.find(r=>r.name==='user')?.id||''}:{});
@@ -231,7 +250,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     return true;
   }
   function cancel(kind) {
-    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
+    if (pending || disposed || accessInvalid || !state || !FORMS[kind]) return false;
     delete pendingBarn[kind];
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
@@ -239,23 +258,22 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     view.editor({ kind, record: null, open: false });
     return true;
   }
-  async function saveLinked(kind, draft) {
+  async function saveLinked(kind, draft, prepared) {
     return run(kind, async () => {
       if (!state || !FORMS[kind]) throw new Error('records_not_ready');
       validate(kind, draft, state);
-      showPending(kind,draft,pendingBarn[kind] ?? state.selectedBarn);
-      feedback(kind,'success','Saving');
-      const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
-      delete pendingBarn[kind];
-      optimistic.delete(kind);
-      if (disposed) return false;
+      const barnId=pendingBarn[kind] ?? state.selectedBarn;
+      let shown;
+      const result = await api.record(kind, draft, barnId,operation=>{
+        if(accessInvalid)return;
+        shown=showPending(kind,operation.body.draft,barnId,operation.requestId);
+        delete pendingBarn[kind];feedback(kind,'success','Saving');prepared?.();
+      });
+      if(shown&&optimistic.get(shown.key)?.entry===shown.entry)optimistic.delete(shown.key);
+      if(shown)confirmedIds.set(shown.entry.id,result.record.id);
+      if (disposed||accessInvalid) return false;
       applySaved(result.state, kind, result.record);
-      if (kind === 'barn') {
-        editing.barn = result.record;
-        fillDraft(targets.forms.barn.fields, result.record);
-        // Existing independent drafts remain untouched when this save completes.
-      }
-      feedback(kind,'success','Saved');
+      feedback(kind,'success',[...optimistic.values()].some(v=>v.kind===kind)?'Saving':'Saved');
       return result;
     }, true);
   }
@@ -273,7 +291,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     if (nodes.secondary) { on(nodes.secondary, 'click', saveHandler(false)); keyboardAction(nodes.secondary, saveHandler(false)); }
   }
   const controller = { initialize, selectBarn, beginEdit, save, profileLink, add, cancel, saveLinked,
-    getState: () => state, isBusy: (kind) => pending || (kind ? pendingKinds.has(kind) : pendingKinds.size > 0),
+    getState: () => state, isBusy: () => pending,
     dispose() { disposed = true; remove.forEach(fn => fn()); mounted.delete(targets.root); } };
   mounted.set(targets.root, controller);
   return controller;

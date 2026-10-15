@@ -40,12 +40,13 @@ export function createTenantBarnStore({legacy,call,actor}){
  const one=async(table,field,value)=>{const rows=await call(table,{formula:`{${field}} = '${quote(value)}'`});if(rows.length>1)fail('ambiguous_tenant_mapping');return rows[0]||null;};
  const mapping=(kind,id)=>one(TABLE.sources,'mapping_uid',`${SOURCE}|${kind}|${id}`);
  async function access(tenantId){
+  const tenant=await call(TABLE.barn,{id:tenantId});if(tenant.fields.tenant_active!==true)return null;
   const person=await one(TABLE.people,'recognition_person_uid',actor.id);if(!person||!['Active','Test'].includes(person.fields.status))return null;
   const memberships=(await call(TABLE.memberships)).filter(r=>r.fields.Person?.length===1&&r.fields.Person[0]===person.id&&r.fields.Tenant?.length===1&&r.fields.Tenant[0]===tenantId);
   if(memberships.length>1)fail('ambiguous_tenant_membership');
   const membership=memberships[0];if(membership?.fields.Status!=='Enabled')return null;
   const catalog=await call(TABLE.roles),roles=catalog.filter(r=>membership.fields.Roles?.includes(r.id));
-  if(!roles.length)return null;
+  if(!roles.some(r=>r.fields.rec_name==='owner')&&!/^\+?[\d ()-]{10,24}$/.test(person.fields.phone_e164||''))return null;
   return {person,membership,roles,manage:roles.some(r=>r.fields.rec_name==='owner')};
  }
  async function allowed(tenantId){return !!await access(tenantId);}
@@ -93,7 +94,7 @@ export function createTenantBarnStore({legacy,call,actor}){
      for(const m of memberships){if(memberships.filter(other=>other.fields.Person[0]===m.fields.Person[0]).length!==1)fail('ambiguous_tenant_membership');
       if(!granted.manage&&(m.fields.Person[0]!==granted.person.id||m.fields.Status!=='Enabled'))continue;
       if(maps.some(map=>map.fields.external_id===m.fields.Person[0]&&map.fields.source_scope===bm.fields.entity_uid))continue;
-      const p=await call(TABLE.people,{id:m.fields.Person[0]}),f=p.fields;if(!f.entity_uid||!f.name||!['Active','Test'].includes(f.status))continue;
+      const p=await call(TABLE.people,{id:m.fields.Person[0]}),f=p.fields;if(!f.entity_uid||!f.name||(!granted.manage&&!['Active','Test'].includes(f.status)))continue;
       if(byId.has(f.entity_uid))fail('ambiguous_tenant_mapping');
       byId.set(f.entity_uid,{id:f.entity_uid,barnId:bm.fields.entity_uid,name:f.name,email:f.email||'',displayName:f['display-name']||'',sms:f.phone_e164||'',profileImg:f['profile-img']||'',tags:f.tags||'',roles:(m.fields.Roles||[]).slice().sort().join(','),membershipStatus:m.fields.Status||'Disabled',recognitionPersonId:f.recognition_person_uid||'',revision:0,ownerUid:actor.id});
      }

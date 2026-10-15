@@ -118,10 +118,11 @@ export function prepareNativeBarn({document, api, chooser}) {
   async function saveSheet(kind){
     const frame=frames.at(-1);if(!frame||frame.kind!==kind||busy||controller.isBusy(kind))return;
     const sheet=sheets[kind];const draft=readDraft(sheet.fields);
-    const result=await controller.saveLinked(kind,draft);if(!result||disposed)return;
-    frames.pop();if(sheet.element.matches(':popover-open'))sheet.element.hidePopover();
-    if(frames.length){const previous=frames.at(-1);if(frame.field)sheets[previous.kind].fields[frame.field].value=result.record.id;showSheet(previous);restoreFocus(frame.opener);}
-    else {if(frame.field&&frame.ownerKind)forms[frame.ownerKind].fields[frame.field].value=result.record.id;if(kind==='barn')selectTab('users');restoreFocus(frame.opener);}
+    const parent=frames.at(-2);
+    const result=await controller.saveLinked(kind,draft,()=>{if(frames.at(-1)===frame&&JSON.stringify(readDraft(sheet.fields))===JSON.stringify(draft)){frames.pop();if(sheet.element.matches(':popover-open'))sheet.element.hidePopover();if(frames.length)showSheet(frames.at(-1));else restoreFocus(frame.opener);}});if(!result||disposed)return;
+    // A background receipt never closes or refocuses a newer editor.
+    if(frame.field&&parent&&frames.includes(parent)&&!sheets[parent.kind].fields[frame.field].value)sheets[parent.kind].fields[frame.field].value=result.record.id;
+    else if(frame.field&&frame.ownerKind&&!forms[frame.ownerKind].fields[frame.field].value)forms[frame.ownerKind].fields[frame.field].value=result.record.id;
   }
   const view={
     state(state,actor){
@@ -150,7 +151,7 @@ export function prepareNativeBarn({document, api, chooser}) {
       if(frames.at(-1)?.kind===kind&&type==='error'){const sheet=sheets[kind];sheet.description.textContent=describeError(value);sheet.description.setAttribute('role','alert');if(!sheet.element.matches(':popover-open'))sheet.element.showPopover();return;}
       clearFeedback(kind);const target=controls[kind][type];target.textContent=type==='error'?describeError(value):value;target.setAttribute('role',type==='error'?'alert':'status');show(target,true);
     },
-    busy(value,{kind,saving=false}={}){if(saving){if(value)savingKinds.add(kind);else savingKinds.delete(kind);}else busy=value;root.setAttribute('aria-busy',String(busy||savingKinds.size>0));root.inert=busy;for(const [key,form] of Object.entries(forms))form.form.inert=busy||savingKinds.has(key);for(const [key,sheet] of Object.entries(sheets))sheet.form.inert=busy||savingKinds.has(key);if(!busy&&pendingFocus){pendingFocus.focus();pendingFocus=null;}},
+    busy(value,{kind,saving=false}={}){if(saving){if(value)savingKinds.add(kind);else savingKinds.delete(kind);}else busy=value;root.setAttribute('aria-busy',String(busy||savingKinds.size>0));root.inert=busy;for(const [key,form] of Object.entries(forms))form.form.inert=busy;for(const [key,sheet] of Object.entries(sheets))sheet.form.inert=busy;if(!busy&&pendingFocus){pendingFocus.focus();pendingFocus=null;}},
     editor({kind,record,open,reveal=true}){if(reveal)selectTab(kind);show(forms[kind].form,open);show(controls[kind].edit,open&&!!record);show(controls[kind].add,!open&&controller.getState()?.canManage!==false);clearFeedback(kind);
       const title=controls[kind].edit.firstElementChild;if(title&&record)title.textContent=`Editing ${record.name}`;if(open&&reveal){if(busy)pendingFocus=forms[kind].fields.name;else forms[kind].fields.name.focus();}}
   };

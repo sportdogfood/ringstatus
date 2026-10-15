@@ -106,7 +106,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   if (root.__rsNativeRecognition) return root.__rsNativeRecognition;
   // Only this explicitly supported native input destination may override the page default.
   const returns = new URLSearchParams(locationImpl?.search || '').getAll('return_to');
-  const returnPath = returns.length === 1 && returns[0] === '/rs-barn-onboarding-alerts' ? returns[0] : null;
+  const returnPath = returns.length === 1 && ['/rs-barn-onboarding-alerts','/rs-barn-onboarding-setup-v24'].includes(returns[0]) ? returns[0] : null;
   const endpoint = new URL(baseUrl);
   if (endpoint.protocol !== "https:" && endpoint.hostname !== "localhost") throw new Error("invalid_recognition_origin");
   if (globalThis.location?.origin && endpoint.origin !== globalThis.location.origin) throw new Error("native_same_origin_required");
@@ -141,7 +141,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   const nativePresent=present;
   function snapshot(){
     const stage=busy?'checking':tenantReady?'tenant_ready':verified?'recognized':otpPhone?'code':state==='login'?'entry':'unavailable';
-    const allowedActions=busy?[]:verified?(tenantReady?['not_you']:['not_you','retry']):['show_phone','show_pin','show_invite','show_sms','retry'];
+    const allowedActions=busy?[]:verified?(tenantReady?['not_you']:['not_you','retry']):['show_phone','show_pin','show_invite','retry'];
     return {stage,busy,halted:false,entryMode,allowedActions,resultVersion};
   }
   present=value=>{nativePresent(value);root.setAttribute('data-rs-recognition-state',JSON.stringify(snapshot()));};
@@ -169,7 +169,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   function choose(mode){
     if(busy||pending||credentialPending)throw new Error('request_pending');
     clearConfirmation(sessionStorageImpl);
-    entryMode=mode;otpPhone=null;otpRequestId=null;opened=true;otpInput(false);
+    entryMode=mode==='sms'?'phone':mode;mode=entryMode;otpPhone=null;otpRequestId=null;opened=true;otpInput(false);
     const input=get('[data-rs-native-state="login"] [name="identifier"]');
     input.value='';input.setAttribute('autocomplete',mode==='phone'||mode==='sms'?'tel':'off');
     input.setAttribute('aria-label',mode==='pin'?'4-digit PIN':mode==='invite'?'7-digit invitation':'10-digit phone');
@@ -361,15 +361,14 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     event.preventDefault(); if (busy) return;
     const command = target.getAttribute('data-rs-native-action');
     if (command === "open") { returnFocus = target; opened = true; show(state); await lookup(); }
-    else if (command === "profile") { opened = true; show(deviceConfirmed ? "profile" : "recognized"); }
-    else if (command === "login" || command === "recovery") { choose(command === "recovery" ? "sms" : "phone"); }
+    else if (command === "profile") { if(deviceConfirmed)navigate('/rs-barn-onboarding-setup-v24?profile=me');else choose('phone'); }
+    else if (command === "login" || command === "recovery") { choose("phone"); }
     else if (command === "cancel") { otpInput(false); otpPhone = null; show(person ? "recognized" : "login"); }
     else if (command === "save") {
       if (!person || !deviceConfirmed) { show(person ? "recognized" : "login", "Use your invitation and confirm this browser before editing."); return; }
-      const v = values("profile");
-      await action(person ? "update_profile" : "create_profile", { user: v.person_name, first: v.first_name, last: v.last_name, sms: v.sms, pin: v.pin, email: v.email, ...owned() });
-    } else if (command === "phone-login") {if(entryMode==='sms'||otpPhone)await verifyPhone();else await submitCredential(values('login').identifier||'',values('login').phone);}
-    else if (command === "recover") await action("recovery", values("recovery"), "received");
+      navigate('/rs-barn-onboarding-setup-v24?profile=me');
+    } else if (command === "phone-login") {await submitCredential(values('login').identifier||'',values('login').phone);}
+    else if (command === "recover") choose("phone");
     else if (command === "retire") await action("retire_device", {}, "login");
     else if (command === "continue") { if (person) await action("confirm_device", owned(), "navigate"); }
     else if (command === "close") {
