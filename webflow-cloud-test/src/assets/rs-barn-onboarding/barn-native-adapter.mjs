@@ -58,6 +58,8 @@ export function bindMainForms({ document, api, view, navigate = path => document
   if (mounted.has(targets.root)) return mounted.get(targets.root);
   for (const method of ['state', 'feedback', 'busy', 'editor']) if (typeof view?.[method] !== 'function') throw new Error(`native_view_contract_missing:${method}`);
   let state = null, actor = null, pending = false, disposed = false;
+  const pendingKinds = new Set();
+  const staleKinds = new Set();
   const pendingBarn = {};
   const optimistic = new Map();
   function display() {
@@ -78,17 +80,26 @@ export function bindMainForms({ document, api, view, navigate = path => document
   const remove = [];
   const feedback = (kind, type, value) => view.feedback({ kind, type, value });
   async function run(kind, operation, saving = false) {
-    if (pending || disposed) return false;
-    pending = true;
+    if (pending || pendingKinds.has(kind) || disposed) return false;
+    if(saving)pendingKinds.add(kind);else pending = true;
     view.busy(true, {kind, saving});
     try { return await operation(); }
-    catch (error) { if (!disposed) feedback(kind, 'error', error.code || error.message); return false; }
-    finally { pending = false; if (!disposed) view.busy(false, {kind, saving}); }
+    catch (error) { if(error.code==='record_changed')staleKinds.add(kind);if (!disposed) feedback(kind, 'error', error.code || error.message); return false; }
+    finally { if(saving)pendingKinds.delete(kind);else pending = false; if (!disposed) view.busy(false, {kind, saving}); }
   }
   function apply(next) {
     if (disposed) return;
     state = next;
     display();
+  }
+  function applySaved(next, kind, record) {
+    // WEC/HPS: merge the confirmed record, not an unrelated response snapshot.
+    if(!state){apply(next);return;}
+    const merged=structuredClone(state),key=kind==='barn'?'barns':kind;
+    const index=merged[key].findIndex(row=>row.id===record.id);
+    if(index<0)merged[key].push(record);else if((record.revision||0)>=(merged[key][index].revision||0))merged[key][index]=record;
+    if(kind==='barn')merged.selectedBarn=record.id;
+    apply(merged);
   }
   async function initialize() {
     return run('barn', async () => {
@@ -123,6 +134,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     });
   }
   async function selectBarn(id) {
+    if(pendingKinds.size)return false;
     return run('barn', async () => {
       if (!state?.barns.some(r => r.id === id)) throw new Error('barn_not_found');
       const next = await api.state(id);
@@ -145,14 +157,15 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
         pendingBarn[kind]=restored.barnId;editing[kind]=restored.draft.id?restored.draft:null;
         fillDraft(targets.forms[kind].fields,restored.draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','retry');return true;
       }
-      const next = await api.state(state.selectedBarn);
+      const next = staleKinds.has(kind) ? await api.state(state.selectedBarn) : state;
+      staleKinds.delete(kind);
       const record = list(next, kind).find(r => r.id === id);
       if (!record || !Number.isInteger(record.revision)) throw new Error('record_not_found');
       if (disposed) return false;
       apply(next);
       editing[kind] = record;
       fillDraft(targets.forms[kind].fields, record);
-      api.resetDraftRequest();
+      api.resetDraftRequest(kind);
       view.editor({ kind, record, open: true });
       return true;
     });
@@ -168,10 +181,10 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
       delete pendingBarn[kind];
       optimistic.delete(kind);
       if (disposed) return false;
-      apply(result.state);
+      applySaved(result.state, kind, result.record);
       editing[kind] = kind === 'barn' ? result.record : null;
       fillDraft(targets.forms[kind].fields, kind === 'barn' ? result.record : kind === 'horses' ? { locationId: draft.locationId } : {});
-      view.editor({ kind: kind === 'barn' ? 'users' : kind, open: kind === 'barn' || another, record: null });
+      view.editor({ kind: kind === 'barn' ? 'users' : kind, open: kind === 'barn' || another, record: null, reveal: false });
       feedback(kind, 'success', 'Saved');
       return true;
     }, true);
@@ -181,24 +194,24 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
       if (!state?.selectedBarn) throw new Error('barn_required');
       const result = await api.profileLink(state.selectedBarn);
       if (disposed) return false;
-      apply(result.state);
+      applySaved(result.state, 'users', result.record);
       feedback('users', 'success', `${result.record.name} linked to this barn.`);
       return true;
     });
   }
   function add(kind) {
-    if (pending || disposed || !state || !FORMS[kind]) return false;
+    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
-    api.resetDraftRequest();
+    api.resetDraftRequest(kind);
     view.editor({ kind, record: null, open: true });
     return true;
   }
   function cancel(kind) {
-    if (pending || disposed || !state || !FORMS[kind]) return false;
+    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
-    api.resetDraftRequest();
+    api.resetDraftRequest(kind);
     view.editor({ kind, record: null, open: false });
     return true;
   }
@@ -212,15 +225,11 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
       delete pendingBarn[kind];
       optimistic.delete(kind);
       if (disposed) return false;
-      apply(result.state);
+      applySaved(result.state, kind, result.record);
       if (kind === 'barn') {
         editing.barn = result.record;
         fillDraft(targets.forms.barn.fields, result.record);
-        for (const other of Object.keys(FORMS).filter(key => key !== 'barn')) {
-          editing[other] = null;
-          fillDraft(targets.forms[other].fields);
-        }
-        view.editor({ kind: 'users', record: null, open: true });
+        // Existing independent drafts remain untouched when this save completes.
       }
       feedback(kind,'success','Saved');
       return result;
@@ -240,7 +249,7 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     if (nodes.secondary) { on(nodes.secondary, 'click', saveHandler(false)); keyboardAction(nodes.secondary, saveHandler(false)); }
   }
   const controller = { initialize, selectBarn, beginEdit, save, profileLink, add, cancel, saveLinked,
-    getState: () => state, isBusy: () => pending,
+    getState: () => state, isBusy: (kind) => pending || (kind ? pendingKinds.has(kind) : pendingKinds.size > 0),
     dispose() { disposed = true; remove.forEach(fn => fn()); mounted.delete(targets.root); } };
   mounted.set(targets.root, controller);
   return controller;

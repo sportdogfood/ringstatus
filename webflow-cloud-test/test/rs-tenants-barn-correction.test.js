@@ -139,3 +139,18 @@ test('disabled roster before completion cannot produce Saved or a completion rec
 test('direct-save source is valid UTF-8 and retains established owner label',async()=>{
  const {readFile}=await import('node:fs/promises');const text=new TextDecoder('utf-8',{fatal:true}).decode(await readFile(new URL('../src/lib/rs-tenant-barn.js',import.meta.url)));assert.ok(text.includes(' \u00b7 owner'));assert.equal(text.includes('\ufffd'),false);
 });
+
+
+test('WEC-style record response verifies Rider target and roster without loading unrelated collections',async()=>{
+ const f=fixture();try{
+  await f.bridge().intake(payload());
+  const lists=[];const legacy={...f.legacy,async list(kind){lists.push(kind);return f.legacy.list(kind)}};
+  const bridge=()=>createTenantBarnBridge({env:f.env,legacy,actor,call:f.call,fetchImpl:f.fetchImpl,includeState:false});
+  const p={kind:'riders',draft:{name:'TEST Selective rider',userId:''},barnId:barn.id,requestId:'selective-rider-1'};
+  const result=await bridge().intake(p);assert.equal(result.state,undefined);assert.equal(result.record.name,p.draft.name);assert.equal(result.record.ownerUid,undefined);
+  assert.equal(lists.includes('horses'),false);assert.equal(lists.includes('locations'),false);
+  f.data[TABLE.roster][0].fields.Status='Disabled';
+  await assert.rejects(bridge().intake({...p,draft:{id:result.record.id,name:'TEST rejected',userId:''},expectedRevision:1,requestId:'selective-revoked'}));
+  assert.equal(f.data[TABLE.events].length,2);
+ }finally{f.db.close()}
+});

@@ -61,6 +61,7 @@ export function prepareNativeBarn({document, api, chooser}) {
   const optionTemplate=one(sheets.riders.element,'option[value=""]').cloneNode(true);
   const originalOptions = new Map([...Object.values(forms).flatMap(f=>Object.values(f.fields)),sheets.riders.fields.userId].filter(n=>n.tagName==='SELECT').map(n=>[n,[...n.childNodes].map(c=>c.cloneNode(true))]));
   const originalButtonLabels=new Map(Object.values(forms).flatMap(f=>[f.primary,f.secondary]).filter(Boolean).map(n=>[n,n.textContent]));
+  const savingKinds=new Set();
   const removes=[]; let controller,frames=[],busy=false,currentKind='barn',disposed=false,pendingFocus=null;
   const listen=(node,type,fn)=>{node.addEventListener(type,fn,true);removes.push(()=>node.removeEventListener(type,fn,true));};
   const click=(node,fn)=>{const handle=event=>{event.preventDefault();event.stopImmediatePropagation();if(!busy&&!disposed)void fn(node);};listen(node,'click',handle);
@@ -101,18 +102,18 @@ export function prepareNativeBarn({document, api, chooser}) {
   function restoreFocus(node){if(node?.isConnected)node.focus();}
   function showSheet(frame){const sheet=sheets[frame.kind];sheet.description.textContent=sheet.originalDescription;sheet.description.setAttribute('role','status');
     sheet.element.showPopover();Object.values(sheet.fields)[0].focus();}
-  function closeSheets(){if(busy)return;const first=frames[0];for(const f of frames)if(sheets[f.kind].element.matches(':popover-open'))sheets[f.kind].element.hidePopover();frames=[];restoreFocus(first?.opener);}
-  function backSheet(){if(busy)return;const frame=frames.pop();if(!frame)return;if(sheets[frame.kind].element.matches(':popover-open'))sheets[frame.kind].element.hidePopover();if(frames.length){showSheet(frames.at(-1));restoreFocus(frame.opener);}else restoreFocus(frame.opener);}
+  function closeSheets(){if(busy||frames.some(f=>controller.isBusy(f.kind)))return;const first=frames[0];for(const f of frames)if(sheets[f.kind].element.matches(':popover-open'))sheets[f.kind].element.hidePopover();frames=[];restoreFocus(first?.opener);}
+  function backSheet(){if(busy||frames.some(f=>controller.isBusy(f.kind)))return;const frame=frames.pop();if(!frame)return;if(sheets[frame.kind].element.matches(':popover-open'))sheets[frame.kind].element.hidePopover();if(frames.length){showSheet(frames.at(-1));restoreFocus(frame.opener);}else restoreFocus(frame.opener);}
   function openSheet(kind,{field,ownerKind,opener,nested=false}={}){
-    if(busy||!controller.getState())return;
-    if(!nested)closeSheets();
+    if(busy||controller.isBusy(kind)||!controller.getState())return;
+    if(!nested){closeSheets();if(frames.length)return;}
     fillDraft(sheets[kind].fields);
     frames.push({kind,field,ownerKind,opener});
     const back=sheets.users.element.querySelector('.rs-barn-v24-back');if(kind==='users')show(back,nested);
     showSheet(frames.at(-1));
   }
   async function saveSheet(kind){
-    const frame=frames.at(-1);if(!frame||frame.kind!==kind||busy)return;
+    const frame=frames.at(-1);if(!frame||frame.kind!==kind||busy||controller.isBusy(kind))return;
     const sheet=sheets[kind];const draft=readDraft(sheet.fields);
     const result=await controller.saveLinked(kind,draft);if(!result||disposed)return;
     frames.pop();if(sheet.element.matches(':popover-open'))sheet.element.hidePopover();
@@ -133,13 +134,13 @@ export function prepareNativeBarn({document, api, chooser}) {
       if(type==='error')forms[kind].form.setAttribute('data-rs-save-error',value);else forms[kind].form.removeAttribute('data-rs-save-error');
       const retry=type==='error'&&!['name_required','invalid_email','invalid_relationship','barn_required'].includes(value);
       for(const button of [forms[kind].primary,forms[kind].secondary].filter(Boolean))button.textContent=retry?'Retry':originalButtonLabels.get(button);
-      if(frames.length){const sheet=sheets[frames.at(-1).kind];sheet.save.textContent=retry?'Retry':sheet.originalSaveLabel;if(type==='success')sheet.description.textContent=value;} 
-      if(frames.length&&type==='error'){const sheet=sheets[frames.at(-1).kind];sheet.description.textContent=describeError(value);sheet.description.setAttribute('role','alert');if(!sheet.element.matches(':popover-open'))sheet.element.showPopover();return;}
+      if(frames.at(-1)?.kind===kind){const sheet=sheets[kind];sheet.save.textContent=retry?'Retry':sheet.originalSaveLabel;if(type==='success')sheet.description.textContent=value;}
+      if(frames.at(-1)?.kind===kind&&type==='error'){const sheet=sheets[kind];sheet.description.textContent=describeError(value);sheet.description.setAttribute('role','alert');if(!sheet.element.matches(':popover-open'))sheet.element.showPopover();return;}
       clearFeedback(kind);const target=controls[kind][type];target.textContent=type==='error'?describeError(value):value;target.setAttribute('role',type==='error'?'alert':'status');show(target,true);
     },
-    busy(value,{kind,saving=false}={}){busy=value;root.setAttribute('aria-busy',String(value));root.inert=value&&!saving;for(const [key,form] of Object.entries(forms))form.form.inert=value&&(!saving||key===kind);for(const [key,sheet] of Object.entries(sheets))sheet.form.inert=value&&(!saving||key===kind);if(!value&&pendingFocus){pendingFocus.focus();pendingFocus=null;}},
-    editor({kind,record,open}){selectTab(kind);show(forms[kind].form,open);show(controls[kind].edit,open&&!!record);show(controls[kind].add,!open);clearFeedback(kind);
-      const title=controls[kind].edit.firstElementChild;if(title&&record)title.textContent=`Editing ${record.name}`;if(open){if(busy)pendingFocus=forms[kind].fields.name;else forms[kind].fields.name.focus();}}
+    busy(value,{kind,saving=false}={}){if(saving){if(value)savingKinds.add(kind);else savingKinds.delete(kind);}else busy=value;root.setAttribute('aria-busy',String(busy||savingKinds.size>0));root.inert=busy;for(const [key,form] of Object.entries(forms))form.form.inert=busy||savingKinds.has(key);for(const [key,sheet] of Object.entries(sheets))sheet.form.inert=busy||savingKinds.has(key);if(!busy&&pendingFocus){pendingFocus.focus();pendingFocus=null;}},
+    editor({kind,record,open,reveal=true}){if(reveal)selectTab(kind);show(forms[kind].form,open);show(controls[kind].edit,open&&!!record);show(controls[kind].add,!open);clearFeedback(kind);
+      const title=controls[kind].edit.firstElementChild;if(title&&record)title.textContent=`Editing ${record.name}`;if(open&&reveal){if(busy)pendingFocus=forms[kind].fields.name;else forms[kind].fields.name.focus();}}
   };
   controller=bindMainForms({document,api,view});
   for(const kind of kinds){clearFeedback(kind);show(controls[kind].edit,false);}
@@ -159,6 +160,9 @@ export function prepareNativeBarn({document, api, chooser}) {
   for(const [field,ownerKind,kind]of [['userId','riders','users'],['riderId','horses','riders'],['locationId','horses','locations']]){
     click(one(forms[ownerKind].fields[field].parentElement,'button.rs-barn-v24-link[popovertarget]'),node=>openSheet(kind,{field,ownerKind,opener:node}));
   }
+  // The section-level native opener uses the same sheet state as relationship openers.
+  for(const node of panes.riders.querySelectorAll('button[popovertarget="rs-barn-v24-sheet-rider"]'))
+    click(node,opener=>openSheet('riders',{opener}));
   click(one(sheets.riders.element,'[popovertarget="rs-barn-v24-sheet-user-nested"]'),node=>openSheet('users',{field:'userId',opener:node,nested:true}));
   click(one(sheets.users.element,'.rs-barn-v24-back'),()=>backSheet());
   for(const [kind,sheet]of Object.entries(sheets)){
@@ -174,7 +178,7 @@ export function prepareNativeBarn({document, api, chooser}) {
     chooser.container.replaceChildren(...nodes);
   }
   const closeChooser=()=>{if(chooserSheet.matches(':popover-open'))chooserSheet.hidePopover();restoreFocus(chooseControl);};
-  const openChooser=()=>{closeSheets();chooserSheet.showPopover();chooser.container.querySelector('[data-rs-barn-id]')?.focus();};
+  const openChooser=()=>{if(controller.isBusy())return;closeSheets();chooserSheet.showPopover();chooser.container.querySelector('[data-rs-barn-id]')?.focus();};
   click(chooseControl,openChooser);click(barnName,openChooser);
   click(one(chooserSheet,'.rs-barn-v24-sheet-close'),closeChooser);
   click(one(chooserSheet,'.rs-barn-v24-sheet-overlay'),closeChooser);

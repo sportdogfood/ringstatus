@@ -7,7 +7,7 @@ import {TABLE} from '../src/lib/rs-tenant-barn.js';
 const req=createRequire('C:/Users/gombc/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/package.json');
 const {chromium}=req('playwright');
 const origin='https://ringstatus.com',path='/rs-barn-onboarding-setup-v24';
-const archived=await readFile('C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/.git/ringstatus-control/tenants-connections-20261010/rs-barn-onboarding-setup-v24.html','utf8');
+const archived=await readFile('C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/.git/ringstatus-control/tenants-cause-audit-20261015/live-page.html','utf8');
 // Actual saved Webflow markup; external scripts/styles removed for deterministic
 // local behavior testing. This does not claim current published visual parity.
 const html=archived.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<link\b[^>]*>/gi,'')+`<style>[hidden],.rs-barn-v24-state-hidden{display:none!important}</style><script type="module">import {prepareBarnOnboarding} from '/test/rs-inputs/native-barn.js';window.app=prepareBarnOnboarding(document,location.origin+'/test/rs-inputs/native-barn.js');</script>`;
@@ -20,7 +20,7 @@ for(const mobile of [true,false])test(`Tenants ${mobile?'mobile':'desktop'} load
  await context.addCookies([{name:'__Host-rs_recognition_device',value:identity.device_token,url:origin,secure:true,httpOnly:true,sameSite:'Lax'}]);
  const page=await context.newPage(),errors=[],writes=[];page.on('pageerror',e=>errors.push(e.message));
  page.setDefaultTimeout(30000);
- let release,failFirst=true,blocked=false;
+ let release,releaseRider,failFirst=true,blocked=false;
  await context.route('**/*',async route=>{
   const request=route.request(),url=new URL(request.url());
   if(url.origin!==origin)return route.abort();
@@ -29,6 +29,7 @@ for(const mobile of [true,false])test(`Tenants ${mobile?'mobile':'desktop'} load
   if(!url.pathname.startsWith('/test/rs-inputs/'))return route.abort();
   if(url.pathname.endsWith('/record')){
    writes.push(JSON.parse(request.postData()));
+   if(writes.at(-1).kind==='riders'&&!writes.at(-1).draft.id)await new Promise(r=>releaseRider=r);
    if(failFirst){failFirst=false;blocked=true;await new Promise(r=>release=r);return route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({ok:false,error:'write_outcome_unknown'})});}
   }
   const response=await f.dispatch(new Request(request.url(),{method:request.method(),headers:await request.allHeaders(),...(request.postData()?{body:request.postData()}:{})}));
@@ -57,14 +58,33 @@ for(const mobile of [true,false])test(`Tenants ${mobile?'mobile':'desktop'} load
   await page.waitForFunction(()=>document.querySelector('#email-form').getAttribute('data-rs-save-state')==='Saved'&&!app.isBusy());
   assert.equal(new Set(writes.filter(w=>w.kind==='barn').map(w=>w.requestId)).size,1);
   assert.equal(f.rows[TABLE.barn].length,1);assert.equal(f.rows[TABLE.barn][0].fields.tenant_official_name,'Immediate Barn');
-  await page.evaluate(()=>app.add('riders'));await page.locator('#Rider-name').fill('Immediate Rider');
-  await page.locator('#email-form-3 .rs-barn-v24-primary').click();
+  const opener=page.locator('.rs-barn-v24-section').filter({has:page.locator('#email-form-3')}).locator('button[popovertarget="rs-barn-v24-sheet-rider"]');
+  await opener.click();
+  const sheet=page.locator('#rs-barn-v24-sheet-rider');
+  await sheet.locator('.rs-barn-v24-sheet-close').click();
+  assert.equal(await sheet.evaluate(n=>n.matches(':popover-open')),false,'visible Close works');
+  await opener.click();await sheet.locator('input[name="Rider name"]').fill('Immediate Rider');
+  await sheet.locator('.rs-barn-v24-primary').click();
   await page.waitForFunction(()=>[...document.querySelectorAll('.rs-barn-v24-row-name')].some(n=>n.textContent==='Immediate Rider'));
   assert.equal(await page.locator('#email-form-3').getAttribute('data-rs-save-state'),'Saving');
+  // Pending Rider save must not block editing a different entity.
+  await page.locator('[aria-label="Edit barn"]').click();
+  await page.locator('#Barn-name').fill('Unsaved while Rider saves');
+  assert.equal(await page.locator('#Barn-name').inputValue(),'Unsaved while Rider saves');
+  while(!releaseRider)await new Promise(r=>setTimeout(r,10));releaseRider();
   await page.waitForFunction(()=>document.querySelector('#email-form-3').getAttribute('data-rs-save-state')==='Saved'&&!app.isBusy());
   assert.equal(f.rows[TABLE.riders].length,1);assert.equal(f.rows[TABLE.riders][0].fields.name,'Immediate Rider');
+  assert.equal(await page.locator('#Barn-name').inputValue(),'Unsaved while Rider saves','confirmation must not erase unrelated draft');
   await page.reload();await page.waitForFunction(()=>window.app?.getState()?.riders.length===1&&!app.isBusy());
   assert.equal((await page.evaluate(()=>app.getState())).barns[0].name,'Immediate Barn');
+  await page.locator('.rs-barn-v24-row').filter({hasText:'Immediate Rider'}).locator('.rs-barn-v24-edit-button').click();
+  await page.locator('#Rider-name').fill('Edited Rider');
+  await page.locator('#email-form-3 .rs-barn-v24-secondary').click();
+  await page.waitForFunction(()=>document.querySelector('#email-form-3').getAttribute('data-rs-save-state')==='Saved'&&!app.isBusy());
+  assert.equal(f.rows[TABLE.riders][0].fields.name,'Edited Rider');
+  await page.reload();await page.waitForFunction(()=>window.app?.getState()?.riders.some(r=>r.name==='Edited Rider')&&!app.isBusy());
+  assert.equal(await page.locator('.rs-barn-v24-row').filter({hasText:'Edited Rider'}).count(),1);
+
   assert.deepEqual(errors,[]);await mkdir('test-evidence',{recursive:true});await page.screenshot({path:`test-evidence/tenants-${mobile?'mobile':'desktop'}-functional.png`,fullPage:true});
- }catch(error){console.log('BROWSER FAILURE',await page.evaluate(()=>({busy:window.app?.isBusy(),error:document.querySelector('#email-form').getAttribute('data-rs-save-error'),input:document.querySelector('#Barn-name')?.value,feedback:[...document.querySelectorAll('.rs-barn-v24-error')].map(n=>n.textContent)})),errors);throw error;}finally{release?.();await context.close();await browser.close();f.db.close();}
+ }catch(error){console.log('BROWSER FAILURE',await page.evaluate(()=>({busy:window.app?.isBusy(),error:document.querySelector('#email-form').getAttribute('data-rs-save-error'),input:document.querySelector('#Barn-name')?.value,feedback:[...document.querySelectorAll('.rs-barn-v24-error')].map(n=>n.textContent)})),errors);throw error;}finally{release?.();releaseRider?.();await context.close();await browser.close();f.db.close();}
 });

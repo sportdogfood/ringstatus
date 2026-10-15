@@ -18,7 +18,7 @@ export async function handleInputRoute({ request, locals }, bindings = env, fetc
         const tenantNative=request.headers.get('X-RS-Tenants')==='barn-rider-v1';
         if(tenantNative&&request.headers.get('X-RS-Actor')!==locals.rsInputActor.id)return Response.json({ok:false,error:'authentication_required'},{status:401,headers:{'Cache-Control':'no-store'}});
         if(tenantNative){
-        const bridge=createTenantBarnBridge({env:bindings,legacy:store,actor:locals.rsInputActor,fetchImpl});
+        const bridge=createTenantBarnBridge({env:bindings,legacy:store,actor:locals.rsInputActor,fetchImpl,includeState:request.headers.get('X-RS-Response')!=='record'});
         store=bridge.store;
         if(operation==='record'&&request.method==='POST'){
           if(request.headers.get('Origin')!==new URL(request.url).origin) return Response.json({ok:false,error:'origin_denied'},{status:403});

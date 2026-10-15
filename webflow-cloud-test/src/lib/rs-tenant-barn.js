@@ -19,7 +19,7 @@ export function createTenantRest(env,fetchImpl=fetch){
  return async function call(table,{id,formula,fields,method='GET',fresh=false}={}){
   if(fresh)cache.clear();
   if(!Object.values(TABLE).includes(table)||!['GET','POST','PATCH'].includes(method))fail('tenant_write_boundary',403);
-  if(method!=='GET'){if(!DIRECT_FIELDS[table]||!fields||Object.keys(fields).some(k=>!DIRECT_FIELDS[table].includes(k))||(method==='PATCH'&&!id))fail('tenant_write_boundary',403);cache.clear();}
+  if(method!=='GET'){if(!DIRECT_FIELDS[table]||!fields||Object.keys(fields).some(k=>!DIRECT_FIELDS[table].includes(k))||(method==='PATCH'&&!id))fail('tenant_write_boundary',403);for(const key of cache.keys())if(new URL(key).pathname.split('/')[3]===table)cache.delete(key);}
   const url=new URL(`https://api.airtable.com/v0/${BASE}/${table}${id&&method==='GET'?'/'+id:''}`);
   if(formula)url.searchParams.set('filterByFormula',formula);
   const cacheKey=String(url);if(method==='GET'&&cache.has(cacheKey))return structuredClone(cache.get(cacheKey));
@@ -77,7 +77,7 @@ export function createTenantBarnStore({legacy,call,actor}){
  };
  return api;
 }
-export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=createTenantRest(env,fetchImpl),clock=()=>new Date().toISOString()}){
+export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=createTenantRest(env,fetchImpl),clock=()=>new Date().toISOString(),includeState=true}){
  const store=createTenantBarnStore({legacy,call,actor});
  const key=()=>{const secret=env.RS_INPUTS_SESSION_SECRET;if(!/^[a-fA-F0-9]{64}$/.test(secret||''))fail('access_secret_missing',503);return crypto.subtle.importKey('raw',Uint8Array.from(secret.match(/../g),x=>parseInt(x,16)),{name:'HMAC',hash:'SHA-256'},false,['sign','verify']);};
  const proof=e=>new TextEncoder().encode('tenant-barn-v1|'+JSON.stringify(e));
@@ -106,6 +106,17 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
  async function directResult(record,{verifyCurrent=false}={}){
   const barn=await store.mapping('barn',record.barnId);
   if(!barn||!await store.allowed(barn.fields.external_id))fail('permission_denied',403);
+  if(!includeState){
+   const kind=record.id===record.barnId?'barn':'riders';
+   const map=await store.mapping(kind,record.id);if(!map)fail('tenant_confirmation_missing');
+   const latest=await store.snapshot(kind,map);
+   if(kind==='riders'){
+    const roster=await call(TABLE.roster);
+    if(!roster.some(r=>r.fields.Status==='Enabled'&&r.fields.Tenant?.length===1&&r.fields.Tenant[0]===barn.fields.external_id&&r.fields.Rider?.length===1&&r.fields.Rider[0]===map.fields.external_id&&!r.fields.Horse?.length))fail('tenant_confirmation_missing');
+   }
+   if(verifyCurrent&&!same(publicRecord(latest),publicRecord(record)))fail('tenant_confirmation_missing');
+   return {ok:true,record:publicRecord(latest)};
+  }
   const state=await readInputState(store,actor,record.barnId);
   if(verifyCurrent){const rows=record.id===record.barnId?state.barns:state.riders;if(!rows.some(r=>same(r,publicRecord(record))))fail('tenant_confirmation_missing');}
   return {ok:true,record:publicRecord(record),state};
@@ -163,7 +174,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
   if(!map)await write(TABLE.sources,{mapping_uid:`${SOURCE}|${kind}|${r.id}`,entity_type:kind==='barn'?'Barn':'Rider',entity_uid:r.id,source_system:SOURCE,source_entity_type:kind,source_scope:r.barnId,external_id:target.id,record_mode:'Test'});
   await write(TABLE.events,{event_uid:e.event.eventId,actor_uid:actor.id,entity_uid:r.id,barn_uid:r.barnId,action:e.event.action,kind,outcome:'committed',request_uid:e.payload.requestId,input_hash:e.event.inputHash,result_json:JSON.stringify(r),occurred_at:e.acceptedAt,record_mode:'Test'});
   // Verify the same target again after related records/audit, never a cached value.
-  const verified=await call(TABLE[kind],{id:target.id});for(const [k,v]of Object.entries(fields))if(!equalField(verified.fields[k],v))fail('target_readback_mismatch');
+  const verified=await call(TABLE[kind],{id:target.id,fresh:true});for(const [k,v]of Object.entries(fields))if(!equalField(verified.fields[k],v))fail('target_readback_mismatch');
   await currentActor(e);
   return directResult(r,{verifyCurrent:true});
  }
@@ -189,7 +200,7 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
     async put(kind,value){previous=(await store.list(kind)).find(r=>r.id===value.id)||null;record=value;},
     async appendEvent(value){event=value;}
    };
-   await saveInputRecord({store:staging,actor,payload});if(!record||!event)fail('tenant_confirmation_missing');
+   await saveInputRecord({store:staging,actor,payload,includeState:false});if(!record||!event)fail('tenant_confirmation_missing');
    const map=await store.mapping(payload.kind,record.id),targetId=map?.fields.external_id||'';
    // First-copy is restricted to a previously owned isolated-trial record or
    // an explicit create through this authenticated editor; never match by name.

@@ -183,7 +183,21 @@ function createInputsApi(apiBase, options = {}) {
   const base = apiBase.replace(/\/$/, "");
   const requests = /* @__PURE__ */ new Map();
   let verifiedActor = null;
+  let confirmedState = null;
   const persistence = (kind) => createPersistence({ scope: { actorId: verifiedActor.id, resource: `native-${kind}`, tenantId: "editor" }, ...options.storage ? { storage: options.storage } : {} });
+  function mergeSavedState(next, kind, record) {
+    if (!confirmedState) {
+      confirmedState = next;
+      return next;
+    }
+    const merged = structuredClone(confirmedState), key = kind === "barn" ? "barns" : kind;
+    const index = merged[key].findIndex((row) => row.id === record.id);
+    if (index < 0) merged[key].push(record);
+    else if ((record.revision || 0) >= (merged[key][index].revision || 0)) merged[key][index] = record;
+    if (kind === "barn") merged.selectedBarn = record.id;
+    confirmedState = merged;
+    return merged;
+  }
   async function request(path, body) {
     const directBarnSave = options.durableBarn && path === "/record" && ["barn", "riders"].includes(String(body?.kind));
     const response = await fetch(`${base}${path}`, {
@@ -191,7 +205,7 @@ function createInputsApi(apiBase, options = {}) {
       credentials: "same-origin",
       cache: "no-store",
       ...!directBarnSave && typeof AbortSignal !== "undefined" ? { signal: AbortSignal.timeout(15e3) } : {},
-      headers: { ...body ? { "Content-Type": "application/json" } : {}, ...options.durableBarn ? { "X-RS-Tenants": "barn-rider-v1", ...verifiedActor ? { "X-RS-Actor": verifiedActor.id } : {} } : {} },
+      headers: { ...body ? { "Content-Type": "application/json" } : {}, ...directBarnSave && confirmedState ? { "X-RS-Response": "record" } : {}, ...options.durableBarn ? { "X-RS-Tenants": "barn-rider-v1", ...verifiedActor ? { "X-RS-Actor": verifiedActor.id } : {} } : {} },
       ...body ? { body: JSON.stringify(body) } : {}
     }).catch(() => {
       throw new Error("Could not connect. Your entry is still here; try again.");
@@ -201,11 +215,12 @@ function createInputsApi(apiBase, options = {}) {
     return result;
   }
   async function mutation(path, body, validate2) {
+    const requestKey = path === "/record" ? `${path}:${String(body.kind)}` : path;
     const fingerprint = JSON.stringify(body);
-    let pending = requests.get(path);
+    let pending = requests.get(requestKey);
     if (!pending || pending.fingerprint !== fingerprint) {
       pending = { fingerprint, id: crypto.randomUUID() };
-      requests.set(path, pending);
+      requests.set(requestKey, pending);
     }
     let device = null, operation = null;
     if (options.durableBarn && path === "/record" && ["barn", "riders"].includes(String(body.kind))) {
@@ -237,11 +252,15 @@ function createInputsApi(apiBase, options = {}) {
           await new Promise((resolve) => setTimeout(resolve, 2e3));
         }
       }
+      if (options.durableBarn && confirmedState && !result.state && path === "/record" && ["barn", "riders"].includes(String(body.kind)) && typeof result.record?.id === "string" && typeof result.record?.name === "string" && typeof result.record?.barnId === "string" && Number.isSafeInteger(result.record?.revision)) result.state = mergeSavedState(confirmedState, body.kind, result.record);
       if (!validate2(result)) throw new Error("The server response could not be verified. Your entry is still here.");
       if (device) await device.confirm(operation, result.record, result.record.revision);
-      if (options.durableBarn && verifiedActor && validStore(result.state)) await persistence("state").refresh(result.state, 0).catch(() => {
-      });
-      requests.delete(path);
+      if (options.durableBarn && verifiedActor && validStore(result.state)) {
+        result.state = mergeSavedState(result.state, path === "/profile-link" ? "users" : body.kind, result.record);
+        await persistence("state").refresh(result.state, 0).catch(() => {
+        });
+      }
+      requests.delete(requestKey);
       return result;
     } catch (error) {
       if (device) await device.fail(operation, error instanceof Error ? error.message : "save_unconfirmed");
@@ -285,8 +304,9 @@ function createInputsApi(apiBase, options = {}) {
       clearDeviceToken();
       await request("/logout", {});
     },
-    resetDraftRequest() {
-      requests.delete("/record");
+    resetDraftRequest(kind) {
+      if (kind) requests.delete(`/record:${kind}`);
+      else for (const key of requests.keys()) if (key.startsWith("/record:")) requests.delete(key);
     },
     resetRecognitionRequest() {
       requests.delete("/recognition");
@@ -294,6 +314,7 @@ function createInputsApi(apiBase, options = {}) {
     async state(barnId = "") {
       const result = await request(`/state${barnId ? `?barn_id=${encodeURIComponent(barnId)}` : ""}`);
       if (!validStore(result.state)) throw new Error("The server returned an invalid record state.");
+      confirmedState = result.state;
       if (options.durableBarn && verifiedActor) await persistence("state").refresh(result.state, 0).catch(() => {
       });
       return result.state;
@@ -375,6 +396,8 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
   if (mounted.has(targets.root)) return mounted.get(targets.root);
   for (const method of ["state", "feedback", "busy", "editor"]) if (typeof view?.[method] !== "function") throw new Error(`native_view_contract_missing:${method}`);
   let state = null, actor = null, pending = false, disposed = false;
+  const pendingKinds = /* @__PURE__ */ new Set();
+  const staleKinds = /* @__PURE__ */ new Set();
   const pendingBarn = {};
   const optimistic = /* @__PURE__ */ new Map();
   function display() {
@@ -396,16 +419,19 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
   const remove = [];
   const feedback = (kind, type, value) => view.feedback({ kind, type, value });
   async function run(kind, operation, saving = false) {
-    if (pending || disposed) return false;
-    pending = true;
+    if (pending || pendingKinds.has(kind) || disposed) return false;
+    if (saving) pendingKinds.add(kind);
+    else pending = true;
     view.busy(true, { kind, saving });
     try {
       return await operation();
     } catch (error) {
+      if (error.code === "record_changed") staleKinds.add(kind);
       if (!disposed) feedback(kind, "error", error.code || error.message);
       return false;
     } finally {
-      pending = false;
+      if (saving) pendingKinds.delete(kind);
+      else pending = false;
       if (!disposed) view.busy(false, { kind, saving });
     }
   }
@@ -413,6 +439,18 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     if (disposed) return;
     state = next;
     display();
+  }
+  function applySaved(next, kind, record) {
+    if (!state) {
+      apply(next);
+      return;
+    }
+    const merged = structuredClone(state), key = kind === "barn" ? "barns" : kind;
+    const index = merged[key].findIndex((row) => row.id === record.id);
+    if (index < 0) merged[key].push(record);
+    else if ((record.revision || 0) >= (merged[key][index].revision || 0)) merged[key][index] = record;
+    if (kind === "barn") merged.selectedBarn = record.id;
+    apply(merged);
   }
   async function initialize() {
     return run("barn", async () => {
@@ -457,6 +495,7 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     });
   }
   async function selectBarn(id) {
+    if (pendingKinds.size) return false;
     return run("barn", async () => {
       if (!state?.barns.some((r) => r.id === id)) throw new Error("barn_not_found");
       const next = await api.state(id);
@@ -483,14 +522,15 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
         feedback(kind, "error", "retry");
         return true;
       }
-      const next = await api.state(state.selectedBarn);
+      const next = staleKinds.has(kind) ? await api.state(state.selectedBarn) : state;
+      staleKinds.delete(kind);
       const record = list(next, kind).find((r) => r.id === id);
       if (!record || !Number.isInteger(record.revision)) throw new Error("record_not_found");
       if (disposed) return false;
       apply(next);
       editing[kind] = record;
       fillDraft(targets.forms[kind].fields, record);
-      api.resetDraftRequest();
+      api.resetDraftRequest(kind);
       view.editor({ kind, record, open: true });
       return true;
     });
@@ -506,10 +546,10 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       delete pendingBarn[kind];
       optimistic.delete(kind);
       if (disposed) return false;
-      apply(result.state);
+      applySaved(result.state, kind, result.record);
       editing[kind] = kind === "barn" ? result.record : null;
       fillDraft(targets.forms[kind].fields, kind === "barn" ? result.record : kind === "horses" ? { locationId: draft.locationId } : {});
-      view.editor({ kind: kind === "barn" ? "users" : kind, open: kind === "barn" || another, record: null });
+      view.editor({ kind: kind === "barn" ? "users" : kind, open: kind === "barn" || another, record: null, reveal: false });
       feedback(kind, "success", "Saved");
       return true;
     }, true);
@@ -519,24 +559,24 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       if (!state?.selectedBarn) throw new Error("barn_required");
       const result = await api.profileLink(state.selectedBarn);
       if (disposed) return false;
-      apply(result.state);
+      applySaved(result.state, "users", result.record);
       feedback("users", "success", `${result.record.name} linked to this barn.`);
       return true;
     });
   }
   function add(kind) {
-    if (pending || disposed || !state || !FORMS[kind]) return false;
+    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
-    api.resetDraftRequest();
+    api.resetDraftRequest(kind);
     view.editor({ kind, record: null, open: true });
     return true;
   }
   function cancel(kind) {
-    if (pending || disposed || !state || !FORMS[kind]) return false;
+    if (pending || pendingKinds.has(kind) || disposed || !state || !FORMS[kind]) return false;
     editing[kind] = null;
     fillDraft(targets.forms[kind].fields);
-    api.resetDraftRequest();
+    api.resetDraftRequest(kind);
     view.editor({ kind, record: null, open: false });
     return true;
   }
@@ -550,15 +590,10 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
       delete pendingBarn[kind];
       optimistic.delete(kind);
       if (disposed) return false;
-      apply(result.state);
+      applySaved(result.state, kind, result.record);
       if (kind === "barn") {
         editing.barn = result.record;
         fillDraft(targets.forms.barn.fields, result.record);
-        for (const other of Object.keys(FORMS).filter((key) => key !== "barn")) {
-          editing[other] = null;
-          fillDraft(targets.forms[other].fields);
-        }
-        view.editor({ kind: "users", record: null, open: true });
       }
       feedback(kind, "success", "Saved");
       return result;
@@ -600,7 +635,7 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     cancel,
     saveLinked,
     getState: () => state,
-    isBusy: () => pending,
+    isBusy: (kind) => pending || (kind ? pendingKinds.has(kind) : pendingKinds.size > 0),
     dispose() {
       disposed = true;
       remove.forEach((fn) => fn());
@@ -691,6 +726,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   const optionTemplate = one2(sheets.riders.element, 'option[value=""]').cloneNode(true);
   const originalOptions = new Map([...Object.values(forms).flatMap((f) => Object.values(f.fields)), sheets.riders.fields.userId].filter((n) => n.tagName === "SELECT").map((n) => [n, [...n.childNodes].map((c) => c.cloneNode(true))]));
   const originalButtonLabels = new Map(Object.values(forms).flatMap((f) => [f.primary, f.secondary]).filter(Boolean).map((n) => [n, n.textContent]));
+  const savingKinds = /* @__PURE__ */ new Set();
   const removes = [];
   let controller, frames = [], busy = false, currentKind = "barn", disposed = false, pendingFocus = null;
   const listen = (node, type, fn) => {
@@ -786,14 +822,14 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
     Object.values(sheet.fields)[0].focus();
   }
   function closeSheets() {
-    if (busy) return;
+    if (busy || frames.some((f) => controller.isBusy(f.kind))) return;
     const first = frames[0];
     for (const f of frames) if (sheets[f.kind].element.matches(":popover-open")) sheets[f.kind].element.hidePopover();
     frames = [];
     restoreFocus(first?.opener);
   }
   function backSheet() {
-    if (busy) return;
+    if (busy || frames.some((f) => controller.isBusy(f.kind))) return;
     const frame = frames.pop();
     if (!frame) return;
     if (sheets[frame.kind].element.matches(":popover-open")) sheets[frame.kind].element.hidePopover();
@@ -803,8 +839,11 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
     } else restoreFocus(frame.opener);
   }
   function openSheet(kind, { field, ownerKind, opener, nested = false } = {}) {
-    if (busy || !controller.getState()) return;
-    if (!nested) closeSheets();
+    if (busy || controller.isBusy(kind) || !controller.getState()) return;
+    if (!nested) {
+      closeSheets();
+      if (frames.length) return;
+    }
     fillDraft(sheets[kind].fields);
     frames.push({ kind, field, ownerKind, opener });
     const back = sheets.users.element.querySelector(".rs-barn-v24-back");
@@ -813,7 +852,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   }
   async function saveSheet(kind) {
     const frame = frames.at(-1);
-    if (!frame || frame.kind !== kind || busy) return;
+    if (!frame || frame.kind !== kind || busy || controller.isBusy(kind)) return;
     const sheet = sheets[kind];
     const draft = readDraft(sheet.fields);
     const result2 = await controller.saveLinked(kind, draft);
@@ -852,13 +891,13 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       else forms[kind].form.removeAttribute("data-rs-save-error");
       const retry = type === "error" && !["name_required", "invalid_email", "invalid_relationship", "barn_required"].includes(value);
       for (const button of [forms[kind].primary, forms[kind].secondary].filter(Boolean)) button.textContent = retry ? "Retry" : originalButtonLabels.get(button);
-      if (frames.length) {
-        const sheet = sheets[frames.at(-1).kind];
+      if (frames.at(-1)?.kind === kind) {
+        const sheet = sheets[kind];
         sheet.save.textContent = retry ? "Retry" : sheet.originalSaveLabel;
         if (type === "success") sheet.description.textContent = value;
       }
-      if (frames.length && type === "error") {
-        const sheet = sheets[frames.at(-1).kind];
+      if (frames.at(-1)?.kind === kind && type === "error") {
+        const sheet = sheets[kind];
         sheet.description.textContent = describeError(value);
         sheet.description.setAttribute("role", "alert");
         if (!sheet.element.matches(":popover-open")) sheet.element.showPopover();
@@ -871,25 +910,28 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       show(target, true);
     },
     busy(value, { kind, saving = false } = {}) {
-      busy = value;
-      root.setAttribute("aria-busy", String(value));
-      root.inert = value && !saving;
-      for (const [key, form] of Object.entries(forms)) form.form.inert = value && (!saving || key === kind);
-      for (const [key, sheet] of Object.entries(sheets)) sheet.form.inert = value && (!saving || key === kind);
-      if (!value && pendingFocus) {
+      if (saving) {
+        if (value) savingKinds.add(kind);
+        else savingKinds.delete(kind);
+      } else busy = value;
+      root.setAttribute("aria-busy", String(busy || savingKinds.size > 0));
+      root.inert = busy;
+      for (const [key, form] of Object.entries(forms)) form.form.inert = busy || savingKinds.has(key);
+      for (const [key, sheet] of Object.entries(sheets)) sheet.form.inert = busy || savingKinds.has(key);
+      if (!busy && pendingFocus) {
         pendingFocus.focus();
         pendingFocus = null;
       }
     },
-    editor({ kind, record, open }) {
-      selectTab(kind);
+    editor({ kind, record, open, reveal = true }) {
+      if (reveal) selectTab(kind);
       show(forms[kind].form, open);
       show(controls[kind].edit, open && !!record);
       show(controls[kind].add, !open);
       clearFeedback(kind);
       const title = controls[kind].edit.firstElementChild;
       if (title && record) title.textContent = `Editing ${record.name}`;
-      if (open) {
+      if (open && reveal) {
         if (busy) pendingFocus = forms[kind].fields.name;
         else forms[kind].fields.name.focus();
       }
@@ -928,6 +970,8 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   for (const [field, ownerKind, kind] of [["userId", "riders", "users"], ["riderId", "horses", "riders"], ["locationId", "horses", "locations"]]) {
     click(one2(forms[ownerKind].fields[field].parentElement, "button.rs-barn-v24-link[popovertarget]"), (node) => openSheet(kind, { field, ownerKind, opener: node }));
   }
+  for (const node of panes.riders.querySelectorAll('button[popovertarget="rs-barn-v24-sheet-rider"]'))
+    click(node, (opener) => openSheet("riders", { opener }));
   click(one2(sheets.riders.element, '[popovertarget="rs-barn-v24-sheet-user-nested"]'), (node) => openSheet("users", { field: "userId", opener: node, nested: true }));
   click(one2(sheets.users.element, ".rs-barn-v24-back"), () => backSheet());
   for (const [kind, sheet] of Object.entries(sheets)) {
@@ -967,6 +1011,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
     restoreFocus(chooseControl);
   };
   const openChooser = () => {
+    if (controller.isBusy()) return;
     closeSheets();
     chooserSheet.showPopover();
     chooser.container.querySelector("[data-rs-barn-id]")?.focus();

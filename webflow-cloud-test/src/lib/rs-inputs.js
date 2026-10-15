@@ -41,7 +41,7 @@ async function authorizedBarn(store, actor, id) {
   if (!owns(actor, barn)) fail('barn_not_found', 404);
   return barn;
 }
-export async function saveInputRecord({ store, actor, payload, profileLink = false }) {
+export async function saveInputRecord({ store, actor, payload, profileLink = false, includeState = true }) {
   requireActor(actor);
   if (!can(actor, 'inputs:read') || !can(actor, 'inputs:write')) fail('permission_denied', 403);
   if (!/^[\w-]{8,128}$/.test(payload.requestId || '')) fail('invalid_request_id');
@@ -73,7 +73,7 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
   if (replay) {
     if (replay.inputHash !== fingerprint) fail('request_id_reused', 409);
     await authorizedBarn(store, actor, replay.record.barnId);
-    return { ok: true, record: replay.record, state: await readInputState(store, actor, replay.record.barnId) };
+    return { ok: true, record: replay.record, ...(includeState ? {state: await readInputState(store, actor, replay.record.barnId)} : {}) };
   }
   const records = await store.list(kind);
   const id = input.id || `rs_${(await digest(`${eventId}|${kind}`)).slice(0, 32)}`;
@@ -85,7 +85,7 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
     await authorizedBarn(store, actor, current.barnId);
     // A retry after an uncertain audit outcome repairs the audit without reapplying the edit.
     await writeAudit(store, { eventId, actor, kind, barnId, fingerprint, requestId: payload.requestId, record: publicRecord(current) });
-    return { ok: true, record: publicRecord(current), state: await readInputState(store, actor, barnId) };
+    return { ok: true, record: publicRecord(current), ...(includeState ? {state: await readInputState(store, actor, barnId)} : {}) };
   }
   if (current && (!Number.isInteger(expectedRevision) || expectedRevision !== current.revision)) fail('record_changed', 409);
   if (records.some(record => record.id !== id && (kind === 'barn' ? owns(actor, record) : record.barnId === barnId) && record.name.toLocaleLowerCase('en-US') === input.name.toLocaleLowerCase('en-US'))) fail('duplicate_name', 409);
@@ -103,7 +103,7 @@ export async function saveInputRecord({ store, actor, payload, profileLink = fal
   // The provider must qualify its own concurrency guarantees. Airtable is trial-only.
   await store.put(kind, record, { expectedRevision: current?.revision });
   await writeAudit(store, { eventId, actor, kind, barnId, fingerprint, requestId: payload.requestId, record: publicRecord(record) });
-  return { ok: true, record: publicRecord(record), state: await readInputState(store, actor, barnId) };
+  return { ok: true, record: publicRecord(record), ...(includeState ? {state: await readInputState(store, actor, barnId)} : {}) };
 }
 async function writeAudit(store, { eventId, actor, kind, barnId, fingerprint, requestId, record }) {
   try {
