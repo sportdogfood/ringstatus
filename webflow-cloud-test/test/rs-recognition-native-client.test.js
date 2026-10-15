@@ -52,6 +52,18 @@ const settle = () => new Promise(resolve => setImmediate(resolve));
 const args = f => ({ root: f.root, baseUrl: "https://example.invalid/test/rs-recognition/", present: () => {}, silentRecognition: false,
   persistentStorage: f.storage, sessionStorageImpl: f.storage, uuid: f.uuid, navigate: () => {} });
 
+test('visible sign-out entry retires existing device before silent recognition and preserves drafts', async()=>{
+ const f=fixture(),calls=[],paths=[],history=[];
+ f.storage.setItem('pending-tenant-draft','keep');
+ const api=mountNativeRecognition({...args(f),silentRecognition:true,
+  locationImpl:{pathname:'/rs-recognize',search:'?sign_out=1',hash:''},historyImpl:{state:null,replaceState:(_a,_b,path)=>history.push(path)},
+  navigate:path=>paths.push(path),fetchImpl:async(url,options)=>{calls.push({operation:url.searchParams.get('operation'),body:JSON.parse(options.body)});return Response.json({ok:true,recognized:false,retired:true});}});
+ await settle();await settle();
+ assert.equal(calls.length,1);assert.equal(calls[0].operation,'action');assert.equal(calls[0].body.action,'retire_device');
+ assert.deepEqual(paths,[]);assert.deepEqual(history,['/rs-recognize']);assert.equal(api.snapshot().stage,'entry');
+ assert.equal(f.storage.getItem('pending-tenant-draft'),'keep');api.destroy();
+});
+
 for (const command of ['login', 'recovery', 'retire', 'phone-login']) {
   test(`${command} start clears previous server-confirmed browser context`, async () => {
     const f = fixture();

@@ -106,6 +106,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   if (root.__rsNativeRecognition) return root.__rsNativeRecognition;
   // Only this explicitly supported native input destination may override the page default.
   const returns = new URLSearchParams(locationImpl?.search || '').getAll('return_to');
+  const signOut = new URLSearchParams(locationImpl?.search || '').get('sign_out') === '1';
   const returnPath = returns.length === 1 && ['/rs-barn-onboarding-alerts','/rs-barn-onboarding-setup-v24'].includes(returns[0]) ? returns[0] : null;
   const endpoint = new URL(baseUrl);
   if (endpoint.protocol !== "https:" && endpoint.hostname !== "localhost") throw new Error("invalid_recognition_origin");
@@ -414,7 +415,12 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   const api={lookup,snapshot,perform,destroy(){controller.abort();delete root.__rsNativeRecognition;root.removeAttribute('data-rs-recognition-state');}};
   root.__rsNativeRecognition=api;
   bindPerson(null);show('unavailable');
-  if(invitation!==null)void acceptInvitation();
+  if(signOut){
+    const search=new URLSearchParams(locationImpl?.search||'');search.delete('sign_out');
+    historyImpl.replaceState(historyImpl.state,'',locationImpl.pathname+(search.size?'?'+search.toString():'')+(locationImpl.hash||''));
+    opened=true;void action('retire_device',{},'login');
+  }
+  else if(invitation!==null)void acceptInvitation();
   else if(silentRecognition){
     busy=true;present({state,open:opened,busy});
     let outcome;

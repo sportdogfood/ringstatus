@@ -891,6 +891,11 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   }));
   const profile = one2(panes.users, ":scope > .rs-barn-v24-link");
   const barnName = one2(root, ".rs-barn-v24-barn-name");
+  const signOut = document2.createElement("a");
+  signOut.className = "rs-barn-v24-link";
+  signOut.textContent = "Not you? Sign out";
+  signOut.href = "/rs-recognize?sign_out=1";
+  root.prepend(signOut);
   const barnLogo = document2.createElement("img");
   barnLogo.alt = "Barn logo";
   barnLogo.width = 48;
