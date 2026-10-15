@@ -214,8 +214,8 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
   if(!allowCreate)fail('tenant_membership_required',403);
   return write(TABLE.memberships,{Name:`${actor.profile.name} · owner`,Person:[person.id],Tenant:[tenantId],Roles:[owners[0].id],Status:'Enabled'});
  }
- async function preflightDirect(e){
-  await call(TABLE.roles,{fresh:true});
+ async function preflightDirect(e,{fresh=false}={}){
+  await call(TABLE.roles,{fresh});
   const r=e.record,kind=e.entityKind;
   const map=await store.mapping(kind,r.id),canonical=kind==='users'&&!map?await store.one(TABLE.people,'entity_uid',r.id):null;if((map?.fields.external_id||e.profilePersonId||canonical?.id||'')!==e.targetId)fail('mapping_changed');
   if(e.profilePersonId){const person=await store.one(TABLE.people,'recognition_person_uid',actor.id);if(person?.id!==e.profilePersonId||r.recognitionPersonId!==actor.id)fail('profile_identity_changed',403);}
@@ -247,7 +247,8 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
     if(e.targetId===access?.person.id&&access.manage&&!roleIds.some(id=>catalog.find(x=>x.id===id)?.fields.rec_name==='owner'))fail('owner_role_required',403);
    }
    if(r.pin&&!r.sms)fail('phone_required',400);
-   if(r.sms){
+   const credentialChange=!e.previous?.recognitionPersonId||r.name!==e.previous.name||(r.email||'')!==(e.previous.email||'')||r.sms!==e.previous.sms||!!r.pin;
+   if(r.sms&&credentialChange){
     const personUid=r.recognitionPersonId||`tenant_${r.id}`;
     credentials=await prepareManagedCredentials({env,fetchImpl,personUid,name:r.name,email:r.email,sms:r.sms,pin:r.pin});
     fields.recognition_person_uid=personUid;fields.phone_e164=credentials.phone;
@@ -286,7 +287,19 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
   // Verify the same target again after related records/audit, never a cached value.
   const verified=await call(TABLE[kind],{id:target.id,fresh:true});for(const [k,v]of Object.entries(fields))if(!equalField(verified.fields[k],v))fail('target_readback_mismatch');
   await currentActor(e);
-  return directResult(r,{verifyCurrent:true,kind});
+  // WEC action-result pattern: return the confirmed edit, not a rebuilt snapshot.
+  // The fresh target read above invalidated the cache; access is checked again.
+  await requireRecordAccess(kind,r);
+  if(kind==='users'){
+   const memberships=await call(TABLE.memberships);
+   const matches=memberships.filter(m=>m.fields.Person?.length===1&&m.fields.Person[0]===target.id&&m.fields.Tenant?.length===1&&m.fields.Tenant[0]===tenantId);
+   if(matches.length!==1||matches[0].fields.Status!==r.membershipStatus||!same((matches[0].fields.Roles||[]).slice().sort().join(','),r.roles||''))fail('tenant_confirmation_missing');
+  }
+  if(kind==='riders'){
+   const roster=await call(TABLE.roster);
+   if(!roster.some(m=>m.fields.Status==='Enabled'&&m.fields.Rider?.length===1&&m.fields.Rider[0]===target.id&&m.fields.Tenant?.length===1&&m.fields.Tenant[0]===tenantId&&!m.fields.Horse?.length))fail('tenant_confirmation_missing');
+  }
+  return {ok:true,record:publicRecord(r),...(includeState?{state:await readInputState(store,actor,r.barnId)}:{})};
  }
  return {store,
   async state(barnId=''){
@@ -379,8 +392,8 @@ export function createTenantBarnBridge({env,legacy,actor,fetchImpl=fetch,call=cr
     activeOperation=operation;
     await operation.reserveRevision(`${payload.kind}|${record.id}|${previous?.revision||0}`);
     // The second preflight remains under ownership; zero-effect failures release it.
-    await preflightDirect(e);
-    return applyDirect(e,prepared);
+    const currentPrepared=await preflightDirect(e,{fresh:true});
+    return applyDirect(e,currentPrepared);
    }});
   },
   async claim(rowId,sig){
