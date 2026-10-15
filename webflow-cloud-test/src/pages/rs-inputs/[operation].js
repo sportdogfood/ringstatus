@@ -7,10 +7,10 @@ import { createTenantBarnBridge } from '../../lib/rs-tenant-barn.js';
 
 // Internal domain dispatch. The public ALL entry point derives its actor from a verified cookie.
 export async function handleInputRoute({ request, locals }, bindings = env, fetchImpl = fetch) {
-  let store, recognition;
+  let store, recognition, submittedOperationId;
+  const operation = new URL(request.url).pathname.split('/').filter(Boolean).at(-1);
   try {
     if (locals.rsInputActor) {
-      const operation = new URL(request.url).pathname.split('/').filter(Boolean).at(-1);
       if (operation === 'recognition') {
         recognition = createInputRecognition({ env: bindings, fetchImpl, principalPersonUid: locals.rsInputActor.profile?.personUid, verifiedInputAccess: locals.rsInputAccessVerified === true });
       } else if (['state', 'record', 'profile-link','user-optins'].includes(operation)) {
@@ -27,6 +27,7 @@ export async function handleInputRoute({ request, locals }, bindings = env, fetc
           const raw=await request.clone().text();
           if(raw.length>16384)return Response.json({ok:false,error:'request_too_large'},{status:413});
           let payload;try{payload=JSON.parse(raw)}catch{return Response.json({ok:false,error:'invalid_json'},{status:400})}
+          if(typeof payload?.requestId==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(payload.requestId))submittedOperationId=payload.requestId;
           if(operation==='profile-link')return Response.json(await bridge.intake(payload,{profileLink:true}),{headers:{'Cache-Control':'no-store'}});
           if(['barn','riders','users'].includes(payload?.kind))return Response.json(await bridge.intake(payload),{headers:{'Cache-Control':'no-store'}});
         }
@@ -37,7 +38,7 @@ export async function handleInputRoute({ request, locals }, bindings = env, fetc
     const traceId = crypto.randomUUID();
     const code = error.code || 'storage_unavailable';
     const status = error.status || 503;
-    console.info(JSON.stringify({ event: 'rs_input_request', traceId, operation: 'configuration', status, code }));
+    console.info(JSON.stringify({ event: 'rs_input_request', traceId, operation, submittedOperationId, status, code }));
     return Response.json({ ok: false, error: code }, { status, headers: { 'Cache-Control': 'no-store', 'X-Request-Id': traceId } });
   }
   return handleInputRequest({ request, actor: locals.rsInputActor, store, recognition, log: event => console.info(JSON.stringify(event)) });

@@ -129,11 +129,13 @@ function createPersistence({ scope, storage = indexedDBStorage(), now = () => Da
       }
       return true;
     }),
-    fail: (op, error) => change((state) => {
+    fail: (op, error, details) => change((state) => {
       const item = matching(state, op);
       if (item) {
         item.attempts++;
         item.error = error;
+        if (details) item.errorDetails = details;
+        else delete item.errorDetails;
       }
     }),
     // Only a proven pre-admission revision rejection may be replaced. Keep the
@@ -165,11 +167,17 @@ var errorMessages = {
   recovery_delivery_unconfigured: "Profile recovery is not available yet. Your details have been kept."
 };
 var InputApiError = class extends Error {
-  constructor(code) {
+  constructor(code, status, requestId, contentType) {
     super(errorMessages[code] || "The request could not be completed. Your entry is still here; try again.");
     this.code = code;
+    this.status = status;
+    this.requestId = requestId;
+    this.contentType = contentType;
   }
   code;
+  status;
+  requestId;
+  contentType;
 };
 function clearRecognitionCache() {
   sessionStorage.removeItem("rs_recognition_result");
@@ -241,7 +249,7 @@ function createInputsApi(apiBase, options = {}) {
       throw new Error("Could not connect. Your entry is still here; try again.");
     });
     const result = await response.json().catch(() => null);
-    if (!response.ok || result?.ok !== true) throw new InputApiError(typeof result?.error === "string" ? result.error : "request_failed");
+    if (!response.ok || result?.ok !== true) throw new InputApiError(typeof result?.error === "string" ? result.error : `save_${response.status}`, response.status, response.headers.get("X-Request-Id") || void 0, response.headers.get("Content-Type") || void 0);
     return result;
   }
   async function mutation(path, body, validate2) {
@@ -276,7 +284,8 @@ function createInputsApi(apiBase, options = {}) {
       }
       if (options.durableBarn && confirmedState && !result.state && (path === "/profile-link" || path === "/record" && ["barn", "riders", "users"].includes(String(body.kind))) && typeof result.record?.id === "string" && typeof result.record?.name === "string" && typeof result.record?.barnId === "string" && Number.isSafeInteger(result.record?.revision)) result.state = mergeSavedState(confirmedState, path === "/profile-link" ? "users" : body.kind, result.record);
       if (!validate2(result)) throw new Error("The server response could not be verified. Your entry is still here.");
-      if (device) await device.confirm(operation, result.record, result.record.revision);
+      if (device) await device.confirm(operation, result.record, result.record.revision).catch(() => {
+      });
       if (options.durableBarn && verifiedActor && validStore(result.state)) {
         result.state = mergeSavedState(result.state, path === "/profile-link" ? "users" : body.kind, result.record);
         await persistence("state").refresh(result.state, 0).catch(() => {
@@ -285,7 +294,8 @@ function createInputsApi(apiBase, options = {}) {
       requests.delete(requestKey);
       return result;
     } catch (error) {
-      if (device) await device.fail(operation, error instanceof Error ? error.message : "save_unconfirmed");
+      if (device) await device.fail(operation, error instanceof InputApiError ? error.code : error instanceof Error ? error.message : "save_unconfirmed", error instanceof InputApiError ? { status: error.status, requestId: error.requestId, contentType: error.contentType } : void 0).catch(() => {
+      });
       throw error;
     }
   }
@@ -638,6 +648,12 @@ function bindMainForms({ document: document2, api, view, navigate = (path) => do
     }, true);
   }
   async function profileLink() {
+    const own = state?.users.filter((row) => row.barnId === state.selectedBarn && row.recognitionPersonId === actor?.id) || [];
+    if (own.length === 1) return beginEdit("users", own[0].id);
+    if (own.length > 1) {
+      feedback("users", "error", "ambiguous_tenant_mapping");
+      return false;
+    }
     return run("users", async () => {
       if (!state?.selectedBarn) throw new Error("barn_required");
       const result = await api.profileLink(state.selectedBarn);

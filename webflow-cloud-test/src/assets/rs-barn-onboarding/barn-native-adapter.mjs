@@ -208,6 +208,9 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     }, true);
   }
   async function profileLink() {
+    const own=state?.users.filter(row=>row.barnId===state.selectedBarn&&row.recognitionPersonId===actor?.id)||[];
+    if(own.length===1)return beginEdit('users',own[0].id);
+    if(own.length>1){feedback('users','error','ambiguous_tenant_mapping');return false;}
     return run('users', async () => {
       if (!state?.selectedBarn) throw new Error('barn_required');
       const result = await api.profileLink(state.selectedBarn);

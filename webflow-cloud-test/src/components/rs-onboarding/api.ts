@@ -26,7 +26,7 @@ const errorMessages: Record<string, string> = {
   recovery_delivery_unconfigured: 'Profile recovery is not available yet. Your details have been kept.'
 };
 export class InputApiError extends Error {
-  constructor(public code: string) { super(errorMessages[code] || 'The request could not be completed. Your entry is still here; try again.'); }
+  constructor(public code: string, public status?: number, public requestId?: string, public contentType?: string) { super(errorMessages[code] || 'The request could not be completed. Your entry is still here; try again.'); }
 }
 
 function clearRecognitionCache() {
@@ -98,7 +98,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       ...(body ? {body:JSON.stringify(body)} : {})
     }).catch(() => { throw new Error('Could not connect. Your entry is still here; try again.'); });
     const result = await response.json().catch(() => null);
-    if (!response.ok || result?.ok !== true) throw new InputApiError(typeof result?.error === 'string' ? result.error : 'request_failed');
+    if (!response.ok || result?.ok !== true) throw new InputApiError(typeof result?.error === 'string' ? result.error : `save_${response.status}`, response.status, response.headers.get('X-Request-Id') || undefined, response.headers.get('Content-Type') || undefined);
     return result;
   }
   async function mutation(path: string, body: Record<string, unknown>, validate: (result: any) => boolean) {
@@ -125,10 +125,12 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       }
       if(options.durableBarn&&confirmedState&&!result.state&&(path==='/profile-link'||(path==='/record'&&['barn','riders','users'].includes(String(body.kind))))&&typeof result.record?.id==='string'&&typeof result.record?.name==='string'&&typeof result.record?.barnId==='string'&&Number.isSafeInteger(result.record?.revision))result.state=mergeSavedState(confirmedState,(path==='/profile-link'?'users':body.kind) as Kind,result.record);
       if (!validate(result)) throw new Error('The server response could not be verified. Your entry is still here.');
-      if(device)await device.confirm(operation,result.record,result.record.revision);
+      // WEC: confirmed returned data determines Saved. Device cleanup is separate;
+      // if unavailable, retain the same operation for later safe reconciliation.
+      if(device)await device.confirm(operation,result.record,result.record.revision).catch(()=>{});
       if(options.durableBarn&&verifiedActor&&validStore(result.state)){result.state=mergeSavedState(result.state,(path==='/profile-link'?'users':body.kind) as Kind,result.record);await persistence('state').refresh(result.state,0).catch(()=>{});}
       requests.delete(requestKey);return result;
-    }catch(error){if(device)await device.fail(operation,error instanceof Error?error.message:'save_unconfirmed');throw error;}
+    }catch(error){if(device)await device.fail(operation,error instanceof InputApiError?error.code:error instanceof Error?error.message:'save_unconfirmed',error instanceof InputApiError?{status:error.status,requestId:error.requestId,contentType:error.contentType}:undefined).catch(()=>{});throw error;}
   }
   const recordResponse = (result: any) => typeof result?.record?.id === 'string' && validStore(result.state);
   function accessActor(result: any): AccessActor {

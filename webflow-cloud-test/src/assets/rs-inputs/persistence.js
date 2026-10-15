@@ -71,7 +71,7 @@ export function createPersistence({scope,storage=indexedDBStorage(),now=()=>Date
    state.confirmed={data:copy(data),revision,updatedAt:now()};removeOperation(state,op);
    if(state.generation===op.generation||state.restoredPendingId===op.requestId){state.draft=copy(state.pending?.body||data);state.dirty=!!state.pending;if(state.pending)state.restoredPendingId=state.pending.requestId;else delete state.restoredPendingId;}return true;
   }),
-  fail:(op,error)=>change(state=>{const item=matching(state,op);if(item){item.attempts++;item.error=error;} }),
+  fail:(op,error,details)=>change(state=>{const item=matching(state,op);if(item){item.attempts++;item.error=error;if(details)item.errorDetails=details;else delete item.errorDetails;} }),
   // Only a proven pre-admission revision rejection may be replaced. Keep the
   // user's draft; unknown outcomes and admitted work retain their exact request.
   rejectRevision:op=>change(state=>{
