@@ -1,10 +1,11 @@
 import { recognitionConfig } from './rs-recognition-config.js';
 import { handleAuthenticatedInputRoute } from '../pages/rs-inputs/[operation].js';
-import { handleAccessRoute, createAccessStore, accessHash } from './rs-inputs-access.js';
+import { handleAccessRoute, createAccessStore, createInputAccess, accessHash } from './rs-inputs-access.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
 import { recordRecognitionSession, recordRecognitionSummary } from './rs-recognition-session.js';
 import { createRecoverySms, requireSmsAutomation } from './rs-recognition-sms.js';
 import { handleRecognitionOtp } from './rs-recognition-otp.js';
+import { handleRecognitionCredential } from './rs-recognition-credential.js';
 
 const respond = (body, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const safePerson = p => p ? Object.fromEntries([
@@ -29,10 +30,36 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
     target.search = '';
     const payload = operation === 'device' ? null : await request.json().catch(() => null);
     if (operation !== 'device' && (!payload || Array.isArray(payload))) return respond({ ok: false, error: 'invalid_request' }, 400);
+    if(operation==='action'&&payload.action==='credential') {
+      const result=await handleRecognitionCredential({request,env:bindings,payload,fetchImpl});
+      const response=respond(result);
+      if(result.verified){
+        response.headers.set('Set-Cookie',`__Host-rs_recognition_device=${result.device_token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
+        response.headers.append('Set-Cookie',createInputAccess({env:bindings,fetchImpl}).logout(request));
+      }
+      return response;
+    }
+    if(operation==='action'&&payload.action==='retire_device') {
+      if(request.headers.get('Origin')!==incoming.origin)return respond({ok:false,error:'origin_denied'},403);
+      const cookies=(request.headers.get('Cookie')||'').split(';').map(v=>v.trim()).filter(v=>v.startsWith('__Host-rs_recognition_device='));
+      if(cookies.length===1) {
+        const token=cookies[0].slice('__Host-rs_recognition_device='.length);
+        const principal=await createInputRecognition({env:bindings,fetchImpl,verifiedInputAccess:true}).retirementPrincipal(token);
+        if(!principal)return respond({ok:false,error:'authentication_required'},401);
+        await createInputRecognition({env:bindings,fetchImpl,principalPersonUid:principal,verifiedInputAccess:true}).action({action:'retire_device',requestId:payload.session_event_uid,device_token:token,values:{}},request);
+        const response=respond({ok:true,retired:true,recognized:false});
+        response.headers.append('Set-Cookie','__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
+        response.headers.append('Set-Cookie',createInputAccess({env:bindings,fetchImpl}).logout(request));
+        return response;
+      }
+    }
     if (operation === 'action' && ['otp_start', 'otp_check'].includes(payload.action)) {
       const result = await handleRecognitionOtp({ request, env: bindings, payload, fetchImpl });
       const response = respond(result);
-      if (result.verified === true) response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${result.device_token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
+      if (result.verified === true) {
+        response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${result.device_token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
+        response.headers.append('Set-Cookie',createInputAccess({env:bindings,fetchImpl}).logout(request));
+      }
       return response;
     }
     if (operation === 'recognize') {
@@ -55,7 +82,7 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
         if (!found.recognized) response.headers.set('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
         return response;
       }
-      const response = respond({ ok: true, recognized: found.recognized, ...(found.recognized ? { first_name: found.profile.first_name, person_name: found.profile.person_name, session } : {}) });
+      const response = respond({ ok: true, recognized: found.recognized, ...(found.recognized ? { person_uid:found.profile.person_uid, first_name: found.profile.first_name, person_name: found.profile.person_name, session } : {}) });
       if (!found.recognized) {
         response.headers.set('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
         return response;

@@ -49,6 +49,12 @@ export function createPersistence({scope,storage=indexedDBStorage(),now=()=>Date
    state.confirmed={data:copy(data),revision,updatedAt:now()};state.pending=null;
    if(state.generation===op.generation){state.draft=copy(data);state.dirty=false;}return true;
   }),
-  fail:(op,error)=>change(state=>{if(matches(state,op)){state.pending.attempts++;state.pending.error=error;} })
+  fail:(op,error)=>change(state=>{if(matches(state,op)){state.pending.attempts++;state.pending.error=error;} }),
+  // Only a proven pre-admission revision rejection may be replaced. Keep the
+  // user's draft; unknown outcomes and admitted work retain their exact request.
+  rejectRevision:op=>change(state=>{
+   if(!matches(state,op)||state.pending.error!=='intake_record_changed')return false;
+   state.pending=null;return true;
+  })
  };
 }

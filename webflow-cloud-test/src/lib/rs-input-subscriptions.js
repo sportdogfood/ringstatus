@@ -3,7 +3,8 @@ import { createAirtableInputStore } from './rs-inputs-airtable.js';
 import { handleAccessRoute } from './rs-inputs-access.js';
 import { createSubscriptionStore, BASE_ID } from './rs-input-subscription-store.js';
 import { withSubscriptionReservation } from './rs-input-subscription-control.js';
-import { personalPreferences } from './rs-input-preferences.js';
+import {createTenantSubmissionBridge} from './rs-tenant-submissions.js';
+import {createTenantSubmissionStore} from './rs-tenant-submission-store.js';
 const fail=(code,status=400)=>{throw new InputError(code,status)};
 const uid=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(v);
 const publicRecord=({owner_uid,request_uid,request_hash,...record})=>record;
@@ -23,11 +24,28 @@ export function createSubscriptionHandler({env,fetchImpl=fetch,definitions=[],ap
    return Response.json(data,{status,headers:{'Cache-Control':'no-store','Vary':'Cookie','X-Content-Type-Options':'nosniff','X-Request-Id':traceId}});
   };
   try{
-   if(env.RS_INPUTS_BASE_ID!==BASE_ID)fail('subscription_destination_required',503);
+   if(env.RS_INPUTS_TENANTS_BASE_ID && env.RS_INPUTS_TENANTS_BASE_ID!==BASE_ID)fail('subscription_destination_required',503);
    if(!actor?.profile?.personUid||actor.id!==actor.profile.personUid||!actor.permissions?.includes('inputs:read'))fail('permission_denied',403);
+   const url=new URL(request.url);
+   // Reuse the prepared Tenants automation bridge. Personal preferences never
+   // fall through to the old direct writer, even when configuration is missing.
+   if((request.method==='GET'&&['preferences','submission'].includes(url.searchParams.get('view')))||request.method==='POST'){
+    let payload;
+    if(request.method==='POST'){
+     if(request.headers.get('Origin')!==url.origin)fail('origin_denied',403);
+     payload=await bodyOf(request);
+    }
+    if(!payload||payload.action==='preferences'){
+     const tenantEnv={...env,RS_INPUTS_TENANT_SUBMISSIONS_MODE:env.RS_INPUTS_TENANT_SUBMISSIONS_MODE??env.RS_INPUTS_WRITE_MODE};
+     const bridge=createTenantSubmissionBridge({env:tenantEnv,definitions,clock,store:createTenantSubmissionStore({env:tenantEnv,fetchImpl,minimumIntervalMs})});
+     const result=payload?await bridge.intake({actor,payload}):url.searchParams.get('view')==='submission'?await bridge.status({actor,requestId:url.searchParams.get('request_id')}):await bridge.read({actor});
+     return respond(result,result.state==='Pending'?202:200);
+    }
+    // Body was validated once; keep the existing engine subscription handler.
+    request=new Request(request.url,{method:'POST',headers:request.headers,body:JSON.stringify(payload)});
+   }
    const identities=createAirtableInputStore({env,fetchImpl,minimumIntervalMs});
    const store=createSubscriptionStore({env,fetchImpl,minimumIntervalMs});
-   if(request.method==='GET'&&new URL(request.url).searchParams.get('view')==='preferences')return respond(await personalPreferences({request,actor,store,env,definitions,clock}));
    const resolve=async barnId=>{
     if(!uid(barnId))fail('barn_required');
     const barn=(await identities.list('barn')).find(b=>b.id===barnId&&b.barnId===barnId&&(b.ownerUid===actor.id||actor.barnIds?.includes(b.id)));
@@ -49,7 +67,6 @@ export function createSubscriptionHandler({env,fetchImpl=fetch,definitions=[],ap
    if(request.headers.get('Origin')!==new URL(request.url).origin)fail('origin_denied',403);
    if(!actor.permissions.includes('inputs:write'))fail('permission_denied',403);
    const payload=await bodyOf(request);
-   if(payload.action==='preferences')return respond(await personalPreferences({request,payload,actor,store,env,definitions,clock}));
    const allowed={revoke:['action','barnId','subscriptionId','expectedRevision','requestId'],update:['action','barnId','subscriptionId','expectedRevision','requestId','alertKeys','alertTypes'],grant:['action','barnId','subscriptionId','expectedRevision','requestId','engineScope','phone','alertKeys']};
    if(typeof payload.action!=='string'||!Object.hasOwn(allowed,payload.action)||Object.keys(payload).some(k=>!allowed[payload.action].includes(k)))fail('invalid_payload');
    if(!/^[\w-]{8,128}$/.test(payload.requestId||''))fail('invalid_request_id');

@@ -1,7 +1,7 @@
 import { InputError } from './rs-inputs.js';
-export const BASE_ID='app9kOZdIaGyKk5uG';
-export const SUBSCRIPTIONS='tblbpALv7flu3NNEE';
-export const EVENTS='tblwts3huk3w1ACjh';
+export const BASE_ID='app7BXcw801n19QKF';
+export const SUBSCRIPTIONS='tblCX61u6pjSLrP5S';
+export const EVENTS='tbluecPFIorOytASP';
 const names=['entity_uid','barn_uid','user_uid','engine_scope','target_type','target_uid','alert_types','phone_e164','status','consent_state','consent_at','consent_source','notice_version','revoked_at','owner_uid','revision','request_uid','request_hash','record_mode','preferences_json'];
 const fail=(code,status=400)=>{throw new InputError(code,status)};
 const uid=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(v);
@@ -21,7 +21,8 @@ export function validateSubscription(row,{writing=false}={}){
  return row;
 }
 export function createSubscriptionStore({env,fetchImpl=fetch,minimumIntervalMs=225}){
- if(env.RS_INPUTS_BASE_ID!==BASE_ID)fail('subscription_destination_required',503);
+ // Inputs/Recognize retain their separate existing base configuration.
+ if(env.RS_INPUTS_TENANTS_BASE_ID && env.RS_INPUTS_TENANTS_BASE_ID!==BASE_ID)fail('subscription_destination_required',503);
  if(!env.AIRTABLE_TOKEN)fail('storage_credentials_missing',503);
  let last=0;
  async function call(table,{method='GET',formula,body}={}){

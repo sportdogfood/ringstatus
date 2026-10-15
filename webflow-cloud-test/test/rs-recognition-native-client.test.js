@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
-import { mountNativeRecognition, createNativeRecognitionPresenter } from "../src/assets/rs-recognition/native-client.js";
+import { mountNativeRecognition, createNativeRecognitionPresenter, runSilentRecognition } from "../src/assets/rs-recognition/native-client.js";
 
 // Small DOM protocol double: these are adapter unit tests, not browser/native proof.
 function fixture() {
@@ -9,6 +9,7 @@ function fixture() {
   function node(kind, state, name) {
     const n = { kind, state, name, value: "", textContent: "", tagName: kind === "input" ? "INPUT" : "A",
       attrs: {}, focus() { n.focused = true; }, getAttribute(key) { return n.attrs[key]; },
+      setAttribute(key, value) { n.attrs[key] = String(value); },
       closest() { return kind === "action" ? n : null; }, click() { return fire(n); } };
     if (kind === "action") n.attrs['data-rs-native-action'] = name;
     nodes.push(n); return n;
@@ -30,8 +31,11 @@ function fixture() {
        selector.includes("data-rs-native-action") ? n.kind === "action" && (!action || n.name === action) :
        selector.includes("input") || inputName ? n.kind === "input" && (!inputName || n.name === inputName) : n.kind === "view"));
   }
-  const root = { querySelector: selector => query(selector)[0], querySelectorAll: query,
-    contains: target => nodes.includes(target), getAttribute: () => "/rs-barn-onboarding-setup",
+  const root = { attrs: { 'data-rs-setup-path': '/rs-barn-onboarding-setup' },
+    querySelector: selector => query(selector)[0], querySelectorAll: query,
+    contains: target => nodes.includes(target), getAttribute(key) { return this.attrs[key] ?? null; },
+    setAttribute(key, value) { this.attrs[key] = String(value); },
+    removeAttribute(key) { delete this.attrs[key]; },
     addEventListener(type, callback, options) {
       if (!listeners.has(type)) listeners.set(type, []);
       listeners.get(type).push(callback);
@@ -66,27 +70,27 @@ for (const command of ['login', 'recovery', 'retire', 'phone-login']) {
   });
 }
 
-test('mounted lookup and actions use the rotated tab UID after silent session conflict', async () => {
-  const f = fixture(), events = [], actions = [];
+test('silent session conflict rotates tab UID and waits for explicit retry before access', async () => {
+  const f = fixture(), sessions = [], actions = [];
   let checks = 0;
   const api = mountNativeRecognition({ ...args(f), silentRecognition: true, fetchImpl: async (url, options = {}) => {
     const operation = url.searchParams.get('operation');
     if (operation === 'recognize') {
+      sessions.push(JSON.parse(options.body).session_uid);
       checks++;
-      return checks === 1 ? Response.json({ ok: false, error: 'session_identity_conflict' }, { status: 409 }) : Response.json({ ok: true, recognized: true });
+      return checks === 1 ? Response.json({ ok: false, error: 'session_identity_conflict' }, { status: 409 }) : Response.json({ ok: true, recognized: true, person_uid: 'synthetic-person' });
     }
-    if (operation === 'device') return Response.json({ ok: true, recognized: true });
-    const payload = JSON.parse(options.body);
-    if (operation === 'session') events.push(payload);
-    else actions.push(payload);
-    return Response.json({ ok: true, recognized: true });
+    if (url.pathname.endsWith('/access')) return Response.json({ ok: true, actor: { id: 'synthetic-person' } });
+    actions.push(operation);
+    throw new Error('unexpected operation');
   } });
   await settle(); await settle();
   const rotated = f.storage.getItem('rs_native_recognition_session_v1');
   assert.equal(rotated, 'synthetic-3');
-  assert.equal(events.length, 1); assert.equal(events[0].session_uid, rotated);
-  await f.click('continue');
-  assert.equal(actions.length, 1); assert.equal(actions[0].session_uid, rotated);
+  assert.equal(api.snapshot().stage, 'unavailable'); assert.equal(checks, 1);
+  await api.perform('retry');
+  assert.equal(checks, 2); assert.equal(sessions[1], rotated);
+  assert.deepEqual(actions, []); assert.equal(api.snapshot().stage, 'tenant_ready');
   api.destroy();
 });
 
@@ -94,13 +98,15 @@ test('SMS code is submitted in the original browser and only approved binding re
   const f = fixture(), actions = [], paths = [];
   const token = '81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
   const api = mountNativeRecognition({ ...args(f), navigate: p => paths.push(p), fetchImpl: async (url, options = {}) => {
+    if (url.pathname.endsWith('/access')) return Response.json({ ok: true, actor: { id: 'synthetic-person' } });
     if (url.searchParams.get('operation') === 'device') return Response.json({ ok: false, error: 'authentication_required' }, { status: 401 });
-    if (url.searchParams.get('operation') === 'recognize') return Response.json({ ok: true, recognized: true });
+    if (url.searchParams.get('operation') === 'recognize') return Response.json({ ok: true, recognized: true, person_uid: 'synthetic-person' });
     const payload = JSON.parse(options.body); actions.push(payload);
     if (payload.action === 'otp_start') return Response.json({ ok: true, otp_required: true });
     return Response.json(payload.code === '123456' ? { ok: true, verified: true, device_token: token } : { ok: true, verified: false });
   } });
   await settle();
+  await api.perform('show_sms');
   const input = f.nodes.find(n => n.kind === 'input' && n.state === 'login');
   input.value = '2025550199'; await f.click('phone-login');
   assert.equal(input.value, ''); assert.deepEqual(paths, []);
@@ -109,15 +115,16 @@ test('SMS code is submitted in the original browser and only approved binding re
   assert.deepEqual(actions.map(a => a.action), ['otp_start', 'otp_check', 'otp_check']);
   assert.ok(actions.every(a => a.sms === '2025550199'));
   assert.equal(f.storage.getItem('rs_recognition_device_token_v1'), token);
-  assert.deepEqual(paths, ['/']); api.destroy();
+  assert.deepEqual(paths, ['/rs-barn-onboarding-setup']); api.destroy();
 });
 
 test('default native mount silently recognizes and redirects home without opening a dialog', async () => {
   const f = fixture(), paths = [], views = [], operations = [];
+  f.root.setAttribute('data-rs-setup-path', '/');
   const api = mountNativeRecognition({ ...args(f), silentRecognition: true, navigate: p => paths.push(p), present: v => views.push(v),
-    fetchImpl: async url => { operations.push(url.searchParams.get('operation')); return Response.json({ ok: true, recognized: true }); } });
+    fetchImpl: async url => { operations.push(url.pathname.endsWith('/access') ? 'access' : url.searchParams.get('operation')); return Response.json(url.pathname.endsWith('/access') ? { ok: true, actor: { id: 'synthetic-person' } } : { ok: true, recognized: true, person_uid: 'synthetic-person' }); } });
   await settle(); await settle();
-  assert.deepEqual(operations, ['recognize']); assert.deepEqual(paths, ['/']);
+  assert.deepEqual(operations, ['recognize', 'access']); assert.deepEqual(paths, ['/']);
   assert.equal(views.some(v => v.open), false); api.destroy();
 });
 
@@ -132,6 +139,7 @@ test('unknown silent visitor stays in the requesting browser to enter its SMS co
     } });
   await settle(); await settle();
   assert.equal(views.at(-1).state, 'login'); assert.equal(views.at(-1).open,true);
+  await api.perform('show_sms');
   await f.click('phone-login');
   assert.equal(views.at(-1).state,'login'); assert.deepEqual(paths,[]);
   assert.match(f.nodes.find(n=>n.kind==='feedback' && n.state==='login').textContent,/enter its SMS code in this browser/); api.destroy();
@@ -297,6 +305,94 @@ test("uncertain OTP send is not automatically repeated by the retry control", as
     return Response.json({ ok: true, recognized: false });
   } });
   await settle(); await settle();
+  await api.perform('show_sms');
   await f.click("phone-login"); await f.click("retry");
   assert.equal(requests.length, 1); assert.equal(requests[0].action, 'otp_start'); api.destroy();
+});
+
+for(const query of ['?return_to=%2Frs-barn-onboarding-alerts','?return_to=https%3A%2F%2Fevil.test','?return_to=%252Frs-barn-onboarding-alerts','?return_to=%2Frs-barn-onboarding-alerts&return_to=%2Fevil'])test('recognition completion preserves safe exact return '+query,async()=>{
+ const f=fixture(),paths=[];
+ mountNativeRecognition({...args(f),silentRecognition:true,locationImpl:{hash:'',pathname:'/rs-recognize',search:query},navigate:p=>paths.push(p),fetchImpl:async url=>new URL(url).pathname.endsWith('/access')?Response.json({ok:true,actor:{id:'synthetic-person'}}):Response.json({ok:true,recognized:true,person_uid:'synthetic-person'})});
+ for(let i=0;i<8;i++)await settle();
+ assert.deepEqual(paths,[query==='?return_to=%2Frs-barn-onboarding-alerts'?'/rs-barn-onboarding-alerts':'/rs-barn-onboarding-setup']);
+});
+
+for (const entry of ['native', 'agent']) {
+  for (const [kind, value] of [['phone', '2025550199'], ['pin', '0123'], ['invite', '1234567']]) {
+    test(`unknown alerts return uses shared ${kind} action through ${entry}`, async () => {
+      const f = fixture(), paths = [], requests = [];
+      const token = '81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+      let confirmed = false;
+      const api = mountNativeRecognition({ ...args(f), silentRecognition: true,
+        locationImpl: { pathname: '/rs-recognize', search: '?return_to=%2Frs-barn-onboarding-alerts', hash: '' },
+        navigate: path => paths.push(path), fetchImpl: async (url, options = {}) => {
+          assert.equal(options.credentials, 'same-origin');
+          assert.equal(url.origin, 'https://example.invalid');
+          if (url.pathname.endsWith('/access')) {
+            requests.push('access'); assert.equal(confirmed, true);
+            return Response.json({ ok: true, actor: { id: 'synthetic-person' } });
+          }
+          const operation = url.searchParams.get('operation');
+          const payload = JSON.parse(options.body); requests.push(operation);
+          if (operation === 'recognize') {
+            if (confirmed) assert.equal(payload.device_token, token);
+            return Response.json({ ok: true, recognized: confirmed, ...(confirmed ? { person_uid: 'synthetic-person' } : {}) });
+          }
+          assert.equal(operation, 'action'); assert.equal(payload.action, 'credential');
+          assert.equal(payload.kind, kind); assert.equal(payload.value, value);
+          assert.ok(payload.request_id); confirmed = true;
+          return Response.json({ ok: true, verified: true, device_token: token });
+        } });
+      await settle(); await settle();
+      assert.equal(api.snapshot().stage, 'entry'); assert.deepEqual(paths, []);
+      assert.deepEqual(requests, ['recognize'], 'unknown entry does not send SMS or fabricate access');
+      if (entry === 'agent') {
+        await api.perform('show_' + kind);
+        await api.perform('submit_credential', value);
+      } else {
+        // The native identifier selects the same phone/PIN/invitation controller action.
+        f.nodes.find(n => n.kind === 'input' && n.state === 'login').value = value;
+        await f.click('phone-login');
+      }
+      assert.deepEqual(requests, ['recognize', 'action', 'recognize', 'access']);
+      assert.deepEqual(paths, ['/rs-barn-onboarding-alerts']);
+      assert.equal(api.snapshot().stage, 'tenant_ready');
+      assert.equal(JSON.parse(f.root.getAttribute('data-rs-recognition-state')).stage, 'tenant_ready');
+      assert.equal(JSON.parse(f.storage.getItem('rs_native_recognition_confirmation_v1')).confirmed, true);
+      api.destroy(); assert.equal(f.root.getAttribute('data-rs-recognition-state'), null);
+    });
+  }
+}
+
+for (const accessResult of ['denied', 'different-actor']) {
+  test(`alerts return waits for matching permitted actor: ${accessResult}`, async () => {
+    const f = fixture(), paths = [];
+    const api = mountNativeRecognition({ ...args(f), silentRecognition: true,
+      locationImpl: { pathname: '/rs-recognize', search: '?return_to=%2Frs-barn-onboarding-alerts', hash: '' },
+      navigate: path => paths.push(path), fetchImpl: async url => {
+        if (url.pathname.endsWith('/access')) return accessResult === 'denied'
+          ? Response.json({ ok: false, error: 'authentication_required' }, { status: 401 })
+          : Response.json({ ok: true, actor: { id: 'another-person' } });
+        return Response.json({ ok: true, recognized: true, person_uid: 'synthetic-person' });
+      } });
+    await settle(); await settle();
+    assert.deepEqual(paths, []); assert.notEqual(api.snapshot().stage, 'tenant_ready');
+    api.destroy();
+  });
+}
+
+test('known alerts caller silently checks identity without navigating or mounting a dialog', async () => {
+  const f = fixture(), paths = [], outcomes = [], requests = [];
+  const matched = await runSilentRecognition({ endpoint: 'https://example.invalid/test/rs-inputs/native-recognition',
+    persistentStorage: f.storage, sessionStorageImpl: f.storage, uuid: f.uuid,
+    pagePath: '/rs-barn-onboarding-alerts', redirectOnRecognized: false,
+    navigate: path => paths.push(path), onOutcome: outcome => outcomes.push(outcome),
+    fetchImpl: async (url, options) => {
+      requests.push(JSON.parse(options.body)); assert.equal(url.searchParams.get('operation'), 'recognize');
+      return Response.json({ ok: true, recognized: true, person_uid: 'synthetic-person' });
+    } });
+  assert.equal(matched, true); assert.deepEqual(paths, []);
+  assert.equal(outcomes[0].outcome, 'recognized');
+  assert.equal(requests[0].page_path, '/rs-barn-onboarding-alerts');
+  assert.equal(f.root.__rsNativeRecognition, undefined);
 });

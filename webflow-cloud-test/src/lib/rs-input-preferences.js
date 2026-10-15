@@ -40,6 +40,8 @@ export async function personalPreferences({request,payload,actor,store,env,defin
   if(replay){
    if(replay.inputHash!==fingerprint)fail('request_id_reused',409);
    if(replay.record.id!==id||replay.record.ownerUid!==actor.id||replay.record.targetType!=='Person'||!current)fail('invalid_audit_record',502);
+   if(replay.record.preferences)return {ok:true,preferences:validatePreferences(replay.record.preferences,definitions),revision:replay.record.revision};
+   if(current.request_uid!==eventId||current.request_hash!==fingerprint||current.revision!==replay.record.revision)fail('operation_result_unavailable',409);
    return output(current);
   }
   const audit=async record=>{
@@ -47,7 +49,7 @@ export async function personalPreferences({request,payload,actor,store,env,defin
    const at=clock();if(!Number.isFinite(Date.parse(at)))fail('invalid_server_time',503);
    await store.appendEvent({eventId,actorId:actor.id,requestId:payload.requestId,inputHash:fingerprint,occurredAt:at,
     action:preferences.enabled?'consent_granted':'consent_revoked',
-    record:{id,ownerUid:actor.id,targetType:'Person',targetUid:actor.id,revision:record.revision,status:record.status,consentState:record.consent_state,consentAt:record.consent_at,consentSource:record.consent_source,noticeVersion:record.notice_version,revokedAt:record.revoked_at||null}});
+    record:{id,ownerUid:actor.id,targetType:'Person',targetUid:actor.id,revision:record.revision,status:record.status,consentState:record.consent_state,consentAt:record.consent_at,consentSource:record.consent_source,noticeVersion:record.notice_version,revokedAt:record.revoked_at||null,preferences:validatePreferences(JSON.parse(record.preferences_json),definitions)}});
   };
   if(current?.request_uid===eventId){if(current.request_hash!==fingerprint)fail('request_id_reused',409);await audit(current);return output(current);}
   if(guard.recoveryOnly)fail('subscription_reconciliation_required',503);

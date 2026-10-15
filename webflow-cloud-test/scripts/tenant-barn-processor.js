@@ -2,7 +2,8 @@
 // Reuses the existing signed admission -> one-winner claim -> readback pattern.
 const T={sub:'tblldMTDEC697hPwE',barn:'tbled1saw01Thffs1',riders:'tbllUlTlcEMgZiW3h',sources:'tblRswgKjA9dt3PED',events:'tbluecPFIorOytASP',people:'tblyTBgrgdhT3Tcg7',memberships:'tblFf4aWQYA2RRsWo',roster:'tblwcczj8lFhVcbyt'};
 const endpoint='https://ringstatus.com/test/rs-inputs/tenant-barn-process';
-const source='rs-inputs-native',ownerRole='recjmgDCzQmZ5CARx';
+const source='rs-inputs-native';
+const rolesTable='tblRqRbjmqmNfJtIP';
 const cell=(r,k)=>r.getCellValue(k),choice=v=>v?.name||v||'';
 const fail=code=>{throw Error(code)};
 async function rows(table,fields){return (await base.getTable(table).selectRecordsAsync({fields})).records;}
@@ -12,6 +13,9 @@ async function saveMap(kind,record,target){const prior=await mapping(kind,record
  await base.getTable(T.sources).createRecordAsync({mapping_uid:`${source}|${kind}|${record.id}`,entity_type:{name:kind==='barn'?'Barn':'Rider'},entity_uid:record.id,source_system:source,source_entity_type:kind,source_scope:record.barnId,external_id:target,record_mode:{name:'Test'}});
 }
 async function membership(actor,tenantId,allowCreate){
+ const owner=unique(await rows(rolesTable,['rec_name']),r=>cell(r,'rec_name')==='owner');
+ if(!owner)fail('tenant_owner_role_required');
+ const ownerRole=owner.id;
  let person=unique(await rows(T.people,['recognition_person_uid','entity_uid']),r=>cell(r,'recognition_person_uid')===actor.id);
  if(!person&&allowCreate){const id=await base.getTable(T.people).createRecordAsync({entity_uid:`recognize_${actor.id}`,recognition_person_uid:actor.id,name:actor.profile.name,email:actor.profile.email||'',status:{name:'Active'},record_mode:{name:'Test'}});person=await base.getTable(T.people).selectRecordAsync(id);}
  if(!person)fail('tenant_membership_required');

@@ -5,7 +5,7 @@ import { claimOnce, completeClaim } from './rs-recognition-claims.js';
 import { createAccessStore } from './rs-inputs-access.js';
 
 export const BASE='app7BXcw801n19QKF';
-export const TABLE={barn:'tbled1saw01Thffs1',riders:'tbllUlTlcEMgZiW3h',sources:'tblRswgKjA9dt3PED',events:'tbluecPFIorOytASP',submissions:'tblldMTDEC697hPwE',people:'tblyTBgrgdhT3Tcg7',memberships:'tblFf4aWQYA2RRsWo',roster:'tblwcczj8lFhVcbyt'};
+export const TABLE={barn:'tbled1saw01Thffs1',riders:'tbllUlTlcEMgZiW3h',sources:'tblRswgKjA9dt3PED',events:'tbluecPFIorOytASP',submissions:'tblldMTDEC697hPwE',people:'tblyTBgrgdhT3Tcg7',memberships:'tblFf4aWQYA2RRsWo',roles:'tblRqRbjmqmNfJtIP',roster:'tblwcczj8lFhVcbyt'};
 export const SOURCE='rs-inputs-native';
 const fail=(code,status=409)=>{throw new InputError(code,status)};
 const quote=v=>String(v).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
@@ -34,8 +34,15 @@ export function createTenantBarnStore({legacy,call,actor}){
  const mapping=(kind,id)=>one(TABLE.sources,'mapping_uid',`${SOURCE}|${kind}|${id}`);
  async function allowed(tenantId){
   const person=await one(TABLE.people,'recognition_person_uid',actor.id);if(!person)return false;
-  const memberships=await call(TABLE.memberships);
-  return memberships.some(r=>r.fields.Status==='Enabled'&&r.fields.Person?.length===1&&r.fields.Person[0]===person.id&&r.fields.Tenant?.length===1&&r.fields.Tenant[0]===tenantId&&r.fields.Roles?.includes('recjmgDCzQmZ5CARx'));
+  const memberships=(await call(TABLE.memberships)).filter(r=>r.fields.Person?.length===1&&r.fields.Person[0]===person.id&&r.fields.Tenant?.length===1&&r.fields.Tenant[0]===tenantId);
+  if(memberships.length>1)fail('ambiguous_tenant_membership');
+  const membership=memberships[0];
+  if(membership?.fields.Status!=='Enabled')return false;
+  // Barn/Rider editing is the owner's existing permission. Descriptive people
+  // roles, trainer labels, or client-supplied role names never grant it.
+  const owners=(await call(TABLE.roles)).filter(r=>r.fields.rec_name==='owner');
+  if(owners.length!==1)fail('tenant_owner_role_required');
+  return membership.fields.Roles?.includes(owners[0].id)===true;
  }
  async function snapshot(kind,map){
   const m=map.fields;if(m.source_system!==SOURCE||m.source_entity_type!==kind||!/^rec[A-Za-z0-9]+$/.test(m.external_id||''))fail('invalid_tenant_mapping');

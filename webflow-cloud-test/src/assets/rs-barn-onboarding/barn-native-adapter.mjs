@@ -59,21 +59,36 @@ export function bindMainForms({ document, api, view, navigate = path => document
   for (const method of ['state', 'feedback', 'busy', 'editor']) if (typeof view?.[method] !== 'function') throw new Error(`native_view_contract_missing:${method}`);
   let state = null, actor = null, pending = false, disposed = false;
   const pendingBarn = {};
+  const optimistic = new Map();
+  function display() {
+    if (!state || disposed) return;
+    const visible = structuredClone(state);
+    for (const [kind, entry] of optimistic) {
+      const key=kind==='barn'?'barns':kind;
+      const rows=visible[key],index=rows.findIndex(row=>row.id===entry.id);
+      if(index<0)rows.push(entry);else rows[index]=entry;
+    }
+    view.state(visible, actor);
+  }
+  function showPending(kind,draft,barnId) {
+    optimistic.set(kind,{...draft,id:draft.id||`pending-${kind}`,barnId:kind==='barn'?(draft.id||''):barnId,pending:true});
+    display();
+  }
   const editing = Object.fromEntries(Object.keys(FORMS).map(kind => [kind, null]));
   const remove = [];
   const feedback = (kind, type, value) => view.feedback({ kind, type, value });
-  async function run(kind, operation) {
+  async function run(kind, operation, saving = false) {
     if (pending || disposed) return false;
     pending = true;
-    view.busy(true);
+    view.busy(true, {kind, saving});
     try { return await operation(); }
     catch (error) { if (!disposed) feedback(kind, 'error', error.code || error.message); return false; }
-    finally { pending = false; if (!disposed) view.busy(false); }
+    finally { pending = false; if (!disposed) view.busy(false, {kind, saving}); }
   }
   function apply(next) {
     if (disposed) return;
     state = next;
-    view.state(next, actor);
+    display();
   }
   async function initialize() {
     return run('barn', async () => {
@@ -86,11 +101,12 @@ export function bindMainForms({ document, api, view, navigate = path => document
         if (!disposed) navigate('/rs-recognize');
         return false;
       }
+      const cached=await api.cachedState?.();if(cached)apply(cached);
       let next,loadError;
       try{next=await api.state();}catch(error){loadError=error;}
       if (disposed) return false;
       if(next)apply(next);
-      const barn = next?.barns.find(r => r.id === next.selectedBarn);
+      const barn = state?.barns.find(r => r.id === state.selectedBarn);
       editing.barn = barn || null;
       fillDraft(targets.forms.barn.fields, barn);
       for (const kind of ['barn','riders']) {
@@ -99,7 +115,8 @@ export function bindMainForms({ document, api, view, navigate = path => document
         if(draft){
           pendingBarn[kind]=saved.barnId;
           if(next&&saved.barnId&&next.selectedBarn!==saved.barnId){const restored=await api.state(saved.barnId);apply(restored);}
-editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','A previous save is unconfirmed. Your entry is restored; use Save to check it.');}
+showPending(kind,draft,saved.barnId);
+editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','retry');}
       }
       if(loadError)throw loadError;
       return true;
@@ -123,6 +140,11 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
   async function beginEdit(kind, id) {
     return run(kind, async () => {
       if (!FORMS[kind] || !state) throw new Error('records_not_ready');
+      const restored=await api.pendingDraft?.(kind);
+      if(restored?.draft && (restored.draft.id===id || id===`pending-${kind}`)){
+        pendingBarn[kind]=restored.barnId;editing[kind]=restored.draft.id?restored.draft:null;
+        fillDraft(targets.forms[kind].fields,restored.draft);view.editor({kind,record:editing[kind],open:true});feedback(kind,'error','retry');return true;
+      }
       const next = await api.state(state.selectedBarn);
       const record = list(next, kind).find(r => r.id === id);
       if (!record || !Number.isInteger(record.revision)) throw new Error('record_not_found');
@@ -140,16 +162,19 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
       if (!FORMS[kind] || !state) throw new Error('records_not_ready');
       const draft = readDraft(targets.forms[kind].fields, editing[kind]);
       validate(kind, draft, state);
+      showPending(kind,draft,pendingBarn[kind] ?? state.selectedBarn);
+      feedback(kind,'success','Saving');
       const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
       delete pendingBarn[kind];
+      optimistic.delete(kind);
       if (disposed) return false;
       apply(result.state);
       editing[kind] = kind === 'barn' ? result.record : null;
       fillDraft(targets.forms[kind].fields, kind === 'barn' ? result.record : kind === 'horses' ? { locationId: draft.locationId } : {});
       view.editor({ kind: kind === 'barn' ? 'users' : kind, open: kind === 'barn' || another, record: null });
-      feedback(kind, 'success', `${result.record.name} ${draft.id ? 'updated' : 'saved'}.`);
+      feedback(kind, 'success', 'Saved');
       return true;
-    });
+    }, true);
   }
   async function profileLink() {
     return run('users', async () => {
@@ -181,8 +206,11 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
     return run(kind, async () => {
       if (!state || !FORMS[kind]) throw new Error('records_not_ready');
       validate(kind, draft, state);
+      showPending(kind,draft,pendingBarn[kind] ?? state.selectedBarn);
+      feedback(kind,'success','Saving');
       const result = await api.record(kind, draft, pendingBarn[kind] ?? state.selectedBarn);
       delete pendingBarn[kind];
+      optimistic.delete(kind);
       if (disposed) return false;
       apply(result.state);
       if (kind === 'barn') {
@@ -194,8 +222,9 @@ editing[kind]=draft.id?draft:null;fillDraft(targets.forms[kind].fields,draft);vi
         }
         view.editor({ kind: 'users', record: null, open: true });
       }
+      feedback(kind,'success','Saved');
       return result;
-    });
+    }, true);
   }
   function on(node, event, handler) { node.addEventListener(event, handler, true); remove.push(() => node.removeEventListener(event, handler, true)); }
   function keyboardAction(node, handler) {

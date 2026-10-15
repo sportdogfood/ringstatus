@@ -13,6 +13,7 @@ function fixture(){
  const db=controlDatabase(),env={AIRTABLE_TOKEN:'fixture',RS_INPUTS_BASE_ID:'app9kOZdIaGyKk5uG',RS_INPUTS_WRITE_MODE:'isolated-trial',RS_INPUTS_SESSION_SECRET:'ab'.repeat(32),RS_RECOGNITION_CONTROL_DB:db};
  const data=Object.fromEntries(Object.values(TABLE).map(t=>[t,[]]));let seq=0;
  const insert=(table,fields)=>{const row={id:'rec'+String(++seq).padStart(14,'0'),fields:structuredClone(fields)};data[table].push(row);return row;};
+ insert(TABLE.roles,{rec_name:'owner'});
  const call=async(table,{id,formula,fields,method='GET'}={})=>{
   if(method!=='GET'){assert.equal(table,TABLE.submissions);return [structuredClone(insert(table,fields))];}
   if(id){const row=data[table].find(r=>r.id===id);assert.ok(row);return structuredClone(row);}
@@ -123,5 +124,21 @@ test('a stale competing submission becomes Needs review without downgrading the 
   await assert.rejects(f.process(f.data[TABLE.submissions][1]),/record_changed/);
   assert.equal(f.data[TABLE.submissions][0].fields['Processing status'],'Applied');assert.equal(f.data[TABLE.submissions][1].fields['Processing status'],'Needs review');
   await assert.rejects(f.bridge().intake(other),e=>e.code==='tenant_save_needs_review');assert.equal(f.data[TABLE.barn][0].fields.tenant_official_name,'TEST Winner');
+ }finally{f.db.close()}
+});
+
+test('canonical permissions follow the unique owner role and current tenant membership only',async()=>{
+ const f=fixture();try{
+  const payload={kind:'barn',draft:draft('TEST Role binding'),barnId:barn.id,expectedRevision:2,requestId:'role-binding-1'};
+  await assert.rejects(f.bridge().intake(payload),e=>e.code==='tenant_save_pending');await f.process(f.data[TABLE.submissions][0]);
+  const membership=f.data[TABLE.memberships][0],owner=f.data[TABLE.roles][0];
+  assert.deepEqual(membership.fields.Roles,[owner.id]);
+  assert.equal((await f.bridge().store.list('barn')).length,1);
+  const staff=f.insert(TABLE.roles,{rec_name:'staff'});membership.fields.Roles=[staff.id];
+  assert.equal((await f.bridge().store.list('barn')).length,0,'staff label must not acquire owner rights');
+  membership.fields.Roles=[owner.id];membership.fields.Tenant=['recDifferentTenant'];
+  assert.equal((await f.bridge().store.list('barn')).length,0,'membership of another tenant must not authorize this barn');
+  membership.fields.Tenant=[f.data[TABLE.barn][0].id];f.insert(TABLE.roles,{rec_name:'owner'});
+  await assert.rejects(f.bridge().store.list('barn'),e=>e.code==='tenant_owner_role_required');
  }finally{f.db.close()}
 });

@@ -100,10 +100,10 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
   async function phoneCandidate(value) {
     const phone = normalizedPhone(value);
     const digits = phone.slice(1);
-    const direct = await unique(tables.people, `OR({primary_phone_e164} = '${formulaValue(phone)}',{primary_phone_e164} = '${formulaValue(digits)}')`, "ambiguous_phone");
+    const direct = await unique(tables.people, `OR({primary_phone_e164} = '${formulaValue(phone)}',{primary_phone_e164} = '${formulaValue(digits)}',{primary_phone_e164} = '${formulaValue(digits.slice(1))}')`, "ambiguous_phone");
     // Check aliases even when a direct person exists: the old action would
     // otherwise use the first person and overlook a conflicting alias owner.
-    const alias = await unique(tables.aliases, `OR({alias_phone_e164} = '${formulaValue(phone)}',{alias_phone_e164} = '${formulaValue(digits)}')`, "ambiguous_phone_alias");
+    const alias = await unique(tables.aliases, `OR({alias_phone_e164} = '${formulaValue(phone)}',{alias_phone_e164} = '${formulaValue(digits)}',{alias_phone_e164} = '${formulaValue(digits.slice(1))}')`, "ambiguous_phone_alias");
     if (!alias) return direct;
     const links = alias.fields?.person;
     if (!Array.isArray(links) || links.length !== 1) fail("ambiguous_phone_alias", 409);
@@ -152,10 +152,30 @@ export function createInputRecognition({ env, fetchImpl = fetch, principalPerson
       const person = await phoneCandidate(value);
       return person && eligible(person) ? { personUid: person.fields.person_uid, phone: normalizedPhone(value) } : null;
     },
+    // Owner-selected lightweight recognition: explicit stored PIN only. Never
+    // treat the last four phone digits, Geo-IP, or a first match as a secret.
+    async credentialCandidate({ phone, pin, deviceToken }) {
+      if (phone) {
+        const person = await phoneCandidate(phone);
+        if (!person || !eligible(person) || (pin && clean(person.fields.member_pin) !== pin)) return null;
+        return { personUid: person.fields.person_uid };
+      }
+      if (!/^\d{4}$/.test(pin || '')) fail('invalid_pin');
+      if (deviceToken) {
+        const current = await resolve(deviceToken);
+        if (current.person && clean(current.person.fields.member_pin) === pin) return { personUid: current.person.fields.person_uid };
+      }
+      const person = await unique(tables.people, `{member_pin} = '${pin}'`, 'ambiguous_pin');
+      return person && eligible(person) ? { personUid: person.fields.person_uid } : null;
+    },
     // Recognition context for the public launcher, never an Inputs actor or grant.
     async recognizeDevice(deviceToken) {
       const resolved = await resolve(deviceToken);
       return { ...resolved.response, personRecordId: resolved.person?.id || '', deviceRecordId: resolved.deviceRecordId || '' };
+    },
+    async retirementPrincipal(deviceToken) {
+      const resolved=await resolve(deviceToken,{includeRetiredOwner:true});
+      return resolved.person?.fields?.person_uid || null;
     },
     async lookup(deviceToken) {
       if (deviceToken != null && deviceToken !== "" && !principal) fail("verified_profile_required", 503);

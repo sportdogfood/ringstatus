@@ -95,7 +95,8 @@ export function createInputAccess({ env, fetchImpl = fetch, now = () => Date.now
     return actorOf(row);
   }
   async function redeem(request, token) {
-    if (typeof token !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(token)) fail('invalid_invitation');
+    // Preserve issued legacy links; new owner-selected invites are seven digits.
+    if (typeof token !== 'string' || !/^(?:[A-Za-z0-9_-]{43}|\d{7})$/.test(token)) fail('invalid_invitation');
     requireClaimDatabase(env);
     const key = await signingKey(env); // Validate configuration before consuming a link.
     const { audience, path } = scope(request);
@@ -164,6 +165,13 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
       const found = await createInputRecognition({ env, fetchImpl, verifiedInputAccess: true }).recognizeDevice(token);
       if (!found.recognized) throw error;
       actor = actorOf(await createAccessStore({ env, fetchImpl }).byUid(found.profile.person_uid));
+    }
+    // Preserve the existing staged client's account-bound device drafts.
+    // This checks identity; it never grants identity or permissions.
+    const actorScope = request.headers.get('X-RS-Actor-Scope');
+    if (actorScope !== null) {
+      if (!validUid(actorScope)) fail('invalid_actor_scope', 400);
+      if (actorScope !== actor.id) fail('account_changed', 409);
     }
     if (operation === 'access') return respond({ ok: true, actor });
     return await inputHandler(actor);

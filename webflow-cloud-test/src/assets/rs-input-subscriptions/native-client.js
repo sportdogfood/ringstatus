@@ -1,4 +1,6 @@
-(() => {
+import {createPersistence} from './persistence.js';
+import {runSilentRecognition} from '../rs-recognition/native-client.js';
+(async () => {
  const root=document.getElementById('rs-component-drafts');
  const main=document.getElementById('rs-draft-alerts');
  const form=root?.querySelector('[data-rs-form="alerts"]');
@@ -6,13 +8,22 @@
  form.dataset.rsNativeBound='true';
  const definitions=[{"key":"class_start_late","group":"Classes","label":"Class delayed","description":"When a class is expected to start later than scheduled."},{"key":"class_start_early","group":"Classes","label":"Class moved earlier","description":"When a class is expected to start earlier than scheduled."},{"key":"class_starts_in1","group":"Classes","label":"Class reminder 1","description":"A reminder before the expected class start.","input":"minutes","presets":[30,45,60,75,90]},{"key":"class_starts_in2","group":"Classes","label":"Class reminder 2","description":"A second reminder before the expected class start.","input":"minutes","presets":[15,30,45,60]},{"key":"class_started","group":"Classes","label":"Class started","description":"When the class begins."},{"key":"class_underway","group":"Classes","label":"Class in progress","description":"An update when the class is underway."},{"key":"class_completed","group":"Classes","label":"Class finished","description":"When the class is complete."},{"key":"trip_starts_in1","group":"Rider trips","label":"Ride reminder 1","description":"A reminder before the expected start of a rider’s trip.","input":"minutes","presets":[30,45,60,75,90]},{"key":"trip_starts_in2","group":"Rider trips","label":"Ride reminder 2","description":"A second reminder before the expected start of a rider’s trip.","input":"minutes","presets":[15,30,45,60]},{"key":"rider_oog","group":"Rider trips","label":"Rider order","description":"An update about the rider’s order of go."},{"key":"rider_oog10","group":"Rider trips","label":"Rides to go","description":"Tell me when this many entries remain before my rider’s turn.","input":"entries","presets":[7,10,15],"defaultValue":"10"},{"key":"rider_started","group":"Rider trips","label":"Rider started","description":"When the rider begins their trip."},{"key":"rider_first_score","group":"Rider trips","label":"First score","description":"When the rider’s first score is reported."},{"key":"rider_first_time","group":"Rider trips","label":"First time","description":"When the rider’s first time is reported."},{"key":"rider_results","group":"Rider trips","label":"Rider results","description":"When results for the rider become available."},{"key":"groom_tasks_at1","group":"Groom tasks","label":"Task reminder 1","description":"A groom task reminder at your chosen time.","input":"time"},{"key":"groom_tasks_at2","group":"Groom tasks","label":"Task reminder 2","description":"A second groom task reminder at your chosen time.","input":"time"},{"key":"groom_tasks_at3","group":"Groom tasks","label":"Task reminder 3","description":"A third groom task reminder at your chosen time.","input":"time"}];
  const endpoint=new URL('subscriptions',import.meta.url);
- let revision=0,loaded=false,busy=false,pending=null;
- const lock=on=>{busy=on;form.querySelectorAll('input,button,select').forEach(node=>node.disabled=on);};
- const errors={authentication_required:'Open Recognize in this browser, then reload this page.',record_changed:'Preferences changed in another window. Reload to view the latest saved choices.',write_outcome_unknown:'Save could not be confirmed. Retry the same save to check it.',subscription_request_in_progress:'A save is already in progress. Wait, then try again.'};
- async function request(body){
-  const url=new URL(endpoint);if(!body)url.searchParams.set('view','preferences');
-  const response=await fetch(url,{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(30000),...(body?{headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
-  const result=await response.json();if(!response.ok||result?.ok!==true)throw Error(errors[result?.error]||'Preferences could not be saved or loaded. Your choices are kept here.');return result;
+ let revision=0,loaded=false,busy=false,pending=null,persistence=null,actorId=null,stopped=false;
+ let draftWrites=Promise.resolve(),retryTimer=null,awaitingRequestId=null;
+ const accessEndpoint=new URL('access',import.meta.url);
+ async function verifyAccess(){
+  const response=await fetch(accessEndpoint,{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(30000)});
+  const result=await response.json();
+  if(!response.ok||result?.ok!==true||!result.actor?.id||!result.actor.permissions?.includes('inputs:write')){stopped=true;loaded=false;data=seed();throw Error(errors.authentication_required);}
+  if(actorId&&result.actor.id!==actorId){stopped=true;loaded=false;data=seed();throw Error('Account changed. Reload to load this account’s preferences.');}
+  return result.actor.id;
+ }
+ const lock=on=>{busy=on;form.querySelectorAll('input,button,select').forEach(node=>node.disabled=on||!loaded||stopped);};
+ const errors={account_changed:'Account changed. Reload to load this account’s preferences.',authentication_required:'Recognition is required to load your preferences.',record_changed:'Preferences changed in another window. Reload to view the latest saved choices.',write_outcome_unknown:'Save could not be confirmed. Retry the same save to check it.',subscription_request_in_progress:'A save is already in progress. Wait, then try again.'};
+ async function request(body,requestId){
+  const url=new URL(endpoint);if(!body){url.searchParams.set('view',requestId?'submission':'preferences');if(requestId)url.searchParams.set('request_id',requestId);}
+  const response=await fetch(url,{method:body?'POST':'GET',credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(30000),headers:{'X-RS-Actor-Scope':actorId,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
+  const result=await response.json();if(!response.ok||result?.ok!==true){const e=Error(errors[result?.error]||'Preferences could not be saved or loaded. Your choices are kept here.');e.code=result?.error;if(['authentication_required','account_changed'].includes(e.code)){stopped=true;loaded=false;data=seed();}throw e;}return result;
  }
  const seed=()=>({version:1,enabled:false,phone:'',timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone,variables:Object.fromEntries(definitions.map(a=>[a.key,{enabled:false,value:a.defaultValue||''}]))});
  let data=seed(),error='',notice='',invalid='',mobile=new URLSearchParams(window.location.search).get('view')!=='desktop';
@@ -38,11 +49,12 @@
   root.querySelector('[data-rs-time-zone]').textContent='Times use the saved local time zone ('+data.timeZone+').';
   const selected=definitions.filter(a=>data.variables[a.key].enabled).length;
   count.textContent=selected+' of '+definitions.length+' alerts selected'+(data.enabled?'':' · SMS off');
+  form.querySelectorAll('[type="submit"]').forEach(node=>{node.textContent=busy?'Saving':error&&pending?'Retry':notice.startsWith('Saved')?'Saved':'Save';});
   errorNode.textContent=error;statusNode.textContent=notice;
   show(errorNode,!!error,'block');show(statusNode,!error&&!!notice,'block');show(count,!error&&!notice,'block');show(hint,invalid==='phone','block');
   presentation();
  }
- function changed(){error='';notice='';invalid='';update();}
+ function changed(){if(!loaded||stopped||!persistence)return;error='';notice='Pending — use Save to confirm these choices.';invalid='';const draft=JSON.parse(JSON.stringify(data));draftWrites=draftWrites.then(()=>persistence.edit(draft)).catch(()=>{error='Device storage failed. Keep this page open; these choices cannot be safely queued.';update();throw Error('device_storage_failed');});draftWrites.catch(()=>{});update();}
  async function save(){
   if(busy||!loaded)return;
   error='';notice='';invalid='';
@@ -57,16 +69,53 @@
     if(a.input==='time'&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(pref.value)){error=a.label+': choose a time.';invalid=a.key;update();return;}
    }
   }
-  const fingerprint=JSON.stringify(data);
-  if(!pending||pending.fingerprint!==fingerprint)pending={fingerprint,body:{action:'preferences',requestId:crypto.randomUUID(),expectedRevision:revision,preferences:JSON.parse(fingerprint)}};
-  lock(true);notice='Saving preferences…';update();
-  try{const saved=await request(pending.body);data=saved.preferences;revision=saved.revision;pending=null;notice=data.enabled?'SMS opt-in preferences saved to your profile.':'SMS alerts are off. Preferences saved to your profile.';}
-  catch(e){error=e.name==='TimeoutError'?'Save could not be confirmed. Retry the same save to check it.':e.message;}
-  finally{lock(false);update();}
+  await transmit(true);
  }
- root.addEventListener('click',event=>{const button=event.target.closest('[data-rs-action]');if(!button||!root.contains(button))return;event.preventDefault();const action=button.dataset.rsAction;if(action==='theme')root.dataset.theme=button.dataset.value;if(action==='alert-view')mobile=!mobile;if(action==='alert-value'){if(busy||!loaded)return;data.variables[button.dataset.key].value=button.dataset.value;changed();return;}presentation();});
- root.addEventListener('change',event=>{const e=event.target;if(e===sms){data.enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert')){data.variables[e.dataset.rsAlert].enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
- root.addEventListener('input',event=>{const e=event.target;if(e===phone){data.phone=e.value;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
+ async function transmit(explicit=false){
+  if(busy||!loaded||stopped)return;
+  lock(true);notice='Saving preferences…';update();
+  let operation,polling=false;
+  try{
+   await draftWrites;await verifyAccess();
+   const state=await persistence.load();
+   operation=state.pending;
+   if(explicit&&operation?.error==='intake_record_changed'&&!awaitingRequestId){
+    const latest=await request();await persistence.refresh(latest.preferences,latest.revision);
+    if(!await persistence.rejectRevision(operation))throw Error('Save changed in another window. Reload before saving.');
+    revision=latest.revision;operation=null;
+   }
+   if(!operation){
+    if(!explicit){notice=state.dirty?'Pending - use Save to confirm these choices.':'';return;}
+    // Explicit Save alone authorizes a new consent-bearing request.
+    operation=await persistence.prepare({action:'preferences',requestId:crypto.randomUUID(),expectedRevision:revision,preferences:JSON.parse(JSON.stringify(data))});
+   }
+   if(!explicit&&['record_changed','intake_record_changed'].includes(operation.error)){error=errors.record_changed;notice='';return;}
+   pending=operation;
+   polling=awaitingRequestId===operation.body.requestId;
+   let saved=polling?await request(null,operation.body.requestId):await request(operation.body);
+   if(saved.state==='Pending'){awaitingRequestId=operation.body.requestId;
+    // Intake is not a save. Keep the exact durable operation while polling its outcome.
+    notice='Saving';error='';clearTimeout(retryTimer);retryTimer=setTimeout(()=>transmit(),3000);return;
+   }
+   if(saved.state==='Applied'&&(saved.requestId!==operation.body.requestId||saved.actorId!==actorId||saved.revision!==operation.body.expectedRevision+1))throw Error('Operation confirmation did not match this save.');
+   if(!saved.preferences||!Number.isInteger(saved.revision))throw Error('Save response could not be confirmed.');
+   await persistence.confirm(operation,saved.preferences,saved.revision);
+   awaitingRequestId=null;
+   const current=await persistence.load();data=current.draft;revision=saved.revision;pending=current.pending;
+   notice=current.dirty?'Pending — newer choices still need Save.':'Saved';
+  }catch(e){
+   if(operation)await persistence.fail(operation,!polling&&e.code==='record_changed'?'intake_record_changed':e.code||e.name).catch(()=>{});
+   error=e.name==='TimeoutError'?'Save could not be confirmed. Retry the same save to check it.':e.message;
+   if(operation&&!stopped&&['TypeError','TimeoutError'].includes(e.name)){
+    const state=await persistence.load().catch(()=>null);clearTimeout(retryTimer);
+    retryTimer=setTimeout(()=>transmit(),Math.min(60000,1000*2**Math.min(state?.pending?.attempts||1,6)));
+   }
+  }finally{lock(false);form.querySelectorAll('[type="submit"]').forEach(node=>node.disabled=!loaded);update();}
+
+ }
+ root.addEventListener('click',event=>{const button=event.target.closest('[data-rs-action]');if(!button||!root.contains(button))return;event.preventDefault();const action=button.dataset.rsAction;if(action==='theme')root.dataset.theme=button.dataset.value;if(action==='alert-view')mobile=!mobile;if(action==='alert-value'){if(busy||!loaded||stopped)return;data.variables[button.dataset.key].value=button.dataset.value;changed();return;}presentation();});
+ root.addEventListener('change',event=>{if(!loaded||stopped||!persistence)return;const e=event.target;if(e===sms){data.enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert')){data.variables[e.dataset.rsAlert].enabled=e.checked;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
+ root.addEventListener('input',event=>{if(!loaded||stopped||!persistence)return;const e=event.target;if(e===phone){data.phone=e.value;changed();}else if(e.hasAttribute('data-rs-alert-time')){data.variables[e.dataset.rsAlertTime].value=e.value;changed();}});
  root.addEventListener('submit',event=>{if(event.target!==form)return;event.preventDefault();event.stopImmediatePropagation();save();},true);
  root.querySelectorAll('[data-rs-action]').forEach(button=>{if(button.tagName==='A'){button.setAttribute('role','button');button.setAttribute('tabindex','0');button.addEventListener('keydown',event=>{if(event.key===' '||event.key==='Enter'){event.preventDefault();button.click();}});}});
  narrow.addEventListener('change',presentation);update();
@@ -74,9 +123,26 @@
   lock(true);notice='Loading saved preferences…';update();
   const prototypeNote=[...root.querySelectorAll('p')].find(node=>node.textContent.includes('Prototype preferences only.'));
   if(prototypeNote)prototypeNote.textContent='Preferences are saved to your RingStatus profile. Alert delivery is not active.';
-  try{const saved=await request();if(saved.preferences)data=saved.preferences;revision=saved.revision;loaded=true;notice='';}
+  try{
+   let recognitionOutcome;
+   const recognized=await runSilentRecognition({endpoint:new URL('native-recognition',import.meta.url),redirectOnRecognized:false,onOutcome:outcome=>{recognitionOutcome=outcome;}});
+   if(!recognized){
+    if(recognitionOutcome?.outcome==='unknown'){stopped=true;window.location.assign('/rs-recognize?return_to=%2Frs-barn-onboarding-alerts');return;}
+    throw Error('Recognition could not be confirmed. Reload to try again.');
+   }
+   actorId=await verifyAccess();persistence=createPersistence({scope:{actorId,resource:endpoint.href,tenantId:'personal'}});
+   const cached=await persistence.load();
+   if(cached.draft)data=cached.draft;
+   revision=cached.confirmed?.revision||0;pending=cached.pending;loaded=true;
+   notice=cached.dirty?'Pending — use Save to confirm these choices.':cached.confirmed?'Last saved '+new Date(cached.confirmed.updatedAt).toLocaleString():'';update();
+   const saved=await request();await persistence.refresh(saved.preferences||seed(),saved.revision);
+   const state=await persistence.load();data=state.draft;revision=saved.revision;pending=state.pending;
+   notice=state.dirty?'Pending — use Save to confirm these choices.':'';
+  }
   catch(e){error=e.message;notice='';}
   finally{lock(false);form.querySelectorAll('[type="submit"]').forEach(node=>node.disabled=!loaded);update();}
  }
- initialize();
+ window.addEventListener('online',()=>transmit());
+ await initialize();
+ if(pending&&loaded&&!stopped)transmit();
 })();

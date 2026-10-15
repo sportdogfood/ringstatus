@@ -8,7 +8,7 @@ const one = (root, selector) => {
   return nodes[0];
 };
 const errors = {
-  name_required:'Enter a name.', barn_required:'Add a barn first.', invalid_email:'Enter a valid email address or leave it blank.',
+  retry:'Retry — your entry is kept.', tenant_save_pending:'Retry — your entry is kept.', name_required:'Enter a name.', barn_required:'Add a barn first.', invalid_email:'Enter a valid email address or leave it blank.',
   invalid_relationship:'Choose a linked record in this barn.', authentication_required:'Your access could not be verified. No changes were saved.',
   record_changed:'This record has changed. Your entry is kept here. Reopen the record to load its latest saved values.',
   write_outcome_unknown:'The save could not be confirmed. Your entry is still here; retry the same save to check its result.',
@@ -56,10 +56,11 @@ export function prepareNativeBarn({document, api, chooser}) {
     const element=one(root,'#'+spec.id);
     return [kind,{...spec,element,form:one(element,'.rs-barn-v24-sheet-form'),fields:Object.fromEntries(Object.entries(spec.fields).map(([f,s])=>[f,one(element,s)])),
       save:one(element,'.rs-barn-v24-primary'),close:one(element,'.rs-barn-v24-sheet-close'),description:one(element,'.rs-barn-v24-sheet-description'),
-      originalDescription:one(element,'.rs-barn-v24-sheet-description').textContent}];
+      originalSaveLabel:one(element,'.rs-barn-v24-primary').textContent,originalDescription:one(element,'.rs-barn-v24-sheet-description').textContent}];
   }));
   const optionTemplate=one(sheets.riders.element,'option[value=""]').cloneNode(true);
   const originalOptions = new Map([...Object.values(forms).flatMap(f=>Object.values(f.fields)),sheets.riders.fields.userId].filter(n=>n.tagName==='SELECT').map(n=>[n,[...n.childNodes].map(c=>c.cloneNode(true))]));
+  const originalButtonLabels=new Map(Object.values(forms).flatMap(f=>[f.primary,f.secondary]).filter(Boolean).map(n=>[n,n.textContent]));
   const removes=[]; let controller,frames=[],busy=false,currentKind='barn',disposed=false,pendingFocus=null;
   const listen=(node,type,fn)=>{node.addEventListener(type,fn,true);removes.push(()=>node.removeEventListener(type,fn,true));};
   const click=(node,fn)=>{const handle=event=>{event.preventDefault();event.stopImmediatePropagation();if(!busy&&!disposed)void fn(node);};listen(node,'click',handle);
@@ -69,7 +70,7 @@ export function prepareNativeBarn({document, api, chooser}) {
   function renderOptions(select, records) {
     const previous=select.value;
     const placeholder=optionTemplate.cloneNode(true);placeholder.textContent='Choose';placeholder.value='';
-    const options=records.map(record=>{const node=optionTemplate.cloneNode(true);node.value=record.id;node.textContent=record.name;return node;});
+    const options=records.filter(record=>!record.id.startsWith('pending-')).map(record=>{const node=optionTemplate.cloneNode(true);node.value=record.id;node.textContent=record.name;return node;});
     select.replaceChildren(placeholder,...options);
     select.value=records.some(record=>record.id===previous)?previous:'';
   }
@@ -78,6 +79,7 @@ export function prepareNativeBarn({document, api, chooser}) {
     const slot=templates[kind];const rows=rowsFor(state,kind).map(record=>{
       const row=cleanClone(slot.template);row.dataset.rsRecordId=record.id;
       one(row,'.rs-barn-v24-row-name').textContent=record.name;
+      row.setAttribute('data-rs-pending',String(record.pending===true));
       one(row,'.rs-barn-v24-edit-button').setAttribute('aria-label',`Edit ${record.name}`);
       for(const action of row.querySelectorAll('a')){action.setAttribute('role','button');action.setAttribute('tabindex','0');}
       if(kind==='riders'){
@@ -127,10 +129,15 @@ export function prepareNativeBarn({document, api, chooser}) {
       if(chooser)renderChooser(state);
     },
     feedback({kind,type,value}){
+      forms[kind].form.setAttribute('data-rs-save-state',type==='error'?'Retry':value);
+      if(type==='error')forms[kind].form.setAttribute('data-rs-save-error',value);else forms[kind].form.removeAttribute('data-rs-save-error');
+      const retry=type==='error'&&!['name_required','invalid_email','invalid_relationship','barn_required'].includes(value);
+      for(const button of [forms[kind].primary,forms[kind].secondary].filter(Boolean))button.textContent=retry?'Retry':originalButtonLabels.get(button);
+      if(frames.length){const sheet=sheets[frames.at(-1).kind];sheet.save.textContent=retry?'Retry':sheet.originalSaveLabel;if(type==='success')sheet.description.textContent=value;} 
       if(frames.length&&type==='error'){const sheet=sheets[frames.at(-1).kind];sheet.description.textContent=describeError(value);sheet.description.setAttribute('role','alert');if(!sheet.element.matches(':popover-open'))sheet.element.showPopover();return;}
       clearFeedback(kind);const target=controls[kind][type];target.textContent=type==='error'?describeError(value):value;target.setAttribute('role',type==='error'?'alert':'status');show(target,true);
     },
-    busy(value){busy=value;root.setAttribute('aria-busy',String(value));root.inert=value;for(const form of Object.values(forms))form.form.inert=value;for(const sheet of Object.values(sheets))sheet.form.inert=value;if(!value&&pendingFocus){pendingFocus.focus();pendingFocus=null;}},
+    busy(value,{kind,saving=false}={}){busy=value;root.setAttribute('aria-busy',String(value));root.inert=value&&!saving;for(const [key,form] of Object.entries(forms))form.form.inert=value&&(!saving||key===kind);for(const [key,sheet] of Object.entries(sheets))sheet.form.inert=value&&(!saving||key===kind);if(!value&&pendingFocus){pendingFocus.focus();pendingFocus=null;}},
     editor({kind,record,open}){selectTab(kind);show(forms[kind].form,open);show(controls[kind].edit,open&&!!record);show(controls[kind].add,!open);clearFeedback(kind);
       const title=controls[kind].edit.firstElementChild;if(title&&record)title.textContent=`Editing ${record.name}`;if(open){if(busy)pendingFocus=forms[kind].fields.name;else forms[kind].fields.name.focus();}}
   };
@@ -163,7 +170,7 @@ export function prepareNativeBarn({document, api, chooser}) {
   }
   // Clone the designated native option, preserving its presentation.
   function renderChooser(state){
-    const nodes=state.barns.map(record=>{const option=cleanClone(chooser.optionTemplate);option.textContent=record.name;option.dataset.rsBarnId=record.id;option.setAttribute('aria-current',String(record.id===state.selectedBarn));option.setAttribute('role','button');option.setAttribute('tabindex','0');return option;});
+    const nodes=state.barns.filter(record=>!record.pending||record.id!=='pending-barn').map(record=>{const option=cleanClone(chooser.optionTemplate);option.textContent=record.name;option.dataset.rsBarnId=record.id;option.setAttribute('aria-current',String(record.id===state.selectedBarn));option.setAttribute('role','button');option.setAttribute('tabindex','0');return option;});
     chooser.container.replaceChildren(...nodes);
   }
   const closeChooser=()=>{if(chooserSheet.matches(':popover-open'))chooserSheet.hidePopover();restoreFocus(chooseControl);};

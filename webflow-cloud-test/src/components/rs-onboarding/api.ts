@@ -82,6 +82,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
   async function request(path: string, body?: Record<string, unknown>) {
     const response = await fetch(`${base}${path}`, {
       method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
+      ...(typeof AbortSignal!=='undefined'?{signal:AbortSignal.timeout(15000)}:{}),
       headers: { ...(body ? {'Content-Type':'application/json'} : {}), ...(options.durableBarn ? {'X-RS-Tenants':'barn-rider-v1', ...(verifiedActor ? {'X-RS-Actor':verifiedActor.id} : {})} : {}) },
       ...(body ? {body:JSON.stringify(body)} : {})
     }).catch(() => { throw new Error('Could not connect. Your entry is still here; try again.'); });
@@ -116,6 +117,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
       }
       if (!validate(result)) throw new Error('The server response could not be verified. Your entry is still here.');
       if(device)await device.confirm(operation,result.record,result.record.revision);
+      if(options.durableBarn&&verifiedActor&&validStore(result.state))await persistence('state').refresh(result.state,0).catch(()=>{});
       requests.delete(path);return result;
     }catch(error){if(device)await device.fail(operation,error instanceof Error?error.message:'save_unconfirmed');throw error;}
   }
@@ -131,6 +133,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
   }
   return {
     async access(): Promise<AccessActor> { const current=accessActor(await request('/access'));if(verifiedActor&&current.id!==verifiedActor.id)throw new InputApiError('authentication_required');verifiedActor=current;return current; },
+    async cachedState(){if(!options.durableBarn||!verifiedActor)return null;try{const saved=(await persistence('state').load()).confirmed?.data;return validStore(saved)?saved:null;}catch{return null;}},
     async pendingDraft(kind: string){if(!options.durableBarn||!verifiedActor)return null;return (await persistence(kind).load()).pending?.body||null;},
     async acceptInvitation(token: string): Promise<AccessActor> {
       if (!/^[A-Za-z0-9_-]{43}$/.test(token)) throw new InputApiError('invalid_invitation');
@@ -143,6 +146,7 @@ export function createInputsApi(apiBase: string, options: { durableBarn?: boolea
     async state(barnId = ''): Promise<Store> {
       const result = await request(`/state${barnId ? `?barn_id=${encodeURIComponent(barnId)}` : ''}`);
       if (!validStore(result.state)) throw new Error('The server returned an invalid record state.');
+      if(options.durableBarn&&verifiedActor)await persistence('state').refresh(result.state,0).catch(()=>{});
       return result.state;
     },
     async record(kind: Kind, draft: Draft, barnId: string): Promise<{ record: Item; state: Store }> {

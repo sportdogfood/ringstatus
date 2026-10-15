@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Recognize \u00e2\u20ac\u201d disposable live agent test",
+  "version": "0.2.0",
+  "description": "Optional guide using the shared native recognition controller. Phone, PIN, invite and explicit SMS; no independent identity grants.",
+  "host_permissions": [
+    "http://127.0.0.1:43187/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://ringstatus.com/rs-recognize",
+        "https://ringstatus.com/rs-recognize/*",
+        "https://ringstatus.com/rs-member",
+        "https://ringstatus.com/rs-member/*",
+        "https://ringstatus.com/rs-barn-onboarding-setup-v24"
+      ],
+      "js": [
+        "adapter.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "incognito": "split"
+}

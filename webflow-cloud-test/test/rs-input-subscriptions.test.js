@@ -5,12 +5,16 @@ afterEach(()=>{for(const db of testDatabases.splice(0))db.close();});
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createInputAccess, accessHash } from '../src/lib/rs-inputs-access.js';
+import {personalPreferences} from '../src/lib/rs-input-preferences.js';
+import {digest} from '../src/lib/rs-inputs.js';
 
 
 const module = await import('../src/lib/rs-input-subscriptions.js').catch(()=>null);
 const storeModule = await import('../src/lib/rs-input-subscription-store.js').catch(()=>null);
-const BASE='app9kOZdIaGyKk5uG', SUB='tblbpALv7flu3NNEE', EVENTS='tblwts3huk3w1ACjh';
+const BASE='app9kOZdIaGyKk5uG', TENANTS='app7BXcw801n19QKF', SUB='tblCX61u6pjSLrP5S', EVENTS='tbluecPFIorOytASP';
 const schema=JSON.parse(readFileSync(new URL('../test-support/rs-subscription-schema.json',import.meta.url)));
+schema.find(t=>t.id==='tblbpALv7flu3NNEE').id=SUB;
+schema.find(t=>t.id==='tblwts3huk3w1ACjh').id=EVENTS;
 schema.find(t=>t.id===SUB).fields.push({id:'fldXUxFnjBwpUpBYA',name:'preferences_json',type:'multilineText'});
 const {subscriptionAlertDefinitions:defs}=await import('../src/lib/rs-input-subscription-alerts.js');
 const env={RS_INPUTS_BASE_ID:BASE,RS_INPUTS_RECOGNITION_BASE_ID:BASE,RS_INPUTS_WRITE_MODE:'isolated-trial',AIRTABLE_TOKEN:'synthetic',RS_INPUTS_SESSION_SECRET:'ab'.repeat(32)};
@@ -23,8 +27,9 @@ function fixture(){
  [SUB]:[{id:'recSub',fields:{entity_uid:'sub_1',barn_uid:'barn_1',user_uid:'user_1',engine_scope:'WEC',target_type:'Barn',target_uid:'barn_1',alert_types:'approved_started',phone_e164:'+12025550148',status:'Draft',consent_state:'Granted',consent_at:'2026-10-08T00:00:00.000Z',consent_source:'synthetic-grant',notice_version:'synthetic-v1',owner_uid:'person_1',revision:1,request_uid:'seed',request_hash:'a'.repeat(64),record_mode:'Test'}}],[EVENTS]:[]};
  const calls=[];let loseSub=false,failAudit=false,badResponse=false,auditReadDelay=0;let seq=0;
  const fetchImpl=async(input,init={})=>{
-  const url=new URL(input);assert.equal(url.hostname,'api.airtable.com');const parts=url.pathname.split('/').filter(Boolean);assert.equal(parts[1],BASE);
-  const table=decodeURIComponent(parts[2]),method=init.method||'GET';calls.push({table,method});
+  const url=new URL(input);assert.equal(url.hostname,'api.airtable.com');const parts=url.pathname.split('/').filter(Boolean);
+  const rawTable=decodeURIComponent(parts[2]),table=({'tbly1PM5iFYqVzKSm':'rs_people_test','tblfkRSJAEMzuzApR':'rs_devices_test'})[rawTable]||rawTable,method=init.method||'GET';calls.push({table,method});
+  assert.equal(parts[1],[SUB,EVENTS].includes(table)?TENANTS:BASE);
   assert.ok(tables[table],table);let rows=tables[table];
   if(method==='GET'){
    if(parts[3])return Response.json(rows.find(r=>r.id===parts[3])||{error:'NOT_FOUND'});
@@ -52,15 +57,25 @@ function fixture(){
   const access=createInputAccess({env:bindings,store:{async byHash(){return structuredClone(row)},async byUid(){return structuredClone(row)},async update(id,fields){Object.assign(row.fields,fields);return structuredClone(row)}}});
   return (await access.redeem(new Request(origin+'/test/rs-inputs/access'),token)).cookie.split(';')[0];
  }
- return {tables,calls,fetchImpl,build,cookie,lose(){loseSub=true},auditFail(value){failAudit=value},bad(){badResponse=true},delayAuditReads(ms){auditReadDelay=ms}};
+ // Historical synchronous preference logic remains regression-tested directly;
+ // it is no longer the production HTTP preferences route.
+ const legacyPreferences=()=>async request=>{try{
+  const payload=request.method==='POST'?await request.json():undefined;
+  return Response.json(await personalPreferences({request,payload,actor:{id:'person_1',profile:{personUid:'person_1'},permissions:['inputs:read','inputs:write']},store:storeModule.createSubscriptionStore({env:bindings,fetchImpl,minimumIntervalMs:0}),env:bindings,definitions:defs,clock:()=> '2026-10-09T01:00:00.000Z'}));
+ }catch(e){return Response.json({ok:false,error:e.code},{status:e.status||500})}};
+ async function seedPersonal(){
+  const id='rs_'+(await digest('sms-preferences|person_1')).slice(0,32);
+  tables[SUB].push({id:'recPersonal00001',fields:{entity_uid:id,owner_uid:'person_1',target_uid:'person_1',target_type:'Person',record_mode:'Test',status:'Revoked',consent_state:'Revoked',revision:2,preferences_json:JSON.stringify({...preferences(),enabled:false})}});
+ }
+ return {tables,calls,fetchImpl,build,cookie,legacyPreferences,seedPersonal,lose(){loseSub=true},auditFail(value){failAudit=value},bad(){badResponse=true},delayAuditReads(ms){auditReadDelay=ms}};
 }
 const req=(cookie,body,barn='barn_1',extra={})=>new Request(origin+'/test/rs-inputs/subscriptions?barn_id='+barn,{method:body?'POST':'GET',headers:{...(cookie?{Cookie:cookie}:{}),...(body?{Origin:origin,'Content-Type':'application/json'}:{}),...extra},...(body?{body:JSON.stringify(body)}:{})});
 const revoke={action:'revoke',barnId:'barn_1',subscriptionId:'sub_1',expectedRevision:1,requestId:'revoke_request_001'};
 const preferences=()=>({version:1,enabled:true,phone:'2025550148',timeZone:'America/New_York',variables:Object.fromEntries(defs.map(d=>[d.key,{enabled:!!d.input,value:d.input==='time'?'10:15':d.presets?String(d.presets[0]):''}]))});
 async function result(response,status){const b=await response.json();assert.equal(response.status,status,JSON.stringify(b));return b;}
 
-test('person preferences retain every timing, reload, update and opt out without inventing barn or engine',async()=>{
- const f=fixture(),cookie=await f.cookie(),handler=f.build();
+test('historical preference function retains timings, reload and explicit opt-out on the corrected store',async()=>{
+ const f=fixture(),cookie=await f.cookie(),handler=f.legacyPreferences();
  f.tables.tblRvTwo3HYPUkZou=[];f.tables.tblYgoeLEey05xgw9=[];
  const body={action:'preferences',requestId:'preferences_save_001',preferences:preferences()};
  const saved=await result(await handler(req(cookie,body)),200);
@@ -83,8 +98,8 @@ test('person preferences retain every timing, reload, update and opt out without
  assert.equal(f.tables[SUB].find(r=>r.fields.preferences_json).fields.revoked_at,undefined);
 });
 
-test('preference save reconciles a lost storage reply once without duplicate record or audit',async()=>{
- const f=fixture(),cookie=await f.cookie(),handler=f.build();
+test('historical preference function reconciles lost storage reply without duplicate audit',async()=>{
+ const f=fixture(),cookie=await f.cookie(),handler=f.legacyPreferences();
  const body={action:'preferences',requestId:'preferences_lost_001',preferences:preferences()};
  f.lose();await result(await handler(req(cookie,body)),503);
  const saved=await result(await handler(req(cookie,body)),200);
@@ -94,11 +109,12 @@ test('preference save reconciles a lost storage reply once without duplicate rec
 
 test('recognized browser reads preferences through the same existing cookie and rejects impersonation',async()=>{
  const f=fixture(),handler=f.build(),token='81a81b40-f954-4ad5-8911-8fc3bf91c4a1';
+ await f.seedPersonal();
  f.tables.rs_people_test[0].id='recPerson00000001';
  f.tables.rs_devices_test=[{id:'recDevice00000001',fields:{device_token:token,status:'Active',person:['recPerson00000001']}}];
  const cookie='__Host-rs_recognition_device='+token;
  const read=new Request(origin+'/test/rs-inputs/subscriptions?view=preferences',{headers:{Cookie:cookie}});
- assert.equal((await result(await handler(read),200)).preferences,null);
+ assert.equal((await result(await handler(read),200)).preferences.enabled,false);
  await result(await handler(req(cookie,{action:'preferences',requestId:'preferences_actor_001',ownerUid:'other',preferences:preferences()})),400);
  f.tables.rs_people_test[0].fields.input_access='revoked';
  await result(await handler(new Request(read)),401);
@@ -108,7 +124,7 @@ test('recognized browser reads preferences through the same existing cookie and 
 test('preferences reject unknown or invalid parameters before storage and preserve explicit off',async()=>{
  const f=fixture(),cookie=await f.cookie(),handler=f.build();
  for(const change of [p=>p.variables.class_starts_in1.value='9999',p=>p.variables.groom_tasks_at1.value='25:15',p=>p.timeZone='not-a-zone',p=>p.variables.injected={enabled:true,value:''}]){
-  const p=preferences();change(p);await result(await handler(req(cookie,{action:'preferences',requestId:'invalid_preference_001',preferences:p})),400);
+  const p=preferences();change(p);await result(await handler(req(cookie,{action:'preferences',requestId:'invalid_preference_001',expectedRevision:2,preferences:p})),400);
  }
  assert.equal(f.calls.filter(c=>c.method==='PATCH').length,0);
 });
@@ -164,7 +180,7 @@ test('inconsistent audit lineage cannot authorize a later overwrite',async()=>{
 });
 test('storage pins exact base and validates required fields before writes',async()=>{
  assert.equal(typeof storeModule?.createSubscriptionStore,'function','subscription store implementation missing');
- let calls=0;assert.throws(()=>storeModule.createSubscriptionStore({env:{...env,RS_INPUTS_BASE_ID:'appOther'},fetchImpl:()=>{calls++}}),{code:'subscription_destination_required'});assert.equal(calls,0);
+ let calls=0;assert.throws(()=>storeModule.createSubscriptionStore({env:{...env,RS_INPUTS_TENANTS_BASE_ID:'appOther'},fetchImpl:()=>{calls++}}),{code:'subscription_destination_required'});assert.equal(calls,0);
  const f=fixture(),store=storeModule.createSubscriptionStore({env,fetchImpl:f.fetchImpl,minimumIntervalMs:0});
  await assert.rejects(store.put({...f.tables[SUB][0].fields,consent_state:'Granted',consent_source:''},1),{code:'consent_evidence_required'});
  assert.equal(f.calls.filter(c=>c.method!=='GET').length,0);
